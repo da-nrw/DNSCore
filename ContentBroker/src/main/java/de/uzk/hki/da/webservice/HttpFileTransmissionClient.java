@@ -73,6 +73,7 @@ public class HttpFileTransmissionClient {
 	 * @param file the file
 	 * @param toFile the to file
 	 */
+	@SuppressWarnings("finally")
 	public File postFileAndReadResponse(File file, File toFile) {
 		HttpClient httpclient = null;;
 		try {
