@@ -36,37 +36,11 @@ public class FriendshipConversionAction extends AbstractAction{
 
 	static final Logger logger = LoggerFactory.getLogger(FriendshipConversionAction.class);
 	
-	// COMMENTED OUT ON PURPOSE - DO NOT DELETE - distributed conversion
-	// @SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	boolean implementation() throws IOException {
 		
-		// COMMENTED OUT ON PURPOSE - DO NOT DELETE - distributed conversion
 		if (irodsSystemConnector==null) throw new ConfigurationException("irodsSystemConnector not set");
 		object.reattach();
-		
-		
-//		object.reattach();
-//		
-//		irodsSystemConnector.replicateCollectionToResource(
-//				getIrodsZonePath()+"fork/"+object.getContractor().getShort_name()+"/"+object.getIdentifier()+"/data",
-//				localNode.getWorkingResource()
-//				);
-//		
-//		ConverterService converter = new ConverterService();
-//		converter.convertBatch(
-//				object.getLatest("premis.xml").toRegularFile(),
-//				object, 
-//				new ArrayList(job.getConversion_instructions()) // this job only contains ConversionInstructions for THIS node.
-//				);
-//		
-//		irodsSystemConnector.registerFilesInCollection(
-//				getIrodsZonePath()+"fork/"+object.getContractor().getShort_name()+"/"+object.getIdentifier()+"/data",
-//				new File(object.getDataPath()),
-//				localNode.getWorkingResource()
-//				);
-//
-//		HibernateUtil.getThreadBoundSession().refresh(job); // not needed anymore?
 		
 		return true;
 	}

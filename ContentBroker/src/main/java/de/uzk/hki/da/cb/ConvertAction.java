@@ -71,25 +71,6 @@ public class ConvertAction extends AbstractAction {
 			logger.debug(f.toString());
 		}
 		
-		// COMMENTED OUT ON PURPOSE - DO NOT DELETE - distributed conversion
-//		distributedConversionAdapter.register(
-//				"fork/"+object.getContractor().getShort_name()+"/"+object.getIdentifier()+"/data",
-//				object.getDataPath()
-//				);
-//		if (job.getChildren().size() > 0)
-//			waitForFriendJobsToBeReady(job.getChildren());
-//		distributedConversionAdapter.replicateToTocalNode(
-//				"fork/"+object.getContractor().getShort_name()+"/"+object.getIdentifier()+"/data"
-//				);
-		
-		// TODO trim the stuff down to only our resource
-		
-		// COMMENTED OUT ON PURPOSE - DO NOT DELETE - distributed conversion
-//		Session session = HibernateUtil.openSession();
-//		session.beginTransaction();
-//		dao.refreshJob(job); // To avoid concurrent modification of the files collection.
-//		session.close();
-//		
 		for (Event e:localConversionEvents){
 			object.getLatestPackage().getEvents().add(e);
 			object.getLatestPackage().getFiles().add(e.getTarget_file());

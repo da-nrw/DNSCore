@@ -1,7 +1,7 @@
 #!/bin/bash
 # author: Daniel M. de Oliveira
 
-git pull origin master https://github.com/da-nrw/DNSCore
+git pull origin master
 
 STATUS_UNIT_TESTS=0
 mvn test

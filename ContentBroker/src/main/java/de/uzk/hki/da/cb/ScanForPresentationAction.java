@@ -82,15 +82,6 @@ public class ScanForPresentationAction extends AbstractAction{
 		
 		job.getConversion_instructions().addAll(cisPres);
 		
-		// COMMENTED OUT ON PURPOSE - DO NOT DELETE - distributed conversion
-//		if (cisPres.size() > 0)
-//			DistributedConversionHelper.determineProcessingNodesForConversionInstructions(
-//					job,localNode,getConversionRoutinesForJob(job));
-//		List<Job> friendJobs = DistributedConversionHelper.createJobsWhichCantBeDoneLocally(
-//				job,dao.getAllNodes(),localNode.getName(),getObject());
-////		for (Job j:friendJobs) dao.createJob(j);
-//		job.getChildren().addAll(friendJobs);
-		
 		// detect package type
 		PackageTypeDetectionService ptds = new PackageTypeDetectionService(object.getLatestPackage());
 		String packageType = ptds.getPackageType();
@@ -102,13 +93,6 @@ public class ScanForPresentationAction extends AbstractAction{
 			actionCommunicatorService.addDataObject(job.getId(), "metadata_file", metadataFile);
 		}
 		
-		// COMMENTED OUT ON PURPOSE - DO NOT DELETE - distributed conversion
-//		distributedConversionAdapter.create(
-//				"fork/"+object.getContractor().getShort_name()+"/"+object.getIdentifier()+"/data");
-//		distributedConversionAdapter.register(
-//				"fork/"+object.getContractor().getShort_name()+"/"+object.getIdentifier()+"/data",
-//				object.getDataPath()
-//				);
 		return true;
 	}
 	

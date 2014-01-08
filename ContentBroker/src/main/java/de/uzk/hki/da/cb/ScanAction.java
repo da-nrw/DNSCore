@@ -113,25 +113,11 @@ public class ScanAction extends AbstractAction{
 			List<ConversionInstruction> cisArch = generateConversionInstructions(filesArchival);
 			job.getConversion_instructions().addAll(cisArch);
 			
-			// COMMENTED OUT ON PURPOSE - DO NOT DELETE - distributed conversion
-//			if (cisArch.size() > 0)
-//				DistributedConversionHelper.determineProcessingNodesForConversionInstructions(
-//						job,localNode,getConversionRoutinesForJob(job));
-//			List<Job> friendJobs = DistributedConversionHelper.createJobsWhichCantBeDoneLocally(
-//					job,dao.getAllNodes(),localNode.getName(), getObject());
-//			job.getChildren().addAll(friendJobs);
 		}
 		else
 			logger.info("No migration rights granted. No files will be converted for archival storage.");
 		
 		detectPackageTypeAndStoreInCommunicator();
-		
-		// COMMENTED OUT ON PURPOSE - DO NOT DELETE - distributed conversion
-//		distributedConversionAdapter.create("fork/"+object.getContractor().getShort_name()+"/"+object.getIdentifier());
-//		distributedConversionAdapter.register(
-//				"fork/"+object.getContractor().getShort_name()+"/"+object.getIdentifier()+"/data",
-//				object.getDataPath()
-//				);
 		return true;
 	}
 
