@@ -1,3 +1,0 @@
-1180938412f9d376208d1cc0a83ccda7  data/bitstreams/Ye_old_duckroll.jpg
-fc22a89a187742d3ed830ffbf90633e0  data/metadata/dc.xml
-3357c88917117c47780fbd2ab9380715  data/metadata/mods.xml

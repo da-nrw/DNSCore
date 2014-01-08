@@ -1,4 +1,0 @@
-create table contracts (id INT NOT NULL , node_id_pri INT, deliverer_id INT NOT NULL, data_type_id VARCHAR(20), public_access VARCHAR);
-insert into contracts (id, node_id_pri, deliverer_id, data_type_id, public_access) VALUES ( 1, 1, 1, 'fmt/10', 'YES' );
-insert into contracts (id, node_id_pri, deliverer_id, data_type_id, public_access) VALUES ( 2, 1, 1, 'fmt/11', 'NO' );
-
