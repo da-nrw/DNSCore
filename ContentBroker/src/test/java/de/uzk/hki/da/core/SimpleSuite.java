@@ -54,7 +54,6 @@ import de.uzk.hki.da.convert.PublishVideoConversionStrategyTests;
 import de.uzk.hki.da.convert.PublishXsltConversionStrategyTests;
 import de.uzk.hki.da.convert.TiffConversionStrategyTests;
 import de.uzk.hki.da.db.CentralDatabaseDAOTests;
-import de.uzk.hki.da.db.HibernateUtilTests;
 import de.uzk.hki.da.format.FormatScanServiceTests;
 import de.uzk.hki.da.grid.IrodsGridFacadeTest;
 import de.uzk.hki.da.integrity.IntegrityScannerWorkerTest;
@@ -101,7 +100,6 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	ActionRegistryTests.class,
 	TarActionTests.class,
 	BuildAIPActionTests.class,
-	HibernateUtilTests.class,
 	ModelTest.class,
 	ConvertCheckActionTests.class,
 	ConvertActionNodeSplittingTests.class,

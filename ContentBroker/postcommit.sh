@@ -1,9 +1,7 @@
 #!/bin/bash
 # author: Daniel M. de Oliveira
 
-bzr up
-bzr revert
-mvn clean
+git pull origin master https://github.com/da-nrw/DNSCore
 
 STATUS_UNIT_TESTS=0
 mvn test

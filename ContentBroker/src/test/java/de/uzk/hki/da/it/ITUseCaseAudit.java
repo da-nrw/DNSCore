@@ -108,7 +108,9 @@ public class ITUseCaseAudit extends ITBase{
 		object = new Object();
 		object.setIdentifier(urn);
 		object.setOrig_name(urn);
-		object.setContractor(dao.getContractor(HibernateUtil.getThreadBoundSession(), "TEST"));
+		
+		object.setContractor(dao.getContractor(session, "TEST"));
+		
 		object.getPackages().add(pkg);
 		
 		Contractor c = new Contractor();

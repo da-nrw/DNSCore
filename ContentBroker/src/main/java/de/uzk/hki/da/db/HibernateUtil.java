@@ -93,31 +93,6 @@ public class HibernateUtil {
 	}
 	
 	/**
-	 * @deprecated radically discouraged to use this anymore
-	 * @return the session object.
-     * @author Daniel M. d Oliveira
-	 */
-	public static synchronized Session getThreadBoundSession(){
-		if (sessionFactory==null) throw new IllegalStateException("sessionFactory is null in HibernateUtil");
-		
-		if (threadLocalSession.get()==null||!threadLocalSession.get().isOpen()){
-			threadLocalSession.set(sessionFactory.openSession());
-		}
-
-		return threadLocalSession.get();
-	}
-
-	/**
-	 * @author Daniel M. de Oliveira
-	 */
-	public static synchronized void closeThreadBoundSession(){
-
-		if (threadLocalSession.get()!=null){
-			threadLocalSession.get().close();
-		}
-	}
-
-	/**
 	 * prints the stats of a thread bound session.
 	 */
 	public static void printStats() {

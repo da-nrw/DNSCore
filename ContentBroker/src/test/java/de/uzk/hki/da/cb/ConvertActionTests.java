@@ -169,7 +169,6 @@ public class ConvertActionTests {
 		action.setActionCommunicatorService(acs);
 		
 		HibernateUtil.init("src/main/conf/hibernateCentralDB.cfg.xml.inmem");
-		HibernateUtil.getThreadBoundSession().beginTransaction();
 		
 	}
 	

@@ -251,7 +251,7 @@ public class ITBase {
 	protected boolean existITJobsInErrorState (Node node) {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		System.out.println(ITUseCaseIngest.class.getName()+".findITJobsInError() "+" got session from Hibernate: "+HibernateUtil.getThreadBoundSession().hashCode());
+		System.out.println(ITUseCaseIngest.class.getName()+".findITJobsInError() "+" got session from Hibernate: "+session.hashCode());
 		
 		@SuppressWarnings("rawtypes")
 		List joblist=null;

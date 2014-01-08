@@ -141,13 +141,6 @@ public class RegisterObjectService {
 		session.getTransaction().begin();
 		Object object = getDao().getUniqueObject(session,origName, contractorShortName);
 		session.close();
-		
-		if (object != null) {
-			for (Package p:object.getPackages()){
-//				XXX p.setLocalNode(localNode);
-			}
-		}
-
 		return object;
 	}
 

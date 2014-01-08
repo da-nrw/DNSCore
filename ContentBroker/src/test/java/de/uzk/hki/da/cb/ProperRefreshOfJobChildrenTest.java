@@ -147,8 +147,10 @@ public class ProperRefreshOfJobChildrenTest extends Thread{
 
 		IrodsSystemConnector irods = mock (IrodsSystemConnector.class);
 		Node node = new Node(); node.setWorkingResource("vm3");
-		HibernateUtil.getThreadBoundSession().beginTransaction();
-		action.setJob((Job) HibernateUtil.getThreadBoundSession().get(Job.class,1));
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		action.setJob((Job) session.get(Job.class,1));
+		session.close();
 		action.setNode(node);
 		action.setIrodsSystemConnector(irods);
 		action.setDao(dao);
@@ -170,7 +172,10 @@ public class ProperRefreshOfJobChildrenTest extends Thread{
 	public void test() {
 		
 		List<Job> friendJobs = new ArrayList<Job>();
-		friendJobs.add((Job) HibernateUtil.getThreadBoundSession().get(Job.class,2));
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		friendJobs.add((Job) session.get(Job.class,2));
+		session.close();
 		
 		action.waitForFriendJobsToBeReady(friendJobs);
 	}
