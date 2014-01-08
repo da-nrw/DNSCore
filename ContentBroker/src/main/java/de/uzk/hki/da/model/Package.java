@@ -241,23 +241,6 @@ public class Package {
 		return "["+getId()+","+getName()+"]";
 	}
 
-	/**
-	 * Sets the local node.
-	 * @deprecated
-	 * @param localNode the new local node
-	 */
-	public void setLocalNode(Node localNode) {
-		node = localNode;
-	}
-	
-	/**
-	 * Gets the local node.
-	 * @deprecated
-	 * @return the local node
-	 */
-	public Node getLocalNode() {
-		return node;
-	}
 
 	/**
 	 * Gets the container name.
