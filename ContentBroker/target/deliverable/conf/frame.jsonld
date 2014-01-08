@@ -1,0 +1,39 @@
+{
+	"@context": {
+		"dc": "http://purl.org/dc/elements/1.1/",
+	   	"foaf": "http://xmlns.com/foaf/0.1/",
+	   	"dcterms": "http://purl.org/dc/terms/",
+		"edm": "http://www.europeana.eu/schemas/edm/",
+		"ore": "http://www.openarchives.org/ore/terms/",
+		"owl": "http://www.w3.org/2002/07/owl#",
+		"owl:sameAs": { "@type": "@id", "@container": "@set" },
+		"dc:contributor": { "@container": "@set" },
+        "dc:creator": { "@container": "@set" },
+        "dc:date": { "@container": "@set" },
+        "dc:description": { "@container": "@set" },
+        "dc:identifier": { "@container": "@set" },
+        "dc:language": { "@container": "@set" },
+        "dc:publisher": { "@container": "@set" },
+        "dc:rights": { "@container": "@set" },
+        "dc:source": { "@container": "@set" },
+        "dc:subject": { "@container": "@set" },
+        "dc:title": { "@container": "@set" },
+        "dc:type": { "@container": "@set" },
+        "dcterms:alternative": { "@container": "@set" },
+        "dcterms:extent": { "@container": "@set" },
+        "dcterms:provenance": { "@container": "@set" },
+        "dcterms:spatial": { "@container": "@set" },
+        "dcterms:temporal": { "@container": "@set" },
+		"dc:title": { "@container": "@set" },
+		"dcterms:isPartOf": { "@type": "@id", "@container": "@set" },
+		"edm:hasView": { "@container": "@set" }
+	},
+	"@type": "ore:Aggregation",
+	"edm:aggregatedCHO": {
+		"@type": "edm:ProvidedCHO",
+		"dcterms:isPartOf": {	
+			"@embed": false,
+			"@omitDefault": true
+		}
+	}
+}

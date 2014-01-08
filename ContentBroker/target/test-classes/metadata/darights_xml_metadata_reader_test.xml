@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rightsGranted xmlns="http://www.danrw.de/contract/v1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.danrw.de/contract/v1 /home/scuy/Development/workspace/xml_workspace/examples/danrw-contract-xml/danrw-contract-xml.xsd">
+
+    <migrationRight>
+        <condition>NOTIFY</condition>
+    </migrationRight>
+    <publicationRight>
+        <audience>PUBLIC</audience>
+        <startDate>2012-01-23</startDate>
+        <restrictions>
+            <lawID>EPFLICHT</lawID>
+            <restrictAudio>
+                <duration>30</duration>
+            </restrictAudio>
+            <restrictImage>
+                <footerText>asdf</footerText>
+                <height>480</height>
+                <width>640</width>
+            </restrictImage>
+            <expireDate>2023-06-23</expireDate>
+            <restrictText>
+                <pages>15</pages>
+                <certainPages>23 42</certainPages>
+            </restrictText>
+            <restrictVideo>
+                <duration>30</duration>
+                <height>480</height>
+                <width>640</width>
+            </restrictVideo>
+        </restrictions>
+    </publicationRight>
+    <publicationRight>
+        <audience>INSTITUTION</audience>
+        <startDate>2052-01-23</startDate>
+        <restrictions>
+            <restrictAudio>
+                <duration>30</duration>
+            </restrictAudio>
+            <restrictImage>
+                <footerText>fdsa</footerText>
+                <height>480</height>
+                <width>640</width>
+            </restrictImage>
+            <expireDate>2023-06-23</expireDate>
+            <restrictText>
+                <pages>15</pages>
+            </restrictText>
+            <restrictVideo>
+                <duration>30</duration>
+                <height>480</height>
+                <width>640</width>
+            </restrictVideo>
+        </restrictions>
+    </publicationRight>
+</rightsGranted>

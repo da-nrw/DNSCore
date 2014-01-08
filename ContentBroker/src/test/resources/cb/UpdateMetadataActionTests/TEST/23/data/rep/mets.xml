@@ -1,0 +1,277 @@
+<mets:mets xmlns:mets="http://www.loc.gov/METS/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mods="http://www.loc.gov/mods/v3"
+    xmlns:xlink="http://www.w3.org/1999/xlink" OBJID="enne09"
+    xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version18/mets.xsd http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd">
+    <mets:metsHdr CREATEDATE="2011-12-05T09:22:02.406197">
+        <mets:agent ROLE="CUSTODIAN" TYPE="ORGANIZATION">
+            <mets:name>Universit&#228;ts- und Stadtbibliothek K&#246;ln</mets:name>
+        </mets:agent>
+    </mets:metsHdr>
+    <mets:dmdSec ID="dmdSec_idm1092496">
+        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+            <mets:xmlData>
+                <mods:mods version="3.4">
+                    <mods:titleInfo>
+                        <mods:title>De remediis contra pusillanimitatem contra deceptorias inimici
+                            consolationes eiusque tentationes</mods:title>
+                    </mods:titleInfo>
+                    <mods:name type="personal">
+                        <mods:namePart>Gerson, Johannes</mods:namePart>
+                    </mods:name>
+                    <mods:originInfo>
+                        <mods:publisher>[Cologne: Ulrich Zel, about 1470]</mods:publisher>
+                        <mods:publisher>: , [about 1468]</mods:publisher>
+                        <mods:dateCreated>1468 1470</mods:dateCreated>
+                    </mods:originInfo>
+                    <mods:language>
+                        <mods:languageTerm type="code" authority="iso639-2b">lat</mods:languageTerm>
+                    </mods:language>
+                    <mods:physicalDescription>
+                        <mods:extent>4&#176;</mods:extent>
+                    </mods:physicalDescription>
+                    <mods:note>GW dates about 1468</mods:note>
+                    <mods:relatedItem>
+                        <mods:identifier>Goff G265</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:relatedItem>
+                        <mods:identifier>H 7705*</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:relatedItem>
+                        <mods:identifier>Voull(K) 483</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:relatedItem>
+                        <mods:identifier>Pell 5224 &amp; 5224A</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:relatedItem>
+                        <mods:identifier>Hillard 891</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:relatedItem>
+                        <mods:identifier>Arnoult 691</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:relatedItem>
+                        <mods:identifier>IDL 1971</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:relatedItem>
+                        <mods:identifier>Saj&#243;-Solt&#233;sz 1421</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:relatedItem>
+                        <mods:identifier>Voull(B) 681</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:relatedItem>
+                        <mods:identifier>Ohly-Sack 1227</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:relatedItem>
+                        <mods:identifier>Finger 431</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:relatedItem>
+                        <mods:identifier>Walsh 328</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:relatedItem>
+                        <mods:identifier>Oates 322</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:relatedItem>
+                        <mods:identifier>Sheppard 630</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:relatedItem>
+                        <mods:identifier>Pr 838</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:relatedItem>
+                        <mods:identifier>BSB-Ink G-166</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:relatedItem>
+                        <mods:identifier>GW 10825</mods:identifier>
+                    </mods:relatedItem>
+                    <mods:location>
+                        <mods:physicalLocation>Berlin SB</mods:physicalLocation>
+                    </mods:location>
+                    <mods:location>
+                        <mods:physicalLocation>Darmstadt LHSB</mods:physicalLocation>
+                    </mods:location>
+                    <mods:location>
+                        <mods:physicalLocation>D&#252;sseldorf ULB</mods:physicalLocation>
+                    </mods:location>
+                    <mods:location>
+                        <mods:physicalLocation>Frankfurt(Main) StUB</mods:physicalLocation>
+                    </mods:location>
+                    <mods:location>
+                        <mods:physicalLocation>Koblenz StB</mods:physicalLocation>
+                    </mods:location>
+                    <mods:location>
+                        <mods:physicalLocation>K&#246;ln Di&#246;zesanB</mods:physicalLocation>
+                    </mods:location>
+                    <mods:location>
+                        <mods:physicalLocation>K&#246;ln USB</mods:physicalLocation>
+                    </mods:location>
+                    <mods:location>
+                        <mods:physicalLocation>Lindau StB</mods:physicalLocation>
+                    </mods:location>
+                    <mods:location>
+                        <mods:physicalLocation>Mainz PriesterSem</mods:physicalLocation>
+                    </mods:location>
+                    <mods:location>
+                        <mods:physicalLocation>Mainz StB (2)</mods:physicalLocation>
+                    </mods:location>
+                    <mods:location>
+                        <mods:physicalLocation>M&#252;nchen BSB ( )</mods:physicalLocation>
+                    </mods:location>
+                    <mods:identifier type="istc">ig00265000</mods:identifier>
+                </mods:mods>
+            </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+    <mets:amdSec ID="amdSec">
+        <mets:rightsMD ID="rightsMD">
+            <mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+                <mets:xmlData>
+                    <dv:rights xmlns:dv="http://dfg-viewer.de/">
+                        <dv:owner>Universit&#228;ts- und Stadtbibliothek K&#246;ln</dv:owner>
+                        <dv:ownerSiteURL>http://ub.uni-koeln.de</dv:ownerSiteURL>
+                        <dv:ownerLogo>http://www.ub.uni-koeln.de/common/layout/logo.gif</dv:ownerLogo>
+                    </dv:rights>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:rightsMD>
+        <mets:digiprovMD ID="digiprovMD">
+            <mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVLINKS">
+                <mets:xmlData>
+                    <dv:links xmlns:dv="http://dfg-viewer.de/">
+                        <dv:reference>http://inkunabeln.ub.uni-koeln.de/info/enne09/USB</dv:reference>
+                    </dv:links>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:digiprovMD>
+    </mets:amdSec>
+    <mets:fileSec>
+        <mets:fileGrp USE="DEFAULT">
+            <mets:file ID="file_DEFAULT_idm90744">
+                <mets:FLocat xlink:href="tif/enne09=v0001.tif" LOCTYPE="URL"/>
+            </mets:file>
+        </mets:fileGrp>
+    </mets:fileSec>
+    <mets:structMap TYPE="LOGICAL">
+        <mets:div TYPE="volume" ADMID="amdSec">
+            <mets:div TYPE="preface" ID="div_idm1094368">
+                <mets:div TYPE="chapter" LABEL="" ID="div_idm1045928"/>
+            </mets:div>
+            <mets:div TYPE="text" ID="div_idp102544">
+                <mets:div TYPE="monograph" ID="div_idm1092496" DMDID="dmdSec_idm1092496"
+                    LABEL="De pollutione nocturna">
+                    <mets:div TYPE="chapter"
+                        LABEL="Incipit Tractatus venerabilis Magistri Johannis Gerson cancellarii parisiensis tractans de pollucione nocturna. an impediat celebrantem vel non"
+                        ID="div_idm1041944">
+                        <mets:div TYPE="chapter"
+                            LABEL="Ubitantum est apud me frequenter et diu presertim post susceptum sacerdotium. si quis nocturno pollutus sompnio a celebrando missam cessare deberet"
+                            ID="div_idm1148696"/>
+                    </mets:div>
+                    <mets:div TYPE="chapter" LABEL="Sequitur Quinta consideracio"
+                        ID="div_idm1130872">
+                        <mets:div TYPE="chapter"
+                            LABEL="Nulla pollutio inchoata et perfecta in sompno peccatum est mortale"
+                            ID="div_idm1042600"/>
+                    </mets:div>
+                    <mets:div TYPE="chapter" LABEL="Nona consideratio" ID="div_idm1403896">
+                        <mets:div TYPE="chapter"
+                            LABEL="Precipue ex divino munere et non ex nostra industria seu preparatione reddimur digni misteriorum participacione sacramentorum"
+                            ID="div_idm1416832"/>
+                    </mets:div>
+                </mets:div>
+                <mets:div TYPE="monograph" ID="div_idm1415288" DMDID="dmdSec_idm1415288"
+                    LABEL="De cognitione castitatis et de pollutionibus diurnis Forma absolutionis sacramentalis">
+                    <mets:div TYPE="chapter"
+                        LABEL="Incipit Tractatulus venerabilis Magistri Johannis Gerson Cancellarii parisiensis. de Cognicione castitatis et pollucionibus diurnis"
+                        ID="div_idm1095880">
+                        <mets:div TYPE="chapter" LABEL="Consideratio prima" ID="div_idp3979568">
+                            <mets:div TYPE="chapter"
+                                LABEL="Presupponendum est igitur in primis. quod a corpore humano defluit multiplex humor permeatus membrorum pudendorum que generationi deputata sunt. unde est vero seminalis. alius vero urinalis. alius quodammodo medius qui potest appellari salivalis vel sputalis"
+                                ID="div_idm1130192"/>
+                        </mets:div>
+                    </mets:div>
+                    <mets:div TYPE="chapter" LABEL="Consideratio sexta" ID="div_idm1382016">
+                        <mets:div TYPE="chapter"
+                            LABEL="Quo circa dicamus Sexto consequenter quod distingui solet in voluntate duplex consensus. unus completus deliberativus et indirectus"
+                            ID="div_idm1285080"/>
+                    </mets:div>
+                    <mets:div TYPE="chapter" LABEL="Propositio octava" ID="div_idm1005128">
+                        <mets:div TYPE="chapter"
+                            LABEL="Difficile est vel impossibile absque divina illuminatione cognoscere certitudinaliter radicem et causa pollutionis diurne si videlicet veniat ex consensu vero vel interpretativo aut consensu directo vel indirecto aut a consensu superioris rationis vel inferioris provenit"
+                            ID="div_idm1040608"/>
+                    </mets:div>
+                    <mets:div TYPE="chapter"
+                        LABEL="Incipit forma absolucionis sacramentalis eiusdem Magistri Joh(annis) Gerson"
+                        ID="div_idm995368">
+                        <mets:div TYPE="chapter"
+                            LABEL="Gratia tibi et pax frater carissime petis primo si apud aliquem  doctorem reperiatur forma absolutionis  sacramentalis"
+                            ID="div_idm1417832"/>
+                    </mets:div>
+                </mets:div>
+                <mets:div TYPE="monograph" ID="div_idm990592" DMDID="dmdSec_idm990592"
+                    LABEL="De simonia. Add: De probatione spirituum De eruditione confessorum De remediis contra recidivum peccandi">
+                    <mets:div TYPE="chapter"
+                        LABEL="Incipit Tractatus de symonia Magistri Johannis Gerson Cancellarii parisiensis"
+                        ID="div_idm1103376">
+                        <mets:div TYPE="chapter"
+                            LABEL="Simonaica labes contra ius divinum vel de simonaica spspem suspectum est in conferente beneficium ecclesiarum"
+                            ID="div_idm1043240"/>
+                    </mets:div>
+                    <mets:div TYPE="chapter"
+                        LABEL="Denique pro responsione ad septimam racionem consideratio septuplex notabiliter satis confertur ad premissa"
+                        ID="div_idm1059864">
+                        <mets:div TYPE="chapter" LABEL="Prima consideratio" ID="div_idm485504">
+                            <mets:div TYPE="chapter"
+                                LABEL="Simonaica labes sicut de per se non est heresis. Sic non aufert a papa neccessario suam potestate vel ecclesiastice potestatis plenitudinem. Ymmo nec execucionem"
+                                ID="div_idm485064"/>
+                        </mets:div>
+                    </mets:div>
+                    <mets:div TYPE="chapter"
+                        LABEL="Incipit tractatus de probatione spirituum Magistri Johannis Gerson. Cancellarii parisiensis"
+                        ID="div_idp3980432">
+                        <mets:div TYPE="chapter"
+                            LABEL="Probate spiritus si ex deo sunt iubet discipulus ille quem diligebat ihesus  Neque enim nesciebat illam coapostoli fui sentenciam"
+                            ID="div_idp3980968"/>
+                    </mets:div>
+                    <mets:div TYPE="chapter"
+                        LABEL="Incipit tractatus de eruditione confessorum Magistri Johannis Gerson . Cancellarii parisiensis"
+                        ID="div_idm15408">
+                        <mets:div TYPE="chapter"
+                            LABEL="Et si virtus quam assuefactio gignit certius quam ars  operetur. nonnichil tamen prodest artis tradicio apud eos qui nondum perfecti sunt in virtute. hoc in arte quomlibet perspiciuum est"
+                            ID="div_idm14864"/>
+                    </mets:div>
+                    <mets:div TYPE="chapter"
+                        LABEL="Incipit  tractatus Magistri Johannis Gerson . de remediis contrarecidivum peccandi a confessoribus dandis"
+                        ID="div_idm967472">
+                        <mets:div TYPE="chapter"
+                            LABEL="Habet hoc primum ars quelibet ut faciliori conpendio ad finem ducat optatum ammirari preterea  nemo debet si in animarum regimine. quod est ars arcium. experti in ea faciliora quidem sciunt et dant remedia  que morbos vitiorum presertim in foro conscientie ubi maxime locum habet illa christi formidabilis sententia"
+                            ID="div_idm966920"/>
+                    </mets:div>
+                </mets:div>
+                <mets:div TYPE="monograph" ID="div_idm986792" DMDID="dmdSec_idm986792"
+                    LABEL="De remediis contra pusillanimitatem contra deceptorias inimici consolationes eiusque tentationes">
+                    <mets:div TYPE="chapter" LABEL="" ID="div_idm480968"/>
+                    <mets:div TYPE="chapter"
+                        LABEL="Incipit Tractatulus de Remediis contra pusillamitatem Scrupulositate . contra deceptorias inimici consolaciones. et subtiles eius temptaciones. Per Illuminatissimum Magistrum Johannem Gerson. doctorem sacre Theologie. Cancellarium Parisiensis. Edittus"
+                        ID="div_idm1372408">
+                        <mets:div TYPE="chapter"
+                            LABEL="Qui pusillaminis est pavidus. cavere sibi debet a nimio timore. Si ei cor suum et naturalia sequitur. ad desperacionem vel nimiam mentis deiectione perveniet"
+                            ID="div_idm1371712"/>
+                    </mets:div>
+                    <mets:div TYPE="chapter"
+                        LABEL="Explicit tractatulus de remediis contra pusillanimitatem. scrupulositatem. et deceptorias inimici consolationes. et subtiles eius temptationes. venerabilis Magistri Joh(annis) Gerson. Cancellarii parisiensis "
+                        ID="div_idm94720"/>
+                </mets:div>
+            </mets:div>
+            <mets:div TYPE="section" ID="div_idm93160">
+                <mets:div TYPE="chapter" LABEL="" ID="div_idm92904"/>
+            </mets:div>
+        </mets:div>
+    </mets:structMap>
+    <mets:structMap TYPE="PHYSICAL">
+        <mets:div TYPE="physSequence">
+            <mets:div TYPE="page" ORDER="1" ORDERLABEL="1" ID="div_idm1263368">
+                <mets:fptr FILEID="file_DEFAULT_idm90744"/>
+            </mets:div>
+        </mets:div>
+    </mets:structMap>
+    <mets:structLink>
+        <mets:smLink xlink:from="div_idm1094368" xlink:to="div_idm1263368"/>
+    </mets:structLink>
+</mets:mets>

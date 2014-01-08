@@ -1,0 +1,35 @@
+<configuration debug="true">
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="de.uzk.hki.da" additivity="false">
+		<level value="trace" />
+		<appender-ref ref="console" />
+	</logger>
+
+	<logger name="org.hibernate.type" level="INFO" />
+  	<logger name="org.hibernate" level="INFO" />
+
+	<logger name="org.springframework" additivity="false">
+		<level value="error" />
+	</logger>
+
+	<logger name="org.irods" additivity="false">
+		<level value="error" />
+	</logger>
+
+
+
+	<root>
+		<priority value="error" />
+		<appender-ref ref="console" />
+	</root>
+	
+	
+
+</configuration>

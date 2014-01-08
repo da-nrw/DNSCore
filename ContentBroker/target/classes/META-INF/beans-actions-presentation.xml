@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/util
+           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+           http://www.springframework.org/schema/task
+           http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+          
+	<bean id="fedoPass" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetClass" value="de.uzk.hki.da.utils.PasswordUtils"/>
+		<property name="targetMethod" value="decryptPassword"/>
+		<property name="arguments">
+			<list><value>${fedora.password}</value></list>
+		</property>
+	</bean>
+    
+    <bean id="fedora" class="de.uzk.hki.fedorest.Fedora">
+		<constructor-arg value="${fedora.url}" />
+		<constructor-arg value="${fedora.user}" />
+		<constructor-arg ref="fedoPass" />
+    </bean>
+  	
+  	
+	<!-- BEGIN Fedora and ElasticSearch related BEGIN -->
+	<bean id="FetchPIPsAction" class="de.uzk.hki.da.cb.FetchPIPsAction"
+		scope="prototype">
+		<property name="startStatus" value="540" />
+		<property name="endStatus" value="550" />
+		<property name="name" value="FetchPIPsAction" />
+		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
+	</bean>
+	<bean id="SendToPresenterAction" class="de.uzk.hki.da.cb.SendToPresenterAction"
+		scope="prototype">
+		<property name="startStatus" value="550" />
+		<property name="endStatus" value="560" />
+		<property name="fedora" ref="fedora" />
+		<property name="name" value="SendToPresenterAction" />
+		<property name="viewerUrls" ref="viewerUrls" />
+	</bean>
+	<bean id="CreateEDMAction" class="de.uzk.hki.da.cb.CreateEDMAction"
+		scope="prototype">
+		<property name="startStatus" value="560" />
+		<property name="endStatus" value="570" />
+		<property name="fedora" ref="fedora" />
+		<property name="name" value="CreateEDMAction" />
+		<property name="choBaseUri" value="${uris.cho}"/>
+		<property name="aggrBaseUri" value="${uris.aggr}"/>
+		<property name="localBaseUri" value="${uris.local}"/>
+	</bean>
+	<bean id="IndexESAction" class="de.uzk.hki.da.cb.IndexESAction"
+		scope="prototype">
+		<property name="startStatus" value="570" />
+		<property name="endStatus" value="579" />
+		<property name="fedora" ref="fedora" />
+		<property name="name" value="IndexESAction" />
+		<property name="esHosts" value="${elasticsearch.hosts}" />
+		<property name="esCluster" value="${elasticsearch.cluster}" />
+		<property name="esIndexName" value="${elasticsearch.index}" />
+	</bean>
+	<!-- END Fedora and ElasticSearch related END -->
+</beans>

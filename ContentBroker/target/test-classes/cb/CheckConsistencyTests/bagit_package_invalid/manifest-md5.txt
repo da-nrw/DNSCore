@@ -1,0 +1,4 @@
+0c7c0403d60c4fd482f60a95beca13f1  data/premis.xml
+3357c88917117c47780fbd2ab9380715  data/mod.xml
+fc22a89a187742d3ed830ffbf90633e0  data/dc.xml
+1180938412f9d376208d1cc0a83ccda7  data/Ye_old_duckroll.jpg

@@ -1,0 +1,11 @@
+ace0ef9419c8edbe164a888d4e4ab7ee  bagit.txt
+<<<<<<< TREE
+0532bb5abd403d2fcc5a6676678f42f8  bag-info.txt.~1~
+feffb60396c158c6692d17cde42b9e5c  manifest-md5.txt.~1~
+5655f7ae0c767219483567c7d4e85193  bag-info.txt
+1bdf10701905a9f52c4f230e77936ae2  tagmanifest-md5.txt.~1~
+=======
+1b23eba49e5d87664f03be855e365f56  manifest-md5.txt.~1~
+ece098e83e9ca4013a5c04648247c3d5  bag-info.txt
+>>>>>>> MERGE-SOURCE
+89cf063d1766ec9469b78156796ba266  manifest-md5.txt

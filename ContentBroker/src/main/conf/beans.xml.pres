@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/util
+           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+           http://www.springframework.org/schema/task
+           http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+           
+	<import resource="classpath*:META-INF/beans-actions-presentation.xml"/>
+	<import resource="classpath*:META-INF/beans-infrastructure.xml"/>
+
+	<bean class="de.uzk.hki.da.core.LoadBalancer" id="loadBalancer">
+		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
+		<property name="fileSizeFactor" value="3" />
+		<property name="freeDiskSpacePercent" value="5" />
+	</bean>
+	
+    <bean id="contentBroker" class="de.uzk.hki.da.core.ContentBroker" init-method="init">
+        <property name="taskExecutor" ref="taskExecutor" />
+        <property name="actionFactory" ref="actionFactory" />
+        <property name="serverSocketNumber" value="${cb.serverSocketNumber}" />
+        <property name="mqBroker" ref="mqBroker" />
+        <property name="mqConnectionFactory" ref="mqConnectionFactory" />
+    </bean>
+    
+    <task:executor id="taskExecutor" pool-size="10"
+        queue-capacity="20" rejection-policy="CALLER_RUNS" />
+	<task:scheduled-tasks scheduler="taskScheduler">
+		<task:scheduled ref="contentBroker" method="scheduleTask" fixed-delay="2000" />
+	</task:scheduled-tasks>
+    <task:scheduler id="taskScheduler" pool-size="20" />
+	
+	<bean id="actionRegistry" class="de.uzk.hki.da.core.ActionRegistry" scope="prototype">
+		<property name="maxThreads">
+			<util:map>
+				<entry key="IndexESAction" value="3" />
+				<entry key="CreateEDMAction" value="3" />
+				<entry key="FetchPIPsAction" value="3" />
+				<entry key="SendToPresenterAction" value="3" />
+			</util:map>
+		</property>
+		<property name="actionPriority">
+			<util:list>
+				<value>IndexESAction</value>
+				<value>CreateEDMAction</value>
+				<value>SendToPresenterAction</value>
+				<value>FetchPIPsAction</value>
+			</util:list>
+		</property>
+	</bean>
+	
+</beans>

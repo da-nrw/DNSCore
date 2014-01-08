@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# author: Daniel M. de Oliveira
+
+TARGET=target/deliverable
+
+cd ../../..
+rm -rf $TARGET
+mkdir $TARGET
+mkdir $TARGET/conf
+cp -r src/main/fido $TARGET
+cp -r conf/xslt $TARGET/conf
+cp ffmpeg.sh $TARGET
+cp fido.sh $TARGET
+cp conf/healthCheck.avi $TARGET/conf
+cp conf/healthCheck.tif $TARGET/conf
+cp target/ContentBroker-0.6.2-jar-with-dependencies.jar $TARGET/ContentBroker.jar
+cp premis.xsd $TARGET/conf
+
+
+if [[ $1 == "bagua" ]] then
+	cp src/main/conf/hibernateCentralDbWithInmem.cfg.xml $TARGET/conf
+fi
+
+
+
