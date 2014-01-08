@@ -1,0 +1,190 @@
+<mets:mets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:mets="http://www.loc.gov/METS/" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:vls="http://semantics.de/vls"
+    xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version18/mets.xsd"
+    OBJID="2" LABEL="E-Pflicht-Sammlung">
+    <mets:metsHdr CREATEDATE="2011-05-31T16:19:29">
+        <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="SOFTWARE">
+            <mets:name>vls/2.11</mets:name>
+        </mets:agent>
+        <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="INSTANCE">
+            <mets:name>ulbd-epflicht-1</mets:name>
+        </mets:agent>
+        <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="BUILDER">
+            <mets:name>vdzip</mets:name>
+        </mets:agent>
+    </mets:metsHdr>
+    <mets:amdSec>
+        <mets:rightsMD ID="rights1">
+            <mets:mdWrap MDTYPE="OTHER">
+                <mets:xmlData>
+                    <rightsGranted xmlns="http://www.danrw.de/contract/v1"
+                        xsi:schemaLocation="http://www.danrw.de/contract/v1 http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd">
+                        
+                        <publicationRight>
+                            <audience>PUBLIC</audience>
+                            <startDate>2011-04-04</startDate>
+                            <restrictions>
+                                <restrictImage>
+                                    <width>480</width>
+                                    <height>360</height>
+                                    <footerText>asdf</footerText>
+                                </restrictImage>
+                                <restrictVideo>
+                                    <width>480</width>
+                                    <height>360</height>
+                                    <duration>30</duration>
+                                </restrictVideo>
+                                <restrictAudio>
+                                    <duration>30</duration>
+                                </restrictAudio>
+                                <restrictText>
+                                    <pages>15</pages>
+                                </restrictText>
+                            </restrictions>
+                        </publicationRight>
+                        
+                        <publicationRight>
+                            <audience>INSTITUTION</audience>
+                            <startDate>2011-04-04</startDate>
+                            <restrictions>
+                                <restrictImage>
+                                    <width>480</width>
+                                    <height>360</height>
+                                    <footerText>asdf</footerText>
+                                </restrictImage>
+                                <restrictVideo>
+                                    <width>480</width>
+                                    <height>360</height>
+                                    <duration>30</duration>
+                                </restrictVideo>
+                                <restrictAudio>
+                                    <duration>30</duration>
+                                </restrictAudio>
+                                <restrictText>
+                                    <pages>15</pages>
+                                </restrictText>
+                            </restrictions>
+                        </publicationRight>
+                        
+                        <migrationRight>
+                            <condition>NOTIFY</condition>
+                        </migrationRight>    
+                        
+                    </rightsGranted>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:rightsMD>
+    </mets:amdSec>
+    <mets:dmdSec ID="md2053">
+        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+            <mets:xmlData>
+                <mods xmlns="http://www.loc.gov/mods/v3" version="3.4"
+                    xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd">
+                    <titleInfo>
+                        <title>Amtsblatt der Stadt Langenfeld</title>
+                    </titleInfo>
+                    <name type="corporate">
+                        <namePart>Langenfeld</namePart>
+                        <role>
+                            <roleTerm type="code" authority="marcrelator">asn</roleTerm>
+                        </role>
+                    </name>
+                    <typeOfResource>text</typeOfResource>
+                    <genre authority="marcgt">journal</genre>
+                    <originInfo>
+                        <place>
+                            <placeTerm type="text">Langenfeld</placeTerm>
+                        </place>
+                        <dateIssued>13.2008 -</dateIssued>
+                        <dateIssued keyDate="yes" encoding="w3cdtf" point="start">2008</dateIssued>
+                        <issuance>continuing</issuance>
+                        <frequency authority="marcfrequency">Completely irregular</frequency>
+                    </originInfo>
+                    <language>
+                        <languageTerm authority="iso639-2b" type="code">ger</languageTerm>
+                    </language>
+                    <note type="statement of responsibility">Hrsg.: Der B&#252;rgermeister der Stadt
+                        Langenfeld Rhld.</note>
+                    <subject>
+                        <geographic authority="gnd" authorityURI="http://d-nb.info/gnd/"
+                            valueURI="http://d-nb.info/gnd/4034505-1">Langenfeld
+                            &lt;Rheinland&gt;</geographic>
+                        <genre>Zeitschrift</genre>
+                        <genre>Online-Publikation</genre>
+                    </subject>
+                    <classification authority="nwbib">99</classification>
+                    <classification authority="nwbib">426000</classification>
+                    <identifier type="zdb">2581653-6</identifier>
+                    <identifier type="eki">ZDB2581653-6</identifier>
+                    <identifier type="urn">urn:nbn:de:hbz:061:3-888</identifier>
+                    <relatedItem type="preceding">
+                        <titleInfo>
+                            <title>Langenfeld: Amtsblatt der Stadt Langenfeld</title>
+                        </titleInfo>
+                        <recordInfo>
+                            <recordIdentifier source="ulbdpc">HT007066567</recordIdentifier>
+                        </recordInfo>
+                    </relatedItem>
+                    <location>
+                        <url displayLabel="Verlag"
+                            >http://langenfeld.active-city.net/city_info/webaccessibility/index.cfm?region_id=138&amp;waid=9&amp;item_id=0&amp;link_id=188900001&amp;&amp;fsize=1&amp;contrast=0&amp;search=Amtsblatt</url>
+                    </location>
+                    <location>
+                        <url displayLabel="Resolving-System"
+                            >http://nbn-resolving.de/urn:nbn:de:hbz:061:3-888</url>
+                    </location>
+                    <location>
+                        <physicalLocation>466</physicalLocation>
+                    </location>
+                    <location>
+                        <physicalLocation>385</physicalLocation>
+                    </location>
+                    <location>
+                        <physicalLocation>Tr 5</physicalLocation>
+                    </location>
+                    <recordInfo>
+                        <recordCreationDate encoding="marc">20101115</recordCreationDate>
+                        <recordChangeDate encoding="marc">20110114</recordChangeDate>
+                        <recordIdentifier source="ulbdpc">HT016603943</recordIdentifier>
+                    </recordInfo>
+                </mods>
+            </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+    <mets:fileSec>
+        <mets:fileGrp USE="pdf upload">
+            <mets:file MIMETYPE="application/pdf"
+                CHECKSUM="36592817ec198140db779ccd3802b433504e74c7" SIZE="35780"
+                CHECKSUMTYPE="SHA-1" CREATED="2010-11-16T09:36:00" ID="PDF3506">
+                <mets:FLocat xlink:href="pdf/3506.pdf" LOCTYPE="URL"/>
+            </mets:file>
+            <mets:file MIMETYPE="application/pdf"
+                CHECKSUM="6c3238839ca0045e0094816a2069ed82430c1459" SIZE="87033"
+                CHECKSUMTYPE="SHA-1" CREATED="2010-11-16T09:36:03" ID="PDF3508">
+                <mets:FLocat xlink:href="pdf/3510.pdf" LOCTYPE="URL"/>
+            </mets:file>
+            <mets:file MIMETYPE="application/pdf"
+                CHECKSUM="634c1374cb015f55a3d0915d7887b14df734bde8" SIZE="30102"
+                CHECKSUMTYPE="SHA-1" CREATED="2010-11-16T09:37:16" ID="PDF3512">
+                <mets:FLocat xlink:href="pdf/3512.pdf" LOCTYPE="URL"/>
+            </mets:file>
+        </mets:fileGrp>
+    </mets:fileSec>
+    <mets:structMap TYPE="LOGICAL">
+        <mets:div ID="log2053" DMDID="md2053" TYPE="periodical"
+            LABEL="Amtsblatt der Stadt Langenfeld" ORDER="1" CONTENTIDS="urn:nbn:de:hbz:061:3-888">
+            <mets:div ID="log3504" TYPE="volume" LABEL="15. Jahrgang [2010]" ORDER="1">
+                <mets:div ID="log3506" TYPE="issue" LABEL="Nr. 1 ; 15.01.2010" ORDER="1">
+                    <mets:fptr FILEID="PDF3506"/>
+                </mets:div>
+                <mets:div ID="log3508" TYPE="issue" LABEL="Nr. 2 ; 09.02.2010" ORDER="2">
+                    <mets:fptr FILEID="PDF3508"/>
+                </mets:div>
+                <mets:div ID="log3512" TYPE="issue" LABEL="Nr. 4 ; 05.03.2010" ORDER="4">
+                    <mets:fptr FILEID="PDF3512"/>
+                </mets:div>
+            </mets:div>
+        </mets:div>
+    </mets:structMap>
+</mets:mets>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<premis xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="info:lc/xmlns/premis-v2" version="2.1">
+<agent>
+<agentIdentifier>
+<agentIdentifierType>da-nrw-agent-id</agentIdentifierType>
+<agentIdentifierValue>ULBD</agentIdentifierValue>
+</agentIdentifier>
+<agentName>Universitäts- und Landesbibliothek Düsseldorf</agentName>
+<agentType>CONTRACTOR</agentType>
+</agent>
+<rights>
+<rightsStatement>
+<rightsBasis>license</rightsBasis>
+<rightsGranted>
+<act>FIXITY_CHECK</act>
+<termOfGrant>
+<startDate>2011-09-30T15:36:27.515+02:00</startDate>
+</termOfGrant>
+</rightsGranted>
+<rightsGranted>
+<act>MIGRATION</act>
+<termOfGrant>
+<startDate>2011-09-30T15:36:27.515+02:00</startDate>
+</termOfGrant>
+</rightsGranted>
+<rightsGranted>
+<act>PUBLICATION</act>
+<termOfGrant>
+<startDate>2011-09-30T15:36:27.515+02:00</startDate>
+</termOfGrant>
+</rightsGranted>
+</rightsStatement>
+</rights>
+</premis>

@@ -1,0 +1,233 @@
+package de.uzk.hki.da.service;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import de.uzk.hki.da.archivers.ArchiveBuilder;
+import de.uzk.hki.da.archivers.ArchiveBuilderFactory;
+import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
+
+public class RetrievePackagesHelper {
+
+	static final Logger logger = LoggerFactory.getLogger(RetrievePackagesHelper.class);
+	static final String irodsZonePath = "/da-nrw/";
+
+	/**
+	 * 
+	 * XXX newest package is not included
+	 * 
+	 * Note: DataPath of Package must already exist!
+	 * 
+	 * Replicates all packages of a given object to the cache resource of local node and copyies the resulting
+	 * collection to fork for further processing.
+	 * @param obj the packages that get processed belong to this object.
+	 * @author Daniel M. de Oliveira
+	 * @throws IOException if package at work area does not exist
+	 */
+
+	public void copyPackagesFromLZAToWorkArea(Object obj,Job job,GridFacade grid) throws IOException{
+		if (!new File(job.getPackage().getDataPath()).exists()) throw new IOException(job.getPackage().getDataPath()+" does not exist");
+		if (obj==null) throw new IllegalArgumentException("corresponding Object is null");
+		if (obj.getPackages().isEmpty()) throw new IllegalArgumentException("Object does not contain any packages");
+
+		List<Package> packs = obj.getPackages();
+		logger.trace("Retrieving packages...");
+		for (Package pkg : packs) {
+			
+			if (pkg==job.getPackage()) continue;
+			
+			String pn = pkg.getName();
+			String data_name = irodsZonePath+"aip/"
+					+ job.getContractor().getShort_name() + "/" + obj.getIdentifier()
+					+ "/" + obj.getIdentifier() + ".pack_" + pn + ".tar";
+			// all previously unloaded files will be deleted
+			File targetdir=new File(job.getPackage().getPath() + "/existingAIPs");
+			if (!targetdir.exists()) targetdir.mkdir();
+			File targetFile = new File(targetdir.getAbsolutePath() +"/"+obj.getIdentifier() + ".pack_" + pn + ".tar");
+			if (targetFile.exists()) targetFile.delete(); 
+
+
+			logger.debug("Retrieving from lza to temp resource: "+data_name);
+
+			try {
+				grid.get(targetFile,
+						irodsZonePath + "aip/"
+								+ job.getContractor().getShort_name() + "/" + obj.getIdentifier()
+								+ "/" + obj.getIdentifier() + ".pack_" + pn + ".tar");
+			} catch (IOException e) {
+				throw new RuntimeException("Error while retrieving file ",e);
+			}
+		}
+
+	}
+
+	/**
+	 * Adds existing representations to the unpacked delta package
+	 * @author Thomas Kleinke
+	 * @param packagePath: path to new delta package
+	 * @throws IOException 
+	 */
+	public void unpackExistingPackages(Job job,Object object) throws IOException {
+		if (!new File(object.getLatestPackage().getPath()).exists()) throw new IOException(object.getLatestPackage().getPath()+" does not exist");
+
+		// Unpack existing archives to new folder
+		String archives[] = new File(object.getLatestPackage().getPath()+"existingAIPs").list();
+		Arrays.sort(archives);
+		if (archives.length==0) throw new RuntimeException("found no packages at "+object.getLatestPackage().getPath()+"existingAIPs");
+
+		ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(new File(archives[0]));
+
+		File tempFolder = new File(object.getLatestPackage().getPath() + "existingAIPs_Temp");		
+		tempFolder.mkdir();
+
+		for (int i = 0; i < archives.length; i++)
+		{
+			logger.debug("unpacking: " + archives[i]);			
+
+			try {
+				builder.unarchiveFolder(new File(object.getLatestPackage().getPath() + "existingAIPs" + "/" + archives[i]), 
+						new File(object.getLatestPackage().getPath() + "existingAIPs_Temp"));
+			} catch (Exception e) {
+				throw new IOException("Existing AIP " + object.getLatestPackage().getPath() + "/" + archives[i] +
+						" couldn't be unpacked to folder " + object.getLatestPackage().getPath() + "existingAIPs_Temp", e);
+			}
+
+			File[] folderFiles;
+			File[] files = tempFolder.listFiles();
+			File dataFolder = null;
+			if (files.length > 1)
+				folderFiles = files;
+			else
+				folderFiles = files[0].listFiles();
+
+			for (File f : folderFiles) {
+				if (f.getName().equals("data")) {
+					dataFolder = f;
+					break;
+				}				
+			}
+			
+			if (dataFolder == null)
+				throw new RuntimeException("package doesn't contain a data folder!");
+
+			File[] repFolders = dataFolder.listFiles();
+
+			for (File f : repFolders) {
+				logger.debug(f.getAbsolutePath());
+				if (f.isFile()) {
+					try {
+						FileUtils.moveFileToDirectory(f, new File(job.getPackage().getPath()+"existingAIPs/data"), true);
+					} catch (IOException e) {
+						throw new RuntimeException("couldn't move file " + f.getAbsolutePath() +
+								" to folder " + job.getPackage().getPath()+"existingAIPs", e);
+					}
+				}
+				if (f.isDirectory()) {
+					try {
+						FileUtils.moveDirectoryToDirectory(f, new File(job.getPackage().getPath()+"existingAIPs/data"), true);
+					} catch (IOException e) {
+						throw new RuntimeException("couldn't move folder " + f.getAbsolutePath() +
+								" to folder " + job.getPackage().getPath()+"existingAIPs", e);
+					}
+				}
+
+			}	
+
+			try {
+				FileUtils.deleteDirectory(tempFolder);
+			} catch (IOException e) {
+				throw new RuntimeException("couldn't delete folder " + tempFolder.getAbsolutePath());
+			}			
+
+			if (new File(job.getPackage().getPath() + "existingAIPs/bagit.txt").exists())
+				new File(job.getPackage().getPath() + "existingAIPs/bagit.txt").delete();
+			if (new File(job.getPackage().getPath() + "existingAIPs/bag-info.txt").exists())
+				new File(job.getPackage().getPath() + "existingAIPs/bag-info.txt").delete();
+			if (new File(job.getPackage().getPath() + "existingAIPs/manifest-md5.txt").exists())
+				new File(job.getPackage().getPath() + "existingAIPs/manifest-md5.txt").delete();
+			if (new File(job.getPackage().getPath() + "existingAIPs/tagmanifest-md5.txt").exists())
+				new File(job.getPackage().getPath() + "existingAIPs/tagmanifest-md5.txt").delete();
+			if (!(i == archives.length - 1) && new File(job.getPackage().getPath() + "existingAIPs/data/premis.xml").exists())
+				new File(job.getPackage().getPath() + "existingAIPs/data/premis.xml").delete();	
+		}
+
+		// Move unpacked representation folders (and premis file) to the delta package folder (packagePath + "/data")
+		logger.debug("Moving unpacked representation folders from " + job.getPackage().getPath() + "existingAIPs to " + job.getPackage().getDataPath());
+		String dataPath = job.getPackage().getPath() + "existingAIPs/data/";
+		String contents[] = new File(dataPath).list();
+
+		if (contents == null)
+			throw new RuntimeException("Listing files in " + dataPath + " failed!");
+
+		for (int i = 0; i < contents.length; i++)
+		{
+			if (new File(dataPath + contents[i]).isDirectory())
+			{
+				try {
+					FileUtils.moveDirectory(new File(dataPath + contents[i]), new File(job.getPackage().getDataPath() + contents[i]));
+				} catch (IOException e) {
+					throw new RuntimeException("Folder " + dataPath + contents[i] + " couldn't be moved to folder " +
+							job.getPackage().getDataPath() + contents[i], e);
+				}
+			}
+			else
+			{
+				try {
+					FileUtils.moveFile(new File(dataPath + contents[i]), new File(job.getPackage().getDataPath() + contents[i]));
+				} catch (IOException e) {
+					throw new RuntimeException("File " + dataPath + contents[i] + " couldn't be moved to " +
+							job.getPackage().getDataPath() + contents[i], e);
+				}
+
+			}
+		}
+
+		FileUtils.deleteDirectory(new File(job.getPackage().getPath() + "/existingAIPs"));	
+	}
+
+	/**
+	 * Size of the object (but not including the newest package).
+	 * 
+	 * @author TODO ??? who was the primary author?
+	 * @author Daniel M. de Oliveira
+	 * @param obj
+	 * @param job
+	 * @param grid
+	 * @return
+	 * @throws IOException
+	 */
+	public long getObjectSize(Object obj,Job job,GridFacade grid) throws IOException {
+
+		if (obj == null) throw new IllegalArgumentException("corresponding Object is null");
+
+		if (obj.getPackages().isEmpty())
+			return 0;
+
+		long objectSize = 0;
+
+		List<Package> packs = obj.getPackages();
+		for (Package pkg : packs) {
+			if (pkg==job.getPackage()) continue; // don't count newest package
+			
+			String pn = pkg.getName();
+
+			try {
+				objectSize += grid.getFileSize(irodsZonePath + "aip/" + job.getContractor().getShort_name() + "/" + obj.getIdentifier() +
+						"/" + obj.getIdentifier() + ".pack_" + pn + ".tar");
+			} catch (IOException e) {
+				throw new RuntimeException("Failed to determine file size", e);
+			}
+		}
+
+		return objectSize;
+	}
+}

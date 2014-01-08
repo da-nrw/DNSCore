@@ -1,0 +1,39 @@
+environments {
+    production {
+				
+		dataSource {
+		}
+	}
+	
+	development {
+		
+		dataSource {
+		}
+	}
+	test {
+		cb.homepath = "/data/danrw/ContentBroker/"
+		daweb3.logo = "DANRW-Logo_small.png"
+		irods.server = "da-nrw-vm6.hki.uni-koeln.de"
+		irods.default_resc = "01-cache.da-nrw-vm6.hki.uni-koeln.de"
+		irods.zone = "da-nrw"
+		localNode.userAreaRootPath = "/data/danrw/www/default/webdav"
+		localNode.ingestAreaRootPath = "/data/danrw/ingest"
+		transferNode.downloadLinkPrefix = "https://da-nrw-vm6.hki.uni-koeln.de/webdav"
+		fedora.urlPrefix = "http://da-nrw-vm6.hki.uni-koeln.de:8080/fedora/objects/"
+		cb.presServer= "da-nrw-vm6.hki.uni-koeln.de"
+		
+		dataSource {
+			pooled = true
+			driverClassName = "org.postgresql.Driver"
+			dialect = org.hibernate.dialect.PostgreSQLDialect
+			dbCreate = "validate"
+			url = "jdbc:postgresql://da-nrw-vm6.hki.uni-koeln.de:5432/contentbroker?autoReconnect=true"
+			username = "irods"
+			password = "Tn1svGjNfKnn9fUl5sLrVw=="
+			passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec"
+			characterEncoding = "UTF-8"
+		}
+		
+	}
+}
+

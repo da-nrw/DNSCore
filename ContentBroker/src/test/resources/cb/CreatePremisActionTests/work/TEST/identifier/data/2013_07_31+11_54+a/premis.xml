@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<premis xmlns="info:lc/xmlns/premis-v2" xmlns:premis="info:lc/xmlns/premis-v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-1.xsd" version="2.1">
+    <object xsi:type="representation">
+        <objectIdentifier>
+            <objectIdentifierType>PACKAGE_NAME</objectIdentifierType>
+            <objectIdentifierValue>pdf2</objectIdentifierValue>
+        </objectIdentifier>
+    </object>
+    <event>
+        <eventIdentifier>
+            <eventIdentifierType>SIP_CREATION_ID</eventIdentifierType>
+            <eventIdentifierValue>Sip_Creation_2013-08-01T13:25:14.432</eventIdentifierValue>
+        </eventIdentifier>
+        <eventType>SIP_CREATION</eventType>
+        <eventDateTime>2013-08-01T13:25:14.432+01:00</eventDateTime>
+        <linkingAgentIdentifier>
+            <linkingAgentIdentifierType>APPLICATION_NAME</linkingAgentIdentifierType>
+            <linkingAgentIdentifierValue>DA-NRW SIP-Builder 0.5.3</linkingAgentIdentifierValue>
+        </linkingAgentIdentifier>
+        <linkingObjectIdentifier>
+            <linkingObjectIdentifierType>PACKAGENAME</linkingObjectIdentifierType>
+            <linkingObjectIdentifierValue>pdf2</linkingObjectIdentifierValue>
+        </linkingObjectIdentifier>
+    </event>
+    <agent>
+        <agentIdentifier>
+            <agentIdentifierType>APPLICATION_NAME</agentIdentifierType>
+            <agentIdentifierValue>DA-NRW SIP-Builder 0.5.3</agentIdentifierValue>
+        </agentIdentifier>
+        <agentName>DA-NRW SIP-Builder 0.5.3</agentName>
+        <agentType>APPLICATION</agentType>
+    </agent>
+    <rights>
+        <rightsStatement>
+            <rightsStatementIdentifier>
+                <rightsStatementIdentifierType>rightsid</rightsStatementIdentifierType>
+                <rightsStatementIdentifierValue></rightsStatementIdentifierValue>
+            </rightsStatementIdentifier>
+            <rightsBasis>license</rightsBasis>
+            <rightsGranted>
+                <act>PUBLICATION_PUBLIC</act>
+                <restriction>see rightsExtension</restriction>
+                <termOfGrant>
+                    <startDate>2013-08-01T00:00:00.000Z</startDate>
+                </termOfGrant>
+            </rightsGranted>
+            <rightsGranted>
+                <act>PUBLICATION_INSTITUTION</act>
+                <restriction>see rightsExtension</restriction>
+                <termOfGrant>
+                    <startDate>2013-08-01T00:00:00.000Z</startDate>
+                </termOfGrant>
+            </rightsGranted>
+            <rightsGranted>
+                <act>MIGRATION</act>
+                <restriction>see rightsExtension</restriction>
+                <termOfGrant>
+                    <startDate>2013-08-01T00:00:00.000Z</startDate>
+                </termOfGrant>
+            </rightsGranted>
+        </rightsStatement>
+        <rightsExtension>
+            <rightsGranted xmlns="http://www.danrw.de/contract/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.danrw.de/contract/v1 http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd">
+                <migrationRight>
+                    <condition>NONE</condition>
+                </migrationRight>
+                <publicationRight>
+                    <audience>PUBLIC</audience>
+                        <startDate>2013-09-01T00:00:00.000Z</startDate>
+                    <restrictions/>
+                </publicationRight>
+                <publicationRight>
+                    <audience>INSTITUTION</audience>
+                        <startDate>2013-08-01T00:00:00.000Z</startDate>
+                    <restrictions/>
+                </publicationRight>
+            </rightsGranted>
+        </rightsExtension>
+    </rights>
+</premis>

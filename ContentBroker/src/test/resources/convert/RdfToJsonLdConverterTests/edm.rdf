@@ -1,0 +1,2397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:edm="http://www.europeana.eu/schemas/edm/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:ore="http://www.openarchives.org/ore/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:base="urn:nbn:de:danrw-1-201111111">
+   <ore:ResourceMap rdf:about="">
+      <dc:publisher>Digitales Archiv NRW</dc:publisher>
+      <foaf:primaryTopic rdf:resource="#cho"/>
+      <ore:describes rdf:resource="#aggregation"/>
+   </ore:ResourceMap>
+   <edm:ProvidedCHO rdf:about="#cho">
+      <dc:title>Forschungsstelle Rheinländer in aller Welt; Bezirksstelle West des Vereins für das Deutschtum im Ausland</dc:title>
+      <dc:identifier>VDA</dc:identifier>
+      <dc:type>collection</dc:type>
+      <dc:description>&lt;lb/&gt;</dc:description>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggregation">
+      <edm:aggregatedCHO rdf:resource="#cho"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e48">
+      <dc:title>04. Rheinländer in aller Welt, Adressen</dc:title>
+      <dcterms:isPartOf rdf:resource="urn:nbn:de:danrw-1-201111111"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e48">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e48"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e56">
+      <dc:title>Anschriften I</dc:title>
+      <dc:identifier>IV 1</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>o. Dat.</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e48"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e56">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e56"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e109">
+      <dc:title>Nella Jacob</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e109">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e109"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_002.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_002.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_002.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e172">
+      <dc:title>J.M. Jacobi</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e172">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e172"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_003.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_003.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_003.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e235">
+      <dc:title>Mrs John Jacobi</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e235">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e235"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_004.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_004.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_004.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e298">
+      <dc:title>Henry Jacobs</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e298">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e298"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_005.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_005.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_005.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e361">
+      <dc:title>Joseph Jacobs</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e361">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e361"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_006.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_006.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_006.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e424">
+      <dc:title>Peter Jacobs</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e424">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e424"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_007.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_007.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_007.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e487">
+      <dc:title>Felix und Elfriede Jadot</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e487">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e487"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_008.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_008.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_008.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e550">
+      <dc:title>Albert Jaecker</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e550">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e550"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_009.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_009.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_009.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e613">
+      <dc:title>Albert Jaeger</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e613">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e613"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_010.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_010.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_010.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e676">
+      <dc:title>Ernst Jaeger</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e676">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e676"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_011.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_011.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_011.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e739">
+      <dc:title>Gustav Jäger</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e739">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e739"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_012.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_012.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_012.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e802">
+      <dc:title>Hugo Jaeger</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e802">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e802"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_013.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_013.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_013.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e865">
+      <dc:title>Maria Jaeger</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e865">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e865"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_014.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_014.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_014.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e928">
+      <dc:title>Selma Jaeger geb. Steffens</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e928">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e928"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_015.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_015.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_015.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e991">
+      <dc:title>Willi Jäger</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e991">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e991"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_016.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_016.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_016.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e1054">
+      <dc:title>Edith Jakob geb. Gobbers</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e1054">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e1054"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_017.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_017.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_017.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e1117">
+      <dc:title>Bertha Jakobi</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e1117">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e1117"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_018.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_018.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_018.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e1180">
+      <dc:title>Anna Jakobs geb. Weirauch</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e1180">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e1180"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_019.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_019.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_019.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e1243">
+      <dc:title>Karl Jakobs</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e1243">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e1243"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_020.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_020.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_020.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e1306">
+      <dc:title>Wilhelm Jakobs</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e1306">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e1306"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_021.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_021.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_021.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e1369">
+      <dc:title>Georg Jakobmeier</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e1369">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e1369"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_022.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_022.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_022.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e1432">
+      <dc:title>Mathilde Jakomeit</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e1432">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e1432"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_023.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_023.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_023.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e1495">
+      <dc:title>Carl, Werner Janhsen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e1495">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e1495"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_024.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_024.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_024.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e1558">
+      <dc:title>Aenne Janicke</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e1558">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e1558"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_025.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_025.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_025.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e1621">
+      <dc:title>Karl Janscha</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e1621">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e1621"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_026.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_026.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_026.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e1684">
+      <dc:title>Ferdinand Januschke</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e1684">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e1684"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_027.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_027.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_027.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e1747">
+      <dc:title>A.H. Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e1747">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e1747"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_028.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_028.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_028.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e1810">
+      <dc:title>Alfred Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e1810">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e1810"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_029.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_029.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_029.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e1873">
+      <dc:title>Catharina Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e1873">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e1873"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_030.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_030.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_030.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e1936">
+      <dc:title>Claus Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e1936">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e1936"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_031.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_031.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_031.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e1999">
+      <dc:title>Fritz Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e1999">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e1999"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_032.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_032.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_032.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e2062">
+      <dc:title>Heinrich Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e2062">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e2062"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_033.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_033.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_033.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e2125">
+      <dc:title>Hubert Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e2125">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e2125"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_034.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_034.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_034.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e2188">
+      <dc:title>Ida Jansen geb. Vogt</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e2188">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e2188"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_035.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_035.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_035.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e2251">
+      <dc:title>Johann Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e2251">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e2251"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_036.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_036.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_036.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e2314">
+      <dc:title>Josef Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e2314">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e2314"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_037.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_037.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_037.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e2377">
+      <dc:title>Karl Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e2377">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e2377"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_038.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_038.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_038.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e2440">
+      <dc:title>Katharine Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e2440">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e2440"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_039.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_039.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_039.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e2503">
+      <dc:title>Leo Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e2503">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e2503"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_040.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_040.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_040.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e2566">
+      <dc:title>Maria Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e2566">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e2566"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_041.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_041.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_041.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e2629">
+      <dc:title>Marianne Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e2629">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e2629"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_042.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_042.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_042.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e2692">
+      <dc:title>Peter Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e2692">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e2692"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_043.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_043.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_043.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e2755">
+      <dc:title>Thea Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e2755">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e2755"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_044.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_044.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_044.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e2818">
+      <dc:title>Theodor Jansen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e2818">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e2818"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_045.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_045.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_045.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e2881">
+      <dc:title>Peter Janzen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e2881">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e2881"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_046.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_046.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_046.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e2944">
+      <dc:title>Henry Janssen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e2944">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e2944"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_047.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_047.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_047.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e3007">
+      <dc:title>Joseph Janßen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e3007">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e3007"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_048.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_048.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_048.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e3070">
+      <dc:title>Martin Janssen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e3070">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e3070"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_049.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_049.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_049.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e3133">
+      <dc:title>Familie Mathias Janssen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e3133">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e3133"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_050.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_050.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_050.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e3196">
+      <dc:title>Theodor Janveka</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e3196">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e3196"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_051.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_051.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_051.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e3259">
+      <dc:title>Anna Susanna Jaquet geb. Köhler</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e3259">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e3259"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_052.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_052.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_052.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e3322">
+      <dc:title>Dr. Hans A. Jarre</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e3322">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e3322"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_053.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_053.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_053.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e3385">
+      <dc:title>Ernst Javusek</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e3385">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e3385"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_054.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_054.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_054.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e3448">
+      <dc:title>Annemarie Jenewein</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e3448">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e3448"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_055.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_055.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_055.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e3511">
+      <dc:title>Lene Jennen geb. Oberheidter</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e3511">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e3511"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_056.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_056.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_056.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e3574">
+      <dc:title>Heinz Jenssen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e3574">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e3574"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_057.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_057.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_057.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e3637">
+      <dc:title>Wilhelm Jenter</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e3637">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e3637"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_058.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_058.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_058.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e3700">
+      <dc:title>Theodor Jerig</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e3700">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e3700"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_059.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_059.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_059.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e3763">
+      <dc:title>Willi Jersch</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e3763">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e3763"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_060.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_060.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_060.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e3826">
+      <dc:title>Emilie Jess</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e3826">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e3826"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_061.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_061.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_061.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e3889">
+      <dc:title>Mrs L. Jesse</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e3889">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e3889"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_062.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_062.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_062.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e3952">
+      <dc:title>Wanda Jezierski</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e3952">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e3952"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_063.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_063.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_063.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e4015">
+      <dc:title>Herrmann Imand</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e4015">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e4015"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_064.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_064.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_064.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e4078">
+      <dc:title>Gertrud Imberger</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e4078">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e4078"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_065.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_065.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_065.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e4141">
+      <dc:title>Ludwig Imgrund</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e4141">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e4141"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_066.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_066.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_066.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e4204">
+      <dc:title>Emil Imhausen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e4204">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e4204"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_067.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_067.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_067.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e4267">
+      <dc:title>Guilh. Imkamp</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e4267">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e4267"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_068.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_068.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_068.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e4330">
+      <dc:title>John Inderbieten</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e4330">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e4330"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_069.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_069.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_069.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e4393">
+      <dc:title>Arthur Ingalls</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e4393">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e4393"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_070.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_070.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_070.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e4456">
+      <dc:title>Gerta v. Ingen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e4456">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e4456"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_071.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_071.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_071.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e4519">
+      <dc:title>Frau Konstantin Instael</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e4519">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e4519"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_072.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_072.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_072.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e4582">
+      <dc:title>Josef Ingenleuf</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e4582">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e4582"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_073.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_073.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_073.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e4645">
+      <dc:title>Mathilde Jobst geb. Steinforth</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e4645">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e4645"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_074.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_074.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_074.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e4708">
+      <dc:title>Felix Jöpen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e4708">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e4708"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_075.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_075.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_075.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e4771">
+      <dc:title>Hubert Joepgen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e4771">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e4771"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_076.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_076.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_076.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e4834">
+      <dc:title>Maria Jörgensen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e4834">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e4834"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_077.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_077.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_077.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e4897">
+      <dc:title>Marie Jörissen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e4897">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e4897"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_078.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_078.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_078.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e4960">
+      <dc:title>Ernst Joerman</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e4960">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e4960"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_079.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_079.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_079.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e5023">
+      <dc:title>Rucardo Jörn</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e5023">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e5023"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_080.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_080.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_080.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e5086">
+      <dc:title>Artur Johann</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e5086">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e5086"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_081.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_081.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_081.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e5149">
+      <dc:title>Paul Johann</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e5149">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e5149"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_082.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_082.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_082.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e5212">
+      <dc:title>Nikolaus Johanns</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e5212">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e5212"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_083.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_083.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_083.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e5275">
+      <dc:title>Frau Paul John</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e5275">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e5275"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_084.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_084.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_084.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e5338">
+      <dc:title>Anna Johnson</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e5338">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e5338"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_085.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_085.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_085.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e5401">
+      <dc:title>Margarete Johnson</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e5401">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e5401"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_086.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_086.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_086.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e5464">
+      <dc:title>Maria Johnson geb. Dahm</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e5464">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e5464"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_087.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_087.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_087.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e5527">
+      <dc:title>Herbert und Gerhard Jonas</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e5527">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e5527"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_088.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_088.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_088.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e5590">
+      <dc:title>Johann Jonas</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e5590">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e5590"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_089.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_089.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_089.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e5653">
+      <dc:title>Cläre Jones</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e5653">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e5653"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_090.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_090.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_090.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e5716">
+      <dc:title>Therese Jongen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e5716">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e5716"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_091.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_091.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_091.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e5779">
+      <dc:title>Heinz Jongkind</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e5779">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e5779"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_092.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_092.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_092.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e5842">
+      <dc:title>Margarete de Joode geb. Kewelmann</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e5842">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e5842"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_093.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_093.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_093.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e5905">
+      <dc:title>Toni Jornot</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e5905">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e5905"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_094.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_094.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_094.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e5968">
+      <dc:title>James Josephs</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e5968">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e5968"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_095.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_095.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_095.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e6031">
+      <dc:title>Carl Jost</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e6031">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e6031"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_096.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_096.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_096.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e6094">
+      <dc:title>Theodor Josten</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e6094">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e6094"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_097.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_097.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_097.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e6157">
+      <dc:title>M. Sibilla Irma</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e6157">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e6157"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_098.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_098.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_098.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e6220">
+      <dc:title>Florence Irmen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e6220">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e6220"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_099.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_099.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_099.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e6283">
+      <dc:title>Frank Irmen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e6283">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e6283"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_100.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_100.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_100.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e6346">
+      <dc:title>Frank Irmen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e6346">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e6346"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_101.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_101.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_101.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e6409">
+      <dc:title>Ino Irmen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e6409">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e6409"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_102.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_102.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_102.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e6472">
+      <dc:title>Josef Irmen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e6472">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e6472"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_103.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_103.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_103.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e6535">
+      <dc:title>Michael Irmen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e6535">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e6535"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_104.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_104.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_104.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e6598">
+      <dc:title>M. H. Irmen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e6598">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e6598"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_105.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_105.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_105.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e6661">
+      <dc:title>Irmen u. Klicka</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e6661">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e6661"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_106.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_106.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_106.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e6724">
+      <dc:title>Arthur, Walter Isenberg</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e6724">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e6724"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_107.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_107.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_107.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e6787">
+      <dc:title>Paul Isenhardt</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e6787">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e6787"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_108.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_108.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_108.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e6850">
+      <dc:title>Louis Jüchtmanns</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e6850">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e6850"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_109.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_109.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_109.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e6913">
+      <dc:title>Hubert Jünemann</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e6913">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e6913"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_110.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_110.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_110.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e6976">
+      <dc:title>Ww. Willy Jüengel</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e6976">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e6976"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_111.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_111.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_111.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e7039">
+      <dc:title>J. L. Jung</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e7039">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e7039"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_112.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_112.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_112.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e7102">
+      <dc:title>Henriette Jung</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e7102">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e7102"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_113.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_113.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_113.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e7165">
+      <dc:title>Katharina Jung</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e7165">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e7165"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_114.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_114.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_114.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e7228">
+      <dc:title>Otto, F. Jung</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e7228">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e7228"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_115.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_115.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_115.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e7291">
+      <dc:title>Peter A. Jung</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e7291">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e7291"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_116.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_116.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_116.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e7354">
+      <dc:title>Werner Diether Jung</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e7354">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e7354"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_117.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_117.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_117.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e7417">
+      <dc:title>Karl Jungbluth</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e7417">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e7417"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_118.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_118.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_118.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e7480">
+      <dc:title>Johann Jungbluth</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e7480">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e7480"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_119.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_119.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_119.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e7543">
+      <dc:title>Josepf Jungblut</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e7543">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e7543"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_120.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_120.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_120.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e7606">
+      <dc:title>August Jungmann</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e7606">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e7606"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_121.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_121.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_121.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e7669">
+      <dc:title>Heinrich Jungmann</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e7669">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e7669"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_122.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_122.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_122.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e7732">
+      <dc:title>Albert Junk</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e7732">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e7732"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_123.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_123.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_123.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e7795">
+      <dc:title>Friedrich Karl Junk</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e7795">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e7795"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_124.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_124.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_124.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e7858">
+      <dc:title>Josef Junk</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e7858">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e7858"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_125.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_125.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_125.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e7921">
+      <dc:title>Robert Junkers</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e7921">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e7921"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_126.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_126.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_126.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e7984">
+      <dc:title>Walter Junkers</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e7984">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e7984"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_127.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_127.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_127.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e8047">
+      <dc:title>jun. August Junz</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e8047">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e8047"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_128.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_128.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_128.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e8110">
+      <dc:title>sen. August Junz</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e8110">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e8110"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_129.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_129.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_129.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e8173">
+      <dc:title>Vinzenz Jurtz</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e8173">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e8173"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_130.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_130.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_130.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e8236">
+      <dc:title>Lambert Justen</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e8236">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e8236"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_131.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_131.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_131.jpg"/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#cho_d0e8299">
+      <dc:title>Schwester Ivo (M. Brey)</dc:title>
+      <dc:identifier>(...)</dc:identifier>
+      <dc:type>file</dc:type>
+      <dc:date>0000/0000</dc:date>
+      <dc:date>ohne Datum</dc:date>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dc:description>(...)</dc:description>
+      <dcterms:references>(...)</dcterms:references>
+      <dcterms:isPartOf rdf:resource="#cho_d0e56"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="#aggr_d0e8299">
+      <edm:aggregatedCHO rdf:resource="#cho_d0e8299"/>
+      <edm:isShownBy rdf:resource="http://www.danrw.de/data/1-2012100886121/public-ALVR_Nr_4551_Aufn_132.jpg"/>
+      <edm:hasView rdf:resource="http://www.danrw.de/data/1-2012100886121/institution-ALVR_Nr_4551_Aufn_132.jpg"/>
+      <edm:object rdf:resource="http://www.danrw.de/data/1-2012100886121/thumbnail-ALVR_Nr_4551_Aufn_132.jpg"/>
+   </ore:Aggregation>
+</rdf:RDF>
