@@ -86,34 +86,29 @@ public class Controller implements Runnable {
 			mqBroker.start();
 			logger.debug("MQ-Broker is started: " + mqBroker.isStarted());
 			
-			Connection connection = mqConnectionFactory.createConnection();
-            connection.start();
-            
-            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            Destination destination = session.createQueue("CB.SYSTEM");
-            MessageProducer producer1 = session.createProducer(destination);
-            producer1.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-            String text = "Hello Client, this is ContentBroker running at " + serverName;
-            TextMessage message = session.createTextMessage(text);
-            Queue responseQueue = session.createTemporaryQueue();
-            message.setJMSReplyTo(responseQueue);
-            producer1.send(message);
-            
-            List<ActionDescription> list = null;
-            MessageConsumer consumer = session.createConsumer(responseQueue);
-            for (;;) {
 			
+            List<ActionDescription> list = null;
+            for (;;) {
+            	Connection connection = mqConnectionFactory.createConnection();
+                connection.start();
+                
+                Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+                Destination destination = session.createQueue("CB.SYSTEM");
+                
+            	MessageProducer producer = session.createProducer(destination);
+            	producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+            	 MessageConsumer consumer = session.createConsumer(destination);
+                 
 			String messageSend = "";
             Message messageRecieve = consumer.receive(1000);
             
             if (messageRecieve instanceof TextMessage) {
-            	MessageProducer producer = session.createProducer(destination);
-                producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-                TextMessage textMessage = (TextMessage) messageRecieve;
+            	TextMessage textMessage = (TextMessage) messageRecieve;
                 String command = textMessage.getText();
                 if (!command.equals("")) logger.debug("Received: " + command);
                 if (command.indexOf("STOP_FACTORY") >= 0) {
-					logger.debug("STOPPING FACTORY");
+					
+                	logger.debug("STOPPING FACTORY");
 					messageSend = "...STOPPING FACTORY done";
 					actionFactory.pause(true);
 					
@@ -129,13 +124,19 @@ public class Controller implements Runnable {
 		            producer.send(om);
 				} 
                 if (!messageSend.equals("")) {
-                	TextMessage message2 = session.createTextMessage(text);
-                	message2 = session.createTextMessage(messageSend);
-                	producer.send(message2);
+                	String text = "Hello Client, this is ContentBroker running at " + serverName;
+                	TextMessage messageGreeting = session.createTextMessage(text);
+                	TextMessage message = session.createTextMessage(messageSend);
                 	
+                    producer.send(messageGreeting);
+                    producer.send(message);
+                 
                 }
-                
             }
+            consumer.close();
+            producer.close();
+            session.close();
+            connection.close();
 			}
 		} catch (Exception e) {
 			logger.error("Error creating/execution of CB-Controller thread " + e.getStackTrace() );
