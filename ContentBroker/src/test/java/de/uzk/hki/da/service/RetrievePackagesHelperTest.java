@@ -56,7 +56,7 @@ public class RetrievePackagesHelperTest {
 	
 	@After 
 	public void tearDown() throws IOException{
-		FileUtils.deleteDirectory(new File(basePath+"work/TEST/id/existingAIPs"));
+		FileUtils.deleteDirectory(new File(basePath+"work/TEST/id/loadedAIPs"));
 		FileUtils.deleteDirectory(new File(basePath+"work/TEST/id/data"));
 	}
 	
@@ -67,8 +67,7 @@ public class RetrievePackagesHelperTest {
 		FakeGridFacade grid = new FakeGridFacade();
 		grid.setGridCacheAreaRootPath(basePath+"grid/");
 		
-		new RetrievePackagesHelper().copyPackagesFromLZAToWorkArea(object, grid, true);
-		new RetrievePackagesHelper().unpackExistingPackages(object);
+		new RetrievePackagesHelper(grid).loadPackages(object, true);
 		
 		String outputPath = basePath + "work/TEST/id/";
 		
