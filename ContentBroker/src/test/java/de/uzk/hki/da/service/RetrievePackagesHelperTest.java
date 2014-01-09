@@ -21,7 +21,6 @@ package de.uzk.hki.da.service;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,8 +30,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.db.CentralDatabaseDAO;
-import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.TESTHelper;
@@ -43,17 +40,7 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class RetrievePackagesHelperTest {
 
-	/** The base path. */
-	String basePath = "src/test/resources/cb/RetrievePackagesHelperTest/";
-	
-	/** The irods. */
-	IrodsSystemConnector irods;
-	
-	/** The dao. */
-	CentralDatabaseDAO dao;
-	
-	/** The urn. */
-	String urn = "urn+nbn+de+danrw-1-2012091718884";
+	private String basePath = "src/test/resources/service/RetrievePackagesHelperTest/";
 	
 	/**
 	 * Sets the up.
@@ -62,8 +49,6 @@ public class RetrievePackagesHelperTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		 irods = mock (IrodsSystemConnector.class);
-		 dao = mock(CentralDatabaseDAO.class);
 		 
 		 new File(basePath+"csn/1/data/existingAIPs").mkdirs();
 		 FileUtils.copyFile(new File(basePath+"source/pack1.tar"), new File(basePath+"TEST/1/existingAIPs/urn.pack_1.tar"));
