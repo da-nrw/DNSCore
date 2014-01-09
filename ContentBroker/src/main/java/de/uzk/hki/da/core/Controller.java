@@ -54,9 +54,6 @@ public class Controller implements Runnable {
 	private ActionRegistry actionRegistry;
 
 	private int socketNumber;
-	private String clientChannel = "clientChannel";
-	private String serverChannel = "serverChannel";
-	private String channelType = "channelType";
 	private String serverName;
 
 	private XBeanBrokerService mqBroker;

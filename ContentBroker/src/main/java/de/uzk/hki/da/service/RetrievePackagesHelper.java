@@ -37,6 +37,8 @@ import de.uzk.hki.da.model.Package;
 
 /**
  * The Class RetrievePackagesHelper.
+ * @author Daniel M. de Oliveira
+ * @author Thomas Kleinke
  */
 public class RetrievePackagesHelper {
 

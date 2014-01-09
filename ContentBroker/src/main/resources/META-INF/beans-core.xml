@@ -28,7 +28,9 @@
 		<property name="zonePath" value="${irods.zone}"/>
 		<property name="workingResource" value="${localNode.workingResource}"/>
 	</bean>
-	<bean id="fakeGridFacade" class="de.uzk.hki.da.grid.FakeGridFacade" />
+	<bean id="fakeGridFacade" class="de.uzk.hki.da.grid.FakeGridFacade">
+		<property name="gridCacheAreaRootPath" value="${localNode.gridCacheAreaRootPath}" />
+	</bean>
 	<bean id="irodsGridFacade" class="de.uzk.hki.da.grid.IrodsGridFacade">
 		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
 		<property name="localNode" ref="localNode"/>
