@@ -20,16 +20,18 @@ package de.uzk.hki.da.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.archivers.ArchiveBuilder;
 import de.uzk.hki.da.archivers.ArchiveBuilderFactory;
 import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
@@ -66,6 +68,7 @@ public class RetrievePackagesHelper {
 		if (grid==null) throw new IllegalStateException("grid not set");
 		if (object==null) throw new IllegalArgumentException("corresponding Object is null");
 		if (object.getPackages().isEmpty()) throw new IllegalArgumentException("Object does not contain any packages");
+		if (!new File(object.getPath()).exists()) throw new IllegalArgumentException(object.getPath()+" does not exist");
 
 		
 		logger.trace("Retrieving packages...");
@@ -74,9 +77,15 @@ public class RetrievePackagesHelper {
 			if (!includeLastPackage)
 				if (pkg==object.getLatestPackage()) continue;
 			
-			retrieveSinglePackageFromGrid(object,pkg);
+			File retrievedPackage = retrieveSinglePackageFromGrid(object,pkg);
+			List<DAFile> results = unpackExistingPackage(object,retrievedPackage);
+			logger.debug("new files: ");
+			for (DAFile f:results)
+				logger.debug(f.toString());
+			
+			// TODO attach files to package
+			// TODO test it
 		}
-		unpackExistingPackages(object);
 	}
 	
 	
@@ -126,7 +135,7 @@ public class RetrievePackagesHelper {
 	 * @param pkg
 	 * @throws IOException
 	 */
-	private void retrieveSinglePackageFromGrid(Object object,Package pkg) throws IOException{
+	private File retrieveSinglePackageFromGrid(Object object,Package pkg) throws IOException{
 		String data_name = "/aip/"
 				+ object.getContractor().getShort_name() + "/" + object.getIdentifier()
 				+ "/" + object.getIdentifier() + ".pack_" + pkg.getName() + ".tar";
@@ -141,6 +150,8 @@ public class RetrievePackagesHelper {
 		logger.debug("Retrieving from lza to temp resource: "+data_name);
 		grid.get(targetFile,
 				data_name);
+		
+		return targetFile;
 	}
 	
 	
@@ -159,33 +170,79 @@ public class RetrievePackagesHelper {
 	 * @author Thomas Kleinke
 	 * @author Daniel M. de Oliveira
 	 */
-	private void unpackExistingPackages(Object object) throws IOException {
+	private List<DAFile> unpackExistingPackage(Object object,File container) throws IOException {
+		
+		List<DAFile> results = new ArrayList<DAFile>();
 		
 		String loadedAIPsPath = object.getPath()+"loadedAIPs/";
 		
-		if (!new File(object.getPath()).exists()) throw new IOException(object.getPath()+" does not exist");
-		String archives[] = new File(loadedAIPsPath).list();
-		if (archives==null||archives.length==0) 
-			throw new RuntimeException("temporary folder "+loadedAIPsPath+" does not contain any packages to unpack");
-		Arrays.sort(archives);
-
-		for (int i = 0; i < archives.length; i++)
-		{
-			String archivePath = loadedAIPsPath + archives[i];
-			logger.debug("unpacking: " + archivePath);			
-			unpackArchiveAndMoveContents(
-					archivePath,
-					object.getPath(),
-					loadedAIPsPath+"data");
-			removeBagitFilesAndPremis(loadedAIPsPath);	
-		}
-
+		logger.debug("unpacking: " + container);			
+		results = unpackArchiveAndMoveContents(
+				container,
+				loadedAIPsPath+"data");
+		
+		removeBagitFilesAndPremis(loadedAIPsPath);	
+			
 		new File(object.getDataPath()).mkdir();
-		normalizeObject(object);
-		FileUtils.deleteDirectory(new File(loadedAIPsPath));	
+		normalizeObject(object); // TODO really? for every package?
+		FileUtils.deleteDirectory(new File(loadedAIPsPath));
+		
+		return results;
 	}
 
 	
+	/**
+	 * Unpacks one archive container and moves its content to targetPath.
+	 * When unpacked, all files below [containerFirstLevelEntry]/data/ are content in this sense.
+	 * <pre>Example:
+	 * a/data/rep/abc.tif (from a.tar) -\> [targetPath]/rep/abc.tif</pre>
+	 *  
+	 * @param container
+	 * @param targetPath
+	 * @throws IOException
+	 */
+	private List<DAFile> unpackArchiveAndMoveContents(
+			File container,
+			String targetPath) throws IOException {
+		
+		List<DAFile> results = new ArrayList<DAFile>();
+		
+		File tempFolder = new File(targetPath + "Temp");		
+		tempFolder.mkdir();
+		
+		try {
+			ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(container);
+			builder.unarchiveFolder(container, 
+					tempFolder);
+		} catch (Exception e) {
+			throw new IOException("Existing AIP \"" + container +
+					"\" couldn't be unpacked to folder " + tempFolder, e);
+		}
+	
+		String containerFirstLevelEntry[] = (tempFolder).list();
+		File tempDataFolder = new File(tempFolder.getPath()+"/"+containerFirstLevelEntry[0]+"/data");
+		if (!tempDataFolder.exists())
+			throw new RuntimeException("unpacked package in Temp doesn't contain a data folder!");
+	
+		logger.debug("Listing representations inside temporary folder: ");
+		File[] repFolders = tempDataFolder.listFiles();
+		for (File rep : repFolders) {
+			
+			String repPartialPath = (rep.getPath()).replace(tempDataFolder.getPath()+"/", "");
+			if (!rep.isDirectory()) continue;
+				
+		    for (File f : FileUtils.listFiles(rep,
+			        TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE))
+		      results.add(new DAFile(null,repPartialPath,f.getPath().replace((tempDataFolder.getPath()+"/"+repPartialPath+"/"),"")));    
+			    
+			FileUtils.moveDirectoryToDirectory(rep, new File(targetPath), true);
+		}
+		
+		FileUtils.deleteDirectory(tempFolder);
+		
+		return results;
+	}
+
 	/**
 	 * At the beginning the objects data are located under:
 	 * <pre>[workAreaRootPath]/[csn]/object-id/loadedAIPs/data</pre>
@@ -218,41 +275,6 @@ public class RetrievePackagesHelper {
 
 	
 	
-	
-	private void unpackArchiveAndMoveContents(
-			String archivePath,
-			String objectPath,
-			String targetDataPath) throws IOException {
-		
-		File tempFolder = new File(objectPath + "Temp");		
-		tempFolder.mkdir();
-		
-		try {
-			ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(new File(archivePath));
-			builder.unarchiveFolder(new File(archivePath), 
-					tempFolder);
-		} catch (Exception e) {
-			throw new IOException("Existing AIP \"" + archivePath +
-					"\" couldn't be unpacked to folder " + tempFolder, e);
-		}
-
-		String subfolder[] = (new File(objectPath+"Temp")).list();
-		File tempDataFolder = new File(objectPath+"Temp/"+subfolder[0]+"/data");
-		if (!tempDataFolder.exists())
-			throw new RuntimeException("unpacked package in Temp doesn't contain a data folder!");
-
-		File[] repFolders = tempDataFolder.listFiles();
-		for (File f : repFolders) {
-			logger.debug(f.getAbsolutePath());
-			if (f.isFile())
-				FileUtils.moveFileToDirectory(f, new File(targetDataPath), true);
-			if (f.isDirectory())
-				FileUtils.moveDirectoryToDirectory(f, new File(targetDataPath), true);
-
-		}
-		FileUtils.deleteDirectory(tempFolder);
-	}
-
 	
 	private void removeBagitFilesAndPremis(String pathToBagRoot){
 		if (new File(pathToBagRoot+"bagit.txt").exists())
