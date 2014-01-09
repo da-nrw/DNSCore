@@ -34,24 +34,28 @@ public class TESTHelper {
 	 * Sets up the object.
 	 *
 	 * @param pkgId the pkg id
-	 * @param basePath the base path
+	 * @param workAreaRootPath the base path
 	 * @return the object
 	 */
-	public static Object setUpObject(String identifier,String basePath){
+	public static Object setUpObject(String identifier,String workAreaRootPath){
 		
-		Object o = new Object();
 		Node node = new Node();
-		node.setWorkAreaRootPath(basePath);
+		node.setWorkAreaRootPath(workAreaRootPath);
+		
 		Contractor contractor = new Contractor();
 		contractor.setShort_name("TEST");
-		o.setContractor(contractor);
-		o.setTransientNodeRef(node);
+		
 		Package pkg = new Package();
 		pkg.setName("1");
 		pkg.setId(1);
+		
+		Object o = new Object();
+		o.setContractor(contractor);
+		o.setTransientNodeRef(node);
 		o.setIdentifier(identifier);
 		o.getPackages().add(pkg);
 		o.reattach();
+		
 		return o;
 	}
 }

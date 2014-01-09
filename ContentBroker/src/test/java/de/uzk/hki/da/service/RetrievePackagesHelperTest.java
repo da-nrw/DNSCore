@@ -18,7 +18,6 @@
 */
 package de.uzk.hki.da.service;
 
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -30,63 +29,48 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.grid.FakeGridFacade;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.TESTHelper;
 
-
 /**
- * The Class RetrievePackagesHelperTest.
+ * @author Daniel M. de Oliveira
  */
 public class RetrievePackagesHelperTest {
 
 	private String basePath = "src/test/resources/service/RetrievePackagesHelperTest/";
+	private Object object;	
 	
-	/**
-	 * Sets the up.
-	 *
-	 * @throws Exception the exception
-	 */
 	@Before
-	public void setUp() throws Exception {
-		 
-		 new File(basePath+"csn/1/data/existingAIPs").mkdirs();
-		 FileUtils.copyFile(new File(basePath+"source/pack1.tar"), new File(basePath+"TEST/1/existingAIPs/urn.pack_1.tar"));
-		 FileUtils.copyFile(new File(basePath+"source/pack2.tar"), new File(basePath+"TEST/1/existingAIPs/urn.pack_2.tar"));
-		 FileUtils.copyFile(new File(basePath+"source/pack3.tar"), new File(basePath+"TEST/1/existingAIPs/urn.pack_3.tar"));
+	public void setUp(){
+		new File(basePath+"work/TEST/id/data").mkdir();
+		
+		object = TESTHelper.setUpObject("id", basePath+"work/");
+		
+		Package p2 = new Package(); p2.setName("2");
+		Package p3 = new Package(); p3.setName("3");
+		object.getPackages().add(p2);
+		object.getPackages().add(p3);
 	}
 	
-	/**
-	 * Tear down.
-	 */
-	@After
-	public void tearDown() {
-		try {
-			FileUtils.deleteDirectory(new File(basePath+"TEST/1"));
-			FileUtils.deleteDirectory(new File(basePath+"csn"));
-		} catch (IOException e) {
-			throw new RuntimeException("Couldn't delete directory");
-		}
+	@After 
+	public void tearDown() throws IOException{
+		FileUtils.deleteDirectory(new File(basePath+"work/TEST/id/existingAIPs"));
+		FileUtils.deleteDirectory(new File(basePath+"work/TEST/id/data"));
 	}
 	
 	
-	/**
-	 * Test unpack.
-	 *
-	 * @throws Exception the exception
-	 */
 	@Test
-	public void testUnpack() throws Exception{
+	public void test() throws IOException{
 		
-		Object o = TESTHelper.setUpObject("1",basePath);
+		FakeGridFacade grid = new FakeGridFacade();
+		grid.setGridCacheAreaRootPath(basePath+"grid/");
 		
-		Job job = new Job();
-		job.setObject(o);
+		new RetrievePackagesHelper().copyPackagesFromLZAToWorkArea(object, grid, true);
+		new RetrievePackagesHelper().unpackExistingPackages(object);
 		
-		new RetrievePackagesHelper().unpackExistingPackages(o);
-		
-		
-		String outputPath = basePath + "/TEST/1/";
+		String outputPath = basePath + "work/TEST/id/";
 		
 		assertTrue(new File(outputPath + "data/a/pic1.txt").exists());
 		assertTrue(new File(outputPath + "data/b/pic2.txt").exists());

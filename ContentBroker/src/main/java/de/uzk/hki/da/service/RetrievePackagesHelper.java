@@ -220,7 +220,7 @@ public class RetrievePackagesHelper {
 	 * @param grid the grid
 	 * @return the object size
 	 * @throws IOException Signals that an I/O exception has occurred.
-	 * @author TODO ??? who was the primary author?
+	 * @author Jens Peters
 	 * @author Daniel M. de Oliveira
 	 */
 	public long getObjectSize(Object obj,Job job,GridFacade grid) throws IOException {
