@@ -1,6 +1,5 @@
 package de.uzk.hki.da.core;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.jms.Connection;
@@ -11,7 +10,6 @@ import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
-import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
