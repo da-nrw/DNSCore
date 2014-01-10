@@ -48,15 +48,17 @@ public class ControllerClient {
         connection.start();
         
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        Destination destination = session.createQueue("CB.SYSTEM");
+        Destination toClient = session.createQueue("CB.CLIENT");
+        Destination toServer = session.createQueue("CB.SYSTEM");
+        
         String text = args[1];
-       	MessageProducer producer = session.createProducer(destination);    
+       	MessageProducer producer = session.createProducer(toServer);    
     	producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
     	TextMessage message = session.createTextMessage(text);
     	
     	producer.send(message);
       	
-        MessageConsumer consumer = session.createConsumer(destination);
+        MessageConsumer consumer = session.createConsumer(toClient);
         for (;;) {
         Message messageRecieve = consumer.receive(1000);
         	if (messageRecieve instanceof TextMessage) {
@@ -66,7 +68,8 @@ public class ControllerClient {
         	} else if (messageRecieve instanceof ObjectMessage) {
             		  ObjectMessage om = (ObjectMessage)messageRecieve;
             		  
-            		  List<ActionDescription> ads = (List<ActionDescription>) om.getObject();
+            		  @SuppressWarnings("unchecked")
+					List<ActionDescription> ads = (List<ActionDescription>) om.getObject();
             		  for (ActionDescription ad : ads) {
             			  System.out.println(ad.toString());
             		  }

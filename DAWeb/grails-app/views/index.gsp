@@ -27,6 +27,10 @@
 				<li class="controller"><g:link controller="incoming">Verarbeitung für abgelieferte SIP starten</g:link></li>
 				<li class="controller"><g:link controller="outgoing">Objekt entnehmen (DIP)</g:link></li>
 				<li class="controller"><g:link controller="info">Hinweise zur Ansteuerung über externe Systeme</g:link></li>
+				<g:if test="${ session.contractor.admin==1}">
+				<li class="controller"><g:link controller="cbtalk">Adminfunktionen</g:link></li>
+				</g:if>
+			
 			</ul>
 		</div>
 	</body>
