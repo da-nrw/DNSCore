@@ -30,12 +30,10 @@ import java.util.List;
 import org.apache.commons.io.FileSystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
 
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.service.XPathUtils;
 
 /**
  * Helps converting files based on lists of ConversionInstructions.
@@ -62,14 +60,8 @@ public class ConverterService {
 	 * @throws IOException 
 	 */
 	public List<Event> convertBatch(
-			File premisFile,
 			Object object,
 			List<ConversionInstruction> conversionInstructions) throws IOException {
-		
-		Document dom = XPathUtils.parseDom(premisFile.getAbsolutePath());
-		if (dom==null){
-			throw new RuntimeException("Error while parsing premis.xml");
-		}
 		
 		List<Event> results = new ArrayList<Event>();
 		
@@ -85,7 +77,7 @@ public class ConverterService {
 		for (ConversionInstruction ci:conversionInstructions){
 			waitUntilThereIsSufficientSpaceOnCacheResource(object.getDataPath(),2097152,10000);
 			
-			List<Event> partialResults = executeConversionInstruction(ci,object,dom);
+			List<Event> partialResults = executeConversionInstruction(ci,object);
 			
 			results.addAll(partialResults);
 		}
@@ -137,7 +129,7 @@ public class ConverterService {
 	 * 
 	 * @throws RuntimeException if resulting file doesn't exit or is null byte file.
 	 */
-	private List<Event> executeConversionInstruction(ConversionInstruction ci,Object object,Document dom) throws IOException  {
+	private List<Event> executeConversionInstruction(ConversionInstruction ci,Object object) throws IOException  {
 		if (ci.getConversion_routine()==null) throw new InvalidParameterException("ConversionRoutine not set in ConversionInstruction");
 		
 		final ConversionStrategy strategy;
@@ -155,7 +147,6 @@ public class ConverterService {
 
 		ci.getSource_file().setPackage(object.getLatestPackage());
 		
-		strategy.setDom(dom);
 		strategy.setCLIConnector(new CLIConnector());
 		strategy.setObject(object);
 		strategy.setParam(ci.getConversion_routine().getParams());

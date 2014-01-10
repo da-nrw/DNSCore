@@ -32,14 +32,14 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.contract.PublicationRight;
 import de.uzk.hki.da.service.CommandLineConnector;
-import de.uzk.hki.da.core.UserException.UserExceptionId;
-import de.uzk.hki.da.service.XPathUtils;
 import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -61,9 +61,6 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 	
 	/** The audiences. */
 	private String[] audiences = new String [] {"PUBLIC", "INSTITUTION" };
-	
-	/** The dom. */
-	Document dom;
 	
 	/** The cli connector. */
 	private CLIConnector cliConnector;
@@ -95,7 +92,6 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 		// Convert 
 		ArrayList<String> commandAsList  = null;
 		for (String audience: audiences ) {
-
 			
 			String audience_lc = audience.toLowerCase();
 			
@@ -154,7 +150,7 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 				throw new RuntimeException("convert did not succeed: " + Arrays.toString(commandAsArray));
 			
 			
-			// thumbnail; purposely commented out -scuy
+			// XXX thumbnail; purposely commented out -scuy
 			// should be replaced by action that creates one thumb per package
 			/*commandAsList = new ArrayList<String>();
 			commandAsList.add("convert");
@@ -228,8 +224,9 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 	 * @return the footer text
 	 */
 	private String getFooterText(String audience) {
-		return XPathUtils.getXPathElementText(dom, "/premis:premis/premis:rights/premis:rightsExtension/contract:rightsGranted/contract:publicationRight[contract:audience/text()='" + audience + "']"
-				+"/contract:restrictions/contract:restrictImage/contract:footerText/text()");
+		if (getPublicationRightForAudience(audience)==null) return "";
+		
+		return getPublicationRightForAudience(audience).getImageRestriction().getFooterText(); 
 	}	
 	
 	
@@ -259,8 +256,9 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 	 * 
 	 */
 	private ArrayList<String> getWatermark(ArrayList<String> commandAsList, String audience) {
-		String text = XPathUtils.getXPathElementText(dom, "/premis:premis/premis:rights/premis:rightsExtension/contract:rightsGranted/contract:publicationRight[contract:audience/text()='" + audience + "']"
-				+"/contract:restrictions/contract:restrictImage/contract:watermark/contract:watermarkString/text()");
+		if (getPublicationRightForAudience(audience)==null) return commandAsList;
+		
+		String text = getPublicationRightForAudience(audience).getImageRestriction().getWatermarkString();
 		if (text == null || text.equals("")) {
 			logger.debug("Adding Watermark: text not found for audience " + audience);
 			return commandAsList;
@@ -269,22 +267,19 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 		commandAsList.add("Arial");
 		commandAsList.add("-pointsize");
 		
-		String psize = XPathUtils.getXPathElementText(dom, "/premis:premis/premis:rights/premis:rightsExtension/contract:rightsGranted/contract:publicationRight[contract:audience/text()='" + audience + "']"
-				+"/contract:restrictions/contract:restrictImage/contract:watermark/contract:pointSize/text()");
+		String psize = getPublicationRightForAudience(audience).getImageRestriction().getWatermarkPointSize();
 		if (psize == null) {
 			logger.debug("Adding watermark: point size not found for audience " + audience);
 			throw new UserException(UserExceptionId.WATERMARK_NO_POINTSIZE, "No setting for pointsize given while adding watermark");
 		}
 		commandAsList.add(psize);
-		String position = XPathUtils.getXPathElementText(dom, "/premis:premis/premis:rights/premis:rightsExtension/contract:rightsGranted/contract:publicationRight[contract:audience/text()='" + audience + "']"
-				+"/contract:restrictions/contract:restrictImage/contract:watermark/contract:position/text()");
+		String position = getPublicationRightForAudience(audience).getImageRestriction().getWatermarkPosition();
 		if (position == null) {
 			logger.debug("Adding watermark: gravity not found for audience " + audience);
 			throw new UserException(UserExceptionId.WATERMARK_NO_GRAVITY, "No setting for gravity given while adding watermark");
 		}
 		
-		String opacity = XPathUtils.getXPathElementText(dom, "/premis:premis/premis:rights/premis:rightsExtension/contract:rightsGranted/contract:publicationRight[contract:audience/text()='" + audience + "']"
-				+"/contract:restrictions/contract:restrictImage/contract:watermark/contract:opacity/text()");
+		String opacity = getPublicationRightForAudience(audience).getImageRestriction().getWatermarkOpacity();
 		if (opacity == null) {
 			logger.debug("Adding watermark: opacity not found for audience " + audience);
 			throw new UserException(UserExceptionId.WATERMARK_NO_OPACITY, "No setting for opacity given while adding watermark");
@@ -295,8 +290,19 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 		
 		commandAsList.add("-draw");
 		commandAsList.add("gravity "+ position +" fill #000000" + opacityHex + " text 0,15 '"+ text +"' fill #ffffff" + opacityHex + " text 0,14 '"+ text +"'");
+
+		
 		return commandAsList;
 	}
+	
+	
+	private PublicationRight getPublicationRightForAudience(String audience){
+		for (PublicationRight right:object.getRights().getPublicationRights()){
+			if (right.getAudience().toString().equals(audience)) return right;
+		}
+		return null;
+	}
+	
 	
 	/**
 	 * Gets the resize dimensions for audience.
@@ -305,11 +311,11 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 	 * @return the resize dimensions for audience
 	 */
 	private String getResizeDimensionsForAudience(String audience) {
+		if (getPublicationRightForAudience(audience)==null) return "";
 		
-		String width= XPathUtils.getXPathElementText(dom, "/premis:premis/premis:rights/premis:rightsExtension/contract:rightsGranted/contract:publicationRight[contract:audience/text()='" +
-															audience + "']/contract:restrictions/contract:restrictImage/contract:width/text()");
-		String height = XPathUtils.getXPathElementText(dom, "/premis:premis/premis:rights/premis:rightsExtension/contract:rightsGranted/contract:publicationRight[contract:audience/text()='" +
-															audience + "']/contract:restrictions/contract:restrictImage/contract:height/text()");
+		String width= getPublicationRightForAudience(audience).getImageRestriction().getWidth();
+		String height= getPublicationRightForAudience(audience).getImageRestriction().getHeight();
+
 		if (width != null && !width.isEmpty() && height != null && !height.isEmpty()) {
 			return width+"x"+height;
 		} else {
@@ -318,21 +324,14 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 		return "";
 	}
 		
-	/* (non-Javadoc)
-	 * @see de.uzk.hki.da.convert.ConversionStrategy#setParam(java.lang.String)
-	 */
 	@Override
-	public void setParam(String param) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void setParam(String param) {}
 
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setDom(org.w3c.dom.Document)
 	 */
 	@Override 
 	public void setDom(Document dom){
-		this.dom = dom;
 	}
 	
 	/* (non-Javadoc)

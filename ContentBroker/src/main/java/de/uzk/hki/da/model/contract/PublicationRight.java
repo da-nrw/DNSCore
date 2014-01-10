@@ -55,7 +55,7 @@ public class PublicationRight {
 	private String lawID;
 	
 	/** The image restriction. */
-	private ImageRestriction imageRestriction;
+	private ImageRestriction imageRestriction = new ImageRestriction();
 	
 	/** The video restriction. */
 	private VideoRestriction videoRestriction;

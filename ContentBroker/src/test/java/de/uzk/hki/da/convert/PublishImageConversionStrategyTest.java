@@ -38,6 +38,8 @@ import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.contract.PublicationRight;
+import de.uzk.hki.da.model.contract.PublicationRight.Audience;
 import de.uzk.hki.da.service.XPathUtils;
 import de.uzk.hki.da.utils.TESTHelper;
 
@@ -87,12 +89,19 @@ public class PublishImageConversionStrategyTest {
 	@Test
 	public void testResizeAndWatermark() throws Exception {
 		cs = new PublishImageConversionStrategy();
-		Document dom = XPathUtils.parseDom("src/test/resources/convert/PublishImageConversionStrategyTests/premis.xml");
-		if (dom==null){
-			throw new RuntimeException("Error while parsing premis.xml");
-		}
 		
 		Object o = TESTHelper.setUpObject("123",basePath);
+		PublicationRight right = new PublicationRight();
+		right.setAudience(Audience.PUBLIC);
+		right.getImageRestriction().setWidth("480");
+		right.getImageRestriction().setHeight("360");
+		right.getImageRestriction().setWatermarkOpacity("50");
+		right.getImageRestriction().setWatermarkPosition("north");
+		right.getImageRestriction().setWatermarkPointSize("10");
+		right.getImageRestriction().setWatermarkString("Hallo");
+		o.getRights().getPublicationRights().add(right);
+		
+		
 		
 		CLIConnector cli = mock ( CLIConnector.class );
 		
@@ -115,7 +124,6 @@ public class PublishImageConversionStrategyTest {
 		
 		PublishImageConversionStrategy s = new PublishImageConversionStrategy();
 		s.setCLIConnector( cli );
-		s.setDom(dom);
 		
 		DAFile sourceFile = new DAFile(o.getLatestPackage(),"a","filename.tif");
 		
@@ -146,12 +154,14 @@ public class PublishImageConversionStrategyTest {
 	@Test
 	public void testFooterTextWithResize() throws Exception {
 		cs = new PublishImageConversionStrategy();
-		Document dom = XPathUtils.parseDom("src/test/resources/convert/PublishImageConversionStrategyTests/premisFooterWithResize.xml");
-		if (dom==null){
-			throw new RuntimeException("Error while parsing premis.xml");
-		}
 		
 		Object o = TESTHelper.setUpObject("123",basePath);
+		PublicationRight right = new PublicationRight();
+		right.setAudience(Audience.PUBLIC);
+		right.getImageRestriction().setWidth("480");
+		right.getImageRestriction().setHeight("360");
+		right.getImageRestriction().setFooterText("Hallo");
+		o.getRights().getPublicationRights().add(right);
 		
 		CLIConnector cli = mock ( CLIConnector.class );
 		
@@ -179,7 +189,6 @@ public class PublishImageConversionStrategyTest {
 		
 		PublishImageConversionStrategy s = new PublishImageConversionStrategy();
 		s.setCLIConnector( cli );
-		s.setDom(dom);
 		
 		DAFile sourceFile = new DAFile(o.getLatestPackage(),"a","filename.tif");
 		
@@ -212,12 +221,11 @@ public class PublishImageConversionStrategyTest {
 	@Test
 	public void testFooterTextWithoutResize() throws Exception {
 		cs = new PublishImageConversionStrategy();
-		Document dom = XPathUtils.parseDom("src/test/resources/convert/PublishImageConversionStrategyTests/premisFooterWithoutResize.xml");
-		if (dom==null){
-			throw new RuntimeException("Error while parsing premis.xml");
-		}
-		
 		Object o = TESTHelper.setUpObject("123",basePath);
+		PublicationRight right = new PublicationRight();
+		right.setAudience(Audience.PUBLIC);
+		right.getImageRestriction().setFooterText("Hallo");
+		o.getRights().getPublicationRights().add(right);
 		
 		CLIConnector cli = mock ( CLIConnector.class );
 		
@@ -244,7 +252,6 @@ public class PublishImageConversionStrategyTest {
 		
 		PublishImageConversionStrategy s = new PublishImageConversionStrategy();
 		s.setCLIConnector( cli );
-		s.setDom(dom);
 		
 		DAFile sourceFile = new DAFile(o.getLatestPackage(),"a","filename.tif");
 		

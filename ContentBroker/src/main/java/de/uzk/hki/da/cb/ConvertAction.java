@@ -21,6 +21,7 @@ package de.uzk.hki.da.cb;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +32,11 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.convert.ConverterService;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
+import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Object;
 
 
 
@@ -61,8 +64,10 @@ public class ConvertAction extends AbstractAction {
 		if (job.getConversion_instructions().size()==0)
 			logger.warn("No Conversion Instruction could be found for job with id: "+job.getId());
 		
+		Object premisObject = parsePremisToMetadata(object.getLatest("premis.xml").toRegularFile().getAbsolutePath());
+		object.setRights(premisObject.getRights());
+		
 		localConversionEvents = new ConverterService().convertBatch(
-					object.getLatest("premis.xml").toRegularFile(),
 					object, 
 					new ArrayList(job.getConversion_instructions()));
 		
@@ -86,6 +91,22 @@ public class ConvertAction extends AbstractAction {
 		return true;
 	}
 
+	// TODO remove code duplication with scan action
+	private Object parsePremisToMetadata(String pathToPremis) throws IOException {
+		logger.debug("reading rights from " + pathToPremis);
+		Object o = null;
+				
+		try {
+			o = new PremisXmlReader()
+			.deserialize(new File(pathToPremis));
+		} catch (ParseException e) {
+			throw new RuntimeException("error while parsing premis file",e);
+		}
+		
+		return o;
+	}
+	
+	
 
 	void waitForFriendJobsToBeReady(List<Job> friendJobs){
 
