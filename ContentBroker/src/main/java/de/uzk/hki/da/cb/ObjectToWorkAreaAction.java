@@ -1,3 +1,21 @@
+/*
+  DA-NRW Software Suite | ContentBroker
+  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
+  Universität zu Köln
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package de.uzk.hki.da.cb;
 
 import java.io.File;
@@ -8,6 +26,9 @@ import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.service.RetrievePackagesHelper;
 
+/**
+ * @author Daniel M. de Oliveira
+ */
 public class ObjectToWorkAreaAction extends AbstractAction {
 
 	private LoadBalancer loadBalancer;
@@ -21,10 +42,10 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 		
 		new File(object.getDataPath()).mkdirs();
 		
-		RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper();
+		RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridFacade());
 		
 		try {
-			if (!loadBalancer.canHandle(retrievePackagesHelper.getObjectSize(object, job, getGridFacade()))) {
+			if (!loadBalancer.canHandle(retrievePackagesHelper.getObjectSize(object, job))) {
 				logger.info("no disk space available at working resource. will not fetch new data.");
 				return false;
 			}
@@ -33,8 +54,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 		}
 		
 		try {
-			retrievePackagesHelper.copyPackagesFromLZAToWorkArea(object, getGridFacade(),true);
-			retrievePackagesHelper.unpackExistingPackages(object);
+			retrievePackagesHelper.loadPackages(object, true);
 		} catch (IOException e) {
 			throw new RuntimeException("error while trying to get existing packages from lza area",e);
 		}

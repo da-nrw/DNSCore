@@ -66,7 +66,7 @@
 				<entry key="IngestCreatePremisAction" value="3" />
 				<entry key="IngestCheckFormatsAction" value="3" />
 				<entry key="IngestScanForPresentationAction" value="3" />
-				<entry key="IngestPreprocessForPresentationAction" value="1" />
+				<entry key="IngestPreprocessForPresentationAction" value="3" />
 				<entry key="IngestConvertForPresentationAction" value="3" />
 				<entry key="IngestPresUpdateMetadataAction" value="3" />
 				<entry key="IngestShortenFileNamesAction" value="3" />
@@ -78,14 +78,14 @@
 				<entry key="AuditAction" value="3" />
 				<entry key="IngestBuildAIPAction" value="3" />
 				<entry key="PostRetrievalAction" value="3" />
-				<entry key="PIPGenPrepareSendToPresenterAction" value="1" />
+				<entry key="PIPGenPrepareSendToPresenterAction" value="3" />
 				<entry key="PIPGenShortenFileNamesAction" value="3" />
-				<entry key="PIPGenUpdateMetadataAction" value="1" />
-				<entry key="PIPGenPreprocessForPresentationAction" value="1" />
-				<entry key="PIPGenConvertAction" value="1" />
-				<entry key="PIPGenScanForPresentationAction" value="1" />
-				<entry key="PIPGenObjectToWorkAreaAction" value="1" />
-				<entry key="PIPGenCleanWorkAreaAction" value="1" />
+				<entry key="PIPGenUpdateMetadataAction" value="3" />
+				<entry key="PIPGenPreprocessForPresentationAction" value="3" />
+				<entry key="PIPGenConvertAction" value="3" />
+				<entry key="PIPGenScanForPresentationAction" value="3" />
+				<entry key="PIPGenObjectToWorkAreaAction" value="3" />
+				<entry key="PIPGenCleanWorkAreaAction" value="3" />
 			</util:map>
 		</property>
 		<property name="actionPriority">
@@ -125,6 +125,11 @@
 				<value>PIPGenObjectToWorkAreaAction</value>
                 <value>PostRetrievalAction</value>
 				</util:list>
+		</property>
+		<property name="blockedBy">
+			<util:map>
+				<entry key="IngestArchiveReplicationAction" value="IngestArchiveReplicationCheckAction"/>
+			</util:map>
 		</property>
 	</bean>
 </beans>

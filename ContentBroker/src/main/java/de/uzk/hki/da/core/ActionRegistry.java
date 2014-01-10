@@ -54,6 +54,13 @@ public class ActionRegistry {
 	/** The running actions. */
 	private List<AbstractAction> runningActions = new ArrayList<AbstractAction>();
 	
+	private Map<String,String> blockedBy = new HashMap<String,String>();
+	
+	
+	
+	
+	
+	
 	/**
 	 * Deregister action.
 	 *
@@ -94,12 +101,12 @@ public class ActionRegistry {
 	
 	
 	/**
-	 * Registers an action within the registry.
+	 * Registers an action at the registry. By registering
+	 * one signals that the action is in a running state.
 	 * 
-	 * It is recommended that you test first if one more
-	 * thread of given type is allowed
-	 * immediately before calling this method.
-	 *
+	 * Note that you must check prior to calling this method if more threads
+	 * of given type are allowed.
+	 * 
 	 * @param action the action
 	 * @author daniel
 	 */
@@ -120,22 +127,33 @@ public class ActionRegistry {
 		activeThreads.put(name, activeThreads.get(name) + 1);
 	}
 
-	/**
-	 * Gets the available job types.
-	 *
-	 * @return priorized list of names of job types.
-	 */
-	public List<String> getAvailableJobTypes() {
-		List<String> result = new ArrayList<String>();
-		for (String key : actionPriority) {
-			if (activeThreads.get(key) == null || 
-					activeThreads.get(key) < getMaxThreads().get(key))
-				result.add(key);
-		}
-		return result;
+	
+	private boolean actionTypeHasNotReachedMaxThreads(String actionName){
+		if (activeThreads.get(actionName) == null || 
+				activeThreads.get(actionName) < getMaxThreads().get(actionName)) return true;
+		return false;
 	}
 	
 	
+	/**
+	 * Gets the available job types.
+	 *
+	 * @return sorted list of names of job types. Sorted by priority. First element has highest priority.
+	 */
+	public List<String> getAvailableJobTypes() {
+		List<String> result = new ArrayList<String>();
+		for (String actionName : actionPriority) {
+			
+			if (getBlockedBy().containsKey(actionName)){
+				if (!(actionTypeHasNotReachedMaxThreads(getBlockedBy().get(actionName))))
+					continue;
+			}
+
+			if (actionTypeHasNotReachedMaxThreads(actionName))
+				result.add(actionName);
+		}
+		return result;
+	}
 	
 
 	/**
@@ -189,5 +207,21 @@ public class ActionRegistry {
 	 */
 	public void setActionPriority(List<String> actionPriority) {
 		this.actionPriority = actionPriority;
+	}
+
+
+
+
+
+	public Map<String,String> getBlockedBy() {
+		return blockedBy;
+	}
+
+
+
+
+
+	public void setBlockedBy(Map<String,String> blockedBy) {
+		this.blockedBy = blockedBy;
 	}
 }

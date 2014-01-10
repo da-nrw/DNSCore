@@ -143,10 +143,10 @@ public class UnpackAction extends AbstractAction {
 								+ "("+object.getObject_state()+
 						"), therefore no deltas could be added!");
 			}
-			RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper();
+			RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot());
 
 			try {
-				if (!loadBalancer.canHandle(retrievePackagesHelper.getObjectSize(object, job, getGridRoot()))){
+				if (!loadBalancer.canHandle(retrievePackagesHelper.getObjectSize(object, job ))){
 					logger.info("no disk space available at working resource. will not fetch new data.");
 					return false;
 				}
@@ -157,10 +157,9 @@ public class UnpackAction extends AbstractAction {
 			new File(object.getDataPath()).mkdirs();
 			logger.info("object already exists. Moving existing packages to work area.");
 			try {
-				retrievePackagesHelper.copyPackagesFromLZAToWorkArea(object, getGridRoot(),false);
+				retrievePackagesHelper.loadPackages(object, false);
 				logger.info("Packages of object \""+object.getIdentifier()+
 						"\" are now available on cache resource at: " + object.getPath()+"existingAIPs");
-				retrievePackagesHelper.unpackExistingPackages(object);
 				FileUtils.moveFile(new File(object.getDataPath() + object.getNameOfNewestBRep() + "/premis.xml"),
 						 new File(object.getDataPath() + "premis_old.xml"));
 			} catch (IOException e) {

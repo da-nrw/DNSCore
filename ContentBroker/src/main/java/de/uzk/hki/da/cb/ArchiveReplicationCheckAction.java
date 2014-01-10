@@ -40,7 +40,7 @@ import de.uzk.hki.da.service.Mail;
  * Checks if the minimum number of replications of an AIP, as specified by minNodes, is available on any
  * set of available resources as specified in the local node's repl_destinations.
  * 
- * The AIP must be located at the logical path <code>[zonePath]/aip/[csn]/[objectIdentifier]/[objectIdentifier].pack_[pkgname].tar</code>.
+ * The AIP must be located at the logical path <code>/aip/[csn]/[objectIdentifier]/[objectIdentifier].pack_[pkgname].tar</code>.
  * 
  * @author Jens Peters
  * @author Daniel M. de Oliveira
@@ -59,7 +59,6 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	
 	
 	/**
-	 * @return false if minimum number of replications could not be detected.
 	 */
 	@Override
 	public
@@ -67,26 +66,22 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 		setKILLATEXIT(true);
 		object.reattach();
-		
-		String aip = "/aip/" + object.getContractor().getShort_name() + 
-				"/" + object.getIdentifier() + "/"+ object.getIdentifier() + ".pack_" + object.getLatestPackage().getName() + ".tar";
-		
+
 		StoragePolicy sp = new StoragePolicy(localNode);
 		sp.setMinNodes(minNodes);
-		if (!gridRoot.storagePolicyAchieved(aip, sp)){
+		do{
 			delay();
-			return false;
 		}
-		
+		while (!gridRoot.storagePolicyAchieved(
+				"/aip/" + object.getContractor().getShort_name() + 
+				"/" + object.getIdentifier() + "/"+ object.getIdentifier() + ".pack_" + object.getLatestPackage().getName() + ".tar", 
+				sp));
 		
 		setObjectStored(object);
-		
 		sendReciept(job, object);
 		object.getPackages().get(object.getPackages().size()-1).getFiles().clear();
 		object.getPackages().get(object.getPackages().size()-1).getEvents().clear();
-		
 		createPublicationJob();
-		
 		return true;
 	}
 	
