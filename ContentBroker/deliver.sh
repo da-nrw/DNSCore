@@ -57,6 +57,7 @@ cp src/main/resources/frame.jsonld $TARGET/conf
 cp src/main/scripts/ffmpeg.sh $TARGET
 cp src/main/scripts/ContentBroker_stop.sh $TARGET
 cp src/main/scripts/ContentBroker_start.sh $TARGET
+cp src/main/scripts/cbTalk.sh $TARGET
 cp src/main/scripts/fido.sh $TARGET
 cp src/main/scripts/PDFA_def.ps $TARGET/conf
 cp src/main/resources/healthCheck.avi $TARGET/conf
