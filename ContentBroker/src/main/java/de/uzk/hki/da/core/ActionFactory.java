@@ -89,11 +89,11 @@ public class ActionFactory implements ApplicationContextAware {
 		
 		logger.trace("building action");
 		
-		if (dao == null) throw new IllegalStateException("Unable to build action. DAO has not been set.");
-		if (actionCommunicatorService == null) throw new IllegalStateException("Unable to build action. Action Communicator Service has not been set.");
-		if (actionRegistry == null) throw new IllegalStateException("Unable to build action. Action map has not been set.");
-		if (context == null) throw new IllegalStateException("Unable to build action. Application context has not been set.");
-		if (localNode==null) throw new IllegalStateException("Unable to build action. Node not set.");
+		if (dao == null) throw new ConfigurationException("Unable to build action. DAO has not been set.");
+		if (actionCommunicatorService == null) throw new ConfigurationException("Unable to build action. Action Communicator Service has not been set.");
+		if (actionRegistry == null) throw new ConfigurationException("Unable to build action. Action map has not been set.");
+		if (context == null) throw new ConfigurationException("Unable to build action. Application context has not been set.");
+		if (localNode==null) throw new ConfigurationException("Unable to build action. Node not set.");
 		
 		if (onHalt){
 			logger.info("ActionFactory is on halt. Waiting to resume work ...");

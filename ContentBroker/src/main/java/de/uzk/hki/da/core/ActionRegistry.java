@@ -144,8 +144,6 @@ public class ActionRegistry {
 		List<String> result = new ArrayList<String>();
 		for (String actionName : actionPriority) {
 			
-			// if archiveReplicationAction.concurentActionName!=null
-			// wenn concurent alle thread voll, dann !result.add
 			if (getBlockedBy().containsKey(actionName)){
 				if (!(actionTypeHasNotReachedMaxThreads(getBlockedBy().get(actionName))))
 					continue;
