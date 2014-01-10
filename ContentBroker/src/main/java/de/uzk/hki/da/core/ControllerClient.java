@@ -65,7 +65,8 @@ public class ControllerClient {
                  System.out.println("Recieved:" + textMessage.getText());
         	} else if (messageRecieve instanceof ObjectMessage) {
             		  ObjectMessage om = (ObjectMessage)messageRecieve;
-            		  List<ActionDescription> ads = (List<ActionDescription>) messageRecieve;
+            		  
+            		  List<ActionDescription> ads = (List<ActionDescription>) om.getObject();
             		  for (ActionDescription ad : ads) {
             			  System.out.println(ad.toString());
             		  }
