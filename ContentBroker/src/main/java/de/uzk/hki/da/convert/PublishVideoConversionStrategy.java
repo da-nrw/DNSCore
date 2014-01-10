@@ -37,7 +37,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.service.XPathUtils;
+import de.uzk.hki.da.model.contract.PublicationRight;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -57,9 +57,6 @@ public class PublishVideoConversionStrategy implements ConversionStrategy{
 	/** The pkg. */
 	private Package pkg;
 	
-	/** The dom. */
-	private Document dom;
-
 	/** The object. */
 	private Object object;
 	
@@ -69,7 +66,6 @@ public class PublishVideoConversionStrategy implements ConversionStrategy{
 	@Override
 	public List<Event> convertFile(ConversionInstruction ci)
 			throws FileNotFoundException {
-		if (dom==null) throw new IllegalStateException("dom not set");
 		if (pkg==null) throw new IllegalStateException("pkg not set");
 		if (cliConnector==null) throw new IllegalStateException("cliConnector not set");
 		
@@ -128,19 +124,32 @@ public class PublishVideoConversionStrategy implements ConversionStrategy{
 	}
 	
 	/**
+	 * TODO remove code duplication with publishimageconversionstrategy
+	 * @author Daniel M. de Oliveira
+	 * @param audience
+	 * @return
+	 */
+	private PublicationRight getPublicationRightForAudience(String audience){
+		for (PublicationRight right:object.getRights().getPublicationRights()){
+			if (right.getAudience().toString().equals(audience)) return right;
+		}
+		return null;
+	}
+	
+	/**
 	 * Gets the restriction parameters for audience.
 	 *
 	 * @param audience the audience
 	 * @return the restriction parameters for audience
 	 */
 	private String[] getRestrictionParametersForAudience(String audience) {
-
-		String height = XPathUtils.getXPathElementText(dom, "/premis:premis/premis:rights/premis:rightsExtension/contract:rightsGranted/contract:publicationRight[contract:audience/text()='" +
-				audience + "']/contract:restrictions/contract:restrictVideo/contract:height/text()");
+		if (getPublicationRightForAudience(audience)==null) return new String[]{};
+		
+		
+		String height = getPublicationRightForAudience(audience).getVideoRestriction().getHeight();
 		logger.debug("height restriction for audience "+audience+": "+height);
 		
-		String duration = XPathUtils.getXPathElementText(dom, "/premis:premis/premis:rights/premis:rightsExtension/contract:rightsGranted/contract:publicationRight[contract:audience/text()='" +
-				audience + "']/contract:restrictions/contract:restrictVideo/contract:duration/text()");
+		String duration = getPublicationRightForAudience(audience).getVideoRestriction().getDuration().toString();
 		logger.debug("duration restriction for audience "+audience+": "+duration);		
 		
 		if (height != null && !height.equals("") &&
@@ -159,9 +168,7 @@ public class PublishVideoConversionStrategy implements ConversionStrategy{
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setDom(org.w3c.dom.Document)
 	 */
-	public void setDom(Document dom){
-		this.dom = dom;
-	}
+	public void setDom(Document dom){}
 	
 
 	/* (non-Javadoc)

@@ -32,21 +32,12 @@ public class FakeDistributedConversionAdapter implements DistributedConversionAd
 	}
 
 	@Override
-	public void register(String relativePath, String physicalPath) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void register(String relativePath, String physicalPath) {}
 
 	@Override
-	public void replicateToTocalNode(String relativePath) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void replicateToTocalNode(String relativePath) {}
 
 	@Override
-	public void remove(String relativePath) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void remove(String relativePath) {}
 
 }

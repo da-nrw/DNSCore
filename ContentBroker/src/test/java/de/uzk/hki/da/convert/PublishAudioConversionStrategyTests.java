@@ -31,6 +31,10 @@ import org.w3c.dom.Document;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.contract.AudioRestriction;
+import de.uzk.hki.da.model.contract.ImageRestriction;
+import de.uzk.hki.da.model.contract.PublicationRight;
+import de.uzk.hki.da.model.contract.PublicationRight.Audience;
 import de.uzk.hki.da.service.XPathUtils;
 import de.uzk.hki.da.utils.TESTHelper;
 
@@ -82,7 +86,11 @@ public class PublishAudioConversionStrategyTests {
 
 		
 		Object o = TESTHelper.setUpObject("123",basePath);
-		
+		PublicationRight right = new PublicationRight();
+		right.setAudience(Audience.PUBLIC);
+		right.setAudioRestriction(new AudioRestriction());
+		right.getAudioRestriction().setDuration(10);
+		o.getRights().getPublicationRights().add(right);
 		s.setObject(o);
 		
 		ConversionInstruction ci = new ConversionInstruction();

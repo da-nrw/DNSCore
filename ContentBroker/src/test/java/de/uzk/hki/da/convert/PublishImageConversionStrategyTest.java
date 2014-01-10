@@ -38,6 +38,7 @@ import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.contract.ImageRestriction;
 import de.uzk.hki.da.model.contract.PublicationRight;
 import de.uzk.hki.da.model.contract.PublicationRight.Audience;
 import de.uzk.hki.da.service.XPathUtils;
@@ -93,6 +94,7 @@ public class PublishImageConversionStrategyTest {
 		Object o = TESTHelper.setUpObject("123",basePath);
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
+		right.setImageRestriction(new ImageRestriction());
 		right.getImageRestriction().setWidth("480");
 		right.getImageRestriction().setHeight("360");
 		right.getImageRestriction().setWatermarkOpacity("50");
@@ -158,6 +160,7 @@ public class PublishImageConversionStrategyTest {
 		Object o = TESTHelper.setUpObject("123",basePath);
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
+		right.setImageRestriction(new ImageRestriction());
 		right.getImageRestriction().setWidth("480");
 		right.getImageRestriction().setHeight("360");
 		right.getImageRestriction().setFooterText("Hallo");
@@ -224,6 +227,7 @@ public class PublishImageConversionStrategyTest {
 		Object o = TESTHelper.setUpObject("123",basePath);
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
+		right.setImageRestriction(new ImageRestriction());
 		right.getImageRestriction().setFooterText("Hallo");
 		o.getRights().getPublicationRights().add(right);
 		

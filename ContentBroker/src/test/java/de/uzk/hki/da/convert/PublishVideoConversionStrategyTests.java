@@ -34,6 +34,9 @@ import org.w3c.dom.Document;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.contract.PublicationRight;
+import de.uzk.hki.da.model.contract.PublicationRight.Audience;
+import de.uzk.hki.da.model.contract.VideoRestriction;
 import de.uzk.hki.da.service.XPathUtils;
 import de.uzk.hki.da.utils.TESTHelper;
 
@@ -77,6 +80,12 @@ public class PublishVideoConversionStrategyTests {
 		}
 		
 		Object o = TESTHelper.setUpObject("1",basePath);
+		PublicationRight right = new PublicationRight();
+		right.setAudience(Audience.PUBLIC);
+		right.setVideoRestriction(new VideoRestriction());
+		right.getVideoRestriction().setHeight("360");
+		right.getVideoRestriction().setDuration(180);
+		o.getRights().getPublicationRights().add(right);
 		
 		CLIConnector cli = mock ( CLIConnector.class );
 		
