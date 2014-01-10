@@ -126,5 +126,10 @@
                 <value>PostRetrievalAction</value>
 				</util:list>
 		</property>
+		<property name="blockedBy">
+			<util:map>
+				<entry key="IngestArchiveReplicationAction" value="IngestArchiveReplicationCheckAction"/>
+			</util:map>
+		</property>
 	</bean>
 </beans>

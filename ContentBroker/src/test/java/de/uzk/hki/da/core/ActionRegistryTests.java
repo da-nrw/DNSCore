@@ -33,6 +33,7 @@ import org.junit.Test;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import de.uzk.hki.da.cb.AbstractAction;
+import de.uzk.hki.da.cb.NullAction;
 import de.uzk.hki.da.cb.TarAction;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
@@ -42,6 +43,8 @@ import de.uzk.hki.da.model.Package;
 
 /**
  * The Class ActionRegistryTests.
+ * @author Daniel M. de Oliveira
+ * @author Jens Peters
  */
 public class ActionRegistryTests {
 	
@@ -146,19 +149,56 @@ public class ActionRegistryTests {
 		
 	}
 	
+	
+	
 	/**
-	 * Test available job types.
 	 */
 	@Test
-	public void testAvailableJobTypes() {
-		List<String> list = registry.getAvailableJobTypes();
-		assertEquals("IngestTarAction",list.get(0));
+	public void testGetLowerPriorizedActionIfMaxThreads() {
+		
+		AbstractAction action = (NullAction) context.getBean("BlockingAction");
+		registry.registerAction(action);
 
-		AbstractAction tarAction = (AbstractAction) context.getBean("IngestTarAction");
-		registry.registerAction(tarAction);
-		list = registry.getAvailableJobTypes();
+		AbstractAction action2 = (NullAction) context.getBean("IngestTarAction");
+		registry.registerAction(action2);
+		
+		List<String> list = registry.getAvailableJobTypes();
 		assertEquals("SendToPresenterAction",list.get(0));
 	}
+	
+	
+	/**
+	 * 
+	 */
+	@Test
+	public void testOneActionsIsBlockedByAnother(){
+		AbstractAction blocking = (NullAction) context.getBean("BlockingAction");
+		registry.registerAction(blocking);
+		
+		assertEquals("IngestTarAction",registry.getAvailableJobTypes().get(0));
+	}
+	
+	
+	
+	/**
+	 * 
+	 */
+	@Test
+	public void testAnotherActionIsBlocked(){
+		
+		registry.registerAction((NullAction) context.getBean("BlockingAction"));
+		registry.registerAction((NullAction) context.getBean("IngestTarAction"));
+		registry.registerAction((NullAction) context.getBean("SendToPresenterAction"));
+		registry.registerAction((NullAction) context.getBean("AnotherBlockingAction"));
+		
+		assertTrue(registry.getAvailableJobTypes().isEmpty());
+	}
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * Test job with max threads.
