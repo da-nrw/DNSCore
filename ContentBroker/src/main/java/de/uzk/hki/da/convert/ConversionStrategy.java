@@ -58,11 +58,6 @@ public interface ConversionStrategy {
 	public void setObject(Object obj);
 	
 	
-	/**
-	 * Document contains contents of the premis file of a package.
-	 * @param dom
-	 */
-	public void setDom(Document dom);
 
 	/**
 	 * @param cliConnector

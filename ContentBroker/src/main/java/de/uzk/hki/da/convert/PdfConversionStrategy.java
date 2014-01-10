@@ -135,15 +135,6 @@ public class PdfConversionStrategy implements ConversionStrategy {
 	}
 	
 	/* (non-Javadoc)
-	 * @see de.uzk.hki.da.convert.ConversionStrategy#setDom(org.w3c.dom.Document)
-	 */
-	@Override
-	public void setDom(Document dom) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
 	 */
 	@Override

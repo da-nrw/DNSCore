@@ -37,6 +37,10 @@ import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.contract.PublicationRight;
+import de.uzk.hki.da.model.contract.TextRestriction;
+import de.uzk.hki.da.model.contract.VideoRestriction;
+import de.uzk.hki.da.model.contract.PublicationRight.Audience;
 import de.uzk.hki.da.service.XPathUtils;
 import de.uzk.hki.da.utils.TESTHelper;
 
@@ -80,13 +84,13 @@ public class PublishPDFConversionStrategyTests {
 	@Test
 	public void test() throws IOException {
 		
-		Document dom = XPathUtils.parseDom(dataPath + "premis.xml");
-		if (dom==null){
-			throw new RuntimeException("Error while parsing premis.xml");
-		}
-		
 		o = TESTHelper.setUpObject("1", basePath);
-		cs.setDom(dom);
+		PublicationRight right = new PublicationRight();
+		right.setAudience(Audience.PUBLIC);
+		right.setTextRestriction(new TextRestriction());
+		right.getTextRestriction().setPages(7);
+		o.getRights().getPublicationRights().add(right);
+		
 		
 		DAFile sourceFile = new DAFile(o.getLatestPackage(),"a","filename.pdf");
 		

@@ -296,7 +296,6 @@ public class PublishImageConversionStrategyTest {
 		
 		PublishImageConversionStrategy s = new PublishImageConversionStrategy();
 		s.setCLIConnector( new CLIConnector() );
-		s.setDom(dom);
 		
 		DAFile sourceFile = new DAFile(o.getLatestPackage(),"a","filename.tif");
 		

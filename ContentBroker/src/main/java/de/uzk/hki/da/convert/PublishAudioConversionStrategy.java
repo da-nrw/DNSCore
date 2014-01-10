@@ -154,12 +154,6 @@ public class PublishAudioConversionStrategy implements ConversionStrategy{
 	@Override
 	public void setParam(String param) {}
 
-	/* (non-Javadoc)
-	 * @see de.uzk.hki.da.convert.ConversionStrategy#setDom(org.w3c.dom.Document)
-	 */
-	@Override
-	public void setDom(Document dom) {
-	}
 
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)

@@ -26,16 +26,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import org.junit.Test;
-import org.w3c.dom.Document;
 
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.contract.AudioRestriction;
-import de.uzk.hki.da.model.contract.ImageRestriction;
 import de.uzk.hki.da.model.contract.PublicationRight;
 import de.uzk.hki.da.model.contract.PublicationRight.Audience;
-import de.uzk.hki.da.service.XPathUtils;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -79,11 +76,6 @@ public class PublishAudioConversionStrategyTests {
 		PublishAudioConversionStrategy s = new PublishAudioConversionStrategy();
 		s.setCLIConnector( cli );
 		
-		Document dom = XPathUtils.parseDom("src/test/resources/convert/PublishAudioConversionStrategyTests/premis.xml");
-		if (dom==null){
-			throw new RuntimeException("Error while parsing premis.xml");
-		} s.setDom(dom);
-
 		
 		Object o = TESTHelper.setUpObject("123",basePath);
 		PublicationRight right = new PublicationRight();
