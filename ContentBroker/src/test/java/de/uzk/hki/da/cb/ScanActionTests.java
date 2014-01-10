@@ -25,6 +25,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -123,11 +124,10 @@ public class ScanActionTests {
 	
 	/**
 	 * Conversion instructions get created properly.
-	 *
-	 * @throws FileNotFoundException the file not found exception
+	 * @throws IOException 
 	 */
 	@Test 
-	public void conversionInstructionsGetCreatedProperly() throws FileNotFoundException{
+	public void conversionInstructionsGetCreatedProperly() throws IOException{
 		
 		action.implementation();
 		

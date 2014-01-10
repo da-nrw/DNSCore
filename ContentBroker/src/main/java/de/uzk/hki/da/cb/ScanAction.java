@@ -20,7 +20,6 @@
 package de.uzk.hki.da.cb;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -88,7 +87,7 @@ public class ScanAction extends AbstractAction{
 
 
 	@Override
-	boolean implementation() throws FileNotFoundException {
+	boolean implementation() throws IOException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 		if (formatScanService==null) throw new ConfigurationException("formatScanService not set");
 		if (preservationSystem==null) // So we can prevent the preservationSystem to be instantiated in unit tests.
@@ -101,18 +100,12 @@ public class ScanAction extends AbstractAction{
 		object.getLatestPackage().getFiles().addAll(filesArchival);
 		
 		String repPath = object.getDataPath() + job.getRep_name();
-		Object premisObject;
-		try {
-			premisObject = parsePremisToMetadata(repPath+"a");
-		} catch (IOException e) {
-			throw new RuntimeException("Could not read premis file ",e);
-		}
+		Object premisObject = parsePremisToMetadata(repPath+"a");
 		
 		if (premisObject.grantsRight("MIGRATION"))
 		{
 			List<ConversionInstruction> cisArch = generateConversionInstructions(filesArchival);
 			job.getConversion_instructions().addAll(cisArch);
-			
 		}
 		else
 			logger.info("No migration rights granted. No files will be converted for archival storage.");

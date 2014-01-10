@@ -42,7 +42,6 @@ import de.uzk.hki.da.utils.MD5Checksum;
 
 /**
  * Relates to AK-T/02 Ingest.
- * @author Daniel M. de Oliveira
  * @author Jens Peters
  */
 public class ITUseCaseIngest extends ITIngestBase{
@@ -102,14 +101,12 @@ public class ITUseCaseIngest extends ITIngestBase{
 	
 	/**
 	 * Test ingest.
-	 *
 	 * @throws Exception the exception
 	 */
 	@Test
 	public void testIngest() throws Exception {
 		
 		stepThroughIngestWorkflow();
-		
 		String packageRelativePath = "TEST/"+object.getIdentifier()+"/"+object.getIdentifier()+".pack_1.tar";
 		
 		// checking properties of grid
@@ -137,7 +134,6 @@ public class ITUseCaseIngest extends ITIngestBase{
 
 	/**
 	 * Checking grid properties.
-	 *
 	 * @param packageRelativePath the package relative path
 	 */
 	private void checkingGridProperties(String packageRelativePath) {
@@ -150,7 +146,6 @@ public class ITUseCaseIngest extends ITIngestBase{
 	
 	/**
 	 * Assert that working area has been left in a clean state.
-	 *
 	 * @param obj the obj
 	 * @param packageRelativePath the package relative path
 	 */
@@ -163,9 +158,9 @@ public class ITUseCaseIngest extends ITIngestBase{
 			.exists()); // AIP Package still in Cache Folder - cleanup error, Do we have configured less than 3 copies on the grid?
 	}
 	
+	
+	
 	/**
-	 * 
-	 * 
 	 * @param packageRelativePath
 	 * @author Jens Peters
 	 */

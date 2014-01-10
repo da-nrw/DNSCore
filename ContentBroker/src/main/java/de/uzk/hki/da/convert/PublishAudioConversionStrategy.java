@@ -35,7 +35,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.service.XPathUtils;
+import de.uzk.hki.da.model.contract.PublicationRight;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -46,10 +46,7 @@ public class PublishAudioConversionStrategy implements ConversionStrategy{
 
 	/** The logger. */
 	private static Logger logger = 
-			LoggerFactory.getLogger(PublishVideoConversionStrategy.class);
-	
-	/** The dom. */
-	private Document dom;
+			LoggerFactory.getLogger(PublishAudioConversionStrategy.class);
 	
 	/** The pkg. */
 	private Package pkg;
@@ -67,7 +64,6 @@ public class PublishAudioConversionStrategy implements ConversionStrategy{
 	@Override
 	public List<Event> convertFile(ConversionInstruction ci)
 			throws FileNotFoundException {
-		if (dom==null) throw new IllegalStateException("dom not set");
 		if (pkg==null) throw new IllegalStateException("pkg not set");
 		if (cliConnector==null) throw new IllegalStateException("cliConnector not set");
 		
@@ -83,7 +79,7 @@ public class PublishAudioConversionStrategy implements ConversionStrategy{
 		logger.debug(ci.getSource_file().toRegularFile().getAbsolutePath());
 		logger.debug(object.getDataPath()+"dip/public/"+ci.getTarget_folder()+FilenameUtils.getBaseName(
 				ci.getSource_file().toRegularFile().getAbsolutePath())+".mp3");
-		if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdPUBLIC,getDurationRestrictionsForAudience("public")))){
+		if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdPUBLIC,getDurationRestrictionsForAudience("PUBLIC")))){
 			throw new RuntimeException("command not succeeded");
 		}
 		DAFile f1 = new DAFile(pkg,ci.getTarget_folder(),object.getDataPath()+"dip/public/"+ci.getTarget_folder()+FilenameUtils.getBaseName(
@@ -103,7 +99,7 @@ public class PublishAudioConversionStrategy implements ConversionStrategy{
 				object.getDataPath()+"dip/institution/"+ci.getTarget_folder()+FilenameUtils.getBaseName(
 						ci.getSource_file().toRegularFile().getAbsolutePath())+".mp3"
 		};
-		if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdINSTITUTION,getDurationRestrictionsForAudience("institution")))){
+		if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdINSTITUTION,getDurationRestrictionsForAudience("INSTITUTION")))){
 			throw new RuntimeException("command not succeeded");
 		}
 		DAFile f2 = new DAFile(pkg,ci.getTarget_folder(),object.getDataPath()+"dip/institution/"+ci.getTarget_folder()+FilenameUtils.getBaseName(
@@ -129,12 +125,11 @@ public class PublishAudioConversionStrategy implements ConversionStrategy{
 	 * @return the duration restrictions for audience
 	 */
 	private String[] getDurationRestrictionsForAudience(String audience) {
+		if (getPublicationRightForAudience(audience)==null) return new String[]{};
 		
-		String duration= XPathUtils.getXPathElementText(dom, 
-				"/premis:premis/premis:rights/premis:rightsExtension/contract:rightsGranted/contract:publicationRight[contract:audience/text()='"
-				+audience.toUpperCase()
-				+"']/contract:restrictions/contract:restrictAudio/contract:duration/text()");
 		
+		String duration= getPublicationRightForAudience(audience).getAudioRestriction().getDuration().toString();
+				
 		logger.debug("duration restriction for audience "+audience+": "+duration);
 		if (duration != null && !duration.isEmpty()) {
 			return new String[]{"trim","0",duration};
@@ -144,21 +139,26 @@ public class PublishAudioConversionStrategy implements ConversionStrategy{
 		return new String[]{};
 	}
 	
+	/// TODO remove code duplication with publishimageconversionstrategy
+	private PublicationRight getPublicationRightForAudience(String audience){
+		for (PublicationRight right:object.getRights().getPublicationRights()){
+			if (right.getAudience().toString().equals(audience)) return right;
+		}
+		return null;
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setParam(java.lang.String)
 	 */
 	@Override
-	public void setParam(String param) {
-		// TODO Auto-generated method stub
-	}
+	public void setParam(String param) {}
 
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setDom(org.w3c.dom.Document)
 	 */
 	@Override
 	public void setDom(Document dom) {
-		this.dom = dom;
 	}
 
 	/* (non-Javadoc)

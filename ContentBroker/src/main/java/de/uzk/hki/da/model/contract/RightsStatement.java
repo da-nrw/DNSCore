@@ -19,6 +19,7 @@
 
 package de.uzk.hki.da.model.contract;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -45,7 +46,7 @@ public class RightsStatement {
 	private String delivererId;
 	
 	/** The publication rights. */
-	private List<PublicationRight> publicationRights;
+	private List<PublicationRight> publicationRights = new ArrayList<PublicationRight>();
 	
 	/** The migration right. */
 	private MigrationRight migrationRight;

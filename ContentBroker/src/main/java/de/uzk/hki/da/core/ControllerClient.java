@@ -66,8 +66,9 @@ public class ControllerClient {
             	 textMessage = (TextMessage) messageRecieve;
                  System.out.println("Recieved:" + textMessage.getText());
         	} else if (messageRecieve instanceof ObjectMessage) {
+        		
+        		
             		  ObjectMessage om = (ObjectMessage)messageRecieve;
-            		  
             		  @SuppressWarnings("unchecked")
 					List<ActionDescription> ads = (List<ActionDescription>) om.getObject();
             		  for (ActionDescription ad : ads) {

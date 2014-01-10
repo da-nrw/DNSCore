@@ -41,7 +41,6 @@ import de.uzk.hki.da.model.Package;
 
 /**
  * The Class ITUseCaseAudit.
- *
  * @author Jens Peters
  */
 

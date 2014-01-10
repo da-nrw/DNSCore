@@ -124,7 +124,7 @@ public class ConverterServiceTests {
 	public void test() throws IOException{
 		
 		ConverterService converter = new ConverterService();
-		converter.convertBatch(new File(dataPath+"premis.xml"),o,conversionInstructions);
+		converter.convertBatch(o,conversionInstructions);
 		
 		assertTrue(new File(dataPath+"2011+11+01+b/abc.xml").exists());
 		assertTrue(new File(dataPath+"2011+11+01+b/140864.png").exists());
