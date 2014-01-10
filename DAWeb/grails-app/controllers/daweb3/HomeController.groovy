@@ -21,6 +21,11 @@ package daweb3
 class HomeController {
 
 	def index() {
+		def admin = false;
+		if (session.contractor.admin == 1) {
+				admin = true;
+		}
+		[admin: admin]
 		render(view:"/index")
 	}
 

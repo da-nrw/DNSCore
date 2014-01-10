@@ -88,6 +88,7 @@ public class ArchiveReplicationAction extends AbstractAction {
 		
 		List<String> targetDest = Arrays.asList(replDestinations.split(","));
 		List<String> forbidden = Arrays.asList(forbiddenNodes.split(","));
+		@SuppressWarnings("unchecked")
 		Collection <String>destinations = CollectionUtils.subtract(targetDest, forbidden);
 		return destinations; 
 	}

@@ -92,11 +92,12 @@ public class Controller implements Runnable {
                 connection.start();
                 
                 Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-                Destination destination = session.createQueue("CB.SYSTEM");
+                Destination toServer = session.createQueue("CB.SYSTEM");
+                Destination toClient = session.createQueue("CB.CLIENT");
                 
-            	MessageProducer producer = session.createProducer(destination);
+            	MessageProducer producer = session.createProducer(toClient);
             	producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-            	 MessageConsumer consumer = session.createConsumer(destination);
+            	 MessageConsumer consumer = session.createConsumer(toServer);
                  
 			String messageSend = "";
             Message messageRecieve = consumer.receive(1000);

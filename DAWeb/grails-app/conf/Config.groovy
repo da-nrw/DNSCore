@@ -72,6 +72,8 @@ environments {
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
 }
+
+grails.plugins.activemq.active=false
 environments {
 	test {
 		// set per-environment irods config in classpath file!
