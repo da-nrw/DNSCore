@@ -83,7 +83,6 @@ public class MD5Checksum {
      fis.close();
      return complete.digest();
 	} catch (Exception e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 	return null;
