@@ -76,6 +76,8 @@ public class ContentBrokerTests {
 		contentBroker.scheduleTaskWithoutCatchingExceptions();
 		contentBroker.scheduleTaskWithoutCatchingExceptions();
 		contentBroker.scheduleTaskWithoutCatchingExceptions();
+		
+		context.close();
 	}
 
 }

@@ -23,8 +23,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-import org.w3c.dom.Document;
-
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;

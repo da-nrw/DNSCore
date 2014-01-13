@@ -42,6 +42,8 @@ public class IngestAreaScannerWorkerTests {
 	/** The worker. */
 	IngestAreaScannerWorker worker = new IngestAreaScannerWorker();
 	
+	AbstractApplicationContext context;
+	
 	/**
 	 * Sets the up.
 	 *
@@ -50,8 +52,7 @@ public class IngestAreaScannerWorkerTests {
 	@Before
 	public void setUp() throws IOException{
 		
-		AbstractApplicationContext context =
-				new FileSystemXmlApplicationContext(basePath+"IngestAreaScanner.xml");
+		context = new FileSystemXmlApplicationContext(basePath+"IngestAreaScanner.xml");
 		
 //		BaseThreadDatabaseOperations ops = mock(BaseThreadDatabaseOperations.class);
 //		when(ops.getNumberOfInactiveJobs(anyString())).thenReturn(0);
@@ -71,6 +72,7 @@ public class IngestAreaScannerWorkerTests {
 		new File(basePath+"ingest/TEST/a.tgz").delete();
 		new File(basePath+"work/TEST/a.tgz").delete();
 		
+		context.close();		
 	}
 	
 	/**

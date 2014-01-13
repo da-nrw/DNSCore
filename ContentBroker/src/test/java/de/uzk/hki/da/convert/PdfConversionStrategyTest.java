@@ -79,17 +79,10 @@ public class PdfConversionStrategyTest {
 		ConversionRoutine cr = new ConversionRoutine();
 		
 		CLIConnector cli = mock ( CLIConnector.class );
-		String cmd[] = new String[]{
-				"gs","-q", "-dPDFA", "-dPDFACompatibilityPolicy=1", "-dBATCH" ,"-dNOPAUSE" ,"-dNOOUTERSAVE",
-				"-dUseCIEColor","-sProcessColorModel=DeviceCMYK","-sDEVICE=pdfwrite", 
-				"-sOutputFile=" + new File( o.getDataPath() + o.getNameOfNewestRep()+"/Pdf.pdf").getAbsolutePath(),
-				"conf/PDFA_def.ps",new File(o.getDataPath() + "rep+a/Pdf.pdf").getAbsolutePath()
-				 };
-				
-			when(cli.execute((String[]) anyObject())).thenAnswer(new Answer () {
+					
+		when(cli.execute((String[]) anyObject())).thenAnswer(new Answer () {
 			public Boolean answer(InvocationOnMock invocation) {
 			    java.lang.Object[] args = invocation.getArguments();
-		         java.lang.Object mock = invocation.getMock();
 		         String[] cmdarr = (String[]) args[0];
 				
 		         for (String s : cmdarr) {
@@ -97,9 +90,7 @@ public class PdfConversionStrategyTest {
 		         }
 		         return true;
 		    }
-				
-			});
-		
+		});		
 			
 		cs.setCLIConnector(cli);
 		
