@@ -1671,7 +1671,7 @@ public class IrodsSystemConnector {
 	 }
 	 
 	 /**
-	  * TODO at this point we have trust the IRODS ReServer the feration rules are up'n'runnin 
+	  * At this point we have trust the IRODS ReServer the feration rules are up'n'runnin 
 	  * and it evaluates the AVU correctly 
 	  * 
 	  * @param data_name
