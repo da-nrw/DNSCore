@@ -29,6 +29,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.ConfigurationException;
+import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.FormatScanService;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.metadata.PremisXmlReader;
@@ -192,7 +194,7 @@ public class ScanAction extends AbstractAction{
 			o = new PremisXmlReader()
 			.deserialize(new File(pathToRepresentation + "/premis.xml"));
 		} catch (ParseException e) {
-			throw new RuntimeException("error while parsing premis file",e);
+			throw new UserException(UserExceptionId.READ_SIP_PREMIS_ERROR, "Error while parsing premis file", e);
 		}
 		
 		return o;

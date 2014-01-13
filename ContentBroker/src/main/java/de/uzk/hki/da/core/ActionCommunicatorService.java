@@ -48,6 +48,8 @@ public class ActionCommunicatorService {
 	/** The recovery file name. */
 	final private String recoveryFileName = "actionCommunicatorService.recovery";
 	
+	private boolean isSerializing = false;
+	
 	/**
 	 * Instantiates a new action communicator service.
 	 */
@@ -64,6 +66,8 @@ public class ActionCommunicatorService {
 	 */
 	public synchronized void serialize() {
 		
+		isSerializing = true;
+		
 		ObjectOutputStream output = null;
 		try {
 			output = new ObjectOutputStream
@@ -79,6 +83,8 @@ public class ActionCommunicatorService {
 				throw new RuntimeException("Failed to close output stream.", e);
 			}		
 		}
+		
+		isSerializing = false;
 	}
 	
 	/**
@@ -120,6 +126,8 @@ public class ActionCommunicatorService {
 	 */
 	public void addDataObject(int jobId, String dataObjectId, Object dataObject) {
 		
+		waitWhileSerializing();
+		
 		Map<String, Object> map = dataObjectMap.get(jobId);
 		
 		if (map == null)
@@ -140,6 +148,8 @@ public class ActionCommunicatorService {
 	 */
 	public Object extractDataObject(int jobId, String dataObjectId) {
 		
+		waitWhileSerializing();
+		
 		Object obj = getDataObject(jobId, dataObjectId);
 		removeDataObject(jobId, dataObjectId);
 		
@@ -156,6 +166,8 @@ public class ActionCommunicatorService {
 	 */
 	
 	public Object getDataObject(int jobId, String dataObjectId) {
+		
+		waitWhileSerializing();
 		
 		Map<String, Object> map = dataObjectMap.get(jobId);
 		
@@ -175,6 +187,8 @@ public class ActionCommunicatorService {
 	 */
 	public boolean removeDataObject(int jobId, String dataObjectId) {
 		
+		waitWhileSerializing();
+		
 		Map<String, Object> map = dataObjectMap.get(jobId);
 		
 		if (map != null && map.remove(dataObjectId) != null)
@@ -189,6 +203,17 @@ public class ActionCommunicatorService {
 		{
 			logger.debug("Failed to remove data object \"" + dataObjectId + "\" for job id " + jobId + ".");
 			return false;
+		}
+	}
+	
+	private void waitWhileSerializing() {
+		
+		while (isSerializing) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				logger.warn(e.getMessage() + e.getStackTrace());
+			}
 		}
 	}
 }
