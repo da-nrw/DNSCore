@@ -29,7 +29,6 @@ import java.util.List;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
 
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
@@ -102,7 +101,7 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 	
 			new File(object.getDataPath() + "dip/" + audience_lc + "/" + ci.getTarget_folder()).mkdirs();
 
-			if (!getResizeDimensionsForAudience(audience).equals("")) {
+			if (!(getResizeDimensionsForAudience(audience)==null||getResizeDimensionsForAudience(audience).equals(""))) {
 				commandAsList.add("-resize");
 				commandAsList.add(getResizeDimensionsForAudience(audience));
 			}
@@ -225,6 +224,7 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 	 */
 	private String getFooterText(String audience) {
 		if (getPublicationRightForAudience(audience)==null) return "";
+		if (getPublicationRightForAudience(audience).getImageRestriction()==null) return "";
 		
 		return getPublicationRightForAudience(audience).getImageRestriction().getFooterText(); 
 	}	
@@ -257,6 +257,7 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 	 */
 	private ArrayList<String> getWatermark(ArrayList<String> commandAsList, String audience) {
 		if (getPublicationRightForAudience(audience)==null) return commandAsList;
+		if (getPublicationRightForAudience(audience).getImageRestriction()==null) return commandAsList;
 		
 		String text = getPublicationRightForAudience(audience).getImageRestriction().getWatermarkString();
 		if (text == null || text.equals("")) {
@@ -312,6 +313,7 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 	 */
 	private String getResizeDimensionsForAudience(String audience) {
 		if (getPublicationRightForAudience(audience)==null) return "";
+		if (getPublicationRightForAudience(audience).getImageRestriction()==null) return "";
 		
 		String width= getPublicationRightForAudience(audience).getImageRestriction().getWidth();
 		String height= getPublicationRightForAudience(audience).getImageRestriction().getHeight();
@@ -327,13 +329,6 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 	@Override
 	public void setParam(String param) {}
 
-	/* (non-Javadoc)
-	 * @see de.uzk.hki.da.convert.ConversionStrategy#setDom(org.w3c.dom.Document)
-	 */
-	@Override 
-	public void setDom(Document dom){
-	}
-	
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
 	 */

@@ -182,14 +182,6 @@ public class CLIConversionStrategy implements ConversionStrategy{
 		this.commandLine=param;
 	}
 	
-	/**
-	 * Not used here.
-	 *
-	 * @param dom the new dom
-	 */
-	@Override
-	public void setDom(Document dom) {}
-
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
 	 */

@@ -28,14 +28,13 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
 
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.service.XPathUtils;
+import de.uzk.hki.da.model.contract.PublicationRight;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -50,15 +49,26 @@ public class PublishPDFConversionStrategy implements ConversionStrategy {
 	private Package pkg;
 	
 	/** The logger. */
-	@SuppressWarnings("unused")
 	private static Logger logger = 
 			LoggerFactory.getLogger(PublishPDFConversionStrategy.class);
 	
 	/** The audiences. */
 	private String[] audiences = new String [] {"PUBLIC", "INSTITUTION" };
+
+	private Object object;
 	
-	/** The dom. */
-	Document dom;
+	/**
+	 * TODO remove code duplication with publishimage
+	 * @author Daniel M. de Oliveira
+	 * @param audience
+	 * @return
+	 */
+	private PublicationRight getPublicationRightForAudience(String audience){
+		for (PublicationRight right:object.getRights().getPublicationRights()){
+			if (right.getAudience().toString().equals(audience)) return right;
+		}
+		return null;
+	}
 	
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#convertFile(de.uzk.hki.da.model.ConversionInstruction)
@@ -82,17 +92,22 @@ public class PublishPDFConversionStrategy implements ConversionStrategy {
 					FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix());
 			target.toRegularFile().getParentFile().mkdirs();
 			
-			String numberOfPagesText = XPathUtils.getXPathElementText(dom,
-					"/premis:premis/premis:rights/premis:rightsExtension" +
-					"/contract:rightsGranted" +
-					"/contract:publicationRight[contract:audience/text()='" + audience + "']" +
-					"/contract:restrictions/contract:restrictText/contract:numberOfPages/text()");
-			String certainPagesText = XPathUtils.getXPathElementText(dom,
-					"/premis:premis/premis:rights/premis:rightsExtension" +
-					"/contract:rightsGranted" +
-					"/contract:publicationRight[contract:audience/text()='" + audience + "']" +
-					"/contract:restrictions/contract:restrictText/contract:certainPages/text()");
+			String numberOfPagesText=null;
+			if (getPublicationRightForAudience(audience)!=null) 
+				numberOfPagesText=getPublicationRightForAudience(audience).getTextRestriction().getPages().toString();
 			
+			String certainPagesText=null;
+			if (getPublicationRightForAudience(audience)!=null){
+				certainPagesText="";
+				if (getPublicationRightForAudience(audience).getTextRestriction()!=null)
+					if (getPublicationRightForAudience(audience).getTextRestriction().getCertainPages()!=null)
+						for (int i=0;i<getPublicationRightForAudience(audience).getTextRestriction().getCertainPages().length;i++){
+							certainPagesText+=getPublicationRightForAudience(audience).getTextRestriction().getCertainPages()[i];
+							logger.debug(":"+i);
+						}
+				
+			}
+					
 			// copy whole file if no restrictions are found
 			if (numberOfPagesText == null && certainPagesText == null) {
 				try {
@@ -135,14 +150,6 @@ public class PublishPDFConversionStrategy implements ConversionStrategy {
 	}
 
 	/* (non-Javadoc)
-	 * @see de.uzk.hki.da.convert.ConversionStrategy#setDom(org.w3c.dom.Document)
-	 */
-	@Override
-	public void setDom(Document dom) {
-		this.dom = dom;
-	}
-
-	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
 	 */
 	@Override
@@ -156,6 +163,7 @@ public class PublishPDFConversionStrategy implements ConversionStrategy {
 	@Override
 	public void setObject(Object obj) {
 		this.pkg = obj.getLatestPackage();
+		this.object = obj;
 	}
 
 }
