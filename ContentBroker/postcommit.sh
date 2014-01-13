@@ -1,7 +1,7 @@
 #!/bin/bash
 # author: Daniel M. de Oliveira
-
-git pull origin master
+git fetch --all
+git reset --hard origin/master
 
 STATUS_UNIT_TESTS=0
 mvn test

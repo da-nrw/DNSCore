@@ -25,6 +25,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.hp.hpl.jena.shared.ConfigException;
+
 import de.uzk.hki.da.metadata.MetsURNXmlReader;
 import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.model.DAFile;
@@ -45,6 +47,8 @@ public class RegisterURNAction extends AbstractAction {
 
 	@Override
 	boolean implementation() {
+		if (nameSpace==null) throw new ConfigException("URN NameSpace parameter not set!");
+		
 		object.reattach();
 		
 		if (object.hasDeltas())

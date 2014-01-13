@@ -20,6 +20,7 @@
 package de.uzk.hki.da.core;
 
 import java.io.Serializable;
+import java.net.URL;
 import java.util.List;
 
 import javax.jms.Connection;
@@ -36,6 +37,14 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.xbean.XBeanBrokerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.joran.JoranConfigurator;
+import ch.qos.logback.classic.net.JMSQueueAppender;
+import ch.qos.logback.classic.spi.LoggingEvent;
+import ch.qos.logback.classic.util.ContextInitializer;
+import ch.qos.logback.core.joran.spi.JoranException;
+import ch.qos.logback.core.util.StatusPrinter;
 
 /**
  * Controls and coordinates the work of the action factory and its associate
@@ -85,7 +94,7 @@ public class Controller implements Runnable {
 			mqBroker.start();
 			logger.debug("MQ-Broker is started: " + mqBroker.isStarted());
 			
-			
+			reloadLoggers();
             List<ActionDescription> list = null;
             for (;;) {
             	Connection connection = mqConnectionFactory.createConnection();
@@ -122,6 +131,23 @@ public class Controller implements Runnable {
 					messageSend = "found " + list.size()+ " working actions"; 
 					ObjectMessage om = session.createObjectMessage((Serializable) list);
 		            producer.send(om);
+				} else if (command.indexOf("GRACEFUL_SHUTDOWN")>=0){ 
+					list = actionRegistry.getCurrentActionDescriptions();
+					actionFactory.pause(true);
+					int i = 0;
+					while (list.size()>0) {
+						String text = "waiting for actions to complete before shut down (" + list.size() +")";
+						TextMessage message = session.createTextMessage(text);
+	                    producer.send(message);
+	                    Thread.sleep(3000);
+	                    list = actionRegistry.getCurrentActionDescriptions();
+	                    i++;
+					}
+					String text = "ContentBroker at " + serverName + " exiting now!";
+					TextMessage message = session.createTextMessage(text);
+                    producer.send(message);
+                    Thread.sleep(3000);
+                    System.exit(0);
 				} 
                 if (!messageSend.equals("")) {
                 	String text = "Hello Client, this is ContentBroker running at " + serverName;
@@ -130,7 +156,6 @@ public class Controller implements Runnable {
                 	
                     producer.send(messageGreeting);
                     producer.send(message);
-                 
                 }
             }
             consumer.close();
@@ -139,8 +164,25 @@ public class Controller implements Runnable {
             connection.close();
 			}
 		} catch (Exception e) {
-			logger.error("Error creating/execution of CB-Controller thread " + e.getStackTrace() );
+			logger.error("Error creating/execution/usage of CB-Controller thread: " + e,e );
 		}
 			
 		}
+
+	private void reloadLoggers() {
+		    LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+
+		    ContextInitializer ci = new ContextInitializer(loggerContext);
+		    URL url = ci.findURLOfDefaultConfigurationFile(true);
+
+		    try {
+		        JoranConfigurator configurator = new JoranConfigurator();
+		        configurator.setContext(loggerContext);
+		        loggerContext.reset();
+		        configurator.doConfigure(url);
+		    } catch (JoranException je) {
+		        // StatusPrinter will handle this
+		    }
+		    StatusPrinter.printInCaseOfErrorsOrWarnings(loggerContext);
+			}
 }

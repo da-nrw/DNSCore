@@ -13,6 +13,7 @@ cb.min_repls=2
 cb.serverSocketNumber=4455
 cb.sidecar_extensions=xmp;txt;xml
 cb.presServer=da-nrw-vm2.hki.uni-koeln.de
+cb.urnNameSpace=urn:nbn:de:danrw
 
 localNode.admin_email=da-nrw-notifier@uni-koeln.de
 localNode.userAreaRootPath=CONTENTBROKER_ROOT/storage/user

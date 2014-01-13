@@ -28,12 +28,16 @@ import javax.jms.TextMessage
 class CbtalkController {
 	def jmsService
 	def cbtalkService
+	def cberrorService
+
 	def index() { 	
 		if (session.contractor.admin==1) {
 		def messages = cbtalkService.getMessages()
 		def myList = cbtalkService.getActions()
+		def errors = cberrorService.getMessages()
 		[messages: messages,
-			myList: myList]
+			myList: myList,
+			errors: errors]
 		} else render(status: 403, text: 'forbidden')
 	}
 	
@@ -53,8 +57,19 @@ class CbtalkController {
 			
 			message = "SHOW_ACTIONS";
 		}
+		if (params.gracefulShutdown){
+			
+			message = "GRACEFUL_SHUTDOWN";
+		}
+		
 		println "MESSAGE $message"
+		try {
+			
+	
 		jmsService.send(queue:'CB.SYSTEM', message)
+		} catch (Exception e) {
+			flash.message= "Fehler in der Sendekommunikation mit dem ActiveMQ Broker!"
+		}
 		} else render(status: 403, text: 'forbidden')
 		redirect(action:"index");
 		

@@ -54,7 +54,7 @@ grails.project.dependency.resolution = {
         runtime ":hibernate:$grailsVersion"
         runtime ":jquery:1.7.1"
         runtime ":resources:1.1.6"
-		compile('org.apache.activemq:activemq-core:5.3.0',
+		runtime('org.apache.activemq:activemq-core:5.3.0',
 			'org.apache.activemq:activeio-core:3.1.2',
 			'org.apache.xbean:xbean-spring:3.7') {
 			 excludes 'activemq-openwire-generator'

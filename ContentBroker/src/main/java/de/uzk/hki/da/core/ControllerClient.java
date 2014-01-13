@@ -1,3 +1,4 @@
+
 package de.uzk.hki.da.core;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 /**
  * 
  * @author Jens Peters
- * The Active MQ Client for communicating to the running CB 
+ * The Client for communicating to the running CB based on Active MQ
  *
  */
 public class ControllerClient {
@@ -26,6 +27,14 @@ public class ControllerClient {
 	/**
 	 * For example
 	 * tcp://localhost:4455 STOP_FACTORY
+	 * 
+	 * The following commands are actually allowed
+	 * <ol>
+	 * <li>STOP_FACTORY : let the ActionFactory catch another job</li>
+	 * <li>START_FACTORY: disable fetching of new jobs, while already fetched jobs keep working</li>
+	 * <li>GRACEFUL_SHUTDOWN: stop running ContentBroker, when all working jobs are finished. (Preferred shutdown sequence)</li>
+	 * <li>SHOW_ACTIONS: gets list of running actions, performed by ContentBroker</li>
+	 * </ol> 
 	 * 
 	 * @author Jens Peters
 	 * @param String ConnectionUri String command 
