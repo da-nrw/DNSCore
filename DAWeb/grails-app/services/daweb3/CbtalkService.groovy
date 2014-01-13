@@ -20,7 +20,7 @@ public createMessage(msg)	{
 		 textMessage = (TextMessage) msg;
 		 
 	} else if (msg instanceof ObjectMessage) {
-			  ObjectMessage om = (ObjectMessage)msg;
+			  ObjectMessage om = (ObjectMessage)msg.g;
 			  
 			  ads = (List<ActionDescription>) om.getObject();
 			  for (ActionDescription ad : ads) {
