@@ -48,9 +48,9 @@ import de.uzk.hki.da.model.contract.VideoRestriction;
 
 
 /**
- * The Class PremisXmlStreamWriterTest.
+ * The Class PremisXmlWriterTest.
  */
-public class PremisXmlStreamWriterTest {
+public class PremisXmlWriterTest {
 	
 	/**
 	 * Clean up.

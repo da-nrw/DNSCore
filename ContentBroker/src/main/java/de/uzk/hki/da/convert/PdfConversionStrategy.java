@@ -28,13 +28,11 @@ import java.util.List;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
 
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -54,9 +52,6 @@ public class PdfConversionStrategy implements ConversionStrategy {
 	/** The command line. */
 	protected String commandLine;
 
-	/** The pkg. */
-	protected Package pkg;
-	
 	/** The object. */
 	private Object object;
 
@@ -73,7 +68,7 @@ public class PdfConversionStrategy implements ConversionStrategy {
 	 */
 	public List<Event> convertFile(ConversionInstruction ci)
 			throws FileNotFoundException {
-		if (pkg == null)
+		if (object.getLatestPackage() == null)
 			throw new IllegalStateException("Package not set");
 		new File(object.getDataPath() + object.getNameOfNewestRep() + "/"
 				+ ci.getTarget_folder()).mkdirs();
@@ -90,7 +85,7 @@ public class PdfConversionStrategy implements ConversionStrategy {
 		}
 
 		if (result.exists()) {
-			DAFile daf = new DAFile(pkg, object.getNameOfNewestRep(),
+			DAFile daf = new DAFile(object.getLatestPackage(), object.getNameOfNewestRep(),
 					Utilities.slashize(ci.getTarget_folder())
 							+ result.getName());
 			logger.debug("new dafile:" + daf);
@@ -129,10 +124,7 @@ public class PdfConversionStrategy implements ConversionStrategy {
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setParam(java.lang.String)
 	 */
 	@Override
-	public void setParam(String param) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void setParam(String param) {}
 	
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
@@ -148,7 +140,6 @@ public class PdfConversionStrategy implements ConversionStrategy {
 	@Override
 	public void setObject(Object obj) {
 		this.object = obj;
-		this.pkg = obj.getLatestPackage();
 	}
 
 }

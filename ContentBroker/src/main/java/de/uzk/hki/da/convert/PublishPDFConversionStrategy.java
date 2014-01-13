@@ -33,7 +33,6 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.contract.PublicationRight;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -45,9 +44,6 @@ import de.uzk.hki.da.utils.Utilities;
  */
 public class PublishPDFConversionStrategy implements ConversionStrategy {
 
-	/** The pkg. */
-	private Package pkg;
-	
 	/** The logger. */
 	private static Logger logger = 
 			LoggerFactory.getLogger(PublishPDFConversionStrategy.class);
@@ -88,13 +84,15 @@ public class PublishPDFConversionStrategy implements ConversionStrategy {
 			
 			String audience_lc = audience.toLowerCase();
 			
-			DAFile target = new DAFile(pkg,"dip/"+audience_lc,Utilities.slashize(ci.getTarget_folder())+
+			DAFile target = new DAFile(object.getLatestPackage(),"dip/"+audience_lc,Utilities.slashize(ci.getTarget_folder())+
 					FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix());
 			target.toRegularFile().getParentFile().mkdirs();
 			
 			String numberOfPagesText=null;
 			if (getPublicationRightForAudience(audience)!=null) 
-				numberOfPagesText=getPublicationRightForAudience(audience).getTextRestriction().getPages().toString();
+				if (getPublicationRightForAudience(audience).getTextRestriction()!=null)
+					if (getPublicationRightForAudience(audience).getTextRestriction().getPages()!=null)
+						numberOfPagesText=getPublicationRightForAudience(audience).getTextRestriction().getPages().toString();
 			
 			String certainPagesText=null;
 			if (getPublicationRightForAudience(audience)!=null){
@@ -145,24 +143,19 @@ public class PublishPDFConversionStrategy implements ConversionStrategy {
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setParam(java.lang.String)
 	 */
 	@Override
-	public void setParam(String param) {
-		// not needed
-	}
+	public void setParam(String param) {}
 
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
 	 */
 	@Override
-	public void setCLIConnector(CLIConnector cliConnector) {
-		// not needed
-	}
+	public void setCLIConnector(CLIConnector cliConnector) {}
 
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setObject(de.uzk.hki.da.model.Object)
 	 */
 	@Override
 	public void setObject(Object obj) {
-		this.pkg = obj.getLatestPackage();
 		this.object = obj;
 	}
 

@@ -45,7 +45,6 @@ import de.uzk.hki.da.utils.Utilities;
 
 /**
  * tested by {@link PublishImageConversionStrategyTest}.
- *
  * @author Jens Peters
  * @author Daniel M. de Oliveira
  */
@@ -67,8 +66,10 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 	/** The object. */
 	private Object object;
 	
-	/* (non-Javadoc)
-	 * @see de.uzk.hki.da.convert.ConversionStrategy#convertFile(de.uzk.hki.da.model.ConversionInstruction)
+	private String resizeWidth = null;
+	
+	
+	/**
 	 */
 	@Override
 	public List<Event> convertFile(ConversionInstruction ci)
@@ -78,7 +79,6 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 		if (ci.getConversion_routine().getTarget_suffix()==null||
 				ci.getConversion_routine().getTarget_suffix().isEmpty()) 
 			throw new IllegalStateException("target suffix in conversionRoutine not set");
-		
 		
 		List<Event> results = new ArrayList<Event>();
 		
@@ -92,46 +92,25 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 		ArrayList<String> commandAsList  = null;
 		for (String audience: audiences ) {
 			
-			String audience_lc = audience.toLowerCase();
-			
-			// standard
+			new File(object.getDataPath() + "dip/" + audience.toLowerCase() + "/" + ci.getTarget_folder()).mkdirs();
+
 			commandAsList = new ArrayList<String>();
 			commandAsList.add("convert");
 			commandAsList.add(ci.getSource_file().toRegularFile().getAbsolutePath());
-	
-			new File(object.getDataPath() + "dip/" + audience_lc + "/" + ci.getTarget_folder()).mkdirs();
-
-			if (!(getResizeDimensionsForAudience(audience)==null||getResizeDimensionsForAudience(audience).equals(""))) {
-				commandAsList.add("-resize");
-				commandAsList.add(getResizeDimensionsForAudience(audience));
-			}
+			logger.debug(commandAsList.toString());
+			commandAsList = assembleResizeDimensionsCommand(commandAsList,audience);
+			commandAsList = assembleWatermarkCommand(commandAsList,audience);
+			commandAsList = assembleFooterTextCommand(commandAsList, audience, ci.getSource_file().toRegularFile().getAbsolutePath());
 			
-			commandAsList = getWatermark(commandAsList,audience);
-			
-			String footerText = getFooterText(audience);
-			if (footerText != null && !footerText.isEmpty()) {
-				String width;
-				if (!getResizeDimensionsForAudience(audience).equals("")) {
-					// set footer width to resize width if resizing happened
-					width = getResizeDimensionsForAudience(audience).split("x")[0];
-				} else {
-					// get image width with prepended identify and use shell variable for footer width
-					String[] cmd = new String[]{"identify", "-format", "%w",
-							ci.getSource_file().toRegularFile().getAbsolutePath()};
-					ProcessInformation pi = CommandLineConnector.runCmdSynchronously(cmd);
-					if (pi.getExitValue() != 0) {
-						throw new RuntimeException("Unable to get image width. " + pi.getStdErr());
-					}
-					width = pi.getStdOut().trim();	
-					width = pi.getStdOut().trim();			
-				}
-				commandAsList = buildFooterTextCmd(commandAsList, audience, width);	
-			}
-			
-			DAFile target = new DAFile(pkg,"dip/"+audience_lc,Utilities.slashize(ci.getTarget_folder())+
+			DAFile target = new DAFile(pkg,"dip/"+audience.toLowerCase(),Utilities.slashize(ci.getTarget_folder())+
 					FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix());
 			commandAsList.add(target.toRegularFile().getAbsolutePath());
+			
 			logger.debug(commandAsList.toString());
+			String[] commandAsArray = new String[commandAsList.size()];
+			commandAsArray = commandAsList.toArray(commandAsArray);
+			if (!cliConnector.execute(commandAsArray))
+				throw new RuntimeException("convert did not succeed: " + Arrays.toString(commandAsArray));
 			
 			Event e = new Event();
 			e.setDetail(Utilities.createString(commandAsList));
@@ -140,41 +119,6 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 			e.setType("CONVERT");
 			e.setDate(new Date());
 			results.add(e);
-			
-			String[] commandAsArray = new String[commandAsList.size()];
-			commandAsArray = commandAsList.toArray(commandAsArray);
-			
-			
-			if (!cliConnector.execute(commandAsArray))
-				throw new RuntimeException("convert did not succeed: " + Arrays.toString(commandAsArray));
-			
-			
-			// XXX thumbnail; purposely commented out -scuy
-			// should be replaced by action that creates one thumb per package
-			/*commandAsList = new ArrayList<String>();
-			commandAsList.add("convert");
-			commandAsList.add("-resize");
-			commandAsList.add("256x256");
-			commandAsList.add(ci.getSource_file().toRegularFile().getAbsolutePath());
-	
-			DAFile target2 = new DAFile(pkg,"dip/"+audience_lc,Utilities.slashize(ci.getTarget_folder())+
-					FilenameUtils.getBaseName(input)+".thumb."+ci.getConversion_routine().getTarget_suffix());
-			commandAsList.add(target2.toRegularFile().getAbsolutePath());
-			logger.debug(commandAsList.toString());
-			
-			Event e2 = new Event();
-			e2.setDetail(Utilities.createString(commandAsList));
-			e2.setSource_file(ci.getSource_file());
-			e2.setTarget_file(target2);
-			e2.setType("CONVERT");
-			e2.setDate(new Date());
-			results.add(e2);
-			
-			commandAsArray = new String[commandAsList.size()];
-			commandAsArray = commandAsList.toArray(commandAsArray);
-			
-			if (!cliConnector.execute(commandAsArray)) throw new RuntimeException("convert did not succeed");
-			*/
 		}
 		
 		new File(object.getDataPath()+Utilities.slashize(tf)+"thumbnail").mkdirs();
@@ -184,6 +128,27 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 	
 	
 	
+	private String getImageWidth(String absolutePath) {
+		String[] cmd = new String[]{"identify", "-format", "%w",
+				absolutePath};
+		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(cmd);
+		if (pi.getExitValue() != 0) {
+			throw new RuntimeException("Unable to get image width. " + pi.getStdErr());
+		}
+		return pi.getStdOut().trim();
+	}
+
+
+
+	private PublicationRight getPublicationRightForAudience(String audience){
+		for (PublicationRight right:object.getRights().getPublicationRights()){
+			if (right.getAudience().toString().equals(audience)) return right;
+		}
+		return null;
+	}
+
+
+
 	/**
 	 * Builds the footer text cmd.
 	 *
@@ -193,13 +158,26 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 	 * @return the array list
 	 * @author Jens Peters
 	 */
-	private ArrayList<String> buildFooterTextCmd(ArrayList<String> commandAsList, String audience, String width){
-		 
+	private ArrayList<String> assembleFooterTextCommand(ArrayList<String> commandAsList, String audience, String pathToFile){
+		if (getPublicationRightForAudience(audience)==null) return commandAsList;
+		if (getPublicationRightForAudience(audience).getImageRestriction()==null) return commandAsList;
+		
+		
 		String text = getFooterText(audience);
 		if (text == null || text.equals("")) {
 			logger.debug("Adding Footertext: Footertext not found for audience " + audience );
 			return commandAsList;
 		} 	
+		
+		String footerText = getFooterText(audience);
+		String width="";
+		if (footerText != null && !footerText.isEmpty()) {
+
+			if (resizeWidth!=null)
+				width = "-size "+ resizeWidth + "x30";
+			else 
+				width = "-size "+ getImageWidth(pathToFile) + "x30";
+		}
 		
 		commandAsList.add("-background");
 		commandAsList.add("'#0008'");
@@ -207,8 +185,7 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 		commandAsList.add("white");
 		commandAsList.add("-gravity");
 		commandAsList.add("center");
-		commandAsList.add("-size");
-		commandAsList.add(width +"x30");
+		commandAsList.add(width);
 		commandAsList.add("caption:\""+text+"\"");
 		commandAsList.add("-gravity");
 		commandAsList.add("south");
@@ -223,10 +200,12 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 	 * @return the footer text
 	 */
 	private String getFooterText(String audience) {
-		if (getPublicationRightForAudience(audience)==null) return "";
-		if (getPublicationRightForAudience(audience).getImageRestriction()==null) return "";
-		
-		return getPublicationRightForAudience(audience).getImageRestriction().getFooterText(); 
+		if ((getPublicationRightForAudience(audience)==null) ||
+				(getPublicationRightForAudience(audience).getImageRestriction()==null) ||  
+				(getPublicationRightForAudience(audience).getImageRestriction().getFooterText()==null))
+			return "";
+		else
+			return getPublicationRightForAudience(audience).getImageRestriction().getFooterText();
 	}	
 	
 	
@@ -237,25 +216,8 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 	 * @param audience the audience
 	 * @return the watermark
 	 * @author Jens Peters
-	 * TODO: opacity really needed? Adding composite image (rendered text image + overlay)
 	 */
-	
-	/* Watermarking will not work on Java Versions less than 6u24 due to java bug: http://bugs.sun.com/view_bug.do?bug_id=7032109!
-	 * 
-	 *  convert -size 300x50 xc:grey30 -font Arial -pointsize 20 -gravity center \
-          -draw "fill grey70  text 0,0  'Copyright'" \
-          stamp_fgnd.png
-  		convert -size 300x50 xc:black -font Arial -pointsize 20 -gravity center \
-          -draw "fill white  text  1,1  'Copyright'  \
-                             text  0,0  'Copyright'  \
-                 fill black  text -1,-1 'Copyright'" \
-          +matte stamp_mask.png
-  		composite -compose CopyOpacity  stamp_mask.png  stamp_fgnd.png  stamp.png
-  		mogrify -trim +repage stamp.png
-	 * 
-	 * 
-	 */
-	private ArrayList<String> getWatermark(ArrayList<String> commandAsList, String audience) {
+	private ArrayList<String> assembleWatermarkCommand(ArrayList<String> commandAsList, String audience) {
 		if (getPublicationRightForAudience(audience)==null) return commandAsList;
 		if (getPublicationRightForAudience(audience).getImageRestriction()==null) return commandAsList;
 		
@@ -264,22 +226,16 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 			logger.debug("Adding Watermark: text not found for audience " + audience);
 			return commandAsList;
 		} 	
-		commandAsList.add("-font");
-		commandAsList.add("Arial");
-		commandAsList.add("-pointsize");
-		
 		String psize = getPublicationRightForAudience(audience).getImageRestriction().getWatermarkPointSize();
 		if (psize == null) {
 			logger.debug("Adding watermark: point size not found for audience " + audience);
 			throw new UserException(UserExceptionId.WATERMARK_NO_POINTSIZE, "No setting for pointsize given while adding watermark");
 		}
-		commandAsList.add(psize);
 		String position = getPublicationRightForAudience(audience).getImageRestriction().getWatermarkPosition();
 		if (position == null) {
 			logger.debug("Adding watermark: gravity not found for audience " + audience);
 			throw new UserException(UserExceptionId.WATERMARK_NO_GRAVITY, "No setting for gravity given while adding watermark");
 		}
-		
 		String opacity = getPublicationRightForAudience(audience).getImageRestriction().getWatermarkOpacity();
 		if (opacity == null) {
 			logger.debug("Adding watermark: opacity not found for audience " + audience);
@@ -289,19 +245,14 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 		String opacityHex = Long.toHexString(Math.round(Integer.parseInt(opacity) * 2.55));
 		if (opacityHex.length() == 1) opacityHex = "0" + opacityHex;
 		
+		commandAsList.add("-font");
+		commandAsList.add("Arial");
+		commandAsList.add("-pointsize");
+		commandAsList.add(psize);
 		commandAsList.add("-draw");
 		commandAsList.add("gravity "+ position +" fill #000000" + opacityHex + " text 0,15 '"+ text +"' fill #ffffff" + opacityHex + " text 0,14 '"+ text +"'");
-
 		
 		return commandAsList;
-	}
-	
-	
-	private PublicationRight getPublicationRightForAudience(String audience){
-		for (PublicationRight right:object.getRights().getPublicationRights()){
-			if (right.getAudience().toString().equals(audience)) return right;
-		}
-		return null;
 	}
 	
 	
@@ -311,19 +262,21 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 	 * @param audience the audience
 	 * @return the resize dimensions for audience
 	 */
-	private String getResizeDimensionsForAudience(String audience) {
-		if (getPublicationRightForAudience(audience)==null) return "";
-		if (getPublicationRightForAudience(audience).getImageRestriction()==null) return "";
+	private ArrayList<String> assembleResizeDimensionsCommand(ArrayList<String> commandAsList,String audience) {
+		if (getPublicationRightForAudience(audience)==null) return commandAsList;
+		if (getPublicationRightForAudience(audience).getImageRestriction()==null) return commandAsList;
 		
 		String width= getPublicationRightForAudience(audience).getImageRestriction().getWidth();
 		String height= getPublicationRightForAudience(audience).getImageRestriction().getHeight();
 
 		if (width != null && !width.isEmpty() && height != null && !height.isEmpty()) {
-			return width+"x"+height;
+			commandAsList.add("-resize " + width+"x"+height);
+			resizeWidth = width;
+			return commandAsList;
 		} else {
 			logger.debug("No resize information found for audience " + audience);
 		} 
-		return "";
+		return commandAsList;
 	}
 		
 	@Override

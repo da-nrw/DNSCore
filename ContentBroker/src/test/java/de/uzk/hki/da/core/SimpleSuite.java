@@ -60,7 +60,7 @@ import de.uzk.hki.da.integrity.IntegrityScannerWorkerTest;
 import de.uzk.hki.da.metadata.MetsRightsSectionXmlReaderTest;
 import de.uzk.hki.da.metadata.MetsURNXmlReaderTest;
 import de.uzk.hki.da.metadata.PremisXmlReaderTests;
-import de.uzk.hki.da.metadata.PremisXmlStreamWriterTest;
+import de.uzk.hki.da.metadata.PremisXmlWriterTest;
 import de.uzk.hki.da.model.GetAllFilesTest;
 import de.uzk.hki.da.model.GetNewestFilesFromAllRepresentationsTests;
 import de.uzk.hki.da.model.JobCascadingTest;
@@ -110,7 +110,7 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	PreservationSystemTests.class,
 	GetNewestFilesFromAllRepresentationsTests.class,
 	RetrievalActionTest.class,
-	PremisXmlStreamWriterTest.class,
+	PremisXmlWriterTest.class,
 	ActionCommunicatorServiceTests.class,
 	IrodsGridFacadeTest.class,
 //	IrodsSystemConnectorTest.class, XXX should not be a unit test

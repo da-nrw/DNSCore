@@ -30,7 +30,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.After;
 import org.junit.Test;
-import org.w3c.dom.Document;
 
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
@@ -38,10 +37,8 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.contract.PublicationRight;
-import de.uzk.hki.da.model.contract.TextRestriction;
-import de.uzk.hki.da.model.contract.VideoRestriction;
 import de.uzk.hki.da.model.contract.PublicationRight.Audience;
-import de.uzk.hki.da.service.XPathUtils;
+import de.uzk.hki.da.model.contract.TextRestriction;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
