@@ -72,4 +72,13 @@
   <amq:connectionFactory brokerURL="tcp://localhost:${cb.serverSocketNumber}"
   id="mqConnectionFactory" />
  
+  <bean id="jndi" class="org.apache.xbean.spring.jndi.SpringInitialContextFactory" 
+        factory-method="makeInitialContext"
+      scope="prototype">
+    <property name="entries" ref="jndiEntries" />
+  </bean>
+  
+  <util:map id="jndiEntries">
+    <entry key="java:error" value="CB.ERROR"/>
+  </util:map>
  </beans>

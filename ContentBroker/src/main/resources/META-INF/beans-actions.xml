@@ -51,7 +51,7 @@
 		<property name="startStatus" value="140" />
 		<property name="endStatus" value="230" />
 		<property name="name" value="IngestRegisterURNAction" />
-		<property name="nameSpace" value="urn:nbn:de:danrw" />
+		<property name="nameSpace" value="${cb.urnNameSpace}" />
 	</bean>
 	<bean id="IngestConvertAction" class="de.uzk.hki.da.cb.ConvertAction"
 		scope="prototype">
