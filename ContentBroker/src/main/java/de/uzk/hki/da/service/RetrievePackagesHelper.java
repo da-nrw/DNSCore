@@ -143,7 +143,7 @@ public class RetrievePackagesHelper {
 		if (!new File(object.getDataPath()).exists()) new File(object.getDataPath()).mkdirs();
 
 		File targetDir=new File(object.getPath() + "/loadedAIPs");
-		if (targetDir.exists()) targetDir.mkdir(); 
+		if (targetDir.exists()) targetDir.mkdirs(); 
 		File targetFile = new File(targetDir.getAbsolutePath() +"/"+object.getIdentifier() + ".pack_" + pkg.getName() + ".tar");
 		if (targetFile.exists()) targetFile.delete(); 
 
