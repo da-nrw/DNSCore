@@ -3,30 +3,37 @@
 <h1>Continuous Delivery Workflow</h1>
 
 <ul>
-<li>regelmäßig committen (Richtwert z.b. 1 mal stündlich), um Integrationsschwierigkeiten vorzubeugen</li>
-<li>dazu, wenn nötig, größere Tasks in kleinere Schritte unterteilen.
+<li>Regelmäßig committen (Richtwert z.b. 1 mal stündlich), um Integrationsschwierigkeiten vorzubeugen</li>
+<li>Dazu, wenn nötig, größere Tasks in kleinere Schritte unterteilen.
 vor einem Commit</li>
 <li>je nachdem woran gearbeitet wird
-** die AkkzeptanzTests lokal ausführen oder
-** die IntegrationTests auf dem Testbed ausführen
-** oder beides.</li>
-<li>dann committen
-nach einem Commit</li>
-<li>postcommit.sh,integration.sh,acceptance.sh ausführen</li>
+<ul><li>einzelne oder alle AkkzeptanzTests lokal ausführen oder</li>
+<li>die IntegrationTests auf dem Testbed ausführen</li>
+<li>oder beides.</li></ul></li>
+<li>dann committen</li>
+<li>nach einem Commit: postcommit.sh,integration.sh,acceptance.sh ausführen</li>
 </ul>
 
-<h1>Auf der Developer-Maschine: (lokal, nicht dev-grid!)==</h1>
+<h2>Vorbereitung einer neuen lokalen Development Umgebung</h2>
+
+<ol>
+<li>Auf der lokalen Maschine einen leeren Ordner für den ContentBroker anlegen, damit die Deploy-Scripte dahin ausrollen können.</li>
+<li>Dieser Ordner wird oben mit (pathToLocalCBInstallation) referenziert.</li>
+</ol>
+
+<h2>Auf einer lokalen Development Umgebung:</h2>
 
 <ol>
 <li>cd ContentBrokerTrunk</li>
 <li>mvn package (Um aus den neuesten Änderungen ein Compilat zu bauen und !Wichtig! die Unit Tests auszuführen, um Fehlern schon hier vorzubeugen)</li>
-<li>./deliver.sh dev dev (pathToLocalCBInstallation - ohne abschließendes Slash!)</li>
+<li>./deliver.sh dev (pathToLocalCBInstallation - Absoluter Pfad ohne abschließendes Slash)</li>
 <li>Warten auf folgende Message: INFO  de.uzk.hki.da.core.ContentBroker - ContentBroker is up and running</li>
 <li>Wenn die Meldung kommt, dann mit ctrl-c abbrechen. Der ContentBroker läuft jetzt und es wurde eine Instanz der HSQLDB gestartet</li>
-<li>./acceptance.sh dev dev (pathToLocalCBInstallation - ohne abschließendes Slash!)</li>
+<li>Ausführen aller Akzeptanztests: mvn failsafe:integration-test</li>
+<li>Ausführen einzelner Akzeptanztests: mvn failsafe:integration-test -Dit.test=ATUseCaseX</li>
 </ol>
 
-<h1>Integrationstests in den Testbeds ausführen==</h1>
+<h2>Integrationstests in den Testbeds ausführen</h2>
 
 <ol>
 <li>lokal die neuesten Changes mit mvn package bauen</li>
@@ -35,51 +42,47 @@ nach einem Commit</li>
 <li>./integration.sh</li>
 </ol>
 
-<h1>Ausführen einzelner IntegrationTests auf der vm3 (Testbed oder Trunk)</h1>
+<h2>Ausführen einzelner IntegrationTests auf der vm3 (Testbed oder Trunk)</h2>
 
 <ol>
 <li>./deliver.sh integration</li>
 <li>mvn test -Dtest=IT...</li>
 </ol>
 
-<h1>Auf der VM3: Bauen des Release Candidate und manuelles Testen</h1>
+<h2>Auf der VM3: Bauen des Release Candidate und manuelles Testen</h2>
 
 <ol>
 <li>cd development/ContentBrokerTrunk; . ./predeploy.sh</li>
-<li>./postcommit.sh (!!!Achtung postcommit bloß nicht lokal auf der Developer-Maschien ausführen. Da steckt ein bzr revert drin!!!)</li>
+<li>./postcommit.sh</li>
 <li>Wenn letzter Schritt erfolgreich, dann ./integration.sh</li>
 <li>Wenn letzter Schritt erfolgreich, dann ./deliver.sh vm3</li>
 <li>Warten auf folgende Message: INFO  de.uzk.hki.da.core.ContentBroker - ContentBroker is up and running</li>
 <li>Wenn die Meldung kommt, dann mit ctrl-c abbrechen. Der ContentBroker läuft jetzt.</li>
 <li>ContentBroker auf der VM2 stoppen! (acceptance wartet auf Status 540, das Paket darf nicht von der VM2 gefetched werden)</li>
-<li>Wenn letzter Schritt erfolgreich, dann ./acceptance.sh vm3</li>
+<li>Ausführen aller Akzeptanztests: mvn failsafe:integration-test</li>
 <li>Wenn letzter Schritt erfolgreich, dann ./deliver.sh vm2</li>
 <li>goto vm2:ContentBroker; ./ContentBroker_start.sh</li>
 <li>Manuelles Testen (testpackage<em>klein</em>und<em>muss</em>durchlaufen.*)</li>
 </ol>
 
-<h1>Deployment auf anderen Maschinen</h1>
+<h2>Deployment auf anderen Maschinen</h2>
 
-<ul>
+<ol>
+<li>Zunächst müssen nach Auswahl eines geeigneten Release-Kandidaten alle manuellen Akzeptanztests auf der QS,
+so wie sie in den Testkatalogen spezifiziert sind, durchgeführt werden.</li>
 <li>vm6
 <ul><li>./deliver.sh full</li>
 <li>deliverable.full.$VERSION.tar -> vm6; unpack in CB_ROOT; ./configure.sh</li></ul></li>
+<li>Danach kann ausgerollt werden.</li>
 <li>danrw
 <ul><li>./deliver.sh pres</li>
 <li>deliverable.pres.$VERSION.tar -> danrw; unpack in CB_ROOT; ./configure.sh</li></ul></li>
-<li>prod und andere Knoten
+<li>Prod und andere Knoten
 <ul><li>./deliver.sh node</li>
 <li>deliverable.node.$VERSION.tar -> prod; unpack in CB_ROOT; ./configure.sh</li></ul></li>
-</ul>
-
-<h1>Vorbereitung einer neuen Development Umgebung</h1>
-
-<ol>
-<li>Auf der lokalen Maschine einen leeren Ordner für den ContentBroker anlegen, damit die Deploy-Scripte dahin ausrollen können.</li>
-<li>Dieser Ordner wird oben mit (pathToLocalCBInstallation) referenziert.</li>
 </ol>
 
-<h1>Datenbankabfrage auf Developer-Maschine</h1>
+<h2>Datenbankabfrage auf Developer-Maschine</h2>
 
 <ol>
 <li>./sqlrequest "[SQL-Abfrage]"</li>

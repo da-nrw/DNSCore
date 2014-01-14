@@ -34,7 +34,6 @@ import de.uzk.hki.da.model.StoragePolicy;
 
 
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class IrodsFederatedGridFacade.
  */

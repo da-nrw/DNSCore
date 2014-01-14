@@ -44,8 +44,5 @@ public class NullAction extends AbstractAction{
 	 * @throws Exception the exception
 	 */
 	@Override
-	void rollback() throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+	void rollback() throws Exception {}
 }

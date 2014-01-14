@@ -252,7 +252,8 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 		String height= getPublicationRightForAudience(audience).getImageRestriction().getHeight();
 
 		if (width != null && !width.isEmpty() && height != null && !height.isEmpty()) {
-			commandAsList.add("-resize " + width+"x"+height);
+			commandAsList.add("-resize");
+			commandAsList.add(width+"x"+height);
 			resizeWidth = width;
 			return commandAsList;
 		} else {

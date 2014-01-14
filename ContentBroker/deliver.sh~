@@ -19,7 +19,7 @@ then
 		echo "./deliver.sh dev <machineName> <contentBrokerInstallationRootPath>"
 		exit
 	fi
-	INSTALL_PATH=$2
+	INSTALL_PATH=$3
 	if [[ "${INSTALL_PATH:${#INSTALL_PATH}-1}" == "/" ]]; then
                 INSTALL_PATH="${INSTALL_PATH%?}"
         fi	

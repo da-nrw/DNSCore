@@ -161,10 +161,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setParam(java.lang.String)
 	 */
 	@Override
-	public void setParam(String param) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void setParam(String param) {}
 
 
 	/**
@@ -184,10 +181,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
 	 */
 	@Override
-	public void setCLIConnector(CLIConnector cliConnector) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void setCLIConnector(CLIConnector cliConnector) {}
 
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setObject(de.uzk.hki.da.model.Object)

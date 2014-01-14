@@ -253,9 +253,6 @@ public class PublishXSLTConversionStrategy implements ConversionStrategy {
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
 	 */
 	@Override
-	public void setCLIConnector(CLIConnector cliConnector) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void setCLIConnector(CLIConnector cliConnector) {}
 
 }

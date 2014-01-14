@@ -182,10 +182,7 @@ public class PublishVideoConversionStrategy implements ConversionStrategy{
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setParam(java.lang.String)
 	 */
 	@Override
-	public void setParam(String param) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void setParam(String param) {}
 
 
 	/* (non-Javadoc)

@@ -103,14 +103,12 @@ public class PublishImageConversionStrategyTest {
 		right.getImageRestriction().setWatermarkString("Hallo");
 		o.getRights().getPublicationRights().add(right);
 		
-		
-		
 		CLIConnector cli = mock ( CLIConnector.class );
 		
 		String cmdPUBLIC[] = new String[]{
 				"convert",
 				new File(dataPath + "a/filename.tif").getAbsolutePath(),
-				 "-resize 480x360",
+				 "-resize","480x360", // ! ImageMagick expects this to be 2 params 
 				 "-font", "Arial", "-pointsize", "10", "-draw",
 				 "gravity north fill #0000007f text 0,15 'Hallo' fill #ffffff7f text 0,14 'Hallo'",
 				new File(dataPath + "dip/public/target/filename.jpg").getAbsolutePath(),
@@ -171,7 +169,7 @@ public class PublishImageConversionStrategyTest {
 		String cmdPUBLIC[] = new String[]{
 				"convert",
 				new File(dataPath + "a/filename.tif").getAbsolutePath(),
-					"-resize 480x360",
+					"-resize","480x360", // ! ImageMagick expects this to be 2 params 
 					"-background", "'#0008'",
 					"-fill", "white",
 					"-gravity", "center",
