@@ -62,10 +62,13 @@ public class PremisXmlValidator {
 	 * @author Thomas Kleinke
 	 * @author Daniel M. de Oliveira
 	 */
-	public static boolean validatePremisFile(File premisFile) throws IOException{
+	public static boolean validatePremisFile(File premisFile) throws IOException {
 
+		if (!premisFile.exists())
+			throw new FileNotFoundException();
+		
 		Source fileSource = new StreamSource(premisFile);
-					
+		
 		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		factory.setResourceResolver(new PremisResourceResolver());
 		

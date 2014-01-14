@@ -9,6 +9,7 @@ import java.util.List;
 public class UserException extends RuntimeException {
 
 	public enum UserExceptionId {
+		SIP_PREMIS_NOT_FOUND,
 		INVALID_SIP_PREMIS,
 		INVALID_OBJECT_DELTA,
 		UNKNOWN_PACKAGE_TYPE,

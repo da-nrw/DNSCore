@@ -20,6 +20,7 @@
 package de.uzk.hki.da.cb;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -121,8 +122,11 @@ public class UnpackAction extends AbstractAction {
 			try {
 				if (!PremisXmlValidator.validatePremisFile(new File(object.getDataPath() + "premis.xml")))
 					throw new UserException(UserExceptionId.INVALID_SIP_PREMIS, "PREMIS file is not valid");
-			} catch (IOException e) {
-				throw new RuntimeException("Failed to read PREMIS file for validation", e);
+			} catch (FileNotFoundException e1) {
+				throw new UserException(UserExceptionId.SIP_PREMIS_NOT_FOUND, "Couldn't find PREMIS file", e1);
+			}
+			catch (IOException e2) {
+				throw new RuntimeException("Failed to read PREMIS file for validation", e2);
 			}		
 		
 		String repName;
@@ -140,7 +144,7 @@ public class UnpackAction extends AbstractAction {
 			if (object.getObject_state()!=100){
 				throw new UserException(UserExceptionId.INVALID_OBJECT_DELTA, 
 						object.getIdentifier() + " not in archived/valid state "+""
-								+ "("+object.getObject_state()+
+								+ "("+object.getObject_state() +
 						"), therefore no deltas could be added!");
 			}
 			RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot());
