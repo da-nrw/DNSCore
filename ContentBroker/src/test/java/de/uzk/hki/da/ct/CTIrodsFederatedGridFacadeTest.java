@@ -40,15 +40,14 @@ import de.uzk.hki.da.model.StoragePolicy;
 
 
 /**
- * 
  * @author Jens Peters
- *
  */
 public class CTIrodsFederatedGridFacadeTest {
 
 	/** The fork dir. */
 	static String forkDir = "/tmp/fork/";
-	IrodsSystemConnector isc = new IrodsSystemConnector("rods", "WpXlLLg3a4/S/iYrs6UhtQ==", "da-nrw-vm3.hki.uni-koeln.de", "da-nrw", "01-da-nrw-vm3.hki.uni-koeln.de");
+	IrodsSystemConnector isc = new IrodsSystemConnector(
+			"rods", "WpXlLLg3a4/S/iYrs6UhtQ==", "da-nrw-vm3.hki.uni-koeln.de", "da-nrw", "01-da-nrw-vm3.hki.uni-koeln.de");
 	
 	
 	/** The temp. */
@@ -87,7 +86,6 @@ public class CTIrodsFederatedGridFacadeTest {
 		IrodsFederatedGridFacade fg = new IrodsFederatedGridFacade();
 		fg.setIrodsSystemConnector(isc);
 		
-		
 		ArrayList<String> dest = new ArrayList<String>();
 		dest.add("da-nrw");
 		dest.add("somewhere");
@@ -110,8 +108,5 @@ public class CTIrodsFederatedGridFacadeTest {
 		
 		isc.logoff();
 		assertTrue(fg.storagePolicyAchieved(gridPath, sp));
-	
 	}
-	
-
 }

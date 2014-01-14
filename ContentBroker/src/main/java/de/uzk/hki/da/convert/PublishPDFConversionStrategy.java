@@ -33,7 +33,6 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.contract.PublicationRight;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -42,29 +41,11 @@ import de.uzk.hki.da.utils.Utilities;
  *
  * @author Sebastian Cuy
  */
-public class PublishPDFConversionStrategy implements ConversionStrategy {
+public class PublishPDFConversionStrategy extends PublishConversionStrategyBase {
 
 	/** The logger. */
 	private static Logger logger = 
 			LoggerFactory.getLogger(PublishPDFConversionStrategy.class);
-	
-	/** The audiences. */
-	private String[] audiences = new String [] {"PUBLIC", "INSTITUTION" };
-
-	private Object object;
-	
-	/**
-	 * TODO remove code duplication with publishimage
-	 * @author Daniel M. de Oliveira
-	 * @param audience
-	 * @return
-	 */
-	private PublicationRight getPublicationRightForAudience(String audience){
-		for (PublicationRight right:object.getRights().getPublicationRights()){
-			if (right.getAudience().toString().equals(audience)) return right;
-		}
-		return null;
-	}
 	
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#convertFile(de.uzk.hki.da.model.ConversionInstruction)

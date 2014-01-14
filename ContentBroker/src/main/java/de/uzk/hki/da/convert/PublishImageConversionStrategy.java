@@ -37,7 +37,6 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.contract.PublicationRight;
 import de.uzk.hki.da.service.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.Utilities;
@@ -48,7 +47,7 @@ import de.uzk.hki.da.utils.Utilities;
  * @author Jens Peters
  * @author Daniel M. de Oliveira
  */
-public class PublishImageConversionStrategy implements ConversionStrategy {
+public class PublishImageConversionStrategy extends PublishConversionStrategyBase {
 
 	/** The pkg. */
 	private Package pkg;
@@ -57,14 +56,8 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 	private static Logger logger = 
 			LoggerFactory.getLogger(PublishImageConversionStrategy.class);
 	
-	/** The audiences. */
-	private String[] audiences = new String [] {"PUBLIC", "INSTITUTION" };
-	
 	/** The cli connector. */
 	private CLIConnector cliConnector;
-	
-	/** The object. */
-	private Object object;
 	
 	private String resizeWidth = null;
 	
@@ -137,17 +130,6 @@ public class PublishImageConversionStrategy implements ConversionStrategy {
 		}
 		return pi.getStdOut().trim();
 	}
-
-
-
-	private PublicationRight getPublicationRightForAudience(String audience){
-		for (PublicationRight right:object.getRights().getPublicationRights()){
-			if (right.getAudience().toString().equals(audience)) return right;
-		}
-		return null;
-	}
-
-
 
 	/**
 	 * Builds the footer text cmd.

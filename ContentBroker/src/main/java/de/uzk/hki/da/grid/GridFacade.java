@@ -38,11 +38,10 @@ import de.uzk.hki.da.model.StoragePolicy;
  */
 public interface GridFacade {
 	
-
-	
 	/**
 	 * Asynchronous call.
-	 *
+	 * Puts a file from the local file system into the grid. 
+	 *  
 	 * @param file full path to a file location which should be ingested into the grid
 	 * @param address_dest address of the target file name in grid (excluding zone prefix)
 	 * 
