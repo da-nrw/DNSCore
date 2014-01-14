@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="layout" content="main" />
-    <title>CBTalk</title>         
+    <title>Administrative Funktionen</title>         
   </head>
   <body>
     <div class="body">

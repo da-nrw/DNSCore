@@ -1,6 +1,6 @@
 package daweb3
 import java.text.SimpleDateFormat;
-/**
+/*
  DA-NRW Software Suite | ContentBroker
  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
  Universität zu Köln
@@ -18,9 +18,12 @@ import java.text.SimpleDateFormat;
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-@Author Jens Peters
-@Author Scuy
 */
+/**
+ * AIP
+ *@Author Jens Peters
+ * @Author Scuy
+ */
 class Object {
 
     static constraints = {

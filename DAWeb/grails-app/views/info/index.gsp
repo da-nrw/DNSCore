@@ -24,7 +24,7 @@
 	<div id="controller-list" role="navigation">
 			<h2>REST Funktionen:</h2>
 			<ul>
-				<li class="controller"><g:link controller="object" action="queueForRetrievalJSONInfo">Erstellung von Retrievalanfragen </g:link></li>
+				<li class="controller"><g:link controller="automatedRetrieval">Erstellung von Retrievalanfragen </g:link></li>
 				<li class="controller"><g:link controller="status" action="teaser">Abfrage der Verarbeitung und Archivierung</g:link></li>
 			</ul>
 		</div>

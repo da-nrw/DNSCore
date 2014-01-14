@@ -1,5 +1,5 @@
 package daweb3
-/**
+/*
  DA-NRW Software Suite | ContentBroker
  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
  Universität zu Köln
@@ -16,8 +16,9 @@ package daweb3
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
+*/
+/**
+ * SIP to AIP or AIP - DIP monitoring. 
 @Author Jens Peters
 @Author Scuy
 */

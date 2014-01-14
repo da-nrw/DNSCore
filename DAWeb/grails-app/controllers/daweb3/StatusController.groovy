@@ -1,5 +1,5 @@
 package daweb3
-/**
+/*
  DA-NRW Software Suite | ContentBroker
 
 
@@ -18,10 +18,17 @@ package daweb3
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- @Author Jens Peters
- @Author Sebastian Cuy
 */
 
+/** 
+ * Adds capability of getting information about archived objects (AIP)
+ * or SIP by automated systems (JSON responses)  
+ * 
+ * evaluates at first status in the Queue, then AIP 
+ * 
+ * @Author Jens Peters 
+ * @Author Sebastian Cuy
+ */
 import org.hibernate.criterion.CriteriaSpecification;
 
 import grails.converters.JSON
@@ -89,37 +96,38 @@ class StatusController {
 				 csn: session.bauthuser]);
 		}
 		boolean hasAQueueEntry = false
+		def queueResult = "in progress ";
+		// found a QueueEntry
 		if (instance!=null) {
 			result.urn = instance.obj.urn
 			result.contractor = instance.obj.contractor.shortName;
 			result.origName = instance.obj.origName
 			result.identifier = instance.obj.identifier
 			if (instance.status.endsWith("1"))
-				result.status = "error"
-			else
-				result.status = "in progress"
-			hasAQueueEntry = true;
-		} 
+				queueResult = "in progress error : (" + instance.status + ")"
+				hasAQueueEntry = true;
+		}  
 		
-			if (params.urn) {
+		if (params.urn) {
 				def contractor = Contractor.findByShortName(session.bauthuser)
 				instance = Object.findByContractorAndUrn(contractor, params.urn)
-			}
-			if (params.origName) {
+		}
+		if (params.origName) {
 				def contractor = Contractor.findByShortName(session.bauthuser)
 				instance = Object.findByContractorAndOrigName(contractor, params.origName)
-			} 
-			if (params.identifier) {
+		} 
+		if (params.identifier) {
 				def contractor = Contractor.findByShortName(session.bauthuser)
 				instance = Object.findByContractorAndIdentifier(contractor, params.identifier)	
-			}
-			if (instance != null) {
-				if (instance.object_state==100) result.status = "archived"
-				else result.status = "failure"
-				
-				if (hasAQueueEntry) {
-					result.status = "archived - but in progress"
-				}
+		}
+		// Found Object, must be true if we found anything (Queue or Object only)
+		if (instance != null && instance.count()==1) {
+				if (instance.object_state==100 && !hasAQueueEntry) result.status = "archived"
+				else if (hasAQueueEntry && instance.object_state==100) {
+					result.status = "archived - but " + queueResult
+				} else if (hasAQueueEntry && instance.object_state==0) {
+					result.status = queueResult;
+				} 
 				result.urn = instance.urn
 				result.contractor = instance.contractor.shortName
 				result.origName = instance.origName
@@ -129,12 +137,20 @@ class StatusController {
 				instance.packages.each() {pack ->
 						result.packages.add(pack.name)
 				} 
-			} else {
+		// ambiguous item : mainly due to missing internal uniqueness of field urn!
+		} else if (instance != null && instance.count()>1){
+			response.status = 404
+			result.status = "ambiguous item, alter request"
+			render result as JSON
+			return
+
+		} else {
+		// unknown item
 				response.status = 404
 				result.status = "not found"
 				render result as JSON
 				return
-			}
+		}
 		if (session.bauthuser!= result.contractor) {
 			response.status = 403 
 			result = [status: "forbidden"]

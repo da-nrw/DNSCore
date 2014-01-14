@@ -24,6 +24,7 @@ import java.io.Serializable;
 
 /**
  * The Class ActionDescription.
+ * @Author Daniel M. de Oliveira
  */
 @SuppressWarnings("serial")
 public class ActionDescription implements Serializable{

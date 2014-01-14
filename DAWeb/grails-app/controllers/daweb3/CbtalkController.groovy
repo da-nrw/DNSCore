@@ -25,6 +25,13 @@ import de.uzk.hki.da.core.ActionDescription
 import javax.jms.ObjectMessage
 import javax.jms.TextMessage
 
+
+/**
+ * Webcontroller to Talk with running ContentBroker via Webinterface
+ * @author Jens Peters
+ *
+ */
+
 class CbtalkController {
 	def jmsService
 	def cbtalkService

@@ -1,6 +1,6 @@
 package daweb3
 
-/**
+/*
  DA-NRW Software Suite | ContentBroker
  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
  Universität zu Köln
@@ -17,8 +17,10 @@ package daweb3
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-* @Author Jens Peters
+*/
+/**
+ * Webcontroller for Autentication of contractors
+ *  @Author Jens Peters
 */
 import org.irods.jargon.core.connection.IRODSAccount
 import org.irods.jargon.core.connection.IRODSProtocolManager
@@ -40,7 +42,7 @@ class ContractorController {
 			IRODSProtocolManager irodsConnectionManager = IRODSSimpleProtocolManager.instance()
 			if (grailsApplication.config.irods.server.toString()==null ||grailsApplication.config.irods.server.toString().equals(""))
 			log.error("Server property is empty :" + grailsApplication.config.irods.server.toString() )
-			log.error("Server: " +  grailsApplication.config.irods.server.toString())
+			log.debug("Server: " +  grailsApplication.config.irods.server.toString())
 			IRODSAccount irodsAccount = new IRODSAccount(
 				grailsApplication.config.irods.server.toString(),
 				1247,

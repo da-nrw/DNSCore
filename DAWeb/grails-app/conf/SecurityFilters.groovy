@@ -67,6 +67,51 @@ class SecurityFilters {
             }
 		}
         
+		basicAuthCheck(controller: 'automatedRetrieval') {
+			before = {
+				
+				def auth = request.getHeader('Authorization')
+				if (!auth) {
+					 response.addHeader("WWW-Authenticate", "Basic realm=\"DA-Web\"")
+					 response.sendError(401, "Authorization required")
+					 return false
+				}
+				
+				def credentials = new String(new sun.misc.BASE64Decoder().decodeBuffer(auth - 'Basic ')).split(':')
+				try {
+					session.bauthuser = credentials[0]
+					// TODO: wire this up in the spring context!
+					IRODSProtocolManager irodsConnectionManager = IRODSSimpleProtocolManager.instance()
+					IRODSAccount irodsAccount = new IRODSAccount(
+						grailsApplication.config.irods.server,
+						1247,
+						credentials[0],
+						credentials[1],
+						"/" + grailsApplication.config.irods.zone +"/home/"+credentials[0],grailsApplication.config.irods.zone,
+						grailsApplication.config.irods.default_resc
+					)
+					IRODSSession irodsSession = IRODSSession.instance(irodsConnectionManager);
+					IRODSAccessObjectFactory irodsAccessObjectFactory = IRODSAccessObjectFactoryImpl.instance(irodsSession);
+
+					def userAO = irodsAccessObjectFactory.getUserAO(irodsAccount)
+
+					if (userAO!=null) {
+						request.contractor = credentials[0]
+					} else {
+						response.addHeader("WWW-Authenticate", "Basic realm=\"DA-Web\"")
+						response.sendError(401, "Authorization required")
+						return false
+					}
+
+				} catch (Exception e) {
+					response.addHeader("WWW-Authenticate", "Basic realm=\"DA-Web\"")
+					response.sendError(401, "Authorization required")
+					return false
+				}
+				
+			}
+		}
+
       
         
     }

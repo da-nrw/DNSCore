@@ -1,5 +1,5 @@
 package daweb3
-/**
+/*
  DA-NRW Software Suite | ContentBroker
  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
  Universität zu Köln
@@ -16,8 +16,13 @@ package daweb3
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-@Author Jens Peters
 */
+/**
+ * The Main DA-NRW object Controller for listing Objects (AIP) stored in the DA-NRW 
+ * @Author Jens Peters, Sebastian Cuy
+ * 
+ */
+
 
 import org.springframework.dao.DataIntegrityViolationException
 import grails.converters.*
@@ -195,38 +200,6 @@ class ObjectController {
 			render result as JSON
 		}
 	
-	def queueForRetrievalJSON = {
-		def result = [success:false]
-		def jsonObject = request.JSON
-		def instance = Object.findByIdentifier(jsonObject['identifier'])
-		if (instance!=null) {
-			createQueueEntryForObject( instance ,"900", null)
-			result = [success:true]
-			result.msg = "Erfolgreich Arbeitsauftrag erstellt für "  + jsonObject['identifier']
-			render result as JSON
-		}
-		instance = Object.findByUrn(jsonObject['urn'])
-		if (instance!=null) {
-			createQueueEntryForObject( instance ,"900", null)
-			result = [success:true]
-			result.msg = "Erfolgreich Arbeitsauftrag erstellt für "  + jsonObject['urn']
-			render result as JSON
-		}
-		instance = Object.findByOrigName(jsonObject['origName'])
-		if (instance!=null) {
-			createQueueEntryForObject( instance ,"900", null)
-			result = [success:true]
-			result.msg = "Erfolgreich Arbeitsauftrag erstellt für "  + jsonObject['origName']
-			render result as JSON
-		}
-		
-		result.msg = "Fehler bei Erstellung eines Arbeitsauftrages" 
-		render result as JSON
-		
-	}
-	def queueForRetrievalJSONInfo = {
-		
-	}
 	
 	
 	def queueForRebuildPresentation = {

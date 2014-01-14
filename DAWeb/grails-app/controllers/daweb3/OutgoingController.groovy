@@ -1,5 +1,5 @@
 package daweb3
-/**
+/*
  DA-NRW Software Suite | ContentBroker
  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
  Universität zu Köln
@@ -22,8 +22,8 @@ import java.io.File
 /**
  * 
  * @author Jens Peters DANRW 2013
- * Lists alls Objects being successfully retrieved beneath the webdav outgoing folder.
- * Redirects user to the webdav Server. Marks the objects as being read by the user. (Status 960)
+ * Lists all Objects being successfully retrieved beneath the outgoing folder.
+ * Redirects user to the WebServer. Marks the objects as being read by the user. (Status 960)
  *
  */
 

@@ -20,7 +20,7 @@
 						</span></li>
 						<li><span class="property-value">
 						Übergeben Sie dafür einen JSON Request im POST (Aufbau analog des Ergebnisses der Statusabfrage) an die folgende URL: 
-						<b>https://Servername<g:createLink controller="object" action="queueForRetrievalJSON"/></b><br>
+						<b>https://Servername<g:createLink controller="automatedRetrieval" action="queueForRetrievalJSON"/></b><br>
 						</span></li>
 						<span class="property-value"><li>Als Antwort erhalten Sie ein maschinenlesbares Ergebnis (JSON) über die Erstellung eines Abfragevorgangs<br></li>
 						</span>
@@ -29,7 +29,6 @@
 $('form').submit(function(e) {
 	 e.preventDefault();
     var identifier = $('#identifier').val();
-    alert (identifier)
     var formData = { identifier: identifier };                
   $.ajax({
     type: 'POST',
@@ -37,7 +36,7 @@ $('form').submit(function(e) {
     dataType:'json',
     data: JSON.stringify(formData),
     contentType: 'application/json; charset=utf-8',
-    url: '<g:createLink controller="object" action="queueForRetrievalJSON"/>',
+    url: '<g:createLink controller="automatedRetrieval" action="queueForRetrievalJSON"/>',
     success:
       	function queuedFor(result) {
 				var type = "error";
@@ -55,7 +54,6 @@ $('form').submit(function(e) {
 Identifier:<input id="identifier" name="identifier" type="text" value="">
 <input type="submit" value="Als JSON senden (testweise)" class="button"/> 
 </form>
-<!-- {"urn":"urn:nbn:de:hbz:6:1-20814","contractor":"TEST","origName":"scuy_test_2013-20-12_1","identifier":"131614-2013122027085","status":"archived - but in progress","packages":["1"]} --></p>
 </div>
 </body>
 </html>

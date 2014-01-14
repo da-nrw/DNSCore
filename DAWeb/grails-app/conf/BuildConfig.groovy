@@ -45,7 +45,7 @@ grails.project.dependency.resolution = {
 			 excludes 'xml-apis'
 			 exported = false
 		}
-		compile('org.irods.jargon:jargon-core:3.0.1-SNAPSHOT') {
+		compile('org.irods.jargon:jargon-core:3.3.2-SNAPSHOT') {
 			excludes "slf4j-api", "slf4j-log4j12", "commons-io", "commons-codec"
 		}
     }
