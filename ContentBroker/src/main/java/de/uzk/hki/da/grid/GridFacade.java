@@ -44,7 +44,9 @@ public interface GridFacade {
 	 * Asynchronous call.
 	 *
 	 * @param file full path to a file location which should be ingested into the grid
-	 * @param address_dest address of the target file name in grid (excluding zone prefix)
+	 * @param gridPath address of the target file name in grid (excluding zone prefix)
+	 * 
+	 * If @param gridPath parent Folder does not exist, it will be created.
 	 * 
 	 * @return <strong>true</strong> if file has been successfully copied to the grid cache area,
 	 * the file has been successfully registered at the working resource and the replication command has been fired.<br>

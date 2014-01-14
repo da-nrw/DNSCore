@@ -22,6 +22,7 @@ package de.uzk.hki.da.grid;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,7 +81,13 @@ public class FederatedCopyExecutor extends Thread {
 		for (String targetFed: zp) {
 			logger.info("federate to " + targetFed);
 			if (!gridPath.startsWith("/")) gridPath = "/" + gridPath;
-			isc.put(localFile, "/" + targetFed + gridPath );
+			
+			String dest = "/" + targetFed + gridPath;
+			
+			if (!isc.collectionExists(FilenameUtils.getFullPath(dest)))
+				isc.createCollection(FilenameUtils.getFullPath(dest));
+				
+			isc.put(localFile, dest);
 			logger.debug("test");
 		}
 	}	
