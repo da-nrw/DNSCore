@@ -42,9 +42,9 @@ fi
 echo collecting
 
 TARGET=target/deliverable
-
 rm -rf $TARGET
 mkdir $TARGET
+echo -e "ContentBroker Version $VERSION\nWritten by\n Daniel M. de Oliveira\n Jens Peters\n Sebastian Cuy\n Thomas Kleinke" > $TARGET/README.txt
 mkdir $TARGET/conf
 cp -r src/main/fido $TARGET
 cp -r src/main/jhove $TARGET
