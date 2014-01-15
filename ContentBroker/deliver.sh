@@ -2,9 +2,35 @@
 
 # author: Daniel M. de Oliveira
 # author: Jens Peters
-VERSION=0.6.4-SNAPSHOT
+
+######################
+#### PACK BINARY #####
+###################### 
+
+VERSION="0.6.4-SNAPSHOT"
+TARGET=target/deliverable
+rm -rf $TARGET
+mkdir $TARGET
+cp target/ContentBroker-$VERSION.jar $TARGET/ContentBroker.jar
+if [ $? -ne 0 ]
+then
+	echo target has to be build first by mvn package
+	exit
+fi
+
+#################
+#### PARAMS #####
+################# 
+
+for last; do true; done
+if [[ $last == --version=* ]]
+then
+  VERSION=`echo $last | sed 's/--version=//'`
+fi
+
 LANG="de_DE.UTF-8"
 export LANG
+
 
 if [ $# -eq 0 ] 
 then 
@@ -34,22 +60,18 @@ then
 	fi
 fi
 
-#################
-#### PART I #####
-################# 
+#############################
+#### CREATE DELIVERABLE #####
+############################# 
 
 ###################
 echo collecting
 
-TARGET=target/deliverable
-rm -rf $TARGET
-mkdir $TARGET
 echo -e "ContentBroker Version $VERSION\nWritten by\n Daniel M. de Oliveira\n Jens Peters\n Sebastian Cuy\n Thomas Kleinke" > $TARGET/README.txt
 mkdir $TARGET/conf
 cp -r src/main/fido $TARGET
 cp -r src/main/jhove $TARGET
 cp -r src/main/xslt $TARGET/conf
-cp target/ContentBroker-$VERSION.jar $TARGET/ContentBroker.jar
 cp src/main/resources/premis.xsd $TARGET/conf
 cp src/main/resources/xlink.xsd $TARGET/conf
 cp src/main/resources/frame.jsonld $TARGET/conf
@@ -141,9 +163,9 @@ cd ..
 
 
 
-#################
-#### PART II ####
-################# 
+##############################
+#### ROLL OUT DELIVERABLE ####
+############################## 
 echo Delivering and starting machines.
 
 mv target/deliverable/deliverable.tar ./deliverable.$1.$VERSION.tar

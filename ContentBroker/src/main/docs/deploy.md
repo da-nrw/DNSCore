@@ -1,4 +1,4 @@
-*Markdown*
+Dieses Dokument beschreibt den Build-Prozess von DNSCore
 
 # Continuous Delivery Workflow
 

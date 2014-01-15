@@ -75,6 +75,7 @@ import de.uzk.hki.da.utils.MetsConsistencyChecker;
  * 
  * @author Daniel M. de Oliveira
  * @author Sebastian Cuy
+ * @author Thomas Kleinke
  * 
  */
 public class UnpackAction extends AbstractAction {
@@ -98,12 +99,16 @@ public class UnpackAction extends AbstractAction {
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 		object.reattach();
 		
-		String absoluteSIPPath =
-				searchForFileInIngestArea(object.getLatestPackage().getContainerName());
-		if (absoluteSIPPath == null)
-			throw new RuntimeException("There is a queue entry for " + 
-					object.getLatestPackage().getContainerName() + " but no file could be found corresponding with it.");
-		
+		String containerName = object.getLatestPackage().getContainerName();
+		if (!checkContainerFormat(containerName)) {
+			throw new UserException(UserExceptionId.UNSUPPORTED_CONTAINER_FORMAT,
+					"Format of file " + containerName + " is not a supported package file format",
+					FilenameUtils.getExtension(containerName));
+		}
+						
+		String absoluteSIPPath = localNode.getIngestAreaRootPath() + object.getContractor().getShort_name() + 
+				"/" + containerName;
+	
 		if (!loadBalancer.canHandle(new File(absoluteSIPPath).length())){
 			logger.warn("ResourceMonitor prevents further processing of package due to space limitations.");
 			return false;
@@ -169,9 +174,7 @@ public class UnpackAction extends AbstractAction {
 			} catch (IOException e) {
 				throw new RuntimeException("error while trying to get existing packages from lza area",e);
 			}
-			
-
-		}								
+		}
 		
 		logger.info("deleting: "+sipInForkPath);
 		new File(sipInForkPath).delete();
@@ -180,36 +183,22 @@ public class UnpackAction extends AbstractAction {
 	}	
 	
 	/**
-	 * Takes a look into the ingest area if it finds a container corresponding to the origName
-	 * (and ending with .zip,.tar.gz,.tgz,.tar) there.
-	 * 
-	 * Slashes in origNames for files of collections (like "col1/a") get resolved so
-	 * it will be searched for files like "col2%f.tgz".
+	 * Checks if the package file format is an accepted container file format
 	 * 
 	 * @author Daniel M. de Oliveira
 	 * @author Thomas Kleinke
-	 * 
-	 * @return the absolute path of the submitted SIP container including the file extension.
-	 * Null if the file could be found nowhere.
+	 * @return true if the file format is accepted, otherwise false
 	 */
-	private String searchForFileInIngestArea(String containerName) {
-		String containerPath = localNode.getIngestAreaRootPath() + object.getContractor().getShort_name() + 
-				"/" + maskSlashes(containerName);
+	private boolean checkContainerFormat(String containerName) {
 		
 		for (int i=0; i < acceptedContainerFormatSuffixes.length; i++) {
 					
-			if (containerPath.endsWith(acceptedContainerFormatSuffixes[i])) {
-				logger.info("Found the following file in ingest area: " + containerName);
-				return containerPath;
-			}
+			if (containerName.endsWith(acceptedContainerFormatSuffixes[i]))
+				return true;
 		}
 		
-		return null;
+		return false;
 	}
-
-	private String maskSlashes(String input){
-		return input.replaceAll("/", "%2F");
-	}	
 	
 	/**
 	 * Moves the SIP from ingest area to work area.
