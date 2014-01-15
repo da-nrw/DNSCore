@@ -19,17 +19,20 @@
 
 package de.uzk.hki.da.cb;
 
-import org.junit.Test;
-import org.junit.BeforeClass;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import de.uzk.hki.da.db.CentralDatabaseDAO;
 import de.uzk.hki.da.grid.IrodsGridFacade;
-import de.uzk.hki.da.grid.IrodsSystemConnector;
-import de.uzk.hki.da.model.*;
+import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import static org.mockito.Mockito.*;
 
 
 /**
@@ -79,8 +82,6 @@ public class AuditActionTest {
 		Object obj = new Object();
 		obj.setContractor(cont);
 		
-		IrodsSystemConnector irods = mock (IrodsSystemConnector.class);
-		
 		IrodsGridFacade grid = mock (IrodsGridFacade.class);
 		
 		
@@ -88,7 +89,6 @@ public class AuditActionTest {
 		when ( grid.isValid( anyString()) )
 			.thenReturn( true ).thenReturn(false);
 			
-		action.setIrodsSystemConnector( irods );
 		action.setJob (job);
 		
 		action.implementation();

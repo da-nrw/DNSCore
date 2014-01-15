@@ -41,7 +41,7 @@ public interface DistributedConversionAdapter {
 	 * 
 	 * @param relativePath from fork 
 	 */
-	public void replicateToTocalNode(String relativePath);
+	public void replicateToLocalNode(String relativePath);
 	
 	
 	/**

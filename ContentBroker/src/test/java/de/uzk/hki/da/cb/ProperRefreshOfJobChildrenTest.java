@@ -19,8 +19,6 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.mockito.Mockito.mock;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +31,6 @@ import org.junit.Test;
 
 import de.uzk.hki.da.db.CentralDatabaseDAO;
 import de.uzk.hki.da.db.HibernateUtil;
-import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 
@@ -145,14 +142,12 @@ public class ProperRefreshOfJobChildrenTest extends Thread{
 	@Before
 	public void setUp() throws Exception {
 
-		IrodsSystemConnector irods = mock (IrodsSystemConnector.class);
 		Node node = new Node(); node.setWorkingResource("vm3");
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		action.setJob((Job) session.get(Job.class,1));
 		session.close();
 		action.setNode(node);
-		action.setIrodsSystemConnector(irods);
 		action.setDao(dao);
 	}
 

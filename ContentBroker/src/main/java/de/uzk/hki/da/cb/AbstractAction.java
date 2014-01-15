@@ -77,7 +77,6 @@ public abstract class AbstractAction implements Runnable {
 	protected Object object;
 	protected String endStatus;
 	protected int concurrentJobs = 3;
-	protected IrodsSystemConnector irodsSystemConnector;
 	protected ActionCommunicatorService actionCommunicatorService;
 	private UserExceptionManager userExceptionManager;
 
@@ -132,11 +131,6 @@ public abstract class AbstractAction implements Runnable {
 			logger.info("AbstractAction fetched job from queue. See logfile: "+object.getIdentifier()+".log");
 			setupObjectLogging(object.getIdentifier());
 
-			if (irodsSystemConnector!=null)
-				if (!irodsSystemConnector.connect()){
-					throw new RuntimeException("Couldn't establish iRODS-Connection");
-				}
-
 			logger.info("Stubbing implementation of "+this.getClass().getName());
 			if (!implementation()){				
 				logger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
@@ -186,9 +180,6 @@ public abstract class AbstractAction implements Runnable {
 			handleError();			
 			createAdminReport(e);
 		} finally {
-			
-			if (irodsSystemConnector!=null)
-				irodsSystemConnector.logoff();
 			
 			unsetObjectLogging();
 			actionMap.deregisterAction(this);
@@ -341,14 +332,6 @@ public abstract class AbstractAction implements Runnable {
 		this.dao = dao;
 	}
 
-	public IrodsSystemConnector getIrodsSystemConnector() {
-		return irodsSystemConnector;
-	}
-
-	public void setIrodsSystemConnector(IrodsSystemConnector irods) {
-		this.irodsSystemConnector = irods;
-	}
-	
 	public ActionCommunicatorService getActionCommunicatorService() {
 		return actionCommunicatorService;
 	}

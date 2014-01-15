@@ -2,7 +2,7 @@
 
 # author: Daniel M. de Oliveira
 # author: Jens Peters
-VERSION=0.6.3
+VERSION=0.6.4-SNAPSHOT
 LANG="de_DE.UTF-8"
 export LANG
 

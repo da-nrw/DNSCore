@@ -23,14 +23,13 @@
 		<constructor-arg ref="fedoPass" />
     </bean>
   	
-  	
 	<!-- BEGIN Fedora and ElasticSearch related BEGIN -->
 	<bean id="FetchPIPsAction" class="de.uzk.hki.da.cb.FetchPIPsAction"
 		scope="prototype">
 		<property name="startStatus" value="540" />
 		<property name="endStatus" value="550" />
 		<property name="name" value="FetchPIPsAction" />
-		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
+		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
 	</bean>
 	<bean id="SendToPresenterAction" class="de.uzk.hki.da.cb.SendToPresenterAction"
 		scope="prototype">

@@ -100,7 +100,6 @@ public class BuildAIPActionTests {
 
 		action.setObject(obj);
 		action.setDao(dao);
-		action.setIrodsSystemConnector(irods);
 		action.setNode(node);
 		action.setJob(job);
 		

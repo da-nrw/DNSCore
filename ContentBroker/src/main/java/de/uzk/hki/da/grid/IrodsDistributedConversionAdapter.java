@@ -59,7 +59,7 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 	}
 
 	@Override
-	public void replicateToTocalNode(String relativePath) {
+	public void replicateToLocalNode(String relativePath) {
 		
 		if (!irodsSystemConnector.connect()){
 			throw new RuntimeException("Couldn't establish iRODS-Connection");

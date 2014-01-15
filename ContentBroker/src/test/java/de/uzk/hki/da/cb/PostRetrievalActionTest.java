@@ -114,7 +114,6 @@ public class PostRetrievalActionTest {
 		job.setDate_created(String.valueOf(Math.round(gc.getTimeInMillis()/1000L)));
 		PostRetrievalAction action = new PostRetrievalAction();
 		action.setJob(job);
-		action.setIrodsSystemConnector(irods);
 		
 		action.setLocalNode(node);
 		action.setDao(dao);

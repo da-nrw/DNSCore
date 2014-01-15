@@ -24,8 +24,6 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.core.ConfigurationException;
-
 /**
  * FriendshipConversionAction takes a job that has been created by ScanAction on another node,
  * replicates the xIP to its local node, executes all of the jobs ConversionInstructions
@@ -35,19 +33,11 @@ import de.uzk.hki.da.core.ConfigurationException;
 public class FriendshipConversionAction extends AbstractAction{
 
 	static final Logger logger = LoggerFactory.getLogger(FriendshipConversionAction.class);
-	
 	@Override
 	boolean implementation() throws IOException {
-		
-		if (irodsSystemConnector==null) throw new ConfigurationException("irodsSystemConnector not set");
 		object.reattach();
-		
 		return true;
 	}
-
 	@Override
 	void rollback() throws Exception {}
-
-	
-	
 }

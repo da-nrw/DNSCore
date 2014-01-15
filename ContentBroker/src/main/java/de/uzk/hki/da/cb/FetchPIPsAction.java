@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.core.ConfigurationException;
+import de.uzk.hki.da.grid.DistributedConversionAdapter;
 
 /**
  * Fetches the PIPs from the nodes on which they've originally been created.
@@ -16,9 +17,11 @@ import de.uzk.hki.da.core.ConfigurationException;
  */
 public class FetchPIPsAction extends AbstractAction {
 
+	private DistributedConversionAdapter distributedConversionAdapter;
+	
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException {
-		if (irodsSystemConnector==null) throw new ConfigurationException("irodsSystemConnector not set");
+		if (distributedConversionAdapter==null) throw new ConfigurationException("irodsSystemConnector not set");
 		object.reattach();
 		
 		String dipSourcePartialPath = 
@@ -33,8 +36,8 @@ public class FetchPIPsAction extends AbstractAction {
 		renamePIPs(dipSourcePartialPath, dipTargetPartialPath);
 		
 		// cleanup
-		irodsSystemConnector.removeCollectionAndEatException(getIrodsZonePath()+"dip/public/"+dipSourcePartialPath);
-		irodsSystemConnector.removeCollectionAndEatException(getIrodsZonePath()+"dip/institution/"+dipSourcePartialPath);
+		distributedConversionAdapter.remove("dip/public/"+dipSourcePartialPath);
+		distributedConversionAdapter.remove("dip/institution/"+dipSourcePartialPath);
 
 		return true;
 	}
@@ -83,16 +86,27 @@ public class FetchPIPsAction extends AbstractAction {
 	 */
 	private void replicateFromSourceResourceToWorkingResource(
 			String dipSourcePartialPath) {
-		getIrodsSystemConnector().replicateCollectionToResource(
-				getIrodsZonePath()+"dip/public/"+dipSourcePartialPath, 
-				localNode.getWorkingResource());
-		getIrodsSystemConnector().replicateCollectionToResource(
-				getIrodsZonePath()+"dip/institution/"+dipSourcePartialPath, 
-				localNode.getWorkingResource());
+		distributedConversionAdapter.replicateToLocalNode(
+				getIrodsZonePath()+"dip/public/"+dipSourcePartialPath);
+		distributedConversionAdapter.replicateToLocalNode(
+				getIrodsZonePath()+"dip/institution/"+dipSourcePartialPath);
 	}
 
 	
 	
 	@Override
 	void rollback() throws Exception {}
+
+
+
+	public DistributedConversionAdapter getDistributedConversionAdapter() {
+		return distributedConversionAdapter;
+	}
+
+
+
+	public void setDistributedConversionAdapter(
+			DistributedConversionAdapter distributedConversionAdapter) {
+		this.distributedConversionAdapter = distributedConversionAdapter;
+	}
 }
