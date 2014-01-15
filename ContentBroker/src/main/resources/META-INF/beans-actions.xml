@@ -168,7 +168,6 @@
 		<property name="startStatus" value="580" />
 		<property name="endStatus" value="590" />
 		<property name="name" value="FriendshipConversionAction" />
-		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
 	</bean>
 	
 	
