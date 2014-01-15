@@ -13,7 +13,7 @@
 	<groupId>de.uzk.hki.da</groupId>
 	<artifactId>ContentBroker</artifactId>
 
-	<version>0.6.3</version>
+	<version>0.6.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>DA-NRW Content Broker</name>
 
