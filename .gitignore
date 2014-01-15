@@ -4,3 +4,5 @@ ContentBroker/deliverable*
 DAWeb/target/
 DAWeb/target-eclipse/
 DAWeb/.settings/
+deliverable.tar
+ContentBroker/.settings
