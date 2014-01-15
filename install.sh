@@ -2,7 +2,7 @@
 
 VERSION=$1
 TARGET=$2
-INSTALLATION=../installation
+INSTALLATION=installation
 
 echo Installing to $TARGET
 tar xf $INSTALLATION/binary-repository/ContentBroker-binaries-$VERSION.tar -C $TARGET
