@@ -146,7 +146,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 				.getNumberOfReplsForDataObjectInResGroup(FilenameUtils.getFullPath(gridPath), 
 					FilenameUtils.getName(gridPath),
 					res);
-				if (targetResgroup.startsWith("cp_") && replicas>0) replicas--;
+				if (targetResgroup.startsWith("cp_") && replicas>1) replicas--;
 				replicasTotal = replicasTotal + replicas;
 			}
 			logger.debug("Number of Total Replications on LZA Nodes is now ("
