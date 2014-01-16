@@ -12,7 +12,7 @@ if [ ! -d "$TARGET" ]; then
 		exit
 fi
 HOME=`pwd`
-if [ $TARGET = $TARGET ]; then 
+if [ $HOME = $TARGET ]; then 
 	echo Error target environment $TARGET and current src tree are identical!
 	exit
 fi
