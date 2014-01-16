@@ -126,7 +126,7 @@ public class PremisXmlReader implements XmlReader{
 	 * @see de.uzk.hki.da.metadata.XmlReader#deserialize(java.lang.String)
 	 */
 	@Override
-	public Object deserialize(String uri) throws IOException, ParseException {
+	public Object deserialize(String uri) throws IOException, ParseException, NullPointerException {
 		throw new NotImplementedException();
 	}
 
@@ -134,7 +134,7 @@ public class PremisXmlReader implements XmlReader{
 	 * @see de.uzk.hki.da.metadata.XmlReader#deserialize(java.io.File)
 	 */
 	@Override
-	public Object deserialize(File file) throws IOException, ParseException {
+	public Object deserialize(File file) throws IOException, ParseException, NullPointerException {
 		return deserialize(new FileReader(file));
 	}
 
@@ -148,7 +148,7 @@ public class PremisXmlReader implements XmlReader{
 	 * @author Daniel M. de Oliveira
 	 */
 	@Override
-	public Object deserialize(Reader reader) throws IOException, ParseException {
+	public Object deserialize(Reader reader) throws IOException, ParseException, NullPointerException {
 
 		XMLReader xmlReader = null;
 		SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -243,7 +243,7 @@ public class PremisXmlReader implements XmlReader{
 	 * @author Thomas Kleinke
 	 * Maps an event from premis to native data model.
 	 */
-	private Event buildEvent(Element el, Object object){
+	private Event buildEvent(Element el, Object object) throws NullPointerException {
 		if (object.getPackages().isEmpty()) 
 			throw new InvalidParameterException("Error: Object is not consistent. Has no package.");
 		
@@ -361,7 +361,7 @@ public class PremisXmlReader implements XmlReader{
 	 * @author Sebastian Cuy
 	 * @author Thomas Kleinke
 	 */
-	private RightsStatement buildRight(Object object, Element rightsEl) {
+	private RightsStatement buildRight(Object object, Element rightsEl) throws NullPointerException {
 		logger.debug("Start reading rights section");
 		
 		if (rightsEl != null) {
@@ -526,7 +526,7 @@ public class PremisXmlReader implements XmlReader{
 	 * @param agentEl the agent el
 	 * @param object the object
 	 */
-	private void buildAgent(Element agentEl, Object object) {
+	private void buildAgent(Element agentEl, Object object) throws NullPointerException {
 		Agent agent = new Agent();
 		
 		String agentId = agentEl.getFirstChildElement("agentIdentifier", PREMIS_NS)
@@ -553,7 +553,7 @@ public class PremisXmlReader implements XmlReader{
 	 * @param objectEl the object el
 	 * @return the object
 	 */
-	private Object buildObject(Element objectEl) {
+	private Object buildObject(Element objectEl) throws NullPointerException {
 		String objectIdentifier = null;
 		String urn = null;		
 		
@@ -592,7 +592,7 @@ public class PremisXmlReader implements XmlReader{
 	 * @param objectEl the object el
 	 * @return the package
 	 */
-	private Package buildPackage(Element objectEl) {
+	private Package buildPackage(Element objectEl) throws NullPointerException {
 		String packageId = objectEl.getFirstChildElement("objectIdentifier", PREMIS_NS)
 									 .getFirstChildElement("objectIdentifierValue", PREMIS_NS)
 									 .getValue();
@@ -628,7 +628,7 @@ public class PremisXmlReader implements XmlReader{
 	 * @author Daniel M. de Oliveira
 	 * @author Thomas Kleinke
 	 */
-	private DAFile createFile(List<Package> packages, Element objectEl) throws ParseException{
+	private DAFile createFile(List<Package> packages, Element objectEl) throws ParseException, NullPointerException {
 		
 		String packageId;
 		try{
@@ -682,7 +682,7 @@ public class PremisXmlReader implements XmlReader{
 		return f;
 	}
 	
-	private Date readDate(String dateElementValue) {
+	private Date readDate(String dateElementValue) throws NullPointerException {
 		
 		try {
 			String dateString = dateElementValue;
