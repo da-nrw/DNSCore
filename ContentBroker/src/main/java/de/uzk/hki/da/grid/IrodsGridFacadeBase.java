@@ -113,7 +113,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 			new File (FilenameUtils.getFullPath(targetPhysically)).mkdir(); 
 			FileUtils.copyFile(file, gridfile);
 		} catch (IOException e) { 
-			logger.error("Error while creating File or directory physically on the Grid " + e.getMessage());
+			logger.error("Error while creating File or directory physically on the GridCachePath, target file may already exist " + e.getMessage());
 			return false; 
 		}
 		
