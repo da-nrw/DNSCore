@@ -1,5 +1,4 @@
 <userExceptionMessages>
-	<userExceptionMessage id="UNSUPPORTED_CONTAINER_FORMAT">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: %ERROR_INFO ist kein akzeptiertes Containerformat.</userExceptionMessage>
 	<userExceptionMessage id="SIP_PREMIS_NOT_FOUND">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Es konnte keine PREMIS-Datei im SIP gefunden werden.</userExceptionMessage>
 	<userExceptionMessage id="INVALID_SIP_PREMIS">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Die im SIP enthaltene PREMIS-Datei ist nicht valide.</userExceptionMessage>
 	<userExceptionMessage id="INVALID_OBJECT_DELTA">Das Objekt %OBJECT_IDENTIFIER wurde nicht ordnungsgemäß archiviert bzw. ist nicht valide.\nDas von Ihnen eingelieferte Delta-Paket %CONTAINER_NAME konnte dem Objekt daher nicht\nhinzugefügt werden.</userExceptionMessage>
