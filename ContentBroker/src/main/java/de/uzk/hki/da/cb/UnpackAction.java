@@ -80,8 +80,6 @@ import de.uzk.hki.da.utils.MetsConsistencyChecker;
  */
 public class UnpackAction extends AbstractAction {
 
-	String acceptedContainerFormatSuffixes[] = {".zip",".tar",".tgz",".tar.gz"};
-	
 	private enum PackageType{ BAGIT, METS }
 	
 	static final Logger logger = LoggerFactory.getLogger(UnpackAction.class);
@@ -99,15 +97,8 @@ public class UnpackAction extends AbstractAction {
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 		object.reattach();
 		
-		String containerName = object.getLatestPackage().getContainerName();
-		if (!checkContainerFormat(containerName)) {
-			throw new UserException(UserExceptionId.UNSUPPORTED_CONTAINER_FORMAT,
-					"Format of file " + containerName + " is not a supported package file format",
-					FilenameUtils.getExtension(containerName));
-		}
-						
 		String absoluteSIPPath = localNode.getIngestAreaRootPath() + object.getContractor().getShort_name() + 
-				"/" + containerName;
+				"/" + object.getLatestPackage().getContainerName();
 	
 		if (!loadBalancer.canHandle(new File(absoluteSIPPath).length())){
 			logger.warn("ResourceMonitor prevents further processing of package due to space limitations.");
@@ -181,24 +172,6 @@ public class UnpackAction extends AbstractAction {
 		
 		return true;
 	}	
-	
-	/**
-	 * Checks if the package file format is an accepted container file format
-	 * 
-	 * @author Daniel M. de Oliveira
-	 * @author Thomas Kleinke
-	 * @return true if the file format is accepted, otherwise false
-	 */
-	private boolean checkContainerFormat(String containerName) {
-		
-		for (int i=0; i < acceptedContainerFormatSuffixes.length; i++) {
-					
-			if (containerName.endsWith(acceptedContainerFormatSuffixes[i]))
-				return true;
-		}
-		
-		return false;
-	}
 	
 	/**
 	 * Moves the SIP from ingest area to work area.
