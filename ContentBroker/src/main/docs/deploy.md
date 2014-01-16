@@ -1,59 +1,70 @@
-*Markdown*
+ci@machine = continuous integration server
+developer@machine = development workstation
+DNSCore = clone of the git repository
 
 # Continuous Delivery Workflow
 
-* Regelmäßig committen (Richtwert z.b. 1 mal stündlich), um Integrationsschwierigkeiten vorzubeugen
-* Dazu, wenn nötig, größere Tasks in kleinere Schritte unterteilen.
-vor einem Commit
-* je nachdem woran gearbeitet wird
- * einzelne oder alle AkkzeptanzTests lokal ausführen oder
- * die IntegrationTests auf dem Testbed ausführen
- * oder beides.
-* dann committen
-* nach einem Commit: postcommit.sh,integration.sh,acceptance.sh ausführen
+* Commit and push regularly. Ideally after every small task. If necessary divide bigger tasks in smaller subtasks.
+* Go through your test suite before commiting.
+* This means you should execute at least all your unit tests and depending on your task at hand some acceptance tests.
+* Even better: Take a short break and execute all your acceptance tests locally.
+* For every change in GitHub the whole test suite should be executed on ci@machine and a binary should get build and stored in the maven repository.
 
-## Vorbereitung einer neuen lokalen Development Umgebung
-1. Auf der lokalen Maschine einen leeren Ordner für den ContentBroker anlegen, damit die Deploy-Scripte dahin ausrollen können.
-2. Dieser Ordner wird oben mit (pathToLocalCBInstallation) referenziert
+## Create a local installation for development
 
-## Auf einer lokalen Development Umgebung:
+1. goto [developer@machine]
+1. if !exists [CBInstallDir], mkdir [CBInstallDir]
 1. cd DNSCore/ContentBroker
-2. ./build.sh dev pathToLocalCBInstallation
-3. ./install.sh dev pathToLocalCBInstallation
-4. Warten auf folgende Message: INFO  de.uzk.hki.da.core.ContentBroker - ContentBroker is up and running 
-5. Wenn die Meldung kommt, dann mit ctrl-c abbrechen. Der ContentBroker läuft jetzt und es wurde eine Instanz der HSQLDB gestartet
-6. Ausführen aller Akzeptanztests: mvn failsafe:integration-test
-7. Ausführen einzelner Akzeptanztests: mvn failsafe:integration-test -Dit.test=ATUseCaseX
+2. ./build.sh dev [CBInstallDir]
+3. ./install.sh dev [CBInstallDir]
+5. Wait for message "INFO  de.uzk.hki.da.core.ContentBroker - ContentBroker is up and running". Then CTRL-C.
+6. Run all acceptance tests with: mvn failsafe:integration-test
+7. Run single acceptance test with: mvn failsafe:integration-test -Dit.test=ATUseCaseX
 
-## Auf der VM3: Bauen des Release Candidate und manuelles Testen
+## Build the release candidate
+At the moment we do it manually. Jenkins integration is planned for may14.
+
+1. goto [ci@machine]
 1. cd development/DNSCore
-2. git -- je nach Bedarf die entsprechende Version auschecken
+2. git -- check out the branch/revision you want to build
 3. ./build.sh vm3
-3. ??? Wenn letzter Schritt erfolgreich, dann ./integration.sh
 4. ./install.sh vm3
-5. Warten auf folgende Message: INFO  de.uzk.hki.da.core.ContentBroker - ContentBroker is up and running 
-6. Wenn die Meldung kommt, dann mit ctrl-c abbrechen. Der ContentBroker läuft jetzt.
-7. ContentBroker auf der VM2 stoppen! (acceptance wartet auf Status 540, das Paket darf nicht von der VM2 gefetched werden)
-8. mvn failsafe:integration-test
-9. ??? Wenn letzter Schritt erfolgreich, dann ./deliver.sh vm2
+5. Wait for message "INFO  de.uzk.hki.da.core.ContentBroker - ContentBroker is up and running". Then CTRL-C.
+6. mvn failsafe:integration-test
+
+With the current setup, make sure CB is stopped at vm2!
+
 10. goto vm2:ContentBroker; ./ContentBroker_start.sh
 11. Manuelles Testen (testpackage_klein_und_muss_durchlaufen.*)
 
-## Deployment auf anderen Maschinen 
-1. Zunächst müssen nach Auswahl eines geeigneten Release-Kandidaten alle manuellen Akzeptanztests auf der QS,
-so wie sie in den Testkatalogen spezifiziert sind, durchgeführt werden.
-* vm6
-	* ./deliver.sh full
-	* deliverable.full.$VERSION.tar -> vm6; unpack in CB_ROOT; ./configure.sh
-2. Danach kann ausgerollt werden.
-* danrw
-	* ./deliver.sh pres
-	* deliverable.pres.$VERSION.tar -> danrw; unpack in CB_ROOT; ./configure.sh
-* Prod und andere Knoten
-	* ./deliver.sh node
-	* deliverable.node.$VERSION.tar -> prod; unpack in CB_ROOT; ./configure.sh
+3. ??? Wenn letzter Schritt erfolgreich, dann ./integration.sh
+9. ??? Wenn letzter Schritt erfolgreich, dann ./deliver.sh vm2
 
-## Datenbankabfrage auf Developer-Maschine
+## Deploy to production nodes
+Every fully tested release candidate can be rolled out following this workflow:
+
+1. goto ci@machine
+1. cd DNSCore/ContentBroker
+1. ./build.sh [type]
+1. cd DNSCore
+1. tar cf DNSCore-[version]-installer.tar
+1. scp DNSCore-[version]-installer.tar [target@machine]:/tmp
+1. goto [target@machine]
+1. cd /tmp
+1. tar xf DNSCore-[version]-installer.tar
+1. cd installation
+1. ./install.sh [CBInstallDir]
+1. cd [CBInstallDir]
+1. ./ContentBroker_start.sh
+
+[type] can have one of the following values:
+
+* full (e.g. for vm6)
+* pres (e.g. for vm2,danrw)
+* node (e.g. for prod,lvr,eunomia )
+
+
+## Query your hsqldb easily on developer@machine
 1. ./sqlrequest "[SQL-Abfrage]"
 
 
