@@ -9,7 +9,6 @@
 
 REPO=../installation/
 VERSION=`cat ../VERSION.txt`
-ENVIRONMENT=$1
 
 LANG="de_DE.UTF-8"
 export LANG
@@ -47,7 +46,7 @@ function restartContentBroker(){
 }
 
 
-case "$ENVIRONMENT" in
+case "$1" in
 dev)
 	if [ $# -ne 2 ] 
 	then
