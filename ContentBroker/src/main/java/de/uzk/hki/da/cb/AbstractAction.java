@@ -178,7 +178,7 @@ public abstract class AbstractAction implements Runnable {
 			
 		} catch (UserException e) {
 			logger.error(this.getClass().getName()+": UserException in action: ",e);
-			handleError();			
+			handleError();
 			createUserReport(e);
 			if (e.checkForAdminReport())
 				createAdminReport(e);
@@ -255,12 +255,10 @@ public abstract class AbstractAction implements Runnable {
 		String message = userExceptionManager.getMessage(e.getId());
 		
 		message = message.replace("%OBJECT_IDENTIFIER", object.getIdentifier())
-				.replace("%CONTAINER_NAME", object.getLatestPackage().getContainerName())
-				.replace("%ERROR_INFO", e.getErrorInfo());
-		
-		logger.debug("Sending mail to: " + email);
-		logger.debug(subject);
-		logger.debug(message);
+			 .replace("%CONTAINER_NAME", object.getLatestPackage().getContainerName())
+			 .replace("%ERROR_INFO", e.getErrorInfo());
+				
+		logger.debug("Sending mail to: " + email + "\n" + subject + "\n" + message);
 		
 		if (email != null) {			
 			try {
