@@ -193,8 +193,10 @@ public class ScanAction extends AbstractAction{
 		try {
 			o = new PremisXmlReader()
 			.deserialize(new File(pathToRepresentation + "/premis.xml"));
-		} catch (ParseException e) {
-			throw new UserException(UserExceptionId.READ_SIP_PREMIS_ERROR, "Error while parsing premis file", e);
+		} catch (ParseException e1) {
+			throw new UserException(UserExceptionId.READ_SIP_PREMIS_ERROR, "Error while parsing premis file", e1);
+		} catch (NullPointerException e2) {
+			throw new UserException(UserExceptionId.READ_SIP_PREMIS_ERROR, "Error while parsing premis file", e2);
 		}
 		
 		return o;
