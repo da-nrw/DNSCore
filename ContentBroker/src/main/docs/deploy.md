@@ -8,7 +8,7 @@
 * Go through your test suite before commiting.
 * This means you should execute at least all your unit tests and depending on your task at hand some acceptance tests.
 * Even better: Take a short break and execute all your acceptance tests locally.
-* For every change in GitHub the whole test suite should be executed on ci@machine and a binary should get build and stored in the maven repository.
+* For every change in GitHub the whole test suite should be executed on [ci@machine] and a binary should get build and stored in the maven repository.
 
 ### Create a local installation for development
 
@@ -43,7 +43,7 @@ With the current setup, make sure CB is stopped at vm2!
 ### Deploy to production nodes
 Every fully tested release candidate can be rolled out following this workflow:
 
-1. goto ci@machine
+1. goto [ci@machine]
 1. cd DNSCore/ContentBroker
 1. ./build.sh [type]
 1. cd DNSCore
@@ -65,7 +65,7 @@ Every fully tested release candidate can be rolled out following this workflow:
 * node (e.g. for prod,lvr,eunomia )
 
 
-### Query your hsqldb easily on developer@machine
+### Query your hsqldb easily on [developer@machine]
 1. ./sqlrequest "[SQL-Abfrage]"
 
 
