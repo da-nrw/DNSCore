@@ -116,6 +116,7 @@ public abstract class AbstractAction implements Runnable {
 		if (object.getContractor()==null) throw new IllegalStateException("contractor not set in job");
 		if (object.getContractor().getShort_name()==null) throw new IllegalStateException("contractor short name not set in job");
 		if (actionCommunicatorService==null) throw new IllegalStateException("action communicator service not set");
+		if (userExceptionManager==null) throw new IllegalStateException("user exception manager not set");
 	}
 
 	
