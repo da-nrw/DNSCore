@@ -139,8 +139,7 @@ public class UnpackAction extends AbstractAction {
 			
 			if (object.getObject_state()!=100){
 				throw new UserException(UserExceptionId.INVALID_OBJECT_DELTA, 
-						object.getIdentifier() + " not in archived/valid state "+""
-								+ "("+object.getObject_state() +
+						object.getIdentifier() + " not in archived/valid state " + "(" + object.getObject_state() +
 						"), therefore no deltas could be added!");
 			}
 			RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot());

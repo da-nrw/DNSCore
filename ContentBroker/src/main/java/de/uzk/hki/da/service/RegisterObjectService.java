@@ -146,7 +146,6 @@ public class RegisterObjectService {
 
 	/**
 	 * If the Packages contains names like 1,2 the newly created name will be 3.
-	 * XXX Sort of a hack because not yet safely implemented due to unclear naming conventions at this moment
 	 *
 	 * @param packs the packs
 	 * @return the string
