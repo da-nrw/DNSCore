@@ -22,6 +22,7 @@ package de.uzk.hki.da.it;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -43,12 +44,14 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.service.CommandLineConnector;
+import de.uzk.hki.da.service.UserExceptionManager;
 import de.uzk.hki.da.utils.ProcessInformation;
 
 
 /**
  * Common base of all integration tests.
  * @author Daniel M. de Oliveira
+ * @author Thomas Kleinke
  *
  */
 public class ITBase {
@@ -81,6 +84,8 @@ public class ITBase {
 
 	protected static ActionCommunicatorService acs = new ActionCommunicatorService();
 	
+	protected static UserExceptionManager uem = new UserExceptionManager();
+	
 	/** The node. */
 	protected static Node node = null;
 	
@@ -93,7 +98,13 @@ public class ITBase {
 	/** The context. */
 	static AbstractXmlApplicationContext context;
 	
-	
+	public ITBase() {
+		try {
+			uem.readConfigFile();
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to read user exception manager config file", e);
+		}
+	}	
 	
 	/**
 	 * Retrieves Object from the Object Table for a given object identifier.
@@ -279,6 +290,7 @@ public class ITBase {
 	 * @param name the name
 	 * @return the job
 	 * @author Daniel M. de Oliveira
+	 * @author Thomas Kleinke
 	 */
 	protected Job connectAndRunAction(String name){
 		
@@ -307,6 +319,7 @@ public class ITBase {
 			action.setINTEGRATIONTEST(true);
 			action.setDao(dao);
 			action.setActionCommunicatorService(acs);
+			action.setUserExceptionManager(uem);
 			action.setNode(node);
 			action.setIrodsZonePath(zonePath);
 			ActionRegistry map = (ActionRegistry) context.getBean("actionRegistry");

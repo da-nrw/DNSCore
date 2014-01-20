@@ -77,29 +77,18 @@ grails.plugins.activemq.active=false
 environments {
 	test {
 		// set per-environment irods config in classpath file!
-		grails.config.locations = ["classpath:${appName}_properties.groovy"]
+		grails.config.locations = ["file:${userHome}/.grails/${appName}_properties.groovy"]
 	}	
 	production {
 		// set per-environment irods config in classpath file!
-		grails.config.locations = ["classpath:${appName}_properties.groovy"]
+		grails.config.locations = ["file:${userHome}/.grails/${appName}_properties.groovy"]
 	}
 	development {
-	// running this on vm3 would cause a lot of catalina.out stuff!!		
-		//grails.config.locations = ["classpath:${appName}_properties.groovy"]
+		// running this on vm3 would cause a lot of catalina.out stuff!!		
 		//log4j = {
 		//		debug   'grails.app'
 		//}
-		cb.homepath = "/data/danrw/ContentBroker/"
-		daweb3.logo = "DANRW-Logo_small.png"
-		irods.server = "da-nrw-vm2.hki.uni-koeln.de"
-		irods.default_resc = "02-da-nrw-vm2.hki.uni-koeln.de"
-		irods.zone = "da-nrw"
-		localNode.userAreaRootPath = "/data/danrw/www/default/webdav"
-		localNode.ingestAreaRootPath = "/data/danrw/ingest"
-		transferNode.downloadLinkPrefix = "https://da-nrw-vm2.hki.uni-koeln.de/webdav"
-		fedora.urlPrefix = "http://da-nrw-vm2.hki.uni-koeln.de:8080/fedora/objects/"
-		cb.presServer= "da-nrw-vm2.hki.uni-koeln.de"
-		
+		grails.config.locations = ["file:${userHome}/.grails/${appName}_properties.groovy"]		
 	}
 }
 

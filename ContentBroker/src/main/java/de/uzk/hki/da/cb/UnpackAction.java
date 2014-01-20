@@ -186,18 +186,21 @@ public class UnpackAction extends AbstractAction {
 		File ingestFile = new File(ingestFilePath);
 		File destFile = new File(destFilePath);
 		
-		if (ingestFile.exists()) {
-			try {
-				FileUtils.copyFile(ingestFile, destFile);
-			} catch (IOException e) {
-				throw new RuntimeException("File " + ingestFile.getAbsolutePath() + " could not be moved to " +
-						destFile.getAbsolutePath(), e);
-			}
-			if (destFile.exists())
-				ingestFile.delete();
-			else
-				throw new RuntimeException("File " + destFile.getAbsolutePath() + " does not exist");
+		if (!ingestFile.exists())
+			throw new RuntimeException("Package file " + ingestFile.getAbsolutePath() + " does not exist");
+		
+		try {
+			FileUtils.copyFile(ingestFile, destFile);
+		} catch (IOException e) {
+			throw new RuntimeException("File " + ingestFile.getAbsolutePath() + " could not be moved to " +
+					destFile.getAbsolutePath(), e);
 		}
+		
+		if (destFile.exists())
+			ingestFile.delete();
+		else
+			throw new RuntimeException("File " + destFile.getAbsolutePath() + " does not exist");
+			
 		return destFilePath;
 	}	
 	
