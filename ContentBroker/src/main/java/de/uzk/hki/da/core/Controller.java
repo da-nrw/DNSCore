@@ -89,12 +89,11 @@ public class Controller implements Runnable {
 				return;
 			}
 			logger.debug("starting JMS -Service at: " + serverName + " "+ socketNumber);
+			mqBroker.setPersistent(false);
 			mqBroker.deleteAllMessages();
 			mqBroker.start();
 			logger.debug("MQ-Broker is started: " + mqBroker.isStarted());
-			
-			reloadLoggers();
-            List<ActionDescription> list = null;
+		    List<ActionDescription> list = null;
             for (;;) {
             	Connection connection = mqConnectionFactory.createConnection();
                 connection.start();
@@ -167,21 +166,4 @@ public class Controller implements Runnable {
 		}
 			
 		}
-
-	private void reloadLoggers() {
-		    LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-
-		    ContextInitializer ci = new ContextInitializer(loggerContext);
-		    URL url = ci.findURLOfDefaultConfigurationFile(true);
-
-		    try {
-		        JoranConfigurator configurator = new JoranConfigurator();
-		        configurator.setContext(loggerContext);
-		        loggerContext.reset();
-		        configurator.doConfigure(url);
-		    } catch (JoranException je) {
-		        // StatusPrinter will handle this
-		    }
-		    StatusPrinter.printInCaseOfErrorsOrWarnings(loggerContext);
-			}
 }
