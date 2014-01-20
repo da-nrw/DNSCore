@@ -89,6 +89,7 @@ public class Controller implements Runnable {
 				return;
 			}
 			logger.debug("starting JMS -Service at: " + serverName + " "+ socketNumber);
+			mqBroker.deleteAllMessages();
 			mqBroker.start();
 			logger.debug("MQ-Broker is started: " + mqBroker.isStarted());
 			
