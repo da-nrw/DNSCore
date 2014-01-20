@@ -179,7 +179,7 @@ public class ConvertActionTests {
 	@After
 	public void tearDown() throws IOException{
 		if (new File(dataPath+"data/2011+11+01+b/").exists())
-				FileUtils.deleteDirectory(new File(dataPath+"data/2011+11+01+b/"));
+			FileUtils.deleteDirectory(new File(dataPath+"data/2011+11+01+b/"));
 		
 		if (new File(dataPath+"data/dip/").exists())
 			FileUtils.deleteDirectory(new File(dataPath+"data/dip/"));
@@ -226,8 +226,8 @@ public class ConvertActionTests {
 		action.implementation();
 		action.rollback();
 		
-		assertFalse(new File(dataPath+"data/2011+11+01+b/").exists());
-		assertFalse(new File(dataPath+"data/dip/").exists());
+		assertFalse(new File(dataPath+"data/2011+11+01+b/140864.png").exists());
+		assertFalse(new File(dataPath+"data/2011+11+01+b/abc.xml").exists());
 		assertEquals(0, action.getObject().getLatestPackage().getEvents().size());
 	}
 }

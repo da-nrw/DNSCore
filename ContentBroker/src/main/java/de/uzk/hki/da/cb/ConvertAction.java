@@ -142,16 +142,10 @@ public class ConvertAction extends AbstractAction {
 	@Override
 	void rollback() throws IOException {
 		
-		if (new File(object.getDataPath() + "dip").exists())
-			FileUtils.deleteDirectory(new File(object.getDataPath() + "dip"));
-		
-		String latestARep = object.getNameOfNewestARep();
-		String repName = latestARep.replace("a", "b");
-		if (object.getNameOfNewestBRep().equals(repName))
-			FileUtils.deleteDirectory(new File(object.getDataPath() + repName));
-
 		if (localConversionEvents != null) {
 			for (Event e : localConversionEvents) {
+				e.getTarget_file().toRegularFile().delete();
+				
 				object.getLatestPackage().getEvents().remove(e);
 				object.getLatestPackage().getFiles().remove(e.getTarget_file());
 			}
