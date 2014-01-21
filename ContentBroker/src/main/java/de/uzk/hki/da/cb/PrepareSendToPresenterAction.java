@@ -114,7 +114,7 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 			distributedConversionAdapter.create("dip/institution/"+dipName);
 		else
 			distributedConversionAdapter.register(
-				"dip/institution"+dipName, 
+				"dip/institution/"+dipName, 
 				instDir.getAbsolutePath()
 				);
 	}
