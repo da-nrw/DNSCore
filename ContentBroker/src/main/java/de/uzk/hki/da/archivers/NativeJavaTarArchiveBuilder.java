@@ -33,12 +33,22 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.utils.Utilities;
 
+
+/**
+ * @author ???
+ * @author Daniel M. de Oliveira
+ */
 public class NativeJavaTarArchiveBuilder implements ArchiveBuilder {
 
 	public NativeJavaTarArchiveBuilder(){}
 		
 	static final Logger logger = LoggerFactory.getLogger(NativeJavaTarArchiveBuilder.class);
+	
+	private String firstLevelEntryName = "";
+	
+	
 	
 	@Override	
 	public void unarchiveFolder(File srcTar, File destFolder) throws Exception {
@@ -72,6 +82,15 @@ public class NativeJavaTarArchiveBuilder implements ArchiveBuilder {
 		fin.close();
 	}
 	
+	
+	/**
+	 * There is an option to override the name of the first level entry if you want to pack 
+	 * a directory. Set includeFolder = true so that it not only packs the contents but also
+	 * the containing folder. Then use the setter setFirstLevelEntryName and set the name
+	 * of the folder which contains the files to pack. The name of the folder then gets replaced
+	 * in the resulting tar. Note that after calling archiveFolder once, the variable gets automatically
+	 * reset so that you have to call the setter again if you want to set the override setting again.
+	 */
 	@Override
 	public void archiveFolder(File srcFolder, File destFile, boolean includeFolder)
 			throws Exception {
@@ -80,23 +99,31 @@ public class NativeJavaTarArchiveBuilder implements ArchiveBuilder {
 		BufferedOutputStream bOut = null;
 		TarArchiveOutputStream tOut = null;
 		
+		fOut = new FileOutputStream(destFile);
+		bOut = new BufferedOutputStream(fOut);
+		tOut = new TarArchiveOutputStream(bOut);
+		
+		tOut.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
+		tOut.setBigNumberMode(2);
+
 		try {
-			fOut = new FileOutputStream(destFile);
-			bOut = new BufferedOutputStream(fOut);
-			tOut = new TarArchiveOutputStream(bOut);
 			
-			tOut.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
-			tOut.setBigNumberMode(2);
+			String base = "";
+			if (firstLevelEntryName.isEmpty()) firstLevelEntryName = srcFolder.getName() + "/";
 			
-			if (includeFolder)
-				addFileToTar(tOut,srcFolder,"");
-			else
-			{
-				File children[] = srcFolder.listFiles();
-				for (int i = 0; i < children.length; i++) {
-					addFileToTar(tOut,children[i],"");
-				}
+			if (includeFolder){
+				logger.debug("addFileToTar: "+firstLevelEntryName);
+				TarArchiveEntry entry = (TarArchiveEntry) tOut.createArchiveEntry(srcFolder,firstLevelEntryName);
+				tOut.putArchiveEntry(entry);
+				tOut.closeArchiveEntry();
+				base = firstLevelEntryName;
 			}
+			
+			File children[] = srcFolder.listFiles();
+			for (int i = 0; i < children.length; i++) {
+				addFileToTar(tOut,children[i],base);
+			}
+		
 		} finally
 		{
 			tOut.finish();
@@ -104,6 +131,8 @@ public class NativeJavaTarArchiveBuilder implements ArchiveBuilder {
 			tOut.close();
 			bOut.close();
 			fOut.close();
+			
+			firstLevelEntryName = "";
 		}
 	}
 	
@@ -142,6 +171,15 @@ public class NativeJavaTarArchiveBuilder implements ArchiveBuilder {
 				addFileToTar(tOut,children[i],entryName+"/");
 			}
 		}
+	}
+
+	public String getFirstLevelEntryName() {
+		return firstLevelEntryName;
+	}
+
+	public void setFirstLevelEntryName(String firstLevelEntryName) {
+		if (firstLevelEntryName==null) this.firstLevelEntryName = "";
+		this.firstLevelEntryName = Utilities.slashize(firstLevelEntryName);
 	}
 		
 }

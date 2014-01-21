@@ -158,16 +158,6 @@ public class TarActionTests {
 	}
 	
 	
-	/**
-	 * Test destruction of original fork object.
-	 * @throws IOException 
-	 */
-	@Test 
-	public void testDestructionOfOriginalForkObject() throws IOException{
-		action.implementation();
-		assertFalse(new File(packageForkPath).exists());
-	}
-	
 	
 	/**
 	 * In case the package still exists in the fork directory, we can safely remove any

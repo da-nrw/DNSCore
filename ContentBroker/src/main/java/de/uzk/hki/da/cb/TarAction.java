@@ -22,7 +22,6 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +53,7 @@ public class TarAction extends AbstractAction {
 	
 	static final Logger logger = LoggerFactory.getLogger(TarAction.class);
 	private DistributedConversionAdapter distributedConversionAdapter;
-	
+	private String tar = null;
 	
 	public TarAction(){}
 	
@@ -63,34 +62,22 @@ public class TarAction extends AbstractAction {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 		object.reattach();
 		
-		String renamedSourcePath = localNode.getWorkAreaRootPath() + 
+		tar = localNode.getWorkAreaRootPath() + 
 				object.getContractor().getShort_name() + "/" + object.getIdentifier() 
-				+ ".pack_" + object.getLatestPackage().getName() + "/";
-		new File(object.getPath()).renameTo(new File(renamedSourcePath));
-
+				+ ".pack_" + object.getLatestPackage().getName() + ".tar";
 		
-		String targetFilename = object.getIdentifier() + ".pack_" + object.getLatestPackage().getName() + ".tar";		
-		logger.info ( "Building tar for AIP at: " + localNode.getWorkAreaRootPath() + 
-				object.getContractor().getShort_name() + "/" + targetFilename );
+		logger.info ( "Building tar for AIP at: " + tar );
 		try {
-			(new NativeJavaTarArchiveBuilder()).archiveFolder(new File(renamedSourcePath), 
-					new File(localNode.getWorkAreaRootPath() 
-					+ object.getContractor().getShort_name() + "/" + targetFilename), true);
+			NativeJavaTarArchiveBuilder builder = new NativeJavaTarArchiveBuilder();
+			builder.setFirstLevelEntryName(object.getIdentifier()+".pack_"+object.getLatestPackage().getName()+".tar");
+			builder.archiveFolder(new File(object.getPath()),new File(tar),true);
+			
 		} catch (Exception e) {
 			throw new RuntimeException("Error while creating tar.",e);
 		}
 
 		object.getLatestPackage().setChecksum(MD5Checksum.getMD5checksumForLocalFile(
-				new File(localNode.getWorkAreaRootPath() + object.getContractor().getShort_name() + "/" + targetFilename)));
-		
-		// IMPORTANT: make sure this is the last thing that happens because we only 
-		// want to destroy the source if everything else here ran successfully.
-		
-		FileUtils.deleteDirectory(new File(renamedSourcePath));
-		// COMMENTED OUT ON PURPOSE - DO NOT DELETE - distributed conversion
-//		distributedConversionAdapter.remove(
-//				"fork/"+object.getContractor().getShort_name()+"/"+object.getIdentifier());
-		
+				new File(tar)));
 		return true;
 	}
 
@@ -100,15 +87,11 @@ public class TarAction extends AbstractAction {
 	 */
 	@Override
 	void rollback() {
-		
-		String relativeCollectionPath = object.getContractor().getShort_name() + "/";
-		String filename = object.getIdentifier() + ".pack_" + object.getLatestPackage().getName() + ".tar";
-		
-		logger.info("Deleting previously (possibly only partially) created file "+relativeCollectionPath+filename);
-		
-		if (new File(localNode.getWorkAreaRootPath() + relativeCollectionPath + filename).exists())
-			new File(localNode.getWorkAreaRootPath() + relativeCollectionPath + filename).delete();
-		distributedConversionAdapter.remove(relativeCollectionPath+filename);
+		if ((tar!=null)&&new File(tar).exists()){
+			logger.info("Deleting previously (possibly only partially) created file "+tar);
+			new File(tar).delete();
+		}
+		logger.info("@Admin: You can safely roll back this job to status "+this.getStartStatus()+" now.");
 	}
 
 	public DistributedConversionAdapter getDistributedConversionAdapter() {

@@ -19,10 +19,13 @@
 
 package de.uzk.hki.da.cb;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
 import javax.mail.MessagingException;
 
+import org.apache.commons.io.FileUtils;
 import org.hibernate.classic.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,10 +62,11 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	
 	
 	/**
+	 * @throws IOException 
 	 */
 	@Override
 	public
-	boolean implementation() {
+	boolean implementation() throws IOException {
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 		setKILLATEXIT(true);
 		object.reattach();
@@ -82,6 +86,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		object.getPackages().get(object.getPackages().size()-1).getFiles().clear();
 		object.getPackages().get(object.getPackages().size()-1).getEvents().clear();
 		createPublicationJob();
+		FileUtils.deleteDirectory(new File(object.getPath()));
 		return true;
 	}
 	
