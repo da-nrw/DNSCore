@@ -19,7 +19,6 @@
 
 package de.uzk.hki.da.at;
 
-import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -113,8 +112,7 @@ public class ATPIPGen extends Base{
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
 		
-		assertTrue(new File(dipAreaRootPath+"public/TEST/"+dipPath).exists());
-		assertFalse(new File(dipAreaRootPath+"public/TEST/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
+		assertFalse(new File(dipAreaRootPath+"public/TEST/"+dipPath).exists());
 		assertTrue( new File(dipAreaRootPath+"institution/TEST/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
 	}
 	
@@ -126,9 +124,7 @@ public class ATPIPGen extends Base{
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
 		
-		assertTrue(new File(dipAreaRootPath+"public/TEST/"+dipPath).exists());
-		System.out.println("Looking for PIP files in: "+dipAreaRootPath+"public/TEST/"+dipPath);
-		assertThat(new File(dipAreaRootPath+"public/TEST/"+dipPath).list().length).isEqualTo(0); 
+		assertFalse(new File(dipAreaRootPath+"public/TEST/"+dipPath).exists());
 	}
 	
 	@Test
@@ -139,9 +135,7 @@ public class ATPIPGen extends Base{
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
 		
-		assertTrue(new File(dipAreaRootPath+"public/TEST/"+dipPath).exists());
-		System.out.println("Looking for PIP files in: "+dipAreaRootPath+"public/TEST/"+dipPath);
-		assertThat(new File(dipAreaRootPath+"public/TEST/"+dipPath).list().length).isEqualTo(0);
+		assertFalse(new File(dipAreaRootPath+"public/TEST/"+dipPath).exists());
 	}
 	
 	
@@ -153,10 +147,8 @@ public class ATPIPGen extends Base{
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/";
 		
-		assertTrue(new File(dipAreaRootPath+"public/TEST/"+dipPath).exists());
-		assertTrue(new File(dipAreaRootPath+"institution/TEST/"+dipPath).exists());
-		assertFalse(new File(dipAreaRootPath+"public/TEST/"+dipPath+"0c32b463b540e3fee433961ba5c491d6.jpg").exists());
-		assertFalse(new File(dipAreaRootPath+"institution/TEST/"+dipPath+"0c32b463b540e3fee433961ba5c491d6.jpg").exists());
+		assertFalse(new File(dipAreaRootPath+"public/TEST/"+dipPath).exists());
+		assertFalse(new File(dipAreaRootPath+"institution/TEST/"+dipPath).exists());
 	}
 	
 	@Test

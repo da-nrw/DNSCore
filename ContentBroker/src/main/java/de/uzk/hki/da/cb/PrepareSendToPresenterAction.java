@@ -41,55 +41,43 @@ import de.uzk.hki.da.model.contract.PublicationRight.Audience;
 public class PrepareSendToPresenterAction extends AbstractAction {
 
 	private DistributedConversionAdapter distributedConversionAdapter;
+	private File publicDir;
+	private File instDir;
 	
 	@Override
 	boolean implementation() throws IOException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 		object.reattach();
 		
-		
 		String dipName = object.getContractor().getShort_name() + "/" + object.getIdentifier()+"_"+object.getLatestPackage().getId();
-		logger.trace("Moving the dip content for presentation purposes out of the archival package.");
-		extractDerivateForPresentation(dipName);
+		publicDir = new File(localNode.getDipAreaRootPath()+"public/"+dipName);
+		instDir = new File(localNode.getDipAreaRootPath()+"institution/"+dipName);
 		
+		logger.trace("Moving the dip content for presentation purposes out of the archival package.");
+		copyPIPSforReplication();
 		
 		Object premisObject = readRightsFromPREMIS();
 		
-		
 		if (!premisObject.grantsRight("PUBLICATION")) {
 			logger.info("PUBLICATION Right not granted. Will delete datastreams.");
-			if (new File(localNode.getDipAreaRootPath()+"public/"+dipName).exists())
-				FileUtils.deleteDirectory(
-						new File(localNode.getDipAreaRootPath()+"public/"+dipName));
-			if (new File(localNode.getDipAreaRootPath()+"institution/"+dipName).exists())
-				FileUtils.deleteDirectory(
-					new File(localNode.getDipAreaRootPath()+"institution/"+dipName));
+			if (publicDir.exists()) FileUtils.deleteDirectory(publicDir);
+			if (instDir.exists()) FileUtils.deleteDirectory(instDir);
 		} else
 		if (!premisObject.grantsPublicationRight(Audience.PUBLIC)) {
 			logger.info("Rights for PUBLIC not granted. Will delete datastreams.");
-			if (new File(localNode.getDipAreaRootPath()+"public/"+dipName).exists())
-				FileUtils.deleteDirectory(
-					new File(localNode.getDipAreaRootPath()+"public/"+dipName));
+			if (publicDir.exists()) FileUtils.deleteDirectory(publicDir);
 		} else
 		if (!premisObject.grantsPublicationRight(Audience.INSTITUTION)) {
 			logger.info("Rights for INSTITUTION not granted. Will delete datastreams.");
-			if (new File(localNode.getDipAreaRootPath()+"/institution/"+dipName).exists())
-				FileUtils.deleteDirectory(
-					new File(localNode.getDipAreaRootPath()+"institution/"+dipName));
+			if (instDir.exists()) FileUtils.deleteDirectory(instDir);
 		}
 		
-		
-		
-		irodsRegisterStuffForReplication(dipName);
-		distributedConversionAdapter.remove("fork/"+object.getContractor().getShort_name()+"/"
-			+object.getIdentifier()+"/data/dip");
-		
+		registerPIPSforReplication(dipName);
 		return true;
 	}
 
 
 	/**
-	 * @author Daniel M. de Oliveira
 	 * @return
 	 * @throws IOException
 	 */
@@ -110,32 +98,24 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 
 
 	/**
-	 * @author Daniel M. de Oliveira
-	 * @param dipName has the form csn/urn_pkgid
+	 * @param dipName has the form [csn]/[oid]_[pkgid]
 	 */
-	private void irodsRegisterStuffForReplication(String dipName) {
+	private void registerPIPSforReplication(String dipName) {
 		
-		String publPartialPath = "public/"+dipName;
-		register(publPartialPath);
-		String instPartialPath = "institution/"+dipName;
-		register(instPartialPath);
-	}
-
-
-	/**
-	 * @author Daniel M. de Oliveira
-	 * @param pipPartialPath
-	 */
-	private void register(String pipPartialPath) {
-		if (!new File(localNode.getDipAreaRootPath()+pipPartialPath).exists()){
-			// So Fedora can in any case ingest an empty object as our interface (through SendToPresenterAction) requires.
-			logger.info("Since the dip collection at "+pipPartialPath+" is empty create an empty collection");
-			new File(localNode.getDipAreaRootPath()+pipPartialPath).mkdir();
-			distributedConversionAdapter.create("dip/"+pipPartialPath);
-		}
-		distributedConversionAdapter.register(
-				"dip/"+pipPartialPath, 
-				localNode.getDipAreaRootPath()+pipPartialPath
+		if (!publicDir.exists())
+			distributedConversionAdapter.create("dip/public/"+dipName);
+		else
+			distributedConversionAdapter.register(
+				"dip/public/"+dipName, 
+				publicDir.getAbsolutePath()
+				);
+		
+		if (!instDir.exists())
+			distributedConversionAdapter.create("dip/institution/"+dipName);
+		else
+			distributedConversionAdapter.register(
+				"dip/institution"+dipName, 
+				instDir.getAbsolutePath()
 				);
 	}
 
@@ -146,28 +126,25 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	 * get into the archive we extract the derivate before we build a tar file around the xIP.
 	 * 
 	 * Moves 
-	 * <li>from fork/csn/123/data/dip/public -> dip/public/TEST/objectIdentifier_123
-	 * <li>from fork/csn/123/data/dip/institution -> dip/institution/TEST/objectIdentifier_123
+	 * <li>from fork/[csn]/123/data/dip/public -> dip/public/[csn]/[oid]
+	 * <li>from fork/[csn]/123/data/dip/institution -> dip/institution/[csn]/[oid]
 	 * 
-	 * @author Daniel M. de Oliveira
 	 * @param dipName has the form urn_pkgid
 	 * @throws IOException 
 	 */
-	private void extractDerivateForPresentation(String dipName) throws IOException {
+	private void copyPIPSforReplication() throws IOException {
 		
 		if (new File(object.getDataPath()+"dip/public").exists()){
-			File publicDir = new File(localNode.getDipAreaRootPath()+"public/"+dipName);
-			logger.info("Moving public datastreams to " + publicDir.getAbsolutePath());
+			logger.info("Copying public datastreams to " + publicDir.getAbsolutePath());
 			if (publicDir.exists()) FileUtils.deleteDirectory(publicDir);
-			FileUtils.moveDirectory(
+			FileUtils.copyDirectory(
 					new File(object.getDataPath()+"dip/public"), 
 					publicDir);
 		}
 		if (new File(object.getDataPath()+"dip/institution").exists()){
-			File instDir = new File(localNode.getDipAreaRootPath()+"institution/"+dipName);
-			logger.info("Moving public datastreams to " + instDir);
+			logger.info("Copying institution datastreams to " + instDir);
 			if (instDir.exists()) FileUtils.deleteDirectory(instDir);
-			FileUtils.moveDirectory(
+			FileUtils.copyDirectory(
 					new File(object.getDataPath()+"dip/institution"), 
 					instDir);
 		}
@@ -176,7 +153,10 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	
 
 	@Override
-	void rollback() throws Exception {}
+	void rollback() throws Exception {
+		if (publicDir.exists()) FileUtils.deleteDirectory(publicDir);
+		if (instDir.exists()) FileUtils.deleteDirectory(instDir);
+	}
 
 
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
