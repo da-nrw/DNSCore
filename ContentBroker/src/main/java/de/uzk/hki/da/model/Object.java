@@ -74,7 +74,9 @@ public class Object {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int data_pk;
 
-	/** The identifier. */
+	/** 
+	 * The identifier. In javadoc comments throughout the source code base often refered to as oid.
+	 * */
 	private String identifier;
 	
 	/** The urn. */

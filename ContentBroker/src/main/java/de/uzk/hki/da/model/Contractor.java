@@ -32,8 +32,9 @@ import javax.persistence.Table;
 
 
 /**
- * The Class Contractor.
- *
+ * The Class Contractor. An institutional agent. Role under which the users 
+ * which belong to an institution
+ * interact with the system.
  * @author Daniel M. de Oliveira
  */
 @Entity
@@ -46,7 +47,10 @@ public class Contractor{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 
-	/** The short_name. */
+	/** 
+	 * The short_name. A unique idenfier for an institutional agent.
+	 * In Javadoc comments troughout the source code base often refered to as csn (contractor short name).
+	 **/
 	private String short_name;
 	
 	/** The forbidden_nodes. */

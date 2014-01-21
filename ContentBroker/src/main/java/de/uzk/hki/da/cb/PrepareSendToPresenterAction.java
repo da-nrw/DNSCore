@@ -126,8 +126,8 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	 * get into the archive we extract the derivate before we build a tar file around the xIP.
 	 * 
 	 * Moves 
-	 * <li>from fork/[csn]/123/data/dip/public -> dip/public/[csn]/[oid]
-	 * <li>from fork/[csn]/123/data/dip/institution -> dip/institution/[csn]/[oid]
+	 * <li>from fork/[csn]/[oid]/data/dip/public -> dip/public/[csn]/[oid]
+	 * <li>from fork/[csn]/[oid]/data/dip/institution -> dip/institution/[csn]/[oid]
 	 * 
 	 * @param dipName has the form urn_pkgid
 	 * @throws IOException 

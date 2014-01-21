@@ -7,4 +7,4 @@ if [[ -f /tmp/cb.running ]] ; then
 fi
 touch /tmp/cb.running
 nohup java -jar ContentBroker.jar 1>log/stdout.log 2>log/stderr.log &
-tail -f log/contentbroker.log | grep "ContentBroker is up and running"
+
