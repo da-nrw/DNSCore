@@ -69,7 +69,7 @@ public class TarAction extends AbstractAction {
 		logger.info ( "Building tar for AIP at: " + tar );
 		try {
 			NativeJavaTarArchiveBuilder builder = new NativeJavaTarArchiveBuilder();
-			builder.setFirstLevelEntryName(object.getIdentifier()+".pack_"+object.getLatestPackage().getName()+".tar");
+			builder.setFirstLevelEntryName(object.getIdentifier()+".pack_"+object.getLatestPackage().getName());
 			builder.archiveFolder(new File(object.getPath()),new File(tar),true);
 			
 		} catch (Exception e) {
