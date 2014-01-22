@@ -11,7 +11,6 @@ VERSION=`cat ../VERSION.txt`
 # $3 debug level for logback.xml
 #
 function prepareCustomInstallation(){
-	cp configure.sh $REPO/
 	cp src/main/conf/jhove.conf $REPO/jhove.conf
 	cp src/main/scripts/jhove $REPO/jhove
 	cp src/main/conf/beans.xml.$1 $REPO/beans.xml

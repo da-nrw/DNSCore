@@ -3,6 +3,19 @@
 # author: Jens Peters
 # author: Daniel M. de Oliveira
 
+TAR=tar
+
+OS=´uname -s`
+case "$OS" in
+SunOS)
+	TAR=gtar
+	;;
+esac
+	
+
+
+
+
 TARGET=$1
 if [[ "${TARGET:${#TARGET}-1}" == "/" ]]; then
 	TARGET="${TARGET%?}"
@@ -19,7 +32,7 @@ fi
 
 
 echo Installing to $TARGET
-tar xf ContentBroker.tar -C $TARGET
+$TAR xf ContentBroker.tar -C $TARGET
 if [ -e config.properties.cb ]
 then
 	cp config.properties.cb $TARGET/conf/config.properties
