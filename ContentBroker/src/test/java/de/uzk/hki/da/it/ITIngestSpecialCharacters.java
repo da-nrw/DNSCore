@@ -82,7 +82,6 @@ public class ITIngestSpecialCharacters extends ITIngestBase{
 		irodsSystemConnector.removeCollectionAndEatException("/da-nrw/aip/TEST/it+ingestBase+identifier/");
 	}
 	
-	
 	/**
 	 * Test special chars in file names.
 	 *
@@ -95,18 +94,6 @@ public class ITIngestSpecialCharacters extends ITIngestBase{
 		stepThroughIngestWorkflow();
 	}
 	
-	/**
-	 * Test special chars in file names.
-	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	@Test
-	public void testUmlautsInPackageName() throws IOException{
-		
-		prepareSIPAndInsertJobAndObject("integrationTest_ÜmläuteInPakötnamen");
-		stepThroughIngestWorkflow();
-	}
-
 	/**
 	 * Test umlauts in file names.
 	 *
