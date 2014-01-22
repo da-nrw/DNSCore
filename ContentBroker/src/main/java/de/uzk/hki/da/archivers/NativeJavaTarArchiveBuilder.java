@@ -49,7 +49,6 @@ public class NativeJavaTarArchiveBuilder implements ArchiveBuilder {
 	static final Logger logger = LoggerFactory.getLogger(NativeJavaTarArchiveBuilder.class);
 	
 	private String firstLevelEntryName = "";
-	private String exclusionPattern = "";
 	
 	
 	
@@ -93,12 +92,6 @@ public class NativeJavaTarArchiveBuilder implements ArchiveBuilder {
 	 * of the folder which contains the files to pack. The name of the folder then gets replaced
 	 * in the resulting tar. Note that after calling archiveFolder once, the variable gets automatically
 	 * reset so that you have to call the setter again if you want to set the override setting again.
-	 * 
-	 * Another option is to set an exclusion pattern. You can exclude a folder recursively from beeing 
-	 * packed into the target tar container. Note that if you use this option together with the renamed
-	 * first level entry option, you have to specify the exclusion as follows:
-	 * [renamedFirstLevelEntry]/folderToExclude.
-	 * Note that the exclusionPattern is reset after every call to archiveFolder.
 	 */
 	@Override
 	public void archiveFolder(File srcFolder, File destFile, boolean includeFolder)
@@ -142,7 +135,6 @@ public class NativeJavaTarArchiveBuilder implements ArchiveBuilder {
 			fOut.close();
 			
 			firstLevelEntryName = "";
-			exclusionPattern = "";
 		}
 	}
 	
@@ -155,15 +147,6 @@ public class NativeJavaTarArchiveBuilder implements ArchiveBuilder {
 	private void addFileToTar(TarArchiveOutputStream tOut, File file, String base) throws IOException{
 		
 		String entryName = base + file.getName();
-		
-		if (!exclusionPattern.isEmpty()){
-			Pattern p = Pattern.compile(exclusionPattern);
-			Matcher m = p.matcher(entryName);
-			if (m.matches()) {
-				logger.debug("exluding "+entryName);
-				return;
-			}
-		}
 		logger.debug("addFileToTar: "+entryName);
 		
 		
@@ -201,16 +184,4 @@ public class NativeJavaTarArchiveBuilder implements ArchiveBuilder {
 		if (firstLevelEntryName==null) this.firstLevelEntryName = "";
 		this.firstLevelEntryName = Utilities.slashize(firstLevelEntryName);
 	}
-
-
-	public String getExclusionPattern() {
-		return exclusionPattern;
-	}
-
-
-	public void setExclusionPattern(String exclusionPattern) {
-		if (exclusionPattern==null) this.exclusionPattern = "";
-		this.exclusionPattern = exclusionPattern;
-	}
-		
 }

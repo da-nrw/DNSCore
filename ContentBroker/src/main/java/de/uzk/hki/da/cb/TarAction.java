@@ -70,7 +70,6 @@ public class TarAction extends AbstractAction {
 		try {
 			NativeJavaTarArchiveBuilder builder = new NativeJavaTarArchiveBuilder();
 			builder.setFirstLevelEntryName(object.getIdentifier()+".pack_"+object.getLatestPackage().getName());
-			builder.setExclusionPattern(   object.getIdentifier()+".pack_"+object.getLatestPackage().getName()+"/dip.*");
 			builder.archiveFolder(new File(object.getPath()),new File(tar),true);
 			
 		} catch (Exception e) {
