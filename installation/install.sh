@@ -5,7 +5,7 @@
 
 TAR=tar
 
-OS=´uname -s`
+OS=`uname -s`
 case "$OS" in
 SunOS)
 	TAR=gtar

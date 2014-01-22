@@ -68,7 +68,15 @@ cd $TARGET
 rm ../../../installation/ContentBroker.tar
 tar cf ../../../installation/ContentBroker.tar *
 cd ../../../installation
-find . -type f ! -name "ContentBroker.tar" ! -name "install.sh" ! -name ".gitignore" -exec rm {} \;
+rm fido.sh > /dev/null
+rm beans.xml > /dev/null
+rm config.properties.cb > /dev/null
+rm hibernateCentralDB.cfg.xml > /dev/null
+rm jhove.conf > /dev/null
+rm logback.xml > /dev/null
+rm ffmpeg.sh > /dev/null
+rm jhove > /dev/null
+rm jhove.conf   > /dev/null
 cd ../ContentBroker
 
 case "$1" in

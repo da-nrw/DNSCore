@@ -3,7 +3,7 @@ PYTHON_PATH="PYTHON_BIN"
 FIDO_PATH="fido/fido.py"
 
 AWK=awk
-OS=´uname -s`
+OS=`uname -s`
 case "$OS" in
 SunOS)
         AWK=gawk
