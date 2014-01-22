@@ -77,8 +77,6 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 		
 		// connect dafile to package
 
-		String tf = ci.getTarget_folder();
-		
 		String input  = ci.getSource_file().toRegularFile().getAbsolutePath();
 		
 		// Convert 
@@ -113,8 +111,6 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			e.setDate(new Date());
 			results.add(e);
 		}
-		
-		new File(object.getDataPath()+Utilities.slashize(tf)+"thumbnail").mkdirs();
 		
 		return results;
 	}

@@ -52,6 +52,7 @@
 	<bean id="actionRegistry" class="de.uzk.hki.da.core.ActionRegistry">
 		<property name="maxThreads">
 			<util:map>
+				<entry key="RestartIngestWorkflowAction" value="3" />
 				<entry key="IngestRegisterURNAction" value="3" />
 				<entry key="IngestTarAction" value="3" />
 				<entry key="IndexESAction" value="3" />
@@ -90,6 +91,7 @@
 		</property>
 		<property name="actionPriority">
 			<util:list>
+				<value>RestartIngestWorkflowAction</value>
 				<value>RetrievalAction</value>
 				<value>RetrievalObjectToWorkAreaAction</value>
 				<value>IngestArchiveReplicationCheckAction</value>
