@@ -78,6 +78,12 @@ dev)
 	restartContentBroker $INSTALL_PATH
 ;;
 vm3)
+	set PG_PASSWORD=kulle_oezil06
+	psql contentbroker -c "delete from queue;"
+	psql contentbroker -c "delete from objects;"
+	psql contentbroker -c "delete from packages;"
+	psql contentbroker -c "delete from objects_packages;"
+
 	INSTALL_PATH=/data/danrw/ContentBroker
 	cd ../installation; ./install.sh $INSTALL_PATH; cd ../ContentBroker;
 
