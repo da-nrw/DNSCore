@@ -93,16 +93,4 @@ public class ITIngestSpecialCharacters extends ITIngestBase{
 		prepareSIPAndInsertJobAndObject("integrationTest_Sonderzeichen_in_Dateinamen");
 		stepThroughIngestWorkflow();
 	}
-	
-	/**
-	 * Test umlauts in file names.
-	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	@Test
-	public void testUmlautsInFileNames() throws IOException{
-
-		prepareSIPAndInsertJobAndObject("integrationTest_Umlaute_in_Dateinamen");
-		stepThroughIngestWorkflow();
-	}
 }
