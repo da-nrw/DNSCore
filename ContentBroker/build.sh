@@ -17,6 +17,7 @@ function prepareCustomInstallation(){
 		cp src/main/conf/hibernateCentralDB.cfg.xml.$2 $INSTALLER/hibernateCentralDB.cfg.xml
 	fi
 	cp src/main/conf/logback.xml.$3 $INSTALLER/logback.xml
+	echo DNSCore installer for the $1 version of the DNSCore-$VERSION > $INSTALLER/VERSION.txt
 }
 
 function createStorageFolder(){
@@ -38,8 +39,8 @@ rm config.properties 2>/dev/null
 rm hibernateCentralDB.cfg.xml 2>/dev/null
 rm logback.xml 2>/dev/null
 rm ffmpeg.sh 2>/dev/null
+rm VERSION.txt 2>/dev/null
 cd ../ContentBroker 
-
 
 mvn package
 CBTAR_SRC=target/deliverable
