@@ -47,6 +47,7 @@
 	<bean id="actionRegistry" class="de.uzk.hki.da.core.ActionRegistry" scope="prototype">
 		<property name="maxThreads">
 			<util:map>
+				<entry key="RestartIngestWorkflowAction" value="3" />
 				<entry key="IngestUnpackAction" value="1" />
 				<entry key="IngestConvertAction" value="1" />
 				<entry key="FriendshipConversionAction" value="1" />
@@ -81,6 +82,7 @@
 		</property>
 		<property name="actionPriority">
 			<util:list>
+				<value>RestartIngestWorkflowAction</value>
 				<value>IngestArchiveReplicationCheckAction</value>
 				<value>IngestArchiveReplicationAction</value>
 				<value>IngestTarAction</value>
