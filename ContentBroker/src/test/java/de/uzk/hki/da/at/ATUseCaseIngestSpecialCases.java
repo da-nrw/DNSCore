@@ -59,6 +59,21 @@ public class ATUseCaseIngestSpecialCases extends Base{
 	}
 	
 	@Test
+	public void testSpecialCharactersInFileNames() throws Exception{
+		
+		originalName = "ATSonderzeichen_in_Dateinamen";
+		containerName = originalName+".tgz";
+				
+		FileUtils.copyFileToDirectory(new File("src/test/testdata/"+containerName), 
+				new File(ingestAreaRootPath+"TEST"));
+		waitForJobToBeInStatus(originalName,"540",2000);
+		object = fetchObjectFromDB(originalName);
+		System.out.println("objectIdentifier: "+object.getIdentifier());
+		
+		System.out.println("yeah!");
+	}
+	
+	@Test
 	public void testUmlautsInFileNames() throws Exception{
 		
 		originalName = "ATUmlaute_in_Dateinamen";

@@ -52,12 +52,6 @@ then
 	echo there were errors in integration tests for use case ingest
 	exit 0
 fi
-mvn -Dtest=ITIngestSpecialCharacters test
-if [ "$?" != "0" ] 
-then
-	echo there were errors in integration tests for use case ingest special characters
-	exit 0
-fi
 
 echo "Generating Javadoc"
 ///data/danrw/tools/groovy-1.8.7/bin/groovydoc -classpath /data/danrw/tools/groovy-1.8.7/lib/ -sourcepath /data/danrw/development/ContentBrokerTrunk/src/main/java:/data/danrw/development/ContentBrokerTrunk/src/main/resources:/data/danrw/development/ContentBrokerTrunk/src/test/java:/data/danrw/development/ContentBrokerTrunk/src/test/resources -d /data/danrw/www/javadoc -doctitle DA-NRW\ ContentBroker -windowtitle DA-NRW\ ContentBroker de.uzk.hki.da.archivers de.uzk.hki.da.cb de.uzk.hki.da.convert de.uzk.hki.da.core de.uzk.hki.da.db de.uzk.hki.da.grid de.uzk.hki.da.integrity de.uzk.hki.da.it de.uzk.hki.da.metadata de.uzk.hki.da.model de.uzk.hki.da.model.contract de.uzk.hki.da.service de.uzk.hki.da.utils  *.java
