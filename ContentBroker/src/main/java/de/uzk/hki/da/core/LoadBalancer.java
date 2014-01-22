@@ -80,6 +80,9 @@ public class LoadBalancer {
 		if (freeDiskSpacePercent < 1)
 			return true;
 		
+		if (freeSpaceOnDestination == 0)
+			return false;
+		
 		return ((totalSpaceOnDestination / freeSpaceOnDestination) < (100 / freeDiskSpacePercent));		
 	}
 	
