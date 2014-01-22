@@ -7,6 +7,8 @@
 		<scp.host2>da-nrw-vm2.hki.uni-koeln.de</scp.host2>
 		<scp.toDir>/data/danrw/iRODS/server/bin</scp.toDir>
 		<maven.test.search.classdir>true</maven.test.search.classdir>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>	
+    	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 
 	<modelVersion>4.0.0</modelVersion>
