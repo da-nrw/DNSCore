@@ -116,7 +116,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 	@Test
 	public void testUmlautsInPackageName() throws Exception{
 		
-		originalName = "ATÜmläuteInPakötnamen";
+		originalName = "AT√úml√§uteInPak√∂tnamen";
 		containerName = originalName+".tgz";
 				
 		FileUtils.copyFileToDirectory(new File("src/test/testdata/"+containerName), 
