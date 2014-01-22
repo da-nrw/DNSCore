@@ -42,8 +42,21 @@ function restartContentBroker(){
 	kill -9 `ps -aef | grep ContentBroker.jar | grep -v grep | awk '{print $2}'` 2>/dev/null
 	rm -f /tmp/cb.running
 	./ContentBroker_start.sh
-    tail -f log/contentbroker.log | grep "ContentBroker is up and running"
+    	tail -f log/contentbroker.log | grep "ContentBroker is up and running"
 	cd $SOURCE_PATH
+}
+
+# $1 = INSTALL_PATH
+function install(){
+	cd ../installation 
+	echo call ./install.sh $1
+	./install.sh $1
+	if [ $? = 1 ]
+	then
+		echo Error in install script
+		exit
+	fi
+	cd ../ContentBroker;
 }
 
 
@@ -69,7 +82,9 @@ dev)
 		exit
 	fi
 
-	cd ../installation; ./install.sh $INSTALL_PATH; cd ../ContentBroker;
+	rm $INSTALL_PATH/conf/config.properties
+	rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
+	install $INSTALL_PATH
 	
 	./populatetestdb.sh create
 	./populatetestdb.sh populate
@@ -85,7 +100,10 @@ vm3)
 	psql contentbroker -c "delete from objects_packages;"
 
 	INSTALL_PATH=/data/danrw/ContentBroker
-	cd ../installation; ./install.sh $INSTALL_PATH; cd ../ContentBroker;
+
+	rm $INSTALL_PATH/conf/config.properties
+	rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
+	install $INSTALL_PATH
 
 	createIrodsDirs
 	prepareTestEnvironment $INSTALL_PATH

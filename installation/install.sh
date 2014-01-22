@@ -36,7 +36,7 @@ then
 	then
 		echo Installer found an existing config.properties at the target.
 		echo Please either delete the config.properties from the installation dir or from the target, depending on which one you want to keep.
-		exit
+		exit 1
 	fi
 	cp config.properties $INSTALLATION_TARGET/conf/
 fi
@@ -46,7 +46,7 @@ then
 	then
 		echo Installer found an existing hibernateCentralDB.cfg.xml at the target.
 		echo Please either delete the hibernateCentralDB.cfg.xml from the installation dir or from the target, depending on which one you want to keep.
-		exit
+		exit 1
 	fi
 	cp hibernateCentralDB.cfg.xml $INSTALLATION_TARGET/conf/
 fi
@@ -55,7 +55,9 @@ cp logback.xml $INSTALLATION_TARGET/conf
 cp configure.sh $INSTALLATION_TARGET/
 if [ -e ffmpeg.sh ] 
 then
+	echo copy new ffmpeg
 	cp -f ffmpeg.sh $INSTALLATION_TARGET/
 fi
 cd $INSTALLATION_TARGET
 ./configure.sh
+exit 0

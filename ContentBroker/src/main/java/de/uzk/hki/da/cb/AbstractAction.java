@@ -39,7 +39,6 @@ import de.uzk.hki.da.core.ActionRegistry;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.db.CentralDatabaseDAO;
 import de.uzk.hki.da.db.HibernateUtil;
-import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;

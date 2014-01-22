@@ -113,20 +113,20 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		System.out.println("yeah!");
 	}
 	
-//	@Test
-//	public void testUmlautsInPackageName() throws Exception{
-//		
-//		originalName = "AT√úml√§uteInPak√∂tnamen";
-//		containerName = originalName+".tgz";
-//				
-//		FileUtils.copyFileToDirectory(new File("src/test/testdata/"+containerName), 
-//				new File(ingestAreaRootPath+"TEST"));
-//		waitForJobToBeInStatus(originalName,"540",2000);
-//		object = fetchObjectFromDB(originalName);
-//		System.out.println("objectIdentifier: "+object.getIdentifier());
-//		
-//		System.out.println("yeah!");
-//	}
+	@Test
+	public void testUmlautsInPackageName() throws Exception{
+		
+		originalName = "ATÜmläuteInPakötnamen";
+		containerName = originalName+".tgz";
+				
+		FileUtils.copyFileToDirectory(new File("src/test/testdata/"+containerName), 
+				new File(ingestAreaRootPath+"TEST"));
+		waitForJobToBeInStatus(originalName,"540",2000);
+		object = fetchObjectFromDB(originalName);
+		System.out.println("objectIdentifier: "+object.getIdentifier());
+		
+		System.out.println("yeah!");
+	}
 	
 	@Test
 	public void testWhiteSpacesInFileNames() throws Exception{
