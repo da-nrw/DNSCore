@@ -30,9 +30,8 @@ function createStorageFolder(){
 	mkdir -p $CBTAR_SRC/storage/ingest/TEST
 }
 
+# clean up installation dir
 
-
-mvn clean
 cd ../installation
 rm beans.xml 2>/dev/null
 rm config.properties 2>/dev/null
@@ -42,13 +41,24 @@ rm ffmpeg.sh 2>/dev/null
 rm VERSION.txt 2>/dev/null
 cd ../ContentBroker 
 
-mvn package
+
+if [ "$1" == "dev" ]
+then 
+	echo setting Maven profile to dev
+	PROFILE="-Pdev"
+fi
+mvn clean 
+mvn package $PROFILE
+
+
+
 CBTAR_SRC=target/deliverable
 mkdir $CBTAR_SRC
 cp target/ContentBroker-$VERSION.jar $CBTAR_SRC/ContentBroker.jar
 if [ $? -ne 0 ]
 then
-	echo target has to be build first by mvn package
+	echo target has to be build first by mvn package. remember that you cannot build anything other than dev on development machines.
+	echo any other target environment will need the CT tests to pass
 	exit
 fi
 

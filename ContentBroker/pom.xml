@@ -10,6 +10,27 @@
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>	
     	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
+	
+
+	<profiles>
+  		<profile>
+    	<id>dev</id>
+    	<properties>
+      		<include.tests>**/*DDDCDDSD*.java</include.tests>
+    	</properties>
+  		</profile>
+  		<profile>
+  		
+    	<id>vm3</id>
+    	<activation>
+    		<activeByDefault>true</activeByDefault> 
+    	</activation>
+    	<properties>
+      		<include.tests>**/*CT*.java</include.tests>
+    	</properties>
+  		</profile>
+	</profiles>
+	
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.uzk.hki.da</groupId>
@@ -110,6 +131,7 @@
 				<configuration>
 					<includes>
 						<include>%regex[.*Simple.*Suite.*]</include>
+						<include>${include.tests}</include>
 					</includes>
 	    			<argLine>-Dfile.encoding=UTF-8</argLine> 
 					
