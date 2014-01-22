@@ -39,7 +39,7 @@ import de.uzk.hki.da.utils.MD5Checksum;
  * One (b) representation with the converted files.
  * 
  * Workflow effects:
- * Container gets created as <code>/da-nrw/aip/[csn]/[oid]/[oid].pack_<package_name>.tar.
+ * Container gets created as <code>/da-nrw/aip/[csn]/[oid]/[oid].pack_<pkg_name>.tar.
  * When container has been created the source under fork gets destroyed. <br>
  * 
  * The event log for the package is merged with the premis.xml inside the package before

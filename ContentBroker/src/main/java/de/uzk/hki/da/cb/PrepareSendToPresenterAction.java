@@ -156,6 +156,7 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	void rollback() throws Exception {
 		if (publicDir.exists()) FileUtils.deleteDirectory(publicDir);
 		if (instDir.exists()) FileUtils.deleteDirectory(instDir);
+		logger.info("@Admin: You can safely roll back this job to status "+this.getStartStatus()+" now.");
 	}
 
 
