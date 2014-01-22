@@ -105,15 +105,6 @@ esac
 
 
 cd $CBTAR_SRC
-rm ../../../installation/ContentBroker.tar
+rm ../../../installation/ContentBroker.tar 2>/dev/null
 tar cf ../../../installation/ContentBroker.tar *
-cd ../ContentBroker
-
-
-
-
-
-
-
-
-
+cd ../../

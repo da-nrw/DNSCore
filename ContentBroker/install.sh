@@ -78,7 +78,7 @@ dev)
 	restartContentBroker $INSTALL_PATH
 ;;
 vm3)
-	set PG_PASSWORD=kulle_oezil06
+	export PGPASSWORD="kulle_oezil06"
 	psql contentbroker -c "delete from queue;"
 	psql contentbroker -c "delete from objects;"
 	psql contentbroker -c "delete from packages;"
