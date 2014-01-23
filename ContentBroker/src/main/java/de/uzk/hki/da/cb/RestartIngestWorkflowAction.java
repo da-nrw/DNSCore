@@ -10,6 +10,8 @@ import de.uzk.hki.da.model.Package;
 
 /**
  * 
+ * Resets the job from any status between 12x and 36x to status 120.
+ * 
  * @author Thomas Kleinke
  */
 public class RestartIngestWorkflowAction extends AbstractAction {
@@ -18,7 +20,7 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	
 	@Override
 	boolean implementation() {
-
+		
 		if (!object.hasDeltas())
 			object.setUrn(null);
 		
@@ -26,7 +28,12 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 		cleanDataFolder();		
 		deleteDips();
 		deleteJhoveTempData();		
-		resetPackage();		
+		
+		Package pkg = object.getLatestPackage();
+		pkg.getEvents().clear();
+		pkg.getFiles().clear();
+		
+		job.getConversion_instructions().clear();
 				
 		return true;
 	}
@@ -126,19 +133,6 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 		}
 	}
 	
-	/**
-	 * 
-	 * Resets the package to the initial state
-	 * 
-	 * @author Thomas Kleinke
-	 */
-	private void resetPackage() {
-		
-		Package pkg = object.getLatestPackage();
-		pkg.getEvents().clear();
-		pkg.getFiles().clear();		
-	}
-
 	@Override
 	void rollback() throws Exception { }
 
