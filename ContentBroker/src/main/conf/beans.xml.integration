@@ -59,7 +59,6 @@
 				<entry key="IngestUpdateMetadataAction" value="1" />
 				<entry key="IngestPresUpdateMetadataAction" value="1" />
 				<entry key="IngestShortenFileNamesAction" value="1" />
-				<entry key="IngestPreprocessForPresentationAction" value="1" />
 				<entry key="IngestScanForPresentationAction" value="1" />
 				<entry key="IngestConvertForPresentationAction" value="1" />
 				<entry key="IngestArchiveReplicationCheckAction" value="1" />
@@ -93,7 +92,6 @@
 				<value>IngestShortenFileNamesAction</value>
 				<value>IngestConvertForPresentationAction</value>
 				<value>IngestScanForPresentationAction</value>
-				<value>IngestPreprocessForPresentationAction</value>
 				<value>FriendshipConversionAction</value>
 				<value>IngestCreatePremisAction</value>
 				<value>IngestCheckFormatsAction</value>

@@ -67,7 +67,6 @@
 				<entry key="IngestCreatePremisAction" value="3" />
 				<entry key="IngestCheckFormatsAction" value="3" />
 				<entry key="IngestScanForPresentationAction" value="3" />
-				<entry key="IngestPreprocessForPresentationAction" value="3" />
 				<entry key="IngestConvertForPresentationAction" value="3" />
 				<entry key="IngestPresUpdateMetadataAction" value="3" />
 				<entry key="IngestShortenFileNamesAction" value="3" />
@@ -104,7 +103,6 @@
 				<value>IngestShortenFileNamesAction</value>
 				<value>IngestUpdateMetadataAction</value>
 				<value>IngestCheckFormatsAction</value>
-				<value>IngestPreprocessForPresentationAction</value>
 				<value>IngestConvertForPresentationAction</value>
 				<value>IngestScanForPresentationAction</value>
 				<value>IngestCreatePremisAction</value>

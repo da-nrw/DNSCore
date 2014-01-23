@@ -210,6 +210,23 @@
         <artifactId>maven-antrun-plugin</artifactId>
         <version>1.7</version>
         <executions>
+	   	<execution>
+        <id>validation</id>
+            <phase>validate</phase>
+            <configuration>
+              <tasks>
+                <exec
+                  dir="${basedir}"
+                  executable="${basedir}/validate.sh"
+                  failonerror="true">
+                  <arg line="" />
+                </exec>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
         <execution>
         <id>cleanup</id>
             <phase>clean</phase>
@@ -217,7 +234,7 @@
               <tasks>
                 <exec
                   dir="${basedir}"
-                  executable="${basedir}/cleanUpInstaller.sh"
+                  executable="${basedir}/clean.sh"
                   failonerror="true">
                   <arg line="" />
                 </exec>
@@ -293,6 +310,44 @@
 									</pluginExecutionFilter>
 									<action>
 										<execute />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											exec-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.2.1,)
+										</versionRange>
+										<goals>
+											<goal>run</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-antrun-plugin
+										</artifactId>
+										<versionRange>
+											[1.7,)
+										</versionRange>
+										<goals>
+											<goal>run</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -437,7 +492,7 @@
 		<dependency>
 			<groupId>org.irods.jargon</groupId>
 			<artifactId>jargon-core</artifactId>
-			<version>3.3.2-SNAPSHOT</version>
+			<version>3.3.2-beta1</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>

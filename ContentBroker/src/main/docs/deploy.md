@@ -15,7 +15,7 @@
 1. goto [developer@machine]
 1. if !exists [CBInstallDir], mkdir [CBInstallDir]
 1. cd DNSCore/ContentBroker
-2. ./build.sh dev [CBInstallDir]
+2. mvn package -Pdev -DappHome=[CBInstallDir]
 3. ./install.sh dev [CBInstallDir]
 5. Wait for message "INFO  de.uzk.hki.da.core.ContentBroker - ContentBroker is up and running". Then CTRL-C.
 6. Run all acceptance tests with: mvn failsafe:integration-test
@@ -67,15 +67,4 @@ Every fully tested release candidate can be rolled out following this workflow:
 
 ### Query your hsqldb easily on [developer@machine]
 1. ./sqlrequest "[SQL-Abfrage]"
-
-
-## Integrationstests in den Testbeds ausführen
-1. lokal die neuesten Changes mit mvn package bauen
-2. rsync zum Testbed
-3. im Testbed: 
-4. ./integration.sh
-
-## Ausführen einzelner IntegrationTests auf der vm3 (Testbed oder Trunk)
-1. ./deliver.sh integration
-2. mvn test -Dtest=IT...
 

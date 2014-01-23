@@ -22,7 +22,6 @@ public abstract class PublishConversionStrategyBase implements ConversionStrateg
 	
 	
 	/**
-	 * TODO remove code duplication with publishimage
 	 * @author Daniel M. de Oliveira
 	 * @param audience
 	 * @return

@@ -161,8 +161,6 @@ public class ATPIPGen extends Base{
 		
 		assertTrue(new File(dipAreaRootPath+"public/TEST/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
 		assertTrue(new File(dipAreaRootPath+"institution/TEST/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
-		// TODO how is our policy for text documents? assertTrue(new File(dipBasePath+"image42_pdf.pdf").exists());
-		// TODO test that nothing else exists
 	}
 	
 	

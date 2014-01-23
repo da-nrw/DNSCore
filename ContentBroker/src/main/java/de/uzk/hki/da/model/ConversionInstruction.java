@@ -213,16 +213,12 @@ public class ConversionInstruction {
 	public boolean equals(java.lang.Object o) {
 		
 		if (o==null) throw new IllegalArgumentException("o is null");
-		
 		ConversionInstruction oInstr = (ConversionInstruction) o;
-//		if (oInstr==null) throw new RuntimeException("oInst is null"); // 
 		
-		// XXX trying to debug an error which occurred with 83gb testpackage
 		if (oInstr.getSource_file()==null) throw new IllegalArgumentException("oInstr.getSource_file is null");
 		if (this.getSource_file()  ==null) throw new IllegalArgumentException("this.getSource_file is null");
 		if (oInstr.getConversion_routine()==null) throw new IllegalArgumentException("oInstr.getConversionRoutine is null");
 		if (this.getConversion_routine()==null) throw new IllegalArgumentException("this.getConversionRoutine is null");
-		// XXX
 		
 		if (this.conversion_routine == oInstr.conversion_routine &&
 			this.getSource_file().getRelative_path().equals(oInstr.getSource_file().getRelative_path()) &&

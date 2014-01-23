@@ -82,9 +82,6 @@ public class RetrievePackagesHelper {
 			logger.debug("new files: ");
 			for (DAFile f:results)
 				logger.debug(f.toString());
-			
-			// TODO attach files to package
-			// TODO test it
 		}
 	}
 	

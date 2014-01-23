@@ -91,14 +91,9 @@
 	<bean id="IngestConvertForPresentationAction" class="de.uzk.hki.da.cb.ConvertAction"
 		scope="prototype">
 		<property name="startStatus" value="320" />
-		<property name="endStatus" value="330" />
+		<property name="endStatus" value="340" />
 		<property name="name" value="IngestConvertForPresentationAction" />
 		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
-	</bean>
-	<bean id="IngestPreprocessForPresentationAction" class="de.uzk.hki.da.cb.PreprocessForPresentationAction" scope="prototype">
-		<property name="startStatus" value="330" />
-		<property name="endStatus" value="340" />
-		<property name="name" value="IngestScanForPresentationAction" />
 	</bean>
 	<bean id="IngestShortenFileNamesAction" class="de.uzk.hki.da.cb.ShortenFileNamesAction"
 		scope="prototype">

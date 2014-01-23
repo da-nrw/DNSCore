@@ -34,14 +34,13 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.contract.PublicationRight;
 import de.uzk.hki.da.utils.Utilities;
 
 
 /**
  * The Class PublishAudioConversionStrategy.
  */
-public class PublishAudioConversionStrategy implements ConversionStrategy{
+public class PublishAudioConversionStrategy extends PublishConversionStrategyBase {
 
 	/** The logger. */
 	private static Logger logger = 
@@ -138,13 +137,7 @@ public class PublishAudioConversionStrategy implements ConversionStrategy{
 		return new String[]{};
 	}
 	
-	/// TODO remove code duplication with publishimageconversionstrategy
-	private PublicationRight getPublicationRightForAudience(String audience){
-		for (PublicationRight right:object.getRights().getPublicationRights()){
-			if (right.getAudience().toString().equals(audience)) return right;
-		}
-		return null;
-	}
+	
 	
 	
 	/* (non-Javadoc)

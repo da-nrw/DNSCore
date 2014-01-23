@@ -49,11 +49,6 @@ import org.slf4j.LoggerFactory;
  * @author Daniel M. de Oliveira
  * @author Thomas Kleinke
  * 
- * TODO make files a set
- * TODO add resynchronizeFS method to populate files
- * TODO let the various get methods return instances from the files collection instead of creating new instances. let the logger issue a warning
- * if new instances have to be created or issue an error if the files are not listed yet.
- * 
  * Note: When the files collection is used for transfer dafiles from and to the db, the
  * client is responsible for populating the table files via the setter and getter methods.
  */

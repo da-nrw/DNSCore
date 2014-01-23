@@ -42,8 +42,6 @@ import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * The Class PublishXsltConversionStrategyTests.
- *
- * @author TODO ???
  */
 public class PublishXsltConversionStrategyTests {
 	

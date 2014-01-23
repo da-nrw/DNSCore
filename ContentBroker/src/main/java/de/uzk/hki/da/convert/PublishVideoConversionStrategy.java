@@ -37,7 +37,6 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.contract.PublicationRight;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -45,7 +44,7 @@ import de.uzk.hki.da.utils.Utilities;
  * The Class PublishVideoConversionStrategy
  * @author Thomas Kleinke?
  */
-public class PublishVideoConversionStrategy implements ConversionStrategy{
+public class PublishVideoConversionStrategy extends PublishConversionStrategyBase {
 
 	/** The logger. */
 	private static Logger logger = 
@@ -121,19 +120,6 @@ public class PublishVideoConversionStrategy implements ConversionStrategy{
 		results.add(e2);
 		
 		return results;
-	}
-	
-	/**
-	 * TODO remove code duplication with publishimageconversionstrategy
-	 * @author Daniel M. de Oliveira
-	 * @param audience
-	 * @return
-	 */
-	private PublicationRight getPublicationRightForAudience(String audience){
-		for (PublicationRight right:object.getRights().getPublicationRights()){
-			if (right.getAudience().toString().equals(audience)) return right;
-		}
-		return null;
 	}
 	
 	/**
