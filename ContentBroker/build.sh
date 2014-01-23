@@ -5,6 +5,13 @@
 INSTALLER=../installation/
 VERSION=`cat ../VERSION.txt`
 
+if [ $# -lt 1 ]
+then
+	echo We need at least one argument for the env here
+	exit
+fi
+echo params are $1 $2
+
 #
 # $1 beansType
 # $2 type of db
@@ -32,23 +39,14 @@ function createStorageFolder(){
 
 # clean up installation dir
 
-cd ../installation
-rm beans.xml 2>/dev/null
-rm config.properties 2>/dev/null
-rm hibernateCentralDB.cfg.xml 2>/dev/null
-rm logback.xml 2>/dev/null
-rm ffmpeg.sh 2>/dev/null
-rm VERSION.txt 2>/dev/null
-cd ../ContentBroker 
 
-
-if [ "$1" == "dev" ]
-then 
-	echo setting Maven profile to dev
-	PROFILE="-Pdev"
-fi
-mvn clean 
-mvn package $PROFILE
+#if [ "$1" == "dev" ]
+#then 
+#	echo setting Maven profile to dev
+#	PROFILE="-Pdev"
+#fi
+#mvn clean 
+#mvn package $PROFILE
 
 
 

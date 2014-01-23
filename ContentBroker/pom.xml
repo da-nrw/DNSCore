@@ -9,28 +9,46 @@
 		<maven.test.search.classdir>true</maven.test.search.classdir>
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>	
     	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    	<include.tests>**/*DDDCDDSD*.java</include.tests>
 	</properties>
 	
 
 	<profiles>
   		<profile>
-    	<id>dev</id>
-    	<properties>
-      		<include.tests>**/*DDDCDDSD*.java</include.tests>
-    	</properties>
+    		<id>dev</id>
+    		<properties>
+	      		<env>dev</env>
+	    	</properties>
+    		<activation>
+    		<activeByDefault>true</activeByDefault> 
+    		</activation>
   		</profile>
   		<profile>
-  		
-    	<id>vm3</id>
-    	<activation>
-    		<activeByDefault>true</activeByDefault> 
-    	</activation>
-    	<properties>
-      		<include.tests>**/*CT*.java</include.tests>
-    	</properties>
+    		<id>vm3</id>
+	    	<properties>
+	      		<env>vm3</env>
+	      		<include.tests>**/*CT*.java</include.tests>
+	    	</properties>
+  		</profile>
+  		<profile>
+    		<id>node</id>
+	    	<properties>
+	      		<env>node</env>
+	    	</properties>
+  		</profile>
+  		<profile>
+    		<id>pres</id>
+	    	<properties>
+	      		<env>pres</env>
+	    	</properties>
+  		</profile>
+  		<profile>
+    		<id>full</id>
+	    	<properties>
+	      		<env>full</env>
+	    	</properties>
   		</profile>
 	</profiles>
-	
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.uzk.hki.da</groupId>
@@ -106,6 +124,8 @@
          <destDir>/</destDir>
         </configuration>
       </plugin>
+     
+      
 			<plugin>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.6</version>
@@ -134,14 +154,6 @@
 						<include>${include.tests}</include>
 					</includes>
 	    			<argLine>-Dfile.encoding=UTF-8</argLine> 
-					
-					<skipTests>${skipUTs}</skipTests>	    			
-	    			<systemProperties>
-            			<property>
-              			<name>DIR</name>
-              			<value>BLABLA</value>
-            			</property>
-          			</systemProperties>
 				</configuration>
 				
 			</plugin>
@@ -193,6 +205,49 @@
 			    </execution>
 			  </executions>
 	</plugin>
+	
+	 <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.7</version>
+        <executions>
+        <execution>
+        <id>cleanup</id>
+            <phase>clean</phase>
+            <configuration>
+              <tasks>
+                <exec
+                  dir="${basedir}"
+                  executable="${basedir}/cleanUpInstaller.sh"
+                  failonerror="true">
+                  <arg line="" />
+                </exec>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+          <execution>
+          <id>packageit</id>
+            <phase>package</phase>
+            <configuration>
+              <tasks>
+                <exec
+                  dir="${basedir}"
+                  executable="${basedir}/build.sh"
+                  failonerror="true">
+                  <arg line="${env} ${appHome}" />
+                </exec>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
+      
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
