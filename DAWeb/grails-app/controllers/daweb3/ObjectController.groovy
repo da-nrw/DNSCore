@@ -74,7 +74,6 @@ class ObjectController {
 						baseFolder: baseFolder
 				]
 				} else {
-					if (params.search.urn!="") params.search.urn = params.search.urn.replaceAll(~":","\\+")
 					
 					def c = Object.createCriteria()
 					log.debug(params.toString())

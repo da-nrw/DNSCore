@@ -40,6 +40,10 @@
             			<td>URN:</td>
             			<td><g:textField name="search.urn" value="${params.search?.urn}" size="50"/></td>
             		</tr>
+            			<tr>
+            			<td>Identifier:</td>
+            			<td><g:textField name="search.identifier" value="${params.search?.identifier}" size="50"/></td>
+            		</tr>
             		<tr>
             			<td></td>
             			<td><g:submitButton name="submit" value="Filter anwenden"/></td>
