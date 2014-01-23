@@ -20,7 +20,6 @@
 package de.uzk.hki.da.core;
 
 import java.io.Serializable;
-import java.net.URL;
 import java.util.List;
 
 import javax.jms.Connection;
@@ -37,12 +36,6 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.xbean.XBeanBrokerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
-import ch.qos.logback.classic.util.ContextInitializer;
-import ch.qos.logback.core.joran.spi.JoranException;
-import ch.qos.logback.core.util.StatusPrinter;
 
 /**
  * Controls and coordinates the work of the action factory and its associate
