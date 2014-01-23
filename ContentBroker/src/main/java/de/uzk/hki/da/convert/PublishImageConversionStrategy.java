@@ -147,23 +147,27 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			return commandAsList;
 		} 	
 		
-		String footerText = getFooterText(audience);
-		String width="";
-		if (footerText != null && !footerText.isEmpty()) {
-
-			if (resizeWidth!=null)
-				width = "-size "+ resizeWidth + "x30";
-			else 
-				width = "-size "+ getImageWidth(pathToFile) + "x30";
-		}
-		
 		commandAsList.add("-background");
 		commandAsList.add("'#0008'");
 		commandAsList.add("-fill");
 		commandAsList.add("white");
 		commandAsList.add("-gravity");
 		commandAsList.add("center");
-		commandAsList.add(width);
+		
+		String footerText = getFooterText(audience);
+		if (footerText != null && !footerText.isEmpty()) {
+
+			if (resizeWidth!=null){
+				commandAsList.add("-size");
+				commandAsList.add(resizeWidth + "x30");
+			}
+			else{ 
+				commandAsList.add("-size");
+				commandAsList.add(getImageWidth(pathToFile) + "x30");
+			}
+		}
+		
+		
 		commandAsList.add("caption:\""+text+"\"");
 		commandAsList.add("-gravity");
 		commandAsList.add("south");
