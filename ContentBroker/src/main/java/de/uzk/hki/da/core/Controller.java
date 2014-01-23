@@ -92,9 +92,18 @@ public class Controller implements Runnable {
 			mqBroker.setPersistent(false);
 			mqBroker.deleteAllMessages();
 			mqBroker.start();
+		
+		} catch (Exception e) {
+			logger.error("Error creating CB-Controller thread: " + e,e );
+		}
+		
 			logger.debug("MQ-Broker is started: " + mqBroker.isStarted());
 		    List<ActionDescription> list = null;
-            for (;;) {
+          
+		    
+		    for (;;) {
+		    	
+		    	try {
             	Connection connection = mqConnectionFactory.createConnection();
                 connection.start();
                 
@@ -132,15 +141,13 @@ public class Controller implements Runnable {
 				} else if (command.indexOf("GRACEFUL_SHUTDOWN")>=0){ 
 					list = actionRegistry.getCurrentActionDescriptions();
 					actionFactory.pause(true);
-					int i = 0;
 					while (list.size()>0) {
 						String text = "waiting for actions to complete before shut down (" + list.size() +")";
 						TextMessage message = session.createTextMessage(text);
 	                    producer.send(message);
 	                    Thread.sleep(3000);
 	                    list = actionRegistry.getCurrentActionDescriptions();
-	                    i++;
-					}
+	                }
 					String text = "ContentBroker at " + serverName + " exiting now!";
 					TextMessage message = session.createTextMessage(text);
                     producer.send(message);
@@ -159,11 +166,10 @@ public class Controller implements Runnable {
             consumer.close();
             producer.close();
             session.close();
-            connection.close();
+            connection.close();	
+		    } catch (Exception e) {
+				logger.error("Error using CB-Controller thread: " + e,e );
 			}
-		} catch (Exception e) {
-			logger.error("Error creating/execution/usage of CB-Controller thread: " + e,e );
-		}
-			
+		    }
 		}
 }
