@@ -42,7 +42,8 @@ function restartContentBroker(){
 	kill -9 `ps -aef | grep ContentBroker.jar | grep -v grep | awk '{print $2}'` 2>/dev/null
 	rm -f /tmp/cb.running
 	./ContentBroker_start.sh
-    	tail -f log/contentbroker.log | grep "ContentBroker is up and running"
+	sleep 15
+    # tail -f log/contentbroker.log | grep "ContentBroker is up and running"
 	cd $SOURCE_PATH
 }
 

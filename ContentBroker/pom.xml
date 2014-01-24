@@ -217,7 +217,7 @@
               <tasks>
                 <exec
                   dir="${basedir}"
-                  executable="${basedir}/validate.sh"
+                  executable="${basedir}/src/main/scripts/validate.sh"
                   failonerror="true">
                   <arg line="" />
                 </exec>
@@ -234,7 +234,7 @@
               <tasks>
                 <exec
                   dir="${basedir}"
-                  executable="${basedir}/clean.sh"
+                  executable="${basedir}/src/main/scripts/clean.sh"
                   failonerror="true">
                   <arg line="" />
                 </exec>
@@ -251,7 +251,24 @@
               <tasks>
                 <exec
                   dir="${basedir}"
-                  executable="${basedir}/build.sh"
+                  executable="${basedir}/src/main/scripts/package.sh"
+                  failonerror="true">
+                  <arg line="${env} ${appHome}" />
+                </exec>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+          <execution>
+          <id>installit</id>
+            <phase>pre-integration-test</phase>
+            <configuration>
+              <tasks>
+                <exec
+                  dir="${basedir}"
+                  executable="${basedir}/pre-integration-test.sh"
                   failonerror="true">
                   <arg line="${env} ${appHome}" />
                 </exec>
