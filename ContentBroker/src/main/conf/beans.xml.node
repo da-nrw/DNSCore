@@ -63,39 +63,7 @@
 				<entry key="PIPGenCleanWorkAreaAction" value="3" />
 			</util:map>
 		</property>
-		<property name="actionPriority">
-			<util:list>
-				<value>RestartIngestWorkflowAction</value>
-				<value>IngestArchiveReplicationCheckAction</value>
-				<value>IngestArchiveReplicationAction</value>
-				<value>IngestTarAction</value>
-				<value>IngestCreatePremisAction</value>
-				<value>IngestBuildAIPAction</value>
-				<value>IngestPrepareSendToPresenterAction</value>
-				<value>IngestPresUpdateMetadataAction</value>
-				<value>IngestShortenFileNamesAction</value>
-				<value>IngestConvertForPresentationAction</value>
-				<value>IngestScanForPresentationAction</value>
-				<value>FriendshipConversionAction</value>
-				<value>IngestCreatePremisAction</value>
-				<value>IngestCheckFormatsAction</value>
-				<value>IngestUpdateMetadataAction</value>
-				<value>IngestConvertAction</value>
-				<value>IngestRegisterURNAction</value>
-				<value>IngestScanAction</value>
-				<value>IngestUnpackAction</value>
-				<value>RetrievalObjectToWorkAreaAction</value>
-				<value>RetrievalAction</value>
-				<value>AuditAction</value>
-				<value>PIPGenCleanWorkAreaAction</value>
-				<value>PIPGenPrepareSendToPresenterAction</value>
-				<value>PIPGenUpdateMetadataAction</value>
-				<value>PIPGenShortenFileNamesAction</value>
-				<value>PIPGenConvertAction</value>
-				<value>PIPGenScanForPresentationAction</value>
-				<value>PIPGenObjectToWorkAreaAction</value>
-			</util:list>
-		</property>
+		<property name="actionPriority" ref="actionOrdering" />
 		<property name="blockedBy">
 			<util:map>
 				<entry key="IngestArchiveReplicationAction" value="IngestArchiveReplicationCheckAction"/>

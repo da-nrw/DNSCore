@@ -10,7 +10,7 @@
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
            
 	<import resource="classpath*:META-INF/beans-actions-presentation.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>
+	<import resource="classpath*:META-INF/beans-infrastructure.pres.xml"/>
     
     <task:executor id="taskExecutor" pool-size="10"
         queue-capacity="20" rejection-policy="CALLER_RUNS" />
@@ -28,14 +28,7 @@
 				<entry key="SendToPresenterAction" value="3" />
 			</util:map>
 		</property>
-		<property name="actionPriority">
-			<util:list>
-				<value>IndexESAction</value>
-				<value>CreateEDMAction</value>
-				<value>SendToPresenterAction</value>
-				<value>FetchPIPsAction</value>
-			</util:list>
-		</property>
+		<property name="actionPriority" ref="actionOrdering" />
 	</bean>
 	
 </beans>
