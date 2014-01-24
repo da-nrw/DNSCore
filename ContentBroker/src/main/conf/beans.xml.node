@@ -10,33 +10,13 @@
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
            
 	<import resource="classpath*:META-INF/beans-actions.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.xml"/>
+	<import resource="classpath*:META-INF/beans-infrastructure.node.xml"/>
 
 	<bean class="de.uzk.hki.da.core.LoadBalancer" id="loadBalancer">
 		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
 		<property name="fileSizeFactor" value="3" />
-		<property name="freeDiskSpacePercent" value="5" />
+		<property name="freeDiskSpacePercent" value="50" />
 	</bean>
-	
-	 <bean class="de.uzk.hki.da.format.FormatScanService" id="formatScanService" init-method="healthCheckFormatIdentifiers">
-
-        <constructor-arg ref="centralDao" />
-
-        <property name="pronomFormatIdentifier" ref="pronomFormatIdentifier"/>
-        <property name="formatSecondaryAttributeIdentifiers">
-            <util:set>
-                <ref bean="videoCodecFormatIdentifier" />
-            </util:set>
-        </property>
-    </bean>
-	
-    <bean id="contentBroker" class="de.uzk.hki.da.core.ContentBroker" init-method="init">
-        <property name="taskExecutor" ref="taskExecutor" />
-        <property name="actionFactory" ref="actionFactory" />
-        <property name="serverSocketNumber" value="${cb.serverSocketNumber}" />
-        <property name="mqBroker" ref="mqBroker" />
-        <property name="mqConnectionFactory" ref="mqConnectionFactory" />
-    </bean>
     
     <task:executor id="taskExecutor" pool-size="10"
 		queue-capacity="20" rejection-policy="CALLER_RUNS" />
@@ -78,7 +58,6 @@
 				<entry key="PIPGenUpdateMetadataAction" value="3" />
 				<entry key="PIPGenShortenFileNamesAction" value="3" />
 				<entry key="PIPGenConvertAction" value="3" />
-				<entry key="PIPGenPreprocessForPresentationAction" value="3" />
 				<entry key="PIPGenScanForPresentationAction" value="3" />
 				<entry key="PIPGenObjectToWorkAreaAction" value="3" />
 				<entry key="PIPGenCleanWorkAreaAction" value="3" />
@@ -114,7 +93,6 @@
 				<value>PIPGenShortenFileNamesAction</value>
 				<value>PIPGenConvertAction</value>
 				<value>PIPGenScanForPresentationAction</value>
-				<value>PIPGenPreprocessForPresentationAction</value>
 				<value>PIPGenObjectToWorkAreaAction</value>
 			</util:list>
 		</property>

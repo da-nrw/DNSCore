@@ -73,8 +73,8 @@ public class PublishAudioConversionStrategyTests {
 		};
 		when(cli.execute(cmdINSTITUTION)).thenReturn(true);
 		
-		PublishAudioConversionStrategy s = new PublishAudioConversionStrategy();
-		s.setCLIConnector( cli );
+		PublishAudioConversionStrategy strategy = new PublishAudioConversionStrategy();
+		strategy.setCLIConnector( cli );
 		
 		
 		Object o = TESTHelper.setUpObject("123",basePath);
@@ -83,11 +83,11 @@ public class PublishAudioConversionStrategyTests {
 		right.setAudioRestriction(new AudioRestriction());
 		right.getAudioRestriction().setDuration(10);
 		o.getRights().getPublicationRights().add(right);
-		s.setObject(o);
+		strategy.setObject(o);
 		
 		ConversionInstruction ci = new ConversionInstruction();
 		ci.setSource_file(new DAFile(o.getLatestPackage(),"a","audiofile.wav"));
 		ci.setTarget_folder("target/");
-		s.convertFile(ci);
+		strategy.convertFile(ci);
 	}
 }

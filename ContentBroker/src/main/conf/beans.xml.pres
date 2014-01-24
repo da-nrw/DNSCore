@@ -10,21 +10,7 @@
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
            
 	<import resource="classpath*:META-INF/beans-actions-presentation.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.xml"/>
-
-	<bean class="de.uzk.hki.da.core.LoadBalancer" id="loadBalancer">
-		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
-		<property name="fileSizeFactor" value="3" />
-		<property name="freeDiskSpacePercent" value="5" />
-	</bean>
-	
-    <bean id="contentBroker" class="de.uzk.hki.da.core.ContentBroker" init-method="init">
-        <property name="taskExecutor" ref="taskExecutor" />
-        <property name="actionFactory" ref="actionFactory" />
-        <property name="serverSocketNumber" value="${cb.serverSocketNumber}" />
-        <property name="mqBroker" ref="mqBroker" />
-        <property name="mqConnectionFactory" ref="mqConnectionFactory" />
-    </bean>
+	<import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>
     
     <task:executor id="taskExecutor" pool-size="10"
         queue-capacity="20" rejection-policy="CALLER_RUNS" />

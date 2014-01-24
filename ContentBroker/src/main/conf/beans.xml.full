@@ -11,22 +11,15 @@
 
 
 	<import resource="classpath*:META-INF/beans-actions.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.xml"/>
 	<import resource="classpath*:META-INF/beans-actions-presentation.xml"/>
+	<import resource="classpath*:META-INF/beans-infrastructure.node.xml"/>
 
 	<bean class="de.uzk.hki.da.core.LoadBalancer" id="loadBalancer">
 		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
 		<property name="fileSizeFactor" value="3" />
-		<property name="freeDiskSpacePercent" value="5" />
+		<property name="freeDiskSpacePercent" value="50" />
 	</bean>
 
-	<bean id="contentBroker" class="de.uzk.hki.da.core.ContentBroker" init-method="init">
-        <property name="taskExecutor" ref="taskExecutor" />
-        <property name="actionFactory" ref="actionFactory" />
-		<property name="serverSocketNumber" value="${cb.serverSocketNumber}" />
-    	<property name="mqBroker" ref="mqBroker" />
-        <property name="mqConnectionFactory" ref="mqConnectionFactory" />
-    </bean>
 	 
 	<bean class="de.uzk.hki.da.format.FormatScanService" id="formatScanService" init-method="healthCheckFormatIdentifiers">
 		<constructor-arg ref="centralDao" />
@@ -81,7 +74,6 @@
 				<entry key="PIPGenPrepareSendToPresenterAction" value="3" />
 				<entry key="PIPGenShortenFileNamesAction" value="3" />
 				<entry key="PIPGenUpdateMetadataAction" value="3" />
-				<entry key="PIPGenPreprocessForPresentationAction" value="3" />
 				<entry key="PIPGenConvertAction" value="3" />
 				<entry key="PIPGenScanForPresentationAction" value="3" />
 				<entry key="PIPGenObjectToWorkAreaAction" value="3" />
@@ -119,7 +111,6 @@
 				<value>PIPGenPrepareSendToPresenterAction</value>
 				<value>PIPGenShortenFileNamesAction</value>
 				<value>PIPGenUpdateMetadataAction</value>
-				<value>PIPGenPreprocessForPresentationAction</value>
 				<value>PIPGenConvertAction</value>
 				<value>PIPGenScanForPresentationAction</value>
 				<value>PIPGenObjectToWorkAreaAction</value>

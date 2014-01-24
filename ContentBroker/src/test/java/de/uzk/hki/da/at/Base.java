@@ -83,7 +83,7 @@ public class Base {
 	private void instantiateGrid(String gridImplBeanName,String dcaImplBeanName) {
 		
 		AbstractApplicationContext context =
-				new FileSystemXmlApplicationContext("src/main/resources/META-INF/beans-core.xml");
+				new FileSystemXmlApplicationContext("src/main/resources/META-INF/beans-infrastructure.core.xml");
 		gridFacade = (GridFacade) context.getBean(gridImplBeanName);
 		distributedConversionAdapter = (DistributedConversionAdapter) context.getBean(dcaImplBeanName);
 		context.close();

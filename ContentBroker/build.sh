@@ -89,16 +89,12 @@ dev)
 	createStorageFolder	
 	cp -f src/main/scripts/ffmpeg.sh.fake $INSTALLER/ffmpeg.sh
 	cp src/main/conf/sqltool.rc ~/
-	prepareCustomInstallation node hsql debug
+	prepareCustomInstallation node.test hsql debug
 ;;
 vm3)
 	cp src/main/conf/config.properties.vm3 $INSTALLER/config.properties
-	prepareCustomInstallation node postgres debug
+	prepareCustomInstallation node.test postgres debug
 	INSTALL_PATH=/data/danrw/ContentBroker
-;;
-integration)
-	cp src/main/conf/config.properties.vm3 $INSTALLER/config.properties
-	prepareCustomInstallation integration postgres debug
 ;;
 full)
 	prepareCustomInstallation full none debug

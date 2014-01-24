@@ -55,10 +55,7 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 	
 	/** The pkg. */
 	private Package pkg;
-	
-	/** The object. */
-	private Object object;
-	
+
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#convertFile(de.uzk.hki.da.model.ConversionInstruction)
 	 */

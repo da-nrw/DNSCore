@@ -33,7 +33,6 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -46,12 +45,6 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 	private static Logger logger = 
 			LoggerFactory.getLogger(PublishAudioConversionStrategy.class);
 	
-	/** The pkg. */
-	private Package pkg;
-	
-	/** The object. */
-	private Object  object;
-	
 	/** The cli connector. */
 	private CLIConnector cliConnector;
 
@@ -62,11 +55,11 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 	@Override
 	public List<Event> convertFile(ConversionInstruction ci)
 			throws FileNotFoundException {
-		if (pkg==null) throw new IllegalStateException("pkg not set");
+		if (object==null) throw new IllegalStateException("object not set");
+		
 		if (cliConnector==null) throw new IllegalStateException("cliConnector not set");
 		
 		List<Event> results = new ArrayList<Event>();
-		
 		
 		String cmdPUBLIC[] = new String[] {
 				"sox",
@@ -80,7 +73,7 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 		if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdPUBLIC,getDurationRestrictionsForAudience("PUBLIC")))){
 			throw new RuntimeException("command not succeeded");
 		}
-		DAFile f1 = new DAFile(pkg,ci.getTarget_folder(),object.getDataPath()+"dip/public/"+ci.getTarget_folder()+FilenameUtils.getBaseName(
+		DAFile f1 = new DAFile(object.getLatestPackage(),ci.getTarget_folder(),object.getDataPath()+"dip/public/"+ci.getTarget_folder()+FilenameUtils.getBaseName(
 				ci.getSource_file().toRegularFile().getAbsolutePath())+".mp3");
 		
 		Event e = new Event();
@@ -100,7 +93,7 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 		if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdINSTITUTION,getDurationRestrictionsForAudience("INSTITUTION")))){
 			throw new RuntimeException("command not succeeded");
 		}
-		DAFile f2 = new DAFile(pkg,ci.getTarget_folder(),object.getDataPath()+"dip/institution/"+ci.getTarget_folder()+FilenameUtils.getBaseName(
+		DAFile f2 = new DAFile(object.getLatestPackage(),ci.getTarget_folder(),object.getDataPath()+"dip/institution/"+ci.getTarget_folder()+FilenameUtils.getBaseName(
 				ci.getSource_file().toRegularFile().getAbsolutePath())+".mp3");
 		
 		Event e1 = new Event();
@@ -161,7 +154,6 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 	@Override
 	public void setObject(Object obj) {
 		this.object = obj;
-		this.pkg = obj.getLatestPackage();
 	}
 
 }

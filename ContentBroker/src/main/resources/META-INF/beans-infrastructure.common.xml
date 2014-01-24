@@ -9,7 +9,15 @@
            http://www.springframework.org/schema/task
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
           
-    <import resource="classpath*:META-INF/beans-core.xml"/>      
+    <import resource="classpath*:META-INF/beans-infrastructure.core.xml"/>      
+    
+    <bean id="contentBroker" class="de.uzk.hki.da.core.ContentBroker" init-method="init">
+        <property name="taskExecutor" ref="taskExecutor" />
+        <property name="actionFactory" ref="actionFactory" />
+        <property name="serverSocketNumber" value="${cb.serverSocketNumber}" />
+          <property name="mqBroker" ref="mqBroker" />
+       <property name="mqConnectionFactory" ref="mqConnectionFactory" />
+    </bean>
           
 	<util:map id="updateMetadataNamespaces">
   		<entry key="mets" value="http://www.loc.gov/METS/"/>

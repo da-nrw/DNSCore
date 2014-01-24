@@ -249,14 +249,9 @@
 	<bean id="PIPGenConvertAction" class="de.uzk.hki.da.cb.ConvertAction"
 		scope="prototype">
 		<property name="startStatus" value="720" />
-		<property name="endStatus" value="730" />
+		<property name="endStatus" value="740" />
 		<property name="name" value="PIPGenConvertAction" />
 		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
-	</bean>
-	<bean id="PIPGenPreprocessForPresentationAction" class="de.uzk.hki.da.cb.PreprocessForPresentationAction" scope="prototype">
-		<property name="startStatus" value="730" />
-		<property name="endStatus" value="740" />
-		<property name="name" value="IngestScanForPresentationAction" />
 	</bean>
 	<bean id="PIPGenShortenFileNamesAction" class="de.uzk.hki.da.cb.ShortenFileNamesAction"
 		scope="prototype">

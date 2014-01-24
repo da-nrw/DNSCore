@@ -27,6 +27,10 @@ public abstract class PublishConversionStrategyBase implements ConversionStrateg
 	 * @return
 	 */
 	protected PublicationRight getPublicationRightForAudience(String audience){
+		if (object==null) throw new IllegalStateException("object not set");
+		if (object.getRights()==null) throw new IllegalStateException("object rights not set");
+		if (object.getRights().getPublicationRights()==null) throw new IllegalStateException("object publication rights not set");
+		
 		for (PublicationRight right:object.getRights().getPublicationRights()){
 			if (right.getAudience().toString().equals(audience)) return right;
 		}
