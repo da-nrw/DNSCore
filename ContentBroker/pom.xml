@@ -268,7 +268,7 @@
               <tasks>
                 <exec
                   dir="${basedir}"
-                  executable="${basedir}/pre-integration-test.sh"
+                  executable="${basedir}/src/main/scripts/pre-integration-test.sh"
                   failonerror="true">
                   <arg line="${env} ${appHome}" />
                 </exec>

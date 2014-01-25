@@ -87,8 +87,8 @@ dev)
 	rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
 	install $INSTALL_PATH
 	
-	./populatetestdb.sh create
-	./populatetestdb.sh populate
+	src/main/scripts/populatetestdb.sh create
+	src/main/scripts/populatetestdb.sh populate
 	
 	prepareTestEnvironment $INSTALL_PATH
 	restartContentBroker $INSTALL_PATH
@@ -109,9 +109,6 @@ vm3)
 	createIrodsDirs
 	prepareTestEnvironment $INSTALL_PATH
 	restartContentBroker $INSTALL_PATH
-;;
-integration)
-	cd ../installation; ./install.sh $INSTALL_PATH; cd ../ContentBroker;
 ;;
 esac
 

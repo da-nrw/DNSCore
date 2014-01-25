@@ -10,16 +10,33 @@
 * Even better: Take a short break and execute all your acceptance tests locally.
 * For every change in GitHub the whole test suite should be executed on [ci@machine] and a binary should get build and stored in the maven repository.
 
-### Create a local installation for development
+### Maven build lifecycle and local installation for development
+
+All you need to do for a build that gets automatically deployed locally and acceptance tested
+is to run 
 
 1. goto [developer@machine]
 1. if !exists [CBInstallDir], mkdir [CBInstallDir]
 1. cd DNSCore/ContentBroker
-2. mvn package -Pdev -DappHome=[CBInstallDir]
-3. ./install.sh dev [CBInstallDir]
-5. Wait for message "INFO  de.uzk.hki.da.core.ContentBroker - ContentBroker is up and running". Then CTRL-C.
-6. Run all acceptance tests with: mvn failsafe:integration-test
-7. Run single acceptance test with: mvn failsafe:integration-test -Dit.test=ATUseCaseX
+1. mvn verify -Pdev -DappHome=[CBInstallDir]
+
+There are some custom scripts which are plugged in to the maven lifecycle which you find under src/main/scripts.
+For more control you can directly make use of them if you follow these steps
+
+1. cd DNSCore/ContentBroker
+1. mvn package -Pdev -DappHome=[CBInstallDir] (this will build an installer at DNSCore/installation)
+1. src/main/scripts/pre-integration-test.sh (this will a) install the CB to [CBInstallDir] and b) prepare the testing environment)
+1. mvn failsafe:integration-test (Running all acceptance tests)
+1. mvn failsafe:integration-test -Dit.test=ATUseCaseX (Run a single acceptance test)
+
+If you only want do deploy the CB locally without the need for acceptance testing you can do it like this:
+
+1. cd DNSCore/ContentBroker
+1. mvn package -Pdev -DappHome=[CBInstallDir]
+1. cd DNSCore/installation
+1. ./install.sh [CBInstallDir] (installing the CB)
+1. cd [CBInstallDir]
+1. ./ContentBroker_start.sh
 
 ### Build the release candidate
 At the moment we do it manually. Jenkins integration is planned for may14.
@@ -27,17 +44,12 @@ At the moment we do it manually. Jenkins integration is planned for may14.
 1. goto [ci@machine]
 1. cd development/DNSCore
 2. git -- check out the branch/revision you want to build
-3. ./build.sh vm3
-4. ./install.sh vm3
-5. Wait for message "INFO  de.uzk.hki.da.core.ContentBroker - ContentBroker is up and running". Then CTRL-C.
-6. mvn failsafe:integration-test
+3. mvn clean && mvn verify -Pvm3
 
 With the current setup, make sure CB is stopped at vm2!
 
-10. goto vm2:ContentBroker; ./ContentBroker_start.sh
 11. Manuelles Testen (testpackage_klein_und_muss_durchlaufen.*)
 
-3. ??? Wenn letzter Schritt erfolgreich, dann ./integration.sh
 9. ??? Wenn letzter Schritt erfolgreich, dann ./deliver.sh vm2
 
 ### Deploy to production nodes
@@ -64,7 +76,8 @@ Every fully tested release candidate can be rolled out following this workflow:
 * pres (e.g. for vm2,danrw)
 * node (e.g. for prod,lvr,eunomia )
 
-
 ### Query your hsqldb easily on [developer@machine]
-1. ./sqlrequest "[SQL-Abfrage]"
+
+1. cd DNSCore/ContentBroker
+1. src/main/scripts/sqlrequest.sh "[SQL-Abfrage]"
 

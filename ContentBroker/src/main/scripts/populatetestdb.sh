@@ -2,6 +2,9 @@
 
 # author: Daniel M. de Oliveira
 
+HIER=`pwd`
+cd /tmp
+
 if [ "$1" = "create" ] 
 then
 
@@ -17,6 +20,8 @@ then
 	echo Recreating da-nrw schema in hsql database.
 	rm -r mydb.tmp 2> /dev/null
 	rm mydb.*      2> /dev/null
+	
+	cd $HIER
 	java -cp src/main/hsqldb/lib/hsqldb.jar org.hsqldb.server.Server --database.0 file:mydb --dbname.0 xdb &
 	
 	sleep 2
@@ -70,6 +75,7 @@ fi
 for i in "${sqls[@]}"
 do
 	echo "$i"
+	cd $HIER
 	java -jar src/main/hsqldb/lib/sqltool.jar --autoCommit --sql "$i" xdb 
 done
 
