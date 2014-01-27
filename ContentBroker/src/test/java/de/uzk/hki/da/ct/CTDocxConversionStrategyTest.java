@@ -20,19 +20,15 @@
 package de.uzk.hki.da.ct;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import de.uzk.hki.da.convert.CLIConnector;
 import de.uzk.hki.da.convert.DocxConversionStrategy;
@@ -73,10 +69,11 @@ public class CTDocxConversionStrategyTest {
 	@Before
 	public void setUp() throws IOException{
 		
+		FileUtils.copyFile(new File("src/main/scripts/PDFA_def.ps"),new File("conf/PDFA_def.ps"));
+		
 		o = TESTHelper.setUpObject("1", basePath);
 		o.reattach();
 		cs.setObject(o);
-		new File(basePath + "TEST/1/data/rep+a/_Docx.pdf").createNewFile();
 		new File(basePath + "TEST/1/data/rep+b").mkdirs();
         	
 	}
@@ -120,25 +117,9 @@ public class CTDocxConversionStrategyTest {
 		
 		
 		
-		CLIConnector cli = mock ( CLIConnector.class );
-		when(cli.execute((String[]) anyObject())).thenAnswer(new Answer<java.lang.Object> () {
-			public Boolean answer(InvocationOnMock invocation) {
-			    java.lang.Object[] args = invocation.getArguments();
-		         String[] cmdarr = (String[]) args[0];
-				
-		         for (String s : cmdarr) {
-		        	 System.out.print(s + " ");
-		         }
-		         return true;
-		    }
-		});	cs.setCLIConnector(cli);
+		CLIConnector cli = new CLIConnector(); 
+		cs.setCLIConnector(cli);
 		
-		
-		
-		
-		
-			
-			
 		cr.setTarget_suffix("pdf");
 		ci.setConversion_routine(cr);
 		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","Docx.docx"));
@@ -157,8 +138,8 @@ public class CTDocxConversionStrategyTest {
 	@After
 	public void cleanup() throws IOException {
 		new File(basePath + "TEST/1/data/rep+b/Docx.pdf").delete();
-		new File(basePath + "TEST/1/data/rep+a/_Docx.pdf").delete();
-		
+		new File(basePath + "TEST/1/data/rep+b/_Docx.pdf").delete();
+		new File("conf/PDFA_def.ps").delete();
 	}
 	
 
