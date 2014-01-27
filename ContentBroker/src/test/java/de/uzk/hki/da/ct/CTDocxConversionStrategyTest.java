@@ -76,7 +76,7 @@ public class CTDocxConversionStrategyTest {
 		o = TESTHelper.setUpObject("1", basePath);
 		o.reattach();
 		cs.setObject(o);
-		new File( o.getDataPath() + o.getNameOfNewestRep()+"/_Docx.pdf").createNewFile();
+		new File(basePath + "TEST/1/data/rep+a/_Docx.pdf").createNewFile();
 	}
 	
 	
