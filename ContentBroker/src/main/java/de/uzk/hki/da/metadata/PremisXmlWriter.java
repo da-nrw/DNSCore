@@ -103,7 +103,7 @@ public class PremisXmlWriter {
 		FileOutputStream outputStream = new FileOutputStream(f);		
 
 		try {
-	    	writer = outputFactory.createXMLStreamWriter(outputStream);
+	    	writer = outputFactory.createXMLStreamWriter(outputStream, "UTF-8");
 			} catch (XMLStreamException e) {
 			throw new IOException("Failed to create XMLStreamWriter", e);
 			}
