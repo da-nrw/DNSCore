@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,8 +110,8 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			String baseName = FilenameUtils.getBaseName(target.toRegularFile().getAbsolutePath());
 			String extension = FilenameUtils.getExtension(target.toRegularFile().getAbsolutePath());
 			logger.info("Finding files matching wildcard expression \""+baseName+"*."+extension+"\" in order to check them and test if conversion was successful");
-			List<File> wild = findFilesWithWildcard(
-					new File(FilenameUtils.getFullPath(target.toRegularFile().getAbsolutePath())), baseName+"-.\\."+extension);
+			List<File> wild = findFilesWithRegex(
+					new File(FilenameUtils.getFullPath(target.toRegularFile().getAbsolutePath())), baseName+"-.[.]"+extension);
 			if (!wild.isEmpty()){
 				for (File f : wild){
 					DAFile daf = new DAFile(pkg,"dip/"+audience.toLowerCase(),Utilities.slashize(ci.getTarget_folder())+f.getName());
@@ -147,17 +148,17 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 	 * Find files with wildcard.
 	 *
 	 * @param folderToScan the folder to scan
-	 * @param wildcardExpression the wildcard expression
+	 * @param regexExpression the wildcard expression
 	 * @return all files matching wildcardExpression
 	 */
-	private List<File> findFilesWithWildcard(File folderToScan,String wildcardExpression){
+	private List<File> findFilesWithRegex(File folderToScan,String regexExpression){
 		logger.debug("folder:"+folderToScan);
 		List<File> result = new ArrayList<File>();
 		
-		FileFilter fileFilter = new WildcardFileFilter(wildcardExpression);
+		FileFilter fileFilter = new RegexFileFilter(regexExpression);
 		File[] files = folderToScan.listFiles(fileFilter);
 		for (int i = 0; i < files.length; i++) {
-			logger.debug("found file via wildcard expression");
+			logger.debug("found file via regex expression");
 			result.add(files[i]);
 		}
 		return result;

@@ -177,7 +177,7 @@ public class PremisXmlReader implements XmlReader{
 			for (int i = 0; i < objectElements.size(); i++) {
 				String objectIdType = objectElements.get(i).getFirstChildElement("objectIdentifier", PREMIS_NS)
 						 .getFirstChildElement("objectIdentifierType", PREMIS_NS).getValue();				
-				logger.debug(objectIdType);
+				
 				if (objectIdType.toUpperCase().equals("URN") || objectIdType.toUpperCase().equals("OBJECT_BUSINESS_KEY"))
 					object = buildObject(objectElements.get(i));
 				
