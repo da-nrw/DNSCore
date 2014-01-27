@@ -1,5 +1,5 @@
 beans = {
   jmsConnectionFactory(org.apache.activemq.ActiveMQConnectionFactory) {
-    brokerURL = 'tcp://localhost:4455'
+    brokerURL = 'tcp://' + application.config.irods.server +':'+ application.config.cb.port
   }
 }
