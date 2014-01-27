@@ -77,6 +77,8 @@ public class CTDocxConversionStrategyTest {
 		o.reattach();
 		cs.setObject(o);
 		new File(basePath + "TEST/1/data/rep+a/_Docx.pdf").createNewFile();
+		new File(basePath + "TEST/1/data/rep+b").mkdirs();
+        	
 	}
 	
 	
