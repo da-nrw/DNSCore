@@ -106,26 +106,26 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 				throw new RuntimeException("convert did not succeed: " + Arrays.toString(commandAsArray));
 			
 			// In order to support multipage tiffs, we check for files by wildcard expression
-//			String baseName = FilenameUtils.getBaseName(target.toRegularFile().getAbsolutePath());
-//			String extension = FilenameUtils.getExtension(target.toRegularFile().getAbsolutePath());
-//			logger.info("Finding files matching wildcard expression \""+baseName+"*."+extension+"\" in order to check them and test if conversion was successful");
-//			List<File> wild = findFilesWithWildcard(
-//					new File(FilenameUtils.getFullPath(target.toRegularFile().getAbsolutePath())), baseName+"*."+extension);
-//			if (!wild.isEmpty()){
-//				for (File f : wild){
-//					DAFile daf = new DAFile(pkg,"dip/"+audience.toLowerCase(),Utilities.slashize(ci.getTarget_folder())+f.getName());
-//					logger.debug("new dafile:"+daf);
-//										
-//					Event e = new Event();
-//					e.setType("CONVERT");
-//					e.setDetail(Utilities.createString(commandAsArray));
-//					e.setSource_file(ci.getSource_file());
-//					e.setTarget_file(daf);
-//					e.setDate(new Date());
-//					
-//					results.add(e);
-//				}
-//			}
+			String baseName = FilenameUtils.getBaseName(target.toRegularFile().getAbsolutePath());
+			String extension = FilenameUtils.getExtension(target.toRegularFile().getAbsolutePath());
+			logger.info("Finding files matching wildcard expression \""+baseName+"*."+extension+"\" in order to check them and test if conversion was successful");
+			List<File> wild = findFilesWithWildcard(
+					new File(FilenameUtils.getFullPath(target.toRegularFile().getAbsolutePath())), baseName+"-.\\."+extension);
+			if (!wild.isEmpty()){
+				for (File f : wild){
+					DAFile daf = new DAFile(pkg,"dip/"+audience.toLowerCase(),Utilities.slashize(ci.getTarget_folder())+f.getName());
+					logger.debug("new dafile:"+daf);
+										
+					Event e = new Event();
+					e.setType("CONVERT");
+					e.setDetail(Utilities.createString(commandAsArray));
+					e.setSource_file(ci.getSource_file());
+					e.setTarget_file(daf);
+					e.setDate(new Date());
+					
+					results.add(e);
+				}
+			}
 			
 			// Since this case is a subcase of the wildcard case, we don't need it except for the unit test which wont' work without this.
 //			else{
