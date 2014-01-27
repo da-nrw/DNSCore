@@ -125,8 +125,12 @@ public class RegisterURNAction extends AbstractAction {
 			try {
 				urn = metsUrnReader.readURN(metsFile.toRegularFile());
 			} catch (Exception e) {
+				Exception causeEx = (Exception) e.getCause();
+				while (causeEx.getCause() != null) {
+					causeEx = (Exception) causeEx.getCause();					
+				};
 				throw new UserException(UserExceptionId.READ_METS_ERROR, "Failed to read URN from mets file " +
-					metsFile.toRegularFile().getAbsolutePath(), metsFile.getRelative_path(), e);
+					metsFile.toRegularFile().getAbsolutePath(), causeEx.getMessage());
 			}
 			
 			return urn;
