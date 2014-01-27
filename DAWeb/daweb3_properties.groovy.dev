@@ -5,16 +5,16 @@ environments {
 		//log4j = {
 		//		debug   'grails.app'
 		//}
-		cb.homepath = "/data/danrw/ContentBroker/"
+		cb.port = 4455
 		daweb3.logo = "DANRW-Logo_small.png"
 		irods.server = "localhost"
-		irods.default_resc = "02-da-nrw-vm2.hki.uni-koeln.de"
-		irods.zone = "da-nrw"
-		localNode.userAreaRootPath = "/data/danrw/www/default/webdav"
-		localNode.ingestAreaRootPath = "/data/danrw/ingest"
-		transferNode.downloadLinkPrefix = "https://da-nrw-vm2.hki.uni-koeln.de/webdav"
-		fedora.urlPrefix = "http://da-nrw-vm2.hki.uni-koeln.de:8080/fedora/objects/"
-		cb.presServer= "localhost"
+		irods.default_resc = "your irods resc name"
+		irods.zone = "your home zone name"
+		localNode.userAreaRootPath = "/path_to_/userhome/SIP"
+		localNode.ingestAreaRootPath = "path_to_/ingest"
+		transferNode.downloadLinkPrefix = "prefix for URL to download DIP"
+		fedora.urlPrefix = "http://prefix_for_fedora/fedora/objects/"
+		cb.presServer= "CB nodename of fedora Server"
 		
 		// here it's up to you to decide whether environment you want to use:
 		dataSource {

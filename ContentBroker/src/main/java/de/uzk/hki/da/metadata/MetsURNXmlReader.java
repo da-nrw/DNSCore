@@ -65,17 +65,17 @@ public class MetsURNXmlReader {
 
 		@Override
 		public void error(SAXParseException e) throws SAXException {
-			throw new SAXException("Error while parsing premis file", e);
+			throw new SAXException("Error while parsing mets file", e);
 		}
 
 		@Override
 		public void fatalError(SAXParseException e) throws SAXException {
-			throw new SAXException("Fatal error while parsing premis file", e);
+			throw new SAXException("Fatal error while parsing mets file", e);
 		}
 
 		@Override
 		public void warning(SAXParseException e) throws SAXException {
-			logger.warn("Warning while parsing premis file", e);
+			logger.warn("Warning while parsing mets file", e);
 		}
 	};
 

@@ -27,6 +27,8 @@ import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.shared.ConfigException;
 
+import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.metadata.MetsURNXmlReader;
 import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.model.DAFile;
@@ -89,7 +91,8 @@ public class RegisterURNAction extends AbstractAction {
 		try {
 			premisObject = reader.deserialize(premisFile);
 		} catch (Exception e) {
-			throw new RuntimeException("Couldn't deserialize premis file " + premisFile.getAbsolutePath(), e);
+			throw new UserException(UserExceptionId.READ_SIP_PREMIS_ERROR,
+					"Couldn't deserialize premis file " + premisFile.getAbsolutePath(), e);
 		}
 		
 		String urn = null;
@@ -122,8 +125,8 @@ public class RegisterURNAction extends AbstractAction {
 			try {
 				urn = metsUrnReader.readURN(metsFile.toRegularFile());
 			} catch (Exception e) {
-				throw new RuntimeException("Failed to read URN from mets file " +
-					metsFile.toRegularFile().getAbsolutePath(), e);
+				throw new UserException(UserExceptionId.READ_METS_ERROR, "Failed to read URN from mets file " +
+					metsFile.toRegularFile().getAbsolutePath(), metsFile.getRelative_path(), e);
 			}
 			
 			return urn;

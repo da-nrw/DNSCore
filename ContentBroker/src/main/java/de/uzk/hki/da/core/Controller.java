@@ -33,6 +33,9 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.usage.MemoryUsage;
+import org.apache.activemq.usage.SystemUsage;
+import org.apache.activemq.usage.TempUsage;
 import org.apache.activemq.xbean.XBeanBrokerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,9 +86,19 @@ public class Controller implements Runnable {
 			}
 			logger.debug("starting JMS -Service at: " + serverName + " "+ socketNumber);
 			mqBroker.setPersistent(false);
-			mqBroker.deleteAllMessages();
 			mqBroker.start();
-		
+			mqBroker.setDeleteAllMessagesOnStartup(true);
+			MemoryUsage mu = new MemoryUsage();
+			mu.setLimit(167772160L);
+			
+			TempUsage tu = new TempUsage();
+			tu.setLimit(4194304000L);
+			SystemUsage memoryManager = new SystemUsage();
+			
+			memoryManager.setTempUsage(tu);
+			memoryManager.setMemoryUsage(mu);
+
+			mqBroker.setSystemUsage(memoryManager );
 		} catch (Exception e) {
 			logger.error("Error creating CB-Controller thread: " + e,e );
 		}

@@ -110,7 +110,8 @@ class StatusController {
 		
 		if (params.urn) {
 				def contractor = Contractor.findByShortName(session.bauthuser)
-				instance = Object.findByContractorAndUrn(contractor, params.urn)
+				instance = Object.findByContractorAndUrnAndObject_stateBetween(contractor, params.urn,)
+				
 		}
 		if (params.origName) {
 				def contractor = Contractor.findByShortName(session.bauthuser)
@@ -139,8 +140,7 @@ class StatusController {
 				} 
 		// ambiguous item : mainly due to missing internal uniqueness of field urn!
 		} else if (instance != null && instance.count()>1){
-			response.status = 404
-			result.status = "ambiguous item, alter request"
+			result = [status: "ambiguous item, please alter request"]
 			render result as JSON
 			return
 
