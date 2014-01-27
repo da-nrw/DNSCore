@@ -128,7 +128,7 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 		if (!cliConnector.execute(commandAsArray)){
 			throw new RuntimeException("GS command not succeeded");
 		}
-		// TODO: should be done with separate CR
+		
 		try {
 			if (tempFile.exists()) {
 				result.delete();
