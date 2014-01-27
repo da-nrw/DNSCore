@@ -20,6 +20,7 @@
 package de.uzk.hki.da.convert;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,18 +105,63 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			if (!cliConnector.execute(commandAsArray))
 				throw new RuntimeException("convert did not succeed: " + Arrays.toString(commandAsArray));
 			
-			Event e = new Event();
-			e.setDetail(Utilities.createString(commandAsList));
-			e.setSource_file(ci.getSource_file());
-			e.setTarget_file(target);
-			e.setType("CONVERT");
-			e.setDate(new Date());
-			results.add(e);
+			// In order to support multipage tiffs, we check for files by wildcard expression
+			String baseName = FilenameUtils.getBaseName(target.toRegularFile().getAbsolutePath());
+			String extension = FilenameUtils.getExtension(target.toRegularFile().getAbsolutePath());
+			logger.info("Finding files matching wildcard expression \""+baseName+"*."+extension+"\" in order to check them and test if conversion was successful");
+			List<File> wild = findFilesWithWildcard(
+					new File(FilenameUtils.getFullPath(target.toRegularFile().getAbsolutePath())), baseName+"*."+extension);
+			if (!wild.isEmpty()){
+				for (File f : wild){
+					DAFile daf = new DAFile(pkg,"dip/"+audience.toLowerCase(),Utilities.slashize(ci.getTarget_folder())+f.getName());
+					logger.debug("new dafile:"+daf);
+										
+					Event e = new Event();
+					e.setType("CONVERT");
+					e.setDetail(Utilities.createString(commandAsArray));
+					e.setSource_file(ci.getSource_file());
+					e.setTarget_file(daf);
+					e.setDate(new Date());
+					
+					results.add(e);
+				}
+			}
+			
+			// Since this case is a subcase of the wildcard case, we don't need it except for the unit test which wont' work without this.
+			else{
+				Event e = new Event();
+				e.setDetail(Utilities.createString(commandAsList));
+				e.setSource_file(ci.getSource_file());
+				e.setTarget_file(target);
+				e.setType("CONVERT");
+				e.setDate(new Date());
+				results.add(e);
+			}
 		}
 		
 		return results;
 	}
 	
+	
+	/**
+	 * Find files with wildcard.
+	 *
+	 * @param folderToScan the folder to scan
+	 * @param wildcardExpression the wildcard expression
+	 * @return all files matching wildcardExpression
+	 */
+	private List<File> findFilesWithWildcard(File folderToScan,String wildcardExpression){
+		logger.debug("folder:"+folderToScan);
+		List<File> result = new ArrayList<File>();
+		
+		FileFilter fileFilter = new WildcardFileFilter(wildcardExpression);
+		File[] files = folderToScan.listFiles(fileFilter);
+		for (int i = 0; i < files.length; i++) {
+			logger.debug("found file via wildcard expression");
+			result.add(files[i]);
+		}
+		return result;
+	}
 	
 	
 	private String getImageWidth(String absolutePath) {

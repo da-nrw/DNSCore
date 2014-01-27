@@ -72,11 +72,7 @@ public class PublishImageConversionStrategyTest {
 	try {
 			if (new File(dataPath + "dip").exists())
 				FileUtils.deleteDirectory(new File(dataPath + "dip"));			
-			//if (new File(dataPath + "target").exists())
-				//FileUtils.deleteDirectory(new File(dataPath + "target"));
-		} catch (IOException e) { 
-			// Ignore exception
-		}
+		} catch (IOException e) {}
 	}
 	
 
