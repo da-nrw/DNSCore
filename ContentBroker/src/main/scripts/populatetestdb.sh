@@ -3,7 +3,7 @@
 # author: Daniel M. de Oliveira
 
 HIER=`pwd`
-cd /tmp
+#cd /tmp
 
 if [ "$1" = "create" ] 
 then
