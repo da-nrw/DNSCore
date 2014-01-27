@@ -34,6 +34,15 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import de.uzk.hki.da.convert.CLIConnector;
+import de.uzk.hki.da.convert.DocxConversionStrategy;
+import de.uzk.hki.da.model.ConversionInstruction;
+import de.uzk.hki.da.model.ConversionRoutine;
+import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.TESTHelper;
+import de.uzk.hki.da.webservice.HttpFileTransmissionClient;
+
 
 
 /**
@@ -49,7 +58,7 @@ public class CTDocxConversionStrategyTest {
 	String basePath="src/test/resources/convert/DocxConversionStrategyTests/";
 	
 	/** The cs. */
-//	DocxConversionStrategy cs = new DocxConversionStrategy();
+	DocxConversionStrategy cs = new DocxConversionStrategy();
 	
 	/** The url. */
 	String url = "http://da-nrw-winvm1.hki.uni-koeln.de/Handler.ashx";
@@ -64,10 +73,10 @@ public class CTDocxConversionStrategyTest {
 	@Before
 	public void setUp() throws IOException{
 		
-//		o = TESTHelper.setUpObject("1", basePath);
-//		o.reattach();
-//		cs.setObject(o);
-//		new File( o.getDataPath() + o.getNameOfNewestRep()+"/_Docx.pdf").createNewFile();
+		o = TESTHelper.setUpObject("1", basePath);
+		o.reattach();
+		cs.setObject(o);
+		new File( o.getDataPath() + o.getNameOfNewestRep()+"/_Docx.pdf").createNewFile();
 	}
 	
 	
@@ -80,56 +89,62 @@ public class CTDocxConversionStrategyTest {
 	 */
 	@Test
 	public void testDocxConverison () throws FileNotFoundException {
-//		ConversionInstruction ci = new ConversionInstruction();
-//		
-//		ConversionRoutine cr = new ConversionRoutine();
-//		cr.setParams( url );
+		ConversionInstruction ci = new ConversionInstruction();
 		
-//		
-		
-//		HttpFileTransmissionClient httpclient = mock( HttpFileTransmissionClient.class );
-//		when( httpclient.postFileAndReadResponse((File)anyObject(),(File)anyObject()) ).thenAnswer(new Answer<java.lang.Object> () {
-//			public File answer(InvocationOnMock invocation) {
-//				
-//				File f = new File(basePath + "TEST/1/data/rep+b/Docx.pdf");
-//		        try {
-//					f.createNewFile();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//				return f;
-//		    }
-//		});	cs.httpclient = httpclient;
-//		
+		ConversionRoutine cr = new ConversionRoutine();
+		cr.setParams( url );
 		
 		
-//		CLIConnector cli = mock ( CLIConnector.class );
-//		when(cli.execute((String[]) anyObject())).thenAnswer(new Answer<java.lang.Object> () {
-//			public Boolean answer(InvocationOnMock invocation) {
-//			    java.lang.Object[] args = invocation.getArguments();
-//		         String[] cmdarr = (String[]) args[0];
-//				
-//		         for (String s : cmdarr) {
-//		        	 System.out.print(s + " ");
-//		         }
-//		         return true;
-//		    }
-//		});	cs.setCLIConnector(cli);
+		HttpFileTransmissionClient httpclient = new HttpFileTransmissionClient();
+		httpclient.setUrl(url);
+		
+		/*  Mocking httpclient is not useful
+		HttpFileTransmissionClient httpclient = mock( HttpFileTransmissionClient.class );
+		when( httpclient.postFileAndReadResponse((File)anyObject(),(File)anyObject()) ).thenAnswer(new Answer<java.lang.Object> () {
+			public File answer(InvocationOnMock invocation) {
+				
+				File f = new File(basePath + "TEST/1/data/rep+b/Docx.pdf");
+		        try {
+		        	f.mkdirs();
+		        	f.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return f;
+		    }
+		});
+		*/	
+		cs.setHttpclient(httpclient);
+		
+		
+		
+		CLIConnector cli = mock ( CLIConnector.class );
+		when(cli.execute((String[]) anyObject())).thenAnswer(new Answer<java.lang.Object> () {
+			public Boolean answer(InvocationOnMock invocation) {
+			    java.lang.Object[] args = invocation.getArguments();
+		         String[] cmdarr = (String[]) args[0];
+				
+		         for (String s : cmdarr) {
+		        	 System.out.print(s + " ");
+		         }
+		         return true;
+		    }
+		});	cs.setCLIConnector(cli);
 		
 		
 		
 		
 		
 			
-//			
-//		cr.setTarget_suffix("pdf");
-//		ci.setConversion_routine(cr);
-//		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","Docx.docx"));
-//		ci.setTarget_folder("");
-//		
-//		cs.convertFile(ci);
-//		
-//		assertTrue(new File(basePath + "TEST/1/data/rep+b/Docx.pdf").exists());
+			
+		cr.setTarget_suffix("pdf");
+		ci.setConversion_routine(cr);
+		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","Docx.docx"));
+		ci.setTarget_folder("");
+		
+		cs.convertFile(ci);
+		
+		assertTrue(new File(basePath + "TEST/1/data/rep+b/Docx.pdf").exists());
 	}
 	
 	/**
@@ -139,7 +154,8 @@ public class CTDocxConversionStrategyTest {
 	 */
 	@After
 	public void cleanup() throws IOException {
-//		new File(basePath + "TEST/1/data/rep+b/Docx.pdf").delete();
+		new File(basePath + "TEST/1/data/rep+b/Docx.pdf").delete();
+		new File(basePath + "TEST/1/data/rep+a/_Docx.pdf").delete();
 		
 	}
 	

@@ -105,7 +105,7 @@ public class DocxConversionStrategyTests {
 				}
 				return f;
 		    }
-		});	cs.httpclient = httpclient;
+		});	cs.setHttpclient(httpclient);
 		
 		
 		
