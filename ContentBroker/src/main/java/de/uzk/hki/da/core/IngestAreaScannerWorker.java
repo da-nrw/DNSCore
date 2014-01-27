@@ -152,8 +152,7 @@ public class IngestAreaScannerWorker {
 					
 					logger.info("Found file \""+child+"\" in ingest Area. Creating job for \""+contractorShortName+"\"");
 					Object object = registerObjectService.registerObject(
-							convertMaskedSlashes(FilenameUtils.removeExtension(child)),
-							convertMaskedSlashes(child),contractor);	
+							convertMaskedSlashes(FilenameUtils.removeExtension(child)), child, contractor);	
 
 					logger.debug("Created new Object with id: "+object.getData_pk());
 					
@@ -212,7 +211,8 @@ public class IngestAreaScannerWorker {
 
 				Session session = HibernateUtil.openSession();
 				session.beginTransaction();
-				if (dao.getJob(session, FilenameUtils.removeExtension(children[i]), contractorShortName) == null) {				
+				if (dao.getJob(session, convertMaskedSlashes(FilenameUtils.removeExtension(children[i])),
+						contractorShortName) == null) {				
 					logger.debug("New file found, making timestamp for: "+children[i]);
 					files.put(children[i], currentTimeStamp);
 				}
