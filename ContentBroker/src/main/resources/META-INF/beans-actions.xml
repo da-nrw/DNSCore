@@ -218,7 +218,6 @@
 		scope="prototype">
 		<property name="startStatus" value="960" />
 		<property name="endStatus" value="970" />
-		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
 		<property name="name" value="PostRetrievalAction" />
 	</bean>	
 	<!--  END UseCase Retrieval END -->
