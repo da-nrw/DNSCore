@@ -69,7 +69,7 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 	/** The object. */
 	Object object;
 
-	HttpFileTransmissionClient httpclient;
+	private HttpFileTransmissionClient httpclient;
 	
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setParam(java.lang.String)
@@ -87,7 +87,7 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 	}
 	
 	public DocxConversionStrategy() {
-		httpclient = new HttpFileTransmissionClient();
+		setHttpclient(new HttpFileTransmissionClient());
 	}
 	
 	
@@ -102,16 +102,14 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 		if (ci.getConversion_routine().getTarget_suffix().isEmpty()) throw new IllegalStateException("target suffix in conversionRoutine not set");
 		if (ci.getConversion_routine().getParams()==null) throw new IllegalStateException("add params not set");
 		if (cliConnector==null) throw new IllegalStateException("Cli Connector is not set");
-		
-//		TODO remove String url = ci.getConversion_routine().getParams();
-		
+				
 		File result = new File(generateTargetFilePath(ci));
 		
 		List<Event> results = new ArrayList<Event>();
 		
-		httpclient.setUrl(ci.getConversion_routine().getParams());
-		httpclient.setSourceMimeType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-		httpclient.postFileAndReadResponse(ci.getSource_file().toRegularFile(), result);
+		getHttpclient().setUrl(ci.getConversion_routine().getParams());
+		getHttpclient().setSourceMimeType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+		getHttpclient().postFileAndReadResponse(ci.getSource_file().toRegularFile(), result);
 		
 		if (result.exists()) {
 		DAFile daf = new DAFile(pkg,object.getNameOfNewestRep(),Utilities.slashize(ci.getTarget_folder())+result.getName());
@@ -173,6 +171,20 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 	public void setObject(Object obj) {
 		this.object = obj;
 		this.pkg = obj.getLatestPackage();
+	}
+
+	/**
+	 * @return the httpclient
+	 */
+	public HttpFileTransmissionClient getHttpclient() {
+		return httpclient;
+	}
+
+	/**
+	 * @param httpclient the httpclient to set
+	 */
+	public void setHttpclient(HttpFileTransmissionClient httpclient) {
+		this.httpclient = httpclient;
 	}
 
 }
