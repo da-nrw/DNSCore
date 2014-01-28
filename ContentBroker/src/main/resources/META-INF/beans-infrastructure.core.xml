@@ -70,7 +70,7 @@
   </amq:broker>
   
   <amq:memoryUsage id="mqUsage" percentOfJvmHeap="10" />
-  <amq:tempUsage id="mqTemp" limit="20 mb" />
+  <amq:tempUsage id="mqTemp" limit="20Mb" />
   
   <amq:systemUsage id="mqSys" memoryUsage="mqUsage" tempUsage="mqTemp"/>
   
