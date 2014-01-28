@@ -45,7 +45,6 @@ public class FetchPIPsAction extends AbstractAction {
 
 
 	/**
-	 * @author Daniel M. de Oliveira
 	 * @param dipTargetPartialPath
 	 * @throws IOException
 	 */
@@ -61,7 +60,6 @@ public class FetchPIPsAction extends AbstractAction {
 
 
 	/**
-	 * @author Daniel M. de Oliveira
 	 * @param dipSourcePartialPath
 	 * @param dipTargetPartialPath
 	 * @throws IOException
@@ -87,9 +85,9 @@ public class FetchPIPsAction extends AbstractAction {
 	private void replicateFromSourceResourceToWorkingResource(
 			String dipSourcePartialPath) {
 		distributedConversionAdapter.replicateToLocalNode(
-				getIrodsZonePath()+"dip/public/"+dipSourcePartialPath);
+				"dip/public/"+dipSourcePartialPath);
 		distributedConversionAdapter.replicateToLocalNode(
-				getIrodsZonePath()+"dip/institution/"+dipSourcePartialPath);
+				"dip/institution/"+dipSourcePartialPath);
 	}
 
 	
