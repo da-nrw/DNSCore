@@ -85,17 +85,6 @@ public class Controller implements Runnable {
 				return;
 			}
 			logger.debug("starting JMS -Service at: " + serverName + " "+ socketNumber);
-			MemoryUsage mu = new MemoryUsage();
-			mu.setLimit(20971520L);
-			
-			TempUsage tu = new TempUsage();
-			tu.setLimit(167772160L);
-			SystemUsage memoryManager = new SystemUsage();
-			
-			memoryManager.setTempUsage(tu);
-			memoryManager.setMemoryUsage(mu);
-			mqBroker.setSystemUsage(memoryManager);
-			mqBroker.setDeleteAllMessagesOnStartup(true);
 			mqBroker.start();		
 		} catch (Exception e) {
 			logger.error("Error creating CB-Controller thread: " + e,e );

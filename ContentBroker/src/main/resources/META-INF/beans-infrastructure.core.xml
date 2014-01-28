@@ -63,11 +63,16 @@
         <property name="keyStore" value="${irods.keyStorePath}" />
         <property name="trustStore" value="${irods.trustStorePath}" />
     </bean>
-     <amq:broker id="mqBroker" persistent="false" start="false">
+     <amq:broker id="mqBroker" persistent="false" start="false" systemUsage="mqSys" deleteAllMessagesOnStartup="true">
     <amq:transportConnectors>
       <amq:transportConnector uri="tcp://localhost:${cb.serverSocketNumber}" />
     </amq:transportConnectors>
   </amq:broker>
+  
+  <amq:memoryUsage id="mqUsage" percentOfJvmHeap="10" />
+  <amq:tempUsage id="mqTemp" limit="20 mb" />
+  
+  <amq:systemUsage id="mqSys" memoryUsage="mqUsage" tempUsage="mqTemp"/>
   
   <amq:connectionFactory brokerURL="tcp://localhost:${cb.serverSocketNumber}"
   id="mqConnectionFactory" />
