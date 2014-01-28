@@ -7,3 +7,5 @@ DAWeb/target-eclipse/
 DAWeb/.settings/
 deliverable.tar
 ContentBroker/.settings
+.DS_Store
+.thumbs_db
