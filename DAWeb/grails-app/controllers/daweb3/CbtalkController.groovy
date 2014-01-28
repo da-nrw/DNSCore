@@ -76,6 +76,7 @@ class CbtalkController {
 		jmsService.send(queue:'CB.SYSTEM', message)
 		} catch (Exception e) {
 			flash.message= "Fehler in der Sendekommunikation mit dem ActiveMQ Broker!"
+			log.error(e);
 		}
 		} else render(status: 403, text: 'forbidden')
 		redirect(action:"index");

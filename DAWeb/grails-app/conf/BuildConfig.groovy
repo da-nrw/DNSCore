@@ -45,7 +45,7 @@ grails.project.dependency.resolution = {
 			 excludes 'xml-apis'
 			 exported = false
 		}
-		compile('org.irods.jargon:jargon-core:3.3.2-SNAPSHOT') {
+		compile('org.irods.jargon:jargon-core:3.3.2-beta1') {
 			excludes "slf4j-api", "slf4j-log4j12", "commons-io", "commons-codec","cog-jglobus"
 		}
     }
@@ -73,7 +73,6 @@ grails.project.dependency.resolution = {
 		compile ":jms:1.2"
 		
 	  compile ":jquery-ui:1.8.15" 
-	  compile ":modernizr:2.0.6" 
-	  compile ":uploadr:0.5.11"
+	  compile ":modernizr:2.0.6"
     }
 }

@@ -79,6 +79,7 @@ cp src/main/scripts/PDFA_def.ps $CBTAR_SRC/conf
 cp src/main/resources/healthCheck.avi $CBTAR_SRC/conf
 cp src/main/resources/healthCheck.tif $CBTAR_SRC/conf
 cp src/main/resources/frame.jsonld $CBTAR_SRC/conf
+mkdir $CBTAR_SRC/activemq-data
 mkdir $CBTAR_SRC/log
 touch $CBTAR_SRC/log/contentbroker.log
 echo -e "ContentBroker Version $VERSION\nWritten by\n Daniel M. de Oliveira\n Jens Peters\n Sebastian Cuy\n Thomas Kleinke" > $CBTAR_SRC/README.txt
