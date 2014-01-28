@@ -1,11 +1,10 @@
 package de.uzk.hki.da.convert;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Matchers.anyObject;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 
@@ -22,7 +21,7 @@ import de.uzk.hki.da.utils.TESTHelper;
 
 public class PublishImageMultipageTIFFTests {
 
-	String basePath="src/test/resources/convert/PublishImageMultipageTIFFTests/";
+	String basePath="src/test/resources/convert/PublishImageMultipageTiffTests/";
 	
 	@Before
 	public void setUp() throws Exception {
