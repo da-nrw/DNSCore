@@ -40,7 +40,7 @@ class StatusController {
 		def result = [:]
 		def results = [:]
 		
-		def instance = null
+		def rList = null
 		if (session.bauthuser == null) {
 			log.error "Login failed";
 			response.status = 403
@@ -48,26 +48,23 @@ class StatusController {
 			render result as JSON
 			return
 		}
+		def contractor = Contractor.findByShortName(session.bauthuser)
 		// listall objects of Contractor
 		if (params.listallobjects) {
-			def contractor = Contractor.findByShortName(session.bauthuser)
 			def objects = Object.findAllByContractorAndObject_stateGreaterThan(contractor, 50)
 			results.result = []
 			objects.each()  { inst ->
 				if (inst.object_state==100) result.status = "archived"
-				else result.status = "failure"
+				else result.status = "archived - but check needed"
 				result.urn = inst.urn
 				result.contractor = inst.contractor.shortName
 				result.origName = inst.origName
-				
-				
 				def packages = []
 				result.packages = packages
 				inst.packages.each() {pack ->
 						result.packages.add(pack.name)
 				}
 				result = [:]
-				
 				results.result.add(result)
 			}
 			render results as JSON
@@ -75,60 +72,71 @@ class StatusController {
 		}
 				
 		if (params.urn ) {
-			Contractor cont = Contractor.findByShortName(session.bauthuser);
-		
-			instance = QueueEntry.withCriteria(uniqueResult: true) {
+			rList = QueueEntry.withCriteria() {
 					createAlias('obj', 'o', 
-						CriteriaSpecification.INNER_JOIN)
+					CriteriaSpecification.INNER_JOIN)
 					createAlias('o.contractor', 'contractor', CriteriaSpecification.INNER_JOIN)
 					eq("contractor.shortName", session.bauthuser)
 					eq("o.urn", params.urn)
 			};
 			} else if (params.origName) {
-			Contractor cont = Contractor.findByShortName(session.bauthuser);
-			instance = QueueEntry.find("from QueueEntry as q where q.obj.contractor.shortName=:csn and q.obj.origName=:on",
+			rList = QueueEntry.findAll("from QueueEntry as q where q.obj.contractor.shortName=:csn and q.obj.origName=:on",
              [on: params.origName,
 				 csn: session.bauthuser]);
 		} else if (params.identifier) {
-			Contractor cont = Contractor.findByShortName(session.bauthuser);
-			instance = QueueEntry.find("from QueueEntry as q where q.obj.contractor.shortName=:csn and q.obj.identifier=:idn",
+			rList = QueueEntry.findAll("from QueueEntry as q where q.obj.contractor.shortName=:csn and q.obj.identifier=:idn",
 			 [idn: params.identifier, 
 				 csn: session.bauthuser]);
 		}
 		boolean hasAQueueEntry = false
-		def queueResult = "in progress ";
+		def queueResult = "in progress";
 		// found a QueueEntry
-		if (instance!=null) {
+		results.result = []
+		rList.each()  { instance ->	
 			result.urn = instance.obj.urn
 			result.contractor = instance.obj.contractor.shortName;
 			result.origName = instance.obj.origName
 			result.identifier = instance.obj.identifier
-			if (instance.status.endsWith("1"))
+			if (instance.status.endsWith("1")) {
 				queueResult = "in progress error : (" + instance.status + ")"
-				hasAQueueEntry = true;
+			}
+			if (instance.status.endsWith("0")) {
+				queueResult = "in progress waiting : (" + instance.status + ")"
+			}
+			if (instance.status.endsWith("2")) {
+				queueResult = "in progress working : (" + instance.status + ")"
+			}
+			result.status =queueResult
+			
+			hasAQueueEntry = true;
+			results.result.add(result)
+			result = [:]
+			
 		}  
 		
+		// we give precedence for queue Entries ober searching for an object
+		if (hasAQueueEntry) {
+			render results as JSON
+			return
+		} else {
+		// search for an Object
 		if (params.urn) {
-				def contractor = Contractor.findByShortName(session.bauthuser)
-				instance = Object.findByContractorAndUrnAndObject_stateBetween(contractor, params.urn,)
-				
+				rList = Object.findAllByContractorAndUrnAndObject_stateBetween(contractor, params.urn,50,100)
 		}
 		if (params.origName) {
-				def contractor = Contractor.findByShortName(session.bauthuser)
-				instance = Object.findByContractorAndOrigName(contractor, params.origName)
+				rList = Object.findAllByContractorAndOrigNameAndObject_stateBetween(contractor, params.origName,50,100)
 		} 
 		if (params.identifier) {
-				def contractor = Contractor.findByShortName(session.bauthuser)
-				instance = Object.findByContractorAndIdentifier(contractor, params.identifier)	
+				rList = Object.findAllByContractorAndIdentifierAndObject_stateBetween(contractor, params.identifier,50.100)	
 		}
 		// Found Object, must be true if we found anything (Queue or Object only)
-		if (instance != null && instance.count()==1) {
-				if (instance.object_state==100 && !hasAQueueEntry) result.status = "archived"
-				else if (hasAQueueEntry && instance.object_state==100) {
-					result.status = "archived - but " + queueResult
-				} else if (hasAQueueEntry && instance.object_state==0) {
-					result.status = queueResult;
-				} 
+		boolean foundObject = false;
+		results.result = []
+		rList.each()  { instance ->
+				if (instance.object_state==100) result.status = "archived"
+				else {
+					result.status = "archived - but check needed"
+				}
 				result.urn = instance.urn
 				result.contractor = instance.contractor.shortName
 				result.origName = instance.origName
@@ -138,26 +146,21 @@ class StatusController {
 				instance.packages.each() {pack ->
 						result.packages.add(pack.name)
 				} 
-		// ambiguous item : mainly due to missing internal uniqueness of field urn!
-		} else if (instance != null && instance.count()>1){
-			result = [status: "ambiguous item, please alter request"]
-			render result as JSON
-			return
-
-		} else {
+				results.result.add(result)
+				result = [:]
+				foundObject = true;
+		} 
 		// unknown item
-				response.status = 404
-				result.status = "not found"
-				render result as JSON
-				return
+		if (!foundObject && !hasAQueueEntry) {
+		response.status = 404
+		result = [ status : "not found"]
+		render result as JSON
+		return	
 		}
-		if (session.bauthuser!= result.contractor) {
-			response.status = 403 
-			result = [status: "forbidden"]
+		
+		render results as JSON
+		return
 		}
-    	
-    	render result as JSON
-    	
 	}
 	def teaser() {
 		
