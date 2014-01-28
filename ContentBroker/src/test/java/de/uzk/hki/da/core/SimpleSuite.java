@@ -49,6 +49,7 @@ import de.uzk.hki.da.convert.PDFServiceTests;
 import de.uzk.hki.da.convert.PdfConversionStrategyTest;
 import de.uzk.hki.da.convert.PublishAudioConversionStrategyTests;
 import de.uzk.hki.da.convert.PublishImageConversionStrategyTest;
+import de.uzk.hki.da.convert.PublishImageMultipageTIFFTests;
 import de.uzk.hki.da.convert.PublishPDFConversionStrategyTests;
 import de.uzk.hki.da.convert.PublishVideoConversionStrategyTests;
 import de.uzk.hki.da.convert.PublishXsltConversionStrategyTests;
@@ -118,6 +119,7 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	PublishVideoConversionStrategyTests.class,
 	PublishXsltConversionStrategyTests.class,
 	PublishAudioConversionStrategyTests.class,
+	PublishImageMultipageTIFFTests.class,
 	UpdateMetadataActionTests.class,
 	IndexESActionTests.class,
 	PremisXmlReaderTests.class,

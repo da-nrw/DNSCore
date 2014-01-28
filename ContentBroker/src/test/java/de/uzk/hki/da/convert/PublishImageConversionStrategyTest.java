@@ -58,8 +58,6 @@ public class PublishImageConversionStrategyTest {
 	/** The data path. */
 	String dataPath=basePath+"TEST/123/data/";
 	
-	/** The cs. */
-	PublishImageConversionStrategy cs;;
 	
 	/** The cr. */
 	ConversionRoutine cr;
@@ -85,7 +83,6 @@ public class PublishImageConversionStrategyTest {
 	 */
 	@Test
 	public void testResizeAndWatermark() throws Exception {
-		cs = new PublishImageConversionStrategy();
 		
 		Object o = TESTHelper.setUpObject("123",basePath);
 		PublicationRight right = new PublicationRight();
@@ -149,7 +146,6 @@ public class PublishImageConversionStrategyTest {
 	 */
 	@Test
 	public void testFooterTextWithResize() throws Exception {
-		cs = new PublishImageConversionStrategy();
 		
 		Object o = TESTHelper.setUpObject("123",basePath);
 		PublicationRight right = new PublicationRight();
@@ -217,7 +213,6 @@ public class PublishImageConversionStrategyTest {
 	 */
 	@Test
 	public void testFooterTextWithoutResize() throws Exception {
-		cs = new PublishImageConversionStrategy();
 		Object o = TESTHelper.setUpObject("123",basePath);
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
@@ -280,7 +275,6 @@ public class PublishImageConversionStrategyTest {
 	 */
 	public void testWatermarkWithRealImage() throws FileNotFoundException {
 		
-		cs = new PublishImageConversionStrategy();
 		Document dom = XPathUtils.parseDom("src/test/resources/convert/PublishImageConversionStrategyTests/premis.xml");
 		if (dom==null){
 			throw new RuntimeException("Error while parsing premis.xml");

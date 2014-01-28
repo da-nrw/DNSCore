@@ -29,7 +29,6 @@ import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -107,29 +106,16 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 				throw new RuntimeException("convert did not succeed: " + Arrays.toString(commandAsArray));
 			
 			// In order to support multipage tiffs, we check for files by wildcard expression
-			String baseName = FilenameUtils.getBaseName(target.toRegularFile().getAbsolutePath());
 			String extension = FilenameUtils.getExtension(target.toRegularFile().getAbsolutePath());
-			logger.info("Finding files matching wildcard expression \""+baseName+"*."+extension+"\" in order to check them and test if conversion was successful");
 			List<File> wild = findFilesWithRegex(
-					new File(FilenameUtils.getFullPath(target.toRegularFile().getAbsolutePath())), baseName+"-.[.]"+extension);
+					new File(FilenameUtils.getFullPath(target.toRegularFile().getAbsolutePath())), "^.*-.[.]+"+extension);
 			if (!wild.isEmpty()){
 				for (File f : wild){
 					DAFile daf = new DAFile(pkg,"dip/"+audience.toLowerCase(),Utilities.slashize(ci.getTarget_folder())+f.getName());
-					logger.debug("new dafile:"+daf);
-										
-					Event e = new Event();
-					e.setType("CONVERT");
-					e.setDetail(Utilities.createString(commandAsArray));
-					e.setSource_file(ci.getSource_file());
-					e.setTarget_file(daf);
-					e.setDate(new Date());
-					
-					results.add(e);
+					logger.debug("ignore_file:"+daf);
 				}
 			}
-			
-			// Since this case is a subcase of the wildcard case, we don't need it except for the unit test which wont' work without this.
-//			else{
+			else{
 				Event e = new Event();
 				e.setDetail(Utilities.createString(commandAsList));
 				e.setSource_file(ci.getSource_file());
@@ -137,7 +123,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 				e.setType("CONVERT");
 				e.setDate(new Date());
 				results.add(e);
-//			}
+			}
 		}
 		
 		return results;
@@ -152,13 +138,13 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 	 * @return all files matching wildcardExpression
 	 */
 	private List<File> findFilesWithRegex(File folderToScan,String regexExpression){
-		logger.debug("folder:"+folderToScan);
+		logger.debug("scan_folder:"+folderToScan);
 		List<File> result = new ArrayList<File>();
 		
 		FileFilter fileFilter = new RegexFileFilter(regexExpression);
 		File[] files = folderToScan.listFiles(fileFilter);
 		for (int i = 0; i < files.length; i++) {
-			logger.debug("found file via regex expression");
+			logger.debug("found_file via regex expression");
 			result.add(files[i]);
 		}
 		return result;
