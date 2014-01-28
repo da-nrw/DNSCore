@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
@@ -108,7 +109,8 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			// In order to support multipage tiffs, we check for files by wildcard expression
 			String extension = FilenameUtils.getExtension(target.toRegularFile().getAbsolutePath());
 			List<File> wild = findFilesWithRegex(
-					new File(FilenameUtils.getFullPath(target.toRegularFile().getAbsolutePath())), "^.*-.[.]+"+extension);
+					new File(FilenameUtils.getFullPath(target.toRegularFile().getAbsolutePath())), 
+					Pattern.quote(FilenameUtils.getBaseName(target.getRelative_path()))+"-.[.]+"+extension);
 			if (!wild.isEmpty()){
 				for (File f : wild){
 					DAFile daf = new DAFile(pkg,"dip/"+audience.toLowerCase(),Utilities.slashize(ci.getTarget_folder())+f.getName());
@@ -144,8 +146,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 		FileFilter fileFilter = new RegexFileFilter(regexExpression);
 		File[] files = folderToScan.listFiles(fileFilter);
 		for (int i = 0; i < files.length; i++) {
-			logger.debug("found_file via regex expression");
-			result.add(files[i]);
+				result.add(files[i]);
 		}
 		return result;
 	}

@@ -41,7 +41,7 @@ public class PublishImageMultipageTIFFTests {
 		when(cli.execute((String[]) anyObject())).thenReturn(true);
 		
 		cs.setCLIConnector(cli);
-		DAFile sourceFile = new DAFile(o.getLatestPackage(),"source","ALVR_Nr_4557_Aufn_249.tif");
+		DAFile sourceFile = new DAFile(o.getLatestPackage(),"source","ALVR{}_Nr_4557_Aufn_249.tif");
 		
 		ConversionInstruction ci = new ConversionInstruction();
 		ci.setSource_file(sourceFile);
