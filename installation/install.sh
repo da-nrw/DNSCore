@@ -1,17 +1,13 @@
 #!/bin/bash
 
-# author: Jens Peters
 # author: Daniel M. de Oliveira
+# author: Jens Peters
 
-TAR=tar
-
-OS=`uname -s`
-case "$OS" in
-SunOS)
-	TAR=gtar
-	;;
-esac
-
+if [ $# -lt 1 ] 
+then
+	echo script needs at least one param for the installation target dir
+	exit 1
+fi
 
 INSTALLATION_TARGET=$1
 if [[ "${INSTALLATION_TARGET:${#INSTALLATION_TARGET}-1}" == "/" ]]; then
@@ -27,6 +23,42 @@ if [ $HOME = $INSTALLATION_TARGET ]; then
 	exit
 fi
 
+if [ $# -eq 2 ]
+then
+	BEANS_TYPE=$2
+else
+	echo "Select your desired feature set from the available options: (n)ode. (p)res. (f)ull. preserve (e)xisting beans."
+	read ANSWER
+	case "$ANSWER" in
+	n)
+		BEANS_TYPE="node"  
+	;;
+	f)
+		BEANS_TYPE="full"
+	;;
+	p)
+		BEANS_TYPE="pres"
+	;;
+	e)
+		BEANS_TYPE=""
+	;;
+	*)
+		echo invalid option
+		exit
+	;;
+	esac
+fi
+
+
+TAR=tar
+OS=`uname -s`
+case "$OS" in
+SunOS)
+	TAR=gtar
+	;;
+esac
+
+##############################################################
 
 echo Installing to $INSTALLATION_TARGET
 $TAR xf ContentBroker.tar -C $INSTALLATION_TARGET
@@ -50,9 +82,12 @@ then
 	fi
 	cp hibernateCentralDB.cfg.xml $INSTALLATION_TARGET/conf/
 fi
-cp beans.xml $INSTALLATION_TARGET/conf
-cp logback.xml $INSTALLATION_TARGET/conf
-cp configure.sh $INSTALLATION_TARGET/
+if [ "$BEANS_TYPE" -ne "" ]
+then 
+	cp -f beans.xml.$BEANS_TYPE $INSTALLATION_TARGET/conf/beans.xml
+fi
+cp -f logback.xml $INSTALLATION_TARGET/conf
+cp -f configure.sh $INSTALLATION_TARGET/
 if [ -e ffmpeg.sh ] 
 then
 	echo copy new ffmpeg

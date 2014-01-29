@@ -278,6 +278,23 @@
               <goal>run</goal>
             </goals>
           </execution>
+          <execution>
+          <id>after</id>
+            <phase>post-integration-test</phase>
+            <configuration>
+              <tasks>
+                <exec
+                  dir="${basedir}"
+                  executable="${basedir}/src/main/scripts/post-integration-test.sh"
+                  failonerror="true">
+                  <arg line="" />
+                </exec>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
       

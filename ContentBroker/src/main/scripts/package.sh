@@ -12,21 +12,6 @@ then
 fi
 echo params are $1 $2
 
-#
-# $1 beansType
-# $2 type of db
-# $3 debug level for logback.xml
-#
-function prepareCustomInstallation(){
-	cp src/main/conf/beans.xml.$1 $INSTALLER/beans.xml
-	if [ $2 != "none" ]
-	then
-		cp src/main/conf/hibernateCentralDB.cfg.xml.$2 $INSTALLER/hibernateCentralDB.cfg.xml
-	fi
-	cp src/main/conf/logback.xml.$3 $INSTALLER/logback.xml
-	echo DNSCore installer for the $1 version of the DNSCore-$VERSION > $INSTALLER/VERSION.txt
-}
-
 function createStorageFolder(){
 	mkdir $CBTAR_SRC/storage/
 	mkdir $CBTAR_SRC/storage/grid
@@ -36,18 +21,6 @@ function createStorageFolder(){
 	mkdir -p $CBTAR_SRC/storage/fork/TEST
 	mkdir -p $CBTAR_SRC/storage/ingest/TEST
 }
-
-# clean up installation dir
-
-
-#if [ "$1" == "dev" ]
-#then 
-#	echo setting Maven profile to dev
-#	PROFILE="-Pdev"
-#fi
-#mvn clean 
-#mvn package $PROFILE
-
 
 
 CBTAR_SRC=target/deliverable
@@ -84,27 +57,25 @@ mkdir $CBTAR_SRC/log
 touch $CBTAR_SRC/log/contentbroker.log
 echo -e "ContentBroker Version $VERSION\nWritten by\n Daniel M. de Oliveira\n Jens Peters\n Sebastian Cuy\n Thomas Kleinke" > $CBTAR_SRC/README.txt
 
+
+cp src/main/conf/beans.xml.node $INSTALLER/
+cp src/main/conf/beans.xml.node.test $INSTALLER/
+cp src/main/conf/beans.xml.pres $INSTALLER/
+cp src/main/conf/beans.xml.full $INSTALLER/
+cp src/main/conf/logback.xml.debug $INSTALLER/logback.xml
+
 case "$1" in
 dev)
 	sed "s@CONTENTBROKER_ROOT@$2@" src/main/conf/config.properties.dev  > $INSTALLER/config.properties
 	createStorageFolder	
 	cp -f src/main/scripts/ffmpeg.sh.fake $INSTALLER/ffmpeg.sh
 	cp src/main/conf/sqltool.rc ~/
-	prepareCustomInstallation node.test hsql debug
+	cp src/main/conf/hibernateCentralDB.cfg.xml.hsql $INSTALLER/hibernateCentralDB.cfg.xml
 ;;
 vm3)
 	cp src/main/conf/config.properties.vm3 $INSTALLER/config.properties
-	prepareCustomInstallation node.test postgres debug
+	cp src/main/conf/hibernateCentralDB.cfg.xml.postgres $INSTALLER/hibernateCentralDB.cfg.xml
 	INSTALL_PATH=/data/danrw/ContentBroker
-;;
-full)
-	prepareCustomInstallation full none debug
-;;
-node)
-	prepareCustomInstallation node none debug
-;;
-pres)
-	prepareCustomInstallation pres none debug
 ;;
 esac
 
