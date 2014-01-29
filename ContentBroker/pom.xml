@@ -219,7 +219,7 @@
                   dir="${basedir}"
                   executable="${basedir}/src/main/scripts/validate.sh"
                   failonerror="true">
-                  <arg line="" />
+                  <arg line="${env}" />
                 </exec>
               </tasks>
             </configuration>

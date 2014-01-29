@@ -16,3 +16,14 @@ then
 	echo "Number of XXX entries in java files must not exceed $ALLOWED_XXXS (actually is $XXXS)."
 	exit 1
 fi
+
+if [ "$1" -eq "vm3 ]
+then
+	REVISION_NUMBER=`git rev-list HEAD --count`
+	if [ -d "/data/danrw/buildRepository/installation.$REVISION_NUMBER" ]
+	then
+		echo "The directory at /data/danrw/buildRepository/installation.$REVISION_NUMBER already exists which means"
+		echo "you already have a valid build for the current revision. Will exit now."
+		exit
+	fi
+fi
