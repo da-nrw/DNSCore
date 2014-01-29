@@ -40,7 +40,6 @@ else
 		BEANS_TYPE="pres"
 	;;
 	e)
-		BEANS_TYPE=""
 	;;
 	*)
 		echo invalid option
@@ -82,7 +81,7 @@ then
 	fi
 	cp hibernateCentralDB.cfg.xml $INSTALLATION_TARGET/conf/
 fi
-if [ "$BEANS_TYPE" -ne "" ]
+if [ -z $BEANS_TYPE ]
 then 
 	cp -f beans.xml.$BEANS_TYPE $INSTALLATION_TARGET/conf/beans.xml
 fi
