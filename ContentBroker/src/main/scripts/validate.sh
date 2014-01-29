@@ -17,7 +17,7 @@ then
 	exit 1
 fi
 
-if [ "$1" -eq "vm3" ]
+if [ "$1" = "vm3" ]
 then
 	REVISION_NUMBER=`git rev-list HEAD --count`
 	if [ -d "/data/danrw/buildRepository/installation.$REVISION_NUMBER" ]
