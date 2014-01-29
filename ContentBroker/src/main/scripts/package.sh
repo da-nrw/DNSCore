@@ -57,7 +57,6 @@ mkdir $CBTAR_SRC/log
 touch $CBTAR_SRC/log/contentbroker.log
 echo -e "ContentBroker Version $VERSION\nWritten by\n Daniel M. de Oliveira\n Jens Peters\n Sebastian Cuy\n Thomas Kleinke" > $CBTAR_SRC/README.txt
 
-
 cp src/main/conf/beans.xml.node $INSTALLER/
 cp src/main/conf/beans.xml.node.test $INSTALLER/
 cp src/main/conf/beans.xml.pres $INSTALLER/
@@ -66,7 +65,7 @@ cp src/main/conf/logback.xml.debug $INSTALLER/logback.xml
 
 case "$1" in
 dev)
-	sed "s@CONTENTBROKER_ROOT@$2@" src/main/conf/config.properties.dev  > $INSTALLER/config.properties
+	sed "s@CONTENTBROKER_ROOT@$2@" src/main/conf/config.properties.dev  > $INSTALLER/config.properties # TODO move to pre-integration-test.sh
 	createStorageFolder	
 	cp -f src/main/scripts/ffmpeg.sh.fake $INSTALLER/ffmpeg.sh
 	cp src/main/conf/sqltool.rc ~/
@@ -79,6 +78,10 @@ vm3)
 ;;
 esac
 
+cd ../DAWeb
+./build.sh prod
+mv target/daweb3-$VERSION.war ../installation/daweb3.war
+cd ../ContentBroker
 
 
 cd $CBTAR_SRC
