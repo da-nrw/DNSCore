@@ -24,6 +24,6 @@ then
 	then
 		echo "The directory at /data/danrw/buildRepository/installation.$REVISION_NUMBER already exists which means"
 		echo "you already have a valid build for the current revision. Will exit now."
-		exit
+		exit 1
 	fi
 fi
