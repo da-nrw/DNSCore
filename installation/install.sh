@@ -81,7 +81,7 @@ then
 	fi
 	cp hibernateCentralDB.cfg.xml $INSTALLATION_TARGET/conf/
 fi
-if [ -z $BEANS_TYPE ]
+if [ ! -z $BEANS_TYPE ]
 then 
 	cp -f beans.xml.$BEANS_TYPE $INSTALLATION_TARGET/conf/beans.xml
 fi
