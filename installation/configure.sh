@@ -28,8 +28,10 @@ rm jhove/jhove.tmp
 PYTHON_BIN=`cat conf/config.properties | grep python.bin | sed "s@python.bin=@@"`
 if [ "$PYTHON_BIN" = "" ]
 then
-	echo ERROR could not read python.path from config.properties
-	exit
+	echo "ERROR could not read python.bin from config.properties"
+	echo "ERROR Make sure there is an appropriate entry for python.bin=[path to a python version > 2.7]".
+	echo "ERROR If not, add it and call this script again."
+	exit 1
 fi
 mv fido.sh fido.sh.tmp
 sed "s@PYTHON_BIN@$PYTHON_BIN@" fido.sh.tmp >> fido.sh
