@@ -37,11 +37,11 @@ import org.slf4j.LoggerFactory;
  * @author Christian Weitz
  * @author Thomas Kleinke
  */
-public class LoadBalancer {
+public class IngestGate {
 
 	/** The Constant logger. */
 	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(LoadBalancer.class);
+	private static final Logger logger = LoggerFactory.getLogger(IngestGate.class);
 	
 	/** The work area root path. */
 	private String workAreaRootPath;

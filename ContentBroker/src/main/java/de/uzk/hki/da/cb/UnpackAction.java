@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.archivers.ArchiveBuilder;
 import de.uzk.hki.da.archivers.ArchiveBuilderFactory;
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.core.LoadBalancer;
+import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.metadata.PremisXmlValidator;
@@ -88,7 +88,7 @@ public class UnpackAction extends AbstractAction {
 	
 	public UnpackAction(){}
 	
-	private LoadBalancer loadBalancer;
+	private IngestGate ingestGate;
 	
 	private GridFacade gridRoot;
 	
@@ -100,7 +100,7 @@ public class UnpackAction extends AbstractAction {
 		String absoluteSIPPath = localNode.getIngestAreaRootPath() + object.getContractor().getShort_name() + 
 				"/" + object.getLatestPackage().getContainerName();
 	
-		if (!loadBalancer.canHandle(new File(absoluteSIPPath).length())){
+		if (!ingestGate.canHandle(new File(absoluteSIPPath).length())){
 			logger.warn("ResourceMonitor prevents further processing of package due to space limitations.");
 			return false;
 		}
@@ -145,7 +145,7 @@ public class UnpackAction extends AbstractAction {
 			RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot());
 
 			try {
-				if (!loadBalancer.canHandle(retrievePackagesHelper.getObjectSize(object, job ))){
+				if (!ingestGate.canHandle(retrievePackagesHelper.getObjectSize(object, job ))){
 					logger.info("no disk space available at working resource. will not fetch new data.");
 					return false;
 				}
@@ -438,12 +438,12 @@ public class UnpackAction extends AbstractAction {
 		 FileUtils.deleteDirectory(new File(object.getPath()));
 	}
 
-	public LoadBalancer getLoadBalancer() {
-		return loadBalancer;
+	public IngestGate getIngestGate() {
+		return ingestGate;
 	}
 
-	public void setLoadBalancer(LoadBalancer loadBalancer) {
-		this.loadBalancer = loadBalancer;
+	public void setIngestGate(IngestGate ingestGate) {
+		this.ingestGate = ingestGate;
 	}
 
 	public GridFacade getGridRoot() {

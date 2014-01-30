@@ -14,7 +14,7 @@
 	<import resource="classpath*:META-INF/beans-actions-presentation.xml"/>
 	<import resource="classpath*:META-INF/beans-infrastructure.full.xml"/>
 
-	<bean class="de.uzk.hki.da.core.LoadBalancer" id="loadBalancer">
+	<bean class="de.uzk.hki.da.core.IngestGate" id="ingesteGate">
 		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
 		<property name="fileSizeFactor" value="3" />
 		<property name="freeDiskSpacePercent" value="50" />

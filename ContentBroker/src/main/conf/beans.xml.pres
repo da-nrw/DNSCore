@@ -12,6 +12,12 @@
 	<import resource="classpath*:META-INF/beans-actions-presentation.xml"/>
 	<import resource="classpath*:META-INF/beans-infrastructure.pres.xml"/>
     
+    <bean class="de.uzk.hki.da.core.IngestGate" id="ingestGate">
+		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
+		<property name="fileSizeFactor" value="3" />
+		<property name="freeDiskSpacePercent" value="5" />
+	</bean>
+    
     <task:executor id="taskExecutor" pool-size="10"
         queue-capacity="20" rejection-policy="CALLER_RUNS" />
 	<task:scheduled-tasks scheduler="taskScheduler">

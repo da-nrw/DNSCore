@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.core.ConfigurationException;
+import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 
 /**
@@ -17,6 +18,8 @@ import de.uzk.hki.da.grid.DistributedConversionAdapter;
  */
 public class FetchPIPsAction extends AbstractAction {
 
+	private IngestGate ingestGate;
+	
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
 	@Override
@@ -106,5 +109,17 @@ public class FetchPIPsAction extends AbstractAction {
 	public void setDistributedConversionAdapter(
 			DistributedConversionAdapter distributedConversionAdapter) {
 		this.distributedConversionAdapter = distributedConversionAdapter;
+	}
+
+
+
+	public IngestGate getIngestGate() {
+		return ingestGate;
+	}
+
+
+
+	public void setIngestGate(IngestGate ingestGate) {
+		this.ingestGate = ingestGate;
 	}
 }
