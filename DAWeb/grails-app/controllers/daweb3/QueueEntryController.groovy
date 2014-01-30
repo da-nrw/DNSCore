@@ -41,11 +41,13 @@ class QueueEntryController {
 
     def list() {
         
+		
     }
     
     def listSnippet() {
     	def queueEntries = null	
-		def admin = false	
+		def admin = false
+		def periodical = true;	
 		if (params.search==null){		
 			if (session.contractor.admin != 1) {
 				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.contractor.shortName=:csn",
@@ -55,8 +57,9 @@ class QueueEntryController {
 				queueEntries = QueueEntry.findAll(params)
 			}
 			[queueEntryInstanceList: queueEntries,
-				admin:admin ]
+				admin:admin, periodical:periodical ]
 		} else {
+			periodical = false;
 			def c = QueueEntry.createCriteria()
 			queueEntries = c.list() {
 				if (params.search?.obj) params.search.obj.each { key, value ->
@@ -85,7 +88,7 @@ class QueueEntryController {
 			}
 		} 
 		[queueEntryInstanceList: queueEntries,
-			admin:admin ]
+			admin:admin, periodical:periodical ]
     }
 
     def show() {

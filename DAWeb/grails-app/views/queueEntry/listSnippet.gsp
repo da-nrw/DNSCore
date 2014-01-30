@@ -1,3 +1,9 @@
+<r:script>
+<g:if test="${ periodical }">
+			// comment out next line to stop periodical updater on page load.		
+			$( document ).ready(startUpdater())
+			</g:if>
+		</r:script>
 <table>
 	<thead>
 		<tr>

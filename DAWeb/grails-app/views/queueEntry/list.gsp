@@ -12,6 +12,7 @@
 		<r:script>
 			var order = "asc";
 			var sort = "id";
+			var upd;
 			$(function() {
 				$("#legend").accordion({ collapsible: true, active: false, autoHeight: false });
 			});
@@ -19,10 +20,6 @@
 				$("#filter").accordion({ collapsible: true, active: false });
 			});
 			
-			function stopUpdater() {
-				upd.stop();
-			}
-			var upd;
 			function startUpdater(){
 			upd = $.PeriodicalUpdater("./listSnippet",
 				{
@@ -40,6 +37,9 @@
 				}
 			);
 			}
+			function stopUpdater() {
+				upd.stop();
+			}
 			function sortQueue(field) {
 				console.log("sortQueue: "+field);
 				if (field == sort && order == "asc") order = "desc";
@@ -52,8 +52,7 @@
 				console.log(field);
 				return false;
 			}
-			// comment out next line to stop periodical updater on page load.
-			//$( document ).ready(startUpdater())
+			
 		</r:script>
 	</head>
 	<body>
@@ -99,8 +98,10 @@
             	</table>     
             </g:form>
            </div>
-	 Update&nbsp;<a href="#" onclick="upd.stop();">stop</a>&nbsp;<a href="#" onclick="startUpdater();">start</a>
-        
+           
+<g:if test="${ !params.search }">
+	 Update:&nbsp;<a href="#" onclick="stopUpdater();">stop</a>&nbsp;<a href="#" onclick="startUpdater();">start</a>
+     </g:if>   
 			
 			<!-- This div is updated through the periodical updater -->
 			<div class="list" id="entry-list">
