@@ -58,8 +58,6 @@ public class CreatePremisAction extends AbstractAction {
 
 	@Override
 	public boolean implementation() throws IOException	{
-		object.reattach();
-		
 		logger.debug("Listing all files attached to all packages of the object:");
 		 for (Package pkg : object.getPackages()) 
 		   		for (DAFile fi : pkg.getFiles())

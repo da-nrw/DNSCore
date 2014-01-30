@@ -24,9 +24,8 @@ public class FetchPIPsAction extends AbstractAction {
 	
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException {
-		if (distributedConversionAdapter==null) throw new ConfigurationException("irodsSystemConnector not set");
-		object.reattach();
 		
+		if (distributedConversionAdapter==null) throw new ConfigurationException("irodsSystemConnector not set");
 		String dipSourcePartialPath = 
 				object.getContractor().getShort_name()+"/"+object.getIdentifier()+"_"+object.getLatestPackage().getId();
 		String dipTargetPartialPath = 

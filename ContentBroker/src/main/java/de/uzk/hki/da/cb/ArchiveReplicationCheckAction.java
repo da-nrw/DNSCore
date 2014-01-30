@@ -69,7 +69,6 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	boolean implementation() throws IOException {
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 		setKILLATEXIT(true);
-		object.reattach();
 
 		StoragePolicy sp = new StoragePolicy(localNode);
 		sp.setMinNodes(minNodes);

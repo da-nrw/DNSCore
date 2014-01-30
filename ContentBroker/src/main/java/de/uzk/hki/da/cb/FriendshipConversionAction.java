@@ -35,7 +35,6 @@ public class FriendshipConversionAction extends AbstractAction{
 	static final Logger logger = LoggerFactory.getLogger(FriendshipConversionAction.class);
 	@Override
 	boolean implementation() throws IOException {
-		object.reattach();
 		return true;
 	}
 	@Override

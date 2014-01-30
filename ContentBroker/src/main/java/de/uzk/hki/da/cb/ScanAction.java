@@ -94,8 +94,6 @@ public class ScanAction extends AbstractAction{
 		if (formatScanService==null) throw new ConfigurationException("formatScanService not set");
 		if (preservationSystem==null) // So we can prevent the preservationSystem to be instantiated in unit tests.
 			preservationSystem = new PreservationSystem(dao);
-		object.reattach();
-		
 		
 		List<DAFile> filesArchival = formatScanService.identify(object.getLatestPackage().getFiles());
 		

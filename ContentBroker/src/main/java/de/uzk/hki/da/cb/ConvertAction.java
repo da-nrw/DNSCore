@@ -58,7 +58,6 @@ public class ConvertAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
-		object.reattach();
 		
 		if (job.getConversion_instructions().size()==0)
 			logger.warn("No Conversion Instruction could be found for job with id: "+job.getId());

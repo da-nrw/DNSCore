@@ -115,6 +115,7 @@ public class UnpackActionBagitAndDeltaTests {
 		o.setIdentifier("identifier");
 		o.getPackages().add(pkg);
 		o.setTransientNodeRef(node);
+		o.reattach();
 
 		
 		job.setObject(o);

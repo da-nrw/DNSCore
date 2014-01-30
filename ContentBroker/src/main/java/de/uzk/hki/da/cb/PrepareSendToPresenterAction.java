@@ -47,7 +47,6 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	@Override
 	boolean implementation() throws IOException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
-		object.reattach();
 		
 		String dipName = object.getContractor().getShort_name() + "/" + object.getIdentifier()+"_"+object.getLatestPackage().getId();
 		publicDir = new File(localNode.getDipAreaRootPath()+"public/"+dipName);

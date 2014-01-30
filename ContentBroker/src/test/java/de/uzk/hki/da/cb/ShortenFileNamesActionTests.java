@@ -102,7 +102,7 @@ public class ShortenFileNamesActionTests {
 		obj.getPackages().add(pkg);
 		obj.setIdentifier("1");
 		obj.setTransientNodeRef(node);
-		
+		obj.reattach();
 		
 		Event event1 = new Event();
 		event1.setType("CONVERT");

@@ -38,7 +38,6 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 	
 	@Override
 	boolean implementation() {
-		object.reattach();
 		
 		new File(object.getDataPath()).mkdirs();
 		

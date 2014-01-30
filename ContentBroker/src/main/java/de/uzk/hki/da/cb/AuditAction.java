@@ -55,7 +55,6 @@ public class AuditAction extends AbstractAction {
 	@Override
 	boolean implementation() {
 		setKILLATEXIT(true);
-		object.reattach();
 		
 		Properties properties = null;
 		InputStream in;

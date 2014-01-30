@@ -60,7 +60,6 @@ public class RetrievalAction extends AbstractAction {
 	@Override
 	protected
 	boolean implementation() {
-		object.reattach();
 		
 		ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(new File(".tar"));
 

@@ -24,8 +24,6 @@ public class CreateEDMAction extends AbstractAction {
 
 	@Override
 	boolean implementation() {
-		object.reattach();
-		
 		if (fedora == null) 
 			throw new RuntimeException("Fedora object not set. Make sure the action is configured properly");
 		

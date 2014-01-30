@@ -51,7 +51,6 @@ public class CheckFormatsAction extends AbstractAction {
 
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException {
-		object.reattach();
 		
 		List<DAFile> allFiles = new ArrayList<DAFile>();
 		for (Package p:object.getPackages()){

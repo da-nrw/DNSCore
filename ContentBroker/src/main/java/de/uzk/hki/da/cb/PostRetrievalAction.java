@@ -40,7 +40,6 @@ public class PostRetrievalAction extends AbstractAction {
 	@Override
 	boolean implementation() {
 		setKILLATEXIT(true);
-		object.reattach();
 		
 		String csn=object.getContractor().getShort_name();
 		String mergeTarName = object.getIdentifier() + ".tar";

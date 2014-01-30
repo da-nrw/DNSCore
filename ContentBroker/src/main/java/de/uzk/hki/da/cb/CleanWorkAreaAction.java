@@ -42,7 +42,6 @@ public class CleanWorkAreaAction extends AbstractAction{
 	boolean implementation() {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 		setKILLATEXIT(true);
-		object.reattach();
 		
 		// to prevent leftover files from irods collection removal we delete the dirs on the filesystem first.
 		try {

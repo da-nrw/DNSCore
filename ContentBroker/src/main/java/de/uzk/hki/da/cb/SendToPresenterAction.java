@@ -56,7 +56,6 @@ public class SendToPresenterAction extends AbstractAction {
 
 	@Override
 	public boolean implementation() throws IOException {
-		object.reattach();
 		
 		String dipPathPublic = new StringBuilder(localNode.getDipAreaRootPath())
 			.append("public/").append(object.getContractor().getShort_name())

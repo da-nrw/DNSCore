@@ -95,7 +95,6 @@ public class UnpackAction extends AbstractAction {
 	
 	boolean implementation(){
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
-		object.reattach();
 		
 		String absoluteSIPPath = localNode.getIngestAreaRootPath() + object.getContractor().getShort_name() + 
 				"/" + object.getLatestPackage().getContainerName();
