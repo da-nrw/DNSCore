@@ -610,6 +610,8 @@ public class Object {
 	 * to the file objects from the file system, the method will return these instead.
 	 * @author Thomas Kleinke
 	 * @author Daniel M. de Oliveira
+	 * @throws RuntimeException if it finds a file on the file system to which it cannot find a corresponding attached instance of
+	 * DAFile in this object.
 	 */
 	
 	public List<DAFile> getNewestFilesFromAllRepresentations(String sidecarExtensions)
@@ -729,7 +731,7 @@ public class Object {
 				break;
 		}
 		if (!foundAttachedInstance)
-			logger.trace(newDAFile.toString()+". New Instance.");
+			throw new RuntimeException("cannot find attached instance for "+fRepName+"/"+fRelativePath);
 		return newDAFile;
 	}
 	

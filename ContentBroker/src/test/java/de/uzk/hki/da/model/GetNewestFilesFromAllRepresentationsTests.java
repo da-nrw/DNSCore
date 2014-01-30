@@ -64,6 +64,9 @@ public class GetNewestFilesFromAllRepresentationsTests {
 		o.setIdentifier("2");
 		o.getPackages().clear();
 		o.getPackages().add(pkg);
+		pkg.setTransientBackRefToObject(o);
+		o.getLatestPackage().scanRepRecursively("2013_06_19+10_26+a");
+		o.getLatestPackage().scanRepRecursively("2013_06_19+10_26+b");
 		
 		List<DAFile> fileList = o.getNewestFilesFromAllRepresentations("xmp;xml");
 		
@@ -96,6 +99,10 @@ public class GetNewestFilesFromAllRepresentationsTests {
 	@Test
 	public void getNewestFileForDocument(){
 		
+		o.getLatestPackage().scanRepRecursively("2012_11_05+12_49+a");
+		o.getLatestPackage().scanRepRecursively("2012_11_05+12_49+b");
+		o.getLatestPackage().scanRepRecursively("2012_11_05+13_32+a");
+		o.getLatestPackage().scanRepRecursively("2012_11_05+13_32+b");
 		List<DAFile> fileList = o.getNewestFilesFromAllRepresentations("xmp");
 	
 		boolean justOne = true;
@@ -119,7 +126,12 @@ public class GetNewestFilesFromAllRepresentationsTests {
 	 @Test
 	 public void getNewestFilesFromAllRepresentations()
 	 {
-		
+		 
+		 o.getLatestPackage().scanRepRecursively("2012_11_05+12_49+a");
+		 o.getLatestPackage().scanRepRecursively("2012_11_05+12_49+b");
+		 o.getLatestPackage().scanRepRecursively("2012_11_05+13_32+a");
+		 o.getLatestPackage().scanRepRecursively("2012_11_05+13_32+b");
+		 
 		 List<DAFile> fileList = o.getNewestFilesFromAllRepresentations("xmp;xml;txt");
 		 String[][] correctRelativePaths = new String[][] { {"testImage_1.tif", "2012_11_05+12_49+b"},
 				 											{"testImage_2.tif", "2012_11_05+13_32+b"},

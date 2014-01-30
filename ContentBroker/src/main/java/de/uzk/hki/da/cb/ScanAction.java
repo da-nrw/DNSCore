@@ -97,9 +97,7 @@ public class ScanAction extends AbstractAction{
 		object.reattach();
 		
 		
-		List<DAFile> filesArchival= object.getLatestPackage().scanRepRecursively(job.getRep_name()+"a");
-		filesArchival = formatScanService.identify(filesArchival);
-		object.getLatestPackage().getFiles().addAll(filesArchival);
+		List<DAFile> filesArchival = formatScanService.identify(object.getLatestPackage().getFiles());
 		
 		String repPath = object.getDataPath() + job.getRep_name();
 		Object premisObject = parsePremisToMetadata(repPath+"a");

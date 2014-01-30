@@ -131,7 +131,7 @@ public class UnpackAction extends AbstractAction {
 		} catch (IOException e) {		
 			throw new RuntimeException("problems during creating new representation");
 		}
-		
+		object.getLatestPackage().scanRepRecursively(repName+"a");
 		logger.debug("REPNAME: " + repName);
 		job.setRep_name(repName);
 		
@@ -165,6 +165,9 @@ public class UnpackAction extends AbstractAction {
 				throw new RuntimeException("error while trying to get existing packages from lza area",e);
 			}
 		}
+		
+		
+		
 		
 		logger.info("deleting: "+sipInForkPath);
 		new File(sipInForkPath).delete();
