@@ -58,8 +58,7 @@
 								</g:link>
 					</g:if>
 					<g:if test="${ statusType == "1" && admin }">
-					<g:link action="queueRecover" id="${queueEntryInstance.id}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/recover.jpg"/>
+					<g:link action="queueRecover" id="${queueEntryInstance.id}"><g:img style="width:16px; height:16px" uri="/images/icons/recover.jpg"/>
 					</g:link>
 				</g:if>
 				</td>
