@@ -11,6 +11,16 @@
           
     <import resource="classpath*:META-INF/beans-infrastructure.core.xml"/>      
     
+    <bean id="actionRegistry" class="de.uzk.hki.da.core.ActionRegistry">
+		<property name="maxThreads" ref="actionThreads" />
+		<property name="actionPriority" ref="actionOrdering" />
+		<property name="blockedBy">
+			<util:map>
+				<entry key="IngestArchiveReplicationAction" value="IngestArchiveReplicationCheckAction"/>
+			</util:map>
+		</property>
+	</bean>
+    
     <bean id="contentBroker" class="de.uzk.hki.da.core.ContentBroker" init-method="init">
         <property name="taskExecutor" ref="taskExecutor" />
         <property name="actionFactory" ref="actionFactory" />

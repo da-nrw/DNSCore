@@ -30,50 +30,39 @@
 	</task:scheduled-tasks>
 	<task:scheduler id="taskScheduler" pool-size="20" />
 
-
-	<bean id="actionRegistry" class="de.uzk.hki.da.core.ActionRegistry">
-		<property name="maxThreads">
-			<util:map>
-				<entry key="RestartIngestWorkflowAction" value="3" />
-				<entry key="IngestRegisterURNAction" value="3" />
-				<entry key="IngestTarAction" value="3" />
-				<entry key="IndexESAction" value="3" />
-				<entry key="CreateEDMAction" value="3" />
-				<entry key="FetchPIPsAction" value="3" />
-				<entry key="SendToPresenterAction" value="3" />
-				<entry key="IngestPrepareSendToPresenterAction" value="3" />
-				<entry key="IngestUnpackAction" value="3" />
-				<entry key="IngestConvertAction" value="3" />
-				<entry key="FriendshipConversionAction" value="3" />
-				<entry key="IngestScanAction" value="3" />
-				<entry key="IngestCreatePremisAction" value="3" />
-				<entry key="IngestCheckFormatsAction" value="3" />
-				<entry key="IngestScanForPresentationAction" value="3" />
-				<entry key="IngestConvertForPresentationAction" value="3" />
-				<entry key="IngestPresUpdateMetadataAction" value="3" />
-				<entry key="IngestShortenFileNamesAction" value="3" />
-				<entry key="IngestUpdateMetadataAction" value="3" />
-				<entry key="IngestArchiveReplicationAction" value="3" />
-				<entry key="IngestArchiveReplicationCheckAction" value="3" />
-				<entry key="RetrievalAction" value="3" />			
-				<entry key="RetrievalObjectToWorkAreaAction" value="3" />			
-				<entry key="AuditAction" value="3" />
-				<entry key="IngestBuildAIPAction" value="3" />
-				<entry key="PostRetrievalAction" value="3" />
-				<entry key="PIPGenPrepareSendToPresenterAction" value="3" />
-				<entry key="PIPGenShortenFileNamesAction" value="3" />
-				<entry key="PIPGenUpdateMetadataAction" value="3" />
-				<entry key="PIPGenConvertAction" value="3" />
-				<entry key="PIPGenScanForPresentationAction" value="3" />
-				<entry key="PIPGenObjectToWorkAreaAction" value="3" />
-				<entry key="PIPGenCleanWorkAreaAction" value="3" />
-			</util:map>
-		</property>
-		<property name="actionPriority" ref="actionOrdering" />
-		<property name="blockedBy">
-			<util:map>
-				<entry key="IngestArchiveReplicationAction" value="IngestArchiveReplicationCheckAction"/>
-			</util:map>
-		</property>
-	</bean>
+	<util:map id="actionThreads">
+		<entry key="RestartIngestWorkflowAction" value="3" />
+		<entry key="IngestRegisterURNAction" value="3" />
+		<entry key="IngestTarAction" value="3" />
+		<entry key="IndexESAction" value="3" />
+		<entry key="CreateEDMAction" value="3" />
+		<entry key="FetchPIPsAction" value="3" />
+		<entry key="SendToPresenterAction" value="3" />
+		<entry key="IngestPrepareSendToPresenterAction" value="3" />
+		<entry key="IngestUnpackAction" value="3" />
+		<entry key="IngestConvertAction" value="3" />
+		<entry key="FriendshipConversionAction" value="3" />
+		<entry key="IngestScanAction" value="3" />
+		<entry key="IngestCreatePremisAction" value="3" />
+		<entry key="IngestCheckFormatsAction" value="3" />
+		<entry key="IngestScanForPresentationAction" value="3" />
+		<entry key="IngestConvertForPresentationAction" value="3" />
+		<entry key="IngestPresUpdateMetadataAction" value="3" />
+		<entry key="IngestShortenFileNamesAction" value="3" />
+		<entry key="IngestUpdateMetadataAction" value="3" />
+		<entry key="IngestArchiveReplicationAction" value="3" />
+		<entry key="IngestArchiveReplicationCheckAction" value="3" />
+		<entry key="RetrievalAction" value="3" />			
+		<entry key="RetrievalObjectToWorkAreaAction" value="3" />			
+		<entry key="AuditAction" value="3" />
+		<entry key="IngestBuildAIPAction" value="3" />
+		<entry key="PostRetrievalAction" value="3" />
+		<entry key="PIPGenPrepareSendToPresenterAction" value="3" />
+		<entry key="PIPGenShortenFileNamesAction" value="3" />
+		<entry key="PIPGenUpdateMetadataAction" value="3" />
+		<entry key="PIPGenConvertAction" value="3" />
+		<entry key="PIPGenScanForPresentationAction" value="3" />
+		<entry key="PIPGenObjectToWorkAreaAction" value="3" />
+		<entry key="PIPGenCleanWorkAreaAction" value="3" />
+	</util:map>
 </beans>

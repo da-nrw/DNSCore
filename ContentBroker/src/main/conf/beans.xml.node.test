@@ -30,47 +30,35 @@
 
 	<task:scheduler id="taskScheduler" pool-size="20" />
 	
-	<bean id="actionRegistry" class="de.uzk.hki.da.core.ActionRegistry" scope="prototype">
-		<property name="maxThreads">
-			<util:map>
-				<entry key="RestartIngestWorkflowAction" value="1" />
-				<entry key="IngestUnpackAction" value="1" />
-				<entry key="IngestConvertAction" value="1" />
-				<entry key="FriendshipConversionAction" value="1" />
-				<entry key="IngestCreatePremisAction" value="1" />
-				<entry key="IngestCheckFormatsAction" value="1" />
-				<entry key="IngestScanAction" value="1" />
-				<entry key="IngestRegisterURNAction" value="1" />
-				<entry key="IngestPrepareSendToPresenterAction" value="1" />
-				<entry key="IngestUpdateMetadataAction" value="1" />
-				<entry key="IngestPresUpdateMetadataAction" value="1" />
-				<entry key="IngestShortenFileNamesAction" value="1" />
-				<entry key="IngestScanForPresentationAction" value="1" />
-				<entry key="IngestConvertForPresentationAction" value="1" />
-				<entry key="IngestArchiveReplicationCheckAction" value="1" />
-				<entry key="IngestArchiveReplicationAction" value="1" />
-				<entry key="IngestTarAction" value="1" />
-				<entry key="RetrievalObjectToWorkAreaAction" value="1" />
-				<entry key="RetrievalAction" value="1" />
-				<entry key="AuditAction" value="1" />
-				<entry key="IngestBuildAIPAction" value="1" />
-				<entry key="PIPGenPrepareSendToPresenterAction" value="1" />
-				<entry key="PIPGenUpdateMetadataAction" value="1" />
-				<entry key="PIPGenShortenFileNamesAction" value="1" />
-				<entry key="PIPGenConvertAction" value="1" />
-				<entry key="PIPGenScanForPresentationAction" value="1" />
-				<entry key="PIPGenObjectToWorkAreaAction" value="1" />
-				<entry key="PIPGenCleanWorkAreaAction" value="1" />
-			</util:map>
-		</property>
-		<property name="actionPriority" ref="actionOrdering" />
-		<property name="blockedBy">
-			<util:map>
-				<entry key="IngestArchiveReplicationAction" value="IngestArchiveReplicationCheckAction"/>
-			</util:map>
-		</property>
-	</bean>
-	
-	
-	
+
+	<util:map id="actionThreads">
+		<entry key="RestartIngestWorkflowAction" value="1" />
+		<entry key="IngestUnpackAction" value="1" />
+		<entry key="IngestConvertAction" value="1" />
+		<entry key="FriendshipConversionAction" value="1" />
+		<entry key="IngestCreatePremisAction" value="1" />
+		<entry key="IngestCheckFormatsAction" value="1" />
+		<entry key="IngestScanAction" value="1" />
+		<entry key="IngestRegisterURNAction" value="1" />
+		<entry key="IngestPrepareSendToPresenterAction" value="1" />
+		<entry key="IngestUpdateMetadataAction" value="1" />
+		<entry key="IngestPresUpdateMetadataAction" value="1" />
+		<entry key="IngestShortenFileNamesAction" value="1" />
+		<entry key="IngestScanForPresentationAction" value="1" />
+		<entry key="IngestConvertForPresentationAction" value="1" />
+		<entry key="IngestArchiveReplicationCheckAction" value="1" />
+		<entry key="IngestArchiveReplicationAction" value="1" />
+		<entry key="IngestTarAction" value="1" />
+		<entry key="RetrievalObjectToWorkAreaAction" value="1" />
+		<entry key="RetrievalAction" value="1" />
+		<entry key="AuditAction" value="1" />
+		<entry key="IngestBuildAIPAction" value="1" />
+		<entry key="PIPGenPrepareSendToPresenterAction" value="1" />
+		<entry key="PIPGenUpdateMetadataAction" value="1" />
+		<entry key="PIPGenShortenFileNamesAction" value="1" />
+		<entry key="PIPGenConvertAction" value="1" />
+		<entry key="PIPGenScanForPresentationAction" value="1" />
+		<entry key="PIPGenObjectToWorkAreaAction" value="1" />
+		<entry key="PIPGenCleanWorkAreaAction" value="1" />
+	</util:map>
 </beans>
