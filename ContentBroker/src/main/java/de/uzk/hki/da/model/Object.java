@@ -22,7 +22,6 @@ package de.uzk.hki.da.model;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,16 +42,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.contract.PublicationRight;
 import de.uzk.hki.da.model.contract.PublicationRight.Audience;
 import de.uzk.hki.da.model.contract.RightsStatement;
-import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -578,64 +574,6 @@ public class Object {
 	public boolean hasDeltas() {
 		return (packages.size() > 1);
 	}
-	
-	
-	/**
-	 * XXX Hack. for the moment i simply will return new instances which are bound to the latest package
-	 * 
-	 * Looks onto the file system and creates a new
-	 * or returns an existing corresponding instance of DAFile for every file found for this
-	 * object.
-	 *
-	 * @return the all files
-	 * @author Daniel M. de Oliveira
-	 */
-	public List<DAFile> getAllFiles(){
-		List<DAFile> results = new ArrayList<DAFile>();
-		
-		
-		File baseFolder = new File(getDataPath());
-		if ((!baseFolder.exists())||((baseFolder.listFiles().length == 0)))
-			throw new RuntimeException("Folder " + baseFolder.getAbsolutePath() +
-									   " is empty or does not exist!");	
-	
-		String representations[] = baseFolder.list();
-
-		List<File> allRegularFiles = new ArrayList<File>();
-		for (String repName:representations){
-			
-			if (!(new File(baseFolder.getAbsolutePath()+"/"+repName).isDirectory())) continue;
-			
-			
-			Collection<File> found = FileUtils.listFiles(
-					  new File(baseFolder.getAbsolutePath()+"/"+repName), 
-					  TrueFileFilter.INSTANCE, 
-					  TrueFileFilter.INSTANCE
-					);
-			allRegularFiles.addAll(found);
-		}
-
-		
-		Package pkg = getLatestPackage();
-		for (File f:allRegularFiles){
-			String fRelativePath = f.getAbsolutePath().replace(baseFolder.getAbsolutePath()+"/", "");
-			
-			DAFile daf = new DAFile(pkg,fRelativePath.substring(0,18),fRelativePath.substring(19,fRelativePath.length()));
-			results.add(daf);
-		}
-		
-		
-		
-		
-		return results;
-	}
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	/**
