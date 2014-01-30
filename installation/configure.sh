@@ -3,6 +3,15 @@
 # author: Jens Peters
 # configures jhove
 
+SED_BIN=sed
+OS=`uname -s`
+case "$OS" in
+SunOS)
+				SED_BIN=gsed
+        ;;
+esac
+
+
 INSTALL_PATH=`pwd`
 
 if [ ! -d "$INSTALL_PATH" ]; then
@@ -11,8 +20,8 @@ if [ ! -d "$INSTALL_PATH" ]; then
 fi
 mv jhove/conf/jhove.conf  jhove/conf/jhove.conf.tmp
 mv jhove/jhove jhove/jhove.tmp 
-sed "s@CONTENTBROKER_ROOT@$INSTALL_PATH@" jhove/conf/jhove.conf.tmp >> jhove/conf/jhove.conf
-sed "s@CONTENTBROKER_ROOT@$INSTALL_PATH@" jhove/jhove.tmp >> jhove/jhove
+$SED_BIN "s@CONTENTBROKER_ROOT@$INSTALL_PATH@" jhove/conf/jhove.conf.tmp >> jhove/conf/jhove.conf
+$SED_BIN "s@CONTENTBROKER_ROOT@$INSTALL_PATH@" jhove/jhove.tmp >> jhove/jhove
 rm jhove/conf/jhove.conf.tmp
 rm jhove/jhove.tmp
 
