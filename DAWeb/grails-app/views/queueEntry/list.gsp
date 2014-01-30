@@ -53,7 +53,7 @@
 				return false;
 			}
 			// comment out next line to stop periodical updater on page load.
-			$( document ).ready(startUpdater())
+			//$( document ).ready(startUpdater())
 		</r:script>
 	</head>
 	<body>
@@ -73,7 +73,7 @@
 			</g:if>
 				<div id="filter" style="margin: 0.8em 0 0.3em">
 			<h1><a href="#">Filter</a></h1> 
-            <g:form name="searchForm" action="list">
+            <g:form name="searchForm" id="filterform" action="list">
             	<table>
             	<tr>
             		<td>Status:</td>
@@ -98,8 +98,9 @@
             		</tr>
             	</table>     
             </g:form>
-        </div>
-	
+           </div>
+	 Update&nbsp;<a href="#" onclick="upd.stop();">stop</a>&nbsp;<a href="#" onclick="startUpdater();">start</a>
+        
 			
 			<!-- This div is updated through the periodical updater -->
 			<div class="list" id="entry-list">
@@ -107,7 +108,6 @@
 			</div>
 						
 		</div>
-		<a href="#" onclick="upd.stop();">stop</a>&nbsp;<a href="#" onclick="startUpdater();">start</a>
 		<div id="legend">
 			<h1><a href="#">Hinweise zu den Statuscodes</a></h1>
 			<div>
