@@ -15,7 +15,16 @@
 			$(function() {
 				$("#legend").accordion({ collapsible: true, active: false, autoHeight: false });
 			});
-			$.PeriodicalUpdater("./listSnippet",
+			$(function() {
+				$("#filter").accordion({ collapsible: true, active: false });
+			});
+			
+			function stopUpdater() {
+				upd.stop();
+			}
+			var upd;
+			function startUpdater(){
+			upd = $.PeriodicalUpdater("./listSnippet",
 				{
 					method: "get",
 					minTimeout: 1000,
@@ -30,6 +39,7 @@
 					}
 				}
 			);
+			}
 			function sortQueue(field) {
 				console.log("sortQueue: "+field);
 				if (field == sort && order == "asc") order = "desc";
@@ -42,6 +52,8 @@
 				console.log(field);
 				return false;
 			}
+			// comment out next line to stop periodical updater on page load.
+			$( document ).ready(startUpdater())
 		</r:script>
 	</head>
 	<body>
@@ -59,6 +71,35 @@
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
+				<div id="filter" style="margin: 0.8em 0 0.3em">
+			<h1><a href="#">Filter</a></h1> 
+            <g:form name="searchForm" action="list">
+            	<table>
+            	<tr>
+            		<td>Status:</td>
+            			<td><g:textField name="search.status" value="${params.search?.status}" size="50"/></td>
+            		</tr>
+            		
+            		<tr>
+            			<td>Originalname:</td>
+            			<td><g:textField name="search.obj.origName" value="${params.search?.obj?.origName}" size="50"/></td>
+            		</tr>
+            		<tr>
+            			<td>URN:</td>
+            			<td><g:textField name="search.obj.urn" value="${params.search?.obj?.urn}" size="50"/></td>
+            		</tr>
+            			<tr>
+            			<td>Identifier:</td>
+            			<td><g:textField name="search.obj.identifier" value="${params.search?.obj?.identifier}" size="50"/></td>
+            		</tr>
+            		<tr>
+            			<td></td>
+            			<td><g:submitButton name="submit" value="Filter anwenden"/></td>
+            		</tr>
+            	</table>     
+            </g:form>
+        </div>
+	
 			
 			<!-- This div is updated through the periodical updater -->
 			<div class="list" id="entry-list">
@@ -66,7 +107,7 @@
 			</div>
 						
 		</div>
-		
+		<a href="#" onclick="upd.stop();">stop</a>&nbsp;<a href="#" onclick="startUpdater();">start</a>
 		<div id="legend">
 			<h1><a href="#">Hinweise zu den Statuscodes</a></h1>
 			<div>
