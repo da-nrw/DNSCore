@@ -750,7 +750,7 @@ public class Object {
 				
 				DAFile newDAFile = new DAFile(this.getLatestPackage(),fRepName,fRelativePath);
 				
-				newDAFile = replaceByAttachedInstanceIfAvailable(dataPath,
+				newDAFile = replaceByAttachedInstance(dataPath,
 						fRelativePath, fRepName, newDAFile);
 				
 				newDAFile.setRelative_path(fRelativePath);
@@ -771,7 +771,7 @@ public class Object {
 	 * @return the dA file
 	 * @author Daniel M. de Oliveira
 	 */
-	private DAFile replaceByAttachedInstanceIfAvailable(String dataPath,
+	private DAFile replaceByAttachedInstance(String dataPath,
 			String fRelativePath, String fRepName, DAFile newDAFile) {
 		
 		boolean foundAttachedInstance = false;

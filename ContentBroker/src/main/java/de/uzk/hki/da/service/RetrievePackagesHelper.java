@@ -279,7 +279,5 @@ public class RetrievePackagesHelper {
 			new File(pathToBagRoot+"manifest-md5.txt").delete();
 		if (new File(pathToBagRoot+"tagmanifest-md5.txt").exists())
 			new File(pathToBagRoot+"tagmanifest-md5.txt").delete();
-		if (new File(pathToBagRoot+"data/premis.xml").exists())
-			new File(pathToBagRoot+"data/premis.xml").delete();
 	}
 }

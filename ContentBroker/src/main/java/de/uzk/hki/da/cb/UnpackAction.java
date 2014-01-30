@@ -159,7 +159,7 @@ public class UnpackAction extends AbstractAction {
 				retrievePackagesHelper.loadPackages(object, false);
 				logger.info("Packages of object \""+object.getIdentifier()+
 						"\" are now available on cache resource at: " + object.getPath()+"existingAIPs");
-				FileUtils.moveFile(new File(object.getDataPath() + object.getNameOfNewestBRep() + "/premis.xml"),
+				FileUtils.copyFile(new File(object.getDataPath() + object.getNameOfNewestBRep() + "/premis.xml"),
 						 new File(object.getDataPath() + "premis_old.xml"));
 			} catch (IOException e) {
 				throw new RuntimeException("error while trying to get existing packages from lza area",e);

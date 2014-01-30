@@ -92,11 +92,10 @@ public class FormatScanService {
 	 */
 	public List<DAFile> identify(List<DAFile> files) throws FileNotFoundException {
 		if (!formatIdentifiersHealthChecked) throw new IllegalStateException("Format Identifiers not initialized");
-		for (DAFile f:files)
-			if (!f.toRegularFile().exists()) throw new FileNotFoundException("file "+f.toRegularFile().getPath()+" doesn't exist");
-
 		for (DAFile f:files){
-			
+			if (!f.toRegularFile().exists()) throw new FileNotFoundException("file "+f.toRegularFile().getPath()+" doesn't exist");
+		}	
+		for (DAFile f:files){
 			f.setFormatPUID(identify(f.toRegularFile()));
 			logger.trace(f+" has puid "+f.getFormatPUID()+". Now searching if second stage scan policy is applicable");
 			
