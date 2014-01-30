@@ -66,8 +66,8 @@ public class ScanForPresentationAction extends AbstractAction{
 		if (newestFiles.size() == 0)
 			throw new RuntimeException("No files found!");
 		newestFiles = formatScanService.identify(newestFiles);
-		for (DAFile file : newestFiles) 
-			object.getLatestPackage().getFiles().add(file); 
+//		for (DAFile file : newestFiles) 
+//			object.getLatestPackage().getFiles().add(file); 
 				// TODO make sure these get not saved in db
 		 		// instead the already attached file instances from the db should be used
 				// should work fine in ingest, but what about standalone pip gen?
