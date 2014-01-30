@@ -30,6 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.grid.FakeGridFacade;
+import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.TESTHelper;
@@ -80,5 +81,50 @@ public class RetrievePackagesHelperTest {
 		assertTrue(new File(outputPath + "data/f/folder2/pic5.txt").exists());
 		assertTrue(new File(outputPath + "data/f/pic3.txt").exists());
 		assertFalse(new File(outputPath + "existingAIPs").exists());
+		
+		boolean checked1=false;
+		boolean checked2=false;
+		boolean checked3=false;
+		for (Package p:object.getPackages()){
+			System.out.println("Object has Package "+p.getName());
+			
+			if (p.getName().equals("1")){
+				assertTrue(p.getFiles().contains(new DAFile(null,"a","pic1.txt")));
+				assertTrue(p.getFiles().contains(new DAFile(null,"b","pic2.txt")));
+				assertFalse(p.getFiles().contains(new DAFile(null,"c","pic3.txt")));
+				assertFalse(p.getFiles().contains(new DAFile(null,"d","pic4.txt")));
+				assertFalse(p.getFiles().contains(new DAFile(null,"e","pic1.txt")));
+				assertFalse(p.getFiles().contains(new DAFile(null,"f","folder1/pic5.txt")));
+				assertFalse(p.getFiles().contains(new DAFile(null,"f","folder2/pic5.txt")));
+				assertFalse(p.getFiles().contains(new DAFile(null,"f","pic3.txt")));
+				checked1=true;
+			}
+			if (p.getName().equals("2")){
+				assertFalse(p.getFiles().contains(new DAFile(null,"a","pic1.txt")));
+				assertFalse(p.getFiles().contains(new DAFile(null,"b","pic2.txt")));
+				assertTrue(p.getFiles().contains(new DAFile(null,"c","pic3.txt")));
+				assertTrue(p.getFiles().contains(new DAFile(null,"d","pic4.txt")));
+				assertFalse(p.getFiles().contains(new DAFile(null,"e","pic1.txt")));
+				assertFalse(p.getFiles().contains(new DAFile(null,"f","folder1/pic5.txt")));
+				assertFalse(p.getFiles().contains(new DAFile(null,"f","folder2/pic5.txt")));
+				assertFalse(p.getFiles().contains(new DAFile(null,"f","pic3.txt")));
+				checked2=true;
+				
+			}
+			if (p.getName().equals("3")){
+				assertFalse(p.getFiles().contains(new DAFile(null,"a","pic1.txt")));
+				assertFalse(p.getFiles().contains(new DAFile(null,"b","pic2.txt")));
+				assertFalse(p.getFiles().contains(new DAFile(null,"c","pic3.txt")));
+				assertFalse(p.getFiles().contains(new DAFile(null,"d","pic4.txt")));
+				assertTrue(p.getFiles().contains(new DAFile(null,"e","pic1.txt")));
+				assertTrue(p.getFiles().contains(new DAFile(null,"f","folder1/pic5.txt")));
+				assertTrue(p.getFiles().contains(new DAFile(null,"f","folder2/pic5.txt")));
+				assertTrue(p.getFiles().contains(new DAFile(null,"f","pic3.txt")));
+				checked3=true;
+			}
+		}
+		assertTrue(checked1);
+		assertTrue(checked2);
+		assertTrue(checked3);
 	}
 }

@@ -56,9 +56,10 @@ public class RetrievePackagesHelper {
 	 * contents at the destined object location at workAreaRootPath/[csn]/[id] where they can be
 	 * further processed. If [workAreaRootPath]/|csn]/[id] does not exist, it gets created. Note also
 	 * that any existing files below [workAreaRootPath]/[csn]/[id] get overwritten in case of namespace
-	 * collision with files contained within the retrieved packages.
+	 * collision with files contained within the retrieved packages. 
 	 * 
-	 * @param object the packages that get processed belong to this object.
+	 * @param object the packages that get processed belong to this object. The object has packages, to which,
+	 * as a side of the operation, new instances of DAFile will get attached.
 	 * @param includeLastPackage if set to false, the method will load all but the last package.
 	 * @throws IOException if at least one of the packages could not be retrieved from the grid.
 	 * @author Daniel M. de Oliveira
@@ -70,8 +71,6 @@ public class RetrievePackagesHelper {
 		if (object.getPackages().isEmpty()) throw new IllegalArgumentException("Object does not contain any packages");
 		if (!new File(object.getPath()).exists()) throw new IllegalArgumentException(object.getPath()+" does not exist");
 
-		
-		logger.trace("Retrieving packages...");
 		for (Package pkg : object.getPackages()) {
 			
 			if (!includeLastPackage)
@@ -79,9 +78,7 @@ public class RetrievePackagesHelper {
 			
 			File retrievedPackage = retrieveSinglePackageFromGrid(object,pkg);
 			List<DAFile> results = unpackExistingPackage(object,retrievedPackage);
-			logger.debug("new files: ");
-			for (DAFile f:results)
-				logger.debug(f.toString());
+			pkg.getFiles().addAll(results);
 		}
 	}
 	
