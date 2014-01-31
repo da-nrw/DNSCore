@@ -3,7 +3,7 @@
 			// comment out next line to stop periodical updater on page load.		
 			$( document ).ready(startUpdater())
 			</g:if>
-		</r:script>
+</r:script>
 <table>
 	<thead>
 		<tr>

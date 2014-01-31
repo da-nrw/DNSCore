@@ -27,7 +27,7 @@
 					minTimeout: 1000,
 					maxTimeout: 1000,
 					data: function() {
-						return { order: order, sort: sort }
+						return { order: order, sort: sort, params: $('form').serialize() }
 					},
 					success: function(data) {
 						console.log("success - sort: "+sort+", order: "+order);
