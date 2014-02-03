@@ -78,9 +78,10 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 		if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdPUBLIC,getDurationRestrictionsForAudience("PUBLIC")))){
 			throw new RuntimeException("command not succeeded");
 		}
-		DAFile f1 = new DAFile(object.getLatestPackage(),ci.getTarget_folder(),object.getDataPath()+"dip/public/"+ci.getTarget_folder()+FilenameUtils.getBaseName(
-				ci.getSource_file().toRegularFile().getAbsolutePath())+".mp3");
 		
+		DAFile f1 = new DAFile(object.getLatestPackage(), "dip/public", Utilities.slashize(ci.getTarget_folder()) + 
+				FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp3");
+				
 		Event e = new Event();
 		e.setType("CONVERT");
 		e.setSource_file(ci.getSource_file());
@@ -98,8 +99,9 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 		if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdINSTITUTION,getDurationRestrictionsForAudience("INSTITUTION")))){
 			throw new RuntimeException("command not succeeded");
 		}
-		DAFile f2 = new DAFile(object.getLatestPackage(),ci.getTarget_folder(),object.getDataPath()+"dip/institution/"+ci.getTarget_folder()+FilenameUtils.getBaseName(
-				ci.getSource_file().toRegularFile().getAbsolutePath())+".mp3");
+		
+		DAFile f2 = new DAFile(object.getLatestPackage(), "dip/institution", Utilities.slashize(ci.getTarget_folder()) + 
+				FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp3");
 		
 		Event e1 = new Event();
 		e1.setType("CONVERT");
