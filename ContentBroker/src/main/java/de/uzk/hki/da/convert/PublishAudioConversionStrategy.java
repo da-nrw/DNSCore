@@ -19,6 +19,7 @@
 
 package de.uzk.hki.da.convert;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,6 +60,9 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 		if (object==null) throw new IllegalStateException("object not set");
 		
 		if (cliConnector==null) throw new IllegalStateException("cliConnector not set");
+
+		new File(object.getDataPath() + "dip/public/" + ci.getTarget_folder()).mkdirs();
+		new File(object.getDataPath() + "dip/institution/" + ci.getTarget_folder()).mkdirs();
 		
 		List<Event> results = new ArrayList<Event>();
 		
