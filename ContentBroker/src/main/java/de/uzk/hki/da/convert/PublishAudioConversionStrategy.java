@@ -33,6 +33,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.contract.AudioRestriction;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -116,17 +117,22 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 	 * @return the duration restrictions for audience
 	 */
 	private String[] getDurationRestrictionsForAudience(String audience) {
-		if (getPublicationRightForAudience(audience)==null) return new String[]{};
 		
+		if (getPublicationRightForAudience(audience) == null)
+			return new String[]{};
 		
-		String duration= getPublicationRightForAudience(audience).getAudioRestriction().getDuration().toString();
+		AudioRestriction audioRestriction = getPublicationRightForAudience(audience).getAudioRestriction();
+		
+		if (audioRestriction != null && audioRestriction.getDuration() != null) {
+			String duration = audioRestriction.getDuration().toString();
 				
-		logger.debug("duration restriction for audience "+audience+": "+duration);
-		if (duration != null && !duration.isEmpty()) {
-			return new String[]{"trim","0",duration};
-		} else {
-			logger.debug("No resize information found for audience " + audience);
+			logger.debug("duration restriction for audience " + audience + ": " + duration);
+			if (!duration.isEmpty())
+				return new String[] { "trim", "0", duration };
 		}
+		
+		logger.debug("No resize information found for audience " + audience);
+		
 		return new String[]{};
 	}
 	
