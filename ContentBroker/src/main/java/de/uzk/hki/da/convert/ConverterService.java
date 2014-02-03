@@ -92,7 +92,8 @@ public class ConverterService {
 			logger.info(e.getTarget_file().getRep_name()+"/"+e.getTarget_file().getRelative_path());
 			// Double check if the file really exists
 			if (!e.getTarget_file().toRegularFile().exists()) 
-				throw new RuntimeException("target file "+e.getTarget_file()+" does not exist");
+				throw new RuntimeException("Target file " + e.getTarget_file().toRegularFile().getAbsolutePath() +
+						" does not exist");
 		}
 		
 		return results;
