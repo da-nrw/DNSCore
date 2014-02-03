@@ -3,6 +3,15 @@
 # author: Jens Peters
 # configures jhove
 
+SED_BIN=sed
+OS=`uname -s`
+case "$OS" in
+SunOS)
+				SED_BIN=gsed
+        ;;
+esac
+
+
 INSTALL_PATH=`pwd`
 
 if [ ! -d "$INSTALL_PATH" ]; then
@@ -11,16 +20,18 @@ if [ ! -d "$INSTALL_PATH" ]; then
 fi
 mv jhove/conf/jhove.conf  jhove/conf/jhove.conf.tmp
 mv jhove/jhove jhove/jhove.tmp 
-sed "s@CONTENTBROKER_ROOT@$INSTALL_PATH@" jhove/conf/jhove.conf.tmp >> jhove/conf/jhove.conf
-sed "s@CONTENTBROKER_ROOT@$INSTALL_PATH@" jhove/jhove.tmp >> jhove/jhove
+$SED_BIN "s@CONTENTBROKER_ROOT@$INSTALL_PATH@" jhove/conf/jhove.conf.tmp >> jhove/conf/jhove.conf
+$SED_BIN "s@CONTENTBROKER_ROOT@$INSTALL_PATH@" jhove/jhove.tmp >> jhove/jhove
 rm jhove/conf/jhove.conf.tmp
 rm jhove/jhove.tmp
 
 PYTHON_BIN=`cat conf/config.properties | grep python.bin | sed "s@python.bin=@@"`
 if [ "$PYTHON_BIN" = "" ]
 then
-	echo ERROR could not read python.path from config.properties
-	exit
+	echo "ERROR could not read python.bin from config.properties"
+	echo "ERROR Make sure there is an appropriate entry for python.bin=[path to a python version > 2.7]".
+	echo "ERROR If not, add it and call this script again."
+	exit 1
 fi
 mv fido.sh fido.sh.tmp
 sed "s@PYTHON_BIN@$PYTHON_BIN@" fido.sh.tmp >> fido.sh

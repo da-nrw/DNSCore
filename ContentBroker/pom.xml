@@ -53,7 +53,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.uzk.hki.da</groupId>
 	<artifactId>ContentBroker</artifactId>
-	<version>0.6.4-rc1</version>
+	<version>0.6.4-final</version>
 	<packaging>jar</packaging>
 	<name>DA-NRW Content Broker</name>
 
@@ -219,7 +219,7 @@
                   dir="${basedir}"
                   executable="${basedir}/src/main/scripts/validate.sh"
                   failonerror="true">
-                  <arg line="" />
+                  <arg line="${env}" />
                 </exec>
               </tasks>
             </configuration>

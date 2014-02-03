@@ -47,7 +47,6 @@ public class UpdateMetadataAction extends AbstractAction {
 
 	@Override
 	public boolean implementation() throws IOException {
-		object.reattach();
 		
 		logConvertEventsOnDebugLevel();
 		

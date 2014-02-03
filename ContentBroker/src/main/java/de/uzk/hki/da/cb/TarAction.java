@@ -60,7 +60,6 @@ public class TarAction extends AbstractAction {
 	@Override
 	boolean implementation() throws IOException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
-		object.reattach();
 		
 		tar = localNode.getWorkAreaRootPath() + 
 				object.getContractor().getShort_name() + "/" + object.getIdentifier() 

@@ -35,6 +35,9 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.CommaSeparatedList;
 
+/**
+ * @author Daniel M. de Oliveira
+ */
 public class CheckFormatsAction extends AbstractAction {
 
 	static final Logger logger = LoggerFactory
@@ -48,49 +51,26 @@ public class CheckFormatsAction extends AbstractAction {
 
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException {
-		object.reattach();
 		
-		logger.debug("listing file instances attached to latest package");
-		for (DAFile f:object.getLatestPackage().getFiles()){
-			logger.debug(f.toString());
+		List<DAFile> allFiles = new ArrayList<DAFile>();
+		for (Package p:object.getPackages()){
+				allFiles.addAll(p.getFiles());
+				
 		}
+		allFiles = getFormatScanService().identify(allFiles);
 		
-		
-		
-		List<DAFile> unattachedFileInstances = object.getAllFiles(); // XXX Hack. These instances are not attached.
-		unattachedFileInstances = getFormatScanService().identify(unattachedFileInstances); // = is for mock during testing
-		for (DAFile unattachedFileInstance:unattachedFileInstances){
-			logger.debug("unattachedFileInstance: "+unattachedFileInstance+" puid["+unattachedFileInstance.getFormatPUID()+"]/secondaryAttribute/["+unattachedFileInstance.getFormatSecondaryAttribute()+"]");
-
-			// XXX Hack since the files are not attached search through all file instances that are attached 
-			// to the object and copy the file information into the attached dafile instances.
-			for (Package pkg:object.getPackages()){
-				for (DAFile objectfile:pkg.getFiles()){
-					
-					if (objectfile.equals(unattachedFileInstance)){ // is attached to object
-						logger.debug("will update attached instance ");
-						objectfile.setFormatPUID(unattachedFileInstance.getFormatPUID());
-						objectfile.setFormatSecondaryAttribute(unattachedFileInstance.getFormatSecondaryAttribute());
-					}
-				}
-			}
+		for (DAFile f:allFiles){
+			if (f.getFormatPUID()==null) throw new RuntimeException("file \""+f+"\" has no format puid");
 		}
+		attachJhoveInfoToAllFiles(allFiles);
+		
 
 		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(sidecarExtensions);
+		
 		Set<String> mostRecentFormats = new HashSet<String>();
 		Set<String> mostRecentSecondaryAttributes = new HashSet<String>();
 		
 		for (DAFile f:newestFiles){
-			
-			// XXX same hack again
-			for (DAFile af:unattachedFileInstances){
-				if (af.equals(f)){
-					f.setFormatPUID(af.getFormatPUID());
-					f.setFormatSecondaryAttribute(af.getFormatSecondaryAttribute());
-				}
-			}
-			
-			if (f.getFormatPUID()==null) throw new RuntimeException("file \""+f+"\" has no format puid");
 			mostRecentFormats.add(f.getFormatPUID());
 			if (!f.getFormatSecondaryAttribute().isEmpty())
 				mostRecentSecondaryAttributes.add(f.getFormatSecondaryAttribute());
@@ -101,11 +81,8 @@ public class CheckFormatsAction extends AbstractAction {
 		object.setMost_recent_formats(new CommaSeparatedList(new ArrayList<String>(mostRecentFormats)).toString());
 		object.setMostRecentSecondaryAttributes(new CommaSeparatedList(new ArrayList<String>(mostRecentSecondaryAttributes)).toString());
 		object.setOriginal_formats(
-				new CommaSeparatedList(new ArrayList<String>(getPUIDsForAllRepAFiles(unattachedFileInstances))).toString() // hack necessary again?
-				                                                                                           // error check for puid is existent
+				new CommaSeparatedList(new ArrayList<String>(getPUIDsForAllRepAFiles(allFiles))).toString() // hack necessary again?
 						);
-		
-		attachJhoveInfoToAllFiles(object.getLatestPackage().getFiles());
 		
 		return true;
 	}

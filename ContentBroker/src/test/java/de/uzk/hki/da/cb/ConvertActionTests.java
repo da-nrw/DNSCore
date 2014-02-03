@@ -96,6 +96,7 @@ public class ConvertActionTests {
 		object.setContractor(contractor);
 		object.setIdentifier(objectIdentifier);
 		object.setTransientNodeRef(n);
+		object.reattach();
 		
 		action.setObject(object);
 		

@@ -29,7 +29,7 @@
 		<property name="endStatus" value="120" />
 		<property name="name" value="IngestUnpackAction" />
 		<property name="gridRoot" ref="${grid.implementation}"/>
-		<property name="loadBalancer" ref="loadBalancer" />
+		<property name="ingestGate" ref="ingestGate" />
 		<property name="unwantedFilesFilters">
 			<util:list value-type="org.apache.commons.io.filefilter.IOFileFilter">
 				<bean class="org.apache.commons.io.filefilter.WildcardFileFilter">
@@ -203,7 +203,7 @@
 		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
 		<property name="gridFacade" ref="${grid.implementation}"/>
 		<property name="name" value="RetrievalObjectToWorkAreaAction" />
-		<property name="loadBalancer" ref="loadBalancer" />
+		<property name="ingestGate" ref="ingestGate" />
 	</bean>	
 	<bean id="RetrievalAction" class="de.uzk.hki.da.cb.RetrievalAction"
 		scope="prototype">
@@ -235,7 +235,7 @@
 		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
 		<property name="gridFacade" ref="${grid.implementation}"/>
 		<property name="name" value="PIPGenObjectToWorkAreaAction" />
-		<property name="loadBalancer" ref="loadBalancer" />
+		<property name="ingestGate" ref="ingestGate" />
 	</bean>	
 	<bean id="PIPGenScanForPresentationAction" class="de.uzk.hki.da.cb.ScanForPresentationAction" scope="prototype">
 		<property name="startStatus" value="710" />

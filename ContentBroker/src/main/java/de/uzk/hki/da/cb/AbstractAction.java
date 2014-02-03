@@ -58,7 +58,6 @@ import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
  * <li>Constructors which should only be seen by tests should also have default (package) visibility.
  * </ol>
  * @author Daniel M. de Oliveira
- *
  */
 public abstract class AbstractAction implements Runnable {	
 	
@@ -126,11 +125,11 @@ public abstract class AbstractAction implements Runnable {
 		
 		
 		try {
-			
 			// --- MUST happen before setting up object style logging ---
 			logger.info("AbstractAction fetched job from queue. See logfile: "+object.getIdentifier()+".log");
 			setupObjectLogging(object.getIdentifier());
 
+			object.reattach();
 			logger.info("Stubbing implementation of "+this.getClass().getName());
 			if (!implementation()){				
 				logger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  

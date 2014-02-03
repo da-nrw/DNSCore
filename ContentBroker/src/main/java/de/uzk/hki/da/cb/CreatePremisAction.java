@@ -58,8 +58,6 @@ public class CreatePremisAction extends AbstractAction {
 
 	@Override
 	public boolean implementation() throws IOException	{
-		object.reattach();
-		
 		logger.debug("Listing all files attached to all packages of the object:");
 		 for (Package pkg : object.getPackages()) 
 		   		for (DAFile fi : pkg.getFiles())
@@ -124,15 +122,14 @@ public class CreatePremisAction extends AbstractAction {
 		
 		if (!PremisXmlValidator.validatePremisFile(newPREMISXml))
 			throw new RuntimeException("PREMIS that has recently been created is not valid");
-		
 		logger.trace("Successfully created premis file");
-	
+		object.getLatestPackage().getFiles().add(new DAFile(object.getLatestPackage(),job.getRep_name()+"b","premis.xml"));
+		
 		for (Package p : newPREMISObject.getPackages()){
 			logger.debug("pname:" + p.getName());
 		}
 		
 		determineDisclosureLimits(newPREMISObject);
-		
 		deleteJhoveTempFiles();
 		
 		return true;

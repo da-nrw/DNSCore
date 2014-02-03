@@ -22,7 +22,6 @@ package de.uzk.hki.da.model;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,16 +42,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.contract.PublicationRight;
 import de.uzk.hki.da.model.contract.PublicationRight.Audience;
 import de.uzk.hki.da.model.contract.RightsStatement;
-import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -581,64 +577,6 @@ public class Object {
 	
 	
 	/**
-	 * XXX Hack. for the moment i simply will return new instances which are bound to the latest package
-	 * 
-	 * Looks onto the file system and creates a new
-	 * or returns an existing corresponding instance of DAFile for every file found for this
-	 * object.
-	 *
-	 * @return the all files
-	 * @author Daniel M. de Oliveira
-	 */
-	public List<DAFile> getAllFiles(){
-		List<DAFile> results = new ArrayList<DAFile>();
-		
-		
-		File baseFolder = new File(getDataPath());
-		if ((!baseFolder.exists())||((baseFolder.listFiles().length == 0)))
-			throw new RuntimeException("Folder " + baseFolder.getAbsolutePath() +
-									   " is empty or does not exist!");	
-	
-		String representations[] = baseFolder.list();
-
-		List<File> allRegularFiles = new ArrayList<File>();
-		for (String repName:representations){
-			
-			if (!(new File(baseFolder.getAbsolutePath()+"/"+repName).isDirectory())) continue;
-			
-			
-			Collection<File> found = FileUtils.listFiles(
-					  new File(baseFolder.getAbsolutePath()+"/"+repName), 
-					  TrueFileFilter.INSTANCE, 
-					  TrueFileFilter.INSTANCE
-					);
-			allRegularFiles.addAll(found);
-		}
-
-		
-		Package pkg = getLatestPackage();
-		for (File f:allRegularFiles){
-			String fRelativePath = f.getAbsolutePath().replace(baseFolder.getAbsolutePath()+"/", "");
-			
-			DAFile daf = new DAFile(pkg,fRelativePath.substring(0,18),fRelativePath.substring(19,fRelativePath.length()));
-			results.add(daf);
-		}
-		
-		
-		
-		
-		return results;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/**
 	 * Grants publication right.
 	 *
 	 * @param audience Audience specifies the type of audience to be checked
@@ -672,6 +610,8 @@ public class Object {
 	 * to the file objects from the file system, the method will return these instead.
 	 * @author Thomas Kleinke
 	 * @author Daniel M. de Oliveira
+	 * @throws RuntimeException if it finds a file on the file system to which it cannot find a corresponding attached instance of
+	 * DAFile in this object.
 	 */
 	
 	public List<DAFile> getNewestFilesFromAllRepresentations(String sidecarExtensions)
@@ -750,7 +690,7 @@ public class Object {
 				
 				DAFile newDAFile = new DAFile(this.getLatestPackage(),fRepName,fRelativePath);
 				
-				newDAFile = replaceByAttachedInstanceIfAvailable(dataPath,
+				newDAFile = replaceByAttachedInstance(dataPath,
 						fRelativePath, fRepName, newDAFile);
 				
 				newDAFile.setRelative_path(fRelativePath);
@@ -771,7 +711,7 @@ public class Object {
 	 * @return the dA file
 	 * @author Daniel M. de Oliveira
 	 */
-	private DAFile replaceByAttachedInstanceIfAvailable(String dataPath,
+	private DAFile replaceByAttachedInstance(String dataPath,
 			String fRelativePath, String fRepName, DAFile newDAFile) {
 		
 		boolean foundAttachedInstance = false;
@@ -791,7 +731,7 @@ public class Object {
 				break;
 		}
 		if (!foundAttachedInstance)
-			logger.trace(newDAFile.toString()+". New Instance.");
+			throw new RuntimeException("cannot find attached instance for "+fRepName+"/"+fRelativePath);
 		return newDAFile;
 	}
 	

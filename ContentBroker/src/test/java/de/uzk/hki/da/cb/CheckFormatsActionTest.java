@@ -120,7 +120,6 @@ public class CheckFormatsActionTest {
 						f.setFormatSecondaryAttribute("cinepak");
 					}
 					
-					
 					if (f.equals(new DAFile(null,"2000_01_01+00_00+a","_1.jpg"))){
 						f.setFormatPUID("fmt/43");
 					}
@@ -148,31 +147,33 @@ public class CheckFormatsActionTest {
 	 */
 	@Before
 	public void setUp() throws Exception{
+		localNode = new Node();
+		Contractor contractor = new Contractor();
+		contractor.setShort_name("TEST");
+		localNode.setWorkAreaRootPath(baseDirPath);
 
 		JhoveScanService jhove = mock(JhoveScanService.class);
 		when(jhove.extract((DAFile)anyObject(),anyInt())).thenReturn("abc");
 		
 		
-		final Package sipPackage = new Package(); // the SIP / Delta
+		final Package sipPackage = new Package(); sipPackage.setName("2"); // the SIP / Delta
+		final Package aipPackage = new Package(); aipPackage.setName("1"); // the existing AIP
 		
+		DAFile a  = new DAFile(sipPackage,"2000_01_01+00_00+a","_1.jpg");
+		DAFile b  = new DAFile(sipPackage,"2000_01_01+00_00+a","_3.mov");
+		DAFile c = new DAFile(sipPackage,"2000_01_01+00_00+b","_1.tif"); 
 		DAFile sipPackageOriginalFile  = new DAFile(sipPackage,"2011_11_11+11_11+a","_2.jpg");
 		DAFile sipPackageOriginalFile2  = new DAFile(sipPackage,"2011_11_11+11_11+a","_3.avi");
 		DAFile sipPackageConvertedFile = new DAFile(sipPackage,"2011_11_11+11_11+b","_2.tif"); 
-		
-		localNode = new Node();
+		aipPackage.getFiles().add(a);
+		aipPackage.getFiles().add(b);
+		aipPackage.getFiles().add(c);
 		sipPackage.getFiles().add(sipPackageOriginalFile);
 		sipPackage.getFiles().add(sipPackageOriginalFile2);
 		sipPackage.getFiles().add(sipPackageConvertedFile);
 		
-		sipPackage.setName("2");
-		
-		
-		Contractor contractor = new Contractor();
-		contractor.setShort_name("TEST");
-		localNode.setWorkAreaRootPath(baseDirPath);
 		object = new Object();
-		List<DAFile> allFiles = new ArrayList<DAFile>(); allFiles.add(sipPackageConvertedFile); allFiles.add(sipPackageOriginalFile);
-		List<Package> packages = new ArrayList<Package>(); packages.add(sipPackage);
+		List<Package> packages = new ArrayList<Package>(); packages.add(sipPackage); packages.add(aipPackage);
 		object.setPackages(packages);
 		object.setContractor(contractor);
 		object.setIdentifier("identifier");
@@ -180,7 +181,6 @@ public class CheckFormatsActionTest {
 		object.reattach();
 		
 		FormatScanService formatScanService = setUpformatScanServiceBehaviour();
-		
 		
 		job = new Job();
 		job.setId(1000);

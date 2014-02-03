@@ -42,7 +42,6 @@ public class BuildAIPAction extends AbstractAction {
 	
 	@Override
 	boolean implementation() {
-		object.reattach();
 
 		String relativePathOfSource = object.getContractor().getShort_name()+"/" + object.getIdentifier() +"/";
 		String physicalPackagePathOfSource = localNode.getWorkAreaRootPath() + "/" + relativePathOfSource;

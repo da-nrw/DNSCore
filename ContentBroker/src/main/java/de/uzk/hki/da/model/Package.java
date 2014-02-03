@@ -190,6 +190,7 @@ public class Package {
 					substring(offset+1, f.getPath().length()));
 			logger.debug("found: "+newFile.toString());
 			result.add(newFile);
+			this.getFiles().add(newFile);
 		}
 		
 		return result;

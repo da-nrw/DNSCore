@@ -21,7 +21,7 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.IOException;
 
-import de.uzk.hki.da.core.LoadBalancer;
+import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.service.RetrievePackagesHelper;
@@ -31,21 +31,20 @@ import de.uzk.hki.da.service.RetrievePackagesHelper;
  */
 public class ObjectToWorkAreaAction extends AbstractAction {
 
-	private LoadBalancer loadBalancer;
+	private IngestGate ingestGate;
 	private GridFacade gridFacade;
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
 	
 	@Override
 	boolean implementation() {
-		object.reattach();
 		
 		new File(object.getDataPath()).mkdirs();
 		
 		RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridFacade());
 		
 		try {
-			if (!loadBalancer.canHandle(retrievePackagesHelper.getObjectSize(object, job))) {
+			if (!ingestGate.canHandle(retrievePackagesHelper.getObjectSize(object, job))) {
 				logger.info("no disk space available at working resource. will not fetch new data.");
 				return false;
 			}
@@ -75,16 +74,16 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 
 
 
-	public LoadBalancer getLoadBalancer() {
-		return loadBalancer;
+	public IngestGate getIngestGate() {
+		return ingestGate;
 	}
 
 
 
 
 
-	public void setLoadBalancer(LoadBalancer loadBalancer) {
-		this.loadBalancer = loadBalancer;
+	public void setIngestGate(IngestGate ingestGate) {
+		this.ingestGate = ingestGate;
 	}
 
 

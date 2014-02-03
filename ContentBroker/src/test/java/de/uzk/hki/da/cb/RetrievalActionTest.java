@@ -94,6 +94,13 @@ public class RetrievalActionTest {
 		job.setObject(object);
 		object.setTransientNodeRef(node);
 		object.reattach();
+		object.getLatestPackage().setTransientBackRefToObject(object);
+		object.getLatestPackage().scanRepRecursively("a");
+		object.getLatestPackage().scanRepRecursively("b");
+		object.getLatestPackage().scanRepRecursively("c");
+		object.getLatestPackage().scanRepRecursively("d");
+		object.getLatestPackage().scanRepRecursively("e");
+		object.getLatestPackage().scanRepRecursively("f");
 		
 		dca = mock (DistributedConversionAdapter.class);
 

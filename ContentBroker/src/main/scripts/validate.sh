@@ -3,16 +3,27 @@
 TODOS=`find src/*/java/de/ -name "*java" -exec grep "TODO" {} \; | wc -l`
 XXXS=`find src/*/java/de/ -name "*java" -exec grep "XXX" {} \; | wc -l`
 
-ALLOWED_TODOS=43
+ALLOWED_TODOS=41
 if [ "$TODOS" -gt "$ALLOWED_TODOS" ]
 then
 	echo "Number of TODO entries in java files must not exceed $ALLOWED_TODOS (actually is $TODOS)."
 	exit 1
 fi
 
-ALLOWED_XXXS=13
+ALLOWED_XXXS=9
 if [ "$XXXS" -gt "$ALLOWED_XXXS" ]
 then
 	echo "Number of XXX entries in java files must not exceed $ALLOWED_XXXS (actually is $XXXS)."
 	exit 1
+fi
+
+if [ "$1" = "vm3" ]
+then
+	REVISION_NUMBER=`git rev-list HEAD --count`
+	if [ -d "/data/danrw/buildRepository/installation.$REVISION_NUMBER" ]
+	then
+		echo "The directory at /data/danrw/buildRepository/installation.$REVISION_NUMBER already exists which means"
+		echo "you already have a valid build for the current revision. Will exit now."
+		exit 1
+	fi
 fi

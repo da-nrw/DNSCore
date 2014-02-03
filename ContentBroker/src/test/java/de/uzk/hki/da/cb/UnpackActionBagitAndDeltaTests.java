@@ -33,7 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.ActionCommunicatorService;
-import de.uzk.hki.da.core.LoadBalancer;
+import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.db.CentralDatabaseDAO;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
@@ -65,7 +65,7 @@ public class UnpackActionBagitAndDeltaTests {
 	CentralDatabaseDAO dao = mock(CentralDatabaseDAO.class);
 	
 	/** The bal. */
-	LoadBalancer bal = new LoadBalancer();
+	IngestGate bal = new IngestGate();
 	
 	/** The node. */
 	Node node = new Node();
@@ -115,13 +115,14 @@ public class UnpackActionBagitAndDeltaTests {
 		o.setIdentifier("identifier");
 		o.getPackages().add(pkg);
 		o.setTransientNodeRef(node);
+		o.reattach();
 
 		
 		job.setObject(o);
 		
 		action.setObject(o);
 		action.setJob(job);
-		action.setLoadBalancer(bal);
+		action.setIngestGate(bal);
 		action.setActionCommunicatorService(acs);
 
 		FileUtils.copyFile(new File(basePath+"/bagitPackage.tgz_"),new File(basePath+"/bagitPackage.tgz"));

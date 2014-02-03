@@ -26,6 +26,7 @@ package daweb3
  * @Author Sebastian Cuy 
  */
 import java.util.logging.Logger;
+import org.hibernate.criterion.CriteriaSpecification;
 
 import org.springframework.aop.TrueClassFilter;
 import org.springframework.dao.DataIntegrityViolationException
@@ -40,20 +41,54 @@ class QueueEntryController {
 
     def list() {
         
+		
     }
     
     def listSnippet() {
     	def queueEntries = null	
-		def admin = false	
-		if (session.contractor.admin != 1) {
-			queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.contractor.shortName=:csn",
-             [csn: session.contractor.shortName])
+		def admin = false
+		def periodical = true;	
+		if (params.search==null){		
+			if (session.contractor.admin != 1) {
+				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.contractor.shortName=:csn",
+	             [csn: session.contractor.shortName])
+			} else {
+				admin = true;
+				queueEntries = QueueEntry.findAll(params)
+			}
+			[queueEntryInstanceList: queueEntries,
+				admin:admin, periodical:periodical ]
 		} else {
-			admin = true;
-			queueEntries = QueueEntry.findAll(params)
-		}
+			periodical = false;
+			def c = QueueEntry.createCriteria()
+			queueEntries = c.list() {
+				if (params.search?.obj) params.search.obj.each { key, value ->
+						if (value!="") {
+						projections {
+							obj {
+								like(key, "%" + value + "%")
+							}
+						}
+					}
+				}
+				if (params.search?.status) 
+					like("status", params.search.status+"%")
+				if (session.contractor.admin==0) {
+					def contract = Contractor.findByShortName(session.contractor.shortName)
+					projections {
+						obj {
+								contractor {
+									eq("shortName", contract.shortName)								
+								}
+						}
+					}
+				} else {
+				admin = true;
+				}
+			}
+		} 
 		[queueEntryInstanceList: queueEntries,
-			admin:admin ]
+			admin:admin, periodical:periodical ]
     }
 
     def show() {

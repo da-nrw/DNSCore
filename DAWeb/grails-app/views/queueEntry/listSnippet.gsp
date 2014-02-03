@@ -1,3 +1,9 @@
+<r:script>
+<g:if test="${ periodical }">
+			// comment out next line to stop periodical updater on page load.		
+			$( document ).ready(startUpdater())
+			</g:if>
+</r:script>
 <table>
 	<thead>
 		<tr>
@@ -58,8 +64,7 @@
 								</g:link>
 					</g:if>
 					<g:if test="${ statusType == "1" && admin }">
-					<g:link action="queueRecover" id="${queueEntryInstance.id}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/recover.jpg"/>
+					<g:link action="queueRecover" id="${queueEntryInstance.id}"><g:img style="width:16px; height:16px" uri="/images/icons/recover.jpg"/>
 					</g:link>
 				</g:if>
 				</td>

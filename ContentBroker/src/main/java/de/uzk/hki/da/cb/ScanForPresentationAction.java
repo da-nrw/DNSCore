@@ -60,19 +60,11 @@ public class ScanForPresentationAction extends AbstractAction{
 		if (formatScanService==null) throw new ConfigurationException("formatScanService not set");
 		if (preservationSystem==null) // So we can prevent the preservationSystem to be instantiated in unit tests.
 			preservationSystem = new PreservationSystem(dao);
-		object.reattach();
 		
 		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(sidecarExtensions);
 		if (newestFiles.size() == 0)
 			throw new RuntimeException("No files found!");
 		newestFiles = formatScanService.identify(newestFiles);
-		for (DAFile file : newestFiles) 
-			object.getLatestPackage().getFiles().add(file); 
-				// TODO make sure these get not saved in db
-		 		// instead the already attached file instances from the db should be used
-				// should work fine in ingest, but what about standalone pip gen?
-				// it should be checked if there are already attached instances
-				// make dafiles a set in package?
 		
 		List<ConversionInstruction> cisPres = generateConversionInstructionsForPresentation(
 			object.getLatestPackage(),

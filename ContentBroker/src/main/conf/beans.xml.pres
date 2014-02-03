@@ -12,6 +12,12 @@
 	<import resource="classpath*:META-INF/beans-actions-presentation.xml"/>
 	<import resource="classpath*:META-INF/beans-infrastructure.pres.xml"/>
     
+    <bean class="de.uzk.hki.da.core.IngestGate" id="ingestGate">
+		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
+		<property name="fileSizeFactor" value="3" />
+		<property name="freeDiskSpacePercent" value="5" />
+	</bean>
+    
     <task:executor id="taskExecutor" pool-size="10"
         queue-capacity="20" rejection-policy="CALLER_RUNS" />
 	<task:scheduled-tasks scheduler="taskScheduler">
@@ -19,16 +25,11 @@
 	</task:scheduled-tasks>
     <task:scheduler id="taskScheduler" pool-size="20" />
 	
-	<bean id="actionRegistry" class="de.uzk.hki.da.core.ActionRegistry" scope="prototype">
-		<property name="maxThreads">
-			<util:map>
-				<entry key="IndexESAction" value="3" />
-				<entry key="CreateEDMAction" value="3" />
-				<entry key="FetchPIPsAction" value="3" />
-				<entry key="SendToPresenterAction" value="3" />
-			</util:map>
-		</property>
-		<property name="actionPriority" ref="actionOrdering" />
-	</bean>
 	
+	<util:map id="actionThreads">
+		<entry key="IndexESAction" value="3" />
+		<entry key="CreateEDMAction" value="3" />
+		<entry key="FetchPIPsAction" value="3" />
+		<entry key="SendToPresenterAction" value="3" />
+	</util:map>
 </beans>

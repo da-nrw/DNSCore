@@ -62,7 +62,6 @@ import de.uzk.hki.da.metadata.MetsRightsSectionXmlReaderTest;
 import de.uzk.hki.da.metadata.MetsURNXmlReaderTest;
 import de.uzk.hki.da.metadata.PremisXmlReaderTests;
 import de.uzk.hki.da.metadata.PremisXmlWriterTest;
-import de.uzk.hki.da.model.GetAllFilesTest;
 import de.uzk.hki.da.model.GetNewestFilesFromAllRepresentationsTests;
 import de.uzk.hki.da.model.JobCascadingTest;
 import de.uzk.hki.da.model.ModelTest;
@@ -130,7 +129,6 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	XPathUtilsTests.class,
 	CommaSeparatedListTests.class,
 	CheckFormatsActionTest.class,
-	GetAllFilesTest.class,
 	PdfConversionStrategyTest.class,
 	PublishPDFConversionStrategyTests.class,
 	TiffConversionStrategyTests.class,
