@@ -27,12 +27,12 @@ import java.io.FileNotFoundException;
 
 import org.junit.Test;
 
+import de.uzk.hki.da.model.AudioRestriction;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.contract.AudioRestriction;
-import de.uzk.hki.da.model.contract.PublicationRight;
-import de.uzk.hki.da.model.contract.PublicationRight.Audience;
+import de.uzk.hki.da.model.PublicationRight;
+import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.utils.TESTHelper;
 
 

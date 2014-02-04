@@ -29,8 +29,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.uzk.hki.da.db.CentralDatabaseDAO;
-import de.uzk.hki.da.db.HibernateUtil;
+import de.uzk.hki.da.core.HibernateUtil;
+import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 

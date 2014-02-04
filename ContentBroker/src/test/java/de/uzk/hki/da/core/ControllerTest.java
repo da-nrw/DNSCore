@@ -24,7 +24,6 @@ import org.junit.Test;
 import de.uzk.hki.da.core.ActionFactory;
 import de.uzk.hki.da.core.ActionRegistry;
 import de.uzk.hki.da.core.Controller;
-import de.uzk.hki.da.db.HibernateUtil;
 
 
 /**

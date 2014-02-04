@@ -33,8 +33,7 @@ import org.junit.Test;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import de.uzk.hki.da.cb.AbstractAction;
-import de.uzk.hki.da.db.CentralDatabaseDAO;
-import de.uzk.hki.da.db.HibernateUtil;
+import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;

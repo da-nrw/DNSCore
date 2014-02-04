@@ -29,15 +29,15 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.archivers.ArchiveBuilder;
-import de.uzk.hki.da.archivers.ArchiveBuilderFactory;
-import de.uzk.hki.da.archivers.BagitUtils;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.Mail;
+import de.uzk.hki.da.utils.ArchiveBuilder;
+import de.uzk.hki.da.utils.ArchiveBuilderFactory;
+import de.uzk.hki.da.utils.BagitUtils;
 
 
 /**

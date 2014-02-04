@@ -32,10 +32,10 @@ import java.util.GregorianCalendar;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.MigrationRight;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.contract.MigrationRight;
-import de.uzk.hki.da.model.contract.PublicationRight.Audience;
+import de.uzk.hki.da.model.PublicationRight.Audience;
 
 
 /**

@@ -35,8 +35,6 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.archivers.ArchiveBuilder;
-import de.uzk.hki.da.archivers.ArchiveBuilderFactory;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
@@ -46,6 +44,8 @@ import de.uzk.hki.da.service.PremisCreator;
 import de.uzk.hki.da.service.PremisCreator.IdentifyPackageException;
 import de.uzk.hki.da.service.RetrievePackagesHelper;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.utils.ArchiveBuilder;
+import de.uzk.hki.da.utils.ArchiveBuilderFactory;
 import de.uzk.hki.da.utils.BagitConsistencyChecker;
 import de.uzk.hki.da.utils.ConsistencyChecker;
 import de.uzk.hki.da.utils.MetsConsistencyChecker;

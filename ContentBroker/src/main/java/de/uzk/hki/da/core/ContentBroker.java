@@ -36,7 +36,6 @@ import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.apache.activemq.xbean.XBeanBrokerService;
 
 import de.uzk.hki.da.cb.AbstractAction;
-import de.uzk.hki.da.db.HibernateUtil;
 import de.uzk.hki.da.utils.Utilities;
 
 

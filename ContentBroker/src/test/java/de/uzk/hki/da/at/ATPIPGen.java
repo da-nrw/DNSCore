@@ -36,7 +36,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.db.HibernateUtil;
+import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.StoragePolicy;
@@ -171,7 +171,7 @@ public class ATPIPGen extends Base{
 	 */
 	private void createObjectAndJob(String name,Integer dbid) throws IOException{
 		gridFacade.put(
-				new File("src/test/testdata/ATPIPGen"+name+".pack_1.tar"),
+				new File("src/test/resources/at/ATPIPGen"+name+".pack_1.tar"),
 				"/aip/TEST/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
 		
 		Session session = HibernateUtil.openSession();

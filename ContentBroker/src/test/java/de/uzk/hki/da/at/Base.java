@@ -31,18 +31,18 @@ import org.hibernate.classic.Session;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import de.uzk.hki.da.archivers.NativeJavaTarArchiveBuilder;
-import de.uzk.hki.da.db.CentralDatabaseDAO;
-import de.uzk.hki.da.db.HibernateUtil;
+import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.utils.Utilities;
 
 public class Base {
 
-	protected String testDataRootPath="src/test/testdata/";
+	protected String testDataRootPath="src/test/resources/at/";
 	protected String ingestAreaRootPath;
 	protected String workAreaRootPath;
 	protected String gridCacheAreaRootPath;

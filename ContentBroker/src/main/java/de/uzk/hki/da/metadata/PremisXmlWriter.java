@@ -46,12 +46,12 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.model.Agent;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.ImageRestriction;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.contract.ImageRestriction;
-import de.uzk.hki.da.model.contract.PublicationRight;
-import de.uzk.hki.da.model.contract.RightsStatement;
-import de.uzk.hki.da.model.contract.VideoRestriction;
+import de.uzk.hki.da.model.PublicationRight;
+import de.uzk.hki.da.model.RightsStatement;
+import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.utils.MD5Checksum;
 
 

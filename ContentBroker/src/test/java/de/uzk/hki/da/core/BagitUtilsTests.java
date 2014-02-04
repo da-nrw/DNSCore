@@ -23,7 +23,7 @@ import java.io.File;
 
 import org.junit.Test;
 
-import de.uzk.hki.da.archivers.BagitUtils;
+import de.uzk.hki.da.utils.BagitUtils;
 
 
 /**

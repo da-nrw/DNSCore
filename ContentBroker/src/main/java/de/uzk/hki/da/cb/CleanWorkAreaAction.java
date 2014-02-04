@@ -27,7 +27,7 @@ import org.apache.commons.io.FileUtils;
 import org.hibernate.classic.Session;
 
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.db.HibernateUtil;
+import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;

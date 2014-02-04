@@ -29,8 +29,8 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.format.FormatScanService;
-import de.uzk.hki.da.format.JhoveScanService;
+import de.uzk.hki.da.convert.FormatScanService;
+import de.uzk.hki.da.convert.JhoveScanService;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.CommaSeparatedList;

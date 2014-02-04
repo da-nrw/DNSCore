@@ -64,7 +64,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		originalName = "ATSonderzeichen_in_Dateinamen";
 		containerName = originalName+".tgz";
 				
-		FileUtils.copyFileToDirectory(new File("src/test/testdata/"+containerName), 
+		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
 		waitForJobToBeInStatus(originalName,"540",2000);
 		object = fetchObjectFromDB(originalName);
@@ -79,7 +79,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		originalName = "ATUmlaute_in_Dateinamen";
 		containerName = originalName+".tgz";
 				
-		FileUtils.copyFileToDirectory(new File("src/test/testdata/"+containerName), 
+		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
 		waitForJobToBeInStatus(originalName,"540",2000);
 		object = fetchObjectFromDB(originalName);
@@ -94,7 +94,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		originalName = "AT_CON1";
 		containerName = originalName+".tar";
 				
-		FileUtils.copyFileToDirectory(new File("src/test/testdata/"+containerName), 
+		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
 		waitForJobToBeInStatus(originalName,"540",2000);
 		object = fetchObjectFromDB(originalName);
@@ -121,7 +121,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		originalName = "AT_CON3";
 		containerName = originalName+".zip";
 				
-		FileUtils.copyFileToDirectory(new File("src/test/testdata/"+containerName), 
+		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
 		waitForJobToBeInStatus(originalName,"540",2000);
 		object = fetchObjectFromDB(originalName);

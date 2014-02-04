@@ -35,11 +35,11 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.metadata.MetsRightsSectionXmlReader;
 import de.uzk.hki.da.metadata.PremisXmlWriter;
 import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.MigrationRight;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.contract.MigrationRight;
-import de.uzk.hki.da.model.contract.PublicationRight;
-import de.uzk.hki.da.model.contract.RightsStatement;
+import de.uzk.hki.da.model.PublicationRight;
+import de.uzk.hki.da.model.RightsStatement;
 
 
 /**

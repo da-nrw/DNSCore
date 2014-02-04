@@ -28,7 +28,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.db.HibernateUtil;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.service.RegisterObjectService;
 import de.uzk.hki.da.service.URNCheckDigitGenerator;

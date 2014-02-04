@@ -32,8 +32,7 @@ import org.hibernate.classic.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.db.CentralDatabaseDAO;
-import de.uzk.hki.da.db.HibernateUtil;
+import de.uzk.hki.da.core.HibernateUtil;
 
 
 /**

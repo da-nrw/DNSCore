@@ -51,17 +51,17 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 import de.uzk.hki.da.model.Agent;
+import de.uzk.hki.da.model.AudioRestriction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.ImageRestriction;
+import de.uzk.hki.da.model.MigrationRight;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.contract.AudioRestriction;
-import de.uzk.hki.da.model.contract.ImageRestriction;
-import de.uzk.hki.da.model.contract.MigrationRight;
-import de.uzk.hki.da.model.contract.PublicationRight;
-import de.uzk.hki.da.model.contract.RightsStatement;
-import de.uzk.hki.da.model.contract.TextRestriction;
-import de.uzk.hki.da.model.contract.VideoRestriction;
+import de.uzk.hki.da.model.PublicationRight;
+import de.uzk.hki.da.model.RightsStatement;
+import de.uzk.hki.da.model.TextRestriction;
+import de.uzk.hki.da.model.VideoRestriction;
 
 
 /**

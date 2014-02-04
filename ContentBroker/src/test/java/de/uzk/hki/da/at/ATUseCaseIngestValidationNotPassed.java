@@ -58,7 +58,7 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 		originalName = "ATErsteZeile_tagmanifest1Zeichengeaendert";
 		containerName = originalName+".tgz";
 				
-		FileUtils.copyFileToDirectory(new File("src/test/testdata/"+containerName), 
+		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
 		waitForJobToBeInStatus(originalName,"111",2000);
 		object = fetchObjectFromDB(originalName);
@@ -74,7 +74,7 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 		originalName = "ATManifestMd5_2filesgeaendert";
 		containerName = originalName+".tgz";
 				
-		FileUtils.copyFileToDirectory(new File("src/test/testdata/"+containerName), 
+		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
 		waitForJobToBeInStatus(originalName,"111",2000);
 		object = fetchObjectFromDB(originalName);
@@ -92,7 +92,7 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 		originalName = "ATEineDatei_geloescht";
 		containerName = originalName+".tgz";
 				
-		FileUtils.copyFileToDirectory(new File("src/test/testdata/"+containerName), 
+		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
 		waitForJobToBeInStatus(originalName,"111",2000);
 		object = fetchObjectFromDB(originalName);
@@ -110,7 +110,7 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 		originalName = "ATInvalidPremis";
 		containerName = originalName+".zip";
 				
-		FileUtils.copyFileToDirectory(new File("src/test/testdata/"+containerName), 
+		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
 		waitForJobToBeInStatus(originalName,"111",2000);
 		object = fetchObjectFromDB(originalName);

@@ -34,9 +34,9 @@ import org.junit.Test;
 
 import de.uzk.hki.da.core.ActionCommunicatorService;
 import de.uzk.hki.da.core.IngestGate;
-import de.uzk.hki.da.db.CentralDatabaseDAO;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
+import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;

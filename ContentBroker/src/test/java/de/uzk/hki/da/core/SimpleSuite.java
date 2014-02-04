@@ -23,7 +23,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import de.uzk.hki.da.archivers.ArchiveBuilderTests;
 import de.uzk.hki.da.cb.ArchiveReplicationActionTests;
 import de.uzk.hki.da.cb.BuildAIPActionTests;
 import de.uzk.hki.da.cb.CheckFormatsActionTest;
@@ -45,6 +44,8 @@ import de.uzk.hki.da.cb.UnpackActionBagitAndDeltaTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionTests;
 import de.uzk.hki.da.convert.CLIConversionStrategyTests;
 import de.uzk.hki.da.convert.ConverterServiceTests;
+import de.uzk.hki.da.convert.FidoCLITest;
+import de.uzk.hki.da.convert.FormatScanServiceTests;
 import de.uzk.hki.da.convert.PDFServiceTests;
 import de.uzk.hki.da.convert.PdfConversionStrategyTest;
 import de.uzk.hki.da.convert.PublishAudioConversionStrategyTests;
@@ -54,14 +55,13 @@ import de.uzk.hki.da.convert.PublishPDFConversionStrategyTests;
 import de.uzk.hki.da.convert.PublishVideoConversionStrategyTests;
 import de.uzk.hki.da.convert.PublishXsltConversionStrategyTests;
 import de.uzk.hki.da.convert.TiffConversionStrategyTests;
-import de.uzk.hki.da.db.CentralDatabaseDAOTests;
-import de.uzk.hki.da.format.FormatScanServiceTests;
 import de.uzk.hki.da.grid.IrodsGridFacadeTest;
 import de.uzk.hki.da.integrity.IntegrityScannerWorkerTest;
 import de.uzk.hki.da.metadata.MetsRightsSectionXmlReaderTest;
 import de.uzk.hki.da.metadata.MetsURNXmlReaderTest;
 import de.uzk.hki.da.metadata.PremisXmlReaderTests;
 import de.uzk.hki.da.metadata.PremisXmlWriterTest;
+import de.uzk.hki.da.model.CentralDatabaseDAOTests;
 import de.uzk.hki.da.model.GetNewestFilesFromAllRepresentationsTests;
 import de.uzk.hki.da.model.JobCascadingTest;
 import de.uzk.hki.da.model.ModelTest;
@@ -71,6 +71,7 @@ import de.uzk.hki.da.model.SaveConversionInstructionsByJob;
 import de.uzk.hki.da.service.RetrievePackagesHelperTest;
 import de.uzk.hki.da.service.URNCheckDigitGeneratorTests;
 import de.uzk.hki.da.service.XPathUtilsTests;
+import de.uzk.hki.da.utils.ArchiveBuilderTests;
 import de.uzk.hki.da.utils.CommaSeparatedListTests;
 
 /**
@@ -135,7 +136,8 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	URNCheckDigitGeneratorTests.class,
 	PDFServiceTests.class,
 	PackageTests.class,
-	ArchiveReplicationActionTests.class
+	ArchiveReplicationActionTests.class,
+	FidoCLITest.class
 //	HibernateUtilThreadingTest.class
 })
 public class SimpleSuite {

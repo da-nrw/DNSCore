@@ -40,7 +40,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.ActionCommunicatorService;
-import de.uzk.hki.da.db.CentralDatabaseDAO;
+import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;

@@ -21,7 +21,7 @@ package de.uzk.hki.da.model;
 import org.hibernate.Session;
 import org.junit.Test;
 
-import de.uzk.hki.da.db.HibernateUtil;
+import de.uzk.hki.da.core.HibernateUtil;
 
 
 /**

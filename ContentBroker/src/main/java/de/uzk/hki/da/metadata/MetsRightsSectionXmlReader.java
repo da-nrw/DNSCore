@@ -42,7 +42,7 @@ import org.globus.ftp.exception.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.model.contract.RightsStatement;
+import de.uzk.hki.da.model.RightsStatement;
 
 
 /**

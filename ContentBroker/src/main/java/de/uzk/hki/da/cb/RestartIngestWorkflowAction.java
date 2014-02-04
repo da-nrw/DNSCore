@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-import de.uzk.hki.da.format.JhoveScanService;
+import de.uzk.hki.da.convert.JhoveScanService;
 import de.uzk.hki.da.model.Package;
 
 /**

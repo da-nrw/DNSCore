@@ -34,7 +34,7 @@ import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.db.CentralDatabaseDAO;
+import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;

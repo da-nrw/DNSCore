@@ -32,10 +32,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.archivers.ArchiveBuilderFactory;
-import de.uzk.hki.da.db.HibernateUtil;
+import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.utils.ArchiveBuilderFactory;
 
 /**
  * Relates to AK-T/05 RetrieveObject - Happy Path Scenario.
@@ -49,7 +49,7 @@ public class ATUseCaseRetrieval extends Base{
 	public void setUp() throws IOException{
 		setUpBase();
 		gridFacade.put(
-				new File("src/test/testdata/ATUseCaseRetrieval.pack_1.tar"),
+				new File("src/test/resources/at/ATUseCaseRetrieval.pack_1.tar"),
 				"/aip/TEST/RetrievalObject/RetrievalObject.pack_1.tar",new StoragePolicy(new Node()));
 	}
 	

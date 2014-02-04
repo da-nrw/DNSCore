@@ -43,7 +43,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.db.HibernateUtil;
+import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 
@@ -78,7 +78,7 @@ public class ATUseCaseIngestDelta extends Base {
 	@Test
 	public void testHappyPath() throws Exception{
 		
-		FileUtils.copyFile(new File("src/test/testdata/"+originalName+"1.tgz"), 
+		FileUtils.copyFile(new File("src/test/resources/at/"+originalName+"1.tgz"), 
 				new File(ingestAreaRootPath+"TEST/"+originalName+".tgz"));
 		Job job = waitForJobToBeInStatus(originalName,"540",500);
 		
@@ -89,7 +89,7 @@ public class ATUseCaseIngestDelta extends Base {
 		session.close();
 		Thread.sleep(60000); // to avoid newly generated repnames clashing with previous ones
 		
-		FileUtils.copyFile(new File("src/test/testdata/"+originalName+"2.tgz"), 
+		FileUtils.copyFile(new File("src/test/resources/at/"+originalName+"2.tgz"), 
 				new File(ingestAreaRootPath+"TEST/"+originalName+".tgz"));
 		job = waitForJobToBeInStatus(originalName,"540",500);
 		

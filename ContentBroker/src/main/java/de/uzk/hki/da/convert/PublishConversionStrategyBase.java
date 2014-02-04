@@ -7,7 +7,7 @@ import java.util.List;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.contract.PublicationRight;
+import de.uzk.hki.da.model.PublicationRight;
 
 public abstract class PublishConversionStrategyBase implements ConversionStrategy{
 	
