@@ -33,6 +33,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -57,7 +58,7 @@ public class PublishAudioConversionStrategyTests {
 	@Test
 	public void test() throws FileNotFoundException{
 		
-		CLIConnector cli = mock ( CLIConnector.class );
+		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
 		String cmdPUBLIC[] = new String[]{
 				"sox",
 				new File(basePath+"TEST/123/data/a/audiofile.wav").getAbsolutePath(),

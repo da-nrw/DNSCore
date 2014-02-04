@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 
 /**
  * Helps converting files based on lists of ConversionInstructions.
@@ -148,7 +149,7 @@ public class ConverterService {
 
 		ci.getSource_file().setPackage(object.getLatestPackage());
 		
-		strategy.setCLIConnector(new CLIConnector());
+		strategy.setCLIConnector(new SimplifiedCommandLineConnector());
 		strategy.setObject(object);
 		strategy.setParam(ci.getConversion_routine().getParams());
 		

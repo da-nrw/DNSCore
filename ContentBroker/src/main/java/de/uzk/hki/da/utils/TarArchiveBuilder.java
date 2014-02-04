@@ -22,7 +22,6 @@ package de.uzk.hki.da.utils;
 
 import java.io.File;
 
-import de.uzk.hki.da.service.CommandLineConnector;
 
 
 

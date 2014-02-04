@@ -37,6 +37,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -78,7 +79,7 @@ public class PdfConversionStrategyTest {
 		
 		ConversionRoutine cr = new ConversionRoutine();
 		
-		CLIConnector cli = mock ( CLIConnector.class );
+		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
 					
 		when(cli.execute((String[]) anyObject())).thenAnswer(new Answer () {
 			public Boolean answer(InvocationOnMock invocation) {

@@ -38,6 +38,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
 import de.uzk.hki.da.webservice.HttpFileTransmissionClient;
 
@@ -109,7 +110,7 @@ public class DocxConversionStrategyTests {
 		
 		
 		
-		CLIConnector cli = mock ( CLIConnector.class );
+		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
 		when(cli.execute((String[]) anyObject())).thenAnswer(new Answer<java.lang.Object> () {
 			public Boolean answer(InvocationOnMock invocation) {
 			    java.lang.Object[] args = invocation.getArguments();

@@ -35,6 +35,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -48,7 +49,7 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 			LoggerFactory.getLogger(PublishAudioConversionStrategy.class);
 	
 	/** The cli connector. */
-	private CLIConnector cliConnector;
+	private SimplifiedCommandLineConnector cliConnector;
 
 	
 	/* (non-Javadoc)
@@ -156,7 +157,7 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
 	 */
 	@Override
-	public void setCLIConnector(CLIConnector cliConnector) {
+	public void setCLIConnector(SimplifiedCommandLineConnector cliConnector) {
 		this.cliConnector = cliConnector;
 	}
 

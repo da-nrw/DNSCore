@@ -30,12 +30,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.convert.CLIConnector;
 import de.uzk.hki.da.convert.DocxConversionStrategy;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
 import de.uzk.hki.da.webservice.HttpFileTransmissionClient;
 
@@ -117,7 +117,7 @@ public class CTDocxConversionStrategyTest {
 		
 		
 		
-		CLIConnector cli = new CLIConnector(); 
+		SimplifiedCommandLineConnector cli = new SimplifiedCommandLineConnector(); 
 		cs.setCLIConnector(cli);
 		
 		cr.setTarget_suffix("pdf");

@@ -40,7 +40,8 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.service.CommandLineConnector;
+import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
+import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -60,7 +61,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			LoggerFactory.getLogger(PublishImageConversionStrategy.class);
 	
 	/** The cli connector. */
-	private CLIConnector cliConnector;
+	private SimplifiedCommandLineConnector cliConnector;
 	
 	private String resizeWidth = null;
 	
@@ -304,7 +305,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
 	 */
 	@Override
-	public void setCLIConnector(CLIConnector cliConnector) {
+	public void setCLIConnector(SimplifiedCommandLineConnector cliConnector) {
 		this.cliConnector = cliConnector;
 	}
 

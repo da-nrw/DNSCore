@@ -38,6 +38,7 @@ import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.service.XPathUtils;
+import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -87,7 +88,7 @@ public class PublishVideoConversionStrategyTests {
 		right.getVideoRestriction().setDuration(180);
 		o.getRights().getPublicationRights().add(right);
 		
-		CLIConnector cli = mock ( CLIConnector.class );
+		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
 		
 		
 		String cmdPUBLIC[] = new String[]{

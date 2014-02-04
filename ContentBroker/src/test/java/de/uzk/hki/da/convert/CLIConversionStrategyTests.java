@@ -33,6 +33,7 @@ import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -74,7 +75,7 @@ public class CLIConversionStrategyTests {
 		Object o = TESTHelper.setUpObject("1233",basePath);
 		
 		CLIConversionStrategy strat= new CLIConversionStrategy();
-		strat.setCLIConnector(new CLIConnector());
+		strat.setCLIConnector(new SimplifiedCommandLineConnector());
 		strat.setParam("cp input output");
 		strat.setObject(o);
 		ConversionInstruction ci= new ConversionInstruction();
@@ -106,7 +107,7 @@ public class CLIConversionStrategyTests {
 		Object o = TESTHelper.setUpObject("1244",basePath);
 		
 		CLIConversionStrategy strat= new CLIConversionStrategy();
-		strat.setCLIConnector(new CLIConnector());
+		strat.setCLIConnector(new SimplifiedCommandLineConnector());
 		strat.setParam("convert -resize {institution.width}x{institution.height} input output");
 		strat.setObject(o);
 		
@@ -157,7 +158,7 @@ public class CLIConversionStrategyTests {
 		ci.setTarget_folder("");
 		ci.setConversion_routine(conversionRoutinePdfToPdfA);
 		
-		strat.setCLIConnector(new CLIConnector());
+		strat.setCLIConnector(new SimplifiedCommandLineConnector());
 		strat.setParam("gs -dPDFA -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sProcessColorModel=DeviceGray -sOutputFile=output input");
 		strat.convertFile(ci);
 		

@@ -42,6 +42,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.service.XPathUtils;
+import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -96,7 +97,7 @@ public class PublishImageConversionStrategyTest {
 		right.getImageRestriction().setWatermarkString("Hallo");
 		o.getRights().getPublicationRights().add(right);
 		
-		CLIConnector cli = mock ( CLIConnector.class );
+		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
 		
 		String cmdPUBLIC[] = new String[]{
 				"convert",
@@ -156,7 +157,7 @@ public class PublishImageConversionStrategyTest {
 		right.getImageRestriction().setFooterText("Hallo");
 		o.getRights().getPublicationRights().add(right);
 		
-		CLIConnector cli = mock ( CLIConnector.class );
+		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
 		
 		String cmdPUBLIC[] = new String[]{
 				"convert",
@@ -220,7 +221,7 @@ public class PublishImageConversionStrategyTest {
 		right.getImageRestriction().setFooterText("Hallo");
 		o.getRights().getPublicationRights().add(right);
 		
-		CLIConnector cli = mock ( CLIConnector.class );
+		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
 		
 		String cmdPUBLIC[] = new String[]{
 				"convert",
@@ -283,7 +284,7 @@ public class PublishImageConversionStrategyTest {
 		Object o = TESTHelper.setUpObject("123",basePath);
 		
 		PublishImageConversionStrategy s = new PublishImageConversionStrategy();
-		s.setCLIConnector( new CLIConnector() );
+		s.setCLIConnector( new SimplifiedCommandLineConnector() );
 		
 		DAFile sourceFile = new DAFile(o.getLatestPackage(),"a","filename.tif");
 		

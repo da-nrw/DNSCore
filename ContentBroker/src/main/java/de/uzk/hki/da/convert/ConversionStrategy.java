@@ -26,6 +26,7 @@ import java.util.List;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 
 
 /**
@@ -60,6 +61,6 @@ public interface ConversionStrategy {
 	/**
 	 * @param cliConnector
 	 */
-	public void setCLIConnector(CLIConnector cliConnector);
+	public void setCLIConnector(SimplifiedCommandLineConnector cliConnector);
 
 }
