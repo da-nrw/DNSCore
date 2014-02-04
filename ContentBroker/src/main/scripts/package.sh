@@ -25,7 +25,7 @@ function createStorageFolder(){
 
 CBTAR_SRC=target/deliverable
 mkdir $CBTAR_SRC
-cp target/ContentBroker-$VERSION.jar $CBTAR_SRC/ContentBroker.jar
+cp target/ContentBroker-SNAPSHOT.jar $CBTAR_SRC/ContentBroker.jar
 if [ $? -ne 0 ]
 then
 	echo target has to be build first by mvn package. remember that you cannot build anything other than dev on development machines.

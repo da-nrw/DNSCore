@@ -30,30 +30,12 @@
 	      		<include.tests>**/*CT*.java</include.tests>
 	    	</properties>
   		</profile>
-  		<profile>
-    		<id>node</id>
-	    	<properties>
-	      		<env>node</env>
-	    	</properties>
-  		</profile>
-  		<profile>
-    		<id>pres</id>
-	    	<properties>
-	      		<env>pres</env>
-	    	</properties>
-  		</profile>
-  		<profile>
-    		<id>full</id>
-	    	<properties>
-	      		<env>full</env>
-	    	</properties>
-  		</profile>
 	</profiles>
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.uzk.hki.da</groupId>
 	<artifactId>ContentBroker</artifactId>
-	<version>0.6.4-final</version>
+	<version>SNAPSHOT</version><!-- DONT EDIT, EXACTLY THIS ENTRY NEEDED BY DEPLOY SCRIPTS -->
 	<packaging>jar</packaging>
 	<name>DA-NRW Content Broker</name>
 
