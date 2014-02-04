@@ -199,7 +199,7 @@
               <tasks>
                 <exec
                   dir="${basedir}"
-                  executable="${basedir}/src/main/scripts/validate.sh"
+                  executable="${basedir}/src/main/bash/validate.sh"
                   failonerror="true">
                   <arg line="${env}" />
                 </exec>
@@ -216,7 +216,7 @@
               <tasks>
                 <exec
                   dir="${basedir}"
-                  executable="${basedir}/src/main/scripts/clean.sh"
+                  executable="${basedir}/src/main/bash/clean.sh"
                   failonerror="true">
                   <arg line="" />
                 </exec>
@@ -233,7 +233,7 @@
               <tasks>
                 <exec
                   dir="${basedir}"
-                  executable="${basedir}/src/main/scripts/package.sh"
+                  executable="${basedir}/src/main/bash/package.sh"
                   failonerror="true">
                   <arg line="${env} ${appHome}" />
                 </exec>
@@ -250,7 +250,7 @@
               <tasks>
                 <exec
                   dir="${basedir}"
-                  executable="${basedir}/src/main/scripts/pre-integration-test.sh"
+                  executable="${basedir}/src/main/bash/pre-integration-test.sh"
                   failonerror="true">
                   <arg line="${env} ${appHome}" />
                 </exec>
@@ -267,7 +267,7 @@
               <tasks>
                 <exec
                   dir="${basedir}"
-                  executable="${basedir}/src/main/scripts/post-integration-test.sh"
+                  executable="${basedir}/src/main/bash/post-integration-test.sh"
                   failonerror="true">
                   <arg line="" />
                 </exec>
@@ -284,7 +284,7 @@
               <tasks>
                 <exec
                   dir="${basedir}"
-                  executable="${basedir}/src/main/scripts/deploy.sh"
+                  executable="${basedir}/src/main/bash/deploy.sh"
                   failonerror="true">
                   <arg line="" />
                 </exec>

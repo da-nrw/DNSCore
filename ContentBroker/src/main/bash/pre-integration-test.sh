@@ -87,8 +87,8 @@ dev)
 	rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
 	install $INSTALL_PATH
 	
-	src/main/scripts/populatetestdb.sh create
-	src/main/scripts/populatetestdb.sh populate
+	src/main/bash/populatetestdb.sh create
+	src/main/bash/populatetestdb.sh populate
 	
 	prepareTestEnvironment $INSTALL_PATH
 	restartContentBroker $INSTALL_PATH

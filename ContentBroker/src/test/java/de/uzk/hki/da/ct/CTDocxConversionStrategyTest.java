@@ -69,7 +69,7 @@ public class CTDocxConversionStrategyTest {
 	@Before
 	public void setUp() throws IOException{
 		
-		FileUtils.copyFile(new File("src/main/scripts/PDFA_def.ps"),new File("conf/PDFA_def.ps"));
+		FileUtils.copyFile(new File("src/main/conf/PDFA_def.ps"),new File("conf/PDFA_def.ps"));
 		
 		o = TESTHelper.setUpObject("1", basePath);
 		o.reattach();

@@ -37,18 +37,18 @@ fi
 mkdir $CBTAR_SRC/conf
 cp -r src/main/fido $CBTAR_SRC
 cp -r src/main/jhove $CBTAR_SRC
-cp src/main/scripts/jhove $CBTAR_SRC/jhove
+cp src/main/sh/jhove $CBTAR_SRC/jhove
 cp src/main/conf/jhove.conf $CBTAR_SRC/jhove/conf
 cp -r src/main/xslt $CBTAR_SRC/conf
 cp src/main/resources/premis.xsd $CBTAR_SRC/conf
 cp src/main/resources/xlink.xsd $CBTAR_SRC/conf
 cp src/main/resources/frame.jsonld $CBTAR_SRC/conf
-cp src/main/scripts/ffmpeg.sh $CBTAR_SRC
-cp src/main/scripts/ContentBroker_stop.sh $CBTAR_SRC
-cp src/main/scripts/ContentBroker_start.sh $CBTAR_SRC
-cp src/main/scripts/cbTalk.sh $CBTAR_SRC
-cp src/main/scripts/fido.sh $CBTAR_SRC
-cp src/main/scripts/PDFA_def.ps $CBTAR_SRC/conf
+cp src/main/bash/ffmpeg.sh $CBTAR_SRC
+cp src/main/bash/ContentBroker_stop.sh $CBTAR_SRC
+cp src/main/bash/ContentBroker_start.sh $CBTAR_SRC
+cp src/main/bash/cbTalk.sh $CBTAR_SRC
+cp src/main/bash/fido.sh $CBTAR_SRC
+cp src/main/conf/PDFA_def.ps $CBTAR_SRC/conf
 cp src/main/resources/healthCheck.avi $CBTAR_SRC/conf
 cp src/main/resources/healthCheck.tif $CBTAR_SRC/conf
 cp src/main/resources/frame.jsonld $CBTAR_SRC/conf
@@ -67,7 +67,7 @@ case "$1" in
 dev)
 	sed "s@CONTENTBROKER_ROOT@$2@" src/main/conf/config.properties.dev  > $INSTALLER/config.properties # TODO move to pre-integration-test.sh
 	createStorageFolder	
-	cp -f src/main/scripts/ffmpeg.sh.fake $INSTALLER/ffmpeg.sh
+	cp -f src/main/bash/ffmpeg.sh.fake $INSTALLER/ffmpeg.sh
 	cp src/main/conf/sqltool.rc ~/
 	cp src/main/conf/hibernateCentralDB.cfg.xml.hsql $INSTALLER/hibernateCentralDB.cfg.xml
 ;;
