@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foxml:digitalObject VERSION="1.1" PID="danrw:PresentationRepository"
+xmlns:foxml="info:fedora/fedora-system:def/foxml#"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="info:fedora/fedora-system:def/foxml# http://www.fedora.info/definitions/1/0/foxml1-1.xsd">
+<foxml:objectProperties>
+<foxml:property NAME="info:fedora/fedora-system:def/model#state" VALUE="Active"/>
+<foxml:property NAME="info:fedora/fedora-system:def/model#label" VALUE="Metadata about the Repository (needed for PrOAI)"/>
+<foxml:property NAME="info:fedora/fedora-system:def/model#ownerId" VALUE=""/>
+<foxml:property NAME="info:fedora/fedora-system:def/model#createdDate" VALUE="2011-11-18T13:36:10.191Z"/>
+<foxml:property NAME="info:fedora/fedora-system:def/view#lastModifiedDate" VALUE="2011-12-01T16:26:12.067Z"/>
+</foxml:objectProperties>
+<foxml:datastream ID="DC" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+<foxml:datastreamVersion ID="DC1.0" LABEL="Dublin Core Record for this object" CREATED="2011-11-18T13:36:10.191Z" MIMETYPE="text/xml" FORMAT_URI="http://www.openarchives.org/OAI/2.0/oai_dc/" SIZE="429">
+<foxml:xmlContent>
+<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+  <dc:title>Metadata about the Repository (needed for PrOAI)</dc:title>
+  <dc:identifier>danrw:PreservationRepository</dc:identifier>
+</oai_dc:dc>
+</foxml:xmlContent>
+</foxml:datastreamVersion>
+</foxml:datastream>
+<foxml:datastream ID="Identify.xml" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+<foxml:datastreamVersion ID="Identify.xml.0" LABEL="Response for verb=Identify in OAI-PMH" MIMETYPE="text/xml">
+<foxml:xmlContent>
+<Identify>
+  <repositoryName>DA-NRW Presentation Repository</repositoryName>
+  <baseURL>http://da-nrw.de/oai</baseURL>
+  <protocolVersion>2.0</protocolVersion>
+  <adminEmail>sebastian.cuy@uni-koeln.de</adminEmail>
+  <earliestDatestamp>2011-03-14T11:22:19Z</earliestDatestamp>
+  <deletedRecord>transient</deletedRecord>
+  <granularity>YYYY-MM-DDThh:mm:ssZ</granularity>
+  <description>
+    <oai-identifier xmlns="http://www.openarchives.org/OAI/2.0/oai-identifier" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai-identifier           http://www.openarchives.org/OAI/2.0/oai-identifier.xsd">
+      <scheme>oai</scheme>
+      <repositoryIdentifier>danrw.de</repositoryIdentifier>
+      <delimiter>:</delimiter>
+      <sampleIdentifier>oai:danrw.de:1-100013</sampleIdentifier>
+    </oai-identifier>
+  </description>
+</Identify>
+</foxml:xmlContent>
+</foxml:datastreamVersion>
+</foxml:datastream>
+<foxml:datastream ID="RELS-EXT" STATE="A" CONTROL_GROUP="X" VERSIONABLE="false">
+<foxml:datastreamVersion ID="RELS-EXT.2" LABEL="Relationships" CREATED="2012-02-06T15:58:10.680Z" MIMETYPE="application/rdf+xml" FORMAT_URI="info:fedora/fedora-system:FedoraRELSExt-1.0" SIZE="527">
+<foxml:xmlContent>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:Description rdf:about="info:fedora/danrw:PresentationRepository">
+	<isMemberOfCollection xmlns="info:fedora/fedora-system:def/relations-external#" rdf:resource="info:fedora/collection:open"></isMemberOfCollection>
+</rdf:Description>
+</rdf:RDF>
+</foxml:xmlContent>
+</foxml:datastreamVersion>
+</foxml:datastream>
+</foxml:digitalObject>

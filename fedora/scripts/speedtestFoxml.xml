@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foxml:digitalObject xmlns:foxml="info:fedora/fedora-system:def/foxml#" VERSION="1.1" PID="test:speedFoxml"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="info:fedora/fedora-system:def/foxml#
+                                         http://www.fedora.info/definitions/1/0/foxml1-1.xsd">
+  <foxml:objectProperties>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#state" VALUE="A"/>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#label" VALUE="FOXML Speedtest"/>
+  </foxml:objectProperties><foxml:datastream CONTROL_GROUP="E" ID="ds_0" STATE="A">
+    <foxml:datastreamVersion ID="ds_0.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_1" STATE="A">
+    <foxml:datastreamVersion ID="ds_1.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_2" STATE="A">
+    <foxml:datastreamVersion ID="ds_2.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_3" STATE="A">
+    <foxml:datastreamVersion ID="ds_3.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_4" STATE="A">
+    <foxml:datastreamVersion ID="ds_4.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_5" STATE="A">
+    <foxml:datastreamVersion ID="ds_5.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_6" STATE="A">
+    <foxml:datastreamVersion ID="ds_6.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_7" STATE="A">
+    <foxml:datastreamVersion ID="ds_7.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_8" STATE="A">
+    <foxml:datastreamVersion ID="ds_8.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_9" STATE="A">
+    <foxml:datastreamVersion ID="ds_9.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_10" STATE="A">
+    <foxml:datastreamVersion ID="ds_10.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_11" STATE="A">
+    <foxml:datastreamVersion ID="ds_11.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_12" STATE="A">
+    <foxml:datastreamVersion ID="ds_12.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_13" STATE="A">
+    <foxml:datastreamVersion ID="ds_13.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_14" STATE="A">
+    <foxml:datastreamVersion ID="ds_14.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_15" STATE="A">
+    <foxml:datastreamVersion ID="ds_15.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_16" STATE="A">
+    <foxml:datastreamVersion ID="ds_16.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_17" STATE="A">
+    <foxml:datastreamVersion ID="ds_17.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_18" STATE="A">
+    <foxml:datastreamVersion ID="ds_18.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_19" STATE="A">
+    <foxml:datastreamVersion ID="ds_19.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_20" STATE="A">
+    <foxml:datastreamVersion ID="ds_20.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_21" STATE="A">
+    <foxml:datastreamVersion ID="ds_21.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_22" STATE="A">
+    <foxml:datastreamVersion ID="ds_22.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_23" STATE="A">
+    <foxml:datastreamVersion ID="ds_23.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_24" STATE="A">
+    <foxml:datastreamVersion ID="ds_24.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_25" STATE="A">
+    <foxml:datastreamVersion ID="ds_25.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_26" STATE="A">
+    <foxml:datastreamVersion ID="ds_26.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_27" STATE="A">
+    <foxml:datastreamVersion ID="ds_27.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_28" STATE="A">
+    <foxml:datastreamVersion ID="ds_28.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_29" STATE="A">
+    <foxml:datastreamVersion ID="ds_29.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_30" STATE="A">
+    <foxml:datastreamVersion ID="ds_30.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_31" STATE="A">
+    <foxml:datastreamVersion ID="ds_31.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_32" STATE="A">
+    <foxml:datastreamVersion ID="ds_32.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_33" STATE="A">
+    <foxml:datastreamVersion ID="ds_33.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_34" STATE="A">
+    <foxml:datastreamVersion ID="ds_34.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_35" STATE="A">
+    <foxml:datastreamVersion ID="ds_35.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_36" STATE="A">
+    <foxml:datastreamVersion ID="ds_36.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_37" STATE="A">
+    <foxml:datastreamVersion ID="ds_37.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_38" STATE="A">
+    <foxml:datastreamVersion ID="ds_38.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_39" STATE="A">
+    <foxml:datastreamVersion ID="ds_39.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_40" STATE="A">
+    <foxml:datastreamVersion ID="ds_40.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_41" STATE="A">
+    <foxml:datastreamVersion ID="ds_41.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_42" STATE="A">
+    <foxml:datastreamVersion ID="ds_42.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_43" STATE="A">
+    <foxml:datastreamVersion ID="ds_43.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_44" STATE="A">
+    <foxml:datastreamVersion ID="ds_44.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_45" STATE="A">
+    <foxml:datastreamVersion ID="ds_45.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_46" STATE="A">
+    <foxml:datastreamVersion ID="ds_46.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_47" STATE="A">
+    <foxml:datastreamVersion ID="ds_47.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_48" STATE="A">
+    <foxml:datastreamVersion ID="ds_48.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream><foxml:datastream CONTROL_GROUP="E" ID="ds_49" STATE="A">
+    <foxml:datastreamVersion ID="ds_49.0" MIMETYPE="image/png"
+                             LABEL="Test image">
+      <foxml:contentLocation REF="file:///home/scuy/Enne06+h_Druck1=0001.png" TYPE="URL"/>
+    </foxml:datastreamVersion>
+  </foxml:datastream></foxml:digitalObject>

@@ -1,0 +1,33 @@
+VM2:
+
+	MPTStore - image42.tif (100x):
+	Average: 0.157845308781 s
+
+	MPTStore - Enne06+h_Druck1=0001.png (50x):
+	Average: 0.395021266937 s
+	
+	Mulgara - image42.tif (100x):
+	Average: 0.214045221806 s
+	
+	Mulgara - Enne06+h_Druck1=0001.png (50x):
+	Average: 0.474729027748 s
+
+DA-NRW:
+
+	MPTStore - image42.tif (100x):
+	Average: 0.182841846943 s
+	
+	MPTStore - Enne06+h_Druck1=0001.png (50x):
+	Average: 0.416702699661 s
+
+	Mulgara - image42.tif (100x):
+	Average: 0.147541828156 s
+	
+	Mulgara - Enne06+h_Druck1=0001.png (50x):
+	Average: 0.436507368088 s
+	
+	
+	
+CREATE ROLE "fedoraAdmin" LOGIN PASSWORD 'Herrlich456FFEE' NOINHERIT CREATEDB VALID UNTIL 'infinity';
+
+CREATE DATABASE "riTriples" WITH ENCODING='UTF8' OWNER="fedoraAdmin";
