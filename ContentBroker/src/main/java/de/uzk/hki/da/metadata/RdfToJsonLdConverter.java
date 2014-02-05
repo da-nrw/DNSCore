@@ -50,7 +50,7 @@ public class RdfToJsonLdConverter {
 	public RdfToJsonLdConverter(String frameFilePath) {
 		try {
 			InputStream inputStream = new FileInputStream(frameFilePath);
-			frame = (Map<String, Object>) JSONUtils.fromInputStream(inputStream);
+			frame = (Map<String, Object>) JSONUtils.fromInputStream(inputStream, "UTF-8");
 		} catch (IOException e) {
 			throw new RuntimeException("Could not initialize RdfToJsonLdConverter", e);
 		} catch (ClassCastException e) {
