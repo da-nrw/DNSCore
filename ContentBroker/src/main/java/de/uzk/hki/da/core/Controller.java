@@ -85,7 +85,7 @@ public class Controller implements Runnable {
 				return;
 			}
 			logger.debug("starting JMS -Service at: " + serverName + " "+ socketNumber);
-			mqBroker.start();		
+			mqBroker.start();
 		} catch (Exception e) {
 			logger.error("Error creating CB-Controller thread: " + e,e );
 		}
@@ -95,7 +95,6 @@ public class Controller implements Runnable {
           
 		    
 		    for (;;) {
-		    	
 		    	try {
             	Connection connection = mqConnectionFactory.createConnection();
                 connection.start();
@@ -162,6 +161,11 @@ public class Controller implements Runnable {
             connection.close();	
 		    } catch (Exception e) {
 				logger.error("Error using CB-Controller thread: " + e,e );
+			} finally {
+				if (!mqBroker.isStarted()){
+					logger.error("Controller thread seems to be dead, too!");
+					break;
+				}
 			}
 		    }
 		}
