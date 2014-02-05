@@ -63,11 +63,8 @@
         <property name="keyStore" value="${irods.keyStorePath}" />
         <property name="trustStore" value="${irods.trustStorePath}" />
     </bean>
-     <amq:broker id="mqBroker" useShutdownHook="false" deleteAllMessagesOnStartup="true">
-       <amq:persistenceAdapter>
-    		<amq:levelDB directory="activemq-data"/>
-  		</amq:persistenceAdapter>
-       <amq:systemUsage>
+        <amq:broker id="mqBroker" useShutdownHook="true" useJmx="false" deleteAllMessagesOnStartup="true" start="false">
+      <amq:systemUsage>
         <amq:systemUsage>
         <amq:memoryUsage><amq:memoryUsage limit="16Mb" /></amq:memoryUsage>
         <amq:tempUsage><amq:tempUsage limit="100Mb"></amq:tempUsage></amq:tempUsage>	
@@ -77,7 +74,6 @@
       <amq:transportConnector uri="tcp://localhost:${cb.serverSocketNumber}" />
     </amq:transportConnectors>
   </amq:broker>
-  
   
   <amq:connectionFactory brokerURL="tcp://localhost:${cb.serverSocketNumber}"
   id="mqConnectionFactory" />
