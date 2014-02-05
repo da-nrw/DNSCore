@@ -1,3 +1,22 @@
+/*
+  DA-NRW Software Suite | ContentBroker
+  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
+  Universität zu Köln
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package de.uzk.hki.da.cb;
 
 import java.io.File;
@@ -20,6 +39,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
+import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.metadata.XmpCollector;
 import de.uzk.hki.da.metadata.XsltGenerator;
 import de.uzk.hki.da.model.DAFile;
@@ -33,6 +53,7 @@ import de.uzk.hki.da.service.UpdateMetadataService;
  * files, in sync with the actual package content after
  * conversion actions took place.
  * @author Sebastian Cuy
+ * @author Daniel M. de Oliveira
  *
  */
 public class UpdateMetadataAction extends AbstractAction {
@@ -47,153 +68,108 @@ public class UpdateMetadataAction extends AbstractAction {
 
 	@Override
 	public boolean implementation() throws IOException {
-		
-		logConvertEventsOnDebugLevel();
+		if (job==null) throw new ConfigurationException("job not set");
+		if (actionCommunicatorService==null) throw new ConfigurationException("actionCommunicatorService not set");
+		if (updateMetadataService==null) throw new ConfigurationException("updateMetadataService not set");
 		
 		String packageType = (String) actionCommunicatorService.extractDataObject(job.getId(), "package_type");
-		String metadataFile = (String) actionCommunicatorService.extractDataObject(job.getId(), "metadata_file");
-		logger.debug("Got data from ACS - package_type: {}, metadata_file: {}", packageType, metadataFile);
-		if (packageType == null || metadataFile == null) {
+		String metadataFileName = (String) actionCommunicatorService.extractDataObject(job.getId(), "metadata_file");
+		if (packageType == null || metadataFileName == null) {
 			logger.warn("Could not determine package type. No metadata to update.");
 			return true;
 		}
+		logger.debug("Got data from ACS - package_type: {}, metadata_file: {}", packageType, metadataFileName);
+		
+		logConvertEventsOnDebugLevel();
+
+		
+		String absUrlPrefixFull = "";
+		if (getAbsUrlPrefix() != null && !getAbsUrlPrefix().isEmpty()) {
+			absUrlPrefixFull = getAbsUrlPrefix() + "/" + job.getObject().getIdentifier() + "/";
+		}
 	
-		// replace paths in newest rep when no reps are set
 		if (repNames == null || repNames.length == 0) {
 			repNames = new String[]{ object.getNameOfNewestRep() };
 		}
 		
-		// copy xmp sidecar files and collect them into one "XMP manifest"
-		if ("XMP".equals(packageType)) {
-			for (String repName : getRepNames()) {
-				String repPath = object.getDataPath() + repName;
-				File repDir = new File(repPath);
-				if (!repDir.exists()) {
-					logger.info("representation directory {} does not exist. Skipping ...", repPath);
-					continue;
-				}
-				List<DAFile> files = object.getNewestFilesFromAllRepresentations("xmp;XMP");
-				for (DAFile file : files) {
-					logger.debug("checking if file is xmp sidecar: {}", file);
-					if (file.getRelative_path().toLowerCase().endsWith(".xmp")
-							&& !Arrays.asList(repNames).contains(file.getRep_name())) {
+		
+		if ("XMP".equals(packageType)) 
+			collectXMP();
+		else 
+			metadataFileName = copyMetadataFileToNewReps(packageType,
+					metadataFileName);
 
-						File targetDir = new File(repPath+"/"+FilenameUtils.getPath(file.getRelative_path()));
-						
-						logger.debug("Copying {} to {}", file, targetDir);
-						FileUtils.copyFileToDirectory(file.toRegularFile(), targetDir);
-						DAFile daFile = new DAFile(object.getLatestPackage(), repName, file.getRelative_path());
-						daFile.setFormatPUID(file.getFormatPUID());
-						object.getLatestPackage().getFiles().add(daFile);
-						
-						Event e = new Event();							
-						for (Package p : object.getPackages()) {
-							for (DAFile f : p.getFiles()) {
-								if (file.toRegularFile().getAbsolutePath()
-										.equals(f.toRegularFile().getAbsolutePath())) {
-									e.setSource_file(f);
-								}
-							}
-						}							
-						e.setTarget_file(daFile);
-						e.setType("COPY");
-						e.setDate(new Date());
-						e.setAgent_type("NODE");
-						e.setAgent_name(object.getTransientNodeRef().getName());							
-						object.getLatestPackage().getEvents().add(e);
-						logger.debug("created DAFile: {}", daFile);
-					}
-				}
-				getUpdateMetadataService().renameSidecarFiles(object, object.getLatestPackage(), repName);
-				logger.debug("collecting files in path: {}", repPath);
-				XmpCollector.collect(repDir, new File(repPath + "/XMP.rdf"));
-			}
-			
-		// copy other metadata to rep(s)
-		} else {		
-			logger.debug("copy metadata to rep(s)");
-			DAFile srcDaFile = object.getLatest(metadataFile);
-			File srcFile = srcDaFile.toRegularFile();
-			String extension = FilenameUtils.getExtension(srcFile.getName());
-			for (String repName : getRepNames()) {
-				logger.debug("checking rep " + repName);
-				// rename metadatafile for presentation
-				if (repName.startsWith("dip")) {
-					metadataFile = packageType + "." + extension;
-				}
-				File destFile = new File(object.getDataPath() + repName + "/" // XXX same problem with subdirs as above? Daniel M. de Oliveira
-						+ metadataFile);
-				try {
-					FileUtils.copyFile(srcFile, destFile);
-					DAFile daFile = new DAFile(object.getLatestPackage(), repName, metadataFile);
-					daFile.setFormatPUID(srcDaFile.getFormatPUID());
-					object.getLatestPackage().getFiles().add(daFile);
-					
-					Event e = new Event();							
-					for (Package p : object.getPackages()) {
-						for (DAFile f : p.getFiles()) {
-							if (srcDaFile.toRegularFile().getAbsolutePath()
-									.equals(f.toRegularFile().getAbsolutePath())) {
-								e.setSource_file(f);
-								logger.debug("source file: " + f.toRegularFile().getAbsolutePath());
-							}
-						}
-					}							
-					e.setTarget_file(daFile);
-					logger.debug("target file: " + daFile.toRegularFile().getAbsolutePath());
-					e.setType("COPY");
-					e.setDate(new Date());
-					e.setAgent_type("NODE");
-					e.setAgent_name(object.getTransientNodeRef().getName());							
-					object.getLatestPackage().getEvents().add(e);
-					
-					logger.debug("copied metadata file {} to {}", srcFile.getAbsoluteFile(), destFile.getAbsolutePath());
-					actionCommunicatorService.addDataObject(job.getId(), "metadata_file", metadataFile);
-				} catch (IOException e1) {
-					throw new RuntimeException("Unable to copy metadata file!", e1);
-				}
-				// copy METS-Files if present in EAD-package
-				if ("EAD".equals(packageType)) {
-					File destDir = new File(object.getDataPath() + repName);
-					Iterator<File> xmlFiles = FileUtils.iterateFiles(
-							srcFile.getParentFile(), new WildcardFileFilter("*.xml"), null);
-					while (xmlFiles.hasNext()) {
-						try {
-							File xmlFile = xmlFiles.next();
-							FileUtils.copyFileToDirectory(xmlFile, destDir);
-							
-							String destFilePath = destDir.getAbsolutePath() + "/" + xmlFile.getName();							
-							String xmlFileRelativePath = destFilePath.replace(object.getDataPath() + repName + "/", "");
-							DAFile daFile = new DAFile(object.getLatestPackage(), repName, xmlFileRelativePath);
-														
-							Event e = new Event();							
-							for (Package p : object.getPackages()) {
-								for (DAFile f : p.getFiles()) {
-									if (xmlFile.getAbsolutePath()
-											.equals(f.toRegularFile().getAbsolutePath())) {
-										e.setSource_file(f);
-										daFile.setFormatPUID(f.getFormatPUID());
-									}
-								}
-							}							
-							
-							object.getLatestPackage().getFiles().add(daFile);
-							
-							e.setTarget_file(daFile);
-							e.setType("COPY");
-							e.setDate(new Date());
-							e.setAgent_type("NODE");
-							e.setAgent_name(object.getTransientNodeRef().getName());							
-							object.getLatestPackage().getEvents().add(e);
-						} catch (IOException e1) {
-							throw new RuntimeException("Unable to copy metadata file!", e1);
-						}
-					}
-				}
-			}
+		for (String repName : getRepNames()) {
+			getUpdateMetadataService().updatePathsInMetadata(
+					object.getLatestPackage(),
+					packageType,
+					metadataFileName,
+					repName,
+					absUrlPrefixFull
+				);
 		}
 		
-		// create DC datastream from metadata
+		
+		copyDCdatastreamFromMetadata(packageType, metadataFileName);
+		if (isWritePackageTypeToDC())
+			writePackageTypeToDC(packageType);
+		
+		
+		
+			
+		return true;
+		
+	}
+
+	/**
+	 * @param packageType
+	 * @param metadataFileName
+	 * @return
+	 * @throws IOException
+	 */
+	private String copyMetadataFileToNewReps(String packageType,
+			String metadataFileName) throws IOException {
+		// copy other metadata to rep(s)
+		DAFile srcMetadataFile = object.getLatest(metadataFileName);
+		String extension = FilenameUtils.getExtension(srcMetadataFile.toRegularFile().getName());
+		for (String repName : getRepNames()) {
+			// rename metadatafile for presentation
+			if (repName.startsWith("dip")) {
+				metadataFileName = packageType + "." + extension;
+			}
+			File destFile = new File(object.getDataPath() + repName + "/" // XXX same problem with subdirs as above? Daniel M. de Oliveira
+					+ metadataFileName);
+
+			FileUtils.copyFile(srcMetadataFile.toRegularFile(), destFile);
+			DAFile destMetadataFile = new DAFile(object.getLatestPackage(), repName, metadataFileName);
+			destMetadataFile.setFormatPUID(srcMetadataFile.getFormatPUID());
+			object.getLatestPackage().getFiles().add(destMetadataFile);
+			
+			Event e = new Event();							
+			e.setTarget_file(destMetadataFile);
+			e.setType("COPY");
+			e.setDate(new Date());
+			e.setAgent_type("NODE");
+			e.setAgent_name(object.getTransientNodeRef().getName());							
+			object.getLatestPackage().getEvents().add(e);
+			
+			logger.debug("Copied metadata file \"{}\" to \"{}\"", srcMetadataFile.toString(), destMetadataFile);
+			actionCommunicatorService.addDataObject(job.getId(), "metadata_file", metadataFileName);
+			
+			// copy METS-Files if present in EAD-package
+			if ("EAD".equals(packageType)) {
+				copyXMLsToNewRepresentation(srcMetadataFile.toRegularFile(), repName);
+			}
+		}
+		return metadataFileName;
+	}
+
+	/**
+	 * @param packageType
+	 * @param metadataFile
+	 */
+	private void copyDCdatastreamFromMetadata(String packageType,
+			String metadataFile) {
 		if (packageType != null && metadataFile != null) {
 			String xsltFile;
 			if ("METS".equals(packageType)) {
@@ -225,28 +201,100 @@ public class UpdateMetadataAction extends AbstractAction {
 				throw new RuntimeException("Unable to create DC file.", e);
 			}
 		}
-		
-		if (isWritePackageTypeToDC())
-			writePackageTypeToDC(packageType);
-		
-		String absUrlPrefixFull = "";
-		if (getAbsUrlPrefix() != null && !getAbsUrlPrefix().isEmpty()) {
-			absUrlPrefixFull = getAbsUrlPrefix() + "/" + job.getObject().getIdentifier() + "/";
-		}
-		
-		// update filepaths in metadata		
-		for (String repName : getRepNames()) {
-			getUpdateMetadataService().updatePathsInMetadata(
-					object.getLatestPackage(),
-					packageType,
-					metadataFile,
-					repName,
-					absUrlPrefixFull
-				);
-		}
+	}
+
+	/**
+	 * @param srcFile
+	 * @param repName
+	 * @throws IOException
+	 */
+	private void copyXMLsToNewRepresentation(File srcFile, String repName)
+			throws IOException {
+		File destDir = new File(object.getDataPath() + repName);
+		Iterator<File> xmlFiles = FileUtils.iterateFiles(
+				srcFile.getParentFile(), new WildcardFileFilter("*.xml"), null);
+		int count=0;
+		while (xmlFiles.hasNext()) {
+			count++;
 			
-		return true;
-		
+			File xmlFile = xmlFiles.next();
+			FileUtils.copyFileToDirectory(xmlFile, destDir);
+			
+			String destFilePath = destDir.getAbsolutePath() + "/" + xmlFile.getName();							
+			String xmlFileRelativePath = destFilePath.replace(object.getDataPath() + repName + "/", "");
+			DAFile daFile = new DAFile(object.getLatestPackage(), repName, xmlFileRelativePath);
+										
+			Event e = new Event();							
+			for (Package p : object.getPackages()) {
+				for (DAFile f : p.getFiles()) {
+					if (xmlFile.getAbsolutePath()
+							.equals(f.toRegularFile().getAbsolutePath())) {
+						e.setSource_file(f);
+						daFile.setFormatPUID(f.getFormatPUID());
+					}
+				}
+			}							
+			
+			object.getLatestPackage().getFiles().add(daFile);
+			
+			e.setTarget_file(daFile);
+			e.setType("COPY");
+			e.setDate(new Date());
+			e.setAgent_type("NODE");
+			e.setAgent_name(object.getTransientNodeRef().getName());							
+			object.getLatestPackage().getEvents().add(e);
+		}
+		logger.debug("Copied "+count+ " *.xml files to new representation (package is of type EAD)");
+	}
+
+	/**
+	 * Copy xmp sidecar files and collect them into one "XMP manifest"
+	 * @throws IOException
+	 */
+	private void collectXMP() throws IOException {
+		for (String repName : getRepNames()) {
+			String repPath = object.getDataPath() + repName;
+			File repDir = new File(repPath);
+			if (!repDir.exists()) {
+				logger.info("representation directory {} does not exist. Skipping ...", repPath);
+				continue;
+			}
+			List<DAFile> files = object.getNewestFilesFromAllRepresentations("xmp;XMP");
+			for (DAFile file : files) {
+				logger.debug("checking if file is xmp sidecar: {}", file);
+				if (file.getRelative_path().toLowerCase().endsWith(".xmp")
+						&& !Arrays.asList(repNames).contains(file.getRep_name())) {
+
+					File targetDir = new File(repPath+"/"+FilenameUtils.getPath(file.getRelative_path()));
+					
+					logger.debug("Copying {} to {}", file, targetDir);
+					FileUtils.copyFileToDirectory(file.toRegularFile(), targetDir);
+					DAFile daFile = new DAFile(object.getLatestPackage(), repName, file.getRelative_path());
+					daFile.setFormatPUID(file.getFormatPUID());
+					object.getLatestPackage().getFiles().add(daFile);
+					
+					Event e = new Event();							
+					for (Package p : object.getPackages()) {
+						for (DAFile f : p.getFiles()) {
+							if (file.toRegularFile().getAbsolutePath()
+									.equals(f.toRegularFile().getAbsolutePath())) {
+								e.setSource_file(f);
+							}
+						}
+					}							
+					e.setTarget_file(daFile);
+					e.setType("COPY");
+					e.setDate(new Date());
+					e.setAgent_type("NODE");
+					e.setAgent_name(object.getTransientNodeRef().getName());							
+					object.getLatestPackage().getEvents().add(e);
+					logger.debug("created DAFile: {}", daFile);
+				}
+			}
+			getUpdateMetadataService().renameSidecarFiles(object, object.getLatestPackage(), repName);
+			logger.debug("collecting files in path: {}", repPath);
+			XmpCollector.collect(repDir, new File(repPath + "/XMP.rdf"));
+		}
 	}
 
 	private void logConvertEventsOnDebugLevel() {
