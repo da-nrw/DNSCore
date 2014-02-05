@@ -222,4 +222,17 @@ public class Utilities {
 		}
 		return result.toString();
 	}
+	
+	public static String getHeapSpaceInformation() {
+		
+		String output;
+		Runtime runtime = Runtime.getRuntime();
+		
+		output = "Used Memory: " + (runtime.totalMemory() - runtime.freeMemory()) / (1024*1024) + " MB\n";
+        output += "Free Memory: " + runtime.freeMemory() / (1024*1024) + "MB \n";
+        output += "Total available Memory:" + runtime.totalMemory() / (1024*1024) + "MB \n";
+        output += "Max Memory:" + runtime.maxMemory() / (1024*1024) + "MB \n";
+		
+        return output;
+	}
 }

@@ -45,6 +45,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.Mail;
 import de.uzk.hki.da.service.UserExceptionManager;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
+import de.uzk.hki.da.utils.Utilities;
 
 
 /**
@@ -131,6 +132,7 @@ public abstract class AbstractAction implements Runnable {
 
 			object.reattach();
 			logger.info("Stubbing implementation of "+this.getClass().getName());
+			logger.debug(Utilities.getHeapSpaceInformation());
 			if (!implementation()){				
 				logger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
 				job.setStatus(startStatus);
