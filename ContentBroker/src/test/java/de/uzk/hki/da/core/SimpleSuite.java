@@ -68,6 +68,7 @@ import de.uzk.hki.da.model.ModelTest;
 import de.uzk.hki.da.model.PackageTests;
 import de.uzk.hki.da.model.PreservationSystemTests;
 import de.uzk.hki.da.model.SaveConversionInstructionsByJob;
+import de.uzk.hki.da.service.PackageTypeDetectionServiceTests;
 import de.uzk.hki.da.service.RetrievePackagesHelperTest;
 import de.uzk.hki.da.service.URNCheckDigitGeneratorTests;
 import de.uzk.hki.da.service.XPathUtilsTests;
@@ -137,7 +138,8 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	PDFServiceTests.class,
 	PackageTests.class,
 	ArchiveReplicationActionTests.class,
-	FidoCLITest.class
+	FidoCLITest.class,
+	PackageTypeDetectionServiceTests.class
 //	HibernateUtilThreadingTest.class
 })
 public class SimpleSuite {
