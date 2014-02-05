@@ -45,6 +45,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.Mail;
 import de.uzk.hki.da.service.UserExceptionManager;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
+import de.uzk.hki.da.utils.Utilities;
 
 
 /**
@@ -131,6 +132,7 @@ public abstract class AbstractAction implements Runnable {
 
 			object.reattach();
 			logger.info("Stubbing implementation of "+this.getClass().getName());
+			logger.debug(Utilities.getHeapSpaceInformation());
 			if (!implementation()){				
 				logger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
 				job.setStatus(startStatus);
@@ -146,8 +148,7 @@ public abstract class AbstractAction implements Runnable {
 				actionCommunicatorService.serialize();
 				job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
 				if (KILLATEXIT)	{
-
-					logger.trace(this.getClass().getName()+" finished working on job: "+job.getId()+". Deleting job.");
+					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now committing changes to database.");
 					job.setStatus(endStatus); // XXX needed just for integration test	
 					Session session = HibernateUtil.openSession();
 					session.beginTransaction();
@@ -155,9 +156,10 @@ public abstract class AbstractAction implements Runnable {
 					session.update(object);
 					session.getTransaction().commit();
 					session.close();
+					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Job deleted. Database transaction successful.");
 					
 				} else {
-					logger.trace(this.getClass().getName()+" finished working on job: "+job.getId()+". Setting job to end state ("+endStatus+").");
+					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now commiting changes to database.");
 					job.setStatus(endStatus);	
 					Session session = HibernateUtil.openSession();
 					session.beginTransaction();
@@ -165,6 +167,7 @@ public abstract class AbstractAction implements Runnable {
 					session.update(object);
 					session.getTransaction().commit();
 					session.close();
+					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Set job to end state ("+endStatus+"). Database transaction successful.");
 				}
 			}
 			
@@ -174,6 +177,10 @@ public abstract class AbstractAction implements Runnable {
 			createUserReport(e);
 			if (e.checkForAdminReport())
 				createAdminReport(e);
+		} catch (org.hibernate.exception.GenericJDBCException sql){
+			logger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sql);
+			handleError();
+			createAdminReport(sql);
 		} catch (Exception e) {
 			logger.error(this.getClass().getName()+": Exception in action: ",e);
 			handleError();			
@@ -191,19 +198,27 @@ public abstract class AbstractAction implements Runnable {
 			logger.info("Stubbing rollback of "+this.getClass().getName());
 			rollback();
 		} catch (Exception e) {
-			logger.error(this.getClass().getName()+": couldn't rollback to previous state. Exception in action.rollback(): ",e);
+			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO ROLLBACK ACTION. DATABASE MIGHT BE INCONSISTENT NOW.");
+			logger.error(this.getClass().getName()+": couldn't get rollbacked to previous state. Exception in action.rollback(): ",e);
 		}
 
 		String errorStatus = getStartStatus().substring(0,getStartStatus().length()-1) + "1";
-		logger.debug("Setting job to error state ("+errorStatus+") due to a caught exception");
 		job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
 		job.setStatus(errorStatus);
 		
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		session.update(job);
-		session.getTransaction().commit();
-		session.close();
+		try{
+			logger.debug("Set job to error state. Commit changes to database now.");
+			Session session = HibernateUtil.openSession();
+			session.beginTransaction();
+			session.update(job);
+			session.getTransaction().commit();
+			session.close();
+		}catch(Exception e){
+			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO COMMIT CHANGES AFTER ROLLBACK. DATABASE MIGHT BE INCONSISTENT NOW.",e);
+		}
+		
+		logger.info("Database transaction successful. Job set to error state "+errorStatus);
+		
 	}
 	
 	/**

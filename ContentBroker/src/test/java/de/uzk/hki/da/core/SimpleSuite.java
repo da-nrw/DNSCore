@@ -41,6 +41,7 @@ import de.uzk.hki.da.cb.SelectProcessingNodesTests;
 import de.uzk.hki.da.cb.ShortenFileNamesActionTests;
 import de.uzk.hki.da.cb.TarActionTests;
 import de.uzk.hki.da.cb.UnpackActionBagitAndDeltaTests;
+import de.uzk.hki.da.cb.UpdateMetadataActionEADTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionTests;
 import de.uzk.hki.da.convert.CLIConversionStrategyTests;
 import de.uzk.hki.da.convert.ConverterServiceTests;
@@ -139,7 +140,8 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	PackageTests.class,
 	ArchiveReplicationActionTests.class,
 	FidoCLITest.class,
-	PackageTypeDetectionServiceTests.class
+	PackageTypeDetectionServiceTests.class,
+	UpdateMetadataActionEADTests.class
 //	HibernateUtilThreadingTest.class
 })
 public class SimpleSuite {

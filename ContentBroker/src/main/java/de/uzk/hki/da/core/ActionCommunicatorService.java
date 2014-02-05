@@ -141,6 +141,8 @@ public class ActionCommunicatorService {
 	/**
 	 * Retrieves data object for given job id and data object id
 	 * and removes it from the data object map.
+	 * @author Thomas Kleinke
+	 * @author Daniel M. de Oliveira
 	 *
 	 * @param jobId the job id
 	 * @param dataObjectId the data object id
@@ -151,7 +153,8 @@ public class ActionCommunicatorService {
 		waitWhileSerializing();
 		
 		Object obj = getDataObject(jobId, dataObjectId);
-		removeDataObject(jobId, dataObjectId);
+		if (obj!=null)
+			removeDataObject(jobId, dataObjectId);
 		
 		return obj;		
 	}
