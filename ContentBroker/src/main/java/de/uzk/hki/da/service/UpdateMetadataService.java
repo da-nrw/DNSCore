@@ -156,6 +156,7 @@ public class UpdateMetadataService {
 		
 		// replace paths in elements denoted by xpath
 		String xPathPath = xpathsToUrls.get(packageType);
+		logger.debug("xPathPath: "+xPathPath);
 		updatePathsInFile(pkg, repName, metadataFilePath, xPathPath, replacements);			
 		
 		// special treatment for EAD packages with METS files
@@ -223,7 +224,6 @@ public class UpdateMetadataService {
 			String xPathPath,
 			Map<String,String> replacements
 	) {
-		
 		try {
 
 			SAXBuilder builder = new SAXBuilder(false);

@@ -22,17 +22,22 @@ package de.uzk.hki.da.cb;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
 import org.apache.commons.io.FileUtils;
+import org.jdom.Document;
+import org.jdom.JDOMException;
 import org.jdom.Namespace;
+import org.jdom.input.SAXBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.ActionCommunicatorService;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.UpdateMetadataService;
@@ -53,14 +58,17 @@ public class UpdateMetadataActionEADTests {
 		Object obj = TESTHelper.setUpObject("42",basePath);
 
 		FileUtils.copyFileToDirectory(new File(basePath+"src/mets_2_99.xml"), new File(basePath+"TEST/42/data/a/"));
-		FileUtils.copyFileToDirectory(new File(basePath+"src/mets_2_998.xml"), new File(basePath+"TEST/42/data/a/"));
 		FileUtils.copyFileToDirectory(new File(basePath+"src/vda3.XML"), new File(basePath+"TEST/42/data/a/"));
 		DAFile f1 = new DAFile(obj.getLatestPackage(),"a","mets_2_99.xml");
 		obj.getLatestPackage().getFiles().add(f1);
-		DAFile f2 = new DAFile(obj.getLatestPackage(),"a","mets_2_998.xml");
-		obj.getLatestPackage().getFiles().add(f2);
 		DAFile f3 = new DAFile(obj.getLatestPackage(),"a","vda3.XML");
 		obj.getLatestPackage().getFiles().add(f3);
+		
+		Event e1 = new Event();
+		e1.setSource_file(new DAFile(obj.getLatestPackage(),"a","ALVR_Nr_4547_Aufn_067.tif"));
+		e1.setTarget_file(new DAFile(obj.getLatestPackage(),"b","renamed067.tif"));
+		e1.setType("CONVERT");
+		obj.getLatestPackage().getEvents().add(e1);
 		
 		
 		
@@ -69,18 +77,15 @@ public class UpdateMetadataActionEADTests {
 		acs.addDataObject(1, "package_type", "EAD");
 		acs.addDataObject(1, "metadata_file", "vda3.XML");
 		
-		
-		
 		UpdateMetadataService service = new UpdateMetadataService();
 		HashMap<String,String> xpaths = new HashMap<String,String>();
 		xpaths.put("METS", "//mets:FLocat/@xlink:href");
+		xpaths.put("EAD", "//daoloc/@href");
 		service.setXpathsToUrls(xpaths);
-		
 		HashMap<String, String> nsMap = new HashMap<String,String>();
 		nsMap.put("mets", METS_NS.getURI());
 		nsMap.put("xlink", XLINK_NS.getURI());
 		service.setNamespaces(nsMap);
-		
 		action.setUpdateMetadataService(service);
 		
 		
@@ -92,19 +97,28 @@ public class UpdateMetadataActionEADTests {
 	@After 
 	public void tearDown(){
 		new File(basePath+"TEST/42/data/a/mets_2_99.xml").delete();
-		new File(basePath+"TEST/42/data/a/mets_2_998.xml").delete();
 		new File(basePath+"TEST/42/data/a/vda3.XML").delete();
 		new File(basePath+"TEST/42/data/b/mets_2_99.xml").delete();
-		new File(basePath+"TEST/42/data/b/mets_2_998.xml").delete();
 		new File(basePath+"TEST/42/data/b/vda3.XML").delete();
 	}
 	
 	
 	@Test
-	public void test() throws IOException {
+	public void test() throws IOException, JDOMException {
 		
+		action.implementation();
 		
-//		action.implementation();
+		SAXBuilder builder = new SAXBuilder();
+		Document doc = builder.build(new FileReader(new File(basePath + "TEST/42/data/b/mets_2_99.xml")));
+
+		String url = doc.getRootElement()
+				.getChild("fileSec", METS_NS)
+				.getChild("fileGrp", METS_NS)
+				.getChild("file", METS_NS)
+				.getChild("FLocat", METS_NS)
+				.getAttributeValue("href", XLINK_NS);
+		
+		assertEquals("renamed067.tif", url);
 	}
 
 }
