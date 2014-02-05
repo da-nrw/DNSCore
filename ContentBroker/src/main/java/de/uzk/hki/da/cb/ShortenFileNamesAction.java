@@ -95,6 +95,7 @@ public class ShortenFileNamesAction extends AbstractAction {
 	void rollback() throws Exception {
 		
 		for (Event e:object.getLatestPackage().getEvents()) {
+			if (!"CONVERT".equals(e.getType())) continue;
 			
 			DAFile daFile = e.getTarget_file();
 			File file = daFile.toRegularFile();
@@ -108,7 +109,8 @@ public class ShortenFileNamesAction extends AbstractAction {
 			FileUtils.moveFile(file, oldFile);
 			
 		}
-
+		
+		logger.info("@Admin: You can safely roll back this job to status "+this.getStartStatus()+" now.");
 	}
 	
 	private void deleteEmptyDirsRecursively(String path) {
