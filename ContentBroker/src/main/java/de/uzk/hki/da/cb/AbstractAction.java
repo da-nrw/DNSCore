@@ -173,26 +173,28 @@ public abstract class AbstractAction implements Runnable {
 			
 		} catch (UserException e) {
 			logger.error(this.getClass().getName()+": UserException in action: ",e);
-			handleError();
+			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "4";
+			handleError(errorStatus);
 			createUserReport(e);
 			if (e.checkForAdminReport())
 				createAdminReport(e);
-		} catch (org.hibernate.exception.GenericJDBCException sql){
+		} catch (org.hibernate.exception.GenericJDBCException sql) {
 			logger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sql);
-			handleError();
+			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "1";
+			handleError(errorStatus);
 			createAdminReport(sql);
 		} catch (Exception e) {
 			logger.error(this.getClass().getName()+": Exception in action: ",e);
-			handleError();			
+			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "1";
+			handleError(errorStatus);
 			createAdminReport(e);
-		} finally {
-			
+		} finally {			
 			unsetObjectLogging();
 			actionMap.deregisterAction(this);
 		}
 	}
 	
-	private void handleError() {
+	private void handleError(String errorStatus) {
 		
 		try {
 			logger.info("Stubbing rollback of "+this.getClass().getName());
@@ -200,9 +202,9 @@ public abstract class AbstractAction implements Runnable {
 		} catch (Exception e) {
 			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO ROLLBACK ACTION. DATABASE MIGHT BE INCONSISTENT NOW.");
 			logger.error(this.getClass().getName()+": couldn't get rollbacked to previous state. Exception in action.rollback(): ",e);
+			errorStatus = errorStatus.substring(0, errorStatus.length() - 1) + "3";
 		}
 
-		String errorStatus = getStartStatus().substring(0,getStartStatus().length()-1) + "1";
 		job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
 		job.setStatus(errorStatus);
 		
@@ -217,7 +219,7 @@ public abstract class AbstractAction implements Runnable {
 			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO COMMIT CHANGES AFTER ROLLBACK. DATABASE MIGHT BE INCONSISTENT NOW.",e);
 		}
 		
-		logger.info("Database transaction successful. Job set to error state "+errorStatus);
+		logger.info("Database transaction successful. Job set to error state " + errorStatus);
 		
 	}
 	
