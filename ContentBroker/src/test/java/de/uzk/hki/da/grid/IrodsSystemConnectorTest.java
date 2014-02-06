@@ -273,6 +273,7 @@ public class IrodsSystemConnectorTest {
 	/**
 	 * Builds the tar.
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void buildTar() {
 		irodsSystemConnector.createCollection("/da-nrw/home/rods/" + testColl + "/testColl2");
