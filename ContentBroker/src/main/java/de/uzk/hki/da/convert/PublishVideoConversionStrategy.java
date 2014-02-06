@@ -87,7 +87,8 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 		if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdPUBLIC,getRestrictionParametersForAudience("PUBLIC")))){
 			throw new RuntimeException("command not succeeded");
 		}
-		DAFile pubFile = new DAFile(pkg,ci.getTarget_folder(),object.getDataPath()+"dip/public/"+ci.getTarget_folder()+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4");
+		DAFile pubFile = new DAFile(pkg, "dip/public", Utilities.slashize(ci.getTarget_folder()) + 
+				FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp4");
 		
 		Event e = new Event();
 		e.setType("CONVERT");
@@ -109,7 +110,8 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 		if (!cliConnector.execute(cmd))
 			throw new RuntimeException("command not succeeded:" + Arrays.toString(cmd));
 		
-		DAFile instFile = new DAFile(pkg,ci.getTarget_folder(),object.getDataPath()+"dip/institution/"+ci.getTarget_folder()+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4");
+		DAFile instFile = new DAFile(pkg, "dip/institution", Utilities.slashize(ci.getTarget_folder()) + 
+				FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp4");
 		Event e2 = new Event();
 		e2.setType("CONVERT");
 		e2.setDetail(Utilities.createString(cmdINSTITUTION));
