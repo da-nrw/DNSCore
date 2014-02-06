@@ -42,6 +42,7 @@
 		<value>IngestRegisterURNAction</value>
 		<value>IngestScanAction</value>
 		<value>IngestUnpackAction</value>
+		<value>PostRetrievalAction</value>
 		<value>RetrievalObjectToWorkAreaAction</value>
 		<value>RetrievalAction</value>
 		<value>AuditAction</value>

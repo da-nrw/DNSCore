@@ -24,6 +24,7 @@
     
     <util:list id="actionOrdering">
 		<value>RestartIngestWorkflowAction</value>
+		<value>PostRetrievalAction</value>
 		<value>RetrievalAction</value>
 		<value>RetrievalObjectToWorkAreaAction</value>
 		<value>IngestArchiveReplicationCheckAction</value>
