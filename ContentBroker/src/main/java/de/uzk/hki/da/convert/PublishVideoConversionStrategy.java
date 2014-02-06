@@ -37,13 +37,16 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.Utilities;
 
 
 /**
  * The Class PublishVideoConversionStrategy
- * @author Thomas Kleinke?
+ * @author Thomas Kleinke
+ * @author Christian Weitz
+ * @author Daniel M. de Oliveira
  */
 public class PublishVideoConversionStrategy extends PublishConversionStrategyBase {
 
@@ -113,7 +116,6 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 		e2.setSource_file(ci.getSource_file());
 		e2.setTarget_file(instFile);
 		
-		
 		results.add(e);
 		results.add(e2);
 		
@@ -127,14 +129,21 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 	 * @return the restriction parameters for audience
 	 */
 	private String[] getRestrictionParametersForAudience(String audience) {
-		if (getPublicationRightForAudience(audience)==null) return new String[]{};
 		
+		if (getPublicationRightForAudience(audience) == null)
+			return new String[]{};
 		
-		String height = getPublicationRightForAudience(audience).getVideoRestriction().getHeight();
-		logger.debug("height restriction for audience "+audience+": "+height);
+		VideoRestriction videoRestriction = getPublicationRightForAudience(audience).getVideoRestriction();
+		if (videoRestriction == null)
+			return new String[]{};
 		
-		String duration = getPublicationRightForAudience(audience).getVideoRestriction().getDuration().toString();
-		logger.debug("duration restriction for audience "+audience+": "+duration);		
+		String height = videoRestriction.getHeight();
+		logger.debug("height restriction for audience " + audience + ": " + height);
+				
+		String duration = "";
+		if (videoRestriction.getDuration() != null)
+			duration = videoRestriction.getDuration().toString();
+		logger.debug("duration restriction for audience " + audience + ": " + duration);		
 		
 		if (height != null && !height.equals("") &&
 			duration != null && !duration.equals(""))
