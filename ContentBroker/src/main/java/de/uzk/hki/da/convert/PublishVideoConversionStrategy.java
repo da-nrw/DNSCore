@@ -44,6 +44,7 @@ import de.uzk.hki.da.utils.Utilities;
 
 /**
  * The Class PublishVideoConversionStrategy
+ * 
  * @author Thomas Kleinke
  * @author Christian Weitz
  * @author Daniel M. de Oliveira
@@ -74,7 +75,6 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 		new File(object.getDataPath()+"dip/public/"+ci.getTarget_folder()).mkdirs();
 		new File(object.getDataPath()+"dip/institution/"+ci.getTarget_folder()).mkdirs();
 		
-		// convert public datastreams
 		String cmdPUBLIC[] = new String[]{
 				"HandBrakeCLI",
 				"-i",
@@ -84,8 +84,11 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 				"-e","x264","-f","mp4","-E","faac"
 		};
 		
-		if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdPUBLIC,getRestrictionParametersForAudience("PUBLIC")))){
-			throw new RuntimeException("command not succeeded");
+		cmdPUBLIC = (String[]) ArrayUtils.addAll(cmdPUBLIC, getRestrictionParametersForAudience("PUBLIC"));
+		cmdPUBLIC = (String[]) ArrayUtils.addAll(cmdPUBLIC, new String[]{">", "/dev/null"});
+		
+		if (!cliConnector.execute(cmdPUBLIC)){
+			throw new RuntimeException("command not succeeded: " + Arrays.toString(cmdPUBLIC));
 		}
 		DAFile pubFile = new DAFile(pkg, "dip/public", Utilities.slashize(ci.getTarget_folder()) + 
 				FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp4");
@@ -106,12 +109,15 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 				"-e","x264","-f","mp4","-E","faac"
 		};
 
-		String[] cmd = (String[]) ArrayUtils.addAll(cmdINSTITUTION,getRestrictionParametersForAudience("INSTITUTION"));
-		if (!cliConnector.execute(cmd))
-			throw new RuntimeException("command not succeeded:" + Arrays.toString(cmd));
+		cmdINSTITUTION = (String[]) ArrayUtils.addAll(cmdINSTITUTION, getRestrictionParametersForAudience("INSTITUTION"));
+		cmdINSTITUTION = (String[]) ArrayUtils.addAll(cmdINSTITUTION, new String[]{">", "/dev/null"});
+		
+		if (!cliConnector.execute(cmdINSTITUTION))
+			throw new RuntimeException("command not succeeded: " + Arrays.toString(cmdINSTITUTION));
 		
 		DAFile instFile = new DAFile(pkg, "dip/institution", Utilities.slashize(ci.getTarget_folder()) + 
 				FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp4");
+		
 		Event e2 = new Event();
 		e2.setType("CONVERT");
 		e2.setDetail(Utilities.createString(cmdINSTITUTION));
