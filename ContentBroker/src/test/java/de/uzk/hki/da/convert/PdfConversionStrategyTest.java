@@ -73,6 +73,7 @@ public class PdfConversionStrategyTest {
 	 *
 	 * @throws FileNotFoundException the file not found exception
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void testPdfConversion () throws FileNotFoundException {
 		ConversionInstruction ci = new ConversionInstruction();
