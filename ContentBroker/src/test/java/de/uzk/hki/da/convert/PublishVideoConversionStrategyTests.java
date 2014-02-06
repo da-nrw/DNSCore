@@ -98,7 +98,7 @@ public class PublishVideoConversionStrategyTests {
 				"-o",
 				"\"" + basePath + "TEST/1/data/dip/public/target/filename.mp4\"",
 				"-e","x264","-f","mp4","-E","faac",
-				"-l","360","--stop-at","duration:180"
+				"-l","360","--stop-at","duration:180", ">", "/dev/null"
 		};
 		when(cli.execute(cmdPUBLIC)).thenReturn(true);
 		
@@ -108,7 +108,7 @@ public class PublishVideoConversionStrategyTests {
 				"\"" + new File(basePath + "TEST/1/data/a/filename.avi").getAbsolutePath() + "\"",
 				"-o",
 				"\"" + basePath + "TEST/1/data/dip/institution/target/filename.mp4\"",
-				"-e","x264","-f","mp4","-E","faac"
+				"-e","x264","-f","mp4","-E","faac", ">", "/dev/null"
 		};
 		when(cli.execute(cmdINSTITUTION)).thenReturn(true);
 		
