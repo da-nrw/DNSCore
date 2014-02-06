@@ -60,7 +60,7 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 				
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
-		waitForJobToBeInStatus(originalName,"111",2000);
+		waitForJobToBeInStatus(originalName,"114",2000);
 		object = fetchObjectFromDB(originalName);
 		System.out.println("objectIdentifier: "+object.getIdentifier());
 		
@@ -76,7 +76,7 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 				
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
-		waitForJobToBeInStatus(originalName,"111",2000);
+		waitForJobToBeInStatus(originalName,"114",2000);
 		object = fetchObjectFromDB(originalName);
 		System.out.println("objectIdentifier: "+object.getIdentifier());
 		
@@ -94,7 +94,7 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 				
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
-		waitForJobToBeInStatus(originalName,"111",2000);
+		waitForJobToBeInStatus(originalName,"114",2000);
 		object = fetchObjectFromDB(originalName);
 		System.out.println("objectIdentifier: "+object.getIdentifier());
 		
@@ -112,7 +112,7 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 				
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
-		waitForJobToBeInStatus(originalName,"111",2000);
+		waitForJobToBeInStatus(originalName,"114",2000);
 		object = fetchObjectFromDB(originalName);
 		System.out.println("objectIdentifier: "+object.getIdentifier());
 		
