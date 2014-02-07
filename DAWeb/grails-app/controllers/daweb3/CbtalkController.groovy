@@ -39,13 +39,17 @@ class CbtalkController {
 
 	def index() { 	
 		if (session.contractor.admin==1) {
-		def messages = cbtalkService.getMessages()
-		def myList = cbtalkService.getActions()
-		def errors = cberrorService.getMessages()
-		[messages: messages,
-			myList: myList,
-			errors: errors]
 		} else render(status: 403, text: 'forbidden')
+	}
+	def messageSnippet() {
+		if (session.contractor.admin==1) {
+			
+		def messages = cbtalkService.getMessages()
+		def errors = cberrorService.getMessages()
+		
+		[messages: messages,
+			errors: errors]
+		}
 	}
 	
 	def save() {
@@ -68,14 +72,16 @@ class CbtalkController {
 			
 			message = "GRACEFUL_SHUTDOWN";
 		}
-		
-		println "MESSAGE $message"
+		if (params.showVersion){	
+			message = "SHOW_VERSION";
+		}
+		log.debug(message)
 		try {
 			
 	
 		jmsService.send(queue:'CB.SYSTEM', message)
 		} catch (Exception e) {
-			flash.message= "Fehler in der Sendekommunikation mit dem ActiveMQ Broker!"
+			flash.message= "Fehler in der Sendekommunikation mit dem ActiveMQ Broker! " + e.getCause()
 			log.error(e);
 		}
 		} else render(status: 403, text: 'forbidden')

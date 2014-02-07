@@ -4,6 +4,27 @@
     <meta name="layout" content="main" />
     <title>Administrative Funktionen</title>         
   </head>
+  <r:require modules="periodicalupdater, jqueryui"/>
+		<r:script>
+			$(function() {
+				$("#legend").accordion({ collapsible: true, active: false, autoHeight: false });
+			});
+			$(function() {
+				$("#filter").accordion({ collapsible: true, active: false });
+			});
+			
+			$.PeriodicalUpdater("./messageSnippet",
+				{
+					method: "get",
+					minTimeout: 1000,
+					maxTimeout: 1000,
+					success: function(data) {
+						console.log("success - sort: "+sort+", order: "+order);
+						$("#entry-list").html(data);
+					}
+				}
+			);
+		</r:script>
   <body>
     <div class="body">
       <h1>CbTalk</h1>
@@ -14,17 +35,15 @@
    <g:submitButton name="stopFactory" value="stop Factory" />
    <g:submitButton name="startFactory" value="start Factory" /> 
    <g:submitButton name="showActions" value="show Actions" /> 
-   <g:submitButton name="gracefulShutdown" value="ContentBroker graceful shutdown" />   
+   <g:submitButton name="gracefulShutdown" value="ContentBroker graceful shutdown" />  
+   <g:submitButton name="showVersion" value="Show Version of ContentBroker" />    
 </g:form>
-      <g:each var="message" in="${messages}">
-      	 <p>${message}</p>
-      </g:each> 
-         Momentan laufende Action des CB:
-      <g:each var="ActionDescription" in="${myList}">
-      	 <p>${ActionDescription}</p>
-      </g:each> 
-      <p>
-Errors:      
+
+			<!-- This div is updated through the periodical updater -->
+			<div class="list" id="entry-list">
+				<g:include action="messageSnippet" />
+			</div>
+			 Errors:      
 <g:each var="Error" in="${errors}">
       	 <p>${Error}</p>
       </g:each> 

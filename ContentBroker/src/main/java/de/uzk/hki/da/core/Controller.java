@@ -19,6 +19,8 @@
 
 package de.uzk.hki.da.core;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -121,6 +123,21 @@ public class Controller implements Runnable {
 					logger.debug("STARTING FACTORY");
 					messageSend = "...STARTING FACTORY done";
 					actionFactory.pause(false);
+				} else if (command.indexOf("SHOW_VERSION")>=0) {
+					logger.debug("SHOW VERSION");
+					FileReader fr = null;
+						int c;
+						StringBuffer buff = new StringBuffer();
+				        try {
+				        	fr = new FileReader("./README.txt");
+				            while ((c = fr.read()) != -1) {
+				                buff.append((char) c);
+				            }
+				            fr.close();
+				        } catch (IOException e) {
+				            logger.error("Readme not found");
+				        } 
+				        messageSend = buff.toString();
 				} else if (command.indexOf("SHOW_ACTIONS")>=0){ 
 					list = actionRegistry.getCurrentActionDescriptions();
 					logger.debug("SHOW_ACTIONS");
