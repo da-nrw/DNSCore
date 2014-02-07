@@ -2,6 +2,8 @@ package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,8 +42,11 @@ public class Testutf8 {
 	@Test
 	public void test() {
 		p.scanRepRecursively("a"); 
-		for (DAFile f:p.getFiles())
+		for (DAFile f:p.getFiles()) {
 			assertTrue(f.toRegularFile().exists());
-	}
+			File file = new File(basedir +"/TEST/123/data/a/" + f.toRegularFile().getName());
+			assertTrue(file.exists());
+		} 
+		}
 
 }
