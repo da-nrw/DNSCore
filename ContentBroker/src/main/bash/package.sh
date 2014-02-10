@@ -35,7 +35,7 @@ fi
 
 
 mkdir $CBTAR_SRC/conf
-cp -r src/main/fido $CBTAR_SRC
+cp -r ../3rdParty/fido $CBTAR_SRC
 cp -r ../3rdParty/jhove $CBTAR_SRC
 cp src/main/sh/jhove $CBTAR_SRC/jhove
 cp src/main/conf/jhove.conf $CBTAR_SRC/jhove/conf

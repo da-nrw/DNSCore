@@ -42,7 +42,7 @@ public class FidoCLITest {
 		FileUtils.copyFileToDirectory(new File("src/main/bash/configure.sh"), new File("./"));
 		FileUtils.copyFileToDirectory(new File("src/main/bash/fido.sh"), new File("./"));
 		FileUtils.copyFile(new File("src/main/conf/config.properties.dev"), new File("./conf/config.properties"));
-		FileUtils.copyDirectoryToDirectory(new File("src/main/fido"), new File("./"));
+		FileUtils.copyDirectoryToDirectory(new File("../3rdParty/fido"), new File("./"));
 		new File("fido.sh").setExecutable(true);
 		new File("configure.sh").setExecutable(true);
 		new SimplifiedCommandLineConnector().execute(new String[]{"./configure.sh"});
