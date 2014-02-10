@@ -148,6 +148,8 @@ public class ConvertAction extends AbstractAction {
 				object.getLatestPackage().getFiles().remove(e.getTarget_file());
 			}
 		}
+		
+		logger.info("@Admin: You can safely roll back this job to status "+this.getStartStatus()+" now.");
 	}
 
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
