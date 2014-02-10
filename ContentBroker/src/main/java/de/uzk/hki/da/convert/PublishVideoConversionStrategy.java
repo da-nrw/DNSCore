@@ -101,7 +101,7 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 		e.setDate(new Date());
 		
 		String cmdINSTITUTION[] = new String[]{
-				"HandBrakeCLI",
+				"./handBrake.sh",
 				"-i",
 				"\"" + ci.getSource_file().toRegularFile().getAbsolutePath() + "\"",
 				"-o",
