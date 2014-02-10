@@ -58,6 +58,8 @@ mkdir $CBTAR_SRC/log
 touch $CBTAR_SRC/log/contentbroker.log
 echo -e "ContentBroker Version $VERSION\nWritten by\n Daniel M. de Oliveira\n Jens Peters\n Sebastian Cuy\n Thomas Kleinke" > $CBTAR_SRC/README.txt
 
+cp src/main/bash/install.sh $INSTALLER
+cp src/main/bash/configure.sh $INSTALLER
 cp src/main/xml/beans.xml.node $INSTALLER/
 cp src/main/xml/beans.xml.node.test $INSTALLER/
 cp src/main/xml/beans.xml.pres $INSTALLER/

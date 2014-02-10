@@ -39,7 +39,7 @@ public class FidoCLITest {
 
 	@Before
 	public void setUp() throws IOException{
-		FileUtils.copyFileToDirectory(new File("../installation/configure.sh"), new File("./"));
+		FileUtils.copyFileToDirectory(new File("src/main/bash/configure.sh"), new File("./"));
 		FileUtils.copyFileToDirectory(new File("src/main/bash/fido.sh"), new File("./"));
 		FileUtils.copyFile(new File("src/main/conf/config.properties.dev"), new File("./conf/config.properties"));
 		FileUtils.copyDirectoryToDirectory(new File("src/main/fido"), new File("./"));
