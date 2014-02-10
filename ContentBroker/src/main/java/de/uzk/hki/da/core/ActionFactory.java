@@ -22,6 +22,7 @@ package de.uzk.hki.da.core;
 
 import java.util.List;
 
+import org.apache.activemq.ActiveMQConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -72,8 +73,10 @@ public class ActionFactory implements ApplicationContextAware {
 	
 	/** The on halt. */
 	private boolean onHalt = false;
-
 	
+	/** *The Active MQ Connection factory */
+	private ActiveMQConnectionFactory mqConnectionFactory;
+
 	
 	/**
 	 * Following the defined priorities (context) of
@@ -127,7 +130,7 @@ public class ActionFactory implements ApplicationContextAware {
 			action.setDao(dao);
 			action.setActionCommunicatorService(actionCommunicatorService);
 			action.setUserExceptionManager(userExceptionManager);
-			
+			action.setMqConnectionFactory(mqConnectionFactory);
 			action.setIrodsZonePath(irodsZonePath);
 			action.setNode(localNode);
 			jobCandidate.getObject().setTransientNodeRef(localNode);
@@ -278,6 +281,20 @@ public class ActionFactory implements ApplicationContextAware {
 	 */
 	public void setLocalNode(Node localNode) {
 		this.localNode = localNode;
+	}
+
+	/**
+	 * @return the mqConnectionFactory
+	 */
+	public ActiveMQConnectionFactory getMqConnectionFactory() {
+		return mqConnectionFactory;
+	}
+
+	/**
+	 * @param mqConnectionFactory the mqConnectionFactory to set
+	 */
+	public void setMqConnectionFactory(ActiveMQConnectionFactory mqConnectionFactory) {
+		this.mqConnectionFactory = mqConnectionFactory;
 	}
 	
 }

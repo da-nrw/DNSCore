@@ -47,7 +47,7 @@ public class ControllerTest {
 		ActionRegistry registry = new ActionRegistry();
 		
 		Controller controller = new Controller("localhost",
-				4455, factory, registry,null,null);
+				4455, factory,new ActionInformation(), null,null);
 		controller.run();
 	}
 }

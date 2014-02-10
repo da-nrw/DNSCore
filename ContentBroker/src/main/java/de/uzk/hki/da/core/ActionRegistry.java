@@ -91,10 +91,13 @@ public class ActionRegistry {
 		for (AbstractAction a:runningActions){
 			
 			int packageId=-1;
-			if (a.getJob().getObject().getLatestPackage()!=null) 
+			if (a.getJob().getObject().getLatestPackage()!=null)  {
 				packageId=a.getJob().getObject().getLatestPackage().getId();
-			result.add(new ActionDescription(
-					a.getName(), a.getJob().getId(), packageId));
+			}
+			ActionDescription ad = new ActionDescription(a.getName(), a.getJob().getId(), packageId);
+			ad.setDescription(a.getDescription());
+			result.add(ad);
+			
 		}
 		return result;
 	}

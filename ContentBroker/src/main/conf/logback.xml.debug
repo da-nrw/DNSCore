@@ -78,8 +78,6 @@
 		</sift>
 	</appender>
         
-
-
 		<logger name="de.uzk.hki.da.core" additivity="false" level="DEBUG">
                 <appender-ref ref="FILE" />
         </logger>

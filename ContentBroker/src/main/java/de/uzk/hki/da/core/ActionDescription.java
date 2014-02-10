@@ -37,6 +37,12 @@ public class ActionDescription implements Serializable{
 	/** The action type. */
 	private String actionType;
 	
+	private String startStatus;
+	
+	private String endStatus;
+	
+	private String description;
+	
 	/**
 	 * Instantiates a new action description.
 	 *
@@ -51,6 +57,13 @@ public class ActionDescription implements Serializable{
 		this.actionType=actionType;
 		this.jobId=jobId;
 		this.packageId=packageId;
+	}
+	
+	/**
+	 * Instantiates a new action description.
+	 *
+	 */
+	public ActionDescription() {
 	}
 	
 	/* (non-Javadoc)
@@ -113,6 +126,48 @@ public class ActionDescription implements Serializable{
 	 */
 	public void setActionType(String actionType) {
 		this.actionType = actionType;
+	}
+
+	/**
+	 * @return the startStatus
+	 */
+	public String getStartStatus() {
+		return startStatus;
+	}
+
+	/**
+	 * @param startStatus the startStatus to set
+	 */
+	public void setStartStatus(String startStatus) {
+		this.startStatus = startStatus;
+	}
+
+	/**
+	 * @return the endStatus
+	 */
+	public String getEndStatus() {
+		return endStatus;
+	}
+
+	/**
+	 * @param endStatus the endStatus to set
+	 */
+	public void setEndStatus(String endStatus) {
+		this.endStatus = endStatus;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	

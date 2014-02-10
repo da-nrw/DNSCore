@@ -1,6 +1,7 @@
 package daweb3
 
 import java.security.MessageDigest;
+import java.util.List;
 
 import de.uzk.hki.da.core.ActionDescription
 
@@ -9,18 +10,14 @@ class CberrorService {
 	
 static exposes = ['jms'];
 List<String> messages = new ArrayList<String>();
+
 @grails.plugin.jms.Queue(name='CB.ERROR')
-public createMessage(msg)	{
-	println "GOT ERROR MESSAGE $msg"
-	messages.add(msg);
-	if (msg instanceof TextMessage) {
-		TextMessage textMessage = (TextMessage) msg;
-		 textMessage = (TextMessage) msg;
-		 
-	} 
+   def createMessage(messageObject) {
+    println "GOT MESSAGE: $messageObject"
+ 	messages.add(new Date().toLocaleString() + " " + messageObject)
 }
 public List<String> getMessages() {
-	return messages
+	return messages.reverse()
 }
 
 }

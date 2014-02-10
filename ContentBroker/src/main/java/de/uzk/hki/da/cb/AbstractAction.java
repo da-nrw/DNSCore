@@ -25,6 +25,16 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
 
+import javax.jms.Connection;
+
+import org.apache.activemq.ActiveMQConnectionFactory;
+
+import javax.jms.DeliveryMode;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
+import javax.jms.TextMessage;
 import javax.mail.MessagingException;
 
 import org.hibernate.Session;
@@ -59,6 +69,7 @@ import de.uzk.hki.da.utils.Utilities;
  * <li>Constructors which should only be seen by tests should also have default (package) visibility.
  * </ol>
  * @author Daniel M. de Oliveira
+ * & the DA-NRW team
  */
 public abstract class AbstractAction implements Runnable {	
 	
@@ -75,10 +86,13 @@ public abstract class AbstractAction implements Runnable {
 	protected Job job;
 	protected Object object;
 	protected String endStatus;
+	protected String description;
 	protected int concurrentJobs = 3;
 	protected ActionCommunicatorService actionCommunicatorService;
 	private UserExceptionManager userExceptionManager;
-
+	private ActiveMQConnectionFactory mqConnectionFactory;
+	
+	
 	AbstractAction(){}
 	
 	Logger logger = LoggerFactory.getLogger( this.getClass().getName() );
@@ -178,19 +192,46 @@ public abstract class AbstractAction implements Runnable {
 			createUserReport(e);
 			if (e.checkForAdminReport())
 				createAdminReport(e);
+			sendJMSException(e);
 		} catch (org.hibernate.exception.GenericJDBCException sql) {
 			logger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sql);
 			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "1";
 			handleError(errorStatus);
 			createAdminReport(sql);
+			sendJMSException(sql);
 		} catch (Exception e) {
 			logger.error(this.getClass().getName()+": Exception in action: ",e);
 			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "1";
 			handleError(errorStatus);
 			createAdminReport(e);
+			sendJMSException(e);
 		} finally {			
 			unsetObjectLogging();
 			actionMap.deregisterAction(this);
+		}
+	}
+	/**
+	 * Send Exception to JMS Broker
+	 * @author Jens Peters
+	 * @param e
+	 */
+	private void sendJMSException(Exception e) {
+		try {
+			Connection connection = mqConnectionFactory.createConnection();
+			connection.start();
+			javax.jms.Session session = connection.createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
+			Destination toClient = session.createQueue("CB.ERROR");
+			MessageProducer producer;
+			producer = session.createProducer(toClient);
+			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);         
+			String messageSend = e.getMessage();
+			TextMessage message = session.createTextMessage(messageSend);
+            producer.send(message);
+            producer.close();
+            session.close();
+            connection.close();
+		}catch (JMSException e1) {
+			logger.error("Error while connecting to ActiveMQ Broker " + e1.getCause());
 		}
 	}
 	
@@ -239,7 +280,7 @@ public abstract class AbstractAction implements Runnable {
 	    e.printStackTrace(new PrintWriter(s));
 	    msg += s.toString();
 		
-		if (email!=null) {
+		if (email!=null && !email.equals("")) {
 		try {
 			Mail.sendAMail(email, subject, msg);
 		} catch (MessagingException ex) {
@@ -418,6 +459,18 @@ public abstract class AbstractAction implements Runnable {
 	public void setUserExceptionManager(UserExceptionManager userExceptionManager) {
 		this.userExceptionManager = userExceptionManager;
 	}
-	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public ActiveMQConnectionFactory getMqConnectionFactory() {
+		return mqConnectionFactory;
+	}
+	public void setMqConnectionFactory(ActiveMQConnectionFactory mqConnectionFactory) {
+		this.mqConnectionFactory = mqConnectionFactory;
+	}
+
 	
 }

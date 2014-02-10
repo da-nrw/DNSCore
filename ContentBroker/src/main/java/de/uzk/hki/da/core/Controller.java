@@ -53,20 +53,20 @@ public class Controller implements Runnable {
 
 	private ActionFactory actionFactory;
 	private ActionRegistry actionRegistry;
+	private ActionInformation actionInformation;
 
 	private int socketNumber;
 	private String serverName;
 
 	private XBeanBrokerService mqBroker;
 	private ActiveMQConnectionFactory mqConnectionFactory;
-	
- 	public Controller(String serverName, int socketNumber,
-			ActionFactory actionFactory, ActionRegistry actionRegistry, XBeanBrokerService mqBroker, ActiveMQConnectionFactory mqConnectionFactory) {
-
+	public Controller(String serverName, int socketNumber,
+			ActionFactory actionFactory, ActionInformation actionInformation, XBeanBrokerService mqBroker, ActiveMQConnectionFactory mqConnectionFactory) {
+		this.actionInformation = actionInformation;
 		this.serverName = serverName;
-		this.actionRegistry = actionRegistry;
 		this.socketNumber = socketNumber;
 		this.actionFactory = actionFactory;
+		this.actionRegistry = actionFactory.getActionRegistry();
 		this.mqBroker = mqBroker;
 		this.mqConnectionFactory = mqConnectionFactory;
 	}
@@ -123,6 +123,14 @@ public class Controller implements Runnable {
 					logger.debug("STARTING FACTORY");
 					messageSend = "...STARTING FACTORY done";
 					actionFactory.pause(false);
+				} else if (command.startsWith("SHOW_DESCRIPTION")) {
+					String []arr = command.split(" ");
+					if (arr.length==2) {
+						logger.debug("SHOW_DESCRIPTION OF STATE: "+arr[1]);
+						ActionDescription ad = actionInformation.findStateInActionList(arr[1]);
+						if (ad!=null) messageSend = ad.getDescription();
+						else messageSend = "Action is unknown to CB at " + serverName;
+					} else messageSend = "Command not understood!";
 				} else if (command.indexOf("SHOW_VERSION")>=0) {
 					logger.debug("SHOW VERSION");
 					FileReader fr = null;

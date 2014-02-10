@@ -65,6 +65,9 @@ public class ContentBroker {
 	/** The action factory. */
 	private ActionFactory actionFactory;
 	
+	/** The action factory. */
+	private ActionInformation actionInformation;
+	
 	/** The controller. */
 	private Controller controller;
 	
@@ -188,8 +191,7 @@ public class ContentBroker {
 
 		controller = new Controller("localhost",
 				getServerSocketNumber(),
-				actionFactory,
-				actionFactory.getActionRegistry(), mqBroker, mqConnectionFactory);
+				actionFactory, actionInformation, mqBroker, mqConnectionFactory);
 		(new Thread(controller)).start();
 	}
 	
@@ -279,6 +281,22 @@ public class ContentBroker {
 
 	public void setMqConnectionFactory(ActiveMQConnectionFactory mqConnectionFactory) {
 		this.mqConnectionFactory = mqConnectionFactory;
+	}
+
+
+	/**
+	 * @return the actionInformation
+	 */
+	public ActionInformation getActionInformation() {
+		return actionInformation;
+	}
+
+
+	/**
+	 * @param actionInformation the actionInformation to set
+	 */
+	public void setActionInformation(ActionInformation actionInformation) {
+		this.actionInformation = actionInformation;
 	}
 
 	

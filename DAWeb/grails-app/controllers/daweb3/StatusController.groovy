@@ -114,7 +114,7 @@ class StatusController {
 			
 		}  
 		
-		// we give precedence for queue Entries ober searching for an object
+		// we give precedence for queue Entries instead judt searching for an object
 		if (hasAQueueEntry) {
 			render results as JSON
 			return
