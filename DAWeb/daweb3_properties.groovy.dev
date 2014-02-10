@@ -22,7 +22,6 @@ environments {
 			pooled = true
 			driverClassName = "org.hsqldb.jdbcDriver"
 			dialect = org.hibernate.dialect.HSQLDialect
-			dbCreate = "validate"
 			url = "jdbc:hsqldb:hsql://localhost/xdb"
 			username = "sa"
 			password = ""
@@ -32,27 +31,8 @@ environments {
 
 
 test {
-		cb.homepath = "/data/danrw/ContentBroker/"
-		daweb3.logo = "DANRW-Logo_small.png"
-		irods.server = "da-nrw-vm3.hki.uni-koeln.de"
-		irods.default_resc = "02-da-nrw-vm2.hki.uni-koeln.de"
-		irods.zone = "da-nrw"
-		localNode.userAreaRootPath = "/data/danrw/www/default/webdav"
-		localNode.ingestAreaRootPath = "/data/danrw/ingest"
-		transferNode.downloadLinkPrefix = "https://da-nrw-vm2.hki.uni-koeln.de/webdav"
-		fedora.urlPrefix = "http://da-nrw-vm2.hki.uni-koeln.de:8080/fedora/objects/"
-		cb.presServer= "da-nrw-vm2.hki.uni-koeln.de"
-		
+			
 		dataSource {
-			pooled = true
-			driverClassName = "org.postgresql.Driver"
-			dialect = org.hibernate.dialect.PostgreSQLDialect
-			dbCreate = "validate"
-			url = "jdbc:postgresql://da-nrw-vm3.hki.uni-koeln.de:5435/contentbroker?autoReconnect=true"
-			username = "irods"
-			password = "98Q4P4ZgUWCey8PHPYxM3g=="
-			passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec"
-			characterEncoding = "UTF-8"
 		}
 }
 
