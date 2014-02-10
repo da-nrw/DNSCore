@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/util
+           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+           http://www.springframework.org/schema/task
+           http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+          
+	<!--  BEGIN UseCase Retrieval BEGIN -->
+	<bean id="RetrievalObjectToWorkAreaAction" class="de.uzk.hki.da.cb.ObjectToWorkAreaAction"
+		scope="prototype">
+		<property name="startStatus" value="900" />
+		<property name="endStatus" value="910" />
+		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
+		<property name="gridFacade" ref="${grid.implementation}"/>
+		<property name="name" value="RetrievalObjectToWorkAreaAction" />
+		<property name="ingestGate" ref="ingestGate" />
+	</bean>	
+	<bean id="RetrievalAction" class="de.uzk.hki.da.cb.RetrievalAction"
+		scope="prototype">
+		<property name="startStatus" value="910" />
+		<property name="endStatus" value="950" />
+        <property name="irodsZonePath" value="${irods.zone}" />
+		<property name="name" value="RetrievalAction" />
+		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
+		<property name="sidecarExtensions" value="${cb.sidecar_extensions}" />
+	</bean>	
+	<bean id="PostRetrievalAction" class="de.uzk.hki.da.cb.PostRetrievalAction"
+		scope="prototype">
+		<property name="startStatus" value="960" />
+		<property name="endStatus" value="970" />
+		<property name="name" value="PostRetrievalAction" />
+	</bean>	
+	<!--  END UseCase Retrieval END -->
+</beans>

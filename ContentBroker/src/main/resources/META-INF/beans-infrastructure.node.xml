@@ -8,9 +8,25 @@
            http://www.springframework.org/schema/util/spring-util-3.0.xsd
            http://www.springframework.org/schema/task
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
-          
+        
     <import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>      
-       
+
+	<import resource="classpath*:META-INF/beans-workflow.ingest.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.retrieval.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.pipgen.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.other.xml"/>
+
+
+    <bean class="de.uzk.hki.da.convert.CLIFormatIdentifier" id="pronomFormatIdentifier">
+         <property name="conversionScript" value="fido.sh"/>
+         <property name="healthCheckTestFile" value="conf/healthCheck.tif"/>
+         <property name="healthCheckExpectedOutcome" value="fmt/353"/>
+    </bean>
+    <bean class="de.uzk.hki.da.convert.CLIFormatIdentifier" id="videoCodecFormatIdentifier">
+         <property name="conversionScript" value="ffmpeg.sh"/>
+         <property name="healthCheckTestFile" value="conf/healthCheck.avi"/>
+         <property name="healthCheckExpectedOutcome" value="cinepak"/>
+    </bean>
     <bean class="de.uzk.hki.da.convert.FormatScanService" id="formatScanService" init-method="healthCheckFormatIdentifiers">
         <constructor-arg ref="centralDao" />
 

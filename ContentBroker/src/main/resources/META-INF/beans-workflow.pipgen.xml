@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/util
+           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+           http://www.springframework.org/schema/task
+           http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+          
+	<bean class="de.uzk.hki.da.convert.CLIFormatIdentifier" id="pronomFormatIdentifier">
+         <property name="conversionScript" value="fido.sh"/>
+         <property name="healthCheckTestFile" value="conf/healthCheck.tif"/>
+         <property name="healthCheckExpectedOutcome" value="fmt/353"/>
+    </bean>
+    <bean class="de.uzk.hki.da.convert.CLIFormatIdentifier" id="videoCodecFormatIdentifier">
+         <property name="conversionScript" value="ffmpeg.sh"/>
+         <property name="healthCheckTestFile" value="conf/healthCheck.avi"/>
+         <property name="healthCheckExpectedOutcome" value="cinepak"/>
+    </bean>
+          
+
+	<!-- BEGIN UseCase PIPCreation BEGIN -->
+	<bean id="PIPGenObjectToWorkAreaAction" class="de.uzk.hki.da.cb.ObjectToWorkAreaAction"
+		scope="prototype">
+		<property name="startStatus" value="700" />
+		<property name="endStatus" value="710" />
+		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
+		<property name="gridFacade" ref="${grid.implementation}"/>
+		<property name="name" value="PIPGenObjectToWorkAreaAction" />
+		<property name="ingestGate" ref="ingestGate" />
+	</bean>	
+	<bean id="PIPGenScanForPresentationAction" class="de.uzk.hki.da.cb.ScanForPresentationAction" scope="prototype">
+		<property name="startStatus" value="710" />
+		<property name="endStatus" value="720" />
+		<property name="name" value="PIPGenScanForPresentationAction" />
+		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
+		<property name="formatScanService" ref="formatScanService" />
+		<property name="sidecarExtensions" value="${cb.sidecar_extensions}" />
+	</bean>
+	<bean id="PIPGenConvertAction" class="de.uzk.hki.da.cb.ConvertAction"
+		scope="prototype">
+		<property name="startStatus" value="720" />
+		<property name="endStatus" value="740" />
+		<property name="name" value="PIPGenConvertAction" />
+		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
+	</bean>
+	<bean id="PIPGenShortenFileNamesAction" class="de.uzk.hki.da.cb.ShortenFileNamesAction"
+		scope="prototype">
+		<property name="startStatus" value="740" />
+		<property name="endStatus" value="750" />
+		<property name="name" value="PIPGenShortenFileNamesAction" />
+	</bean>
+	<bean id="PIPGenUpdateMetadataAction" class="de.uzk.hki.da.cb.UpdateMetadataAction" scope="prototype">
+		<property name="startStatus" value="750" />
+		<property name="endStatus" value="760" />
+		<property name="name" value="PIPGenUpdateMetadataAction" />
+		<property name="updateMetadataService" ref="updateMetadataService" />
+		<property name="writePackageTypeToDC" value="true" />
+		<property name="repNames">
+			<util:list>
+				<value>dip/public</value>
+				<value>dip/institution</value>
+			</util:list>
+		</property>
+	</bean>
+	<bean id="PIPGenPrepareSendToPresenterAction" class="de.uzk.hki.da.cb.PrepareSendToPresenterAction" scope="prototype">
+		<property name="startStatus" value="760" />
+		<property name="endStatus" value="770" />
+		<property name="name" value="PIPGenPrepareSendToPresenterAction" />
+		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
+	</bean>
+	<bean id="PIPGenCleanWorkAreaAction" class="de.uzk.hki.da.cb.CleanWorkAreaAction" scope="prototype">
+		<property name="startStatus" value="770" />
+		<property name="endStatus" value="799" />
+		<property name="name" value="PIPGenCleanWorkAreaAction" />
+		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
+		<property name="dipNode">
+			<ref bean="dipNode" />
+		</property>
+	</bean>
+	<!-- END UseCase PIPCreation END -->
+</beans>
