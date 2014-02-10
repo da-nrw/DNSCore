@@ -76,7 +76,7 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 		new File(object.getDataPath()+"dip/institution/"+ci.getTarget_folder()).mkdirs();
 		
 		String cmdPUBLIC[] = new String[]{
-				"HandBrakeCLI",
+				"./handBrake.sh",
 				"-i",
 				"\"" + ci.getSource_file().toRegularFile().getAbsolutePath() + "\"",
 				"-o",

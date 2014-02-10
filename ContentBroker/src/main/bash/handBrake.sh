@@ -1,0 +1,2 @@
+HandBrakeCLI "$@"
+exit $?
