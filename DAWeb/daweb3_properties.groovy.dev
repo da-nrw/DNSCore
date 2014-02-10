@@ -23,6 +23,7 @@ environments {
 			driverClassName = "org.hsqldb.jdbcDriver"
 			dialect = org.hibernate.dialect.HSQLDialect
 			url = "jdbc:hsqldb:hsql://localhost/xdb"
+			dbCreate = "validate"
 			username = "sa"
 			password = ""
 			characterEncoding = "UTF-8"
