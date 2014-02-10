@@ -44,6 +44,7 @@ cp src/main/resources/premis.xsd $CBTAR_SRC/conf
 cp src/main/resources/xlink.xsd $CBTAR_SRC/conf
 cp src/main/resources/frame.jsonld $CBTAR_SRC/conf
 cp src/main/bash/ffmpeg.sh $CBTAR_SRC
+cp src/main/bash/handBrake.sh $CBTAR_SRC
 cp src/main/bash/ContentBroker_stop.sh $CBTAR_SRC
 cp src/main/bash/ContentBroker_start.sh $CBTAR_SRC
 cp src/main/bash/cbTalk.sh $CBTAR_SRC

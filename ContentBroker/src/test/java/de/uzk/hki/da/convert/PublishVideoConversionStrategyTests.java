@@ -92,7 +92,7 @@ public class PublishVideoConversionStrategyTests {
 		
 		
 		String cmdPUBLIC[] = new String[]{
-				"HandBrakeCLI",
+				"./handBrake.sh",
 				"-i",
 				"\"" + new File(basePath + "TEST/1/data/a/filename.avi").getAbsolutePath() + "\"",
 				"-o",
@@ -103,7 +103,7 @@ public class PublishVideoConversionStrategyTests {
 		when(cli.execute(cmdPUBLIC)).thenReturn(true);
 		
 		String cmdINSTITUTION[] = new String[]{
-				"HandBrakeCLI",
+				"./handBrake.sh",
 				"-i",
 				"\"" + new File(basePath + "TEST/1/data/a/filename.avi").getAbsolutePath() + "\"",
 				"-o",

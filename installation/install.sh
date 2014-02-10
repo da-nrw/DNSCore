@@ -92,6 +92,11 @@ then
 	echo copy new ffmpeg
 	cp -f ffmpeg.sh $INSTALLATION_TARGET/
 fi
+if [ -e handBrake.sh ]
+then
+	echo copy new handBrake
+	cp -f handBrake.sh $INSTALLATION_TARGET/
+fi
 cd $INSTALLATION_TARGET
 ./configure.sh
 exit 0
