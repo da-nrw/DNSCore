@@ -26,6 +26,7 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -170,7 +171,9 @@ public class RetrievalAction extends AbstractAction {
 	}
 	
 	@Override
-	void rollback() {}
+	void rollback() {
+		throw new NotImplementedException("No rollback implemented for this action");
+	}
 	
 	public void setSidecarExtensions(String sidecarExtensions) {
 		this.sidecarExtensions = sidecarExtensions;

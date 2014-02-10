@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.convert.JhoveScanService;
 import de.uzk.hki.da.model.Package;
@@ -134,7 +135,9 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	}
 	
 	@Override
-	void rollback() throws Exception { }
+	void rollback() throws Exception {
+		throw new NotImplementedException("No rollback implemented for this action");
+	}
 
 	public JhoveScanService getJhoveScanService() {
 		return jhoveScanService;

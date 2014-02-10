@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.NotImplementedException;
 import org.hibernate.classic.Session;
 
 import de.uzk.hki.da.core.ConfigurationException;
@@ -81,7 +82,9 @@ public class CleanWorkAreaAction extends AbstractAction{
 
 	
 	@Override
-	void rollback() throws Exception {}
+	void rollback() throws Exception {
+		throw new NotImplementedException("No rollback implemented for this action");
+	}
 
 
 	public DistributedConversionAdapter getDistributedConversionAdapter() {

@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -117,6 +118,7 @@ public class CheckFormatsAction extends AbstractAction {
 
 	@Override
 	void rollback() throws Exception {
+		throw new NotImplementedException("No rollback implemented for this action");
 	}
 
 	public FormatScanService getFormatScanService() {

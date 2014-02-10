@@ -22,6 +22,7 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.util.Date;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,5 +67,7 @@ public class PostRetrievalAction extends AbstractAction {
 	}
 
 	@Override
-	void rollback() throws Exception {}
+	void rollback() throws Exception {
+		throw new NotImplementedException("No rollback implemented for this action");
+	}
 }

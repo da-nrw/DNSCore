@@ -21,6 +21,8 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
@@ -68,7 +70,9 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 	
 	
 	@Override
-	void rollback() throws Exception {}
+	void rollback() throws Exception {
+		throw new NotImplementedException("No rollback implemented for this action");
+	}
 
 
 
