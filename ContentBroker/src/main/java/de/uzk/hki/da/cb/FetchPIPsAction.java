@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
@@ -95,7 +96,9 @@ public class FetchPIPsAction extends AbstractAction {
 	
 	
 	@Override
-	void rollback() throws Exception {}
+	void rollback() throws Exception {
+		throw new NotImplementedException("No rollback implemented for this action");
+	}
 
 
 

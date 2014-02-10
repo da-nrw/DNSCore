@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -95,6 +96,7 @@ public class ArchiveReplicationAction extends AbstractAction {
 	
 	@Override
 	void rollback() {
+		throw new NotImplementedException("No rollback implemented for this action");
 	}
 
 	public GridFacade getGridRoot() {

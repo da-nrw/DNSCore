@@ -33,6 +33,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.io.input.BOMInputStream;
+import org.apache.commons.lang.NotImplementedException;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -354,6 +355,7 @@ public class UpdateMetadataAction extends AbstractAction {
 
 	@Override
 	void rollback() throws Exception {
+		throw new NotImplementedException("No rollback implemented for this action");
 	}
 
 	public UpdateMetadataService getUpdateMetadataService() {

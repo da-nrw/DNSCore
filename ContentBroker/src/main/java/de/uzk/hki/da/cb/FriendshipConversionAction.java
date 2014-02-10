@@ -21,6 +21,7 @@ package de.uzk.hki.da.cb;
 
 import java.io.IOException;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,5 +39,7 @@ public class FriendshipConversionAction extends AbstractAction{
 		return true;
 	}
 	@Override
-	void rollback() throws Exception {}
+	void rollback() throws Exception {
+		throw new NotImplementedException("No rollback implemented for this action");
+	}
 }

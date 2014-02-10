@@ -1,6 +1,6 @@
 import javax.servlet.SessionCookieConfig;
 
-import de.uzk.hki.da.security.LoginFactory;
+import de.uzk.hki.da.login.LoginFactory;
 
 class SecurityFilters {
 
@@ -24,9 +24,16 @@ class SecurityFilters {
 					 return false 
 				}
 				
-				def credentials = new String(new sun.misc.BASE64Decoder().decodeBuffer(auth - 'Basic ')).split(':') 
-				session.bauthuser = credentials[0]		
-				
+			def credentials = new String(new sun.misc.BASE64Decoder().decodeBuffer(auth - 'Basic ')).split(':') 		
+			if (credentials.size()!=2) {
+				response.addHeader("WWW-Authenticate", "Basic realm=\"DA-Web\"")
+				response.sendError(401, "Authorization required")
+				return false;
+			}	
+			session.bauthuser = credentials[0]		
+			if (grailsApplication.config.daweb3.loginManager==null) {
+					response.sendError(500, "Login Manager not found")
+			}
 			LoginFactory lf = Class.forName(grailsApplication.config.daweb3.loginManager.toString(),true,
 			Thread.currentThread().contextClassLoader).newInstance();
 			if (lf.login(credentials[0], credentials[1], grailsApplication)) {
@@ -36,18 +43,28 @@ class SecurityFilters {
 					response.sendError(401, "Authorization required") 
 					return false 
 				}
-            }
+				
+				return false;
+			}
 		}
         
 		basicAuthCheck(controller: 'automatedRetrieval') {
-			before = {
-				
+			before = {	
 				def auth = request.getHeader('Authorization')
 				if (!auth) {
 					 response.addHeader("WWW-Authenticate", "Basic realm=\"DA-Web\"")
 					 response.sendError(401, "Authorization required")
 					 return false
 				}
+			def credentials = new String(new sun.misc.BASE64Decoder().decodeBuffer(auth - 'Basic ')).split(':')
+			if (credentials.size()!=2) {
+				response.addHeader("WWW-Authenticate", "Basic realm=\"DA-Web\"")
+				response.sendError(401, "Authorization required")
+				return false;
+			}
+			if (grailsApplication.config.daweb3.loginManager==null) {
+				response.sendError(500, "Login Manager not found")
+			}
 			LoginFactory lf = Class.forName(grailsApplication.config.daweb3.loginManager.toString(),true,
 			Thread.currentThread().contextClassLoader).newInstance();
 			if (lf.login(credentials[0], credentials[1], grailsApplication)) {
@@ -57,6 +74,8 @@ class SecurityFilters {
 					response.sendError(401, "Authorization required")
 					return false
 				}				
+			return false;
+				
 			}
 		}
 

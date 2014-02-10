@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -153,7 +154,9 @@ public class SendToPresenterAction extends AbstractAction {
 	
 	
 	@Override
-	public void rollback() {}
+	public void rollback() {
+		throw new NotImplementedException("No rollback implemented for this action");
+	}
 
 	
 	

@@ -25,6 +25,8 @@ import java.util.Properties;
 
 import javax.mail.MessagingException;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
@@ -107,7 +109,9 @@ public class AuditAction extends AbstractAction {
 	}
 
 	@Override
-	void rollback() throws Exception {}
+	void rollback() throws Exception {
+		throw new NotImplementedException("No rollback implemented for this action");
+	}
 	
 	/**
 	 * Informs the Node Admin about the problems being found

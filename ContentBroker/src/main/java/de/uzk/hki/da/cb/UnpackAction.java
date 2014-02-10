@@ -104,7 +104,7 @@ public class UnpackAction extends AbstractAction {
 			return false;
 		}
 		
-		String sipInForkPath = moveSIPToWorkArea(absoluteSIPPath);
+		String sipInForkPath = copySIPToWorkArea(absoluteSIPPath);
 		
 		unpack(new File(sipInForkPath),object.getPath());
 		
@@ -165,12 +165,12 @@ public class UnpackAction extends AbstractAction {
 			}
 		}
 		
-		
-		
-		
 		logger.info("deleting: "+sipInForkPath);
 		new File(sipInForkPath).delete();
 		
+		// Must be the last step in this action
+		new File(absoluteSIPPath).delete();
+				
 		return true;
 	}	
 	
@@ -180,7 +180,7 @@ public class UnpackAction extends AbstractAction {
 	 * @author Thomas Kleinke
 	 * @return path to SIP in work area
 	 */
-	private String moveSIPToWorkArea(String ingestFilePath) {
+	private String copySIPToWorkArea(String ingestFilePath) {
 		
 		String destFilePath = localNode.getWorkAreaRootPath() + object.getContractor().getShort_name() + "/" + 
 						  FilenameUtils.getName(ingestFilePath);
@@ -197,11 +197,9 @@ public class UnpackAction extends AbstractAction {
 					destFile.getAbsolutePath(), e);
 		}
 		
-		if (destFile.exists())
-			ingestFile.delete();
-		else
+		if (!destFile.exists())
 			throw new RuntimeException("File " + destFile.getAbsolutePath() + " does not exist");
-			
+					
 		return destFilePath;
 	}	
 	
@@ -437,7 +435,10 @@ public class UnpackAction extends AbstractAction {
 
 	@Override
 	void rollback() throws IOException {
-		 FileUtils.deleteDirectory(new File(object.getPath()));
+		FileUtils.deleteDirectory(new File(object.getPath()));
+		
+		new File(localNode.getWorkAreaRootPath() + object.getContractor().getShort_name() + "/" + 
+				object.getLatestPackage().getContainerName()).delete();
 	}
 
 	public IngestGate getIngestGate() {

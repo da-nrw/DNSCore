@@ -121,7 +121,7 @@ public class IndexESAction extends AbstractAction {
 
 	@Override
 	void rollback() throws Exception {
-		// nothing to do		
+		// nothing to do
 	}
 	
 	public Fedora getFedora() {

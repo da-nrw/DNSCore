@@ -269,6 +269,8 @@ public class CreatePremisAction extends AbstractAction {
 		
 		actionCommunicatorService.removeDataObject(job.getId(), "static_nondisclosure_limit");
 		actionCommunicatorService.removeDataObject(job.getId(), "dynamic_nondisclosure_limit");
+		
+		logger.info("@Admin: You can safely roll back this job to status "+this.getStartStatus()+" now.");
 	}
 
 	public void setJhoveScanService(JhoveScanService jhoveScanService) {
