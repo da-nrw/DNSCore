@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/util
+           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+           http://www.springframework.org/schema/task
+           http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+          
+	<bean id="FriendshipConversionAction" class="de.uzk.hki.da.cb.FriendshipConversionAction"
+		scope="prototype">
+		<property name="startStatus" value="580" />
+		<property name="endStatus" value="590" />
+		<property name="name" value="FriendshipConversionAction" />
+	</bean>
+	<bean id="RestartIngestWorkflowAction" class="de.uzk.hki.da.cb.RestartIngestWorkflowAction"
+		scope="prototype">
+		<property name="startStatus" value="600" />
+		<property name="endStatus" value="120" />
+		<property name="name" value="RestartIngestWorkflowAction" />
+		<property name="jhoveScanService" ref="jhoveScanService" />	
+	</bean>
+	<bean id="AuditAction" class="de.uzk.hki.da.cb.AuditAction"
+		scope="prototype">
+		<property name="startStatus" value="5000" />
+		<property name="endStatus" value="6000" />
+		<property name="minNodes" value="${cb.min_repls}" />
+		<property name="nodeAdminEmail" value="${localNode.admin_email}" />
+		<property name="gridRoot" ref="${grid.implementation}"/>
+		<property name="name" value="AuditAction" />
+	</bean>
+</beans>
