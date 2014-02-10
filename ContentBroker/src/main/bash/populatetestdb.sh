@@ -22,7 +22,7 @@ then
 	rm mydb.*      2> /dev/null
 	
 	cd $HIER
-	java -cp src/main/hsqldb/lib/hsqldb.jar org.hsqldb.server.Server --database.0 file:mydb --dbname.0 xdb &
+	java -cp ../3rdParty/hsqldb/lib/hsqldb.jar org.hsqldb.server.Server --database.0 file:mydb --dbname.0 xdb &
 	
 	sleep 2
 
@@ -76,7 +76,7 @@ for i in "${sqls[@]}"
 do
 	echo "$i"
 	cd $HIER
-	java -jar src/main/hsqldb/lib/sqltool.jar --autoCommit --sql "$i" xdb 
+	java -jar ../3rdParty/hsqldb/lib/sqltool.jar --autoCommit --sql "$i" xdb 
 done
 
 
