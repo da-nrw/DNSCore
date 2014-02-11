@@ -22,6 +22,7 @@ package de.uzk.hki.da.cb;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
@@ -121,7 +122,7 @@ public class IndexESAction extends AbstractAction {
 
 	@Override
 	void rollback() throws Exception {
-		// nothing to do
+		throw new NotImplementedException();
 	}
 	
 	public Fedora getFedora() {

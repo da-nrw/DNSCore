@@ -19,19 +19,27 @@
 
 package de.uzk.hki.da.cb;
 
-//jp
+
+import static org.junit.Assert.assertSame;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * The Class ObjectTest.
  */
 public class ObjectTest {
 	
-	/** The object identifier. */
-	public static String objectIdentifier = ":ABCD:CONTRACTOR3:";
-
+	private static final String workAreaRootPath = "src/test/resources/model/ObjectTests/";
+	private static DAFile f1;
+	private static DAFile f2;
+	private static Object o;
+	
 	/**
 	 * Sets the up before class.
 	 *
@@ -39,58 +47,23 @@ public class ObjectTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-//		HibernateUtil.init("conf/hibernateCentralDbWithInmem.cfg.xml");
-//		dao.clearAll();
-//
-//		dao.addContractor(new Contractor(
-//				"KCG","","info@hki.uni-koeln.de"));
+		Node n = new Node();
+		n.setWorkAreaRootPath(workAreaRootPath);
+		
+		o = TESTHelper.setUpObject("123", workAreaRootPath);
+
+		f1 = new DAFile(o.getLatestPackage(),"a","a.txt");
+		f2 = new DAFile(o.getLatestPackage(),"b","a.txt");
+		
+		o.getLatestPackage().getFiles().add(f1);
+		o.getLatestPackage().getFiles().add(f2);
 	}
 
 	
-	// TODO StoreObjectActionShould be under test
-	/**
-	 * Creates the object.
-	 *
-	 * @throws Exception the exception
-	 */
+	
 	@Test
-	public void createObject() throws Exception {
+	public void testGetLatestReturnsAttachedInstance(){
 		
-//		Job job= dao.createJob(new Job(urn, "KCG", "vm1"));
-//		debugDao.showJobs();
-//		Package pkg = dao.createPackage(new Package("1", job.getUrn()));
-//		job.setPackage(pkg);
-//		System.out.println(".."); debugDao.showJobs();
-//		Contractor contractor = dao.getContractor("KCG");
-//		
-//		Object obj = dao.updateObjectFromJob( job, contractor );
-//		
-//		Assert.assertEquals(obj.getContractor().getShort_name(), "KCG");
-//		Assert.assertEquals(urn, obj.getUrn());
-//		Assert.assertEquals(urn, obj.getPackages().get(0).getObject_urn());
-//		System.out.println("Object state: " + obj.getObject_state() );
-		
+		assertSame(f2,o.getLatest("a.txt"));
 	}
-	
-
-	
-	/*
-	@Test
-	public void addObject() throws Exception {
-		Thread.sleep(1000);
-		Job job= dao.createJob(urn,"KCG", "vm1");
-		dao.updateObjectFromJob(urn);
-		Object obj = dao.getObject(urn);
-		Assert.assertEquals(obj.getContractor().getShort_name(), "KCG");
-		Assert.assertEquals(urn, obj.getUrn());
-		Assert.assertEquals(urn, obj.getPackages().get(1).getObject_urn());
-
-
-		for ( Iterator<de.uzk.hki.da.db.Package> pack= obj.getPackages().iterator(); pack.hasNext(); )
-		 System.out.println("Package: " + pack.next().getName() );
-
-	}*/
-	
-
-
 }

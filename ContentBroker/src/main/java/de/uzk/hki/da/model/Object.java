@@ -809,23 +809,28 @@ public class Object {
 	 * @param filename the filename
 	 * @return the latest
 	 * @author Daniel M. de Oliveira
+	 * @throws IllegalStateException if it finds a file without an associated dafile instance.
 	 */
 	public DAFile getLatest(String filename) {
-		logger.debug("data path: {}", getDataPath());
-		logger.debug("looking up latest version of: {}", filename);
 		
-		File[] files = new File(getDataPath()).listFiles();
-		Arrays.sort(files);
+		
+		File[] representations = new File(getDataPath()).listFiles();
+		Arrays.sort(representations);
 		
 		DAFile result = null;
-		for (File rep : files) {
-				
+		for (File rep : representations) {
 			if (new File(getDataPath()+rep.getName()+"/"+filename).exists()){
-				result = new DAFile(this.getLatestPackage(),rep.getName(),filename);
-				logger.debug("found file in rep: {}", rep.getAbsolutePath());
+
+				for (Package p:this.getPackages())
+					for (DAFile f:p.getFiles()){
+						if (f.equals(new DAFile(this.getLatestPackage(),rep.getName(),filename))) result=f;
+					}
+				if (result==null) throw new IllegalStateException("found a file without an associated dafile instance "+
+						new DAFile(this.getLatestPackage(),rep.getName(),filename));
 			}
 		}
 		
+		logger.debug("getLatest(). result is {}", result);
 		return result;
 	}
 	
