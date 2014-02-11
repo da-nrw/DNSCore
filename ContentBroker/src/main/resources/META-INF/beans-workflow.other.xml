@@ -22,6 +22,13 @@
 		<property name="name" value="RestartIngestWorkflowAction" />
 		<property name="jhoveScanService" ref="jhoveScanService" />	
 	</bean>
+	<bean id="DeleteObjectAction" class="de.uzk.hki.da.cb.DeleteObjectAction"
+		scope="prototype">
+		<property name="startStatus" value="800" />
+		<property name="endStatus" value="809" />
+		<property name="KILLATEXIT" value="true" />
+		<property name="name" value="DeleteObjectAction" />
+	</bean>
 	<bean id="AuditAction" class="de.uzk.hki.da.cb.AuditAction"
 		scope="prototype">
 		<property name="startStatus" value="5000" />

@@ -30,6 +30,7 @@
     </bean>   
     
     <util:list id="actionOrdering">
+   		<value>DeleteObjectAction</value>
 		<value>RestartIngestWorkflowAction</value>
 		<value>PostRetrievalAction</value>
 		<value>RetrievalAction</value>

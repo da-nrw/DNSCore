@@ -31,6 +31,7 @@ import de.uzk.hki.da.cb.ConvertActionNodeSplittingTests;
 import de.uzk.hki.da.cb.ConvertActionTests;
 import de.uzk.hki.da.cb.ConvertCheckActionTests;
 import de.uzk.hki.da.cb.CreatePremisActionTests;
+import de.uzk.hki.da.cb.DeleteObjectActionTests;
 import de.uzk.hki.da.cb.IndexESActionTests;
 import de.uzk.hki.da.cb.ObjectTest;
 import de.uzk.hki.da.cb.PrepareSendToPresenterActionTests;
@@ -141,7 +142,8 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	ArchiveReplicationActionTests.class,
 	FidoCLITest.class,
 	PackageTypeDetectionServiceTests.class,
-	UpdateMetadataActionEADTests.class
+	UpdateMetadataActionEADTests.class,
+	DeleteObjectActionTests.class
 //	HibernateUtilThreadingTest.class
 })
 public class SimpleSuite {

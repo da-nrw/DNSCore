@@ -28,6 +28,7 @@
 	<task:scheduler id="taskScheduler" pool-size="20" />
 
 	<util:map id="actionThreads">
+		<entry key="DeleteObjectAction" value="3" />
 		<entry key="RestartIngestWorkflowAction" value="3" />
 		<entry key="IngestRegisterURNAction" value="3" />
 		<entry key="IngestTarAction" value="3" />
