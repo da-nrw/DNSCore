@@ -128,18 +128,7 @@ public class PremisXmlWriter {
 				for (DAFile fi : pkg.getFiles())
 					createFileElement(fi, object);
 		   	
-			// generate events
-			for (Package pkg : object.getPackages())
-		   	  for (Event e : pkg.getEvents()){
-				if (e.getType().toUpperCase().equals("CONVERT")
-						|| e.getType().toUpperCase().equals("COPY")){
-					logger.debug("Serializing convert event: "+e);
-					createConvertEventElement(e);
-				}else{
-					logger.debug("Serializing package event:"+e);
-					createPackageEventElement(object, pkg, e);
-				}
-			}
+			generateEvents(object);
 						
 			for (Agent a : agents)
 				createAgentElement(object, a);
@@ -164,6 +153,26 @@ public class PremisXmlWriter {
 		}
 	
 	}
+
+
+	/**
+	 * @param object
+	 * @throws XMLStreamException
+	 */
+	private void generateEvents(Object object) throws XMLStreamException {
+		
+		for (Package pkg : object.getPackages())
+		  for (Event e : pkg.getEvents()){
+			if (e.getType().toUpperCase().equals("CONVERT")
+					|| e.getType().toUpperCase().equals("COPY")){
+				logger.debug("Serializing convert event: "+e);
+				createConvertEventElement(e);
+			}else{
+				logger.debug("Serializing package event:"+e);
+				createPackageEventElement(object, pkg, e);
+			}
+		}
+	}
 	
 	
 	/**
@@ -174,6 +183,7 @@ public class PremisXmlWriter {
 	 * @throws XMLStreamException the xML stream exception
 	 */
 	private void createObjectElement(String objectIdentifier, String urn, String orig_name) throws XMLStreamException{
+		
 		createOpenElement("object", 1);
 		createAttribute(XSI_NS, "type", "representation");
 			createOpenElement("objectIdentifier", 2);

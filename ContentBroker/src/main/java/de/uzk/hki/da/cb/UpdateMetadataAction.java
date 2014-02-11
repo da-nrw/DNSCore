@@ -146,7 +146,8 @@ public class UpdateMetadataAction extends AbstractAction {
 			destMetadataFile.setFormatPUID(srcMetadataFile.getFormatPUID());
 			object.getLatestPackage().getFiles().add(destMetadataFile);
 			
-			Event e = new Event();							
+			Event e = new Event();
+			e.setSource_file(srcMetadataFile);
 			e.setTarget_file(destMetadataFile);
 			e.setType("COPY");
 			e.setDate(new Date());
