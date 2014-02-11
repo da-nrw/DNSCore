@@ -821,9 +821,10 @@ public class Object {
 		for (File rep : representations) {
 			if (new File(getDataPath()+rep.getName()+"/"+filename).exists()){
 
-				for (DAFile f:this.getLatestPackage().getFiles()){
-					if (f.equals(new DAFile(this.getLatestPackage(),rep.getName(),filename))) result=f;
-				}
+				for (Package p:this.getPackages())
+					for (DAFile f:p.getFiles()){
+						if (f.equals(new DAFile(this.getLatestPackage(),rep.getName(),filename))) result=f;
+					}
 				if (result==null) throw new IllegalStateException("found a file without an associated dafile instance "+
 						new DAFile(this.getLatestPackage(),rep.getName(),filename));
 			}
