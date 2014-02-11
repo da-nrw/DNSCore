@@ -249,7 +249,7 @@ public abstract class AbstractAction implements Runnable {
 			logger.info("Stubbing rollback of "+this.getClass().getName());
 			rollback();
 		} catch (Exception e) {
-			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO ROLLBACK ACTION. DATABASE MIGHT BE INCONSISTENT NOW.");
+			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO ROLLBACK ACTION. DATABASE OR WORKAREA MIGHT BE INCONSISTENT NOW.");
 			logger.error(this.getClass().getName()+": couldn't get rollbacked to previous state. Exception in action.rollback(): ",e);
 			errorStatus = errorStatus.substring(0, errorStatus.length() - 1) + "3";
 		}

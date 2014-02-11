@@ -271,7 +271,8 @@ public class UpdateMetadataAction extends AbstractAction {
 					
 					logger.debug("Copying {} to {}", file, targetDir);
 					FileUtils.copyFileToDirectory(file.toRegularFile(), targetDir);
-					DAFile daFile = new DAFile(object.getLatestPackage(), repName, file.getRelative_path());
+					DAFile daFile = 
+							new DAFile(object.getLatestPackage(), repName, file.getRelative_path());
 					daFile.setFormatPUID(file.getFormatPUID());
 					object.getLatestPackage().getFiles().add(daFile);
 					
@@ -295,7 +296,10 @@ public class UpdateMetadataAction extends AbstractAction {
 			}
 			getUpdateMetadataService().renameSidecarFiles(object, object.getLatestPackage(), repName);
 			logger.debug("collecting files in path: {}", repPath);
+			
 			XmpCollector.collect(repDir, new File(repPath + "/XMP.rdf"));
+			object.getLatestPackage().getFiles().add(
+					new DAFile(object.getLatestPackage(),repName,"XMP.rdf"));
 		}
 	}
 
