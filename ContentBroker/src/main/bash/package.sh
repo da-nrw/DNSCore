@@ -35,8 +35,8 @@ fi
 
 
 mkdir $CBTAR_SRC/conf
-cp -r src/main/fido $CBTAR_SRC
-cp -r src/main/jhove $CBTAR_SRC
+cp -r ../3rdParty/fido $CBTAR_SRC
+cp -r ../3rdParty/jhove $CBTAR_SRC
 cp src/main/sh/jhove $CBTAR_SRC/jhove
 cp src/main/conf/jhove.conf $CBTAR_SRC/jhove/conf
 cp -r src/main/xslt $CBTAR_SRC/conf
@@ -58,11 +58,13 @@ mkdir $CBTAR_SRC/log
 touch $CBTAR_SRC/log/contentbroker.log
 echo -e "ContentBroker Version $VERSION\nWritten by\n Daniel M. de Oliveira\n Jens Peters\n Sebastian Cuy\n Thomas Kleinke" > $CBTAR_SRC/README.txt
 
-cp src/main/conf/beans.xml.node $INSTALLER/
-cp src/main/conf/beans.xml.node.test $INSTALLER/
-cp src/main/conf/beans.xml.pres $INSTALLER/
-cp src/main/conf/beans.xml.full $INSTALLER/
-cp src/main/conf/logback.xml.debug $INSTALLER/logback.xml
+cp src/main/bash/install.sh $INSTALLER
+cp src/main/bash/configure.sh $INSTALLER
+cp src/main/xml/beans.xml.node $INSTALLER/
+cp src/main/xml/beans.xml.node.test $INSTALLER/
+cp src/main/xml/beans.xml.pres $INSTALLER/
+cp src/main/xml/beans.xml.full $INSTALLER/
+cp src/main/xml/logback.xml.debug $INSTALLER/logback.xml
 
 case "$1" in
 dev)
@@ -70,11 +72,11 @@ dev)
 	createStorageFolder	
 	cp -f src/main/bash/ffmpeg.sh.fake $INSTALLER/ffmpeg.sh
 	cp src/main/conf/sqltool.rc ~/
-	cp src/main/conf/hibernateCentralDB.cfg.xml.hsql $INSTALLER/hibernateCentralDB.cfg.xml
+	cp src/main/xml/hibernateCentralDB.cfg.xml.hsql $INSTALLER/hibernateCentralDB.cfg.xml
 ;;
 vm3)
 	cp src/main/conf/config.properties.vm3 $INSTALLER/config.properties
-	cp src/main/conf/hibernateCentralDB.cfg.xml.postgres $INSTALLER/hibernateCentralDB.cfg.xml
+	cp src/main/xml/hibernateCentralDB.cfg.xml.postgres $INSTALLER/hibernateCentralDB.cfg.xml
 	INSTALL_PATH=/data/danrw/ContentBroker
 ;;
 esac

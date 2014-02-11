@@ -92,7 +92,7 @@ public class ProperRefreshOfJobChildrenTest extends Thread{
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		HibernateUtil.init("src/main/conf/hibernateCentralDB.cfg.xml.inmem");
+		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		Session baseSession = HibernateUtil.openSession();
 		baseSession.beginTransaction();
 		
