@@ -76,4 +76,8 @@ class QueueEntry {
 		return "Status (Queue)";
 	}
 	
+	Integer getStatusAsInteger() {
+		return Integer.parseInt(status);
+	}
+	
 }

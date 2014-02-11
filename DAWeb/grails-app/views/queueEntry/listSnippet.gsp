@@ -58,15 +58,24 @@
 						${fieldValue(bean: queueEntryInstance, field: "status")}
 					</g:link>
 					<g:set var="statusType" value="${queueEntryInstance.status[-1]}" />
+					<g:set var="statusInt" value="${queueEntryInstance.getStatusAsInteger()}" />
 					<g:if test="${statusType == "1" && admin }">
 								<g:link action="queueRetry" id="${queueEntryInstance.id}">
 									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png"/>
 								</g:link>
 					</g:if>
-					<g:if test="${ statusType == "1" && admin }">
-					<g:link action="queueRecover" id="${queueEntryInstance.id}"><g:img style="width:16px; height:16px" uri="/images/icons/recover.jpg"/>
+					<g:if test="${ statusType == "3" && admin }">
+						<g:if test="${statusInt >= 123 && statusInt <= 353 }">
+						<g:link action="queueRecover" id="${queueEntryInstance.id}"><g:img style="width:16px; height:16px" uri="/images/icons/recover.jpg"/>
 					</g:link>
-				</g:if>
+					</g:if>
+					</g:if> 
+					<g:if test="${ statusType == "4" || statusType == "3" }">
+						<g:if test="${ statusInt<=401 && admin }">
+					<g:link onclick="return confirm('Packet löschen. Sind Sie sicher?');" action="queueDelete" id="${queueEntryInstance.id}"><g:img style="width:16px; height:16px" uri="/images/icons/list_remove.png"/>
+					</g:link>
+					</g:if>
+					</g:if>
 				</td>
 
 				<td>

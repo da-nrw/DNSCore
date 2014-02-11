@@ -135,7 +135,7 @@ class QueueEntryController {
 			def status = queueEntryInstance.getStatus()
 			int state = status.toInteger();
 			
-			if (state>=120 && state<=351) {
+			if ((state>=123 && state<=353) && status.endsWith("3") && !status.endsWith("1")) {
 				// Recover state is 600
 				def newstat = "600"
 				queueEntryInstance.status = newstat
@@ -157,4 +157,33 @@ class QueueEntryController {
 
 		[queueEntryInstance: queueEntryInstance]
 	}
+	def queueDelete() {
+		def queueEntryInstance = QueueEntry.get(params.id)
+		if (queueEntryInstance) {
+			def status = queueEntryInstance.getStatus()
+			int state = status.toInteger();
+			
+			if ((status.endsWith("3") || status.endsWith("4")) && state <401) {
+				// Delete state is 800
+				def newstat = "800"
+				queueEntryInstance.status = newstat
+				queueEntryInstance.modified = Math.round(new Date().getTime()/1000L)
+				if( !queueEntryInstance.save() ) {
+					log.debug("Validation errors on save")
+					queueEntryInstance.errors.each {
+						log.debug(it)
+					}
+				}
+				flash.message = "Paket für Löschung vorgesehen"
+			} else flash.message = "Paket ist nicht löschbar, wenden Sie sich an Ihren Knotenadmin!"
+			redirect(action: "list")
+			return
+			
+		} else flash.message = message(code: 'default.not.found.message', args: [message(code: 'queueEntry.label', default: 'QueueEntry'), params.id])
+		redirect(action: "list")
+		return
+
+		[queueEntryInstance: queueEntryInstance]
+	}
+
 }
