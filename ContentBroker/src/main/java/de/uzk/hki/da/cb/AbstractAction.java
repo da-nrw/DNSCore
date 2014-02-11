@@ -26,17 +26,14 @@ import java.io.StringWriter;
 import java.util.Date;
 
 import javax.jms.Connection;
-
-import org.apache.activemq.ActiveMQConnectionFactory;
-
 import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.TextMessage;
 import javax.mail.MessagingException;
 
+import org.apache.activemq.ActiveMQConnectionFactory;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,6 +74,7 @@ public abstract class AbstractAction implements Runnable {
 	
 	private boolean KILLATEXIT = false;
 	private boolean INTEGRATIONTEST = false;
+	protected boolean DELETEOBJECT = false;
 	
 	protected ActionRegistry actionMap;
 	private String name;
@@ -167,7 +165,12 @@ public abstract class AbstractAction implements Runnable {
 					Session session = HibernateUtil.openSession();
 					session.beginTransaction();
 					session.delete(job);
-					session.update(object);
+					
+					if (DELETEOBJECT) 
+						session.delete(object);
+					else
+						session.update(object);
+					
 					session.getTransaction().commit();
 					session.close();
 					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Job deleted. Database transaction successful.");

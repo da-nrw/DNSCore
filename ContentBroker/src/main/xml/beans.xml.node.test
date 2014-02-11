@@ -31,6 +31,7 @@
 	
 
 	<util:map id="actionThreads">
+		<entry key="DeleteObjectAction" value="1" />
 		<entry key="RestartIngestWorkflowAction" value="1" />
 		<entry key="IngestUnpackAction" value="1" />
 		<entry key="IngestConvertAction" value="1" />

@@ -39,6 +39,7 @@
     </bean>   
     
     <util:list id="actionOrdering">
+    	<value>DeleteObjectAction</value>
 		<value>RestartIngestWorkflowAction</value>
 		<value>IngestArchiveReplicationCheckAction</value>
 		<value>IngestArchiveReplicationAction</value>
