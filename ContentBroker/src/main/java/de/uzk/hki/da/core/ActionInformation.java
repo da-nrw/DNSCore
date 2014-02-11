@@ -39,6 +39,7 @@ public class ActionInformation implements ApplicationContextAware {
 	ActionInformation() {
 	}
 	
+	@SuppressWarnings("unused")
 	private void init(){
 		if (context == null) throw new ConfigurationException("Unable to build action. Application context has not been set.");
 		if (actionRegistry == null) throw new ConfigurationException("actionRegistry not set!");
