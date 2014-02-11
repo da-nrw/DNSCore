@@ -214,7 +214,7 @@ public abstract class AbstractAction implements Runnable {
 		}
 	}
 	/**
-	 * Send Exception to JMS Broker
+	 * Sends Exception to JMS Broker
 	 * @author Jens Peters
 	 * @param e
 	 */
