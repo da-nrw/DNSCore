@@ -3,7 +3,7 @@
 # author: Daniel M. de Oliveira
 
 mvn clean && mvn pre-integration-test -Pdev -DappHome=$1
-mvn failsafe:integration-test -Dit.test=ATUseCaseIngest
+
 mvn failsafe:integration-test -Dit.test=ATUseCaseIngestDelta
 mvn failsafe:verify 
 if [ "$?" = "1" ]
