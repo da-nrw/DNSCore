@@ -32,7 +32,6 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.TextMessage;
 import javax.mail.MessagingException;
