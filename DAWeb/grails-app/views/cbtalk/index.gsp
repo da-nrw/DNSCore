@@ -48,10 +48,6 @@
 			<div class="list" id="entry-list">
 				<g:include action="messageSnippet" />
 			</div>
-			 Errors:      
-<g:each var="Error" in="${errors}">
-      	 <p>${Error}</p>
-      </g:each> 
      </div>
   </body>
 </html>

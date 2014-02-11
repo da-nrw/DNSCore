@@ -65,11 +65,12 @@
     </bean>
         <amq:broker id="mqBroker" useShutdownHook="true" useJmx="false" deleteAllMessagesOnStartup="true" start="false">
       <amq:systemUsage>
-        <amq:systemUsage>
-        <amq:memoryUsage><amq:memoryUsage limit="16Mb" /></amq:memoryUsage>
-        <amq:tempUsage><amq:tempUsage limit="100Mb"></amq:tempUsage></amq:tempUsage>	
-        </amq:systemUsage>
-       	</amq:systemUsage>
+      	<amq:systemUsage>
+      		<amq:memoryUsage><amq:memoryUsage limit="16Mb" /></amq:memoryUsage>
+       		<amq:tempUsage><amq:tempUsage limit="100Mb" /></amq:tempUsage>
+       		<amq:storeUsage><amq:storeUsage limit="1GB" /></amq:storeUsage>
+   	</amq:systemUsage>
+   	</amq:systemUsage>
     <amq:transportConnectors>
       <amq:transportConnector uri="tcp://localhost:${cb.serverSocketNumber}" />
     </amq:transportConnectors>

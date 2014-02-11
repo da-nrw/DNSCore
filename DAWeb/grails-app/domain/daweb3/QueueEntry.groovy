@@ -32,14 +32,12 @@ class QueueEntry {
 	String created
 	String modified
 	String replDestinations
-	String nodeName
 	Object obj
 
     static constraints = {
 		status(nullable:false)
 		created(nullable:true)
 		modified(nullable:true)
-		nodeName(nullable:true)
 		replDestinations(nullable:true)	
 	}
 	

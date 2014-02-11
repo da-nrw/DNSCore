@@ -37,7 +37,7 @@ class ObjectController {
 
     def list() {
 				def admin = false;
-				def relativeDir = session.irodsAccount.userName + "/outgoing"
+				def relativeDir = session.contractor.shortName+ "/outgoing"
 				def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
 				
 				if (params.search==null||((params.search.origName==null||params.search.origName=="")

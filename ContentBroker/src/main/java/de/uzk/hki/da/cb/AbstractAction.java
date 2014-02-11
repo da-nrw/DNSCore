@@ -216,22 +216,27 @@ public abstract class AbstractAction implements Runnable {
 	 * @param e
 	 */
 	private void sendJMSException(Exception e) {
+		if (mqConnectionFactory!=null) {
 		try {
+		 
 			Connection connection = mqConnectionFactory.createConnection();
 			connection.start();
 			javax.jms.Session session = connection.createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
 			Destination toClient = session.createQueue("CB.ERROR");
+			Destination toServer = session.createQueue("CB.ERROR.SERVER");
 			MessageProducer producer;
 			producer = session.createProducer(toClient);
 			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);         
-			String messageSend = e.getMessage();
+			String messageSend = "Package "+  object.getIdentifier() + " " + e.getMessage();
 			TextMessage message = session.createTextMessage(messageSend);
+			message.setJMSReplyTo(toServer);
             producer.send(message);
             producer.close();
             session.close();
             connection.close();
 		}catch (JMSException e1) {
 			logger.error("Error while connecting to ActiveMQ Broker " + e1.getCause());
+		}
 		}
 	}
 	
