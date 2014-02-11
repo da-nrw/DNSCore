@@ -42,14 +42,13 @@ import de.uzk.hki.da.core.ActionCommunicatorService;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.TESTHelper;
 
 
 
@@ -64,10 +63,10 @@ public class ConvertActionTests {
 	private static final ConvertAction action= new ConvertAction();
 	
 	/** The Constant vaultPath. */
-	private static final String vaultPath="src/test/resources/cb/ConvertActionTests";
+	private static final String workAreaRootPath="src/test/resources/cb/ConvertActionTests/work/";
 	
 	/** The Constant dataPath. */
-	private static final String dataPath= vaultPath + "/work/TEST/identifier123/";
+	private static final String dataPath= workAreaRootPath + "TEST/123/";
 	
 	/** The job. */
 	private static Job job = null;
@@ -78,26 +77,8 @@ public class ConvertActionTests {
 	@Before
 	public void setUp(){
 		
-		Node n = new Node(); n.setWorkAreaRootPath(vaultPath+"/work/");
-		Package pkg = new Package();
-		pkg.setName("1");
 		
-		
-		// , "urn+nbn+de+danrw-1-23425");
-		pkg.setId(123); 
-		 
-		String objectIdentifier = "identifier123";
-		
-		Contractor contractor = new Contractor();
-		contractor.setShort_name("TEST");
-		
-		Object object = new Object();
-		object.getPackages().add(pkg);
-		object.setContractor(contractor);
-		object.setIdentifier(objectIdentifier);
-		object.setTransientNodeRef(n);
-		object.reattach();
-		
+		Object object = TESTHelper.setUpObject("123", workAreaRootPath);
 		action.setObject(object);
 		
 		job = new Job();
@@ -134,7 +115,10 @@ public class ConvertActionTests {
 		ConversionInstruction ci1 = new ConversionInstruction();
 		ci1.setTarget_folder("");
 		
-		DAFile f1 = new DAFile(pkg,"2011+11+01+a","abc.xml");
+		DAFile f = new DAFile(object.getLatestPackage(),"2011+11+01+a","premis.xml");
+		object.getLatestPackage().getFiles().add(f);
+		
+		DAFile f1 = new DAFile(object.getLatestPackage(),"2011+11+01+a","abc.xml");
 		ci1.setSource_file(f1);
 		ci1.setNode("vm3");
 		ci1.setConversion_routine(copy);
@@ -144,7 +128,7 @@ public class ConvertActionTests {
 		ConversionInstruction ci2 = new ConversionInstruction();
 		ci2.setTarget_folder("");
 		
-		DAFile f2 = new DAFile(pkg,"2011+11+01+a","140864.tif");
+		DAFile f2 = new DAFile(object.getLatestPackage(),"2011+11+01+a","140864.tif");
 		ci2.setSource_file(f2);
 		
 		
@@ -169,7 +153,7 @@ public class ConvertActionTests {
 		ActionCommunicatorService acs = new ActionCommunicatorService();
 		action.setActionCommunicatorService(acs);
 		
-		HibernateUtil.init("src/main/conf/hibernateCentralDB.cfg.xml.inmem");
+		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		
 	}
 	
@@ -202,7 +186,7 @@ public class ConvertActionTests {
 
 		action.setJob(job);
 		Node localNode = new Node("vm2","01-vm2");
-		localNode.setWorkAreaRootPath(vaultPath+"/fork");
+		localNode.setWorkAreaRootPath(workAreaRootPath+"/fork");
 		action.setNode(localNode);
 		
 		action.implementation();
@@ -221,7 +205,7 @@ public class ConvertActionTests {
 
 		action.setJob(job);
 		Node localNode = new Node("vm2","01-vm2");
-		localNode.setWorkAreaRootPath(vaultPath+"/fork");
+		localNode.setWorkAreaRootPath(workAreaRootPath+"/fork");
 		action.setNode(localNode);
 		
 		action.implementation();
