@@ -66,7 +66,7 @@
 					</g:if>
 					<g:if test="${ statusType == "3" && admin }">
 						<g:if test="${statusInt >= 123 && statusInt <= 353 }">
-						<g:link action="queueRecover" id="${queueEntryInstance.id}"><g:img style="width:16px; height:16px" uri="/images/icons/recover.jpg"/>
+						<g:link action="queueRecover" id="${queueEntryInstance.id}"><g:img style="width:16px; height:16px" uri="/images/icons/back-icon.png"/>
 					</g:link>
 					</g:if>
 					</g:if> 
