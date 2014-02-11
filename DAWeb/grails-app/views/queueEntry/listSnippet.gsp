@@ -70,8 +70,8 @@
 					</g:link>
 					</g:if>
 					</g:if> 
-					<g:if test="${ statusType == "4" || statusType == "3" }">
-						<g:if test="${ statusInt<=401 && admin }">
+					<g:if test="${ statusType == "4" || statusType == "3" || statusType=="1" }">
+						<g:if test="${ statusInt<401 && admin }">
 					<g:link onclick="return confirm('Eintrag löschen. Sind Sie sicher?');" action="queueDelete" id="${queueEntryInstance.id}"><g:img style="width:16px; height:16px" uri="/images/icons/list_remove.png"/>
 					</g:link>
 					</g:if>
