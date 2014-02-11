@@ -30,6 +30,7 @@
 		<property name="endStatus" value="140" />
 		<property name="name" value="IngestScanAction" />
 		<property name="formatScanService" ref="formatScanService" />
+		<property name="description" value="Format Scan Service" />
 		<property name="sidecarExtensions" value="${cb.sidecar_extensions}" />
 		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
 	</bean>

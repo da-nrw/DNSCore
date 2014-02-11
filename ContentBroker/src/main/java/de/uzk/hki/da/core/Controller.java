@@ -124,7 +124,7 @@ public class Controller implements Runnable {
 					messageSend = "...STARTING FACTORY done";
 					actionFactory.pause(false);
 				} else if (command.startsWith("SHOW_DESCRIPTION")) {
-					String []arr = command.split(" ");
+					String []arr = command.split("=");
 					if (arr.length==2) {
 						logger.debug("SHOW_DESCRIPTION OF STATE: "+arr[1]);
 						ActionDescription ad = actionInformation.findStateInActionList(arr[1]);

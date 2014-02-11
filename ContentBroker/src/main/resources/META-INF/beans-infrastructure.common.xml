@@ -27,6 +27,7 @@
         <property name="serverSocketNumber" value="${cb.serverSocketNumber}" />
           <property name="mqBroker" ref="mqBroker" />
        <property name="mqConnectionFactory" ref="mqConnectionFactory" />
+       <property name="actionInformation" ref="actionInformation" />
     </bean>
           
 	<util:map id="updateMetadataNamespaces">
