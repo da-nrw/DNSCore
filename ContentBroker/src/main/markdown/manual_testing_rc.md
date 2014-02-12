@@ -192,35 +192,68 @@ innerhalb des IntegrationTests wird die Funktionalität des Audits bereits getes
 
 **Akzeptanzkriterien:**
 
-1. Es wird eine Email an den Auftraggeber (Nodeadmin) gesendet. Diese enthält die Bezeichnung des kaputten Objekts.
-1. Die ausgabe erfolgt auch im integrity.log unter /Contentbroker/logs/  
+* Es wird eine Email an den Auftraggeber (Nodeadmin) gesendet. Diese enthält die Bezeichnung des kaputten Objekts.
+* Die ausgabe erfolgt auch im integrity.log unter /Contentbroker/logs/  
 
 ### ME1 - messages
 
-Meldungen der autom. Schnittstelle testen
-DA-WEB.
+Meldungen der autom. Schnittstelle testen der DA-WEB. (Menüpunkt "Ansteuerung über externe Systeme") 
+Jeweils wird die Statusschnittstelle abgefragt. Es ist ein erneuter Login erforderlich.
 
-Ein Objekt in Bearbeitung ist in Status : in progress
-Ein fehlerhaftes Objekt in Bearbeitung ist in Status : in failure (error state)
 
-Ein Objekt welches archiviert ist, hat den Status archived
+**Vorbedingung**
+* Es gibt ein fertig eingeliefertes, archiviertes Objekt, welches keinen Queue Eintrag mehr hat
+* Es gibt ein fertig eingeliefertes, archiviertes Objekt, welches ein Delta oder Retrieval bekommt
+* Es gibt ein noch nicht fertig eingeliefertes Objekt, welches im Fehlerstatus ist. 
 
-Ein Objekt, zu dem ein Delta angeliefert wird "archived - but in progress"
+**Akzeptanzkriterien:**
+
+* Der JSON Response Text gibt den korrekten status wieder: 
+* Ein fehlerhaftes Objekt in Bearbeitung ist in Status : in failure (error state)
+* Ein Objekt welches archiviert ist, hat den Status archived
+* Ein Objekt, zu dem ein Delta angeliefert wird "archived - but in progress"
 
 ### RE1 - retrieval
 
-Ein Objekt wird mittels JSON Request zum Retrieval angefragt.
+Ein Objekt wird mittels JSON Request zum Retrieval angefragt. Dazu gibt es einen "Browser" im 
+(Menüpunkt "Ansteuerung über externe Systeme"), Erstellung von Retrievalanfragen. Es ist ein erneuter Login erforderlich.
+Dieser löst JSON POST Aktionen aus, die einen Retrievalrequest erzeugen.  
+
+**Vorbedingung**
+
+Es gibt mindestens ein bereits archiviertes Objekt. Der Identifier des Objekts ist bekannt. 
+
+**Akzeptanzkriterien:**
+
+Es wird auf Anfrage ein Retrievalrequest erzeugt. 
 
 ### AD1 - administration
 
-Start und Stoppen der Factory als Admin
+**Vorbedingung**
+
+Login als DA-Admin ist an der DA-Web erfolgreich. Der Punkt "Adminfunktion" erscheint im Hauptmenü.
+Nacheinander werden alle Buttons der DA-WEB zur Administration des CB gedrückt. 
+
+**Akzeptanzkriterien:**
+
+Der CB meldet jeweils das Resultat erfolgreich zurück. 
+Fehlermeldungen in der Paketverarbeitung erscheinen im unteren Fenster. 
 
 ### MS 1 : Microsoft Office Formate
 
-testPackage_doxc.tgz wird eingespielt.
+Dieser Test überprüft die autom. Konvertierung eines Office Formats (DOCX) in ein PDF/A 
+
+**Vorbedingung**
+Der Webservice auf dediziertem Server muss erreichbar sein und laufen.
+
+**testPackage_doxc.tgz** wird eingespielt und anschl. zurückgeladen.
 
 **Akzeptanzkriterien:**
-ist ein PDFA
+
+Der Ingest verläuft erfolgreich, das Paket wird archiviert. 
+Das DIP enthält nach Download ein PDF/A der DOCX Datei. 
+
+
 
 
 
