@@ -92,23 +92,23 @@ public class PublishVideoConversionStrategyTests {
 		
 		
 		String cmdPUBLIC[] = new String[]{
-				"./handBrake.sh",
+				"HandBrakeCLI",
 				"-i",
-				"\"" + new File(basePath + "TEST/1/data/a/filename.avi").getAbsolutePath() + "\"",
+				new File(basePath + "TEST/1/data/a/filename.avi").getAbsolutePath(),
 				"-o",
-				"\"" + basePath + "TEST/1/data/dip/public/target/filename.mp4\"",
+				basePath + "TEST/1/data/dip/public/target/filename.mp4",
 				"-e","x264","-f","mp4","-E","faac",
-				"-l","360","--stop-at","duration:180", ">", "/dev/null"
+				"-l","360","--stop-at","duration:180"
 		};
 		when(cli.execute(cmdPUBLIC)).thenReturn(true);
 		
 		String cmdINSTITUTION[] = new String[]{
-				"./handBrake.sh",
+				"HandBrakeCLI",
 				"-i",
-				"\"" + new File(basePath + "TEST/1/data/a/filename.avi").getAbsolutePath() + "\"",
+				new File(basePath + "TEST/1/data/a/filename.avi").getAbsolutePath(),
 				"-o",
-				"\"" + basePath + "TEST/1/data/dip/institution/target/filename.mp4\"",
-				"-e","x264","-f","mp4","-E","faac", ">", "/dev/null"
+				basePath + "TEST/1/data/dip/institution/target/filename.mp4",
+				"-e","x264","-f","mp4","-E","faac"
 		};
 		when(cli.execute(cmdINSTITUTION)).thenReturn(true);
 		
