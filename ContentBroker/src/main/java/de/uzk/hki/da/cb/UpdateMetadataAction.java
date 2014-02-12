@@ -40,6 +40,7 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import de.uzk.hki.da.core.ConfigurationException;
+import de.uzk.hki.da.metadata.XmpCollector;
 import de.uzk.hki.da.metadata.XsltGenerator;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -266,22 +267,9 @@ public class UpdateMetadataAction extends AbstractAction {
 						|| Arrays.asList(repNames).contains(sidecarSourceFile.getRep_name())) continue;
 				logger.debug("found xmp sidecar: {}", sidecarSourceFile);
 
-				// TODO factor block out
-				String baseName = "";
-				for (Event evt:object.getLatestPackage().getEvents()){
-					if (evt.getType().equals("CONVERT")&&
-							FilenameUtils.getPath(evt.getSource_file().getRelative_path()).
-								equals(FilenameUtils.getPath(sidecarSourceFile.getRelative_path()))){
-						baseName = FilenameUtils.getBaseName(evt.getTarget_file().getRelative_path());
-						break;
-					}
-				}
-				if (baseName.equals("")) throw new RuntimeException("baseName must not be null");
-				
-				
 				DAFile sidecarTargetFile = new DAFile(object.getLatestPackage(),repName,
 						FilenameUtils.getPath(sidecarSourceFile.getRelative_path())+"/"+
-						baseName+".xmp");
+								determineTargetBaseName(sidecarSourceFile)+".xmp");
 				logger.debug("Copying {} to {}", sidecarSourceFile, sidecarTargetFile.toString());
 				FileUtils.copyFile(sidecarSourceFile.toRegularFile(), sidecarTargetFile.toRegularFile());
 				sidecarTargetFile.setFormatPUID(sidecarSourceFile.getFormatPUID());
@@ -292,10 +280,24 @@ public class UpdateMetadataAction extends AbstractAction {
 			}
 			logger.debug("collecting files in path: {}", repPath);
 			
-//			XmpCollector.collect(repDir, new File(repPath + "/XMP.rdf"));
+			XmpCollector.collect(repDir, new File(repPath + "/XMP.rdf"));
 			object.getLatestPackage().getFiles().add(
 					new DAFile(object.getLatestPackage(),repName,"XMP.rdf"));
 		}
+	}
+
+	private String determineTargetBaseName(DAFile sidecarSourceFile) {
+		String baseName = "";
+		for (Event evt:object.getLatestPackage().getEvents()){
+			if (evt.getType().equals("CONVERT")&&
+					FilenameUtils.getPath(evt.getSource_file().getRelative_path()).
+						equals(FilenameUtils.getPath(sidecarSourceFile.getRelative_path()))){
+				baseName = FilenameUtils.getBaseName(evt.getTarget_file().getRelative_path());
+				break;
+			}
+		}
+		if (baseName.equals("")) throw new RuntimeException("baseName must not be null");
+		return baseName;
 	}
 
 	private Event createCopyEvent(DAFile sidecarSourceFile,

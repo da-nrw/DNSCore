@@ -20,25 +20,26 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+import org.apache.commons.io.FileUtils;
+import org.jdom.JDOMException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.ActionCommunicatorService;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.Event;
-import de.uzk.hki.da.core.ActionCommunicatorService;
 import de.uzk.hki.da.service.UpdateMetadataService;
 import de.uzk.hki.da.utils.TESTHelper;
 
-// TODO put to simple suite
 /**
  * @author Daniel M. de Oliveira
  */
@@ -48,16 +49,22 @@ public class UpdateMetadataActionXMPTests {
 	
 	@Before
 	public void setUp() throws Exception {
+		FileUtils.copyDirectoryToDirectory(new File("src/main/xslt"), new File("conf/"));
 	}
 
 	@After
 	public void tearDown() throws Exception {
 		new File(workAreaRootPath+"TEST/123/data/dip/public/hash.xmp").delete();
 		new File(workAreaRootPath+"TEST/123/data/dip/institution/hash.xmp").delete();
+		new File(workAreaRootPath+"TEST/123/data/dip/public/XMP.rdf").delete();
+		new File(workAreaRootPath+"TEST/123/data/dip/institution/XMP.rdf").delete();
+		new File(workAreaRootPath+"TEST/123/data/dip/public/DC.xml").delete();
+		new File(workAreaRootPath+"TEST/123/data/dip/institution/DC.xml").delete();
+		FileUtils.deleteDirectory(new File("conf/xslt"));
 	}
 
 	@Test
-	public void test() throws IOException {
+	public void test() throws IOException, JDOMException {
 		Object obj = TESTHelper.setUpObject("123", workAreaRootPath);
 		
 		
@@ -118,6 +125,9 @@ public class UpdateMetadataActionXMPTests {
 		
 		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/public/hash.xmp").exists());
 		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/institution/hash.xmp").exists());
+		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/public/XMP.rdf").exists());
+		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/institution/XMP.rdf").exists());
+		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/public/DC.xml").exists());
+		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/institution/DC.xml").exists());
 	}
-
 }
