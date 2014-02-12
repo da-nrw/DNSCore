@@ -73,14 +73,14 @@ Nachdem es im Fedora angekommen ist, müssen die folgenden Daten verifiziert wer
 * Wurden EDM-Metadaten generiert? Sind diese korrekt, d.h. sind im RDF auf den ersten Blick sinnvolle Felder und Werte erkennbar?
 
 
-### PR1 - Publikationsrechte 
+### RI1 - Publikationsrechte 
 
 **testpackages:**
 
 * Als Grundlage dienen drei Pakete
-** das erste ('''DEL3_Bagit_TestPaket1.tgz''') enthält die Datei bild1.bmp. Ohne Restriktionen für alle zugänglich.
-** das zweite ('''DEL3_Bagit_TestPaket2.tgz''') enthält kein Bild. Die Contracteinstellungen sind aber so geändert, dass dabei für die Öffentlichkeit eine niedrigere Ansichts-Auflösung gewählt ist.
-** das dritte ('''DEL3_Bagit_TestPaket3.tgz''') enthält auch kein Bild. Die Rechte sind aber so geändert, dass das Bild überhaupt nicht zur Publikation freigegeben ist.
+  * das erste ('''DEL3_Bagit_TestPaket1.tgz''') enthält die Datei bild1.bmp. Ohne Restriktionen für alle zugänglich.
+  * das zweite ('''DEL3_Bagit_TestPaket2.tgz''') enthält kein Bild. Die Contracteinstellungen sind aber so geändert, dass dabei für die Öffentlichkeit eine niedrigere Ansichts-Auflösung gewählt ist.
+  * das dritte ('''DEL3_Bagit_TestPaket3.tgz''') enthält auch kein Bild. Die Rechte sind aber so geändert, dass das Bild überhaupt nicht zur Publikation freigegeben ist.
 
 **Ablauf**
 
@@ -91,7 +91,7 @@ Nachdem es im Fedora angekommen ist, müssen die folgenden Daten verifiziert wer
 1. Das dritte Paket wird entsprechend dem Namen des ersten Pakets benannt eingeliefert.
 1. Prüfung des Ergebnisses im PR
 
-'''Akzeptanzkriterien'''
+**Akzeptanzkriterien**
 * zu 2: Objekt im PR vorhanden, ein JPEG mit voller Auflösung (ca. 2000x3000px) vorhanden.
 * zu 4: Objekt im PR vorhanden, ein JPEG mit begrenzter Auflösung (ca. 200x300) vorhanden.
 * zu 6: Objekt im PR nicht mehr vorhanden
@@ -110,7 +110,7 @@ In diesem Test sollen auftretende Probleme mit langen Dateinamen oder Pfaden auf
 * Die Pakete sind im PR einsehbar.
 * Sie enthalten jeweils 3 JPGs, deren Namen hashcodiert sind.
 
-### MA1 - Massentest- Threading ==
+### MA1 - Massentest- Threading
 
 Dieser Test ist als Stresstest gedacht, der mögliche Probleme mit dem Threading-Konzept aufdecken soll.
 
@@ -123,7 +123,7 @@ Dieser Test ist als Stresstest gedacht, der mögliche Probleme mit dem Threading
 1. Alle Pakete müssen erfolgreich durchlaufen.
 1. Niemals während der gesamten Verarbeitung dürfen pro Action-Typ mehr als 3 Threads gleichzeitig laufen (= Status xx2 haben).
 
-### BI1 - big - Großes Paket mit vielen kleinen Dateien ==
+### BI1 - big - Großes Paket mit vielen kleinen Dateien
 
 Dieser Test zielt drauf ab, ob ein sehr großes Paket mit vielen Dateien korrekt verarbeitet wird und der ob der dabei benötigte Speicherplatz auch wieder freigegeben wird.
 
