@@ -83,7 +83,15 @@ esac
 
 cd ../DAWeb
 ./build.sh prod
+if [ "$?"="1" ]
+then
+	exit 1
+fi 
 mv target/daweb3-$VERSION.war ../installation/daweb3.war
+if [ "$?"="1" ]
+then
+	exit 1
+fi 
 cd ../ContentBroker
 
 
