@@ -46,9 +46,10 @@ class CbtalkController {
 			
 		def messages = cbtalkService.getMessages()
 		def errors = cberrorService.getMessages()
-		
+		def date = new Date();
 		[messages: messages,
-			errors: errors]
+			errors: errors,
+			date: date]
 		}
 	}
 	
