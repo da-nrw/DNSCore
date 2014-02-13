@@ -54,12 +54,18 @@ public class UpdateMetadataActionXMPTests {
 
 	@After
 	public void tearDown() throws Exception {
-		new File(workAreaRootPath+"TEST/123/data/dip/public/hash.xmp").delete();
-		new File(workAreaRootPath+"TEST/123/data/dip/institution/hash.xmp").delete();
+		new File(workAreaRootPath+"TEST/123/data/dip/public/hasha.xmp").delete();
+		new File(workAreaRootPath+"TEST/123/data/dip/institution/hasha.xmp").delete();
+		new File(workAreaRootPath+"TEST/123/data/dip/public/hashb.xmp").delete();
+		new File(workAreaRootPath+"TEST/123/data/dip/institution/hashb.xmp").delete();
 		new File(workAreaRootPath+"TEST/123/data/dip/public/XMP.rdf").delete();
 		new File(workAreaRootPath+"TEST/123/data/dip/institution/XMP.rdf").delete();
 		new File(workAreaRootPath+"TEST/123/data/dip/public/DC.xml").delete();
 		new File(workAreaRootPath+"TEST/123/data/dip/institution/DC.xml").delete();
+		new File(workAreaRootPath+"TEST/123/data/dip/public/a.xmp").delete();
+		new File(workAreaRootPath+"TEST/123/data/dip/institution/a.xmp").delete();
+		new File(workAreaRootPath+"TEST/123/data/dip/public/b.xmp").delete();
+		new File(workAreaRootPath+"TEST/123/data/dip/institution/b.xmp").delete();
 		FileUtils.deleteDirectory(new File("conf/xslt"));
 	}
 
@@ -67,14 +73,16 @@ public class UpdateMetadataActionXMPTests {
 	public void test() throws IOException, JDOMException {
 		Object obj = TESTHelper.setUpObject("123", workAreaRootPath);
 		
-		
 		DAFile daf1 = new DAFile(obj.getLatestPackage(),"a","a.txt");
 		DAFile daf2 = new DAFile(obj.getLatestPackage(),"b","a.txt");
 		DAFile daf3 = new DAFile(obj.getLatestPackage(),"b","a.xmp");
-		DAFile daf4 = new DAFile(obj.getLatestPackage(),"dip/institution","hash.txt");
-		DAFile daf5 = new DAFile(obj.getLatestPackage(),"dip/public","hash.txt");
-		DAFile daf6 = new DAFile(obj.getLatestPackage(),"dip/public","XMP.rdf");
-		DAFile daf7 = new DAFile(obj.getLatestPackage(),"dip/institution","XMP.rdf");
+		DAFile daf4 = new DAFile(obj.getLatestPackage(),"dip/institution","hasha.txt");
+		DAFile daf5 = new DAFile(obj.getLatestPackage(),"dip/public","hasha.txt");
+		DAFile daf6 = new DAFile(obj.getLatestPackage(),"dip/public","hashb.txt");
+		DAFile daf7 = new DAFile(obj.getLatestPackage(),"dip/institution","hashb.txt");
+		DAFile daf8 = new DAFile(obj.getLatestPackage(),"a","b.txt");
+		DAFile daf9 = new DAFile(obj.getLatestPackage(),"b","b.txt");
+		DAFile daf10 = new DAFile(obj.getLatestPackage(),"b","b.xmp");
 	
 		Event evt1  = new Event();
 		evt1.setSource_file(daf2);
@@ -86,6 +94,26 @@ public class UpdateMetadataActionXMPTests {
 		evt2.setTarget_file(daf5);
 		evt2.setType("CONVERT");
 		
+		Event evt3  = new Event();
+		evt3.setSource_file(daf9);
+		evt3.setTarget_file(daf6);
+		evt3.setType("CONVERT");
+		
+		Event evt4  = new Event();
+		evt4.setSource_file(daf9);
+		evt4.setTarget_file(daf7);
+		evt4.setType("CONVERT");
+		
+		Event evt5  = new Event();
+		evt5.setSource_file(daf1);
+		evt5.setTarget_file(daf2);
+		evt5.setType("CONVERT");
+		
+		Event evt6  = new Event();
+		evt6.setSource_file(daf8);
+		evt6.setTarget_file(daf9);
+		evt6.setType("CONVERT");
+		
 		obj.getLatestPackage().getFiles().add(daf1);
 		obj.getLatestPackage().getFiles().add(daf2);
 		obj.getLatestPackage().getFiles().add(daf3);
@@ -93,10 +121,15 @@ public class UpdateMetadataActionXMPTests {
 		obj.getLatestPackage().getFiles().add(daf5);
 		obj.getLatestPackage().getFiles().add(daf6);
 		obj.getLatestPackage().getFiles().add(daf7);
+		obj.getLatestPackage().getFiles().add(daf8);
+		obj.getLatestPackage().getFiles().add(daf9);
+		obj.getLatestPackage().getFiles().add(daf10);
 		obj.getLatestPackage().getEvents().add(evt1);
 		obj.getLatestPackage().getEvents().add(evt2);
-		
-		
+		obj.getLatestPackage().getEvents().add(evt3);
+		obj.getLatestPackage().getEvents().add(evt4);
+		obj.getLatestPackage().getEvents().add(evt5);
+		obj.getLatestPackage().getEvents().add(evt6);
 		
 		// set up object - end
 		
@@ -123,8 +156,10 @@ public class UpdateMetadataActionXMPTests {
 		
 		action.implementation();
 		
-		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/public/hash.xmp").exists());
-		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/institution/hash.xmp").exists());
+		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/public/hasha.xmp").exists());
+		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/institution/hasha.xmp").exists());
+		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/public/hashb.xmp").exists());
+		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/institution/hashb.xmp").exists());
 		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/public/XMP.rdf").exists());
 		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/institution/XMP.rdf").exists());
 		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/public/DC.xml").exists());

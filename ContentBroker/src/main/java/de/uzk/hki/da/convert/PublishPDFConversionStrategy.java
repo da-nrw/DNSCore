@@ -82,9 +82,11 @@ public class PublishPDFConversionStrategy extends PublishConversionStrategyBase 
 				if (getPublicationRightForAudience(audience).getTextRestriction()!=null)
 					if (getPublicationRightForAudience(audience).getTextRestriction().getCertainPages()!=null)
 						for (int i=0;i<getPublicationRightForAudience(audience).getTextRestriction().getCertainPages().length;i++){
+							if (!certainPagesText.equals(""))
+								certainPagesText += " ";
 							certainPagesText+=getPublicationRightForAudience(audience).getTextRestriction().getCertainPages()[i];
-							logger.debug(":"+i);
 						}
+				logger.debug("reduce to certain pages: " + certainPagesText);
 				
 			}
 					

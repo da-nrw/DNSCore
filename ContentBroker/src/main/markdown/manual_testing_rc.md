@@ -23,7 +23,7 @@ Nachdem es im Fedora angekommen ist, müssen die folgenden Daten verifiziert wer
 
 **Akzeptanzkriterien**
 
-Nachdem es das Paket komplett verarbeitet wurde, müssen die folgenden Daten verifiziert werden:
+Nachdem das Paket komplett verarbeitet wurde, müssen die folgenden Daten verifiziert werden:
 
 * Wurden DC-Metadaten (z.B. Titel) generiert? Wenn es nicht funktioniert, sieht man die URN als Titel.
 * Sind die Pfade in EAD angepasst? daoloc-Element -> Pfade mit ersetzten Dateinamen (data.danrw.....hash.jpg)
@@ -147,6 +147,8 @@ Bitte vorher überprüfen, ob das Testpaket an der Kommandozeile richtig entpack
 
 ### BI3 - Rheinländer Paket - Test mit Realdaten
 
+* Es handelt sich um ein EAD-Testpaket, welches auf viele eingebettete Mets-Dateien referenziert.
+* Das Testpaket hat unter anderem die Eigenschaften, viele Multipage-Tiffs zu beinhalten.
 
 ### PR1 - presentation - Presentation
 
@@ -195,7 +197,7 @@ innerhalb des IntegrationTests wird die Funktionalität des Audits bereits getes
 * Es wird eine Email an den Auftraggeber (Nodeadmin) gesendet. Diese enthält die Bezeichnung des kaputten Objekts.
 * Die ausgabe erfolgt auch im integrity.log unter /Contentbroker/logs/  
 
-### ME1 - messages
+### MSG1 - messages
 
 Meldungen der autom. Schnittstelle testen der DA-WEB. (Menüpunkt "Ansteuerung über externe Systeme") 
 Jeweils wird die Statusschnittstelle abgefragt. Es ist ein erneuter Login erforderlich.

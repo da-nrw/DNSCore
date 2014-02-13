@@ -85,7 +85,7 @@ public class PublishPDFConversionStrategyTests {
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
 		right.setTextRestriction(new TextRestriction());
-		right.getTextRestriction().setPages(7);
+		right.getTextRestriction().setCertainPages(new int[] { 1, 2, 7, 10, 12, 14, 15});
 		o.getRights().getPublicationRights().add(right);
 		
 		

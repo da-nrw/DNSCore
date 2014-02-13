@@ -265,7 +265,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			for (DAFile sidecarSourceFile : object.getNewestFilesFromAllRepresentations("xmp;XMP")) {
 				if (!sidecarSourceFile.getRelative_path().toLowerCase().endsWith(".xmp")
 						|| Arrays.asList(repNames).contains(sidecarSourceFile.getRep_name())) continue;
-				logger.debug("found xmp sidecar: {}", sidecarSourceFile);
+				logger.debug("Found xmp sidecar: {}", sidecarSourceFile);
 
 				DAFile sidecarTargetFile = new DAFile(object.getLatestPackage(),repName,
 						FilenameUtils.getPath(sidecarSourceFile.getRelative_path())+"/"+
@@ -290,8 +290,8 @@ public class UpdateMetadataAction extends AbstractAction {
 		String baseName = "";
 		for (Event evt:object.getLatestPackage().getEvents()){
 			if (evt.getType().equals("CONVERT")&&
-					FilenameUtils.getPath(evt.getSource_file().getRelative_path()).
-						equals(FilenameUtils.getPath(sidecarSourceFile.getRelative_path()))){
+					FilenameUtils.removeExtension(evt.getSource_file().toRegularFile().getAbsolutePath()).
+						equals(FilenameUtils.removeExtension(sidecarSourceFile.toRegularFile().getAbsolutePath()))){
 				baseName = FilenameUtils.getBaseName(evt.getTarget_file().getRelative_path());
 				break;
 			}
@@ -299,6 +299,8 @@ public class UpdateMetadataAction extends AbstractAction {
 		if (baseName.equals("")) throw new RuntimeException("baseName must not be null");
 		return baseName;
 	}
+	
+	
 
 	private Event createCopyEvent(DAFile sidecarSourceFile,
 			DAFile sidecarTargetFile) {
