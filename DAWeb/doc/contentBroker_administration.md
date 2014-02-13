@@ -1,0 +1,45 @@
+### Administration of DNS
+
+Users being "Administrators" are able to perform several tasks a normal user can't.
+Some of the features being available are listed below.
+
+#### View CB Error Messages 
+
+Error Messages of CB are listed in the frontend being available as "Adminstrative Funktionen" 
+on Homepage. The newest message is on top. The reason for listing is to make debugging 
+of errors more easily and (in case you've more than one node to administer) to view errors 
+of other nodes as well. 
+
+#### Starting / Stopping CB-Factory 
+
+In case of shutting down CB, you should use the Stop Factory button, 
+avoiding uncontrolled interruption on work done by CB. After hitting the butoon stop factory 
+CB will stop working after having performed all running tasks completely. 
+
+#### Show Actions 
+
+To view what your CB process actually is performing you may hit he Show actions button. 
+
+#### Graceful CB shutdown 
+
+Hitting this button will cause CB to stop main execution thread after having completed all 
+running actions. Please notice : There might be still processes called 
+
+<pre>java -jar ContenBroker</pre>
+
+Please execute after doing graceful shutdown by
+<pre>ContentBroker_stop.sh</pre>
+ 
+#### Reload PIP
+
+For convinence Admins can perform a rebuild of PIP (Presentation  Information packages). 
+The PIP is being built on basis of the latest version, including all deltas. 
+
+#### Reindex Elasticserach
+
+For convinence Admins can perform a rebuild of elastic search index insertion on basis of latest
+PIP. 
+
+#### Recover and Deletion of entries
+
+Admins can perform adequate recover processes if they could be carried out by the system. 

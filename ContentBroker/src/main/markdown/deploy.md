@@ -2,6 +2,13 @@
 * developer@machine = development workstation
 * DNSCore = clone of the git repository
 
+### Prerequisites
+
+To build DNS Core successfully you'll need at least a developer engine with
+* JAVA 1.6
+* MAVEN
+* Grails 2.2.4 in order to compile DA-WEB 
+
 ### Continuous Delivery Workflow
 
 * Commit and push regularly. Ideally after every small task. If necessary divide bigger tasks in smaller subtasks.
