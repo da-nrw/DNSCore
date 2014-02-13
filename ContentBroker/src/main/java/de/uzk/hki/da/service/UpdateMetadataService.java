@@ -65,6 +65,8 @@ public class UpdateMetadataService {
 	/** The xpaths to urls. */
 	private Map<String,String> xpathsToUrls = new HashMap<String,String>();
 	
+	
+	
 	/**
 	 * Renames the sidecar files according to the renaming
 	 * that occurred when converting the corresponding
@@ -78,7 +80,6 @@ public class UpdateMetadataService {
 			Package pkg,
 			String repName)
 	{
-		
 		for (Event e:pkg.getEvents()) {
 					
 			if (!"CONVERT".equals(e.getType())
@@ -109,17 +110,16 @@ public class UpdateMetadataService {
 						+ hash + "." + sidecarExtension;
 				if (newSidecarFilePath.equals(sidecarFilePath)) continue;
 				File newSidecarFile = new File(sidecarFile.getAbsolutePath().replaceAll(Pattern.quote(sidecarFilePath)+"$", newSidecarFilePath));
+				
 				logger.debug("moving sidecar file {} to {}", sidecarFile.getAbsolutePath(), newSidecarFile.getAbsolutePath());
 				try {
 					FileUtils.moveFile(sidecarFile, newSidecarFile);
 				} catch (IOException e1) {
 					throw new RuntimeException("Unable to move sidecar file " + sidecarFilePath + " to " + newSidecarFilePath, e1);
-				}
-			}
-			
-		}
-		
-	}
+	}	}   }   }
+
+	
+	
 	
 	/**
 	 * Update paths in a packages metadata.
