@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Controls and coordinates the work of the action factory and its associate
- * classes. Server is now using NIO
+ * classes. 
  * 
  * @author Daniel M. de Oliveira
  * @author Jens Peters
@@ -169,11 +169,7 @@ public class Controller implements Runnable {
                     System.exit(0);
 				} 
                 if (!messageSend.equals("")) {
-                	String text = "Hello Client, this is ContentBroker running at " + serverName;
-                	TextMessage messageGreeting = session.createTextMessage(text);
                 	TextMessage message = session.createTextMessage(messageSend);
-                	
-                    producer.send(messageGreeting);
                     producer.send(message);
                 }
             }

@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -251,6 +250,8 @@ public class UpdateMetadataAction extends AbstractAction {
 
 	/**
 	 * Copy xmp sidecar files and collect them into one "XMP manifest"
+	 * @author Sebastian Cuy
+	 * @author Daniel M. de Oliveira
 	 * @throws IOException
 	 */
 	private void collectXMP() throws IOException {
@@ -261,46 +262,54 @@ public class UpdateMetadataAction extends AbstractAction {
 				logger.info("representation directory {} does not exist. Skipping ...", repPath);
 				continue;
 			}
-			List<DAFile> files = object.getNewestFilesFromAllRepresentations("xmp;XMP");
-			for (DAFile file : files) {
-				logger.debug("checking if file is xmp sidecar: {}", file);
-				if (file.getRelative_path().toLowerCase().endsWith(".xmp")
-						&& !Arrays.asList(repNames).contains(file.getRep_name())) {
+			for (DAFile sidecarSourceFile : object.getNewestFilesFromAllRepresentations("xmp;XMP")) {
+				if (!sidecarSourceFile.getRelative_path().toLowerCase().endsWith(".xmp")
+						|| Arrays.asList(repNames).contains(sidecarSourceFile.getRep_name())) continue;
+				logger.debug("found xmp sidecar: {}", sidecarSourceFile);
 
-					File targetDir = new File(repPath+"/"+FilenameUtils.getPath(file.getRelative_path()));
-					
-					logger.debug("Copying {} to {}", file, targetDir);
-					FileUtils.copyFileToDirectory(file.toRegularFile(), targetDir);
-					DAFile daFile = 
-							new DAFile(object.getLatestPackage(), repName, file.getRelative_path());
-					daFile.setFormatPUID(file.getFormatPUID());
-					object.getLatestPackage().getFiles().add(daFile);
-					
-					Event e = new Event();							
-					for (Package p : object.getPackages()) {
-						for (DAFile f : p.getFiles()) {
-							if (file.toRegularFile().getAbsolutePath()
-									.equals(f.toRegularFile().getAbsolutePath())) {
-								e.setSource_file(f);
-							}
-						}
-					}							
-					e.setTarget_file(daFile);
-					e.setType("COPY");
-					e.setDate(new Date());
-					e.setAgent_type("NODE");
-					e.setAgent_name(object.getTransientNodeRef().getName());							
-					object.getLatestPackage().getEvents().add(e);
-					logger.debug("created DAFile: {}", daFile);
-				}
+				DAFile sidecarTargetFile = new DAFile(object.getLatestPackage(),repName,
+						FilenameUtils.getPath(sidecarSourceFile.getRelative_path())+"/"+
+								determineTargetBaseName(sidecarSourceFile)+".xmp");
+				logger.debug("Copying {} to {}", sidecarSourceFile, sidecarTargetFile.toString());
+				FileUtils.copyFile(sidecarSourceFile.toRegularFile(), sidecarTargetFile.toRegularFile());
+				sidecarTargetFile.setFormatPUID(sidecarSourceFile.getFormatPUID());
+				
+				object.getLatestPackage().getFiles().add(sidecarTargetFile);
+				object.getLatestPackage().getEvents().add(
+						createCopyEvent(sidecarSourceFile, sidecarTargetFile));
 			}
-			getUpdateMetadataService().renameSidecarFiles(object, object.getLatestPackage(), repName);
 			logger.debug("collecting files in path: {}", repPath);
 			
 			XmpCollector.collect(repDir, new File(repPath + "/XMP.rdf"));
 			object.getLatestPackage().getFiles().add(
 					new DAFile(object.getLatestPackage(),repName,"XMP.rdf"));
 		}
+	}
+
+	private String determineTargetBaseName(DAFile sidecarSourceFile) {
+		String baseName = "";
+		for (Event evt:object.getLatestPackage().getEvents()){
+			if (evt.getType().equals("CONVERT")&&
+					FilenameUtils.getPath(evt.getSource_file().getRelative_path()).
+						equals(FilenameUtils.getPath(sidecarSourceFile.getRelative_path()))){
+				baseName = FilenameUtils.getBaseName(evt.getTarget_file().getRelative_path());
+				break;
+			}
+		}
+		if (baseName.equals("")) throw new RuntimeException("baseName must not be null");
+		return baseName;
+	}
+
+	private Event createCopyEvent(DAFile sidecarSourceFile,
+			DAFile sidecarTargetFile) {
+		Event e = new Event();							
+		e.setTarget_file(sidecarTargetFile);
+		e.setSource_file(sidecarSourceFile);
+		e.setType("COPY");
+		e.setDate(new Date());
+		e.setAgent_type("NODE");
+		e.setAgent_name(object.getTransientNodeRef().getName());
+		return e;
 	}
 
 	private void logConvertEventsOnDebugLevel() {

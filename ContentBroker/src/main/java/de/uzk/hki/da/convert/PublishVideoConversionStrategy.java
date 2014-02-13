@@ -76,16 +76,15 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 		new File(object.getDataPath()+"dip/institution/"+ci.getTarget_folder()).mkdirs();
 		
 		String cmdPUBLIC[] = new String[]{
-				"./handBrake.sh",
+				"HandBrakeCLI",
 				"-i",
-				"\"" + ci.getSource_file().toRegularFile().getAbsolutePath() + "\"",
+				ci.getSource_file().toRegularFile().getAbsolutePath(),
 				"-o",
-				"\"" + object.getDataPath()+"dip/public/"+ci.getTarget_folder()+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4\"",
+				object.getDataPath()+"dip/public/"+ci.getTarget_folder()+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4",
 				"-e","x264","-f","mp4","-E","faac"
 		};
 		
 		cmdPUBLIC = (String[]) ArrayUtils.addAll(cmdPUBLIC, getRestrictionParametersForAudience("PUBLIC"));
-		cmdPUBLIC = (String[]) ArrayUtils.addAll(cmdPUBLIC, new String[]{">", "/dev/null"});
 		
 		if (!cliConnector.execute(cmdPUBLIC)){
 			throw new RuntimeException("command not succeeded: " + Arrays.toString(cmdPUBLIC));
@@ -101,16 +100,15 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 		e.setDate(new Date());
 		
 		String cmdINSTITUTION[] = new String[]{
-				"./handBrake.sh",
+				"HandBrakeCLI",
 				"-i",
-				"\"" + ci.getSource_file().toRegularFile().getAbsolutePath() + "\"",
+				ci.getSource_file().toRegularFile().getAbsolutePath(),
 				"-o",
-				"\"" + object.getDataPath()+"dip/institution/"+ci.getTarget_folder()+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4\"",
+				object.getDataPath()+"dip/institution/"+ci.getTarget_folder()+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4",
 				"-e","x264","-f","mp4","-E","faac"
 		};
 
 		cmdINSTITUTION = (String[]) ArrayUtils.addAll(cmdINSTITUTION, getRestrictionParametersForAudience("INSTITUTION"));
-		cmdINSTITUTION = (String[]) ArrayUtils.addAll(cmdINSTITUTION, new String[]{">", "/dev/null"});
 		
 		if (!cliConnector.execute(cmdINSTITUTION))
 			throw new RuntimeException("command not succeeded: " + Arrays.toString(cmdINSTITUTION));

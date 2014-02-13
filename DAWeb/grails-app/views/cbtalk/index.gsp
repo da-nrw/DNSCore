@@ -16,10 +16,9 @@
 			$.PeriodicalUpdater("./messageSnippet",
 				{
 					method: "get",
-					minTimeout: 1000,
-					maxTimeout: 1000,
+					minTimeout: 2000,
+					maxTimeout: 2000,
 					success: function(data) {
-						console.log("success - sort: "+sort+", order: "+order);
 						$("#entry-list").html(data);
 					}
 				}
@@ -43,7 +42,7 @@
    <g:submitButton name="gracefulShutdown" value="ContentBroker graceful shutdown" />  
    <g:submitButton name="showVersion" value="Show Version of ContentBroker" />    
 </g:form>
-
+Rückmeldungen des ContentBroker (können verzögert eintreffen)
 			<!-- This div is updated through the periodical updater -->
 			<div class="list" id="entry-list">
 				<g:include action="messageSnippet" />

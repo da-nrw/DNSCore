@@ -1,9 +1,8 @@
-<r:script>
-<g:if test="${ periodical }">
+<script type="text/javascript"><g:if test="${ periodical }">
 			// comment out next line to stop periodical updater on page load.		
 			$( document ).ready(startUpdater())
 			</g:if>
-</r:script>
+</script>
 <table>
 	<thead>
 		<tr>
@@ -70,7 +69,7 @@
 					</g:link>
 					</g:if>
 					</g:if> 
-					<g:if test="${ statusType == "4" || statusType == "3" || statusType=="1" }">
+					<g:if test="${ queueEntryInstance.showDeletionButton()}">
 						<g:if test="${ statusInt<401 && admin }">
 					<g:link onclick="return confirm('Eintrag löschen. Sind Sie sicher?');" action="queueDelete" id="${queueEntryInstance.id}"><g:img style="width:16px; height:16px" uri="/images/icons/list_remove.png"/>
 					</g:link>

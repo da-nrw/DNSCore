@@ -1,6 +1,8 @@
 The testing chart for release candidates is availabe [here]
 (https://docs.google.com/spreadsheet/ccc?key=0Ash-t_YI6jRrdGhDTUNveGdLSHlwaVRZaDFRVjY4a3c#gid=0)
 
+Most of the testpackages which are small enough to host in github are put to src/test/resources/manual/
+
 
 ### ME1 - Publikationsmetadatentest 1 - METS/MODS
 
@@ -21,7 +23,7 @@ Nachdem es im Fedora angekommen ist, müssen die folgenden Daten verifiziert wer
 
 **Akzeptanzkriterien**
 
-Nachdem es das Paket komplett verarbeitet wurde, müssen die folgenden Daten verifiziert werden:
+Nachdem das Paket komplett verarbeitet wurde, müssen die folgenden Daten verifiziert werden:
 
 * Wurden DC-Metadaten (z.B. Titel) generiert? Wenn es nicht funktioniert, sieht man die URN als Titel.
 * Sind die Pfade in EAD angepasst? daoloc-Element -> Pfade mit ersetzten Dateinamen (data.danrw.....hash.jpg)
@@ -71,14 +73,14 @@ Nachdem es im Fedora angekommen ist, müssen die folgenden Daten verifiziert wer
 * Wurden EDM-Metadaten generiert? Sind diese korrekt, d.h. sind im RDF auf den ersten Blick sinnvolle Felder und Werte erkennbar?
 
 
-### PR1 - Publikationsrechte 
+### RI1 - Publikationsrechte 
 
 **testpackages:**
 
 * Als Grundlage dienen drei Pakete
-** das erste ('''DEL3_Bagit_TestPaket1.tgz''') enthält die Datei bild1.bmp. Ohne Restriktionen für alle zugänglich.
-** das zweite ('''DEL3_Bagit_TestPaket2.tgz''') enthält kein Bild. Die Contracteinstellungen sind aber so geändert, dass dabei für die Öffentlichkeit eine niedrigere Ansichts-Auflösung gewählt ist.
-** das dritte ('''DEL3_Bagit_TestPaket3.tgz''') enthält auch kein Bild. Die Rechte sind aber so geändert, dass das Bild überhaupt nicht zur Publikation freigegeben ist.
+  * das erste ('''DEL3_Bagit_TestPaket1.tgz''') enthält die Datei bild1.bmp. Ohne Restriktionen für alle zugänglich.
+  * das zweite ('''DEL3_Bagit_TestPaket2.tgz''') enthält kein Bild. Die Contracteinstellungen sind aber so geändert, dass dabei für die Öffentlichkeit eine niedrigere Ansichts-Auflösung gewählt ist.
+  * das dritte ('''DEL3_Bagit_TestPaket3.tgz''') enthält auch kein Bild. Die Rechte sind aber so geändert, dass das Bild überhaupt nicht zur Publikation freigegeben ist.
 
 **Ablauf**
 
@@ -89,7 +91,7 @@ Nachdem es im Fedora angekommen ist, müssen die folgenden Daten verifiziert wer
 1. Das dritte Paket wird entsprechend dem Namen des ersten Pakets benannt eingeliefert.
 1. Prüfung des Ergebnisses im PR
 
-'''Akzeptanzkriterien'''
+**Akzeptanzkriterien**
 * zu 2: Objekt im PR vorhanden, ein JPEG mit voller Auflösung (ca. 2000x3000px) vorhanden.
 * zu 4: Objekt im PR vorhanden, ein JPEG mit begrenzter Auflösung (ca. 200x300) vorhanden.
 * zu 6: Objekt im PR nicht mehr vorhanden
@@ -108,7 +110,7 @@ In diesem Test sollen auftretende Probleme mit langen Dateinamen oder Pfaden auf
 * Die Pakete sind im PR einsehbar.
 * Sie enthalten jeweils 3 JPGs, deren Namen hashcodiert sind.
 
-### TESTCASE MA1 - Massentest- Threading ==
+### MA1 - Massentest- Threading
 
 Dieser Test ist als Stresstest gedacht, der mögliche Probleme mit dem Threading-Konzept aufdecken soll.
 
@@ -121,7 +123,7 @@ Dieser Test ist als Stresstest gedacht, der mögliche Probleme mit dem Threading
 1. Alle Pakete müssen erfolgreich durchlaufen.
 1. Niemals während der gesamten Verarbeitung dürfen pro Action-Typ mehr als 3 Threads gleichzeitig laufen (= Status xx2 haben).
 
-### TESTCASE BI1 - big - Großes Paket mit vielen kleinen Dateien ==
+### BI1 - big - Großes Paket mit vielen kleinen Dateien
 
 Dieser Test zielt drauf ab, ob ein sehr großes Paket mit vielen Dateien korrekt verarbeitet wird und der ob der dabei benötigte Speicherplatz auch wieder freigegeben wird.
 
@@ -135,7 +137,7 @@ Dieser Test zielt drauf ab, ob ein sehr großes Paket mit vielen Dateien korrekt
 1. Der Speicherplatz wird erneut geprüft.
 
 
-### TESTCASE BI2 - Großes Paket mit einer großen Datei
+### BI2 - Großes Paket mit einer großen Datei
 
 Dieser Test prüft ob einzelne sehr große Datei korrekt verarbeitet werden kann.
 Bitte vorher überprüfen, ob das Testpaket an der Kommandozeile richtig entpackt werden kann. 
@@ -143,7 +145,7 @@ Bitte vorher überprüfen, ob das Testpaket an der Kommandozeile richtig entpack
  wird eingespielt und anschließend retrieved.
  
 
-### TESTCASE BI3 - Rheinländer Paket - Test mit Realdaten
+### BI3 - Rheinländer Paket - Test mit Realdaten
 
 * Es handelt sich um ein EAD-Testpaket, welches auf viele eingebettete Mets-Dateien referenziert.
 * Das Testpaket hat unter anderem die Eigenschaften, viele Multipage-Tiffs zu beinhalten.
@@ -184,7 +186,7 @@ die Information sind im PR angekommen (TODO - genauere Kriterien festlegen)
 ** ein PDF
 ** Jede dieser Dateien muss eine "niedrige" Auflösung (maximal 480x360px) haben
 
-### TESTCASE AU1 - Audit Checksummen-Test, hier: Hintergrundprozess konfiguriert und läuft
+### AU1 - Audit Checksummen-Test, hier: Hintergrundprozess konfiguriert und läuft
 
 innerhalb des IntegrationTests wird die Funktionalität des Audits bereits getestet (AuditAction). Deiser Test dient nur der Verifikation des Hintergrundprozesses ("Worker"), der die Objekte durchgeht. Dies könnte auch in einem autom. Tests erfolgen. 
 
@@ -192,35 +194,68 @@ innerhalb des IntegrationTests wird die Funktionalität des Audits bereits getes
 
 **Akzeptanzkriterien:**
 
-1. Es wird eine Email an den Auftraggeber (Nodeadmin) gesendet. Diese enthält die Bezeichnung des kaputten Objekts.
-1. Die ausgabe erfolgt auch im integrity.log unter /Contentbroker/logs/  
+* Es wird eine Email an den Auftraggeber (Nodeadmin) gesendet. Diese enthält die Bezeichnung des kaputten Objekts.
+* Die ausgabe erfolgt auch im integrity.log unter /Contentbroker/logs/  
 
-### TESTCASE ME1 - messages
+### MSG1 - messages
 
-Meldungen der autom. Schnittstelle testen
-DA-WEB.
+Meldungen der autom. Schnittstelle testen der DA-WEB. (Menüpunkt "Ansteuerung über externe Systeme") 
+Jeweils wird die Statusschnittstelle abgefragt. Es ist ein erneuter Login erforderlich.
 
-Ein Objekt in Bearbeitung ist in Status : in progress
-Ein fehlerhaftes Objekt in Bearbeitung ist in Status : in failure (error state)
 
-Ein Objekt welches archiviert ist, hat den Status archived
+**Vorbedingung**
+* Es gibt ein fertig eingeliefertes, archiviertes Objekt, welches keinen Queue Eintrag mehr hat
+* Es gibt ein fertig eingeliefertes, archiviertes Objekt, welches ein Delta oder Retrieval bekommt
+* Es gibt ein noch nicht fertig eingeliefertes Objekt, welches im Fehlerstatus ist. 
 
-Ein Objekt, zu dem ein Delta angeliefert wird "archived - but in progress"
+**Akzeptanzkriterien:**
 
-### TESTCASE RE1 - retrieval
+* Der JSON Response Text gibt den korrekten status wieder: 
+* Ein fehlerhaftes Objekt in Bearbeitung ist in Status : in failure (error state)
+* Ein Objekt welches archiviert ist, hat den Status archived
+* Ein Objekt, zu dem ein Delta angeliefert wird "archived - but in progress"
 
-Ein Objekt wird mittels JSON Request zum Retrieval angefragt.
+### RE1 - retrieval
 
-### TESTCASE AD1 - administration
+Ein Objekt wird mittels JSON Request zum Retrieval angefragt. Dazu gibt es einen "Browser" im 
+(Menüpunkt "Ansteuerung über externe Systeme"), Erstellung von Retrievalanfragen. Es ist ein erneuter Login erforderlich.
+Dieser löst JSON POST Aktionen aus, die einen Retrievalrequest erzeugen.  
 
-Start und Stoppen der Factory als Admin
+**Vorbedingung**
+
+Es gibt mindestens ein bereits archiviertes Objekt. Der Identifier des Objekts ist bekannt. 
+
+**Akzeptanzkriterien:**
+
+Es wird auf Anfrage ein Retrievalrequest erzeugt. 
+
+### AD1 - administration
+
+**Vorbedingung**
+
+Login als DA-Admin ist an der DA-Web erfolgreich. Der Punkt "Adminfunktion" erscheint im Hauptmenü.
+Nacheinander werden alle Buttons der DA-WEB zur Administration des CB gedrückt. 
+
+**Akzeptanzkriterien:**
+
+Der CB meldet jeweils das Resultat erfolgreich zurück. 
+Fehlermeldungen in der Paketverarbeitung erscheinen im unteren Fenster. 
 
 ### MS 1 : Microsoft Office Formate
 
-testPackage_doxc.tgz wird eingespielt.
+Dieser Test überprüft die autom. Konvertierung eines Office Formats (DOCX) in ein PDF/A 
+
+**Vorbedingung**
+Der Webservice auf dediziertem Server muss erreichbar sein und laufen.
+
+**testPackage_doxc.tgz** wird eingespielt und anschl. zurückgeladen.
 
 **Akzeptanzkriterien:**
-ist ein PDFA
+
+Der Ingest verläuft erfolgreich, das Paket wird archiviert. 
+Das DIP enthält nach Download ein PDF/A der DOCX Datei. 
+
+
 
 
 

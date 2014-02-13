@@ -80,4 +80,11 @@ class QueueEntry {
 		return Integer.parseInt(status);
 	}
 	
+	boolean showDeletionButton() {
+		def checkfor = ["1","3","4"]
+		def ch = status[-1]
+		if (checkfor.contains(ch)) return true;
+		return false;
+	}
+	
 }

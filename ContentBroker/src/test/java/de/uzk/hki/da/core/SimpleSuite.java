@@ -44,6 +44,7 @@ import de.uzk.hki.da.cb.TarActionTests;
 import de.uzk.hki.da.cb.UnpackActionBagitAndDeltaTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionEADTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionTests;
+import de.uzk.hki.da.cb.UpdateMetadataActionXMPTests;
 import de.uzk.hki.da.convert.CLIConversionStrategyTests;
 import de.uzk.hki.da.convert.ConverterServiceTests;
 import de.uzk.hki.da.convert.FidoCLITest;
@@ -143,7 +144,8 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	FidoCLITest.class,
 	PackageTypeDetectionServiceTests.class,
 	UpdateMetadataActionEADTests.class,
-	DeleteObjectActionTests.class
+	DeleteObjectActionTests.class,
+	UpdateMetadataActionXMPTests.class
 //	HibernateUtilThreadingTest.class
 })
 public class SimpleSuite {

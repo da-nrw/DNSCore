@@ -19,17 +19,12 @@
 package de.uzk.hki.da.service;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.jdom.Attribute;
 import org.jdom.Document;
@@ -42,11 +37,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.utils.Utilities;
-import de.uzk.hki.da.core.UserException.UserExceptionId;
 
 
 /**
@@ -68,60 +62,7 @@ public class UpdateMetadataService {
 	
 	
 	/**
-	 * Renames the sidecar files according to the renaming
-	 * that occurred when converting the corresponding
-	 * image files.
-	 *
-	 * @param pkg the package
-	 * @param repName the name of the target representation
-	 */
-	public void renameSidecarFiles(
-			de.uzk.hki.da.model.Object obj,
-			Package pkg,
-			String repName)
-	{
-		for (Event e:pkg.getEvents()) {
-					
-			if (!"CONVERT".equals(e.getType())
-					|| !e.getTarget_file().getRep_name().equals(repName)) continue;
-			
-			final File srcFile = e.getSource_file().toRegularFile();
-			final File targetFile = e.getTarget_file().toRegularFile();
-			// candidate folder for sidecar is new rep + old rel path
-			final File folder = new File(obj.getDataPath() + e.getTarget_file().getRep_name()
-					+ "/" + e.getSource_file().getRelative_path()).getParentFile();
-			logger.debug("Searching for XMP file to soure file {} in folder {}", srcFile, folder);
-			
-			
-			// rename corresponding sidecar files as well
-			File[] sidecarFiles = folder.listFiles( new FileFilter() {
-				public boolean accept(File pathname) {
-					if (pathname.getName().equals(srcFile.getName())) return false;
-					if (FilenameUtils.getBaseName(pathname.getName())
-							.equals(FilenameUtils.getBaseName(srcFile.getAbsolutePath()))) return true;
-					return false;
-				}
-			});
-			for (File sidecarFile : sidecarFiles) {
-				String hash = FilenameUtils.getBaseName(targetFile.getAbsolutePath());
-				String sidecarExtension = FilenameUtils.getExtension(sidecarFile.getName());
-				String sidecarFilePath = sidecarFile.getAbsolutePath();
-				String newSidecarFilePath = Utilities.slashize(targetFile.getParentFile().getAbsolutePath())
-						+ hash + "." + sidecarExtension;
-				if (newSidecarFilePath.equals(sidecarFilePath)) continue;
-				File newSidecarFile = new File(sidecarFile.getAbsolutePath().replaceAll(Pattern.quote(sidecarFilePath)+"$", newSidecarFilePath));
-				
-				logger.debug("moving sidecar file {} to {}", sidecarFile.getAbsolutePath(), newSidecarFile.getAbsolutePath());
-				try {
-					FileUtils.moveFile(sidecarFile, newSidecarFile);
-				} catch (IOException e1) {
-					throw new RuntimeException("Unable to move sidecar file " + sidecarFilePath + " to " + newSidecarFilePath, e1);
-	}	}   }   }
 
-	
-	
-	
-	/**
 	 * Update paths in a packages metadata.
 	 *
 	 * @param pkg the current package
