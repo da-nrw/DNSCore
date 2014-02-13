@@ -1,6 +1,6 @@
-# Deploy Da-Web3 WAR=
+## Deploy Da-Web3 WAR
 
-## Build Da-Web3
+### Build Da-Web3
 In normal build processes this is done automatically by the install processes called in
 the maven build process. If you want to build DA-Web as isolated project, you will need 
 to have GRAILS installed on your command line, while the project itself is not mavenized 
@@ -10,7 +10,7 @@ The command
 <pre>grails war prod</pre>
 war will build the target file for you. 
 
-## Installation
+### Installation
 
 In most cases dropping the built war into your servlet container and having the 
 <pre>daweb_properties.groovy</pre> in place would be sufficient to run the application. Please
@@ -19,7 +19,7 @@ undeploy former versions of daweb completely.
 Please keep in mind: without having the properties file in place, the webapp won't start 
 at all. 
 
-## Configuration
+### Configuration
 
 We added a configuration system under which you might be able to alter most of the 
 parameters being used in the webapp. 
