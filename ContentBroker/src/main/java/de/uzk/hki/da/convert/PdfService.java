@@ -128,6 +128,8 @@ public class PdfService {
 			targetPdf.save(targetPdfFile);
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to create PDF!", e);
+		} finally {
+			targetPdf.close();
 		}
 
 	}
