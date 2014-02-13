@@ -10,6 +10,15 @@ The command
 <pre>grails war prod</pre>
 war will build the target file for you. 
 
+The build.sh script found in the main dir of the appication is called during maven build on
+ContentBroker. 
+
+### Running DAWeb locally
+
+The DaWeb interface could be executed locally with command 
+<pre>grails dev run-app</pre>
+You must have the daweb3_properties.groovy in xour home dir in the .grails/ dir. Otherwise the webapp won't start!  
+
 ### Installation
 
 In most cases dropping the built war into your servlet container and having the 
