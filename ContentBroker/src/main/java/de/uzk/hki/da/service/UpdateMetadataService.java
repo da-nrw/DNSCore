@@ -59,7 +59,10 @@ public class UpdateMetadataService {
 	/** The xpaths to urls. */
 	private Map<String,String> xpathsToUrls = new HashMap<String,String>();
 	
+	
+	
 	/**
+
 	 * Update paths in a packages metadata.
 	 *
 	 * @param pkg the current package

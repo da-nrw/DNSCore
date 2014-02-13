@@ -147,6 +147,8 @@ Bitte vorher überprüfen, ob das Testpaket an der Kommandozeile richtig entpack
 
 ### BI3 - Rheinländer Paket - Test mit Realdaten
 
+* Es handelt sich um ein EAD-Testpaket, welches auf viele eingebettete Mets-Dateien referenziert.
+* Das Testpaket hat unter anderem die Eigenschaften, viele Multipage-Tiffs zu beinhalten.
 
 ### PR1 - presentation - Presentation
 
