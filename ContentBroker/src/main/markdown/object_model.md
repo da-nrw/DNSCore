@@ -1,18 +1,25 @@
-Object model reference
+## Object model reference
 
-Object
+### Object
 
-Package
+Todo oid and csn + orig_name
+plays a role with deltas
 
-Representation
+### Package
 
-DAFile
+### Representation
 
-Contractor
+a representation is a model entity of second order so to speak and
+is not modeled as a java class in its own right. one can find them
+only as folders in the file system ...
 
-ConversionRoutine
+### DAFile
 
-ConversionPolicy
+### Contractor
+
+### ConversionRoutine
+
+### ConversionPolicy
 
 
 
