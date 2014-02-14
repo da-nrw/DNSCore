@@ -1,6 +1,4 @@
-
-
-## AIP
+# AIP - Specification
 
 After passing the ingest workflow of the ContentBroker, a SIP gets converted
 to a new structure which contains the original data from the SIP as well as
