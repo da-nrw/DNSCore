@@ -36,7 +36,7 @@ grails.project.dependency.resolution = {
 		// runtime 'mysql:mysql-connector-java:5.1.16'
 		runtime 'postgresql:postgresql:9.0-801.jdbc4'
 		runtime 'org.hsqldb:hsqldb:2.3.1'
-		compile('org.apache.activemq:activemq-core:5.3.0',
+		compile('org.apache.activemq:activemq-all:5.8.0',
 			'org.apache.activemq:activeio-core:3.1.2',
 			'org.apache.xbean:xbean-spring:3.7') {
 			 excludes 'activemq-openwire-generator'
@@ -54,7 +54,7 @@ grails.project.dependency.resolution = {
         runtime ":hibernate:$grailsVersion"
         runtime ":jquery:1.7.1"
         runtime ":resources:1.1.6"
-		runtime('org.apache.activemq:activemq-core:5.3.0',
+		runtime('org.apache.activemq:activemq-all:5.8.0',
 			'org.apache.activemq:activeio-core:3.1.2',
 			'org.apache.xbean:xbean-spring:3.7') {
 			 excludes 'activemq-openwire-generator'

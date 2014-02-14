@@ -151,26 +151,30 @@ public class Controller implements Runnable {
 					logger.debug("SHOW_ACTIONS");
 					messageSend = "found " + list.size()+ " working actions"; 
 					ObjectMessage om = session.createObjectMessage((Serializable) list);
-		            producer.send(om);
+		            om.setJMSReplyTo(toServer);
+					producer.send(om);
 				} else if (command.indexOf("GRACEFUL_SHUTDOWN")>=0){ 
 					list = actionRegistry.getCurrentActionDescriptions();
 					actionFactory.pause(true);
 					while (list.size()>0) {
 						String text = "waiting for actions to complete before shut down (" + list.size() +")";
 						TextMessage message = session.createTextMessage(text);
-	                    producer.send(message);
+	                    message.setJMSReplyTo(toServer);
+						producer.send(message);
 	                    Thread.sleep(3000);
 	                    list = actionRegistry.getCurrentActionDescriptions();
 	                }
 					String text = "ContentBroker at " + serverName + " exiting now!";
 					TextMessage message = session.createTextMessage(text);
-                    producer.send(message);
+                    message.setJMSReplyTo(toServer);
+					producer.send(message);
                     Thread.sleep(3000);
                     System.exit(0);
 				} 
                 if (!messageSend.equals("")) {
                 	TextMessage message = session.createTextMessage(messageSend);
-                    producer.send(message);
+                	message.setJMSReplyTo(toServer);
+                	producer.send(message);
                 }
             }
             consumer.close();
