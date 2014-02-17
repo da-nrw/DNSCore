@@ -9,7 +9,7 @@ distribution criteria of long term preservation is met. At this stage we would s
 accessed by a user, the data gets loaded back from long term resources, gets unpacked and a new container only with the 
 data needed in the actual access operation gets build and send back to the user. Here we have our DIP, finally.
 
-![](![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/processing_stages.jpg))
+![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/processing_stages.jpg)
 
 ### Processing stages
 So, what is of main interest here is how to administrate the lifecycle phase of objects while they get processed
