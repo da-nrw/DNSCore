@@ -1,5 +1,4 @@
 
-
 While this is the conceptual model, we deal with these types of data packages in a slightly different terminology
 which is more technical and related to day to day administration needs. When a user sends a selection of data which he considers
 to be a single intelectual entity to the system, it is required that this data is structured in a certain way. 
@@ -11,7 +10,7 @@ distribution criteria of long term preservation is met. At this stage we would s
 accessed by a user, the data gets loaded back from long term resources, gets unpacked and a new container only with the 
 data needed in the actual access operation gets build and send back to the user. Here we have our DIP, finally.
 
-![](https://github.com/da-nrw/DNSCore/tree/master/ContentBroker/src/main/markdown/processing_stages.jpg)
+![](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.jpg)
 
 ### Processing stages
 So, what is of main interest here is how to administrate the lifecycle phase of objects while they get processed
