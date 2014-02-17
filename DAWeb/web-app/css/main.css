@@ -526,6 +526,22 @@ th.desc a {
 	background: #ffe0e0;
 }
 
+.odd.status-type-3 {
+	background: #f7dada;
+}
+
+.even.status-type-3 {
+	background: #ffe0e0;
+}
+
+.odd.status-type-4 {
+	background: #f7dada;
+}
+
+.even.status-type-4 {
+	background: #ffe0e0;
+}
+
 .odd.status-type-2 {
 	background: #f7f7da;
 }
