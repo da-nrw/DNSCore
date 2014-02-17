@@ -1,7 +1,7 @@
 When dealing with data packages in DNSCore, it is necessary to understand how the 
-data of an object is structured on the different storage media or, more precisely,
-on the different processing areas of a node which runs DNSCore. The easiest way to do so is to
-take a look at how a data package makes its way through the system during ingest.
+object data is structured on the different processing areas of a node which runs DNSCore. 
+In order to get a general overview of which processing areas exist on a node it is a good starting point to have a look at
+how a data package makes its way through the system during ingest, going from area to area.
 
 ![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/processing_stages.jpg)
 
