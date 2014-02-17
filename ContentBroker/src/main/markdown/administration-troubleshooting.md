@@ -45,4 +45,7 @@ a new object the orig name is reusable again. The urn which was given to the obj
 
 #### Deletion
 
+#### Error Handling in DA-WEB
+
+Please refer to the documents added under Daweb/docs
 

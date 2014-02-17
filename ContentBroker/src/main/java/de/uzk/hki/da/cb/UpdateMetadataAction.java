@@ -290,8 +290,8 @@ public class UpdateMetadataAction extends AbstractAction {
 		String baseName = "";
 		for (Event evt:object.getLatestPackage().getEvents()){
 			if (evt.getType().equals("CONVERT")&&
-					FilenameUtils.removeExtension(evt.getSource_file().getRelative_path()).
-						equals(FilenameUtils.removeExtension(sidecarSourceFile.getRelative_path()))){
+					FilenameUtils.removeExtension(evt.getSource_file().toRegularFile().getAbsolutePath()).
+						equals(FilenameUtils.removeExtension(sidecarSourceFile.toRegularFile().getAbsolutePath()))){
 				baseName = FilenameUtils.getBaseName(evt.getTarget_file().getRelative_path());
 				break;
 			}

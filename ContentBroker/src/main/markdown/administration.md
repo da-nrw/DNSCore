@@ -1,9 +1,4 @@
-The main unit for administrators to deal with is the "object". An object is the most fundamental
-entity in our data model. If we leave the concept of "deltas" aside for a moment, an object can
-be seen as one, depending of its function at a given moment, of the basic entities from the OAIS-model.
-An object which comes in as a data package send by the user is a SIP in terms of OAIS. A data package
-which resided inside the system is called an AIP and one that is send back to the user is called a DIP.
-We devided DIPs further for our purposes into DIPs and PIPs.
+
 
 While this is the conceptual model, we deal with these types of data packages in a slightly different terminology
 which is more technical and related to day to day administration needs. When a user sends a selection of data which he considers
@@ -56,4 +51,5 @@ log/grid.log
 log/object-logs/[oid].log
 
 ## Controlling
+
 

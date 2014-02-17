@@ -89,16 +89,6 @@
 					
 				</li>
 				</g:if>
-			
-				<g:if test="${queueEntryInstance?.nodeName}">
-				<li class="fieldcontain">
-					<span id="nodeName-label" class="property-label"><g:message code="queueEntry.nodeName.label" default="Node Name" /></span>
-					
-						<span class="property-value" aria-labelledby="nodeName-label"><g:fieldValue bean="${queueEntryInstance}" field="nodeName"/></span>
-					
-				</li>
-				</g:if>
-			
 				<g:if test="${queueEntryInstance?.obj.origName}">
 				<li class="fieldcontain">
 					<span id="origName-label" class="property-label"><g:message code="queueEntry.obj.origName.label" default="Orig Name" /></span>

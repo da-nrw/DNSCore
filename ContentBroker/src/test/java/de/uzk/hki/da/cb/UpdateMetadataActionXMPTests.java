@@ -62,13 +62,16 @@ public class UpdateMetadataActionXMPTests {
 		new File(workAreaRootPath+"TEST/123/data/dip/institution/XMP.rdf").delete();
 		new File(workAreaRootPath+"TEST/123/data/dip/public/DC.xml").delete();
 		new File(workAreaRootPath+"TEST/123/data/dip/institution/DC.xml").delete();
+		new File(workAreaRootPath+"TEST/123/data/dip/public/a.xmp").delete();
+		new File(workAreaRootPath+"TEST/123/data/dip/institution/a.xmp").delete();
+		new File(workAreaRootPath+"TEST/123/data/dip/public/b.xmp").delete();
+		new File(workAreaRootPath+"TEST/123/data/dip/institution/b.xmp").delete();
 		FileUtils.deleteDirectory(new File("conf/xslt"));
 	}
 
 	@Test
 	public void test() throws IOException, JDOMException {
 		Object obj = TESTHelper.setUpObject("123", workAreaRootPath);
-		
 		
 		DAFile daf1 = new DAFile(obj.getLatestPackage(),"a","a.txt");
 		DAFile daf2 = new DAFile(obj.getLatestPackage(),"b","a.txt");
@@ -101,6 +104,16 @@ public class UpdateMetadataActionXMPTests {
 		evt4.setTarget_file(daf7);
 		evt4.setType("CONVERT");
 		
+		Event evt5  = new Event();
+		evt5.setSource_file(daf1);
+		evt5.setTarget_file(daf2);
+		evt5.setType("CONVERT");
+		
+		Event evt6  = new Event();
+		evt6.setSource_file(daf8);
+		evt6.setTarget_file(daf9);
+		evt6.setType("CONVERT");
+		
 		obj.getLatestPackage().getFiles().add(daf1);
 		obj.getLatestPackage().getFiles().add(daf2);
 		obj.getLatestPackage().getFiles().add(daf3);
@@ -115,7 +128,8 @@ public class UpdateMetadataActionXMPTests {
 		obj.getLatestPackage().getEvents().add(evt2);
 		obj.getLatestPackage().getEvents().add(evt3);
 		obj.getLatestPackage().getEvents().add(evt4);
-		
+		obj.getLatestPackage().getEvents().add(evt5);
+		obj.getLatestPackage().getEvents().add(evt6);
 		
 		// set up object - end
 		
