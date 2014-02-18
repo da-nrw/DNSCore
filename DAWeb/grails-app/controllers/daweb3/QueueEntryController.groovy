@@ -163,7 +163,7 @@ class QueueEntryController {
 			def status = queueEntryInstance.getStatus()
 			int state = status.toInteger();
 			
-			if ((status.endsWith("3") || status.endsWith("4")) && state <401) {
+			if (queueEntryInstance.showDeletionButton() && state <401) {
 				// Delete state is 800
 				def newstat = "800"
 				queueEntryInstance.status = newstat
