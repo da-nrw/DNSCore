@@ -47,8 +47,6 @@ An instance of an object is a logically coherent set of files.
 Note that what makes these files coherent is up to the user (see pre_ingest.md). 
 Every object in DNSCore will get a unique technical identifier within the system. 
 
-Todo oid and csn + orig_name
-
 ![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_1.jpg)
 
 
@@ -72,6 +70,13 @@ designed from the ground up to give users constant access to copies of objects w
 generating DIPs on access. Since this was a source of confusion in the early days of the project we decided to reflect
 the different functions of original DIPs and DIPs for constant access (which we call presentation or publication) by
 introducing the PIP concept.
+
+### Contractor
+
+Todo oid and csn + orig_name
+
+### Node
+
 
 ### Representation
 
@@ -109,12 +114,12 @@ which then contains more than one representation and the complete object content
 
 ### DAFile
 
-### Contractor
+![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_2.jpg)
 
 ### ConversionRoutine
 
 ### ConversionPolicy
 
-### Node
+
 
 
