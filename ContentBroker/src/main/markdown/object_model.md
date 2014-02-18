@@ -1,26 +1,51 @@
+	/*
+	  DA-NRW Software Suite | ContentBroker
+	  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
+	  Universität zu Köln
+	
+	  This program is free software: you can redistribute it and/or modify
+	  it under the terms of the GNU General Public License as published by
+	  the Free Software Foundation, either version 3 of the License, or
+	  (at your option) any later version.
+	
+	  This program is distributed in the hope that it will be useful,
+	  but WITHOUT ANY WARRANTY; without even the implied warranty of
+	  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	  GNU General Public License for more details.
+	
+	  You should have received a copy of the GNU General Public License
+	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	*/
+
 # Object model reference
+
+The OAIS reference model provides the basic conceptual framework for our application.
+As the term "reference" model already says, for the practical use of building and using an
+application a refined object model, which fits the needs and requirements at hand is needed.
+This model will be described in this document.
+
+One of the fundamental requirements when building the software was the "delta" feature which should allow
+users to add content to already existing objects. This feature has been considered as one of the trademark features
+of the software to be build since inception of the project and therefore is reflected in the basic object model.
+While it would seem natural for an application without the delta feature would be to create an object model
+which derives its root entity directly from a generalization of the OAIS package types (AIP,SIP,DIP). We would then 
+refer to this generalization simply as "package" or as "object". With deltas, however, the situation is slightly more
+complex. Here an entity was needed, which can bind the contents of several SIPs together and makes them accessible under
+one identifier. So it was decided to name this root entity the "object" and to refer to SIPs, AIPs, and DIPs as packages.
+While this proofed to be a sound base for our technical solution, there are some occasion were the deviation from the
+simple model (without deltas) has some implications which need more than a quick look to grasp. For example can a DIP
+as a package contain either the objects complete data, or only a part of it. The same applies to an AIP. Depending on the
+situtaion, it either can contain data derived only from one singly SIP or it can contain data from several SIPs. Therefore
+the different concepts of our object model will be explained in detail in the following sections.
 
 ### Object
 
+The [object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/Object.java) class.
+
 The most fundamental entity in our data model is simply called the "object". 
-An object as a concept helps to describe a logically coherent set of files (possibly ordered within folder structures). 
-What makes these files coherent is totally up to the user. It can be a single picture with some metadata or a database 
-serialized in an xml format or a book consisting of jpg files and bound together by a METS metadata file. Or whatever
-the user considers a unit of works worth preserving.
-
-While the software is based on the OAIS reference model, the OAIS model is not sufficient to describe certain
-of the architectural and conceptual aspects of the concrete software implementation DNSCore. Leaving the PIPs (TODO)
-aside for a moment, this is mainly due to the concepts of deltas which is was a strongly wanted by the community in which
-the software grew up and henceforth deeply integrated into the heart of the software from its beginnings. A delta lets 
-users make additions to objects and this leads to the situation that an object can consist of many AIPs at a time,
-build up by ingesting many SIPs. The user is then able to retrieve the object as a DIP or PIP which is in our technical
-terms a view of an object. 
-
-So now that we know what an object should model, we should discuss which artifacts actually constitute an object
-and were we find them.
-
-Developers find the the object implementation [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/Object.java).
-
+An instance of an object is a logically coherent set of files.
+Note that what makes these files coherent is up to the user (see pre_ingest.md). 
+Every object in DNSCore will get a unique technical identifier within the system. 
 
 ---------------
 A data package
@@ -33,11 +58,54 @@ plays a role with deltas
 
 ### Package
 
+The [package](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/Package.java) class.
+
+While the object is more general entity a package in DNSCore 
+is an actual physical container (tar) which contains the objects data or at least a part of it.
+Most of the times one uses the term package rather than the more conceptual terms DIP,AIP,SIP from the OAIS model.
+When users send their SIPs to the system, we also call these SIPs simply packages. When the ContentBroker
+builds AIPs for storage, we also use the term package. 
+
+In the standard use case ingest, the incoming package gets augmented by new data generated by the systems via
+file format conversions or metadata updates. The original data and the new data gets then repacked into a new package and
+put on long term resources. The same applies if you have a delta. The user ingests a second SIP and the system augments it
+with new data before repacking it.
+
+The result is that you now have two packages, belonging to the same object!
+
 ### Representation
 
-a representation is a model entity of second order so to speak and
-is not modeled as a java class in its own right. one can find them
-only as folders in the file system ...
+A representation is a model entity of second order so to speak and
+is not modeled as a java class in its own right. Representations are a means of organizing
+the data within packages. When the ContentBroker ingests a SIP, it puts the original
+data into one representation and puts the data it generates itself into another representation.
+Therefore after repacking as AIP every package contains at least two representations. The
+naming scheme for a representation always looks like this:
+
+    yyyy_mm_dd+hh_mm+x
+    
+The x always is an a for original user content while x is b for system generated data. 
+
+By alphabetical ordering of representations it is possible to have a quick glance on the objects history.
+
+But while it seems obvious at first that every package has exactly two representations there are
+some occasions where you find more than two representations at the same time, either on the file system
+or in packages itself. If the system recognizes a package as a delta to an existing
+object during ingest. When this happens the system possibly needs to regenerate PIPs. Since in these cases
+data from older packages are needed the older packages get loaded from long term archival resources to
+the WorkArea. Then you will find old representations alongside new ones. This could look like that:
+
+    2014_10_01+12_12+a
+    2014_10_01+12_12+b
+    2015_10_03+10_00+a
+    2015_10_03+10_00+b
+    2016_09_03+01_10+a
+    2016_09_03+01_10+b
+
+After building PIPs everything except the newest two representations get deleted again from the WorkArea and
+the newest get repackaged an put on long term resources. But there also a use case which is yet to be implemented
+which will the system allow to repackage object contents distributed across several packages into a new single package
+which then contains more than one representation and the complete object content respectively. 
 
 ### DAFile
 
@@ -47,5 +115,6 @@ only as folders in the file system ...
 
 ### ConversionPolicy
 
+### Node
 
 
