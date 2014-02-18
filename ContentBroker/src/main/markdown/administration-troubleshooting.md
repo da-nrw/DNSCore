@@ -49,3 +49,12 @@ a new object the orig name is reusable again. The urn which was given to the obj
 
 Please refer to the documents added under Daweb/docs
 
+## Basic concepts
+
+## Logging
+
+log/contentbroker.log
+log/grid.log
+log/object-logs/[oid].log
+
+## Controlling
