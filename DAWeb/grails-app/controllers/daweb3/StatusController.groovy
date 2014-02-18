@@ -127,7 +127,7 @@ class StatusController {
 				rList = Object.findAllByContractorAndOrigNameAndObject_stateBetween(contractor, params.origName,50,100)
 		} 
 		if (params.identifier) {
-				rList = Object.findAllByContractorAndIdentifierAndObject_stateBetween(contractor, params.identifier,50.100)	
+				rList = Object.findAllByContractorAndIdentifierAndObject_stateBetween(contractor, params.identifier,50,100)	
 		}
 		// Found Object, must be true if we found anything (Queue or Object only)
 		boolean foundObject = false;
