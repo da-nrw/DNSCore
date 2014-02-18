@@ -1,6 +1,9 @@
 <script type="text/javascript"><g:if test="${ periodical }">
 			// comment out next line to stop periodical updater on page load.		
-			$( document ).ready(startUpdater())
+			$( document ).ready(
+					function() {
+		//			startUpdater()
+					});
 			</g:if>
 </script>
 <table>

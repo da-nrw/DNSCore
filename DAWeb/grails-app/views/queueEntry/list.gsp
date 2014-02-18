@@ -1,6 +1,3 @@
-
-
-
 <%@ page import="daweb3.QueueEntry" %>
 <!doctype html>
 <html>
@@ -12,22 +9,20 @@
 		<r:script>
 			var order = "asc";
 			var sort = "id";
-			var upd;
 			$(function() {
 				$("#legend").accordion({ collapsible: true, active: false, autoHeight: false });
 			});
 			$(function() {
 				$("#filter").accordion({ collapsible: true, active: false });
 			});
-			
-			function startUpdater(){
-			upd = $.PeriodicalUpdater("./listSnippet",
+	<g:if test="${ !params.search }">		
+			var obj = $.PeriodicalUpdater("./listSnippet",
 				{
 					method: "get",
 					minTimeout: 1000,
 					maxTimeout: 1000,
 					data: function() {
-						return { order: order, sort: sort, params: $('form').serialize() }
+						return { order: order, sort: sort}
 					},
 					success: function(data) {
 						console.log("success - sort: "+sort+", order: "+order);
@@ -36,10 +31,11 @@
 					}
 				}
 			);
+	</g:if>
+			function stopUpdater() {		
+				obj.stop();
 			}
-			function stopUpdater() {
-				upd.stop();
-			}
+		
 			function sortQueue(field) {
 				console.log("sortQueue: "+field);
 				if (field == sort && order == "asc") order = "desc";
@@ -100,7 +96,7 @@
            </div>
            
 <g:if test="${ !params.search }">
-	 Update:&nbsp;<a href="#" onclick="stopUpdater();">stop</a>&nbsp;<a href="#" onclick="startUpdater();">start</a>
+	<!-- Update:&nbsp;<a href="#" onclick="stopUpdater();">stop</a>&nbsp;<a href="#" onclick="startUpdater();">start</a> -->	
      </g:if>   
 			
 			<!-- This div is updated through the periodical updater -->
@@ -112,7 +108,7 @@
 		<div id="legend">
 			<h1><a href="#">Hinweise zu den Statuscodes</a></h1>
 			<div>
-				<p style="font-style:italic">(xx1: bezeichnet einen Fehler, xx2: bezeichnet	arbeitend)<p> 
+				<p style="font-style:italic">(xx1,xx3,xx4 bezeichnet einen Fehler, xx2: bezeichnet	arbeitend)<p> 
 				<a target="liste" href="https://docs.google.com/drawings/d/1qEd_LVNXKiiHmAW_LKNL0hEkS6ixcVf8TgO9-5a9WrM/edit?pli=1">Übersichtsliste mit den aktuellen Statuskennungen</a>
 			</div>
 		</div>

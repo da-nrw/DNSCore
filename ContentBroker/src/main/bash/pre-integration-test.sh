@@ -37,14 +37,12 @@ function createIrodsDirs(){
 function restartContentBroker(){
 	SOURCE_PATH=`pwd`
 	cd $1
-	echo -e "\nWait for message \"INFO  de.uzk.hki.da.core.ContentBroker - ContentBroker is up and running\". Then hit ctrl-c."
-	echo -e "If you don't see this message after a couple of seconds, try debugging ContentBroker by starting it manually via java -jar ContentBroker.jar\n"
+	echo -e "\nTrying to start ContentBroker "
 	kill -9 `ps -aef | grep ContentBroker.jar | grep -v grep | awk '{print $2}'` 2>/dev/null
 	rm -f /tmp/cb.running
 	./ContentBroker_start.sh
 	sleep 15
-    # tail -f log/contentbroker.log | grep "ContentBroker is up and running"
-	cd $SOURCE_PATH
+   cd $SOURCE_PATH
 }
 
 # $1 = INSTALL_PATH
