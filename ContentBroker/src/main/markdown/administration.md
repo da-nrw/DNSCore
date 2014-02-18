@@ -88,20 +88,61 @@ sufficient memory free on the WorkArea, the ContentBroker fetches new objects fr
                                 [oid4]/...
                          ...
 
+#### DIPArea
+
+    [DIPAreaRootPath]/
+                      public/
+                             [csn1]/
+                                    [oid1]_[jobid]/
+                                                   file1.txt
+                                                   file2.txt
+                                                   ...
+                             [csn2]/
+                                    [oid2]_[jobid]/
+                                                   file1.txt
+                                                   file2.txt
+                                                   ...
+                             ...
+                      institution/
+                             [csn1]/
+                                    [oid1]_[jobid]/
+                                                   file1.txt
+                                                   file2.txt
+                                                   ...
+                             [csn2]/
+                                    [oid5]_[jobid]/
+                                                   file3.txt
+                                                   file4.txt
+                                                   ...
+                                    [oid6]_[jobid]/
+                                                   file5.txt
+                                                   file6.txt
+                             ...
+
 #### GridCacheArea
+
+    [GridCacheAreaRootFolder]/
+                             [csn1]/
+                                    [oid1]/
+                                           [oid1].pack_[packagename].tar
+                                    [oid2]/
+                                           [oid2].pack_[packagename].tar
+                                    ...
 
 #### LZAArea
 
-#### DIPArea
+    [GridCacheAreaRootFolder]/
+                             [csn1]/
+                                    [oid1]/
+                                           [oid1].pack_[packagename].tar
+                                    [oid2]/
+                                           [oid2].pack_[packagename].tar
+                                    ...
 
-## Basic concepts
 
-## Logging
 
-log/contentbroker.log
-log/grid.log
-log/object-logs/[oid].log
 
-## Controlling
+
+
 
 
