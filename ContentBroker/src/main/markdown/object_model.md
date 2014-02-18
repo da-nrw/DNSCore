@@ -49,7 +49,7 @@ Every object in DNSCore will get a unique technical identifier within the system
 
 Todo oid and csn + orig_name
 
-![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model.jpg)
+![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_1.jpg)
 
 
 ### Package
