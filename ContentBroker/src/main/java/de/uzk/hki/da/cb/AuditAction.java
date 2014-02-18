@@ -76,6 +76,7 @@ public class AuditAction extends AbstractAction {
 		StoragePolicy sp = new StoragePolicy(localNode);
 		sp.setMinNodes(Integer.parseInt(((String)properties.getProperty("cb.min_repls"))));
 		
+		
 		for (Package pack : object.getPackages()) {
 			String pname = pack.getName();
 			if (pname.equals("")) pname = "1";
@@ -96,6 +97,7 @@ public class AuditAction extends AbstractAction {
 					logger.debug("settin object state to 100");
 					object.setObject_state(100);
 				}
+				
 			} else {
 				logger.error(logicalPath + " is invalid!");
 				unloadAndRepair(pack, job, object);
