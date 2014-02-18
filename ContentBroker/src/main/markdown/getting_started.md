@@ -1,0 +1,1 @@
+purpose of this document quickest possible way of getting started
