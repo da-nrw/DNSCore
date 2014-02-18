@@ -112,6 +112,8 @@ the newest get repackaged an put on long term resources. But there also a use ca
 which will the system allow to repackage object contents distributed across several packages into a new single package
 which then contains more than one representation and the complete object content respectively. 
 
+TODO two additional representations
+
 ### DAFile
 
 ![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_2.jpg)

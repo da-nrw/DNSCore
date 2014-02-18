@@ -88,6 +88,8 @@ sufficient memory free on the WorkArea, the ContentBroker fetches new objects fr
                                 [oid4]/...
                          ...
 
+The WorkArea has to be under the vault path of the irods cache area or working resource. TODO link.
+
 #### DIPArea
 
     [DIPAreaRootPath]/
@@ -119,8 +121,22 @@ sufficient memory free on the WorkArea, the ContentBroker fetches new objects fr
                                                    file6.txt
                              ...
 
+The DIPArea has to be under the vault path of the irods cache area or working resource. TODO link.
+
+
 #### GridCacheArea
 
+Before we explain how the packages are sorted in the GridCacheArea we first have to 
+make clear our perspective on "the grid". From the standpoint of the application code of
+DNSCore the grid abstracts away the complete storage layer. The application code simply acts
+as a user of the grid and puts data into it. The data we put into it are as a matter of fact only
+tar encoded containers which are packages belonging to objects. When the application code puts data
+into the grid it references the containers with path names which begin with a zoneName prefix and continue
+with a path like [csn]/[oid]/[oid].pack_[packname].tar, independently where the file is really stored on on the 
+file system or storage media. The application code can address objects in the grid only under this grid adress.
+
+    [zoneName]
+    or
     [GridCacheAreaRootFolder]/
                              [csn1]/
                                     [oid1]/
@@ -128,10 +144,26 @@ sufficient memory free on the WorkArea, the ContentBroker fetches new objects fr
                                     [oid2]/
                                            [oid2].pack_[packagename].tar
                                     ...
+                                    
+But, when the grid component gets a file to store from the application code it first stores it on the local
+file system in the GridCacheArea which is structured like you see in the box above. From here the component
+replicates the data across the "real" grid to other boxes and storage media. 
+
+Note that the GridCacheArea is an optional construct of DNSCore which depends heavily on the implementation of 
+the GridFacade implementation in use! At the moment all implementations make use of the GridCacheArea, but there 
+may be future implementation which will behave different.
+
+Due to the fact that there was a paradigm shift during development from a storage layer focused to a more application layer focused
+approach the GridCacheArea at the moment is located at the irods cache resource which more consistently should be on an own resource.
+Since this is rather a logical problem and has no practical implementations it will only get refactored later when the concrete 
+requirements for new storage architectures come in to play.
 
 #### LZAArea
 
-    [GridCacheAreaRootFolder]/
+The LZAArea is a logical construct which abstracts away all concrete details on how the files area actually stored. It only 
+knows a logical organisation of files in the following manner.
+
+    [zoneName]/
                              [csn1]/
                                     [oid1]/
                                            [oid1].pack_[packagename].tar
@@ -139,8 +171,10 @@ sufficient memory free on the WorkArea, the ContentBroker fetches new objects fr
                                            [oid2].pack_[packagename].tar
                                     ...
 
+The storage media, the number of replications, the order on the file system are up to the system/grid configuration and are in the 
+responsibility of the node owner and/or administrator of the respective node.
 
-
+TODO link to irods documentation
 
 
 
