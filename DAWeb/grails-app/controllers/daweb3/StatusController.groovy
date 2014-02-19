@@ -50,9 +50,9 @@ class StatusController {
 		}
 		def contractor = Contractor.findByShortName(session.bauthuser)
 		// listall objects of Contractor
+		results.result = []
 		if (params.listallobjects) {
 			def objects = Object.findAllByContractorAndObject_stateGreaterThan(contractor, 50)
-			results.result = []
 			objects.each()  { inst ->
 				if (inst.object_state==100) result.status = "archived"
 				else result.status = "archived - but check needed"
@@ -91,7 +91,6 @@ class StatusController {
 		boolean hasAQueueEntry = false
 		def queueResult = "in progress";
 		// found a QueueEntry
-		results.result = []
 		rList.each()  { instance ->	
 			result.urn = instance.obj.urn
 			result.contractor = instance.obj.contractor.shortName;
@@ -114,12 +113,6 @@ class StatusController {
 			
 		}  
 		
-		// we give precedence for queue Entries instead judt searching for an object
-		if (hasAQueueEntry) {
-			render results as JSON
-			return
-		} else {
-		// search for an Object
 		if (params.urn) {
 				rList = Object.findAllByContractorAndUrnAndObject_stateBetween(contractor, params.urn,50,100)
 		}
@@ -131,7 +124,6 @@ class StatusController {
 		}
 		// Found Object, must be true if we found anything (Queue or Object only)
 		boolean foundObject = false;
-		results.result = []
 		rList.each()  { instance ->
 				if (instance.object_state==100) result.status = "archived"
 				else {
@@ -160,7 +152,6 @@ class StatusController {
 		
 		render results as JSON
 		return
-		}
 	}
 	def teaser() {
 		

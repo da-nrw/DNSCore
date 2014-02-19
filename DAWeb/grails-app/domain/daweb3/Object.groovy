@@ -63,16 +63,13 @@ class Object {
 	 * 0 means normal (grey)
 	 * 1 means error (red)
 	 * 2 means currently running (yellow)
-	 * 3 means approved (green)
 	 */
 	def getStatusCode() {
-		switch (object_state) {
-			case 0:	return 1
-			case 50: return 2
-			case 60: return 1
-			case 100: return 3
-			default: return 0
-		}
+		if (object_state<50) return 1
+		if (object_state==50) return 2
+		if (object_state==51) return 1
+		if (object_state==100) return 0
+		return 1;
 	}
 	
 	def getPublicPresLink() {

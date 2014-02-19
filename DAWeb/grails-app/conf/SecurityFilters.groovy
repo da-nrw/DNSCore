@@ -30,14 +30,14 @@ class SecurityFilters {
 				response.sendError(401, "Authorization required")
 				return false;
 			}	
-			session.bauthuser = credentials[0]		
 			if (grailsApplication.config.daweb3.loginManager==null) {
 					response.sendError(500, "Login Manager not found")
 			}
 			LoginFactory lf = Class.forName(grailsApplication.config.daweb3.loginManager.toString(),true,
 			Thread.currentThread().contextClassLoader).newInstance();
 			if (lf.login(credentials[0], credentials[1], grailsApplication)) {
-						return true;
+					session.bauthuser = credentials[0]
+					return true;
 				} else {
 					response.addHeader("WWW-Authenticate", "Basic realm=\"DA-Web\"") 
 					response.sendError(401, "Authorization required") 
@@ -68,6 +68,7 @@ class SecurityFilters {
 			LoginFactory lf = Class.forName(grailsApplication.config.daweb3.loginManager.toString(),true,
 			Thread.currentThread().contextClassLoader).newInstance();
 			if (lf.login(credentials[0], credentials[1], grailsApplication)) {
+					session.bauthuser = credentials[0]
 					return true;
 				} else {
 					response.addHeader("WWW-Authenticate", "Basic realm=\"DA-Web\"")

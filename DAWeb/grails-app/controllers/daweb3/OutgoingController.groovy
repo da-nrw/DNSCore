@@ -30,7 +30,7 @@ import java.io.File
 class OutgoingController {
 
     def index() {
-		def relativeDir = session.irodsAccount.userName + "/outgoing"
+		def relativeDir = session.contractor.shortName + "/outgoing"
 		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
 		def baseDir
 		def filelist = []
