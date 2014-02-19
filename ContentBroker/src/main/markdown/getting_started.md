@@ -69,6 +69,7 @@ version in the appropriate source code branch of the release you want to install
 1. Save the file as config.properties.
 1. Replace CONTENTBROKER_ROOT by [somewhere].
 
+in config.properties:    
     
     localNode.userAreaRootPath=[somewhere]/storage/user
     localNode.ingestAreaRootPath=[somewhere]/storage/ingest
@@ -90,9 +91,11 @@ TODO fake ffmpeg.sh
 1. Save the file as hibernateCentralDB.cfg.xml
 1. Edit the following entries to match your current database settings.
 
-<property name="connection.url">jdbc:hsqldb:mem:QueueDB</property>
-<property name="connection.username">sa</property>
-<property name="connection.password"></property>
+in hibernateCentralDB.cfg.xml:
+
+   <property name="connection.url">jdbc:hsqldb:mem:QueueDB</property>
+   <property name="connection.username">sa</property>
+   <property name="connection.password"></property>
 
 ## Install and test the software
 
