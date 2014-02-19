@@ -28,6 +28,12 @@ TODO description what deltas are
 
 TODO orig name and identifier
 
+TODO replacing contracts
+
+TODO use cases, replacing and adding files, example use cases
+
+https://wiki1.hbz-nrw.de/display/DANOPEN/Delta-Spezifikation
+
 When working with deltas it is necessary to understand which implication this has. Therefore
 users in using the delta feature should read at least the paragraph about 
 [substitution rules](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/dip_specification.md#substitution-rules-and-surface-view-of-an-object) 
