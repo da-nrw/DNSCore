@@ -48,7 +48,7 @@ public class AuditAction extends AbstractAction {
 	private String nodeAdminEmail ="";
 	private int minNodes = 3;
 	private GridFacade gridRoot;
-	
+	private int errorState = 51;
 	/*
 	 * 
 	 * (non-Javadoc)
@@ -88,7 +88,7 @@ public class AuditAction extends AbstractAction {
 			if (gridRoot.isValid(logicalPath)) {
 				logger.info(logicalPath + " is valid!");
 				if (!gridRoot.storagePolicyAchieved(logicalPath, sp)) {
-					object.setObject_state(0);
+					object.setObject_state(errorState);
 					msg += "\nAnzahl der geforderten Replikationen für das Datenpaket "+logicalPath +" auf LZA Medien wurde nicht erreicht! Soll: " + minNodes +"\n";
 				}
 				if (!msg.equals("")) {
@@ -101,7 +101,7 @@ public class AuditAction extends AbstractAction {
 			} else {
 				logger.error(logicalPath + " is invalid!");
 				unloadAndRepair(pack, job, object);
-				object.setObject_state(60);
+				object.setObject_state(errorState);
 				msg = "Das gespeicherte Datenpaket \""+ logicalPath + "\" hat mindestens eine kaputte Replikation. " +
 				"Bitte prüfen Sie das entsprechende Datenpaket und die Medien auf denen es liegt!\n\n";
 			}
