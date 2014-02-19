@@ -40,7 +40,7 @@ the different concepts of our object model will be explained in detail in the fo
 
 ### Object
 
-The [object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/Object.java) class.
+The Java [Object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/Object.java) class.
 
 The most fundamental entity in our data model is simply called the "object". 
 An instance of an object is a logically coherent set of files.
@@ -52,7 +52,7 @@ Every object in DNSCore will get a unique technical identifier within the system
 
 ### Package
 
-The [package](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/Package.java) class.
+The Java [Package](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/Package.java) class.
 
 While the object is more general entity a package in DNSCore 
 is an actual physical container (tar) which contains the objects data or at least a part of it.
@@ -73,9 +73,27 @@ introducing the PIP concept.
 
 ### Contractor
 
-Todo oid and csn + orig_name
+The Java [Contractor](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/Contractor.java) class.
+
+The contractor is modeled to describe a party which delivers content to a system consisting of nodes running DNSCore.
+Every contractor has one specific node to which it can deliver its content. This node processes the data and stores the
+primary copy of AIPs while the other nodes of the grid store the replicas. The contractor is a more general notion for a user
+of the system, which is typically a single person working for an institution having a contract with the system owner. However,
+this doesn't matter for the application logic so there is only the contractor role and there is no distinction between different users
+working for the same organization.
+
+Note that in addition to and independently of the object identifier every contractor can create new objects or retrieve objects
+with a special name property, which is unique among his objects and which is used to identify the object as well as with the oid. 
+This property is called the "original name" of the object. (TODO link to delta / ingest)
+
+TODO administrator, default, presenter
 
 ### Node
+
+The node is the abstract notion for a location at which a box running DNSCore sits.
+It is part of the a grid of sites which replicate data for each other and share common policies.
+The grid of nodes in this documentation is often referred to as the "system". Each node has a list of contractors
+for which it provides the DNSCore functionality and for whose objects storage and distribution it is mainly/solely responsible.
 
 
 ### Representation
@@ -112,16 +130,44 @@ the newest get repackaged an put on long term resources. But there also a use ca
 which will the system allow to repackage object contents distributed across several packages into a new single package
 which then contains more than one representation and the complete object content respectively. 
 
-TODO two additional representations
+Just because it was simple to do so, packages in WorkArea get two additional representations which never are part of
+AIPs and are used to store the PIPs for publication. These representations are
+
+    dip/public
+    dip/institution
 
 ### DAFile
+
+The java [DAFile](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/DAFile.java) class.
+
+Each file stored within a package has a correspondent DAFile instance, which captures some properties
+relevant to the business logic of the application.
+
+#### PUID
+
+The puid is used to store the file format of the file, determined by 
+[FIDO](http://www.openplanetsfoundation.org/software/fido), 
+and encoded in the [PRONOM](http://www.nationalarchives.gov.uk/PRONOM/Default.aspx) format.
+
+#### Representation
+
+The representation under which the concrete DAfile can be found has been described in an earlier paragraph. However, as stated there,
+it is not modelled as an own class. Instead, the representation is modelled as part of the DAFile class. At the moment DAFile instances
+are used during processing packages by the workflows of the ContentBroker. Therefore, DAFile is targeted at files which reside in the 
+[WorkArea](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md#workarea).
+
+#### Relative path
+
+The relative path of a file is always relative to the representation the file is contained in. A file
+
+    [WorkArea]/[csn]/[oid]/data/2014_10_01+12+12+a/subfolder/abc.tif
+    
+therefore has the relative path
+
+    subfolder/abc.tif
 
 ![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_2.jpg)
 
 ### ConversionRoutine
 
 ### ConversionPolicy
-
-
-
-
