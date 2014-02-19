@@ -30,7 +30,7 @@ import java.io.File
 class IncomingController {
 	
     def index = { 
-		def relativeDir = session.irodsAccount.userName + "/incoming"
+		def relativeDir = session.contractor.shortName + "/incoming"
 		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
 		def msg = ""
 		def baseDir;

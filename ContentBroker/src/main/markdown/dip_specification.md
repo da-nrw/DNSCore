@@ -54,7 +54,7 @@ Lets look at the AIPs content from a different perspective:
 So what a user gets in his DIP is the latest version of each **document**.
 
 A document is a logical description of several files which share the relative path 
-(TODO see object model dafile) minus the extension
+(see [DAFile](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#dafile)) minus the extension
 (everything after the last dot including the dot). So abc.jpg and abc.tif are considered the same document, one could
 name it the document with the identifier "abc". The identifiers for the other documents are "premis", "subdir/cde" and "efg" 
 respectively. The files which get packaged into the DIP then are determined by the system by ordering all representations of the object 
