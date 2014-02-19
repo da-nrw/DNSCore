@@ -1,45 +1,67 @@
-This document desribes how to install DNSCore on your target environment.
+	/*
+	  DA-NRW Software Suite | ContentBroker
+	  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
+	  Universität zu Köln
+	
+	  This program is free software: you can redistribute it and/or modify
+	  it under the terms of the GNU General Public License as published by
+	  the Free Software Foundation, either version 3 of the License, or
+	  (at your option) any later version.
+	
+	  This program is distributed in the hope that it will be useful,
+	  but WITHOUT ANY WARRANTY; without even the implied warranty of
+	  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	  GNU General Public License for more details.
+	
+	  You should have received a copy of the GNU General Public License
+	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	*/
+
+# Installing DNSCore
 
 ## Installation
 
-1. The ContentBroker installation dir will simply be named [CB] here.
-1. Download the installer DNSCore-v[VERSION].tar from the latest stable release from https://github.com/da-nrw/DNSCore/releases
-1. Put the downloaded container to the /tmp dir of your machine.
-1. Unpack it. You will then find a directory at /tmp/installation from where you can install your DNSCore. cd into it.
+1. Download an installer for the newest stable version of the software from the 
+[release section](https://github.com/da-nrw/DNSCore/releases) and put it to the a temp dir on your box. The temp dir will be called [tmp] here.
+1. Unpack it. You will then find a directory at [tmp]/installation.xyz/ from where you can install your DNSCore.
+1. The installer requires there is a folder where the ContentBroker can be installed into. It can be either an empty folder for a first installation or 
+the folder of an existing installation which gets updated then. We will refer to this installation directory as [ContentBroker] in this
+document.
 1. Depending on your type of installation read the appropriate paragraph below.
 
-### Installation / Update
+## Prerequisites
 
-1. Run ./install.sh [CB]
+* database
+* python > 2.7
 
-### Installation / Fresh Installation
+## Installation / Fresh Installation
 
-1. If this is your first installation 
-on the target machine, create a directory for the ContentBroker installation. This is the directory we
-referenced with [CB] earlier.
-1. You will have to get some configuratione files (listed with descriptions below).
-1. Put them in your /tmp/installer directory
-1. Run ./install.sh [CB] then.
+* Make sure
+  * [ContentBroker] exists. If not, create [ContentBroker] now!
+  * [tmp]/config.properties exists (if not, look 
+  [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/getting_started.md))
+  * [tmp]/hibernateCentralDB.cfg.xml exists (if not, 
+  look [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/getting_started.md))
 
-The config files you need for a fresh installation can be found in the github source code repository
-for DNSCore. Take out the following two files:
-1. DNSCore/ContentBroker/src/main/conf/config.properties.dev
-1. DNSCore/ContentBroker/src/main/conf/hibernateCentralDB.cfg.xml.inmem
-and put them to your installer. You will have to remove the suffixes (inmem.dev) so you'll have these
-files in your installer now before installing:
-/tmp/installation/config.properties
-/tmp/installation/hibernateCentralDB.cfg.xml
-Please make sure when you download the sources of the config files that you pick the configs for
-the exact version you want to deploy. To achieve this easily follow the links to the source code in the
-github release section for the version you want to install.
-Before you can deploy, you will have to configure your target system via the downloaded config files.
+## Installation
 
-Learn more about how to configure your system at system_configuration.md!
+    cd [ContentBroker]
+    ./install.sh [ContentBroker]
+
+Choose your 
+[feature set](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/system_configuration.md).
 
 ## Starting the ContentBroker
 
-1. Go to [CB]
-1. Run ./ContentBroker_start.sh
+    cd [ContentBroker]
+    ./ContentBroker_start.sh
+    
 1. Watch if the ContentBroker comes up with tail -f log/contentbroker.log
 1. If everything goes well, you will see him greedily searching for jobs soon.
 
+## Test the ContentBroker
+
+1. Test the software with a testpackage.
+  1. Ingest a package
+  1. Retrieve a package
+  

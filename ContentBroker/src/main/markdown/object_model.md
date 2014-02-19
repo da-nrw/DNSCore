@@ -66,8 +66,8 @@ with new data before repacking it. The result is that you now have two packages,
 
 Note that we extended the OAIS terms for our needs by the package type PIP (presentation information package).
 The concept was introduced to facilitate communication when speaking about DIPs. The architecture of the software was 
-designed from the ground up to give users constant access to copies of objects which were without accessing the AIPs and
-generating DIPs on access. Since this was a source of confusion in the early days of the project we decided to reflect
+designed from the ground up to give users constant access to copies of objects without accessing the AIPs for
+DIP generation. Since this was a source of confusion in the early days of the project we decided to reflect
 the different functions of original DIPs and DIPs for constant access (which we call presentation or publication) by
 introducing the PIP concept.
 

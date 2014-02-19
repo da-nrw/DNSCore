@@ -1,11 +1,12 @@
 ### Feature sets of the DNSCore
 
 In order to give the administrator only the necessary configuration options for a specified feature set, the admin can
-choose, when installing the DNSCore, between three feature sets:
+choose, when installing the DNSCore, between three feature sets and one additional option:
 
 1. (n)ode 
 2. (p)res
 3. (f)ull
+4. preserve (e)xisting beans.
 
 This choice lets the installer deliver only the beans.xml with the necessary configuration.
 
