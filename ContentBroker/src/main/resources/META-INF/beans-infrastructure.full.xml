@@ -32,7 +32,6 @@
     <util:list id="actionOrdering">
    		<value>DeleteObjectAction</value>
 		<value>RestartIngestWorkflowAction</value>
-		<value>PostRetrievalAction</value>
 		<value>RetrievalAction</value>
 		<value>RetrievalObjectToWorkAreaAction</value>
 		<value>IngestArchiveReplicationCheckAction</value>
@@ -64,7 +63,7 @@
 		<value>PIPGenConvertAction</value>
 		<value>PIPGenScanForPresentationAction</value>
 		<value>PIPGenObjectToWorkAreaAction</value>
-              <value>PostRetrievalAction</value>
+        <value>PostRetrievalAction</value>
 	</util:list>
 	
 </beans>

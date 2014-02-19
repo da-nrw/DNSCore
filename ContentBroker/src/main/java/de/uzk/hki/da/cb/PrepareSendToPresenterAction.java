@@ -35,7 +35,7 @@ import de.uzk.hki.da.model.PublicationRight.Audience;
 /**
  * First moves the dip out of the package to another location.
  * Then evaluates contract rights for publication and trims down bitstreams
- * of PIP that aren't allowed to get be published.
+ * of PIP that aren't allowed to get published.
  * @author Daniel M. de Oliveira
  */
 public class PrepareSendToPresenterAction extends AbstractAction {
