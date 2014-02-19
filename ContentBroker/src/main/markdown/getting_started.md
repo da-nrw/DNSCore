@@ -30,9 +30,9 @@ way is slightly more complex and is described in this document.
 What will be discussed here is how to set up the software in the quickest way possible, but 
 without the help of the build scripts. This will help you to learn how to set up and configure
 a version of DNSCore for production. To make things easy for you, the version you will build is a stripped
-down version though, without presentation and advanced storage layer with replications. But once you have installed and tested
+down version, without presentation and advanced storage layer with replications. But once you have installed and tested
 the basic version you easily can extend the software by the other components if you install them and change a few
-configuration settings in DNSCore. We think this is a great way for administrators to get up and running quickly while
+configuration settings. We think this is a great way for administrators to get up and running quickly while
 getting an understanding of the basic behaviour and configuration possibilities of the software.
 
 ## Prerequisites
@@ -46,8 +46,8 @@ getting an understanding of the basic behaviour and configuration possibilities 
 
 Prepare your installation and storage directories
 
-[somewhere]/ContentBroker/
-[somewhere]/storage/
+    [somewhere]/ContentBroker/
+    [somewhere]/storage/
                     user/
                     ingest/
                     work/
@@ -69,6 +69,7 @@ version in the appropriate source code branch of the release you want to install
 1. Save the file as config.properties.
 1. Replace CONTENTBROKER_ROOT by [somewhere].
 
+    
     localNode.userAreaRootPath=[somewhere]/storage/user
     localNode.ingestAreaRootPath=[somewhere]/storage/ingest
     localNode.workAreaRootPath=[somewhere]/storage/work
