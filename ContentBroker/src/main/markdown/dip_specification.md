@@ -64,7 +64,7 @@ alphabetically and then taking the last version for each document.
 
 .. contains events ..
 
-## Sidecar files TODO
+## Sidecar files
 
 
 ## PIPs
