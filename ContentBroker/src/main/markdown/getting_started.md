@@ -93,9 +93,9 @@ TODO fake ffmpeg.sh
 
 in hibernateCentralDB.cfg.xml:
 
-   <property name="connection.url">jdbc:hsqldb:mem:QueueDB</property>
-   <property name="connection.username">sa</property>
-   <property name="connection.password"></property>
+    <property name="connection.url">jdbc:hsqldb:mem:QueueDB</property>
+    <property name="connection.username">sa</property>
+    <property name="connection.password"></property>
 
 ## Install and test the software
 
