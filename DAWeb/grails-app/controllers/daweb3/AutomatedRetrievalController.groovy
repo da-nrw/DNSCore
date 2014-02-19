@@ -28,43 +28,51 @@ class AutomatedRetrievalController {
 	
     def index() { }
 	
-	def queueForRetrievalJSON = {
+	def queueForRetrievalJSON () {
 		def QueueUtils qu = new QueueUtils(); 
 		def result = [success:false]
 		def jsonObject = request.JSON
 		
 		def instance = Object.findByIdentifier(jsonObject['identifier'])
+		
 		if (instance!=null) {
+			
 			if (instance.contractor.shortName != session.bauthuser) {
 				result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt " + jsonObject['identifier'] + " anzufordern!"
 				render result as JSON
+				return
 			}
 			qu.createQueueEntryForObject( instance ,"900", null)
 			result = [success:true]
 			result.msg = "Erfolgreich Arbeitsauftrag erstellt für "  + jsonObject['identifier']
 			render result as JSON
-		}
+			return
+			}
 		instance = Object.findByUrn(jsonObject['urn'])
 		if (instance!=null) {
 			if (instance.contractor.shortName != session.bauthuser) {
 				result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt "+ jsonObject['urn'] + " anzufordern!"
 				render result as JSON
+				return
 			}
 			qu.createQueueEntryForObject( instance ,"900", null)
 			result = [success:true]
 			result.msg = "Erfolgreich Arbeitsauftrag erstellt für "  + jsonObject['urn']
 			render result as JSON
+			return
 		}
 		instance = Object.findByOrigName(jsonObject['origName'])
 		if (instance!=null) {
 			if (instance.contractor.shortName != session.bauthuser) {
 				result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt "+ jsonObject['origName'] + " anzufordern!"
 				render result as JSON
+				return
 			}
 			qu.createQueueEntryForObject( instance ,"900", null)
 			result = [success:true]
 			result.msg = "Erfolgreich Arbeitsauftrag erstellt für "  + jsonObject['origName']
 			render result as JSON
+			return
 		}
 		
 		result.msg = "Fehler bei Erstellung eines Arbeitsauftrages"

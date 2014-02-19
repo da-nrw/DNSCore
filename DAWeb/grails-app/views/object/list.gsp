@@ -116,12 +116,9 @@
 								<g:elseif test="${statusCode == 2}">
 									<g:img style="width:16px; height:16px" uri="/images/icons/clock32.png"/>
 								</g:elseif>
-								<g:elseif test="${statusCode == 3}">
+								<g:elseif test="${statusCode == 0}">
 									<g:img style="width:16px; height:16px" uri="/images/icons/check32.png"/>
 								</g:elseif>
-								<g:else>
-									<g:img style="width:16px; height:16px" uri="/images/icons/questionbook32.png"/>
-								</g:else>
 							</td>
 							<td style="text-align: center">
 								<g:remoteLink action="queueForInspect" onLoaded="queuedFor(data)" id="${objectInstance.id}">
