@@ -82,6 +82,11 @@ public class SendToPresenterAction extends AbstractAction {
 		IngesterFacade ingester = new IngesterFacade(getFedora());
 		ingester.setLabelMap(labelMap);
 		String urn = object.getUrn();
+
+		// delete existing packages before ingesting the new ones
+		ingester.purgePackageIfExists(urn, object.getIdentifier(), "danrw:");
+		ingester.purgePackageIfExists(urn, object.getIdentifier(), "danrw-closed:");
+		
 		int publishedFlag = 0;
 		try {
 			if (new File(dipPathPublic).exists()) {				
@@ -91,14 +96,12 @@ public class SendToPresenterAction extends AbstractAction {
 				if (!object.ddbExcluded()) {
 					sets = new String[]{ "ddb" };
 				}
-				ingester.purgePackageIfExists(urn, object.getIdentifier(), "danrw:"); // in case of delta
 				if (ingester.ingestPackage(urn, object.getIdentifier(), dipPathPublic, object.getContractor().getShort_name(), packageType, "danrw:", sets))
 					publishedFlag += 1;
 			}
 			if (new File(dipPathInstitution).exists()) {
 				// write xepicur file for urn resolving
 				XepicurWriter.createXepicur(object.getIdentifier(), packageType, viewerUrls.get(packageType), dipPathInstitution);
-				ingester.purgePackageIfExists(urn, object.getIdentifier(), "danrw-closed:"); // in case of delta
 				if (ingester.ingestPackage(urn, object.getIdentifier(), dipPathInstitution, object.getContractor().getShort_name(), packageType, "danrw-closed:", null))
 					publishedFlag += 2;
 			}
