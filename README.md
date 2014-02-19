@@ -39,7 +39,7 @@ distinctions in a concise way in order to make communication easier. So we intro
 the concept of PIPs (Presentation Information Package) into our model, which is an
 extension to the OAIS model specifically targeted at our needs.
 
-The second big feature is the so called Delta-Feature. With deltas users can make additions
+The second big feature is the so called [Delta-Feature](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/the_delta_feature.md). With deltas users can make additions
 to contents already present in the long term archive. This feature is also deeply integrated
 into the basic architecture of the software. Also it needed to create an object model that is
 in line with the OAIS reference model but is more complicated in its specifics since the
