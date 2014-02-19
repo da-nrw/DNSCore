@@ -61,7 +61,7 @@ respectively. The files which get packaged into the DIP then are determined by t
 alphabetically and then taking the last version for each document.
 
 
-## Sidecar files TODO
+## Sidecar files
 
 
 ## PIPs
