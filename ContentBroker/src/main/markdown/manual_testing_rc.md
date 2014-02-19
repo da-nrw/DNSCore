@@ -3,6 +3,7 @@ The testing chart for release candidates is availabe [here]
 
 Most of the testpackages which are small enough to host in github are put to src/test/resources/manual/
 
+(Our manual testing instructions are available in german only)
 
 ### ME1 - Publikationsmetadatentest 1 - METS/MODS
 
@@ -162,7 +163,9 @@ Dieser Test prüft die Bildmanipulation durch imagemagick.
 
 **Akzeptanzkriterien:**
 
-die Information sind im PR angekommen (TODO - genauere Kriterien festlegen)
+* Die Informationen sind im PR angekommen.
+* Das Paket Watermark enthält Bilder mit einem Wasserzeichen über jedem Bild
+* Das Paket Footertext enthält Bilder mit jeweils einer Fußzeile. 
 
 ### PR2 - presentation Format Restrictions
 
