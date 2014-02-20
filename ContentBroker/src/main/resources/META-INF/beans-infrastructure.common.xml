@@ -69,6 +69,7 @@
         <property name="gridFacade" ref="${grid.implementation}" />
         <property name="nodeAdminEmail" value="${localNode.admin_email}" />
         <property name="dao" ref="centralDao" />
+        <property name="systemName" value="${irods.zone}" />
         <property name="minNodes" value="${cb.min_repls}" />
     </bean>
     

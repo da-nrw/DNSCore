@@ -62,6 +62,8 @@ public class IntegrityScannerWorker {
 	/** The node admin email. */
 	private String nodeAdminEmail;
 	
+	private String systemName;
+	
 	/** The error state. */
 	private Integer errorState = 51;
 
@@ -87,7 +89,6 @@ public class IntegrityScannerWorker {
 				return;
 			}
 			logger.debug("Scanning AIP s of node " + localNodeName );
-			// TODO: better set this to enum_state archived !!
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
 			Object obj = getDao().getObjectNeedAudit(session,localNodeName, errorState);
@@ -130,7 +131,7 @@ public class IntegrityScannerWorker {
 	void sendEmail(Object obj) {
 		// send Mail to Admin with Package in Error
 
-		String subject = "[" + "] Problem Report für " + obj.getIdentifier() + " auf " + localNodeName;
+		String subject = "[" + systemName +  "] Problem Report für " + obj.getIdentifier() + " auf " + localNodeName;
 		if (nodeAdminEmail != null && !nodeAdminEmail.equals("")) {
 			try {
 				Mail.sendAMail(nodeAdminEmail, subject, "Es gibt ein Problem mit dem Objekt " + obj.getContractor().getShort_name()+ "/" + obj.getIdentifier());
@@ -262,6 +263,26 @@ public class IntegrityScannerWorker {
 
 	public void setDao(CentralDatabaseDAO dao) {
 		this.dao = dao;
+	}
+
+
+
+
+	/**
+	 * @return the zoneName
+	 */
+	public String getSystemName() {
+		return systemName;
+	}
+
+
+
+
+	/**
+	 * @param zoneName the zoneName to set
+	 */
+	public void setSystemName(String zoneName) {
+		this.systemName = zoneName;
 	}
 	
 	

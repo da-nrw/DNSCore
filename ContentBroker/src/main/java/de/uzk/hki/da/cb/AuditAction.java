@@ -45,10 +45,11 @@ import de.uzk.hki.da.service.Mail;
 public class AuditAction extends AbstractAction {
 
 	
-	private String nodeAdminEmail ="";
+	private String nodeAdminEmail;
 	private int minNodes = 3;
 	private GridFacade gridRoot;
 	private int errorState = 51;
+	private String systemName;
 	/*
 	 * 
 	 * (non-Javadoc)
@@ -94,7 +95,7 @@ public class AuditAction extends AbstractAction {
 				if (!msg.equals("")) {
 					informNodeAdmin(logicalPath, msg);
 				} else {
-					logger.debug("settin object state to 100");
+					logger.debug("setting object state to 100");
 					object.setObject_state(100);
 				}
 				
@@ -102,8 +103,9 @@ public class AuditAction extends AbstractAction {
 				logger.error(logicalPath + " is invalid!");
 				unloadAndRepair(pack, job, object);
 				object.setObject_state(errorState);
-				msg = "Das gespeicherte Datenpaket \""+ logicalPath + "\" hat mindestens eine kaputte Replikation. " +
+				msg += "Das gespeicherte Datenpaket \""+ logicalPath + "\" hat mindestens eine kaputte Replikation. " +
 				"Bitte prüfen Sie das entsprechende Datenpaket und die Medien auf denen es liegt!\n\n";
+				informNodeAdmin(logicalPath, msg);
 			}
 		}
 		
@@ -126,7 +128,7 @@ public class AuditAction extends AbstractAction {
 	void informNodeAdmin(String logicalPath, String msg) {
 		// send Mail to Admin with Package in Error
 
-		String subject = "[DA-NRW] Problem Report für " + logicalPath;
+		String subject = "[" + systemName + "] Problem Report für " + logicalPath;
 		if (nodeAdminEmail != null && !nodeAdminEmail.equals("")) {
 			try {
 				Mail.sendAMail(nodeAdminEmail, subject, msg);
@@ -191,5 +193,19 @@ public class AuditAction extends AbstractAction {
 
 	public void setGridRoot(GridFacade gridRoot) {
 		this.gridRoot = gridRoot;
+	}
+
+	/**
+	 * @return the zoneName
+	 */
+	public String getSystemName() {
+		return systemName;
+	}
+
+	/**
+	 * @param zoneName the zoneName to set
+	 */
+	public void setSystemName(String zoneName) {
+		this.systemName = zoneName;
 	}
 }

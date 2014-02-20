@@ -36,6 +36,7 @@
 		<property name="minNodes" value="${cb.min_repls}" />
 		<property name="nodeAdminEmail" value="${localNode.admin_email}" />
 		<property name="gridRoot" ref="${grid.implementation}"/>
+		<property name="systemName" value="${irods.zone}"/>
 		<property name="name" value="AuditAction" />
 	</bean>
 </beans>
