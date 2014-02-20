@@ -89,11 +89,14 @@ DIP for your object immediately. See screenshot below.
 1. Alternatively you have the "Entnahme" Button which appears for your object in the "Eingelieferte Objekte (AIP)" section when your DIP can be retrieved.
 1. To save resources, the system will remove the DIP automatically from the web share/UserArea 24h after you have downloaded it.
 
-Filtering for objects in "Eingelieferte Objekte (AIP)" section
+
 ![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_1.png)
 
-Getting your object in "Objekte entnehmen (DIP)" view:
+Filtering for objects in "Eingelieferte Objekte (AIP)" section
+
 ![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_2.png)
+
+Getting your object in "Objekte entnehmen (DIP)" view:
 
 **Note** that requested packages are visible not only on the "Objekt entnehmen (DIP)" view but also in the outgoing folder of the contractors web share.
 
