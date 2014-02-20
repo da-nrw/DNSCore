@@ -29,6 +29,7 @@ import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
@@ -77,38 +78,34 @@ public class AuditAction extends AbstractAction {
 		StoragePolicy sp = new StoragePolicy(localNode);
 		sp.setMinNodes(Integer.parseInt(((String)properties.getProperty("cb.min_repls"))));
 		
-		
+		String msg= "";
+		// TODO: refactor to same implementation IntegrityScanner uses
+		boolean completelyValid = true; 
 		for (Package pack : object.getPackages()) {
 			String pname = pack.getName();
 			if (pname.equals("")) pname = "1";
-
 			String logicalPath = "/aip/"+object.getContractor().getShort_name() + "/" +object.getIdentifier() +"/"+
 					object.getIdentifier() + ".pack_"+pname+".tar";
-
-			String msg= "";
-			if (gridRoot.isValid(logicalPath)) {
-				logger.info(logicalPath + " is valid!");
-				if (!gridRoot.storagePolicyAchieved(logicalPath, sp)) {
-					object.setObject_state(errorState);
-					msg += "\nAnzahl der geforderten Replikationen für das Datenpaket "+logicalPath +" auf LZA Medien wurde nicht erreicht! Soll: " + minNodes +"\n";
-				}
-				if (!msg.equals("")) {
-					informNodeAdmin(logicalPath, msg);
-				} else {
-					logger.debug("setting object state to 100");
-					object.setObject_state(100);
-				}
-				
-			} else {
-				logger.error(logicalPath + " is invalid!");
-				unloadAndRepair(pack, job, object);
-				object.setObject_state(errorState);
-				msg += "Das gespeicherte Datenpaket \""+ logicalPath + "\" hat mindestens eine kaputte Replikation. " +
-				"Bitte prüfen Sie das entsprechende Datenpaket und die Medien auf denen es liegt!\n\n";
-				informNodeAdmin(logicalPath, msg);
+			
+			if (!gridRoot.isValid(logicalPath)) {
+				msg+="SEVERE FAULT " + logicalPath + " is not valid, Checksum could not be verified on all systems!\n";
+				 completelyValid = false;
+				continue;
 			}
+			if (!gridRoot.storagePolicyAchieved(logicalPath, sp)) {
+				msg+="FAULT " + logicalPath + " has not achieved its replication policy!\n";
+				completelyValid = false;
+				continue;
+			} 
 		}
-		
+		if (completelyValid) {
+			logger.debug("Object checked OK, setting object state to 100");
+			object.setObject_state(100);
+		} else {
+			object.setObject_state(errorState);
+			logger.error("Object " + object.getIdentifier()  + " has following errors :" +  msg);
+			unloadAndRepair(object);
+		}		
 		return true;
 	}
 
@@ -142,18 +139,12 @@ public class AuditAction extends AbstractAction {
 	
 	
 	
-	void unloadAndRepair(Package pack, Job job, Object obj) {
-		// unload and Deep Check & repair Package on node
-		//Todo
+	void unloadAndRepair( Object obj) {
+		// TODO TBD unload and Deep Check & repair Package on node
 	}
 	
-	public void setObjectState(Job job, int state) {
-		
-//		if (dao==null) throw new IllegalStateException("centralDatabaseDAO not set");
-		
-//		HibernateUtil.getThreadBoundSession().refresh(object);
-		
-		if (object!=null) { // TODO reconsider
+	public void setObjectState(Job job, int state) {	
+		if (object!=null) { 
 			object.setObject_state(state);
 		}
 		

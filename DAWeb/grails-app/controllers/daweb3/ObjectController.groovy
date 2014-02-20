@@ -38,13 +38,7 @@ class ObjectController {
     def list() {
 				def admin = false;
 				def relativeDir = session.contractor.shortName+ "/outgoing"
-				def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
-				
-				if (params.search==null||((params.search.origName==null||params.search.origName=="")
-						&&(params.search.urn==null||params.search.urn==""))) params.search=null;
-        
-				if (params.search==null){
-		
+				def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir				
 					params.max = Math.min(params.max ? params.int('max') : 10, 100)
 					
 					def c = Object.createCriteria()
@@ -73,37 +67,6 @@ class ObjectController {
 						admin: admin,
 						baseFolder: baseFolder
 				]
-				} else {
-					
-					def c = Object.createCriteria()
-					log.debug(params.toString())
-					def objects = c.list {
-						if (params.search) params.search.each { key, value ->
-							like(key, "%" + value + "%")
-						}
-						if (session.contractor.admin!=1) {
-							def contractor = Contractor.findByShortName(session.contractor.shortName)
-							eq("contractor.id", contractor.id)
-						}
-						if (session.contractor.admin==1) {
-							admin = true;
-						}
-						between("object_state", 50,100)
-						order(params.sort ?: "id", params.order ?: "desc")
-					}
-					if (params.search.urn!="") params.search.urn = params.search.urn.replaceAll(~"\\+",":")
-					
-					log.debug(params.search)
-					
-					
-					
-					return [
-						objectInstanceList: objects,
-						searchParams: params.search,
-						admin: admin,
-						baseFolder: baseFolder
-				]
-				}
     }
 
     def show() {
