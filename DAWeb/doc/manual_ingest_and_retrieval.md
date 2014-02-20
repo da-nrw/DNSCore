@@ -65,26 +65,37 @@ further processing.
 
 ![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/ingest_1.png)
 
+**Note** that users are able to monitor the package while beeing processed.
+This is an advanced feature which is only optional and primarily targeted at 
+administrators. It is described in this (TODO link) document.
+
 ## Retrieval 
 
 Once you have ingested a package into the system successfully, which you know by
 recieving an email report for the object, you can search the system for it and retrieve
 it. How this is done is described by the following steps
 
-#### Steps
+#### Retrieval step by step
 
 1. Log in to DAWeb on your node.
 2. Go to the "Eingelieferte Objekte (AIP)" section.
-3. Search your object by filtering for it by object identifier (which you take from the email)
+3. Search your object by filtering for it by object identifier (which you take from the email). See screenshot below.
 1. Click the "Anfordern" button of your object.
 1. Wait for another email which confirms your object has successfully been retrieved and is ready for download
+
 1. Go to the starting page of DAWeb again and then select "Objekt entnehmen (DIP)".
 1. Click the link for your object and your browser should start do download the 
-DIP for your object immediately.
+DIP for your object immediately. See screenshot below.
+1. Alternatively you have the "Entnahme" Button which appears for your object in the "Eingelieferte Objekte (AIP)" section when your DIP can be retrieved.
 1. To save resources, the system will remove the DIP automatically from the web share/UserArea 24h after you have downloaded it.
 
-Note that requested packages are visible not only on the "Objekt entnehmen (DIP)" view but also in the outgoing folder of the contractors web share.
+Filtering for objects in "Eingelieferte Objekte (AIP)" section
+![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_1.png)
 
+Getting your object in "Objekte entnehmen (DIP)" view:
+![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_2.png)
+
+**Note** that requested packages are visible not only on the "Objekt entnehmen (DIP)" view but also in the outgoing folder of the contractors web share.
 
 ## User Reports via Email
 
