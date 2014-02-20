@@ -18,30 +18,65 @@
 */
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.model.Object; 
-import de.uzk.hki.da.model.Package; 
+import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * @author Daniel M. de Oliveira
  */
 public class DeleteObjectActionTests {
 
+	private String workAreaRootPath = "src/test/resources/cb/DeleteObjectActionTests/work/";
+	private String ingestAreaRootPath = "src/test/resources/cb/DeleteObjectActionTests/ingest/";
+	private DeleteObjectAction action;
+	
+	@Before
+	public void setUp() throws IOException{
+		new File(workAreaRootPath+"TEST/123/data").mkdirs();
+		new File(workAreaRootPath+"TEST/abc.txt").createNewFile();
+		new File(ingestAreaRootPath+"TEST/abc.txt").createNewFile();
+	}
+	
+	@Test
+	public void cleanFork() throws FileNotFoundException, UserException, IOException{
+		Object o = TESTHelper.setUpObject("123", workAreaRootPath);
+		o.getTransientNodeRef().setIngestAreaRootPath(ingestAreaRootPath);
+		o.getLatestPackage().setContainerName("abc.txt");
+		
+		action = new DeleteObjectAction();
+		action.setObject(o);
+		action.implementation();
+		
+		assertFalse(new File(workAreaRootPath+"TEST/123/").exists());
+		assertFalse(new File(workAreaRootPath+"TEST/abc.txt").exists());
+		assertFalse(new File(ingestAreaRootPath+"TEST/abc.txt").exists());
+	}
+	
+	
+	/**
+	 * AbstractAction deletes the object from the DB if DELETEOBJECT is set to true. 
+	 * 
+	 * @throws FileNotFoundException
+	 * @throws UserException
+	 * @throws IOException
+	 */
 	@Test
 	public void testSetDeleteObjectFlag() throws FileNotFoundException, UserException, IOException{
-		Object o = new Object();
-		Package p = new Package(); p.setName("1");
-		o.getPackages().add(p);
-		DeleteObjectAction action = new DeleteObjectAction();
-		action.setObject(o);
-		
+		action = new DeleteObjectAction();
+		action.setObject(TESTHelper.setUpObject("123", workAreaRootPath));
 		action.implementation();
 
 		assertTrue(action.DELETEOBJECT);
@@ -49,14 +84,11 @@ public class DeleteObjectActionTests {
 	
 	@Test
 	public void testSetDeletePackage() throws FileNotFoundException, UserException, IOException{
-		Object o = new Object();
-		Package p = new Package(); p.setName("1"); 
+		action = new DeleteObjectAction();
+		Object o = TESTHelper.setUpObject("123", workAreaRootPath);
 		Package p2 = new Package(); p2.setName("2"); 
-		o.getPackages().add(p);
 		o.getPackages().add(p2);
-		DeleteObjectAction action = new DeleteObjectAction();
 		action.setObject(o);
-		
 		action.implementation();
 
 		assertFalse(action.DELETEOBJECT);

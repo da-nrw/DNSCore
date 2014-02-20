@@ -18,9 +18,11 @@
 */
 package de.uzk.hki.da.cb;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +30,9 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.core.UserException;
 
 /**
+ * For a given object 
+ * <li>deletes the object folder from the UserArea
+ * <li>deletes any existing packages belonging to the Object from the IngestArea
  * @author Daniel M. de Oliveira
  */
 public class DeleteObjectAction extends AbstractAction {
@@ -46,6 +51,26 @@ public class DeleteObjectAction extends AbstractAction {
 		if (object.getPackages().size()>1){
 			object.getPackages().remove(object.getLatestPackage());
 		}
+		
+		logger.info("Deleting object from WorkArea: "+object.getPath());
+		FileUtils.deleteDirectory(new File(object.getPath()));
+		
+		File fileInWorkArea = new File(object.getTransientNodeRef().getWorkAreaRootPath() + 
+				object.getContractor().getShort_name() + 
+				"/" + object.getLatestPackage().getContainerName());
+		if (fileInWorkArea.exists()) {
+			logger.info("Delete latest package from WorkArea: " + fileInWorkArea );
+			fileInWorkArea.delete();
+		}
+		
+		File fileInIngestArea = new File(object.getTransientNodeRef().getIngestAreaRootPath() + 
+				object.getContractor().getShort_name() + 
+				"/" + object.getLatestPackage().getContainerName());
+		if (fileInIngestArea.exists()) {
+			logger.info("Delete latest package from WorkArea: " + fileInIngestArea );
+			fileInIngestArea.delete();
+		}
+		
 		
 		return true;
 	}

@@ -182,10 +182,9 @@ public class UnpackAction extends AbstractAction {
 	 */
 	private String copySIPToWorkArea(String ingestFilePath) {
 		
-		String destFilePath = localNode.getWorkAreaRootPath() + object.getContractor().getShort_name() + "/" + 
-						  FilenameUtils.getName(ingestFilePath);
 		File ingestFile = new File(ingestFilePath);
-		File destFile = new File(destFilePath);
+		File destFile = new File(localNode.getWorkAreaRootPath() + object.getContractor().getShort_name() + "/" + 
+				  FilenameUtils.getName(ingestFilePath));
 		
 		if (!ingestFile.exists())
 			throw new RuntimeException("Package file " + ingestFile.getAbsolutePath() + " does not exist");
@@ -200,7 +199,7 @@ public class UnpackAction extends AbstractAction {
 		if (!destFile.exists())
 			throw new RuntimeException("File " + destFile.getAbsolutePath() + " does not exist");
 					
-		return destFilePath;
+		return destFile.getAbsolutePath();
 	}	
 	
 	/**
