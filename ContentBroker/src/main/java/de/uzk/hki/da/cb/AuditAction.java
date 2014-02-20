@@ -105,6 +105,7 @@ public class AuditAction extends AbstractAction {
 			object.setObject_state(errorState);
 			logger.error("Object " + object.getIdentifier()  + " has following errors :" +  msg);
 			unloadAndRepair(object);
+			informNodeAdmin(object, msg);
 		}		
 		return true;
 	}
@@ -122,15 +123,15 @@ public class AuditAction extends AbstractAction {
 	 * @author Jens Peters
 	 */
 	
-	void informNodeAdmin(String logicalPath, String msg) {
+	void informNodeAdmin(Object obj, String msg) {
 		// send Mail to Admin with Package in Error
 
-		String subject = "[" + systemName + "] Problem Report für " + logicalPath;
+		String subject = "[" + systemName + "] Problem Report für " + obj.getIdentifier();
 		if (nodeAdminEmail != null && !nodeAdminEmail.equals("")) {
 			try {
 				Mail.sendAMail(nodeAdminEmail, subject, msg);
 			} catch (MessagingException e) {
-				logger.error("Sending email problem report for " + logicalPath + "failed");
+				logger.error("Sending email problem report for " +  obj.getIdentifier() + " failed");
 			}
 		} else {
 			logger.warn("Node Admin has no valid Email address!");
