@@ -63,9 +63,9 @@ further processing.
 1. Verify that the entry for the file disappears.
 1. Wait for an email which informs you about success or failure of the ingest process.
 
-![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/ingest_1.png)
 
-<sub>Start the ingest after uploading</sub>
+![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/ingest_1.png)
+<br><sub>Start the ingest after uploading</sub>
 
 **Note** that users are able to monitor the package while beeing processed.
 This is an advanced feature which is only optional and primarily targeted at 
@@ -92,13 +92,12 @@ DIP for your object immediately. See screenshot below.
 1. To save resources, the system will remove the DIP automatically from the web share/UserArea 24h after you have downloaded it.
 
 
-![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_1.png)
 
-<sub>Filtering for objects in "Eingelieferte Objekte (AIP)" section</sub>
+![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_1.png)
+<br><sub>Filtering for objects in "Eingelieferte Objekte (AIP)" section</sub>
 
 ![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_2.png)
-
-<sub>Getting your object in "Objekte entnehmen (DIP)" view</sub>
+<br><sub>Getting your object in "Objekte entnehmen (DIP)" view</sub>
 
 **Note** that requested packages are visible not only on the "Objekt entnehmen (DIP)" view but also in the outgoing folder of the contractors web share.
 
