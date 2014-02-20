@@ -90,6 +90,7 @@ it. How this is done is described by the following steps
 DIP for your object immediately.
 ![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_2.png)
 1. Alternatively you have the "Entnahme" Button which appears for your object in the "Eingelieferte Objekte (AIP)" section when your DIP can be retrieved.
+![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_3.png)
 1. To save resources, the system will remove the DIP automatically from the web share/UserArea 24h after you have downloaded it.
 
 
