@@ -35,14 +35,17 @@ the basic version you easily can extend the software by the other components if 
 configuration settings. We think this is a great way for administrators to get up and running quickly while
 getting an understanding of the basic behaviour and configuration possibilities of the software.
 
+A second [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation.md) then describes
+how to convert the existing DNSCore into a full-fledged installation including the iRODS storage layer.
+
 ## Prerequisites
 
 * Python > 2.7
-* Java 1.6
-* ImageMagick
-* PostgreSQL
+* Oracle Java 1.6 
+* ImageMagick > 6.7.8-10
+* PostgreSQL > 9.0
 
-## Preparation
+## Installation directories
 
 Prepare your installation and storage directories
 
@@ -51,16 +54,51 @@ Prepare your installation and storage directories
                     user/
                     ingest/
                     work/
-                    dips/
-                    grid/                  
+                    pip/
+                        institution/
+                        public/
+                    gridCache/                  
 
 [somewhere] denotes some arbitrary path on your local box.
 The ContentBroker directory then is the folder into which we will later let
 our installer put the binaries. The storage directory is a directory structure
-which DNSCore will use to work with data packages. The subfolders correspond to the various 
-[processing stages](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md).
+which DNSCore will use to work with data packages. 
 
-## Configure the application
+The subfolders correspond to the various 
+[processing stages](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md).
+According to the structure of the different areas in addition to the basic folder layout we need directories
+for at least one user to run tests against the system. This first user is typically the TEST user. Every user (TODO link)
+has a unique property called "contractor short name" which we most of the time call csn for short, as it is done in the
+processing stages document, where [csn1],[csn2] act as placeholders for the various short names. Note that short names 
+are case sensitive. For our system to work with the TESTS user, extend the directory structure like this:
+
+    [somewhere]/storage/
+                    user/
+                         TEST/
+                              incoming/
+                              outgoing/
+                    ingest/
+                         TEST/
+                    work/
+                         TEST/
+                    pip/
+                        institution/
+                               TEST/
+                        public/
+                               TEST/
+                    gridCache/
+                         TEST   
+
+## Database
+
+1. Create a new database called contentbroker.
+1. Create a database user called cb_usr.
+1. Ask our team for a dump of a basic database schema. We'll discussing various solutions to automatize this step, 
+but for the moment asking for a dump is the way to go.
+
+## Application configuration
+
+### config.properties
 
 1. Get a properties file 
 [template](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/config.properties.dev). Note that this document
@@ -74,17 +112,15 @@ in config.properties:
     localNode.userAreaRootPath=[somewhere]/storage/user
     localNode.ingestAreaRootPath=[somewhere]/storage/ingest
     localNode.workAreaRootPath=[somewhere]/storage/work
-    localNode.dipAreaRootPath=[somewhere]/storage/dip
-    localNode.gridCacheAreaRootPath=[somewhere]/storage/grid
+    localNode.dipAreaRootPath=[somewhere]/storage/pip
+    localNode.gridCacheAreaRootPath=[somewhere]/storage/gridCache
 
-TODO fake ffmpeg.sh
+If your python installation is not globally visible, for example if your package system does not provide
+the newest version, set the path accordingly at
 
-## Prepare the database with minimal configuration
+    python.bin=python
 
-1. Create a new database called contentbroker.
-1. Create a database user called cb_usr.
-1. Ask our team for a dump of a basic database schema. We'll discussing various solutions to automatize this step, but for the moment asking
-   for a dump is the way to go.
+### hibernate.cfg.xml
 
 1. Download a hibernate properties file 
 [template](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.inmem).
@@ -97,8 +133,20 @@ in hibernateCentralDB.cfg.xml:
     <property name="connection.username">sa</property>
     <property name="connection.password"></property>
 
+### ffmpeg.sh
+
+1. Download a fake glue [script](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/bash/ffmpeg.sh.fake) 
+that will ensure you don't have to install ffmpeg for now.
+2. Rename it to ffmpeg.sh
+
 ## Install and test the software
 
 1. Follow the steps for a fresh installation described 
 [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation.md#installation--fresh-installation).
-2. Use the hibernate.cfg.xml and config.properties you prepared during this tutorial.
+
+**Important** Before you run the installer, make sure you put hibernate.cfg.xml, config.properties and ffmpeg.sh
+ you prepared during this tutorial to your installer before running install.sh. You will have to overwrite the existing
+ ffmpeg.sh.
+
+If your DNSCore is up'n'running, you are free to play around with it or convert your existing installation into a full-fledged
+installation including the iRODS storage layer following this [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/full_fledged_installation.md).
