@@ -64,6 +64,7 @@ further processing.
 1. Wait for an email which informs you about success or failure of the ingest process.
 
 ![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/ingest_1.png)
+
 <sub>Start the ingest after uploading</sub>
 
 **Note** that users are able to monitor the package while beeing processed.
