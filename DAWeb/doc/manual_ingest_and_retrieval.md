@@ -81,23 +81,24 @@ it. How this is done is described by the following steps
 
 1. Log in to DAWeb on your node.
 2. Go to the "Eingelieferte Objekte (AIP)" section.
-3. Search your object by filtering for it by object identifier (which you take from the email). See screenshot below.
+3. Search your object by filtering for it by object identifier (which you take from the email).
+4. ![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_1.png)
 1. Click the "Anfordern" button of your object.
 1. Wait for another email which confirms your object has successfully been retrieved and is ready for download
-
 1. Go to the starting page of DAWeb again and then select "Objekt entnehmen (DIP)".
 1. Click the link for your object and your browser should start do download the 
-DIP for your object immediately. See screenshot below.
+DIP for your object immediately.
+![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_2.png)
 1. Alternatively you have the "Entnahme" Button which appears for your object in the "Eingelieferte Objekte (AIP)" section when your DIP can be retrieved.
 1. To save resources, the system will remove the DIP automatically from the web share/UserArea 24h after you have downloaded it.
 
 
 
-![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_1.png)
-<br><sub>Filtering for objects in "Eingelieferte Objekte (AIP)" section</sub>
 
-![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_2.png)
-<br><sub>Getting your object in "Objekte entnehmen (DIP)" view</sub>
+
+
+
+
 
 **Note** that requested packages are visible not only on the "Objekt entnehmen (DIP)" view but also in the outgoing folder of the contractors web share.
 
