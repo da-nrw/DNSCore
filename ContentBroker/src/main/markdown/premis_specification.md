@@ -1,21 +1,20 @@
 ## Inhalt einer vom SIP-Builder gebauten Premis-Datei
 
 * Ein Object-Element für das gebaute Paket
-** objectIdentifierType: PACKAGE_NAME
-** objectIdentifierValue: \[DAN:Name des SIPs, d.h. Name der tgz-Datei ohne Dateiendung\]
+  * objectIdentifierType: PACKAGE_NAME
+  * objectIdentifierValue: \[DAN:Name des SIPs, d.h. Name der tgz-Datei ohne Dateiendung\]
 * Ein Event-Element für die SIP-Erstellung
-** eventIdentifierType: SIP_CREATION_ID
-** eventIdentifierValue: Sip_Creation_\[DAN:Datum der Premis-Erstellung\]
-** EventType: SIP_CREATION
-** eventDateTime: \[DAN:Datum der Premis-Erstellung\]
-** Link auf den SIP-Builder-Agent
-** Link auf das Paket-Object
+  * eventIdentifierType: SIP_CREATION_ID
+  * eventIdentifierValue: Sip_Creation_\[DAN:Datum der Premis-Erstellung\]
+  * EventType: SIP_CREATION
+  * eventDateTime: \[DAN:Datum der Premis-Erstellung\]
+  * Link auf den SIP-Builder-Agent
+  * Link auf das Paket-Object
 * Ein Agent-Element für den SIP-Builder, mit dem das SIP erstellt wurde
-** agentIdentifierType: APPLICATION_NAME
-** agentIdentifierValue: DA NRW SIP-Builder \[DAN:Version\]
-** agentType: APPLICATION
+  * agentIdentifierType: APPLICATION_NAME
+  * agentIdentifierValue: DA NRW SIP-Builder \[DAN:Version\]
+  * agentType: APPLICATION
 * Ein Rights-Element für die festgelegten Contract Rights
-
 
 ## Vom System erwartete Eigenschaften einer eingehenden PREMIS-Datei
 
@@ -23,7 +22,6 @@
 * Rechte
 
 ## Im Falle von Erstanlieferungen werden folgende PREMIS-Elemente angelegt:
-
 
 ###### einmalig ein PREMIS-Object
 
@@ -34,7 +32,6 @@
 
 * Identifier vom Identifier-Typ PACKAGE_NAME angelegt.
 * Der Package-Name entspricht dem Namen der am Ende des Ingestvorgangs erzeugten tar-Datei
-
 
 ###### für alle Files, die direkt im SIP mitangeliefert werden jeweils ein Premis-Object
 
@@ -47,7 +44,7 @@
 
 ###### für jedes konvertierte File jeweils ein PREMIS-Event
 
-* {color:#000000}siehe Konversionsevent{color}
+* siehe Konversionsevent
 
 ###### einmalig ein PREMIS-Event zur Repräsention des Ingest des jeweiligen Paketes
 
@@ -73,12 +70,10 @@
 * Identifier-Typ URN angelegt.
 * Entspricht einer Entität vom Typ model.Object
 
-
 ###### für jedes Paket inklusive des neuesten Delta-Paketes ein PREMIS-Object
 
 * Identifier vom Identifier-Typ PACKAGE_NAME angelegt.
 * Der Package-Name entspricht dem Namen der am Ende des Ingestvorgangs erzeugten tar-Datei
-
 
 ###### für alle Files, die in allen (Delta)-SIPs mitangeliefert werden jeweils ein PREMIS-Object
 
@@ -88,16 +83,13 @@
 
 * siehe&nbsp;PREMIS-Objekt, das ein File beschreibt
 
-
 ###### für jedes konvertierte File jeden Paketes jeweils 1 PREMIS-Event&nbsp;
 
 * siehe Konversionsevent
 
-
 ###### je Paket eine SIP-Erstellungs-Event
 
 * siehe SIPCreationEvent
-
 
 ###### für jedes Paket ein PREMIS-Event
 
@@ -108,11 +100,9 @@
 
 * Name des Knotens
 
-
 ###### im Falle der Nutzung des SIP-Builders ein PREMIS-Agent
 
 * Name bzw. Version des SIP-Builders
-
 
 ###### für den Contractor ein PREMIS-Agent
 
