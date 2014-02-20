@@ -67,10 +67,10 @@ which DNSCore will use to work with data packages.
 The subfolders correspond to the various 
 [processing stages](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md).
 According to the structure of the different areas in addition to the basic folder layout we need directories
-for at least one user to run tests against the system. This first user is typically the TEST user. Every user (TODO link)
+for at least one user to run tests against the system. This first user (or contractor in DNSCore terminology) is typically the TEST user. Every  [contractor](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#contractor)
 has a unique property called "contractor short name" which we most of the time call csn for short, as it is done in the
 processing stages document, where [csn1],[csn2] act as placeholders for the various short names. Note that short names 
-are case sensitive. For our system to work with the TESTS user, extend the directory structure like this:
+are case sensitive. For our system to work with the TEST user, extend the directory structure like this:
 
     [somewhere]/storage/
                     user/
