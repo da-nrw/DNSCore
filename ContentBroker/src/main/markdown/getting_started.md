@@ -57,7 +57,7 @@ Prepare your installation and storage directories
                     pip/
                         institution/
                         public/
-                    gridCache/                  
+                    aip/                  
 
 [somewhere] denotes some arbitrary path on your local box.
 The ContentBroker directory then is the folder into which we will later let
@@ -86,7 +86,7 @@ are case sensitive. For our system to work with the TESTS user, extend the direc
                                TEST/
                         public/
                                TEST/
-                    gridCache/
+                    aip/
                          TEST   
 
 ## Database
@@ -113,7 +113,7 @@ in config.properties:
     localNode.ingestAreaRootPath=[somewhere]/storage/ingest
     localNode.workAreaRootPath=[somewhere]/storage/work
     localNode.dipAreaRootPath=[somewhere]/storage/pip
-    localNode.gridCacheAreaRootPath=[somewhere]/storage/gridCache
+    localNode.gridCacheAreaRootPath=[somewhere]/storage/aip
 
 If your python installation is not globally visible, for example if your package system does not provide
 the newest version, set the path accordingly at
