@@ -1,3 +1,5 @@
+# PREMIS Spezifikationen
+
 ## Inhalt einer vom SIP-Builder gebauten Premis-Datei
 
 * Ein Object-Element für das gebaute Paket
@@ -16,12 +18,12 @@
   * agentType: APPLICATION
 * Ein Rights-Element für die festgelegten Contract Rights
 
-## Vom System erwartete Eigenschaften einer eingehenden PREMIS-Datei
+### Vom System erwartete Eigenschaften einer eingehenden PREMIS-Datei
 
 * Ein Event der SIP-Erstellung
 * Rechte
 
-## Im Falle von Erstanlieferungen werden folgende PREMIS-Elemente angelegt:
+### Im Falle von Erstanlieferungen werden folgende PREMIS-Elemente angelegt:
 
 ###### einmalig ein PREMIS-Object
 
@@ -108,7 +110,7 @@
 
 * Contractor Short Name
 
-## Spezifikationen einzelner Elemente
+### Spezifikationen einzelner Elemente
 
 ##### FileObject
 
