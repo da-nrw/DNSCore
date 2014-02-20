@@ -87,7 +87,7 @@ public class AuditAction extends AbstractAction {
 					object.getIdentifier() + ".pack_"+pname+".tar";
 			
 			if (!gridRoot.isValid(logicalPath)) {
-				msg+="SEVERE FAULT " + logicalPath + " is not valid, Checksum could not be verified on all systems!\n";
+				msg+="SEVERE FAULT " + logicalPath + " is not valid, Checksum could not be verified on all systems! Please refer to the Storage Layer logs for further information! \n";
 				 completelyValid = false;
 				continue;
 			}
