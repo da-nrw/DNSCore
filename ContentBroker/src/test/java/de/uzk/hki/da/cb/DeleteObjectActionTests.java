@@ -26,6 +26,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,6 +50,13 @@ public class DeleteObjectActionTests {
 		new File(workAreaRootPath+"TEST/123/data").mkdirs();
 		new File(workAreaRootPath+"TEST/abc.txt").createNewFile();
 		new File(ingestAreaRootPath+"TEST/abc.txt").createNewFile();
+	}
+	
+	@After
+	public void tearDown() throws IOException{
+		FileUtils.deleteDirectory(new File(workAreaRootPath+"TEST/123/data"));
+		new File(workAreaRootPath+"TEST/abc.txt").delete();
+		new File(ingestAreaRootPath+"TEST/abc.txt").delete();
 	}
 	
 	@Test
