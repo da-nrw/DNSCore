@@ -31,9 +31,6 @@ public class VideoRestriction {
 	/** The height. */
 	private String height;
 	
-	/** The compression rate. */
-	private String compressionRate;
-	
 	/** The duration. */
 	private Integer duration;
 	
@@ -44,7 +41,6 @@ public class VideoRestriction {
 		width = null;
 		height = null;
 		duration = null;
-		compressionRate = null;
 	}
 	
 	/**
@@ -52,13 +48,11 @@ public class VideoRestriction {
 	 *
 	 * @param width the width
 	 * @param height the height
-	 * @param compressionRate the compression rate
 	 * @param duration the duration
 	 */
-	public VideoRestriction(String width, String height, String compressionRate, Integer duration) {
+	public VideoRestriction(String width, String height, Integer duration) {
 		this.width = width;
 		this.height = height;
-		this.compressionRate = compressionRate;
 		this.duration = duration;
 	}
 	
@@ -98,24 +92,6 @@ public class VideoRestriction {
 		this.height = height;
 	}
 	
-	/**
-	 * Gets the compression rate.
-	 *
-	 * @return the compression rate
-	 */
-	public String getCompressionRate() {
-		return compressionRate;
-	}
-
-	/**
-	 * Sets the compression rate.
-	 *
-	 * @param compressionRate the new compression rate
-	 */
-	public void setCompressionRate(String compressionRate) {
-		this.compressionRate = compressionRate;
-	}
-
 	/**
 	 * Gets the duration.
 	 *

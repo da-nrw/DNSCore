@@ -466,8 +466,6 @@ public class PremisXmlReader implements XmlReader{
 								.getFirstChildElement("width", CONTRACT_NS)));
 						videoRestriction.setHeight(stringValue(restrictVideoEl
 								.getFirstChildElement("height", CONTRACT_NS)));
-						videoRestriction.setCompressionRate(stringValue(restrictVideoEl
-								.getFirstChildElement("compressionRate", CONTRACT_NS)));
 						videoRestriction.setDuration(intValue(restrictVideoEl
 								.getFirstChildElement("duration", CONTRACT_NS)));
 						publicationRight.setVideoRestriction(videoRestriction);
