@@ -88,6 +88,8 @@ This property is called the "original name" of the object. (TODO link to delta /
 
 TODO administrator, default, presenter
 
+TODO contractor_short_name
+
 ### Node
 
 The node is the abstract notion for a location at which a box running DNSCore sits.
