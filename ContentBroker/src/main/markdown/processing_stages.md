@@ -47,13 +47,23 @@ push their data to and the ContentBroker pulls data from it should have a reason
 
     /mountpoint/[UserAreaFolder]/
 	                           [csn1]/
-	                                  package1.tgz
-	                                  package2.tgz
-	                                  ...
+	                           		  incoming/
+	                                           package1.tgz
+	                                           package2.tgz
+	                                           ...
+	                                  outgoing/
+	                                           oid1.tar
+	                                           oid2.tar
+	                                           ...
 	                           [csn2]/
-	                         	      package1.tgz
-	                         		  package2.tgz
-	                         		  ...
+	                                  incoming/
+	                         	               package1.tgz
+	                         		           package2.tgz
+	                         		           ...
+	                         		  outgoing/
+	                         		           oid3.tar
+	                         		           oid4.tar
+	                         		           ...
 	                           ...
 #### IngestArea
 

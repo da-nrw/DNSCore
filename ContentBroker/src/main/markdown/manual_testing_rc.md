@@ -1,4 +1,4 @@
-The testing chart for release candidates is availabe [here]
+The testing chart for release candidates is available [here]
 (https://docs.google.com/spreadsheet/ccc?key=0Ash-t_YI6jRrdGhDTUNveGdLSHlwaVRZaDFRVjY4a3c#gid=0)
 
 Most of the testpackages which are small enough to host in github are put to src/test/resources/manual/
