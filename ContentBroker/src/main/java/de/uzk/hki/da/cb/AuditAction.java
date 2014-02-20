@@ -29,7 +29,6 @@ import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
