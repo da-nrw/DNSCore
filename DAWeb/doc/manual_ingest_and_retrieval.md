@@ -51,7 +51,7 @@ further processing.
 2. You have recieved log in data for the web share for your node by an administrator.
 3. You have mounted the webshare on your local box or installed a file transfer program.
 
-#####
+##### Steps
 
 1. Choose a package for upload.
 1. Mount your webshare on your box or open and log in into your file transfer program.
