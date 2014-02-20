@@ -50,11 +50,11 @@ public class ShortenFileNamesAction extends AbstractAction {
 		// rename results of conversions
 		for (Event e:object.getLatestPackage().getEvents()) {
 			
-			logger.debug("checking if event is CONVERT or COPY for {}", e);
+			logger.debug("checking if event is CONVERT for {}", e);
 			
-			if (!"CONVERT".equals(e.getType()) && !"COPY".equals(e.getType())) continue;
+			if (!"CONVERT".equals(e.getType())) continue;
 			
-			logger.debug("event is CONVERT/COPY: {}", e);
+			logger.debug("event is CONVERT: {}", e);
 
 			DAFile daFile = e.getTarget_file();
 			if (!daFile.getRep_name().startsWith("dip")) continue;
@@ -95,7 +95,7 @@ public class ShortenFileNamesAction extends AbstractAction {
 	void rollback() throws Exception {
 		
 		for (Event e:object.getLatestPackage().getEvents()) {
-			if (!"CONVERT".equals(e.getType()) && !"COPY".equals(e.getType())) continue;
+			if (!"CONVERT".equals(e.getType())) continue;
 			
 			DAFile daFile = e.getTarget_file();
 			File file = daFile.toRegularFile();

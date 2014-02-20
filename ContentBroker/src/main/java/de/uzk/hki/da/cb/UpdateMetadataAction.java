@@ -262,14 +262,13 @@ public class UpdateMetadataAction extends AbstractAction {
 				logger.info("representation directory {} does not exist. Skipping ...", repPath);
 				continue;
 			}
-			for (DAFile sidecarSourceFile : object.getNewestFilesFromAllRepresentations("xmp;XMP")) {
+			for (DAFile sidecarSourceFile : object.getNewestFilesFromAllRepresentations("xmp")) {
 				if (!sidecarSourceFile.getRelative_path().toLowerCase().endsWith(".xmp")
 						|| Arrays.asList(repNames).contains(sidecarSourceFile.getRep_name())) continue;
 				logger.debug("Found xmp sidecar: {}", sidecarSourceFile);
 
 				DAFile sidecarTargetFile = new DAFile(object.getLatestPackage(),repName,
-						FilenameUtils.getPath(sidecarSourceFile.getRelative_path())+"/"+
-								determineTargetBaseName(sidecarSourceFile)+".xmp");
+						determineTargetRelativePathWithoutExtension(sidecarSourceFile) + ".xmp");
 				logger.debug("Copying {} to {}", sidecarSourceFile, sidecarTargetFile.toString());
 				FileUtils.copyFile(sidecarSourceFile.toRegularFile(), sidecarTargetFile.toRegularFile());
 				sidecarTargetFile.setFormatPUID(sidecarSourceFile.getFormatPUID());
@@ -286,18 +285,18 @@ public class UpdateMetadataAction extends AbstractAction {
 		}
 	}
 
-	private String determineTargetBaseName(DAFile sidecarSourceFile) {
-		String baseName = "";
+	private String determineTargetRelativePathWithoutExtension(DAFile sidecarSourceFile) {
+		String relativePath = "";
 		for (Event evt:object.getLatestPackage().getEvents()){
 			if (evt.getType().equals("CONVERT")&&
 					FilenameUtils.removeExtension(evt.getSource_file().toRegularFile().getAbsolutePath()).
 						equals(FilenameUtils.removeExtension(sidecarSourceFile.toRegularFile().getAbsolutePath()))){
-				baseName = FilenameUtils.getBaseName(evt.getTarget_file().getRelative_path());
+				relativePath = FilenameUtils.removeExtension(evt.getTarget_file().getRelative_path());
 				break;
 			}
 		}
-		if (baseName.equals("")) throw new RuntimeException("baseName must not be null");
-		return baseName;
+		if (relativePath.equals("")) throw new RuntimeException("relativePath must not be null");
+		return relativePath;
 	}
 	
 	
