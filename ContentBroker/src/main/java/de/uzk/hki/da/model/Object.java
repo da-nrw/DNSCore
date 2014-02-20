@@ -602,7 +602,8 @@ public class Object {
 	/**
 	 * Gets the newest files from all representations.
 	 *
-	 * @param sidecarExtensions the sidecar extensions
+	 * @param sidecarExtensions Files with the given extensions are considered sidecar files. Sidecar files are treated differently from other files
+	 *  (see <a href="https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/dip_specification.md#sidecar-files">documentation</a> for details)
 	 * @return newest DAFile of each Document. Note that by default the DAFile instances are build from scratch and will
 	 * not be attached to the object. However in case there are already instances attached to the object which correspond
 	 * to the file objects from the file system, the method will return these instead.
@@ -684,7 +685,7 @@ public class Object {
 				}
 				
 				if (Utilities.isSidecarFile(fRelativePath, sidecarExtensions))
-					relativePathWithoutExtension += "?sidecar" + FilenameUtils.getExtension(fRelativePath);
+					relativePathWithoutExtension += "?sidecar" + FilenameUtils.getExtension(fRelativePath).toLowerCase();
 				
 				DAFile newDAFile = new DAFile(this.getLatestPackage(),fRepName,fRelativePath);
 				

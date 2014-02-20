@@ -60,8 +60,11 @@ name it the document with the identifier "abc". The identifiers for the other do
 respectively. The files which get packaged into the DIP then are determined by the system by ordering all representations of the object 
 alphabetically and then taking the last version for each document.
 
+## TODO premis.xml
 
-## Sidecar files TODO
+.. contains events ..
+
+## Sidecar files
 
 
 ## PIPs
