@@ -82,7 +82,7 @@ it. How this is done is described by the following steps
 1. Log in to DAWeb on your node.
 2. Go to the "Eingelieferte Objekte (AIP)" section.
 3. Search your object by filtering for it by object identifier (which you take from the email).
-4. ![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_1.png)
+![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_1.png)
 1. Click the "Anfordern" button of your object.
 1. Wait for another email which confirms your object has successfully been retrieved and is ready for download
 1. Go to the starting page of DAWeb again and then select "Objekt entnehmen (DIP)".
