@@ -1,6 +1,6 @@
 # PREMIS Spezifikationen
 
-## Inhalt einer vom SIP-Builder gebauten Premis-Datei
+### Inhalt einer vom SIP-Builder gebauten Premis-Datei
 
 * Ein Object-Element für das gebaute Paket
   * objectIdentifierType: PACKAGE_NAME
@@ -64,7 +64,7 @@
 
 * Contractor Short Name
 
-## Im Falle von Deltas enthalten die PREMIS-Dateien folgende Elemente:
+### Im Falle von Deltas enthalten die PREMIS-Dateien folgende Elemente:
 
 
 ###### einmalig ein PREMIS-Object
