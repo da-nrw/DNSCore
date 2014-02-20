@@ -565,9 +565,11 @@ public class PremisXmlWriter {
 						if (pubRight.getVideoRestriction() != null) {
 							VideoRestriction videoRestriction = pubRight.getVideoRestriction();
 							createOpenElement("restrictVideo", 6);
-								createTextElement("width", videoRestriction.getWidth(), 7);	
+							if (videoRestriction.getWidth() != null && !videoRestriction.getWidth().equals(""))
+								createTextElement("width", videoRestriction.getWidth(), 7);
+							if (videoRestriction.getHeight() != null && !videoRestriction.getHeight().equals(""))
 								createTextElement("height", videoRestriction.getHeight(), 7);
-								createTextElement("compressionRate", videoRestriction.getCompressionRate(), 7);
+							if (videoRestriction.getDuration() != null)
 								createTextElement("duration", Integer.toString(videoRestriction.getDuration()), 7);								
 							createCloseElement(6);
 						}

@@ -104,7 +104,7 @@ public class PremisXmlWriterTest {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(2023, 5, 23);
 		publicationRight.setImageRestriction(new ImageRestriction("640","480","asdf"));
-		publicationRight.setVideoRestriction(new VideoRestriction("640","480","75",30));
+		publicationRight.setVideoRestriction(new VideoRestriction("640","480",30));
 		publicationRight.setAudioRestriction(new AudioRestriction(30));
 		publicationRight.setTextRestriction(new TextRestriction(15,new int[]{23,42}));
 		publicationRights.add(publicationRight);
@@ -114,7 +114,7 @@ public class PremisXmlWriterTest {
 		publicationRight2.setStartDate(new Date());
 		calendar.set(2023, 5, 23);
 		publicationRight2.setImageRestriction(new ImageRestriction("640","480","fdsa"));
-		publicationRight2.setVideoRestriction(new VideoRestriction("640","480","75",30));
+		publicationRight2.setVideoRestriction(new VideoRestriction("640","480",30));
 		publicationRight2.setAudioRestriction(new AudioRestriction(30));
 		publicationRight2.setTextRestriction(new TextRestriction(15));
 		publicationRights.add(publicationRight2);
