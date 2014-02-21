@@ -44,10 +44,10 @@ To view what your CB process actually is performing you may hit he Show actions 
 Hitting this button will cause CB to stop main execution thread after having completed all 
 running actions. Please notice : There might be still processes called 
 
-<pre>java -jar ContenBroker</pre>
+<pre>java -jar ContenBroker.jar</pre>
 
-Please execute after doing graceful shutdown by
-<pre>ContentBroker_stop.sh</pre>
+Please execute after doing graceful shutdown
+<pre>ContentBroker_stop.sh</pre> otherwise starting ContentBroker will be denied.
  
 #### Reload PIP
 
