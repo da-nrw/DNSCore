@@ -45,7 +45,7 @@ at all.
 1. Download a properties file template from 
 [here](https://github.com/da-nrw/DNSCore/blob/master/DAWeb/daweb3_properties.groovy.dev).
 1. Save the file as 
-2. 
+
     /home/tomcat/.grails/daweb_properties.groovy
 
 1. Open it in an editor.
