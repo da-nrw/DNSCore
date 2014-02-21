@@ -45,7 +45,9 @@ at all.
 1. Download a properties file template from 
 [here](https://github.com/da-nrw/DNSCore/blob/master/DAWeb/daweb3_properties.groovy.dev).
 1. Save the file as 
+2. 
     /home/tomcat/.grails/daweb_properties.groovy
+
 1. Open it in an editor.
 1. Delete the blocks for the "test" and "development" environments
 1. Fill in the property params. Most of the params being used must have the same values like they've in the adjacent contentbroker
@@ -55,6 +57,4 @@ file "config.properties".
 
 To encode your own DB Password, you could use the command:
 
-<pre>
-groovy de.uzk.hki.da.utils.DESCodec <your_password>
-</Pre>   
+    groovy de.uzk.hki.da.utils.DESCodec <your_password>
