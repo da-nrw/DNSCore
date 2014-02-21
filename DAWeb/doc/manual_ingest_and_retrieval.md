@@ -93,21 +93,11 @@ DIP for your object immediately.
 ![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_3.png)
 1. To save resources, the system will remove the DIP automatically from the web share/UserArea 24h after you have downloaded it.
 
-
-
-
-
-
-
-
-
 **Note** that requested packages are visible not only on the "Objekt entnehmen (DIP)" view but also in the outgoing folder of the contractors web share.
 
-## User Reports via Email
+## User Reporting via DA-Web
 
-TODO for ingest
-TODO for errors during ingest
-TODO troobleshooting when no email
+Although ContentBroker sends Emails on significant actions (like "archived" or "user error") you are able to call interface of DA-Web for state calls, please refer to the information provided in this folder.
 
 
 
