@@ -28,7 +28,7 @@
 
 We added a configuration system under which you might be able to alter most of the 
 parameters being used in the webapp. 
-The file MUST be located under the tomcat owners home directory (e.g. User "tomcat")
+The file MUST be located under the tomcat owner's home directory (e.g. User "tomcat")
 This file has to be just readable by the Tomcat process owner. 
 You can find the file in the main folder daweb as well. The file lists the following properties:
 Although you might be able to add three environments, in fact the productional environment 
@@ -36,8 +36,9 @@ is used in normal software releases only. Of course you might be able to use the
 build in several environments as it depends only on the values added to properties file. 
 In most cases dropping the built war into your servlet container and having the 
 <pre>daweb_properties.groovy</pre> in place would be sufficient to run the application. Please
-undeploy former versions of daweb completely. Please keep in mind: without having the properties file in place, the webapp wont start 
+undeploy former versions of daweb completely. Please keep in mind: without having the properties file in place, the webapp won't start 
 at all. 
+
 
 #### Step by step
 
