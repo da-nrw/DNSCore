@@ -39,7 +39,11 @@ In most cases dropping the built war into your servlet container and having the
 undeploy former versions of daweb completely. Please keep in mind: without having the properties file in place, the webapp won't start 
 at all. 
 
-#### Step by step
+#### Prepare the database 
+
+TODO create contractor admin
+ 
+#### Installation Step by step
 
 1. Download a properties file template from 
 [here](https://github.com/da-nrw/DNSCore/blob/master/DAWeb/daweb3_properties.groovy.dev).
@@ -49,13 +53,33 @@ at all.
 </pre>
 1. Open it in an editor.
 1. Delete the blocks for the "test" and "development" environments
-1. Fill in the property params. Most of the params being used must have the same values like they've in the adjacent contentbroker
-file "config.properties". 
+1. Fill in the property params. Most of the params being used must have the same values like they've in the adjacent contentbroker. See also the explanation section below.
 1. Put the daweb3.war container from your installer into the tomcat web-apps folder.
 1. Restart your tomcat.
 
-To encode your own DB Password, you could use the command:
+## For readers coming from the Getting started tutorial, daweb3_properties.groovy
 
-<pre>
-groovy de.uzk.hki.da.utils.DESCodec <your_password>
-</Pre>   
+**Note** 
+If you are coming from the "Getting started" tutorial, set
+
+    irods.server = ""
+    irods.default_resc = ""
+
+    daweb3.loginManager = "de.uzk.hki.da.login.PlainLogin"
+    
+    driverClassName = "org.postgresql.Driver"
+    dialect = org.hibernate.dialect.PostgreSQLDialect
+    passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec"
+    username = "irods"
+
+    password = "98Q4P4ZgUWCey8PHPYxM3g=="
+    passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec"
+
+    localNode.userAreaRootPath = [somewhere]/storage/user 
+    localNode.ingestAreaRootPath = [somewhere]/storage/ingest
+
+
+This password mentioned above is a default password used non critical contexts.
+To encode your own DB Password for production, you have to have a groovy compiler and run 
+
+    groovy de.uzk.hki.da.utils.DESCodec <your_password>
