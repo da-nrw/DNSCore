@@ -78,10 +78,13 @@ public class HibernateUtil {
 				"initializing HibernateUtil. HibernateUtil already initialized.");
 		
 		try {
-			logger.trace("starting HibernateUtil and creating SessionFactory ...");
+			logger.info("starting HibernateUtil and creating SessionFactory ...");
 
 			sessionFactory = new AnnotationConfiguration().configure(
 					createDecryptedConfigFile(configFilePath)).buildSessionFactory();
+			
+			logger.info("HibernateUtil and SessionFactory successfully created");
+			
 
 		} catch (Throwable ex) {
 

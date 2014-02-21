@@ -90,6 +90,15 @@ public class ContentBroker {
 
 		logger.info("Starting ContentBroker ..");
 		
+		logger.info("Setting up HibernateUtil ..");
+		try {
+			HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
+		} catch (Exception e) {
+			logger.error("Exception in main!",e);
+		}
+		
+		logger.info("Reading properties");
+		
 		Properties properties = null;
 		InputStream in;
 		try {
@@ -102,6 +111,8 @@ public class ContentBroker {
 			throw new RuntimeException(e);
 		}
 
+		logger.info("Smoke test the application");
+		
 		boolean ok = true;
 		if (!new File(properties.getProperty("localNode.userAreaRootPath")).exists()){
 			logger.error("path localNode.userAreaRootPath points to not exists");
@@ -131,7 +142,6 @@ public class ContentBroker {
 		Utilities.parseArguments(args,props);
 		
 		try {
-			HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
 			AbstractApplicationContext context =
 					new FileSystemXmlApplicationContext("conf/beans.xml");
 			context.registerShutdownHook();
@@ -139,7 +149,6 @@ public class ContentBroker {
 		} catch (Exception e) {
 			logger.error("Exception in main!",e);
 		}
-		
 		
 		logger.info("ContentBroker is up and running");
 	}

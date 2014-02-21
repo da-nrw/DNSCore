@@ -42,7 +42,6 @@ how to convert the existing DNSCore into a full-fledged installation including t
 
 * Python > 2.7
 * Oracle Java 1.6 
-* ImageMagick > 6.7.8-10
 * PostgreSQL > 9.0
 
 ## Installation directories
@@ -123,15 +122,8 @@ the newest version, set the path accordingly at
 ### hibernate.cfg.xml
 
 1. Download a hibernate properties file 
-[template](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.inmem).
+[template](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.postgres).
 1. Save the file as hibernateCentralDB.cfg.xml
-1. Edit the following entries to match your current database settings.
-
-in hibernateCentralDB.cfg.xml:
-
-    <property name="connection.url">jdbc:hsqldb:mem:QueueDB</property>
-    <property name="connection.username">sa</property>
-    <property name="connection.password"></property>
 
 ### ffmpeg.sh
 
@@ -144,9 +136,12 @@ that will ensure you don't have to install ffmpeg for now.
 1. Follow the steps for a fresh installation described 
 [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation.md#installation--fresh-installation).
 
-**Important** Before you run the installer, make sure you put hibernate.cfg.xml, config.properties and ffmpeg.sh
- you prepared during this tutorial to your installer before running install.sh. You will have to overwrite the existing
- ffmpeg.sh.
+**Important**<br>
+1. Before you run the installer, make sure you put hibernate.cfg.xml and config.properties
+ you prepared during this tutorial to your installer before running install.sh. 
+1. Before starting the ContentBroker, replace the existing ffmpeg.sh by the fake one.
+ 
+
 
 If your DNSCore is up'n'running, you are free to play around with it or convert your existing installation into a full-fledged
 installation including the iRODS storage layer following this [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/full_fledged_installation.md).
