@@ -91,9 +91,10 @@ are case sensitive. For our system to work with the TEST user, extend the direct
 ## Database
 
 1. Create a new database called contentbroker.
-1. Create a database user called cb_usr.
-1. Ask our team for a dump of a basic database schema. We'll discussing various solutions to automatize this step, 
-but for the moment asking for a dump is the way to go.
+1. Ask our team for the decrypted password for the irods database user.
+1. Create a database user called irods with exactly that password.
+1. Get the actual schema [dump](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/postgres_schema.dump) 
+and use it to create your database schema for the database contentbroker.
 
 ## Application configuration
 
@@ -124,6 +125,9 @@ the newest version, set the path accordingly at
 1. Download a hibernate properties file 
 [template](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.postgres).
 1. Save the file as hibernateCentralDB.cfg.xml
+1. Edit the following entry to match your hostname and port.
+    
+    <property name="connection.url">jdbc:postgresql://hostname:port/contentbroker</property>
 
 ### ffmpeg.sh
 
@@ -133,14 +137,23 @@ that will ensure you don't have to install ffmpeg for now.
 
 ## Install and test the software
 
-1. Follow the steps for a fresh installation described 
-[here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation.md#installation--fresh-installation).
+1. Download an installer for the newest stable version of the software from the 
+[release section](https://github.com/da-nrw/DNSCore/releases) and put it to the a temp dir on your box. The temp dir will be called [tmp] here.
+1. Unpack it. You will then find a directory at [tmp]/installation.xyz/ from where you can install your DNSCore.
+1. Put hibernate.cfg.xml and config.properties you have prepared during this tutorial to your installer before running install.sh. 
+1. Call
 
-**Important**<br>
-1. Before you run the installer, make sure you put hibernate.cfg.xml and config.properties
- you prepared during this tutorial to your installer before running install.sh. 
-1. Before starting the ContentBroker, replace the existing ffmpeg.sh by the fake one.
- 
+    ./install.sh [somewhere]/ContentBroker/
+    
+1. As feature set, choose (n)ode
+1. Put the ffmpeg.sh fake file you downloaded to [somewhere]/ContentBroker/ffmpeg.sh (replace the existing file)
+1. Call
+
+    cd [somewhere]/ContentBroker
+    ./ContentBroker_start.sh
+    tail -f log/contentbroker.log
+    
+1. You should see your ContentBroker start working.
 
 
 If your DNSCore is up'n'running, you are free to play around with it or convert your existing installation into a full-fledged

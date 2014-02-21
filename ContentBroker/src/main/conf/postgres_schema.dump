@@ -1,0 +1,622 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: contractors; Type: TABLE; Schema: public; Owner: irods; Tablespace: 
+--
+
+CREATE TABLE contractors (
+    id integer NOT NULL,
+    admin integer,
+    email_contact character varying(255),
+    forbidden_nodes character varying(255),
+    short_name character varying(255)
+);
+
+
+ALTER TABLE public.contractors OWNER TO irods;
+
+--
+-- Name: conversion_policies; Type: TABLE; Schema: public; Owner: irods; Tablespace: 
+--
+
+CREATE TABLE conversion_policies (
+    id integer NOT NULL,
+    source_format character varying(255),
+    contractor_id integer,
+    conversion_routine_id integer
+);
+
+
+ALTER TABLE public.conversion_policies OWNER TO irods;
+
+--
+-- Name: conversion_queue; Type: TABLE; Schema: public; Owner: irods; Tablespace: 
+--
+
+CREATE TABLE conversion_queue (
+    id integer NOT NULL,
+    additional_params character varying(255),
+    node character varying(255),
+    target_folder character varying(255),
+    conversion_routine_id integer,
+    source_file_id integer,
+    job_id integer
+);
+
+
+ALTER TABLE public.conversion_queue OWNER TO irods;
+
+--
+-- Name: conversion_routines; Type: TABLE; Schema: public; Owner: irods; Tablespace: 
+--
+
+CREATE TABLE conversion_routines (
+    id integer NOT NULL,
+    name character varying(255),
+    params character varying(255),
+    target_suffix character varying(255),
+    type character varying(255)
+);
+
+
+ALTER TABLE public.conversion_routines OWNER TO irods;
+
+--
+-- Name: conversion_routines_nodes; Type: TABLE; Schema: public; Owner: irods; Tablespace: 
+--
+
+CREATE TABLE conversion_routines_nodes (
+    conversion_routines_id integer NOT NULL,
+    nodes_id integer NOT NULL
+);
+
+
+ALTER TABLE public.conversion_routines_nodes OWNER TO irods;
+
+--
+-- Name: dafiles; Type: TABLE; Schema: public; Owner: irods; Tablespace: 
+--
+
+CREATE TABLE dafiles (
+    id integer NOT NULL,
+    conversion_instruction_id integer NOT NULL,
+    file_format character varying(255),
+    format_second_attribute character varying(255),
+    path_to_jhove_output character varying(255),
+    relative_path character varying(255),
+    rep_name character varying(255),
+    pkg_id integer
+);
+
+
+ALTER TABLE public.dafiles OWNER TO irods;
+
+--
+-- Name: events; Type: TABLE; Schema: public; Owner: irods; Tablespace: 
+--
+
+CREATE TABLE events (
+    id integer NOT NULL,
+    agent_name character varying(255),
+    agent_type character varying(255),
+    date timestamp without time zone,
+    detail character varying(255),
+    type character varying(255),
+    source_file_id integer,
+    target_file_id integer,
+    pkg_id integer
+);
+
+
+ALTER TABLE public.events OWNER TO irods;
+
+--
+-- Name: hibernate_sequence; Type: SEQUENCE; Schema: public; Owner: irods
+--
+
+CREATE SEQUENCE hibernate_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.hibernate_sequence OWNER TO irods;
+
+--
+-- Name: nodes; Type: TABLE; Schema: public; Owner: irods; Tablespace: 
+--
+
+CREATE TABLE nodes (
+    id integer NOT NULL,
+    name character varying(255),
+    urn_index integer NOT NULL
+);
+
+
+ALTER TABLE public.nodes OWNER TO irods;
+
+--
+-- Name: objects; Type: TABLE; Schema: public; Owner: irods; Tablespace: 
+--
+
+CREATE TABLE objects (
+    data_pk integer NOT NULL,
+    date_created character varying(255),
+    date_modified character varying(255),
+    ddb_exclusion boolean,
+    dynamic_nondisclosure_limit character varying(255),
+    identifier character varying(255),
+    initial_node character varying(255),
+    last_checked timestamp without time zone,
+    most_recent_formats character varying(255),
+    most_recent_secondary_attributes character varying(255),
+    object_state integer NOT NULL,
+    orig_name character varying(255),
+    original_formats character varying(255),
+    published_flag integer NOT NULL,
+    static_nondisclosure_limit timestamp without time zone,
+    urn character varying(255),
+    zone character varying(255),
+    contractor_id integer
+);
+
+
+ALTER TABLE public.objects OWNER TO irods;
+
+--
+-- Name: objects_packages; Type: TABLE; Schema: public; Owner: irods; Tablespace: 
+--
+
+CREATE TABLE objects_packages (
+    objects_data_pk integer NOT NULL,
+    packages_id integer NOT NULL
+);
+
+
+ALTER TABLE public.objects_packages OWNER TO irods;
+
+--
+-- Name: packages; Type: TABLE; Schema: public; Owner: irods; Tablespace: 
+--
+
+CREATE TABLE packages (
+    id integer NOT NULL,
+    checksum character varying(255),
+    container_name character varying(255),
+    last_checked timestamp without time zone,
+    name character varying(255),
+    status character varying(255)
+);
+
+
+ALTER TABLE public.packages OWNER TO irods;
+
+--
+-- Name: queue; Type: TABLE; Schema: public; Owner: irods; Tablespace: 
+--
+
+CREATE TABLE queue (
+    id integer NOT NULL,
+    date_created character varying(255),
+    date_modified character varying(255),
+    initial_node character varying(255),
+    parent_id integer,
+    rep_name character varying(255),
+    repl_destinations character varying(255),
+    status character varying(255),
+    contractor_id integer,
+    objects_id integer
+);
+
+
+ALTER TABLE public.queue OWNER TO irods;
+
+--
+-- Name: second_stage_scans; Type: TABLE; Schema: public; Owner: irods; Tablespace: 
+--
+
+CREATE TABLE second_stage_scans (
+    id integer NOT NULL,
+    puid character varying(255),
+    allowed_values character varying(255),
+    format_identifier_script_name character varying(255)
+);
+
+
+ALTER TABLE public.second_stage_scans OWNER TO irods;
+
+--
+-- Data for Name: contractors; Type: TABLE DATA; Schema: public; Owner: irods
+--
+
+COPY contractors (id, admin, email_contact, forbidden_nodes, short_name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: conversion_policies; Type: TABLE DATA; Schema: public; Owner: irods
+--
+
+COPY conversion_policies (id, source_format, contractor_id, conversion_routine_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: conversion_queue; Type: TABLE DATA; Schema: public; Owner: irods
+--
+
+COPY conversion_queue (id, additional_params, node, target_folder, conversion_routine_id, source_file_id, job_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: conversion_routines; Type: TABLE DATA; Schema: public; Owner: irods
+--
+
+COPY conversion_routines (id, name, params, target_suffix, type) FROM stdin;
+\.
+
+
+--
+-- Data for Name: conversion_routines_nodes; Type: TABLE DATA; Schema: public; Owner: irods
+--
+
+COPY conversion_routines_nodes (conversion_routines_id, nodes_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: dafiles; Type: TABLE DATA; Schema: public; Owner: irods
+--
+
+COPY dafiles (id, conversion_instruction_id, file_format, format_second_attribute, path_to_jhove_output, relative_path, rep_name, pkg_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: events; Type: TABLE DATA; Schema: public; Owner: irods
+--
+
+COPY events (id, agent_name, agent_type, date, detail, type, source_file_id, target_file_id, pkg_id) FROM stdin;
+\.
+
+
+--
+-- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: irods
+--
+
+SELECT pg_catalog.setval('hibernate_sequence', 1, false);
+
+
+--
+-- Data for Name: nodes; Type: TABLE DATA; Schema: public; Owner: irods
+--
+
+COPY nodes (id, name, urn_index) FROM stdin;
+\.
+
+
+--
+-- Data for Name: objects; Type: TABLE DATA; Schema: public; Owner: irods
+--
+
+COPY objects (data_pk, date_created, date_modified, ddb_exclusion, dynamic_nondisclosure_limit, identifier, initial_node, last_checked, most_recent_formats, most_recent_secondary_attributes, object_state, orig_name, original_formats, published_flag, static_nondisclosure_limit, urn, zone, contractor_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: objects_packages; Type: TABLE DATA; Schema: public; Owner: irods
+--
+
+COPY objects_packages (objects_data_pk, packages_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: packages; Type: TABLE DATA; Schema: public; Owner: irods
+--
+
+COPY packages (id, checksum, container_name, last_checked, name, status) FROM stdin;
+\.
+
+
+--
+-- Data for Name: queue; Type: TABLE DATA; Schema: public; Owner: irods
+--
+
+COPY queue (id, date_created, date_modified, initial_node, parent_id, rep_name, repl_destinations, status, contractor_id, objects_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: second_stage_scans; Type: TABLE DATA; Schema: public; Owner: irods
+--
+
+COPY second_stage_scans (id, puid, allowed_values, format_identifier_script_name) FROM stdin;
+\.
+
+
+--
+-- Name: contractors_pkey; Type: CONSTRAINT; Schema: public; Owner: irods; Tablespace: 
+--
+
+ALTER TABLE ONLY contractors
+    ADD CONSTRAINT contractors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: conversion_policies_pkey; Type: CONSTRAINT; Schema: public; Owner: irods; Tablespace: 
+--
+
+ALTER TABLE ONLY conversion_policies
+    ADD CONSTRAINT conversion_policies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: conversion_queue_pkey; Type: CONSTRAINT; Schema: public; Owner: irods; Tablespace: 
+--
+
+ALTER TABLE ONLY conversion_queue
+    ADD CONSTRAINT conversion_queue_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: conversion_routines_nodes_pkey; Type: CONSTRAINT; Schema: public; Owner: irods; Tablespace: 
+--
+
+ALTER TABLE ONLY conversion_routines_nodes
+    ADD CONSTRAINT conversion_routines_nodes_pkey PRIMARY KEY (conversion_routines_id, nodes_id);
+
+
+--
+-- Name: conversion_routines_pkey; Type: CONSTRAINT; Schema: public; Owner: irods; Tablespace: 
+--
+
+ALTER TABLE ONLY conversion_routines
+    ADD CONSTRAINT conversion_routines_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: dafiles_pkey; Type: CONSTRAINT; Schema: public; Owner: irods; Tablespace: 
+--
+
+ALTER TABLE ONLY dafiles
+    ADD CONSTRAINT dafiles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: irods; Tablespace: 
+--
+
+ALTER TABLE ONLY events
+    ADD CONSTRAINT events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: nodes_pkey; Type: CONSTRAINT; Schema: public; Owner: irods; Tablespace: 
+--
+
+ALTER TABLE ONLY nodes
+    ADD CONSTRAINT nodes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: objects_packages_packages_id_key; Type: CONSTRAINT; Schema: public; Owner: irods; Tablespace: 
+--
+
+ALTER TABLE ONLY objects_packages
+    ADD CONSTRAINT objects_packages_packages_id_key UNIQUE (packages_id);
+
+
+--
+-- Name: objects_pkey; Type: CONSTRAINT; Schema: public; Owner: irods; Tablespace: 
+--
+
+ALTER TABLE ONLY objects
+    ADD CONSTRAINT objects_pkey PRIMARY KEY (data_pk);
+
+
+--
+-- Name: packages_pkey; Type: CONSTRAINT; Schema: public; Owner: irods; Tablespace: 
+--
+
+ALTER TABLE ONLY packages
+    ADD CONSTRAINT packages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: queue_pkey; Type: CONSTRAINT; Schema: public; Owner: irods; Tablespace: 
+--
+
+ALTER TABLE ONLY queue
+    ADD CONSTRAINT queue_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: second_stage_scans_pkey; Type: CONSTRAINT; Schema: public; Owner: irods; Tablespace: 
+--
+
+ALTER TABLE ONLY second_stage_scans
+    ADD CONSTRAINT second_stage_scans_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: fk343d37b88bad65fd; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY objects_packages
+    ADD CONSTRAINT fk343d37b88bad65fd FOREIGN KEY (objects_data_pk) REFERENCES objects(data_pk);
+
+
+--
+-- Name: fk343d37b8e0e854da; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY objects_packages
+    ADD CONSTRAINT fk343d37b8e0e854da FOREIGN KEY (packages_id) REFERENCES packages(id);
+
+
+--
+-- Name: fk5543f41a6fdfd79b; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY dafiles
+    ADD CONSTRAINT fk5543f41a6fdfd79b FOREIGN KEY (pkg_id) REFERENCES packages(id);
+
+
+--
+-- Name: fk66f1911bdcedd53; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY queue
+    ADD CONSTRAINT fk66f1911bdcedd53 FOREIGN KEY (contractor_id) REFERENCES contractors(id);
+
+
+--
+-- Name: fk66f1911cfe5879e; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY queue
+    ADD CONSTRAINT fk66f1911cfe5879e FOREIGN KEY (objects_id) REFERENCES objects(data_pk);
+
+
+--
+-- Name: fk66f1911df7d9ef4; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY queue
+    ADD CONSTRAINT fk66f1911df7d9ef4 FOREIGN KEY (parent_id) REFERENCES queue(id);
+
+
+--
+-- Name: fk682236594951d234; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY conversion_policies
+    ADD CONSTRAINT fk682236594951d234 FOREIGN KEY (conversion_routine_id) REFERENCES conversion_routines(id);
+
+
+--
+-- Name: fk68223659bdcedd53; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY conversion_policies
+    ADD CONSTRAINT fk68223659bdcedd53 FOREIGN KEY (contractor_id) REFERENCES contractors(id);
+
+
+--
+-- Name: fk815618a81f42cf01; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY conversion_queue
+    ADD CONSTRAINT fk815618a81f42cf01 FOREIGN KEY (job_id) REFERENCES queue(id);
+
+
+--
+-- Name: fk815618a84951d234; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY conversion_queue
+    ADD CONSTRAINT fk815618a84951d234 FOREIGN KEY (conversion_routine_id) REFERENCES conversion_routines(id);
+
+
+--
+-- Name: fk815618a88013be4c; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY conversion_queue
+    ADD CONSTRAINT fk815618a88013be4c FOREIGN KEY (source_file_id) REFERENCES dafiles(id);
+
+
+--
+-- Name: fk9d13c514bdcedd53; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY objects
+    ADD CONSTRAINT fk9d13c514bdcedd53 FOREIGN KEY (contractor_id) REFERENCES contractors(id);
+
+
+--
+-- Name: fkb307e1196fdfd79b; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY events
+    ADD CONSTRAINT fkb307e1196fdfd79b FOREIGN KEY (pkg_id) REFERENCES packages(id);
+
+
+--
+-- Name: fkb307e1197273f1c2; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY events
+    ADD CONSTRAINT fkb307e1197273f1c2 FOREIGN KEY (target_file_id) REFERENCES dafiles(id);
+
+
+--
+-- Name: fkb307e1198013be4c; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY events
+    ADD CONSTRAINT fkb307e1198013be4c FOREIGN KEY (source_file_id) REFERENCES dafiles(id);
+
+
+--
+-- Name: fkf167a8ea61c73de4; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY conversion_routines_nodes
+    ADD CONSTRAINT fkf167a8ea61c73de4 FOREIGN KEY (nodes_id) REFERENCES nodes(id);
+
+
+--
+-- Name: fkf167a8eac31e4a77; Type: FK CONSTRAINT; Schema: public; Owner: irods
+--
+
+ALTER TABLE ONLY conversion_routines_nodes
+    ADD CONSTRAINT fkf167a8eac31e4a77 FOREIGN KEY (conversion_routines_id) REFERENCES conversion_routines(id);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
