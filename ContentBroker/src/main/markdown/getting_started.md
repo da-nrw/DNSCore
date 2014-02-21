@@ -61,33 +61,9 @@ Prepare your installation and storage directories
 [somewhere] denotes some arbitrary path on your local box.
 The ContentBroker directory then is the folder into which we will later let
 our installer put the binaries. The storage directory is a directory structure
-which DNSCore will use to work with data packages. 
-
-The subfolders correspond to the various 
+which DNSCore will use to work with data packages. The subfolders correspond to the various 
 [processing stages](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md).
-According to the structure of the different areas in addition to the basic folder layout we need directories
-for at least one user to run tests against the system. This first user (or contractor in DNSCore terminology) is typically the TEST user. Every  [contractor](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#contractor)
-has a unique property called "contractor short name" which we most of the time call csn for short, as it is done in the
-processing stages document, where [csn1],[csn2] act as placeholders for the various short names. Note that short names 
-are case sensitive. For our system to work with the TEST user, extend the directory structure like this:
-
-    [somewhere]/storage/
-                    user/
-                         TEST/
-                              incoming/
-                              outgoing/
-                    ingest/
-                         TEST/
-                    work/
-                         TEST/
-                    pip/
-                        institution/
-                               TEST/
-                        public/
-                               TEST/
-                    aip/
-                         TEST   
-
+ 
 ## Database
 
 1. Create a new database called contentbroker.
@@ -129,12 +105,6 @@ the newest version, set the path accordingly at
     
     <property name="connection.url">jdbc:postgresql://hostname:port/contentbroker</property>
 
-### ffmpeg.sh
-
-1. Download a fake glue [script](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/bash/ffmpeg.sh.fake) 
-that will ensure you don't have to install ffmpeg for now.
-2. Rename it to ffmpeg.sh
-
 ## Install and test the software
 
 1. Download an installer for the newest stable version of the software from the 
@@ -146,7 +116,9 @@ that will ensure you don't have to install ffmpeg for now.
     ./install.sh [somewhere]/ContentBroker/
     
 1. As feature set, choose (n)ode
-1. Put the ffmpeg.sh fake file you downloaded to [somewhere]/ContentBroker/ffmpeg.sh (replace the existing file)
+1. Download a fake glue [script](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/bash/ffmpeg.sh.fake) 
+that will ensure you don't have to install ffmpeg for now.
+1. Replace [somewhere]/ContentBroker/ffmpeg.sh by the ffmpeg.sh.fake file you downloaded
 1. Call
 
     cd [somewhere]/ContentBroker
@@ -154,6 +126,40 @@ that will ensure you don't have to install ffmpeg for now.
     tail -f log/contentbroker.log
     
 1. You should see your ContentBroker start working.
+
+You now have a ContentBroker installation which runs but does nothing for now.
+What we now need is to configure the database and add some user directories for a test user in order to let the ContentBroker do some work.
+
+## Adding user directories
+
+According to the structure of the different areas in addition to the basic folder layout we need directories
+for at least one user to run tests against the system. This first user (or contractor in DNSCore terminology) is typically the TEST user. 
+Every  [contractor](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#contractor)
+has a unique property called "contractor short name" which we most of the time call csn for short, as it is done in the
+processing stages document, where [csn1],[csn2] act as placeholders for the various short names. Note that short names 
+are case sensitive. For our system to work with the TEST user, extend the directory structure like this:
+
+    [somewhere]/storage/
+                    user/
+                         TEST/
+                              incoming/
+                              outgoing/
+                    ingest/
+                         TEST/
+                    work/
+                         TEST/
+                    pip/
+                        institution/
+                               TEST/
+                        public/
+                               TEST/
+                    aip/
+                         TEST  
+
+## Configuring the database
+
+1. Create a test user TODO
+1. Create a node TODO
 
 
 If your DNSCore is up'n'running, you are free to play around with it or convert your existing installation into a full-fledged
