@@ -105,26 +105,26 @@ the newest version, set the path accordingly at
     
     <property name="connection.url">jdbc:postgresql://hostname:port/contentbroker</property>
 
-## Install and test the software
+## Install the software
 
 1. Download an installer for the newest stable version of the software from the 
 [release section](https://github.com/da-nrw/DNSCore/releases) and put it to the a temp dir on your box. The temp dir will be called [tmp] here.
 1. Unpack it. You will then find a directory at [tmp]/installation.xyz/ from where you can install your DNSCore.
 1. Put hibernate.cfg.xml and config.properties you have prepared during this tutorial to your installer before running install.sh. 
 1. Call
-
+<pre>
     ./install.sh [somewhere]/ContentBroker/
-    
+</pre>
 1. As feature set, choose (n)ode
 1. Download a fake glue [script](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/bash/ffmpeg.sh.fake) 
 that will ensure you don't have to install ffmpeg for now.
 1. Replace [somewhere]/ContentBroker/ffmpeg.sh by the ffmpeg.sh.fake file you downloaded
 1. Call
-
+<pre>
     cd [somewhere]/ContentBroker
     ./ContentBroker_start.sh
     tail -f log/contentbroker.log
-    
+</pre>
 1. You should see your ContentBroker start working.
 
 You now have a ContentBroker installation which runs but does nothing for now.
