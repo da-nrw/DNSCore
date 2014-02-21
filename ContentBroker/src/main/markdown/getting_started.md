@@ -44,7 +44,7 @@ how to convert the existing DNSCore into a full-fledged installation including t
 * Oracle Java 1.6 
 * PostgreSQL > 9.0
 
-## Installation directories
+## Installation directories and properties file
 
 Prepare your installation and storage directories
 
@@ -64,18 +64,8 @@ our installer put the binaries. The storage directory is a directory structure
 which DNSCore will use to work with data packages. The subfolders correspond to the various 
 [processing stages](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md).
  
-## Database
-
-1. Create a new database called contentbroker.
-1. Ask our team for the decrypted password for the irods database user.
-1. Create a database user called irods with exactly that password.
-1. Get the actual schema [dump](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/postgres_schema.dump) 
-and use it to create your database schema for the database contentbroker.
-
-## Application configuration
-
-### config.properties
-
+Now you need to configure your installer in order to make use of the created directories.
+ 
 1. Get a properties file 
 [template](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/config.properties.dev). Note that this document
 can change from time to time and therefore is bound to a specific version of DNSCore. If in doubt you can get a config which fits your
@@ -94,10 +84,15 @@ in config.properties:
 If your python installation is not globally visible, for example if your package system does not provide
 the newest version, set the path accordingly at
 
-    python.bin=python
+    python.bin=python 
+ 
+## Database
 
-### hibernate.cfg.xml
-
+1. Create a new database called contentbroker.
+1. Ask our team for the decrypted password for the irods database user.
+1. Create a database user called irods with exactly that password.
+1. Get the actual schema [dump](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/postgres_schema.dump) 
+and use it to create your database schema for the database contentbroker.
 1. Download a hibernate properties file 
 [template](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.postgres).
 1. Save the file as hibernateCentralDB.cfg.xml
