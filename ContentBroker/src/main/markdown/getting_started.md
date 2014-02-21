@@ -44,7 +44,9 @@ how to convert the existing DNSCore into a full-fledged installation including t
 * Oracle Java 1.6 
 * PostgreSQL > 9.0
 
-## Installation directories and properties file
+## ContentBroker
+
+### Installation directories and properties file
 
 Prepare your installation and storage directories
 
@@ -86,7 +88,7 @@ the newest version, set the path accordingly at
 
     python.bin=python 
  
-## Database
+### Database
 
 1. Create a new database called contentbroker.
 1. Ask our team for the decrypted password for the irods database user.
@@ -100,7 +102,7 @@ and use it to create your database schema for the database contentbroker.
     
     <property name="connection.url">jdbc:postgresql://hostname:port/contentbroker</property>
 
-## Install the software
+### Install the software
 
 1. Download an installer for the newest stable version of the software from the 
 [release section](https://github.com/da-nrw/DNSCore/releases) and put it to the a temp dir on your box. The temp dir will be called [tmp] here.
@@ -125,7 +127,7 @@ that will ensure you don't have to install ffmpeg for now.
 You now have a ContentBroker installation which runs but does nothing for now.
 What we now need is to configure the database and add some user directories for a test user in order to let the ContentBroker do some work.
 
-## Adding user directories
+### Adding user directories
 
 According to the structure of the different areas in addition to the basic folder layout we need directories
 for at least one user to run tests against the system. This first user (or contractor in DNSCore terminology) is typically the TEST user. 
@@ -151,14 +153,14 @@ are case sensitive. For our system to work with the TEST user, extend the direct
                     aip/
                          TEST  
 
-## Configuring the database
+### Configuring the database
 
 1. Create a contractor: (id,short_name) -> (1,'DEFAULT')
 1. Create a contractor: (id,short_name) -> (2,'PRESENTER')
 1. Create a contractor: (id,short_name) -> (3,'TEST')
 1. Create a node: (id,name,urn_index) -> (1,[domainNameOfYourNode],1)
 
-## Test your application
+### Test your application
 
 Now that you have created the minimum necessary database configuration for the ContentBroker to work with, restart your ContentBroker
 
@@ -190,6 +192,25 @@ Always look for the newest object log under
 
     log/object-logs/
 
+## DAWeb 
 
-If your DNSCore is up'n'running, you are free to play around with it or convert your existing installation into a full-fledged
-installation including the iRODS storage layer following this [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/full_fledged_installation.md).
+The second core component of DNSCore is DAWeb, the graphical user interface for the ContentBroker.
+How to set up this component is part of this [tutorial](https://github.com/da-nrw/DNSCore/blob/master/DAWeb/doc/deploy.md).
+
+
+## Congratulations
+
+You have set up the two components of DNSCore.
+Now your DNSCore is up'n'running, you are free to play around with it or convert your existing installation into a full-fledged
+installation following this [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/full_fledged_installation.md).
+
+The tutorial will show you how to install additional components and features:
+
+* Format conversion
+* iRODS Storage layer
+* Presentation Repostitory
+
+
+
+
+

@@ -17,119 +17,42 @@
 	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 	
-## Deploy Da-Web3 WAR
+# Deploy DAWeb
 
-### Build Da-Web3
-In normal build processes this is done automatically by the install processes called in
-the maven build process. If you want to build DA-Web as isolated project, you will need 
-to have GRAILS installed on your command line, while the project itself is not mavenized 
-yet. 
+## Prerequisites
 
-The command 
-<pre>grails war prod</pre>
-war will build the target file for you. 
-
-The build.sh script found in the main dir of the appication is called during maven build on
-ContentBroker. 
-
-### Running DAWeb locally
-
-The DaWeb interface could be executed locally with command 
-<pre>grails dev run-app</pre>
-You must have the daweb3_properties.groovy in xour home dir in the .grails/ dir. Otherwise the webapp won't start!  
+* Oracle Java 1.6 
+* Tomcat6
 
 ### Installation
-
-In most cases dropping the built war into your servlet container and having the 
-<pre>daweb_properties.groovy</pre> in place would be sufficient to run the application. Please
-undeploy former versions of daweb completely. 
-
-Please keep in mind: without having the properties file in place, the webapp won't start 
-at all. 
-
-### Configuration
 
 We added a configuration system under which you might be able to alter most of the 
 parameters being used in the webapp. 
 The file MUST be located under the tomcat owner's home directory (e.g. User "tomcat")
-<pre>
-/home/tomcat/.grails/daweb_properties.groovy
-</pre>
 This file has to be just readable by the Tomcat process owner. 
 You can find the file in the main folder daweb as well. The file lists the following properties:
-<pre>
- 
-environments {
-	production {
-		//log4j = {
-		//		debug   'grails.app'
-		//}
-		daweb3.loginManager = "de.uzk.hki.da.login.IrodsLogin"
-		cb.port = 4455
-		daweb3.logo = "DANRW-Logo_small.png"
-		irods.server = "localhost"
-		irods.default_resc = "your irods resc name"
-		irods.zone = "your home zone name"
-		localNode.userAreaRootPath = "/path_to_/userhome/SIP"
-		localNode.ingestAreaRootPath = "path_to_/ingest"
-		transferNode.downloadLinkPrefix = "prefix for URL to download DIP"
-		fedora.urlPrefix = "http://prefix_for_fedora/fedora/objects/"
-		cb.presServer= "CB nodename of fedora Server"
-		
-		// here it's up to you to decide whether environment you want to use:
-		dataSource {
-			pooled = true
-			driverClassName = "org.hsqldb.jdbcDriver"
-			dialect = org.hibernate.dialect.HSQLDialect
-			url = "jdbc:hsqldb:hsql://localhost/xdb"
-			dbCreate = "validate"
-			username = "sa"
-			password = ""
-			characterEncoding = "UTF-8"
-		}
-	}
-
-
-test {
-			
-		dataSource {
-		}
-}
-
-development {		
-		cb.homepath = ""
-		daweb3.logo = ""
-		irods.server = ""
-		irods.default_resc = ""
-		irods.zone = ""
-		localNode.userAreaRootPath = ""
-		localNode.ingestAreaRootPath = ""
-		transferNode.downloadLinkPrefix = ""
-		fedora.urlPrefix = ""
-		cb.presServer= ""
-		
-		dataSource {
-			pooled = true
-			driverClassName = "org.postgresql.Driver"
-			dialect = org.hibernate.dialect.PostgreSQLDialect
-			dbCreate = "validate"
-			url = "jdbc:postgresql://localhost:5432/cb?autoReconnect=true"
-			username = "irods"
-			password = "=="
-			passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec"
-			characterEncoding = "UTF-8"
-		
-		}
-	}
-}
-</pre> 
-
 Although you might be able to add three environments, in fact the productional environment 
 is used in normal software releases only. Of course you might be able to use the same productional
 build in several environments as it depends only on the values added to properties file. 
+In most cases dropping the built war into your servlet container and having the 
+<pre>daweb_properties.groovy</pre> in place would be sufficient to run the application. Please
+undeploy former versions of daweb completely. Please keep in mind: without having the properties file in place, the webapp won't start 
+at all. 
 
-Most of the params being used must have the same values like they've in the adjacent contentbroker
+#### Step by step
+
+1. Download a properties file template from 
+[here](https://github.com/da-nrw/DNSCore/blob/master/DAWeb/daweb3_properties.groovy.dev).
+1. Save the file as 
+<pre>
+/home/tomcat/.grails/daweb_properties.groovy
+</pre>
+1. Open it in an editor.
+1. Delete the blocks for the "test" and "development" environments
+1. Fill in the property params. Most of the params being used must have the same values like they've in the adjacent contentbroker
 file "config.properties". 
+1. Put the daweb3.war container from your installer into the tomcat web-apps folder.
+1. Restart your tomcat.
 
 To encode your own DB Password, you could use the command:
 
