@@ -158,8 +158,42 @@ are case sensitive. For our system to work with the TEST user, extend the direct
 
 ## Configuring the database
 
-1. Create a test user TODO
-1. Create a node TODO
+1. Create a contractor: (id,short_name) -> (1,'DEFAULT')
+1. Create a contractor: (id,short_name) -> (2,'PRESENTER')
+1. Create a contractor: (id,short_name) -> (3,'TEST')
+1. Create a node: (id,name,urn_index) -> (1,[domainNameOfYourNode],1)
+
+## Test your application
+
+Now that you have created the minimum necessary database configuration for the ContentBroker to work with, restart your ContentBroker
+
+    ./ContentBroker_start.sh
+
+Verify that it runs with
+
+    tail -f log/contentbroker.log
+    
+Download a testpackage from our source code repository, for example 
+[this](https://github.com/da-nrw/DNSCore/raw/master/ContentBroker/src/test/resources/manual/BagIt_META1_METS_MODS_2013.tgz) one.
+Copy it to your IngestArea
+
+    cp BagIt_META1_METS_MODS_2013.tgz [somewhere]/storage/ingest/TEST/abc1.tgz
+    
+After some seconds the ContentBroker should fetch the package and you won't find it anymore under ingest/TEST.
+Watch the ContentBroker working with the package with
+
+    tail -f log/object-logs/1-[DDDDDDDDDD].log
+    
+**Troubleshooting**
+
+If the package does not get removed from the IngestArea, have a look at
+
+    tail -f log/ingest.log
+    
+If you want to restart again with another testpackage, make sure you always set a new name, e.g. abc2.tgz for the second package.
+Always look for the newest object log under
+
+    log/object-logs/
 
 
 If your DNSCore is up'n'running, you are free to play around with it or convert your existing installation into a full-fledged
