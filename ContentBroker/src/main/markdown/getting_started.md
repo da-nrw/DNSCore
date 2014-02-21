@@ -97,9 +97,9 @@ and use it to create your database schema for the database contentbroker.
 [template](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.postgres).
 1. Save the file as hibernateCentralDB.cfg.xml
 1. Edit the following entry to match your hostname and port.
-    
+<pre> 
     <property name="connection.url">jdbc:postgresql://hostname:port/contentbroker</property>
-
+</pre>
 ## Install the software
 
 1. Download an installer for the newest stable version of the software from the 
