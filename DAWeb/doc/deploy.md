@@ -57,29 +57,40 @@ TODO create contractor admin
 1. Put the daweb3.war container from your installer into the tomcat web-apps folder.
 1. Restart your tomcat.
 
-## For readers coming from the Getting started tutorial, daweb3_properties.groovy
+## daweb3_properties.groovy
 
 **Note** 
 If you are coming from the "Getting started" tutorial, set
 
     irods.server = ""
     irods.default_resc = ""
+    daweb3.loginManager = "de.uzk.hki.da.login.IrodsLogin"
 
-    daweb3.loginManager = "de.uzk.hki.da.login.PlainLogin"
+Alternatively if, you are coming from the "Getting started" tutorial,
+set 
     
-    driverClassName = "org.postgresql.Driver"
-    dialect = org.hibernate.dialect.PostgreSQLDialect
-    passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec"
-    username = "irods"
+    irods.server = "" # leave empty
+    irods.default_resc = "" # leave empty
+    daweb3.loginManager = "de.uzk.hki.da.login.PlainLogin"
 
-    password = "98Q4P4ZgUWCey8PHPYxM3g=="
-    passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec"
+### Directory Settings
 
     localNode.userAreaRootPath = [somewhere]/storage/user 
     localNode.ingestAreaRootPath = [somewhere]/storage/ingest
 
+### Database Connection Settings
 
-This password mentioned above is a default password used non critical contexts.
+    driverClassName = "org.postgresql.Driver"
+    dialect = org.hibernate.dialect.PostgreSQLDialect
+    username = "irods"
+    password = "98Q4P4ZgUWCey8PHPYxM3g=="
+    passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec"
+
+This password mentioned above is a default password used non critical contexts. Leave it 
+as it is when you are coming from the "Getting started" tutorial.
+
 To encode your own DB Password for production, you have to have a groovy compiler and run 
 
     groovy de.uzk.hki.da.utils.DESCodec <your_password>
+    
+Alternatively, you can ask our team to do it for you.
