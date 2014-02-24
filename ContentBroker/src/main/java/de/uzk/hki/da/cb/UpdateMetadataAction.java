@@ -252,6 +252,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	 * Copy xmp sidecar files and collect them into one "XMP manifest"
 	 * @author Sebastian Cuy
 	 * @author Daniel M. de Oliveira
+	 * @author Thomas Kleinke
 	 * @throws IOException
 	 */
 	private void collectXMP() throws IOException {
@@ -267,8 +268,12 @@ public class UpdateMetadataAction extends AbstractAction {
 						|| Arrays.asList(repNames).contains(sidecarSourceFile.getRep_name())) continue;
 				logger.debug("Found xmp sidecar: {}", sidecarSourceFile);
 
-				DAFile sidecarTargetFile = new DAFile(object.getLatestPackage(),repName,
-						determineTargetRelativePathWithoutExtension(sidecarSourceFile) + ".xmp");
+				String xmpTargetPath = determineTargetRelativePathWithoutExtension(sidecarSourceFile) + ".xmp"; 
+				
+				if (xmpTargetPath.equals(""))					
+					continue;
+				
+				DAFile sidecarTargetFile = new DAFile(object.getLatestPackage(), repName, xmpTargetPath);
 				logger.debug("Copying {} to {}", sidecarSourceFile, sidecarTargetFile.toString());
 				FileUtils.copyFile(sidecarSourceFile.toRegularFile(), sidecarTargetFile.toRegularFile());
 				sidecarTargetFile.setFormatPUID(sidecarSourceFile.getFormatPUID());
@@ -284,7 +289,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					new DAFile(object.getLatestPackage(),repName,"XMP.rdf"));
 		}
 	}
-
+	
 	private String determineTargetRelativePathWithoutExtension(DAFile sidecarSourceFile) {
 		String relativePath = "";
 		for (Event evt:object.getLatestPackage().getEvents()){
@@ -295,12 +300,13 @@ public class UpdateMetadataAction extends AbstractAction {
 				break;
 			}
 		}
-		if (relativePath.equals("")) throw new RuntimeException("relativePath must not be null");
+		
+		if (relativePath.equals(""))
+			logger.debug("No CONVERT event found for " + FilenameUtils.removeExtension(sidecarSourceFile.toRegularFile().getName()));
+		
 		return relativePath;
 	}
 	
-	
-
 	private Event createCopyEvent(DAFile sidecarSourceFile,
 			DAFile sidecarTargetFile) {
 		Event e = new Event();							
