@@ -59,20 +59,22 @@ TODO create contractor admin
 
 ## daweb3_properties.groovy
 
-**Note** 
-If you are coming from the "Getting started" tutorial, set
-
     irods.server = ""
     irods.default_resc = ""
     daweb3.loginManager = "de.uzk.hki.da.login.IrodsLogin"
 
-Alternatively if, you are coming from the "Getting started" tutorial,
-set 
+These settings are responsible for the connection between DAWeb and the
+iRODS server. DAWeb users get authenticated by an iRODS server which acts
+as authentication backbone.
+
+Alternatively if, you are coming from the "Getting started" tutorial or
+want to showcase DNSCore on a local laptop, you can bypass the iRODS authentication
+mechanism by setting the irods properties to
     
     irods.server = "" # leave empty
     irods.default_resc = "" # leave empty
     daweb3.loginManager = "de.uzk.hki.da.login.PlainLogin"
-
+    
 ### Directory Settings
 
     localNode.userAreaRootPath = [somewhere]/storage/user 
