@@ -155,9 +155,10 @@ are case sensitive. For our system to work with the TEST user, extend the direct
 
 ### Configuring the database
 
-1. Create a contractor: (id,short_name) -> (1,'DEFAULT')
-1. Create a contractor: (id,short_name) -> (2,'PRESENTER')
-1. Create a contractor: (id,short_name) -> (3,'TEST')
+1. Create a contractor: (id,short_name,admin) -> (1,'DEFAULT',0)
+1. Create a contractor: (id,short_name,admin) -> (2,'PRESENTER',0)
+1. Create a contractor: (id,short_name,admin) -> (3,'TEST',0)
+1. Create a contractor: (id,short_name,admin) -> (3,'admin',1)
 1. Create a node: (id,name,urn_index) -> (1,[domainNameOfYourNode],1)
 
 ### Test your application
