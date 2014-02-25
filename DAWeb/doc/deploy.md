@@ -55,7 +55,6 @@ insert into contractors (id,short_name,admin) values (3,'admin',1)
     /home/tomcat/.grails/daweb_properties.groovy
 
 1. Open it in an editor.
-1. Delete the blocks for the "test" and "development" environments
 1. Fill in the property params. Most of the params being used must have the same values like they've in the adjacent contentbroker. See also the explanation section below.
 1. Put the daweb3.war container from your installer into the tomcat web-apps folder.
 1. Restart your tomcat.
