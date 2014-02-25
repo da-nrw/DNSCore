@@ -35,7 +35,7 @@ the basic version you easily can extend the software by the other components if 
 configuration settings. We think this is a great way for administrators to get up and running quickly while
 getting an understanding of the basic behaviour and configuration possibilities of the software.
 
-A second [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/full_fledged_installation.md) then describes
+A second [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/preparing_irods_for_dnscore.md) then describes
 how to convert the existing DNSCore into a full-fledged installation including the iRODS storage layer.
 
 ## Prerequisites
@@ -69,10 +69,10 @@ which DNSCore will use to work with data packages. The subfolders correspond to 
 Now you need to configure your installer in order to make use of the created directories.
  
 1. Get a properties file 
-[template](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/config.properties.dev). Note that this document
+[template](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/conf/config.properties.dev). Note that this document
 can change from time to time and therefore is bound to a specific version of DNSCore. If in doubt you can get a config which fits your
 version in the appropriate source code branch of the release you want to install.
-1. Save the file as config.properties.
+1. Save the file as config.properties in a temporary directory on your local box. (TODO where?)
 1. Replace CONTENTBROKER_ROOT by [somewhere].
 
 in config.properties:    
@@ -83,6 +83,8 @@ in config.properties:
     localNode.dipAreaRootPath=[somewhere]/storage/pip
     localNode.gridCacheAreaRootPath=[somewhere]/storage/aip
 
+(Please check if the paths correspond to the created paths on your system before)
+
 If your python installation is not globally visible, for example if your package system does not provide
 the newest version, set the path accordingly at
 
@@ -91,13 +93,13 @@ the newest version, set the path accordingly at
 ### Database
 
 1. Create a new database called contentbroker.
-1. Ask our team for the decrypted password for the irods database user.
+1. Ask our team for the decrypted password for the irods database user. (TODO)
 1. Create a database user called irods with exactly that password.
-1. Get the actual schema [dump](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/postgres_schema.dump) 
+1. Get the actual schema [dump](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/conf/postgres_schema.dump)
 and use it to create your database schema for the database contentbroker.
 1. Download a hibernate properties file 
-[template](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.postgres).
-1. Save the file as hibernateCentralDB.cfg.xml
+[template](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.postgres).
+1. Save the file as hibernateCentralDB.cfg.xml in a temporary directory on your local box.
 1. Edit the following entry to match your hostname and port.
 <pre> 
     <property name="connection.url">jdbc:postgresql://hostname:port/contentbroker</property>
@@ -153,13 +155,16 @@ are case sensitive. For our system to work with the TEST user, extend the direct
                     aip/
                          TEST  
 
+
 ### Configuring the database
 
-1. Create a contractor: (id,short_name) -> (1,'DEFAULT')
-1. Create a contractor: (id,short_name) -> (2,'PRESENTER')
-1. Create a contractor: (id,short_name) -> (3,'TEST')
-1. Create a node: (id,name,urn_index) -> (1,[domainNameOfYourNode],1)
-
+Create needed contractors:
+<pre>
+insert into contractors (id,short_name,admin) values (1,'DEFAULT',0)
+insert into contractors (id,short_name,admin) values (2,'PRESENTER',0)
+insert into contractors (id,short_name,admin) values (3,'TEST',0)
+insert into nodes (id,name,urn_index) values (1,[domainNameOfYourNode],1)
+</pre>
 ### Test your application
 
 Now that you have created the minimum necessary database configuration for the ContentBroker to work with, restart your ContentBroker
@@ -179,7 +184,7 @@ Copy it to your IngestArea
 After some seconds the ContentBroker should fetch the package and you won't find it anymore under ingest/TEST.
 Watch the ContentBroker working with the package with
 
-    tail -f log/object-logs/1-[DDDDDDDDDD].log
+    tail -f log/object-logs/1-[DDDDDDDDDD].log       // DDDD... simply means: some digits
     
 **Troubleshooting**
 
@@ -202,7 +207,7 @@ How to set up this component is part of this [tutorial](https://github.com/da-nr
 
 You have set up the two components of DNSCore.
 Now your DNSCore is up'n'running, you are free to play around with it or convert your existing installation into a full-fledged
-installation following this [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/full_fledged_installation.md).
+installation following this [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/preparing_irods_for_dnscore.md).
 
 The tutorial will show you how to install additional components and features:
 

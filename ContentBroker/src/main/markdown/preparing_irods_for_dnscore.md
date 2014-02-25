@@ -18,7 +18,7 @@
 	*/
 	
 	
-# Introduction 
+# Preparing iRODS for DNSCore
 
 DNScore uses iRODS as storage layer. Therefore at least a running instance of iRODS is needed
 for DNSCore to perform. To get a deeper overview of the iRODS System please refer to the 
@@ -50,6 +50,7 @@ resource names are your repl_destinations names. In case of forming a federation
 
 Please note the settings of your iRODS installation, as they're needed for config.properties of CB and DA-Web.
 
+<<<<<<< HEAD
 ## Default Resource
 
 Alter "default resource" settings in core.re and in danrw.re for apropiate settings on your system as they might point
@@ -57,46 +58,130 @@ to some dummy resources.
 
 
 ## Adding and changing the RuleSet
+=======
+### Adding and changing the RuleSet
+>>>>>>> branch 'master' of https://github.com/da-nrw/DNSCore
 
 iRODS works with event based triggers being fired on certain actions. Additionally iRODS has the ability to automatically 
 perform some time based actions (performed by the RuleEngine of Master ICAT). To support event based rules needed by 
 DNSCore and to provide needed actions for the GridFacade, it is needed to add the RuleSet to the reConfig rule base, located 
 at 
-<pre>
-iRODS/server/config/server.config
-</pre>  
+
+    iRODS/server/config/server.config
+  
 
 Please add the entry 
-<pre>
-reRuleSet   danrw,core
-</pre>
+
+    reRuleSet   danrw,core
+
 
 And store the corresponding file danrw.re in:
 
-<pre>
-iRODS/server/config/reConfigs
-</pre>
+
+    iRODS/server/config/reConfigs
+
 The file danrw.re must be changed to your local appropiate settings. Please refer carefully to the iRODS Documentation
 about needed change of other parameters, as wrong parameters could harm your system!
 
-## Adding users to DNSCore
 
-DNSCore needs a technical user for the application ContentBroker as well as the Contractors 
-being Users of iRODS. 
-
-## Creating needed logical paths
-
-Create at least the following directories:
-
-<pre>
-/zone/aip/
-/zone/fork/
-</pre>
-
-DNSCore delivers a bash script for easily creating contractors and iRODS directories. 
-
-## Microservices
+## Connecting DNSCore to the Storage Layer
 
 As ContentBroker has now an extended and comfortable interface for interacting with all kinds of 
 iRODS Servers (iRODSSystemConnector) based on the JARGON interface provided by RENCI, DNSCore
 is deployed without the need for installed microservices anymore. 
+
+In order to work together, you just have to follow the steps outlined in the following paragraphs.
+
+
+
+
+In the getting started document you created a basic folder structure which looks like this:
+
+    [somewhere]/storage/
+                    user/
+                    ingest/
+                    work/
+                    pip/
+                        institution/
+                        public/
+                    aip/ 
+                    
+Now, select a partition or filemount on your box which is separated from the partition you let the ContentBroker
+do his work. The reason for this are explained 
+[here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md) 
+(at the sections UserArea and IngestArea).
+
+Move the user/ and ingest/ directories already created including the TEST subfolders to a location at the other partition
+so that you have a directory structure like this:
+
+    [otherPartition]/[location]/
+                                user/
+                                     TEST/
+                                          incoming/
+                                          outgoing/
+                                ingest/
+                                     TEST/
+    
+In the following the steps of the "Preparing iRODS for DNSCore" document, you already have created a cache resource.
+This is the iRODS resource that helps the ContentBroker work together with ContentBroker other instances on other nodes
+when working with unpacked objects. Make sure that the vault path of this cache resource is pointed at 
+the root of your storage location, which you either can do by moving your storage folder to the path denoted
+by the resources vault path or by making the resources vault path point at your storage location. Either way, you
+should end up having something like that:
+
+    [vaultPathOfIrodsResource]/
+                               work/
+                                    TEST/
+                               pip/
+                                   institution/
+                                               TEST/
+                                   public/
+                                          TEST/
+                               aip/ 
+                                   TEST/
+                                   
+As the folders exist now physically, iRODS has to know about them, so execute the following steps
+
+    imkdir [zonePath]/work
+    imkdir [zonePath]/work/TEST
+    imkdir [zonePath]/pip
+    imkdir [zonePath]/pip/institution
+    imkdir [zonePath]/pip/institution/TEST
+    imkdir [zonePath]/pip/public
+    imkdir [zonePath]/pip/public/TEST
+    imkdir [zonePath]/aip                               
+    imkdir [zonePath]/aip/TEST
+	
+Finally edit the config.properties to reflect your changes:                               
+
+    localNode.userAreaRootPath=[otherPartition]/[location]/user
+    localNode.ingestAreaRootPath=[otherPartition]/[location]/ingest
+    localNode.workAreaRootPath=[vaultPathOfIrodsResource]/work
+    localNode.dipAreaRootPath=[vaultPathOfIrodsResource]/pip
+    localNode.gridCacheAreaRootPath=[vaultPathOfIrodsResource]/aip
+
+                                 
+To let the grid component know how to speak to the iRODS server set the 
+following properties to match your iRODS configuration:
+
+    irods.user=[yourIrodsUser]
+    irods.password=[encryptedIrodsPasswd] (TODO show how to encrypt)
+    irods.server=[domainNameOfYourServer]
+    irods.zone=[yourZoneName]
+    irods.default_resc=[nameOfYourCacheResc]
+
+To let the core component of DNSCore know how to speak to the grid set the following properties:
+
+    localNode.workingResource=localhost TODO ......
+    grid.implementation=IrodsGridFacade
+    implementation.distributedConversion=IrodsDistributedConversionAdapter
+	
+
+
+### Adding users to DNSCore
+
+DNSCore needs a technical user for the application ContentBroker as well as the Contractors 
+being Users of iRODS. 
+
+DNSCore delivers a bash script for easily creating contractors and iRODS directories. 
+

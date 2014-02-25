@@ -41,7 +41,10 @@ at all.
 
 #### Prepare the database 
 
-TODO create contractor admin
+Create at least one contractor with role admin:
+<pre>
+insert into contractors (id,short_name,admin) values (3,'admin',1)
+</pre>
  
 #### Installation Step by step
 
@@ -57,29 +60,42 @@ TODO create contractor admin
 1. Put the daweb3.war container from your installer into the tomcat web-apps folder.
 1. Restart your tomcat.
 
-## For readers coming from the Getting started tutorial, daweb3_properties.groovy
-
-**Note** 
-If you are coming from the "Getting started" tutorial, set
+## daweb3_properties.groovy
 
     irods.server = ""
     irods.default_resc = ""
+    daweb3.loginManager = "de.uzk.hki.da.login.IrodsLogin"
 
+These settings are responsible for the connection between DAWeb and the
+iRODS server. DAWeb users get authenticated by an iRODS server which acts
+as authentication backbone.
+
+Alternatively if, you are coming from the "Getting started" tutorial or
+want to showcase DNSCore on a local laptop, you can bypass the iRODS authentication
+mechanism by setting the irods properties to
+    
+    irods.server = "" # leave empty
+    irods.default_resc = "" # leave empty
     daweb3.loginManager = "de.uzk.hki.da.login.PlainLogin"
     
-    driverClassName = "org.postgresql.Driver"
-    dialect = org.hibernate.dialect.PostgreSQLDialect
-    passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec"
-    username = "irods"
-
-    password = "98Q4P4ZgUWCey8PHPYxM3g=="
-    passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec"
+### Directory Settings
 
     localNode.userAreaRootPath = [somewhere]/storage/user 
     localNode.ingestAreaRootPath = [somewhere]/storage/ingest
 
+### Database Connection Settings
 
-This password mentioned above is a default password used non critical contexts.
+    driverClassName = "org.postgresql.Driver"
+    dialect = org.hibernate.dialect.PostgreSQLDialect
+    username = "irods"
+    password = "98Q4P4ZgUWCey8PHPYxM3g=="
+    passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec"
+
+This password mentioned above is a default password used non critical contexts. Leave it 
+as it is when you are coming from the "Getting started" tutorial.
+
 To encode your own DB Password for production, you have to have a groovy compiler and run 
 
     groovy de.uzk.hki.da.utils.DESCodec <your_password>
+    
+Alternatively, you can ask our team to do it for you.
