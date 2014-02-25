@@ -41,7 +41,10 @@ at all.
 
 #### Prepare the database 
 
-TODO create contractor admin
+Create at least one contractor with role admin:
+<pre>
+insert into contractors (id,short_name,admin) values (3,'admin',1)
+</pre>
  
 #### Installation Step by step
 
