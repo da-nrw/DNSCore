@@ -69,10 +69,10 @@ which DNSCore will use to work with data packages. The subfolders correspond to 
 Now you need to configure your installer in order to make use of the created directories.
  
 1. Get a properties file 
-[template](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/config.properties.dev). Note that this document
+[template](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/config.properties.dev). (TODO: better link to plain text) Note that this document
 can change from time to time and therefore is bound to a specific version of DNSCore. If in doubt you can get a config which fits your
 version in the appropriate source code branch of the release you want to install.
-1. Save the file as config.properties.
+1. Save the file as config.properties. (TODO where?)
 1. Replace CONTENTBROKER_ROOT by [somewhere].
 
 in config.properties:    
