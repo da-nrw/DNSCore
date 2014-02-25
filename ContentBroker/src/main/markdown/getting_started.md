@@ -91,13 +91,13 @@ the newest version, set the path accordingly at
 ### Database
 
 1. Create a new database called contentbroker.
-1. Ask our team for the decrypted password for the irods database user.
+1. Ask our team for the decrypted password for the irods database user. (TODO)
 1. Create a database user called irods with exactly that password.
-1. Get the actual schema [dump](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/postgres_schema.dump) 
+1. Get the actual schema [dump](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/postgres_schema.dump) (TODO: Raw file preferred)
 and use it to create your database schema for the database contentbroker.
 1. Download a hibernate properties file 
 [template](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.postgres).
-1. Save the file as hibernateCentralDB.cfg.xml
+1. Save the file as hibernateCentralDB.cfg.xml (TODO: where)
 1. Edit the following entry to match your hostname and port.
 <pre> 
     <property name="connection.url">jdbc:postgresql://hostname:port/contentbroker</property>
