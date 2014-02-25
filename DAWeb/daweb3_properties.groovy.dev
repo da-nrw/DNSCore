@@ -1,7 +1,7 @@
  
 
 environments {
-	development {
+	production {
 		//log4j = {
 		//		debug   'grails.app'
 		//}
@@ -28,28 +28,7 @@ environments {
 			password = ""
 			characterEncoding = "UTF-8"
 		}
-	}
-
-
-test {
-			
-		dataSource {
-		}
-}
-
-production {		
-		cb.homepath = ""
-		daweb3.logo = ""
-		irods.server = ""
-		irods.default_resc = ""
-		irods.zone = ""
-		localNode.userAreaRootPath = ""
-		localNode.ingestAreaRootPath = ""
-		transferNode.downloadLinkPrefix = ""
-		fedora.urlPrefix = ""
-		cb.presServer= ""
-		
-		dataSource {
+		/*dataSource {
 			pooled = true
 			driverClassName = "org.postgresql.Driver"
 			dialect = org.hibernate.dialect.PostgreSQLDialect
@@ -60,7 +39,7 @@ production {
 			passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec"
 			characterEncoding = "UTF-8"
 		
-		}
+		}*/
 	}
 }
 	

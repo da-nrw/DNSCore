@@ -43,13 +43,17 @@ All iRODS Servers (as well in federated or in resource server mode) need at leas
 1. "Cache" resource having a small latency and being fast, to store all objects after they are put to the grid.  
 1. "Archive" resource having longer latency (tape device or mount point) for acessing the WORM devices of long term storage.
 
+Please take a look at documentation at irods.org how to create iRODS resources. 
+
 The archive resource has to part of an named resource group. In case you're running the resource server mode, the 
 resource names are your repl_destinations names. In case of forming a federation, zone_names are your repl_destinations. 
 
-Please note the settings of your iRODS installation, as they're needed for config.properties of CB.
+Please note the settings of your iRODS installation, as they're needed for config.properties of CB and DA-Web.
 
 ## Default Resource
 
+Alter "default resource" settings in core.re and in danrw.re for apropiate settings on your system as they might point
+to some dummy resources. 
 
 
 ## Adding and changing the RuleSet
