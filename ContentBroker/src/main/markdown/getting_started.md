@@ -69,10 +69,10 @@ which DNSCore will use to work with data packages. The subfolders correspond to 
 Now you need to configure your installer in order to make use of the created directories.
  
 1. Get a properties file 
-[template](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/config.properties.dev). (TODO: better link to plain text) Note that this document
+[template](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/conf/config.properties.dev). Note that this document
 can change from time to time and therefore is bound to a specific version of DNSCore. If in doubt you can get a config which fits your
 version in the appropriate source code branch of the release you want to install.
-1. Save the file as config.properties. (TODO where?)
+1. Save the file as config.properties in a temporary directory on your local box. (TODO where?)
 1. Replace CONTENTBROKER_ROOT by [somewhere].
 
 in config.properties:    
@@ -93,11 +93,11 @@ the newest version, set the path accordingly at
 1. Create a new database called contentbroker.
 1. Ask our team for the decrypted password for the irods database user. (TODO)
 1. Create a database user called irods with exactly that password.
-1. Get the actual schema [dump](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/postgres_schema.dump) (TODO: Raw file preferred)
+1. Get the actual schema [dump](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/conf/postgres_schema.dump)
 and use it to create your database schema for the database contentbroker.
 1. Download a hibernate properties file 
 [template](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.postgres).
-1. Save the file as hibernateCentralDB.cfg.xml (TODO: where)
+1. Save the file as hibernateCentralDB.cfg.xml in a temporary directory on your local box.
 1. Edit the following entry to match your hostname and port.
 <pre> 
     <property name="connection.url">jdbc:postgresql://hostname:port/contentbroker</property>
@@ -179,7 +179,7 @@ Copy it to your IngestArea
 After some seconds the ContentBroker should fetch the package and you won't find it anymore under ingest/TEST.
 Watch the ContentBroker working with the package with
 
-    tail -f log/object-logs/1-[DDDDDDDDDD].log
+    tail -f log/object-logs/1-[DDDDDDDDDD].log       // DDDD... simply means: some digits
     
 **Troubleshooting**
 
