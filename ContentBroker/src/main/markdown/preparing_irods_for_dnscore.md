@@ -72,7 +72,7 @@ The file danrw.re must be changed to your local appropiate settings. Please refe
 about needed change of other parameters, as wrong parameters could harm your system!
 
 
-## Connection DNSCore to the Storage Layer
+## Connecting DNSCore to the Storage Layer
 
 As ContentBroker has now an extended and comfortable interface for interacting with all kinds of 
 iRODS Servers (iRODSSystemConnector) based on the JARGON interface provided by RENCI, DNSCore
