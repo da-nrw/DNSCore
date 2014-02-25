@@ -94,8 +94,7 @@ mechanism by setting the irods properties to
 This password mentioned above is a default password used non critical contexts. Leave it 
 as it is when you are coming from the "Getting started" tutorial.
 
-To encode your own DB Password for production, you have to have a groovy compiler and run 
+To encode your own DB Password for production, you have to have a groovy compiler (and at least a checkout of the class) run 
     
     groovy grails-app/utils/de/uzk/hki/da/utils/DESCodec.groovy <your password>
 
-Alternatively, you can ask our team to do it for you.
