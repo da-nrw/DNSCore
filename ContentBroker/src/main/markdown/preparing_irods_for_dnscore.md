@@ -40,14 +40,36 @@ GridFace abstract classes and its respective implementations. The only thing Gri
 to know is an instance of a storage policy which has to be achieved and the logical pathname (address) the
 object is stored under. This helps to seperate the concerns of DNSCore between ContentBroker's business logic and the Storage layer. 
 
+## iRODS
+
+The reasons why we have choosen iRODS as a storage layer framework were
+
+1. It is open source
+2. broadly being used in academic projects at large data scales 
+3. being able to connect heterogenous existing hardware systems (act as abstraction layer)
+4. "out-of-the-box" capabilities for replication, maintenance and low-level bitstream verification.
+5. has a vivid community
+
+The version described here is community iRODS Version (3.X), you may consider also the e-iRODS Version. www.eirods.org but this is to be tested.
+
+Several hardware platforms are supported by iRODS "out-of-the-box", but having a standard "mount-point" (unix file system) is always a good start. Tape devices not being able to provide such, may be connected via MSS compound devices and need a special setup. 
+
 ## Setup iRODS
 
 To successfully run ContentBroker/DNSCore with iRODS, you have to prepare your running installation of iRODS.
 Please start customizing iRODS install after having done a complete check of your iRODS installation: you should be familiar with 
-iRODS Cli-commands esp. irepl, ils, iput, irsync, iget. As iRODS Admin you have to be familiar as well with command iadmin. 
+iRODS Cli-commands esp. 
+
+    irepl, ils, iput, irsync, iget
+
+As iRODS Admin (of each zone being used) you have to be familiar as well with command 
+
+    iadmin
  
 Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zones" as well as the concept of 
-having one Zone with several resource servers. Please refer to the iRODS Documentation about this. DNSCore supports both operational modes.  
+having one Zone with several resource servers. Please refer to the iRODS Documentation about this. DNSCore supports both operational modes. 
+
+Each Zone needs at least one database (so called ICAT Server). The usage of Postgres is encouraged here.  
 
 All iRODS Servers (as well in federated or in resource server mode) need at least to have two resources:
 
@@ -91,21 +113,18 @@ errors error, commands like
 
     ils 
     
-will return with RE_PARSER_ERROR. any change done to ruleBase should be followed issueing at least this command. 
+will return with RE_PARSER_ERROR. Any change done to ruleBase should be followed issueing at least this command. There are many more actions being neccessary or at least interesting to implement, please consider reading the documenation in these files as well. 
 
 ## Connecting DNSCore to the Storage Layer
 
-As ContentBroker has now an extended and comfortable interface for interacting with all kinds of 
-iRODS Servers (iRODSSystemConnector) based on the JARGON interface provided by RENCI (see https://code.renci.org/gf/project/jargon/), DNSCore
-is deployed without the need for installed C-microservices for iRODS anymore. 
-
+As ContentBroker has now an extended and comfortable interface for interacting with 
+iRODS Servers (federated and single zone based architectures) based on the JARGON interface provided by RENCI (see https://code.renci.org/gf/project/jargon/) and our implematations of GridFacade, DNSCore
+is deployed without the need for installed C-microservices for iRODS anymore.
 
 In order to work together, you just have to follow the steps outlined in the following paragraphs.
 
 
-
-
-In the getting started document you created a basic folder structure which looks like this:
+In the getting started document you have already created a basic folder structure which looks like this:
 
     [somewhere]/storage/
                     user/
