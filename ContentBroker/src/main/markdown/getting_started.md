@@ -96,7 +96,7 @@ the newest version, set the path accordingly at
 1. Get the actual schema [dump](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/conf/postgres_schema.dump)
 and use it to create your database schema for the database contentbroker.
 1. Download a hibernate properties file 
-[template](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.postgres).
+[template](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.postgres).
 1. Save the file as hibernateCentralDB.cfg.xml in a temporary directory on your local box.
 1. Edit the following entry to match your hostname and port.
 <pre> 
