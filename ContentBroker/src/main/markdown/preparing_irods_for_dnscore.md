@@ -28,6 +28,7 @@ You are able to install and run DNSCore without having iRODS installed, due to h
 "Getting started" usage of DNSCore. Please refer to that respective documentation.
 
 In the following parts we assume 
+
 1. You have read the documenation available under www.irods.org (e.g. the read the e-Book "iRODS Primer")
 2. You have already have at least one iRODS Server at your site
 2. It is running and you have already performed some basic tests. 
