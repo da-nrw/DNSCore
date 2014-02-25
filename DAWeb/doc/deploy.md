@@ -22,7 +22,7 @@
 ## Prerequisites
 
 * Oracle Java 1.6 
-* Tomcat6
+* Tomcat6 or Tomcat7 
 
 ### Installation
 
