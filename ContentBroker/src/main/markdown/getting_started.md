@@ -83,6 +83,8 @@ in config.properties:
     localNode.dipAreaRootPath=[somewhere]/storage/pip
     localNode.gridCacheAreaRootPath=[somewhere]/storage/aip
 
+(Please check if the paths correspond to the created paths on your system before)
+
 If your python installation is not globally visible, for example if your package system does not provide
 the newest version, set the path accordingly at
 
@@ -153,13 +155,14 @@ are case sensitive. For our system to work with the TEST user, extend the direct
                     aip/
                          TEST  
 
+
 ### Configuring the database
 
-1. Create a contractor: (id,short_name,admin) -> (1,'DEFAULT',0)
-1. Create a contractor: (id,short_name,admin) -> (2,'PRESENTER',0)
-1. Create a contractor: (id,short_name,admin) -> (3,'TEST',0)
-1. Create a contractor: (id,short_name,admin) -> (3,'admin',1)
-1. Create a node: (id,name,urn_index) -> (1,[domainNameOfYourNode],1)
+1. Create a contractor: insert into contractors (id,short_name,admin) values (1,'DEFAULT',0)
+1. Create a contractor: insert into contractors (id,short_name,admin) values (2,'PRESENTER',0)
+1. Create a contractor: insert into contractors (id,short_name,admin) values (3,'TEST',0)
+1. Create a contractor: insert into contractors (id,short_name,admin) values (3,'admin',1)
+1. Create a node: insert into nodes (id,name,urn_index) values (1,[domainNameOfYourNode],1)
 
 ### Test your application
 
