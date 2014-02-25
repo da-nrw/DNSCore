@@ -19,7 +19,7 @@
 	
 # Components Connectors
 
-![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/components_connectors.jpg)
+![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/components_connectors.jpg)
 
 The sketch describes the main components of a "system". Not every node has to operate all of the components.
 There are different congigurations possible for a node to participate in the system.
