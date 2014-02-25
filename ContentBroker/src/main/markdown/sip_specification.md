@@ -19,7 +19,7 @@
 
 # SIP Specification
 
-TODO Lieferung
+* TODO Lieferung
 
 ## SIP
 The basic structure of a SIP as accepted by the system looks like this:
@@ -59,7 +59,7 @@ others as we'll see soon (TODO).
 
 ### Other 
 
-TODO mets ist doch nicht mehr unterstützt oder?
+* TODO mets ist doch nicht mehr unterstützt oder?
 
 ## SIP - special formats
 
