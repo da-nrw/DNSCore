@@ -50,7 +50,7 @@ The reasons why we have choosen iRODS as a storage layer framework were
 4. "out-of-the-box" capabilities for replication, maintenance and low-level bitstream verification.
 5. has a vivid community
 
-The version described here is community iRODS Version (3.X), you may consider also the e-iRODS Version. www.eirods.org but this is to be tested.
+The version described here is community iRODS Version (3.X), you may consider also the e-iRODS Version. www.eirods.org but this not tested with DNSCore.
 
 Several hardware platforms are supported by iRODS "out-of-the-box", but having a standard "mount-point" (unix file system) is always a good start. Tape devices not being able to provide such, may be connected via MSS compound devices and need a special setup. 
 
@@ -82,6 +82,12 @@ The archive resource has to part of an named resource group. In case you're runn
 resource names are your repl_destinations names in config.properties. In case of forming a federation, zone_names are your repl_destinations. 
 
 Please note the settings of your iRODS installation, as they're needed for config.properties of CB and DA-Web.
+
+## Prerequisites
+
+1. running iRODS Server > 3.2 
+1. darnrw.re file Template: https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/danrw.re
+
 
 ## Default Resource
 
