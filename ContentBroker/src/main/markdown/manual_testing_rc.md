@@ -11,9 +11,9 @@ by the dev team can intersect.
 
 There are three types of tests maintained by the dev team:
 
-# Unit Tests
-# Automated Acceptance Tests
-# Manual Acceptance Tests
+1. Unit Tests
+1. Automated Acceptance Tests
+1. Manual Acceptance Tests
 
 While the Unit tests are developement-centric, the automated as well as the manual acceptance tests
 test business value. Business value means either value directly visibly to end users but also value 
