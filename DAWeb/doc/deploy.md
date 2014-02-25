@@ -21,7 +21,7 @@
 
 ## Prerequisites
 
-* Oracle Java 1.6 
+* Oracle Java 1.6 (1.7 prooved for DA-WEB)
 * Tomcat6 or Tomcat7 
 
 ### Installation
@@ -88,11 +88,9 @@ mechanism by setting the irods properties to
     driverClassName = "org.postgresql.Driver"
     dialect = org.hibernate.dialect.PostgreSQLDialect
     username = "irods"
-    password = "98Q4P4ZgUWCey8PHPYxM3g=="
+    password = "=="
     passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec"
 
-This password mentioned above is a default password used non critical contexts. Leave it 
-as it is when you are coming from the "Getting started" tutorial.
 
 To encode your own DB Password for production, you have to have a groovy compiler (and at least a checkout of the class) run 
     
