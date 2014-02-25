@@ -24,7 +24,7 @@
 The sketch describes the main components of a "system". Not every node has to operate all of the components.
 There are different congigurations possible for a node to participate in the system.
 
-The arrows indicate where one component consumes services of another component.
+Some components are shown more than once to signal that nodes of the system can provide services and share components with other nodes. The arrows indicate where one component consumes services of another component.
 
 ## Normal Node
 
