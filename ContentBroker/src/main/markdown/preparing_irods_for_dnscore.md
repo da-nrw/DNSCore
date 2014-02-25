@@ -72,16 +72,16 @@ The file danrw.re must be changed to your local appropiate settings. Please refe
 about needed change of other parameters, as wrong parameters could harm your system!
 
 
-
-## Microservices
+## Connection DNSCore to the Storage Layer
 
 As ContentBroker has now an extended and comfortable interface for interacting with all kinds of 
 iRODS Servers (iRODSSystemConnector) based on the JARGON interface provided by RENCI, DNSCore
 is deployed without the need for installed microservices anymore. 
 
+In order to work together, you just have to follow the steps outlined in the following paragraphs.
 
 
-## Connection DNSCore to the Storage Layer
+
 
 In the getting started document you created a basic folder structure which looks like this:
 
@@ -137,8 +137,8 @@ As the folders exist now physically, iRODS has to know about them, so execute th
     imkdir [zonePath]/pip/institution/TEST
     imkdir [zonePath]/pip/public
     imkdir [zonePath]/pip/public/TEST
-	imkdir [zonePath]/aip                               
-	imkdir [zonePath]/aip/TEST
+    imkdir [zonePath]/aip                               
+    imkdir [zonePath]/aip/TEST
 	
 Finally edit the config.properties to reflect your changes:                               
 
@@ -160,14 +160,10 @@ following properties to match your iRODS configuration:
 
 To let the core component of DNSCore know how to speak to the grid set the following properties:
 
-
     localNode.workingResource=localhost TODO ......
-	grid.implementation=IrodsGridFacade
-	implementation.distributedConversion=IrodsDistributedConversionAdapter
+    grid.implementation=IrodsGridFacade
+    implementation.distributedConversion=IrodsDistributedConversionAdapter
 	
-TODO ffmpeg
-
-
 
 
 ### Adding users to DNSCore
