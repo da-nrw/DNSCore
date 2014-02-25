@@ -51,9 +51,10 @@ insert into contractors (id,short_name,admin) values (3,'admin',1)
 1. Download a properties file template from 
 [here](https://github.com/da-nrw/DNSCore/blob/master/DAWeb/daweb3_properties.groovy.dev).
 1. Save the file as 
-
+<pre>
     /home/tomcat/.grails/daweb_properties.groovy
-
+</pre> 
+Please note: some distributions have a distinct home folder of user tomcat (e.g. RH this might be /usr/share/tomcat)
 1. Open it in an editor.
 1. Fill in the property params. Most of the params being used must have the same values like they've in the adjacent contentbroker. See also the explanation section below.
 1. Put the daweb3.war container from your installer into the tomcat web-apps folder.
