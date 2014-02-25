@@ -35,7 +35,7 @@ the basic version you easily can extend the software by the other components if 
 configuration settings. We think this is a great way for administrators to get up and running quickly while
 getting an understanding of the basic behaviour and configuration possibilities of the software.
 
-A second [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/full_fledged_installation.md) then describes
+A second [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/preparing_irods_for_dnscore.md) then describes
 how to convert the existing DNSCore into a full-fledged installation including the iRODS storage layer.
 
 ## Prerequisites
@@ -202,7 +202,7 @@ How to set up this component is part of this [tutorial](https://github.com/da-nr
 
 You have set up the two components of DNSCore.
 Now your DNSCore is up'n'running, you are free to play around with it or convert your existing installation into a full-fledged
-installation following this [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/full_fledged_installation.md).
+installation following this [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/preparing_irods_for_dnscore.md).
 
 The tutorial will show you how to install additional components and features:
 
