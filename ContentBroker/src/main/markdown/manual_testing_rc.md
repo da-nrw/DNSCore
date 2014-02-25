@@ -1,3 +1,42 @@
+# DNSCore - Testing the application
+
+## Testing concepts
+
+At the moment there exist two general testing strategies. The first one
+is maintained by the development team and is the subject of discussion here. 
+Additional testing is done by people not attached to the development team. They do
+testing on the basis of the formal project specs like use case documents and "Leistungsbeschreibung".
+However, with the exception of the unit tests, these tests and acceptance tests done
+by the dev team can intersect. 
+
+There are three types of tests maintained by the dev team:
+
+# Unit Tests
+# Automated Acceptance Tests
+# Manual Acceptance Tests
+
+While the Unit tests are developement-centric, the automated as well as the manual acceptance tests
+test business value. Business value means either value directly visibly to end users but also value 
+which is related to the domain of long term archival and understandable und measurable in the terms of this
+domain (one example: structure of PREMIS as a success condition of Use Case Ingest). 
+
+The manual acceptance tests are always extended when a new feature gets developed. This is the easiest way
+to do because the natural language written specification can act as a design spec while development. When
+we think the test can easily be automated and fits its purpose well we will transform the manual test into
+an automated acceptance test. In contrast to the unit tests were it is done in many cases there isn't a test first approach here.
+
+
+### Building realase candidates - testing in context of versioning
+
+An automated build system builds a release candidate by first passing the unit tests and then the
+automated acceptance tests. Only when all tests have passed, the release candidate is available for
+manual testing. If it passes the manual tests, it can be released. Insofar, there never is a final 
+state of the software or a version in the classical way. Every relase candidate which passes the tests
+can be realeased at every moment.
+
+
+## Manual Testing Catalogue
+
 The testing chart for release candidates is available [here]
 (https://docs.google.com/spreadsheet/ccc?key=0Ash-t_YI6jRrdGhDTUNveGdLSHlwaVRZaDFRVjY4a3c#gid=0)
 
