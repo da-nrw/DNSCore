@@ -95,7 +95,7 @@ This password mentioned above is a default password used non critical contexts. 
 as it is when you are coming from the "Getting started" tutorial.
 
 To encode your own DB Password for production, you have to have a groovy compiler and run 
-
-    groovy de.uzk.hki.da.utils.DESCodec <your_password>
     
+    groovy grails-app/utils/de/uzk/hki/da/utils/DESCodec.groovy <your password>
+
 Alternatively, you can ask our team to do it for you.
