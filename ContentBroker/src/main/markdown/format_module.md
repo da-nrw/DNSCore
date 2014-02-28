@@ -24,7 +24,7 @@ Lets have a close look which concepts you have to understand, which steps the sy
 in order to perform the simple conversion (jpg->tif) from the above mentioned example. 
 
 The first step the ContentBroker (via FIDO) performs is to determine the [PRONOM](http://www.nationalarchives.gov.uk/PRONOM/Default.aspx) 
-puid for every file found in the +a-representation. For a file in the jpg format version 1.00
+PUID for every file found in the +a-representation. For a file in the jpg format version 1.00
 FIDO will report an identifier fmt/42 back to the ContentBroker, which in turn uses this identifier to check if there is a special
 [ConversionPolicy](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#conversionpolicy) 
 matching this identifier. Here is an example of a matching **ConversionPolicy** which demonstrates their basic form:
