@@ -83,6 +83,8 @@ in config.properties:
     localNode.dipAreaRootPath=[somewhere]/storage/pip
     localNode.gridCacheAreaRootPath=[somewhere]/storage/aip
 
+(Please check if the paths correspond to the created paths on your system before)
+
 If your python installation is not globally visible, for example if your package system does not provide
 the newest version, set the path accordingly at
 
@@ -153,13 +155,16 @@ are case sensitive. For our system to work with the TEST user, extend the direct
                     aip/
                          TEST  
 
+
 ### Configuring the database
 
-1. Create a contractor: (id,short_name) -> (1,'DEFAULT')
-1. Create a contractor: (id,short_name) -> (2,'PRESENTER')
-1. Create a contractor: (id,short_name) -> (3,'TEST')
-1. Create a node: (id,name,urn_index) -> (1,[domainNameOfYourNode],1)
-
+Create needed contractors:
+<pre>
+insert into contractors (id,short_name,admin) values (1,'DEFAULT',0)
+insert into contractors (id,short_name,admin) values (2,'PRESENTER',0)
+insert into contractors (id,short_name,admin) values (3,'TEST',0)
+insert into nodes (id,name,urn_index) values (1,[domainNameOfYourNode],1)
+</pre>
 ### Test your application
 
 Now that you have created the minimum necessary database configuration for the ContentBroker to work with, restart your ContentBroker

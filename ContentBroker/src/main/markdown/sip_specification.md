@@ -19,7 +19,7 @@
 
 # SIP Specification
 
-TODO Lieferung
+* TODO Lieferung
 
 ## SIP
 The basic structure of a SIP as accepted by the system looks like this:
@@ -47,8 +47,19 @@ of any formats and in any structure (hierarchical ordering in folders) into the
 data folder though some formats and structures are somewhat more supported than
 others as we'll see soon (TODO).
 
-TODO SIP builder
-TODO mets ist doch nicht mehr unterstützt oder?
+### PREMIS - specification
+
+* TODO
+
+### SIPBuilder 
+
+* TODO link to documentation
+* TODO link to other artifacts?
+* TODO explain SIP builder in this context
+
+### Other 
+
+* TODO mets ist doch nicht mehr unterstützt oder?
 
 ## SIP - special formats
 

@@ -21,8 +21,8 @@
 
 ## Prerequisites
 
-* Oracle Java 1.6 
-* Tomcat6
+* Oracle Java 1.6 (1.7 prooved for DA-WEB)
+* Tomcat6 or Tomcat7 
 
 ### Installation
 
@@ -41,18 +41,21 @@ at all.
 
 #### Prepare the database 
 
-TODO create contractor admin
+Create at least one contractor with role admin:
+<pre>
+insert into contractors (id,short_name,admin) values (3,'admin',1)
+</pre>
  
 #### Installation Step by step
 
 1. Download a properties file template from 
 [here](https://github.com/da-nrw/DNSCore/blob/master/DAWeb/daweb3_properties.groovy.dev).
 1. Save the file as 
-
+<pre>
     /home/tomcat/.grails/daweb_properties.groovy
-
+</pre> 
+Please note: some distributions have a distinct home folder of user tomcat (e.g. RH this might be /usr/share/tomcat)
 1. Open it in an editor.
-1. Delete the blocks for the "test" and "development" environments
 1. Fill in the property params. Most of the params being used must have the same values like they've in the adjacent contentbroker. See also the explanation section below.
 1. Put the daweb3.war container from your installer into the tomcat web-apps folder.
 1. Restart your tomcat.
@@ -85,14 +88,11 @@ mechanism by setting the irods properties to
     driverClassName = "org.postgresql.Driver"
     dialect = org.hibernate.dialect.PostgreSQLDialect
     username = "irods"
-    password = "98Q4P4ZgUWCey8PHPYxM3g=="
+    password = "=="
     passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec"
 
-This password mentioned above is a default password used non critical contexts. Leave it 
-as it is when you are coming from the "Getting started" tutorial.
 
-To encode your own DB Password for production, you have to have a groovy compiler and run 
-
-    groovy de.uzk.hki.da.utils.DESCodec <your_password>
+To encode your own DB Password for production, you have to have a groovy compiler (and at least a checkout of the class) run 
     
-Alternatively, you can ask our team to do it for you.
+    groovy grails-app/utils/de/uzk/hki/da/utils/DESCodec.groovy <your password>
+

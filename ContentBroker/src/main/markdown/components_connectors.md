@@ -19,12 +19,14 @@
 	
 # Components Connectors
 
-![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/components_connectors.jpg)
+![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/components_connectors.jpg)
 
-The sketch describes the main components of a "system". Not every node has to operate all of the components.
+The sketch describes the main components of a 
+[system](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#system). Not every 
+[node](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#node) has to operate all of the components.
 There are different congigurations possible for a node to participate in the system.
 
-The arrows indicate where one component consumes services of another component.
+Some components are shown more than once to signal that nodes of the system can provide services and share components with other nodes. The arrows indicate where one component consumes services of another component.
 
 ## Normal Node
 

@@ -21,39 +21,86 @@
 # Preparing iRODS for DNSCore
 
 DNScore uses iRODS as storage layer. Therefore at least a running instance of iRODS is needed
-for DNSCore to perform. To get a deeper overview of the iRODS System please refer to the 
-documentation available at http://www.irods.org . 
+for DNSCore to perform in testing or pre-productional usage. 
+
+You are able to install and run DNSCore without having iRODS installed, due to have a so called 
+"FakeGridFacade" implementation configured in your config.properties. This os ONLY recommended in development and
+"Getting started" usage of DNSCore. Please refer to that respective documentation.
+
+In the following parts we assume 
+
+1. You have read the documenation available under www.irods.org (e.g. the read the e-Book "iRODS Primer")
+2. You have already have at least one iRODS Server at your site
+2. It is running and you have already performed some basic tests. 
+3. You are able to create resources. 
+
+## Introduction
 
 The storage layer is separated of ContentBroker's internal business logic, the interface is composed by 
 GridFace abstract classes and its respective implementations. The only thing GridFacade needs
 to know is an instance of a storage policy which has to be achieved and the logical pathname (address) the
-object is stored under.  
+object is stored under. This helps to seperate the concerns of DNSCore between ContentBroker's business logic and the Storage layer. 
+
+## iRODS
+
+The reasons why we have choosen iRODS as a storage layer framework were
+
+1. It is open source
+2. broadly being used in academic projects at large data scales 
+3. being able to connect heterogenous existing hardware systems (act as abstraction layer)
+4. "out-of-the-box" capabilities for replication, maintenance and low-level bitstream verification.
+5. has a vivid community
+
+The version described here is community iRODS Version (3.X), you may consider also the e-iRODS Version. www.eirods.org but this not tested with DNSCore.
+
+Several hardware platforms are supported by iRODS "out-of-the-box", but having a standard "mount-point" (unix file system) is always a good start. Tape devices not being able to provide such, may be connected via MSS compound devices and need a special setup. 
 
 ## Setup iRODS
 
 To successfully run ContentBroker/DNSCore with iRODS, you have to prepare your running installation of iRODS.
 Please start customizing iRODS install after having done a complete check of your iRODS installation: you should be familiar with 
-iRODS Cli-commands esp. irepl, ils, iput, irsync, iget. As iRODS Admin you have to be familiar as well with command iadmin. 
+iRODS Cli-commands esp. 
+
+    irepl, ils, iput, irsync, iget
+
+As iRODS Admin (of each zone being used) you have to be familiar as well with command 
+
+    iadmin
  
-Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zone" as well as the concept of 
-having one Zone with several resource servers. Please refer to the iRODS Documentation about this. DNSCore supports both operational 
-modes.  
+Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zones" as well as the concept of 
+having one Zone with several resource servers. Please refer to the iRODS Documentation about this. DNSCore supports both operational modes. 
+
+Each Zone needs at least one database (so called ICAT Server). The usage of Postgres is encouraged here.  
+
 All iRODS Servers (as well in federated or in resource server mode) need at least to have two resources:
 
 1. "Cache" resource having a small latency and being fast, to store all objects after they are put to the grid.  
-1. "Archive" resource having longer latency (tape device or mount point) for acessing the WORM devices of long term storage.
+1. "Archive" resource having longer latency (tape device or mount point for storage devices) for acessing the WORM devices of long term storage. 
+
+Please take a look at documentation at www.irods.org how to create iRODS resources. 
 
 The archive resource has to part of an named resource group. In case you're running the resource server mode, the 
-resource names are your repl_destinations names. In case of forming a federation, zone_names are your repl_destinations. 
+resource names are your repl_destinations names in config.properties. In case of forming a federation, zone_names are your repl_destinations. 
 
-Please note the settings of your iRODS installation, as they're needed for config.properties of CB.
+Please note the settings of your iRODS installation, as they're needed for config.properties of CB and DA-Web.
 
-### Adding and changing the RuleSet
+## Prerequisites
+
+1. running iRODS Server > 3.2 
+1. darnrw.re file Template: https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/danrw.re
+
+
+## Default Resource
+
+Alter "default resource" settings in core.re and in danrw.re for apropiate settings on your system as they might point
+to some dummy resources. 
+
+
+## Adding and changing the RuleSet
 
 iRODS works with event based triggers being fired on certain actions. Additionally iRODS has the ability to automatically 
 perform some time based actions (performed by the RuleEngine of Master ICAT). To support event based rules needed by 
-DNSCore and to provide needed actions for the GridFacade, it is needed to add the RuleSet to the reConfig rule base, located 
-at 
+DNSCore and to provide needed actions for the GridFacade, it is needed to add the RuleSet to the reConfig rule base, located at 
 
     iRODS/server/config/server.config
   
@@ -62,28 +109,29 @@ Please add the entry
 
     reRuleSet   danrw,core
 
-
 And store the corresponding file danrw.re in:
 
 
     iRODS/server/config/reConfigs
 
 The file danrw.re must be changed to your local appropiate settings. Please refer carefully to the iRODS Documentation
-about needed change of other parameters, as wrong parameters could harm your system!
+about needed change of other parameters, as wrong parameters could serverly harm your system! There is no test if a ruleBase is operating well, while this file being parsed on demand whenever actions being fired. In case of severe  
+errors error, commands like 
 
+    ils 
+    
+will return with RE_PARSER_ERROR. Any change done to ruleBase should be followed issueing at least this command. There are many more actions being neccessary or at least interesting to implement, please consider reading the documenation in these files as well. 
 
 ## Connecting DNSCore to the Storage Layer
 
-As ContentBroker has now an extended and comfortable interface for interacting with all kinds of 
-iRODS Servers (iRODSSystemConnector) based on the JARGON interface provided by RENCI, DNSCore
-is deployed without the need for installed microservices anymore. 
+As ContentBroker has now an extended and comfortable interface for interacting with 
+iRODS Servers (federated and single zone based architectures) based on the JARGON interface provided by RENCI (see https://code.renci.org/gf/project/jargon/) and our implematations of GridFacade, DNSCore
+is deployed without the need for installed C-microservices for iRODS anymore.
 
 In order to work together, you just have to follow the steps outlined in the following paragraphs.
 
 
-
-
-In the getting started document you created a basic folder structure which looks like this:
+In the getting started document you have already created a basic folder structure which looks like this:
 
     [somewhere]/storage/
                     user/
