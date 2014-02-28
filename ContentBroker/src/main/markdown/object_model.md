@@ -172,11 +172,12 @@ therefore has the relative path
 
     subfolder/abc.tif
 
-![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_2.jpg)
-
 ### ConversionPolicy
 
 The Java [ConversionPolicy](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/ConversionPolicy.java) class.
+
+![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_2.jpg)
+
 
 A ConversionPolicy is a system wide property which describes which ConversionRoutine is to be executed by the system
 for every given file found in a SIP, either in the context of long term archival or in the context of publication.
