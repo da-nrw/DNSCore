@@ -39,14 +39,14 @@ In most cases dropping the built war into your servlet container and having the
 undeploy former versions of daweb completely. Please keep in mind: without having the properties file in place, the webapp won't start 
 at all. 
 
-#### Prepare the database 
+### Prepare the database 
 
 Create at least one contractor with role admin:
 <pre>
 insert into contractors (id,short_name,admin) values (3,'admin',1)
 </pre>
  
-#### Installation Step by step
+### Installation Step by step
 
 1. Download a properties file template from 
 [here](https://github.com/da-nrw/DNSCore/blob/master/DAWeb/daweb3_properties.groovy.dev).
