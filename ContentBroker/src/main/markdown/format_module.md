@@ -69,20 +69,20 @@ TODO summary - what is needed
 1. The domain expert selects the appropriate **ConversionStrategy** and/or command line tool for the job.
 
 1. To test the new routine on a test system, the database configuration has to be made:
-   
+<pre>   
     INSERT INTO conversion_routines (id,type,params,target_suffix)
     id -> new id
     type -> choose a type from the available ConversionStragegies
     params -> params needed to configure the selected ConversionStrategy
     target_suffix -> Some routines can be configured with an entry here which determines the target format automatically. Others won't need it.
-
+</pre>
 1. In order to get visibly to the applications running on the nodes, 
 the ConversionRoutine has to be connected to the nodes. this has to be done for **every** node in a system.
-
+<pre>
     INSERT INTO conversion_routines_nodes (conversion_routines_id,nodes_id)
     conversion_routines_id -> the id of the new routine
     nodes_id -> the node id 
-    
+</pre>
 1. The domain expert tests the routine on a test machine.   
 1. He documents the new ConversionRoutine.
 1. For production: In case a new command line tool is required, it has to be installed on **all** nodes of the system by the node admins.
