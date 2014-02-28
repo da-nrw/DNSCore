@@ -92,7 +92,8 @@ the newest version, set the path accordingly at
  
 ### Database
 
-1. Create a new database called contentbroker.
+1. Setup Database for accepting incoming connections 
+1. Create a new database called contentbroker. 
 1. Ask our team for the decrypted password for the irods database user. (TODO)
 1. Create a database user called irods with exactly that password.
 1. Get the actual schema [dump](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/conf/postgres_schema.dump)
