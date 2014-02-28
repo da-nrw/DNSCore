@@ -121,7 +121,7 @@ and encoded in the [PRONOM](http://www.nationalarchives.gov.uk/PRONOM/Default.as
 
 #### Representation
 
-The representation under which the concrete DAfile can be found has been described in an earlier paragraph. However, as stated there,
+The representation under which the concrete DAfile can be found has been described in a following paragraph . However, as stated there,
 it is not modelled as an own class. Instead, the representation is modelled as part of the DAFile class. At the moment DAFile instances
 are used during processing packages by the workflows of the ContentBroker. Therefore, DAFile is targeted at files which reside in the 
 [WorkArea](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md#workarea).
