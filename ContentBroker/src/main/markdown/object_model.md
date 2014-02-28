@@ -102,6 +102,42 @@ The grid of nodes in this documentation is often referred to as the "system". Ea
 for which it provides the DNSCore functionality and for whose objects storage and distribution it is mainly/solely responsible.
 
 
+
+
+### DAFile
+
+The java [DAFile](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/DAFile.java) class.
+
+![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_1a.jpg)
+
+Each file stored within a package has a correspondent DAFile instance, which captures some properties
+relevant to the business logic of the application.
+
+#### PUID
+
+The puid is used to store the file format of the file, determined by 
+[FIDO](http://www.openplanetsfoundation.org/software/fido), 
+and encoded in the [PRONOM](http://www.nationalarchives.gov.uk/PRONOM/Default.aspx) format.
+
+#### Representation
+
+The representation under which the concrete DAfile can be found has been described in an earlier paragraph. However, as stated there,
+it is not modelled as an own class. Instead, the representation is modelled as part of the DAFile class. At the moment DAFile instances
+are used during processing packages by the workflows of the ContentBroker. Therefore, DAFile is targeted at files which reside in the 
+[WorkArea](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md#workarea).
+
+#### Relative path
+
+The relative path of a file is always relative to the representation the file is contained in. A file
+
+    [WorkArea]/[csn]/[oid]/data/2014_10_01+12+12+a/subfolder/abc.tif
+    
+therefore has the relative path
+
+    subfolder/abc.tif
+
+
+
 ### Representation
 
 A representation is a model entity of second order so to speak and
@@ -142,41 +178,11 @@ AIPs and are used to store the PIPs for publication. These representations are
     dip/public
     dip/institution
 
-### DAFile
-
-The java [DAFile](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/DAFile.java) class.
-
-Each file stored within a package has a correspondent DAFile instance, which captures some properties
-relevant to the business logic of the application.
-
-#### PUID
-
-The puid is used to store the file format of the file, determined by 
-[FIDO](http://www.openplanetsfoundation.org/software/fido), 
-and encoded in the [PRONOM](http://www.nationalarchives.gov.uk/PRONOM/Default.aspx) format.
-
-#### Representation
-
-The representation under which the concrete DAfile can be found has been described in an earlier paragraph. However, as stated there,
-it is not modelled as an own class. Instead, the representation is modelled as part of the DAFile class. At the moment DAFile instances
-are used during processing packages by the workflows of the ContentBroker. Therefore, DAFile is targeted at files which reside in the 
-[WorkArea](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md#workarea).
-
-#### Relative path
-
-The relative path of a file is always relative to the representation the file is contained in. A file
-
-    [WorkArea]/[csn]/[oid]/data/2014_10_01+12+12+a/subfolder/abc.tif
-    
-therefore has the relative path
-
-    subfolder/abc.tif
-
-![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_2.jpg)
-
 ### ConversionPolicy
 
 The Java [ConversionPolicy](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/ConversionPolicy.java) class.
+
+![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_2.jpg)
 
 A ConversionPolicy is a system wide property which describes which ConversionRoutine is to be executed by the system
 for every given file found in a SIP, either in the context of long term archival or in the context of publication.
