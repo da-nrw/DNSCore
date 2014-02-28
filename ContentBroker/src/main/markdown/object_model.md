@@ -188,6 +188,8 @@ gets generated based on the ConversionProperty. To see how the system operates i
 
 ### ConversionRoutine
 
+The Java [ConversionRoutine](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/ConversionRoutine.java) class.
+
 A ConversionRoutine describes, how exactly a conversion has to be executed. It is a global property of the system 
 and has to deliver reproducable outcomes on every node. A ConversionRoutine can consist of a block of JavaCode
 or can make use of Unix CLI programs to execute the actual conversion. The exact behaviour of a conversion routine
@@ -197,8 +199,6 @@ and optionally "target_suffix".
 See also how it is used in [context](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/format_module.md#how-it-works---a-simple-example).
 
 #### ConversionRoutine in the context of long term archival
-
-The Java [ConversionRoutine](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/ConversionRoutine.java) class.
 
 It is in the responsibility of a domain expert to ensure that a specific ConversionRoutine does what it does in 
 a quality assured and reproducible way, indepentently of the actual machine executing the conversion. The domain expert
