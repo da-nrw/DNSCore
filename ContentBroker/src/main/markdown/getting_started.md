@@ -115,7 +115,7 @@ and use it to create your database schema for the database contentbroker.
 <pre>
     ./install.sh [somewhere]/ContentBroker/
 </pre>
-1. As feature set, choose (n)ode
+1. As feature set, choose (n)ode (TODO: explain different modes)
 1. Download a fake glue [script](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/bash/ffmpeg.sh.fake) 
 that will ensure you don't have to install ffmpeg for now.
 1. Replace [somewhere]/ContentBroker/ffmpeg.sh by the ffmpeg.sh.fake file you downloaded
