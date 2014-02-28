@@ -172,7 +172,7 @@ therefore has the relative path
 
     subfolder/abc.tif
 
-![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_2.jpg)
+![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_2.jpg)
 
 ### ConversionPolicy
 
