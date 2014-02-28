@@ -90,7 +90,18 @@ the ConversionRoutine has to be connected to the nodes. this has to be done for 
 
 ## Adding a ConversionPolicy - Step by Step
 
-
+1. A domain expert has to make the decision that all files of a given format have to be converted automatically by the system during ingest.
+1. He has to identify all the pronom PUIDs which belong to the format.
+1. For **every** PUID he has to create one ConversionRoutine.
+1. The system admin has to create the database entries 
+<pre>
+    INSERT INTO conversion_policies (id,puid,conversion_routines_id,contractor_id)
+    id -> new id
+    puid -> the format identifier
+    conversion_routines_id -> the link to a existing ConversionRoutine
+    contractor_id -> dependet of wheter it is used to create conversions for archival or publication, the contractor_id has to be either
+    the one of DEFAULT or presenter.
+</pre>
 
 ## Special Cases
 
