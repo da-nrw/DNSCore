@@ -39,6 +39,7 @@ In most cases dropping the built war into your servlet container and having the
 undeploy former versions of daweb completely. Please keep in mind: without having the properties file in place, the webapp won't start 
 at all. 
 
+
 ### Prepare the database 
 
 Create at least one contractor with role admin:
