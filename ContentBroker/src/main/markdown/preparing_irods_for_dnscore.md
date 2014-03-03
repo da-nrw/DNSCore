@@ -53,7 +53,7 @@ The reasons why we have choosen iRODS as a storage layer framework were
 
 The version described here is community iRODS Version (3.X), you may consider also the e-iRODS Version. www.eirods.org but this not tested with DNSCore.
 
-Several hardware platforms are supported by iRODS "out-of-the-box", but having a standard "mount-point" (unix file system) is always a good start. Tape devices not being able to provide such, may be connected via MSS compound devices and need a special setup. 
+Several hardware platforms are supported by iRODS "out-of-the-box", but having a standard "mount-point" (unix file system) is always a good start. Tape devices not being able to provide such, may be connected via MSS compound devices and may need special configuration. 
 
 ## Setup iRODS
 
@@ -70,7 +70,7 @@ As iRODS Admin (of each zone being used) you have to be familiar as well with co
 Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zones" as well as the concept of 
 having one Zone with several resource servers. Please refer to the iRODS Documentation about this. DNSCore supports both operational modes. 
 
-Each Zone needs at least one database (so called ICAT Server). The usage of Postgres is encouraged here.  
+Each Zone needs at least one database (so called ICAT Server). The use of Postgres is encouraged here.  
 
 All iRODS Servers (as well in federated or in resource server mode) need at least to have two resources:
 
@@ -80,14 +80,14 @@ All iRODS Servers (as well in federated or in resource server mode) need at leas
 Please take a look at documentation at www.irods.org how to create iRODS resources. 
 
 The archive resource has to part of an named resource group. In case you're running the resource server mode, the 
-resource names are your repl_destinations names in config.properties. In case of forming a federation, zone_names are your repl_destinations. 
+resource names are your repl_destinations names in config.properties. In case of forming a federation, zone_names are listed in repl_destinations. 
 
 Please note the settings of your iRODS installation, as they're needed for config.properties of CB and DA-Web.
 
 ## Prerequisites
 
 1. running iRODS Server > 3.2 
-1. darnrw.re file Template: https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/danrw.re
+1. danrw.re file Template: https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/danrw.re
 
 
 ## Default Resource
@@ -95,17 +95,16 @@ Please note the settings of your iRODS installation, as they're needed for confi
 Alter "default resource" settings in core.re and in danrw.re for apropiate settings on your system as they might point
 to some dummy resources. 
 
-
 ## Adding and changing the RuleSet
 
 iRODS works with event based triggers being fired on certain actions. Additionally iRODS has the ability to automatically 
 perform some time based actions (performed by the RuleEngine of Master ICAT). To support event based rules needed by 
-DNSCore and to provide needed actions for the GridFacade, it is needed to add the RuleSet to the reConfig rule base, located at 
+DNSCore and to provide needed actions for the GridFacade, it is needed to add the RuleSet to reConfig rule base. The rule base config is located at:
 
     iRODS/server/config/server.config
   
 
-Please add the entry 
+Please add the entry on all connected servers by changing line 
 
     reRuleSet   danrw,core
 
@@ -114,8 +113,10 @@ And store the corresponding file danrw.re in:
 
     iRODS/server/config/reConfigs
 
-The file danrw.re must be changed to your local appropiate settings. Please refer carefully to the iRODS Documentation
-about needed change of other parameters, as wrong parameters could serverly harm your system! There is no test if a ruleBase is operating well, while this file being parsed on demand whenever actions being fired. In case of severe  
+The file danrw.re must be changed to your local appropiate settings. 
+
+Please refer carefully to the iRODS Documentation
+about needed change of other parameters, as wrong parameters could serverly harm your DNS system! There is no test if a ruleBase is operating well, while this file being parsed on demand whenever actions being fired. In case of severe  
 errors error, commands like 
 
     ils 
