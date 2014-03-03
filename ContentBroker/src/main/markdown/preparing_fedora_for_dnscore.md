@@ -72,16 +72,13 @@ and change adminEmailList and repositoryName depending to your needs.
      
     repositoryDomainName = danrw.de
     repositoryName = DA-NRW Presentation Repository
-     
-Im Modul org.fcrepo.server.resourceIndex.ResourceIndex den Paramter datastore auf localPostgresMPTTriplestore
-Ggf. die Datenbankeinstellungen (weiter unten in fedora.fcfg) im datastore localPostgresMPTTriplestore anpassen
-Tomcat neustarten. 
-Hinweise:
- Wenn Zugriff auf Fedora danach nicht möglich, muss idR das http-basic Login erneuert werden (Browser neu starten, oder in FF: Chronik->NeuesteChronikLöschen->AktiveLogins)
-Wenn Nach Umstellung auf "localPostgresMPTTriplestore" von localMulgaraTriplestore Fedora nicht startet, muss ggf. der ResourceIndex neu aufgebaut werden, zusätzlich kann es zu Problemen mit der Validation von db-Schemata kommen. Siehe hierzu: 
-http://comments.gmane.org/gmane.comp.cms.fedora-commons.user/6444
-Die genannte Datei existiert nicht mehr in fcrepo 3.7, stattdessen:
-fedora/server/config/fedora.fcfg line 147
+
+alter module 
+    
+    org.fcrepo.server.resourceIndex.ResourceIndex den Paramter datastore auf localPostgresMPTTriplestore
+
+to your database properties.
+
 <pre>
 <module role="org.fcrepo.server.security.Authorization" class="org.fcrepo.server.security.DefaultAuthorization">
 	<comment>Builds and manages Fedora's authorization structure.</comment>
@@ -97,10 +94,11 @@ fedora/server/config/fedora.fcfg line 147
 	<param name="REPOSITORY-POLICIES-DIRECTORY" value="data/fedora-xacml-policies/repository-policies" isFilePath="true"/>
   </module>
   </pre>
-Rebuild des ResourceIndex: 
+### Rebuild of ResourceIndex: 
 run as root: 
- export $FEDORA_WEBAPP_HOME=/var/lib/tomcat7/webapps/fedora
- fedora/server/bin/fedora-rebuild.sh
+    export $FEDORA_WEBAPP_HOME=/var/lib/tomcat7/webapps/fedora
+    fedora/server/bin/fedora-rebuild.sh
+
 
 /opt/tomcat/webapps/fedora/WEB-INF/applicationContext.xml öffnen
 Den Parameter fedoraServerHost ändern
@@ -114,21 +112,24 @@ Den Parameter fedoraServerHost ändern
 </bean>
 
 Tomcat neustarten
-Fedora kann jetzt unter folgenden URLs erreicht werden:
-Generelle Informationen: http://<servername>:8080/fedora
-Suchinterface: http://<servername>:8080/fedora/objects
-Admininterface: http://<servername>:8080/fedora/admin
-Policies
+
+### Policies
+
 Um den Zugriff auf Objekte zu verhindern, die nicht öffentlich zugänglich sein sollen, müssen die entsprechenden XACML-Policies wie folgt installiert werden:
 Default Bootstrap-Policies löschen (sonst werden diese bei jedem Neustart geladen)
 sudo rm -f /opt/fedora/pdp/policies/*
+
 DA-NRW Policies laden
 Skripte und Policy-Dateien aus dem bazaar-Repository laden
-bzr checkout sftp://[login]@repositories.hki.uni-koeln.de/repositories/bzr/danrw/Fedora/trunk
+
+    bzr checkout sftp://[login]@repositories.hki.uni-koeln.de/repositories/bzr/danrw/Fedora/trunk
+
 Die Policy-Objekte liegen unter trunk/policies und können mit dem Skript scripts/setup-policies.py geladen werden. Das Package python-httplib2 muss dazu installiert sein.
 Vor der Ausführung sollte die FedoraClient-URL in den Skriptdateien angepasst werden.
 Skript ausführen
-python scripts/setup-policies.py
+    
+    python scripts/setup-policies.py
+
 AttributeFinder anpassen
 Damit die Policy für die Beschränkung des Zugriffs auf nicht-öffentliche Objekte richtig funktioniert muss folgende Änderung in der Datei /opt/fedora/pdp/conf/config-attribute-finder.xml vorgenommen werden:
 Die Zeile
@@ -159,13 +160,15 @@ Datenbank und Datenbankuser proai mit Passwort proai anlegen
 adduser proai
 passwd proai
 psql -U postgres template1
-CREATE USER proai WITH PASSWORD 'proai';
+
 CREATE DATABASE proai;
 GRANT ALL PRIVILEGES ON DATABASE proai TO proai;
 
-Konfiguration
+### Konfiguration
 
 Objekt zur Identifikation der OAI-PMH-Schnittstelle in Fedora anlegen.
+
+<pre>
 python scripts/ingest.py -f config/danrw_PresentationRepository.xml
 Objekt zur Beschreibung des DDB-Sets in Fedora anlegen:
 python scripts/ingest.py -f config/set_ddb.xml
@@ -194,6 +197,8 @@ driver.fedora.md.format.ead.dissType = info:fedora/*/EAD
 driver.fedora.md.format.epicur.dissType = info:fedora/*/epicur.xml
 driver.fedora.mpt.jdbc.user = fedora
 driver.fedora.mpt.jdbc.password = Password des DB-Users für die Tabelle riTriples
+</pre>
+
 Die Datei mit den entsprechenden Einstellungen befindet sich auch im Bazaar-Repository unter Fedora/trunk/config/proai.properties
 Tomcat neustarten
 
