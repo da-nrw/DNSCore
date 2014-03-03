@@ -80,6 +80,7 @@ alter module
 to your database properties.
 
 <pre>
+
 <module role="org.fcrepo.server.security.Authorization" class="org.fcrepo.server.security.DefaultAuthorization">
 	<comment>Builds and manages Fedora's authorization structure.</comment>
 	<param name="REPOSITORY-POLICY-GUITOOL-POLICIES-DIRECTORY" value="data/fedora-xacml-policies/repository-policies-generated-by-policyguitool" isFilePath="true">
@@ -94,6 +95,7 @@ to your database properties.
 	<param name="REPOSITORY-POLICIES-DIRECTORY" value="data/fedora-xacml-policies/repository-policies" isFilePath="true"/>
   </module>
   </pre>
+  
 ### Rebuild of ResourceIndex: 
 run as root: 
     export $FEDORA_WEBAPP_HOME=/var/lib/tomcat7/webapps/fedora
