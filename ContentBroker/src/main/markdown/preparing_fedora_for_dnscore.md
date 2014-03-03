@@ -25,69 +25,54 @@ the configuration needed in order to let DNSCore work with it.
 (To be translated and formatted)
 
 ## Presentation Repository
-Das Presentation Repository des DA-NRW zur Bereitstellung der konvertierten browserfähigen Objekte und zum Abruf durch Portale läuft nur an einem Knoten des Grids und zwar an der Universität zu Köln. Momentan wird als Repository-Software Fedora 3.5 eingesetzt.
 
-Im folgenden wird davon ausgegangen dass die Installationspfade wie folgt lauten (diese müssen beim Abarbeiten der Dokumentation ggf. entsprechend angepasst werden):
-Fedora: /opt/fedora
-Tomcat: /opt/tomcat
+The so called "Presentation Repository" stores derivates (proxies) of your AIP. Although in OAIS terms, they are DIP too, in DNSCore they are called PIP (Presentation IP). The stored files to be considered to be browser readable. The presenation repository. DNSCore uses Fedora Commons 3.5 
 
-Im Source-Code-Repository befindet sich ein Projekt mit Skripten und Config-Dateien zu Fedora. Die aktuelle Adresse ist 
-sftp://[login]@repositories.hki.uni-koeln.de/repositories/bzr/danrw/Fedora/trunk
-Fedora
-Installation
-Tomcat und PostgreSQL müssen installiert sein
-Fedora 3.5 läuft sowohl unter Tomcat 6, als auch unter Tomcat 7. Da folgende Versionen von Fedora Tomcat 7 benötigen wird dieser jedoch empfohlen.
-User 'fedora' und Datenbank ‘fedora’ in PostgreSQL anlegen
-adduser fedora
-passwd fedora
-psql -U postgres template1
-CREATE USER fedora WITH PASSWORD 's3cr3t';
-CREATE DATABASE fedora;
-GRANT ALL PRIVILEGES ON DATABASE fedora TO fedora;
-Datenbank "riTriples" für den Resource Index in PostgreSQL anlegen (Achtung: casesensitive name -> quotes verwenden!)
-CREATE DATABASE "riTriples";
-GRANT ALL PRIVILEGES ON DATABASE "riTriples" TO fedora;
-Fedora Installer in der Version 3.5 downloaden:
-wget http://downloads.sourceforge.net/fedora-commons/fcrepo-installer-3.5.jar
-Installer ausführen:
-sudo java -jar fcrepo-installer-3.5.jar
+### Prerequsites 
 
-Während der Installation folgende Optionen wählen:
-Installation type: custom
-Fedora home directory: Pfad in dem Fedora installiert werden soll,
-z.B.: /opt/fedora
-Fedora administrator password: Passwort
-Fedora server host: DNS-Name des Presentation Repository Servers
-Fedora application server context: fedora
-Authentication requirement for API-A: false
-SSL availability: false
-Servlet engine: existingTomcat
-Tomcat home directory: Pfad zu Tomcat (z.B. /opt/tomcat)
-Tomcat HTTP port: 8080
-Tomcat shutdown port: 8005
-Database: postgresql
-Postgresql JDBC driver: included
-Database username: fedora
-Database password: In Schritt 2 gewähltes Passwort
-JDBC URL: jdbc:postgresql://localhost/fedora
-JDBC DriverClass: org.postgresql.Driver
-Enable FeSL AuthN: true
-Enable FeSL AuthZ: true
-Policy enforcement enabled: true
-Low Level Storage: akubra-fs
-Enable Resource Index: true
-Enable Messaging: false
-Deploy local services and demos: false
+1. tomcat 
+2. Postgres
 
-Die Datei fedora.fcfg mit den entsprechenden Einstellungen befindet sich auch im Repository unter Fedora/trunk/config/fedora.fcfg
+### Installation of Fedora Commons for DNSCore
 
-Ggf. die vom Installer erstellte server.xml in den Tomcat-Ordner conf kopieren
-Eventuell müssen die Berechtigungen so angepasst werden, dass der User, unter dem Tomcat läuft, Schreibzugriff auf den Home-Ordner von Fedora hat
-/opt/fedora/server/config/fedora.fcfg öffnen
-Ggf. adminEmailList und repositoryName anpassen
-Im Modul org.fcrepo.oai.OAIProvider ggf. adminEmails setzen, außerdem:
-repositoryDomainName = danrw.de
-repositoryName = DA-NRW Presentation Repository
+Fedora commons 3.5 Setup:
+
+Create Database and user for fedora.
+
+    sudo java -jar fcrepo-installer-3.5.jar
+    
+### Installation of Resource Index
+
+    Installation type: custom
+    Authentication requirement for API-A: false
+    SSL availability: false
+    Servlet engine: existingTomcat
+    Tomcat home directory
+    Tomcat HTTP port: 8080
+    Tomcat shutdown port: 8005
+    Database: postgresql
+    Postgresql JDBC driver: included
+    Database username: fedora
+    JDBC URL: jdbc:postgresql://localhost/fedora
+    JDBC DriverClass: org.postgresql.Driver
+    Enable FeSL AuthN: true
+    Enable FeSL AuthZ: true
+    Policy enforcement enabled: true
+    Low Level Storage: akubra-fs
+    Enable Resource Index: true
+    Enable Messaging: false
+    Deploy local services and demos: false
+
+Ensure tomcat owner can access the Fedora home dir.
+
+Open 
+    /opt/fedora/server/config/fedora.fcfg öffnen
+
+and change adminEmailList and repositoryName depending to your needs.
+     
+    repositoryDomainName = danrw.de
+    repositoryName = DA-NRW Presentation Repository
+     
 Im Modul org.fcrepo.server.resourceIndex.ResourceIndex den Paramter datastore auf localPostgresMPTTriplestore
 Ggf. die Datenbankeinstellungen (weiter unten in fedora.fcfg) im datastore localPostgresMPTTriplestore anpassen
 Tomcat neustarten. 
