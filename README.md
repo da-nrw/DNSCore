@@ -8,6 +8,8 @@ distributed, self-validating repository, allowing depositors a high degree of co
 the methods applied to individual objects submitted for preservation and
 distribution.
 
+More information is provided in the wiki https://github.com/da-nrw/DNSCore/wiki
+
 ### Feature list
 
 As a result of various research programs in the recent years there are some 
