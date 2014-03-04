@@ -41,7 +41,7 @@ Create Database and user for fedora.
 
     sudo java -jar fcrepo-installer-3.5.jar
     
-### Installation of Resource Index
+### Installation
 
     Installation type: custom
     Authentication requirement for API-A: false
