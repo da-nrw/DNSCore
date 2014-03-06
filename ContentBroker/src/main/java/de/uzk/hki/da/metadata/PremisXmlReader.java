@@ -321,7 +321,7 @@ public class PremisXmlReader implements XmlReader{
 					
 					if (outcomeFile.equals(f.getRep_name() + "/" + f.getRelative_path())) {
 						event.setTarget_file(f);
-						if (event.getSource_file() != null || eventType.toUpperCase().equals("CREATE")) {
+						if (eventType.toUpperCase().equals("CREATE") || event.getSource_file() != null) {
 							pkg.getEvents().add(event);
 							eventAdded = true;
 							break;
