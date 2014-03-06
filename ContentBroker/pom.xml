@@ -101,7 +101,7 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.9.1</version>
 				<configuration>
-					<reportOutputDirectory>/data/danrw/www/javadoc</reportOutputDirectory>
+					<reportOutputDirectory>${project.reporting.outputDirectory}/staging/apidocs</reportOutputDirectory>
 					<bottom>DA-NRW Software Suite | ContentBroker Copyright (C) 2011-2014
 						Historisch-Kulturwissenschaftliche Informationsverarbeitung Universitaet zu
 						Koeln</bottom>
@@ -109,7 +109,20 @@
 					<destDir>/</destDir>
 				</configuration>
 			</plugin>
-
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-publish-plugin</artifactId>
+				<version>1.0</version>
+				<configuration>
+					<checkoutDirectory>${project.build.directory}/scmpublish</checkoutDirectory>
+					<checkinComment>Publishing javadoc for ${project.artifactId}:${project.version}</checkinComment>
+					<content>${project.reporting.outputDirectory}/staging</content>
+					<skipDeletedFiles>true</skipDeletedFiles>
+					<pubScmUrl>scm:git:git@github.com:da-nrw/DNSCore.git</pubScmUrl>
+					<scmBranch>gh-pages</scmBranch>
+				</configuration>
+			</plugin>
 
 			<plugin>
 				<artifactId>maven-failsafe-plugin</artifactId>
