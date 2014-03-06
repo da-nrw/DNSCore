@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<properties>
@@ -7,35 +8,34 @@
 		<scp.host2>da-nrw-vm2.hki.uni-koeln.de</scp.host2>
 		<scp.toDir>/data/danrw/iRODS/server/bin</scp.toDir>
 		<maven.test.search.classdir>true</maven.test.search.classdir>
-    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>	
-    	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    	<include.tests>**/*DDDCDDSD*.java</include.tests>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<include.tests>**/*DDDCDDSD*.java</include.tests>
 	</properties>
-	
 
 	<profiles>
-  		<profile>
-    		<id>dev</id>
-    		<properties>
-	      		<env>dev</env>
-	    	</properties>
-    		<activation>
-    		<activeByDefault>true</activeByDefault> 
-    		</activation>
-  		</profile>
-  		<profile>
-    		<id>vm3</id>
-	    	<properties>
-	      		<env>vm3</env>
-	      		<include.tests>**/*CT*.java</include.tests>
-	    	</properties>
-  		</profile>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<env>dev</env>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>vm3</id>
+			<properties>
+				<env>vm3</env>
+				<include.tests>**/*CT*.java</include.tests>
+			</properties>
+		</profile>
 	</profiles>
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.uzk.hki.da</groupId>
 	<artifactId>ContentBroker</artifactId>
-	<version>SNAPSHOT</version><!-- DONT EDIT, EXACTLY THIS ENTRY NEEDED BY DEPLOY SCRIPTS -->
+	<version>SNAPSHOT</version> <!-- DONT EDIT, EXACTLY THIS ENTRY NEEDED BY DEPLOY SCRIPTS -->
 	<packaging>jar</packaging>
 	<name>DA-NRW Content Broker</name>
 
@@ -95,19 +95,22 @@
 
 	<build>
 		<plugins>
-		<plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.9.1</version>
-        <configuration>
-        <reportOutputDirectory>/data/danrw/www/javadoc</reportOutputDirectory>
-        <bottom>DA-NRW Software Suite | ContentBroker Copyright (C) 2011-2014 Historisch-Kulturwissenschaftliche Informationsverarbeitung Universitaet zu Koeln</bottom>
-         <quiet>true</quiet>
-         <destDir>/</destDir>
-        </configuration>
-      </plugin>
-     
-      
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<configuration>
+					<reportOutputDirectory>/data/danrw/www/javadoc</reportOutputDirectory>
+					<bottom>DA-NRW Software Suite | ContentBroker Copyright (C) 2011-2014
+						Historisch-Kulturwissenschaftliche Informationsverarbeitung Universitaet zu
+						Koeln</bottom>
+					<quiet>true</quiet>
+					<destDir>/</destDir>
+				</configuration>
+			</plugin>
+
+
 			<plugin>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.6</version>
@@ -120,10 +123,10 @@
 					</execution>
 				</executions>
 				<configuration>
-          			<includes>
-            			<include>**/AT**.java</include>
-          			</includes>
-        		</configuration>
+					<includes>
+						<include>**/AT**.java</include>
+					</includes>
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -135,11 +138,9 @@
 						<include>%regex[.*Simple.*Suite.*]</include>
 						<include>${include.tests}</include>
 					</includes>
-	    			<argLine>-Dfile.encoding=UTF-8</argLine> 
+					<argLine>-Dfile.encoding=UTF-8</argLine>
 				</configuration>
-				
 			</plugin>
-
 
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -151,151 +152,148 @@
 			</plugin>
 
 			<plugin>
-  			<groupId>org.apache.maven.plugins</groupId>
-			  <artifactId>maven-shade-plugin</artifactId>
-			  <version>1.6</version>
-			   <executions>
-			    <execution>
-			      <phase>package</phase>
-			      <goals>
-			        <goal>shade</goal>
-			      </goals>
-			      <configuration>
-			        <transformers>
-			          <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                <mainClass>de.uzk.hki.da.core.ContentBroker</mainClass>
-                            </transformer>
-			          <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-			            <resource>META-INF/spring.handlers</resource>
-			          </transformer>
-			          <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-			            <resource>META-INF/spring.schemas</resource>
-			          </transformer>
-			          
-			        </transformers>
-			        <filters>
-        <filter>
-            <artifact>*:*</artifact>
-            <excludes>
-                <exclude>META-INF/*.SF</exclude>
-                <exclude>META-INF/*.DSA</exclude>
-                <exclude>META-INF/*.RSA</exclude>
-            </excludes>
-        </filter>
-    </filters>
-			      </configuration>
-			    </execution>
-			  </executions>
-	</plugin>
-	
-	 <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.7</version>
-        <executions>
-	   	<execution>
-        <id>validation</id>
-            <phase>validate</phase>
-            <configuration>
-              <tasks>
-                <exec
-                  dir="${basedir}"
-                  executable="${basedir}/src/main/bash/validate.sh"
-                  failonerror="true">
-                  <arg line="${env}" />
-                </exec>
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        <execution>
-        <id>cleanup</id>
-            <phase>clean</phase>
-            <configuration>
-              <tasks>
-                <exec
-                  dir="${basedir}"
-                  executable="${basedir}/src/main/bash/clean.sh"
-                  failonerror="true">
-                  <arg line="" />
-                </exec>
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-          <execution>
-          <id>packageit</id>
-            <phase>package</phase>
-            <configuration>
-              <tasks>
-                <exec
-                  dir="${basedir}"
-                  executable="${basedir}/src/main/bash/package.sh"
-                  failonerror="true">
-                  <arg line="${env} ${appHome}" />
-                </exec>
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-          <execution>
-          <id>installit</id>
-            <phase>pre-integration-test</phase>
-            <configuration>
-              <tasks>
-                <exec
-                  dir="${basedir}"
-                  executable="${basedir}/src/main/bash/pre-integration-test.sh"
-                  failonerror="true">
-                  <arg line="${env} ${appHome}" />
-                </exec>
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-          <execution>
-          <id>after</id>
-            <phase>post-integration-test</phase>
-            <configuration>
-              <tasks>
-                <exec
-                  dir="${basedir}"
-                  executable="${basedir}/src/main/bash/post-integration-test.sh"
-                  failonerror="true">
-                  <arg line="" />
-                </exec>
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-          <execution>
-          <id>deploy-it</id>
-            <phase>deploy</phase>
-            <configuration>
-              <tasks>
-                <exec
-                  dir="${basedir}"
-                  executable="${basedir}/src/main/bash/deploy.sh"
-                  failonerror="true">
-                  <arg line="" />
-                </exec>
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>de.uzk.hki.da.core.ContentBroker</mainClass>
+								</transformer>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+									<resource>META-INF/spring.handlers</resource>
+								</transformer>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+									<resource>META-INF/spring.schemas</resource>
+								</transformer>
+
+							</transformers>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+									</excludes>
+								</filter>
+							</filters>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>validation</id>
+						<phase>validate</phase>
+						<configuration>
+							<tasks>
+								<exec dir="${basedir}"
+									executable="${basedir}/src/main/bash/validate.sh"
+									failonerror="true">
+									<arg line="${env}"/>
+								</exec>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>cleanup</id>
+						<phase>clean</phase>
+						<configuration>
+							<tasks>
+								<exec dir="${basedir}"
+									executable="${basedir}/src/main/bash/clean.sh"
+									failonerror="true">
+									<arg line=""/>
+								</exec>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>packageit</id>
+						<phase>package</phase>
+						<configuration>
+							<tasks>
+								<exec dir="${basedir}"
+									executable="${basedir}/src/main/bash/package.sh"
+									failonerror="true">
+									<arg line="${env} ${appHome}"/>
+								</exec>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>installit</id>
+						<phase>pre-integration-test</phase>
+						<configuration>
+							<tasks>
+								<exec dir="${basedir}"
+									executable="${basedir}/src/main/bash/pre-integration-test.sh"
+									failonerror="true">
+									<arg line="${env} ${appHome}"/>
+								</exec>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>after</id>
+						<phase>post-integration-test</phase>
+						<configuration>
+							<tasks>
+								<exec dir="${basedir}"
+									executable="${basedir}/src/main/bash/post-integration-test.sh"
+									failonerror="true">
+									<arg line=""/>
+								</exec>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>deploy-it</id>
+						<phase>deploy</phase>
+						<configuration>
+							<tasks>
+								<exec dir="${basedir}"
+									executable="${basedir}/src/main/bash/deploy.sh"
+									failonerror="true">
+									<arg line=""/>
+								</exec>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
 		</plugins>
 
@@ -312,60 +310,42 @@
 							<pluginExecutions>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>
-											org.codehaus.gmaven
-										</groupId>
-										<artifactId>
-											gmaven-plugin
-										</artifactId>
-										<versionRange>
-											[1.4,)
-										</versionRange>
+										<groupId> org.codehaus.gmaven </groupId>
+										<artifactId> gmaven-plugin </artifactId>
+										<versionRange> [1.4,) </versionRange>
 										<goals>
 											<goal>generateTestStubs</goal>
 											<goal>testCompile</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<execute />
+										<execute/>
 									</action>
 								</pluginExecution>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>
-											org.codehaus.mojo
-										</groupId>
-										<artifactId>
-											exec-maven-plugin
-										</artifactId>
-										<versionRange>
-											[1.2.1,)
-										</versionRange>
+										<groupId> org.codehaus.mojo </groupId>
+										<artifactId> exec-maven-plugin </artifactId>
+										<versionRange> [1.2.1,) </versionRange>
 										<goals>
 											<goal>run</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>
-											org.apache.maven.plugins
-										</groupId>
-										<artifactId>
-											maven-antrun-plugin
-										</artifactId>
-										<versionRange>
-											[1.7,)
-										</versionRange>
+										<groupId> org.apache.maven.plugins </groupId>
+										<artifactId> maven-antrun-plugin </artifactId>
+										<versionRange> [1.7,) </versionRange>
 										<goals>
 											<goal>run</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -393,10 +373,10 @@
 			<version>1.1</version>
 		</dependency>
 		<dependency>
-        <groupId>commons-collections</groupId>
-        <artifactId>commons-collections</artifactId>
-        <version>3.2.1</version>
-      </dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
+		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
@@ -424,9 +404,9 @@
 			<version>1.0.3</version>
 		</dependency>
 		<dependency>
-  			<groupId>org.apache.commons</groupId>
-  			<artifactId>commons-compress</artifactId>
-  			<version>1.4</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -435,7 +415,7 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-		<groupId>commons-lang</groupId>
+			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.3</version>
 		</dependency>
@@ -492,10 +472,10 @@
 			<version>4.0.0.RELEASE</version>
 		</dependency>
 		<dependency>
-		 	<groupId>org.mockito</groupId>
-		  	<artifactId>mockito-all</artifactId>
-		  	<version>1.9.0</version>
-		  	<scope>test</scope>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.0</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -560,9 +540,9 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-		    <groupId>org.elasticsearch</groupId>
-		    <artifactId>elasticsearch</artifactId>
-		    <version>0.90.3</version>
+			<groupId>org.elasticsearch</groupId>
+			<artifactId>elasticsearch</artifactId>
+			<version>0.90.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -570,40 +550,40 @@
 			<version>4.2.5</version>
 		</dependency>
 		<dependency>
-		    <groupId>com.github.jsonld-java</groupId>
-		    <artifactId>jsonld-java</artifactId>
-		    <version>0.2</version>
+			<groupId>com.github.jsonld-java</groupId>
+			<artifactId>jsonld-java</artifactId>
+			<version>0.2</version>
 		</dependency>
 		<dependency>
-		    <groupId>com.github.jsonld-java</groupId>
-		    <artifactId>jsonld-java-jena</artifactId>
-		    <version>0.2</version>
+			<groupId>com.github.jsonld-java</groupId>
+			<artifactId>jsonld-java-jena</artifactId>
+			<version>0.2</version>
 		</dependency>
 		<dependency>
-       		<groupId>org.easytesting</groupId>
-      		<artifactId>fest-assert</artifactId>
-      		<version>1.4</version>
-    	</dependency>
-        <dependency>
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-assert</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>
 			<version>1.8.2</version>
 		</dependency>
-		 <dependency>
+		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-all</artifactId>
 			<version>5.8.0</version>
 		</dependency>
-<dependency>
-	<groupId>org.apache.xbean</groupId>
-	<artifactId>xbean-spring</artifactId>
-	<version>3.16</version>
-</dependency>
 		<dependency>
-	<groupId>org.apache.pdfbox</groupId>
-	<artifactId>preflight</artifactId>
-	<version>1.8.2</version>
-</dependency>              
+			<groupId>org.apache.xbean</groupId>
+			<artifactId>xbean-spring</artifactId>
+			<version>3.16</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>preflight</artifactId>
+			<version>1.8.2</version>
+		</dependency>
 	</dependencies>
 
 </project>
