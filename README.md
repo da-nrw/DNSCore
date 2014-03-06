@@ -9,6 +9,7 @@ the methods applied to individual objects submitted for preservation and
 distribution.
 
 For Documentation see:
+
 * the [wiki](https://github.com/da-nrw/DNSCore/wiki)
 * the [Java API documentation](http://da-nrw.github.io/DNSCore/apidocs/)
 
