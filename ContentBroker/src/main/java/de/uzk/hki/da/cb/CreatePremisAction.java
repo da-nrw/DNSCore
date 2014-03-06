@@ -221,7 +221,7 @@ public class CreatePremisAction extends AbstractAction {
 	/**
 	 * @author Thomas Kleinke
 	 * @param object
-	 * @throws RuntimeException if rep b files without corresponding convert events exist 
+	 * @throws RuntimeException if rep b files without corresponding CONVERT/COPY/CREATE events exist 
 	 */
 	private void checkConvertEvents(Object object) {
 		
@@ -230,7 +230,7 @@ public class CreatePremisAction extends AbstractAction {
 				if (f.getRep_name().endsWith("b")) {
 					boolean eventExists = false;
 					for (Event e : pkg.getEvents()) {
-						if (e.getType().equals("CONVERT") || e.getType().equals("COPY")
+						if (e.getType().equals("CONVERT") || e.getType().equals("COPY") || e.getType().equals("CREATE")
 								&& e.getTarget_file() != null
 								&& e.getTarget_file().getRelative_path().equals(f.getRelative_path())) {
 							eventExists = true;

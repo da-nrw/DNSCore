@@ -285,8 +285,9 @@ public class UpdateMetadataAction extends AbstractAction {
 			logger.debug("collecting files in path: {}", repPath);
 			
 			XmpCollector.collect(repDir, new File(repPath + "/XMP.rdf"));
-			object.getLatestPackage().getFiles().add(
-					new DAFile(object.getLatestPackage(),repName,"XMP.rdf"));
+			DAFile xmpFile = new DAFile(object.getLatestPackage(),repName,"XMP.rdf");
+			object.getLatestPackage().getFiles().add(xmpFile);
+			object.getLatestPackage().getEvents().add(createCreateEvent(xmpFile));			
 		}
 	}
 	
@@ -313,6 +314,17 @@ public class UpdateMetadataAction extends AbstractAction {
 		e.setTarget_file(sidecarTargetFile);
 		e.setSource_file(sidecarSourceFile);
 		e.setType("COPY");
+		e.setDate(new Date());
+		e.setAgent_type("NODE");
+		e.setAgent_name(object.getTransientNodeRef().getName());
+		return e;
+	}
+	
+	private Event createCreateEvent(DAFile targetFile) {
+		
+		Event e = new Event();
+		e.setTarget_file(targetFile);
+		e.setType("CREATE");
 		e.setDate(new Date());
 		e.setAgent_type("NODE");
 		e.setAgent_name(object.getTransientNodeRef().getName());
