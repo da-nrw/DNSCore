@@ -335,7 +335,7 @@ public class PremisXmlWriter {
 		createTextElement("linkingAgentIdentifierValue", a.getName(), 3);
 		createCloseElement(2);
 		
-		if (e.getSource_file() != null) {
+		if (e.getType().equals("CONVERT") || e.getType().equals("COPY")) {
 			createOpenElement("linkingObjectIdentifier", 2);
 			createTextElement("linkingObjectIdentifierType", "FILE_PATH", 3);
 			createTextElement("linkingObjectIdentifierValue", e.getSource_file().getRep_name() + "/" + e.getSource_file().getRelative_path(), 3);
