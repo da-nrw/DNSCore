@@ -40,7 +40,7 @@ a single entry which resembles the filename of the container without the extensi
 Inside this first level entry you will find exactly five entries. Four of them
 are text files which are required by BagIt and then you have one data folder.
 Inside the data folder there must be at least one file which is the premis.xml.
-The premis.xml, which adheres to a standard described (elsewhere TODO) contains
+The premis.xml, which adheres to a standard described [here](http://www.loc.gov/standards/premis/v2/premis-2-2.pdf) contains
 some object specific rights settings which will control the publication settings
 for the object. In addition to the premis.xml the user is free to put any data
 of any formats and in any structure (hierarchical ordering in folders) into the 
