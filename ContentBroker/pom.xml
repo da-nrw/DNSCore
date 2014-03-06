@@ -109,20 +109,6 @@
 					<destDir>/</destDir>
 				</configuration>
 			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-scm-publish-plugin</artifactId>
-				<version>1.0</version>
-				<configuration>
-					<checkoutDirectory>${project.build.directory}/scmpublish</checkoutDirectory>
-					<checkinComment>Publishing javadoc for ${project.artifactId}:${project.version}</checkinComment>
-					<content>${project.reporting.outputDirectory}/staging</content>
-					<skipDeletedFiles>true</skipDeletedFiles>
-					<pubScmUrl>scm:git:git@github.com:da-nrw/DNSCore.git</pubScmUrl>
-					<scmBranch>gh-pages</scmBranch>
-				</configuration>
-			</plugin>
 
 			<plugin>
 				<artifactId>maven-failsafe-plugin</artifactId>
