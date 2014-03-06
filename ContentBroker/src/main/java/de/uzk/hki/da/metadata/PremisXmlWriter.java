@@ -164,7 +164,8 @@ public class PremisXmlWriter {
 		for (Package pkg : object.getPackages())
 		  for (Event e : pkg.getEvents()){
 			if (e.getType().toUpperCase().equals("CONVERT")
-					|| e.getType().toUpperCase().equals("COPY")){
+					|| e.getType().toUpperCase().equals("COPY")
+					|| e.getType().toUpperCase().equals("CREATE")){
 				logger.debug("Serializing convert event: "+e);
 				createConvertEventElement(e);
 			}else{
@@ -334,11 +335,13 @@ public class PremisXmlWriter {
 		createTextElement("linkingAgentIdentifierValue", a.getName(), 3);
 		createCloseElement(2);
 		
-		createOpenElement("linkingObjectIdentifier", 2);
-		createTextElement("linkingObjectIdentifierType", "FILE_PATH", 3);
-		createTextElement("linkingObjectIdentifierValue", e.getSource_file().getRep_name() + "/" + e.getSource_file().getRelative_path(), 3);
-		createTextElement("linkingObjectRole", "source", 3);
-		createCloseElement(2);
+		if (e.getSource_file() != null) {
+			createOpenElement("linkingObjectIdentifier", 2);
+			createTextElement("linkingObjectIdentifierType", "FILE_PATH", 3);
+			createTextElement("linkingObjectIdentifierValue", e.getSource_file().getRep_name() + "/" + e.getSource_file().getRelative_path(), 3);
+			createTextElement("linkingObjectRole", "source", 3);
+			createCloseElement(2);
+		}
 		
 		createOpenElement("linkingObjectIdentifier", 2);
 		createTextElement("linkingObjectIdentifierType", "FILE_PATH", 3);

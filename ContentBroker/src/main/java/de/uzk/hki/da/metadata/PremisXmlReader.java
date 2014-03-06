@@ -298,7 +298,8 @@ public class PremisXmlReader implements XmlReader{
 		
 		boolean eventAdded = false;		
 		if (eventType.toUpperCase().equals("CONVERT")
-				|| eventType.toUpperCase().equals("COPY")) {
+				|| eventType.toUpperCase().equals("COPY")
+				|| eventType.toUpperCase().equals("CREATE")) {
 			for (Package pkg : object.getPackages()) {
 				for (DAFile f : pkg.getFiles()) {
 					if (sourceFile.equals("") && outcomeFile.equals("")
@@ -320,7 +321,7 @@ public class PremisXmlReader implements XmlReader{
 					
 					if (outcomeFile.equals(f.getRep_name() + "/" + f.getRelative_path())) {
 						event.setTarget_file(f);
-						if (event.getSource_file() != null) {
+						if (event.getSource_file() != null || eventType.toUpperCase().equals("CREATE")) {
 							pkg.getEvents().add(event);
 							eventAdded = true;
 							break;
