@@ -18,6 +18,6 @@
 */
 
 /**
- * Service classes encapsulating reusable business logic.
+ * Interface and implementations for accessing the presentation repository.
  */
 package de.uzk.hki.da.repository;
