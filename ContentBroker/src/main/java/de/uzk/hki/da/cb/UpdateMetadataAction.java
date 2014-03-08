@@ -24,9 +24,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -263,15 +265,24 @@ public class UpdateMetadataAction extends AbstractAction {
 				logger.info("representation directory {} does not exist. Skipping ...", repPath);
 				continue;
 			}
-			for (DAFile sidecarSourceFile : object.getNewestFilesFromAllRepresentations("xmp")) {
-				if (!sidecarSourceFile.getRelative_path().toLowerCase().endsWith(".xmp")
-						|| Arrays.asList(repNames).contains(sidecarSourceFile.getRep_name())) continue;
+			
+			List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations("xmp");
+			List<DAFile> newestXmpFiles = new ArrayList<DAFile>();
+			for (DAFile dafile : newestFiles) {
+				if (dafile.getRelative_path().toLowerCase().endsWith(".xmp"))
+					newestXmpFiles.add(dafile);
+			}
+			
+			for (DAFile sidecarSourceFile : newestXmpFiles) {
+				if (Arrays.asList(repNames).contains(sidecarSourceFile.getRep_name())) continue;
 				logger.debug("Found xmp sidecar: {}", sidecarSourceFile);
 
-				String xmpTargetPath = determineTargetRelativePathWithoutExtension(sidecarSourceFile) + ".xmp"; 
+				String xmpTargetPath = determineTargetRelativePathWithoutExtension(sidecarSourceFile); 
 				
 				if (xmpTargetPath.equals(""))					
 					continue;
+				
+				 xmpTargetPath += ".xmp";
 				
 				DAFile sidecarTargetFile = new DAFile(object.getLatestPackage(), repName, xmpTargetPath);
 				logger.debug("Copying {} to {}", sidecarSourceFile, sidecarTargetFile.toString());
@@ -284,7 +295,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			}
 			logger.debug("collecting files in path: {}", repPath);
 			
-			XmpCollector.collect(repDir, new File(repPath + "/XMP.rdf"));
+			XmpCollector.collect(newestXmpFiles, new File(repPath + "/XMP.rdf"));
 			DAFile xmpFile = new DAFile(object.getLatestPackage(),repName,"XMP.rdf");
 			object.getLatestPackage().getFiles().add(xmpFile);
 			object.getLatestPackage().getEvents().add(createCreateEvent(xmpFile));			
