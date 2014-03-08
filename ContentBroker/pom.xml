@@ -30,6 +30,12 @@
 				<include.tests>**/*CT*.java</include.tests>
 			</properties>
 		</profile>
+			<profile>
+			<id>ci</id>
+			<properties>
+				<env>ci</env>
+			</properties>
+		</profile>
 	</profiles>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -38,18 +44,7 @@
 	<version>SNAPSHOT</version> <!-- DONT EDIT, EXACTLY THIS ENTRY NEEDED BY DEPLOY SCRIPTS -->
 	<packaging>jar</packaging>
 	<name>DA-NRW Content Broker</name>
-
-	<distributionManagement>
-		<downloadUrl>http://repositories.hki.uni-koeln.de/mvn/</downloadUrl>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>da-nrw-maven-repo</id>
-			<name>DA-NRW Maven Repository</name>
-			<url>scp://repositories.hki.uni-koeln.de/repositories/mvn/</url>
-			<layout>default</layout>
-		</repository>
-	</distributionManagement>
-
+	
 	<repositories>
 		<repository>
 			<id>da-nrw-maven-repo</id>
