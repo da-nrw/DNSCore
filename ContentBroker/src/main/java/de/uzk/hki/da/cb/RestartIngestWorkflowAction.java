@@ -31,8 +31,15 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 		deleteJhoveTempData();		
 		
 		Package pkg = object.getLatestPackage();
+		
 		pkg.getEvents().clear();
 		pkg.getFiles().clear();
+		
+		String[] repNames = new File(object.getDataPath()).list();
+		for (String repName : repNames) {
+			if (new File(repName).isDirectory())
+				pkg.scanRepRecursively(repName);
+		}
 		
 		job.getConversion_instructions().clear();
 				
