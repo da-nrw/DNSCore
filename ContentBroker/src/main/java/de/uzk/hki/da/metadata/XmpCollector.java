@@ -30,6 +30,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,10 +86,10 @@ public class XmpCollector {
 				throw new RuntimeException("Unable to preprocess XMP file: " + file.getAbsolutePath(), e);
 			}
 			
-			final String baseName = file.getName().substring(0, file.getName().length()-3);
+			final String baseName = FilenameUtils.removeExtension(file.getName());
 			String[] list = file.getParentFile().list(new FilenameFilter() {
 				public boolean accept(File dir, String name) {
-					String baseName2 = name.substring(0, name.length()-3);
+					String baseName2 = FilenameUtils.removeExtension(name);
 					if (baseName.equals(baseName2) && !name.toLowerCase().endsWith(".xmp")) return true;
 					else return false;
 				}
