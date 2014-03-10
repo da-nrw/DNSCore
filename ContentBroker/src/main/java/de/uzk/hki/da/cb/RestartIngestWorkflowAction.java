@@ -8,6 +8,7 @@ import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.convert.JhoveScanService;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.Utilities;
 
 /**
  * 
@@ -37,7 +38,7 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 		
 		String[] repNames = new File(object.getDataPath()).list();
 		for (String repName : repNames) {
-			if (new File(repName).isDirectory())
+			if (new File(Utilities.slashize(object.getDataPath()) + repName).isDirectory())
 				pkg.scanRepRecursively(repName);
 		}
 		
