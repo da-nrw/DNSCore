@@ -128,11 +128,9 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 	 */
 	@Override
 	public boolean storagePolicyAchieved(String gridPath, StoragePolicy sp) {
-		
-		// factor out string
-		gridPath = "/da-nrw"+gridPath;
-		int minNodes = sp.getMinNodes();
 		irodsSystemConnector.connect();
+		gridPath = "/" + irodsSystemConnector.getZone()  + gridPath;
+		int minNodes = sp.getMinNodes();
 		try {
 			logger.debug("checking StoragePolicy achieved for " + gridPath); 
 			List<String> targetResgroups = Arrays.asList(localNode.getReplDestinations().split(","));
