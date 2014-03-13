@@ -1,6 +1,6 @@
 # Metadata workflow in DNSCore
 
-Descriptive metadata providing centextual information about the archived objects plays an important role in different stages of the DNS workflow. First a set of metadata is stored with every AIP in order to ensure that the preserved objects contain machine-readable information about the archived data in order to be able to be able to process and understand retrieved objects. Furthermore this metadata is stored in the PIPs and used to facilitate access to published objects in the presentation layer.
+Descriptive metadata providing centextual information about the archived objects plays an important role in different stages of the DNS workflow. On one hand a set of metadata is stored with every AIP in order to ensure that the preserved objects contain machine-readable information about the archived data in order to be able to be able to process and understand retrieved objects. Furthermore this metadata is stored in the PIPs and used to facilitate access to published objects in the presentation layer.
 
 ## Supported Formats
 
