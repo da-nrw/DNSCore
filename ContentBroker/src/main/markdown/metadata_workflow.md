@@ -30,19 +30,19 @@ Trys to read URN information from the metadata file (currently only implemented 
 
 ### UpdateMetadataAction
 
-1 Ensures that file names referenced in the metadata are updated according to changes caused by format conversions and renames that happened before.
-2 XMP sidecar files are collected to a single "XMP manifest" as a prerequisite for XSL transformations.
-3 DC metadata is created by executing the corresponding XSLTs.
-4 If a URL prefix is given in the beans configuration references to files in the metadata are updated in order to allow web resolution in the presentation layer.
-5 If the switch is set in the beans configuration the package type is written to the DC file.
+1. Ensures that file names referenced in the metadata are updated according to changes caused by format conversions and renames that happened before.
+2. XMP sidecar files are collected to a single "XMP manifest" as a prerequisite for XSL transformations.
+3. DC metadata is created by executing the corresponding XSLTs.
+4. If a URL prefix is given in the beans configuration references to files in the metadata are updated in order to allow web resolution in the presentation layer.
+5. If the switch is set in the beans configuration the package type is written to the DC file.
 
 ### CreateEDMAction
 
-1 Retrieves the main metadata file from the presentation repository.
-2 EDM (RDF/XML) metadata is created by executing the corresponding XSLTs.
-3 The EDM metadata is ingested into the presentation repository.
+1. Retrieves the main metadata file from the presentation repository.
+2. EDM (RDF/XML) metadata is created by executing the corresponding XSLTs.
+3. The EDM metadata is ingested into the presentation repository.
 
 # IndexESAction
 
-1 Retrieves the EDM metadata from the presentation repository.
-2 Indexes the EDM metadata as JSON in the elasticsearch index.
+1. Retrieves the EDM metadata from the presentation repository.
+2. Indexes the EDM metadata as JSON in the elasticsearch index.
