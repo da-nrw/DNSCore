@@ -12,6 +12,7 @@ For Documentation see:
 
 * the [wiki](https://github.com/da-nrw/DNSCore/wiki)
 * the [Java API documentation](http://da-nrw.github.io/DNSCore/apidocs/)
+* the [Java test documentation](http://da-nrw.github.io/DNSCore/testapidocs/)
 
 ### Feature list
 
