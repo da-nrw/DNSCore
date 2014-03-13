@@ -42,7 +42,7 @@ Trys to read URN information from the metadata file (currently only implemented 
 2. EDM (RDF/XML) metadata is created by executing the corresponding XSLTs.
 3. The EDM metadata is ingested into the presentation repository.
 
-# IndexESAction
+### IndexESAction
 
 1. Retrieves the EDM metadata from the presentation repository.
 2. Indexes the EDM metadata as JSON in the elasticsearch index.
