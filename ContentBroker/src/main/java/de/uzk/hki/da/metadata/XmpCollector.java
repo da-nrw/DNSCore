@@ -22,19 +22,22 @@ package de.uzk.hki.da.metadata;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+
+import de.uzk.hki.da.model.DAFile;
 
 
 /**
@@ -49,24 +52,18 @@ public class XmpCollector {
 	/**
 	 * Collect.
 	 *
-	 * @param folder the folder
+	 * @param xmpFiles list of xmp files to collect
 	 * @param targetFile the target file
 	 */
-	public static void collect(File folder, File targetFile) {
+	public static void collect(List<DAFile> xmpFiles, File targetFile) {
 		
 		Model model = ModelFactory.createDefaultModel();
-		
-		File[] files = folder.listFiles(new FileFilter() {
-			public boolean accept(File pathname) {
-				if (pathname.getName().toLowerCase().endsWith(".xmp")) return true;
-				return false;
-			}
-		});
-		if (files == null) {
-			throw new RuntimeException("Unable to open directory: " + folder.getAbsolutePath());
-		}
-		for (File file : files) {
-			logger.debug("found xmp file {}", file.getAbsolutePath());
+				
+		for (DAFile dafile : xmpFiles) {
+			
+			File file = dafile.toRegularFile();
+			
+			logger.debug("collecting XMP file {}", file.getAbsolutePath());
 			
 			StringWriter xmpWriter = new StringWriter();
 			
@@ -89,10 +86,10 @@ public class XmpCollector {
 				throw new RuntimeException("Unable to preprocess XMP file: " + file.getAbsolutePath(), e);
 			}
 			
-			final String baseName = file.getName().substring(0, file.getName().length()-3);
-			String[] list = folder.list(new FilenameFilter() {
+			final String baseName = FilenameUtils.removeExtension(file.getName());
+			String[] list = file.getParentFile().list(new FilenameFilter() {
 				public boolean accept(File dir, String name) {
-					String baseName2 = name.substring(0, name.length()-3);
+					String baseName2 = FilenameUtils.removeExtension(name);
 					if (baseName.equals(baseName2) && !name.toLowerCase().endsWith(".xmp")) return true;
 					else return false;
 				}

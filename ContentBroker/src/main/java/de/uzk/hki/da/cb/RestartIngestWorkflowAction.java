@@ -8,6 +8,7 @@ import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.convert.JhoveScanService;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.Utilities;
 
 /**
  * 
@@ -31,8 +32,15 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 		deleteJhoveTempData();		
 		
 		Package pkg = object.getLatestPackage();
+		
 		pkg.getEvents().clear();
 		pkg.getFiles().clear();
+		
+		String[] repNames = new File(object.getDataPath()).list();
+		for (String repName : repNames) {
+			if (new File(Utilities.slashize(object.getDataPath()) + repName).isDirectory())
+				pkg.scanRepRecursively(repName);
+		}
 		
 		job.getConversion_instructions().clear();
 				

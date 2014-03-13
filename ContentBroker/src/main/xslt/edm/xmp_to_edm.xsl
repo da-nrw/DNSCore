@@ -96,15 +96,15 @@
     <xsl:template name="map">
         <xsl:param name="from"/>
         <xsl:param name="to"/>
-        <xsl:if test="$from">
-            <xsl:element name="{$to}"><xsl:value-of select="*[name()=$from]"/></xsl:element>
+        <xsl:if test="*[name()=$from]">
+             <xsl:element name="{$to}"><xsl:value-of select="*[name()=$from]"/></xsl:element>
         </xsl:if>
     </xsl:template>
     
     <xsl:template name="mapDC">
         <xsl:param name="from"/>
         <xsl:param name="to"/>
-        <xsl:if test="$from">
+        <xsl:if test="*[name()=$from]">
             <xsl:for-each select="*[name()=$from]/rdf:Alt/rdf:li|*[name()=$from]/rdf:Bag/rdf:li|*[name()=$from]/rdf:Seq/rdf:li">
                 <xsl:element name="{$to}"><xsl:value-of select="."/></xsl:element>
             </xsl:for-each>
