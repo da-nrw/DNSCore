@@ -190,8 +190,8 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	 */
 	@Override
 	public boolean isValid(String address_dest) {
-		// TODO factor out string
-		address_dest = "/da-nrw"+address_dest;
+
+		address_dest = "/" + irodsSystemConnector.getZone() + address_dest;
 		
 		irodsSystemConnector.connect();
 		
@@ -237,8 +237,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	@Override
 	public void get(File destination, String gridFileAdress) throws IOException  { 
 		
-		// XXX factor out string
-		String prefixedGridFileAdress = "/da-nrw"+gridFileAdress;
+		String prefixedGridFileAdress = "/" + irodsSystemConnector.getZone() + gridFileAdress;
 		
 		irodsSystemConnector.connect();
 		
