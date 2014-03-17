@@ -80,7 +80,7 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 				"-i",
 				ci.getSource_file().toRegularFile().getAbsolutePath(),
 				"-o",
-				object.getDataPath()+"dip/public/"+ci.getTarget_folder()+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4",
+				object.getDataPath()+"dip/public/"+Utilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4",
 				"-e","x264","-f","mp4","-E","faac"
 		};
 		
@@ -104,7 +104,7 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 				"-i",
 				ci.getSource_file().toRegularFile().getAbsolutePath(),
 				"-o",
-				object.getDataPath()+"dip/institution/"+ci.getTarget_folder()+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4",
+				object.getDataPath()+"dip/institution/"+Utilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4",
 				"-e","x264","-f","mp4","-E","faac"
 		};
 
