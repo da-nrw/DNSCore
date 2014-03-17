@@ -70,7 +70,7 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 		String cmdPUBLIC[] = new String[] {
 				"sox",
 				ci.getSource_file().toRegularFile().getAbsolutePath(),
-				object.getDataPath()+"dip/public/"+ci.getTarget_folder()+FilenameUtils.getBaseName(
+				object.getDataPath()+"dip/public/"+Utilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(
 						ci.getSource_file().toRegularFile().getAbsolutePath())+".mp3"
 		};
 		logger.debug(ci.getSource_file().toRegularFile().getAbsolutePath());
@@ -94,7 +94,7 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 		String cmdINSTITUTION[] = new String[] {
 				"sox",
 				ci.getSource_file().toRegularFile().getAbsolutePath(),
-				object.getDataPath()+"dip/institution/"+ci.getTarget_folder()+FilenameUtils.getBaseName(
+				object.getDataPath()+"dip/institution/"+Utilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(
 						ci.getSource_file().toRegularFile().getAbsolutePath())+".mp3"
 		};
 		if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdINSTITUTION,getDurationRestrictionsForAudience("INSTITUTION")))){
