@@ -438,6 +438,9 @@ public class UnpackAction extends AbstractAction {
 		
 		new File(localNode.getWorkAreaRootPath() + object.getContractor().getShort_name() + "/" + 
 				object.getLatestPackage().getContainerName()).delete();
+		
+		object.getLatestPackage().getFiles().clear();
+		job.setRep_name("");
 	}
 
 	public IngestGate getIngestGate() {
