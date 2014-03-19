@@ -47,9 +47,11 @@ ichmod read $1  /da-nrw/home/$1/outgoing
 ichmod inherit /da-nrw/home/$1/outgoing
 iadmin atg danrwUser $1
 
+imkdir /da-nrw/dip/public/$1
+imkdir /da-nrw/dip/instution/$1
+ichmod -M own contentbroker /da-nrw/dip/public/$1
+ichmod -M own contentbroker /da-nrw/dip/instution/$1
 echo -e "\nUSER $1 created!"
 echo "Don't forget to"
 echo "insert into contractors (short_name,email_contact,id) values ('$1','email@rechner.de',ID);"
-echo "Grant webaccess to daweb if needed"
-echo "insert into users (id,login,password,name,contractorshortname,nodeindex) values  (ID,'$1','$1','$1','$1',NODEID);"  
 

@@ -246,17 +246,5 @@ acPostProcForObjRename(*sourceObject,*destObject)|(*destObject like /da-nrw/aip/
 #computes Checksum on DO
 acPostProcForObjCreate|($objPath like /da-nrw/aip/*.tar)|acComputeChecksum($objPath)|nop
 
-#Author Jens Peters
-#Doing PostPutOperations on Object, fetch URN, check if not already registered in queue and register it into the queue
-#URN fetcher hardcoded on da-nrw, needs to be TODO migrated to C function
-acPutObject(*objPath, *rescLoc, *rescName, *status)||msiSplitPath(*objPath,*incomingColl,*orig_name)##msiSplitPath(*incomingColl,*trash,*contractorShortName)##msiWriteRodsLog('acPutObject called for *objPath',*trash)##msiWriteRodsLog('*contractorShortName fetch URN and queue insert for *objPath on ressource *rescName',*junk)##msiStrlen(*orig_name,*orig_name_length)##assign(*strlen,*orig_name_length - 4)##msiSubstr(*orig_name,0,*strlen,*orig_name_stripped)##msiIsPackageNotAlreadyRegisteredInQueue(*contractorShortName,*orig_name_stripped,*output)##ifExec(*output == 0,msiGetSystemTime(*date_created,null)##msiGenericSQL("insert into queue (contractor_short_name,orig_name,status,date_created,initial_node) values ('*contractorShortName','*orig_name_stripped',*status,'*date_created','*rescLoc')"),msiWriteRodsLog(something failed while adding *orig_name to queue,*out),msiWriteRodsLog(already registered Object *orig_name in Queue, *junk),nop)|nop
-
-#Read on outgoing path
-acPreprocForDataObjOpen|($writeFlag == 0) && ($objPath like /da-nrw/home/*/outgoing/*)|msiWriteRodsLog(open for read AIP on outgoing path, *junk)##msiSetDataObjPreferredResc(cache)##msiSplitPath($objPath,*trash,*data_name)##msiStrlen(*data_name,*length)##assign(*strlen,*length - 4)##msiSubstr(*data_name,0,*strlen,*data_name)##msiWriteRodsLog(set user has read item status for AIP *data_name, *junk)##msiGetSystemTime(*systime,nope)##msiGenericSQL("UPDATE queue set status='960', date_modified=*systime WHERE urn='*data_name' and status='950'")|nop
-
 #Read access on archival storage path
 acPreprocForDataObjOpen|($writeFlag == 0) && ($objPath like /da-nrw/aip/*)|msiWriteRodsLog(open for read AIP on archival storage path from $userNameClient, *junk)|nop
-
-#Author Jens Peters
-#Updates status of URN in Queue
-acUpdateStatus(*status,*id)||msiWriteRodsLog("Set Status of *id to *status",*junk)##msiGetSystemTime(*systime,nope)##msiGenericSQL("UPDATE queue set status='*status', date_modified=*systime WHERE id='*id'")|nop
