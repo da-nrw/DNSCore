@@ -19,8 +19,6 @@
 
 # SIP Specification
 
-* TODO Lieferung
-
 ## SIP
 The basic structure of a SIP as accepted by the system looks like this:
 
@@ -46,6 +44,27 @@ for the object. In addition to the premis.xml the user is free to put any data
 of any formats and in any structure (hierarchical ordering in folders) into the 
 data folder though some formats and structures are somewhat more supported than
 others as we'll see soon (TODO).
+
+## Collection
+
+Multiple SIPs can be bundled to a collection before ingest. Collections have the same structure as SIPs, with two exceptions:
+
+1. The data folder must contain only SIP container files
+2. The collection folder itself is not packed to a container file
+
+A collection containing three SIPs might look like this:
+
+	myCollection/
+		bag-info.txt
+		bagit.txt
+		manifest-md5.txt
+		tagmanifest-md5.txt
+		data/
+			mySIP1.(tgz|zip|tar)
+			mySIP2.(tgz|zip|tar)
+			mySIP3.(tgz|zip|tar)
+
+Collections allow the user to create a loose connection between multiple objects without merging the data to a single object. The status of every object belonging to a collection can be requested for all objects at once by searching for the collection name via DA-WEB.
 
 ### PREMIS - specification
 
