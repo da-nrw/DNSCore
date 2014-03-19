@@ -72,8 +72,13 @@ Collections allow the user to create a loose connection between multiple objects
 
 ### SIPBuilder 
 
-* TODO link to documentation
-* TODO link to other artifacts?
+A German manual explaining the steps in GUI mode and all of the commands in CLI mode can be found [here] (https://github.com/da-nrw/SIP-Builder/blob/master/src/manual/SIP-Builder%20Anleitung.pdf?raw=true).
+
+For more information please refer to
+* the [Java API documentation](https://da-nrw.github.com/SIP-Builder/apidocs)
+* the [Java test documentation](https://da-nrw.github.com/SIP-Builder/testapidocs)
+
+
 * TODO explain SIP builder in this context
 
 ## SIP - special formats
