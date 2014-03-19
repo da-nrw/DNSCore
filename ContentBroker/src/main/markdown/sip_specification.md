@@ -76,10 +76,6 @@ Collections allow the user to create a loose connection between multiple objects
 * TODO link to other artifacts?
 * TODO explain SIP builder in this context
 
-### Other 
-
-* TODO mets ist doch nicht mehr unterstützt oder?
-
 ## SIP - special formats
 
 In addition to the basic SIP format the are some metadata formats/structures which are
