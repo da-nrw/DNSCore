@@ -1,7 +1,10 @@
 package de.uzk.hki.da.repository;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Decouples the repository logic used for publishing PIPs from specific implementations.
@@ -27,11 +30,23 @@ public interface RepositoryFacade {
 	
 	/**
 	 * Purge a package if it exists.
-	 *
-	 * @param urn the urn
 	 * @param prefix the prefix
+	 * @return boolean, true if package existed and was purged
+	 * @throws RepositoryException
 	 */
-	public void purgePackageIfExists(String urn, String objectId, String prefix) throws RepositoryException;
+	public boolean purgePackageIfExists(String objectId, String prefix) throws RepositoryException;
+	
+	/**
+	 * Get the set of filenames to be filtered during ingest
+	 * @return the set of filenames to be filtered during ingest
+	 */
+	public Set<String> getFileFilter();
+	
+	/**
+	 * Set the set of filenames to be filtered during ingest
+	 * @param fileFilter the set of filenames to be filtered during ingest
+	 */
+	public void setFileFilter(Set<String> fileFilter);
 	
 	/**
 	 * Ingest a package into the repository.
@@ -44,28 +59,30 @@ public interface RepositoryFacade {
 	 * @param prefix the prefix
 	 * @return true, if successful
 	 * @throws RepositoryException
+	 * @throws IOException 
 	 */
-	public boolean ingestPackage(String urn, String objectId, String packagePath, String contractorShortName, String packageType, String prefix, String[] sets) throws RepositoryException;
+	public boolean ingestPackage(String urn, String objectId, String packagePath, String contractorShortName, String packageType, String prefix, String[] sets) throws RepositoryException, IOException;
 	
 	/**
 	 * Attach a file to a package in the repository.
 	 * 
 	 * @param objectId the object id of object the file is attached to
 	 * @param file the file to be ingested
-	 * @param fileId the id for the file in the repository
+	 * @param relPath the relative path to the file from the package root
 	 * @return true, if successful
+	 * @throws IOException 
 	 * @throws RepositoryEcxeption
 	 */
-	public boolean ingestFile(String objectId, File file, String fileId) throws RepositoryException;
+	public boolean ingestFile(String objectId, File file, String relPath) throws RepositoryException, IOException;
 	
 	/**
 	 * Get the file contents from the repository.
 	 * 
 	 * @param objectId the object id of object the file is attached to
 	 * @param fileId the id for the file in the repository
-	 * @return the contents of the file as a string
+	 * @return the contents of the file as an input stream
 	 * @throws RepositoryException
 	 */
-	public String retrieveFile(String objectId, String fileId) throws RepositoryException;
+	public InputStream retrieveFile(String objectId, String fileId) throws RepositoryException;
 
 }
