@@ -77,18 +77,51 @@ Example:
 				picture3.tif
 				premis.xml
 
-The three PNG files are converted to TIF files during ingest. The resulting DIP contains the newest (i. e. converted) versions of the files included in package 1 (picture1.tif, picture2.tif) and the newest version of the file included in package 2 (picture3.tif) It also contains the newest PREMIS file available: in this case, the newest PREMIS file is the premis.xml included in the second package.
+The three PNG files are converted to TIF files during ingest. The resulting DIP contains the newest (i. e. converted) versions of the files included in package 1 (picture1.tif, picture2.tif) and the newest version of the file included in package 2 (picture3.tif). It also contains the newest PREMIS file available: in this case, the newest PREMIS file is the premis.xml included in the second package.
 
+### Replacing files
 
-			
+It is also possible to replace existing files with updated versions of these files. As already ingested files should never be deleted in a long term preservation system, the older file is not deleted from the storage device, but replaced *logically* by the newer file: DIPs will only contain the newer file, and only the newer file will be published.
+
+Example:
+
+	myPackage.zip (First package)
+		myPackage/
+			bag-info.txt
+			bagit.txt
+			manifest-md5.txt
+			tagmanifest-md5.txt
+			data/
+				picture1.png
+				picture2.png
+				premis.xml
+				
+	myPackage.zip (Second package, named like the first one)
+		myPackage/
+			bag-info.txt
+			bagit.txt
+			manifest-md5.txt
+			tagmanifest-md5.txt
+			data/
+				picture2.png
+				premis.xml
+				
+	 1-2014031047417.tar (DIP)
+	 	1-2014031047417/
+	 		bag-info.txt
+			bagit.txt
+			manifest-md5.txt
+			tagmanifest-md5.txt
+			data/
+				picture1.tif	(Package 1 version)
+				picture2.tif	(Package 2 version)
+				premis.xml
+
+If a delta package contains a file named like a file already existing in a previously delivered package, the older file is replaced logically by the newer file. Please note that the file extension is not considered part of the file name in this case: If two files have different file extensions while sharing the same base name (e. g. "document.pdf" and "document.doc"), these files are considered homonymous. Before planning to replace files using the delta feature, please read the paragraph about [substitution rules](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/dip_specification.md#substitution-rules-and-surface-view-of-an-object) carefully.
+
 
 TODO replacing contracts
 
 TODO use cases, replacing and adding files, example use cases
 
 https://wiki1.hbz-nrw.de/display/DANOPEN/Delta-Spezifikation
-
-When working with deltas it is necessary to understand which implication this has. Therefore
-users in using the delta feature should read at least the paragraph about 
-[substitution rules](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/dip_specification.md#substitution-rules-and-surface-view-of-an-object) 
-carefully.
