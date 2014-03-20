@@ -125,4 +125,12 @@ When building delta packages, it is important to know that only the premis.xml d
 Just like every other SIP, each delta package needs to contain a valid PREMIS file. If you want to keep the settings of the originally delivered package, just copy the rights section from the original premis.xml, or choose the same rights settings again when building the SIP via the SIP-Builder. Alternatively, you can include a PREMIS file with different settings in order to change the contract rights (e. g. add a footer text or allow publication). Please note that the new settings will be valid for the contents of the whole object and not just for the contents of the delta package!  
 It is not necessary to add data files to a delta package if you just want to change the contract. A SIP containing just a single premis.xml is a valid SIP (while a SIP containing just other data and no premis.xml is not).
 
+## Deltas and metadata
 
+If the originally delivered package contains a metadata file, an updated version of the file needs to be contained in the delta package. Just like the premis.xml, the new metadata file has to apply to the whole object and not just the contents of the delta package (e. g. the *fileSec* element of a mets.xml file needs to reference the files of the original package *and* the delta package(s)).  
+However, this is not true for sidecar files (like [XMP files](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md#xmp)): You only have to include sidecar files if the corresponding base files are also included in the delta package.
+
+## Deltas and long term preservation
+
+As mentioned above, already ingested data is only deleted under exceptional circumstances. To ensure that delta files never overwrite existing files, each package of an object is stored as a separate AIP. They are combined inside the working directory at certain occasions (e. g. retrieval, transfer to presentation repository), but are kept at different locations on the storage device.  
+However, there is one downside to this approach: In case of a fatal database damage, the objects may need to be reconstructed manually out of the different package files. Therefore it is planned to merge the packages of an object to a single AIP at regular intervals (without deleting the original packages). The feature will be implemented in a future version of the ContentBroker.
