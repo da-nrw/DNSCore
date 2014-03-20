@@ -119,9 +119,10 @@ Example:
 
 If a delta package contains a file named like a file already existing in a previously delivered package, the older file is replaced logically by the newer file. Please note that the file extension is not considered part of the file name in this case: If two files have different file extensions while sharing the same base name (e. g. "document.pdf" and "document.doc"), these files are considered homonymous. Before planning to replace files using the delta feature, please read the paragraph about [substitution rules](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/dip_specification.md#substitution-rules-and-surface-view-of-an-object) carefully.
 
+### Replacing the contract
 
-TODO replacing contracts
+When building delta packages, it is important to know that only the premis.xml delivered in the newest package is used for determining the contract rights of an object.  
+Just like every other SIP, each delta package needs to contain a valid PREMIS file. If you want to keep the settings of the originally delivered package, just copy the rights section from the original premis.xml, or choose the same rights settings again when building the SIP via the SIP-Builder. Alternatively, you can include a PREMIS file with different settings in order to change the contract rights (e. g. add a footer text or allow publication). Please note that the new settings will be valid for the contents of the whole object and not just for the contents of the delta package!  
+It is not necessary to add data files to a delta package if you just want to change the contract. A SIP containing just a single premis.xml is a valid SIP (while a SIP containing just other data and no premis.xml is not).
 
-TODO use cases, replacing and adding files, example use cases
 
-https://wiki1.hbz-nrw.de/display/DANOPEN/Delta-Spezifikation
