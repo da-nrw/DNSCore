@@ -66,10 +66,6 @@ A collection containing three SIPs might look like this:
 
 Collections allow the user to create a loose connection between multiple objects without merging the data into a single object. The status of every object belonging to a collection can be requested for all objects at once by searching for the collection name via DA-WEB.
 
-### PREMIS - specification
-
-* TODO
-
 ## SIP-Builder 
 
 The [SIP-Builder](https://github.com/da-nrw/SIP-Builder) is a Java tool capable of creating SIPs and collections that adhere to the structure explained above. The tool can be used in two modes:
