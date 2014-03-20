@@ -70,16 +70,17 @@ Collections allow the user to create a loose connection between multiple objects
 
 * TODO
 
-### SIPBuilder 
+### SIP-Builder 
 
-A German manual explaining the steps in GUI mode and all of the commands in CLI mode can be found [here] (https://github.com/da-nrw/SIP-Builder/blob/master/src/manual/SIP-Builder%20Anleitung.pdf?raw=true).
+The SIP-Builer is a Java tool capable of creating SIPs and collections that adhere to the structure explained above. The tool can be used in two modes:
+* In GUI mode, the user is led through a number of consecutive steps in order to determine the data and rights settings. This mode is meant primarily for unexperienced users and can also be used to create the contract rights in a comfortable way.
+* In CLI mode, the necessary settings are handed over to the application as command line parameters. This mode is useful for integrating the SIP-Builder into automated processes.
+
+A German manual explaining the steps in GUI mode and all of the possible parameters in CLI mode can be found [here] (https://github.com/da-nrw/SIP-Builder/blob/master/src/manual/SIP-Builder%20Anleitung.pdf?raw=true).
 
 For more information please refer to
 * the [Java API documentation](https://da-nrw.github.com/SIP-Builder/apidocs)
 * the [Java test documentation](https://da-nrw.github.com/SIP-Builder/testapidocs)
-
-
-* TODO explain SIP builder in this context
 
 ## SIP - special formats
 
