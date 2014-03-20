@@ -64,7 +64,7 @@ A collection containing three SIPs might look like this:
 			mySIP2.(tgz|zip|tar)
 			mySIP3.(tgz|zip|tar)
 
-Collections allow the user to create a loose connection between multiple objects without merging the data to a single object. The status of every object belonging to a collection can be requested for all objects at once by searching for the collection name via DA-WEB.
+Collections allow the user to create a loose connection between multiple objects without merging the data into a single object. The status of every object belonging to a collection can be requested for all objects at once by searching for the collection name via DA-WEB.
 
 ### PREMIS - specification
 
