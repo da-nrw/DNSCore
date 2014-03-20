@@ -10,4 +10,5 @@ iRODS uses the following ports for communication between the different nodes of 
 
 ## PostgreSQL
 
-*TODO*
+On every node that acts as a master iCAT or that holds the central object database:
+* TCP 5432
