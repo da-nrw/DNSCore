@@ -1,0 +1,31 @@
+
+<rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dv="http://dfg-viewer.de/" xmlns:edm="http://www.europeana.eu/schemas/edm/" xmlns:ore="http://www.openarchives.org/ore/terms/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/131614-2014011528642-md713085">
+    <owl:sameAs rdf:resource="urn:nbn:de:hbz:6:1-20814-md713085"></owl:sameAs>
+    <dc:identifier>urn:nbn:de:hbz:6:1-20814-md713085</dc:identifier>
+    <dc:identifier>http://data.danrw.de/cho/131614-2014011528642-md713085</dc:identifier>
+    <dc:title>De Antiqvissima Vrbis Osnabr. Tvrri, dem Buck paucis disserit, &amp; simul Osnabrugum doctum ad tres orationes IX Idd. Septembr. ... decenter invitat M. Zacharias Goeze, Ill. Gymn. Osnab. Rector.</dc:title>
+    <dcterms:alternative>De antiquissima urbis Osnabr. turri, dem Buck ...</dcterms:alternative>
+    <dc:creator>Götze, Zacharias</dc:creator>
+    <edm:type>TEXT</edm:type>
+    <dc:type>book</dc:type>
+    <dcterms:issued>1727</dcterms:issued>
+    <dc:publisher>Kisling (Osnabrvgi)</dc:publisher>
+    <dc:publisher>Universitäts- und Landesbibliothek (Münster) [Electronic ed.]</dc:publisher>
+    <dcterms:extent>[4] Bl. : Ill. ; 4-o</dcterms:extent>
+    <dc:description>Vorlageform des Erscheinungsvermerks: Impressit Godefridus Kislingius</dc:description>
+    <dcterms:spatial>Osnabrück</dcterms:spatial>
+    <dc:relation></dc:relation>
+    <dc:identifier>CT005002082</dc:identifier>
+    <owl:sameAs rdf:resource="info:hbz-idn/CT005002082"></owl:sameAs>
+    <dc:identifier>urn:nbn:de:hbz:6:1-20814</dc:identifier>
+    <owl:sameAs rdf:resource="urn:nbn:de:hbz:6:1-20814"></owl:sameAs>
+  </edm:ProvidedCHO>
+  <ore:Aggregation rdf:about="http://data.danrw.de/aggregation/131614-2014011528642-md713085">
+    <edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/131614-2014011528642-md713085"></edm:aggregatedCHO>
+    <edm:dataProvider>Universitäts- und Landesbibliothek Münster</edm:dataProvider>
+    <edm:provider></edm:provider>
+    <edm:isShownAt rdf:resource="http://data.danrw.de/aggregation/131614-2014011528642-md713085"></edm:isShownAt>
+    <edm:object rdf:resource="&quot;http://data.danrw.de/file/131614-2014011528642/_e376196e28bebdfa7828a9a0b416a957.jpg"></edm:object>
+  </ore:Aggregation>
+</rdf:RDF>
