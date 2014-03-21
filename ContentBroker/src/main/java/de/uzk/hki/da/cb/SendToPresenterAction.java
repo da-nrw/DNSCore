@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.hibernate.classic.Session;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -33,6 +34,7 @@ import org.jdom.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.metadata.XepicurWriter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -110,6 +112,11 @@ public class SendToPresenterAction extends AbstractAction {
 			throw new RuntimeException(e);
 		}
 		object.setPublished_flag(publishedFlag);
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.save(object);
+		session.getTransaction().commit();
+		session.close();
 		logger.debug("Set published flag of object to '{}'", object.getPublished_flag());
 		
 		// if no public DIP is created EDM creation and ES indexing is skipped
