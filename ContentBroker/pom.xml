@@ -405,12 +405,6 @@
 			<artifactId>fedora-client-core</artifactId>
 			<version>0.7</version>
 		</dependency>
-		<!-- TODO: delete when done with refactoring -->
-		<dependency>
-			<groupId>de.uzk.hki</groupId>
-			<artifactId>fedorest</artifactId>
-			<version>0.0.3-SNAPSHOT</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>

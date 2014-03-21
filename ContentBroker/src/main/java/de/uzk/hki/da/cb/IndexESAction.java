@@ -19,9 +19,11 @@
 
 package de.uzk.hki.da.cb;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.NotImplementedException;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -31,16 +33,15 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import com.github.jsonldjava.utils.JSONUtils;
 
 import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
-import de.uzk.hki.fedorest.Fedora;
-import de.uzk.hki.fedorest.FedoraException;
-import de.uzk.hki.fedorest.FedoraResult;
+import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.repository.RepositoryFacade;
 
 /**
  * @author Sebastian Cuy
  */
 public class IndexESAction extends AbstractAction {
 	
-	private Fedora fedora;
+	private RepositoryFacade repositoryFacade;
 	private String[] esHosts;
 	private String esCluster = "elasticsearch";
 	private String esIndexName;
@@ -49,8 +50,8 @@ public class IndexESAction extends AbstractAction {
 	boolean implementation() {
 		setKILLATEXIT(true);
 		
-		if (fedora == null) 
-			throw new RuntimeException("Fedora object not set. Make sure the action is configured properly");
+		if (repositoryFacade == null) 
+			throw new RuntimeException("Repository facade object not set. Make sure the action is configured properly");
 		if (esIndexName == null) 
 			throw new RuntimeException("Elasticsearch index name not set. Make sure the action is configured properly");
 		if (esHosts == null || esHosts.length == 0) 
@@ -70,16 +71,12 @@ public class IndexESAction extends AbstractAction {
 		TransportClient client = null;
 		try {
 			
-			FedoraResult result = fedora.getDatastreamDissemination()
-					.param("pid", pid)
-					.param("dsID", "EDM")
-					.execute();
-			if (result.getStatus() != 200)
-				throw new RuntimeException("Error getting EDM datastream for pid: " + pid);
+			InputStream edmStream = repositoryFacade.retrieveFile(pid, "EDM");
+			String edmContent = IOUtils.toString(edmStream, "UTF-8");
 			
 			// transform EDM to JSON
 			RdfToJsonLdConverter converter = new RdfToJsonLdConverter("conf/frame.jsonld");
-			Map<String, Object> json = converter.convert(result.getContent());
+			Map<String, Object> json = converter.convert(edmContent);
 			
 			logger.debug("transformed EDM RDF into JSON. Result: {}", JSONUtils.toPrettyString(json));
 			
@@ -107,7 +104,7 @@ public class IndexESAction extends AbstractAction {
 					.setId(id).setSource(aggregation).execute().actionGet();
 			}	
 			
-		} catch (FedoraException e) {
+		} catch (RepositoryException e) {
 			logger.warn("Could not retrieve EDM from Fedora, skipping ingest into elasticsearch!");
 		} catch (Exception e) {
 			throw new RuntimeException("Error while ingesting EDM into elasticsearch", e);
@@ -123,14 +120,6 @@ public class IndexESAction extends AbstractAction {
 	@Override
 	void rollback() throws Exception {
 		throw new NotImplementedException();
-	}
-	
-	public Fedora getFedora() {
-		return fedora;
-	}
-
-	public void setFedora(Fedora fedora) {
-		this.fedora = fedora;
 	}
 
 	public String[] getEsHosts() {

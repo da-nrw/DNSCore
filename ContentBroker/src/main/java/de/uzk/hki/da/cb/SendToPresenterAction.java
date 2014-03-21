@@ -36,9 +36,8 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.metadata.XepicurWriter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
-import de.uzk.hki.da.service.IngesterFacade;
-import de.uzk.hki.da.service.IngesterFacade.IngestException;
-import de.uzk.hki.fedorest.Fedora;
+import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.repository.RepositoryFacade;
 
 /** 
  * TODO refactor in a way that a single FOXML-File is created
@@ -50,7 +49,7 @@ public class SendToPresenterAction extends AbstractAction {
 
 	static final Logger logger = LoggerFactory.getLogger(SendToPresenterAction.class);
 	
-	private Fedora fedora;
+	private RepositoryFacade repositoryFacade;
 	private Map<String,String> viewerUrls;
 	
 	SendToPresenterAction(){}
@@ -79,16 +78,17 @@ public class SendToPresenterAction extends AbstractAction {
 			labelMap.put(targetFile.getRelative_path(), sourceFile.getRelative_path());			
 		}
 		
-		IngesterFacade ingester = new IngesterFacade(getFedora());
-		ingester.setLabelMap(labelMap);
+		getRepositoryFacade().setLabelMap(labelMap);
 		String urn = object.getUrn();
 
-		// delete existing packages before ingesting the new ones
-		ingester.purgePackageIfExists(urn, object.getIdentifier(), "danrw:");
-		ingester.purgePackageIfExists(urn, object.getIdentifier(), "danrw-closed:");
-		
 		int publishedFlag = 0;
+		
 		try {
+
+			// delete existing packages before ingesting the new ones
+			getRepositoryFacade().purgePackageIfExists(object.getIdentifier(), "danrw:");
+			getRepositoryFacade().purgePackageIfExists(object.getIdentifier(), "danrw-closed:");
+		
 			if (new File(dipPathPublic).exists()) {				
 				// write xepicur file for urn resolving
 				XepicurWriter.createXepicur(object.getIdentifier(), packageType, viewerUrls.get(packageType), dipPathPublic);
@@ -96,19 +96,20 @@ public class SendToPresenterAction extends AbstractAction {
 				if (!object.ddbExcluded()) {
 					sets = new String[]{ "ddb" };
 				}
-				if (ingester.ingestPackage(urn, object.getIdentifier(), dipPathPublic, object.getContractor().getShort_name(), packageType, "danrw:", sets))
+				if (getRepositoryFacade().ingestPackage(urn, object.getIdentifier(), dipPathPublic, object.getContractor().getShort_name(), packageType, "danrw:", sets))
 					publishedFlag += 1;
 			}
 			if (new File(dipPathInstitution).exists()) {
 				// write xepicur file for urn resolving
 				XepicurWriter.createXepicur(object.getIdentifier(), packageType, viewerUrls.get(packageType), dipPathInstitution);
-				if (ingester.ingestPackage(urn, object.getIdentifier(), dipPathInstitution, object.getContractor().getShort_name(), packageType, "danrw-closed:", null))
+				if (getRepositoryFacade().ingestPackage(urn, object.getIdentifier(), dipPathInstitution, object.getContractor().getShort_name(), packageType, "danrw-closed:", null))
 					publishedFlag += 2;
 			}
 			
-		} catch (IngestException e) {
+		} catch (RepositoryException e) {
 			throw new RuntimeException(e);
 		}
+		
 		object.setPublished_flag(publishedFlag);
 		logger.debug("Set published flag of object to '{}'", object.getPublished_flag());
 		
@@ -161,22 +162,20 @@ public class SendToPresenterAction extends AbstractAction {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 
-	
-	
-	public Fedora getFedora() {
-		return fedora;
-	}
-
-	public void setFedora(Fedora fedora) {
-		this.fedora = fedora;
-	}
-
 	public Map<String,String> getViewerUrls() {
 		return viewerUrls;
 	}
 
 	public void setViewerUrls(Map<String,String> viewerUrls) {
 		this.viewerUrls = viewerUrls;
+	}
+
+	public RepositoryFacade getRepositoryFacade() {
+		return repositoryFacade;
+	}
+
+	public void setRepositoryFacade(RepositoryFacade repositoryFacade) {
+		this.repositoryFacade = repositoryFacade;
 	}
 
 }

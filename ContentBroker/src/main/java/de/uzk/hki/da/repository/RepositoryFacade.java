@@ -76,6 +76,19 @@ public interface RepositoryFacade {
 	public boolean ingestFile(String objectId, File file, String relPath) throws RepositoryException, IOException;
 	
 	/**
+	 * Create a metadata file for a package in the repository.
+	 * 
+	 * @param objectId the object id of object the file is attached to
+	 * @param fileId the name of the file to be created
+	 * @param content the file content
+	 * @param label the label of the file
+	 * @param mimeType the MIME type
+	 * @return true, if successful
+	 * @throws RepositoryEcxeption
+	 */
+	public boolean createMetadataFile(String objectId, String fileId, String content, String label, String mimeType) throws RepositoryException;
+	
+	/**
 	 * Get the file contents from the repository.
 	 * 
 	 * @param objectId the object id of object the file is attached to

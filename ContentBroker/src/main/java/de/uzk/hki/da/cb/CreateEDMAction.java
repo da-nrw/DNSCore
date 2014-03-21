@@ -1,31 +1,29 @@
 package de.uzk.hki.da.cb;
 
-import java.io.StringReader;
+import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
 import de.uzk.hki.da.metadata.XsltGenerator;
-import de.uzk.hki.fedorest.Fedora;
-import de.uzk.hki.fedorest.FedoraResult;
+import de.uzk.hki.da.repository.RepositoryFacade;
 
 /**
  * @author Sebastian Cuy
  */
 public class CreateEDMAction extends AbstractAction {
 	
-	private Fedora fedora;
+	private RepositoryFacade repositoryFacade;
 	private String choBaseUri;
 	private String aggrBaseUri;
 	private String localBaseUri;
 
 	@Override
 	boolean implementation() {
-		if (fedora == null) 
-			throw new RuntimeException("Fedora object not set. Make sure the action is configured properly");
+		if (repositoryFacade == null) 
+			throw new RuntimeException("Repository facade object not set. Make sure the action is configured properly");
 		
 		String id = object.getIdentifier().replace("+", ":");
 		String pid = "danrw:" + id;
@@ -34,13 +32,10 @@ public class CreateEDMAction extends AbstractAction {
 			
 			logger.debug("Getting DC datastream for pid: {}", pid);
 			
-			FedoraResult result = fedora.getDatastreamDissemination()
-					.param("pid", pid)
-					.param("dsID", "DC")
-					.execute();
+			InputStream dcStream = repositoryFacade.retrieveFile(pid, "DC");
 			
 			SAXBuilder builder = new SAXBuilder(false);
-			Document doc = builder.build(new StringReader(result.getContent()));
+			Document doc = builder.build(dcStream);
 			Element formatEl = doc.getRootElement().getChild("format",
 					Namespace.getNamespace("http://purl.org/dc/elements/1.1/"));
 			if (formatEl == null) {
@@ -64,23 +59,18 @@ public class CreateEDMAction extends AbstractAction {
 				throw new RuntimeException("No conversion available for package type '" + packageType + "'. EDM can not be created.");
 			}
 			
-			FedoraResult xmlResult = fedora.getDatastreamDissemination()
-					.param("pid", pid)
-					.param("dsID", packageType)
-					.execute();
+			InputStream metadataStream = repositoryFacade.retrieveFile(pid, packageType);
+			
 			XsltGenerator edmGenerator = new XsltGenerator(
-					"conf/xslt/edm/" + xsltFile,
-					IOUtils.toInputStream(xmlResult.getContent()));	
+					"conf/xslt/edm/" + xsltFile, metadataStream);	
 			edmGenerator.setParameter("urn", object.getUrn());
 			edmGenerator.setParameter("cho-base-uri", choBaseUri + "/" + id);
 			edmGenerator.setParameter("aggr-base-uri", aggrBaseUri + "/" + id);
 			edmGenerator.setParameter("local-base-uri", localBaseUri);
-			String edmResult = edmGenerator.generate().toString();
+			String edmResult = edmGenerator.generate();
 			
-			fedora.addDatastream().param("pid", pid).param("dsID", "EDM")
-					.param("mimeType", "application/rdf+xml").param("controlGroup", "X")
-					.param("dsLabel", "Object representation in Europeana Data Model")
-					.execute(edmResult);
+			repositoryFacade.createMetadataFile(pid, "EDM", edmResult, "Object representation in Europeana Data Model", "application/rdf+xml");
+			
 			logger.info("Successfully created EDM datastream for pid {}.", pid);
 			
 		} catch (Exception e) {
@@ -93,14 +83,6 @@ public class CreateEDMAction extends AbstractAction {
 	@Override
 	void rollback() throws Exception {
 		// nothing to do		
-	}
-	
-	public Fedora getFedora() {
-		return fedora;
-	}
-
-	public void setFedora(Fedora fedora) {
-		this.fedora = fedora;
 	}
 
 	public String getChoBaseUri() {

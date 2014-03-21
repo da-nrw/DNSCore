@@ -1,6 +1,7 @@
 package de.uzk.hki.da.repository;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -197,9 +198,12 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			if (labelMap.containsKey(dsID))
 				label = labelMap.get(dsID);
 			if ("X".equals(controlGroup)) {
+				FileInputStream fileInputStream = new FileInputStream(file);
 				new AddDatastream(pid, dsID).mimeType(mimeType)
 					.controlGroup(controlGroup).dsLabel(label)
+					.content(fileInputStream)
 					.execute(fedora);
+				fileInputStream.close();
 			} else {
 				String dsLocation = "file://" + file.getAbsolutePath();
 				new AddDatastream(pid, dsID).mimeType(mimeType)
@@ -213,6 +217,18 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		
 		return true;
 		
+	}
+	
+	@Override
+	public boolean createMetadataFile(String pid, String dsId, String content, String label, String mimeType) throws RepositoryException {
+		try {
+			new AddDatastream(pid, dsId).mimeType(mimeType)
+				.controlGroup("X").dsLabel(label)
+				.content(content).execute(fedora);
+			return true;
+		} catch(FedoraClientException e) {
+			throw new RepositoryException("Unable to create metadata file: " + dsId, e);
+		}
 	}
 	
 	/**
