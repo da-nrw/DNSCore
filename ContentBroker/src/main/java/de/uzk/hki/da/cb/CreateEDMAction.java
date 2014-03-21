@@ -25,14 +25,13 @@ public class CreateEDMAction extends AbstractAction {
 		if (repositoryFacade == null) 
 			throw new RuntimeException("Repository facade object not set. Make sure the action is configured properly");
 		
-		String id = object.getIdentifier().replace("+", ":");
-		String pid = "danrw:" + id;
+		String objectId = object.getIdentifier();
 		
 		try {
 			
-			logger.debug("Getting DC datastream for pid: {}", pid);
+			logger.debug("Getting DC datastream for object: {}", objectId);
 			
-			InputStream dcStream = repositoryFacade.retrieveFile(pid, "DC");
+			InputStream dcStream = repositoryFacade.retrieveFile(objectId, "danrw", "DC");
 			
 			SAXBuilder builder = new SAXBuilder(false);
 			Document doc = builder.build(dcStream);
@@ -59,19 +58,19 @@ public class CreateEDMAction extends AbstractAction {
 				throw new RuntimeException("No conversion available for package type '" + packageType + "'. EDM can not be created.");
 			}
 			
-			InputStream metadataStream = repositoryFacade.retrieveFile(pid, packageType);
+			InputStream metadataStream = repositoryFacade.retrieveFile(objectId, "danrw", packageType);
 			
 			XsltGenerator edmGenerator = new XsltGenerator(
 					"conf/xslt/edm/" + xsltFile, metadataStream);	
 			edmGenerator.setParameter("urn", object.getUrn());
-			edmGenerator.setParameter("cho-base-uri", choBaseUri + "/" + id);
-			edmGenerator.setParameter("aggr-base-uri", aggrBaseUri + "/" + id);
+			edmGenerator.setParameter("cho-base-uri", choBaseUri + "/" + objectId);
+			edmGenerator.setParameter("aggr-base-uri", aggrBaseUri + "/" + objectId);
 			edmGenerator.setParameter("local-base-uri", localBaseUri);
 			String edmResult = edmGenerator.generate();
 			
-			repositoryFacade.createMetadataFile(pid, "EDM", edmResult, "Object representation in Europeana Data Model", "application/rdf+xml");
+			repositoryFacade.createMetadataFile(objectId, "danrw", "EDM", edmResult, "Object representation in Europeana Data Model", "application/rdf+xml");
 			
-			logger.info("Successfully created EDM datastream for pid {}.", pid);
+			logger.info("Successfully created EDM datastream for object {}.", objectId);
 			
 		} catch (Exception e) {
 			throw new RuntimeException(e);

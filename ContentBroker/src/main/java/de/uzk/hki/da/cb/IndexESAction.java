@@ -67,11 +67,11 @@ public class IndexESAction extends AbstractAction {
 			esIndexName += "_test";
 		}
 		
-		String pid = "danrw:" + object.getIdentifier().replace("+", ":");
+		String objectId = object.getIdentifier();
 		TransportClient client = null;
 		try {
 			
-			InputStream edmStream = repositoryFacade.retrieveFile(pid, "EDM");
+			InputStream edmStream = repositoryFacade.retrieveFile(objectId, "danrw", "EDM");
 			String edmContent = IOUtils.toString(edmStream, "UTF-8");
 			
 			// transform EDM to JSON
