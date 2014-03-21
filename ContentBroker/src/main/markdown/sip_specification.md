@@ -80,7 +80,7 @@ For more information please refer to
 
 ## SIP - special formats
 
-In addition to the basic SIP format the are some metadata formats/structures which are
+In addition to the basic SIP format there are some metadata formats/structures which are
 supported in a special way, optimized for the publication feature of DNSCore.
 
 ### METS
