@@ -16,8 +16,8 @@
 			$.PeriodicalUpdater("./messageSnippet",
 				{
 					method: "get",
-					minTimeout: 2000,
-					maxTimeout: 2000,
+					minTimeout: 10000,
+					maxTimeout: 10000,
 					success: function(data) {
 						$("#entry-list").html(data);
 					}
