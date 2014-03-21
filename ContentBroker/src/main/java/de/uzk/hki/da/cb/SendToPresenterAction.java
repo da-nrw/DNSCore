@@ -47,11 +47,24 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 
 /** 
+ * This action implements the ingest into the presentation repository.
+ * 
+ * It creates the epicur metadata for URN/URL mapping and creates
+ * one object and the in the collections "danrw" and "danrw-closed"
+ * depending on the audiences it should be accessible to according
+ * to the contract and sets the published flag in the database
+ * accordingly.
+ * 
+ * The action also makes sure the metadata necessary for 
+ * publication with OAI-PMH is present in the repository.
+ * 
+ * @author Sebastian Cuy
+ */
+/*
  * TODO refactor in a way that a single FOXML-File is created
  * and ingested based on the conversion events (and package type).
  * Set datastream labels from the events' source file.
- * @author Sebastian Cuy
- */
+*/
 public class SendToPresenterAction extends AbstractAction {
 
 	static final Logger logger = LoggerFactory.getLogger(SendToPresenterAction.class);
@@ -80,7 +93,7 @@ public class SendToPresenterAction extends AbstractAction {
 		
 		String packageType = getPackageTypeFromDC(dipPathPublic, dipPathInstitution);
 		
-		// build map that contains original filenames for labeling in Fedora
+		// build map that contains original filenames for labeling
 		labelMap = new HashMap<String,String>();
 		for (Event e:object.getLatestPackage().getEvents()) {			
 			if (!"CONVERT".equals(e.getType())) continue;
@@ -145,10 +158,18 @@ public class SendToPresenterAction extends AbstractAction {
 		this.viewerUrls = viewerUrls;
 	}
 
+	/**
+	 * Get the repository facade
+	 * @return the repository facade
+	 */
 	public RepositoryFacade getRepositoryFacade() {
 		return repositoryFacade;
 	}
-
+	
+	/**
+	 * Set the repository facade
+	 * @param the repository facade
+	 */
 	public void setRepositoryFacade(RepositoryFacade repositoryFacade) {
 		this.repositoryFacade = repositoryFacade;
 	}

@@ -37,6 +37,18 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 
 /**
+ * Action that indexes EDM data into elasticsearch.
+ * 
+ * First the action fetches the EDM/RDF data from
+ * the presentation repository.
+ * In order for the EDM data to be compatible with
+ * the elasticsearch data model the EDM/RDF data is
+ * then converted into JSON-LD and indexed in
+ * elasticsearch.
+ * 
+ * The frame that defines the JSON structure can be
+ * configured in "conf/frame.jsonld".
+ *  
  * @author Sebastian Cuy
  */
 public class IndexESAction extends AbstractAction {
@@ -122,26 +134,56 @@ public class IndexESAction extends AbstractAction {
 		throw new NotImplementedException();
 	}
 
+	/**
+	 * Get the list of elasticsearch hosts
+	 * the desired index is running on.
+	 * @return the list of hosts
+	 */
 	public String[] getEsHosts() {
 		return esHosts;
 	}
 
+	/**
+	 * Set the list of elasticsearch hosts
+	 * the desired index is running on.
+	 * @param the list of hosts
+	 */
 	public void setEsHosts(String[] esHosts) {
 		this.esHosts = esHosts;
 	}
 
+	/**
+	 * Get the elasticsearch cluster name
+	 * the desired index is running on.
+	 * @return the cluster name
+	 */
 	public String getEsCluster() {
 		return esCluster;
 	}
 
+	/**
+	 * Set the elasticsearch cluster name
+	 * the desired index is running on.
+	 * @param the cluster name
+	 */
 	public void setEsCluster(String esCluster) {
 		this.esCluster = esCluster;
 	}
 
+	/**
+	 * Get the elasticsearch index name
+	 * the data will be indexed in.
+	 * @return the index name
+	 */
 	public String getEsIndexName() {
 		return esIndexName;
 	}
 
+	/**
+	 * Set the elasticsearch index name
+	 * the data will be indexed in.
+	 * @param the index name
+	 */
 	public void setEsIndexName(String esIndexName) {
 		this.esIndexName = esIndexName;
 	}

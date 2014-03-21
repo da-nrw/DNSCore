@@ -11,6 +11,13 @@ import de.uzk.hki.da.metadata.XsltGenerator;
 import de.uzk.hki.da.repository.RepositoryFacade;
 
 /**
+ * This action transforms the primary metadata of an
+ * object into EDM/RDF and adds the result into
+ * the presentation repository.
+ * 
+ * The transformation is done with XSLT, the mappings
+ * can be found in "conf/xslt/edm/".
+ * 
  * @author Sebastian Cuy
  */
 public class CreateEDMAction extends AbstractAction {
@@ -84,26 +91,60 @@ public class CreateEDMAction extends AbstractAction {
 		// nothing to do		
 	}
 
+	/**
+	 * Gets the base URI that will be prepended to the
+	 * object ID in order to coin a URI for Cultural
+	 * Heritage Objects in the EDM data.
+	 * @return the base URI
+	 */
 	public String getChoBaseUri() {
 		return choBaseUri;
 	}
-
+	
+	/**
+	 * Sets the base URI that will be prepended to the
+	 * object ID in order to coin a URI for Cultural
+	 * Heritage Objects in the EDM data.
+	 * @param the base URI
+	 */
 	public void setChoBaseUri(String choBaseUri) {
 		this.choBaseUri = choBaseUri;
 	}
 
+	/**
+	 * Gets the base URI that will be prepended to the
+	 * object ID in order to coin a URI for Aggregations
+	 * in the EDM data.
+	 * @return the base URI
+	 */
 	public String getAggrBaseUri() {
 		return aggrBaseUri;
 	}
 
+	/**
+	 * Sets the base URI that will be prepended to the
+	 * object ID in order to coin a URI for Aggregations
+	 * in the EDM data.
+	 * @param the base URI
+	 */
 	public void setAggrBaseUri(String aggrBaseUri) {
 		this.aggrBaseUri = aggrBaseUri;
 	}
 
+	/**
+	 * Gets the base URI that will be prepended to the
+	 * relative IDs in the EDM data.
+	 * @return the base URI
+	 */
 	public String getLocalBaseUri() {
 		return localBaseUri;
 	}
-
+	
+	/**
+	 * Sets the base URI that will be prepended to the
+	 * relative IDs in the EDM data.
+	 * @param the base URI
+	 */
 	public void setLocalBaseUri(String localBaseUri) {
 		this.localBaseUri = localBaseUri;
 	}
