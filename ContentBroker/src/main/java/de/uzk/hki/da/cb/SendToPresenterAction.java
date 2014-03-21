@@ -73,6 +73,7 @@ public class SendToPresenterAction extends AbstractAction {
 	private Map<String,String> viewerUrls;
 	private Set<String> fileFilter;
 	private Map<String,String> labelMap;
+	private Set<String> testContractors;
 	
 	SendToPresenterAction(){}
 
@@ -271,13 +272,9 @@ public class SendToPresenterAction extends AbstractAction {
 			logger.debug("Added relationship: rels-ext:isMemberOfCollection " + collectionUri);
 			
 			// add oai identifier
-			// don't add test packages to OAI-PMH
-			// TODO move test contractors to config
 			if (!"danrw-closed:".equals(collection) && 
-				!("TEST".equals(contractorShortName)
-					|| "LVRInfoKom".equals(contractorShortName)
-					|| "HBZ".equals(contractorShortName)
-				)
+				// don't add test packages to OAI-PMH
+				!testContractors.contains(contractorShortName)
 			) {
 				String oaiId = "oai:danrw.de:" + objectId;
 				repositoryFacade.addRelationship(objectId, collection, "http://www.openarchives.org/OAI/2.0/identifier", oaiId);
@@ -372,6 +369,26 @@ public class SendToPresenterAction extends AbstractAction {
 		logger.debug("Detected MIME type {} for file {}",mimeType,file.getName());		
 		return mimeType;
 		
+	}
+
+	/**
+	 * Get the set of contractors that are considered test users.
+	 * Objects ingested by these users will not be published 
+	 * in the OAI-PMH server.
+	 * @return the set of test users
+	 */
+	public Set<String> getTestContractors() {
+		return testContractors;
+	}
+
+	/**
+	 * Set the set of contractors that are considered test users.
+	 * Objects ingested by these users will not be published 
+	 * in the OAI-PMH server.
+	 * @param the set of test users
+	 */
+	public void setTestContractors(Set<String> testContractors) {
+		this.testContractors = testContractors;
 	}
 
 }

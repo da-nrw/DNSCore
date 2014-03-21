@@ -22,6 +22,7 @@ package de.uzk.hki.da.cb;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.NotImplementedException;
@@ -57,6 +58,7 @@ public class IndexESAction extends AbstractAction {
 	private String[] esHosts;
 	private String esCluster = "elasticsearch";
 	private String esIndexName;
+	private Set<String> testContractors;
 
 	@Override
 	boolean implementation() {
@@ -72,10 +74,7 @@ public class IndexESAction extends AbstractAction {
 		// use test index for test packages
 		// TODO move test contractors to config
 		String contractorShortName = job.getObject().getContractor().getShort_name();
-		if("TEST".equals(contractorShortName)
-			|| "LVRInfoKom".equals(contractorShortName)
-			|| "HBZ".equals(contractorShortName)
-		) {
+		if(testContractors.contains(contractorShortName)) {
 			esIndexName += "_test";
 		}
 		
@@ -186,6 +185,26 @@ public class IndexESAction extends AbstractAction {
 	 */
 	public void setEsIndexName(String esIndexName) {
 		this.esIndexName = esIndexName;
+	}
+
+	/**
+	 * Get the set of contractors that are considered test users.
+	 * Objects ingested by these users will be indexed in the
+	 * test index (index_name + "test").
+	 * @return the set of test users
+	 */
+	public Set<String> getTestContractors() {
+		return testContractors;
+	}
+
+	/**
+	 * Set the set of contractors that are considered test users.
+	 * Objects ingested by these users will be indexed in the
+	 * test index (index_name + "test").
+	 * @param the set of test users
+	 */
+	public void setTestContractors(Set<String> testContractors) {
+		this.testContractors = testContractors;
 	}
 
 }

@@ -39,6 +39,7 @@
 		<property name="repositoryFacade" ref="repositoryFacade" />
 		<property name="name" value="SendToPresenterAction" />
 		<property name="viewerUrls" ref="viewerUrls" />
+		<property name="testContractors" ref="testContractors" />
 		<property name="fileFilter">
 	        <set>
 	            <value>premis.xml</value>
@@ -52,9 +53,9 @@
 		<property name="endStatus" value="570" />
 		<property name="repositoryFacade" ref="repositoryFacade" />
 		<property name="name" value="CreateEDMAction" />
-		<property name="choBaseUri" value="${uris.cho}"/>
-		<property name="aggrBaseUri" value="${uris.aggr}"/>
-		<property name="localBaseUri" value="${uris.local}"/>
+		<property name="choBaseUri" value="${uris.cho}" />
+		<property name="aggrBaseUri" value="${uris.aggr}" />
+		<property name="localBaseUri" value="${uris.local}" />
 	</bean>
 	<bean id="IndexESAction" class="de.uzk.hki.da.cb.IndexESAction"
 		scope="prototype">
@@ -65,6 +66,7 @@
 		<property name="esHosts" value="${elasticsearch.hosts}" />
 		<property name="esCluster" value="${elasticsearch.cluster}" />
 		<property name="esIndexName" value="${elasticsearch.index}" />
+		<property name="testContractors" ref="testContractors" />
 	</bean>
 	<!-- END Fedora and ElasticSearch related END -->
 </beans>
