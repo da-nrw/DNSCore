@@ -9,6 +9,12 @@ To build DNS Core successfully you'll need at least a developer engine with
 * MAVEN
 * Grails 2.2.4 in order to compile DA-WEB 
 
+Please ensure, your @machine's are all running in UTF-8 mode:
+    
+    export MAVEN_OPTS='-Dfile.encoding=UTF-8'
+    export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
+    export LANG='de_DE.UTF-8'
+
 ### Continuous Delivery Workflow
 
 * Commit and push regularly. Ideally after every small task. If necessary divide bigger tasks in smaller subtasks.
