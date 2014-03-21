@@ -17,7 +17,7 @@
 		</property>
 	</bean>
     
-    <bean id="fedora" class="de.uzk.hki.fedorest.Fedora">
+    <bean id="repositoryFacade" class="de.uzk.hki.da.repository.Fedora3RepositoryFacade">
 		<constructor-arg value="${fedora.url}" />
 		<constructor-arg value="${fedora.user}" />
 		<constructor-arg ref="fedoPass" />
@@ -36,15 +36,21 @@
 		scope="prototype">
 		<property name="startStatus" value="550" />
 		<property name="endStatus" value="560" />
-		<property name="fedora" ref="fedora" />
+		<property name="repositoryFacade" ref="repositoryFacade" />
 		<property name="name" value="SendToPresenterAction" />
 		<property name="viewerUrls" ref="viewerUrls" />
+		<property name="fileFilter">
+	        <set>
+	            <value>premis.xml</value>
+	            <value>premis.xml.tmp</value>
+	        </set>
+	    </property>
 	</bean>
 	<bean id="CreateEDMAction" class="de.uzk.hki.da.cb.CreateEDMAction"
 		scope="prototype">
 		<property name="startStatus" value="560" />
 		<property name="endStatus" value="570" />
-		<property name="fedora" ref="fedora" />
+		<property name="repositoryFacade" ref="repositoryFacade" />
 		<property name="name" value="CreateEDMAction" />
 		<property name="choBaseUri" value="${uris.cho}"/>
 		<property name="aggrBaseUri" value="${uris.aggr}"/>
@@ -54,7 +60,7 @@
 		scope="prototype">
 		<property name="startStatus" value="570" />
 		<property name="endStatus" value="579" />
-		<property name="fedora" ref="fedora" />
+		<property name="repositoryFacade" ref="repositoryFacade" />
 		<property name="name" value="IndexESAction" />
 		<property name="esHosts" value="${elasticsearch.hosts}" />
 		<property name="esCluster" value="${elasticsearch.cluster}" />
