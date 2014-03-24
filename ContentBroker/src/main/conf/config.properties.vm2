@@ -40,4 +40,5 @@ uris.local=info:
 
 grid.implementation=irodsGridFacade
 implementation.distributedConversion=irodsDistributedConversionAdapter
+repository.implementation=fedoraRepositoryFacade
 python.bin=python
