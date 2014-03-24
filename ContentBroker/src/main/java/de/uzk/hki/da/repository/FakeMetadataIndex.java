@@ -1,14 +1,49 @@
+/*
+  DA-NRW Software Suite | ContentBroker
+  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
+  Universität zu Köln
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package de.uzk.hki.da.repository;
 
 import java.util.Map;
 
+/**
+ * Implements a simple file system based "index"
+ * for acceptance testing on developer machines.
+ * @author Sebastian Cuy
+ */
 public class FakeMetadataIndex implements MetadataIndex {
-
+	
+	private String dipAreaRootPath;
+	
 	@Override
 	public void indexMetadata(String indexName, String type, String id,
 			Map<String, Object> data) throws MetadataIndexException {
-		// TODO Auto-generated method stub
+		
+		
+		
+	}
 
+	public String getDipAreaRootPath() {
+		return dipAreaRootPath;
+	}
+
+	public void setDipAreaRootPath(String dipAreaRootPath) {
+		this.dipAreaRootPath = dipAreaRootPath;
 	}
 
 }
