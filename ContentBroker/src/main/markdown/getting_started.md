@@ -72,7 +72,7 @@ Now you need to configure your installer in order to make use of the created dir
 [template](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/conf/config.properties.dev). Note that this document
 can change from time to time and therefore is bound to a specific version of DNSCore. If in doubt you can get a config which fits your
 version in the appropriate source code branch of the release you want to install.
-1. Save the file as config.properties in a temporary directory on your local box. (TODO where?)
+1. Save the file as config.properties in an arbitrary temporary directory on your local box.
 1. Replace CONTENTBROKER_ROOT by [somewhere].
 
 in config.properties:    
@@ -94,8 +94,8 @@ the newest version, set the path accordingly at
 
 1. Setup Database for accepting incoming connections 
 1. Create a new database called contentbroker. 
-1. Ask our team for the decrypted password for the irods database user. (TODO)
-1. Create a database user called irods with exactly that password.
+1. Ask our team for the decrypted password for the irods database user.
+1. Create a database user with exactly that password.
 1. Get the actual schema [dump](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/conf/postgres_schema.dump)
 and use it to create your database schema for the database contentbroker.
 1. Download a hibernate properties file 
