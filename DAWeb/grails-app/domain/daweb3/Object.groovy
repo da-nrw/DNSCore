@@ -65,7 +65,7 @@ class Object {
 	 * 2 means currently running (yellow)
 	 */
 	def getStatusCode() {
-		if (object_state<50) return 1
+		if (object_state<50) return 2
 		if (object_state==50) return 2
 		if (object_state==51) return 1
 		if (object_state==100) return 0

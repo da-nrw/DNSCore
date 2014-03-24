@@ -141,6 +141,9 @@ public class UnpackAction extends AbstractAction {
 						object.getIdentifier() + " not in archived/valid state " + "(" + object.getObject_state() +
 						"), therefore no deltas could be added!");
 			}
+			logger.info("Setting " + object.getIdentifier() + " to transient state, because of recieving delta");
+			object.setObject_state(40);
+			
 			RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot());
 
 			try {
