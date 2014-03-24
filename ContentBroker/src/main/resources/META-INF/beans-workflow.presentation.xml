@@ -43,15 +43,13 @@
 		<property name="aggrBaseUri" value="${uris.aggr}" />
 		<property name="localBaseUri" value="${uris.local}" />
 	</bean>
-	<bean id="IndexESAction" class="de.uzk.hki.da.cb.IndexESAction"
+	<bean id="IndexMetadataAction" class="de.uzk.hki.da.cb.IndexMetadataAction"
 		scope="prototype">
 		<property name="startStatus" value="570" />
 		<property name="endStatus" value="579" />
 		<property name="repositoryFacade" ref="${repository.implementation}" />
-		<property name="name" value="IndexESAction" />
-		<property name="esHosts" value="${elasticsearch.hosts}" />
-		<property name="esCluster" value="${elasticsearch.cluster}" />
-		<property name="esIndexName" value="${elasticsearch.index}" />
+		<property name="name" value="IndexMetadataAction" />
+		<property name="indexName" value="${elasticsearch.index}" />
 		<property name="testContractors" ref="testContractors" />
 	</bean>
 	<!-- END Fedora and ElasticSearch related END -->

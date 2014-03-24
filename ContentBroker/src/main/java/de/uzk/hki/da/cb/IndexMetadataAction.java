@@ -33,7 +33,7 @@ import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
 import de.uzk.hki.da.repository.RepositoryFacade;
 
 /**
- * Action that indexes metadata data into a search index. 
+ * Action that indexes metadata into a search index. 
  * @author Sebastian Cuy 
  */
 public class IndexMetadataAction extends AbstractAction {
@@ -54,7 +54,7 @@ public class IndexMetadataAction extends AbstractAction {
 		// use test index for test packages
 		String contractorShortName = job.getObject().getContractor().getShort_name();
 		String tempIndexName = indexName;
-		if(testContractors.contains(contractorShortName)) {
+		if(testContractors != null && testContractors.contains(contractorShortName)) {
 			tempIndexName += "_test";
 		}
 
