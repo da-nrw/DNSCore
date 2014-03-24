@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
@@ -143,9 +144,9 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	}
 
 	@Override
-	public void indexMetadata(String indexName, String objectId, String collection, String fileId)
-			throws RepositoryException {
-		
+	public void indexMetadata(String indexName, String type, String id,
+			Map<String, Object> data) throws RepositoryException {
+		// stub, fake repository does not handle indexing
 	}
 
 }
