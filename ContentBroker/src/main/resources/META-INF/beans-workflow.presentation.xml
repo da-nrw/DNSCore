@@ -8,20 +8,6 @@
            http://www.springframework.org/schema/util/spring-util-3.0.xsd
            http://www.springframework.org/schema/task
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
-          
-	<bean id="fedoPass" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetClass" value="de.uzk.hki.da.utils.PasswordUtils"/>
-		<property name="targetMethod" value="decryptPassword"/>
-		<property name="arguments">
-			<list><value>${fedora.password}</value></list>
-		</property>
-	</bean>
-    
-    <bean id="repositoryFacade" class="de.uzk.hki.da.repository.Fedora3RepositoryFacade">
-		<constructor-arg value="${fedora.url}" />
-		<constructor-arg value="${fedora.user}" />
-		<constructor-arg ref="fedoPass" />
-    </bean>
   	
 	<!-- BEGIN Fedora and ElasticSearch related BEGIN -->
 	<bean id="FetchPIPsAction" class="de.uzk.hki.da.cb.FetchPIPsAction"
@@ -36,7 +22,7 @@
 		scope="prototype">
 		<property name="startStatus" value="550" />
 		<property name="endStatus" value="560" />
-		<property name="repositoryFacade" ref="repositoryFacade" />
+		<property name="repositoryFacade" ref="${repository.implementation}" />
 		<property name="name" value="SendToPresenterAction" />
 		<property name="viewerUrls" ref="viewerUrls" />
 		<property name="testContractors" ref="testContractors" />
@@ -51,7 +37,7 @@
 		scope="prototype">
 		<property name="startStatus" value="560" />
 		<property name="endStatus" value="570" />
-		<property name="repositoryFacade" ref="repositoryFacade" />
+		<property name="repositoryFacade" ref="${repository.implementation}" />
 		<property name="name" value="CreateEDMAction" />
 		<property name="choBaseUri" value="${uris.cho}" />
 		<property name="aggrBaseUri" value="${uris.aggr}" />
@@ -61,7 +47,7 @@
 		scope="prototype">
 		<property name="startStatus" value="570" />
 		<property name="endStatus" value="579" />
-		<property name="repositoryFacade" ref="repositoryFacade" />
+		<property name="repositoryFacade" ref="${repository.implementation}" />
 		<property name="name" value="IndexESAction" />
 		<property name="esHosts" value="${elasticsearch.hosts}" />
 		<property name="esCluster" value="${elasticsearch.cluster}" />
@@ -69,4 +55,5 @@
 		<property name="testContractors" ref="testContractors" />
 	</bean>
 	<!-- END Fedora and ElasticSearch related END -->
+	
 </beans>
