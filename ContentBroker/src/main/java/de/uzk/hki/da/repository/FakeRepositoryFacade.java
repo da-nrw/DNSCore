@@ -9,8 +9,6 @@ import java.io.PrintWriter;
 
 import org.apache.commons.io.FileUtils;
 
-import com.yourmediashelf.fedora.client.FedoraClientException;
-
 /**
  * Implements a simple file system based repository
  * for acceptance testing on developer machines.
@@ -24,25 +22,28 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	public boolean purgeObjectIfExists(String objectId, String collection)
 			throws RepositoryException {
 		try {
-			FileUtils.deleteDirectory(getFile(objectId, collection, null));
+			if (objectExists(objectId, collection)) {
+				FileUtils.deleteDirectory(getFile(objectId, collection, null));
+				return true;
+			} else {
+				return false;
+			}
 		} catch (IOException e) {
 			throw new RepositoryException("Unable to purge object " + objectId, e);
 		}
-		return true;
 	}
 
 	@Override
-	public boolean createObject(String objectId, String collection,
+	public void createObject(String objectId, String collection,
 			String ownerId) throws RepositoryException {
 		if(!getFile(objectId, collection, null).mkdirs()) {
 			throw new RepositoryException("Unable to create folder for object "
 					+ collection + "/" + objectId);
 		}
-		return true;
 	}
 
 	@Override
-	public boolean ingestFile(String objectId, String collection,
+	public void ingestFile(String objectId, String collection,
 			String fileId, File file, String label, String mimeType)
 			throws RepositoryException, IOException {
 		try {
@@ -52,11 +53,10 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 			throw new RepositoryException("Unable to create file "
 					+ collection + "/" + objectId + "/" + fileId , e);
 		}
-		return true;
 	}
 
 	@Override
-	public boolean createMetadataFile(String objectId, String collection,
+	public void createMetadataFile(String objectId, String collection,
 			String fileId, String content, String label, String mimeType)
 			throws RepositoryException {
 		PrintWriter pw = null;
@@ -69,14 +69,13 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 		} finally {
 			if (pw != null)	pw.close();
 		}
-		return true;
 	}
 
 	@Override
-	public boolean updateMetadataFile(String objectId, String collection,
+	public void updateMetadataFile(String objectId, String collection,
 			String fileId, String content, String label, String mimeType)
 			throws RepositoryException {
-		return createMetadataFile(objectId, collection, fileId, content, label, mimeType);
+		createMetadataFile(objectId, collection, fileId, content, label, mimeType);
 	}
 
 	@Override
@@ -98,7 +97,7 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 
 	@Override
 	public void addRelationship(String objectId, String collection,
-			String predicate, String object) throws FedoraClientException {
+			String predicate, String object) {
 		// stub, fake repository does not handle relationships
 	}
 
@@ -122,6 +121,12 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 			path += File.pathSeparator + file;
 		}
 		return new File(path);
+	}
+
+	@Override
+	public void indexMetadata(String objectId, String collection, String fileId)
+			throws RepositoryException {
+		// stub, fake repository does not handle indexing
 	}
 
 }

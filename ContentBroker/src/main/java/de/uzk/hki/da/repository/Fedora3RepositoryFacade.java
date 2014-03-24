@@ -23,10 +23,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.jsonldjava.utils.JSONUtils;
 import com.yourmediashelf.fedora.client.FedoraClient;
 import com.yourmediashelf.fedora.client.FedoraClientException;
 import com.yourmediashelf.fedora.client.FedoraCredentials;
@@ -38,9 +42,12 @@ import com.yourmediashelf.fedora.client.request.Ingest;
 import com.yourmediashelf.fedora.client.request.ModifyDatastream;
 import com.yourmediashelf.fedora.client.request.PurgeObject;
 
+import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
+
 public class Fedora3RepositoryFacade implements RepositoryFacade {
 	
 	private static Logger logger = LoggerFactory.getLogger(Fedora3RepositoryFacade.class);
+	private MetadataIndex metadataIndex;
 	
 	private FedoraClient fedora;
 	
@@ -71,7 +78,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	}
 
 	@Override 
-	public boolean createObject(String objectId, String collection, String ownerId) throws RepositoryException {
+	public void createObject(String objectId, String collection, String ownerId) throws RepositoryException {
 		String pid = generatePid(objectId, collection);
 		try {
 			new Ingest(pid).ownerId(ownerId).execute(fedora);
@@ -79,11 +86,10 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		} catch (FedoraClientException e) {
 			throw new RepositoryException("Unable to create package " + pid, e);
 		}
-		return true;
 	}
 	
 	@Override
-	public boolean ingestFile(String objectId, String collection, String dsId, File file, String label, String mimeType) throws RepositoryException, IOException {
+	public void ingestFile(String objectId, String collection, String dsId, File file, String label, String mimeType) throws RepositoryException, IOException {
 		String pid = generatePid(objectId, collection);
 		try {
 			String dsLocation = "file://" + file.getAbsolutePath();
@@ -94,12 +100,10 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		} catch (FedoraClientException e) {
 			throw new RepositoryException("Error while trying to add datastream for file " + file.getName(),e);
 		}		
-		return true;
-		
 	}
 	
 	@Override
-	public boolean createMetadataFile(String objectId, String collection, String dsId, String content, String label, String mimeType) throws RepositoryException {
+	public void createMetadataFile(String objectId, String collection, String dsId, String content, String label, String mimeType) throws RepositoryException {
 		String pid = generatePid(objectId, collection);
 		try {
 			new AddDatastream(pid, dsId).mimeType(mimeType)
@@ -109,11 +113,10 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		} catch(FedoraClientException e) {
 			throw new RepositoryException("Unable to create metadata file: " + dsId, e);
 		}
-		return true;
 	}
 	
 	@Override
-	public boolean updateMetadataFile(String objectId, String collection, String dsId, String content, String label, String mimeType) throws RepositoryException {
+	public void updateMetadataFile(String objectId, String collection, String dsId, String content, String label, String mimeType) throws RepositoryException {
 		String pid = generatePid(objectId, collection);
 		try {
 			new ModifyDatastream(pid, dsId).mimeType(mimeType)
@@ -122,7 +125,6 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		} catch(FedoraClientException e) {
 			throw new RepositoryException("Unable to update metadata file: " + dsId, e);
 		}
-		return true;
 	}
 	
 	@Override
@@ -173,15 +175,62 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	}
 	
 	@Override
-	public void addRelationship(String objectId, String collection, String predicate, String object) throws FedoraClientException {
+	public void addRelationship(String objectId, String collection, String predicate, String object) throws RepositoryException {
 		String pid = generatePid(objectId, collection);
-		new AddRelationship("info:fedora/" + pid)
-			.predicate(predicate)
-			.object(object).execute();
+		try {
+			new AddRelationship("info:fedora/" + pid)
+				.predicate(predicate)
+				.object(object).execute();
+		} catch (FedoraClientException e) {
+			throw new RepositoryException("Unable to add relationship", e);
+		}
+	}
+	
+	@Override
+	public void indexMetadata(String objectId, String collection,
+			String fileId, String indexName) throws RepositoryException {
+
+		try {
+			
+			InputStream metadataStream = retrieveFile(objectId, collection, fileId);
+			String metadataContent = IOUtils.toString(metadataStream, "UTF-8");
+			
+			// transform metadata to JSON
+			RdfToJsonLdConverter converter = new RdfToJsonLdConverter("conf/frame.jsonld");
+			Map<String, Object> json = converter.convert(metadataContent);
+			
+			logger.debug("transformed RDF into JSON. Result: {}", JSONUtils.toPrettyString(json));
+			
+			@SuppressWarnings("unchecked")
+			List<Object> graph = (List<Object>) json.get("@graph");
+			// create index entry for every subject in graph
+			for (Object object : graph) {
+				// extract id from subject uri
+				@SuppressWarnings("unchecked")
+				Map<String,Object> subject = (Map<String,Object>) object;
+				String[] splitId = ((String) subject.get("@id")).split("/");
+				String id = splitId[splitId.length-1];
+				// extract index name from type
+				String[] splitType = ((String) subject.get("@type")).split("/");
+				String type = splitType[splitType.length-1];
+				metadataIndex.indexMetadata(indexName, type, id, subject);
+			}
+		} catch(Exception e) {
+			throw new RepositoryException("Unable to index metadata", e);
+		}
+		
 	}
 	
 	private String generatePid(String objectId, String collection) {
 		return collection + ":" + objectId;
+	}
+
+	public MetadataIndex getMetadataIndex() {
+		return metadataIndex;
+	}
+
+	public void setMetadataIndex(MetadataIndex metadataIndex) {
+		this.metadataIndex = metadataIndex;
 	}
 
 }

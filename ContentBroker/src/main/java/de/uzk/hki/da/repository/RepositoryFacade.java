@@ -32,7 +32,7 @@ import com.yourmediashelf.fedora.client.FedoraClientException;
  * this interface and changing the corresponding class in the spring configuration.
  * 
  * @author Sebastian Cuy
- *
+ * 
  */
 public interface RepositoryFacade {
 	
@@ -43,17 +43,16 @@ public interface RepositoryFacade {
 	 * @return boolean, true if package existed and was purged
 	 * @throws RepositoryException
 	 */
-	public boolean purgeObjectIfExists(String objectId, String collection) throws RepositoryException;
+	boolean purgeObjectIfExists(String objectId, String collection) throws RepositoryException;
 	
 	/**
 	 * Create a new object in the repository.
 	 * @param objectId the id for the package
 	 * @param collection the collection name
 	 * @param ownerId a user id
-	 * @return boolean, true if package existed and was purged
 	 * @throws RepositoryException
 	 */
-	public boolean createObject(String objectId, String collection, String ownerId) throws RepositoryException;
+	void createObject(String objectId, String collection, String ownerId) throws RepositoryException;
 	
 	/**
 	 * Attach a file to a package in the repository.
@@ -63,11 +62,10 @@ public interface RepositoryFacade {
 	 * @param file the file to be ingested
 	 * @param label the label of the file
 	 * @param mimeType the MIME type
-	 * @return true, if successful
 	 * @throws IOException 
 	 * @throws RepositoryEcxeption
 	 */
-	boolean ingestFile(String objectId, String collection, String fileId,
+	void ingestFile(String objectId, String collection, String fileId,
 			File file, String label, String mimeType) throws RepositoryException, IOException;
 	
 	/**
@@ -78,10 +76,9 @@ public interface RepositoryFacade {
 	 * @param content the file content
 	 * @param label the label of the file
 	 * @param mimeType the MIME type
-	 * @return true, if successful
 	 * @throws RepositoryEcxeption
 	 */
-	public boolean createMetadataFile(String objectId, String fileId, String collection,
+	void createMetadataFile(String objectId, String collection, String fileId,
 			String content, String label, String mimeType) throws RepositoryException;
 	
 	/**
@@ -92,10 +89,9 @@ public interface RepositoryFacade {
 	 * @param content the file content
 	 * @param label the label of the file
 	 * @param mimeType the MIME type
-	 * @return true, if successful
 	 * @throws RepositoryEcxeption
 	 */
-	public boolean updateMetadataFile(String objectId, String collection, String fileId, 
+	void updateMetadataFile(String objectId, String collection, String fileId, 
 			String content, String label, String mimeType) throws RepositoryException;
 	
 	/**
@@ -106,7 +102,7 @@ public interface RepositoryFacade {
 	 * @return the contents of the file as an input stream
 	 * @throws RepositoryException
 	 */
-	public InputStream retrieveFile(String objectId, String collection, String fileId) throws RepositoryException;
+	InputStream retrieveFile(String objectId, String collection, String fileId) throws RepositoryException;
 
 	/**
 	 * Check if an object exists in the repository.
@@ -124,15 +120,27 @@ public interface RepositoryFacade {
 	 * @param predicate the predicate as absolute URL
 	 * @param object the object as absolute URL
 	 * @throws FedoraClientException
+	 * @throws RepositoryException
 	 */
-	public void addRelationship(String objectId, String collection, String predicate, String object)
-			throws FedoraClientException;
+	void addRelationship(String objectId, String collection, String predicate, String object)
+			throws RepositoryException;
+	
+	/**
+	 * Add object metadata to index
+	 * @param objectId the id of the object in the repository
+	 * @param collection a named collection
+	 * @param fileId the id of the metadata file to be indexed
+	 * @param indexName the name of the index the metadata is added to
+	 * @throws RepositoryException
+	 */
+	void indexMetadata(String objectId, String collection,
+			String fileId, String indexName) throws RepositoryException;
 	
 	/**
 	 * Generate a file id from a file path.
 	 * @param path the path to the file
 	 * @return the generated file id
 	 */
-	public String generateFileId(String path);
+	String generateFileId(String path);
 
 }
