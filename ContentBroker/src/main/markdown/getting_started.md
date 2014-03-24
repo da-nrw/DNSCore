@@ -113,7 +113,7 @@ and use it to create your database schema for the database contentbroker.
 1. Put hibernate.cfg.xml and config.properties you have prepared during this tutorial to your installer before running install.sh. 
 1. Call
 <pre>
-    ./install.sh [somewhere]/ContentBroker/
+    ./install.sh [somewhere]/ContentBroker (make sure there is no trailing slash!)
 </pre>
 1. As feature set, choose (n)ode (TODO: explain different modes)
 1. Download a fake glue [script](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/bash/ffmpeg.sh.fake) 

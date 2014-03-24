@@ -332,7 +332,8 @@ public class PremisXmlReader implements XmlReader{
 		}
 		else {
 			for (Package pkg : object.getPackages()) {
-				logger.debug("package name: " + object.getIdentifier() + ".pack_" + pkg.getName() + ".tar");
+				if (object.getIdentifier() != null)
+					logger.debug("package name: " + object.getIdentifier() + ".pack_" + pkg.getName() + ".tar");
 				if (nonConvertEventIdentifier.equals(object.getIdentifier() + ".pack_" + pkg.getName() + ".tar")) {
 					pkg.getEvents().add(event);
 					eventAdded = true;
