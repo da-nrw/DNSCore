@@ -19,11 +19,17 @@
 
 package de.uzk.hki.da.cb;
 
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.NotImplementedException;
 
-import de.uzk.hki.da.repository.RepositoryException;
+import com.github.jsonldjava.utils.JSONUtils;
+
+import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
 import de.uzk.hki.da.repository.RepositoryFacade;
 
 /**
@@ -51,14 +57,36 @@ public class IndexMetadataAction extends AbstractAction {
 		if(testContractors.contains(contractorShortName)) {
 			tempIndexName += "_test";
 		}
-		
-		String objectId = object.getIdentifier();
+
 		try {
-			repositoryFacade.indexMetadata(tempIndexName, objectId, "danrw", "EDM");
-		} catch (RepositoryException e) {
-			logger.warn("Could not retrieve EDM from Fedora, skipping ingest into elasticsearch!");
-		} catch (Exception e) {
-			throw new RuntimeException("Error while ingesting EDM into elasticsearch", e);
+			
+			String objectId = object.getIdentifier();
+			InputStream metadataStream = repositoryFacade.retrieveFile(objectId, "danrw", "EDM");
+			String metadataContent = IOUtils.toString(metadataStream, "UTF-8");
+			
+			// transform metadata to JSON
+			RdfToJsonLdConverter converter = new RdfToJsonLdConverter("conf/frame.jsonld");
+			Map<String, Object> json = converter.convert(metadataContent);
+			
+			logger.debug("transformed RDF into JSON. Result: {}", JSONUtils.toPrettyString(json));
+			
+			@SuppressWarnings("unchecked")
+			List<Object> graph = (List<Object>) json.get("@graph");
+			// create index entry for every subject in graph
+			for (Object object : graph) {
+				// extract id from subject uri
+				@SuppressWarnings("unchecked")
+				Map<String,Object> subject = (Map<String,Object>) object;
+				String[] splitId = ((String) subject.get("@id")).split("/");
+				String id = splitId[splitId.length-1];
+				// extract index name from type
+				String[] splitType = ((String) subject.get("@type")).split("/");
+				String type = splitType[splitType.length-1];
+				repositoryFacade.indexMetadata(tempIndexName, type, id, subject);
+			}
+			
+		} catch(Exception e) {
+			throw new RuntimeException(e);
 		}
 		
 		return true;

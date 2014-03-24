@@ -22,6 +22,7 @@ package de.uzk.hki.da.repository;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 import com.yourmediashelf.fedora.client.FedoraClientException;
 
@@ -126,15 +127,14 @@ public interface RepositoryFacade {
 			throws RepositoryException;
 	
 	/**
-	 * Add object metadata to index
-	 * @param objectId the id of the object in the repository
-	 * @param collection a named collection
-	 * @param fileId the id of the metadata file to be indexed
-	 * @param indexName the name of the index the metadata is added to
+	 * Indexes metadata
+	 * @param indexName the name of the index
+	 * @param type the type or collection in the index
+	 * @param data nested key value data to be indexed
 	 * @throws RepositoryException
 	 */
-	void indexMetadata(String objectId, String collection,
-			String fileId, String indexName) throws RepositoryException;
+	void indexMetadata(String indexName, String type, String id, Map<String, Object> data)
+			throws RepositoryException;
 	
 	/**
 	 * Generate a file id from a file path.

@@ -23,14 +23,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.jsonldjava.utils.JSONUtils;
 import com.yourmediashelf.fedora.client.FedoraClient;
 import com.yourmediashelf.fedora.client.FedoraClientException;
 import com.yourmediashelf.fedora.client.FedoraCredentials;
@@ -41,8 +38,6 @@ import com.yourmediashelf.fedora.client.request.GetObjectProfile;
 import com.yourmediashelf.fedora.client.request.Ingest;
 import com.yourmediashelf.fedora.client.request.ModifyDatastream;
 import com.yourmediashelf.fedora.client.request.PurgeObject;
-
-import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
 
 public class Fedora3RepositoryFacade implements RepositoryFacade {
 	
@@ -185,44 +180,15 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			throw new RepositoryException("Unable to add relationship", e);
 		}
 	}
-	
-	@Override
-	public void indexMetadata(String objectId, String collection,
-			String fileId, String indexName) throws RepositoryException {
 
+	@Override
+	public void indexMetadata(String indexName, String type, String id,
+			Map<String, Object> data) throws RepositoryException {
 		try {
-			
-			InputStream metadataStream = retrieveFile(objectId, collection, fileId);
-			String metadataContent = IOUtils.toString(metadataStream, "UTF-8");
-			
-			// transform metadata to JSON
-			RdfToJsonLdConverter converter = new RdfToJsonLdConverter("conf/frame.jsonld");
-			Map<String, Object> json = converter.convert(metadataContent);
-			
-			logger.debug("transformed RDF into JSON. Result: {}", JSONUtils.toPrettyString(json));
-			
-			@SuppressWarnings("unchecked")
-			List<Object> graph = (List<Object>) json.get("@graph");
-			// create index entry for every subject in graph
-			for (Object object : graph) {
-				// extract id from subject uri
-				@SuppressWarnings("unchecked")
-				Map<String,Object> subject = (Map<String,Object>) object;
-				String[] splitId = ((String) subject.get("@id")).split("/");
-				String id = splitId[splitId.length-1];
-				// extract index name from type
-				String[] splitType = ((String) subject.get("@type")).split("/");
-				String type = splitType[splitType.length-1];
-				metadataIndex.indexMetadata(indexName, type, id, subject);
-			}
-		} catch(Exception e) {
-			throw new RepositoryException("Unable to index metadata", e);
-		}
-		
-	}
-	
-	private String generatePid(String objectId, String collection) {
-		return collection + ":" + objectId;
+			metadataIndex.indexMetadata(indexName, type, id, data);
+		} catch (MetadataIndexException e) {
+			throw new RepositoryException("Unable to index metadata", e);			
+		}		
 	}
 
 	public MetadataIndex getMetadataIndex() {
@@ -231,6 +197,10 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 
 	public void setMetadataIndex(MetadataIndex metadataIndex) {
 		this.metadataIndex = metadataIndex;
+	}
+	
+	private String generatePid(String objectId, String collection) {
+		return collection + ":" + objectId;
 	}
 
 }
