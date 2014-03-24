@@ -124,7 +124,7 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	}
 
 	@Override
-	public void indexMetadata(String objectId, String collection, String fileId)
+	public void indexMetadata(String indexName, String objectId, String collection, String fileId)
 			throws RepositoryException {
 		// stub, fake repository does not handle indexing
 	}
