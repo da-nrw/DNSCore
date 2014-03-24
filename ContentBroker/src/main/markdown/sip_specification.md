@@ -38,9 +38,9 @@ a single entry which resembles the filename of the container without the extensi
 Inside this first level entry you will find exactly five entries. Four of them
 are text files which are required by BagIt and then you have one data folder.
 Inside the data folder there must be at least one file which is the premis.xml.
-The premis.xml, which adheres to a standard described [here](http://www.loc.gov/standards/premis/v2/premis-2-2.pdf) contains
-some object specific rights settings which will control the publication settings
-for the object. In addition to the premis.xml the user is free to put any data
+The premis.xml, which adheres to a standard described [here](http://www.loc.gov/standards/premis/v2/premis-2-2.pdf) contains some object specific rights settings which will control the publication settings
+for the object. A detailed specification of the expected PREMIS elements and the used vocabulary can be found [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/premis_specification.md).
+In addition to the premis.xml the user is free to put any data
 of any formats and in any structure (hierarchical ordering in folders) into the 
 data folder though some formats and structures are somewhat more supported than
 others as we'll see soon (TODO).
@@ -64,26 +64,23 @@ A collection containing three SIPs might look like this:
 			mySIP2.(tgz|zip|tar)
 			mySIP3.(tgz|zip|tar)
 
-Collections allow the user to create a loose connection between multiple objects without merging the data to a single object. The status of every object belonging to a collection can be requested for all objects at once by searching for the collection name via DA-WEB.
+Collections allow the user to create a loose connection between multiple objects without merging the data into a single object. The status of every object belonging to a collection can be requested for all objects at once by searching for the collection name via DA-WEB.
 
-### PREMIS - specification
+## SIP-Builder 
 
-* TODO
+The [SIP-Builder](https://github.com/da-nrw/SIP-Builder) is a Java tool capable of creating SIPs and collections that adhere to the structure explained above. The tool can be used in two modes:
+* In GUI mode, the user is led through a number of consecutive steps in order to determine the data and rights settings. This mode is meant primarily for unexperienced users and users who want to process a rather small amount of data. It can also be used to create the contract rights in a comfortable way.
+* In CLI mode, the necessary settings are handed over to the application as command line parameters. This mode is useful for integrating the SIP-Builder into automated processes.
 
-### SIPBuilder 
-
-A German manual explaining the steps in GUI mode and all of the commands in CLI mode can be found [here] (https://github.com/da-nrw/SIP-Builder/blob/master/src/manual/SIP-Builder%20Anleitung.pdf?raw=true).
+A German manual explaining the steps in GUI mode and all of the possible parameters in CLI mode can be found [here] (https://github.com/da-nrw/SIP-Builder/blob/master/src/manual/SIP-Builder%20Anleitung.pdf?raw=true).
 
 For more information please refer to
 * the [Java API documentation](https://da-nrw.github.com/SIP-Builder/apidocs)
 * the [Java test documentation](https://da-nrw.github.com/SIP-Builder/testapidocs)
 
-
-* TODO explain SIP builder in this context
-
 ## SIP - special formats
 
-In addition to the basic SIP format the are some metadata formats/structures which are
+In addition to the basic SIP format there are some metadata formats/structures which are
 supported in a special way, optimized for the publication feature of DNSCore.
 
 ### METS
