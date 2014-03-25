@@ -134,6 +134,9 @@ class ObjectController {
 		}
 
 
+		/**
+		 * Create Queue Entry for Retrieval
+		 */
 
 
     def queueForRetrieval = {
@@ -162,7 +165,9 @@ class ObjectController {
 			render result as JSON
 		}
 	
-	
+	/**
+	 * Creates QueueEntry for PIP rebuild
+	 */
 	
 	def queueForRebuildPresentation = {
 		def result = [success:false]
@@ -183,6 +188,10 @@ class ObjectController {
 		render result as JSON
 	}
 	
+	/**
+	 * Creates QueueEntry for recreating elasticSearchIndex
+	 * 
+	 */
 	def queueForIndex = {
 		def result = [success:false]
 		
@@ -214,7 +223,7 @@ class ObjectController {
 			log.debug "object.contractor.shortName: " + object.contractor.shortName
 			log.debug "session.contractor.shortName: " + session.contractor.shortName
 			
-			def list = QueueEntry.findByObj(object) 
+			def list = QueueEntry.findByObjAndStatus(object, status) 
 			if (list==null) {
 			def entry = new QueueEntry()		
 			entry.status = status
@@ -247,29 +256,17 @@ class ObjectController {
 				log.debug "object.contractor.shortName: " + object.contractor.shortName
 				log.debug "session.contractor.shortName: " + session.contractor.shortName
 					
-					// set Object state to 50: orange 
-					object.setObject_state(50);
-					def entry = new QueueEntry()
-					entry.status = "5000";
-					entry.initialNode = grailsApplication.config.irods.server
-					entry.created = Math.round(new Date().getTime()/1000L)
-					entry.setObj(object);
-					if( !entry.save() ) {
-						entry.errors.each {
-							log.warn it
-						}
-						result.msg = "Fehler bei der Erstellung des Arbeitsauftrages zur Überprüfung des Objekts mit der URN ${object.urn}. Bitte wenden Sie sich an einen Administrator."
-					} else {
+				try {
+						createQueueEntryForObject( object, "5000" , grailsApplication.config.irods.server)
+						result.msg = "Auftrag zur Indizierung erstellt ${object.urn}."
 						result.msg = "Das Objekt mit der URN ${object.urn} wurde zur Überprüfung in die Queue eingestellt!"
 						result.success = true
+					} catch(Exception e) {
+					result.msg = "Fehler bei der Erstellung des Arbeitsauftrages zur Überprüfung des Objekts mit der URN ${object.urn}. Bitte wenden Sie sich an einen Administrator."
+					println e
 					}
-			} else {
-				result.msg = "couldn't find object in database"
 			}
-			log.info result.msg
-		
 			render result as JSON
-			
-		}
+	}
 
 }
