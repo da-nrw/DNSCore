@@ -70,6 +70,7 @@
 		<value>PIPGenConvertAction</value>
 		<value>PIPGenScanForPresentationAction</value>
 		<value>PIPGenObjectToWorkAreaAction</value>
+		<value>PostRetrievalAction</value>
 	</util:list>
 	
 </beans>
