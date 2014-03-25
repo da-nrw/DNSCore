@@ -22,3 +22,5 @@ install DNSCore on CentOS 6:
     sox
     developer-tools
     
+A complete install protcol of running Presenation rEpository node on ubuntu 12.04:
+https://github.com/da-nrw/prepscripts/blob/master/doc/install_protocol_presrep_ubuntu.sh
