@@ -10,8 +10,8 @@ You are able to install and run DNSCore without having iRODS installed, due to h
 In the following parts we assume 
 
 1. You have read the documenation available under www.irods.org (e.g. the read the e-Book "iRODS Primer")
-2. You have already have at least one iRODS Server at your site
-2. It is running and you have already performed some basic tests. 
+2. You have already have at least one iRODS Server running at your site
+2. It is started and you have already performed some basic tests. 
 3. You are able to create resources. 
 
 ## Introduction
@@ -69,6 +69,25 @@ Please note the settings of your iRODS installation, as they're needed for confi
 1. running iRODS Server > 3.2 
 1. danrw.re file Template: https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/danrw.re
 
+## Open needed Ports
+
+There are several ports which needed to be opened on your Firewall for iRODS to perform. It is possible to set the desired port numbers in the iRODS install scripts, but we recommend the standard ports. 
+
+TCP:
+
+    1247 (iRODS)
+    20.000-20.199 (iRODS)
+    5432 (DNS DB)
+    
+opened exclusively to all participants of your desired storage layer nodes.
+
+Other ports such as
+
+    8080
+    80
+    443
+    
+could be openend as you might need them, but hey might depend on your setup. Please disable all running desktop firewalls (e.g. iptables) on your server as they may cause problems.  
 
 ## Default Resource
 
