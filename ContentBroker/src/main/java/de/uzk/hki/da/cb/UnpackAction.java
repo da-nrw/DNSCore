@@ -142,7 +142,7 @@ public class UnpackAction extends AbstractAction {
 						"), therefore no deltas could be added!");
 			}
 			logger.info("Setting " + object.getIdentifier() + " to transient state, because of recieving delta");
-			object.setObject_state(40);
+			object.setObject_state(50);
 			
 			RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot());
 
