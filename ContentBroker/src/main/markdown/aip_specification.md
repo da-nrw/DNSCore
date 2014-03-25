@@ -138,6 +138,16 @@ the storage media.
         		2073_10_10+15_20+b/abc.[fmt_c]
         		2073_10_10+15_20+b/subfolder/fgh.[fmt_c]
         		
+### State of AIP
+
+DNSCore introduces serveral states of objects which are represented by numeric codes and visually shown in DA-WEB User interface.
+
+1. archived / valid
+2. invalid (during initial creation)
+3. working state (recieving delta or doing an integrity check)
+
+
+        		
 
 
         	
