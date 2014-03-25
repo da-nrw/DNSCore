@@ -11,6 +11,7 @@ install DNSCore on CentOS 6:
     identify
     apache-mod-ssl
     apache-mod-ajp
+    apache-mod-proxy
     gcc
     gcc-c++
     java 1.6 JDK 
