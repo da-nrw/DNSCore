@@ -213,7 +213,9 @@ class ObjectController {
 
 			log.debug "object.contractor.shortName: " + object.contractor.shortName
 			log.debug "session.contractor.shortName: " + session.contractor.shortName
-	
+			
+			def list = QueueEntry.findByObj(object) 
+			if (list==null) {
 			def entry = new QueueEntry()		
 			entry.status = status
 			entry.setObj(object);
@@ -226,7 +228,8 @@ class ObjectController {
 			if( !entry.save() ) {
 				entry.errors.each { errorMsg += it }
 				throw new Exception(errorMsg)
-			} 			
+			} 
+			} else throw new RuntimeException ("Bereits angefordert.");			
 		}
 
 
