@@ -69,6 +69,25 @@ Please note the settings of your iRODS installation, as they're needed for confi
 1. running iRODS Server > 3.2 
 1. danrw.re file Template: https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/danrw.re
 
+## Open needed Ports
+
+There are several ports which needed to be opened on your Firewall for iRODS to perform. It is possible to set the desired port numbers in the iRODS install scripts, but we recommend the standard ports. 
+
+TCP:
+
+    1247 (iRODS)
+    20.000-20.199 (iRODS)
+    5432 (DNS DB)
+    
+opened exclusively to all participants of your desired storage layer nodes.
+
+Other ports such as
+
+    8080
+    80
+    443
+    
+could be openend as you might need them, but hey might depend on your setup. 
 
 ## Default Resource
 
