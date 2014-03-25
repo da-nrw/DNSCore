@@ -87,7 +87,7 @@ Other ports such as
     80
     443
     
-could be openend as you might need them, but hey might depend on your setup. 
+could be openend as you might need them, but hey might depend on your setup. Please disable all running desktop firewalls (e.g. iptables) on your server as they may cause problems.  
 
 ## Default Resource
 
