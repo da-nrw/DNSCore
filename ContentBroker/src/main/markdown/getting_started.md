@@ -125,7 +125,7 @@ that will ensure you don't have to install ffmpeg for now.
     ./ContentBroker_start.sh
     tail -f log/contentbroker.log
 </pre>
-1. You should see your ContentBroker start working.
+1. You should see your ContentBroker start working. You can verify by looking for ongoing messages that look like "No jobs in queue, nothing to do, shoobidowoo, ..."
 
 You now have a ContentBroker installation which runs but does nothing for now.
 What we now need is to configure the database and add some user directories for a test user in order to let the ContentBroker do some work.
