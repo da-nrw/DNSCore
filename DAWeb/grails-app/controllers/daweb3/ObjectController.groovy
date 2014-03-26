@@ -53,6 +53,10 @@ class ObjectController {
 							
 						}
 						if (session.contractor.admin==1) {
+							if (params.searchContractorName!=null) {
+								createAlias( "contractor", "c" )
+								eq("c.shortName", params.searchContractorName)
+							}
 							admin = true;
 						}
 						between("object_state", 50,100)
@@ -258,11 +262,12 @@ class ObjectController {
 					
 				try {
 						createQueueEntryForObject( object, "5000" , grailsApplication.config.irods.server)
-						result.msg = "Auftrag zur Indizierung erstellt ${object.urn}."
+						result.msg = "Auftrag zur Überprüfung erstellt ${object.urn}."
 						result.msg = "Das Objekt mit der URN ${object.urn} wurde zur Überprüfung in die Queue eingestellt!"
 						result.success = true
 					} catch(Exception e) {
 					result.msg = "Fehler bei der Erstellung des Arbeitsauftrages zur Überprüfung des Objekts mit der URN ${object.urn}. Bitte wenden Sie sich an einen Administrator."
+					log.error(result.msg)
 					println e
 					}
 			}

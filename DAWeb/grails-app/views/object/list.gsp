@@ -44,6 +44,12 @@
             			<td>Identifier:</td>
             			<td><g:textField name="search.identifier" value="${params.search?.identifier}" size="50"/></td>
             		</tr>
+            		<g:if test="${admin}">
+            			<tr>
+            			<td>Contractor:</td>
+            			<td><g:textField name="searchContractorName" value="${params.searchContractorName}" size="50"/></td>
+            		</tr>
+            		</g:if>
             		<tr>
             			<td></td>
             			<td><g:submitButton name="submit" value="Filter anwenden"/></td>
