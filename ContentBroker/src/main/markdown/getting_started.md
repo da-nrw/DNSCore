@@ -168,8 +168,8 @@ Create needed contractors:
 insert into contractors (id,short_name,admin) values (1,'DEFAULT',0)
 insert into contractors (id,short_name,admin) values (2,'PRESENTER',0)
 insert into contractors (id,short_name,admin) values (3,'TEST',0)
-insert into nodes (id,name,urn_index) values (1,[domainNameOfYourNode],1)
 </pre>
+
 ### Test your application
 
 Now that you have created the minimum necessary database configuration for the ContentBroker to work with, restart your ContentBroker
