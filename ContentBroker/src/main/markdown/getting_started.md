@@ -115,12 +115,12 @@ the newest version, set the path accordingly at
 1. Put hibernate.cfg.xml and config.properties you have prepared during this tutorial to your installer before running install.sh. 
 1. Call
 <pre>
-    ./install.sh [somewhere]/ContentBroker (make sure there is no trailing slash!)
+    ./install.sh [cb]/ContentBroker (make sure there is no trailing slash!)
 </pre>
 1. As feature set, choose (n)ode (explanation of different feature sets [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/system_configuration.md))
 1. Download a fake glue [script](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/bash/ffmpeg.sh.fake) 
 that will ensure you don't have to install ffmpeg for now.
-1. Replace [somewhere]/ContentBroker/ffmpeg.sh by the ffmpeg.sh.fake file you downloaded
+1. Replace [cb]/ContentBroker/ffmpeg.sh by the ffmpeg.sh.fake file you downloaded
 1. Call
 <pre>
     cd [cb]/ContentBroker
