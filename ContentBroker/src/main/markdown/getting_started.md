@@ -93,18 +93,23 @@ the newest version, set the path accordingly at
  
 ### Database
 
-1. Setup Database for accepting incoming connections 
-1. Create a new database called contentbroker. 
-1. Ask our team for the decrypted password for the irods database user.
-1. Create a database user with exactly that password.
-1. Get the actual schema [dump](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/conf/postgres_schema.dump)
-and use it to create your database schema for the database contentbroker.
+1. Set up a new database. It will be refered to as [dbname].
+1. Ask our team for a decrypted password.
+1. Create a database user [dbuser] with exactly that password and grant all privileges on [dbname] to [dbuser].
 1. Download a hibernate properties file 
 [template](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.postgres).
-1. Save the file as hibernateCentralDB.cfg.xml in a temporary directory on your local box.
+1. Save the file as hibernateCentralDB.cfg.xml in an arbitrary temporary directory on your local box.
 1. Edit the following entry to match your hostname and port.
 <pre> 
     <property name="connection.url">jdbc:postgresql://hostname:port/contentbroker</property>
+</pre>
+1. In order to create the database scheme let the application know that it has the right to do so:
+<pre>
+    <property name="htm2ddl.auto">create</property>
+</pre>
+
+**Note** Get the actual schema [dump](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/conf/postgres_schema.dump)
+
 
 ### Install the software
 
