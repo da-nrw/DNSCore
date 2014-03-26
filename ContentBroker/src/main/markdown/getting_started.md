@@ -19,16 +19,9 @@
 
 # Getting started
 
-There are two ways of getting started really quickly with DNSCore. 
-The first way of getting a running version of DNSCore on your
-local machine it to build a version from scratch via the 
-[deploy scripts](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/deploy.md), 
-which build and install the software,
-even preparing the configuration settings and starting a preconfigured lightweight database in the background. The second
-way is slightly more complex and is described in this document.
-
-What will be discussed here is how to set up the software in the quickest way possible, but 
-without the help of the build scripts. This will help you to learn how to set up and configure
+This document describes how to setup a node with DNSCore in the quickest possible manner, using
+an existent build of the software which can be retrieved from our releases section.
+This will help you to learn how to set up and configure
 a version of DNSCore for production. To make things easy for you, the version you will build is a stripped
 down version, without presentation and advanced storage layer with replications. But once you have installed and tested
 the basic version you easily can extend the software by the other components if you install them and change a few
@@ -37,6 +30,8 @@ getting an understanding of the basic behaviour and configuration possibilities 
 
 A second [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/preparing_irods_for_dnscore.md) then describes
 how to convert the existing DNSCore into a full-fledged installation including the iRODS storage layer.
+
+**Note** that if you want to learn how to build a new version of the software from scratch, using the build system and the deploy scripts, look [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/deploy.md).
 
 ## Prerequisites
 
