@@ -101,15 +101,11 @@ the newest version, set the path accordingly at
 1. Save the file as hibernateCentralDB.cfg.xml in an arbitrary temporary directory on your local box.
 1. Edit the following entry to match your hostname and port.
 
-    <property name="connection.url">jdbc:postgresql://hostname:port/contentbroker</property>
+    property: connection.url -> jdbc:postgresql://hostname:port/contentbroker
 
 1. In order to create the database scheme let the application know that it has the right to do so:
 
-    <property name="htm2ddl.auto">create</property>
-
-
-**Note** Get the actual schema [dump](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/conf/postgres_schema.dump)
-
+    property: htm2ddl.auto" -> create
 
 ### Install the software
 
@@ -121,7 +117,7 @@ the newest version, set the path accordingly at
 <pre>
     ./install.sh [somewhere]/ContentBroker (make sure there is no trailing slash!)
 </pre>
-1. As feature set, choose (n)ode (TODO: explain different modes)
+1. As feature set, choose (n)ode (explanation of different feature sets [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/system_configuration.md))
 1. Download a fake glue [script](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/bash/ffmpeg.sh.fake) 
 that will ensure you don't have to install ffmpeg for now.
 1. Replace [somewhere]/ContentBroker/ffmpeg.sh by the ffmpeg.sh.fake file you downloaded
@@ -135,6 +131,12 @@ that will ensure you don't have to install ffmpeg for now.
 
 You now have a ContentBroker installation which runs but does nothing for now.
 What we now need is to configure the database and add some user directories for a test user in order to let the ContentBroker do some work.
+
+**Important:** Now that you have a running application and created a database scheme, make sure to reedit the
+following entry in your hibernateCentralDB.cfg.xml to make sure your database scheme cannot be modified anymore
+by the application:
+
+    property: htm2ddl.auto" -> validate
 
 ### Adding user directories
 
