@@ -180,6 +180,9 @@ Verify that it runs with
 
     tail -f log/contentbroker.log
     
+In addition to the shoobidoowoo message you now should see the UserAreaScannerWorker scanning the TEST folder (look for the message 
+d.u.h.da.core.UserAreaScannerWorker - TEST).
+    
 Download a testpackage from our source code repository, for example 
 [this](https://github.com/da-nrw/DNSCore/raw/master/ContentBroker/src/test/resources/manual/BagIt_META1_METS_MODS_2013.tgz) one.
 Copy it to your IngestArea
