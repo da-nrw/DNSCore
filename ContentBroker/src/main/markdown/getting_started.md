@@ -50,8 +50,8 @@ how to convert the existing DNSCore into a full-fledged installation including t
 
 Prepare your installation and storage directories
 
-    [somewhere]/ContentBroker/
-    [somewhere]/storage/
+    [cb]/ContentBroker/
+    [cb]/storage/
                     user/
                     ingest/
                     work/
@@ -61,7 +61,7 @@ Prepare your installation and storage directories
                     aip/
                     grid/
 
-[somewhere] denotes some arbitrary path on your local box.
+[cb] denotes some arbitrary path on your local box.
 The ContentBroker directory then is the folder into which we will later let
 our installer put the binaries. The storage directory is a directory structure
 which DNSCore will use to work with data packages. The subfolders correspond to the various 
@@ -78,11 +78,11 @@ version in the appropriate source code branch of the release you want to install
 
 in config.properties:    
     
-    localNode.userAreaRootPath=[somewhere]/storage/user
-    localNode.ingestAreaRootPath=[somewhere]/storage/ingest
-    localNode.workAreaRootPath=[somewhere]/storage/work
-    localNode.dipAreaRootPath=[somewhere]/storage/pip
-    localNode.gridCacheAreaRootPath=[somewhere]/storage/grid
+    localNode.userAreaRootPath=[cb]/storage/user
+    localNode.ingestAreaRootPath=[cb]/storage/ingest
+    localNode.workAreaRootPath=[cb]/storage/work
+    localNode.dipAreaRootPath=[cb]/storage/pip
+    localNode.gridCacheAreaRootPath=[cb]/storage/grid
 
 (Please check if the paths correspond to the created paths on your system before)
 
@@ -123,7 +123,7 @@ that will ensure you don't have to install ffmpeg for now.
 1. Replace [somewhere]/ContentBroker/ffmpeg.sh by the ffmpeg.sh.fake file you downloaded
 1. Call
 <pre>
-    cd [somewhere]/ContentBroker
+    cd [cb]/ContentBroker
     ./ContentBroker_start.sh
     tail -f log/contentbroker.log
 </pre>
