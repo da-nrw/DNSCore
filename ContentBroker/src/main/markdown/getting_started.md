@@ -102,6 +102,7 @@ the newest version, set the path accordingly at
 1. Edit the following entry to match your hostname and port (for a default postgres installation on a fresh box you can set hostname to localhost and port to 5432).
  
    property: connection.url -> jdbc:postgresql://hostname:port/[dbname]
+
 1. In order to create the database scheme let the application know that it has the right to do so:
 
     property: htm2ddl.auto" -> create
@@ -160,7 +161,7 @@ are case sensitive. For our system to work with the TEST user, extend the direct
                                TEST/
                         public/
                                TEST/
-                    aip/
+                    grid/
                          TEST  
 
 
