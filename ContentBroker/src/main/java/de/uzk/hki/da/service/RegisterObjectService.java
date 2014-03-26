@@ -179,7 +179,7 @@ public class RegisterObjectService {
 	 * @throws IllegalStateException if there exists no db entry for localNode or its urn_index is < 0.
 	 * @author Daniel M. de Oliveira
 	 */
-	private synchronized String generateURNForNode(){ // TODO make private
+	public synchronized String generateURNForNode(){ // TODO make private
 		// Must be synchronized to block other processes from 
 		// fetching and incrementing the same urn_index, upon which [number] is based.
 		
