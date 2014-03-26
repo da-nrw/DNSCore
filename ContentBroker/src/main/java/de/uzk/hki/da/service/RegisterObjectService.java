@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.UnresolvableObjectException;
 import org.hibernate.classic.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,35 +42,37 @@ import de.uzk.hki.da.utils.Utilities;
 /**
  * Registers objects at a certain node.
  * 
- * Checks if package is a delta. Generates an object identifier and creates new object entry in case it is not a delta. 
  * @author Daniel M. de Oliveira
  * @author Thomas Kleinke
  *
  */
 public class RegisterObjectService {
 
-	/** The Constant logger. */
 	static final Logger logger = LoggerFactory.getLogger(RegisterObjectService.class);
 
-	/** The ops. */
 	private CentralDatabaseDAO dao;	
 	
 	/** The name space. */
 	private String nameSpace;
 	
 	/** The zone. */
-	private String zone;	
+	private String zone;	 // todo delete
 
 	private Node localNode;
 	
 	/**
-	 * Register object.
+     * Checks if package is a delta. 
+     * Generates an object identifier and creates new object entry in case it is not a delta. 
 	 *
 	 * @param job the job
 	 * @param localNode the local node
 	 */
 	public Object registerObject(String origName,String containerName,Contractor contractor) {
-		if (contractor==null) throw new ConfigurationException("Contractor not set up correctly, check the corresponding entry in the contractors table!");
+		if (contractor==null) 
+			throw new ConfigurationException("contractor is null");
+		if (localNode==null)
+			throw new ConfigurationException("localNode is null");
+		
 		Object obj = getObject(origName,contractor.getShort_name());
 		if (obj != null) { // is delta then
 
@@ -94,7 +97,7 @@ public class RegisterObjectService {
 			 * Side effects: increments counter urn_index for the initial 
 			 * node referenced by Job with jobId and writes job to the database.
 			 */
-			identifier = generateURNForNode(getLocalNode(), new Date()).replace(nameSpace + "-", "");
+			identifier = generateURNForNode().replace(nameSpace + "-", ""); // TODO refactor to method
 
 			logger.info("Creating new Object with identifier " + identifier);
 			obj = new Object();
@@ -162,37 +165,58 @@ public class RegisterObjectService {
 		return Integer.toString(Integer.parseInt( max )+1);		
 	}
 
+	
+	
+	
 	/**
-	 * To ensure we never generate a URN twice this method is synchronized. Since
-	 * we know that every node has a special character in the urn which decodes the node
-	 * (-1-,-2-,...) we can guarantee the newly generated URN is unique.
-	 *
-	 * @param node the node
-	 * @param date the date
-	 * @return the string
+	 * Generates a URN of the form [nameSpace]-[node_id]-[number].
+	 * The generated number is ensured to be unique per node_id 
+	 * (the system never generates the same
+	 * number twice for any given [nodeId] across the database).
+	 * Increments the urn_index of node on every call.
+	 * 
+	 * @return the generated URN.
+	 * @throws IllegalStateException if there exists no db entry for localNode or its urn_index is < 0.
 	 * @author Daniel M. de Oliveira
 	 */
-	public synchronized String generateURNForNode(Node node, Date date){
-		Session session = HibernateUtil.openSession();
-		session.getTransaction().begin();
-		session.refresh(node);
-
-		if (node.getUrn_index() < 0)
-			throw new IllegalStateException("Node's urn_index must not be null");
-		node.setUrn_index(node.getUrn_index() + 1);
-
-		session.merge(node); // we must ensure that the transaction is commited within this method
-		session.getTransaction().commit();
-		session.close();
+	private synchronized String generateURNForNode(){ // TODO make private
+		// Must be synchronized to block other processes from 
+		// fetching and incrementing the same urn_index, upon which [number] is based.
 		
 		String base = nameSpace+"-"
-				+ node.getId()+"-"
-				+ Utilities.todayAsSimpleIsoDate(date)
-				+ node.getUrn_index();
+				+ localNode.getId()+"-"
+				+ Utilities.todayAsSimpleIsoDate(new Date())
+				+ incrementURNindex();
 
 		return base + (new URNCheckDigitGenerator()).checkDigit( base );
 	}
 
+	
+	
+	
+	private int incrementURNindex(){
+		Session session = HibernateUtil.openSession();
+		session.getTransaction().begin();
+		try {
+			session.refresh(localNode);
+		} catch (UnresolvableObjectException e){
+			throw new IllegalStateException("Node does not exist in db");
+		}
+				
+		if (localNode.getUrn_index() < 0)
+			throw new IllegalStateException("Node's urn_index must not be lower than 0");
+		localNode.setUrn_index(localNode.getUrn_index() + 1);
+
+		session.merge(localNode);
+		session.getTransaction().commit();
+		session.close();
+		
+		return localNode.getUrn_index();
+	}
+	
+	
+	
+	
 	/**
 	 * Sets the name space.
 	 *

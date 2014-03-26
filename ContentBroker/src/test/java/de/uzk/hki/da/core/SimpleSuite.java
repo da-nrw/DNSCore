@@ -138,6 +138,7 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	PublishPDFConversionStrategyTests.class,
 	TiffConversionStrategyTests.class,
 	URNCheckDigitGeneratorTests.class,
+	URNGeneratorTests.class,
 	PDFServiceTests.class,
 	PackageTests.class,
 	ArchiveReplicationActionTests.class,

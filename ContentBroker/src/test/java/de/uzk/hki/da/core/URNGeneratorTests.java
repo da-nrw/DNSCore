@@ -58,7 +58,7 @@ public class URNGeneratorTests {
 	 */
 	@Before
 	public void setUp(){
-		HibernateUtil.init("src/main/conf/hibernateCentralDB.cfg.xml.inmem");
+		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
 		session.createSQLQuery("DELETE FROM nodes").executeUpdate();
@@ -97,13 +97,11 @@ public class URNGeneratorTests {
 		session.getTransaction().commit();
 		session.close();
 
-		
-		
-		
 		RegisterObjectService registerObjectService = new RegisterObjectService();
 		registerObjectService.setNameSpace("urn:nbn:de:danrw");
+		registerObjectService.setLocalNode(node);
 		
-		String urnWithCheckDigit = registerObjectService.generateURNForNode(node,new Date());
+		String urnWithCheckDigit = registerObjectService.generateURNForNode();
 		String urnWithoutCheckDigit = urnWithCheckDigit.substring(0, urnWithCheckDigit.length()-1);
 		
 		assertEquals(("urn:nbn:de:danrw-"+node.getId()+"-"+ Utilities.todayAsSimpleIsoDate(new Date())+"93"),urnWithoutCheckDigit );
