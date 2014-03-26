@@ -82,7 +82,7 @@ in config.properties:
     localNode.ingestAreaRootPath=[somewhere]/storage/ingest
     localNode.workAreaRootPath=[somewhere]/storage/work
     localNode.dipAreaRootPath=[somewhere]/storage/pip
-    localNode.gridCacheAreaRootPath=[somewhere]/storage/aip
+    localNode.gridCacheAreaRootPath=[somewhere]/storage/grid
 
 (Please check if the paths correspond to the created paths on your system before)
 
