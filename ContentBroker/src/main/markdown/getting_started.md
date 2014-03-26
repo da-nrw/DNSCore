@@ -100,13 +100,13 @@ the newest version, set the path accordingly at
 [template](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.postgres).
 1. Save the file as hibernateCentralDB.cfg.xml in an arbitrary temporary directory on your local box. 
 1. Edit the following entry to match your hostname and port (for a default postgres installation on a fresh box you can set hostname to localhost and port to 5432).
- 
+<pre>
    property: connection.url -> jdbc:postgresql://hostname:port/[dbname]
-
+</pre>
 1. In order to create the database scheme let the application know that it has the right to do so:
-
+<pre>
     property: htm2ddl.auto" -> create
-
+</pre>
 ### Install the software
 
 1. Download an installer for the newest stable version of the software from the 
