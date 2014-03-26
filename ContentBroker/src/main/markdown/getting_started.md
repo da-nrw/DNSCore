@@ -58,7 +58,8 @@ Prepare your installation and storage directories
                     pip/
                         institution/
                         public/
-                    aip/                  
+                    aip/
+                    grid/
 
 [somewhere] denotes some arbitrary path on your local box.
 The ContentBroker directory then is the folder into which we will later let
