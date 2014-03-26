@@ -92,7 +92,6 @@
    <bean id="registerObjectService" class="de.uzk.hki.da.service.RegisterObjectService">
   		<property name="dao" ref="centralDao" />
   		<property name="nameSpace" value="urn:nbn:de:danrw" />
-		<property name="zone" value="${irods.zone}" />
 		<property name="localNode" ref="localNode" />
   	</bean>
   

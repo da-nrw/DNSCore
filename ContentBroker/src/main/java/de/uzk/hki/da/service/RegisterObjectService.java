@@ -55,9 +55,6 @@ public class RegisterObjectService {
 	/** The name space. */
 	private String nameSpace;
 	
-	/** The zone. */
-	private String zone;	 // todo delete
-
 	private Node localNode;
 	
 	/**
@@ -70,6 +67,8 @@ public class RegisterObjectService {
 	public Object registerObject(String origName,String containerName,Contractor contractor) {
 		if (contractor==null) 
 			throw new ConfigurationException("contractor is null");
+		if (contractor.getShort_name()==null||contractor.getShort_name().isEmpty())
+			throw new ConfigurationException("contractor short name not set");
 		if (localNode==null)
 			throw new ConfigurationException("localNode is null");
 		
@@ -93,11 +92,8 @@ public class RegisterObjectService {
 
 		}else{		
 			String identifier;
-			/**
-			 * Side effects: increments counter urn_index for the initial 
-			 * node referenced by Job with jobId and writes job to the database.
-			 */
-			identifier = generateURNForNode().replace(nameSpace + "-", ""); // TODO refactor to method
+
+			identifier = convertURNtoTechnicalIdentifier(generateURNForNode());
 
 			logger.info("Creating new Object with identifier " + identifier);
 			obj = new Object();
@@ -118,7 +114,6 @@ public class RegisterObjectService {
 			obj.setLast_checked(new Date());
 			obj.setInitial_node(localNode.getName());
 			obj.setOrig_name(origName);
-			obj.setZone(zone);
 			
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
@@ -127,6 +122,16 @@ public class RegisterObjectService {
 			session.close();
 		}
 		return obj;
+	}
+
+	/**
+	 * @author Daniel M. de Oliveira
+	 * @param urn
+	 * @return
+	 */
+	private String convertURNtoTechnicalIdentifier(String urn) {
+		
+		return urn.replace(nameSpace + "-", "");
 	}
 
 	/**
@@ -173,13 +178,14 @@ public class RegisterObjectService {
 	 * The generated number is ensured to be unique per node_id 
 	 * (the system never generates the same
 	 * number twice for any given [nodeId] across the database).
-	 * Increments the urn_index of node on every call.
+	 * Increments the urn_index of node and writes it back to the 
+	 * database immediately on every call.
 	 * 
 	 * @return the generated URN.
 	 * @throws IllegalStateException if there exists no db entry for localNode or its urn_index is < 0.
 	 * @author Daniel M. de Oliveira
 	 */
-	public synchronized String generateURNForNode(){ // TODO make private
+	private synchronized String generateURNForNode(){
 		// Must be synchronized to block other processes from 
 		// fetching and incrementing the same urn_index, upon which [number] is based.
 		
@@ -214,9 +220,6 @@ public class RegisterObjectService {
 		return localNode.getUrn_index();
 	}
 	
-	
-	
-	
 	/**
 	 * Sets the name space.
 	 *
@@ -225,16 +228,6 @@ public class RegisterObjectService {
 	public void setNameSpace(String nameSpace) {
 		this.nameSpace = nameSpace;
 	}
-
-	/**
-	 * Sets the zone.
-	 *
-	 * @param zone the new zone
-	 */
-	public void setZone(String zone) {
-		this.zone = zone;
-	}
-
 
 	public Node getLocalNode() {
 		return localNode;

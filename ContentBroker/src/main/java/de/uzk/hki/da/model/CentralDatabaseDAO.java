@@ -215,7 +215,10 @@ public class CentralDatabaseDAO {
 			} catch (IndexOutOfBoundsException e2) {
 				logger.debug("Search for an object with objectIdentifier " + orig_name + " for contractor " +
 						csn + " returns null!");	
-			}					
+			}	
+			
+		} catch (Exception e) {
+			return null;
 		}
 		
 		return null;

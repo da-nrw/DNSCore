@@ -28,7 +28,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.model.CentralDatabaseDAO;
+import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.RegisterObjectService;
 import de.uzk.hki.da.service.URNCheckDigitGenerator;
 import de.uzk.hki.da.utils.Utilities;
@@ -37,9 +40,12 @@ import de.uzk.hki.da.utils.Utilities;
 /**
  * The Class URNGeneratorTests.
  */
-public class URNGeneratorTests {
+public class RegisterObjectServiceTests {
 
-	
+	private Node node;
+	private Contractor contractor;
+
+
 	/**
 	 * TODO Up til now i couldn't find a sample test suite of valid URNs.
 	 * Tests URNCheckDigitGenerator.checkDigit
@@ -47,9 +53,7 @@ public class URNGeneratorTests {
 	 */
 	@Test
 	public void testCheckDigit(){
-		
 		String base = "urn:nbn:de:gbv:089-332175294";
-		
 		assertEquals(new URNCheckDigitGenerator().checkDigit( base ),"5");
 	}
 	
@@ -62,8 +66,24 @@ public class URNGeneratorTests {
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
 		session.createSQLQuery("DELETE FROM nodes").executeUpdate();
+		
+		
+		
+		
 		session.getTransaction().commit();
 		session.close();
+		
+		node = new Node("vm1","vm1-01");
+		node.setUrn_index(92);
+		contractor = new Contractor();
+		contractor.setShort_name("TEST");
+
+		Session session2 = HibernateUtil.openSession();
+		session2.getTransaction().begin();
+		session2.save(node);
+		session2.save(contractor);
+		session2.getTransaction().commit();
+		session2.close();
 	}
 	
 	/**
@@ -89,24 +109,16 @@ public class URNGeneratorTests {
 	@Test
 	public void testGenerateURNForNode(){
 		
-		Node node = new Node("vm1","vm1-01");
-		node.setUrn_index(92);
-		Session session = HibernateUtil.openSession();
-		session.getTransaction().begin();
-		session.save(node);
-		session.getTransaction().commit();
-		session.close();
-
 		RegisterObjectService registerObjectService = new RegisterObjectService();
+		CentralDatabaseDAO dao = new CentralDatabaseDAO();
+		registerObjectService.setDao(dao);
 		registerObjectService.setNameSpace("urn:nbn:de:danrw");
 		registerObjectService.setLocalNode(node);
 		
-		String urnWithCheckDigit = registerObjectService.generateURNForNode();
-		String urnWithoutCheckDigit = urnWithCheckDigit.substring(0, urnWithCheckDigit.length()-1);
+		Object object = registerObjectService.registerObject("origName", "containerName", contractor);
+		String identifierWithoutURNCheckDigit =  object.getIdentifier().substring(0, object.getIdentifier().length()-1);
 		
-		assertEquals(("urn:nbn:de:danrw-"+node.getId()+"-"+ Utilities.todayAsSimpleIsoDate(new Date())+"93"),urnWithoutCheckDigit );
-			
-		
+		assertEquals(node.getId()+"-"+ Utilities.todayAsSimpleIsoDate(new Date())+"93",identifierWithoutURNCheckDigit);
 	}
 	
 }
