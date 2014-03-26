@@ -98,13 +98,10 @@ the newest version, set the path accordingly at
 1. Create a database user [dbuser] with exactly that password and grant all privileges on [dbname] to [dbuser].
 1. Download a hibernate properties file 
 [template](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.postgres).
-1. Save the file as hibernateCentralDB.cfg.xml in an arbitrary temporary directory on your local box.
-1. Edit the following entry to match your hostname and port. For a default postgres installation on a fresh box you can set hostname to localhost and port to 5432.
-
+1. Save the file as hibernateCentralDB.cfg.xml in an arbitrary temporary directory on your local box. 
+2. 1. Edit the following entry to match your hostname and port (for a default postgres installation on a fresh box you can set hostname to localhost and port to 5432).
     property: connection.url -> jdbc:postgresql://hostname:port/[dbname]
-
 1. In order to create the database scheme let the application know that it has the right to do so:
-
     property: htm2ddl.auto" -> create
 
 ### Install the software
