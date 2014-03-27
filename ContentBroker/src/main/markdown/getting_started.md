@@ -55,8 +55,12 @@ Create a directory somewhere on your filesystem into which you can install your 
 1. cd into [tmp]/installation.xyz/ 
 1. Call
 <pre>
-    ./install.sh [cb]/ContentBroker (make sure there is no trailing slash!)
+    ./install.sh [somewhere]/ContentBroker (make sure there is no trailing slash!)
 </pre>
+1. As feature set, choose (n)ode (explanation of different feature sets [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/system_configuration.md))
+1. Download a fake glue [script](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/bash/ffmpeg.sh.fake) 
+that will ensure you don't have to install ffmpeg for now.
+1. Replace [somewhere]/ContentBroker/ffmpeg.sh by the ffmpeg.sh.fake file you downloaded
 
 The application is then installed in [somewhere]/ContentBroker and needs further configurations in order to run
 properly.
@@ -110,8 +114,8 @@ the newest version, set the path accordingly at
 1. Create a database user [dbuser] with exactly that password and grant all privileges on [dbname] to [dbuser].
 1. Download a hibernate properties file 
 [template](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.postgres).
-1. Save the file as hibernateCentralDB.cfg.xml in an arbitrary temporary directory on your local box. 
-1. Edit the following entry to match your hostname and port (for a default postgres installation on a fresh box you can set hostname to localhost and port to 5432).
+1. Save the file as [somewhere]/ContentBroker/conf/hibernateCentralDB.cfg.xml.
+1. Open the file and edit the following entry to match your hostname and port (for a default postgres installation on a fresh box you can set hostname to localhost and port to 5432).
 <pre>
    property: connection.url -> jdbc:postgresql://hostname:port/[dbname]
 </pre>
@@ -120,20 +124,8 @@ the newest version, set the path accordingly at
     property: htm2ddl.auto" -> create
 </pre>
 
-### Install the software
+### Start the software
 
-1. Download an installer for the newest stable version of the software from the 
-[release section](https://github.com/da-nrw/DNSCore/releases) and put it to the a temp dir on your box. The temp dir will be called [tmp] here.
-1. Unpack it. You will then find a directory at [tmp]/installation.xyz/ from where you can install your DNSCore.
-1. Put hibernate.cfg.xml and config.properties you have prepared during this tutorial to your installer before running install.sh. 
-1. Call
-<pre>
-    ./install.sh [somewhere]/ContentBroker (make sure there is no trailing slash!)
-</pre>
-1. As feature set, choose (n)ode (explanation of different feature sets [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/system_configuration.md))
-1. Download a fake glue [script](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/bash/ffmpeg.sh.fake) 
-that will ensure you don't have to install ffmpeg for now.
-1. Replace [somewhere]/ContentBroker/ffmpeg.sh by the ffmpeg.sh.fake file you downloaded
 1. Call
 <pre>
     cd [cb]/ContentBroker
