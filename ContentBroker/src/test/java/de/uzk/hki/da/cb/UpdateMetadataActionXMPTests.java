@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.jdom.JDOMException;
@@ -153,6 +154,10 @@ public class UpdateMetadataActionXMPTests {
 		action.setActionCommunicatorService(new ActionCommunicatorService());
 		action.getActionCommunicatorService().addDataObject(1, "package_type", "XMP");
 		action.getActionCommunicatorService().addDataObject(1, "metadata_file", "XMP.rdf");
+		
+		Map<String, String> dcMappings = new HashMap<String,String>();
+		dcMappings.put("XMP", "conf/xslt/dc/xmp_to_dc.xsl");
+		action.setDcMappings(dcMappings);
 		
 		action.implementation();
 		

@@ -26,6 +26,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -68,7 +69,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	private boolean writePackageTypeToDC = false;	
 	private String[] repNames;	
 	private String absUrlPrefix;
-	private Map<String,String> dcMappings;
+	private Map<String,String> dcMappings = new HashMap<String,String>();
 
 	@Override
 	public boolean implementation() throws IOException {
