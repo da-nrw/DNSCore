@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -48,23 +49,26 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.service.UpdateMetadataService;
 
 /**
- * Performs updates to metadata file that are necessary
+ * Performs updates to metadata files that are necessary
  * to keep the metadata, especially the paths to referenced
  * files, in sync with the actual package content after
  * conversion actions took place.
+ * 
+ * Also the transformation to Dublin Core takes place here.
+ * 
+ * Special actions are taken for XMP and EAD metadata.
+ * 
  * @author Sebastian Cuy
  * @author Daniel M. de Oliveira
  *
  */
 public class UpdateMetadataAction extends AbstractAction {
 	
-	private UpdateMetadataService updateMetadataService;
-	
-	private boolean writePackageTypeToDC = false;
-	
-	private String[] repNames;
-	
+	private UpdateMetadataService updateMetadataService;	
+	private boolean writePackageTypeToDC = false;	
+	private String[] repNames;	
 	private String absUrlPrefix;
+	private Map<String,String> dcMappings;
 
 	@Override
 	public boolean implementation() throws IOException {
@@ -172,16 +176,8 @@ public class UpdateMetadataAction extends AbstractAction {
 	private void copyDCdatastreamFromMetadata(String packageType,
 			String metadataFile) {
 		if (packageType != null && metadataFile != null) {
-			String xsltFile;
-			if ("METS".equals(packageType)) {
-				xsltFile = "mets-mods_to_dc.xsl";
-			} else if ("EAD".equals(packageType)) {
-				xsltFile = "ead_to_dc.xsl";
-			} else if ("XMP".equals(packageType)) {
-				xsltFile = "xmp_to_dc.xsl";
-			} else if ("LIDO".equals(packageType)) {
-				xsltFile = "lido_to_dc.xsl";
-			} else {
+			String xsltFile = getDcMappings().get(packageType);
+			if (xsltFile == null) {
 				throw new RuntimeException("No conversion available for package type '" + packageType + "'. DC can not be created.");
 			}
 			try {
@@ -189,7 +185,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					if (!repName.startsWith("dip")) continue;
 					FileInputStream inputStream = new FileInputStream(object.getDataPath() + repName + "/" + metadataFile);
 					BOMInputStream bomInputStream = new BOMInputStream(inputStream);
-					XsltGenerator xsltGenerator = new XsltGenerator("conf/xslt/dc/" + xsltFile, bomInputStream);
+					XsltGenerator xsltGenerator = new XsltGenerator(xsltFile, bomInputStream);
 					String result = xsltGenerator.generate();
 					File file = new File(object.getDataPath() + repName + "/DC.xml");
 					if (!file.exists()) file.createNewFile();
@@ -421,6 +417,26 @@ public class UpdateMetadataAction extends AbstractAction {
 
 	public void setAbsUrlPrefix(String absUrlPrefix) {
 		this.absUrlPrefix = absUrlPrefix;
+	}
+
+	/**
+	 * Gets the map that describes which XSLTs should be
+	 * used to convert Metadata to Dublin Core.
+	 * @return a map, keys represent metadata formats,
+	 * 	values the path to the XSLT file
+	 */
+	public Map<String,String> getDcMappings() {
+		return dcMappings;
+	}
+
+	/**
+	 * Sets the map that describes which XSLTs should be
+	 * used to convert Metadata to Dublin Core.
+	 * @param a map, keys represent metadata formats,
+	 * 	values the path to the XSLT file
+	 */
+	public void setDcMappings(Map<String,String> dcMappings) {
+		this.dcMappings = dcMappings;
 	}
 
 }

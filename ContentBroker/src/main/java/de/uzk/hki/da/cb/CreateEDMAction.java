@@ -46,7 +46,7 @@ public class CreateEDMAction extends AbstractAction {
 	private String choBaseUri;
 	private String aggrBaseUri;
 	private String localBaseUri;
-	private Map<String,String> mappings;
+	private Map<String,String> edmMappings;
 
 	@Override
 	boolean implementation() {
@@ -73,7 +73,7 @@ public class CreateEDMAction extends AbstractAction {
 			
 			logger.debug("Read package type: {}", packageType);
 			
-			String xsltFile = getMappings().get(packageType);
+			String xsltFile = getEdmMappings().get(packageType);
 			if (xsltFile == null) {
 				throw new RuntimeException("No conversion available for package type '" + packageType + "'. EDM can not be created.");
 			}
@@ -164,21 +164,21 @@ public class CreateEDMAction extends AbstractAction {
 	/**
 	 * Gets the map that describes which XSLTs should be
 	 * used to convert Metadata to EDM.
-	 * @return a map, keys representing metadata formats,
+	 * @return a map, keys represent metadata formats,
 	 * 	values the path to the XSLT file
 	 */
-	public Map<String,String> getMappings() {
-		return mappings;
+	public Map<String,String> getEdmMappings() {
+		return edmMappings;
 	}
 
 	/**
-	 * Gets the map that describes which XSLTs should be
+	 * Sets the map that describes which XSLTs should be
 	 * used to convert Metadata to EDM.
-	 * @param a map, keys representing metadata formats,
+	 * @param a map, keys represent metadata formats,
 	 * 	values the path to the XSLT file
 	 */
-	public void setMappings(Map<String,String> mappings) {
-		this.mappings = mappings;
+	public void setEdmMappings(Map<String,String> mappings) {
+		this.edmMappings = mappings;
 	}
 
 }
