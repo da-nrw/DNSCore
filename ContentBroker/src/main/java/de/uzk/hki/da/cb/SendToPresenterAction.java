@@ -121,12 +121,14 @@ public class SendToPresenterAction extends AbstractAction {
 				if (!object.ddbExcluded()) {
 					sets = new String[]{ "ddb" };
 				}
+				// ingest package to public collection
 				if (ingestPackage(urn, object.getIdentifier(), "danrw", dipPathPublic, object.getContractor().getShort_name(), packageType, sets))
 					publishedFlag += 1;
 			}
 			if (new File(dipPathInstitution).exists()) {
 				// write xepicur file for urn resolving
 				XepicurWriter.createXepicur(object.getIdentifier(), packageType, viewerUrls.get(packageType), dipPathInstitution);
+				// ingest package to closed collection
 				if (ingestPackage(urn, object.getIdentifier(), "danrw-closed", dipPathInstitution, object.getContractor().getShort_name(), packageType, null))
 					publishedFlag += 2;
 			}
