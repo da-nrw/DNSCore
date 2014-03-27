@@ -150,8 +150,7 @@ public class IngestAreaScannerWorker {
 				for (String child:scanContractorFolderForReadyFiles(contractorShortName, currentTimeStamp)){
 					
 					logger.info("Found file \""+child+"\" in ingest Area. Creating job for \""+contractorShortName+"\"");
-					Object object = registerObjectService.registerObject(
-							convertMaskedSlashes(FilenameUtils.removeExtension(child)), child, contractor);	
+					Object object = registerObjectService.registerObject( child, contractor);	
 
 					logger.debug("Created new Object with id: "+object.getData_pk());
 					
@@ -173,17 +172,6 @@ public class IngestAreaScannerWorker {
 			logger.error("Caught: "+e,e);
 		}
 			
-	}
-	
-	
-	/**
-	 * Replaces %2F inside a string to /.
-	 *
-	 * @param input the input
-	 * @return the string
-	 */
-	String convertMaskedSlashes(String input){
-		return input.replaceAll("%2F", "/");
 	}
 	
 	
@@ -233,6 +221,17 @@ public class IngestAreaScannerWorker {
 		return childrenWhichAreReady;
 	} 
 
+	// TODO factor out
+	/**
+	 * Replaces %2F inside a string to /.
+	 *
+	 * @param input the input
+	 * @return the string
+	 */
+	String convertMaskedSlashes(String input){
+		return input.replaceAll("%2F", "/");
+	} 
+	
 	/**
 	 * The rootFolderPath is an absolute path on the local file system which contains
 	 * the contractors staging folders. These folders will be scanned for new files.

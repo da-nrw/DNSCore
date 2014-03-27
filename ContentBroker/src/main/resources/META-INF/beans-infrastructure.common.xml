@@ -89,7 +89,7 @@
         <property name="mqConnectionFactory" ref="mqConnectionFactory"/>
     </bean>
     
-   <bean id="registerObjectService" class="de.uzk.hki.da.service.RegisterObjectService">
+   <bean id="registerObjectService" class="de.uzk.hki.da.service.RegisterObjectService" init-method="init">
   		<property name="dao" ref="centralDao" />
   		<property name="nameSpace" value="urn:nbn:de:danrw" />
 		<property name="localNode" ref="localNode" />

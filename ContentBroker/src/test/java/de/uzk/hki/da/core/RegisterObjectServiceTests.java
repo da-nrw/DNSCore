@@ -67,9 +67,6 @@ public class RegisterObjectServiceTests {
 		session.getTransaction().begin();
 		session.createSQLQuery("DELETE FROM nodes").executeUpdate();
 		
-		
-		
-		
 		session.getTransaction().commit();
 		session.close();
 		
@@ -115,7 +112,7 @@ public class RegisterObjectServiceTests {
 		registerObjectService.setNameSpace("urn:nbn:de:danrw");
 		registerObjectService.setLocalNode(node);
 		
-		Object object = registerObjectService.registerObject("origName", "containerName", contractor);
+		Object object = registerObjectService.registerObject("containerName", contractor);
 		String identifierWithoutURNCheckDigit =  object.getIdentifier().substring(0, object.getIdentifier().length()-1);
 		
 		assertEquals(node.getId()+"-"+ Utilities.todayAsSimpleIsoDate(new Date())+"93",identifierWithoutURNCheckDigit);

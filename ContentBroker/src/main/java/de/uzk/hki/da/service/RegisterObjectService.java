@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.hibernate.UnresolvableObjectException;
 import org.hibernate.classic.Session;
 import org.slf4j.Logger;
@@ -58,13 +59,40 @@ public class RegisterObjectService {
 	private Node localNode;
 	
 	/**
-     * Checks if package is a delta. 
-     * Generates an object identifier and creates new object entry in case it is not a delta. 
-	 *
-	 * @param job the job
-	 * @param localNode the local node
+	 * @throws new IllegalStateException if there exists no db entry for localNode or its urn_index is < 0.
+	 * @author Daniel M. de Oliveira
 	 */
-	public Object registerObject(String origName,String containerName,Contractor contractor) {
+	public void init(){
+		
+		Session session = HibernateUtil.openSession();
+		session.getTransaction().begin();
+		try {
+			session.refresh(localNode);
+		} catch (UnresolvableObjectException e){
+			throw new IllegalStateException("Node "+localNode.getName()+"does not exist in db");
+		}
+		if (localNode.getUrn_index() < 0)
+			throw new IllegalStateException("Node's urn_index must not be lower than 0");
+	}
+	
+	
+	
+	/**
+	 * 
+	 * Checks if a container is a new object to the system or 
+	 * if it is a delta to an existing object. Depending on the outcome,
+	 * either an object with a new technical identifier and a package 
+	 * get created or just a new package which
+	 * will be attached to an existing object.
+	 * When generating new a technical identifiers, 
+	 * the urn_index of localNode gets incremented and 
+	 * written back to the db immediately.
+	 *
+	 * @param containerName the file name of the container
+	 * @param contractor the contractor who owns the container
+	 */
+	public Object registerObject(String containerName,Contractor contractor){
+		
 		if (contractor==null) 
 			throw new ConfigurationException("contractor is null");
 		if (contractor.getShort_name()==null||contractor.getShort_name().isEmpty())
@@ -72,6 +100,8 @@ public class RegisterObjectService {
 		if (localNode==null)
 			throw new ConfigurationException("localNode is null");
 		
+		String origName = convertMaskedSlashes(FilenameUtils.removeExtension(containerName));
+
 		Object obj = getObject(origName,contractor.getShort_name());
 		if (obj != null) { // is delta then
 
@@ -124,6 +154,17 @@ public class RegisterObjectService {
 		return obj;
 	}
 
+	
+	/**
+	 * Replaces %2F inside a string to /.
+	 *
+	 * @param input the input
+	 * @return the string
+	 */
+	private String convertMaskedSlashes(String input){
+		return input.replaceAll("%2F", "/");
+	}
+
 	/**
 	 * @author Daniel M. de Oliveira
 	 * @param urn
@@ -147,7 +188,7 @@ public class RegisterObjectService {
 
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
-		Object object = getDao().getUniqueObject(session,origName, contractorShortName);
+		Object object = dao.getUniqueObject(session,origName, contractorShortName);
 		session.close();
 		return object;
 	}
@@ -182,7 +223,6 @@ public class RegisterObjectService {
 	 * database immediately on every call.
 	 * 
 	 * @return the generated URN.
-	 * @throws IllegalStateException if there exists no db entry for localNode or its urn_index is < 0.
 	 * @author Daniel M. de Oliveira
 	 */
 	private synchronized String generateURNForNode(){
@@ -201,18 +241,11 @@ public class RegisterObjectService {
 	
 	
 	private int incrementURNindex(){
+		
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
-		try {
-			session.refresh(localNode);
-		} catch (UnresolvableObjectException e){
-			throw new IllegalStateException("Node does not exist in db");
-		}
-				
-		if (localNode.getUrn_index() < 0)
-			throw new IllegalStateException("Node's urn_index must not be lower than 0");
+		session.refresh(localNode);
 		localNode.setUrn_index(localNode.getUrn_index() + 1);
-
 		session.merge(localNode);
 		session.getTransaction().commit();
 		session.close();
@@ -229,16 +262,11 @@ public class RegisterObjectService {
 		this.nameSpace = nameSpace;
 	}
 
-	public Node getLocalNode() {
-		return localNode;
-	}
 
 	public void setLocalNode(Node localNode) {
+		if (localNode==null||localNode.getName()==null) 
+			throw new IllegalArgumentException("localNode or localNode.getName is null");
 		this.localNode = localNode;
-	}
-
-	public CentralDatabaseDAO getDao() {
-		return dao;
 	}
 
 	public void setDao(CentralDatabaseDAO dao) {
