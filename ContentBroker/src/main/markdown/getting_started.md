@@ -41,12 +41,35 @@ how to convert the existing DNSCore into a full-fledged installation including t
 
 ## ContentBroker
 
+### Install the software
+
+Create a directory somewhere on your filesystem into which you can install your ContentBroker.
+
+    [somewhere]/ContentBroker/
+
+[somewhere] denotes some arbitrary path on your file system.
+
+1. Download an installer for the newest stable version of the software from the 
+[release section](https://github.com/da-nrw/DNSCore/releases) and put it to the a arbitrary temp dir on your box. The temp dir will be called [tmp] here.
+1. Unpack it. You will then find a directory at [tmp]/installation.xyz/ from where you can install your DNSCore.
+1. cd into [tmp]/installation.xyz/ 
+1. Call
+<pre>
+    ./install.sh [somewhere]/ContentBroker (make sure there is no trailing slash!)
+</pre>
+1. As feature set, choose (n)ode (explanation of different feature sets [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/system_configuration.md))
+1. Download a fake glue [script](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/bash/ffmpeg.sh.fake) 
+that will ensure you don't have to install ffmpeg for now.
+1. Replace [somewhere]/ContentBroker/ffmpeg.sh by the ffmpeg.sh.fake file you downloaded
+
+The application is then installed in [somewhere]/ContentBroker and needs further configurations in order to run
+properly.
+
 ### Installation directories and properties file
 
 Prepare your installation and storage directories
 
-    [cb]/ContentBroker/
-    [cb]/storage/
+    [somewhere]/storage/
                     user/
                     ingest/
                     work/
@@ -56,9 +79,7 @@ Prepare your installation and storage directories
                     aip/
                     grid/
 
-[cb] denotes some arbitrary path on your local box.
-The ContentBroker directory then is the folder into which we will later let
-our installer put the binaries. The storage directory is a directory structure
+The storage directory is a directory structure
 which DNSCore will use to work with data packages. The subfolders correspond to the various 
 [processing stages](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md).
  
@@ -68,18 +89,18 @@ Now you need to configure your installer in order to make use of the created dir
 [template](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/conf/config.properties.dev). Note that this document
 can change from time to time and therefore is bound to a specific version of DNSCore. If in doubt you can get a config which fits your
 version in the appropriate source code branch of the release you want to install.
-1. Save the file as config.properties in an arbitrary temporary directory on your local box.
-1. Replace CONTENTBROKER_ROOT by [somewhere].
+1. Save the file as[somewhere]/ContentBroker/conf/config.properties
+1. Open the file and replace all occurrences of CONTENTBROKER_ROOT by [somewhere].
 
-in config.properties:    
+config.properties:    
     
-    localNode.userAreaRootPath=[cb]/storage/user
-    localNode.ingestAreaRootPath=[cb]/storage/ingest
-    localNode.workAreaRootPath=[cb]/storage/work
-    localNode.dipAreaRootPath=[cb]/storage/pip
-    localNode.gridCacheAreaRootPath=[cb]/storage/grid
+    localNode.userAreaRootPath=[somewhere]/storage/user
+    localNode.ingestAreaRootPath=[somewhere]/storage/ingest
+    localNode.workAreaRootPath=[somewhere]/storage/work
+    localNode.dipAreaRootPath=[somewhere]/storage/pip
+    localNode.gridCacheAreaRootPath=[somewhere]/storage/grid
 
-(Please check if the paths correspond to the created paths on your system before)
+(Make sure the paths fit the recently created paths on your file system)
 
 If your python installation is not globally visible, for example if your package system does not provide
 the newest version, set the path accordingly at
@@ -93,8 +114,8 @@ the newest version, set the path accordingly at
 1. Create a database user [dbuser] with exactly that password and grant all privileges on [dbname] to [dbuser].
 1. Download a hibernate properties file 
 [template](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.postgres).
-1. Save the file as hibernateCentralDB.cfg.xml in an arbitrary temporary directory on your local box. 
-1. Edit the following entry to match your hostname and port (for a default postgres installation on a fresh box you can set hostname to localhost and port to 5432).
+1. Save the file as [somewhere]/ContentBroker/conf/hibernateCentralDB.cfg.xml.
+1. Open the file and edit the following entry to match your hostname and port (for a default postgres installation on a fresh box you can set hostname to localhost and port to 5432).
 <pre>
    property: connection.url -> jdbc:postgresql://hostname:port/[dbname]
 </pre>
@@ -102,20 +123,9 @@ the newest version, set the path accordingly at
 <pre>
     property: htm2ddl.auto" -> create
 </pre>
-### Install the software
 
-1. Download an installer for the newest stable version of the software from the 
-[release section](https://github.com/da-nrw/DNSCore/releases) and put it to the a temp dir on your box. The temp dir will be called [tmp] here.
-1. Unpack it. You will then find a directory at [tmp]/installation.xyz/ from where you can install your DNSCore.
-1. Put hibernate.cfg.xml and config.properties you have prepared during this tutorial to your installer before running install.sh. 
-1. Call
-<pre>
-    ./install.sh [cb]/ContentBroker (make sure there is no trailing slash!)
-</pre>
-1. As feature set, choose (n)ode (explanation of different feature sets [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/system_configuration.md))
-1. Download a fake glue [script](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/bash/ffmpeg.sh.fake) 
-that will ensure you don't have to install ffmpeg for now.
-1. Replace [cb]/ContentBroker/ffmpeg.sh by the ffmpeg.sh.fake file you downloaded
+### Start the software
+
 1. Call
 <pre>
     cd [cb]/ContentBroker
