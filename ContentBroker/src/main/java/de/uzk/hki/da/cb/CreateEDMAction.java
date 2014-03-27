@@ -20,6 +20,7 @@
 package de.uzk.hki.da.cb;
 
 import java.io.InputStream;
+import java.util.Map;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -45,6 +46,7 @@ public class CreateEDMAction extends AbstractAction {
 	private String choBaseUri;
 	private String aggrBaseUri;
 	private String localBaseUri;
+	private Map<String,String> mappings;
 
 	@Override
 	boolean implementation() {
@@ -71,23 +73,14 @@ public class CreateEDMAction extends AbstractAction {
 			
 			logger.debug("Read package type: {}", packageType);
 			
-			String xsltFile;
-			if ("METS".equals(packageType)) {
-				xsltFile = "mets-mods_to_edm.xsl";
-			} else if ("EAD".equals(packageType)) {
-				xsltFile = "ead_to_edm.xsl";
-			} else if ("XMP".equals(packageType)) {
-				xsltFile = "xmp_to_edm.xsl";
-			} else if ("LIDO".equals(packageType)) {
-				xsltFile = "lido_to_edm.xsl";
-			} else {
+			String xsltFile = getMappings().get(packageType);
+			if (xsltFile == null) {
 				throw new RuntimeException("No conversion available for package type '" + packageType + "'. EDM can not be created.");
 			}
 			
 			InputStream metadataStream = repositoryFacade.retrieveFile(objectId, "danrw", packageType);
 			
-			XsltGenerator edmGenerator = new XsltGenerator(
-					"conf/xslt/edm/" + xsltFile, metadataStream);	
+			XsltGenerator edmGenerator = new XsltGenerator(xsltFile, metadataStream);	
 			edmGenerator.setParameter("urn", object.getUrn());
 			edmGenerator.setParameter("cho-base-uri", choBaseUri + "/" + objectId);
 			edmGenerator.setParameter("aggr-base-uri", aggrBaseUri + "/" + objectId);
@@ -166,6 +159,26 @@ public class CreateEDMAction extends AbstractAction {
 	 */
 	public void setLocalBaseUri(String localBaseUri) {
 		this.localBaseUri = localBaseUri;
+	}
+
+	/**
+	 * Gets the map that describes which XSLTs should be
+	 * used to convert Metadata to EDM.
+	 * @return a map, keys representing metadata formats,
+	 * 	values the path to the XSLT file
+	 */
+	public Map<String,String> getMappings() {
+		return mappings;
+	}
+
+	/**
+	 * Gets the map that describes which XSLTs should be
+	 * used to convert Metadata to EDM.
+	 * @param a map, keys representing metadata formats,
+	 * 	values the path to the XSLT file
+	 */
+	public void setMappings(Map<String,String> mappings) {
+		this.mappings = mappings;
 	}
 
 }
