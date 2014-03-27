@@ -177,8 +177,8 @@ public class ATPIPGen extends Base{
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		
-		session.createSQLQuery("INSERT INTO objects (data_pk,identifier,orig_name,contractor_id,object_state,published_flag) "
-				+"VALUES ("+dbid+",'ID-"+name+"','ATPIPGen"+name+"',1,'100',0);").executeUpdate();
+		session.createSQLQuery("INSERT INTO objects (data_pk,identifier,orig_name,contractor_id,object_state,published_flag,ddb_exclusion) "
+				+"VALUES ("+dbid+",'ID-"+name+"','ATPIPGen"+name+"',1,'100',0,false);").executeUpdate();
 		session.createSQLQuery("INSERT INTO packages (id,name) VALUES ("+dbid+",'1');").executeUpdate();
 		session.createSQLQuery("INSERT INTO objects_packages (objects_data_pk,packages_id) VALUES ("+dbid+","+dbid+");").executeUpdate();
 		
