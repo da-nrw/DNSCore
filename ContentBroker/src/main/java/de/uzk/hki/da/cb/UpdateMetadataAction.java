@@ -387,34 +387,72 @@ public class UpdateMetadataAction extends AbstractAction {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 
+	/**
+	 * Gets the update metadata service
+	 * @return the service
+	 */
 	public UpdateMetadataService getUpdateMetadataService() {
 		return updateMetadataService;
 	}
 
+	/**
+	 * Gets the update metadata service
+	 * @param the service
+	 */
 	public void setUpdateMetadataService(UpdateMetadataService updateMetadataService) {
 		this.updateMetadataService = updateMetadataService;
 	}
 
+	/**
+	 * Check if the package type is written to the
+	 * Dublin Core metadata file.
+	 * @return
+	 */
 	public boolean isWritePackageTypeToDC() {
 		return writePackageTypeToDC;
 	}
 
+	/**
+	 * Set wether the package type should be written to the
+	 * Dublin Core metadata 
+	 * @param writePackageTypeToDC
+	 */
 	public void setWritePackageTypeToDC(boolean writePackageTypeToDC) {
 		this.writePackageTypeToDC = writePackageTypeToDC;
 	}
 
+	/**
+	 * Get the names of the representations the action
+	 * should work on.
+	 * @return an array of representation names
+	 */
 	public String[] getRepNames() {
 		return repNames;
 	}
 
+	/**
+	 * Set the names of the representations the action
+	 * should work on.
+	 * @param an array of representation names
+	 */
 	public void setRepNames(String[] repNames) {
 		this.repNames = repNames;
 	}
 
+	/**
+	 * Gets the prefix prepended to the updated file URLs.
+	 * @return
+	 */
 	public String getAbsUrlPrefix() {
 		return absUrlPrefix;
 	}
 
+	/**
+	 * Sets the prefix prepended to the updated file URLs.
+	 * If the prefix is null (default) the generated URLs
+	 * will be relative.
+	 * @param absUrlPrefix
+	 */
 	public void setAbsUrlPrefix(String absUrlPrefix) {
 		this.absUrlPrefix = absUrlPrefix;
 	}
