@@ -148,7 +148,7 @@ by the application:
 
     property: htm2ddl.auto -> validate
 
-### Adding user directories
+### Adding a test contractor
 
 According to the structure of the different areas in addition to the basic folder layout we need directories
 for at least one user to run tests against the system. This first user (or contractor in DNSCore terminology) is typically the TEST user. Note that TEST is the  [contractors](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#contractor) short name (or csn for short) and that short names in our system are case sensitive. For our system to work with the TEST user, extend the directory structure like this:
@@ -170,14 +170,15 @@ for at least one user to run tests against the system. This first user (or contr
                     grid/
                          TEST  
 
-
-### Configuring the database
-
-Create needed contractors:
+In the database create needed contractors:
 <pre>
-insert into contractors (id,short_name,admin) values (1,'DEFAULT',0)
-insert into contractors (id,short_name,admin) values (2,'PRESENTER',0)
-insert into contractors (id,short_name,admin) values (3,'TEST',0)
+insert into contractors (id,short_name,admin) values (1,'TEST',0)
+</pre>
+
+In order to run properly, two additional contractors are needed:
+<pre>
+insert into contractors (id,short_name,admin) values (2,'DEFAULT',0)
+insert into contractors (id,short_name,admin) values (3,'PRESENTER',0)
 </pre>
 
 ### Test your application
