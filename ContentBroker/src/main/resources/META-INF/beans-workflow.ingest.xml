@@ -51,7 +51,15 @@
 		<property name="startStatus" value="250" />
 		<property name="endStatus" value="260" />
 		<property name="name" value="IngestUpdateMetadataAction" />
-		<property name="updateMetadataService" ref="updateMetadataService" />
+		<property name="updateMetadataService" ref="updateMetadataService" />		
+		<property name="dcMappings">
+			<map>
+				<entry key="METS" value="conf/xslt/dc/mets-mods_to_dc.xsl" />
+				<entry key="EAD" value="conf/xslt/dc/ead_to_dc.xsl" />
+				<entry key="XMP" value="conf/xslt/dc/xmp_to_dc.xsl" />
+				<entry key="LIDO" value="conf/xslt/dc/lido_to_dc.xsl" />
+			</map>
+		</property>
 	</bean>
 	<bean id="IngestCheckFormatsAction" class="de.uzk.hki.da.cb.CheckFormatsAction" scope="prototype">
 		<property name="startStatus" value="260" />
@@ -101,6 +109,14 @@
 			</util:list>
 		</property>
 		<property name="absUrlPrefix" value="${uris.file}"/>
+		<property name="dcMappings">
+			<map>
+				<entry key="METS" value="conf/xslt/dc/mets-mods_to_dc.xsl" />
+				<entry key="EAD" value="conf/xslt/dc/ead_to_dc.xsl" />
+				<entry key="XMP" value="conf/xslt/dc/xmp_to_dc.xsl" />
+				<entry key="LIDO" value="conf/xslt/dc/lido_to_dc.xsl" />
+			</map>
+		</property>
 	</bean>
 	<bean id="IngestPrepareSendToPresenterAction" class="de.uzk.hki.da.cb.PrepareSendToPresenterAction" scope="prototype">
 		<property name="startStatus" value="360" />
