@@ -89,7 +89,7 @@ Now you need to configure your installer in order to make use of the created dir
 [template](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/conf/config.properties.dev). Note that this document
 can change from time to time and therefore is bound to a specific version of DNSCore. If in doubt you can get a config which fits your
 version in the appropriate source code branch of the release you want to install.
-1. Save the file as[somewhere]/ContentBroker/conf/config.properties
+1. Save the file as [somewhere]/ContentBroker/conf/config.properties
 1. Open the file and replace all occurrences of CONTENTBROKER_ROOT by [somewhere].
 
 config.properties:    
@@ -148,7 +148,7 @@ by the application:
 
     property: htm2ddl.auto -> validate
 
-### Adding a test contractor
+### Adding a TEST contractor
 
 According to the structure of the different areas in addition to the basic folder layout we need directories
 for at least one user to run tests against the system. This first user (or contractor in DNSCore terminology) is typically the TEST user. Note that TEST is the  [contractors](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#contractor) short name (or csn for short) and that short names in our system are case sensitive. For our system to work with the TEST user, extend the directory structure like this:
