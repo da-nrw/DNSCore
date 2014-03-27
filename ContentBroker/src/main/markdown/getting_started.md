@@ -124,6 +124,11 @@ the newest version, set the path accordingly at
     property: htm2ddl.auto" -> create
 </pre>
 
+Create a node (in tables nodes):
+<pre>
+insert into nodes (id,name,urn_index) values (1,'node1',1);
+</pre>
+
 ### Start the software
 
 1. Call
