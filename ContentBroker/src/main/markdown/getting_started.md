@@ -121,10 +121,10 @@ the newest version, set the path accordingly at
 </pre>
 1. In order to create the database scheme let the application know that it has the right to do so:
 <pre>
-    property: htm2ddl.auto" -> create
+    property: htm2ddl.auto -> create
 </pre>
 
-Create a node (in tables nodes):
+1. Create a node (in tables nodes):
 <pre>
 insert into nodes (id,name,urn_index) values (1,'node1',1);
 </pre>
@@ -146,7 +146,7 @@ What we now need is to configure the database and add some user directories for 
 following entry in your hibernateCentralDB.cfg.xml to make sure your database scheme cannot be modified anymore
 by the application:
 
-    property: htm2ddl.auto" -> validate
+    property: htm2ddl.auto -> validate
 
 ### Adding user directories
 
