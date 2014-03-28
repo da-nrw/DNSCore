@@ -1254,6 +1254,10 @@ public class IrodsSystemConnector {
 		logger.trace("Get amount of repls for " + collection +" " +filename + " in " + resgroup);
 		List<DataObject> dataobjects;
 		dataobjects = getReplicationsForFileInResGroup(collection ,filename, resgroup);
+		if (dataobjects==null) {
+			throw new IrodsRuntimeException("Cannot get Number of Repls - Connection to iRODS Server not valid?");
+		}
+		
 		if (!dataobjects.isEmpty()) {
 			logger.trace("is: " + dataobjects.size());
 			return dataobjects.size();
