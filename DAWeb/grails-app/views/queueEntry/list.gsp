@@ -135,8 +135,8 @@
 			<tr><td>580</td><td>FriendshipConversionAction</td><td>Konvertierung auf anderem Knoten</td></tr>			
 			<tr><td>600</td><td>RestartIngestWorkflowAction</td><td>Zurücksetzung des Ingestworkflows</td></tr>			
 			<tr><td>700</td><td>PIPGenObjectToWorkareaAction</td><td>Übertragung von AIP an das Knotenarbeitsverzeichnis</td></tr>
-			<tr><td>710</td><td>PIPGenScanForPresentationAction</td><td>Scannen der Präsenationsformate</td></tr>
-			<tr><td>720</td><td>PIPGenConvertForPrestationAction</td><td>Bildung der PIPs (Präsenationsderivate)</td></tr>
+			<tr><td>710</td><td>PIPGenScanForPresentationAction</td><td>Scannen der Präsentationsformate</td></tr>
+			<tr><td>720</td><td>PIPGenConvertForPrestationAction</td><td>Bildung der PIPs (Präsentationsderivate)</td></tr>
 			<tr><td>730</td><td>PIPGenPreProcessForPresentationAction</td><td>Verschieben der PIPs</td></tr>
 			<tr><td>740</td><td>PIPGenShortenFilenamesAction</td><td>Kürzung der PIP Dateinamen</td></tr>
 			<tr><td>750</td><td>PIPGenPreUpdateMetadataAction</td><td>Update der Metadaten nach PIP Erstellung</td></tr>
