@@ -62,7 +62,7 @@ public class IndexMetadataAction extends AbstractAction {
 	boolean implementation() {
 		setKILLATEXIT(true);
 		
-		if (repositoryFacade == null) 
+		if (getRepositoryFacade() == null) 
 			throw new RuntimeException("Repository facade object not set. Make sure the action is configured properly");
 		if (indexName == null) 
 			throw new RuntimeException("Index name not set. Make sure the action is configured properly");
@@ -81,7 +81,7 @@ public class IndexMetadataAction extends AbstractAction {
 				String metadataFileId = getFrames().get(framePath);
 			
 				String objectId = object.getIdentifier();
-				InputStream metadataStream = repositoryFacade.retrieveFile(objectId, "danrw", metadataFileId);
+				InputStream metadataStream = getRepositoryFacade().retrieveFile(objectId, "danrw", metadataFileId);
 				String metadataContent = IOUtils.toString(metadataStream, "UTF-8");
 				
 				// transform metadata to JSON
@@ -104,7 +104,7 @@ public class IndexMetadataAction extends AbstractAction {
 					// extract index name from type
 					String[] splitType = ((String) subject.get("@type")).split("/");
 					String type = splitType[splitType.length-1];
-					repositoryFacade.indexMetadata(tempIndexName, type, id, subject);
+					getRepositoryFacade().indexMetadata(tempIndexName, type, id, subject);
 				}
 			
 			}
@@ -202,6 +202,22 @@ public class IndexMetadataAction extends AbstractAction {
 	 */
 	public void setContextUriPrefix(String contextUriPrefix) {
 		this.contextUriPrefix = contextUriPrefix;
+	}
+
+	/**
+	 * Get the repository implementation
+	 * @return the repository implementation
+	 */
+	public RepositoryFacade getRepositoryFacade() {
+		return repositoryFacade;
+	}
+	
+	/**
+	 * Set the repository implementation
+	 * @param repositoryFacade the repository implementation
+	 */
+	public void setRepositoryFacade(RepositoryFacade repositoryFacade) {
+		this.repositoryFacade = repositoryFacade;
 	}
 
 }
