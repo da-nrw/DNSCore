@@ -134,11 +134,21 @@ public class Base {
 	
 	protected void waitForJobsToFinish(String originalName, int timeout) throws InterruptedException{
 
+		// wait for job to appear
+		Job job = null;
+		while(job == null) {
+			Session session = HibernateUtil.openSession();
+			session.beginTransaction();
+			job = dao.getJob(session, originalName, "TEST");
+			session.close();
+		}
+		
+		// wait for jobs to disappear
 		while (true){
 
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
-			Job job = dao.getJob(session, originalName, "TEST");
+			job = dao.getJob(session, originalName, "TEST");
 
 			session.close();
 			
@@ -238,7 +248,7 @@ public class Base {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		
-		session.createSQLQuery("INSERT INTO objects (data_pk,identifier,orig_name,contractor_id,object_state,published_flag,ddb_exclusion) "
+		session.createSQLQuery("INSERT INTO objects (identifier,orig_name,contractor_id,object_state,published_flag,ddb_exclusion) "
 				+"VALUES ('ID-"+name+"','"+name+"',1,'100',0,false);").executeUpdate();
 		Integer dbid = (Integer) session.createSQLQuery("SELECT LAST_INSERT_ID()").uniqueResult(); 
 		session.createSQLQuery("INSERT INTO packages (id,name) VALUES ("+dbid+",'1');").executeUpdate();
