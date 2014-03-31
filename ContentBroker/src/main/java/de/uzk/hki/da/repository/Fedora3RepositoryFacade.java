@@ -149,7 +149,11 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			return new GetDatastreamDissemination(pid, "DC")
 				.execute(fedora).getEntityInputStream();
 		} catch (FedoraClientException e) {
-			throw new RepositoryException("Failed to retrieve datastream: " + fileId, e);
+			if (e.getStatus() == 404) { 
+				return null;
+			} else {
+				throw new RepositoryException("Failed to retrieve datastream: " + fileId, e);
+			}
 		}
 	}
 	
