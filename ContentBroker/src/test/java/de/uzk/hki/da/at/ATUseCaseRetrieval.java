@@ -69,21 +69,21 @@ public class ATUseCaseRetrieval extends Base{
 		String name = "ATUseCaseRetrieval";
 		createObjectAndJob(name,"900");
 		waitForJobToBeInStatus(name, "950", 2000);
-		
-		System.out.println(new File(userAreaRootPath+"TEST/outgoing/RetrievalObject.tar").getAbsolutePath());
-		assertTrue(new File(userAreaRootPath+"TEST/outgoing/RetrievalObject.tar").exists());
+		Thread.sleep(60000);
+		System.out.println(new File(userAreaRootPath+"TEST/outgoing/ID-ATUseCaseRetrieval.tar").getAbsolutePath());
+		assertTrue(new File(userAreaRootPath+"TEST/outgoing/ID-ATUseCaseRetrieval.tar").exists());
 		
 		FileUtils.moveFileToDirectory(
-				new File(userAreaRootPath+"TEST/outgoing/RetrievalObject.tar"), 
+				new File(userAreaRootPath+"TEST/outgoing/ID-ATUseCaseRetrieval.tar"), 
 				new File("/tmp"), false);
 		
-		ArchiveBuilderFactory.getArchiveBuilderForFile(new File("/tmp/RetrievalObject.tar"))
-			.unarchiveFolder(new File("/tmp/RetrievalObject.tar"), new File ("/tmp/"));
+		ArchiveBuilderFactory.getArchiveBuilderForFile(new File("/tmp/ID-ATUseCaseRetrieval.tar"))
+			.unarchiveFolder(new File("/tmp/ID-ATUseCaseRetrieval.tar"), new File ("/tmp/"));
 		
-		if (!new File("/tmp/RetrievalObject/data/"+"image/713091.tif").exists()) fail();
-		if (!new File("/tmp/RetrievalObject/data/"+"premis.xml").exists()) fail();
+		if (!new File("/tmp/ID-ATUseCaseRetrieval/data/"+"image/713091.tif").exists()) fail();
+		if (!new File("/tmp/ID-ATUseCaseRetrieval/data/"+"premis.xml").exists()) fail();
 		
-		if (!checkBag(new File("/tmp/RetrievalObject"))) fail();
+		if (!checkBag(new File("/tmp/ID-ATUseCaseRetrieval"))) fail();
 	}
 	
 	// ----------

@@ -66,18 +66,20 @@ public class ATPIPGen extends Base{
 		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
+		String dipPath = object.getIdentifier()+"/"; 
 		
-		assertTrue(new File(dipAreaRootPath+"public/TEST/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
-		assertTrue(new File(dipAreaRootPath+"institution/TEST/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
-		assertTrue(new File(dipAreaRootPath+"public/TEST/"+dipPath+"METS.xml").exists());
-		assertTrue(new File(dipAreaRootPath+"institution/TEST/"+dipPath+"METS.xml").exists());
+		
+		
+		assertTrue(new File(dipAreaRootPath+"_data/danrw/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
+		assertTrue(new File(dipAreaRootPath+"_data/danrw-closed/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
+		assertTrue(new File(dipAreaRootPath+"_data/danrw/"+dipPath+"METS").exists());
+		assertTrue(new File(dipAreaRootPath+"_data/danrw-closed/"+dipPath+"METS").exists());
 		
 		Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 		Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 		
 		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(new FileReader(new File(dipAreaRootPath+"public/TEST/"+dipPath+"METS.xml")));
+		Document doc = builder.build(new FileReader(new File(dipAreaRootPath+"_data/danrw/"+dipPath+"METS.xml")));
 
 		String url = doc.getRootElement()
 				.getChild("fileSec", METS_NS)
@@ -88,7 +90,7 @@ public class ATPIPGen extends Base{
 		
 		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", url);
 		
-		doc = builder.build(new FileReader(new File(dipAreaRootPath+"institution/TEST/"+dipPath+"METS.xml")));
+		doc = builder.build(new FileReader(new File(dipAreaRootPath+"_data/danrw-closed/"+dipPath+"METS.xml")));
 
 		url = doc.getRootElement()
 				.getChild("fileSec", METS_NS)
@@ -106,10 +108,10 @@ public class ATPIPGen extends Base{
 		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
+		String dipPath = object.getIdentifier()+"/"; 
 		
-		assertFalse(new File(dipAreaRootPath+"public/TEST/"+dipPath).exists());
-		assertTrue( new File(dipAreaRootPath+"institution/TEST/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
+		assertFalse(new File(dipAreaRootPath+"_data/danrw/"+dipPath).exists());
+		assertTrue( new File(dipAreaRootPath+"_data/danrw-closed/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
 	}
 	
 	@Test
@@ -118,9 +120,9 @@ public class ATPIPGen extends Base{
 		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
+		String dipPath = object.getIdentifier()+"/"; 
 		
-		assertFalse(new File(dipAreaRootPath+"public/TEST/"+dipPath).exists());
+		assertFalse(new File(dipAreaRootPath+"_data/danrw/"+dipPath).exists());
 	}
 	
 	@Test
@@ -129,9 +131,9 @@ public class ATPIPGen extends Base{
 		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
+		String dipPath = object.getIdentifier()+"/"; 
 		
-		assertFalse(new File(dipAreaRootPath+"public/TEST/"+dipPath).exists());
+		assertFalse(new File(dipAreaRootPath+"_data/danrw/"+dipPath).exists());
 	}
 	
 	
@@ -141,10 +143,10 @@ public class ATPIPGen extends Base{
 		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name,  500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/";
+		String dipPath = object.getIdentifier()+"/";
 		
-		assertFalse(new File(dipAreaRootPath+"public/TEST/"+dipPath).exists());
-		assertFalse(new File(dipAreaRootPath+"institution/TEST/"+dipPath).exists());
+		assertFalse(new File(dipAreaRootPath+"_data/danrw/"+dipPath).exists());
+		assertFalse(new File(dipAreaRootPath+"_data/danrw-closed/"+dipPath).exists());
 	}
 	
 	@Test
@@ -153,10 +155,10 @@ public class ATPIPGen extends Base{
 		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name,  500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
+		String dipPath = object.getIdentifier()+"/"; 
 		
-		assertTrue(new File(dipAreaRootPath+"public/TEST/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
-		assertTrue(new File(dipAreaRootPath+"institution/TEST/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
+		assertTrue(new File(dipAreaRootPath+"_data/danrw/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
+		assertTrue(new File(dipAreaRootPath+"_data/danrw-closed/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
 	}
 	
 }
