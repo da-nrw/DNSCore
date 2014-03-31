@@ -113,6 +113,24 @@ public class Base {
 		}
 	}
 	
+	protected void waitForJobsToFinish(String originalName, int timeout) throws InterruptedException{
+
+		while (true){
+
+			Session session = HibernateUtil.openSession();
+			session.beginTransaction();
+			Job job = dao.getJob(session, originalName, "TEST");
+
+			session.close();
+			
+			if (job==null) return;
+			
+			System.out.println("waiting for jobs to finish ... ");
+			
+			Thread.sleep(timeout);
+		}
+	}
+	
 	protected Object fetchObjectFromDB(String originalName){
 		Object object;
 		Session session = HibernateUtil.openSession();
