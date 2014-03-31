@@ -8,7 +8,7 @@
 	</appender>
 
 	<logger name="de.uzk.hki.da" additivity="false">
-		<level value="trace" />
+		<level value="info" />
 		<appender-ref ref="console" />
 	</logger>
 

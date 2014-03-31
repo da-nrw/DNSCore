@@ -139,9 +139,9 @@ public class Base {
 		int count = 0;
 		while(job == null) {
 			if(++count * timeout > 60000) {
-				throw new RuntimeException("ERROR: Job did not appear after 1 minute!");
+				throw new RuntimeException("ERROR: Job did not appear after 1 minute! " + originalName);
 			}
-			System.out.println("waiting for job to appear ...");
+			System.out.println("waiting for job to appear ..." + originalName);
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
 			job = dao.getJob(session, originalName, "TEST");
@@ -158,7 +158,7 @@ public class Base {
 			session.close();
 			
 			if (job==null) {
-				System.out.println("finished");
+				System.out.println("finished! " + originalName);
 				return;
 			} else if (job.getStatus().endsWith("1") || job.getStatus().endsWith("3")
 					|| job.getStatus().endsWith("4")) {
