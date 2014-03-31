@@ -138,14 +138,19 @@ public class Base {
 		Job job = null;
 		int count = 0;
 		while(job == null) {
+			
 			if(++count * timeout > 60000) {
 				throw new RuntimeException("ERROR: Job did not appear after 1 minute! " + originalName);
 			}
-			System.out.println("waiting for job to appear ..." + originalName);
+			
+			System.out.println("waiting for job to appear ... " + originalName);
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
 			job = dao.getJob(session, originalName, "TEST");
 			session.close();
+			
+			Thread.sleep(timeout);
+			
 		}
 		
 		// wait for jobs to disappear
