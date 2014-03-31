@@ -32,4 +32,5 @@ uris.local=info:
 
 grid.implementation=fakeGridFacade
 implementation.distributedConversion=fakeDistributedConversionAdapter
+repository.implementation=fakeRepositoryFacade
 python.bin=python

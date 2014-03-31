@@ -37,6 +37,7 @@ import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -49,6 +50,7 @@ public class Base {
 	protected String userAreaRootPath;
 	protected String dipAreaRootPath;
 	protected GridFacade gridFacade;
+	protected RepositoryFacade repositoryFacade;
 	protected DistributedConversionAdapter distributedConversionAdapter;
 	protected String nodeName;
 	protected CentralDatabaseDAO dao = new CentralDatabaseDAO();
@@ -72,7 +74,10 @@ public class Base {
 		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
 		
 		instantiateGrid(properties.getProperty("grid.implementation"),properties.getProperty("implementation.distributedConversion"));
-		if (gridFacade==null) throw new IllegalStateException("gridFacade could not get instantiated");
+		if (gridFacade==null) throw new IllegalStateException("gridFacade could not be instantiated");
+		
+		instantiateRepository(properties.getProperty("repository.implementation"));
+		if (repositoryFacade==null) throw new IllegalStateException("repositoryFacade could not be instantiated");
 	}
 	
 	/**
@@ -86,6 +91,13 @@ public class Base {
 				new FileSystemXmlApplicationContext("src/main/resources/META-INF/beans-infrastructure.core.xml");
 		gridFacade = (GridFacade) context.getBean(gridImplBeanName);
 		distributedConversionAdapter = (DistributedConversionAdapter) context.getBean(dcaImplBeanName);
+		context.close();
+	}
+	
+	private void instantiateRepository(String repImplBeanName) {
+		AbstractApplicationContext context =
+				new FileSystemXmlApplicationContext("src/main/resources/META-INF/beans-infrastructure.core.xml");
+		repositoryFacade = (RepositoryFacade) context.getBean(repImplBeanName);
 		context.close();
 	}
 	

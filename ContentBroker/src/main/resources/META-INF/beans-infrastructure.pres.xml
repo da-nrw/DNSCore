@@ -12,7 +12,7 @@
     <import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>       
     
     <util:list id="actionOrdering">
-		<value>IndexESAction</value>
+		<value>IndexMetadataAction</value>
 		<value>CreateEDMAction</value>
 		<value>SendToPresenterAction</value>
 		<value>FetchPIPsAction</value>
