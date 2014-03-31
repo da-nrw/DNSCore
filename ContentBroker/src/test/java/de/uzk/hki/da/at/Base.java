@@ -158,6 +158,7 @@ public class Base {
 			session.close();
 			
 			if (job==null) {
+				System.out.println("finished");
 				return;
 			} else if (job.getStatus().endsWith("1") || job.getStatus().endsWith("3")
 					|| job.getStatus().endsWith("4")) {
