@@ -24,11 +24,11 @@
 				<thead>
 					<tr>
 					
-						<th><g:message code="conversionPolicies.contractor.label" default="Contractor" /></th>
+						<th><g:message code="conversionPolicies.contractor.label" default="Zielsystem" /></th>
 					
-						<th><g:message code="conversionPolicies.conversion_routine.label" default="Conversionroutine" /></th>
+						<th><g:message code="conversionPolicies.conversion_routine.label" default="Konversionsroutine" /></th>
 					
-						<g:sortableColumn property="source_format" title="${message(code: 'conversionPolicies.source_format.label', default: 'Sourceformat')}" />
+						<g:sortableColumn property="source_format" title="${message(code: 'conversionPolicies.source_format.label', default: 'Quellformat')}" />
 					
 					</tr>
 				</thead>
@@ -48,6 +48,7 @@
 				</g:each>
 				</tbody>
 			</table>
+			<a href="https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/format_module.md">Mehr dazu</a>
 			<div class="pagination">
 				<g:paginate total="${conversionPoliciesInstanceTotal}" />
 			</div>

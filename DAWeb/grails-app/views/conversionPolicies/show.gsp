@@ -24,7 +24,7 @@
 			
 				<g:if test="${conversionPoliciesInstance?.contractor}">
 				<li class="fieldcontain">
-					<span id="contractor-label" class="property-label"><g:message code="conversionPolicies.contractor.label" default="Contractor" /></span>
+					<span id="contractor-label" class="property-label"><g:message code="conversionPolicies.contractor.label" default="Zielsystem" /></span>
 					
 						<span class="property-value" aria-labelledby="contractor-label">${conversionPoliciesInstance?.contractor?.encodeAsHTML()}</span>
 					
@@ -33,7 +33,7 @@
 			
 				<g:if test="${conversionPoliciesInstance?.conversion_routine}">
 				<li class="fieldcontain">
-					<span id="conversion_routine-label" class="property-label"><g:message code="conversionPolicies.conversion_routine.label" default="Conversionroutine" /></span>
+					<span id="conversion_routine-label" class="property-label"><g:message code="conversionPolicies.conversion_routine.label" default="konversionroutine" /></span>
 					
 						<span class="property-value" aria-labelledby="conversion_routine-label">${conversionPoliciesInstance?.conversion_routine?.encodeAsHTML()}</span>
 					
@@ -42,7 +42,7 @@
 			
 				<g:if test="${conversionPoliciesInstance?.source_format}">
 				<li class="fieldcontain">
-					<span id="source_format-label" class="property-label"><g:message code="conversionPolicies.source_format.label" default="Sourceformat" /></span>
+					<span id="source_format-label" class="property-label"><g:message code="conversionPolicies.source_format.label" default="Quellformat" /></span>
 					
 						<span class="property-value" aria-labelledby="source_format-label"><g:fieldValue bean="${conversionPoliciesInstance}" field="source_format"/></span>
 					

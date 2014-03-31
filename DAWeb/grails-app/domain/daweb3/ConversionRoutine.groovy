@@ -13,6 +13,8 @@ class ConversionRoutine {
 	}
 	   
 	String toString() {
+		if (paramss!=null)
 		return name + " " + paramss;
+		else return name;
 	}
 }
