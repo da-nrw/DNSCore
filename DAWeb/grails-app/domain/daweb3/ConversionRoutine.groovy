@@ -5,6 +5,7 @@ class ConversionRoutine {
 	int id
 	String paramss
 	String name
+	String target_suffix
 	
    	static mapping = {
 		table 'conversion_routines'

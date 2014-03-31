@@ -48,6 +48,14 @@
 					
 				</li>
 				</g:if>
+					<g:if test="${conversionPoliciesInstance?.conversionRoutine?.target_suffix}">
+				<li class="fieldcontain">
+					<span id="source_format-label" class="property-label"><g:message code="conversionPolicies.conversionRoutine.target_suffix.label" default="Zielformat" /></span>
+					
+						<span class="property-value" aria-labelledby="source_format-label"><g:fieldValue bean="${conversionRoutine}" field="target_suffix"/></span>
+					
+				</li>
+				</g:if>
 			
 			</ol>
 			<g:form>

@@ -30,6 +30,8 @@
 					
 						<g:sortableColumn property="source_format" title="${message(code: 'conversionPolicies.source_format.label', default: 'Quellformat')}" />
 					
+						<g:sortableColumn property="target_suffix" title="${message(code: 'conversionPolicies.conversion_routine.label', default: 'Zielformat')}" />
+					
 					</tr>
 				</thead>
 				<tbody>
@@ -43,6 +45,8 @@
 						<td><g:if test="${!fieldValue(bean: conversionPoliciesInstance, field: "source_format").startsWith("danrw")}">
 						  	 <g:link target='pronom' url="http://www.nationalarchives.gov.uk/PRONOM/${fieldValue(bean: conversionPoliciesInstance, field: "source_format")}">${fieldValue(bean: conversionPoliciesInstance, field: "source_format")}</g:link>
 						   </g:if><g:else>${fieldValue(bean: conversionPoliciesInstance, field: "source_format")}</g:else></td>
+						<td>${fieldValue(bean: conversionPoliciesInstance.conversion_routine, field: "target_suffix")}</td>
+					
 					
 					</tr>
 				</g:each>
