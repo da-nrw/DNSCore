@@ -82,6 +82,10 @@ public class IndexMetadataAction extends AbstractAction {
 			
 				String objectId = object.getIdentifier();
 				InputStream metadataStream = getRepositoryFacade().retrieveFile(objectId, "danrw", metadataFileId);
+				if (metadataStream == null) {
+					logger.warn("Metadata file {} not found in repository! Skipping indexing.", metadataFileId);
+					continue;
+				}
 				String metadataContent = IOUtils.toString(metadataStream, "UTF-8");
 				
 				// transform metadata to JSON

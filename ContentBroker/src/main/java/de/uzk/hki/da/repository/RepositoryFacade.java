@@ -100,7 +100,7 @@ public interface RepositoryFacade {
 	 * @param objectId the object id of object the file is attached to
 	 * @param collection a named collection
 	 * @param fileId the id for the file in the repository
-	 * @return the contents of the file as an input stream
+	 * @return the contents of the file as an input stream, null if file does not exist
 	 * @throws RepositoryException
 	 */
 	InputStream retrieveFile(String objectId, String collection, String fileId) throws RepositoryException;

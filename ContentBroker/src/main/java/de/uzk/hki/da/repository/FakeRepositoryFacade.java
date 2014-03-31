@@ -106,8 +106,7 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 		try {
 			return new FileInputStream(getFile(objectId, collection, fileId));
 		} catch (FileNotFoundException e) {
-			throw new RepositoryException("Unable to read to file "
-					+ collection + "/" + objectId + "/" + fileId , e);
+			return null;
 		}
 	}
 
