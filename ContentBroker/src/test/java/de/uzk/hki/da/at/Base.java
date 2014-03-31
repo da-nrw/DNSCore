@@ -216,7 +216,7 @@ public class Base {
 			InterruptedException {
 				FileUtils.copyFileToDirectory(new File(testDataRootPath+originalName+".tgz"), 
 						new File(ingestAreaRootPath+"TEST"));
-				waitForJobToBeInStatus(originalName,"540",500);
+				waitForJobsToFinish(originalName,500);
 				
 				Object object = fetchObjectFromDB(originalName);
 				return object;

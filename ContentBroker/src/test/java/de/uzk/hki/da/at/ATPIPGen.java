@@ -68,7 +68,7 @@ public class ATPIPGen extends Base{
 	public void testUpdateUrls() throws InterruptedException, IOException, JDOMException{
 		String name = "UpdateUrls";
 		createObjectAndJob(name,2);
-		waitForJobToBeInStatus("ATPIPGen"+name, "540", 500);
+		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
 		
@@ -108,7 +108,7 @@ public class ATPIPGen extends Base{
 	public void testPublishInstOnly() throws InterruptedException, IOException{
 		String name = "InstOnly";
 		createObjectAndJob(name,2);
-		waitForJobToBeInStatus("ATPIPGen"+name, "540", 500);
+		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
 		
@@ -120,7 +120,7 @@ public class ATPIPGen extends Base{
 	public void testNoPubWithLawSet() throws InterruptedException, IOException{
 		String name = "NoPubWithLawSet";
 		createObjectAndJob(name,3);
-		waitForJobToBeInStatus("ATPIPGen"+name, "540", 500);
+		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
 		
@@ -131,7 +131,7 @@ public class ATPIPGen extends Base{
 	public void testNoPubWithStartDateSet() throws InterruptedException, IOException{
 		String name = "NoPubWithStartDateSet";
 		createObjectAndJob(name,5);
-		waitForJobToBeInStatus("ATPIPGen"+name, "540", 500);
+		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
 		
@@ -143,7 +143,7 @@ public class ATPIPGen extends Base{
 	public void testPublishNothing() throws InterruptedException, IOException{
 		String name = "PublishNothing";
 		createObjectAndJob(name,1);
-		waitForJobToBeInStatus("ATPIPGen"+name, "540", 500);
+		waitForJobsToFinish("ATPIPGen"+name,  500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/";
 		
@@ -155,7 +155,7 @@ public class ATPIPGen extends Base{
 	public void testPublishAll() throws InterruptedException, IOException{
 		String name = "AllPublic";
 		createObjectAndJob(name,4);
-		waitForJobToBeInStatus("ATPIPGen"+name, "540", 500);
+		waitForJobsToFinish("ATPIPGen"+name,  500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
 		

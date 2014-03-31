@@ -58,7 +58,7 @@ public class ATReadURNFromSIP extends Base {
 		String originalName = "ATReadURNFromSIP";
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+originalName+".tgz"), 
 				new File(ingestAreaRootPath+"TEST"));
-		waitForJobToBeInStatus(originalName,"540",500);
+		waitForJobsToFinish(originalName,500);
 		Object object = fetchObjectFromDB(originalName);
 		
 		assertEquals("urn:nbn:de:xyz-1-20131008367735", object.getUrn());
