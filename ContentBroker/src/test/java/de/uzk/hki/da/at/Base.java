@@ -36,7 +36,9 @@ import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.utils.Utilities;
@@ -222,6 +224,31 @@ public class Base {
 		new File(workAreaRootPath+"TEST").mkdirs();
 		new File(dipAreaRootPath+"public/TEST").mkdirs();
 		new File(dipAreaRootPath+"institution/TEST").mkdirs();
+	}
+	
+
+	/**
+	 * @throws IOException 
+	 */
+	protected void createObjectAndJob(String name, String status) throws IOException{
+		gridFacade.put(
+				new File("src/test/resources/at/"+name+".pack_1.tar"),
+				"/aip/TEST/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
+		
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		
+		session.createSQLQuery("INSERT INTO objects (data_pk,identifier,orig_name,contractor_id,object_state,published_flag,ddb_exclusion) "
+				+"VALUES ('ID-"+name+"','"+name+"',1,'100',0,false);").executeUpdate();
+		Integer dbid = (Integer) session.createSQLQuery("SELECT LAST_INSERT_ID()").uniqueResult(); 
+		session.createSQLQuery("INSERT INTO packages (id,name) VALUES ("+dbid+",'1');").executeUpdate();
+		session.createSQLQuery("INSERT INTO objects_packages (objects_data_pk,packages_id) VALUES ("+dbid+","+dbid+");").executeUpdate();
+		
+		session.createSQLQuery("INSERT INTO queue (id,status,objects_id,initial_node) VALUES ("+dbid+",'"+status+"',"+dbid+","+
+				"'"+nodeName+"');").executeUpdate();
+		
+		session.getTransaction().commit();
+		session.close();	
 	}
 
 	protected Object ingest(String originalName) throws IOException,

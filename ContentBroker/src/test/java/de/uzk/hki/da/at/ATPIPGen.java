@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.hibernate.classic.Session;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
@@ -36,10 +35,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.StoragePolicy;
 
 /**
  * @author Daniel M. de Oliveira
@@ -67,7 +63,7 @@ public class ATPIPGen extends Base{
 	@Test
 	public void testUpdateUrls() throws InterruptedException, IOException, JDOMException{
 		String name = "UpdateUrls";
-		createObjectAndJob(name,2);
+		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
@@ -107,7 +103,7 @@ public class ATPIPGen extends Base{
 	@Test
 	public void testPublishInstOnly() throws InterruptedException, IOException{
 		String name = "InstOnly";
-		createObjectAndJob(name,2);
+		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
@@ -119,7 +115,7 @@ public class ATPIPGen extends Base{
 	@Test
 	public void testNoPubWithLawSet() throws InterruptedException, IOException{
 		String name = "NoPubWithLawSet";
-		createObjectAndJob(name,3);
+		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
@@ -130,7 +126,7 @@ public class ATPIPGen extends Base{
 	@Test
 	public void testNoPubWithStartDateSet() throws InterruptedException, IOException{
 		String name = "NoPubWithStartDateSet";
-		createObjectAndJob(name,5);
+		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
@@ -142,7 +138,7 @@ public class ATPIPGen extends Base{
 	@Test
 	public void testPublishNothing() throws InterruptedException, IOException{
 		String name = "PublishNothing";
-		createObjectAndJob(name,1);
+		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name,  500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/";
@@ -154,39 +150,13 @@ public class ATPIPGen extends Base{
 	@Test
 	public void testPublishAll() throws InterruptedException, IOException{
 		String name = "AllPublic";
-		createObjectAndJob(name,4);
+		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name,  500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
 		
 		assertTrue(new File(dipAreaRootPath+"public/TEST/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
 		assertTrue(new File(dipAreaRootPath+"institution/TEST/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
-	}
-	
-	
-	
-	
-	/**
-	 * @throws IOException 
-	 */
-	private void createObjectAndJob(String name,Integer dbid) throws IOException{
-		gridFacade.put(
-				new File("src/test/resources/at/ATPIPGen"+name+".pack_1.tar"),
-				"/aip/TEST/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
-		
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		
-		session.createSQLQuery("INSERT INTO objects (data_pk,identifier,orig_name,contractor_id,object_state,published_flag,ddb_exclusion) "
-				+"VALUES ("+dbid+",'ID-"+name+"','ATPIPGen"+name+"',1,'100',0,false);").executeUpdate();
-		session.createSQLQuery("INSERT INTO packages (id,name) VALUES ("+dbid+",'1');").executeUpdate();
-		session.createSQLQuery("INSERT INTO objects_packages (objects_data_pk,packages_id) VALUES ("+dbid+","+dbid+");").executeUpdate();
-		
-		session.createSQLQuery("INSERT INTO queue (id,status,objects_id,initial_node) VALUES ("+dbid+",'700',"+dbid+","+
-				"'"+nodeName+"');").executeUpdate();
-		
-		session.getTransaction().commit();
-		session.close();	
 	}
 	
 }
