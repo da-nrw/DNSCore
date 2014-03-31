@@ -181,4 +181,20 @@ public class CreateEDMAction extends AbstractAction {
 		this.edmMappings = mappings;
 	}
 
+	/**
+	 * Get the repository implementation
+	 * @return the repository implementation
+	 */
+	public RepositoryFacade getRepositoryFacade() {
+		return repositoryFacade;
+	}
+	
+	/**
+	 * Set the repository implementation
+	 * @param repositoryFacade the repository implementation
+	 */
+	public void setRepositoryFacade(RepositoryFacade repositoryFacade) {
+		this.repositoryFacade = repositoryFacade;
+	}
+
 }
