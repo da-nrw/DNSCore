@@ -45,6 +45,7 @@ import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.metadata.XepicurWriter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 
@@ -138,14 +139,15 @@ public class SendToPresenterAction extends AbstractAction {
 		} catch (RepositoryException e) {
 			throw new RuntimeException(e);
 		}
-		
-		object.setPublished_flag(publishedFlag);
+
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		session.save(object);
+		Object uniqueObject = dao.getUniqueObject(session, object.getOrig_name(), object.getContractor().getShort_name());
+		object.setPublished_flag(publishedFlag);
+		session.save(uniqueObject);
 		session.getTransaction().commit();
 		session.close();
-		logger.debug("Set published flag of object to '{}'", object.getPublished_flag());
+		logger.debug("Set published flag of object to '{}'", uniqueObject.getPublished_flag());
 		
 		// if no public DIP is created EDM creation and ES indexing is skipped
 		if (publishedFlag % 2 == 0) {
