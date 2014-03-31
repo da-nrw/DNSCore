@@ -79,7 +79,7 @@ public class ATPIPGen extends Base{
 		Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 		
 		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(new FileReader(new File(dipAreaRootPath+"_data/danrw/"+dipPath+"METS.xml")));
+		Document doc = builder.build(new FileReader(new File(dipAreaRootPath+"_data/danrw/"+dipPath+"METS")));
 
 		String url = doc.getRootElement()
 				.getChild("fileSec", METS_NS)
@@ -90,7 +90,7 @@ public class ATPIPGen extends Base{
 		
 		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", url);
 		
-		doc = builder.build(new FileReader(new File(dipAreaRootPath+"_data/danrw-closed/"+dipPath+"METS.xml")));
+		doc = builder.build(new FileReader(new File(dipAreaRootPath+"_data/danrw-closed/"+dipPath+"METS")));
 
 		url = doc.getRootElement()
 				.getChild("fileSec", METS_NS)

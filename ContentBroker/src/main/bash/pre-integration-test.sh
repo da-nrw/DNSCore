@@ -10,8 +10,8 @@
 REPO=../installation/
 VERSION=`cat ../VERSION.txt`
 
-LANG="de_DE.UTF-8"
-export LANG
+#LANG="de_DE.UTF-8"
+#export LANG
 
 #############################
 #### CREATE DELIVERABLE #####
