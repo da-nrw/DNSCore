@@ -136,7 +136,12 @@ public class Base {
 
 		// wait for job to appear
 		Job job = null;
+		int count = 0;
 		while(job == null) {
+			if(++count * timeout > 60000) {
+				throw new RuntimeException("ERROR: Job did not appear after 1 minute!");
+			}
+			System.out.println("waiting for job to appear ...");
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
 			job = dao.getJob(session, originalName, "TEST");
@@ -250,7 +255,7 @@ public class Base {
 		
 		session.createSQLQuery("INSERT INTO objects (identifier,orig_name,contractor_id,object_state,published_flag,ddb_exclusion) "
 				+"VALUES ('ID-"+name+"','"+name+"',1,'100',0,false);").executeUpdate();
-		Integer dbid = (Integer) session.createSQLQuery("SELECT LAST_INSERT_ID()").uniqueResult(); 
+		Integer dbid = (Integer) session.createSQLQuery("SELECT MAX(data_pk) FROM objects").uniqueResult(); 
 		session.createSQLQuery("INSERT INTO packages (id,name) VALUES ("+dbid+",'1');").executeUpdate();
 		session.createSQLQuery("INSERT INTO objects_packages (objects_data_pk,packages_id) VALUES ("+dbid+","+dbid+");").executeUpdate();
 		
