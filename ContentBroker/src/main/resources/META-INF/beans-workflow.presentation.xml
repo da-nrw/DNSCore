@@ -44,7 +44,7 @@
 		<property name="localBaseUri" value="${uris.local}" />
 		<property name="edmMappings">
 			<map>
-				<entry key="METS" value="conf/xslt/edm/mets_mods_to_edm.xsl" />
+				<entry key="METS" value="conf/xslt/edm/mets-mods_to_edm.xsl" />
 				<entry key="EAD" value="conf/xslt/edm/ead_to_edm.xsl" />
 				<entry key="XMP" value="conf/xslt/edm/xmp_to_edm.xsl" />
 				<entry key="LIDO" value="conf/xslt/edm/lido_to_edm.xsl" />
