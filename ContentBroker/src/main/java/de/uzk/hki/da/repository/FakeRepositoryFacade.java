@@ -60,6 +60,8 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 			throw new RepositoryException("Unable to create folder for object "
 					+ collection + "/" + objectId);
 		}
+		String dcContent = "<?xml version=\"1.0\" encoding=\"utf-8\"?><oai_dc:dc xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:oai_dc=\"http://www.openarchives.org/OAI/2.0/oai_dc/\"><dc:title>Testpaket in Fake Repository</dc:title></oai_dc:dc>";
+		createMetadataFile(objectId, collection, "DC", dcContent, "DC.xml", "text/xml");
 	}
 
 	@Override
