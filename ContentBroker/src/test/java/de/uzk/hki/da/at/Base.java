@@ -118,6 +118,11 @@ public class Base {
 				if (job.getStatus().equals(status)){
 					System.out.println("ready");
 					return job;
+				} else if (job.getStatus().endsWith("1") || job.getStatus().endsWith("3")
+						|| job.getStatus().endsWith("4")) {
+					String msg = "ERROR: Job in error state: " + job.getStatus();
+					System.out.println(msg);
+					throw new RuntimeException(msg);
 				}
 			}
 			
@@ -135,9 +140,16 @@ public class Base {
 
 			session.close();
 			
-			if (job==null) return;
+			if (job==null) {
+				return;
+			} else if (job.getStatus().endsWith("1") || job.getStatus().endsWith("3")
+					|| job.getStatus().endsWith("4")) {
+				String msg = "ERROR: Job in error state: " + job.getStatus();
+				System.out.println(msg);
+				throw new RuntimeException(msg);
+			}
 			
-			System.out.println("waiting for jobs to finish ... ");
+			System.out.println("waiting for jobs to finish ... "+job.getStatus());
 			
 			Thread.sleep(timeout);
 		}
