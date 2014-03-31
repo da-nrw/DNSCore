@@ -135,10 +135,10 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	}
 
 	private File getFile(String objectId, String collection, String file) {
-		String path = dipAreaRootPath + "_data" + File.pathSeparator
-				+ collection + File.pathSeparator + objectId;
+		String path = dipAreaRootPath + File.separator + "_data" + File.separator
+				+ collection + File.separator + objectId;
 		if (file != null && !file.isEmpty()) {
-			path += File.pathSeparator + file;
+			path += File.separator + file;
 		}
 		return new File(path);
 	}

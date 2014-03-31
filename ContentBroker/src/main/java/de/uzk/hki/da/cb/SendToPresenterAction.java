@@ -260,7 +260,7 @@ public class SendToPresenterAction extends AbstractAction {
 			repositoryFacade.updateMetadataFile(objectId, collection, "DC", content, "DC.xml", "text/xml");
 		    logger.info("Successfully added identifiers to DC datastream");
 		} catch (Exception e) {
-			throw new RepositoryException("Failed to create object for package "+packagePath+" in fedora",e);
+			throw new RepositoryException("Failed to add identifiers to object in repository",e);
 		}
 		
 		// add RELS-EXT relationships
