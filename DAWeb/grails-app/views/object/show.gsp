@@ -144,7 +144,7 @@
 					
 						  <g:each in="${objectInstance.most_recent_formats?.split(",")}">
 						  	 <g:if test="${!it.startsWith("danrw")}">
-						  	 <g:link url="http://www.nationalarchives.gov.uk/PRONOM/${it}" target="_blank"><span class="property-value" aria-labelledby="urn-label">${it}</span></g:link>
+						  	 <g:link url="http://www.nationalarchives.gov.uk/PRONOM/${it}" target="pronom"><span class="property-value" aria-labelledby="urn-label">${it}</span></g:link>
 						   </g:if><g:else><span class="property-value" aria-labelledby="origName-label">${it}</span></g:else></g:each>
 				</li>
 				</g:if>
