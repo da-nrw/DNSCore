@@ -415,9 +415,9 @@
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>de.uzk.hki</groupId>
-			<artifactId>fedorest</artifactId>
-			<version>0.0.3-SNAPSHOT</version>
+			<groupId>com.yourmediashelf.fedora.client</groupId>
+			<artifactId>fedora-client-core</artifactId>
+			<version>0.7</version>
 		</dependency>
 
 		<dependency>
@@ -615,7 +615,12 @@
 	<groupId>commons-logging</groupId>
 	<artifactId>commons-logging</artifactId>
 	<version>1.1.3</version>
-</dependency>
+		</dependency>
+		<dependency> 
+		    <groupId>xml-apis</groupId>
+		    <artifactId>xml-apis</artifactId>
+		    <version>1.4.01</version>
+		</dependency>
 	</dependencies>
 
 </project>

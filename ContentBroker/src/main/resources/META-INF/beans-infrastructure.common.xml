@@ -44,6 +44,12 @@
   		<entry key="LIDO" value="//lido:linkResource"/>
   	</util:map>
   	
+  	<util:set id="testContractors">
+  		<value>TEST</value>
+  		<value>LVRInfoKom</value>
+  		<value>HBZ</value>
+  	</util:set>
+  	
   	<bean id="updateMetadataService" class="de.uzk.hki.da.service.UpdateMetadataService">
 		<property name="namespaces" ref="updateMetadataNamespaces" />
 		<property name="xpathsToUrls" ref="updateMetadataXpathsForUrls" />

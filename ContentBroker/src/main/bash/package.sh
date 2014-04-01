@@ -63,6 +63,7 @@ cp src/main/xml/beans.xml.node $INSTALLER/
 cp src/main/xml/beans.xml.node.test $INSTALLER/
 cp src/main/xml/beans.xml.pres $INSTALLER/
 cp src/main/xml/beans.xml.full $INSTALLER/
+cp src/main/xml/beans.xml.full.test $INSTALLER/
 cp src/main/xml/logback.xml.debug $INSTALLER/logback.xml
 
 case "$1" in

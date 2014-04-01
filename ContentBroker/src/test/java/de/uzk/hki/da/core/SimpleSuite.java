@@ -32,7 +32,6 @@ import de.uzk.hki.da.cb.ConvertActionTests;
 import de.uzk.hki.da.cb.ConvertCheckActionTests;
 import de.uzk.hki.da.cb.CreatePremisActionTests;
 import de.uzk.hki.da.cb.DeleteObjectActionTests;
-import de.uzk.hki.da.cb.IndexESActionTests;
 import de.uzk.hki.da.cb.ObjectTest;
 import de.uzk.hki.da.cb.PrepareSendToPresenterActionTests;
 import de.uzk.hki.da.cb.ProperRefreshOfJobChildrenTest;
@@ -125,7 +124,6 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	PublishAudioConversionStrategyTests.class,
 	PublishImageMultipageTIFFTests.class,
 	UpdateMetadataActionTests.class,
-	IndexESActionTests.class,
 	PremisXmlReaderTests.class,
 	MetsRightsSectionXmlReaderTest.class,
 	MetsURNXmlReaderTest.class,

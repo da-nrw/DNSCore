@@ -8,20 +8,6 @@
            http://www.springframework.org/schema/util/spring-util-3.0.xsd
            http://www.springframework.org/schema/task
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
-          
-	<bean id="fedoPass" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetClass" value="de.uzk.hki.da.utils.PasswordUtils"/>
-		<property name="targetMethod" value="decryptPassword"/>
-		<property name="arguments">
-			<list><value>${fedora.password}</value></list>
-		</property>
-	</bean>
-    
-    <bean id="fedora" class="de.uzk.hki.fedorest.Fedora">
-		<constructor-arg value="${fedora.url}" />
-		<constructor-arg value="${fedora.user}" />
-		<constructor-arg ref="fedoPass" />
-    </bean>
   	
 	<!-- BEGIN Fedora and ElasticSearch related BEGIN -->
 	<bean id="FetchPIPsAction" class="de.uzk.hki.da.cb.FetchPIPsAction"
@@ -36,29 +22,50 @@
 		scope="prototype">
 		<property name="startStatus" value="550" />
 		<property name="endStatus" value="560" />
-		<property name="fedora" ref="fedora" />
+		<property name="repositoryFacade" ref="${repository.implementation}" />
 		<property name="name" value="SendToPresenterAction" />
 		<property name="viewerUrls" ref="viewerUrls" />
+		<property name="testContractors" ref="testContractors" />
+		<property name="fileFilter">
+	        <set>
+	            <value>premis.xml</value>
+	            <value>premis.xml.tmp</value>
+	        </set>
+	    </property>
 	</bean>
 	<bean id="CreateEDMAction" class="de.uzk.hki.da.cb.CreateEDMAction"
 		scope="prototype">
 		<property name="startStatus" value="560" />
 		<property name="endStatus" value="570" />
-		<property name="fedora" ref="fedora" />
+		<property name="repositoryFacade" ref="${repository.implementation}" />
 		<property name="name" value="CreateEDMAction" />
-		<property name="choBaseUri" value="${uris.cho}"/>
-		<property name="aggrBaseUri" value="${uris.aggr}"/>
-		<property name="localBaseUri" value="${uris.local}"/>
+		<property name="choBaseUri" value="${uris.cho}" />
+		<property name="aggrBaseUri" value="${uris.aggr}" />
+		<property name="localBaseUri" value="${uris.local}" />
+		<property name="edmMappings">
+			<map>
+				<entry key="METS" value="conf/xslt/edm/mets-mods_to_edm.xsl" />
+				<entry key="EAD" value="conf/xslt/edm/ead_to_edm.xsl" />
+				<entry key="XMP" value="conf/xslt/edm/xmp_to_edm.xsl" />
+				<entry key="LIDO" value="conf/xslt/edm/lido_to_edm.xsl" />
+			</map>
+		</property>
 	</bean>
-	<bean id="IndexESAction" class="de.uzk.hki.da.cb.IndexESAction"
+	<bean id="IndexMetadataAction" class="de.uzk.hki.da.cb.IndexMetadataAction"
 		scope="prototype">
 		<property name="startStatus" value="570" />
 		<property name="endStatus" value="579" />
-		<property name="fedora" ref="fedora" />
-		<property name="name" value="IndexESAction" />
-		<property name="esHosts" value="${elasticsearch.hosts}" />
-		<property name="esCluster" value="${elasticsearch.cluster}" />
-		<property name="esIndexName" value="${elasticsearch.index}" />
+		<property name="repositoryFacade" ref="${repository.implementation}" />
+		<property name="name" value="IndexMetadataAction" />
+		<property name="indexName" value="${elasticsearch.index}" />
+		<property name="testContractors" ref="testContractors" />
+		<property name="frames">
+			<map>
+				<entry key="conf/frame.jsonld" value="EDM" />
+			</map>
+		</property>
+		<property name="contextUriPrefix" value="http://data.danrw.de/contexts/" />
 	</bean>
 	<!-- END Fedora and ElasticSearch related END -->
+	
 </beans>

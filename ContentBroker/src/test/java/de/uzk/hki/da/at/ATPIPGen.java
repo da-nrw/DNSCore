@@ -21,13 +21,13 @@ package de.uzk.hki.da.at;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 
-import org.hibernate.classic.Session;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
@@ -36,10 +36,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.repository.RepositoryException;
 
 /**
  * @author Daniel M. de Oliveira
@@ -63,25 +61,28 @@ public class ATPIPGen extends Base{
 	 * @throws InterruptedException
 	 * @throws IOException
 	 * @throws JDOMException 
+	 * @throws RepositoryException 
 	 */
 	@Test
-	public void testUpdateUrls() throws InterruptedException, IOException, JDOMException{
-		String name = "UpdateUrls";
-		createObjectAndJob(name,2);
-		waitForJobToBeInStatus("ATPIPGen"+name, "540", 500);
-		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
+	public void testUpdateUrls() throws InterruptedException, IOException, JDOMException, RepositoryException{
 		
-		assertTrue(new File(dipAreaRootPath+"public/TEST/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
-		assertTrue(new File(dipAreaRootPath+"institution/TEST/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
-		assertTrue(new File(dipAreaRootPath+"public/TEST/"+dipPath+"METS.xml").exists());
-		assertTrue(new File(dipAreaRootPath+"institution/TEST/"+dipPath+"METS.xml").exists());
+		String name = "UpdateUrls";
+		createObjectAndJob("ATPIPGen"+name,"700");
+		waitForJobsToFinish("ATPIPGen"+name, 500);
+		Object object = fetchObjectFromDB("ATPIPGen"+name);
+		
+		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		InputStream metsStreamPublic = repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "METS");
+		assertNotNull(metsStreamPublic);
+		InputStream metsStreamClosed = repositoryFacade.retrieveFile(object.getIdentifier(), "danrw-closed", "METS");
+		assertNotNull(metsStreamClosed);
 		
 		Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 		Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 		
 		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(new FileReader(new File(dipAreaRootPath+"public/TEST/"+dipPath+"METS.xml")));
+		Document doc = builder.build(metsStreamPublic);
 
 		String url = doc.getRootElement()
 				.getChild("fileSec", METS_NS)
@@ -92,7 +93,7 @@ public class ATPIPGen extends Base{
 		
 		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", url);
 		
-		doc = builder.build(new FileReader(new File(dipAreaRootPath+"institution/TEST/"+dipPath+"METS.xml")));
+		doc = builder.build(metsStreamClosed);
 
 		url = doc.getRootElement()
 				.getChild("fileSec", METS_NS)
@@ -102,91 +103,71 @@ public class ATPIPGen extends Base{
 				.getAttributeValue("href", XLINK_NS);
 		
 		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", url);
+		
 	}
 	
 	@Test
-	public void testPublishInstOnly() throws InterruptedException, IOException{
+	public void testPublishInstOnly() throws InterruptedException, IOException, RepositoryException{
+		
 		String name = "InstOnly";
-		createObjectAndJob(name,2);
-		waitForJobToBeInStatus("ATPIPGen"+name, "540", 500);
+		createObjectAndJob("ATPIPGen"+name,"700");
+		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
 		
-		assertFalse(new File(dipAreaRootPath+"public/TEST/"+dipPath).exists());
-		assertTrue( new File(dipAreaRootPath+"institution/TEST/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
+		assertNull(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		
 	}
 	
 	@Test
-	public void testNoPubWithLawSet() throws InterruptedException, IOException{
+	public void testNoPubWithLawSet() throws InterruptedException, IOException, RepositoryException{
+		
 		String name = "NoPubWithLawSet";
-		createObjectAndJob(name,3);
-		waitForJobToBeInStatus("ATPIPGen"+name, "540", 500);
+		createObjectAndJob("ATPIPGen"+name,"700");
+		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
 		
-		assertFalse(new File(dipAreaRootPath+"public/TEST/"+dipPath).exists());
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "danrw"));
+		
 	}
 	
 	@Test
-	public void testNoPubWithStartDateSet() throws InterruptedException, IOException{
+	public void testNoPubWithStartDateSet() throws InterruptedException, IOException, RepositoryException{
+		
 		String name = "NoPubWithStartDateSet";
-		createObjectAndJob(name,5);
-		waitForJobToBeInStatus("ATPIPGen"+name, "540", 500);
+		createObjectAndJob("ATPIPGen"+name,"700");
+		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
 		
-		assertFalse(new File(dipAreaRootPath+"public/TEST/"+dipPath).exists());
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "danrw"));
+		
 	}
 	
 	
 	@Test
-	public void testPublishNothing() throws InterruptedException, IOException{
+	public void testPublishNothing() throws InterruptedException, IOException, RepositoryException{
+		
 		String name = "PublishNothing";
-		createObjectAndJob(name,1);
-		waitForJobToBeInStatus("ATPIPGen"+name, "540", 500);
+		createObjectAndJob("ATPIPGen"+name,"700");
+		waitForJobsToFinish("ATPIPGen"+name,  500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/";
 		
-		assertFalse(new File(dipAreaRootPath+"public/TEST/"+dipPath).exists());
-		assertFalse(new File(dipAreaRootPath+"institution/TEST/"+dipPath).exists());
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "danrw"));
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "danrw-closed"));
+		
 	}
 	
 	@Test
-	public void testPublishAll() throws InterruptedException, IOException{
+	public void testPublishAll() throws InterruptedException, IOException, RepositoryException{
+		
 		String name = "AllPublic";
-		createObjectAndJob(name,4);
-		waitForJobToBeInStatus("ATPIPGen"+name, "540", 500);
+		createObjectAndJob("ATPIPGen"+name,"700");
+		waitForJobsToFinish("ATPIPGen"+name,  500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"_"+object.getLatestPackage().getId()+"/"; 
 		
-		assertTrue(new File(dipAreaRootPath+"public/TEST/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
-		assertTrue(new File(dipAreaRootPath+"institution/TEST/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
-	}
-	
-	
-	
-	
-	/**
-	 * @throws IOException 
-	 */
-	private void createObjectAndJob(String name,Integer dbid) throws IOException{
-		gridFacade.put(
-				new File("src/test/resources/at/ATPIPGen"+name+".pack_1.tar"),
-				"/aip/TEST/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
+		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), "danrw"));
+		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), "danrw-closed"));
 		
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		
-		session.createSQLQuery("INSERT INTO objects (data_pk,identifier,orig_name,contractor_id,object_state,published_flag,ddb_exclusion) "
-				+"VALUES ("+dbid+",'ID-"+name+"','ATPIPGen"+name+"',1,'100',0,false);").executeUpdate();
-		session.createSQLQuery("INSERT INTO packages (id,name) VALUES ("+dbid+",'1');").executeUpdate();
-		session.createSQLQuery("INSERT INTO objects_packages (objects_data_pk,packages_id) VALUES ("+dbid+","+dbid+");").executeUpdate();
-		
-		session.createSQLQuery("INSERT INTO queue (id,status,objects_id,initial_node) VALUES ("+dbid+",'700',"+dbid+","+
-				"'"+nodeName+"');").executeUpdate();
-		
-		session.getTransaction().commit();
-		session.close();	
 	}
 	
 }

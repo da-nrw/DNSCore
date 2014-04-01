@@ -16,21 +16,19 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package de.uzk.hki.da.cb;
 
-import org.junit.Test;
+package de.uzk.hki.da.repository;
 
+public class RepositoryException extends Exception {
 
-/**
- * The Class IndexESActionTests.
- */
-public class IndexESActionTests {
+	private static final long serialVersionUID = -7332746132365206286L;
 
-	/**
-	 * Test.
-	 */
-	@Test
-	public void test() {
+    public RepositoryException(String message) {
+        super(message);
+    }
 
-	}
+    public RepositoryException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+
 }

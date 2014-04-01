@@ -63,6 +63,14 @@
 				<value>dip/public</value>
 				<value>dip/institution</value>
 			</util:list>
+		</property>		
+		<property name="dcMappings">
+			<map>
+				<entry key="METS" value="conf/xslt/dc/mets-mods_to_dc.xsl" />
+				<entry key="EAD" value="conf/xslt/dc/ead_to_dc.xsl" />
+				<entry key="XMP" value="conf/xslt/dc/xmp_to_dc.xsl" />
+				<entry key="LIDO" value="conf/xslt/dc/lido_to_dc.xsl" />
+			</map>
 		</property>
 	</bean>
 	<bean id="PIPGenPrepareSendToPresenterAction" class="de.uzk.hki.da.cb.PrepareSendToPresenterAction" scope="prototype">

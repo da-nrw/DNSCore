@@ -34,7 +34,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.hibernate.classic.Session;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -43,8 +42,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 
 /**
@@ -80,18 +77,13 @@ public class ATUseCaseIngestDelta extends Base {
 		
 		FileUtils.copyFile(new File("src/test/resources/at/"+originalName+"1.tgz"), 
 				new File(ingestAreaRootPath+"TEST/"+originalName+".tgz"));
-		Job job = waitForJobToBeInStatus(originalName,"540",500);
+		waitForJobsToFinish(originalName,500);
 		
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		session.delete(job);
-		session.getTransaction().commit();
-		session.close();
 		Thread.sleep(60000); // to avoid newly generated repnames clashing with previous ones
 		
 		FileUtils.copyFile(new File("src/test/resources/at/"+originalName+"2.tgz"), 
 				new File(ingestAreaRootPath+"TEST/"+originalName+".tgz"));
-		job = waitForJobToBeInStatus(originalName,"540",500);
+		waitForJobsToFinish(originalName,500);
 		
 		object = retrievePackage(originalName,"2");
 		assertEquals(originalName,object.getOrig_name());

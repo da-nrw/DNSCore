@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
@@ -87,7 +88,9 @@ public class UpdateMetadataActionEADTests {
 		nsMap.put("xlink", XLINK_NS.getURI());
 		service.setNamespaces(nsMap);
 		action.setUpdateMetadataService(service);
-		
+		Map<String, String> dcMappings = new HashMap<String,String>();
+		dcMappings.put("EAD", "conf/xslt/dc/ead_to_dc.xsl");
+		action.setDcMappings(dcMappings);
 		
 		action.setActionCommunicatorService(acs);
 		action.setObject(obj);

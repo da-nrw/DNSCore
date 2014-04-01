@@ -23,24 +23,25 @@
  */
 package de.uzk.hki.da.metadata;
 
-import static org.junit.Assert.fail;
-
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.github.jsonldjava.core.JSONLDProcessingError;
 import com.github.jsonldjava.utils.JSONUtils;
 
-import de.uzk.hki.fedorest.Fedora;
-import de.uzk.hki.fedorest.FedoraResult;
-
 public class RdfToJsonLdConverterTest {
+	
+	private static final String pathToRdfFile = "src/test/resources/metadata/rdf_to_jsonld_test.rdf";
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -61,28 +62,15 @@ public class RdfToJsonLdConverterTest {
 	}
 
 	@Test
-	public void test() {
+	public void test() throws JSONLDProcessingError, IOException {
+			
+		// transform EDM to JSON
+		RdfToJsonLdConverter converter = new RdfToJsonLdConverter("conf/frame.jsonld");
+		FileInputStream rdfStream = new FileInputStream(new File(pathToRdfFile));
+		Map<String, Object> json = converter.convert(IOUtils.toString(rdfStream, "UTF-8"));
 		
-		String pid = "danrw:131614-2014011528642".replace("+", ":");
-		Fedora fedora = new Fedora("http://da-nrw-vm2.hki.uni-koeln.de:8080/fedora", "fedoraAdmin",de.uzk.hki.da.utils.PasswordUtils.decryptPassword("/MxDGbm6x9Uqoz4iM+C4EA=="));
-		try {
+		System.out.println(JSONUtils.toPrettyString(json));
 			
-			FedoraResult result = fedora.getDatastreamDissemination()
-					.param("pid", pid)
-					.param("dsID", "EDM")
-					.execute();
-			if (result.getStatus() != 200)
-				throw new RuntimeException("Error getting EDM datastream for pid: " + pid);
-			
-			// transform EDM to JSON
-			RdfToJsonLdConverter converter = new RdfToJsonLdConverter("conf/frame.jsonld");
-			Map<String, Object> json = converter.convert(result.getContent());
-			
-			System.out.println(JSONUtils.toPrettyString(json));
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail();
-		}
 	}
 
 }

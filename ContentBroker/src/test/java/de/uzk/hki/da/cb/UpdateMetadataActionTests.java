@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
@@ -219,6 +220,10 @@ public class UpdateMetadataActionTests {
 		
 		action.setUpdateMetadataService(service);		
 		action.setRepNames(new String[]{"dip/public", "dip/institution"});
+		Map<String, String> dcMappings = new HashMap<String,String>();
+		dcMappings.put("METS", "conf/xslt/dc/mets-mods_to_dc.xsl");
+		action.setDcMappings(dcMappings);
+		
 		action.implementation();
 		
 		SAXBuilder builder = new SAXBuilder();

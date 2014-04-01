@@ -66,7 +66,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 				
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
-		waitForJobToBeInStatus(originalName,"540",2000);
+		waitForJobsToFinish(originalName,2000);
 		object = fetchObjectFromDB(originalName);
 		System.out.println("objectIdentifier: "+object.getIdentifier());
 		
@@ -81,7 +81,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 				
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
-		waitForJobToBeInStatus(originalName,"540",2000);
+		waitForJobsToFinish(originalName,2000);
 		object = fetchObjectFromDB(originalName);
 		System.out.println("objectIdentifier: "+object.getIdentifier());
 		
@@ -96,7 +96,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 				
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
-		waitForJobToBeInStatus(originalName,"540",2000);
+		waitForJobsToFinish(originalName,2000);
 		object = fetchObjectFromDB(originalName);
 		System.out.println("objectIdentifier: "+object.getIdentifier());
 		
@@ -111,7 +111,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 				
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
-		waitForJobToBeInStatus(originalName,"540",2000);
+		waitForJobsToFinish(originalName,2000);
 		object = fetchObjectFromDB(originalName);
 		System.out.println("objectIdentifier: "+object.getIdentifier());
 		
@@ -138,7 +138,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 				
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
 				new File(ingestAreaRootPath+"TEST"));
-		waitForJobToBeInStatus(originalName,"540",2000);
+		waitForJobsToFinish(originalName,2000);
 		object = fetchObjectFromDB(originalName);
 		System.out.println("objectIdentifier: "+object.getIdentifier());
 		

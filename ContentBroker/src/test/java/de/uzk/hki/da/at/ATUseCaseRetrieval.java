@@ -27,12 +27,10 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
-import org.hibernate.classic.Session;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.utils.ArchiveBuilderFactory;
@@ -50,14 +48,14 @@ public class ATUseCaseRetrieval extends Base{
 		setUpBase();
 		gridFacade.put(
 				new File("src/test/resources/at/ATUseCaseRetrieval.pack_1.tar"),
-				"/aip/TEST/RetrievalObject/RetrievalObject.pack_1.tar",new StoragePolicy(new Node()));
+				"/aip/TEST/RetrievalObject/ID-ATUseCaseRetrieval.pack_1.tar",new StoragePolicy(new Node()));
 	}
 	
 	@After
 	public void tearDown() throws IOException{
-		distributedConversionAdapter.remove("aip/TEST/RetrievalObject"); // TODO does it work?
-		new File("/tmp/RetrievalObject.tar").delete();
-		FileUtils.deleteDirectory(new File("/tmp/RetrievalObject"));
+		distributedConversionAdapter.remove("aip/TEST/ID-ATUseCaseRetrieval"); // TODO does it work?
+		new File("/tmp/ID-ATUseCaseRetrieval.tar").delete();
+		FileUtils.deleteDirectory(new File("/tmp/ID-ATUseCaseRetrieval"));
 		
 		cleanStorage();
 		clearDB();
@@ -68,23 +66,24 @@ public class ATUseCaseRetrieval extends Base{
 	@Test
 	public void testHappyPath() throws Exception{
 		
-		createObjectAndRetrievalJob();
-		waitForJobToBeInStatus("OriginalName", "950", 2000);
-		
-		System.out.println(new File(userAreaRootPath+"TEST/outgoing/RetrievalObject.tar").getAbsolutePath());
-		assertTrue(new File(userAreaRootPath+"TEST/outgoing/RetrievalObject.tar").exists());
+		String name = "ATUseCaseRetrieval";
+		createObjectAndJob(name,"900");
+		waitForJobToBeInStatus(name, "950", 2000);
+		Thread.sleep(60000);
+		System.out.println(new File(userAreaRootPath+"TEST/outgoing/ID-ATUseCaseRetrieval.tar").getAbsolutePath());
+		assertTrue(new File(userAreaRootPath+"TEST/outgoing/ID-ATUseCaseRetrieval.tar").exists());
 		
 		FileUtils.moveFileToDirectory(
-				new File(userAreaRootPath+"TEST/outgoing/RetrievalObject.tar"), 
+				new File(userAreaRootPath+"TEST/outgoing/ID-ATUseCaseRetrieval.tar"), 
 				new File("/tmp"), false);
 		
-		ArchiveBuilderFactory.getArchiveBuilderForFile(new File("/tmp/RetrievalObject.tar"))
-			.unarchiveFolder(new File("/tmp/RetrievalObject.tar"), new File ("/tmp/"));
+		ArchiveBuilderFactory.getArchiveBuilderForFile(new File("/tmp/ID-ATUseCaseRetrieval.tar"))
+			.unarchiveFolder(new File("/tmp/ID-ATUseCaseRetrieval.tar"), new File ("/tmp/"));
 		
-		if (!new File("/tmp/RetrievalObject/data/"+"image/713091.tif").exists()) fail();
-		if (!new File("/tmp/RetrievalObject/data/"+"premis.xml").exists()) fail();
+		if (!new File("/tmp/ID-ATUseCaseRetrieval/data/"+"image/713091.tif").exists()) fail();
+		if (!new File("/tmp/ID-ATUseCaseRetrieval/data/"+"premis.xml").exists()) fail();
 		
-		if (!checkBag(new File("/tmp/RetrievalObject"))) fail();
+		if (!checkBag(new File("/tmp/ID-ATUseCaseRetrieval"))) fail();
 	}
 	
 	// ----------
@@ -99,23 +98,6 @@ public class ATUseCaseRetrieval extends Base{
 		BagFactory bagFactory = new BagFactory();
 		Bag bag = bagFactory.createBag(file);
 		return bag.verifyValid().isSuccess();
-	}
-	
-	/**
-	 * @deprecated code duplication with pipgen
-	 */
-	private void createObjectAndRetrievalJob(){
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		session.createSQLQuery("INSERT INTO objects (data_pk,identifier,orig_name,contractor_id,object_state,published_flag) "
-				+"VALUES (1,'RetrievalObject','OriginalName',1,'100',0);").executeUpdate();
-		session.createSQLQuery("INSERT INTO packages (id,name) VALUES (1,'1');").executeUpdate();
-		session.createSQLQuery("INSERT INTO objects_packages (objects_data_pk,packages_id) VALUES (1,1);").executeUpdate();
-		session.createSQLQuery("INSERT INTO queue (id,status,objects_id,initial_node) VALUES (1,'900',1,"+
-				"'"+nodeName+"');").executeUpdate();
-		session.getTransaction().commit();
-		session.close();	
-	}
-	
+	}	
 	
 }

@@ -36,7 +36,10 @@ import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -49,6 +52,7 @@ public class Base {
 	protected String userAreaRootPath;
 	protected String dipAreaRootPath;
 	protected GridFacade gridFacade;
+	protected RepositoryFacade repositoryFacade;
 	protected DistributedConversionAdapter distributedConversionAdapter;
 	protected String nodeName;
 	protected CentralDatabaseDAO dao = new CentralDatabaseDAO();
@@ -72,7 +76,10 @@ public class Base {
 		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
 		
 		instantiateGrid(properties.getProperty("grid.implementation"),properties.getProperty("implementation.distributedConversion"));
-		if (gridFacade==null) throw new IllegalStateException("gridFacade could not get instantiated");
+		if (gridFacade==null) throw new IllegalStateException("gridFacade could not be instantiated");
+		
+		instantiateRepository(properties.getProperty("repository.implementation"));
+		if (repositoryFacade==null) throw new IllegalStateException("repositoryFacade could not be instantiated");
 	}
 	
 	/**
@@ -86,6 +93,13 @@ public class Base {
 				new FileSystemXmlApplicationContext("src/main/resources/META-INF/beans-infrastructure.core.xml");
 		gridFacade = (GridFacade) context.getBean(gridImplBeanName);
 		distributedConversionAdapter = (DistributedConversionAdapter) context.getBean(dcaImplBeanName);
+		context.close();
+	}
+	
+	private void instantiateRepository(String repImplBeanName) {
+		AbstractApplicationContext context =
+				new FileSystemXmlApplicationContext("src/main/resources/META-INF/beans-infrastructure.core.xml");
+		repositoryFacade = (RepositoryFacade) context.getBean(repImplBeanName);
 		context.close();
 	}
 	
@@ -106,6 +120,11 @@ public class Base {
 				if (job.getStatus().equals(status)){
 					System.out.println("ready");
 					return job;
+				} else if (job.getStatus().endsWith("1") || job.getStatus().endsWith("3")
+						|| job.getStatus().endsWith("4")) {
+					String msg = "ERROR: Job in error state: " + job.getStatus();
+					System.out.println(msg);
+					throw new RuntimeException(msg);
 				}
 			}
 			
@@ -115,17 +134,45 @@ public class Base {
 	
 	protected void waitForJobsToFinish(String originalName, int timeout) throws InterruptedException{
 
+		// wait for job to appear
+		Job job = null;
+		int count = 0;
+		while(job == null) {
+			
+			if(++count * timeout > 60000) {
+				throw new RuntimeException("ERROR: Job did not appear after 1 minute! " + originalName);
+			}
+			
+			System.out.println("waiting for job to appear ... " + originalName);
+			Session session = HibernateUtil.openSession();
+			session.beginTransaction();
+			job = dao.getJob(session, originalName, "TEST");
+			session.close();
+			
+			Thread.sleep(timeout);
+			
+		}
+		
+		// wait for jobs to disappear
 		while (true){
 
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
-			Job job = dao.getJob(session, originalName, "TEST");
+			job = dao.getJob(session, originalName, "TEST");
 
 			session.close();
 			
-			if (job==null) return;
+			if (job==null) {
+				System.out.println("finished! " + originalName);
+				return;
+			} else if (job.getStatus().endsWith("1") || job.getStatus().endsWith("3")
+					|| job.getStatus().endsWith("4")) {
+				String msg = "ERROR: Job in error state: " + job.getStatus();
+				System.out.println(msg);
+				throw new RuntimeException(msg);
+			}
 			
-			System.out.println("waiting for jobs to finish ... ");
+			System.out.println("waiting for jobs to finish ... "+job.getStatus());
 			
 			Thread.sleep(timeout);
 		}
@@ -199,12 +246,37 @@ public class Base {
 		new File(dipAreaRootPath+"public/TEST").mkdirs();
 		new File(dipAreaRootPath+"institution/TEST").mkdirs();
 	}
+	
+
+	/**
+	 * @throws IOException 
+	 */
+	protected void createObjectAndJob(String name, String status) throws IOException{
+		gridFacade.put(
+				new File("src/test/resources/at/"+name+".pack_1.tar"),
+				"/aip/TEST/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
+		
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		
+		session.createSQLQuery("INSERT INTO objects (identifier,orig_name,contractor_id,object_state,published_flag,ddb_exclusion) "
+				+"VALUES ('ID-"+name+"','"+name+"',1,'100',0,false);").executeUpdate();
+		Integer dbid = (Integer) session.createSQLQuery("SELECT MAX(data_pk) FROM objects").uniqueResult(); 
+		session.createSQLQuery("INSERT INTO packages (id,name) VALUES ("+dbid+",'1');").executeUpdate();
+		session.createSQLQuery("INSERT INTO objects_packages (objects_data_pk,packages_id) VALUES ("+dbid+","+dbid+");").executeUpdate();
+		
+		session.createSQLQuery("INSERT INTO queue (id,status,objects_id,initial_node) VALUES ("+dbid+",'"+status+"',"+dbid+","+
+				"'"+nodeName+"');").executeUpdate();
+		
+		session.getTransaction().commit();
+		session.close();	
+	}
 
 	protected Object ingest(String originalName) throws IOException,
 			InterruptedException {
 				FileUtils.copyFileToDirectory(new File(testDataRootPath+originalName+".tgz"), 
 						new File(ingestAreaRootPath+"TEST"));
-				waitForJobToBeInStatus(originalName,"540",500);
+				waitForJobsToFinish(originalName,500);
 				
 				Object object = fetchObjectFromDB(originalName);
 				return object;

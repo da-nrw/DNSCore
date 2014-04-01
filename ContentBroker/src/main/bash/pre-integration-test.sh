@@ -10,8 +10,8 @@
 REPO=../installation/
 VERSION=`cat ../VERSION.txt`
 
-LANG="de_DE.UTF-8"
-export LANG
+#LANG="de_DE.UTF-8"
+#export LANG
 
 #############################
 #### CREATE DELIVERABLE #####
@@ -49,7 +49,7 @@ function restartContentBroker(){
 function install(){
 	cd ../installation 
 	echo call ./install.sh $1
-	./install.sh $1 "node.test"
+	./install.sh $1 "full.test"
 	if [ $? = 1 ]
 	then
 		echo Error in install script

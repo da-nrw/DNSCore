@@ -50,7 +50,7 @@
 		<value>IngestConvertAction</value>
 		<value>IngestScanAction</value>
 		<value>IngestRegisterURNAction</value>
-		<value>IndexESAction</value>
+		<value>IndexMetadataAction</value>
 		<value>CreateEDMAction</value>
 		<value>SendToPresenterAction</value>
 		<value>FetchPIPsAction</value>
