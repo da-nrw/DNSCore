@@ -21,11 +21,12 @@ package de.uzk.hki.da.at;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -36,6 +37,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.repository.RepositoryException;
 
 /**
  * @author Daniel M. de Oliveira
@@ -59,27 +61,28 @@ public class ATPIPGen extends Base{
 	 * @throws InterruptedException
 	 * @throws IOException
 	 * @throws JDOMException 
+	 * @throws RepositoryException 
 	 */
 	@Test
-	public void testUpdateUrls() throws InterruptedException, IOException, JDOMException{
+	public void testUpdateUrls() throws InterruptedException, IOException, JDOMException, RepositoryException{
+		
 		String name = "UpdateUrls";
 		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"/"; 
 		
-		
-		
-		assertTrue(new File(dipAreaRootPath+"_data/danrw/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
-		assertTrue(new File(dipAreaRootPath+"_data/danrw-closed/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
-		assertTrue(new File(dipAreaRootPath+"_data/danrw/"+dipPath+"METS").exists());
-		assertTrue(new File(dipAreaRootPath+"_data/danrw-closed/"+dipPath+"METS").exists());
+		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		InputStream metsStreamPublic = repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "METS");
+		assertNotNull(metsStreamPublic);
+		InputStream metsStreamClosed = repositoryFacade.retrieveFile(object.getIdentifier(), "danrw-closed", "METS");
+		assertNotNull(metsStreamClosed);
 		
 		Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 		Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 		
 		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(new FileReader(new File(dipAreaRootPath+"_data/danrw/"+dipPath+"METS")));
+		Document doc = builder.build(metsStreamPublic);
 
 		String url = doc.getRootElement()
 				.getChild("fileSec", METS_NS)
@@ -90,7 +93,7 @@ public class ATPIPGen extends Base{
 		
 		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", url);
 		
-		doc = builder.build(new FileReader(new File(dipAreaRootPath+"_data/danrw-closed/"+dipPath+"METS")));
+		doc = builder.build(metsStreamClosed);
 
 		url = doc.getRootElement()
 				.getChild("fileSec", METS_NS)
@@ -100,65 +103,71 @@ public class ATPIPGen extends Base{
 				.getAttributeValue("href", XLINK_NS);
 		
 		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", url);
+		
 	}
 	
 	@Test
-	public void testPublishInstOnly() throws InterruptedException, IOException{
+	public void testPublishInstOnly() throws InterruptedException, IOException, RepositoryException{
+		
 		String name = "InstOnly";
 		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"/"; 
 		
-		assertFalse(new File(dipAreaRootPath+"_data/danrw/"+dipPath).exists());
-		assertTrue( new File(dipAreaRootPath+"_data/danrw-closed/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
+		assertNull(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		
 	}
 	
 	@Test
-	public void testNoPubWithLawSet() throws InterruptedException, IOException{
+	public void testNoPubWithLawSet() throws InterruptedException, IOException, RepositoryException{
+		
 		String name = "NoPubWithLawSet";
 		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"/"; 
 		
-		assertFalse(new File(dipAreaRootPath+"_data/danrw/"+dipPath).exists());
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "danrw"));
+		
 	}
 	
 	@Test
-	public void testNoPubWithStartDateSet() throws InterruptedException, IOException{
+	public void testNoPubWithStartDateSet() throws InterruptedException, IOException, RepositoryException{
+		
 		String name = "NoPubWithStartDateSet";
 		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"/"; 
 		
-		assertFalse(new File(dipAreaRootPath+"_data/danrw/"+dipPath).exists());
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "danrw"));
+		
 	}
 	
 	
 	@Test
-	public void testPublishNothing() throws InterruptedException, IOException{
+	public void testPublishNothing() throws InterruptedException, IOException, RepositoryException{
+		
 		String name = "PublishNothing";
 		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name,  500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"/";
 		
-		assertFalse(new File(dipAreaRootPath+"_data/danrw/"+dipPath).exists());
-		assertFalse(new File(dipAreaRootPath+"_data/danrw-closed/"+dipPath).exists());
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "danrw"));
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "danrw-closed"));
+		
 	}
 	
 	@Test
-	public void testPublishAll() throws InterruptedException, IOException{
+	public void testPublishAll() throws InterruptedException, IOException, RepositoryException{
+		
 		String name = "AllPublic";
 		createObjectAndJob("ATPIPGen"+name,"700");
 		waitForJobsToFinish("ATPIPGen"+name,  500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
-		String dipPath = object.getIdentifier()+"/"; 
 		
-		assertTrue(new File(dipAreaRootPath+"_data/danrw/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
-		assertTrue(new File(dipAreaRootPath+"_data/danrw-closed/"+dipPath+"_0c32b463b540e3fee433961ba5c491d6.jpg").exists());
+		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), "danrw"));
+		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), "danrw-closed"));
+		
 	}
 	
 }
