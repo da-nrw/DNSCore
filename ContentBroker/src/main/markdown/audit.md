@@ -23,7 +23,7 @@ It might be worth considering archiving the resulting logs, instead of rotateing
 
 Nodeadmins can perform manual checking of AIP by queueing them via DA-WEB on demand. 
 
-### Reports on errors
+### Error reporting 
 
 "Errors" in terms of DNS Core Audit could be:
 
