@@ -7,6 +7,7 @@
 To build DNS Core successfully you'll need at least a developer engine with
 * JAVA 1.6
 * MAVEN
+* GIT
 * Grails 2.2.4 in order to compile DA-WEB 
 
 Please ensure, your @machine's are all running in UTF-8 mode:
