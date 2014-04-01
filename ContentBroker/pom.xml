@@ -615,8 +615,13 @@
 		    <groupId>xml-apis</groupId>
 		    <artifactId>xml-apis</artifactId>
 		    <version>1.4.01</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		
 	</dependencies>
 
 </project>
