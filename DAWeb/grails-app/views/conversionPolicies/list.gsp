@@ -30,7 +30,7 @@
 					
 						<g:sortableColumn property="source_format" title="${message(code: 'conversionPolicies.source_format.label', default: 'Quellformat')}" />
 					
-						<g:sortableColumn property="target_suffix" title="${message(code: 'conversionPolicies.conversion_routine.label', default: 'Zielformat')}" />
+						<th><g:message code="conversionPolicies.conversion_routine.label" default="Zielformat" /></th>
 					
 					</tr>
 				</thead>
