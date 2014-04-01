@@ -21,7 +21,8 @@ Nodeadmins can perform manual checking of AIP by queueing them via DA-WEB.
 
 ### Reports on errors
 
-"Errors" are: one of the three required nodes is down, while perform a check (minor error).
+"Errors" in terms of DNS Core Audit could be:
+One or ore of the three required nodes is down, while perform a check (minor error).
 One or more checksums are not identical to the stored checksum in the Metadata catalogue ICAT (severe error).
 
 On both errors, DNS send an email to the configured node admin. 
