@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Kathrin Schroeder (Die Deutsche Bibliothek) -->
+<xsd:schema targetNamespace="urn:nbn:de:1111-2004033116" xmlns:epicur="urn:nbn:de:1111-2004033116" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0" xsi:schemaLocation=" http://www.w3.org/2001/XMLSchema  http://www.w3.org/2001/XMLSchema.xsd">
+	<xsd:annotation>
+		<xsd:documentation xml:lang="de">
+				Diese Datei beinhaltet das Schema der auf XML basierenden EPICUR-Transfersyntax zur Abbildung des umfassenden URN-Workflows. Mit diesem Schema werden zwei Ziele verfolgt:
+
+ 			1. Die Einbindung in OAI 2.0 zum selektiven Harvesten von URN-Records durch Die Deutsche Bibliothek von einem DataProvider.  
+			    URN-Records beinhalten folgende Informationen:
+				- Einen neu erstellten Metadatensatz mit Informationen ueber die URN und die zugehoerige URL. 
+				- Es wird zusaetzlich eine Metainformation ueber einen bei dem DataProvider geaenderten Record angegeben. Dieser Fall tritt ein, wenn die URL aktualisiert wurde. 
+				- Es koennen optional hierarchische Zuordnungen  (Gesamt- und Teildokument) angegeben werden und die fuer Teildokumente vergebenen URNs.  
+ 				- Optional ist die Abbildung von semantischen Informationen vorgesehen wie z.B. die Angabe einer URN, die fuer eine neue Dokumentversion vergeben wurde.
+		
+			2. Das Anbieten einer separaten Schnittstelle zur Implementation eines aktiven URN-Melde- und Updateprozesses an Die Deutsche Bibliothek mit folgenden 		
+			    Informationen:
+
+			    - URN-Erstregistrierung
+			    - Erstmeldung einer URN fuer neue Dokumentversionen
+                           - Erstmeldung von URNs fuer Teildkokumente
+			    - Update einer URL
+			    - URL-Update bei mehr als 1 registrierten URL fuer eine URN
+                           - URL-delete
+			    -  URL-insert
+			
+			Stand: Februar 2004
+			Version: 1.0
+
+			Autoren: 
+			Kathrin Schroeder		
+		</xsd:documentation>
+		<xsd:documentation xml:lang="en">
+This file contains the schema of the XML schema on the basis of the XEPICUR transfer syntax for the entire URN administration. This schema has two aims: 1. The integration into OAI 2.0 of the selective harvesting of URN records by Die Deutsche Bibliothek from a data provider. URN records contain the following information: - A  created xml-based metadata record with information about a URN, its associated URL and some attributes. - Also provided is meta-information about records changed by data providers. This situation applies when a URL is updated. - Optionally hierarchical designations (for whole or partial documents) can be provided as can URNs for partial documents. - There is an option of providing semantic information such as the details of a new URN allocated for a new document version. 2. The provision of a separate technical interface for implementing an active process for reporting and updating URNs at Die Deutsche Bibliothek with the following information: - Initial URN registration - initial registration of a URN for a new version of a document - initial registration of a URN for partial documents - URL updating - URL updating where more than URL is registered against one URN - deleting URNs - inserting URLs As at: February 2004 Version: 1.0 Authors: Kathrin Schroeder	
+        	</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="epicur">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="de">
+			Deklaration des Wurzelelements "epicur" mit zwei Unterelementen "administrative_data" und "record".  Beide Elemente sind Pflichtfelder und muessen mindestens einmal auftreten. 
+			</xsd:documentation>
+			<xsd:documentation xml:lang="en">
+Declaration of "epicur" root element with two sub-elements "administrative_data" and "record". Both elements are mandatory fields and must occur at least once.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="administrative_data" type="epicur:administrative_dataType"/>
+				<xsd:element name="record" type="epicur:recordType" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="administrative_dataType">
+		<xsd:sequence>
+			<xsd:element name="delivery" type="epicur:deliveryType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="deliveryType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="de">
+				Die Informationen dienen der Spezifizierung des URN-Meldeprozesses wie z.B. URN_Erstmeldung oder URL-Aktualisierung, die verwendete 	
+				Transferschnittstelle oder die Art der Rueckmeldung.   			
+			</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       The information is used to specify the URN reporting process such as initial URN registration or URL updating, the transfer interface used or the type of response. 
+                        </xsd:documentation>
+
+
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="authorization" type="epicur:authorizationType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">
+					 Element dient der Erfassung von Legitimationsdaten. Es ist optional.  			
+					 </xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       This element is used to capture validation data. It is optional. 
+                        </xsd:documentation>
+
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="update_status" type="epicur:update_statusType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">
+					 Spezifizierung der Art der Meldung. Die Angabe ist obligatorisch.  					</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+Specification of reporting type. This entry is mandatory.
+
+                        </xsd:documentation>
+
+
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="transfer" type="epicur:transferType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">
+					 Spezifizierung der genutzten Schnittstelle oder des verwendeten Protokolles. Die Angabe ist optional.  			
+				</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+Specification of the interface or protocol used. This entry is optional.
+                        </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="resupply" type="epicur:resupplyType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="authorizationType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="de">
+				Dieses Element bezeichnet einen URN-Namensraum und sollte gewaehlt werden, wenn URNs aus einem anderen Namensraum an Die Deutsche Bibliothek gemeldet werden wie z.B. urn:std-123456789.  						
+			</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       This element indicates a URN namespace and should be selected if URNs from another namespace are being reported to Die Deutsche Bibliothek, such as urn:tib-123456789. 
+                        </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="person_id" type="xsd:string">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="de">
+							Legitimations_ID einer Person. 						
+					</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       Validation ID for a person. 
+                        </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="system_id" type="xsd:string">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="de">
+							Alternative zu "person_id". Es kann eine ID sein, die nur in Zusammenhang mit maschinengesteuerter URN-Meldung erfolgt. 					
+					</xsd:documentation>
+
+                         <xsd:documentation xml:lang="en">
+                       Alternative to "person_id". This can only be an ID used in conjunction with automated URN registration. 
+                        </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:choice>
+				<xsd:element name="urn_nid" type="epicur:urn_nidType">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="de">
+							 Das Element beinhaltet den URN-Namensraum wie z.B. "urn:tib".
+						</xsd:documentation>
+                        <xsd:documentation xml:lang="en">
+                       The element contains the URN namespace such as "urn:tib". 
+                        </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="urn_snid" type="epicur:urn_snidType">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="de">
+						 Das Element beinhaltet den NBN-Unternamensraum wie z.B. urn:nbn:de:gbv:089. Das Ziel ist das Ermitteln von Berechtigungen zur 										Administration des URN-Unternamensraumes.  	
+					</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       This element contains the NBN sub-namespace such as urn:nbn:de:gbv:089. The purpose is to trace authorisations for administering URN sub-namespaces. The purpose is to trace authorisations for administering URN sub-namespaces. 
+                        </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="update_statusType">
+		<xsd:attribute name="type" use="required">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="de">
+					Die Angabe erfolgt bei einer URN_Erstmeldung bzw. Neuerstellung eines OAI-Records. Die Angabe des Elementes ist obligatorisch. 
+				</xsd:documentation>
+                        <xsd:documentation xml:lang="en">
+                        This entry is for an initial URN registration or a newly created OAI record. An entry for this element is mandatory.
+                        </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:NMTOKEN">
+					<xsd:enumeration value="urn_new">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="de">
+								URN-Erstmeldung. Dies ist ein Pflichtfeld und wird bei Einbindung in OAI per Default bei Neuerstellung von Records angegeben.  
+							</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       Initial URN registration. This is a mandatory field and is a default new record entry for inclusion in OAI. 
+                        </xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="urn_new_version">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="de">
+								URN-Erstregistrierung fuer eine neue Dokumentversion. Die Angabe ist optional. 
+								Bei einem Metadatenharvesten ueber OAI ist wird dieses Attribut verwendet, wenn eine URN fuer eine neue Dokumentversion vergeben wurde und dies in den Metadaten abgebildet wird, ist der update_status mit "urn_new_version" anzugeben, auch wenn der Record neu erstellt wurde.  	
+							</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       Initial URN registration for a new version of a document. This entry is optional. When harvesting metadata using OAI 2.0, this attribute is used if a new URN was allocated for a new version of a document and this is to be reflected in the metadata. "urn_new_version" is entered for the update_status, even if the record has been newly created. 
+                        </xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="urn_alternative">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="de">
+								Persistent-Identifier, der zusaetzlich zu einer bereits registrierten URN existiert wie z.B. DOI. Die Angabe ist optional. 
+							</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       Persistent Identifier, which also exists for a URN already registered such as DOI. This entry is optional. 
+                        </xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="url_update">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="de">
+								Bei Aktualisierung von URLs wird dieses Attribut angegeben, wenn explizit eine von mehreren URLs geaendert werden sollen. 
+							</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       This attribute is entered when updating URLs, if just one amongst several URLs is to be altered. 
+                        </xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="url_update_general">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="de">
+								Aktualisierung von URLs. Dieses Attribut muss angegeben, wenn der Record nur "neue" URLs beinhaltet. Es werden alle registrierten URLs geloescht und mit den "neuen" URLs ersetzt.
+							</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       Updating URLs. This attribute must be entered if the record only contains "new" URLs. All registered URLs will be deleted and replaced with the "new" URLs. 
+ng URLs. This attribute must be entered if the record only contains"new" URLs. All registered URLs will be deleted and replaced with the "new" URLs.
+                        </xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="url_delete">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="de">
+								Dieses Attribut wird gesetzt, wenn eine URL geloescht werden soll. 	
+							</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       This attribute is set when a URL is to be deleted. 
+                        </xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="url_insert">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="de">
+								Dieses Attribut wird gesetzt, wenn eine neue URL hinzugefuegt (im Sinne von Nachmeldeprozesses) werden soll. 	
+						</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       This attribute is set if a new URL is to be added (in the context of a subsequent reporting procedure). 
+                        </xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="transferType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="de">
+		 		Angabe der Transferschnittstelle oder des Protokolles. Das Element ist optional.  			
+			</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       Transfer interface or protocol details. This element is optional. 
+                        </xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="type" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:NMTOKEN">
+					<xsd:enumeration value="oai"/>
+					<xsd:enumeration value="email"/>
+					<xsd:enumeration value="http"/>
+					<xsd:enumeration value="ftp"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="resupplyType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="de">
+				 Zieladresse zur Information ueber eine erfolgreiche oder fehlerhafte Bearbeitung. Die Angabe ist optional.  			
+			</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                Target address for information on successful or failed processing. This entry is optional.        
+                        </xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="type" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:NMTOKEN">
+					<xsd:enumeration value="email"/>
+					<xsd:enumeration value="ftp"/>
+					<xsd:enumeration value="http"/>
+					<xsd:enumeration value="soap"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:simpleType name="urn_nidType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="de">
+				Validation, ob der Inhalt des Elements "urn_nid" mit dem selektierten Scheme konform geht.			
+			</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                Validation of whether the "urn_nid" element complies with the chosen schema.        
+                        </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="urn:.*"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="urn_snidType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="de">
+				Validation, ob der Inhalt des Elements "urn_snid" mit dem selektierten Scheme konform geht.			
+			</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                Validation of whether the "urn_snid" element complies with the chosen schema.        
+                        </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="urn:nbn:.*"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="recordType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="de">
+			Das Element record ist dem Wurzelelement "epicur" direkt untergeordnet. Es ist wiederholbar, um Sammelmeldungen zu generieren. Dieser Fall kann bei der Implementation des URN-Melde- und Updateprozesses ueber eine separate URN-Schnittstelle eintreten. Bei Einbindung des Schemas in OAI 2.0 ist die Kardinalitaet des Elements "record" auf 1 begrentzt.   	
+			</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                The element record is directly sub-ordinate to the "epicur" root element. It can be repeated in order to generate multiple registrations. This situation can occur when implementing URN reporting or updating procedures using a separate URN interface. When integrating the schema into OAI 2.0 the "record" element is restricted to the cardinality 1.        
+                        </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="identifier" type="epicur:identifierType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">
+					Identifier URN und URL mit unterschiedlichen Attributen  
+				</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                Identifier for URN and URL with different attributes         
+                        </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="isVersionOf" type="epicur:isVersionOfType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">
+					Persistent Identifier der neuen Dokumentversion 
+				</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       Persistent Identifier for the new document version 
+                        </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="hasVersion" type="epicur:hasVersionType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">
+					Persistent Identifier wie z.B. DOI, der zusaetzlich zu einer URN existiert. 
+				</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       Persistent Identifier such as DOI, which exists in addition to a URN. 
+                        </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="resource" type="epicur:resourceType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">
+					Element mit den Unterelementen identifier und format dient der Abbildung der Zusammenhaenge von URN und URL. 			
+				</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                        Element with identifier and format sub-elements, used to illustrate the connections between URL and URN.
+                        </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="isPartOf" type="epicur:isPartOfType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">
+					Element zur Erfassung von Informationen ueber URNs und URLs fuer Teildokumente 			
+			</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                        Element for capturing URN and URL information for partial documents 
+                        </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="identifierType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="scheme" use="required">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="de">
+										 URN und URL des Objektes. Die URN, die mit folgenden Attributen spezifiziert werden. 		
+									</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       URN and URL of the object. The URNs specified with the following attributes. 
+                        </xsd:documentation>
+							</xsd:annotation>
+							<xsd:enumeration value="urn"/>
+							<xsd:enumeration value="urn:nbn"/>
+							<xsd:enumeration value="urn:nbn:de"/>
+							<xsd:enumeration value="urn:nbn:at"/>
+							<xsd:enumeration value="urn:nbn:ch"/>
+							<xsd:enumeration value="url">
+								<xsd:annotation>
+									<xsd:documentation xml:lang="de">
+										 URL des Objektes; Es koennen Attribute spezifiziert werden, um beim Resolving eine Default-URL (role=primary) explizit festzulegen, eine URL als Frontpage-URL zu kennzeichnen, damit ein URN-Resolving zu einer Metabeschreibung eines Objektes moeglich ist. 						
+									</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       URL of the object; attributes can be specified, so that during the resolving process a default URL (role=primary) is explicitly set, a URL is designated as the front page URL, so that it is possible for a URN to resolve to a meta-description of the object. 
+                        </xsd:documentation>
+								</xsd:annotation>
+							</xsd:enumeration>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+				<xsd:attribute name="type">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="de">
+										 Attribut einer URL zur Kennzeichnung als Frontpage-URL. 	
+								</xsd:documentation>
+<xsd:documentation xml:lang="en">URL attribute for identification as the front page URL.
+                        </xsd:documentation>
+							</xsd:annotation>
+							<xsd:enumeration value="frontpage"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+				<xsd:attribute name="status">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="de">
+						 Dieses Attribut ist optional und wird bei einem Updateprozess zur Kennzeichnung der URL als "alte" bzw. "neue" URL verwendet. 
+						</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       This attribute is optional and is used during the update process to identify a URL as being "new" or "old". 
+                        </xsd:documentation>
+					</xsd:annotation>
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:enumeration value="old"/>
+							<xsd:enumeration value="new"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+				<xsd:attribute name="role">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="de">
+							Attribut einer URL, die beim Resolving zuerst ausgewiesen werden soll. Dieser Fall tritt ein, wenn mehr als eine URL zu einer URN registriert sind. 
+						</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                        URL attribute to be identified first during resolution. This situation arises when more than one URL is registered against a URN.
+                        </xsd:documentation>
+					</xsd:annotation>
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:enumeration value="primary"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+				<xsd:attribute name="origin">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="de">
+							Attribut einer URL, dass die Herkunft spezifiziert. Dies kann optional angeben werden, wenn beim URN-Resolving gezielt auf einzelne URLs verwiesen werden soll. 
+						</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       URL attribute specifying the source. This is an optional entry if, during URN resolution, individual URLs are to be specifically pointed to. 
+                        </xsd:documentation>
+					</xsd:annotation>
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:enumeration value="original">
+								<xsd:annotation>
+									<xsd:documentation xml:lang="de">				
+									URL des Original-Servers. 
+									</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       URL of the original server. 
+                        </xsd:documentation>
+								</xsd:annotation>
+							</xsd:enumeration>
+							<xsd:enumeration value="extern">
+								<xsd:annotation>
+									<xsd:documentation xml:lang="de">
+										URL eines Spiegelservers. 	
+								</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       URL of a mirror server. 
+                        </xsd:documentation>
+								</xsd:annotation>
+							</xsd:enumeration>
+							<xsd:enumeration value="archive">
+								<xsd:annotation>
+									<xsd:documentation xml:lang="de">
+										 URL eines Archivservers wie z.B. Der Deutschen Bibliothek. 												
+									</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       URL of an archive server, such as at Die Deutsche Bibliothek. 
+                        </xsd:documentation>
+								
+</xsd:annotation>
+							</xsd:enumeration>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+				<xsd:attribute name="target">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="de">
+						        Optionales Attribut einer URL, welches die URL als Transfer-URL zur Uebertragung der Objekte in ein Depotsystem kennzeichnet.   
+						</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       Optional URL attribute identifying the URL as a transfer URL for transferring the objects to a deposit system. 
+                        </xsd:documentation>
+					</xsd:annotation>
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:enumeration value="transfer"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="isVersionOfType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="de">
+			Dieses Element bezeichnet die URN, die fuer eine neue Dokumentversion vergeben wurde. Dabei werden die u.a. Schemes beruecksichtigt.  			
+			</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                        This element identifies URNs assigned to new document versions. This takes into account the schema set out below.
+                        </xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="scheme" use="required">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:token">
+							<xsd:enumeration value="urn"/>
+							<xsd:enumeration value="urn:nbn"/>
+							<xsd:enumeration value="urn:nbn:de"/>
+							<xsd:enumeration value="urn:nbn:ch"/>
+							<xsd:enumeration value="urn:nbn:at"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="hasVersionType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="de">
+				 Das Element "hasVersion" ist optional und dient der Angabe, ob zusaetzlich zu einem bereits registrierten Persistent Identifier wie z.B. "urn:nbn:de:..." ein weiterer Persistent Identifier wie z.B. DOI existiert. Der "externe" Persistent Identifier muss mittels "scheme" spezifiziert werden.  
+			</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                The "hasVersion" element is optional and is used to detail whether another persistent identifier, such as DOI, exists in addition to a Persistent Identifier already registered such as "urn:nbn:de:...". The "external" Persistent Identifier must be specified using "scheme".        
+                        </xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="scheme" use="required">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:token">
+							<xsd:enumeration value="urn"/>
+							<xsd:enumeration value="urn:nbn"/>
+							<xsd:enumeration value="urn:nbn:de"/>
+							<xsd:enumeration value="urn:nbn:ch"/>
+							<xsd:enumeration value="urn:nbn:at"/>
+							<xsd:enumeration value="doi"/>
+							<xsd:enumeration value="handle"/>
+							<xsd:enumeration value="urn:issn"/>
+							<xsd:enumeration value="urn:isbn"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="resourceType">
+		<xsd:sequence maxOccurs="unbounded">
+			<xsd:element name="identifier" type="epicur:identifierType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">
+					Das Element dient der Erfassung von Informationen ueber URNs und URLs mit unterschiedlichen Attributen.			
+			</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                The element is used to capture information about URNs and URLs with different attributes.        
+                        </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="format" type="epicur:formatType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">
+					Das Element dient der Erfassung des MimeTypes einer Publikation. 						</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       The element is used to capture a publication's MimeType.  
+                        </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="formatType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="de">
+				 Das Element "format" wird verwendet, um den MimeType des Objektes anzugeben.  
+			</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                       The "format" element is used to give an object's MimeType. 
+                        </xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="scheme" use="required">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:NMTOKEN">
+							<xsd:enumeration value="imt"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="isPartOfType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="de">
+			Das Element mit zwei Unterelementen dient der Abbildung von Informationen ueber URNs und den zugehoerigen URLs, die fuer Teildokumente vergeben wurden. 			
+			</xsd:documentation>
+			<xsd:documentation>
+			URN und URL des Gesamtdokumentes  			
+			</xsd:documentation>
+                    <xsd:documentation xml:lang="en">
+                        The element with two sub-elements is used to illustrate information about URNs and their associated URLs allocated for partial documents.
+                        </xsd:documentation>
+			<xsd:documentation xml:lang="de">
+				 	Dieses Element beinhaltet Informationen ueber URNs und URLs der Teildokumente. Es ist wiederholbar. 					
+			</xsd:documentation>
+
+                    <xsd:documentation xml:lang="en">
+                       This element contains information about URNs and URLs for partial documents. It is repeatable. 
+                        </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence maxOccurs="unbounded">
+			<xsd:element name="identifier" type="epicur:identifierType"/>
+			<xsd:element name="resource" type="epicur:resourceType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

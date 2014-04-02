@@ -1,0 +1,719 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2007 bearbeitet (http://www.altova.com) von Jörg Rutkowski (SER Solutions Deutschland GmbH) -->
+<!-- edited with XMLSpy v2012 rel. 2 sp1 (x64) (http://www.altova.com) by Benjamin SBB1567212 Martin (Hewlett-Packard GmbH) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://dips.bundesarchiv.de/schema" xmlns:dips="http://dips.bundesarchiv.de/schema" targetNamespace="http://dips.bundesarchiv.de/schema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
+	<xs:include schemaLocation="DiPSDatentypen.xsd"/>
+	<xs:element name="dips_aip" type="t_dips_aip"/>
+	<xs:complexType name="t_dips_aip" abstract="false">
+		<xs:annotation>
+			<xs:documentation>DiPSAIP beschreibt ein AIP in Anlehnung an PREMIS und DublinCore</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AIP">
+				<xs:annotation>
+					<xs:documentation>Metadaten für die Bechreibung des Archival Information Package </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AIPID" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Eindeutige ID fuer das gesamte AIP</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="DescriptionOfAIP" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Beschreibung der Repräsentation zur Steuerung der Anzeige im Verzeichnissystem</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Parent" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>ID des AIP aus dem dieses AIP entstanden ist (Ursprungsrepräsentation)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Type" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Typ des AIP (Dateisystemablage, Datenbank etc.)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>o
+			</xs:element>
+			<xs:element name="admin" type="t_dipsAdmin">
+				<xs:annotation>
+					<xs:documentation>Administrative Informationen zur Lieferung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="technical">
+				<xs:annotation>
+					<xs:documentation>PREMIS-Metadaten zur technischen Beschreibung der Objekte und aller Massnahmen fuer deren dauerhafte Archivierung</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="object" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Das Objekt ist ein Stück = Datei = Primärobjekt = archivischer Inhalt der dauerhaft in seiner Aussage erhalten werden soll</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="objectIdentifier">
+										<xs:annotation>
+											<xs:documentation>Eindeutiger Bezeichner für ein Primärobjekt, wird in DC als Stück bezeichnet (=GUID)</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="objectIdentifierType" type="xs:string">
+													<xs:annotation>
+														<xs:documentation>Typ des eindeutigen Bezeichners</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="objectIdentifierValue" type="xs:string">
+													<xs:annotation>
+														<xs:documentation>konkreter Wert des eindeutigen Bezeichners</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+											<xs:anyAttribute namespace="http://www.w3.org/1999/xlink"/>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="preservationLevel" type="xs:int" default="0">
+										<xs:annotation>
+											<xs:documentation>Archivierungstatus des Objektes. Wert für das Ursprungsobjekt ist 0, jede Migrationsstufe wird mit 1 beginnend hochgezählt</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="objectCategory" type="xs:string" default="" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Art des Objektes, möglich sind: Repräsentation, File und Bitstream</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="objectCharacteristics">
+										<xs:annotation>
+											<xs:documentation>Technische Eigenschaften eines Objektes</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="compositionLevel" type="xs:int" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Reihenfolge der Entschlüsselung zu sinnhaften Darstellung des Inhaltes</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="fixity">
+													<xs:annotation>
+														<xs:documentation>Nachweis der Datenintegrität der Primärdatei/Stück</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="messageDigestAlgorithm" type="xs:string">
+																<xs:annotation>
+																	<xs:documentation>Art des Algorythmus (Hashwert, z.B. SHA256)</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="messageDigest" type="xs:string">
+																<xs:annotation>
+																	<xs:documentation>Wert des Algorithmus</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="messageDigestOriginator" type="xs:string">
+																<xs:annotation>
+																	<xs:documentation>Instanz, die den Algorythmus errechnet hat </xs:documentation>
+																</xs:annotation>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="size" type="xs:long">
+													<xs:annotation>
+														<xs:documentation>Die Grösse des Primärobjektes in Byte</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="format">
+													<xs:annotation>
+														<xs:documentation>Bezeichnung des Formats des Primärobjektes</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="formatDesignation">
+																<xs:annotation>
+																	<xs:documentation>Bezeichnung des Formats des Primärobjektes
+</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="formatName" type="xs:string">
+																			<xs:annotation>
+																				<xs:documentation>Formatname</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="formatMimeType" type="xs:string">
+																			<xs:annotation>
+																				<xs:documentation>Medientyp des erkannten Formats (Text)</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="formatVersion" type="xs:string">
+																			<xs:annotation>
+																				<xs:documentation>Version des Formats</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="formatValid" type="xs:string">
+																			<xs:annotation>
+																				<xs:documentation>Ergebnis der Validierung durch Jhove. Ein Format kann valide = true oder not valid = false sein</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="formatValidDescription" type="xs:string" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Angaben zum Validierungsergebnis</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="textEncoding" type="xs:string" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Encoding fuer Textdateien. notwendig z.B. fuer CSV,TXT,...</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																	</xs:sequence>
+																</xs:complexType>
+															</xs:element>
+															<xs:element name="formatRegistry">
+																<xs:annotation>
+																	<xs:documentation>Informationen zu einem Format durch Verweis auf einen Eintrag in einer Formatdatenbank</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="formatRegistryName" type="xs:string">
+																			<xs:annotation>
+																				<xs:documentation>Name der Formatdatenbank (z.B. Pronom)</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="formatRegistryKey" type="xs:string">
+																			<xs:annotation>
+																				<xs:documentation>Eindeutige Bezeichnung für einen Formateintrag (PUID)</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="formatRegistryKeyExtended" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+																			<xs:annotation>
+																				<xs:documentation>fuer alle weiteren PUIDs die event. auch in Frage kommen</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="formatRegistryRole" type="xs:string" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Unterscheidung für Einträge, die aus unterschiedlichen Formatdatenbanken kommen</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																	</xs:sequence>
+																	<xs:anyAttribute namespace="http://www.w3.org/1999/xlink"/>
+																</xs:complexType>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="significantProperties" type="xs:string" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Spezifische Eigenschaften, die über Migrationen hinweg erhalten werden sollen</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="inhibitors" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Angaben zu Zugriffssperren, aktuell nicht verwendet</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="inhibitorType" type="xs:string" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Methode der Verschlüsselung</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="inhibitiorTarget" type="xs:string" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Inhalte, die von der Veschlüsselung betroffen sind</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="inhibitorKey" type="xs:string" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Angabe der Entschlüsselungsmethode (z.B. Passwort)</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="creatingApplication">
+													<xs:annotation>
+														<xs:documentation>Erzeugende technische Umgebung</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="creatingApplicationName" type="xs:string">
+																<xs:annotation>
+																	<xs:documentation>Name der erzeugenden Umgebung</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="creatingApplicationVersion" type="xs:string" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Version der erzeugenden Umgebung</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="dateCreatedByApplication" type="xs:date" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Datum an dem das Primärobjekt erzeugt wurde</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="originalName" type="xs:string">
+													<xs:annotation>
+														<xs:documentation>Ursprünglicher Dateiname</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="storage" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Informationen über den Langzeitspeicher</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="contentLocation" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Speicherort</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="contentLocationType" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+																			<xs:annotation>
+																				<xs:documentation>Art des Speicherortes (z.B. LTO3)</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="contentLocationValue" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+																			<xs:annotation>
+																				<xs:documentation>Kennung  des Speicherortes</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																	</xs:sequence>
+																	<xs:anyAttribute namespace="http://www.w3.org/1999/xlink"/>
+																</xs:complexType>
+															</xs:element>
+															<xs:element name="storageMedium" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Speichermedium</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="environment" minOccurs="0" maxOccurs="unbounded">
+													<xs:annotation>
+														<xs:documentation>Technische Umgebung (Hard- und Software), die für die Benutzung des Objektes  notwendig ist </xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="environmentCharacteristic" type="xs:string" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Beschreibung wie die technische Umgebung  die Benutzung des Objektes unterstützt (z.B. empfohlen für eine mögliche Anzeige)</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="environmentPurpose" type="xs:string" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Art der möglichen Benutzung des Objektes (z.B. edit, render)</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="environmentNote" type="xs:string" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Zusatzinformation</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="dependency" minOccurs="0" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Technische Abhängigkeit  zu einem anderen Objekt (nicht Software und Hardware, sondern z.B. Schema)</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="dependencyName" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+																			<xs:annotation>
+																				<xs:documentation>Name für das notwendige Zusatzobjekt,Bezeichnung eines Schemas/DTDs das zur Interpretation notwendig ist. Bsp.: XJustiz 1.0</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="dependencyIdentifier" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Endeutiger Bezeichner zur Identifikation des Zusatzobjektes</xs:documentation>
+																			</xs:annotation>
+																			<xs:complexType>
+																				<xs:sequence>
+																					<xs:element name="dependencyIdentifierType" type="xs:string" minOccurs="0">
+																						<xs:annotation>
+																							<xs:documentation>Art des eindeutigen Bezeichners für das Zusatzobjekt</xs:documentation>
+																						</xs:annotation>
+																					</xs:element>
+																					<xs:element name="dependencyIdentifierValue" type="xs:string" minOccurs="0">
+																						<xs:annotation>
+																							<xs:documentation>Wert des eindeutigen Bezeichners für das Zusatzobjekt</xs:documentation>
+																						</xs:annotation>
+																					</xs:element>
+																				</xs:sequence>
+																			</xs:complexType>
+																		</xs:element>
+																	</xs:sequence>
+																</xs:complexType>
+															</xs:element>
+															<xs:element name="software" minOccurs="0" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Software für die Benutzung des Primärobjektes</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="swName" type="xs:string" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Name/Hersteller der Software</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="swVersion" type="xs:string" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Version der Software</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="swType" type="xs:string" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Art der benötigten Software (z.B. Treiber, Viewer)</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="swOtherInformation" type="xs:string" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Zusatzinformationen</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="swDependency" type="xs:string" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Benötigte zusätzliche Softwarekomponenten (z.B. ein Perl-Script (genannt in softwareName) läuft nur mit dem Perl-Module (genannt in softwareDependency)</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																	</xs:sequence>
+																</xs:complexType>
+															</xs:element>
+															<xs:element name="hardware" minOccurs="0" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Hardware die von der Software (SoftwareName) benötigt wird</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="hwName" type="xs:string" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Hersteller/Modell/Version der Hardware</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="hwType" type="xs:string" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Art der benötigten Hardware (z.B. Prozessor)</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="hwOtherInformation" type="xs:string" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Zusatzinformation</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																	</xs:sequence>
+																</xs:complexType>
+															</xs:element>
+														</xs:sequence>
+														<xs:attribute name="xmlID" type="xs:ID"/>
+														<xs:attribute name="version" use="optional">
+															<xs:simpleType>
+																<xs:restriction base="xs:string">
+																	<xs:enumeration value="1.1"/>
+																</xs:restriction>
+															</xs:simpleType>
+														</xs:attribute>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="relationship" minOccurs="0" maxOccurs="unbounded">
+													<xs:annotation>
+														<xs:documentation>Informationen über technische Beziehungen zwischen Objekten</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="relationshipType" type="WL_PREMIS_relationshipType" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Art der Beziehung (abgeleitet=derivation)</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="relationshipSubType" type="WL_PREMIS_relationshiphasSubType" minOccurs="0" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Spezifizierung der Beziehung ist abgeleitet =  derived from</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="relatedObjectIdentification" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Eindeutiger Bezeichner für das Objekt, zu dem die Beziehung besteht</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="relatedObjectIdentifierType" type="xs:string" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Art des eindeutigen  Bezeichners für das refernzierte Objekt</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="relatedObjectIdentifierValue" type="xs:string" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Wert des eindeutigne Bezeichners für das refernzierte Objekt </xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="relatedObjectSequence" type="xs:nonNegativeInteger" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Reihenfolge der Objekte, die zueinander in Beziehung stehen</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																	</xs:sequence>
+																	<xs:attribute name="RelObjectXmlID" type="xs:IDREF" use="optional"/>
+																	<xs:anyAttribute namespace="http://www.w3.org/1999/xlink"/>
+																</xs:complexType>
+															</xs:element>
+															<xs:element name="relatedEventIdentification" minOccurs="0" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Referenz auf einen Vorgang, der mit dem Objekt verknüpft ist (z.B.  Format- oder Virenprüfung), nicht zu Verwechseln mit linkingEventIdentifier</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="relatedEventIdentifierType" type="xs:string" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Art des Bezeichners für das referenzierte Event</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="relatedEventIdentifierValue" type="xs:string" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Wert des eindeutigen Bezeichners  für das referenzierte Event</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="relatedEventSequence" type="xs:nonNegativeInteger" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Reihenfolge der Vorgänge </xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																	</xs:sequence>
+																	<xs:attribute name="RelEventXmlID" type="xs:IDREF" use="optional"/>
+																	<xs:anyAttribute namespace="http://www.w3.org/1999/xlink"/>
+																</xs:complexType>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="initialName" type="xs:string" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Dateiname vor Umbenennung falls eine Umbenennung aus technologischen Gründen während des Pre Ingest erfolgt ist</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="linkingEventIdentifier" minOccurs="0" maxOccurs="unbounded">
+										<xs:annotation>
+											<xs:documentation>Verweis auf den eindeutigen Bezeichner des Events</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="linkingEventIdentifierType" type="xs:string" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Art des Verweises auf den eindeutigen Bezeichner des Events</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="linkingEventIdentifierValue" type="xs:string" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Wert des Verweises auf den eindeutigen Bezeichners des Events</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+											<xs:attribute name="LinkEventXmlID" type="xs:IDREF" use="optional"/>
+											<xs:anyAttribute namespace="http://www.w3.org/1999/xlink"/>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="type">
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:enumeration value="representation"/>
+											<xs:enumeration value="file"/>
+											<xs:enumeration value="bitstream"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+								<xs:attribute name="xmlID" type="xs:ID"/>
+								<xs:attribute name="version" use="optional">
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:enumeration value="1.1"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="event" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Ereignis</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="eventIdentifier">
+										<xs:annotation>
+											<xs:documentation>Eindeutiger Bezeichner für ein Ereignis (z.B. Ingest )</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="eventIdentifierType" type="xs:string">
+													<xs:annotation>
+														<xs:documentation>Art des eindeutigen Bezeichners</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="eventIdentifierValue" type="xs:string">
+													<xs:annotation>
+														<xs:documentation>Wert des eindeutigen Bezeichners</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+											<xs:anyAttribute namespace="http://www.w3.org/1999/xlink"/>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="eventType" type="WL_eventType">
+										<xs:annotation>
+											<xs:documentation>Kategorie des Ereignistyps: ingest, validation, migration,  conversion,nonValidAccepted
+</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="eventDateTime" type="xs:dateTime">
+										<xs:annotation>
+											<xs:documentation>Datum und Zeit bzw. Zeitdauer des Ereignisses</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="eventDetail" type="xs:string" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Zusätzliche Informationen zum Ereignis</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="eventOutcomeInformation" maxOccurs="unbounded">
+										<xs:annotation>
+											<xs:documentation>Information über das  Ergebnis des Ereignisses</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="eventOutcome" type="WL_eventOutcome">
+													<xs:annotation>
+														<xs:documentation>Kategorie des Ergebnistyps (z.B. fehlgeschlagen)</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="eventOutcomeDetail" type="xs:string">
+													<xs:annotation>
+														<xs:documentation>Zusatzinformation zum Ergebnis</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="linkingAgentIdentifier" minOccurs="0" maxOccurs="unbounded">
+										<xs:annotation>
+											<xs:documentation>Verweis auf den eindeutigen Bezeichner für die Person/System, die das Ereignis ausgelöst hat</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="linkingAgentIdentifierType" type="xs:string" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Art des Verweises auf den Identifier des Agenten</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="linkingAgentIdentifierValue" type="xs:string" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Wert des Verweises auf den Identifier des Agenten</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="linkingAgentRole" type="xs:string" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Rolle der Person/Systen für das Ereignis</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+											<xs:attribute name="LinkAgentXmlID" type="xs:IDREF" use="optional"/>
+											<xs:anyAttribute namespace="http://www.w3.org/1999/xlink"/>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="linkingObjectIdentifier" maxOccurs="unbounded">
+										<xs:annotation>
+											<xs:documentation>Verweis auf den eindeutigen Bezeichner für das Objekt, das mit dem Ereignis verbunden ist</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="linkingObjectIdentifierType" type="xs:string">
+													<xs:annotation>
+														<xs:documentation>Art des Verweises</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="linkingObjectIdentifierValue" type="xs:string">
+													<xs:annotation>
+														<xs:documentation>Wert des Verweises </xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+											<xs:attribute name="LinkObjectXmlID" type="xs:IDREF" use="optional"/>
+											<xs:anyAttribute namespace="http://www.w3.org/1999/xlink"/>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="xmlID" type="xs:ID"/>
+								<xs:attribute name="version" use="optional">
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:enumeration value="1.1"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="agent" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Agent</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="agentIdentifier">
+										<xs:annotation>
+											<xs:documentation>Eindeutiger Bezeichner für eine Person/System</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="agentIdentifierType" type="xs:string">
+													<xs:annotation>
+														<xs:documentation>Art des Bezeichners für den Agenten </xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="agentIdentifierValue" type="xs:string">
+													<xs:annotation>
+														<xs:documentation>Wert des Bezeichners für den Agenten</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+											<xs:anyAttribute namespace="http://www.w3.org/1999/xlink"/>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="agentName" type="xs:string" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Name der Person/Systems (z.B. 007)</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="agentType" type="xs:string" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Angabe der Rolle des Agenten</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="xmlID" type="xs:ID"/>
+								<xs:attribute name="version" use="optional">
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:enumeration value="1.1"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="intellectualEntity" type="t_dips_IntellectualEntity">
+				<xs:annotation>
+					<xs:documentation>Verzeichnungseinheit (inhaltliche Einheit)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="schemaVersion" type="xs:string" use="required" fixed="0.8"/>
+	</xs:complexType>
+</xs:schema>
