@@ -144,7 +144,7 @@ public class SendToPresenterAction extends AbstractAction {
 		session.beginTransaction();
 		Object uniqueObject = dao.getUniqueObject(session, object.getOrig_name(), object.getContractor().getShort_name());
 		object.setPublished_flag(publishedFlag);
-		session.save(uniqueObject);
+		session.update(uniqueObject);
 		session.getTransaction().commit();
 		session.close();
 		logger.debug("Set published flag of object to '{}'", uniqueObject.getPublished_flag());
