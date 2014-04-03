@@ -19,7 +19,6 @@ In the following parts we assume
 1. You should be familiar with 
     
     iRODS Cli-commands esp. 
-
     irepl, ils, iput, irsync, iget
 
 As iRODS Admin (of each zone being used) you have to be familiar as well with command 
@@ -35,29 +34,12 @@ GridFace abstract classes and its respective implementations. The only thing Gri
 to know is an instance of a storage policy which has to be achieved and the logical pathname (address) the
 object is stored under. This helps to seperate the concerns of DNSCore between ContentBroker's business logic and the Storage layer. 
 
-In order to connect the two systems, we assume that you have
+In order to connect the two systems to prepare a node for production use, we assume that you have
 
 1. set up the ContentBroker as described in the getting started [guide](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/getting_started.md).
 1. you have set up a basic iRODS installation. 
 
-
-Therefore at least a running instance of iRODS is needed
-for DNSCore to perform in testing or pre-productional usage. 
-
-You are able to install and run DNSCore without having iRODS installed, due to have a so called 
-"FakeGridFacade" implementation configured in your config.properties. This os ONLY recommended in development and
-"Getting started" usage of DNSCore. Please refer to that respective documentation.
-
-. 
-
-## Introduction
-
-
-
-## iRODS
-
  
-
 ## Setup iRODS
 
 To successfully run ContentBroker/DNSCore with iRODS, you have to prepare your running installation of iRODS.
