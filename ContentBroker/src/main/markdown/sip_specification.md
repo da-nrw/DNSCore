@@ -100,6 +100,8 @@ If you need the subfolder structure, do it as follows:
 
 #### Formats - Planning for long term preservation
 
+TODO
+
 #### Publication - Preparation of Metadata
 
 
