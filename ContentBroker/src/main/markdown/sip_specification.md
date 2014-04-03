@@ -52,6 +52,18 @@ to take into consideration when assembling the contents for a SIP.
 
 #### Naming conventions and deltas
 
+##### Original Name
+
+The name of the packaged SIP without the extension (which would be simply "mySIP" in the example above)
+is called original name. Every original name is unique per contractor. This allows the system for 
+recognizing several SIPs as belonging to the same logical object. So make sure, if you want
+to ingest content into the system, which you would define as an entirely new intellectual entity (the object in
+our terms), choose a name which you have not used before (you can check this if you do a quick filtered search via DAWeb). If you want to add contents to the existing object, name the subsequent SIPs with the appropriate original
+name and the system will make sure the SIPs get recognized as part of an existing object. For more information
+on the delta system, look [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/the_delta_feature.md).
+
+##### File names
+
 #### Formats - Planning for long term preservation
 
 #### Publication - Preparation of Metadata
