@@ -1,29 +1,6 @@
-# Preparing iRODS for DNSCore
+# Connecting iRODS and DNSCore
 
-DNScore uses iRODS as storage layer. Therefore at least a running instance of iRODS is needed
-for DNSCore to perform in testing or pre-productional usage. 
-
-You are able to install and run DNSCore without having iRODS installed, due to have a so called 
-"FakeGridFacade" implementation configured in your config.properties. This os ONLY recommended in development and
-"Getting started" usage of DNSCore. Please refer to that respective documentation.
-
-In the following parts we assume 
-
-1. You have read the documenation available under www.irods.org (e.g. the read the e-Book "iRODS Primer")
-2. You have already have at least one iRODS Server running at your site
-2. It is started and you have already performed some basic tests. 
-3. You are able to create resources. 
-
-## Introduction
-
-The storage layer is separated of ContentBroker's internal business logic, the interface is composed by 
-GridFace abstract classes and its respective implementations. The only thing GridFacade needs
-to know is an instance of a storage policy which has to be achieved and the logical pathname (address) the
-object is stored under. This helps to seperate the concerns of DNSCore between ContentBroker's business logic and the Storage layer. 
-
-## iRODS
-
-The reasons why we have choosen iRODS as a storage layer framework were
+DNScore uses iRODS as storage layer. The reasons why we have choosen iRODS as a storage layer framework were
 
 1. It is open source
 2. broadly being used in academic projects at large data scales 
@@ -33,19 +10,58 @@ The reasons why we have choosen iRODS as a storage layer framework were
 
 The version described here is community iRODS Version (3.X), you may consider also the e-iRODS Version. www.eirods.org but this not tested with DNSCore.
 
-Several hardware platforms are supported by iRODS "out-of-the-box", but having a standard "mount-point" (unix file system) is always a good start. Tape devices not being able to provide such, may be connected via MSS compound devices and may need special configuration. 
+Several hardware platforms are supported by iRODS "out-of-the-box", but having a standard "mount-point" (unix file system) is always a good start. Tape devices not being able to provide such, may be connected via MSS compound devices and may need special configuration.
 
-## Setup iRODS
+In the following parts we assume 
 
-To successfully run ContentBroker/DNSCore with iRODS, you have to prepare your running installation of iRODS.
-Please start customizing iRODS install after having done a complete check of your iRODS installation: you should be familiar with 
-iRODS Cli-commands esp. 
+1. You have read the documenation available under www.irods.org (e.g. the read the e-Book "iRODS Primer")
+1. You have already experimented with iRODS at a local developer box and you are able to use it.
+1. You should be familiar with 
+    
+    iRODS Cli-commands esp. 
 
     irepl, ils, iput, irsync, iget
 
 As iRODS Admin (of each zone being used) you have to be familiar as well with command 
 
     iadmin
+
+1. You are able to create resources
+
+## ContentBroker - How it works together with iRODS
+
+The storage layer is separated of ContentBroker's internal business logic, the interface is composed by 
+GridFace abstract classes and its respective implementations. The only thing GridFacade needs
+to know is an instance of a storage policy which has to be achieved and the logical pathname (address) the
+object is stored under. This helps to seperate the concerns of DNSCore between ContentBroker's business logic and the Storage layer. 
+
+In order to connect the two systems, we assume that you have
+
+1. set up the ContentBroker as described in the getting started [guide](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/getting_started.md).
+1. you have set up a basic iRODS installation. 
+
+
+Therefore at least a running instance of iRODS is needed
+for DNSCore to perform in testing or pre-productional usage. 
+
+You are able to install and run DNSCore without having iRODS installed, due to have a so called 
+"FakeGridFacade" implementation configured in your config.properties. This os ONLY recommended in development and
+"Getting started" usage of DNSCore. Please refer to that respective documentation.
+
+. 
+
+## Introduction
+
+
+
+## iRODS
+
+ 
+
+## Setup iRODS
+
+To successfully run ContentBroker/DNSCore with iRODS, you have to prepare your running installation of iRODS.
+Please start customizing iRODS install after having done a complete check of your iRODS installation: 
  
 Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zones" as well as the concept of 
 having one Zone with several resource servers. Please refer to the iRODS Documentation about this. DNSCore supports both operational modes. 
