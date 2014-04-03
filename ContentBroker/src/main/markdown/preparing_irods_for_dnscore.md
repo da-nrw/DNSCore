@@ -16,13 +16,11 @@ In the following parts we assume
 
 1. You have read the documenation available under www.irods.org (e.g. the read the e-Book "iRODS Primer")
 1. You have already experimented with iRODS at a local developer box and you are able to use it.
-1. You should be familiar with 
-    
+1. You should be familiar with
+
+
     iRODS Cli-commands esp. 
     irepl, ils, iput, irsync, iget
-
-As iRODS Admin (of each zone being used) you have to be familiar as well with command 
-
     iadmin
 
 1. You are able to create resources (Please take a look at documentation at www.irods.org how to create iRODS resources). 
@@ -61,12 +59,10 @@ Please note the settings of your iRODS installation, as they're needed for confi
 
 1. danrw.re file Template: https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/danrw.re
 
-## Default Resource
-
 Alter "default resource" settings in core.re and in danrw.re for apropiate settings on your system as they might point
 to some dummy resources. 
 
-## Adding and changing the RuleSet
+### Adding and changing the RuleSet
 
 iRODS works with event based triggers being fired on certain actions. Additionally iRODS has the ability to automatically 
 perform some time based actions (performed by the RuleEngine of Master ICAT). To support event based rules needed by 
@@ -84,6 +80,8 @@ And store the corresponding file danrw.re in:
 
 The file danrw.re must be changed to your local appropiate settings. 
 
+### Test the modified iRODS version
+
 Please refer carefully to the iRODS Documentation
 about needed change of other parameters, as wrong parameters could serverly harm your DNS system! There is no test if a ruleBase is operating well, while this file being parsed on demand whenever actions being fired. In case of severe  
 errors error, commands like 
@@ -91,6 +89,7 @@ errors error, commands like
     ils 
     
 will return with RE_PARSER_ERROR. Any change done to ruleBase should be followed issueing at least this command. There are many more actions being neccessary or at least interesting to implement, please consider reading the documentation in these files as well. 
+
 
 ## Connecting DNSCore to the Storage Layer
 
