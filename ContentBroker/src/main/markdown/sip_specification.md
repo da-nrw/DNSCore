@@ -64,6 +64,40 @@ on the delta system, look [here](https://github.com/da-nrw/DNSCore/blob/master/C
 
 ##### File names
 
+If you take away the extension away from a file name, you have what is considered a "document" by the system.
+Documents have to be unique which means you shouldn't place two files with the same document name into a SIP:
+
+    forbidden:
+    data/abc.jpg
+    data/abc.tif
+    
+Typically, with choosing the same base names for different files the users wants to signal a correspondence of
+two or more files (e.g. same content but encoded in different formats). 
+
+However, as our system sees it, the document name of both files is [abc] and the system can't distinguish between them when doing conversions or handling deltas. If you really want to have both files inside your SIP, consider doing it as follows:
+
+    better:
+    data/jpgs/abc.jpg
+    data/tifs/abc.tif
+
+Which leads us to another point: File names and their relative paths below data/ are a combined to a single property
+relative path, which has a special meaning to the system. So
+
+    not good:
+    data/images/abc.jpg
+    data/images/abc.tif
+    
+again would have the same document name [images/abc] which is based on their respective relative paths
+
+    images/abc.jpg
+    images/abc.tif
+   
+If you need the subfolder structure, do it as follows:
+
+    images/jpg/abc.jpg
+    images/tif/abc.tif
+
+
 #### Formats - Planning for long term preservation
 
 #### Publication - Preparation of Metadata
@@ -72,13 +106,13 @@ on the delta system, look [here](https://github.com/da-nrw/DNSCore/blob/master/C
 In addition to the basic SIP format there are some metadata formats/structures which are
 supported in a special way, optimized for the publication feature of DNSCore.
 
-### METS
+##### METS
 
-### EAD
+##### EAD
 
-### EAD / METS
+##### EAD / METS
 
-### XMP
+##### XMP
 
     data/
         premis.xml
