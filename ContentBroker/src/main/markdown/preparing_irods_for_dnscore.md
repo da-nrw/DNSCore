@@ -25,67 +25,41 @@ As iRODS Admin (of each zone being used) you have to be familiar as well with co
 
     iadmin
 
-1. You are able to create resources
+1. You are able to create resources (Please take a look at documentation at www.irods.org how to create iRODS resources). 
 
-## ContentBroker - How it works together with iRODS
+## Setup ContentBroker
 
 The storage layer is separated of ContentBroker's internal business logic, the interface is composed by 
 GridFace abstract classes and its respective implementations. The only thing GridFacade needs
 to know is an instance of a storage policy which has to be achieved and the logical pathname (address) the
 object is stored under. This helps to seperate the concerns of DNSCore between ContentBroker's business logic and the Storage layer. 
 
-In order to connect the two systems to prepare a node for production use, we assume that you have
+In order to connect the two systems to prepare a node for production use, we assume that you already have set up
 
-1. set up the ContentBroker as described in the getting started [guide](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/getting_started.md).
-1. you have set up a basic iRODS installation. 
+    the ContentBroker as described in the getting started [guide](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/getting_started.md).
 
- 
 ## Setup iRODS
 
-To successfully run ContentBroker/DNSCore with iRODS, you have to prepare your running installation of iRODS.
-Please start customizing iRODS install after having done a complete check of your iRODS installation: 
- 
-Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zones" as well as the concept of 
-having one Zone with several resource servers. Please refer to the iRODS Documentation about this. DNSCore supports both operational modes. 
+Set up a basic iRODS > 3.2 installation with one default resource of type cache, pointing to [somewhere] (as described
+in the getting started document).
 
-Each Zone needs at least one database (so called ICAT Server). The use of Postgres is encouraged here.  
+### Creating the resources
 
-All iRODS Servers (as well in federated or in resource server mode) need at least to have two resources:
+iRODS Servers (as well in federated or in resource server mode) two types of resources:
 
-1. "Cache" resource having a small latency and being fast, to store all objects after they are put to the grid.  
-1. "Archive" resource having longer latency (tape device or mount point for storage devices) for acessing the WORM devices of long term storage. 
+1. "Cache" type resource having a small latency and being fast, for objects that have to be accessed frequently.
+1. "Archive" type resource having longer latency, generally targeted at permanent storage and less frequent access.
 
-Please take a look at documentation at www.irods.org how to create iRODS resources. 
+We adhere to these iRODS principles and use one cache type of resource as storage layer backend for the
+WorkArea and DIPArea, where objects are processed by the DNSCore and one archive type resource where AIPs are
+put onto and which should be a WORM device (for example tape storage).
 
-The archive resource has to part of an named resource group. In case you're running the resource server mode, the 
-resource names are your repl_destinations names in config.properties. In case of forming a federation, zone_names are listed in repl_destinations. 
+As you already have created the cache resource during installation of iRODS, you now have to create
+the archive type resource. The archive resource has to part of an named resource group. In case you're running the resource server mode, the resource names are your repl_destinations names in config.properties. In case of forming a federation, zone_names are listed in repl_destinations. 
 
 Please note the settings of your iRODS installation, as they're needed for config.properties of CB and DA-Web.
 
-## Prerequisites
-
-1. running iRODS Server > 3.2 
 1. danrw.re file Template: https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/danrw.re
-
-## Open needed Ports
-
-There are several ports which needed to be opened on your Firewall for iRODS to perform. It is possible to set the desired port numbers in the iRODS install scripts, but we recommend the standard ports. 
-
-TCP:
-
-    1247 (iRODS)
-    20.000-20.199 (iRODS)
-    5432 (DNS DB)
-    
-opened exclusively to all participants of your desired storage layer nodes.
-
-Other ports such as
-
-    8080
-    80
-    443
-    
-could be openend as you might need them, but hey might depend on your setup. Please disable all running desktop firewalls (e.g. iptables) on your server as they may cause problems.  
 
 ## Default Resource
 
@@ -100,13 +74,11 @@ DNSCore and to provide needed actions for the GridFacade, it is needed to add th
 
     iRODS/server/config/server.config
   
-
 Please add the entry on all connected servers by changing line 
 
     reRuleSet   danrw,core
 
 And store the corresponding file danrw.re in:
-
 
     iRODS/server/config/reConfigs
 
@@ -118,7 +90,7 @@ errors error, commands like
 
     ils 
     
-will return with RE_PARSER_ERROR. Any change done to ruleBase should be followed issueing at least this command. There are many more actions being neccessary or at least interesting to implement, please consider reading the documenation in these files as well. 
+will return with RE_PARSER_ERROR. Any change done to ruleBase should be followed issueing at least this command. There are many more actions being neccessary or at least interesting to implement, please consider reading the documentation in these files as well. 
 
 ## Connecting DNSCore to the Storage Layer
 
@@ -217,4 +189,35 @@ DNSCore needs a technical user for the application ContentBroker as well as the 
 being Users of iRODS. 
 
 DNSCore delivers a bash script for easily creating contractors and iRODS directories. 
+
+## Open needed Ports
+
+In order to connect several nodes or setup an irods which connects to a different master node,
+you have to open several ports.
+
+There are several ports which needed to be opened on your Firewall for iRODS to perform. It is possible to set the desired port numbers in the iRODS install scripts, but we recommend the standard ports. 
+
+TCP:
+
+    1247 (iRODS)
+    20.000-20.199 (iRODS)
+    5432 (DNS DB)
+    
+opened exclusively to all participants of your desired storage layer nodes.
+
+Other ports such as
+
+    8080
+    80
+    443
+    
+could be openend as you might need them, but hey might depend on your setup. Please disable all running desktop firewalls (e.g. iptables) on your server as they may cause problems.  
+
+## Setting up a node topology: 
+
+Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zones" as well as the concept of 
+having one Zone with several resource servers. Please refer to the iRODS Documentation about this. DNSCore supports both operational modes. 
+
+Each Zone needs at least one database (so called ICAT Server). The use of Postgres is encouraged here. 
+
 
