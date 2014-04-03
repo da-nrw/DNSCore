@@ -143,23 +143,9 @@ For more information please refer to
 * the [Java API documentation](https://da-nrw.github.com/SIP-Builder/apidocs)
 * the [Java test documentation](https://da-nrw.github.com/SIP-Builder/testapidocs)
 
-## Collection
+## Collections
 
-Multiple SIPs can be bundled to a collection before ingest. Collections have the same structure as SIPs, with two exceptions:
+**Warning: Requirements for this feature are yet to be collected.**
 
-1. The data folder must contain only SIP container files
-2. The collection folder itself is not packed to a container file
+Developer only documentation can be found in the internal wiki.
 
-A collection containing three SIPs might look like this:
-
-	myCollection/
-		bag-info.txt
-		bagit.txt
-		manifest-md5.txt
-		tagmanifest-md5.txt
-		data/
-			mySIP1.(tgz|zip|tar)
-			mySIP2.(tgz|zip|tar)
-			mySIP3.(tgz|zip|tar)
-
-Collections allow the user to create a loose connection between multiple objects without merging the data into a single object. The status of every object belonging to a collection can be requested for all objects at once by searching for the collection name via DA-WEB.
