@@ -145,7 +145,7 @@ For more information please refer to
 
 ## Collections
 
-**Warning: Requirements for this feature are yet to be collected.**
+**Note** that this feature is planned but requirements for this feature are yet to be collected.
 
-Developer only documentation can be found in the internal wiki.
+For the moment developer only documentation can be found in the internal wiki.
 
