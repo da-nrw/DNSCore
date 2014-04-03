@@ -46,7 +46,7 @@ the ContentBroker as described in the getting started [guide](https://github.com
 ## Setup iRODS
 
 Set up a basic iRODS > 3.2 installation with one default resource of type cache, pointing to [somewhere] (as described
-in the getting started document).
+in the getting started document). Make sure the installation is installed as ICAT-Enabled. 
 
 ### Creating the resources
 
