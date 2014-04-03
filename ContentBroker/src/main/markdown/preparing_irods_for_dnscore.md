@@ -33,8 +33,7 @@ to know is an instance of a storage policy which has to be achieved and the logi
 object is stored under. This helps to seperate the concerns of DNSCore between ContentBroker's business logic and the Storage layer. 
 
 In order to connect the two systems to prepare a node for production use, we assume that you already have set up
-
-    the ContentBroker as described in the getting started [guide](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/getting_started.md).
+the ContentBroker as described in the getting started [guide](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/getting_started.md).
 
 ## Setup iRODS
 
