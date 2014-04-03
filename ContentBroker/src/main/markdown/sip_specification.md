@@ -19,7 +19,7 @@
 
 # SIP Specification
 
-## SIP
+## SIP - General structure
 
 The basic structure of a SIP as accepted by the system looks like this:
 
@@ -31,8 +31,8 @@ The basic structure of a SIP as accepted by the system looks like this:
         	tagmanifest-md5.txt
         	data/
         		premis.xml
-        		someData1.x
-        		subfolder/someData.x
+        		someFile1.x
+        		subfolder/someFile.x
         		
 Inside a container of one of the supported container formats there is
 a single entry which resembles the filename of the container without the extension.
@@ -43,12 +43,19 @@ The premis.xml, which adheres to a standard described [here](http://www.loc.gov/
 for the object. A detailed specification of the expected PREMIS elements and the used vocabulary can be found [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/premis_specification.md).
 In addition to the premis.xml the user is free to put any data
 of any formats and in any structure (hierarchical ordering in folders) into the 
-data folder though some formats and structures are somewhat more supported than
-others as we'll see soon (TODO).
+data folder. 
 
+### Guidelines for structuring your SIPs
 
+Though it is entirely up to you, the user, what to put into your SIP, there are several details
+to take into consideration when assembling the contents for a SIP.
 
-## SIP - special formats
+#### Naming conventions and deltas
+
+#### Formats - Planning for long term preservation
+
+#### Publication - Preparation of Metadata
+
 
 In addition to the basic SIP format there are some metadata formats/structures which are
 supported in a special way, optimized for the publication feature of DNSCore.
