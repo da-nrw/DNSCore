@@ -1,5 +1,13 @@
 # Connecting iRODS and DNSCore
 
+This document describes how to set up iRODS as a backend to an existing DNSCore installation.
+Both systems connected, with the DNSCore beeing the business layer and iRODS beeing the storage layer,
+form a fully operational node ready for production use. For the purpose of this document, the system is considered
+as consisting only of this node, e.g. you can see it as a how to of setting up the master node of a system. For setup of
+slave nodes or a consideration of other topologies (federation) see the notes at the bottom of this document.
+
+## Why iRODS
+
 DNScore uses iRODS as storage layer. The reasons why we have choosen iRODS as a storage layer framework were
 
 1. It is open source
