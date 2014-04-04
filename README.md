@@ -57,7 +57,7 @@ a unit of data which can consist of data of more than one package/SIP at the sam
 
 * DAWeb - Graphical user interface for administrators and users
 * Storage Layer - geographical distribution/replication of data
-* Audit
+* Self validating ("audit")
 * Format identification
 * Codec identification
 * Automatic format conversion
