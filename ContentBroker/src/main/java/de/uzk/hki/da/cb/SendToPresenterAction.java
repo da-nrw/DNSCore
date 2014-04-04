@@ -31,7 +31,6 @@ import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.NotImplementedException;
-import org.hibernate.classic.Session;
 import org.apache.tika.Tika;
 import org.jdom.Document;
 import org.jdom.Element;
