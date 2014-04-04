@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -203,8 +204,9 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		this.metadataIndex = metadataIndex;
 	}
 	
+	@SuppressWarnings("deprecation")
 	private String generatePid(String objectId, String collection) {
-		return collection + ":" + objectId;
+		return URLEncoder.encode(collection + ":" + objectId);
 	}
 
 }
