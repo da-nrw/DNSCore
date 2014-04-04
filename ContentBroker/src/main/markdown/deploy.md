@@ -18,7 +18,7 @@ Please ensure, your @machine's are all running in UTF-8 mode:
 
 Of course yu need a clean checkout of our source Repo containing both DA-Web and ContentBroker
 
-    git clone 
+    git clone https://github.com/da-nrw/DNSCore.git
 
 ### Continuous Delivery Workflow
 
