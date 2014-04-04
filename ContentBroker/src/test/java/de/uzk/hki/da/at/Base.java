@@ -179,14 +179,13 @@ public class Base {
 	}
 	
 	protected Object fetchObjectFromDB(String originalName){
-		Object object;
+		Object object = null;
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		try {
 		object = dao.getUniqueObject(session,originalName, "TEST");
 		} catch (Exception e) {
-			System.out.println("more than 1 Object found!"); 
-			throw new RuntimeException(e);
+			fail("more than 1 Object found!"); 
 		}
 		session.close();
 		return object;
@@ -263,12 +262,17 @@ public class Base {
 		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		
-		session.createSQLQuery("INSERT INTO objects (identifier,orig_name,contractor_id,object_state,published_flag,ddb_exclusion) "
-				+"VALUES ('ID-"+name+"','"+name+"',1,'100',0,false);").executeUpdate();
 		Integer dbid = (Integer) session.createSQLQuery("SELECT MAX(data_pk) FROM objects").uniqueResult(); 
-		session.createSQLQuery("INSERT INTO packages (id,name) VALUES ("+dbid+",'1');").executeUpdate();
-		session.createSQLQuery("INSERT INTO objects_packages (objects_data_pk,packages_id) VALUES ("+dbid+","+dbid+");").executeUpdate();
+		if (dbid==null) dbid = 0;
+		dbid++;
+		System.out.println("CREATED Object with id " + dbid);
+		session.createSQLQuery("INSERT INTO objects (data_pk,identifier,orig_name,contractor_id,object_state,published_flag,ddb_exclusion) "
+				+"VALUES (" + dbid + ",'ID-"+name+"','"+name+"',1,'100',0,false);").executeUpdate();
+		Integer pkid = (Integer) session.createSQLQuery("SELECT MAX(id) FROM packages").uniqueResult(); 
+		if (pkid==null) pkid = 0;
+		pkid++;
+		session.createSQLQuery("INSERT INTO packages (id,name) VALUES ("+pkid+",'1');").executeUpdate();
+		session.createSQLQuery("INSERT INTO objects_packages (objects_data_pk,packages_id) VALUES ("+dbid+","+pkid+");").executeUpdate();
 		
 		session.createSQLQuery("INSERT INTO queue (id,status,objects_id,initial_node) VALUES ("+dbid+",'"+status+"',"+dbid+","+
 				"'"+nodeName+"');").executeUpdate();
