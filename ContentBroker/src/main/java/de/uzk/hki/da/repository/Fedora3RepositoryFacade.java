@@ -206,7 +206,8 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	
 	@SuppressWarnings("deprecation")
 	private String generatePid(String objectId, String collection) {
-		return URLEncoder.encode(collection + ":" + objectId);
+		logger.debug("checking in Fedora: " + URLEncoder.encode(collection + ":" + objectId));
+		return URLEncoder.encode(collection + "%3A" + objectId);
 	}
 
 }
