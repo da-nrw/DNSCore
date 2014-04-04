@@ -182,7 +182,12 @@ public class Base {
 		Object object;
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
+		try {
 		object = dao.getUniqueObject(session,originalName, "TEST");
+		} catch (Exception e) {
+			System.out.println("more than 1 Object found!"); 
+			throw new RuntimeException(e);
+		}
 		session.close();
 		return object;
 	}
