@@ -219,10 +219,20 @@ Other ports such as
     
 could be openend as you might need them, but hey might depend on your setup. Please disable all running desktop firewalls (e.g. iptables) on your server as they may cause problems.  
 
-## Setting up a node topology: 
+## Setting up a node topology
 
 Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zones" as well as the concept of 
-having one Zone with several resource servers. Please refer to the iRODS Documentation about this. DNSCore supports both operational modes. 
+having one Zone with several resource servers. Please refer to the iRODS Documentation about this. 
+
+DNSCore supports both operational modes, depending on your
+
+    grid.implemenation 
+    
+Parameter in your config.properties. Possible values are so far:
+
+    grid.implementation=fakeGridFacade
+    grid.implementation=irodsGridFacade
+    grid.implementation=federatedGridFacade
 
 Each Zone needs at least one database (so called ICAT Server). The use of Postgres is encouraged here. 
 
