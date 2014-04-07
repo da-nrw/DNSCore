@@ -43,7 +43,7 @@ In the following parts we assume
 
 1. You are able to create resources (Please take a look at documentation at www.irods.org how to create iRODS resources). 
 
-## Setup iRODS
+## Installation instructions
 
 Set up a basic iRODS > 3.2 installation with one default resource of type cache, pointing to "somewhere" (as described
 in the getting started document). Make sure the installation is installed as ICAT-Enabled. 
