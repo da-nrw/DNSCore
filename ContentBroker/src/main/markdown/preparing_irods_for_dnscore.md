@@ -66,17 +66,18 @@ And store the corresponding file [danrw.re](https://raw.githubusercontent.com/da
 The file contentbroker.re must be changed to your local appropiate settings. 
 
     acDataDeletePolicy {ON($rescName == "") {msiDeleteDisallowed; }}         -- 
-    acGetReplDests(*replDests) { replDests=""; } 
-    acGetMyNode(*myNode,*myServer){ *myNode =""; *myServer ="" }
-    acGetNodeAdmin(*email){ *email = "" }
+    acGetReplDests(*replDests) { replDests=""; }                             --
+    acGetMyNode(*myNode,*myServer){ *myNode =""; *myServer ="" }             --
+    acGetNodeAdmin(*email){ *email = "" }                                    --
 
-Please refer carefully to the iRODS Documentation
-about needed change of other parameters, as wrong parameters could serverly harm your DNS system! There is no test if a ruleBase is operating well, while this file being parsed on demand whenever actions being fired. In case of severe  
-errors error, commands like 
+Restart the iRODS server and check if it runs properly by typing in 
 
-    ils 
+    ils
     
-will return with RE_PARSER_ERROR. Any change done to ruleBase should be followed issueing at least this command. There are many more actions being neccessary or at least interesting to implement, please consider reading the documentation in these files as well. 
+In case there is somethin wrong it will return a RE_PARSER_ERROR.
+    
+Please refer carefully to the iRODS Documentation
+about needed change of other parameters, as wrong parameters could serverly harm your DNS system! There is no test if a ruleBase is operating well, while this file being parsed on demand whenever actions being fired. There are many more actions being neccessary or at least interesting to implement, please consider reading the documentation in these files as well. 
 
 ### Creating the resources
 
