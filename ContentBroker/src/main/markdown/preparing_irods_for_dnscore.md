@@ -60,7 +60,7 @@ We adhere to these iRODS principles and use one cache type of resource as storag
 WorkArea and DIPArea, where objects are processed by the DNSCore and one archive type resource where AIPs are
 put onto and which should be a WORM device (for example tape storage).
 
-### Change your folder layout
+### Create iRODS resources and allign your existing folder layout to conform to the resources
 
 In the getting started document you have already created a basic folder structure which looks like this:
 
