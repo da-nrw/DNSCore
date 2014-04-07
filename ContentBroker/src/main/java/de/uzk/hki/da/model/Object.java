@@ -659,7 +659,7 @@ public class Object {
 		String dataPath = rootPath + "data/";
 		
 		File[] files = folder.listFiles();
-		Arrays.sort(files); // why?? 
+		Arrays.sort(files); // sort rep names chronologically (i.e. alphabetically)
 		
 		for (File f : files)
 		{

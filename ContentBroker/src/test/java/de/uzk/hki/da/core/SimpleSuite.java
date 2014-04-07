@@ -54,7 +54,6 @@ import de.uzk.hki.da.convert.PublishAudioConversionStrategyTests;
 import de.uzk.hki.da.convert.PublishImageConversionStrategyTest;
 import de.uzk.hki.da.convert.PublishImageMultipageTIFFTests;
 import de.uzk.hki.da.convert.PublishPDFConversionStrategyTests;
-import de.uzk.hki.da.convert.PublishVideoConversionStrategyTests;
 import de.uzk.hki.da.convert.PublishXsltConversionStrategyTests;
 import de.uzk.hki.da.convert.TiffConversionStrategyTests;
 import de.uzk.hki.da.grid.IrodsGridFacadeTest;
@@ -119,7 +118,7 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	IrodsGridFacadeTest.class,
 //	IrodsSystemConnectorTest.class, XXX should not be a unit test
 	PublishImageConversionStrategyTest.class,
-	PublishVideoConversionStrategyTests.class,
+//	PublishVideoConversionStrategyTests.class, XXX should not be dependent on handbrake installation
 	PublishXsltConversionStrategyTests.class,
 	PublishAudioConversionStrategyTests.class,
 	PublishImageMultipageTIFFTests.class,

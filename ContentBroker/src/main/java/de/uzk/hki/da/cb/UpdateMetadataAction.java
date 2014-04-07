@@ -255,7 +255,10 @@ public class UpdateMetadataAction extends AbstractAction {
 	 * @throws IOException
 	 */
 	private void collectXMP() throws IOException {
+		logger.debug("collectXMP");
+		Map<DAFile,DAFile> copyCommands = new HashMap<DAFile,DAFile>();
 		for (String repName : getRepNames()) {
+			logger.debug("looking for xmp files in rep {}", repName);
 			String repPath = object.getDataPath() + repName;
 			File repDir = new File(repPath);
 			if (!repDir.exists()) {
@@ -270,6 +273,8 @@ public class UpdateMetadataAction extends AbstractAction {
 					newestXmpFiles.add(dafile);
 			}
 			
+			logger.debug("found {} xmp files", newestXmpFiles.size());
+			
 			for (DAFile sidecarSourceFile : newestXmpFiles) {
 				if (Arrays.asList(repNames).contains(sidecarSourceFile.getRep_name())) continue;
 				logger.debug("Found xmp sidecar: {}", sidecarSourceFile);
@@ -279,24 +284,34 @@ public class UpdateMetadataAction extends AbstractAction {
 				if (xmpTargetPath.equals(""))					
 					continue;
 				
-				 xmpTargetPath += ".xmp";
+				xmpTargetPath += ".xmp";
 				
 				DAFile sidecarTargetFile = new DAFile(object.getLatestPackage(), repName, xmpTargetPath);
-				logger.debug("Copying {} to {}", sidecarSourceFile, sidecarTargetFile.toString());
-				FileUtils.copyFile(sidecarSourceFile.toRegularFile(), sidecarTargetFile.toRegularFile());
-				sidecarTargetFile.setFormatPUID(sidecarSourceFile.getFormatPUID());
 				
-				object.getLatestPackage().getFiles().add(sidecarTargetFile);
-				object.getLatestPackage().getEvents().add(
-						createCopyEvent(sidecarSourceFile, sidecarTargetFile));
+				copyCommands.put(sidecarTargetFile, sidecarSourceFile);
 			}
 			logger.debug("collecting files in path: {}", repPath);
 			
 			XmpCollector.collect(newestXmpFiles, new File(repPath + "/XMP.rdf"));
 			DAFile xmpFile = new DAFile(object.getLatestPackage(),repName,"XMP.rdf");
 			object.getLatestPackage().getFiles().add(xmpFile);
-			object.getLatestPackage().getEvents().add(createCreateEvent(xmpFile));			
+			object.getLatestPackage().getEvents().add(createCreateEvent(xmpFile));
+			
 		}
+		
+		// run copy commands
+		for (DAFile sidecarTargetFile : copyCommands.keySet()) {
+			DAFile sidecarSourceFile = copyCommands.get(sidecarTargetFile);
+			
+			logger.debug("Copying {} to {}", sidecarSourceFile, sidecarTargetFile);
+			FileUtils.copyFile(sidecarSourceFile.toRegularFile(), sidecarTargetFile.toRegularFile());
+			sidecarTargetFile.setFormatPUID(sidecarSourceFile.getFormatPUID());
+			
+			object.getLatestPackage().getFiles().add(sidecarTargetFile);
+			object.getLatestPackage().getEvents().add(
+					createCopyEvent(sidecarSourceFile, sidecarTargetFile));
+		}
+		
 	}
 	
 	private String determineTargetRelativePathWithoutExtension(DAFile sidecarSourceFile) {
