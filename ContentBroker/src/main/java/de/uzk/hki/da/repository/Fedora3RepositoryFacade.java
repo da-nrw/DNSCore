@@ -204,7 +204,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	}
 	
 	private String generatePid(String objectId, String collection) {
-		return (collection + "%253A" + objectId);
+		return (collection + ":" + objectId);
 	}
 
 }
