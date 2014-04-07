@@ -75,6 +75,7 @@ public class ATPIPGen extends Base{
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
 		InputStream metsStreamPublic = repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "METS");
 		assertNotNull(metsStreamPublic);
+		assertTrue(metsStreamPublic.toString().length() > 0);
 		InputStream metsStreamClosed = repositoryFacade.retrieveFile(object.getIdentifier(), "danrw-closed", "METS");
 		assertNotNull(metsStreamClosed);
 		
@@ -84,6 +85,8 @@ public class ATPIPGen extends Base{
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build(metsStreamPublic);
 
+		System.out.println("doc: " + doc);
+		
 		String url = doc.getRootElement()
 				.getChild("fileSec", METS_NS)
 				.getChild("fileGrp", METS_NS)
