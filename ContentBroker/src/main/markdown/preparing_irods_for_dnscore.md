@@ -60,7 +60,7 @@ We adhere to these iRODS principles and use one cache type of resource as storag
 WorkArea and DIPArea, where objects are processed by the DNSCore and one archive type resource where AIPs are
 put onto and which should be a WORM device (for example tape storage).
 
-### Create iRODS resources and allign your existing folder layout to conform to the resources
+### Create iRODS resources and adjust existing folder layout
 
 In the getting started document you have already created a basic folder structure which looks like this:
 
@@ -95,6 +95,8 @@ archiveResource folders get created to match the iRODS resources we will create 
                             grid/
                                  TEST/
 
+### Create resources
+
 Create a working resource 
 
     iadmin mkresc [nameYourWorkingResource] "unix file system" cache [hostname] [somewhere]/workingResource
@@ -108,18 +110,32 @@ and a resource group to which the archive resource belongs and make the recently
     iadmin mkgroup [nameYourArchiveResouceGroup]
     iadmin atrg [nameYourArchiveResourceGroup] [archiveResource]
 
-### Creating the resources
+### Adjust ContentBroker settings
 
- In case you're running the resource server mode, the resource names are your repl_destinations names in config.properties. In case of forming a federation, zone_names are listed in repl_destinations. 
+Edit the config.properties to reflect your changes:                               
 
-Please note the settings of your iRODS installation, as they're needed for config.properties of CB and DA-Web.
+    localNode.userAreaRootPath=[somewhere]/[transferResource]/user
+    localNode.ingestAreaRootPath=[somewhere]/[transferResource]/ingest
+    localNode.workAreaRootPath=[somewhere]/[workingResource]/work
+    localNode.dipAreaRootPath=[somewhere]/workingResource/pip
+    localNode.gridCacheAreaRootPath=[somewhere]/workingResource/grid
 
-1. danrw.re file Template: https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/danrw.re
+To let the grid component know how to speak to the iRODS server set the 
+following properties to match your iRODS configuration:
 
-Alter "default resource" settings in core.re and in danrw.re for apropiate settings on your system as they might point
-to some dummy resources. 
+    irods.user=[yourIrodsUser]
+    irods.password=[encryptedIrodsPasswd] (TODO show how to encrypt)
+    irods.server=[domainNameOfYourServer]
+    irods.zone=[yourZoneName]
+    irods.default_resc=[nameOfYourCacheResc]
 
-### Adding and changing the RuleSet
+To let the core component of DNSCore know how to speak to the grid set the following properties (esp. when you followed the Getting Started Tutorial, the following parameters might point to some fake Adapters):
+
+    localNode.workingResource=localhost TODO ......
+    grid.implementation=IrodsGridFacade
+    implementation.distributedConversion=IrodsDistributedConversionAdapter
+
+### Adjust iRODS installation
 
 iRODS works with event based triggers being fired on certain actions. Additionally iRODS has the ability to automatically 
 perform some time based actions (performed by the RuleEngine of Master ICAT). To support event based rules needed by 
@@ -151,33 +167,17 @@ In case there is somethin wrong it will return a RE_PARSER_ERROR.
 Please refer carefully to the iRODS Documentation
 about needed change of other parameters, as wrong parameters could serverly harm your DNS system! There is no test if a ruleBase is operating well, while this file being parsed on demand whenever actions being fired. There are many more actions being neccessary or at least interesting to implement, please consider reading the documentation in these files as well. 
 
+ In case you're running the resource server mode, the resource names are your repl_destinations names in config.properties. In case of forming a federation, zone_names are listed in repl_destinations. 
 
-## Connecting DNSCore to the Storage Layer
+Please note the settings of your iRODS installation, as they're needed for config.properties of CB and DA-Web.
 
-Finally edit the config.properties to reflect your changes:                               
+1. danrw.re file Template: https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/danrw.re
 
-    localNode.userAreaRootPath=[otherPartition]/[location]/user
-    localNode.ingestAreaRootPath=[otherPartition]/[location]/ingest
-    localNode.workAreaRootPath=[vaultPathOfIrodsResource]/work
-    localNode.dipAreaRootPath=[vaultPathOfIrodsResource]/pip
-    localNode.gridCacheAreaRootPath=[vaultPathOfIrodsResource]/aip
+Alter "default resource" settings in core.re and in danrw.re for apropiate settings on your system as they might point
+to some dummy resources. 
 
-                                 
-To let the grid component know how to speak to the iRODS server set the 
-following properties to match your iRODS configuration:
 
-    irods.user=[yourIrodsUser]
-    irods.password=[encryptedIrodsPasswd] (TODO show how to encrypt)
-    irods.server=[domainNameOfYourServer]
-    irods.zone=[yourZoneName]
-    irods.default_resc=[nameOfYourCacheResc]
-
-To let the core component of DNSCore know how to speak to the grid set the following properties (esp. when you followed the Getting Started Tutorial, the following parameters might point to some fake Adapters):
-
-    localNode.workingResource=localhost TODO ......
-    grid.implementation=IrodsGridFacade
-    implementation.distributedConversion=IrodsDistributedConversionAdapter
-	
+## TODO other stuff
 
 ### Adding users to DNSCore
 
