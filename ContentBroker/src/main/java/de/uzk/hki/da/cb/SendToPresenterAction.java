@@ -114,8 +114,8 @@ public class SendToPresenterAction extends AbstractAction {
 		try {
 
 			// delete existing packages before ingesting the new ones
-			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), "danrw:");
-			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), "danrw-closed:");
+			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), "danrw");
+			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), "danrw-closed");
 		
 			if (new File(dipPathPublic).exists()) {				
 				// write xepicur file for urn resolving
