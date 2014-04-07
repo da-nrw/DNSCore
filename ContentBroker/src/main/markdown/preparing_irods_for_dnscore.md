@@ -36,8 +36,11 @@ In the following parts we assume
 ## Setup ContentBroker
 
 The storage layer is separated of ContentBroker's internal business logic. The interface is composed by the
-GridFacade abstract class and its respective implementations, to separate concers. By use of this inteface the business code can access objects via logical names whitout knowing of the underlying storage system (which in this case is iRODS).
+GridFacade abstract class and its respective implementations, to separate concerns. By use of this inteface the business code can access objects via logical names whitout knowing of the underlying storage system (which in this case is iRODS).
 
+As ContentBroker has now an extended and comfortable interface for interacting with 
+iRODS Servers (federated and single zone based architectures) based on the JARGON interface provided by RENCI (see https://code.renci.org/gf/project/jargon/) and our implematations of GridFacade, DNSCore
+is deployed without the need for installed C-microservices for iRODS anymore.
 
 In order to connect the two systems to prepare a node for production use, we assume that you already have set up
 the ContentBroker as described in the getting started [guide](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/getting_started.md).
@@ -59,6 +62,21 @@ put onto and which should be a WORM device (for example tape storage).
 
 ### Change your folder layout
 
+In the getting started document you have already created a basic folder structure which looks like this:
+
+    [somewhere]/storage/
+                    user/
+                    ingest/
+                    work/
+                    pip/
+                        institution/
+                        public/
+                    aip/ 
+
+You now have to adjust this directory structure. First of all, for reasons explained in [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md) 
+(at the sections UserArea and IngestArea),user and ingest get moved to an own folder. The workingResource and
+archiveResource folders get created to match the iRODS resources we will create in this section.
+
     [somewhere]/archiveResource/
     [somewhere]/transferResource/
                             user/
@@ -77,10 +95,22 @@ put onto and which should be a WORM device (for example tape storage).
                             grid/
                                  TEST/
 
+Create a working resource 
+
+    iadmin mkresc [nameYourWorkingResource] "unix file system" cache [hostname] [somewhere]/workingResource
+
+Create an archive resource
+
+    iadmin mkresc [nameYourArchiveResource] "unix file system" archive [hostname] [somewhere]/archiveResource
+
+and a resource group and make the recently created archive resource to be part of that resource group:
+
+
+
+
 ### Creating the resources
 
-As you already have created the cache resource during installation of iRODS, you now have to create
-the archive type resource. The archive resource has to part of an named resource group. In case you're running the resource server mode, the resource names are your repl_destinations names in config.properties. In case of forming a federation, zone_names are listed in repl_destinations. 
+ The archive resource has to part of an named resource group. In case you're running the resource server mode, the resource names are your repl_destinations names in config.properties. In case of forming a federation, zone_names are listed in repl_destinations. 
 
 Please note the settings of your iRODS installation, as they're needed for config.properties of CB and DA-Web.
 
@@ -124,70 +154,6 @@ about needed change of other parameters, as wrong parameters could serverly harm
 
 ## Connecting DNSCore to the Storage Layer
 
-As ContentBroker has now an extended and comfortable interface for interacting with 
-iRODS Servers (federated and single zone based architectures) based on the JARGON interface provided by RENCI (see https://code.renci.org/gf/project/jargon/) and our implematations of GridFacade, DNSCore
-is deployed without the need for installed C-microservices for iRODS anymore.
-
-In order to work together, you just have to follow the steps outlined in the following paragraphs.
-
-
-In the getting started document you have already created a basic folder structure which looks like this:
-
-    [somewhere]/storage/
-                    user/
-                    ingest/
-                    work/
-                    pip/
-                        institution/
-                        public/
-                    aip/ 
-                    
-Now, select a partition or filemount on your box which is separated from the partition you let the ContentBroker
-do his work. The reason for this are explained 
-[here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md) 
-(at the sections UserArea and IngestArea).
-
-Move the user/ and ingest/ directories already created including the TEST subfolders to a location at the other partition
-so that you have a directory structure like this:
-
-    [otherPartition]/[location]/
-                                user/
-                                     TEST/
-                                          incoming/
-                                          outgoing/
-                                ingest/
-                                     TEST/
-    
-In the following the steps of the "Preparing iRODS for DNSCore" document, you already have created a cache resource.
-This is the iRODS resource that helps the ContentBroker work together with ContentBroker other instances on other nodes
-when working with unpacked objects. Make sure that the vault path of this cache resource is pointed at 
-the root of your storage location, which you either can do by moving your storage folder to the path denoted
-by the resources vault path or by making the resources vault path point at your storage location. Either way, you
-should end up having something like that:
-
-    [vaultPathOfIrodsResource]/
-                               work/
-                                    TEST/
-                               pip/
-                                   institution/
-                                               TEST/
-                                   public/
-                                          TEST/
-                               aip/ 
-                                   TEST/
-                                   
-As the folders exist now physically, iRODS has to know about them, so execute the following steps
-
-    imkdir [zonePath]/work
-    imkdir [zonePath]/work/TEST
-    imkdir [zonePath]/pip
-    imkdir [zonePath]/pip/institution
-    imkdir [zonePath]/pip/institution/TEST
-    imkdir [zonePath]/pip/public
-    imkdir [zonePath]/pip/public/TEST
-    imkdir [zonePath]/aip                               
-    imkdir [zonePath]/aip/TEST
-	
 Finally edit the config.properties to reflect your changes:                               
 
     localNode.userAreaRootPath=[otherPartition]/[location]/user
