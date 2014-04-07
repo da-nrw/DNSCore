@@ -71,7 +71,7 @@ In the getting started document you have already created a basic folder structur
                     pip/
                         institution/
                         public/
-                    aip/ 
+                    grid/
 
 You now have to adjust this directory structure. First of all, for reasons explained in [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md) 
 (at the sections UserArea and IngestArea),user and ingest get moved to an own folder. The workingResource and
