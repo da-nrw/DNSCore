@@ -266,8 +266,8 @@ public class Base {
 		if (dbid==null) dbid = 0;
 		dbid++;
 		System.out.println("CREATED Object with id " + dbid);
-		session.createSQLQuery("INSERT INTO objects (data_pk,identifier,orig_name,contractor_id,object_state,published_flag,ddb_exclusion) "
-				+"VALUES (" + dbid + ",'ID-"+name+"','"+name+"',1,'100',0,false);").executeUpdate();
+		session.createSQLQuery("INSERT INTO objects (data_pk,urn,identifier,orig_name,contractor_id,object_state,published_flag,ddb_exclusion) "
+				+"VALUES (" + dbid + ",' urn:nbn:de:danrw-test-" + dbid + "','ID-"+name+"','"+name+"',1,'100',0,false);").executeUpdate();
 		Integer pkid = (Integer) session.createSQLQuery("SELECT MAX(id) FROM packages").uniqueResult(); 
 		if (pkid==null) pkid = 0;
 		pkid++;
