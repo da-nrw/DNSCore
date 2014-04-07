@@ -103,14 +103,14 @@ Create an archive resource
 
     iadmin mkresc [nameYourArchiveResource] "unix file system" archive [hostname] [somewhere]/archiveResource
 
-and a resource group and make the recently created archive resource to be part of that resource group:
+and a resource group to which the archive resource belongs and make the recently created archive resource to be part of that resource group:
 
-
-
+    iadmin mkgroup [nameYourArchiveResouceGroup]
+    iadmin atrg [nameYourArchiveResourceGroup] [archiveResource]
 
 ### Creating the resources
 
- The archive resource has to part of an named resource group. In case you're running the resource server mode, the resource names are your repl_destinations names in config.properties. In case of forming a federation, zone_names are listed in repl_destinations. 
+ In case you're running the resource server mode, the resource names are your repl_destinations names in config.properties. In case of forming a federation, zone_names are listed in repl_destinations. 
 
 Please note the settings of your iRODS installation, as they're needed for config.properties of CB and DA-Web.
 
