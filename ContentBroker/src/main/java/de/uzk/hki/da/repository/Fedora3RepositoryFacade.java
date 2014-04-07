@@ -146,7 +146,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			throws RepositoryException {
 		String pid = generatePid(objectId, collection);
 		try {
-			return new GetDatastreamDissemination(pid, "DC")
+			return new GetDatastreamDissemination(pid, fileId)
 				.execute(fedora).getEntityInputStream();
 		} catch (FedoraClientException e) {
 			if (e.getStatus() == 404) { 
