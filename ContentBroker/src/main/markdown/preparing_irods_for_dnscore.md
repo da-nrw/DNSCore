@@ -57,13 +57,13 @@ DNSCore and to provide needed actions for the GridFacade, it is needed to add th
   
 Please add the entry on all connected servers by changing line 
 
-    reRuleSet   danrw,core
+    reRuleSet   contentbroker,core
 
 And store the corresponding file danrw.re in:
 
     iRODS/server/config/reConfigs
 
-The file danrw.re must be changed to your local appropiate settings. 
+The file contentbroker.re must be changed to your local appropiate settings. 
 
 Please refer carefully to the iRODS Documentation
 about needed change of other parameters, as wrong parameters could serverly harm your DNS system! There is no test if a ruleBase is operating well, while this file being parsed on demand whenever actions being fired. In case of severe  
