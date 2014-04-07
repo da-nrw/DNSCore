@@ -65,6 +65,11 @@ And store the corresponding file [danrw.re](https://raw.githubusercontent.com/da
 
 The file contentbroker.re must be changed to your local appropiate settings. 
 
+    acDataDeletePolicy {ON($rescName == "") {msiDeleteDisallowed; }}         -- 
+    acGetReplDests(*replDests) { replDests=""; } 
+    acGetMyNode(*myNode,*myServer){ *myNode =""; *myServer ="" }
+    acGetNodeAdmin(*email){ *email = "" }
+
 Please refer carefully to the iRODS Documentation
 about needed change of other parameters, as wrong parameters could serverly harm your DNS system! There is no test if a ruleBase is operating well, while this file being parsed on demand whenever actions being fired. In case of severe  
 errors error, commands like 
