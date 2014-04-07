@@ -56,6 +56,10 @@
 		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
 		<property name="localNode" ref="localNode"/>
 	</bean>	
+	<bean id="federatedGridFacade" class="de.uzk.hki.da.grid.IrodsFederatedGridFacade">
+		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
+		<property name="localNode" ref="localNode"/>
+	</bean>	
 	<bean id="localNode" class="de.uzk.hki.da.model.Node">
 		<property name="name" value="${irods.server}"/>
 		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}"/>

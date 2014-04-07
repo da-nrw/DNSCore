@@ -111,11 +111,18 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			String extension = FilenameUtils.getExtension(target.toRegularFile().getAbsolutePath());
 			List<File> wild = findFilesWithRegex(
 					new File(FilenameUtils.getFullPath(target.toRegularFile().getAbsolutePath())), 
-					Pattern.quote(FilenameUtils.getBaseName(target.getRelative_path()))+"-.[.]+"+extension);
-			if (!wild.isEmpty()){
+					Pattern.quote(FilenameUtils.getBaseName(target.getRelative_path()))+"-\\d+\\."+extension);
+			if (!target.toRegularFile().exists() && !wild.isEmpty()){
 				for (File f : wild){
-					DAFile daf = new DAFile(pkg,"dip/"+audience.toLowerCase(),Utilities.slashize(ci.getTarget_folder())+f.getName());
-					logger.debug("ignore_file:"+daf);
+					DAFile multipageTarget = new DAFile(pkg,"dip/"+audience.toLowerCase(),Utilities.slashize(ci.getTarget_folder())+f.getName());
+					
+					Event e = new Event();
+					e.setDetail(Utilities.createString(commandAsList));
+					e.setSource_file(ci.getSource_file());
+					e.setTarget_file(multipageTarget);
+					e.setType("CONVERT");
+					e.setDate(new Date());
+					results.add(e);
 				}
 			}
 			else{

@@ -16,6 +16,10 @@ Please ensure, your @machine's are all running in UTF-8 mode:
     export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
     export LANG='de_DE.UTF-8'
 
+Of course you need a clean checkout of our source repo containing both DA-Web and ContentBroker
+
+    git clone https://github.com/da-nrw/DNSCore.git
+
 ### Continuous Delivery Workflow
 
 * Commit and push regularly. Ideally after every small task. If necessary divide bigger tasks in smaller subtasks.
