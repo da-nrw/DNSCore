@@ -12,9 +12,9 @@ The current version of DNS implements routines for four different types of packa
 
 These four metadata formats are the only ones currently officially supported by the DNS and are stored in the AIPs so that they can be read and processed should the objects be restored or if migrations to other future standards should be necessary.
 
-Additionaly the DNS currently implements crosswalks for these standards in order to be able to make them accessible in a unified presentation environment. These crosswalks create the following formats:
-* DC
-* EDM
+Additionaly the DNS currently implements crosswalks for these standards in order to be able to make them accessible in a unified presentation environment. These crosswalks create the following formats for every object:
+* DC (Dublin Core)
+* EDM (Europeana Data Model)
 
 ## Technical workflow
 
