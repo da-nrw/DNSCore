@@ -35,18 +35,43 @@ In the following parts we assume
 
 ## Setup ContentBroker
 
-The storage layer is separated of ContentBroker's internal business logic, the interface is composed by 
-GridFace abstract classes and its respective implementations. The only thing GridFacade needs
-to know is an instance of a storage policy which has to be achieved and the logical pathname (address) the
-object is stored under. This helps to seperate the concerns of DNSCore between ContentBroker's business logic and the Storage layer. 
+The storage layer is separated of ContentBroker's internal business logic. The interface is composed by the
+GridFacade abstract class and its respective implementations, to separate concers. By use of this inteface the business code can access objects via logical names whitout knowing of the underlying storage system (which in this case is iRODS).
+
 
 In order to connect the two systems to prepare a node for production use, we assume that you already have set up
 the ContentBroker as described in the getting started [guide](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/getting_started.md).
 
 ## Setup iRODS
 
-Set up a basic iRODS > 3.2 installation with one default resource of type cache, pointing to [somewhere] (as described
+Set up a basic iRODS > 3.2 installation with one default resource of type cache, pointing to "somewhere" (as described
 in the getting started document). Make sure the installation is installed as ICAT-Enabled. 
+
+### Adding and changing the RuleSet
+
+iRODS works with event based triggers being fired on certain actions. Additionally iRODS has the ability to automatically 
+perform some time based actions (performed by the RuleEngine of Master ICAT). To support event based rules needed by 
+DNSCore and to provide needed actions for the GridFacade, it is needed to add the RuleSet to reConfig rule base. The rule base config is located at:
+
+    iRODS/server/config/server.config
+  
+Please add the entry on all connected servers by changing line 
+
+    reRuleSet   danrw,core
+
+And store the corresponding file danrw.re in:
+
+    iRODS/server/config/reConfigs
+
+The file danrw.re must be changed to your local appropiate settings. 
+
+Please refer carefully to the iRODS Documentation
+about needed change of other parameters, as wrong parameters could serverly harm your DNS system! There is no test if a ruleBase is operating well, while this file being parsed on demand whenever actions being fired. In case of severe  
+errors error, commands like 
+
+    ils 
+    
+will return with RE_PARSER_ERROR. Any change done to ruleBase should be followed issueing at least this command. There are many more actions being neccessary or at least interesting to implement, please consider reading the documentation in these files as well. 
 
 ### Creating the resources
 
@@ -68,35 +93,6 @@ Please note the settings of your iRODS installation, as they're needed for confi
 
 Alter "default resource" settings in core.re and in danrw.re for apropiate settings on your system as they might point
 to some dummy resources. 
-
-### Adding and changing the RuleSet
-
-iRODS works with event based triggers being fired on certain actions. Additionally iRODS has the ability to automatically 
-perform some time based actions (performed by the RuleEngine of Master ICAT). To support event based rules needed by 
-DNSCore and to provide needed actions for the GridFacade, it is needed to add the RuleSet to reConfig rule base. The rule base config is located at:
-
-    iRODS/server/config/server.config
-  
-Please add the entry on all connected servers by changing line 
-
-    reRuleSet   danrw,core
-
-And store the corresponding file danrw.re in:
-
-    iRODS/server/config/reConfigs
-
-The file danrw.re must be changed to your local appropiate settings. 
-
-### Test the modified iRODS version
-
-Please refer carefully to the iRODS Documentation
-about needed change of other parameters, as wrong parameters could serverly harm your DNS system! There is no test if a ruleBase is operating well, while this file being parsed on demand whenever actions being fired. In case of severe  
-errors error, commands like 
-
-    ils 
-    
-will return with RE_PARSER_ERROR. Any change done to ruleBase should be followed issueing at least this command. There are many more actions being neccessary or at least interesting to implement, please consider reading the documentation in these files as well. 
-
 
 ## Connecting DNSCore to the Storage Layer
 
