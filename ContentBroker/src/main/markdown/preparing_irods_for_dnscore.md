@@ -50,6 +50,7 @@ the ContentBroker as described in the getting started [guide](https://github.com
 Set up a basic iRODS > 3.2 installation with one default resource of type cache, pointing to "somewhere" (as described
 in the getting started document). Make sure the installation is installed as ICAT-Enabled. 
 
+### Create iRODS resources and adjust existing folder layout
 
 iRODS Servers (as well in federated or in resource server mode) know two types of resources:
 
@@ -59,8 +60,6 @@ iRODS Servers (as well in federated or in resource server mode) know two types o
 We adhere to these iRODS principles and use one cache type of resource as storage layer backend for the
 WorkArea and DIPArea, where objects are processed by the DNSCore and one archive type resource where AIPs are
 put onto and which should be a WORM device (for example tape storage).
-
-### Create iRODS resources and adjust existing folder layout
 
 In the getting started document you have already created a basic folder structure which looks like this:
 
@@ -94,8 +93,6 @@ archiveResource folders get created to match the iRODS resources we will create 
                                         TEST/
                             grid/
                                  TEST/
-
-### Create resources
 
 Create a working resource 
 
