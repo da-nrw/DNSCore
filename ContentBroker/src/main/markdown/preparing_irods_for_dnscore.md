@@ -47,9 +47,8 @@ the ContentBroker as described in the getting started [guide](https://github.com
 Set up a basic iRODS > 3.2 installation with one default resource of type cache, pointing to "somewhere" (as described
 in the getting started document). Make sure the installation is installed as ICAT-Enabled. 
 
-### Creating the resources
 
-iRODS Servers (as well in federated or in resource server mode) two types of resources:
+iRODS Servers (as well in federated or in resource server mode) know two types of resources:
 
 1. "Cache" type resource having a small latency and being fast, for objects that have to be accessed frequently.
 1. "Archive" type resource having longer latency, generally targeted at permanent storage and less frequent access.
@@ -57,6 +56,28 @@ iRODS Servers (as well in federated or in resource server mode) two types of res
 We adhere to these iRODS principles and use one cache type of resource as storage layer backend for the
 WorkArea and DIPArea, where objects are processed by the DNSCore and one archive type resource where AIPs are
 put onto and which should be a WORM device (for example tape storage).
+
+### Change your folder layout
+
+    [somewhere]/archiveResource/
+    [somewhere]/transferResource/
+                            user/
+                                 TEST/
+                            ingest/
+                                 TEST/
+    [somewhere]/workingResource/
+                            work/
+                                 TEST/
+                            pip/
+                                 institution/
+                                        TEST/
+                            pip/ 
+                                 public/
+                                        TEST/
+                            grid/
+                                 TEST/
+
+### Creating the resources
 
 As you already have created the cache resource during installation of iRODS, you now have to create
 the archive type resource. The archive resource has to part of an named resource group. In case you're running the resource server mode, the resource names are your repl_destinations names in config.properties. In case of forming a federation, zone_names are listed in repl_destinations. 
