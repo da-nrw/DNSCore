@@ -21,6 +21,7 @@ package de.uzk.hki.da.convert;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -38,6 +39,8 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.VideoRestriction;
+import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
+import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -55,11 +58,11 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 	private static Logger logger = 
 			LoggerFactory.getLogger(PublishVideoConversionStrategy.class);
 	
-	/** The cli connector. */
-	private SimplifiedCommandLineConnector cliConnector;
-	
 	/** The pkg. */
 	private Package pkg;
+	
+	/** The process timeout interval. */
+	private long processTimeout = 30000;
 
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#convertFile(de.uzk.hki.da.model.ConversionInstruction)
@@ -68,7 +71,6 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 	public List<Event> convertFile(ConversionInstruction ci)
 			throws FileNotFoundException {
 		if (pkg==null) throw new IllegalStateException("pkg not set");
-		if (cliConnector==null) throw new IllegalStateException("cliConnector not set");
 		
 		List<Event> results = new ArrayList<Event>();
 		
@@ -86,11 +88,11 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 		
 		cmdPUBLIC = (String[]) ArrayUtils.addAll(cmdPUBLIC, getRestrictionParametersForAudience("PUBLIC"));
 		
-		if (!cliConnector.execute(cmdPUBLIC)){
-			throw new RuntimeException("command not succeeded: " + Arrays.toString(cmdPUBLIC));
-		}
 		DAFile pubFile = new DAFile(pkg, "dip/public", Utilities.slashize(ci.getTarget_folder()) + 
 				FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp4");
+		
+		if (!executeConversionTool(cmdPUBLIC, pubFile.toRegularFile()))
+			throw new RuntimeException("command not succeeded: " + Arrays.toString(cmdPUBLIC));
 		
 		Event e = new Event();
 		e.setType("CONVERT");
@@ -110,12 +112,12 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 
 		cmdINSTITUTION = (String[]) ArrayUtils.addAll(cmdINSTITUTION, getRestrictionParametersForAudience("INSTITUTION"));
 		
-		if (!cliConnector.execute(cmdINSTITUTION))
-			throw new RuntimeException("command not succeeded: " + Arrays.toString(cmdINSTITUTION));
-		
 		DAFile instFile = new DAFile(pkg, "dip/institution", Utilities.slashize(ci.getTarget_folder()) + 
 				FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp4");
 		
+		if (!executeConversionTool(cmdINSTITUTION, instFile.toRegularFile()))
+			throw new RuntimeException("command not succeeded: " + Arrays.toString(cmdINSTITUTION));
+				
 		Event e2 = new Event();
 		e2.setType("CONVERT");
 		e2.setDetail(Utilities.createString(cmdINSTITUTION));
@@ -126,6 +128,74 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 		results.add(e2);
 		
 		return results;
+	}
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 * @author Christian Weitz
+	 * @author Thomas Kleinke
+	 * 
+	 * @param cmd The command to execute
+	 * @param targetFile The target file to check regularly
+	 * @return true if the conversion was successful, otherwise false
+	 */
+	private boolean executeConversionTool(String[] cmd, File targetFile) {
+		
+		String stdErr="";
+		String stdOut="";		
+		
+		logger.debug("Running cmd \"{}\"", Arrays.toString(cmd));
+		
+		System.out.println(targetFile);
+				
+		Process p = null;
+		ProcessInformation pi= new ProcessInformation();
+		try{
+			ProcessBuilder pb = new ProcessBuilder(cmd);
+			p = pb.start();
+			
+			InputStream errStr = p.getErrorStream();
+			int c1;
+			while ((c1 = errStr.read()) != -1){
+				stdErr += (char) c1;
+			}
+			pi.setStdErr(stdErr);
+			errStr.close();
+			
+			InputStream outStr = p.getInputStream();
+			int c2;
+			while ((c2 = outStr.read()) != -1){
+				stdOut += (char) c2;
+			}
+			pi.setStdOut(stdOut);
+			outStr.close();
+			
+			long targetFileSize = 0;
+			long previousTargetFileSize = 0;
+			do {
+				previousTargetFileSize = targetFileSize;				
+				Thread.sleep(processTimeout);
+				targetFileSize = targetFile.length();
+			} while (previousTargetFileSize < targetFileSize);
+				
+			p.destroy();
+		}
+		catch( FileNotFoundException e){			
+			logger.error("File not found in runShellCommand",e);
+			System.out.println("File not found in runShellCommand" + e.getMessage());
+			return false;
+		}	
+		catch (Exception e){		
+			logger.error("Error in runShellCommand",e);
+			System.out.println("Error in runShellCommand" + e.getMessage());
+			return false;
+		}
+		finally {
+			if (p != null)
+				LinuxEnvironmentUtils.closeStreams(p);
+		}
+		
+		return true;
 	}
 	
 	/**
@@ -168,14 +238,7 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setDom(org.w3c.dom.Document)
 	 */
 	public void setDom(Document dom){}
-	
 
-	/* (non-Javadoc)
-	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
-	 */
-	public void setCLIConnector(SimplifiedCommandLineConnector cliConnector){
-		this.cliConnector = cliConnector;
-	}
 	
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setParam(java.lang.String)
@@ -185,6 +248,13 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 
 
 	/* (non-Javadoc)
+	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
+	 */
+	@Override
+	public void setCLIConnector(SimplifiedCommandLineConnector cliConnector) {}
+	
+	
+	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setObject(de.uzk.hki.da.model.Object)
 	 */
 	@Override
@@ -192,5 +262,8 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 		this.object = obj;
 		this.pkg = obj.getLatestPackage();
 	}
-
+	
+	public void setProcessTimeout(long processTimeout) {
+		this.processTimeout = processTimeout;  
+	}
 }

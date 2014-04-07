@@ -19,11 +19,7 @@
 
 package de.uzk.hki.da.convert;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
@@ -38,7 +34,6 @@ import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.service.XPathUtils;
-import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -69,11 +64,10 @@ public class PublishVideoConversionStrategyTests {
 	
 	/**
 	 * Test.
-	 *
-	 * @throws FileNotFoundException the file not found exception
+	 * @throws IOException 
 	 */
 	@Test
-	public void test() throws FileNotFoundException {
+	public void test() throws IOException {
 		
 		Document dom = XPathUtils.parseDom(basePath + "premis.xml");
 		if (dom==null){
@@ -88,34 +82,7 @@ public class PublishVideoConversionStrategyTests {
 		right.getVideoRestriction().setDuration(180);
 		o.getRights().getPublicationRights().add(right);
 		
-		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
-		
-		
-		String cmdPUBLIC[] = new String[]{
-				"HandBrakeCLI",
-				"-i",
-				new File(basePath + "TEST/1/data/a/filename.avi").getAbsolutePath(),
-				"-o",
-				basePath + "TEST/1/data/dip/public/target/filename.mp4",
-				"-e","x264","-f","mp4","-E","faac",
-				"-l","360","--stop-at","duration:180"
-		};
-		when(cli.execute(cmdPUBLIC)).thenReturn(true);
-		
-		String cmdINSTITUTION[] = new String[]{
-				"HandBrakeCLI",
-				"-i",
-				new File(basePath + "TEST/1/data/a/filename.avi").getAbsolutePath(),
-				"-o",
-				basePath + "TEST/1/data/dip/institution/target/filename.mp4",
-				"-e","x264","-f","mp4","-E","faac"
-		};
-		when(cli.execute(cmdINSTITUTION)).thenReturn(true);
-		
-		
-		
 		PublishVideoConversionStrategy s = new PublishVideoConversionStrategy();
-		s.setCLIConnector( cli );
 		s.setDom(dom);
 		
 		ConversionInstruction ci = new ConversionInstruction();
@@ -123,6 +90,15 @@ public class PublishVideoConversionStrategyTests {
 		ci.setTarget_folder("target/");
 
 		s.setObject(o);
+		s.setProcessTimeout(250);
+		
+		File testFile = new File(basePath + "testfile.txt");
+		File pubFile = new File(basePath + "TEST/1/data/dip/public/target/filename.mp4");
+		File instFile = new File(basePath + "TEST/1/data/dip/institution/target/filename.mp4");
+		
+		FileUtils.copyFile(testFile, pubFile);
+		FileUtils.copyFile(testFile, instFile);
+						
 		s.convertFile(ci);
 	}
 }
