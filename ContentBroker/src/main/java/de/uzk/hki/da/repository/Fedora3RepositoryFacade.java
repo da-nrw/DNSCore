@@ -179,9 +179,10 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		try {
 			new AddRelationship("info:fedora/" + pid)
 				.predicate(predicate)
-				.object(object).execute();
+				.object(object).execute(fedora);
 		} catch (FedoraClientException e) {
-			throw new RepositoryException("Unable to add relationship", e);
+			throw new RepositoryException("Unable to add relationship: info:fedora/"
+					+ pid + "-" + predicate + "-" + object,  e);
 		}
 	}
 
@@ -204,7 +205,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	}
 	
 	private String generatePid(String objectId, String collection) {
-		return (collection + "%253A" + objectId);
+		return (collection + ":" + objectId);
 	}
 
 }
