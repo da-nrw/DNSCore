@@ -59,7 +59,7 @@ Please add the entry on all connected servers by changing line
 
     reRuleSet   contentbroker,core
 
-And store the corresponding file [contentbroker.re](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/danrw.re) as:
+And store the corresponding file [contentbroker.re](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/danrw.re) as:
 
     iRODS/server/config/reConfigs/contentbroker.re
 
