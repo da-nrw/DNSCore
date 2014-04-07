@@ -181,7 +181,8 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 				.predicate(predicate)
 				.object(object).execute(fedora);
 		} catch (FedoraClientException e) {
-			throw new RepositoryException("Unable to add relationship", e);
+			throw new RepositoryException("Unable to add relationship: info:fedora/"
+					+ pid + "-" + predicate + "-" + object,  e);
 		}
 	}
 
