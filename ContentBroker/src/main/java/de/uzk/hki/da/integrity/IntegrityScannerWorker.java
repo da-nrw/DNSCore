@@ -131,7 +131,7 @@ public class IntegrityScannerWorker {
 	void sendEmail(Object obj) {
 		// send Mail to Admin with Package in Error
 
-		String subject = "[" + systemName +  "] Problem Report für " + obj.getIdentifier() + " auf " + localNodeName;
+		String subject = "[" + systemName.toUpperCase() +  "] Problem Report für " + obj.getIdentifier() + " auf " + localNodeName;
 		if (nodeAdminEmail != null && !nodeAdminEmail.equals("")) {
 			try {
 				Mail.sendAMail(nodeAdminEmail, subject, "Es gibt ein Problem mit dem Objekt " + obj.getContractor().getShort_name()+ "/" + obj.getIdentifier());
