@@ -21,7 +21,6 @@ package de.uzk.hki.da.convert;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -40,7 +39,6 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
-import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -141,34 +139,12 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 	 */
 	private boolean executeConversionTool(String[] cmd, File targetFile) {
 		
-		String stdErr="";
-		String stdOut="";		
-		
 		logger.debug("Running cmd \"{}\"", Arrays.toString(cmd));
 		
-		System.out.println(targetFile);
-				
 		Process p = null;
-		ProcessInformation pi= new ProcessInformation();
 		try{
 			ProcessBuilder pb = new ProcessBuilder(cmd);
 			p = pb.start();
-			
-			InputStream errStr = p.getErrorStream();
-			int c1;
-			while ((c1 = errStr.read()) != -1){
-				stdErr += (char) c1;
-			}
-			pi.setStdErr(stdErr);
-			errStr.close();
-			
-			InputStream outStr = p.getInputStream();
-			int c2;
-			while ((c2 = outStr.read()) != -1){
-				stdOut += (char) c2;
-			}
-			pi.setStdOut(stdOut);
-			outStr.close();
 			
 			long targetFileSize = 0;
 			long previousTargetFileSize = 0;
@@ -177,17 +153,15 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 				Thread.sleep(processTimeout);
 				targetFileSize = targetFile.length();
 			} while (previousTargetFileSize < targetFileSize);
-				
+
 			p.destroy();
 		}
-		catch( FileNotFoundException e){			
+		catch(FileNotFoundException e){			
 			logger.error("File not found in runShellCommand",e);
-			System.out.println("File not found in runShellCommand" + e.getMessage());
 			return false;
 		}	
 		catch (Exception e){		
 			logger.error("Error in runShellCommand",e);
-			System.out.println("Error in runShellCommand" + e.getMessage());
 			return false;
 		}
 		finally {
