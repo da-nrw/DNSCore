@@ -29,6 +29,7 @@ import org.jdom.input.SAXBuilder;
 
 import de.uzk.hki.da.metadata.XsltGenerator;
 import de.uzk.hki.da.repository.RepositoryFacade;
+import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * This action transforms the primary metadata of an
@@ -61,7 +62,7 @@ public class CreateEDMAction extends AbstractAction {
 			
 			InputStream dcStream = repositoryFacade.retrieveFile(objectId, "danrw", "DC");
 			
-			SAXBuilder builder = new SAXBuilder(false);
+			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 			Document doc = builder.build(dcStream);
 			Element formatEl = doc.getRootElement().getChild("format",
 					Namespace.getNamespace("http://purl.org/dc/elements/1.1/"));

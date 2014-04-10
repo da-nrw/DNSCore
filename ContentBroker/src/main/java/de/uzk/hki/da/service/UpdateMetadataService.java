@@ -41,6 +41,7 @@ import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.XMLUtils;
 
 
 /**
@@ -107,12 +108,7 @@ public class UpdateMetadataService {
 				
 				Map<String,String> metsReplacements = new HashMap<String,String>();
 			
-				SAXBuilder builder = new SAXBuilder(false);
-				builder.setFeature("http://xml.org/sax/features/validation", false);
-				builder.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
-				builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-				builder.setFeature("http://xml.org/sax/features/external-general-entities", false);
-				builder.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+				SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 				File metadataFile = new File(pkg.getTransientBackRefToObject().getDataPath() + repName + "/" + metadataFilePath);
 
 				FileInputStream fileInputStream = new FileInputStream(metadataFile);
@@ -167,7 +163,7 @@ public class UpdateMetadataService {
 	) {
 		try {
 
-			SAXBuilder builder = new SAXBuilder(false);
+			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 			File metadataFile = new File(pkg.getTransientBackRefToObject().getDataPath() + repName + "/" + metadataFilePath);
 			
 			FileInputStream fileInputStream = new FileInputStream(metadataFile);

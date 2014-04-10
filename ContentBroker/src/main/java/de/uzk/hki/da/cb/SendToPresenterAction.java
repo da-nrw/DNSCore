@@ -45,6 +45,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
+import de.uzk.hki.da.utils.XMLUtils;
 
 /** 
  * This action implements the ingest into the presentation repository.
@@ -200,7 +201,7 @@ public class SendToPresenterAction extends AbstractAction {
 		if (!dcFile.exists())
 			dcFile = new File(dipPathInstitution + "/DC.xml");
 		if (dcFile.exists()) {
-			SAXBuilder builder = new SAXBuilder();
+			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 			Document doc;
 			try {
 				doc = builder.build(new FileReader(dcFile));
@@ -242,7 +243,7 @@ public class SendToPresenterAction extends AbstractAction {
 		try {
 			String url = "http://www.danrw.de/objects/" + objectId;
 			InputStream result = repositoryFacade.retrieveFile(objectId, collection, "DC");
-			SAXBuilder builder = new SAXBuilder(false);
+			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 			Document doc = builder.build(result);
 			doc.getRootElement().addContent(
 					new Element("identifier","dc","http://purl.org/dc/elements/1.1/")
