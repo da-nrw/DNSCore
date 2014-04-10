@@ -97,7 +97,6 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	ConversionInstructionsBuilderTests.class,
 	CentralDatabaseDAOTests.class,
 	SelectProcessingNodesTests.class,
-	RegisterObjectServiceTests.class,
 	ActionFactoryTests.class,
 	RetrievePackagesHelperTest.class,
 	ActionRegistryTests.class,
