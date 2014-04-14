@@ -135,8 +135,8 @@ following properties to match your iRODS configuration:
 To let the core component of DNSCore know how to speak to the grid set the following properties (esp. when you followed the Getting Started Tutorial, the following parameters might point to some fake Adapters):
 
     localNode.workingResource=localhost TODO ......
-    grid.implementation=IrodsGridFacade
-    implementation.distributedConversion=IrodsDistributedConversionAdapter
+    grid.implementation=irodsGridFacade
+    implementation.distributedConversion=irodsDistributedConversionAdapter
 
 ### Adjust iRODS installation
 
