@@ -48,6 +48,14 @@ In the following parts we assume
 Set up a basic iRODS > 3.2 installation with one default resource of type cache, pointing to "somewhere" (as described
 in the getting started document). Make sure the installation is installed as ICAT-Enabled. 
 
+To certain properties of your installation we will refer later in the text.
+
+    [irodsuser] - irods user name as set in the ~/.irods/.irodsEnv
+    [irodspassword] - irods password as set in the ~/.irods/.irodsEnv
+    [irodszone] - irodsZone as set in the ~/.irods/.irodsEnv
+
+The .irodsEnv we refer to here must be the one of the user which will run the ContentBroker.
+
 ### Create iRODS resources and adjust existing folder layout
 
 iRODS Servers (as well in federated or in resource server mode) know two types of resources:
@@ -122,7 +130,7 @@ following properties to match your iRODS configuration:
     irods.password=[encryptedIrodsPasswd] (TODO show how to encrypt)
     irods.server=[domainNameOfYourServer]
     irods.zone=[yourZoneName]
-    irods.default_resc=[nameOfYourCacheResc]
+    irods.default_resc=[nameOfYourWorkingRescource]
 
 To let the core component of DNSCore know how to speak to the grid set the following properties (esp. when you followed the Getting Started Tutorial, the following parameters might point to some fake Adapters):
 
