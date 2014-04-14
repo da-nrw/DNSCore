@@ -335,7 +335,7 @@ public class SendToPresenterAction extends AbstractAction {
 			fileId = "DC";
 			isMetadataFile = true;
 			mimeType = "text/xml";
-		} else if (file.getName().equals(packageType + ".xml")) {
+		} else if (file.getName().equals(packageType + ".xml") || file.getName().equals(packageType + ".rdf")) {
 			fileId = packageType;
 			isMetadataFile = true;
 		}
