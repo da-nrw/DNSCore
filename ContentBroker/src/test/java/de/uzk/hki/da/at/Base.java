@@ -70,7 +70,7 @@ public class Base {
 		gridCacheAreaRootPath = Utilities.slashize((String) properties.get("localNode.gridCacheAreRootPath"));
 		userAreaRootPath = Utilities.slashize((String) properties.get("localNode.userAreaRootPath"));
 		dipAreaRootPath = Utilities.slashize((String) properties.get("localNode.dipAreaRootPath"));
-		nodeName = (String) properties.get("irods.server");
+		nodeName = (String) properties.get("localNode.name");
 		System.out.println(ingestAreaRootPath);
 	
 		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");

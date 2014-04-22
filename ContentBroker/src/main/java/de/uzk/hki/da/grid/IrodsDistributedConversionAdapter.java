@@ -105,7 +105,6 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 	@Override
 	public void create(String relativePath) {
 		
-		
 		if (!irodsSystemConnector.connect()){
 			throw new RuntimeException("Couldn't establish iRODS-Connection");
 		}
@@ -117,8 +116,10 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 		finally {
 			irodsSystemConnector.logoff();
 		}
-		
 	}
+	
+	
+	
 
 	public IrodsSystemConnector getIrodsSystemConnector() {
 		return irodsSystemConnector;
