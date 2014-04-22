@@ -41,7 +41,8 @@ how to convert the existing DNSCore into a full-fledged installation including t
 
 ## ContentBroker
 
-### Install the software
+### Install the software 
+
 
 Create a directory somewhere on your filesystem into which you can install your ContentBroker.
 
