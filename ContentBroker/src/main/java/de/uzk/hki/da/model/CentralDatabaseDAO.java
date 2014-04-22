@@ -158,8 +158,6 @@ public class CentralDatabaseDAO {
 		job.setDate_created(String.valueOf(new Date().getTime()/1000L));
 	
 		session.save(job);
-		session.getTransaction().commit();
-		
 		return job;
 	}
 	
