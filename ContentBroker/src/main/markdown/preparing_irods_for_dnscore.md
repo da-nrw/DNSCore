@@ -128,7 +128,7 @@ following properties to match your iRODS configuration:
 
     irods.user=[yourIrodsUser]
     irods.password=[encryptedIrodsPasswd] (TODO show how to encrypt)
-    irods.server=[domainNameOfYourServer]
+    irods.server=[nameOfYourIrodsServerInstance]
     irods.zone=[yourZoneName]
     irods.default_resc=[nameOfYourWorkingRescource]
 
