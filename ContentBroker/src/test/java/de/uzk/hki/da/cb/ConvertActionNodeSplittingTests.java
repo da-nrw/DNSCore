@@ -22,15 +22,12 @@ package de.uzk.hki.da.cb;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Matchers.anyObject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -94,7 +91,6 @@ public class ConvertActionNodeSplittingTests {
 		
 		allNodes.add(localNode);
 		allNodes.add(friendNode);
-		when(dao.getAllNodes((Session)anyObject())).thenReturn(allNodes);
 		
 		job = new Job();
 		job.setId(1);

@@ -26,6 +26,7 @@ localNode.dipAreaRootPath=/data/danrw/storage/fs/dip
 localNode.gridCacheAreaRootPath=/data/danrw/storage/fs
 localNode.workingResource=01-da-nrw-vm3.hki.uni-koeln.de
 localNode.replDestinations=hbz,lvr
+localNode.name=da-nrw-vm3.hki.uni-koeln.de
 localNode.id=131614
 
 elasticsearch.index=portal_test

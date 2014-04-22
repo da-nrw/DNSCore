@@ -96,9 +96,6 @@ public class IngestAreaScannerWorker {
 	/** The register object service. */
 	private RegisterObjectService registerObjectService;
 	
-	/** The local node. */
-	private Node localNode;
-	
 	/** The root dir. */
 	File rootDir = null; 
 	
@@ -306,24 +303,6 @@ public class IngestAreaScannerWorker {
 	 */
 	public void setRegisterObjectService(RegisterObjectService registerObjectService) {
 		this.registerObjectService = registerObjectService;
-	}
-
-	/**
-	 * Gets the local node.
-	 *
-	 * @return the local node
-	 */
-	public Node getLocalNode() {
-		return localNode;
-	}
-
-	/**
-	 * Sets the local node.
-	 *
-	 * @param localNode the new local node
-	 */
-	public void setLocalNode(Node localNode) {
-		this.localNode = localNode;
 	}
 
 	public CentralDatabaseDAO getDao() {

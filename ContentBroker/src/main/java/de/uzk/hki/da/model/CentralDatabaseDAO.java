@@ -294,43 +294,6 @@ public class CentralDatabaseDAO {
 	
 	
 	
-	/**
-	 * Gets all nodes.
-	 *
-	 * @return all Nodes available
-	 * @auhtor jens Peters
-	 */
-	public Set<Node> getAllNodes(Session session) {
-
-		@SuppressWarnings("unchecked")
-		List<Node> nodes = session
-				.createQuery(
-						"from Node").setReadOnly(true).list();
-
-		Set<Node> resultSet = new HashSet<Node>();
-		for (Node node : nodes) {
-
-			if (node == null) {
-				throw new Error(
-						"Found an entry in Nodes List that has a null field for node");
-			}
-
-			if (node != null)
-				resultSet.add(node);
-		}
-
-		return resultSet;
-	}
-
-	
-	
-
-	
-	
-	
-	
-	
-	
 	
 	/**
 	 * 

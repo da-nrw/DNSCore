@@ -61,7 +61,7 @@
 		<property name="localNode" ref="localNode"/>
 	</bean>	
 	<bean id="localNode" class="de.uzk.hki.da.model.Node">
-		<property name="name" value="${irods.server}"/>
+		<property name="name" value="${localNode.name}"/>
 		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}"/>
         <property name="dipAreaRootPath" value="${localNode.dipAreaRootPath}" />
         <property name="userAreaRootPath" value="${localNode.userAreaRootPath}" />

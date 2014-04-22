@@ -31,6 +31,7 @@ localNode.dipAreaRootPath=CONTENTBROKER_ROOT/storage/dip
 localNode.gridCacheAreaRootPath=CONTENTBROKER_ROOT/storage/grid
 localNode.workingResource=localhost
 localNode.replDestinations=hbz,lvr
+localNode.name=localhost
 localNode.id=1
 
 uris.file=http://data.danrw.de/file

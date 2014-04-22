@@ -143,8 +143,6 @@ public class ConvertActionTests {
 		when (dao.getJob((Session)anyObject(),anyInt())).thenReturn(job);
 		action.setDao(dao);
 		
-		when (dao.getAllNodes((Session)anyObject())).thenReturn(allNodes);
-		
 		Job ret = new Job(); ret.setStatus("260");
 		when (dao.refreshJob((Job)anyObject())).thenReturn(ret);
 		

@@ -57,7 +57,7 @@ then
         "INSERT INTO contractors (id,short_name,admin) values (2,'DEFAULT',0);"
         "INSERT INTO contractors (id,short_name,admin) values (3,'PRESENTER',0);"
         "INSERT INTO contractors (id,short_name,admin) values (4,'rods',1);"
-        "INSERT INTO nodes (id,name,urn_index) values (1,'localhost',0);"
+        "INSERT INTO nodes (id,urn_index) values (1,0);"
         "INSERT INTO conversion_routines (id,name,target_suffix,type) VALUES (1,'TIFF',null,'de.uzk.hki.da.convert.TiffConversionStrategy');"
         "INSERT INTO conversion_routines (id,name,target_suffix,type) VALUES (2,'PIMG','jpg','de.uzk.hki.da.convert.PublishImageConversionStrategy');"
         "INSERT INTO conversion_routines (id,name,target_suffix,type,params) VALUES (3,'CLITIF','tif','de.uzk.hki.da.convert.CLIConversionStrategy','convert input output');"

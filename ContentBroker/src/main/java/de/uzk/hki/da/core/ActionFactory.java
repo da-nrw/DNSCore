@@ -121,9 +121,6 @@ public class ActionFactory implements ApplicationContextAware {
 				continue;
 			}
 			
-			
-			
-			
 			logger.info("fetched job: {}", jobCandidate);
 
 			actionRegistry.registerAction(action);

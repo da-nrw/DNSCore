@@ -47,7 +47,7 @@ public class CentralDatabaseDAOTests {
 	
 	/** The Constant inserts. */
 	private static final String inserts[] = new String[]{
-		"INSERT INTO nodes (name,urn_index) VALUES ('vm1',1)",
+		"INSERT INTO nodes (urn_index) VALUES (1)",
 		"INSERT INTO conversion_routines (name,type,params,target_suffix) " +
 			"VALUES ('abc','de.uzk.hki.da.cb.CLIConversionStrategy','convert input output','png')",
 		"INSERT INTO conversion_routines (name,type,params,target_suffix) " +
@@ -72,7 +72,7 @@ public class CentralDatabaseDAOTests {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass(){
-		HibernateUtil.init("src/main/conf/hibernateCentralDB.cfg.xml.inmem");
+		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		
@@ -122,15 +122,4 @@ public class CentralDatabaseDAOTests {
 		
 	}
 	
-	/**
-	 * Test get all nodes.
-	 */
-	@Test
-	public void testGetAllNodes() {
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		Set<Node> nodes = dao.getAllNodes(session);
-		assertEquals(1,nodes.size());
-
-	}
 }

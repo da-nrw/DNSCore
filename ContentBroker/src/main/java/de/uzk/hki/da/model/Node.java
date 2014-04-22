@@ -38,7 +38,7 @@ public class Node{
 	private int id;
 	
 	/** The name. */
-	private String name;
+	@Transient private String name;
 
 	/** The urn_index. */
 	private int urn_index=-1;
@@ -208,8 +208,7 @@ public class Node{
 	 */
 	@Override 
 	public int hashCode(){
-		
-		return 31+name.hashCode();
+		return id; // Hacked with full consciousness.
 	}
 
 	/**
