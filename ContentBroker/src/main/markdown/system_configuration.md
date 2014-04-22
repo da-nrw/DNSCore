@@ -31,7 +31,7 @@ block will show which beans.xml version will generate which application context:
 
 <pre>
 	-> beans.xml.node (This is the beans you see as beans.xml when you install your DNSCore with feature set (n)ode)
-	    -> imports src/main/resources/META-INF/beans-infrastructure.pres.xml
+	    -> imports src/main/resources/META-INF/beans-infrastructure.node.xml
             -> imports src/main/resources/META-INF/beans-infrastructure.common.xml
                   -> imports src/main/resources/META-INF/beans-infrastructure.core.xml    
        -> imports src/main/resources/META-INF/beans-workflow.ingest.xml  
