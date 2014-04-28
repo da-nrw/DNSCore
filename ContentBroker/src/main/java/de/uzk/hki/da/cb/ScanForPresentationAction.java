@@ -118,9 +118,15 @@ public class ScanForPresentationAction extends AbstractAction{
 			// get cps for fileanduser. do with cps: assemble
 			
 			logger.trace("Generating ConversionInstructions for PRESENTER");
-			for (ConversionPolicy p:
-				preservationSystem.getApplicablePolicies(file, "PRESENTER"))
-			{
+			List<ConversionPolicy> policies = preservationSystem.getApplicablePolicies(file, "PRESENTER");
+			if ( object.grantsRight("PUBLICATION")
+					&& !file.toRegularFile().getName().toLowerCase().endsWith(".xml")
+					&& !file.toRegularFile().getName().toLowerCase().endsWith(".rdf")
+					&& !file.toRegularFile().getName().toLowerCase().endsWith(".xmp")
+					&& (policies == null || policies.isEmpty()) ) {
+				throw new RuntimeException("No policy found for file "+file.toRegularFile().getAbsolutePath()
+						+"("+file.getFormatPUID()+")! Package can not be published because it would be incomplete.");
+			} else for (ConversionPolicy p : policies)	{
 				logger.info("Found applicable Policy for FileFormat "+p.getSource_format()+" -> "+p.getConversion_routine().getName() + "("+ file.getRelative_path()+ ")");
 				ConversionInstruction ci = ciB.assembleConversionInstruction(file, p);
 				ci.setTarget_folder(ci.getTarget_folder());
