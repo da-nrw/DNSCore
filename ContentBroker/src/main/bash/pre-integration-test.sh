@@ -49,7 +49,7 @@ function restartContentBroker(){
 function install(){
 	cd ../installation 
 	echo call ./install.sh $1
-	./install.sh $1 "full.test"
+	./install.sh $1 $2
 	if [ $? = 1 ]
 	then
 		echo Error in install script
@@ -84,7 +84,7 @@ dev)
 	rm $INSTALL_PATH/conf/config.properties
 	rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
 	rm $INSTALL_PATH/actionCommunicatorService.recovery
-	install $INSTALL_PATH
+	install $INSTALL_PATH dev
 	
 	src/main/bash/populatetestdb.sh create
 	src/main/bash/populatetestdb.sh populate
@@ -103,7 +103,7 @@ vm3)
 
 	rm $INSTALL_PATH/conf/config.properties
 	rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
-	install $INSTALL_PATH
+	install $INSTALL_PATH full
 
 	createIrodsDirs
 	prepareTestEnvironment $INSTALL_PATH

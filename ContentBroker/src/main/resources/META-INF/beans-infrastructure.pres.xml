@@ -11,12 +11,23 @@
           
     <import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>       
     
-    
-    <bean id="esMetadataIndex" class="de.uzk.hki.da.repository.ElasticsearchMetadataIndex">    
+    <bean id="fedoraRepositoryFacade" class="de.uzk.hki.da.repository.Fedora3RepositoryFacade">
+		<constructor-arg value="${fedora.url}" />
+		<constructor-arg value="${fedora.user}" />
+		<constructor-arg ref="fedoPass" />
+		<property name="metadataIndex" ref="esMetadataIndex"/>
+    </bean>
+    <bean id="fedoPass" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetClass" value="de.uzk.hki.da.utils.PasswordUtils"/>
+		<property name="targetMethod" value="decryptPassword"/>
+		<property name="arguments">
+			<list><value>${fedora.password}</value></list>
+		</property>
+	</bean>
+	<bean id="esMetadataIndex" class="de.uzk.hki.da.repository.ElasticsearchMetadataIndex">    
 		<property name="hosts" value="${elasticsearch.hosts}" />
 		<property name="cluster" value="${elasticsearch.cluster}" />
-    </bean> 
-    
+    </bean>
     
     <util:list id="actionOrdering">
 		<value>IndexMetadataAction</value>

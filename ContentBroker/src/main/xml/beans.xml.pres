@@ -10,7 +10,6 @@
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
            
 	<import resource="classpath*:META-INF/beans-infrastructure.pres.xml"/>
-	
     <import resource="classpath*:META-INF/beans-workflow.presentation.xml"/>
     
     <bean class="de.uzk.hki.da.core.IngestGate" id="ingestGate">
