@@ -58,12 +58,19 @@ To certain properties of your installation we will refer later in the text.
 
 The .irodsEnv we refer to here must be the one of the user which will run the ContentBroker.
 
-#### iRODS resources
+#### iRODS and its two different functions in DNSCore
 
 If we use iRODS as our backend, from the perspective of our application, we use it to serve two different purposes.
-On the one hand we use it to replicate (during ingest for example) DIPs to other nodes on which the presentation repository runs. This function is represented by the class "DistributedConversionHelper". On the other hand we use
+On the one hand we use it to replicate (during ingest for example) DIPs to other nodes on which the presentation repository runs. This function is represented by the interface "DistributedConversionHelper". On the other hand we use
 it to build up a grid between different nodes to realize the necessary geographical distribution of a long term archive.
-In order to let iRODS replicate data, it must be placed on so called resources, which basically are paths on your file systems which you define to be a resource.
+
+    grid.implementation=irodsGridFacade
+    implementation.distributedConversion=irodsDistributedConversionAdapter
+    
+#### iRODS resources
+
+In order to let iRODS replicate data, it must be placed on so called resources, which basically are paths on your file systems which you define to be a resource. This function is represented business-code-wise by the interface GridFacade. You can choose amongst different implementations of which we use our irods implementations. This is reflected by entries
+in the config.properties, which you should open and edit now so that it looks like:
 
 iRODS Servers (as well in federated or in resource server mode) know two types of resources:
 
@@ -145,14 +152,12 @@ following properties to match your iRODS configuration:
     irods.user=[yourIrodsUser]
     irods.password=[encryptedIrodsPasswd] (TODO show how to encrypt)
     irods.server=[nameOfYourIrodsServerInstance]
-    irods.zone=[yourZoneName]
+    irods.zone=[irodszone]
     irods.default_resc=[nameOfYourWorkingRescource]
 
 To let the core component of DNSCore know how to speak to the grid set the following properties (esp. when you followed the Getting Started Tutorial, the following parameters might point to some fake Adapters):
 
     localNode.workingResource=[nameOfYourWorkingResource]
-    grid.implementation=irodsGridFacade
-    implementation.distributedConversion=irodsDistributedConversionAdapter
 
 ### Adjust iRODS installation
 
