@@ -45,6 +45,8 @@ In the following parts we assume
 
 ## Installation instructions
 
+### iRODS Installation
+
 Set up a basic iRODS > 3.2 installation with one default resource of type cache, pointing to "somewhere" (as described
 in the getting started document). Make sure the installation is installed as ICAT-Enabled. 
 
@@ -56,9 +58,26 @@ To certain properties of your installation we will refer later in the text.
 
 The .irodsEnv we refer to here must be the one of the user which will run the ContentBroker.
 
-### Create iRODS resources and adjust existing folder layout
+### Understanding the mapping of iRODS resources to ContentBroker Areas
+
+Coming from the Getting Started Guide, where you already set up your ContentBroker, you should have a directory 
+layout which looks like this:
+
+    [somewhere]/storage/
+                    user/
+                    ingest/
+                    work/
+                    pip/
+                        institution/
+                        public/
+                    grid/
+                    
+All of these folders are placed somewhere in an arbitrary folder somewhere on a single partition on your file system.
+However, if you want to set up a fully operational node, you have to understand that the areas have to reside on different file system partitions and at the same time must match certain iRODS resources.
 
 ![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/different_views.jpg)
+
+### Create iRODS resources and adjust existing folder layout
 
 iRODS Servers (as well in federated or in resource server mode) know two types of resources:
 
@@ -71,14 +90,7 @@ put onto and which should be a WORM device (for example tape storage).
 
 In the getting started document you have already created a basic folder structure which looks like this:
 
-    [somewhere]/storage/
-                    user/
-                    ingest/
-                    work/
-                    pip/
-                        institution/
-                        public/
-                    grid/
+
 
 You now have to adjust this directory structure. First of all, for reasons explained in [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md) 
 (at the sections UserArea and IngestArea),user and ingest get moved to an own folder. The workingResource and
