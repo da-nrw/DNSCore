@@ -84,7 +84,7 @@ dev)
 	rm $INSTALL_PATH/conf/config.properties
 	rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
 	rm $INSTALL_PATH/actionCommunicatorService.recovery
-	install $INSTALL_PATH dev
+	install $INSTALL_PATH
 	
 	src/main/bash/populatetestdb.sh create
 	src/main/bash/populatetestdb.sh populate
@@ -104,9 +104,10 @@ vm3)
 
 	rm $INSTALL_PATH/conf/config.properties
 	rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
-	install $INSTALL_PATH full
+	install $INSTALL_PATH
 
 	createIrodsDirs
+	cp src/main/xml/beans.xml.ci conf/beans.xml
 	prepareTestEnvironment $INSTALL_PATH
 	restartContentBroker $INSTALL_PATH
 ;;
