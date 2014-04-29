@@ -120,8 +120,8 @@ Edit the config.properties to reflect your changes:
     localNode.userAreaRootPath=[somewhere]/[transferResource]/user
     localNode.ingestAreaRootPath=[somewhere]/[transferResource]/ingest
     localNode.workAreaRootPath=[somewhere]/[workingResource]/work
-    localNode.dipAreaRootPath=[somewhere]/workingResource/pip
-    localNode.gridCacheAreaRootPath=[somewhere]/workingResource/grid
+    localNode.dipAreaRootPath=[somewhere]/workingResource/pip (the chosen phys. path must be subdir of vaultpath of iRODS workingResource)
+    localNode.gridCacheAreaRootPath=[somewhere]/workingResource/grid (the chosen phys. path must be subdir of vaultpath of iRODS workingResource)
 
 To let the grid component know how to speak to the iRODS server set the 
 following properties to match your iRODS configuration:
