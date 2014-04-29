@@ -9,8 +9,6 @@
            http://www.springframework.org/schema/task
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
           
-    <import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>       
-    
     <bean id="fedoraRepositoryFacade" class="de.uzk.hki.da.repository.Fedora3RepositoryFacade">
 		<constructor-arg value="${fedora.url}" />
 		<constructor-arg value="${fedora.user}" />
