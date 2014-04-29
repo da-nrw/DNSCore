@@ -39,8 +39,8 @@ public class FetchPIPsAction extends AbstractAction {
 		renamePIPs(dipSourcePartialPath, dipTargetPartialPath);
 		
 		// cleanup
-		distributedConversionAdapter.remove("dip/public/"+dipSourcePartialPath);
-		distributedConversionAdapter.remove("dip/institution/"+dipSourcePartialPath);
+		distributedConversionAdapter.remove("pip/public/"+dipSourcePartialPath);
+		distributedConversionAdapter.remove("pip/institution/"+dipSourcePartialPath);
 
 		return true;
 	}
@@ -88,9 +88,9 @@ public class FetchPIPsAction extends AbstractAction {
 	private void replicateFromSourceResourceToWorkingResource(
 			String dipSourcePartialPath) {
 		distributedConversionAdapter.replicateToLocalNode(
-				"dip/public/"+dipSourcePartialPath);
+				"pip/public/"+dipSourcePartialPath);
 		distributedConversionAdapter.replicateToLocalNode(
-				"dip/institution/"+dipSourcePartialPath);
+				"pip/institution/"+dipSourcePartialPath);
 	}
 
 	

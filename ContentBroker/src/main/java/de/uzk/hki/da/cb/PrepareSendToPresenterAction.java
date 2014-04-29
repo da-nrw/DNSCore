@@ -102,18 +102,18 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	private void registerPIPSforReplication(String dipName) {
 		
 		if (!publicDir.exists())
-			distributedConversionAdapter.create("pips/public/"+dipName);
+			distributedConversionAdapter.create("pip/public/"+dipName);
 		else
 			distributedConversionAdapter.register(
-				"pips/public/"+dipName, 
+				"pip/public/"+dipName, 
 				publicDir.getAbsolutePath()
 				);
 		
 		if (!instDir.exists())
-			distributedConversionAdapter.create("pips/institution/"+dipName);
+			distributedConversionAdapter.create("pip/institution/"+dipName);
 		else
 			distributedConversionAdapter.register(
-				"pips/institution/"+dipName, 
+				"pip/institution/"+dipName, 
 				instDir.getAbsolutePath()
 				);
 	}

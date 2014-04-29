@@ -235,13 +235,13 @@ public class Base {
 		
 		distributedConversionAdapter.remove("fork/TEST");
 		distributedConversionAdapter.remove("aip/TEST");
-		distributedConversionAdapter.remove("dip/institution/TEST");
-		distributedConversionAdapter.remove("dip/public/TEST");
+		distributedConversionAdapter.remove("pip/institution/TEST");
+		distributedConversionAdapter.remove("pip/public/TEST");
 		
 		distributedConversionAdapter.create("fork/TEST");
 		distributedConversionAdapter.create("aip/TEST");
-		distributedConversionAdapter.create("dip/institution/TEST");
-		distributedConversionAdapter.create("dip/public/TEST");
+		distributedConversionAdapter.create("pip/institution/TEST");
+		distributedConversionAdapter.create("pip/public/TEST");
 		
 		new File(userAreaRootPath+"TEST/outgoing").mkdirs();
 		new File(gridCacheAreaRootPath+"TEST").mkdirs();

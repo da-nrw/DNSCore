@@ -28,8 +28,8 @@ function prepareTestEnvironment(){
 function createIrodsDirs(){
 	imkdir /da-nrw/fork/TEST              2>/dev/null
 	imkdir /da-nrw/aip/TEST               2>/dev/null
-	imkdir /da-nrw/dip/institution/TEST   2>/dev/null
-	imkdir /da-nrw/dip/public/TEST        2>/dev/null
+	imkdir /da-nrw/pip/institution/TEST   2>/dev/null
+	imkdir /da-nrw/pip/public/TEST        2>/dev/null
 }
 
 
