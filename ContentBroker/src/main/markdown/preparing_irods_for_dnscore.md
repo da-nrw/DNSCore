@@ -6,9 +6,6 @@ form a fully operational node ready for production use. For the purpose of this 
 as consisting only of this node, e.g. you can see it as a how to of setting up the master node of a system. For setup of
 slave nodes or a consideration of other topologies (federation) see the notes at the bottom of this document.
 
-In order to connect the two systems to prepare a node for production use, we assume that you already have set up
-the ContentBroker as described in the getting started [guide](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/getting_started.md).
-
 ## iRODS as a storage layer
 
 The storage layer is separated of ContentBroker's internal business logic. The interface is composed by the
@@ -30,7 +27,14 @@ The version described here is community iRODS Version (3.X), you may consider al
 
 Several hardware platforms are supported by iRODS "out-of-the-box", but having a standard "mount-point" (unix file system) is always a good start. Tape devices not being able to provide such, may be connected via MSS compound devices and may need special configuration.
 
-In the following parts we assume 
+
+
+## Installation instructions
+
+### Prerequisites
+
+In order to connect the two systems to prepare a node for production use, we assume that you already have set up
+the ContentBroker as described in the getting started [guide](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/getting_started.md).
 
 1. You have read the documenation available under www.irods.org (e.g. the read the e-Book "iRODS Primer")
 1. You have already experimented with iRODS at a local developer box and you are able to use it.
@@ -42,8 +46,6 @@ In the following parts we assume
     iadmin
 
 1. You are able to create resources (Please take a look at documentation at www.irods.org how to create iRODS resources). 
-
-## Installation instructions
 
 ### iRODS Installation
 
