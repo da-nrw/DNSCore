@@ -25,19 +25,21 @@ Some of the features being available are listed below.
 #### View CB Error Messages 
 
 Error Messages of CB are listed in the frontend being available as "Adminstrative Funktionen" 
-on Homepage. The newest message is on top. The reason for listing is to make debugging 
+on Homepage in case you are logged in as admin role. 
+
+The newest message is on top. The reason for listing is to make debugging 
 of errors more easily and (in case you've more than one node to administer) to view errors 
 of other nodes as well. 
 
 #### Starting / Stopping CB-Factory 
 
 In case of shutting down CB, you should use the Stop Factory button, 
-avoiding uncontrolled interruption on work done by CB. After hitting the butoon stop factory 
+avoiding uncontrolled interruption of work done by CB. After hitting the button "stop factory "
 CB will stop working after having performed all running tasks completely. 
 
 #### Show Actions 
 
-To view what your CB process actually is performing you may hit he Show actions button. 
+To view what your CB process actually is performing you may hit the "show actions" button. 
 
 #### Graceful CB shutdown 
 
@@ -52,19 +54,19 @@ Please execute after doing graceful shutdown
 #### Reload PIP
 
 For convinence Admins can perform a rebuild of PIP (Presentation  Information packages). 
-The PIP is being built on basis of the latest version, including all deltas. 
+The PIP is being built on basis of the latest version, including all deltas. This feature is accessible on the "list objects" view for admin users only.
 
-#### Reindex Elasticserach
+#### Reindex Elasticsearch
 
 For convinence Admins can perform a rebuild of elastic search index insertion on basis of latest
-PIP. 
+PIP. This feature is accessible on the "list objects" view for admin users only.
 
-#### Check status of AIP
+#### Manually checking status of AIP
 
 Although automated service is carrying out integrity checks on AIP stored in the repository all 
-the time, administrators can perform checks on demand as well. 
+the time, administrators can perform checks on demand as well. This feature is accessible on the "list objects" view for admin users only.
 
 
 #### Recover and Deletion of entries
 
-Admins can perform adequate recover processes if they could be carried out by the system. 
+Admins can perform adequate recover processes if they could be carried out by the system.  This is being indicated by buttons.  This feature is accessible on the "queue list" view for admin users only.
