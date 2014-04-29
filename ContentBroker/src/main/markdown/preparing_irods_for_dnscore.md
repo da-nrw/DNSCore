@@ -66,8 +66,6 @@ following lines of your config.properties to match your iRODS configuration:
     irods.server=[nameOfYourIrodsServerInstance]
     irods.zone=[irodszone]
 
-#### iRODS and its two different functions in DNSCore
-
 If we use iRODS as our backend, from the perspective of our application, we use it to serve two different purposes.
 On the one hand we use it to replicate (during ingest for example) DIPs to other nodes on which the presentation repository runs. This function is represented by the interface "DistributedConversionHelper". On the other hand we use
 it to build up a grid between different nodes to realize the necessary geographical distribution of a long term archive.
@@ -145,10 +143,6 @@ archiveResource folders get created to match the iRODS resources we will create 
                                         TEST/
                             grid/
                                  TEST/
-
-
-
-### Adjust ContentBroker settings
 
 Edit the config.properties to reflect your changes:                               
 
