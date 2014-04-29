@@ -58,6 +58,14 @@ To certain properties of your installation we will refer later in the text.
 
 The .irodsEnv we refer to here must be the one of the user which will run the ContentBroker.
 
+To let the grid component know how to speak to the iRODS server set the 
+following lines of your config.properties to match your iRODS configuration:
+
+    irods.user=[irodsuser]
+    irods.password=[encryptedirodspassword] (TODO show how to encrypt)
+    irods.server=[nameOfYourIrodsServerInstance]
+    irods.zone=[irodszone]
+
 #### iRODS and its two different functions in DNSCore
 
 If we use iRODS as our backend, from the perspective of our application, we use it to serve two different purposes.
@@ -92,6 +100,10 @@ and a resource group to which the archive resource belongs and make the recently
 
     iadmin mkgroup [nameYourArchiveResouceGroup]
     iadmin atrg [nameYourArchiveResourceGroup] [archiveResource]
+
+And in your config.properties:
+
+    irods.default_resc=[nameOfYourWorkingRescource]
 
 ### Understanding the mapping of iRODS resources to ContentBroker Areas
 
@@ -146,14 +158,7 @@ Edit the config.properties to reflect your changes:
     localNode.dipAreaRootPath=[somewhere]/workingResource/pip (the chosen phys. path must be subdir of vaultpath of iRODS workingResource)
     localNode.gridCacheAreaRootPath=[somewhere]/workingResource/grid (the chosen phys. path must be subdir of vaultpath of iRODS workingResource)
 
-To let the grid component know how to speak to the iRODS server set the 
-following properties to match your iRODS configuration:
 
-    irods.user=[yourIrodsUser]
-    irods.password=[encryptedIrodsPasswd] (TODO show how to encrypt)
-    irods.server=[nameOfYourIrodsServerInstance]
-    irods.zone=[irodszone]
-    irods.default_resc=[nameOfYourWorkingRescource]
 
 To let the core component of DNSCore know how to speak to the grid set the following properties (esp. when you followed the Getting Started Tutorial, the following parameters might point to some fake Adapters):
 
