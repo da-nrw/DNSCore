@@ -45,6 +45,8 @@ In the following parts we assume
 
 ## Installation instructions
 
+### iRODS Installation
+
 Set up a basic iRODS > 3.2 installation with one default resource of type cache, pointing to "somewhere" (as described
 in the getting started document). Make sure the installation is installed as ICAT-Enabled. 
 
@@ -56,20 +58,57 @@ To certain properties of your installation we will refer later in the text.
 
 The .irodsEnv we refer to here must be the one of the user which will run the ContentBroker.
 
-### Create iRODS resources and adjust existing folder layout
+To let the grid component know how to speak to the iRODS server set the 
+following lines of your config.properties to match your iRODS configuration:
 
-![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/different_views.jpg)
+    irods.user=[irodsuser]
+    irods.password=[encryptedirodspassword] (TODO show how to encrypt)
+    irods.server=[nameOfYourIrodsServerInstance]
+    irods.zone=[irodszone]
+
+#### iRODS and its two different functions in DNSCore
+
+If we use iRODS as our backend, from the perspective of our application, we use it to serve two different purposes.
+On the one hand we use it to replicate (during ingest for example) DIPs to other nodes on which the presentation repository runs. This function is represented by the interface "DistributedConversionHelper". On the other hand we use
+it to build up a grid between different nodes to realize the necessary geographical distribution of a long term archive.
+
+    grid.implementation=irodsGridFacade
+    implementation.distributedConversion=irodsDistributedConversionAdapter
+    
+#### iRODS resources
+
+In order to let iRODS replicate data, it must be placed on so called resources, which basically are paths on your file systems which you define to be a resource. This function is represented business-code-wise by the interface GridFacade. You can choose amongst different implementations of which we use our irods implementations. This is reflected by entries
+in the config.properties, which you should open and edit now so that it looks like:
 
 iRODS Servers (as well in federated or in resource server mode) know two types of resources:
 
 1. "Cache" type resource having a small latency and being fast, for objects that have to be accessed frequently.
 1. "Archive" type resource having longer latency, generally targeted at permanent storage and less frequent access.
 
-We adhere to these iRODS principles and use one cache type of resource as storage layer backend for the
-WorkArea and DIPArea, where objects are processed by the DNSCore and one archive type resource where AIPs are
+We adhere to these iRODS principles and use one cache type of resource to fulfill the first of the abovementioned functions and the archive type resource for the storage where AIPs are
 put onto and which should be a WORM device (for example tape storage).
 
-In the getting started document you have already created a basic folder structure which looks like this:
+Create a working resource 
+
+    iadmin mkresc [nameYourWorkingResource] "unix file system" cache [hostname] [somewhere]/workingResource
+
+Create an archive resource
+
+    iadmin mkresc [nameYourArchiveResource] "unix file system" archive [hostname] [somewhere]/archiveResource
+
+and a resource group to which the archive resource belongs and make the recently created archive resource to be part of that resource group:
+
+    iadmin mkgroup [nameYourArchiveResouceGroup]
+    iadmin atrg [nameYourArchiveResourceGroup] [archiveResource]
+
+And in your config.properties:
+
+    irods.default_resc=[nameOfYourWorkingRescource]
+
+### Understanding the mapping of iRODS resources to ContentBroker Areas
+
+Coming from the Getting Started Guide, where you already set up your ContentBroker, you should have a directory 
+layout which looks like this:
 
     [somewhere]/storage/
                     user/
@@ -79,8 +118,13 @@ In the getting started document you have already created a basic folder structur
                         institution/
                         public/
                     grid/
+                    
+All of these folders are placed somewhere in an arbitrary folder somewhere on a single partition on your file system.
+However, if you want to set up a fully operational node, you have to understand that the areas have to reside on different file system partitions and at the same time must match certain iRODS resources.
 
-You now have to adjust this directory structure. First of all, for reasons explained in [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md) 
+![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/different_views.jpg)
+
+You now have to adjust the folder structure to reflect this. First of all, for reasons explained in [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md) 
 (at the sections UserArea and IngestArea),user and ingest get moved to an own folder. The workingResource and
 archiveResource folders get created to match the iRODS resources we will create in this section.
 
@@ -102,18 +146,7 @@ archiveResource folders get created to match the iRODS resources we will create 
                             grid/
                                  TEST/
 
-Create a working resource 
 
-    iadmin mkresc [nameYourWorkingResource] "unix file system" cache [hostname] [somewhere]/workingResource
-
-Create an archive resource
-
-    iadmin mkresc [nameYourArchiveResource] "unix file system" archive [hostname] [somewhere]/archiveResource
-
-and a resource group to which the archive resource belongs and make the recently created archive resource to be part of that resource group:
-
-    iadmin mkgroup [nameYourArchiveResouceGroup]
-    iadmin atrg [nameYourArchiveResourceGroup] [archiveResource]
 
 ### Adjust ContentBroker settings
 
@@ -125,20 +158,11 @@ Edit the config.properties to reflect your changes:
     localNode.dipAreaRootPath=[somewhere]/workingResource/pip (the chosen phys. path must be subdir of vaultpath of iRODS workingResource)
     localNode.gridCacheAreaRootPath=[somewhere]/workingResource/grid (the chosen phys. path must be subdir of vaultpath of iRODS workingResource)
 
-To let the grid component know how to speak to the iRODS server set the 
-following properties to match your iRODS configuration:
 
-    irods.user=[yourIrodsUser]
-    irods.password=[encryptedIrodsPasswd] (TODO show how to encrypt)
-    irods.server=[nameOfYourIrodsServerInstance]
-    irods.zone=[yourZoneName]
-    irods.default_resc=[nameOfYourWorkingRescource]
 
 To let the core component of DNSCore know how to speak to the grid set the following properties (esp. when you followed the Getting Started Tutorial, the following parameters might point to some fake Adapters):
 
     localNode.workingResource=[nameOfYourWorkingResource]
-    grid.implementation=irodsGridFacade
-    implementation.distributedConversion=irodsDistributedConversionAdapter
 
 ### Adjust iRODS installation
 
