@@ -12,19 +12,34 @@
            http://activemq.apache.org/schema/core 
            http://activemq.apache.org/schema/core/activemq-core.xsd">
           
+          
     <bean id="fakeRepositoryFacade" class="de.uzk.hki.da.repository.FakeRepositoryFacade">
         <property name="dipAreaRootPath" value="${localNode.dipAreaRootPath}" />
 	</bean>   
+    <bean id="fedoraRepositoryFacade" class="de.uzk.hki.da.repository.Fedora3RepositoryFacade">
+		<constructor-arg value="${fedora.url}" />
+		<constructor-arg value="${fedora.user}" />
+		<constructor-arg ref="fedoPass" />
+		<property name="metadataIndex" ref="esMetadataIndex"/>
+    </bean>
+    <bean id="fedoPass" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetClass" value="de.uzk.hki.da.utils.PasswordUtils"/>
+		<property name="targetMethod" value="decryptPassword"/>
+		<property name="arguments">
+			<list><value>${fedora.password}</value></list>
+		</property>
+	</bean>
+          
           
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
 		<property name="location">
 			<value>conf/config.properties</value>
 		</property>
 	</bean>	
-    
     <bean id="dipNode" class="de.uzk.hki.da.model.Node">
 		<property name="name" value="${cb.presServer}" />
 	</bean>
+		
 		
 	<bean id="fakeDistributedConversionAdapter" class="de.uzk.hki.da.grid.FakeDistributedConversionAdapter"/>
 	<bean id="irodsDistributedConversionAdapter" class="de.uzk.hki.da.grid.IrodsDistributedConversionAdapter">
@@ -43,6 +58,8 @@
 		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
 		<property name="localNode" ref="localNode"/>
 	</bean>	
+	
+	
 	<bean id="localNode" class="de.uzk.hki.da.model.Node">
 		<property name="name" value="${localNode.name}"/>
 		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}"/>
