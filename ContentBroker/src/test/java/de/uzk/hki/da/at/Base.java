@@ -90,7 +90,7 @@ public class Base {
 	private void instantiateGrid(String gridImplBeanName,String dcaImplBeanName) {
 		
 		AbstractApplicationContext context =
-				new FileSystemXmlApplicationContext("src/main/resources/META-INF/beans-infrastructure.core.xml");
+				new FileSystemXmlApplicationContext("conf/beans.xml");
 		gridFacade = (GridFacade) context.getBean(gridImplBeanName);
 		distributedConversionAdapter = (DistributedConversionAdapter) context.getBean(dcaImplBeanName);
 		context.close();
@@ -98,7 +98,7 @@ public class Base {
 	
 	private void instantiateRepository(String repImplBeanName) {
 		AbstractApplicationContext context =
-				new FileSystemXmlApplicationContext("src/main/resources/META-INF/beans-infrastructure.core.xml");
+				new FileSystemXmlApplicationContext("conf/beans.xml");
 		repositoryFacade = (RepositoryFacade) context.getBean(repImplBeanName);
 		context.close();
 	}
