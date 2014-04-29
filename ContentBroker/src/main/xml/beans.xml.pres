@@ -32,4 +32,10 @@
 		<entry key="FetchPIPsAction" value="3" />
 		<entry key="SendToPresenterAction" value="3" />
 	</util:map>
+	<util:list id="actionOrdering">
+		<value>IndexMetadataAction</value>
+		<value>CreateEDMAction</value>
+		<value>SendToPresenterAction</value>
+		<value>FetchPIPsAction</value>
+	</util:list>
 </beans>

@@ -28,11 +28,4 @@
 		<property name="hosts" value="${elasticsearch.hosts}" />
 		<property name="cluster" value="${elasticsearch.cluster}" />
     </bean>
-    
-    <util:list id="actionOrdering">
-		<value>IndexMetadataAction</value>
-		<value>CreateEDMAction</value>
-		<value>SendToPresenterAction</value>
-		<value>FetchPIPsAction</value>
-	</util:list>
 </beans>

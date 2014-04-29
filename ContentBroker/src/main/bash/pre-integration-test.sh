@@ -48,8 +48,8 @@ function restartContentBroker(){
 # $1 = INSTALL_PATH
 function install(){
 	cd ../installation 
-	echo call ./install.sh $1
-	./install.sh $1 $2
+	echo call ./install.sh $1 full
+	./install.sh $1 full
 	if [ $? = 1 ]
 	then
 		echo Error in install script
@@ -89,6 +89,7 @@ dev)
 	src/main/bash/populatetestdb.sh create
 	src/main/bash/populatetestdb.sh populate
 	
+	cp src/main/xml/beans.xml.dev conf/beans.xml
 	prepareTestEnvironment $INSTALL_PATH
 	restartContentBroker $INSTALL_PATH
 ;;

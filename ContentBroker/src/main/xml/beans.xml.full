@@ -9,13 +9,14 @@
            http://www.springframework.org/schema/task
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
+    <!-- beans.xml.full -->
 	<import resource="classpath*:META-INF/beans-infrastructure.full.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.pres.xml"/>
+	<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>
 
 	<bean class="de.uzk.hki.da.core.IngestGate" id="ingestGate">
 		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
 		<property name="fileSizeFactor" value="3" />
-		<property name="freeDiskSpacePercent" value="50" />
+		<property name="freeDiskSpacePercent" value="5" />
 	</bean>
 
 	<task:executor id="taskExecutor" pool-size="10"
@@ -64,4 +65,40 @@
 		<entry key="PIPGenObjectToWorkAreaAction" value="3" />
 		<entry key="PIPGenCleanWorkAreaAction" value="3" />
 	</util:map>
+	<util:list id="actionOrdering">
+   		<value>DeleteObjectAction</value>
+		<value>RestartIngestWorkflowAction</value>
+		<value>RetrievalAction</value>
+		<value>RetrievalObjectToWorkAreaAction</value>
+		<value>IngestArchiveReplicationCheckAction</value>
+		<value>IngestArchiveReplicationAction</value>
+		<value>IngestTarAction</value>
+		<value>IngestBuildAIPAction</value>
+		<value>IngestPrepareSendToPresenterAction</value>
+		<value>FriendshipConversionAction</value>
+		<value>IngestPresUpdateMetadataAction</value>
+		<value>IngestShortenFileNamesAction</value>
+		<value>IngestUpdateMetadataAction</value>
+		<value>IngestCheckFormatsAction</value>
+		<value>IngestConvertForPresentationAction</value>
+		<value>IngestScanForPresentationAction</value>
+		<value>IngestCreatePremisAction</value>
+		<value>IngestConvertAction</value>
+		<value>IngestScanAction</value>
+		<value>IngestRegisterURNAction</value>
+		<value>IndexMetadataAction</value>
+		<value>CreateEDMAction</value>
+		<value>SendToPresenterAction</value>
+		<value>FetchPIPsAction</value>
+		<value>IngestUnpackAction</value>
+		<value>AuditAction</value>
+		<value>PIPGenCleanWorkAreaAction</value>
+		<value>PIPGenPrepareSendToPresenterAction</value>
+		<value>PIPGenShortenFileNamesAction</value>
+		<value>PIPGenUpdateMetadataAction</value>
+		<value>PIPGenConvertAction</value>
+		<value>PIPGenScanForPresentationAction</value>
+		<value>PIPGenObjectToWorkAreaAction</value>
+        <value>PostRetrievalAction</value>
+	</util:list>
 </beans>
