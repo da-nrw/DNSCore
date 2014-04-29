@@ -58,6 +58,34 @@ To certain properties of your installation we will refer later in the text.
 
 The .irodsEnv we refer to here must be the one of the user which will run the ContentBroker.
 
+#### iRODS resources
+
+If we use iRODS as our backend, from the perspective of our application, we use it to serve two different purposes.
+On the one hand we use it to replicate (during ingest for example) DIPs to other nodes on which the presentation repository runs. This function is represented by the class "DistributedConversionHelper". On the other hand we use
+it to build up a grid between different nodes to realize the necessary geographical distribution of a long term archive.
+In order to let iRODS replicate data, it must be placed on so called resources, which basically are paths on your file systems which you define to be a resource.
+
+iRODS Servers (as well in federated or in resource server mode) know two types of resources:
+
+1. "Cache" type resource having a small latency and being fast, for objects that have to be accessed frequently.
+1. "Archive" type resource having longer latency, generally targeted at permanent storage and less frequent access.
+
+We adhere to these iRODS principles and use one cache type of resource to fulfill the first of the abovementioned functions and the archive type resource for the storage where AIPs are
+put onto and which should be a WORM device (for example tape storage).
+
+Create a working resource 
+
+    iadmin mkresc [nameYourWorkingResource] "unix file system" cache [hostname] [somewhere]/workingResource
+
+Create an archive resource
+
+    iadmin mkresc [nameYourArchiveResource] "unix file system" archive [hostname] [somewhere]/archiveResource
+
+and a resource group to which the archive resource belongs and make the recently created archive resource to be part of that resource group:
+
+    iadmin mkgroup [nameYourArchiveResouceGroup]
+    iadmin atrg [nameYourArchiveResourceGroup] [archiveResource]
+
 ### Understanding the mapping of iRODS resources to ContentBroker Areas
 
 Coming from the Getting Started Guide, where you already set up your ContentBroker, you should have a directory 
@@ -77,20 +105,7 @@ However, if you want to set up a fully operational node, you have to understand 
 
 ![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/different_views.jpg)
 
-### Create iRODS resources and adjust existing folder layout
-
-iRODS Servers (as well in federated or in resource server mode) know two types of resources:
-
-1. "Cache" type resource having a small latency and being fast, for objects that have to be accessed frequently.
-1. "Archive" type resource having longer latency, generally targeted at permanent storage and less frequent access.
-
-We adhere to these iRODS principles and use one cache type of resource as storage layer backend for the
-WorkArea and DIPArea, where objects are processed by the DNSCore and one archive type resource where AIPs are
-put onto and which should be a WORM device (for example tape storage).
-
-In the getting started document you have already created a basic folder structure which looks like this:
-
-
+### Create iRODS resources and adjust existing fold
 
 You now have to adjust this directory structure. First of all, for reasons explained in [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md) 
 (at the sections UserArea and IngestArea),user and ingest get moved to an own folder. The workingResource and
@@ -114,18 +129,7 @@ archiveResource folders get created to match the iRODS resources we will create 
                             grid/
                                  TEST/
 
-Create a working resource 
 
-    iadmin mkresc [nameYourWorkingResource] "unix file system" cache [hostname] [somewhere]/workingResource
-
-Create an archive resource
-
-    iadmin mkresc [nameYourArchiveResource] "unix file system" archive [hostname] [somewhere]/archiveResource
-
-and a resource group to which the archive resource belongs and make the recently created archive resource to be part of that resource group:
-
-    iadmin mkgroup [nameYourArchiveResouceGroup]
-    iadmin atrg [nameYourArchiveResourceGroup] [archiveResource]
 
 ### Adjust ContentBroker settings
 
