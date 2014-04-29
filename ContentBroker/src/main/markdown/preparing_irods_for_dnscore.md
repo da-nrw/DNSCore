@@ -58,6 +58,8 @@ The .irodsEnv we refer to here must be the one of the user which will run the Co
 
 ### Create iRODS resources and adjust existing folder layout
 
+![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/different_views.jpg)
+
 iRODS Servers (as well in federated or in resource server mode) know two types of resources:
 
 1. "Cache" type resource having a small latency and being fast, for objects that have to be accessed frequently.
@@ -82,13 +84,13 @@ You now have to adjust this directory structure. First of all, for reasons expla
 (at the sections UserArea and IngestArea),user and ingest get moved to an own folder. The workingResource and
 archiveResource folders get created to match the iRODS resources we will create in this section.
 
-    [somewhere]/archiveResource/
-    [somewhere]/transferResource/
+    [somewhere]/fileMount/archiveResource/
+    [somewhere]/partition_1/
                             user/
                                  TEST/
                             ingest/
                                  TEST/
-    [somewhere]/workingResource/
+    [somewhere]/partition_2/workingResource/
                             work/
                                  TEST/
                             pip/

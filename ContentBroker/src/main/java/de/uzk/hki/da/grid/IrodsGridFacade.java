@@ -46,6 +46,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 			.getLogger(IrodsGridFacade.class);
 	
 	
+	
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.grid.IrodsGridFacadeBase#put(java.io.File, java.lang.String)
 	 */
@@ -60,7 +61,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		if (!gridPath.startsWith("/")) 
 			address_dest = "/" + gridPath;
 		String targetPhysically = Utilities.slashize(localNode.getGridCacheAreaRootPath()) + address_dest;
-		String targetLogically  = "/" + irodsSystemConnector.getZone() + address_dest;	
+		String targetLogically  = "/" + irodsSystemConnector.getZone() + "/" + aipDirName  + address_dest;	
 		File gridfile = new File (targetPhysically); 
 		
 		if (registerOnWorkingResourceAndComputeChecksum(file,targetLogically,gridfile))

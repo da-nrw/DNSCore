@@ -48,6 +48,9 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	/** The local node. */
 	protected Node localNode;
 	
+	protected String aipDirName = "aip";
+	
+	
 	
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.grid.GridFacade#put(java.io.File, java.lang.String)
@@ -237,7 +240,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	@Override
 	public void get(File destination, String gridFileAdress) throws IOException  { 
 		
-		String prefixedGridFileAdress = "/" + irodsSystemConnector.getZone() + gridFileAdress;
+		String prefixedGridFileAdress = "/" + irodsSystemConnector.getZone()+ "/" + aipDirName + "/" + gridFileAdress;
 		
 		irodsSystemConnector.connect();
 		

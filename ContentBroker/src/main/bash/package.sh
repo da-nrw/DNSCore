@@ -15,8 +15,8 @@ echo params are $1 $2
 function createStorageFolder(){
 	mkdir $CBTAR_SRC/storage/
 	mkdir $CBTAR_SRC/storage/grid
-	mkdir -p $CBTAR_SRC/storage/dip/institution/TEST
-	mkdir -p $CBTAR_SRC/storage/dip/public/TEST
+	mkdir -p $CBTAR_SRC/storage/pips/institution/TEST
+	mkdir -p $CBTAR_SRC/storage/pips/public/TEST
 	mkdir -p $CBTAR_SRC/storage/user/TEST/outgoing
 	mkdir -p $CBTAR_SRC/storage/fork/TEST
 	mkdir -p $CBTAR_SRC/storage/ingest/TEST

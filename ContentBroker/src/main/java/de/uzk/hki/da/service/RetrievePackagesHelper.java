@@ -130,8 +130,8 @@ public class RetrievePackagesHelper {
 	 * @throws IOException
 	 */
 	private File retrieveSinglePackageFromGrid(Object object,Package pkg) throws IOException{
-		String data_name = "/aip/"
-				+ object.getContractor().getShort_name() + "/" + object.getIdentifier()
+		String data_name =
+				object.getContractor().getShort_name() + "/" + object.getIdentifier()
 				+ "/" + object.getIdentifier() + ".pack_" + pkg.getName() + ".tar";
 		
 		if (!new File(object.getDataPath()).exists()) new File(object.getDataPath()).mkdirs();

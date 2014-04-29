@@ -23,8 +23,12 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.cb.ArchiveReplicationAction;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.utils.Utilities;
 
 /**
  * For acceptance testing on developer machines
@@ -33,11 +37,13 @@ import de.uzk.hki.da.model.StoragePolicy;
  */
 public class FakeGridFacade implements GridFacade {
 
+	static final Logger logger = LoggerFactory.getLogger(FakeGridFacade.class);
+	
 	private String gridCacheAreaRootPath;
 	
 	@Override
 	public boolean put(File file, String address_dest, StoragePolicy sp) throws IOException {
-		System.out.println("putting: "+file+" to "+getGridCacheAreaRootPath()+address_dest);
+		logger.debug("putting: "+file+" to "+getGridCacheAreaRootPath()+address_dest);
 		FileUtils.copyFile(file, new File(getGridCacheAreaRootPath()+address_dest));
 		return true;
 	}
@@ -45,8 +51,8 @@ public class FakeGridFacade implements GridFacade {
 	@Override
 	public void get(File destination, String sourceFileAdress)
 			throws IOException {
-		System.out.println("retrieving: "+getGridCacheAreaRootPath()+sourceFileAdress+" to "+destination);
-		FileUtils.copyFile(new File(getGridCacheAreaRootPath()+sourceFileAdress),destination);
+		logger.debug("retrieving: " + getGridCacheAreaRootPath() + sourceFileAdress + " to " + destination);
+		FileUtils.copyFile(new File(getGridCacheAreaRootPath() + sourceFileAdress),destination);
 	}
 
 	@Override
@@ -69,7 +75,7 @@ public class FakeGridFacade implements GridFacade {
 	}
 
 	public void setGridCacheAreaRootPath(String gridCacheAreaRootPath) {
-		this.gridCacheAreaRootPath = gridCacheAreaRootPath;
+		this.gridCacheAreaRootPath = Utilities.slashize(gridCacheAreaRootPath);
 	}
 
 	

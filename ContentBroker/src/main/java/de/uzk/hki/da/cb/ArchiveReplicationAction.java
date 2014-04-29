@@ -54,7 +54,7 @@ public class ArchiveReplicationAction extends AbstractAction {
 		if (gridRoot==null) throw new ConfigurationException("gridRoot not set");
 		
 		String filename = object.getIdentifier() + ".pack_" + object.getLatestPackage().getName() + ".tar";
-		String target = "/aip/"+object.getContractor().getShort_name()+"/"+object.getIdentifier()+"/"+filename;
+		String target = "/"+ object.getContractor().getShort_name()+"/"+object.getIdentifier()+"/"+filename;
 
 		StoragePolicy sp = new StoragePolicy(localNode);
 		sp.setDestinations(new ArrayList<String>(getDestinations()));

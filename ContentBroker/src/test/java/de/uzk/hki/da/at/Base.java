@@ -203,7 +203,7 @@ public class Base {
 		
 		try {
 			gridFacade.get(new File("/tmp/"+object.getIdentifier()+".pack_"+packageName+".tar"), 
-					"/aip/TEST/"+object.getIdentifier()+"/"+object.getIdentifier()+".pack_"+packageName+".tar");
+					"/TEST/"+object.getIdentifier()+"/"+object.getIdentifier()+".pack_"+packageName+".tar");
 		} catch (IOException e) {
 			fail("could not fetch object from grid");
 		}
@@ -228,7 +228,7 @@ public class Base {
 	protected void cleanStorage() throws IOException{
 		FileUtils.deleteDirectory(new File(workAreaRootPath+"TEST"));
 		FileUtils.deleteDirectory(new File(ingestAreaRootPath+"TEST"));
-		FileUtils.deleteDirectory(new File(gridCacheAreaRootPath+"aip/TEST"));
+		FileUtils.deleteDirectory(new File(gridCacheAreaRootPath+"TEST"));
 		FileUtils.deleteDirectory(new File(dipAreaRootPath+"institution/TEST"));
 		FileUtils.deleteDirectory(new File(dipAreaRootPath+"public/TEST"));
 		FileUtils.deleteDirectory(new File(userAreaRootPath+"TEST/outgoing"));
@@ -244,7 +244,7 @@ public class Base {
 		distributedConversionAdapter.create("dip/public/TEST");
 		
 		new File(userAreaRootPath+"TEST/outgoing").mkdirs();
-		new File(gridCacheAreaRootPath+"aip/TEST").mkdirs();
+		new File(gridCacheAreaRootPath+"TEST").mkdirs();
 		new File(ingestAreaRootPath+"TEST").mkdirs();
 		new File(workAreaRootPath+"TEST").mkdirs();
 		new File(dipAreaRootPath+"public/TEST").mkdirs();
@@ -258,7 +258,7 @@ public class Base {
 	protected void createObjectAndJob(String name, String status) throws IOException{
 		gridFacade.put(
 				new File("src/test/resources/at/"+name+".pack_1.tar"),
-				"/aip/TEST/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
+				"TEST/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
 		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();

@@ -43,7 +43,7 @@ public interface GridFacade {
 	 * Puts a file from the local file system into the grid. 
 	 *  
 	 * @param file full path to a file location which should be ingested into the grid
-	 * @param gridPath address of the target file name in grid (excluding zone prefix)
+	 * @param gridPath address of the target file name in grid (excluding zone prefix). 
 	 * 
 	 * If @param gridPath parent Folder does not exist, it will be created.
 	 * 
