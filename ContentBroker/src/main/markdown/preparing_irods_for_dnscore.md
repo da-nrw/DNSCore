@@ -105,9 +105,7 @@ However, if you want to set up a fully operational node, you have to understand 
 
 ![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/different_views.jpg)
 
-### Create iRODS resources and adjust existing fold
-
-You now have to adjust this directory structure. First of all, for reasons explained in [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md) 
+You now have to adjust the folder structure to reflect this. First of all, for reasons explained in [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md) 
 (at the sections UserArea and IngestArea),user and ingest get moved to an own folder. The workingResource and
 archiveResource folders get created to match the iRODS resources we will create in this section.
 
