@@ -221,6 +221,10 @@ public class Base {
 		session.createSQLQuery("DELETE FROM objects_packages").executeUpdate();
 		session.createSQLQuery("DELETE FROM packages").executeUpdate();
 		session.createSQLQuery("DELETE FROM objects").executeUpdate();
+		session.createSQLQuery("DELETE FROM events").executeUpdate();
+		session.createSQLQuery("DELETE FROM dafiles").executeUpdate();
+		session.createSQLQuery("DELETE FROM conversion_queue").executeUpdate();
+		
 		session.getTransaction().commit();
 		session.close();
 	}

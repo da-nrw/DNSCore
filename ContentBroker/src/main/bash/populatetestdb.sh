@@ -47,6 +47,9 @@ then
 	sqls=(
 		"DELETE FROM nodes;"
 		"DELETE FROM contractors;"
+		"DELETE FROM events;"
+		"DELETE FROM dafiles;"
+		"DELETE FROM conversion_queue;"
 	) 
 fi
 
