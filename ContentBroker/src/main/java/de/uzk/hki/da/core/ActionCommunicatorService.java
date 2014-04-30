@@ -181,6 +181,16 @@ public class ActionCommunicatorService {
 	}
 	
 	/**
+	 * Removes serialized ActionCommunicatorService.recovery file
+	 */
+	public void purgeActionCommunicatorService() {
+		
+		waitWhileSerializing();
+		dataObjectMap = new HashMap<Integer, Map<String, Object>>();
+		serialize();
+	}
+	
+	/**
 	 * Removes data object for given job id and data object id from the
 	 * data object map.
 	 *

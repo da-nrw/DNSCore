@@ -5,10 +5,15 @@
 ### Prerequisites
 
 To build DNS Core successfully you'll need at least a developer engine with
+
 * JAVA 1.6
 * MAVEN
 * GIT
 * Grails 2.2.4 in order to compile DA-WEB 
+* Imagemagick 6.7.8 (with jasper, to use jpg2000,  with tiff)
+
+No other converters are needed for compile and run the acceptance tests at the developer@machine.  
+In order to to build release candidates you'll need needed packages for all configured converters. 
 
 Please ensure, your @machine's are all running in UTF-8 mode:
     
@@ -90,12 +95,12 @@ Every fully tested release candidate can be rolled out following this workflow:
 
 [type] can have one of the following values:
 
-* full (e.g. for vm6)
-* pres (e.g. for vm2,danrw)
-* node (e.g. for prod,lvr,eunomia )
+* full (a fully fledged node including Pres Repository, also a good start to use the software)
+* pres (just a Presentation Repository node, without conversion)
+* node (would fit in most cases, having  n-nodes)
 
 ### Query your hsqldb easily on [developer@machine]
 
 1. cd DNSCore/ContentBroker
-1. src/main/scripts/sqlrequest.sh "[SQL-Abfrage]"
+1. src/main/bash/sqlrequest.sh "[SQL-Query]"
 
