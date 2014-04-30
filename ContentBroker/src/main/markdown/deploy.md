@@ -12,7 +12,8 @@ To build DNS Core successfully you'll need at least a developer engine with
 * Grails 2.2.4 in order to compile DA-WEB 
 * Imagemagick 6.7.8 (with jasper, to use jpg2000,  with tiff)
 
-No other converters are needed for compile and run the acceptance tests.  
+No other converters are needed for compile and run the acceptance tests at the developer@machine.  
+In order to to build release candidates you'll need needed packages for all configured converters. 
 
 Please ensure, your @machine's are all running in UTF-8 mode:
     
