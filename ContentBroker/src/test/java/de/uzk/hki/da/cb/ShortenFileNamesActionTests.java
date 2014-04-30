@@ -45,7 +45,7 @@ import de.uzk.hki.da.model.Object;
 public class ShortenFileNamesActionTests {
 
 	/** The base path. */
-	private String basePath = "src/test/resources/cb/ShortenFileNamesActionTests/";
+	private String workAreaRootPath = "src/test/resources/cb/ShortenFileNamesActionTests/";
 	
 	/** The action. */
 	ShortenFileNamesAction action = new ShortenFileNamesAction();
@@ -68,7 +68,7 @@ public class ShortenFileNamesActionTests {
 	public void setUp() throws IOException {
 		
 		node = new Node();
-		node.setWorkAreaRootPath(basePath+"fork/");
+		node.setWorkAreaRootPath(workAreaRootPath);
 		Node dipNode = new Node(); dipNode.setName("dipNode");
 		action.setNode(node);
 		
@@ -80,7 +80,7 @@ public class ShortenFileNamesActionTests {
 		ActionCommunicatorService acs = new ActionCommunicatorService();
 		action.setActionCommunicatorService(acs);
 		
-		FileUtils.copyDirectory(new File(basePath+"sources/1"), new File(basePath+"fork/TEST/1"));
+		FileUtils.copyDirectory(new File(workAreaRootPath+"work/sources/1"), new File(workAreaRootPath+"work/TEST/1"));
 		
 	}
 
@@ -131,13 +131,13 @@ public class ShortenFileNamesActionTests {
 		action.implementation();
 		
 		String newFileName = "_a5e54d1fd7bb69a228ef0dcd2431367e.txt";
-		assertTrue(new File(basePath + "fork/TEST/1/data/dip/public/" + newFileName).exists());
+		assertTrue(new File(workAreaRootPath + "work/TEST/1/data/dip/public/" + newFileName).exists());
 		newFileName = "_ce506ace22f28ac2bc4f933d4cf989fd.txt";
-		assertTrue(new File(basePath + "fork/TEST/1/data/dip/public/" + newFileName).exists());
+		assertTrue(new File(workAreaRootPath + "work/TEST/1/data/dip/public/" + newFileName).exists());
 		newFileName = "_a5e54d1fd7bb69a228ef0dcd2431367e.txt";
-		assertTrue(new File(basePath + "fork/TEST/1/data/dip/institution/" + newFileName).exists());
+		assertTrue(new File(workAreaRootPath + "work/TEST/1/data/dip/institution/" + newFileName).exists());
 		newFileName = "_ce506ace22f28ac2bc4f933d4cf989fd.txt";
-		assertTrue(new File(basePath + "fork/TEST/1/data/dip/institution/" + newFileName).exists());
+		assertTrue(new File(workAreaRootPath + "work/TEST/1/data/dip/institution/" + newFileName).exists());
 		
 	}
 	
@@ -148,7 +148,7 @@ public class ShortenFileNamesActionTests {
 	 */
 	@After
 	public void tearDown() throws IOException {		
-		FileUtils.deleteDirectory(new File(basePath+"fork/TEST/1"));
+		FileUtils.deleteDirectory(new File(workAreaRootPath+"work/TEST/1"));
 	}
 
 }

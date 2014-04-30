@@ -32,8 +32,7 @@ import org.junit.Test;
  */
 public class PackageTests {
 
-	/** The path. */
-	String path = "src/test/resources/model/PackageTests/";
+	String workAreaRootPath = "src/test/resources/model/PackageTests/";
 	
 	/** The n. */
 	Node node;
@@ -44,7 +43,7 @@ public class PackageTests {
 	@Before
 	public void setUp() {
 		node = new Node();
-		node.setWorkAreaRootPath(path);
+		node.setWorkAreaRootPath(workAreaRootPath);
 	}
 	
 //	@Test

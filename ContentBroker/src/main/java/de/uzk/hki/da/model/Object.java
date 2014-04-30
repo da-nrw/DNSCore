@@ -300,7 +300,7 @@ public class Object {
 		if (transientNodeRef.getWorkAreaRootPath()==null||transientNodeRef.getWorkAreaRootPath().isEmpty()) 
 			throw new RuntimeException("workarearootpath null or empty");
 		
-		return transientNodeRef.getWorkAreaRootPath() + contractor.getShort_name() + "/" + identifier + "/data/";
+		return transientNodeRef.getWorkAreaRootPath() + "work/" + contractor.getShort_name() + "/" + identifier + "/data/";
 	}
 	
 	
@@ -313,7 +313,7 @@ public class Object {
 		if (transientNodeRef.getWorkAreaRootPath()==null||transientNodeRef.getWorkAreaRootPath().isEmpty()) 
 			throw new RuntimeException("workarearootpath null or empty");
 		
-		return transientNodeRef.getWorkAreaRootPath() + contractor.getShort_name() + "/" + identifier + "/";
+		return transientNodeRef.getWorkAreaRootPath() + "work/" + contractor.getShort_name() + "/" + identifier + "/";
 	}
 	
 	

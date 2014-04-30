@@ -126,10 +126,6 @@ public class ContentBroker {
 			logger.error("path localNode.workAreaRootPath not exists");
 			ok=false;
 		}
-		if (!new File(properties.getProperty("localNode.dipAreaRootPath")).exists()) {
-			logger.error("path localNode.dipAreaRootPath points to not exists");
-			ok=false;
-		}
 		if (!new File(properties.getProperty("localNode.gridCacheAreaRootPath")).exists()) {
 			logger.error("path localNode.gridCacheAreaRootPath points to not exists");
 			ok=false;

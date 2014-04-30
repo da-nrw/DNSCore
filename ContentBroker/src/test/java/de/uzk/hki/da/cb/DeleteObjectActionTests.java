@@ -41,21 +41,21 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class DeleteObjectActionTests {
 
-	private String workAreaRootPath = "src/test/resources/cb/DeleteObjectActionTests/work/";
+	private String workAreaRootPath = "src/test/resources/cb/DeleteObjectActionTests/";
 	private String ingestAreaRootPath = "src/test/resources/cb/DeleteObjectActionTests/ingest/";
 	private DeleteObjectAction action;
 	
 	@Before
 	public void setUp() throws IOException{
-		new File(workAreaRootPath+"TEST/123/data").mkdirs();
-		new File(workAreaRootPath+"TEST/abc.txt").createNewFile();
+		new File(workAreaRootPath+"work/TEST/123/data").mkdirs();
+		new File(workAreaRootPath+"work/TEST/abc.txt").createNewFile();
 		new File(ingestAreaRootPath+"TEST/abc.txt").createNewFile();
 	}
 	
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteDirectory(new File(workAreaRootPath+"TEST/123/data"));
-		new File(workAreaRootPath+"TEST/abc.txt").delete();
+		FileUtils.deleteDirectory(new File(workAreaRootPath+"work/TEST/123/data"));
+		new File(workAreaRootPath+"work/TEST/abc.txt").delete();
 		new File(ingestAreaRootPath+"TEST/abc.txt").delete();
 	}
 	
@@ -69,8 +69,8 @@ public class DeleteObjectActionTests {
 		action.setObject(o);
 		action.implementation();
 		
-		assertFalse(new File(workAreaRootPath+"TEST/123/").exists());
-		assertFalse(new File(workAreaRootPath+"TEST/abc.txt").exists());
+		assertFalse(new File(workAreaRootPath+"work/TEST/123/").exists());
+		assertFalse(new File(workAreaRootPath+"work/TEST/abc.txt").exists());
 		assertFalse(new File(ingestAreaRootPath+"TEST/abc.txt").exists());
 	}
 	

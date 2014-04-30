@@ -104,7 +104,6 @@ public class ActionFactoryTests {
 		Node node = new Node("da-nrw-vm3.hki.uni-koeln.de","01-vm3"); node.setId(42);
 		node.setName("da-nrw-vm3.hki.uni-koeln.de");
 		node.setWorkAreaRootPath("fakePath");
-		node.setDipAreaRootPath("fakePath");
 		
 		factory.setDao(dummyDao);	
 		factory.setLocalNode(node);

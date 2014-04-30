@@ -73,11 +73,11 @@ public class RetrievalActionTest {
 	@Before
 	public void setUp() throws Exception {
 		
-		FileUtils.copyDirectory(new File(forkAndTransferPath+"csn/Source"), 
-				                new File(forkAndTransferPath+"csn/1")); 
+		FileUtils.copyDirectory(new File(forkAndTransferPath+"work/csn/Source"), 
+				                new File(forkAndTransferPath+"work/csn/1")); 
 		Node node = new Node();
 		node.setWorkAreaRootPath(forkAndTransferPath);
-		node.setUserAreaRootPath(forkAndTransferPath);
+		node.setUserAreaRootPath(forkAndTransferPath+"work/");
 		
 		Contractor contractor = new Contractor(); 
 		contractor.setShort_name("csn"); 
@@ -141,24 +141,24 @@ public class RetrievalActionTest {
 		
 		action.implementation();
 		assertFalse(new File(forkAndTransferPath+"csn/1_").exists());
-		assertTrue( new File(forkAndTransferPath+"csn/outgoing/1.tar").exists() );
+		assertTrue( new File(forkAndTransferPath+"work/csn/outgoing/1.tar").exists() );
 		
 		// checking contents of package
 		
 		NativeJavaTarArchiveBuilder tar = new NativeJavaTarArchiveBuilder();
-		tar.unarchiveFolder(new File(forkAndTransferPath+"csn/outgoing/1.tar"),
-				            new File(forkAndTransferPath+"csn/outgoing/"));
+		tar.unarchiveFolder(new File(forkAndTransferPath+"work/csn/outgoing/1.tar"),
+				            new File(forkAndTransferPath+"work/csn/outgoing/"));
 		
-		assertTrue(new File(forkAndTransferPath+"csn/outgoing/1/data/folder1/pic5.txt").exists());
-		assertTrue(new File(forkAndTransferPath+"csn/outgoing/1/data/folder2/pic5.txt").exists());
-		assertTrue(new File(forkAndTransferPath+"csn/outgoing/1/data/pic1.txt").exists());
-		assertTrue(new File(forkAndTransferPath+"csn/outgoing/1/data/pic2.txt").exists());
-		assertTrue(new File(forkAndTransferPath+"csn/outgoing/1/data/pic3.txt").exists());
-		assertTrue(new File(forkAndTransferPath+"csn/outgoing/1/data/pic4.txt").exists());
+		assertTrue(new File(forkAndTransferPath+"work/csn/outgoing/1/data/folder1/pic5.txt").exists());
+		assertTrue(new File(forkAndTransferPath+"work/csn/outgoing/1/data/folder2/pic5.txt").exists());
+		assertTrue(new File(forkAndTransferPath+"work/csn/outgoing/1/data/pic1.txt").exists());
+		assertTrue(new File(forkAndTransferPath+"work/csn/outgoing/1/data/pic2.txt").exists());
+		assertTrue(new File(forkAndTransferPath+"work/csn/outgoing/1/data/pic3.txt").exists());
+		assertTrue(new File(forkAndTransferPath+"work/csn/outgoing/1/data/pic4.txt").exists());
 		
 		// check bag
 		BagFactory bagFactory = new BagFactory();
-		Bag bag = bagFactory.createBag(new File(forkAndTransferPath+"csn/outgoing/1/"));
+		Bag bag = bagFactory.createBag(new File(forkAndTransferPath+"work/csn/outgoing/1/"));
 		SimpleResult result = bag.verifyValid();
 		assertTrue(result.isSuccess());
 	}

@@ -18,7 +18,7 @@ function createStorageFolder(){
 	mkdir -p $CBTAR_SRC/storage/pips/institution/TEST
 	mkdir -p $CBTAR_SRC/storage/pips/public/TEST
 	mkdir -p $CBTAR_SRC/storage/user/TEST/outgoing
-	mkdir -p $CBTAR_SRC/storage/fork/TEST
+	mkdir -p $CBTAR_SRC/storage/work/TEST
 	mkdir -p $CBTAR_SRC/storage/ingest/TEST
 }
 

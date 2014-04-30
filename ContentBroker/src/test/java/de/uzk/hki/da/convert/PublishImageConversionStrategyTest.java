@@ -53,11 +53,10 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class PublishImageConversionStrategyTest {
 
-	/** The base path. */
-	String basePath="src/test/resources/convert/PublishImageConversionStrategyTests/";
+	String workAreaRootPath="src/test/resources/convert/PublishImageConversionStrategyTests/";
 	
 	/** The data path. */
-	String dataPath=basePath+"TEST/123/data/";
+	String dataPath=workAreaRootPath+"work/TEST/123/data/";
 	
 	
 	/** The cr. */
@@ -85,7 +84,7 @@ public class PublishImageConversionStrategyTest {
 	@Test
 	public void testResizeAndWatermark() throws Exception {
 		
-		Object o = TESTHelper.setUpObject("123",basePath);
+		Object o = TESTHelper.setUpObject("123",workAreaRootPath);
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
 		right.setImageRestriction(new ImageRestriction());
@@ -148,7 +147,7 @@ public class PublishImageConversionStrategyTest {
 	@Test
 	public void testFooterTextWithResize() throws Exception {
 		
-		Object o = TESTHelper.setUpObject("123",basePath);
+		Object o = TESTHelper.setUpObject("123",workAreaRootPath);
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
 		right.setImageRestriction(new ImageRestriction());
@@ -214,7 +213,7 @@ public class PublishImageConversionStrategyTest {
 	 */
 	@Test
 	public void testFooterTextWithoutResize() throws Exception {
-		Object o = TESTHelper.setUpObject("123",basePath);
+		Object o = TESTHelper.setUpObject("123",workAreaRootPath);
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
 		right.setImageRestriction(new ImageRestriction());
@@ -281,7 +280,7 @@ public class PublishImageConversionStrategyTest {
 			throw new RuntimeException("Error while parsing premis.xml");
 		}
 		
-		Object o = TESTHelper.setUpObject("123",basePath);
+		Object o = TESTHelper.setUpObject("123",workAreaRootPath);
 		
 		PublishImageConversionStrategy s = new PublishImageConversionStrategy();
 		s.setCLIConnector( new SimplifiedCommandLineConnector() );

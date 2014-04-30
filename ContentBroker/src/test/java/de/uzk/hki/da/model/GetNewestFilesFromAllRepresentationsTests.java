@@ -36,8 +36,7 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class GetNewestFilesFromAllRepresentationsTests {
 
-	/** The base path. */
-	String basePath = "src/test/resources/model/Object/GetNewestFiles/";
+	String workAreaRootPath = "src/test/resources/model/Object/GetNewestFiles/";
 	
 	/** The o. */
 	Object o;
@@ -47,7 +46,7 @@ public class GetNewestFilesFromAllRepresentationsTests {
 	 */
 	@Before
 	public void setUp() {
-		o = TESTHelper.setUpObject("1",basePath);
+		o = TESTHelper.setUpObject("1",workAreaRootPath);
 	}
 	
 	
@@ -58,7 +57,7 @@ public class GetNewestFilesFromAllRepresentationsTests {
 	 */
 	@Test
 	public void testIanusPkg(){
-		Node n = new Node(); n.setWorkAreaRootPath(basePath);
+		Node n = new Node(); n.setWorkAreaRootPath(workAreaRootPath);
 		Package pkg = new Package(); pkg.setId(2); 
 		pkg.setName("2");
 		o.setIdentifier("2");

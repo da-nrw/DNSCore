@@ -47,11 +47,10 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class PublishPDFConversionStrategyTests {
 	
-	/** The base path. */
-	String basePath="src/test/resources/convert/PublishPDFConversionStrategyTests/";
+	String workAreaRootPath="src/test/resources/convert/PublishPDFConversionStrategyTests/";
 	
 	/** The data path. */
-	String dataPath=basePath+"TEST/1/data/";
+	String dataPath=workAreaRootPath+"work/TEST/1/data/";
 	
 	/** The cs. */
 	PublishPDFConversionStrategy cs = new PublishPDFConversionStrategy();
@@ -81,7 +80,7 @@ public class PublishPDFConversionStrategyTests {
 	@Test
 	public void test() throws IOException {
 		
-		o = TESTHelper.setUpObject("1", basePath);
+		o = TESTHelper.setUpObject("1", workAreaRootPath);
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
 		right.setTextRestriction(new TextRestriction());

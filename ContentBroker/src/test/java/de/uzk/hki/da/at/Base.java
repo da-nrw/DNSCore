@@ -50,7 +50,6 @@ public class Base {
 	protected String workAreaRootPath;
 	protected String gridCacheAreaRootPath;
 	protected String userAreaRootPath;
-	protected String dipAreaRootPath;
 	protected GridFacade gridFacade;
 	protected RepositoryFacade repositoryFacade;
 	protected DistributedConversionAdapter distributedConversionAdapter;
@@ -69,7 +68,6 @@ public class Base {
 		workAreaRootPath = Utilities.slashize((String) properties.get("localNode.workAreaRootPath"));
 		gridCacheAreaRootPath = Utilities.slashize((String) properties.get("localNode.gridCacheAreRootPath"));
 		userAreaRootPath = Utilities.slashize((String) properties.get("localNode.userAreaRootPath"));
-		dipAreaRootPath = Utilities.slashize((String) properties.get("localNode.dipAreaRootPath"));
 		nodeName = (String) properties.get("localNode.name");
 		System.out.println(ingestAreaRootPath);
 	
@@ -226,29 +224,29 @@ public class Base {
 	}
 	
 	protected void cleanStorage() throws IOException{
-		FileUtils.deleteDirectory(new File(workAreaRootPath+"TEST"));
+		FileUtils.deleteDirectory(new File(workAreaRootPath+"work/TEST"));
 		FileUtils.deleteDirectory(new File(ingestAreaRootPath+"TEST"));
 		FileUtils.deleteDirectory(new File(gridCacheAreaRootPath+"TEST"));
-		FileUtils.deleteDirectory(new File(dipAreaRootPath+"institution/TEST"));
-		FileUtils.deleteDirectory(new File(dipAreaRootPath+"public/TEST"));
+		FileUtils.deleteDirectory(new File(workAreaRootPath+"pips/institution/TEST"));
+		FileUtils.deleteDirectory(new File(workAreaRootPath+"pips/public/TEST"));
 		FileUtils.deleteDirectory(new File(userAreaRootPath+"TEST/outgoing"));
 		
-		distributedConversionAdapter.remove("fork/TEST");
+		distributedConversionAdapter.remove("work/TEST");
 		distributedConversionAdapter.remove("aip/TEST");
-		distributedConversionAdapter.remove("pip/institution/TEST");
-		distributedConversionAdapter.remove("pip/public/TEST");
+		distributedConversionAdapter.remove("pips/institution/TEST");
+		distributedConversionAdapter.remove("pips/public/TEST");
 		
-		distributedConversionAdapter.create("fork/TEST");
+		distributedConversionAdapter.create("work/TEST");
 		distributedConversionAdapter.create("aip/TEST");
-		distributedConversionAdapter.create("pip/institution/TEST");
-		distributedConversionAdapter.create("pip/public/TEST");
+		distributedConversionAdapter.create("pips/institution/TEST");
+		distributedConversionAdapter.create("pips/public/TEST");
 		
 		new File(userAreaRootPath+"TEST/outgoing").mkdirs();
 		new File(gridCacheAreaRootPath+"TEST").mkdirs();
 		new File(ingestAreaRootPath+"TEST").mkdirs();
-		new File(workAreaRootPath+"TEST").mkdirs();
-		new File(dipAreaRootPath+"public/TEST").mkdirs();
-		new File(dipAreaRootPath+"institution/TEST").mkdirs();
+		new File(workAreaRootPath+"work/TEST").mkdirs();
+		new File(workAreaRootPath+"pips/public/TEST").mkdirs();
+		new File(workAreaRootPath+"pips/institution/TEST").mkdirs();
 	}
 	
 

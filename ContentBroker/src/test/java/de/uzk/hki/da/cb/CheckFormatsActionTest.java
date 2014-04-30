@@ -71,8 +71,7 @@ import de.uzk.hki.da.model.Package;
  */
 public class CheckFormatsActionTest {
 
-	/** The base dir path. */
-	private String baseDirPath = "src/test/resources/cb/CheckFormatsActionTests/";
+	private String workAreaRootPath = "src/test/resources/cb/CheckFormatsActionTests/";
 	
 	/** The action. */
 	CheckFormatsAction action = new CheckFormatsAction();
@@ -150,7 +149,7 @@ public class CheckFormatsActionTest {
 		localNode = new Node();
 		Contractor contractor = new Contractor();
 		contractor.setShort_name("TEST");
-		localNode.setWorkAreaRootPath(baseDirPath);
+		localNode.setWorkAreaRootPath(workAreaRootPath);
 
 		JhoveScanService jhove = mock(JhoveScanService.class);
 		when(jhove.extract((DAFile)anyObject(),anyInt())).thenReturn("abc");

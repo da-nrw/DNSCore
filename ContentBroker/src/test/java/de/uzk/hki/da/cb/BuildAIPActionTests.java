@@ -46,14 +46,13 @@ import de.uzk.hki.da.model.Package;
  */
 public class BuildAIPActionTests {
 
-	/** The fork path. */
-	static String forkPath = "src/test/resources/cb/BuildAIPActionTests/";
+	static String workAreaRootPath = "src/test/resources/cb/BuildAIPActionTests/";
 	
 	/** The backup package path. */
-	static String backupPackagePath = forkPath+"csn/95949_/";
+	static String backupPackagePath = workAreaRootPath+"work/csn/95949_/";
 	
 	/** The package fork path. */
-	static String packageForkPath = forkPath+"csn/95949/";
+	static String packageForkPath = workAreaRootPath+"work/csn/95949/";
 	
 	/** The job. */
 	static Job job = new Job("csn","vm3");
@@ -79,7 +78,7 @@ public class BuildAIPActionTests {
 	@BeforeClass
 	public static void setUpBeforeClass(){
 		node.setWorkingResource("vm3");
-		node.setWorkAreaRootPath(forkPath);
+		node.setWorkAreaRootPath(workAreaRootPath);
 		
 		
 		Package pkg = new Package();

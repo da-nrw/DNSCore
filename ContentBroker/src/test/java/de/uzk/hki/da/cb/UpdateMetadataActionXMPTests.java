@@ -55,18 +55,18 @@ public class UpdateMetadataActionXMPTests {
 
 	@After
 	public void tearDown() throws Exception {
-		new File(workAreaRootPath+"TEST/123/data/dip/public/hasha.xmp").delete();
-		new File(workAreaRootPath+"TEST/123/data/dip/institution/hasha.xmp").delete();
-		new File(workAreaRootPath+"TEST/123/data/dip/public/hashb.xmp").delete();
-		new File(workAreaRootPath+"TEST/123/data/dip/institution/hashb.xmp").delete();
-		new File(workAreaRootPath+"TEST/123/data/dip/public/XMP.rdf").delete();
-		new File(workAreaRootPath+"TEST/123/data/dip/institution/XMP.rdf").delete();
-		new File(workAreaRootPath+"TEST/123/data/dip/public/DC.xml").delete();
-		new File(workAreaRootPath+"TEST/123/data/dip/institution/DC.xml").delete();
-		new File(workAreaRootPath+"TEST/123/data/dip/public/a.xmp").delete();
-		new File(workAreaRootPath+"TEST/123/data/dip/institution/a.xmp").delete();
-		new File(workAreaRootPath+"TEST/123/data/dip/public/b.xmp").delete();
-		new File(workAreaRootPath+"TEST/123/data/dip/institution/b.xmp").delete();
+		new File(workAreaRootPath+"work/TEST/123/data/dip/public/hasha.xmp").delete();
+		new File(workAreaRootPath+"work/TEST/123/data/dip/institution/hasha.xmp").delete();
+		new File(workAreaRootPath+"work/TEST/123/data/dip/public/hashb.xmp").delete();
+		new File(workAreaRootPath+"work/TEST/123/data/dip/institution/hashb.xmp").delete();
+		new File(workAreaRootPath+"work/TEST/123/data/dip/public/XMP.rdf").delete();
+		new File(workAreaRootPath+"work/TEST/123/data/dip/institution/XMP.rdf").delete();
+		new File(workAreaRootPath+"work/TEST/123/data/dip/public/DC.xml").delete();
+		new File(workAreaRootPath+"work/TEST/123/data/dip/institution/DC.xml").delete();
+		new File(workAreaRootPath+"work/TEST/123/data/dip/public/a.xmp").delete();
+		new File(workAreaRootPath+"work/TEST/123/data/dip/institution/a.xmp").delete();
+		new File(workAreaRootPath+"work/TEST/123/data/dip/public/b.xmp").delete();
+		new File(workAreaRootPath+"work/TEST/123/data/dip/institution/b.xmp").delete();
 		FileUtils.deleteDirectory(new File("conf/xslt"));
 	}
 
@@ -161,13 +161,13 @@ public class UpdateMetadataActionXMPTests {
 		
 		action.implementation();
 		
-		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/public/hasha.xmp").exists());
-		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/institution/hasha.xmp").exists());
-		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/public/hashb.xmp").exists());
-		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/institution/hashb.xmp").exists());
-		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/public/XMP.rdf").exists());
-		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/institution/XMP.rdf").exists());
-		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/public/DC.xml").exists());
-		assertTrue(new File(workAreaRootPath+"TEST/123/data/dip/institution/DC.xml").exists());
+		assertTrue(new File(workAreaRootPath+"work/TEST/123/data/dip/public/hasha.xmp").exists());
+		assertTrue(new File(workAreaRootPath+"work/TEST/123/data/dip/institution/hasha.xmp").exists());
+		assertTrue(new File(workAreaRootPath+"work/TEST/123/data/dip/public/hashb.xmp").exists());
+		assertTrue(new File(workAreaRootPath+"work/TEST/123/data/dip/institution/hashb.xmp").exists());
+		assertTrue(new File(workAreaRootPath+"work/TEST/123/data/dip/public/XMP.rdf").exists());
+		assertTrue(new File(workAreaRootPath+"work/TEST/123/data/dip/institution/XMP.rdf").exists());
+		assertTrue(new File(workAreaRootPath+"work/TEST/123/data/dip/public/DC.xml").exists());
+		assertTrue(new File(workAreaRootPath+"work/TEST/123/data/dip/institution/DC.xml").exists());
 	}
 }

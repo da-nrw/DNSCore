@@ -55,7 +55,7 @@ public class DeleteObjectAction extends AbstractAction {
 		logger.info("Deleting object from WorkArea: "+object.getPath());
 		FileUtils.deleteDirectory(new File(object.getPath()));
 		
-		File fileInWorkArea = new File(object.getTransientNodeRef().getWorkAreaRootPath() + 
+		File fileInWorkArea = new File(object.getTransientNodeRef().getWorkAreaRootPath() + "work/" +
 				object.getContractor().getShort_name() + 
 				"/" + object.getLatestPackage().getContainerName());
 		if (fileInWorkArea.exists()) {

@@ -26,20 +26,20 @@ public interface DistributedConversionAdapter {
 
 	/**
 	 * 
-	 * @param relativePath from fork
+	 * @param relativePath from work
 	 */
 	public void create(String relativePath);
 	
 	/**
 	 * 
-	 * @param relativePath from fork
+	 * @param relativePath from work
 	 * @param physicalPath on local file system
 	 */
 	public void register(String relativePath,String physicalPath);
 	
 	/**
 	 * 
-	 * @param relativePath from fork 
+	 * @param relativePath from work 
 	 */
 	public void replicateToLocalNode(String relativePath);
 	

@@ -49,8 +49,7 @@ public class PublishXsltConversionStrategyTests {
 	private final static Logger logger = 
 			LoggerFactory.getLogger(PublishXsltConversionStrategyTests.class);
 	
-	/** The Constant basePath. */
-	private final static String basePath = 
+	private final static String workAreaRootPath = 
 			"src/test/resources/convert/XsltConversionStrategyTests/";
 	
 	/** The routine. */
@@ -68,7 +67,7 @@ public class PublishXsltConversionStrategyTests {
 	@Before
 	public void setUp() throws IOException {
 		
-		obj = TESTHelper.setUpObject("1",basePath);
+		obj = TESTHelper.setUpObject("1",workAreaRootPath);
 		obj.setIdentifier("1");
 //		when(pkg.getNameOfNewestRep()).thenReturn("target");
 		
@@ -85,8 +84,8 @@ public class PublishXsltConversionStrategyTests {
 	 */
 	@After
 	public void tearDown() throws IOException {
-		FileUtils.deleteDirectory(new File(basePath + "TEST/1/data/dip/public"));
-		FileUtils.deleteDirectory(new File(basePath + "TEST/1/data/dip/institution"));
+		FileUtils.deleteDirectory(new File(workAreaRootPath + "work/TEST/1/data/dip/public"));
+		FileUtils.deleteDirectory(new File(workAreaRootPath + "work/TEST/1/data/dip/institution"));
 	}
 	
 	/**
@@ -104,11 +103,11 @@ public class PublishXsltConversionStrategyTests {
 				"", routine, null);
 		
 		ci.setSource_file(new DAFile(obj.getLatestPackage(),"","ead_correct.xml"));
-		strategy.setStylesheet(basePath + "ead_to_dc.xsl");
+		strategy.setStylesheet(workAreaRootPath + "ead_to_dc.xsl");
 		strategy.convertFile(ci);
 		
-		File targetFile = new File(basePath + 
-				"TEST/1/data/dip/public/ead_correct_XSLT_ead_to_dc.xml");
+		File targetFile = new File(workAreaRootPath + 
+				"work/TEST/1/data/dip/public/ead_correct_XSLT_ead_to_dc.xml");
 		assertTrue(targetFile.exists());
 		assertTrue(FileUtils.sizeOf(targetFile) > 0);
 		
@@ -130,7 +129,7 @@ public class PublishXsltConversionStrategyTests {
 					0, "", routine, null);
 			
 			ci.setSource_file(new DAFile(obj.getLatestPackage(),"","ead_not-well-formed.xml"));
-			strategy.setStylesheet(basePath + "ead_to_dc.xsl");
+			strategy.setStylesheet(workAreaRootPath + "ead_to_dc.xsl");
 			strategy.convertFile(ci);
 			
 			// should not be reached since exception should be thrown in convertFile
@@ -157,11 +156,11 @@ public class PublishXsltConversionStrategyTests {
 				"", routine, null);
 		
 		ci.setSource_file(new DAFile(obj.getLatestPackage(),"","ead_not-valid.xml"));
-		strategy.setStylesheet(basePath + "ead_to_dc.xsl");
+		strategy.setStylesheet(workAreaRootPath + "ead_to_dc.xsl");
 		strategy.convertFile(ci);
 		
-		File targetFile = new File(basePath + 
-				"TEST/1/data/dip/public/ead_not-valid_XSLT_ead_to_dc.xml");
+		File targetFile = new File(workAreaRootPath + 
+				"work/TEST/1/data/dip/public/ead_not-valid_XSLT_ead_to_dc.xml");
 		assertTrue(targetFile.exists());
 		assertTrue(FileUtils.sizeOf(targetFile) > 0);
 		
@@ -184,7 +183,7 @@ public class PublishXsltConversionStrategyTests {
 					"", routine, null);
 			
 			ci.setSource_file(new DAFile(obj.getLatestPackage(),"","ead_charset-errors.xml"));
-			strategy.setStylesheet(basePath + "/ead_to_dc.xsl");
+			strategy.setStylesheet(workAreaRootPath + "/ead_to_dc.xsl");
 			strategy.convertFile(ci);
 			
 			// should not be reached since exception should be thrown in convertFile

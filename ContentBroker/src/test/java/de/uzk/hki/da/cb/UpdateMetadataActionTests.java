@@ -56,8 +56,7 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class UpdateMetadataActionTests {
 	
-	/** The Constant basePath. */
-	private static final String basePath = "src/test/resources/cb/UpdateMetadataActionTests/";
+	private static final String workAreaPath = "src/test/resources/cb/UpdateMetadataActionTests/";
 	
 	/** The Constant METS_NS. */
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
@@ -80,7 +79,7 @@ public class UpdateMetadataActionTests {
 		action = new UpdateMetadataAction();		
 		node = new Node();
 		node.setWorkingResource("vm3");
-		node.setWorkAreaRootPath(basePath);
+		node.setWorkAreaRootPath(workAreaPath);
 		action.setNode(node);	
 		
 		FileUtils.copyDirectoryToDirectory(new File("src/main/xslt"), new File("conf/"));
@@ -88,12 +87,12 @@ public class UpdateMetadataActionTests {
 	
 	@After
 	public void tearDown () throws IOException {
-		new File(basePath + "TEST/23/data/dip/institution/DC.xml").delete();
-		new File(basePath + "TEST/23/data/dip/institution/METS.xml").delete();
-		new File(basePath + "TEST/23/data/dip/public/DC.xml").delete();
-		new File(basePath + "TEST/23/data/dip/public/METS.xml").delete();
-		new File(basePath + "TEST/42/data/DC_.xml").delete();
-		FileUtils.deleteDirectory(new File(basePath + "TEST/42/data/dip"));
+		new File(workAreaPath + "work/TEST/23/data/dip/institution/DC.xml").delete();
+		new File(workAreaPath + "work/TEST/23/data/dip/institution/METS.xml").delete();
+		new File(workAreaPath + "work/TEST/23/data/dip/public/DC.xml").delete();
+		new File(workAreaPath + "work/TEST/23/data/dip/public/METS.xml").delete();
+		new File(workAreaPath + "work/TEST/42/data/DC_.xml").delete();
+		FileUtils.deleteDirectory(new File(workAreaPath + "TEST/42/data/dip"));
 		FileUtils.deleteDirectory(new File("conf/xslt"));
 	}
 	
@@ -109,7 +108,7 @@ public class UpdateMetadataActionTests {
 	@Test
 	public void testWritePackageTypeToDC() throws FileNotFoundException, JDOMException, IOException {
 		
-		Object o = TESTHelper.setUpObject("42",basePath);
+		Object o = TESTHelper.setUpObject("42",workAreaPath);
 		
 		o.getLatestPackage().getFiles().add(new DAFile(o.getLatestPackage(), "dip/public", "DC.xml"));
 		o.getLatestPackage().getFiles().add(new DAFile(o.getLatestPackage(), "dip/institution", "DC.xml"));
@@ -161,7 +160,7 @@ public class UpdateMetadataActionTests {
 	@Test
 	public void testUpdatePathsInMetadata() throws FileNotFoundException, JDOMException, IOException {
 		
-		Object obj = TESTHelper.setUpObject("23",basePath);
+		Object obj = TESTHelper.setUpObject("23",workAreaPath);
 
 		DAFile t1 = new DAFile(obj.getLatestPackage(), "dip/public", "Ye_old_duckroll.jpg");
 		DAFile t2 = new DAFile(obj.getLatestPackage(), "dip/institution", "Ye_old_duckroll.jpg");
@@ -227,7 +226,7 @@ public class UpdateMetadataActionTests {
 		action.implementation();
 		
 		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(new FileReader(new File(basePath + "TEST/23/data/dip/public/METS.xml")));
+		Document doc = builder.build(new FileReader(new File(workAreaPath + "work/TEST/23/data/dip/public/METS.xml")));
 
 		String url = doc.getRootElement()
 				.getChild("fileSec", METS_NS)
@@ -238,7 +237,7 @@ public class UpdateMetadataActionTests {
 		
 		assertEquals("Ye_old_duckroll.jpg", url);
 		
-		doc = builder.build(new FileReader(new File(basePath + "TEST/23/data/dip/institution/METS.xml")));
+		doc = builder.build(new FileReader(new File(workAreaPath + "work/TEST/23/data/dip/institution/METS.xml")));
 
 		url = doc.getRootElement()
 				.getChild("fileSec", METS_NS)

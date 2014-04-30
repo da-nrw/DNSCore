@@ -46,19 +46,16 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class ConverterServiceTests {
 
-	/** The base path. */
-	private final String basePath = "src/test/resources/convert/ConverterServiceTests/";
+	private final String workAreaRootPath = "src/test/resources/convert/ConverterServiceTests/";
 	
 	/** The data path. */
-	private final String dataPath=basePath+"TEST/123/data/";
+	private final String dataPath=workAreaRootPath+"work/TEST/123/data/";
 	
 	/** The conversion instructions. */
 	private final List<ConversionInstruction> conversionInstructions = new ArrayList<ConversionInstruction>();
 	
 	/** The o. */
 	private Object  o   = null;
-	
-	
 	
 	
 	/**
@@ -68,7 +65,7 @@ public class ConverterServiceTests {
 	public void setUp(){
 		final Node vm3 = new Node("vm3","01-vm3");
 		
-		o = TESTHelper.setUpObject("123",basePath);
+		o = TESTHelper.setUpObject("123",workAreaRootPath);
 		
 		@SuppressWarnings("serial")
 		Set<Node> nodes = new HashSet<Node>(){{add(vm3);}};

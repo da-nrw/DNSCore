@@ -60,7 +60,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 			throw new RuntimeException("error while trying to get existing packages from lza area",e);
 		}
 		
-		distributedConversionAdapter.register("fork/"+object.getContractor().getShort_name()+"/"+object.getIdentifier(),
+		distributedConversionAdapter.register("work/"+object.getContractor().getShort_name()+"/"+object.getIdentifier(),
 				object.getPath());
 		return true;
 	}

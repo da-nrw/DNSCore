@@ -22,7 +22,7 @@ import de.uzk.hki.da.utils.TESTHelper;
 
 public class PublishImageMultipageTIFFTests {
 
-	String basePath="src/test/resources/convert/PublishImageMultipageTiffTests/";
+	String workAreaRootPathPath="src/test/resources/convert/PublishImageMultipageTiffTests/";
 	
 	@Before
 	public void setUp() throws Exception {
@@ -36,7 +36,7 @@ public class PublishImageMultipageTIFFTests {
 	@Test
 	public void testMultipage() throws FileNotFoundException {
 		PublishImageConversionStrategy cs = new PublishImageConversionStrategy();
-		Object o = TESTHelper.setUpObject("123",basePath);
+		Object o = TESTHelper.setUpObject("123",workAreaRootPathPath);
 		
 		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );		
 		when(cli.execute((String[]) anyObject())).thenReturn(true);

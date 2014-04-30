@@ -36,7 +36,7 @@ ichmod -M own rods /da-nrw/home/$1
 ichmod -M own contentbroker /da-nrw/home/$1
 ichmod -M inherit /da-nrw/home/$1
 imkdir /da-nrw/home/$1/outgoing
-imkdir /da-nrw/fork/$1
+imkdir /da-nrw/work/$1
 echo "home dirs and for created"
 imkdir /da-nrw/aip/$1
 ichmod -M own rods /da-nrw/aip/$1

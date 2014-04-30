@@ -39,8 +39,8 @@ public class FetchPIPsAction extends AbstractAction {
 		renamePIPs(dipSourcePartialPath, dipTargetPartialPath);
 		
 		// cleanup
-		distributedConversionAdapter.remove("pip/public/"+dipSourcePartialPath);
-		distributedConversionAdapter.remove("pip/institution/"+dipSourcePartialPath);
+		distributedConversionAdapter.remove("pips/public/"+dipSourcePartialPath);
+		distributedConversionAdapter.remove("pips/institution/"+dipSourcePartialPath);
 
 		return true;
 	}
@@ -52,12 +52,12 @@ public class FetchPIPsAction extends AbstractAction {
 	 * @throws IOException
 	 */
 	private void deletePreviousPIPs(String dipTargetPartialPath) throws IOException{
-		if (new File(localNode.getDipAreaRootPath()+"public/"+dipTargetPartialPath).exists());
+		if (new File(localNode.getWorkAreaRootPath()+"pips/public/"+dipTargetPartialPath).exists());
 			FileUtils.deleteDirectory(new File(
-					localNode.getDipAreaRootPath()+"public/"+dipTargetPartialPath));
-		if (new File(localNode.getDipAreaRootPath()+"institution/"+dipTargetPartialPath).exists())
+					localNode.getWorkAreaRootPath()+"pips/public/"+dipTargetPartialPath));
+		if (new File(localNode.getWorkAreaRootPath()+"pips/institution/"+dipTargetPartialPath).exists())
 			FileUtils.deleteDirectory(new File(
-					localNode.getDipAreaRootPath()+"institution/"+dipTargetPartialPath));
+					localNode.getWorkAreaRootPath()+"pips/institution/"+dipTargetPartialPath));
 	}
 
 
@@ -69,14 +69,14 @@ public class FetchPIPsAction extends AbstractAction {
 	 */
 	private void renamePIPs(String dipSourcePartialPath,
 			String dipTargetPartialPath) throws IOException {
-		if (new File(localNode.getDipAreaRootPath()+"public/"+dipSourcePartialPath).exists())
+		if (new File(localNode.getWorkAreaRootPath()+"pips/public/"+dipSourcePartialPath).exists())
 			FileUtils.moveDirectory(
-					new File(localNode.getDipAreaRootPath()+"public/"+dipSourcePartialPath), 
-					new File(localNode.getDipAreaRootPath()+"public/"+dipTargetPartialPath));
-		if (new File(localNode.getDipAreaRootPath()+"institution/"+dipSourcePartialPath).exists())
+					new File(localNode.getWorkAreaRootPath()+"pips/public/"+dipSourcePartialPath), 
+					new File(localNode.getWorkAreaRootPath()+"pips/public/"+dipTargetPartialPath));
+		if (new File(localNode.getWorkAreaRootPath()+"pips/institution/"+dipSourcePartialPath).exists())
 			FileUtils.moveDirectory(
-					new File(localNode.getDipAreaRootPath()+"institution/"+dipSourcePartialPath), 
-					new File(localNode.getDipAreaRootPath()+"institution/"+dipTargetPartialPath));
+					new File(localNode.getWorkAreaRootPath()+"pips/institution/"+dipSourcePartialPath), 
+					new File(localNode.getWorkAreaRootPath()+"pips/institution/"+dipTargetPartialPath));
 	}
 
 
@@ -88,9 +88,9 @@ public class FetchPIPsAction extends AbstractAction {
 	private void replicateFromSourceResourceToWorkingResource(
 			String dipSourcePartialPath) {
 		distributedConversionAdapter.replicateToLocalNode(
-				"pip/public/"+dipSourcePartialPath);
+				"pips/public/"+dipSourcePartialPath);
 		distributedConversionAdapter.replicateToLocalNode(
-				"pip/institution/"+dipSourcePartialPath);
+				"pips/institution/"+dipSourcePartialPath);
 	}
 
 	

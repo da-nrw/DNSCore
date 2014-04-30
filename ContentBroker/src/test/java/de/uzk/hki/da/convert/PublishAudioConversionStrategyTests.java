@@ -46,7 +46,7 @@ import de.uzk.hki.da.utils.TESTHelper;
 public class PublishAudioConversionStrategyTests {
 
 	/** The base path. */
-	private String basePath = "src/test/resources/convert/PublishAudioConversionStrategyTests/";
+	private String workAreaRootPathPath = "src/test/resources/convert/PublishAudioConversionStrategyTests/";
 	
 	
 	
@@ -61,16 +61,16 @@ public class PublishAudioConversionStrategyTests {
 		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
 		String cmdPUBLIC[] = new String[]{
 				"sox",
-				new File(basePath+"TEST/123/data/a/audiofile.wav").getAbsolutePath(),
-				basePath+"TEST/123/data/dip/public/target/audiofile.mp3",
+				new File(workAreaRootPathPath+"work/TEST/123/data/a/audiofile.wav").getAbsolutePath(),
+				workAreaRootPathPath+"work/TEST/123/data/dip/public/target/audiofile.mp3",
 				"trim","0","10"
 		};
 		when(cli.execute(cmdPUBLIC)).thenReturn(true);
 		
 		String cmdINSTITUTION[] = new String[]{
 				"sox",
-				new File(basePath+"TEST/123/data/a/audiofile.wav").getAbsolutePath(),
-				basePath+"TEST/123/data/dip/institution/target/audiofile.mp3"
+				new File(workAreaRootPathPath+"work/TEST/123/data/a/audiofile.wav").getAbsolutePath(),
+				workAreaRootPathPath+"work/TEST/123/data/dip/institution/target/audiofile.mp3"
 		};
 		when(cli.execute(cmdINSTITUTION)).thenReturn(true);
 		
@@ -78,7 +78,7 @@ public class PublishAudioConversionStrategyTests {
 		strategy.setCLIConnector( cli );
 		
 		
-		Object o = TESTHelper.setUpObject("123",basePath);
+		Object o = TESTHelper.setUpObject("123",workAreaRootPathPath);
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
 		right.setAudioRestriction(new AudioRestriction());

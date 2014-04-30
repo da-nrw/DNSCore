@@ -40,8 +40,7 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class TiffConversionStrategyTests {
 	
-	/** The base path. */
-	String basePath="src/test/resources/convert/TiffConversionStrategyTests/";
+	String workAreaRootPath="src/test/resources/convert/TiffConversionStrategyTests/";
 	
 	/** The cs. */
 	TiffConversionStrategy cs = new TiffConversionStrategy();
@@ -56,7 +55,7 @@ public class TiffConversionStrategyTests {
 	@Before
 	public void setUp(){
 		
-		o = TESTHelper.setUpObject("1", basePath);
+		o = TESTHelper.setUpObject("1", workAreaRootPath);
 		cs.setObject(o);
 		o.reattach();
 	}
@@ -74,7 +73,7 @@ public class TiffConversionStrategyTests {
 		
 		cs.convertFile(ci);
 		
-		assertTrue(new File(basePath + "TEST/1/data/rep+b/subfolder/CCITT_1.TIF").exists());
+		assertTrue(new File(workAreaRootPath + "work/TEST/1/data/rep+b/subfolder/CCITT_1.TIF").exists());
 	}
 	
 	/**
@@ -90,7 +89,7 @@ public class TiffConversionStrategyTests {
 		
 		cs.convertFile(ci);
 		
-		assertTrue(new File(basePath + "TEST/1/data/rep+b/CCITT_1.TIF").exists());
+		assertTrue(new File(workAreaRootPath + "work/TEST/1/data/rep+b/CCITT_1.TIF").exists());
 	}
 	
 	
@@ -107,7 +106,7 @@ public class TiffConversionStrategyTests {
 		
 		cs.convertFile(ci);
 		
-		assertFalse(new File(basePath + "TEST/1/data/rep+b/CCITT_1_UNCOMPRESSED.TIF").exists());
+		assertFalse(new File(workAreaRootPath + "work/TEST/1/data/rep+b/CCITT_1_UNCOMPRESSED.TIF").exists());
 	}
 	
 	/**
@@ -117,9 +116,9 @@ public class TiffConversionStrategyTests {
 	 */
 	@After
 	public void cleanup() throws IOException {
-		new File(basePath + "TEST/1/data/rep+b/CCITT_1.TIF").delete();
-		new File(basePath + "TEST/1/data/rep+b/CCITT_1_UNCOMPRESSED.TIF").delete();
-		org.apache.commons.io.FileUtils.deleteDirectory(new File(basePath + "TEST/1/data/rep+b/subfolder"));
+		new File(workAreaRootPath + "work/TEST/1/data/rep+b/CCITT_1.TIF").delete();
+		new File(workAreaRootPath + "work/TEST/1/data/rep+b/CCITT_1_UNCOMPRESSED.TIF").delete();
+		org.apache.commons.io.FileUtils.deleteDirectory(new File(workAreaRootPath + "work/TEST/1/data/rep+b/subfolder"));
 	}
 	
 

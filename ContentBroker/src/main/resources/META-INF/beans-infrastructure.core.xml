@@ -14,10 +14,8 @@
           
           
     <bean id="fakeRepositoryFacade" class="de.uzk.hki.da.repository.FakeRepositoryFacade">
-        <property name="dipAreaRootPath" value="${localNode.dipAreaRootPath}" />
+        <property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
 	</bean>   
-     
-          
           
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
 		<property name="location">
@@ -27,7 +25,6 @@
     <bean id="dipNode" class="de.uzk.hki.da.model.Node">
 		<property name="name" value="${cb.presServer}" />
 	</bean>
-		
 		
 	<bean id="fakeDistributedConversionAdapter" class="de.uzk.hki.da.grid.FakeDistributedConversionAdapter"/>
 	<bean id="irodsDistributedConversionAdapter" class="de.uzk.hki.da.grid.IrodsDistributedConversionAdapter">
@@ -51,7 +48,6 @@
 	<bean id="localNode" class="de.uzk.hki.da.model.Node">
 		<property name="name" value="${localNode.name}"/>
 		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}"/>
-        <property name="dipAreaRootPath" value="${localNode.dipAreaRootPath}" />
         <property name="userAreaRootPath" value="${localNode.userAreaRootPath}" />
         <property name="ingestAreaRootPath" value="${localNode.ingestAreaRootPath}" />
         <property name="gridCacheAreaRootPath" value="${localNode.gridCacheAreaRootPath}" />

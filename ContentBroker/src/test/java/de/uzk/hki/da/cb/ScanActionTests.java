@@ -55,8 +55,7 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class ScanActionTests {
 
-	/** The Constant basePath. */
-	private static final String basePath = "src/test/resources/cb/ScanActionTests/";
+	private static final String workAreaRootPath = "src/test/resources/cb/ScanActionTests/";
 	
 	/** The Constant action. */
 	private static final ScanAction action = new ScanAction();
@@ -74,7 +73,7 @@ public class ScanActionTests {
 	@SuppressWarnings("unchecked")
 	public static void setUpBeforeClass() throws FileNotFoundException{
 		
-		Object obj = TESTHelper.setUpObject("1234",basePath);
+		Object obj = TESTHelper.setUpObject("1234",workAreaRootPath);
 		
 		job.setObject(obj);
 		job.setRep_name("2011_11_01+00_01+");
@@ -91,7 +90,7 @@ public class ScanActionTests {
 
 		
 		Node localNode = new Node("vm2","01-vm2");
-		localNode.setWorkAreaRootPath(basePath);
+		localNode.setWorkAreaRootPath(workAreaRootPath);
 		action.setLocalNode(localNode);
 	
 		

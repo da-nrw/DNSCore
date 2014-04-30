@@ -154,7 +154,6 @@ public class ITBase {
 		
 		if (node==null) { fail("node is null"); }
 		node.setWorkAreaRootPath(workAreaRootPath);
-		node.setDipAreaRootPath(dipAreaRootPath);
 		node.setUserAreaRootPath("/data/danrw/www/default/webdav/");
 		node.setIngestAreaRootPath("/data/danrw/ingest/");
 		node.setGridCacheAreaRootPath("/data/danrw/storage/fs/");

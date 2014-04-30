@@ -46,9 +46,6 @@ public class Node{
 	/** The repl_destinations. */
 	@Transient private String repl_destinations;
 	
-	/** The dip area root path. */
-	@Transient private String dipAreaRootPath;
-	
 	/** The work area root path. */
 	@Transient private String workAreaRootPath;
 	
@@ -265,25 +262,6 @@ public class Node{
 	 */
 	public void setWorkAreaRootPath(String workAreaRootPath) {
 		this.workAreaRootPath = Utilities.slashize(workAreaRootPath);
-	}
-
-	/**
-	 * Gets the dip area root path.
-	 *
-	 * @return the dip area root path
-	 */
-	public String getDipAreaRootPath() {
-		return dipAreaRootPath;
-	}
-
-
-	/**
-	 * Sets the dip area root path.
-	 *
-	 * @param dipAreaRootPath the new dip area root path
-	 */
-	public void setDipAreaRootPath(String dipAreaRootPath) {
-		this.dipAreaRootPath = Utilities.slashize(dipAreaRootPath);
 	}
 
 

@@ -63,13 +63,13 @@ public class ArchiveReplicationAction extends AbstractAction {
 		if (!sp.isPolicyAchievable()) throw new RuntimeException ("POLICY is not achievable! More forbidden nodens then required minimal copies!");
 		
 		try {
-			if (gridRoot.put(new File(localNode.getWorkAreaRootPath() + object.getContractor().getShort_name()+"/" +filename), 
+			if (gridRoot.put(new File(localNode.getWorkAreaRootPath() + "work/" + object.getContractor().getShort_name()+"/" +filename), 
 					target, sp )) {
 				
-					new File(localNode.getWorkAreaRootPath() + object.getContractor().getShort_name() + "/"+filename).delete();
+					new File(localNode.getWorkAreaRootPath() + "work/"+ object.getContractor().getShort_name() + "/"+filename).delete();
 			} 
 		} catch (IOException e) {
-			throw new RuntimeException("Error while putting file into grid or fork deletion! ",e);
+			throw new RuntimeException("Error while putting file into grid or work deletion! ",e);
 		}
 				
 		return true;

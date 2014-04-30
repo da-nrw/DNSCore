@@ -48,7 +48,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 	@After
 	public void tearDown() throws IOException{
 		
-		FileUtils.deleteDirectory(new File(workAreaRootPath+"TEST/"+object.getIdentifier()));
+		FileUtils.deleteDirectory(new File(workAreaRootPath+"work/TEST/"+object.getIdentifier()));
 		
 		new File(ingestAreaRootPath+"TEST/AT_CON1.tar").delete();
 		new File(ingestAreaRootPath+"TEST/AT_CON2.tgz").delete();

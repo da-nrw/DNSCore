@@ -26,10 +26,10 @@ function prepareTestEnvironment(){
 	cp $1/conf/hibernateCentralDB.cfg.xml conf/
 }
 function createIrodsDirs(){
-	imkdir /da-nrw/fork/TEST              2>/dev/null
+	imkdir /da-nrw/work/TEST              2>/dev/null
 	imkdir /da-nrw/aip/TEST               2>/dev/null
-	imkdir /da-nrw/pip/institution/TEST   2>/dev/null
-	imkdir /da-nrw/pip/public/TEST        2>/dev/null
+	imkdir /da-nrw/pips/institution/TEST   2>/dev/null
+	imkdir /da-nrw/pips/public/TEST        2>/dev/null
 }
 
 

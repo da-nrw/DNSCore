@@ -50,13 +50,13 @@ import de.uzk.hki.da.model.Object;
 public class UnpackActionBagitAndDeltaTests {
 
 	/** The data path. */
-	String dataPath = "src/test/resources/cb/UnpackActionTests/";
+	String workAreaRootPath = "src/test/resources/cb/UnpackActionTests/";
 	
 	/** The base path. */
-	String basePath = dataPath + "ingest/csn/";
+	String ingestPath = workAreaRootPath + "ingest/csn/";
 	
 	/** The work path. */
-	String workPath = dataPath + "work/csn/";
+	String csnPath = workAreaRootPath + "work/csn/";
 
 	/** The grid. */
 	GridFacade grid = mock(IrodsGridFacade.class);
@@ -65,7 +65,7 @@ public class UnpackActionBagitAndDeltaTests {
 	CentralDatabaseDAO dao = mock(CentralDatabaseDAO.class);
 	
 	/** The bal. */
-	IngestGate bal = new IngestGate();
+	IngestGate gate = new IngestGate();
 	
 	/** The node. */
 	Node node = new Node();
@@ -97,12 +97,12 @@ public class UnpackActionBagitAndDeltaTests {
 		c.setShort_name("csn");
 
 		node.setWorkingResource("vm3");
-		node.setWorkAreaRootPath(dataPath + "work/");
-		node.setIngestAreaRootPath(dataPath + "ingest/");
+		node.setWorkAreaRootPath(workAreaRootPath);
+		node.setIngestAreaRootPath(workAreaRootPath + "ingest/");
 
-		bal.setWorkAreaRootPath(dataPath + "work/");
-		bal.setFreeDiskSpacePercent(5);
-		bal.setFileSizeFactor(3);
+		gate.setWorkAreaRootPath(workAreaRootPath);
+		gate.setFreeDiskSpacePercent(5);
+		gate.setFileSizeFactor(3);
 
 		pkg.setName("1");	
 
@@ -122,10 +122,10 @@ public class UnpackActionBagitAndDeltaTests {
 		
 		action.setObject(o);
 		action.setJob(job);
-		action.setIngestGate(bal);
+		action.setIngestGate(gate);
 		action.setActionCommunicatorService(acs);
 
-		FileUtils.copyFile(new File(basePath+"/bagitPackage.tgz_"),new File(basePath+"/bagitPackage.tgz"));
+		FileUtils.copyFile(new File(ingestPath+"/bagitPackage.tgz_"),new File(ingestPath+"/bagitPackage.tgz"));
 	}
 
 	/**
@@ -138,9 +138,9 @@ public class UnpackActionBagitAndDeltaTests {
 		new File("conf/premis.xsd").delete();
 		new File("conf/xlink.xsd").delete();
 		
-		FileUtils.deleteDirectory(new File(workPath+"identifier"));
-		if (new File(basePath+"/bagitPackage.tgz").exists()) new File(basePath+"/bagitPackage.tgz").delete();
-		if (new File(workPath+"/bagitPackage.tgz").exists()) new File(workPath+"/bagitPackage.tgz").delete();
+		FileUtils.deleteDirectory(new File(csnPath+"identifier"));
+		if (new File(ingestPath+"/bagitPackage.tgz").exists()) new File(ingestPath+"/bagitPackage.tgz").delete();
+		if (new File(csnPath+"/bagitPackage.tgz").exists()) new File(csnPath+"/bagitPackage.tgz").delete();
 	}
 
 	/**
@@ -154,7 +154,7 @@ public class UnpackActionBagitAndDeltaTests {
 		action.implementation();
 
 		String repName = job.getRep_name();
-		String packagePath = workPath + "identifier/";
+		String packagePath = csnPath + "identifier/";
 
 		assertTrue(new File(packagePath+"data").exists());
 		assertTrue(new File(packagePath+"bagit.txt").exists());
@@ -173,7 +173,7 @@ public class UnpackActionBagitAndDeltaTests {
 		job.getObject().getLatestPackage().setId(10020);
 		job.getObject().getLatestPackage().setContainerName("bagitPackage.tgz");
 		action.implementation();
-		assertFalse(new File(workPath + "bagitPackage.tgz").exists());
+		assertFalse(new File(csnPath + "bagitPackage.tgz").exists());
 	} 
 
 	/**

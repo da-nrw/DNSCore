@@ -186,7 +186,7 @@ public class UnpackAction extends AbstractAction {
 	private String copySIPToWorkArea(String ingestFilePath) {
 		
 		File ingestFile = new File(ingestFilePath);
-		File destFile = new File(localNode.getWorkAreaRootPath() + object.getContractor().getShort_name() + "/" + 
+		File destFile = new File(localNode.getWorkAreaRootPath() + "work/" + object.getContractor().getShort_name() + "/" + 
 				  FilenameUtils.getName(ingestFilePath));
 		
 		if (!ingestFile.exists())

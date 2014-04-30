@@ -49,8 +49,8 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 		
 		String dipName = object.getContractor().getShort_name() + "/" + object.getIdentifier()+"_"+object.getLatestPackage().getId();
-		publicDir = new File(localNode.getDipAreaRootPath()+"public/"+dipName);
-		instDir = new File(localNode.getDipAreaRootPath()+"institution/"+dipName);
+		publicDir = new File(localNode.getWorkAreaRootPath()+"pips/public/"+dipName);
+		instDir = new File(localNode.getWorkAreaRootPath()+"pips/institution/"+dipName);
 		
 		logger.trace("Moving the dip content for presentation purposes out of the archival package.");
 		copyPIPSforReplication();
@@ -102,18 +102,18 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	private void registerPIPSforReplication(String dipName) {
 		
 		if (!publicDir.exists())
-			distributedConversionAdapter.create("pip/public/"+dipName);
+			distributedConversionAdapter.create("pips/public/"+dipName);
 		else
 			distributedConversionAdapter.register(
-				"pip/public/"+dipName, 
+				"pips/public/"+dipName, 
 				publicDir.getAbsolutePath()
 				);
 		
 		if (!instDir.exists())
-			distributedConversionAdapter.create("pip/institution/"+dipName);
+			distributedConversionAdapter.create("pips/institution/"+dipName);
 		else
 			distributedConversionAdapter.register(
-				"pip/institution/"+dipName, 
+				"pips/institution/"+dipName, 
 				instDir.getAbsolutePath()
 				);
 	}
@@ -125,8 +125,8 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	 * get into the archive we extract the derivate before we build a tar file around the xIP.
 	 * 
 	 * Moves 
-	 * <li>from fork/[csn]/[oid]/data/dip/public -> dip/public/[csn]/[oid]
-	 * <li>from fork/[csn]/[oid]/data/dip/institution -> dip/institution/[csn]/[oid]
+	 * <li>from work/[csn]/[oid]/data/dip/public -> dip/public/[csn]/[oid]
+	 * <li>from work/[csn]/[oid]/data/dip/institution -> dip/institution/[csn]/[oid]
 	 * 
 	 * @param dipName has the form urn_pkgid
 	 * @throws IOException 

@@ -40,14 +40,14 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class RetrievePackagesHelperTest {
 
-	private String basePath = "src/test/resources/service/RetrievePackagesHelperTest/";
+	private String workAreaRootPathPath = "src/test/resources/service/RetrievePackagesHelperTest/";
 	private Object object;	
 	
 	@Before
 	public void setUp(){
-		new File(basePath+"work/TEST/id/data").mkdir();
+		new File(workAreaRootPathPath+"work/TEST/id/data").mkdir();
 		
-		object = TESTHelper.setUpObject("id", basePath+"work/");
+		object = TESTHelper.setUpObject("id", workAreaRootPathPath);
 		
 		Package p2 = new Package(); p2.setName("2");
 		Package p3 = new Package(); p3.setName("3");
@@ -57,8 +57,8 @@ public class RetrievePackagesHelperTest {
 	
 	@After 
 	public void tearDown() throws IOException{
-		FileUtils.deleteDirectory(new File(basePath+"work/TEST/id/loadedAIPs"));
-		FileUtils.deleteDirectory(new File(basePath+"work/TEST/id/data"));
+		FileUtils.deleteDirectory(new File(workAreaRootPathPath+"work/TEST/id/loadedAIPs"));
+		FileUtils.deleteDirectory(new File(workAreaRootPathPath+"work/TEST/id/data"));
 	}
 	
 	
@@ -66,11 +66,11 @@ public class RetrievePackagesHelperTest {
 	public void test() throws IOException{
 		
 		FakeGridFacade grid = new FakeGridFacade();
-		grid.setGridCacheAreaRootPath(basePath+"grid/");
+		grid.setGridCacheAreaRootPath(workAreaRootPathPath+"grid/");
 		
 		new RetrievePackagesHelper(grid).loadPackages(object, true);
 		
-		String outputPath = basePath + "work/TEST/id/";
+		String outputPath = workAreaRootPathPath + "work/TEST/id/";
 		
 		assertTrue(new File(outputPath + "data/a/pic1.txt").exists());
 		assertTrue(new File(outputPath + "data/b/pic2.txt").exists());

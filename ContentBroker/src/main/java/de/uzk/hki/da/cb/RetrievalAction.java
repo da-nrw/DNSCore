@@ -111,7 +111,7 @@ public class RetrievalAction extends AbstractAction {
 			throw new UserException(UserExceptionId.RETRIEVAL_ERROR, "Couldn't delete folder " + packageFolder.getAbsolutePath(), e);
 		}
 		
-		distributedConversionAdapter.remove("fork/" + relativePackagePath.replaceAll("/$", "")); // replace all -> iRODS doesn't like trailing slashes
+		distributedConversionAdapter.remove("work/" + relativePackagePath.replaceAll("/$", "")); // replace all -> iRODS doesn't like trailing slashes
 		
 		emailReport(object.getContractor().getEmail_contact(),object.getIdentifier(),object.getContractor().getShort_name());
 		return true;

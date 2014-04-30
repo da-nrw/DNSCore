@@ -46,7 +46,7 @@ import de.uzk.hki.da.model.Package;
 public class PrepareSendToPresenterActionTests {
 
 	/** The base path. */
-	private String basePath = "src/test/resources/cb/PrepareSendToPresenterActionTests/";
+	private String workingAreaRootPath = "src/test/resources/cb/PrepareSendToPresenterActionTests/";
 	
 	/** The action. */
 	PrepareSendToPresenterAction action = new PrepareSendToPresenterAction();
@@ -64,10 +64,10 @@ public class PrepareSendToPresenterActionTests {
 	Node node;
 	
 	/** The public file. */
-	private File publicFile = new File(basePath+"dip/public/TEST/identifier_1_1/a.txt");
+	private File publicFile = new File(workingAreaRootPath+"pips/public/TEST/identifier_1_1/a.txt");
 	
 	/** The institution file. */
-	private File institutionFile = new File(basePath+"dip/institution/TEST/identifier_1_1/a.txt");
+	private File institutionFile = new File(workingAreaRootPath+"pips/institution/TEST/identifier_1_1/a.txt");
 
 	/** The contractor. */
 	private Contractor contractor;
@@ -83,8 +83,7 @@ public class PrepareSendToPresenterActionTests {
 		action.setDao(mock(CentralDatabaseDAO.class));
 
 		node = new Node(); 
-		node.setDipAreaRootPath(basePath+"dip/");
-		node.setWorkAreaRootPath(basePath+"work/");
+		node.setWorkAreaRootPath(workingAreaRootPath);
 		Node dipNode = new Node(); dipNode.setName("dipNode");
 		action.setNode(node);
 
@@ -93,8 +92,8 @@ public class PrepareSendToPresenterActionTests {
 		
 		job = new Job();
 		
-		FileUtils.copyDirectory(new File(basePath+"sources/1"), new File(basePath+"work/TEST/identifier_1"));
-		FileUtils.copyDirectory(new File(basePath+"sources/2"), new File(basePath+"work/TEST/identifier_2"));
+		FileUtils.copyDirectory(new File(workingAreaRootPath+"sources/1"), new File(workingAreaRootPath+"work/TEST/identifier_1"));
+		FileUtils.copyDirectory(new File(workingAreaRootPath+"sources/2"), new File(workingAreaRootPath+"work/TEST/identifier_2"));
 	}
 	
 	/**
@@ -148,10 +147,10 @@ public class PrepareSendToPresenterActionTests {
 	@After
 	public void tearDown() throws IOException {
 		
-		FileUtils.deleteDirectory(new File(basePath+"work/TEST/identifier_1"));
-		FileUtils.deleteDirectory(new File(basePath+"dip/public"));
-		FileUtils.deleteDirectory(new File(basePath+"work/TEST/identifier_2"));
-		FileUtils.deleteDirectory(new File(basePath+"dip/institution"));
+		FileUtils.deleteDirectory(new File(workingAreaRootPath+"work/TEST/identifier_1"));
+		FileUtils.deleteDirectory(new File(workingAreaRootPath+"pips/public"));
+		FileUtils.deleteDirectory(new File(workingAreaRootPath+"work/TEST/identifier_2"));
+		FileUtils.deleteDirectory(new File(workingAreaRootPath+"pips/institution"));
 	}
 	
 	

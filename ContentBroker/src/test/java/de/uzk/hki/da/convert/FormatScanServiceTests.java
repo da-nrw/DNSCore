@@ -53,7 +53,7 @@ import de.uzk.hki.da.utils.TESTHelper;
 public class FormatScanServiceTests {
 
 	private static FormatScanService formatScanService;
-	private static String basePath = "src/test/resources/convert/FormatIdentificationTests/";
+	private static String workAreaRootPath = "src/test/resources/convert/FormatIdentificationTests/";
 	private static Object object;
 	
 	private List<DAFile> files = new ArrayList<DAFile>();
@@ -93,7 +93,7 @@ public class FormatScanServiceTests {
 		
 		formatScanService.formatIdentifiersHealthChecked = true;
 		
-		object = TESTHelper.setUpObject("123",basePath);
+		object = TESTHelper.setUpObject("123",workAreaRootPath);
 	}
 
 

@@ -48,8 +48,7 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class PdfConversionStrategyTest {
 
-	/** The base path. */
-	String basePath="src/test/resources/convert/PdfConversionStrategyTests/";
+	String workAreaRootPath="src/test/resources/convert/PdfConversionStrategyTests/";
 	
 	/** The cs. */
 	PdfConversionStrategy cs = new PdfConversionStrategy();
@@ -63,7 +62,7 @@ public class PdfConversionStrategyTest {
 	@Before
 	public void setUp(){
 		
-		o = TESTHelper.setUpObject("1", basePath);
+		o = TESTHelper.setUpObject("1", workAreaRootPath);
 		
 		cs.setObject(o);
 	}
@@ -112,7 +111,7 @@ public class PdfConversionStrategyTest {
 	 */
 	@After
 	public void cleanup() throws IOException {
-		new File(basePath + "data/rep+b/Pdf.pdf").delete();
+		new File(workAreaRootPath + "work/data/rep+b/Pdf.pdf").delete();
 	}
 
 

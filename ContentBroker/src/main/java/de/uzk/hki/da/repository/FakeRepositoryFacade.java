@@ -28,6 +28,8 @@ import java.io.PrintWriter;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implements a simple file system based repository
@@ -36,11 +38,14 @@ import org.apache.commons.io.FileUtils;
  */
 public class FakeRepositoryFacade implements RepositoryFacade {
 	
-	private String dipAreaRootPath;
+	static final Logger logger = LoggerFactory.getLogger(FakeRepositoryFacade.class);
+	
+	private String workAreaRootPath;
 
 	@Override
 	public boolean purgeObjectIfExists(String objectId, String collection)
 			throws RepositoryException {
+		logger.debug("purgeObjectIfExists");
 		try {
 			if (objectExists(objectId, collection)) {
 				FileUtils.deleteDirectory(getFile(objectId, collection, null));
@@ -56,6 +61,7 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	@Override
 	public void createObject(String objectId, String collection,
 			String ownerId) throws RepositoryException {
+		logger.debug("createObject");
 		if(!getFile(objectId, collection, null).mkdirs()) {
 			throw new RepositoryException("Unable to create folder for object "
 					+ collection + "/" + objectId);
@@ -68,6 +74,7 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	public void ingestFile(String objectId, String collection,
 			String fileId, File file, String label, String mimeType)
 			throws RepositoryException, IOException {
+		logger.debug("ingestFile");
 		try {
 			File destFile = getFile(objectId, collection, fileId);
 			FileUtils.copyFile(file, destFile);
@@ -81,6 +88,7 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	public void createMetadataFile(String objectId, String collection,
 			String fileId, String content, String label, String mimeType)
 			throws RepositoryException {
+		logger.debug("createMetadataFile");
 		PrintWriter pw = null;
 		try {
 			pw = new PrintWriter(getFile(objectId, collection, fileId), "UTF-8");
@@ -97,12 +105,14 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	public void updateMetadataFile(String objectId, String collection,
 			String fileId, String content, String label, String mimeType)
 			throws RepositoryException {
+		logger.debug("updateMetadataFile");
 		createMetadataFile(objectId, collection, fileId, content, label, mimeType);
 	}
 
 	@Override
 	public InputStream retrieveFile(String objectId, String collection,
 			String fileId) throws RepositoryException {
+		logger.debug("retrieveFile");
 		try {
 			return new FileInputStream(getFile(objectId, collection, fileId));
 		} catch (FileNotFoundException e) {
@@ -127,20 +137,21 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 		return new File(path).getName();
 	}
 
-	public String getDipAreaRootPath() {
-		return dipAreaRootPath;
+	public String getWorkAreaRootPath() {
+		return workAreaRootPath;
 	}
 
-	public void setDipAreaRootPath(String dipAreaRootPath) {
-		this.dipAreaRootPath = dipAreaRootPath;
+	public void setWorkAreaRootPath(String workAreaRootPath) {
+		this.workAreaRootPath = workAreaRootPath + "/work";
 	}
 
 	private File getFile(String objectId, String collection, String file) {
-		String path = dipAreaRootPath + File.separator + "_data" + File.separator
+		String path = workAreaRootPath + File.separator + "_data" + File.separator
 				+ collection + File.separator + objectId;
 		if (file != null && !file.isEmpty()) {
 			path += File.separator + file;
 		}
+		logger.debug("getFile:"+path);
 		return new File(path);
 	}
 

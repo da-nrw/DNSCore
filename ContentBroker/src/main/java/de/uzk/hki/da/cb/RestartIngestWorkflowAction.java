@@ -100,9 +100,9 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	 * @author Thomas Kleinke
 	 */
 	private void deleteDips() {
-		File publicDipFolder = new File(localNode.getDipAreaRootPath() + "public/" +
+		File publicDipFolder = new File(localNode.getWorkAreaRootPath() + "pips/public/" +
 			object.getContractor().getShort_name() + "/" + object.getIdentifier() + "_" + object.getLatestPackage().getId());
-		File institutionDipFolder = new File(localNode.getDipAreaRootPath() + "institution/" +
+		File institutionDipFolder = new File(localNode.getWorkAreaRootPath() + "pips/institution/" +
 				object.getContractor().getShort_name() + "/" + object.getIdentifier() + "_" + object.getLatestPackage().getId());
 		
 		if (publicDipFolder.exists()) {

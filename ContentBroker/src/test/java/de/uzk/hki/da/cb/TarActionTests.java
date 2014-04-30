@@ -47,20 +47,19 @@ import de.uzk.hki.da.model.Package;
  */
 public class TarActionTests {
 
-	/** The vault path. */
-	static String vaultPath = "src/test/resources/cb/TarActionTests/Implementation/";
+	static String workAreaRootPath = "src/test/resources/cb/TarActionTests/Implementation/";
 	
 	/** The backup package path. */
-	static String backupPackagePath = vaultPath+"fork/csn/95949_/";
+	static String backupPackagePath = workAreaRootPath+"work/csn/95949_/";
 	
 	/** The package fork path. */
-	static String packageForkPath = vaultPath+"fork/csn/95949/";
+	static String packageForkPath = workAreaRootPath+"work/csn/95949/";
 	
 	/** The unpacked package path. */
-	static String unpackedPackagePath = vaultPath+"fork/csn/95949_unpacked/";
+	static String unpackedPackagePath = workAreaRootPath+"work/csn/95949_unpacked/";
 	
 	/** The target tar file. */
-	static File targetTarFile = new File(vaultPath+"fork/csn/95949.pack_2.tar");
+	static File targetTarFile = new File(workAreaRootPath+"work/csn/95949.pack_2.tar");
 	
 	/** The job. */
 	static Job job = new Job("csn","vm3");
@@ -84,7 +83,7 @@ public class TarActionTests {
 	@BeforeClass
 	public static void setUpBeforeClass(){
 		node.setWorkingResource("vm3");
-		node.setWorkAreaRootPath(vaultPath+"fork/");
+		node.setWorkAreaRootPath(workAreaRootPath);
 		
 		Contractor contractor = new Contractor();
 		contractor.setShort_name("csn");

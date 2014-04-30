@@ -44,16 +44,16 @@ import de.uzk.hki.da.utils.TESTHelper;
 public class CLIConversionStrategyTests {
 	
 	/** The base path. */
-	private String basePath = "src/test/resources/convert/CLIConversionStrategyTests/";
+	private String workAreaRootPath = "src/test/resources/convert/CLIConversionStrategyTests/";
 	
 	/**
 	 * Tear down.
 	 */
 	@After
 	public void tearDown() {
-		new File(basePath+"TEST/1233/data/2012_12_12+12_12+b/Bild 4-1.jpg").delete();
-		new File(basePath+"TEST/1244/data/2011+11+01+b/140849.png").delete();
-		new File(basePath+"TEST/1255/data/2012_12_12+12_12+b/3512.pdf").delete();
+		new File(workAreaRootPath+"work/TEST/1233/data/2012_12_12+12_12+b/Bild 4-1.jpg").delete();
+		new File(workAreaRootPath+"work/TEST/1244/data/2011+11+01+b/140849.png").delete();
+		new File(workAreaRootPath+"work/TEST/1255/data/2012_12_12+12_12+b/3512.pdf").delete();
 	}
 	
 	
@@ -72,7 +72,7 @@ public class CLIConversionStrategyTests {
 		ConversionRoutine conversionRoutineCopy= new ConversionRoutine("COPY",new HashSet<Node>(),"",
 				"cp input output","*");
 		
-		Object o = TESTHelper.setUpObject("1233",basePath);
+		Object o = TESTHelper.setUpObject("1233",workAreaRootPath);
 		
 		CLIConversionStrategy strat= new CLIConversionStrategy();
 		strat.setCLIConnector(new SimplifiedCommandLineConnector());
@@ -89,7 +89,7 @@ public class CLIConversionStrategyTests {
 		
 		strat.convertFile(ci);
 		
-		assertTrue(new File(basePath+"TEST/1233/data/2012_12_12+12_12+b/Bild 4-1.jpg").exists());
+		assertTrue(new File(workAreaRootPath+"work/TEST/1233/data/2012_12_12+12_12+b/Bild 4-1.jpg").exists());
 	}
 	
 	/**
@@ -104,7 +104,7 @@ public class CLIConversionStrategyTests {
 		ConversionRoutine conversionRoutineResize=  new ConversionRoutine("RESIZE",new HashSet<Node>(),"",
 				"convert -resize {institution.width}x{institution.height} input output","png");
 		
-		Object o = TESTHelper.setUpObject("1244",basePath);
+		Object o = TESTHelper.setUpObject("1244",workAreaRootPath);
 		
 		CLIConversionStrategy strat= new CLIConversionStrategy();
 		strat.setCLIConnector(new SimplifiedCommandLineConnector());
@@ -121,7 +121,7 @@ public class CLIConversionStrategyTests {
 		
 		strat.convertFile(ci);
 		
-		assertTrue(new File(basePath+"TEST/1244/data/2011+11+01+b/140849.png").exists());
+		assertTrue(new File(workAreaRootPath+"work/TEST/1244/data/2011+11+01+b/140849.png").exists());
 		
 		
 	}
@@ -143,7 +143,7 @@ public class CLIConversionStrategyTests {
 	@Test
 	public void testOutputParameterAfterEqualsSign() throws FileNotFoundException{
 		
-		Object o = TESTHelper.setUpObject("1255",basePath);
+		Object o = TESTHelper.setUpObject("1255",workAreaRootPath);
 		
 		CLIConversionStrategy strat= new CLIConversionStrategy();
 		strat.setObject(o);
@@ -162,7 +162,7 @@ public class CLIConversionStrategyTests {
 		strat.setParam("gs -dPDFA -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sProcessColorModel=DeviceGray -sOutputFile=output input");
 		strat.convertFile(ci);
 		
-		assertTrue(new File(basePath+"TEST/1255/data/2012_12_12+12_12+b/3512.pdf").exists());
+		assertTrue(new File(workAreaRootPath+"work/TEST/1255/data/2012_12_12+12_12+b/3512.pdf").exists());
 	}
 	
 	/*
