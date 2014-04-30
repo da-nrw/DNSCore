@@ -5,10 +5,14 @@
 ### Prerequisites
 
 To build DNS Core successfully you'll need at least a developer engine with
+
 * JAVA 1.6
 * MAVEN
 * GIT
 * Grails 2.2.4 in order to compile DA-WEB 
+* Imagemagick 6.7.8 (with jasper, to use jpg2000,  with tiff)
+
+No other converters are needed for compile and run the acceptance tests.  
 
 Please ensure, your @machine's are all running in UTF-8 mode:
     
