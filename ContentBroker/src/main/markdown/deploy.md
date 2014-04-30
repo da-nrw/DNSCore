@@ -95,12 +95,12 @@ Every fully tested release candidate can be rolled out following this workflow:
 
 [type] can have one of the following values:
 
-* full (e.g. for vm6)
-* pres (e.g. for vm2,danrw)
-* node (e.g. for prod,lvr,eunomia )
+* full (a fully fledged node including Pres Repository, also a good start to use the software)
+* pres (just a Presentation Repository node, without conversion)
+* node (would fit in most cases, having  n-nodes)
 
 ### Query your hsqldb easily on [developer@machine]
 
 1. cd DNSCore/ContentBroker
-1. src/main/scripts/sqlrequest.sh "[SQL-Abfrage]"
+1. src/main/bash/sqlrequest.sh "[SQL-Query]"
 
