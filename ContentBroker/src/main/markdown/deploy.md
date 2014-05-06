@@ -23,7 +23,7 @@ Please ensure, your @machine's are all running in UTF-8 mode:
 
 Of course you need a clean checkout of our source repo containing both DA-Web and ContentBroker
 
-    git clone https://github.com/da-nrw/DNSCore.git
+    git clone https://github.com/da-nrw/DNSCore DNSCore
 
 ### Continuous Delivery Workflow
 
