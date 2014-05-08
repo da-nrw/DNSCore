@@ -40,13 +40,7 @@ Before you start please note the following distinction of two different location
 
 Here are some custom scripts which are plugged in to the maven lifecycle which you find under src/main/scripts.
 For more control you can directly make use of them if you follow these steps
-
-1. cd DNSCore/ContentBroker
-1. mvn package -Pdev -DappHome=[CBInstallDir] (this will build an installer at DNSCore/installation)
-1. src/main/scripts/pre-integration-test.sh 
-    (src/main/bash/pre-integration-test.sh?) (this will a) install the CB to [CBInstallDir] and b) prepare the testing environment)
-1. mvn failsafe:integration-test (Running all acceptance tests)
-1. mvn failsafe:integration-test -Dit.test=ATUseCaseX (Run a single acceptance test)
+TODO
 
 
 ### Build and acceptance test the application on a development workstation
@@ -61,6 +55,15 @@ is to run
 
 -Pdev 
 this is the environment setting of the install script which indicates we're on a development workstation
+ 
+#### Executing single steps
+ 
+1. cd DNSCore/ContentBroker
+1. mvn package -Pdev -DappHome=[CBInstallDir] (this will build an installer at DNSCore/installation)
+1. src/main/scripts/pre-integration-test.sh 
+    (src/main/bash/pre-integration-test.sh?) (this will a) install the CB to [CBInstallDir] and b) prepare the testing environment)
+1. mvn failsafe:integration-test (Running all acceptance tests)
+1. mvn failsafe:integration-test -Dit.test=ATUseCaseX (Run a single acceptance test)
  
 ### Build and acceptance test the application on a Continuous Integration machine
 
