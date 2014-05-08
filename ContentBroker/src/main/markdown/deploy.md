@@ -1,6 +1,6 @@
 # Build process
 
-## Build DNS on a local development workstation
+## Build DNS
 
 This paragraph describes how you build and test DNS (essentially ContentBroker+DAWeb with some plugins) 
 on a development workstation.
@@ -27,7 +27,6 @@ Of course you need a clean checkout of our source repo containing both DA-Web an
 
     git clone https://github.com/da-nrw/DNSCore DNSCore
     
-### Build and acceptance test the application
 Before you start please note the following distinction of two different locations we'll work with
 
     [...]/DNSCore/ContentBroker - this is the local clone of the DNSCore git repository 
@@ -40,6 +39,10 @@ Before you start please note the following distinction of two different location
 So
     
     if !exists [appHome], mkdir [appHome]
+
+### Build and acceptance test the application on a development workstation
+
+    -Pdev this is the environment setting of the install script which indicates we're on a development workstation
 
 All you need then to do for a build that gets automatically deployed locally and acceptance tested
 is to run 
@@ -59,6 +62,15 @@ For more control you can directly make use of them if you follow these steps
 1. mvn failsafe:integration-test (Running all acceptance tests)
 1. mvn failsafe:integration-test -Dit.test=ATUseCaseX (Run a single acceptance test)
 
+### Build and acceptance test the application on a Continuous Integration machine
+
+All you need then to do for a build that gets automatically deployed locally and acceptance tested
+is to run 
+
+    -Pvm3 this is the environment setting of the install script which indicates we're on a development workstation
+
+1. cd DNSCore/ContentBroker
+1. mvn deploy -Pvm3 
 
 ### Continuous Delivery Workflow
 
@@ -69,9 +81,6 @@ For more control you can directly make use of them if you follow these steps
 * For every change in GitHub the whole test suite should be executed on [ci@machine] and a binary should get build and stored in the maven repository.
 
 ### Maven build lifecycle and local installation for development
-
-
-
 T
 If you only want do deploy the CB locally without the need for acceptance testing you can do it like this:
 
