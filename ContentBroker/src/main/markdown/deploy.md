@@ -2,6 +2,13 @@
 * developer@machine = development workstation
 * DNSCore = clone of the git repository
 
+## Build DNS on a local development workstation
+
+This paragraph describes how you build and test DNS (essentially ContentBroker+DAWeb with some plugins) 
+on a development workstation.
+Following the steps will enable you to check out a local copy of the code, modify it
+and build and test the modified application. 
+
 ### Prerequisites
 
 To build DNS Core successfully you'll need at least a developer engine with
@@ -9,21 +16,41 @@ To build DNS Core successfully you'll need at least a developer engine with
 * JAVA 1.6
 * MAVEN
 * GIT
-* Grails 2.2.4 in order to compile DA-WEB 
-* Imagemagick 6.7.8 (with jasper, to use jpg2000,  with tiff)
+* Grails 2.2.4
+* Imagemagick 6.7.8 (with jasper, to use jpg2000, with tiff)
 
-No other converters are needed for compile and run the acceptance tests at the developer@machine.  
-In order to to build release candidates you'll need needed packages for all configured converters. 
-
-Please ensure, your @machine's are all running in UTF-8 mode:
+Please ensure, the shells (bash and sh) of your workstation run in UTF-8 mode:
     
     export MAVEN_OPTS='-Dfile.encoding=UTF-8'
     export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
     export LANG='de_DE.UTF-8'
-
+    
 Of course you need a clean checkout of our source repo containing both DA-Web and ContentBroker
 
     git clone https://github.com/da-nrw/DNSCore DNSCore
+    
+### Build and test
+
+Before you start please note the following distinction of two different locations we'll work with
+
+    [...]/DNSCore/ContentBroker - this is the local clone of the DNSCore git repository which you can place somewhere
+        onto your file system (which is what the [...] should indicate)
+    [appHome]/ - appHome is the full physical path to a local installation of the ContentBroker which automatically gets         installed by the test system in order to run the automated acceptance tests.
+
+So
+    
+    if !exists [appHome], mkdir [appHome]
+
+All you need then to do for a build that gets automatically deployed locally and acceptance tested
+is to run 
+
+1. cd DNSCore/ContentBroker
+1. mvn verify -Pdev -DappHome=[appHome]
+
+
+
+
+
 
 ### Continuous Delivery Workflow
 
@@ -35,13 +62,7 @@ Of course you need a clean checkout of our source repo containing both DA-Web an
 
 ### Maven build lifecycle and local installation for development
 
-All you need to do for a build that gets automatically deployed locally and acceptance tested
-is to run 
 
-1. goto [developer@machine]
-1. if !exists [CBInstallDir], mkdir [CBInstallDir]
-1. cd DNSCore/ContentBroker
-1. mvn verify -Pdev -DappHome=[CBInstallDir]
 
 There are some custom scripts which are plugged in to the maven lifecycle which you find under src/main/scripts.
 For more control you can directly make use of them if you follow these steps
