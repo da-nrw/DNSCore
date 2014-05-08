@@ -53,9 +53,9 @@ is to run
 1. cd DNSCore/ContentBroker
 1. mvn clean && mvn verify -Pdev -DappHome=[appHome]
 
--Pdev 
+* -Pdev 
 this is the environment setting of the install script which indicates we're on a development workstation
--DappHome=[appHome] 
+* -DappHome=[appHome] 
 make sure there is no ending slash!!!
  
 #### Executing single steps
