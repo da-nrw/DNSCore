@@ -33,9 +33,12 @@ Of course you need a clean checkout of our source repo containing both DA-Web an
 
 Before you start please note the following distinction of two different locations we'll work with
 
-    [...]/DNSCore/ContentBroker - this is the local clone of the DNSCore git repository which you can place somewhere
+    [...]/DNSCore/ContentBroker - this is the local clone of the DNSCore git repository 
+        which you can place somewhere
         onto your file system (which is what the [...] should indicate)
-    [appHome]/ - appHome is the full physical path to a local installation of the ContentBroker which automatically gets         installed by the test system in order to run the automated acceptance tests.
+    [appHome]/ - appHome is the full physical path to a local installation of the ContentBroker
+        which automatically gets installed by the test system 
+        in order to run the automated acceptance tests.
 
 So
     
