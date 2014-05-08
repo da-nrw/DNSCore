@@ -55,4 +55,4 @@ done
 #{JAVA} -classpath $CP Jhove $ARGS -x org.apache.xerces.parsers.SAXParser
 #${JAVA} -classpath $CP Jhove $ARGS
 # New way, doesn't require you to use JAVA_HOME.
-java -classpath $CP Jhove $ARGS
+java $JAVA_OPTS -classpath $CP Jhove $ARGS
