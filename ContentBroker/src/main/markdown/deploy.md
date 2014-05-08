@@ -23,7 +23,7 @@ Please ensure, your @machine's are all running in UTF-8 mode:
 
 Of course you need a clean checkout of our source repo containing both DA-Web and ContentBroker
 
-    git clone https://github.com/da-nrw/DNSCore.git
+    git clone https://github.com/da-nrw/DNSCore DNSCore
 
 ### Continuous Delivery Workflow
 
@@ -48,7 +48,8 @@ For more control you can directly make use of them if you follow these steps
 
 1. cd DNSCore/ContentBroker
 1. mvn package -Pdev -DappHome=[CBInstallDir] (this will build an installer at DNSCore/installation)
-1. src/main/scripts/pre-integration-test.sh (this will a) install the CB to [CBInstallDir] and b) prepare the testing environment)
+1. src/main/scripts/pre-integration-test.sh 
+    (src/main/bash/pre-integration-test.sh?) (this will a) install the CB to [CBInstallDir] and b) prepare the testing environment)
 1. mvn failsafe:integration-test (Running all acceptance tests)
 1. mvn failsafe:integration-test -Dit.test=ATUseCaseX (Run a single acceptance test)
 
