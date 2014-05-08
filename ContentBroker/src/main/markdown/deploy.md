@@ -36,6 +36,19 @@ Before you start please note the following distinction of two different location
         which automatically gets installed by the test system 
         in order to run the automated acceptance tests.
 
+### Explanation of how maven build process details
+
+Here are some custom scripts which are plugged in to the maven lifecycle which you find under src/main/scripts.
+For more control you can directly make use of them if you follow these steps
+
+1. cd DNSCore/ContentBroker
+1. mvn package -Pdev -DappHome=[CBInstallDir] (this will build an installer at DNSCore/installation)
+1. src/main/scripts/pre-integration-test.sh 
+    (src/main/bash/pre-integration-test.sh?) (this will a) install the CB to [CBInstallDir] and b) prepare the testing environment)
+1. mvn failsafe:integration-test (Running all acceptance tests)
+1. mvn failsafe:integration-test -Dit.test=ATUseCaseX (Run a single acceptance test)
+
+
 ### Build and acceptance test the application on a development workstation
 
     if !exists [appHome], mkdir [appHome]
@@ -60,17 +73,6 @@ is to run
 -Pvm3 
 this is the environment setting of the install script which indicates we're on a development workstation
 
-### More explanation of how maven build process details
-
-Here are some custom scripts which are plugged in to the maven lifecycle which you find under src/main/scripts.
-For more control you can directly make use of them if you follow these steps
-
-1. cd DNSCore/ContentBroker
-1. mvn package -Pdev -DappHome=[CBInstallDir] (this will build an installer at DNSCore/installation)
-1. src/main/scripts/pre-integration-test.sh 
-    (src/main/bash/pre-integration-test.sh?) (this will a) install the CB to [CBInstallDir] and b) prepare the testing environment)
-1. mvn failsafe:integration-test (Running all acceptance tests)
-1. mvn failsafe:integration-test -Dit.test=ATUseCaseX (Run a single acceptance test)
 
 ### Maven build lifecycle and local installation for development
 T
