@@ -55,6 +55,8 @@ is to run
 
 -Pdev 
 this is the environment setting of the install script which indicates we're on a development workstation
+-DappHome=[appHome] 
+make sure there is no ending slash!!!
  
 #### Executing single steps
  
