@@ -1,6 +1,4 @@
-* ci@machine = continuous integration server
-* developer@machine = development workstation
-* DNSCore = clone of the git repository
+# Build process
 
 ## Build DNS on a local development workstation
 
