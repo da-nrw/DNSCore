@@ -84,14 +84,14 @@ Remarks:
 this is the environment setting of the install script which indicates we're on a development workstation. 
 In this case the ContentBroker gets configured so that it gets provided with fake versions of the necessary
 adapters to the storage and presentation layer.
-* -DappHome=[appHome]  **make sure there is no ending slash!!!**
+* -DappHome=[appHome]  **no ending slash!!!**
  
 ### Build and acceptance test the application on a Continuous Integration machine
 
 The build process on a dedicated build machine works more or less the same, with a few exceptions discussed
 here. To execute the build process run:
 
-1. cd DNSCore/ContentBroker
+1. cd [...]/DNSCore/ContentBroker
 1. mvn clean && mvn deploy -Pvm3 
 
 Remarks:
@@ -106,45 +106,16 @@ completely tested release candidate to a precondigured folder were all release c
 is done to support continuous integration workflows.
 
  
-### Executing single steps
- 
-1. cd DNSCore/ContentBroker
-1. mvn package -Pdev -DappHome=[CBInstallDir] (this will build an installer at DNSCore/installation)
-1. src/main/bash/pre-integration-test.sh (this will a) install the CB to [CBInstallDir] and b) prepare the testing environment)
-1. mvn failsafe:integration-test (Running all acceptance tests)
-1. mvn failsafe:integration-test -Dit.test=ATUseCaseX (Run a single acceptance test)
- 
+### Debugging and Development
 
+Sometimes it is necessary to have more fine grained control over the build and test process. For example,
+if you want to bugfix a certain acceptance test or if you write a new acceptance test. 
 
+1. cd [...]/DNSCore/ContentBroker
+1. mvn clean && mvn pre-integration-test -Pdev -DappHome=[appHome] **no ending slash!!!**
 
-### Maven build lifecycle and local installation for development
-T
-If you only want do deploy the CB locally without the need for acceptance testing you can do it like this:
+If you run mvn pre-integration-test, the applications gets unit tested, build and installed automatically
+to [appHome]. There you can debug the running ContentBroker manually or you can run single acceptance tests
+by calling
 
-1. cd DNSCore/ContentBroker
-1. mvn package -Pdev -DappHome=[CBInstallDir]
-1. cd DNSCore/installation
-1. ./install.sh [CBInstallDir] (installing the CB)
-1. cd [CBInstallDir]
-1. ./ContentBroker_start.sh
-11. Manuelles Testen (testpackage_klein_und_muss_durchlaufen.*)
-
-9. ??? Wenn letzter Schritt erfolgreich, dann ./deliver.sh vm2
-
-## Continuous Delivery
-
-### Workflow
-
-* Commit and push regularly. Ideally after every small task. If necessary divide bigger tasks in smaller subtasks.
-* Go through your test suite before commiting.
-* This means you should execute at least all your unit tests and depending on your task at hand some acceptance tests.
-* Even better: Take a short break and execute all your acceptance tests locally.
-* For every change in GitHub the whole test suite should be executed on [ci@machine] and a binary should get build and stored in the maven repository.
-
-
-
-### Query your hsqldb easily on [developer@machine]
-
-1. cd DNSCore/ContentBroker
-1. src/main/bash/sqlrequest.sh "[SQL-Query]"
-
+1. mvn failsafe:integration-test -Dit.test=AT[TestName]
