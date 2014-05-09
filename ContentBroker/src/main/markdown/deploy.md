@@ -1,13 +1,11 @@
 # Build process
 
-## Build DNS
-
 This paragraph describes how you build and test DNS (essentially ContentBroker+DAWeb with some plugins) 
 on a development workstation.
 Following the steps will enable you to check out a local copy of the code, modify it
 and build and test the modified application. 
 
-### Prerequisites
+## Prerequisites
 
 To build DNS Core successfully you'll need at least a developer engine with
 
@@ -36,7 +34,7 @@ Before you start please note the following distinction of two different location
         which automatically gets installed by the test system 
         in order to run the automated acceptance tests.
 
-### Testing strategies and setup
+## Testing strategies and setup
 
 ![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/blackbox_whitebox.jpg)
 
@@ -64,7 +62,7 @@ context:
 
 Just to repeat an important fact, if one calls for example "mvn verify" all previous maven build lifecycle phases until verify get executed, one by one.
 
-### Build and acceptance test the application on a development workstation
+## Build and acceptance test the application on a development workstation
 
 In order to run the tests on a development workstation and to reduce the dependencies to the workstation, one can
 execute the acceptance tests against a version of the ContentBroker which runs with fake connectors which replace the
@@ -106,7 +104,7 @@ completely tested release candidate to a precondigured folder were all release c
 is done to support continuous integration workflows.
 
  
-### Debugging and Development
+## Debugging and Development
 
 Sometimes it is necessary to have more fine grained control over the build and test process. For example,
 if you want to bugfix a certain acceptance test or if you write a new acceptance test. 
