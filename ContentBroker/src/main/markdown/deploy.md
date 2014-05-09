@@ -68,8 +68,7 @@ Just to repeat an important fact, if one calls for example "mvn verify" all prev
 
 In order to run the tests on a development workstation and to reduce the dependencies to the workstation, one can
 execute the acceptance tests against a version of the ContentBroker which runs with fake connectors which replace the
-real external systems. So a developer is able to run the tests quickly but is not forced to install the whole bunch of external
-software DNSCore would need to speak to on a real node.l
+real external systems. So a developer is able to run the tests quickly but is not forced to install the whole bunch of external software DNSCore would need to speak to on a real node. 
 
 To build the software from source and run the unit and acceptance tests follow these steps:
 
@@ -82,20 +81,30 @@ This will automatically build and test the whole application which should result
 Remarks:
 
 * -Pdev 
-this is the environment setting of the install script which indicates we're on a development workstation
-* -DappHome=[appHome] 
-'''make sure there is no ending slash!!!'''
+this is the environment setting of the install script which indicates we're on a development workstation. 
+In this case the ContentBroker gets configured so that it gets provided with fake versions of the necessary
+adapters to the storage and presentation layer.
+* -DappHome=[appHome]  '''make sure there is no ending slash!!!'''
  
 ### Build and acceptance test the application on a Continuous Integration machine
 
-All you need then to do for a build that gets automatically deployed locally and acceptance tested
-is to run 
+The build process on a dedicated build machine works more or less the same, with a few exceptions discussed
+here. To execute the build process run:
 
 1. cd DNSCore/ContentBroker
 1. mvn clean && mvn deploy -Pvm3 
 
--Pvm3 
-this is the environment setting of the install script which indicates we're on a development workstation
+Remarks:
+
+* -Pvm3 
+this is the environment setting of the install script which indicates we're on a development workstation. This
+leads to a ContentBroker configuration which provides access to the real iRODS storage layer and the real
+Fedora presentation layer. 
+* missing -DappHome this param is not necessary when -Pvm3 is selected as the paths are preconfigured.
+* mvn deploy instead of mvn verify: The one additional phase executed at the end of the build phase deploys the
+completely tested release candidate to a precondigured folder were all release candidates are collected. This 
+is done to support continuous integration workflows.
+
  
 ### Executing single steps
  
