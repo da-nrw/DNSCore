@@ -61,9 +61,8 @@ make sure there is no ending slash!!!
 #### Executing single steps
  
 1. cd DNSCore/ContentBroker
-1. mvn package -Pdev -DappHome=[CBInstallDir] (whithout a slash at the end of the path! This will build an installer at DNSCore/installation)
-1. src/main/scripts/pre-integration-test.sh 
-    (src/main/bash/pre-integration-test.sh?) (this will a) install the CB to [CBInstallDir] and b) prepare the testing environment)
+1. mvn package -Pdev -DappHome=[CBInstallDir] (this will build an installer at DNSCore/installation)
+1. src/main/bash/pre-integration-test.sh (this will a) install the CB to [CBInstallDir] and b) prepare the testing environment)
 1. mvn failsafe:integration-test (Running all acceptance tests)
 1. mvn failsafe:integration-test -Dit.test=ATUseCaseX (Run a single acceptance test)
  
