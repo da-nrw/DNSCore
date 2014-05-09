@@ -84,7 +84,7 @@ Remarks:
 this is the environment setting of the install script which indicates we're on a development workstation. 
 In this case the ContentBroker gets configured so that it gets provided with fake versions of the necessary
 adapters to the storage and presentation layer.
-* -DappHome=[appHome]  '''make sure there is no ending slash!!!'''
+* -DappHome=[appHome]  **make sure there is no ending slash!!!**
  
 ### Build and acceptance test the application on a Continuous Integration machine
 
