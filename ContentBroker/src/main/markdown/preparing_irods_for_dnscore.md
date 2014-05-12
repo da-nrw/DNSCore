@@ -49,18 +49,14 @@ the ContentBroker as described in the getting started [guide](https://github.com
 
 ### iRODS Installation
 
-Set up a basic iRODS > 3.2 installation with one default resource of type cache, pointing to "somewhere" (as described
-in the getting started document). Make sure the installation is installed as ICAT-Enabled. 
+Set up a basic iRODS > 3.2 installation. Make sure the installation is installed as ICAT-Enabled. The installer
+will ask you for entering certain properties to which we will refer later.
 
-To certain properties of your installation we will refer later in the text.
-
-    [irodsuser] - irods user name as set in the ~/.irods/.irodsEnv
-    [irodspassword] - irods password as set in the ~/.irods/.irodsEnv
-    [irodszone] - irodsZone as set in the ~/.irods/.irodsEnv
-
-The .irodsEnv we refer to here must be the one of the user which will run the ContentBroker.
-
-To let the grid component know how to speak to the iRODS server set the 
+    [irodsuser] - The irods user we will use to let the ContentBroker talk to the iRODS server.
+    [irodspassword] - The password of this user.
+    [irodszone] - The irods zone the ContentBroker will work in. Choose an appropriate name.
+    
+To let the grid component of the ContentBroker as a client know how to speak to the iRODS server set the 
 following lines of your config.properties to match your iRODS configuration:
 
     irods.user=[irodsuser]
@@ -86,20 +82,20 @@ iRODS Servers (as well in federated or in resource server mode) know two types o
 1. "Archive" type resource having longer latency, generally targeted at permanent storage and less frequent access.
 
 We adhere to these iRODS principles and use one cache type of resource to fulfill the first of the abovementioned functions and the archive type resource for the storage where AIPs are
-put onto and which should be a WORM device (for example tape storage).
+put onto and which should be a WORM device (for example tape storage).[.
 
 Create a working resource 
 
-    iadmin mkresc [nameYourWorkingResource] "unix file system" cache [hostname] [somewhere]/workingResource
+    iadmin mkresc [nameOfYourWorkingResource] "unix file system" cache [hostname] vaultPathWorkingResources
 
 Create an archive resource
 
-    iadmin mkresc [nameYourArchiveResource] "unix file system" archive [hostname] [somewhere]/archiveResource
+    iadmin mkresc [nameOfYourArchiveResource] "unix file system" archive [hostname] [...]/archiveResource
 
 and a resource group to which the archive resource belongs and make the recently created archive resource to be part of that resource group:
 
-    iadmin mkgroup [nameYourArchiveResouceGroup]
-    iadmin atrg [nameYourArchiveResourceGroup] [archiveResource]
+    iadmin mkgroup [nameOfYourArchiveResouceGroup]
+    iadmin atrg [nameOfYourArchiveResourceGroup] [archiveResource]
 
 And in your config.properties:
 
@@ -110,7 +106,7 @@ And in your config.properties:
 Coming from the Getting Started Guide, where you already set up your ContentBroker, you should have a directory 
 layout which looks like this:
 
-    [somewhere]/storage/
+    [...]/storage/
                     user/
                     ingest/
                     work/
@@ -118,6 +114,8 @@ layout which looks like this:
                         institution/
                         public/
                     grid/
+        
+Note that [...] should denote some arbitrary path which you can choose.
                     
 All of these folders are placed somewhere in an arbitrary folder somewhere on a single partition on your file system.
 However, if you want to set up a fully operational node, you have to understand that the areas have to reside on different file system partitions and at the same time must match certain iRODS resources.
@@ -128,13 +126,13 @@ You now have to adjust the folder structure to reflect this. First of all, for r
 (at the sections UserArea and IngestArea),user and ingest get moved to an own folder. The workingResource and
 archiveResource folders get created to match the iRODS resources we will create in this section.
 
-    [somewhere]/fileMount/archiveResource/
-    [somewhere]/partition_1/
+    [...]/archiveResource/
+    [...]/partition_1/
                             user/
                                  TEST/
                             ingest/
                                  TEST/
-    [somewhere]/partition_2/workingResource/
+    [...]/workingResource/
                             work/
                                  TEST/
                             pip/
