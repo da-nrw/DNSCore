@@ -46,7 +46,7 @@ how to convert the existing DNSCore into a full-fledged installation including t
 
 Create a directory somewhere on your filesystem into which you can install your ContentBroker.
 
-    [somewhere]/ContentBroker/
+    [...]/ContentBroker/
 
 [somewhere] denotes some arbitrary path on your file system.
 
@@ -56,12 +56,12 @@ Create a directory somewhere on your filesystem into which you can install your 
 1. cd into [tmp]/installation.xyz/ 
 1. Call
 <pre>
-    ./install.sh [somewhere]/ContentBroker (make sure there is no trailing slash!)
+    ./install.sh [...]/ContentBroker (make sure there is no trailing slash!)
 </pre>
 1. As feature set, choose (n)ode (explanation of different feature sets [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/system_configuration.md))
 1. Download a fake glue [script](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/bash/ffmpeg.sh.fake) 
 that will ensure you don't have to install ffmpeg for now.
-1. Replace [somewhere]/ContentBroker/ffmpeg.sh by the ffmpeg.sh.fake file you downloaded
+1. Replace [...]/ContentBroker/ffmpeg.sh by the ffmpeg.sh.fake file you downloaded
 
 The application is then installed in [somewhere]/ContentBroker and needs further configurations in order to run
 properly.
