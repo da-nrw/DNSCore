@@ -70,7 +70,7 @@ properly.
 
 Prepare your installation and storage directories
 
-    [somewhere]/storage/
+    [...]/storage/
                     user/
                     ingest/
                     work/
@@ -95,11 +95,11 @@ version in the appropriate source code branch of the release you want to install
 
 config.properties:    
     
-    localNode.userAreaRootPath=[somewhere]/storage/user
-    localNode.ingestAreaRootPath=[somewhere]/storage/ingest
-    localNode.workAreaRootPath=[somewhere]/storage/work
-    localNode.dipAreaRootPath=[somewhere]/storage/pip
-    localNode.gridCacheAreaRootPath=[somewhere]/storage/grid
+    localNode.userAreaRootPath=[...]/storage/user
+    localNode.ingestAreaRootPath=[...]/storage/ingest
+    localNode.workAreaRootPath=[...]/storage/work
+    localNode.dipAreaRootPath=[...]/storage/pip
+    localNode.gridCacheAreaRootPath=[...]/storage/grid
 
 (Make sure the paths fit the recently created paths on your file system)
 
