@@ -82,24 +82,45 @@ iRODS Servers (as well in federated or in resource server mode) know two types o
 1. "Archive" type resource having longer latency, generally targeted at permanent storage and less frequent access.
 
 We adhere to these iRODS principles and use one cache type of resource to fulfill the first of the abovementioned functions and the archive type resource for the storage where AIPs are
-put onto and which should be a WORM device (for example tape storage).[.
+put onto and which should be a WORM device (for example tape storage)..
 
 Create a working resource 
 
-    iadmin mkresc [nameOfYourWorkingResource] "unix file system" cache [hostname] vaultPathWorkingResources
+    iadmin mkresc [nameOfYourWorkingResource] "unix file system" cache [hostname] [vaultPathOfWorkingResources]
 
 Create an archive resource
 
-    iadmin mkresc [nameOfYourArchiveResource] "unix file system" archive [hostname] [...]/archiveResource
+    iadmin mkresc [nameOfYourArchiveResource] "unix file system" archive [hostname] [vaultPathOfYourArchiveResource]
 
-and a resource group to which the archive resource belongs and make the recently created archive resource to be part of that resource group:
+For both of your resources you have to choose an appropriate name and a vaultPath. A resource in iRODS most of the times
+is a simple mapping to some random path on a file system which is mounted on your computer. All files and folders below
+this path, which is called the "vaultPath" of the resource, belong to this resource and get mapped to an appropriate logical path by iRODS (the details don't matter here).
+
+
+In order to work properly, two further things have to be done. First, for reasons explained later in this document the ContentBroker stores data to resource groups, not to resources directly, when working in its long term archive mode.
+As a consequence, we have to create a resource group and add the recently created archive resource to it.
 
     iadmin mkgroup [nameOfYourArchiveResouceGroup]
-    iadmin atrg [nameOfYourArchiveResourceGroup] [archiveResource]
+    iadmin atrg [nameOfYourArchiveResourceGroup] [nameOfYourArchiveResource]
 
-And in your config.properties:
+##### connect the ContentBroker
+
+The ContentBroker needs to know with which resources it can work for each of its two modes.
+For the distributedConversion mode this setting is needed:
 
     irods.default_resc=[nameOfYourWorkingRescource]
+    localNode.workingResource=[nameOfYourWorkingResource]
+    
+For the long term archive mode, these settings are needed:
+
+    cb.min_repls=1
+    localNode.replDestinations=[nameOfYourArchiveResourceGroup]
+    
+These settings mean that the ContentBroker will replicate the AIPs to exactly one resource location which
+is denoted by [nameOfYourArchiveResourceGroup]. The min_repls setting, then, denotes, that it considers
+long term archival done when one replica of an AIP is existent in the grid. 
+Of course, these minimal settings are only for instructional purposes. On a real productions grid, we would need
+at least three different geographically districuted locations.
 
 ### Understanding the mapping of iRODS resources to ContentBroker Areas
 
@@ -115,10 +136,18 @@ layout which looks like this:
                         public/
                     grid/
         
-Note that [...] should denote some arbitrary path which you can choose.
-                    
-All of these folders are placed somewhere in an arbitrary folder somewhere on a single partition on your file system.
-However, if you want to set up a fully operational node, you have to understand that the areas have to reside on different file system partitions and at the same time must match certain iRODS resources.
+This means that somewhere on your filesystem is the whole storage tree as needed by the ContentBroker when 
+working without iRODS. When working with iRODS, we need to move some of the folders below the workingResourceVaultPath.
+
+    [...]/storage/
+                            user/
+                            ingest/
+    [vaultPathOfYourWorkingResource]/
+                            work/
+                            pip/ 
+                            grid/
+
+The following sketch illustrates the mapping between iRODS resources and file system locations:
 
 ![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/different_views.jpg)
 
@@ -126,37 +155,12 @@ You now have to adjust the folder structure to reflect this. First of all, for r
 (at the sections UserArea and IngestArea),user and ingest get moved to an own folder. The workingResource and
 archiveResource folders get created to match the iRODS resources we will create in this section.
 
-    [...]/archiveResource/
-    [...]/partition_1/
-                            user/
-                                 TEST/
-                            ingest/
-                                 TEST/
-    [...]/workingResource/
-                            work/
-                                 TEST/
-                            pip/
-                                 institution/
-                                        TEST/
-                            pip/ 
-                                 public/
-                                        TEST/
-                            grid/
-                                 TEST/
-
 Edit the config.properties to reflect your changes:                               
 
-    localNode.userAreaRootPath=[somewhere]/[transferResource]/user
-    localNode.ingestAreaRootPath=[somewhere]/[transferResource]/ingest
-    localNode.workAreaRootPath=[somewhere]/[workingResource]/work
-    localNode.dipAreaRootPath=[somewhere]/workingResource/pip (the chosen phys. path must be subdir of vaultpath of iRODS workingResource)
-    localNode.gridCacheAreaRootPath=[somewhere]/workingResource/grid (the chosen phys. path must be subdir of vaultpath of iRODS workingResource)
-
-
-
-To let the core component of DNSCore know how to speak to the grid set the following properties (esp. when you followed the Getting Started Tutorial, the following parameters might point to some fake Adapters):
-
-    localNode.workingResource=[nameOfYourWorkingResource]
+    localNode.userAreaRootPath=[...]/storage/user
+    localNode.ingestAreaRootPath=[...]/storage/ingest
+    localNode.workAreaRootPath=[vaultPathOfYourWorkingResource] 
+    localNode.gridCacheAreaRootPath=[vaultPathOfYourWorkingResource]/grid (the chosen phys. path must be subdir of vaultpath of iRODS workingResource)
 
 ### Adjust iRODS installation
 
