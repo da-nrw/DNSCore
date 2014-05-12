@@ -14,9 +14,9 @@ Set up iRODS
 
 ... TODO
 
-zonename = c-i
-irodsuser = 
-irodspassword =
+    zonename = c-i
+    irodsuser = rods
+    irodspassword = 
 
 Create 2 resources 
 
