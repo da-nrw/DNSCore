@@ -20,10 +20,12 @@ irodspassword =
 
 Create 2 resources 
 
-1. WorkResource. name: TODO. vaultPath: /ci/storage/WorkArea
-2. ArchiveResource. name: ... vaultPath: /ci/archiveStorage
+1. WorkResource. name: ciWorkingResource. vaultPath: /ci/storage/WorkArea
+2. ArchiveResource. name: ciArchiveResource ... vaultPath: /ci/archiveStorage
 
 Create a resource group and add archive resource to it.
+
+* ciArchiveResourceGroup 
 
 ## Preparing the directory structure
 
