@@ -23,12 +23,12 @@ Set up iRODS
 
 Create 2 resources 
 
-1. WorkResource. name: ciWorkingResource. vaultPath: /ci/storage/WorkArea
-2. ArchiveResource. name: ciArchiveResource ... vaultPath: /ci/archiveStorage
+    WorkResource. name: ciWorkingResource. vaultPath: /ci/storage/WorkArea
+    ArchiveResource. name: ciArchiveResource ... vaultPath: /ci/archiveStorage
 
 Create a resource group and add archive resource to it.
 
-* ciArchiveResourceGroup 
+    ciArchiveResourceGroup 
 
 ## Preparing the directory structure
 
