@@ -149,7 +149,7 @@ by the application:
 According to the structure of the different areas in addition to the basic folder layout we need directories
 for at least one user to run tests against the system. This first user (or contractor in DNSCore terminology) is typically the TEST user. Note that TEST is the  [contractors](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#contractor) short name (or csn for short) and that short names in our system are case sensitive. For our system to work with the TEST user, extend the directory structure like this:
 
-    [somewhere]/storage/
+    [...]/storage/
                     userArea/
                          TEST/
                               incoming/
