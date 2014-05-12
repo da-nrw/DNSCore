@@ -10,7 +10,17 @@
 
 ## Prepare the database
 
+Create 2 databases
 
+# irods db
+
+name: ICAT
+user: irods
+
+# contentbroker db
+
+name: CI-CB
+user: cb_usr
 
 ## Prepare iRODS
 
