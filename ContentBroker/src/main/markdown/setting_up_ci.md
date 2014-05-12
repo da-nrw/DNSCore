@@ -14,14 +14,14 @@ Create 2 databases
 
 ### irods db
 
-name: ICAT
-user: irods
+    name: ICAT
+    user: irods
 
 ### contentbroker db
 
-name: CI-CB
-user: cb_usr
-password: kulle_oezil06
+    name: CI-CB
+    user: cb_usr
+    password: 
 
 ## Prepare iRODS
 
