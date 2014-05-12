@@ -71,14 +71,10 @@ properly.
 Prepare your installation and storage directories
 
     [...]/storage/
-                    user/
-                    ingest/
-                    work/
-                    pip/
-                        institution/
-                        public/
-                    aip/
-                    grid/
+                    userArea/
+                    ingestArea/
+                    workArea/
+                    gridCacheAre/
 
 The storage directory is a directory structure
 which DNSCore will use to work with data packages. The subfolders correspond to the various 
@@ -95,11 +91,10 @@ version in the appropriate source code branch of the release you want to install
 
 config.properties:    
     
-    localNode.userAreaRootPath=[...]/storage/user
-    localNode.ingestAreaRootPath=[...]/storage/ingest
-    localNode.workAreaRootPath=[...]/storage/work
-    localNode.dipAreaRootPath=[...]/storage/pip
-    localNode.gridCacheAreaRootPath=[...]/storage/grid
+    localNode.userAreaRootPath=[...]/storage/userArea
+    localNode.ingestAreaRootPath=[...]/storage/ingestArea
+    localNode.workAreaRootPath=[...]/storage/workArea
+    localNode.gridCacheAreaRootPath=[...]/storage/gridCacheArea
 
 (Make sure the paths fit the recently created paths on your file system)
 
@@ -155,20 +150,15 @@ According to the structure of the different areas in addition to the basic folde
 for at least one user to run tests against the system. This first user (or contractor in DNSCore terminology) is typically the TEST user. Note that TEST is the  [contractors](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#contractor) short name (or csn for short) and that short names in our system are case sensitive. For our system to work with the TEST user, extend the directory structure like this:
 
     [somewhere]/storage/
-                    user/
+                    userArea/
                          TEST/
                               incoming/
                               outgoing/
-                    ingest/
+                    ingestArea/
                          TEST/
-                    work/
+                    workArea/
                          TEST/
-                    pip/
-                        institution/
-                               TEST/
-                        public/
-                               TEST/
-                    grid/
+                    gridCacheArea/
                          TEST  
 
 In the database create needed contractors:
