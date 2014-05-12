@@ -48,7 +48,7 @@ Create a directory somewhere on your filesystem into which you can install your 
 
     [...]/ContentBroker/
 
-[somewhere] denotes some arbitrary path on your file system.
+[...] denotes some arbitrary path on your file system.
 
 1. Download an installer for the newest stable version of the software from the 
 [release section](https://github.com/da-nrw/DNSCore/releases) and put it to the a arbitrary temp dir on your box. The temp dir will be called [tmp] here.
@@ -189,7 +189,7 @@ Download a testpackage from our source code repository, for example
 [this](https://github.com/da-nrw/DNSCore/raw/master/ContentBroker/src/test/resources/manual/BagIt_META1_METS_MODS_2013.tgz) one.
 Copy it to your IngestArea
 
-    cp BagIt_META1_METS_MODS_2013.tgz [somewhere]/storage/ingest/TEST/abc1.tgz
+    cp BagIt_META1_METS_MODS_2013.tgz [...]/storage/ingest/TEST/abc1.tgz
     
 After some seconds the ContentBroker should fetch the package and you won't find it anymore under ingest/TEST.
 Watch the ContentBroker working with the package with
