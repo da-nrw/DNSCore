@@ -12,15 +12,16 @@
 
 Create 2 databases
 
-# irods db
+### irods db
 
 name: ICAT
 user: irods
 
-# contentbroker db
+### contentbroker db
 
 name: CI-CB
 user: cb_usr
+password: kulle_oezil06
 
 ## Prepare iRODS
 
