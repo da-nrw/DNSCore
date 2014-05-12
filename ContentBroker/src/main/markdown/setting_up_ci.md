@@ -8,6 +8,9 @@
 * iRODS > 3.2
 * git
 
+## Prepare the database
+
+
 ## Prepare iRODS
 
 Set up iRODS
@@ -48,7 +51,6 @@ Create the following folders
 As opposed to a regular node install or an installation on a local development workstation,
 the dirs are fixed and correspond to the settings in src/main/conf/config.properties.vm3
 
-## Prepare the database
 
 
 
