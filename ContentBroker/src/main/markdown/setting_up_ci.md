@@ -48,6 +48,7 @@ Create the following folders
     /ci/storage/GridCacheArea/
                          TEST/
     /ci/archiveStorage/
+    /ci/iRODS/
                          
 As opposed to a regular node install or an installation on a local development workstation,
 the dirs are fixed and correspond to the settings in src/main/conf/config.properties.vm3
