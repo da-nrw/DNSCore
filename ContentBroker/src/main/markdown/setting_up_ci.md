@@ -5,7 +5,7 @@
 * Python > 2.7
 * Postgres > 9.0
 * Oracle Java 1.6
-* iRODS > 3.2
+* iRODS = 3.2
 * git
 
 ## Prepare the database
