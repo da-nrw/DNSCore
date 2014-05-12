@@ -12,7 +12,7 @@ irods.keyStorePassword=
 irods.keyStorePath=
 irods.trustStorePath=
 
-cb.min_repls=2
+cb.min_repls=1
 cb.serverSocketNumber=4455
 cb.sidecar_extensions=xmp;txt;xml
 cb.presServer=da-nrw-vm2.hki.uni-koeln.de
@@ -24,7 +24,7 @@ localNode.ingestAreaRootPath=/ci/storage/IngestArea
 localNode.workAreaRootPath=/ci/storage/WorkArea
 localNode.gridCacheAreaRootPath=/ci/storage/GridCacheArea
 localNode.workingResource=ciWorkingResource
-localNode.replDestinations=hbz,lvr
+localNode.replDestinations=ciArchiveResourceGroup
 localNode.name=da-nrw-vm3.hki.uni-koeln.de
 localNode.id=131614
 
