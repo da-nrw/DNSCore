@@ -97,7 +97,7 @@ Create the following collections
 
 ## Performing a testrun by hand
 
-* mvn clean && mvn deploy -Pvm3
+* mvn clean && mvn deploy -Pci
 
 
 
