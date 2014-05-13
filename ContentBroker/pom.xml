@@ -30,12 +30,6 @@
 				<include.tests>**/*CT*.java</include.tests>
 			</properties>
 		</profile>
-			<profile>
-			<id>ci</id>
-			<properties>
-				<env>ci</env>
-			</properties>
-		</profile>
 	</profiles>
 
 	<modelVersion>4.0.0</modelVersion>
