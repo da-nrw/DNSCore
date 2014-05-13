@@ -103,7 +103,7 @@ public class CTIrodsFederatedGridFacadeTest {
 		fg.put(temp, gridPath, sp);
 		
 		isc.connect();
-		assertTrue(isc.fileExists("/da-nrw/aip/TEST/12345/12345.pack_1.tar"));
+		assertTrue(isc.fileExists("/c-i/aip/TEST/12345/12345.pack_1.tar"));
 		assertTrue(isc.fileExists("/somewhere/aip/TEST/12345/12345.pack_1.tar"));
 		
 		isc.logoff();
