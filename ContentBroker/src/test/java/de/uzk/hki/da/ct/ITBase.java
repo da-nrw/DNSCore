@@ -57,7 +57,7 @@ import de.uzk.hki.da.utils.ProcessInformation;
 public class ITBase {
 
 	/** The name of our integration test node. */
-	protected static String nameOfOurIntegrationTestNode = "da-nrw-vm3.hki.uni-koeln.de";
+	protected static String nameOfOurIntegrationTestNode = "cihost";
 	
 	/** The cache resource vault path. */
 	protected static String cacheResourceVaultPath = "/data/danrw/storage/fs/";
@@ -187,8 +187,8 @@ public class ITBase {
 	 */
 	protected void setupSysConnector(){
 		irodsSystemConnector = new IrodsSystemConnector(
-				"rods", "WpXlLLg3a4/S/iYrs6UhtQ==", nameOfOurIntegrationTestNode, "da-nrw", 
-				"01-da-nrw-vm3.hki.uni-koeln.de");
+				"rods", "UPNTxH5PM9eupHk225S7SA==", nameOfOurIntegrationTestNode, "c-i", 
+				"demoResc");
 		irodsSystemConnector.connect();
 	}
 	
