@@ -100,7 +100,7 @@ vm3)
 	psql contentbroker -c "delete from packages;"
 	psql contentbroker -c "delete from objects_packages;"
 
-	INSTALL_PATH=/data/danrw/ContentBroker
+	INSTALL_PATH=/ci/ContentBroker
 
 	rm $INSTALL_PATH/conf/config.properties
 	rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
