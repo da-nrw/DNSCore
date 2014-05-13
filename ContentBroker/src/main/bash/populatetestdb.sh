@@ -54,9 +54,9 @@ then
 		"DELETE FROM objects;"
 		"DELETE FROM conversion_routines_nodes;"
 		"DELETE FROM nodes;"
+		"DELETE FROM conversion_policies;"
 		"DELETE FROM conversion_routines;"
 		"DELETE FROM conversion_queue;"
-		"DELETE FROM conversion_policies;"
 		"DELETE FROM contractors;"
 	) 
 fi
