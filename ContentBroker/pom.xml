@@ -24,9 +24,9 @@
 			</activation>
 		</profile>
 		<profile>
-			<id>vm3</id>
+			<id>ci</id>
 			<properties>
-				<env>vm3</env>
+				<env>ci</env>
 				<include.tests>**/*CT*.java</include.tests>
 			</properties>
 		</profile>
