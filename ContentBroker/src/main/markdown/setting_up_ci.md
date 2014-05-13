@@ -85,6 +85,7 @@ Create the following folders
                          TEST/
     /ci/archiveStorage/
     /ci/iRODS/
+    /ci/python
                          
 As opposed to a regular node install or an installation on a local development workstation,
 the dirs are fixed and correspond to the settings in src/main/conf/config.properties.vm3
