@@ -15,7 +15,7 @@ irods.trustStorePath=
 cb.min_repls=1
 cb.serverSocketNumber=4455
 cb.sidecar_extensions=xmp;txt;xml
-cb.presServer=da-nrw-vm2.hki.uni-koeln.de
+cb.presServer=localhost
 cb.urnNameSpace=urn:nbn:de:danrw
 
 localNode.admin_email=da-nrw-notifier@uni-koeln.de
