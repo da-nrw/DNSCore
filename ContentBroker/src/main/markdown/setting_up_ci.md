@@ -58,7 +58,8 @@ Create the following collections
     /somewhere/aip
     /c-i/work
     /c-i/aip
-    /c-i/
+    /c-i/pips/institution
+    /c-i/pips/public
 
 ## Preparing the directory structure
 
