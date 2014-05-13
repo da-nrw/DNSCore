@@ -46,9 +46,9 @@ how to convert the existing DNSCore into a full-fledged installation including t
 
 Create a directory somewhere on your filesystem into which you can install your ContentBroker.
 
-    [somewhere]/ContentBroker/
+    [...]/ContentBroker/
 
-[somewhere] denotes some arbitrary path on your file system.
+[...] denotes some arbitrary path on your file system.
 
 1. Download an installer for the newest stable version of the software from the 
 [release section](https://github.com/da-nrw/DNSCore/releases) and put it to the a arbitrary temp dir on your box. The temp dir will be called [tmp] here.
@@ -56,12 +56,12 @@ Create a directory somewhere on your filesystem into which you can install your 
 1. cd into [tmp]/installation.xyz/ 
 1. Call
 <pre>
-    ./install.sh [somewhere]/ContentBroker (make sure there is no trailing slash!)
+    ./install.sh [...]/ContentBroker (make sure there is no trailing slash!)
 </pre>
 1. As feature set, choose (n)ode (explanation of different feature sets [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/system_configuration.md))
 1. Download a fake glue [script](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/bash/ffmpeg.sh.fake) 
 that will ensure you don't have to install ffmpeg for now.
-1. Replace [somewhere]/ContentBroker/ffmpeg.sh by the ffmpeg.sh.fake file you downloaded
+1. Replace [...]/ContentBroker/ffmpeg.sh by the ffmpeg.sh.fake file you downloaded
 
 The application is then installed in [somewhere]/ContentBroker and needs further configurations in order to run
 properly.
@@ -70,15 +70,11 @@ properly.
 
 Prepare your installation and storage directories
 
-    [somewhere]/storage/
-                    user/
-                    ingest/
-                    work/
-                    pip/
-                        institution/
-                        public/
-                    aip/
-                    grid/
+    [...]/storage/
+                    userArea/
+                    ingestArea/
+                    workArea/
+                    gridCacheAre/
 
 The storage directory is a directory structure
 which DNSCore will use to work with data packages. The subfolders correspond to the various 
@@ -95,11 +91,10 @@ version in the appropriate source code branch of the release you want to install
 
 config.properties:    
     
-    localNode.userAreaRootPath=[somewhere]/storage/user
-    localNode.ingestAreaRootPath=[somewhere]/storage/ingest
-    localNode.workAreaRootPath=[somewhere]/storage/work
-    localNode.dipAreaRootPath=[somewhere]/storage/pip
-    localNode.gridCacheAreaRootPath=[somewhere]/storage/grid
+    localNode.userAreaRootPath=[...]/storage/userArea
+    localNode.ingestAreaRootPath=[...]/storage/ingestArea
+    localNode.workAreaRootPath=[...]/storage/workArea
+    localNode.gridCacheAreaRootPath=[...]/storage/gridCacheArea
 
 (Make sure the paths fit the recently created paths on your file system)
 
@@ -154,21 +149,16 @@ by the application:
 According to the structure of the different areas in addition to the basic folder layout we need directories
 for at least one user to run tests against the system. This first user (or contractor in DNSCore terminology) is typically the TEST user. Note that TEST is the  [contractors](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#contractor) short name (or csn for short) and that short names in our system are case sensitive. For our system to work with the TEST user, extend the directory structure like this:
 
-    [somewhere]/storage/
-                    user/
+    [...]/storage/
+                    userArea/
                          TEST/
                               incoming/
                               outgoing/
-                    ingest/
+                    ingestArea/
                          TEST/
-                    work/
+                    workArea/
                          TEST/
-                    pip/
-                        institution/
-                               TEST/
-                        public/
-                               TEST/
-                    grid/
+                    gridCacheArea/
                          TEST  
 
 In the database create needed contractors:
@@ -199,7 +189,7 @@ Download a testpackage from our source code repository, for example
 [this](https://github.com/da-nrw/DNSCore/raw/master/ContentBroker/src/test/resources/manual/BagIt_META1_METS_MODS_2013.tgz) one.
 Copy it to your IngestArea
 
-    cp BagIt_META1_METS_MODS_2013.tgz [somewhere]/storage/ingest/TEST/abc1.tgz
+    cp BagIt_META1_METS_MODS_2013.tgz [...]/storage/ingest/TEST/abc1.tgz
     
 After some seconds the ContentBroker should fetch the package and you won't find it anymore under ingest/TEST.
 Watch the ContentBroker working with the package with

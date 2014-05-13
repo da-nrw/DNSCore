@@ -4,27 +4,27 @@ fedora.password=/MxDGbm6x9Uqoz4iM+C4EA==
 
 irods.user=contentbroker
 irods.password=UPNTxH5PM9eupHk225S7SA==
-irods.server=da-nrw-vm3.hki.uni-koeln.de
-irods.zone=da-nrw
-irods.default_resc=01-da-nrw-vm3.hki.uni-koeln.de
+irods.server=cihost
+irods.zone=c-i
+irods.default_resc=demoResc
 irods.pam=false
 irods.keyStorePassword=
 irods.keyStorePath=
 irods.trustStorePath=
 
-cb.min_repls=2
+cb.min_repls=1
 cb.serverSocketNumber=4455
 cb.sidecar_extensions=xmp;txt;xml
 cb.presServer=da-nrw-vm2.hki.uni-koeln.de
 cb.urnNameSpace=urn:nbn:de:danrw
 
 localNode.admin_email=da-nrw-notifier@uni-koeln.de
-localNode.userAreaRootPath=/data/danrw/www/default/webdav
-localNode.ingestAreaRootPath=/data/danrw/ingest
-localNode.workAreaRootPath=/data/danrw/storage/fs
-localNode.gridCacheAreaRootPath=/data/danrw/storage/fs
-localNode.workingResource=01-da-nrw-vm3.hki.uni-koeln.de
-localNode.replDestinations=hbz,lvr
+localNode.userAreaRootPath=/ci/storage/UserArea
+localNode.ingestAreaRootPath=/ci/storage/IngestArea
+localNode.workAreaRootPath=/ci/storage/WorkArea
+localNode.gridCacheAreaRootPath=/ci/storage/GridCacheArea
+localNode.workingResource=ciWorkingResource
+localNode.replDestinations=ciArchiveResourceGroup
 localNode.name=da-nrw-vm3.hki.uni-koeln.de
 localNode.id=131614
 

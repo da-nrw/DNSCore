@@ -7,8 +7,8 @@
 
 <!-- JDBC connection settings -->
 <property name="connection.driver_class">org.postgresql.Driver</property>
-<property name="connection.url">jdbc:postgresql://da-nrw-vm3.hki.uni-koeln.de:5435/contentbroker</property>
-<property name="connection.username">irods</property>
+<property name="connection.url">jdbc:postgresql://localhost:5432/CI-CB</property>
+<property name="connection.username">cb_usr</property>
 <property name="connection.password">frWKAhKevo6NaneYP1BYfQ==</property>
  
 <!-- JDBC connection pool, use Hibernate internal connection pool -->

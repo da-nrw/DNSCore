@@ -9,7 +9,7 @@ slave nodes or a consideration of other topologies (federation) see the notes at
 ## iRODS as a storage layer
 
 The storage layer is separated of ContentBroker's internal business logic. The interface is composed by the
-GridFacade abstract class and its respective implementations, to separate concerns. By use of this inteface the business code can access objects via logical names whitout knowing of the underlying storage system (which in this case is iRODS).
+GridFacade abstract class and its respective implementations, to separate concerns. By use of this inteface the business code can access objects via logical names without knowing of the underlying storage system (which in this case is iRODS).
 
 As ContentBroker has now an extended and comfortable interface for interacting with 
 iRODS Servers (federated and single zone based architectures) based on the JARGON interface provided by RENCI (see https://code.renci.org/gf/project/jargon/) and our implematations of GridFacade, DNSCore
