@@ -4,7 +4,7 @@ fedora.password=/MxDGbm6x9Uqoz4iM+C4EA==
 
 irods.user=contentbroker
 irods.password=UPNTxH5PM9eupHk225S7SA==
-irods.server=da-nrw-vm3.hki.uni-koeln.de
+irods.server=cihost
 irods.zone=c-i
 irods.default_resc=01-da-nrw-vm3.hki.uni-koeln.de
 irods.pam=false
