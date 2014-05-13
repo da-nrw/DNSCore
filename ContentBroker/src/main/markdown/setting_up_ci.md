@@ -9,6 +9,12 @@
 * git
 * Maven
 
+# Install python
+
+make sure there is a python binary or symlink at
+
+    /ci/python/python
+
 ## Prepare the database
 
 Create 2 databases
