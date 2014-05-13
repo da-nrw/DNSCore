@@ -15,7 +15,7 @@ irods.trustStorePath=
 cb.min_repls=1
 cb.serverSocketNumber=4455
 cb.sidecar_extensions=xmp;txt;xml
-cb.presServer=localhost
+cb.presServer=localnode
 cb.urnNameSpace=urn:nbn:de:danrw
 
 localNode.admin_email=da-nrw-notifier@uni-koeln.de
@@ -25,7 +25,7 @@ localNode.workAreaRootPath=/ci/storage/WorkArea
 localNode.gridCacheAreaRootPath=/ci/storage/GridCacheArea
 localNode.workingResource=ciWorkingResource
 localNode.replDestinations=ciArchiveResourceGroup
-localNode.name=localhost
+localNode.name=localnode
 localNode.id=1
 
 elasticsearch.index=portal_test
