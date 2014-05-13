@@ -43,6 +43,10 @@ Create a resource group and add archive resource to it.
 
     ciArchiveResourceGroup 
 
+Modify server/config/irodsHost so that our irods server hostname is cihost
+
+    localhost cihost
+
 ## Preparing the directory structure
 
 Create the following folders
