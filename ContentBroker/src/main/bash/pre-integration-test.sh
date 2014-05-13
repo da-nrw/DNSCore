@@ -103,10 +103,10 @@ ci)
 ;;
 esac
 
-install $INSTALL_PATH
 rm $INSTALL_PATH/conf/config.properties
 rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
 rm $INSTALL_PATH/actionCommunicatorService.recovery
+install $INSTALL_PATH
 prepareTestEnvironment $INSTALL_PATH
 restartContentBroker $INSTALL_PATH
 
