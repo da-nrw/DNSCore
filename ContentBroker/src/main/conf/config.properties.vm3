@@ -2,7 +2,7 @@ fedora.url=http://da-nrw-vm2.hki.uni-koeln.de:8080/fedora
 fedora.user=fedoraAdmin
 fedora.password=/MxDGbm6x9Uqoz4iM+C4EA==
 
-irods.user=contentbroker
+irods.user=rods
 irods.password=WpXlLLg3a4/S/iYrs6UhtQ==
 irods.server=cihost
 irods.zone=c-i
