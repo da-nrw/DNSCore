@@ -82,7 +82,6 @@ dev)
 	fi
 	
 	src/main/bash/populatetestdb.sh create $1
-	src/main/bash/populatetestdb.sh populate $1
 ;;
 ci)
 	INSTALL_PATH=/ci/ContentBroker
@@ -90,11 +89,12 @@ ci)
 	# TODO remove
 	export PGPASSWORD="kulle_oezil06"
 	src/main/bash/populatetestdb.sh clean $1
-	src/main/bash/populatetestdb.sh populate $1
 
 	createIrodsDirs
 ;;
 esac
+
+src/main/bash/populatetestdb.sh populate $1
 
 rm $INSTALL_PATH/conf/config.properties
 rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
