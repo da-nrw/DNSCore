@@ -96,9 +96,10 @@ dev)
 vm3)
 	# TODO remove
 	export PGPASSWORD="kulle_oezil06"
+	src/main/bash/populatetestdb.sh clean ci
+	src/main/bash/populatetestdb.sh populate ci
 
 	INSTALL_PATH=/ci/ContentBroker
-
 	rm $INSTALL_PATH/conf/config.properties
 	rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
 	install $INSTALL_PATH
@@ -106,8 +107,6 @@ vm3)
 	createIrodsDirs
 	cp src/main/xml/beans.xml.ci conf/beans.xml
 	
-	src/main/bash/populatetestdb.sh clean ci
-	src/main/bash/populatetestdb.sh populate ci
 	
 	# TODO really needed on a ci machine?
 	cp src/main/bash/ffmpeg.sh.fake $INSTALL_PATH/ffmpeg.sh
