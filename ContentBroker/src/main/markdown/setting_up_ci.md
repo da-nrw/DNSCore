@@ -51,6 +51,10 @@ And in /etc/hosts
 
     127.0.0.1 ......... cihost
 
+## Preparing the irods environment
+
+imkdir /somewhere/aip
+
 ## Preparing the directory structure
 
 Create the following folders
