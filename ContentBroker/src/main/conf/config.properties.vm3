@@ -3,7 +3,7 @@ fedora.user=fedoraAdmin
 fedora.password=/MxDGbm6x9Uqoz4iM+C4EA==
 
 irods.user=contentbroker
-irods.password=UPNTxH5PM9eupHk225S7SA==
+irods.password=WpXlLLg3a4/S/iYrs6UhtQ==
 irods.server=cihost
 irods.zone=c-i
 irods.default_resc=demoResc
