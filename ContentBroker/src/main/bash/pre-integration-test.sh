@@ -106,8 +106,8 @@ vm3)
 	createIrodsDirs
 	cp src/main/xml/beans.xml.ci conf/beans.xml
 	
-	src/main/bash/populatetestdb.sh clean
-	src/main/bash/populatetestdb.sh populate
+	src/main/bash/populatetestdb.sh clean ci
+	src/main/bash/populatetestdb.sh populate ci
 	
 	# TODO really needed on a ci machine?
 	cp src/main/bash/ffmpeg.sh.fake $INSTALL_PATH/ffmpeg.sh
