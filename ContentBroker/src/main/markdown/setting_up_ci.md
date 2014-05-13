@@ -9,6 +9,31 @@
 * git
 * Maven
 
+
+
+## Preparing the directory structure
+
+Create the following folders
+
+    /ci/ContentBroker
+    /ci/BuildRepository
+    /ci/DNSCore (clone the repo into this folder)
+    /ci/storage/UserArea/
+                        TEST/
+                            incoming/
+                            outgoing/
+                IngestArea/
+                        TEST/
+                WorkArea/TEST
+    /ci/storage/GridCacheArea/
+                         TEST/
+    /ci/archiveStorage/
+    /ci/iRODS/
+    /ci/python
+                         
+As opposed to a regular node install or an installation on a local development workstation,
+the dirs are fixed and correspond to the settings in src/main/conf/config.properties.vm3
+
 # Install python
 
 make sure there is a python binary or symlink at
@@ -67,28 +92,7 @@ Create the following collections
     /c-i/pips/institution
     /c-i/pips/public
 
-## Preparing the directory structure
 
-Create the following folders
-
-    /ci/ContentBroker
-    /ci/BuildRepository
-    /ci/DNSCore (clone the repo into this folder)
-    /ci/storage/UserArea/
-                        TEST/
-                            incoming/
-                            outgoing/
-                IngestArea/
-                        TEST/
-                WorkArea/TEST
-    /ci/storage/GridCacheArea/
-                         TEST/
-    /ci/archiveStorage/
-    /ci/iRODS/
-    /ci/python
-                         
-As opposed to a regular node install or an installation on a local development workstation,
-the dirs are fixed and correspond to the settings in src/main/conf/config.properties.vm3
 
 
 ## Performing a testrun by hand
