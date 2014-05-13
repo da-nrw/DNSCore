@@ -83,8 +83,6 @@ dev)
 	
 	src/main/bash/populatetestdb.sh create $1
 	src/main/bash/populatetestdb.sh populate $1
-	
-	cp src/main/xml/beans.xml.$1 conf/beans.xml
 ;;
 ci)
 	INSTALL_PATH=/ci/ContentBroker
@@ -95,18 +93,17 @@ ci)
 	src/main/bash/populatetestdb.sh populate $1
 
 	createIrodsDirs
-	cp src/main/xml/beans.xml.$1 conf/beans.xml
-	
-	# TODO really needed on a ci machine?
-	cp src/main/bash/ffmpeg.sh.fake $INSTALL_PATH/ffmpeg.sh
-	
 ;;
 esac
 
 rm $INSTALL_PATH/conf/config.properties
 rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
 rm $INSTALL_PATH/actionCommunicatorService.recovery
+
 install $INSTALL_PATH
+# TODO 1. really needed on a ci machine? 2. duplication with installer?
+cp src/main/bash/ffmpeg.sh.fake $INSTALL_PATH/ffmpeg.sh
+cp src/main/xml/beans.xml.$1 conf/beans.xml
 prepareTestEnvironment $INSTALL_PATH
 restartContentBroker $INSTALL_PATH
 
