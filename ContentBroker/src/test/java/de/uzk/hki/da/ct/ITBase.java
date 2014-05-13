@@ -187,7 +187,7 @@ public class ITBase {
 	 */
 	protected void setupSysConnector(){
 		irodsSystemConnector = new IrodsSystemConnector(
-				"rods", "UPNTxH5PM9eupHk225S7SA==", nameOfOurIntegrationTestNode, "c-i", 
+				"rods", "WpXlLLg3a4/S/iYrs6UhtQ==", nameOfOurIntegrationTestNode, "c-i", 
 				"demoResc");
 		irodsSystemConnector.connect();
 	}
