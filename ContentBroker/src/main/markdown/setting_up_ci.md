@@ -93,7 +93,7 @@ the dirs are fixed and correspond to the settings in src/main/conf/config.proper
 
 ## Performing a testrun by hand
 
-* mvn test -Pvm3
+* mvn clean && mvn deploy -Pvm3
 
 
 
