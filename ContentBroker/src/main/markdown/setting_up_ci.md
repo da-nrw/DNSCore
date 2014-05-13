@@ -53,7 +53,12 @@ And in /etc/hosts
 
 ## Preparing the irods environment
 
-imkdir /somewhere/aip
+Create the following collections
+
+    /somewhere/aip
+    /c-i/work
+    /c-i/aip
+    /c-i/
 
 ## Preparing the directory structure
 
