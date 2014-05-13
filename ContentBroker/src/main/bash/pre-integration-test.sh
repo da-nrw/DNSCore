@@ -80,39 +80,33 @@ dev)
 		echo Error target environment $INSTALL_PATH and current src tree are identical!
 		exit
 	fi
-
-	rm $INSTALL_PATH/conf/config.properties
-	rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
-	rm $INSTALL_PATH/actionCommunicatorService.recovery
-	install $INSTALL_PATH
 	
-	src/main/bash/populatetestdb.sh create
-	src/main/bash/populatetestdb.sh populate
+	src/main/bash/populatetestdb.sh create $1
+	src/main/bash/populatetestdb.sh populate $1
 	
-	cp src/main/xml/beans.xml.dev conf/beans.xml
-	prepareTestEnvironment $INSTALL_PATH
-	restartContentBroker $INSTALL_PATH
+	cp src/main/xml/beans.xml.$1 conf/beans.xml
 ;;
-vm3)
+ci)
+	INSTALL_PATH=/ci/ContentBroker
+
 	# TODO remove
 	export PGPASSWORD="kulle_oezil06"
-	src/main/bash/populatetestdb.sh clean ci
-	src/main/bash/populatetestdb.sh populate ci
-
-	INSTALL_PATH=/ci/ContentBroker
-	rm $INSTALL_PATH/conf/config.properties
-	rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
-	install $INSTALL_PATH
+	src/main/bash/populatetestdb.sh clean $1
+	src/main/bash/populatetestdb.sh populate $1
 
 	createIrodsDirs
-	cp src/main/xml/beans.xml.ci conf/beans.xml
-	
+	cp src/main/xml/beans.xml.$1 conf/beans.xml
 	
 	# TODO really needed on a ci machine?
 	cp src/main/bash/ffmpeg.sh.fake $INSTALL_PATH/ffmpeg.sh
-	prepareTestEnvironment $INSTALL_PATH
-	restartContentBroker $INSTALL_PATH
+	
 ;;
 esac
 
+install $INSTALL_PATH
+rm $INSTALL_PATH/conf/config.properties
+rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
+rm $INSTALL_PATH/actionCommunicatorService.recovery
+prepareTestEnvironment $INSTALL_PATH
+restartContentBroker $INSTALL_PATH
 
