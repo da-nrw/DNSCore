@@ -85,7 +85,13 @@ for i in "${sqls[@]}"
 do
 	echo "$i"
 	cd $HIER
-	java -jar ../3rdParty/hsqldb/lib/sqltool.jar --autoCommit --sql "$i" xdb 
+	
+	if [ "$2" = "ci" ]
+	then
+	    java -jar ../3rdParty/hsqldb/lib/sqltool.jar --autoCommit --sql "$i" xdb 
+	else
+	    psql -U cb_usr -d CI-CB -c "$i"
+	fi
 done
 
 
