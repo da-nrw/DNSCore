@@ -7,6 +7,7 @@
 * Oracle Java 1.6
 * iRODS = 3.2
 * git
+* Maven
 
 ## Prepare the database
 
