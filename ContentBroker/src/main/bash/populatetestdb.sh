@@ -97,7 +97,8 @@ do
 	if [ "$2" = "ci" ]
 	then
 	    psql -U cb_usr -d CI-CB -c "$i"
-	else
+	fi
+	if if [ "$2" = "dev" ]
 	    java -jar ../3rdParty/hsqldb/lib/sqltool.jar --autoCommit --sql "$i" xdb 
 	fi
 done
