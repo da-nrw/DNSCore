@@ -45,11 +45,15 @@ fi
 if [ "$1" = "clean" ] 
 then
 	sqls=(
-		"DELETE FROM nodes;"
-		"DELETE FROM contractors;"
+		"DELETE FROM objects_packages;"
+		"DELETE FROM objects;"
 		"DELETE FROM events;"
 		"DELETE FROM dafiles;"
+		"DELETE FROM packages;"
+		"DELETE FROM nodes;"
+		"DELETE FROM contractors;"
 		"DELETE FROM conversion_queue;"
+		"DELETE FROM queue;"
 	) 
 fi
 
