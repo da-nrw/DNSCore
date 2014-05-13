@@ -66,6 +66,10 @@ As opposed to a regular node install or an installation on a local development w
 the dirs are fixed and correspond to the settings in src/main/conf/config.properties.vm3
 
 
+## Performing a testrun by hand
+
+* mvn test -Pvm3
+
 
 
 
