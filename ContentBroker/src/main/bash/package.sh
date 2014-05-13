@@ -72,7 +72,7 @@ dev)
 	cp src/main/conf/sqltool.rc ~/
 	cp src/main/xml/hibernateCentralDB.cfg.xml.hsql $INSTALLER/hibernateCentralDB.cfg.xml
 ;;
-vm3)
+ci)
 	cp src/main/conf/config.properties.vm3 $INSTALLER/config.properties
 	cp src/main/xml/hibernateCentralDB.cfg.xml.postgres $INSTALLER/hibernateCentralDB.cfg.xml
 	INSTALL_PATH=/data/danrw/ContentBroker
