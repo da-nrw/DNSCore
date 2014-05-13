@@ -47,7 +47,7 @@ public class CTIrodsFederatedGridFacadeTest {
 	/** The fork dir. */
 	static String forkDir = "/tmp/fork/";
 	IrodsSystemConnector isc = new IrodsSystemConnector(
-			"rods", "WpXlLLg3a4/S/iYrs6UhtQ==", "da-nrw-vm3.hki.uni-koeln.de", "da-nrw", "01-da-nrw-vm3.hki.uni-koeln.de");
+			"rods", "UPNTxH5PM9eupHk225S7SA==", "cihost", "da-nrw", "demoResc");
 	
 	
 	/** The temp. */
@@ -75,19 +75,19 @@ public class CTIrodsFederatedGridFacadeTest {
 
 	@After
 	public void tearDown() throws Exception {
-		isc.removeFile("/da-nrw/aip/TEST/12345/12345.pack_1.tar");
+		isc.removeFile("/c-i/aip/TEST/12345/12345.pack_1.tar");
 		isc.removeFile("/somewhere/aip/TEST/12345/12345.pack_1.tar");
 	}
 	
 	@Test
 	public void testPut () {
 
-		IrodsSystemConnector isc = new IrodsSystemConnector("rods", "WpXlLLg3a4/S/iYrs6UhtQ==", "da-nrw-vm3.hki.uni-koeln.de", "da-nrw", "01-da-nrw-vm3.hki.uni-koeln.de");
+		IrodsSystemConnector isc = new IrodsSystemConnector("rods", "UPNTxH5PM9eupHk225S7SA==", "cihost", "da-nrw", "demoResc");
 		IrodsFederatedGridFacade fg = new IrodsFederatedGridFacade();
 		fg.setIrodsSystemConnector(isc);
 		
 		ArrayList<String> dest = new ArrayList<String>();
-		dest.add("da-nrw");
+		dest.add("c-i");
 		dest.add("somewhere");
 		
 		Node node = mock (Node.class);
