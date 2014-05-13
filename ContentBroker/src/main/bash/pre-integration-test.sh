@@ -94,11 +94,8 @@ dev)
 	restartContentBroker $INSTALL_PATH
 ;;
 vm3)
+	# TODO remove
 	export PGPASSWORD="kulle_oezil06"
-	psql contentbroker -c "delete from queue;"
-	psql contentbroker -c "delete from objects;"
-	psql contentbroker -c "delete from packages;"
-	psql contentbroker -c "delete from objects_packages;"
 
 	INSTALL_PATH=/ci/ContentBroker
 
@@ -109,9 +106,11 @@ vm3)
 	createIrodsDirs
 	cp src/main/xml/beans.xml.ci conf/beans.xml
 	
+	src/main/bash/populatetestdb.sh clean
+	src/main/bash/populatetestdb.sh populate
+	
 	# TODO really needed on a ci machine?
 	cp src/main/bash/ffmpeg.sh.fake $INSTALL_PATH/ffmpeg.sh
-	
 	prepareTestEnvironment $INSTALL_PATH
 	restartContentBroker $INSTALL_PATH
 ;;
