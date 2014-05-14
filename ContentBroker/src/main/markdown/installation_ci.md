@@ -18,12 +18,26 @@ the release candidate can be finally turned in a succesfull release.
 
 ## Prerequisites
 
+Please start with installing the following components to your machine first:
+
 * Python > 2.7
 * Postgres > 9.0
 * Oracle Java 1.6
 * iRODS = 3.2
 * git
 * Maven
+
+### Linux environment
+
+User must be
+
+    irods
+    
+the iRODS and DNSCore as well as the storage locations should all be owned by this user.
+
+Add to bashrc
+
+    export PG_PASSWORD=....
 
 ## Preparing the directory structure
 
@@ -99,17 +113,7 @@ Create a resource group and add archive resource to it.
 
     ciArchiveResourceGroup 
 
-### Linux user
 
-User must be
-
-    irods
-    
-the iRODS and DNSCore as well as the storage locations should all be owned by this user.
-
-Add to bashrc
-
-    export PG_PASSWORD=....
   
 
 ## Preparing the irods environment
