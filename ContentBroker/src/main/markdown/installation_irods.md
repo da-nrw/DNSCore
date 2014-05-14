@@ -1,3 +1,22 @@
+	/*
+	  DA-NRW Software Suite | ContentBroker
+	  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung, Universität zu Köln
+	  Copyright (C) 2014 LVRInfoKom, Landschaftsverband Rheinland
+	
+	  This program is free software: you can redistribute it and/or modify
+	  it under the terms of the GNU General Public License as published by
+	  the Free Software Foundation, either version 3 of the License, or
+	  (at your option) any later version.
+	
+	  This program is distributed in the hope that it will be useful,
+	  but WITHOUT ANY WARRANTY; without even the implied warranty of
+	  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	  GNU General Public License for more details.
+	
+	  You should have received a copy of the GNU General Public License
+	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	*/
+
 # Installing iRODS (for DNSCore)
 
 ## iRODS as a storage layer
@@ -27,8 +46,6 @@ Several hardware platforms are supported by iRODS "out-of-the-box", but having a
 
 ### Prerequisites
 
-In order to connect the two systems to prepare a node for production use, we assume that you already have set up
-the ContentBroker as described in the getting started [guide](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/getting_started.md).
 
 1. You have read the documenation available under www.irods.org (e.g. the read the e-Book "iRODS Primer")
 1. You have already experimented with iRODS at a local developer box and you are able to use it.
