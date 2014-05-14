@@ -86,10 +86,7 @@ dev)
 ci)
 	INSTALL_PATH=/ci/ContentBroker
 
-	# TODO remove
-	export PGPASSWORD="kulle_oezil06"
 	src/main/bash/populatetestdb.sh clean $1
-
 	createIrodsDirs
 ;;
 esac

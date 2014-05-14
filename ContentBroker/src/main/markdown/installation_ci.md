@@ -49,7 +49,7 @@ Create 2 databases
 
 ### contentbroker db
 
-    name: CI-CB
+    name: CB
     user: cb_usr
     password: 
 
@@ -87,6 +87,11 @@ User must be
     irods
     
 the iRODS and DNSCore as well as the storage locations should all be owned by this user.
+
+Add to bashrc
+
+    export PG_PASSWORD=....
+  
 
 ## Preparing the irods environment
 

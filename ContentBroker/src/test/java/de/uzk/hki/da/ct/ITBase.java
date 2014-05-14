@@ -75,7 +75,7 @@ public class ITBase {
 	protected static String transferAreaRootPath ="/data/danrw/www/default/webdav/";
 	
 	/** The zone path. */
-	protected static String zonePath = "/da-nrw/";
+	protected static String zonePath = "/c-i/";
 	
 	/** The irods system connector. */
 	protected static IrodsSystemConnector irodsSystemConnector;
@@ -157,7 +157,7 @@ public class ITBase {
 		node.setUserAreaRootPath("/data/danrw/www/default/webdav/");
 		node.setIngestAreaRootPath("/data/danrw/ingest/");
 		node.setGridCacheAreaRootPath("/data/danrw/storage/fs/");
-		node.setWorkingResource("01-da-nrw-vm3.hki.uni-koeln.de");
+		node.setWorkingResource("ciWorkingResource");
 		node.setAdminEmail("da-nrw-notifier@uni-koeln.de");
 	}
 	
@@ -188,7 +188,7 @@ public class ITBase {
 	protected void setupSysConnector(){
 		irodsSystemConnector = new IrodsSystemConnector(
 				"rods", "WpXlLLg3a4/S/iYrs6UhtQ==", nameOfOurIntegrationTestNode, "c-i", 
-				"demoResc");
+				"ciWorkingResource");
 		irodsSystemConnector.connect();
 	}
 	
@@ -351,7 +351,7 @@ public class ITBase {
 	 */
 	protected boolean fileExistsLogicallyAndPhysically(String relativePackagePath){
 		return ((new File(cacheResourceVaultPath + relativePackagePath).exists())
-				&&(irodsSystemConnector.fileExists("/da-nrw/" + relativePackagePath)));
+				&&(irodsSystemConnector.fileExists("/c-i/" + relativePackagePath)));
 	}
 	
 	/**
@@ -362,7 +362,7 @@ public class ITBase {
 	 */
 	protected boolean fileExistsLogicallyOrPhysically(String relativePackagePath){
 		return ((new File(cacheResourceVaultPath + relativePackagePath).exists())
-				||(irodsSystemConnector.fileExists("/da-nrw/" + relativePackagePath)));
+				||(irodsSystemConnector.fileExists("/c-i/" + relativePackagePath)));
 	}
 	
 	/**
@@ -373,7 +373,7 @@ public class ITBase {
 	 */
 	protected boolean collectionExistsLogicallyOrPhysically(String relativePackagePath){
 		return ((new File(cacheResourceVaultPath + relativePackagePath).exists())
-				||(irodsSystemConnector.collectionExists("/da-nrw/" + relativePackagePath)));
+				||(irodsSystemConnector.collectionExists("/c-i/" + relativePackagePath)));
 	}
 	
 }

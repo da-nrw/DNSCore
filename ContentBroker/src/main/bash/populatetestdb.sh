@@ -96,7 +96,7 @@ do
 	
 	if [ "$2" = "ci" ]
 	then
-	    psql -U cb_usr -d CI-CB -c "$i"
+	    psql -U cb_usr -d CB -c "$i"
 	fi
 	if [ "$2" = "dev" ]
 	then
