@@ -64,6 +64,14 @@ Set up iRODS
     zonename = c-i
     irodsuser = rods
     irodspassword = 
+    
+Modify server/config/irodsHost so that our irods server hostname is cihost
+
+    cihost localhost
+    
+And in /etc/hosts
+
+    127.0.0.1 ......... cihost
 
 Create 2 resources 
 
@@ -74,13 +82,6 @@ Create a resource group and add archive resource to it.
 
     ciArchiveResourceGroup 
 
-Modify server/config/irodsHost so that our irods server hostname is cihost
-
-    cihost localhost
-    
-And in /etc/hosts
-
-    127.0.0.1 ......... cihost
 
 ## Preparing the irods environment
 
