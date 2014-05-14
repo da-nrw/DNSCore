@@ -103,9 +103,9 @@ Create the following collections
 
 ## Performing a testrun by hand
 
-* git clone https://github.com/da-nrw/DNSCore DNSCore_clone
+* git clone https://github.com/da-nrw/DNSCore DNSCore
 
-* cd DNSCore_clone/ContentBroker
+* cd DNSCore/ContentBroker
 
 * mvn clean && mvn deploy -Pci
 
