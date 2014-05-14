@@ -9,8 +9,6 @@
 * git
 * Maven
 
-
-
 ## Preparing the directory structure
 
 Create the following folders
