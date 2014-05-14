@@ -85,11 +85,11 @@ Create a resource group and add archive resource to it.
 
 Create the following collections
 
-    /somewhere/aip
-    /c-i/work
-    /c-i/aip
-    /c-i/pips/institution
-    /c-i/pips/public
+    imkdir /somewhere/aip
+    imkdir /c-i/work
+    imkdir /c-i/aip
+    imkdir /c-i/pips/institution
+    imkdir /c-i/pips/public
 
 
 
