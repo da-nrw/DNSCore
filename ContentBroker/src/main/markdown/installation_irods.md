@@ -62,3 +62,10 @@ Several hardware platforms are supported by iRODS "out-of-the-box", but having a
 
 Set up a basic iRODS > 3.2 installation. Make sure the installation is installed as ICAT-Enabled. The installer
 will ask you for entering certain properties to which we will refer later.
+
+in server/config/reConfigs/core.re
+
+    acSetRescSchemeForCreate {msiSetDefaultResc("ciWorkingResource","null"); }
+    acSetRescSchemeForRepl {msiSetDefaultResc("ciWorkingResource","null"); }
+ 
+
