@@ -96,6 +96,10 @@ Create the following collections
 
 ## Performing a testrun by hand
 
+* git clone https://github.com/da-nrw/DNSCore DNSCore_clone
+
+* cd DNSCore_clone
+
 * mvn clean && mvn deploy -Pci
 
 
