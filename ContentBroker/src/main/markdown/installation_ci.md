@@ -98,7 +98,7 @@ Create the following collections
 
 * git clone https://github.com/da-nrw/DNSCore DNSCore_clone
 
-* cd DNSCore_clone
+* cd DNSCore_clone/ContentBroker
 
 * mvn clean && mvn deploy -Pci
 
