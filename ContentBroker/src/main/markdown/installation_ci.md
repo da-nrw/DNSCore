@@ -16,6 +16,10 @@ all tests passed then, the release candidate, is proved to be suitable to a high
 or capacity testing on a very production similar grid of machines, which should lead to even higher confidence that
 the release candidate can be finally turned in a succesfull release.
 
+In order to always work in a predictable manner with the ever changing code base, of which the build scripts itself
+are part of, the machine set up for continuous integration has to be configured in a certain way. 
+This document describes in detail how to set up such a machine.
+
 ## Prerequisites
 
 Please start with installing the following components to your machine first:
@@ -23,21 +27,20 @@ Please start with installing the following components to your machine first:
 * Python > 2.7
 * Postgres > 9.0
 * Oracle Java 1.6
-* iRODS = 3.2
+* [iRODS](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_irods.md) = 3.2
 * git
 * Maven
 
 ### Linux environment
 
-User must be
+iRODS, DNSCore, as well as the build repository and all the other storage locations from the
+following paragraphs, should be owned by a single linux user, which is preferably named
 
     irods
     
-the iRODS and DNSCore as well as the storage locations should all be owned by this user.
-
-Add to bashrc
-
-    export PG_PASSWORD=....
+Make sure to edit .bashrc of this user and add the following entry
+    
+    export PG_PASSWORD=[db password of cb_usr]
 
 ## Preparing the directory structure
 
@@ -59,8 +62,7 @@ Create the following folders
     /ci/iRODS/
     /ci/python
                          
-As opposed to a regular node install or an installation on a local development workstation,
-the dirs are fixed and correspond to the settings in src/main/conf/config.properties.vm3
+
 
 # Install python
 
@@ -126,9 +128,6 @@ Create the following collections
     imkdir /c-i/pips/institution
     imkdir /c-i/pips/public
 
-
-
-
 ## Performing a testrun by hand
 
 * git clone https://github.com/da-nrw/DNSCore DNSCore
@@ -136,6 +135,11 @@ Create the following collections
 * cd DNSCore/ContentBroker
 
 * mvn clean && mvn deploy -Pci
+
+## Settings
+
+As opposed to a regular node install or an installation on a local development workstation,
+the dirs are fixed and correspond to the settings in src/main/conf/config.properties.vm3
 
 
 
