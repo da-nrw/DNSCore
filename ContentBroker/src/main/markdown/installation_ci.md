@@ -1,5 +1,21 @@
 # Setting up a continuous integration node
 
+Any release candidate of DNSCore which is meant to be used in 
+a production environment, should be build via the maven build lifecycle 
+in a continuous integration environment. When we call "mvn deploy" with the "-Pci"-param 
+(which stands for continuous integration environment), DNSCore gets build and tested,
+and all the acceptance tests run, before the final deliverable gets deployed to a build repository.
+As opposed to a development environment (which typically runs on development workstations) all the 
+acceptance tests run against an installation of the ContentBroker which is embedded in a fully
+operational environment which is similar to the final production environment. This means, that
+there are installation of iRODS and Fedora on the same machine and the ContentBroker acts in conjuntion
+with these components to fulfill the test criteria (as opposed to the tests on development workstations where
+these components are replaced by fake connectors). This helps to control the additional sources of error
+that come from the co-working of DNSCore and the components. The final product of any proper build with
+all tests passed then, the release candidate, is proved to be suitable to a high degree for further exploratory
+or capacity testing on a very production similar grid of machines, which should lead to even higher confidence that
+the release candidate can be finally turned in a succesfull release.
+
 ## Prerequisites
 
 * Python > 2.7
