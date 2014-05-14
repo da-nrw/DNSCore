@@ -27,11 +27,11 @@ Please start with installing the following components to your machine first:
 * Python > 2.7
 * Postgres > 9.0
 * Oracle Java 1.6
-* [iRODS](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_irods.md) = 3.2
+
 * git
 * Maven
 
-### Linux environment
+## Linux environment
 
 iRODS, DNSCore, as well as the build repository and all the other storage locations from the
 following paragraphs, should be owned by a single linux user, which is preferably named
@@ -41,8 +41,6 @@ following paragraphs, should be owned by a single linux user, which is preferabl
 Make sure to edit .bashrc of this user and add the following entry
     
     export PG_PASSWORD=[db password of cb_usr]
-
-## Preparing the directory structure
 
 Create the following folders
 
@@ -62,13 +60,13 @@ Create the following folders
     /ci/iRODS/
     /ci/python
                          
-
-
-# Install python
-
-make sure there is a python binary or symlink at
+Make sure to symlink your python 2.7 binary to this location:
 
     /ci/python/python
+
+And in /etc/hosts
+
+    127.0.0.1 ......... cihost
 
 ## Prepare the database
 
@@ -83,16 +81,13 @@ Create 2 databases
 
     name: CB
     user: cb_usr
-    password: 
 
-import this [dump](ContentBroker/src/main/conf/postgres_schema.dump) which contains
+Import this [dump](ContentBroker/src/main/conf/postgres_schema.dump) which contains
 the schema for the database, the tests will fill the database itself later with data.
 
-## Prepare iRODS
+## iRODS installation
 
-Set up iRODS
-
-... TODO
+Install [iRODS](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_irods.md) 3.2
 
     zonename = c-i
     irodsuser = rods
@@ -101,10 +96,6 @@ Set up iRODS
 Modify server/config/irodsHost so that our irods server hostname is cihost
 
     cihost localhost
-    
-And in /etc/hosts
-
-    127.0.0.1 ......... cihost
 
 Create 2 resources 
 
@@ -115,10 +106,10 @@ Create a resource group and add archive resource to it.
 
     ciArchiveResourceGroup 
 
+in server/config/reConfigs/core.re
 
-  
-
-## Preparing the irods environment
+    acSetRescSchemeForCreate {msiSetDefaultResc("ciWorkingResource","null"); }
+    acSetRescSchemeForRepl {msiSetDefaultResc("ciWorkingResource","null"); }
 
 Create the following collections
 
