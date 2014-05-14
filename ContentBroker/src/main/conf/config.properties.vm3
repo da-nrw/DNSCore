@@ -6,7 +6,7 @@ irods.user=rods
 irods.password=WpXlLLg3a4/S/iYrs6UhtQ==
 irods.server=cihost
 irods.zone=c-i
-irods.default_resc=demoResc
+irods.default_resc=ciWorkingResource
 irods.pam=false
 irods.keyStorePassword=
 irods.keyStorePath=
