@@ -69,6 +69,9 @@ Create 2 databases
     user: cb_usr
     password: 
 
+import this [dump](ContentBroker/src/main/conf/postgres_schema.dump) which contains
+the schema for the database, the tests will fill the database itself later with data.
+
 ## Prepare iRODS
 
 Set up iRODS
