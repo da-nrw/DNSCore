@@ -88,6 +88,11 @@ User must be
     
 the iRODS and DNSCore as well as the storage locations should all be owned by this user.
 
+Add to bashrc
+
+    export PG_PASSWORD=....
+  
+
 ## Preparing the irods environment
 
 Create the following collections
