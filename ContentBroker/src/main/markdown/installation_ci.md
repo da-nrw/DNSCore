@@ -49,7 +49,7 @@ Create 2 databases
 
 ### contentbroker db
 
-    name: CI-CB
+    name: CB
     user: cb_usr
     password: 
 
