@@ -74,6 +74,92 @@ For deeper information on the software please take a look at the Wiki on GitHub.
 
 
 
+## Documentation
+
+Welcome to the DNSCore documentation
+
+We have several sources of comprehensive documentation for our project and our codebase.
+For all questions related to the software as such and its usage, consider the primary source of
+documentation which is rolled out directly as part of the source. 
+
+Before diving into the documentation in the paragraphs below note that documentation about the
+project is stored mainly in to places.
+General overview you'll find it under:
+<br>https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/
+<br>For more information on DA-Web User Interface refer to:
+<br>https://github.com/da-nrw/DNSCore/blob/master/DAWeb/doc
+<br>All the links below refer to documentation stored in one of these places.
+
+**Note** that under the abovementioned links you'll always find the documentation attached to the master (e.g. snapshot) version. In most cases this should be what you need. In rare cases however, you want a documentation artifact that matches the exact state of implementation. In these cases you can go to
+the releases page, follow the source code link for the corresponding version and then search for the document you're after in this special repository snapshot.
+
+### General concepts, for all Audiences including End Users
+
+* [Ingest and Retrieval](https://github.com/da-nrw/DNSCore/blob/master/DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
+* Presentation of the [Object model](ContentBroker/src/main/markdown/object_model.md).
+* Presentation of the [Delta feature](ContentBroker/src/main/markdown/the_delta_feature.md).
+* [DIP](ContentBroker/src/main/markdown/dip_specification.md) Specification
+* [SIP](ContentBroker/src/main/markdown/sip_specification.md) Specification
+* [AIP](ContentBroker/src/main/markdown/aip_specification.md) Specification
+* [PREMIS Specification](ContentBroker/src/main/markdown/premis_specification.md)
+
+
+### Administration
+
+#### General concepts
+* [Processing Stages](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md) demonstrates basic concepts necessary to administrate the system
+* Overview over the system [components](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/components_connectors.md)
+* Overview of the [format module](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/format_module.md).
+* Overview of the [metadata workflow](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/metadata_workflow.md).
+
+#### Installation related
+* [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_irods.md) to learn how to set up a iRODS on a DNSCore node.
+* [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_cb.md) to learn how to set up the ContentBroker.
+* [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_irods_cb.md) to learn how connect iRODS and the ContentBroker
+* [click here](https://github.com/da-nrw/prepscripts/blob/master/README.md) to learn how connect Fedora and DNSCore
+* [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation.md) if you want to update your node to a new version of DNSCore
+* [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_ci.md) to learn how to set up a machine for continuous integration.
+
+#### Running a node
+* [click here](https://github.com/da-nrw/DNSCore/blob/master/DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.  
+* [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/system_configuration.md) to get an overview of how to set up the config files so that DNSCore will work in your environment.
+* [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/administration-troubleshooting.md) to get help how to administrate the system when errors occur.
+* [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/open_ports.md) for a list of ports your firewall has to allow connections to.
+* [clck here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/audit.md) to get information how the AIP are being checked automatically.
+
+
+
+
+### Development
+* [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/3rdPartyTools.md) to get general information about the use and redistribution of used 3rd party libraries and tools.
+* [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/deploy.md) if you want to deploy the software yourself and build the source code on your local or on a continuous integration machine.
+* [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/manual_testing_rc.md) to learn more about how our software is being tested.
+* [click here](https://github.com/da-nrw/DNSCore/blob/master/DAWeb/doc/deploy.md) for information about deploying DAWeb
+* [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/javadoc.md) if you want to recreate the JavaDoc files and publish them on GitHub Pages
+
+
+
+
+
+
+
+
+
+
+## Other stuff
+
+### Release notes of old versions:
+
+* [[Release Notes v0.6.2]]
+* [[Release Notes v0.6.1]]
+* [[Release Notes v0.6.0]]
+* [[Release Notes v0.5.2]]
+* [[Release Notes v0.5.0]]
+* [[Release Notes v0.4.0]]
+
+### Devs only
+
+* [[markuptest]]
 
 
 
