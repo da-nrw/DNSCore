@@ -47,7 +47,7 @@ public class CTIrodsFederatedGridFacadeTest {
 	/** The fork dir. */
 	static String forkDir = "/tmp/fork/";
 	IrodsSystemConnector isc = new IrodsSystemConnector(
-			"rods", "WpXlLLg3a4/S/iYrs6UhtQ==", "cihost", "c-i", "demoResc");
+			"rods", "WpXlLLg3a4/S/iYrs6UhtQ==", "cihost", "c-i", "ciWorkingResource");
 	
 	
 	/** The temp. */
@@ -82,7 +82,7 @@ public class CTIrodsFederatedGridFacadeTest {
 	@Test
 	public void testPut () {
 
-		IrodsSystemConnector isc = new IrodsSystemConnector("rods", "WpXlLLg3a4/S/iYrs6UhtQ==", "cihost", "c-i", "demoResc");
+		IrodsSystemConnector isc = new IrodsSystemConnector("rods", "WpXlLLg3a4/S/iYrs6UhtQ==", "cihost", "c-i", "ciWorkingResource");
 		IrodsFederatedGridFacade fg = new IrodsFederatedGridFacade();
 		fg.setIrodsSystemConnector(isc);
 		
