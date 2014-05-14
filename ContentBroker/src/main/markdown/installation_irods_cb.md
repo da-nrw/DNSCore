@@ -1,5 +1,13 @@
 # Connecting iRODS and DNSCore
 
+## Prerequisites
+
+* iRODS > 3.2
+* DNSCore specific iRODS configuration ([here](installation_irods.md))
+* ContentBroker ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_cb.md))
+
+
+
 This document describes how to set up iRODS as a backend to an existing DNSCore installation.
 Both systems connected, with the DNSCore beeing the business layer and iRODS beeing the storage layer,
 form a fully operational node ready for production use. For the purpose of this document, the system is considered
