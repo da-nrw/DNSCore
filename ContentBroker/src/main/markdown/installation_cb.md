@@ -17,7 +17,7 @@
 	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 
-# Getting started
+# Installation ContentBroker
 
 This document describes how to setup a node with DNSCore in the quickest possible manner, using
 an existent build of the software which can be retrieved from our releases section.
