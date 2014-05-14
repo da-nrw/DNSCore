@@ -80,6 +80,13 @@ Create a resource group and add archive resource to it.
 
     ciArchiveResourceGroup 
 
+### Linux user
+
+User must be
+
+    irods
+    
+the iRODS and DNSCore as well as the storage locations should all be owned by this user.
 
 ## Preparing the irods environment
 
