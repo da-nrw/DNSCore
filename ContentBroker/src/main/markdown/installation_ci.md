@@ -17,7 +17,8 @@ or capacity testing on a very production similar grid of machines, which should 
 the release candidate can be finally turned in a succesfull release.
 
 In order to always work in a predictable manner with the ever changing code base, of which the build scripts itself
-are part of, the machine set up for continuous integration has to be configured in a certain way. 
+are part of, the machine set up for continuous integration has to be configured in a certain way (without the degrees
+of freedom you have when installing a typical node). 
 This document describes in detail how to set up such a machine.
 
 ## Prerequisites
