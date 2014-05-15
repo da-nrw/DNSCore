@@ -158,6 +158,11 @@ in your config/install.properties set the following entries accordingly
 
 Remember the admins name is fedoraAdmin
 
+..
+
+Attention the scripts for setting up the policies seemed to be a little buggy insofar
+as prepscripts/scripts/fedorarest.py had to be adjusted with the right credentials.
+The configuration via setup-policies.py didn't work properly.
 
 ## Performing a testrun by hand
 
