@@ -77,7 +77,7 @@ And in /etc/hosts
     127.0.0.1 ......... cihost
     
 /ci/fedora should be owned by irods:tomcat with all write permissions for tomcat granted.
-Test can be done with ./fedora-ingest-demos.sh localhost 8080 fedoraAdmin clBDmno7 http
+Test can be done with ./fedora-ingest-demos.sh localhost 8080 fedoraAdmin [password] http
     
 
 ## Prepare the database
