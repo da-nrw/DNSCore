@@ -152,6 +152,9 @@ in your config/install.properties set the following entries accordingly
     tomcat.home=(SET)
     fedora.home=/ci/fedora
 
+Remember the admins name is fedoraAdmin
+
+
 ## Performing a testrun by hand
 
 * git clone https://github.com/da-nrw/DNSCore DNSCore
