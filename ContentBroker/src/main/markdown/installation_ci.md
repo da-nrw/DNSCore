@@ -42,6 +42,10 @@ following paragraphs, should be owned by a single linux user, which is preferabl
 Make sure to edit .bashrc of this user and add the following entry
     
     export PG_PASSWORD=[db password of cb_usr]
+    export FEDORA_HOME=/ci/fedora
+    export JAVA_HOME=
+    export JAVA_OPTS
+    export CATALINA_HOME
 
 Create the following folders
 
