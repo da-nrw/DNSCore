@@ -34,6 +34,13 @@ Please start with installing the following components to your machine first:
 
 ## Linux environment
 
+In /etc/profile.d/dns.sh (for all users)
+
+    export FEDORA_HOME=/ci/fedora
+    export JAVA_HOME=
+    export JAVA_OPTS
+    export CATALINA_HOME
+
 iRODS, DNSCore, as well as the build repository and all the other storage locations from the
 following paragraphs, should be owned by a single linux user, which is preferably named
 
@@ -42,10 +49,6 @@ following paragraphs, should be owned by a single linux user, which is preferabl
 Make sure to edit .bashrc of this user and add the following entry
     
     export PG_PASSWORD=[db password of cb_usr]
-    export FEDORA_HOME=/ci/fedora
-    export JAVA_HOME=
-    export JAVA_OPTS
-    export CATALINA_HOME
 
 Create the following folders
 
