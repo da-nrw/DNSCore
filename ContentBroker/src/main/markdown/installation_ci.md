@@ -26,6 +26,7 @@ This document describes in detail how to set up such a machine.
 Please start with installing the following components to your machine first:
 
 * Python > 2.7
+* http2lib module for python
 * Postgres > 9.0
 * Oracle Java 1.6
 * ImageMagick
