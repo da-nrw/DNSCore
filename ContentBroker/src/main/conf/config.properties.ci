@@ -1,6 +1,6 @@
-fedora.url=http://da-nrw-vm2.hki.uni-koeln.de:8080/fedora
+fedora.url=http://localhost:8080/FED
 fedora.user=fedoraAdmin
-fedora.password=/MxDGbm6x9Uqoz4iM+C4EA==
+fedora.password=BYi/MFjKDFd5Dpe52PSUoA==
 
 irods.user=rods
 irods.password=WpXlLLg3a4/S/iYrs6UhtQ==
