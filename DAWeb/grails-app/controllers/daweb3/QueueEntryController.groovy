@@ -54,7 +54,7 @@ class QueueEntryController {
 	             [csn: session.contractor.shortName])
 			} else {
 				admin = true;
-				queueEntries = QueueEntry.findAll(params)
+				queueEntries = QueueEntry.findAll("from QueueEntry as q")
 			}
 			[queueEntryInstanceList: queueEntries,
 				admin:admin, periodical:periodical ]
