@@ -64,6 +64,7 @@ cp src/main/xml/beans.xml.pres $INSTALLER/
 cp src/main/xml/beans.xml.full $INSTALLER/
 cp src/main/xml/logback.xml.debug $INSTALLER/logback.xml
 
+
 case "$1" in
 dev)
 	sed "s@CONTENTBROKER_ROOT@$2@" src/main/conf/config.properties.dev  > $INSTALLER/config.properties # TODO move to pre-integration-test.sh
