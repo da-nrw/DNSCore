@@ -28,7 +28,7 @@ Please start with installing the following components to your machine first:
 * Python > 2.7
 * Postgres > 9.0
 * Oracle Java 1.6
-
+* ImageMagick
 * git
 * Maven
 
