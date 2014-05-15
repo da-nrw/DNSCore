@@ -130,6 +130,21 @@ Create the following collections
     imkdir /c-i/pips/institution
     imkdir /c-i/pips/public
 
+## Install Fedora
+
+While executing the following steps, compare the fedora [installation](https://github.com/da-nrw/prepscripts/blob/master/doc/install_fedora.md) documtn.
+
+in your config/install.properties set the following entries accordingly
+
+    fedora.admin.pass=(SET)
+    fedora.serverHost=cihost
+    database.password=(SET)
+    database.username=fed_usr
+    database.jdbcURL=jdbc\:postgresql\://localhost\:5432//FED
+    database.postgresql.jdbcURL=jdbc\:postgresql\://localhost\:5432//FED
+    tomcat.home=(SET)
+    fedora.home=/ci/fedora
+
 ## Performing a testrun by hand
 
 * git clone https://github.com/da-nrw/DNSCore DNSCore
