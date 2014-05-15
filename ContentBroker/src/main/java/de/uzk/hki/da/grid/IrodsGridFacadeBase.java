@@ -194,7 +194,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	@Override
 	public boolean isValid(String address_dest) {
 
-		address_dest = "/" + irodsSystemConnector.getZone() + address_dest;
+		address_dest = "/" + irodsSystemConnector.getZone() + "/" + aipDirName + "/" + address_dest;
 		
 		irodsSystemConnector.connect();
 		
