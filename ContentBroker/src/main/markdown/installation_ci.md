@@ -71,7 +71,7 @@ And in /etc/hosts
 
 ## Prepare the database
 
-Create 2 databases
+Create 3 databases
 
 ### irods db
 
@@ -85,6 +85,12 @@ Create 2 databases
 
 Import this [dump](../conf/postgres_schema.dump) which contains
 the schema for the database, the tests will fill the database itself later with data.
+
+### fedora db
+
+    name: FED
+    user: fed_usr
+
 
 ## iRODS installation
 
