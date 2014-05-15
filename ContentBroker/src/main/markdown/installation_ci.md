@@ -71,7 +71,7 @@ And in /etc/hosts
 
 ## Prepare the database
 
-Create 3 databases
+Create 4 databases
 
 ### irods db
 
@@ -91,6 +91,10 @@ the schema for the database, the tests will fill the database itself later with 
     name: FED
     user: fed_usr
 
+### fedora triplestore
+
+    name: TRIP
+    user: fed_usr
 
 ## iRODS installation
 
