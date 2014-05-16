@@ -62,10 +62,10 @@ public class IntegrityScannerWorkerTest {
 	String urn = "123456";
 	
 	/** The package1 path. */
-	String package1Path = "/aip/TEST/"+urn+"/"+urn+".pack_1.tar";
+	String package1Path = "TEST/"+urn+"/"+urn+".pack_1.tar";
 	
 	/** The package2 path. */
-	String package2Path = "/aip/TEST/"+urn+"/"+urn+".pack_2.tar";
+	String package2Path = "TEST/"+urn+"/"+urn+".pack_2.tar";
 	
 	/** The obj. */
 	Object obj;
@@ -133,7 +133,7 @@ public class IntegrityScannerWorkerTest {
 		IrodsGridFacade gc = mock(IrodsGridFacade.class);
 		IrodsSystemConnector irods = mock (IrodsSystemConnector.class);
 		
-		when (irods.getZone()).thenReturn("da-nrw");
+		when (irods.getZone()).thenReturn("c-i");
 		
 		when (gc.getirodsSystemConnector()).thenReturn(irods);
 		
@@ -157,7 +157,7 @@ public class IntegrityScannerWorkerTest {
 	
 		IrodsGridFacade gc = mock(IrodsGridFacade.class);
 		IrodsSystemConnector irods = mock (IrodsSystemConnector.class);
-		when (irods.getZone()).thenReturn("da-nrw");
+		when (irods.getZone()).thenReturn("c-i");
 		
 
 		when (gc.getirodsSystemConnector()).thenReturn(irods);
