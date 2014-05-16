@@ -4,9 +4,9 @@
 
 	<properties>
 		<scp.user>irods</scp.user>
-		<scp.host>da-nrw-vm3.hki.uni-koeln.de</scp.host>
-		<scp.host2>da-nrw-vm2.hki.uni-koeln.de</scp.host2>
-		<scp.toDir>/data/danrw/iRODS/server/bin</scp.toDir>
+		<scp.host>da-nrw</scp.host>
+		<scp.host2>da-nrw</scp.host2>
+		<scp.toDir>/da-nrw</scp.toDir>
 		<maven.test.search.classdir>true</maven.test.search.classdir>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
