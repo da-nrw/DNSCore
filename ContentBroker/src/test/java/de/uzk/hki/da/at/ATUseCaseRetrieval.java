@@ -48,12 +48,12 @@ public class ATUseCaseRetrieval extends Base{
 		setUpBase();
 		gridFacade.put(
 				new File("src/test/resources/at/ATUseCaseRetrieval.pack_1.tar"),
-				"/aip/TEST/RetrievalObject/ID-ATUseCaseRetrieval.pack_1.tar",new StoragePolicy(new Node()));
+				"TEST/ID-ATUseCaseRetrieval/ID-ATUseCaseRetrieval.pack_1.tar",new StoragePolicy(new Node()));
 	}
 	
 	@After
 	public void tearDown() throws IOException{
-		distributedConversionAdapter.remove("aip/TEST/ID-ATUseCaseRetrieval"); // TODO does it work?
+		distributedConversionAdapter.remove("TEST/ID-ATUseCaseRetrieval"); // TODO does it work?
 		new File("/tmp/ID-ATUseCaseRetrieval.tar").delete();
 		FileUtils.deleteDirectory(new File("/tmp/ID-ATUseCaseRetrieval"));
 		
