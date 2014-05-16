@@ -25,6 +25,7 @@ public class CTIrodsGridFacadeTest {
 
 	@Before
 	public void setUp(){
+		isc = new IrodsSystemConnector("rods", "WpXlLLg3a4/S/iYrs6UhtQ==", "cihost", "c-i", "ciWorkingResource");
 		isc.connect();
 	}
 	
@@ -36,7 +37,6 @@ public class CTIrodsGridFacadeTest {
 	@Test
 	public void test() throws IOException{
 		
-		isc = new IrodsSystemConnector("rods", "WpXlLLg3a4/S/iYrs6UhtQ==", "cihost", "c-i", "ciWorkingResource");
 		IrodsGridFacade grid = new IrodsGridFacade();
 		grid.setIrodsSystemConnector(isc);
 
