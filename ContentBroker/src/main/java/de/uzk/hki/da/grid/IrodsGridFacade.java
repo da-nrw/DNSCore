@@ -130,7 +130,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 	@Override
 	public boolean storagePolicyAchieved(String gridPath, StoragePolicy sp) {
 		irodsSystemConnector.connect();
-		gridPath = "/" + irodsSystemConnector.getZone()  + gridPath;
+		gridPath = "/" + irodsSystemConnector.getZone() + "/" + aipDirName + "/" + gridPath;
 		int minNodes = sp.getMinNodes();
 		try {
 			logger.debug("checking StoragePolicy achieved for " + gridPath); 
