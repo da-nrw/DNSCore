@@ -152,8 +152,8 @@ in your config/install.properties set the following entries accordingly
     fedora.serverHost=cihost
     database.password=(SET)
     database.username=fed_usr
-    database.jdbcURL=jdbc\:postgresql\://localhost\:5432//FED
-    database.postgresql.jdbcURL=jdbc\:postgresql\://localhost\:5432//FED
+    database.jdbcURL=jdbc\:postgresql\://localhost\:5432/FED
+    database.postgresql.jdbcURL=jdbc\:postgresql\://localhost\:5432/FED
     tomcat.home=(SET)
     fedora.home=/ci/fedora
 
