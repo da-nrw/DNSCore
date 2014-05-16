@@ -46,9 +46,9 @@ public class ATUseCaseRetrieval extends Base{
 	@Before()
 	public void setUp() throws IOException{
 		setUpBase();
-		gridFacade.put(
-				new File("src/test/resources/at/ATUseCaseRetrieval.pack_1.tar"),
-				"TEST/ID-ATUseCaseRetrieval/ID-ATUseCaseRetrieval.pack_1.tar",new StoragePolicy(new Node()));
+//		gridFacade.put(
+//				new File("src/test/resources/at/ATUseCaseRetrieval.pack_1.tar"),
+//				"TEST/ID-ATUseCaseRetrieval/ID-ATUseCaseRetrieval.pack_1.tar",new StoragePolicy(new Node()));
 	}
 	
 	@After

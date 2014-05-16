@@ -271,7 +271,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	public long getFileSize(String address_dest) throws IOException {
 		irodsSystemConnector.connect();
 		
-		long filesize = irodsSystemConnector.getFileSize(address_dest);
+		long filesize = irodsSystemConnector.getFileSize("/" + irodsSystemConnector.getZone()+ "/" + aipDirName + "/" + address_dest);
 		
 		irodsSystemConnector.logoff();
 		return filesize;

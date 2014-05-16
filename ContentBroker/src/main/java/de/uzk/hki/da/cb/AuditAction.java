@@ -83,7 +83,7 @@ public class AuditAction extends AbstractAction {
 		for (Package pack : object.getPackages()) {
 			String pname = pack.getName();
 			if (pname.equals("")) pname = "1";
-			String logicalPath = "/aip/"+object.getContractor().getShort_name() + "/" +object.getIdentifier() +"/"+
+			String logicalPath = object.getContractor().getShort_name() + "/" +object.getIdentifier() +"/"+
 					object.getIdentifier() + ".pack_"+pname+".tar";
 			
 			if (!gridRoot.isValid(logicalPath)) {

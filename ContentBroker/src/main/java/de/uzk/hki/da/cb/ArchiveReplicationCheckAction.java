@@ -77,7 +77,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 			delay();
 		}
 		while (!gridRoot.storagePolicyAchieved(
-				"/aip/" + object.getContractor().getShort_name() + 
+				object.getContractor().getShort_name() + 
 				"/" + object.getIdentifier() + "/"+ object.getIdentifier() + ".pack_" + object.getLatestPackage().getName() + ".tar", 
 				sp));
 		

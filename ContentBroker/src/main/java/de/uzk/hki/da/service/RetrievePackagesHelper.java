@@ -112,7 +112,7 @@ public class RetrievePackagesHelper {
 			String pn = pkg.getName();
 	
 			try {
-				objectSize += grid.getFileSize(irodsZonePath + "aip/" + obj.getContractor().getShort_name() + "/" + obj.getIdentifier() +
+				objectSize += grid.getFileSize( obj.getContractor().getShort_name() + "/" + obj.getIdentifier() +
 						"/" + obj.getIdentifier() + ".pack_" + pn + ".tar");
 			} catch (IOException e) {
 				throw new RuntimeException("Failed to determine file size", e);
@@ -153,7 +153,6 @@ public class RetrievePackagesHelper {
 	/** The Constant logger. */
 	static final Logger logger = LoggerFactory.getLogger(RetrievePackagesHelper.class);
 	/** The Constant irodsZonePath. */
-	static final String irodsZonePath = "/da-nrw/";
 
 
 	/**
