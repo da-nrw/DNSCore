@@ -39,7 +39,9 @@ public class CTIrodsGridFacadeTest {
 		
 		IrodsGridFacade grid = new IrodsGridFacade();
 		grid.setIrodsSystemConnector(isc);
-		Node node = mock (Node.class);
+		Node node = new Node();
+		node.setGridCacheAreaRootPath("/ci/storage/GridCacheArea");
+				
 		grid.setLocalNode(node);
 
 		ArrayList<String> dest = new ArrayList<String>();
