@@ -39,10 +39,11 @@ public class CTIrodsGridFacadeTest {
 		
 		IrodsGridFacade grid = new IrodsGridFacade();
 		grid.setIrodsSystemConnector(isc);
+		Node node = mock (Node.class);
+		grid.setLocalNode(node);
 
 		ArrayList<String> dest = new ArrayList<String>();
 		dest.add("c-i");
-		Node node = mock (Node.class);
 		
 		StoragePolicy sp = new StoragePolicy(node);
 		sp.setMinNodes(1);
