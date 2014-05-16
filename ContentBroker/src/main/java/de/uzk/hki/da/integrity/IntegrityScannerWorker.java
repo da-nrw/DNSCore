@@ -179,7 +179,7 @@ public class IntegrityScannerWorker {
 		if (minNodes == null || minNodes ==0) throw new IllegalStateException("minNodes not set correctly!");
 		boolean completelyValid = true;
 		for (Package pack : obj.getPackages()) {
-			String dao = "/aip/"+obj.getContractor().getShort_name()+"/"+obj.getIdentifier()+"/"+obj.getIdentifier()+".pack_" + pack.getName()+".tar"; 
+			String dao = obj.getContractor().getShort_name()+"/"+obj.getIdentifier()+"/"+obj.getIdentifier()+".pack_" + pack.getName()+".tar"; 
 			logger.debug("Checking: " + dao );
 			if (!gridFacade.isValid(dao)) {
 				logger.error("SEVERE FAULT " + dao + " is not valid, Checksum could not be verified on all systems!" );
