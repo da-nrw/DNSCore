@@ -201,7 +201,7 @@ public class Base {
 		
 		try {
 			gridFacade.get(new File("/tmp/"+object.getIdentifier()+".pack_"+packageName+".tar"), 
-					"/TEST/"+object.getIdentifier()+"/"+object.getIdentifier()+".pack_"+packageName+".tar");
+					"TEST/"+object.getIdentifier()+"/"+object.getIdentifier()+".pack_"+packageName+".tar");
 		} catch (IOException e) {
 			fail("could not fetch object from grid");
 		}
