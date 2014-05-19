@@ -167,7 +167,7 @@ The configuration via setup-policies.py didn't work properly.
 
 ## Install elasticsearch
 
-follow the instructions from (this) documents
+follow the instructions from [this](https://github.com/da-nrw/prepscripts/blob/master/doc/install_elasticsearch.md) documents
 
 choose the following settings
 
