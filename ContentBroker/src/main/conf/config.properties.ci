@@ -28,9 +28,9 @@ localNode.replDestinations=ciArchiveResourceGroup
 localNode.name=localnode
 localNode.id=1
 
-elasticsearch.index=portal_test
+elasticsearch.index=portal_ci
 elasticsearch.hosts=localhost
-elasticsearch.cluster=danrw-test
+elasticsearch.cluster=cluster_ci
 
 uris.file="http://data.danrw.de/file
 uris.cho=http://data.danrw.de/cho
