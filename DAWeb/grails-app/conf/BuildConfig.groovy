@@ -10,6 +10,7 @@ grails.project.dependency.resolver="maven"
 grails.project.dependency.resolution = {
 // inherit Grails' default dependencies
     inherits("global") {
+    	excludes 'spring-asm'
         // uncomment to disable ehcache
         // excludes 'ehcache'
     }
