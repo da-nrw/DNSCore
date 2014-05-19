@@ -47,6 +47,7 @@ grails.project.dependency.resolution = {
 			 excludes 'activemq-openwire-generator'
 			 excludes 'commons-logging'
 			 excludes 'xalan'
+			 excludes 'slfj'
 			 excludes 'xml-apis'
 			 exported = false
 		}
@@ -65,7 +66,9 @@ grails.project.dependency.resolution = {
         //runtime ":yui-minify-resources:0.1.4"
 
 	build ":tomcat:7.0.42"	
-	compile ":jms:1.3"
+	compile (":jms:1.3") {
+		excludes 'spring-asm'
+	}
 	compile ":jquery-ui:1.8.15" 
 	compile ":modernizr:2.0.6"
     }
