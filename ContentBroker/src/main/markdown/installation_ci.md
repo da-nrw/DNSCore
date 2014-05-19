@@ -181,7 +181,7 @@ choose the following settings
 
 * cd DNSCore/ContentBroker
 
-* mvn clean && mvn deploy -Pci
+* mvn clean && mvn install -Pci
 
 ## Settings
 
