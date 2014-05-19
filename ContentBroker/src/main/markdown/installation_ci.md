@@ -165,13 +165,23 @@ Attention the scripts for setting up the policies seemed to be a little buggy in
 as prepscripts/scripts/fedorarest.py had to be adjusted with the right credentials.
 The configuration via setup-policies.py didn't work properly.
 
+## Install elasticsearch
+
+follow the instructions from [this](https://github.com/da-nrw/prepscripts/blob/master/doc/install_elasticsearch.md) documents
+
+choose the following settings
+
+    portal_ci
+    cluster_ci
+
+
 ## Performing a testrun by hand
 
 * git clone https://github.com/da-nrw/DNSCore DNSCore
 
 * cd DNSCore/ContentBroker
 
-* mvn clean && mvn deploy -Pci
+* mvn clean && mvn install -Pci
 
 ## Settings
 

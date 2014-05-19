@@ -90,7 +90,7 @@ The build process on a dedicated build machine works more or less the same, with
 here. To execute the build process run:
 
 1. cd [...]/DNSCore/ContentBroker
-1. mvn clean && mvn deploy -Pvm3 
+1. mvn clean && mvn install -Pci 
 
 Remarks:
 
