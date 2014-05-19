@@ -68,4 +68,4 @@ Edit server/config/server.config to load danrw.re
 
     reRuleSet danrw,core
 
-
+Restart iRODS server.
