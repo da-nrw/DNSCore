@@ -150,8 +150,6 @@
 		<property name="timeOut" value="2000" />
 		<property name="gridRoot" ref="${grid.implementation}"/>
 		<property name="name" value="IngestArchiveReplicationCheckAction" />
-		<property name="dipNode">
-			<ref bean="dipNode" />
-		</property>
+		<property name="presentationRepositoryNodeName" value="${cb.presServer}" />
 	</bean>
 </beans>

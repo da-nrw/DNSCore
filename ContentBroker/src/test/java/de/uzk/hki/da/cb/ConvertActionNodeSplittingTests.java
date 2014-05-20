@@ -94,7 +94,7 @@ public class ConvertActionNodeSplittingTests {
 		
 		job = new Job();
 		job.setId(1);
-		job.setInitial_node("vm1");
+		job.setResponsibleNodeName("vm1");
 		
 		convert.setLocalNode(localNode);
 		convert.setDao(dao);

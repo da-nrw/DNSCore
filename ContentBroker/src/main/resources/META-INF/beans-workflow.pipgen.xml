@@ -84,9 +84,7 @@
 		<property name="endStatus" value="799" />
 		<property name="name" value="PIPGenCleanWorkAreaAction" />
 		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
-		<property name="dipNode">
-			<ref bean="dipNode" />
-		</property>
+		<property name="presentationRepositoryNodeName" value="${cb.presServer}" />
 	</bean>
 	<!-- END UseCase PIPCreation END -->
 </beans>

@@ -86,7 +86,7 @@ public abstract class ITIngestBase extends ITBase{
 		
 		Job job = new Job();
 //		job.setOrig_name(packagename);
-		job.setInitial_node("da-nrw-vm3.hki.uni-koeln.de");
+		job.setResponsibleNodeName("da-nrw-vm3.hki.uni-koeln.de");
 		job.setStatus("110");
 		job.setObject(object);
 

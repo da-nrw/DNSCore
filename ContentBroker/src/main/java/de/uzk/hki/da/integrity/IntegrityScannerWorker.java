@@ -92,27 +92,27 @@ public class IntegrityScannerWorker {
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
 			Object obj = getDao().getObjectNeedAudit(session,localNodeName, errorState);
-			session.close();
 			
 			if (obj==null) { 
 				logger.warn("There seems to be none object to check: Database setup?") ;
 				return;
 			}
 			
-			obj.setObject_state(50); // working state 
-			checkObject(obj);
+			session.beginTransaction();
+			obj.setObject_state(60); // in audit state 
+			session.update(obj);
+			session.getTransaction().commit();
 			
+			obj.setObject_state(checkObject(obj));
 			if (obj.getObject_state()==errorState) {
 				sendEmail(obj);
-				
 			}
 			obj.setLast_checked(new Date());
 			
-			Session session2 = HibernateUtil.openSession();
-			session2.beginTransaction();
-			session2.merge(obj);
-			session2.getTransaction().commit();
-			session2.close();
+			session.beginTransaction();
+			session.merge(obj);
+			session.getTransaction().commit();
+			session.close();
 			
 			
 		} catch (Exception e) {
@@ -169,10 +169,12 @@ public class IntegrityScannerWorker {
 	/**
 	 * Side effect: set objects state to 100 if complete object is valid and policies achieved.
 	 * or 0 if not valid or policies not achieved for any of the objects packages.
-	 *
+	 * @author Jens Peters
+	 * @author Daniel M. de Oliveira
 	 * @param obj the obj
+	 * @return the object state
 	 */
-	void checkObject(Object obj) {
+	int checkObject(Object obj) {
 		Node node = new Node("tobefactoredout");
 		StoragePolicy sp = new StoragePolicy(node);
 		
@@ -183,7 +185,7 @@ public class IntegrityScannerWorker {
 			logger.debug("Checking: " + dao );
 			if (!gridFacade.isValid(dao)) {
 				logger.error("SEVERE FAULT " + dao + " is not valid, Checksum could not be verified on all systems!" );
-				 completelyValid = false;
+				completelyValid = false;
 				continue;
 			}
 			if (!gridFacade.storagePolicyAchieved(dao, sp)) {
@@ -192,8 +194,8 @@ public class IntegrityScannerWorker {
 				continue;
 			}
 		}
-		if (completelyValid) obj.setObject_state(100);
-		else obj.setObject_state(errorState);;
+		if (completelyValid) return 100;
+		else return errorState;
 	}
 
 	/**

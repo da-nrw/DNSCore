@@ -22,9 +22,6 @@
 			<value>conf/config.properties</value>
 		</property>
 	</bean>	
-    <bean id="dipNode" class="de.uzk.hki.da.model.Node">
-		<property name="name" value="${cb.presServer}" />
-	</bean>
 		
 	<bean id="fakeDistributedConversionAdapter" class="de.uzk.hki.da.grid.FakeDistributedConversionAdapter"/>
 	<bean id="irodsDistributedConversionAdapter" class="de.uzk.hki.da.grid.IrodsDistributedConversionAdapter">

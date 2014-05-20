@@ -114,7 +114,7 @@ public class ConvertAction extends AbstractAction {
 			
 			for (Job j:friendJobs){
 				j = dao.refreshJob(j); // little trick to get the tests work ( j = )
-				logger.info("Job on "+j.getInitial_node()+" is in status "+j.getStatus());
+				logger.info("Job on "+j.getResponsibleNodeName()+" is in status "+j.getStatus());
 				if (j.getStatus().equals("581")) throw new RuntimeException(
 						"Error in friend job encountered");
 				if (!j.getStatus().equals("590")) allJobsReady = false;

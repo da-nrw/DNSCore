@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -56,8 +57,11 @@ public class Job {
 	/** The status. */
 	private String status;
 	
-	/** The initial_node. */
-	private String initial_node;
+	/** 
+	 * The name of the node of the system which is instructed to do the job.
+	 */
+	@Column(name="initial_node")
+	private String responsibleNodeName;
 	
 	/** The repl_destinations. */
 	private String repl_destinations;
@@ -90,9 +94,10 @@ public class Job {
 	private Set<ConversionInstruction> conversion_instructions = 
 			new HashSet<ConversionInstruction>();
 	
-	/** The obj. */
+	/**  
+	 * 
+	 * */
 	@ManyToOne
-	@Cascade({CascadeType.SAVE_UPDATE,CascadeType.REFRESH})
 	@JoinColumn(name = "objects_id")
 	private Object obj;
 	
@@ -113,7 +118,7 @@ public class Job {
 	public Job(Job rhs,String status){
 		this.status=status;
 		this.rep_name=rhs.rep_name;
-		this.initial_node=rhs.initial_node;
+		this.responsibleNodeName=rhs.responsibleNodeName;
 		this.contractor = rhs.contractor;
 	}
 
@@ -128,7 +133,7 @@ public class Job {
 	 * @author daniel
 	 */
 	public Job(String initialNodeName, String status){
-		this.initial_node = initialNodeName;
+		this.responsibleNodeName = initialNodeName;
 		this.status=status;
 	}
 	
@@ -172,10 +177,10 @@ public class Job {
 	/**
 	 * Sets the initial_node.
 	 *
-	 * @param initialNode the new initial_node
+	 * @param responsibleNodeName the new initial_node
 	 */
-	public void setInitial_node(String initialNode) {
-		this.initial_node = initialNode;
+	public void setResponsibleNodeName(String responsibleNodeName) {
+		this.responsibleNodeName = responsibleNodeName;
 	}
 	
 	/**
@@ -183,8 +188,8 @@ public class Job {
 	 *
 	 * @return the initial_node
 	 */
-	public String getInitial_node() {
-		return initial_node;
+	public String getResponsibleNodeName() {
+		return responsibleNodeName;
 	}
 	
 	/**
@@ -254,7 +259,7 @@ public class Job {
 				"|%10s"+
 				"|%20s"+
 				"]"
-		,getId(),getStatus(),getInitial_node(),getRepl_destinations());
+		,getId(),getStatus(),getResponsibleNodeName(),getRepl_destinations());
 	}
 
 	

@@ -142,8 +142,7 @@ public class IntegrityScannerWorkerTest {
 		when (gc.isValid(package2Path)).thenReturn(false);
 		worker.setGridFacade(gc);
 		
-		worker.checkObject(obj);
-		assertEquals(51,obj.getObject_state());
+		assertEquals(51,worker.checkObject(obj));
 	}
 
 	
@@ -168,7 +167,6 @@ public class IntegrityScannerWorkerTest {
 		
 		worker.setGridFacade(gc);
 		
-		worker.checkObject(obj);
-		assertEquals(100,obj.getObject_state());
+		assertEquals(100,worker.checkObject(obj));
 	}
 }

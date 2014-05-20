@@ -35,7 +35,6 @@ import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.service.Mail;
@@ -57,7 +56,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	private int minNodes = 3;
 	private int timeOut = 4000;
 	
-	private Node dipNode;
+	private String presentationRepositoryNodeName;
 	
 	private GridFacade gridRoot;
 	
@@ -81,10 +80,9 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 				"/" + object.getIdentifier() + "/"+ object.getIdentifier() + ".pack_" + object.getLatestPackage().getName() + ".tar", 
 				sp));
 		
-		setObjectStored(object);
+		prepareObjectForObjectDBStorage(object);
 		sendReciept(job, object);
-		object.getPackages().get(object.getPackages().size()-1).getFiles().clear();
-		object.getPackages().get(object.getPackages().size()-1).getEvents().clear();
+		
 		createPublicationJob();
 		FileUtils.deleteDirectory(new File(object.getPath()));
 		return true;
@@ -101,13 +99,15 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	
 
 	/**
-	 * @author Daniel M. de Oliveira Jens Peters
+	 * @author Daniel M. de Oliveira 
+	 * @author Jens Peters
 	 */
 	private void createPublicationJob(){
 		
-		logger.info("Creating child job with state 540 on "+   getDipNode().getName()+" for possible publication of this object.");
+		logger.info("Creating child job with state 540 on "+ 
+				getPresentationRepositoryNodeName()+" for possible publication of this object.");
 		Job child = new Job (job, "540");
-		child.setInitial_node(getDipNode().getName());
+		child.setResponsibleNodeName(getPresentationRepositoryNodeName());
 		child.setObject(getObject());
 		child.setDate_created(String.valueOf(new Date().getTime()/1000L));
 		
@@ -118,16 +118,17 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		session.close();
 	}
 	
-	
-	
-	
-	public Node getDipNode() {
-		return dipNode;
+	/**
+	 * @author Daniel M. de Oliveira
+	 * @return
+	 */
+	public String getPresentationRepositoryNodeName() {
+		return presentationRepositoryNodeName;
 	}
 
 
-	public void setDipNode(Node dipNode) {
-		this.dipNode = dipNode;
+	public void setPresentationRepositoryNodeName(String presentationRepositoryNodeName) {
+		this.presentationRepositoryNodeName = presentationRepositoryNodeName;
 	}
 	
 	/**
@@ -156,16 +157,26 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	}
 	
 	/** 
+	 * Cleans object db entry from data which should not get persisted and
+	 * adds data which should get persisted. 
+	 * Sets archive state of object to 100 (archived according to storage policy).
+	 * 
 	 * @author Jens Peters
-	 * Stores Object DB entry in the database. The entry is deduced from the queue entry which
-	 * is not persistent. The method checks if the Object DB entry already exists, and
-	 * adds new Package if that's the case. 
+	 * @author Daniel M. de Oliveira
 	 */
-	private void setObjectStored(Object obj) {
+	private void prepareObjectForObjectDBStorage(Object obj) {
 
-		// THE OBJECT Is set to the full archived valid state now!
-		// since it has sucessfully been been created before. 
-		// The Object is stored in archived and replicated state 100!
+		obj.getPackages().get(obj.getPackages().size()-1).getEvents().clear();
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		// This explicit deletion is introduced to circumvent hibernate behaviour
+		// which causes constraintViolationException when trying to delete dafiles
+		// before events (because events still reference files)
+		session.update(obj);
+		session.getTransaction().commit();
+		session.close();
+		
+		obj.getPackages().get(obj.getPackages().size()-1).getFiles().clear();
 		obj.setObject_state(100);
 		
 		obj.setDate_modified(String.valueOf(new Date().getTime()));

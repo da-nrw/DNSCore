@@ -87,6 +87,8 @@ public class RegisterObjectService {
 	 * When generating new a technical identifiers, 
 	 * the urn_index of localNode gets incremented and 
 	 * written back to the db immediately.
+	 * 
+	 * As a side effect sets the objects state always to 50, even if it already exists.
 	 *
 	 * @param containerName the file name of the container
 	 * @param contractor the contractor who owns the container
@@ -113,6 +115,7 @@ public class RegisterObjectService {
 
 			logger.info("Package is a delta record for Object with identifier: "+obj.getIdentifier());
 			obj.getPackages().add(newPkg);
+			obj.setObject_state(50);
 			
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
@@ -127,6 +130,7 @@ public class RegisterObjectService {
 
 			logger.info("Creating new Object with identifier " + identifier);
 			obj = new Object();
+			obj.setObject_state(50);
 			
 			obj.setIdentifier(identifier);
 

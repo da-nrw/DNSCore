@@ -117,7 +117,7 @@ public class ITUseCaseAudit extends ITBase{
 		
 		job = new Job();
 		job.setObject(object);
-		job.setInitial_node(nameOfOurIntegrationTestNode);
+		job.setResponsibleNodeName(nameOfOurIntegrationTestNode);
 		job.setStatus("5000");
 		
 		session.save(job);

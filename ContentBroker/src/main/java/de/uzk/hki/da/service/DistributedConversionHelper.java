@@ -189,7 +189,7 @@ public class DistributedConversionHelper {
 			
 			logger.debug("Creating friend job for node \""+node+"\"");
 			Job friendJob = new Job(parentJob,"580");
-			friendJob.setInitial_node(node.getName());
+			friendJob.setResponsibleNodeName(node.getName());
 			friendJob.setParent_id(parentJob.getId());
 			friendJob.setDate_created(String.valueOf(new Date().getTime()/1000L));
 			friendJob.setObject(object);

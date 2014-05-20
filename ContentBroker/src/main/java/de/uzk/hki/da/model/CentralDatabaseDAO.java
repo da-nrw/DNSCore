@@ -21,9 +21,7 @@ package de.uzk.hki.da.model;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.hibernate.Session;
 import org.slf4j.Logger;
@@ -47,9 +45,8 @@ public class CentralDatabaseDAO {
 	
 	
 	/**
-	 * XXX locking synchronized
+	 * XXX locking synchronized, against itself and against get object need audit
 	 * 
-	 * Sets the objects status to working status.
 	 * IMPORTANT NOTE: Fetch objects from queue opens a new session.
 	 *
 	 * @param status the status
@@ -68,16 +65,18 @@ public class CentralDatabaseDAO {
 		try{
 			
 			joblist = (List<Job>) session
-					.createQuery("SELECT j FROM Job j LEFT JOIN j.obj as o where j.status=?1 and j.initial_node=?2 and o.orig_name!=?3 order by j.date_modified asc ")
+					.createQuery("SELECT j FROM Job j LEFT JOIN j.obj as o where j.status=?1 and "
+							+ "j.responsibleNodeName=?2 and (o.object_state=100 or o.object_state=50) and o.orig_name!=?3 order by j.date_modified asc ")
 					.setParameter("1", status).setParameter("2", node.getName()).setParameter("3","integrationTest").setCacheable(false).setMaxResults(1).list();
-			logger.debug("no job found for status {}.",status);
-			
+
 			if ((joblist == null) || (joblist.isEmpty())){
+				logger.debug("no job found for status {}.",status);
 				session.close();
 				return null;
 			}
 			
 			Job job = joblist.get(0);
+			
 			// To circumvent lazy initialization issues
 			for (ConversionInstruction ci:job.getConversion_instructions()){}
 			for (Job j:job.getChildren()){}
@@ -122,10 +121,6 @@ public class CentralDatabaseDAO {
 			l = (List<Job>) session.createQuery(
 					"SELECT j FROM Job j left join j.obj as o left join o.contractor as c where o.orig_name=?1 and c.short_name=?2"
 					)
-					
-					
-					
-					
 							.setParameter("1", orig_name)
 							.setParameter("2", csn)
 							.setReadOnly(true).list();
@@ -145,16 +140,16 @@ public class CentralDatabaseDAO {
 	 *
 	 * @param contractorShortName the contractor short name
 	 * @param origName the orig name
-	 * @param initialNodeName the initial node name
+	 * @param responsibleNodeName the initial node name
 	 * @return the job
 	 */
-	public Job insertJobIntoQueue(Session session, Contractor c,String origName,String initialNodeName,Object object){
+	public Job insertJobIntoQueue(Session session, Contractor c,String origName,String responsibleNodeName,Object object){
 
 		Job job = new Job();
 		job.setObject(object);
 		
 		job.setStatus("110");
-		job.setInitial_node(initialNodeName);
+		job.setResponsibleNodeName(responsibleNodeName);
 		job.setDate_created(String.valueOf(new Date().getTime()/1000L));
 	
 		session.save(job);
@@ -279,7 +274,7 @@ public class CentralDatabaseDAO {
 		List l = null;
 	
 		try {
-			l = session.createQuery("from Object where initial_node=?1 and last_checked > :date and object_state >= ?2 order by last_checked asc")
+			l = session.createQuery("from Object where initial_node=?1 and last_checked > :date and object_state=?2 order by last_checked asc")
 					.setCalendar("date",cal)
 					.setParameter("1", initial_node)
 					.setParameter("2", archivedStatus)
