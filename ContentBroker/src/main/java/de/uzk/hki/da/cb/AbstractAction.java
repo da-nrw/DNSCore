@@ -146,17 +146,18 @@ public abstract class AbstractAction implements Runnable {
 			object.reattach();
 			logger.info("Stubbing implementation of "+this.getClass().getName());
 			logger.debug(Utilities.getHeapSpaceInformation());
-			if (!implementation()){				
+			
+			boolean implementationSuccesfullyExecuted = implementation();
+			
+			Session session = HibernateUtil.openSession();
+			session.beginTransaction();
+
+			if (!implementationSuccesfullyExecuted){				
 				logger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
 				job.setStatus(startStatus);
 				
-				Session session = HibernateUtil.openSession();
-				session.beginTransaction();
 				session.update(object);
 				session.update(job);
-				session.getTransaction().commit();
-				session.close();
-				
 				
 			} else {
 				actionCommunicatorService.serialize();
@@ -164,8 +165,6 @@ public abstract class AbstractAction implements Runnable {
 				if (KILLATEXIT)	{
 					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now committing changes to database.");
 					job.setStatus(endStatus); // XXX needed just for integration test	
-					Session session = HibernateUtil.openSession();
-					session.beginTransaction();
 					
 					if (DELETEOBJECT) 
 						session.delete(object);
@@ -177,24 +176,21 @@ public abstract class AbstractAction implements Runnable {
 					session.flush();
 					
 					if (toCreate!=null) session.save(toCreate);
-					session.getTransaction().commit();
-					session.close();
 					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Job deleted. Database transaction successful.");
 					
 				} else {
 					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now commiting changes to database.");
 					job.setStatus(endStatus);	
-					Session session = HibernateUtil.openSession();
-					session.beginTransaction();
 					session.update(job);
 					session.update(object);
 					session.flush();
 					if (toCreate!=null) session.save(toCreate);
-					session.getTransaction().commit();
-					session.close();
 					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Set job to end state ("+endStatus+"). Database transaction successful.");
 				}
 			}
+			
+			session.getTransaction().commit();
+			session.close();
 			
 		} catch (UserException e) {
 			logger.error(this.getClass().getName()+": UserException in action: ",e);

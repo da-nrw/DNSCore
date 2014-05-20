@@ -36,6 +36,7 @@ import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.service.Mail;
 
@@ -160,17 +161,22 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	 */
 	private void prepareObjectForObjectDBStorage(Object obj) {
 
-		obj.getPackages().get(obj.getPackages().size()-1).getEvents().clear();
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
+		for (Package pkg : obj.getPackages()){
+			pkg.getEvents().clear();
+			pkg.getFiles().clear();
+		}
+		
+//		obj.getPackages().get(obj.getPackages().size()-1).getEvents().clear();
+//		Session session = HibernateUtil.openSession();
+//		session.beginTransaction();
 		// This explicit deletion is introduced to circumvent hibernate behaviour
 		// which causes constraintViolationException when trying to delete dafiles
 		// before events (because events still reference files)
-		session.update(obj);
-		session.getTransaction().commit();
-		session.close();
+//		session.update(obj);
+//		session.getTransaction().commit();
+//		session.close();
 		
-		obj.getPackages().get(obj.getPackages().size()-1).getFiles().clear();
+//		obj.getPackages().get(obj.getPackages().size()-1).getFiles().clear();
 		obj.setObject_state(100);
 		
 		obj.setDate_modified(String.valueOf(new Date().getTime()));
