@@ -82,6 +82,7 @@ public abstract class AbstractAction implements Runnable {
 	protected CentralDatabaseDAO dao;
 	protected String startStatus;
 	protected Job job;
+	protected Job toCreate = null;
 	protected Object object;
 	protected String endStatus;
 	protected String description;
@@ -173,6 +174,9 @@ public abstract class AbstractAction implements Runnable {
 					session.flush();
 
 					session.delete(job);
+					session.flush();
+					
+					if (toCreate!=null) session.save(toCreate);
 					session.getTransaction().commit();
 					session.close();
 					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Job deleted. Database transaction successful.");
@@ -184,6 +188,8 @@ public abstract class AbstractAction implements Runnable {
 					session.beginTransaction();
 					session.update(job);
 					session.update(object);
+					session.flush();
+					if (toCreate!=null) session.save(toCreate);
 					session.getTransaction().commit();
 					session.close();
 					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Set job to end state ("+endStatus+"). Database transaction successful.");

@@ -106,16 +106,10 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		
 		logger.info("Creating child job with state 540 on "+ 
 				getPresentationRepositoryNodeName()+" for possible publication of this object.");
-		Job child = new Job (job, "540");
-		child.setResponsibleNodeName(getPresentationRepositoryNodeName());
-		child.setObject(getObject());
-		child.setDate_created(String.valueOf(new Date().getTime()/1000L));
-		
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		session.save(child);
-		session.getTransaction().commit();
-		session.close();
+		toCreate = new Job (job, "540");
+		toCreate.setResponsibleNodeName(getPresentationRepositoryNodeName());
+		toCreate.setObject(getObject());
+		toCreate.setDate_created(String.valueOf(new Date().getTime()/1000L));
 	}
 	
 	/**

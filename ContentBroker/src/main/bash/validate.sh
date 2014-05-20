@@ -17,9 +17,9 @@ then
 	exit 1
 fi
 
-if [ "$1" = "vm3" ]
+if [ "$1" = "ci" ]
 then
-	REVISION_NUMBER=`git rev-list HEAD --count`
+	REVISION_NUMBER=`git rev-list HEAD | wc -l`
 	if [ -d "/data/danrw/buildRepository/installation.$REVISION_NUMBER" ]
 	then
 		echo "The directory at /data/danrw/buildRepository/installation.$REVISION_NUMBER already exists which means"
