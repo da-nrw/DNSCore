@@ -6,5 +6,5 @@ if [[ -f /tmp/cb.running ]] ; then
     exit 1
 fi
 touch /tmp/cb.running
-nohup java $JAVA_OPTS -jar ContentBroker.jar 1>log/stdout.log 2>log/stderr.log &
+nohup $JAVA_HOME/bin/java  $JAVA_OPTS -jar ContentBroker.jar 1>log/stdout.log 2>log/stderr.log &
 

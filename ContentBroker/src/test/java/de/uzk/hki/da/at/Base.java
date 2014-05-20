@@ -165,7 +165,8 @@ public class Base {
 				return;
 			} else if (job.getStatus().endsWith("1") || job.getStatus().endsWith("3")
 					|| job.getStatus().endsWith("4")) {
-				String msg = "ERROR: Job in error state: " + job.getStatus();
+				String oid=job.getObject().getIdentifier();
+				String msg = "ERROR: Job in error state: " + job.getStatus() + "in Object-Id "+ oid;
 				System.out.println(msg);
 				throw new RuntimeException(msg);
 			}
