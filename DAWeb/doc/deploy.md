@@ -17,12 +17,13 @@
 	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 	
-# Deploy DAWeb
+# Build and Deploy DAWeb
 
 ## Prerequisites
 
 * Oracle Java 1.6 (1.7 prooved for DA-WEB)
 * Tomcat6 or Tomcat7 
+* Grails 2.3.8
 
 ### Installation
 
@@ -93,7 +94,7 @@ mechanism by setting the irods properties to
     passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec"
 
 
-To encode your own DB Password for production, you have to have a groovy compiler (and at least a checkout of the class) run 
+To encode your own DB Password for production, you must have a groovy compiler (and at least a checkout of the class) run 
     
     groovy grails-app/utils/de/uzk/hki/da/utils/DESCodec.groovy <your password>
 
