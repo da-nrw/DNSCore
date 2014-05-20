@@ -151,6 +151,7 @@ public abstract class AbstractAction implements Runnable {
 				
 				Session session = HibernateUtil.openSession();
 				session.beginTransaction();
+				session.update(object);
 				session.update(job);
 				session.getTransaction().commit();
 				session.close();
@@ -164,13 +165,14 @@ public abstract class AbstractAction implements Runnable {
 					job.setStatus(endStatus); // XXX needed just for integration test	
 					Session session = HibernateUtil.openSession();
 					session.beginTransaction();
-					session.delete(job);
 					
 					if (DELETEOBJECT) 
 						session.delete(object);
 					else
 						session.update(object);
-					
+					session.flush();
+
+					session.delete(job);
 					session.getTransaction().commit();
 					session.close();
 					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Job deleted. Database transaction successful.");
