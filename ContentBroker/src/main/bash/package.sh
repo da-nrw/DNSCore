@@ -81,12 +81,12 @@ ci)
 esac
 
 cd ../DAWeb
-#./build.sh prod
-#if [ "$?" = "1" ]
-#then
-#	echo there was an error in ./build.sh prod
-#	exit 1
-#fi 
+./build.sh prod
+if [ "$?" = "1" ]
+then
+	echo there was an error in ./build.sh prod
+	exit 1
+fi 
 cd ../ContentBroker
 
 
