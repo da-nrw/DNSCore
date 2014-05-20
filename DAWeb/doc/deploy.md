@@ -17,7 +17,7 @@
 	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 	
-# Deploy DAWeb
+# Build and Deploy DAWeb
 
 ## Prerequisites
 
