@@ -58,6 +58,9 @@ Also each object is always in a certain object_state which indicates if the obje
 
 **Note for Developers**
 
+The object states are also used to ensure objects cannot be selected for starting 
+new workflows if they are already in a workflow or under integrity check.
+
 * state 51 should be set if GridFacade.isValid returns false.
 
 ### Package
