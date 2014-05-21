@@ -40,7 +40,7 @@ the different concepts of our object model will be explained in detail in the fo
 
 ### Object
 
-The Java [Object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/Object.java) class.
+The Java [Object](../java/de/uzk/hki/da/model/Object.java) class.
 
 The most fundamental entity in our data model is simply called the "object". 
 An instance of an object is a logically coherent set of files.
@@ -67,7 +67,7 @@ new workflows if they are already in a workflow or under integrity check.
 
 ### Package
 
-The Java [Package](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/Package.java) class.
+The Java [Package](../java/de/uzk/hki/da/model/Package.java) class.
 
 While the object is more general entity a package in DNSCore 
 is an actual physical container (tar) which contains the objects data or at least a part of it.
@@ -88,7 +88,7 @@ introducing the PIP concept.
 
 ### Contractor
 
-The Java [Contractor](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/Contractor.java) class.
+The Java [Contractor](../java/de/uzk/hki/da/model/Contractor.java) class.
 
 The contractor is modeled to describe a party which delivers content to a system consisting of nodes running DNSCore.
 Every contractor has one specific node to which it can deliver its content. This node processes the data and stores the
@@ -121,7 +121,7 @@ for which it provides the DNSCore functionality and for whose objects storage an
 
 ### DAFile
 
-The java [DAFile](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/DAFile.java) class.
+The java [DAFile](../java/de/uzk/hki/da/model/DAFile.java) class.
 
 ![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_1a.jpg)
 
@@ -195,7 +195,7 @@ AIPs and are used to store the PIPs for publication. These representations are
 
 ### ConversionPolicy
 
-The Java [ConversionPolicy](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/ConversionPolicy.java) class.
+The Java [ConversionPolicy](../java/de/uzk/hki/da/model/ConversionPolicy.java) class.
 
 ![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_2.jpg)
 
@@ -209,7 +209,7 @@ gets generated based on the ConversionProperty. To see how the system operates i
 
 ### ConversionRoutine
 
-The Java [ConversionRoutine](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/java/de/uzk/hki/da/model/ConversionRoutine.java) class.
+The Java [ConversionRoutine](../java/de/uzk/hki/da/model/ConversionRoutine.java) class.
 
 A ConversionRoutine describes, how exactly a conversion has to be executed. It is a global property of the system 
 and has to deliver reproducable outcomes on every node. A ConversionRoutine can consist of a block of JavaCode
