@@ -26,6 +26,8 @@ package daweb3
 
 import org.springframework.dao.DataIntegrityViolationException
 import grails.converters.*
+import java.security.InvalidParameterException
+
 
 class ObjectController {
 
@@ -125,7 +127,7 @@ class ObjectController {
 					result.success = false
 				} else {
 					try {
-					createQueueEntryForObject( object ,"900", null) + "\n"	
+					createJob( object ,"900", null) + "\n"	
 					result.msg += "${object.urn} - OK. " 
 					} catch ( Exception e ) { 
 					result.msg += "${object.urn} - FEHLER. "
@@ -157,7 +159,7 @@ class ObjectController {
 					
 				} else {
 					try {
-					createQueueEntryForObject( object ,"900", null) 
+					createJob( object ,"900", null) 
 					result.msg = "Objekt ${object.urn} erfolgreich angefordert."
 					result.success = true
 					} catch ( Exception e ) { 
@@ -181,7 +183,7 @@ class ObjectController {
 		if ( object == null ) result.msg += "Das Objekt ${object.urn} konnte nicht gefunden werden!"
 		else {
 			try {
-				createQueueEntryForObject( object, "700", null )
+				createJob( object, "700", null )
 				result.msg = "Auftrag zur Erstellung neuer Präsentationsformate erstellt ${object.urn}."
 				result.success = true
 			} catch ( Exception e ) {
@@ -204,7 +206,7 @@ class ObjectController {
 		if ( object == null ) result.msg += "Das Objekt ${object.urn} konnte nicht gefunden werden!"
 		else {
 			try {
-				createQueueEntryForObject( object, "560" ,grailsApplication.config.cb.presServer)
+				createJob( object, "560" ,grailsApplication.config.cb.presServer)
 				result.msg = "Auftrag zur Indizierung erstellt ${object.urn}."
 				result.success = true
 			} catch ( Exception e ) {
@@ -218,31 +220,54 @@ class ObjectController {
 		
 	
 		/**
-		 * @param object valid instance of an object
-		 * throws Exception if entry could not be created
+		 * Creates a job with status on responsibleNode 
+		 * for a selected object. Also sets the object_state to 50
+		 * to indicate it is in workflow state. 
+		 * 
+		 * @param object 
+		 * @param status
+		 * @param responsibleNodeName The name of the node which gets assigned responsibility for executing the job.
+		 * This parameter is optional.
+		 * @throws Exception if entry could not be created.
+		 * @throws Exception if object state could not be updated.
+		 * @throws IllegalArgumentException if object is null.
+		 * @author Jens Peters
+		 * @author Daniel M. de Oliveira
+		 * 
 		 */
-		String createQueueEntryForObject(object, status, optionalInitialNode) {
-			if (object == null) throw new RuntimeException ( "Object is not valid" )
+		String createJob( daweb3.Object object, status, responsibleNodeName) {
+			if (object == null) throw new IllegalArgumentException ( "Object is not valid" )
+			object.object_state = 50
 
 			log.debug "object.contractor.shortName: " + object.contractor.shortName
 			log.debug "session.contractor.shortName: " + session.contractor.shortName
 			
 			def list = QueueEntry.findByObjAndStatus(object, status) 
-			if (list==null) {
-			def entry = new QueueEntry()		
-			entry.status = status
-			entry.setObj(object);
-			entry.created = Math.round(new Date().getTime()/1000L)
-			entry.modified = Math.round(new Date().getTime()/1000L)
-			if (optionalInitialNode==null)
-			entry.setInitialNode(grailsApplication.config.irods.server)
-			else entry.setInitialNode(optionalInitialNode)
+			if (list != null) throw new RuntimeException ("Bereits angefordert.");
+			
+			def job = new QueueEntry()		
+			job.status = status
+			job.setObj(object);
+			job.created = Math.round(new Date().getTime()/1000L)
+			job.modified = Math.round(new Date().getTime()/1000L)
+			
+			if (responsibleNodeName==null)
+				job.setInitialNode(grailsApplication.config.irods.server)
+			else job.setInitialNode(responsibleNodeName)
+			
+						
 			def errorMsg = ""
-			if( !entry.save() ) {
-				entry.errors.each { errorMsg += it }
+			if( !object.save() ) {
+				
+				object.errors.each { errorMsg += it }
 				throw new Exception(errorMsg)
-			} 
-			} else throw new RuntimeException ("Bereits angefordert.");			
+			}
+			errorMsg = ""
+			if( !job.save()  ) {
+				
+				job.errors.each { errorMsg += it }
+				throw new Exception(errorMsg)
+			}
 		}
 
 
@@ -261,7 +286,7 @@ class ObjectController {
 				log.debug "session.contractor.shortName: " + session.contractor.shortName
 					
 				try {
-						createQueueEntryForObject( object, "5000" , grailsApplication.config.irods.server)
+						createJob( object, "5000" , grailsApplication.config.irods.server)
 						result.msg = "Auftrag zur Überprüfung erstellt ${object.urn}."
 						result.msg = "Das Objekt mit der URN ${object.urn} wurde zur Überprüfung in die Queue eingestellt!"
 						result.success = true

@@ -27,7 +27,7 @@
 		<link>
 			<name>.link_to_grails_plugins</name>
 			<type>2</type>
-			<locationURI>GRAILS_ROOT/2.2.4/projects/daweb3/plugins</locationURI>
+			<locationURI>GRAILS_ROOT/2.3.8/projects/daweb3/plugins</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

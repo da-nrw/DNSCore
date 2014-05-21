@@ -41,7 +41,6 @@ class QueueEntryController {
 
     def list() {
         
-		
     }
     
     def listSnippet() {
@@ -157,6 +156,7 @@ class QueueEntryController {
 
 		[queueEntryInstance: queueEntryInstance]
 	}
+	
 	def queueDelete() {
 		def queueEntryInstance = QueueEntry.get(params.id)
 		if (queueEntryInstance) {

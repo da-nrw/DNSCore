@@ -126,7 +126,7 @@
 			<tr><td>360</td><td>IngestPrepareSendToPresenterAction</td><td>Anmeldung der PIP zur Übertragung ans Pres. Repository</td></tr>
 			<tr><td>370</td><td>IngestBuildAIPAction</td><td>AIP Erstellung</td></tr>
 			<tr><td>380</td><td>IngestTarAction</td><td>AIP Erstellung als TAR-Archiv</td></tr>
-			<tr><td>400</td><td>ArchiveReplicationAction</td><td>Ablage auf LZA Medien und Replikation</td</tr>>
+			<tr><td>400</td><td>ArchiveReplicationAction</td><td>Ablage auf LZA Medien und Replikation</td></tr>
 			<tr><td>440</td><td>ArchiveReplicationCheckAction</td><td>Prüfung der Replikationen</td></tr>
 			<tr><td>540</td><td>FetchPIPsAction</td><td>Replikation der PIP an den Presentation Repository Knoten</td></tr>
 			<tr><td>550</td><td>SendToPresenterAction</td><td>Einspielung der PIP in das Presentation Repository</td></tr>
