@@ -49,6 +49,15 @@ Every object in DNSCore will get a unique technical identifier within the system
 
 ![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_1.jpg)
 
+Also each object is always in a certain object_state which indicates if the object is 
+* 100: archived and valid 
+* 50: at least on of the packages object is under control of the ContentBroker which runs a workflow to process it.
+* 60: the object is beeing checked for integrity.
+* 51: the object is corrupts (which can be for various reasons). 
+ 
+''Note for Developers''
+
+* state 51 should be set if GridFacade.isValid returns false.
 
 ### Package
 
