@@ -45,7 +45,9 @@ The Java [Object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/sr
 The most fundamental entity in our data model is simply called the "object". 
 An instance of an object is a logically coherent set of files.
 Note that what makes these files coherent is up to the user (see pre_ingest.md). 
-Every object in DNSCore will get a unique technical identifier within the system. 
+Every object in DNSCore will get a unique technical identifier within the system. This technical
+identifier is the primary means of identifying and finding an object within the system. Therefore
+it gets "handed over" to the user at the end of the ingest workflow.
 
 ![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_1.jpg)
 
