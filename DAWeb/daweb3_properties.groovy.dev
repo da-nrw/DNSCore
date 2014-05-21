@@ -25,7 +25,8 @@ environments {
 			url = "jdbc:hsqldb:hsql://localhost/xdb"
 			dbCreate = "validate"
 			username = "sa"
-			password = "" (must be encrypted with DESCodec. See ../doc/deploy.md)
+			// passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec" uncomment if necessary
+			password = "" // (if set, must be encrypted with DESCodec. See ../doc/deploy.md)
 			characterEncoding = "UTF-8"
 		}
 		/*dataSource {
