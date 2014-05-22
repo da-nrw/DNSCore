@@ -110,6 +110,45 @@ public class TiffConversionStrategyTests {
 	}
 	
 	/**
+	 * Test identify return code on problematic Tiff containing "EXIF IFD" and "GPS IFD" Tags)
+	 */
+	@Test
+	public void testConversionProblematicTiff () {
+		ConversionInstruction ci = new ConversionInstruction();
+		ConversionRoutine cr = new ConversionRoutine();
+		ci.setConversion_routine(cr);
+		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","0001_L.TIF"));
+		ci.setTarget_folder("");
+		
+		cs.convertFile(ci);
+		
+		assertFalse(new File(workAreaRootPath + "work/TEST/1/data/rep+b/0001_L.TIF").exists());
+	}
+	
+	/**
+	 * Test return code on Tiff, which isn't a picture at all. (Assume it has passed the fido checks 
+	 * done before)
+	 */
+	@Test
+	public void testConversionBuggyTiff () {
+		ConversionInstruction ci = new ConversionInstruction();
+		ConversionRoutine cr = new ConversionRoutine();
+		ci.setConversion_routine(cr);
+		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","notanytiff.tif"));
+		ci.setTarget_folder("");
+		
+		try {
+		cs.convertFile(ci);
+		assertFalse(true);
+		} catch (Exception e) {
+			
+		}
+		assertFalse(new File(workAreaRootPath + "work/TEST/1/data/rep+b/notanytiff.tif").exists());
+		
+	}
+	
+	
+	/**
 	 * Cleanup.
 	 *
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -118,6 +157,7 @@ public class TiffConversionStrategyTests {
 	public void cleanup() throws IOException {
 		new File(workAreaRootPath + "work/TEST/1/data/rep+b/CCITT_1.TIF").delete();
 		new File(workAreaRootPath + "work/TEST/1/data/rep+b/CCITT_1_UNCOMPRESSED.TIF").delete();
+		new File(workAreaRootPath + "work/TEST/1/data/rep+b/0001_L.TIF").delete();
 		org.apache.commons.io.FileUtils.deleteDirectory(new File(workAreaRootPath + "work/TEST/1/data/rep+b/subfolder"));
 	}
 	
