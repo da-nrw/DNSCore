@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 class Object {
 
     static constraints = {
+		dynamic_nondisclosure_limit nullable : true
     }
     
     static mapping = {
@@ -65,10 +66,14 @@ class Object {
 	 * 2 means currently running (yellow)
 	 */
 	def getStatusCode() {
-		if (object_state<50) return 2
-		if (object_state==50) return 2
-		if (object_state==51) return 1
-		if (object_state==100) return 0
+
+		if ( object_state == 50 ) return 2
+		if ( object_state == 60 ) return 2
+ 		
+		if ( object_state == 51 ) return 1
+		
+		if (object_state == 100 ) return 0
+		
 		return 1;
 	}
 	

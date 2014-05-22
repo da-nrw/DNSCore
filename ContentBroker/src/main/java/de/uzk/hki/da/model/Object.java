@@ -94,7 +94,13 @@ public class Object {
 	/** The published_flag. */
 	private int published_flag;
 	
-	/** The object_state. */
+	/** The object_state. 
+	 *
+	 * 100: archived and valid
+	 * 51: corrupt
+	 * 50: in workflow
+	 * 60: under integrity check
+	 */
 	private int object_state;
 	
 	/** The last_checked. */
