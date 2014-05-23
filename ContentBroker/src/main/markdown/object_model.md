@@ -65,6 +65,8 @@ new workflows if they are already in a workflow or under integrity check.
 
 * state 51 should be set if GridFacade.isValid returns false.
 
+Likewise, any object which is in a workflow cannot be selected for integrity check.
+
 ### Package
 
 The Java [Package](../java/de/uzk/hki/da/model/Package.java) class.

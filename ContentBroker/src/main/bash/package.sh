@@ -65,20 +65,20 @@ cp src/main/xml/beans.xml.full $INSTALLER/
 cp src/main/xml/logback.xml.debug $INSTALLER/logback.xml
 
 
+cp src/main/xml/hibernateCentralDB.cfg.xml.$1 $INSTALLER/hibernateCentralDB.cfg.xml
 case "$1" in
 dev)
 	sed "s@CONTENTBROKER_ROOT@$2@" src/main/conf/config.properties.dev  > $INSTALLER/config.properties # TODO move to pre-integration-test.sh
 	createStorageFolder	
 	cp -f src/main/bash/ffmpeg.sh.fake $INSTALLER/ffmpeg.sh
 	cp src/main/conf/sqltool.rc ~/
-	cp src/main/xml/hibernateCentralDB.cfg.xml.hsql $INSTALLER/hibernateCentralDB.cfg.xml
 ;;
 ci)
 	cp src/main/conf/config.properties.ci $INSTALLER/config.properties
-	cp src/main/xml/hibernateCentralDB.cfg.xml.postgres $INSTALLER/hibernateCentralDB.cfg.xml
 	INSTALL_PATH=/data/danrw/ContentBroker
 ;;
 esac
+
 
 cd ../DAWeb
 ./build.sh prod
