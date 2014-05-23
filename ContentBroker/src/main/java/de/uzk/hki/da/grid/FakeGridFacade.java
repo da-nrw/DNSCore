@@ -26,7 +26,6 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.cb.ArchiveReplicationAction;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.utils.Utilities;
 

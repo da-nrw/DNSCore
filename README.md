@@ -70,8 +70,6 @@ To build streamlined SIP based based on the used SIP specifications, take a look
 SIP submitted to the DNS. The software could be easily integrated in subsystems, due to having 
 a command line interface.
 
-For deeper information on the software please take a look at the Wiki on GitHub.  
-
 
 
 ## Documentation
@@ -80,7 +78,8 @@ Welcome to the DNSCore documentation
 
 We have several sources of comprehensive documentation for our project and our codebase.
 For all questions related to the software as such and its usage, consider the primary source of
-documentation which is rolled out directly as part of the source. 
+documentation which is rolled out directly as part of the source. You'll find the extended documentation 
+below src/main/markdown/. It should be pointed out, that not all of the documents are linked here. 
 
 Before diving into the documentation in the paragraphs below note that documentation about the
 project is stored mainly in to places.
@@ -118,6 +117,8 @@ the releases page, follow the source code link for the corresponding version and
 * [click here](https://github.com/da-nrw/prepscripts/blob/master/README.md) to learn how connect Fedora and DNSCore
 * [click here](ContentBroker/src/main/markdown/installation.md) if you want to update your node to a new version of DNSCore
 * [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_ci.md) to learn how to set up a machine for continuous integration.
+* [clck here](ContentBroker/src/main/markdown/needed_packages.md) contains information on needed packages to run DNSCore.
+* [clck here](ContentBroker/src/main/markdown/using_iRODS_PAM_auth.md ) how to setup DNSCore for iRODS PAM Authentication
 
 #### Running a node
 * [click here](DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.  
@@ -126,9 +127,6 @@ the releases page, follow the source code link for the corresponding version and
 * [click here](ContentBroker/src/main/markdown/open_ports.md) for a list of ports your firewall has to allow connections to.
 * [clck here](ContentBroker/src/main/markdown/audit.md) to get information how the AIP are being checked automatically.
 
-
-
-
 ### Development
 * [click here](ContentBroker/src/main/markdown/3rdPartyTools.md) to get general information about the use and redistribution of used 3rd party libraries and tools.
 * [click here](ContentBroker/src/main/markdown/deploy.md) if you want to deploy the software yourself and build the source code on your local or on a continuous integration machine.
@@ -136,30 +134,5 @@ the releases page, follow the source code link for the corresponding version and
 * [click here](DAWeb/doc/deploy.md) for information about deploying DAWeb
 * [click here](ContentBroker/src/main/markdown/javadoc.md) if you want to recreate the JavaDoc files and publish them on GitHub Pages
 
-
-
-
-
-
-
-
-
-
-## Other stuff
-
-### Release notes of old versions:
-
-* [[Release Notes v0.6.2]]
-* [[Release Notes v0.6.1]]
-* [[Release Notes v0.6.0]]
-* [[Release Notes v0.5.2]]
-* [[Release Notes v0.5.0]]
-* [[Release Notes v0.4.0]]
-
-### Devs only
-
-* [[markuptest]]
-
-+ ++ + ++ +
 
 

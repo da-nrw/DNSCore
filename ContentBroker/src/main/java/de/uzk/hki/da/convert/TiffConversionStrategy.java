@@ -149,9 +149,11 @@ public class TiffConversionStrategy implements ConversionStrategy {
 					"identify","-format","'%C'",input};
 		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(cmd);
 		if (pi.getExitValue()!=0){
+			logger.error("recieved exit code " + pi.getExitValue());
 			throw new RuntimeException("Stderr: "+pi.getStdErr());
 		}
 		String compression = pi.getStdOut().trim();
+		if (compression.length()>0) 
 		compression = compression.substring( 1, compression.length() - 1 );
 		
 		return compression;

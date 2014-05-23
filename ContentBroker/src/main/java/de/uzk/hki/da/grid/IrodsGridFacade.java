@@ -115,7 +115,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		List<String> targetResgroups = Arrays.asList(localNode.getReplDestinations().split(","));
 		irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(targetLogically, "replicate_to", localNode.getReplDestinations().replace("cp_",""));
 		logger.debug("Starting threads for Replication to " + StringUtils.collectionToDelimitedString(targetResgroups, "|"));
-		Thread  re = new ReplicationExecutor(irodsSystemConnector, localNode.getWorkingResource(), targetResgroups, targetLogically);
+		Thread  re = new ReplicationExecutor(irodsSystemConnector, localNode, targetResgroups, targetLogically);
 		re.start();
 		return true;
 	}
