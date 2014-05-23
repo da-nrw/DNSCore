@@ -73,8 +73,7 @@ import de.uzk.hki.da.service.PackageTypeDetectionServiceTests;
 import de.uzk.hki.da.service.RetrievePackagesHelperTest;
 import de.uzk.hki.da.service.URNCheckDigitGeneratorTests;
 import de.uzk.hki.da.service.XPathUtilsTests;
-import de.uzk.hki.da.utils.ArchiveBuilderTests;
-import de.uzk.hki.da.utils.CommaSeparatedListTests;
+import de.uzk.hki.da.utils.*;
 
 /**
  * The collection of all our unit tests which should run pre and post commit.
@@ -142,7 +141,8 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	PackageTypeDetectionServiceTests.class,
 	UpdateMetadataActionEADTests.class,
 	DeleteObjectActionTests.class,
-	UpdateMetadataActionXMPTests.class
+	UpdateMetadataActionXMPTests.class,
+	PathTest.class
 //	HibernateUtilThreadingTest.class
 })
 public class SimpleSuite {
