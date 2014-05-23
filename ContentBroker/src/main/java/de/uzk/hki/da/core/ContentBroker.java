@@ -88,6 +88,13 @@ public class ContentBroker {
 	 */
 	public static void main( String[] args) throws IOException {		
 
+		if ((args.length>0)&&(args[0].equals("createSchema"))){
+			HibernateUtil.createSchema("conf/hibernateCentralDB.cfg.xml");
+			return;
+		}
+		
+		
+		
 		logger.info("Starting ContentBroker ..");
 		
 		logger.info("Setting up HibernateUtil ..");

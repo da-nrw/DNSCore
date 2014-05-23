@@ -36,8 +36,8 @@
  <mapping class="de.uzk.hki.da.model.Object"/>
  <mapping class="de.uzk.hki.da.model.DAFile"/>
  <mapping class="de.uzk.hki.da.model.Package"/>
-  <mapping class="de.uzk.hki.da.model.Event"/>
-  <mapping class="de.uzk.hki.da.model.SecondStageScanPolicy"/>
+ <mapping class="de.uzk.hki.da.model.Event"/>
+ <mapping class="de.uzk.hki.da.model.SecondStageScanPolicy"/>
  
 </session-factory>
 </hibernate-configuration>

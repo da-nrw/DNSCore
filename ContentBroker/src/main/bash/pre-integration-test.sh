@@ -13,55 +13,9 @@ VERSION=`cat ../VERSION.txt`
 LANG="de_DE.UTF-8"
 export LANG
 
-#############################
-#### CREATE DELIVERABLE #####
-############################# 
-
-echo Setting up and collecting environment specific configuration.
-
-# $1 = INSTALL_PATH
-function prepareTestEnvironment(){
-	echo Prepare test environment for acceptance testing.
-	cp $1/conf/config.properties conf/
-	cp $1/conf/hibernateCentralDB.cfg.xml conf/
-}
-function createIrodsDirs(){
-	imkdir /c-i/TEST                    2>/dev/null
-	imkdir /c-i/aip/TEST                2>/dev/null
-	imkdir /c-i/pips/institution/TEST   2>/dev/null
-	imkdir /c-i/pips/public/TEST        2>/dev/null
-}
-
-
-# $1 = INSTALL_PATH
-function restartContentBroker(){
-	SOURCE_PATH=`pwd`
-	cd $1
-	echo -e "\nTrying to start ContentBroker "
-	kill -9 `ps -aef | grep ContentBroker.jar | grep -v grep | awk '{print $2}'` 2>/dev/null
-	rm -f /tmp/cb.running
-	./ContentBroker_start.sh
-	sleep 15
-   cd $SOURCE_PATH
-}
-
-# $1 = INSTALL_PATH
-function install(){
-	cd ../installation 
-	echo call ./install.sh $1 full
-	./install.sh $1 full
-	if [ $? = 1 ]
-	then
-		echo Error in install script
-		exit
-	fi
-	cd ../ContentBroker;
-}
-
-
-case "$1" in
-dev)
-	if [ $# -ne 2 ] 
+if [ "$1" = "dev" ]
+then
+		if [ $# -ne 2 ] 
 	then
 		echo you chose a development environment as target environment. call
 		echo "./install.sh dev <contentBrokerInstallationRootPath>"
@@ -80,18 +34,95 @@ dev)
 		echo Error target environment $INSTALL_PATH and current src tree are identical!
 		exit
 	fi
+else 
+	INSTALL_PATH=/ci/ContentBroker
+fi
+
+#############################
+######## FUNCTIONS ##########
+############################# 
+
+function createIrodsDirs(){
+	imkdir /c-i/TEST                    2>/dev/null
+	imkdir /c-i/aip/TEST                2>/dev/null
+	imkdir /c-i/pips/institution/TEST   2>/dev/null
+	imkdir /c-i/pips/public/TEST        2>/dev/null
+}
+
+# $1 = INSTALL_PATH
+function stopContentBroker(){
+	SOURCE_PATH=`pwd`
+	cd $1
+	echo -e "\nTrying to start ContentBroker "
+	kill -9 `ps -aef | grep ContentBroker.jar | grep -v grep | awk '{print $2}'` 2>/dev/null
+	rm -f /tmp/cb.running
+    cd $SOURCE_PATH
+}
+
+# $1 = INSTALL_PATH
+function startContentBroker(){
+	SOURCE_PATH=`pwd`
+	cd $1
+	./ContentBroker_start.sh
+	sleep 15
+   cd $SOURCE_PATH
+}
+
+# $1 = INSTALL_PATH
+function install(){
+	cd ../installation 
+	echo call ./install.sh $1 full
+	./install.sh $1 full
+	if [ $? = 1 ]
+	then
+		echo Error in install script
+		exit
+	fi
+	cd ../ContentBroker;
+}
+
+function launchXDB(){
+	DATABASE_PROC_ID=`ps -aef | grep hsqldb.jar | grep -v grep | awk '{print $2}'`
+	if [ "$DATABASE_PROC_ID" != "" ]
+	then
+	        echo Killing hsql database process $DATABASE_PROC_ID.
+	        kill -9 $DATABASE_PROC_ID
+	fi
 	
-	src/main/bash/populatetestdb.sh create $1
+	sleep 2
+	
+	echo Recreating da-nrw schema in hsql database.
+	rm -r mydb.tmp 2> /dev/null
+	rm mydb.*      2> /dev/null
+	
+	cd $HIER
+	java -cp ../3rdParty/hsqldb/lib/hsqldb.jar org.hsqldb.server.Server --database.0 file:mydb --dbname.0 xdb &
+	
+	sleep 2
+}
+
+
+
+
+#############################
+######## MAIN ###############
+############################# 
+
+stopContentBroker $INSTALL_PATH
+
+case "$1" in
+dev)
+	launchXDB
 ;;
 ci)
-	INSTALL_PATH=/ci/ContentBroker
-
-	src/main/bash/populatetestdb.sh clean $1
 	createIrodsDirs
 ;;
 esac
 
+cp src/main/xml/hibernateCentralDB.cfg.xml.$1 conf/hibernateCentralDB.cfg.xml
+java -jar target/ContentBroker-SNAPSHOT.jar createSchema
 src/main/bash/populatetestdb.sh populate $1
+
 
 rm $INSTALL_PATH/conf/config.properties
 rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
@@ -101,6 +132,7 @@ install $INSTALL_PATH
 # TODO 1. really needed on a ci machine? 2. duplication with installer?
 cp src/main/bash/ffmpeg.sh.fake $INSTALL_PATH/ffmpeg.sh
 cp src/main/xml/beans.xml.$1 conf/beans.xml
-prepareTestEnvironment $INSTALL_PATH
-restartContentBroker $INSTALL_PATH
+cp $INSTALL_PATH/conf/config.properties conf/
+
+startContentBroker $INSTALL_PATH
 
