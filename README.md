@@ -118,7 +118,7 @@ the releases page, follow the source code link for the corresponding version and
 * [click here](ContentBroker/src/main/markdown/installation.md) if you want to update your node to a new version of DNSCore
 * [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_ci.md) to learn how to set up a machine for continuous integration.
 * [clck here](ContentBroker/src/main/markdown/needed_packages.md) contains information on needed packages to run DNSCore.
-* [clck here](ContentBroker/src/main/markdown/needed_packages.md) how to setup DNCOre for iRODS PAM Authentication
+* [clck here](ContentBroker/src/main/markdown/using_iRODS_PAM_auth.md ) how to setup DNSCore for iRODS PAM Authentication
 
 #### Running a node
 * [click here](DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.  
