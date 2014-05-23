@@ -21,8 +21,13 @@ package de.uzk.hki.da.grid;
 
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.service.Mail;
 
 /**
  * The Class ReplicationExecutor.
@@ -44,11 +49,34 @@ public class ReplicationExecutor extends Thread {
 	/** The data_name. */
 	private String data_name;
 	
+	/** The node */
+	private Node node;
+	
+	private long timeout = 20000l;
+	
+	private int retries=3;
+	
+	public int getRetries() {
+		return retries;
+	}
+
+	public void setRetries(int retries) {
+		this.retries = retries;
+	}
+
+	public long getTimeout() {
+		return timeout;
+	}
+
+	public void setTimeout(long timeout) {
+		this.timeout = timeout;
+	}
+
 	/** The logger. */
 	private static Logger logger = LoggerFactory
 			.getLogger(ReplicationExecutor.class);
 	
-	private int retries=3;
+	
 	/**
 	 * Instantiates a new replication executor.
 	 *
@@ -59,9 +87,10 @@ public class ReplicationExecutor extends Thread {
 	 * @author Daniel M. de Oliveira
 	 * @author Jens Peters
 	 */
-	public ReplicationExecutor(IrodsSystemConnector isc, String srcResc, List<String> targetResgroups, String data_name){
+	public ReplicationExecutor(IrodsSystemConnector isc, Node localnode, List<String> targetResgroups, String data_name){
+		this.node = localnode;
 		this.isc = isc;
-		this.srcResc = srcResc;
+		this.srcResc = localnode.getWorkingResource();
 		this.targetResgroups = targetResgroups;
 		this.data_name = data_name;
 	}
@@ -80,23 +109,46 @@ public class ReplicationExecutor extends Thread {
 			logger.info("replicate to " + targetResgroup);
 			targetResgroup = targetResgroup.trim();
 			if (targetResgroup.startsWith("cp_")) targetResgroup = targetResgroup.substring(3);
-			int i =0;
+			int i =1;
 		
-				while (!replicate(data_name, targetResgroup, srcResc) && i<retries){
-					i++;
+			while (!replicate(data_name, targetResgroup, srcResc) && i<retries){
+					
 					try {
-						Thread.sleep(10000l);
+						Thread.sleep(timeout);
 					} catch (InterruptedException e) {
 						logger.error("failed replication thread " + e.getCause());
 					}
+					i++;
+					
+			}
+			// We have passed the retries, we try to send Email to node admin
+			if (i>=retries) {
+				
+				String err = "Failed to replicate :" + data_name + " giving up on node "+ targetResgroup; 
+				if (node.getAdminEmail()!=null && !node.getAdminEmail().equals("")) {
+					try {
+						Mail.sendAMail(node.getAdminEmail(), err , err);
+					} catch (MessagingException ex) {
+						logger.error("Sending Email failed " + ex.toString());
+					}
+				logger.error("Failed to replicate :" + data_name + " giving up on node "+ targetResgroup );
 				}
-
-				// TODO: this has to be send to someone!
-				if (i>=retries) logger.error("Failed to replicate :" + data_name + " giving up on node "+ targetResgroup );
+			} 
 		}
 		logger.debug("deleting cache on resc " +srcResc );
 		isc.trimResource(data_name, srcResc);
 }	
+	
+	/**
+	 * Trying to Replicate
+	 * Exception being catched due to having "normal" error of unreachable nodes.
+	 * 
+	 * @author Jens Peters
+	 * @param data_name
+	 * @param targetResgroup
+	 * @param srcResc
+	 * @return
+	 */
 	
 private boolean replicate (String data_name, String targetResgroup, String srcResc) {
 	try {

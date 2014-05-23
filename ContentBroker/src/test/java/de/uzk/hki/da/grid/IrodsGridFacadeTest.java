@@ -97,9 +97,11 @@ public class IrodsGridFacadeTest {
 		when (isc.computeChecksum(anyString())).thenReturn("abc");
 		
 		Node node = new Node();
+		node.setWorkingResource("cacheresc");
 		node.setGridCacheAreaRootPath(irodsDir);
 		node.setWorkAreaRootPath(forkDir);
-		node.setReplDestinations("");
+		node.setReplDestinations("lvr");
+		node.setAdminEmail("test@test.de");
 		ig.setLocalNode(node);
 		when(isc.getZone()).thenReturn("da-nrw");
 		sp = new StoragePolicy(node);
