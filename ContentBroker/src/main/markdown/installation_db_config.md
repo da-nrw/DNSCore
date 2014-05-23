@@ -23,11 +23,6 @@ The ContentBroker needs a database in order to run.
 The connection to this database is configurable via 
 conf/hibernateCentralDB.cfg.xml (to see a sample file, click [here](../conf/hibernateCentralDB.cfg.xml.inmem)).
 
-
-Please **note** that you cannot use the hibernate property hbm2ddl.auto (create | ..). This is suppressed by
-the ContentBroker. If you want to learn how to let the ContentBroker help you to create a schema, see the dedicated 
-paragraph on the bottom of the page.
-
 ## Encrypting a password
 
 

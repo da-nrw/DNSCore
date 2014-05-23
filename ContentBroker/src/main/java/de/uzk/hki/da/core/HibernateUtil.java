@@ -94,7 +94,6 @@ public class HibernateUtil {
 			
 			String encryptedPassword = configuration.getProperty("hibernate.connection.password");
 			configuration.setProperty("hibernate.connection.password", PasswordUtils.decryptPassword(encryptedPassword) );
-			configuration.setProperty("hibernate.hbm2ddl.auto", ""); // suppress schema creation by config file
 			
 			sessionFactory = configuration.buildSessionFactory();
 			logger.info("HibernateUtil and SessionFactory successfully created");
