@@ -1,4 +1,4 @@
-== Using PAM Auth features of iRODS in CB
+#Using PAM Auth features of iRODS in CB
 
 Since Version 3.2 of iRODS, iRODS can authenticate users with the PAM (Pluggable authentication modules) feature
 as part of the authentication process of iRODS users. 
@@ -10,7 +10,7 @@ http://wiki.irods.org/index.php/PAM_SSL_Setup
 
 Please install the mentioned packages and certificates.
 
-=== Configuring iRODS 
+##Configuring iRODS 
 
 Don't forget to edit config/config.mk and change
 
@@ -34,7 +34,7 @@ During compilation we encountered the following error (might derive from differn
 
 This could be fixed by changing sk_GENERAL_NAMES_num to sk_GENERAL_NAME_ (http://groups.google.com/group/irod-chat/tree/browse_frm/month/2012-10/11ad1d04874f4959?rnum=91&_done=%2Fgroup%2Firod-chat%2Fbrowse_frm%2Fmonth%2F2012-10%3F)
 
-=== Setup of ContentBroker 
+##Setup of ContentBroker 
 
 Please import the ICAT certifcate file to the java keychain:
     
