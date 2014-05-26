@@ -36,7 +36,7 @@ DNScore uses iRODS as storage layer. The reasons why we have choosen iRODS as a 
 4. "out-of-the-box" capabilities for replication, maintenance and low-level bitstream verification.
 5. has a vivid community
 
-The version described here is community iRODS Version (3.X), you may consider also the e-iRODS Version. www.eirods.org but this not tested with DNSCore.
+The version described here is community iRODS Version (3.X). There are already newer releases, you may consider to update but this not tested with DNSCore.
 
 Several hardware platforms are supported by iRODS "out-of-the-box", but having a standard "mount-point" (unix file system) is always a good start. Tape devices not being able to provide such, may be connected via MSS compound devices and may need special configuration.
 
