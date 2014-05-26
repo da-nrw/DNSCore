@@ -19,14 +19,16 @@
 
 package de.uzk.hki.da.cb;
 
-
-
+import org.hibernate.Session;
 
 /**
  * The Class NullAction.
+ * @author Daniel M. de Oliveira
  */
 public class NullAction extends AbstractAction{
 
+	protected Session session;
+	
 	/**
 	 * Implementation.
 	 *
@@ -45,4 +47,19 @@ public class NullAction extends AbstractAction{
 	 */
 	@Override
 	void rollback() throws Exception {}
+	
+	
+	@Override
+	public Session openSession() {
+		System.out.println("OPEN SESSION");
+		return session;
+	}
+
+	public Session getSession() {
+		return session;
+	}
+
+	public void setSession(Session session) {
+		this.session = session;
+	}
 }

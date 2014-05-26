@@ -43,7 +43,9 @@ fi
 ############################# 
 
 function createIrodsDirs(){
-	imkdir /c-i/TEST                    2>/dev/null
+	irm -r /c-i/aip/TEST                2>/dev/null
+	irm -r /c-i/pips/institution/TEST   2>/dev/null
+	irm -r /c-i/pips/public/TEST        2>/dev/null
 	imkdir /c-i/aip/TEST                2>/dev/null
 	imkdir /c-i/pips/institution/TEST   2>/dev/null
 	imkdir /c-i/pips/public/TEST        2>/dev/null

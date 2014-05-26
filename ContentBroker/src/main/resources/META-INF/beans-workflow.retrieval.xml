@@ -23,7 +23,6 @@
 		scope="prototype">
 		<property name="startStatus" value="910" />
 		<property name="endStatus" value="950" />
-        <property name="irodsZonePath" value="${irods.zone}" />
 		<property name="name" value="RetrievalAction" />
 		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
 		<property name="sidecarExtensions" value="${cb.sidecar_extensions}" />

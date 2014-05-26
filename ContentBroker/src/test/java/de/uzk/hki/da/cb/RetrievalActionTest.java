@@ -109,7 +109,6 @@ public class RetrievalActionTest {
 		action.setObject(object);
 		action.setJob(job);
 		action.setLocalNode(node);
-		action.setIrodsZonePath("da-nrw");
 	}
 	
 	/**

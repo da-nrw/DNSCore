@@ -845,13 +845,17 @@ public class Object {
 	/**
 	 * Gets the latest package.
 	 *
-	 * @return the newest package which is attached to the object
+	 * @return the newest package which is attached to the object.
+	 * @throws IllegalStateException if there are no packages associated to the object.
+	 * 
 	 * @author Daniel M. de Oliveira
 	 */
 	public Package getLatestPackage(){
+		if (getPackages().size()==0) throw new IllegalStateException("no packages associated");
+
 		Package max = null;
-		
 		int maxnumber=0;
+		
 		for (Package p:getPackages()){
 			if (Integer.parseInt(p.getName())>maxnumber){
 				maxnumber = Integer.parseInt(p.getName());

@@ -320,7 +320,6 @@ public class ITBase {
 			action.setActionCommunicatorService(acs);
 			action.setUserExceptionManager(uem);
 			action.setNode(node);
-			action.setIrodsZonePath(zonePath);
 			ActionRegistry map = (ActionRegistry) context.getBean("actionRegistry");
 			map.registerAction(action);
 			action.setActionMap(map);

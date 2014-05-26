@@ -23,6 +23,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import de.uzk.hki.da.cb.AbstractActionTests;
 import de.uzk.hki.da.cb.ArchiveReplicationActionTests;
 import de.uzk.hki.da.cb.BuildAIPActionTests;
 import de.uzk.hki.da.cb.CheckFormatsActionTest;
@@ -142,7 +143,8 @@ import de.uzk.hki.da.utils.*;
 	UpdateMetadataActionEADTests.class,
 	DeleteObjectActionTests.class,
 	UpdateMetadataActionXMPTests.class,
-	PathTest.class
+	PathTest.class,
+	AbstractActionTests.class
 //	HibernateUtilThreadingTest.class
 })
 public class SimpleSuite {

@@ -128,7 +128,6 @@ public class ActionFactory implements ApplicationContextAware {
 			action.setActionCommunicatorService(actionCommunicatorService);
 			action.setUserExceptionManager(userExceptionManager);
 			action.setMqConnectionFactory(mqConnectionFactory);
-			action.setIrodsZonePath(irodsZonePath);
 			action.setNode(localNode);
 			jobCandidate.getObject().setTransientNodeRef(localNode);
 			action.setObject(jobCandidate.getObject());
