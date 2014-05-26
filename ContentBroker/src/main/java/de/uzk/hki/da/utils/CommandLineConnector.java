@@ -82,11 +82,11 @@ public class CommandLineConnector {
 		}
 		catch( FileNotFoundException e){			
 			Utilities.logger.error("File not found in runShellCommand",e);
-			return null;
+			throw new RuntimeException(e);
 		}	
 		catch (Exception e){		
 			Utilities.logger.error("Error in runShellCommand",e);
-			return null;
+			throw new RuntimeException(e);
 		}
 		finally {
 			if (p != null)

@@ -30,20 +30,43 @@ import java.util.List;
  *
  */
 
-public class Path {
+public class Path{
 	
 	List<String> pathArray = new ArrayList<String>();
 	
-	public Path(List<String> currentPathArray) {
-		this.pathArray = currentPathArray;
+	/** 
+	 * 
+	 * @author Polina Gubaidullina
+	 * @param list
+	 * @throws IllegalArgumentException if an element of list is not of type string or path
+	 */
+	
+	public Path(Object ... list) {
+		for (Object o: list) {
+			
+			String s = o.toString();
+			
+			if(o instanceof Path) {
+				s = s.substring(1);
+				pathArray.add(s);
+			} else if (o instanceof String) {
+				String [] newString = s.split(File.separator);
+				for(int i=0; i<newString.length; i++) {
+					if(!newString[i].isEmpty()) {
+						pathArray.add(newString[i]);
+					}
+				}
+			} else {
+				throw new IllegalArgumentException("Incorrect data type: path or string expected");
+			}
+		}
 	}
-	
-	
+
 	@Override
 	public String toString() {
 		String directoryString = "";
-		for (int i=0; i<this.pathArray.size(); i++) {
-			directoryString = directoryString + File.separator + pathArray.get(i);
+		for (String i: pathArray) {
+			directoryString = directoryString + File.separator + i;
 		}
 		return directoryString;
 	}

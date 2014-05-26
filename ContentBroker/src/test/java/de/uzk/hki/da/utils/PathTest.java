@@ -23,8 +23,6 @@ package de.uzk.hki.da.utils;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.util.Arrays;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -50,7 +48,7 @@ public class PathTest {
 		testDirectory1 = "directory1";
 		testDirectory2 = "directory2";
 		testDirectory3 = "directory3";
-		Path path = new Path (Arrays.asList(testDirectory1, testDirectory2, testDirectory3));
+		Path path = new Path (testDirectory1, testDirectory2, testDirectory3);
 		resultTestString = path.toString();
 		fileSeparator = File.separator;
 		resultStringArray = resultTestString.split(fileSeparator);
@@ -82,5 +80,27 @@ public class PathTest {
 	@Test
 	public void testAbsenceOfFileSeparatorAtTheEndOfPath (){
 		assertTrue(!resultTestString.endsWith(File.separator));
+	}
+	
+	@Test
+	public void testMergePaths (){
+		Path testPath = new Path ("first", "path");
+		String testString = "///////string_part1///string_part2///";
+		Path resultPath = new Path(testPath, testString);
+		String resultString = resultPath.toString();
+		assertTrue(!resultString.endsWith(File.separator));
+		assertTrue(resultString.startsWith(File.separator));
+		String manuelString = "/first/path/string_part1/string_part2";
+		assertEquals(manuelString, resultString);
+	}
+	@Test
+	public void testIllegalArgs (){
+		Path testPath = new Path ("first", "path");
+		String testString = "///////string_part1///string_part2///";
+		try {
+			new Path(testPath, testString, 7);
+			fail();
+		} catch (Exception e){
+		}
 	}
 }

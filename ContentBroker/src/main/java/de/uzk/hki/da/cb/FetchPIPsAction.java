@@ -3,8 +3,6 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
@@ -25,15 +23,15 @@ public class FetchPIPsAction extends AbstractAction {
 	
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
-	private Path pipsPublicSource = new Path(Arrays.asList("pips", "public"));
-	private Path pipsInstitutionSource = new Path(Arrays.asList("pips", "institution"));
+	private Path pipsPublicSource = new Path("pips", "public");
+	private Path pipsInstitutionSource = new Path("pips", "institution");
 	
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException {
 		
 		if (distributedConversionAdapter==null) throw new ConfigurationException("irodsSystemConnector not set");
-		Path dipSourcePartial = new Path (Arrays.asList(object.getContractor().getShort_name(), object.getIdentifier()+"_"+object.getLatestPackage().getId()));
-		Path dipTargetPartial = new Path (Arrays.asList(object.getContractor().getShort_name(), object.getIdentifier()));
+		Path dipSourcePartial = new Path (object.getContractor().getShort_name(), object.getIdentifier()+"_"+object.getLatestPackage().getId());
+		Path dipTargetPartial = new Path (object.getContractor().getShort_name(), object.getIdentifier());
 		String dipTargetPartialPath = dipTargetPartial.toString();
 		
 		replicateFromSourceResourceToWorkingResource(dipSourcePartial);
