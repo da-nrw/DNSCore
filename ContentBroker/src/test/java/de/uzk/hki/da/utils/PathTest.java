@@ -88,7 +88,6 @@ public class PathTest {
 		String testString = "///////string_part1///string_part2///";
 		Path resultPath = new Path(testPath, testString);
 		String resultString = resultPath.toString();
-		System.out.println("TEST: "+resultString);
 		assertTrue(!resultString.endsWith(File.separator));
 		assertTrue(resultString.startsWith(File.separator));
 		String manuelString = "/first/path/string_part1/string_part2";
@@ -102,7 +101,6 @@ public class PathTest {
 			new Path(testPath, testString, 7);
 			fail();
 		} catch (Exception e){
-			System.out.println("OK");
 		}
 	}
 }
