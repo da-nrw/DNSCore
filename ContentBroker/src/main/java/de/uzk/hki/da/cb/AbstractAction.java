@@ -233,8 +233,10 @@ public abstract class AbstractAction implements Runnable {
 			Destination toServer = session.createQueue("CB.ERROR.SERVER");
 			MessageProducer producer;
 			producer = session.createProducer(toClient);
-			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);         
-			String messageSend = "Package "+  object.getIdentifier() + " " + e.getMessage();
+			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);   
+			String txt =  e.getMessage(); 	
+			if  (e.getMessage()=="null") txt = "-keine weiteren Details- (NPE)"; 	
+			String messageSend = "Package "+  object.getIdentifier() + " " + txt;
 			TextMessage message = session.createTextMessage(messageSend);
 			message.setJMSReplyTo(toServer);
             producer.send(message);
