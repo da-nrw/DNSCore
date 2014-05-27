@@ -50,6 +50,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.service.UpdateMetadataService;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * Performs updates to metadata files that are necessary
@@ -144,6 +145,8 @@ public class UpdateMetadataAction extends AbstractAction {
 			if (repName.startsWith("dip")) {
 				metadataFileName = packageType + "." + extension;
 			}
+			
+			
 			File destFile = new File(object.getDataPath() + repName + "/" // XXX same problem with subdirs as above? Daniel M. de Oliveira
 					+ metadataFileName);
 
@@ -220,7 +223,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			File xmlFile = xmlFiles.next();
 			FileUtils.copyFileToDirectory(xmlFile, destDir);
 			
-			String destFilePath = destDir.getAbsolutePath() + "/" + xmlFile.getName();							
+			String destFilePath = new Path(destDir.getAbsolutePath(), xmlFile.getName()).toString();						
 			String xmlFileRelativePath = destFilePath.replace(object.getDataPath() + repName + "/", "");
 			DAFile daFile = new DAFile(object.getLatestPackage(), repName, xmlFileRelativePath);
 										

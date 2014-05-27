@@ -39,6 +39,7 @@ import de.uzk.hki.da.service.Mail;
 import de.uzk.hki.da.utils.ArchiveBuilder;
 import de.uzk.hki.da.utils.ArchiveBuilderFactory;
 import de.uzk.hki.da.utils.BagitUtils;
+import de.uzk.hki.da.utils.Path;
 
 
 /**
@@ -64,8 +65,10 @@ public class RetrievalAction extends AbstractAction {
 		
 		ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(new File(".tar"));
 
-		String tempFolder = localNode.getWorkAreaRootPath()+object.getContractor().getShort_name()+"/"+object.getIdentifier()+"/"+
-				object.getIdentifier()+"/";
+//		expected structure of tempFolder: .../.../.../
+//		Path().toString().substring(1) removes the file separator at the beginning of path; 
+//		"+ File.separator" adds the missing file separator at the end of path;
+		String tempFolder = new Path(localNode.getWorkAreaRootPath()+object.getContractor().getShort_name(), object.getIdentifier(), object.getIdentifier()+"/").toString().substring(1) + "/";
 		new File(tempFolder).mkdir();
 		File premisFile = new File(object.getDataPath() + object.getNameOfNewestBRep() + "/premis.xml");
 		

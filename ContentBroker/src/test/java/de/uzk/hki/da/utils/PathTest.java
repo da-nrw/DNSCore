@@ -84,7 +84,7 @@ public class PathTest {
 	
 	@Test
 	public void testMergePaths (){
-		Path testPath = new Path ("first", "path");
+		Path testPath = new Path ("fir" + "st", "path");
 		String testString = "///////string_part1///string_part2///";
 		Path resultPath = new Path(testPath, testString);
 		String resultString = resultPath.toString();
