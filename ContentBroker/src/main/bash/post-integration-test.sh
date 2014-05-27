@@ -2,6 +2,6 @@
 
 # author: Daniel M. de Oliveira
 
-cd ../installation
+cd target/installation
 rm config.properties
 rm hibernateCentralDB.cfg.xml

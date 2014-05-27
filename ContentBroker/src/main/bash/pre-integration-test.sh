@@ -7,9 +7,9 @@
 #### PARAMS #####
 ################# 
 
-REPO=../installation/
+REPO=target/installation/
 VERSION=`cat ../VERSION.txt`
-
+SOURCE_PATH=`pwd`
 LANG="de_DE.UTF-8"
 export LANG
 
@@ -53,7 +53,7 @@ function createIrodsDirs(){
 
 # $1 = INSTALL_PATH
 function stopContentBroker(){
-	SOURCE_PATH=`pwd`
+	#SOURCE_PATH=`pwd`
 	cd $1
 	echo -e "\nTrying to start ContentBroker "
 	kill -9 `ps -aef | grep ContentBroker.jar | grep -v grep | awk '{print $2}'` 2>/dev/null
@@ -63,17 +63,18 @@ function stopContentBroker(){
 
 # $1 = INSTALL_PATH
 function startContentBroker(){
-	SOURCE_PATH=`pwd`
+	#SOURCE_PATH=`pwd`
 	cd $1
 	./ContentBroker_start.sh
 	sleep 15
-   cd $SOURCE_PATH
+	cd $SOURCE_PATH
 }
 
 # $1 = INSTALL_PATH
 # $2 = mode
 function install(){
-	cd ../installation 
+	#SOURCE_PATH=`pwd`
+	cd $REPO
 	echo call ./install.sh $1 $2
 	./install.sh $1 $2
 	if [ $? = 1 ]
@@ -81,7 +82,7 @@ function install(){
 		echo Error in install script
 		exit
 	fi
-	cd ../ContentBroker;
+	cd $SOURCE_PATH
 }
 
 function launchXDB(){

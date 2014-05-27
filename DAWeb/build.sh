@@ -11,5 +11,5 @@ if [ $? != 0 ]; then
 	echo "ERROR in building DAWEB"
 	exit 1;
 fi
-cp target/daweb3-$VERSION.war ../installation/daweb3.war
+cp target/daweb3-$VERSION.war ../ContentBroker/target/installation/daweb3.war
 
