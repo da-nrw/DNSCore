@@ -115,15 +115,14 @@ public class ActionFactory implements ApplicationContextAware {
 			
 			Job jobCandidate = dao.fetchJobFromQueue(action.getStartStatus(), workingStatus
 					, localNode);
-			
 			if (jobCandidate == null) {
 				logger.trace("No job for type {}, checking for types with lower priority", jobType);
 				continue;
 			}
-			
 			logger.info("fetched job: {}", jobCandidate);
 
 			actionRegistry.registerAction(action);
+			
 			action.setDao(dao);
 			action.setActionCommunicatorService(actionCommunicatorService);
 			action.setUserExceptionManager(userExceptionManager);

@@ -172,7 +172,10 @@ public class ContentBroker {
 		logger.trace("scheduling task");		
 		try {
 			AbstractAction action = actionFactory.buildNextAction();
-			if(action != null) taskExecutor.execute(action);
+			if(action != null) {
+				logger.debug("executing... "+action.getName());
+				taskExecutor.execute(action);
+			}
 		} catch (TaskRejectedException e) {
 			logger.warn("Task rejected!",e);
 		} catch (Exception e) {

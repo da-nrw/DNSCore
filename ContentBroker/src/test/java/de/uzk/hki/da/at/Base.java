@@ -274,7 +274,7 @@ public class Base {
 		Integer pkid = (Integer) session.createSQLQuery("SELECT MAX(id) FROM packages").uniqueResult(); 
 		if (pkid==null) pkid = 0;
 		pkid++;
-		session.createSQLQuery("INSERT INTO packages (id,name) VALUES ("+pkid+",'1');").executeUpdate();
+		session.createSQLQuery("INSERT INTO packages (id,name,container_name) VALUES ("+pkid+",'1','"+name+"');").executeUpdate();
 		session.createSQLQuery("INSERT INTO objects_packages (objects_data_pk,packages_id) VALUES ("+dbid+","+pkid+");").executeUpdate();
 		
 		session.createSQLQuery("INSERT INTO queue (id,status,objects_id,initial_node) VALUES ("+dbid+",'"+status+"',"+dbid+","+

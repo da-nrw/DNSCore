@@ -117,7 +117,7 @@ public abstract class AbstractAction implements Runnable {
 	 * Checks settings that are common for all actions.
 	 * Can be overridden by extensions.
 	 */
-	public void checkCommonPreConditions(){
+	public void checkCommonPreConditions() throws Exception{
 		if (dao==null) throw new ConfigurationException("dao not set");
 		if (actionMap==null) throw new ConfigurationException("actionMap not set");
 		if (object==null) throw new ConfigurationException("object not set");
@@ -138,8 +138,10 @@ public abstract class AbstractAction implements Runnable {
 		
 		logger.info("Running \""+this.getClass().getName()+"\"");
 		logger.debug(LinuxEnvironmentUtils.logHeapSpaceInformation());
-		checkCommonPreConditions();
 		
+		try {checkCommonPreConditions();} catch (Exception e) {
+			logger.error(e.getMessage()); return;
+		}
 		
 		try {
 			// --- MUST happen before setting up object style logging ---
