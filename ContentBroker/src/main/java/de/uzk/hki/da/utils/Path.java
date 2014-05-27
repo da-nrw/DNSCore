@@ -28,6 +28,14 @@ import java.util.List;
  * 
  * @author Polina Gubaidullina
  *
+ */ 
+
+/**
+ * 
+ * Structure of path: /.../.../...
+ * file separator at the beginning of a path
+ * no file separator at the end of a path
+ *
  */
 
 public class Path{
@@ -43,22 +51,22 @@ public class Path{
 	
 	public Path(Object ... list) {
 		for (Object o: list) {
-			
-			String s = o.toString();
-			
-			if(o instanceof Path) {
-				s = s.substring(1);
-				pathArray.add(s);
-			} else if (o instanceof String) {
-				String [] newString = s.split(File.separator);
-				for(int i=0; i<newString.length; i++) {
-					if(!newString[i].isEmpty()) {
-						pathArray.add(newString[i]);
+			if (o != null) {
+			    String s = o.toString();
+				if(o instanceof Path) {
+					s = s.substring(1);
+					pathArray.add(s);
+				} else if (o instanceof String) {
+					String [] newString = s.split(File.separator);
+					for(int i=0; i<newString.length; i++) {
+						if(!newString[i].isEmpty()) {
+							pathArray.add(newString[i]);
+						}
 					}
+				} else {
+					throw new IllegalArgumentException("Incorrect data type: path or string expected");
 				}
-			} else {
-				throw new IllegalArgumentException("Incorrect data type: path or string expected");
-			}
+			} else throw new NullPointerException();
 		}
 	}
 

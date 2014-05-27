@@ -31,6 +31,7 @@ import de.uzk.hki.da.service.RetrievePackagesHelper;
 /**
  * @author Daniel M. de Oliveira
  */
+
 public class ObjectToWorkAreaAction extends AbstractAction {
 
 	private IngestGate ingestGate;
