@@ -73,10 +73,12 @@ public class Base {
 	
 		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
 		
-		instantiateGrid(properties.getProperty("grid.implementation"),properties.getProperty("implementation.distributedConversion"));
+		instantiateGrid(
+				properties.getProperty("cb.implementation.grid"),
+				properties.getProperty("cb.implementation.distributedConversion"));
 		if (gridFacade==null) throw new IllegalStateException("gridFacade could not be instantiated");
 		
-		instantiateRepository(properties.getProperty("repository.implementation"));
+		instantiateRepository(properties.getProperty("cb.implementation.repository"));
 		if (repositoryFacade==null) throw new IllegalStateException("repositoryFacade could not be instantiated");
 	}
 	

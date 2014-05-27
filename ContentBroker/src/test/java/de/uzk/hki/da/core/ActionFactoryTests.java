@@ -80,7 +80,6 @@ public class ActionFactoryTests {
 		factory.setApplicationContext(context);
 		factory.setDao(dao);
 		factory.setActionCommunicatorService(acs);
-		factory.setIrodsZonePath("/da-nrw/");
 		factory.setActionRegistry((ActionRegistry)context.getBean("actionRegistry"));
 	}
 	

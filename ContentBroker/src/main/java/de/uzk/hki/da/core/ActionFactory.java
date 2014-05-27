@@ -65,9 +65,6 @@ public class ActionFactory implements ApplicationContextAware {
 	/** The context. */
 	private ApplicationContext context;
 	
-	/** The irods zone path. */
-	private String irodsZonePath;
-	
 	/** The admin email. */
 	private String adminEmail;
 	
@@ -239,26 +236,6 @@ public class ActionFactory implements ApplicationContextAware {
 		onHalt  = b;
 	}
 
-
-	/**
-	 * Gets the irods zone path.
-	 *
-	 * @return the irods zone path
-	 */
-	public String getIrodsZonePath() {
-		return irodsZonePath;
-	}
-
-	/**
-	 * Sets the irods zone path.
-	 *
-	 * @param irodsZonePath the new irods zone path
-	 */
-	public void setIrodsZonePath(String irodsZonePath) {
-		if (!irodsZonePath.startsWith("/")) irodsZonePath="/"+irodsZonePath;
-		if (!irodsZonePath.endsWith("/")) irodsZonePath+="/";
-		this.irodsZonePath = irodsZonePath;
-	}
 
 	/**
 	 * Gets the local node.

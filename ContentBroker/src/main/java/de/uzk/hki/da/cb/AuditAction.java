@@ -49,7 +49,6 @@ public class AuditAction extends AbstractAction {
 	private int minNodes = 3;
 	private GridFacade gridRoot;
 	private int errorState = 51;
-	private String systemName;
 	/*
 	 * 
 	 * (non-Javadoc)
@@ -125,7 +124,7 @@ public class AuditAction extends AbstractAction {
 	void informNodeAdmin(Object obj, String msg) {
 		// send Mail to Admin with Package in Error
 
-		String subject = "[" + systemName + "] Problem Report für " + obj.getIdentifier();
+		String subject = "[" + "da-nrw" + "] Problem Report für " + obj.getIdentifier();
 		if (nodeAdminEmail != null && !nodeAdminEmail.equals("")) {
 			try {
 				Mail.sendAMail(nodeAdminEmail, subject, msg);
@@ -184,19 +183,5 @@ public class AuditAction extends AbstractAction {
 
 	public void setGridRoot(GridFacade gridRoot) {
 		this.gridRoot = gridRoot;
-	}
-
-	/**
-	 * @return the zoneName
-	 */
-	public String getSystemName() {
-		return systemName;
-	}
-
-	/**
-	 * @param zoneName the zoneName to set
-	 */
-	public void setSystemName(String zoneName) {
-		this.systemName = zoneName;
 	}
 }

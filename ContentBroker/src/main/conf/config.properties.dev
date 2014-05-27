@@ -1,27 +1,9 @@
-irods.user=contentbroker
-irods.password=UPNTxH5PM9eupHk225S7SA==
-
-fedora.url=http://localhost:8080/fedora
-fedora.user=fedoraAdmin
-fedora.password=/MxDGbm6x9Uqoz4iM+C4EA==
-
-irods.server=localhost
-irods.zone=da-nrw
-irods.default_resc=01-da-nrw-vm2.hki.uni-koeln.de
-irods.pam=false
-irods.keyStorePassword=
-irods.keyStorePath=
-irods.trustStorePath=
-
 elasticsearch.index=portal_test
-elasticsearch.hosts=localhost
-elasticsearch.cluster=danrw-test
 
-cb.min_repls=2
-cb.serverSocketNumber=4455
-cb.sidecar_extensions=xmp;txt;xml
-cb.presServer=localhost
-cb.urnNameSpace=urn:nbn:de:danrw
+system.min_repls=2
+system.sidecar_extensions=xmp;txt;xml
+system.presServer=localhost
+system.urnNameSpace=urn:nbn:de:danrw
 
 localNode.admin_email=da-nrw-notifier@uni-koeln.de
 localNode.userAreaRootPath=CONTENTBROKER_ROOT/storage/user
@@ -38,7 +20,8 @@ uris.cho=http://data.danrw.de/cho
 uris.aggr=http://data.danrw.de/aggregation
 uris.local=info:
 
-grid.implementation=fakeGridFacade
-implementation.distributedConversion=fakeDistributedConversionAdapter
-repository.implementation=fakeRepositoryFacade
-python.bin=python
+cb.serverSocketNumber=4455
+cb.implementation.grid=fakeGridFacade
+cb.implementation.distributedConversion=fakeDistributedConversionAdapter
+cb.implementation.repository=fakeRepositoryFacade
+cb.bin.python=python

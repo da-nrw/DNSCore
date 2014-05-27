@@ -12,11 +12,11 @@ irods.keyStorePassword=
 irods.keyStorePath=
 irods.trustStorePath=
 
-cb.min_repls=1
-cb.serverSocketNumber=4455
-cb.sidecar_extensions=xmp;txt;xml
-cb.presServer=localnode
-cb.urnNameSpace=urn:nbn:de:danrw
+
+system.min_repls=1
+system.sidecar_extensions=xmp;txt;xml
+system.presServer=localnode
+system.urnNameSpace=urn:nbn:de:danrw
 
 localNode.admin_email=da-nrw-notifier@uni-koeln.de
 localNode.userAreaRootPath=/ci/storage/UserArea
@@ -37,7 +37,8 @@ uris.cho=http://data.danrw.de/cho
 uris.aggr=http://data.danrw.de/aggregation
 uris.local=info:
 
-grid.implementation=irodsGridFacade
-implementation.distributedConversion=irodsDistributedConversionAdapter
-repository.implementation=fedoraRepositoryFacade
-python.bin=/ci/python/python
+cb.serverSocketNumber=4455
+cb.implementation.grid=irodsGridFacade
+cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+cb.implementation.repository=fedoraRepositoryFacade
+cb.bin.python=/ci/python/python

@@ -72,11 +72,10 @@
     
     <bean id="integrityScannerWorker" class="de.uzk.hki.da.integrity.IntegrityScannerWorker">
         <property name="localNodeName" value="${localNode.name}" />
-        <property name="gridFacade" ref="${grid.implementation}" />
+        <property name="gridFacade" ref="${cb.implementation.grid}" />
         <property name="nodeAdminEmail" value="${localNode.admin_email}" />
         <property name="dao" ref="centralDao" />
-        <property name="systemName" value="${irods.zone}" />
-        <property name="minNodes" value="${cb.min_repls}" />
+        <property name="minNodes" value="${system.min_repls}" />
     </bean>
     
     <bean id="userAreaScannerWorker" class="de.uzk.hki.da.core.UserAreaScannerWorker" init-method="init">
@@ -88,7 +87,6 @@
         <property name="actionRegistry" ref="actionRegistry" />
         <property name="localNode" ref="localNode" />
         <property name="adminEmail" value="${localNode.admin_email}" />
-        <property name="irodsZonePath" value="${irods.zone}" />
         <property name="dao" ref="centralDao" />
         <property name="actionCommunicatorService" ref="actionCommunicatorService" />
         <property name="userExceptionManager" ref="userExceptionManager" />

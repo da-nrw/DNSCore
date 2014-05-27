@@ -31,8 +31,8 @@ If we use iRODS as our backend, from the perspective of our application, we use 
 On the one hand we use it to replicate (during ingest for example) DIPs to other nodes on which the presentation repository runs. This function is represented by the interface "DistributedConversionHelper". On the other hand we use
 it to build up a grid between different nodes to realize the necessary geographical distribution of a long term archive.
 
-    grid.implementation=irodsGridFacade
-    implementation.distributedConversion=irodsDistributedConversionAdapter
+    cb.implementation.grid=irodsGridFacade
+    cb.implementation.distributedConversion=irodsDistributedConversionAdapter
     
 #### iRODS resources
 

@@ -71,10 +71,11 @@ function startContentBroker(){
 }
 
 # $1 = INSTALL_PATH
+# $2 = mode
 function install(){
 	cd ../installation 
-	echo call ./install.sh $1 full
-	./install.sh $1 full
+	echo call ./install.sh $1 $2
+	./install.sh $1 $2
 	if [ $? = 1 ]
 	then
 		echo Error in install script
@@ -115,9 +116,11 @@ stopContentBroker $INSTALL_PATH
 case "$1" in
 dev)
 	launchXDB
+	BEANS=full.dev
 ;;
 ci)
 	createIrodsDirs
+	BEANS=full
 ;;
 esac
 
@@ -125,15 +128,15 @@ cp src/main/xml/hibernateCentralDB.cfg.xml.$1 conf/hibernateCentralDB.cfg.xml
 java -jar target/ContentBroker-SNAPSHOT.jar createSchema
 src/main/bash/populatetestdb.sh populate $1
 
-
+rm $INSTALL_PATH/conf/beans.xml
 rm $INSTALL_PATH/conf/config.properties
 rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
 rm $INSTALL_PATH/actionCommunicatorService.recovery
 
-install $INSTALL_PATH
+install $INSTALL_PATH $BEANS
 # TODO 1. really needed on a ci machine? 2. duplication with installer?
 cp src/main/bash/ffmpeg.sh.fake $INSTALL_PATH/ffmpeg.sh
-cp src/main/xml/beans.xml.$1 conf/beans.xml
+cp src/main/xml/beans.xml.acceptance-test.$1 conf/beans.xml
 cp $INSTALL_PATH/conf/config.properties conf/
 
 startContentBroker $INSTALL_PATH

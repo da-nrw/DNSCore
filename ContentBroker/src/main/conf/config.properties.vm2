@@ -17,11 +17,10 @@ elasticsearch.index=portal_test
 elasticsearch.hosts=localhost
 elasticsearch.cluster=danrw-test
 
-cb.min_repls=2
-cb.serverSocketNumber=4455
-cb.sidecar_extensions=xmp;txt;xml
-cb.presServer=da-nrw-vm2.hki.uni-koeln.de
-cb.urnNameSpace=urn:nbn:de:danrw
+system.min_repls=2
+system.sidecar_extensions=xmp;txt;xml
+system.presServer=da-nrw-vm2.hki.uni-koeln.de
+system.urnNameSpace=urn:nbn:de:danrw
 
 localNode.admin_email=da-nrw-notifier@uni-koeln.de
 localNode.userAreaRootPath=/data/danrw/www/default/webdav
@@ -38,7 +37,8 @@ uris.cho=http://data.danrw.de/cho
 uris.aggr=http://data.danrw.de/aggregation
 uris.local=info:
 
-grid.implementation=irodsGridFacade
-implementation.distributedConversion=irodsDistributedConversionAdapter
-repository.implementation=fedoraRepositoryFacade
-python.bin=python
+cb.serverSocketNumber=4455
+cb.implementation.grid=irodsGridFacade
+cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+cb.implementation.repository=fedoraRepositoryFacade
+cb.bin.python=python

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/util
+           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+           http://www.springframework.org/schema/task
+           http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+    <!-- beans.xml.full.dev -->
+
+	<import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>
+	<import resource="classpath*:META-INF/beans-infrastructure.identifier.xml"/>
+
+	<import resource="classpath*:META-INF/beans-workflow.presentation.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.ingest.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.retrieval.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.pipgen.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.other.xml"/>
+
+	<bean class="de.uzk.hki.da.core.IngestGate" id="ingestGate">
+		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
+		<property name="fileSizeFactor" value="3" />
+		<property name="freeDiskSpacePercent" value="5" />
+	</bean>
+
+	<task:executor id="taskExecutor" pool-size="10"
+		queue-capacity="20" rejection-policy="CALLER_RUNS" />
+	<task:scheduled-tasks scheduler="taskScheduler">
+		<task:scheduled ref="contentBroker" method="scheduleTask" fixed-delay="200" />
+		<task:scheduled ref="ingestAreaScannerWorker" method="scheduleTask" fixed-delay="1000" />
+		<task:scheduled ref="userAreaScannerWorker" method="scheduleTask" fixed-delay="1000" />
+		<task:scheduled ref="integrityScannerWorker" method="scheduleTask" fixed-delay="20000" />
+	</task:scheduled-tasks>
+	<task:scheduler id="taskScheduler" pool-size="20" />
+
+	<util:map id="actionThreads">
+		<entry key="DeleteObjectAction" value="3" />
+		<entry key="RestartIngestWorkflowAction" value="3" />
+		<entry key="IngestRegisterURNAction" value="3" />
+		<entry key="IngestTarAction" value="3" />
+		<entry key="IndexMetadataAction" value="3" />
+		<entry key="CreateEDMAction" value="3" />
+		<entry key="FetchPIPsAction" value="3" />
+		<entry key="SendToPresenterAction" value="3" />
+		<entry key="IngestPrepareSendToPresenterAction" value="3" />
+		<entry key="IngestUnpackAction" value="3" />
+		<entry key="IngestConvertAction" value="3" />
+		<entry key="FriendshipConversionAction" value="3" />
+		<entry key="IngestScanAction" value="3" />
+		<entry key="IngestCreatePremisAction" value="3" />
+		<entry key="IngestCheckFormatsAction" value="3" />
+		<entry key="IngestScanForPresentationAction" value="3" />
+		<entry key="IngestConvertForPresentationAction" value="3" />
+		<entry key="IngestPresUpdateMetadataAction" value="3" />
+		<entry key="IngestShortenFileNamesAction" value="3" />
+		<entry key="IngestUpdateMetadataAction" value="3" />
+		<entry key="IngestArchiveReplicationAction" value="3" />
+		<entry key="IngestArchiveReplicationCheckAction" value="3" />
+		<entry key="RetrievalAction" value="3" />			
+		<entry key="RetrievalObjectToWorkAreaAction" value="3" />			
+		<entry key="AuditAction" value="3" />
+		<entry key="IngestBuildAIPAction" value="3" />
+		<entry key="PostRetrievalAction" value="3" />
+		<entry key="PIPGenPrepareSendToPresenterAction" value="3" />
+		<entry key="PIPGenShortenFileNamesAction" value="3" />
+		<entry key="PIPGenUpdateMetadataAction" value="3" />
+		<entry key="PIPGenConvertAction" value="3" />
+		<entry key="PIPGenScanForPresentationAction" value="3" />
+		<entry key="PIPGenObjectToWorkAreaAction" value="3" />
+		<entry key="PIPGenCleanWorkAreaAction" value="3" />
+	</util:map>
+	<util:list id="actionOrdering">
+   		<value>DeleteObjectAction</value>
+		<value>RestartIngestWorkflowAction</value>
+		<value>RetrievalAction</value>
+		<value>RetrievalObjectToWorkAreaAction</value>
+		<value>IngestArchiveReplicationCheckAction</value>
+		<value>IngestArchiveReplicationAction</value>
+		<value>IngestTarAction</value>
+		<value>IngestBuildAIPAction</value>
+		<value>IngestPrepareSendToPresenterAction</value>
+		<value>FriendshipConversionAction</value>
+		<value>IngestPresUpdateMetadataAction</value>
+		<value>IngestShortenFileNamesAction</value>
+		<value>IngestUpdateMetadataAction</value>
+		<value>IngestCheckFormatsAction</value>
+		<value>IngestConvertForPresentationAction</value>
+		<value>IngestScanForPresentationAction</value>
+		<value>IngestCreatePremisAction</value>
+		<value>IngestConvertAction</value>
+		<value>IngestScanAction</value>
+		<value>IngestRegisterURNAction</value>
+		<value>IndexMetadataAction</value>
+		<value>CreateEDMAction</value>
+		<value>SendToPresenterAction</value>
+		<value>FetchPIPsAction</value>
+		<value>IngestUnpackAction</value>
+		<value>AuditAction</value>
+		<value>PIPGenCleanWorkAreaAction</value>
+		<value>PIPGenPrepareSendToPresenterAction</value>
+		<value>PIPGenShortenFileNamesAction</value>
+		<value>PIPGenUpdateMetadataAction</value>
+		<value>PIPGenConvertAction</value>
+		<value>PIPGenScanForPresentationAction</value>
+		<value>PIPGenObjectToWorkAreaAction</value>
+        <value>PostRetrievalAction</value>
+	</util:list>
+</beans>
