@@ -10,8 +10,17 @@
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
     <!-- beans.xml.full -->
-	<import resource="classpath*:META-INF/beans-infrastructure.full.xml"/>
+
+	<import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>
+	<import resource="classpath*:META-INF/beans-infrastructure.identifier.xml"/>
 	<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>
+	<import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>
+
+	<import resource="classpath*:META-INF/beans-workflow.presentation.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.ingest.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.retrieval.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.pipgen.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.other.xml"/>
 
 	<bean class="de.uzk.hki.da.core.IngestGate" id="ingestGate">
 		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
