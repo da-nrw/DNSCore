@@ -63,7 +63,7 @@ public class ArchiveReplicationAction extends AbstractAction {
 		if (!sp.isPolicyAchievable()) throw new RuntimeException ("POLICY is not achievable! More forbidden nodens then required minimal copies!");
 		
 		try {
-			Path newFilePath = new Path (localNode.getWorkAreaRootPath() + "work/" + object.getContractor().getShort_name()+"/" +filename);
+			Path newFilePath = new Path (localNode.getWorkAreaRootPath(), "work", object.getContractor().getShort_name(), filename);
 			if (gridRoot.put(new File(newFilePath.toString()), 
 					target.toString(), sp )) {
 					new File(newFilePath.toString()).delete();
