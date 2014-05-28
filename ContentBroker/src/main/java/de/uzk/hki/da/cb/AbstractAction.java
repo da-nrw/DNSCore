@@ -43,6 +43,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
 import de.uzk.hki.da.core.ActionCommunicatorService;
 import de.uzk.hki.da.core.ActionRegistry;
+import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
@@ -69,8 +70,6 @@ import de.uzk.hki.da.utils.Utilities;
  * & the DA-NRW team
  */
 public abstract class AbstractAction implements Runnable {	
-	
-	private String irodsZonePath;
 	
 	private boolean KILLATEXIT = false;
 	private boolean INTEGRATIONTEST = false;
@@ -118,16 +117,20 @@ public abstract class AbstractAction implements Runnable {
 	 * Checks settings that are common for all actions.
 	 * Can be overridden by extensions.
 	 */
-	public void checkCommonPreConditions(){
-		if (dao==null) throw new IllegalStateException("dao not set");
-		if (actionMap==null) throw new IllegalStateException("actionMap not set");
-		if (object==null) throw new IllegalStateException("object not set");
-		if (localNode==null) throw new IllegalStateException("localNode not set");
-		if (job==null) throw new IllegalStateException("job not set");
-		if (object.getContractor()==null) throw new IllegalStateException("contractor not set in job");
+	public void checkCommonPreConditions() throws Exception{
+		if (dao==null) throw new ConfigurationException("dao not set");
+		if (actionMap==null) throw new ConfigurationException("actionMap not set");
+		if (object==null) throw new ConfigurationException("object not set");
+		if (localNode==null) throw new ConfigurationException("localNode not set");
+		if (job==null) throw new ConfigurationException("job not set");
+		if (object.getContractor()==null) throw new ConfigurationException("contractor not set in job");
+		if (actionCommunicatorService==null) throw new ConfigurationException("action communicator service not set");
+		if (userExceptionManager==null) throw new ConfigurationException("user exception manager not set");
+
 		if (object.getContractor().getShort_name()==null) throw new IllegalStateException("contractor short name not set in job");
-		if (actionCommunicatorService==null) throw new IllegalStateException("action communicator service not set");
-		if (userExceptionManager==null) throw new IllegalStateException("user exception manager not set");
+		if (object.getIdentifier()==null) throw new IllegalStateException("object identifier not set");
+		object.getLatestPackage();
+		if (object.getLatestPackage().getContainerName()==null) throw new IllegalStateException("containerName of latest package not set");
 	}
 
 	
@@ -135,8 +138,10 @@ public abstract class AbstractAction implements Runnable {
 		
 		logger.info("Running \""+this.getClass().getName()+"\"");
 		logger.debug(LinuxEnvironmentUtils.logHeapSpaceInformation());
-		checkCommonPreConditions();
 		
+		try {checkCommonPreConditions();} catch (Exception e) {
+			logger.error(e.getMessage()); return;
+		}
 		
 		try {
 			// --- MUST happen before setting up object style logging ---
@@ -147,12 +152,12 @@ public abstract class AbstractAction implements Runnable {
 			logger.info("Stubbing implementation of "+this.getClass().getName());
 			logger.debug(Utilities.getHeapSpaceInformation());
 			
-			boolean implementationSuccesfullyExecuted = implementation();
+			boolean implementationExecutionAborted = implementation();
 			
-			Session session = HibernateUtil.openSession();
+			Session session = openSession();
 			session.beginTransaction();
 
-			if (!implementationSuccesfullyExecuted){				
+			if (!implementationExecutionAborted){				
 				logger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
 				job.setStatus(startStatus);
 				
@@ -265,7 +270,7 @@ public abstract class AbstractAction implements Runnable {
 		
 		try{
 			logger.debug("Set job to error state. Commit changes to database now.");
-			Session session = HibernateUtil.openSession();
+			Session session = openSession();
 			session.beginTransaction();
 			session.update(job);
 			session.getTransaction().commit();
@@ -449,15 +454,6 @@ public abstract class AbstractAction implements Runnable {
 		INTEGRATIONTEST = iNTEGRATIONTEST;
 	}
 	
-	public String getIrodsZonePath() {
-		return irodsZonePath;
-	}
-
-	public void setIrodsZonePath(String irodsZonePath) {
-		if (!irodsZonePath.endsWith("/")) irodsZonePath+="/";
-		this.irodsZonePath = irodsZonePath;
-	}
-
 	public Object getObject() {
 		return object;
 	}
@@ -486,5 +482,7 @@ public abstract class AbstractAction implements Runnable {
 		this.mqConnectionFactory = mqConnectionFactory;
 	}
 
-	
+	public Session openSession() {
+		return HibernateUtil.openSession();
+	}
 }

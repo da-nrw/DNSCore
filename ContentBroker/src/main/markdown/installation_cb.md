@@ -101,7 +101,7 @@ config.properties:
 If your python installation is not globally visible, for example if your package system does not provide
 the newest version, set the path accordingly at
 
-    python.bin=python 
+    cb.bin.python=python 
  
 ### Database
 

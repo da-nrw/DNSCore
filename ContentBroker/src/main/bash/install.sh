@@ -83,6 +83,7 @@ then
 fi
 if [ ! -z $BEANS_TYPE ]
 then 
+	echo Copying beans.xml.$BEANS_TYPE to $INSTALLATION_TARGET/conf/beans.xml
 	cp -f beans.xml.$BEANS_TYPE $INSTALLATION_TARGET/conf/beans.xml
 fi
 cp -f logback.xml $INSTALLATION_TARGET/conf

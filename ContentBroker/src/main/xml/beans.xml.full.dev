@@ -9,12 +9,10 @@
            http://www.springframework.org/schema/task
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-    <!-- beans.xml.full -->
+    <!-- beans.xml.full.dev -->
 
 	<import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>
 	<import resource="classpath*:META-INF/beans-infrastructure.identifier.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>
 
 	<import resource="classpath*:META-INF/beans-workflow.presentation.xml"/>
 	<import resource="classpath*:META-INF/beans-workflow.ingest.xml"/>

@@ -81,9 +81,9 @@ DNSCore supports both operational modes, depending on your
     
 Parameter in your config.properties. Possible values are so far:
 
-    grid.implementation=fakeGridFacade
-    grid.implementation=irodsGridFacade
-    grid.implementation=federatedGridFacade
+    cb.implementation.grid=fakeGridFacade
+    cb.implementation.grid=irodsGridFacade
+    cb.implementation.grid=federatedGridFacade
 
 Each Zone needs at least one database (so called ICAT Server). The use of Postgres is encouraged here. 
 

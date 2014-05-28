@@ -14,8 +14,8 @@
 		scope="prototype">
 		<property name="startStatus" value="900" />
 		<property name="endStatus" value="910" />
-		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
-		<property name="gridFacade" ref="${grid.implementation}"/>
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
+		<property name="gridFacade" ref="${cb.implementation.grid}"/>
 		<property name="name" value="RetrievalObjectToWorkAreaAction" />
 		<property name="ingestGate" ref="ingestGate" />
 	</bean>	
@@ -23,10 +23,9 @@
 		scope="prototype">
 		<property name="startStatus" value="910" />
 		<property name="endStatus" value="950" />
-        <property name="irodsZonePath" value="${irods.zone}" />
 		<property name="name" value="RetrievalAction" />
-		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
-		<property name="sidecarExtensions" value="${cb.sidecar_extensions}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
+		<property name="sidecarExtensions" value="${system.sidecar_extensions}" />
 	</bean>	
 	<bean id="PostRetrievalAction" class="de.uzk.hki.da.cb.PostRetrievalAction"
 		scope="prototype">

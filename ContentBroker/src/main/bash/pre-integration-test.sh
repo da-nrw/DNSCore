@@ -7,9 +7,9 @@
 #### PARAMS #####
 ################# 
 
-REPO=../installation/
+REPO=target/installation/
 VERSION=`cat ../VERSION.txt`
-
+SOURCE_PATH=`pwd`
 LANG="de_DE.UTF-8"
 export LANG
 
@@ -43,7 +43,9 @@ fi
 ############################# 
 
 function createIrodsDirs(){
-	imkdir /c-i/TEST                    2>/dev/null
+	irm -r /c-i/aip/TEST                2>/dev/null
+	irm -r /c-i/pips/institution/TEST   2>/dev/null
+	irm -r /c-i/pips/public/TEST        2>/dev/null
 	imkdir /c-i/aip/TEST                2>/dev/null
 	imkdir /c-i/pips/institution/TEST   2>/dev/null
 	imkdir /c-i/pips/public/TEST        2>/dev/null
@@ -51,7 +53,7 @@ function createIrodsDirs(){
 
 # $1 = INSTALL_PATH
 function stopContentBroker(){
-	SOURCE_PATH=`pwd`
+	#SOURCE_PATH=`pwd`
 	cd $1
 	echo -e "\nTrying to start ContentBroker "
 	kill -9 `ps -aef | grep ContentBroker.jar | grep -v grep | awk '{print $2}'` 2>/dev/null
@@ -61,24 +63,26 @@ function stopContentBroker(){
 
 # $1 = INSTALL_PATH
 function startContentBroker(){
-	SOURCE_PATH=`pwd`
+	#SOURCE_PATH=`pwd`
 	cd $1
 	./ContentBroker_start.sh
 	sleep 15
-   cd $SOURCE_PATH
+	cd $SOURCE_PATH
 }
 
 # $1 = INSTALL_PATH
+# $2 = mode
 function install(){
-	cd ../installation 
-	echo call ./install.sh $1 full
-	./install.sh $1 full
+	#SOURCE_PATH=`pwd`
+	cd $REPO
+	echo call ./install.sh $1 $2
+	./install.sh $1 $2
 	if [ $? = 1 ]
 	then
 		echo Error in install script
 		exit
 	fi
-	cd ../ContentBroker;
+	cd $SOURCE_PATH
 }
 
 function launchXDB(){
@@ -113,9 +117,11 @@ stopContentBroker $INSTALL_PATH
 case "$1" in
 dev)
 	launchXDB
+	BEANS=full.dev
 ;;
 ci)
 	createIrodsDirs
+	BEANS=full
 ;;
 esac
 
@@ -123,15 +129,15 @@ cp src/main/xml/hibernateCentralDB.cfg.xml.$1 conf/hibernateCentralDB.cfg.xml
 java -jar target/ContentBroker-SNAPSHOT.jar createSchema
 src/main/bash/populatetestdb.sh populate $1
 
-
+rm $INSTALL_PATH/conf/beans.xml
 rm $INSTALL_PATH/conf/config.properties
 rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
 rm $INSTALL_PATH/actionCommunicatorService.recovery
 
-install $INSTALL_PATH
+install $INSTALL_PATH $BEANS
 # TODO 1. really needed on a ci machine? 2. duplication with installer?
 cp src/main/bash/ffmpeg.sh.fake $INSTALL_PATH/ffmpeg.sh
-cp src/main/xml/beans.xml.$1 conf/beans.xml
+cp src/main/xml/beans.xml.acceptance-test.$1 conf/beans.xml
 cp $INSTALL_PATH/conf/config.properties conf/
 
 startContentBroker $INSTALL_PATH

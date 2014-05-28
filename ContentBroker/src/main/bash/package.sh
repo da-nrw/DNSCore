@@ -2,15 +2,19 @@
 
 # Author: Daniel M. de Oliveira
 
-INSTALLER=../installation/
+INSTALLER=target/installation
+CBTAR_SRC=target/installation_tar
+
 VERSION=`cat ../VERSION.txt`
+
 
 if [ $# -lt 1 ]
 then
 	echo We need at least one argument for the env here
 	exit
 fi
-echo params are $1 $2
+echo "calling package.sh $1 $2"
+
 
 function createStorageFolder(){
 	mkdir $CBTAR_SRC/storage/
@@ -22,9 +26,9 @@ function createStorageFolder(){
 	mkdir -p $CBTAR_SRC/storage/ingest/TEST
 }
 
-
-CBTAR_SRC=target/deliverable
+mkdir $INSTALLER
 mkdir $CBTAR_SRC
+
 cp target/ContentBroker-SNAPSHOT.jar $CBTAR_SRC/ContentBroker.jar
 if [ $? -ne 0 ]
 then
@@ -32,7 +36,6 @@ then
 	echo any other target environment will need the CT tests to pass
 	exit
 fi
-
 
 mkdir $CBTAR_SRC/conf
 cp -r ../3rdParty/fido $CBTAR_SRC
@@ -59,9 +62,10 @@ echo -e "ContentBroker Version $VERSION\nWritten by\n Daniel M. de Oliveira\n Je
 
 cp src/main/bash/install.sh $INSTALLER
 cp src/main/bash/configure.sh $INSTALLER
-cp src/main/xml/beans.xml.node $INSTALLER/
-cp src/main/xml/beans.xml.pres $INSTALLER/
-cp src/main/xml/beans.xml.full $INSTALLER/
+cp src/main/xml/beans.xml.node $INSTALLER
+cp src/main/xml/beans.xml.pres $INSTALLER
+cp src/main/xml/beans.xml.full $INSTALLER
+cp src/main/xml/beans.xml.full.dev $INSTALLER
 cp src/main/xml/logback.xml.debug $INSTALLER/logback.xml
 
 
@@ -75,7 +79,6 @@ dev)
 ;;
 ci)
 	cp src/main/conf/config.properties.ci $INSTALLER/config.properties
-	INSTALL_PATH=/data/danrw/ContentBroker
 ;;
 esac
 
@@ -91,6 +94,6 @@ cd ../ContentBroker
 
 
 cd $CBTAR_SRC
-rm ../../../installation/ContentBroker.tar 2>/dev/null
-tar cf ../../../installation/ContentBroker.tar *
-cd ../../
+rm ../installation/ContentBroker.tar 2>/dev/null
+tar cf ../installation/ContentBroker.tar *
+cd ../..

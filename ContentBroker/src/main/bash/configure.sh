@@ -25,7 +25,7 @@ $SED_BIN "s@CONTENTBROKER_ROOT@$INSTALL_PATH@" jhove/jhove.tmp >> jhove/jhove
 rm jhove/conf/jhove.conf.tmp
 rm jhove/jhove.tmp
 
-PYTHON_BIN=`cat conf/config.properties | grep python.bin | sed "s@python.bin=@@"`
+PYTHON_BIN=`cat conf/config.properties | grep cb.bin.python | sed "s@cb.bin.python=@@"`
 if [ "$PYTHON_BIN" = "" ]
 then
 	echo "ERROR could not read python.bin from config.properties"

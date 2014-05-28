@@ -14,7 +14,7 @@
 		<property name="startStatus" value="110" />
 		<property name="endStatus" value="120" />
 		<property name="name" value="IngestUnpackAction" />
-		<property name="gridRoot" ref="${grid.implementation}"/>
+		<property name="gridRoot" ref="${cb.implementation.grid}"/>
 		<property name="ingestGate" ref="ingestGate" />
 		<property name="unwantedFilesFilters">
 			<util:list value-type="org.apache.commons.io.filefilter.IOFileFilter">
@@ -31,21 +31,21 @@
 		<property name="name" value="IngestScanAction" />
 		<property name="formatScanService" ref="formatScanService" />
 		<property name="description" value="Format Scan Service" />
-		<property name="sidecarExtensions" value="${cb.sidecar_extensions}" />
-		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
+		<property name="sidecarExtensions" value="${system.sidecar_extensions}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
 	</bean>
 	<bean id="IngestRegisterURNAction" class="de.uzk.hki.da.cb.RegisterURNAction" scope="prototype">
 		<property name="startStatus" value="140" />
 		<property name="endStatus" value="230" />
 		<property name="name" value="IngestRegisterURNAction" />
-		<property name="nameSpace" value="${cb.urnNameSpace}" />
+		<property name="nameSpace" value="${system.urnNameSpace}" />
 	</bean>
 	<bean id="IngestConvertAction" class="de.uzk.hki.da.cb.ConvertAction"
 		scope="prototype">
 		<property name="startStatus" value="230" />
 		<property name="endStatus" value="250" />
 		<property name="name" value="IngestConvertAction" />
-		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
 	</bean>
 	<bean id="IngestUpdateMetadataAction" class="de.uzk.hki.da.cb.UpdateMetadataAction" scope="prototype">
 		<property name="startStatus" value="250" />
@@ -67,7 +67,7 @@
 		<property name="name" value="IngestCheckFormatsAction" />
 		<property name="formatScanService" ref="formatScanService" />
 		<property name="jhoveScanService" ref="jhoveScanService" />
-		<property name="sidecarExtensions" value="${cb.sidecar_extensions}" />
+		<property name="sidecarExtensions" value="${system.sidecar_extensions}" />
 	</bean>
 	<bean id="IngestCreatePremisAction" class="de.uzk.hki.da.cb.CreatePremisAction" scope="prototype">
 		<property name="startStatus" value="270" />
@@ -79,16 +79,16 @@
 		<property name="startStatus" value="310" />
 		<property name="endStatus" value="320" />
 		<property name="name" value="IngestScanForPresentationAction" />
-		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
 		<property name="formatScanService" ref="formatScanService" />
-		<property name="sidecarExtensions" value="${cb.sidecar_extensions}" />
+		<property name="sidecarExtensions" value="${system.sidecar_extensions}" />
 	</bean>
 	<bean id="IngestConvertForPresentationAction" class="de.uzk.hki.da.cb.ConvertAction"
 		scope="prototype">
 		<property name="startStatus" value="320" />
 		<property name="endStatus" value="340" />
 		<property name="name" value="IngestConvertForPresentationAction" />
-		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
 	</bean>
 	<bean id="IngestShortenFileNamesAction" class="de.uzk.hki.da.cb.ShortenFileNamesAction"
 		scope="prototype">
@@ -122,7 +122,7 @@
 		<property name="startStatus" value="360" />
 		<property name="endStatus" value="370" />
 		<property name="name" value="IngestPrepareSendToPresenterAction" />
-		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
 	</bean>
 	<bean id="IngestBuildAIPAction" class="de.uzk.hki.da.cb.BuildAIPAction" scope="prototype">
 		<property name="startStatus" value="370" />
@@ -132,7 +132,7 @@
 	<bean id="IngestTarAction" class="de.uzk.hki.da.cb.TarAction" scope="prototype">
 		<property name="startStatus" value="380" />
 		<property name="endStatus" value="400" />
-		<property name="distributedConversionAdapter" ref="${implementation.distributedConversion}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
 		<property name="name" value="IngestTarAction" />
 	</bean>
 	<bean id="IngestArchiveReplicationAction" class="de.uzk.hki.da.cb.ArchiveReplicationAction"
@@ -140,16 +140,16 @@
 		<property name="startStatus" value="400" />
 		<property name="endStatus" value="440" />
 		<property name="name" value="IngestArchiveReplicationAction" />
-		<property name="gridRoot" ref="${grid.implementation}"/>
+		<property name="gridRoot" ref="${cb.implementation.grid}"/>
 	</bean>
 	<bean id="IngestArchiveReplicationCheckAction" class="de.uzk.hki.da.cb.ArchiveReplicationCheckAction"
 		scope="prototype">
 		<property name="startStatus" value="440" />
 		<property name="endStatus" value="500" />
-		<property name="minNodes" value="${cb.min_repls}" />
+		<property name="minNodes" value="${system.min_repls}" />
 		<property name="timeOut" value="2000" />
-		<property name="gridRoot" ref="${grid.implementation}"/>
+		<property name="gridRoot" ref="${cb.implementation.grid}"/>
 		<property name="name" value="IngestArchiveReplicationCheckAction" />
-		<property name="presentationRepositoryNodeName" value="${cb.presServer}" />
+		<property name="presentationRepositoryNodeName" value="${system.presServer}" />
 	</bean>
 </beans>

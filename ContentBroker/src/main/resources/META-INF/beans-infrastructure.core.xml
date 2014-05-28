@@ -12,35 +12,13 @@
            http://activemq.apache.org/schema/core 
            http://activemq.apache.org/schema/core/activemq-core.xsd">
           
-          
-    <bean id="fakeRepositoryFacade" class="de.uzk.hki.da.repository.FakeRepositoryFacade">
-        <property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
-	</bean>   
+    <!-- beans-infrastructure.core.xml -->
           
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
 		<property name="location">
 			<value>conf/config.properties</value>
 		</property>
 	</bean>	
-		
-	<bean id="fakeDistributedConversionAdapter" class="de.uzk.hki.da.grid.FakeDistributedConversionAdapter"/>
-	<bean id="irodsDistributedConversionAdapter" class="de.uzk.hki.da.grid.IrodsDistributedConversionAdapter">
-		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
-		<property name="zonePath" value="${irods.zone}"/>
-		<property name="workingResource" value="${localNode.workingResource}"/>
-	</bean>
-	<bean id="fakeGridFacade" class="de.uzk.hki.da.grid.FakeGridFacade">
-		<property name="gridCacheAreaRootPath" value="${localNode.gridCacheAreaRootPath}" />
-	</bean>
-	<bean id="irodsGridFacade" class="de.uzk.hki.da.grid.IrodsGridFacade">
-		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
-		<property name="localNode" ref="localNode"/>
-	</bean>	
-	<bean id="federatedGridFacade" class="de.uzk.hki.da.grid.IrodsFederatedGridFacade">
-		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
-		<property name="localNode" ref="localNode"/>
-	</bean>	
-	
 	
 	<bean id="localNode" class="de.uzk.hki.da.model.Node">
 		<property name="name" value="${localNode.name}"/>
@@ -53,28 +31,20 @@
         <property name="replDestinations" value="${localNode.replDestinations}" />
    	</bean>
            
-    <bean id="irodsSystemConnector" class="de.uzk.hki.da.grid.IrodsSystemConnector" scope="prototype">
-        <!-- iRODS user to be used by ContentBroker -->
-        <constructor-arg value="${irods.user}" />
-        <!-- password for iRODS user -->
-        <constructor-arg value="${irods.password}" />
-        <!-- iRODS server address -->
-        <constructor-arg value="${irods.server}" />
-        <!-- iRODS zone -->
-        <constructor-arg value="${irods.zone}" />
-        <!-- iRODS default resource -->
-        <constructor-arg value="${irods.default_resc}" />
-        <property name="pamMode" value="${irods.pam}" />
-        <property name="keyStorePassword" value="${irods.keyStorePassword}" />
-        <property name="keyStore" value="${irods.keyStorePath}" />
-        <property name="trustStore" value="${irods.trustStorePath}" />
-    </bean>
-        <amq:broker id="mqBroker" useShutdownHook="true" useJmx="false" deleteAllMessagesOnStartup="true" start="false">
-      <amq:systemUsage>
-      	<amq:systemUsage>
-      		<amq:memoryUsage><amq:memoryUsage limit="16Mb" /></amq:memoryUsage>
-       		<amq:tempUsage><amq:tempUsage limit="100Mb" /></amq:tempUsage>
-       		<amq:storeUsage><amq:storeUsage limit="1GB" /></amq:storeUsage>
+    <bean id="fakeDistributedConversionAdapter" class="de.uzk.hki.da.grid.FakeDistributedConversionAdapter"/>
+     <bean id="fakeGridFacade" class="de.uzk.hki.da.grid.FakeGridFacade">
+		<property name="gridCacheAreaRootPath" value="${localNode.gridCacheAreaRootPath}" />
+	</bean>
+    <bean id="fakeRepositoryFacade" class="de.uzk.hki.da.repository.FakeRepositoryFacade">
+        <property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
+	</bean>  
+    
+    <amq:broker id="mqBroker" useShutdownHook="true" useJmx="false" deleteAllMessagesOnStartup="true" start="false">
+    <amq:systemUsage>
+    <amq:systemUsage>
+    	<amq:memoryUsage><amq:memoryUsage limit="16Mb" /></amq:memoryUsage>
+    	<amq:tempUsage><amq:tempUsage limit="100Mb" /></amq:tempUsage>
+    	<amq:storeUsage><amq:storeUsage limit="1GB" /></amq:storeUsage>
    	</amq:systemUsage>
    	</amq:systemUsage>
     <amq:transportConnectors>

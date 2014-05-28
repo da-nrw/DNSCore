@@ -33,10 +33,9 @@
 		scope="prototype">
 		<property name="startStatus" value="5000" />
 		<property name="endStatus" value="6000" />
-		<property name="minNodes" value="${cb.min_repls}" />
+		<property name="minNodes" value="${system.min_repls}" />
 		<property name="nodeAdminEmail" value="${localNode.admin_email}" />
-		<property name="gridRoot" ref="${grid.implementation}"/>
-		<property name="systemName" value="${irods.zone}"/>
+		<property name="gridRoot" ref="${cb.implementation.grid}"/>
 		<property name="name" value="AuditAction" />
 	</bean>
 </beans>

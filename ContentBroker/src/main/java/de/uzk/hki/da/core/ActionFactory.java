@@ -65,9 +65,6 @@ public class ActionFactory implements ApplicationContextAware {
 	/** The context. */
 	private ApplicationContext context;
 	
-	/** The irods zone path. */
-	private String irodsZonePath;
-	
 	/** The admin email. */
 	private String adminEmail;
 	
@@ -115,20 +112,18 @@ public class ActionFactory implements ApplicationContextAware {
 			
 			Job jobCandidate = dao.fetchJobFromQueue(action.getStartStatus(), workingStatus
 					, localNode);
-			
 			if (jobCandidate == null) {
 				logger.trace("No job for type {}, checking for types with lower priority", jobType);
 				continue;
 			}
-			
 			logger.info("fetched job: {}", jobCandidate);
 
 			actionRegistry.registerAction(action);
+			
 			action.setDao(dao);
 			action.setActionCommunicatorService(actionCommunicatorService);
 			action.setUserExceptionManager(userExceptionManager);
 			action.setMqConnectionFactory(mqConnectionFactory);
-			action.setIrodsZonePath(irodsZonePath);
 			action.setNode(localNode);
 			jobCandidate.getObject().setTransientNodeRef(localNode);
 			action.setObject(jobCandidate.getObject());
@@ -241,26 +236,6 @@ public class ActionFactory implements ApplicationContextAware {
 		onHalt  = b;
 	}
 
-
-	/**
-	 * Gets the irods zone path.
-	 *
-	 * @return the irods zone path
-	 */
-	public String getIrodsZonePath() {
-		return irodsZonePath;
-	}
-
-	/**
-	 * Sets the irods zone path.
-	 *
-	 * @param irodsZonePath the new irods zone path
-	 */
-	public void setIrodsZonePath(String irodsZonePath) {
-		if (!irodsZonePath.startsWith("/")) irodsZonePath="/"+irodsZonePath;
-		if (!irodsZonePath.endsWith("/")) irodsZonePath+="/";
-		this.irodsZonePath = irodsZonePath;
-	}
 
 	/**
 	 * Gets the local node.

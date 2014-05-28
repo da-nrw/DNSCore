@@ -73,10 +73,12 @@ public class Base {
 	
 		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
 		
-		instantiateGrid(properties.getProperty("grid.implementation"),properties.getProperty("implementation.distributedConversion"));
+		instantiateGrid(
+				properties.getProperty("cb.implementation.grid"),
+				properties.getProperty("cb.implementation.distributedConversion"));
 		if (gridFacade==null) throw new IllegalStateException("gridFacade could not be instantiated");
 		
-		instantiateRepository(properties.getProperty("repository.implementation"));
+		instantiateRepository(properties.getProperty("cb.implementation.repository"));
 		if (repositoryFacade==null) throw new IllegalStateException("repositoryFacade could not be instantiated");
 	}
 	
@@ -274,7 +276,7 @@ public class Base {
 		Integer pkid = (Integer) session.createSQLQuery("SELECT MAX(id) FROM packages").uniqueResult(); 
 		if (pkid==null) pkid = 0;
 		pkid++;
-		session.createSQLQuery("INSERT INTO packages (id,name) VALUES ("+pkid+",'1');").executeUpdate();
+		session.createSQLQuery("INSERT INTO packages (id,name,container_name) VALUES ("+pkid+",'1','"+name+"');").executeUpdate();
 		session.createSQLQuery("INSERT INTO objects_packages (objects_data_pk,packages_id) VALUES ("+dbid+","+pkid+");").executeUpdate();
 		
 		session.createSQLQuery("INSERT INTO queue (id,status,objects_id,initial_node) VALUES ("+dbid+",'"+status+"',"+dbid+","+
@@ -284,6 +286,9 @@ public class Base {
 		session.close();	
 	}
 
+	
+	
+	
 	protected Object ingest(String originalName) throws IOException,
 			InterruptedException {
 				FileUtils.copyFileToDirectory(new File(testDataRootPath+originalName+".tgz"), 

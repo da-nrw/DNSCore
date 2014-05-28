@@ -158,8 +158,8 @@ public class RetrievalAction extends AbstractAction {
 	
 	private void emailReport(String email,String objectIdentifier,String csn){
 		
-		String subject = "[" + getIrodsZonePath().replace("/", "") +  "] Retrieval Report für " + objectIdentifier;
-		String msg = "Ihr angefordertes Objekt mit dem Namen \""+ objectIdentifier + "\" wurde unter Ihrem Outgoing Ordner unter " + getIrodsZonePath() + "home/" 
+		String subject = "[" + "da-nrw".replace("/", "") +  "] Retrieval Report für " + objectIdentifier;
+		String msg = "Ihr angefordertes Objekt mit dem Namen \""+ objectIdentifier + "\" wurde unter Ihrem Outgoing Ordner unter " + "da-nrw" + "home/" 
 				+ csn + "/outgoing/ abgelegt und steht jetzt"
 				+ " zum Retrieval bereit!\n\n";
 		if (email != null) {

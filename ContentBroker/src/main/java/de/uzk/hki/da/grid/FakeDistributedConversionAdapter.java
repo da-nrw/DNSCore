@@ -29,15 +29,22 @@ public class FakeDistributedConversionAdapter implements DistributedConversionAd
 
 	@Override
 	public void create(String relativePath) {
+
 	}
 
 	@Override
-	public void register(String relativePath, String physicalPath) {}
+	public void register(String relativePath, String physicalPath) {
+		
+	}
 
 	@Override
-	public void replicateToLocalNode(String relativePath) {}
+	public void replicateToLocalNode(String relativePath) {
+		
+	}
 
 	@Override
-	public void remove(String relativePath) {}
+	public void remove(String relativePath) {
+		
+	}
 
 }
