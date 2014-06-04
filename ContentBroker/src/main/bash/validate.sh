@@ -22,7 +22,7 @@ then
 	REVISION_NUMBER=`git rev-list HEAD | wc -l`
 	if [ -d "/ci/BuildRepository/installation.$REVISION_NUMBER" ]
 	then
-		echo "The directory at /data/danrw/buildRepository/installation.$REVISION_NUMBER already exists which means"
+		echo "The directory at /ci/BuildRepository/installation.$REVISION_NUMBER already exists which means"
 		echo "you already have a valid build for the current revision. Will exit now."
 		exit 1
 	fi
