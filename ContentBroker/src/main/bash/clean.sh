@@ -1,6 +1,15 @@
 #!/bin/bash
 
 # author: Daniel M. de Oliveira
+# author: Jens Peters
+echo clean iRODS Stuff
+
+irm -r /c-i/aip/TEST                2>/dev/null
+irm -r /c-i/pips/institution/TEST   2>/dev/null
+irm -r /c-i/pips/public/TEST        2>/dev/null
+imkdir /c-i/aip/TEST                2>/dev/null
+imkdir /c-i/pips/institution/TEST   2>/dev/null
+imkdir /c-i/pips/public/TEST        2>/dev/null
 
 echo clean up installer
 cd target/installation
