@@ -92,7 +92,7 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 		}
 		
 		try	{
-			irodsSystemConnector.removeCollectionAndEatException(zonePath+relativePath);
+			irodsSystemConnector.removeCollectionAndEatException(new Path(zonePath,relativePath).toString());
 		} 
 		finally {
 			irodsSystemConnector.logoff();

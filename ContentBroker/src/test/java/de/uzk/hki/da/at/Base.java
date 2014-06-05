@@ -233,7 +233,7 @@ public class Base {
 	protected void cleanStorage() throws IOException{
 		FileUtils.deleteDirectory(new File(workAreaRootPath+"work/TEST"));
 		FileUtils.deleteDirectory(new File(ingestAreaRootPath+"TEST"));
-		FileUtils.deleteDirectory(new File(gridCacheAreaRootPath+"TEST"));
+		FileUtils.deleteDirectory(new File(gridCacheAreaRootPath+"aip/TEST"));
 		FileUtils.deleteDirectory(new File(workAreaRootPath+"pips/institution/TEST"));
 		FileUtils.deleteDirectory(new File(workAreaRootPath+"pips/public/TEST"));
 		FileUtils.deleteDirectory(new File(userAreaRootPath+"TEST/outgoing"));
@@ -249,7 +249,7 @@ public class Base {
 		distributedConversionAdapter.create("pips/public/TEST");
 		
 		new File(userAreaRootPath+"TEST/outgoing").mkdirs();
-		new File(gridCacheAreaRootPath+"TEST").mkdirs();
+		new File(gridCacheAreaRootPath+"aip/TEST").mkdirs();
 		new File(ingestAreaRootPath+"TEST").mkdirs();
 		new File(workAreaRootPath+"work/TEST").mkdirs();
 		new File(workAreaRootPath+"pips/public/TEST").mkdirs();

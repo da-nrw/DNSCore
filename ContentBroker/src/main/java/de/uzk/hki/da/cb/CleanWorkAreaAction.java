@@ -52,8 +52,6 @@ public class CleanWorkAreaAction extends AbstractAction{
 					object.getPath()+"\"",e);
 		}
 		
-		distributedConversionAdapter.remove(object.getContractor().getShort_name()+"/"+object.getIdentifier());
-		
 		object.getLatestPackage().getFiles().clear();
 		object.getLatestPackage().getEvents().clear();
 		

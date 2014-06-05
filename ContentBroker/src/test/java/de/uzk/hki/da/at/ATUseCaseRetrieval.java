@@ -39,19 +39,17 @@ import de.uzk.hki.da.utils.ArchiveBuilderFactory;
  */
 public class ATUseCaseRetrieval extends Base{
 	
+	String name = "ATUseCaseRetrieval";
+	
 	// SETUP
 	
 	@Before()
 	public void setUp() throws IOException{
 		setUpBase();
-//		gridFacade.put(
-//				new File("src/test/resources/at/ATUseCaseRetrieval.pack_1.tar"),
-//				"TEST/ID-ATUseCaseRetrieval/ID-ATUseCaseRetrieval.pack_1.tar",new StoragePolicy(new Node()));
 	}
 	
 	@After
 	public void tearDown() throws IOException{
-		distributedConversionAdapter.remove("aip/TEST/ID-ATUseCaseRetrieval"); // TODO does it work?
 		new File("/tmp/ID-ATUseCaseRetrieval.tar").delete();
 		FileUtils.deleteDirectory(new File("/tmp/ID-ATUseCaseRetrieval"));
 		
@@ -64,7 +62,6 @@ public class ATUseCaseRetrieval extends Base{
 	@Test
 	public void testHappyPath() throws Exception{
 		
-		String name = "ATUseCaseRetrieval";
 		createObjectAndJob(name,"900");
 		waitForJobToBeInStatus(name, "950", 2000);
 		

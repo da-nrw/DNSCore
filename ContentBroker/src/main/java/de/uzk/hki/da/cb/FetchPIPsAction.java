@@ -78,8 +78,8 @@ public class FetchPIPsAction extends AbstractAction {
 		if (new Path(localNode.getWorkAreaRootPath(),publicContractorFolder.toString(),sourceDIPName).toFile().exists())
 			FileUtils.moveDirectory(
 					new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,sourceDIPName).toFile(), 
-					new Path(localNode.getWorkAreaRootPath(),publicContractorFolder.toString(),targetDIPName).toFile());
-		if (new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder.toString(),sourceDIPName).toFile().exists())
+					new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile());
+		if (new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName).toFile().exists())
 			FileUtils.moveDirectory(
 					new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName).toFile(), 
 					new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName).toFile());
