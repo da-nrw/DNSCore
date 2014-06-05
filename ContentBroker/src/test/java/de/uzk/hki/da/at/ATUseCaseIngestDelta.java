@@ -76,13 +76,13 @@ public class ATUseCaseIngestDelta extends Base {
 	public void testHappyPath() throws Exception{
 		
 		FileUtils.copyFile(new File("src/test/resources/at/"+originalName+"1.tgz"), 
-				new File(ingestAreaRootPath+"TEST/"+originalName+".tgz"));
+				new File(localNode.getIngestAreaRootPath()+"TEST/"+originalName+".tgz"));
 		waitForJobsToFinish(originalName,500);
 		
 		Thread.sleep(60000); // to avoid newly generated repnames clashing with previous ones
 		
 		FileUtils.copyFile(new File("src/test/resources/at/"+originalName+"2.tgz"), 
-				new File(ingestAreaRootPath+"TEST/"+originalName+".tgz"));
+				new File(localNode.getIngestAreaRootPath()+"TEST/"+originalName+".tgz"));
 		waitForJobsToFinish(originalName,500);
 		
 		object = retrievePackage(originalName,"2");
@@ -198,17 +198,17 @@ public class ATUseCaseIngestDelta extends Base {
 				String eventIdentifier = e.getChild("eventIdentifier", ns).getChildText("eventIdentifierValue",ns);
 				
 				if ( eventIdentifier.endsWith("+b/CCITT_1.TIF") ) {
-					TestHelper.checkConvertEvent(ns, e, "CCITT_1.TIF",nodeName); 
+					TestHelper.checkConvertEvent(ns, e, "CCITT_1.TIF",localNode.getName()); 
 					System.out.println("checked CONVERT event: +b/CCITT_1.TIF");
 					checkedEvents++;
 				}
 				if ( eventIdentifier.endsWith("+b/CCITT_2.TIF") ) {
-					TestHelper.checkConvertEvent(ns, e, "CCITT_2.TIF",nodeName);
+					TestHelper.checkConvertEvent(ns, e, "CCITT_2.TIF",localNode.getName());
 					System.out.println("checked CONVERT event: +b/CCITT_2.TIF");
 					checkedEvents++;
 				}
 				if ( eventIdentifier.endsWith("+b/CCITT_3.TIF") ) {
-					TestHelper.checkConvertEvent(ns, e, "CCITT_3.TIF",nodeName); 
+					TestHelper.checkConvertEvent(ns, e, "CCITT_3.TIF",localNode.getName()); 
 					System.out.println("checked CONVERT event: +b/CCITT_3.TIF");
 					checkedEvents++;
 				}
@@ -270,7 +270,7 @@ public class ATUseCaseIngestDelta extends Base {
 				assertEquals("CONTRACTOR", e.getChildText("agentType", ns));
 				assertEquals("CONTRACTOR_SHORT_NAME", agentIdentifier.getChildText("agentIdentifierType", ns));
 				checkedAgents++;
-			}else if (nodeName.equals(agentName)){
+			}else if (localNode.getName().equals(agentName)){
 				assertEquals("NODE", e.getChildText("agentType", ns));
 				assertEquals("NODE_NAME", agentIdentifier.getChildText("agentIdentifierType", ns));
 				checkedAgents++;

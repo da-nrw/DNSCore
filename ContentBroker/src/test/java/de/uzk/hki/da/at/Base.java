@@ -46,15 +46,12 @@ import de.uzk.hki.da.utils.Utilities;
 public class Base {
 
 	protected String testDataRootPath="src/test/resources/at/";
-	protected String ingestAreaRootPath;
-	protected String workAreaRootPath;
-	protected String gridCacheAreaRootPath;
-	protected String userAreaRootPath;
+	protected Node localNode;
 	protected GridFacade gridFacade;
 	protected RepositoryFacade repositoryFacade;
 	protected DistributedConversionAdapter distributedConversionAdapter;
-	protected String nodeName;
 	protected CentralDatabaseDAO dao = new CentralDatabaseDAO();
+
 	
 	protected void setUpBase() throws IOException{
 		
@@ -63,13 +60,11 @@ public class Base {
 		in = new FileInputStream("conf/config.properties");
 		properties = new Properties();
 		properties.load(in);
+		
+		instantiateNode();
+		if (localNode==null) throw new IllegalStateException("localNode could not be instantiated");
 
-		ingestAreaRootPath = Utilities.slashize((String) properties.get("localNode.ingestAreaRootPath"));
-		workAreaRootPath = Utilities.slashize((String) properties.get("localNode.workAreaRootPath"));
-		gridCacheAreaRootPath = Utilities.slashize((String) properties.get("localNode.gridCacheAreRootPath"));
-		userAreaRootPath = Utilities.slashize((String) properties.get("localNode.userAreaRootPath"));
-		nodeName = (String) properties.get("localNode.name");
-		System.out.println(ingestAreaRootPath);
+		System.out.println(localNode.getName());
 	
 		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
 		
@@ -87,12 +82,19 @@ public class Base {
 	 * @param dcaImplBeanName distributed conversion adapter beanName
 	 * @return
 	 */
+	
 	private void instantiateGrid(String gridImplBeanName,String dcaImplBeanName) {
-		
 		AbstractApplicationContext context =
 				new FileSystemXmlApplicationContext("conf/beans.xml");
 		gridFacade = (GridFacade) context.getBean(gridImplBeanName);
 		distributedConversionAdapter = (DistributedConversionAdapter) context.getBean(dcaImplBeanName);
+		context.close();
+	}
+	
+	private void instantiateNode() {
+		AbstractApplicationContext context = 
+				new FileSystemXmlApplicationContext("conf/beans.xml");
+		localNode = (Node) context.getBean("localNode");
 		context.close();
 	}
 	
@@ -231,12 +233,12 @@ public class Base {
 	}
 	
 	protected void cleanStorage() throws IOException{
-		FileUtils.deleteDirectory(new File(workAreaRootPath+"work/TEST"));
-		FileUtils.deleteDirectory(new File(ingestAreaRootPath+"TEST"));
-		FileUtils.deleteDirectory(new File(gridCacheAreaRootPath+"TEST"));
-		FileUtils.deleteDirectory(new File(workAreaRootPath+"pips/institution/TEST"));
-		FileUtils.deleteDirectory(new File(workAreaRootPath+"pips/public/TEST"));
-		FileUtils.deleteDirectory(new File(userAreaRootPath+"TEST/outgoing"));
+		FileUtils.deleteDirectory(new File(localNode.getWorkAreaRootPath()+"work/TEST"));
+		FileUtils.deleteDirectory(new File(localNode.getIngestAreaRootPath()+"TEST"));
+		FileUtils.deleteDirectory(new File(localNode.getGridCacheAreaRootPath()+"TEST"));
+		FileUtils.deleteDirectory(new File(localNode.getWorkAreaRootPath()+"pips/institution/TEST"));
+		FileUtils.deleteDirectory(new File(localNode.getWorkAreaRootPath()+"pips/public/TEST"));
+		FileUtils.deleteDirectory(new File(localNode.getUserAreaRootPath()+"TEST/outgoing"));
 		
 		distributedConversionAdapter.remove("work/TEST");
 		distributedConversionAdapter.remove("aip/TEST");
@@ -248,12 +250,12 @@ public class Base {
 		distributedConversionAdapter.create("pips/institution/TEST");
 		distributedConversionAdapter.create("pips/public/TEST");
 		
-		new File(userAreaRootPath+"TEST/outgoing").mkdirs();
-		new File(gridCacheAreaRootPath+"TEST").mkdirs();
-		new File(ingestAreaRootPath+"TEST").mkdirs();
-		new File(workAreaRootPath+"work/TEST").mkdirs();
-		new File(workAreaRootPath+"pips/public/TEST").mkdirs();
-		new File(workAreaRootPath+"pips/institution/TEST").mkdirs();
+		new File(localNode.getUserAreaRootPath()+"TEST/outgoing").mkdirs();
+		new File(localNode.getGridCacheAreaRootPath()+"TEST").mkdirs();
+		new File(localNode.getIngestAreaRootPath()+"TEST").mkdirs();
+		new File(localNode.getWorkAreaRootPath()+"work/TEST").mkdirs();
+		new File(localNode.getWorkAreaRootPath()+"pips/public/TEST").mkdirs();
+		new File(localNode.getWorkAreaRootPath()+"pips/institution/TEST").mkdirs();
 	}
 	
 
@@ -280,7 +282,7 @@ public class Base {
 		session.createSQLQuery("INSERT INTO objects_packages (objects_data_pk,packages_id) VALUES ("+dbid+","+pkid+");").executeUpdate();
 		
 		session.createSQLQuery("INSERT INTO queue (id,status,objects_id,initial_node) VALUES ("+dbid+",'"+status+"',"+dbid+","+
-				"'"+nodeName+"');").executeUpdate();
+				"'"+localNode.getName()+"');").executeUpdate();
 		
 		session.getTransaction().commit();
 		session.close();	
@@ -292,12 +294,10 @@ public class Base {
 	protected Object ingest(String originalName) throws IOException,
 			InterruptedException {
 				FileUtils.copyFileToDirectory(new File(testDataRootPath+originalName+".tgz"), 
-						new File(ingestAreaRootPath+"TEST"));
+						new File(localNode.getIngestAreaRootPath()+"TEST"));
 				waitForJobsToFinish(originalName,500);
 				
 				Object object = fetchObjectFromDB(originalName);
 				return object;
 			}
-	
-	
 }

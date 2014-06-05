@@ -61,7 +61,7 @@ public class ATUseCaseIngest extends Base{
 	@After
 	public void tearDown() throws IOException{ 
 		try{
-			new File(ingestAreaRootPath+"TEST/"+containerName).delete();
+			new File(localNode.getIngestAreaRootPath()+"TEST/"+containerName).delete();
 			new File("/tmp/"+object.getIdentifier()+".pack_1.tar").delete();
 			FileUtils.deleteDirectory(new File("/tmp/"+object.getIdentifier()+".pack_1"));
 		}catch(Exception e){
@@ -89,7 +89,7 @@ public class ATUseCaseIngest extends Base{
 			if (f.contains("+b")) repBName = f;
 		}
 		verifyAIPContainsExpectedFiles(unpackedObjectPath, repAName, repBName);
-		verifyPREMISContainsSpecifiedElements(unpackedObjectPath,object,repAName,repBName,nodeName);
+		verifyPREMISContainsSpecifiedElements(unpackedObjectPath,object,repAName,repBName,localNode.getName());
 
 		assertTrue(bagIsValid(unpackedObjectPath));
 	}
