@@ -58,6 +58,7 @@ import de.uzk.hki.da.convert.PublishPDFConversionStrategyTests;
 import de.uzk.hki.da.convert.PublishXsltConversionStrategyTests;
 import de.uzk.hki.da.convert.TiffConversionStrategyTests;
 import de.uzk.hki.da.grid.IrodsGridFacadeTest;
+import de.uzk.hki.da.grid.ReplicationExecutorTest;
 import de.uzk.hki.da.integrity.IntegrityScannerWorkerTest;
 import de.uzk.hki.da.metadata.MetsRightsSectionXmlReaderTest;
 import de.uzk.hki.da.metadata.MetsURNXmlReaderTest;
@@ -144,7 +145,8 @@ import de.uzk.hki.da.utils.*;
 	DeleteObjectActionTests.class,
 	UpdateMetadataActionXMPTests.class,
 	PathTest.class,
-	AbstractActionTests.class
+	AbstractActionTests.class,
+	ReplicationExecutorTest.class
 //	HibernateUtilThreadingTest.class
 })
 public class SimpleSuite {
