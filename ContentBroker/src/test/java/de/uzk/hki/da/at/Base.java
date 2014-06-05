@@ -22,6 +22,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -56,17 +57,26 @@ public class Base {
 	protected String nodeName;
 	protected CentralDatabaseDAO dao = new CentralDatabaseDAO();
 	
-	protected void setUpBase() throws IOException{
+	protected void setUpBase(){
 		
 		Properties properties = null;
 		InputStream in;
-		in = new FileInputStream("conf/config.properties");
+		try {
+			in = new FileInputStream("conf/config.properties");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return;
+		}
 		properties = new Properties();
-		properties.load(in);
-
+		try {
+			properties.load(in);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		ingestAreaRootPath = Utilities.slashize((String) properties.get("localNode.ingestAreaRootPath"));
 		workAreaRootPath = Utilities.slashize((String) properties.get("localNode.workAreaRootPath"));
-		gridCacheAreaRootPath = Utilities.slashize((String) properties.get("localNode.gridCacheAreRootPath"));
+		gridCacheAreaRootPath = Utilities.slashize((String) properties.get("localNode.gridCacheAreaRootPath"));
 		userAreaRootPath = Utilities.slashize((String) properties.get("localNode.userAreaRootPath"));
 		nodeName = (String) properties.get("localNode.name");
 		System.out.println(ingestAreaRootPath);
@@ -230,13 +240,21 @@ public class Base {
 		session.close();
 	}
 	
-	protected void cleanStorage() throws IOException{
-		FileUtils.deleteDirectory(new File(workAreaRootPath+"work/TEST"));
-		FileUtils.deleteDirectory(new File(ingestAreaRootPath+"TEST"));
-		FileUtils.deleteDirectory(new File(gridCacheAreaRootPath+"aip/TEST"));
-		FileUtils.deleteDirectory(new File(workAreaRootPath+"pips/institution/TEST"));
-		FileUtils.deleteDirectory(new File(workAreaRootPath+"pips/public/TEST"));
-		FileUtils.deleteDirectory(new File(userAreaRootPath+"TEST/outgoing"));
+	protected void cleanStorage(){
+		
+		FileUtils.deleteQuietly(new File(workAreaRootPath+"work/TEST"));
+		FileUtils.deleteQuietly(new File(ingestAreaRootPath+"TEST"));
+		FileUtils.deleteQuietly(new File(gridCacheAreaRootPath+"aip/TEST"));
+		FileUtils.deleteQuietly(new File(workAreaRootPath+"pips/institution/TEST"));
+		FileUtils.deleteQuietly(new File(workAreaRootPath+"pips/public/TEST"));
+		FileUtils.deleteQuietly(new File(userAreaRootPath+"TEST/outgoing"));
+			
+		new File(userAreaRootPath+"TEST/outgoing").mkdirs();
+		new File(gridCacheAreaRootPath+"aip/TEST").mkdirs();
+		new File(ingestAreaRootPath+"TEST").mkdirs();
+		new File(workAreaRootPath+"work/TEST").mkdirs();
+		new File(workAreaRootPath+"pips/public/TEST").mkdirs();
+		new File(workAreaRootPath+"pips/institution/TEST").mkdirs();
 		
 		distributedConversionAdapter.remove("work/TEST");
 		distributedConversionAdapter.remove("aip/TEST");
@@ -247,13 +265,6 @@ public class Base {
 		distributedConversionAdapter.create("aip/TEST");
 		distributedConversionAdapter.create("pips/institution/TEST");
 		distributedConversionAdapter.create("pips/public/TEST");
-		
-		new File(userAreaRootPath+"TEST/outgoing").mkdirs();
-		new File(gridCacheAreaRootPath+"aip/TEST").mkdirs();
-		new File(ingestAreaRootPath+"TEST").mkdirs();
-		new File(workAreaRootPath+"work/TEST").mkdirs();
-		new File(workAreaRootPath+"pips/public/TEST").mkdirs();
-		new File(workAreaRootPath+"pips/institution/TEST").mkdirs();
 	}
 	
 

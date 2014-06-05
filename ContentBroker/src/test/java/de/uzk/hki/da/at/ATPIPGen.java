@@ -50,7 +50,7 @@ public class ATPIPGen extends Base{
 	}
 	
 	@After
-	public void tearDown() throws IOException{
+	public void tearDown(){
 		clearDB();
 		cleanStorage();
 	}
