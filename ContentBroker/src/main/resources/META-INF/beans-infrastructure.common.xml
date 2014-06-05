@@ -74,7 +74,6 @@
         <property name="localNodeName" value="${localNode.name}" />
         <property name="gridFacade" ref="${cb.implementation.grid}" />
         <property name="nodeAdminEmail" value="${localNode.admin_email}" />
-        <property name="dao" ref="centralDao" />
         <property name="minNodes" value="${system.min_repls}" />
     </bean>
     

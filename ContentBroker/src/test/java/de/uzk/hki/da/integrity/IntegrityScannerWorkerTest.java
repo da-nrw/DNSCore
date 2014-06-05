@@ -94,7 +94,6 @@ public class IntegrityScannerWorkerTest {
 		obj.setObject_state(66);
 		obj.setIdentifier(urn);
 		obj.setContractor(new Contractor("TEST","",""));
-		worker.setDao(dao);
 		Node node = new Node("test");
 		sp = new StoragePolicy(node);
 		worker.setMinNodes(3);
@@ -108,7 +107,7 @@ public class IntegrityScannerWorkerTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		HibernateUtil.init("src/main/conf/hibernateCentralDB.cfg.xml.inmem");
+		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 	}
 	
 	/**
@@ -118,7 +117,7 @@ public class IntegrityScannerWorkerTest {
 	 */
 	@After 
 	public void tearDown() throws IOException {
-		
+			// TODO clear the inmem object db
 	}
 	
 	
@@ -142,7 +141,7 @@ public class IntegrityScannerWorkerTest {
 		when (gc.isValid(package2Path)).thenReturn(false);
 		worker.setGridFacade(gc);
 		
-		assertEquals(51,worker.checkObject(obj));
+		assertEquals(51,worker.checkObjectValidity(obj));
 	}
 
 	
@@ -167,6 +166,6 @@ public class IntegrityScannerWorkerTest {
 		
 		worker.setGridFacade(gc);
 		
-		assertEquals(100,worker.checkObject(obj));
+		assertEquals(100,worker.checkObjectValidity(obj));
 	}
 }
