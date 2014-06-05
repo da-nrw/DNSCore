@@ -33,7 +33,6 @@ public class FetchPIPsAction extends AbstractAction {
 		Path dipSourcePartial = new Path (object.getContractor().getShort_name(), object.getIdentifier()+"_"+object.getLatestPackage().getId());
 		Path dipTargetPartial = new Path (object.getContractor().getShort_name(), object.getIdentifier());
 		String dipTargetPartialPath = dipTargetPartial.toString();
-		
 		replicateFromSourceResourceToWorkingResource(dipSourcePartial);
 		deletePreviousPIPs(dipTargetPartial);
 		// the rename is necessary because at the moment we don't have another possibility to delete or trim the irods
@@ -85,12 +84,15 @@ public class FetchPIPsAction extends AbstractAction {
 
 	/**
 	 * @author Daniel M. de Oliveira
+	 * @author Jens Peters
 	 * @param dipSourcePartialPath
 	 */
 	private void replicateFromSourceResourceToWorkingResource(
 			Path dipSourcePartial) {
+		if (new File(localNode.getWorkAreaRootPath()+pipsPublicSource.toString()+dipSourcePartial.toString()).exists()) 
 		distributedConversionAdapter.replicateToLocalNode(
 				pipsPublicSource.toString()+dipSourcePartial.toString());
+		if (new File(localNode.getWorkAreaRootPath()+pipsInstitutionSource.toString()+dipSourcePartial.toString()).exists()) 
 		distributedConversionAdapter.replicateToLocalNode(
 				pipsInstitutionSource.toString()+dipSourcePartial.toString());
 	}
