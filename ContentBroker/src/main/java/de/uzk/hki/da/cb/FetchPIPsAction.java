@@ -1,8 +1,8 @@
 package de.uzk.hki.da.cb;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
@@ -23,25 +23,28 @@ public class FetchPIPsAction extends AbstractAction {
 	
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
-	private Path pipsPublicSource = new Path("pips", "public");
-	private Path pipsInstitutionSource = new Path("pips", "institution");
+	Path publicContractorFolder = null;
+	Path institutionContractorFolder = null;
 	
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException {
-		
 		if (distributedConversionAdapter==null) throw new ConfigurationException("irodsSystemConnector not set");
-		Path dipSourcePartial = new Path (object.getContractor().getShort_name(), object.getIdentifier()+"_"+object.getLatestPackage().getId());
-		Path dipTargetPartial = new Path (object.getContractor().getShort_name(), object.getIdentifier());
-		String dipTargetPartialPath = dipTargetPartial.toString();
-		replicateFromSourceResourceToWorkingResource(dipSourcePartial);
-		deletePreviousPIPs(dipTargetPartial);
+		
+		publicContractorFolder = new Path("pips", "public", object.getContractor().getShort_name());
+		institutionContractorFolder = new Path("pips", "institution", object.getContractor().getShort_name());
+		String sourceDIPName = object.getIdentifier()+"_"+object.getLatestPackage().getId();
+		
+		replicateFromSourceResourceToWorkingResource(sourceDIPName);
+		
+		
 		// the rename is necessary because at the moment we don't have another possibility to delete or trim the irods
 		// collections on specific resources.
-		renamePIPs(dipSourcePartial.toString(), dipTargetPartialPath);
+		deletePreviousPIPs(object.getIdentifier());
+		renamePIPs(sourceDIPName, object.getIdentifier());
 		
 		// cleanup
-		distributedConversionAdapter.remove(pipsPublicSource.toString()+dipSourcePartial.toString());
-		distributedConversionAdapter.remove(pipsInstitutionSource.toString()+dipSourcePartial.toString());
+		distributedConversionAdapter.remove(new Path(publicContractorFolder,sourceDIPName).toString());
+		distributedConversionAdapter.remove(new Path(institutionContractorFolder,sourceDIPName).toString());
 
 		return true;
 	}
@@ -52,32 +55,34 @@ public class FetchPIPsAction extends AbstractAction {
 	 * @param dipTargetPartialPath
 	 * @throws IOException
 	 */
-	private void deletePreviousPIPs(Path dipTargetPartial) throws IOException{
-		if (new File(localNode.getWorkAreaRootPath()+pipsPublicSource.toString()+dipTargetPartial.toString()).exists());
-			FileUtils.deleteDirectory(new File(
-					localNode.getWorkAreaRootPath()+pipsPublicSource.toString()+dipTargetPartial.toString()));
-		if (new File(localNode.getWorkAreaRootPath()+pipsInstitutionSource.toString()+dipTargetPartial.toString()).exists())
-			FileUtils.deleteDirectory(new File(
-					localNode.getWorkAreaRootPath()+pipsInstitutionSource.toString()+dipTargetPartial.toString()));
+	private void deletePreviousPIPs(String targetDIPName) throws IOException{
+		
+		if (new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile().exists());
+			FileUtils.deleteDirectory(new Path(
+					localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile());
+		if (new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName).toFile().exists())
+			FileUtils.deleteDirectory(new Path(
+					localNode.getWorkAreaRootPath(),institutionContractorFolder, targetDIPName).toFile());
 	}
 
 
 
 	/**
-	 * @param dipSourcePartialPath
-	 * @param dipTargetPartialPath
+	 * @param sourceDIPName
+	 * @param targetDIPName
 	 * @throws IOException
 	 */
-	private void renamePIPs(String dipSourcePartialPath,
-			String dipTargetPartialPath) throws IOException {
-		if (new File(localNode.getWorkAreaRootPath()+pipsPublicSource.toString()+dipSourcePartialPath).exists())
+	private void renamePIPs(String sourceDIPName,
+			String targetDIPName) throws IOException {
+		
+		if (new Path(localNode.getWorkAreaRootPath(),publicContractorFolder.toString(),sourceDIPName).toFile().exists())
 			FileUtils.moveDirectory(
-					new File(localNode.getWorkAreaRootPath()+pipsPublicSource.toString()+dipSourcePartialPath), 
-					new File(localNode.getWorkAreaRootPath()+pipsPublicSource.toString()+dipTargetPartialPath));
-		if (new File(localNode.getWorkAreaRootPath()+pipsInstitutionSource.toString()+dipSourcePartialPath).exists())
+					new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,sourceDIPName).toFile(), 
+					new Path(localNode.getWorkAreaRootPath(),publicContractorFolder.toString(),targetDIPName).toFile());
+		if (new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder.toString(),sourceDIPName).toFile().exists())
 			FileUtils.moveDirectory(
-					new File(localNode.getWorkAreaRootPath()+pipsInstitutionSource.toString()+dipSourcePartialPath), 
-					new File(localNode.getWorkAreaRootPath()+pipsInstitutionSource.toString()+dipTargetPartialPath));
+					new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName).toFile(), 
+					new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName).toFile());
 	}
 
 
@@ -88,13 +93,14 @@ public class FetchPIPsAction extends AbstractAction {
 	 * @param dipSourcePartialPath
 	 */
 	private void replicateFromSourceResourceToWorkingResource(
-			Path dipSourcePartial) {
-		if (new File(localNode.getWorkAreaRootPath()+pipsPublicSource.toString()+dipSourcePartial.toString()).exists()) 
+			String dipSourcePartial) {
+		
+		if (new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,dipSourcePartial).toFile().exists()) 
+			distributedConversionAdapter.replicateToLocalNode(
+				new Path(publicContractorFolder,dipSourcePartial).toString());
+		if (new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,dipSourcePartial).toFile().exists()) 
 		distributedConversionAdapter.replicateToLocalNode(
-				pipsPublicSource.toString()+dipSourcePartial.toString());
-		if (new File(localNode.getWorkAreaRootPath()+pipsInstitutionSource.toString()+dipSourcePartial.toString()).exists()) 
-		distributedConversionAdapter.replicateToLocalNode(
-				pipsInstitutionSource.toString()+dipSourcePartial.toString());
+				new Path(institutionContractorFolder,dipSourcePartial).toString());
 	}
 
 	

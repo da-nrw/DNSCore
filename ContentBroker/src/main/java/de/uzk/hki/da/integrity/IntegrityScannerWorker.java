@@ -57,7 +57,7 @@ public class IntegrityScannerWorker {
 		private static final Integer UnderAudit = 60;
 		private static final Integer InWorkflow = 50;
 		private static final Integer Error = 51;
-		private static final Integer ArchivedAndValid = 100;
+		private static final Integer archivedAndValidState = 100;
 	}
 	
 	/** The Constant logger. */
@@ -248,7 +248,7 @@ public class IntegrityScannerWorker {
 				continue;
 			}
 		}
-		if (completelyValid) return ObjectState.ArchivedAndValid;
+		if (completelyValid) return ObjectState.archivedAndValidState;
 		else return ObjectState.Error;
 	}
 

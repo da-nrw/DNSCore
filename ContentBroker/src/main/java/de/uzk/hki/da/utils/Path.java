@@ -78,4 +78,12 @@ public class Path{
 		}
 		return directoryString;
 	}
+
+	/**
+	 * @author Daniel M. de Oliveira
+	 * @return the path converted to a regular java file object
+	 */
+	public File toFile(){
+		return new File(this.toString());
+	}
 }
