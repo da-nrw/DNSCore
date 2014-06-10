@@ -23,27 +23,54 @@ package daweb3
  * @author Jens Peters, Sebastian Cuy
  *
  */
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class QueueUtils {
 
 	/**
-	 * @param object valid instance of an object
-	 * throws Exception if entry could not be created
+	 * Creates a job with status on responsibleNode
+	 * for a selected object. Also sets the object_state to 50
+	 * to indicate it is in workflow state.
+	 *
+	 * @param object
+	 * @param status
+	 * @param responsibleNodeName The name of the node which gets assigned responsibility for executing the job.
+	 * @throws Exception if entry could not be created.
+	 * @throws Exception if object state could not be updated.
+	 * @throws IllegalArgumentException if object is null.
+	 * @author Jens Peters
+	 * @author Daniel M. de Oliveira
+	 *
 	 */
-	String createQueueEntryForObject(object, status, optionalInitialNode) {
-		if (object == null) throw new RuntimeException ( "Object is not valid" )
-		def entry = new QueueEntry()
-		entry.status = status
-		entry.setObj(object);
-		entry.created = Math.round(new Date().getTime()/1000L)
-		entry.modified = Math.round(new Date().getTime()/1000L)
-		if (optionalInitialNode==null) {
-			entry.setInitialNode(ConfigurationHolder.config.irods.server)
-		} else entry.setInitialNode(optionalInitialNode)
+	String createJob( daweb3.Object object, status, responsibleNodeName) {
+		if (object == null) throw new IllegalArgumentException ( "Object is not valid" )
+		if (responsibleNodeName == null) throw new IllegalArgumentException("responsibleNodeName must not be null")
+		object.object_state = 50
+
+		log.debug "object.contractor.shortName: " + object.contractor.shortName
+		log.debug "session.contractor.shortName: " + object.contractor.shortName
+		
+		def list = QueueEntry.findByObjAndStatus(object, status)
+		if (list != null) throw new RuntimeException ("Bereits angefordert.");
+		
+		def job = new QueueEntry()
+		job.status = status
+		job.setObj(object);
+		job.created = Math.round(new Date().getTime()/1000L)
+		job.modified = Math.round(new Date().getTime()/1000L)
+		
+		job.setInitialNode(responsibleNodeName)
+		
+					
 		def errorMsg = ""
-		if( !entry.save() ) {
-			entry.errors.each { errorMsg += it }
+		if( !object.save() ) {
+			
+			object.errors.each { errorMsg += it }
+			throw new Exception(errorMsg)
+		}
+		errorMsg = ""
+		if( !job.save()  ) {
+			
+			job.errors.each { errorMsg += it }
 			throw new Exception(errorMsg)
 		}
 	}
