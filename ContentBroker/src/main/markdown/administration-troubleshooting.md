@@ -17,8 +17,7 @@
 	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 
-As you have already read in the administration.md (if you don't have, do it first),
-the WorkArea is the space where the ContentBroker manipulates the contents of objects. In a step by step
+As you might have already read the WorkArea is the space where the ContentBroker manipulates the contents of objects. In a step by step
 transition, it transforms contents of objects. Depending on the workflow, that means adding data
 (by conversion or adding metadata), or removing of data (for DIPs or presentation). In any case the main unit
 of operation is an unpacked object which comes either from the IngestArea or the LZAArea or both (in case of deltas).
