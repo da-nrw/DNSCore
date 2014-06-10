@@ -49,7 +49,7 @@ the unpacked object is an well defined state again. So, a job in state 120 and a
 physical file system and database state.
 
 #### xx2
-This is the working state
+This is the working state. Normally shown, while CB is working. 
 
 #### xx4
 These are states where an error occured due to imcomplete or inconsistent data caused by the user. The xx4 states always result 
@@ -68,12 +68,25 @@ a new object the orig name is reusable again. The urn which was given to the obj
 
 Please refer to the documents added under Daweb/docs
 
-## Basic concepts
-
 ## Logging
 
-log/contentbroker.log
-log/grid.log
-log/object-logs/[oid].log
+    log/contentbroker.log
+    log/grid.log
+    log/object-logs/[oid].log
 
 ## Controlling
+
+Please stop the following applications in sequence: (when available) 
+
+1. stop Tomcat
+1. stop ContentBroker
+2. stop iRODS
+3. stop Database
+
+
+Please start the following applications in sequence:
+
+1. start Database
+1. start iRODS
+2. start ContentBroker
+1. start Tomcat
