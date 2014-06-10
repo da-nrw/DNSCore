@@ -61,8 +61,13 @@ a new object the orig name is reusable again. The urn which was given to the obj
 
 #### 123 - 353 (only xx3)
 
+Failures in the error range 123-353 could be handled with DA-WEB. 
+Whenever possible, Deletion buttons are shown. 
 
 #### Deletion
+
+Sometimes manuallay deletion of packages is needed on your system. 
+Please examine the error logfiles at your node. 
 
 #### Error Handling in DA-WEB
 
@@ -74,7 +79,7 @@ Please refer to the documents added under Daweb/docs
     log/grid.log
     log/object-logs/[oid].log
 
-## Controlling
+## Services Administration
 
 Please stop the following applications in sequence: (when available) 
 
