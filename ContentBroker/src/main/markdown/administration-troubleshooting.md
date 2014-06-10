@@ -75,9 +75,24 @@ Please refer to the documents added under Daweb/docs
 
 ## Logging
 
+(Taken from and referred to your systems logback.conf)
+
+ContentBroker main logfile, first look here:
+
     log/contentbroker.log
+ 
+The irods-ContentBroker bridge
+    
     log/grid.log
+    
+One logfile per each Objekt(Package) refer to it from the DA-WEB Queue view. 
+
     log/object-logs/[oid].log
+    
+The audit errors are listed here
+
+     log/audit.log
+     
 
 ## Services Administration
 
