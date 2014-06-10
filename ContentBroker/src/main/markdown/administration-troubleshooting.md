@@ -115,6 +115,8 @@ Please start the following applications in sequence:
 
 ## Monitoring
 
+As for now, you have to consider the Queue via at least once a day for only a few minutes to be sure all of your jobs are performing as expected. Most errors on your node are shown at the admin interface of DA-WEB in a very convienent way.  
+
 Please monitor the availibilty on the ports 1247, 8080 . The command 
 
     ./cbTalk SHOW_VERSION
