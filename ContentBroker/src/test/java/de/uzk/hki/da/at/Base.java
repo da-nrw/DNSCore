@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -35,13 +37,16 @@ import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
+import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.utils.Utilities;
+import edu.harvard.hul.ois.jhove.Identifier;
 
 public class Base {
 
@@ -170,7 +175,7 @@ public class Base {
 			} else if (job.getStatus().endsWith("1") || job.getStatus().endsWith("3")
 					|| job.getStatus().endsWith("4")) {
 				String oid=job.getObject().getIdentifier();
-				String msg = "ERROR: Job in error state: " + job.getStatus() + "in Object-Id "+ oid;
+				String msg = "ERROR: Job in error state: " + job.getStatus() + " in Object-Id "+ oid;
 				System.out.println(msg);
 				throw new RuntimeException(msg);
 			}
@@ -267,25 +272,45 @@ public class Base {
 				new File("src/test/resources/at/"+name+".pack_1.tar"),
 				"TEST/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
 		
+		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		Integer dbid = (Integer) session.createSQLQuery("SELECT MAX(data_pk) FROM objects").uniqueResult(); 
-		if (dbid==null) dbid = 0;
-		dbid++;
-		System.out.println("CREATED Object with id " + dbid);
-		session.createSQLQuery("INSERT INTO objects (data_pk,urn,identifier,orig_name,contractor_id,object_state,published_flag,ddb_exclusion) "
-				+"VALUES (" + dbid + ",'urn:nbn:de:danrw-test-" + dbid + "','ID-"+name+"','"+name+"',1,'100',0,false);").executeUpdate();
-		Integer pkid = (Integer) session.createSQLQuery("SELECT MAX(id) FROM packages").uniqueResult(); 
-		if (pkid==null) pkid = 0;
-		pkid++;
-		session.createSQLQuery("INSERT INTO packages (id,name,container_name) VALUES ("+pkid+",'1','"+name+"');").executeUpdate();
-		session.createSQLQuery("INSERT INTO objects_packages (objects_data_pk,packages_id) VALUES ("+dbid+","+pkid+");").executeUpdate();
+		CentralDatabaseDAO centralDB = new CentralDatabaseDAO();
+		Contractor contractor = centralDB.getContractor(session, "TEST");
+		Object object = new Object();
+		object.setUrn("");
+		object.setIdentifier("ID-"+name);
+		object.setOrig_name(name);
 		
-		session.createSQLQuery("INSERT INTO queue (id,status,objects_id,initial_node) VALUES ("+dbid+",'"+status+"',"+dbid+","+
-				"'"+localNode.getName()+"');").executeUpdate();
+		object.setContractor(contractor);
+		object.setObject_state(100);
+		object.setPublished_flag(0);
+		object.setDdbExclusion(false);
+		session.save(object);
+
+		int data_pk = object.getData_pk();
+		System.out.println("CREATED Object with id " + data_pk);
+		String data_pk_string = String.valueOf(data_pk);
+		object.setUrn("urn:nbn:de:danrw-test-"+data_pk_string);
+		session.saveOrUpdate(object);
+		
+		
+		Package currentPackage = new Package();
+		currentPackage.setName("1");
+		currentPackage.setContainerName(name);
+		List<Package> packages = new ArrayList<Package>();
+		packages.add(currentPackage);
+		object.setPackages(packages);		
+		session.saveOrUpdate(object);
+		
+		Job job = new Job();
+		job.setStatus(status);
+		job.setResponsibleNodeName(localNode.getName());
+		job.setObject(object);
+		session.save(job);
 		
 		session.getTransaction().commit();
-		session.close();	
+		session.close();
 	}
 
 	

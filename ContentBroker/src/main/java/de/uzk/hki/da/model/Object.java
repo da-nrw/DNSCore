@@ -389,6 +389,7 @@ public class Object {
 		this.contractor = contractor;
 	}
 	
+	
 	/**
 	 * Gets the contractor.
 	 *
