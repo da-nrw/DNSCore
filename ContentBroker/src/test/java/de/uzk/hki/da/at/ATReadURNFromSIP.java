@@ -45,10 +45,11 @@ public class ATReadURNFromSIP extends Base {
 	}
 
 	/**
+	 * @throws IOException 
 	 * @throws java.lang.Exception
 	 */
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown(){
 		clearDB();
 		cleanStorage();
 	}

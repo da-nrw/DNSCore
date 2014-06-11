@@ -22,6 +22,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -45,8 +46,6 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
-import de.uzk.hki.da.utils.Utilities;
-import edu.harvard.hul.ois.jhove.Identifier;
 
 public class Base {
 
@@ -58,18 +57,29 @@ public class Base {
 	protected CentralDatabaseDAO dao = new CentralDatabaseDAO();
 
 	
-	protected void setUpBase() throws IOException{
+	protected void setUpBase(){
 		
 		Properties properties = null;
 		InputStream in;
-		in = new FileInputStream("conf/config.properties");
+		try {
+			in = new FileInputStream("conf/config.properties");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return;
+		}
 		properties = new Properties();
+		
+		try {
 		properties.load(in);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		instantiateNode();
 		if (localNode==null) throw new IllegalStateException("localNode could not be instantiated");
 
 		System.out.println(localNode.getName());
+
 	
 		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
 		
@@ -237,13 +247,14 @@ public class Base {
 		session.close();
 	}
 	
-	protected void cleanStorage() throws IOException{
-		FileUtils.deleteDirectory(new File(localNode.getWorkAreaRootPath()+"work/TEST"));
-		FileUtils.deleteDirectory(new File(localNode.getIngestAreaRootPath()+"TEST"));
-		FileUtils.deleteDirectory(new File(localNode.getGridCacheAreaRootPath()+"TEST"));
-		FileUtils.deleteDirectory(new File(localNode.getWorkAreaRootPath()+"pips/institution/TEST"));
-		FileUtils.deleteDirectory(new File(localNode.getWorkAreaRootPath()+"pips/public/TEST"));
-		FileUtils.deleteDirectory(new File(localNode.getUserAreaRootPath()+"TEST/outgoing"));
+
+	protected void cleanStorage(){
+		FileUtils.deleteQuietly(new File(localNode.getWorkAreaRootPath()+"work/TEST"));
+		FileUtils.deleteQuietly(new File(localNode.getIngestAreaRootPath()+"TEST"));
+		FileUtils.deleteQuietly(new File(localNode.getGridCacheAreaRootPath()+"TEST"));
+		FileUtils.deleteQuietly(new File(localNode.getWorkAreaRootPath()+"pips/institution/TEST"));
+		FileUtils.deleteQuietly(new File(localNode.getWorkAreaRootPath()+"pips/public/TEST"));
+		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"TEST/outgoing"));
 		
 		distributedConversionAdapter.remove("work/TEST");
 		distributedConversionAdapter.remove("aip/TEST");
@@ -312,9 +323,6 @@ public class Base {
 		session.getTransaction().commit();
 		session.close();
 	}
-
-	
-	
 	
 	protected Object ingest(String originalName) throws IOException,
 			InterruptedException {

@@ -59,7 +59,7 @@ public class ATUseCaseIngest extends Base{
 	}
 	
 	@After
-	public void tearDown() throws IOException{ 
+	public void tearDown(){ 
 		try{
 			new File(localNode.getIngestAreaRootPath()+"TEST/"+containerName).delete();
 			new File("/tmp/"+object.getIdentifier()+".pack_1.tar").delete();

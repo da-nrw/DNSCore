@@ -22,6 +22,7 @@ package de.uzk.hki.da.grid;
 import java.io.File;
 
 import de.uzk.hki.da.core.ConfigurationException;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * 
@@ -47,7 +48,7 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 		try {
 			
 			irodsSystemConnector.registerFilesInCollection(
-					zonePath+relativePath,
+					new Path(zonePath,relativePath).toString(),
 					new File(physicalPath),
 					workingResource
 					);
@@ -68,7 +69,7 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 		try {
 			
 			irodsSystemConnector.replicateCollectionToResource(
-					zonePath+relativePath,
+					new Path(zonePath,relativePath).toString(),
 					workingResource
 					);
 			
@@ -91,7 +92,7 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 		}
 		
 		try	{
-			irodsSystemConnector.removeCollectionAndEatException(zonePath+relativePath);
+			irodsSystemConnector.removeCollectionAndEatException(new Path(zonePath,relativePath).toString());
 		} 
 		finally {
 			irodsSystemConnector.logoff();

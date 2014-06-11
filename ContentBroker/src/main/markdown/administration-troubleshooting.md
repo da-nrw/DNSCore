@@ -17,8 +17,7 @@
 	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 
-As you have already read in the administration.md (if you don't have, do it first),
-the WorkArea is the space where the ContentBroker manipulates the contents of objects. In a step by step
+As you might have already read the WorkArea is the space where the ContentBroker manipulates the contents of objects. In a step by step
 transition, it transforms contents of objects. Depending on the workflow, that means adding data
 (by conversion or adding metadata), or removing of data (for DIPs or presentation). In any case the main unit
 of operation is an unpacked object which comes either from the IngestArea or the LZAArea or both (in case of deltas).
@@ -49,7 +48,7 @@ the unpacked object is an well defined state again. So, a job in state 120 and a
 physical file system and database state.
 
 #### xx2
-This is the working state
+This is the working state. Normally shown, while CB is working. 
 
 #### xx4
 These are states where an error occured due to imcomplete or inconsistent data caused by the user. The xx4 states always result 
@@ -61,19 +60,68 @@ a new object the orig name is reusable again. The urn which was given to the obj
 
 #### 123 - 353 (only xx3)
 
+Failures in the error range 123-353 could be handled with DA-WEB. 
+Whenever possible, Deletion buttons are shown. 
 
 #### Deletion
+
+Sometimes manuallay deletion of packages is needed on your system. 
+Please examine the error logfiles at your node. 
 
 #### Error Handling in DA-WEB
 
 Please refer to the documents added under Daweb/docs
 
-## Basic concepts
-
 ## Logging
 
-log/contentbroker.log
-log/grid.log
-log/object-logs/[oid].log
+(Taken from and referred to your systems logback.conf)
 
-## Controlling
+ContentBroker main logfile, first look here:
+
+    log/contentbroker.log
+ 
+The irods-ContentBroker bridge
+    
+    log/grid.log
+    
+One logfile per each Objekt(Package) refer to it from the DA-WEB Queue view. 
+
+    log/object-logs/[oid].log
+    
+The audit errors are listed here
+
+     log/audit.log
+     
+
+## Services Administration
+
+Please stop the following applications in sequence: (when available) 
+
+1. graceful shutdown on ActionFactory (via DAWEB or ./cbTalk GRACEFUL_SHUTDOWN)
+2. Be sure, no jobs are currently processed.
+1. stop Tomcat
+1. stop ContentBroker
+2. stop iRODS
+3. stop Database
+
+
+Please start the following applications in sequence:
+
+1. start Database
+1. start iRODS
+2. start ContentBroker
+1. start Tomcat
+
+
+## Monitoring
+
+As for now, you have to consider the Queue via at least once a day for only a few minutes to be sure all of your jobs are performing as expected. Most errors on your node are shown at the admin interface of DA-WEB in a very convienent way.  
+
+Please monitor the availibilty on the ports 1247, 8080 . The command 
+
+    ./cbTalk SHOW_VERSION
+    
+should show some kind of useful information. 
+
+As node admin it you to check your long term resources and the throughput of your whole system. As watermark: there should be not much jobs (less than 20 packages) in your queue in failed or error states where your system has care of. (initial_node)  
+

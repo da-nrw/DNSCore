@@ -7,6 +7,7 @@ automatically checked in periodic intervals.
 An AIP is only valid in terms of DNS, when is stored at least at three nodes and has identical checksums on all hosts. 
 This is checked on each Retrieval process, too. 
 
+
 ### Automatic Audit
 
 Each primary (initial) node of AIP, where the former SIP was ingested first is reponsible for checking it's AIP. 

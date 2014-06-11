@@ -32,7 +32,9 @@ import java.security.InvalidParameterException
 class ObjectController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-
+	static QueueUtils qu = new QueueUtils();
+	
+	
     def index() {
         redirect(action: "list", params: params)
     }
@@ -127,7 +129,7 @@ class ObjectController {
 					result.success = false
 				} else {
 					try {
-					createJob( object ,"900", null) + "\n"	
+					qu.createJob( object ,"900", grailsApplication.config.irods.server) + "\n"	
 					result.msg += "${object.urn} - OK. " 
 					} catch ( Exception e ) { 
 					result.msg += "${object.urn} - FEHLER. "
@@ -159,7 +161,7 @@ class ObjectController {
 					
 				} else {
 					try {
-					createJob( object ,"900", null) 
+					qu.createJob( object ,"900", grailsApplication.config.irods.server) 
 					result.msg = "Objekt ${object.urn} erfolgreich angefordert."
 					result.success = true
 					} catch ( Exception e ) { 
@@ -183,7 +185,7 @@ class ObjectController {
 		if ( object == null ) result.msg += "Das Objekt ${object.urn} konnte nicht gefunden werden!"
 		else {
 			try {
-				createJob( object, "700", null )
+				qu.createJob( object, "700", grailsApplication.config.cb.presServer )
 				result.msg = "Auftrag zur Erstellung neuer Präsentationsformate erstellt ${object.urn}."
 				result.success = true
 			} catch ( Exception e ) {
@@ -206,7 +208,7 @@ class ObjectController {
 		if ( object == null ) result.msg += "Das Objekt ${object.urn} konnte nicht gefunden werden!"
 		else {
 			try {
-				createJob( object, "560" ,grailsApplication.config.cb.presServer)
+				qu.createJob( object, "560" ,grailsApplication.config.cb.presServer)
 				result.msg = "Auftrag zur Indizierung erstellt ${object.urn}."
 				result.success = true
 			} catch ( Exception e ) {
@@ -218,60 +220,6 @@ class ObjectController {
 	}
 
 		
-	
-		/**
-		 * Creates a job with status on responsibleNode 
-		 * for a selected object. Also sets the object_state to 50
-		 * to indicate it is in workflow state. 
-		 * 
-		 * @param object 
-		 * @param status
-		 * @param responsibleNodeName The name of the node which gets assigned responsibility for executing the job.
-		 * This parameter is optional.
-		 * @throws Exception if entry could not be created.
-		 * @throws Exception if object state could not be updated.
-		 * @throws IllegalArgumentException if object is null.
-		 * @author Jens Peters
-		 * @author Daniel M. de Oliveira
-		 * 
-		 */
-		String createJob( daweb3.Object object, status, responsibleNodeName) {
-			if (object == null) throw new IllegalArgumentException ( "Object is not valid" )
-			object.object_state = 50
-
-			log.debug "object.contractor.shortName: " + object.contractor.shortName
-			log.debug "session.contractor.shortName: " + session.contractor.shortName
-			
-			def list = QueueEntry.findByObjAndStatus(object, status) 
-			if (list != null) throw new RuntimeException ("Bereits angefordert.");
-			
-			def job = new QueueEntry()		
-			job.status = status
-			job.setObj(object);
-			job.created = Math.round(new Date().getTime()/1000L)
-			job.modified = Math.round(new Date().getTime()/1000L)
-			
-			if (responsibleNodeName==null)
-				job.setInitialNode(grailsApplication.config.irods.server)
-			else job.setInitialNode(responsibleNodeName)
-			
-						
-			def errorMsg = ""
-			if( !object.save() ) {
-				
-				object.errors.each { errorMsg += it }
-				throw new Exception(errorMsg)
-			}
-			errorMsg = ""
-			if( !job.save()  ) {
-				
-				job.errors.each { errorMsg += it }
-				throw new Exception(errorMsg)
-			}
-		}
-
-
-
 	
 	def queueForInspect = {
 		
@@ -286,7 +234,7 @@ class ObjectController {
 				log.debug "session.contractor.shortName: " + session.contractor.shortName
 					
 				try {
-						createJob( object, "5000" , grailsApplication.config.irods.server)
+						qu.createJob( object, "5000" , grailsApplication.config.irods.server)
 						result.msg = "Auftrag zur Überprüfung erstellt ${object.urn}."
 						result.msg = "Das Objekt mit der URN ${object.urn} wurde zur Überprüfung in die Queue eingestellt!"
 						result.success = true

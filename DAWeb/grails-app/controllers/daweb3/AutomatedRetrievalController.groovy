@@ -20,6 +20,7 @@
 package daweb3
 import grails.converters.*
 
+
 /**
  * Create Retrieval Requests from JSON requests
  * @Author Jens Peters
@@ -42,7 +43,7 @@ class AutomatedRetrievalController {
 				render result as JSON
 				return
 			}
-			qu.createQueueEntryForObject( instance ,"900", null)
+			qu.createJob( instance ,"900", grailsApplication.config.irods.server)
 			result = [success:true]
 			result.msg = "Erfolgreich Arbeitsauftrag erstellt für "  + jsonObject['identifier']
 			render result as JSON
@@ -55,7 +56,7 @@ class AutomatedRetrievalController {
 				render result as JSON
 				return
 			}
-			qu.createQueueEntryForObject( instance ,"900", null)
+			qu.createJob( instance ,"900", null)
 			result = [success:true]
 			result.msg = "Erfolgreich Arbeitsauftrag erstellt für "  + jsonObject['urn']
 			render result as JSON
@@ -68,7 +69,7 @@ class AutomatedRetrievalController {
 				render result as JSON
 				return
 			}
-			qu.createQueueEntryForObject( instance ,"900", null)
+			qu.createJob( instance ,"900", null)
 			result = [success:true]
 			result.msg = "Erfolgreich Arbeitsauftrag erstellt für "  + jsonObject['origName']
 			render result as JSON

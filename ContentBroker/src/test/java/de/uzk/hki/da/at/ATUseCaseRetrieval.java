@@ -50,10 +50,10 @@ public class ATUseCaseRetrieval extends Base{
 	}
 	
 	@After
-	public void tearDown() throws IOException{
+	public void tearDown(){
 		distributedConversionAdapter.remove("aip/TEST/ID-ATUseCaseRetrieval"); // TODO does it work?
 		new File("/tmp/ID-ATUseCaseRetrieval.tar").delete();
-		FileUtils.deleteDirectory(new File("/tmp/ID-ATUseCaseRetrieval"));
+		FileUtils.deleteQuietly(new File("/tmp/ID-ATUseCaseRetrieval"));
 		
 		cleanStorage();
 		clearDB();

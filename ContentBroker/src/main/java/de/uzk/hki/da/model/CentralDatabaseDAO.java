@@ -19,7 +19,6 @@
 
 package de.uzk.hki.da.model;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -258,34 +257,9 @@ public class CentralDatabaseDAO {
 	
 	
 	
-	/**
-	 * Gets the objects, which need audit.
-	 *
-	 * @param initial_node the initial_node
-	 * @param archivedStatus the archived status
-	 * @return the object need audit
-	 */
-	public Object getObjectNeedAudit(Session session,String initial_node, int archivedStatus) {
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.HOUR_OF_DAY, -24);
-
-		
-		@SuppressWarnings("rawtypes")
-		List l = null;
 	
-		try {
-			l = session.createQuery("from Object where initial_node=?1 and last_checked > :date and object_state=?2 order by last_checked asc")
-					.setCalendar("date",cal)
-					.setParameter("1", initial_node)
-					.setParameter("2", archivedStatus)
-							.setReadOnly(true).list();
-			
-			return (Object) l.get(0);
-		} catch (IndexOutOfBoundsException e) {
-			logger.debug("search for a Objects with initial_node " + initial_node + " returns null!");
-			return null;
-		}
-	}
+	
+	
 	
 	
 	

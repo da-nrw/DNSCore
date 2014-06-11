@@ -17,9 +17,14 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * The package integrity.
+ */
 package de.uzk.hki.da.integrity;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.mail.MessagingException;
 
@@ -29,7 +34,6 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.GridFacade;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
@@ -43,15 +47,22 @@ import de.uzk.hki.da.service.Mail;
  * and Checksum is of all replicas is correct. 
  * 
  * @author Jens Peters
+ * @author Daniel M. de Oliveira
  *
  */
 public class IntegrityScannerWorker {
 
+	
+	private static class ObjectState {
+		private static final Integer UnderAudit = 60;
+		private static final Integer InWorkflow = 50;
+		private static final Integer Error = 51;
+		private static final Integer archivedAndValidState = 100;
+	}
+	
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(IntegrityScannerWorker.class);
 	
-	/** The dao. */
-	private CentralDatabaseDAO dao = null;
 	
 	/** The irods grid connector. */
 	private GridFacade gridFacade;
@@ -62,61 +73,107 @@ public class IntegrityScannerWorker {
 	/** The node admin email. */
 	private String nodeAdminEmail;
 	
-	/** The error state. */
-	private Integer errorState = 51;
-
-	/**
-	 * Inits the.
-	 */
-	public void init(){
-		
-		logger.info("Scanning Table Objects for objects to audit!");
-		
-	}
-	
 	/** The local node name. */
 	private String localNodeName;
 	
+	
 	/**
 	 * Checking for the AIPs related to this node.
+	 * @author Daniel M. de Oliveira
+	 * @author Jens Peters
 	 */
 	public void scheduleTask(){
+		logger.trace("Scanning AIP s of node " + localNodeName );
+
 		try {
-			if (getDao()==null) {
-				logger.warn("dao is not set yet");
-				return;
-			}
-			logger.debug("Scanning AIP s of node " + localNodeName );
-			Session session = HibernateUtil.openSession();
-			session.beginTransaction();
-			Object obj = getDao().getObjectNeedAudit(session,localNodeName, errorState);
 			
-			if (obj==null) { 
-				logger.warn("There seems to be none object to check: Database setup?") ;
+			Object object = null;
+			if ((object=fetchObjectForAudit())==null) { 
+				logger.warn("Found no object to audit.") ;
 				return;
 			}
 			
-			session.beginTransaction();
-			obj.setObject_state(60); // in audit state 
-			session.update(obj);
-			session.getTransaction().commit();
+			Integer auditResult = checkObjectValidity(object);
+			updateObject(object,auditResult);
 			
-			obj.setObject_state(checkObject(obj));
-			if (obj.getObject_state()==errorState) {
-				sendEmail(obj);
+			if (auditResult==ObjectState.Error) {
+				sendEmail(object);
 			}
-			obj.setLast_checked(new Date());
-			
-			session.beginTransaction();
-			session.merge(obj);
-			session.getTransaction().commit();
-			session.close();
-			
 			
 		} catch (Exception e) {
 			logger.error("Error in integrityCheck schedule Task " + e.getMessage(),e);
 		}
 	}
+	
+	/**
+	 * Updates the object state, sets the current time, and updates
+	 * the database object accordingly
+	 * @param object
+	 * @param auditResult
+	 */
+	private void updateObject(Object object,Integer auditResult){
+		
+		object.setLast_checked(new Date());
+		object.setObject_state(auditResult);
+		
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.update(object);
+		session.getTransaction().commit();
+		session.close();
+	}
+	
+	
+	
+	/**
+	 * Determines which of the objects that the local node is responsible for 
+	 * (since it holds the primary copies of them) is the one which
+	 * has not been checked for the longest period of time. 
+	 * 
+	 * @return the next object that needs audit. null if there is no object in the database which meets the criteria.
+	 * 
+	 * @author Jens Peters
+	 * @author Daniel M. de Oliveira
+	 * 
+	 */
+	private synchronized Object fetchObjectForAudit() {
+		
+		try {
+			
+			Session session = HibernateUtil.openSession();
+			session.beginTransaction();
+			
+			Calendar now = Calendar.getInstance();
+			now.add(Calendar.HOUR_OF_DAY, -24);
+			@SuppressWarnings("rawtypes")
+			List l = null;
+			l = session.createQuery("from Object where initial_node=?1 and last_checked > :date and "
+					+ "object_state!=?2 and object_state!=?3"
+					+ "order by last_checked asc")
+					.setCalendar("date",now)
+					.setParameter("1", localNodeName)
+					.setParameter("2", ObjectState.InWorkflow) // don't consider objects under work
+					.setParameter("4", ObjectState.UnderAudit) //           ||
+							.setReadOnly(true).list();
+			
+			Object objectToAudit = (Object) l.get(0);
+			
+			// lock object
+			objectToAudit.setObject_state(ObjectState.UnderAudit);
+			session.update(objectToAudit);
+			session.getTransaction().commit();
+			session.close();
+			
+			return objectToAudit;
+		
+		} catch (IndexOutOfBoundsException e){
+			return null;
+		}
+	}
+	
+	
+	
+	
 	
 	
 	
@@ -126,7 +183,7 @@ public class IntegrityScannerWorker {
 	 *
 	 * @param obj the obj
 	 */
-	void sendEmail(Object obj) {
+	private void sendEmail(Object obj) {
 		// send Mail to Admin with Package in Error
 
 		String subject = "[" + "da-nrw".toUpperCase() +  "] Problem Report für " + obj.getIdentifier() + " auf " + localNodeName;
@@ -165,14 +222,13 @@ public class IntegrityScannerWorker {
 	}
 
 	/**
-	 * Side effect: set objects state to 100 if complete object is valid and policies achieved.
-	 * or 0 if not valid or policies not achieved for any of the objects packages.
 	 * @author Jens Peters
 	 * @author Daniel M. de Oliveira
 	 * @param obj the obj
-	 * @return the object state
+	 * @return the new object state. Either archivedAndValidState or errorState.
 	 */
-	int checkObject(Object obj) {
+	int checkObjectValidity(Object obj) {
+		
 		Node node = new Node("tobefactoredout");
 		StoragePolicy sp = new StoragePolicy(node);
 		
@@ -192,8 +248,8 @@ public class IntegrityScannerWorker {
 				continue;
 			}
 		}
-		if (completelyValid) return 100;
-		else return errorState;
+		if (completelyValid) return ObjectState.archivedAndValidState;
+		else return ObjectState.Error;
 	}
 
 	/**
@@ -251,17 +307,4 @@ public class IntegrityScannerWorker {
 		this.minNodes = minNodes;
 	}
 
-
-
-
-	public CentralDatabaseDAO getDao() {
-		return dao;
-	}
-
-
-
-
-	public void setDao(CentralDatabaseDAO dao) {
-		this.dao = dao;
-	}
 }

@@ -235,7 +235,7 @@
 								<exec dir="${basedir}"
 									executable="${basedir}/src/main/bash/clean.sh"
 									failonerror="true">
-									<arg line=""/>
+									<arg line="{env}"/>
 								</exec>
 							</tasks>
 						</configuration>

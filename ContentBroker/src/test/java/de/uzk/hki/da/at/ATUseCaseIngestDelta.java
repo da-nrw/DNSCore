@@ -59,7 +59,7 @@ public class ATUseCaseIngestDelta extends Base {
 	}
 	
 	@After
-	public void tearDown() throws IOException{
+	public void tearDown(){
 		try{
 			new File("/tmp/"+object.getIdentifier()+".pack_2.tar").delete();
 			FileUtils.deleteDirectory(new File("/tmp/"+object.getIdentifier()+".pack_2"));
