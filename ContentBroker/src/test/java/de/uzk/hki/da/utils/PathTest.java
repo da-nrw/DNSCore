@@ -103,4 +103,15 @@ public class PathTest {
 		} catch (Exception e){
 		}
 	}
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
+	@Test
+	public void testEndingSlashIsOK(){
+		Path testPath = new Path("/firstOne/secondOne/");
+		assertEquals("/firstOne/secondOne",testPath.toString());
+	}
+	
+	
 }

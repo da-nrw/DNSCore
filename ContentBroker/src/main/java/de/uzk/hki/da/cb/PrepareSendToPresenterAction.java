@@ -30,6 +30,7 @@ import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.utils.Path;
 
 
 /**
@@ -49,8 +50,8 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 		
 		String dipName = object.getContractor().getShort_name() + "/" + object.getIdentifier()+"_"+object.getLatestPackage().getId();
-		publicDir = new File(localNode.getWorkAreaRootPath()+"pips/public/"+dipName);
-		instDir = new File(localNode.getWorkAreaRootPath()+"pips/institution/"+dipName);
+		publicDir = new File(localNode.getWorkAreaRootPath()+"/pips/public/"+dipName);
+		instDir = new File(localNode.getWorkAreaRootPath()+"/pips/institution/"+dipName);
 		
 		logger.trace("Moving the dip content for presentation purposes out of the archival package.");
 		copyPIPSforReplication();
@@ -132,7 +133,7 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	 * @throws IOException 
 	 */
 	private void copyPIPSforReplication() throws IOException {
-		
+
 		if (new File(object.getDataPath()+"dip/public").exists()){
 			logger.info("Copying public datastreams to " + publicDir.getAbsolutePath());
 			if (publicDir.exists()) FileUtils.deleteDirectory(publicDir);

@@ -38,6 +38,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.utils.Path;
 
 
 /**
@@ -99,7 +100,7 @@ public class IrodsGridFacadeTest {
 		Node node = new Node();
 		node.setWorkingResource("cacheresc");
 		node.setGridCacheAreaRootPath(irodsDir);
-		node.setWorkAreaRootPath(forkDir);
+		node.setWorkAreaRootPath(new Path(forkDir));
 		node.setReplDestinations("lvr");
 		node.setAdminEmail("test@test.de");
 		ig.setLocalNode(node);

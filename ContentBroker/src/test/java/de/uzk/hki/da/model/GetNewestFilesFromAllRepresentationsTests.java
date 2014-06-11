@@ -28,6 +28,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -57,7 +58,7 @@ public class GetNewestFilesFromAllRepresentationsTests {
 	 */
 	@Test
 	public void testIanusPkg(){
-		Node n = new Node(); n.setWorkAreaRootPath(workAreaRootPath);
+		Node n = new Node(); n.setWorkAreaRootPath(new Path(workAreaRootPath));
 		Package pkg = new Package(); pkg.setId(2); 
 		pkg.setName("2");
 		o.setIdentifier("2");

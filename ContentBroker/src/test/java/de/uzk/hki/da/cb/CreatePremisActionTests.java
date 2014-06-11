@@ -55,6 +55,8 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 
 /**
@@ -100,7 +102,7 @@ public class CreatePremisActionTests {
 		FileUtils.copyFileToDirectory(new File("src/main/resources/xlink.xsd"), new File("conf/"));
 		
 		Node node = new Node();
-		node.setWorkAreaRootPath(workAreaRootPath);
+		node.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
 		
 		pkg = new Package();
 		pkg.setId(1234565);

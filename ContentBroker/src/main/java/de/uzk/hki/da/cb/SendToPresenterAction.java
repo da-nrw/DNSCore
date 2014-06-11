@@ -84,11 +84,11 @@ public class SendToPresenterAction extends AbstractAction {
 		if (repositoryFacade == null) 
 			throw new RuntimeException("Repository facade object not set. Make sure the action is configured properly");
 		
-		String dipPathPublic = new StringBuilder(localNode.getWorkAreaRootPath()+"pips/")
+		String dipPathPublic = new StringBuilder(localNode.getWorkAreaRootPath()+"/pips/")
 			.append("public/").append(object.getContractor().getShort_name())
 			.append("/").append(object.getIdentifier()).toString();
 		logger.debug("generated dipPathPublic: {}", dipPathPublic);
-		String dipPathInstitution = new StringBuilder(localNode.getWorkAreaRootPath()+"pips/")
+		String dipPathInstitution = new StringBuilder(localNode.getWorkAreaRootPath()+"/pips/")
 			.append("institution/").append(object.getContractor().getShort_name())
 			.append("/").append(object.getIdentifier()).toString();
 		logger.debug("generated dipPathInstitution: {}", dipPathInstitution);

@@ -15,6 +15,7 @@ import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author Daniel M. de Oliveira
@@ -43,7 +44,7 @@ public class CTIrodsGridFacadeTest {
 		grid.setIrodsSystemConnector(isc);
 		Node node = new Node();
 		node.setGridCacheAreaRootPath("/ci/storage/GridCacheArea");
-		node.setWorkAreaRootPath("/ci/storage/WorkArea");
+		node.setWorkAreaRootPath(new Path("/ci/storage/WorkArea"));
 		node.setWorkingResource("ciWorkingResource");		
 		node.setReplDestinations("ciArchiveResource");
 		
