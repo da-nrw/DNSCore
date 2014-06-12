@@ -62,7 +62,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 		}
 		
 		distributedConversionAdapter.register("work/"+object.getContractor().getShort_name()+"/"+object.getIdentifier(),
-				object.getPath());
+				object.getPath().toString());
 		return true;
 	}
 

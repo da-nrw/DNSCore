@@ -19,7 +19,6 @@
 
 package de.uzk.hki.da.cb;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
@@ -46,7 +45,7 @@ public class CleanWorkAreaAction extends AbstractAction{
 		
 		// to prevent leftover files from irods collection removal we delete the dirs on the filesystem first.
 		try {
-			FileUtils.deleteDirectory(new File(object.getPath()));
+			FileUtils.deleteDirectory(object.getPath().toFile());
 		} catch (IOException e) {
 			throw new RuntimeException("Exception while deleting \""+
 					object.getPath()+"\"",e);
