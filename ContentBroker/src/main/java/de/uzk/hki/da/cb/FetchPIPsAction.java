@@ -3,6 +3,8 @@ package de.uzk.hki.da.cb;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javassist.expr.NewArray;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
@@ -26,6 +28,10 @@ public class FetchPIPsAction extends AbstractAction {
 	Path publicContractorFolder = null;
 	Path institutionContractorFolder = null;
 	
+//	Prefix for FetchPIPsActionTest
+	String contractorFolderPrefix = "";
+//	
+	
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("irodsSystemConnector not set");
@@ -37,7 +43,7 @@ public class FetchPIPsAction extends AbstractAction {
 		replicateFromSourceResourceToWorkingResource(sourceDIPName);
 		
 		
-		// the rename is necessary because at the moment we don't have another possibility to delete or trim the irods
+		// the rename is necessary because at the moment we donl't have another possibility to delete or trim the irods
 		// collections on specific resources.
 		deletePreviousPIPs(object.getIdentifier());
 		renamePIPs(sourceDIPName, object.getIdentifier());
@@ -94,15 +100,22 @@ public class FetchPIPsAction extends AbstractAction {
 	 */
 	private void replicateFromSourceResourceToWorkingResource(
 			String dipSourcePartial) {
+//		System.out.println("replicateFromSourceResourceToWorkingResource...");
+//		System.out.println("Replicate from "+(new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,dipSourcePartial).toFileWithoutFirstFileSeparator())+ " to " +
+//				new Path(contractorFolderPrefix, publicContractorFolder,dipSourcePartial).toStringWithoutFirstFileSeparator());
+//		System.out.println("replDir exists: " +(new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,dipSourcePartial).toFileWithoutFirstFileSeparator()).exists());
+//		System.out.println("source exists: " +new Path(contractorFolderPrefix, publicContractorFolder,dipSourcePartial).toFileWithoutFirstFileSeparator().exists());
+//		System.out.println("Replicate from "+ new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,dipSourcePartial).toFileWithoutFirstFileSeparator() + " to " + 
+//				new Path(contractorFolderPrefix, institutionContractorFolder,dipSourcePartial).toStringWithoutFirstFileSeparator());
 		
-		if (new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,dipSourcePartial).toFile().exists()) 
+//		TODO check if source exists
 			distributedConversionAdapter.replicateToLocalNode(
-				new Path(publicContractorFolder,dipSourcePartial).toString());
-		if (new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,dipSourcePartial).toFile().exists()) 
-		distributedConversionAdapter.replicateToLocalNode(
-				new Path(institutionContractorFolder,dipSourcePartial).toString());
+					new Path(contractorFolderPrefix, publicContractorFolder,dipSourcePartial).toStringWithoutFirstFileSeparator());
+//		TODO check if source exists
+//		if (new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,dipSourcePartial).toFileWithoutFirstFileSeparator().exists()) 
+			 distributedConversionAdapter.replicateToLocalNode(
+				new Path(contractorFolderPrefix, institutionContractorFolder,dipSourcePartial).toStringWithoutFirstFileSeparator());
 	}
-
 	
 	
 	@Override

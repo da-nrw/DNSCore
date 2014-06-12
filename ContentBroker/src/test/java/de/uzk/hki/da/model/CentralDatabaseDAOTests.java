@@ -19,10 +19,7 @@
 
 package de.uzk.hki.da.model;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-
-import java.util.Set;
 
 import org.hibernate.Session;
 import org.junit.AfterClass;
@@ -34,7 +31,6 @@ import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Node;
  
 
 /**
