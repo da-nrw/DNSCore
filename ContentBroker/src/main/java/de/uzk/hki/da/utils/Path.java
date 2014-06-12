@@ -25,9 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
  * @author Polina Gubaidullina
- *
+ * @author Daniel M. de Oliveira
  */ 
 
 /**
@@ -83,7 +82,9 @@ public class Path{
 
 	/**
 	 * Creates a Path instance that is either of type Path or of its subtype RelativePath,
-	 * dependent if its first element is of type RelativePath
+	 * dependent if its first element is of type RelativePath. If you assemble Path instances
+	 * from existing instances, using this method should always be prefered over using the constructor.
+	 * TODO make constructor private
 	 * 
 	 * @author Daniel M. de Oliveira
 	 * @param list
@@ -118,5 +119,36 @@ public class Path{
 	 */
 	public File toFile(){
 		return new File(this.toString());
+	}
+	
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
+	@Override
+	public boolean equals(Object o){
+		if (!(o instanceof Path)) return false;
+		Path otherPath = (Path) o;
+		
+		if (this instanceof RelativePath){
+			if (!(o instanceof RelativePath)){
+				return false;
+			}
+		}
+		else{
+			if (o instanceof RelativePath){
+				return false;
+			}
+		}
+		
+		if (pathArray.size()!=otherPath.pathArray.size())
+			return false;
+		
+		boolean equals = true;
+		for (int i=0; i<pathArray.size(); i++ ){
+			if (!pathArray.toArray()[i].equals(otherPath.pathArray.toArray()[i])) equals= false; 
+		}
+		
+		return equals;
 	}
 }

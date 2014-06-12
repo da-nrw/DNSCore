@@ -29,8 +29,10 @@ import org.junit.Test;
 import de.uzk.hki.da.utils.Path;
 
 /**
+ * Tests the Path and RelativePath classes.
  * 
  * @author Polina Gubaidullina
+ * @author Daniel M. de Oliveira
  *
  */
 
@@ -130,5 +132,51 @@ public class PathTest {
 		
 		assertEquals("/src/test",Path.make(new Path("src"),new Path("test")).toString());
 	}
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
+	@Test
+	public void testEqualityOfAbsolutePaths(){
+		
+		assertEquals(new Path("src","test"),new Path("src","test"));
+	}
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
+	@Test
+	public void testNonEqualityOfAbsolutePaths(){
+		
+		assertFalse(new Path("src","test").equals(new Path("src","main")));
+	}
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
+	@Test 
+	public void testPathsHaveNotSameLength(){
+		
+		assertFalse(new Path("src").equals(new Path("src","main")));
+		assertFalse(new Path("src","main").equals(new Path("src")));
+	}
+
+	@Test
+	public void testEqualityOfRelativePaths(){
+
+		assertEquals(new RelativePath("src","test"),new RelativePath("src","test"));
+	}
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
+	@Test
+	public void testRelativeAndAbsolutePathCannotBeEqual(){
+		
+		assertFalse(new RelativePath("src").equals(new Path("src")));
+		assertFalse(new Path("src").equals(new RelativePath("src")));
+	}
+	
+	
 	
 }
