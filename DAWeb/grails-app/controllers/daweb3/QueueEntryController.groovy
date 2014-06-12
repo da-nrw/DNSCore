@@ -48,12 +48,13 @@ class QueueEntryController {
 		def admin = false
 		def periodical = true;	
 		if (params.search==null){		
-			if (session.contractor.admin != 1) {
+			if (session.contractor.admin != 1) {	
 				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.contractor.shortName=:csn",
 	             [csn: session.contractor.shortName])
 			} else {
 				admin = true;
 				queueEntries = QueueEntry.findAll("from QueueEntry as q")
+				
 			}
 			[queueEntryInstanceList: queueEntries,
 				admin:admin, periodical:periodical ]

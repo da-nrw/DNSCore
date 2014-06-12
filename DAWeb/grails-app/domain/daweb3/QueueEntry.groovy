@@ -87,4 +87,19 @@ class QueueEntry {
 		return false;
 	}
 	
+	/**
+	 * @author jpeters shows retry button after some time (48 hours)
+	 * 
+	 */
+	
+	boolean showRetryButtonAfterSomeTime(){
+		if (modified!=null && modified!="" && modified!="NULL" && modified.length()>5) {
+			long diff = new Date().getTime() - Long.valueOf(modified).longValue()*1000L();
+			if (diff > 2 * 24 * 60 * 60 * 1000) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }
