@@ -69,7 +69,7 @@ public class TarAction extends AbstractAction {
 		try {
 			NativeJavaTarArchiveBuilder builder = new NativeJavaTarArchiveBuilder();
 			builder.setFirstLevelEntryName(object.getIdentifier()+".pack_"+object.getLatestPackage().getName());
-			builder.archiveFolder(new File(object.getPath()),new File(tar),true);
+			builder.archiveFolder(object.getPath().toFile(),new File(tar),true);
 			
 		} catch (Exception e) {
 			throw new RuntimeException("Error while creating tar.",e);

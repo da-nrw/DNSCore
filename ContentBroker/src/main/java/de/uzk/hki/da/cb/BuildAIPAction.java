@@ -62,10 +62,10 @@ public class BuildAIPAction extends AbstractAction {
 		logger.debug("Deleting bagit files from source");
 		try{
 		
-			new File(object.getPath()+"bag-info.txt").delete();
-			new File(object.getPath()+"bagit.txt").delete();
-			new File(object.getPath()+"manifest-md5.txt").delete();
-			new File(object.getPath()+"tagmanifest-md5.txt").delete();
+			new File(object.getPath()+"/bag-info.txt").delete();
+			new File(object.getPath()+"/bagit.txt").delete();
+			new File(object.getPath()+"/manifest-md5.txt").delete();
+			new File(object.getPath()+"/tagmanifest-md5.txt").delete();
 		}catch(Exception e){
 			logger.error("Couldn't delete bagit files");
 		}

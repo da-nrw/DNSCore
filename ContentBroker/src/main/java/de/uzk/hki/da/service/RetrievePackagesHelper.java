@@ -69,7 +69,7 @@ public class RetrievePackagesHelper {
 		if (grid==null) throw new IllegalStateException("grid not set");
 		if (object==null) throw new IllegalArgumentException("corresponding Object is null");
 		if (object.getPackages().isEmpty()) throw new IllegalArgumentException("Object does not contain any packages");
-		if (!new File(object.getPath()).exists()) throw new IllegalArgumentException(object.getPath()+" does not exist");
+		if (!object.getPath().toFile().exists()) throw new IllegalArgumentException(object.getPath()+" does not exist");
 
 		for (Package pkg : object.getPackages()) {
 			

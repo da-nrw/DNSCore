@@ -107,13 +107,13 @@ public class UnpackAction extends AbstractAction {
 		
 		String sipInForkPath = copySIPToWorkArea(absoluteSIPPath);
 		
-		unpack(new File(sipInForkPath),object.getPath());
+		unpack(new File(sipInForkPath),object.getPath().toString());
 		
-		deleteUnwantedFiles(new File(object.getPath())); // unwanted content can be configured in beans-actions.xml
+		deleteUnwantedFiles(object.getPath().toFile()); // unwanted content can be configured in beans-actions.xml
 		
-		PackageType pType = checkConsistency(object.getPath());
+		PackageType pType = checkConsistency(object.getPath().toString());
 		if (pType==PackageType.METS)
-			convertMETStoPREMIS(object.getPath());
+			convertMETStoPREMIS(object.getPath().toString());
 		else
 			try {
 				if (!PremisXmlValidator.validatePremisFile(new File(object.getDataPath() + "premis.xml")))
@@ -127,7 +127,7 @@ public class UnpackAction extends AbstractAction {
 		
 		String repName;
 		try {
-			repName = transduceDateFolderContentsToNewRep(object.getPath());
+			repName = transduceDateFolderContentsToNewRep(object.getPath().toString());
 		} catch (IOException e) {		
 			throw new RuntimeException("problems during creating new representation");
 		}
@@ -430,7 +430,7 @@ public class UnpackAction extends AbstractAction {
 
 	@Override
 	void rollback() throws IOException {
-		FileUtils.deleteDirectory(new File(object.getPath()));
+		FileUtils.deleteDirectory(new File(object.getPath().toString()));
 		
 		new File(localNode.getWorkAreaRootPath() + object.getContractor().getShort_name() + "/" + 
 				object.getLatestPackage().getContainerName()).delete();

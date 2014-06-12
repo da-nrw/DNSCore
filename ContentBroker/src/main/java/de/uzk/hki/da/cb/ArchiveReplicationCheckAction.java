@@ -83,7 +83,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		sendReciept(job, object);
 		
 		createPublicationJob();
-		FileUtils.deleteDirectory(new File(object.getPath()));
+		FileUtils.deleteDirectory(object.getPath().toFile());
 		return true;
 	}
 	
