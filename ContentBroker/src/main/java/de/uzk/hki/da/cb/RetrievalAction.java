@@ -68,7 +68,8 @@ public class RetrievalAction extends AbstractAction {
 //		expected structure of tempFolder: .../.../.../
 //		Path().toString().substring(1) removes the file separator at the beginning of path; 
 //		"+ File.separator" adds the missing file separator at the end of path;
-		String tempFolder = new Path(localNode.getWorkAreaRootPath()+object.getContractor().getShort_name(), object.getIdentifier(), object.getIdentifier()+"/").toString().substring(1) + "/";
+		String tempFolder = localNode.getWorkAreaRootPath()+
+				new Path(object.getContractor().getShort_name(), object.getIdentifier(), object.getIdentifier()).toString() + "/";
 		new File(tempFolder).mkdir();
 		File premisFile = new File(object.getDataPath() + object.getNameOfNewestBRep() + "/premis.xml");
 		
@@ -90,10 +91,10 @@ public class RetrievalAction extends AbstractAction {
 		BagitUtils.buildBagit(tempFolder);
 		
 		// Repacking
-		logger.debug("Building tar at " + localNode.getUserAreaRootPath() + object.getContractor().getShort_name() + "/outgoing/" + object.getIdentifier() + ".tar");
+		logger.debug("Building tar at " + localNode.getUserAreaRootPath() + "/" +object.getContractor().getShort_name() + "/outgoing/" + object.getIdentifier() + ".tar");
 		try {
 			builder.archiveFolder(new File(tempFolder),
-								  new File(localNode.getUserAreaRootPath() + object.getContractor().getShort_name() + "/outgoing/" + object.getIdentifier() + ".tar"), true);
+								  new File(localNode.getUserAreaRootPath() + "/" +object.getContractor().getShort_name() + "/outgoing/" + object.getIdentifier() + ".tar"), true);
 
 		} catch (Exception e) {
 			throw new UserException(UserExceptionId.RETRIEVAL_ERROR, "Tar couldn't be packed", e);

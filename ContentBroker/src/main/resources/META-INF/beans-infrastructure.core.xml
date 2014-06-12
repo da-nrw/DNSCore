@@ -20,6 +20,16 @@
 		</property>
 	</bean>	
 	
+	<bean id="customPropertyEditorRegistrar" class="de.uzk.hki.da.utils.CustomPropertyEditorRegistrar"/>
+
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="propertyEditorRegistrars">
+			<list>
+				<ref bean="customPropertyEditorRegistrar"/>
+			</list>
+		</property>
+	</bean>
+	
 	<bean id="localNode" class="de.uzk.hki.da.model.Node">
 		<property name="name" value="${localNode.name}"/>
 		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}"/>

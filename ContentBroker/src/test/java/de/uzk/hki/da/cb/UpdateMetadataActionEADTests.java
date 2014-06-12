@@ -46,6 +46,7 @@ import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * @author Daniel M. de Oliveira
+ * @author jpeters
  */
 public class UpdateMetadataActionEADTests {
 
@@ -87,6 +88,7 @@ public class UpdateMetadataActionEADTests {
 		nsMap.put("mets", METS_NS.getURI());
 		nsMap.put("xlink", XLINK_NS.getURI());
 		service.setNamespaces(nsMap);
+		action.setAbsUrlPrefix("http://data.danrw.de/file");
 		action.setUpdateMetadataService(service);
 		Map<String, String> dcMappings = new HashMap<String,String>();
 		dcMappings.put("EAD", "conf/xslt/dc/ead_to_dc.xsl");
@@ -121,7 +123,7 @@ public class UpdateMetadataActionEADTests {
 				.getChild("FLocat", METS_NS)
 				.getAttributeValue("href", XLINK_NS);
 		
-		assertEquals("renamed067.tif", url);
+		assertEquals("http://data.danrw.de/file/42/renamed067.tif", url);
 	}
 
 }

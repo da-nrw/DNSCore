@@ -38,6 +38,8 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 
 /**
@@ -83,7 +85,7 @@ public class TarActionTests {
 	@BeforeClass
 	public static void setUpBeforeClass(){
 		node.setWorkingResource("vm3");
-		node.setWorkAreaRootPath(workAreaRootPath);
+		node.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
 		
 		Contractor contractor = new Contractor();
 		contractor.setShort_name("csn");

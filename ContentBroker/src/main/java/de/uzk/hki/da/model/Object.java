@@ -303,10 +303,10 @@ public class Object {
 	 */
 	public String getDataPath(){
 		if (transientNodeRef==null) throw new RuntimeException("node is null");
-		if (transientNodeRef.getWorkAreaRootPath()==null||transientNodeRef.getWorkAreaRootPath().isEmpty()) 
+		if (transientNodeRef.getWorkAreaRootPath()==null||transientNodeRef.getWorkAreaRootPath().toString().isEmpty()) 
 			throw new RuntimeException("workarearootpath null or empty");
 		
-		return transientNodeRef.getWorkAreaRootPath() + "work/" + contractor.getShort_name() + "/" + identifier + "/data/";
+		return transientNodeRef.getWorkAreaRootPath() + "/work/" + contractor.getShort_name() + "/" + identifier + "/data/";
 	}
 	
 	
@@ -316,10 +316,10 @@ public class Object {
 	 */
 	public String getPath(){
 		if (transientNodeRef==null) throw new RuntimeException("node is null");
-		if (transientNodeRef.getWorkAreaRootPath()==null||transientNodeRef.getWorkAreaRootPath().isEmpty()) 
+		if (transientNodeRef.getWorkAreaRootPath()==null||transientNodeRef.getWorkAreaRootPath().toString().isEmpty()) 
 			throw new RuntimeException("workarearootpath null or empty");
 		
-		return transientNodeRef.getWorkAreaRootPath() + "work/" + contractor.getShort_name() + "/" + identifier + "/";
+		return transientNodeRef.getWorkAreaRootPath() + "/work/" + contractor.getShort_name() + "/" + identifier + "/";
 	}
 	
 	
@@ -773,6 +773,7 @@ public class Object {
 	 * @author Thomas Kleinke
 	 */
 	public String getNameOfNewestARep(){
+		
 		String[] files = new File(getDataPath()).list();
 		Arrays.sort(files);
 		
@@ -820,7 +821,6 @@ public class Object {
 	 * @throws IllegalStateException if it finds a file without an associated dafile instance.
 	 */
 	public DAFile getLatest(String filename) {
-		
 		
 		File[] representations = new File(getDataPath()).listFiles();
 		Arrays.sort(representations);

@@ -34,6 +34,7 @@ import org.junit.Test;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
 
 /**
@@ -60,9 +61,9 @@ public class DeleteObjectActionTests {
 	}
 	
 	@Test
-	public void cleanFork() throws FileNotFoundException, UserException, IOException{
+	public void cleanWorkArea() throws FileNotFoundException, UserException, IOException{
 		Object o = TESTHelper.setUpObject("123", workAreaRootPath);
-		o.getTransientNodeRef().setIngestAreaRootPath(ingestAreaRootPath);
+		o.getTransientNodeRef().setIngestAreaRootPath(new RelativePath(ingestAreaRootPath));
 		o.getLatestPackage().setContainerName("abc.txt");
 		
 		action = new DeleteObjectAction();

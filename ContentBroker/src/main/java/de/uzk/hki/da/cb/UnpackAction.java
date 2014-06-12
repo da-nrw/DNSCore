@@ -49,6 +49,7 @@ import de.uzk.hki.da.utils.ArchiveBuilderFactory;
 import de.uzk.hki.da.utils.BagitConsistencyChecker;
 import de.uzk.hki.da.utils.ConsistencyChecker;
 import de.uzk.hki.da.utils.MetsConsistencyChecker;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * Does the following steps during the (early) ingest stage of a package:
@@ -96,8 +97,8 @@ public class UnpackAction extends AbstractAction {
 	boolean implementation(){
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 		
-		String absoluteSIPPath = localNode.getIngestAreaRootPath() + object.getContractor().getShort_name() + 
-				"/" + object.getLatestPackage().getContainerName();
+		String absoluteSIPPath = localNode.getIngestAreaRootPath() + new Path(object.getContractor().getShort_name(), 
+				object.getLatestPackage().getContainerName()).toString();
 	
 		if (!ingestGate.canHandle(new File(absoluteSIPPath).length())){
 			logger.warn("ResourceMonitor prevents further processing of package due to space limitations.");

@@ -62,6 +62,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 
 /**
@@ -149,7 +151,7 @@ public class CheckFormatsActionTest {
 		localNode = new Node();
 		Contractor contractor = new Contractor();
 		contractor.setShort_name("TEST");
-		localNode.setWorkAreaRootPath(workAreaRootPath);
+		localNode.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
 
 		JhoveScanService jhove = mock(JhoveScanService.class);
 		when(jhove.extract((DAFile)anyObject(),anyInt())).thenReturn("abc");

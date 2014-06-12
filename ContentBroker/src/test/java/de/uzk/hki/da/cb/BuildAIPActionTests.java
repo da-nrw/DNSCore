@@ -39,6 +39,8 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 
 /**
@@ -78,7 +80,7 @@ public class BuildAIPActionTests {
 	@BeforeClass
 	public static void setUpBeforeClass(){
 		node.setWorkingResource("vm3");
-		node.setWorkAreaRootPath(workAreaRootPath);
+		node.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
 		
 		
 		Package pkg = new Package();

@@ -103,4 +103,29 @@ public class PathTest {
 		} catch (Exception e){
 		}
 	}
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
+	@Test
+	public void testEndingSlashIsOK(){
+		Path testPath = new Path("/firstOne/secondOne/");
+		assertEquals("/firstOne/secondOne",testPath.toString());
+	}
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
+	@Test 
+	public void testMakeWithRelativePathAndTwoArguments(){
+		
+		assertEquals("src/test",Path.make(new RelativePath("src"),new Path("test")).toString());
+	}
+	
+	@Test
+	public void testMakeWithAbsolutePathAndTwoArguments(){
+		
+		assertEquals("/src/test",Path.make(new Path("src"),new Path("test")).toString());
+	}
+	
 }

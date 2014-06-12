@@ -41,6 +41,8 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 
 /**
@@ -76,8 +78,8 @@ public class RetrievalActionTest {
 		FileUtils.copyDirectory(new File(forkAndTransferPath+"work/csn/Source"), 
 				                new File(forkAndTransferPath+"work/csn/1")); 
 		Node node = new Node();
-		node.setWorkAreaRootPath(forkAndTransferPath);
-		node.setUserAreaRootPath(forkAndTransferPath+"work/");
+		node.setWorkAreaRootPath(new RelativePath(forkAndTransferPath));
+		node.setUserAreaRootPath(new RelativePath(forkAndTransferPath+"work/"));
 		
 		Contractor contractor = new Contractor(); 
 		contractor.setShort_name("csn"); 

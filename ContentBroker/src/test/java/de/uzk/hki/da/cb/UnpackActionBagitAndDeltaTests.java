@@ -42,6 +42,8 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 
 /**
@@ -97,8 +99,8 @@ public class UnpackActionBagitAndDeltaTests {
 		c.setShort_name("csn");
 
 		node.setWorkingResource("vm3");
-		node.setWorkAreaRootPath(workAreaRootPath);
-		node.setIngestAreaRootPath(workAreaRootPath + "ingest/");
+		node.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
+		node.setIngestAreaRootPath(new RelativePath(workAreaRootPath + "ingest/"));
 
 		gate.setWorkAreaRootPath(workAreaRootPath);
 		gate.setFreeDiskSpacePercent(5);

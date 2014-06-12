@@ -45,6 +45,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.service.UserExceptionManager;
 import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.ProcessInformation;
 
 
@@ -153,10 +154,10 @@ public class ITBase {
 		session.close();
 		
 		if (node==null) { fail("node is null"); }
-		node.setWorkAreaRootPath(workAreaRootPath);
-		node.setUserAreaRootPath("/data/danrw/www/default/webdav/");
-		node.setIngestAreaRootPath("/data/danrw/ingest/");
-		node.setGridCacheAreaRootPath("/data/danrw/storage/fs/");
+		node.setWorkAreaRootPath(new Path(workAreaRootPath));
+		node.setUserAreaRootPath(new Path("/data/danrw/www/default/webdav/"));
+		node.setIngestAreaRootPath(new Path ("/data/danrw/ingest/"));
+		node.setGridCacheAreaRootPath(new Path("/data/danrw/storage/fs/"));
 		node.setWorkingResource("ciWorkingResource");
 		node.setAdminEmail("da-nrw-notifier@uni-koeln.de");
 	}

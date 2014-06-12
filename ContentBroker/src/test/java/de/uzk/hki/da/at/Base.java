@@ -249,12 +249,12 @@ public class Base {
 	
 
 	protected void cleanStorage(){
-		FileUtils.deleteQuietly(new File(localNode.getWorkAreaRootPath()+"work/TEST"));
-		FileUtils.deleteQuietly(new File(localNode.getIngestAreaRootPath()+"TEST"));
-		FileUtils.deleteQuietly(new File(localNode.getGridCacheAreaRootPath()+"TEST"));
-		FileUtils.deleteQuietly(new File(localNode.getWorkAreaRootPath()+"pips/institution/TEST"));
-		FileUtils.deleteQuietly(new File(localNode.getWorkAreaRootPath()+"pips/public/TEST"));
-		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"TEST/outgoing"));
+		FileUtils.deleteQuietly(new File(localNode.getWorkAreaRootPath()+"/work/TEST"));
+		FileUtils.deleteQuietly(new File(localNode.getIngestAreaRootPath()+"/TEST"));
+		FileUtils.deleteQuietly(new File(localNode.getGridCacheAreaRootPath()+"/TEST"));
+		FileUtils.deleteQuietly(new File(localNode.getWorkAreaRootPath()+"/pips/institution/TEST"));
+		FileUtils.deleteQuietly(new File(localNode.getWorkAreaRootPath()+"/pips/public/TEST"));
+		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing"));
 		
 		distributedConversionAdapter.remove("work/TEST");
 		distributedConversionAdapter.remove("aip/TEST");
@@ -266,12 +266,12 @@ public class Base {
 		distributedConversionAdapter.create("pips/institution/TEST");
 		distributedConversionAdapter.create("pips/public/TEST");
 		
-		new File(localNode.getUserAreaRootPath()+"TEST/outgoing").mkdirs();
-		new File(localNode.getGridCacheAreaRootPath()+"TEST").mkdirs();
-		new File(localNode.getIngestAreaRootPath()+"TEST").mkdirs();
-		new File(localNode.getWorkAreaRootPath()+"work/TEST").mkdirs();
-		new File(localNode.getWorkAreaRootPath()+"pips/public/TEST").mkdirs();
-		new File(localNode.getWorkAreaRootPath()+"pips/institution/TEST").mkdirs();
+		new File(localNode.getUserAreaRootPath()+"/TEST/outgoing").mkdirs();
+		new File(localNode.getGridCacheAreaRootPath()+"/TEST").mkdirs();
+		new File(localNode.getIngestAreaRootPath()+"/TEST").mkdirs();
+		new File(localNode.getWorkAreaRootPath()+"/work/TEST").mkdirs();
+		new File(localNode.getWorkAreaRootPath()+"/pips/public/TEST").mkdirs();
+		new File(localNode.getWorkAreaRootPath()+"/pips/institution/TEST").mkdirs();
 	}
 	
 
@@ -327,7 +327,7 @@ public class Base {
 	protected Object ingest(String originalName) throws IOException,
 			InterruptedException {
 				FileUtils.copyFileToDirectory(new File(testDataRootPath+originalName+".tgz"), 
-						new File(localNode.getIngestAreaRootPath()+"TEST"));
+						new File(localNode.getIngestAreaRootPath()+"/TEST"));
 				waitForJobsToFinish(originalName,500);
 				
 				Object object = fetchObjectFromDB(originalName);

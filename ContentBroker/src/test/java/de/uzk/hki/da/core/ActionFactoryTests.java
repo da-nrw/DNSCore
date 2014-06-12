@@ -39,6 +39,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.utils.Path;
 
 
 
@@ -102,7 +103,7 @@ public class ActionFactoryTests {
 		
 		Node node = new Node("da-nrw-vm3.hki.uni-koeln.de","01-vm3"); node.setId(42);
 		node.setName("da-nrw-vm3.hki.uni-koeln.de");
-		node.setWorkAreaRootPath("fakePath");
+		node.setWorkAreaRootPath(new Path("fakePath"));
 		
 		factory.setDao(dummyDao);	
 		factory.setLocalNode(node);

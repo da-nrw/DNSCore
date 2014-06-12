@@ -42,6 +42,9 @@ public class Path{
 	
 	List<String> pathArray = new ArrayList<String>();
 	
+	
+	
+	
 	/** 
 	 * 
 	 * @author Polina Gubaidullina
@@ -52,11 +55,19 @@ public class Path{
 	public Path(Object ... list) {
 		for (Object o: list) {
 			if (o != null) {
-			    String s = o.toString();
-				if(o instanceof Path) {
-					s = s.substring(1);
-					pathArray.add(s);
+				if(o instanceof Path || o instanceof RelativePath) {
+
+					String s = o.toString();
+					if (!(o  instanceof RelativePath)){
+						s = s.substring(1);
+					}
+
+					pathArray.add(s); // this could be problematic since there now could be complex elements in path array 
+					                  // perhaps it would be better to add the single elements one by one
+					
 				} else if (o instanceof String) {
+					
+					String s = o.toString();
 					String [] newString = s.split(File.separator);
 					for(int i=0; i<newString.length; i++) {
 						if(!newString[i].isEmpty() || !newString[i].equals("")) {
@@ -70,6 +81,28 @@ public class Path{
 		}
 	}
 
+	/**
+	 * Creates a Path instance that is either of type Path or of its subtype RelativePath,
+	 * dependent if its first element is of type RelativePath
+	 * 
+	 * @author Daniel M. de Oliveira
+	 * @param list
+	 * @return
+	 */
+	public static Path make(Object ... list) {
+		
+		Path path = null;
+		if ((list[0]) instanceof RelativePath){
+			path = new RelativePath(list);
+		}else
+			path = new Path(list);
+		
+		return path;
+	}
+
+	
+	
+	
 	@Override
 	public String toString() {
 		String directoryString = "";
