@@ -79,7 +79,7 @@ public class RetrievalActionTest {
 				                new File(forkAndTransferPath+"work/csn/1")); 
 		Node node = new Node();
 		node.setWorkAreaRootPath(new RelativePath(forkAndTransferPath));
-		node.setUserAreaRootPath(forkAndTransferPath+"work/");
+		node.setUserAreaRootPath(new RelativePath(forkAndTransferPath+"work/"));
 		
 		Contractor contractor = new Contractor(); 
 		contractor.setShort_name("csn"); 

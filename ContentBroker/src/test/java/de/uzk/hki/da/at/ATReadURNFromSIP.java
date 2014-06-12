@@ -58,7 +58,7 @@ public class ATReadURNFromSIP extends Base {
 	public void test() throws IOException, InterruptedException {
 		String originalName = "ATReadURNFromSIP";
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+originalName+".tgz"), 
-				new File(localNode.getIngestAreaRootPath()+"TEST"));
+				new File(localNode.getIngestAreaRootPath()+"/TEST"));
 		waitForJobsToFinish(originalName,500);
 		Object object = fetchObjectFromDB(originalName);
 		

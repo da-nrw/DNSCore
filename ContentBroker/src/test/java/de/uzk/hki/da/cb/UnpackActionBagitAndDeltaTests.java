@@ -100,7 +100,7 @@ public class UnpackActionBagitAndDeltaTests {
 
 		node.setWorkingResource("vm3");
 		node.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
-		node.setIngestAreaRootPath(workAreaRootPath + "ingest/");
+		node.setIngestAreaRootPath(new RelativePath(workAreaRootPath + "ingest/"));
 
 		gate.setWorkAreaRootPath(workAreaRootPath);
 		gate.setFreeDiskSpacePercent(5);

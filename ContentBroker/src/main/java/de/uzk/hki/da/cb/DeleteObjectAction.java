@@ -63,7 +63,7 @@ public class DeleteObjectAction extends AbstractAction {
 			fileInWorkArea.delete();
 		}
 		
-		File fileInIngestArea = new File(object.getTransientNodeRef().getIngestAreaRootPath() + 
+		File fileInIngestArea = new File(object.getTransientNodeRef().getIngestAreaRootPath() + "/" +
 				object.getContractor().getShort_name() + 
 				"/" + object.getLatestPackage().getContainerName());
 		if (fileInIngestArea.exists()) {

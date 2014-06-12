@@ -113,5 +113,19 @@ public class PathTest {
 		assertEquals("/firstOne/secondOne",testPath.toString());
 	}
 	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
+	@Test 
+	public void testMakeWithRelativePathAndTwoArguments(){
+		
+		assertEquals("src/test",Path.make(new RelativePath("src"),new Path("test")).toString());
+	}
+	
+	@Test
+	public void testMakeWithAbsolutePathAndTwoArguments(){
+		
+		assertEquals("/src/test",Path.make(new Path("src"),new Path("test")).toString());
+	}
 	
 }

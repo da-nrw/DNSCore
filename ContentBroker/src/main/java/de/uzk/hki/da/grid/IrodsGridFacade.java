@@ -60,7 +60,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		String address_dest = gridPath;
 		if (!gridPath.startsWith("/")) 
 			address_dest = "/" + gridPath;
-		String targetPhysically = Utilities.slashize(localNode.getGridCacheAreaRootPath()) + "/" + aipDirName + address_dest;
+		String targetPhysically = localNode.getGridCacheAreaRootPath() + "/" + aipDirName + address_dest;
 		String targetLogically  = "/" + irodsSystemConnector.getZone() + "/" + aipDirName  + address_dest;	
 		File gridfile = new File (targetPhysically); 
 		

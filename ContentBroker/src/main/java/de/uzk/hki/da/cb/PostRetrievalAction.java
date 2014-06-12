@@ -45,7 +45,7 @@ public class PostRetrievalAction extends AbstractAction {
 		String csn=object.getContractor().getShort_name();
 		String mergeTarName = object.getIdentifier() + ".tar";
 		
-		String transferAreaRootPath = localNode.getUserAreaRootPath();
+		String transferAreaRootPath = localNode.getUserAreaRootPath().toString();
 		
 		if (new Date().getTime()/1000L > (Long.parseLong(job.getDate_created())+(3600L*24))){
 			

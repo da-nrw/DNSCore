@@ -61,7 +61,7 @@ public class ATUseCaseIngest extends Base{
 	@After
 	public void tearDown(){ 
 		try{
-			new File(localNode.getIngestAreaRootPath()+"TEST/"+containerName).delete();
+			new File(localNode.getIngestAreaRootPath()+"/TEST/"+containerName).delete();
 			new File("/tmp/"+object.getIdentifier()+".pack_1.tar").delete();
 			FileUtils.deleteDirectory(new File("/tmp/"+object.getIdentifier()+".pack_1"));
 		}catch(Exception e){
