@@ -34,6 +34,7 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ch.qos.logback.core.joran.action.Action;
 import de.uzk.hki.da.convert.FormatScanService;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
@@ -60,6 +61,7 @@ public class ScanActionTests {
 	
 	/** The Constant action. */
 	private static final ScanAction action = new ScanAction();
+	
 	
 	/** The Constant job. */
 	private static final Job job = new Job();

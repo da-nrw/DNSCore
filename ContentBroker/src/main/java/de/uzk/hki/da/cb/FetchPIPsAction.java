@@ -3,6 +3,8 @@ package de.uzk.hki.da.cb;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javassist.expr.NewArray;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
@@ -10,6 +12,7 @@ import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 /**
  * Fetches the PIPs from the nodes on which they've originally been created.
@@ -37,7 +40,7 @@ public class FetchPIPsAction extends AbstractAction {
 		replicateFromSourceResourceToWorkingResource(sourceDIPName);
 		
 		
-		// the rename is necessary because at the moment we don't have another possibility to delete or trim the irods
+		// the rename is necessary because at the moment we donl't have another possibility to delete or trim the irods
 		// collections on specific resources.
 		deletePreviousPIPs(object.getIdentifier());
 		renamePIPs(sourceDIPName, object.getIdentifier());
@@ -55,8 +58,7 @@ public class FetchPIPsAction extends AbstractAction {
 	 * @param dipTargetPartialPath
 	 * @throws IOException
 	 */
-	private void deletePreviousPIPs(String targetDIPName) throws IOException{
-		
+	private void deletePreviousPIPs(String targetDIPName) throws IOException{	
 		if (new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile().exists());
 			FileUtils.deleteDirectory(new Path(
 					localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile());
@@ -75,14 +77,14 @@ public class FetchPIPsAction extends AbstractAction {
 	private void renamePIPs(String sourceDIPName,
 			String targetDIPName) throws IOException {
 		
-		if (new Path(localNode.getWorkAreaRootPath(),publicContractorFolder.toString(),sourceDIPName).toFile().exists())
+		if (Path.make(localNode.getWorkAreaRootPath(),publicContractorFolder.toString(),sourceDIPName).toFile().exists())
 			FileUtils.moveDirectory(
-					new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,sourceDIPName).toFile(), 
-					new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile());
-		if (new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName).toFile().exists())
+					Path.make(localNode.getWorkAreaRootPath(),publicContractorFolder,sourceDIPName).toFile(), 
+					Path.make(localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile());
+		if (Path.make(localNode.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName).toFile().exists())
 			FileUtils.moveDirectory(
-					new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName).toFile(), 
-					new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName).toFile());
+					Path.make(localNode.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName).toFile(), 
+					Path.make(localNode.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName).toFile());
 	}
 
 
@@ -94,15 +96,13 @@ public class FetchPIPsAction extends AbstractAction {
 	 */
 	private void replicateFromSourceResourceToWorkingResource(
 			String dipSourcePartial) {
-		
-		if (new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,dipSourcePartial).toFile().exists()) 
+//		TODO check if source exists
 			distributedConversionAdapter.replicateToLocalNode(
-				new Path(publicContractorFolder,dipSourcePartial).toString());
-		if (new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,dipSourcePartial).toFile().exists()) 
-		distributedConversionAdapter.replicateToLocalNode(
+					new Path(publicContractorFolder,dipSourcePartial).toString());
+//		TODO check if source exists
+			 distributedConversionAdapter.replicateToLocalNode(
 				new Path(institutionContractorFolder,dipSourcePartial).toString());
 	}
-
 	
 	
 	@Override

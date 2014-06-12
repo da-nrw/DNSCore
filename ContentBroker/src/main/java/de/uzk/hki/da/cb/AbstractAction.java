@@ -63,7 +63,7 @@ import de.uzk.hki.da.utils.Utilities;
  * Extension notes: In order to extend the BaseAction please follow a few instructions:
  * 
  * <ol><li>Helper methods of extended classes 
- * which should be separetely tested should have default (package) visibility.
+ * which should be separately tested should have default (package) visibility.
  * <li>Constructors which should only be seen by tests should also have default (package) visibility.
  * </ol>
  * @author Daniel M. de Oliveira
@@ -97,7 +97,7 @@ public abstract class AbstractAction implements Runnable {
 	
 	/**
 	 * false means: i (node) am not responsible 
-	 * true means: succesful
+	 * true means: successful
 	 * errors lead to an error status in run()
 	 * 
 	 * For good readability every implementation() should contain only

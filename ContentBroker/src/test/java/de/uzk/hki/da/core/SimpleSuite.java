@@ -33,6 +33,8 @@ import de.uzk.hki.da.cb.ConvertActionTests;
 import de.uzk.hki.da.cb.ConvertCheckActionTests;
 import de.uzk.hki.da.cb.CreatePremisActionTests;
 import de.uzk.hki.da.cb.DeleteObjectActionTests;
+import de.uzk.hki.da.cb.FetchPIPsAction;
+import de.uzk.hki.da.cb.FetchPIPsActionTest;
 import de.uzk.hki.da.cb.ObjectTest;
 import de.uzk.hki.da.cb.PrepareSendToPresenterActionTests;
 import de.uzk.hki.da.cb.ProperRefreshOfJobChildrenTest;
@@ -110,6 +112,7 @@ import de.uzk.hki.da.utils.*;
 	ScanActionTests.class,
 	ArchiveBuilderTests.class,
 	FormatScanServiceTests.class,
+	FetchPIPsActionTest.class,
 	PreservationSystemTests.class,
 	GetNewestFilesFromAllRepresentationsTests.class,
 	RetrievalActionTest.class,

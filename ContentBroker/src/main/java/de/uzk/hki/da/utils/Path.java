@@ -69,7 +69,7 @@ public class Path{
 					String s = o.toString();
 					String [] newString = s.split(File.separator);
 					for(int i=0; i<newString.length; i++) {
-						if(!newString[i].isEmpty()) {
+						if(!newString[i].isEmpty() || !newString[i].equals("")) {
 							pathArray.add(newString[i]);
 						}
 					}
