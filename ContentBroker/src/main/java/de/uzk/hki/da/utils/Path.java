@@ -111,14 +111,6 @@ public class Path{
 		}
 		return directoryString;
 	}
-	
-	public String toStringWithoutFirstFileSeparator() {
-		String directoryString = pathArray.get(0);
-		for (int i=1; i<pathArray.size(); i++) {
-			directoryString = directoryString +  File.separator + pathArray.get(i);
-		}
-		return directoryString;
-	}
 
 	/**
 	 * @author Daniel M. de Oliveira
@@ -126,14 +118,5 @@ public class Path{
 	 */
 	public File toFile(){
 		return new File(this.toString());
-	}
-	
-	/**
-	 * @author Polina Gubaidullina
-	 * @return the path converted to a regular java file object without the first file separator
-	 */
-	
-	public File toFileWithoutFirstFileSeparator(){
-		return new File(this.toStringWithoutFirstFileSeparator());
 	}
 }

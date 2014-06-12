@@ -12,6 +12,7 @@ import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 /**
  * Fetches the PIPs from the nodes on which they've originally been created.
@@ -27,10 +28,6 @@ public class FetchPIPsAction extends AbstractAction {
 	
 	Path publicContractorFolder = null;
 	Path institutionContractorFolder = null;
-	
-//	Prefix for FetchPIPsActionTest
-	String contractorFolderPrefix = "";
-//	
 	
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException {
@@ -61,8 +58,7 @@ public class FetchPIPsAction extends AbstractAction {
 	 * @param dipTargetPartialPath
 	 * @throws IOException
 	 */
-	private void deletePreviousPIPs(String targetDIPName) throws IOException{
-		
+	private void deletePreviousPIPs(String targetDIPName) throws IOException{	
 		if (new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile().exists());
 			FileUtils.deleteDirectory(new Path(
 					localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile());
@@ -81,14 +77,14 @@ public class FetchPIPsAction extends AbstractAction {
 	private void renamePIPs(String sourceDIPName,
 			String targetDIPName) throws IOException {
 		
-		if (new Path(localNode.getWorkAreaRootPath(),publicContractorFolder.toString(),sourceDIPName).toFile().exists())
+		if (Path.make(localNode.getWorkAreaRootPath(),publicContractorFolder.toString(),sourceDIPName).toFile().exists())
 			FileUtils.moveDirectory(
-					new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,sourceDIPName).toFile(), 
-					new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile());
-		if (new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName).toFile().exists())
+					Path.make(localNode.getWorkAreaRootPath(),publicContractorFolder,sourceDIPName).toFile(), 
+					Path.make(localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile());
+		if (Path.make(localNode.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName).toFile().exists())
 			FileUtils.moveDirectory(
-					new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName).toFile(), 
-					new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName).toFile());
+					Path.make(localNode.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName).toFile(), 
+					Path.make(localNode.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName).toFile());
 	}
 
 
@@ -100,21 +96,12 @@ public class FetchPIPsAction extends AbstractAction {
 	 */
 	private void replicateFromSourceResourceToWorkingResource(
 			String dipSourcePartial) {
-//		System.out.println("replicateFromSourceResourceToWorkingResource...");
-//		System.out.println("Replicate from "+(new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,dipSourcePartial).toFileWithoutFirstFileSeparator())+ " to " +
-//				new Path(contractorFolderPrefix, publicContractorFolder,dipSourcePartial).toStringWithoutFirstFileSeparator());
-//		System.out.println("replDir exists: " +(new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,dipSourcePartial).toFileWithoutFirstFileSeparator()).exists());
-//		System.out.println("source exists: " +new Path(contractorFolderPrefix, publicContractorFolder,dipSourcePartial).toFileWithoutFirstFileSeparator().exists());
-//		System.out.println("Replicate from "+ new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,dipSourcePartial).toFileWithoutFirstFileSeparator() + " to " + 
-//				new Path(contractorFolderPrefix, institutionContractorFolder,dipSourcePartial).toStringWithoutFirstFileSeparator());
-		
 //		TODO check if source exists
 			distributedConversionAdapter.replicateToLocalNode(
-					new Path(contractorFolderPrefix, publicContractorFolder,dipSourcePartial).toStringWithoutFirstFileSeparator());
+					new Path(publicContractorFolder,dipSourcePartial).toString());
 //		TODO check if source exists
-//		if (new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,dipSourcePartial).toFileWithoutFirstFileSeparator().exists()) 
 			 distributedConversionAdapter.replicateToLocalNode(
-				new Path(contractorFolderPrefix, institutionContractorFolder,dipSourcePartial).toStringWithoutFirstFileSeparator());
+				new Path(institutionContractorFolder,dipSourcePartial).toString());
 	}
 	
 	
