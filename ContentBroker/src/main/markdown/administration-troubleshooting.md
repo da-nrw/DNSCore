@@ -73,8 +73,8 @@ Sometimes manuallay deletion of packages is needed on your system.
 Please examine the error logfiles at your node. 
 
 For recovering bunches of Packages you might consider a rollback via Database. 
-Just set the packages in state '800' for a clean rollback, BUT check the error 
-and the error codes first!
+Just set the packages in state '800' for a clean deletion, BUT check the error 
+and the error codes first! Only packages lower then 400 are deleteable, because otherwise they are archived!
 
 #### Error Handling in DA-WEB
 
