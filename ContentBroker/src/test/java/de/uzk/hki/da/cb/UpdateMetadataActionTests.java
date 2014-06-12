@@ -48,6 +48,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.UpdateMetadataService;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -79,7 +80,7 @@ public class UpdateMetadataActionTests {
 		action = new UpdateMetadataAction();		
 		node = new Node();
 		node.setWorkingResource("vm3");
-		node.setWorkAreaRootPath(workAreaPath);
+		node.setWorkAreaRootPath(new Path(workAreaPath));
 		action.setNode(node);	
 		
 		FileUtils.copyDirectoryToDirectory(new File("src/main/xslt"), new File("conf/"));

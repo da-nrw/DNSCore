@@ -38,6 +38,8 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 
 /**
@@ -46,7 +48,7 @@ import de.uzk.hki.da.model.Package;
 public class PrepareSendToPresenterActionTests {
 
 	/** The base path. */
-	private String workingAreaRootPath = "src/test/resources/cb/PrepareSendToPresenterActionTests/";
+	private String workingAreaRoot = "src/test/resources/cb/PrepareSendToPresenterActionTests";
 	
 	/** The action. */
 	PrepareSendToPresenterAction action = new PrepareSendToPresenterAction();
@@ -64,10 +66,10 @@ public class PrepareSendToPresenterActionTests {
 	Node node;
 	
 	/** The public file. */
-	private File publicFile = new File(workingAreaRootPath+"pips/public/TEST/identifier_1_1/a.txt");
+	private File publicFile = new File(workingAreaRoot+"/pips/public/TEST/identifier_1_1/a.txt");
 	
 	/** The institution file. */
-	private File institutionFile = new File(workingAreaRootPath+"pips/institution/TEST/identifier_1_1/a.txt");
+	private File institutionFile = new File(workingAreaRoot+"/pips/institution/TEST/identifier_1_1/a.txt");
 
 	/** The contractor. */
 	private Contractor contractor;
@@ -83,7 +85,7 @@ public class PrepareSendToPresenterActionTests {
 		action.setDao(mock(CentralDatabaseDAO.class));
 
 		node = new Node(); 
-		node.setWorkAreaRootPath(workingAreaRootPath);
+		node.setWorkAreaRootPath(new RelativePath(workingAreaRoot));
 		Node dipNode = new Node(); dipNode.setName("dipNode");
 		action.setNode(node);
 
@@ -92,8 +94,11 @@ public class PrepareSendToPresenterActionTests {
 		
 		job = new Job();
 		
-		FileUtils.copyDirectory(new File(workingAreaRootPath+"sources/1"), new File(workingAreaRootPath+"work/TEST/identifier_1"));
-		FileUtils.copyDirectory(new File(workingAreaRootPath+"sources/2"), new File(workingAreaRootPath+"work/TEST/identifier_2"));
+		new File(workingAreaRoot+"/pips/institution").mkdirs();
+		new File(workingAreaRoot+"/pips/public").mkdirs();
+		
+		FileUtils.copyDirectory(new File(workingAreaRoot+"/sources/1"), new File(workingAreaRoot+"/work/TEST/identifier_1"));
+		FileUtils.copyDirectory(new File(workingAreaRoot+"/sources/2"), new File(workingAreaRoot+"/work/TEST/identifier_2"));
 	}
 	
 	/**
@@ -147,10 +152,10 @@ public class PrepareSendToPresenterActionTests {
 	@After
 	public void tearDown() throws IOException {
 		
-		FileUtils.deleteDirectory(new File(workingAreaRootPath+"work/TEST/identifier_1"));
-		FileUtils.deleteDirectory(new File(workingAreaRootPath+"pips/public"));
-		FileUtils.deleteDirectory(new File(workingAreaRootPath+"work/TEST/identifier_2"));
-		FileUtils.deleteDirectory(new File(workingAreaRootPath+"pips/institution"));
+		FileUtils.deleteDirectory(new File(workingAreaRoot+"/work/TEST/identifier_1"));
+		FileUtils.deleteDirectory(new File(workingAreaRoot+"/work/TEST/identifier_2"));
+		FileUtils.deleteDirectory(new File(workingAreaRoot+"/pips/institution"));
+		FileUtils.deleteDirectory(new File(workingAreaRoot+"/pips/public"));
 	}
 	
 	

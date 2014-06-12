@@ -32,6 +32,7 @@ import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author Daniel M. de Oliveira
@@ -46,7 +47,7 @@ public class ArchiveReplicationActionTests {
 	@BeforeClass
 	public static void prepareNode() {
 		workAreaRootPath = "src/test/resources/cb/ArchiveReplicationTests/fork/";
-		node.setWorkAreaRootPath(workAreaRootPath);
+		node.setWorkAreaRootPath(new Path(workAreaRootPath));
 	}
 	
 	@Before

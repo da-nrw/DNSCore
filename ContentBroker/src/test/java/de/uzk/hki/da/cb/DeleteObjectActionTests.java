@@ -60,7 +60,7 @@ public class DeleteObjectActionTests {
 	}
 	
 	@Test
-	public void cleanFork() throws FileNotFoundException, UserException, IOException{
+	public void cleanWorkArea() throws FileNotFoundException, UserException, IOException{
 		Object o = TESTHelper.setUpObject("123", workAreaRootPath);
 		o.getTransientNodeRef().setIngestAreaRootPath(ingestAreaRootPath);
 		o.getLatestPackage().setContainerName("abc.txt");

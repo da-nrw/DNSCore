@@ -40,7 +40,7 @@ public class TESTHelper {
 	public static Object setUpObject(String identifier,String workAreaRootPath){
 		
 		Node node = new Node();
-		node.setWorkAreaRootPath(workAreaRootPath);
+		node.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
 		
 		Contractor contractor = new Contractor();
 		contractor.setShort_name("TEST");

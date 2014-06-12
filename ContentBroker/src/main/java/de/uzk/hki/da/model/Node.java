@@ -20,6 +20,7 @@
 package de.uzk.hki.da.model;
 import javax.persistence.*;
 
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.Utilities;
 
 import java.lang.Object;
@@ -47,7 +48,7 @@ public class Node{
 	@Transient private String repl_destinations;
 	
 	/** The work area root path. */
-	@Transient private String workAreaRootPath;
+	@Transient private Path workArea;
 	
 	/** The user area root path. */
 	@Transient private String userAreaRootPath;
@@ -250,8 +251,8 @@ public class Node{
 	 *
 	 * @return the work area root path
 	 */
-	public String getWorkAreaRootPath() {
-		return workAreaRootPath;
+	public Path getWorkAreaRootPath() {
+		return workArea;
 	}
 
 
@@ -260,8 +261,8 @@ public class Node{
 	 *
 	 * @param workAreaRootPath the new work area root path
 	 */
-	public void setWorkAreaRootPath(String workAreaRootPath) {
-		this.workAreaRootPath = Utilities.slashize(workAreaRootPath);
+	public void setWorkAreaRootPath(Path workAreaRootPath) {
+		this.workArea = workAreaRootPath;
 	}
 
 

@@ -146,7 +146,8 @@ import de.uzk.hki.da.utils.*;
 	UpdateMetadataActionXMPTests.class,
 	PathTest.class,
 	AbstractActionTests.class,
-	ReplicationExecutorTest.class
+	ReplicationExecutorTest.class,
+	PathTypeEditorSupportTests.class
 //	HibernateUtilThreadingTest.class
 })
 public class SimpleSuite {

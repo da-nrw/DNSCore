@@ -28,6 +28,7 @@ import org.junit.Test;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.TESTHelper;
 
 /**
@@ -48,7 +49,7 @@ public class ObjectTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		Node n = new Node();
-		n.setWorkAreaRootPath(workAreaRootPath);
+		n.setWorkAreaRootPath(new Path(workAreaRootPath));
 		
 		o = TESTHelper.setUpObject("123", workAreaRootPath);
 

@@ -46,6 +46,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -90,7 +91,7 @@ public class ScanActionTests {
 
 		
 		Node localNode = new Node("vm2","01-vm2");
-		localNode.setWorkAreaRootPath(workAreaRootPath);
+		localNode.setWorkAreaRootPath(new Path(workAreaRootPath));
 		action.setLocalNode(localNode);
 	
 		
