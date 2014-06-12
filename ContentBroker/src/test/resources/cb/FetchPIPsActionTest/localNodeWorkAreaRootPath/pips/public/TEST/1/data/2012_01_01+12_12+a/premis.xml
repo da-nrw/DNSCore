@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<premis xmlns="info:lc/xmlns/premis-v2" xmlns:premis="info:lc/xmlns/premis-v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-1.xsd" version="2.1">
+<agent>
+<agentType>CONTRACTOR</agentType>
+</agent>
+<rights>
+<rightsStatement>
+<rightsBasis>license</rightsBasis>
+<rightsGranted>
+<act>PUBLICATION</act>
+<restriction>See rightsExtension</restriction>
+<termOfGrant>
+<startDate/>
+</termOfGrant>
+</rightsGranted>
+<rightsGranted>
+<act>PUBLICATION</act>
+<restriction>See rightsExtension</restriction>
+<termOfGrant>
+<startDate/>
+</termOfGrant>
+</rightsGranted>
+<rightsGranted>
+<act>MIGRATION</act>
+<restriction>See rightsExtension</restriction>
+<termOfGrant>
+<startDate>2011-01-01</startDate>
+</termOfGrant>
+</rightsGranted>
+</rightsStatement>
+<rightsExtension>
+<rightsGranted xmlns="http://www.danrw.de/contract/v1">
+        <migrationRight>
+            <condition>NONE</condition>
+        </migrationRight>
+        <publicationRight>
+<audience>PUBLIC</audience>
+<restrictions/>
+</publicationRight>
+        <publicationRight>
+<audience>INSTITUTION</audience>
+<restrictions/>
+</publicationRight>
+    </rightsGranted>
+</rightsExtension>
+</rights>
+</premis>
