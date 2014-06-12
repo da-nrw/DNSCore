@@ -122,6 +122,9 @@ public class PathTest {
 		assertEquals("src/test",Path.make(new RelativePath("src"),new Path("test")).toString());
 	}
 	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
 	@Test
 	public void testMakeWithAbsolutePathAndTwoArguments(){
 		

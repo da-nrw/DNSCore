@@ -47,6 +47,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -314,12 +315,12 @@ public class Object {
 	 * Absolute path to the package on local nodes working resource.
 	 * @return the path
 	 */
-	public String getPath(){
+	public Path getPath(){
 		if (transientNodeRef==null) throw new RuntimeException("node is null");
 		if (transientNodeRef.getWorkAreaRootPath()==null||transientNodeRef.getWorkAreaRootPath().toString().isEmpty()) 
 			throw new RuntimeException("workarearootpath null or empty");
 		
-		return transientNodeRef.getWorkAreaRootPath() + "/work/" + contractor.getShort_name() + "/" + identifier + "/";
+		return Path.make(transientNodeRef.getWorkAreaRootPath(),"/work/",contractor.getShort_name(),identifier);
 	}
 	
 	

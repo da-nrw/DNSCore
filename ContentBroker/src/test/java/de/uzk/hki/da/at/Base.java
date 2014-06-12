@@ -46,6 +46,7 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
+import de.uzk.hki.da.utils.Path;
 
 public class Base {
 
@@ -249,12 +250,12 @@ public class Base {
 	
 
 	protected void cleanStorage(){
-		FileUtils.deleteQuietly(new File(localNode.getWorkAreaRootPath()+"/work/TEST"));
-		FileUtils.deleteQuietly(new File(localNode.getIngestAreaRootPath()+"/TEST"));
-		FileUtils.deleteQuietly(new File(localNode.getGridCacheAreaRootPath()+"/TEST"));
-		FileUtils.deleteQuietly(new File(localNode.getWorkAreaRootPath()+"/pips/institution/TEST"));
-		FileUtils.deleteQuietly(new File(localNode.getWorkAreaRootPath()+"/pips/public/TEST"));
-		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing"));
+		FileUtils.deleteQuietly(Path.make(localNode.getWorkAreaRootPath(),"/work/TEST").toFile());
+		FileUtils.deleteQuietly(Path.make(localNode.getIngestAreaRootPath(),"/TEST").toFile());
+		FileUtils.deleteQuietly(Path.make(localNode.getGridCacheAreaRootPath(),"/TEST").toFile());
+		FileUtils.deleteQuietly(Path.make(localNode.getWorkAreaRootPath(),"/pips/institution/TEST").toFile());
+		FileUtils.deleteQuietly(Path.make(localNode.getWorkAreaRootPath(),"/pips/public/TEST").toFile());
+		FileUtils.deleteQuietly(Path.make(localNode.getUserAreaRootPath(),"/TEST/outgoing").toFile());
 		
 		distributedConversionAdapter.remove("work/TEST");
 		distributedConversionAdapter.remove("aip/TEST");
@@ -266,12 +267,12 @@ public class Base {
 		distributedConversionAdapter.create("pips/institution/TEST");
 		distributedConversionAdapter.create("pips/public/TEST");
 		
-		new File(localNode.getUserAreaRootPath()+"/TEST/outgoing").mkdirs();
-		new File(localNode.getGridCacheAreaRootPath()+"/TEST").mkdirs();
-		new File(localNode.getIngestAreaRootPath()+"/TEST").mkdirs();
-		new File(localNode.getWorkAreaRootPath()+"/work/TEST").mkdirs();
-		new File(localNode.getWorkAreaRootPath()+"/pips/public/TEST").mkdirs();
-		new File(localNode.getWorkAreaRootPath()+"/pips/institution/TEST").mkdirs();
+		Path.make(localNode.getUserAreaRootPath(),"/TEST/outgoing").toFile().mkdirs();
+		Path.make(localNode.getGridCacheAreaRootPath(),"/TEST").toFile().mkdirs();
+		Path.make(localNode.getIngestAreaRootPath(),"/TEST").toFile().mkdirs();
+		Path.make(localNode.getWorkAreaRootPath(),"/work/TEST").toFile().mkdirs();
+		Path.make(localNode.getWorkAreaRootPath(),"/pips/public/TEST").toFile().mkdirs();
+		Path.make(localNode.getWorkAreaRootPath(),"/pips/institution/TEST").toFile().mkdirs();
 	}
 	
 
