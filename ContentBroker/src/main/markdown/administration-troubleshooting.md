@@ -60,13 +60,21 @@ a new object the orig name is reusable again. The urn which was given to the obj
 
 #### 123 - 353 (only xx3)
 
-Failures in the error range 123-353 could be handled with DA-WEB. 
+Failures in the error range 123-383 could be handled with DA-WEB. 
 Whenever possible, Deletion buttons are shown. 
+
+For recovering bunches of Packages you might consider a rollback via Database. 
+Just set the packages in state '600' for a clean rollback, BUT check the error 
+and the error codes first!
 
 #### Deletion
 
 Sometimes manuallay deletion of packages is needed on your system. 
 Please examine the error logfiles at your node. 
+
+For recovering bunches of Packages you might consider a rollback via Database. 
+Just set the packages in state '800' for a clean rollback, BUT check the error 
+and the error codes first!
 
 #### Error Handling in DA-WEB
 
