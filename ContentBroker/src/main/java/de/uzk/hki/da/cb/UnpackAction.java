@@ -97,10 +97,10 @@ public class UnpackAction extends AbstractAction {
 	boolean implementation(){
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 		
-		String absoluteSIPPath = localNode.getIngestAreaRootPath() + new Path(object.getContractor().getShort_name(), 
-				object.getLatestPackage().getContainerName()).toString();
+		Path absoluteSIPPath = Path.make(localNode.getIngestAreaRootPath(),object.getContractor().getShort_name(), 
+				object.getLatestPackage().getContainerName());
 	
-		if (!ingestGate.canHandle(new File(absoluteSIPPath).length())){
+		if (!ingestGate.canHandle(absoluteSIPPath.toFile().length())){
 			logger.warn("ResourceMonitor prevents further processing of package due to space limitations.");
 			return false;
 		}
@@ -111,7 +111,7 @@ public class UnpackAction extends AbstractAction {
 		
 		deleteUnwantedFiles(object.getPath().toFile()); // unwanted content can be configured in beans-actions.xml
 		
-		PackageType pType = checkConsistency(object.getPath().toString());
+		PackageType pType = checkConsistency(object.getPath());
 		if (pType==PackageType.METS)
 			convertMETStoPREMIS(object.getPath().toString());
 		else
@@ -165,7 +165,7 @@ public class UnpackAction extends AbstractAction {
 		new File(sipInForkPath).delete();
 		
 		// Must be the last step in this action
-		new File(absoluteSIPPath).delete();
+		absoluteSIPPath.toFile().delete();
 				
 		return true;
 	}	
@@ -176,11 +176,11 @@ public class UnpackAction extends AbstractAction {
 	 * @author Thomas Kleinke
 	 * @return path to SIP in work area
 	 */
-	private String copySIPToWorkArea(String ingestFilePath) {
+	private String copySIPToWorkArea(Path ingestFilePath) {
 		
-		File ingestFile = new File(ingestFilePath);
-		File destFile = new File(localNode.getWorkAreaRootPath() + "work/" + object.getContractor().getShort_name() + "/" + 
-				  FilenameUtils.getName(ingestFilePath));
+		File ingestFile = ingestFilePath.toFile();
+		File destFile = Path.make(localNode.getWorkAreaRootPath(),"work",object.getContractor().getShort_name(), 
+				  FilenameUtils.getName(ingestFilePath.toString())).toFile();
 		
 		if (!ingestFile.exists())
 			throw new RuntimeException("Package file " + ingestFile.getAbsolutePath() + " does not exist");
@@ -205,20 +205,20 @@ public class UnpackAction extends AbstractAction {
 	 * @return
 	 * @throws RuntimeException
 	 */
-	private PackageType checkConsistency(String packageInForkAbsolutePath){
+	private PackageType checkConsistency(Path packageInForkAbsolutePath){
 		
 		PackageType pType = null;
-		pType = determinePackageType(new File(packageInForkAbsolutePath));
+		pType = determinePackageType(packageInForkAbsolutePath.toFile());
 
 		if (pType == null)
 			throw new UserException(UserExceptionId.UNKNOWN_PACKAGE_TYPE, "Package type couldn't be determined");
 
 		ConsistencyChecker checker = null;
 		if (pType==PackageType.METS) {
-			normalizeMetsPackage(new File(packageInForkAbsolutePath));
-			checker = new MetsConsistencyChecker(packageInForkAbsolutePath + "/data");
+			normalizeMetsPackage(packageInForkAbsolutePath.toFile());
+			checker = new MetsConsistencyChecker(packageInForkAbsolutePath.toString() + "/data");
 		}else{
-			checker = new BagitConsistencyChecker(packageInForkAbsolutePath);
+			checker = new BagitConsistencyChecker(packageInForkAbsolutePath.toString());
 		}
 		
 		try{

@@ -48,13 +48,13 @@ import de.uzk.hki.da.utils.RelativePath;
  */
 public class BuildAIPActionTests {
 
-	static String workAreaRootPath = "src/test/resources/cb/BuildAIPActionTests/";
+	static Path workAreaRootPath = new RelativePath("src/test/resources/cb/BuildAIPActionTests/");
 	
 	/** The backup package path. */
-	static String backupPackagePath = workAreaRootPath+"work/csn/95949_/";
+	static Path backupPackagePath = Path.make(workAreaRootPath,"work/csn/95949_/");
 	
 	/** The package fork path. */
-	static String packageForkPath = workAreaRootPath+"work/csn/95949/";
+	static Path packageForkPath = Path.make(workAreaRootPath,"work/csn/95949/");
 	
 	/** The job. */
 	static Job job = new Job("csn","vm3");
@@ -113,7 +113,7 @@ public class BuildAIPActionTests {
 	 */
 	@Before
 	public void setUp() throws IOException{
-		FileUtils.copyDirectory(new File(backupPackagePath), new File(packageForkPath));
+		FileUtils.copyDirectory(backupPackagePath.toFile(), packageForkPath.toFile());
 	}
 	
 	/**
@@ -123,7 +123,7 @@ public class BuildAIPActionTests {
 	 */
 	@After
 	public void tearDown() throws IOException{
-		if (new File(packageForkPath).exists()) FileUtils.deleteDirectory(new File(packageForkPath)); 
+		if (packageForkPath.toFile().exists()) FileUtils.deleteDirectory(packageForkPath.toFile()); 
 	}
 	
 	/**
@@ -151,7 +151,7 @@ public class BuildAIPActionTests {
 	public void testOnlyNewestRepsSurvive() throws Exception{
 		action.implementation();
 		
-		String children[] = new File(packageForkPath+"data").list(); 
+		String children[] = new File(packageForkPath+"/data").list(); 
 		
 		for (int i=0;i<children.length;i++){
 			if (!children[i].contains(repName) && !children[i].contains("premis")) fail();
