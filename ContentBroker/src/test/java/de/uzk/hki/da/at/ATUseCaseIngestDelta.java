@@ -76,13 +76,13 @@ public class ATUseCaseIngestDelta extends Base {
 	public void testHappyPath() throws Exception{
 		
 		FileUtils.copyFile(new File("src/test/resources/at/"+originalName+"1.tgz"), 
-				new File(localNode.getIngestAreaRootPath()+"TEST/"+originalName+".tgz"));
+				new File(localNode.getIngestAreaRootPath()+"/TEST/"+originalName+".tgz"));
 		waitForJobsToFinish(originalName,500);
 		
 		Thread.sleep(60000); // to avoid newly generated repnames clashing with previous ones
 		
 		FileUtils.copyFile(new File("src/test/resources/at/"+originalName+"2.tgz"), 
-				new File(localNode.getIngestAreaRootPath()+"TEST/"+originalName+".tgz"));
+				new File(localNode.getIngestAreaRootPath()+"/TEST/"+originalName+".tgz"));
 		waitForJobsToFinish(originalName,500);
 		
 		object = retrievePackage(originalName,"2");

@@ -68,11 +68,11 @@ public class ATUseCaseRetrieval extends Base{
 		createObjectAndJob(name,"900");
 		waitForJobToBeInStatus(name, "950", 2000);
 		
-		System.out.println(new File(localNode.getUserAreaRootPath()+"TEST/outgoing/ID-ATUseCaseRetrieval.tar").getAbsolutePath());
-		assertTrue(new File(localNode.getUserAreaRootPath()+"TEST/outgoing/ID-ATUseCaseRetrieval.tar").exists());
+		System.out.println(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/ID-ATUseCaseRetrieval.tar").getAbsolutePath());
+		assertTrue(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/ID-ATUseCaseRetrieval.tar").exists());
 		
 		FileUtils.moveFileToDirectory(
-				new File(localNode.getUserAreaRootPath()+"TEST/outgoing/ID-ATUseCaseRetrieval.tar"), 
+				new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/ID-ATUseCaseRetrieval.tar"), 
 				new File("/tmp"), false);
 		
 		ArchiveBuilderFactory.getArchiveBuilderForFile(new File("/tmp/ID-ATUseCaseRetrieval.tar"))

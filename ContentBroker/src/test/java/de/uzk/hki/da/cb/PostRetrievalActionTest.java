@@ -39,6 +39,7 @@ import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.utils.Path;
 
 
 /**
@@ -85,7 +86,7 @@ public class PostRetrievalActionTest {
 	public void setUp() throws Exception {
 		 irods = mock (IrodsSystemConnector.class);
 		 node = new Node();
-			node.setUserAreaRootPath("/tmp/webdav");
+			node.setUserAreaRootPath(new Path("/tmp/webdav"));
 			
 	}
 

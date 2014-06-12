@@ -48,11 +48,11 @@ public class ATUseCaseIngestSpecialCases extends Base{
 	@After
 	public void tearDown(){
 		
-		FileUtils.deleteQuietly(new File(localNode.getWorkAreaRootPath()+"work/TEST/"+object.getIdentifier()));
+		FileUtils.deleteQuietly(new File(localNode.getWorkAreaRootPath()+"/work/TEST/"+object.getIdentifier()));
 
-		new File(localNode.getIngestAreaRootPath()+"TEST/AT_CON1.tar").delete();
-		new File(localNode.getIngestAreaRootPath()+"TEST/AT_CON2.tgz").delete();
-		new File(localNode.getIngestAreaRootPath()+"TEST/AT_CON3.zip").delete();
+		new File(localNode.getIngestAreaRootPath()+"/TEST/AT_CON1.tar").delete();
+		new File(localNode.getIngestAreaRootPath()+"/TEST/AT_CON2.tgz").delete();
+		new File(localNode.getIngestAreaRootPath()+"/TEST/AT_CON3.zip").delete();
 		
 		clearDB();
 		cleanStorage();
@@ -65,7 +65,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		containerName = originalName+".tgz";
 				
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
-				new File(localNode.getIngestAreaRootPath()+"TEST"));
+				new File(localNode.getIngestAreaRootPath()+"/TEST"));
 		waitForJobsToFinish(originalName,2000);
 		object = fetchObjectFromDB(originalName);
 		System.out.println("objectIdentifier: "+object.getIdentifier());
@@ -80,7 +80,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		containerName = originalName+".tgz";
 				
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
-				new File(localNode.getIngestAreaRootPath()+"TEST"));
+				new File(localNode.getIngestAreaRootPath()+"/TEST"));
 		waitForJobsToFinish(originalName,2000);
 		object = fetchObjectFromDB(originalName);
 		System.out.println("objectIdentifier: "+object.getIdentifier());
@@ -95,7 +95,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		containerName = originalName+".tgz";
 				
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
-				new File(localNode.getIngestAreaRootPath()+"TEST"));
+				new File(localNode.getIngestAreaRootPath()+"/TEST"));
 		waitForJobsToFinish(originalName,2000);
 		object = fetchObjectFromDB(originalName);
 		System.out.println("objectIdentifier: "+object.getIdentifier());
@@ -110,7 +110,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		containerName = originalName+".tar";
 				
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
-				new File(localNode.getIngestAreaRootPath()+"TEST"));
+				new File(localNode.getIngestAreaRootPath()+"/TEST"));
 		waitForJobsToFinish(originalName,2000);
 		object = fetchObjectFromDB(originalName);
 		System.out.println("objectIdentifier: "+object.getIdentifier());
@@ -137,7 +137,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		containerName = originalName+".zip";
 				
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
-				new File(localNode.getIngestAreaRootPath()+"TEST"));
+				new File(localNode.getIngestAreaRootPath()+"/TEST"));
 		waitForJobsToFinish(originalName,2000);
 		object = fetchObjectFromDB(originalName);
 		System.out.println("objectIdentifier: "+object.getIdentifier());

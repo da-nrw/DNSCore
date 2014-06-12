@@ -24,8 +24,8 @@ package de.uzk.hki.da.utils;
  */
 public class RelativePath extends Path {
 
-	public RelativePath(String workingAreaRoot) {
-		super(workingAreaRoot);
+	public RelativePath(Object ... list) {
+		super(list);
 	}
 
 	@Override

@@ -43,7 +43,7 @@ public class CTIrodsGridFacadeTest {
 		IrodsGridFacade grid = new IrodsGridFacade();
 		grid.setIrodsSystemConnector(isc);
 		Node node = new Node();
-		node.setGridCacheAreaRootPath("/ci/storage/GridCacheArea");
+		node.setGridCacheAreaRootPath(new Path ("/ci/storage/GridCacheArea"));
 		node.setWorkAreaRootPath(new Path("/ci/storage/WorkArea"));
 		node.setWorkingResource("ciWorkingResource");		
 		node.setReplDestinations("ciArchiveResource");

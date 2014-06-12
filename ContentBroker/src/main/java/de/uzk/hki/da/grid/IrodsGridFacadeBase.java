@@ -81,7 +81,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 		String address_dest = relative_address_dest;
 		if (!relative_address_dest.startsWith("/")) 
 			address_dest = "/" + relative_address_dest;
-		String targetPhysically = Utilities.slashize(localNode.getGridCacheAreaRootPath()) + "/" + aipDirName + address_dest;
+		String targetPhysically = localNode.getGridCacheAreaRootPath() + "/" + aipDirName + address_dest;
 		String targetLogically  = "/" + irodsSystemConnector.getZone() + "/" + aipDirName + address_dest;	
 		
 		File gridfile = new File (targetPhysically); 	
