@@ -39,11 +39,6 @@ import java.util.List;
 
 public class Path{
 	
-	List<String> pathArray = new ArrayList<String>();
-	
-	
-	
-	
 	/** 
 	 * 
 	 * @author Polina Gubaidullina
@@ -51,33 +46,36 @@ public class Path{
 	 * @throws IllegalArgumentException if an element of list is not of type string or path
 	 */
 	
+	List<String> finalPathArray = new ArrayList<String>();
+	
 	public Path(Object ... list) {
 		for (Object o: list) {
+			List<String> partialPathArray;
 			if (o != null) {
-				if(o instanceof Path || o instanceof RelativePath) {
-
+				partialPathArray = new ArrayList<String>();
+				if(o instanceof Path || o instanceof RelativePath || o instanceof String) {
 					String s = o.toString();
-					if (!(o  instanceof RelativePath)){
-						s = s.substring(1);
-					}
-
-					pathArray.add(s); // this could be problematic since there now could be complex elements in path array 
-					                  // perhaps it would be better to add the single elements one by one
-					
-				} else if (o instanceof String) {
-					
-					String s = o.toString();
-					String [] newString = s.split(File.separator);
-					for(int i=0; i<newString.length; i++) {
-						if(!newString[i].isEmpty() || !newString[i].equals("")) {
-							pathArray.add(newString[i]);
-						}
-					}
+					partialPathArray = stringToPathArray(s);
+					for(int i=0; i<partialPathArray.size(); i++) {
+						finalPathArray.add(partialPathArray.get(i));
+					}					
 				} else {
 					throw new IllegalArgumentException("Incorrect data type: path or string expected");
 				}
 			} else throw new NullPointerException();
 		}
+	}
+	
+	public static List<String> stringToPathArray(String currentString) {
+		List<String> currentPathArray = new ArrayList<String>();
+		String s = currentString;
+		String [] newString = s.split(File.separator);
+		for(int i=0; i<newString.length; i++) {
+			if(!newString[i].isEmpty() || !newString[i].equals("")) {
+				currentPathArray.add(newString[i]);
+			}
+		}
+		return currentPathArray;
 	}
 
 	/**
@@ -107,7 +105,7 @@ public class Path{
 	@Override
 	public String toString() {
 		String directoryString = "";
-		for (String i: pathArray) {
+		for (String i: finalPathArray) {
 			directoryString = directoryString + File.separator + i;
 		}
 		return directoryString;
@@ -141,12 +139,12 @@ public class Path{
 			}
 		}
 		
-		if (pathArray.size()!=otherPath.pathArray.size())
+		if (finalPathArray.size()!=otherPath.finalPathArray.size())
 			return false;
 		
 		boolean equals = true;
-		for (int i=0; i<pathArray.size(); i++ ){
-			if (!pathArray.toArray()[i].equals(otherPath.pathArray.toArray()[i])) equals= false; 
+		for (int i=0; i<finalPathArray.size(); i++ ){
+			if (!finalPathArray.toArray()[i].equals(otherPath.finalPathArray.toArray()[i])) equals= false; 
 		}
 		
 		return equals;

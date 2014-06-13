@@ -115,8 +115,8 @@ public class FetchPIPsActionTest{
 	@BeforeClass
 	public static void manReplFromSourceToWorkingResource() {
 		try {
-			FileUtils.copyDirectory(new RelativePath(sourcePIPsPath, institutionPartialPath).toFile(), new RelativePath(workAreaRootPartialPath, institutionPartialPath).toFile());
-			FileUtils.copyDirectory(new RelativePath(sourcePIPsPath, publicPartialPath).toFile(), new RelativePath(workAreaRootPartialPath, publicPartialPath).toFile());
+			FileUtils.copyDirectory(Path.make(sourcePIPsPath, institutionPartialPath).toFile(), Path.make(workAreaRootPartialPath, institutionPartialPath).toFile());
+			FileUtils.copyDirectory(Path.make(sourcePIPsPath, publicPartialPath).toFile(), Path.make(workAreaRootPartialPath, publicPartialPath).toFile());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -124,6 +124,6 @@ public class FetchPIPsActionTest{
 	
 	@Test
 	public void testRenamePIPs(){
-		assertTrue(new RelativePath(workAreaRootPartialPath, institutionPartialPath, objectId).toFile().exists());
+		assertTrue(Path.make(workAreaRootPartialPath, institutionPartialPath, objectId).toFile().exists());
 	}
 }
