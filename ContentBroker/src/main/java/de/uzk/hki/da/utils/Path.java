@@ -149,4 +149,14 @@ public class Path{
 		
 		return equals;
 	}
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
+	@Override 
+	public int hashCode(){
+		
+		return this.toString().hashCode();
+	}
+	
 }

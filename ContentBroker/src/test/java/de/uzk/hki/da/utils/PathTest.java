@@ -177,6 +177,15 @@ public class PathTest {
 		assertFalse(new Path("src").equals(new RelativePath("src")));
 	}
 	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
+	@Test
+	public void testHashCodes(){
+	
+		assertEquals("/src/test".hashCode(),new Path("/src/test").hashCode());
+		assertEquals("src/test".hashCode(),new RelativePath("src","test").hashCode());
+	}
 	
 	
 }
