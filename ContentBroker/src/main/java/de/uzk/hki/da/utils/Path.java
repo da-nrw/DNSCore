@@ -25,18 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Polina Gubaidullina
- * @author Daniel M. de Oliveira
- */ 
-
-/**
- * 
  * Structure of path: /.../.../...
  * file separator at the beginning of a path
  * no file separator at the end of a path
  *
+ * @author Polina Gubaidullina
+ * @author Daniel M. de Oliveira
  */
-
 public class Path{
 	
 	/** 

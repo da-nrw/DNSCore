@@ -33,9 +33,7 @@ import de.uzk.hki.da.utils.Path;
  * 
  * @author Polina Gubaidullina
  * @author Daniel M. de Oliveira
- *
  */
-
 public class PathTest {
 	
 	static String resultTestString;
