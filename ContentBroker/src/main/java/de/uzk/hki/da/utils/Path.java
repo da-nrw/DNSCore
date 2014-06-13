@@ -61,7 +61,7 @@ public class Path{
 		}
 	}
 	
-	public static List<String> stringToPathArray(String currentString) {
+	private List<String> stringToPathArray(String currentString) {
 		List<String> currentPathArray = new ArrayList<String>();
 		String s = currentString;
 		String [] newString = s.split(File.separator);
