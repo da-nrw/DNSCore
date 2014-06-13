@@ -223,7 +223,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			File xmlFile = xmlFiles.next();
 			FileUtils.copyFileToDirectory(xmlFile, destDir);
 			
-			String destFilePath = new Path(destDir.getAbsolutePath(), xmlFile.getName()).toString();						
+			String destFilePath = Path.make(destDir.getAbsolutePath(), xmlFile.getName()).toString();						
 			String xmlFileRelativePath = destFilePath.replace(object.getDataPath() + repName + "/", "");
 			DAFile daFile = new DAFile(object.getLatestPackage(), repName, xmlFileRelativePath);
 										

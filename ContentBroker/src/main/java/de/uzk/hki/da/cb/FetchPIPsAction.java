@@ -3,8 +3,6 @@ package de.uzk.hki.da.cb;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javassist.expr.NewArray;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
@@ -12,7 +10,6 @@ import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.RelativePath;
 
 /**
  * Fetches the PIPs from the nodes on which they've originally been created.
@@ -33,8 +30,8 @@ public class FetchPIPsAction extends AbstractAction {
 	boolean implementation() throws FileNotFoundException, IOException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("irodsSystemConnector not set");
 		
-		publicContractorFolder = new Path("pips", "public", object.getContractor().getShort_name());
-		institutionContractorFolder = new Path("pips", "institution", object.getContractor().getShort_name());
+		publicContractorFolder = Path.make("pips", "public", object.getContractor().getShort_name());
+		institutionContractorFolder = Path.make("pips", "institution", object.getContractor().getShort_name());
 		String sourceDIPName = object.getIdentifier()+"_"+object.getLatestPackage().getId();
 		
 		replicateFromSourceResourceToWorkingResource(sourceDIPName);
@@ -46,8 +43,8 @@ public class FetchPIPsAction extends AbstractAction {
 		renamePIPs(sourceDIPName, object.getIdentifier());
 		
 		// cleanup
-		distributedConversionAdapter.remove(new Path(publicContractorFolder,sourceDIPName).toString());
-		distributedConversionAdapter.remove(new Path(institutionContractorFolder,sourceDIPName).toString());
+		distributedConversionAdapter.remove(Path.make(publicContractorFolder,sourceDIPName).toString());
+		distributedConversionAdapter.remove(Path.make(institutionContractorFolder,sourceDIPName).toString());
 
 		return true;
 	}
@@ -59,11 +56,11 @@ public class FetchPIPsAction extends AbstractAction {
 	 * @throws IOException
 	 */
 	private void deletePreviousPIPs(String targetDIPName) throws IOException{	
-		if (new Path(localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile().exists());
-			FileUtils.deleteDirectory(new Path(
+		if (Path.make(localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile().exists());
+			FileUtils.deleteDirectory(Path.make(
 					localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile());
-		if (new Path(localNode.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName).toFile().exists())
-			FileUtils.deleteDirectory(new Path(
+		if (Path.make(localNode.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName).toFile().exists())
+			FileUtils.deleteDirectory(Path.make(
 					localNode.getWorkAreaRootPath(),institutionContractorFolder, targetDIPName).toFile());
 	}
 
@@ -98,10 +95,10 @@ public class FetchPIPsAction extends AbstractAction {
 			String dipSourcePartial) {
 //		TODO check if source exists
 			distributedConversionAdapter.replicateToLocalNode(
-					new Path(publicContractorFolder,dipSourcePartial).toString());
+					Path.make(publicContractorFolder,dipSourcePartial).toString());
 //		TODO check if source exists
 			 distributedConversionAdapter.replicateToLocalNode(
-				new Path(institutionContractorFolder,dipSourcePartial).toString());
+				Path.make(institutionContractorFolder,dipSourcePartial).toString());
 	}
 	
 	

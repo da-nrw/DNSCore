@@ -93,7 +93,7 @@ public class ScanActionTests {
 
 		
 		Node localNode = new Node("vm2","01-vm2");
-		localNode.setWorkAreaRootPath(new Path(workAreaRootPath));
+		localNode.setWorkAreaRootPath(Path.make(workAreaRootPath));
 		action.setLocalNode(localNode);
 	
 		

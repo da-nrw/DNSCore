@@ -43,7 +43,7 @@ public class Path{
 	
 	List<String> finalPathArray = new ArrayList<String>();
 	
-	public Path(Object ... list) {
+	protected Path(Object ... list) {
 		for (Object o: list) {
 			List<String> partialPathArray;
 			if (o != null) {

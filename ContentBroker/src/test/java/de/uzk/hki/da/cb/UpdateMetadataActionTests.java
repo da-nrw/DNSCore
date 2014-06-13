@@ -80,7 +80,7 @@ public class UpdateMetadataActionTests {
 		action = new UpdateMetadataAction();		
 		node = new Node();
 		node.setWorkingResource("vm3");
-		node.setWorkAreaRootPath(new Path(workAreaPath));
+		node.setWorkAreaRootPath(Path.make(workAreaPath));
 		action.setNode(node);	
 		
 		FileUtils.copyDirectoryToDirectory(new File("src/main/xslt"), new File("conf/"));

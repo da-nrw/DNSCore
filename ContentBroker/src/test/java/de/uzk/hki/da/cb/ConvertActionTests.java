@@ -205,7 +205,7 @@ public class ConvertActionTests {
 
 		action.setJob(job);
 		Node localNode = new Node("vm2","01-vm2");
-		localNode.setWorkAreaRootPath(new Path(workAreaRootPath));
+		localNode.setWorkAreaRootPath(Path.make(workAreaRootPath));
 		action.setNode(localNode);
 		
 		action.implementation();

@@ -58,7 +58,7 @@ public class GetNewestFilesFromAllRepresentationsTests {
 	 */
 	@Test
 	public void testIanusPkg(){
-		Node n = new Node(); n.setWorkAreaRootPath(new Path(workAreaRootPath));
+		Node n = new Node(); n.setWorkAreaRootPath(Path.make(workAreaRootPath));
 		Package pkg = new Package(); pkg.setId(2); 
 		pkg.setName("2");
 		o.setIdentifier("2");

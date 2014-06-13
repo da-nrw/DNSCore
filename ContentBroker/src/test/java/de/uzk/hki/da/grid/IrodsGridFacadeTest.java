@@ -99,8 +99,8 @@ public class IrodsGridFacadeTest {
 		
 		Node node = new Node();
 		node.setWorkingResource("cacheresc");
-		node.setGridCacheAreaRootPath(new Path(irodsDir));
-		node.setWorkAreaRootPath(new Path(forkDir));
+		node.setGridCacheAreaRootPath(Path.make(irodsDir));
+		node.setWorkAreaRootPath(Path.make(forkDir));
 		node.setReplDestinations("lvr");
 		node.setAdminEmail("test@test.de");
 		ig.setLocalNode(node);

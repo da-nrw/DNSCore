@@ -49,7 +49,7 @@ public class ObjectTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		Node n = new Node();
-		n.setWorkAreaRootPath(new Path(workAreaRootPath));
+		n.setWorkAreaRootPath(Path.make(workAreaRootPath));
 		
 		o = TESTHelper.setUpObject("123", workAreaRootPath);
 

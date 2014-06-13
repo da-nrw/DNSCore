@@ -55,7 +55,7 @@ public class ArchiveReplicationAction extends AbstractAction {
 		if (gridRoot==null) throw new ConfigurationException("gridRoot not set");
 		
 		String filename = object.getIdentifier() + ".pack_" + object.getLatestPackage().getName() + ".tar";
-		Path target = new Path (object.getContractor().getShort_name(), object.getIdentifier(), filename);
+		Path target = Path.make(object.getContractor().getShort_name(), object.getIdentifier(), filename);
 		StoragePolicy sp = new StoragePolicy(localNode);
 		sp.setDestinations(new ArrayList<String>(getDestinations()));
 		
@@ -63,7 +63,7 @@ public class ArchiveReplicationAction extends AbstractAction {
 		if (!sp.isPolicyAchievable()) throw new RuntimeException ("POLICY is not achievable! More forbidden nodens then required minimal copies!");
 		
 		try {
-			Path newFilePath = new Path (localNode.getWorkAreaRootPath(), "work", object.getContractor().getShort_name(), filename);
+			Path newFilePath = Path.make(localNode.getWorkAreaRootPath(), "work", object.getContractor().getShort_name(), filename);
 			if (gridRoot.put(new File(newFilePath.toString()), 
 					target.toString(), sp )) {
 					new File(newFilePath.toString()).delete();

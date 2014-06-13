@@ -83,7 +83,7 @@ public class AuditAction extends AbstractAction {
 		for (Package pack : object.getPackages()) {
 			String pname = pack.getName();
 			if (pname.equals("")) pname = "1";
-			String logicalPath = (new Path (object.getContractor().getShort_name(), object.getIdentifier(), object.getIdentifier())).toString() + ".pack_"+pname+".tar";
+			String logicalPath = (Path.make(object.getContractor().getShort_name(), object.getIdentifier(), object.getIdentifier())).toString() + ".pack_"+pname+".tar";
 			if (!gridRoot.isValid(logicalPath)) {
 				msg+="SEVERE FAULT " + logicalPath + " is not valid, Checksum could not be verified on all systems! Please refer to the Storage Layer logs for further information! \n";
 				 completelyValid = false;
