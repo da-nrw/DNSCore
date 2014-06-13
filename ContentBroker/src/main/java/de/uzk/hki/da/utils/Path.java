@@ -34,15 +34,13 @@ import java.util.List;
  */
 public class Path{
 	
+	List<String> finalPathArray = new ArrayList<String>();
+
 	/** 
-	 * 
 	 * @author Polina Gubaidullina
 	 * @param list
 	 * @throws IllegalArgumentException if an element of list is not of type string or path
 	 */
-	
-	List<String> finalPathArray = new ArrayList<String>();
-	
 	protected Path(Object ... list) {
 		for (Object o: list) {
 			List<String> partialPathArray;
@@ -77,7 +75,6 @@ public class Path{
 	 * Creates a Path instance that is either of type Path or of its subtype RelativePath,
 	 * dependent if its first element is of type RelativePath. If you assemble Path instances
 	 * from existing instances, using this method should always be prefered over using the constructor.
-	 * TODO make constructor private
 	 * 
 	 * @author Daniel M. de Oliveira
 	 * @param list
@@ -123,20 +120,9 @@ public class Path{
 		if (!(o instanceof Path)) return false;
 		Path otherPath = (Path) o;
 		
-		if (this instanceof RelativePath){
-			if (!(o instanceof RelativePath)){
-				return false;
-			}
-		}
-		else{
-			if (o instanceof RelativePath){
-				return false;
-			}
-		}
-		
-		if (finalPathArray.size()!=otherPath.finalPathArray.size())
-			return false;
-		
+		if (finalPathArray.size()!=otherPath.finalPathArray.size()) return false;
+		if (!areOfSameType(this, otherPath)) return false;
+			
 		boolean equals = true;
 		for (int i=0; i<finalPathArray.size(); i++ ){
 			if (!finalPathArray.toArray()[i].equals(otherPath.finalPathArray.toArray()[i])) equals= false; 
@@ -144,6 +130,24 @@ public class Path{
 		
 		return equals;
 	}
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 * @param t
+	 * @param o
+	 * @return
+	 */
+	private boolean areOfSameType(Path t,Path o){
+		
+		if (t instanceof RelativePath){
+			if (!(o instanceof RelativePath)) return false;
+		}else{
+			if (o instanceof RelativePath) return false;
+		}
+		return true;
+	}
+	
+	
 	
 	/**
 	 * @author Daniel M. de Oliveira
