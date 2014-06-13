@@ -47,10 +47,11 @@ import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 public class Base {
 
-	protected String testDataRootPath="src/test/resources/at/";
+	protected Path testDataRootPath = new RelativePath("src/test/resources/at/");
 	protected Node localNode;
 	protected GridFacade gridFacade;
 	protected RepositoryFacade repositoryFacade;
@@ -359,7 +360,7 @@ public class Base {
 		
 		if (!containerSuffix.isEmpty()) containerSuffix="."+containerSuffix;
 		
-		FileUtils.copyFileToDirectory(Path.make( testDataRootPath, originalName+containerSuffix ).toFile(), 
+		FileUtils.copyFileToDirectory( Path.make( testDataRootPath, originalName+containerSuffix ).toFile(), 
 				Path.make(localNode.getIngestAreaRootPath(),"TEST").toFile());
 		waitForJobsToFinish(originalName,500);
 		

@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 /**
  * Relates to AK-T/02 Ingest - Alternative Szenarien.
@@ -55,7 +56,7 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 		
 		if (!containerSuffix.isEmpty()) containerSuffix="."+containerSuffix;
 		
-		FileUtils.copyFileToDirectory(Path.make("src/test/resources/at/",originalName+containerSuffix).toFile(), 
+		FileUtils.copyFileToDirectory(new RelativePath("src/test/resources/at/",originalName+containerSuffix).toFile(), 
 				Path.make(localNode.getIngestAreaRootPath(),"/TEST").toFile());
 		waitForJobToBeInStatus(originalName,errorState,2000);
 		return fetchObjectFromDB(originalName);
