@@ -153,6 +153,70 @@ Independently if the repository functionality is used or not, these settings are
 
 ## beans.xml
 
+Depending on the mode of installation (f,p,n) the beans.xml can look a little different respectively. However here are described the building blocks which comprise the beans.xml:
+
+### The import secion
+
+    <!-- beans.xml.full -->
+
+	<import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>
+	<import resource="classpath*:META-INF/beans-infrastructure.identifier.xml"/>
+	<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>
+	<import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>
+
+	<import resource="classpath*:META-INF/beans-workflow.presentation.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.ingest.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.retrieval.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.pipgen.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.other.xml"/>
+
+### The General params section 
+
+	<bean class="de.uzk.hki.da.core.IngestGate" id="ingestGate">
+		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
+		<property name="fileSizeFactor" value="3" />
+		<property name="freeDiskSpacePercent" value="5" />
+	</bean>
+
+	<task:executor id="taskExecutor" pool-size="10"
+		queue-capacity="20" rejection-policy="CALLER_RUNS" />
+	<task:scheduled-tasks scheduler="taskScheduler">
+		<task:scheduled ref="contentBroker" method="scheduleTask" fixed-delay="200" />
+		<task:scheduled ref="ingestAreaScannerWorker" method="scheduleTask" fixed-delay="1000" />
+		<task:scheduled ref="userAreaScannerWorker" method="scheduleTask" fixed-delay="1000" />
+		<task:scheduled ref="integrityScannerWorker" method="scheduleTask" fixed-delay="20000" />
+	</task:scheduled-tasks>
+	<task:scheduler id="taskScheduler" pool-size="20" />
+
+
+### The action engine related settings
+
+	<util:map id="actionThreads">
+		<entry key="DeleteObjectAction" value="3" />
+		<entry key="RestartIngestWorkflowAction" value="3" />
+		<entry key="IngestRegisterURNAction" value="3" />
+		...
+		<entry key="PIPGenObjectToWorkAreaAction" value="3" />
+		<entry key="PIPGenCleanWorkAreaAction" value="3" />
+	</util:map>
+
+TODO description
+
+	<util:list id="actionOrdering">
+   		<value>DeleteObjectAction</value>
+		<value>RestartIngestWorkflowAction</value>
+		<value>RetrievalAction</value>
+		...
+		<value>PIPGenScanForPresentationAction</value>
+		<value>PIPGenObjectToWorkAreaAction</value>
+        <value>PostRetrievalAction</value>
+	</util:list>
+	
+TODO description	
+
+
+
+
 ## logback.xml
 
 ## Logfiles
