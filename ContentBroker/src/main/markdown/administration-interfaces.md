@@ -55,25 +55,25 @@ nodes are maintained by different administrators (perhaps if the nodes are distr
 
 There are a couple of settings that relate strongly to the node concept, but are not related to business concepts in any way. Instead they relate to technical concepts only. Hence they merit their own category which is called "cb" which stands for ContentBroker settings.
 
-    cb.serverSocketNumber=4455
+    cb.serverSocketNumber=
 
-asdf
+In order to let peripheral components of DNSCore (primary use of course is DA-Web) talk to and have introspection into the application state of the ContentBroker, a server process is beeing established by the ContentBroker at startup. Any free port will do. As under normal circumstances DA-Web runs on the same node (i.r. localnode will suffice) as the ContentBroker, firewall issues could possibly be neglected.
 
-    cb.implementation.grid=irodsGridFacade
+    cb.implementation.grid=
 
 The full and node mode installations of the ContentBroker require a grid component onto which they put and from which they retrieve the long term archive contents, which correspond to the AIP in OAIS terms, and always relate to containered files (.tar) on the technical level. At the moment there exist three implementations of grid subsystems, of which two relate to iRODS configurations in different modes.
 
-    cb.implementation=irodsGridFacade
+    cb.implementation.grid=irodsGridFacade
     
 If set to irodsGridFacade, the iRODS installation is assumed to be configured properly to run a one zone based grid.
 
 block described below must be inserted to a working config.properties. 
     
-    cb.implementation=irodsFederatedGridFacade
+    cb.implementation.grid=irodsFederatedGridFacade
 
 As opposed to the irodsGridFacade, the irodsFederatedGridFacade assumes to have an iRODS system running which is configured in a federated (TODO link to documents) manner. Note: At the moment this feature is considered experimental until it is fully tested in a load test environment.
 
-    cb.implementation=fakeGridFacade
+    cb.implementation.grid=fakeGridFacade
     
 The fakeGridFacade is a simple implementation which resigns any third party subsystems but only the local file system.
 It has been written primarily for purposes of testing or easy experimentation for evaluation or showcasing purposes.
