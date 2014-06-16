@@ -52,7 +52,7 @@ public class RegisterURNAction extends AbstractAction {
 	boolean implementation() {
 		if (nameSpace==null) throw new ConfigException("URN NameSpace parameter not set!");
 		
-		if (object.hasDeltas())
+		if (object.isDelta())
 			logger.info("Object URN: " + object.getUrn());
 		else {
 			String urn;

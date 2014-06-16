@@ -135,7 +135,7 @@ public class UnpackAction extends AbstractAction {
 		logger.debug("REPNAME: " + repName);
 		job.setRep_name(repName);
 		
-		if (object.hasDeltas()) {
+		if (object.isDelta()) {
 			
 			RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot());
 
@@ -153,9 +153,9 @@ public class UnpackAction extends AbstractAction {
 			try {
 				retrievePackagesHelper.loadPackages(object, false);
 				logger.info("Packages of object \""+object.getIdentifier()+
-						"\" are now available on cache resource at: " + object.getPath()+"existingAIPs");
-				FileUtils.copyFile(new File(object.getDataPath() + object.getNameOfNewestBRep() + "/premis.xml"),
-						 new File(object.getDataPath() + "premis_old.xml"));
+						"\" are now available on cache resource at: " + Path.make(object.getPath(),"existingAIPs"));
+				FileUtils.copyFile(Path.makeFile(object.getDataPath(),object.getNameOfNewestBRep(),"premis.xml"),
+						Path.makeFile(object.getDataPath(),"premis_old.xml"));
 			} catch (IOException e) {
 				throw new RuntimeException("error while trying to get existing packages from lza area",e);
 			}

@@ -24,7 +24,7 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	@Override
 	boolean implementation() {
 		
-		if (!object.hasDeltas())
+		if (!object.isDelta())
 			object.setUrn(null);
 		
 		deleteAIPTarFile();

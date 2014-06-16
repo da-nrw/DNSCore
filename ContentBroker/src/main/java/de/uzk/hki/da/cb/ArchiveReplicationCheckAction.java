@@ -188,7 +188,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		String email = obj.getContractor().getEmail_contact();
 		String subject;
 		String msg;
-		if (obj.hasDeltas())
+		if (obj.isDelta())
 		{
 			subject = "[DA-NRW] Einlieferungsbeleg für Ihr Delta zum Objekt " + objectIdentifier;
 			msg = "Ihrem archivierten Objekt mit dem Identifier " + objectIdentifier + " und der URN " + obj.getUrn() +

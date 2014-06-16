@@ -576,7 +576,7 @@ public class Object {
 	 * @author Thomas Kleinke
 	 * @return true if the object has deltas, otherwise false
 	 */
-	public boolean hasDeltas() {
+	public boolean isDelta() {
 		return (packages.size() > 1);
 	}
 	

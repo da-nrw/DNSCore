@@ -88,7 +88,7 @@ public class CreatePremisAction extends AbstractAction {
 		
 		newPREMISObject.getPackages().add(object.getLatestPackage());
 		
-		if (object.hasDeltas()){
+		if (object.isDelta()){
 		
 			Object mainPREMISObject = parseOldPremisFile(
 					Path.makeFile(object.getDataPath(),"premis_old.xml"));
@@ -261,8 +261,6 @@ public class CreatePremisAction extends AbstractAction {
 	void rollback() throws Exception {
 		
 		Path.make(object.getDataPath(),object.getNameOfNewestBRep(),"premis.xml").toFile().delete();
-		
-		System.out.println(":"+jhoveScanService.getJhoveFolder() + "/temp/" + job.getId() + "/premis_output/");
 		
 		File tempFolder = new File(jhoveScanService.getJhoveFolder() + "/temp/" + job.getId() + "/premis_output/");
 		if (tempFolder.exists())
