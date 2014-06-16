@@ -1,3 +1,7 @@
+# Administration - Interfaces 
+
+TODO purpose of this document.
+
 ## config.properties
 
 The file config.properties is a necessary part of every DNSCore installation. It has always to be stored
