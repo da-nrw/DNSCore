@@ -42,6 +42,10 @@ df
 
 ### system
 
+System properties apply to all nodes comprising the so called "system" (TODO link to glossary or data model). As
+a consequence, for a properly working system all the nodes system properties have to be exactly the same. If the
+nodes are maintained by different administrators (perhaps if the nodes are distributed geographically or organisationally) the administrators must agree upon the common setings.
+
     system.min_repls=1
     system.sidecar_extensions=xmp;txt;xml
     system.presServer=localnode
