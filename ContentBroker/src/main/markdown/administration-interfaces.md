@@ -90,7 +90,11 @@ asdf
 
 asdf
 
-    cb.bin.python=/ci/python/python
+    cb.bin.python=
+
+Here you have to insert the command to run an instance of python (at the moment >= 2.7 is required). If you are sure the required command is globally visible in the environment (the shell or process) in which the ContentBroker.jar is intended to run, you simple can insert something as simple as "python" as a value. If this is not the case, for example if the packaging system of your distro has only python in a version < 2.7 and you have a self compiled version at another path
+on your file system, you should insert the full path to the python binary as a value.
+
 
 ### irods
 
