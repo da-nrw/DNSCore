@@ -1,6 +1,8 @@
-# Administration - Interfaces 
+# Administration - Interface Reference 
 
-TODO purpose of this document.
+While we have an administration and user frontend called DA-Web which lets users (end users and administrators) interact in a dynamic manner, there are several configuration options of DNSCore which are considered static properties of the system. They are configured in the old fashioned way of good old configuration files which can be edited with your good old favorite linux editor. Easy! 
+
+These artefacts comprise the interface to the ContentBroker with which administrators must learn to deal with in order to configure and run a proper node of a DNSCore based system. The document is structed that each configuration file is described extensively in its own passage.
 
 ## config.properties
 
@@ -47,6 +49,9 @@ a consequence, for a properly working system all the nodes system properties hav
 nodes are maintained by different administrators (perhaps if the nodes are distributed geographically or organisationally) the administrators must agree upon the common setings.
 
     system.min_repls=1
+    
+The minimum number of replications the ContentBroker asks the grid component for to fulfill to consider a copy (an AIP) long term archived. Normally it is 3.
+    
     system.sidecar_extensions=xmp;txt;xml
     system.presServer=localnode
     system.urnNameSpace=urn:nbn:de:danrw
@@ -114,7 +119,8 @@ asdf
 
     irods.password=WpXlLLg3a4/S/iYrs6UhtQ== 
 
-asdf
+The password has to be encrypted with the password encryptor/decryptor which is part of the DNSCore project itself (if you haven't already, you can see the sub project [here](https://github.com/da-nrw/DNSCore/tree/master/PasswordEncryptor).
+
 
 ### fedora
 
@@ -124,6 +130,9 @@ asdf
 adf
 
     fedora.password=BYi/MFjKDFd5Dpe52PSUoA==
+    
+The passwort has to be encrypted/decrypted with the PasswordEncryptor of DNSCore.
+    
 
 asdf
 
