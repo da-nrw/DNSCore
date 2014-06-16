@@ -13,12 +13,14 @@ according block:
 The localNode block contains all the settings related to the configuration of the machine itself as well as information
 regarding the administrator role.
 
-    localNode.userAreaRootPath=/ci/storage/UserArea
-    localNode.ingestAreaRootPath=/ci/storage/IngestArea
-    localNode.workAreaRootPath=/ci/storage/WorkArea
-    localNode.gridCacheAreaRootPath=/ci/storage/GridCacheArea
+    localNode.userAreaRootPath=
+    localNode.ingestAreaRootPath=
+    localNode.workAreaRootPath=
+    localNode.gridCacheAreaRootPath=
     
-asd
+These four properties should be set to the absolute physical paths of the mount points in the file system which hold
+the aip data during the ContentBroker workflow processing stages. If you don't know anything about the concept of areas
+in context of DNSCore, have a look at [this](processing_stages.md) document. It doesn't matter if the paths carry a trailing slash or not. But make sure the paths are absolute and not relative.
     
     localNode.workingResource=ciWorkingResource
     localNode.replDestinations=ciArchiveResourceGroup
@@ -44,15 +46,26 @@ df
 ### cb
 
     cb.serverSocketNumber=4455
+
+asdf
+
     cb.implementation.grid=irodsGridFacade
     cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+    
+asdf
+    
     cb.implementation.repository=fedoraRepositoryFacade
+
+asdf
+
     cb.bin.python=/ci/python/python
 
 ### irods
 
+These settings are optional and must be set only if cb.implementation.grid or cb.implementaion.districutedConversion
+are set to use the corresponding irods specific implementations. Nodes not using irods dont need these parameters.
+
     irods.user=rods
-    irods.password=WpXlLLg3a4/S/iYrs6UhtQ== 
     irods.server=cihost
     irods.zone=c-i
     irods.default_resc=ciWorkingResource
@@ -61,11 +74,22 @@ df
     irods.keyStorePath=
     irods.trustStorePath=
 
+asdf
+
+    irods.password=WpXlLLg3a4/S/iYrs6UhtQ== 
+
+asdf
+
 ### fedora
 
     fedora.url=http://localhost:8080/fedora
     fedora.user=fedoraAdmin
+
+adf
+
     fedora.password=BYi/MFjKDFd5Dpe52PSUoA==
+
+asdf
 
 ### elasticsearch 
 
@@ -75,11 +99,12 @@ df
 
 ### uris
 
+Independently if the repository functionality is used or not, these settings are needed:
+
     uris.file="http://data.danrw.de/file
     uris.cho=http://data.danrw.de/cho
     uris.aggr=http://data.danrw.de/aggregation
     uris.local=info:
-
 
 ## beans.xml
 
