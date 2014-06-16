@@ -17,10 +17,21 @@ regarding the administrator role.
     localNode.ingestAreaRootPath=/ci/storage/IngestArea
     localNode.workAreaRootPath=/ci/storage/WorkArea
     localNode.gridCacheAreaRootPath=/ci/storage/GridCacheArea
+    
+asd
+    
     localNode.workingResource=ciWorkingResource
     localNode.replDestinations=ciArchiveResourceGroup
+   
+asdf 
+    
     localNode.name=localnode
-    localNode.id= (This setting must contain the integer value primary key of the nodes correspoding entry in the nodes table of the object db 
+
+df
+
+    localNode.id= 
+    
+(This setting must contain the integer value primary key of the nodes correspoding entry in the nodes table of the object db 
     localNode.admin_email=da-nrw-notifier@uni-koeln.de
 
 ### system
