@@ -29,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -37,7 +38,7 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class GetNewestFilesFromAllRepresentationsTests {
 
-	String workAreaRootPath = "src/test/resources/model/Object/GetNewestFiles/";
+	Path workAreaRootPath = new RelativePath("src/test/resources/model/Object/GetNewestFiles/");
 	
 	/** The o. */
 	Object o;
@@ -58,7 +59,7 @@ public class GetNewestFilesFromAllRepresentationsTests {
 	 */
 	@Test
 	public void testIanusPkg(){
-		Node n = new Node(); n.setWorkAreaRootPath(new Path(workAreaRootPath));
+		Node n = new Node(); n.setWorkAreaRootPath(Path.make(workAreaRootPath));
 		Package pkg = new Package(); pkg.setId(2); 
 		pkg.setName("2");
 		o.setIdentifier("2");

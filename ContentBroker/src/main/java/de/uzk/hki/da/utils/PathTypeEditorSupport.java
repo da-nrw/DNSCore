@@ -27,7 +27,7 @@ public class PathTypeEditorSupport extends PropertyEditorSupport {
 
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
-		setValue(new Path(text));
+		setValue(Path.make(text));
 	}
 
 	@Override

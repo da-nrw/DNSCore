@@ -72,8 +72,8 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 		
 		List<Event> results = new ArrayList<Event>();
 		
-		new File(object.getDataPath()+"dip/public/"+ci.getTarget_folder()).mkdirs();
-		new File(object.getDataPath()+"dip/institution/"+ci.getTarget_folder()).mkdirs();
+		new File(object.getDataPath()+"/dip/public/"+ci.getTarget_folder()).mkdirs();
+		new File(object.getDataPath()+"/dip/institution/"+ci.getTarget_folder()).mkdirs();
 		
 		String cmdPUBLIC[] = new String[]{
 				"HandBrakeCLI",

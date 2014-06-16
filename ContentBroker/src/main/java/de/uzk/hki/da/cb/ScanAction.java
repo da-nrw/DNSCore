@@ -97,7 +97,7 @@ public class ScanAction extends AbstractAction{
 		
 		List<DAFile> filesArchival = formatScanService.identify(object.getLatestPackage().getFiles());
 		
-		String repPath = object.getDataPath() + job.getRep_name();
+		String repPath = object.getDataPath() +"/"+ job.getRep_name();
 		Object premisObject = parsePremisToMetadata(repPath+"a");
 		
 		if (premisObject.grantsRight("MIGRATION"))

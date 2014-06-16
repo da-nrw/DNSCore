@@ -42,7 +42,6 @@
 		<entry key="RestartIngestWorkflowAction" value="3" />
 		<entry key="IngestUnpackAction" value="3" />
 		<entry key="IngestConvertAction" value="3" />
-		<entry key="FriendshipConversionAction" value="3" />
 		<entry key="IngestCreatePremisAction" value="3" />
 		<entry key="IngestCheckFormatsAction" value="3" />
 		<entry key="IngestScanAction" value="3" />
@@ -81,7 +80,6 @@
 		<value>IngestShortenFileNamesAction</value>
 		<value>IngestConvertForPresentationAction</value>
 		<value>IngestScanForPresentationAction</value>
-		<value>FriendshipConversionAction</value>
 		<value>IngestCreatePremisAction</value>
 		<value>IngestCheckFormatsAction</value>
 		<value>IngestUpdateMetadataAction</value>

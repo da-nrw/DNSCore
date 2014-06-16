@@ -161,7 +161,7 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 	 */
 	public String generateTargetFilePath(ConversionInstruction ci) {
 		String input  = ci.getSource_file().toRegularFile().getAbsolutePath();
-		return object.getDataPath()+object.getNameOfNewestRep()+"/"+Utilities.slashize(ci.getTarget_folder())
+		return object.getDataPath()+"/"+object.getNameOfNewestRep()+"/"+Utilities.slashize(ci.getTarget_folder())
 				+ FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix();
 	}
 

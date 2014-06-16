@@ -34,6 +34,7 @@ import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.service.XPathUtils;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -74,7 +75,7 @@ public class PublishVideoConversionStrategyTests {
 			throw new RuntimeException("Error while parsing premis.xml");
 		}
 		
-		Object o = TESTHelper.setUpObject("1",basePath);
+		Object o = TESTHelper.setUpObject("1",new RelativePath(basePath));
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
 		right.setVideoRestriction(new VideoRestriction());

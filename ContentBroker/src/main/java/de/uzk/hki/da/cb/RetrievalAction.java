@@ -69,9 +69,9 @@ public class RetrievalAction extends AbstractAction {
 //		Path().toString().substring(1) removes the file separator at the beginning of path; 
 //		"+ File.separator" adds the missing file separator at the end of path;
 		String tempFolder = localNode.getWorkAreaRootPath()+
-				new Path(object.getContractor().getShort_name(), object.getIdentifier(), object.getIdentifier()).toString() + "/";
+				Path.make(object.getContractor().getShort_name(), object.getIdentifier(), object.getIdentifier()).toString() + "/";
 		new File(tempFolder).mkdir();
-		File premisFile = new File(object.getDataPath() + object.getNameOfNewestBRep() + "/premis.xml");
+		File premisFile = new File(object.getDataPath() +"/" + object.getNameOfNewestBRep() + "/premis.xml");
 		
 		if (premisFile.exists())
 		{

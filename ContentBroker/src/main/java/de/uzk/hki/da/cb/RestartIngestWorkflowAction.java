@@ -8,6 +8,7 @@ import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.convert.JhoveScanService;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.Utilities;
 
 /**
@@ -23,7 +24,7 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	@Override
 	boolean implementation() {
 		
-		if (!object.hasDeltas())
+		if (!object.isDelta())
 			object.setUrn(null);
 		
 		deleteAIPTarFile();
@@ -36,9 +37,9 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 		pkg.getEvents().clear();
 		pkg.getFiles().clear();
 		
-		String[] repNames = new File(object.getDataPath()).list();
+		String[] repNames = object.getDataPath().toFile().list();
 		for (String repName : repNames) {
-			if (new File(Utilities.slashize(object.getDataPath()) + repName).isDirectory())
+			if (Path.make(object.getDataPath(),repName).toFile().isDirectory())
 				pkg.scanRepRecursively(repName);
 		}
 		
@@ -72,7 +73,7 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	 */
 	private void cleanDataFolder() {
 		
-		File dataFolder = new File(object.getDataPath());
+		File dataFolder = object.getDataPath().toFile();
 		File newestBRepFolder = new File(dataFolder, object.getNameOfNewestARep().replace("+a", "+b"));
 		File dipFolder = new File(dataFolder, "dip");
 		

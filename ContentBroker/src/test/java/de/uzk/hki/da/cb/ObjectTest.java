@@ -29,6 +29,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
 
 /**
@@ -36,7 +37,7 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class ObjectTest {
 	
-	private static final String workAreaRootPath = "src/test/resources/model/ObjectTests/";
+	private static final Path workAreaRootPath = new RelativePath("src/test/resources/model/ObjectTests/");
 	private static DAFile f1;
 	private static DAFile f2;
 	private static Object o;
@@ -49,7 +50,7 @@ public class ObjectTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		Node n = new Node();
-		n.setWorkAreaRootPath(new Path(workAreaRootPath));
+		n.setWorkAreaRootPath(Path.make(workAreaRootPath));
 		
 		o = TESTHelper.setUpObject("123", workAreaRootPath);
 

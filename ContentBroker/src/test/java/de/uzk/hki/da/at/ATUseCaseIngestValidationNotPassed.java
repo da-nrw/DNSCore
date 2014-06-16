@@ -19,7 +19,6 @@
 
 package de.uzk.hki.da.at;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
@@ -28,6 +27,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 /**
  * Relates to AK-T/02 Ingest - Alternative Szenarien.
@@ -36,10 +37,6 @@ import de.uzk.hki.da.model.Object;
  */
 public class ATUseCaseIngestValidationNotPassed extends Base{
 
-	private String originalName = "ATUseCaseIngest1";
-	private String containerName = originalName+".tgz";
-	private Object object;
-	
 	@Before
 	public void setUp() throws IOException{
 		setUpBase();
@@ -51,76 +48,45 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 		cleanStorage();
 	}
 	
+	private Object ingestAndWaitForErrorState(String originalName,String errorState) throws IOException, InterruptedException{
+		return ingestAndWaitForErrorState(originalName, errorState, "tgz");
+	}
+		
+	private Object ingestAndWaitForErrorState(String originalName,String errorState,String containerSuffix) throws IOException, InterruptedException{
+		
+		if (!containerSuffix.isEmpty()) containerSuffix="."+containerSuffix;
+		
+		FileUtils.copyFileToDirectory(new RelativePath("src/test/resources/at/",originalName+containerSuffix).toFile(), 
+				Path.make(localNode.getIngestAreaRootPath(),"/TEST").toFile());
+		waitForJobToBeInStatus(originalName,errorState,2000);
+		return fetchObjectFromDB(originalName);
+	}
 	
 	@Test
 	public void testFirst_tagmanifest1ZeichenChanged() throws Exception{
 		
-		originalName = "ATErsteZeile_tagmanifest1Zeichengeaendert";
-		containerName = originalName+".tgz";
-				
-		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
-				new File(localNode.getIngestAreaRootPath()+"/TEST"));
-		waitForJobToBeInStatus(originalName,"114",2000);
-		object = fetchObjectFromDB(originalName);
-		System.out.println("objectIdentifier: "+object.getIdentifier());
-		
+		ingestAndWaitForErrorState("ATErsteZeile_tagmanifest1Zeichengeaendert", "114");
 		System.out.println("yeah!");
 	}
-	
 	
 	@Test
 	public void testManifestMd5_2filesChanged() throws Exception{
 		
-		originalName = "ATManifestMd5_2filesgeaendert";
-		containerName = originalName+".tgz";
-				
-		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
-				new File(localNode.getIngestAreaRootPath()+"/TEST"));
-		waitForJobToBeInStatus(originalName,"114",2000);
-		object = fetchObjectFromDB(originalName);
-		System.out.println("objectIdentifier: "+object.getIdentifier());
-		
+		ingestAndWaitForErrorState("ATManifestMd5_2filesgeaendert", "114");
 		System.out.println("yeah!");
 	}
-	
-	
-	
 	
 	@Test
 	public void testOneFileDeleted() throws Exception{
 		
-		originalName = "ATEineDatei_geloescht";
-		containerName = originalName+".tgz";
-				
-		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
-				new File(localNode.getIngestAreaRootPath()+"/TEST"));
-		waitForJobToBeInStatus(originalName,"114",2000);
-		object = fetchObjectFromDB(originalName);
-		System.out.println("objectIdentifier: "+object.getIdentifier());
-		
+		ingestAndWaitForErrorState("ATEineDatei_geloescht", "114");
 		System.out.println("yeah!");
 	}
-	
-	
-	
 	
 	@Test
 	public void testInvalidPremis() throws Exception{
 		
-		originalName = "ATInvalidPremis";
-		containerName = originalName+".zip";
-				
-		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+containerName), 
-				new File(localNode.getIngestAreaRootPath()+"/TEST"));
-		waitForJobToBeInStatus(originalName,"114",2000);
-		object = fetchObjectFromDB(originalName);
-		System.out.println("objectIdentifier: "+object.getIdentifier());
-		
+		ingestAndWaitForErrorState("ATInvalidPremis", "114","zip");
 		System.out.println("yeah!");
 	}
-	
-	
-	
-	
-	
 }

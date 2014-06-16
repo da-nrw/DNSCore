@@ -47,7 +47,7 @@ public class ArchiveReplicationActionTests {
 	@BeforeClass
 	public static void prepareNode() {
 		workAreaRootPath = "src/test/resources/cb/ArchiveReplicationTests/fork/";
-		node.setWorkAreaRootPath(new Path(workAreaRootPath));
+		node.setWorkAreaRootPath(Path.make(workAreaRootPath));
 	}
 	
 	@Before

@@ -29,11 +29,11 @@ import org.junit.Test;
 import de.uzk.hki.da.utils.Path;
 
 /**
+ * Tests the Path and RelativePath classes.
  * 
  * @author Polina Gubaidullina
- *
+ * @author Daniel M. de Oliveira
  */
-
 public class PathTest {
 	
 	static String resultTestString;
@@ -86,7 +86,7 @@ public class PathTest {
 	public void testMergePaths (){
 		Path testPath = new Path ("fir" + "st", "path");
 		String testString = "///////string_part1///string_part2///";
-		Path resultPath = new Path(testPath, testString);
+		Path resultPath = Path.make(testPath, testString);
 		String resultString = resultPath.toString();
 		assertTrue(!resultString.endsWith(File.separator));
 		assertTrue(resultString.startsWith(File.separator));
@@ -98,7 +98,7 @@ public class PathTest {
 		Path testPath = new Path ("first", "path");
 		String testString = "///////string_part1///string_part2///";
 		try {
-			new Path(testPath, testString, 7);
+			Path.make(testPath, testString, 7);
 			fail();
 		} catch (Exception e){
 		}
@@ -109,7 +109,7 @@ public class PathTest {
 	 */
 	@Test
 	public void testEndingSlashIsOK(){
-		Path testPath = new Path("/firstOne/secondOne/");
+		Path testPath = Path.make("/firstOne/secondOne/");
 		assertEquals("/firstOne/secondOne",testPath.toString());
 	}
 	
@@ -119,7 +119,7 @@ public class PathTest {
 	@Test 
 	public void testMakeWithRelativePathAndTwoArguments(){
 		
-		assertEquals("src/test",Path.make(new RelativePath("src"),new Path("test")).toString());
+		assertEquals("src/test",Path.make(new RelativePath("src"),Path.make("test")).toString());
 	}
 	
 	/**
@@ -128,7 +128,62 @@ public class PathTest {
 	@Test
 	public void testMakeWithAbsolutePathAndTwoArguments(){
 		
-		assertEquals("/src/test",Path.make(new Path("src"),new Path("test")).toString());
+		assertEquals("/src/test",Path.make(Path.make("src"),Path.make("test")).toString());
 	}
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
+	@Test
+	public void testEqualityOfAbsolutePaths(){
+		
+		assertEquals(Path.make("src","test"),Path.make("src","test"));
+	}
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
+	@Test
+	public void testNonEqualityOfAbsolutePaths(){
+		
+		assertFalse(Path.make("src","test").equals(Path.make("src","main")));
+	}
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
+	@Test 
+	public void testPathsHaveNotSameLength(){
+		
+		assertFalse(Path.make("src").equals(Path.make("src","main")));
+		assertFalse(Path.make("src","main").equals(Path.make("src")));
+	}
+
+	@Test
+	public void testEqualityOfRelativePaths(){
+
+		assertEquals(new RelativePath("src","test"),new RelativePath("src","test"));
+	}
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
+	@Test
+	public void testRelativeAndAbsolutePathCannotBeEqual(){
+		
+		assertFalse(new RelativePath("src").equals(Path.make("src")));
+		assertFalse(Path.make("src").equals(new RelativePath("src")));
+	}
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 */
+	@Test
+	public void testHashCodes(){
+	
+		assertEquals("/src/test".hashCode(),Path.make("/src/test").hashCode());
+		assertEquals("src/test".hashCode(),new RelativePath("src","test").hashCode());
+	}
+	
 	
 }

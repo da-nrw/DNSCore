@@ -86,7 +86,7 @@ public class PostRetrievalActionTest {
 	public void setUp() throws Exception {
 		 irods = mock (IrodsSystemConnector.class);
 		 node = new Node();
-			node.setUserAreaRootPath(new Path("/tmp/webdav"));
+			node.setUserAreaRootPath(Path.make("/tmp/webdav"));
 			
 	}
 

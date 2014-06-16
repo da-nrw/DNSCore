@@ -37,10 +37,10 @@ public class TESTHelper {
 	 * @param workAreaRootPath the base path
 	 * @return the object
 	 */
-	public static Object setUpObject(String identifier,String workAreaRootPath){
+	public static Object setUpObject(String identifier,Path workAreaRootPath){
 		
 		Node node = new Node();
-		node.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
+		node.setWorkAreaRootPath(workAreaRootPath);
 		
 		Contractor contractor = new Contractor();
 		contractor.setShort_name("TEST");

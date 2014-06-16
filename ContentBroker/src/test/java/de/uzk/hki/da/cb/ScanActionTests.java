@@ -34,6 +34,7 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ch.qos.logback.core.joran.action.Action;
 import de.uzk.hki.da.convert.FormatScanService;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
@@ -47,6 +48,7 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -56,10 +58,11 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class ScanActionTests {
 
-	private static final String workAreaRootPath = "src/test/resources/cb/ScanActionTests/";
+	private static final Path workAreaRootPath = new RelativePath("src/test/resources/cb/ScanActionTests/");
 	
 	/** The Constant action. */
 	private static final ScanAction action = new ScanAction();
+	
 	
 	/** The Constant job. */
 	private static final Job job = new Job();
@@ -91,7 +94,7 @@ public class ScanActionTests {
 
 		
 		Node localNode = new Node("vm2","01-vm2");
-		localNode.setWorkAreaRootPath(new Path(workAreaRootPath));
+		localNode.setWorkAreaRootPath(Path.make(workAreaRootPath));
 		action.setLocalNode(localNode);
 	
 		

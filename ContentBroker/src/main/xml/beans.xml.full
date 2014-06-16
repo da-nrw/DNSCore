@@ -50,7 +50,6 @@
 		<entry key="IngestPrepareSendToPresenterAction" value="3" />
 		<entry key="IngestUnpackAction" value="3" />
 		<entry key="IngestConvertAction" value="3" />
-		<entry key="FriendshipConversionAction" value="3" />
 		<entry key="IngestScanAction" value="3" />
 		<entry key="IngestCreatePremisAction" value="3" />
 		<entry key="IngestCheckFormatsAction" value="3" />
@@ -84,7 +83,6 @@
 		<value>IngestTarAction</value>
 		<value>IngestBuildAIPAction</value>
 		<value>IngestPrepareSendToPresenterAction</value>
-		<value>FriendshipConversionAction</value>
 		<value>IngestPresUpdateMetadataAction</value>
 		<value>IngestShortenFileNamesAction</value>
 		<value>IngestUpdateMetadataAction</value>

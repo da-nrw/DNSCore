@@ -48,7 +48,7 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 		try {
 			
 			irodsSystemConnector.registerFilesInCollection(
-					new Path(zonePath,relativePath).toString(),
+					Path.make(zonePath,relativePath).toString(),
 					new File(physicalPath),
 					workingResource
 					);
@@ -69,7 +69,7 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 		try {
 			
 			irodsSystemConnector.replicateCollectionToResource(
-					new Path(zonePath,relativePath).toString(),
+					Path.make(zonePath,relativePath).toString(),
 					workingResource
 					);
 			
@@ -92,7 +92,7 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 		}
 		
 		try	{
-			irodsSystemConnector.removeCollectionAndEatException(new Path(zonePath,relativePath).toString());
+			irodsSystemConnector.removeCollectionAndEatException(Path.make(zonePath,relativePath).toString());
 		} 
 		finally {
 			irodsSystemConnector.logoff();

@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -62,7 +63,7 @@ public class PublishCLIConversionStrategy extends CLIConversionStrategy {
 			String audience_lc = audience.toLowerCase();
 			String repName = "dip/"+audience_lc;
 		
-			new File(object.getDataPath() + repName + "/" + ci.getTarget_folder()).mkdirs();
+			Path.make(object.getDataPath(),repName,ci.getTarget_folder()).toFile().mkdirs();
 			
 			String[] commandAsArray = assemble(ci, repName);
 			if (!cliConnector.execute(commandAsArray)) throw new RuntimeException("convert did not succeed");

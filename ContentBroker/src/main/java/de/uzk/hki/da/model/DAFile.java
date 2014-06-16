@@ -32,6 +32,8 @@ import javax.persistence.Transient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.utils.Path;
+
 
 /**
  * contains the information about one file inside an aip.
@@ -147,7 +149,7 @@ public class DAFile{
 		String repName = "";
 		if ((getRep_name() != null)&&(getRep_name() != ""))
 			repName = getRep_name() + "/";
-		return new File(pkg.getTransientBackRefToObject().getDataPath() + repName + relative_path);
+		return Path.make(pkg.getTransientBackRefToObject().getDataPath(),repName,relative_path).toFile();
 	}
 		
 	/* (non-Javadoc)

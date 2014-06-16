@@ -40,6 +40,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
@@ -87,7 +88,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 		ArrayList<String> commandAsList  = null;
 		for (String audience: audiences ) {
 			
-			new File(object.getDataPath() + "dip/" + audience.toLowerCase() + "/" + ci.getTarget_folder()).mkdirs();
+			Path.make(object.getDataPath(),"dip",audience.toLowerCase(),ci.getTarget_folder()).toFile().mkdirs();
 
 			commandAsList = new ArrayList<String>();
 			commandAsList.add("convert");

@@ -154,10 +154,10 @@ public class ITBase {
 		session.close();
 		
 		if (node==null) { fail("node is null"); }
-		node.setWorkAreaRootPath(new Path(workAreaRootPath));
-		node.setUserAreaRootPath(new Path("/data/danrw/www/default/webdav/"));
-		node.setIngestAreaRootPath(new Path ("/data/danrw/ingest/"));
-		node.setGridCacheAreaRootPath(new Path("/data/danrw/storage/fs/"));
+		node.setWorkAreaRootPath(Path.make(workAreaRootPath));
+		node.setUserAreaRootPath(Path.make("/data/danrw/www/default/webdav/"));
+		node.setIngestAreaRootPath(Path.make("/data/danrw/ingest/"));
+		node.setGridCacheAreaRootPath(Path.make("/data/danrw/storage/fs/"));
 		node.setWorkingResource("ciWorkingResource");
 		node.setAdminEmail("da-nrw-notifier@uni-koeln.de");
 	}

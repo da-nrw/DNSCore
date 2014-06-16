@@ -33,6 +33,7 @@ import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
 
@@ -72,7 +73,7 @@ public class CLIConversionStrategyTests {
 		ConversionRoutine conversionRoutineCopy= new ConversionRoutine("COPY",new HashSet<Node>(),"",
 				"cp input output","*");
 		
-		Object o = TESTHelper.setUpObject("1233",workAreaRootPath);
+		Object o = TESTHelper.setUpObject("1233",new RelativePath(workAreaRootPath));
 		
 		CLIConversionStrategy strat= new CLIConversionStrategy();
 		strat.setCLIConnector(new SimplifiedCommandLineConnector());
@@ -104,7 +105,7 @@ public class CLIConversionStrategyTests {
 		ConversionRoutine conversionRoutineResize=  new ConversionRoutine("RESIZE",new HashSet<Node>(),"",
 				"convert -resize {institution.width}x{institution.height} input output","png");
 		
-		Object o = TESTHelper.setUpObject("1244",workAreaRootPath);
+		Object o = TESTHelper.setUpObject("1244",new RelativePath(workAreaRootPath));
 		
 		CLIConversionStrategy strat= new CLIConversionStrategy();
 		strat.setCLIConnector(new SimplifiedCommandLineConnector());
@@ -143,7 +144,7 @@ public class CLIConversionStrategyTests {
 	@Test
 	public void testOutputParameterAfterEqualsSign() throws FileNotFoundException{
 		
-		Object o = TESTHelper.setUpObject("1255",workAreaRootPath);
+		Object o = TESTHelper.setUpObject("1255",new RelativePath(workAreaRootPath));
 		
 		CLIConversionStrategy strat= new CLIConversionStrategy();
 		strat.setObject(o);

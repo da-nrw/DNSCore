@@ -47,10 +47,11 @@ import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 public class Base {
 
-	protected String testDataRootPath="src/test/resources/at/";
+	protected Path testDataRootPath = new RelativePath("src/test/resources/at/");
 	protected Node localNode;
 	protected GridFacade gridFacade;
 	protected RepositoryFacade repositoryFacade;
@@ -325,13 +326,45 @@ public class Base {
 		session.close();
 	}
 	
+	/**
+	 * Puts the file with named originalName into the contractor TEST's
+	 * subfolder of the ingest area of the running ContentBroker. Waits until 
+	 * the file has been ingested.
+	 * 
+	 * For the source file will be searched for in testDataRootPath.
+	 * 
+	 * @author Daniel M. de Oliveira
+	 * @param originalName just the basename of the file. the extension default to tgz. if you want to explicitely change that use 
+	 * ingest(String,String).
+	 * @return the database entry for the object of the ingested package.
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	protected Object ingest(String originalName) throws IOException,
 			InterruptedException {
-				FileUtils.copyFileToDirectory(new File(testDataRootPath+originalName+".tgz"), 
-						new File(localNode.getIngestAreaRootPath()+"/TEST"));
-				waitForJobsToFinish(originalName,500);
-				
-				Object object = fetchObjectFromDB(originalName);
-				return object;
-			}
+		
+		return ingest(originalName,"tgz");
+	}
+			
+	/**
+	 * @see Base#ingest(String)
+	 * 
+	 * @author Daniel M. de Oliveira
+	 * @param originalName
+	 * @param containerSuffix
+	 * @return
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	protected Object ingest(String originalName,String containerSuffix) throws IOException, InterruptedException{
+		
+		if (!containerSuffix.isEmpty()) containerSuffix="."+containerSuffix;
+		
+		FileUtils.copyFileToDirectory( Path.make( testDataRootPath, originalName+containerSuffix ).toFile(), 
+				Path.make(localNode.getIngestAreaRootPath(),"TEST").toFile());
+		waitForJobsToFinish(originalName,500);
+		
+		Object object = fetchObjectFromDB(originalName);
+		return object;
+	}
 }

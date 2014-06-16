@@ -17,6 +17,7 @@ import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
 
@@ -36,7 +37,7 @@ public class PublishImageMultipageTIFFTests {
 	@Test
 	public void testMultipage() throws FileNotFoundException {
 		PublishImageConversionStrategy cs = new PublishImageConversionStrategy();
-		Object o = TESTHelper.setUpObject("123",workAreaRootPathPath);
+		Object o = TESTHelper.setUpObject("123",new RelativePath(workAreaRootPathPath));
 		
 		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );		
 		when(cli.execute((String[]) anyObject())).thenReturn(true);

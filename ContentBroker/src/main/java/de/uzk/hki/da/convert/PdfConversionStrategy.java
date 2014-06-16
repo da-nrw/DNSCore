@@ -33,6 +33,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -71,8 +72,8 @@ public class PdfConversionStrategy implements ConversionStrategy {
 			throws FileNotFoundException {
 		if (object.getLatestPackage() == null)
 			throw new IllegalStateException("Package not set");
-		new File(object.getDataPath() + object.getNameOfNewestRep() + "/"
-				+ ci.getTarget_folder()).mkdirs();
+		Path.make(object.getDataPath(),object.getNameOfNewestRep(),
+				ci.getTarget_folder()).toFile().mkdirs();
 		List<Event> results = new ArrayList<Event>();
 		File result = new File(generateTargetFilePath(ci));
 		String commandAsArray[] = new String[] { "gs", "-q", "-dPDFA",
@@ -117,7 +118,7 @@ public class PdfConversionStrategy implements ConversionStrategy {
 	 */
 	public String generateTargetFilePath(ConversionInstruction ci) {
 		String input  = ci.getSource_file().toRegularFile().getAbsolutePath();
-		return object.getDataPath()+object.getNameOfNewestRep()+"/"+Utilities.slashize(ci.getTarget_folder())
+		return object.getDataPath()+"/"+object.getNameOfNewestRep()+"/"+Utilities.slashize(ci.getTarget_folder())
 				+ FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix();
 	}
 	

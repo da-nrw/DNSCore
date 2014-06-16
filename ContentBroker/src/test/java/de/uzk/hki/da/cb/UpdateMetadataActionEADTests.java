@@ -42,6 +42,8 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.UpdateMetadataService;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
 
 /**
@@ -52,15 +54,15 @@ public class UpdateMetadataActionEADTests {
 
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
-	private static final String workAreaRootPathPath = "src/test/resources/cb/UpdateMetadataActionEADTests/";
+	private static final Path workAreaRootPathPath = new RelativePath("src/test/resources/cb/UpdateMetadataActionEADTests/");
 	private static final UpdateMetadataAction action = new UpdateMetadataAction();
 	
 	@Before
 	public void setUp() throws IOException{
 		Object obj = TESTHelper.setUpObject("42",workAreaRootPathPath);
 
-		FileUtils.copyFileToDirectory(new File(workAreaRootPathPath+"work/src/mets_2_99.xml"), new File(workAreaRootPathPath+"work/TEST/42/data/a/"));
-		FileUtils.copyFileToDirectory(new File(workAreaRootPathPath+"work/src/vda3.XML"), new File(workAreaRootPathPath+"work/TEST/42/data/a/"));
+		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/mets_2_99.xml").toFile(), Path.make(workAreaRootPathPath,"work/TEST/42/data/a/").toFile());
+		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/vda3.XML").toFile(), Path.make(workAreaRootPathPath,"work/TEST/42/data/a/").toFile());
 		DAFile f1 = new DAFile(obj.getLatestPackage(),"a","mets_2_99.xml");
 		obj.getLatestPackage().getFiles().add(f1);
 		DAFile f3 = new DAFile(obj.getLatestPackage(),"a","vda3.XML");
@@ -114,7 +116,7 @@ public class UpdateMetadataActionEADTests {
 		action.implementation();
 		
 		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(new FileReader(new File(workAreaRootPathPath + "work/TEST/42/data/b/mets_2_99.xml")));
+		Document doc = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/42/data/b/mets_2_99.xml").toFile()));
 
 		String url = doc.getRootElement()
 				.getChild("fileSec", METS_NS)

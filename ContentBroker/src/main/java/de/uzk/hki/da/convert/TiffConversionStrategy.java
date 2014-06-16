@@ -35,6 +35,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
@@ -79,7 +80,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 		if (getEncoding(input).equals("None")) return resultEvents;
 		
 		// create subfolder if necessary
-		new File(object.getDataPath()+object.getNameOfNewestRep()+"/"+ci.getTarget_folder()).mkdirs();
+		Path.make(object.getDataPath(),object.getNameOfNewestRep(),ci.getTarget_folder()).toFile().mkdirs();
 		
 		String[] commandAsArray = new String [] {"convert","+compress",input,generateTargetFilePath(ci)};
 		logger.info("Executing conversion command: {}", commandAsArray);
@@ -175,7 +176,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 	 */
 	public String generateTargetFilePath(ConversionInstruction ci) {
 		String input  = ci.getSource_file().toRegularFile().getAbsolutePath();
-		return object.getDataPath()+object.getNameOfNewestRep()+"/"+Utilities.slashize(ci.getTarget_folder())
+		return object.getDataPath()+"/"+object.getNameOfNewestRep()+"/"+Utilities.slashize(ci.getTarget_folder())
 				+ FilenameUtils.getName(input);
 	}
 	

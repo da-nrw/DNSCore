@@ -41,6 +41,8 @@ import org.hibernate.annotations.CascadeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.utils.Path;
+
 
 /**
  * The Class Package.
@@ -178,7 +180,7 @@ public class Package {
 	public List<DAFile> scanRepRecursively(
 			String repName) {
 		List<DAFile> result = new ArrayList<DAFile>();
-		String repFolderPath = getTransientBackRefToObject().getDataPath() + repName;
+		String repFolderPath = Path.make( getTransientBackRefToObject().getDataPath(), repName).toString();
 		int offset = repFolderPath.length();
 		
 		logger.debug("scanning "+repFolderPath);

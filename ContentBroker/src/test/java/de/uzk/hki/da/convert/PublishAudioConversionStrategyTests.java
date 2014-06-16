@@ -33,6 +33,8 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
 
@@ -46,7 +48,7 @@ import de.uzk.hki.da.utils.TESTHelper;
 public class PublishAudioConversionStrategyTests {
 
 	/** The base path. */
-	private String workAreaRootPathPath = "src/test/resources/convert/PublishAudioConversionStrategyTests/";
+	private Path workAreaRootPathPath = new RelativePath("src/test/resources/convert/PublishAudioConversionStrategyTests/");
 	
 	
 	
@@ -61,16 +63,16 @@ public class PublishAudioConversionStrategyTests {
 		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
 		String cmdPUBLIC[] = new String[]{
 				"sox",
-				new File(workAreaRootPathPath+"work/TEST/123/data/a/audiofile.wav").getAbsolutePath(),
-				workAreaRootPathPath+"work/TEST/123/data/dip/public/target/audiofile.mp3",
+				new File(workAreaRootPathPath+"/work/TEST/123/data/a/audiofile.wav").getAbsolutePath(),
+				workAreaRootPathPath+"/work/TEST/123/data/dip/public/target/audiofile.mp3",
 				"trim","0","10"
 		};
 		when(cli.execute(cmdPUBLIC)).thenReturn(true);
 		
 		String cmdINSTITUTION[] = new String[]{
 				"sox",
-				new File(workAreaRootPathPath+"work/TEST/123/data/a/audiofile.wav").getAbsolutePath(),
-				workAreaRootPathPath+"work/TEST/123/data/dip/institution/target/audiofile.mp3"
+				new File(workAreaRootPathPath+"/work/TEST/123/data/a/audiofile.wav").getAbsolutePath(),
+				workAreaRootPathPath+"/work/TEST/123/data/dip/institution/target/audiofile.mp3"
 		};
 		when(cli.execute(cmdINSTITUTION)).thenReturn(true);
 		

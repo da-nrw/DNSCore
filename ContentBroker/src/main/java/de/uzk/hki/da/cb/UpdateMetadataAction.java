@@ -147,7 +147,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			}
 			
 			
-			File destFile = new File(object.getDataPath() + repName + "/" // XXX same problem with subdirs as above? Daniel M. de Oliveira
+			File destFile = new File(object.getDataPath() + "/" + repName + "/" // XXX same problem with subdirs as above? Daniel M. de Oliveira
 					+ metadataFileName);
 
 			FileUtils.copyFile(srcMetadataFile.toRegularFile(), destFile);
@@ -189,11 +189,11 @@ public class UpdateMetadataAction extends AbstractAction {
 			try {
 				for (String repName : getRepNames()) {
 					if (!repName.startsWith("dip")) continue;
-					FileInputStream inputStream = new FileInputStream(object.getDataPath() + repName + "/" + metadataFile);
+					FileInputStream inputStream = new FileInputStream(Path.make(object.getDataPath(),repName,metadataFile).toString());
 					BOMInputStream bomInputStream = new BOMInputStream(inputStream);
 					XsltGenerator xsltGenerator = new XsltGenerator(xsltFile, bomInputStream);
 					String result = xsltGenerator.generate();
-					File file = new File(object.getDataPath() + repName + "/DC.xml");
+					File file = new File(object.getDataPath() + "/"+repName + "/DC.xml");
 					if (!file.exists()) file.createNewFile();
 					FileOutputStream outputStream = new FileOutputStream(file);
 					outputStream.write(result.getBytes("utf-8"));
@@ -213,7 +213,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	 */
 	private void copyXMLsToNewRepresentation(File srcFile, String repName)
 			throws IOException {
-		File destDir = new File(object.getDataPath() + repName);
+		File destDir = new File(object.getDataPath() +"/"+ repName);
 		Iterator<File> xmlFiles = FileUtils.iterateFiles(
 				srcFile.getParentFile(), new WildcardFileFilter("*.xml"), null);
 		int count=0;
@@ -223,8 +223,8 @@ public class UpdateMetadataAction extends AbstractAction {
 			File xmlFile = xmlFiles.next();
 			FileUtils.copyFileToDirectory(xmlFile, destDir);
 			
-			String destFilePath = new Path(destDir.getAbsolutePath(), xmlFile.getName()).toString();						
-			String xmlFileRelativePath = destFilePath.replace(object.getDataPath() + repName + "/", "");
+			String destFilePath = Path.make(destDir.getAbsolutePath(), xmlFile.getName()).toString();						
+			String xmlFileRelativePath = destFilePath.replace(object.getDataPath() +"/"+ repName + "/", "");
 			DAFile daFile = new DAFile(object.getLatestPackage(), repName, xmlFileRelativePath);
 										
 			Event e = new Event();							
@@ -262,7 +262,7 @@ public class UpdateMetadataAction extends AbstractAction {
 		Map<DAFile,DAFile> copyCommands = new HashMap<DAFile,DAFile>();
 		for (String repName : getRepNames()) {
 			logger.debug("looking for xmp files in rep {}", repName);
-			String repPath = object.getDataPath() + repName;
+			String repPath = Path.make(object.getDataPath(),repName).toString();
 			File repDir = new File(repPath);
 			if (!repDir.exists()) {
 				logger.info("representation directory {} does not exist. Skipping ...", repPath);
@@ -373,7 +373,7 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		if (packageType != null) {
 			for (String repName : getRepNames()) {
-				File file = new File(object.getDataPath() + repName + "/DC.xml");
+				File file = Path.make(object.getDataPath(),repName,"DC.xml").toFile();
 				if (file.exists()) {
 					try {
 						FileInputStream inputStream = new FileInputStream(file);
@@ -391,7 +391,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					logger.warn("Unable to locate DC file, creating one ...");
 					Document doc = new Document();
 					doc.setRootElement(new Element("dc", "oai_dc", "http://www.openarchives.org/OAI/2.0/oai_dc/"));
-					String dcPath = object.getDataPath() + repName + "/DC.xml";
+					String dcPath = object.getDataPath() +"/"+ repName + "/DC.xml";
 					writeDCForDIP(doc, packageType, dcPath);
 				}
 			}

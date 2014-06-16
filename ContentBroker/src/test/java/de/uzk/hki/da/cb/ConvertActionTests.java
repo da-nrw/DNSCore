@@ -65,7 +65,7 @@ public class ConvertActionTests {
 	private static final ConvertAction action= new ConvertAction();
 	
 	/** The Constant vaultPath. */
-	private static final String workAreaRootPath="src/test/resources/cb/ConvertActionTests";
+	private static final Path workAreaRootPath = new RelativePath("src/test/resources/cb/ConvertActionTests");
 	
 	/** The Constant dataPath. */
 	private static final String dataPath= workAreaRootPath + "/work/TEST/123/";
@@ -205,7 +205,7 @@ public class ConvertActionTests {
 
 		action.setJob(job);
 		Node localNode = new Node("vm2","01-vm2");
-		localNode.setWorkAreaRootPath(new Path(workAreaRootPath));
+		localNode.setWorkAreaRootPath(Path.make(workAreaRootPath));
 		action.setNode(localNode);
 		
 		action.implementation();
