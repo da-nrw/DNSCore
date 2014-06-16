@@ -11,8 +11,8 @@ if [ $? != 0 ]; then
 	echo "ERROR in building DAWEB"
 	exit 1;
 fi
-cp target/$FILENAME ../installation/$FILENAME
-if [ -f ../installation/$FILENAME ]; then
+cp target/$FILENAME ../ContentBroker/target/installation/$FILENAME
+if [ -f ../ContentBroker/target/installation/$FILENAME ]; then
 	echo "successfully built DAWEB"	
 	exit 0;
 	else exit 1;
