@@ -116,7 +116,7 @@ public class UnpackAction extends AbstractAction {
 			convertMETStoPREMIS(object.getPath().toString());
 		else
 			try {
-				if (!PremisXmlValidator.validatePremisFile(new File(object.getDataPath() + "premis.xml")))
+				if (!PremisXmlValidator.validatePremisFile(Path.make(object.getDataPath(),"premis.xml").toFile()))
 					throw new UserException(UserExceptionId.INVALID_SIP_PREMIS, "PREMIS file is not valid");
 			} catch (FileNotFoundException e1) {
 				throw new UserException(UserExceptionId.SIP_PREMIS_NOT_FOUND, "Couldn't find PREMIS file", e1);
@@ -148,7 +148,7 @@ public class UnpackAction extends AbstractAction {
 				throw new RuntimeException("Failed to determine object size for object " + object.getIdentifier(), e);
 			}
 			
-			new File(object.getDataPath()).mkdirs();
+			object.getDataPath().toFile().mkdirs();
 			logger.info("object already exists. Moving existing packages to work area.");
 			try {
 				retrievePackagesHelper.loadPackages(object, false);
@@ -430,7 +430,7 @@ public class UnpackAction extends AbstractAction {
 
 	@Override
 	void rollback() throws IOException {
-		FileUtils.deleteDirectory(new File(object.getPath().toString()));
+		FileUtils.deleteDirectory(Path.make(object.getPath()).toFile());
 		
 		new File(localNode.getWorkAreaRootPath() + object.getContractor().getShort_name() + "/" + 
 				object.getLatestPackage().getContainerName()).delete();

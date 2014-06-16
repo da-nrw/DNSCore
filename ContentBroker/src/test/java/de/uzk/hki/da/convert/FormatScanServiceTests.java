@@ -45,6 +45,7 @@ import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
 
 /**
@@ -93,7 +94,7 @@ public class FormatScanServiceTests {
 		
 		formatScanService.formatIdentifiersHealthChecked = true;
 		
-		object = TESTHelper.setUpObject("123",workAreaRootPath);
+		object = TESTHelper.setUpObject("123",new RelativePath(workAreaRootPath));
 	}
 
 

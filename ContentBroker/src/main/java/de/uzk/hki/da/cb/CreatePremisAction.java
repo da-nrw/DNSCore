@@ -42,6 +42,7 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PublicationRight;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * 
@@ -70,7 +71,7 @@ public class CreatePremisAction extends AbstractAction {
 		newPREMISObject.setContractor(object.getContractor());
 		
 		Object sipPREMISObject = parseSipPremisFile(
-				new File(object.getDataPath() + object.getNameOfNewestARep() + "/premis.xml"));
+				Path.makeFile(object.getDataPath(),object.getNameOfNewestARep(),"premis.xml"));
 		
 		if (sipPREMISObject.getPackages().size() > 0) {
 			object.getLatestPackage().getEvents().addAll(sipPREMISObject.getPackages().get(0).getEvents());
@@ -90,7 +91,7 @@ public class CreatePremisAction extends AbstractAction {
 		if (object.hasDeltas()){
 		
 			Object mainPREMISObject = parseOldPremisFile(
-					new File(object.getDataPath() + "premis_old.xml"));
+					Path.makeFile(object.getDataPath(),"premis_old.xml"));
 
 			if (mainPREMISObject==null) throw new RuntimeException("mainPREMISObject is null");
 			if (mainPREMISObject.getPackages()==null) throw new RuntimeException("mainPREMISObject.getPackages is null");
@@ -115,8 +116,8 @@ public class CreatePremisAction extends AbstractAction {
 				
 		checkConvertEvents(newPREMISObject);
 	
-		File newPREMISXml = new File(object.getDataPath() + 
-				object.getNameOfNewestBRep() + "/premis.xml");
+		File newPREMISXml = Path.make(object.getDataPath(), 
+				object.getNameOfNewestBRep(),"premis.xml").toFile();
 		logger.trace("trying to write new Premis file at " + newPREMISXml.getAbsolutePath());
 		new PremisXmlWriter().serialize(newPREMISObject, newPREMISXml);
 		
@@ -259,7 +260,9 @@ public class CreatePremisAction extends AbstractAction {
 	@Override
 	void rollback() throws Exception {
 		
-		new File(object.getDataPath() + object.getNameOfNewestBRep() + "/premis.xml").delete();
+		Path.make(object.getDataPath(),object.getNameOfNewestBRep(),"premis.xml").toFile().delete();
+		
+		System.out.println(":"+jhoveScanService.getJhoveFolder() + "/temp/" + job.getId() + "/premis_output/");
 		
 		File tempFolder = new File(jhoveScanService.getJhoveFolder() + "/temp/" + job.getId() + "/premis_output/");
 		if (tempFolder.exists())

@@ -134,7 +134,7 @@ public class RetrievePackagesHelper {
 				object.getContractor().getShort_name() + "/" + object.getIdentifier()
 				+ "/" + object.getIdentifier() + ".pack_" + pkg.getName() + ".tar";
 		
-		if (!new File(object.getDataPath()).exists()) new File(object.getDataPath()).mkdirs();
+		if (!object.getDataPath().toFile().exists()) object.getDataPath().toFile().mkdirs();
 
 		File targetDir=new File(object.getPath() + "/loadedAIPs");
 		if (!targetDir.exists()) targetDir.mkdirs(); 
@@ -167,7 +167,7 @@ public class RetrievePackagesHelper {
 		
 		List<DAFile> results = new ArrayList<DAFile>();
 		
-		String loadedAIPsPath = object.getPath()+"loadedAIPs/";
+		String loadedAIPsPath = object.getPath()+"/loadedAIPs/";
 		
 		logger.debug("unpacking: " + container);			
 		results = unpackArchiveAndMoveContents(
@@ -176,7 +176,7 @@ public class RetrievePackagesHelper {
 		
 		removeBagitFilesAndPremis(loadedAIPsPath);	
 			
-		new File(object.getDataPath()).mkdir();
+		object.getDataPath().toFile().mkdir();
 		normalizeObject(object); // TODO really? for every package?
 		FileUtils.deleteDirectory(new File(loadedAIPsPath));
 		
@@ -248,7 +248,7 @@ public class RetrievePackagesHelper {
 	private void normalizeObject(Object object) throws IOException {
 	
 		logger.trace("normalizeObject: Moving unpacked representation folders from " + object.getPath() + "loadedAIPs to " + object.getPath());
-		String dataPath = object.getPath() + "loadedAIPs/data/";
+		String dataPath = object.getPath() + "/loadedAIPs/data/";
 		String dataPathContents[] = new File(dataPath).list();
 		
 		if (dataPathContents == null)
@@ -259,11 +259,11 @@ public class RetrievePackagesHelper {
 			if (new File(dataPath + dataPathContents[i]).isDirectory())
 				FileUtils.moveDirectoryToDirectory(
 						new File(dataPath + dataPathContents[i]), 
-						new File(object.getDataPath()), false);
+						object.getDataPath().toFile(), false);
 			else
 				FileUtils.moveFileToDirectory(
 						new File(dataPath + dataPathContents[i]), 
-						new File(object.getDataPath()), false );
+						object.getDataPath().toFile(), false );
 		}
 	}
 

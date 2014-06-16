@@ -65,7 +65,7 @@ public class ConvertActionTests {
 	private static final ConvertAction action= new ConvertAction();
 	
 	/** The Constant vaultPath. */
-	private static final String workAreaRootPath="src/test/resources/cb/ConvertActionTests";
+	private static final Path workAreaRootPath = new RelativePath("src/test/resources/cb/ConvertActionTests");
 	
 	/** The Constant dataPath. */
 	private static final String dataPath= workAreaRootPath + "/work/TEST/123/";

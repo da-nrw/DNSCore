@@ -78,18 +78,15 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 
 
 	/**
-	 * @return
-	 * @throws IOException
+	 * @author Daniel M. de Oliveira
 	 */
 	private Object readRightsFromPREMIS() throws IOException {
 		Object premisObject = null;
 		try {
-			PremisXmlReader reader = new PremisXmlReader();
 
-			File premisFile = new File(object.getDataPath() +
-					object.getNameOfNewestBRep() + "/premis.xml");
+			premisObject = new PremisXmlReader().deserialize(Path.make(object.getDataPath(),
+					object.getNameOfNewestBRep(),"/premis.xml").toFile());
 			
-			premisObject = reader.deserialize(premisFile);
 		} catch (ParseException pe){
 			throw new RuntimeException("error while parsing PREMIS-file",pe);
 		}
@@ -134,18 +131,18 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	 */
 	private void copyPIPSforReplication() throws IOException {
 
-		if (new File(object.getDataPath()+"dip/public").exists()){
+		if (Path.make(object.getDataPath(),"dip","public").toFile().exists()){
 			logger.info("Copying public datastreams to " + publicDir.getAbsolutePath());
 			if (publicDir.exists()) FileUtils.deleteDirectory(publicDir);
 			FileUtils.copyDirectory(
-					new File(object.getDataPath()+"dip/public"), 
+					Path.make(object.getDataPath(),"dip","public").toFile(), 
 					publicDir);
 		}
-		if (new File(object.getDataPath()+"dip/institution").exists()){
+		if (Path.make(object.getDataPath(),"dip","institution").toFile().exists()){
 			logger.info("Copying institution datastreams to " + instDir);
 			if (instDir.exists()) FileUtils.deleteDirectory(instDir);
 			FileUtils.copyDirectory(
-					new File(object.getDataPath()+"dip/institution"), 
+					Path.make(object.getDataPath(),"dip","institution").toFile(), 
 					instDir);
 		}
 	}

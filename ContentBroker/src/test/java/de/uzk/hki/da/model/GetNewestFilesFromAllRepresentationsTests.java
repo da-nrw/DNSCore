@@ -29,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -37,7 +38,7 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class GetNewestFilesFromAllRepresentationsTests {
 
-	String workAreaRootPath = "src/test/resources/model/Object/GetNewestFiles/";
+	Path workAreaRootPath = new RelativePath("src/test/resources/model/Object/GetNewestFiles/");
 	
 	/** The o. */
 	Object o;

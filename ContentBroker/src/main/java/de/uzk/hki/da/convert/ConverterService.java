@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 
 /**
@@ -67,16 +68,16 @@ public class ConverterService {
 		List<Event> results = new ArrayList<Event>();
 		
 		// to register the dip subfolder into irods, it must exist (even if it is empty).
-		new File(object.getDataPath()+"dip").mkdir();
+		Path.make(object.getDataPath(),"dip").toFile().mkdir();
 		String latestRep = object.getNameOfNewestRep();
 		// XXX little hack
 		String repName = latestRep.replace("a", "b");
-		new File(object.getDataPath()+repName).mkdir();
+		Path.make(object.getDataPath(),repName).toFile().mkdir();
 		logger.debug("repname:"+repName);
 		
 		
 		for (ConversionInstruction ci:conversionInstructions){
-			waitUntilThereIsSufficientSpaceOnCacheResource(object.getDataPath(),2097152,10000);
+			waitUntilThereIsSufficientSpaceOnCacheResource(object.getDataPath().toString(),2097152,10000);
 			
 			List<Event> partialResults = executeConversionInstruction(ci,object);
 			

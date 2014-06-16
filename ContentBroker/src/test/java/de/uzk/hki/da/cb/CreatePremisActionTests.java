@@ -74,11 +74,11 @@ public class CreatePremisActionTests {
 	CreatePremisAction action = new CreatePremisAction();
 	
 	/** The main folder. */
-	String workAreaRootPath = "src/test/resources/cb/CreatePremisActionTests/";
+	Path workAreaRootPath = new RelativePath("src/test/resources/cb/CreatePremisActionTests/");
 
-	String objCharTifAFilePath = workAreaRootPath + "jhove_output_2013_07_21+14_28+a_image_tif.xml";
-	String objCharTifBFilePath = workAreaRootPath + "jhove_output_2013_07_21+14_28+b_image_tif.xml";
-	String objCharPremisAFilePath = workAreaRootPath + "jhove_output_2013_07_21+14_28+a_premis_xml.xml";
+	String objCharTifAFilePath = workAreaRootPath + "/jhove_output_2013_07_21+14_28+a_image_tif.xml";
+	String objCharTifBFilePath = workAreaRootPath + "/jhove_output_2013_07_21+14_28+b_image_tif.xml";
+	String objCharPremisAFilePath = workAreaRootPath + "/jhove_output_2013_07_21+14_28+a_premis_xml.xml";
 	
 	/** The object. */
 	Object object;
@@ -102,7 +102,7 @@ public class CreatePremisActionTests {
 		FileUtils.copyFileToDirectory(new File("src/main/resources/xlink.xsd"), new File("conf/"));
 		
 		Node node = new Node();
-		node.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
+		node.setWorkAreaRootPath(workAreaRootPath);
 		
 		pkg = new Package();
 		pkg.setId(1234565);
@@ -134,7 +134,7 @@ public class CreatePremisActionTests {
 
 		JhoveScanService jhoveScanService = mock(JhoveScanService.class);
 		when(jhoveScanService.getJhoveFolder()).
-			thenReturn(workAreaRootPath + "JhoveFolder");				
+			thenReturn(workAreaRootPath + "/JhoveFolder");				
 		action.setJhoveScanService(jhoveScanService);		
 		
 		DAFile a = new DAFile(pkg2,"2013_07_31+11_54+a","140864.tif");
@@ -180,9 +180,9 @@ public class CreatePremisActionTests {
 	public void tearDown() {
 		new File("conf/premis.xsd").delete();
 		new File("conf/xlink.xsd").delete();
-		new File(workAreaRootPath + "work/TEST/identifier_deltas/data/premis_old.xml").delete();
-		new File(workAreaRootPath + "work/TEST/identifier/data/2013_07_31+11_54+b/premis.xml").delete();
-		new File(workAreaRootPath + "work/TEST/identifier_deltas/data/2013_07_31+11_54+b/premis.xml").delete();
+		Path.make(workAreaRootPath,"work/TEST/identifier_deltas/data/premis_old.xml").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/identifier/data/2013_07_31+11_54+b/premis.xml").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/identifier_deltas/data/2013_07_31+11_54+b/premis.xml").toFile().delete();
 	}
 	
 
@@ -214,8 +214,8 @@ public class CreatePremisActionTests {
 		
 		object.setIdentifier("identifier_deltas");
 		
-		FileUtils.copyFile(new File(workAreaRootPath + "premis_deltatest.xml"),
-						   new File(workAreaRootPath + "work/TEST/identifier_deltas/data/premis_old.xml"));
+		FileUtils.copyFile(Path.make(workAreaRootPath,"premis_deltatest.xml").toFile(),
+						   Path.make(workAreaRootPath,"work/TEST/identifier_deltas/data/premis_old.xml").toFile());
 		
 		action.implementation();
 		checkDeltaPremisFile();		
@@ -246,14 +246,14 @@ public class CreatePremisActionTests {
 		
 		object.setIdentifier("identifier_deltas");
 		
-		FileUtils.copyFile(new File(workAreaRootPath + "premis_deltatest.xml"),
-						   new File(workAreaRootPath + "work/TEST/identifier_deltas/data/premis_old.xml"));
+		FileUtils.copyFile(Path.makeFile(workAreaRootPath,"premis_deltatest.xml"),
+						   Path.makeFile(workAreaRootPath,"work/TEST/identifier_deltas/data/premis_old.xml"));
 		
 		action.implementation();
 		action.rollback();
 		
-		assertFalse(new File(object.getDataPath() + object.getNameOfNewestBRep() + "/premis.xml").exists());
-		assertFalse(new File(workAreaRootPath + "JhoveFolder/temp/" + job.getId() + "/premis_output/").exists());
+		assertFalse(Path.makeFile(object.getDataPath(),object.getNameOfNewestBRep(),"premis.xml").exists());
+		assertFalse(Path.makeFile(workAreaRootPath,"JhoveFolder","temp",new Integer(job.getId()).toString(),"premis_output").exists());
 		
 		assertEquals(1, object.getLatestPackage().getEvents().size());
 		
@@ -276,7 +276,7 @@ public class CreatePremisActionTests {
 		Element objectCharTifBRoot;
 		Element objectCharPremisARoot;
 		try {
-			doc = builder.build(workAreaRootPath + "work/TEST/identifier/data/2013_07_31+11_54+b/premis.xml");
+			doc = builder.build(Path.makeFile(workAreaRootPath,"work/TEST/identifier/data/2013_07_31+11_54+b/premis.xml"));
 			
 			objectCharTifARoot = builder.build(objCharTifAFilePath).getRootElement();
 			objectCharTifBRoot = builder.build(objCharTifBFilePath).getRootElement();
@@ -495,7 +495,7 @@ public class CreatePremisActionTests {
 		SAXBuilder builder = new SAXBuilder();
 		Document doc;
 		try {
-			doc = builder.build(workAreaRootPath + "work/TEST/identifier_deltas/data/2013_07_31+11_54+b/premis.xml");
+			doc = builder.build(workAreaRootPath + "/work/TEST/identifier_deltas/data/2013_07_31+11_54+b/premis.xml");
 			
 			objectCharTifARoot = builder.build(objCharTifAFilePath).getRootElement();
 			objectCharTifBRoot = builder.build(objCharTifBFilePath).getRootElement();

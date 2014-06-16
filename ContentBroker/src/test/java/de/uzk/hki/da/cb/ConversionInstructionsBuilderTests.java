@@ -37,6 +37,8 @@ import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -51,10 +53,10 @@ public class ConversionInstructionsBuilderTests {
 	private final ConversionInstructionBuilder ciB = new ConversionInstructionBuilder();
 	
 	/** The base path. */
-	String basePath="src/test/resources/cb/GenerateConversionInstructionsTests/";
+	Path basePath=new RelativePath("src/test/resources/cb/GenerateConversionInstructionsTests/");
 	
 	/** The data path. */
-	String dataPath="src/test/resources/cb/GenerateConversionInstructionsTests/RecursiveStructured_SIP/data/2011+11+01+a";
+	Path dataPath=Path.make(basePath,"/RecursiveStructured_SIP/data/2011+11+01+a");
 	
 	/** The pkg. */
 	private Package pkg;

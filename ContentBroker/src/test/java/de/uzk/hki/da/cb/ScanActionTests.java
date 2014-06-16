@@ -48,6 +48,7 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -57,7 +58,7 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class ScanActionTests {
 
-	private static final String workAreaRootPath = "src/test/resources/cb/ScanActionTests/";
+	private static final Path workAreaRootPath = new RelativePath("src/test/resources/cb/ScanActionTests/");
 	
 	/** The Constant action. */
 	private static final ScanAction action = new ScanAction();

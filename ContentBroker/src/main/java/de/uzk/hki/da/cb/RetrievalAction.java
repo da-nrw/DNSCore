@@ -71,7 +71,7 @@ public class RetrievalAction extends AbstractAction {
 		String tempFolder = localNode.getWorkAreaRootPath()+
 				Path.make(object.getContractor().getShort_name(), object.getIdentifier(), object.getIdentifier()).toString() + "/";
 		new File(tempFolder).mkdir();
-		File premisFile = new File(object.getDataPath() + object.getNameOfNewestBRep() + "/premis.xml");
+		File premisFile = new File(object.getDataPath() +"/" + object.getNameOfNewestBRep() + "/premis.xml");
 		
 		if (premisFile.exists())
 		{

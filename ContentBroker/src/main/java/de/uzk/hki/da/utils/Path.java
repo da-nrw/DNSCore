@@ -82,18 +82,28 @@ public class Path{
 	 */
 	public static Path make(Object ... list) {
 		
-		Path path = null;
-		if ((list[0]) instanceof RelativePath){
-			path = new RelativePath(list);
-		}else
-			path = new Path(list);
-		
-		return path;
+		if ((list[0]) instanceof RelativePath)
+			return new RelativePath(list);
+		else
+			return new Path(list);
 	}
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 * @param list
+	 * @return
+	 */
+	public static File makeFile(Object ... list) {
+		
+		return make(list).toFile();
+	}
+	
 
 	
 	
-	
+	/**
+	 * @return path /../../..
+	 */
 	@Override
 	public String toString() {
 		String directoryString = "";
@@ -123,19 +133,26 @@ public class Path{
 		if (finalPathArray.size()!=otherPath.finalPathArray.size()) return false;
 		if (!areOfSameType(this, otherPath)) return false;
 			
+		if (!containSameElements(finalPathArray, otherPath.finalPathArray)) return false;
+		return true;
+	}
+
+	/**
+	 * @param lhs 
+	 * @param rhs has to have the same size as lhs
+	 * @author Daniel M. de Oliveira
+	 */
+	private boolean containSameElements(List<String> lhs,List<String> rhs){
+		
 		boolean equals = true;
 		for (int i=0; i<finalPathArray.size(); i++ ){
-			if (!finalPathArray.toArray()[i].equals(otherPath.finalPathArray.toArray()[i])) equals= false; 
+			if (!finalPathArray.toArray()[i].equals(rhs.toArray()[i])) equals = false; 
 		}
-		
 		return equals;
 	}
 	
 	/**
 	 * @author Daniel M. de Oliveira
-	 * @param t
-	 * @param o
-	 * @return
 	 */
 	private boolean areOfSameType(Path t,Path o){
 		
@@ -146,8 +163,6 @@ public class Path{
 		}
 		return true;
 	}
-	
-	
 	
 	/**
 	 * @author Daniel M. de Oliveira

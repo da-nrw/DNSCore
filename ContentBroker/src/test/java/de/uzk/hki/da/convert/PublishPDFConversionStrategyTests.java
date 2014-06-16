@@ -39,6 +39,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.TextRestriction;
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -80,7 +81,7 @@ public class PublishPDFConversionStrategyTests {
 	@Test
 	public void test() throws IOException {
 		
-		o = TESTHelper.setUpObject("1", workAreaRootPath);
+		o = TESTHelper.setUpObject("1", new RelativePath(workAreaRootPath));
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
 		right.setTextRestriction(new TextRestriction());

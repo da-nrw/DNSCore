@@ -42,7 +42,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 	@Override
 	boolean implementation() {
 		
-		new File(object.getDataPath()).mkdirs();
+		object.getDataPath().toFile().mkdirs();
 		
 		RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridFacade());
 		

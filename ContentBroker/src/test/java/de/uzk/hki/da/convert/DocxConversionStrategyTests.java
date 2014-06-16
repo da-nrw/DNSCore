@@ -38,6 +38,8 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
 import de.uzk.hki.da.webservice.HttpFileTransmissionClient;
@@ -72,9 +74,9 @@ public class DocxConversionStrategyTests {
 	@Before
 	public void setUp() throws IOException{
 		
-		o = TESTHelper.setUpObject("1", basePath);
+		o = TESTHelper.setUpObject("1", new RelativePath(basePath));
 		cs.setObject(o);
-		new File( o.getDataPath() + o.getNameOfNewestRep()+"/_Docx.pdf").createNewFile();
+		Path.make(o.getDataPath(),o.getNameOfNewestRep()+"/_Docx.pdf").toFile().createNewFile();
 	}
 	
 	

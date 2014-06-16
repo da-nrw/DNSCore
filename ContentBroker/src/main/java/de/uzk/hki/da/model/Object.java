@@ -298,29 +298,28 @@ public class Object {
 	}
 	
 	/**
-	 * Gets the data path.
-	 *
-	 * @return the data path
+	 * @return physical path to package's data path on local node's working resource
+	 * @throws IllegalStateException if reference to particular node is not set.
+	 * @throws IllegalStateException if workAreaRoot path of the referenced node is null or empty.
+	 * @author Daniel M. de Oliveira
 	 */
-	public String getDataPath(){
-		if (transientNodeRef==null) throw new RuntimeException("node is null");
-		if (transientNodeRef.getWorkAreaRootPath()==null||transientNodeRef.getWorkAreaRootPath().toString().isEmpty()) 
-			throw new RuntimeException("workarearootpath null or empty");
-		
-		return transientNodeRef.getWorkAreaRootPath() + "/work/" + contractor.getShort_name() + "/" + identifier + "/data/";
+	public Path getDataPath(){
+		return Path.make(getPath(),"data");
 	}
 	
 	
 	/**
-	 * Absolute path to the package on local nodes working resource.
-	 * @return the path
+	 * @return physical path to package on local node's working resource
+	 * @throws IllegalStateException if reference to particular node is not set.
+	 * @throws IllegalStateException if workAreaRoot path of the referenced node is null or empty.
+	 * @author Daniel M. de Oliveira
 	 */
 	public Path getPath(){
-		if (transientNodeRef==null) throw new RuntimeException("node is null");
+		if (transientNodeRef==null) throw new IllegalStateException("Object is not related to any particular node. So the physical path cannot be calculated.");
 		if (transientNodeRef.getWorkAreaRootPath()==null||transientNodeRef.getWorkAreaRootPath().toString().isEmpty()) 
-			throw new RuntimeException("workarearootpath null or empty");
+			throw new IllegalStateException("WorkAreaRootPath of related object is null or empty. Physical path cannot be calculated");
 		
-		return Path.make(transientNodeRef.getWorkAreaRootPath(),"/work/",contractor.getShort_name(),identifier);
+		return Path.make(transientNodeRef.getWorkAreaRootPath(),"work",contractor.getShort_name(),identifier);
 	}
 	
 	
@@ -625,7 +624,7 @@ public class Object {
 	{
 		Map<String, DAFile> fileMap = new HashMap<String, DAFile>();
 			
-		File mainFolder = new File(getDataPath());
+		File mainFolder = getDataPath().toFile();
 		if ((!mainFolder.exists())||((mainFolder.listFiles().length == 0)))
 			throw new RuntimeException("Folder " + mainFolder.getAbsolutePath() +
 									   " is empty or does not exist!");	
@@ -753,7 +752,7 @@ public class Object {
 	 * @author daniel
 	 */
 	public String getNameOfNewestRep(){
-		String[] files = new File(getDataPath()).list();
+		String[] files = getDataPath().toFile().list();
 		Arrays.sort(files);
 		
 		List<String> list = new ArrayList<String>();
@@ -775,7 +774,7 @@ public class Object {
 	 */
 	public String getNameOfNewestARep(){
 		
-		String[] files = new File(getDataPath()).list();
+		String[] files = getDataPath().toFile().list();
 		Arrays.sort(files);
 		
 		List<String> list = new ArrayList<String>();
@@ -796,7 +795,7 @@ public class Object {
 	 * @author Thomas Kleinke
 	 */
 	public String getNameOfNewestBRep(){
-		String[] files = new File(getDataPath()).list();
+		String[] files = getDataPath().toFile().list();
 		Arrays.sort(files);
 		
 		List<String> list = new ArrayList<String>();
@@ -823,12 +822,12 @@ public class Object {
 	 */
 	public DAFile getLatest(String filename) {
 		
-		File[] representations = new File(getDataPath()).listFiles();
+		File[] representations = getDataPath().toFile().listFiles();
 		Arrays.sort(representations);
 		
 		DAFile result = null;
 		for (File rep : representations) {
-			if (new File(getDataPath()+rep.getName()+"/"+filename).exists()){
+			if (new File(getDataPath()+"/"+rep.getName()+"/"+filename).exists()){
 
 				for (Package p:this.getPackages())
 					for (DAFile f:p.getFiles()){

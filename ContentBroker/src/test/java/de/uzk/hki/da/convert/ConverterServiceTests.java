@@ -38,6 +38,7 @@ import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -65,7 +66,7 @@ public class ConverterServiceTests {
 	public void setUp(){
 		final Node vm3 = new Node("vm3","01-vm3");
 		
-		o = TESTHelper.setUpObject("123",workAreaRootPath);
+		o = TESTHelper.setUpObject("123",new RelativePath(workAreaRootPath));
 		
 		@SuppressWarnings("serial")
 		Set<Node> nodes = new HashSet<Node>(){{add(vm3);}};

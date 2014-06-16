@@ -42,6 +42,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.service.XPathUtils;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
 
@@ -84,7 +85,7 @@ public class PublishImageConversionStrategyTest {
 	@Test
 	public void testResizeAndWatermark() throws Exception {
 		
-		Object o = TESTHelper.setUpObject("123",workAreaRootPath);
+		Object o = TESTHelper.setUpObject("123",new RelativePath(workAreaRootPath));
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
 		right.setImageRestriction(new ImageRestriction());
@@ -147,7 +148,7 @@ public class PublishImageConversionStrategyTest {
 	@Test
 	public void testFooterTextWithResize() throws Exception {
 		
-		Object o = TESTHelper.setUpObject("123",workAreaRootPath);
+		Object o = TESTHelper.setUpObject("123",new RelativePath(workAreaRootPath));
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
 		right.setImageRestriction(new ImageRestriction());
@@ -213,7 +214,7 @@ public class PublishImageConversionStrategyTest {
 	 */
 	@Test
 	public void testFooterTextWithoutResize() throws Exception {
-		Object o = TESTHelper.setUpObject("123",workAreaRootPath);
+		Object o = TESTHelper.setUpObject("123",new RelativePath(workAreaRootPath));
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
 		right.setImageRestriction(new ImageRestriction());
@@ -280,7 +281,7 @@ public class PublishImageConversionStrategyTest {
 			throw new RuntimeException("Error while parsing premis.xml");
 		}
 		
-		Object o = TESTHelper.setUpObject("123",workAreaRootPath);
+		Object o = TESTHelper.setUpObject("123",new RelativePath(workAreaRootPath));
 		
 		PublishImageConversionStrategy s = new PublishImageConversionStrategy();
 		s.setCLIConnector( new SimplifiedCommandLineConnector() );

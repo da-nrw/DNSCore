@@ -37,6 +37,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -67,7 +68,7 @@ public class PublishXsltConversionStrategyTests {
 	@Before
 	public void setUp() throws IOException {
 		
-		obj = TESTHelper.setUpObject("1",workAreaRootPath);
+		obj = TESTHelper.setUpObject("1",new RelativePath(workAreaRootPath));
 		obj.setIdentifier("1");
 //		when(pkg.getNameOfNewestRep()).thenReturn("target");
 		

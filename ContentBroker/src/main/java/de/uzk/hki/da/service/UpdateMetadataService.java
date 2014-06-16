@@ -41,6 +41,7 @@ import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
 
@@ -109,7 +110,7 @@ public class UpdateMetadataService {
 				Map<String,String> metsReplacements = new HashMap<String,String>();
 			
 				SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-				File metadataFile = new File(pkg.getTransientBackRefToObject().getDataPath() + repName + "/" + metadataFilePath);
+				File metadataFile = Path.makeFile(pkg.getTransientBackRefToObject().getDataPath(),repName,metadataFilePath);
 
 				FileInputStream fileInputStream = new FileInputStream(metadataFile);
 				BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
@@ -164,7 +165,7 @@ public class UpdateMetadataService {
 		try {
 
 			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-			File metadataFile = new File(pkg.getTransientBackRefToObject().getDataPath() + repName + "/" + metadataFilePath);
+			File metadataFile = Path.make(pkg.getTransientBackRefToObject().getDataPath(),repName,metadataFilePath).toFile();
 			
 			FileInputStream fileInputStream = new FileInputStream(metadataFile);
 			BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);

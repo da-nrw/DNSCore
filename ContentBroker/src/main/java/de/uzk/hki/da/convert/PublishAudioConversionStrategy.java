@@ -35,6 +35,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -62,19 +63,19 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 		
 		if (cliConnector==null) throw new IllegalStateException("cliConnector not set");
 
-		new File(object.getDataPath() + "dip/public/" + ci.getTarget_folder()).mkdirs();
-		new File(object.getDataPath() + "dip/institution/" + ci.getTarget_folder()).mkdirs();
+		Path.make(object.getDataPath(),"dip/public/",ci.getTarget_folder()).toFile().mkdirs();
+		Path.make(object.getDataPath(),"dip/institution/",ci.getTarget_folder()).toFile().mkdirs();
 		
 		List<Event> results = new ArrayList<Event>();
 		
 		String cmdPUBLIC[] = new String[] {
 				"sox",
 				ci.getSource_file().toRegularFile().getAbsolutePath(),
-				object.getDataPath()+"dip/public/"+Utilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(
+				object.getDataPath()+"/dip/public/"+Utilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(
 						ci.getSource_file().toRegularFile().getAbsolutePath())+".mp3"
 		};
 		logger.debug(ci.getSource_file().toRegularFile().getAbsolutePath());
-		logger.debug(object.getDataPath()+"dip/public/"+ci.getTarget_folder()+FilenameUtils.getBaseName(
+		logger.debug(object.getDataPath()+"/dip/public/"+ci.getTarget_folder()+FilenameUtils.getBaseName(
 				ci.getSource_file().toRegularFile().getAbsolutePath())+".mp3");
 		if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdPUBLIC,getDurationRestrictionsForAudience("PUBLIC")))){
 			throw new RuntimeException("command not succeeded");
@@ -94,7 +95,7 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 		String cmdINSTITUTION[] = new String[] {
 				"sox",
 				ci.getSource_file().toRegularFile().getAbsolutePath(),
-				object.getDataPath()+"dip/institution/"+Utilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(
+				object.getDataPath()+"/dip/institution/"+Utilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(
 						ci.getSource_file().toRegularFile().getAbsolutePath())+".mp3"
 		};
 		if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdINSTITUTION,getDurationRestrictionsForAudience("INSTITUTION")))){
