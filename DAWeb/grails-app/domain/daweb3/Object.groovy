@@ -59,6 +59,10 @@ class Object {
 	String most_recent_secondary_attributes
 	Boolean ddb_exclusion
 	
+	
+	String getIdAsString() {
+		return id.toString();
+	}
 	/**
 	 * retrieves a status code based on the object_state
 	 * 0 means normal (grey)

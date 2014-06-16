@@ -31,14 +31,12 @@ class QueueEntry {
 	String initialNode
 	String created
 	String modified
-	String replDestinations
 	Object obj
 
     static constraints = {
 		status(nullable:false)
 		created(nullable:true)
 		modified(nullable:true)
-		replDestinations(nullable:true)	
 	}
 	
 	static mapping = {
@@ -87,6 +85,10 @@ class QueueEntry {
 		return false;
 	}
 	
+	String getIdAsString(){
+		return id.toString()
+	}
+	
 	/**
 	 * @author jpeters shows retry button after some time (48 hours)
 	 * 
@@ -94,7 +96,7 @@ class QueueEntry {
 	
 	boolean showRetryButtonAfterSomeTime(){
 		if (modified!=null && modified!="" && modified!="NULL" && modified.length()>5) {
-			long diff = new Date().getTime() - Long.valueOf(modified).longValue()*1000L();
+			long diff = new Date().getTime()-Long.valueOf(modified).longValue()*1000L;
 			if (diff > 2 * 24 * 60 * 60 * 1000) {
 				return true;
 			}

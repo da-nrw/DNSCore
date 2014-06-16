@@ -24,7 +24,7 @@
 				<li class="fieldcontain">
 					<span id="urn-label" class="property-label"><g:message code="queueEntry.id.label" default="Job-Id" /></span>
 					
-						<span class="property-value" aria-labelledby="urn-label"><g:fieldValue bean="${queueEntryInstance}" field="id"/></span>
+						<span class="property-value" aria-labelledby="urn-label">${queueEntryInstance?.getIdAsString() }</span>
 					
 				</li>
 				</g:if>
@@ -32,8 +32,15 @@
 				<li class="fieldcontain">
 					<span id="urn-label" class="property-label"><g:message code="queueEntry.id.label" default="Identifier" /></span>
 					
-						<span class="property-value" aria-labelledby="urn-label"><g:fieldValue bean="${queueEntryInstance.obj}" field="id"/></span>
+						<span class="property-value" aria-labelledby="urn-label"><g:fieldValue bean="${queueEntryInstance.obj}" field="identifier"/></span>
 					
+				</li>
+				</g:if>
+					<g:if test="${queueEntryInstance?.obj.getIdAsString()}">
+				<li class="fieldcontain">
+					<span id="urn-label" class="property-label"><g:message code="object.id.label" default="Object-Id" /></span>
+					
+						<span class="property-value" aria-labelledby="urn-label">${queueEntryInstance?.obj.getIdAsString() }</span>
 				</li>
 				</g:if>
 				<g:if test="${queueEntryInstance?.status}">
@@ -98,15 +105,7 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${queueEntryInstance?.replDestinations}">
-				<li class="fieldcontain">
-					<span id="replDestinations-label" class="property-label"><g:message code="queueEntry.replDestinations.label" default="Repl Destinations" /></span>
-					
-						<span class="property-value" aria-labelledby="replDestinations-label"><g:fieldValue bean="${queueEntryInstance}" field="replDestinations"/></span>
-					
-				</li>
-				</g:if>
-			
+				
 			</ol>
 			<g:form>
 				<fieldset class="buttons">
