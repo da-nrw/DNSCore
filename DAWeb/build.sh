@@ -12,4 +12,9 @@ if [ $? != 0 ]; then
 	exit 1;
 fi
 cp target/$FILENAME ../installation/$FILENAME
+if [ -f ../installation/$FILENAME ]; then
+	echo "successfully built DAWEB"	
+	exit 0;
+	else exit 1;
+fi
 
