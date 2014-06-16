@@ -1,3 +1,7 @@
+# Administration - Interfaces 
+
+TODO purpose of this document.
+
 ## config.properties
 
 The file config.properties is a necessary part of every DNSCore installation. It has always to be stored
@@ -11,7 +15,7 @@ according block:
 ### localNode
 
 The localNode block contains all the settings related to the configuration of the machine itself as well as information
-regarding the administrator role.
+regarding the administrator role. Note that the localNode is the implementation of the node concept of the domain business model.
 
     localNode.userAreaRootPath=
     localNode.ingestAreaRootPath=
@@ -38,6 +42,10 @@ df
 
 ### system
 
+System properties apply to all nodes comprising the so called "system" (TODO link to glossary or data model). As
+a consequence, for a properly working system all the nodes system properties have to be exactly the same. If the
+nodes are maintained by different administrators (perhaps if the nodes are distributed geographically or organisationally) the administrators must agree upon the common setings.
+
     system.min_repls=1
     system.sidecar_extensions=xmp;txt;xml
     system.presServer=localnode
@@ -45,12 +53,36 @@ df
 
 ### cb
 
+There are a couple of settings that relate strongly to the node concept, but are not related to business concepts in any way. Instead they relate to technical concepts only. Hence they merit their own category which is called "cb" which stands for ContentBroker settings.
+
     cb.serverSocketNumber=4455
 
 asdf
 
     cb.implementation.grid=irodsGridFacade
+
+The full and node mode installations of the ContentBroker require a grid component onto which they put and from which they retrieve the long term archive contents, which correspond to the AIP in OAIS terms, and always relate to containered files (.tar) on the technical level. At the moment there exist three implementations of grid subsystems, of which two relate to iRODS configurations in different modes.
+
+    cb.implementation=irodsGridFacade
+    
+If set to irodsGridFacade, the iRODS installation is assumed to be configured properly to run a one zone based grid.
+
+block described below must be inserted to a working config.properties. 
+    
+    cb.implementation=irodsFederatedGridFacade
+
+As opposed to the irodsGridFacade, the irodsFederatedGridFacade assumes to have an iRODS system running which is configured in a federated (TODO link to documents) manner. Note: At the moment this feature is considered experimental until it is fully tested in a load test environment.
+
+    cb.implementation=fakeGridFacade
+    
+The fakeGridFacade is a simple implementation which resigns any third party subsystems but only the local file system.
+It has been written primarily for purposes of testing or easy experimentation for evaluation or showcasing purposes.
+
+asdf
+
+
     cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+
     
 asdf
     
@@ -58,7 +90,11 @@ asdf
 
 asdf
 
-    cb.bin.python=/ci/python/python
+    cb.bin.python=
+
+Here you have to insert the command to run an instance of python (at the moment >= 2.7 is required). If you are sure the required command is globally visible in the environment (the shell or process) in which the ContentBroker.jar is intended to run, you simple can insert something as simple as "python" as a value. If this is not the case, for example if the packaging system of your distro has only python in a version < 2.7 and you have a self compiled version at another path
+on your file system, you should insert the full path to the python binary as a value.
+
 
 ### irods
 
