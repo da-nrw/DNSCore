@@ -151,6 +151,36 @@ Independently if the repository functionality is used or not, these settings are
     uris.aggr=http://data.danrw.de/aggregation
     uris.local=info:
 
+## hibernateCentralDB.cfg.xml
+
+    <property name="connection.driver_class">org.postgresql.Driver</property>
+    <property name="connection.url">jdbc:postgresql://localhost:5432/CB</property>
+    <property name="connection.username">cb_usr</property>
+    <property name="connection.password">vb9gpJq/TjrkFcJ0jaJu+w==</property>
+
+TODO ergänzen. auf encryption hinweisen
+ 
+    <property name="connection.pool_size">5</property>
+    <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+    <property name="current_session_context_class">thread</property>
+ 
+    <property name="format_sql">true</property>
+    <property name="hbm2ddl.auto">validate</property>
+ 
+TODO hinweis auf contentbroker -create, validate sollte nicht verwendet werden.
+ 
+    <mapping class="de.uzk.hki.da.model.Contractor"/>
+    <mapping class="de.uzk.hki.da.model.Node"/>
+    ...
+    <mapping class="de.uzk.hki.da.model.SecondStageScanPolicy"/>
+
+TODO description 
+
+    <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+
+TODO anmerkung feststehende properties.
+
 ## beans.xml
 
 Depending on the mode of installation (f,p,n) the beans.xml can look a little different respectively. However here are described the building blocks which comprise the beans.xml:
