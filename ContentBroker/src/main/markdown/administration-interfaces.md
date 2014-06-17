@@ -39,17 +39,13 @@ It depends on the implementations of the underlying grid what these node names T
 
     localNode.workingResource=ciWorkingResource
 
-
-
-    
 TODO should that be really on the node section?
     
-   
 asdf 
     
     localNode.name=localnode
 
-df
+This property lets you specify the name which identifies the node in the system. It is used for example for synchronizing jobs between nodes (by using the DistributedConversionAdapter). While the name is theoretically arbitrary, it is recommended to use the fully qualified domain name of the node, which typically should equal the irods.server setting on iRODS based node installations (see description of irods settings below).
 
     localNode.id= 
     
@@ -99,28 +95,27 @@ It has been written primarily for purposes of testing or easy experimentation fo
 
     cb.implementation.distributedConversion=
 
-asdf
+The ContentBroker is able to synchronize jobs between nodes in the system. To accomplish this, the unpacked objects in the WorkArea can be transfered to another node and an action can then create a job for the other node to execute which will then work with the replicated data. So two or more nodes can modify the objects state sequentially. The setting lets you choose an implementation which provides the necessary replicaton facilities.
 
     cb.implementation.distributedConversion=irodsDistributedConversionAdapter
- 
-asdf
+
+When selecting the irodsDistributedConversionAdapter, an installation of iRODS (in zone mode) is used. The irods settings in config.properties have to be present (also see irods section below).
     
     cb.implementation.distributedConversion=fakeDistributedConversionAdapter
 
-    
-asdf
+This implementation is useful for testing or evaluation purposes.
     
     cb.implementation.repository=
 
-asdf
+This setting determines the connection to the presentation repository subsystem.
     
     cb.implementation.repository=fedoraRepositoryFacade
     
-asdf    
+When choosing fedoraRepositoryFacade, Fedora is used as the presentation layer subsystem.
 
-    cb.implementation.repository=fedoraRepositoryFacade
+    cb.implementation.repository=fakeRepositoryFacade
 
-asdf
+This implementation is useful for testing or evaluation purposes.
 
     cb.bin.python=
 
