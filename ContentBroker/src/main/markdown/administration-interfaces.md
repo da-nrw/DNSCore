@@ -278,11 +278,29 @@ Depending on the mode of installation (f,p,n) the beans.xml can look a little di
 
 ### The General params section 
 
+#### Ingest Gate
+
+Example:
+
 	<bean class="de.uzk.hki.da.core.IngestGate" id="ingestGate">
 		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
 		<property name="fileSizeFactor" value="3" />
 		<property name="freeDiskSpacePercent" value="5" />
 	</bean>
+
+The IngestGate is a mechanism that helps to protect the working resource from data overflow.
+
+    <property name="freeDiskSpacePercent" value="5" />
+
+TODO
+
+    <property name="fileSizeFactor" value="3" />
+
+TODO
+
+#### Worker scheduler
+
+Example:
 
 	<task:executor id="taskExecutor" pool-size="10"
 		queue-capacity="20" rejection-policy="CALLER_RUNS" />
@@ -293,6 +311,8 @@ Depending on the mode of installation (f,p,n) the beans.xml can look a little di
 		<task:scheduled ref="integrityScannerWorker" method="scheduleTask" fixed-delay="20000" />
 	</task:scheduled-tasks>
 	<task:scheduler id="taskScheduler" pool-size="20" />
+
+The ContentBroker has a scheduling mechanism which starts worker threads periodically.
 
 
 ### The action engine related settings
