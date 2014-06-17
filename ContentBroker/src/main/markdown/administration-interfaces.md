@@ -4,6 +4,8 @@ While we have an administration and user frontend called DA-Web which lets users
 
 These artefacts comprise the interface to the ContentBroker with which administrators must learn to deal with in order to configure and run a proper node of a DNSCore based system. The document is structed that each configuration file is described extensively in its own passage.
 
+Note that for the purporse of the discussion of this document, we call the ContentBroker installation directory ${CB_HOME}
+
 ## config.properties
 
 The file config.properties is a necessary part of every DNSCore installation. It has always to be stored
@@ -185,21 +187,6 @@ TODO anmerkung feststehende properties.
 
 Depending on the mode of installation (f,p,n) the beans.xml can look a little different respectively. However here are described the building blocks which comprise the beans.xml:
 
-### The import secion
-
-    <!-- beans.xml.full -->
-
-	<import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.identifier.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>
-
-	<import resource="classpath*:META-INF/beans-workflow.presentation.xml"/>
-	<import resource="classpath*:META-INF/beans-workflow.ingest.xml"/>
-	<import resource="classpath*:META-INF/beans-workflow.retrieval.xml"/>
-	<import resource="classpath*:META-INF/beans-workflow.pipgen.xml"/>
-	<import resource="classpath*:META-INF/beans-workflow.other.xml"/>
-
 ### The General params section 
 
 	<bean class="de.uzk.hki.da.core.IngestGate" id="ingestGate">
@@ -244,6 +231,23 @@ TODO description
 	
 TODO description	
 
+### The import secion
+
+    <!-- beans.xml.full -->
+
+    <import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>
+    <import resource="classpath*:META-INF/beans-infrastructure.identifier.xml"/>
+    <import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>
+    <import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>
+
+    <import resource="classpath*:META-INF/beans-workflow.presentation.xml"/>
+    <import resource="classpath*:META-INF/beans-workflow.ingest.xml"/>
+    <import resource="classpath*:META-INF/beans-workflow.retrieval.xml"/>
+    <import resource="classpath*:META-INF/beans-workflow.pipgen.xml"/>
+    <import resource="classpath*:META-INF/beans-workflow.other.xml"/>
+
+You'll typically find this section at the top of a beans.xml file. When installing the application, the installer delivers it with a beans.xml which has the right imports for your version (node,pres,full). The imports activate certain components of the application which would be inactive otherwise. When the imports are active the application requires the presence of certain properties in the config.properties file, dependent on the modules activated. Compare the parameters section above.
+
 ## TODO
 
 ### Logfiles
@@ -265,87 +269,14 @@ TODO description
 
 ## logback.xml
 
-<configuration scan="true">
+In order to present its output, the ContentBroker.jar expects a ${CB_HOME}/conf/logback.xml file, though
+the ContentBroker.jar would still work without the file, but without useful logging. 
 
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-		</encoder>
-	</appender>
-
-     <appender name="GRID" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>TRACE</level>
-        </filter>
-		<file>log/grid.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>log/grid.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-	    <encoder>
-	        <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
-	    </encoder>
-	</appender>   
-
-     <appender name="INGEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>TRACE</level>
-        </filter>
-		<file>log/ingest.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>log/ingest.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-	    <encoder>
-	        <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
-	    </encoder>
-	</appender>   
-
-
-     <appender name="INTEGRITY" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>TRACE</level>
-        </filter>
-		<file>log/integrity.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>log/integrity.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-	    <encoder>
-	        <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
-	    </encoder>
-	</appender>   
-
-	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>TRACE</level>
-        </filter>
-		<file>log/contentbroker.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>log/contentbroker.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-	    <encoder>
-	        <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
-	    </encoder>
-	</appender>
-
-	<appender name="OBJECT" class="ch.qos.logback.classic.sift.SiftingAppender">
-		<discriminator>
-			<key>object_id</key>
-			<defaultValue>default-object-log</defaultValue>
-		</discriminator>
-		<sift>
-			<appender name="FILE-${object_id}" class="ch.qos.logback.core.FileAppender">
-				<file>log/object-logs/${object_id}.log</file>
-				<encoder>
-					<pattern>%d %level %logger{35} - %msg%n</pattern>
-				</encoder>
-			</appender>
-		</sift>
-	</appender>
+### The package to appender section        
         
-		<logger name="de.uzk.hki.da.core" additivity="false" level="DEBUG">
+First we will discuss the section usually found at the bottom of the logback.xml file
+        
+	<logger name="de.uzk.hki.da.core" additivity="false" level="DEBUG">
                 <appender-ref ref="FILE" />
         </logger>
 
@@ -372,6 +303,101 @@ TODO description
                 <appender-ref ref="FILE" />
         </logger>
         <root level="OFF" />
+
+
+
+
+### The console appender
+
+<configuration scan="true">
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+### The grid appender
+
+     <appender name="GRID" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>TRACE</level>
+        </filter>
+		<file>log/grid.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>log/grid.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+	    <encoder>
+	        <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
+	    </encoder>
+	</appender>   
+
+### The ingest appender
+
+     <appender name="INGEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>TRACE</level>
+        </filter>
+		<file>log/ingest.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>log/ingest.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+	    <encoder>
+	        <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
+	    </encoder>
+	</appender>   
+
+### The integrity appender
+
+     <appender name="INTEGRITY" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>TRACE</level>
+        </filter>
+		<file>log/integrity.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>log/integrity.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+	    <encoder>
+	        <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
+	    </encoder>
+	</appender>   
+
+### The file appender
+
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>TRACE</level>
+        </filter>
+		<file>log/contentbroker.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>log/contentbroker.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+	    <encoder>
+	        <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
+	    </encoder>
+	</appender>
+
+### The object appender
+
+	<appender name="OBJECT" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<key>object_id</key>
+			<defaultValue>default-object-log</defaultValue>
+		</discriminator>
+		<sift>
+			<appender name="FILE-${object_id}" class="ch.qos.logback.core.FileAppender">
+				<file>log/object-logs/${object_id}.log</file>
+				<encoder>
+					<pattern>%d %level %logger{35} - %msg%n</pattern>
+				</encoder>
+			</appender>
+		</sift>
+	</appender>
+
+
 
 
 </configuration>
