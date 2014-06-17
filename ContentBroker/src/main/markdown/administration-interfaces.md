@@ -20,6 +20,19 @@ according block:
 
 ### localNode
 
+Example from [config.properties.ci](../conf/config.properties.ci)
+
+    localNode.admin_email=da-nrw-notifier@uni-koeln.de
+    localNode.userAreaRootPath=/ci/storage/UserArea
+    localNode.ingestAreaRootPath=/ci/storage/IngestArea 
+    localNode.workAreaRootPath=/ci/storage/WorkArea
+    localNode.gridCacheAreaRootPath=/ci/storage/GridCacheArea
+    localNode.workingResource=ciWorkingResource 
+    localNode.replDestinations=ciArchiveResourceGroup
+    localNode.name=localnode
+    localNode.id=
+
+
 The localNode block contains all the settings related to the configuration of the machine itself as well as information
 regarding the administrator role. Note that the localNode is the implementation of the node concept of the domain business model.
 
@@ -55,6 +68,13 @@ The email address of the administrator responsible for the node. Note that who i
 
 ### system
 
+Example from [config.properties.ci](../conf/config.properties.ci)
+
+    system.min_repls=1
+    system.sidecar_extensions=xmp;txt;xml
+    system.presServer=localnode
+    system.urnNameSpace=urn:nbn:de:danrw
+
 System properties apply to all nodes comprising the so called "system" (TODO link to glossary or data model). As
 a consequence, for a properly working system all the nodes system properties have to be exactly the same. If the
 nodes are maintained by different administrators (perhaps if the nodes are distributed geographically or organisationally) the administrators must agree upon the common setings.
@@ -76,6 +96,14 @@ This is the name of the node which hosts the presentation repository. It must be
 TODO describe urn:nbn:de:danrw
 
 ### cb
+
+Example from [config.properties.ci](../conf/config.properties.ci)
+
+    cb.serverSocketNumber=4455
+    cb.implementation.grid=irodsGridFacade
+    cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+    cb.implementation.repository=fedoraRepositoryFacade
+    cb.bin.python=/ci/python/python
 
 There are a couple of settings that relate strongly to the node concept, but are not related to business concepts in any way. Instead they relate to technical concepts only. Hence they merit their own category which is called "cb" which stands for ContentBroker settings.
 
@@ -133,13 +161,25 @@ on your file system, you should insert the full path to the python binary as a v
 
 ### irods
 
-These settings are optional and must be set only if cb.implementation.grid or cb.implementaion.districutedConversion
-are set to use the corresponding irods specific implementations. Nodes not using irods dont need these parameters.
+Example from [config.properties.ci](../conf/config.properties.ci)
 
     irods.user=rods
+    irods.password=WpXlLLg3a4/S/iYrs6UhtQ==
     irods.server=cihost
     irods.zone=c-i
     irods.default_resc=ciWorkingResource
+    irods.pam=false
+    irods.keyStorePassword=
+    irods.keyStorePath=
+    irods.trustStorePath=
+
+These settings are optional and must be set only if cb.implementation.grid or cb.implementaion.districutedConversion
+are set to use the corresponding irods specific implementations. Nodes not using irods dont need these parameters.
+
+    irods.user=
+    irods.server=
+    irods.zone=
+    irods.default_resc=
     irods.pam=false 
     irods.keyStorePassword=
     irods.keyStorePath=
@@ -152,6 +192,12 @@ asdf
 The password has to be encrypted with the password encryptor/decryptor which is part of the DNSCore project itself (if you haven't already, you can see the sub project [here](https://github.com/da-nrw/DNSCore/tree/master/PasswordEncryptor).
 
 ### fedora
+
+Example from [config.properties.ci](../conf/config.properties.ci)
+
+    fedora.url=http://localhost:8080/fedora
+    fedora.user=fedoraAdmin
+    fedora.password=BYi/MFjKDFd5Dpe52PSUoA==
 
 When the application has been installed in one of wither pres or full mode, the presentation module is activated via its respective import in the import section of the beans.xml (see down below).
 
@@ -167,6 +213,12 @@ The passwort has to be encrypted/decrypted with the PasswordEncryptor of DNSCore
 
 ### elasticsearch 
 
+Example from [config.properties.ci](../conf/config.properties.ci)
+
+    elasticsearch.index=portal_ci
+    elasticsearch.hosts=localhost
+    elasticsearch.cluster=cluster_ci
+
 The elasticsearch settings only are necessary on nodes which provide presentation repository functionality, which is enabled by choosing either the full or pres setting during installation.
 
     elasticsearch.index=
@@ -176,6 +228,8 @@ The elasticsearch settings only are necessary on nodes which provide presentatio
 Make sure you insert the same settings you have used during your elasticsearch installation.
 
 ### uris
+
+Example from [config.properties.ci](../conf/config.properties.ci)
 
 Independently if the repository functionality is used or not, these settings are needed:
 
@@ -283,11 +337,9 @@ TODO description
 
 You'll typically find this section at the top of a beans.xml file. When installing the application, the installer delivers it with a beans.xml which has the right imports for your version (node,pres,full). The imports activate certain components of the application which would be inactive otherwise. When the imports are active the application requires the presence of certain properties in the config.properties file, dependent on the modules activated. Compare the parameters section above.
 
-
-
 ## Application logging
 
-${CB_HOME}/conf/logback.xml
+    ${CB_HOME}/conf/logback.xml
 
 In order to present its output, the ContentBroker.jar expects a ${CB_HOME}/conf/logback.xml file, though
 the ContentBroker.jar would still work without the file, but without useful logging. 
@@ -296,7 +348,14 @@ the ContentBroker.jar would still work without the file, but without useful logg
 
 Down below there is a discussion of how logging is configured in DNSCore. If you don't want this fine grained control, which is propably normal for startes with DNSCore, you can choose to install DNSCore with a default settings logback.xml (which can be retrieved from here) . The effects of using it are described here ...
 
+    ${CB_HOME}/log/ingest.log
+    
+This logger provides information coming from the IngestScannerWorker, the component which scans the [IngestArea](processing_stages.md#ingestarea)s contractor folders for incoming SIP packages. If wonder why there are packages in the IngestArea and the ContentBroker doesn't fetch them, this file is one of the most obvious places to start debugging.
+
     ${CB_HOME}/log/grid.log
+    
+The grid log provides information about from the package grid. 
+
     ${CB_HOME}/log/contentbroker.log
     
 TODO description
