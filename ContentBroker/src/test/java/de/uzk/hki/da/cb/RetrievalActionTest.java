@@ -41,7 +41,6 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
-import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
 

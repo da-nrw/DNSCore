@@ -56,7 +56,6 @@ public class RetrievalAction extends AbstractAction {
 	private String sidecarExtensions;
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
-	
 	public RetrievalAction(){}
 	
 	@Override
@@ -65,13 +64,11 @@ public class RetrievalAction extends AbstractAction {
 		
 		ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(new File(".tar"));
 
-//		expected structure of tempFolder: .../.../.../
-//		Path().toString().substring(1) removes the file separator at the beginning of path; 
-//		"+ File.separator" adds the missing file separator at the end of path;
-		String tempFolder = localNode.getWorkAreaRootPath()+
-				Path.make(object.getContractor().getShort_name(), object.getIdentifier(), object.getIdentifier()).toString() + "/";
+		String tempFolder = Path.make(localNode.getWorkAreaRootPath(),
+				object.getContractor().getShort_name(), object.getIdentifier(), object.getIdentifier()) + "/";
+		
 		new File(tempFolder).mkdir();
-		File premisFile = new File(object.getDataPath() +"/" + object.getNameOfNewestBRep() + "/premis.xml");
+		File premisFile = Path.makeFile(object.getDataPath(),object.getNameOfNewestBRep(),"/premis.xml");
 		
 		if (premisFile.exists())
 		{
@@ -86,15 +83,15 @@ public class RetrievalAction extends AbstractAction {
 		
 		copySurfaceRepresentation(object,tempFolder);
 		
-		// Bagit
 		logger.trace("Building BagIt");
 		BagitUtils.buildBagit(tempFolder);
 		
 		// Repacking
-		logger.debug("Building tar at " + localNode.getUserAreaRootPath() + "/" +object.getContractor().getShort_name() + "/outgoing/" + object.getIdentifier() + ".tar");
+		Path newTar = Path.make(localNode.getUserAreaRootPath(),object.getContractor().getShort_name(),"outgoing",object.getIdentifier() + ".tar");
+		logger.debug("Building tar at " + newTar);
 		try {
 			builder.archiveFolder(new File(tempFolder),
-								  new File(localNode.getUserAreaRootPath() + "/" +object.getContractor().getShort_name() + "/outgoing/" + object.getIdentifier() + ".tar"), true);
+								  newTar.toFile(), true);
 
 		} catch (Exception e) {
 			throw new UserException(UserExceptionId.RETRIEVAL_ERROR, "Tar couldn't be packed", e);
@@ -107,7 +104,7 @@ public class RetrievalAction extends AbstractAction {
 		}
 		
 		String relativePackagePath = object.getContractor().getShort_name() + "/" + object.getIdentifier() + "/";
-		File packageFolder = new File(localNode.getWorkAreaRootPath() + relativePackagePath);
+		File packageFolder = Path.makeFile(localNode.getWorkAreaRootPath(),relativePackagePath);
 		
 		try {
 			FileUtils.deleteDirectory(packageFolder);
@@ -159,8 +156,8 @@ public class RetrievalAction extends AbstractAction {
 	
 	private void emailReport(String email,String objectIdentifier,String csn){
 		
-		String subject = "[" + "da-nrw".replace("/", "") +  "] Retrieval Report für " + objectIdentifier;
-		String msg = "Ihr angefordertes Objekt mit dem Namen \""+ objectIdentifier + "\" wurde unter Ihrem Outgoing Ordner unter " + "da-nrw" + "home/" 
+		String subject = "Retrieval Report für " + objectIdentifier;
+		String msg = "Ihr angefordertes Objekt mit dem Namen \""+ objectIdentifier + "\" wurde unter Ihrem Outgoing Ordner unter " 
 				+ csn + "/outgoing/ abgelegt und steht jetzt"
 				+ " zum Retrieval bereit!\n\n";
 		if (email != null) {
