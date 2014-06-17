@@ -5,7 +5,7 @@
 INSTALLER=target/installation
 CBTAR_SRC=target/installation_tar
 
-VERSION=`cat ../VERSION.txt`
+VERSION="`cat ../VERSION.txt` (build:`git rev-parse HEAD`)"
 
 
 if [ $# -lt 1 ]
@@ -58,7 +58,7 @@ cp src/main/resources/frame.jsonld $CBTAR_SRC/conf
 mkdir $CBTAR_SRC/activemq-data
 mkdir $CBTAR_SRC/log
 touch $CBTAR_SRC/log/contentbroker.log
-echo -e "ContentBroker Version $VERSION\nWritten by\n Daniel M. de Oliveira\n Jens Peters\n Sebastian Cuy\n Thomas Kleinke" > $CBTAR_SRC/README.txt
+echo -e "ContentBroker Version $VERSION\nWritten by\n Daniel M. de Oliveira\n Jens Peters\n Sebastian Cuy\n Thomas Kleinke\n Polina Gubaidullina" > $CBTAR_SRC/README.txt
 
 cp src/main/bash/install.sh $INSTALLER
 cp src/main/bash/configure.sh $INSTALLER
