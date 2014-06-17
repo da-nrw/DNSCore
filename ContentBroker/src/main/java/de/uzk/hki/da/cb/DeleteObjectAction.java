@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * For a given object 
@@ -55,17 +56,17 @@ public class DeleteObjectAction extends AbstractAction {
 		logger.info("Deleting object from WorkArea: "+object.getPath());
 		FileUtils.deleteDirectory(object.getPath().toFile());
 		
-		File fileInWorkArea = new File(object.getTransientNodeRef().getWorkAreaRootPath() + "/work/" +
-				object.getContractor().getShort_name() + 
-				"/" + object.getLatestPackage().getContainerName());
+		File fileInWorkArea = Path.makeFile(
+				object.getTransientNodeRef().getWorkAreaRootPath(),"work",
+				object.getContractor().getShort_name(),object.getLatestPackage().getContainerName());
 		if (fileInWorkArea.exists()) {
 			logger.info("Delete latest package from WorkArea: " + fileInWorkArea );
 			fileInWorkArea.delete();
 		}
 		
-		File fileInIngestArea = new File(object.getTransientNodeRef().getIngestAreaRootPath() + "/" +
-				object.getContractor().getShort_name() + 
-				"/" + object.getLatestPackage().getContainerName());
+		File fileInIngestArea = Path.makeFile(
+				object.getTransientNodeRef().getIngestAreaRootPath(),
+				object.getContractor().getShort_name(),object.getLatestPackage().getContainerName());
 		if (fileInIngestArea.exists()) {
 			logger.info("Delete latest package from WorkArea: " + fileInIngestArea );
 			fileInIngestArea.delete();
