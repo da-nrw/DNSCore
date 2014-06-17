@@ -31,6 +31,7 @@ import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 
 /**
@@ -50,8 +51,8 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 		
 		String dipName = object.getContractor().getShort_name() + "/" + object.getIdentifier()+"_"+object.getLatestPackage().getId();
-		publicDir = new File(localNode.getWorkAreaRootPath()+"/pips/public/"+dipName);
-		instDir = new File(localNode.getWorkAreaRootPath()+"/pips/institution/"+dipName);
+		publicDir = Path.makeFile(localNode.getWorkAreaRootPath(),"pips","public",dipName);
+		instDir = Path.makeFile(localNode.getWorkAreaRootPath(),"pips","institution",dipName);
 		
 		logger.trace("Moving the dip content for presentation purposes out of the archival package.");
 		copyPIPSforReplication();
@@ -84,8 +85,8 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 		Object premisObject = null;
 		try {
 
-			premisObject = new PremisXmlReader().deserialize(Path.make(object.getDataPath(),
-					object.getNameOfNewestBRep(),"/premis.xml").toFile());
+			premisObject = new PremisXmlReader().deserialize(Path.makeFile(object.getDataPath(),
+					object.getNameOfNewestBRep(),"premis.xml"));
 			
 		} catch (ParseException pe){
 			throw new RuntimeException("error while parsing PREMIS-file",pe);
@@ -100,18 +101,18 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	private void registerPIPSforReplication(String dipName) {
 		
 		if (!publicDir.exists())
-			distributedConversionAdapter.create("pips/public/"+dipName);
+			distributedConversionAdapter.create(new RelativePath("pips","public",dipName).toString());
 		else
-			distributedConversionAdapter.register(
-				"pips/public/"+dipName, 
+			distributedConversionAdapter.register(new RelativePath
+				("pips","public",dipName).toString(),
 				publicDir.getAbsolutePath()
 				);
 		
 		if (!instDir.exists())
-			distributedConversionAdapter.create("pips/institution/"+dipName);
+			distributedConversionAdapter.create(new RelativePath("pips","institution",dipName).toString());
 		else
-			distributedConversionAdapter.register(
-				"pips/institution/"+dipName, 
+			distributedConversionAdapter.register(new RelativePath(
+				"pips","institution",dipName).toString(),
 				instDir.getAbsolutePath()
 				);
 	}
@@ -131,14 +132,14 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	 */
 	private void copyPIPSforReplication() throws IOException {
 
-		if (Path.make(object.getDataPath(),"dip","public").toFile().exists()){
+		if (Path.makeFile(object.getDataPath(),"dip","public").exists()){
 			logger.info("Copying public datastreams to " + publicDir.getAbsolutePath());
 			if (publicDir.exists()) FileUtils.deleteDirectory(publicDir);
 			FileUtils.copyDirectory(
 					Path.make(object.getDataPath(),"dip","public").toFile(), 
 					publicDir);
 		}
-		if (Path.make(object.getDataPath(),"dip","institution").toFile().exists()){
+		if (Path.makeFile(object.getDataPath(),"dip","institution").exists()){
 			logger.info("Copying institution datastreams to " + instDir);
 			if (instDir.exists()) FileUtils.deleteDirectory(instDir);
 			FileUtils.copyDirectory(
