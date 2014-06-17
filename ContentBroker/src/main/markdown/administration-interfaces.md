@@ -283,11 +283,9 @@ TODO description
 
 You'll typically find this section at the top of a beans.xml file. When installing the application, the installer delivers it with a beans.xml which has the right imports for your version (node,pres,full). The imports activate certain components of the application which would be inactive otherwise. When the imports are active the application requires the presence of certain properties in the config.properties file, dependent on the modules activated. Compare the parameters section above.
 
-
-
 ## Application logging
 
-${CB_HOME}/conf/logback.xml
+    ${CB_HOME}/conf/logback.xml
 
 In order to present its output, the ContentBroker.jar expects a ${CB_HOME}/conf/logback.xml file, though
 the ContentBroker.jar would still work without the file, but without useful logging. 
@@ -296,7 +294,14 @@ the ContentBroker.jar would still work without the file, but without useful logg
 
 Down below there is a discussion of how logging is configured in DNSCore. If you don't want this fine grained control, which is propably normal for startes with DNSCore, you can choose to install DNSCore with a default settings logback.xml (which can be retrieved from here) . The effects of using it are described here ...
 
+    ${CB_HOME}/log/ingest.log
+    
+This logger provides information coming from the IngestScannerWorker, the component which scans the [IngestArea](processing_stages.md#ingestarea)s contractor folders for incoming SIP packages. If wonder why there are packages in the IngestArea and the ContentBroker doesn't fetch them, this file is one of the most obvious places to start debugging.
+
     ${CB_HOME}/log/grid.log
+    
+The grid log provides information about from the package grid. 
+
     ${CB_HOME}/log/contentbroker.log
     
 TODO description
