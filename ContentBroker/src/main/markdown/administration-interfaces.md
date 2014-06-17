@@ -6,7 +6,9 @@ These artefacts comprise the interface to the ContentBroker with which administr
 
 Note that for the purporse of the discussion of this document, we call the ContentBroker installation directory ${CB_HOME}
 
-## config.properties
+## Application configuration
+
+${CB_HOME}/conf/config.properties
 
 The file config.properties is a necessary part of every DNSCore installation. It has always to be stored
 in the conf directory directly under the DNSCore main directory (which is the one that contains the ContentBroker.jar).
@@ -85,14 +87,27 @@ As opposed to the irodsGridFacade, the irodsFederatedGridFacade assumes to have 
 The fakeGridFacade is a simple implementation which resigns any third party subsystems but only the local file system.
 It has been written primarily for purposes of testing or easy experimentation for evaluation or showcasing purposes.
 
-asdf
+    cb.implementation.distributedConversion=
 
+asdf
 
     cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+ 
+asdf
+    
+    cb.implementation.distributedConversion=fakeDistributedConversionAdapter
 
     
 asdf
     
+    cb.implementation.repository=
+
+asdf
+    
+    cb.implementation.repository=fedoraRepositoryFacade
+    
+asdf    
+
     cb.implementation.repository=fedoraRepositoryFacade
 
 asdf
@@ -101,7 +116,6 @@ asdf
 
 Here you have to insert the command to run an instance of python (at the moment >= 2.7 is required). If you are sure the required command is globally visible in the environment (the shell or process) in which the ContentBroker.jar is intended to run, you simple can insert something as simple as "python" as a value. If this is not the case, for example if the packaging system of your distro has only python in a version < 2.7 and you have a self compiled version at another path
 on your file system, you should insert the full path to the python binary as a value.
-
 
 ### irods
 
@@ -119,30 +133,33 @@ are set to use the corresponding irods specific implementations. Nodes not using
 
 asdf
 
-    irods.password=WpXlLLg3a4/S/iYrs6UhtQ== 
+    irods.password= 
 
 The password has to be encrypted with the password encryptor/decryptor which is part of the DNSCore project itself (if you haven't already, you can see the sub project [here](https://github.com/da-nrw/DNSCore/tree/master/PasswordEncryptor).
 
-
 ### fedora
 
-    fedora.url=http://localhost:8080/fedora
-    fedora.user=fedoraAdmin
+When the application has been installed in one of wither pres or full mode, the presentation module is activated via its respective import in the import section of the beans.xml (see down below).
 
-adf
+    fedora.url=
+    fedora.user=
 
-    fedora.password=BYi/MFjKDFd5Dpe52PSUoA==
+In pres or full mode the ContentBroker and the presentation repository are hosted on one and the same machine. Fedora runs on a tomcat and fedora.url points to the http://... adress of Fedora while fedora.user is a fedora user prepared
+for usage by the ContentBroker.
+
+    fedora.password=
     
 The passwort has to be encrypted/decrypted with the PasswordEncryptor of DNSCore.
-    
-
-asdf
 
 ### elasticsearch 
 
-    elasticsearch.index=portal_ci
-    elasticsearch.hosts=localhost
-    elasticsearch.cluster=cluster_ci
+The elasticsearch settings only are necessary on nodes which provide presentation repository functionality, which is enabled by choosing either the full or pres setting during installation.
+
+    elasticsearch.index=
+    elasticsearch.hosts=
+    elasticsearch.cluster=
+    
+Make sure you insert the same settings you have used during your elasticsearch installation.
 
 ### uris
 
@@ -153,7 +170,9 @@ Independently if the repository functionality is used or not, these settings are
     uris.aggr=http://data.danrw.de/aggregation
     uris.local=info:
 
-## hibernateCentralDB.cfg.xml
+## Application Database configuration
+
+&{CB_HOME}/conf/hibernateCentralDB.cfg.xml
 
     <property name="connection.driver_class">org.postgresql.Driver</property>
     <property name="connection.url">jdbc:postgresql://localhost:5432/CB</property>
@@ -183,7 +202,9 @@ TODO description
 
 TODO anmerkung feststehende properties.
 
-## beans.xml
+## Application module configuration
+
+${CB_HOME}/conf/beans.xml
 
 Depending on the mode of installation (f,p,n) the beans.xml can look a little different respectively. However here are described the building blocks which comprise the beans.xml:
 
@@ -248,29 +269,27 @@ TODO description
 
 You'll typically find this section at the top of a beans.xml file. When installing the application, the installer delivers it with a beans.xml which has the right imports for your version (node,pres,full). The imports activate certain components of the application which would be inactive otherwise. When the imports are active the application requires the presence of certain properties in the config.properties file, dependent on the modules activated. Compare the parameters section above.
 
-## TODO
+
+
+## Application logging
+
+${CB_HOME}/conf/logback.xml
+
+In order to present its output, the ContentBroker.jar expects a ${CB_HOME}/conf/logback.xml file, though
+the ContentBroker.jar would still work without the file, but without useful logging. 
 
 ### Logfiles
 
 Down below there is a discussion of how logging is configured in DNSCore. If you don't want this fine grained control, which is propably normal for startes with DNSCore, you can choose to install DNSCore with a default settings logback.xml (which can be retrieved from here) . The effects of using it are described here ...
 
-    grid.log
-    contentbroker.log
+    ${CB_HOME}/log/grid.log
+    ${CB_HOME}/log/contentbroker.log
     
 TODO description
     
-    object-logs
+    ${CB_HOME}/log/object-logs
     
 TODO description
-   
-    
-### cbTalk.
-
-
-## logback.xml
-
-In order to present its output, the ContentBroker.jar expects a ${CB_HOME}/conf/logback.xml file, though
-the ContentBroker.jar would still work without the file, but without useful logging. 
 
 ### The package to appender section        
         
@@ -397,11 +416,9 @@ First we will discuss the section usually found at the bottom of the logback.xml
 		</sift>
 	</appender>
 
+## TODO
 
-
-
-</configuration>
-
+### cbTalk
 
 
 
