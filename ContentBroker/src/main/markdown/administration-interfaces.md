@@ -37,11 +37,9 @@ in context of DNSCore, have a look at [this](processing_stages.md) document. It 
 For this setting you can insert either a single destination or a comma seperated list of several destinations which are considered endpoints for the node. These are the nodes holding the secondary copies of objects for long term archival.
 It depends on the implementations of the underlying grid what these node names TODO(why not node names?, here is a discrepancy between the business model side and the technical implementation details) refer to. In a typical iRODS (zone) installation these are the names of resource groups to which the objects can be replicated to.
 
-    localNode.workingResource=ciWorkingResource
+    localNode.workingResource=
 
-TODO should that be really on the node section?
-    
-asdf 
+TODO does it belong on the node section?
     
     localNode.name=localnode
 
@@ -49,8 +47,11 @@ This property lets you specify the name which identifies the node in the system.
 
     localNode.id= 
     
-(This setting must contain the integer value primary key of the nodes correspoding entry in the nodes table of the object db 
+This setting must contain the integer value primary key of the nodes correspoding entry in the nodes table of the object db.
+
     localNode.admin_email=da-nrw-notifier@uni-koeln.de
+
+The email address of the administrator responsible for the node. Note that who is meant here is the administrator in the domain model sense, the person who takes responsibility for the working of the node and supervision of packages and workflow. It can be but has not necessarily to be the same person who is responsible for maintaining the machine in the infrastructure sense.
 
 ### system
 
@@ -63,8 +64,16 @@ nodes are maintained by different administrators (perhaps if the nodes are distr
 The minimum number of replications the ContentBroker asks the grid component for to fulfill to consider a copy (an AIP) long term archived. Normally it is 3.
     
     system.sidecar_extensions=xmp;txt;xml
+
+TODO    
+
     system.presServer=localnode
-    system.urnNameSpace=urn:nbn:de:danrw
+    
+This is the name of the node which hosts the presentation repository. It must be the same name which is configured on the conf/config.properties of the presentation repositories ContentBroker installation.
+    
+    system.urnNameSpace=
+    
+TODO describe urn:nbn:de:danrw
 
 ### cb
 
