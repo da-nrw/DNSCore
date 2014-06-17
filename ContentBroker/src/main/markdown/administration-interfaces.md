@@ -2,13 +2,13 @@
 
 While we have an administration and user frontend called DA-Web which lets users (end users and administrators) interact in a dynamic manner, there are several configuration options of DNSCore which are considered static properties of the system. They are configured in the old fashioned way of good old configuration files which can be edited with your good old favorite linux editor. Easy! 
 
-These artefacts comprise the interface to the ContentBroker with which administrators must learn to deal with in order to configure and run a proper node of a DNSCore based system. The document is structed that each configuration file is described extensively in its own passage.
+These artefacts comprise the interface to the ContentBroker with which administrators must learn to deal with in order to configure and run a proper node of a DNSCore based system. The document is structed in that way that each configuration file is described extensively in its own passage.
 
 Note that for the purporse of the discussion of this document, we call the ContentBroker installation directory ${CB_HOME}
 
 ## Application configuration
 
-${CB_HOME}/conf/config.properties
+    ${CB_HOME}/conf/config.properties
 
 The file config.properties is a necessary part of every DNSCore installation. It has always to be stored
 in the conf directory directly under the DNSCore main directory (which is the one that contains the ContentBroker.jar).
@@ -31,9 +31,19 @@ regarding the administrator role. Note that the localNode is the implementation 
 These four properties should be set to the absolute physical paths of the mount points in the file system which hold
 the aip data during the ContentBroker workflow processing stages. If you don't know anything about the concept of areas
 in context of DNSCore, have a look at [this](processing_stages.md) document. It doesn't matter if the paths carry a trailing slash or not. But make sure the paths are absolute and not relative.
-    
-    localNode.workingResource=ciWorkingResource
+
     localNode.replDestinations=ciArchiveResourceGroup
+   
+For this setting you can insert either a single destination or a comma seperated list of several destinations which are considered endpoints for the node. These are the nodes holding the secondary copies of objects for long term archival.
+It depends on the implementations of the underlying grid what these node names TODO(why not node names?, here is a discrepancy between the business model side and the technical implementation details) refer to. In a typical iRODS (zone) installation these are the names of resource groups to which the objects can be replicated to.
+
+    localNode.workingResource=ciWorkingResource
+
+
+
+    
+TODO should that be really on the node section?
+    
    
 asdf 
     
