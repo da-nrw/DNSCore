@@ -88,7 +88,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 		ArrayList<String> commandAsList  = null;
 		for (String audience: audiences ) {
 			
-			Path.make(object.getDataPath(),"dip",audience.toLowerCase(),ci.getTarget_folder()).toFile().mkdirs();
+			Path.makeFile(object.getDataPath(),pips,audience.toLowerCase(),ci.getTarget_folder()).mkdirs();
 
 			commandAsList = new ArrayList<String>();
 			commandAsList.add("convert");
@@ -98,7 +98,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			commandAsList = assembleWatermarkCommand(commandAsList,audience);
 			commandAsList = assembleFooterTextCommand(commandAsList, audience, ci.getSource_file().toRegularFile().getAbsolutePath());
 			
-			DAFile target = new DAFile(pkg,"dip/"+audience.toLowerCase(),Utilities.slashize(ci.getTarget_folder())+
+			DAFile target = new DAFile(pkg,pips+"/"+audience.toLowerCase(),Utilities.slashize(ci.getTarget_folder())+
 					FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix());
 			commandAsList.add(target.toRegularFile().getAbsolutePath());
 			
@@ -115,7 +115,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 					Pattern.quote(FilenameUtils.getBaseName(target.getRelative_path()))+"-\\d+\\."+extension);
 			if (!target.toRegularFile().exists() && !wild.isEmpty()){
 				for (File f : wild){
-					DAFile multipageTarget = new DAFile(pkg,"dip/"+audience.toLowerCase(),Utilities.slashize(ci.getTarget_folder())+f.getName());
+					DAFile multipageTarget = new DAFile(pkg,pips+"/"+audience.toLowerCase(),Utilities.slashize(ci.getTarget_folder())+f.getName());
 					
 					Event e = new Event();
 					e.setDetail(Utilities.createString(commandAsList));

@@ -19,7 +19,6 @@
 
 package de.uzk.hki.da.convert;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +41,8 @@ import de.uzk.hki.da.utils.Utilities;
 
 /**
  * The Class PublishAudioConversionStrategy.
+ * @author unknown
+ * @author Daniel M. de Oliveira
  */
 public class PublishAudioConversionStrategy extends PublishConversionStrategyBase {
 
@@ -63,58 +64,41 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 		
 		if (cliConnector==null) throw new IllegalStateException("cliConnector not set");
 
-		Path.make(object.getDataPath(),"dip/public/",ci.getTarget_folder()).toFile().mkdirs();
-		Path.make(object.getDataPath(),"dip/institution/",ci.getTarget_folder()).toFile().mkdirs();
+		Path.makeFile(object.getDataPath(),pips,"public",ci.getTarget_folder()).mkdirs();
+		Path.makeFile(object.getDataPath(),pips,"institution",ci.getTarget_folder()).mkdirs();
 		
 		List<Event> results = new ArrayList<Event>();
 		
-		String cmdPUBLIC[] = new String[] {
-				"sox",
-				ci.getSource_file().toRegularFile().getAbsolutePath(),
-				object.getDataPath()+"/dip/public/"+Utilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(
-						ci.getSource_file().toRegularFile().getAbsolutePath())+".mp3"
-		};
-		logger.debug(ci.getSource_file().toRegularFile().getAbsolutePath());
-		logger.debug(object.getDataPath()+"/dip/public/"+ci.getTarget_folder()+FilenameUtils.getBaseName(
-				ci.getSource_file().toRegularFile().getAbsolutePath())+".mp3");
-		if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdPUBLIC,getDurationRestrictionsForAudience("PUBLIC")))){
-			throw new RuntimeException("command not succeeded");
+		for (String audience:audiences){
+		
+			Path source = Path.make(ci.getSource_file().toRegularFile().getAbsolutePath());
+			Path target = Path.make(object.getDataPath(),pips,audience.toLowerCase(),
+					ci.getTarget_folder(),FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp3");
+			logger.debug("source:"+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()));
+			
+			String cmdPUBLIC[] = new String[] {
+					"sox",
+					source.toString(),
+					target.toString()
+			};
+			logger.debug("source:"+source);
+			logger.debug("target:"+target);
+			if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdPUBLIC,getDurationRestrictionsForAudience(audience)))){
+				throw new RuntimeException("command not succeeded");
+			}
+			
+			DAFile f1 = new DAFile(object.getLatestPackage(), pips+"/"+audience.toLowerCase(), Utilities.slashize(ci.getTarget_folder()) + 
+					FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp3");
+					
+			Event e = new Event();
+			e.setType("CONVERT");
+			e.setSource_file(ci.getSource_file());
+			e.setTarget_file(f1);
+			e.setDetail(Utilities.createString(cmdPUBLIC));
+			e.setDate(new Date());
+			results.add(e);
 		}
-		
-		DAFile f1 = new DAFile(object.getLatestPackage(), "dip/public", Utilities.slashize(ci.getTarget_folder()) + 
-				FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp3");
-				
-		Event e = new Event();
-		e.setType("CONVERT");
-		e.setSource_file(ci.getSource_file());
-		e.setTarget_file(f1);
-		e.setDetail(Utilities.createString(cmdPUBLIC));
-		e.setDate(new Date());
-		
-		
-		String cmdINSTITUTION[] = new String[] {
-				"sox",
-				ci.getSource_file().toRegularFile().getAbsolutePath(),
-				object.getDataPath()+"/dip/institution/"+Utilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(
-						ci.getSource_file().toRegularFile().getAbsolutePath())+".mp3"
-		};
-		if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdINSTITUTION,getDurationRestrictionsForAudience("INSTITUTION")))){
-			throw new RuntimeException("command not succeeded");
-		}
-		
-		DAFile f2 = new DAFile(object.getLatestPackage(), "dip/institution", Utilities.slashize(ci.getTarget_folder()) + 
-				FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp3");
-		
-		Event e1 = new Event();
-		e1.setType("CONVERT");
-		e1.setSource_file(ci.getSource_file());
-		e1.setTarget_file(f2);
-		e1.setDetail(Utilities.createString(cmdINSTITUTION));
-		e1.setDate(new Date());
-		
-		
-		results.add(e);
-		results.add(e1);
+	
 		return results;
 	}
 
@@ -134,7 +118,7 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 		if (audioRestriction != null && audioRestriction.getDuration() != null) {
 			String duration = audioRestriction.getDuration().toString();
 				
-			logger.debug("duration restriction for audience " + audience + ": " + duration);
+			logger.debug("duration restriction for audience " + audience + ": " + duration+ " Adding \"trim 0 "+duration+"\" to command ");
 			if (!duration.isEmpty())
 				return new String[] { "trim", "0", duration };
 		}

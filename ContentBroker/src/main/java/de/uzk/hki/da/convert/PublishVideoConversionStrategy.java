@@ -39,6 +39,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -72,21 +73,21 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 		
 		List<Event> results = new ArrayList<Event>();
 		
-		new File(object.getDataPath()+"/dip/public/"+ci.getTarget_folder()).mkdirs();
-		new File(object.getDataPath()+"/dip/institution/"+ci.getTarget_folder()).mkdirs();
+		Path.makeFile(object.getDataPath(),pips,"public",ci.getTarget_folder()).mkdirs();
+		Path.makeFile(object.getDataPath(),pips,"institution",ci.getTarget_folder()).mkdirs();
 		
 		String cmdPUBLIC[] = new String[]{
 				"HandBrakeCLI",
 				"-i",
 				ci.getSource_file().toRegularFile().getAbsolutePath(),
 				"-o",
-				object.getDataPath()+"dip/public/"+Utilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4",
+				object.getDataPath()+"/"+pips.toString()+"/public/"+Utilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4",
 				"-e","x264","-f","mp4","-E","faac"
 		};
 		
 		cmdPUBLIC = (String[]) ArrayUtils.addAll(cmdPUBLIC, getRestrictionParametersForAudience("PUBLIC"));
 		
-		DAFile pubFile = new DAFile(pkg, "dip/public", Utilities.slashize(ci.getTarget_folder()) + 
+		DAFile pubFile = new DAFile(pkg, pips+"/public", Utilities.slashize(ci.getTarget_folder()) + 
 				FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp4");
 		
 		if (!executeConversionTool(cmdPUBLIC, pubFile.toRegularFile()))
@@ -104,7 +105,7 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 				"-i",
 				ci.getSource_file().toRegularFile().getAbsolutePath(),
 				"-o",
-				object.getDataPath()+"dip/institution/"+Utilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4",
+				object.getDataPath()+"/"+pips+"/institution/"+Utilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4",
 				"-e","x264","-f","mp4","-E","faac"
 		};
 
