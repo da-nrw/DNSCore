@@ -217,6 +217,8 @@ public class CentralDatabaseDAO {
 	}
 	
 	
+	
+	
 	/**
 	 * Gets the contractor.
 	 *
@@ -254,12 +256,6 @@ public class CentralDatabaseDAO {
 
 		return l;
 	}
-	
-	
-	
-	
-	
-	
 	
 	
 	

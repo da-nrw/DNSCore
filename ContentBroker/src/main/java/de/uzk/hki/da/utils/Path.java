@@ -42,7 +42,10 @@ public class Path{
 	 * @throws IllegalArgumentException if an element of list is not of type string or path
 	 */
 	protected Path(Object ... list) {
+		
+		int argNo=0;
 		for (Object o: list) {
+			argNo++;
 			List<String> partialPathArray;
 			if (o != null) {
 				partialPathArray = new ArrayList<String>();
@@ -53,9 +56,9 @@ public class Path{
 						finalPathArray.add(partialPathArray.get(i));
 					}					
 				} else {
-					throw new IllegalArgumentException("Incorrect data type: path or string expected");
+					throw new IllegalArgumentException("the "+argNo+"th (counting from 1) argument was of incorrect data type. path or string expected");
 				}
-			} else throw new NullPointerException();
+			} else throw new NullPointerException("the "+argNo+"th (counting from 1) argument was null");
 		}
 	}
 	
