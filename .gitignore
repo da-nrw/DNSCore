@@ -1,5 +1,5 @@
 !installation
-ContentBroker/target/
+ContentBroker/target/*
 ContentBroker/mydb*
 ContentBroker/deliverable*
 ContentBroker/.settings
