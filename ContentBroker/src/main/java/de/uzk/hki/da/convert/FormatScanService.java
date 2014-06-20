@@ -183,7 +183,6 @@ public class FormatScanService {
 		for (String r:fileFormats){
 			result=r;
 		}
-		
 		return result;
 	}
 	

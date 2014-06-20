@@ -77,4 +77,15 @@ public class FidoCLITest {
 		System.out.println(pi.getStdOut());
 		assertTrue(pi.getStdOut().endsWith("danrw-fmt/2"));
 	}
+	/**
+	 * 
+	 * @author Jens Peters
+	 */
+	@Test
+	public void testEADFindbuchAusTestLVR(){
+		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[]{"./fido.sh",
+				"src/test/resources/convert/FidoCLITest/Findbuch_EAD.xml"});
+		System.out.println(pi.getStdOut());
+		assertTrue(pi.getStdOut().endsWith("danrw-fmt/2"));
+	}
 }

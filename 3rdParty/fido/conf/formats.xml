@@ -24910,7 +24910,7 @@ The 2 byte file type identifier BM indicates that the BMP was created by OS/2 or
       <note>For testing purposes</note>
       <pattern>
         <position>BOF</position>
-        <regex>(?s)\A.{0,500}\x3cead[^\x3c]{0,100}\x3ceadheader</regex>
+        <regex>(?s)\A.{0,500}\x3cead[^\x3c]{0,500}\x3ceadheader</regex>
       </pattern>
     </signature>
   </format>
