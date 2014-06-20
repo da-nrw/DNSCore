@@ -14,8 +14,13 @@ class ConversionPoliciesControllerTests {
         // TODO: Populate valid properties like...
         //params["name"] = 'someValidName'
     }
+	
+	
 
     void testIndex() {
+		def request = GrailsWebUtil.bindMockWebRequest()
+		def contractor = new Contractor();
+		request.session['contractor'] = contractor
         controller.index()
         assert "/conversionPolicies/list" == response.redirectedUrl
     }
@@ -34,21 +39,6 @@ class ConversionPoliciesControllerTests {
         assert model.conversionPoliciesInstance != null
     }
 
-    void testSave() {
-        controller.save()
-
-        assert model.conversionPoliciesInstance != null
-        assert view == '/conversionPolicies/create'
-
-        response.reset()
-
-        populateValidParams(params)
-        controller.save()
-
-        assert response.redirectedUrl == '/conversionPolicies/show/1'
-        assert controller.flash.message != null
-        assert ConversionPolicies.count() == 1
-    }
 
     void testShow() {
         controller.show()
@@ -131,25 +121,4 @@ class ConversionPoliciesControllerTests {
         assert flash.message != null
     }
 
-    void testDelete() {
-        controller.delete()
-        assert flash.message != null
-        assert response.redirectedUrl == '/conversionPolicies/list'
-
-        response.reset()
-
-        populateValidParams(params)
-        def conversionPolicies = new ConversionPolicies(params)
-
-        assert conversionPolicies.save() != null
-        assert ConversionPolicies.count() == 1
-
-        params.id = conversionPolicies.id
-
-        controller.delete()
-
-        assert ConversionPolicies.count() == 0
-        assert ConversionPolicies.get(conversionPolicies.id) == null
-        assert response.redirectedUrl == '/conversionPolicies/list'
-    }
 }

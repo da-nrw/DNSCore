@@ -49,8 +49,6 @@ grails.project.dependency.resolution = {
 		// runtime 'mysql:mysql-connector-java:5.1.16'
 		runtime 'postgresql:postgresql:9.0-801.jdbc4'
 		runtime 'org.hsqldb:hsqldb:2.3.1'
-
-		
 		compile('org.apache.activemq:activemq-client:5.9.0',
 			'org.apache.xbean:xbean-spring:3.7') {
 			 excludes 'activemq-openwire-generator'
