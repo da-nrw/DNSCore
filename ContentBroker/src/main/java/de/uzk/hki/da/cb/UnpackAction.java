@@ -101,7 +101,7 @@ public class UnpackAction extends AbstractAction {
 				object.getLatestPackage().getContainerName());
 	
 		if (!ingestGate.canHandle(absoluteSIPPath.toFile().length())){
-			logger.warn("ResourceMonitor prevents further processing of package due to space limitations.");
+			logger.warn("ResourceMonitor prevents further processing of package due to space limitations. Setting job back to start state.");
 			return false;
 		}
 		
