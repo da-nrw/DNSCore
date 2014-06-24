@@ -132,8 +132,9 @@ Typically, an unpacked object contains all representations from all packages tha
 
 which looks almost like an AIP with the exception that it usually contains all the representations belonging to the object. That is the reason why we always should talk of objects instead of packages in the context of the WorkArea.
 
-Now that we've already mentioned different types of sources material (AIPs, SIPs) for the unpacked objects, we should discuss where they come from, in order to understand the dataflow. SIPs come from the IngestArea. When the ContentBroker decides there is sufficient free memory on the WorkArea (TODO link), it fetches SIPs from the IngestArea in order to do work on them.
+###### Notes on the dataflow
 
+Now that we've already mentioned different types of sources material (AIPs, SIPs) for the unpacked objects, we should discuss where they come from, in order to understand the dataflow. SIPs come from the IngestArea. When the ContentBroker decides there is sufficient free memory on the WorkArea (TODO link), it fetches SIPs from the IngestArea in order to do work on them. It may be then, in case the package is a delta to an existing object, that additional AIPs from the long term resources are fetched. These data and the SIPs data get unpacked before starting the workflow. Workflows as Retrieval or PIPGen start without SIP. Instead they base entirely on the AIPs they fetch from long term resources.
 
 ##### DipsSection of the WorkArea
 
