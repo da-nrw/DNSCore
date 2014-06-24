@@ -102,7 +102,11 @@ The WorkArea is the one and only place where the ContentBroker manipulates the "
 sufficient memory free on the WorkArea, the ContentBroker fetches new objects from the IngestArea. 
 
     [WorkAreaRootFolder]/
-                         [csn1]/
+    
+    			work/
+    			
+                           [csn1]/
+                           
                                 [oid1]/data/
                                             [rep1+a]
                                             [rep1+b]
@@ -112,17 +116,14 @@ sufficient memory free on the WorkArea, the ContentBroker fetches new objects fr
                                             [rep1+a]
                                             ...
                                 ... 
-                         [csn2]/
+                           [csn2]/
                                 [oid3]/...
                                 [oid4]/...
-                         ...
-
-The WorkArea has to be under the vault path of the irods cache area or working resource. TODO link.
-
-#### DIPArea
-
-    [DIPAreaRootPath]/
-                      public/
+                           ...
+                        dips/
+                        
+                          public/
+                          
                              [csn1]/
                                     [oid1]_[jobid]/
                                                    file1.txt
@@ -134,7 +135,8 @@ The WorkArea has to be under the vault path of the irods cache area or working r
                                                    file2.txt
                                                    ...
                              ...
-                      institution/
+                          institution/
+                          
                              [csn1]/
                                     [oid1]_[jobid]/
                                                    file1.txt
@@ -150,7 +152,14 @@ The WorkArea has to be under the vault path of the irods cache area or working r
                                                    file6.txt
                              ...
 
-The DIPArea has to be under the vault path of the irods cache area or working resource. TODO link.
+
+
+The WorkArea has to be under the vault path of the irods cache area or working resource. TODO link.
+
+#### DIPArea
+
+
+
 
 
 #### GridCacheArea
