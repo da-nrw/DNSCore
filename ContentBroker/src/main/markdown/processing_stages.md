@@ -137,7 +137,7 @@ Now that we've already mentioned different types of sources material (AIPs, SIPs
 
 ##### DipsSection of the WorkArea
 
-The WorkArea is connected to a subsystem which allows for replication of the working states of those objects in transitory states between nodes of the system. At the moment this is used for moving PIPs around. The subsystem is represented by the [DistributedConversionAdapter.java](../java/de/uzk/hki/da/grid/DistributedConversionAdapter.java). On iRODS based nodes, this system talks to resources which map to the WorkArea file system paths. Have a look at the document [here](administration-interfaced.md) and look for "distributedConversionAdapter" to understand how to set up the subsystem properly.
+The WorkArea is connected to a subsystem which allows for replication of the working states of those objects in transitory states between nodes of the system. At the moment this is used for moving PIPs around. The subsystem is represented by the [DistributedConversionAdapter.java](../java/de/uzk/hki/da/grid/DistributedConversionAdapter.java). On iRODS based nodes, this system talks to resources which map to the WorkArea file system paths. Have a look at the document [here](administration-interfaces.md) and look for "distributedConversionAdapter" to understand how to set up the subsystem properly.
 
     [WorkAreaRootFolder]/
     
