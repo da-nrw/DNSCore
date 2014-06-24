@@ -121,9 +121,7 @@ sufficient memory free on the WorkArea, the ContentBroker fetches new objects fr
                                 [oid4]/...
                            ...
                         dips/
-                        
                           public/
-                          
                              [csn1]/
                                     [oid1]_[jobid]/
                                                    file1.txt
@@ -136,7 +134,6 @@ sufficient memory free on the WorkArea, the ContentBroker fetches new objects fr
                                                    ...
                              ...
                           institution/
-                          
                              [csn1]/
                                     [oid1]_[jobid]/
                                                    file1.txt
