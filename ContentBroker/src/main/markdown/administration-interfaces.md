@@ -5,6 +5,7 @@ While we have an administration and user frontend called DA-Web which lets users
 These artefacts comprise the interface to the ContentBroker with which administrators must learn to deal with in order to configure and run a proper node of a DNSCore based system. The document is structed in that way that each configuration file is described extensively in its own passage.
 
 **Note** that for the purporse of the discussion of this document, we call the ContentBroker installation directory ${CB_HOME}
+
 **Note** that, as the interfaces can change from time to time, in doubt you should look at the right version of this document. Go to the releases page and you'll find the source tree for this specific version. 
 
 ## Application configuration
