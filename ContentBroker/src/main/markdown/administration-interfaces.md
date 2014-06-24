@@ -284,7 +284,7 @@ Depending on the mode of installation (f,p,n) the beans.xml can look a little di
 
 The IngestGate is a special feature which was designed with the purpose of protecting the [WorkArea](processing_stages.md#WorkArea)'s file system from overflow. The ContentBroker's workflow engine recieves orders from various other components that always have the consequence that data from different resources must be fetched to the WorkArea. There the data get unpacked, processed and repacked.
 
-Example from [beans.xml.full](../conf/beans.xml.full)
+Example from [beans.xml.full](../xml/beans.xml.full)
 
 	<bean class="de.uzk.hki.da.core.IngestGate" id="ingestGate">
 		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
@@ -304,7 +304,7 @@ This value is tweakable, but does not depend on the machine but on the workflow 
 
 #### Worker scheduler
 
-Example from [beans.xml.full](../conf/beans.xml.full)
+Example from [beans.xml.full](../xml/beans.xml.full)
 
 	<task:executor id="taskExecutor" pool-size="10"
 		queue-capacity="20" rejection-policy="CALLER_RUNS" />
@@ -321,7 +321,7 @@ The ContentBroker has a scheduling mechanism which starts worker threads periodi
 
 ### The action engine related settings
 
-Example from [beans.xml.full](../conf/beans.xml.full)
+Example from [beans.xml.full](../xml/beans.xml.full)
 
 	<util:map id="actionThreads">
 		<entry key="DeleteObjectAction" value="3" />
