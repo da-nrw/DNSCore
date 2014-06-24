@@ -399,10 +399,7 @@ The grid log provides information about from the package grid.
     
 TODO describe
 
-### Fine tune logging
-
-It is possible to override the default settings. **Note** that this is for experimental purposes only
-since the logback.xml gets automatically overwritten by the installer on every update of the application.
+**Note** that it is also possible to override the default settings by modifying the logback.xml. This is for experimental purposes only. The logback.xml gets automatically overwritten by the installer on every update of the application so all changes will be lost after an update.
 
 ## TODO
 
