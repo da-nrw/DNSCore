@@ -98,7 +98,7 @@ the administrator who makes the "move" because he is the one who knows when the 
 
 #### WorkArea
 
-The WorkArea is the place where the ContentBroker unpacks the typical OAIS model packages (AIP,SIP) in order to manipulate the contents of the objects.
+The WorkArea is the place where the ContentBroker unpacks the typical OAIS model packages (AIP,SIP) in order to manipulate the contents of the objects. More so, it is the only place on a node where contents of objects can be seen and manipulated, since AIPs and SIPs always relate to data packed in container formats.
 
 The WorkArea is subdivided into two further sections, the WorkSection where processing on the contents of packages is done, and the DipsSections, which is used to exchange between regular nodes of the system and the node of the system hosting the presentation repository. Each of the subssections will be discussed in the following paragraphs.
 
@@ -132,10 +132,12 @@ Typically, an unpacked object contains all representations from all packages tha
 
 which looks almost like an AIP with the exception that it usually contains all the representations belonging to the object. That is the reason why we always should talk of objects instead of packages in the context of the WorkArea.
 
+Now that we've already mentioned different types of sources material (AIPs, SIPs) for the unpacked objects, we should discuss where they come from, in order to understand the dataflow. SIPs come from the IngestArea. When the ContentBroker decides there is sufficient free memory on the WorkArea (TODO link), it fetches SIPs from the IngestArea in order to do work on them.
+
+
 ##### DipsSection of the WorkArea
 
-The WorkArea is connected to a subsystem which allows for replication of the working states of those objects in transitory states between nodes of the system. At the moment this is used for moving PIPs around. The subsystem is represented by the [DistributedConversionAdapter.java](../java/de/uzk/hki/grid/DistributedConversionAdapter.java). On iRODS based nodes, this system talks to resources which map to the WorkArea file system paths.
-
+The WorkArea is connected to a subsystem which allows for replication of the working states of those objects in transitory states between nodes of the system. At the moment this is used for moving PIPs around. The subsystem is represented by the [DistributedConversionAdapter.java](../java/de/uzk/hki/da/grid/DistributedConversionAdapter.java). On iRODS based nodes, this system talks to resources which map to the WorkArea file system paths. Have a look at the document [here](administration-interfaced.md) and look for "distributedConversionAdapter" to understand how to set up the subsystem properly.
 
     [WorkAreaRootFolder]/
     
@@ -168,14 +170,12 @@ The WorkArea is connected to a subsystem which allows for replication of the wor
                                                    file6.txt
                              ...
 
-The WorkArea has to be under the vault path of the irods cache area or working resource. TODO link.
-
-The WorkArea is the one and only place where the ContentBroker manipulates the "contents" of objects. When there is
-sufficient memory free on the WorkArea, the ContentBroker fetches new objects from the IngestArea. 
 
 
 
-#### DIPArea
+
+
+
 
 
 
