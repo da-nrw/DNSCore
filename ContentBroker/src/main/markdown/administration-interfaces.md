@@ -369,7 +369,7 @@ Before we consider the application specific logging, let us first point out that
 
     ${CB_HOME}/log/stderr.log
     
-The stderr output from the execution of the java command started via nohup in ContentBroker.sh. Gets created on startup. Gets overwritten completely every time the ContentBroker gets restarted.
+The stderr output from the execution of the java command started via nohup in ContentBroker.sh. Gets created on startup. Gets overwritten completely every time the ContentBroker gets restarted. **Note** that if this file has content but it doesn't change from startup to startup, it is the stderr from the last run. After a proper run the file always should be empty.
 
     ${CB_HOME}/log/stdout.log
     
