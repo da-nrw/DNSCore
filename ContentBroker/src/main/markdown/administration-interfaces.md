@@ -361,14 +361,31 @@ You'll typically find this section at the top of a beans.xml file. When installi
 
 ## Application logging
 
+DNSCore uses log4j extensively to present the output of the application in a meaningful, consistent and easy to debug manner.
+
+### Basic logging
+
+Before we consider the application specific logging, let us first point out that there are two logfiles which capture the basic output of the java command. In case your ContentBroker doesn't start, have a look at the content of these files.
+
+    ${CB_HOME}/log/stderr.log
+    
+The stderr output from the execution of the java command started via nohup in ContentBroker.sh. Gets created on startup. Gets overwritten completely every time the ContentBroker gets restarted. **Note** that if this file has content but it doesn't change from startup to startup, it is the stderr from the last run. After a proper run the file always should be empty.
+
+    ${CB_HOME}/log/stdout.log
+    
+The stdout output from the execution of the java command started via nohup in ContentBroker.sh. Gets created on startup. Gets overwritten completely every time the ContentBroker gets restarted.
+
+### Application specific configuration - default behaviour
+
+The ContentBroker finds its logging configuration at
+
     ${CB_HOME}/conf/logback.xml
+ 
+The file automatically gets installed by the installer. Without this file beeing present, the ContentBroker would theoretically work, but without useful logging. By the usage of this file, the ContentBroker configures itself to log into several files. These are described below
 
-In order to present its output, the ContentBroker.jar expects a ${CB_HOME}/conf/logback.xml file, though
-the ContentBroker.jar would still work without the file, but without useful logging. 
-
-### Logfiles
-
-Down below there is a discussion of how logging is configured in DNSCore. If you don't want this fine grained control, which is propably normal for startes with DNSCore, you can choose to install DNSCore with a default settings logback.xml (which can be retrieved from here) . The effects of using it are described here ...
+    ${CB_HOME}/log/contentbroker.log
+    
+This logger outputs information about the workings of the base system, which is responsible for fetching jobs from the database and making actions out of them. The business code of the actions itself gets logged by other loggers. Also setup of the ContentBroker is logged here, why it is usually a good idea to start looking here if the ContentBroker seems not to start properly.
 
     ${CB_HOME}/log/ingest.log
     
@@ -377,139 +394,12 @@ This logger provides information coming from the IngestScannerWorker, the compon
     ${CB_HOME}/log/grid.log
     
 The grid log provides information about from the package grid. 
-
-    ${CB_HOME}/log/contentbroker.log
-    
-TODO description
     
     ${CB_HOME}/log/object-logs
     
-TODO description
+TODO describe
 
-### The package to appender section        
-        
-First we will discuss the section usually found at the bottom of the logback.xml file
-        
-	<logger name="de.uzk.hki.da.core" additivity="false" level="DEBUG">
-                <appender-ref ref="FILE" />
-        </logger>
-
-        <logger name="de.uzk.hki.da.core.IngestAreaScannerWorker"  additivity="false" level="TRACE">
-                <appender-ref ref="INGEST" />
-        </logger>
-
-		<logger name="de.uzk.hki.da.integrity" additivity="false" level="DEBUG">
-                <appender-ref ref="INTEGRITY" />
-        </logger>
-
-        <logger name="de.uzk.hki.da.grid"  additivity="false" level="TRACE">
-                <appender-ref ref="GRID" />
-        </logger>
-
-        <logger name="de.uzk.hki.da"  additivity="false" level="TRACE">
-                <appender-ref ref="OBJECT" />
-        </logger>
-
-        <logger name="org.hibernate" level="INFO">
-                <appender-ref ref="OBJECT" />
-        </logger>
-        <logger name="org.apache.activemq" level="ERROR">
-                <appender-ref ref="FILE" />
-        </logger>
-        <root level="OFF" />
-
-
-
-
-### The console appender
-
-<configuration scan="true">
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-		</encoder>
-	</appender>
-
-### The grid appender
-
-     <appender name="GRID" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>TRACE</level>
-        </filter>
-		<file>log/grid.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>log/grid.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-	    <encoder>
-	        <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
-	    </encoder>
-	</appender>   
-
-### The ingest appender
-
-     <appender name="INGEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>TRACE</level>
-        </filter>
-		<file>log/ingest.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>log/ingest.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-	    <encoder>
-	        <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
-	    </encoder>
-	</appender>   
-
-### The integrity appender
-
-     <appender name="INTEGRITY" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>TRACE</level>
-        </filter>
-		<file>log/integrity.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>log/integrity.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-	    <encoder>
-	        <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
-	    </encoder>
-	</appender>   
-
-### The file appender
-
-	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>TRACE</level>
-        </filter>
-		<file>log/contentbroker.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>log/contentbroker.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-	    <encoder>
-	        <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
-	    </encoder>
-	</appender>
-
-### The object appender
-
-	<appender name="OBJECT" class="ch.qos.logback.classic.sift.SiftingAppender">
-		<discriminator>
-			<key>object_id</key>
-			<defaultValue>default-object-log</defaultValue>
-		</discriminator>
-		<sift>
-			<appender name="FILE-${object_id}" class="ch.qos.logback.core.FileAppender">
-				<file>log/object-logs/${object_id}.log</file>
-				<encoder>
-					<pattern>%d %level %logger{35} - %msg%n</pattern>
-				</encoder>
-			</appender>
-		</sift>
-	</appender>
+**Note** that it is also possible to override the default settings by modifying the logback.xml. This is for experimental purposes only. The logback.xml gets automatically overwritten by the installer on every update of the application so all changes will be lost after an update.
 
 ## TODO
 
