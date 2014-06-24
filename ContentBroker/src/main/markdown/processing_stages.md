@@ -98,29 +98,48 @@ the administrator who makes the "move" because he is the one who knows when the 
 
 #### WorkArea
 
-The WorkArea is the one and only place where the ContentBroker manipulates the "contents" of objects. When there is
-sufficient memory free on the WorkArea, the ContentBroker fetches new objects from the IngestArea. 
+The WorkArea is the place where the ContentBroker unpacks the typical OAIS model packages (AIP,SIP) in order to manipulate the contents of the objects.
+
+The WorkArea is subdivided into two further sections, the WorkSection where processing on the contents of packages is done, and the DipsSections, which is used to exchange between regular nodes of the system and the node of the system hosting the presentation repository. Each of the subssections will be discussed in the following paragraphs.
+
+##### WorkSection of the WorkArea
+
+The actions of the ContentBroker's workflows execute well-defined steps on the material. That means that if a job is a non-transitory (e.g. ending with 0) state, you'll find the corresponding object in a well defined state in the WorkArea.
+
+    [WorkAreaRootFolder]/
+    			work/
+                           [csn1]/
+                                [oid1]
+                                [oid2]
+                           [csn2]/
+                                [oid3]
+                                [oid4]
+                           ...
+                       
+
+Below work there are contractor folders. One for each contractor serviced by this node. Below the contractor folder there are all the objects which are subject to a workflow right now (ingest, retrieval, ...). Typically when debugging objects, the administrator has the oid belonging to the object that is connected to the job. With this object id you find the unpacked object in the WorkArea.
+
+Typically, an unpacked object contains all representations from all packages that are available. This can either a first  representation derived directly from the SIP, or a representation created by conversion processes during ingest or migration, or representations from older AIPs belonging to the same object. You'll find the unpacked objects in this form
+
+    [oid1]/data/
+                [rep1+a]
+                [rep1+b]
+                [rep2+a]
+                [rep2+b]
+    [oid2]/data/
+                [rep1+a]
+                ...
+
+which looks almost like an AIP with the exception that it usually contains all the representations belonging to the object. That is the reason why we always should talk of objects instead of packages in the context of the WorkArea.
+
+##### DipsSection of the WorkArea
+
+The WorkArea is connected to a subsystem which allows for replication of the working states of those objects in transitory states between nodes of the system. At the moment this is used for moving PIPs around. The subsystem is represented by the [DistributedConversionAdapter.java](../java/de/uzk/hki/grid/DistributedConversionAdapter.java). On iRODS based nodes, this system talks to resources which map to the WorkArea file system paths.
+
 
     [WorkAreaRootFolder]/
     
-    			work/
-    			
-                           [csn1]/
-                           
-                                [oid1]/data/
-                                            [rep1+a]
-                                            [rep1+b]
-                                            [rep2+a]
-                                            [rep2+b]
-                                [oid2]/data/
-                                            [rep1+a]
-                                            ...
-                                ... 
-                           [csn2]/
-                                [oid3]/...
-                                [oid4]/...
-                           ...
-                        dips/
+    		 dips/
                           public/
                              [csn1]/
                                     [oid1]_[jobid]/
@@ -149,9 +168,12 @@ sufficient memory free on the WorkArea, the ContentBroker fetches new objects fr
                                                    file6.txt
                              ...
 
-
-
 The WorkArea has to be under the vault path of the irods cache area or working resource. TODO link.
+
+The WorkArea is the one and only place where the ContentBroker manipulates the "contents" of objects. When there is
+sufficient memory free on the WorkArea, the ContentBroker fetches new objects from the IngestArea. 
+
+
 
 #### DIPArea
 
