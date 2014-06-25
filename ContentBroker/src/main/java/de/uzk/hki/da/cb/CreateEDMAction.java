@@ -80,7 +80,9 @@ public class CreateEDMAction extends AbstractAction {
 			}
 			
 			InputStream metadataStream = repositoryFacade.retrieveFile(objectId, "danrw", packageType);
-			
+			if (metadataStream == null) {
+				throw new RuntimeException("Some of the metadata files could not retrieved : " + packageType);
+			}
 			XsltGenerator edmGenerator = new XsltGenerator(xsltFile, metadataStream);	
 			edmGenerator.setParameter("urn", object.getUrn());
 			edmGenerator.setParameter("cho-base-uri", choBaseUri + "/" + objectId);
