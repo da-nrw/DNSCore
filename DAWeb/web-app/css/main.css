@@ -47,6 +47,10 @@ body {
 	        box-shadow: 0 0 0.3em #333;
 }
 
+table {
+	font-size: 12px;
+}
+
 #header {
 	background: #7a4274;
 	background: -moz-linear-gradient(top, #7a4274 0%, #51194b 100%);
