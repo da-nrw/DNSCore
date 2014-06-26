@@ -37,13 +37,13 @@ public class ATUseCaseIngestRheinlaender extends Base{
 	
 	@Before
 	public void setUp(){
-		cleanStorage(); // TODO when test is finished put to tearDown
 		setUpBase();
 	}
 	
 	@After
 	public void tearDown(){
 		clearDB();
+		cleanStorage();
 	}
 	
 	@Test

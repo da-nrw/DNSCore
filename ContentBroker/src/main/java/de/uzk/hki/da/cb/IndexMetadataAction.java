@@ -19,6 +19,7 @@
 
 package de.uzk.hki.da.cb;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -28,9 +29,12 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.NotImplementedException;
 
+import com.github.jsonldjava.core.JSONLDProcessingError;
 import com.github.jsonldjava.utils.JSONUtils;
 
+import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
+import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 
 /**
@@ -49,6 +53,7 @@ import de.uzk.hki.da.repository.RepositoryFacade;
  * name of the frame file.
  * 
  * @author Sebastian Cuy 
+ * @author Daniel M. de Oliveira
  */
 public class IndexMetadataAction extends AbstractAction {
 	
@@ -61,12 +66,11 @@ public class IndexMetadataAction extends AbstractAction {
 	@Override
 	boolean implementation() {
 		setKILLATEXIT(true);
-		
 		if (getRepositoryFacade() == null) 
-			throw new RuntimeException("Repository facade object not set. Make sure the action is configured properly");
+			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
 		if (indexName == null) 
-			throw new RuntimeException("Index name not set. Make sure the action is configured properly");
-
+			throw new ConfigurationException("Index name not set. Make sure the action is configured properly");
+		
 		// use test index for test packages
 		String contractorShortName = job.getObject().getContractor().getShort_name();
 		String tempIndexName = indexName;
@@ -75,52 +79,76 @@ public class IndexMetadataAction extends AbstractAction {
 		}
 
 		try {
-			
 			for (String framePath : getFrames().keySet()) {
 				
 				String metadataFileId = getFrames().get(framePath);
-			
+		
 				String objectId = object.getIdentifier();
 				InputStream metadataStream = getRepositoryFacade().retrieveFile(objectId, "danrw", metadataFileId);
 				if (metadataStream == null) {
 					logger.warn("Metadata file {} not found in repository! Skipping indexing.", metadataFileId);
 					continue;
 				}
-				String metadataContent = IOUtils.toString(metadataStream, "UTF-8");
-				
-				// transform metadata to JSON
-				RdfToJsonLdConverter converter = new RdfToJsonLdConverter(framePath);
-				Map<String, Object> json = converter.convert(metadataContent);
-				
-				logger.debug("transformed RDF into JSON. Result: {}", JSONUtils.toPrettyString(json));
-				
-				@SuppressWarnings("unchecked")
-				List<Object> graph = (List<Object>) json.get("@graph");
-				// create index entry for every subject in graph
-				for (Object object : graph) {
-					@SuppressWarnings("unchecked")
-					Map<String,Object> subject = (Map<String,Object>) object;
-					// Add @context attribute
-					String contextUri = contextUriPrefix + FilenameUtils.getName(framePath);
-					subject.put("@context", contextUri);
-					String[] splitId = ((String) subject.get("@id")).split("/");
-					String id = splitId[splitId.length-1];
-					// extract index name from type
-					String[] splitType = ((String) subject.get("@type")).split("/");
-					String type = splitType[splitType.length-1];
-					getRepositoryFacade().indexMetadata(tempIndexName, type, id, subject);
-				}
-			
+				transformMetadataToJson(framePath,metadataStream,tempIndexName);
 			}
-			
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		}
 		
 		return true;
-		
 	}
 
+
+	/**
+	 * @param framePath
+	 * @param metadataStream
+	 * @param tempIndexName
+	 * @throws RepositoryException
+	 * @throws IOException
+	 * @throws JSONLDProcessingError
+	 */
+	private void transformMetadataToJson(String framePath,InputStream metadataStream,String tempIndexName) throws RepositoryException, IOException, JSONLDProcessingError{
+		String metadataContent = IOUtils.toString(metadataStream, "UTF-8");
+		
+		RdfToJsonLdConverter converter = new RdfToJsonLdConverter(framePath);
+		Map<String, Object> json = converter.convert(metadataContent);
+		
+		logger.debug("transformed RDF into JSON. Result: {}", JSONUtils.toPrettyString(json));
+		
+		@SuppressWarnings("unchecked")
+		List<Object> graph = (List<Object>) json.get("@graph");
+		
+		// create index entry for every subject in graph (subject?)
+		for (Object object : graph) {
+			createIndexEntry(framePath, object);
+		}
+	}
+
+
+	/**
+	 * @param framePath
+	 * @param object
+	 * @throws RepositoryException
+	 */
+	private void createIndexEntry(String framePath, Object object)
+			throws RepositoryException {
+		
+		@SuppressWarnings("unchecked")
+		Map<String,Object> subject = (Map<String,Object>) object;
+		// Add @context attribute
+		String contextUri = contextUriPrefix + FilenameUtils.getName(framePath);
+		subject.put("@context", contextUri);
+		String[] splitId = ((String) subject.get("@id")).split("/");
+		String id = splitId[splitId.length-1];
+		// extract index name from type
+		String[] splitType = ((String) subject.get("@type")).split("/");
+		String type = splitType[splitType.length-1];
+		getRepositoryFacade().indexMetadata(indexName, type, id, subject);
+	}
+	
+	
+	
+	
 	@Override
 	void rollback() throws Exception {
 		throw new NotImplementedException();

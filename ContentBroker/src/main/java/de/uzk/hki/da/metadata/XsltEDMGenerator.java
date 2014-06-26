@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
  * 
  * The Class XsltGenerator.
  */
-public class XsltEDMGenerator implements EDMGenerator {
+public class XsltEDMGenerator {
 
 	/** The logger. */
 	private static Logger logger = LoggerFactory
@@ -89,10 +89,10 @@ public class XsltEDMGenerator implements EDMGenerator {
 		transformer.setErrorListener(new CutomErrorListener());
 	}
 
-	/* (non-Javadoc)
-	 * @see de.uzk.hki.da.metadata.EDMGenerator#generate()
+	/**
+	 * @return
+	 * @throws TransformerException
 	 */
-	@Override
 	public String generate() throws TransformerException {
 		
 		Source xmlSource = new StreamSource(
