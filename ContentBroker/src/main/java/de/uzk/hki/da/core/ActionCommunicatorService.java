@@ -107,7 +107,7 @@ public class ActionCommunicatorService {
 			throw new RuntimeException("Couldn't deserialize dataObjectMap!", e);
 		} finally {
 			try {
-				input.close();
+				if (input!=null) input.close();
 			} catch (IOException e) {
 				throw new RuntimeException("Failed to close input stream.", e);
 			}
