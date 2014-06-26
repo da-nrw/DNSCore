@@ -19,6 +19,8 @@
 
 package de.uzk.hki.da.metadata;
 
+import javax.xml.transform.TransformerException;
+
 
 /**
  * The Interface EDMGenerator.
@@ -29,7 +31,8 @@ public interface EDMGenerator {
 	 * Generate.
 	 *
 	 * @return the string
+	 * @throws TransformerException 
 	 */
-	public String generate();
+	public String generate() throws TransformerException;
 	
 }

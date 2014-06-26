@@ -151,7 +151,7 @@ public class Base {
 		}
 	}
 	
-	protected void waitForJobsToFinish(String originalName, int timeout) throws InterruptedException{
+	protected void waitForJobsToFinish(String originalName, int timeout){
 
 		// wait for job to appear
 		Job job = null;
@@ -168,8 +168,9 @@ public class Base {
 			job = dao.getJob(session, originalName, "TEST");
 			session.close();
 			
-			Thread.sleep(timeout);
-			
+			try {
+				Thread.sleep(timeout);
+			} catch (InterruptedException e) {} // no problem
 		}
 		
 		// wait for jobs to disappear
@@ -194,7 +195,9 @@ public class Base {
 			
 			System.out.println("waiting for jobs to finish ... "+job.getStatus());
 			
-			Thread.sleep(timeout);
+			try {
+				Thread.sleep(timeout);
+			} catch (InterruptedException e) {} // no problem
 		}
 	}
 	
@@ -215,7 +218,7 @@ public class Base {
 	 * @return physical path to unpacked object
 	 * @throws Exception 
 	 */
-	protected Object retrievePackage(String originalName,String packageName) throws Exception{
+	protected Object retrievePackage(String originalName,String packageName){
 		
 		Object object=fetchObjectFromDB(originalName);
 		
@@ -229,7 +232,12 @@ public class Base {
 		}
 		
 		NativeJavaTarArchiveBuilder tar = new NativeJavaTarArchiveBuilder();
-		tar.unarchiveFolder(new File("/tmp/"+object.getIdentifier()+".pack_"+packageName+".tar"), new File("/tmp/"));
+		
+		try {
+			tar.unarchiveFolder(new File("/tmp/"+object.getIdentifier()+".pack_"+packageName+".tar"), new File("/tmp/"));
+		} catch (Exception e) {
+			fail("could not find source file or unarchive source file to tmp");
+		}
 		
 		return object;
 	}
@@ -337,11 +345,8 @@ public class Base {
 	 * @param originalName just the basename of the file. the extension default to tgz. if you want to explicitely change that use 
 	 * ingest(String,String).
 	 * @return the database entry for the object of the ingested package.
-	 * @throws IOException
-	 * @throws InterruptedException
 	 */
-	protected Object ingest(String originalName) throws IOException,
-			InterruptedException {
+	protected Object ingest(String originalName){
 		
 		return ingest(originalName,"tgz");
 	}
@@ -353,18 +358,18 @@ public class Base {
 	 * @param originalName
 	 * @param containerSuffix
 	 * @return
-	 * @throws IOException
-	 * @throws InterruptedException
 	 */
-	protected Object ingest(String originalName,String containerSuffix) throws IOException, InterruptedException{
+	protected Object ingest(String originalName,String containerSuffix){
 		
-		if (!containerSuffix.isEmpty()) containerSuffix="."+containerSuffix;
-		
-		FileUtils.copyFileToDirectory( Path.make( testDataRootPath, originalName+containerSuffix ).toFile(), 
-				Path.make(localNode.getIngestAreaRootPath(),"TEST").toFile());
+		try {
+			FileUtils.copyFileToDirectory( Path.makeFile( testDataRootPath, originalName+"."+containerSuffix ), 
+					Path.makeFile(localNode.getIngestAreaRootPath(),"TEST"));
+		} catch (IOException e) {
+			fail("could not copy file to ingest area. \n"+e);
+		}
 		waitForJobsToFinish(originalName,500);
 		
 		Object object = fetchObjectFromDB(originalName);
 		return object;
-	}
+	}	
 }

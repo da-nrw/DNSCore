@@ -45,7 +45,7 @@ import org.jdom.output.XMLOutputter;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.metadata.XmpCollector;
-import de.uzk.hki.da.metadata.XsltGenerator;
+import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
@@ -191,7 +191,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					if (!repName.startsWith("dip")) continue;
 					FileInputStream inputStream = new FileInputStream(Path.make(object.getDataPath(),repName,metadataFile).toString());
 					BOMInputStream bomInputStream = new BOMInputStream(inputStream);
-					XsltGenerator xsltGenerator = new XsltGenerator(xsltFile, bomInputStream);
+					XsltEDMGenerator xsltGenerator = new XsltEDMGenerator(xsltFile, bomInputStream);
 					String result = xsltGenerator.generate();
 					File file = new File(object.getDataPath() + "/"+repName + "/DC.xml");
 					if (!file.exists()) file.createNewFile();

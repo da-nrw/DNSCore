@@ -27,7 +27,7 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
-import de.uzk.hki.da.metadata.XsltGenerator;
+import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.utils.XMLUtils;
 
@@ -83,7 +83,7 @@ public class CreateEDMAction extends AbstractAction {
 			if (metadataStream == null) {
 				throw new RuntimeException("Could not retrieve some of the metadata files  : " + packageType);
 			}
-			XsltGenerator edmGenerator = new XsltGenerator(xsltFile, metadataStream);	
+			XsltEDMGenerator edmGenerator = new XsltEDMGenerator(xsltFile, metadataStream);	
 			edmGenerator.setParameter("urn", object.getUrn());
 			edmGenerator.setParameter("cho-base-uri", choBaseUri + "/" + objectId);
 			edmGenerator.setParameter("aggr-base-uri", aggrBaseUri + "/" + objectId);

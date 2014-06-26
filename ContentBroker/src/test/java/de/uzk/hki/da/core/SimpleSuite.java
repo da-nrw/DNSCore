@@ -66,6 +66,7 @@ import de.uzk.hki.da.metadata.MetsRightsSectionXmlReaderTest;
 import de.uzk.hki.da.metadata.MetsURNXmlReaderTest;
 import de.uzk.hki.da.metadata.PremisXmlReaderTests;
 import de.uzk.hki.da.metadata.PremisXmlWriterTest;
+import de.uzk.hki.da.metadata.XsltEDMGeneratorTests;
 import de.uzk.hki.da.model.CentralDatabaseDAOTests;
 import de.uzk.hki.da.model.GetNewestFilesFromAllRepresentationsTests;
 import de.uzk.hki.da.model.JobCascadingTest;
@@ -150,7 +151,8 @@ import de.uzk.hki.da.utils.*;
 	PathTest.class,
 	AbstractActionTests.class,
 	ReplicationExecutorTest.class,
-	PathTypeEditorSupportTests.class
+	PathTypeEditorSupportTests.class,
+	XsltEDMGeneratorTests.class
 //	HibernateUtilThreadingTest.class
 })
 public class SimpleSuite {
