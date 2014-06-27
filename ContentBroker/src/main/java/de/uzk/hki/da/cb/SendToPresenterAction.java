@@ -24,7 +24,6 @@ import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -82,11 +81,16 @@ public class SendToPresenterAction extends AbstractAction {
 	
 	private DCReader dcReader;
 	
-	String openCollectionname = "danrw";
+	String openCollectionName = "danrw";
 	String closedCollectionName = "danrw-closed";
 
+	
+	
 	SendToPresenterAction(){}
 
+	
+	
+	
 	/**
 	 * Preconditions:
 	 * There can be two pips at
@@ -115,7 +119,7 @@ public class SendToPresenterAction extends AbstractAction {
 		String packageType = getDcReader().getPackageTypeFromDC(dipPathPublic, dipPathInstitution);
 		logger.debug("read package type from dc: "+packageType);
 		if (!viewerUrls.containsKey(packageType))
-			throw new RuntimeException("Viewer not found for package type");
+			logger.warn("could not determine a viewerUrl for package type");
 		
 		// build map that contains original filenames for labeling
 		labelMap = new HashMap<String,String>();
@@ -131,35 +135,44 @@ public class SendToPresenterAction extends AbstractAction {
 
 		int publishedFlag = 0;
 		
+		// delete existing packages before ingesting the new ones
 		try {
-
-			// delete existing packages before ingesting the new ones
-			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), openCollectionname);
+			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), openCollectionName);
 			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), closedCollectionName);
-		
-			if (dipPathPublic.toFile().exists()) {				
-				// write xepicur file for urn resolving
-				XepicurWriter.createXepicur(
-						object.getIdentifier(), packageType, 
-						viewerUrls.get(packageType), 
-						dipPathPublic.toString());
-				String[] sets = null;
-				if (!object.ddbExcluded()) {
-					sets = new String[]{ "ddb" };
-				}
-				// ingest package to public collection
-				if (ingestPackage(urn, object.getIdentifier(), openCollectionname, dipPathPublic, object.getContractor().getShort_name(), packageType, sets))
-					publishedFlag += 1;
-			}
-			if (dipPathInstitution.toFile().exists()) {
-				// write xepicur file for urn resolving
-				XepicurWriter.createXepicur(object.getIdentifier(), packageType, viewerUrls.get(packageType), dipPathInstitution.toString());
-				// ingest package to closed collection
-				if (ingestPackage(urn, object.getIdentifier(), closedCollectionName, dipPathInstitution, object.getContractor().getShort_name(), packageType, null))
-					publishedFlag += 2;
-			}
 		} catch (RepositoryException e) {
 			throw new RuntimeException(e);
+		}
+
+		
+		if (dipPathPublic.toFile().exists()) {				
+			// write xepicur file for urn resolving
+			XepicurWriter.createXepicur(
+					object.getIdentifier(), packageType, 
+					viewerUrls.get(packageType), 
+					dipPathPublic.toString());
+			String[] sets = null;
+			if (!object.ddbExcluded()) {
+				sets = new String[]{ "ddb" };
+			}
+			// ingest package to public collection
+			try {
+				if (ingestPackage(urn, object.getIdentifier(), openCollectionName, dipPathPublic, object.getContractor().getShort_name(), packageType, sets))
+					publishedFlag += 1;
+			} catch (RepositoryException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
+		if (dipPathInstitution.toFile().exists()) {
+			// write xepicur file for urn resolving
+			XepicurWriter.createXepicur(object.getIdentifier(), packageType, viewerUrls.get(packageType), dipPathInstitution.toString());
+			// ingest package to closed collection
+			try {
+				if (ingestPackage(urn, object.getIdentifier(), closedCollectionName, dipPathInstitution, object.getContractor().getShort_name(), packageType, null))
+					publishedFlag += 2;
+			} catch (RepositoryException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 		object.setPublished_flag(publishedFlag);
@@ -201,12 +214,18 @@ public class SendToPresenterAction extends AbstractAction {
 		Document doc;
 		try {
 			InputStream in = repositoryFacade.retrieveFile(objectId, collection, "DC");
-			in.reset();
+//			StringWriter writer = new StringWriter();
+//			IOUtils.copy(in, writer, "UTF-8");
+//			String theString = writer.toString();
+//			logger.debug("::::::::::::::::::::::"+theString);
+			
+			try{
+				in.reset();
+			}catch(IOException io){}
 			doc = builder.build(in);
 		} catch (JDOMException e) {
 			throw new RuntimeException(e);
 		}
-		
 		
 		try {
 			doc.getRootElement().addContent(
@@ -262,8 +281,11 @@ public class SendToPresenterAction extends AbstractAction {
 		return true;
 	}
 
+	
+	
+	
 	private void ingestDir(String objectId, String collection, File dir, String packagePath, String packageType) throws RepositoryException, IOException {
-
+			
 		File files[] = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				if (getFileFilter().contains(name)) return false;
@@ -280,9 +302,23 @@ public class SendToPresenterAction extends AbstractAction {
 				}
 			}
 		}
-
 	}	
 
+	
+	
+	/**
+	 * Either ingests a file into the repositoryFacade or, in case it is a metadataFile,
+	 * it creates a the correspoding metadata datasream via repositoryFacade
+	 * 
+	 * @param objectId
+	 * @param collection
+	 * @param file
+	 * @param packagePath
+	 * @param packageType
+	 * @return
+	 * @throws RepositoryException
+	 * @throws IOException
+	 */
 	private boolean ingestFile(String objectId, String collection, File file, String packagePath, String packageType) throws RepositoryException, IOException {
 		
 		boolean isMetadataFile = false;
@@ -312,6 +348,7 @@ public class SendToPresenterAction extends AbstractAction {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			String content = IOUtils.toString(fileInputStream, "UTF-8");
 			fileInputStream.close();
+			
 			repositoryFacade.createMetadataFile(objectId, collection, fileId, content, label, mimeType);
 		} else {
 			repositoryFacade.ingestFile(objectId, collection, fileId, file, label, mimeType);
