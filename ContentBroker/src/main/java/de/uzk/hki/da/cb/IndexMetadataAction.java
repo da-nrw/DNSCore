@@ -70,26 +70,19 @@ public class IndexMetadataAction extends AbstractAction {
 			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
 		if (indexName == null) 
 			throw new ConfigurationException("Index name not set. Make sure the action is configured properly");
-		
-		// use test index for test packages
-		String contractorShortName = job.getObject().getContractor().getShort_name();
-		String tempIndexName = indexName;
-		if(testContractors != null && testContractors.contains(contractorShortName)) {
-			tempIndexName += "_test";
-		}
 
 		try {
 			for (String framePath : getFrames().keySet()) {
 				
 				String metadataFileId = getFrames().get(framePath);
-		
-				String objectId = object.getIdentifier();
-				InputStream metadataStream = getRepositoryFacade().retrieveFile(objectId, "danrw", metadataFileId);
+				InputStream metadataStream = 
+						getRepositoryFacade().retrieveFile(
+								object.getIdentifier(), "danrw", metadataFileId);
 				if (metadataStream == null) {
 					logger.warn("Metadata file {} not found in repository! Skipping indexing.", metadataFileId);
 					continue;
 				}
-				transformMetadataToJson(framePath,metadataStream,tempIndexName);
+				transformMetadataToJson(framePath,metadataStream,adjustIndexName(indexName));
 			}
 		} catch(Exception e) {
 			throw new RuntimeException(e);
@@ -98,7 +91,26 @@ public class IndexMetadataAction extends AbstractAction {
 		return true;
 	}
 
+	
 
+	
+	/**
+	 * use test index for test packages
+	 * @param originalIndexName
+	 * @return
+	 */
+	private String adjustIndexName(String originalIndexName){
+		
+		String contractorShortName = job.getObject().getContractor().getShort_name();
+		String adjustedIndexName = indexName;
+		if(testContractors != null && testContractors.contains(contractorShortName)) {
+			adjustedIndexName += "_test";
+		}
+		return adjustedIndexName;
+	}
+	
+	
+	
 	/**
 	 * @param framePath
 	 * @param metadataStream

@@ -18,7 +18,6 @@
 */
 package de.uzk.hki.da.cb;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.lang.NotImplementedException;

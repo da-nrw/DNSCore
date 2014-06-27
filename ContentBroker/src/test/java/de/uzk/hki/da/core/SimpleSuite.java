@@ -33,7 +33,6 @@ import de.uzk.hki.da.cb.ConvertActionTests;
 import de.uzk.hki.da.cb.ConvertCheckActionTests;
 import de.uzk.hki.da.cb.CreatePremisActionTests;
 import de.uzk.hki.da.cb.DeleteObjectActionTests;
-import de.uzk.hki.da.cb.FetchPIPsAction;
 import de.uzk.hki.da.cb.FetchPIPsActionTest;
 import de.uzk.hki.da.cb.ObjectTest;
 import de.uzk.hki.da.cb.PrepareSendToPresenterActionTests;
@@ -41,6 +40,7 @@ import de.uzk.hki.da.cb.ProperRefreshOfJobChildrenTest;
 import de.uzk.hki.da.cb.RetrievalActionTest;
 import de.uzk.hki.da.cb.ScanActionTests;
 import de.uzk.hki.da.cb.SelectProcessingNodesTests;
+import de.uzk.hki.da.cb.SendToPresenterActionTests;
 import de.uzk.hki.da.cb.ShortenFileNamesActionTests;
 import de.uzk.hki.da.cb.TarActionTests;
 import de.uzk.hki.da.cb.UnpackActionBagitAndDeltaTests;
@@ -78,7 +78,10 @@ import de.uzk.hki.da.service.PackageTypeDetectionServiceTests;
 import de.uzk.hki.da.service.RetrievePackagesHelperTest;
 import de.uzk.hki.da.service.URNCheckDigitGeneratorTests;
 import de.uzk.hki.da.service.XPathUtilsTests;
-import de.uzk.hki.da.utils.*;
+import de.uzk.hki.da.utils.ArchiveBuilderTests;
+import de.uzk.hki.da.utils.CommaSeparatedListTests;
+import de.uzk.hki.da.utils.PathTest;
+import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 
 /**
  * The collection of all our unit tests which should run pre and post commit.
@@ -152,7 +155,8 @@ import de.uzk.hki.da.utils.*;
 	AbstractActionTests.class,
 	ReplicationExecutorTest.class,
 	PathTypeEditorSupportTests.class,
-	XsltEDMGeneratorTests.class
+	XsltEDMGeneratorTests.class,
+	SendToPresenterActionTests.class
 //	HibernateUtilThreadingTest.class
 })
 public class SimpleSuite {
