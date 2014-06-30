@@ -20,7 +20,8 @@ class ObjectControllerTests {
     }
 
     void testList() {
-		controller.grailsApplication.config.userAreaRootPath = "/path_to_/userhome/SIP"
+
+		
 		def contractor = new Contractor(shortName: "rods", admin: 1)
 
 	
