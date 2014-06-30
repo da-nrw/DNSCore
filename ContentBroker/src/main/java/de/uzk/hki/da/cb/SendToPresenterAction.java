@@ -83,12 +83,6 @@ public class SendToPresenterAction extends AbstractAction {
 	
 	String openCollectionName = "danrw";
 	String closedCollectionName = "danrw-closed";
-
-	
-	
-	SendToPresenterAction(){}
-
-	
 	
 	
 	/**
@@ -110,18 +104,39 @@ public class SendToPresenterAction extends AbstractAction {
 			throw new ConfigurationException("fileFilter is not set");
 		if (testContractors == null)
 			throw new ConfigurationException("testContractors is not set");
+
+		purgeObjectsIfExist();
+		buildMapWithOriginalFilenamesForLabeling();
 		
-		Path dipPathPublic = Path.make(localNode.getWorkAreaRootPath(),"pips","public",object.getContractor().getShort_name(),object.getIdentifier());
-		Path dipPathInstitution = Path.make(localNode.getWorkAreaRootPath(),"pips","institution",object.getContractor().getShort_name(),object.getIdentifier());
-		if (!dipPathPublic.toFile().exists()) logger.warn(dipPathPublic+" does not exist.");
-		if (!dipPathInstitution.toFile().exists()) logger.warn(dipPathInstitution + " does not exist.");
-		
-		String packageType = getDcReader().getPackageTypeFromDC(dipPathPublic, dipPathInstitution);
+		Path pipPathPublic = Path.make(localNode.getWorkAreaRootPath(),"pips","public",object.getContractor().getShort_name(),object.getIdentifier());
+		Path pipPathInstitution = Path.make(localNode.getWorkAreaRootPath(),"pips","institution",object.getContractor().getShort_name(),object.getIdentifier());
+		if (!pipPathPublic.toFile().exists()) 
+			logger.warn(pipPathPublic+" does not exist.");
+		if (!pipPathInstitution.toFile().exists()) 
+			logger.warn(pipPathInstitution + " does not exist.");
+
+		String packageType = getDcReader().getPackageTypeFromDC(pipPathPublic, pipPathInstitution);
 		logger.debug("read package type from dc: "+packageType);
 		if (!viewerUrls.containsKey(packageType))
 			logger.warn("could not determine a viewerUrl for package type");
+
+		boolean publicPIPSuccesfullyIngested = false;
+		boolean institutionPIPSuccessfullyIngested = false;
+		if (pipPathPublic.toFile().exists())
+			publicPIPSuccesfullyIngested = createXEpicurAndIngest(pipPathPublic,openCollectionName,packageType,object.getUrn(),true);
+		if (pipPathInstitution.toFile().exists()) 
+			institutionPIPSuccessfullyIngested = createXEpicurAndIngest(pipPathInstitution, closedCollectionName, packageType, object.getUrn(), false);
 		
-		// build map that contains original filenames for labeling
+		setPublishedFlag(publicPIPSuccesfullyIngested,
+				institutionPIPSuccessfullyIngested);
+		return true;
+	}
+
+
+	/**
+	 * build map that contains original filenames for labeling
+	 */
+	private void buildMapWithOriginalFilenamesForLabeling() {
 		labelMap = new HashMap<String,String>();
 		for (Event e:object.getLatestPackage().getEvents()) {			
 			if (!"CONVERT".equals(e.getType())) continue;
@@ -130,50 +145,65 @@ public class SendToPresenterAction extends AbstractAction {
 			DAFile sourceFile = e.getSource_file();
 			labelMap.put(targetFile.getRelative_path(), sourceFile.getRelative_path());			
 		}
-		
-		String urn = object.getUrn();
-
-		int publishedFlag = 0;
-		
-		// delete existing packages before ingesting the new ones
+	}
+	
+	
+	/**
+	 * delete existing packages before ingesting the new ones
+	 * @throws RuntimeException
+	 */
+	private void purgeObjectsIfExist(){
 		try {
 			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), openCollectionName);
 			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), closedCollectionName);
 		} catch (RepositoryException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	
+	/**
+	 * write xepicur file for urn resolving and ingest into collection
+	 * @param path
+	 * @param collectionName
+	 * @param packageType
+	 * @param urn
+	 * @param checkSets
+	 * @return
+	 * @throws IOException
+	 * @throws RuntimeException if catched RepositoryException from ingest.
+	 */
+	private boolean createXEpicurAndIngest(Path path,String collectionName,String packageType,String urn,boolean checkSets) throws IOException{
 
+		XepicurWriter.createXepicur(
+				object.getIdentifier(), packageType, 
+				viewerUrls.get(packageType), 
+				path.toString());
 		
-		if (dipPathPublic.toFile().exists()) {				
-			// write xepicur file for urn resolving
-			XepicurWriter.createXepicur(
-					object.getIdentifier(), packageType, 
-					viewerUrls.get(packageType), 
-					dipPathPublic.toString());
-			String[] sets = null;
+		String[] sets = null;
+		if (checkSets){
 			if (!object.ddbExcluded()) {
 				sets = new String[]{ "ddb" };
 			}
-			// ingest package to public collection
-			try {
-				if (ingestPackage(urn, object.getIdentifier(), openCollectionName, dipPathPublic, object.getContractor().getShort_name(), packageType, sets))
-					publishedFlag += 1;
-			} catch (RepositoryException e) {
-				throw new RuntimeException(e);
-			}
+		}
+			
+		try {
+			return ingestPackage(urn, object.getIdentifier(), collectionName, path, object.getContractor().getShort_name(), packageType, sets);
+		} catch (RepositoryException e) {
+			throw new RuntimeException(e);
 		}
 		
-		if (dipPathInstitution.toFile().exists()) {
-			// write xepicur file for urn resolving
-			XepicurWriter.createXepicur(object.getIdentifier(), packageType, viewerUrls.get(packageType), dipPathInstitution.toString());
-			// ingest package to closed collection
-			try {
-				if (ingestPackage(urn, object.getIdentifier(), closedCollectionName, dipPathInstitution, object.getContractor().getShort_name(), packageType, null))
-					publishedFlag += 2;
-			} catch (RepositoryException e) {
-				throw new RuntimeException(e);
-			}
-		}
+	}
+
+
+	private void setPublishedFlag(
+			boolean publicPIPSuccesfullyIngested,
+			boolean institutionPIPSuccessfullyIngested) {
+		
+		int publishedFlag = 0;
+
+		if (publicPIPSuccesfullyIngested) publishedFlag += 1;
+		if (institutionPIPSuccessfullyIngested) publishedFlag += 2;
 
 		object.setPublished_flag(publishedFlag);
 		
@@ -183,9 +213,8 @@ public class SendToPresenterAction extends AbstractAction {
 		if (publishedFlag % 2 == 0) {
 			setKILLATEXIT(true);
 		}
-		
-		return true;
 	}
+
 	
 
 	
