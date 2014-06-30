@@ -92,7 +92,8 @@ Each Zone needs at least one database (so called ICAT Server). The use of Postgr
 
 ## Upgrade iRODS
 
-iRODS isnatllation could be upgraded, if necessary. The following list describes an upgrade from 3.2 to 3.3.1. The 4.X releases are not tested with the code yet. 
+iRODS installation could be upgraded, if necessary. The following list describes an upgrade from 3.2 to 3.3.1. The 4.X releases are not tested with the code yet. 
+The upgrade process differs slightly if your are acting as Master Server ad is more complex, due to have the ICAT Databse as well. Described below you'll find describtion applicable to a Master. 
 
 1. stop ContentBroker
 2. stop iRODS
