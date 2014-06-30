@@ -70,6 +70,31 @@ Edit server/config/server.config to load danrw.re
 
 Restart iRODS server.
 
+### Upgrade iRODS
+
+iRODS isnatllation could be upgraded, if necessary. The following list describes an upgrade from 3.2 to 3.3.1. The 4.X releases are not tested with the code yet. 
+
+1. stop ContentBroker
+2. stop iRODS
+3. delete symbolic link to old installation
+4. backup your old ICAT DB, if you are master node.
+5. move old Installation to iRODS_3.2
+6. Download & unpack irods-3.3.1.tgz
+7. Create symbolic link ln -s iRODS-3.3.1  iRODS
+9. copy old iRODS_old/config/irods.config to iRODS/config
+10.Run skript ./irodsupgrade.sh
+11. Use existing irods.config yes
+12. Start make
+13. Test Server with ils
+14. In case, you are Master: execute nesessary patches found below server/icat/patches/
+15. Copy old rule file from iRODS_old/server/config/reConfigs/danrw.re iRODS/server/config/reConfigs/
+16. Register rule file in iRODS/server/config/server.config ("ruleSet danrw,core")
+17. Remember setting addtional Server config: e.g. irodsHost
+18. Restart iRODS
+19. ils
+20. Restart ContentBroker
+
+
 ### Setting up a node topology
 
 Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zones" as well as the concept of 
