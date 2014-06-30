@@ -36,7 +36,7 @@ DNScore uses iRODS as storage layer. The reasons why we have choosen iRODS as a 
 4. "out-of-the-box" capabilities for replication, maintenance and low-level bitstream verification.
 5. has a vivid community
 
-The version described here is community iRODS Version (3.X). There are already newer releases, you may consider to update but this not tested with DNSCore.
+The version described here is "community iRODS Version (3.X)". There are already newer releases (4.X), you may consider to update but this not tested with DNSCore.
 
 Several hardware platforms are supported by iRODS "out-of-the-box", but having a standard "mount-point" (unix file system) is always a good start. Tape devices not being able to provide such, may be connected via MSS compound devices and may need special configuration.
 
@@ -70,7 +70,27 @@ Edit server/config/server.config to load danrw.re
 
 Restart iRODS server.
 
-### Upgrade iRODS
+
+
+### Setting up a node topology
+
+Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zones" as well as the concept of 
+having one Zone with several resource servers. Please refer to the iRODS Documentation about this. 
+
+DNSCore supports both operational modes, depending on your
+
+    grid.implemenation 
+    
+Parameter in your config.properties. Possible values are so far:
+
+    cb.implementation.grid=fakeGridFacade
+    cb.implementation.grid=irodsGridFacade
+    cb.implementation.grid=federatedGridFacade
+
+Each Zone needs at least one database (so called ICAT Server). The use of Postgres is encouraged here. 
+
+
+## Upgrade iRODS
 
 iRODS isnatllation could be upgraded, if necessary. The following list describes an upgrade from 3.2 to 3.3.1. The 4.X releases are not tested with the code yet. 
 
@@ -93,24 +113,6 @@ iRODS isnatllation could be upgraded, if necessary. The following list describes
 18. Restart iRODS
 19. ils
 20. Restart ContentBroker
-
-
-### Setting up a node topology
-
-Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zones" as well as the concept of 
-having one Zone with several resource servers. Please refer to the iRODS Documentation about this. 
-
-DNSCore supports both operational modes, depending on your
-
-    grid.implemenation 
-    
-Parameter in your config.properties. Possible values are so far:
-
-    cb.implementation.grid=fakeGridFacade
-    cb.implementation.grid=irodsGridFacade
-    cb.implementation.grid=federatedGridFacade
-
-Each Zone needs at least one database (so called ICAT Server). The use of Postgres is encouraged here. 
 
 
 
