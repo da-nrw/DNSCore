@@ -51,7 +51,8 @@
 		<property name="startStatus" value="250" />
 		<property name="endStatus" value="260" />
 		<property name="name" value="IngestUpdateMetadataAction" />
-		<property name="updateMetadataService" ref="updateMetadataService" />		
+		<property name="namespaces" ref="updateMetadataNamespaces" />
+		<property name="xpathsToUrls" ref="updateMetadataXpathsForUrls" />
 		<property name="dcMappings">
 			<map>
 				<entry key="METS" value="conf/xslt/dc/mets-mods_to_dc.xsl" />
@@ -100,7 +101,8 @@
 		<property name="startStatus" value="350" />
 		<property name="endStatus" value="360" />
 		<property name="name" value="IngestUpdateMetadataAction" />
-		<property name="updateMetadataService" ref="updateMetadataService" />
+		<property name="namespaces" ref="updateMetadataNamespaces" />
+		<property name="xpathsToUrls" ref="updateMetadataXpathsForUrls" />
 		<property name="writePackageTypeToDC" value="true" />
 		<property name="repNames">
 			<util:list>

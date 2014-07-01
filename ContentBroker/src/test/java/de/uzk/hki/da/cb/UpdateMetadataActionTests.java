@@ -47,7 +47,6 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.service.UpdateMetadataService;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
@@ -209,17 +208,15 @@ public class UpdateMetadataActionTests {
 		CentralDatabaseDAO dao = mock(CentralDatabaseDAO.class);
 		action.setDao(dao);
 		
-		UpdateMetadataService service = new UpdateMetadataService();
 		HashMap<String,String> xpaths = new HashMap<String,String>();
 		xpaths.put("METS", "//mets:FLocat/@xlink:href");
-		service.setXpathsToUrls(xpaths);
+		action.setXpathsToUrls(xpaths);
 		
 		HashMap<String, String> nsMap = new HashMap<String,String>();
 		nsMap.put("mets", METS_NS.getURI());
 		nsMap.put("xlink", XLINK_NS.getURI());
-		service.setNamespaces(nsMap);
+		action.setNamespaces(nsMap);
 		
-		action.setUpdateMetadataService(service);		
 		action.setRepNames(new String[]{"dip/public", "dip/institution"});
 		Map<String, String> dcMappings = new HashMap<String,String>();
 		dcMappings.put("METS", "conf/xslt/dc/mets-mods_to_dc.xsl");

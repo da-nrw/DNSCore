@@ -54,8 +54,8 @@ public class ATUseCaseIngestRheinlaender extends Base{
 			System.out.println(e.getMessage());
 		}
 		
-		cleanStorage();
 		clearDB();
+		cleanStorage();
 	}
 	
 	@Test
