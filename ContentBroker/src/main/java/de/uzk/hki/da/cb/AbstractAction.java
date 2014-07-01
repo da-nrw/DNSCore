@@ -50,6 +50,7 @@ import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.Mail;
 import de.uzk.hki.da.service.UserExceptionManager;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
@@ -103,8 +104,9 @@ public abstract class AbstractAction implements Runnable {
 	 * For good readability every implementation() should contain only
 	 * the business logic for the action. The details should be package private 
 	 * for unit testing purposes.
+	 * @throws RepositoryException 
 	 */
-	abstract boolean implementation() throws FileNotFoundException, IOException, UserException;
+	abstract boolean implementation() throws FileNotFoundException, IOException, UserException, RepositoryException;
 
 	/**
 	 * Implementations which fail (due to exceptions in implementation() which will be caught in run())

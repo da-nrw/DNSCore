@@ -72,16 +72,14 @@ public class SendToPresenterActionTests {
 		Set<String> fileFilter = new HashSet<String>();
 		action.setFileFilter(fileFilter);
 		
-		String fakeDCFile = "<root xmlns:dc=\"http://www.w3schools.com/furniture\">\n"+
+		try {
+			String fakeDCFile = "<root xmlns:dc=\"http://www.w3schools.com/furniture\">\n"+
 				"<dc:title>VDA - Forschungsstelle Rheinlländer in aller Welt: Bezirksstelle West des Vereins für das Deutschtum im Ausland</dc:title>\n"+
 				"</root>";
-		try {
 			InputStream in = IOUtils.toInputStream(fakeDCFile, "UTF-8");
-			try {
-				when(repositoryFacade.retrieveFile((String) anyObject(), (String) anyObject(), (String)anyObject())).thenReturn(in);
-			} catch (RepositoryException e) {
-				e.printStackTrace();
-			}
+			when(repositoryFacade.retrieveFile((String) anyObject(), (String) anyObject(), (String)anyObject())).thenReturn(in);
+		} catch (RepositoryException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

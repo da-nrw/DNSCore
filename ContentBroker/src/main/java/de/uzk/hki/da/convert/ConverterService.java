@@ -19,7 +19,6 @@
 
 package de.uzk.hki.da.convert;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -75,7 +74,6 @@ public class ConverterService {
 		Path.make(object.getDataPath(),repName).toFile().mkdir();
 		logger.debug("repname:"+repName);
 		
-		
 		for (ConversionInstruction ci:conversionInstructions){
 			waitUntilThereIsSufficientSpaceOnCacheResource(object.getDataPath().toString(),2097152,10000);
 			
@@ -83,8 +81,6 @@ public class ConverterService {
 			
 			results.addAll(partialResults);
 		}
-		
-
 
 		logger.info("Resulting Events");
 		for (Event e: results){
@@ -100,6 +96,7 @@ public class ConverterService {
 		
 		return results;
 	}
+
 	
 	
 	

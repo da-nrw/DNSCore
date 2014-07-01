@@ -63,7 +63,7 @@ public class ArchiveReplicationActionTests {
 		c.setForbidden_nodes("");
 		object.setContractor(c);
 		
-		AbstractAction action = setUpAction(node);
+		ArchiveReplicationAction action = setUpAction(node);
 		action.implementation();
 	}
 	
@@ -74,7 +74,7 @@ public class ArchiveReplicationActionTests {
 		c.setShort_name("TEST");
 		c.setForbidden_nodes("");
 		object.setContractor(c);
-		AbstractAction action = setUpAction(node);
+		ArchiveReplicationAction action = setUpAction(node);
 		action.implementation();
 	}
 	
@@ -85,7 +85,7 @@ public class ArchiveReplicationActionTests {
 		c.setShort_name("TEST");
 		c.setForbidden_nodes(null);
 		object.setContractor(c);
-		AbstractAction action = setUpAction(node);
+		ArchiveReplicationAction action = setUpAction(node);
 		action.implementation();
 	}
 	
@@ -97,7 +97,7 @@ public class ArchiveReplicationActionTests {
 		pkg.setTransientBackRefToObject(object);
 	}
 	
-	private AbstractAction setUpAction(Node node){
+	private ArchiveReplicationAction setUpAction(Node node){
 		ArchiveReplicationAction action = new ArchiveReplicationAction();
 		GridFacade grid = mock (GridFacade.class);
 		action.setGridRoot(grid);

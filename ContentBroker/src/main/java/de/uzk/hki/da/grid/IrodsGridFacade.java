@@ -31,7 +31,6 @@ import org.springframework.util.StringUtils;
 
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.utils.MD5Checksum;
-import de.uzk.hki.da.utils.Utilities;
 
 /**
  * In this implementation the replications are done by creating a thread an doing them synchronously from the thread. 

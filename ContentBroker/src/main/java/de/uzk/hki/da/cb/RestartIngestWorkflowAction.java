@@ -9,7 +9,6 @@ import org.apache.commons.lang.NotImplementedException;
 import de.uzk.hki.da.convert.JhoveScanService;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.Utilities;
 
 /**
  * 

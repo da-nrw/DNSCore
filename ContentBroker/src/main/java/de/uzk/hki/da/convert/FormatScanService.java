@@ -99,7 +99,6 @@ public class FormatScanService {
 			f.setFormatPUID(identify(f.toRegularFile()));
 			logger.trace(f+" has puid "+f.getFormatPUID()+". Now searching if second stage scan policy is applicable");
 			
-			
 			for (SecondStageScanPolicy scan:secondStageScans){
 				if (!f.getFormatPUID().equals(scan.getPUID())) continue;
 				logger.trace("Policy found: "+scan);

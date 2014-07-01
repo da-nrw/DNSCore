@@ -31,6 +31,7 @@ import de.uzk.hki.da.cb.ConversionInstructionsBuilderTests;
 import de.uzk.hki.da.cb.ConvertActionNodeSplittingTests;
 import de.uzk.hki.da.cb.ConvertActionTests;
 import de.uzk.hki.da.cb.ConvertCheckActionTests;
+import de.uzk.hki.da.cb.CreateEDMActionTests;
 import de.uzk.hki.da.cb.CreatePremisActionTests;
 import de.uzk.hki.da.cb.DeleteObjectActionTests;
 import de.uzk.hki.da.cb.FetchPIPsActionTest;
@@ -156,7 +157,8 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	ReplicationExecutorTest.class,
 	PathTypeEditorSupportTests.class,
 	XsltEDMGeneratorTests.class,
-	SendToPresenterActionTests.class
+	SendToPresenterActionTests.class,
+	CreateEDMActionTests.class
 //	HibernateUtilThreadingTest.class
 })
 public class SimpleSuite {

@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.utils.MD5Checksum;
-import de.uzk.hki.da.utils.Utilities;
 
 
 /**

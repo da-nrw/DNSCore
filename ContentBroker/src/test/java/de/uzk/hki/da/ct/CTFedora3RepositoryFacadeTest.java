@@ -19,12 +19,6 @@ public class CTFedora3RepositoryFacadeTest {
 	@Test
 	public void test() throws RepositoryException, IOException{
 		
-//		System.setProperty("http.proxySet","true");
-//        System.setProperty("http.proxyHost","localhost");
-//        System.setProperty("http.proxyPort","3126");   
-//        System.setProperty("http.proxyPassword","J9i64o21It");   
-//        System.setProperty("http.proxyUser","danrwproxy");   
-		
 		try {
 			fedora = new Fedora3RepositoryFacade("http://localhost:8080/fedora", "fedoraAdmin", PasswordUtils.decryptPassword("BYi/MFjKDFd5Dpe52PSUoA=="));
 		} catch (MalformedURLException e) {
