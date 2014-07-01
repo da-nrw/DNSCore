@@ -34,7 +34,7 @@ import org.hibernate.criterion.CriteriaSpecification;
 import grails.converters.JSON
 
 class StatusController {
-
+	
 	def index() {
 	
 		def result = [:]
@@ -72,13 +72,7 @@ class StatusController {
 		}
 				
 		if (params.urn ) {
-			rList = QueueEntry.withCriteria() {
-					createAlias('obj', 'o', 
-					CriteriaSpecification.INNER_JOIN)
-					createAlias('o.contractor', 'contractor', CriteriaSpecification.INNER_JOIN)
-					eq("contractor.shortName", session.bauthuser)
-					eq("o.urn", params.urn)
-			};
+				QueueEntry.getAllQueueEntriesForShortNameAndUrn(session.bauthuser, params.urn)
 			} else if (params.origName) {
 			rList = QueueEntry.findAll("from QueueEntry as q where q.obj.contractor.shortName=:csn and q.obj.origName=:on",
              [on: params.origName,

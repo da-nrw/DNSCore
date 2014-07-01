@@ -23,6 +23,7 @@ package daweb3
 @Author Scuy
 */
 import java.text.SimpleDateFormat;
+import org.hibernate.criterion.CriteriaSpecification
 
 class QueueEntry {
 	
@@ -47,6 +48,16 @@ class QueueEntry {
 		// necessary because dateCreated and dateModified seem to be reserved by grails
 		created column: 'date_created'
 		modified column: 'date_modified'
+	}
+	
+	
+	static QueueEntry getAllQueueEntriesForShortNameAndUrn(String shortName, String urn) {
+		return createCriteria().list  {
+			createAlias('obj', 'o', CriteriaSpecification.INNER_JOIN)
+			createAlias('o.contractor', 'contractor', CriteriaSpecification.INNER_JOIN)
+			eq("contractor.shortName", shortName)
+			eq("o.urn", urn)
+		}
 	}
 	
 	
