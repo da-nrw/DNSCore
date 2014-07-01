@@ -56,7 +56,8 @@
 		<property name="startStatus" value="750" />
 		<property name="endStatus" value="760" />
 		<property name="name" value="PIPGenUpdateMetadataAction" />
-		<property name="updateMetadataService" ref="updateMetadataService" />
+		<property name="namespaces" ref="updateMetadataNamespaces" />
+		<property name="xpathsToUrls" ref="updateMetadataXpathsForUrls" />
 		<property name="writePackageTypeToDC" value="true" />
 		<property name="repNames">
 			<util:list>

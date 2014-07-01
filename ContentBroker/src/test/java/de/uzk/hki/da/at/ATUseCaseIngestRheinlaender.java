@@ -19,6 +19,9 @@
 
 package de.uzk.hki.da.at;
 
+import java.io.File;
+
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +37,7 @@ import de.uzk.hki.da.model.Object;
 public class ATUseCaseIngestRheinlaender extends Base{
 
 	private static final String origName = "ATUseCaseIngestRheinlaender";
+	private Object object;
 	
 	@Before
 	public void setUp(){
@@ -42,6 +46,14 @@ public class ATUseCaseIngestRheinlaender extends Base{
 	
 	@After
 	public void tearDown(){
+		
+		try{
+			new File("/tmp/"+object.getIdentifier()+".pack_1.tar").delete();
+			FileUtils.deleteDirectory(new File("/tmp/"+object.getIdentifier()+".pack_1"));
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+		}
+		
 		clearDB();
 		cleanStorage();
 	}
@@ -49,7 +61,7 @@ public class ATUseCaseIngestRheinlaender extends Base{
 	@Test
 	public void test(){
 		ingest(origName);
-		Object object = retrievePackage(origName,"1");
+		object = retrievePackage(origName,"1");
 		System.out.println("object identifier: "+object.getIdentifier());
 	}
 }

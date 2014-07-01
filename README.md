@@ -111,7 +111,7 @@ the releases page, follow the source code link for the corresponding version and
 * Overview of the [metadata workflow](ContentBroker/src/main/markdown/metadata_workflow.md).
 
 #### Installation related
-* [click here](ContentBroker/src/main/markdown/installation_irods.md) to learn how to set up a iRODS on a DNSCore node.
+* [click here](ContentBroker/src/main/markdown/installation_irods.md) to learn how to set up / upgrade iRODS for DNSCore node.
 * [click here](ContentBroker/src/main/markdown/installation_cb.md) to learn how to set up the ContentBroker.
 * [click here](ContentBroker/src/main/markdown/installation_irods_cb.md) to learn how connect iRODS and the ContentBroker
 * [click here](https://github.com/da-nrw/prepscripts/blob/master/README.md) to learn how connect Fedora and DNSCore

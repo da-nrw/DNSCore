@@ -38,7 +38,6 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.service.UpdateMetadataService;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
@@ -135,17 +134,14 @@ public class UpdateMetadataActionXMPTests {
 		obj.getLatestPackage().getEvents().add(evt6);
 		
 		// set up object - end
+		UpdateMetadataAction action = new UpdateMetadataAction();
 		
-		UpdateMetadataService service = new UpdateMetadataService();
 		HashMap<String,String> xpaths = new HashMap<String,String>();
 		xpaths.put("XMP", "//rdf:Description/@rdf:about");
-		service.setXpathsToUrls(xpaths);
+		action.setXpathsToUrls(xpaths);
 		
 		HashMap<String, String> nsMap = new HashMap<String,String>();
-		service.setNamespaces(nsMap);
-		
-		UpdateMetadataAction action = new UpdateMetadataAction();
-		action.setUpdateMetadataService(service);
+		action.setNamespaces(nsMap);
 		
 		Job job = new Job(); job.setId(1);
 		
