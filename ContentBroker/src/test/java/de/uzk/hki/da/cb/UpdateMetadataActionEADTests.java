@@ -20,8 +20,9 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -37,6 +38,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.ActionCommunicatorService;
+import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
@@ -100,10 +102,10 @@ public class UpdateMetadataActionEADTests {
 	
 	@After 
 	public void tearDown(){
-		new File(workAreaRootPathPath+"work/TEST/42/data/a/mets_2_99.xml").delete();
-		new File(workAreaRootPathPath+"work/TEST/42/data/a/vda3.XML").delete();
-		new File(workAreaRootPathPath+"work/TEST/42/data/b/mets_2_99.xml").delete();
-		new File(workAreaRootPathPath+"work/TEST/42/data/b/vda3.XML").delete();
+		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data/a/mets_2_99.xml").delete();
+		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data/a/vda3.XML").delete();
+		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data/b/mets_2_99.xml").delete();
+		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data/b/vda3.XML").delete();
 	}
 	
 	
@@ -126,9 +128,9 @@ public class UpdateMetadataActionEADTests {
 		
 		try{
 			action.implementation();
-//			fail();
-		}catch(RuntimeException e){
-			// ok
+			fail();
+		}catch(UserException e){
+			assertTrue(e.getMessage().contains("replacements could be done."));
 		}
 
 		

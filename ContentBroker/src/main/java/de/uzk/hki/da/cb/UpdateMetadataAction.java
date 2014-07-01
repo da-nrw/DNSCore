@@ -21,6 +21,7 @@ package de.uzk.hki.da.cb;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -40,6 +41,7 @@ import org.apache.commons.lang.NotImplementedException;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
@@ -90,6 +92,7 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		String packageType = (String) actionCommunicatorService.extractDataObject(job.getId(), "package_type");
 		String metadataFileName = (String) actionCommunicatorService.extractDataObject(job.getId(), "metadata_file");
+		
 		if (packageType == null || metadataFileName == null) {
 			logger.warn("Could not determine package type. No metadata to update.");
 			return true;
@@ -153,64 +156,81 @@ public class UpdateMetadataAction extends AbstractAction {
 	 * @param metadataFilePath
 	 * @param repName
 	 * @param absUrlPrefix
+	 * @throws JDOMException 
+	 * @throws IOException 
 	 */
 	private void updatePathsInEADStructure(
 			Package pkg,
 			String metadataFilePath,
 			String repName,
-			String absUrlPrefix)
+			String absUrlPrefix) 
+					throws IOException
 			{
 
 		if (absUrlPrefix == null) absUrlPrefix = "";
 		
 		Map<String,String> replacements = generateReplacementsMap(pkg, repName, absUrlPrefix);
+		int expectedReplacements = replacements.size();
 		
-		// replace paths in elements denoted by xpath
+		File metadataFile = Path.makeFile(pkg.getTransientBackRefToObject().getDataPath(),repName,metadataFilePath);
+		if (!metadataFile.exists()) throw new FileNotFoundException();
+		
 		String xPathPath = xpathsToUrls.get("EAD");
 		logger.debug("xPathPath: "+xPathPath);
-				
-		File metadataFile = Path.makeFile(pkg.getTransientBackRefToObject().getDataPath(),repName,metadataFilePath);
-
+		// replace paths in elements denoted by xpath
+		XPath xPath;
+		int actualReplacements = 0;
+		@SuppressWarnings("rawtypes")
+		List nodes = null;
 		try {
+			xPath = XPath.newInstance(xPathPath);
 
-			FileInputStream fileInputStream = new FileInputStream(metadataFile);
+	
+			FileInputStream fileInputStream;
+			fileInputStream = new FileInputStream(metadataFile);
 			BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
-			
-			XPath xPath = XPath.newInstance(xPathPath);
+		
 			for (String prefix : namespaces.keySet()) {
 				xPath.addNamespace(prefix, namespaces.get(prefix));
 			}
-			@SuppressWarnings("rawtypes")
-			List nodes = xPath.selectNodes(XMLUtils.createNonvalidatingSaxBuilder().build(bomInputStream));
+			nodes = xPath.selectNodes(XMLUtils.createNonvalidatingSaxBuilder().build(bomInputStream));
 			if (nodes.size() == 0) {
 				logger.warn("XPath expression did not match any Element. No paths will be updated!");
 			}
+		} catch (JDOMException e) {throw new RuntimeException(e);}
 
+		try {
 			Map<String,String> metsReplacements = new HashMap<String,String>();
-
+			
 			for (Object node : nodes) {
 				logger.debug("Diving into EAD-node:"+node);
 				
 				Attribute attr = (Attribute) node;
 				String value = attr.getValue();
 				if (value.endsWith(".xml")) {
-					updatePathsInFile(pkg, repName, value, xpathsToUrls.get("METS"), replacements);
+					actualReplacements+= updatePathsInFile(pkg, repName, value, xpathsToUrls.get("METS"), replacements);
 					metsReplacements.put(value, absUrlPrefix + value);
 				}
 			}
 			updatePathsInFile(pkg, repName, metadataFilePath, xPathPath, metsReplacements);	
 		
-			
 		} catch(Exception err) {
 			throw new UserException(UserExceptionId.REPLACE_URLS_IN_METADATA_ERROR,
 					"Could not replace file URLs in XML metadata.", metadataFilePath, err);
 		}
-				
+			
+			
+		if (expectedReplacements!=actualReplacements){
+			throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,
+					expectedReplacements+" file(s) have been converted and for each one an entry in a METS file has to be updated. "+
+			"but only "+actualReplacements+" replacements could be done.", metadataFilePath, new Exception());
+		}
 	}
+
+
 	
 	
 	/**
-	
 	 * Update paths in a packages metadata.
 	 *
 	 * @param pkg the current package
@@ -313,7 +333,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	 * @param xPathPath the x path path
 	 * @param replacements the replacements
 	 */
-	private void updatePathsInFile(
+	private int updatePathsInFile(
 			Package pkg,
 			String repName,
 			String metadataFilePath,
@@ -362,11 +382,13 @@ public class UpdateMetadataAction extends AbstractAction {
 			}
 			if ((nodes.size() == 0)||(entitiesReplaced == 0 )) {
 				logger.warn("XPath expression did not match any Element. No paths will be updated!");
+				return 0;
 			}
 			
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.setFormat(Format.getPrettyFormat());
 			outputter.output(doc, new FileWriter(metadataFile));
+			return entitiesReplaced;
 			
 		} catch (Exception err) {
 			throw new UserException(UserExceptionId.REPLACE_URLS_IN_METADATA_ERROR,
