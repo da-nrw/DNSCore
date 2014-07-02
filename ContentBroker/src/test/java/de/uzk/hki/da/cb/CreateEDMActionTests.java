@@ -74,6 +74,9 @@ public class CreateEDMActionTests {
 		edmMappings.put("METS","src/main/xslt/edm/mets-mods_to_edm.xsl");
 		action.setEdmMappings(edmMappings);
 		
+		action.setChoBaseUri("cho");
+		action.setAggrBaseUri("aggr");
+		action.setLocalBaseUri("local");
 		action.setRepositoryFacade(repo);
 		action.setObject(object);
 		try {
