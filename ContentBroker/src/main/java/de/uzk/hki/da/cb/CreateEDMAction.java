@@ -148,6 +148,7 @@ public class CreateEDMAction extends AbstractAction {
 		
 		Element formatEl = doc.getRootElement().getChild("format",
 				Namespace.getNamespace("http://purl.org/dc/elements/1.1/"));
+		if (formatEl==null) return null;
 		
 		String packageType = formatEl.getTextNormalize();
 		logger.debug("Read package type: {}", packageType);
