@@ -12,11 +12,16 @@ irods.keyStorePassword=
 irods.keyStorePath=
 irods.trustStorePath=
 
-
 system.min_repls=1
 system.sidecar_extensions=xmp;txt;xml
 system.presServer=localnode
 system.urnNameSpace=urn:nbn:de:danrw
+system.uris.file=http://data.danrw.de/file
+system.uris.cho=http://data.danrw.de/cho
+system.uris.aggr=http://data.danrw.de/aggregation
+system.uris.local=info:
+system.openCollectionName=danrw
+system.closedCollectionName=danrw-closed
 
 localNode.admin_email=da-nrw-notifier@uni-koeln.de
 localNode.userAreaRootPath=/ci/storage/UserArea
@@ -31,11 +36,6 @@ localNode.id=1
 elasticsearch.index=portal_ci
 elasticsearch.hosts=localhost
 elasticsearch.cluster=cluster_ci
-
-uris.file="http://data.danrw.de/file
-uris.cho=http://data.danrw.de/cho
-uris.aggr=http://data.danrw.de/aggregation
-uris.local=info:
 
 cb.serverSocketNumber=4455
 cb.implementation.grid=irodsGridFacade

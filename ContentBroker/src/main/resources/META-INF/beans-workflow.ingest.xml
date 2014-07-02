@@ -110,7 +110,7 @@
 				<value>dip/institution</value>
 			</util:list>
 		</property>
-		<property name="absUrlPrefix" value="${uris.file}"/>
+		<property name="absUrlPrefix" value="${system.uris.file}"/>
 		<property name="dcMappings">
 			<map>
 				<entry key="METS" value="conf/xslt/dc/mets-mods_to_dc.xsl" />
