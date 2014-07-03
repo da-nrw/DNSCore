@@ -105,13 +105,13 @@ TODO explanation
 
     system.uris.local=
     
-TODO expanation
+This path gets added to all metadata streams which get updated during creation of the PIPs. Local file system paths inside metadata which point to the files inside the packages get prefixed by system.uris.local during metadata update. It denotes the path to every single datestream in the presentation repository.
 
     system.uris.file=
     system.uris.cho=
     system.uris.aggr=
 
-First note that these three properties are only needed on installations of type "pres" or "full". Normal node installations do not need them. DNS makes it possible to feed a search index with different references to objects. Objects are split into aggregations, files, and chos.
+First note that these three properties are only needed on installations of type "pres" or "full". Normal node installations do not need them. DNS makes it possible to feed a search index with different references to objects. Objects are split into aggregations, files, and chos. 
 
     system.openCollectionName=
     system.closedCollectionName=
