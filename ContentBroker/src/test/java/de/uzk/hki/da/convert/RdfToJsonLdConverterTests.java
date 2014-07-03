@@ -40,12 +40,10 @@ public class RdfToJsonLdConverterTests {
 
 	/**
 	 * Test.
-	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 * @throws JSONLDProcessingError the jSONLD processing error
+	 * @throws Exception 
 	 */
 	@Test
-	public void test() throws IOException, JSONLDProcessingError {
+	public void test() throws Exception {
 		
 		File edmFile = new File("src/test/resources/convert/RdfToJsonLdConverterTests/edm.rdf");
 		String edm = FileUtils.readFileToString(edmFile);
