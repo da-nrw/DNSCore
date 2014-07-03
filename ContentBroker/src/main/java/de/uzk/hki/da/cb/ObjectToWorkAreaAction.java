@@ -48,7 +48,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 		
 		try {
 			if (!ingestGate.canHandle(retrievePackagesHelper.getObjectSize(object, job))) {
-				logger.info("no disk space available at working resource. will not fetch new data.");
+				logger.warn("ResourceMonitor prevents further processing of package due to space limitations. Setting job back to start state.");
 				return false;
 			}
 		} catch (IOException e) {

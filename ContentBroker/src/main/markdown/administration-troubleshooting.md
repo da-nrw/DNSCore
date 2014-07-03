@@ -26,7 +26,7 @@ the possible workflows of the ContentBroker. Any workflow consists of small, wel
 the actions in workflows can vary slightly over time, we will try to not mention the specifics in this document.
 Instead, please consider the sources if you want to know more about the structure of the workflows:
 
-https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-actions.xml (Ingest-Workflow)
+https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.ingest.xml (Ingest-Workflow)
 
 ### Ingest Workflow - Error handling
 

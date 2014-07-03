@@ -331,11 +331,11 @@ public class SendToPresenterAction extends AbstractAction {
 		String fileId = repositoryFacade.generateFileId(relPath);
 		
 		// special file IDs for metadata files
-		if (file.getName().equals("DC.xml")) {
+		if (file.getName().equalsIgnoreCase("DC.xml")) {
 			fileId = "DC";
 			isMetadataFile = true;
 			mimeType = "text/xml";
-		} else if (file.getName().equals(packageType + ".xml") || file.getName().equals(packageType + ".rdf")) {
+		} else if (file.getName().equalsIgnoreCase(packageType + ".xml") || file.getName().equalsIgnoreCase(packageType + ".rdf")) {
 			fileId = packageType;
 			isMetadataFile = true;
 		}

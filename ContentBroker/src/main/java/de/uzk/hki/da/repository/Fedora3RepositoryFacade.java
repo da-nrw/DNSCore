@@ -150,6 +150,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 				.execute(fedora).getEntityInputStream();
 		} catch (FedoraClientException e) {
 			if (e.getStatus() == 404) { 
+				logger.error("Failed to recieve Datastream, due to not found reason: " + objectId + " " + fileId);
 				return null;
 			} else {
 				throw new RepositoryException("Failed to retrieve datastream: " + fileId, e);

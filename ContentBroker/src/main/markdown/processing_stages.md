@@ -98,31 +98,52 @@ the administrator who makes the "move" because he is the one who knows when the 
 
 #### WorkArea
 
-The WorkArea is the one and only place where the ContentBroker manipulates the "contents" of objects. When there is
-sufficient memory free on the WorkArea, the ContentBroker fetches new objects from the IngestArea. 
+The WorkArea is the place where the ContentBroker unpacks the typical OAIS model packages (AIP,SIP) in order to manipulate the contents of the objects. More so, it is the only place on a node where contents of objects can be seen and manipulated, since AIPs and SIPs always relate to data packed in container formats.
+
+The WorkArea is subdivided into two further sections, the WorkSection where processing on the contents of packages is done, and the PipsSections, which is used to exchange between regular nodes of the system and the node of the system hosting the presentation repository. Each of the subssections will be discussed in the following paragraphs.
+
+##### WorkSection of the WorkArea
+
+The actions of the ContentBroker's workflows execute well-defined steps on the material. That means that if a job is a non-transitory (e.g. ending with 0) state, you'll find the corresponding object in a well defined state in the WorkArea.
 
     [WorkAreaRootFolder]/
-                         [csn1]/
-                                [oid1]/data/
-                                            [rep1+a]
-                                            [rep1+b]
-                                            [rep2+a]
-                                            [rep2+b]
-                                [oid2]/data/
-                                            [rep1+a]
-                                            ...
-                                ... 
-                         [csn2]/
-                                [oid3]/...
-                                [oid4]/...
-                         ...
+    			work/
+                           [csn1]/
+                                [oid1]
+                                [oid2]
+                           [csn2]/
+                                [oid3]
+                                [oid4]
+                           ...
+                       
 
-The WorkArea has to be under the vault path of the irods cache area or working resource. TODO link.
+Below work there are contractor folders. One for each contractor serviced by this node. Below the contractor folder there are all the objects which are subject to a workflow right now (ingest, retrieval, ...). Typically when debugging objects, the administrator has the oid belonging to the object that is connected to the job. With this object id you find the unpacked object in the WorkArea.
 
-#### DIPArea
+Typically, an unpacked object contains all representations from all packages that are available. This can either a first  representation derived directly from the SIP, or a representation created by conversion processes during ingest or migration, or representations from older AIPs belonging to the same object. You'll find the unpacked objects in this form
 
-    [DIPAreaRootPath]/
-                      public/
+    [oid1]/data/
+                [rep1+a]
+                [rep1+b]
+                [rep2+a]
+                [rep2+b]
+    [oid2]/data/
+                [rep1+a]
+                ...
+
+which looks almost like an AIP with the exception that it usually contains all the representations belonging to the object. That is the reason why we always should talk of objects instead of packages in the context of the WorkArea.
+
+###### Notes on the dataflow
+
+Now that we've already mentioned different types of sources material (AIPs, SIPs) for the unpacked objects, we should discuss where they come from, in order to understand the dataflow. SIPs come from the IngestArea. When the ContentBroker decides there is sufficient free memory on the WorkArea (search the document [here](administration-interfaces.md) for "IngestGate" to find information about how to configure that), it fetches SIPs from the IngestArea in order to do work on them. It may be then, in case the package is a delta to an existing object, that additional AIPs from the long term resources are fetched. These data and the SIPs data get unpacked before starting the workflow. Workflows as Retrieval or PIPGen start without SIP. Instead they base entirely on the AIPs they fetch from long term resources.
+
+##### PipsSection of the WorkArea
+
+The WorkArea is connected to a subsystem which allows for replication of the working states of those objects in transitory states between nodes of the system. At the moment this is used for moving PIPs around. The subsystem is represented by the [DistributedConversionAdapter.java](../java/de/uzk/hki/da/grid/DistributedConversionAdapter.java). On iRODS based nodes, this system talks to resources which map to the WorkArea file system paths. Have a look at the document [here](administration-interfaces.md) and look for "distributedConversionAdapter" to understand how to set up the subsystem properly.
+
+    [WorkAreaRootFolder]/
+    
+    		 dips/
+                          public/
                              [csn1]/
                                     [oid1]_[jobid]/
                                                    file1.txt
@@ -134,7 +155,7 @@ The WorkArea has to be under the vault path of the irods cache area or working r
                                                    file2.txt
                                                    ...
                              ...
-                      institution/
+                          institution/
                              [csn1]/
                                     [oid1]_[jobid]/
                                                    file1.txt
@@ -150,8 +171,10 @@ The WorkArea has to be under the vault path of the irods cache area or working r
                                                    file6.txt
                              ...
 
-The DIPArea has to be under the vault path of the irods cache area or working resource. TODO link.
 
+During the Ingest- and PIPGen- Workflows PIPs are generated on the node responsible for the object. When the PIP generation is finished, the two versions of the DIP (public, institution), get moved to the PipsSection so that the rest of the object can be processed independently. The PipsSection is devided into a public and an institution folder, both of which host different subfolders for the different contractors. The Pips get marked with their object identifier plus the jobs database primary key. 
+
+The presentation repository node gets a job for every PIPs which has been placed at one of the nodes PipsSection. It can then fetch it from there as soon as it has free capacities to do so.
 
 #### GridCacheArea
 

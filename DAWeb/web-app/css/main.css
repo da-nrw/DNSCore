@@ -48,6 +48,10 @@ body {
 	        box-shadow: 0 0 0.3em #333;
 }
 
+table {
+	font-size: 12px;
+}
+
 #header {
 	background: #004678;
 	background: linear-gradient(top, #004678 0%, #0064ab 100%);
