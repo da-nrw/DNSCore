@@ -115,6 +115,7 @@ The actions of the ContentBroker's workflows execute well-defined steps on the m
                                 [oid3]
                                 [oid4]
                            ...
+                        dips/
                        
 
 Below work there are contractor folders. One for each contractor serviced by this node. Below the contractor folder there are all the objects which are subject to a workflow right now (ingest, retrieval, ...). Typically when debugging objects, the administrator has the oid belonging to the object that is connected to the job. With this object id you find the unpacked object in the WorkArea.
@@ -141,7 +142,6 @@ Now that we've already mentioned different types of sources material (AIPs, SIPs
 The WorkArea is connected to a subsystem which allows for replication of the working states of those objects in transitory states between nodes of the system. At the moment this is used for moving PIPs around. The subsystem is represented by the [DistributedConversionAdapter.java](../java/de/uzk/hki/da/grid/DistributedConversionAdapter.java). On iRODS based nodes, this system talks to resources which map to the WorkArea file system paths. Have a look at the document [here](administration-interfaces.md) and look for "distributedConversionAdapter" to understand how to set up the subsystem properly.
 
     [WorkAreaRootFolder]/
-    
     		 dips/
                           public/
                              [csn1]/
@@ -170,6 +170,7 @@ The WorkArea is connected to a subsystem which allows for replication of the wor
                                                    file5.txt
                                                    file6.txt
                              ...
+                 work/
 
 
 During the Ingest- and PIPGen- Workflows PIPs are generated on the node responsible for the object. When the PIP generation is finished, the two versions of the DIP (public, institution), get moved to the PipsSection so that the rest of the object can be processed independently. The PipsSection is devided into a public and an institution folder, both of which host different subfolders for the different contractors. The Pips get marked with their object identifier plus the jobs database primary key. 
