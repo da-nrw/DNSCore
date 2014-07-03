@@ -101,20 +101,22 @@ This is the name of the node which hosts the presentation repository. It must be
     
     system.urnNameSpace=
     
-URNs  urn:nbn:de:danrw
+TODO explanation
 
     system.uris.local=
     
-TODO
+TODO expanation
 
     system.uris.file=
     system.uris.cho=
     system.uris.aggr=
 
-First note that these three properties are only needed on installations of type "pres" or "full". Normal node installations do not need them.
+First note that these three properties are only needed on installations of type "pres" or "full". Normal node installations do not need them. DNS makes it possible to feed a search index with different references to objects. Objects are split into aggregations, files, and chos.
 
     system.openCollectionName=
     system.closedCollectionName=
+
+These settings also are only necessary on nodes of type "pres" or "full". The open collection is the collection of the presentation repository which hosts the public datastreams. The closed collection is the collection which hosts the datastream which can only be accessed by the institutions themselves.
 
 ### cb
 
