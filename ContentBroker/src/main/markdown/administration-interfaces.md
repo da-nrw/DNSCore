@@ -82,6 +82,7 @@ Example from [config.properties.ci](../conf/config.properties.ci)
     system.uris.aggr=http://data.danrw.de/aggregation
     system.uris.openCollectionName=danrw
     system.uris.closedCollectionName=danrw-closed
+    system.emailFrom=noreply@danrw.de
 
 System properties apply to all nodes comprising the so called "system" (TODO link to glossary or data model). As
 a consequence, for a properly working system all the nodes system properties have to be exactly the same. If the
