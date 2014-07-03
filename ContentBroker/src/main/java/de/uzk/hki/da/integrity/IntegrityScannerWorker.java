@@ -155,7 +155,7 @@ public class IntegrityScannerWorker {
 					.setCalendar("date",now)
 					.setParameter("1", localNodeName)
 					.setParameter("2", ObjectState.InWorkflow) // don't consider objects under work
-					.setParameter("4", ObjectState.UnderAudit) //           ||
+					.setParameter("3", ObjectState.UnderAudit) //           ||
 							.setReadOnly(true).list();
 			
 			Object objectToAudit = (Object) l.get(0);
