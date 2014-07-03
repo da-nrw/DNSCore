@@ -76,6 +76,10 @@ Example from [config.properties.ci](../conf/config.properties.ci)
     system.sidecar_extensions=xmp;txt;xml
     system.presServer=localnode
     system.urnNameSpace=urn:nbn:de:danrw
+    uris.local=info:
+    uris.file=http://data.danrw.de/file
+    uris.cho=http://data.danrw.de/cho
+    uris.aggr=http://data.danrw.de/aggregation
 
 System properties apply to all nodes comprising the so called "system" (TODO link to glossary or data model). As
 a consequence, for a properly working system all the nodes system properties have to be exactly the same. If the
@@ -87,7 +91,7 @@ The minimum number of replications the ContentBroker asks the grid component for
     
     system.sidecar_extensions=xmp;txt;xml
 
-TODO    
+TODO describe   
 
     system.presServer=localnode
     
@@ -95,7 +99,17 @@ This is the name of the node which hosts the presentation repository. It must be
     
     system.urnNameSpace=
     
-TODO describe urn:nbn:de:danrw
+URNs  urn:nbn:de:danrw
+
+    uris.local=
+    
+TODO
+
+    uris.file=
+    uris.cho=
+    uris.aggr=
+
+TODO
 
 ### cb
 
@@ -229,16 +243,6 @@ The elasticsearch settings only are necessary on nodes which provide presentatio
     
 Make sure you insert the same settings you have used during your elasticsearch installation.
 
-### uris
-
-Example from [config.properties.ci](../conf/config.properties.ci)
-
-Independently if the repository functionality is used or not, these settings are needed:
-
-    uris.file="http://data.danrw.de/file
-    uris.cho=http://data.danrw.de/cho
-    uris.aggr=http://data.danrw.de/aggregation
-    uris.local=info:
 
 ## Application Database configuration
 
