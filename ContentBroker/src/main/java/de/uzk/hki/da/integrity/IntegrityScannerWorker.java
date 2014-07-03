@@ -149,13 +149,13 @@ public class IntegrityScannerWorker {
 			now.add(Calendar.HOUR_OF_DAY, -24);
 			@SuppressWarnings("rawtypes")
 			List l = null;
-			l = session.createQuery("from Object where initial_node= ?1 and last_checked > :date and "
-					+ "object_state!= ?2 and object_state!= ?3"
-					+ "order by last_checked asc")
-					.setCalendar("date",now)
+			l = session.createQuery("from Object o where o.initial_node = ?1 and o.last_checked > ?2 and "
+					+ "o.object_state != ?3 and o.object_state != ?4 "
+					+ "order by o.last_checked asc")
 					.setParameter("1", localNodeName)
-					.setParameter("2", ObjectState.InWorkflow) // don't consider objects under work
-					.setParameter("3", ObjectState.UnderAudit) //           ||
+					.setCalendar("2",now)
+					.setParameter("3", ObjectState.InWorkflow) // don't consider objects under work
+					.setParameter("4", ObjectState.UnderAudit) //           ||
 							.setReadOnly(true).list();
 			
 			Object objectToAudit = (Object) l.get(0);
