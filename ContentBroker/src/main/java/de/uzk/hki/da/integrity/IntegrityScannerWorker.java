@@ -76,6 +76,8 @@ public class IntegrityScannerWorker {
 	/** The local node name. */
 	private String localNodeName;
 	
+	/** The system Email Address */
+	private String systemFromEmailAddress;
 	
 	/**
 	 * Checking for the AIPs related to this node.
@@ -189,7 +191,7 @@ public class IntegrityScannerWorker {
 		String subject = "[" + "da-nrw".toUpperCase() +  "] Problem Report für " + obj.getIdentifier() + " auf " + localNodeName;
 		if (nodeAdminEmail != null && !nodeAdminEmail.equals("")) {
 			try {
-				Mail.sendAMail(nodeAdminEmail, subject, "Es gibt ein Problem mit dem Objekt " + obj.getContractor().getShort_name()+ "/" + obj.getIdentifier());
+				Mail.sendAMail(systemFromEmailAddress, nodeAdminEmail, subject, "Es gibt ein Problem mit dem Objekt an Ihrem Knoten " + obj.getContractor().getShort_name()+ "/" + obj.getIdentifier());
 			} catch (MessagingException e) {
 				logger.error("Sending email problem report for " + obj.getIdentifier() + "failed");
 			}
@@ -305,6 +307,14 @@ public class IntegrityScannerWorker {
 	 */
 	public void setMinNodes(Integer minNodes) {
 		this.minNodes = minNodes;
+	}
+
+	public String getSystemFromEmailAddress() {
+		return systemFromEmailAddress;
+	}
+
+	public void setSystemFromEmailAddress(String systemFromEmailAddress) {
+		this.systemFromEmailAddress = systemFromEmailAddress;
 	}
 
 }

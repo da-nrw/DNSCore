@@ -22,8 +22,9 @@ system.uris.aggr=http://data.danrw.de/aggregation
 system.uris.local=info:
 system.openCollectionName=danrw
 system.closedCollectionName=danrw-closed
+system.emailFrom=noreply@danrw.de
 
-localNode.admin_email=da-nrw-notifier@uni-koeln.de
+localNode.admin_email=root@cihost.de
 localNode.userAreaRootPath=/ci/storage/UserArea
 localNode.ingestAreaRootPath=/ci/storage/IngestArea
 localNode.workAreaRootPath=/ci/storage/WorkArea

@@ -207,7 +207,7 @@ public class UpdateMetadataAction extends AbstractAction {
 				
 				Attribute attr = (Attribute) node;
 				String value = attr.getValue();
-				if (value.endsWith(".xml")) {
+				if (value.endsWith(".xml") || value.endsWith(".XML")) {
 					actualReplacements+= updatePathsInFile(pkg, repName, value, xpathsToUrls.get("METS"), replacements);
 					metsReplacements.put(value, absUrlPrefix + value);
 				}

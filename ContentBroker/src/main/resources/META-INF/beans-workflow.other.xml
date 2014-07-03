@@ -28,8 +28,7 @@
 		<property name="startStatus" value="5000" />
 		<property name="endStatus" value="6000" />
 		<property name="minNodes" value="${system.min_repls}" />
-		<property name="nodeAdminEmail" value="${localNode.admin_email}" />
 		<property name="gridRoot" ref="${cb.implementation.grid}"/>
-		<property name="name" value="AuditAction" />
+		<property name="name" value="AuditAction" /> 
 	</bean>
 </beans>

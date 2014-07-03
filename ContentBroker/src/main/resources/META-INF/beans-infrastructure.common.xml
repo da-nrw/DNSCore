@@ -70,6 +70,7 @@
         <property name="gridFacade" ref="${cb.implementation.grid}" />
         <property name="nodeAdminEmail" value="${localNode.admin_email}" />
         <property name="minNodes" value="${system.min_repls}" />
+        <property name="systemFromEmailAddress" value="${system.emailFrom}" />
     </bean>
     
     <bean id="userAreaScannerWorker" class="de.uzk.hki.da.core.UserAreaScannerWorker" init-method="init">
@@ -80,8 +81,8 @@
    	<bean id="actionFactory" class="de.uzk.hki.da.core.ActionFactory">
         <property name="actionRegistry" ref="actionRegistry" />
         <property name="localNode" ref="localNode" />
-        <property name="adminEmail" value="${localNode.admin_email}" />
         <property name="dao" ref="centralDao" />
+        <property name="systemFromEmailAddress" value="${system.emailFrom}" />
         <property name="actionCommunicatorService" ref="actionCommunicatorService" />
         <property name="userExceptionManager" ref="userExceptionManager" />
         <property name="mqConnectionFactory" ref="mqConnectionFactory"/>

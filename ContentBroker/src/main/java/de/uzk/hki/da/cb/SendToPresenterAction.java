@@ -412,7 +412,7 @@ public class SendToPresenterAction extends AbstractAction {
 	
 	private String detectMimeType(File file) throws IOException {
 		
-		// TODO: read from premis when available
+		// TODO: read from premis when available or: better: provide in DAFile!
 		
 		String mimeType;
 	    Tika tika = new Tika();
