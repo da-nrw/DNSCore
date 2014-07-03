@@ -75,7 +75,8 @@
 							
 							<g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}" />
 						
-							<th><g:message code="object.contractor.label" default="Contractor" /></th>
+							<g:sortableColumn property="contractor" title="${message(code: 'object.contractor.label', default: 'Contractor')}" />
+							<!-- <th><g:message code="object.contractor.label" default="Contractor" /></th> -->
 							
 							
 							<g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name')}" />

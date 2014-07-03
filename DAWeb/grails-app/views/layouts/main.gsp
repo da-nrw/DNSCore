@@ -34,7 +34,10 @@
 			<g:layoutBody/>
 		</div>
 		<div align="center">
-		<div class="footer" role="contentinfo"><g:meta name="app.name"/> <g:meta name="app.version"/>, @Historisch-Kulturwissenschaftliche Informationsverarbeitung 2011-2014</div>
+		<div class="footer" id="page-footer" role="contentinfo"><g:meta name="app.name"/> 
+		<g:meta name="app.version"/>, @Historisch-Kulturwissenschaftliche Informationsverarbeitung 2011-2014
+			<img src="${resource(dir: 'images', file: grailsApplication.config.hbz.logo)}" alt="hbz-Logo"/>
+		</div>
 		</div><div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 		
         <r:layoutResources />

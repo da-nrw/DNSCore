@@ -60,16 +60,16 @@
 						${fieldValue(bean: queueEntryInstance, field: "status")}
 					</g:link>
 					<g:set var="statusType" value="${queueEntryInstance.status[-1]}" />
-					<g:set var="statusInt" value="${queueEntryInstance.getStatusAsInteger()}" />
 					<g:if test="${statusType == "1" && admin }">
 								<g:link action="queueRetry" id="${queueEntryInstance.id}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png"/>
+									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png" title="Workflow für Objekt neu starten" alt="Workflow für Objekt neu starten"/>
 								</g:link>
 					</g:if>
+					<g:set var="statusInt" value="${queueEntryInstance.getStatusAsInteger()}" />
 						<g:if test="${statusType == "2" && admin }">
 								<g:if test="${ queueEntryInstance.showRetryButtonAfterSomeTime()}">
 								<g:link action="queueRetry" id="${queueEntryInstance.id}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png"/>
+									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png" title="Workflow für Objekt neu starten" alt="Workflow für Objekt neu starten"/>
 								</g:link>
 						</g:if>
 					</g:if>
@@ -81,7 +81,7 @@
 					</g:if> 
 					<g:if test="${ queueEntryInstance.showDeletionButton()}">
 						<g:if test="${ statusInt<401 && admin }">
-					<g:link onclick="return confirm('Eintrag löschen. Sind Sie sicher?');" action="queueDelete" id="${queueEntryInstance.id}"><g:img style="width:16px; height:16px" uri="/images/icons/list_remove.png"/>
+					<g:link onclick="return confirm('Eintrag löschen. Sind Sie sicher?');" action="queueDelete" id="${queueEntryInstance.id}"><g:img style="width:16px; height:16px" uri="/images/icons/list_remove.png" title="Objekt aus dem Workflow entfernen" alt="Objekt aus dem Workflow entfernen"/>
 					</g:link>
 					</g:if>
 					</g:if>
