@@ -76,10 +76,12 @@ Example from [config.properties.ci](../conf/config.properties.ci)
     system.sidecar_extensions=xmp;txt;xml
     system.presServer=localnode
     system.urnNameSpace=urn:nbn:de:danrw
-    uris.local=info:
-    uris.file=http://data.danrw.de/file
-    uris.cho=http://data.danrw.de/cho
-    uris.aggr=http://data.danrw.de/aggregation
+    system.uris.local=info:
+    system.uris.file=http://data.danrw.de/file
+    system.uris.cho=http://data.danrw.de/cho
+    system.uris.aggr=http://data.danrw.de/aggregation
+    system.uris.openCollectionName=danrw
+    system.uris.closedCollectionName=danrw-closed
 
 System properties apply to all nodes comprising the so called "system" (TODO link to glossary or data model). As
 a consequence, for a properly working system all the nodes system properties have to be exactly the same. If the
@@ -101,15 +103,18 @@ This is the name of the node which hosts the presentation repository. It must be
     
 URNs  urn:nbn:de:danrw
 
-    uris.local=
+    system.uris.local=
     
 TODO
 
-    uris.file=
-    uris.cho=
-    uris.aggr=
+    system.uris.file=
+    system.uris.cho=
+    system.uris.aggr=
 
-TODO
+First note that these three properties are only needed on installations of type "pres" or "full". Normal node installations do not need them.
+
+    system.openCollectionName=
+    system.closedCollectionName=
 
 ### cb
 
