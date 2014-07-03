@@ -99,7 +99,7 @@ This is the name of the node which hosts the presentation repository. It must be
     
     system.urnNameSpace=
     
-URNs  urn:nbn\:de\:danrw
+URNs  urn:nbn:de:danrw
 
     uris.local=
     
