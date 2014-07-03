@@ -149,8 +149,8 @@ public class IntegrityScannerWorker {
 			now.add(Calendar.HOUR_OF_DAY, -24);
 			@SuppressWarnings("rawtypes")
 			List l = null;
-			l = session.createQuery("from Object where initial_node=?1 and last_checked > :date and "
-					+ "object_state!=?2 and object_state!=?3"
+			l = session.createQuery("from Object where initial_node= ?1 and last_checked > :date and "
+					+ "object_state!= ?2 and object_state!= ?3"
 					+ "order by last_checked asc")
 					.setCalendar("date",now)
 					.setParameter("1", localNodeName)
