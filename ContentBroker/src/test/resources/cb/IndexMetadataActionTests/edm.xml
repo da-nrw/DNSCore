@@ -1,0 +1,17 @@
+
+<rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:edm="http://www.europeana.eu/schemas/edm/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:mets="http://www.loc.gov/METS/" xmlns:ore="http://www.openarchives.org/ore/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <edm:ProvidedCHO rdf:about="http://da-nrw-q.lvr.de/cho/1-20140702256699">
+    <dc:identifier>http://da-nrw-q.lvr.de/cho/1-20140702256699</dc:identifier>
+    <dc:title>VDA - Forschungsstelle Rheinlländer in aller Welt: Bezirksstelle West des Vereins für das Deutschtum im Ausland</dc:title>
+    <dc:identifier>VDA</dc:identifier>
+    <dc:type>collection</dc:type>
+    <dcterms:date>1920-1942</dcterms:date>
+    <edm:type></edm:type>
+  </edm:ProvidedCHO>
+  <ore:Aggregation rdf:about="http://da-nrw-q.lvr.de/aggregation/1-20140702256699">
+    <edm:aggregatedCHO rdf:resource="http://da-nrw-q.lvr.de/cho/1-20140702256699"></edm:aggregatedCHO>
+    <edm:dataProvider></edm:dataProvider>
+    <edm:provider></edm:provider>
+    <edm:rights rdf:resource="http://www.europeana.eu/rights/rr-r/"></edm:rights>
+  </ore:Aggregation>
+</rdf:RDF>

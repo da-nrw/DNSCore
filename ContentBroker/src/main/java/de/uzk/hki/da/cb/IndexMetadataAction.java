@@ -19,6 +19,8 @@
 
 package de.uzk.hki.da.cb;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -64,29 +66,31 @@ public class IndexMetadataAction extends AbstractAction {
 	private String contextUriPrefix;
 
 	@Override
-	boolean implementation() {
+	boolean implementation() throws RepositoryException, IOException {
 		setKILLATEXIT(true);
 		if (getRepositoryFacade() == null) 
 			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
 		if (indexName == null) 
 			throw new ConfigurationException("Index name not set. Make sure the action is configured properly");
-
-		try {
+		if (getFrames()==null)
+			throw new ConfigurationException("Frames not set.");
+		if (getTestContractors()==null)
+			throw new ConfigurationException("testContractors not set");
+		
 			for (String framePath : getFrames().keySet()) {
+				if (!new File(framePath).exists())
+					throw new FileNotFoundException(framePath+" does not exist.");
 				
 				String metadataFileId = getFrames().get(framePath);
-				InputStream metadataStream = 
-						getRepositoryFacade().retrieveFile(
-								object.getIdentifier(), "danrw", metadataFileId);
+				InputStream metadataStream;
+				metadataStream = getRepositoryFacade().retrieveFile(
+					object.getIdentifier(), "danrw", metadataFileId);
 				if (metadataStream == null) {
 					logger.warn("Metadata file {} not found in repository! Skipping indexing.", metadataFileId);
 					continue;
 				}
 				transformMetadataToJson(framePath,metadataStream,adjustIndexName(indexName));
 			}
-		} catch(Exception e) {
-			throw new RuntimeException(e);
-		}
 		
 		return true;
 	}
@@ -101,7 +105,7 @@ public class IndexMetadataAction extends AbstractAction {
 	 */
 	private String adjustIndexName(String originalIndexName){
 		
-		String contractorShortName = job.getObject().getContractor().getShort_name();
+		String contractorShortName = object.getContractor().getShort_name();
 		String adjustedIndexName = indexName;
 		if(testContractors != null && testContractors.contains(contractorShortName)) {
 			adjustedIndexName += "_test";
@@ -119,11 +123,17 @@ public class IndexMetadataAction extends AbstractAction {
 	 * @throws IOException
 	 * @throws JSONLDProcessingError
 	 */
-	private void transformMetadataToJson(String framePath,InputStream metadataStream,String tempIndexName) throws RepositoryException, IOException, JSONLDProcessingError{
+	private void transformMetadataToJson(String framePath,InputStream metadataStream,String tempIndexName) 
+			throws RepositoryException, IOException {
 		String metadataContent = IOUtils.toString(metadataStream, "UTF-8");
 		
 		RdfToJsonLdConverter converter = new RdfToJsonLdConverter(framePath);
-		Map<String, Object> json = converter.convert(metadataContent);
+		Map<String, Object> json = null;
+		try {
+			json = converter.convert(metadataContent);
+		} catch (Exception e) {
+			throw new RuntimeException("An error occured during metadata conversion",e);
+		}
 		
 		logger.debug("transformed RDF into JSON. Result: {}", JSONUtils.toPrettyString(json));
 		
@@ -155,6 +165,7 @@ public class IndexMetadataAction extends AbstractAction {
 		// extract index name from type
 		String[] splitType = ((String) subject.get("@type")).split("/");
 		String type = splitType[splitType.length-1];
+		System.out.println(type+" "+id+" "+subject);
 		getRepositoryFacade().indexMetadata(indexName, type, id, subject);
 	}
 	

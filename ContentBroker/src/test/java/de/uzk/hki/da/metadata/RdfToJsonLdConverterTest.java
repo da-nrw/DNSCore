@@ -62,7 +62,7 @@ public class RdfToJsonLdConverterTest {
 	}
 
 	@Test
-	public void test() throws JSONLDProcessingError, IOException {
+	public void test() throws Exception {
 			
 		// transform EDM to JSON
 		RdfToJsonLdConverter converter = new RdfToJsonLdConverter("conf/frame.jsonld");
