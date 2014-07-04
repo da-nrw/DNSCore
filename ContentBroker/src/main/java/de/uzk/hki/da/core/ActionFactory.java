@@ -65,9 +65,9 @@ public class ActionFactory implements ApplicationContextAware {
 	/** The context. */
 	private ApplicationContext context;
 	
-	/** The admin email. */
-	private String adminEmail;
-	
+	/** The systemFrom Email Adress **/
+	private String systemFromEmailAddress;
+	 
 	/** The on halt. */
 	private boolean onHalt = false;
 	
@@ -125,6 +125,7 @@ public class ActionFactory implements ApplicationContextAware {
 			action.setUserExceptionManager(userExceptionManager);
 			action.setMqConnectionFactory(mqConnectionFactory);
 			action.setNode(localNode);
+			action.setSystemFromEmailAddress(systemFromEmailAddress);
 			jobCandidate.getObject().setTransientNodeRef(localNode);
 			action.setObject(jobCandidate.getObject());
 			action.setActionMap(getActionRegistry());			
@@ -135,24 +136,6 @@ public class ActionFactory implements ApplicationContextAware {
 		logger.info("(for local node) No jobs in queue, nothing to do, shoobidoowoo, ...");
 		return null;
 		
-	}
-
-	/**
-	 * Gets the admin email.
-	 *
-	 * @return the admin email
-	 */
-	public String getAdminEmail() {
-		return adminEmail;
-	}
-
-	/**
-	 * Sets the admin email.
-	 *
-	 * @param adminEmail the new admin email
-	 */
-	public void setAdminEmail(String adminEmail) {
-		this.adminEmail = adminEmail;
 	}
 
 	/* (non-Javadoc)
@@ -267,6 +250,14 @@ public class ActionFactory implements ApplicationContextAware {
 	 */
 	public void setMqConnectionFactory(ActiveMQConnectionFactory mqConnectionFactory) {
 		this.mqConnectionFactory = mqConnectionFactory;
+	}
+
+	public String getSystemFromEmailAddress() {
+		return systemFromEmailAddress;
+	}
+
+	public void setSystemFromEmailAddress(String systemFromEmailAddress) {
+		this.systemFromEmailAddress = systemFromEmailAddress;
 	}
 	
 }

@@ -57,8 +57,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	private String presentationRepositoryNodeName;
 	
 	private GridFacade gridRoot;
-	
-	
+
 	/**
 	 * @throws IOException 
 	 */
@@ -208,7 +207,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		
 		if (email!=null) {
 		try {
-			Mail.sendAMail(email, subject, msg);
+			Mail.sendAMail(getSystemFromEmailAdress(), email, subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email reciept for " + objectIdentifier + " failed",e);
 			return false;
@@ -232,5 +231,6 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	public void setGridRoot(GridFacade gridRoot) {
 		this.gridRoot = gridRoot;
 	}
+
 }
 	

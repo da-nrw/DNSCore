@@ -63,6 +63,9 @@ public class CreateEDMAction extends AbstractAction {
 
 	@Override
 	boolean implementation() throws IOException, RepositoryException {
+		if (choBaseUri==null||choBaseUri.isEmpty()) throw new ConfigurationException("choBaseUri not set");
+		if (aggrBaseUri==null||aggrBaseUri.isEmpty()) throw new ConfigurationException("aggrBaseUri not set");
+		if (localBaseUri==null||localBaseUri.isEmpty()) throw new ConfigurationException("localBaseUri not set");
 		if (repositoryFacade == null) 
 			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
 		if (edmMappings == null)

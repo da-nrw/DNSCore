@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
+import org.xml.sax.SAXParseException;
+
 import com.github.jsonldjava.core.JSONLD;
 import com.github.jsonldjava.core.JSONLDProcessingError;
 import com.github.jsonldjava.impl.JenaRDFParser;
@@ -66,12 +68,14 @@ public class RdfToJsonLdConverter {
 	 * @throws JSONLDProcessingError the jSONLD processing error
 	 */
 	@SuppressWarnings("unchecked")
-	public Map<String,Object> convert(String content) throws JSONLDProcessingError {
+	public Map<String,Object> convert(String content) throws JSONLDProcessingError,Exception {
+		Object json=null;
 		final Model modelResult = ModelFactory.createDefaultModel().read(
 				new ByteArrayInputStream(content.getBytes()), "", "RDF/XML");
 		final JenaRDFParser parser = new JenaRDFParser();
-		Object json = JSONLD.fromRDF(modelResult, parser);
+		json = JSONLD.fromRDF(modelResult, parser);
 		json = JSONLD.frame(json, frame);
+			
 		return (Map<String,Object>) json;
 	}
 

@@ -76,6 +76,8 @@ public class IntegrityScannerWorker {
 	/** The local node name. */
 	private String localNodeName;
 	
+	/** The system Email Address */
+	private String systemFromEmailAddress;
 	
 	/**
 	 * Checking for the AIPs related to this node.
@@ -147,12 +149,12 @@ public class IntegrityScannerWorker {
 			now.add(Calendar.HOUR_OF_DAY, -24);
 			@SuppressWarnings("rawtypes")
 			List l = null;
-			l = session.createQuery("from Object where initial_node=?1 and last_checked > :date and "
-					+ "object_state!=?2 and object_state!=?3"
-					+ "order by last_checked asc")
-					.setCalendar("date",now)
+			l = session.createQuery("from Object o where o.initial_node = ?1 and o.last_checked > ?2 and "
+					+ "o.object_state != ?3 and o.object_state != ?4 "
+					+ "order by o.last_checked asc")
 					.setParameter("1", localNodeName)
-					.setParameter("2", ObjectState.InWorkflow) // don't consider objects under work
+					.setCalendar("2",now)
+					.setParameter("3", ObjectState.InWorkflow) // don't consider objects under work
 					.setParameter("4", ObjectState.UnderAudit) //           ||
 							.setReadOnly(true).list();
 			
@@ -189,7 +191,7 @@ public class IntegrityScannerWorker {
 		String subject = "[" + "da-nrw".toUpperCase() +  "] Problem Report für " + obj.getIdentifier() + " auf " + localNodeName;
 		if (nodeAdminEmail != null && !nodeAdminEmail.equals("")) {
 			try {
-				Mail.sendAMail(nodeAdminEmail, subject, "Es gibt ein Problem mit dem Objekt " + obj.getContractor().getShort_name()+ "/" + obj.getIdentifier());
+				Mail.sendAMail(systemFromEmailAddress, nodeAdminEmail, subject, "Es gibt ein Problem mit dem Objekt an Ihrem Knoten " + obj.getContractor().getShort_name()+ "/" + obj.getIdentifier());
 			} catch (MessagingException e) {
 				logger.error("Sending email problem report for " + obj.getIdentifier() + "failed");
 			}
@@ -305,6 +307,14 @@ public class IntegrityScannerWorker {
 	 */
 	public void setMinNodes(Integer minNodes) {
 		this.minNodes = minNodes;
+	}
+
+	public String getSystemFromEmailAddress() {
+		return systemFromEmailAddress;
+	}
+
+	public void setSystemFromEmailAddress(String systemFromEmailAddress) {
+		this.systemFromEmailAddress = systemFromEmailAddress;
 	}
 
 }

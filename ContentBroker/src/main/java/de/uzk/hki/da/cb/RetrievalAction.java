@@ -162,7 +162,7 @@ public class RetrievalAction extends AbstractAction {
 				+ " zum Retrieval bereit!\n\n";
 		if (email != null) {
 			try {
-				Mail.sendAMail(email, subject, msg);
+				Mail.sendAMail(getSystemFromEmailAdress(),email, subject, msg);
 			} catch (MessagingException e) {
 				logger.error("Sending email retrieval reciept for " + objectIdentifier + "failed", e);
 			}
@@ -183,6 +183,7 @@ public class RetrievalAction extends AbstractAction {
 	public String getSidecarExtensions() {
 		return sidecarExtensions;
 	}
+
 
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
 		return distributedConversionAdapter;

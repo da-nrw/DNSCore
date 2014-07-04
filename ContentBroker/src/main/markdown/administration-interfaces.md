@@ -76,6 +76,13 @@ Example from [config.properties.ci](../conf/config.properties.ci)
     system.sidecar_extensions=xmp;txt;xml
     system.presServer=localnode
     system.urnNameSpace=urn:nbn:de:danrw
+    system.uris.local=info:
+    system.uris.file=http://data.danrw.de/file
+    system.uris.cho=http://data.danrw.de/cho
+    system.uris.aggr=http://data.danrw.de/aggregation
+    system.uris.openCollectionName=danrw
+    system.uris.closedCollectionName=danrw-closed
+    system.emailFrom=noreply@danrw.de
 
 System properties apply to all nodes comprising the so called "system" (TODO link to glossary or data model). As
 a consequence, for a properly working system all the nodes system properties have to be exactly the same. If the
@@ -87,7 +94,7 @@ The minimum number of replications the ContentBroker asks the grid component for
     
     system.sidecar_extensions=xmp;txt;xml
 
-TODO    
+TODO describe   
 
     system.presServer=localnode
     
@@ -95,7 +102,22 @@ This is the name of the node which hosts the presentation repository. It must be
     
     system.urnNameSpace=
     
-TODO describe urn:nbn:de:danrw
+TODO explanation
+
+    system.uris.local=
+    
+This path gets added to all metadata streams which get updated during creation of the PIPs. Local file system paths inside metadata which point to the files inside the packages get prefixed by system.uris.local during metadata update. It denotes the path to every single datestream in the presentation repository.
+
+    system.uris.file=
+    system.uris.cho=
+    system.uris.aggr=
+
+First note that these three properties are only needed on installations of type "pres" or "full". Normal node installations do not need them. DNS makes it possible to feed a search index with different references to objects. Objects are split into aggregations, files, and chos. 
+
+    system.openCollectionName=
+    system.closedCollectionName=
+
+These settings also are only necessary on nodes of type "pres" or "full". The open collection is the collection of the presentation repository which hosts the public datastreams. The closed collection is the collection which hosts the datastream which can only be accessed by the institutions themselves.
 
 ### cb
 
@@ -229,16 +251,6 @@ The elasticsearch settings only are necessary on nodes which provide presentatio
     
 Make sure you insert the same settings you have used during your elasticsearch installation.
 
-### uris
-
-Example from [config.properties.ci](../conf/config.properties.ci)
-
-Independently if the repository functionality is used or not, these settings are needed:
-
-    uris.file="http://data.danrw.de/file
-    uris.cho=http://data.danrw.de/cho
-    uris.aggr=http://data.danrw.de/aggregation
-    uris.local=info:
 
 ## Application Database configuration
 

@@ -50,6 +50,7 @@ public class AuditAction extends AbstractAction {
 	private int minNodes = 3;
 	private GridFacade gridRoot;
 	private int errorState = 51;
+
 	/*
 	 * 
 	 * (non-Javadoc)
@@ -126,7 +127,7 @@ public class AuditAction extends AbstractAction {
 		String subject = "[" + "da-nrw" + "] Problem Report für " + obj.getIdentifier();
 		if (nodeAdminEmail != null && !nodeAdminEmail.equals("")) {
 			try {
-				Mail.sendAMail(nodeAdminEmail, subject, msg);
+				Mail.sendAMail(getSystemFromEmailAdress(), nodeAdminEmail, subject, msg);
 			} catch (MessagingException e) {
 				logger.error("Sending email problem report for " +  obj.getIdentifier() + " failed");
 			}
@@ -183,4 +184,5 @@ public class AuditAction extends AbstractAction {
 	public void setGridRoot(GridFacade gridRoot) {
 		this.gridRoot = gridRoot;
 	}
+
 }

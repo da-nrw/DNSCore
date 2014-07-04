@@ -47,7 +47,7 @@ public class Mail {
 	 * @param mailText the mail text
 	 * @throws MessagingException the messaging exception
 	 */
-	public static void sendAMail(String toAdress, String subject, String mailText) throws MessagingException{
+	public static void sendAMail(String fromAdress, String toAdress, String subject, String mailText) throws MessagingException{
 		Properties props= new Properties();
 //		props.put("mail.smtp.host","smtp.uni-koeln.de");
 		
@@ -58,7 +58,7 @@ public class Mail {
 		message.setSubject(subject);
 		
 		Address toAddress= new InternetAddress(toAdress);
-		Address fromAddress= new InternetAddress("noreply@da-nrw.hki.uni-koeln.de");
+		Address fromAddress= new InternetAddress(fromAdress);
 		message.setFrom(fromAddress);
 		message.setRecipient(Message.RecipientType.TO, toAddress);
 		

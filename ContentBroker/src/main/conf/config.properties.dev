@@ -1,11 +1,16 @@
-elasticsearch.index=portal_test
-
 system.min_repls=2
 system.sidecar_extensions=xmp;txt;xml
 system.presServer=localhost
 system.urnNameSpace=urn:nbn:de:danrw
+system.uris.file=http://data.danrw.de/file
+system.uris.cho=http://data.danrw.de/cho
+system.uris.aggr=http://data.danrw.de/aggregation
+system.uris.local=info:
+system.openCollectionName=danrw
+system.closedCollectionName=danrw-closed
+system.emailFrom=noreply@danrw.de
 
-localNode.admin_email=da-nrw-notifier@uni-koeln.de
+localNode.admin_email=root@localhost
 localNode.userAreaRootPath=CONTENTBROKER_ROOT/storage/user
 localNode.ingestAreaRootPath=CONTENTBROKER_ROOT/storage/ingest
 localNode.workAreaRootPath=CONTENTBROKER_ROOT/storage
@@ -15,13 +20,10 @@ localNode.replDestinations=hbz,lvr
 localNode.name=localhost
 localNode.id=1
 
-uris.file=http://data.danrw.de/file
-uris.cho=http://data.danrw.de/cho
-uris.aggr=http://data.danrw.de/aggregation
-uris.local=info:
-
 cb.serverSocketNumber=4455
 cb.implementation.grid=fakeGridFacade
 cb.implementation.distributedConversion=fakeDistributedConversionAdapter
 cb.implementation.repository=fakeRepositoryFacade
 cb.bin.python=python
+
+elasticsearch.index=portal_test

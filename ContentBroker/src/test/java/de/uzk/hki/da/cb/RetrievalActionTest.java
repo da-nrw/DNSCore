@@ -105,8 +105,9 @@ public class RetrievalActionTest {
 		object.getLatestPackage().scanRepRecursively("f");
 		
 		dca = mock (DistributedConversionAdapter.class);
-
+		
 		action = new RetrievalAction();
+		action.setSystemFromEmailAddress("noreply@system.de");
 		action.setDistributedConversionAdapter(dca);
 		action.setObject(object);
 		action.setJob(job);

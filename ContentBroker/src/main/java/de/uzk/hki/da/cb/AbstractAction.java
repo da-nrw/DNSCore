@@ -90,7 +90,7 @@ public abstract class AbstractAction implements Runnable {
 	protected ActionCommunicatorService actionCommunicatorService;
 	private UserExceptionManager userExceptionManager;
 	private ActiveMQConnectionFactory mqConnectionFactory;
-	
+	private String systemFromEmailAdress;
 	
 	AbstractAction(){}
 	
@@ -303,7 +303,7 @@ public abstract class AbstractAction implements Runnable {
 		
 		if (email!=null && !email.equals("")) {
 		try {
-			Mail.sendAMail(email, subject, msg);
+			Mail.sendAMail(systemFromEmailAdress, email, subject, msg);
 		} catch (MessagingException ex) {
 			logger.error("Sending email reciept for " + object.getIdentifier() + " failed",ex);
 		}
@@ -330,7 +330,7 @@ public abstract class AbstractAction implements Runnable {
 		
 		if (email != null) {			
 			try {
-				Mail.sendAMail(email, subject, message);
+				Mail.sendAMail(systemFromEmailAdress,email, subject, message);
 			} catch (MessagingException ex) {
 				logger.error("Sending email reciept for " + object.getIdentifier() + " failed", ex);
 			}
@@ -486,5 +486,13 @@ public abstract class AbstractAction implements Runnable {
 
 	public Session openSession() {
 		return HibernateUtil.openSession();
+	}
+
+	public String getSystemFromEmailAdress() {
+		return systemFromEmailAdress;
+	}
+
+	public void setSystemFromEmailAddress(String systemFromEmailAdress) {
+		this.systemFromEmailAdress = systemFromEmailAdress;
 	}
 }
