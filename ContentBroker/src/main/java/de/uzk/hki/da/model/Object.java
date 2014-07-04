@@ -760,7 +760,6 @@ public class Object {
 			if (!f.startsWith("dip") && !f.startsWith("premis"))
 				list.add(f); 
 		}
-		
 		return list.get(list.size()-1);
 	}
 	

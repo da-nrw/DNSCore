@@ -132,8 +132,6 @@ public class UpdateMetadataActionEADTests {
 		}catch(UserException e){
 			assertTrue(e.getMessage().contains("replacements could be done."));
 		}
-
-		
 	}
 	
 	private String getURL(Document doc){

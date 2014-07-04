@@ -46,6 +46,7 @@ import de.uzk.hki.da.cb.SendToPresenterActionTests;
 import de.uzk.hki.da.cb.ShortenFileNamesActionTests;
 import de.uzk.hki.da.cb.TarActionTests;
 import de.uzk.hki.da.cb.UnpackActionBagitAndDeltaTests;
+import de.uzk.hki.da.cb.UpdateMetadataActionEADMultilevelPackagesTest;
 import de.uzk.hki.da.cb.UpdateMetadataActionEADTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionXMPTests;
@@ -162,6 +163,8 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	SendToPresenterActionTests.class,
 	CreateEDMActionTests.class,
 	IndexMetadataActionTests.class,
+	UpdateMetadataActionEADMultilevelPackagesTest.class,
+	IndexMetadataActionTests.class
 //	HibernateUtilThreadingTest.class
 })
 public class SimpleSuite {
