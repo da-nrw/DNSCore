@@ -381,6 +381,11 @@
 	</build>
 
 	<dependencies>
+	    <dependency>
+           <groupId>org.json</groupId>
+           <artifactId>json</artifactId>
+           <version>20131018</version>
+        </dependency>
 		<dependency>
 			<groupId>org.xeustechnologies</groupId>
 			<artifactId>jtar</artifactId>

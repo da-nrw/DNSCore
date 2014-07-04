@@ -19,8 +19,6 @@
 
 package de.uzk.hki.da.core;
 
-import groovy.lang.MetaClassImpl.Index;
-
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -78,6 +76,7 @@ import de.uzk.hki.da.model.ModelTest;
 import de.uzk.hki.da.model.PackageTests;
 import de.uzk.hki.da.model.PreservationSystemTests;
 import de.uzk.hki.da.model.SaveConversionInstructionsByJob;
+import de.uzk.hki.da.repository.CTElasticSearchMetadataIndexTests;
 import de.uzk.hki.da.service.PackageTypeDetectionServiceTests;
 import de.uzk.hki.da.service.RetrievePackagesHelperTest;
 import de.uzk.hki.da.service.URNCheckDigitGeneratorTests;
@@ -162,7 +161,7 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	XsltEDMGeneratorTests.class,
 	SendToPresenterActionTests.class,
 	CreateEDMActionTests.class,
-	IndexMetadataActionTests.class
+	IndexMetadataActionTests.class,
 //	HibernateUtilThreadingTest.class
 })
 public class SimpleSuite {

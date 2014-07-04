@@ -212,7 +212,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					metsReplacements.put(value, absUrlPrefix + value);
 				}
 			}
-			updatePathsInFile(pkg, repName, metadataFilePath, xPathPath, metsReplacements);	
+			updatePathsInFile(pkg, repName, metadataFilePath, xPathPath, metsReplacements); // Updates of xml path in EAD file	
 		
 		} catch(Exception err) {
 			throw new UserException(UserExceptionId.REPLACE_URLS_IN_METADATA_ERROR,
@@ -269,7 +269,6 @@ public class UpdateMetadataAction extends AbstractAction {
 			if (!targetFile.getRep_name().equals(repName)) continue;			
 			DAFile sourceFile = e.getSource_file();
 			replacements.put(sourceFile.getRelative_path(), absUrlPrefix + targetFile.getRelative_path());
-			
 		}
 		
 		logger.debug("Planned replacements: {}", replacements);
@@ -370,7 +369,7 @@ public class UpdateMetadataAction extends AbstractAction {
 						attr.setValue(replacements.get(value));
 						entitiesReplaced++;
 					}
-				} else if (node instanceof Element) {
+				} else if (node instanceof Element) { // does this block get used really?
 					Element elem = (Element) node;
 					String value = elem.getText();
 					if (replacements.containsKey(value)) {

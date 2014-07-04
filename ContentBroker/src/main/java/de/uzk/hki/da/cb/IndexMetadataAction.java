@@ -165,7 +165,6 @@ public class IndexMetadataAction extends AbstractAction {
 		// extract index name from type
 		String[] splitType = ((String) subject.get("@type")).split("/");
 		String type = splitType[splitType.length-1];
-		System.out.println(type+" "+id+" "+subject);
 		getRepositoryFacade().indexMetadata(indexName, type, id, subject);
 	}
 	
@@ -180,7 +179,7 @@ public class IndexMetadataAction extends AbstractAction {
 	/**
 	 * Get the name of the index
 	 * the data will be indexed in.
-	 * @return the index name
+//	 * @return the index name
 	 */
 	public String getIndexName() {
 		return indexName;

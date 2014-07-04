@@ -29,6 +29,8 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.core.ConfigurationException;
+
 /**
  * Metadata index implementation for elasticsearch.
  * @author Sebastian Cuy
@@ -44,10 +46,8 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 	public void indexMetadata(String indexName, String type, String objectId,
 			Map<String, Object> data) throws MetadataIndexException {
 				
-		if (cluster == null || hosts.length == 0) 
-			throw new RuntimeException("Elasticsearch cluster not set. Make sure the action is configured properly");
-		if (hosts == null || hosts.length == 0) 
-			throw new RuntimeException("Elasticsearch hosts not set. Make sure the action is configured properly");
+		if (cluster == null || hosts == null || hosts.length == 0) 
+			throw new ConfigurationException("Elasticsearch cluster not set. Make sure the action is configured properly");
 				
 		Settings settings = ImmutableSettings.settingsBuilder()
 		        .put("cluster.name", cluster).build();
