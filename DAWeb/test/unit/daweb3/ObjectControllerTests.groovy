@@ -1,5 +1,9 @@
 package daweb3
 
+/**
+ * 2014 LVR InfoKom
+ * @author jpeters
+ */
 import org.junit.*
 import grails.test.mixin.*
 

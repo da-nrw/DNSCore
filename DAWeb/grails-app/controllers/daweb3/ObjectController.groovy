@@ -2,7 +2,7 @@ package daweb3
 /*
  DA-NRW Software Suite | ContentBroker
  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
- Universität zu Köln
+ Universität zu Köln, 2014 LVR InfoKom
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@ package daweb3
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * The Main DA-NRW object Controller for listing Objects (AIP) stored in the DA-NRW 
+ * The Main DA-NRW object Controller for listing Objects (AIP) stored in DNS 
  * @Author Jens Peters, Sebastian Cuy
  * 
  */
@@ -40,6 +40,7 @@ class ObjectController {
     }
 
     def list() {
+		
 				def admin = false;
 				def relativeDir = session.contractor.shortName+ "/outgoing"
 				def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir				
@@ -48,10 +49,15 @@ class ObjectController {
 					def c = Object.createCriteria()
 					log.debug(params.toString())
 					def objects = c.list(max: params.max, offset: params.offset ?: 0) {
+						
+						if (session==null) throw new RuntimeException("sss")
 						if (params.search) params.search.each { key, value ->
 							like(key, "%" + value + "%")
 						}
+						
+						
 						if (session.contractor.admin==0) {
+						
 							def contractor = Contractor.findByShortName(session.contractor.shortName)
 							eq("contractor.id", contractor.id)
 							
