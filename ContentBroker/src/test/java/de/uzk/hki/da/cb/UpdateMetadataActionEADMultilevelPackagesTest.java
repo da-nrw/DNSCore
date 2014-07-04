@@ -158,7 +158,6 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 		Document doc6 = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/43/data/b/mets_361/mets_2_32048.xml").toFile()));
 		assertEquals("http://data.danrw.de/file/43/mets_361/renamed006.tif", getURL(doc6));
 	}
-
 	
 	private String getURL(Document doc){
 		
