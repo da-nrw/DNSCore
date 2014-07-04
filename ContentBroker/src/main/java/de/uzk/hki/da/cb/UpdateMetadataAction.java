@@ -111,7 +111,6 @@ public class UpdateMetadataAction extends AbstractAction {
 			repNames = new String[]{ object.getNameOfNewestRep() };
 		}
 		
-		
 		if ("XMP".equals(packageType)){
 			collectXMP();
 			
@@ -286,16 +285,15 @@ public class UpdateMetadataAction extends AbstractAction {
 		// copy other metadata to rep(s)
 		DAFile srcMetadataFile = object.getLatest(metadataFileName);
 		String extension = FilenameUtils.getExtension(srcMetadataFile.toRegularFile().getName());
+		
 		for (String repName : getRepNames()) {
 			// rename metadatafile for presentation
 			if (repName.startsWith("dip")) {
 				metadataFileName = packageType + "." + extension;
 			}
 			
-			
 			File destFile = new File(object.getDataPath() + "/" + repName + "/" // XXX same problem with subdirs as above? Daniel M. de Oliveira
 					+ metadataFileName);
-
 			FileUtils.copyFile(srcMetadataFile.toRegularFile(), destFile);
 			DAFile destMetadataFile = new DAFile(object.getLatestPackage(), repName, metadataFileName);
 			destMetadataFile.setFormatPUID(srcMetadataFile.getFormatPUID());
