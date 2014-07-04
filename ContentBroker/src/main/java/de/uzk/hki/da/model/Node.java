@@ -21,8 +21,6 @@ package de.uzk.hki.da.model;
 import javax.persistence.*;
 
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.Utilities;
-
 import java.lang.Object;
 
 
