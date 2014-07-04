@@ -21,10 +21,7 @@ package de.uzk.hki.da.at;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -48,6 +45,7 @@ import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.utils.Utilities;
 
 public class Base {
 
@@ -59,23 +57,9 @@ public class Base {
 	protected CentralDatabaseDAO dao = new CentralDatabaseDAO();
 
 	
-	protected void setUpBase(){
+	protected void setUpBase() throws IOException{
 		
-		Properties properties = null;
-		InputStream in;
-		try {
-			in = new FileInputStream("conf/config.properties");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return;
-		}
-		properties = new Properties();
-		
-		try {
-		properties.load(in);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		Properties properties = Utilities.read(new File("conf/config.properties"));
 		
 		instantiateNode();
 		if (localNode==null) throw new IllegalStateException("localNode could not be instantiated");

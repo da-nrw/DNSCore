@@ -21,19 +21,17 @@
 package de.uzk.hki.da.core;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.activemq.spring.ActiveMQConnectionFactory;
+import org.apache.activemq.xbean.XBeanBrokerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.core.task.TaskRejectedException;
-import org.apache.activemq.spring.ActiveMQConnectionFactory;
-import org.apache.activemq.xbean.XBeanBrokerService;
 
 import de.uzk.hki.da.cb.AbstractAction;
 import de.uzk.hki.da.utils.Utilities;
@@ -106,17 +104,7 @@ public class ContentBroker {
 		
 		logger.info("Reading properties");
 		
-		Properties properties = null;
-		InputStream in;
-		try {
-		
-			in = new FileInputStream("conf/config.properties");
-			properties = new Properties();
-			properties.load(in);
-
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		Properties properties = Utilities.read(new File("conf/config.properties"));
 
 		logger.info("Smoke test the application");
 		

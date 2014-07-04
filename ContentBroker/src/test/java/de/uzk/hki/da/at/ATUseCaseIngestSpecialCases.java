@@ -19,7 +19,6 @@
 
 package de.uzk.hki.da.at;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;

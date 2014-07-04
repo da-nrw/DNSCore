@@ -20,6 +20,7 @@
 package de.uzk.hki.da.at;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -40,7 +41,7 @@ public class ATUseCaseIngestRheinlaender extends Base{
 	private Object object;
 	
 	@Before
-	public void setUp(){
+	public void setUp() throws IOException{
 		setUpBase();
 	}
 	

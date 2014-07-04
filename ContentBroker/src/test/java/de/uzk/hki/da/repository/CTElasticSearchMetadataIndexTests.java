@@ -19,10 +19,15 @@
 
 package de.uzk.hki.da.repository;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -30,41 +35,50 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.tika.io.IOUtils;
 import org.json.JSONObject;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import de.uzk.hki.da.utils.Utilities;
 
 /**
  * @author Daniel M. de Oliveira
  */
 public class CTElasticSearchMetadataIndexTests {
 
-	private static final String LOCALHOST = "localhost";
-	private static final String CLUSTER_CI = "cluster_ci";
 	private static final String TEST_OBJECT_1 = "test_object_1";
 	private static final String TEST_COLLECTION = "test_collection";
-	private static final String PORTAL_CI = "portal_ci";
 	private static final String _1972 = "1972";
 	private static final String YEAR = "@year";
 	private static final String DIRECTOR = "@director";
 	private static final String TITLE = "@title";
 	private static final String FRANCIS_FORD_COPPOLA = "Francis Ford Coppola";
 	private static final String THE_GODFATHER = "The Godfather";
-
-	private static final String url = "http://localhost:9200/portal_ci/test_collection/test_object_1";
+	private static final String URL_PREFIX = "http://localhost:9200/";
+	
+	String url;
+	String portal;
+	
+	File propertiesFile = new File("src/main/conf/config.properties.ci");
 
 	private ElasticsearchMetadataIndex index;
 	private Map<String,Object> data;
 
-	// TODO get properties from config.properties.ci
 	
 	@Before
 	public void setUp() throws MalformedURLException, ProtocolException, IOException{
+		Properties properties = Utilities.read(propertiesFile);
+
+		portal = properties.getProperty("elasticsearch.index");
+		url = URL_PREFIX+portal+"/test_collection/test_object_1";
+		
 		index = new ElasticsearchMetadataIndex();
-		index.setCluster(CLUSTER_CI);
-		index.setHosts(new String[]{LOCALHOST});
+		index.setCluster(properties.getProperty("elasticsearch.cluster"));
+		index.setHosts(new String[]{properties.getProperty("elasticsearch.hosts")});
 		data = new HashMap<String,Object>();
 		data.put(TITLE,THE_GODFATHER);
 		data.put(DIRECTOR,FRANCIS_FORD_COPPOLA);
@@ -73,12 +87,16 @@ public class CTElasticSearchMetadataIndexTests {
 		assertTrue(getBody()==null);
 	}
 		
+	@After
+	public void tearDown(){
+	}
+	
 	
 	@Test
 	public void test() throws MalformedURLException, IOException{
 		
 		try {
-			index.indexMetadata(PORTAL_CI, TEST_COLLECTION, TEST_OBJECT_1, data);
+			index.indexMetadata(portal, TEST_COLLECTION, TEST_OBJECT_1, data);
 		} catch (MetadataIndexException e) {
 			fail();
 		}
