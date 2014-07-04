@@ -43,6 +43,11 @@ class QueueEntryController {
         
     }
     
+	def adminList() {
+		def contractor = Contractor.list()
+		[contractor:contractor]
+	}
+
     def listSnippet() {
     	def queueEntries = null	
 		def admin = false

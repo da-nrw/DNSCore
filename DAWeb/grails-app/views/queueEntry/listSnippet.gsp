@@ -69,19 +69,27 @@
 						<g:if test="${statusType == "2" && admin }">
 								<g:if test="${ queueEntryInstance.showRetryButtonAfterSomeTime()}">
 								<g:link action="queueRetry" id="${queueEntryInstance.id}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png" title="Workflow für Objekt neu starten" alt="Workflow für Objekt neu starten"/>
+									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png" 
+									title="${message(code: 'default.workflow.icon.retry', default: 'Workflow für Objekt neu starten')}" 
+									alt="${message(code: 'default.workflow.icon.retry', default: 'Workflow für Objekt neu starten')}"/>
 								</g:link>
 						</g:if>
 					</g:if>
 					<g:if test="${ statusType == "3" && admin }">
 						<g:if test="${statusInt >= 123 && statusInt <= 353 }">
-						<g:link action="queueRecover" id="${queueEntryInstance.id}"><g:img style="width:16px; height:16px" uri="/images/icons/back-icon.png"/>
+						<g:link action="queueRecover" id="${queueEntryInstance.id}">
+							<g:img style="width:16px; height:16px" uri="/images/icons/back-icon.png"
+									title="${message(code: 'default.workflow.icon.restart', default: 'Gesamten Workflow für Objekt neu starten')}" 
+									alt="${message(code: 'default.workflow.icon.restart', default: 'Gesamten Workflow für Objekt neu starten')}"/>
 					</g:link>
 					</g:if>
 					</g:if> 
 					<g:if test="${ queueEntryInstance.showDeletionButton()}">
 						<g:if test="${ statusInt<401 && admin }">
-					<g:link onclick="return confirm('Eintrag löschen. Sind Sie sicher?');" action="queueDelete" id="${queueEntryInstance.id}"><g:img style="width:16px; height:16px" uri="/images/icons/list_remove.png" title="Objekt aus dem Workflow entfernen" alt="Objekt aus dem Workflow entfernen"/>
+					<g:link onclick="return confirm('Eintrag löschen. Sind Sie sicher?');" action="queueDelete" id="${queueEntryInstance.id}">
+						<g:img style="width:16px; height:16px" uri="/images/icons/list_remove.png" 
+									title="${message(code: 'default.workflow.icon.delete', default: 'Objekt löschen')}" 
+									alt="${message(code: 'default.workflow.icon.delete', default: 'Objekt löschen')}"/>
 					</g:link>
 					</g:if>
 					</g:if>

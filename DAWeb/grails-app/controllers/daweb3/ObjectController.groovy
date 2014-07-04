@@ -41,6 +41,9 @@ class ObjectController {
 
     def list() {
 				def admin = false;
+				
+				def contractorList = Contractor.list()
+		
 				def relativeDir = session.contractor.shortName+ "/outgoing"
 				def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir				
 					params.max = Math.min(params.max ? params.int('max') : 10, 100)
@@ -73,7 +76,8 @@ class ObjectController {
 						searchParams: params.search,
 						paginate: true,
 						admin: admin,
-						baseFolder: baseFolder
+						baseFolder: baseFolder,
+						contractorList: contractorList
 				]
     }
 

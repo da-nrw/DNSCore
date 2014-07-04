@@ -47,7 +47,9 @@
             		<g:if test="${admin}">
             			<tr>
             			<td>Contractor:</td>
-            			<td><g:textField name="searchContractorName" value="${params.searchContractorName}" size="50"/></td>
+            			<td>
+            				<g:select id="contractor" name="searchContractorName" from="${contractorList}" optionKey="shortName" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
+						</td>
             		</tr>
             		</g:if>
             		<tr>
