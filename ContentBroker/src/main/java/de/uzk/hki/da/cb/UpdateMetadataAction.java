@@ -143,11 +143,7 @@ public class UpdateMetadataAction extends AbstractAction {
 		if (isWritePackageTypeToDC())
 			writePackageTypeToDC(packageType);
 		
-		
-		
-			
 		return true;
-		
 	}
 
 	
@@ -160,13 +156,14 @@ public class UpdateMetadataAction extends AbstractAction {
 	 * @throws IOException 
 	 */
 	private void updatePathsInEADStructure(
+			
 			Package pkg,
 			String metadataFilePath,
 			String repName,
 			String absUrlPrefix) 
 					throws IOException
 			{
-
+		
 		if (absUrlPrefix == null) absUrlPrefix = "";
 		
 		Map<String,String> replacements = generateReplacementsMap(pkg, repName, absUrlPrefix);
@@ -182,6 +179,8 @@ public class UpdateMetadataAction extends AbstractAction {
 		int actualReplacements = 0;
 		@SuppressWarnings("rawtypes")
 		List nodes = null;
+		
+		
 		try {
 			xPath = XPath.newInstance(xPathPath);
 
@@ -218,9 +217,8 @@ public class UpdateMetadataAction extends AbstractAction {
 			throw new UserException(UserExceptionId.REPLACE_URLS_IN_METADATA_ERROR,
 					"Could not replace file URLs in XML metadata.", metadataFilePath, err);
 		}
-			
-			
-		if (expectedReplacements!=actualReplacements){
+		
+		if (expectedReplacements!=actualReplacements) {
 			throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,
 					expectedReplacements+" file(s) have been converted and for each one an entry in a METS file has to be updated. "+
 			"but only "+actualReplacements+" replacements could be done.", metadataFilePath, new Exception());
@@ -345,7 +343,6 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		try {
 			
-			
 			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 			File metadataFile = Path.make(pkg.getTransientBackRefToObject().getDataPath(),repName,metadataFilePath).toFile();
 			
@@ -388,6 +385,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.setFormat(Format.getPrettyFormat());
 			outputter.output(doc, new FileWriter(metadataFile));
+			
 			return entitiesReplaced;
 			
 		} catch (Exception err) {
@@ -432,44 +430,67 @@ public class UpdateMetadataAction extends AbstractAction {
 	 * @param repName
 	 * @throws IOException
 	 */
-	private void copyXMLsToNewRepresentation(File srcFile, String repName)
+	
+	private void copyXMLsToNewRepresentation(File srcFile, String repName) 
 			throws IOException {
-		File destDir = new File(object.getDataPath() +"/"+ repName);
+		
 		Iterator<File> xmlFiles = FileUtils.iterateFiles(
 				srcFile.getParentFile(), new WildcardFileFilter("*.xml"), null);
-		int count=0;
-		while (xmlFiles.hasNext()) {
-			count++;
+		
+		File destDir = null;
+		
+		File[] subDirs = srcFile.getParentFile().listFiles();
+		
+		for(int file=-1; file<subDirs.length; file++) {
 			
-			File xmlFile = xmlFiles.next();
-			FileUtils.copyFileToDirectory(xmlFile, destDir);
-			
-			String destFilePath = Path.make(destDir.getAbsolutePath(), xmlFile.getName()).toString();						
-			String xmlFileRelativePath = destFilePath.replace(object.getDataPath() +"/"+ repName + "/", "");
-			DAFile daFile = new DAFile(object.getLatestPackage(), repName, xmlFileRelativePath);
-										
-			Event e = new Event();							
-			for (Package p : object.getPackages()) {
-				for (DAFile f : p.getFiles()) {
-					if (xmlFile.getAbsolutePath()
-							.equals(f.toRegularFile().getAbsolutePath())) {
-						e.setSource_file(f);
-						daFile.setFormatPUID(f.getFormatPUID());
-					}
+			if(file==-1) {
+				destDir = new File(object.getDataPath() +"/"+ repName);
+			} else {
+				File currentFile = subDirs[file];
+				if(currentFile.isDirectory()) {
+					destDir = new File(Path.make(object.getDataPath(), repName, currentFile.getName()).toString());
+					xmlFiles = FileUtils.iterateFiles(
+							currentFile, new WildcardFileFilter("*.xml"), null);
 				}
-			}							
+			}
 			
-			object.getLatestPackage().getFiles().add(daFile);
-			
-			e.setTarget_file(daFile);
-			e.setType("COPY");
-			e.setDate(new Date());
-			e.setAgent_type("NODE");
-			e.setAgent_name(object.getTransientNodeRef().getName());							
-			object.getLatestPackage().getEvents().add(e);
+			int count=0;
+			while (xmlFiles.hasNext()) {
+				count++;
+				
+				File xmlFile = xmlFiles.next();
+				FileUtils.copyFileToDirectory(xmlFile, destDir);
+				
+				String destFilePath = Path.make(destDir.getAbsolutePath(), xmlFile.getName()).toString();						
+				String xmlFileRelativePath = destFilePath.replace(object.getDataPath() +"/"+ repName + "/", "");
+				DAFile daFile = new DAFile(object.getLatestPackage(), repName, xmlFileRelativePath);
+											
+				Event e = new Event();							
+				for (Package p : object.getPackages()) {
+					for (DAFile f : p.getFiles()) {
+						if (xmlFile.getAbsolutePath()
+								.equals(f.toRegularFile().getAbsolutePath())) {
+							e.setSource_file(f);
+							daFile.setFormatPUID(f.getFormatPUID());
+						}
+					}
+				}							
+				
+				object.getLatestPackage().getFiles().add(daFile);
+				
+				e.setTarget_file(daFile);
+				e.setType("COPY");
+				e.setDate(new Date());
+				e.setAgent_type("NODE");
+				e.setAgent_name(object.getTransientNodeRef().getName());							
+				object.getLatestPackage().getEvents().add(e);
+			}
+			logger.debug("Copied "+count+ " *.xml files to new representation (package is of type EAD)");	
 		}
-		logger.debug("Copied "+count+ " *.xml files to new representation (package is of type EAD)");
 	}
+	
+	
+
 
 	/**
 	 * Copy xmp sidecar files and collect them into one "XMP manifest"

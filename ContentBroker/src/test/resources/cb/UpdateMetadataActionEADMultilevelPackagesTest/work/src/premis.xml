@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<premis xmlns="info:lc/xmlns/premis-v2" xmlns:premis="info:lc/xmlns/premis-v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd" version="2.2">
+    <object xsi:type="representation">
+        <objectIdentifier>
+            <objectIdentifierType>PACKAGE_NAME</objectIdentifierType>
+            <objectIdentifierValue>Rheinlaender_Test_2Ebenen_2014-07-02_PG</objectIdentifierValue>
+        </objectIdentifier>
+    </object>
+    <event>
+        <eventIdentifier>
+            <eventIdentifierType>SIP_CREATION_ID</eventIdentifierType>
+            <eventIdentifierValue>Sip_Creation_2014-07-02T14:04:06.141+01:00</eventIdentifierValue>
+        </eventIdentifier>
+        <eventType>SIP_CREATION</eventType>
+        <eventDateTime>2014-07-02T14:04:06.141+01:00</eventDateTime>
+        <linkingAgentIdentifier>
+            <linkingAgentIdentifierType>APPLICATION_NAME</linkingAgentIdentifierType>
+            <linkingAgentIdentifierValue>DA NRW SIP-Builder 0.6.5-p1</linkingAgentIdentifierValue>
+        </linkingAgentIdentifier>
+        <linkingObjectIdentifier>
+            <linkingObjectIdentifierType>PACKAGE_NAME</linkingObjectIdentifierType>
+            <linkingObjectIdentifierValue>Rheinlaender_Test_2Ebenen_2014-07-02_PG</linkingObjectIdentifierValue>
+        </linkingObjectIdentifier>
+    </event>
+    <agent>
+        <agentIdentifier>
+            <agentIdentifierType>APPLICATION_NAME</agentIdentifierType>
+            <agentIdentifierValue>DA NRW SIP-Builder 0.6.5-p1</agentIdentifierValue>
+        </agentIdentifier>
+        <agentType>APPLICATION</agentType>
+    </agent>
+    <rights>
+        <rightsStatement>
+            <rightsStatementIdentifier>
+                <rightsStatementIdentifierType>rightsid</rightsStatementIdentifierType>
+                <rightsStatementIdentifierValue></rightsStatementIdentifierValue>
+            </rightsStatementIdentifier>
+            <rightsBasis>license</rightsBasis>
+            <rightsGranted>
+                <act>PUBLICATION_PUBLIC</act>
+                <restriction>see rightsExtension</restriction>
+                <termOfGrant>
+                    <startDate>2014-07-02T00:00:00.000+01:00</startDate>
+                </termOfGrant>
+            </rightsGranted>
+            <rightsGranted>
+                <act>MIGRATION</act>
+                <restriction>see rightsExtension</restriction>
+                <termOfGrant>
+                    <startDate>2014-07-02T00:00:00.000+01:00</startDate>
+                </termOfGrant>
+            </rightsGranted>
+        </rightsStatement>
+        <rightsExtension>
+            <rightsGranted xmlns="http://www.danrw.de/contract/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.danrw.de/contract/v1 http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd">
+                <migrationRight>
+                    <condition>NONE</condition>
+                </migrationRight>
+                <publicationRight>
+                    <audience>PUBLIC</audience>
+                        <startDate>2014-07-02T00:00:00.000+01:00</startDate>
+                    <restrictions/>
+                </publicationRight>
+            </rightsGranted>
+        </rightsExtension>
+    </rights>
+</premis>
