@@ -140,7 +140,6 @@ Additional documentation
 
 * [Create user](ContentBroker/src/main/markdown/create_user.md)
 * [How to setup iRODS for Presentation Repository](ContentBroker/src/main/markdown/setup_irods.md)
-* [Install protocol for complete installation on Ubuntu 12.04](ContentBroker/src/main/conf/install_protocol_presrep_ubuntu.sh)
 
 ### Development
 * [click here](ContentBroker/src/main/markdown/3rdPartyTools.md) to get general information about the use and redistribution of used 3rd party libraries and tools.
