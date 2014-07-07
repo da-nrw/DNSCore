@@ -128,6 +128,20 @@ the releases page, follow the source code link for the corresponding version and
 * [click here](ContentBroker/src/main/markdown/open_ports.md) for a list of ports your firewall has to allow connections to.
 * [clck here](ContentBroker/src/main/markdown/audit.md) to get information how the AIP are being checked automatically.
 
+#### Presentation Repository Specific
+
+The DA-NRW Presentation Repository constists of the following components:
+
+* [Fedora](ContentBroker/src/main/markdown/install_fedora.md)
+* [PrOAI](ContentBroker/src/main/markdown/install_proai.md)
+* [Elasticsearch](ContentBroker/src/main/markdown/install_elasticsearch.md)
+
+Additional documentation
+
+* [Create user](ContentBroker/src/main/markdown/create_user.md)
+* [How to setup iRODS for Presentation Repository](ContentBroker/src/main/markdown/setup_irods.md)
+* [Install protocol for complete installation on Ubuntu 12.04](ContentBroker/src/main/conf/install_protocol_presrep_ubuntu.sh)
+
 ### Development
 * [click here](ContentBroker/src/main/markdown/3rdPartyTools.md) to get general information about the use and redistribution of used 3rd party libraries and tools.
 * [click here](ContentBroker/src/main/markdown/deploy.md) if you want to deploy the software yourself and build the source code on your local or on a continuous integration machine.
