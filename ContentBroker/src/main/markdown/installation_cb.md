@@ -217,7 +217,7 @@ How to set up this component is part of this [tutorial](https://github.com/da-nr
 
 You have set up the two components of DNSCore.
 Now your DNSCore is up'n'running, you are free to play around with it or convert your existing installation into a full-fledged
-installation following this [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/preparing_irods_for_dnscore.md).
+installation following this [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_irods_cb.md).
 
 The tutorial will show you how to install additional components and features:
 
