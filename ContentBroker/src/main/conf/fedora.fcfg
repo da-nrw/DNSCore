@@ -772,7 +772,7 @@
     <param name="maxActive" value="100">
       <comment>The maximum number of active instances in pool.</comment>
     </param>
-    <param name="dbPassword" value="Herrlich456FFEE">
+    <param name="dbPassword" value="">
       <comment>The database password.</comment>
     </param>
     <param name="jdbcURL" value="jdbc:postgresql://localhost/fedora">
