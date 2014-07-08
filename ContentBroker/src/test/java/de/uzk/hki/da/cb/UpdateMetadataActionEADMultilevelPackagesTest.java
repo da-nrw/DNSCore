@@ -65,31 +65,31 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 		object.getLatestPackage().getFiles().add(f7);
 		
 		event2 = new Event();
-		event2.setSource_file(new DAFile(object.getLatestPackage(),"a","ALVR_Nr_4547_Aufn_002.tif"));
+		event2.setSource_file(new DAFile(object.getLatestPackage(),"a","mets_361/ALVR_Nr_4547_Aufn_002.tif"));
 		event2.setTarget_file(new DAFile(object.getLatestPackage(),"b","mets_361/renamed002.tif"));
 		event2.setType("CONVERT");
 		object.getLatestPackage().getEvents().add(event2);
 		
 		event3 = new Event();
-		event3.setSource_file(new DAFile(object.getLatestPackage(),"a","ALVR_Nr_4547_Aufn_003.tif"));
+		event3.setSource_file(new DAFile(object.getLatestPackage(),"a","mets_361/ALVR_Nr_4547_Aufn_003.tif"));
 		event3.setTarget_file(new DAFile(object.getLatestPackage(),"b","mets_361/renamed003.tif"));
 		event3.setType("CONVERT");
 		object.getLatestPackage().getEvents().add(event3);
 		
 		event4 = new Event();
-		event4.setSource_file(new DAFile(object.getLatestPackage(),"a","ALVR_Nr_4547_Aufn_004.tif"));
+		event4.setSource_file(new DAFile(object.getLatestPackage(),"a","mets_361/ALVR_Nr_4547_Aufn_004.tif"));
 		event4.setTarget_file(new DAFile(object.getLatestPackage(),"b","mets_361/renamed004.tif"));
 		event4.setType("CONVERT");
 		object.getLatestPackage().getEvents().add(event4);
 		
 		event5 = new Event();
-		event5.setSource_file(new DAFile(object.getLatestPackage(),"a","ALVR_Nr_4547_Aufn_005.tif"));
+		event5.setSource_file(new DAFile(object.getLatestPackage(),"a","mets_361/ALVR_Nr_4547_Aufn_005.tif"));
 		event5.setTarget_file(new DAFile(object.getLatestPackage(),"b","mets_361/renamed005.tif"));
 		event5.setType("CONVERT");
 		object.getLatestPackage().getEvents().add(event5);
 		
 		event6 = new Event();
-		event6.setSource_file(new DAFile(object.getLatestPackage(),"a","ALVR_Nr_4547_Aufn_006.tif"));
+		event6.setSource_file(new DAFile(object.getLatestPackage(),"a","mets_361/ALVR_Nr_4547_Aufn_006.tif"));
 		event6.setTarget_file(new DAFile(object.getLatestPackage(),"b","mets_361/renamed006.tif"));
 		event6.setType("CONVERT");
 		object.getLatestPackage().getEvents().add(event6);

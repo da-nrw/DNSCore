@@ -185,7 +185,6 @@ public class UpdateMetadataAction extends AbstractAction {
 
 	
 			FileInputStream fileInputStream;
-			System.out.println("metadataFile: "+metadataFile.getName());
 			fileInputStream = new FileInputStream(metadataFile);
 			BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		
@@ -266,13 +265,14 @@ public class UpdateMetadataAction extends AbstractAction {
 			DAFile targetFile = e.getTarget_file();
 			if (!targetFile.getRep_name().equals(repName)) continue;
 			DAFile sourceFile = e.getSource_file();
-			
-//			TEST
+
 			String [] sourceFileString = e.getSource_file().getRelative_path().split(File.separator);
 			String lastFileName = sourceFileString[sourceFileString.length-1];
-			if(e.getSource_file().getRelative_path().contains(File.separator) && (sourceFileString[sourceFileString.length-2]==targetFile.getRelative_path().split(File.separator)[0])) {
+
+//			In der if-Abfrage muss noch festgestellt werden, dass die Mets-Dateien im selben Unterordner (sourceFileString[sourceFileString.length-2] liegen 
+			if((e.getSource_file().getRelative_path().contains(File.separator)) && (sourceFileString[sourceFileString.length-2].equals(targetFile.getRelative_path().split(File.separator)[0]))) {
 				replacements.put(lastFileName, absUrlPrefix + targetFile.getRelative_path());
-			} else // TEST
+			} else 
 				replacements.put(sourceFile.getRelative_path(), absUrlPrefix + targetFile.getRelative_path());
 		}
 		
@@ -345,7 +345,6 @@ public class UpdateMetadataAction extends AbstractAction {
 	) {
 		
 		logger.debug("Checking file for paths to replace: "+metadataFilePath);
-		System.out.println("metadataFilePath: "+metadataFilePath);
 		
 		try {
 			
