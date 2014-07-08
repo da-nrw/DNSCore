@@ -90,7 +90,13 @@
             			<tr>
             			<td>Contractor:</td>
             			<td>
-            				<g:select id="contractor" name="contractor.id" from="${contractor}" optionKey="id" required="" value="${objectInstance?.contractor?.id}" class="many-to-one"/>
+            				<g:select id="contractor" name="searchContractorName" from="${contractorList}" optionKey="shortName" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
+            			</td>
+            		</tr>
+            			<tr>
+            			<td>InitialNode:</td>
+            			<td>
+            				<g:select id="initialNode" name="node.id" from="${queueEntry.initialNode.list()}" optionKey="id" required="" value="${queueEntryInstance?.initialNode}" class="many-to-one"/>
             			</td>
             		</tr>
             		
