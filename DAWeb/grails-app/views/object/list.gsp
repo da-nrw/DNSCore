@@ -48,7 +48,7 @@
             			<tr>
             			<td>Contractor:</td>
             			<td>
-            				<g:select id="contractor" name="searchContractorName" from="${contractorList}" noSelection="[null:'keine Auswahl']" optionKey="shortName" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
+            				<g:select id="contractor" name="searchContractorName" from="${contractorList}" noSelection="[null:'Alle auswählen']" optionKey="shortName" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
 						</td>
             		</tr>
             		</g:if>

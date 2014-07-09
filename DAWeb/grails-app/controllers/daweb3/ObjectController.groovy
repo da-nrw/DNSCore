@@ -47,12 +47,18 @@ class ObjectController {
 				def relativeDir = session.contractor.shortName+ "/outgoing"
 				def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir				
 					params.max = Math.min(params.max ? params.int('max') : 10, 100)
-					
+
+					if (params.searchContractorName){
+						if(params.searchContractorName=="null"){
+							params.remove("searchContractorName")
+						}
+					}
+
 					def c = Object.createCriteria()
 					log.debug(params.toString())
 					def objects = c.list(max: params.max, offset: params.offset ?: 0) {
 						if (params.search) params.search.each { key, value ->
-							like(key, "%" + value + "%")
+								like(key, "%" + value + "%")
 						}
 						if (session.contractor.admin==0) {
 							def contractor = Contractor.findByShortName(session.contractor.shortName)
