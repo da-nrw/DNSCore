@@ -7,10 +7,15 @@ environments {
 		//}
 		daweb3.loginManager = "de.uzk.hki.da.login.IrodsLogin"
 		cb.port = 4455
+		
+		/* Configure to customize layout */
 		daweb3.logo = "DANRW-Logo_small.png"
+		// To integrate your own logo, place your logo at web-app/images/ and replace file name here
 		provider.logo = "provider-logo.svg"
+		// To integrate a customized css-file, please change file name accordingly 
 		main.css = "main.css"
 		mobile.css = "mobile.css"
+
 		irods.server = "localhost"
 		irods.default_resc = "your irods resc name"
 		irods.zone = "your home zone name"
