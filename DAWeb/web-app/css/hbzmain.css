@@ -37,8 +37,9 @@ html * {
 }
 
 body {
+	font-size: 12px;
 	background: #ffffff;
-	color: #51194b;
+	color: #004678;
 	margin: 0 auto;
 	max-width: 95%;
 	overflow-x: hidden; /* prevents box-shadow causing a horizontal scrollbar in firefox when viewport < 960px wide */
@@ -47,19 +48,18 @@ body {
 	        box-shadow: 0 0 0.3em #333;
 }
 
+table {
+	font-size: 12px;
+}
+
 #header {
-	background: #7a4274;
-	background: -moz-linear-gradient(top, #7a4274 0%, #51194b 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7a4274), color-stop(100%,#51194b));
-	background: -webkit-linear-gradient(top, #7a4274 0%,#51194b 100%);
-	background: -o-linear-gradient(top, #7a4274 0%,#51194b 100%);
-	background: -ms-linear-gradient(top, #7a4274 0%,#51194b 100%);
-	background: linear-gradient(top, #7a4274 0%,#51194b 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7a4274', endColorstr='#51194b',GradientType=0 );
+	background: #004678;
+	background: linear-gradient(top, #004678 0%, #0064ab 100%);
 }
 
 #header h1 {
-	color: #fff;
+	color: #fa9d0a;
+	text-shadow: 2px 2px 2px #000;
 	display: inline;
 }
 
@@ -144,24 +144,26 @@ img {
 }
 
 .footer {
-	background: #7a4274;
-	background: -moz-linear-gradient(top, #7a4274 0%, #51194b 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7a4274), color-stop(100%,#51194b));
-	background: -webkit-linear-gradient(top, #7a4274 0%,#51194b 100%);
-	background: -o-linear-gradient(top, #7a4274 0%,#51194b 100%);
-	background: -ms-linear-gradient(top, #7a4274 0%,#51194b 100%);
-	background: linear-gradient(top, #7a4274 0%,#51194b 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7a4274', endColorstr='#51194b',GradientType=0 );
-	color: #FFFFFF;
+	background: #004678;
+	background: linear-gradient(top, #004678 0%, #fa9d0a 100%);
+	color: #fa9d0a;
+	text-shadow: 2px 2px 2px #000;
 	clear: both;
 	font-size: 0.8em;
-	margin-top: 1.5em;
+	margin-top: 4em;
 	padding: 1em;
 	min-height: 1em;
 }
 
 .footer a {
 	color: #255b17;
+}
+
+#page-footer img {
+    margin-top: -4em;
+    vertical-align: top;
+    width: 90px;
+    float: right;
 }
 
 .spinner {
@@ -215,7 +217,7 @@ img {
 }
 
 .nav a:focus, .nav a:hover {
-	background-color: #7a4274;
+	background-color: #004678;
 	color: #ffffff;
 	outline: none;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
@@ -581,7 +583,7 @@ th:hover, tr:hover {
 
 .pagination a:hover, .pagination a:focus,
 .pagination .currentStep {
-	background-color: #7a4274;
+	background-color: #004678;
 	color: #ffffff;
 	outline: none;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
@@ -626,7 +628,7 @@ th:hover, tr:hover {
 
 .buttons input:hover, .buttons input:focus,
 .buttons a:hover, .buttons a:focus {
-	background-color: #7a4274;
+	background-color: #004678;
 	color: #ffffff;
 	outline: none;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);

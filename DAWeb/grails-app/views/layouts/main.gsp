@@ -12,8 +12,8 @@
 		<link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
 		<link rel="apple-touch-icon" href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
 		<link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
-		<link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
-		<link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile.css')}" type="text/css">
+		<link rel="stylesheet" href="${resource(dir: 'css', file: grailsApplication.config.main.css)}" type="text/css">
+		<link rel="stylesheet" href="${resource(dir: 'css', file: grailsApplication.config.mobile.css)}" type="text/css">
 		<g:layoutHead/>
 		<r:require modules="jquery, application" />
         <r:layoutResources />
@@ -36,7 +36,7 @@
 		<div align="center">
 		<div class="footer" id="page-footer" role="contentinfo"><g:meta name="app.name"/> 
 		<g:meta name="app.version"/>, @Historisch-Kulturwissenschaftliche Informationsverarbeitung 2011-2014
-			<img src="${resource(dir: 'images', file: grailsApplication.config.hbz.logo)}" alt="hbz-Logo"/>
+			<img src="${resource(dir: 'images', file: grailsApplication.config.provider.logo)}" alt="hbz-Logo"/>
 		</div>
 		</div><div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 		
