@@ -269,11 +269,20 @@ public class UpdateMetadataAction extends AbstractAction {
 			String [] sourceFileString = e.getSource_file().getRelative_path().split(File.separator);
 			String lastFileName = sourceFileString[sourceFileString.length-1];
 
+			logger.debug("e.getSource_file().getRelative_path(): "+e.getSource_file().getRelative_path());
+			if(sourceFileString.length>1) {
+				logger.debug("sourceFileString[sourceFileString.length-2: "+sourceFileString[sourceFileString.length-2]);
+			}
+			logger.debug("targetFile.getRelative_path().split(File.separator)[0]: "+targetFile.getRelative_path().split(File.separator)[0]);
+			
 //			In der if-Abfrage muss noch festgestellt werden, dass die Mets-Dateien im selben Unterordner (sourceFileString[sourceFileString.length-2] liegen 
 			if((e.getSource_file().getRelative_path().contains(File.separator)) && (sourceFileString[sourceFileString.length-2].equals(targetFile.getRelative_path().split(File.separator)[0]))) {
+				logger.debug("var replacements!");
+				logger.debug("replacements.put(lastFileName, absUrlPrefix + targetFile.getRelative_path()): "+lastFileName +" to "+absUrlPrefix+targetFile.getRelative_path());
 				replacements.put(lastFileName, absUrlPrefix + targetFile.getRelative_path());
-			} else 
+			} else {
 				replacements.put(sourceFile.getRelative_path(), absUrlPrefix + targetFile.getRelative_path());
+			}
 		}
 		
 		logger.debug("Planned replacements: {}", replacements);
