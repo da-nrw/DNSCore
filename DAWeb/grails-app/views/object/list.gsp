@@ -131,17 +131,23 @@
 							</td>
 							<td style="text-align: center">
 								<g:remoteLink action="queueForInspect" onLoaded="queuedFor(data)" id="${objectInstance.id}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/search32.png"/>
+									<g:img style="width:16px; height:16px" uri="/images/icons/search32.png"
+									title="${message(code: 'default.ltp.icon.queueForInspect', default: 'Objekt zum manuellen Überprüfen anfordern')}" 
+									alt="${message(code: 'default.ltp.icon.queueForInspect', default: 'Objekt zum manuellen Überprüfen anfordern')}"/>
 								</g:remoteLink>
 							</td>
 							<td style="text-align: center">
 								<g:remoteLink action="queueForRebuildPresentation" onLoaded="queuedFor(data)" id="${objectInstance.id}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png"/>
+									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png"
+									title="${message(code: 'default.ltp.icon.rebuildPR', default: 'Objekt für Präsentation neu erzeugen')}" 
+									alt="${message(code: 'default.ltp.icon.rebuildPR', default: 'Objekt für Präsentation neu erzeugen')}"/>
 								</g:remoteLink>
 							</td>
 							<td style="text-align: center">
 								<g:remoteLink action="queueForIndex" onLoaded="queuedFor(data)" id="${objectInstance.id}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png"/>
+									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png"
+									title="${message(code: 'default.ltp.icon.rebuildIndex', default: 'Objekt neu indexieren')}" 
+									alt="${message(code: 'default.ltp.icon.rebuildIndex', default: 'Objekt neu indexieren')}"/>
 								</g:remoteLink>
 							</td>
 							</g:if>
