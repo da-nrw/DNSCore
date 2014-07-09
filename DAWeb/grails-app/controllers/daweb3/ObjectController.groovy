@@ -69,7 +69,7 @@ class ObjectController {
 							}
 							admin = true;
 						}
-						between("object_state", 51,100)
+						between("object_state", 50,100)
 						order(params.sort ?: "id", params.order ?: "desc")
 					}
 					log.debug(params.search)

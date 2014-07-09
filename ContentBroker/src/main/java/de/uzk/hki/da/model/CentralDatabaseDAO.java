@@ -65,7 +65,7 @@ public class CentralDatabaseDAO {
 			
 			joblist = (List<Job>) session
 					.createQuery("SELECT j FROM Job j LEFT JOIN j.obj as o where j.status=?1 and "
-							+ "j.responsibleNodeName=?2 and (o.object_state=100 or o.object_state=50) and o.orig_name!=?3 order by j.date_modified asc ")
+							+ "j.responsibleNodeName=?2 and o.object_state IN (100, 50, 40) and o.orig_name!=?3 order by j.date_modified asc ")
 					.setParameter("1", status).setParameter("2", node.getName()).setParameter("3","integrationTest").setCacheable(false).setMaxResults(1).list();
 
 			if ((joblist == null) || (joblist.isEmpty())){

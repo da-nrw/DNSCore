@@ -113,11 +113,10 @@ public class IntegrityScannerWorker {
 	 * @param object
 	 * @param auditResult
 	 */
-	private void updateObject(Object object,Integer auditResult){
+	private synchronized void updateObject(Object object,Integer auditResult){
 		
 		object.setLast_checked(new Date());
 		object.setObject_state(auditResult);
-		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		session.update(object);
@@ -150,7 +149,7 @@ public class IntegrityScannerWorker {
 			@SuppressWarnings("rawtypes")
 			List l = null;
 			l = session.createQuery("from Object o where o.initial_node = ?1 and o.last_checked > ?2 and "
-					+ "o.object_state != ?3 and o.object_state != ?4 "
+					+ "o.object_state != ?3 and o.object_state != ?4 and o.object_state >= 50"
 					+ "order by o.last_checked asc")
 					.setParameter("1", localNodeName)
 					.setCalendar("2",now)
@@ -174,12 +173,6 @@ public class IntegrityScannerWorker {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
 	/**
 	 * Send email.
 	 *
@@ -187,7 +180,7 @@ public class IntegrityScannerWorker {
 	 */
 	private void sendEmail(Object obj) {
 		// send Mail to Admin with Package in Error
-
+		logger.debug("Trying to send email");
 		String subject = "[" + "da-nrw".toUpperCase() +  "] Problem Report für " + obj.getIdentifier() + " auf " + localNodeName;
 		if (nodeAdminEmail != null && !nodeAdminEmail.equals("")) {
 			try {
@@ -196,7 +189,7 @@ public class IntegrityScannerWorker {
 				logger.error("Sending email problem report for " + obj.getIdentifier() + "failed");
 			}
 		} else {
-			logger.warn("Node Admin has no valid Email address!");
+			logger.error("Node Admin has no valid Email address!");
 		}
 	}
 	

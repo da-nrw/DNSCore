@@ -130,7 +130,7 @@ public class RegisterObjectService {
 
 			logger.info("Creating new Object with identifier " + identifier);
 			obj = new Object();
-			obj.setObject_state(50);
+			obj.setObject_state(40);
 			
 			obj.setIdentifier(identifier);
 
