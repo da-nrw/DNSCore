@@ -49,7 +49,7 @@ A SIP with EAD metadata must conform to the following directory layout
 The metadata must be laid out in the following manner:
 
 1. From the [EAD] file, several METS files somewhere inside the directory structure can be referenced. They can be named arbitrarily (placeholders [METS*]). The references have to be made via daoloc elements. The references have to be set relative from the data path of the package.
-1. 
+1. Any of the referenced METS files links to a single data file ([somefile*.xyz]). METS files with links to more data files lead to an exception which will reject the package and inform the user.
 
 
 
