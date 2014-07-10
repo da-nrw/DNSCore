@@ -55,33 +55,33 @@ The metadata must be laid out in the following manner:
 
 Here is an example of a EAD file:
 
-          <c03 level="file">
-            <did>
-              <unitid type="altsignatur">(...)</unitid>
-              <unitid type="Bestellnummer">4547 Bl.066</unitid>
-              <unitdate normal="0000/0000">ohne Datum</unitdate>
-              <origination>(...)</origination>
-              <physdesc>(...)
-              <extent>(...)</extent></physdesc>
-              <unittitle>Mrs. N. Andres</unittitle>
-              <abstract type="Enth&#195;&#164;lt">(...)</abstract>
-              <abstract type="Darin">(...)</abstract>
-              <note>
-                <p>(...)</p>
-              </note>
-              <unitid type="v.num">4559</unitid>
-            </did>
-            <relatedmaterial>
+    <c03 level="file">
+          <did>
+            <unitid type="altsignatur">(...)</unitid>
+            <unitid type="Bestellnummer">4547 Bl.066</unitid>
+            <unitdate normal="0000/0000">ohne Datum</unitdate>
+            <origination>(...)</origination>
+            <physdesc>(...)
+            <extent>(...)</extent></physdesc>
+            <unittitle>Mrs. N. Andres</unittitle>
+            <abstract type="Enth&#195;&#164;lt">(...)</abstract>
+            <abstract type="Darin">(...)</abstract>
+            <note>
               <p>(...)</p>
-            </relatedmaterial>
-            <bibliography>
-              <p>(...)</p>
-            </bibliography>
-            <daogrp>
-              <daoloc role="mets" title="mets_2_99"
-              href="[subfolder]/[METS2].xml" />
-            </daogrp>
-          </c03>
+            </note>
+            <unitid type="v.num">4559</unitid>
+          </did>
+          <relatedmaterial>
+            <p>(...)</p>
+          </relatedmaterial>
+          <bibliography>
+            <p>(...)</p>
+          </bibliography>
+          <daogrp>
+            <daoloc role="mets" title="mets_2_99"
+            href="[subfolder]/[METS2].xml" />
+          </daogrp>
+    </c03>
 
 
 
