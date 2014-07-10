@@ -14,7 +14,41 @@ At the moment we accept four formats:
 
 ## General rule
 
-Refrences inside metadata
+One important guideline for all metadata formats 
+Refrences inside metadata always have to reference data file with relative paths. 
+These relative paths always count from the data folder. An example will help to clarify this:
+
+    data/[somefile1.xyz]
+    
+must be referenced, independently of the metadata format, like this:
+
+    href="[somefile1.xyz]"
+
+A file in a subfolder
+
+    data/[subfolder]/[somefile2.xyz]
+
+must be referenced like this:
+
+    href="[subfolder]/[somefile2.xyz]
+    
+A common mistake would be referencing a file
+
+   data/[subfolder]/[somefile3.xyz]
+   
+from a metadatafile
+
+   data/[subfolder]/[metadata1].xml
+   
+like this:
+
+   href="[somefile3.xyz]"
+   
+The idea here was, that the data file is referenced relatively to the metadata file. So the guideline to reference files
+relatively to the data file has been ignored. The system would reject such a package, where the referenced file could not be resolved and report an exception to the user.
+
+
+
 
 If there are more than one metadata file found on the top level, the package gets rejected and the user gets informed.
 
