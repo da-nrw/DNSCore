@@ -130,7 +130,7 @@ the releases page, follow the source code link for the corresponding version and
 
 #### Presentation Repository Specific
 
-* Medata [formats](ContentBroker/src/main/markdown/metadata_formats.md). The metadata formats accepted by DNS that will enable proper presentation.
+* Medata [specification](ContentBroker/src/main/markdown/metadata_specification.md). The metadata formats accepted by DNS that will enable proper presentation.
 
 The DA-NRW Presentation Repository constists of the following components:
 
