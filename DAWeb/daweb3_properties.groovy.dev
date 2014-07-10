@@ -7,7 +7,15 @@ environments {
 		//}
 		daweb3.loginManager = "de.uzk.hki.da.login.IrodsLogin"
 		cb.port = 4455
+		
+		/* Configure to customize layout */
 		daweb3.logo = "DANRW-Logo_small.png"
+		// To integrate your own logo, place your logo at web-app/images/ and replace file name here
+		provider.logo = "provider-logo.svg"
+		// To integrate a customized css-file, please change file name accordingly 
+		main.css = "main.css"
+		mobile.css = "mobile.css"
+
 		irods.server = "localhost"
 		irods.default_resc = "your irods resc name"
 		irods.zone = "your home zone name"
@@ -28,7 +36,24 @@ environments {
 			// passwordEncryptionCodec = "de.uzk.hki.da.utils.DESCodec" uncomment if necessary
 			password = "" // (if set, must be encrypted with DESCodec. See ../doc/deploy.md)
 			characterEncoding = "UTF-8"
-		}
+			
+			properties {
+                        maxActive = 50
+                        maxIdle = 25
+                        minIdle = 1
+                        initialSize = 1
+                        numTestsPerEvictionRun = 3
+                        maxWait = 10000
+                        testOnBorrow = true
+                        testWhileIdle = true
+                        testOnReturn = true
+                        validationQuery = "select now()"
+                        minEvictableIdleTimeMillis = 1000 * 60 * 5
+                        timeBetweenEvictionRunsMillis = 1000 * 60 * 5
+                        }
+
+                }
+
 		/*dataSource {
 			pooled = true
 			driverClassName = "org.postgresql.Driver"

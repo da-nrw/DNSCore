@@ -43,10 +43,17 @@ class QueueEntryController {
         
     }
     
+	def adminList() {
+		def contractorList = Contractor.list()
+		[contractorList:contractorList]
+	}
+
     def listSnippet() {
     	def queueEntries = null	
 		def admin = false
 		def periodical = true;	
+		def contractorList = Contractor.list()
+		
 		if (params.search==null){		
 			if (session.contractor.admin != 1) {	
 				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.contractor.shortName=:csn",
@@ -88,7 +95,8 @@ class QueueEntryController {
 			}
 		} 
 		[queueEntryInstanceList: queueEntries,
-			admin:admin, periodical:periodical ]
+			admin:admin, periodical:periodical,
+			contractorList:contractorList ]
     }
 
     def show() {
