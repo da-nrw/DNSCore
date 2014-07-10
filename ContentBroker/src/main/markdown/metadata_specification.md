@@ -90,3 +90,12 @@ Here is an example of a EAD file:
 asdf
 
 ## XMP - Sidecar
+
+A SIP with EAD metadata must conform to the following directory layout
+
+    data/[abc1].[audio]
+    data/[abc1].xmp
+    data/[abc2].[audio]
+    data/[abc2].xmp
+    
+    
