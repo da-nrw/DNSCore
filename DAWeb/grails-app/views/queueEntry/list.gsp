@@ -72,7 +72,7 @@
             	<table>
             	<tr>
             		<td>Status:</td>
-            			<td><g:textField name="search.status" value="${params.search?.status}" size="50"/></td>
+            			<td><g:textField name="search.status" value="${params.search?.status}" size="5"/></td>
             		</tr>
             		
             		<tr>

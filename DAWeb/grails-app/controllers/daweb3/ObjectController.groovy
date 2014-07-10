@@ -42,17 +42,26 @@ class ObjectController {
     def list() {
 		
 				def admin = false;
+				
+				def contractorList = Contractor.list()
+		
 				def relativeDir = session.contractor.shortName+ "/outgoing"
 				def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir				
 					params.max = Math.min(params.max ? params.int('max') : 10, 100)
-					
+
+					if (params.searchContractorName){
+						if(params.searchContractorName=="null"){
+							params.remove("searchContractorName")
+						}
+					}
+
 					def c = Object.createCriteria()
 					log.debug(params.toString())
 					def objects = c.list(max: params.max, offset: params.offset ?: 0) {
 						
 						if (session==null) throw new RuntimeException("sss")
 						if (params.search) params.search.each { key, value ->
-							like(key, "%" + value + "%")
+								like(key, "%" + value + "%")
 						}
 						
 						
@@ -79,7 +88,8 @@ class ObjectController {
 						searchParams: params.search,
 						paginate: true,
 						admin: admin,
-						baseFolder: baseFolder
+						baseFolder: baseFolder,
+						contractorList: contractorList
 				]
     }
 
