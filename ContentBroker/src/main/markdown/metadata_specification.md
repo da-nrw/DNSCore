@@ -88,7 +88,6 @@ The metadata must be laid out in the following manner:
 1. Any of the referenced METS files links to a single data file ([somefile*.xyz]). METS files with links to more data files lead to an exception which will reject the package and inform the user.
 
 
-
 Here is an example of a EAD file:
 
     <c03 level="file">
@@ -114,10 +113,18 @@ Here is an example of a EAD file:
             <p>(...)</p>
           </bibliography>
           <daogrp>
-            <daoloc role="mets" title="mets_2_99"
+            <daoloc role="mets" title="[METS2]"
             href="[subfolder]/[METS2].xml" />
           </daogrp>
     </c03>
+
+The METS file contains then
+
+    <mets:fileSec>
+    <mets:fileGrp>
+    <mets:file ID="item_0" MIMETYPE=""><mets:FLocat xlink:href="[subfolder]/[somefile2.xyz]" LOCTYPE="URL"/></mets:file></mets:fileGrp>
+    </mets:fileSec>
+
 
 
 
