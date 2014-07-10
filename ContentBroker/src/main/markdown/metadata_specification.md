@@ -16,6 +16,8 @@ At the moment we accept four formats:
 
 Refrences inside metadata
 
+If there are more than one metadata file found on the top level, the package gets rejected and the user gets informed.
+
 ## METS/MODS
 
 A SIP with METS metadata must conform to the following directory layout
@@ -42,7 +44,8 @@ A SIP with EAD metadata must conform to the following directory layout
 3. There must be only one [EAD] file. Packages with more than one will get rejected and the user gets informed.
 4. The [subfolder] and [somefile*.xyz] placeholders are files and folders placed in an arbitrary manner by the user.
 
-
 ## LIDO
+
+asdf
 
 ## XMP - Sidecar
