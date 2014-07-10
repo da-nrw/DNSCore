@@ -36,6 +36,8 @@ A SIP with METS metadata must conform to the following directory layout
 A SIP with EAD metadata must conform to the following directory layout
 
     data/[EAD].xml
+    data/[METS1].xml
+    data/[subfolder]/[METS2].xml
     data/[somefile1.xyz]
     data/[subfolder]/[somefile2.xyz]
 
@@ -43,6 +45,38 @@ A SIP with EAD metadata must conform to the following directory layout
 2. The [EAD] file must be on the top level of the directory structure, i.e. directly below the data folder.
 3. There must be only one [EAD] file. Packages with more than one will get rejected and the user gets informed.
 4. The [subfolder] and [somefile*.xyz] placeholders are files and folders placed in an arbitrary manner by the user.
+5. From the [EAD] file, several
+
+
+          <c03 level="file">
+            <did>
+              <unitid type="altsignatur">(...)</unitid>
+              <unitid type="Bestellnummer">4547 Bl.066</unitid>
+              <unitdate normal="0000/0000">ohne Datum</unitdate>
+              <origination>(...)</origination>
+              <physdesc>(...)
+              <extent>(...)</extent></physdesc>
+              <unittitle>Mrs. N. Andres</unittitle>
+              <abstract type="Enth&#195;&#164;lt">(...)</abstract>
+              <abstract type="Darin">(...)</abstract>
+              <note>
+                <p>(...)</p>
+              </note>
+              <unitid type="v.num">4559</unitid>
+            </did>
+            <relatedmaterial>
+              <p>(...)</p>
+            </relatedmaterial>
+            <bibliography>
+              <p>(...)</p>
+            </bibliography>
+            <daogrp>
+              <daoloc role="mets" title="mets_2_99"
+              href="mets_2_99.xml" />
+            </daogrp>
+          </c03>
+
+
 
 ## LIDO
 
