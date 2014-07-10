@@ -32,7 +32,7 @@ must be referenced like this:
 
     href="[subfolder]/[somefile2.xyz]
     
-''Don't do''
+'''Don't do'''
     
 A common mistake would be referencing a file
 
