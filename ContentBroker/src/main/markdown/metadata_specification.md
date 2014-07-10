@@ -32,17 +32,19 @@ must be referenced like this:
 
     href="[subfolder]/[somefile2.xyz]
     
+''Don't do''
+    
 A common mistake would be referencing a file
 
-   data/[subfolder]/[somefile3.xyz]
+    data/[subfolder]/[somefile3.xyz]
    
 from a metadatafile
 
-   data/[subfolder]/[metadata1].xml
+    data/[subfolder]/[metadata1].xml
    
 like this:
 
-   href="[somefile3.xyz]"
+    href="[somefile3.xyz]"
    
 The idea here was, that the data file is referenced relatively to the metadata file. So the guideline to reference files
 relatively to the data file has been ignored. The system would reject such a package, where the referenced file could not be resolved and report an exception to the user.
