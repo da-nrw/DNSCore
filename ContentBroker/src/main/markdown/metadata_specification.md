@@ -42,11 +42,18 @@ A SIP with EAD metadata must conform to the following directory layout
     data/[subfolder]/[somefile2.xyz]
 
 1. The [EAD] placeholder stands for a random string and can be chosen freely.
-2. The [EAD] file must be on the top level of the directory structure, i.e. directly below the data folder.
-3. There must be only one [EAD] file. Packages with more than one will get rejected and the user gets informed.
-4. The [subfolder] and [somefile*.xyz] placeholders are files and folders placed in an arbitrary manner by the user.
-5. From the [EAD] file, several
+1. The [EAD] file must be on the top level of the directory structure, i.e. directly below the data folder.
+1. There must be only one [EAD] file. Packages with more than one will get rejected and the user gets informed.
+1. The [subfolder] and [somefile*.xyz] placeholders are files and folders placed in an arbitrary manner by the user.
 
+The metadata must be laid out in the following manner:
+
+1. From the [EAD] file, several METS files somewhere inside the directory structure can be referenced. They can be named arbitrarily (placeholders [METS*]). The references have to be made via daoloc elements. The references have to be set relative from the data path of the package.
+1. 
+
+
+
+Here is an example of a EAD file:
 
           <c03 level="file">
             <did>
@@ -72,7 +79,7 @@ A SIP with EAD metadata must conform to the following directory layout
             </bibliography>
             <daogrp>
               <daoloc role="mets" title="mets_2_99"
-              href="mets_2_99.xml" />
+              href="[subfolder]/[METS2].xml" />
             </daogrp>
           </c03>
 
