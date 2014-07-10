@@ -98,4 +98,7 @@ A SIP with EAD metadata must conform to the following directory layout
     data/[abc2].[audio]
     data/[abc2].xmp
     
+1. All the files have to be placed at the root level directly below the data folder.
+2. There has to be a 1 to 1 correspondence between data and metadata files. 
+3. The files are associated by naming convention. [abc1].[audio] and [abc1].xmp belong together.
     
