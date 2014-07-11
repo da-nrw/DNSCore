@@ -19,10 +19,6 @@
 
 package de.uzk.hki.da.cb;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Properties;
-
 import javax.mail.MessagingException;
 
 import org.apache.commons.lang.NotImplementedException;
@@ -48,10 +44,17 @@ public class AuditAction extends AbstractAction {
 
 	
 	private String nodeAdminEmail;
-	private int minNodes = 3;
-	private GridFacade gridRoot;
-	private int errorState = 51;
+	private String systemFromEmailAddress;
 
+
+	private int minNodes;
+	private GridFacade gridRoot;
+
+	private static class ObjectState {
+		private static final Integer UnderAudit = 60;
+		private static final Integer Error = 51;
+		private static final Integer archivedAndValidState = 100;
+	}
 	/*
 	 * 
 	 * (non-Javadoc)
@@ -59,27 +62,14 @@ public class AuditAction extends AbstractAction {
 	 */
 	@Override
 	boolean implementation() {
-		setKILLATEXIT(true);
-		
-		Properties properties = null;
-		InputStream in;
-		try {
-		
-			in = new FileInputStream("conf/config.properties");
-			properties = new Properties();
-			properties.load(in);
+		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
+		if (nodeAdminEmail == null) throw new ConfigurationException("nodeAdminEmail is null!");
+		if (minNodes==0) throw new ConfigurationException("minNodes, 0 is not allowed!");
 
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		
-		
-		setObjectState(job,60);
-		
+		setKILLATEXIT(true);
+		setObjectState(job,ObjectState.UnderAudit);
 		StoragePolicy sp = new StoragePolicy(localNode);
-		// why do we load this from config.properties this way?
-		if ((String)properties.getProperty("system.min_repls")==null) throw new ConfigurationException("system.min_repls");
-		sp.setMinNodes(Integer.parseInt(((String)properties.getProperty("system.min_repls"))));
+		
 		
 		String msg= "";
 		// TODO: refactor to same implementation IntegrityScanner uses
@@ -101,9 +91,9 @@ public class AuditAction extends AbstractAction {
 		}
 		if (completelyValid) {
 			logger.debug("Object checked OK, setting object state to 100");
-			object.setObject_state(100);
+			object.setObject_state(ObjectState.archivedAndValidState);
 		} else {
-			object.setObject_state(errorState);
+			object.setObject_state(ObjectState.Error);
 			logger.error("Object " + object.getIdentifier()  + " has following errors :" +  msg);
 			unloadAndRepair(object);
 			informNodeAdmin(object, msg);
@@ -127,7 +117,7 @@ public class AuditAction extends AbstractAction {
 	void informNodeAdmin(Object obj, String msg) {
 		// send Mail to Admin with Package in Error
 
-		String subject = "[" + "da-nrw" + "] Problem Report für " + obj.getIdentifier();
+		String subject = "[" + "da-nrw".toUpperCase() + "] Problem Report für " + obj.getIdentifier();
 		if (nodeAdminEmail != null && !nodeAdminEmail.equals("")) {
 			try {
 				Mail.sendAMail(getSystemFromEmailAdress(), nodeAdminEmail, subject, msg);
@@ -186,6 +176,13 @@ public class AuditAction extends AbstractAction {
 
 	public void setGridRoot(GridFacade gridRoot) {
 		this.gridRoot = gridRoot;
+	}
+	public String getSystemFromEmailAddress() {
+		return systemFromEmailAddress;
+	}
+
+	public void setSystemFromEmailAddress(String systemFromEmailAddress) {
+		this.systemFromEmailAddress = systemFromEmailAddress;
 	}
 
 }
