@@ -27,6 +27,7 @@ import javax.mail.MessagingException;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
@@ -73,10 +74,12 @@ public class AuditAction extends AbstractAction {
 		}
 		
 		
-		setObjectState(job,50);
+		setObjectState(job,60);
 		
 		StoragePolicy sp = new StoragePolicy(localNode);
-		sp.setMinNodes(Integer.parseInt(((String)properties.getProperty("cb.min_repls"))));
+		// why do we load this from config.properties this way?
+		if ((String)properties.getProperty("system.min_repls")==null) throw new ConfigurationException("system.min_repls");
+		sp.setMinNodes(Integer.parseInt(((String)properties.getProperty("system.min_repls"))));
 		
 		String msg= "";
 		// TODO: refactor to same implementation IntegrityScanner uses
