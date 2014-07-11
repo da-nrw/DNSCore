@@ -45,7 +45,9 @@ class QueueEntryController {
     
 	def adminList() {
 		def contractorList = Contractor.list()
-		[contractorList:contractorList]
+		def cbNodeList = CbNode.list()
+		[contractorList:contractorList
+			cbNodeList:cbNodeList]
 	}
 
     def listSnippet() {

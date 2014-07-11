@@ -96,7 +96,7 @@
             			<tr>
             			<td>InitialNode:</td>
             			<td>
-            				<g:select id="initialNode" name="node.id" from="${queueEntry.initialNode.list()}" optionKey="id" required="" value="${queueEntryInstance?.initialNode}" class="many-to-one"/>
+            				<g:select id="initialNode" name="node" from="${cbNodeList}" required="" value="${objectInstance?.cbNodeList?.name}" class="many-to-one"/>
             			</td>
             		</tr>
             		
