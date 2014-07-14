@@ -2,7 +2,7 @@
 <!-- AUGIAS-EAD-Export Version 2.2 -->
 <!DOCTYPE 
 ead PUBLIC "+//ISBN 1-931666-00-8//DTD ead.dtd (Encoded Archival Description (EAD) Version 2002)//EN"
-"src/main/schemas/EAD/augias.dtd">
+"src/main/xsd/EAD/augias.dtd">
 <ead audience="external">
   <eadheader countryencoding="iso3166-1" dateencoding="iso8601">
     <eadid countrycode="DE"></eadid>

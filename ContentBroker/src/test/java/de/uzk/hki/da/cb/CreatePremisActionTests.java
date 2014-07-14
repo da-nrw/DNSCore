@@ -55,6 +55,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.Files;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -67,6 +68,7 @@ import de.uzk.hki.da.utils.RelativePath;
  */
 public class CreatePremisActionTests {
 
+	
 	/** The Constant logger. */
 	static final Logger logger = LoggerFactory.getLogger(CreatePremisActionTests.class);
 	
@@ -98,8 +100,8 @@ public class CreatePremisActionTests {
 	 */
 	@Before
 	public void setUp() throws IOException {
-		FileUtils.copyFileToDirectory(new File("src/main/resources/premis.xsd"), new File("conf/"));
-		FileUtils.copyFileToDirectory(new File("src/main/resources/xlink.xsd"), new File("conf/"));
+		FileUtils.copyFileToDirectory(Files.PREMIS_XSD, new File("conf/"));
+		FileUtils.copyFileToDirectory(Files.XLINK_XSD, new File("conf/"));
 		
 		Node node = new Node();
 		node.setWorkAreaRootPath(workAreaRootPath);
