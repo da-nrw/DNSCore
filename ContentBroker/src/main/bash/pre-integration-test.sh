@@ -122,6 +122,7 @@ ci)
 ;;
 esac
 
+mkdir conf
 cp src/main/xml/hibernateCentralDB.cfg.xml.$1 conf/hibernateCentralDB.cfg.xml
 java -jar target/ContentBroker-SNAPSHOT.jar createSchema
 src/main/bash/populatetestdb.sh populate $1

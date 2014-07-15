@@ -20,7 +20,8 @@ public class UserException extends RuntimeException {
 		WATERMARK_NO_POINTSIZE,
 		WATERMARK_NO_OPACITY,
 		REPLACE_URLS_IN_METADATA_ERROR,
-		RETRIEVAL_ERROR
+		RETRIEVAL_ERROR,
+		DUPLICATE_DOCUMENT_NAMES
 	};
 	
 	private static final long serialVersionUID = -6346016039624940492L;

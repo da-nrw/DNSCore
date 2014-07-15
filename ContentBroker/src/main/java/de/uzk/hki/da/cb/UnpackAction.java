@@ -22,9 +22,11 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -41,21 +43,12 @@ import de.uzk.hki.da.utils.ArchiveBuilder;
 import de.uzk.hki.da.utils.ArchiveBuilderFactory;
 import de.uzk.hki.da.utils.BagitConsistencyChecker;
 import de.uzk.hki.da.utils.ConsistencyChecker;
-import de.uzk.hki.da.utils.MetsConsistencyChecker;
 import de.uzk.hki.da.utils.Path;
 
 /**
- * Does the following steps during the (early) ingest stage of a package:
- * <ol>
- * <li>Looks in the homedir of the delivering user if it can find a file [orig_name].[containersuffix] there. If thats the case (which is the iput
- * standard case), moves it to the fork directory. In case of a prior revert or an ingest through the staging area the package 
- * is expected to be already in fork. So, if there is no package in home, fork gets scanned for appropriate packages.
- * 
- * <li>Unzips the container and checks it against METS or bagIt checksums for consistency. 
- * <li>If it is a METS style package, generates a premis file from the METS rights section.
-
- * <li>Deletes container file after successful unpacking.
- * </ol>
+ * If there is sufficient space on the WorkArea, fetches the container (named object.package.containername)
+ * from the user's (object.contractor) IngestArea space and puts it to work. There the action unpacks the
+ * contents and checks the SIP for consistency. Deletes the container after unpacking so that only the unpacked SIP remains. 
  * 
  * Accepted container formats [.tar,.tar.gz,.tgz,.zip].
  * 
@@ -83,7 +76,9 @@ public class UnpackAction extends AbstractAction {
 	
 	boolean implementation(){
 		
-		Path absoluteSIPPath = Path.make(localNode.getIngestAreaRootPath(),object.getContractor().getShort_name(), 
+		Path absoluteSIPPath = Path.make(
+				localNode.getIngestAreaRootPath(),
+				object.getContractor().getShort_name(), 
 				object.getLatestPackage().getContainerName());
 	
 		if (!ingestGate.canHandle(absoluteSIPPath.toFile().length())){
@@ -92,11 +87,10 @@ public class UnpackAction extends AbstractAction {
 		}
 		
 		String sipInForkPath = copySIPToWorkArea(absoluteSIPPath);
-		
 		unpack(new File(sipInForkPath),object.getPath().toString());
-		
+		throwUserExceptionIfduplicatesExist();          // TODO change order with next line
 		deleteUnwantedFiles(object.getPath().toFile()); // unwanted content can be configured in beans-actions.xml
-		
+
 		checkConsistency(object.getPath());
 		try {
 			if (!PremisXmlValidator.validatePremisFile(Path.make(object.getDataPath(),"premis.xml").toFile()))
@@ -113,9 +107,97 @@ public class UnpackAction extends AbstractAction {
 		
 		// Must be the last step in this action
 		absoluteSIPPath.toFile().delete();
-				
 		return true;
 	}	
+	
+
+
+	
+	/**
+	 * Searches for duplicate document names.
+	 * @author Daniel M. de Oliveira
+	 * @throws UserException if more there are files which share a document name.
+	 */
+	private void throwUserExceptionIfduplicatesExist() {
+
+		Map<String,List<File>> duplicates = purgeUnicates(generateDocumentsToFilesMap());
+
+		String errorMsg = ""; int errs = 0;
+		for (String duplicate : duplicates.keySet()){
+			errorMsg+="document name which is used more than once found:";
+			for (File file:duplicates.get(duplicate)){
+				errorMsg+=" "+file;
+			}
+			errorMsg+="\n";
+			errs++;
+		}
+		if (!errorMsg.isEmpty()){
+			errorMsg+="Make sure there is always only one file with the same prefix existent. Found errors: "+errs; // TODO hinweis auf dokumentation
+		}
+		if (!duplicates.keySet().isEmpty())
+			throw new UserException(UserException.UserExceptionId.DUPLICATE_DOCUMENT_NAMES, errorMsg);
+	}
+
+	
+	
+	
+	/**
+	 * purges documentsToFiles and returns the reference
+	 * @param
+	 * @return the reference to the param  
+	 * @author Daniel M. de Oliveira
+	 */
+	private Map<String, List<File>> purgeUnicates(Map<String,List<File>> documentsToFiles){
+
+		List<String> unicates = new ArrayList<String>();
+		
+		for (String entry:documentsToFiles.keySet())
+			if (documentsToFiles.get(entry).size()==1)
+				unicates.add(entry);
+		
+		for (String unicate:unicates)
+			documentsToFiles.remove(unicate);
+		return documentsToFiles;
+	}
+	
+	
+	/**
+	 * @return
+	 * @author Daniel M. de Oliveira
+	 */
+	private Map<String,List<File>> generateDocumentsToFilesMap(){
+		
+		Map<String,List<File>> documentsToFiles = new HashMap<String,List<File>>();
+		
+		Collection<File> files = FileUtils.listFilesAndDirs(object.getDataPath().toFile(), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+		for (File file : files) {
+			String document = FilenameUtils.getBaseName(file.toString());
+			
+			if (!documentsToFiles.keySet().contains(document)){
+				
+				List<File> filesList = new ArrayList<File>();
+				filesList.add(file);
+				documentsToFiles.put(document,filesList);
+			} else {
+				documentsToFiles.get(document).add(file);
+			}
+		}
+		
+		return documentsToFiles;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * Moves the SIP from ingest area to work area.
