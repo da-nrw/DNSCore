@@ -34,6 +34,12 @@ The basic structure of a SIP as accepted by the system looks like this:
         		someFile1.x
         		subfolder/someFile.x
     
+This document specifies how a SIP must be structured so that any node running DNSCore can ingest it. Following these specifications, a developer should be able to let existing domain specific software output SIPs suitable for getting ingested into DNSCore nodes. It should even be possible doing it manually. 
+
+However, there is a special tool called "SIP-Builder", which is also part of "DA-NRW" project on github. Its source code can be found [here](https://github.com/da-nrw/SIP-Builder). This tool helps users build SIPs providing a comfortable graphical user interface. Power users can also run the SIP builder in headless mode via command line. 
+
+Users can download the latest precomiled version of the SIP-Builder [here](http://www.danrw.de/?page_id=9).
+    
 ### Container formats   
 
 DNSCore supports three container formats. Tar with and without gzip compression and Zip. The file extensions which the system accepts are ".tgz", "tar" and "zip".
