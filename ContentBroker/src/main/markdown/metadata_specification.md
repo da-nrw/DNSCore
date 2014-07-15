@@ -164,6 +164,8 @@ asdf
 
 ## XMP - Sidecar
 
+
+
 A SIP with EAD metadata must conform to the following directory layout
 
     data/[abc1].[audio]
