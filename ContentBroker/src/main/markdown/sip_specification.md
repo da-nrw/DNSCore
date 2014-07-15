@@ -33,9 +33,19 @@ The basic structure of a SIP as accepted by the system looks like this:
         		premis.xml
         		someFile1.x
         		subfolder/someFile.x
-        		
-Inside a container of one of the supported container formats there is
-a single entry which resembles the filename of the container without the extension.
+    
+### Container formats   
+
+DNSCore supports three container formats. Tar with and without gzip compression and Zip. The file extensions which the system accepts are ".tgz", "tar" and "zip".
+
+### Container name
+
+The name of the container is refered to as container name. It is the full name of the file including the extension. The name of the container without its extension is refered to as original name, which will be described further in one of the following paragraphs.
+
+The container contains exactly a single entry. Its name must be the original name, i.e. the name without the container extension.
+
+### Bagit
+
 Inside this first level entry you will find exactly five entries. Four of them
 are text files which are required by BagIt and then you have one data folder.
 Inside the data folder there must be at least one file which is the premis.xml.
@@ -45,24 +55,26 @@ In addition to the premis.xml the user is free to put any data
 of any formats and in any structure (hierarchical ordering in folders) into the 
 data folder. 
 
-### Guidelines for structuring your SIPs
+### PREMIS
 
-Though it is entirely up to you, the user, what to put into your SIP, there are several details
-to take into consideration when assembling the contents for a SIP.
 
-#### Naming conventions and deltas
+### Original Name
 
-##### Original Name
-
-The name of the packaged SIP without the extension (which would be simply "mySIP" in the example above)
-is called original name. Every original name is unique per contractor. This allows the system for 
+Every original name is unique per contractor. This allows the system for 
 recognizing several SIPs as belonging to the same logical object. So make sure, if you want
 to ingest content into the system, which you would define as an entirely new intellectual entity (the object in
 our terms), choose a name which you have not used before (you can check this if you do a quick filtered search via DAWeb). If you want to add contents to the existing object, name the subsequent SIPs with the appropriate original
 name and the system will make sure the SIPs get recognized as part of an existing object. For more information
 on the delta system, look [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/the_delta_feature.md).
 
-##### File names
+
+## Guidelines for structuring your SIPs
+
+Though it is entirely up to you, the user, what to put into your SIP, there are several details
+to take into consideration when assembling the contents for a SIP.
+
+
+#### File names
 
 If you take away the extension away from a file name, you have what is considered a "document" by the system.
 Documents have to be unique which means you shouldn't place two files with the same document name into a SIP:
