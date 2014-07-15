@@ -146,7 +146,7 @@ public class UnpackAction extends AbstractAction {
 
 		String errorMsg = ""; int errs = 0;
 		for (String duplicate : duplicates.keySet()){
-
+			
 			boolean isOKWhenSidecarFilesAreSubtracted = false;
 			for (File file:duplicates.get(duplicate)){
 				if (hasSidecarExtension(file)&&(duplicates.size()-1)==1) {
@@ -196,9 +196,9 @@ public class UnpackAction extends AbstractAction {
 
 		List<String> unicates = new ArrayList<String>();
 		
-		for (String entry:documentsToFiles.keySet())
-			if (documentsToFiles.get(entry).size()==1)
-				unicates.add(entry);
+		for (String document:documentsToFiles.keySet())
+			if (documentsToFiles.get(document).size()==1)
+				unicates.add(document);
 		
 		for (String unicate:unicates)
 			documentsToFiles.remove(unicate);
@@ -214,9 +214,12 @@ public class UnpackAction extends AbstractAction {
 		
 		Map<String,List<File>> documentsToFiles = new HashMap<String,List<File>>();
 		
-		Collection<File> files = FileUtils.listFilesAndDirs(object.getDataPath().toFile(), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+		Collection<File> files = FileUtils.listFiles(object.getDataPath().toFile(), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
 		for (File file : files) {
-			String document = FilenameUtils.getBaseName(file.toString());
+			String document = 
+					file.getAbsolutePath().replace(object.getDataPath().toFile().getAbsolutePath(),"");
+			document = document.substring(1);
+			document = FilenameUtils.removeExtension(document);
 			
 			if (!documentsToFiles.keySet().contains(document)){
 				

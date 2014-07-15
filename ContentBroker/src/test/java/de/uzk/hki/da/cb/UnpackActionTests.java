@@ -53,6 +53,7 @@ public class UnpackActionTests {
 	private static final String CONF = "conf";
 	private static final String BAGIT_PACKAGE = "bagitPackage.tgz";
 	private static final String DUPLICATE_DOCUMENTS = "duplicateDocuments.tgz";
+	private static final String WHEN_DUPLICATES = "whenDuplicatesAreNotDuplicates.tgz";
 	private static final String SIDECAR_FILES = "sidecarFiles.tgz";
 
 	private Path workAreaRootPath = new RelativePath("src/test/resources/cb/UnpackActionTests/");
@@ -133,6 +134,20 @@ public class UnpackActionTests {
 		catch(UserException e){
 			System.out.println(e.getMessage());
 			if (!e.getMessage().endsWith("2")) fail();
+		}
+	}
+	
+	@Test
+	public void testWhenDuplicatesAreNotDuplicates() throws IOException{
+		FileUtils.copyFile(Path.makeFile(ingestPath,WHEN_DUPLICATES+"_"),Path.makeFile(ingestPath,WHEN_DUPLICATES));
+		o.getPackages().get(0).setContainerName(WHEN_DUPLICATES);
+		
+		try{
+			action.implementation();
+		}
+		catch(UserException e){
+			System.out.println(e.getMessage());
+			fail();
 		}
 	}
 	
