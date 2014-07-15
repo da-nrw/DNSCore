@@ -37,8 +37,6 @@ import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.metadata.PremisXmlValidator;
-import de.uzk.hki.da.service.PremisCreator;
-import de.uzk.hki.da.service.PremisCreator.IdentifyPackageException;
 import de.uzk.hki.da.utils.ArchiveBuilder;
 import de.uzk.hki.da.utils.ArchiveBuilderFactory;
 import de.uzk.hki.da.utils.BagitConsistencyChecker;
@@ -98,21 +96,17 @@ public class UnpackAction extends AbstractAction {
 		unpack(new File(sipInForkPath),object.getPath().toString());
 		
 		deleteUnwantedFiles(object.getPath().toFile()); // unwanted content can be configured in beans-actions.xml
-
 		
-		PackageType pType = checkConsistency(object.getPath());
-		if (pType==PackageType.METS)
-			convertMETStoPREMIS(object.getPath().toString());
-		else
-			try {
-				if (!PremisXmlValidator.validatePremisFile(Path.make(object.getDataPath(),"premis.xml").toFile()))
-					throw new UserException(UserExceptionId.INVALID_SIP_PREMIS, "PREMIS file is not valid");
-			} catch (FileNotFoundException e1) {
-				throw new UserException(UserExceptionId.SIP_PREMIS_NOT_FOUND, "Couldn't find PREMIS file", e1);
-			}
-			catch (IOException e2) {
-				throw new RuntimeException("Failed to read PREMIS file for validation", e2);
-			}	
+		checkConsistency(object.getPath());
+		try {
+			if (!PremisXmlValidator.validatePremisFile(Path.make(object.getDataPath(),"premis.xml").toFile()))
+				throw new UserException(UserExceptionId.INVALID_SIP_PREMIS, "PREMIS file is not valid");
+		} catch (FileNotFoundException e1) {
+			throw new UserException(UserExceptionId.SIP_PREMIS_NOT_FOUND, "Couldn't find PREMIS file", e1);
+		}
+		catch (IOException e2) {
+			throw new RuntimeException("Failed to read PREMIS file for validation", e2);
+		}	
 		
 		logger.info("deleting: "+sipInForkPath);
 		new File(sipInForkPath).delete();
@@ -250,13 +244,7 @@ public class UnpackAction extends AbstractAction {
 		if (pType == null)
 			throw new UserException(UserExceptionId.UNKNOWN_PACKAGE_TYPE, "Package type couldn't be determined");
 
-		ConsistencyChecker checker = null;
-		if (pType==PackageType.METS) {
-			normalizeMetsPackage(packageInForkAbsolutePath.toFile());
-			checker = new MetsConsistencyChecker(packageInForkAbsolutePath.toString() + "/data");
-		}else{
-			checker = new BagitConsistencyChecker(packageInForkAbsolutePath.toString());
-		}
+		ConsistencyChecker checker = new BagitConsistencyChecker(packageInForkAbsolutePath.toString());
 		
 		try{
 			if (!checker.checkPackage())
@@ -274,22 +262,6 @@ public class UnpackAction extends AbstractAction {
 	
 	
 
-	private void convertMETStoPREMIS(String unpackedSIPPath){
-		
-		logger.info("The delivered package is a mets style package. Converting Rights " +
-				"statement METS -> PREMIS");
-
-		PremisCreator premisCreator = new PremisCreator();
-		try {
-			premisCreator.createPremisFromMets(
-					unpackedSIPPath+"/data/export_mets.xml",
-					unpackedSIPPath+"/data/premis.xml",
-					object.getContractor());
-		} catch (IdentifyPackageException e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
 	/**
 	 * Determines whether the package is of type BAGIT or PREMIS
 	 * @author Daniel M. de Oliveira
@@ -304,42 +276,14 @@ public class UnpackAction extends AbstractAction {
 			logger.debug("-- "+f);
 		}
 		
-		boolean isSemPackage = false;
 		if (isStandardPackage(pkg_path)) {
 			logger.debug("Package is BagIt style, baby!");
-		} else if (isSemanticsPackage(pkg_path)) {
-			logger.debug("Package is METS style, baby!");
-			isSemPackage = true;
 		} else {
 			return null;
 		}
-		return (isSemPackage ? PackageType.METS : PackageType.BAGIT);
+		return PackageType.BAGIT;
 	}
 	
-	
-	boolean isSemanticsPackage(File packageContent) {
-		String children[] = (new File(packageContent.getAbsolutePath())).list();
-		logger.debug("Absolute path has children: " + Arrays.toString(children));
-		if (children.length == 1) {
-			logger.debug("Testing if path exists" + packageContent.getAbsolutePath() + "/" + children[0] + "/export_mets.xml");
-			logger.debug("Result: " + new File(packageContent.getAbsolutePath() + "/" + children[0] + "/export_mets.xml").exists());
-			if (new File(packageContent.getAbsolutePath() + "/" + children[0] + "/export_mets.xml").exists()) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	
-	void normalizeMetsPackage(File packageName){
-		
-		String children[] = packageName.list();
-		String source= packageName.getAbsolutePath() + "/" + children[0];
-		String target= packageName.getAbsolutePath() + "/data";
-		new File(source).renameTo(new File(target));
-		logger.debug("renaming METS package from "+source+" to "+target);
-	}
-
 	
 	boolean isStandardPackage(File packageContent){
 		
