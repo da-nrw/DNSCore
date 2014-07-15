@@ -46,17 +46,16 @@ The container contains exactly a single entry. Its name must be the original nam
 
 ### Bagit
 
-Inside this first level entry you will find exactly five entries. Four of them
-are text files which are required by BagIt and then you have one data folder.
-Inside the data folder there must be at least one file which is the premis.xml.
-The premis.xml, which adheres to a standard described [here](http://www.loc.gov/standards/premis/v2/premis-2-2.pdf) contains some object specific rights settings which will control the publication settings
-for the object. A detailed specification of the expected PREMIS elements and the used vocabulary can be found [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/premis_specification.md).
-In addition to the premis.xml the user is free to put any data
-of any formats and in any structure (hierarchical ordering in folders) into the 
-data folder. 
+For the purpose of making sure the transfer of a SIP from the client system to a DNSCore node has happened without corruption of the files, all SIPs conform to the BagIt standard, which is described [here](http://tools.ietf.org/html/draft-kunze-bagit-06). 
+
+The first level entry with the orig name inside the container contains exactly five entries. Four of them
+are text files which are required by BagIt and then you have one data folder. The data folder contains the user data and this is what the part "Guidelines for structuring your SIPs" is all about.
 
 ### PREMIS
 
+Inside the data folder there must be at least one file which is the premis.xml.
+The premis.xml, which adheres to a standard described [here](http://www.loc.gov/standards/premis/v2/premis-2-2.pdf) contains some object specific rights settings which will control the publication settings
+for the object. A detailed specification of the expected PREMIS elements and the used vocabulary can be found [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/premis_specification.md).
 
 ### Original Name
 
@@ -69,6 +68,10 @@ on the delta system, look [here](https://github.com/da-nrw/DNSCore/blob/master/C
 
 
 ## Guidelines for structuring your SIPs
+
+In addition to the premis.xml the user is free to put any data
+of any formats and in any structure (hierarchical ordering in folders) into the 
+data folder. 
 
 Though it is entirely up to you, the user, what to put into your SIP, there are several details
 to take into consideration when assembling the contents for a SIP.
