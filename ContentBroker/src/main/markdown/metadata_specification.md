@@ -56,6 +56,10 @@ If there are more than one metadata file found on the top level, the package get
 
 ## METS/MODS
 
+METS allows for a description of complex objects and serves as a container format for content,administrative, technical and structural metadata. More information on METS can be found [here](http://www.loc.gov/standards/mets/). For METS documents processed on nodes running DNSCore there are additional constraints which will be described in the following section.
+
+### Directory layout
+
 A SIP with METS metadata must conform to the following directory layout
 
     data/[METS].xml
@@ -66,6 +70,16 @@ A SIP with METS metadata must conform to the following directory layout
 2. The [METS] file must be on the top level of the directory structure, i.e. directly below the data folder.
 3. There must be only one [METS] file. Packages with more than one will get rejected and the user gets informed.    
 4. The [subfolder] and [somefile*.xyz] placeholders are files and folders placed in an arbitrary manner by the user.
+
+### structural metadata
+
+From within the file section the descriptive metadata is referenced. The attribute xlink:href must point to the relative (from the data path) path of a file.
+
+Files can be grouped, but then only one group gets evaluated. If there is more than one group, the group marked with USE="DEFAULT" is used.
+
+The physical and logical structure within the structMap is optional, but is processed when the attributes TYPE="LOGICAL" or TYPE="PHYSICAL" are present.
+
+### descriptive metadata
 
 ## EAD - with METS
 
