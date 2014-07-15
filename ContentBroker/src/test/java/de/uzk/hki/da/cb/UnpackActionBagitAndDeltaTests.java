@@ -110,7 +110,7 @@ public class UnpackActionBagitAndDeltaTests {
 
 		action.setNode(node);
 		action.setDao(dao);
-		action.setGridRoot(grid);
+//		action.setGridRoot(grid);
 
 		Object o = new Object();
 		o.setContractor(c);
@@ -163,8 +163,8 @@ public class UnpackActionBagitAndDeltaTests {
 		assertTrue(new File(packagePath+"manifest-md5.txt").exists());
 		assertTrue(new File(packagePath+"bag-info.txt").exists());
 		assertTrue(new File(packagePath+"tagmanifest-md5.txt").exists());
-		assertTrue(new File(packagePath+"data/"+repName+"a/140849.tif").exists());
-		assertTrue(new File(packagePath+"data/"+repName+"a/premis.xml").exists());
+		assertTrue(new File(packagePath+"data/140849.tif").exists());
+		assertTrue(new File(packagePath+"data/premis.xml").exists());
 	}
 
 	/**

@@ -22,10 +22,8 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -35,15 +33,12 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.metadata.PremisXmlValidator;
 import de.uzk.hki.da.service.PremisCreator;
 import de.uzk.hki.da.service.PremisCreator.IdentifyPackageException;
-import de.uzk.hki.da.service.RetrievePackagesHelper;
-import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.utils.ArchiveBuilder;
 import de.uzk.hki.da.utils.ArchiveBuilderFactory;
 import de.uzk.hki.da.utils.BagitConsistencyChecker;
@@ -60,10 +55,7 @@ import de.uzk.hki.da.utils.Path;
  * 
  * <li>Unzips the container and checks it against METS or bagIt checksums for consistency. 
  * <li>If it is a METS style package, generates a premis file from the METS rights section.
- * <li>Creates a new Representation and copies the contents of the submission into it.
- * <li>Test if it is a delta package (detected through orig_name=already existing orig_name of an object).
- * <li>If that's the case, the previous representations of the original packages get loaded, so that all 
- * reps including the new one are accessible under fork/[csn]/[orig_name]/data/[repnames]
+
  * <li>Deletes container file after successful unpacking.
  * </ol>
  * 
@@ -91,11 +83,7 @@ public class UnpackAction extends AbstractAction {
 	
 	private IngestGate ingestGate;
 	
-	private GridFacade gridRoot;
-	
-	
 	boolean implementation(){
-		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 		
 		Path absoluteSIPPath = Path.make(localNode.getIngestAreaRootPath(),object.getContractor().getShort_name(), 
 				object.getLatestPackage().getContainerName());
@@ -110,6 +98,7 @@ public class UnpackAction extends AbstractAction {
 		unpack(new File(sipInForkPath),object.getPath().toString());
 		
 		deleteUnwantedFiles(object.getPath().toFile()); // unwanted content can be configured in beans-actions.xml
+
 		
 		PackageType pType = checkConsistency(object.getPath());
 		if (pType==PackageType.METS)
@@ -123,43 +112,7 @@ public class UnpackAction extends AbstractAction {
 			}
 			catch (IOException e2) {
 				throw new RuntimeException("Failed to read PREMIS file for validation", e2);
-			}		
-		
-		String repName;
-		try {
-			repName = transduceDateFolderContentsToNewRep(object.getPath().toString());
-		} catch (IOException e) {		
-			throw new RuntimeException("problems during creating new representation");
-		}
-		object.getLatestPackage().scanRepRecursively(repName+"a");
-		logger.debug("REPNAME: " + repName);
-		job.setRep_name(repName);
-		
-		if (object.isDelta()) {
-			
-			RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot());
-
-			try {
-				if (!ingestGate.canHandle(retrievePackagesHelper.getObjectSize(object, job ))){
-					logger.info("no disk space available at working resource. will not fetch new data.");
-					return false;
-				}
-			} catch (IOException e) {
-				throw new RuntimeException("Failed to determine object size for object " + object.getIdentifier(), e);
-			}
-			
-			object.getDataPath().toFile().mkdirs();
-			logger.info("object already exists. Moving existing packages to work area.");
-			try {
-				retrievePackagesHelper.loadPackages(object, false);
-				logger.info("Packages of object \""+object.getIdentifier()+
-						"\" are now available on cache resource at: " + Path.make(object.getPath(),"existingAIPs"));
-				FileUtils.copyFile(Path.makeFile(object.getDataPath(),object.getNameOfNewestBRep(),"premis.xml"),
-						Path.makeFile(object.getDataPath(),"premis_old.xml"));
-			} catch (IOException e) {
-				throw new RuntimeException("error while trying to get existing packages from lza area",e);
-			}
-		}
+			}	
 		
 		logger.info("deleting: "+sipInForkPath);
 		new File(sipInForkPath).delete();
@@ -198,85 +151,10 @@ public class UnpackAction extends AbstractAction {
 		return destFile.getAbsolutePath();
 	}	
 	
-	/**
-	 * 
-	 * @author Daniel M. de Oliveira
-	 * @param packageInForkAbsolutePath
-	 * @return
-	 * @throws RuntimeException
-	 */
-	private PackageType checkConsistency(Path packageInForkAbsolutePath){
-		
-		PackageType pType = null;
-		pType = determinePackageType(packageInForkAbsolutePath.toFile());
-
-		if (pType == null)
-			throw new UserException(UserExceptionId.UNKNOWN_PACKAGE_TYPE, "Package type couldn't be determined");
-
-		ConsistencyChecker checker = null;
-		if (pType==PackageType.METS) {
-			normalizeMetsPackage(packageInForkAbsolutePath.toFile());
-			checker = new MetsConsistencyChecker(packageInForkAbsolutePath.toString() + "/data");
-		}else{
-			checker = new BagitConsistencyChecker(packageInForkAbsolutePath.toString());
-		}
-		
-		try{
-			if (!checker.checkPackage())
-				throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,
-						"Consistency checker detected inconsistent package!\n" + checker.getMessages(),
-						checker.getMessages());			
-		} catch (UserException e) { 
-			throw e;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		
-		return pType;
-	}	
 	
-	private void convertMETStoPREMIS(String unpackedSIPPath){
-		
-		logger.info("The delivered package is a mets style package. Converting Rights " +
-				"statement METS -> PREMIS");
-
-		PremisCreator premisCreator = new PremisCreator();
-		try {
-			premisCreator.createPremisFromMets(
-					unpackedSIPPath+"/data/export_mets.xml",
-					unpackedSIPPath+"/data/premis.xml",
-					object.getContractor());
-		} catch (IdentifyPackageException e) {
-			throw new RuntimeException(e);
-		}
-	}
 	
-	/**
-	 * Takes a SIP style package that contains its files directly under data and moves this files
-	 * to a newly created subfolder of data which is named like yyyy_MM_dd+HH_mm+a (java simple date format notation).
-	 * 
-	 * @author Daniel M. de Oliveira
-	 * @param job
-	 * @param physicalPathToAIP
-	 * @return the representations
-	 * @throws IOException 
-	 */
-	public String transduceDateFolderContentsToNewRep(String physicalPathToAIP) throws IOException{
-		logger.trace("createFirstRepresentation(job,"+physicalPathToAIP+")");
-		
-		Date dNow = new Date( );
-	    SimpleDateFormat ft = new SimpleDateFormat ("yyyy'_'MM'_'dd'+'HH'_'mm'+'");
-	    String repName = ft.format(dNow);
-	    
-		FileUtils.moveDirectory(new File(physicalPathToAIP+"/data"), 
-				new File(physicalPathToAIP+"/temp"));
 	
-	    new File(physicalPathToAIP+"/data").mkdir();
-	    FileUtils.moveDirectory(new File(physicalPathToAIP+"/temp"), 
-	    		new File(physicalPathToAIP+"/data/"+repName+"a"));
-	    
-	    return repName;
-	}
+	
 	
 	/**
 	 * Creates a folder at targetFolderPath and expands the contents of sourceFilePath into it.
@@ -356,6 +234,62 @@ public class UnpackAction extends AbstractAction {
 
 	}
 	
+	
+	/**
+	 * 
+	 * @author Daniel M. de Oliveira
+	 * @param packageInForkAbsolutePath
+	 * @return
+	 * @throws RuntimeException
+	 */
+	private PackageType checkConsistency(Path packageInForkAbsolutePath){
+		
+		PackageType pType = null;
+		pType = determinePackageType(packageInForkAbsolutePath.toFile());
+
+		if (pType == null)
+			throw new UserException(UserExceptionId.UNKNOWN_PACKAGE_TYPE, "Package type couldn't be determined");
+
+		ConsistencyChecker checker = null;
+		if (pType==PackageType.METS) {
+			normalizeMetsPackage(packageInForkAbsolutePath.toFile());
+			checker = new MetsConsistencyChecker(packageInForkAbsolutePath.toString() + "/data");
+		}else{
+			checker = new BagitConsistencyChecker(packageInForkAbsolutePath.toString());
+		}
+		
+		try{
+			if (!checker.checkPackage())
+				throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,
+						"Consistency checker detected inconsistent package!\n" + checker.getMessages(),
+						checker.getMessages());			
+		} catch (UserException e) { 
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		
+		return pType;
+	}	
+	
+	
+
+	private void convertMETStoPREMIS(String unpackedSIPPath){
+		
+		logger.info("The delivered package is a mets style package. Converting Rights " +
+				"statement METS -> PREMIS");
+
+		PremisCreator premisCreator = new PremisCreator();
+		try {
+			premisCreator.createPremisFromMets(
+					unpackedSIPPath+"/data/export_mets.xml",
+					unpackedSIPPath+"/data/premis.xml",
+					object.getContractor());
+		} catch (IdentifyPackageException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	/**
 	 * Determines whether the package is of type BAGIT or PREMIS
 	 * @author Daniel M. de Oliveira
@@ -382,14 +316,6 @@ public class UnpackAction extends AbstractAction {
 		return (isSemPackage ? PackageType.METS : PackageType.BAGIT);
 	}
 	
-	void normalizeMetsPackage(File packageName){
-		
-		String children[] = packageName.list();
-		String source= packageName.getAbsolutePath() + "/" + children[0];
-		String target= packageName.getAbsolutePath() + "/data";
-		new File(source).renameTo(new File(target));
-		logger.debug("renaming METS package from "+source+" to "+target);
-	}
 	
 	boolean isSemanticsPackage(File packageContent) {
 		String children[] = (new File(packageContent.getAbsolutePath())).list();
@@ -403,7 +329,18 @@ public class UnpackAction extends AbstractAction {
 		}
 		return false;
 	}
+	
+	
+	void normalizeMetsPackage(File packageName){
+		
+		String children[] = packageName.list();
+		String source= packageName.getAbsolutePath() + "/" + children[0];
+		String target= packageName.getAbsolutePath() + "/data";
+		new File(source).renameTo(new File(target));
+		logger.debug("renaming METS package from "+source+" to "+target);
+	}
 
+	
 	boolean isStandardPackage(File packageContent){
 		
 		boolean is=true;
@@ -413,6 +350,10 @@ public class UnpackAction extends AbstractAction {
 		
 		return is;
 	}
+
+	
+	
+
 
 	public List<IOFileFilter> getUnwantedFilesFilters() {
 		return unwantedFilesFilters;
@@ -445,13 +386,5 @@ public class UnpackAction extends AbstractAction {
 
 	public void setIngestGate(IngestGate ingestGate) {
 		this.ingestGate = ingestGate;
-	}
-
-	public GridFacade getGridRoot() {
-		return gridRoot;
-	}
-
-	public void setGridRoot(GridFacade gridRoot) {
-		this.gridRoot = gridRoot;
 	}
 }

@@ -50,6 +50,7 @@
 		<entry key="IngestConvertAction" value="3" />
 		<entry key="IngestScanAction" value="3" />
 		<entry key="IngestCreatePremisAction" value="3" />
+		<entry key="IngestRestructureAction" value="3" />
 		<entry key="IngestCheckFormatsAction" value="3" />
 		<entry key="IngestScanForPresentationAction" value="3" />
 		<entry key="IngestConvertForPresentationAction" value="3" />
@@ -95,6 +96,7 @@
 		<value>CreateEDMAction</value>
 		<value>SendToPresenterAction</value>
 		<value>FetchPIPsAction</value>
+		<value>IngestRestructureAction</value>
 		<value>IngestUnpackAction</value>
 		<value>AuditAction</value>
 		<value>PIPGenCleanWorkAreaAction</value>

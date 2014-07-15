@@ -43,8 +43,8 @@ cp -r ../3rdParty/jhove $CBTAR_SRC
 cp src/main/sh/jhove $CBTAR_SRC/jhove
 cp src/main/conf/jhove.conf $CBTAR_SRC/jhove/conf
 cp -r src/main/xslt $CBTAR_SRC/conf
-cp src/main/resources/premis.xsd $CBTAR_SRC/conf
-cp src/main/resources/xlink.xsd $CBTAR_SRC/conf
+cp src/main/xsd/premis.xsd $CBTAR_SRC/conf
+cp src/main/xsd/xlink.xsd $CBTAR_SRC/conf
 cp src/main/resources/frame.jsonld $CBTAR_SRC/conf
 cp src/main/bash/ffmpeg.sh $CBTAR_SRC
 cp src/main/bash/ContentBroker_stop.sh $CBTAR_SRC

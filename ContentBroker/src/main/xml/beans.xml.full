@@ -59,6 +59,7 @@
 		<entry key="IngestShortenFileNamesAction" value="3" />
 		<entry key="IngestUpdateMetadataAction" value="3" />
 		<entry key="IngestArchiveReplicationAction" value="3" />
+		<entry key="IngestRestructureAction" value="3" />
 		<entry key="IngestArchiveReplicationCheckAction" value="3" />
 		<entry key="RetrievalAction" value="3" />			
 		<entry key="RetrievalObjectToWorkAreaAction" value="3" />			
@@ -97,6 +98,7 @@
 		<value>CreateEDMAction</value>
 		<value>SendToPresenterAction</value>
 		<value>FetchPIPsAction</value>
+		<value>IngestRestructureAction</value>
 		<value>IngestUnpackAction</value>
 		<value>AuditAction</value>
 		<value>PIPGenCleanWorkAreaAction</value>

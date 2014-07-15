@@ -96,19 +96,4 @@ public class SendToPresenterActionTests {
 			fail();
 		}
 	}
-	
-//	@Test
-//	public void testViewerNotExistent(){
-//		when(dcReader.getPackageTypeFromDC((Path)anyObject(),(Path)anyObject())).thenReturn("NOTTHERE");
-//		
-//		try {
-//			action.implementation();
-//			fail();
-//		} catch (RuntimeException e)
-//		{
-//			if (!e.getMessage().startsWith("Viewer not found")) fail();
-//		} catch (IOException e) {
-//			fail();
-//		}
-//	}
 }

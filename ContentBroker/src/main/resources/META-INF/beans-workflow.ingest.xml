@@ -14,7 +14,6 @@
 		<property name="startStatus" value="110" />
 		<property name="endStatus" value="120" />
 		<property name="name" value="IngestUnpackAction" />
-		<property name="gridRoot" ref="${cb.implementation.grid}"/>
 		<property name="ingestGate" ref="ingestGate" />
 		<property name="unwantedFilesFilters">
 			<util:list value-type="org.apache.commons.io.filefilter.IOFileFilter">
@@ -25,8 +24,16 @@
 			</util:list>
 		</property>
 	</bean>
-	<bean id="IngestScanAction" class="de.uzk.hki.da.cb.ScanAction" scope="prototype">
+	<bean id="IngestRestructureAction" class="de.uzk.hki.da.cb.RestructureAction"
+		scope="prototype">
 		<property name="startStatus" value="120" />
+		<property name="endStatus" value="130" />
+		<property name="name" value="IngestRestructureAction" />
+		<property name="ingestGate" ref="ingestGate" />
+		<property name="gridRoot" ref="${cb.implementation.grid}"/>
+	</bean>
+	<bean id="IngestScanAction" class="de.uzk.hki.da.cb.ScanAction" scope="prototype">
+		<property name="startStatus" value="130" />
 		<property name="endStatus" value="140" />
 		<property name="name" value="IngestScanAction" />
 		<property name="formatScanService" ref="formatScanService" />
