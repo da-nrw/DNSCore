@@ -83,6 +83,20 @@ The physical and logical structure within the structMap is optional, but is proc
 
 ## EAD - with METS
 
+In general, for EAD files processable with DNSCore, the guidelines of the EAD profile for "Findbücher" of the "Deutsche Digitale Bibliothek" are followed.
+
+In addition to that, there are several rules to follow in order to let DNSCore work properly on EAD material.
+
+### descriptive metadata
+
+TODO translate
+
+Elemente zur Textstrukturierung, wie Hervorhebungen, Zeilenumbrüche und Absätze werden grundsätzlich ignoriert.
+
+Metadaten im Element für weitergehende deskriptive Daten (<odd>) können aufgrund der fehlenden Systematik nur zur Anzeige und Volltextsuche, nicht aber zur gezielten Recherche genutzt werden.
+
+### directory layout
+
 A SIP with EAD metadata must conform to the following directory layout
 
     data/[EAD].xml
@@ -95,6 +109,8 @@ A SIP with EAD metadata must conform to the following directory layout
 1. The [EAD] file must be on the top level of the directory structure, i.e. directly below the data folder.
 1. There must be only one [EAD] file. Packages with more than one will get rejected and the user gets informed.
 1. The [subfolder] and [somefile*.xyz] placeholders are files and folders placed in an arbitrary manner by the user.
+
+### structural metadata
 
 The metadata must be laid out in the following manner:
 
