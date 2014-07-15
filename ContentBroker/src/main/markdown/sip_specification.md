@@ -130,32 +130,7 @@ TODO
 
 #### Publication - Preparation of Metadata
 
-
 In addition to the basic SIP format there are some metadata formats/structures which are
 supported in a special way, optimized for the publication feature of DNSCore.
 
-##### METS
-
-##### EAD
-
-##### EAD / METS
-
-##### XMP
-
-    data/
-        premis.xml
-        abc1.tif
-        abc1.xmp
-        abc2.tif
-        abc2.xmp
-        cde1.jpg
-        subfolder/abc3.tif
-        subfolder/abc3.xmp
-        subfolder/cde1.jpg
-
-The system will recognize the correspondence of files and sidecar-files by matching filenames ignoring
-the extension of the file. In the example this would mean that we have three pairs (abc1,abc2,abc3) of
-file and sidecar file.
-
-#### LIDO
-
+For a specification of the metadata formats accepted by DNSCore, have a look at [this](metadata_specification.md) document.
