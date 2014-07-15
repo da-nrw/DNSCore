@@ -100,9 +100,6 @@ public class RestructureAction extends AbstractAction{
 			}
 		}
 		
-	
-		
-		
 		return true;
 	}
 
