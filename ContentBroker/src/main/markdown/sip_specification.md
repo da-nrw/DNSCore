@@ -73,6 +73,10 @@ our terms), choose a name which you have not used before (you can check this if 
 name and the system will make sure the SIPs get recognized as part of an existing object. For more information
 on the delta system, look [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/the_delta_feature.md).
 
+### Encoding
+
+File names inside the SIP must be UTF-8 encoded. The file separator must be the unix style slash ("/").
+
 
 ## Guidelines for structuring your SIPs
 
