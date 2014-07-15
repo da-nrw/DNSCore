@@ -65,7 +65,7 @@ import de.uzk.hki.da.utils.Path;
 public class UnpackAction extends AbstractAction {
 
 	private static final String SIP_SPEC_URL = "https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md";
-	private static final String HELP_SUMMARY = "Make sure there is always only one file with the same prefix existent. "
+	private static final String HELP_SUMMARY = "Make sure there exists always only one file with the same document name (which is the file path relative from the SIPs data path, excluding the file extension). "
 			+ "For help refer to the SIP-Specification page at "+ SIP_SPEC_URL + ".";
 	
 	
@@ -156,9 +156,9 @@ public class UnpackAction extends AbstractAction {
 				
 			}
 			if (!isOKWhenSidecarFilesAreSubtracted){
-				errorMsg+="document name which is used more than once found:";
-				errorMsg+=" "+duplicate;
-				errorMsg+="\n";
+				errorMsg+="More than one file found for the document named \"";
+				errorMsg+= duplicate;
+				errorMsg+="\".\n";
 				errs++;
 			}
 		}

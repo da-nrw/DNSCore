@@ -45,16 +45,18 @@ import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * The Class UnpackActionBagitAndDeltaTests.
+ * @author Daniel M. de Oliveira
  */
 public class UnpackActionTests {
 
+	private static final String SIDECAR_EXTENSIONS = "xmp";
 	private static final String INGEST = "ingest";
 	private static final String IDENTIFIER = "identifier";
 	private static final String CONF = "conf";
 	private static final String BAGIT_PACKAGE = "bagitPackage.tgz";
-	private static final String DUPLICATE_DOCUMENTS = "duplicateDocuments.tgz";
-	private static final String WHEN_DUPLICATES = "whenDuplicatesAreNotDuplicates.tgz";
-	private static final String SIDECAR_FILES = "sidecarFiles.tgz";
+	private static final String DUPLICATE_DOCUMENTS_PACKAGE = "duplicateDocuments.tgz";
+	private static final String WHEN_DUPLICATES_PACKAGE = "whenDuplicatesAreNotDuplicates.tgz";
+	private static final String SIDECAR_FILES_PACKAGE = "sidecarFiles.tgz";
 
 	private Path workAreaRootPath = new RelativePath("src/test/resources/cb/UnpackActionTests/");
 	private Path ingestPath = Path.make(workAreaRootPath,"/ingest/TEST/");
@@ -98,8 +100,15 @@ public class UnpackActionTests {
 		FileUtils.deleteQuietly(new File(CONF));
 		
 		FileUtils.deleteDirectory(Path.makeFile(csnPath,IDENTIFIER));
-		if (Path.makeFile(ingestPath,BAGIT_PACKAGE).exists()) Path.makeFile(ingestPath,BAGIT_PACKAGE).delete();
-		if (Path.makeFile(csnPath,BAGIT_PACKAGE).exists()) Path.makeFile(csnPath,BAGIT_PACKAGE).delete();
+		Path.makeFile(ingestPath,BAGIT_PACKAGE).delete();
+		Path.makeFile(csnPath,BAGIT_PACKAGE).delete();
+		Path.makeFile(ingestPath,DUPLICATE_DOCUMENTS_PACKAGE).delete();
+		Path.makeFile(csnPath,DUPLICATE_DOCUMENTS_PACKAGE).delete();
+		Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE).delete();
+		Path.makeFile(csnPath,SIDECAR_FILES_PACKAGE).delete();
+		Path.makeFile(ingestPath,WHEN_DUPLICATES_PACKAGE).delete();
+		Path.makeFile(csnPath,WHEN_DUPLICATES_PACKAGE).delete();
+
 	}
 
 	/**
@@ -124,8 +133,8 @@ public class UnpackActionTests {
 	
 	@Test
 	public void testRejectPackageWithDuplicateDocumentNames() throws IOException{
-		FileUtils.copyFile(Path.makeFile(ingestPath,DUPLICATE_DOCUMENTS+"_"),Path.makeFile(ingestPath,DUPLICATE_DOCUMENTS));
-		o.getPackages().get(0).setContainerName(DUPLICATE_DOCUMENTS);
+		FileUtils.copyFile(Path.makeFile(ingestPath,DUPLICATE_DOCUMENTS_PACKAGE+"_"),Path.makeFile(ingestPath,DUPLICATE_DOCUMENTS_PACKAGE));
+		o.getPackages().get(0).setContainerName(DUPLICATE_DOCUMENTS_PACKAGE);
 		
 		try{
 			action.implementation();
@@ -139,8 +148,8 @@ public class UnpackActionTests {
 	
 	@Test
 	public void testWhenDuplicatesAreNotDuplicates() throws IOException{
-		FileUtils.copyFile(Path.makeFile(ingestPath,WHEN_DUPLICATES+"_"),Path.makeFile(ingestPath,WHEN_DUPLICATES));
-		o.getPackages().get(0).setContainerName(WHEN_DUPLICATES);
+		FileUtils.copyFile(Path.makeFile(ingestPath,WHEN_DUPLICATES_PACKAGE+"_"),Path.makeFile(ingestPath,WHEN_DUPLICATES_PACKAGE));
+		o.getPackages().get(0).setContainerName(WHEN_DUPLICATES_PACKAGE);
 		
 		try{
 			action.implementation();
@@ -154,10 +163,10 @@ public class UnpackActionTests {
 	@Test
 	public void acceptSidecarFiles() throws IOException{
 		
-		FileUtils.copyFile(Path.makeFile(ingestPath,SIDECAR_FILES+"_"),Path.makeFile(ingestPath,SIDECAR_FILES));
-		o.getPackages().get(0).setContainerName(SIDECAR_FILES);
+		FileUtils.copyFile(Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE+"_"),Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE));
+		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE);
 	
-		action.setSidecarExtensions("xmp");
+		action.setSidecarExtensions(SIDECAR_EXTENSIONS);
 		try{
 			action.implementation();
 		}catch(UserException e){
