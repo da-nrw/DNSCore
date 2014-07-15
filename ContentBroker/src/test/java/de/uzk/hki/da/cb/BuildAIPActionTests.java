@@ -101,7 +101,7 @@ public class BuildAIPActionTests {
 
 		action.setObject(obj);
 		action.setDao(dao);
-		action.setNode(node);
+		action.setLocalNode(node);
 		action.setJob(job);
 		
 	}

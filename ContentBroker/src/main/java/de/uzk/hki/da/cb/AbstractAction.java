@@ -376,10 +376,6 @@ public abstract class AbstractAction implements Runnable {
 		this.endStatus=es;
 	}
 	
-	public void setNode(Node node){
-		this.localNode=node;
-	}
-	
 	public void setJob(Job job){
 		this.job=job;
 	}

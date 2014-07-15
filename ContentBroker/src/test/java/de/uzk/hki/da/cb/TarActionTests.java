@@ -103,7 +103,7 @@ public class TarActionTests {
 		action.setObject(o);
 		action.setDao(dao);
 		action.setDistributedConversionAdapter(mock(DistributedConversionAdapter.class));
-		action.setNode(node);
+		action.setLocalNode(node);
 		action.setJob(job);
 		
 	}

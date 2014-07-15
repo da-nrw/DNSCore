@@ -87,7 +87,7 @@ public class PrepareSendToPresenterActionTests {
 		node = new Node(); 
 		node.setWorkAreaRootPath(new RelativePath(workingAreaRoot));
 		Node dipNode = new Node(); dipNode.setName("dipNode");
-		action.setNode(node);
+		action.setLocalNode(node);
 
 		contractor = new Contractor();
 		contractor.setShort_name("TEST");

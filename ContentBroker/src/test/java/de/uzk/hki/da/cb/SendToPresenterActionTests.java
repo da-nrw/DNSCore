@@ -57,7 +57,7 @@ public class SendToPresenterActionTests {
 		
 		action = new SendToPresenterAction();
 		action.setObject(object);
-		action.setNode(object.getTransientNodeRef());
+		action.setLocalNode(object.getTransientNodeRef());
 		RepositoryFacade repositoryFacade = mock(RepositoryFacade.class);
 		action.setRepositoryFacade(repositoryFacade);
 		

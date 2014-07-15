@@ -147,7 +147,7 @@ public class ProperRefreshOfJobChildrenTest extends Thread{
 		session.beginTransaction();
 		action.setJob((Job) session.get(Job.class,1));
 		session.close();
-		action.setNode(node);
+		action.setLocalNode(node);
 		action.setDao(dao);
 	}
 

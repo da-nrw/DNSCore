@@ -102,7 +102,7 @@ public class ArchiveReplicationActionTests {
 		GridFacade grid = mock (GridFacade.class);
 		action.setGridRoot(grid);
 		action.setObject(object);
-		action.setNode(node);
+		action.setLocalNode(node);
 		return action;
 	}
 }

@@ -320,7 +320,7 @@ public class ITBase {
 			action.setDao(dao);
 			action.setActionCommunicatorService(acs);
 			action.setUserExceptionManager(uem);
-			action.setNode(node);
+			action.setLocalNode(node);
 			ActionRegistry map = (ActionRegistry) context.getBean("actionRegistry");
 			map.registerAction(action);
 			action.setActionMap(map);

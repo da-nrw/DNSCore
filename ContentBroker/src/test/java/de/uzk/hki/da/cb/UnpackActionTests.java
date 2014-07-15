@@ -64,7 +64,6 @@ public class UnpackActionTests {
 	private UnpackAction action = new UnpackAction();
 	private Object o;
 
-	
 	/**
 	 * Sets the up.
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -121,7 +120,6 @@ public class UnpackActionTests {
 		assertTrue(new File(o.getPath()+"/data/140849.tif").exists());
 		assertTrue(new File(o.getPath()+"/data/premis.xml").exists());
 	}
-
 	
 	@Test
 	public void testRejectPackageWithDuplicateDocumentNames() throws IOException{
@@ -137,7 +135,6 @@ public class UnpackActionTests {
 			if (!e.getMessage().endsWith("2")) fail();
 		}
 	}
-	
 	
 	@Test
 	public void acceptSidecarFiles() throws IOException{
@@ -156,8 +153,6 @@ public class UnpackActionTests {
 	
 	
 	
-	
-	
 	/**
 	 * Test delete source package.
 	 * @throws IOException 
@@ -170,6 +165,7 @@ public class UnpackActionTests {
 		action.implementation();
 		assertFalse(Path.makeFile(csnPath,BAGIT_PACKAGE).exists());
 	} 
+
 	
 	
 
@@ -187,5 +183,4 @@ public class UnpackActionTests {
 			System.out.println("Exception caught as expected: "+e);	
 		}		
 	}
-
 }
