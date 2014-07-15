@@ -164,7 +164,19 @@ asdf
 
 ## XMP - Sidecar
 
+### structural metadata
 
+With XMP there isn't the possibility to model the structure of complex objects. The only structural information which is maintained by DNSCore is based on a 1 to 1 relation of files to metadata files. The the section directory for more information on that. This relation models that XMP metadata "belong" to documents like pictures or PDFs and so on.
+
+### descriptive metadata
+
+TODO translate 
+
+Deskriptive Metadaten
+
+Aktuell werden nur die deskriptiven Metadaten aus dem Dublin Core Namespace verarbeitet. Die Umsetzung der weiteren in XMP enthaltenen Namespaces (insbesondere iptc4xmpcore und photoshop) ist geplant, hängt aber vom noch zu erarbeitenden Schema für die Recherche im Presentation Repository ab.
+
+### directory layout
 
 A SIP with EAD metadata must conform to the following directory layout
 
