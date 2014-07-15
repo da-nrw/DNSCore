@@ -157,23 +157,5 @@ The system will recognize the correspondence of files and sidecar-files by match
 the extension of the file. In the example this would mean that we have three pairs (abc1,abc2,abc3) of
 file and sidecar file.
 
-### LIDO
-
-## SIP-Builder 
-
-The [SIP-Builder](https://github.com/da-nrw/SIP-Builder) is a Java tool capable of creating SIPs and collections that adhere to the structure explained above. The tool can be used in two modes:
-* In GUI mode, the user is led through a number of consecutive steps in order to determine the data and rights settings. This mode is meant primarily for unexperienced users and users who want to process a rather small amount of data. It can also be used to create the contract rights in a comfortable way.
-* In CLI mode, the necessary settings are handed over to the application as command line parameters. This mode is useful for integrating the SIP-Builder into automated processes.
-
-A German manual explaining the steps in GUI mode and all of the possible parameters in CLI mode can be found [here] (https://github.com/da-nrw/SIP-Builder/blob/master/src/manual/SIP-Builder%20Anleitung.pdf?raw=true).
-
-For more information please refer to
-* the [Java API documentation](https://da-nrw.github.com/SIP-Builder/apidocs)
-* the [Java test documentation](https://da-nrw.github.com/SIP-Builder/testapidocs)
-
-## Collections
-
-**Note** that this feature is planned but requirements for this feature are yet to be collected.
-
-For the moment developer only documentation can be found in the internal wiki.
+#### LIDO
 
