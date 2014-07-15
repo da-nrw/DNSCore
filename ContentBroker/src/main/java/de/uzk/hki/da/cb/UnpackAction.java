@@ -30,7 +30,6 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,12 +67,8 @@ public class UnpackAction extends AbstractAction {
 	private static final String HELP_SUMMARY = "Make sure there exists always only one file with the same document name (which is the file path relative from the SIPs data path, excluding the file extension). "
 			+ "For help refer to the SIP-Specification page at "+ SIP_SPEC_URL + ".";
 	
-	
 	private enum PackageType{ BAGIT, METS }
-	
 	static final Logger logger = LoggerFactory.getLogger(UnpackAction.class);
-	
-	private List<IOFileFilter> unwantedFilesFilters;
 	
 	public UnpackAction(){}
 	
@@ -97,7 +92,7 @@ public class UnpackAction extends AbstractAction {
 		
 		String sipInForkPath = copySIPToWorkArea(absoluteSIPPath);
 		unpack(new File(sipInForkPath),object.getPath().toString());
-		deleteUnwantedFiles(object.getPath().toFile()); // unwanted content can be configured in beans-actions.xml
+		
 		
 		throwUserExceptionIfDuplicatesExist();
 		throwUserExceptionIfNotBagitConsistent();
@@ -337,26 +332,7 @@ public class UnpackAction extends AbstractAction {
 			}
 		}		
 	}
-	
-	public void deleteUnwantedFiles(File pkg) {
 
-		if(unwantedFilesFilters == null || unwantedFilesFilters.isEmpty()) {
-			logger.warn("unwantedFilesFilters is not set. No cleanup will be performed after unpacking.");
-			return;
-		}
-
-		for (IOFileFilter filter : unwantedFilesFilters) {
-			
-			Collection<File> files = FileUtils.listFilesAndDirs(pkg, filter, TrueFileFilter.INSTANCE);
-			for (File file : files) {
-				if( filter.accept(file)) {
-					logger.warn("deleted unwanted file: {}", file.getAbsolutePath());
-					FileUtils.deleteQuietly(file);
-				}
-			}
-		}
-
-	}
 	
 	
 	/**
@@ -429,19 +405,7 @@ public class UnpackAction extends AbstractAction {
 	
 
 
-	public List<IOFileFilter> getUnwantedFilesFilters() {
-		return unwantedFilesFilters;
-	}
-		
-	/**
-	 * Sets a list of unix-like patterns which denote files and directories
-	 * that will be deleted after unpacking the SIP.
-	 * Allowed wildcards are "*" and "?".
-	 * @param unwantedFiles
-	 */
-	public void setUnwantedFilesFilters(List<IOFileFilter> unwantedFilesFilters) {
-		this.unwantedFilesFilters = unwantedFilesFilters;
-	}
+	
 
 	@Override
 	void rollback() throws IOException {

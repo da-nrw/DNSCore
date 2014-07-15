@@ -22,9 +22,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +54,7 @@ public class RestructureAction extends AbstractAction{
 	static final Logger logger = LoggerFactory.getLogger(RestructureAction.class);
 
 	private IngestGate ingestGate;
-	
+	private List<IOFileFilter> unwantedFilesFilters;
 	private GridFacade gridRoot;
 	
 	@Override
@@ -58,6 +62,7 @@ public class RestructureAction extends AbstractAction{
 			UserException, RepositoryException {
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 		
+		deleteUnwantedFiles(object.getPath().toFile()); // unwanted content can be configured in beans-actions.xml
 		
 		String repName;
 		try {
@@ -107,6 +112,29 @@ public class RestructureAction extends AbstractAction{
 	}
 
 	
+	
+	public void deleteUnwantedFiles(File pkg) {
+
+		if(unwantedFilesFilters == null || unwantedFilesFilters.isEmpty()) {
+			logger.warn("unwantedFilesFilters is not set. No cleanup will be performed after unpacking.");
+			return;
+		}
+
+		for (IOFileFilter filter : unwantedFilesFilters) {
+			
+			Collection<File> files = FileUtils.listFilesAndDirs(pkg, filter, TrueFileFilter.INSTANCE);
+			for (File file : files) {
+				if( filter.accept(file)) {
+					logger.warn("deleted unwanted file: {}", file.getAbsolutePath());
+					FileUtils.deleteQuietly(file);
+				}
+			}
+		}
+
+	}
+	
+	
+	
 	/**
 	 * Takes a SIP style package that contains its files directly under data and moves this files
 	 * to a newly created subfolder of data which is named like yyyy_MM_dd+HH_mm+a (java simple date format notation).
@@ -148,5 +176,19 @@ public class RestructureAction extends AbstractAction{
 
 	public void setGridRoot(GridFacade gridRoot) {
 		this.gridRoot = gridRoot;
+	}
+	
+	public List<IOFileFilter> getUnwantedFilesFilters() {
+		return unwantedFilesFilters;
+	}
+		
+	/**
+	 * Sets a list of unix-like patterns which denote files and directories
+	 * that will be deleted after unpacking the SIP.
+	 * Allowed wildcards are "*" and "?".
+	 * @param unwantedFiles
+	 */
+	public void setUnwantedFilesFilters(List<IOFileFilter> unwantedFilesFilters) {
+		this.unwantedFilesFilters = unwantedFilesFilters;
 	}
 }
