@@ -15,6 +15,7 @@
 		<property name="endStatus" value="120" />
 		<property name="name" value="IngestUnpackAction" />
 		<property name="ingestGate" ref="ingestGate" />
+		<property name="sidecarExtensions" value="${system.sidecar_extensions}" />
 		<property name="unwantedFilesFilters">
 			<util:list value-type="org.apache.commons.io.filefilter.IOFileFilter">
 				<bean class="org.apache.commons.io.filefilter.WildcardFileFilter">

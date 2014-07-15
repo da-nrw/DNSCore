@@ -2,6 +2,8 @@
   DA-NRW Software Suite | ContentBroker
   Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
   Universität zu Köln
+  Copyright (C) 2014 LVRInfoKom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -44,20 +46,21 @@ import de.uzk.hki.da.utils.TESTHelper;
 /**
  * The Class UnpackActionBagitAndDeltaTests.
  */
-public class UnpackActionBagitAndDeltaTests {
+public class UnpackActionTests {
 
 	private static final String INGEST = "ingest";
 	private static final String IDENTIFIER = "identifier";
 	private static final String CONF = "conf";
 	private static final String BAGIT_PACKAGE = "bagitPackage.tgz";
 	private static final String DUPLICATE_DOCUMENTS = "duplicateDocuments.tgz";
+	private static final String SIDECAR_FILES = "sidecarFiles.tgz";
 
 	private Path workAreaRootPath = new RelativePath("src/test/resources/cb/UnpackActionTests/");
 	private Path ingestPath = Path.make(workAreaRootPath,"/ingest/TEST/");
 	private Path csnPath = Path.make(workAreaRootPath,"/work/TEST/");
 
 	private IngestGate gate = new IngestGate();
-	
+
 	private UnpackAction action = new UnpackAction();
 	private Object o;
 
@@ -134,6 +137,24 @@ public class UnpackActionBagitAndDeltaTests {
 			if (!e.getMessage().endsWith("2")) fail();
 		}
 	}
+	
+	
+	@Test
+	public void acceptSidecarFiles() throws IOException{
+		
+		FileUtils.copyFile(Path.makeFile(ingestPath,SIDECAR_FILES+"_"),Path.makeFile(ingestPath,SIDECAR_FILES));
+		o.getPackages().get(0).setContainerName(SIDECAR_FILES);
+	
+		action.setSidecarExtensions("xmp");
+		try{
+			action.implementation();
+		}catch(UserException e){
+			fail(e.getMessage());
+		}
+	}
+	
+	
+	
 	
 	
 	

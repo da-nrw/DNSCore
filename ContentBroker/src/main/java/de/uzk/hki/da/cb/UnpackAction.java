@@ -52,8 +52,8 @@ import de.uzk.hki.da.utils.Path;
  * 
  * Accepted container formats [.tar,.tar.gz,.tgz,.zip].
  * 
- * The package is expected to conform to our SIP-Spezifikation.
- * @see abc <a href="http://da-nrw.hki.uni-koeln.de/projects/danrwpublic/wiki/SIP-Spezifikation">
+ * The package is expected to conform to our SIP-Specification.
+ * @see abc <a href="https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md">
  * SIP-Spezifikation
  * </a>
  * 
@@ -64,6 +64,11 @@ import de.uzk.hki.da.utils.Path;
  */
 public class UnpackAction extends AbstractAction {
 
+	private static final String SIP_SPEC_URL = "https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md";
+	private static final String HELP_SUMMARY = "Make sure there is always only one file with the same prefix existent. "
+			+ "For help refer to the SIP-Specification page at "+ SIP_SPEC_URL + ".";
+	
+	
 	private enum PackageType{ BAGIT, METS }
 	
 	static final Logger logger = LoggerFactory.getLogger(UnpackAction.class);
@@ -74,7 +79,11 @@ public class UnpackAction extends AbstractAction {
 	
 	private IngestGate ingestGate;
 	
-	boolean implementation(){
+	private String[] sidecarExtensions;
+	
+	
+	boolean implementation() throws IOException{
+		if (sidecarExtensions==null) sidecarExtensions = new String[]{};
 		
 		Path absoluteSIPPath = Path.make(
 				localNode.getIngestAreaRootPath(),
@@ -88,19 +97,11 @@ public class UnpackAction extends AbstractAction {
 		
 		String sipInForkPath = copySIPToWorkArea(absoluteSIPPath);
 		unpack(new File(sipInForkPath),object.getPath().toString());
-		throwUserExceptionIfduplicatesExist();          // TODO change order with next line
 		deleteUnwantedFiles(object.getPath().toFile()); // unwanted content can be configured in beans-actions.xml
-
-		checkConsistency(object.getPath());
-		try {
-			if (!PremisXmlValidator.validatePremisFile(Path.make(object.getDataPath(),"premis.xml").toFile()))
-				throw new UserException(UserExceptionId.INVALID_SIP_PREMIS, "PREMIS file is not valid");
-		} catch (FileNotFoundException e1) {
-			throw new UserException(UserExceptionId.SIP_PREMIS_NOT_FOUND, "Couldn't find PREMIS file", e1);
-		}
-		catch (IOException e2) {
-			throw new RuntimeException("Failed to read PREMIS file for validation", e2);
-		}	
+		
+		throwUserExceptionIfDuplicatesExist();
+		throwUserExceptionIfNotBagitConsistent();
+		throwUserExceptionIfNotPremisConsistent();
 		
 		logger.info("deleting: "+sipInForkPath);
 		new File(sipInForkPath).delete();
@@ -113,31 +114,75 @@ public class UnpackAction extends AbstractAction {
 
 
 	
+	private void throwUserExceptionIfNotPremisConsistent() throws IOException {
+		
+		try {
+			if (!PremisXmlValidator.validatePremisFile(Path.make(object.getDataPath(),"premis.xml").toFile()))
+				throw new UserException(UserExceptionId.INVALID_SIP_PREMIS, "PREMIS file is not valid");
+		} catch (FileNotFoundException e1) {
+			throw new UserException(UserExceptionId.SIP_PREMIS_NOT_FOUND, "Couldn't find PREMIS file", e1);
+		}
+
+		
+	}
+
+
+
+
 	/**
-	 * Searches for duplicate document names.
+	 * Searches for duplicate document names. Normally duplicates are bad.
+	 * <br>
+	 * However, duplicates can be ok, if there are only two files sharing a document name and
+	 * one of them is a sidecar file (which can be identified if it has one of the allowed sidecarExtensions).
+	 * 
 	 * @author Daniel M. de Oliveira
 	 * @throws UserException if more there are files which share a document name.
 	 */
-	private void throwUserExceptionIfduplicatesExist() {
-
-		Map<String,List<File>> duplicates = purgeUnicates(generateDocumentsToFilesMap());
+	private void throwUserExceptionIfDuplicatesExist() {
+		
+		// document name <-> list of the files sharing the same document name  
+		Map<String,List<File>> duplicates = 
+				purgeUnicates(generateDocumentsToFilesMap());
 
 		String errorMsg = ""; int errs = 0;
 		for (String duplicate : duplicates.keySet()){
-			errorMsg+="document name which is used more than once found:";
+
+			boolean isOKWhenSidecarFilesAreSubtracted = false;
 			for (File file:duplicates.get(duplicate)){
-				errorMsg+=" "+file;
+				if (hasSidecarExtension(file)&&(duplicates.size()-1)==1) {
+					isOKWhenSidecarFilesAreSubtracted=true;
+					break;
+				}
+				
 			}
-			errorMsg+="\n";
-			errs++;
+			if (!isOKWhenSidecarFilesAreSubtracted){
+				errorMsg+="document name which is used more than once found:";
+				errorMsg+=" "+duplicate;
+				errorMsg+="\n";
+				errs++;
+			}
 		}
-		if (!errorMsg.isEmpty()){
-			errorMsg+="Make sure there is always only one file with the same prefix existent. Found errors: "+errs; // TODO hinweis auf dokumentation
-		}
-		if (!duplicates.keySet().isEmpty())
+
+		if (errs!=0){
+			errorMsg+= HELP_SUMMARY+" Found errors: "+errs;
 			throw new UserException(UserException.UserExceptionId.DUPLICATE_DOCUMENT_NAMES, errorMsg);
+		}
 	}
 
+	
+	/**
+	 * @param file
+	 * @return
+	 * @author Daniel M. de Oliveira
+	 */
+	private boolean hasSidecarExtension(File file){
+		for (int i=0;i<sidecarExtensions.length;i++){
+			if (FilenameUtils.getExtension(file.toString()).equals(sidecarExtensions[i])){
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	
 	
@@ -318,15 +363,15 @@ public class UnpackAction extends AbstractAction {
 	 * @return
 	 * @throws RuntimeException
 	 */
-	private PackageType checkConsistency(Path packageInForkAbsolutePath){
+	private PackageType throwUserExceptionIfNotBagitConsistent(){
 		
 		PackageType pType = null;
-		pType = determinePackageType(packageInForkAbsolutePath.toFile());
+		pType = determinePackageType(object.getPath().toFile());
 
 		if (pType == null)
 			throw new UserException(UserExceptionId.UNKNOWN_PACKAGE_TYPE, "Package type couldn't be determined");
 
-		ConsistencyChecker checker = new BagitConsistencyChecker(packageInForkAbsolutePath.toString());
+		ConsistencyChecker checker = new BagitConsistencyChecker(object.getPath().toString());
 		
 		try{
 			if (!checker.checkPackage())
@@ -412,5 +457,13 @@ public class UnpackAction extends AbstractAction {
 
 	public void setIngestGate(IngestGate ingestGate) {
 		this.ingestGate = ingestGate;
+	}
+
+	public String getSidecarExtensions() {
+		return sidecarExtensions.toString();
+	}
+
+	public void setSidecarExtensions(String sidecarFiles) {
+		this.sidecarExtensions = sidecarFiles.split(",");
 	}
 }

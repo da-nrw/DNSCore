@@ -45,7 +45,7 @@ import de.uzk.hki.da.cb.SelectProcessingNodesTests;
 import de.uzk.hki.da.cb.SendToPresenterActionTests;
 import de.uzk.hki.da.cb.ShortenFileNamesActionTests;
 import de.uzk.hki.da.cb.TarActionTests;
-import de.uzk.hki.da.cb.UnpackActionBagitAndDeltaTests;
+import de.uzk.hki.da.cb.UnpackActionTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionEADMultilevelPackagesTest;
 import de.uzk.hki.da.cb.UpdateMetadataActionEADTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionTests;
@@ -102,7 +102,7 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	SaveConversionInstructionsByJob.class,
 	CreatePremisActionTests.class,
 //	ContentBrokerTests.class,
-	UnpackActionBagitAndDeltaTests.class,
+	UnpackActionTests.class,
 	CLIConversionStrategyTests.class,
 	ObjectTest.class,
 	ConversionInstructionsBuilderTests.class,
