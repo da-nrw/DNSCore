@@ -100,7 +100,7 @@ public class ConvertActionTests {
 		ConversionRoutine im = new ConversionRoutine(
 				"IM",
 				nodes2,
-				"de.uzk.hki.da.convert.CLIConversionStrategy",
+				"de.uzk.hki.da.format.CLIConversionStrategy",
 				"convert input output",
 				"png");
 		
@@ -109,7 +109,7 @@ public class ConvertActionTests {
 		ConversionRoutine copy = new ConversionRoutine(
 				"COPY",
 				nodes3,
-				"de.uzk.hki.da.convert.CLIConversionStrategy",
+				"de.uzk.hki.da.format.CLIConversionStrategy",
 				"cp input output",
 				"*");
 		

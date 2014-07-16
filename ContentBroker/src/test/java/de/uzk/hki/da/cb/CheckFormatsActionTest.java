@@ -35,8 +35,8 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.util.StringUtils;
 
-import de.uzk.hki.da.convert.FormatScanService;
-import de.uzk.hki.da.convert.JhoveScanService;
+import de.uzk.hki.da.format.FormatScanService;
+import de.uzk.hki.da.format.JhoveScanService;
 import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
