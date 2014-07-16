@@ -118,6 +118,7 @@ public class UpdateMetadataActionEADTests {
 		Document doc = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/42/data/b/mets_2_99.xml").toFile()));
 
 		assertEquals("http://data.danrw.de/file/42/renamed067.tif", getURL(doc));
+		System.out.println("DC: "+action.getDcMappings());
 	}
 	
 	
@@ -130,7 +131,7 @@ public class UpdateMetadataActionEADTests {
 			action.implementation();
 			fail();
 		}catch(UserException e){
-			assertTrue(e.getMessage().contains("replacements could be done."));
+			assertTrue(e.getMessage().contains("but only"));
 		}
 	}
 	
@@ -143,7 +144,4 @@ public class UpdateMetadataActionEADTests {
 				.getChild("FLocat", METS_NS)
 				.getAttributeValue("href", XLINK_NS);
 	}
-	
-	
-
 }

@@ -40,9 +40,12 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 	private Event event5;
 	private Event event6;
 	private Object object;
+	private Boolean isTest;
+	
 	
 	@Before
 	public void setUp() throws IOException{
+		
 		object = TESTHelper.setUpObject("43",workAreaRootPathPath);
 		
 		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/mets_361/mets_2_32044.xml").toFile(), Path.make(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/").toFile());
@@ -50,7 +53,13 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/mets_361/mets_2_32046.xml").toFile(), Path.make(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/").toFile());
 		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/mets_361/mets_2_32047.xml").toFile(), Path.make(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/").toFile());
 		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/mets_361/mets_2_32048.xml").toFile(), Path.make(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/").toFile());
+		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/mets_361/ALVR_Nr_4547_Aufn_002.tif").toFile(), Path.make(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/").toFile());
+		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/mets_361/ALVR_Nr_4547_Aufn_003.tif").toFile(), Path.make(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/").toFile());
+		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/mets_361/ALVR_Nr_4547_Aufn_004.tif").toFile(), Path.make(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/").toFile());
+		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/mets_361/ALVR_Nr_4547_Aufn_005.tif").toFile(), Path.make(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/").toFile());
+		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/mets_361/ALVR_Nr_4547_Aufn_006.tif").toFile(), Path.make(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/").toFile());
 		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/EAD_Export.XML").toFile(), Path.make(workAreaRootPathPath,"work/TEST/43/data/a/").toFile());
+		
 		DAFile f2 = new DAFile(object.getLatestPackage(),"a","mets_361/mets_2_32044.xml");
 		object.getLatestPackage().getFiles().add(f2);
 		DAFile f3 = new DAFile(object.getLatestPackage(),"a","mets_361/mets_2_32045.xml");
@@ -66,31 +75,31 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 		
 		event2 = new Event();
 		event2.setSource_file(new DAFile(object.getLatestPackage(),"a","mets_361/ALVR_Nr_4547_Aufn_002.tif"));
-		event2.setTarget_file(new DAFile(object.getLatestPackage(),"b","mets_361/renamed002.tif"));
+		event2.setTarget_file(new DAFile(object.getLatestPackage(),"b","renamed002.tif"));
 		event2.setType("CONVERT");
 		object.getLatestPackage().getEvents().add(event2);
 		
 		event3 = new Event();
 		event3.setSource_file(new DAFile(object.getLatestPackage(),"a","mets_361/ALVR_Nr_4547_Aufn_003.tif"));
-		event3.setTarget_file(new DAFile(object.getLatestPackage(),"b","mets_361/renamed003.tif"));
+		event3.setTarget_file(new DAFile(object.getLatestPackage(),"b","renamed003.tif"));
 		event3.setType("CONVERT");
 		object.getLatestPackage().getEvents().add(event3);
 		
 		event4 = new Event();
 		event4.setSource_file(new DAFile(object.getLatestPackage(),"a","mets_361/ALVR_Nr_4547_Aufn_004.tif"));
-		event4.setTarget_file(new DAFile(object.getLatestPackage(),"b","mets_361/renamed004.tif"));
+		event4.setTarget_file(new DAFile(object.getLatestPackage(),"b","renamed004.tif"));
 		event4.setType("CONVERT");
 		object.getLatestPackage().getEvents().add(event4);
 		
 		event5 = new Event();
 		event5.setSource_file(new DAFile(object.getLatestPackage(),"a","mets_361/ALVR_Nr_4547_Aufn_005.tif"));
-		event5.setTarget_file(new DAFile(object.getLatestPackage(),"b","mets_361/renamed005.tif"));
+		event5.setTarget_file(new DAFile(object.getLatestPackage(),"b","renamed005.tif"));
 		event5.setType("CONVERT");
 		object.getLatestPackage().getEvents().add(event5);
 		
 		event6 = new Event();
 		event6.setSource_file(new DAFile(object.getLatestPackage(),"a","mets_361/ALVR_Nr_4547_Aufn_006.tif"));
-		event6.setTarget_file(new DAFile(object.getLatestPackage(),"b","mets_361/renamed006.tif"));
+		event6.setTarget_file(new DAFile(object.getLatestPackage(),"b","renamed006.tif"));
 		event6.setType("CONVERT");
 		object.getLatestPackage().getEvents().add(event6);
 		
@@ -121,6 +130,11 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 
 	@After 
 	public void tearDown(){
+		Path.makeFile(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/ALVR_Nr_4547_Aufn_002.tif").delete();
+		Path.makeFile(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/ALVR_Nr_4547_Aufn_003.tif").delete();
+		Path.makeFile(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/ALVR_Nr_4547_Aufn_004.tif").delete();
+		Path.makeFile(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/ALVR_Nr_4547_Aufn_005.tif").delete();
+		Path.makeFile(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/ALVR_Nr_4547_Aufn_006.tif").delete();
 		Path.makeFile(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/mets_2_32044.xml").delete();
 		Path.makeFile(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/mets_2_32045.xml").delete();
 		Path.makeFile(workAreaRootPathPath,"work/TEST/43/data/a/mets_361/mets_2_32046.xml").delete();
@@ -144,19 +158,19 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 		
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/43/data/b/mets_361/mets_2_32044.xml").toFile()));
-		assertEquals("http://data.danrw.de/file/43/mets_361/renamed002.tif", getURL(doc));
+		assertEquals("http://data.danrw.de/file/43/renamed002.tif", getURL(doc));
 		
 		Document doc3 = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/43/data/b/mets_361/mets_2_32045.xml").toFile()));
-		assertEquals("http://data.danrw.de/file/43/mets_361/renamed003.tif", getURL(doc3));
+		assertEquals("http://data.danrw.de/file/43/renamed003.tif", getURL(doc3));
 		
 		Document doc4 = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/43/data/b/mets_361/mets_2_32046.xml").toFile()));
-		assertEquals("http://data.danrw.de/file/43/mets_361/renamed004.tif", getURL(doc4));
+		assertEquals("http://data.danrw.de/file/43/renamed004.tif", getURL(doc4));
 		
 		Document doc5 = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/43/data/b/mets_361/mets_2_32047.xml").toFile()));
-		assertEquals("http://data.danrw.de/file/43/mets_361/renamed005.tif", getURL(doc5));
+		assertEquals("http://data.danrw.de/file/43/renamed005.tif", getURL(doc5));
 		
 		Document doc6 = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/43/data/b/mets_361/mets_2_32048.xml").toFile()));
-		assertEquals("http://data.danrw.de/file/43/mets_361/renamed006.tif", getURL(doc6));
+		assertEquals("http://data.danrw.de/file/43/renamed006.tif", getURL(doc6));
 	}
 	
 	private String getURL(Document doc){
