@@ -77,8 +77,8 @@ public class UpdateMetadataActionEADTests {
 		object.getLatestPackage().getEvents().add(event);
 		
 		Job job = new Job(); job.setObject(object); job.setId(1);
-		job.setPackage_type("EAD");
-		job.setMetadata_file("vda3.XML");
+		object.setPackage_type("EAD");
+		object.setMetadata_file("vda3.XML");
 		
 		HashMap<String,String> xpaths = new HashMap<String,String>();
 		xpaths.put("METS", "//mets:FLocat/@xlink:href");

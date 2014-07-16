@@ -45,7 +45,7 @@ public class ShortenFileNamesAction extends AbstractAction {
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException {
 
-		String metadataFile = job.getMetadata_file();
+		String metadataFile = object.getMetadata_file();
 		
 		// rename results of conversions
 		for (Event e:object.getLatestPackage().getEvents()) {

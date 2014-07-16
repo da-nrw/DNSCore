@@ -42,7 +42,19 @@ public class ValidateMetadataAction extends AbstractAction {
 	boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException {
 //		if (ptds==null) throw new ConfigurationException("ptds "+FilesAndConstants.ERROR_NOTCONFIGURED);
-		if (ptds==null) return true;
+//		if (ptds==null) return true;
+		
+		PackageTypeDetectionService ptds = new PackageTypeDetectionService(object.getLatestPackage());
+		
+		String packageType = ptds.getPackageType();
+		String metadataFile = ptds.getMetadataFile();
+		if (packageType == null || metadataFile == null) {
+			logger.warn("Could not determine package type. ");
+		} else {
+			
+			object.setPackage_type(packageType);
+			object.setMetadata_file(metadataFile);
+		}
 		
 		// scan all the newest files
 		return true;

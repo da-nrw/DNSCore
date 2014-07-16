@@ -109,33 +109,10 @@ public class ScanAction extends AbstractAction{
 		else
 			logger.info("No migration rights granted. No files will be converted for archival storage.");
 		
-		detectPackageTypeAndStoreInCommunicator();
 		return true;
 	}
 
 
-	
-	
-	
-	
-	/**
-	 * @author Sebastian Cuy
-	 */
-	private void detectPackageTypeAndStoreInCommunicator(){
-		PackageTypeDetectionService ptds = new PackageTypeDetectionService(getObject().getLatestPackage());
-		String packageType = ptds.getPackageType();
-		String metadataFile = ptds.getMetadataFile();
-		if (packageType == null || metadataFile == null) {
-			logger.warn("Could not determine package type. ");
-		} else {
-			
-			job.setPackage_type(packageType);
-			job.setMetadata_file(metadataFile);
-		}
-	}
-	
-	
-	
 	
 	
 

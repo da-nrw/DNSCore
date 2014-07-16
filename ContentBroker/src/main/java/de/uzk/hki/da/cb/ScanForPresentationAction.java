@@ -77,19 +77,6 @@ public class ScanForPresentationAction extends AbstractAction{
 		
 		job.getConversion_instructions().addAll(cisPres);
 		
-		PackageTypeDetectionService ptds = new PackageTypeDetectionService(object.getLatestPackage());
-		
-		String packageType = ptds.getPackageType();
-		String metadataFile = ptds.getMetadataFile();
-		if (packageType == null || metadataFile == null) {
-			logger.warn("Could not determine package type. ");
-		} else {
-			
-			job.setPackage_type(packageType);
-			job.setMetadata_file(metadataFile);
-		}
-	
-		
 		return true;
 	}
 	

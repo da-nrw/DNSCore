@@ -76,10 +76,6 @@ public class Job {
 	/** The rep_name. */
 	private String rep_name;
 	
-	private String package_type;
-	
-	private String metadata_file;
-	
 	private Date static_nondisclosure_limit;
 	
 	private String dynamic_nondisclosure_limit;
@@ -368,21 +364,6 @@ public class Job {
 		this.obj = object;
 	}
 
-	public String getPackage_type() {
-		return package_type;
-	}
-
-	public void setPackage_type(String package_type) {
-		this.package_type = package_type;
-	}
-
-	public String getMetadata_file() {
-		return metadata_file;
-	}
-
-	public void setMetadata_file(String metadata_file) {
-		this.metadata_file = metadata_file;
-	}
 
 	public String getDynamic_nondisclosure_limit() {
 		return dynamic_nondisclosure_limit;

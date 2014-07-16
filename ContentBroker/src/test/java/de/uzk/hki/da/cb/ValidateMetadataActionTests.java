@@ -35,16 +35,16 @@ public class ValidateMetadataActionTests {
 	@Test
 	public void testRejectPackageWithDuplicateEADFile() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
-		ValidateMetadataAction action = new ValidateMetadataAction();
-		action.implementation();
+//		ValidateMetadataAction action = new ValidateMetadataAction();
+//		action.implementation();
 	}
 	
 	
 	@Test
 	public void testDetectPackageType() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
-		ValidateMetadataAction action = new ValidateMetadataAction();
-		action.implementation();
+//		ValidateMetadataAction action = new ValidateMetadataAction();
+//		action.implementation();
 	}
 	
 	

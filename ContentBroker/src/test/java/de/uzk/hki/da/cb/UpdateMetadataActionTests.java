@@ -201,8 +201,8 @@ public class UpdateMetadataActionTests {
 		action.setObject(obj);
 		action.setJob(job);
 		
-		job.setMetadata_file("mets.xml");
-		job.setPackage_type("METS");
+		obj.setMetadata_file("mets.xml");
+		obj.setPackage_type("METS");
 		
 		CentralDatabaseDAO dao = mock(CentralDatabaseDAO.class);
 		action.setDao(dao);
