@@ -38,7 +38,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.ActionCommunicatorService;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
@@ -101,7 +100,7 @@ public class ConvertActionTests {
 		ConversionRoutine im = new ConversionRoutine(
 				"IM",
 				nodes2,
-				"de.uzk.hki.da.convert.CLIConversionStrategy",
+				"de.uzk.hki.da.format.CLIConversionStrategy",
 				"convert input output",
 				"png");
 		
@@ -110,7 +109,7 @@ public class ConvertActionTests {
 		ConversionRoutine copy = new ConversionRoutine(
 				"COPY",
 				nodes3,
-				"de.uzk.hki.da.convert.CLIConversionStrategy",
+				"de.uzk.hki.da.format.CLIConversionStrategy",
 				"cp input output",
 				"*");
 		
@@ -149,9 +148,6 @@ public class ConvertActionTests {
 		when (dao.refreshJob((Job)anyObject())).thenReturn(ret);
 		
 		action.setDistributedConversionAdapter(mock(DistributedConversionAdapter.class));
-		
-		ActionCommunicatorService acs = new ActionCommunicatorService();
-		action.setActionCommunicatorService(acs);
 		
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		

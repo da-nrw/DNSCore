@@ -33,7 +33,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.ActionCommunicatorService;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
@@ -149,9 +148,8 @@ public class UpdateMetadataActionXMPTests {
 		action.setJob(job);
 		action.setRepNames(new String[]{"dip/public", "dip/institution"});
 		
-		action.setActionCommunicatorService(new ActionCommunicatorService());
-		action.getActionCommunicatorService().addDataObject(1, "package_type", "XMP");
-		action.getActionCommunicatorService().addDataObject(1, "metadata_file", "XMP.rdf");
+		job.setMetadata_file("XMP.rdf");
+		job.setPackage_type("XMP");
 		
 		Map<String, String> dcMappings = new HashMap<String,String>();
 		dcMappings.put("XMP", "conf/xslt/dc/xmp_to_dc.xsl");

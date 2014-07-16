@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
-import de.uzk.hki.da.convert.JhoveScanService;
+import de.uzk.hki.da.format.JhoveScanService;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.Path;
 

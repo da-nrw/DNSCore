@@ -56,9 +56,6 @@ public class ActionFactory implements ApplicationContextAware {
 	/** The dao. */
 	private CentralDatabaseDAO dao; // Database Connector
 	
-	/** The action communicator service. */
-	private ActionCommunicatorService actionCommunicatorService;
-	
 	/** The user exception manager. */
 	private UserExceptionManager userExceptionManager;
 	
@@ -90,7 +87,6 @@ public class ActionFactory implements ApplicationContextAware {
 		logger.trace("building action");
 		
 		if (dao == null) throw new ConfigurationException("Unable to build action. DAO has not been set.");
-		if (actionCommunicatorService == null) throw new ConfigurationException("Unable to build action. Action Communicator Service has not been set.");
 		if (actionRegistry == null) throw new ConfigurationException("Unable to build action. Action map has not been set.");
 		if (context == null) throw new ConfigurationException("Unable to build action. Application context has not been set.");
 		if (localNode==null) throw new ConfigurationException("Unable to build action. Node not set.");
@@ -121,7 +117,6 @@ public class ActionFactory implements ApplicationContextAware {
 			actionRegistry.registerAction(action);
 			
 			action.setDao(dao);
-			action.setActionCommunicatorService(actionCommunicatorService);
 			action.setUserExceptionManager(userExceptionManager);
 			action.setMqConnectionFactory(mqConnectionFactory);
 			action.setLocalNode(localNode);
@@ -174,23 +169,6 @@ public class ActionFactory implements ApplicationContextAware {
 		this.actionRegistry = actionRegistry;
 	}
 	
-	/**
-	 * Gets the action communicator service.
-	 *
-	 * @return the action communicator service
-	 */
-	public ActionCommunicatorService getActionCommunicatorService() {
-		return actionCommunicatorService;
-	}
-	
-	/**
-	 * Sets the action communicator service.
-	 *
-	 * @param actionCommunicatorService the new action communicator service
-	 */
-	public void setActionCommunicatorService(ActionCommunicatorService actionCommunicatorService) {
-		this.actionCommunicatorService = actionCommunicatorService;
-	}
 	
 	/**
 	 * Gets the user exception manager.

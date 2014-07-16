@@ -74,17 +74,11 @@
         <property name="systemFromEmailAddress" value="${system.emailFrom}" />
     </bean>
     
-    <bean id="userAreaScannerWorker" class="de.uzk.hki.da.core.UserAreaScannerWorker" init-method="init">
-        <property name="ingestAreaRootPath" value="${localNode.ingestAreaRootPath}" />
-        <property name="userAreaRootPath" value="${localNode.userAreaRootPath}" />
-    </bean>
-    
    	<bean id="actionFactory" class="de.uzk.hki.da.core.ActionFactory">
         <property name="actionRegistry" ref="actionRegistry" />
         <property name="localNode" ref="localNode" />
         <property name="dao" ref="centralDao" />
         <property name="systemFromEmailAddress" value="${system.emailFrom}" />
-        <property name="actionCommunicatorService" ref="actionCommunicatorService" />
         <property name="userExceptionManager" ref="userExceptionManager" />
         <property name="mqConnectionFactory" ref="mqConnectionFactory"/>
     </bean>
@@ -95,14 +89,12 @@
 		<property name="localNode" ref="localNode" />
   	</bean>
   
-    <bean class="de.uzk.hki.da.convert.JhoveScanService" id="jhoveScanService" scope="prototype">
+    <bean class="de.uzk.hki.da.format.JhoveScanService" id="jhoveScanService" scope="prototype">
         <property name="jhoveFolder" value="jhove"/>
     </bean>
     
     <bean class="de.uzk.hki.da.model.CentralDatabaseDAO" id="centralDao"/>
     
-    <bean class="de.uzk.hki.da.core.ActionCommunicatorService" id="actionCommunicatorService"/>
-	
 	<bean class="de.uzk.hki.da.service.UserExceptionManager" id="userExceptionManager" init-method="readConfigFile"/>
 	
 	<bean id="actionInformation" class="de.uzk.hki.da.core.ActionInformation" scope="prototype" init-method="init">

@@ -71,8 +71,6 @@ public class ActionFactoryTests {
 		CentralDatabaseDAO dao = new CentralDatabaseDAO();
 		session.save(new Node("testnode","01-testnode"));
 		
-		ActionCommunicatorService acs = new ActionCommunicatorService();
-		
 		session.getTransaction().commit();	
 		session.close();		
 		
@@ -80,7 +78,6 @@ public class ActionFactoryTests {
 		factory = new ActionFactory();
 		factory.setApplicationContext(context);
 		factory.setDao(dao);
-		factory.setActionCommunicatorService(acs);
 		factory.setActionRegistry((ActionRegistry)context.getBean("actionRegistry"));
 	}
 	

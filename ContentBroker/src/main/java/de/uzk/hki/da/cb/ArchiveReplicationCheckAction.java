@@ -169,10 +169,8 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		obj.setObject_state(100);
 		
 		obj.setDate_modified(String.valueOf(new Date().getTime()));
-		obj.setStatic_nondisclosure_limit((Date) actionCommunicatorService.extractDataObject(job.getId(), 
-											"static_nondisclosure_limit"));
-		obj.setDynamic_nondisclosure_limit((String) actionCommunicatorService.extractDataObject(job.getId(),
-											"dynamic_nondisclosure_limit"));
+		obj.setStatic_nondisclosure_limit(job.getStatic_nondisclosure_limit());
+		obj.setDynamic_nondisclosure_limit(job.getDynamic_nondisclosure_limit());
 	}
 	
 	

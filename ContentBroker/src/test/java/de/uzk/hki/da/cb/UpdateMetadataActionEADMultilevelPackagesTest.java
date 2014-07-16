@@ -1,8 +1,6 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,8 +16,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.ActionCommunicatorService;
-import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
@@ -106,9 +102,9 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 		Job job = new Job(); 
 		job.setObject(object); 
 		job.setId(1);
-		ActionCommunicatorService acs = new ActionCommunicatorService();
-		acs.addDataObject(1, "package_type", "EAD");
-		acs.addDataObject(1, "metadata_file", "EAD_Export.XML");
+		
+		job.setPackage_type("EAD");
+		job.setMetadata_file("EAD_Export.XML");
 
 		HashMap<String,String> xpaths = new HashMap<String,String>();
 		xpaths.put("METS", "//mets:FLocat/@xlink:href");
@@ -123,7 +119,6 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 		dcMappings.put("EAD", "conf/xslt/dc/ead_to_dc.xsl");
 		action.setDcMappings(dcMappings);
 		
-		action.setActionCommunicatorService(acs);
 		action.setObject(object);
 		action.setJob(job);
 	}

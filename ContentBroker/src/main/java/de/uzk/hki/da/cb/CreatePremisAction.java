@@ -32,7 +32,7 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.convert.JhoveScanService;
+import de.uzk.hki.da.format.JhoveScanService;
 import de.uzk.hki.da.metadata.PremisXmlJhoveExtractor;
 import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.metadata.PremisXmlValidator;
@@ -159,8 +159,8 @@ public class CreatePremisAction extends AbstractAction {
 			}
 		}
 		
-		actionCommunicatorService.addDataObject(job.getId(), "static_nondisclosure_limit", static_nondisclosure_limit);
-		actionCommunicatorService.addDataObject(job.getId(), "dynamic_nondisclosure_limit", dynamic_nondisclosure_limit);
+		job.setDynamic_nondisclosure_limit(dynamic_nondisclosure_limit);
+		job.setStatic_nondisclosure_limit(static_nondisclosure_limit);
 	}
 	
 	private Event generateIngestEventElement() {
@@ -268,8 +268,8 @@ public class CreatePremisAction extends AbstractAction {
 		
 		object.getLatestPackage().getEvents().removeAll(addedEvents);
 		
-		actionCommunicatorService.removeDataObject(job.getId(), "static_nondisclosure_limit");
-		actionCommunicatorService.removeDataObject(job.getId(), "dynamic_nondisclosure_limit");
+		job.setStatic_nondisclosure_limit(null);
+		job.setDynamic_nondisclosure_limit(null);
 	}
 
 	public void setJhoveScanService(JhoveScanService jhoveScanService) {

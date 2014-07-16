@@ -28,10 +28,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.convert.FormatScanService;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.format.FormatScanService;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.model.ConversionInstruction;
@@ -127,8 +127,9 @@ public class ScanAction extends AbstractAction{
 		if (packageType == null || metadataFile == null) {
 			logger.warn("Could not determine package type. ");
 		} else {
-			actionCommunicatorService.addDataObject(job.getId(), "package_type", packageType);
-			actionCommunicatorService.addDataObject(job.getId(), "metadata_file", metadataFile);
+			
+			job.setPackage_type(packageType);
+			job.setMetadata_file(metadataFile);
 		}
 	}
 	

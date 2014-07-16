@@ -3,7 +3,7 @@
 TODOS=`find src/*/java/de/ -name "*java" -exec grep "TODO" {} \; | wc -l`
 XXXS=`find src/*/java/de/ -name "*java" -exec grep "XXX" {} \; | wc -l`
 
-ALLOWED_TODOS=50
+ALLOWED_TODOS=47
 if [ "$TODOS" -gt "$ALLOWED_TODOS" ]
 then
 	echo "Number of TODO entries in java files must not exceed $ALLOWED_TODOS (actually is $TODOS)."

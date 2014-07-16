@@ -18,7 +18,7 @@
 */
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,15 +29,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.ActionCommunicatorService;
 import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.RelativePath;
 
 
@@ -78,9 +76,6 @@ public class ShortenFileNamesActionTests {
 		contractor.setShort_name("TEST");
 		
 		job = new Job();
-		
-		ActionCommunicatorService acs = new ActionCommunicatorService();
-		action.setActionCommunicatorService(acs);
 		
 		FileUtils.copyDirectory(new File(workAreaRootPath+"work/sources/1"), new File(workAreaRootPath+"work/TEST/1"));
 		

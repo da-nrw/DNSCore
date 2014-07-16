@@ -24,18 +24,17 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.anyObject;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.ActionCommunicatorService;
 import de.uzk.hki.da.core.ActionRegistry;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
@@ -43,8 +42,8 @@ import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.service.UserExceptionManager;
 
 /**
@@ -72,8 +71,6 @@ public class AbstractActionTests {
 		Package pkg = new Package();
 		pkg.setName("1");
 		pkg.setContainerName("CONTAINER");
-		
-		action.setActionCommunicatorService(mock(ActionCommunicatorService.class));
 		
 		UserExceptionManager userExceptionManager = mock(UserExceptionManager.class);
 		when(userExceptionManager.getMessage((UserExceptionId) anyObject())).thenReturn("INCONSISTENT_PACKAGE");

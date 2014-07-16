@@ -41,7 +41,6 @@ import org.slf4j.MDC;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
-import de.uzk.hki.da.core.ActionCommunicatorService;
 import de.uzk.hki.da.core.ActionRegistry;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
@@ -87,7 +86,6 @@ public abstract class AbstractAction implements Runnable {
 	protected String endStatus;
 	protected String description;
 	protected int concurrentJobs = 3;
-	protected ActionCommunicatorService actionCommunicatorService;
 	private UserExceptionManager userExceptionManager;
 	private ActiveMQConnectionFactory mqConnectionFactory;
 	private String systemFromEmailAdress;
@@ -126,7 +124,6 @@ public abstract class AbstractAction implements Runnable {
 		if (localNode==null) throw new ConfigurationException("localNode not set");
 		if (job==null) throw new ConfigurationException("job not set");
 		if (object.getContractor()==null) throw new ConfigurationException("contractor not set in job");
-		if (actionCommunicatorService==null) throw new ConfigurationException("action communicator service not set");
 		if (userExceptionManager==null) throw new ConfigurationException("user exception manager not set");
 
 		if (object.getContractor().getShort_name()==null) throw new IllegalStateException("contractor short name not set in job");
@@ -167,7 +164,6 @@ public abstract class AbstractAction implements Runnable {
 				session.update(job);
 				
 			} else {
-				actionCommunicatorService.serialize();
 				job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
 				if (KILLATEXIT)	{
 					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now committing changes to database.");
@@ -404,14 +400,6 @@ public abstract class AbstractAction implements Runnable {
 		this.dao = dao;
 	}
 
-	public ActionCommunicatorService getActionCommunicatorService() {
-		return actionCommunicatorService;
-	}
-	
-	public void setActionCommunicatorService(ActionCommunicatorService acs) {
-		this.actionCommunicatorService = acs;
-	}
-	
 	public String getStartStatus() {
 		return startStatus;
 	}

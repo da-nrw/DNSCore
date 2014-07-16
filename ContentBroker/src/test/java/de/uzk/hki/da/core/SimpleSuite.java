@@ -50,18 +50,18 @@ import de.uzk.hki.da.cb.UpdateMetadataActionEADMultilevelPackagesTest;
 import de.uzk.hki.da.cb.UpdateMetadataActionEADTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionXMPTests;
-import de.uzk.hki.da.convert.CLIConversionStrategyTests;
-import de.uzk.hki.da.convert.ConverterServiceTests;
-import de.uzk.hki.da.convert.FidoCLITest;
-import de.uzk.hki.da.convert.FormatScanServiceTests;
-import de.uzk.hki.da.convert.PDFServiceTests;
-import de.uzk.hki.da.convert.PdfConversionStrategyTest;
-import de.uzk.hki.da.convert.PublishAudioConversionStrategyTests;
-import de.uzk.hki.da.convert.PublishImageConversionStrategyTest;
-import de.uzk.hki.da.convert.PublishImageMultipageTIFFTests;
-import de.uzk.hki.da.convert.PublishPDFConversionStrategyTests;
-import de.uzk.hki.da.convert.PublishXsltConversionStrategyTests;
-import de.uzk.hki.da.convert.TiffConversionStrategyTests;
+import de.uzk.hki.da.format.CLIConversionStrategyTests;
+import de.uzk.hki.da.format.ConverterServiceTests;
+import de.uzk.hki.da.format.FidoCLITest;
+import de.uzk.hki.da.format.FormatScanServiceTests;
+import de.uzk.hki.da.format.PDFServiceTests;
+import de.uzk.hki.da.format.PdfConversionStrategyTest;
+import de.uzk.hki.da.format.PublishAudioConversionStrategyTests;
+import de.uzk.hki.da.format.PublishImageConversionStrategyTest;
+import de.uzk.hki.da.format.PublishImageMultipageTIFFTests;
+import de.uzk.hki.da.format.PublishPDFConversionStrategyTests;
+import de.uzk.hki.da.format.PublishXsltConversionStrategyTests;
+import de.uzk.hki.da.format.TiffConversionStrategyTests;
 import de.uzk.hki.da.grid.IrodsGridFacadeTest;
 import de.uzk.hki.da.grid.ReplicationExecutorTest;
 import de.uzk.hki.da.integrity.IntegrityScannerWorkerTest;
@@ -77,7 +77,6 @@ import de.uzk.hki.da.model.ModelTest;
 import de.uzk.hki.da.model.PackageTests;
 import de.uzk.hki.da.model.PreservationSystemTests;
 import de.uzk.hki.da.model.SaveConversionInstructionsByJob;
-import de.uzk.hki.da.repository.CTElasticSearchMetadataIndexTests;
 import de.uzk.hki.da.service.PackageTypeDetectionServiceTests;
 import de.uzk.hki.da.service.RetrievePackagesHelperTest;
 import de.uzk.hki.da.service.URNCheckDigitGeneratorTests;
@@ -97,11 +96,9 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	IngestAreaScannerWorkerTests.class,
 	ProperRefreshOfJobChildrenTest.class,
 	JobCascadingTest.class,
-	UserAreaScannerTests.class,
 	ConvertActionTests.class,
 	SaveConversionInstructionsByJob.class,
 	CreatePremisActionTests.class,
-//	ContentBrokerTests.class,
 	UnpackActionTests.class,
 	CLIConversionStrategyTests.class,
 	ObjectTest.class,
@@ -125,9 +122,7 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	GetNewestFilesFromAllRepresentationsTests.class,
 	RetrievalActionTest.class,
 	PremisXmlWriterTest.class,
-	ActionCommunicatorServiceTests.class,
 	IrodsGridFacadeTest.class,
-//	IrodsSystemConnectorTest.class, XXX should not be a unit test
 	PublishImageConversionStrategyTest.class,
 //	PublishVideoConversionStrategyTests.class, XXX should not be dependent on handbrake installation
 	PublishXsltConversionStrategyTests.class,
@@ -164,8 +159,7 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	CreateEDMActionTests.class,
 	IndexMetadataActionTests.class,
 	UpdateMetadataActionEADMultilevelPackagesTest.class,
-	IndexMetadataActionTests.class
-//	HibernateUtilThreadingTest.class
+	IndexMetadataActionTests.class,
 })
 public class SimpleSuite {
 
