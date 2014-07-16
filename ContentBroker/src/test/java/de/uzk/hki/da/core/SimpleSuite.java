@@ -122,7 +122,6 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	GetNewestFilesFromAllRepresentationsTests.class,
 	RetrievalActionTest.class,
 	PremisXmlWriterTest.class,
-	ActionCommunicatorServiceTests.class,
 	IrodsGridFacadeTest.class,
 	PublishImageConversionStrategyTest.class,
 //	PublishVideoConversionStrategyTests.class, XXX should not be dependent on handbrake installation

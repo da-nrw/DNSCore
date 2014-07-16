@@ -40,7 +40,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.ActionCommunicatorService;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -201,10 +200,10 @@ public class UpdateMetadataActionTests {
 		
 		action.setObject(obj);
 		action.setJob(job);
-		action.setActionCommunicatorService(new ActionCommunicatorService());
-		action.getActionCommunicatorService().addDataObject(job.getId(), "package_type", "METS");
-		action.getActionCommunicatorService().addDataObject(job.getId(), "metadata_file", "mets.xml");
-
+		
+		job.setMetadata_file("mets.xml");
+		job.setPackage_type("METS");
+		
 		CentralDatabaseDAO dao = mock(CentralDatabaseDAO.class);
 		action.setDao(dao);
 		

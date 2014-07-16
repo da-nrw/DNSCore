@@ -78,7 +78,6 @@
         <property name="localNode" ref="localNode" />
         <property name="dao" ref="centralDao" />
         <property name="systemFromEmailAddress" value="${system.emailFrom}" />
-        <property name="actionCommunicatorService" ref="actionCommunicatorService" />
         <property name="userExceptionManager" ref="userExceptionManager" />
         <property name="mqConnectionFactory" ref="mqConnectionFactory"/>
     </bean>
@@ -95,8 +94,6 @@
     
     <bean class="de.uzk.hki.da.model.CentralDatabaseDAO" id="centralDao"/>
     
-    <bean class="de.uzk.hki.da.core.ActionCommunicatorService" id="actionCommunicatorService"/>
-	
 	<bean class="de.uzk.hki.da.service.UserExceptionManager" id="userExceptionManager" init-method="readConfigFile"/>
 	
 	<bean id="actionInformation" class="de.uzk.hki.da.core.ActionInformation" scope="prototype" init-method="init">

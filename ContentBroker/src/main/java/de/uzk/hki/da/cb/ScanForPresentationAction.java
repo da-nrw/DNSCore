@@ -81,8 +81,9 @@ public class ScanForPresentationAction extends AbstractAction{
 		if (packageType == null || metadataFile == null) {
 			logger.warn("Could not determine package type. ");
 		} else {
-			actionCommunicatorService.addDataObject(job.getId(), "package_type", packageType);
-			actionCommunicatorService.addDataObject(job.getId(), "metadata_file", metadataFile);
+			
+			job.setPackage_type(packageType);
+			job.setMetadata_file(metadataFile);
 		}
 		
 		return true;

@@ -19,6 +19,7 @@
 
 package de.uzk.hki.da.model;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,7 +57,7 @@ public class Job {
 	
 	/** The status. */
 	private String status;
-	
+
 	/** 
 	 * The name of the node of the system which is instructed to do the job.
 	 */
@@ -74,6 +75,17 @@ public class Job {
 	
 	/** The rep_name. */
 	private String rep_name;
+	
+	private String package_type;
+	
+	private String metadata_file;
+	
+	private Date static_nondisclosure_limit;
+	
+	private String dynamic_nondisclosure_limit;
+	
+	private String container_extension;
+	
 	
 	
 	/** The contractor. */
@@ -354,5 +366,46 @@ public class Job {
 	 */
 	public void setObject(Object obj) {
 		this.obj = obj;
+	}
+
+	public String getPackage_type() {
+		return package_type;
+	}
+
+	public void setPackage_type(String package_type) {
+		this.package_type = package_type;
+	}
+
+	public String getMetadata_file() {
+		return metadata_file;
+	}
+
+	public void setMetadata_file(String metadata_file) {
+		this.metadata_file = metadata_file;
+	}
+
+	public String getDynamic_nondisclosure_limit() {
+		return dynamic_nondisclosure_limit;
+	}
+
+	public void setDynamic_nondisclosure_limit(
+			String dynamic_nondisclosure_limit) {
+		this.dynamic_nondisclosure_limit = dynamic_nondisclosure_limit;
+	}
+
+	public Date getStatic_nondisclosure_limit() {
+		return static_nondisclosure_limit;
+	}
+
+	public void setStatic_nondisclosure_limit(Date static_nondisclosure_limit) {
+		this.static_nondisclosure_limit = static_nondisclosure_limit;
+	}
+
+	public String getContainer_extension() {
+		return container_extension;
+	}
+
+	public void setContainer_extension(String container_extension) {
+		this.container_extension = container_extension;
 	}
 }

@@ -46,7 +46,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.convert.JhoveScanService;
-import de.uzk.hki.da.core.ActionCommunicatorService;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.DAFile;
@@ -88,9 +87,6 @@ public class CreatePremisActionTests {
 	/** The job. */
 	Job job;
 	
-	/** The action communicator service. */
-	ActionCommunicatorService acs;
-	
 	private Package pkg;  // normal test: unused ,  delta test: the aip 
 	private Package pkg2; // normal test: the sip,  delta test: the delta-sip
 	
@@ -130,9 +126,6 @@ public class CreatePremisActionTests {
 		CentralDatabaseDAO dao = mock (CentralDatabaseDAO.class);
 		action.setDao(dao);
 		
-		acs = new ActionCommunicatorService();
-		acs.addDataObject(7654321, "container_extension", "tgz");
-		action.setActionCommunicatorService(acs);
 
 		JhoveScanService jhoveScanService = mock(JhoveScanService.class);
 		when(jhoveScanService.getJhoveFolder()).
@@ -167,6 +160,7 @@ public class CreatePremisActionTests {
 		job = new Job();
 		object.setOrig_name("testpackage");
 		job.setId(7654321);
+		job.setContainer_extension("tgz");
 		job.setObject(object);
 		job.setRep_name("2013_07_31+11_54+");
 		action.setJob(job);
@@ -203,8 +197,10 @@ public class CreatePremisActionTests {
 		action.implementation();
 		checkPremisFile();
 		
-		assertTrue(action.getActionCommunicatorService().getDataObject(7654321, "static_nondisclosure_limit") != null) ;
-		assertTrue(action.getActionCommunicatorService().getDataObject(7654321, "dynamic_nondisclosure_limit") == null);
+		
+		
+		assertTrue(job.getStatic_nondisclosure_limit() != null) ;
+		assertTrue(job.getDynamic_nondisclosure_limit() == null);
 	}
 	
 	/**
@@ -259,8 +255,8 @@ public class CreatePremisActionTests {
 		
 		assertEquals(1, object.getLatestPackage().getEvents().size());
 		
-		assertEquals(null, acs.getDataObject(job.getId(), "static_nondisclosure_limit"));
-		assertEquals(null, acs.getDataObject(job.getId(), "dynamic_nondisclosure_limit"));
+		assertEquals(null, job.getStatic_nondisclosure_limit());
+		assertEquals(null, job.getDynamic_nondisclosure_limit());
 	}
 	
 	/**

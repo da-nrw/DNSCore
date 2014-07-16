@@ -37,7 +37,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.ActionCommunicatorService;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -78,9 +77,8 @@ public class UpdateMetadataActionEADTests {
 		object.getLatestPackage().getEvents().add(event);
 		
 		Job job = new Job(); job.setObject(object); job.setId(1);
-		ActionCommunicatorService acs = new ActionCommunicatorService();
-		acs.addDataObject(1, "package_type", "EAD");
-		acs.addDataObject(1, "metadata_file", "vda3.XML");
+		job.setPackage_type("EAD");
+		job.setMetadata_file("vda3.XML");
 		
 		HashMap<String,String> xpaths = new HashMap<String,String>();
 		xpaths.put("METS", "//mets:FLocat/@xlink:href");
@@ -95,7 +93,6 @@ public class UpdateMetadataActionEADTests {
 		dcMappings.put("EAD", "conf/xslt/dc/ead_to_dc.xsl");
 		action.setDcMappings(dcMappings);
 		
-		action.setActionCommunicatorService(acs);
 		action.setObject(object);
 		action.setJob(job);
 	}

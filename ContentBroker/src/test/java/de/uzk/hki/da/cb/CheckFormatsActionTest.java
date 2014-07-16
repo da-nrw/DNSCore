@@ -37,7 +37,6 @@ import org.springframework.util.StringUtils;
 
 import de.uzk.hki.da.convert.FormatScanService;
 import de.uzk.hki.da.convert.JhoveScanService;
-import de.uzk.hki.da.core.ActionCommunicatorService;
 import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
@@ -61,9 +60,6 @@ public class CheckFormatsActionTest {
 	
 	/** The job. */
 	private Job job;
-
-	/** The communicator. */
-	private ActionCommunicatorService communicator;
 
 	/** The local node. */
 	private Node localNode;
@@ -174,7 +170,6 @@ public class CheckFormatsActionTest {
 		action.setJob(job);
 		action.setLocalNode(localNode);
 		action.setSidecarExtensions("");
-		action.setActionCommunicatorService(communicator);
 		action.setJhoveScanService(jhove);
 		
 	}
