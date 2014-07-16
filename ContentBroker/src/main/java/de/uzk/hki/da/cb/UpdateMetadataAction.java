@@ -42,6 +42,7 @@ import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
@@ -55,6 +56,7 @@ import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.service.MimeTypeDetectionService;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
@@ -73,8 +75,6 @@ import de.uzk.hki.da.utils.XMLUtils;
  *
  */
 public class UpdateMetadataAction extends AbstractAction {
-	
-	
 
 	/** The namespaces. */
 	private Map<String,String> namespaces;
@@ -87,6 +87,7 @@ public class UpdateMetadataAction extends AbstractAction {
 
 	@Override
 	public boolean implementation() throws IOException {
+		
 		if (job==null) throw new ConfigurationException("job not set");
 		
 		String packageType = job.getPackage_type();
@@ -143,7 +144,6 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		return true;
 	}
-
 	
 	/**
 	 * @param pkg
@@ -164,7 +164,8 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		if (absUrlPrefix == null) absUrlPrefix = "";
 		
-		Map<String,String> replacements = generateReplacementsMap(pkg, repName, absUrlPrefix);
+		Map<String,DAFile> replacements = generateReplacementsMap(pkg, repName, absUrlPrefix);
+//		!!!!!!!!!!!!!!!! ändern in summe aller replacements(i), sobald alle anderen replacements ebenfalls gemacht werden
 		int expectedReplacements = replacements.size();
 		
 		File metadataFile = Path.makeFile(pkg.getTransientBackRefToObject().getDataPath(),repName,metadataFilePath);
@@ -197,24 +198,42 @@ public class UpdateMetadataAction extends AbstractAction {
 		} catch (JDOMException e) {throw new RuntimeException(e);}
 
 		try {
-			Map<String,String> metsReplacements = new HashMap<String,String>();
+			Map<String,DAFile> metsReplacements = new HashMap<String,DAFile>();
 			
 			for (Object node : nodes) {
 				logger.debug("Diving into EAD-node:"+node);
 				
 				Attribute attr = (Attribute) node;
+				
 				String value = attr.getValue();
+				
 				if (value.endsWith(".xml") || value.endsWith(".XML")) {
+				
 					actualReplacements+= updatePathsInFile(pkg, repName, value, xpathsToUrls.get("METS"), replacements);
-					metsReplacements.put(value, absUrlPrefix + value);
+//					metsReplacements.put(value, absUrlPrefix + value);
+					
+					for (Event e:pkg.getEvents()) {
+						if(e.getType().equals("COPY") || e.getType().equals("CONVERT")) {
+							if(e.getSource_file().getRelative_path().contains(value)) {
+								logger.debug("try to put "+value+" & "+e.getTarget_file());
+								metsReplacements.put(value, e.getTarget_file());
+								logger.debug("added to metsReplacements");
+							}
+						}
+					}
 				}
 			}
+			System.out.println("Updates of xml path in EAD file");
+			logger.debug("Planned mets replacements: {}", metsReplacements);
 			updatePathsInFile(pkg, repName, metadataFilePath, xPathPath, metsReplacements); // Updates of xml path in EAD file	
-		
+			
 		} catch(Exception err) {
 			throw new UserException(UserExceptionId.REPLACE_URLS_IN_METADATA_ERROR,
 					"Could not replace file URLs in XML metadata.", metadataFilePath, err);
 		}
+		
+//		System.out.println("expectedReplacements: "+expectedReplacements);
+//		System.out.println("actualReplacements: "+actualReplacements);
 		
 		if (expectedReplacements!=actualReplacements) {
 			throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,
@@ -234,16 +253,17 @@ public class UpdateMetadataAction extends AbstractAction {
 	 * @param metadataFilePath the metadata file path
 	 * @param repName the representation affected
 	 * @param absUrlPrefix a prefix for generating absolute URLs, can be null
+	 * @throws IOException 
 	 */
 	private void updatePathsInMetadata(
 			Package pkg,
 			String packageType,
 			String metadataFilePath,
 			String repName,
-			String absUrlPrefix) {
+			String absUrlPrefix) throws IOException {
 		
 		if (absUrlPrefix == null) absUrlPrefix = "";
-		Map<String,String> replacements = generateReplacementsMap(pkg, repName, absUrlPrefix);
+		Map<String,DAFile> replacements = generateReplacementsMap(pkg, repName, absUrlPrefix);
 		
 		// replace paths in elements denoted by xpath
 		String xPathPath = xpathsToUrls.get(packageType);
@@ -253,35 +273,21 @@ public class UpdateMetadataAction extends AbstractAction {
 	}
 
 
-	private Map<String,String> generateReplacementsMap(Package pkg,String repName,String absUrlPrefix){
+	private Map<String,DAFile> generateReplacementsMap(Package pkg,String repName,String absUrlPrefix) throws IOException{
+		
+		Map<String,DAFile> replacements = new HashMap<String,DAFile>();
 		
 		// collect paths to be replaced in map
-		Map<String,String> replacements = new HashMap<String,String>();
 		for (Event e:pkg.getEvents()) {
 			
 			if (!"CONVERT".equals(e.getType())) continue;
 			
 			DAFile targetFile = e.getTarget_file();
+			
 			if (!targetFile.getRep_name().equals(repName)) continue;
 			DAFile sourceFile = e.getSource_file();
-
-			String [] sourceFileString = e.getSource_file().getRelative_path().split(File.separator);
-			String lastFileName = sourceFileString[sourceFileString.length-1];
-
-			logger.debug("e.getSource_file().getRelative_path(): "+e.getSource_file().getRelative_path());
-			if(sourceFileString.length>1) {
-				logger.debug("sourceFileString[sourceFileString.length-2: "+sourceFileString[sourceFileString.length-2]);
-			}
-			logger.debug("targetFile.getRelative_path().split(File.separator)[0]: "+targetFile.getRelative_path().split(File.separator)[0]);
-			
-//			In der if-Abfrage muss noch festgestellt werden, dass die Mets-Dateien im selben Unterordner (sourceFileString[sourceFileString.length-2] liegen 
-			if((e.getSource_file().getRelative_path().contains(File.separator)) && (sourceFileString[sourceFileString.length-2].equals(targetFile.getRelative_path().split(File.separator)[0]))) {
-				logger.debug("var replacements!");
-				logger.debug("replacements.put(lastFileName, absUrlPrefix + targetFile.getRelative_path()): "+lastFileName +" to "+absUrlPrefix+targetFile.getRelative_path());
-				replacements.put(lastFileName, absUrlPrefix + targetFile.getRelative_path());
-			} else {
-				replacements.put(sourceFile.getRelative_path(), absUrlPrefix + targetFile.getRelative_path());
-			}
+//			sourceFile.setMimeType(mimeType);
+			replacements.put(sourceFile.getRelative_path(), targetFile);
 		}
 		
 		logger.debug("Planned replacements: {}", replacements);
@@ -334,6 +340,49 @@ public class UpdateMetadataAction extends AbstractAction {
 		}
 		return metadataFileName;
 	}
+	
+	private int updateMimeTypeInMetsFile(
+			Document doc,
+			String metadataFilePath,
+			Map<String,String> mimeTypeReplacements
+			) {
+		
+		logger.debug("Checking file for mime types to replace: "+metadataFilePath);
+		
+		Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
+		int entitiesReplaced = 0;
+		
+//		find new mime type to replace
+		
+		String currentMimeType = 
+				doc.getRootElement()
+					.getChild("fileSec", METS_NS)
+					.getChild("fileGrp", METS_NS)
+					.getChild("file", METS_NS)
+					.getAttributeValue("MIMETYPE");
+		System.out.println("currentMimeType: "+currentMimeType);
+			
+//		remove mime type attribute
+		doc.getRootElement()
+		.getChild("fileSec", METS_NS)
+		.getChild("fileGrp", METS_NS)
+		.getChild("file", METS_NS)
+		.removeAttribute("MIMETYPE");
+		
+		String newMimeType = mimeTypeReplacements.get(currentMimeType);
+		System.out.println("newMimeType: "+newMimeType);
+
+//		add new mime type attribute 
+		Element e = (Element) doc.getRootElement()
+				.getChild("fileSec", METS_NS)
+				.getChild("fileGrp", METS_NS)
+				.getChild("file", METS_NS);
+		e.setAttribute("MIMETYPE", newMimeType);
+		
+		System.out.println("Replaced mime type to "+newMimeType);
+
+		return entitiesReplaced;
+	}
 
 	
 	/**
@@ -350,10 +399,11 @@ public class UpdateMetadataAction extends AbstractAction {
 			String repName,
 			String metadataFilePath,
 			String xPathPath,
-			Map<String,String> replacements
+			Map<String,DAFile> replacements
 	) {
 		
-		logger.debug("Checking file for paths to replace: "+metadataFilePath);
+		logger.debug("Check file for paths to replace: "+metadataFilePath);
+		logger.debug("Planned replacements: {}", replacements);
 		
 		try {
 			
@@ -376,17 +426,39 @@ public class UpdateMetadataAction extends AbstractAction {
 				if (node instanceof Attribute) {
 					Attribute attr = (Attribute) node;
 					String value = attr.getValue();
-					if (replacements.containsKey(value)) {
-						logger.debug("-- Replacing attribute \"{}\" with \"{}\"", attr.getValue(),replacements.get(value));
-						attr.setValue(replacements.get(value));
+					if (replacements.containsKey(value)) {	
+						String targetURL = null;
+//						replacements for LZA
+						if(absUrlPrefix==null) {
+							System.out.println("replacements for LZA");
+							targetURL = replacements.get(value).getRelative_path();
+						} 
+//						replacements for presentation
+						else {
+							System.out.println("replacements for presentation");
+							targetURL = absUrlPrefix + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
+						}
+						logger.debug("-- Replacing attribute \"{}\" with \"{}\"", attr.getValue(),targetURL);
+						attr.setValue(targetURL);
 						entitiesReplaced++;
+						
+//						if(metadataFilePath.contains("mets")) {
+//							System.out.println("Mets document found! Replace MIMETYPE...");
+//							try {
+//								updateMimeTypeInMetsFile(doc, metadataFilePath, replacements.get(1));
+//							} catch (Exception err) {
+//								throw new UserException(UserExceptionId.REPLACE_URLS_IN_METADATA_ERROR,
+//										"Could not replace file MIMETYPE in XML metadata.", metadataFilePath, err);
+//							}
+//						}
 					}
 				} else if (node instanceof Element) { // does this block get used really?
 					Element elem = (Element) node;
 					String value = elem.getText();
+					String targetURL = absUrlPrefix + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
 					if (replacements.containsKey(value)) {
 						logger.debug("-- Replacing element \"{}\" with \"{}\"", elem.getValue(),replacements.get(value));
-						elem.setText(replacements.get(value));
+						elem.setText(targetURL);
 						entitiesReplaced++;
 					}
 				}
@@ -414,6 +486,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	 */
 	private void copyDCdatastreamFromMetadata(String packageType,
 			String metadataFile) {
+		System.out.println("copyDCdatastreamFromMetadata...");
 		if (packageType != null && metadataFile != null) {
 			String xsltFile = getDcMappings().get(packageType);
 			if (xsltFile == null) {
@@ -452,6 +525,8 @@ public class UpdateMetadataAction extends AbstractAction {
 				srcFile.getParentFile(), new WildcardFileFilter("*.xml"), null);
 		
 		File destDir = null;
+		
+//		Implementierung für beliebige Baumtiefe steht noch aus!
 		
 		File[] subDirs = srcFile.getParentFile().listFiles();
 		

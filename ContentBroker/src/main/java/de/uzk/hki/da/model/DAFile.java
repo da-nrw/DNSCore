@@ -81,6 +81,9 @@ public class DAFile{
 	/** The chksum. */
 	private String chksum;
 	
+	/** The mimetype. */
+	private String mimeType;
+	
 	/** The size. */
 	private String size;
 	
@@ -199,6 +202,18 @@ public class DAFile{
 	public void setRep_name(String repName) {
 		this.rep_name = repName;
 	}
+	
+	@Transient
+	public void setMimeType(String mimeType) {
+		this.mimeType = mimeType;
+	}
+	
+	@Transient
+	public String getMimeType() {
+		return mimeType;
+	}
+	
+//	public
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mets="http://www.loc.gov/METS/" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:eb="http://sunsite.berkeley.edu/Ebind" xmlns:dcterms="http://purl.org/dc/terms/" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/mets/mets.xsd" xmlns:dv="http://dfg-viewer.de/">
+
+<mets:metsHdr CREATEDATE="2014-06-18T13:43:01Z">
+	<mets:agent ROLE="CREATOR" TYPE="ORGANIZATION">
+		<mets:name>AUGIAS-Data</mets:name>
+	</mets:agent>
+</mets:metsHdr>
+<mets:dmdSec ID="dmdSec_id361">
+<mets:mdWrap MDTYPE="MODS" MIMETYPE="text/xml">
+<mets:xmlData>
+<mods version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd" xmlns:mods="http://www.loc.gov/mods/v3" xmlns="http://www.loc.gov/mods/v3"><identifier type="1">4547_Blatt_001</identifier><mods:titleInfo xmlns:mods="http://www.loc.gov/mods/v3"><mods:title>Karl-Georg Abeck</mods:title></mods:titleInfo><mods:name xmlns:mods="http://www.loc.gov/mods/v3" type="personal"><mods:displayForm>Abeck, Karl-Georg</mods:displayForm></mods:name><mods:originInfo xmlns:mods="http://www.loc.gov/mods/v3"><mods:place><mods:placeTerm type="text"></mods:placeTerm></mods:place><mods:dateIssued>ohne Datum</mods:dateIssued></mods:originInfo></mods></mets:xmlData>
+</mets:mdWrap>
+</mets:dmdSec>
+<mets:amdSec ID="amdSec"><mets:rightsMD ID="rightsMD"><mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS"><mets:xmlData><dv:rights><dv:owner>Digitales Archiv NRW</dv:owner><dv:ownerContact/><dv:ownerLogo>http://www.danrw.de/images/logos/danrw-dfg-viewer.png</dv:ownerLogo><dv:ownerSiteUrl>http://www.danrw.de</dv:ownerSiteUrl></dv:rights></mets:xmlData></mets:mdWrap></mets:rightsMD><mets:digiprovMD ID="digiprovMD"><mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVLINKS"><mets:xmlData><dv:links/></mets:xmlData></mets:mdWrap></mets:digiprovMD></mets:amdSec>
+<mets:fileSec>
+<mets:fileGrp USE="DEFAULT">
+<mets:file ID="item_0" MIMETYPE="image/tiff"><mets:FLocat xlink:href="alvr_nr_4547_aufn_002.tif" LOCTYPE="OTHER"/></mets:file></mets:fileGrp>
+</mets:fileSec>
+
+<mets:structMap TYPE="PHYSICAL">
+<mets:div TYPE="physSequence" ADMID="amdSec" DMDID="dmdSec_id361"><mets:div TYPE="page" ORDER="1" ORDERLABEL="1" ID="div_1"><mets:fptr FILEID="item_0"/></mets:div></mets:div>
+</mets:structMap>
+
+</mets:mets>

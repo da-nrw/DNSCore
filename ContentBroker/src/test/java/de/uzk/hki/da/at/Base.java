@@ -64,7 +64,7 @@ public class Base {
 		instantiateNode();
 		if (localNode==null) throw new IllegalStateException("localNode could not be instantiated");
 
-		System.out.println(localNode.getName());
+		System.out.println("localnode: "+localNode.getName());
 
 	
 		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
@@ -346,6 +346,7 @@ public class Base {
 	protected Object ingest(String originalName,String containerSuffix){
 		
 		try {
+			System.out.println("copy "+Path.makeFile( testDataRootPath, originalName+"."+containerSuffix )+" to "+Path.makeFile(localNode.getIngestAreaRootPath(),"TEST"));
 			FileUtils.copyFileToDirectory( Path.makeFile( testDataRootPath, originalName+"."+containerSuffix ), 
 					Path.makeFile(localNode.getIngestAreaRootPath(),"TEST"));
 		} catch (IOException e) {
