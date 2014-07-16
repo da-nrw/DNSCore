@@ -21,13 +21,14 @@ package de.uzk.hki.da.cb;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.service.PackageTypeDetectionService;
 import de.uzk.hki.da.utils.FilesAndConstants;
 
 /**
@@ -36,18 +37,14 @@ import de.uzk.hki.da.utils.FilesAndConstants;
  */
 public class ValidateMetadataAction extends AbstractAction {
 	
-	private PackageTypeDetectionService ptds = null;
+	private String packageType;
+	private String metadataFile;
 	
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException {
-//		if (ptds==null) throw new ConfigurationException("ptds "+FilesAndConstants.ERROR_NOTCONFIGURED);
-//		if (ptds==null) return true;
 		
-		PackageTypeDetectionService ptds = new PackageTypeDetectionService(object.getLatestPackage());
-		
-		String packageType = ptds.getPackageType();
-		String metadataFile = ptds.getMetadataFile();
+		detect(object.getLatestPackage());
 		if (packageType == null || metadataFile == null) {
 			logger.warn("Could not determine package type. ");
 		} else {
@@ -56,10 +53,33 @@ public class ValidateMetadataAction extends AbstractAction {
 			object.setMetadata_file(metadataFile);
 		}
 		
-		// scan all the newest files
 		return true;
 	}
 
+	
+	private void detect(Package pkg){
+		
+		List<DAFile> files = pkg.getFiles();
+		for (DAFile file : files) {
+			if ("danrw-fmt/1".equals(file.getFormatPUID())) {
+				metadataFile=file.getRelative_path();
+				packageType="METS"; // METS files can be part of EAD packages, so continue
+			} else if ("danrw-fmt/2".equals(file.getFormatPUID())) {
+				metadataFile=file.getRelative_path();
+				packageType="EAD";
+				break; // every package containing an EAD file is of type EAD
+			} else if ("danrw-fmt/3".equals(file.getFormatPUID())) {
+				metadataFile="XMP.rdf";
+				packageType="XMP";
+				break; // every package containing an XMP file is of type XMP
+			} else if ("danrw-fmt/4".equals(file.getFormatPUID())) {
+				metadataFile=file.getRelative_path();
+				packageType="LIDO";
+				break; // every package containing a LIDO file is of type LIDO
+			}
+		}
+	}
+	
 	@Override
 	void rollback() throws Exception {
 		throw new NotImplementedException(FilesAndConstants.ERROR_ROLLBACK_NOT_IMPLEMENTED);

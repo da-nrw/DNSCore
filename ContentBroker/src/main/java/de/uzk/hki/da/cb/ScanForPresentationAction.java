@@ -36,7 +36,6 @@ import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.service.PackageTypeDetectionService;
 
 
 /**

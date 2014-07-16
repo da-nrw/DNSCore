@@ -34,7 +34,6 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ch.qos.logback.core.joran.action.Action;
 import de.uzk.hki.da.format.FormatScanService;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
@@ -74,7 +73,6 @@ public class ScanActionTests {
 	 * @throws FileNotFoundException the file not found exception
 	 */
 	@BeforeClass
-	@SuppressWarnings("unchecked")
 	public static void setUpBeforeClass() throws FileNotFoundException{
 		
 		Object obj = TESTHelper.setUpObject("1234",workAreaRootPath);
@@ -82,22 +80,15 @@ public class ScanActionTests {
 		job.setObject(obj);
 		job.setRep_name("2011_11_01+00_01+");
 		
-		
 		DAFile file = new DAFile(obj.getLatestPackage(),"2011_11_01+00_01+a","140849.tif");
 		file.setFormatPUID("fmt/353");
 		
-		
 		List<DAFile> files = new ArrayList<DAFile>(); files.add(file);
-		FormatScanService scan = mock (FormatScanService.class);
-//		when( scan.identify((List<DAFile>)anyObject()) ) .thenReturn(files);
-//		action.setFormatScanService(scan);
 		obj.getLatestPackage().getFiles().addAll(files);
-		
 		
 		Node localNode = new Node("vm2","01-vm2");
 		localNode.setWorkAreaRootPath(Path.make(workAreaRootPath));
 		action.setLocalNode(localNode);
-	
 		
 		Set<Node> nodes = new HashSet<Node>(); nodes.add(localNode);
 		ConversionRoutine toPng = new ConversionRoutine(
@@ -145,9 +136,4 @@ public class ScanActionTests {
 		assertEquals("",instrs[0].getTarget_folder());
 		assertEquals("TOPNG",instrs[0].getConversion_routine().getName());
 	}
-	
-	
-//	@Test
-//	public void testIfDeltaGetsRecognized(){
-
 }
