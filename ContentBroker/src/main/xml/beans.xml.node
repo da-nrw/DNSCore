@@ -30,7 +30,6 @@
 	<task:scheduled-tasks scheduler="taskScheduler">
 		<task:scheduled ref="contentBroker" method="scheduleTask" fixed-delay="500" />
 		<task:scheduled ref="ingestAreaScannerWorker" method="scheduleTask" fixed-delay="1000" />
-		<task:scheduled ref="userAreaScannerWorker" method="scheduleTask" fixed-delay="1000" />
 		<task:scheduled ref="integrityScannerWorker" method="scheduleTask" fixed-delay="20000" />
 	</task:scheduled-tasks>
 

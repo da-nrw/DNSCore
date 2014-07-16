@@ -96,7 +96,6 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	IngestAreaScannerWorkerTests.class,
 	ProperRefreshOfJobChildrenTest.class,
 	JobCascadingTest.class,
-	UserAreaScannerTests.class,
 	ConvertActionTests.class,
 	SaveConversionInstructionsByJob.class,
 	CreatePremisActionTests.class,

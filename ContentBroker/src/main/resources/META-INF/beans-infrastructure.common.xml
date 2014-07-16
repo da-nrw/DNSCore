@@ -73,11 +73,6 @@
         <property name="systemFromEmailAddress" value="${system.emailFrom}" />
     </bean>
     
-    <bean id="userAreaScannerWorker" class="de.uzk.hki.da.core.UserAreaScannerWorker" init-method="init">
-        <property name="ingestAreaRootPath" value="${localNode.ingestAreaRootPath}" />
-        <property name="userAreaRootPath" value="${localNode.userAreaRootPath}" />
-    </bean>
-    
    	<bean id="actionFactory" class="de.uzk.hki.da.core.ActionFactory">
         <property name="actionRegistry" ref="actionRegistry" />
         <property name="localNode" ref="localNode" />
