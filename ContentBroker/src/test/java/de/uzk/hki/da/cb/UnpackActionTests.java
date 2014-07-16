@@ -49,6 +49,7 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class UnpackActionTests {
 
+	private static final String NUM_EXPECTED_ERRORS = "2";
 	private static final String SIDECAR_EXTENSIONS = "xmp";
 	private static final String INGEST = "ingest";
 	private static final String IDENTIFIER = "identifier";
@@ -142,7 +143,7 @@ public class UnpackActionTests {
 		}
 		catch(UserException e){
 			System.out.println(e.getMessage());
-			if (!e.getMessage().endsWith("2")) fail();
+			if (!e.getMessage().endsWith(NUM_EXPECTED_ERRORS)) fail();
 		}
 	}
 	

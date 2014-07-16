@@ -34,9 +34,15 @@
 		<property name="ingestGate" ref="ingestGate" />
 		<property name="gridRoot" ref="${cb.implementation.grid}"/>
 	</bean>
-	<bean id="IngestScanAction" class="de.uzk.hki.da.cb.ScanAction" scope="prototype">
+	<bean id="IngestValidateMetadataAction" class="de.uzk.hki.da.cb.ValidateMetadataAction"
+		scope="prototype">
 		<property name="startStatus" value="130" />
 		<property name="endStatus" value="140" />
+		<property name="name" value="IngestValidateMetadataAction" />
+	</bean>	
+	<bean id="IngestScanAction" class="de.uzk.hki.da.cb.ScanAction" scope="prototype">
+		<property name="startStatus" value="140" />
+		<property name="endStatus" value="150" />
 		<property name="name" value="IngestScanAction" />
 		<property name="formatScanService" ref="formatScanService" />
 		<property name="description" value="Format Scan Service" />
@@ -44,7 +50,7 @@
 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
 	</bean>
 	<bean id="IngestRegisterURNAction" class="de.uzk.hki.da.cb.RegisterURNAction" scope="prototype">
-		<property name="startStatus" value="140" />
+		<property name="startStatus" value="150" />
 		<property name="endStatus" value="230" />
 		<property name="name" value="IngestRegisterURNAction" />
 		<property name="nameSpace" value="${system.urnNameSpace}" />
