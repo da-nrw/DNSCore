@@ -77,7 +77,6 @@ import de.uzk.hki.da.model.ModelTest;
 import de.uzk.hki.da.model.PackageTests;
 import de.uzk.hki.da.model.PreservationSystemTests;
 import de.uzk.hki.da.model.SaveConversionInstructionsByJob;
-import de.uzk.hki.da.repository.CTElasticSearchMetadataIndexTests;
 import de.uzk.hki.da.service.PackageTypeDetectionServiceTests;
 import de.uzk.hki.da.service.RetrievePackagesHelperTest;
 import de.uzk.hki.da.service.URNCheckDigitGeneratorTests;
@@ -101,7 +100,6 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	ConvertActionTests.class,
 	SaveConversionInstructionsByJob.class,
 	CreatePremisActionTests.class,
-//	ContentBrokerTests.class,
 	UnpackActionTests.class,
 	CLIConversionStrategyTests.class,
 	ObjectTest.class,
@@ -127,7 +125,6 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	PremisXmlWriterTest.class,
 	ActionCommunicatorServiceTests.class,
 	IrodsGridFacadeTest.class,
-//	IrodsSystemConnectorTest.class, XXX should not be a unit test
 	PublishImageConversionStrategyTest.class,
 //	PublishVideoConversionStrategyTests.class, XXX should not be dependent on handbrake installation
 	PublishXsltConversionStrategyTests.class,
@@ -164,8 +161,7 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	CreateEDMActionTests.class,
 	IndexMetadataActionTests.class,
 	UpdateMetadataActionEADMultilevelPackagesTest.class,
-	IndexMetadataActionTests.class
-//	HibernateUtilThreadingTest.class
+	IndexMetadataActionTests.class,
 })
 public class SimpleSuite {
 

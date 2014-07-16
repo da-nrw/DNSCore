@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.ct;
+package de.uzk.hki.da.convert;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
