@@ -61,6 +61,9 @@ public class ScanForPresentationAction extends AbstractAction{
 		if (preservationSystem==null) // So we can prevent the preservationSystem to be instantiated in unit tests.
 			preservationSystem = new PreservationSystem(dao);
 		
+		// check if object package type is set
+		
+		
 		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(sidecarExtensions);
 		if (newestFiles.size() == 0)
 			throw new RuntimeException("No files found!");
@@ -74,8 +77,8 @@ public class ScanForPresentationAction extends AbstractAction{
 		
 		job.getConversion_instructions().addAll(cisPres);
 		
-		// detect package type
 		PackageTypeDetectionService ptds = new PackageTypeDetectionService(object.getLatestPackage());
+		
 		String packageType = ptds.getPackageType();
 		String metadataFile = ptds.getMetadataFile();
 		if (packageType == null || metadataFile == null) {
@@ -85,6 +88,7 @@ public class ScanForPresentationAction extends AbstractAction{
 			job.setPackage_type(packageType);
 			job.setMetadata_file(metadataFile);
 		}
+	
 		
 		return true;
 	}

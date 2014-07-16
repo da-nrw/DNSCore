@@ -43,7 +43,7 @@ import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
-import de.uzk.hki.da.utils.TestFolders;
+import de.uzk.hki.da.utils.TestConstants;
 import de.uzk.hki.da.webservice.HttpFileTransmissionClient;
 
 
@@ -57,7 +57,7 @@ import de.uzk.hki.da.webservice.HttpFileTransmissionClient;
  */
 public class DocxConversionStrategyTests {
 	
-	Path basePath= Path.make(TestFolders.TEST_ROOT_FORMAT,"DocxConversionStrategyTests");
+	Path basePath= Path.make(TestConstants.TEST_ROOT_FORMAT,"DocxConversionStrategyTests");
 	
 	/** The cs. */
 	DocxConversionStrategy cs = new DocxConversionStrategy();

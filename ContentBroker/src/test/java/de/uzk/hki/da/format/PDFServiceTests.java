@@ -11,14 +11,14 @@ import org.junit.Test;
 
 import de.uzk.hki.da.format.PdfService;
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.TestFolders;
+import de.uzk.hki.da.utils.TestConstants;
 
 /**
  * @author Daniel M. de Oliveira
  */
 public class PDFServiceTests {
 	
-	private static final String BASE_DIR = Path.make(TestFolders.TEST_ROOT_FORMAT,"PDFServiceTests").toString();
+	private static final String BASE_DIR = Path.make(TestConstants.TEST_ROOT_FORMAT,"PDFServiceTests").toString();
 	
 	@After
 	public void tearDown(){

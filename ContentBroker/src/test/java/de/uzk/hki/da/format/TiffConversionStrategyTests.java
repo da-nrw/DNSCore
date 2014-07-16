@@ -36,7 +36,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
-import de.uzk.hki.da.utils.TestFolders;
+import de.uzk.hki.da.utils.TestConstants;
 
 
 /**
@@ -44,7 +44,7 @@ import de.uzk.hki.da.utils.TestFolders;
  */
 public class TiffConversionStrategyTests {
 	
-	Path workAreaRootPath=Path.make(TestFolders.TEST_ROOT_FORMAT,"TiffConversionStrategyTests");
+	Path workAreaRootPath=Path.make(TestConstants.TEST_ROOT_FORMAT,"TiffConversionStrategyTests");
 	
 	/** The cs. */
 	TiffConversionStrategy cs = new TiffConversionStrategy();

@@ -22,42 +22,33 @@ package de.uzk.hki.da.cb;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.junit.Test;
 
-import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.service.PackageTypeDetectionService;
-import de.uzk.hki.da.utils.FilesAndConstants;
 
 /**
- * Detects the package type of an object
  * @author Daniel M. de Oliveira
  */
-public class ValidateMetadataAction extends AbstractAction {
-	
-	private PackageTypeDetectionService ptds = null;
-	
-	@Override
-	boolean implementation() throws FileNotFoundException, IOException,
-			UserException, RepositoryException {
-//		if (ptds==null) throw new ConfigurationException("ptds "+FilesAndConstants.ERROR_NOTCONFIGURED);
-		if (ptds==null) return true;
+public class ValidateMetadataActionTests {
+
+	@Test
+	public void testRejectPackageWithDuplicateEADFile() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
-		// scan all the newest files
-		return true;
+		ValidateMetadataAction action = new ValidateMetadataAction();
+		action.implementation();
 	}
-
-	@Override
-	void rollback() throws Exception {
-		throw new NotImplementedException(FilesAndConstants.ERROR_ROLLBACK_NOT_IMPLEMENTED);
+	
+	
+	@Test
+	public void testDetectPackageType() throws FileNotFoundException, UserException, IOException, RepositoryException{
+		
+		ValidateMetadataAction action = new ValidateMetadataAction();
+		action.implementation();
 	}
-
-//	public PackageTypeDetectionService getPtds() {
-//		return ptds;
-//	}
-//
-//	public void setPtds(PackageTypeDetectionService ptds) {
-//		this.ptds = ptds;
-//	}
+	
+	
+	
+	
+	
 }

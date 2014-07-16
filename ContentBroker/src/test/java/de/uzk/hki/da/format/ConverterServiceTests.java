@@ -42,7 +42,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
-import de.uzk.hki.da.utils.TestFolders;
+import de.uzk.hki.da.utils.TestConstants;
 
 
 /**
@@ -50,7 +50,7 @@ import de.uzk.hki.da.utils.TestFolders;
  */
 public class ConverterServiceTests {
 
-	private final Path workAreaRootPath = Path.make(TestFolders.TEST_ROOT_FORMAT,"ConverterServiceTests");
+	private final Path workAreaRootPath = Path.make(TestConstants.TEST_ROOT_FORMAT,"ConverterServiceTests");
 	
 	/** The data path. */
 	private final Path dataPath= Path.make(workAreaRootPath,"work/TEST/123/data/");

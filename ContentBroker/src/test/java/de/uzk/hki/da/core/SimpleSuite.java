@@ -39,6 +39,7 @@ import de.uzk.hki.da.cb.IndexMetadataActionTests;
 import de.uzk.hki.da.cb.ObjectTest;
 import de.uzk.hki.da.cb.PrepareSendToPresenterActionTests;
 import de.uzk.hki.da.cb.ProperRefreshOfJobChildrenTest;
+import de.uzk.hki.da.cb.RestructureActionTests;
 import de.uzk.hki.da.cb.RetrievalActionTest;
 import de.uzk.hki.da.cb.ScanActionTests;
 import de.uzk.hki.da.cb.SelectProcessingNodesTests;
@@ -50,6 +51,7 @@ import de.uzk.hki.da.cb.UpdateMetadataActionEADMultilevelPackagesTest;
 import de.uzk.hki.da.cb.UpdateMetadataActionEADTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionXMPTests;
+import de.uzk.hki.da.cb.ValidateMetadataActionTests;
 import de.uzk.hki.da.format.CLIConversionStrategyTests;
 import de.uzk.hki.da.format.ConverterServiceTests;
 import de.uzk.hki.da.format.FidoCLITest;
@@ -160,6 +162,8 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	IndexMetadataActionTests.class,
 	UpdateMetadataActionEADMultilevelPackagesTest.class,
 	IndexMetadataActionTests.class,
+	RestructureActionTests.class,
+	ValidateMetadataActionTests.class
 })
 public class SimpleSuite {
 

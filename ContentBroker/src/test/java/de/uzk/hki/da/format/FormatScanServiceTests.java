@@ -48,7 +48,7 @@ import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
-import de.uzk.hki.da.utils.TestFolders;
+import de.uzk.hki.da.utils.TestConstants;
 
 /**
  * @author Daniel M. de Oliveira
@@ -56,7 +56,7 @@ import de.uzk.hki.da.utils.TestFolders;
 public class FormatScanServiceTests {
 
 	private static FormatScanService formatScanService;
-	private static Path workAreaRootPath = Path.make(TestFolders.TEST_ROOT_FORMAT,"FormatIdentificationTests");
+	private static Path workAreaRootPath = Path.make(TestConstants.TEST_ROOT_FORMAT,"FormatIdentificationTests");
 	private static Object object;
 	
 	private List<DAFile> files = new ArrayList<DAFile>();

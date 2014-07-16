@@ -89,9 +89,10 @@ public class ScanActionTests {
 		
 		List<DAFile> files = new ArrayList<DAFile>(); files.add(file);
 		FormatScanService scan = mock (FormatScanService.class);
-		when( scan.identify((List<DAFile>)anyObject()) ) .thenReturn(files);
-		action.setFormatScanService(scan);
-
+//		when( scan.identify((List<DAFile>)anyObject()) ) .thenReturn(files);
+//		action.setFormatScanService(scan);
+		obj.getLatestPackage().getFiles().addAll(files);
+		
 		
 		Node localNode = new Node("vm2","01-vm2");
 		localNode.setWorkAreaRootPath(Path.make(workAreaRootPath));

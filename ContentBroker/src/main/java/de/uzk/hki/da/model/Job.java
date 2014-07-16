@@ -362,10 +362,10 @@ public class Job {
 	/**
 	 * Sets the obj.
 	 *
-	 * @param obj the new obj
+	 * @param object the new obj
 	 */
-	public void setObject(Object obj) {
-		this.obj = obj;
+	public void setObject(Object object) {
+		this.obj = object;
 	}
 
 	public String getPackage_type() {

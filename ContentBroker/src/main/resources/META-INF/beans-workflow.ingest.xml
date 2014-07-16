@@ -33,6 +33,8 @@
 		</property>
 		<property name="ingestGate" ref="ingestGate" />
 		<property name="gridRoot" ref="${cb.implementation.grid}"/>
+		<property name="formatScanService" ref="formatScanService" />
+		<property name="sidecarExtensions" value="${system.sidecar_extensions}" />
 	</bean>
 	<bean id="IngestValidateMetadataAction" class="de.uzk.hki.da.cb.ValidateMetadataAction"
 		scope="prototype">
