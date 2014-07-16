@@ -9,12 +9,12 @@
            http://www.springframework.org/schema/task
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
           
-	<bean class="de.uzk.hki.da.convert.CLIFormatIdentifier" id="pronomFormatIdentifier">
+	<bean class="de.uzk.hki.da.format.CLIFormatIdentifier" id="pronomFormatIdentifier">
          <property name="conversionScript" value="fido.sh"/>
          <property name="healthCheckTestFile" value="conf/healthCheck.tif"/>
          <property name="healthCheckExpectedOutcome" value="fmt/353"/>
     </bean>
-    <bean class="de.uzk.hki.da.convert.CLIFormatIdentifier" id="videoCodecFormatIdentifier">
+    <bean class="de.uzk.hki.da.format.CLIFormatIdentifier" id="videoCodecFormatIdentifier">
          <property name="conversionScript" value="ffmpeg.sh"/>
          <property name="healthCheckTestFile" value="conf/healthCheck.avi"/>
          <property name="healthCheckExpectedOutcome" value="cinepak"/>

@@ -88,7 +88,7 @@
 		<property name="localNode" ref="localNode" />
   	</bean>
   
-    <bean class="de.uzk.hki.da.convert.JhoveScanService" id="jhoveScanService" scope="prototype">
+    <bean class="de.uzk.hki.da.format.JhoveScanService" id="jhoveScanService" scope="prototype">
         <property name="jhoveFolder" value="jhove"/>
     </bean>
     
