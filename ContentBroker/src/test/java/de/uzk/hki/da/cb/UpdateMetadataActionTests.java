@@ -21,7 +21,9 @@ package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,6 +40,7 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.CentralDatabaseDAO;
@@ -46,6 +49,7 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.service.MimeTypeDetectionService;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
@@ -55,6 +59,8 @@ import de.uzk.hki.da.utils.TESTHelper;
  * The Class UpdateMetadataActionTests.
  */
 public class UpdateMetadataActionTests {
+	
+	private static MimeTypeDetectionService mtds;
 	
 	private static final Path workAreaPath = new RelativePath("src/test/resources/cb/UpdateMetadataActionTests/");
 	
@@ -74,6 +80,13 @@ public class UpdateMetadataActionTests {
 	 * Sets the up.
 	 * @throws IOException 
 	 */
+	
+	@BeforeClass
+	public static void mockDca() throws IOException {
+		mtds = mock(MimeTypeDetectionService.class);
+		when(mtds.detectMimeType((DAFile)anyObject())).thenReturn("image/tiff");
+	}
+	
 	@Before
 	public void setUp() throws IOException {		
 		action = new UpdateMetadataAction();		
@@ -117,6 +130,7 @@ public class UpdateMetadataActionTests {
 		job.setRep_name("rep42");
 		job.setObject(o);
 		
+		action.setMtds(mtds);
 		action.setObject(o);
 		action.setJob(job);
 		
@@ -198,6 +212,7 @@ public class UpdateMetadataActionTests {
 		FileUtils.copyFile(metsFile, publicMetsFile);
 		FileUtils.copyFile(metsFile, instMetsFile);
 		
+		action.setMtds(mtds);
 		action.setObject(obj);
 		action.setJob(job);
 		

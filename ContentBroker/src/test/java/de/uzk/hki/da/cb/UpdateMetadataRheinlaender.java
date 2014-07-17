@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,6 +23,7 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.UserException;
@@ -27,12 +31,14 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.service.MimeTypeDetectionService;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
 
 public class UpdateMetadataRheinlaender {
 	
+	private static MimeTypeDetectionService mtds;
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	private static final Path workAreaRootPathPath = new RelativePath("src/test/resources/cb/UpdateMetadataRheinlaender/");
@@ -45,6 +51,11 @@ public class UpdateMetadataRheinlaender {
 	private Object object;
 	private Boolean isTest;
 	
+	@BeforeClass
+	public static void mockDca() throws IOException {
+		mtds = mock(MimeTypeDetectionService.class);
+		when(mtds.detectMimeType((DAFile)anyObject())).thenReturn("image/tiff");
+	}
 	
 	@Before
 	public void setUp() throws IOException{
@@ -125,6 +136,7 @@ public class UpdateMetadataRheinlaender {
 		dcMappings.put("EAD", "conf/xslt/dc/ead_to_dc.xsl");
 		action.setDcMappings(dcMappings);
 		
+		action.setMtds(mtds);
 		action.setObject(object);
 		action.setJob(job);
 	}

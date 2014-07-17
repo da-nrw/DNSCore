@@ -21,6 +21,9 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,12 +34,14 @@ import org.apache.commons.io.FileUtils;
 import org.jdom.JDOMException;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.service.MimeTypeDetectionService;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
@@ -46,7 +51,14 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class UpdateMetadataActionXMPTests {
 
+	private static MimeTypeDetectionService mtds;
 	private final Path workAreaRootPath = new RelativePath("src/test/resources/cb/UpdateMetadataActionXMPTests/");
+	
+	@BeforeClass
+	public static void mockDca() throws IOException {
+		mtds = mock(MimeTypeDetectionService.class);
+		when(mtds.detectMimeType((DAFile)anyObject())).thenReturn("image/tiff");
+	}
 	
 	@Before
 	public void setUp() throws Exception {
@@ -144,6 +156,7 @@ public class UpdateMetadataActionXMPTests {
 		
 		Job job = new Job(); job.setId(1);
 		
+		action.setMtds(mtds);
 		action.setObject(obj);
 		action.setJob(job);
 		action.setRepNames(new String[]{"dip/public", "dip/institution"});
