@@ -310,6 +310,12 @@ public class UpdateMetadataAction extends AbstractAction {
 		return replacements;
 	}
 	
+	private void updateLoctypeInMetsFile(Element fileElement, String newLoctype) {
+		
+		fileElement.removeAttribute("LOCTYPE");
+		fileElement.setAttribute("LOCTYPE", newLoctype);
+	}
+	
 	/**
 	 * @param packageType
 	 * @param metadataFileName
@@ -406,6 +412,9 @@ public class UpdateMetadataAction extends AbstractAction {
 					try {
 						Attribute attrMT = element.getAttribute("MIMETYPE");
 						nodes.add(attrMT);
+						if(!(absUrlPrefix==null)) {
+							updateLoctypeInMetsFile(element, "URL");
+						}
 					} catch (Exception e) {
 					}
 				} catch (Exception e) {
