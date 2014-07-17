@@ -19,7 +19,7 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -38,14 +38,13 @@ import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.format.FormatScanService;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
+import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.TESTHelper;
 import de.uzk.hki.da.utils.TestConstants;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Object;
 
 /**
  * @author Daniel M. de Oliveira

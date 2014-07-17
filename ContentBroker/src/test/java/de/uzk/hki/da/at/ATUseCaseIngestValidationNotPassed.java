@@ -19,6 +19,8 @@
 
 package de.uzk.hki.da.at;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
@@ -89,4 +91,24 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 		ingestAndWaitForErrorState("ATInvalidPremis", "114","zip");
 		System.out.println("yeah!");
 	}
+	
+	@Test
+	public void testDuplicateMetadataFiles() throws IOException, InterruptedException{
+		
+		Object object = ingestAndWaitForErrorState("ATDuplicateMetadataFiles","134");
+		System.out.println("yeah!");
+		
+		assertEquals(null,object.getPackage_type());
+		assertEquals(null,object.getMetadata_file());
+	}
+	
+	@Test
+	public void testDuplicateDocumentName() throws IOException, InterruptedException{
+		ingestAndWaitForErrorState("ATDuplicateDocumentName","114");
+		System.out.println("yeah!");
+	}
+	
+	
+	
+	
 }

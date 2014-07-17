@@ -73,7 +73,7 @@ public class AbstractActionTests {
 		pkg.setContainerName("CONTAINER");
 		
 		UserExceptionManager userExceptionManager = mock(UserExceptionManager.class);
-		when(userExceptionManager.getMessage((UserExceptionId) anyObject())).thenReturn("INCONSISTENT_PACKAGE");
+		when(userExceptionManager.getMessage((UserExceptionId) anyObject())).thenReturn("Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Package ist nicht konsistent!\n\nMeldung:\n%ERROR_INFO\nEs ist wahrscheinlich, dass Fehler bei der Übertragung aufgetreten sind. Bitte versuchen Sie eine erneute Ablieferung.");
 		action.setUserExceptionManager(userExceptionManager);
 		
 		action.setDao(mock(CentralDatabaseDAO.class));

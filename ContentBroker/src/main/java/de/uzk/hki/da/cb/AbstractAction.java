@@ -316,23 +316,24 @@ public abstract class AbstractAction implements Runnable {
 		
 		String email = object.getContractor().getEmail_contact();
 		String subject = "Fehlerreport für " + object.getIdentifier();
-		String message = userExceptionManager.getMessage(e.getId());
+		String message = userExceptionManager.getMessage(e.getUserExceptionId());
 		
 		message = message.replace("%OBJECT_IDENTIFIER", object.getIdentifier())
 			 .replace("%CONTAINER_NAME", object.getLatestPackage().getContainerName())
 			 .replace("%ERROR_INFO", e.getErrorInfo());
 				
+		
 		logger.debug("Sending mail to: " + email + "\n" + subject + "\n" + message);
 		
-		if (email != null) {			
-			try {
-				Mail.sendAMail(systemFromEmailAdress,email, subject, message);
-			} catch (MessagingException ex) {
-				logger.error("Sending email reciept for " + object.getIdentifier() + " failed", ex);
-			}
+		if (email == null){
+			logger.warn(object.getContractor().getShort_name() + " has no valid email address!");		
+			return;
 		}
-		else
-			logger.info(object.getContractor().getShort_name() + " has no valid email address!");		
+		try {
+			Mail.sendAMail(systemFromEmailAdress,email, subject, message);
+		} catch (MessagingException ex) {
+			logger.error("Sending email reciept for " + object.getIdentifier() + " failed", ex);
+		}
 	}	
 	
 	/**
