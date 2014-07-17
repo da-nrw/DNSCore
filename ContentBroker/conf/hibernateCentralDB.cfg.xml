@@ -4,15 +4,17 @@
 "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 <session-factory>
+
 <!-- JDBC connection settings -->
-<property name="connection.driver_class">org.hsqldb.jdbcDriver</property>
-<property name="connection.url">jdbc:hsqldb:hsql://localhost/xdb</property>
-<property name="connection.username">sa</property>
-<property name="connection.password"></property>
+<property name="connection.driver_class">org.postgresql.Driver</property>
+<property name="connection.url">jdbc:postgresql://localhost:5432/CB</property>
+<property name="connection.username">cb_usr</property>
+<property name="connection.password">vb9gpJq/TjrkFcJ0jaJu+w==</property>
  
 <!-- JDBC connection pool, use Hibernate internal connection pool -->
 <property name="connection.pool_size">5</property>
-<property name="dialect">org.hibernate.dialect.HSQLDialect</property>
+<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
  
 <!-- Enable Hibernate's automatic session context management -->
 <property name="current_session_context_class">thread</property>

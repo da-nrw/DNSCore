@@ -65,7 +65,7 @@ public class ValidateMetadataAction extends AbstractAction {
 	}
 
 	/**
-	 * @throws UserException
+	 * @throws UserException If more than one metadata file was found.
 	 * @author Daniel M. de Oliveira 
 	 */
 	private void detect(Package pkg){
