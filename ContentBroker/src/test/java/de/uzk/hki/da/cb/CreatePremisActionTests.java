@@ -54,7 +54,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.utils.FilesAndConstants;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -96,8 +96,8 @@ public class CreatePremisActionTests {
 	 */
 	@Before
 	public void setUp() throws IOException {
-		FileUtils.copyFileToDirectory(FilesAndConstants.PREMIS_XSD, new File("conf/"));
-		FileUtils.copyFileToDirectory(FilesAndConstants.XLINK_XSD, new File("conf/"));
+		FileUtils.copyFileToDirectory(C.PREMIS_XSD, new File("conf/"));
+		FileUtils.copyFileToDirectory(C.XLINK_XSD, new File("conf/"));
 		
 		Node node = new Node();
 		node.setWorkAreaRootPath(workAreaRootPath);

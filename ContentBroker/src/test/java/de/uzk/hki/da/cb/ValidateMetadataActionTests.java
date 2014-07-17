@@ -24,10 +24,12 @@ import static org.junit.Assert.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.TESTHelper;
 import de.uzk.hki.da.utils.TestConstants;
@@ -39,43 +41,81 @@ import de.uzk.hki.da.model.Object;
  */
 public class ValidateMetadataActionTests {
 
+	private static final String METS_2_99_XML = "mets_2_99.xml";
 	private static final String IDENTIFIER = "identifier";
 	private static final Path WORK_AREA_ROOT = Path.make(TestConstants.TEST_ROOT_CB,"ValidateMetadataActionTests");
+	private Object object;
+	ValidateMetadataAction action = new ValidateMetadataAction();
 
+	DAFile f_ead1 = new DAFile(null,"rep+a","vda03.xml");
+	DAFile f_ead2 = new DAFile(null,"rep+b","EAD.XML");
+	DAFile f_mets1 = new DAFile(null,"",METS_2_99_XML); 
+	DAFile f_mets2 = new DAFile(null,"","mets_2_998.xml");
 
+	
+	@Before
+	public void setUp(){
+		object = TESTHelper.setUpObject(IDENTIFIER,WORK_AREA_ROOT);
+		action.setObject(object);
+
+		f_ead1.setFormatPUID(C.EAD_PUID);
+		f_ead2.setFormatPUID(C.EAD_PUID);
+		f_mets1.setFormatPUID(C.METS_PUID);
+		f_mets2.setFormatPUID(C.METS_PUID);
+	}
+	
+	
 	@Test
 	public void testRejectPackageWithDuplicateEADFile() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
-//		ValidateMetadataAction action = new ValidateMetadataAction();
-//		action.implementation();
+		object.getLatestPackage().getFiles().add(f_ead1);
+		object.getLatestPackage().getFiles().add(f_ead2);
+		object.getLatestPackage().getFiles().add(f_mets1);
+		object.getLatestPackage().getFiles().add(f_mets2);
+		
+		try{
+			action.implementation();
+			fail();
+		}catch(UserException e){
+			
+		}
 	}
-	
 	
 	@Test
 	public void testDetectEAD() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
-		DAFile f1 = new DAFile(null,"rep+a","vda03.xml");
-		f1.setFormatPUID("danrw-fmt/2");
-		DAFile f2 = new DAFile(null,"","mets_2_99.xml"); f2.setFormatPUID("danrw-fmt/1");
-		DAFile f3 = new DAFile(null,"","mets_2_998.xml"); f3.setFormatPUID("danrw-fmt/1");
+		object.getLatestPackage().getFiles().add(f_ead1);
+		object.getLatestPackage().getFiles().add(f_mets1);
+		object.getLatestPackage().getFiles().add(f_mets2);
 		
-		
-		Object object = TESTHelper.setUpObject(IDENTIFIER,WORK_AREA_ROOT);
-		object.getLatestPackage().getFiles().add(f1);
-		object.getLatestPackage().getFiles().add(f2);
-		object.getLatestPackage().getFiles().add(f3);
-		
-		ValidateMetadataAction action = new ValidateMetadataAction();
-		action.setObject(object);
 		action.implementation();
 		
-		assertEquals("vda03.xml",object.getMetadata_file());
 		assertEquals("EAD",object.getPackage_type());
+		assertEquals("vda03.xml",object.getMetadata_file());
+	}
+
+	@Test
+	public void testMoreThanOneMETSAndNoEAD() throws FileNotFoundException, UserException, IOException, RepositoryException{
+
+		object.getLatestPackage().getFiles().add(f_mets1);
+		object.getLatestPackage().getFiles().add(f_mets2);
 		
+		try{
+			action.implementation();
+			fail();
+		} catch (UserException e){
+			
+		}
 	}
 	
-	
-	
-	
-	
+	@Test 
+	public void testDetectMETS() throws FileNotFoundException, UserException, IOException, RepositoryException{
+		
+		object.getLatestPackage().getFiles().add(f_mets1);
+		
+		action.implementation();
+		
+		assertEquals(C.METS,object.getPackage_type());
+		assertEquals(METS_2_99_XML,object.getMetadata_file());
+	}
 }

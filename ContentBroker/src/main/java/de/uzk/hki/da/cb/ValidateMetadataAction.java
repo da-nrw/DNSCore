@@ -21,18 +21,26 @@ package de.uzk.hki.da.cb;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.utils.FilesAndConstants;
+import de.uzk.hki.da.utils.C;
 
 /**
- * Detects the package type of an object
+ * Detects the package type of an object.
+ * It can be one of
+ * <li>METS
+ * <li>EAD
+ * <li>XMP
+ * <li>LIDO
+ * 
  * @author Daniel M. de Oliveira
  */
 public class ValidateMetadataAction extends AbstractAction {
@@ -56,40 +64,47 @@ public class ValidateMetadataAction extends AbstractAction {
 		return true;
 	}
 
-	
+	/**
+	 * @throws UserException
+	 * @author Daniel M. de Oliveira 
+	 */
 	private void detect(Package pkg){
 		
-		List<DAFile> files = pkg.getFiles();
-		for (DAFile file : files) {
-			if ("danrw-fmt/1".equals(file.getFormatPUID())) {
-				metadataFile=file.getRelative_path();
-				packageType="METS"; // METS files can be part of EAD packages, so continue
-			} else if ("danrw-fmt/2".equals(file.getFormatPUID())) {
-				metadataFile=file.getRelative_path();
-				packageType="EAD";
-				break; // every package containing an EAD file is of type EAD
-			} else if ("danrw-fmt/3".equals(file.getFormatPUID())) {
-				metadataFile="XMP.rdf";
-				packageType="XMP";
-				break; // every package containing an XMP file is of type XMP
-			} else if ("danrw-fmt/4".equals(file.getFormatPUID())) {
-				metadataFile=file.getRelative_path();
-				packageType="LIDO";
-				break; // every package containing a LIDO file is of type LIDO
+		if (getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).size()>2){
+			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"you have more than one EAD file in your package which is forbidden. package will not get processed.");
+		}
+		if (getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).size()==1){
+			metadataFile=getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).get(0).getRelative_path();
+			packageType=C.EAD;
+			return;
+		}
+		if (getFilesWithPUID(pkg.getFiles(), C.METS_PUID).size()>1){
+			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"you have more than one METS file in your package which is forbidden. package will not get processed.");
+		}
+		if (getFilesWithPUID(pkg.getFiles(), C.METS_PUID).size()==1){
+			metadataFile=getFilesWithPUID(pkg.getFiles(), C.METS_PUID).get(0).getRelative_path();
+			packageType=C.METS;
+			return;
+		}
+		// LIDO
+		// XMP.rdf
+	}
+	
+	
+	private List<DAFile> getFilesWithPUID(List<DAFile> files,String PUID){
+		List<DAFile> result = new ArrayList<DAFile>();
+		
+		for (DAFile f:files){
+			if (PUID.equals(f.getFormatPUID())) {
+				result.add(f);
 			}
 		}
+		return result;
 	}
+	
 	
 	@Override
 	void rollback() throws Exception {
-		throw new NotImplementedException(FilesAndConstants.ERROR_ROLLBACK_NOT_IMPLEMENTED);
+		throw new NotImplementedException(C.ERROR_ROLLBACK_NOT_IMPLEMENTED);
 	}
-
-//	public PackageTypeDetectionService getPtds() {
-//		return ptds;
-//	}
-//
-//	public void setPtds(PackageTypeDetectionService ptds) {
-//		this.ptds = ptds;
-//	}
 }

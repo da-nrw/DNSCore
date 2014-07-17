@@ -24,10 +24,18 @@ import java.io.File;
 /**
  * @author Daniel M. de Oliveira
  */
-public class FilesAndConstants {
+public class C {
 
 	public static final File XLINK_XSD = new File("src/main/xsd/xlink.xsd");
 	public static final File PREMIS_XSD = new File("src/main/xsd/premis.xsd");
 	public static final String ERROR_ROLLBACK_NOT_IMPLEMENTED = "rollback not implemented yet.";
 	public static final String ERROR_NOTCONFIGURED = " not configured properly.";
+	public static final String METS_PUID = "danrw-fmt/1";
+	public static final String EAD_PUID = "danrw-fmt/2";
+	public static final String EAD = "EAD";
+	public static final String XMP = "XMP";
+	public static final String LIDO = "LIDO";
+	public static final String METS = "METS";
+	public static final String LIDO_PUID = "danrw-fmt/4";
+	public static final String XMP_PUID = "danrw-fmt/3";
 }
