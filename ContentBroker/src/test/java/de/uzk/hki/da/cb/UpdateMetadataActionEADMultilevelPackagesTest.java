@@ -1,7 +1,11 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
@@ -31,7 +36,6 @@ import de.uzk.hki.da.utils.TESTHelper;
 public class UpdateMetadataActionEADMultilevelPackagesTest {
 	
 	private static MimeTypeDetectionService mtds;
-	
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	private static final Path workAreaRootPathPath = new RelativePath("src/test/resources/cb/UpdateMetadataActionEADMultilevelPackagesTest/");
@@ -46,8 +50,9 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 	
 	
 	@BeforeClass
-	public static void mockDca() {
+	public static void mockDca() throws IOException {
 		mtds = mock(MimeTypeDetectionService.class);
+		when(mtds.detectMimeType((DAFile)anyObject())).thenReturn("image/tiff");
 	}
 	
 	@Before
@@ -130,6 +135,7 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 		dcMappings.put("EAD", "conf/xslt/dc/ead_to_dc.xsl");
 		action.setDcMappings(dcMappings);
 		
+		action.setMtds(mtds);
 		action.setObject(object);
 		action.setJob(job);
 	}
@@ -188,4 +194,13 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 				.getChild("FLocat", METS_NS)
 				.getAttributeValue("href", XLINK_NS);
 	}
+	
+	private String getMIMETYPE(Document doc){
+		
+		return doc.getRootElement()
+				.getChild("fileSec", METS_NS)
+				.getChild("fileGrp", METS_NS)
+				.getChild("file", METS_NS)
+				.getAttributeValue("MIMETYPE");
+		}
 }

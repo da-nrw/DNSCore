@@ -68,6 +68,7 @@
 		<property name="startStatus" value="250" />
 		<property name="endStatus" value="260" />
 		<property name="name" value="IngestUpdateMetadataAction" />
+		<property name="mtds" ref="mtds" />
 		<property name="namespaces" ref="updateMetadataNamespaces" />
 		<property name="xpathsToUrls" ref="updateMetadataXpathsForUrls" />
 		<property name="dcMappings">
@@ -121,6 +122,7 @@
 		<property name="namespaces" ref="updateMetadataNamespaces" />
 		<property name="xpathsToUrls" ref="updateMetadataXpathsForUrls" />
 		<property name="writePackageTypeToDC" value="true" />
+		<property name="mtds" ref="mtds" />
 		<property name="repNames">
 			<util:list>
 				<value>dip/public</value>

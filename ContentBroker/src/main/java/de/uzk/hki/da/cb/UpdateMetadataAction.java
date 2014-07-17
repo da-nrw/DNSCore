@@ -29,9 +29,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -84,9 +86,17 @@ public class UpdateMetadataAction extends AbstractAction {
 	private String[] repNames;	
 	private String absUrlPrefix;
 	private Map<String,String> dcMappings = new HashMap<String,String>();
+	
+	private MimeTypeDetectionService mtds = new MimeTypeDetectionService();
+	
+//	temporary
+	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
+	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 
 	@Override
 	public boolean implementation() throws IOException {
+		
+		this.setMtds(mtds);
 		
 		if (job==null) throw new ConfigurationException("job not set");
 		
@@ -165,8 +175,16 @@ public class UpdateMetadataAction extends AbstractAction {
 		if (absUrlPrefix == null) absUrlPrefix = "";
 		
 		Map<String,DAFile> replacements = generateReplacementsMap(pkg, repName, absUrlPrefix);
-//		!!!!!!!!!!!!!!!! ändern in summe aller replacements(i), sobald alle anderen replacements ebenfalls gemacht werden
-		int expectedReplacements = replacements.size();
+		
+		Set<DAFile> targetFiles = new HashSet<DAFile>();
+		Iterator it = replacements.entrySet().iterator();
+		while (it.hasNext()) {
+	        Map.Entry entry = (Map.Entry)it.next();
+	        targetFiles.add((DAFile)entry.getValue());
+	    }
+		
+//		int expectedReplacements = replacements.size();
+		int expectedReplacements = targetFiles.size();
 		
 		File metadataFile = Path.makeFile(pkg.getTransientBackRefToObject().getDataPath(),repName,metadataFilePath);
 		if (!metadataFile.exists()) throw new FileNotFoundException();
@@ -210,20 +228,16 @@ public class UpdateMetadataAction extends AbstractAction {
 				if (value.endsWith(".xml") || value.endsWith(".XML")) {
 				
 					actualReplacements+= updatePathsInFile(pkg, repName, value, xpathsToUrls.get("METS"), replacements);
-//					metsReplacements.put(value, absUrlPrefix + value);
 					
 					for (Event e:pkg.getEvents()) {
 						if(e.getType().equals("COPY") || e.getType().equals("CONVERT")) {
 							if(e.getSource_file().getRelative_path().contains(value)) {
-								logger.debug("try to put "+value+" & "+e.getTarget_file());
 								metsReplacements.put(value, e.getTarget_file());
-								logger.debug("added to metsReplacements");
 							}
 						}
 					}
 				}
 			}
-			System.out.println("Updates of xml path in EAD file");
 			logger.debug("Planned mets replacements: {}", metsReplacements);
 			updatePathsInFile(pkg, repName, metadataFilePath, xPathPath, metsReplacements); // Updates of xml path in EAD file	
 			
@@ -231,9 +245,6 @@ public class UpdateMetadataAction extends AbstractAction {
 			throw new UserException(UserExceptionId.REPLACE_URLS_IN_METADATA_ERROR,
 					"Could not replace file URLs in XML metadata.", metadataFilePath, err);
 		}
-		
-//		System.out.println("expectedReplacements: "+expectedReplacements);
-//		System.out.println("actualReplacements: "+actualReplacements);
 		
 		if (expectedReplacements!=actualReplacements) {
 			throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,
@@ -283,11 +294,15 @@ public class UpdateMetadataAction extends AbstractAction {
 			if (!"CONVERT".equals(e.getType())) continue;
 			
 			DAFile targetFile = e.getTarget_file();
-			
 			if (!targetFile.getRep_name().equals(repName)) continue;
 			DAFile sourceFile = e.getSource_file();
-//			sourceFile.setMimeType(mimeType);
+//			MIMETYPE
+			String sourceMT = getMtds().detectMimeType(sourceFile);
+			targetFile.setMimeType(getMtds().detectMimeType(targetFile));
+			
 			replacements.put(sourceFile.getRelative_path(), targetFile);
+//			MIMETYPE temporary put the same targetFile again! The goal is to have just two DAFiles in the HashMap (replacements.put(sourceFile, targetFile))
+			replacements.put(sourceMT, targetFile);
 		}
 		
 		logger.debug("Planned replacements: {}", replacements);
@@ -341,50 +356,6 @@ public class UpdateMetadataAction extends AbstractAction {
 		return metadataFileName;
 	}
 	
-	private int updateMimeTypeInMetsFile(
-			Document doc,
-			String metadataFilePath,
-			Map<String,String> mimeTypeReplacements
-			) {
-		
-		logger.debug("Checking file for mime types to replace: "+metadataFilePath);
-		
-		Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
-		int entitiesReplaced = 0;
-		
-//		find new mime type to replace
-		
-		String currentMimeType = 
-				doc.getRootElement()
-					.getChild("fileSec", METS_NS)
-					.getChild("fileGrp", METS_NS)
-					.getChild("file", METS_NS)
-					.getAttributeValue("MIMETYPE");
-		System.out.println("currentMimeType: "+currentMimeType);
-			
-//		remove mime type attribute
-		doc.getRootElement()
-		.getChild("fileSec", METS_NS)
-		.getChild("fileGrp", METS_NS)
-		.getChild("file", METS_NS)
-		.removeAttribute("MIMETYPE");
-		
-		String newMimeType = mimeTypeReplacements.get(currentMimeType);
-		System.out.println("newMimeType: "+newMimeType);
-
-//		add new mime type attribute 
-		Element e = (Element) doc.getRootElement()
-				.getChild("fileSec", METS_NS)
-				.getChild("fileGrp", METS_NS)
-				.getChild("file", METS_NS);
-		e.setAttribute("MIMETYPE", newMimeType);
-		
-		System.out.println("Replaced mime type to "+newMimeType);
-
-		return entitiesReplaced;
-	}
-
-	
 	/**
 	 * Update paths in file.
 	 *
@@ -424,14 +395,22 @@ public class UpdateMetadataAction extends AbstractAction {
 			List allNodes = xPath.selectNodes(doc);
 			List nodes = new ArrayList<Object>();
 			for(Object i: allNodes) {
-				System.out.println("All nodes: "+i);
 				try {
+//					METS
 					Element element = (Element) i;
-					System.out.println(element.getNamespacePrefix());
-					Attribute attr = element.getChild("FLocat", Namespace.getNamespace("http://www.loc.gov/METS/")).getAttribute("href", Namespace.getNamespace("http://www.w3.org/1999/xlink"));
-					System.out.println("Attribute value: "+attr.getValue());
-					nodes.add(attr);
+					try {
+						Attribute attr = element.getChild("FLocat", METS_NS).getAttribute("href", XLINK_NS);
+						nodes.add(attr);
+					} catch (Exception e) {
+					}
+					try {
+						Attribute attrMT = element.getAttribute("MIMETYPE");
+						nodes.add(attrMT);
+					} catch (Exception e) {
+					}
 				} catch (Exception e) {
+//					EAD 
+					nodes = allNodes;
 				}
 			}
 			
@@ -440,31 +419,24 @@ public class UpdateMetadataAction extends AbstractAction {
 				if (node instanceof Attribute) {
 					Attribute attr = (Attribute) node;
 					String value = attr.getValue();
+					String targetValue = null;
 					if (replacements.containsKey(value)) {	
-						String targetURL = null;
-//						replacements for LZA
-						if(absUrlPrefix==null) {
-							System.out.println("replacements for LZA");
-							targetURL = replacements.get(value).getRelative_path();
+						if(attr.getName().equals("MIMETYPE")) {
+							targetValue = replacements.get(value).getMimeType();
 						} 
-//						replacements for presentation
 						else {
-							System.out.println("replacements for presentation");
-							targetURL = absUrlPrefix + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
+//							replacements for LZA
+							if(absUrlPrefix==null) {
+								targetValue = replacements.get(value).getRelative_path();
+							} 
+//							replacements for presentation
+							else {
+								targetValue = absUrlPrefix + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
+							}
+							entitiesReplaced++;
 						}
-						logger.debug("-- Replacing attribute \"{}\" with \"{}\"", attr.getValue(),targetURL);
-						attr.setValue(targetURL);
-						entitiesReplaced++;
-						
-//						if(metadataFilePath.contains("mets")) {
-//							System.out.println("Mets document found! Replace MIMETYPE...");
-//							try {
-//								updateMimeTypeInMetsFile(doc, metadataFilePath, replacements.get(1));
-//							} catch (Exception err) {
-//								throw new UserException(UserExceptionId.REPLACE_URLS_IN_METADATA_ERROR,
-//										"Could not replace file MIMETYPE in XML metadata.", metadataFilePath, err);
-//							}
-//						}
+						logger.debug("-- Replacing attribute \"{}\" with \"{}\"", attr.getValue(),targetValue);
+						attr.setValue(targetValue);
 					}
 				} else if (node instanceof Element) { // does this block get used really?
 					Element elem = (Element) node;
@@ -500,7 +472,6 @@ public class UpdateMetadataAction extends AbstractAction {
 	 */
 	private void copyDCdatastreamFromMetadata(String packageType,
 			String metadataFile) {
-		System.out.println("copyDCdatastreamFromMetadata...");
 		if (packageType != null && metadataFile != null) {
 			String xsltFile = getDcMappings().get(packageType);
 			if (xsltFile == null) {
@@ -870,6 +841,14 @@ public class UpdateMetadataAction extends AbstractAction {
 	 */
 	public void setNamespaces(Map<String,String> namespaces) {
 		this.namespaces = namespaces;
+	}
+
+	public MimeTypeDetectionService getMtds() {
+		return mtds;
+	}
+
+	public void setMtds(MimeTypeDetectionService mtds) {
+		this.mtds = mtds;
 	}
 
 }
