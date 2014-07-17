@@ -107,7 +107,7 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 		job.setMetadata_file("EAD_Export.XML");
 
 		HashMap<String,String> xpaths = new HashMap<String,String>();
-		xpaths.put("METS", "//mets:FLocat/@xlink:href");
+		xpaths.put("METS", "//mets:file");
 		xpaths.put("EAD", "//daoloc/@href");
 		action.setXpathsToUrls(xpaths);
 		HashMap<String, String> nsMap = new HashMap<String,String>();
