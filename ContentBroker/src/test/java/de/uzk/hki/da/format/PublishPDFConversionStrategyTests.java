@@ -43,7 +43,7 @@ import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
-import de.uzk.hki.da.utils.TestFolders;
+import de.uzk.hki.da.utils.TestConstants;
 
 
 /**
@@ -51,7 +51,7 @@ import de.uzk.hki.da.utils.TestFolders;
  */
 public class PublishPDFConversionStrategyTests {
 	
-	Path workAreaRootPath= Path.make(TestFolders.TEST_ROOT_FORMAT,"PublishPDFConversionStrategyTests");
+	Path workAreaRootPath= Path.make(TestConstants.TEST_ROOT_FORMAT,"PublishPDFConversionStrategyTests");
 	
 	/** The data path. */
 	String dataPath=workAreaRootPath+"work/TEST/1/data/";

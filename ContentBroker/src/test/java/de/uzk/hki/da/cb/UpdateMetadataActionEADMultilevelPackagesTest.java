@@ -103,8 +103,8 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 		job.setObject(object); 
 		job.setId(1);
 		
-		job.setPackage_type("EAD");
-		job.setMetadata_file("EAD_Export.XML");
+		object.setPackage_type("EAD");
+		object.setMetadata_file("EAD_Export.XML");
 
 		HashMap<String,String> xpaths = new HashMap<String,String>();
 		xpaths.put("METS", "//mets:file");

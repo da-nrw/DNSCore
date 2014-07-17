@@ -42,7 +42,7 @@ import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
-import de.uzk.hki.da.utils.TestFolders;
+import de.uzk.hki.da.utils.TestConstants;
 
 
 /**
@@ -52,7 +52,7 @@ import de.uzk.hki.da.utils.TestFolders;
  */
 public class PdfConversionStrategyTest {
 
-	Path workAreaRootPath=Path.make(TestFolders.TEST_ROOT_FORMAT,"PdfConversionStrategyTests");
+	Path workAreaRootPath=Path.make(TestConstants.TEST_ROOT_FORMAT,"PdfConversionStrategyTests");
 	
 	/** The cs. */
 	PdfConversionStrategy cs = new PdfConversionStrategy();

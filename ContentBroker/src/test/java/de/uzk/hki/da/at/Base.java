@@ -269,10 +269,14 @@ public class Base {
 	}
 	
 
+	protected void createObjectAndJob(String name,String status) throws IOException{
+		createObjectAndJob(name,status,null,null);
+	}
+	
 	/**
 	 * @throws IOException 
 	 */
-	protected void createObjectAndJob(String name, String status) throws IOException{
+	protected void createObjectAndJob(String name, String status,String packageType,String metadataFile) throws IOException{
 		gridFacade.put(
 				new File("src/test/resources/at/"+name+".pack_1.tar"),
 				"TEST/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
@@ -288,6 +292,8 @@ public class Base {
 		object.setOrig_name(name);
 		
 		object.setContractor(contractor);
+		object.setMetadata_file(metadataFile);
+		object.setPackage_type(packageType);
 		object.setObject_state(100);
 		object.setPublished_flag(0);
 		object.setDdbExclusion(false);

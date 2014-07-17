@@ -24,8 +24,10 @@ import java.io.File;
 /**
  * @author Daniel M. de Oliveira
  */
-public class Files {
+public class FilesAndConstants {
 
-	public static File XLINK_XSD = new File("src/main/xsd/xlink.xsd");
-	public static File PREMIS_XSD = new File("src/main/xsd/premis.xsd");
+	public static final File XLINK_XSD = new File("src/main/xsd/xlink.xsd");
+	public static final File PREMIS_XSD = new File("src/main/xsd/premis.xsd");
+	public static final String ERROR_ROLLBACK_NOT_IMPLEMENTED = "rollback not implemented yet.";
+	public static final String ERROR_NOTCONFIGURED = " not configured properly.";
 }

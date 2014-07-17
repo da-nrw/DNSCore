@@ -91,11 +91,12 @@ public class ScanAction extends AbstractAction{
 	@Override
 	boolean implementation() throws IOException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
-		if (formatScanService==null) throw new ConfigurationException("formatScanService not set");
+//		if (formatScanService==null) throw new ConfigurationException("formatScanService not set");
 		if (preservationSystem==null) // So we can prevent the preservationSystem to be instantiated in unit tests.
 			preservationSystem = new PreservationSystem(dao);
 		
-		List<DAFile> filesArchival = formatScanService.identify(object.getLatestPackage().getFiles());
+//		List<DAFile> filesArchival = formatScanService.identify(object.getLatestPackage().getFiles());
+		List<DAFile> filesArchival = object.getLatestPackage().getFiles();
 		
 		String repPath = object.getDataPath() +"/"+ job.getRep_name();
 		Object premisObject = parsePremisToMetadata(repPath+"a");
@@ -108,33 +109,10 @@ public class ScanAction extends AbstractAction{
 		else
 			logger.info("No migration rights granted. No files will be converted for archival storage.");
 		
-		detectPackageTypeAndStoreInCommunicator();
 		return true;
 	}
 
 
-	
-	
-	
-	
-	/**
-	 * @author Sebastian Cuy
-	 */
-	private void detectPackageTypeAndStoreInCommunicator(){
-		PackageTypeDetectionService ptds = new PackageTypeDetectionService(getObject().getLatestPackage());
-		String packageType = ptds.getPackageType();
-		String metadataFile = ptds.getMetadataFile();
-		if (packageType == null || metadataFile == null) {
-			logger.warn("Could not determine package type. ");
-		} else {
-			
-			job.setPackage_type(packageType);
-			job.setMetadata_file(metadataFile);
-		}
-	}
-	
-	
-	
 	
 	
 

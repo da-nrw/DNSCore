@@ -36,7 +36,9 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.format.FormatScanService;
 import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.RetrievePackagesHelper;
 import de.uzk.hki.da.utils.Path;
@@ -53,6 +55,8 @@ public class RestructureAction extends AbstractAction{
 	
 	static final Logger logger = LoggerFactory.getLogger(RestructureAction.class);
 
+	private String sidecarExtensions="";	
+	private FormatScanService formatScanService;
 	private IngestGate ingestGate;
 	private List<IOFileFilter> unwantedFilesFilters;
 	private GridFacade gridRoot;
@@ -61,6 +65,7 @@ public class RestructureAction extends AbstractAction{
 	boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException {
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
+		if (getFormatScanService()==null) throw new ConfigurationException("formatScanService not set");
 		
 		deleteUnwantedFiles(object.getPath().toFile()); // unwanted content can be configured in beans-actions.xml
 		
@@ -68,7 +73,7 @@ public class RestructureAction extends AbstractAction{
 		try {
 			repName = transduceDateFolderContentsToNewRep(object.getPath().toString());
 		} catch (IOException e) {		
-			throw new RuntimeException("problems during creating new representation");
+			throw new RuntimeException("problems during creating new representation",e);
 		}
 		object.getLatestPackage().scanRepRecursively(repName+"a");
 		logger.debug("REPNAME: " + repName);
@@ -100,6 +105,13 @@ public class RestructureAction extends AbstractAction{
 			}
 		}
 		
+		
+		object.reattach();
+		logger.debug("scanning files with format identifier(s)");
+		List<DAFile> scannedFiles = formatScanService.identify(object.getNewestFilesFromAllRepresentations(sidecarExtensions));
+		for (DAFile f:scannedFiles){
+			logger.debug(f+":"+f.getFormatPUID());
+		}
 		return true;
 	}
 
@@ -187,5 +199,21 @@ public class RestructureAction extends AbstractAction{
 	 */
 	public void setUnwantedFilesFilters(List<IOFileFilter> unwantedFilesFilters) {
 		this.unwantedFilesFilters = unwantedFilesFilters;
+	}
+
+	public FormatScanService getFormatScanService() {
+		return formatScanService;
+	}
+
+	public void setFormatScanService(FormatScanService formatScanService) {
+		this.formatScanService = formatScanService;
+	}
+
+	public String getSidecarExtensions() {
+		return sidecarExtensions;
+	}
+
+	public void setSidecarExtensions(String sidecarExtensions) {
+		this.sidecarExtensions = sidecarExtensions;
 	}
 }

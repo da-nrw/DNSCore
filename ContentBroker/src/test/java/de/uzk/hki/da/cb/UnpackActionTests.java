@@ -37,7 +37,7 @@ import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.utils.Files;
+import de.uzk.hki.da.utils.FilesAndConstants;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
@@ -49,6 +49,7 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class UnpackActionTests {
 
+	private static final String NUM_EXPECTED_ERRORS = "2";
 	private static final String SIDECAR_EXTENSIONS = "xmp";
 	private static final String INGEST = "ingest";
 	private static final String IDENTIFIER = "identifier";
@@ -75,8 +76,8 @@ public class UnpackActionTests {
 	public void setUp() throws IOException{
 
 		new File(CONF).mkdir();
-		FileUtils.copyFileToDirectory(Files.PREMIS_XSD, new File(CONF));
-		FileUtils.copyFileToDirectory(Files.XLINK_XSD, new File(CONF));
+		FileUtils.copyFileToDirectory(FilesAndConstants.PREMIS_XSD, new File(CONF));
+		FileUtils.copyFileToDirectory(FilesAndConstants.XLINK_XSD, new File(CONF));
 		
 		o = TESTHelper.setUpObject(IDENTIFIER, new RelativePath(workAreaRootPath), new RelativePath(workAreaRootPath,INGEST));
 		action.setLocalNode(o.getTransientNodeRef());
@@ -142,7 +143,7 @@ public class UnpackActionTests {
 		}
 		catch(UserException e){
 			System.out.println(e.getMessage());
-			if (!e.getMessage().endsWith("2")) fail();
+			if (!e.getMessage().endsWith(NUM_EXPECTED_ERRORS)) fail();
 		}
 	}
 	

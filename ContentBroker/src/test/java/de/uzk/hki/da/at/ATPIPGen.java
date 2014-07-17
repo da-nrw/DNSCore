@@ -67,9 +67,11 @@ public class ATPIPGen extends Base{
 	public void testUpdateUrls() throws InterruptedException, IOException, JDOMException, RepositoryException{
 		
 		String name = "UpdateUrls";
-		createObjectAndJob("ATPIPGen"+name,"700");
+		createObjectAndJob("ATPIPGen"+name,"700","METS","mets.xml");
+
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
+		
 		
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));

@@ -89,6 +89,10 @@ public class Object {
 	/** The date_modified. */
 	private String date_modified;
 	
+	private String package_type;
+	
+	private String metadata_file;
+	
 	/** The zone. */
 	private String zone;
 	
@@ -909,5 +913,21 @@ public class Object {
 			p.setTransientBackRefToObject(this);
 			p.reattachPaths();
 		}
+	}
+
+	public String getPackage_type() {
+		return package_type;
+	}
+
+	public void setPackage_type(String package_type) {
+		this.package_type = package_type;
+	}
+
+	public String getMetadata_file() {
+		return metadata_file;
+	}
+
+	public void setMetadata_file(String metadata_file) {
+		this.metadata_file = metadata_file;
 	}
 }

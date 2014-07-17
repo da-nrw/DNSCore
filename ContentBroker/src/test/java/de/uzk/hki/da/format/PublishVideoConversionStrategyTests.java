@@ -38,7 +38,7 @@ import de.uzk.hki.da.service.XPathUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
-import de.uzk.hki.da.utils.TestFolders;
+import de.uzk.hki.da.utils.TestConstants;
 
 
 /**
@@ -48,7 +48,7 @@ import de.uzk.hki.da.utils.TestFolders;
  */
 public class PublishVideoConversionStrategyTests {
 
-	Path basePath = Path.make(TestFolders.TEST_ROOT_FORMAT,"PublishVideoConversionStrategyTests");
+	Path basePath = Path.make(TestConstants.TEST_ROOT_FORMAT,"PublishVideoConversionStrategyTests");
 	
 	/**
 	 * Tear down.

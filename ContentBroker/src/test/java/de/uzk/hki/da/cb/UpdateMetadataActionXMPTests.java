@@ -148,8 +148,8 @@ public class UpdateMetadataActionXMPTests {
 		action.setJob(job);
 		action.setRepNames(new String[]{"dip/public", "dip/institution"});
 		
-		job.setMetadata_file("XMP.rdf");
-		job.setPackage_type("XMP");
+		obj.setMetadata_file("XMP.rdf");
+		obj.setPackage_type("XMP");
 		
 		Map<String, String> dcMappings = new HashMap<String,String>();
 		dcMappings.put("XMP", "conf/xslt/dc/xmp_to_dc.xsl");

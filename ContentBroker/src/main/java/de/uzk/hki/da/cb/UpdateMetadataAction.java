@@ -90,8 +90,8 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		if (job==null) throw new ConfigurationException("job not set");
 		
-		String packageType = job.getPackage_type();
-		String metadataFileName = job.getMetadata_file();
+		String packageType = object.getPackage_type();
+		String metadataFileName = object.getMetadata_file();
 		
 		if (packageType == null || metadataFileName == null) {
 			logger.warn("Could not determine package type. No metadata to update.");
@@ -331,7 +331,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			
 			logger.debug("Copied metadata file \"{}\" to \"{}\"", srcMetadataFile.toString(), destMetadataFile);
 			
-			job.setMetadata_file(metadataFileName);
+			object.setMetadata_file(metadataFileName);
 			
 			// copy METS-Files if present in EAD-package
 			if ("EAD".equals(packageType)) {
