@@ -45,10 +45,13 @@ import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.utils.TC;
 import de.uzk.hki.da.utils.Utilities;
 
 public class Base {
 
+	private static final int wait_interval=2000; // in ms
+	
 	protected Path testDataRootPath = new RelativePath("src/test/resources/at/");
 	protected Node localNode;
 	protected GridFacade gridFacade;
@@ -104,6 +107,43 @@ public class Base {
 				new FileSystemXmlApplicationContext("conf/beans.xml");
 		repositoryFacade = (RepositoryFacade) context.getBean(repImplBeanName);
 		context.close();
+	}
+	
+	
+	
+	/**
+	 * Checking the database in regular intervals for a job in an error state ending with errorStatusLastDigit.
+	 * 
+	 * @param originalName
+	 * @param errorStatusLastDigit
+	 * @param timeout wait timeout ms until you consider the test failed.
+	 * @return job if found job in error state
+	 * @throws RuntimeException to signal the test considered failed.
+	 * 
+	 * @author Daniel M. de Oliveira
+	 */
+	protected Job waitForJobToBeInErrorStatus(String originalName,String errorStatusLastDigit,int timeout) throws InterruptedException{
+		
+		int waited_ms_total=0;
+		while (true){
+			if (waited_ms_total>timeout) throw new RuntimeException("waited to long. test considered failed");
+			
+			Session session = HibernateUtil.openSession();
+			session.beginTransaction();
+			Job job = dao.getJob(session, originalName, TC.TEST);
+			session.close();
+			
+			if (job==null) continue;
+			
+			Thread.sleep(wait_interval);
+			waited_ms_total+=wait_interval;
+
+			System.out.println("waiting for job to be ready ... "+job.getStatus());
+			if (job.getStatus().endsWith(errorStatusLastDigit)){
+				System.out.println("ready");
+				return job;
+			}
+		}
 	}
 	
 	

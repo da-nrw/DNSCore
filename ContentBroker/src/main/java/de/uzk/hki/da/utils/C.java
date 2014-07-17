@@ -38,4 +38,7 @@ public class C {
 	public static final String METS = "METS";
 	public static final String LIDO_PUID = "danrw-fmt/4";
 	public static final String XMP_PUID = "danrw-fmt/3";
+	public static final String USER_ERROR_STATE_DIGIT="4";
+	public static final String ZIP = "zip";
+	public static final String TGZ = "tgz";
 }

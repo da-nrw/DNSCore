@@ -52,6 +52,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.Mail;
 import de.uzk.hki.da.service.UserExceptionManager;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -197,7 +198,7 @@ public abstract class AbstractAction implements Runnable {
 			
 		} catch (UserException e) {
 			logger.error(this.getClass().getName()+": UserException in action: ",e);
-			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "4";
+			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + C.USER_ERROR_STATE_DIGIT;
 			handleError(errorStatus);
 			createUserReport(e);
 			if (e.checkForAdminReport())

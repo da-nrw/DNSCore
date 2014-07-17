@@ -19,7 +19,7 @@
 
 package de.uzk.hki.da.at;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
@@ -29,8 +29,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.utils.TC;
 
 /**
  * Relates to AK-T/02 Ingest - Alternative Szenarien.
@@ -38,6 +39,14 @@ import de.uzk.hki.da.utils.RelativePath;
  *
  */
 public class ATUseCaseIngestValidationNotPassed extends Base{
+
+	private static final String AT_EINE_DATEI_GELOESCHT = "ATEineDatei_geloescht";
+	private static final String AT_DUPLICATE_METADATA_FILES = "ATDuplicateMetadataFiles";
+	private static final String AT_INVALID_PREMIS = "ATInvalidPremis";
+	private static final String AT_ERSTE_ZEILE_TAGMANIFEST1_ZEICHENGEAENDERT = "ATErsteZeile_tagmanifest1Zeichengeaendert";
+	private static final String AT_MANIFEST_MD5_2FILESGEAENDERT = "ATManifestMd5_2filesgeaendert";
+	private static final String YEAH = "yeah!";
+	private static final int timeout = 20000;
 
 	@Before
 	public void setUp() throws IOException{
@@ -51,52 +60,52 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 	}
 	
 	private Object ingestAndWaitForErrorState(String originalName,String errorState) throws IOException, InterruptedException{
-		return ingestAndWaitForErrorState(originalName, errorState, "tgz");
+		return ingestAndWaitForErrorState(originalName, errorState, C.TGZ);
 	}
 		
-	private Object ingestAndWaitForErrorState(String originalName,String errorState,String containerSuffix) throws IOException, InterruptedException{
+	private Object ingestAndWaitForErrorState(String originalName,String errorStateLastDigit,String containerSuffix) throws IOException, InterruptedException{
 		
 		if (!containerSuffix.isEmpty()) containerSuffix="."+containerSuffix;
 		
-		FileUtils.copyFileToDirectory(new RelativePath("src/test/resources/at/",originalName+containerSuffix).toFile(), 
-				Path.make(localNode.getIngestAreaRootPath(),"/TEST").toFile());
-		waitForJobToBeInStatus(originalName,errorState,2000);
+		FileUtils.copyFileToDirectory(Path.makeFile(TC.TEST_ROOT_AT,originalName+containerSuffix), 
+				Path.makeFile(localNode.getIngestAreaRootPath(),TC.TEST));
+		waitForJobToBeInErrorStatus(originalName,errorStateLastDigit,timeout);
 		return fetchObjectFromDB(originalName);
 	}
 	
 	@Test
 	public void testFirst_tagmanifest1ZeichenChanged() throws Exception{
 		
-		ingestAndWaitForErrorState("ATErsteZeile_tagmanifest1Zeichengeaendert", "114");
-		System.out.println("yeah!");
+		ingestAndWaitForErrorState(AT_ERSTE_ZEILE_TAGMANIFEST1_ZEICHENGEAENDERT, C.USER_ERROR_STATE_DIGIT);
+		System.out.println(YEAH);
 	}
 	
 	@Test
 	public void testManifestMd5_2filesChanged() throws Exception{
 		
-		ingestAndWaitForErrorState("ATManifestMd5_2filesgeaendert", "114");
-		System.out.println("yeah!");
+		ingestAndWaitForErrorState(AT_MANIFEST_MD5_2FILESGEAENDERT, C.USER_ERROR_STATE_DIGIT);
+		System.out.println(YEAH);
 	}
 	
 	@Test
 	public void testOneFileDeleted() throws Exception{
 		
-		ingestAndWaitForErrorState("ATEineDatei_geloescht", "114");
-		System.out.println("yeah!");
+		ingestAndWaitForErrorState(AT_EINE_DATEI_GELOESCHT, C.USER_ERROR_STATE_DIGIT);
+		System.out.println(YEAH);
 	}
 	
 	@Test
 	public void testInvalidPremis() throws Exception{
 		
-		ingestAndWaitForErrorState("ATInvalidPremis", "114","zip");
-		System.out.println("yeah!");
+		ingestAndWaitForErrorState(AT_INVALID_PREMIS, C.USER_ERROR_STATE_DIGIT,C.ZIP);
+		System.out.println(YEAH);
 	}
 	
 	@Test
 	public void testDuplicateMetadataFiles() throws IOException, InterruptedException{
 		
-		Object object = ingestAndWaitForErrorState("ATDuplicateMetadataFiles","134");
-		System.out.println("yeah!");
+		Object object = ingestAndWaitForErrorState(AT_DUPLICATE_METADATA_FILES,C.USER_ERROR_STATE_DIGIT);
+		System.out.println(YEAH);
 		
 		assertEquals(null,object.getPackage_type());
 		assertEquals(null,object.getMetadata_file());
@@ -104,8 +113,8 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 	
 	@Test
 	public void testDuplicateDocumentName() throws IOException, InterruptedException{
-		ingestAndWaitForErrorState("ATDuplicateDocumentName","114");
-		System.out.println("yeah!");
+		ingestAndWaitForErrorState("ATDuplicateDocumentName",C.USER_ERROR_STATE_DIGIT);
+		System.out.println(YEAH);
 	}
 	
 	
