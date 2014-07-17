@@ -37,7 +37,7 @@ import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.utils.FilesAndConstants;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
@@ -76,8 +76,8 @@ public class UnpackActionTests {
 	public void setUp() throws IOException{
 
 		new File(CONF).mkdir();
-		FileUtils.copyFileToDirectory(FilesAndConstants.PREMIS_XSD, new File(CONF));
-		FileUtils.copyFileToDirectory(FilesAndConstants.XLINK_XSD, new File(CONF));
+		FileUtils.copyFileToDirectory(C.PREMIS_XSD, new File(CONF));
+		FileUtils.copyFileToDirectory(C.XLINK_XSD, new File(CONF));
 		
 		o = TESTHelper.setUpObject(IDENTIFIER, new RelativePath(workAreaRootPath), new RelativePath(workAreaRootPath,INGEST));
 		action.setLocalNode(o.getTransientNodeRef());

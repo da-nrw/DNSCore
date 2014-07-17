@@ -3,6 +3,7 @@ package de.uzk.hki.da.core;
 import java.util.List;
 
 /**
+ * Should be thrown only from ConcreteAction.implementation() and from nowhere else!
  * 
  * @author Thomas Kleinke
  */
@@ -21,7 +22,8 @@ public class UserException extends RuntimeException {
 		WATERMARK_NO_OPACITY,
 		REPLACE_URLS_IN_METADATA_ERROR,
 		RETRIEVAL_ERROR,
-		DUPLICATE_DOCUMENT_NAMES
+		DUPLICATE_DOCUMENT_NAMES,
+		DUPLICATE_METADATA_FILE
 	};
 	
 	private static final long serialVersionUID = -6346016039624940492L;
