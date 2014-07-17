@@ -208,7 +208,7 @@ public class UpdateMetadataActionTests {
 		action.setDao(dao);
 		
 		HashMap<String,String> xpaths = new HashMap<String,String>();
-		xpaths.put("METS", "//mets:FLocat/@xlink:href");
+		xpaths.put("METS", "//mets:file");
 		action.setXpathsToUrls(xpaths);
 		
 		HashMap<String, String> nsMap = new HashMap<String,String>();

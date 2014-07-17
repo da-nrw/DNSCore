@@ -38,8 +38,8 @@
   	</util:map>
   	
   	<util:map id="updateMetadataXpathsForUrls">
-  		<entry key="METS" value="//mets:FLocat/@xlink:href"/>
-<!-- 		<entry key="METS" value="//mets:file"/> --> 
+<!--   		<entry key="METS" value="//mets:FLocat/@xlink:href"/> -->
+		<entry key="METS" value="//mets:file"/> 
   		<entry key="EAD" value="//daoloc/@href"/>
   		<entry key="XMP" value="//rdf:Description/@rdf:about"/>
   		<entry key="LIDO" value="//lido:linkResource"/>

@@ -36,7 +36,7 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.TESTHelper;
-import de.uzk.hki.da.utils.TestConstants;
+import de.uzk.hki.da.utils.TC;
 
 /**
  * @author Daniel M. de Oliveira
@@ -50,7 +50,7 @@ public class ValidateMetadataActionTests {
 	private static final String VDA03_XML = "vda03.xml";
 	private static final String METS_2_99_XML = "mets_2_99.xml";
 	private static final String IDENTIFIER = "identifier";
-	private static final Path WORK_AREA_ROOT = Path.make(TestConstants.TEST_ROOT_CB,"ValidateMetadataActionTests");
+	private static final Path WORK_AREA_ROOT = Path.make(TC.TEST_ROOT_CB,"ValidateMetadataActionTests");
 	private Object object;
 	ValidateMetadataAction action = new ValidateMetadataAction();
 

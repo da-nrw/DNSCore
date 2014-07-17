@@ -1,6 +1,7 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,17 +15,22 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uzk.hki.da.grid.FakeDistributedConversionAdapter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.service.MimeTypeDetectionService;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
 
 public class UpdateMetadataActionEADMultilevelPackagesTest {
+	
+	private static MimeTypeDetectionService mtds;
 	
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
@@ -38,6 +44,11 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 	private Object object;
 	private Boolean isTest;
 	
+	
+	@BeforeClass
+	public static void mockDca() {
+		mtds = mock(MimeTypeDetectionService.class);
+	}
 	
 	@Before
 	public void setUp() throws IOException{
@@ -107,7 +118,7 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 		object.setMetadata_file("EAD_Export.XML");
 
 		HashMap<String,String> xpaths = new HashMap<String,String>();
-		xpaths.put("METS", "//mets:FLocat/@xlink:href");
+		xpaths.put("METS", "//mets:file");
 		xpaths.put("EAD", "//daoloc/@href");
 		action.setXpathsToUrls(xpaths);
 		HashMap<String, String> nsMap = new HashMap<String,String>();

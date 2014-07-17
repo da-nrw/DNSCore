@@ -28,7 +28,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.format.DocxConversionStrategy;
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.TestConstants;
+import de.uzk.hki.da.utils.TC;
 
 
 
@@ -42,7 +42,7 @@ import de.uzk.hki.da.utils.TestConstants;
 public class CTDocxConversionStrategyTest {
 	
 	/** The base path. */
-	Path basePath=Path.make(TestConstants.TEST_ROOT_FORMAT,"DocxConversionStrategyTests");
+	Path basePath=Path.make(TC.TEST_ROOT_FORMAT,"DocxConversionStrategyTests");
 	
 	/** The cs. */
 	DocxConversionStrategy cs = new DocxConversionStrategy();

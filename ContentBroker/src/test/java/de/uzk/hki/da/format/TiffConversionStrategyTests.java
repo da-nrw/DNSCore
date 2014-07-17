@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +37,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
-import de.uzk.hki.da.utils.TestConstants;
+import de.uzk.hki.da.utils.TC;
 
 
 /**
@@ -44,25 +45,32 @@ import de.uzk.hki.da.utils.TestConstants;
  */
 public class TiffConversionStrategyTests {
 	
-	Path workAreaRootPath=Path.make(TestConstants.TEST_ROOT_FORMAT,"TiffConversionStrategyTests");
+	private static final String TIFF_CONVERSION_STRATEGY_TESTS = "TiffConversionStrategyTests";
+
+	Path workAreaRootPath=Path.make(TC.TEST_ROOT_FORMAT,TIFF_CONVERSION_STRATEGY_TESTS);
+	Path contractorFolder=Path.make(workAreaRootPath,"work",TC.TEST);
 	
-	/** The cs. */
 	TiffConversionStrategy cs = new TiffConversionStrategy();
 	
-	/** The o. */
 	private Object o;
 
-	
-	/**
-	 * Sets the up.
-	 */
 	@Before
 	public void setUp(){
 		
 		o = TESTHelper.setUpObject("1", new RelativePath(workAreaRootPath));
 		cs.setObject(o);
 		o.reattach();
+		Path.makeFile(contractorFolder,"1/data","rep+b").mkdirs();
 	}
+
+	@After
+	public void tearDown() throws IOException {
+		Path.makeFile(contractorFolder,"1/data/rep+b/CCITT_1.TIF").delete();
+		Path.makeFile(contractorFolder,"1/data/rep+b/CCITT_1_UNCOMPRESSED.TIF").delete();
+		FileUtils.deleteQuietly(Path.makeFile(contractorFolder,"1/data/rep+b"));
+		org.apache.commons.io.FileUtils.deleteDirectory(Path.makeFile(contractorFolder,"/1/data/rep+b/subfolder"));
+	}
+	
 	
 	/**
 	 * Test subfolder creation.
@@ -151,19 +159,6 @@ public class TiffConversionStrategyTests {
 		
 	}
 	
-	
-	/**
-	 * Cleanup.
-	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	@After
-	public void cleanup() throws IOException {
-		new File(workAreaRootPath + "work/TEST/1/data/rep+b/CCITT_1.TIF").delete();
-		new File(workAreaRootPath + "work/TEST/1/data/rep+b/CCITT_1_UNCOMPRESSED.TIF").delete();
-		new File(workAreaRootPath + "work/TEST/1/data/rep+b/0001_L.TIF").delete();
-		org.apache.commons.io.FileUtils.deleteDirectory(new File(workAreaRootPath + "work/TEST/1/data/rep+b/subfolder"));
-	}
 	
 
 

@@ -32,14 +32,14 @@ import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
-import de.uzk.hki.da.utils.TestConstants;
+import de.uzk.hki.da.utils.TC;
 
 /**
  * @author Daniel M. de Oliveira
  */
 public class FidoCLITest {
 
-	Path BASE_DIR = Path.make(TestConstants.TEST_ROOT_FORMAT,"FidoCLITest");
+	Path BASE_DIR = Path.make(TC.TEST_ROOT_FORMAT,"FidoCLITest");
 	
 	@Before
 	public void setUp() throws IOException{

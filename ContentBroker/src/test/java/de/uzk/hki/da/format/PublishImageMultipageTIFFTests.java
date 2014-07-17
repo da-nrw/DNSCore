@@ -22,11 +22,11 @@ import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
-import de.uzk.hki.da.utils.TestConstants;
+import de.uzk.hki.da.utils.TC;
 
 public class PublishImageMultipageTIFFTests {
 
-	Path workAreaRootPathPath= Path.make(TestConstants.TEST_ROOT_FORMAT,"PublishImageMultipageTiffTests");
+	Path workAreaRootPathPath= Path.make(TC.TEST_ROOT_FORMAT,"PublishImageMultipageTiffTests");
 	
 	@Before
 	public void setUp() throws Exception {

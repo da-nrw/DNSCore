@@ -420,7 +420,21 @@ public class UpdateMetadataAction extends AbstractAction {
 				xPath.addNamespace(prefix, namespaces.get(prefix));
 			}
 			@SuppressWarnings("rawtypes")
-			List nodes = xPath.selectNodes(doc);
+//			List nodes = xPath.selectNodes(doc);
+			List allNodes = xPath.selectNodes(doc);
+			List nodes = new ArrayList<Object>();
+			for(Object i: allNodes) {
+				System.out.println("All nodes: "+i);
+				try {
+					Element element = (Element) i;
+					System.out.println(element.getNamespacePrefix());
+					Attribute attr = element.getChild("FLocat", Namespace.getNamespace("http://www.loc.gov/METS/")).getAttribute("href", Namespace.getNamespace("http://www.w3.org/1999/xlink"));
+					System.out.println("Attribute value: "+attr.getValue());
+					nodes.add(attr);
+				} catch (Exception e) {
+				}
+			}
+			
 			int entitiesReplaced = 0;
 			for (Object node : nodes) {
 				if (node instanceof Attribute) {
