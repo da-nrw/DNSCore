@@ -41,7 +41,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
-import de.uzk.hki.da.utils.TestConstants;
+import de.uzk.hki.da.utils.TC;
 
 
 /**
@@ -54,7 +54,7 @@ public class PublishXsltConversionStrategyTests {
 			LoggerFactory.getLogger(PublishXsltConversionStrategyTests.class);
 	
 	private final static Path workAreaRootPath = 
-			Path.make(TestConstants.TEST_ROOT_FORMAT,"XsltConversionStrategyTests");
+			Path.make(TC.TEST_ROOT_FORMAT,"XsltConversionStrategyTests");
 	
 	/** The routine. */
 	ConversionRoutine routine;

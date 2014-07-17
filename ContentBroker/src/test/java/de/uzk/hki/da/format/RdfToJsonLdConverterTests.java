@@ -30,7 +30,7 @@ import com.github.jsonldjava.utils.JSONUtils;
 
 import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.TestConstants;
+import de.uzk.hki.da.utils.TC;
 
 
 /**
@@ -38,7 +38,7 @@ import de.uzk.hki.da.utils.TestConstants;
  */
 public class RdfToJsonLdConverterTests {
 
-	private static final String BASE_DIR = Path.make(TestConstants.TEST_ROOT_FORMAT,"RdfToJsonLdConverterTests").toString();
+	private static final String BASE_DIR = Path.make(TC.TEST_ROOT_FORMAT,"RdfToJsonLdConverterTests").toString();
 	
 	/**
 	 * Test.

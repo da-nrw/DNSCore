@@ -45,7 +45,7 @@ import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.TESTHelper;
-import de.uzk.hki.da.utils.TestConstants;
+import de.uzk.hki.da.utils.TC;
 
 
 /**
@@ -55,7 +55,7 @@ import de.uzk.hki.da.utils.TestConstants;
  */
 public class PublishImageConversionStrategyTest {
 
-	Path workAreaRootPath = Path.make(TestConstants.TEST_ROOT_FORMAT,"PublishImageConversionStrategyTests");
+	Path workAreaRootPath = Path.make(TC.TEST_ROOT_FORMAT,"PublishImageConversionStrategyTests");
 	Path dataPath         = Path.make(workAreaRootPath,"work/TEST/123/data/");
 	
 	
@@ -275,7 +275,7 @@ public class PublishImageConversionStrategyTest {
 	 */
 	public void testWatermarkWithRealImage() throws FileNotFoundException {
 		
-		Document dom = XPathUtils.parseDom(TestConstants.TEST_ROOT_FORMAT+"/PublishImageConversionStrategyTests/premis.xml");
+		Document dom = XPathUtils.parseDom(TC.TEST_ROOT_FORMAT+"/PublishImageConversionStrategyTests/premis.xml");
 		if (dom==null){
 			throw new RuntimeException("Error while parsing premis.xml");
 		}

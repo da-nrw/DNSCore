@@ -65,13 +65,13 @@ public class ValidateMetadataAction extends AbstractAction {
 	}
 
 	/**
-	 * @throws UserException
+	 * @throws UserException If more than one metadata file was found.
 	 * @author Daniel M. de Oliveira 
 	 */
 	private void detect(Package pkg){
 		
-		if (getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).size()>2){
-			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"you have more than one EAD file in your package which is forbidden. package will not get processed.");
+		if (getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).size()>=2){
+			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate EAD");
 		}
 		if (getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).size()==1){
 			metadataFile=getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).get(0).getRelative_path();
@@ -79,8 +79,8 @@ public class ValidateMetadataAction extends AbstractAction {
 			return;
 		}
 		if (getFilesWithPUID(pkg.getFiles(), C.METS_PUID).size()>1){
-			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"you have more than one METS file in your package which is forbidden. package will not get processed.");
-		}
+			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate METS");
+		}  
 		if (getFilesWithPUID(pkg.getFiles(), C.METS_PUID).size()==1){
 			metadataFile=getFilesWithPUID(pkg.getFiles(), C.METS_PUID).get(0).getRelative_path();
 			packageType=C.METS;
@@ -105,6 +105,7 @@ public class ValidateMetadataAction extends AbstractAction {
 	
 	@Override
 	void rollback() throws Exception {
-		throw new NotImplementedException(C.ERROR_ROLLBACK_NOT_IMPLEMENTED);
+		object.setMetadata_file(null);
+		object.setPackage_type(null);
 	}
 }

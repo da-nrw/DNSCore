@@ -31,7 +31,6 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
-import de.uzk.hki.da.format.FormatScanService;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.model.ConversionInstruction;
@@ -57,52 +56,22 @@ import de.uzk.hki.da.model.PreservationSystem;
 public class ScanAction extends AbstractAction{
 	
 	static final Logger logger = LoggerFactory.getLogger(ScanAction.class);
-	private FormatScanService formatScanService;
 	private PreservationSystem preservationSystem;
 	private final ConversionInstructionBuilder ciB = new ConversionInstructionBuilder();
-	private String sidecarExtensions;
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
-	
-	public ScanAction(){}
-
-	
-	public FormatScanService getFormatScanService() {
-		return formatScanService;
-	}
-
-
-	public void setFormatScanService(FormatScanService formatScanService) {
-		this.formatScanService = formatScanService;
-	}
-
-
-	public void setSidecarExtensions(String sidecarExtensions) {
-		this.sidecarExtensions = sidecarExtensions;
-	}
-
-
-	public String getSidecarExtensions() {
-		return sidecarExtensions;
-	}
-
-
 	@Override
 	boolean implementation() throws IOException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
-//		if (formatScanService==null) throw new ConfigurationException("formatScanService not set");
 		if (preservationSystem==null) // So we can prevent the preservationSystem to be instantiated in unit tests.
 			preservationSystem = new PreservationSystem(dao);
-		
-//		List<DAFile> filesArchival = formatScanService.identify(object.getLatestPackage().getFiles());
-		List<DAFile> filesArchival = object.getLatestPackage().getFiles();
 		
 		String repPath = object.getDataPath() +"/"+ job.getRep_name();
 		Object premisObject = parsePremisToMetadata(repPath+"a");
 		
 		if (premisObject.grantsRight("MIGRATION"))
 		{
-			List<ConversionInstruction> cisArch = generateConversionInstructions(filesArchival);
+			List<ConversionInstruction> cisArch = generateConversionInstructions(object.getLatestPackage().getFiles());
 			job.getConversion_instructions().addAll(cisArch);
 		}
 		else
@@ -110,10 +79,6 @@ public class ScanAction extends AbstractAction{
 		
 		return true;
 	}
-
-
-	
-	
 
 	/**
 	 * @author Daniel M. de Oliveira

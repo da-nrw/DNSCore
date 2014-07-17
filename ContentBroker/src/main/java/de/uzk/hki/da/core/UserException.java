@@ -91,7 +91,7 @@ public class UserException extends RuntimeException {
 		}
 	}
 	
-	public UserExceptionId getId() {
+	public UserExceptionId getUserExceptionId() {
 		return id;
 	}
 	

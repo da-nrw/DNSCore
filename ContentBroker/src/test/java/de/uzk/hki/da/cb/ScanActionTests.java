@@ -34,7 +34,6 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.uzk.hki.da.format.FormatScanService;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Contractor;
@@ -113,7 +112,6 @@ public class ScanActionTests {
 		action.setDistributedConversionAdapter(mock (DistributedConversionAdapter.class));
 		action.setDao(mock ( CentralDatabaseDAO.class ));
 		action.setJob(job);
-		action.setSidecarExtensions("xmp");
 	}
 	
 	

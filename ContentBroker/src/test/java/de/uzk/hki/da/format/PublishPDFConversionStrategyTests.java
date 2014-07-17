@@ -29,6 +29,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.format.PublishPDFConversionStrategy;
@@ -43,7 +44,7 @@ import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
-import de.uzk.hki.da.utils.TestConstants;
+import de.uzk.hki.da.utils.TC;
 
 
 /**
@@ -51,10 +52,9 @@ import de.uzk.hki.da.utils.TestConstants;
  */
 public class PublishPDFConversionStrategyTests {
 	
-	Path workAreaRootPath= Path.make(TestConstants.TEST_ROOT_FORMAT,"PublishPDFConversionStrategyTests");
-	
-	/** The data path. */
-	String dataPath=workAreaRootPath+"work/TEST/1/data/";
+	Path workAreaRootPath= Path.make(TC.TEST_ROOT_FORMAT,"PublishPDFConversionStrategyTests");
+	Path dataPath = Path.make(workAreaRootPath,"work/TEST/1",TC.DATA);
+	Path dipPath = Path.make(dataPath,TC.DIP);
 	
 	/** The cs. */
 	PublishPDFConversionStrategy cs = new PublishPDFConversionStrategy();
@@ -64,16 +64,16 @@ public class PublishPDFConversionStrategyTests {
 	
 	/** The o. */
 	Object o;
+
 	
-	/**
-	 * Tear down.
-	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
+	@Before
+	public void setUp(){
+		dipPath.toFile().mkdirs();
+	}
+	
 	@After
 	public void tearDown() throws IOException {
-		if (new File(dataPath + "dip").exists())
-			FileUtils.deleteDirectory(new File(dataPath + "dip"));
+		FileUtils.deleteQuietly(dipPath.toFile());
 	}
 	
 	/**

@@ -38,7 +38,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.format.FormatScanService;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.ConversionRoutine;
@@ -54,22 +53,12 @@ import de.uzk.hki.da.service.DistributedConversionHelper;
  */
 public class SelectProcessingNodesTests {
 	
-	/** The format scan service facade. */
-	private FormatScanService formatScanServiceFacade;
-	
-	/** The scan. */
 	private ScanAction scan = new ScanAction();
 	
-	/** The vm1. */
 	Node vm1 = new Node("vm1","01-vm1");
-	
-	/** The vm2. */
 	Node vm2 = new Node("vm2","01-vm2");
-	
-	/** The vm3. */
 	Node vm3 = new Node("vm3","01-vm3");
 	
-	/** The dummy dao. */
 	private CentralDatabaseDAO dummyDao;
 	
 	
@@ -102,9 +91,6 @@ public class SelectProcessingNodesTests {
 	public void setUp() {
 		
 		prepareCentralDatabaseDAOInterfaceMock();
-		formatScanServiceFacade = new FormatScanService(dummyDao);
-		scan.setFormatScanService(formatScanServiceFacade);
-		
 	}
 
 

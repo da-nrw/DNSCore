@@ -46,9 +46,7 @@
 		<property name="startStatus" value="140" />
 		<property name="endStatus" value="150" />
 		<property name="name" value="IngestScanAction" />
-		<property name="formatScanService" ref="formatScanService" />
-		<property name="description" value="Format Scan Service" />
-		<property name="sidecarExtensions" value="${system.sidecar_extensions}" />
+		<property name="description" value="Format Scan Service" /> <!-- WTF?? -->
 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
 	</bean>
 	<bean id="IngestRegisterURNAction" class="de.uzk.hki.da.cb.RegisterURNAction" scope="prototype">

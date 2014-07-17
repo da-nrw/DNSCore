@@ -19,7 +19,7 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -38,14 +38,13 @@ import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.format.FormatScanService;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
-import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.TESTHelper;
-import de.uzk.hki.da.utils.TestConstants;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.TESTHelper;
+import de.uzk.hki.da.utils.TC;
 
 /**
  * @author Daniel M. de Oliveira
@@ -53,7 +52,7 @@ import de.uzk.hki.da.model.Object;
 public class RestructureActionTests {
 
 	private static final String IDENTIFIER = "identifier";
-	private static final Path WORK_AREA_ROOT = Path.make(TestConstants.TEST_ROOT_CB,"RestructureActionTests");
+	private static final Path WORK_AREA_ROOT = Path.make(TC.TEST_ROOT_CB,"RestructureActionTests");
 	private static final Path TEST_CONTRACTOR_WORK_FOLDER = Path.make(WORK_AREA_ROOT,"work","TEST");
 	private RestructureAction action;
 	private Job job;
@@ -97,8 +96,8 @@ public class RestructureActionTests {
 		
 		action.implementation();
 		
-		assertTrue(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,TestConstants.DATA,job.getRep_name()+"a").exists());
-		assertTrue(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,TestConstants.DATA,job.getRep_name()+"a","vda3.XML").exists());
+		assertTrue(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,TC.DATA,job.getRep_name()+"a").exists());
+		assertTrue(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,TC.DATA,job.getRep_name()+"a","vda3.XML").exists());
 	}
 	
 	@Test
