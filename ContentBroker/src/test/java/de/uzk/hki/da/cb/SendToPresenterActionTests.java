@@ -50,10 +50,12 @@ public class SendToPresenterActionTests {
 
 	private SendToPresenterAction action;
 	private DCReader dcReader;
+	private Object object;
 
 	@Before
 	public void setUp(){
-		Object object = TESTHelper.setUpObject("id1", new RelativePath("src/test/resources/cb/SendToPresenterActionTests"));
+		object = TESTHelper.setUpObject("id1", new RelativePath("src/test/resources/cb/SendToPresenterActionTests"));
+		object.setUrn("urn");
 		
 		action = new SendToPresenterAction();
 		action.setObject(object);
@@ -96,4 +98,20 @@ public class SendToPresenterActionTests {
 			fail();
 		}
 	}
+	
+	// happened during refactoring of atusecaseingestdelta
+	@Test 
+	public void testThrowErrorWhenTryingToExecuteWithoutURNSet(){
+		object.setUrn(null);
+		try {
+			action.implementation();
+			fail();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	
+	
+	
 }

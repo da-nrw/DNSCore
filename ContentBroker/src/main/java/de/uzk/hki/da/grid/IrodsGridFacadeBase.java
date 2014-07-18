@@ -88,7 +88,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 		if (gridfile.exists()) {
 			
 			if (!replicationIsSolelyOnCache(targetLogically))
-				throw new java.io.IOException("Grid File " +gridfile+" has already LZA Repls, do not try to put it again!");
+				throw new java.io.IOException("Grid File " +gridfile+" "+targetLogically+" has already LZA Repls, do not try to put it again!");
 			
 			if (MD5Checksum.getMD5checksumForLocalFile(file).equals(MD5Checksum.getMD5checksumForLocalFile(gridfile))){
 				// then the only thing left to do is to replicate again

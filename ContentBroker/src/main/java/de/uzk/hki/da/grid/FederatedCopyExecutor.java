@@ -21,6 +21,7 @@ package de.uzk.hki.da.grid;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -76,7 +77,7 @@ public class FederatedCopyExecutor extends Thread {
 	@Override
 	public void run() {
 		logger.trace("run....");
-		ArrayList<String> zp = sp.getDestinations();
+		List<String> zp = sp.getDestinations();
 		
 		for (String targetFed: zp) {
 			logger.info("federate to " + targetFed);

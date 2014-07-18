@@ -1,6 +1,7 @@
 package de.uzk.hki.da.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -18,7 +19,7 @@ public class StoragePolicy {
 		this.node = localnode;
 	}
 	
-	private  ArrayList<String>destinations;
+	private  List<String>destinations;
 	
 	public boolean isPolicyAchievable() {
 		if (destinations==null) return false;
@@ -40,7 +41,7 @@ public class StoragePolicy {
 	/**
 	 * @param destinations the destinations to set
 	 */
-	public void setDestinations(ArrayList<String> destinations) {
+	public void setDestinations(List<String> destinations) {
 		this.destinations = destinations;
 	}
 
@@ -48,7 +49,7 @@ public class StoragePolicy {
 	/**
 	 * @return the destinations
 	 */
-	public ArrayList<String> getDestinations() {
+	public List<String> getDestinations() {
 		return destinations;
 	}
 

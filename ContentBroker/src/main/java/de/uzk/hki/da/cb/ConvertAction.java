@@ -25,9 +25,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.format.ConverterService;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;

@@ -36,8 +36,6 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.metadata.DCReader;
@@ -46,6 +44,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
@@ -71,9 +70,11 @@ import de.uzk.hki.da.utils.XMLUtils;
 */
 public class SendToPresenterAction extends AbstractAction {
 
-	private static final String OWL_SAMEAS = "http://www.w3.org/2002/07/owl#sameAs";
+	private static final String OPEN_COLLECTION_URI = "info:fedora/collection:open";
+	private static final String CLOSED_COLLECTION_URI = "info:fedora/collection:closed";
+	private static final String IDENTIFIER = "identifier";
 	private static final String ddb = "ddb";
-	private static final String dc = "DC";
+	private static final String DC = "DC";
 	private static final String PURL_ORG_DC = "http://purl.org/dc/elements/1.1/";
 	private static final String ENCODING = "UTF-8";
 	private static final String OPENARCHIVES_OAI_IDENTIFIER = "http://www.openarchives.org/OAI/2.0/identifier";
@@ -116,6 +117,11 @@ public class SendToPresenterAction extends AbstractAction {
 			throw new ConfigurationException("fileFilter is not set");
 		if (testContractors == null)
 			throw new ConfigurationException("testContractors is not set");
+		
+		if (object.getUrn()==null||object.getUrn().isEmpty())
+			throw new RuntimeException("urn not set");
+		
+		
 
 		purgeObjectsIfExist();
 		buildMapWithOriginalFilenamesForLabeling();
@@ -266,7 +272,7 @@ public class SendToPresenterAction extends AbstractAction {
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc;
 		try {
-			InputStream in = repositoryFacade.retrieveFile(objectId, collection, dc);
+			InputStream in = repositoryFacade.retrieveFile(objectId, collection, DC);
 			
 			try{
 				in.reset();
@@ -278,31 +284,31 @@ public class SendToPresenterAction extends AbstractAction {
 		
 		try {
 			doc.getRootElement().addContent(
-					new Element("identifier",dc,PURL_ORG_DC)
+					new Element(IDENTIFIER,DC,PURL_ORG_DC)
 					.setText(urn));
 			doc.getRootElement().addContent(
-					new Element("identifier",dc,PURL_ORG_DC)
+					new Element(IDENTIFIER,DC,PURL_ORG_DC)
 					.setText(url));
 		} catch (Exception e) {
 			throw new RepositoryException("Failed to add identifiers to object in repository",e);
 		}
 		String content = new XMLOutputter().outputString(doc);
-		repositoryFacade.updateMetadataFile(objectId, collection, dc, content, dc+".xml", "text/xml");
+		repositoryFacade.updateMetadataFile(objectId, collection, DC, content, DC+".xml", "text/xml");
 		logger.info("Successfully added identifiers to DC datastream");
 		
 		// add RELS-EXT relationships
 		try {
 
 			// add urn as owl:sameAs
-			repositoryFacade.addRelationship(objectId, collection, OWL_SAMEAS, urn);
-			logger.debug("Added relationship: "+OWL_SAMEAS+" "+urn);
+			repositoryFacade.addRelationship(objectId, collection, C.OWL_SAMEAS, urn);
+			logger.debug("Added relationship: "+C.OWL_SAMEAS+" "+urn);
 			
 			// add collection membership
 			String collectionUri;
 			if (getClosedCollectionName().equals(collection)) {
-				collectionUri = "info:fedora/collection:closed";
+				collectionUri = CLOSED_COLLECTION_URI;
 			} else {
-				collectionUri = "info:fedora/collection:open";
+				collectionUri = OPEN_COLLECTION_URI;
 			}
 			repositoryFacade.addRelationship(objectId, collection, MEMBER_COLLECTION, collectionUri);
 			logger.debug("Added relationship: "+MEMBER_COLLECTION+" "+ collectionUri);
@@ -380,8 +386,8 @@ public class SendToPresenterAction extends AbstractAction {
 		String fileId = repositoryFacade.generateFileId(relPath);
 		
 		// special file IDs for metadata files
-		if (file.getName().equalsIgnoreCase(dc+".xml")) {
-			fileId = dc;
+		if (file.getName().equalsIgnoreCase(DC+".xml")) {
+			fileId = DC;
 			isMetadataFile = true;
 			mimeType = "text/xml";
 		} else if (file.getName().equalsIgnoreCase(packageType + ".xml") || file.getName().equalsIgnoreCase(packageType + ".rdf")) {

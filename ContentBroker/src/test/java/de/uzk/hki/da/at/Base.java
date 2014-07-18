@@ -58,6 +58,7 @@ public class Base {
 	protected RepositoryFacade repositoryFacade;
 	protected DistributedConversionAdapter distributedConversionAdapter;
 	protected CentralDatabaseDAO dao = new CentralDatabaseDAO();
+	protected Contractor testContractor;
 
 	
 	protected void setUpBase() throws IOException{
@@ -79,6 +80,12 @@ public class Base {
 		
 		instantiateRepository(properties.getProperty("cb.implementation.repository"));
 		if (repositoryFacade==null) throw new IllegalStateException("repositoryFacade could not be instantiated");
+
+		CentralDatabaseDAO centralDB = new CentralDatabaseDAO();
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		testContractor = centralDB.getContractor(session, "TEST");
+		session.close();
 	}
 	
 	/**
@@ -324,14 +331,13 @@ public class Base {
 		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		CentralDatabaseDAO centralDB = new CentralDatabaseDAO();
-		Contractor contractor = centralDB.getContractor(session, "TEST");
+		
 		Object object = new Object();
 		object.setUrn("");
 		object.setIdentifier("ID-"+name);
 		object.setOrig_name(name);
 		
-		object.setContractor(contractor);
+		object.setContractor(testContractor);
 		object.setMetadata_file(metadataFile);
 		object.setPackage_type(packageType);
 		object.setObject_state(100);

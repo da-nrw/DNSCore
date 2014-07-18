@@ -42,4 +42,5 @@ public class C {
 	public static final String USER_ERROR_STATE_DIGIT="4";
 	public static final String ZIP = "zip";
 	public static final String TGZ = "tgz";
+	public static final String OWL_SAMEAS = "http://www.w3.org/2002/07/owl#sameAs";
 }

@@ -31,9 +31,11 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.hibernate.classic.Session;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -42,7 +44,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.utils.TC;
 
 /**
  * @author Daniel M. de Oliveira
@@ -50,7 +59,11 @@ import de.uzk.hki.da.model.Object;
  */
 public class ATUseCaseIngestDelta extends Base {
 	
-	String originalName = "ATUseCaseIngestDelta";
+	private static final String originalName = "ATUseCaseIngestDelta";
+	private static final String identifier =   "ATUseCaseIngestDeltaIdentifier";
+	private static final String urn =   "urn:nbn:de:danrw:ATUseCaseIngestDeltaIdentifier";
+	private static final String containerName = originalName+"."+C.TGZ;
+	
 	Object object = null;
 
 	@Before
@@ -75,14 +88,39 @@ public class ATUseCaseIngestDelta extends Base {
 	@Test
 	public void testHappyPath() throws Exception{
 		
-		FileUtils.copyFile(new File("src/test/resources/at/"+originalName+"1.tgz"), 
-				new File(localNode.getIngestAreaRootPath()+"/TEST/"+originalName+".tgz"));
-		waitForJobsToFinish(originalName,500);
+		StoragePolicy sp = new StoragePolicy(localNode);
+		ArrayList<String> destinations = new ArrayList<String>();
+		destinations.add("ciArchiveResourceGroup");
+		sp.setDestinations(destinations);
+		sp.setMinNodes(1);
 		
-		Thread.sleep(60000); // to avoid newly generated repnames clashing with previous ones
+		// prepare database
+		gridFacade.put(Path.makeFile(TC.TEST_ROOT_AT,"ATUseCaseIngestDeltaIdentifier.pack_1.tar"), 
+				new RelativePath(TC.TEST,identifier,identifier+".pack_1.tar").toString(), sp);
 		
-		FileUtils.copyFile(new File("src/test/resources/at/"+originalName+"2.tgz"), 
-				new File(localNode.getIngestAreaRootPath()+"/TEST/"+originalName+".tgz"));
+		// put package
+		object = new Object();
+		object.setContractor(testContractor);
+		object.setInitial_node("localnode");
+		object.setIdentifier(identifier);
+		object.setUrn(urn);
+		object.setOrig_name(originalName);
+		Package pkg = new Package();
+		pkg.setName("1");
+		pkg.setContainerName(containerName);
+		object.getPackages().add(pkg);
+		
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.save(object);
+		session.getTransaction().commit();
+		session.close();
+		
+		// set object.
+		
+		FileUtils.copyFile(Path.makeFile(TC.TEST_ROOT_AT,originalName+"2.tgz"), 
+				Path.makeFile(localNode.getIngestAreaRootPath(),TC.TEST,containerName));
+		
 		waitForJobsToFinish(originalName,500);
 		
 		object = retrievePackage(originalName,"2");
@@ -139,7 +177,7 @@ public class ATUseCaseIngestDelta extends Base {
 			}				
 			
 			if (identifierText.equals(objectIdentifier + ".pack_1.tar")) {
-				assertThat(e.getChildText("originalName", ns)).isEqualTo("ATUseCaseIngestDelta.tgz");
+				assertThat(e.getChildText("originalName", ns)).isEqualTo("Delta1.tgz");
 				checkedObjects++;
 			}
 			
@@ -237,7 +275,7 @@ public class ATUseCaseIngestDelta extends Base {
 			
 			if (eventType.equals("INGEST")){
 				String ingestId = e.getChild("eventIdentifier", ns).getChildText("eventIdentifierValue", ns);
-				if (ingestId.equals(objectIdentifier + "+1")) { // the object id is different from our test object id because it was generated in the run for creating the test tar package
+				if (ingestId.equals("1-20140718220" + "+1")) { // the object id is different from our test object id because it was generated in the run for creating the test tar package
 					try {dateFormat.parse(e.getChild("eventDateTime", ns).getValue());} catch (ParseException ex) {	fail();	}	
 					assertThat(e.getChild("linkingAgentIdentifier", ns).getChildText("linkingAgentIdentifierValue", ns)).isEqualTo("TEST");
 					assertThat(e.getChild("linkingObjectIdentifier", ns).getChildText("linkingObjectIdentifierValue", ns)).isEqualTo(objectIdentifier + ".pack_1.tar");

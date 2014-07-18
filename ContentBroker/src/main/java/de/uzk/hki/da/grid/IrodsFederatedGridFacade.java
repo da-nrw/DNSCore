@@ -26,6 +26,7 @@ package de.uzk.hki.da.grid;
  */
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +72,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		irodsSystemConnector.connect();
 		
 		int i = 0;
-		ArrayList<String> zp = sp.getDestinations();
+		List<String> zp = sp.getDestinations();
 		for (String zone : zp){
 			if (irodsSystemConnector.fileExists("/"+ zone + gridPath));
 			i++;
@@ -89,7 +90,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 
 		int i = 0;
 		
-		ArrayList<String> zp = sp.getDestinations();
+		List<String> zp = sp.getDestinations();
 		for (String zone : zp){
 			try {
 				String cs = irodsSystemConnector.getChecksum("/"+ zone + gridPath);

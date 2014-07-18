@@ -83,14 +83,14 @@ ci)
 esac
 
 
-cd ../DAWeb
-./build.sh prod
-if [ "$?" = "1" ]
-then
-	echo there was an error in ./build.sh prod
-	exit 1
-fi 
-cd ../ContentBroker
+#cd ../DAWeb
+#./build.sh prod
+#if [ "$?" = "1" ]
+#then
+#	echo there was an error in ./build.sh prod
+#	exit 1
+#fi 
+#cd ../ContentBroker
 
 
 cd $CBTAR_SRC
