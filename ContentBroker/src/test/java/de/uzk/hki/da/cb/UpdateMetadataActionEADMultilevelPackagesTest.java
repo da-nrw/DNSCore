@@ -171,18 +171,23 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/43/data/b/mets_361/mets_2_32044.xml").toFile()));
 		assertEquals("http://data.danrw.de/file/43/renamed002.tif", getURL(doc));
+		assertEquals("URL", getLoctype(doc));
 		
 		Document doc3 = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/43/data/b/mets_361/mets_2_32045.xml").toFile()));
 		assertEquals("http://data.danrw.de/file/43/renamed003.tif", getURL(doc3));
+		assertEquals("URL", getLoctype(doc3));
 		
 		Document doc4 = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/43/data/b/mets_361/mets_2_32046.xml").toFile()));
 		assertEquals("http://data.danrw.de/file/43/renamed004.tif", getURL(doc4));
+		assertEquals("URL", getLoctype(doc4));
 		
 		Document doc5 = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/43/data/b/mets_361/mets_2_32047.xml").toFile()));
 		assertEquals("http://data.danrw.de/file/43/renamed005.tif", getURL(doc5));
+		assertEquals("URL", getLoctype(doc5));
 		
 		Document doc6 = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/43/data/b/mets_361/mets_2_32048.xml").toFile()));
 		assertEquals("http://data.danrw.de/file/43/renamed006.tif", getURL(doc6));
+		assertEquals("URL", getLoctype(doc6));
 	}
 	
 	private String getURL(Document doc){
@@ -195,12 +200,12 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 				.getAttributeValue("href", XLINK_NS);
 	}
 	
-	private String getMIMETYPE(Document doc){
+	private String getLoctype(Document doc){
 		
 		return doc.getRootElement()
 				.getChild("fileSec", METS_NS)
 				.getChild("fileGrp", METS_NS)
 				.getChild("file", METS_NS)
-				.getAttributeValue("MIMETYPE");
+				.getAttributeValue("LOCTYPE");
 		}
 }

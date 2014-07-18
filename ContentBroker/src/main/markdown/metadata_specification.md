@@ -109,6 +109,7 @@ A SIP with EAD metadata must conform to the following directory layout
 1. The [EAD] file must be on the top level of the directory structure, i.e. directly below the data folder.
 1. There must be only one [EAD] file. Packages with more than one will get rejected and the user gets informed.
 1. The [subfolder] and [somefile*.xyz] placeholders are files and folders placed in an arbitrary manner by the user.
+2. There must be only one subfolder. Structures like data/[subfolder]/[subfolder]/[METS2].xml are not allowed.
 
 ### structural metadata
 
