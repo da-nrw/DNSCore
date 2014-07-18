@@ -23,8 +23,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.utils.BagitUtils;
 import de.uzk.hki.da.utils.Path;
@@ -40,8 +38,6 @@ import de.uzk.hki.da.utils.RelativePath;
  */
 public class BuildAIPAction extends AbstractAction {
 
-	static final Logger logger = LoggerFactory.getLogger(BuildAIPAction.class);
-	
 	@Override
 	boolean implementation() {
 

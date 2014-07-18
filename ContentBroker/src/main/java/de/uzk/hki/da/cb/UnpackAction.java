@@ -31,8 +31,6 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
@@ -68,7 +66,6 @@ public class UnpackAction extends AbstractAction {
 			+ "For help refer to the SIP-Specification page at "+ SIP_SPEC_URL + ".";
 	
 	private enum PackageType{ BAGIT, METS }
-	static final Logger logger = LoggerFactory.getLogger(UnpackAction.class);
 	
 	public UnpackAction(){}
 	

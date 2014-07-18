@@ -85,8 +85,6 @@ public class SendToPresenterAction extends AbstractAction {
 	private static final String _public = "public";
 	private static final String pips = "pips";
 
-	static final Logger logger = LoggerFactory.getLogger(SendToPresenterAction.class);
-	
 	private RepositoryFacade repositoryFacade;
 	private Map<String,String> viewerUrls;
 	private Set<String> fileFilter;

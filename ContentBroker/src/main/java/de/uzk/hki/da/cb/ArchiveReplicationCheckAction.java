@@ -26,8 +26,6 @@ import javax.mail.MessagingException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.grid.GridFacade;
@@ -49,8 +47,6 @@ import de.uzk.hki.da.service.Mail;
  */
 public class ArchiveReplicationCheckAction extends AbstractAction{
 
-	static final Logger logger = LoggerFactory.getLogger(ArchiveReplicationCheckAction.class);
-	
 	private int minNodes = 3;
 	private int timeOut = 4000;
 	

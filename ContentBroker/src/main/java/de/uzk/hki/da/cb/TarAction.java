@@ -51,7 +51,6 @@ import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
  */
 public class TarAction extends AbstractAction {
 	
-	static final Logger logger = LoggerFactory.getLogger(TarAction.class);
 	private DistributedConversionAdapter distributedConversionAdapter;
 	private String tar = null;
 	

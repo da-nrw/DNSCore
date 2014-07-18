@@ -27,8 +27,6 @@ import javax.mail.MessagingException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
@@ -52,7 +50,6 @@ import de.uzk.hki.da.utils.Path;
 
 public class RetrievalAction extends AbstractAction {
 	
-	static final Logger logger = LoggerFactory.getLogger(RetrievalAction.class);
 	private String sidecarExtensions;
 	private DistributedConversionAdapter distributedConversionAdapter;
 	

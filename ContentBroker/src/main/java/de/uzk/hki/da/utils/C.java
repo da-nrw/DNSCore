@@ -35,6 +35,7 @@ public class C {
 	public static final String EAD = "EAD";
 	public static final String XMP = "XMP";
 	public static final String LIDO = "LIDO";
+	public static final String XMP_RDF = "XMP.rdf";
 	public static final String METS = "METS";
 	public static final String LIDO_PUID = "danrw-fmt/4";
 	public static final String XMP_PUID = "danrw-fmt/3";

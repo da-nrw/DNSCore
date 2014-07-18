@@ -44,7 +44,6 @@ import de.uzk.hki.da.model.PreservationSystem;
  */
 public class ScanForPresentationAction extends AbstractAction{
 	
-	static final Logger logger = LoggerFactory.getLogger(ScanForPresentationAction.class);
 	private FormatScanService formatScanService;
 	private PreservationSystem preservationSystem;
 	private final ConversionInstructionBuilder ciB = new ConversionInstructionBuilder();

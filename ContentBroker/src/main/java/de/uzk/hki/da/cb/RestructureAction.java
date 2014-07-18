@@ -30,8 +30,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang.NotImplementedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
@@ -53,8 +51,6 @@ import de.uzk.hki.da.utils.Path;
  */
 public class RestructureAction extends AbstractAction{
 	
-	static final Logger logger = LoggerFactory.getLogger(RestructureAction.class);
-
 	private String sidecarExtensions="";	
 	private FormatScanService formatScanService;
 	private IngestGate ingestGate;

@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.elasticsearch.common.metrics.MeterMetric;
 
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
@@ -45,21 +45,32 @@ import de.uzk.hki.da.utils.C;
  */
 public class ValidateMetadataAction extends AbstractAction {
 	
-	private String packageType;
-	private String metadataFile;
+	private String detectedPackageType;
+	private String detectedMetadataFile;
+	private boolean packageTypeInObjectWasSetBeforeRunningAction=false;
 	
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException {
 		
 		detect(object.getLatestPackage());
-		if (packageType == null || metadataFile == null) {
+		
+		
+		if (detectedPackageType == null || detectedMetadataFile == null) {
 			logger.warn("Could not determine package type. ");
-		} else {
-			
-			object.setPackage_type(packageType);
-			object.setMetadata_file(metadataFile);
+			return true;
 		}
+		
+		if (!(object.getPackage_type()==null||object.getPackage_type().isEmpty())){
+			packageTypeInObjectWasSetBeforeRunningAction=true;
+			if ((!detectedPackageType.equals(object.getPackage_type()))
+					||(!detectedMetadataFile.equals(object.getMetadata_file()))){
+				throw new RuntimeException("COLLISION");
+			}
+		}
+		
+		object.setPackage_type(detectedPackageType);
+		object.setMetadata_file(detectedMetadataFile);
 		
 		return true;
 	}
@@ -73,21 +84,43 @@ public class ValidateMetadataAction extends AbstractAction {
 		if (getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).size()>=2){
 			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate EAD");
 		}
-		if (getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).size()==1){
-			metadataFile=getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).get(0).getRelative_path();
-			packageType=C.EAD;
-			return;
+		if (getFilesWithPUID(pkg.getFiles(), C.LIDO_PUID).size()>1){
+			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate LIDO");
 		}
-		if (getFilesWithPUID(pkg.getFiles(), C.METS_PUID).size()>1){
+
+		int ptypeCount=0;
+		
+		if (getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).size()==1){
+			detectedMetadataFile=getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).get(0).getRelative_path();
+			detectedPackageType=C.EAD;
+			ptypeCount++;
+		}
+		
+		if ((getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).size()!=1)&&
+				getFilesWithPUID(pkg.getFiles(), C.METS_PUID).size()>1){
 			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate METS");
 		}  
+				
 		if (getFilesWithPUID(pkg.getFiles(), C.METS_PUID).size()==1){
-			metadataFile=getFilesWithPUID(pkg.getFiles(), C.METS_PUID).get(0).getRelative_path();
-			packageType=C.METS;
-			return;
+			detectedMetadataFile=getFilesWithPUID(pkg.getFiles(), C.METS_PUID).get(0).getRelative_path();
+			detectedPackageType=C.METS;
+			ptypeCount++;
 		}
-		// LIDO
-		// XMP.rdf
+		
+		if ((getFilesWithPUID(pkg.getFiles(), C.XMP_PUID)).size()>=1){
+			detectedMetadataFile=C.XMP_RDF;
+			detectedPackageType=C.XMP;
+			ptypeCount++;
+		}
+		
+		if ((getFilesWithPUID(pkg.getFiles(), C.LIDO_PUID)).size()==1){
+			detectedMetadataFile=getFilesWithPUID(pkg.getFiles(), C.LIDO_PUID).get(0).getRelative_path();
+			detectedPackageType=C.LIDO;
+			ptypeCount++;
+		}
+		
+		if (ptypeCount>1)
+			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate METADATA");
 	}
 	
 	
@@ -105,7 +138,9 @@ public class ValidateMetadataAction extends AbstractAction {
 	
 	@Override
 	void rollback() throws Exception {
-		object.setMetadata_file(null);
-		object.setPackage_type(null);
+		if (!packageTypeInObjectWasSetBeforeRunningAction){
+			object.setMetadata_file(null);
+			object.setPackage_type(null);
+		}
 	}
 }

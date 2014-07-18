@@ -47,7 +47,6 @@ import de.uzk.hki.da.model.Object;
  */
 public class ConvertAction extends AbstractAction {
 	
-	static final Logger logger = LoggerFactory.getLogger(ConvertAction.class);
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
 	private List<Event> localConversionEvents;

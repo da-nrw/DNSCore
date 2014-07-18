@@ -29,8 +29,6 @@ import java.util.List;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.format.JhoveScanService;
 import de.uzk.hki.da.metadata.PremisXmlJhoveExtractor;
@@ -51,8 +49,6 @@ import de.uzk.hki.da.utils.Path;
  */
 public class CreatePremisAction extends AbstractAction {
 
-	static final Logger logger = LoggerFactory.getLogger(CreatePremisAction.class);
-	
 	private JhoveScanService jhoveScanService;
 	
 	private List<Event> addedEvents = new ArrayList<Event>();

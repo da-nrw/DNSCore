@@ -20,7 +20,7 @@
 package de.uzk.hki.da.utils;
 
 /**
- * Constants for the test folder structure. 
+ * Test constants.
  * @author Daniel M. de Oliveira
  */
 public class TC {

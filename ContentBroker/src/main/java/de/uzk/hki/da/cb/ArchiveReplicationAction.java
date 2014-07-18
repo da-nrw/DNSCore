@@ -29,8 +29,6 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.NotImplementedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.grid.GridFacade;
@@ -42,8 +40,6 @@ import de.uzk.hki.da.utils.Path;
  * @author Jens Peters
  */
 public class ArchiveReplicationAction extends AbstractAction {
-	
-	static final Logger logger = LoggerFactory.getLogger(ArchiveReplicationAction.class);
 	
 	public ArchiveReplicationAction(){}
 	

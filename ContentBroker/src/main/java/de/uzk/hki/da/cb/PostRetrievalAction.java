@@ -36,8 +36,6 @@ import org.slf4j.LoggerFactory;
 
 public class PostRetrievalAction extends AbstractAction {
 
-	static final Logger logger = LoggerFactory.getLogger(PostRetrievalAction.class);
-	
 	@Override
 	boolean implementation() {
 		setKILLATEXIT(true);

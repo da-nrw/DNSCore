@@ -38,8 +38,6 @@ import de.uzk.hki.da.utils.Path;
  */
 public class DeleteObjectAction extends AbstractAction {
 
-	static final Logger logger = LoggerFactory.getLogger(DeleteObjectAction.class);
-	
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException,
 			UserException {
