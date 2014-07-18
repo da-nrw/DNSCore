@@ -53,8 +53,7 @@ public class ValidateMetadataAction extends AbstractAction {
 	boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException {
 		
-		detect(object.getLatestPackage());
-		
+		detect();
 		
 		if (detectedPackageType == null || detectedMetadataFile == null) {
 			logger.warn("Could not determine package type. ");
@@ -79,42 +78,42 @@ public class ValidateMetadataAction extends AbstractAction {
 	 * @throws UserException If more than one metadata file was found.
 	 * @author Daniel M. de Oliveira 
 	 */
-	private void detect(Package pkg){
+	private void detect(){
 		
-		if (getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).size()>=2){
+		if (getFilesWithPUID(C.EAD_PUID).size()>=2){
 			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate EAD");
 		}
-		if (getFilesWithPUID(pkg.getFiles(), C.LIDO_PUID).size()>1){
+		if (getFilesWithPUID(C.LIDO_PUID).size()>1){
 			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate LIDO");
 		}
 
 		int ptypeCount=0;
 		
-		if (getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).size()==1){
-			detectedMetadataFile=getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).get(0).getRelative_path();
+		if (getFilesWithPUID(C.EAD_PUID).size()==1){
+			detectedMetadataFile=getFilesWithPUID(C.EAD_PUID).get(0).getRelative_path();
 			detectedPackageType=C.EAD;
 			ptypeCount++;
 		}
 		
-		if ((getFilesWithPUID(pkg.getFiles(), C.EAD_PUID).size()!=1)&&
-				getFilesWithPUID(pkg.getFiles(), C.METS_PUID).size()>1){
+		if ((getFilesWithPUID(C.EAD_PUID).size()!=1)&&
+				getFilesWithPUID(C.METS_PUID).size()>1){
 			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate METS");
 		}  
 				
-		if (getFilesWithPUID(pkg.getFiles(), C.METS_PUID).size()==1){
-			detectedMetadataFile=getFilesWithPUID(pkg.getFiles(), C.METS_PUID).get(0).getRelative_path();
+		if (getFilesWithPUID(C.METS_PUID).size()==1){
+			detectedMetadataFile=getFilesWithPUID(C.METS_PUID).get(0).getRelative_path();
 			detectedPackageType=C.METS;
 			ptypeCount++;
 		}
 		
-		if ((getFilesWithPUID(pkg.getFiles(), C.XMP_PUID)).size()>=1){
+		if ((getFilesWithPUID(C.XMP_PUID)).size()>=1){
 			detectedMetadataFile=C.XMP_RDF;
 			detectedPackageType=C.XMP;
 			ptypeCount++;
 		}
 		
-		if ((getFilesWithPUID(pkg.getFiles(), C.LIDO_PUID)).size()==1){
-			detectedMetadataFile=getFilesWithPUID(pkg.getFiles(), C.LIDO_PUID).get(0).getRelative_path();
+		if ((getFilesWithPUID(C.LIDO_PUID)).size()==1){
+			detectedMetadataFile=getFilesWithPUID(C.LIDO_PUID).get(0).getRelative_path();
 			detectedPackageType=C.LIDO;
 			ptypeCount++;
 		}
@@ -124,10 +123,10 @@ public class ValidateMetadataAction extends AbstractAction {
 	}
 	
 	
-	private List<DAFile> getFilesWithPUID(List<DAFile> files,String PUID){
+	private List<DAFile> getFilesWithPUID(String PUID){
 		List<DAFile> result = new ArrayList<DAFile>();
 		
-		for (DAFile f:files){
+		for (DAFile f:object.getLatestPackage().getFiles()){
 			if (PUID.equals(f.getFormatPUID())) {
 				result.add(f);
 			}
