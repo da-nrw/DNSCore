@@ -23,22 +23,19 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.TC;
 
 /**
  * Relates to AK-T/02 Ingest - Alternative Szenarien.
  * @author Daniel M. de Oliveira
  *
  */
-public class ATUseCaseIngestValidationNotPassed extends Base{
+public class ATUseCaseIngestValidationNotPassed extends UserErrorBase{
 
 	private static final String AT_EINE_DATEI_GELOESCHT = "ATEineDatei_geloescht";
 	private static final String AT_DUPLICATE_METADATA_FILES = "ATDuplicateMetadataFiles";
@@ -46,7 +43,7 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 	private static final String AT_ERSTE_ZEILE_TAGMANIFEST1_ZEICHENGEAENDERT = "ATErsteZeile_tagmanifest1Zeichengeaendert";
 	private static final String AT_MANIFEST_MD5_2FILESGEAENDERT = "ATManifestMd5_2filesgeaendert";
 	private static final String YEAH = "yeah!";
-	private static final int timeout = 20000;
+	
 
 	@Before
 	public void setUp() throws IOException{
@@ -59,19 +56,7 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 		cleanStorage();
 	}
 	
-	private Object ingestAndWaitForErrorState(String originalName,String errorState) throws IOException, InterruptedException{
-		return ingestAndWaitForErrorState(originalName, errorState, C.TGZ);
-	}
-		
-	private Object ingestAndWaitForErrorState(String originalName,String errorStateLastDigit,String containerSuffix) throws IOException, InterruptedException{
-		
-		if (!containerSuffix.isEmpty()) containerSuffix="."+containerSuffix;
-		
-		FileUtils.copyFileToDirectory(Path.makeFile(TC.TEST_ROOT_AT,originalName+containerSuffix), 
-				Path.makeFile(localNode.getIngestAreaRootPath(),TC.TEST));
-		waitForJobToBeInErrorStatus(originalName,errorStateLastDigit,timeout);
-		return fetchObjectFromDB(originalName);
-	}
+
 	
 	@Test
 	public void testFirst_tagmanifest1ZeichenChanged() throws Exception{

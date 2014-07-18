@@ -32,6 +32,7 @@ import org.junit.Test;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
@@ -57,6 +58,7 @@ public class ValidateMetadataActionTests {
 	
 	
 	private Object object;
+	
 	ValidateMetadataAction action = new ValidateMetadataAction();
 
 	
@@ -327,4 +329,29 @@ public class ValidateMetadataActionTests {
 			assertTrue(e.getMessage().contains(METADATA));
 		}
 	}
+	
+	
+	// TODO cannot test this before getNewestFilesFromAllRepresentations is not separated from looking onto the actual file system.
+	@Test
+	public void testConsiderPreviousPackagesWhenDetectingMetadataFiles() throws FileNotFoundException, IOException, RepositoryException{
+		
+//		object.getLatestPackage().getFiles().add(f_ead1);
+//		Package pkg2 = new Package();
+//		pkg2.setName("2");
+//		pkg2.getFiles().add(f_ead2);
+//		object.getPackages().add(pkg2);
+//		
+//		try{
+//			action.implementation();
+//			fail();
+//		}catch(UserException e){
+//			System.out.println(e.getMessage());
+//			assertTrue(e.getMessage().contains(C.EAD));
+//		}
+	}
+	
+	
+	
+	
+	
 }
