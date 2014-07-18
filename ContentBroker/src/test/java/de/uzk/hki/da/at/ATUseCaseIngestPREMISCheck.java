@@ -47,7 +47,7 @@ import de.uzk.hki.da.model.Object;
  * Relates to AK-T/02 Ingest - Sunny Day Scenario.
  * @author Daniel M. de Oliveira
  */
-public class ATUseCaseIngest extends Base{
+public class ATUseCaseIngestPREMISCheck extends PREMISBase{
 	
 	private String originalName = "ATUseCaseIngest1";
 	private String containerName = originalName+".tgz";
@@ -73,7 +73,7 @@ public class ATUseCaseIngest extends Base{
 	}
 	
 	@Test
-	public void testHappyPath() throws Exception {
+	public void testProperPREMISCreation() throws Exception {
 		
 		ingest(originalName);
 		
@@ -146,23 +146,23 @@ public class ATUseCaseIngest extends Base{
 			}
 						
 			if (identifierText.contains("a/CCITT_1.TIF")){
-				TestHelper.verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_1.TIF", "fmt/353");
+				verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_1.TIF", "fmt/353");
 				checkedObjects++;
 			}
 			if (identifierText.contains("a/CCITT_2.TIF")){
-				TestHelper.verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_2.TIF", "fmt/353");
+				verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_2.TIF", "fmt/353");
 				checkedObjects++;
 			}
 			if (identifierText.contains("a/CCITT_1_UNCOMPRESSED.TIF")){
-				TestHelper.verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_1_UNCOMPRESSED.TIF", "fmt/353");
+				verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_1_UNCOMPRESSED.TIF", "fmt/353");
 				checkedObjects++;
 			}
 			if (identifierText.contains("b/CCITT_1.TIF")){
-				TestHelper.verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_1.TIF", "fmt/353");
+				verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_1.TIF", "fmt/353");
 				checkedObjects++;
 			}
 			if (identifierText.contains("b/CCITT_2.TIF")){
-				TestHelper.verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_2.TIF", "fmt/353");
+				verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_2.TIF", "fmt/353");
 				checkedObjects++;
 			}
 		}
@@ -180,12 +180,12 @@ public class ATUseCaseIngest extends Base{
 				String eventDetail = e.getChildText("eventDetail",ns);
 				String event1fileName = "CCITT_1.TIF";
 				if (eventDetail.contains(event1fileName)){
-					TestHelper.checkConvertEvent(ns, e, event1fileName,nodeName);
+					checkConvertEvent(ns, e, event1fileName,nodeName);
 					checkedEvents++;
 				}
 				String event2fileName = "CCITT_1.TIF";
 				if (eventDetail.contains(event2fileName)){
-					TestHelper.checkConvertEvent(ns, e, event2fileName,nodeName);
+					checkConvertEvent(ns, e, event2fileName,nodeName);
 					checkedEvents++;
 				}
 			}

@@ -31,11 +31,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.hibernate.classic.Session;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -44,31 +42,30 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TC;
 
 /**
  * @author Daniel M. de Oliveira
  * @author Thomas Kleinke
  */
-public class ATUseCaseIngestDelta extends Base {
-	
-	private static final String originalName = "ATUseCaseIngestDelta";
-	private static final String identifier =   "ATUseCaseIngestDeltaIdentifier";
-	private static final String urn =   "urn:nbn:de:danrw:ATUseCaseIngestDeltaIdentifier";
-	private static final String containerName = originalName+"."+C.TGZ;
+public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
 	
 	Object object = null;
+	private static final String ORIG_NAME = "ATUseCaseIngestDelta";
+	private static final String IDENTIFIER =   "ATUseCaseIngestDeltaIdentifier";
+	private static final String containerName = ORIG_NAME+"."+C.TGZ;
+	
 
 	@Before
 	public void setUp() throws IOException{
 		setUpBase();
+
+		object = putPackageToStorageInPreparationForDeltaIngest(IDENTIFIER,ORIG_NAME,containerName);
+		FileUtils.copyFile(Path.makeFile(TC.TEST_ROOT_AT,ORIG_NAME+"2.tgz"), 
+				Path.makeFile(localNode.getIngestAreaRootPath(),TC.TEST,containerName));
 	}
 	
 	@After
@@ -84,47 +81,16 @@ public class ATUseCaseIngestDelta extends Base {
 		cleanStorage();
 	}
 	
+
+	
 	
 	@Test
-	public void testHappyPath() throws Exception{
+	public void testProperPREMISCreation() throws Exception{
 		
-		StoragePolicy sp = new StoragePolicy(localNode);
-		ArrayList<String> destinations = new ArrayList<String>();
-		destinations.add("ciArchiveResourceGroup");
-		sp.setDestinations(destinations);
-		sp.setMinNodes(1);
+		waitForJobsToFinish(ORIG_NAME,500);
+		object = retrievePackage(ORIG_NAME,"2");
 		
-		// prepare database
-		gridFacade.put(Path.makeFile(TC.TEST_ROOT_AT,"ATUseCaseIngestDeltaIdentifier.pack_1.tar"), 
-				new RelativePath(TC.TEST,identifier,identifier+".pack_1.tar").toString(), sp);
-		
-		// put package
-		object = new Object();
-		object.setContractor(testContractor);
-		object.setInitial_node("localnode");
-		object.setIdentifier(identifier);
-		object.setUrn(urn);
-		object.setOrig_name(originalName);
-		Package pkg = new Package();
-		pkg.setName("1");
-		pkg.setContainerName(containerName);
-		object.getPackages().add(pkg);
-		
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		session.save(object);
-		session.getTransaction().commit();
-		session.close();
-		
-		// set object.
-		
-		FileUtils.copyFile(Path.makeFile(TC.TEST_ROOT_AT,originalName+"2.tgz"), 
-				Path.makeFile(localNode.getIngestAreaRootPath(),TC.TEST,containerName));
-		
-		waitForJobsToFinish(originalName,500);
-		
-		object = retrievePackage(originalName,"2");
-		assertEquals(originalName,object.getOrig_name());
+		assertEquals(ORIG_NAME,object.getOrig_name());
 		assertEquals(100,object.getObject_state());
 		checkPremis(object.getIdentifier(),
 				"/tmp/" + object.getIdentifier() + ".pack_2/data/"
@@ -187,37 +153,37 @@ public class ATUseCaseIngestDelta extends Base {
 			}
 			
 			if (identifierText.endsWith("+a/CCITT_1.TIF")){
-				TestHelper.verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_1.TIF", "fmt/353");
+				verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_1.TIF", "fmt/353");
 				System.out.println("checked object: " + identifierText);
 				checkedObjects++;
 			}
 			if (identifierText.endsWith("+a/CCITT_2.TIF")){
-				TestHelper.verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_2.TIF", "fmt/353");
+				verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_2.TIF", "fmt/353");
 				System.out.println("checked object: " + identifierText);
 				checkedObjects++;
 			}
 			if (identifierText.endsWith("+a/CCITT_1_UNCOMPRESSED.TIF")){
-				TestHelper.verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_1_UNCOMPRESSED.TIF", "fmt/353");
+				verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_1_UNCOMPRESSED.TIF", "fmt/353");
 				System.out.println("checked object: " + identifierText);
 				checkedObjects++;
 			}
 			if (identifierText.endsWith("+b/CCITT_1.TIF")){
-				TestHelper.verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_1.TIF", "fmt/353");
+				verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_1.TIF", "fmt/353");
 				System.out.println("checked object: " + identifierText);
 				checkedObjects++;
 			}
 			if (identifierText.endsWith("+b/CCITT_2.TIF")){
-				TestHelper.verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_2.TIF", "fmt/353");
+				verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_2.TIF", "fmt/353");
 				System.out.println("checked object: " + identifierText);
 				checkedObjects++;
 			}
 			if (identifierText.endsWith("+a/CCITT_3.TIF")){
-				TestHelper.verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_3.TIF", "fmt/353");
+				verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_3.TIF", "fmt/353");
 				System.out.println("checked object: " + identifierText);
 				checkedObjects++;
 			}
 			if (identifierText.endsWith("+b/CCITT_3.TIF")){
-				TestHelper.verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_3.TIF", "fmt/353");
+				verifyPREMISFileObjectHasCertainSubElements(ns, e, "CCITT_3.TIF", "fmt/353");
 				System.out.println("checked object: " + identifierText);
 				checkedObjects++;
 			}
@@ -236,17 +202,17 @@ public class ATUseCaseIngestDelta extends Base {
 				String eventIdentifier = e.getChild("eventIdentifier", ns).getChildText("eventIdentifierValue",ns);
 				
 				if ( eventIdentifier.endsWith("+b/CCITT_1.TIF") ) {
-					TestHelper.checkConvertEvent(ns, e, "CCITT_1.TIF",localNode.getName()); 
+					checkConvertEvent(ns, e, "CCITT_1.TIF",localNode.getName()); 
 					System.out.println("checked CONVERT event: +b/CCITT_1.TIF");
 					checkedEvents++;
 				}
 				if ( eventIdentifier.endsWith("+b/CCITT_2.TIF") ) {
-					TestHelper.checkConvertEvent(ns, e, "CCITT_2.TIF",localNode.getName());
+					checkConvertEvent(ns, e, "CCITT_2.TIF",localNode.getName());
 					System.out.println("checked CONVERT event: +b/CCITT_2.TIF");
 					checkedEvents++;
 				}
 				if ( eventIdentifier.endsWith("+b/CCITT_3.TIF") ) {
-					TestHelper.checkConvertEvent(ns, e, "CCITT_3.TIF",localNode.getName()); 
+					checkConvertEvent(ns, e, "CCITT_3.TIF",localNode.getName()); 
 					System.out.println("checked CONVERT event: +b/CCITT_3.TIF");
 					checkedEvents++;
 				}

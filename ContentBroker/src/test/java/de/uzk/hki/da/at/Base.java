@@ -321,6 +321,45 @@ public class Base {
 	}
 	
 	/**
+	 * @author Daniel M. de Oliveira
+	 * @throws IOException 
+	 */
+	protected Object putPackageToStorageInPreparationForDeltaIngest(String identifier,String originalName,String containerName) throws IOException{
+		
+		String urn =   "urn:nbn:de:danrw:"+identifier;
+		
+		StoragePolicy sp = new StoragePolicy(localNode);
+		ArrayList<String> destinations = new ArrayList<String>();
+		destinations.add("ciArchiveResourceGroup");
+		sp.setDestinations(destinations);
+		sp.setMinNodes(1);
+		
+		gridFacade.put(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_1.tar"), 
+				new RelativePath(TC.TEST,identifier,identifier+".pack_1.tar").toString(), sp);
+
+		Object object = new Object();
+		object.setContractor(testContractor);
+		object.setInitial_node("localnode");
+		object.setIdentifier(identifier);
+		object.setUrn(urn);
+		object.setOrig_name(originalName);
+		Package pkg = new Package();
+		pkg.setName("1");
+		pkg.setContainerName(containerName);
+		object.getPackages().add(pkg);
+		
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.save(object);
+		session.getTransaction().commit();
+		session.close();
+		
+		return object;
+	}
+	
+	
+	
+	/**
 	 * @throws IOException 
 	 */
 	protected void createObjectAndJob(String name, String status,String packageType,String metadataFile) throws IOException{
