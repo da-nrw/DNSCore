@@ -206,6 +206,7 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 				.getChild("fileSec", METS_NS)
 				.getChild("fileGrp", METS_NS)
 				.getChild("file", METS_NS)
+				.getChild("FLocat", METS_NS)
 				.getAttributeValue("LOCTYPE");
 		}
 }

@@ -183,7 +183,6 @@ public class UpdateMetadataAction extends AbstractAction {
 	        targetFiles.add((DAFile)entry.getValue());
 	    }
 		
-//		int expectedReplacements = replacements.size();
 		int expectedReplacements = targetFiles.size();
 		
 		File metadataFile = Path.makeFile(pkg.getTransientBackRefToObject().getDataPath(),repName,metadataFilePath);
@@ -286,23 +285,35 @@ public class UpdateMetadataAction extends AbstractAction {
 
 	private Map<String,DAFile> generateReplacementsMap(Package pkg,String repName,String absUrlPrefix) throws IOException{
 		
+		logger.debug("Generate replacements");
+		   
+		//  relativePath,DAFile
+		//  Mimetype, DAFile
 		Map<String,DAFile> replacements = new HashMap<String,DAFile>();
 		
 		// collect paths to be replaced in map
 		for (Event e:pkg.getEvents()) {
+			
+			logger.debug("Event type: "+e.getType());
 			
 			if (!"CONVERT".equals(e.getType())) continue;
 			
 			DAFile targetFile = e.getTarget_file();
 			if (!targetFile.getRep_name().equals(repName)) continue;
 			DAFile sourceFile = e.getSource_file();
+			logger.debug("source file: "+sourceFile.getRelative_path());
+			logger.debug("target file: "+targetFile.getRelative_path());
 //			MIMETYPE
 			String sourceMT = getMtds().detectMimeType(sourceFile);
+			logger.debug("Source mimetype: "+sourceMT);
 			targetFile.setMimeType(getMtds().detectMimeType(targetFile));
+			logger.debug("Target file MIMETYPE: "+targetFile.getMimeType());
 			
+			logger.debug("Put "+sourceFile.getRelative_path()+" | "+targetFile);
 			replacements.put(sourceFile.getRelative_path(), targetFile);
 //			MIMETYPE temporary put the same targetFile again! The goal is to have just two DAFiles in the HashMap (replacements.put(sourceFile, targetFile))
 			replacements.put(sourceMT, targetFile);
+			logger.debug("Put "+sourceMT+" | "+targetFile);
 		}
 		
 		logger.debug("Planned replacements: {}", replacements);
@@ -407,13 +418,14 @@ public class UpdateMetadataAction extends AbstractAction {
 					try {
 						Attribute attr = element.getChild("FLocat", METS_NS).getAttribute("href", XLINK_NS);
 						nodes.add(attr);
-					} catch (Exception e) {
+					} catch (Exception e) { // swallow exception if cast not succesfull
 					}
 					try {
 						Attribute attrMT = element.getAttribute("MIMETYPE");
 						nodes.add(attrMT);
 						if(!(absUrlPrefix==null)) {
-							updateLoctypeInMetsFile(element, "URL");
+							Element FLocat = element.getChild("FLocat", METS_NS);
+							updateLoctypeInMetsFile(FLocat, "URL");
 						}
 					} catch (Exception e) {
 					}
