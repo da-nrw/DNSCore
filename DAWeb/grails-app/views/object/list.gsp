@@ -189,7 +189,7 @@
 
 			<g:if test="${paginate}" >
 				<!-- workaround weil paginate die search map zerhackstückelt -->
-				<g:set var="searchParams" value="${params.search?.collectEntries { key, value -> ['search.'+key, value] }}"/>
+				<g:set var="searchParams" value="${paramsList}"/>
 				<div class="pagination">
 					<g:paginate total="${objectInstanceTotal}" params="${searchParams}" />
 				</div>

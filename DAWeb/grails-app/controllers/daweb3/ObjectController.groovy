@@ -76,10 +76,18 @@ class ObjectController {
 						order(params.sort ?: "id", params.order ?: "desc")
 					}
 					log.debug(params.search)
+
+					// workaround: make ALL params accessible for following http-requests
+					def paramsList = params.search?.collectEntries { key, value -> ['search.'+key, value] }
+					if(params.searchContractorName){
+						paramsList.putAt("searchContractorName", params?.searchContractorName)
+					}
+
 					return [
 						objectInstanceList: objects,
 						objectInstanceTotal: objects.getTotalCount(),
 						searchParams: params.search,
+						paramsList: paramsList,
 						paginate: true,
 						admin: admin,
 						baseFolder: baseFolder,
@@ -257,4 +265,10 @@ class ObjectController {
 			render result as JSON
 	}
 
+	def collectSearchParams = {
+		def paramList = params.search?.collectEntries { key, value -> ['search.'+key, value] }
+		paramsList.putAt("searchContractorName", params?.searchContractorName)
+		return
+		[paramsList:paramsList]
+	}
 }
