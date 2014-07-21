@@ -34,6 +34,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
@@ -48,7 +49,7 @@ public class TiffConversionStrategyTests {
 	private static final String TIFF_CONVERSION_STRATEGY_TESTS = "TiffConversionStrategyTests";
 
 	Path workAreaRootPath=Path.make(TC.TEST_ROOT_FORMAT,TIFF_CONVERSION_STRATEGY_TESTS);
-	Path contractorFolder=Path.make(workAreaRootPath,"work",TC.TEST);
+	Path contractorFolder=Path.make(workAreaRootPath,"work",C.TEST);
 	
 	TiffConversionStrategy cs = new TiffConversionStrategy();
 	

@@ -62,6 +62,10 @@ function stopContentBroker(){
 function startContentBroker(){
 	#SOURCE_PATH=`pwd`
 	cd $1
+	
+	java $JAVA_OPTS -jar ContentBroker.jar diagnostics > diagnostics.txt
+	echo DIAGNOSTICS returned $?
+	
 	./ContentBroker_start.sh
 	sleep 15
 	cd $SOURCE_PATH

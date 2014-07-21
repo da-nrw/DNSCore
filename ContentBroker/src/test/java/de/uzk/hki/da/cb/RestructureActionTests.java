@@ -42,9 +42,10 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.TESTHelper;
 import de.uzk.hki.da.utils.TC;
+import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * @author Daniel M. de Oliveira
@@ -96,8 +97,8 @@ public class RestructureActionTests {
 		
 		action.implementation();
 		
-		assertTrue(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,TC.DATA,job.getRep_name()+"a").exists());
-		assertTrue(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,TC.DATA,job.getRep_name()+"a","vda3.XML").exists());
+		assertTrue(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,C.DATA,job.getRep_name()+"a").exists());
+		assertTrue(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,C.DATA,job.getRep_name()+"a","vda3.XML").exists());
 	}
 	
 	@Test

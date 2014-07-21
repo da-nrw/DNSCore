@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.MD5Checksum;
 
 
@@ -46,8 +47,6 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	
 	/** The local node. */
 	protected Node localNode;
-	
-	protected String aipDirName = "aip";
 	
 	
 	
@@ -80,8 +79,8 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 		String address_dest = relative_address_dest;
 		if (!relative_address_dest.startsWith("/")) 
 			address_dest = "/" + relative_address_dest;
-		String targetPhysically = localNode.getGridCacheAreaRootPath() + "/" + aipDirName + address_dest;
-		String targetLogically  = "/" + irodsSystemConnector.getZone() + "/" + aipDirName + address_dest;	
+		String targetPhysically = localNode.getGridCacheAreaRootPath() + "/" + C.AIP + address_dest;
+		String targetLogically  = "/" + irodsSystemConnector.getZone() + "/" + C.AIP + address_dest;	
 		
 		File gridfile = new File (targetPhysically); 	
 		
@@ -193,7 +192,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	@Override
 	public boolean isValid(String address_dest) {
 
-		address_dest = "/" + irodsSystemConnector.getZone() + "/" + aipDirName + "/" + address_dest;
+		address_dest = "/" + irodsSystemConnector.getZone() + "/" + C.AIP + "/" + address_dest;
 		
 		irodsSystemConnector.connect();
 		
@@ -239,7 +238,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	@Override
 	public void get(File destination, String gridFileAdress) throws IOException  { 
 		
-		String prefixedGridFileAdress = "/" + irodsSystemConnector.getZone()+ "/" + aipDirName + "/" + gridFileAdress;
+		String prefixedGridFileAdress = "/" + irodsSystemConnector.getZone()+ "/" + C.AIP + "/" + gridFileAdress;
 		
 		irodsSystemConnector.connect();
 		
@@ -270,7 +269,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	public long getFileSize(String address_dest) throws IOException {
 		irodsSystemConnector.connect();
 		
-		long filesize = irodsSystemConnector.getFileSize("/" + irodsSystemConnector.getZone()+ "/" + aipDirName + "/" + address_dest);
+		long filesize = irodsSystemConnector.getFileSize("/" + irodsSystemConnector.getZone()+ "/" + C.AIP + "/" + address_dest);
 		
 		irodsSystemConnector.logoff();
 		return filesize;

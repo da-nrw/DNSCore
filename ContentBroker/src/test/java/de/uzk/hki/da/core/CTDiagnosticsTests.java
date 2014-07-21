@@ -15,37 +15,49 @@
 
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
 
-package de.uzk.hki.da.at;
+package de.uzk.hki.da.core;
 
+import static org.junit.Assert.*;
+
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.TC;
 
 /**
+ * 
  * @author Daniel M. de Oliveira
  */
-public class UserErrorBase extends Base{
+public class CTDiagnosticsTests {
 
-	private static final int timeout = 20000;
+	private static final File TEST_PACKAGE_SRC = Path.makeFile(TC.TEST_ROOT_AT,"AT_CON2.tgz");
 	
-	Object ingestAndWaitForErrorState(String originalName,String errorState) throws IOException, InterruptedException{
-		return ingestAndWaitForErrorState(originalName, errorState, C.TGZ);
+	
+	@Before
+	public void setUp() throws IOException{
+		C.CONF.toFile().mkdirs();
+		FileUtils.copyFile(TC.CONFIG_PROPS_CI, C.CONFIG_PROPS);
+		FileUtils.copyFile(TEST_PACKAGE_SRC, C.BASIC_TEST_PACKAGE);
 	}
+	
+	@After
+	public void tearDown(){
+		FileUtils.deleteQuietly(C.CONF.toFile());
+	}
+	
+	
+	@Test
+	public void stubDiagnostics() throws IOException{
 		
-	Object ingestAndWaitForErrorState(String originalName,String errorStateLastDigit,String containerSuffix) throws IOException, InterruptedException{
-		
-		if (!containerSuffix.isEmpty()) containerSuffix="."+containerSuffix;
-		
-		FileUtils.copyFileToDirectory(Path.makeFile(TC.TEST_ROOT_AT,originalName+containerSuffix), 
-				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST));
-		waitForJobToBeInErrorStatus(originalName,errorStateLastDigit,timeout);
-		return fetchObjectFromDB(originalName);
+		assertEquals(new Integer(0),Diagnostics.run());
 	}
 }

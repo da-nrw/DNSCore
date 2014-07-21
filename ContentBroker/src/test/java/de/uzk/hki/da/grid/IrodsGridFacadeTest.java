@@ -96,6 +96,8 @@ public class IrodsGridFacadeTest {
 		ig = new IrodsGridFacade();
 		ig.setIrodsSystemConnector(isc);
 		when (isc.computeChecksum(anyString())).thenReturn("abc");
+		when (isc.connect()).thenReturn(true);
+		
 		
 		Node node = new Node();
 		node.setWorkingResource("cacheresc");

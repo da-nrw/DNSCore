@@ -88,9 +88,11 @@ public class ContentBroker {
 
 		if ((args.length>0)&&(args[0].equals("createSchema"))){
 			HibernateUtil.createSchema("conf/hibernateCentralDB.cfg.xml");
-			return;
 		}
 		
+		if ((args.length>0)&&(args[0].equals("diagnostics"))){
+			System.exit(Diagnostics.run());
+		}
 		
 		
 		logger.info("Starting ContentBroker ..");
@@ -104,30 +106,9 @@ public class ContentBroker {
 		
 		logger.info("Reading properties");
 		
-		Properties properties = Utilities.read(new File("conf/config.properties"));
-
-		logger.info("Smoke test the application");
 		
-		boolean ok = true;
-		if (!new File(properties.getProperty("localNode.userAreaRootPath")).exists()){
-			logger.error("path localNode.userAreaRootPath points to not exists");
-			ok=false;
-		}
-		if (!new File(properties.getProperty("localNode.ingestAreaRootPath")).exists()) {
-			logger.error("path localNode.ingestAreaRootPath points to not exists");
-			ok=false;
-		}
-		if (!new File(properties.getProperty("localNode.workAreaRootPath")).exists()) {
-			logger.error("path localNode.workAreaRootPath not exists");
-			ok=false;
-		}
-		if (!new File(properties.getProperty("localNode.gridCacheAreaRootPath")).exists()) {
-			logger.error("path localNode.gridCacheAreaRootPath points to not exists");
-			ok=false;
-		}
 		
-		if (!ok) throw new RuntimeException("smoke test not passed. check your properties file");
-		
+				
 		
 		
 		Utilities.parseArguments(args,props);

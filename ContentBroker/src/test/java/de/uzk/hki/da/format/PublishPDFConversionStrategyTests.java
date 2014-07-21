@@ -41,6 +41,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.TextRestriction;
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
@@ -53,8 +54,8 @@ import de.uzk.hki.da.utils.TC;
 public class PublishPDFConversionStrategyTests {
 	
 	Path workAreaRootPath= Path.make(TC.TEST_ROOT_FORMAT,"PublishPDFConversionStrategyTests");
-	Path dataPath = Path.make(workAreaRootPath,"work/TEST/1",TC.DATA);
-	Path dipPath = Path.make(dataPath,TC.DIP);
+	Path dataPath = Path.make(workAreaRootPath,"work/TEST/1",C.DATA);
+	Path dipPath = Path.make(dataPath,C.DIP);
 	
 	/** The cs. */
 	PublishPDFConversionStrategy cs = new PublishPDFConversionStrategy();

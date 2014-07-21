@@ -16,7 +16,7 @@
           
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
 		<property name="location">
-			<value>conf/config.properties</value>
+			<value>file:conf/config.properties</value>
 		</property>
 	</bean>	
 	

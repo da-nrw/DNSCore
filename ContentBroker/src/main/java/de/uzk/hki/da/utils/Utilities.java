@@ -50,12 +50,14 @@ public class Utilities {
 	public static Logger logger = LoggerFactory.getLogger(Utilities.class);
 
 	/**
-	 * @author Daniel M. de Oliveira
 	 * @param propertiesFile
-	 * @return
+	 * @return properties
 	 * @throws IOException
+	 * @throws FileNotFoundException if propertiesfile does not exist
+	 * @author Daniel M. de Oliveira
 	 */
 	public static Properties read(File propertiesFile) throws IOException{
+		if (!propertiesFile.exists()) throw new FileNotFoundException(propertiesFile+" does not exist");
 		InputStream in = new FileInputStream(propertiesFile);
 		Properties props = new Properties();
 		props.load(in);

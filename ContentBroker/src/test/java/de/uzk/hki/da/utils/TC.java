@@ -19,6 +19,8 @@
 
 package de.uzk.hki.da.utils;
 
+import java.io.File;
+
 /**
  * Test constants.
  * @author Daniel M. de Oliveira
@@ -29,8 +31,6 @@ public class TC {
 	public static final Path TEST_ROOT_FORMAT = Path.make(TEST_ROOT,"format");
 	public static final Path TEST_ROOT_AT = Path.make(TEST_ROOT,"at");
 	public static final Path TEST_ROOT_CB = Path.make(TEST_ROOT,"cb");
-	public static final String DATA = "data";
-	public static final String WORK = "work";
-	public static final String TEST = "TEST";
-	public static final String DIP = "dip";
+	
+	public static final File CONFIG_PROPS_CI = new RelativePath("src","main","conf","config.properties.ci").toFile();
 }

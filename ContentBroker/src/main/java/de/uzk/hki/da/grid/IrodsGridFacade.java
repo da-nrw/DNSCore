@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.MD5Checksum;
 
 /**
@@ -52,15 +53,15 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 	@Override
 	public boolean put(File file, String gridPath , StoragePolicy sp) throws IOException {
 		
-		irodsSystemConnector.connect();
+		if (!irodsSystemConnector.connect()) throw new RuntimeException("could not connect irodsSystemConnector");
 		
 		if (!PrepareReplication(file, gridPath)) return false;
 		
 		String address_dest = gridPath;
 		if (!gridPath.startsWith("/")) 
 			address_dest = "/" + gridPath;
-		String targetPhysically = localNode.getGridCacheAreaRootPath() + "/" + aipDirName + address_dest;
-		String targetLogically  = "/" + irodsSystemConnector.getZone() + "/" + aipDirName  + address_dest;	
+		String targetPhysically = localNode.getGridCacheAreaRootPath() + "/" + C.AIP + address_dest;
+		String targetLogically  = "/" + irodsSystemConnector.getZone() + "/" + C.AIP  + address_dest;	
 		File gridfile = new File (targetPhysically); 
 		
 		if (registerOnWorkingResourceAndComputeChecksum(file,targetLogically,gridfile))
@@ -130,7 +131,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 	public boolean storagePolicyAchieved(String gridPath2, StoragePolicy sp) {
 		irodsSystemConnector.connect();
 		
-		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + aipDirName + "/" + gridPath2;
+		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + C.AIP + "/" + gridPath2;
 		
 		int minNodes = sp.getMinNodes();
 		try {
