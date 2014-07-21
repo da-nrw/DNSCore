@@ -65,4 +65,6 @@
   
   <amq:connectionFactory brokerURL="tcp://localhost:${cb.serverSocketNumber}"
   id="mqConnectionFactory" />
+  
+  <bean class="de.uzk.hki.da.model.CentralDatabaseDAO" id="centralDao"/>
  </beans>

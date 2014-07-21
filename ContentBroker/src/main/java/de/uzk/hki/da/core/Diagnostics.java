@@ -22,14 +22,18 @@ package de.uzk.hki.da.core;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import de.uzk.hki.da.format.CLIFormatIdentifier;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.Node;
@@ -51,16 +55,20 @@ public class Diagnostics {
 	private static final Logger logger = LoggerFactory.getLogger(Diagnostics.class);
 	
 	private static final String TEST_TGZ = "test.tgz";
-	private static final String IRODS_GRID_FACADE_BEAN_NAME = "irodsGridFacade";
 	private static final File DIAGNOSTICS_RETRIEVAL_FILE = Path.makeFile("tmp","diagnostics.tgz");
 	private static final String DIAGNOSTICS_IRODS = "classpath*:META-INF/beans-diagnostics.irods.xml";
+	private static final String DIAGNOSTICS_IDENTIFIER = "classpath*:META-INF/beans-diagnostics.identifier.xml";
 	private static final String WARN = "WARN: ";
 	private static final String MSG_GRID_CACHE_AREA_NOT_EXISTS = WARN+"path localNode.gridCacheAreaRootPath points to not exists";
 	private static final String MSG_WORK_AREA_NOT_EXISTS = WARN+"path localNode.workAreaRootPath not exists";
 	private static final String MSG_INGEST_AREA_NOT_EXISTS = WARN+"path localNode.ingestAreaRootPath points to not exists";
 	private static final String MSG_USER_AREA_NOT_EXISTS = WARN+"path localNode.userAreaRootPath points to not exists";
 	private static final String GRID_CACHE_AREA_ROOT_PATH = "localNode.gridCacheAreaRootPath";
+	
+	private static final String IRODS_GRID_FACADE_BEAN_NAME = "irodsGridFacade";
 	private static final String IRODS_SYSTEM_CONNECTOR_BEAN_NAME = "irodsSystemConnector";
+	private static final String BEAN_NAME_PRONOM_FORMAT_IDENTIFIER = "pronomFormatIdentifier";
+	private static final String BEAN_NAME_VIDEO_CODEC_FORMAT_IDENTIFIER = "videoCodecFormatIdentifier";
 	
 	private static final String PROP_USER_AREA_ROOT_PATH = "localNode.userAreaRootPath";
 	private static final String PROP_INGEST_AREA_ROOT_PATH = "localNode.ingestAreaRootPath";
@@ -68,20 +76,36 @@ public class Diagnostics {
 	private static final String PROP_REPL_DESTINATIONS = "localNode.replDestinations";
 	private static final String PROP_IRODS_ZONE = "irods.zone";
 
+
+	
+	
+	
 	public static Integer run() {
 	
+		System.out.println("Smoke test the application");
 		int errorCount = 0;
 		
-		System.out.println("Smoke test the application");
 		Properties properties = null;
 		try {
 			properties = Utilities.read(C.CONFIG_PROPS);
 		} catch (IOException e) {
-			System.out.println("error while reading "+C.CONFIG_PROPS);
+			System.out.println(WARN+"error while reading "+C.CONFIG_PROPS);
 			return 1;
 		}
+		
+		logger.info("Setting up HibernateUtil ..");
+		try {
+			HibernateUtil.init(C.HIBERNATE_CFG.getAbsolutePath());
+		} catch (Exception e) {
+			System.out.println("Cannot instantiate database!");
+			return 1;
+		}
+		
+		
 		errorCount+=checkPaths(properties);
 		errorCount+=checkIrods(properties);
+		errorCount+=checkFormatIdentifiers();
+		
 		
 		if (errorCount==0) System.out.println("There were no errors.");
 		else System.out.println("There where "+errorCount+" errors.");
@@ -89,6 +113,30 @@ public class Diagnostics {
 	}
 
 	
+	
+	private static int checkFormatIdentifiers() {
+
+		int errorCount=0;
+		AbstractApplicationContext context =
+				new ClassPathXmlApplicationContext(DIAGNOSTICS_IDENTIFIER);
+		
+		CLIFormatIdentifier pronomFormatIdentifier = (CLIFormatIdentifier) context.getBean(BEAN_NAME_PRONOM_FORMAT_IDENTIFIER);
+		if (!pronomFormatIdentifier.healthCheck()){
+			errorCount++;
+			System.out.println(WARN+"pronomFormatIdentifier health check not passed.");
+		}
+		
+		CLIFormatIdentifier videoCodecFormatIdentifier = (CLIFormatIdentifier) context.getBean(BEAN_NAME_VIDEO_CODEC_FORMAT_IDENTIFIER);
+		if (!videoCodecFormatIdentifier.healthCheck()){
+			errorCount++;
+			System.out.println(WARN+"videoFormatIdentifier health check not passed.");
+		}
+		
+		context.close();
+		return errorCount;
+	}
+
+
 	private static int checkIrods(Properties properties){
 		int errorCount = 0;
 		

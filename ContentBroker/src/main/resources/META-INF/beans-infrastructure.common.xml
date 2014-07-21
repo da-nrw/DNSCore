@@ -93,7 +93,7 @@
         <property name="jhoveFolder" value="jhove"/>
     </bean>
     
-    <bean class="de.uzk.hki.da.model.CentralDatabaseDAO" id="centralDao"/>
+    
     <bean class="de.uzk.hki.da.service.MimeTypeDetectionService" id="mtds"/>
     
 	<bean class="de.uzk.hki.da.service.UserExceptionManager" id="userExceptionManager" init-method="readConfigFile"/>
