@@ -87,6 +87,20 @@
             			<td>Identifier:</td>
             			<td><g:textField name="search.obj.identifier" value="${params.search?.obj?.identifier}" size="50"/></td>
             		</tr>
+
+            			<tr>
+            			<td>Contractor:</td>
+            			<td>
+            				<g:select id="contractor" name="search.contractor" from="${contractorList}" optionKey="shortName" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
+            			</td>
+            		</tr>
+            			<tr>
+            			<td>InitialNode:</td>
+            			<td>
+            				<g:select id="initialNode" name="search.initialNode" from="${cbNodeList}" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.cbNodeList?.name}" class="many-to-one"/>
+            			</td>
+            		</tr>
+
             		<tr>
             			<td></td>
             			<td><g:submitButton name="submit" value="Filter anwenden"/></td>
