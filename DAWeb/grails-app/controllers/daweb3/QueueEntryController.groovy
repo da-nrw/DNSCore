@@ -40,13 +40,12 @@ class QueueEntryController {
     }
 
     def list() {
-        
+		def contractorList = Contractor.list()
+		def cbNodeList = CbNode.list()
+		[contractorList:contractorList,
+		cbNodeList:cbNodeList]
     }
     
-	def adminList() {
-		def contractorList = Contractor.list()
-		[contractorList:contractorList]
-	}
 
     def listSnippet() {
     	def queueEntries = null	
@@ -78,6 +77,11 @@ class QueueEntryController {
 						}
 					}
 				}
+				if (params.search?.initialNode) { 
+					if (params.search?.initialNode !="null"){ 
+						like("initialNode", params.search.initialNode+"%")
+					}
+				}
 				if (params.search?.status) 
 					like("status", params.search.status+"%")
 				if (session.contractor.admin==0) {
@@ -91,6 +95,17 @@ class QueueEntryController {
 					}
 				} else {
 				admin = true;
+				if (params.search?.contractor){
+					if(params.search?.contractor !="null"){
+						projections {
+							obj {
+									contractor {
+										eq("shortName", params.search.contractor)
+									}
+								}
+							}	
+						}
+					}
 				}
 			}
 		} 
@@ -98,7 +113,10 @@ class QueueEntryController {
 			admin:admin, periodical:periodical,
 			contractorList:contractorList ]
     }
-
+	
+	/** 
+	 * Generates detailed view for one item (SIP) in workflow
+	 */
     def show() {
         def queueEntryInstance = QueueEntry.get(params.id)
         if (!queueEntryInstance) {
@@ -110,6 +128,9 @@ class QueueEntryController {
         [queueEntryInstance: queueEntryInstance]
     }
 	
+	/**
+	 * Applies button and functionality to retry the last workflow step for an item
+	 */
 	def queueRetry() {
 		def queueEntryInstance = QueueEntry.get(params.id)
 		if (queueEntryInstance) {
@@ -137,6 +158,9 @@ class QueueEntryController {
 		[queueEntryInstance: queueEntryInstance]
 	}
 	
+	/**
+	 * Applies button and functionality to recover all the workflow for an item
+	 */
 	def queueRecover() {
 		def queueEntryInstance = QueueEntry.get(params.id)
 		if (queueEntryInstance) {
@@ -166,6 +190,9 @@ class QueueEntryController {
 		[queueEntryInstance: queueEntryInstance]
 	}
 	
+	/**
+	 * Applies button and functionality to remove an item from ContentBroker workflow
+	 */
 	def queueDelete() {
 		def queueEntryInstance = QueueEntry.get(params.id)
 		if (queueEntryInstance) {
