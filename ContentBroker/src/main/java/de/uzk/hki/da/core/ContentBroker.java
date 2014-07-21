@@ -20,7 +20,6 @@
 
 package de.uzk.hki.da.core;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -91,7 +90,10 @@ public class ContentBroker {
 		}
 		
 		if ((args.length>0)&&(args[0].equals("diagnostics"))){
-			System.exit(Diagnostics.run());
+			if (Diagnostics.run()!=0)
+				System.exit(1);
+			else
+				System.exit(0);
 		}
 		
 		
