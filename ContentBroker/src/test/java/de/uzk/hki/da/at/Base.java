@@ -65,14 +65,14 @@ public class Base {
 	protected void setUpBase() throws IOException{
 		
 		Properties properties = Utilities.read(new File("conf/config.properties"));
-		
+
+		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
+	
 		instantiateNode();
 		if (localNode==null) throw new IllegalStateException("localNode could not be instantiated");
 
 		System.out.println("localnode: "+localNode.getName());
 
-	
-		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
 		
 		instantiateGrid(
 				properties.getProperty("cb.implementation.grid"),
@@ -107,6 +107,12 @@ public class Base {
 		AbstractApplicationContext context = 
 				new FileSystemXmlApplicationContext("conf/beans.xml");
 		localNode = (Node) context.getBean("localNode");
+		
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.refresh(localNode);
+		session.close();
+		
 		context.close();
 	}
 	
@@ -402,7 +408,8 @@ public class Base {
 		
 		Job job = new Job();
 		job.setStatus(status);
-		job.setResponsibleNodeName(localNode.getName());
+		Node node = (Node)session.load(Node.class, localNode .getId());
+		job.setResponsibleNodeName(node.getName());
 		job.setObject(object);
 		session.save(job);
 		

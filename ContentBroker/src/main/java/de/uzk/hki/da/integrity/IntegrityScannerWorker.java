@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
@@ -74,10 +75,13 @@ public class IntegrityScannerWorker {
 	private String nodeAdminEmail;
 	
 	/** The local node name. */
-	private String localNodeName;
+	private String localNodeId;
 	
 	/** The system Email Address */
 	private String systemFromEmailAddress;
+
+
+	private CentralDatabaseDAO dao;
 	
 	/**
 	 * Checking for the AIPs related to this node.
@@ -85,12 +89,12 @@ public class IntegrityScannerWorker {
 	 * @author Jens Peters
 	 */
 	public void scheduleTask(){
-		logger.trace("Scanning AIP s of node " + localNodeName );
+		logger.trace("Scanning AIP s of node " + localNodeId );
 
 		try {
 			
 			Object object = null;
-			if ((object=fetchObjectForAudit())==null) { 
+			if ((object=getDao().fetchObjectForAudit(localNodeId))==null) { 
 				logger.warn("Found no object to audit.") ;
 				return;
 			}
@@ -126,51 +130,7 @@ public class IntegrityScannerWorker {
 	
 	
 	
-	/**
-	 * Determines which of the objects that the local node is responsible for 
-	 * (since it holds the primary copies of them) is the one which
-	 * has not been checked for the longest period of time. 
-	 * 
-	 * @return the next object that needs audit. null if there is no object in the database which meets the criteria.
-	 * 
-	 * @author Jens Peters
-	 * @author Daniel M. de Oliveira
-	 * 
-	 */
-	private synchronized Object fetchObjectForAudit() {
-		
-		try {
-			
-			Session session = HibernateUtil.openSession();
-			session.beginTransaction();
-			
-			Calendar now = Calendar.getInstance();
-			now.add(Calendar.HOUR_OF_DAY, -24);
-			@SuppressWarnings("rawtypes")
-			List l = null;
-			l = session.createQuery("from Object o where o.initial_node = ?1 and o.last_checked > ?2 and "
-					+ "o.object_state != ?3 and o.object_state != ?4 and o.object_state >= 50"
-					+ "order by o.last_checked asc")
-					.setParameter("1", localNodeName)
-					.setCalendar("2",now)
-					.setParameter("3", ObjectState.InWorkflow) // don't consider objects under work
-					.setParameter("4", ObjectState.UnderAudit) //           ||
-							.setReadOnly(true).list();
-			
-			Object objectToAudit = (Object) l.get(0);
-			
-			// lock object
-			objectToAudit.setObject_state(ObjectState.UnderAudit);
-			session.update(objectToAudit);
-			session.getTransaction().commit();
-			session.close();
-			
-			return objectToAudit;
-		
-		} catch (IndexOutOfBoundsException e){
-			return null;
-		}
-	}
+	
 	
 	
 	/**
@@ -181,7 +141,7 @@ public class IntegrityScannerWorker {
 	private void sendEmail(Object obj) {
 		// send Mail to Admin with Package in Error
 		logger.debug("Trying to send email");
-		String subject = "[" + "da-nrw".toUpperCase() +  "] Problem Report für " + obj.getIdentifier() + " auf " + localNodeName;
+		String subject = "[" + "da-nrw".toUpperCase() +  "] Problem Report für " + obj.getIdentifier() + " auf " + localNodeId;
 		if (nodeAdminEmail != null && !nodeAdminEmail.equals("")) {
 			try {
 				Mail.sendAMail(systemFromEmailAddress, nodeAdminEmail, subject, "Es gibt ein Problem mit dem Objekt an Ihrem Knoten " + obj.getContractor().getShort_name()+ "/" + obj.getIdentifier());
@@ -204,7 +164,7 @@ public class IntegrityScannerWorker {
 	 * @return the local node name
 	 */
 	public String getLocalNodeName() {
-		return localNodeName;
+		return localNodeId;
 	}
 
 	/**
@@ -213,7 +173,7 @@ public class IntegrityScannerWorker {
 	 * @param localNodeName the new local node name
 	 */
 	public void setLocalNodeName(String localNodeName) {
-		this.localNodeName = localNodeName;
+		this.localNodeId = localNodeName;
 	}
 
 	/**
@@ -293,6 +253,14 @@ public class IntegrityScannerWorker {
 	}
 
 
+	public String getLocalNodeId() {
+		return localNodeId;
+	}
+
+	public void setLocalNodeId(String localNodeId) {
+		this.localNodeId = localNodeId;
+	}
+
 	/**
 	 * Sets the min nodes.
 	 *
@@ -308,6 +276,14 @@ public class IntegrityScannerWorker {
 
 	public void setSystemFromEmailAddress(String systemFromEmailAddress) {
 		this.systemFromEmailAddress = systemFromEmailAddress;
+	}
+
+	public CentralDatabaseDAO getDao() {
+		return dao;
+	}
+
+	public void setDao(CentralDatabaseDAO dao) {
+		this.dao = dao;
 	}
 
 }

@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.RegisterObjectService;
 import de.uzk.hki.da.utils.Utilities;
@@ -85,7 +86,7 @@ public class IngestAreaScannerWorker {
 	private String ingestAreaRootPath;
 	
 	/** The local node name. */
-	private String localNodeName;
+	private String localNodeId;
 	
 	/**
 	 * 
@@ -129,6 +130,7 @@ public class IngestAreaScannerWorker {
 			logger.warn("dao is not set yet");
 			return;
 		}
+	
 		
 		try {
 		
@@ -156,7 +158,7 @@ public class IngestAreaScannerWorker {
 							session2,
 							contractor, 
 							convertMaskedSlashes(FilenameUtils.removeExtension(child)),
-							localNodeName,
+							localNodeId,
 							object);
 					session2.getTransaction().commit();
 					session2.close();
@@ -273,8 +275,8 @@ public class IngestAreaScannerWorker {
 	 *
 	 * @return the local node name
 	 */
-	public String getLocalNodeName() {
-		return localNodeName;
+	public String getLocalNodeId() {
+		return localNodeId;
 	}
 
 	/**
@@ -282,8 +284,8 @@ public class IngestAreaScannerWorker {
 	 *
 	 * @param localNodeName the new local node name
 	 */
-	public void setLocalNodeName(String localNodeName) {
-		this.localNodeName = localNodeName;
+	public void setLocalNodeId(String localNodeId) {
+		this.localNodeId = localNodeId;
 	}
 
 	/**

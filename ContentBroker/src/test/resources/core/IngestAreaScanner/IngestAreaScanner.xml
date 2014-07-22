@@ -11,7 +11,7 @@
 
     <bean id="ingestAreaScannerWorker" class="de.uzk.hki.da.core.IngestAreaScannerWorker" init-method="init">
     	<property name="ingestAreaRootPath" value="src/test/resources/core/IngestAreaScanner/ingest/" />
-    	<property name="localNodeName" value="testNode" />
+    	<property name="localNodeId" value="1" />
     	<property name="minAge" value="2000" />
     </bean>
 

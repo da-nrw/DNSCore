@@ -138,6 +138,12 @@
 					</execution>
 				</executions>
 				<configuration>
+				<systemProperties>
+            <property>
+              <name>env</name>
+              <value>${env}</value>
+            </property>
+          </systemProperties>
 					<includes>
 						<include>**/AT**.java</include>
 					</includes>

@@ -31,7 +31,6 @@ localNode.workAreaRootPath=/ci/storage/WorkArea
 localNode.gridCacheAreaRootPath=/ci/storage/GridCacheArea
 localNode.workingResource=ciWorkingResource
 localNode.replDestinations=ciArchiveResourceGroup
-localNode.name=localnode
 localNode.id=1
 
 elasticsearch.index=portal_ci

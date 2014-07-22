@@ -37,7 +37,7 @@ public class Node{
 	private int id;
 	
 	/** The name. */
-	@Transient private String name;
+	private String name;
 
 	/** The urn_index. */
 	private int urn_index=-1;
