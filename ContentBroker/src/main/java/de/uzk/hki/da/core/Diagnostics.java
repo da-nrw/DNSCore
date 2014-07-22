@@ -35,13 +35,16 @@ import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
+import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.Utilities;
 
 /**
- * Allows checking if the application will run prior to execution of the ContentBroker in "normal" execution mode.
+ * Checks basic connectivity of the application. 
+ * 
  * Expects a config.properties file at conf/config.properties
  * Expects a testpackage at conf/testpackage.tgz
  * 
@@ -51,28 +54,32 @@ public class Diagnostics {
 
 	private static final Logger logger = LoggerFactory.getLogger(Diagnostics.class);
 	
+	private static final String WARN = "WARN: ";
+
 	private static final String TEST_TGZ = "test.tgz";
 	private static final File DIAGNOSTICS_RETRIEVAL_FILE = Path.makeFile("tmp","diagnostics.tgz");
-	private static final String DIAGNOSTICS_IRODS = "classpath*:META-INF/beans-diagnostics.irods.xml";
-	private static final String DIAGNOSTICS_IDENTIFIER = "classpath*:META-INF/beans-diagnostics.identifier.xml";
-	private static final String WARN = "WARN: ";
-	private static final String MSG_GRID_CACHE_AREA_NOT_EXISTS = WARN+"path localNode.gridCacheAreaRootPath points to not exists";
-	private static final String MSG_WORK_AREA_NOT_EXISTS = WARN+"path localNode.workAreaRootPath not exists";
-	private static final String MSG_INGEST_AREA_NOT_EXISTS = WARN+"path localNode.ingestAreaRootPath points to not exists";
-	private static final String MSG_USER_AREA_NOT_EXISTS = WARN+"path localNode.userAreaRootPath points to not exists";
-	private static final String GRID_CACHE_AREA_ROOT_PATH = "localNode.gridCacheAreaRootPath";
 	
-	private static final String IRODS_GRID_FACADE_BEAN_NAME = "irodsGridFacade";
-	private static final String IRODS_SYSTEM_CONNECTOR_BEAN_NAME = "irodsSystemConnector";
+	private static final String BEANS_DIAGNOSTICS_IRODS = "classpath*:META-INF/beans-diagnostics.irods.xml";
+	private static final String BEANS_DIAGNOSTICS_IDENTIFIER = "classpath*:META-INF/beans-diagnostics.identifier.xml";
+	private static final String BEANS_DIAGNOSTICS_FEDORA = "classpath*:META-INF/beans-diagnostics.fedora.xml";
+	
+	private static final String BEAN_NAME_IRODS_GRID_FACADE = "irodsGridFacade";
+	private static final String BEAN_NAME_IRODS_SYSTEM_CONNECTOR = "irodsSystemConnector";
 	private static final String BEAN_NAME_PRONOM_FORMAT_IDENTIFIER = "pronomFormatIdentifier";
 	private static final String BEAN_NAME_VIDEO_CODEC_FORMAT_IDENTIFIER = "videoCodecFormatIdentifier";
+	private static final String BEAN_NAME_FEDORA_REPOSITORY_FACADE = "fedoraRepositoryFacade";
 	
+	private static final String PROP_GRID_CACHE_AREA_ROOT_PATH = "localNode.gridCacheAreaRootPath";
 	private static final String PROP_USER_AREA_ROOT_PATH = "localNode.userAreaRootPath";
 	private static final String PROP_INGEST_AREA_ROOT_PATH = "localNode.ingestAreaRootPath";
 	private static final String PROP_WORK_AREA_ROOT_PATH = "localNode.workAreaRootPath";
 	private static final String PROP_REPL_DESTINATIONS = "localNode.replDestinations";
 	private static final String PROP_IRODS_ZONE = "irods.zone";
 
+	private static final String MSG_USER_AREA_NOT_EXISTS = WARN+"path localNode.userAreaRootPath points to not exists";
+	private static final String MSG_GRID_CACHE_AREA_NOT_EXISTS = WARN+"path localNode.gridCacheAreaRootPath points to not exists";
+	private static final String MSG_WORK_AREA_NOT_EXISTS = WARN+"path localNode.workAreaRootPath not exists";
+	private static final String MSG_INGEST_AREA_NOT_EXISTS = WARN+"path localNode.ingestAreaRootPath points to not exists";
 
 	
 	
@@ -102,6 +109,7 @@ public class Diagnostics {
 		errorCount+=checkPaths(properties);
 		errorCount+=checkIrods(properties);
 		errorCount+=checkFormatIdentifiers();
+		errorCount+=checkFedora(properties);
 		
 		
 		if (errorCount==0) System.out.println("There were no errors.");
@@ -111,25 +119,49 @@ public class Diagnostics {
 
 	
 	
+	private static int checkFedora(Properties properties) {
+		
+		int errorCount=0;
+		AbstractApplicationContext context =
+				new ClassPathXmlApplicationContext(BEANS_DIAGNOSTICS_FEDORA);
+		Fedora3RepositoryFacade fedora = (Fedora3RepositoryFacade) context.getBean(BEAN_NAME_FEDORA_REPOSITORY_FACADE);		
+		context.close();
+		
+		try {
+			fedora.purgeObjectIfExists("abc", "coll1");
+			fedora.createObject("abc", "coll1", "TEST");
+			fedora.purgeObjectIfExists("abc", "coll1");
+		} catch (RepositoryException e) {
+			errorCount++;
+			System.out.println(WARN+"connection to fedora cannot be established");
+		}
+		
+		return errorCount;
+	}
+	
+	
+	
+	
 	private static int checkFormatIdentifiers() {
 
 		int errorCount=0;
 		AbstractApplicationContext context =
-				new ClassPathXmlApplicationContext(DIAGNOSTICS_IDENTIFIER);
-		
+				new ClassPathXmlApplicationContext(BEANS_DIAGNOSTICS_IDENTIFIER);
 		CLIFormatIdentifier pronomFormatIdentifier = (CLIFormatIdentifier) context.getBean(BEAN_NAME_PRONOM_FORMAT_IDENTIFIER);
+		CLIFormatIdentifier videoCodecFormatIdentifier = (CLIFormatIdentifier) context.getBean(BEAN_NAME_VIDEO_CODEC_FORMAT_IDENTIFIER);
+		context.close();
+
+		
 		if (!pronomFormatIdentifier.healthCheck()){
 			errorCount++;
 			System.out.println(WARN+"pronomFormatIdentifier health check not passed.");
 		}
 		
-		CLIFormatIdentifier videoCodecFormatIdentifier = (CLIFormatIdentifier) context.getBean(BEAN_NAME_VIDEO_CODEC_FORMAT_IDENTIFIER);
 		if (!videoCodecFormatIdentifier.healthCheck()){
 			errorCount++;
 			System.out.println(WARN+"videoFormatIdentifier health check not passed.");
 		}
 		
-		context.close();
 		return errorCount;
 	}
 
@@ -138,9 +170,12 @@ public class Diagnostics {
 		int errorCount = 0;
 		
 		AbstractApplicationContext context =
-				new ClassPathXmlApplicationContext(DIAGNOSTICS_IRODS);
-		
+				new ClassPathXmlApplicationContext(BEANS_DIAGNOSTICS_IRODS);
+		IrodsSystemConnector irods = (IrodsSystemConnector) context.getBean(BEAN_NAME_IRODS_SYSTEM_CONNECTOR);
+		IrodsGridFacade irodsGridFacade = (IrodsGridFacade) context.getBean(BEAN_NAME_IRODS_GRID_FACADE);
 		Node node = (Node) context.getBean(C.LOCAL_NODE_BEAN_NAME);
+		context.close();
+		
 		StoragePolicy sp = new StoragePolicy(node);
 		sp.setMinNodes(1);
 		List<String> replDestinations = new ArrayList<String>();
@@ -148,9 +183,6 @@ public class Diagnostics {
 		
 		sp.setDestinations(replDestinations);
 		
-		
-		
-		IrodsSystemConnector irods = (IrodsSystemConnector) context.getBean(IRODS_SYSTEM_CONNECTOR_BEAN_NAME);
 		try{
 			irods.connect();
 			irods.removeFileAndEatException(Path.make((String) properties.getProperty(PROP_IRODS_ZONE),C.AIP,C.TEST,TEST_TGZ).toString());
@@ -161,9 +193,6 @@ public class Diagnostics {
 			System.out.println(WARN+"cannot connect to irods via irodsSystemConnector and delete test file. "+e.getMessage());
 		}
 		
-		
-		
-		IrodsGridFacade irodsGridFacade = (IrodsGridFacade) context.getBean(IRODS_GRID_FACADE_BEAN_NAME);
 		try {
 			irodsGridFacade.put( C.BASIC_TEST_PACKAGE, new RelativePath(C.TEST,TEST_TGZ).toString(), sp);
 		} catch (Exception e) {
@@ -180,7 +209,6 @@ public class Diagnostics {
 		}
 		if (DIAGNOSTICS_RETRIEVAL_FILE.exists()) DIAGNOSTICS_RETRIEVAL_FILE.delete();
 		
-		context.close();
 		return errorCount;
 	}
 	
@@ -202,7 +230,7 @@ public class Diagnostics {
 			System.out.println(MSG_WORK_AREA_NOT_EXISTS);
 			errorCount++;
 		}
-		if (!new File(properties.getProperty(GRID_CACHE_AREA_ROOT_PATH)).exists()) {
+		if (!new File(properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH)).exists()) {
 			System.out.println(MSG_GRID_CACHE_AREA_NOT_EXISTS);
 			errorCount++;
 		}

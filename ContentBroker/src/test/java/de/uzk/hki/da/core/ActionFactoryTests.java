@@ -64,11 +64,12 @@ public class ActionFactoryTests {
 	public void setUp() {
 		c.setShort_name("csn");
 		
-		HibernateUtil.init("src/main/conf/hibernateCentralDB.cfg.xml.inmem");
+		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		CentralDatabaseDAO dao = new CentralDatabaseDAO();
+		
 		session.save(new Node("testnode","01-testnode"));
 		
 		session.getTransaction().commit();	

@@ -98,6 +98,7 @@
                 <appender-ref ref="OBJECT" />
         </logger>
 
+
         <logger name="org.hibernate" level="INFO">
                 <appender-ref ref="OBJECT" />
         </logger>

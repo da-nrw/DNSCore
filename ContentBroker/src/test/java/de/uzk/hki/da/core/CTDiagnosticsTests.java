@@ -40,9 +40,22 @@ import de.uzk.hki.da.utils.TC;
  */
 public class CTDiagnosticsTests {
 
-	private static final String CONFIGURE_SH = "configure.sh";
-	private static final String FIDO_SH = "fido.sh";
-	private static final String FFMPEG_SH = "ffmpeg.sh";
+	// set path to logback xml before anything else happens
+	static { 
+		System.setProperty("logback.configurationFile", "src/main/xml/logback.xml.debug");
+	}
+	
+	private static final File LOCAL_DIR = new File("./");
+	private static final File FIDO_DIR = new File("fido");
+	private static final File FIDO_SRC = new File("../3rdParty/fido");
+	private static final File FFMPEG_SH_FAKE_SRC = new File("src/main/bash/ffmpeg.sh.fake");
+	private static final String CHMOD_777 = "chmod 777 ";
+	private static final File HEALTH_CHK_TIF_SRC = new File("src/main/resources/healthCheck.tif");
+	private static final File HEALTH_CHK_AVI_SRC = new File("src/main/resources/healthCheck.avi");
+	private static final File FIDO_SH_SRC = new File("src/main/bash/fido.sh");
+	private static final File CONFIGURE_SH = new File("configure.sh");
+	private static final File FIDO_SH = new File("fido.sh");
+	private static final File FFMPEG_SH = new File("ffmpeg.sh");
 	private static final File TEST_PACKAGE_SRC = Path.makeFile(TC.TEST_ROOT_AT,"AT_CON2.tgz");
 	private static final File CI_DATABASE_CFG = new RelativePath("src","main","xml","hibernateCentralDB.cfg.xml.ci").toFile();
 	private static final File CONFIGURE_SH_SRC = new RelativePath("src/main/bash/configure.sh").toFile();
@@ -50,32 +63,36 @@ public class CTDiagnosticsTests {
 	
 	@Before
 	public void setUp() throws IOException{
+		
 		C.CONF.toFile().mkdirs();
 		FileUtils.copyFile(TC.CONFIG_PROPS_CI, C.CONFIG_PROPS);
 		FileUtils.copyFile(TEST_PACKAGE_SRC, C.BASIC_TEST_PACKAGE);
 		FileUtils.copyFile(CI_DATABASE_CFG, C.HIBERNATE_CFG);
 		
-		FileUtils.copyDirectoryToDirectory(new File("../3rdParty/fido"), new File("./"));
+		FileUtils.copyDirectoryToDirectory(FIDO_SRC, LOCAL_DIR);
 
-		FileUtils.copyFileToDirectory(new File("src/main/resources/healthCheck.avi"), C.CONF.toFile());
-		FileUtils.copyFileToDirectory(new File("src/main/resources/healthCheck.tif"), C.CONF.toFile());
-		FileUtils.copyFileToDirectory(new File("src/main/bash/fido.sh"), new File("./"));
-		Runtime.getRuntime().exec("chmod 777 "+ FIDO_SH);
-		FileUtils.copyFile(new File("src/main/bash/ffmpeg.sh.fake"), new File(FFMPEG_SH));
-		Runtime.getRuntime().exec("chmod 777 "+FFMPEG_SH);
-		FileUtils.copyFileToDirectory(CONFIGURE_SH_SRC, new File("./"));
-		Runtime.getRuntime().exec("chmod 777 "+CONFIGURE_SH);
+		FileUtils.copyFileToDirectory(HEALTH_CHK_AVI_SRC, C.CONF.toFile());
+		FileUtils.copyFileToDirectory(HEALTH_CHK_TIF_SRC, C.CONF.toFile());
+		FileUtils.copyFileToDirectory(FIDO_SH_SRC, LOCAL_DIR);
+		Runtime.getRuntime().exec(CHMOD_777+ FIDO_SH);
+		FileUtils.copyFile(FFMPEG_SH_FAKE_SRC, FFMPEG_SH);
+		Runtime.getRuntime().exec(CHMOD_777+FFMPEG_SH);
+		FileUtils.copyFileToDirectory(CONFIGURE_SH_SRC, LOCAL_DIR);
+		Runtime.getRuntime().exec(CHMOD_777+CONFIGURE_SH);
 		Runtime.getRuntime().exec("./"+CONFIGURE_SH);
-		
 	}
+
+	
+	
+	
 	
 	@After
 	public void tearDown(){
 		FileUtils.deleteQuietly(C.CONF.toFile());
-		FileUtils.deleteQuietly(new File("fido"));
-		FileUtils.deleteQuietly(new File(CONFIGURE_SH));
-		FileUtils.deleteQuietly(new File(FIDO_SH));
-		FileUtils.deleteQuietly(new File("ffmpeg.sh"));
+		FileUtils.deleteQuietly(FIDO_DIR);
+		FileUtils.deleteQuietly(CONFIGURE_SH);
+		FileUtils.deleteQuietly(FIDO_SH);
+		FileUtils.deleteQuietly(FFMPEG_SH);
 	}
 	
 	
