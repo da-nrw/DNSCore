@@ -21,6 +21,7 @@ package de.uzk.hki.da.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -86,6 +87,7 @@ public class Event {
 	private Date date;
 	
 	/** The detail. */
+	@Column(length=1000)
 	private String detail;
 	
 	/** The outcome. */

@@ -63,12 +63,12 @@ function startContentBroker(){
 	#SOURCE_PATH=`pwd`
 	cd $1
 	
-	java $JAVA_OPTS -jar ContentBroker.jar diagnostics
-	if [ $? != 0 ] 
-	then
-		echo DIAGNOSTICS returned ERROR
-		exit 1
-	fi
+	#java $JAVA_OPTS -jar ContentBroker.jar diagnostics
+	#if [ $? != 0 ] 
+	#then
+	#		echo DIAGNOSTICS returned ERROR
+	#		exit 1
+	#	fi
 	
 	./ContentBroker_start.sh
 	sleep 15
@@ -132,6 +132,9 @@ esac
 
 mkdir conf
 cp src/main/xml/hibernateCentralDB.cfg.xml.$1 conf/hibernateCentralDB.cfg.xml
+cp src/main/xml/beans.xml.acceptance-test.$1 conf/beans.xml
+cp src/main/conf/config.properties.$1 conf/config.properties
+
 java -jar target/ContentBroker-SNAPSHOT.jar createSchema
 src/main/bash/populatetestdb.sh populate $1
 
@@ -143,7 +146,7 @@ rm $INSTALL_PATH/actionCommunicatorService.recovery
 install $INSTALL_PATH $BEANS
 # TODO 1. really needed on a ci machine? 2. duplication with installer?
 cp src/main/bash/ffmpeg.sh.fake $INSTALL_PATH/ffmpeg.sh
-cp src/main/xml/beans.xml.acceptance-test.$1 conf/beans.xml
+
 cp $INSTALL_PATH/conf/config.properties conf/
 
 startContentBroker $INSTALL_PATH

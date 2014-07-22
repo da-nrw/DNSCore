@@ -67,7 +67,7 @@ public class CentralDatabaseDAO {
 	public Job fetchJobFromQueue(String status, String workingStatus, Node node) {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-
+		logger.debug("Fetch job for node name " + node.getName());
 		List<Job> joblist=null;
 		try{
 			session.refresh(node);
@@ -156,20 +156,10 @@ public class CentralDatabaseDAO {
 	public synchronized Object fetchObjectForAudit(String localNodeId) {
 		
 		try {
-			Session session2 = HibernateUtil.openSession();
-			session2.beginTransaction();
-			@SuppressWarnings("rawtypes")
-			List list = session2.createQuery("from Node where id=?1")
-		
-					.setParameter("1",localNodeId).setReadOnly(true).list();
-			
-			if (list.isEmpty())
-				return null;
-		
-			Node node = (Node) list.get(0);
-			String localNodeName = node.getName();
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
+	
+			Node node = (Node) session.get(Node.class,Integer.parseInt(localNodeId));
 			
 			Calendar now = Calendar.getInstance();
 			now.add(Calendar.HOUR_OF_DAY, -24);
@@ -178,7 +168,7 @@ public class CentralDatabaseDAO {
 			l = session.createQuery("from Object o where o.initial_node = ?1 and o.last_checked > ?2 and "
 					+ "o.object_state != ?3 and o.object_state != ?4 and o.object_state >= 50"
 					+ "order by o.last_checked asc")
-					.setParameter("1", localNodeName)
+					.setParameter("1", node.getName())
 					.setCalendar("2",now)
 					.setParameter("3", ObjectState.InWorkflow) // don't consider objects under work
 					.setParameter("4", ObjectState.UnderAudit) //           ||
@@ -306,27 +296,6 @@ public class CentralDatabaseDAO {
 			return null;
 	
 		return (Contractor) list.get(0);
-	}
-	
-	/**
-	 * Gets the Node.
-	 *
-	 * @param nodeId
-	 * @return null if no node is found
-	 */
-	public Node getNode(Session session, String nodeId) {
-		logger.trace("CentralDatabaseDAO.getNode(\"" + nodeId + "\")");
-	
-		@SuppressWarnings("rawtypes")
-		List list;	
-		list = session.createQuery("from Node where id=?1")
-	
-				.setParameter("1",nodeId).setReadOnly(true).list();
-		
-		if (list.isEmpty())
-			return null;
-	
-		return (Node) list.get(0);
 	}
 	
 	
