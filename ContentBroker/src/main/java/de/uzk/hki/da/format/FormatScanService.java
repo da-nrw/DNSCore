@@ -49,9 +49,6 @@ public class FormatScanService {
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(FormatScanService.class);
 	
-	/** The format identifiers health checked. */
-	boolean formatIdentifiersHealthChecked = false;
-
 	/** The pronom format identifier. */
 	private CLIFormatIdentifier pronomFormatIdentifier;
 	
@@ -93,7 +90,6 @@ public class FormatScanService {
 	 * @author Daniel M. de Oliveira
 	 */
 	public List<DAFile> identify(List<DAFile> files) throws FileNotFoundException {
-		if (!formatIdentifiersHealthChecked) throw new IllegalStateException("Format Identifiers not initialized");
 		for (DAFile f:files){
 			if (!f.toRegularFile().exists()) throw new FileNotFoundException("file "+f.toRegularFile().getPath()+" doesn't exist");
 		}	
@@ -144,9 +140,7 @@ public class FormatScanService {
 	 * <li> the last puid from the output of the identifier, if there are more than one.
 	 */
 	private String identify(File file) {
-		if (!formatIdentifiersHealthChecked) throw new IllegalStateException("Format Identifiers not initialized");
-		
-		
+
 		Set<String> fileFormats = getPronomFormatIdentifier().identify(file);
 		if (fileFormats.isEmpty()){
 			logger.warn("Identified format for file: \""+file.getName()+"\" is declared UNDEFINED due to the missing result of the" +
