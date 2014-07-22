@@ -48,7 +48,7 @@ public class ATUseCaseIngestDeltaValidationNotPassed extends UserErrorBase {
 
 		object = putPackageToStorageInPreparationForDeltaIngest(IDENTIFIER,ORIG_NAME,CONTAINER_NAME);
 		FileUtils.copyFile(Path.makeFile(TC.TEST_ROOT_AT,CONTAINER_NAME), 
-				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST,CONTAINER_NAME));
+				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME,CONTAINER_NAME));
 	}
 	
 	@After

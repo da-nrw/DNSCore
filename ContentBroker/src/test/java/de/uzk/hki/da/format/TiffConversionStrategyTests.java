@@ -49,7 +49,7 @@ public class TiffConversionStrategyTests {
 	private static final String TIFF_CONVERSION_STRATEGY_TESTS = "TiffConversionStrategyTests";
 
 	Path workAreaRootPath=Path.make(TC.TEST_ROOT_FORMAT,TIFF_CONVERSION_STRATEGY_TESTS);
-	Path contractorFolder=Path.make(workAreaRootPath,"work",C.TEST);
+	Path contractorFolder=Path.make(workAreaRootPath,"work",C.TEST_USER_SHORT_NAME);
 	
 	TiffConversionStrategy cs = new TiffConversionStrategy();
 	

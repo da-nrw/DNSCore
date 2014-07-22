@@ -44,7 +44,7 @@ public class UserErrorBase extends Base{
 		if (!containerSuffix.isEmpty()) containerSuffix="."+containerSuffix;
 		
 		FileUtils.copyFileToDirectory(Path.makeFile(TC.TEST_ROOT_AT,originalName+containerSuffix), 
-				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST));
+				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME));
 		waitForJobToBeInErrorStatus(originalName,errorStateLastDigit,timeout);
 		return fetchObjectFromDB(originalName);
 	}

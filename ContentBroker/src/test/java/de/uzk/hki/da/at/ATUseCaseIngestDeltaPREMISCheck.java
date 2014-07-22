@@ -65,7 +65,7 @@ public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
 
 		object = putPackageToStorageInPreparationForDeltaIngest(IDENTIFIER,ORIG_NAME,containerName);
 		FileUtils.copyFile(Path.makeFile(TC.TEST_ROOT_AT,ORIG_NAME+"2.tgz"), 
-				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST,containerName));
+				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME,containerName));
 	}
 	
 	@After

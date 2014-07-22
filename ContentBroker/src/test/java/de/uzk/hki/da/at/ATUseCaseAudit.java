@@ -18,17 +18,8 @@
  */
 package de.uzk.hki.da.at;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -36,28 +27,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.hibernate.classic.Session;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.Namespace;
-import org.jdom.input.SAXBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.grid.IrodsSystemConnector;
-import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.StoragePolicy;
-import de.uzk.hki.da.service.Mail;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
 
 
 /**
@@ -67,9 +47,9 @@ import de.uzk.hki.da.service.Mail;
  */
 public class ATUseCaseAudit extends Base{
 	
-	private String originalName = "ATUseCaseAudit";
-	private String containerName = originalName+".tgz";
-	private String archiveStoragePath = "/ci/archiveStorage/aip/TEST/";
+	private static final String ORIGINAL_NAME = "ATUseCaseAudit";
+	private static final String CONTAINER_NAME = ORIGINAL_NAME+"."+C.TGZ;
+	private static final Path archiveStoragePath = Path.make("/ci/archiveStorage/aip/TEST/");
 	private Object object = null;
 	
 	@Before
@@ -80,43 +60,41 @@ public class ATUseCaseAudit extends Base{
 	@After
 	public void tearDown(){ 
 		try{
-			new File(localNode.getIngestAreaRootPath()+"/TEST/"+containerName).delete();
-			new File("/tmp/"+object.getIdentifier()+".pack_1.tar").delete();
-			FileUtils.deleteDirectory(new File("/tmp/"+object.getIdentifier()+".pack_1"));
+			Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME,CONTAINER_NAME).delete();
+			Path.makeFile("tmp",object.getIdentifier()+".pack_1.tar").delete();
+			FileUtils.deleteDirectory(Path.makeFile("tmp",object.getIdentifier()+".pack_1"));
 		}catch(Exception e){
 			System.out.println(e.getMessage());
 		}
 		
 		clearDB();
-		//cleanStorage();
+		cleanStorage();
 	}
 	
 	@Test
 	public void testHappyPath() throws Exception {
-		ingest(originalName);
+		ingest(ORIGINAL_NAME);
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		object = dao.getUniqueObject(session, originalName, "TEST");
+		object = dao.getUniqueObject(session, ORIGINAL_NAME, "TEST");
 		session.close();
 		// We'll destroy it now, if we 're on CI
 		// on dev machines FakeGridFacade will find special file in ATUseCaseAudit
 		if (System.getProperty("env").equals("ci"))
-		destroyFileInCIEnvironment(object.getIdentifier());
+			destroyFileInCIEnvironment(object.getIdentifier());
 		assertTrue(waitForObjectInStatus(51));
 	}
 		
 	private void destroyFileInCIEnvironment(String identifier) {
 		
-		
-		String filename = archiveStoragePath + "TEST/" + identifier + "/"+identifier+".pack_1.tar";
-		File file = new File(filename);
+		File file = Path.makeFile(archiveStoragePath,identifier,identifier+".pack_1.tar");
 		if (!file.exists()) {	
-			fail(filename  + " does not exist!" );
+			fail(file  + " does not exist!" );
 		}
 		Writer writer = null;
 		try {
 		    writer = new BufferedWriter(new OutputStreamWriter(
-		          new FileOutputStream(filename), "utf-8"));
+		          new FileOutputStream(file), "utf-8"));
 		    writer.write("Something");
 		} catch (IOException ex) {
 		  fail("writing to file");
@@ -131,7 +109,7 @@ public class ATUseCaseAudit extends Base{
 			Thread.sleep(6000);
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
-			Object object = dao.getUniqueObject(session, originalName, "TEST");
+			Object object = dao.getUniqueObject(session, ORIGINAL_NAME, C.TEST_USER_SHORT_NAME);
 			session.close();		
 			if (object!=null){
 				

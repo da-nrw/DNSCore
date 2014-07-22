@@ -144,7 +144,7 @@ public class Base {
 			
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
-			Job job = dao.getJob(session, originalName, C.TEST);
+			Job job = dao.getJob(session, originalName, C.TEST_USER_SHORT_NAME);
 			session.close();
 			
 			if (job==null) continue;
@@ -299,7 +299,7 @@ public class Base {
 	protected void cleanStorage(){
 		FileUtils.deleteQuietly(Path.make(localNode.getWorkAreaRootPath(),"/work/TEST").toFile());
 		FileUtils.deleteQuietly(Path.make(localNode.getIngestAreaRootPath(),"/TEST").toFile());
-		FileUtils.deleteQuietly(Path.makeFile(localNode.getGridCacheAreaRootPath(),C.AIP,C.TEST));
+		FileUtils.deleteQuietly(Path.makeFile(localNode.getGridCacheAreaRootPath(),C.AIP,C.TEST_USER_SHORT_NAME));
 		FileUtils.deleteQuietly(Path.make(localNode.getWorkAreaRootPath(),"/pips/institution/TEST").toFile());
 		FileUtils.deleteQuietly(Path.make(localNode.getWorkAreaRootPath(),"/pips/public/TEST").toFile());
 		FileUtils.deleteQuietly(Path.make(localNode.getUserAreaRootPath(),"/TEST/outgoing").toFile());
@@ -315,7 +315,7 @@ public class Base {
 		distributedConversionAdapter.create("pips/public/TEST");
 		
 		Path.make(localNode.getUserAreaRootPath(),"/TEST/outgoing").toFile().mkdirs();
-		Path.makeFile(localNode.getGridCacheAreaRootPath(),"aip",C.TEST).mkdirs();
+		Path.makeFile(localNode.getGridCacheAreaRootPath(),"aip",C.TEST_USER_SHORT_NAME).mkdirs();
 		Path.make(localNode.getIngestAreaRootPath(),"/TEST").toFile().mkdirs();
 		Path.make(localNode.getWorkAreaRootPath(),"/work/TEST").toFile().mkdirs();
 		Path.make(localNode.getWorkAreaRootPath(),"/pips/public/TEST").toFile().mkdirs();
@@ -342,7 +342,7 @@ public class Base {
 		sp.setMinNodes(1);
 		
 		gridFacade.put(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_1.tar"), 
-				new RelativePath(C.TEST,identifier,identifier+".pack_1.tar").toString(), sp);
+				new RelativePath(C.TEST_USER_SHORT_NAME,identifier,identifier+".pack_1.tar").toString(), sp);
 
 		Object object = new Object();
 		object.setContractor(testContractor);

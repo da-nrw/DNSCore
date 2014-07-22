@@ -211,7 +211,7 @@ public class Diagnostics {
 		System.out.print("CHECKING IRODS CONNECTION: ");
 		try{
 			irods.connect();
-			irods.removeFileAndEatException(Path.make((String) properties.getProperty(PROP_IRODS_ZONE),C.AIP,C.TEST,TEST_TGZ).toString());
+			irods.removeFileAndEatException(Path.make((String) properties.getProperty(PROP_IRODS_ZONE),C.AIP,C.TEST_USER_SHORT_NAME,TEST_TGZ).toString());
 			irods.logoff();
 			System.out.println("OK");
 		}
@@ -222,7 +222,7 @@ public class Diagnostics {
 		
 		System.out.print("CHECKING GRID FACADE PUT: ");
 		try {
-			irodsGridFacade.put( C.BASIC_TEST_PACKAGE, new RelativePath(C.TEST,TEST_TGZ).toString(), sp);
+			irodsGridFacade.put( C.BASIC_TEST_PACKAGE, new RelativePath(C.TEST_USER_SHORT_NAME,TEST_TGZ).toString(), sp);
 			System.out.println("OK");
 		} catch (Exception e) {
 			errorCount++;
@@ -232,7 +232,7 @@ public class Diagnostics {
 		System.out.print("CHECKING GRID FACADE GET: ");
 		if (DIAGNOSTICS_RETRIEVAL_FILE.exists()) DIAGNOSTICS_RETRIEVAL_FILE.delete();
 		try {
-			irodsGridFacade.get(DIAGNOSTICS_RETRIEVAL_FILE, new RelativePath(C.TEST,TEST_TGZ).toString());
+			irodsGridFacade.get(DIAGNOSTICS_RETRIEVAL_FILE, new RelativePath(C.TEST_USER_SHORT_NAME,TEST_TGZ).toString());
 			System.out.println("OK");
 		} catch (Exception e) {
 			errorCount++;
