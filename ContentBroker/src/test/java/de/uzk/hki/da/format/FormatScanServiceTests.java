@@ -94,8 +94,6 @@ public class FormatScanServiceTests {
 		formatSecondAttributeIdentifiers.add(tiffCompressionMockIdentifier);
 		formatScanService.setFormatSecondaryAttributeIdentifiers(formatSecondAttributeIdentifiers);
 		
-		formatScanService.formatIdentifiersHealthChecked = true;
-		
 		object = TESTHelper.setUpObject("123",new RelativePath(workAreaRootPath));
 	}
 
