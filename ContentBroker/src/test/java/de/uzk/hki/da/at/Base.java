@@ -293,7 +293,7 @@ public class Base {
 	protected void cleanStorage(){
 		FileUtils.deleteQuietly(Path.make(localNode.getWorkAreaRootPath(),"/work/TEST").toFile());
 		FileUtils.deleteQuietly(Path.make(localNode.getIngestAreaRootPath(),"/TEST").toFile());
-		FileUtils.deleteQuietly(Path.make(localNode.getGridCacheAreaRootPath(),"/TEST").toFile());
+		FileUtils.deleteQuietly(Path.makeFile(localNode.getGridCacheAreaRootPath(),C.AIP,C.TEST));
 		FileUtils.deleteQuietly(Path.make(localNode.getWorkAreaRootPath(),"/pips/institution/TEST").toFile());
 		FileUtils.deleteQuietly(Path.make(localNode.getWorkAreaRootPath(),"/pips/public/TEST").toFile());
 		FileUtils.deleteQuietly(Path.make(localNode.getUserAreaRootPath(),"/TEST/outgoing").toFile());
@@ -309,7 +309,7 @@ public class Base {
 		distributedConversionAdapter.create("pips/public/TEST");
 		
 		Path.make(localNode.getUserAreaRootPath(),"/TEST/outgoing").toFile().mkdirs();
-		Path.make(localNode.getGridCacheAreaRootPath(),"/TEST").toFile().mkdirs();
+		Path.makeFile(localNode.getGridCacheAreaRootPath(),"aip",C.TEST).mkdirs();
 		Path.make(localNode.getIngestAreaRootPath(),"/TEST").toFile().mkdirs();
 		Path.make(localNode.getWorkAreaRootPath(),"/work/TEST").toFile().mkdirs();
 		Path.make(localNode.getWorkAreaRootPath(),"/pips/public/TEST").toFile().mkdirs();

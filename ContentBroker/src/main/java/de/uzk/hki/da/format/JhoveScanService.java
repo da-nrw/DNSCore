@@ -20,13 +20,13 @@
 package de.uzk.hki.da.format;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.Utilities;
@@ -39,6 +39,8 @@ import de.uzk.hki.da.utils.Utilities;
  */
 public class JhoveScanService {
 	
+	private static final String JHOVE_CONF = "conf/jhove.conf";
+
 	/** The Constant logger. */
 	static final Logger logger = LoggerFactory.getLogger(JhoveScanService.class);
 	
@@ -71,10 +73,14 @@ public class JhoveScanService {
 	 * @return the string
 	 * @throws Exception the exception
 	 */
-	public String extract(DAFile file, int jobId) throws IOException {
+	public String extract(File file, int jobId) throws IOException {
+		if (jhoveFolder==null) throw new RuntimeException("jhove folder is null");
+		if (!new File(jhoveFolder).exists()) throw new FileNotFoundException("jhove folder does not exist");
+		if (!file.exists()) throw new FileNotFoundException("File to extract Metadata from doesn't exist! ("+file+")");
 		
-		String filePath = file.toRegularFile().getAbsolutePath();
-		if (!file.toRegularFile().exists()) throw new IOException("File to extract Metadata from doesn't exist! ("+file.toRegularFile()+")");
+		
+		
+		String filePath = file.getAbsolutePath();
 		String path = filePath.replace('/', '_').replace('.', '_');
 		String outputFileName = DigestUtils.md5Hex(path) + ".xml";
 		String outputFolderName = new File(jhoveFolder).getAbsolutePath() + "/temp/" + jobId + "/";
@@ -88,7 +94,7 @@ public class JhoveScanService {
 		}
 		
 		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {
-                "/bin/sh", "jhove", "-c", "conf/jhove.conf", "-h", "XML",
+                "/bin/sh", "jhove", "-c", JHOVE_CONF, "-h", "XML",
                 filePath, "-o", outputFilePath },
                 new File(jhoveFolder));
 				
@@ -98,7 +104,7 @@ public class JhoveScanService {
             logger.warn("Jhove error. Will try again without complete file parsing.");
             
             pi = CommandLineConnector.runCmdSynchronously(new String[] {
-                    "/bin/sh", "jhove", "-c", "conf/jhove.conf", "-h", "XML", "-s",
+                    "/bin/sh", "jhove", "-c", JHOVE_CONF, "-h", "XML", "-s",
                     filePath, "-o", outputFilePath },
                     new File(jhoveFolder));
             

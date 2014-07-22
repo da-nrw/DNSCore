@@ -31,8 +31,10 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import de.uzk.hki.da.format.CLIFormatIdentifier;
+import de.uzk.hki.da.format.JhoveScanService;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
+import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
@@ -106,6 +108,7 @@ public class Diagnostics {
 		}
 		
 		
+		errorCount+=checkJhove();
 		errorCount+=checkPaths(properties);
 		errorCount+=checkIrods(properties);
 		errorCount+=checkFormatIdentifiers();
@@ -119,6 +122,23 @@ public class Diagnostics {
 
 	
 	
+	private static int checkJhove() {
+		
+		System.out.print("CHECKING JHOVE: ");
+		JhoveScanService jhove = new JhoveScanService();
+		jhove.setJhoveFolder("jhove");
+		try {
+			jhove.extract(new File("conf/healthCheck.tif"), 1);
+			System.out.println("OK");
+		} catch (IOException e) {
+			System.out.println(WARN+" jhove scan service doesnt work");
+			return 1;
+		}
+		return 0;
+	}
+
+
+
 	private static int checkFedora(Properties properties) {
 		
 		int errorCount=0;
@@ -127,10 +147,12 @@ public class Diagnostics {
 		Fedora3RepositoryFacade fedora = (Fedora3RepositoryFacade) context.getBean(BEAN_NAME_FEDORA_REPOSITORY_FACADE);		
 		context.close();
 		
+		System.out.print("CHECKING FEDORA CONNECTIVITY: ");
 		try {
 			fedora.purgeObjectIfExists("abc", "coll1");
 			fedora.createObject("abc", "coll1", "TEST");
 			fedora.purgeObjectIfExists("abc", "coll1");
+			System.out.println("OK");
 		} catch (RepositoryException e) {
 			errorCount++;
 			System.out.println(WARN+"connection to fedora cannot be established");
@@ -143,7 +165,7 @@ public class Diagnostics {
 	
 	
 	private static int checkFormatIdentifiers() {
-
+		
 		int errorCount=0;
 		AbstractApplicationContext context =
 				new ClassPathXmlApplicationContext(BEANS_DIAGNOSTICS_IDENTIFIER);
@@ -152,15 +174,18 @@ public class Diagnostics {
 		context.close();
 
 		
+		System.out.print("CHECKING PRONOM FORMAT IDENTIFIER: ");
 		if (!pronomFormatIdentifier.healthCheck()){
 			errorCount++;
 			System.out.println(WARN+"pronomFormatIdentifier health check not passed.");
-		}
+		}else System.out.println("OK");
+
 		
+		System.out.print("CHECKING VIDEO FORMAT IDENTIFIER: ");
 		if (!videoCodecFormatIdentifier.healthCheck()){
 			errorCount++;
 			System.out.println(WARN+"videoFormatIdentifier health check not passed.");
-		}
+		}else System.out.println("OK");
 		
 		return errorCount;
 	}
@@ -183,26 +208,32 @@ public class Diagnostics {
 		
 		sp.setDestinations(replDestinations);
 		
+		System.out.print("CHECKING IRODS CONNECTION: ");
 		try{
 			irods.connect();
 			irods.removeFileAndEatException(Path.make((String) properties.getProperty(PROP_IRODS_ZONE),C.AIP,C.TEST,TEST_TGZ).toString());
 			irods.logoff();
+			System.out.println("OK");
 		}
 		catch(Exception e){
 			errorCount++;
 			System.out.println(WARN+"cannot connect to irods via irodsSystemConnector and delete test file. "+e.getMessage());
 		}
 		
+		System.out.print("CHECKING GRID FACADE PUT: ");
 		try {
 			irodsGridFacade.put( C.BASIC_TEST_PACKAGE, new RelativePath(C.TEST,TEST_TGZ).toString(), sp);
+			System.out.println("OK");
 		} catch (Exception e) {
 			errorCount++;
 			System.out.println(WARN+"cannot put file via irodsGridFacade");
 		}
 		
+		System.out.print("CHECKING GRID FACADE GET: ");
 		if (DIAGNOSTICS_RETRIEVAL_FILE.exists()) DIAGNOSTICS_RETRIEVAL_FILE.delete();
 		try {
 			irodsGridFacade.get(DIAGNOSTICS_RETRIEVAL_FILE, new RelativePath(C.TEST,TEST_TGZ).toString());
+			System.out.println("OK");
 		} catch (Exception e) {
 			errorCount++;
 			System.out.println(WARN+"connot retrieve file via irodsGridFacade");
@@ -218,6 +249,7 @@ public class Diagnostics {
 		
 		int errorCount = 0;
 		
+		System.out.print("CHECKING LOCAL NODE PATHS: ");
 		if (!new File(properties.getProperty(PROP_USER_AREA_ROOT_PATH)).exists()){
 			System.out.println(MSG_USER_AREA_NOT_EXISTS);
 			errorCount++;
@@ -234,6 +266,7 @@ public class Diagnostics {
 			System.out.println(MSG_GRID_CACHE_AREA_NOT_EXISTS);
 			errorCount++;
 		}
+		System.out.println("OK");
 		
 		return errorCount;
 	}

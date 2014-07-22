@@ -105,7 +105,7 @@ public class CheckFormatsAction extends AbstractAction {
 	 */
 	private void attachJhoveInfoToAllFiles(List<DAFile> files) throws IOException {
 		for (DAFile f : files) {
-			String jhoveOut = jhoveScanService.extract(f, job.getId());
+			String jhoveOut = jhoveScanService.extract(f.toRegularFile(), job.getId());
 
 			f.setPathToJhoveOutput(jhoveOut);
 			logger.debug("Path to jhove output for file \""+f+"\": " + jhoveOut);

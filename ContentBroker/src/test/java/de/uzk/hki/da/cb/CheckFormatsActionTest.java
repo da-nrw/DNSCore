@@ -24,6 +24,7 @@ import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -131,8 +132,7 @@ public class CheckFormatsActionTest {
 		localNode.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
 
 		JhoveScanService jhove = mock(JhoveScanService.class);
-		when(jhove.extract((DAFile)anyObject(),anyInt())).thenReturn("abc");
-		
+		when(jhove.extract((File)anyObject(),anyInt())).thenReturn("abc");
 		
 		final Package sipPackage = new Package(); sipPackage.setName("2"); // the SIP / Delta
 		final Package aipPackage = new Package(); aipPackage.setName("1"); // the existing AIP
@@ -196,7 +196,7 @@ public class CheckFormatsActionTest {
 	public void testThatNewConvertedFileHasCorrectFormatInfoWithDeltas() throws IOException{
 		
 		Package oldPackage = new Package(); // the AIP
-		oldPackage.setName("1"); 
+		oldPackage.setName("1"); oldPackage.setTransientBackRefToObject(object);
 		DAFile newPackageOriginalFile  = new DAFile(oldPackage,"2000_01_01+00_00+a","_1.jpg");
 		DAFile newPackageConvertedFile = new DAFile(oldPackage,"2000_01_01+00_00+b","_1.tif"); 
 		List<DAFile> allFiles = new ArrayList<DAFile>(); allFiles.add(newPackageConvertedFile); allFiles.add(newPackageOriginalFile);
