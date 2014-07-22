@@ -51,6 +51,8 @@ public class UnpackActionTests {
 
 	private static final String NUM_EXPECTED_ERRORS = "2";
 	private static final String SIDECAR_EXTENSIONS = "xmp";
+	private static final String SIDECAR_EXTENSIONS_COMMA_SPLIT = "xmp,xml";
+	private static final String SIDECAR_EXTENSIONS_SEMIKOLON_SPLIT = "xmp;xml";
 	private static final String INGEST = "ingest";
 	private static final String IDENTIFIER = "identifier";
 	private static final String CONF = "conf";
@@ -168,6 +170,34 @@ public class UnpackActionTests {
 		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE);
 	
 		action.setSidecarExtensions(SIDECAR_EXTENSIONS);
+		try{
+			action.implementation();
+		}catch(UserException e){
+			fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void acceptSidecar_SideCarExtensionsSplitByComma() throws IOException{
+		
+		FileUtils.copyFile(Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE+"_"),Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE));
+		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE);
+	
+		action.setSidecarExtensions(SIDECAR_EXTENSIONS_COMMA_SPLIT);
+		try{
+			action.implementation();
+		}catch(UserException e){
+			fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void acceptSidecar_SideCarExtensionsSplitBySemikolon() throws IOException{
+		
+		FileUtils.copyFile(Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE+"_"),Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE));
+		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE);
+	
+		action.setSidecarExtensions(SIDECAR_EXTENSIONS_SEMIKOLON_SPLIT);
 		try{
 			action.implementation();
 		}catch(UserException e){

@@ -428,6 +428,9 @@ public class UnpackAction extends AbstractAction {
 	}
 
 	public void setSidecarExtensions(String sidecarFiles) {
-		this.sidecarExtensions = sidecarFiles.split(",");
+		if (sidecarFiles.contains(","))
+			this.sidecarExtensions = sidecarFiles.split(",");
+		else
+			this.sidecarExtensions = sidecarFiles.split(";");
 	}
 }
