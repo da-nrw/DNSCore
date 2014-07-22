@@ -23,6 +23,8 @@ package de.uzk.hki.da.core;
 import java.util.List;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.hibernate.UnresolvableObjectException;
+import org.hibernate.classic.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;

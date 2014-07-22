@@ -1,6 +1,6 @@
 system.min_repls=2
 system.sidecar_extensions=xmp;txt;xml
-system.presServer=localhost
+system.presServer=localnode
 system.urnNameSpace=urn:nbn:de:danrw
 system.uris.file=http://data.danrw.de/file
 system.uris.cho=http://data.danrw.de/cho
@@ -17,7 +17,6 @@ localNode.workAreaRootPath=CONTENTBROKER_ROOT/storage
 localNode.gridCacheAreaRootPath=CONTENTBROKER_ROOT/storage/grid
 localNode.workingResource=localhost
 localNode.replDestinations=hbz,lvr
-localNode.name=localhost
 localNode.id=1
 
 cb.serverSocketNumber=4455

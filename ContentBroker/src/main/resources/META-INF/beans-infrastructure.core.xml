@@ -31,7 +31,6 @@
 	</bean>
 	
 	<bean id="localNode" class="de.uzk.hki.da.model.Node">
-		<property name="name" value="${localNode.name}"/>
 		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}"/>
         <property name="userAreaRootPath" value="${localNode.userAreaRootPath}" />
         <property name="ingestAreaRootPath" value="${localNode.ingestAreaRootPath}" />

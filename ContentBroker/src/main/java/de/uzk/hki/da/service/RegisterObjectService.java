@@ -69,7 +69,7 @@ public class RegisterObjectService {
 		try {
 			session.refresh(localNode);
 		} catch (UnresolvableObjectException e){
-			throw new IllegalStateException("Node "+localNode.getName()+"does not exist in db");
+			throw new IllegalStateException("Node "+localNode.getId()+"does not exist in db");
 		}
 		if (localNode.getUrn_index() < 0)
 			throw new IllegalStateException("Node's urn_index must not be lower than 0");
@@ -268,8 +268,8 @@ public class RegisterObjectService {
 
 
 	public void setLocalNode(Node localNode) {
-		if (localNode==null||localNode.getName()==null) 
-			throw new IllegalArgumentException("localNode or localNode.getName is null");
+		if (localNode==null) 
+			throw new IllegalArgumentException("localNode is null");
 		this.localNode = localNode;
 	}
 

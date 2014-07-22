@@ -19,6 +19,7 @@
 
 package de.uzk.hki.da.model;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +35,13 @@ import de.uzk.hki.da.core.HibernateUtil;
  */
 public class CentralDatabaseDAO {
 
+	private static class ObjectState {
+		private static final Integer UnderAudit = 60;
+		private static final Integer InWorkflow = 50;
+		private static final Integer Error = 51;
+		private static final Integer archivedAndValidState = 100;
+	}
+	
 	/** The logger. */
 	private static Logger logger = LoggerFactory
 			.getLogger(CentralDatabaseDAO.class);
@@ -62,6 +70,7 @@ public class CentralDatabaseDAO {
 
 		List<Job> joblist=null;
 		try{
+			session.refresh(node);
 			
 			joblist = (List<Job>) session
 					.createQuery("SELECT j FROM Job j LEFT JOIN j.obj as o where j.status=?1 and "
@@ -133,6 +142,63 @@ public class CentralDatabaseDAO {
 	}
 	
 	
+	/**
+	 * Determines which of the objects that the local node is responsible for 
+	 * (since it holds the primary copies of them) is the one which
+	 * has not been checked for the longest period of time. 
+	 * 
+	 * @return the next object that needs audit. null if there is no object in the database which meets the criteria.
+	 * 
+	 * @author Jens Peters
+	 * @author Daniel M. de Oliveira
+	 * 
+	 */
+	public synchronized Object fetchObjectForAudit(String localNodeId) {
+		
+		try {
+			Session session2 = HibernateUtil.openSession();
+			session2.beginTransaction();
+			@SuppressWarnings("rawtypes")
+			List list = session2.createQuery("from Node where id=?1")
+		
+					.setParameter("1",localNodeId).setReadOnly(true).list();
+			
+			if (list.isEmpty())
+				return null;
+		
+			Node node = (Node) list.get(0);
+			String localNodeName = node.getName();
+			Session session = HibernateUtil.openSession();
+			session.beginTransaction();
+			
+			Calendar now = Calendar.getInstance();
+			now.add(Calendar.HOUR_OF_DAY, -24);
+			@SuppressWarnings("rawtypes")
+			List l = null;
+			l = session.createQuery("from Object o where o.initial_node = ?1 and o.last_checked > ?2 and "
+					+ "o.object_state != ?3 and o.object_state != ?4 and o.object_state >= 50"
+					+ "order by o.last_checked asc")
+					.setParameter("1", localNodeName)
+					.setCalendar("2",now)
+					.setParameter("3", ObjectState.InWorkflow) // don't consider objects under work
+					.setParameter("4", ObjectState.UnderAudit) //           ||
+							.setReadOnly(true).list();
+			
+			Object objectToAudit = (Object) l.get(0);
+			
+			// lock object
+			objectToAudit.setObject_state(ObjectState.UnderAudit);
+			session.update(objectToAudit);
+			session.getTransaction().commit();
+			session.close();
+			
+			return objectToAudit;
+		
+		} catch (IndexOutOfBoundsException e){
+			return null;
+		}
+	}	
+	
 	
 	/**
 	 * Insert job into queue.
@@ -142,13 +208,15 @@ public class CentralDatabaseDAO {
 	 * @param responsibleNodeName the initial node name
 	 * @return the job
 	 */
-	public Job insertJobIntoQueue(Session session, Contractor c,String origName,String responsibleNodeName,Object object){
+	public Job insertJobIntoQueue(Session session, Contractor c,String origName,String responsibleNodeId,Object object){
 
+		Node node = (Node) session.get(Node.class,Integer.parseInt(responsibleNodeId));
+		
 		Job job = new Job();
 		job.setObject(object);
 		
 		job.setStatus("110");
-		job.setResponsibleNodeName(responsibleNodeName);
+		job.setResponsibleNodeName(node.getName());
 		job.setDate_created(String.valueOf(new Date().getTime()/1000L));
 	
 		session.save(job);
@@ -240,7 +308,26 @@ public class CentralDatabaseDAO {
 		return (Contractor) list.get(0);
 	}
 	
+	/**
+	 * Gets the Node.
+	 *
+	 * @param nodeId
+	 * @return null if no node is found
+	 */
+	public Node getNode(Session session, String nodeId) {
+		logger.trace("CentralDatabaseDAO.getNode(\"" + nodeId + "\")");
 	
+		@SuppressWarnings("rawtypes")
+		List list;	
+		list = session.createQuery("from Node where id=?1")
+	
+				.setParameter("1",nodeId).setReadOnly(true).list();
+		
+		if (list.isEmpty())
+			return null;
+	
+		return (Node) list.get(0);
+	}
 	
 	
 	

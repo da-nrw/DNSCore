@@ -107,7 +107,7 @@ public class IntegrityScannerWorkerTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
+//		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 	}
 	
 	/**
