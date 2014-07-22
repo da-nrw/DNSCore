@@ -141,6 +141,12 @@ public class Diagnostics {
 
 	private static int checkFedora(Properties properties) {
 		
+		if (((String)properties.get("fedora.user"))==null||((String)properties.get("fedora.user")).isEmpty()){
+			System.out.println("WARN: WILL NOT CHECK FEDORA ! ! ! fedora.user is empty");
+			return 0;
+		}
+		
+		
 		int errorCount=0;
 		AbstractApplicationContext context =
 				new ClassPathXmlApplicationContext(BEANS_DIAGNOSTICS_FEDORA);
@@ -192,6 +198,15 @@ public class Diagnostics {
 
 
 	private static int checkIrods(Properties properties){
+		
+		if (((String)properties.get("irods.zone"))==null||((String)properties.get("irods.zone")).isEmpty()){
+			System.out.println("WARN: WILL NOT CHECK IRODS ! ! ! irods.zone is empty");
+			return 0;
+		}
+		
+		
+		
+		
 		int errorCount = 0;
 		
 		AbstractApplicationContext context =
