@@ -42,6 +42,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.repository.RepositoryFacade;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
@@ -137,7 +138,7 @@ public class Base {
 			
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
-			Job job = dao.getJob(session, originalName, TC.TEST);
+			Job job = dao.getJob(session, originalName, C.TEST);
 			session.close();
 			
 			if (job==null) continue;
@@ -335,7 +336,7 @@ public class Base {
 		sp.setMinNodes(1);
 		
 		gridFacade.put(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_1.tar"), 
-				new RelativePath(TC.TEST,identifier,identifier+".pack_1.tar").toString(), sp);
+				new RelativePath(C.TEST,identifier,identifier+".pack_1.tar").toString(), sp);
 
 		Object object = new Object();
 		object.setContractor(testContractor);

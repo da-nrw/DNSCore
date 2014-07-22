@@ -21,10 +21,6 @@ package de.uzk.hki.da.core;
 
 import org.junit.Test;
 
-import de.uzk.hki.da.core.ActionFactory;
-import de.uzk.hki.da.core.ActionRegistry;
-import de.uzk.hki.da.core.Controller;
-
 
 /**
  * This is actually not a test but is used to launch 
@@ -42,10 +38,6 @@ public class ControllerTest {
 		HibernateUtil.init("conf/hibernateCentralDbWithInmem.cfg.xml");
 		
 		ActionFactory factory = new ActionFactory();
-//		factory.setOps(new BaseThreadDatabaseOperations());
-		
-		ActionRegistry registry = new ActionRegistry();
-		
 		Controller controller = new Controller("localhost",
 				4455, factory,new ActionInformation(), null,null);
 		controller.run();

@@ -42,5 +42,15 @@ public class C {
 	public static final String USER_ERROR_STATE_DIGIT="4";
 	public static final String ZIP = "zip";
 	public static final String TGZ = "tgz";
+	public static final String DIP = "dip";
+	public static final String AIP = "aip";
+	public static final String DATA = "data";
+	public static final String WORK = "work";
+	public static final Path CONF = new RelativePath("conf");
 	public static final String OWL_SAMEAS = "http://www.w3.org/2002/07/owl#sameAs";
+	public static final File CONFIG_PROPS = new RelativePath(CONF,"config.properties").toFile();
+	public static final File HIBERNATE_CFG = new RelativePath(CONF,"hibernateCentralDB.cfg.xml").toFile();
+	public static final String TEST = "TEST";
+	public static final String LOCAL_NODE_BEAN_NAME = "localNode";
+	public static final File BASIC_TEST_PACKAGE = Path.makeFile(CONF,"basic_test_package.tgz");
 }

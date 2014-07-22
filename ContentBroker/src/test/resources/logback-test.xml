@@ -16,7 +16,7 @@
   	<logger name="org.hibernate" level="INFO" />
 
 	<logger name="org.springframework" additivity="false">
-		<level value="error" />
+		<level value="none" />
 	</logger>
 
 	<logger name="org.irods" additivity="false">

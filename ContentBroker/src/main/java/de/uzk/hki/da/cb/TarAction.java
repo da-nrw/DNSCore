@@ -22,9 +22,6 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.IOException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.utils.MD5Checksum;

@@ -84,7 +84,7 @@ public class ActionFactoryTests {
 		c.setShort_name("csn");
 		
 		CentralDatabaseDAO dao = new CentralDatabaseDAO();
-		
+
 		FileSystemXmlApplicationContext context = new FileSystemXmlApplicationContext(baseDirPath+"action-definitions.xml");
 		factory = new ActionFactory();
 		factory.setApplicationContext(context);

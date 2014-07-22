@@ -47,9 +47,6 @@ public class FormatScanService {
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(FormatScanService.class);
 	
-	/** The format identifiers health checked. */
-	boolean formatIdentifiersHealthChecked = false;
-
 	/** The pronom format identifier. */
 	private CLIFormatIdentifier pronomFormatIdentifier;
 	
@@ -91,7 +88,6 @@ public class FormatScanService {
 	 * @author Daniel M. de Oliveira
 	 */
 	public List<DAFile> identify(List<DAFile> files) throws FileNotFoundException {
-		if (!formatIdentifiersHealthChecked) throw new IllegalStateException("Format Identifiers not initialized");
 		for (DAFile f:files){
 			if (!f.toRegularFile().exists()) throw new FileNotFoundException("file "+f.toRegularFile().getPath()+" doesn't exist");
 		}	
@@ -130,31 +126,6 @@ public class FormatScanService {
 	
 	
 	
-
-	/**
-	 * Health check format identifiers.
-	 */
-	public void healthCheckFormatIdentifiers(){
-		
-		if (!getPronomFormatIdentifier().healthCheck()){
-			logger.error("Format Identifier has not passed health check");
-			throw new RuntimeException("Health Checks for Format Identifiers not passed. Couldn't setup FormatScanService properly.");
-		}
-		
-		logger.trace("checking additional identifiers.");
-		for (CLIFormatIdentifier identifier:getFormatSecondAttributeIdentifiers()){
-			logger.debug("checking "+identifier.getConversionScript());
-			if (!identifier.healthCheck()){
-				logger.error("identifier "+identifier.getConversionScript()+" has not passed health check");
-				throw new RuntimeException("Health Checks for Format Identifiers not passed. Couldn't setup FormatScanService properly.");
-			}
-		}
-		logger.trace("checked all identifiers");
-		
-		
-		formatIdentifiersHealthChecked=true;
-	}
-	
 	
 	/**
 	 * Identifies a file format of a file. The file format is encoded as PRONOM puid.
@@ -167,9 +138,7 @@ public class FormatScanService {
 	 * <li> the last puid from the output of the identifier, if there are more than one.
 	 */
 	private String identify(File file) {
-		if (!formatIdentifiersHealthChecked) throw new IllegalStateException("Format Identifiers not initialized");
-		
-		
+
 		Set<String> fileFormats = getPronomFormatIdentifier().identify(file);
 		if (fileFormats.isEmpty()){
 			logger.warn("Identified format for file: \""+file.getName()+"\" is declared UNDEFINED due to the missing result of the" +

@@ -55,6 +55,7 @@ cp src/main/conf/PDFA_def.ps $CBTAR_SRC/conf
 cp src/main/resources/healthCheck.avi $CBTAR_SRC/conf
 cp src/main/resources/healthCheck.tif $CBTAR_SRC/conf
 cp src/main/resources/frame.jsonld $CBTAR_SRC/conf
+cp src/test/resources/at/ATUseCaseIngest1.tgz $CBTAR_SRC/conf/basic_test_package.tgz
 mkdir $CBTAR_SRC/activemq-data
 mkdir $CBTAR_SRC/log
 touch $CBTAR_SRC/log/contentbroker.log

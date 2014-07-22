@@ -16,7 +16,7 @@
           
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
 		<property name="location">
-			<value>conf/config.properties</value>
+			<value>file:conf/config.properties</value>
 		</property>
 	</bean>	
 	
@@ -64,4 +64,6 @@
   
   <amq:connectionFactory brokerURL="tcp://localhost:${cb.serverSocketNumber}"
   id="mqConnectionFactory" />
+  
+  <bean class="de.uzk.hki.da.model.CentralDatabaseDAO" id="centralDao"/>
  </beans>
