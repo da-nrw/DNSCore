@@ -49,28 +49,20 @@ function createIrodsDirs(){
 }
 
 # $1 = INSTALL_PATH
-function stopContentBroker(){
-	#SOURCE_PATH=`pwd`
-	cd $1
-	echo -e "\nTrying to start ContentBroker "
-	kill -9 `ps -aef | grep ContentBroker.jar | grep -v grep | awk '{print $2}'` 2>/dev/null
-	rm -f /tmp/cb.running
-    cd $SOURCE_PATH
-}
+#function stopContentBroker(){
+#	cd $1
+	#echo -e "\nTrying to start ContentBroker "
+	#kill -9 `ps -aef | grep ContentBroker.jar | grep -v grep | awk '{print $2}'` 2>/dev/null
+	#rm -f /tmp/cb.running
+#	./ContentBroker_stop.sh.template
+#    cd $SOURCE_PATH
+#}
 
 # $1 = INSTALL_PATH
 function startContentBroker(){
-	#SOURCE_PATH=`pwd`
 	cd $1
 	
-	#java $JAVA_OPTS -jar ContentBroker.jar diagnostics
-	#if [ $? != 0 ] 
-	#then
-	#		echo DIAGNOSTICS returned ERROR
-	#		exit 1
-	#	fi
-	
-	./ContentBroker_start.sh
+	./ContentBroker_start.sh.template
 	sleep 15
 	cd $SOURCE_PATH
 }
@@ -78,7 +70,6 @@ function startContentBroker(){
 # $1 = INSTALL_PATH
 # $2 = mode
 function install(){
-	#SOURCE_PATH=`pwd`
 	cd $REPO
 	echo call ./install.sh $1 $2
 	./install.sh $1 $2
@@ -117,7 +108,7 @@ function launchXDB(){
 ######## MAIN ###############
 ############################# 
 
-stopContentBroker $INSTALL_PATH
+src/main/bash/ContentBroker_stop.sh
 
 case "$1" in
 dev)
