@@ -40,8 +40,14 @@ class QueueEntryController {
     }
 
     def list() {
-		def contractorList = Contractor.list()
+		def contractorList
 		def cbNodeList = CbNode.list()
+		if (session.contractor.admin == 1) {	
+			contractorList = Contractor.list()
+		} else {
+			contractorList = Contractor.findAll("from Contractor as c where c.shortName=:csn",
+	        [csn: session.contractor.shortName])
+		}
 		[contractorList:contractorList,
 		cbNodeList:cbNodeList]
     }
