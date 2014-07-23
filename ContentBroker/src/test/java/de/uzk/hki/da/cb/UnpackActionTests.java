@@ -60,6 +60,7 @@ public class UnpackActionTests {
 	private static final String DUPLICATE_DOCUMENTS_PACKAGE = "duplicateDocuments.tgz";
 	private static final String WHEN_DUPLICATES_PACKAGE = "whenDuplicatesAreNotDuplicates.tgz";
 	private static final String SIDECAR_FILES_PACKAGE = "sidecarFiles.tgz";
+	private static final String SIDECAR_FILES_PACKAGE_WHICH_BROKE = "LVR_ILR_4_PDF_TF18.tar";
 
 	private Path workAreaRootPath = new RelativePath("src/test/resources/cb/UnpackActionTests/");
 	private Path ingestPath = Path.make(workAreaRootPath,"/ingest/TEST/");
@@ -108,6 +109,7 @@ public class UnpackActionTests {
 		Path.makeFile(ingestPath,DUPLICATE_DOCUMENTS_PACKAGE).delete();
 		Path.makeFile(csnPath,DUPLICATE_DOCUMENTS_PACKAGE).delete();
 		Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE).delete();
+		Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE_WHICH_BROKE).delete();
 		Path.makeFile(csnPath,SIDECAR_FILES_PACKAGE).delete();
 		Path.makeFile(ingestPath,WHEN_DUPLICATES_PACKAGE).delete();
 		Path.makeFile(csnPath,WHEN_DUPLICATES_PACKAGE).delete();
@@ -176,6 +178,21 @@ public class UnpackActionTests {
 			fail(e.getMessage());
 		}
 	}
+	
+	@Test
+	public void acceptSidecarFilesWithAnotherPackage() throws IOException{
+		
+		FileUtils.copyFile(Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE_WHICH_BROKE+"_"),Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE_WHICH_BROKE));
+		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE_WHICH_BROKE);
+	
+		action.setSidecarExtensions(SIDECAR_EXTENSIONS);
+		try{
+			action.implementation();
+		}catch(UserException e){
+			fail(e.getMessage());
+		}
+	}
+	
 	
 	@Test
 	public void acceptSidecar_SideCarExtensionsSplitByComma() throws IOException{

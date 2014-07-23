@@ -141,11 +141,10 @@ public class UnpackAction extends AbstractAction {
 			
 			boolean isOKWhenSidecarFilesAreSubtracted = false;
 			for (File file:duplicates.get(duplicate)){
-				if (hasSidecarExtension(file)&&(duplicates.size()-1)==1) {
+				if (hasSidecarExtension(file)&&(duplicates.get(duplicate).size()-1)==1) {
 					isOKWhenSidecarFilesAreSubtracted=true;
 					break;
 				}
-				
 			}
 			if (!isOKWhenSidecarFilesAreSubtracted){
 				errorMsg+="More than one file found for the document named \"";
