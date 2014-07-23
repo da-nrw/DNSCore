@@ -27,8 +27,10 @@ function createStorageFolder(){
 }
 
 mkdir $INSTALLER
-mkdir $CBTAR_SRC
 
+
+##### make tarball with artifacts that do not depend on any specific environment #########
+mkdir $CBTAR_SRC
 cp target/ContentBroker-SNAPSHOT.jar $CBTAR_SRC/ContentBroker.jar
 if [ $? -ne 0 ]
 then
@@ -36,25 +38,13 @@ then
 	echo any other target environment will need the CT tests to pass
 	exit
 fi
+src/main/bash/collect.sh "$CBTAR_SRC" "$VERSION"
 
 
-src/main/bash/collect.sh $CBTAR_SRC
-
-cp -r src/main/xslt $CBTAR_SRC/conf
-cp src/main/xsd/premis.xsd $CBTAR_SRC/conf
-cp src/main/xsd/xlink.xsd $CBTAR_SRC/conf
-cp src/main/resources/frame.jsonld $CBTAR_SRC/conf
-cp src/main/bash/ContentBroker_stop.sh $CBTAR_SRC
-cp src/main/bash/ContentBroker_start.sh $CBTAR_SRC
-cp src/main/bash/cbTalk.sh $CBTAR_SRC
-cp src/main/conf/PDFA_def.ps $CBTAR_SRC/conf
-cp src/main/resources/frame.jsonld $CBTAR_SRC/conf
 
 
-mkdir $CBTAR_SRC/activemq-data
-mkdir $CBTAR_SRC/log
-touch $CBTAR_SRC/log/contentbroker.log
-echo -e "ContentBroker Version $VERSION\nWritten by\n Daniel M. de Oliveira\n Jens Peters\n Sebastian Cuy\n Thomas Kleinke\n Polina Gubaidullina" > $CBTAR_SRC/README.txt
+
+
 
 cp src/main/bash/install.sh $INSTALLER
 cp src/main/xml/beans.xml.node $INSTALLER

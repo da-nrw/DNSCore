@@ -23,6 +23,10 @@ if [ $HOME = $INSTALLATION_TARGET ]; then
 	exit
 fi
 
+echo INSTALLING TO $INSTALLATION_TARGET
+
+
+
 if [ $# -eq 2 ]
 then
 	BEANS_TYPE=$2
@@ -87,7 +91,6 @@ then
 	cp -f beans.xml.$BEANS_TYPE $INSTALLATION_TARGET/conf/beans.xml
 fi
 cp -f logback.xml $INSTALLATION_TARGET/conf
-cp -f configure.sh $INSTALLATION_TARGET/
 if [ -e ffmpeg.sh ] 
 then
 	echo copy new ffmpeg
