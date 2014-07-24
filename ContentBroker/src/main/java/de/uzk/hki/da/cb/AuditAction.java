@@ -70,7 +70,7 @@ public class AuditAction extends AbstractAction {
 		setKILLATEXIT(true);
 		setObjectState(job,ObjectState.UnderAudit);
 		StoragePolicy sp = new StoragePolicy(localNode);
-		
+		sp.setMinNodes(minNodes);
 		
 		String msg= "";
 		// TODO: refactor to same implementation IntegrityScanner uses
