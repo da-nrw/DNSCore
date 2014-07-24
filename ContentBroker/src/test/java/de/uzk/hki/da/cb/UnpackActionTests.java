@@ -178,7 +178,13 @@ public class UnpackActionTests {
 			fail(e.getMessage());
 		}
 	}
+
 	
+	
+	/**
+	 * The special condition here was that contrary to the other testpackage this package only contains one pair of file to sidecar file. 
+	 * @throws IOException
+	 */
 	@Test
 	public void acceptSidecarFilesWithAnotherPackage() throws IOException{
 		
@@ -194,6 +200,8 @@ public class UnpackActionTests {
 	}
 	
 	
+	
+	
 	@Test
 	public void acceptSidecar_SideCarExtensionsSplitByComma() throws IOException{
 		
@@ -207,6 +215,7 @@ public class UnpackActionTests {
 			fail(e.getMessage());
 		}
 	}
+	
 	
 	@Test
 	public void acceptSidecar_SideCarExtensionsSplitBySemikolon() throws IOException{
