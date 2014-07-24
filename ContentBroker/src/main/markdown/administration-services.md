@@ -44,18 +44,19 @@ In order to start the ContentBroker, other services have to be started anterior.
     1. Start iRODS.
     1. Start the Tomcat application server.
     1. cd $CONTENTBROKER_HOME
+    1. java -jar $JAVA_OPTS ContentBroker.jar diagnostics
     1. ./ContentBroker_start.sh
 
 ## Shutting down the ContentBroker
 
 Please stop the following applications in sequence: (when available) 
 
-1. graceful shutdown on ActionFactory (via DAWEB or ./cbTalk GRACEFUL_SHUTDOWN)
-2. Be sure, no jobs are currently processed.
-1. stop Tomcat
-1. stop ContentBroker
-2. stop iRODS
-3. stop Database
+    1. graceful shutdown on ActionFactory (via DAWEB or ./cbTalk GRACEFUL_SHUTDOWN)
+    2. Be sure, no jobs are currently processed.
+    1. stop Tomcat
+    1. stop ContentBroker
+    2. stop iRODS
+    3. stop Database
 
 ## Monitoring
 
