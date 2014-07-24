@@ -82,9 +82,7 @@ Make sure that you have created a database and a user prior to calling that comm
 
     $CONTENTBROKER_HOME/conf/hibernateCentralDB.cfg.xml
     
-If you don't have this file, you can download the file
-
-    [hibernateCentralDB.cfg.xml](../xml/hibernateCentralDB.cfg.xml.ci)
+If you don't have this file, you can download the file [hibernateCentralDB.cfg.xml](../xml/hibernateCentralDB.cfg.xml.ci)
     
 and use it as a template.
 For more infos about how to configure that file, see this [document](administration-interfaces.md#application-database-configuration)
