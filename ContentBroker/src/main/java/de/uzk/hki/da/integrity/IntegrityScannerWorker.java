@@ -183,11 +183,11 @@ public class IntegrityScannerWorker {
 	 * @return the new object state. Either archivedAndValidState or errorState.
 	 */
 	int checkObjectValidity(Object obj) {
-		
+		if (minNodes == null || minNodes ==0) throw new IllegalStateException("minNodes not set correctly!");
 		Node node = new Node("tobefactoredout");
 		StoragePolicy sp = new StoragePolicy(node);
+		sp.setMinNodes(minNodes);
 		
-		if (minNodes == null || minNodes ==0) throw new IllegalStateException("minNodes not set correctly!");
 		boolean completelyValid = true;
 		for (Package pack : obj.getPackages()) {
 			String dao = obj.getContractor().getShort_name()+"/"+obj.getIdentifier()+"/"+obj.getIdentifier()+".pack_" + pack.getName()+".tar"; 

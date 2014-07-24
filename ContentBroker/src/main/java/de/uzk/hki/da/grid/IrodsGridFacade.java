@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.naming.ConfigurationException;
+
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,6 +136,10 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + C.AIP + "/" + gridPath2;
 		
 		int minNodes = sp.getMinNodes();
+		if (minNodes == 0 ) {
+			logger.error("Given minnodes setting 0 violates long term preservation");
+			return false;
+		}
 		try {
 			logger.debug("checking StoragePolicy achieved for " + gridPath); 
 			List<String> targetResgroups = Arrays.asList(localNode.getReplDestinations().split(","));
