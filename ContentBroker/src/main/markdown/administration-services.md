@@ -28,6 +28,14 @@ There are certain artifacts that are designed to control DNSCore from the comman
     
 The start and stop scripte are suffixed with .template on purpose. The admin should rename them to ContentBroker_start.sh and ContentBroker_stop.sh. When updating the ContentBroker, the admins renamed files get not overwritten so he is free to modify them on purpose. 
 
+Also the jarfile of the ContentBroker can be executed directly
+    
+    java -jar $JAVA_OPTS ContentBroker.jar diagnostics
+    java -jar $JAVA_OPTS ContentBroker.jar createSchema (careful)
+    
+Diagnostics help to check the state of the environment and should be executed before starting the ContentBroker. Only when the diagnostics show everything is ok, the ContentBroker should be started. CreateSchema helps the admin to create the right database schema on new nodes.
+
+
 ## Starting the ContentBroker
 
 In order to start the ContentBroker, other services have to be started anterior. The complete Startup sequence is:
