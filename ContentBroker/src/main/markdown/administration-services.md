@@ -1,7 +1,7 @@
 	/*
 	  DA-NRW Software Suite | ContentBroker
-	  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
-	  Universität zu Köln
+	  Copyright (C) 2014 LVRInfoKom
+	  Landschaftsverband Rheinland
 	
 	  This program is free software: you can redistribute it and/or modify
 	  it under the terms of the GNU General Public License as published by
@@ -19,6 +19,25 @@
 
 
 # Services Administration
+
+There are certain artifacts that are designed to control DNSCore from the command line.
+ 
+    ./ContentBroker_start.sh.template
+    ./ContentBroker_stop.sh template
+    ./cbTalk.sh
+    
+
+
+
+
+## Starting the ContentBroker
+
+In order to start the ContentBroker, other services have to be started anteriour.
+
+
+
+
+
 
 Please stop the following applications in sequence: (when available) 
 
