@@ -23,21 +23,22 @@
 There are certain artifacts that are designed to control DNSCore from the command line.
  
     ./ContentBroker_start.sh.template
-    ./ContentBroker_stop.sh template
+    ./ContentBroker_stop.sh.template
     ./cbTalk.sh
     
-
-
-
+The start and stop scripte are suffixed with .template on purpose. The admin should rename them to ContentBroker_start.sh and ContentBroker_stop.sh. When updating the ContentBroker, the admins renamed files get not overwritten so he is free to modify them on purpose. 
 
 ## Starting the ContentBroker
 
-In order to start the ContentBroker, other services have to be started anteriour.
+In order to start the ContentBroker, other services have to be started anterior. The complete Startup sequence is:
 
+    1. Start the database.
+    1. Start iRODS.
+    1. Start the Tomcat application server.
+    1. cd $CONTENTBROKER_HOME
+    1. ./ContentBroker_start.sh
 
-
-
-
+## Shutting down the ContentBroker
 
 Please stop the following applications in sequence: (when available) 
 
@@ -47,15 +48,6 @@ Please stop the following applications in sequence: (when available)
 1. stop ContentBroker
 2. stop iRODS
 3. stop Database
-
-
-Please start the following applications in sequence:
-
-1. start Database
-1. start iRODS
-2. start ContentBroker
-1. start Tomcat
-
 
 ## Monitoring
 
