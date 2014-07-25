@@ -259,7 +259,6 @@ class ObjectController {
 					
 				try {
 						qu.createJob( object, "5000" , grailsApplication.config.irods.server)
-						result.msg = "Auftrag zur Überprüfung erstellt ${object.urn}."
 						result.msg = "Das Objekt mit der URN ${object.urn} wurde zur Überprüfung in die Queue eingestellt!"
 						result.success = true
 					} catch(Exception e) {
