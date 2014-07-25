@@ -53,4 +53,14 @@ public class C {
 	public static final String TEST_USER_SHORT_NAME = "TEST";
 	public static final String LOCAL_NODE_BEAN_NAME = "localNode";
 	public static final File BASIC_TEST_PACKAGE = Path.makeFile(CONF,"basic_test_package.tgz");
+	public static final String STOP_FACTORY = "STOP_FACTORY";
+	public static final String START_FACTORY = "START_FACTORY";
+	public static final String SHOW_DESCRIPTION = "SHOW_DESCRIPTION";
+	public static final String SHOW_VERSION = "SHOW_VERSION";
+	public static final String SHOW_ACTIONS = "SHOW_ACTIONS";
+	public static final String GRACEFUL_SHUTDOWN = "GRACEFUL_SHUTDOWN";
+	public static final String QUEUE_TO_SERVER = "CB.SYSTEM";
+	public static final String QUEUE_TO_CLIENT = "CB.CLIENT";
+	
+	
 }
