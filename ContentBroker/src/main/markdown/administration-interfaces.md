@@ -417,12 +417,38 @@ TODO describe
 
 **Note** that it is also possible to override the default settings by modifying the logback.xml. This is for experimental purposes only. The logback.xml gets automatically overwritten by the installer on every update of the application so all changes will be lost after an update.
 
-## TODO
 
 ### cbTalk
 
+In the ContentBroker HOME directory, you find a command line tool called 
 
+    cbTalk.sh 
+    
+This is a wrapper Tool connecting to the Active MQ Broker, CB establishes while starting. 
 
+Stopping CB`s main factory, useful when restarting CB. CB will perform any operations to their dedicated end state, but won't perform any newly created queue entries. This preserves CB from any inconsitencies while performing operations on SIP. 
+
+    ./cbTalk.sh STOP_FACTORY
+    
+Starting CB`s main factory
+
+     ./cbTalk.sh START_FACTORY
+     
+Graceful stopping factory, same as STOP_FACTORY but tries to exit the running JVM. (This feature is experimental, Admins should always ensure to kill CB'S proc after executing coammand)
+
+     ./cbTalk.sh GRACEFUL_SHUTDOWN
+
+Show Version of CB 
+     
+     ./cbTalk.sh SHOW_VERSION
+
+Show running Actions of working CB
+
+     ./cbTalk.sh SHOW_ACTIONS 
+     
+Same operations could be carried out via DAWeb
+
+	
 
 
 
