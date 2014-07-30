@@ -209,4 +209,4 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 				.getChild("FLocat", METS_NS)
 				.getAttributeValue("LOCTYPE");
 		}
-}
+	}
