@@ -28,6 +28,26 @@ Instead, please consider the sources if you want to know more about the structur
 
 https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.ingest.xml (Ingest-Workflow)
 
+### Diagnostics mode in ContentBroker - Smoke test
+
+To perform basis tests on your configured ContentBroker you could run the CB in diagnostics mode
+
+    java -jar ContentBroker.jar diagnostics
+    
+The fature performs some basic tests on your node. The result depends on your installation scope (presentational node, simple node or fully fledged) but should always give OK results as shown below (shown from a fully fledged version)  
+
+    Smoke test the application
+    CHECKING JHOVE: OK
+    CHECKING LOCAL NODE PATHS: OK
+    CHECKING IRODS CONNECTION: OK
+    CHECKING GRID FACADE PUT: OK
+    CHECKING GRID FACADE GET: OK
+    CHECKING PRONOM FORMAT IDENTIFIER: OK
+    CHECKING VIDEO FORMAT IDENTIFIER: OK
+    CHECKING FEDORA CONNECTIVITY: OK
+    There were no errors.
+
+
 ### Ingest Workflow - Error handling
 
 The reasons for an action to result in an error state could be various. Most of the times one encounters an action
