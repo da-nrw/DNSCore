@@ -114,7 +114,7 @@ the releases page, follow the source code link for the corresponding version and
 * [click here](ContentBroker/src/main/markdown/installation_irods.md) to learn how to set up / upgrade iRODS for DNSCore node.
 * [click here](ContentBroker/src/main/markdown/installation_cb.md) to learn how to set up the ContentBroker.
 * [click here](ContentBroker/src/main/markdown/installation_irods_cb.md) to learn how connect iRODS and the ContentBroker
-* [click here](https://github.com/da-nrw/prepscripts/blob/master/README.md) to learn how connect Fedora and DNSCore
+* [click here](ContentBroker/src/main/markdown/install_fedora.md)) to learn how connect Fedora and DNSCore
 * [click here](ContentBroker/src/main/markdown/installation.md) if you want to update your node to a new version of DNSCore
 * [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_ci.md) to learn how to set up a machine for continuous integration.
 * [clck here](ContentBroker/src/main/markdown/needed_packages.md) contains information on needed packages to run DNSCore.
