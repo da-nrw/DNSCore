@@ -95,6 +95,7 @@ config.properties:
     localNode.ingestAreaRootPath=[...]/storage/ingestArea
     localNode.workAreaRootPath=[...]/storage/workArea
     localNode.gridCacheAreaRootPath=[...]/storage/gridCacheArea
+    localNode.id = 1 
 
 (Make sure the paths fit the recently created paths on your file system)
 
@@ -106,8 +107,15 @@ the newest version, set the path accordingly at
 ### Database
 
 1. Set up a new database. It will be refered to as [dbname].
-1. Ask our team for a decrypted password.
+2. The password is encrypted. You have to use the project's password encryptor. 
 1. Create a database user [dbuser] with exactly that password and grant all privileges on [dbname] to [dbuser].
+
+You are able to create the schema starting with the given model classes from scratch. Assuming an empty DB and valid credentials, you are able to perform the following command:
+    
+    java -jar ContentBroker.jar createScheme
+    
+Alternatively you could use this approach:
+
 1. Download a hibernate properties file 
 [template](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/xml/hibernateCentralDB.cfg.xml.postgres).
 1. Save the file as [somewhere]/ContentBroker/conf/hibernateCentralDB.cfg.xml.
@@ -122,10 +130,12 @@ the newest version, set the path accordingly at
 
 1. Create a node (in tables nodes):
 <pre>
-insert into nodes (id,name,urn_index) values (1,'node1',1);
+insert into nodes (id,name,urn_index) values (1,'localnode',1);
 </pre>
 
 ### Start the software
+
+Although DNS provides start& stop Scripts, they should be considered as template files for startup and shutdown. In binary insatller, they are provided as .TEMPLATE files. It is neccessary to customize them for your own linux distro and network setup (e.g. Proxies)
 
 1. Call
 <pre>
