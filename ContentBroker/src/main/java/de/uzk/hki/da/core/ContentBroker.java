@@ -96,7 +96,6 @@ public class ContentBroker {
 				System.exit(0);
 		}
 		
-		
 		logger.info("Starting ContentBroker ..");
 		
 		logger.info("Setting up HibernateUtil ..");
@@ -106,25 +105,18 @@ public class ContentBroker {
 			logger.error("Exception in main!",e);
 		}
 		
-		logger.info("Reading properties");
-		
-		
-		
-				
-		
-		
+		logger.info("Reading properties");		
 		Utilities.parseArguments(args,props);
 		
 		try {
 			AbstractApplicationContext context =
 					new FileSystemXmlApplicationContext("conf/beans.xml");
 			context.registerShutdownHook();
-			
+			logger.info("ContentBroker is up and running");
 		} catch (Exception e) {
 			logger.error("Exception in main!",e);
 		}
 		
-		logger.info("ContentBroker is up and running");
 	}
 	
 	
