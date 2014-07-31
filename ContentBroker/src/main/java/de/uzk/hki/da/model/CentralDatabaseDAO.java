@@ -165,7 +165,7 @@ public class CentralDatabaseDAO {
 			now.add(Calendar.HOUR_OF_DAY, -24);
 			@SuppressWarnings("rawtypes")
 			List l = null;
-			l = session.createQuery("from Object o where o.initial_node = ?1 and o.last_checked > ?2 and "
+			l = session.createQuery("from Object o where o.initial_node = ?1 and o.last_checked < ?2 and "
 					+ "o.object_state != ?3 and o.object_state != ?4 and o.object_state >= 50"
 					+ "order by o.last_checked asc")
 					.setParameter("1", node.getName())

@@ -74,7 +74,7 @@ public class FakeGridFacade implements GridFacade {
 		ArchiveBuilderFactory.getArchiveBuilderForFile(new File("/tmp/"+file.getName()))
 			.unarchiveFolder(new File("/tmp/" + file.getName()), new File ("/tmp/"));
 		
-		logger.debug("Extracting " + file.getName() + " to /tmp  , Dir name" +  FilenameUtils.getBaseName(file.getName()));
+		logger.debug("Extracting " + file.getName() + " to /tmp  , Dir name " +  FilenameUtils.getBaseName(file.getName()));
 		FileFilter filter = new WildcardFileFilter("DESTROYED*");
 		File []found = new File("/tmp/" + FilenameUtils.getBaseName(file.getName())).listFiles(filter);
 		if (found.length==0) {
@@ -84,7 +84,7 @@ public class FakeGridFacade implements GridFacade {
 		} else FileUtils.deleteDirectory(new File("/tmp/" + FilenameUtils.getBaseName(file.getName())));
 		} catch (Exception e) {
 			logger.error("Error while checking validity on fakedGridfacade on " + address_dest + ": "+ e.getMessage());
-			new RuntimeException("Error while checking validity on fakedGridFacade on " + address_dest + ": "+ e.getMessage());
+			new RuntimeException("Error while checking validity on fakedGridFacade on " + address_dest + ": "+ e.getMessage(), e);
 	} return true;
 	} 
 

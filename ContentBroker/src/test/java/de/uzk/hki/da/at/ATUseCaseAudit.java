@@ -27,6 +27,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.Calendar;
 
 import org.apache.commons.io.FileUtils;
 import org.hibernate.classic.Session;
@@ -49,12 +50,19 @@ public class ATUseCaseAudit extends Base{
 	
 	private static final String ORIGINAL_NAME = "ATUseCaseAudit";
 	private static final String CONTAINER_NAME = ORIGINAL_NAME+"."+C.TGZ;
+	private static final String IDENTIFIER =   "ATUseCaseAuditIdentifier";
 	private static final Path archiveStoragePath = Path.make("/ci/archiveStorage/aip/TEST/");
 	private Object object = null;
 	
 	@Before
 	public void setUp() throws IOException{
 		setUpBase();
+		
+		// set object to older creationdate than one day
+		Calendar now = Calendar.getInstance();
+		now.add(Calendar.HOUR_OF_DAY, -25);
+		
+		object = putPackageToStorage(IDENTIFIER,ORIGINAL_NAME,CONTAINER_NAME,now.getTime(),100 );
 	}
 	
 	@After
@@ -73,7 +81,7 @@ public class ATUseCaseAudit extends Base{
 	
 	@Test
 	public void testHappyPath() throws Exception {
-		ingest(ORIGINAL_NAME);
+		//ingest(ORIGINAL_NAME);
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		object = dao.getUniqueObject(session, ORIGINAL_NAME, "TEST");

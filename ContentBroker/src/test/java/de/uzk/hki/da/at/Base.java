@@ -23,6 +23,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -331,8 +332,8 @@ public class Base {
 	 * @author Daniel M. de Oliveira
 	 * @throws IOException 
 	 */
-	protected Object putPackageToStorageInPreparationForDeltaIngest(String identifier,String originalName,String containerName) throws IOException{
-		
+	protected Object putPackageToStorage(String identifier,String originalName,String containerName, Date createddate, int object_state) throws IOException{
+		if (createddate==null) createddate = new Date();
 		String urn =   "urn:nbn:de:danrw:"+identifier;
 		
 		StoragePolicy sp = new StoragePolicy(localNode);
@@ -348,7 +349,11 @@ public class Base {
 		object.setContractor(testContractor);
 		object.setInitial_node("localnode");
 		object.setIdentifier(identifier);
+		object.setObject_state(object_state);
 		object.setUrn(urn);
+		object.setDate_created(String.valueOf(createddate.getTime()));
+		object.setDate_modified(String.valueOf(createddate.getTime()));
+		object.setLast_checked(createddate);
 		object.setOrig_name(originalName);
 		Package pkg = new Package();
 		pkg.setName("1");
@@ -364,6 +369,14 @@ public class Base {
 		return object;
 	}
 	
+
+	/**
+	 * @author jpeters
+	 * @throws IOException 
+	 */
+	protected Object putPackageToStorage(String identifier,String originalName,String containerName) throws IOException{
+		 return putPackageToStorage(identifier,originalName,containerName ,null,0);
+	}
 	
 	
 	/**
