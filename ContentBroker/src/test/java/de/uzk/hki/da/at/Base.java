@@ -335,7 +335,7 @@ public class Base {
 	protected Object putPackageToStorage(String identifier,String originalName,String containerName, Date createddate, int object_state) throws IOException{
 		if (createddate==null) createddate = new Date();
 		String urn =   "urn:nbn:de:danrw:"+identifier;
-		
+		int timeout = 2000;
 		StoragePolicy sp = new StoragePolicy(localNode);
 		ArrayList<String> destinations = new ArrayList<String>();
 		destinations.add("ciArchiveResourceGroup");
@@ -344,7 +344,13 @@ public class Base {
 		
 		gridFacade.put(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_1.tar"), 
 				new RelativePath(C.TEST_USER_SHORT_NAME,identifier,identifier+".pack_1.tar").toString(), sp);
-
+		int i = 0;
+		while (!gridFacade.storagePolicyAchieved(new RelativePath(C.TEST_USER_SHORT_NAME,identifier,identifier+".pack_1.tar").toString(), sp)) {
+			try {
+				Thread.sleep(timeout);
+			} catch (InterruptedException e) {} // no problem
+			if (i>200) fail("Package was not replicated to archive resc");
+		}
 		Object object = new Object();
 		object.setContractor(testContractor);
 		object.setInitial_node("localnode");
