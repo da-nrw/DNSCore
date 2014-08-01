@@ -408,39 +408,41 @@ public class UpdateMetadataAction extends AbstractAction {
 				xPath.addNamespace(prefix, namespaces.get(prefix));
 			}
 			@SuppressWarnings("rawtypes")
-//			List nodes = xPath.selectNodes(doc);
 			List allNodes = xPath.selectNodes(doc);
 			List nodes = new ArrayList<Object>();
 			for(Object i: allNodes) {
 				try {
-//					METS
 					Element element = (Element) i;
-					try {
+					String xmlURI = element.getNamespaceURI();
+					if(xmlURI.toUpperCase().contains("LIDO")) {
+						nodes = allNodes;
+					} else {
+						try {
 						Attribute attr = element.getChild("FLocat", METS_NS).getAttribute("href", XLINK_NS);
 						nodes.add(attr);
-					} catch (Exception e) { // swallow exception if cast not succesfull
-					}
-					try {
+						
 						Attribute attrMT = element.getAttribute("MIMETYPE");
 						nodes.add(attrMT);
 						if(!(absUrlPrefix==null)) {
 							Element FLocat = element.getChild("FLocat", METS_NS);
 							updateLoctypeInMetsFile(FLocat, "URL");
 						}
-					} catch (Exception e) {
-					}
+						
+						} catch (Exception e) { // swallow exception if cast not succesfull
+						}
+					} 
 				} catch (Exception e) {
-//					EAD 
+//					EAD or XMP
 					nodes = allNodes;
-				}
+				}	
 			}
 			
 			int entitiesReplaced = 0;
 			for (Object node : nodes) {
+				String targetValue = null;
 				if (node instanceof Attribute) {
 					Attribute attr = (Attribute) node;
 					String value = attr.getValue();
-					String targetValue = null;
 					if (replacements.containsKey(value)) {	
 						if(attr.getName().equals("MIMETYPE")) {
 							targetValue = replacements.get(value).getMimeType();
@@ -459,13 +461,23 @@ public class UpdateMetadataAction extends AbstractAction {
 						logger.debug("-- Replacing attribute \"{}\" with \"{}\"", attr.getValue(),targetValue);
 						attr.setValue(targetValue);
 					}
-				} else if (node instanceof Element) { // does this block get used really?
+				} else if (node instanceof Element) { // does this block get used really? YES =) 
+//					LIDO
 					Element elem = (Element) node;
 					String value = elem.getText();
-					String targetURL = absUrlPrefix + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
+					
+//					replacements for LZA
+					if(absUrlPrefix==null) {
+						targetValue = replacements.get(value).getRelative_path();
+					} 
+//					replacements for presentation
+					else {
+						targetValue = absUrlPrefix + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
+					}
+					
 					if (replacements.containsKey(value)) {
 						logger.debug("-- Replacing element \"{}\" with \"{}\"", elem.getValue(),replacements.get(value));
-						elem.setText(targetURL);
+						elem.setText(targetValue);
 						entitiesReplaced++;
 					}
 				}

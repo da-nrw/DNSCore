@@ -49,6 +49,7 @@ import de.uzk.hki.da.cb.TarActionTests;
 import de.uzk.hki.da.cb.UnpackActionTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionEADMultilevelPackagesTest;
 import de.uzk.hki.da.cb.UpdateMetadataActionEADTests;
+import de.uzk.hki.da.cb.UpdateMetadataActionLIDOTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionXMPTests;
 import de.uzk.hki.da.cb.ValidateMetadataActionTests;
@@ -159,6 +160,7 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	CreateEDMActionTests.class,
 	IndexMetadataActionTests.class,
 	UpdateMetadataActionEADMultilevelPackagesTest.class,
+	UpdateMetadataActionLIDOTests.class,
 	IndexMetadataActionTests.class,
 	RestructureActionTests.class,
 	ValidateMetadataActionTests.class
