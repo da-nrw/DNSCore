@@ -293,9 +293,9 @@ Technical Contact : Rodolphe Bailly - rbailly@cite-musique.fr
 							<xsl:attribute name="rdf:resource" select="xs:string(xs:anyURI(fn:concat('#', fn:string(.))))"/>
 						</xsl:for-each>
 					</edm:aggregatedCHO>
-					<xsl:for-each select="$var2_administrativeMetadata/ns0:resourceWrap/ns0:resourceSet">
+					<xsl:for-each select="$var2_administrativeMetadata/ns0:resourceWrap/ns0:resourceSet/ns0:resourceRepresentation">
 						<edm:hasView>
-							<xsl:for-each select="ns0:resourceID">
+							<xsl:for-each select="ns0:linkResource">
 								<xsl:attribute name="rdf:resource" select="xs:string(xs:anyURI(fn:string(.)))"/>
 							</xsl:for-each>
 						</edm:hasView>
