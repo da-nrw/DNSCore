@@ -34,19 +34,14 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.RelativePath;
 
 import java.io.InputStream;
-
-import javax.validation.constraints.AssertTrue;
 
 /**
  * Relates to AK-T/02 Ingest - Sunny Day Scenario.
@@ -81,7 +76,7 @@ public class ATUseCaseIngestRheinlaender extends Base{
 	}
 	
 	@Test
-	public void test() throws FileNotFoundException, JDOMException, IOException{
+	public void test() throws FileNotFoundException, JDOMException, IOException, RepositoryException{
 		object = retrievePackage(origName,"1");
 		System.out.println("object identifier: "+object.getIdentifier());
 		
@@ -95,9 +90,7 @@ public class ATUseCaseIngestRheinlaender extends Base{
 //		SAXBuilder new_builder = new SAXBuilder();
 //		Document new_doc;
 //		InputStream metsStreamPublic = repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "METS");
-//			
 //		assertNotNull(metsStreamPublic);
-//			
 //		new_doc = new_builder.build(metsStreamPublic);
 	}
 	
@@ -127,31 +120,4 @@ public class ATUseCaseIngestRheinlaender extends Base{
 				.getAttributeValue("MIMETYPE");
 	}
 }
-
-	
-//	@Test
-//	public void updateMetadataImRheinlaenderTest() throws RepositoryException, JDOMException, IOException{
-//		System.out.println(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "METS"));
-//		System.out.println(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "EAD_Export.XML")	
-//				repositoryFacade.
-//		System.out.println("__________________");
-//		System.out.println("Test2: "+repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "EAD_Export.XML"));
-//		if(repositoryFacade.objectExists(object.getIdentifier(), "danrw")) {
-//			try {
-//			InputStream mets_2_32048 = repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "EAD_Export.XML");
-//			Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
-//			Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
-//			
-//			SAXBuilder builder = new SAXBuilder();
-//			Document doc = builder.build(mets_2_32048);
-//			System.out.println("doc created");
-//			
-//			String rootName = doc.getRootElement().getName();
-//			System.out.println("TEST: "+rootName);
-//			} catch (Exception e) {
-//				System.out.println(" :/");
-//			}	
-//		} else System.out.println("kein mets da!");
-//	}
-	
 	

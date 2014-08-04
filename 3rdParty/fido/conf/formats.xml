@@ -24942,7 +24942,7 @@ The 2 byte file type identifier BM indicates that the BMP was created by OS/2 or
       <note>For testing purposes</note>
       <pattern>
         <position>BOF</position>
-        <regex>(?s)\A.{0,50}\x3c([^: ]+:)?lidoWrap[^\xce]{0,100}xmlns:?[^=]{0,10}="http://www.lido-schema.org</regex>
+        <regex>(?s)\A.{0,500}\x3c([^: ]+:)?lidoWrap[^\xce]{0,100}xmlns:?[^=]{0,10}="http://www.lido-schema.org</regex>
       </pattern>
     </signature>
   </format>

@@ -293,16 +293,23 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		// collect paths to be replaced in map
 		for (Event e:pkg.getEvents()) {
-			
+		
 			logger.debug("Event type: "+e.getType());
 			
-			if (!"CONVERT".equals(e.getType())) continue;
+			if (!"CONVERT".equals(e.getType())) {
+				continue;
+			} 
 			
 			DAFile targetFile = e.getTarget_file();
-			if (!targetFile.getRep_name().equals(repName)) continue;
 			DAFile sourceFile = e.getSource_file();
 			logger.debug("source file: "+sourceFile.getRelative_path());
 			logger.debug("target file: "+targetFile.getRelative_path());
+			if (!targetFile.getRep_name().equals(repName)) {
+				logger.debug("!targetFile.getRep_name().equals(repName)");
+				logger.debug("targetFile.getRep_name(): "+targetFile.getRep_name());
+				logger.debug("repName: "+repName);
+				continue;
+			}
 //			MIMETYPE
 			String sourceMT = getMtds().detectMimeType(sourceFile);
 			logger.debug("Source mimetype: "+sourceMT);
@@ -410,6 +417,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			@SuppressWarnings("rawtypes")
 			List allNodes = xPath.selectNodes(doc);
 			List nodes = new ArrayList<Object>();
+			logger.debug("allNodes.size(): "+allNodes.size());
 			for(Object i: allNodes) {
 				try {
 					Element element = (Element) i;
@@ -439,6 +447,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			
 			int entitiesReplaced = 0;
 			for (Object node : nodes) {
+				logger.debug("NODE: "+node);
 				String targetValue = null;
 				if (node instanceof Attribute) {
 					Attribute attr = (Attribute) node;
@@ -448,12 +457,9 @@ public class UpdateMetadataAction extends AbstractAction {
 							targetValue = replacements.get(value).getMimeType();
 						} 
 						else {
-//							replacements for LZA
-							if(absUrlPrefix==null) {
+							if(isLZA()) {
 								targetValue = replacements.get(value).getRelative_path();
-							} 
-//							replacements for presentation
-							else {
+							} else {
 								targetValue = absUrlPrefix + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
 							}
 							entitiesReplaced++;
@@ -461,24 +467,22 @@ public class UpdateMetadataAction extends AbstractAction {
 						logger.debug("-- Replacing attribute \"{}\" with \"{}\"", attr.getValue(),targetValue);
 						attr.setValue(targetValue);
 					}
-				} else if (node instanceof Element) { // does this block get used really? YES =) 
+				} else if (node instanceof Element) {
 //					LIDO
 					Element elem = (Element) node;
 					String value = elem.getText();
 					
-//					replacements for LZA
-					if(absUrlPrefix==null) {
-						targetValue = replacements.get(value).getRelative_path();
-					} 
-//					replacements for presentation
-					else {
-						targetValue = absUrlPrefix + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
-					}
-					
 					if (replacements.containsKey(value)) {
-						logger.debug("-- Replacing element \"{}\" with \"{}\"", elem.getValue(),replacements.get(value));
-						elem.setText(targetValue);
-						entitiesReplaced++;
+						if(isLZA()) {
+							targetValue = replacements.get(value).getRelative_path();
+						} else {
+							targetValue = absUrlPrefix + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
+						}
+						if (replacements.containsKey(value)) {
+							logger.debug("-- Replacing element \"{}\" with \"{}\"", elem.getValue(),replacements.get(value));
+							elem.setText(targetValue);
+							entitiesReplaced++;
+						}
 					}
 				}
 			}
@@ -882,6 +886,14 @@ public class UpdateMetadataAction extends AbstractAction {
 
 	public void setMtds(MimeTypeDetectionService mtds) {
 		this.mtds = mtds;
+	}
+	
+	public boolean isLZA() {
+		if(absUrlPrefix==null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }
