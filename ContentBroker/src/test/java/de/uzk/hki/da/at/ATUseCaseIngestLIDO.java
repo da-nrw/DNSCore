@@ -42,7 +42,7 @@ public class ATUseCaseIngestLIDO extends Base{
 		}
 		
 		clearDB();
-		cleanStorage();
+//		cleanStorage();
 	}
 	
 	@Test
