@@ -20,7 +20,6 @@
 package de.uzk.hki.da.grid;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;

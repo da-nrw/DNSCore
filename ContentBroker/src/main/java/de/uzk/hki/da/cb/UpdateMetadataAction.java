@@ -163,6 +163,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	 * @throws JDOMException 
 	 * @throws IOException 
 	 */
+	@SuppressWarnings("rawtypes")
 	private void updatePathsInEADStructure(
 			
 			Package pkg,
@@ -193,7 +194,6 @@ public class UpdateMetadataAction extends AbstractAction {
 		// replace paths in elements denoted by xpath
 		XPath xPath;
 		int actualReplacements = 0;
-		@SuppressWarnings("rawtypes")
 		List nodes = null;
 		
 		
@@ -389,6 +389,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	 * @param xPathPath the x path path
 	 * @param replacements the replacements
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private int updatePathsInFile(
 			Package pkg,
 			String repName,
@@ -414,7 +415,6 @@ public class UpdateMetadataAction extends AbstractAction {
 			for (String prefix : namespaces.keySet()) {
 				xPath.addNamespace(prefix, namespaces.get(prefix));
 			}
-			@SuppressWarnings("rawtypes")
 			List allNodes = xPath.selectNodes(doc);
 			List nodes = new ArrayList<Object>();
 			logger.debug("allNodes.size(): "+allNodes.size());
@@ -571,6 +571,7 @@ public class UpdateMetadataAction extends AbstractAction {
 				
 				File xmlFile = xmlFiles.next();
 				FileUtils.copyFileToDirectory(xmlFile, destDir);
+				logger.debug("Copy "+xmlFile.getAbsolutePath()+" to "+destDir.getAbsolutePath());
 				
 				String destFilePath = Path.make(destDir.getAbsolutePath(), xmlFile.getName()).toString();						
 				String xmlFileRelativePath = destFilePath.replace(object.getDataPath() +"/"+ repName + "/", "");

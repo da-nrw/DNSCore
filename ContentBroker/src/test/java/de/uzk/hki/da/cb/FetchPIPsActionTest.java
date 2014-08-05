@@ -1,37 +1,26 @@
 package de.uzk.hki.da.cb;
 
-import java.io.File;
-import java.io.FileInputStream;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
-import javax.validation.constraints.AssertTrue;
-
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
-import org.apache.commons.io.FileUtils;
-
-import com.mchange.v2.log.PackageNames;
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.FakeDistributedConversionAdapter;
-import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
-import static org.junit.Assert.assertFalse;
-import static org.mockito.Mockito.mock;
-import static org.junit.Assert.*;
 
 /**
  * 

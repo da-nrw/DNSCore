@@ -20,7 +20,6 @@
 package de.uzk.hki.da.at;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -41,7 +40,6 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.Path;
 
-import java.io.InputStream;
 
 /**
  * Relates to AK-T/02 Ingest - Sunny Day Scenario.

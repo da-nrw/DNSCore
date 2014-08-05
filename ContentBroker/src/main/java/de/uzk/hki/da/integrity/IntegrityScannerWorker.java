@@ -22,9 +22,7 @@
  */
 package de.uzk.hki.da.integrity;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import javax.mail.MessagingException;
 
@@ -55,8 +53,8 @@ public class IntegrityScannerWorker {
 
 	
 	private static class ObjectState {
-		private static final Integer UnderAudit = 60;
-		private static final Integer InWorkflow = 50;
+//		private static final Integer UnderAudit = 60;
+//		private static final Integer InWorkflow = 50;
 		private static final Integer Error = 51;
 		private static final Integer archivedAndValidState = 100;
 	}

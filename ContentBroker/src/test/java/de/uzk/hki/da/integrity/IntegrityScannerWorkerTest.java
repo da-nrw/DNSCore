@@ -19,10 +19,11 @@
 package de.uzk.hki.da.integrity;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.io.IOException;
 
 import org.junit.After;
@@ -30,7 +31,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.CentralDatabaseDAO;

@@ -1,6 +1,5 @@
 package de.uzk.hki.da.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

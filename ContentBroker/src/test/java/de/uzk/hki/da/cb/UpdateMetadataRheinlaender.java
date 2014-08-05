@@ -1,15 +1,10 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,7 +12,6 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
-import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
@@ -26,7 +20,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
@@ -49,7 +42,6 @@ public class UpdateMetadataRheinlaender {
 	private Event event5;
 	private Event event6;
 	private Object object;
-	private Boolean isTest;
 	
 	@BeforeClass
 	public static void mockDca() throws IOException {

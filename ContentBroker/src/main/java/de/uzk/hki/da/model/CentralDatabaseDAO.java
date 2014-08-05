@@ -38,8 +38,8 @@ public class CentralDatabaseDAO {
 	private static class ObjectState {
 		private static final Integer UnderAudit = 60;
 		private static final Integer InWorkflow = 50;
-		private static final Integer Error = 51;
-		private static final Integer archivedAndValidState = 100;
+//		private static final Integer Error = 51;
+//		private static final Integer archivedAndValidState = 100;
 	}
 	
 	/** The logger. */

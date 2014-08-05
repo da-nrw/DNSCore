@@ -20,14 +20,13 @@ package de.uzk.hki.da.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.RelativePath;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import de.uzk.hki.da.utils.RelativePath;
 
 
 /**

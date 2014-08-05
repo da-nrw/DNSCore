@@ -109,6 +109,7 @@ public class ContentBroker {
 		Utilities.parseArguments(args,props);
 		
 		try {
+			@SuppressWarnings("resource")
 			AbstractApplicationContext context =
 					new FileSystemXmlApplicationContext("conf/beans.xml");
 			context.registerShutdownHook();

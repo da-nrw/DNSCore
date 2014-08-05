@@ -25,7 +25,6 @@ package de.uzk.hki.da.grid;
  * iRODS Servers 
  */
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;

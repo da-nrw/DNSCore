@@ -3,8 +3,6 @@ package de.uzk.hki.da.cb;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.FileReader;
@@ -13,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
-import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
@@ -23,7 +20,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.uzk.hki.da.grid.FakeDistributedConversionAdapter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
@@ -46,7 +42,6 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 	private Event event5;
 	private Event event6;
 	private Object object;
-	private Boolean isTest;
 	
 	
 	@BeforeClass

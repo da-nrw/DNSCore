@@ -33,7 +33,6 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Contractor;
-import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.RegisterObjectService;
 import de.uzk.hki.da.utils.Utilities;

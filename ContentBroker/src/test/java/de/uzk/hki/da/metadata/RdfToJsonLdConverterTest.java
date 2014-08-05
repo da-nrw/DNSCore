@@ -25,7 +25,6 @@ package de.uzk.hki.da.metadata;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -36,7 +35,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.github.jsonldjava.core.JSONLDProcessingError;
 import com.github.jsonldjava.utils.JSONUtils;
 
 public class RdfToJsonLdConverterTest {

@@ -30,7 +30,6 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.service.Mail;
-import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
 /**

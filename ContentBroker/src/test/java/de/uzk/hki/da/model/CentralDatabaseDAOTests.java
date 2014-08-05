@@ -27,7 +27,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.Job;
@@ -39,7 +38,7 @@ import de.uzk.hki.da.model.Job;
 public class CentralDatabaseDAOTests {
 	
 	/** The dao. */
-	private static CentralDatabaseDAO dao = new CentralDatabaseDAO();
+//	private static CentralDatabaseDAO dao = new CentralDatabaseDAO();
 	
 	/** The Constant inserts. */
 	private static final String inserts[] = new String[]{

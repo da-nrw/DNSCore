@@ -34,7 +34,6 @@ import de.uzk.hki.da.format.CLIFormatIdentifier;
 import de.uzk.hki.da.format.JhoveScanService;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
-import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
