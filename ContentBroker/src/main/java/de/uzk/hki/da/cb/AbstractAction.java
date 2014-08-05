@@ -169,14 +169,15 @@ public abstract class AbstractAction implements Runnable {
 				if (KILLATEXIT)	{
 					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now committing changes to database.");
 					job.setStatus(endStatus); // XXX needed just for integration test	
-					
-					if (DELETEOBJECT) 
+					logger.info("Set the job status to the end status "+endStatus+" .");
+					if (DELETEOBJECT) {
+						session.delete(job);
 						session.delete(object);
-					else
+					}	
+					else {
 						session.update(object);
-					session.flush();
-
-					session.delete(job);
+						session.delete(job);
+					}
 					session.flush();
 					
 					if (toCreate!=null) session.save(toCreate);

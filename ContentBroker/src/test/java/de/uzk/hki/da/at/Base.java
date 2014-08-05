@@ -24,7 +24,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -245,7 +247,7 @@ public class Base {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		try {
-		object = dao.getUniqueObject(session,originalName, "TEST");
+			object = dao.getUniqueObject(session,originalName, "TEST");
 		} catch (Exception e) {
 			fail("more than 1 Object found!"); 
 		}
@@ -385,6 +387,68 @@ public class Base {
 	}
 	
 	
+	protected Map<Session, Object> createObject(String name, String packageType,String metadataFile) throws IOException {
+		
+		Map<Session, Object> sessionObjectMap = new HashMap<Session, Object>();
+		
+		gridFacade.put(
+				new File("src/test/resources/at/"+name+".pack_1.tar"),
+				"TEST/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
+		
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		
+		Object object = new Object();
+		object.setUrn("");
+		object.setIdentifier("ID-"+name);
+		object.setOrig_name(name);
+		
+		object.setContractor(testContractor);
+		object.setMetadata_file(metadataFile);
+		object.setPackage_type(packageType);
+		object.setObject_state(100);
+		object.setPublished_flag(0);
+		object.setDdbExclusion(false);
+		session.save(object);
+
+		int current_data_pk = object.getData_pk();
+		System.out.println("CREATED Object with id " + current_data_pk);
+		String current_data_pk_string = String.valueOf(current_data_pk);
+		object.setUrn("urn:nbn:de:danrw-test-"+current_data_pk_string);
+		session.saveOrUpdate(object);
+		
+		Package currentPackage = new Package();
+		currentPackage.setName("1");
+		currentPackage.setContainerName(name);
+		List<Package> packages = new ArrayList<Package>();
+		packages.add(currentPackage);
+		object.setPackages(packages);		
+		session.saveOrUpdate(object);	
+		
+		sessionObjectMap.put(session, object);
+		
+		return sessionObjectMap;
+	}
+	
+	/**
+	 * @throws IOException 
+	 */
+	protected void createJob(Map<Session, Object> sessionObject, String status) {
+		
+		Session session = (Session) sessionObject.keySet().toArray()[0];
+		Object object = (Object) sessionObject.get(session);
+	
+		Job job = new Job();
+		job.setStatus(status);
+		Node node = (Node)session.load(Node.class, localNode .getId());
+		job.setResponsibleNodeName(node.getName());
+		job.setObject(object);
+		session.save(job);
+		
+		session.getTransaction().commit();
+		session.close();
+	}
+	
 	/**
 	 * @throws IOException 
 	 */
@@ -426,10 +490,13 @@ public class Base {
 		session.saveOrUpdate(object);
 		
 		Job job = new Job();
-		job.setStatus(status);
+//		job.setStatus(status);
 		Node node = (Node)session.load(Node.class, localNode .getId());
 		job.setResponsibleNodeName(node.getName());
 		job.setObject(object);
+		
+		job.setStatus(status);
+	
 		session.save(job);
 		
 		session.getTransaction().commit();
