@@ -172,7 +172,7 @@ A SIP with LIDO metadata must conform to the following directory layout
     
 ### structural metadata
 
-The element <linkResource> must point to the relative (from the data path) path of a file.
+The element linkResource must point to the relative (from the data path) path of a file.
 
 ### descriptive metadata
 
