@@ -161,7 +161,20 @@ The METS file contains then
 
 ## LIDO
 
-asdf
+LIDO is a schema intended for delivering metadata, for use in a variety of online services, from an organization’s online collections database to portals of aggregated resources, as well as exposing, sharing and connecting data on the web. More information about LIDO can be found [here](http://www.lido-schema.org/schema/v1.0/lido-v1.0-specification.pdf).
+
+### directory layout
+
+A SIP with LIDO metadata must conform to the following directory layout
+
+    data/[LIDO].xml
+    data/[somefile1.xyz]
+    
+### structural metadata
+
+The element <linkResource> must point to the relative (from the data path) path of a file.
+
+### descriptive metadata
 
 ## XMP - Sidecar
 
