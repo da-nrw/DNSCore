@@ -169,6 +169,9 @@ A SIP with LIDO metadata must conform to the following directory layout
 
     data/[LIDO].xml
     data/[somefile1.xyz]
+    data/[somefile2.xyz]
+    data/[somefile3.xyz]
+    ...
     
 ### structural metadata
 
