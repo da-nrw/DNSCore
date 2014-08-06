@@ -179,17 +179,13 @@ The element linkResource must point to the relative (from the data path) path of
 
 ### descriptive metadata
 
-Object Classification Wrapper (objectClassificationWrap)
-All classifying information about an object such as: type, style, genre, form etc.
+The element objectClassificationWrap contains all classifying information about an object such as: type, style, genre, form etc.
 
-Object Identification Wrapper (objectIdentificationWrap)
-Information that identifies an object, for example: names, descriptions, and repository information.
+The element objectIdentificationWrap contains information that identifies an object, for example: names, descriptions, and repository information.
 
-Event Wrapper (eventWrap)
-Information about object events, for example:  creation / production, find, use, modification etc. Events have dates, places and actors, and other describing elements associated with them.
+The element eventWrap contains information about object events, for example:  creation / production, find, use, modification etc. Events have dates, places and actors, and other describing elements associated with them.
 
-Object Relation Wrapper (objectRelationWrap)
-Information about relationships to other objects.
+The element objectRelationWrap contains information about relationships to other objects.
 
 ### administrative metadata
 
