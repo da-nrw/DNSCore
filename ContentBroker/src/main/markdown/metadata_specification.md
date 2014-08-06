@@ -179,6 +179,30 @@ The element linkResource must point to the relative (from the data path) path of
 
 ### descriptive metadata
 
+Object Classification Wrapper (objectClassificationWrap)
+All classifying information about an object such as: type, style, genre, form etc.
+
+Object Identification Wrapper (objectIdentificationWrap)
+Information that identifies an object, for example: names, descriptions, and repository information.
+
+Event Wrapper (eventWrap)
+Information about object events, for example:  creation / production, find, use, modification etc. Events have dates, places and actors, and other describing elements associated with them.
+
+Object Relation Wrapper (objectRelationWrap)
+Information about relationships to other objects.
+
+### administrative metadata
+
+Rights Work:    information about the rights associated with the object;
+
+Record:         basic information about the record;
+
+Resource:       information about digital resource being supplied to the service environment
+                
+                linkResource: URL of the resource;
+
+
+
 ## XMP - Sidecar
 
 ### structural metadata
