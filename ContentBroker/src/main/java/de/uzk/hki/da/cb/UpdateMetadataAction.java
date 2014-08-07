@@ -96,6 +96,10 @@ public class UpdateMetadataAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException {
 		
+		if(isLZA()) {
+			logger.debug(":::::::::::::::::::::::::::::: LZA ::::::::::::::::::::::::::::::");
+		} else logger.debug(":::::::::::::::::::::::::::::: Presentation ::::::::::::::::::::::::::::::");
+		
 		this.setMtds(mtds);
 		
 		if (job==null) throw new ConfigurationException("job not set");
@@ -229,7 +233,8 @@ public class UpdateMetadataAction extends AbstractAction {
 					actualReplacements+= updatePathsInFile(pkg, repName, value, xpathsToUrls.get("METS"), replacements);
 					
 					for (Event e:pkg.getEvents()) {
-						if(e.getType().equals("COPY") || e.getType().equals("CONVERT")) {
+//						if(e.getType().equals("COPY") || e.getType().equals("CONVERT")) {
+						if(e.getType().equals("CONVERT")) {
 							if(e.getSource_file().getRelative_path().contains(value)) {
 								metsReplacements.put(value, e.getTarget_file());
 							}
