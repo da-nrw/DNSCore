@@ -171,11 +171,15 @@ public abstract class AbstractAction implements Runnable {
 					job.setStatus(endStatus); // XXX needed just for integration test	
 					logger.info("Set the job status to the end status "+endStatus+" .");
 					if (DELETEOBJECT) {
+						session.flush();
 						session.delete(job);
+						session.flush();
 						session.delete(object);
 					}	
 					else {
+						session.flush();
 						session.update(object);
+						session.flush();
 						session.delete(job);
 					}
 					session.flush();
