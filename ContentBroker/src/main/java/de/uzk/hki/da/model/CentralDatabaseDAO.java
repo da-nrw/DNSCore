@@ -155,8 +155,9 @@ public class CentralDatabaseDAO {
 	 */
 	public synchronized Object fetchObjectForAudit(String localNodeId) {
 		
+		Session session = null;
 		try {
-			Session session = HibernateUtil.openSession();
+			session = HibernateUtil.openSession();
 			session.beginTransaction();
 	
 			Node node = (Node) session.get(Node.class,Integer.parseInt(localNodeId));
@@ -185,6 +186,7 @@ public class CentralDatabaseDAO {
 			return objectToAudit;
 		
 		} catch (IndexOutOfBoundsException e){
+			if (session!=null) session.close();
 			return null;
 		}
 	}	
