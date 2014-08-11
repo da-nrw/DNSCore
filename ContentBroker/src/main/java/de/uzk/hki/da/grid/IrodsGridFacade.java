@@ -90,7 +90,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 			logger.debug("compute checksum on " + targetLogically);
 			String MD5CheckSum = MD5Checksum.getMD5checksumForLocalFile(file);
 			if (irodsSystemConnector.computeChecksum(targetLogically).equals(MD5CheckSum)){
-				irodsSystemConnector.addAVUMetadataDataObject(targetLogically, "chksum", MD5CheckSum );
+				irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(targetLogically, "chksum", MD5CheckSum );
 				return true;
 			}
 		}
