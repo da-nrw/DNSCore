@@ -31,7 +31,7 @@ if [ $# -eq 2 ]
 then
 	BEANS_TYPE=$2
 else
-	echo "Select your desired feature set from the available options: (n)ode. (p)res. (f)ull. preserve (e)xisting beans."
+	echo "Select your desired feature set from the available options: (n)ode. (p)res. (f)ull."
 	read ANSWER
 	case "$ANSWER" in
 	n)
@@ -42,8 +42,6 @@ else
 	;;
 	p)
 		BEANS_TYPE="pres"
-	;;
-	e)
 	;;
 	*)
 		echo invalid option
@@ -85,12 +83,20 @@ then
 	fi
 	cp hibernateCentralDB.cfg.xml $INSTALLATION_TARGET/conf/
 fi
+
+if  [ -e $INSTALLATION_TARGET/conf/beans.xml ]
+then 
+	cp -f $INSTALLATION_TARGET/conf/beans.xml $INSTALLATION_TARGET/conf/beans.xml.BAK	
+	echo "Found existing beans.xml, saved to beans.xml.BAK. Please use always newly installed beans.xml file - but check for settings needed for your system (e.g. freeDiskSpacePercent)."
+fi
 if [ ! -z $BEANS_TYPE ]
 then 
-	echo Copying beans.xml.$BEANS_TYPE to $INSTALLATION_TARGET/conf/beans.xml
-	cp -f beans.xml.$BEANS_TYPE $INSTALLATION_TARGET/conf/beans.xml
+echo Copying beans.xml.$BEANS_TYPE to $INSTALLATION_TARGET/conf/beans.xml
+cp -f beans.xml.$BEANS_TYPE $INSTALLATION_TARGET/conf/beans.xml
 fi
+
 cp -f logback.xml $INSTALLATION_TARGET/conf
+echo "copied new logback.xml to your installation, but check for settings needed for your system you made to this file earlier."
 if [ -e ffmpeg.sh ] 
 then
 	echo copy new ffmpeg
