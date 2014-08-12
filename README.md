@@ -23,7 +23,7 @@ software solutions available which handle preservation tasks. Since each of
 these solutions was designed under a different focus and to solve different sets of
 problems within the field of longterm preservation, it is worth mentioning
 the two most distinctive features of DNSCore at first, before diving in into
-a richer feater list.
+a richer feature list.
 
 #### Distinctive Features
 
