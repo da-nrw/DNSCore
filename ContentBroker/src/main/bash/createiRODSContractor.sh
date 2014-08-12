@@ -7,6 +7,17 @@
 #don't forget to: (examples!)
 # insert into contractors (short_name,email_contact,id,admin) values ('TEST1','da-nrw-notifier@uni-koeln.de',7,0);
 
+asksure() {
+echo -n "Are you sure (Y/N)? "
+	while read -r -n 1 -s answer; do
+  	if [[ $answer = [YyNn] ]]; then
+  	 [[ $answer = [Yy] ]] && retval=0
+    	 [[ $answer = [Nn] ]] && retval=1
+   	break
+  	fi
+done
+return $retval
+}
 
 echo "Create iRODS Contractor Named $1"
 EXPECTED_ARGS=1
@@ -19,18 +30,23 @@ then
 fi
 echo "iRODS Password"
 read INPUT
-
-read -p "Are you sure (y/Y)? Create User $1" -n 1
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
-    exit 1
-fi
-iadmin mkuser $1 rodsuser
-echo "Password has to be longer then 6 characters"
 if [ $(echo -n "$INPUT" | wc -m) -ge 6 ]
-then iadmin moduser $1 password $INPUT
-fi else e
-echo "user created"
+then 
+	if asksure; then
+
+		iadmin mkuser $1 rodsuser
+		iadmin moduser $1 password $INPUT
+		echo "user successfully created"
+		echo "configured users"
+		iadmin lu
+	else 
+		echo "something went wrong"
+		exit $E_BADARGS
+	fi
+else 
+	echo "Password has to be longer then 6 characters"	
+	exit $E_BADARGS
+fi
 imkdir /da-nrw/work/$1
 imkdir /da-nrw/aip/$1
 ichmod -M own rods /da-nrw/aip/$1
