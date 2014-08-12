@@ -26,9 +26,10 @@ then
     exit 1
 fi
 iadmin mkuser $1 rodsuser
+echo "Password has to be longer then 6 characters"
 if [ $(echo -n "$INPUT" | wc -m) -ge 6 ]
 then iadmin moduser $1 password $INPUT
-fi
+fi else e
 echo "user created"
 imkdir /da-nrw/work/$1
 imkdir /da-nrw/aip/$1
@@ -37,10 +38,10 @@ ichmod -M own contentbroker /da-nrw/aip/$1
 ichmod -M inherit /da-nrw/aip/$1
 echo "aip folders created, granted rights"
 imkdir /da-nrw/pips/public/$1
-imkdir /da-nrw/pips/instution/$1
+imkdir /da-nrw/pips/institution/$1
 ichmod -M own contentbroker /da-nrw/pips/public/$1
-ichmod -M own contentbroker /da-nrw/pips/instution/$1
+ichmod -M own contentbroker /da-nrw/pips/institution/$1
 echo -e "\nUSER $1 created!"
 echo "Don't forget to"
 echo "insert into contractors (short_name,email_contact,id,admin) values ('$1','email@rechner.de',ID,0);"
-
+echo "And to configure ingest and retrieval folders as needed by ContentBroker."
