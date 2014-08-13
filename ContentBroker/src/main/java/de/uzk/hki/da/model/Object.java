@@ -650,7 +650,7 @@ public class Object {
 		
 		for (File rep : getRepresentations())
 			for (DAFile f: getFilesFromRepresentation(rep)){
-				if (hasSidecarExtension(f.toRegularFile(),sidecarExts))
+				if (Utilities.hasSidecarExtension(f.toRegularFile(),sidecarExts))
 					documentMap.put(f.getRelative_path(), f);
 				else
 					documentMap.put(FilenameUtils.removeExtension(f.getRelative_path()), f);
@@ -662,28 +662,6 @@ public class Object {
 	
 	
 	
-	/**
-	 * TODO remove duplicate from UnpackAction
-	 * @param file
-	 * @return
-	 * @author Daniel M. de Oliveira
-	 */
-	private boolean hasSidecarExtension(File file,String sidecarExts){
-
-		String[] sidecarExtensions;
-		if (sidecarExts.contains(","))
-			sidecarExtensions = sidecarExts.split(",");
-		else
-			sidecarExtensions = sidecarExts.split(";");
-		
-		for (int i=0;i<sidecarExtensions.length;i++){
-			if (FilenameUtils.getExtension(file.toString()).equals(sidecarExtensions[i])){
-				System.out.println(file+" has sidecar ext "+sidecarExtensions[i]);
-				return true;
-			}
-		}
-		return false;
-	}
 	
 	
 	

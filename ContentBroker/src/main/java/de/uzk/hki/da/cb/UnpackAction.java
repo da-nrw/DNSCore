@@ -41,6 +41,7 @@ import de.uzk.hki.da.utils.ArchiveBuilderFactory;
 import de.uzk.hki.da.utils.BagitConsistencyChecker;
 import de.uzk.hki.da.utils.ConsistencyChecker;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.Utilities;
 
 /**
  * If there is sufficient space on the WorkArea, fetches the container (named object.package.containername)
@@ -71,11 +72,9 @@ public class UnpackAction extends AbstractAction {
 	
 	private IngestGate ingestGate;
 	
-	private String[] sidecarExtensions;
-	
+	private String sidecarExts = "";
 	
 	boolean implementation() throws IOException{
-		if (sidecarExtensions==null) sidecarExtensions = new String[]{};
 		
 		Path absoluteSIPPath = Path.make(
 				localNode.getIngestAreaRootPath(),
@@ -139,7 +138,7 @@ public class UnpackAction extends AbstractAction {
 			
 			boolean isOKWhenSidecarFilesAreSubtracted = false;
 			for (File file:duplicates.get(duplicate)){
-				if (hasSidecarExtension(file)&&(duplicates.get(duplicate).size()-1)==1) {
+				if (Utilities.hasSidecarExtension(file,sidecarExts)&&(duplicates.get(duplicate).size()-1)==1) {
 					isOKWhenSidecarFilesAreSubtracted=true;
 					break;
 				}
@@ -158,21 +157,6 @@ public class UnpackAction extends AbstractAction {
 		}
 	}
 
-	
-	/**
-	 * @param file
-	 * @return
-	 * @author Daniel M. de Oliveira
-	 */
-	private boolean hasSidecarExtension(File file){
-		for (int i=0;i<sidecarExtensions.length;i++){
-			if (FilenameUtils.getExtension(file.toString()).equals(sidecarExtensions[i])){
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	
 	
 	/**
@@ -421,13 +405,10 @@ public class UnpackAction extends AbstractAction {
 	}
 
 	public String getSidecarExtensions() {
-		return sidecarExtensions.toString();
+		return sidecarExts;
 	}
 
 	public void setSidecarExtensions(String sidecarExts) {
-		if (sidecarExts.contains(","))
-			this.sidecarExtensions = sidecarExts.split(",");
-		else
-			this.sidecarExtensions = sidecarExts.split(";");
+		this.sidecarExts = sidecarExts;
 	}
 }
