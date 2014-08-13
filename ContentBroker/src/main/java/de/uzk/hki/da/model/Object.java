@@ -614,143 +614,76 @@ public class Object {
 	
 	
 	
+	/**
+	 * @author Daniel M. de Oliveira 
+	 * @return
+	 */
+	private Collection<DAFile> getFilesFromRepresentation(File rep){
+
+		ArrayList<DAFile> list = new ArrayList<DAFile>();
+		
+		for (Package pkg:getPackages()){
+			for (DAFile f:pkg.getFiles()){
+				if (f.getRep_name().equals(rep.getName())) list.add(f);
+			}
+		}
+		
+		return list;
+	}
+ 	
 	
 	/**
 	 * Gets the newest files from all representations.
 	 *
 	 * @param sidecarExtensions Files with the given extensions are considered sidecar files. Sidecar files are treated differently from other files
 	 *  (see <a href="https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/dip_specification.md#sidecar-files">documentation</a> for details)
-	 * @return newest DAFile of each Document. Note that by default the DAFile instances are build from scratch and will
-	 * not be attached to the object. However in case there are already instances attached to the object which correspond
-	 * to the file objects from the file system, the method will return these instead.
+	 * @return newest DAFile of each Document.  
 	 * @author Thomas Kleinke
 	 * @author Daniel M. de Oliveira
 	 * @throws RuntimeException if it finds a file on the file system to which it cannot find a corresponding attached instance of
 	 * DAFile in this object.
 	 */
 	
-	public List<DAFile> getNewestFilesFromAllRepresentations(String sidecarExtensions)
+	public List<DAFile> getNewestFilesFromAllRepresentations(String sidecarExts)
 	{
-		Map<String, DAFile> fileMap = new HashMap<String, DAFile>();
-			
-		File mainFolder = getDataPath().toFile();
-		if ((!mainFolder.exists())||((mainFolder.listFiles().length == 0)))
-			throw new RuntimeException("Folder " + mainFolder.getAbsolutePath() +
-									   " is empty or does not exist!");	
+		Map<String, DAFile> documentMap = new HashMap<String, DAFile>();
 		
-		checkFiles(
-				FilenameUtils.getFullPath(
-						mainFolder.getPath().
-						substring(0, mainFolder.getPath().length()-2)
-						), 
-				mainFolder, 
-				fileMap, 
-				sidecarExtensions );
-	
-		return new ArrayList<DAFile>(fileMap.values());
+		for (File rep : getRepresentations())
+			for (DAFile f: getFilesFromRepresentation(rep)){
+				if (hasSidecarExtension(f.toRegularFile(),sidecarExts))
+					documentMap.put(f.getRelative_path(), f);
+				else
+					documentMap.put(FilenameUtils.removeExtension(f.getRelative_path()), f);
+			}
+			
+		return new ArrayList<DAFile>(documentMap.values());
 	}
 	
 	
 	
 	
 	/**
-	 * Check files.
-	 *
-	 * @param rootPath the root path
-	 * @param folder the folder
-	 * @param fileMap the file map
-	 * @param sidecarExtensions the sidecar extensions
-	 * @return sidecarExtensions
-	 * @author Thomas Kleinke
+	 * TODO remove duplicate from UnpackAction
+	 * @param file
+	 * @return
 	 * @author Daniel M. de Oliveira
 	 */
-	// TODO rename method to specify what is checked here
-	private Map<String, DAFile> checkFiles( 
-			String rootPath, 
-			File folder, 
-			Map<String, DAFile> fileMap,
-			String sidecarExtensions)
-	{
-		
-		String dataPath = rootPath + "data/";
-		
-		File[] files = folder.listFiles();
-		Arrays.sort(files); // sort rep names chronologically (i.e. alphabetically)
-		
-		for (File f : files)
-		{
-			if (f.isDirectory())
-				fileMap = checkFiles(rootPath, f, fileMap, sidecarExtensions);
-			else
-			{				
-				String fRelativePath = f.getPath();
-				fRelativePath = fRelativePath.replace(dataPath, "");
-				
-				int indexOfFirstSeparator = fRelativePath.indexOf('/');
-				if (indexOfFirstSeparator == -1) continue;
-				if (fRelativePath.startsWith("dip")) {
-					indexOfFirstSeparator += fRelativePath.substring(indexOfFirstSeparator+1).indexOf('/') + 1;
-				}
-				String fRepName = fRelativePath.substring(0, indexOfFirstSeparator);
-				fRelativePath = fRelativePath.substring(indexOfFirstSeparator + 1); // relative from rep folder
+	private boolean hasSidecarExtension(File file,String sidecarExts){
 
-				String relativePathWithoutExtension = fRelativePath;
-				if (fRelativePath.lastIndexOf('.') != -1)
-				{
-					relativePathWithoutExtension = fRelativePath.substring(0, fRelativePath.lastIndexOf('.'));
-				}
-				
-				if (Utilities.isSidecarFile(fRelativePath, sidecarExtensions))
-					relativePathWithoutExtension += "?sidecar" + FilenameUtils.getExtension(fRelativePath).toLowerCase();
-				
-				DAFile newDAFile = new DAFile(this.getLatestPackage(),fRepName,fRelativePath);
-				
-				newDAFile = replaceByAttachedInstance(dataPath,
-						fRelativePath, fRepName, newDAFile);
-				
-				newDAFile.setRelative_path(fRelativePath);
-				fileMap.put(relativePathWithoutExtension, newDAFile);
+		String[] sidecarExtensions;
+		if (sidecarExts.contains(","))
+			sidecarExtensions = sidecarExts.split(",");
+		else
+			sidecarExtensions = sidecarExts.split(";");
+		
+		for (int i=0;i<sidecarExtensions.length;i++){
+			if (FilenameUtils.getExtension(file.toString()).equals(sidecarExtensions[i])){
+				System.out.println(file+" has sidecar ext "+sidecarExtensions[i]);
+				return true;
 			}
 		}
-		
-		return fileMap;
+		return false;
 	}
-	
-	/**
-	 * Replace by attached instance if available.
-	 *
-	 * @param dataPath the data path
-	 * @param fRelativePath the f relative path
-	 * @param fRepName the f rep name
-	 * @param newDAFile the new da file
-	 * @return the dA file
-	 * @author Daniel M. de Oliveira
-	 */
-	private DAFile replaceByAttachedInstance(String dataPath,
-			String fRelativePath, String fRepName, DAFile newDAFile) {
-		
-		boolean foundAttachedInstance = false;
-		for (Package pkg : this.getPackages()) {    // if package already exists, replace by attached package
-			
-			for (DAFile attachedFile : pkg.getFiles()) {
-
-				if (attachedFile.toRegularFile().getAbsolutePath().equals
-						(new File(dataPath+fRepName+"/"+fRelativePath).getAbsolutePath())){
-					logger.trace(attachedFile.toString()+". Will use instance already attached to object.");
-					newDAFile = attachedFile;
-					foundAttachedInstance = true;
-					break;
-				}
-			}
-			if (foundAttachedInstance)
-				break;
-		}
-		if (!foundAttachedInstance)
-			throw new RuntimeException("cannot find attached instance for "+fRepName+"/"+fRelativePath);
-		return newDAFile;
-	}
-	
-	
 	
 	
 	
@@ -771,6 +704,8 @@ public class Object {
 		}
 		return list.get(list.size()-1);
 	}
+	
+	
 	
 	
 	/**
@@ -1018,7 +953,7 @@ public class Object {
 	/**
 	 * Gets the representations based on the existing folders in the objects folder on the file system.
 	 * @author Daniel M. de Oliveira
-	 * @return
+	 * @return representations as sorted array
 	 */
 	private File[] getRepresentations() {
 

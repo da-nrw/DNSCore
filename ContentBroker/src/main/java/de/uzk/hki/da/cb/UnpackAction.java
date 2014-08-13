@@ -114,8 +114,6 @@ public class UnpackAction extends AbstractAction {
 		} catch (FileNotFoundException e1) {
 			throw new UserException(UserExceptionId.SIP_PREMIS_NOT_FOUND, "Couldn't find PREMIS file", e1);
 		}
-
-		
 	}
 
 
@@ -426,10 +424,10 @@ public class UnpackAction extends AbstractAction {
 		return sidecarExtensions.toString();
 	}
 
-	public void setSidecarExtensions(String sidecarFiles) {
-		if (sidecarFiles.contains(","))
-			this.sidecarExtensions = sidecarFiles.split(",");
+	public void setSidecarExtensions(String sidecarExts) {
+		if (sidecarExts.contains(","))
+			this.sidecarExtensions = sidecarExts.split(",");
 		else
-			this.sidecarExtensions = sidecarFiles.split(";");
+			this.sidecarExtensions = sidecarExts.split(";");
 	}
 }
