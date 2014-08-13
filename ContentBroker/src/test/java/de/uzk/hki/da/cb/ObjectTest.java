@@ -20,9 +20,11 @@
 package de.uzk.hki.da.cb;
 
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.DAFile;
@@ -47,8 +49,8 @@ public class ObjectTest {
 	 *
 	 * @throws Exception the exception
 	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		Node n = new Node();
 		n.setWorkAreaRootPath(Path.make(workAreaRootPath));
 		
@@ -67,5 +69,42 @@ public class ObjectTest {
 	public void testGetLatestReturnsAttachedInstance(){
 		
 		assertSame(f2,o.getLatest("a.txt"));
+	}
+	
+	
+	
+	
+	
+	@Test
+	public void testCheckDBtoFSConsistent(){
+		
+		assertTrue(o.isDBtoFSconsistent());
+	}
+	
+	@Test
+	public void testCheckDBtoFSNotConsistent(){
+		
+		o = TESTHelper.setUpObject("234", workAreaRootPath);
+		f1 = new DAFile(o.getLatestPackage(),"a","a.txt");
+		f2 = new DAFile(o.getLatestPackage(),"b","a.txt");
+		o.getLatestPackage().getFiles().add(f1);
+		o.getLatestPackage().getFiles().add(f2);
+		assertFalse(o.isDBtoFSconsistent());
+	}
+	
+	
+	@Test
+	public void testCheckFSToDBConsistent(){
+		
+		assertTrue(o.isFStoDBconsistent());
+	}
+	
+	@Test
+	public void testCheckFSToDBNotConsistent(){
+		
+		o.getLatestPackage().getFiles().clear();
+		f1 = new DAFile(o.getLatestPackage(),"a","a.txt");
+		o.getLatestPackage().getFiles().add(f1);
+		assertFalse(o.isFStoDBconsistent());
 	}
 }

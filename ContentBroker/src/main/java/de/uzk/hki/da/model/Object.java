@@ -2,6 +2,8 @@
   DA-NRW Software Suite | ContentBroker
   Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
   Universität zu Köln
+  Copyright (C) 2014 LVRInfoKom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -22,6 +24,7 @@ package de.uzk.hki.da.model;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,7 +45,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -825,8 +830,7 @@ public class Object {
 	 */
 	public DAFile getLatest(String filename) {
 		
-		File[] representations = getDataPath().toFile().listFiles();
-		Arrays.sort(representations);
+		File[] representations = getRepresentations();
 		
 		DAFile result = null;
 		for (File rep : representations) {
@@ -930,4 +934,101 @@ public class Object {
 	public void setMetadata_file(String metadata_file) {
 		this.metadata_file = metadata_file;
 	}
+
+	
+	
+	/**
+	 * Checks if for every DAFile attached to the db there is a physical file inside the object folder on the file system.
+	 * @author Daniel M. de Oliveira
+	 * @return false if there is at least one DAFile which lacks a correspondent physical file. true otherwise.
+	 */
+	public boolean isDBtoFSconsistent() {
+
+		boolean consistent = true;
+		
+		for (Package pkg: getPackages())
+			for (DAFile f: pkg.getFiles())
+				if (!f.toRegularFile().exists()) consistent = false;
+		
+		return consistent;
+	}
+
+
+	/**
+	 * Checks if for every physical file inside the object on the file system there is a DAFile attached to one of the packages belonging to the object.
+	 * @author Daniel M. de Oliveira
+	 * @return false if there is at least one existent file the DAfile is missing. true otherwise.
+	 */
+	public boolean isFStoDBconsistent() {
+		
+		boolean consistent = true;
+		
+		for (File rep : getRepresentations()) {
+			for (File f:getFilesOfRepresentation(rep)){
+				
+				if (!existsAsAttachedDAFile(new DAFile(null,rep.getName(),getRelativePath(f, rep.getName()))))
+					consistent = false;
+			}
+			
+		}
+		return consistent;
+	}
+
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 * @return
+	 */
+	private boolean existsAsAttachedDAFile(DAFile toCompare){
+		
+		for (Package p: getPackages()){
+			for (DAFile f:p.getFiles()){
+				if (f.equals(toCompare)) return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 * @param f
+	 * @param repName
+	 * @return
+	 */
+	private String getRelativePath(File f,String repName){
+		
+		return f.getPath().replace(getPath().toString()+"/data/"+repName,"");
+	}
+	
+	
+	/**
+	 * Gets the files of a repreentation. Operates on the basis of the FS.
+	 * @author Daniel M. de Oliveira
+	 * @param rep
+	 * @return
+	 */
+	private Collection<File> getFilesOfRepresentation(File rep){
+		
+		return FileUtils.listFiles(rep,
+				TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+	}
+	
+	
+	/**
+	 * Gets the representations based on the existing folders in the objects folder on the file system.
+	 * @author Daniel M. de Oliveira
+	 * @return
+	 */
+	private File[] getRepresentations() {
+
+		File[] representations = getDataPath().toFile().listFiles();
+		Arrays.sort(representations);
+		return representations;
+	}
+	
+	
+	
+	
+	
 }
