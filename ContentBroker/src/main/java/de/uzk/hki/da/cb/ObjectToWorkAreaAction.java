@@ -37,6 +37,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 	private GridFacade gridFacade;
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
+	public ObjectToWorkAreaAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;}
 	
 	@Override
 	boolean implementation() {

@@ -54,6 +54,8 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	
 	private GridFacade gridRoot;
 
+	public ArchiveReplicationCheckAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
+	
 	/**
 	 * @throws IOException 
 	 */

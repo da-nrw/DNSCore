@@ -41,7 +41,7 @@ import de.uzk.hki.da.utils.Path;
  */
 public class ArchiveReplicationAction extends AbstractAction {
 	
-	public ArchiveReplicationAction(){}
+	public ArchiveReplicationAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
 	
 	private GridFacade gridRoot;
 	

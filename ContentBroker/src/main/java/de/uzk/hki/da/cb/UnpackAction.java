@@ -68,13 +68,14 @@ public class UnpackAction extends AbstractAction {
 	
 	private enum PackageType{ BAGIT, METS }
 	
-	public UnpackAction(){}
+	public UnpackAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;}
 	
 	private IngestGate ingestGate;
 	
 	private String sidecarExts = "";
 	
 	boolean implementation() throws IOException{
+		
 		
 		Path absoluteSIPPath = Path.make(
 				localNode.getIngestAreaRootPath(),

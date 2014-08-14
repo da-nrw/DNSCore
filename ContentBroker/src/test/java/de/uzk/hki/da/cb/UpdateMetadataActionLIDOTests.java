@@ -32,6 +32,8 @@ import de.uzk.hki.da.utils.TESTHelper;
 
 public class UpdateMetadataActionLIDOTests {
 	
+	private static final String _1_B_REP = "1+b";
+	private static final String _1_A_REP = "1+a";
 	private static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
 	private static MimeTypeDetectionService mtds;
 	private static final Path workAreaRootPathPath = new RelativePath("src/test/resources/cb/UpdateMetadataActionLIDOTests/");
@@ -50,18 +52,18 @@ public class UpdateMetadataActionLIDOTests {
 	public void setUp() throws IOException {
 		object = TESTHelper.setUpObject("42",workAreaRootPathPath);
 
-		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/LIDO-Testexport2014-07-04-FML-Auswahl.xml").toFile(), Path.make(workAreaRootPathPath,"work/TEST/42/data/a/").toFile());
-		DAFile f1 = new DAFile(object.getLatestPackage(),"a","LIDO-Testexport2014-07-04-FML-Auswahl.xml");
+		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/LIDO-Testexport2014-07-04-FML-Auswahl.xml").toFile(), Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_A_REP).toFile());
+		DAFile f1 = new DAFile(object.getLatestPackage(),_1_A_REP,"LIDO-Testexport2014-07-04-FML-Auswahl.xml");
 		object.getLatestPackage().getFiles().add(f1);
 		
 		event1 = new Event();
-		event1.setSource_file(new DAFile(object.getLatestPackage(),"a","LVR_DFG-Alltagskultur_0000050177.tif"));
-		event1.setTarget_file(new DAFile(object.getLatestPackage(),"b","renamed0000050177.tif"));
+		event1.setSource_file(new DAFile(object.getLatestPackage(),_1_A_REP,"LVR_DFG-Alltagskultur_0000050177.tif"));
+		event1.setTarget_file(new DAFile(object.getLatestPackage(),_1_B_REP,"renamed0000050177.tif"));
 		event1.setType("CONVERT");
 		
 		event2 = new Event();
-		event2.setSource_file(new DAFile(object.getLatestPackage(),"a","LVR_DFG-Alltagskultur_0000050178.tif"));
-		event2.setTarget_file(new DAFile(object.getLatestPackage(),"b","renamed0000050178.tif"));
+		event2.setSource_file(new DAFile(object.getLatestPackage(),_1_A_REP,"LVR_DFG-Alltagskultur_0000050178.tif"));
+		event2.setTarget_file(new DAFile(object.getLatestPackage(),_1_B_REP,"renamed0000050178.tif"));
 		event2.setType("CONVERT");
 		
 		object.getLatestPackage().getEvents().add(event1);
@@ -90,8 +92,8 @@ public class UpdateMetadataActionLIDOTests {
 	
 	@After 
 	public void tearDown(){
-		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data/a/LIDO-Testexport2014-07-04-FML-Auswahl.xml").delete();
-		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data/b/LIDO-Testexport2014-07-04-FML-Auswahl.xml").delete();
+		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data",_1_A_REP,"LIDO-Testexport2014-07-04-FML-Auswahl.xml").delete();
+		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data",_1_B_REP,"LIDO-Testexport2014-07-04-FML-Auswahl.xml").delete();
 	}
 	
 	@Test
@@ -100,7 +102,7 @@ public class UpdateMetadataActionLIDOTests {
 		action.implementation();
 		
 		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/42/data/b/LIDO-Testexport2014-07-04-FML-Auswahl.xml").toFile()));
+		Document doc = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_B_REP,"LIDO-Testexport2014-07-04-FML-Auswahl.xml").toFile()));
 		assertEquals("http://data.danrw.de/file/42/renamed0000050177.tif", getLIDOURL(doc));
 		
 	}

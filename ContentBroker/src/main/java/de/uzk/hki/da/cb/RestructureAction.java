@@ -57,6 +57,10 @@ public class RestructureAction extends AbstractAction{
 	private List<IOFileFilter> unwantedFilesFilters;
 	private GridFacade gridRoot;
 	
+	public RestructureAction(){
+		SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;
+	}
+	
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException {

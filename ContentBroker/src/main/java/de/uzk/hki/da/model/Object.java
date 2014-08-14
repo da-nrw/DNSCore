@@ -22,6 +22,7 @@
 package de.uzk.hki.da.model;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -47,6 +48,7 @@ import javax.persistence.Transient;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,6 +68,8 @@ import de.uzk.hki.da.utils.Utilities;
 @Table(name="objects")
 public class Object {
 	
+	private static final String REPRESENTATION_FILTER = "^.*[+][ab]";
+
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(Object.class);
 	
@@ -743,10 +747,8 @@ public class Object {
 	 */
 	public DAFile getLatest(String filename) {
 		
-		File[] representations = getRepresentations();
-		
 		DAFile result = null;
-		for (File rep : representations) {
+		for (File rep : getRepresentations()) {
 			if (new File(getDataPath()+"/"+rep.getName()+"/"+filename).exists()){
 
 				for (Package p:this.getPackages())
@@ -860,8 +862,10 @@ public class Object {
 		boolean consistent = true;
 		
 		for (Package pkg: getPackages())
-			for (DAFile f: pkg.getFiles())
+			for (DAFile f: pkg.getFiles()){
+				if (!f.getRep_name().matches(REPRESENTATION_FILTER)) continue;
 				if (!f.toRegularFile().exists()) consistent = false;
+			}
 		
 		return consistent;
 	}
@@ -933,11 +937,16 @@ public class Object {
 	 * @author Daniel M. de Oliveira
 	 * @return representations as sorted array
 	 */
-	private File[] getRepresentations() {
+	private List<File> getRepresentations() {
 
-		File[] representations = getDataPath().toFile().listFiles();
+		FileFilter fileFilter = new RegexFileFilter(REPRESENTATION_FILTER);
+		
+		File[] representations = getDataPath().toFile().listFiles(fileFilter);
+		if (representations==null)
+			return new ArrayList<File>();
+		
 		Arrays.sort(representations);
-		return representations;
+		return Arrays.asList(representations);
 	}
 	
 	

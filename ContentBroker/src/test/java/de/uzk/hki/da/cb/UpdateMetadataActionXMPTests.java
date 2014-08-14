@@ -51,6 +51,8 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class UpdateMetadataActionXMPTests {
 
+	private static final String _1_B_REP = "1+b";
+	private static final String _1_A_REP = "1+a";
 	private static MimeTypeDetectionService mtds;
 	private final Path workAreaRootPath = new RelativePath("src/test/resources/cb/UpdateMetadataActionXMPTests/");
 	
@@ -86,16 +88,16 @@ public class UpdateMetadataActionXMPTests {
 	public void test() throws IOException, JDOMException {
 		Object obj = TESTHelper.setUpObject("123", workAreaRootPath);
 		
-		DAFile daf1 = new DAFile(obj.getLatestPackage(),"a","a.txt");
-		DAFile daf2 = new DAFile(obj.getLatestPackage(),"b","a.txt");
-		DAFile daf3 = new DAFile(obj.getLatestPackage(),"b","a.xmp");
+		DAFile daf1 = new DAFile(obj.getLatestPackage(),_1_A_REP,"a.txt");
+		DAFile daf2 = new DAFile(obj.getLatestPackage(),_1_B_REP,"a.txt");
+		DAFile daf3 = new DAFile(obj.getLatestPackage(),_1_B_REP,"a.xmp");
 		DAFile daf4 = new DAFile(obj.getLatestPackage(),"dip/institution","hasha.txt");
 		DAFile daf5 = new DAFile(obj.getLatestPackage(),"dip/public","hasha.txt");
 		DAFile daf6 = new DAFile(obj.getLatestPackage(),"dip/public","hashb.txt");
 		DAFile daf7 = new DAFile(obj.getLatestPackage(),"dip/institution","hashb.txt");
-		DAFile daf8 = new DAFile(obj.getLatestPackage(),"a","b.txt");
-		DAFile daf9 = new DAFile(obj.getLatestPackage(),"b","b.txt");
-		DAFile daf10 = new DAFile(obj.getLatestPackage(),"b","b.xmp");
+		DAFile daf8 = new DAFile(obj.getLatestPackage(),_1_A_REP,"b.txt");
+		DAFile daf9 = new DAFile(obj.getLatestPackage(),_1_B_REP,"b.txt");
+		DAFile daf10 = new DAFile(obj.getLatestPackage(),_1_B_REP,"b.xmp");
 	
 		Event evt1  = new Event();
 		evt1.setSource_file(daf2);

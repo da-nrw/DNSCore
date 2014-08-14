@@ -89,6 +89,7 @@ public class AbstractActionTests {
 		action.setObject(object);
 		action.setStartStatus(startStatus);
 		action.setEndStatus(endStatus);
+		action.SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
 	}
 	
 	

@@ -57,6 +57,8 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class UpdateMetadataActionEADTests {
 	
+	private static final String _1_B_REP = "1+b";
+	private static final String _1_A_REP = "1+a";
 	private static MimeTypeDetectionService mtds;
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
@@ -75,16 +77,16 @@ public class UpdateMetadataActionEADTests {
 	public void setUp() throws IOException{
 		object = TESTHelper.setUpObject("42",workAreaRootPathPath);
 
-		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/mets_2_99.xml").toFile(), Path.make(workAreaRootPathPath,"work/TEST/42/data/a/").toFile());
-		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/vda3.XML").toFile(), Path.make(workAreaRootPathPath,"work/TEST/42/data/a/").toFile());
-		DAFile f1 = new DAFile(object.getLatestPackage(),"a","mets_2_99.xml");
+		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/mets_2_99.xml").toFile(), Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_A_REP).toFile());
+		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/vda3.XML").toFile(), Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_A_REP).toFile());
+		DAFile f1 = new DAFile(object.getLatestPackage(),_1_A_REP,"mets_2_99.xml");
 		object.getLatestPackage().getFiles().add(f1);
-		DAFile f3 = new DAFile(object.getLatestPackage(),"a","vda3.XML");
+		DAFile f3 = new DAFile(object.getLatestPackage(),_1_A_REP,"vda3.XML");
 		object.getLatestPackage().getFiles().add(f3);
 		
 		event = new Event();
-		event.setSource_file(new DAFile(object.getLatestPackage(),"a","ALVR_Nr_4547_Aufn_067.tif"));
-		event.setTarget_file(new DAFile(object.getLatestPackage(),"b","renamed067.tif"));
+		event.setSource_file(new DAFile(object.getLatestPackage(),_1_A_REP,"ALVR_Nr_4547_Aufn_067.tif"));
+		event.setTarget_file(new DAFile(object.getLatestPackage(),_1_B_REP,"renamed067.tif"));
 		event.setType("CONVERT");
 		object.getLatestPackage().getEvents().add(event);
 		
@@ -112,10 +114,10 @@ public class UpdateMetadataActionEADTests {
 	
 	@After 
 	public void tearDown(){
-		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data/a/mets_2_99.xml").delete();
-		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data/a/vda3.XML").delete();
-		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data/b/mets_2_99.xml").delete();
-		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data/b/vda3.XML").delete();
+		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data",_1_A_REP,"mets_2_99.xml").delete();
+		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data",_1_A_REP,"vda3.XML").delete();
+		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data",_1_B_REP,"mets_2_99.xml").delete();
+		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data",_1_B_REP,"vda3.XML").delete();
 	}
 	
 	
@@ -125,7 +127,7 @@ public class UpdateMetadataActionEADTests {
 		action.implementation();
 		
 		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/42/data/b/mets_2_99.xml").toFile()));
+		Document doc = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_B_REP,"mets_2_99.xml").toFile()));
 
 		assertEquals("http://data.danrw.de/file/42/renamed067.tif", getURL(doc));
 		System.out.println("DC: "+action.getDcMappings());
@@ -135,7 +137,7 @@ public class UpdateMetadataActionEADTests {
 	
 	@Test
 	public void upperLowerCaseMismatch() throws IOException, JDOMException {
-		event.setSource_file(new DAFile(object.getLatestPackage(),"a","alvr_Nr_4547_Aufn_067.tif"));
+		event.setSource_file(new DAFile(object.getLatestPackage(),_1_A_REP,"alvr_Nr_4547_Aufn_067.tif"));
 		
 		try{
 			action.implementation();
