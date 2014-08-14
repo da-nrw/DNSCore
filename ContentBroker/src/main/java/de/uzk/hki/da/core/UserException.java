@@ -23,7 +23,8 @@ public class UserException extends RuntimeException {
 		REPLACE_URLS_IN_METADATA_ERROR,
 		RETRIEVAL_ERROR,
 		DUPLICATE_DOCUMENT_NAMES,
-		DUPLICATE_METADATA_FILE
+		DUPLICATE_METADATA_FILE,
+		INVALID_METADATA_FILE
 	};
 	
 	private static final long serialVersionUID = -6346016039624940492L;
