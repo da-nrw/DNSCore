@@ -36,6 +36,7 @@ import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -53,21 +54,21 @@ public class RegisterObjectService {
 
 	private CentralDatabaseDAO dao;	
 	
-	/** The name space. */
-	private String nameSpace;
-	
 	private Node localNode;
+	private PSystem pSystem;
 	
 	/**
 	 * @throws new IllegalStateException if there exists no db entry for localNode or its urn_index is < 0.
 	 * @author Daniel M. de Oliveira
 	 */
 	public void init(){
+		pSystem = new PSystem(); pSystem.setId(1);
 		
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
 		try {
 			session.refresh(localNode);
+			session.refresh(pSystem);
 		} catch (UnresolvableObjectException e){
 			throw new IllegalStateException("Node "+localNode.getId()+"does not exist in db");
 		}
@@ -176,7 +177,7 @@ public class RegisterObjectService {
 	 */
 	private String convertURNtoTechnicalIdentifier(String urn) {
 		
-		return urn.replace(nameSpace + "-", "");
+		return urn.replace(getpSystem().getUrnNameSpace() + "-", "");
 	}
 
 	/**
@@ -233,7 +234,7 @@ public class RegisterObjectService {
 		// Must be synchronized to block other processes from 
 		// fetching and incrementing the same urn_index, upon which [number] is based.
 		
-		String base = nameSpace+"-"
+		String base = getpSystem().getUrnNameSpace()+"-"
 				+ localNode.getId()+"-"
 				+ Utilities.todayAsSimpleIsoDate(new Date())
 				+ incrementURNindex();
@@ -257,16 +258,6 @@ public class RegisterObjectService {
 		return localNode.getUrn_index();
 	}
 	
-	/**
-	 * Sets the name space.
-	 *
-	 * @param nameSpace the new name space
-	 */
-	public void setNameSpace(String nameSpace) {
-		this.nameSpace = nameSpace;
-	}
-
-
 	public void setLocalNode(Node localNode) {
 		if (localNode==null) 
 			throw new IllegalArgumentException("localNode is null");
@@ -275,5 +266,17 @@ public class RegisterObjectService {
 
 	public void setDao(CentralDatabaseDAO dao) {
 		this.dao = dao;
+	}
+
+
+
+	public PSystem getpSystem() {
+		return pSystem;
+	}
+
+
+
+	public void setpSystem(PSystem pSystem) {
+		this.pSystem = pSystem;
 	}
 }

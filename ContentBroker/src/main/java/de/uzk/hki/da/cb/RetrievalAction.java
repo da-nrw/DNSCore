@@ -50,7 +50,6 @@ import de.uzk.hki.da.utils.Path;
 
 public class RetrievalAction extends AbstractAction {
 	
-	private String sidecarExtensions;
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
 	public RetrievalAction(){}
@@ -128,7 +127,7 @@ public class RetrievalAction extends AbstractAction {
 	private void copySurfaceRepresentation(Object o, String destinationFolder)
 			throws RuntimeException {
 		
-		List<DAFile> files = o.getNewestFilesFromAllRepresentations(sidecarExtensions);
+		List<DAFile> files = o.getNewestFilesFromAllRepresentations(pSystem.getSidecarExtensions());
 		for (DAFile f : files)
 		{
 			if (!f.toRegularFile().getName().equals("premis.xml"))
@@ -173,15 +172,6 @@ public class RetrievalAction extends AbstractAction {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 	
-	public void setSidecarExtensions(String sidecarExtensions) {
-		this.sidecarExtensions = sidecarExtensions;
-	}
-
-	public String getSidecarExtensions() {
-		return sidecarExtensions;
-	}
-
-
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
 		return distributedConversionAdapter;
 	}

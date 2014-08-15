@@ -39,6 +39,7 @@ import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.utils.Path;
@@ -74,6 +75,9 @@ public class RetrievalActionTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+
+		PSystem pSystem = new PSystem();
+		pSystem.setSidecarExtensions("xmp");
 		
 		FileUtils.copyDirectory(Path.makeFile(forkAndTransferPath,"work/csn/Source"), 
 				                Path.makeFile(forkAndTransferPath,"work/csn/1")); 
@@ -112,6 +116,7 @@ public class RetrievalActionTest {
 		action.setObject(object);
 		action.setJob(job);
 		action.setLocalNode(node);
+		action.setPSystem(pSystem);
 	}
 	
 	/**
@@ -137,9 +142,6 @@ public class RetrievalActionTest {
 	 */
 	@Test
 	public void test() throws Exception {
-		
-		// action.setIrodsSystemConnector(irods);
-		action.setSidecarExtensions("xmp");
 		
 		action.implementation();
 		assertFalse(Path.makeFile(forkAndTransferPath,"csn/1_").exists());

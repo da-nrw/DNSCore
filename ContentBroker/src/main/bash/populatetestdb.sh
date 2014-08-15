@@ -21,7 +21,7 @@ then
 		"DELETE FROM conversion_queue;"
 		"DELETE FROM contractors;"
 		"DELETE FROM psystem;"
-		"INSERT INTO psystem (id,urn_name_space,sidecar_extensions,pres_server) VALUES (1,'urn:nbn:de:danrw','xmp;txt;xml','localnode');"
+		"INSERT INTO psystem (id,urn_name_space,sidecar_extensions,pres_server,closed_collection_name,open_collection_name,uris_file,uris_cho,uris_aggr) VALUES (1,'urn:nbn:de:danrw','xmp;txt;xml','localnode','danrw-closed','danrw','http://data.danrw.de/file','http://data.danrw.de/cho','system.uris.aggr=http://data.danrw.de/aggregation');"
 		"INSERT INTO contractors (id,short_name,admin) values (1,'TEST',0);"
         "INSERT INTO contractors (id,short_name,admin) values (2,'DEFAULT',0);"
         "INSERT INTO contractors (id,short_name,admin) values (3,'PRESENTER',0);"

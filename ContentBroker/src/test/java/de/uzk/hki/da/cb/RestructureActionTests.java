@@ -41,6 +41,7 @@ import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
@@ -62,6 +63,9 @@ public class RestructureActionTests {
 	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() throws IOException{
+		PSystem pSystem = new PSystem();
+		
+		
 		FileUtils.copyDirectory(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER+"_"), Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER));
 		
 		object = TESTHelper.setUpObject(IDENTIFIER, WORK_AREA_ROOT);
@@ -74,6 +78,7 @@ public class RestructureActionTests {
 		action.setGridRoot(grid);
 		action.setObject(object);
 		action.setJob(job);
+		action.setPSystem(pSystem);
 		
 		
 		

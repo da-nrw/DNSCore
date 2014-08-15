@@ -94,10 +94,6 @@ public class SendToPresenterAction extends AbstractAction {
 	
 	private DCReader dcReader;
 	
-	private String openCollectionName;
-	private String closedCollectionName;
-	
-	
 	/**
 	 * Preconditions:
 	 * There can be two pips at
@@ -141,9 +137,9 @@ public class SendToPresenterAction extends AbstractAction {
 		boolean publicPIPSuccesfullyIngested = false;
 		boolean institutionPIPSuccessfullyIngested = false;
 		if (pipPathPublic.toFile().exists())
-			publicPIPSuccesfullyIngested = createXEpicurAndIngest(pipPathPublic,getOpenCollectionName(),packageType,object.getUrn(),true);
+			publicPIPSuccesfullyIngested = createXEpicurAndIngest(pipPathPublic,pSystem.getOpenCollectionName(),packageType,object.getUrn(),true);
 		if (pipPathInstitution.toFile().exists()) 
-			institutionPIPSuccessfullyIngested = createXEpicurAndIngest(pipPathInstitution, getClosedCollectionName(), packageType, object.getUrn(), false);
+			institutionPIPSuccessfullyIngested = createXEpicurAndIngest(pipPathInstitution, pSystem.getClosedCollectionName(), packageType, object.getUrn(), false);
 		
 		setPublishedFlag(publicPIPSuccesfullyIngested,
 				institutionPIPSuccessfullyIngested);
@@ -172,8 +168,8 @@ public class SendToPresenterAction extends AbstractAction {
 	 */
 	private void purgeObjectsIfExist(){
 		try {
-			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), getOpenCollectionName());
-			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), getClosedCollectionName());
+			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), pSystem.getOpenCollectionName());
+			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), pSystem.getClosedCollectionName());
 		} catch (RepositoryException e) {
 			throw new RuntimeException(e);
 		}
@@ -305,7 +301,7 @@ public class SendToPresenterAction extends AbstractAction {
 			
 			// add collection membership
 			String collectionUri;
-			if (getClosedCollectionName().equals(collection)) {
+			if (pSystem.getClosedCollectionName().equals(collection)) {
 				collectionUri = CLOSED_COLLECTION_URI;
 			} else {
 				collectionUri = OPEN_COLLECTION_URI;
@@ -314,7 +310,7 @@ public class SendToPresenterAction extends AbstractAction {
 			logger.debug("Added relationship: "+MEMBER_COLLECTION+" "+ collectionUri);
 			
 			// add oai identifier
-			if (!(getClosedCollectionName()+":").equals(collection) && 
+			if (!(pSystem.getClosedCollectionName()+":").equals(collection) && 
 				// don't add test packages to OAI-PMH
 				!testContractors.contains(contractorShortName)
 			) {
@@ -507,25 +503,5 @@ public class SendToPresenterAction extends AbstractAction {
 	 */
 	public void setFileFilter(Set<String> fileFilter) {
 		this.fileFilter = fileFilter;
-	}
-
-
-	public String getOpenCollectionName() {
-		return openCollectionName;
-	}
-
-
-	public void setOpenCollectionName(String openCollectionName) {
-		this.openCollectionName = openCollectionName;
-	}
-
-
-	public String getClosedCollectionName() {
-		return closedCollectionName;
-	}
-
-
-	public void setClosedCollectionName(String closedCollectionName) {
-		this.closedCollectionName = closedCollectionName;
 	}
 }

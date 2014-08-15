@@ -92,7 +92,7 @@ public abstract class AbstractAction implements Runnable {
 	private UserExceptionManager userExceptionManager;
 	private ActiveMQConnectionFactory mqConnectionFactory;
 	private String systemFromEmailAdress;
-	private PSystem pSystem;
+	protected PSystem pSystem;
 	
 	
 	AbstractAction(){}

@@ -42,7 +42,7 @@ public class PSystem {
 	private Integer minRepls;
 
 	@Column(name="sidecar_extensions")
-	private String sidecarExtensions;
+	private String sidecarExtensions="";
 	
 	@Column(name="pres_server")
 	private String presServer;

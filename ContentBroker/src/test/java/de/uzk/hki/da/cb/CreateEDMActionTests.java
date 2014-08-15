@@ -35,6 +35,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
@@ -74,8 +75,11 @@ public class CreateEDMActionTests {
 		edmMappings.put("METS","src/main/xslt/edm/mets-mods_to_edm.xsl");
 		action.setEdmMappings(edmMappings);
 		
-		action.setChoBaseUri("cho");
-		action.setAggrBaseUri("aggr");
+		PSystem pSystem = new PSystem();
+		pSystem.setUrisCho("cho");
+		pSystem.setUrisAggr("aggr");
+
+		action.setPSystem(pSystem);
 		action.setLocalBaseUri("local");
 		action.setRepositoryFacade(repo);
 		action.setObject(object);

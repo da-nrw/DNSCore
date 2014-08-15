@@ -88,7 +88,6 @@ public class IngestAreaScannerWorker {
 	private String localNodeId;
 	
 	/**
-	 * 
 	 */
 	private CentralDatabaseDAO dao = null;
 	

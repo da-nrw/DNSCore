@@ -15,8 +15,6 @@
 		<property name="endStatus" value="120" />
 		<property name="name" value="IngestUnpackAction" />
 		<property name="ingestGate" ref="ingestGate" />
-		<property name="sidecarExtensions" value="${system.sidecar_extensions}" />
-		
 	</bean>
 	<bean id="IngestRestructureAction" class="de.uzk.hki.da.cb.RestructureAction"
 		scope="prototype">
@@ -34,7 +32,6 @@
 		<property name="ingestGate" ref="ingestGate" />
 		<property name="gridRoot" ref="${cb.implementation.grid}"/>
 		<property name="formatScanService" ref="formatScanService" />
-		<property name="sidecarExtensions" value="${system.sidecar_extensions}" />
 	</bean>
 	<bean id="IngestValidateMetadataAction" class="de.uzk.hki.da.cb.ValidateMetadataAction"
 		scope="prototype">
@@ -53,7 +50,6 @@
 		<property name="startStatus" value="150" />
 		<property name="endStatus" value="230" />
 		<property name="name" value="IngestRegisterURNAction" />
-		<property name="nameSpace" value="${system.urnNameSpace}" />
 	</bean>
 	<bean id="IngestConvertAction" class="de.uzk.hki.da.cb.ConvertAction"
 		scope="prototype">
@@ -84,7 +80,6 @@
 		<property name="name" value="IngestCheckFormatsAction" />
 		<property name="formatScanService" ref="formatScanService" />
 		<property name="jhoveScanService" ref="jhoveScanService" />
-		<property name="sidecarExtensions" value="${system.sidecar_extensions}" />
 	</bean>
 	<bean id="IngestCreatePremisAction" class="de.uzk.hki.da.cb.CreatePremisAction" scope="prototype">
 		<property name="startStatus" value="270" />
@@ -98,7 +93,6 @@
 		<property name="name" value="IngestScanForPresentationAction" />
 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
 		<property name="formatScanService" ref="formatScanService" />
-		<property name="sidecarExtensions" value="${system.sidecar_extensions}" />
 	</bean>
 	<bean id="IngestConvertForPresentationAction" class="de.uzk.hki.da.cb.ConvertAction"
 		scope="prototype">
@@ -127,7 +121,7 @@
 				<value>dip/institution</value>
 			</util:list>
 		</property>
-		<property name="absUrlPrefix" value="${system.uris.file}"/>
+		<property name="presMode" value="true"/>
 		<property name="dcMappings">
 			<map>
 				<entry key="METS" value="conf/xslt/dc/mets-mods_to_dc.xsl" />
@@ -169,6 +163,5 @@
 		<property name="timeOut" value="2000" />
 		<property name="gridRoot" ref="${cb.implementation.grid}"/>
 		<property name="name" value="IngestArchiveReplicationCheckAction" />
-		<property name="presentationRepositoryNodeName" value="${system.presServer}" />
 	</bean>
 </beans>

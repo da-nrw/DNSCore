@@ -24,6 +24,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.service.MimeTypeDetectionService;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
@@ -51,6 +52,9 @@ public class UpdateMetadataRheinlaender {
 	
 	@Before
 	public void setUp() throws IOException{
+		
+		PSystem pSystem = new PSystem();
+		pSystem.setUrisFile("http://data.danrw.de/file");
 		
 		object = TESTHelper.setUpObject("43",workAreaRootPathPath);
 		
@@ -123,7 +127,7 @@ public class UpdateMetadataRheinlaender {
 		nsMap.put("mets", METS_NS.getURI());
 		nsMap.put("xlink", XLINK_NS.getURI());
 		action.setNamespaces(nsMap);
-		action.setAbsUrlPrefix("http://data.danrw.de/file");
+		
 		Map<String, String> dcMappings = new HashMap<String,String>();
 		dcMappings.put("EAD", "conf/xslt/dc/ead_to_dc.xsl");
 		action.setDcMappings(dcMappings);
@@ -131,6 +135,7 @@ public class UpdateMetadataRheinlaender {
 		action.setMtds(mtds);
 		action.setObject(object);
 		action.setJob(job);
+		action.setPSystem(pSystem);
 	}
 
 	@After 

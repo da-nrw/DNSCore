@@ -13,15 +13,7 @@ irods.keyStorePath=
 irods.trustStorePath=
 
 system.min_repls=1
-system.sidecar_extensions=xmp;txt;xml
-system.presServer=localnode
-system.urnNameSpace=urn:nbn:de:danrw
-system.uris.file=http://data.danrw.de/file
-system.uris.cho=http://data.danrw.de/cho
-system.uris.aggr=http://data.danrw.de/aggregation
 system.uris.local=info:
-system.openCollectionName=danrw
-system.closedCollectionName=danrw-closed
 system.emailFrom=noreply@danrw.de
 
 localNode.admin_email=root@cihost.de

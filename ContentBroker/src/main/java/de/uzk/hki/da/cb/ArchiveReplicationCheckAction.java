@@ -50,8 +50,6 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	private int minNodes = 3;
 	private int timeOut = 4000;
 	
-	private String presentationRepositoryNodeName;
-	
 	private GridFacade gridRoot;
 
 	public ArchiveReplicationCheckAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
@@ -102,27 +100,15 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		Job result = new Job();
 		
 		logger.info("Creating child job with state 540 on "+ 
-				getPresentationRepositoryNodeName()+" for possible publication of this object.");
+				pSystem.getPresServer()+" for possible publication of this object.");
 		result = new Job (parent, "540");
-		result.setResponsibleNodeName(getPresentationRepositoryNodeName());
+		result.setResponsibleNodeName(pSystem.getPresServer());
 		result.setObject(getObject());
 		result.setDate_created(String.valueOf(new Date().getTime()/1000L));
 		
 		return result;
 	}
 	
-	/**
-	 * @author Daniel M. de Oliveira
-	 * @return
-	 */
-	public String getPresentationRepositoryNodeName() {
-		return presentationRepositoryNodeName;
-	}
-
-
-	public void setPresentationRepositoryNodeName(String presentationRepositoryNodeName) {
-		this.presentationRepositoryNodeName = presentationRepositoryNodeName;
-	}
 	
 	/**
 	 * @param minNodes

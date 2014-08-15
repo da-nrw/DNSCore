@@ -25,7 +25,6 @@
 		<property name="endStatus" value="950" />
 		<property name="name" value="RetrievalAction" />
 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
-		<property name="sidecarExtensions" value="${system.sidecar_extensions}" />
 	</bean>	
 	<bean id="PostRetrievalAction" class="de.uzk.hki.da.cb.PostRetrievalAction"
 		scope="prototype">

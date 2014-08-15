@@ -46,11 +46,9 @@ public class RegisterURNAction extends AbstractAction {
 	
 	static final Logger logger = LoggerFactory.getLogger(RegisterURNAction.class);
 	
-	private String nameSpace;
-
 	@Override
 	boolean implementation() {
-		if (nameSpace==null) throw new ConfigException("URN NameSpace parameter not set!");
+		if (pSystem.getUrnNameSpace()==null) throw new ConfigException("URN NameSpace parameter not set!");
 		
 		if (object.isDelta())
 			logger.info("Object URN: " + object.getUrn());
@@ -66,7 +64,7 @@ public class RegisterURNAction extends AbstractAction {
 				if (metsUrn != null)
 					urn = metsUrn;
 				else				
-					urn = nameSpace + "-" + object.getIdentifier();
+					urn = pSystem.getUrnNameSpace() + "-" + object.getIdentifier();
 			}
 			
 			logger.info("Object URN: " + urn);
@@ -138,9 +136,6 @@ public class RegisterURNAction extends AbstractAction {
 		return null;
 	}
 	
-	public void setNameSpace(String nameSpace) {
-		this.nameSpace = nameSpace;
-	}
 
 	@Override
 	void rollback() {

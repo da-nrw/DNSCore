@@ -43,6 +43,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -126,6 +127,9 @@ public class CheckFormatsActionTest {
 	 */
 	@Before
 	public void setUp() throws Exception{
+		
+		
+		PSystem pSystem = new PSystem();
 		localNode = new Node();
 		Contractor contractor = new Contractor();
 		contractor.setShort_name("TEST");
@@ -169,8 +173,8 @@ public class CheckFormatsActionTest {
 		action.setFormatScanService(formatScanService);
 		action.setJob(job);
 		action.setLocalNode(localNode);
-		action.setSidecarExtensions("");
 		action.setJhoveScanService(jhove);
+		action.setPSystem(pSystem);
 		
 	}
 
