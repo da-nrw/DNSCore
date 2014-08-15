@@ -137,6 +137,7 @@ grails.plugin.springsecurity.interceptUrlMap = [
 	'/**/favicon.ico':    ['permitAll'],
 	'/login/**':          ['permitAll'],
 	'/logout/**':         ['permitAll'],
+	'/contractor/**':         ['permitAll'],
 	'/queueEntry/**':     ['ROLE_CONTRACTOR'],
 	'/automatedRetrieval/**':     ['ROLE_CONTRACTOR'],
 	'/object/**':    	  ['ROLE_CONTRACTOR'],

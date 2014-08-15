@@ -35,20 +35,15 @@ import grails.converters.JSON
 
 class StatusController {
 	
+	def springSecurityService
+	
 	def index() {
 	
 		def result = [:]
 		def results = [:]
 		
 		def rList = null
-		if (session.bauthuser == null) {
-			log.error "Login failed";
-			response.status = 403
-			result = [status: "forbidden"]
-			render result as JSON
-			return
-		}
-		def contractor = User.findByShortName(session.bauthuser)
+		def contractor = User.findByShortName(springSecurityService.currentUser.toString())
 		// listall objects of Contractor
 		results.result = []
 		if (params.listallobjects) {
@@ -72,15 +67,15 @@ class StatusController {
 		}
 				
 		if (params.urn ) {
-				QueueEntry.getAllQueueEntriesForShortNameAndUrn(session.bauthuser, params.urn)
+				QueueEntry.getAllQueueEntriesForShortNameAndUrn(springSecurityService.currentUser.toString(), params.urn)
 			} else if (params.origName) {
 			rList = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.obj.origName=:on",
              [on: params.origName,
-				 csn: session.bauthuser]);
+				 csn: springSecurityService.currentUser.toString()]);
 		} else if (params.identifier) {
 			rList = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.obj.identifier=:idn",
 			 [idn: params.identifier, 
-				 csn: session.bauthuser]);
+				 csn: springSecurityService.currentUser.toString()]);
 		}
 		boolean hasAQueueEntry = false
 		def queueResult = "in progress";

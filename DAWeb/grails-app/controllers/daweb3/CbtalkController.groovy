@@ -38,23 +38,17 @@ class CbtalkController {
 	def cberrorService
 
 	def index() { 	
-		if (session.contractor.admin==1) {
-		} else render(status: 403, text: 'forbidden')
 	}
 	def messageSnippet() {
-		if (session.contractor.admin==1) {
-			
 		def messages = cbtalkService.getMessages()
 		def errors = cberrorService.getMessages()
 		def date = new Date();
 		[messages: messages,
 			errors: errors,
 			date: date]
-		}
 	}
 	
 	def save() {
-		if (session.contractor.admin==1) {
 			
 		def message = ""
 		if (params.stopFactory) {
@@ -85,8 +79,6 @@ class CbtalkController {
 			flash.message= "Fehler in der Sendekommunikation mit dem ActiveMQ Broker! " + e.getCause()
 			log.error(e);
 		}
-		} else render(status: 403, text: 'forbidden')
-		redirect(action:"index");
 		
 	} 
 	
