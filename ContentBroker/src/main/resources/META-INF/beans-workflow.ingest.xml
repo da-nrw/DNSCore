@@ -159,7 +159,6 @@
 		scope="prototype">
 		<property name="startStatus" value="440" />
 		<property name="endStatus" value="500" />
-		<property name="minNodes" value="${system.min_repls}" />
 		<property name="timeOut" value="2000" />
 		<property name="gridRoot" ref="${cb.implementation.grid}"/>
 		<property name="name" value="IngestArchiveReplicationCheckAction" />

@@ -23,7 +23,7 @@ then
 		"DELETE FROM users;"
 		"DELETE FROM Role;"
 		"DELETE FROM psystem;"
-		"INSERT INTO psystem (id,urn_name_space,sidecar_extensions,pres_server,open_collection_name,closed_collection_name,uris_aggr,uris_cho,uris_file) VALUES (1,'urn:nbn:de:danrw','xmp;txt;xml','localnode','danrw','danrw-closed','http://data.danrw.de/aggregation','http://data.danrw.de/cho','http://data.danrw.de/file');"
+		"INSERT INTO psystem (id,urn_name_space,sidecar_extensions,pres_server,open_collection_name,closed_collection_name,uris_aggr,uris_cho,uris_file,min_repls,uris_local,email_from) VALUES (1,'urn:nbn:de:danrw','xmp;txt;xml','localnode','danrw','danrw-closed','http://data.danrw.de/aggregation','http://data.danrw.de/cho','http://data.danrw.de/file',1,'info:','noreply@danrw.de');"
 		"INSERT INTO users (id,short_name,username,accountlocked,accountexpired,passwordexpired,enabled) values (1,'TEST','TEST',FALSE,FALSE,FALSE,TRUE);"
         "INSERT INTO users (id,short_name,username,accountlocked,accountexpired,passwordexpired,enabled) values (2,'DEFAULT','DEFAULT',TRUE,FALSE,FALSE,TRUE);"
         "INSERT INTO users (id,short_name,username,accountlocked,accountexpired,passwordexpired,enabled) values (3,'PRESENTER','PRESENTER',TRUE,FALSE,FALSE,TRUE);"

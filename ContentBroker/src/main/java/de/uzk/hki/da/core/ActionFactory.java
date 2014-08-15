@@ -23,6 +23,7 @@ package de.uzk.hki.da.core;
 import java.util.List;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -63,15 +64,23 @@ public class ActionFactory implements ApplicationContextAware {
 	/** The context. */
 	private ApplicationContext context;
 	
-	/** The systemFrom Email Adress **/
-	private String systemFromEmailAddress;
-	 
 	/** The on halt. */
 	private boolean onHalt = false;
 	
 	/** *The Active MQ Connection factory */
 	private ActiveMQConnectionFactory mqConnectionFactory;
 
+	private PSystem pSystem;
+
+
+	public void init(){
+		pSystem = new PSystem(); pSystem.setId(1);
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.refresh(pSystem);
+		session.getTransaction().commit();
+		session.close();
+	}
 	
 	/**
 	 * Following the defined priorities (context) of
@@ -123,7 +132,7 @@ public class ActionFactory implements ApplicationContextAware {
 			action.setUserExceptionManager(userExceptionManager);
 			action.setMqConnectionFactory(mqConnectionFactory);
 			action.setLocalNode(localNode);
-			action.setSystemFromEmailAddress(systemFromEmailAddress);
+			action.setSystemFromEmailAddress(pSystem.getEmailFrom());
 			jobCandidate.getObject().setTransientNodeRef(localNode);
 			action.setObject(jobCandidate.getObject());
 			action.setActionMap(getActionRegistry());			
@@ -233,13 +242,4 @@ public class ActionFactory implements ApplicationContextAware {
 	public void setMqConnectionFactory(ActiveMQConnectionFactory mqConnectionFactory) {
 		this.mqConnectionFactory = mqConnectionFactory;
 	}
-
-	public String getSystemFromEmailAddress() {
-		return systemFromEmailAddress;
-	}
-
-	public void setSystemFromEmailAddress(String systemFromEmailAddress) {
-		this.systemFromEmailAddress = systemFromEmailAddress;
-	}
-	
 }

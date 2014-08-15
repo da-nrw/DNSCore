@@ -78,9 +78,9 @@ public class CreateEDMActionTests {
 		PSystem pSystem = new PSystem();
 		pSystem.setUrisCho("cho");
 		pSystem.setUrisAggr("aggr");
+		pSystem.setUrisLocal("local");
 
 		action.setPSystem(pSystem);
-		action.setLocalBaseUri("local");
 		action.setRepositoryFacade(repo);
 		action.setObject(object);
 		try {

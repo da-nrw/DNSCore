@@ -47,7 +47,6 @@ import de.uzk.hki.da.service.Mail;
  */
 public class ArchiveReplicationCheckAction extends AbstractAction{
 
-	private int minNodes = 3;
 	private int timeOut = 4000;
 	
 	private GridFacade gridRoot;
@@ -64,7 +63,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		setKILLATEXIT(true);
 
 		StoragePolicy sp = new StoragePolicy(localNode);
-		sp.setMinNodes(minNodes);
+		sp.setMinNodes(pSystem.getMinRepls());
 		do{
 			delay();
 		}
@@ -109,21 +108,6 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		return result;
 	}
 	
-	
-	/**
-	 * @param minNodes
-	 *            the minNodes to set
-	 */
-	public void setMinNodes(int minNodes) {
-		this.minNodes = minNodes;
-	}
-
-	/**
-	 * @return the minNodes
-	 */
-	public int getMinNodes() {
-		return minNodes;
-	}
 
 	/**
 	 * Defines the length of the interval at which the function checks the state

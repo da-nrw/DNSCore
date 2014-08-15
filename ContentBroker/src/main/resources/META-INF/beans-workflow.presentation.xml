@@ -40,7 +40,6 @@
 		<property name="endStatus" value="570" />
 		<property name="repositoryFacade" ref="${cb.implementation.repository}" />
 		<property name="name" value="CreateEDMAction" />
-		<property name="localBaseUri" value="${system.uris.local}" />
 		<property name="edmMappings">
 			<map>
 				<entry key="METS" value="conf/xslt/edm/mets-mods_to_edm.xsl" />
