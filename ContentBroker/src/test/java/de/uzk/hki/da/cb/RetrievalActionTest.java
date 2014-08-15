@@ -97,12 +97,12 @@ public class RetrievalActionTest {
 		object.setTransientNodeRef(node);
 		object.reattach();
 		object.getLatestPackage().setTransientBackRefToObject(object);
-		object.getLatestPackage().scanRepRecursively("a");
-		object.getLatestPackage().scanRepRecursively("b");
-		object.getLatestPackage().scanRepRecursively("c");
-		object.getLatestPackage().scanRepRecursively("d");
-		object.getLatestPackage().scanRepRecursively("e");
-		object.getLatestPackage().scanRepRecursively("f");
+		object.getLatestPackage().scanRepRecursively("1+a");
+		object.getLatestPackage().scanRepRecursively("1+b");
+		object.getLatestPackage().scanRepRecursively("2+a");
+		object.getLatestPackage().scanRepRecursively("2+b");
+		object.getLatestPackage().scanRepRecursively("3+a");
+		object.getLatestPackage().scanRepRecursively("3+b");
 		
 		dca = mock (DistributedConversionAdapter.class);
 		

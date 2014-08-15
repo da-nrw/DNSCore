@@ -51,7 +51,7 @@ public class TarAction extends AbstractAction {
 	private DistributedConversionAdapter distributedConversionAdapter;
 	private String tar = null;
 	
-	public TarAction(){}
+	public TarAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
 	
 	@Override
 	boolean implementation() throws IOException {

@@ -34,6 +34,7 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -95,6 +96,29 @@ public class Utilities {
 		}
 	}
 	
+	
+	/**
+	 * TODO remove duplicate from UnpackAction
+	 * @param file
+	 * @return
+	 * @author Daniel M. de Oliveira
+	 */
+	public static boolean hasSidecarExtension(File file,String sidecarExts){
+
+		String[] sidecarExtensions;
+		if (sidecarExts.contains(","))
+			sidecarExtensions = sidecarExts.split(",");
+		else
+			sidecarExtensions = sidecarExts.split(";");
+		
+		for (int i=0;i<sidecarExtensions.length;i++){
+			if (FilenameUtils.getExtension(file.toString()).equals(sidecarExtensions[i])){
+				System.out.println(file+" has sidecar ext "+sidecarExtensions[i]);
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	
 	/**

@@ -2,6 +2,8 @@
   DA-NRW Software Suite | ContentBroker
   Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
   Universität zu Köln
+  Copyright (C) 2014 LVRInfoKom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -29,16 +31,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.utils.TC;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
 /**
  * The Class GetNewestFilesFromAllRepresentationsTests.
+ * @author Daniel M. de Oliveira
  */
 public class GetNewestFilesFromAllRepresentationsTests {
 
-	Path workAreaRootPath = new RelativePath("src/test/resources/model/Object/GetNewestFiles/");
+	Path workAreaRootPath = Path.make(TC.TEST_ROOT_MODEL,"Object","GetNewestFiles");
 	
 	/** The o. */
 	Object o;
@@ -50,6 +53,10 @@ public class GetNewestFilesFromAllRepresentationsTests {
 	public void setUp() {
 		o = TESTHelper.setUpObject("1",workAreaRootPath);
 	}
+	
+	
+	
+	
 	
 	
 	/**
@@ -127,11 +134,11 @@ public class GetNewestFilesFromAllRepresentationsTests {
 	 @Test
 	 public void getNewestFilesFromAllRepresentations()
 	 {
-		 
 		 o.getLatestPackage().scanRepRecursively("2012_11_05+12_49+a");
 		 o.getLatestPackage().scanRepRecursively("2012_11_05+12_49+b");
 		 o.getLatestPackage().scanRepRecursively("2012_11_05+13_32+a");
 		 o.getLatestPackage().scanRepRecursively("2012_11_05+13_32+b");
+		 
 		 
 		 List<DAFile> fileList = o.getNewestFilesFromAllRepresentations("xmp;xml;txt");
 		 String[][] correctRelativePaths = new String[][] { {"testImage_1.tif", "2012_11_05+12_49+b"},

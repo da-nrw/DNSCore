@@ -73,6 +73,7 @@ import de.uzk.hki.da.utils.Utilities;
 public abstract class AbstractAction implements Runnable {	
 	
 	private boolean KILLATEXIT = false;
+	protected boolean SUPPRESS_OBJECT_CONSISTENCY_CHECK = false;
 	private boolean INTEGRATIONTEST = false;
 	protected boolean DELETEOBJECT = false;
 	
@@ -144,11 +145,17 @@ public abstract class AbstractAction implements Runnable {
 		}
 		
 		try {
-			// --- MUST happen before setting up object style logging ---
 			logger.info("AbstractAction fetched job from queue. See logfile: "+object.getIdentifier()+".log");
 			setupObjectLogging(object.getIdentifier());
 
 			object.reattach();
+			if (!SUPPRESS_OBJECT_CONSISTENCY_CHECK){
+				if ((!object.isDBtoFSconsistent())||(!object.isFStoDBconsistent())){
+					throw new RuntimeException("Object DB is not consistent with data on FS.");
+				}
+			}
+
+			
 			logger.info("Stubbing implementation of "+this.getClass().getName());
 			logger.debug(Utilities.getHeapSpaceInformation());
 			

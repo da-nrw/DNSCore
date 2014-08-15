@@ -51,7 +51,7 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.MimeTypeDetectionService;
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.utils.TC;
 import de.uzk.hki.da.utils.TESTHelper;
 
 
@@ -60,9 +60,11 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class UpdateMetadataActionTests {
 	
+	private static final String REP_NAME = "rep+a";
+
 	private static MimeTypeDetectionService mtds;
 	
-	private static final Path workAreaPath = new RelativePath("src/test/resources/cb/UpdateMetadataActionTests/");
+	private static final Path workAreaPath = Path.make(TC.TEST_ROOT_CB,"UpdateMetadataActionTests/");
 	
 	/** The Constant METS_NS. */
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
@@ -178,8 +180,8 @@ public class UpdateMetadataActionTests {
 
 		DAFile t1 = new DAFile(obj.getLatestPackage(), "dip/public", "Ye_old_duckroll.jpg");
 		DAFile t2 = new DAFile(obj.getLatestPackage(), "dip/institution", "Ye_old_duckroll.jpg");
-		DAFile s = new DAFile(obj.getLatestPackage(), "rep", "tif/enne09=v0001.tif");
-		DAFile m = new DAFile(obj.getLatestPackage(), "rep", "mets.xml");
+		DAFile s = new DAFile(obj.getLatestPackage(), REP_NAME, "tif/enne09=v0001.tif");
+		DAFile m = new DAFile(obj.getLatestPackage(), REP_NAME, "mets.xml");
 		
 		Event event = new Event();
 		event.setType("CONVERT");
@@ -205,7 +207,7 @@ public class UpdateMetadataActionTests {
 		job.setObject(obj);
 		job.setRep_name("rep42");
 
-		String metsPath = Path.make( obj.getDataPath(), "rep/mets.xml").toString();
+		String metsPath = Path.make( obj.getDataPath(), REP_NAME,"mets.xml").toString();
 		File metsFile = new File(metsPath);
 		File publicMetsFile = new File(obj.getDataPath() + "/dip/public/mets.xml");
 		File instMetsFile = new File(obj.getDataPath() + "/dip/institution/mets.xml");

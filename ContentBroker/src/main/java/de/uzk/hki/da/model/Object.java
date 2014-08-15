@@ -2,6 +2,8 @@
   DA-NRW Software Suite | ContentBroker
   Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
   Universität zu Köln
+  Copyright (C) 2014 LVRInfoKom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -20,8 +22,10 @@
 package de.uzk.hki.da.model;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,7 +46,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,6 +68,8 @@ import de.uzk.hki.da.utils.Utilities;
 @Table(name="objects")
 public class Object {
 	
+	private static final String REPRESENTATION_FILTER = "^.*[+][ab]";
+
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(Object.class);
 	
@@ -609,141 +618,52 @@ public class Object {
 	
 	
 	
+	/**
+	 * @author Daniel M. de Oliveira 
+	 * @return
+	 */
+	private Collection<DAFile> getFilesFromRepresentation(File rep){
+
+		ArrayList<DAFile> list = new ArrayList<DAFile>();
+		
+		for (Package pkg:getPackages()){
+			for (DAFile f:pkg.getFiles()){
+				if (f.getRep_name().equals(rep.getName())) list.add(f);
+			}
+		}
+		
+		return list;
+	}
+ 	
 	
 	/**
 	 * Gets the newest files from all representations.
 	 *
 	 * @param sidecarExtensions Files with the given extensions are considered sidecar files. Sidecar files are treated differently from other files
 	 *  (see <a href="https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/dip_specification.md#sidecar-files">documentation</a> for details)
-	 * @return newest DAFile of each Document. Note that by default the DAFile instances are build from scratch and will
-	 * not be attached to the object. However in case there are already instances attached to the object which correspond
-	 * to the file objects from the file system, the method will return these instead.
+	 * @return newest DAFile of each Document.  
 	 * @author Thomas Kleinke
 	 * @author Daniel M. de Oliveira
 	 * @throws RuntimeException if it finds a file on the file system to which it cannot find a corresponding attached instance of
 	 * DAFile in this object.
 	 */
 	
-	public List<DAFile> getNewestFilesFromAllRepresentations(String sidecarExtensions)
+	public List<DAFile> getNewestFilesFromAllRepresentations(String sidecarExts)
 	{
-		Map<String, DAFile> fileMap = new HashMap<String, DAFile>();
-			
-		File mainFolder = getDataPath().toFile();
-		if ((!mainFolder.exists())||((mainFolder.listFiles().length == 0)))
-			throw new RuntimeException("Folder " + mainFolder.getAbsolutePath() +
-									   " is empty or does not exist!");	
+		Map<String, DAFile> documentMap = new HashMap<String, DAFile>();
 		
-		checkFiles(
-				FilenameUtils.getFullPath(
-						mainFolder.getPath().
-						substring(0, mainFolder.getPath().length()-2)
-						), 
-				mainFolder, 
-				fileMap, 
-				sidecarExtensions );
-	
-		return new ArrayList<DAFile>(fileMap.values());
-	}
-	
-	
-	
-	
-	/**
-	 * Check files.
-	 *
-	 * @param rootPath the root path
-	 * @param folder the folder
-	 * @param fileMap the file map
-	 * @param sidecarExtensions the sidecar extensions
-	 * @return sidecarExtensions
-	 * @author Thomas Kleinke
-	 * @author Daniel M. de Oliveira
-	 */
-	// TODO rename method to specify what is checked here
-	private Map<String, DAFile> checkFiles( 
-			String rootPath, 
-			File folder, 
-			Map<String, DAFile> fileMap,
-			String sidecarExtensions)
-	{
-		
-		String dataPath = rootPath + "data/";
-		
-		File[] files = folder.listFiles();
-		Arrays.sort(files); // sort rep names chronologically (i.e. alphabetically)
-		
-		for (File f : files)
-		{
-			if (f.isDirectory())
-				fileMap = checkFiles(rootPath, f, fileMap, sidecarExtensions);
-			else
-			{				
-				String fRelativePath = f.getPath();
-				fRelativePath = fRelativePath.replace(dataPath, "");
-				
-				int indexOfFirstSeparator = fRelativePath.indexOf('/');
-				if (indexOfFirstSeparator == -1) continue;
-				if (fRelativePath.startsWith("dip")) {
-					indexOfFirstSeparator += fRelativePath.substring(indexOfFirstSeparator+1).indexOf('/') + 1;
-				}
-				String fRepName = fRelativePath.substring(0, indexOfFirstSeparator);
-				fRelativePath = fRelativePath.substring(indexOfFirstSeparator + 1); // relative from rep folder
-
-				String relativePathWithoutExtension = fRelativePath;
-				if (fRelativePath.lastIndexOf('.') != -1)
-				{
-					relativePathWithoutExtension = fRelativePath.substring(0, fRelativePath.lastIndexOf('.'));
-				}
-				
-				if (Utilities.isSidecarFile(fRelativePath, sidecarExtensions))
-					relativePathWithoutExtension += "?sidecar" + FilenameUtils.getExtension(fRelativePath).toLowerCase();
-				
-				DAFile newDAFile = new DAFile(this.getLatestPackage(),fRepName,fRelativePath);
-				
-				newDAFile = replaceByAttachedInstance(dataPath,
-						fRelativePath, fRepName, newDAFile);
-				
-				newDAFile.setRelative_path(fRelativePath);
-				fileMap.put(relativePathWithoutExtension, newDAFile);
+		for (File rep : getRepresentations())
+			for (DAFile f: getFilesFromRepresentation(rep)){
+				if (Utilities.hasSidecarExtension(f.toRegularFile(),sidecarExts))
+					documentMap.put(f.getRelative_path(), f);
+				else
+					documentMap.put(FilenameUtils.removeExtension(f.getRelative_path()), f);
 			}
-		}
-		
-		return fileMap;
+			
+		return new ArrayList<DAFile>(documentMap.values());
 	}
 	
-	/**
-	 * Replace by attached instance if available.
-	 *
-	 * @param dataPath the data path
-	 * @param fRelativePath the f relative path
-	 * @param fRepName the f rep name
-	 * @param newDAFile the new da file
-	 * @return the dA file
-	 * @author Daniel M. de Oliveira
-	 */
-	private DAFile replaceByAttachedInstance(String dataPath,
-			String fRelativePath, String fRepName, DAFile newDAFile) {
-		
-		boolean foundAttachedInstance = false;
-		for (Package pkg : this.getPackages()) {    // if package already exists, replace by attached package
-			
-			for (DAFile attachedFile : pkg.getFiles()) {
-
-				if (attachedFile.toRegularFile().getAbsolutePath().equals
-						(new File(dataPath+fRepName+"/"+fRelativePath).getAbsolutePath())){
-					logger.trace(attachedFile.toString()+". Will use instance already attached to object.");
-					newDAFile = attachedFile;
-					foundAttachedInstance = true;
-					break;
-				}
-			}
-			if (foundAttachedInstance)
-				break;
-		}
-		if (!foundAttachedInstance)
-			throw new RuntimeException("cannot find attached instance for "+fRepName+"/"+fRelativePath);
-		return newDAFile;
-	}
+	
 	
 	
 	
@@ -766,6 +686,8 @@ public class Object {
 		}
 		return list.get(list.size()-1);
 	}
+	
+	
 	
 	
 	/**
@@ -825,11 +747,8 @@ public class Object {
 	 */
 	public DAFile getLatest(String filename) {
 		
-		File[] representations = getDataPath().toFile().listFiles();
-		Arrays.sort(representations);
-		
 		DAFile result = null;
-		for (File rep : representations) {
+		for (File rep : getRepresentations()) {
 			if (new File(getDataPath()+"/"+rep.getName()+"/"+filename).exists()){
 
 				for (Package p:this.getPackages())
@@ -930,4 +849,108 @@ public class Object {
 	public void setMetadata_file(String metadata_file) {
 		this.metadata_file = metadata_file;
 	}
+
+	
+	
+	/**
+	 * Checks if for every DAFile attached to the db there is a physical file inside the object folder on the file system.
+	 * @author Daniel M. de Oliveira
+	 * @return false if there is at least one DAFile which lacks a correspondent physical file. true otherwise.
+	 */
+	public boolean isDBtoFSconsistent() {
+
+		boolean consistent = true;
+		
+		for (Package pkg: getPackages())
+			for (DAFile f: pkg.getFiles()){
+				if (!f.getRep_name().matches(REPRESENTATION_FILTER)) continue;
+				if (!f.toRegularFile().exists()) consistent = false;
+			}
+		
+		return consistent;
+	}
+
+
+	/**
+	 * Checks if for every physical file inside the object on the file system there is a DAFile attached to one of the packages belonging to the object.
+	 * @author Daniel M. de Oliveira
+	 * @return false if there is at least one existent file the DAfile is missing. true otherwise.
+	 */
+	public boolean isFStoDBconsistent() {
+		
+		boolean consistent = true;
+		
+		for (File rep : getRepresentations()) {
+			for (File f:getFilesOfRepresentation(rep)){
+				
+				if (!existsAsAttachedDAFile(new DAFile(null,rep.getName(),getRelativePath(f, rep.getName()))))
+					consistent = false;
+			}
+			
+		}
+		return consistent;
+	}
+
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 * @return
+	 */
+	private boolean existsAsAttachedDAFile(DAFile toCompare){
+		
+		for (Package p: getPackages()){
+			for (DAFile f:p.getFiles()){
+				if (f.equals(toCompare)) return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	/**
+	 * @author Daniel M. de Oliveira
+	 * @param f
+	 * @param repName
+	 * @return
+	 */
+	private String getRelativePath(File f,String repName){
+		
+		return f.getPath().replace(getPath().toString()+"/data/"+repName,"");
+	}
+	
+	
+	/**
+	 * Gets the files of a repreentation. Operates on the basis of the FS.
+	 * @author Daniel M. de Oliveira
+	 * @param rep
+	 * @return
+	 */
+	private Collection<File> getFilesOfRepresentation(File rep){
+		
+		return FileUtils.listFiles(rep,
+				TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+	}
+	
+	
+	/**
+	 * Gets the representations based on the existing folders in the objects folder on the file system.
+	 * @author Daniel M. de Oliveira
+	 * @return representations as sorted array
+	 */
+	private List<File> getRepresentations() {
+
+		FileFilter fileFilter = new RegexFileFilter(REPRESENTATION_FILTER);
+		
+		File[] representations = getDataPath().toFile().listFiles(fileFilter);
+		if (representations==null)
+			return new ArrayList<File>();
+		
+		Arrays.sort(representations);
+		return Arrays.asList(representations);
+	}
+	
+	
+	
+	
+	
 }

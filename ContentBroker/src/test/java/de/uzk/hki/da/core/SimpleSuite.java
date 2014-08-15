@@ -36,7 +36,7 @@ import de.uzk.hki.da.cb.CreatePremisActionTests;
 import de.uzk.hki.da.cb.DeleteObjectActionTests;
 import de.uzk.hki.da.cb.FetchPIPsActionTest;
 import de.uzk.hki.da.cb.IndexMetadataActionTests;
-import de.uzk.hki.da.cb.ObjectTest;
+import de.uzk.hki.da.cb.ObjectFSTests;
 import de.uzk.hki.da.cb.PrepareSendToPresenterActionTests;
 import de.uzk.hki.da.cb.ProperRefreshOfJobChildrenTest;
 import de.uzk.hki.da.cb.RestructureActionTests;
@@ -103,7 +103,7 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	CreatePremisActionTests.class,
 	UnpackActionTests.class,
 	CLIConversionStrategyTests.class,
-	ObjectTest.class,
+	ObjectFSTests.class,
 	ConversionInstructionsBuilderTests.class,
 	CentralDatabaseDAOTests.class,
 	SelectProcessingNodesTests.class,
