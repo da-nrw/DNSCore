@@ -33,7 +33,7 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.model.AudioRestriction;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.ImageRestriction;
 import de.uzk.hki.da.model.MigrationRight;
@@ -71,7 +71,7 @@ public class PremisXmlWriterTest {
 	@Test
 	public void testWriteMetadata() throws ParserConfigurationException, SAXException, IOException {
 		
-		Contractor c = new Contractor();
+		User c = new User();
 		c.setShort_name("csn");
 		
 		Object object = new Object();

@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.FakeDistributedConversionAdapter;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
@@ -77,7 +77,7 @@ public class FetchPIPsActionTest{
 	
 	@BeforeClass
 	public static void initObject() {
-		Contractor contractor = new Contractor();
+		User contractor = new User();
 		contractor.setShort_name("TEST");
 		object.setContractor(contractor);
 		object.setIdentifier(objectId);

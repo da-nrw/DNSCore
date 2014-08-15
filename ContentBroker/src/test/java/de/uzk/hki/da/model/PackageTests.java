@@ -70,7 +70,7 @@ public class PackageTests {
 		
 		String repName = "test";
 		Object object = new Object();
-		Contractor contractor = new Contractor();
+		User contractor = new User();
 		contractor.setShort_name("TEST");
 		Package pkg = new Package();
 		pkg.setId(1);

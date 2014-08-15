@@ -39,7 +39,7 @@ import de.uzk.hki.da.core.ActionRegistry;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -81,7 +81,7 @@ public class AbstractActionTests {
 		action.setLocalNode(mock(Node.class));
 		Job job = new Job();
 		action.setJob(job);
-		Contractor c = new Contractor(); c.setShort_name("TEST");
+		User c = new User(); c.setShort_name("TEST");
 		Object object = new Object();
 		object.setIdentifier("ID");
 		object.setContractor(c);

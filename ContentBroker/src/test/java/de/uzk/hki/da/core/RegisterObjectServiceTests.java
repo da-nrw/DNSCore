@@ -29,7 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.RegisterObjectService;
@@ -43,7 +43,7 @@ import de.uzk.hki.da.utils.Utilities;
 public class RegisterObjectServiceTests {
 
 	private Node node;
-	private Contractor contractor;
+	private User contractor;
 
 
 	/**
@@ -72,7 +72,7 @@ public class RegisterObjectServiceTests {
 		
 		node = new Node("vm1","vm1-01");
 		node.setUrn_index(92);
-		contractor = new Contractor();
+		contractor = new User();
 		contractor.setShort_name("TEST");
 
 		Session session2 = HibernateUtil.openSession();

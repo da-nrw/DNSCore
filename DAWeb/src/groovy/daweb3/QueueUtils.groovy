@@ -46,8 +46,8 @@ class QueueUtils {
 		if (responsibleNodeName == null) throw new IllegalArgumentException("responsibleNodeName must not be null")
 		object.object_state = 50
 
-		log.debug "object.contractor.shortName: " + object.contractor.shortName
-		log.debug "session.contractor.shortName: " + object.contractor.shortName
+		log.debug "object.contractor.shortName: " + object.user.shortName
+		log.debug "session.contractor.shortName: " + object.user.shortName
 		
 		def list = QueueEntry.findByObjAndStatus(object, status)
 		if (list != null) throw new RuntimeException ("Bereits angefordert.");

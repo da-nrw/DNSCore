@@ -48,16 +48,16 @@ class StatusController {
 			render result as JSON
 			return
 		}
-		def contractor = Contractor.findByShortName(session.bauthuser)
+		def contractor = User.findByShortName(session.bauthuser)
 		// listall objects of Contractor
 		results.result = []
 		if (params.listallobjects) {
-			def objects = Object.findAllByContractorAndObject_stateGreaterThan(contractor, 50)
+			def objects = Object.findAllByUserAndObject_stateGreaterThan(contractor, 50)
 			objects.each()  { inst ->
 				if (inst.object_state==100) result.status = "archived"
 				else result.status = "archived - but check needed"
 				result.urn = inst.urn
-				result.contractor = inst.contractor.shortName
+				result.contractor = inst.user.shortName
 				result.origName = inst.origName
 				def packages = []
 				result.packages = packages
@@ -74,11 +74,11 @@ class StatusController {
 		if (params.urn ) {
 				QueueEntry.getAllQueueEntriesForShortNameAndUrn(session.bauthuser, params.urn)
 			} else if (params.origName) {
-			rList = QueueEntry.findAll("from QueueEntry as q where q.obj.contractor.shortName=:csn and q.obj.origName=:on",
+			rList = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.obj.origName=:on",
              [on: params.origName,
 				 csn: session.bauthuser]);
 		} else if (params.identifier) {
-			rList = QueueEntry.findAll("from QueueEntry as q where q.obj.contractor.shortName=:csn and q.obj.identifier=:idn",
+			rList = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.obj.identifier=:idn",
 			 [idn: params.identifier, 
 				 csn: session.bauthuser]);
 		}
@@ -87,7 +87,7 @@ class StatusController {
 		// found a QueueEntry
 		rList.each()  { instance ->	
 			result.urn = instance.obj.urn
-			result.contractor = instance.obj.contractor.shortName;
+			result.contractor = instance.obj.user.shortName;
 			result.origName = instance.obj.origName
 			result.identifier = instance.obj.identifier
 			if (instance.status.endsWith("1")) {
@@ -108,13 +108,13 @@ class StatusController {
 		}  
 		
 		if (params.urn) {
-				rList = Object.findAllByContractorAndUrnAndObject_stateBetween(contractor, params.urn,50,100)
+				rList = Object.findAllByUserAndUrnAndObject_stateBetween(contractor, params.urn,50,100)
 		}
 		if (params.origName) {
-				rList = Object.findAllByContractorAndOrigNameAndObject_stateBetween(contractor, params.origName,50,100)
+				rList = Object.findAllByUserAndOrigNameAndObject_stateBetween(contractor, params.origName,50,100)
 		} 
 		if (params.identifier) {
-				rList = Object.findAllByContractorAndIdentifierAndObject_stateBetween(contractor, params.identifier,50,100)	
+				rList = Object.findAllByUserAndIdentifierAndObject_stateBetween(contractor, params.identifier,50,100)	
 		}
 		// Found Object, must be true if we found anything (Queue or Object only)
 		boolean foundObject = false;
@@ -124,7 +124,7 @@ class StatusController {
 					result.status = "archived - but check needed"
 				}
 				result.urn = instance.urn
-				result.contractor = instance.contractor.shortName
+				result.contractor = instance.user.shortName
 				result.origName = instance.origName
 				result.identifier = instance.identifier
 				def packages = []

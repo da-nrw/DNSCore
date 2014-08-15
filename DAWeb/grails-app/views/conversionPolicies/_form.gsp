@@ -7,7 +7,7 @@
 		<g:message code="conversionPolicies.contractor.label" default="Contractor" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="contractor" name="contractor.id" from="${daweb3.Contractor.list()}" optionKey="id" required="" value="${conversionPoliciesInstance?.contractor?.id}" class="many-to-one"/>
+	<g:select id="contractor" name="contractor.id" from="${daweb3.User.list()}" optionKey="id" required="" value="${conversionPoliciesInstance?.contractor?.id}" class="many-to-one"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: conversionPoliciesInstance, field: 'conversion_routine', 'error')} required">

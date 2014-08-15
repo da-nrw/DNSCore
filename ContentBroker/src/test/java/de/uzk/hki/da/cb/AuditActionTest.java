@@ -28,7 +28,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -75,7 +75,7 @@ public class AuditActionTest {
 		
 		job.setStatus("6000");
 		Package pkg = new Package();
-		Contractor cont = new Contractor("csn","sam-fs,elsewhere","test@test.de");
+		User cont = new User("csn","sam-fs,elsewhere","test@test.de");
 		pkg.setName ( "1" );
 		pkg.setName ( "2" );
 		

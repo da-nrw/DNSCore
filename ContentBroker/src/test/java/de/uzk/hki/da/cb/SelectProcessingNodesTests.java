@@ -39,7 +39,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
@@ -69,8 +69,8 @@ public class SelectProcessingNodesTests {
 	void prepareCentralDatabaseDAOInterfaceMock(){
 		dummyDao = mock( CentralDatabaseDAO.class );
 		when( dummyDao.getContractor((Session) anyObject(), anyString())).
-			thenReturn( new Contractor("PRESENTER","","") )
-			.thenReturn( new Contractor("DEFAULT","","") );
+			thenReturn( new User("PRESENTER","","") )
+			.thenReturn( new User("DEFAULT","","") );
 			
 		when( dummyDao.getSecondStageScanPolicies((Session)anyObject())).thenReturn( new ArrayList<SecondStageScanPolicy>() );
 		
@@ -81,7 +81,7 @@ public class SelectProcessingNodesTests {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass(){
-		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml.inmem");
+		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 	}
 	
 	/**

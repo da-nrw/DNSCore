@@ -38,7 +38,7 @@ import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -62,7 +62,7 @@ public class Base {
 	protected RepositoryFacade repositoryFacade;
 	protected DistributedConversionAdapter distributedConversionAdapter;
 	protected CentralDatabaseDAO dao = new CentralDatabaseDAO();
-	protected Contractor testContractor;
+	protected User testContractor;
 
 	
 	protected void setUpBase() throws IOException{

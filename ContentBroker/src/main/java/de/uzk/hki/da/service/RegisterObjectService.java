@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
@@ -93,7 +93,7 @@ public class RegisterObjectService {
 	 * @param containerName the file name of the container
 	 * @param contractor the contractor who owns the container
 	 */
-	public Object registerObject(String containerName,Contractor contractor){
+	public Object registerObject(String containerName,User contractor){
 		
 		if (contractor==null) 
 			throw new ConfigurationException("contractor is null");

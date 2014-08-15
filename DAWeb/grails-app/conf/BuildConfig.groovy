@@ -74,7 +74,8 @@ grails.project.dependency.resolution = {
         //runtime ":zipped-resources:1.0"
         //runtime ":cached-resources:1.0"
         //runtime ":yui-minify-resources:0.1.4"
-	
+		compile ':spring-security-core:2.0-RC4'
+		compile ":scaffolding:2.0.1"
 		build ":tomcat:7.0.42"	
 		compile (":jms:1.3") {
 		excludes 'spring-asm'

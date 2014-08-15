@@ -25,7 +25,7 @@
 			<h1>Web Konsole</h1>
 			<div id="header-menu">
 				<g:if test="${session.contractor}">
-					<g:link controller="contractor" action="logout">Logout</a></g:link>
+					<g:link controller="user" action="logout">Logout</a></g:link>
 				</g:if>
 			</div>
 		</div>

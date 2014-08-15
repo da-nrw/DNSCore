@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package de.uzk.hki.da.utils;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
@@ -56,7 +56,7 @@ public class TESTHelper {
 		node.setWorkAreaRootPath(workAreaRootPath);
 		node.setIngestAreaRootPath(ingestAreaRootPath);
 		
-		Contractor contractor = new Contractor();
+		User contractor = new User();
 		contractor.setShort_name("TEST");
 		
 		Package pkg = new Package();

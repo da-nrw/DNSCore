@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.format.JhoveScanService;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
@@ -112,7 +112,7 @@ public class CreatePremisActionTests {
 		pkg2.setName("2");
 		pkg2.setContainerName("testpackage.tgz");
 		
-		Contractor contractor = new Contractor();
+		User contractor = new User();
 		contractor.setShort_name("TEST");
 		
 		object = new Object();

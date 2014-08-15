@@ -71,10 +71,10 @@ public class PreservationSystemTests {
 	private DAFile file;
 	
 	/** The default c. */
-	private Contractor defaultC;
+	private User defaultC;
 	
 	/** The pres c. */
-	private Contractor presC;
+	private User presC;
 
 	/**
 	 * Sets the up.
@@ -114,11 +114,11 @@ public class PreservationSystemTests {
 		policies2.add(four);
 
 		
-		defaultC = new Contractor();
+		defaultC = new User();
 		defaultC.setShort_name("DEFAULT");
 		defaultC.setConversion_policies(policies);
 		
-		presC = new Contractor();
+		presC = new User();
 		presC.setShort_name("PRESENTER");
 		presC.setConversion_policies(policies2);
 		
