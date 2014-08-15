@@ -30,6 +30,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.TC;
+import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * @author Daniel M. de Oliveira
@@ -53,7 +54,7 @@ public class ATUseCaseIngestDeltaValidationNotPassed extends UserErrorBase {
 	
 	@After
 	public void tearDown(){
-		clearDB();
+		TESTHelper.clearDB();
 		cleanStorage();
 	}
 	

@@ -38,6 +38,7 @@ import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.Node;
 
@@ -105,7 +106,7 @@ public class ActionFactoryTests {
 		o.getPackages().add(p);
 		j.setObject(o);
 		
-		when(dummyDao.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
+		when(dummyDao.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject(),(PSystem)anyObject())).
 			thenReturn(j);
 		
 		factory.setDao(dummyDao);	
@@ -119,7 +120,6 @@ public class ActionFactoryTests {
 		assertNotNull(a.getDao());
 //		assertEquals("csn", a.getJob().getObject().getContractor().getShort_name()); XXX used?
 		assertNotNull(a.getActionMap());
-		
 	}
 	
 	/**
@@ -130,7 +130,7 @@ public class ActionFactoryTests {
 		
 		CentralDatabaseDAO dummyDao = mock(CentralDatabaseDAO.class);
 
-		when(dummyDao.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
+		when(dummyDao.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject(),(PSystem)anyObject())).
 			thenReturn(null);
 		
 		Node node = new Node("localnode");

@@ -29,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * @author Thomas Kleinke
@@ -50,7 +51,7 @@ public class ATReadURNFromSIP extends Base {
 	 */
 	@After
 	public void tearDown(){
-		clearDB();
+		TESTHelper.clearDB();
 		cleanStorage();
 	}
 

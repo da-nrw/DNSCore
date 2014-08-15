@@ -6,6 +6,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.utils.TESTHelper;
+
 public class ATUseCaseDeleteObjectFromWorkflow extends Base{
 	
 	@Before
@@ -15,7 +17,7 @@ public class ATUseCaseDeleteObjectFromWorkflow extends Base{
 	
 	@After
 	public void tearDown(){
-		clearDB();
+		TESTHelper.clearDB();
 		cleanStorage();
 	}
 	

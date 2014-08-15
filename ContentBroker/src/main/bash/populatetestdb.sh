@@ -20,6 +20,8 @@ then
 		"DELETE FROM conversion_routines;"
 		"DELETE FROM conversion_queue;"
 		"DELETE FROM contractors;"
+		"DELETE FROM psystem;"
+		"INSERT INTO psystem (id,urn_name_space,sidecar_extensions,pres_server) VALUES (1,'urn:nbn:de:danrw','xmp;txt;xml','localnode');"
 		"INSERT INTO contractors (id,short_name,admin) values (1,'TEST',0);"
         "INSERT INTO contractors (id,short_name,admin) values (2,'DEFAULT',0);"
         "INSERT INTO contractors (id,short_name,admin) values (3,'PRESENTER',0);"

@@ -33,6 +33,7 @@ import de.uzk.hki.da.cb.AbstractAction;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.service.UserExceptionManager;
 
 
@@ -95,6 +96,8 @@ public class ActionFactory implements ApplicationContextAware {
 			logger.info("ActionFactory is on halt. Waiting to resume work ...");
 			return null;
 		}
+
+		PSystem pSystem = new PSystem(); pSystem.setId(1);
 		
 		// iterate over available job types in order of priority,
 		// start action if a corresponding job exists in the database 
@@ -107,7 +110,7 @@ public class ActionFactory implements ApplicationContextAware {
 			String workingStatus = action.getStartStatus().substring(0,action.getStartStatus().length()-1) + "2";
 			
 			Job jobCandidate = dao.fetchJobFromQueue(action.getStartStatus(), workingStatus
-					, localNode);
+					, localNode, pSystem);
 			if (jobCandidate == null) {
 				logger.trace("No job for type {}, checking for types with lower priority", jobType);
 				continue;
@@ -125,6 +128,7 @@ public class ActionFactory implements ApplicationContextAware {
 			action.setObject(jobCandidate.getObject());
 			action.setActionMap(getActionRegistry());			
 			action.setJob(jobCandidate);
+			action.setPSystem(pSystem);
 			return action;
 		}
 		

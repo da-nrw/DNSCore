@@ -49,6 +49,7 @@ import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.Mail;
 import de.uzk.hki.da.service.UserExceptionManager;
@@ -91,6 +92,8 @@ public abstract class AbstractAction implements Runnable {
 	private UserExceptionManager userExceptionManager;
 	private ActiveMQConnectionFactory mqConnectionFactory;
 	private String systemFromEmailAdress;
+	private PSystem pSystem;
+	
 	
 	AbstractAction(){}
 	
@@ -121,6 +124,7 @@ public abstract class AbstractAction implements Runnable {
 	 */
 	public void checkCommonPreConditions() throws Exception{
 		if (dao==null) throw new ConfigurationException("dao not set");
+		if (pSystem==null) throw new ConfigurationException("pSystem not set");
 		if (actionMap==null) throw new ConfigurationException("actionMap not set");
 		if (object==null) throw new ConfigurationException("object not set");
 		if (localNode==null) throw new ConfigurationException("localNode not set");
@@ -492,5 +496,13 @@ public abstract class AbstractAction implements Runnable {
 
 	public void setSystemFromEmailAddress(String systemFromEmailAdress) {
 		this.systemFromEmailAdress = systemFromEmailAdress;
+	}
+
+	public PSystem getpSystem() {
+		return pSystem;
+	}
+
+	public void setPSystem(PSystem pSystem) {
+		this.pSystem = pSystem;
 	}
 }

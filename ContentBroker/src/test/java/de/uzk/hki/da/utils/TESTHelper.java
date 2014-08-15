@@ -17,6 +17,9 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package de.uzk.hki.da.utils;
+import org.hibernate.classic.Session;
+
+import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.Contractor;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -73,4 +76,19 @@ public class TESTHelper {
 		
 		return o;
 	}
+	
+	public static void clearDB() {
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.createSQLQuery("DELETE FROM events").executeUpdate();
+		session.createSQLQuery("DELETE FROM dafiles").executeUpdate();
+		session.createSQLQuery("DELETE FROM conversion_queue").executeUpdate();
+		session.createSQLQuery("DELETE FROM queue").executeUpdate();
+		session.createSQLQuery("DELETE FROM objects_packages").executeUpdate();
+		session.createSQLQuery("DELETE FROM packages").executeUpdate();
+		session.createSQLQuery("DELETE FROM objects").executeUpdate();
+		session.getTransaction().commit();
+		session.close();
+	}
+	
 }

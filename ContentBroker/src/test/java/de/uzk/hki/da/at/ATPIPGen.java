@@ -38,6 +38,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * @author Daniel M. de Oliveira
@@ -51,7 +52,7 @@ public class ATPIPGen extends Base{
 	
 	@After
 	public void tearDown(){
-		clearDB();
+		TESTHelper.clearDB();
 		cleanStorage();
 	}
 

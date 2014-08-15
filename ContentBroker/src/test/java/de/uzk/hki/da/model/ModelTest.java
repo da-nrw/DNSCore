@@ -2,6 +2,8 @@
   DA-NRW Software Suite | ContentBroker
   Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
   Universität zu Köln
+  Copyright (C) 2014 LVRInfoKom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,43 +21,77 @@
 
 package de.uzk.hki.da.model;
 
+import static org.junit.Assert.fail;
+
+import org.hibernate.Session;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.HibernateUtil;
+import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * The Class ModelTest.
  */
 public class ModelTest {
-//	private static CentralDatabaseManagerDebugExtension debugDAO = new CentralDatabaseManagerDebugExtension();
 	
-	/** The debug dao. */
+	private static final String inserts[] = new String[]{
+		"INSERT INTO nodes (urn_index) VALUES (1)",
+		"INSERT INTO conversion_routines (name,type,params,target_suffix) " +
+			"VALUES ('abc','de.uzk.hki.da.cb.CLIConversionStrategy','convert input output','png')",
+		"INSERT INTO conversion_routines (name,type,params,target_suffix) " +
+			"VALUES ('def','de.uzk.hki.da.cb.CLIConversionStrategy','convert input output','png')",
+		"INSERT INTO contractors (short_name,forbidden_nodes,email_contact,id) " +
+			"VALUES ('TEST_1','','da-nrw-notifier@uni-koeln.de','1')",
+		"INSERT INTO contractors (short_name,forbidden_nodes,email_contact,id) " +
+			"VALUES ('TEST_2','','da-nrw-notifier@uni-koeln.de','2')",
+	};
 	
-	/**
-	 * Model test.
-	 */
+	@BeforeClass
+	public static void setUpBeforeClass(){
+		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		for (int i=0;i<inserts.length;i++)
+			session.createSQLQuery(inserts[i]).executeUpdate();
+		session.getTransaction().commit();
+		session.close();
+	}
+	
+	@AfterClass
+	public static void tearDownAfterClass(){
+		TESTHelper.clearDB();
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.createSQLQuery("DELETE FROM contractors").executeUpdate();
+		session.createSQLQuery("DELETE FROM conversion_routines").executeUpdate();
+		session.createSQLQuery("DELETE FROM nodes").executeUpdate();
+		session.getTransaction().commit();
+		session.close();
+	}
+
+	
 	@Test
-	/** 
-	 * Makes sure that if one changes the field package of Job the change gets propagated
-	 * to the packages table.
-	 * @author Daniel
-	 */
-	public void modelTest(){
+	public void testAddConversionInstructionWithInvalidRoutine(){
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
 		
-//		HibernateUtil.init("conf/hibernateCentralDbWithInmem.cfg.xml");
-//		Session session = HibernateUtil.getThreadBoundSession();
-//		session.beginTransaction();
-//		Job job = new Job("urn", "csn", "vm3");
-//		session.save(job);
-//		
-//		Package pkg = new Package();
-//		object.setPackage(pkg);
-//		session.save(pkg);
-//		
-//		job.getPackage().setName("_1");
-//
-//		assertEquals( "_1", pkg.getName() );
-//		
-//		debugDAO.showPackages();
-//		session.getTransaction().commit();
+		Job job = new Job("testContractor", "testNode");
+		session.save(job);
+		
+		ConversionRoutine routine = new ConversionRoutine();
+		routine.setId(444);
+		
+		ConversionInstruction ci = new ConversionInstruction(
+				job.getId(),  "target", 
+				routine, "");
+		
+		try{
+			session.save(ci);
+			fail();
+		}catch(Exception e)
+		{                 }
+		session.close();
 	}
 }

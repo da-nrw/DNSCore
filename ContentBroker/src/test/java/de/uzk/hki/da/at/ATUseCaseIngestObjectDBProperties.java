@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.springframework.util.StringUtils;
 
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * @author Thomas KLeinke
@@ -47,7 +48,7 @@ public class ATUseCaseIngestObjectDBProperties extends Base{
 	
 	@After
 	public void tearDown(){
-		clearDB();
+		TESTHelper.clearDB();
 		cleanStorage();
 	}
 	

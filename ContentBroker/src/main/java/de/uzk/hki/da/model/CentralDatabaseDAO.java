@@ -64,13 +64,14 @@ public class CentralDatabaseDAO {
 	 * @author Daniel M. de Oliveira
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
-	public Job fetchJobFromQueue(String status, String workingStatus, Node node) {
+	public Job fetchJobFromQueue(String status, String workingStatus, Node node, PSystem pSystem) {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		logger.debug("Fetch job for node name " + node.getName());
+		logger.trace("Fetch job for node name " + node.getName());
 		List<Job> joblist=null;
 		try{
 			session.refresh(node);
+			session.refresh(pSystem);
 			
 			joblist = (List<Job>) session
 					.createQuery("SELECT j FROM Job j LEFT JOIN j.obj as o where j.status=?1 and "
@@ -78,7 +79,7 @@ public class CentralDatabaseDAO {
 					.setParameter("1", status).setParameter("2", node.getName()).setParameter("3","integrationTest").setCacheable(false).setMaxResults(1).list();
 
 			if ((joblist == null) || (joblist.isEmpty())){
-				logger.debug("no job found for status {}.",status);
+				logger.trace("no job found for status {}.",status);
 				session.close();
 				return null;
 			}

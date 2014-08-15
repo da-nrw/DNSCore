@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.TESTHelper;
 
 public class ATUseCaseIngestLIDO extends Base{
 
@@ -40,7 +41,7 @@ public class ATUseCaseIngestLIDO extends Base{
 			System.out.println(e.getMessage());
 		}
 		
-		clearDB();
+		TESTHelper.clearDB();
 		cleanStorage();
 	}
 	

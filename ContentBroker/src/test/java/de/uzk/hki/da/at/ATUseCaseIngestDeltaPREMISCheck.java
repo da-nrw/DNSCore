@@ -46,6 +46,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.TC;
+import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * @author Daniel M. de Oliveira
@@ -77,7 +78,7 @@ public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
 			System.out.println(e.getMessage());
 		}
 		
-		clearDB();
+		TESTHelper.clearDB();
 		cleanStorage();
 	}
 	

@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * Relates to AK-T/02 Ingest - Sunny Day Szenario (mit besonderen Bedingungen).
@@ -52,7 +53,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		Path.make(localNode.getIngestAreaRootPath(),"/TEST/AT_CON2.tgz").toFile().delete();
 		Path.make(localNode.getIngestAreaRootPath(),"/TEST/AT_CON3.zip").toFile().delete();
 		
-		clearDB();
+		TESTHelper.clearDB();
 		cleanStorage();
 	}
 	
