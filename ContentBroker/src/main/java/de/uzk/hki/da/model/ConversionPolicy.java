@@ -45,7 +45,7 @@ public class ConversionPolicy {
 	
 	/** The contractor. */
 	@ManyToOne(targetEntity=User.class)
-	private User contractor;
+	private User user;
 	
 	/** The source_format. */
 	private String source_format;
@@ -77,7 +77,7 @@ public class ConversionPolicy {
 			ConversionRoutine fallbackRoutine,
 			String audience){
 		
-		this.contractor= contractor;
+		this.user= contractor;
 		this.source_format= sourceFormat;
 		this.conversion_routine= conversionRoutine;
 	}
@@ -107,7 +107,7 @@ public class ConversionPolicy {
 	 * @param contractor the new contractor
 	 */
 	public void setContractor(User contractor) {
-		this.contractor = contractor;
+		this.user = contractor;
 	}
 
 	
@@ -117,7 +117,7 @@ public class ConversionPolicy {
 	 * @return the contractor
 	 */
 	public User getContractor() {
-		return contractor;
+		return user;
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class ConversionPolicy {
 	public String toString(){
 		
 		return "ConversionPolicy[" +
-			contractor.getShort_name()+","+source_format+","
+			user.getShort_name()+","+source_format+","
 		+conversion_routine.getName()+"]";
 	}
 	
