@@ -34,7 +34,7 @@ class Object {
 		table 'objects'
 		version false
 		id column:'data_pk'
-		contractor column: 'contractor_id'
+		user column: 'user_id'
 		packages joinTable: [key: 'objects_data_pk', column: 'packages_id']
 		created column: 'date_created'
 		modified column: 'date_modified'
@@ -45,7 +45,7 @@ class Object {
 	int id
 	String urn
 	String identifier
-	Contractor contractor
+	User user
 	String origName
 	int object_state
 	int published_flag

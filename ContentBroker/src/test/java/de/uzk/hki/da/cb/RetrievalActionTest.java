@@ -35,7 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -85,7 +85,7 @@ public class RetrievalActionTest {
 		node.setWorkAreaRootPath(new RelativePath(forkAndTransferPath));
 		node.setUserAreaRootPath(new RelativePath(forkAndTransferPath,"work"));
 		
-		Contractor contractor = new Contractor(); 
+		User contractor = new User(); 
 		contractor.setShort_name("csn"); 
 		contractor.setEmail_contact("abc@hki.uni-koeln.de");
 		Object object = new Object(); 

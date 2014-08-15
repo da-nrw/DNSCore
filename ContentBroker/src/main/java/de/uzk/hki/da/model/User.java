@@ -21,25 +21,29 @@ package de.uzk.hki.da.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
 /**
- * The Class Contractor. An institutional agent. Role under which the users 
+ * The Class User. An institutional agent. Role under which the users 
  * which belong to an institution
  * interact with the system.
  * @author Daniel M. de Oliveira
  */
 @Entity
-@Table(name="contractors")
-public class Contractor{
+@Table(name="users")
+public class User{
 	
 	
 	/** The id. */
@@ -63,14 +67,35 @@ public class Contractor{
 	
 	/** The conversion_policies. */
 	@OneToMany
-	@JoinColumn(name="contractor_id")
+	@JoinColumn(name="user_id")
 	private List<ConversionPolicy> conversion_policies = new ArrayList<ConversionPolicy>();
 	
+	private String username;
+	private String password;
+	   
+    @ManyToMany(cascade=CascadeType.ALL)  
+    @JoinTable(name="user_role",  
+    joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},  
+    inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id")})
+    private Set<Role> roles; 
+    
+	private Boolean enabled = true;
+	private Boolean accountexpired;
+	private Boolean accountlocked;
+	private Boolean passwordexpired;
+	/**
+	 * Gets the Roles.
+	 *
+	 * @return the roles
+	 */
+	public Set<Role> getRoles() {
+		return this.roles;
+	}
 	
 	/**
 	 * Instantiates a new contractor.
 	 */
-	public Contractor(){}
+	public User(){}
 	
 	/**
 	 * Instantiates a new contractor.
@@ -79,7 +104,7 @@ public class Contractor{
 	 * @param forbidden_nodes the forbidden_nodes
 	 * @param email_contact the email_contact
 	 */
-	public Contractor(
+	public User(
 			String short_name,
 			String forbidden_nodes,
 			String email_contact){
@@ -150,7 +175,7 @@ public class Contractor{
 	@Override
 	public String toString(){
 		
-		return "Contractor["+short_name+","+forbidden_nodes+","+email_contact+"]";
+		return "User["+short_name+","+forbidden_nodes+","+email_contact+"]";
 	}
 
 	/**
@@ -184,7 +209,7 @@ public class Contractor{
 	 */
 	@Override
 	public boolean equals(java.lang.Object o){
-		Contractor other = (Contractor) o;
+		User other = (User) o;
 		return (this.short_name.equals(other.short_name));
 	}
 
@@ -218,5 +243,53 @@ public class Contractor{
 	 */
 	public int getAdmin() {
 		return admin;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public Boolean getAccountexpired() {
+		return accountexpired;
+	}
+
+	public void setAccountexpired(Boolean accountexpired) {
+		this.accountexpired = accountexpired;
+	}
+
+	public Boolean getAccountlocked() {
+		return accountlocked;
+	}
+
+	public void setAccountlocked(Boolean accountlocked) {
+		this.accountlocked = accountlocked;
+	}
+
+	public Boolean getPasswordexpired() {
+		return passwordexpired;
+	}
+
+	public void setPasswordexpired(Boolean passwordexpired) {
+		this.passwordexpired = passwordexpired;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }

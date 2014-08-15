@@ -44,20 +44,20 @@ public class CentralDatabaseDAOTests {
 			"VALUES ('abc','de.uzk.hki.da.cb.CLIConversionStrategy','convert input output','png')",
 		"INSERT INTO conversion_routines (name,type,params,target_suffix) " +
 			"VALUES ('def','de.uzk.hki.da.cb.CLIConversionStrategy','convert input output','png')",
-		"INSERT INTO contractors (short_name,forbidden_nodes,email_contact,id) " +
+		"INSERT INTO users (short_name,forbidden_nodes,email_contact,id) " +
 			"VALUES ('TEST_1','','da-nrw-notifier@uni-koeln.de','1')",
-		"INSERT INTO contractors (short_name,forbidden_nodes,email_contact,id) " +
+		"INSERT INTO users (short_name,forbidden_nodes,email_contact,id) " +
 			"VALUES ('TEST_2','','da-nrw-notifier@uni-koeln.de','2')",
 		"INSERT INTO objects (data_pk,initial_node,urn,orig_name,date_created,date_modified,zone," +
-			"published_flag,contractor_id,object_state) VALUES ('109733','da-nrw-vm3.hki.uni-koeln.de'," +
+			"published_flag,user_id,object_state) VALUES ('109733','da-nrw-vm3.hki.uni-koeln.de'," +
 			"'urn+nbn+de+danrw-1-2012113022771','test_object','1354276007948','1354276113286','da-nrw','0','1','100')",
 		"INSERT INTO objects (data_pk,initial_node,urn,orig_name,date_created,date_modified,zone," +
-			"published_flag,contractor_id,object_state) VALUES ('109734','da-nrw-vm3.hki.uni-koeln.de'," +
+			"published_flag,user_id,object_state) VALUES ('109734','da-nrw-vm3.hki.uni-koeln.de'," +
 			"'urn+nbn+de+danrw-1-2012113022772','test_object_double','1354276007948','1354276113286','da-nrw','0','1','100')",
 		"INSERT INTO objects (data_pk,initial_node,urn,orig_name,date_created,date_modified,zone," +
-			"published_flag,contractor_id,object_state) VALUES ('109735','da-nrw-vm3.hki.uni-koeln.de'," +
+			"published_flag,user_id,object_state) VALUES ('109735','da-nrw-vm3.hki.uni-koeln.de'," +
 			"'urn+nbn+de+danrw-1-2012113022773','test_object_double','1354276007948','1354276113286','da-nrw','0','1','100')",
-		"INSERT INTO queue (id,objects_id,contractor_id,status) VALUES (1,109735,1,'110')",
+		"INSERT INTO queue (id,objects_id,user_id,status) VALUES (1,109735,1,'110')",
 		"INSERT INTO psystem (id,sidecar_extensions) VALUES (1,'xmp')",
 	};
 	
@@ -86,7 +86,7 @@ public class CentralDatabaseDAOTests {
 		session.createSQLQuery("DELETE FROM psystem").executeUpdate();
 		session.createSQLQuery("DELETE FROM conversion_routines").executeUpdate();
 		session.createSQLQuery("DELETE FROM nodes").executeUpdate();
-		session.createSQLQuery("DELETE FROM contractors").executeUpdate();
+		session.createSQLQuery("DELETE FROM users").executeUpdate();
 		session.getTransaction().commit();
 		session.close();
 	}

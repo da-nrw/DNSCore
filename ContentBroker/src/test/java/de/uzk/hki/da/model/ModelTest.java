@@ -42,9 +42,9 @@ public class ModelTest {
 			"VALUES ('abc','de.uzk.hki.da.cb.CLIConversionStrategy','convert input output','png')",
 		"INSERT INTO conversion_routines (name,type,params,target_suffix) " +
 			"VALUES ('def','de.uzk.hki.da.cb.CLIConversionStrategy','convert input output','png')",
-		"INSERT INTO contractors (short_name,forbidden_nodes,email_contact,id) " +
+		"INSERT INTO users (short_name,forbidden_nodes,email_contact,id) " +
 			"VALUES ('TEST_1','','da-nrw-notifier@uni-koeln.de','1')",
-		"INSERT INTO contractors (short_name,forbidden_nodes,email_contact,id) " +
+		"INSERT INTO users (short_name,forbidden_nodes,email_contact,id) " +
 			"VALUES ('TEST_2','','da-nrw-notifier@uni-koeln.de','2')",
 	};
 	
@@ -64,7 +64,7 @@ public class ModelTest {
 		TESTHelper.clearDB();
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		session.createSQLQuery("DELETE FROM contractors").executeUpdate();
+		session.createSQLQuery("DELETE FROM users").executeUpdate();
 		session.createSQLQuery("DELETE FROM conversion_routines").executeUpdate();
 		session.createSQLQuery("DELETE FROM nodes").executeUpdate();
 		session.getTransaction().commit();

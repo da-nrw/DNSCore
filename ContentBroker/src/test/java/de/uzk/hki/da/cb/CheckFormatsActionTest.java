@@ -38,7 +38,7 @@ import org.springframework.util.StringUtils;
 
 import de.uzk.hki.da.format.FormatScanService;
 import de.uzk.hki.da.format.JhoveScanService;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -131,7 +131,7 @@ public class CheckFormatsActionTest {
 		
 		PSystem pSystem = new PSystem();
 		localNode = new Node();
-		Contractor contractor = new Contractor();
+		User contractor = new User();
 		contractor.setShort_name("TEST");
 		localNode.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
 

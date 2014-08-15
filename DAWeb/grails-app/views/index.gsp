@@ -16,8 +16,7 @@
 		</style>
 	</head>
 	<body>
-		<h1>Willkommen ${session.contractor.shortName}! <g:if test="${ session.contractor.admin==1}">
-		(Administrator)
+		<h1>Willkommen ${user} ! <g:if test="${admin==1}"> (Administrator)
 		</g:if></h1>
 		<div id="controller-list" role="navigation">
 			<h2>Funktionen:</h2>
@@ -28,7 +27,7 @@
 				<li class="controller"><g:link controller="outgoing">Objekt entnehmen (DIP)</g:link></li>
 				<li class="controller"><g:link controller="info">Hinweise zur Ansteuerung über externe Systeme</g:link></li>
 				<li class="controller"><g:link controller="conversionPolicies">Konfigurierte Konversionen</g:link></li>
-				<g:if test="${ session.contractor.admin==1}">
+				<g:if test="${ admin==1}">
 				<li class="controller"><g:link controller="cbtalk">Adminfunktionen</g:link></li>
 				</g:if>
 			

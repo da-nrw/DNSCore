@@ -29,7 +29,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
@@ -57,7 +57,7 @@ public class ShortenFileNamesActionTests {
 	Node node;
 
 	/** The contractor. */
-	private Contractor contractor;
+	private User contractor;
 	
 	/**
 	 * Sets the up.
@@ -72,7 +72,7 @@ public class ShortenFileNamesActionTests {
 		Node dipNode = new Node(); dipNode.setName("dipNode");
 		action.setLocalNode(node);
 		
-		contractor = new Contractor();
+		contractor = new User();
 		contractor.setShort_name("TEST");
 		
 		job = new Job();

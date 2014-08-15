@@ -33,6 +33,8 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class QueueEntryController {
 
+	
+	def springSecurityService
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -42,11 +44,18 @@ class QueueEntryController {
     def list() {
 		def contractorList
 		def cbNodeList = CbNode.list()
-		if (session.contractor.admin == 1) {	
-			contractorList = Contractor.list()
+		def username = springSecurityService.currentUser
+		def admin = 0;
+		User user = User.findByUsername(username)
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		if (admin == 1) {	
+			contractorList = User.list()
 		} else {
-			contractorList = Contractor.findAll("from Contractor as c where c.shortName=:csn",
-	        [csn: session.contractor.shortName])
+			contractorList = User.findAll("from User as c where c.shortName=:csn",
+	        [csn: user.getShortName()])
 		}
 		[contractorList:contractorList,
 		cbNodeList:cbNodeList]
@@ -54,15 +63,20 @@ class QueueEntryController {
     
 
     def listSnippet() {
+		def username = springSecurityService.currentUser
     	def queueEntries = null	
-		def admin = false
 		def periodical = true;	
-		def contractorList = Contractor.list()
+		def contractorList = User.list()
+		def admin = 0;
+		User user = User.findByUsername(username)
 		
-		if (params.search==null){		
-			if (session.contractor.admin != 1) {	
-				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.contractor.shortName=:csn",
-	             [csn: session.contractor.shortName])
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		if (params.search==null){	
+			if (admin != 1) {	
+				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn",
+	             [csn: user.shortName])
 			} else {
 				admin = true;
 				queueEntries = QueueEntry.findAll("from QueueEntry as q")
@@ -90,22 +104,21 @@ class QueueEntryController {
 				}
 				if (params.search?.status) 
 					like("status", params.search.status+"%")
-				if (session.contractor.admin==0) {
-					def contract = Contractor.findByShortName(session.contractor.shortName)
+				if (admin==0) {
 					projections {
 						obj {
-								contractor {
-									eq("shortName", contract.shortName)								
+								user {
+									eq("shortName", user.shortName)								
 								}
 						}
 					}
 				} else {
-				admin = true;
+				admin = 1;
 				if (params.search?.contractor){
 					if(params.search?.contractor !="null"){
 						projections {
 							obj {
-									contractor {
+									user {
 										eq("shortName", params.search.contractor)
 									}
 								}

@@ -34,7 +34,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -87,7 +87,7 @@ public class BuildAIPActionTests {
 		pkg.setName("2");
 		pkg.setId(95949);
 		
-		Contractor contractor = new Contractor();
+		User contractor = new User();
 		contractor.setShort_name("csn");
 		
 		Object obj = new Object();

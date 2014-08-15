@@ -82,7 +82,7 @@ public class ATUseCaseAudit extends Base{
 	
 	@Test
 	public void testHappyPath() throws Exception {
-		//ingest(ORIGINAL_NAME);
+		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		object = dao.getUniqueObject(session, ORIGINAL_NAME, "TEST");

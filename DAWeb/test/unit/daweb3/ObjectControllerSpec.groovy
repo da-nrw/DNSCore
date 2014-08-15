@@ -31,11 +31,11 @@ import org.codehaus.groovy.grails.web.servlet.mvc.SynchronizerTokensHolder
  * TODO: will work with Grails 2.4.2 
  * */
 
-@Mock([Contractor,daweb3.Object])
+@Mock([User,daweb3.Object])
 @TestFor(daweb3.ObjectController)
 //@TestMixin(HibernateTestMixin)
 class ObjectControllerSpec extends Specification {
-	def cont = new Contractor(id:1)
+	def cont = new User(id:1)
 	def obj1 = new daweb3.Object(id:1)
 	def pack = new daweb3.Package(id:1);
 	def results = []

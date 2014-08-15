@@ -35,7 +35,7 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import de.uzk.hki.da.cb.AbstractAction;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PSystem;
@@ -56,7 +56,7 @@ public class ActionFactoryTests {
 	private ActionFactory factory;
 	
 	/** The c. */
-	private Contractor c = new Contractor();
+	private User c = new User();
 	
 	private static int nodeId;
 	

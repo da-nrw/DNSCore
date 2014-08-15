@@ -28,7 +28,7 @@ import grails.test.mixin.TestFor
 import groovy.mock.interceptor.MockFor
 import spock.lang.Specification
 
-@Mock([Contractor,QueueEntry])
+@Mock([User,QueueEntry])
 @TestFor(daweb3.StatusController)
 class StatusControllerSpec extends Specification {
 void "test failed if not auth"() { 
@@ -39,7 +39,7 @@ void "test failed if not auth"() {
 
 void "test passed if login"() {
 	given:
-	def cont = new Contractor()
+	def cont = new User()
 	cont.setShortName("TEST")
 	controller.session.bauthuser = "TEST"
 	when: controller.index()
