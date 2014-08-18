@@ -89,11 +89,11 @@ DIP generation. Since this was a source of confusion in the early days of the pr
 the different functions of original DIPs and DIPs for constant access (which we call presentation or publication) by
 introducing the PIP concept.
 
-### Contractor
+### User
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_object_users.jpg)
 
-The Java [Contractor](../java/de/uzk/hki/da/model/Contractor.java) class.
+The Java [User](../java/de/uzk/hki/da/model/User.java) class.
 
 The contractor is modeled to describe a party which delivers content to a system consisting of nodes running DNSCore.
 Every contractor has one specific node to which it can deliver its content. This node processes the data and stores the
