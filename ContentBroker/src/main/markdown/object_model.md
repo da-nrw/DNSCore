@@ -50,7 +50,7 @@ Every object in DNSCore will get a unique technical identifier within the system
 identifier is the primary means of identifying and finding an object within the system. Therefore
 it gets "handed over" to the user at the end of the ingest workflow.
 
-![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_1.jpg)
+![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_objects_packages.jpg)
 
 Also each object is always in a certain object_state which indicates if the object is 
 
