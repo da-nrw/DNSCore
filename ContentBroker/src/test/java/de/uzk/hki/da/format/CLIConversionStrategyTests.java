@@ -70,7 +70,7 @@ public class CLIConversionStrategyTests {
 	@Test
 	public void convertFileContainingWhitespaces() throws FileNotFoundException{
 		
-		ConversionRoutine conversionRoutineCopy= new ConversionRoutine("COPY",new HashSet<Node>(),"",
+		ConversionRoutine conversionRoutineCopy= new ConversionRoutine("COPY","",
 				"cp input output","*");
 		
 		Object o = TESTHelper.setUpObject("1233",new RelativePath(workAreaRootPath));
@@ -102,7 +102,7 @@ public class CLIConversionStrategyTests {
 	public void testResolveAdditionalParams() throws FileNotFoundException{
 		
 
-		ConversionRoutine conversionRoutineResize=  new ConversionRoutine("RESIZE",new HashSet<Node>(),"",
+		ConversionRoutine conversionRoutineResize=  new ConversionRoutine("RESIZE","",
 				"convert -resize {institution.width}x{institution.height} input output","png");
 		
 		Object o = TESTHelper.setUpObject("1244",new RelativePath(workAreaRootPath));
@@ -148,7 +148,7 @@ public class CLIConversionStrategyTests {
 		
 		CLIConversionStrategy strat= new CLIConversionStrategy();
 		strat.setObject(o);
-		ConversionRoutine conversionRoutinePdfToPdfA=  new ConversionRoutine("PDF2PDFA",new HashSet<Node>(),"",
+		ConversionRoutine conversionRoutinePdfToPdfA=  new ConversionRoutine("PDF2PDFA","",
 			"gs -dPDFA -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sProcessColorModel=DeviceGray -sOutputFile=output input","pdf");
 		
 	

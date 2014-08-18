@@ -74,13 +74,11 @@ public class ConverterServiceTests {
 		Set<Node> nodes = new HashSet<Node>(){{add(vm3);}};
 		ConversionRoutine im = new ConversionRoutine(
 				"IM",
-				nodes,
 				"de.uzk.hki.da.format.CLIConversionStrategy",
 				"convert input output",
 				"png");
 		ConversionRoutine copy = new ConversionRoutine(
 				"IM",
-				nodes,
 				"de.uzk.hki.da.format.CLIConversionStrategy",
 				"cp input output",
 				"*");

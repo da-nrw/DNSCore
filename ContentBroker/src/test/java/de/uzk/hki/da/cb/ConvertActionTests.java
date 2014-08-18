@@ -99,7 +99,6 @@ public class ConvertActionTests {
 		Set<Node> nodes2 = new HashSet<Node>(){{add(vm2);}};
 		ConversionRoutine im = new ConversionRoutine(
 				"IM",
-				nodes2,
 				"de.uzk.hki.da.format.CLIConversionStrategy",
 				"convert input output",
 				"png");
@@ -108,7 +107,6 @@ public class ConvertActionTests {
 		Set<Node> nodes3 = new HashSet<Node>(){{add(vm3);}};
 		ConversionRoutine copy = new ConversionRoutine(
 				"COPY",
-				nodes3,
 				"de.uzk.hki.da.format.CLIConversionStrategy",
 				"cp input output",
 				"*");

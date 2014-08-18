@@ -46,9 +46,6 @@ public class ConversionRoutine {
 	/** The id. */
 	private int id;
 	
-	/** The nodes. */
-	private Set<Node> nodes = new HashSet<Node>(0);
-	
 	/** The name. */
 	private String name;
 	
@@ -81,14 +78,12 @@ public class ConversionRoutine {
 	 */
 	public ConversionRoutine(
 			String name,
-			Set<Node> nodes,
 			String type,
 			String params,
 			String target_suffix){
 		
 		this.name=name;
 		this.type=type;
-		this.nodes=nodes;
 		this.params=params;
 		this.target_suffix=target_suffix;
 	}
@@ -139,29 +134,6 @@ public class ConversionRoutine {
 	
 	
 	/**
-	 * Sets the nodes.
-	 *
-	 * @param nodes the new nodes
-	 */
-	public void setNodes(Set<Node> nodes) {
-		this.nodes = nodes;
-	}
-	
-	
-	
-	
-	// domain names of the machines on which the ConversionRoutine is installed
-	/**
-	 * Gets the nodes.
-	 *
-	 * @return the nodes
-	 */
-	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER, targetEntity = Node.class)
-	public Set<Node> getNodes() {
-		return this.nodes;
-	}
-
-	/**
 	 * Sets the params.
 	 *
 	 * @param params the new params
@@ -204,8 +176,7 @@ public class ConversionRoutine {
 	 */
 	@Override
 	public String toString(){
-		return "ConversionRoutine["+getName()+", ["+
-				""+getNodes()+"], "+getParams()+", "+getTarget_suffix()+"]";
+		return "ConversionRoutine["+getName()+"], "+getParams()+", "+getTarget_suffix()+"]";
 	}
 
 	

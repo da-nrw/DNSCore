@@ -91,7 +91,7 @@ public class ScanActionTests {
 		
 		Set<Node> nodes = new HashSet<Node>(); nodes.add(localNode);
 		ConversionRoutine toPng = new ConversionRoutine(
-				"TOPNG", nodes,
+				"TOPNG", 
 				"de.uzk.hki.da.cb.CLIConversionStrategy",
 				"cp input output","bmp");
 		ConversionPolicy policy = new ConversionPolicy(

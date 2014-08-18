@@ -166,11 +166,4 @@ public class ConversionPolicy {
 			user.getShort_name()+","+source_format+","
 		+conversion_routine.getName()+"]";
 	}
-	
-	/**
-	 * Test.
-	 */
-	public void test(){
-		conversion_routine.getNodes();
-	}
 }
