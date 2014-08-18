@@ -19,10 +19,13 @@
 
 # Objektmodell-Referenz
 
+Die Java [Object](../java/de/uzk/hki/da/model/Object.java) Klasse.
 
 ### Object - Das Objekt
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_objects_packages.jpg)
+
+Die fundamentale Klasse des Datenmodells heisst einfach "Object". Ein Objekt repräsentiert eine logisch zusammenhängende Sammlung von Dateien. Den Zusammenhang der Dateien legt dabei der User fest (siehe pre_ingest.md). Jedes Objekt innerhalb innerhalb eines PreservationSystems trägt einen eindeutigen technischen Identifier, der zum Identifizieren und Auffinden von Objekten innerhalb des PreservationSystems dienen kann. Dieser technische Identifier wird einem User daher  (Contractor) am Ende eines Ingest-Workflows übermittelt.
 
 ### Package - Das Informationspaket
 
