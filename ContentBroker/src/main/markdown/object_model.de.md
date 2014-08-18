@@ -22,6 +22,8 @@
 
 ### Object - Das Objekt
 
+![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_objects_packages.jpg)
+
 ### Package - Das Informationspaket
 
 ### User - Der Benutzer
