@@ -37,7 +37,7 @@ import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PSystem;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
@@ -71,7 +71,7 @@ public class UnpackActionTests {
 
 	private UnpackAction action = new UnpackAction();
 	private Object o;
-	private static final PSystem pSystem = new PSystem();
+	private static final PreservationSystem pSystem = new PreservationSystem();
 	
 	
 	/**

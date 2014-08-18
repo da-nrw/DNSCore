@@ -32,7 +32,6 @@ import de.uzk.hki.da.model.ConversionInstructionBuilder;
 import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.PreservationSystem;
 
 
 /**
@@ -42,7 +41,6 @@ import de.uzk.hki.da.model.PreservationSystem;
 public class ScanForPresentationAction extends AbstractAction{
 	
 	private FormatScanService formatScanService;
-	private PreservationSystem preservationSystem;
 	private final ConversionInstructionBuilder ciB = new ConversionInstructionBuilder();
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
@@ -52,8 +50,6 @@ public class ScanForPresentationAction extends AbstractAction{
 	boolean implementation() throws FileNotFoundException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 		if (formatScanService==null) throw new ConfigurationException("formatScanService not set");
-		if (preservationSystem==null) // So we can prevent the preservationSystem to be instantiated in unit tests.
-			preservationSystem = new PreservationSystem(dao);
 		
 		// check if object package type is set
 		
@@ -75,14 +71,6 @@ public class ScanForPresentationAction extends AbstractAction{
 	}
 	
 	
-	
-	/**
-	 * this is just for testing purposes
-	 * @param sys
-	 */
-	void setPreservationSystem(PreservationSystem sys){
-		preservationSystem = sys;
-	}
 
 	/**
 	 * Every file in the files list gets tested with respect to if a ConversionPolicies of contractor PRESENTER will apply to it.
@@ -95,7 +83,6 @@ public class ScanForPresentationAction extends AbstractAction{
 	 */
 	public List<ConversionInstruction> generateConversionInstructionsForPresentation( 
 			Package pkg, List<DAFile> files ){
-		if (preservationSystem==null) throw new IllegalStateException("preservationSystem not set");
 		
 		List<ConversionInstruction> cis = new ArrayList<ConversionInstruction>();
 		
@@ -104,7 +91,7 @@ public class ScanForPresentationAction extends AbstractAction{
 			// get cps for fileanduser. do with cps: assemble
 			
 			logger.trace("Generating ConversionInstructions for PRESENTER");
-			List<ConversionPolicy> policies = preservationSystem.getApplicablePolicies(file, "PRESENTER");
+			List<ConversionPolicy> policies = pSystem.getApplicablePolicies(file, "PRESENTER");
 			if ( object.grantsRight("PUBLICATION")
 					&& !file.toRegularFile().getName().toLowerCase().endsWith(".xml")
 					&& !file.toRegularFile().getName().toLowerCase().endsWith(".rdf")

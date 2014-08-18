@@ -32,7 +32,7 @@ import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PSystem;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.service.RegisterObjectService;
 import de.uzk.hki.da.service.URNCheckDigitGenerator;
 import de.uzk.hki.da.utils.Utilities;
@@ -106,7 +106,7 @@ public class RegisterObjectServiceTests {
 	 */
 	@Test
 	public void testGenerateURNForNode(){
-		PSystem pSystem = new PSystem();
+		PreservationSystem pSystem = new PreservationSystem();
 		pSystem.setUrnNameSpace("urn:nbn:de:danrw");
 		
 		RegisterObjectService registerObjectService = new RegisterObjectService();

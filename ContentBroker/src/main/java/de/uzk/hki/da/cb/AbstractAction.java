@@ -49,7 +49,7 @@ import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PSystem;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.Mail;
 import de.uzk.hki.da.service.UserExceptionManager;
@@ -91,7 +91,7 @@ public abstract class AbstractAction implements Runnable {
 	protected int concurrentJobs = 3;
 	private UserExceptionManager userExceptionManager;
 	private ActiveMQConnectionFactory mqConnectionFactory;
-	protected PSystem pSystem;
+	protected PreservationSystem pSystem;
 	
 	
 	AbstractAction(){}
@@ -489,11 +489,11 @@ public abstract class AbstractAction implements Runnable {
 		return HibernateUtil.openSession();
 	}
 
-	public PSystem getpSystem() {
+	public PreservationSystem getpSystem() {
 		return pSystem;
 	}
 
-	public void setPSystem(PSystem pSystem) {
+	public void setPSystem(PreservationSystem pSystem) {
 		this.pSystem = pSystem;
 	}
 }

@@ -38,7 +38,6 @@ import de.uzk.hki.da.model.ConversionInstructionBuilder;
 import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PreservationSystem;
 
 
 /**
@@ -56,15 +55,12 @@ import de.uzk.hki.da.model.PreservationSystem;
 public class ScanAction extends AbstractAction{
 	
 	static final Logger logger = LoggerFactory.getLogger(ScanAction.class);
-	private PreservationSystem preservationSystem;
 	private final ConversionInstructionBuilder ciB = new ConversionInstructionBuilder();
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
 	@Override
 	boolean implementation() throws IOException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
-		if (preservationSystem==null) // So we can prevent the preservationSystem to be instantiated in unit tests.
-			preservationSystem = new PreservationSystem(dao);
 		
 		String repPath = object.getDataPath() +"/"+ job.getRep_name();
 		Object premisObject = parsePremisToMetadata(repPath+"a");
@@ -91,7 +87,7 @@ public class ScanAction extends AbstractAction{
 		for (DAFile file : filesArchival){
 			
 			for	(ConversionPolicy p:
-				preservationSystem.getApplicablePolicies(file, "DEFAULT"))
+				pSystem.getApplicablePolicies(file, "DEFAULT"))
 			{
 				logger.info("Found applicable Policy for FileFormat "+
 						p.getSource_format()+" -> "+p.getConversion_routine().getName() + "("+ file.getRelative_path()+ ")");
@@ -113,15 +109,6 @@ public class ScanAction extends AbstractAction{
 	
 	
 	
-	
-	/**
-	 * this is just for testing purposes
-	 * @param sys
-	 */
-	void setPreservationSystem(PreservationSystem sys){
-		preservationSystem = sys;
-	}
-
 	
 	
 	

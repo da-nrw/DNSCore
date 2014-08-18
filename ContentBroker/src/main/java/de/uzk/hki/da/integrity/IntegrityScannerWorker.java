@@ -35,7 +35,7 @@ import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PSystem;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.service.Mail;
@@ -72,12 +72,12 @@ public class IntegrityScannerWorker {
 	
 	private CentralDatabaseDAO dao;
 
-	private PSystem pSystem;
+	private PreservationSystem pSystem;
 	private Node node;
 
 	public void init(){
 		node = new Node(); node.setId(Integer.parseInt(localNodeId));
-		setpSystem(new PSystem()); getPSystem().setId(1);
+		setpSystem(new PreservationSystem()); getPSystem().setId(1);
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		session.refresh(getPSystem());
@@ -246,12 +246,12 @@ public class IntegrityScannerWorker {
 	}
 
 
-	public PSystem getPSystem() {
+	public PreservationSystem getPSystem() {
 		return pSystem;
 	}
 
 
-	public void setpSystem(PSystem pSystem) {
+	public void setpSystem(PreservationSystem pSystem) {
 		this.pSystem = pSystem;
 	}
 

@@ -39,7 +39,7 @@ import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PSystem;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.utils.Path;
@@ -76,7 +76,7 @@ public class RetrievalActionTest {
 	@Before
 	public void setUp() throws Exception {
 
-		PSystem pSystem = new PSystem();
+		PreservationSystem pSystem = new PreservationSystem();
 		pSystem.setSidecarExtensions("xmp");
 		User sysadmin = new User(); sysadmin.setEmailAddress("noreply@danrw.de");
 		pSystem.setAdmin(sysadmin);

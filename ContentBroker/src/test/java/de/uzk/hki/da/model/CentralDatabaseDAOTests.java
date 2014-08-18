@@ -58,7 +58,7 @@ public class CentralDatabaseDAOTests {
 			"published_flag,user_id,object_state) VALUES ('109735','da-nrw-vm3.hki.uni-koeln.de'," +
 			"'urn+nbn+de+danrw-1-2012113022773','test_object_double','1354276007948','1354276113286','da-nrw','0','1','100')",
 		"INSERT INTO queue (id,objects_id,user_id,status) VALUES (1,109735,1,'110')",
-		"INSERT INTO psystem (id,sidecar_extensions) VALUES (1,'xmp')",
+		"INSERT INTO preservation_system (id,sidecar_extensions) VALUES (1,'xmp')",
 	};
 	
 	/**
@@ -83,7 +83,7 @@ public class CentralDatabaseDAOTests {
 		TESTHelper.clearDB();
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		session.createSQLQuery("DELETE FROM psystem").executeUpdate();
+		session.createSQLQuery("DELETE FROM preservation_system").executeUpdate();
 		session.createSQLQuery("DELETE FROM conversion_routines").executeUpdate();
 		session.createSQLQuery("DELETE FROM nodes").executeUpdate();
 		session.createSQLQuery("DELETE FROM users").executeUpdate();
@@ -95,7 +95,7 @@ public class CentralDatabaseDAOTests {
 	@Test
 	public void fetchJob(){
 		Node node = new Node(); node.setId(1);
-		PSystem pSystem = new PSystem(); pSystem.setId(1);
+		PreservationSystem pSystem = new PreservationSystem(); pSystem.setId(1);
 		CentralDatabaseDAO dao = new CentralDatabaseDAO();
 		dao.fetchJobFromQueue("110", "112", node, pSystem);
 		assertEquals("xmp",pSystem.getSidecarExtensions());

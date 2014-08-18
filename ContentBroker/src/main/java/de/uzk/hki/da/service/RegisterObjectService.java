@@ -36,7 +36,7 @@ import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PSystem;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -55,14 +55,14 @@ public class RegisterObjectService {
 	private CentralDatabaseDAO dao;	
 	
 	private Node localNode;
-	private PSystem pSystem;
+	private PreservationSystem pSystem;
 	
 	/**
 	 * @throws new IllegalStateException if there exists no db entry for localNode or its urn_index is < 0.
 	 * @author Daniel M. de Oliveira
 	 */
 	public void init(){
-		pSystem = new PSystem(); pSystem.setId(1);
+		pSystem = new PreservationSystem(); pSystem.setId(1);
 		
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
@@ -270,13 +270,13 @@ public class RegisterObjectService {
 
 
 
-	public PSystem getpSystem() {
+	public PreservationSystem getpSystem() {
 		return pSystem;
 	}
 
 
 
-	public void setpSystem(PSystem pSystem) {
+	public void setpSystem(PreservationSystem pSystem) {
 		this.pSystem = pSystem;
 	}
 }

@@ -62,7 +62,7 @@ public class CentralDatabaseDAO {
 	 * @author Daniel M. de Oliveira
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
-	public Job fetchJobFromQueue(String status, String workingStatus, Node node, PSystem pSystem) {
+	public Job fetchJobFromQueue(String status, String workingStatus, Node node, PreservationSystem pSystem) {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		logger.trace("Fetch job for node name " + node.getName());

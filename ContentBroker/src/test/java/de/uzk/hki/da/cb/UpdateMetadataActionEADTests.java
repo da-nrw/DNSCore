@@ -46,7 +46,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PSystem;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.service.MimeTypeDetectionService;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
@@ -76,7 +76,7 @@ public class UpdateMetadataActionEADTests {
 	
 	@Before
 	public void setUp() throws IOException{
-		PSystem pSystem = new PSystem();
+		PreservationSystem pSystem = new PreservationSystem();
 		pSystem.setUrisFile("http://data.danrw.de/file");
 		
 		object = TESTHelper.setUpObject("42",workAreaRootPathPath);
