@@ -38,6 +38,9 @@ as a package contain either the objects complete data, or only a part of it. The
 situtaion, it either can contain data derived only from one singly SIP or it can contain data from several SIPs. Therefore
 the different concepts of our object model will be explained in detail in the following sections.
 
+![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_object_users.jpg)
+
+
 ### Object
 
 The Java [Object](../java/de/uzk/hki/da/model/Object.java) class.
