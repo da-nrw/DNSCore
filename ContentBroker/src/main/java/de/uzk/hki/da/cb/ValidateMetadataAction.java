@@ -37,7 +37,6 @@ import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Path;
 
 /**
  * Detects the package type of an object.

@@ -18,24 +18,14 @@
  */
 package de.uzk.hki.da.service;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.model.ConversionInstruction;
-import de.uzk.hki.da.model.ConversionRoutine;
-import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Object;
 
 
 /**

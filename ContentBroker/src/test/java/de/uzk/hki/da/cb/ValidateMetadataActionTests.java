@@ -29,8 +29,6 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -40,7 +38,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import ch.qos.logback.classic.Logger;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.metadata.FakeMetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructureFactory;
