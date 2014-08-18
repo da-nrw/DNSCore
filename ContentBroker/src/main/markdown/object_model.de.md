@@ -19,10 +19,10 @@
 
 # Objektmodell-Referenz
 
-## Object - Das Objekt
+### Object - Das Objekt
 
-## Package - Das Informationspaket
+### Package - Das Informationspaket
 
-## User - Der Benutzer
+### User - Der Benutzer
 
-## System - Das Gesamtsystem
+### System - Das Gesamtsystem
