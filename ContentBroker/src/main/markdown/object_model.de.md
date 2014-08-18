@@ -33,11 +33,21 @@ Die fundamentale Klasse des Datenmodells heisst einfach "Object". Ein Objekt rep
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_object_users.jpg)
 
+Ein Benutzer ist ein Anwender der Applikation. Endnutzer verwenden das System auf verschiedene Art und Weise, je nach Rolle. Derzeit sind drei Benutzerrollen möglich:
+
+* PreservationSystem Administrator - Fachlicher Ansprechpartner für ein PreservationSystem
+* Node Administrator - Technischer Ansprechpartner für einen Knoten
+* Contractor - 
+
+Contractoren sind die Endanwender der Applikation. Sie liefern ihre Pakete immer auf jeweils einem Knoten ein.
+
 ### PreservationSystem - Das Gesamtsystem
 
 Die Klasse PreservationSystem repräsentiert das Gesamtsystem. Es besteht aus einzelnen Knoten, auf denen Contractoren ihre Objekte einliefern. Das Gesamtsystem hält die global gültigen Regeln zur Anwendung von Konversionen vor und bestimmt, welche Konversionsroutinen von allen Knoten gleichermaßen angeboten werden. 
 
 ### Node - Der Knoten
+
+An einem Knoten liefern Contractoren ihre Objekte ein. Der Knoten steht dabei für ein konkretes technisches System am Standort eines Betreibers. Verschiedene Knoten verschiedener Betreiber an verschiedenen Standorten formen ein PreservationSystem. 
 
 ### ConversionRoutine - Die Konversionsroutine
 
