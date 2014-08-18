@@ -34,7 +34,7 @@ import org.junit.Test;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.PSystem;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -82,7 +82,7 @@ public class IntegrityScannerWorkerTest {
 	@Before
 	public void setUp() throws IOException{
 		
-		PSystem pSystem = new PSystem();
+		PreservationSystem pSystem = new PreservationSystem();
 		pSystem.setMinRepls(3);
 		
 		dao = mock(CentralDatabaseDAO.class);

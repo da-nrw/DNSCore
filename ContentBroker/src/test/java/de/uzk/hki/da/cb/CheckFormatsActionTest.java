@@ -43,7 +43,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PSystem;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -129,7 +129,7 @@ public class CheckFormatsActionTest {
 	public void setUp() throws Exception{
 		
 		
-		PSystem pSystem = new PSystem();
+		PreservationSystem pSystem = new PreservationSystem();
 		localNode = new Node();
 		User contractor = new User();
 		contractor.setShort_name("TEST");

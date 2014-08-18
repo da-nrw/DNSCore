@@ -34,6 +34,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.HibernateUtil;
+
 
 
 /**
@@ -64,7 +66,6 @@ public class PreservationSystemTests {
 	public static void tearDownAfterClass() throws Exception {
 	}
 
-	/** The preservation system. */
 	private PreservationSystem preservationSystem;
 	
 	/** The file. */
@@ -84,6 +85,8 @@ public class PreservationSystemTests {
 	@Before
 	public void setUp() throws Exception {
 	
+		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
+		
 		ConversionRoutine routine = new ConversionRoutine();
 		routine.setName("COPY");
 		
@@ -126,7 +129,8 @@ public class PreservationSystemTests {
 		when(dao.getContractor((Session) anyObject(), anyString())).thenReturn(presC).thenReturn(defaultC);
 //		when(dao.getConversionPoliciesForContractor((Contractor) anyObject())).
 //			thenReturn(policies).thenReturn(policies2);
-		preservationSystem = new PreservationSystem(dao);
+		preservationSystem = new PreservationSystem();
+		preservationSystem.initialize(dao);
 		
 		// creating a valid file
 		file = new DAFile(null,"","");

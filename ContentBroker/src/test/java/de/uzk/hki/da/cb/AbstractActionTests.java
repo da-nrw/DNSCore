@@ -43,7 +43,7 @@ import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PSystem;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.service.UserExceptionManager;
 
@@ -91,7 +91,7 @@ public class AbstractActionTests {
 		action.setStartStatus(startStatus);
 		action.setEndStatus(endStatus);
 		action.SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
-		action.setPSystem(new PSystem());
+		action.setPSystem(new PreservationSystem());
 	}
 	
 	

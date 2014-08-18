@@ -36,7 +36,6 @@ import org.junit.Test;
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.ConversionRoutine;
@@ -45,6 +44,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
@@ -104,10 +104,10 @@ public class ScanActionTests {
 		List<ConversionPolicy> noPolicies = new ArrayList<ConversionPolicy>();
 		policies.add(policy);
 
-		PreservationSystem pres = mock ( PreservationSystem.class );
-		when(pres.getApplicablePolicies((DAFile) anyObject(), anyString())).thenReturn(policies).thenReturn(noPolicies);
-		action.setPreservationSystem(pres);
+		PreservationSystem pSystem = mock (PreservationSystem.class);
 		
+		when(pSystem.getApplicablePolicies((DAFile) anyObject(), anyString())).thenReturn(policies).thenReturn(noPolicies);
+		action.setPSystem(pSystem);
 		action.setObject(obj);
 		action.setDistributedConversionAdapter(mock (DistributedConversionAdapter.class));
 		action.setDao(mock ( CentralDatabaseDAO.class ));

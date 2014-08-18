@@ -1,7 +1,7 @@
 /*
   DA-NRW Software Suite | ContentBroker
-  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
-  Universität zu Köln
+  Copyright (C) 2014 LVRInfoKom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -17,16 +17,23 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
- * 
- */
 package de.uzk.hki.da.model;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.classic.Session;
 import org.slf4j.Logger;
@@ -34,33 +41,149 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.HibernateUtil;
 
-
 /**
- * Manages ConversionPolicies and knows which ones 
- * to apply for certain file format / user combinations.
- * Acts like a repository for the ConversionPolicies.
+ * Represents the preservation system.
  * @author Daniel M. de Oliveira
- *
  */
+@Entity
+@Table(name="preservation_system")
 public class PreservationSystem {
 	
-	/** The Constant logger. */
 	static final Logger logger = LoggerFactory.getLogger(PreservationSystem.class);
 	
-	/** The policies map. */
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int id;
+
+	@OneToOne
+	@JoinColumn(name="admin_id",unique=true)
+	private User admin;
+	
+	@OneToMany
+	@JoinColumn(name="psystem_id")
+	private List<ConversionRoutine> conversionRoutines = new ArrayList<ConversionRoutine>();
+	
+	@Transient
+	private List<User> contractors = new ArrayList<User>();
+
+	@Transient
 	private Map<String,List<ConversionPolicy>> policiesMap;
 	
-	/** The contractors. */
-	private List<User> contractors = new ArrayList<User>();
+	@Column(name="min_repls")
+	private Integer minRepls;
+
+	@Column(name="sidecar_extensions")
+	private String sidecarExtensions="";
+	
+	@Column(name="pres_server")
+	private String presServer;
+
+	@Column(name="urn_name_space")
+	private String urnNameSpace;
+	
+	@Column(name="uris_file")
+	private String urisFile;
+	
+	@Column(name="uris_cho")
+	private String urisCho;
+	
+	@Column(name="uris_aggr")
+	private String urisAggr;
+	
+	@Column(name="uris_local")
+	private String urisLocal;
+	
+	@Column(name="open_collection_name")
+	private String openCollectionName;
+	
+	@Column(name="closed_collection_name")
+	private String closedCollectionName;
+
+	public Integer getMinRepls() {
+		return minRepls;
+	}
+	public void setMinRepls(Integer minRepls) {
+		this.minRepls = minRepls;
+	}
+	public String getSidecarExtensions() {
+		return sidecarExtensions;
+	}
+	public void setSidecarExtensions(String sidecarExtensions) {
+		this.sidecarExtensions = sidecarExtensions;
+	}
+	public String getPresServer() {
+		return presServer;
+	}
+	public void setPresServer(String presServer) {
+		this.presServer = presServer;
+	}
+	public String getUrnNameSpace() {
+		return urnNameSpace;
+	}
+	public void setUrnNameSpace(String urnNameSpace) {
+		this.urnNameSpace = urnNameSpace;
+	}
+	public String getUrisFile() {
+		return urisFile;
+	}
+	public void setUrisFile(String urisFile) {
+		this.urisFile = urisFile;
+	}
+	public String getUrisCho() {
+		return urisCho;
+	}
+	public void setUrisCho(String urisCho) {
+		this.urisCho = urisCho;
+	}
+	public String getUrisAggr() {
+		return urisAggr;
+	}
+	public void setUrisAggr(String urisAggr) {
+		this.urisAggr = urisAggr;
+	}
+	public String getUrisLocal() {
+		return urisLocal;
+	}
+	public void setUrisLocal(String urisLocal) {
+		this.urisLocal = urisLocal;
+	}
+	public String getClosedCollectionName() {
+		return closedCollectionName;
+	}
+	public void setClosedCollectionName(String closedCollectionName) {
+		this.closedCollectionName = closedCollectionName;
+	}
+	public String getOpenCollectionName() {
+		return openCollectionName;
+	}
+	public void setOpenCollectionName(String openCollectionName) {
+		this.openCollectionName = openCollectionName;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public User getAdmin() {
+		return admin;
+	}
+	public void setAdmin(User admin) {
+		this.admin = admin;
+	}
+	public List<ConversionRoutine> getConversionRoutines() {
+		return conversionRoutines;
+	}
+	public void setConversionRoutines(List<ConversionRoutine> conversionRoutines) {
+		this.conversionRoutines = conversionRoutines;
+	}
 	
 	
-	/**
-	 * Instantiates a new preservation system.
-	 *
-	 * @param dao the dao
-	 */
+	
+	
+	
 	@SuppressWarnings("unused")
-	public PreservationSystem(CentralDatabaseDAO dao){
+	public void initialize(CentralDatabaseDAO dao){
 		policiesMap = new HashMap<String,List<ConversionPolicy>>();
 		
 		Session session = HibernateUtil.openSession();
@@ -92,8 +215,8 @@ public class PreservationSystem {
 				"PRESENTER",presenter.getConversion_policies());
 		session.close();
 	}
-	
 
+	
 	/**
 	 * Matches the files format (specifically the puid) against the available
 	 * ConversionPolicies and returns all matches. If a file has no evaluable file format information a warning
@@ -126,5 +249,5 @@ public class PreservationSystem {
 		}
 		return result;
 	}
-
+	
 }

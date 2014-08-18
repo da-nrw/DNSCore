@@ -37,7 +37,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.metadata.DCReader;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PSystem;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.utils.Path;
@@ -89,7 +89,7 @@ public class SendToPresenterActionTests {
 		
 		Set<String> testContractors = new HashSet<String>();
 		action.setTestContractors(testContractors);
-		action.setPSystem(new PSystem());
+		action.setPSystem(new PreservationSystem());
 	}
 	
 	@Test

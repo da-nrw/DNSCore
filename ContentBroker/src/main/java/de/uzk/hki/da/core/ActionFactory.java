@@ -34,7 +34,7 @@ import de.uzk.hki.da.cb.AbstractAction;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.PSystem;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.service.UserExceptionManager;
 
 
@@ -70,16 +70,18 @@ public class ActionFactory implements ApplicationContextAware {
 	/** *The Active MQ Connection factory */
 	private ActiveMQConnectionFactory mqConnectionFactory;
 
-	private PSystem pSystem;
+	private PreservationSystem pSystem;
 
 
 	public void init(){
-		pSystem = new PSystem(); pSystem.setId(1);
+		if (dao==null) throw new ConfigurationException("dao not set");
+		pSystem = new PreservationSystem(); pSystem.setId(1);
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		session.refresh(pSystem);
 		session.getTransaction().commit();
 		session.close();
+		pSystem.initialize(dao);
 	}
 	
 	/**
@@ -106,8 +108,6 @@ public class ActionFactory implements ApplicationContextAware {
 			return null;
 		}
 
-		PSystem pSystem = new PSystem(); pSystem.setId(1);
-		
 		// iterate over available job types in order of priority,
 		// start action if a corresponding job exists in the database 
 		List<String> availableJobTypes = actionRegistry.getAvailableJobTypes();
