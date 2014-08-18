@@ -76,7 +76,7 @@ public class PublishXsltConversionStrategyTests {
 //		when(pkg.getNameOfNewestRep()).thenReturn("target");
 		
 		 routine = new ConversionRoutine(
-				 "XSLT_ead_to_dc", null,
+				 "XSLT_ead_to_dc",
 				 "de.uzk.hki.da.cb.XSLTConversionStrategy",
 				 "conf/xslt/dc/ead_to_dc.xsl", "xml");
 	}

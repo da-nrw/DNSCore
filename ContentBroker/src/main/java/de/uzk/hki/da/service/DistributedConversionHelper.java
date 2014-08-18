@@ -54,85 +54,9 @@ public class DistributedConversionHelper {
 	/** The Constant logger. */
 	static final Logger logger = LoggerFactory.getLogger(DistributedConversionHelper.class);
 	
-	/**
-	 * Select processing nodes.
-	 *
-	 * @param actualNode the actual node
-	 * @param routines the routines
-	 * @return the map
-	 */
-	private static Map<ConversionRoutine,Node> selectProcessingNodes(Node actualNode,Set<ConversionRoutine> routines) {
-		Map<ConversionRoutine,Node> conversionRoutinesSelectedNodes= new HashMap<ConversionRoutine,Node>();
-		Set<Node> selectedNodes= new HashSet<Node>();
-		
-		// select nodes for each of them
-		for (ConversionRoutine conversionRoutine : routines){
-			Set<Node> availabeNodesForActualRoutine= conversionRoutine.getNodes();	
-			if (availabeNodesForActualRoutine.isEmpty()) throw new 
-				IllegalStateException("ConversionRoutine "+ conversionRoutine.getName()+ "" +
-						" exists but no node is defined which can handle it. " +
-						"This shouldn't have happened because contractors cannot add routines to their " +
-						"cart for which no nodes are defined.");
-			logger.debug("Possible Machines for Conversion with \""+
-					conversionRoutine.getName()+"\": "+conversionRoutine.getNodes());
-			
-			Node chosenNode=null;
-			if (availabeNodesForActualRoutine.contains(actualNode)){
-				logger.debug("availabeNodesForActualRoutine contain actualNode");
-				
-				chosenNode= actualNode;
-				selectedNodes.add(actualNode);
-				
-			}else if (availabeNodesForActualRoutine.size()==1){
-				
-				chosenNode= availabeNodesForActualRoutine.iterator().next(); 
-				selectedNodes.add(chosenNode);
-				logger.debug("#1 node gets added to replNodes: "+chosenNode);
-				
-			}else{
-				
-				boolean oneOfTheAvailableNodesHasAlreadyBeenSelected=false;
-				for (Node n : availabeNodesForActualRoutine){
-					// is one of them already in the set
-					if (selectedNodes.contains(n)){
-						oneOfTheAvailableNodesHasAlreadyBeenSelected=true;
-						chosenNode= n;
-						break;
-					}
-				}
-				if (!oneOfTheAvailableNodesHasAlreadyBeenSelected){
-					chosenNode= availabeNodesForActualRoutine.iterator().next(); // here is a problem
-					selectedNodes.add(chosenNode);
-					logger.debug("#2 node gets added to replNodes: "+chosenNode);
-				}
-			}
-			logger.debug(conversionRoutine.getName()+ " will be processed on "+chosenNode);
-			conversionRoutinesSelectedNodes.put(conversionRoutine,chosenNode);
-		}
-		return conversionRoutinesSelectedNodes;
-	}
+
 	
-	/**
-	 * Determine processing nodes for conversion instructions.
-	 *
-	 * @param job the job
-	 * @param localNode the local node
-	 * @param routines the routines
-	 * @return the map
-	 */
-	private static Map<ConversionRoutine, Node> determineProcessingNodesForConversionInstructions(Job job,Node localNode,Set<ConversionRoutine> routines){
-		Map<ConversionRoutine, Node> conversionRoutinesSelectedNodes = 
-				DistributedConversionHelper.selectProcessingNodes(localNode, routines);
-		for (ConversionRoutine routine : conversionRoutinesSelectedNodes
-				.keySet()){
-			for (ConversionInstruction ci : job.getConversion_instructions()){
-				if (ci.getConversion_routine().getName().equals(routine.getName())){
-					ci.setNode(conversionRoutinesSelectedNodes.get(routine).getName());
-				}
-			}
-		}
-		return conversionRoutinesSelectedNodes;
-	}
+	
 	
 	/**
 	 * Iterates over a collection of Nodes and creates a list of their working
@@ -143,7 +67,7 @@ public class DistributedConversionHelper {
 	 * @param nodes the nodes
 	 * @return comma separated list of working resources
 	 */
-	public static String listOfWorkingResources(Collection<Node> nodes) {
+	private static String listOfWorkingResources(Collection<Node> nodes) {
 
 		Set<Node> nodesSet = new HashSet<Node>(nodes);
 
@@ -157,62 +81,4 @@ public class DistributedConversionHelper {
 		result = result.substring(0, result.lastIndexOf(","));
 		return result;
 	}
-	
-	/**
-	 * Creates Jobs in the db which contain ConversionInstructions to be executed on different nodes.
-	 * As a side effect the linkage to the ConversionInstructions which are not done locally get removed from
-	 * the parent job object.
-	 *
-	 * @param parentJob the parent job
-	 * @param nodes the nodes
-	 * @param localNodeName the local node name
-	 * @return List of Jobs.
-	 * @author Daniel M. de Oliveira
-	 * @param object 
-	 */
-	public static List<Job> createJobsWhichCantBeDoneLocally(Job parentJob,Set<Node> nodes,String localNodeName, Object object){
-		
-		ArrayList<ConversionInstruction> allCis = new ArrayList<ConversionInstruction>(parentJob.getConversion_instructions());
-		
-		List<Job> friendJobs = new ArrayList<Job>();
-		for (Node node:nodes){
-			
-			if (node.getName().equals(localNodeName)) continue;
-			
-			@SuppressWarnings("unchecked")
-			Collection <ConversionInstruction> cis = 
-					CollectionUtils.select(allCis, new NodePredicate(node));
-			if (cis.isEmpty()){
-				logger.debug("not creating friend job, no ConversionInstructions found for node "+node.getName());
-				continue;
-			}
-			
-			logger.debug("Creating friend job for node \""+node+"\"");
-			Job friendJob = new Job(parentJob,"580");
-			friendJob.setResponsibleNodeName(node.getName());
-			friendJob.setParent_id(parentJob.getId());
-			friendJob.setDate_created(String.valueOf(new Date().getTime()/1000L));
-			friendJob.setObject(object);
-			// creating copies and linking them to the job
-			logger.debug("The following conversions will not be done locally:");
-			for (ConversionInstruction ci:cis){
-				logger.debug("ci: "+ci);
-				ConversionInstruction newCI = new ConversionInstruction(ci);
-				newCI.setNode(node.getName());
-				
-				friendJob.getConversion_instructions().add(newCI);
-				parentJob.getConversion_instructions().remove(ci);
-			}
-			friendJobs.add(friendJob);
-		}
-		return friendJobs;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
 }

@@ -28,7 +28,6 @@ import de.uzk.hki.da.cb.ArchiveReplicationActionTests;
 import de.uzk.hki.da.cb.BuildAIPActionTests;
 import de.uzk.hki.da.cb.CheckFormatsActionTest;
 import de.uzk.hki.da.cb.ConversionInstructionsBuilderTests;
-import de.uzk.hki.da.cb.ConvertActionNodeSplittingTests;
 import de.uzk.hki.da.cb.ConvertActionTests;
 import de.uzk.hki.da.cb.ConvertCheckActionTests;
 import de.uzk.hki.da.cb.CreateEDMActionTests;
@@ -42,7 +41,6 @@ import de.uzk.hki.da.cb.ProperRefreshOfJobChildrenTest;
 import de.uzk.hki.da.cb.RestructureActionTests;
 import de.uzk.hki.da.cb.RetrievalActionTest;
 import de.uzk.hki.da.cb.ScanActionTests;
-import de.uzk.hki.da.cb.SelectProcessingNodesTests;
 import de.uzk.hki.da.cb.SendToPresenterActionTests;
 import de.uzk.hki.da.cb.ShortenFileNamesActionTests;
 import de.uzk.hki.da.cb.TarActionTests;
@@ -106,7 +104,6 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	ObjectFSTests.class,
 	ConversionInstructionsBuilderTests.class,
 	CentralDatabaseDAOTests.class,
-	SelectProcessingNodesTests.class,
 	ActionFactoryTests.class,
 	RetrievePackagesHelperTest.class,
 	ActionRegistryTests.class,
@@ -114,7 +111,6 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	BuildAIPActionTests.class,
 	ModelTest.class,
 	ConvertCheckActionTests.class,
-	ConvertActionNodeSplittingTests.class,
 	ConverterServiceTests.class,
 	ScanActionTests.class,
 	ArchiveBuilderTests.class,
