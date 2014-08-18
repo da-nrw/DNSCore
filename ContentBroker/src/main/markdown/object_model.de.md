@@ -35,6 +35,10 @@ Die fundamentale Klasse des Datenmodells heisst einfach "Object". Ein Objekt rep
 
 ### PreservationSystem - Das Gesamtsystem
 
+Die Klasse PreservationSystem repräsentiert das Gesamtsystem. Es besteht aus einzelnen Knoten, auf denen Contractoren ihre Objekte einliefern. Das Gesamtsystem hält die global gültigen Regeln zur Anwendung von Konversionen vor und bestimmt, welche Konversionsroutinen von allen Knoten gleichermaßen angeboten werden. 
+
+### Node - Der Knoten
+
 ### ConversionRoutine - Die Konversionsroutine
 
 ### ConversionPolicy - Die Regel zur Anwendung einer Konversion
