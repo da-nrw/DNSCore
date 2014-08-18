@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -60,7 +61,8 @@ public class User{
 	private String forbidden_nodes;
 	
 	/** The email_contact. */
-	private String email_contact;
+	@Column(name="email_contact")
+	private String emailAddress;
 	
 	private Integer admin; // TODO factor out
 	
@@ -109,7 +111,7 @@ public class User{
 			String email_contact){
 		this.short_name=short_name;
 		this.forbidden_nodes=forbidden_nodes;
-		this.email_contact=email_contact;
+		this.emailAddress=email_contact;
 	}
 	
 	
@@ -153,10 +155,10 @@ public class User{
 	/**
 	 * Sets the email_contact.
 	 *
-	 * @param email_contact the new email_contact
+	 * @param emailAddress the new email_contact
 	 */
-	public void setEmail_contact(String email_contact) {
-		this.email_contact = email_contact;
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 
 	/**
@@ -164,8 +166,8 @@ public class User{
 	 *
 	 * @return the email_contact
 	 */
-	public String getEmail_contact() {
-		return email_contact;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 	
 	/* (non-Javadoc)
@@ -174,7 +176,7 @@ public class User{
 	@Override
 	public String toString(){
 		
-		return "User["+short_name+","+forbidden_nodes+","+email_contact+"]";
+		return "User["+short_name+","+forbidden_nodes+","+emailAddress+"]";
 	}
 
 	/**

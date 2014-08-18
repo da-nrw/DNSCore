@@ -19,12 +19,16 @@
 
 package de.uzk.hki.da.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -43,6 +47,10 @@ public class PSystem {
 	@OneToOne
 	@JoinColumn(name="admin_id",unique=true)
 	private User admin;
+	
+	@OneToMany
+	@JoinColumn(name="psystem_id")
+	private List<ConversionRoutine> conversionRoutines = new ArrayList<ConversionRoutine>();
 	
 	@Column(name="min_repls")
 	private Integer minRepls;
@@ -74,10 +82,6 @@ public class PSystem {
 	@Column(name="closed_collection_name")
 	private String closedCollectionName;
 
-	// TODO refactor to admin of system
-	@Column(name="email_from")
-	private String emailFrom;
-	
 	public Integer getMinRepls() {
 		return minRepls;
 	}
@@ -138,12 +142,6 @@ public class PSystem {
 	public void setOpenCollectionName(String openCollectionName) {
 		this.openCollectionName = openCollectionName;
 	}
-	public String getEmailFrom() {
-		return emailFrom;
-	}
-	public void setEmailFrom(String emailFrom) {
-		this.emailFrom = emailFrom;
-	}
 	public int getId() {
 		return id;
 	}
@@ -155,6 +153,12 @@ public class PSystem {
 	}
 	public void setAdmin(User admin) {
 		this.admin = admin;
+	}
+	public List<ConversionRoutine> getConversionRoutines() {
+		return conversionRoutines;
+	}
+	public void setConversionRoutines(List<ConversionRoutine> conversionRoutines) {
+		this.conversionRoutines = conversionRoutines;
 	}
 
 	

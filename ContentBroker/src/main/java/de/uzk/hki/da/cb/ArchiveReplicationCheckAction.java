@@ -149,7 +149,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		if (dao==null) throw new IllegalStateException("centralDatabaseDAO not set");
 		
 		String objectIdentifier=obj.getIdentifier();
-		String email = obj.getContractor().getEmail_contact();
+		String email = obj.getContractor().getEmailAddress();
 		String subject;
 		String msg;
 		if (obj.isDelta())
@@ -172,7 +172,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		
 		if (email!=null) {
 		try {
-			Mail.sendAMail(getSystemFromEmailAdress(), email, subject, msg);
+			Mail.sendAMail(pSystem.getAdmin().getEmailAddress(), email, subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email reciept for " + objectIdentifier + " failed",e);
 			return false;

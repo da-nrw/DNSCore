@@ -12,7 +12,6 @@ irods.keyStorePassword=
 irods.keyStorePath=
 irods.trustStorePath=
 
-localNode.admin_email=root@cihost.de
 localNode.userAreaRootPath=/ci/storage/UserArea
 localNode.ingestAreaRootPath=/ci/storage/IngestArea
 localNode.workAreaRootPath=/ci/storage/WorkArea

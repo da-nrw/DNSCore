@@ -61,7 +61,7 @@ public class AuditAction extends AbstractAction {
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 		if (nodeAdminEmail == null) throw new ConfigurationException("nodeAdminEmail is null!");
 		if (pSystem.getMinRepls()==0) throw new ConfigurationException("minNodes, 0 is not allowed!");
-		if (pSystem.getEmailFrom()==null)  throw new ConfigurationException("systemFromEmailAdress is not set!");
+		if (pSystem.getAdmin().getEmailAddress()==null)  throw new ConfigurationException("systemFromEmailAdress is not set!");
 		setKILLATEXIT(true);
 		setObjectState(job,ObjectState.UnderAudit);
 		StoragePolicy sp = new StoragePolicy(localNode);
@@ -114,9 +114,9 @@ public class AuditAction extends AbstractAction {
 		// send Mail to Admin with Package in Error
 
 		String subject = "[" + "da-nrw".toUpperCase() + "] Problem Report für " + obj.getIdentifier();
-		if (nodeAdminEmail != null && !nodeAdminEmail.equals("") && getSystemFromEmailAdress() != null && !getSystemFromEmailAdress().equals("")) {
+		if (nodeAdminEmail != null && !nodeAdminEmail.equals("") && pSystem.getAdmin().getEmailAddress() != null && !pSystem.getAdmin().getEmailAddress().equals("")) {
 			try {
-				Mail.sendAMail(getSystemFromEmailAdress(), nodeAdminEmail, subject, msg);
+				Mail.sendAMail(pSystem.getAdmin().getEmailAddress(), nodeAdminEmail, subject, msg);
 			} catch (MessagingException e) {
 				logger.error("Sending email problem report for " +  obj.getIdentifier() + " failed");
 			}

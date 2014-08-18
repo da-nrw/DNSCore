@@ -36,7 +36,6 @@
         <property name="ingestAreaRootPath" value="${localNode.ingestAreaRootPath}" />
         <property name="gridCacheAreaRootPath" value="${localNode.gridCacheAreaRootPath}" />
         <property name="workingResource" value="${localNode.workingResource}" />
-        <property name="adminEmail" value="${localNode.admin_email}" />    
         <property name="id" value="${localNode.id}" />
         <property name="replDestinations" value="${localNode.replDestinations}" />
    	</bean>

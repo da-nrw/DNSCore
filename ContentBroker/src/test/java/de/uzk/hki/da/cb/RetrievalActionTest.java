@@ -78,6 +78,9 @@ public class RetrievalActionTest {
 
 		PSystem pSystem = new PSystem();
 		pSystem.setSidecarExtensions("xmp");
+		User sysadmin = new User(); sysadmin.setEmailAddress("noreply@danrw.de");
+		pSystem.setAdmin(sysadmin);
+		
 		
 		FileUtils.copyDirectory(Path.makeFile(forkAndTransferPath,"work/csn/Source"), 
 				                Path.makeFile(forkAndTransferPath,"work/csn/1")); 
@@ -87,7 +90,7 @@ public class RetrievalActionTest {
 		
 		User contractor = new User(); 
 		contractor.setShort_name("csn"); 
-		contractor.setEmail_contact("abc@hki.uni-koeln.de");
+		contractor.setEmailAddress("abc@hki.uni-koeln.de");
 		Object object = new Object(); 
 		object.setContractor(contractor); 
 		object.setIdentifier(objectIdentifier);
@@ -111,7 +114,6 @@ public class RetrievalActionTest {
 		dca = mock (DistributedConversionAdapter.class);
 		
 		action = new RetrievalAction();
-		action.setSystemFromEmailAddress("noreply@system.de");
 		action.setDistributedConversionAdapter(dca);
 		action.setObject(object);
 		action.setJob(job);

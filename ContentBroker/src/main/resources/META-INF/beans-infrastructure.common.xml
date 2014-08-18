@@ -69,7 +69,6 @@
     <bean id="integrityScannerWorker" class="de.uzk.hki.da.integrity.IntegrityScannerWorker" init-method="init">
         <property name="localNodeId" value="${localNode.id}" />
         <property name="gridFacade" ref="${cb.implementation.grid}" />
-        <property name="nodeAdminEmail" value="${localNode.admin_email}" />
         <property name="dao" ref="centralDao" />
     </bean>
     

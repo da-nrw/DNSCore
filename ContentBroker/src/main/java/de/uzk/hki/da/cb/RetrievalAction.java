@@ -110,7 +110,7 @@ public class RetrievalAction extends AbstractAction {
 		
 		distributedConversionAdapter.remove("work/" + relativePackagePath.replaceAll("/$", "")); // replace all -> iRODS doesn't like trailing slashes
 		
-		emailReport(object.getContractor().getEmail_contact(),object.getIdentifier(),object.getContractor().getShort_name());
+		emailReport(object.getContractor().getEmailAddress(),object.getIdentifier(),object.getContractor().getShort_name());
 		return true;
 	}
 
@@ -158,7 +158,7 @@ public class RetrievalAction extends AbstractAction {
 				+ " zum Retrieval bereit!\n\n";
 		if (email != null) {
 			try {
-				Mail.sendAMail(getSystemFromEmailAdress(),email, subject, msg);
+				Mail.sendAMail(pSystem.getAdmin().getEmailAddress(),email, subject, msg);
 			} catch (MessagingException e) {
 				logger.error("Sending email retrieval reciept for " + objectIdentifier + "failed", e);
 			}

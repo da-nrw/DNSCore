@@ -104,7 +104,6 @@ public class IrodsGridFacadeTest {
 		node.setGridCacheAreaRootPath(Path.make(irodsDir));
 		node.setWorkAreaRootPath(Path.make(forkDir));
 		node.setReplDestinations("lvr");
-		node.setAdminEmail("test@test.de");
 		ig.setLocalNode(node);
 		when(isc.getZone()).thenReturn("da-nrw");
 		sp = new StoragePolicy(node);
