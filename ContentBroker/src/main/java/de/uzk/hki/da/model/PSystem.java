@@ -24,6 +24,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -37,6 +39,10 @@ public class PSystem {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
+
+	@OneToOne
+	@JoinColumn(name="admin_id",unique=true)
+	private User admin;
 	
 	@Column(name="min_repls")
 	private Integer minRepls;
@@ -143,6 +149,12 @@ public class PSystem {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public User getAdmin() {
+		return admin;
+	}
+	public void setAdmin(User admin) {
+		this.admin = admin;
 	}
 
 	

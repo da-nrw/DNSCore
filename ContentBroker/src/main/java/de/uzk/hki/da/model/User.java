@@ -45,7 +45,6 @@ import javax.persistence.Table;
 @Table(name="users")
 public class User{
 	
-	
 	/** The id. */
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -63,7 +62,7 @@ public class User{
 	/** The email_contact. */
 	private String email_contact;
 	
-	private Integer admin;
+	private Integer admin; // TODO factor out
 	
 	/** The conversion_policies. */
 	@OneToMany
