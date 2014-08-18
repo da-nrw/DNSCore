@@ -32,12 +32,15 @@ import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 import javax.jms.TextMessage;
 import javax.mail.MessagingException;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.hibernate.Session;
+import org.jdom.JDOMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.xml.sax.SAXException;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
@@ -107,8 +110,11 @@ public abstract class AbstractAction implements Runnable {
 	 * the business logic for the action. The details should be package private 
 	 * for unit testing purposes.
 	 * @throws RepositoryException 
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
+	 * @throws JDOMException 
 	 */
-	abstract boolean implementation() throws FileNotFoundException, IOException, UserException, RepositoryException;
+	abstract boolean implementation() throws FileNotFoundException, IOException, UserException, RepositoryException, JDOMException, ParserConfigurationException, SAXException;
 
 	/**
 	 * Implementations which fail (due to exceptions in implementation() which will be caught in run())

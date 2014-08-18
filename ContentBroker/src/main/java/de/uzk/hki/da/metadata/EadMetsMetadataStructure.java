@@ -22,13 +22,11 @@ import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
 import org.xml.sax.SAXException;
 
-import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
 
-public class EadMetsStructure extends MetadataFile{
+public class EadMetsMetadataStructure extends MetadataStructure{
 	
 	private String EAD_XPATH_EXPRESSION = 		"//daoloc/@href";
 	private String METS_XPATH_EXPRESSION= 		"//mets:file";
@@ -36,9 +34,11 @@ public class EadMetsStructure extends MetadataFile{
 	private static final Namespace METS_NS = 	Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = 	Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	
-	private final File 	currentMetadataFile;
+	private final File 	eadFile;
 	private File 		packageFile;
 	
+	private List<String> metsReferencesInEAD;
+	private List<File> metsFiles;
 	private Element metsFileElement;
 	
 	@SuppressWarnings("rawtypes")
@@ -47,59 +47,43 @@ public class EadMetsStructure extends MetadataFile{
 	HashMap<File, HashMap<String, String>> metsInfo = new HashMap<File, HashMap<String,String>>();
 	HashMap<String, Document> metsPathToDocument = new HashMap<String, Document>();
 	
-	@SuppressWarnings("rawtypes")
-	public EadMetsStructure(File metadataFile) throws JDOMException, 
+	public EadMetsMetadataStructure(File metadataFile) throws JDOMException, 
 		IOException, ParserConfigurationException, SAXException {
 		super(metadataFile);
 		
-		currentMetadataFile = metadataFile;
-		packageFile = currentMetadataFile.getParentFile();
+		eadFile = metadataFile;
+		packageFile = eadFile.getParentFile();
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		FileInputStream fileInputStream = new FileInputStream(currentMetadataFile);
-		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
-		Document eadDoc = builder.build(bomInputStream);
+		metsReferencesInEAD = getMetsRefsInEad();
+		metsFiles = getMetsFiles();
 		
-		XPath xPath = XPath.newInstance(EAD_XPATH_EXPRESSION);
+		setUpMetsInfo(metsReferencesInEAD, metsFiles);
 		
-		List allNodes = xPath.selectNodes(eadDoc);
-		
-		List<String> metsReferences = new ArrayList<String>();
-		
-		for (Object node : allNodes) {
-			Attribute attr = (Attribute) node;
-			String href = attr.getValue();
-			metsReferences.add(href);
-		}
-		
-		setUpMetsInfo(metsReferences);
+		parseMetsFiles(metsFiles);
 //		printMetsContent();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  SETUP  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
-	private void setUpMetsInfo(List<String> metsReferences) throws JDOMException, IOException, ParserConfigurationException, SAXException {
+	private void setUpMetsInfo(List<String> metsReferences, List<File> metsFiles) throws JDOMException, IOException, ParserConfigurationException, SAXException {
 		
-		packageFile = currentMetadataFile.getParentFile();
 		for(int i=0; i<metsReferences.size(); i++) {
-			String href = metsReferences.get(i);
-			File metsFile = Path.make(packageFile.getAbsolutePath(), href).toFile();
-			metsInfo.put(metsFile, new HashMap<String, String>());
-			metsInfo.get(metsFile).put("relativePath", href);
-		}
-		
-		List<File> metsFiles = getMetsFiles();
-		parseMetsFiles(metsFiles);		
-		
+			for(int j=0; j<metsFiles.size(); j++) {
+				if(metsFiles.get(j).getAbsolutePath().contains(metsReferences.get(i))) {
+					File currentMetsFile = metsFiles.get(i);
+					metsInfo.put(currentMetsFile, new HashMap<String, String>());
+					metsInfo.get(currentMetsFile).put("relativePath", metsReferences.get(i));
+				}
+			}
+		}		
 	}
-	
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  PARSER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
 //	METS
 	private void parseMetsFiles(List<File> metsFiles) throws ParserConfigurationException, SAXException, IOException, JDOMException {
-		for(File metsFile : metsInfo.keySet()) {
-			parseMetsFile(metsFile);
+		for(int i=0; i<metsFiles.size(); i++) {
+			parseMetsFile(metsFiles.get(i));
 		}
 	}
 	
@@ -117,9 +101,11 @@ public class EadMetsStructure extends MetadataFile{
 		allFileNodesInMets = metsXPath.selectNodes(metsDoc);
 		
 		if(allFileNodesInMets.size()==0) {
-			throw new UserException(UserExceptionId.INVALID_METADATA_FILE, "METS file didn't refer to any file.");
+			isValid = false;
+			logger.error("METS file didn't refer to any file.");
 		} else if(allFileNodesInMets.size()>1) {
-			throw new UserException(UserExceptionId.INVALID_METADATA_FILE, "METS file refers to more than one file.");
+			isValid = false;
+			logger.error("METS file refers to more than one file.");
 		} else {
 			metsFileElement = (Element) allFileNodesInMets.get(0);
 			
@@ -136,16 +122,48 @@ public class EadMetsStructure extends MetadataFile{
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
-	public HashMap<File, HashMap<String, String>> getContentOfMetsFiles() {
-		return metsInfo;
+	private List<String> getMetsRefsInEad() throws JDOMException, IOException {
+		
+		List<String> metsReferences = new ArrayList<String>();
+		
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		FileInputStream fileInputStream = new FileInputStream(eadFile);
+		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
+		Document eadDoc = builder.build(bomInputStream);
+	
+		XPath xPath = XPath.newInstance(EAD_XPATH_EXPRESSION);
+		
+		@SuppressWarnings("rawtypes")
+		List allNodes = xPath.selectNodes(eadDoc);
+		
+		for (Object node : allNodes) {
+			Attribute attr = (Attribute) node;
+			String href = attr.getValue();
+			metsReferences.add(href);
+		}
+		return metsReferences;
 	}
 	
 	public List<File> getMetsFiles() {
 		List<File> metsFiles = new ArrayList<File>();
-		for(File metsFile : metsInfo.keySet()) {
+		packageFile = eadFile.getParentFile();
+		
+		for(int i=0; i<metsReferencesInEAD.size(); i++) {
+			String href = metsReferencesInEAD.get(i);
+			File metsFile = Path.make(packageFile.getAbsolutePath(), href).toFile();
 			metsFiles.add(metsFile);
 		}
+		
+		if(metsReferencesInEAD.size()>metsFiles.size()) {
+			isValid = false;
+			logger.error("EAD file refers to "+metsReferencesInEAD.size()+" METS files, but there are only "+metsFiles.size()+" METS files.");
+		}
+		
 		return metsFiles;
+	}
+	
+	public HashMap<File, HashMap<String, String>> getContentOfMetsFiles() {
+		return metsInfo;
 	}
 	
 	public String getMimetype(Element file) {
@@ -210,5 +228,10 @@ public class EadMetsStructure extends MetadataFile{
 				System.out.println("metsInfo: "+metsRef+": "+metsInfo.get(metsFile).get(metsRef));
 			}
 		}
+	}
+
+	@Override
+	public boolean isValid() {
+		return isValid;
 	}
 }

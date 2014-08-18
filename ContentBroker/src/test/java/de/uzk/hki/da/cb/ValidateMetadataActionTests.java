@@ -22,14 +22,28 @@ package de.uzk.hki.da.cb;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.jdom.JDOMException;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
+import ch.qos.logback.classic.Logger;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.metadata.FakeMetadataStructure;
+import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
@@ -53,28 +67,48 @@ public class ValidateMetadataActionTests {
 	private static final String IDENTIFIER = "identifier";
 	private static final Path WORK_AREA_ROOT = Path.make(TC.TEST_ROOT_CB,"ValidateMetadataActionTests");
 	private static final String XMP1_XML = "xmp1.xmp";
+	private static final String XMP_RDF = "XMP.rdf";
 	private static final String LIDO_XML = "lido1.xml";
 	
+	private static MetadataStructureFactory msf;
 	
 	private Object object;
 	
 	ValidateMetadataAction action = new ValidateMetadataAction();
-
 	
 	DAFile f_ead1 = new DAFile(null,REP_A,VDA03_XML);
 	DAFile f_ead2 = new DAFile(null,REP_B,EAD_XML);
 	DAFile f_mets1 = new DAFile(null,"",METS_2_99_XML); 
 	DAFile f_mets2 = new DAFile(null,"",METS_2_998_XML);
 	DAFile f_xmp1 = new DAFile(null,"",XMP1_XML);
+	DAFile f_rdf = new DAFile(null,"",XMP_RDF);
 	DAFile f_lido1 = new DAFile(null,"",LIDO_XML);
 	DAFile f_lido2 = new DAFile(null,"",LIDO_XML);
 
 	
-	
+//	@SuppressWarnings("static-access")
+	@BeforeClass
+	public static void mockDca() throws IOException, JDOMException, ParserConfigurationException, SAXException {
+		msf = mock(MetadataStructureFactory.class);
+		File file = null;
+		when(msf.create((String)anyObject(),(File)anyObject())).thenReturn(new FakeMetadataStructure(file));	
+	}
 	
 	@Before
 	public void setUp(){
+		
 		object = TESTHelper.setUpObject(IDENTIFIER,WORK_AREA_ROOT);
+		
+		f_ead1.setPackage(object.getLatestPackage());
+		f_ead2.setPackage(object.getLatestPackage());
+		f_mets1.setPackage(object.getLatestPackage());
+		f_mets2.setPackage(object.getLatestPackage());
+		f_xmp1.setPackage(object.getLatestPackage());
+		f_rdf.setPackage(object.getLatestPackage());
+		f_lido1.setPackage(object.getLatestPackage());
+		f_lido2.setPackage(object.getLatestPackage());
+		
+		action.setMsf(msf);
 		action.setObject(object);
 
 		f_ead1.setFormatPUID(C.EAD_PUID);
@@ -172,6 +206,7 @@ public class ValidateMetadataActionTests {
 	public void testXMP() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
 		object.getLatestPackage().getFiles().add(f_xmp1);
+		object.getLatestPackage().getFiles().add(f_rdf);
 		
 		action.implementation();
 		
@@ -348,9 +383,4 @@ public class ValidateMetadataActionTests {
 //			assertTrue(e.getMessage().contains(C.EAD));
 //		}
 	}
-	
-	
-	
-	
-	
 }

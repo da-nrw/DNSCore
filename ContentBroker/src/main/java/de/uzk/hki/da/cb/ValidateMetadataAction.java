@@ -19,16 +19,25 @@
 
 package de.uzk.hki.da.cb;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.jdom.JDOMException;
+import org.xml.sax.SAXException;
+
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.metadata.MetadataStructure;
+import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * Detects the package type of an object.
@@ -45,6 +54,7 @@ public class ValidateMetadataAction extends AbstractAction {
 	private String detectedPackageType;
 	private String detectedMetadataFile;
 	private boolean packageTypeInObjectWasSetBeforeRunningAction=false;
+	private MetadataStructureFactory msf = new MetadataStructureFactory();
 	
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException,
@@ -67,6 +77,30 @@ public class ValidateMetadataAction extends AbstractAction {
 		
 		object.setPackage_type(detectedPackageType);
 		object.setMetadata_file(detectedMetadataFile);
+		
+		DAFile metadataDAFile = new DAFile();
+		List<DAFile> DAFiles = object.getLatestPackage().getFiles();
+		
+		for(DAFile daFile : DAFiles) {
+			if (daFile.toRegularFile().getName().equals(object.getMetadata_file())) {
+				metadataDAFile = daFile;
+			}
+		}
+		
+		File eadFile = metadataDAFile.toRegularFile();
+		
+		MetadataStructure ms;
+		try {
+			ms = msf.create(object.getPackage_type(), eadFile);
+			boolean metadataStructureIsValid = ms.isValid();
+			System.out.println("metadataStructureIsValid: "+metadataStructureIsValid);
+		} catch (JDOMException e) {
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		}
 		
 		return true;
 	}
@@ -138,5 +172,9 @@ public class ValidateMetadataAction extends AbstractAction {
 			object.setMetadata_file(null);
 			object.setPackage_type(null);
 		}
+	}
+	
+	public void setMsf(MetadataStructureFactory msf) {
+		this.msf = msf;
 	}
 }

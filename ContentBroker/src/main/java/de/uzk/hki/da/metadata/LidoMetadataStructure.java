@@ -21,14 +21,14 @@ import org.jdom.output.XMLOutputter;
 import de.uzk.hki.da.utils.XMLUtils;
 
 
-public class LIDO extends MetadataFile{
+public class LidoMetadataStructure extends MetadataStructure{
 	
 	private static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
 	private Document doc;
 	private List<Element> linkResources;
 	private File currentMetadataFile;
 	
-	public LIDO(File metadataFile) throws FileNotFoundException, JDOMException,
+	public LidoMetadataStructure(File metadataFile) throws FileNotFoundException, JDOMException,
 			IOException {
 		super(metadataFile);
 		
@@ -77,4 +77,10 @@ public class LIDO extends MetadataFile{
 		outputter.setFormat(Format.getPrettyFormat());
 		outputter.output(doc, new FileWriter(currentMetadataFile));
 	}
+
+	@Override
+	public boolean isValid() {
+		return isValid;
+	}
+
 }

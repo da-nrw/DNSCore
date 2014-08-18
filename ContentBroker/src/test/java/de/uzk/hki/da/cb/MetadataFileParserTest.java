@@ -23,8 +23,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import de.uzk.hki.da.metadata.EadMetsStructure;
-import de.uzk.hki.da.metadata.LIDO;
+import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
+import de.uzk.hki.da.metadata.LidoMetadataStructure;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.XMLUtils;
@@ -45,8 +45,8 @@ public class MetadataFileParserTest {
 	private static File eadFile2;
 	private static File lidoFile;
 	
-	private static EadMetsStructure eadXML;
-	private static LIDO lidoXML;
+	private static EadMetsMetadataStructure eadXML;
+	private static LidoMetadataStructure lidoXML;
 	
 	private static SAXBuilder builder;
 	
@@ -65,10 +65,10 @@ public class MetadataFileParserTest {
 		
 		
 		eadFile2 = Path.make(workAreaRootPathPath, "replacementsTest", EAD2_FILENAME).toFile();
-		eadXML = new EadMetsStructure(eadFile2);
+		eadXML = new EadMetsMetadataStructure(eadFile2);
 		
 		lidoFile = Path.make(workAreaRootPathPath, "replacementsTest", LIDO_FILENAME).toFile();
-		lidoXML = new LIDO(lidoFile);
+		lidoXML = new LidoMetadataStructure(lidoFile);
 		
 		builder = XMLUtils.createNonvalidatingSaxBuilder();
 	}
