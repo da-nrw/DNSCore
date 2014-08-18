@@ -34,7 +34,8 @@ import org.junit.Test;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.PSystem;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
@@ -81,6 +82,9 @@ public class IntegrityScannerWorkerTest {
 	@Before
 	public void setUp() throws IOException{
 		
+		PSystem pSystem = new PSystem();
+		pSystem.setMinRepls(3);
+		
 		dao = mock(CentralDatabaseDAO.class);
 		obj = new Object();
 		
@@ -93,10 +97,11 @@ public class IntegrityScannerWorkerTest {
 		obj.getPackages().add(pack2);
 		obj.setObject_state(66);
 		obj.setIdentifier(urn);
-		obj.setContractor(new Contractor("TEST","",""));
+		obj.setContractor(new User("TEST","",""));
 		Node node = new Node("test");
 		sp = new StoragePolicy(node);
-		worker.setMinNodes(3);
+		
+		worker.setpSystem(pSystem);;
 	}
 	
 	

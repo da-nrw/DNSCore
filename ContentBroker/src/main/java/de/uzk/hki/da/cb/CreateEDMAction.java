@@ -56,16 +56,13 @@ public class CreateEDMAction extends AbstractAction {
 	
 	private static final String COLLNAME = "danrw";
 	private RepositoryFacade repositoryFacade;
-	private String choBaseUri;
-	private String aggrBaseUri;
-	private String localBaseUri;
 	private Map<String,String> edmMappings;
 
 	@Override
 	boolean implementation() throws IOException, RepositoryException {
-		if (choBaseUri==null||choBaseUri.isEmpty()) throw new ConfigurationException("choBaseUri not set");
-		if (aggrBaseUri==null||aggrBaseUri.isEmpty()) throw new ConfigurationException("aggrBaseUri not set");
-		if (localBaseUri==null||localBaseUri.isEmpty()) throw new ConfigurationException("localBaseUri not set");
+		if (pSystem.getUrisCho()==null||pSystem.getUrisCho().isEmpty()) throw new ConfigurationException("choBaseUri not set");
+		if (pSystem.getUrisAggr()==null||pSystem.getUrisAggr().isEmpty()) throw new ConfigurationException("aggrBaseUri not set");
+		if (pSystem.getUrisLocal()==null||pSystem.getUrisLocal().isEmpty()) throw new ConfigurationException("localBaseUri not set");
 		if (repositoryFacade == null) 
 			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
 		if (edmMappings == null)
@@ -121,9 +118,9 @@ public class CreateEDMAction extends AbstractAction {
 			throw new RuntimeException(e1);
 		}	
 		edmGenerator.setParameter("urn", object.getUrn());
-		edmGenerator.setParameter("cho-base-uri", choBaseUri + "/" + objectId);
-		edmGenerator.setParameter("aggr-base-uri", aggrBaseUri + "/" + objectId);
-		edmGenerator.setParameter("local-base-uri", localBaseUri);
+		edmGenerator.setParameter("cho-base-uri", pSystem.getUrisCho() + "/" + objectId);
+		edmGenerator.setParameter("aggr-base-uri", pSystem.getUrisAggr() + "/" + objectId);
+		edmGenerator.setParameter("local-base-uri", pSystem.getUrisLocal());
 		String edmResult=null;
 		try {
 			edmResult = edmGenerator.generate();
@@ -187,64 +184,6 @@ public class CreateEDMAction extends AbstractAction {
 	@Override
 	void rollback() throws Exception {
 		throw new NotImplementedException();	
-	}
-
-	/**
-	 * Gets the base URI that will be prepended to the
-	 * object ID in order to coin a URI for Cultural
-	 * Heritage Objects in the EDM data.
-	 * @return the base URI
-	 */
-	public String getChoBaseUri() {
-		return choBaseUri;
-	}
-	
-	/**
-	 * Sets the base URI that will be prepended to the
-	 * object ID in order to coin a URI for Cultural
-	 * Heritage Objects in the EDM data.
-	 * @param the base URI
-	 */
-	public void setChoBaseUri(String choBaseUri) {
-		this.choBaseUri = choBaseUri;
-	}
-
-	/**
-	 * Gets the base URI that will be prepended to the
-	 * object ID in order to coin a URI for Aggregations
-	 * in the EDM data.
-	 * @return the base URI
-	 */
-	public String getAggrBaseUri() {
-		return aggrBaseUri;
-	}
-
-	/**
-	 * Sets the base URI that will be prepended to the
-	 * object ID in order to coin a URI for Aggregations
-	 * in the EDM data.
-	 * @param the base URI
-	 */
-	public void setAggrBaseUri(String aggrBaseUri) {
-		this.aggrBaseUri = aggrBaseUri;
-	}
-
-	/**
-	 * Gets the base URI that will be prepended to the
-	 * relative IDs in the EDM data.
-	 * @return the base URI
-	 */
-	public String getLocalBaseUri() {
-		return localBaseUri;
-	}
-	
-	/**
-	 * Sets the base URI that will be prepended to the
-	 * relative IDs in the EDM data.
-	 * @param the base URI
-	 */
-	public void setLocalBaseUri(String localBaseUri) {
-		this.localBaseUri = localBaseUri;
 	}
 
 	/**

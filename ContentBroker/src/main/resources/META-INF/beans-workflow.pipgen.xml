@@ -37,7 +37,6 @@
 		<property name="name" value="PIPGenScanForPresentationAction" />
 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
 		<property name="formatScanService" ref="formatScanService" />
-		<property name="sidecarExtensions" value="${system.sidecar_extensions}" />
 	</bean>
 	<bean id="PIPGenConvertAction" class="de.uzk.hki.da.cb.ConvertAction"
 		scope="prototype">
@@ -85,7 +84,6 @@
 		<property name="endStatus" value="799" />
 		<property name="name" value="PIPGenCleanWorkAreaAction" />
 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
-		<property name="presentationRepositoryNodeName" value="${system.presServer}" />
 	</bean>
 	<!-- END UseCase PIPCreation END -->
 </beans>

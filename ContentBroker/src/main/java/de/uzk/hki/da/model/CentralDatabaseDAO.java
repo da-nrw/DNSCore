@@ -38,8 +38,6 @@ public class CentralDatabaseDAO {
 	private static class ObjectState {
 		private static final Integer UnderAudit = 60;
 		private static final Integer InWorkflow = 50;
-//		private static final Integer Error = 51;
-//		private static final Integer archivedAndValidState = 100;
 	}
 	
 	/** The logger. */
@@ -64,13 +62,14 @@ public class CentralDatabaseDAO {
 	 * @author Daniel M. de Oliveira
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
-	public Job fetchJobFromQueue(String status, String workingStatus, Node node) {
+	public Job fetchJobFromQueue(String status, String workingStatus, Node node, PSystem pSystem) {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		logger.debug("Fetch job for node name " + node.getName());
+		logger.trace("Fetch job for node name " + node.getName());
 		List<Job> joblist=null;
 		try{
 			session.refresh(node);
+			session.refresh(pSystem);
 			
 			joblist = (List<Job>) session
 					.createQuery("SELECT j FROM Job j LEFT JOIN j.obj as o where j.status=?1 and "
@@ -78,7 +77,7 @@ public class CentralDatabaseDAO {
 					.setParameter("1", status).setParameter("2", node.getName()).setParameter("3","integrationTest").setCacheable(false).setMaxResults(1).list();
 
 			if ((joblist == null) || (joblist.isEmpty())){
-				logger.debug("no job found for status {}.",status);
+				logger.trace("no job found for status {}.",status);
 				session.close();
 				return null;
 			}
@@ -127,7 +126,7 @@ public class CentralDatabaseDAO {
 	
 		try {
 			l = (List<Job>) session.createQuery(
-					"SELECT j FROM Job j left join j.obj as o left join o.contractor as c where o.orig_name=?1 and c.short_name=?2"
+					"SELECT j FROM Job j left join j.obj as o left join o.user as c where o.orig_name=?1 and c.short_name=?2"
 					)
 							.setParameter("1", orig_name)
 							.setParameter("2", csn)
@@ -135,7 +134,7 @@ public class CentralDatabaseDAO {
 			
 			return l.get(0);
 		} catch (IndexOutOfBoundsException e) {
-			logger.debug("search for a job with orig_name " + orig_name + " for contractor " +
+			logger.debug("search for a job with orig_name " + orig_name + " for user " +
 						 csn + " returns null!");
 			return null;
 		}
@@ -200,7 +199,7 @@ public class CentralDatabaseDAO {
 	 * @param responsibleNodeName the initial node name
 	 * @return the job
 	 */
-	public Job insertJobIntoQueue(Session session, Contractor c,String origName,String responsibleNodeId,Object object){
+	public Job insertJobIntoQueue(Session session, User c,String origName,String responsibleNodeId,Object object){
 
 		Node node = (Node) session.get(Node.class,Integer.parseInt(responsibleNodeId));
 		
@@ -229,43 +228,43 @@ public class CentralDatabaseDAO {
 	 */
 	public Object getUniqueObject(Session session,String orig_name, String csn) {
 		
-		Contractor contractor = getContractor(session, csn);
+		User contractor = getContractor(session, csn);
 		
 		@SuppressWarnings("rawtypes")
 		List l = null;
 	
 		try {
-			l = session.createQuery("from Object where orig_name=?1 and contractor_id=?2")
+			l = session.createQuery("from Object where orig_name=?1 and user_id=?2")
 							.setParameter("1", orig_name)
 							.setParameter("2", contractor.getId())
 							.list();
 
 			if (l.size() > 1)
 				throw new RuntimeException("Found more than one object with name " + orig_name +
-									" for contractor " + csn + "!");
+									" for user " + csn + "!");
 			
 			Object o = (Object) l.get(0);
 			o.setContractor(contractor);
 			return o;
 		} catch (IndexOutOfBoundsException e1) {
 			try {
-				logger.debug("Search for an object with orig_name " + orig_name + " for contractor " +
+				logger.debug("Search for an object with orig_name " + orig_name + " for user " +
 						csn + " returns null! Try to find objects with objectIdentifier " + orig_name);
 			
-				l = session.createQuery("from Object where identifier=?1 and contractor_id=?2")
+				l = session.createQuery("from Object where identifier=?1 and user_id=?2")
 					.setParameter("1", orig_name)
 					.setParameter("2", contractor.getId())
 					.list();
 
 				if (l.size() > 1)
 					throw new RuntimeException("Found more than one object with name " + orig_name +
-								" for contractor " + csn + "!");
+								" for user " + csn + "!");
 				
 				Object o = (Object) l.get(0);
 				o.setContractor(contractor);
 				return o;
 			} catch (IndexOutOfBoundsException e2) {
-				logger.debug("Search for an object with objectIdentifier " + orig_name + " for contractor " +
+				logger.debug("Search for an object with objectIdentifier " + orig_name + " for user " +
 						csn + " returns null!");	
 			}	
 			
@@ -285,19 +284,19 @@ public class CentralDatabaseDAO {
 	 * @param contractorShortName the contractor short name
 	 * @return null if no contractor for short name could be found
 	 */
-	public Contractor getContractor(Session session, String contractorShortName) {
+	public User getContractor(Session session, String contractorShortName) {
 		logger.trace("CentralDatabaseDAO.getContractor(\"" + contractorShortName + "\")");
 	
 		@SuppressWarnings("rawtypes")
 		List list;	
-		list = session.createQuery("from Contractor where short_name=?1")
+		list = session.createQuery("from User where short_name=?1")
 	
 				.setParameter("1",contractorShortName).setReadOnly(true).list();
 		
 		if (list.isEmpty())
 			return null;
 	
-		return (Contractor) list.get(0);
+		return (User) list.get(0);
 	}
 	
 	

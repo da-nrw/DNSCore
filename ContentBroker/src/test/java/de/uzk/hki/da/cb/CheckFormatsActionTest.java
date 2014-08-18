@@ -38,11 +38,12 @@ import org.springframework.util.StringUtils;
 
 import de.uzk.hki.da.format.FormatScanService;
 import de.uzk.hki.da.format.JhoveScanService;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -126,8 +127,11 @@ public class CheckFormatsActionTest {
 	 */
 	@Before
 	public void setUp() throws Exception{
+		
+		
+		PSystem pSystem = new PSystem();
 		localNode = new Node();
-		Contractor contractor = new Contractor();
+		User contractor = new User();
 		contractor.setShort_name("TEST");
 		localNode.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
 
@@ -169,8 +173,8 @@ public class CheckFormatsActionTest {
 		action.setFormatScanService(formatScanService);
 		action.setJob(job);
 		action.setLocalNode(localNode);
-		action.setSidecarExtensions("");
 		action.setJhoveScanService(jhove);
+		action.setPSystem(pSystem);
 		
 	}
 

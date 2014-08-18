@@ -39,6 +39,7 @@ import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.TESTHelper;
 
 
 /**
@@ -75,13 +76,13 @@ public class ATUseCaseAudit extends Base{
 			System.out.println(e.getMessage());
 		}
 		
-		clearDB();
+		TESTHelper.clearDB();
 		cleanStorage();
 	}
 	
 	@Test
 	public void testHappyPath() throws Exception {
-		//ingest(ORIGINAL_NAME);
+		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		object = dao.getUniqueObject(session, ORIGINAL_NAME, "TEST");

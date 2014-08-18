@@ -25,6 +25,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.service.MimeTypeDetectionService;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
@@ -50,6 +51,9 @@ public class UpdateMetadataActionLIDOTests {
 	
 	@Before
 	public void setUp() throws IOException {
+		PSystem pSystem = new PSystem();
+		pSystem.setUrisFile("http://data.danrw.de/file");
+		
 		object = TESTHelper.setUpObject("42",workAreaRootPathPath);
 
 		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/LIDO-Testexport2014-07-04-FML-Auswahl.xml").toFile(), Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_A_REP).toFile());
@@ -80,7 +84,7 @@ public class UpdateMetadataActionLIDOTests {
 		nsMap.put("lido", LIDO_NS.getURI());
 		action.setNamespaces(nsMap);
 		
-		action.setAbsUrlPrefix("http://data.danrw.de/file");
+		
 		Map<String, String> dcMappings = new HashMap<String,String>();
 		dcMappings.put("LIDO", "conf/xslt/dc/lido_to_dc.xsl");
 		action.setDcMappings(dcMappings);
@@ -88,6 +92,7 @@ public class UpdateMetadataActionLIDOTests {
 		action.setMtds(mtds);
 		action.setObject(object);
 		action.setJob(job);
+		action.setPSystem(pSystem);
 	}
 	
 	@After 
@@ -99,6 +104,7 @@ public class UpdateMetadataActionLIDOTests {
 	@Test
 	public void test() throws IOException, JDOMException {
 		
+		action.setPresMode(true);
 		action.implementation();
 		
 		SAXBuilder builder = new SAXBuilder();

@@ -50,7 +50,6 @@ import de.uzk.hki.da.utils.Path;
 
 public class RetrievalAction extends AbstractAction {
 	
-	private String sidecarExtensions;
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
 	public RetrievalAction(){}
@@ -111,7 +110,7 @@ public class RetrievalAction extends AbstractAction {
 		
 		distributedConversionAdapter.remove("work/" + relativePackagePath.replaceAll("/$", "")); // replace all -> iRODS doesn't like trailing slashes
 		
-		emailReport(object.getContractor().getEmail_contact(),object.getIdentifier(),object.getContractor().getShort_name());
+		emailReport(object.getContractor().getEmailAddress(),object.getIdentifier(),object.getContractor().getShort_name());
 		return true;
 	}
 
@@ -128,7 +127,7 @@ public class RetrievalAction extends AbstractAction {
 	private void copySurfaceRepresentation(Object o, String destinationFolder)
 			throws RuntimeException {
 		
-		List<DAFile> files = o.getNewestFilesFromAllRepresentations(sidecarExtensions);
+		List<DAFile> files = o.getNewestFilesFromAllRepresentations(pSystem.getSidecarExtensions());
 		for (DAFile f : files)
 		{
 			if (!f.toRegularFile().getName().equals("premis.xml"))
@@ -159,7 +158,7 @@ public class RetrievalAction extends AbstractAction {
 				+ " zum Retrieval bereit!\n\n";
 		if (email != null) {
 			try {
-				Mail.sendAMail(getSystemFromEmailAdress(),email, subject, msg);
+				Mail.sendAMail(pSystem.getAdmin().getEmailAddress(),email, subject, msg);
 			} catch (MessagingException e) {
 				logger.error("Sending email retrieval reciept for " + objectIdentifier + "failed", e);
 			}
@@ -173,15 +172,6 @@ public class RetrievalAction extends AbstractAction {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 	
-	public void setSidecarExtensions(String sidecarExtensions) {
-		this.sidecarExtensions = sidecarExtensions;
-	}
-
-	public String getSidecarExtensions() {
-		return sidecarExtensions;
-	}
-
-
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
 		return distributedConversionAdapter;
 	}

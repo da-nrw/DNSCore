@@ -74,9 +74,6 @@ public class CTDiagnosticsTests {
 	}
 
 	
-	
-	
-	
 	@After
 	public void tearDown(){
 		FileUtils.deleteQuietly(C.CONF.toFile());

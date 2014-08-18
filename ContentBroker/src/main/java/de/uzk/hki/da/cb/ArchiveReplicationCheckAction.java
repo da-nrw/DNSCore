@@ -47,10 +47,7 @@ import de.uzk.hki.da.service.Mail;
  */
 public class ArchiveReplicationCheckAction extends AbstractAction{
 
-	private int minNodes = 3;
 	private int timeOut = 4000;
-	
-	private String presentationRepositoryNodeName;
 	
 	private GridFacade gridRoot;
 
@@ -66,7 +63,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		setKILLATEXIT(true);
 
 		StoragePolicy sp = new StoragePolicy(localNode);
-		sp.setMinNodes(minNodes);
+		sp.setMinNodes(pSystem.getMinRepls());
 		do{
 			delay();
 		}
@@ -102,42 +99,15 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		Job result = new Job();
 		
 		logger.info("Creating child job with state 540 on "+ 
-				getPresentationRepositoryNodeName()+" for possible publication of this object.");
+				pSystem.getPresServer()+" for possible publication of this object.");
 		result = new Job (parent, "540");
-		result.setResponsibleNodeName(getPresentationRepositoryNodeName());
+		result.setResponsibleNodeName(pSystem.getPresServer());
 		result.setObject(getObject());
 		result.setDate_created(String.valueOf(new Date().getTime()/1000L));
 		
 		return result;
 	}
 	
-	/**
-	 * @author Daniel M. de Oliveira
-	 * @return
-	 */
-	public String getPresentationRepositoryNodeName() {
-		return presentationRepositoryNodeName;
-	}
-
-
-	public void setPresentationRepositoryNodeName(String presentationRepositoryNodeName) {
-		this.presentationRepositoryNodeName = presentationRepositoryNodeName;
-	}
-	
-	/**
-	 * @param minNodes
-	 *            the minNodes to set
-	 */
-	public void setMinNodes(int minNodes) {
-		this.minNodes = minNodes;
-	}
-
-	/**
-	 * @return the minNodes
-	 */
-	public int getMinNodes() {
-		return minNodes;
-	}
 
 	/**
 	 * Defines the length of the interval at which the function checks the state
@@ -179,7 +149,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		if (dao==null) throw new IllegalStateException("centralDatabaseDAO not set");
 		
 		String objectIdentifier=obj.getIdentifier();
-		String email = obj.getContractor().getEmail_contact();
+		String email = obj.getContractor().getEmailAddress();
 		String subject;
 		String msg;
 		if (obj.isDelta())
@@ -202,7 +172,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		
 		if (email!=null) {
 		try {
-			Mail.sendAMail(getSystemFromEmailAdress(), email, subject, msg);
+			Mail.sendAMail(pSystem.getAdmin().getEmailAddress(), email, subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email reciept for " + objectIdentifier + " failed",e);
 			return false;

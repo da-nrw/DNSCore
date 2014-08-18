@@ -2,6 +2,8 @@
   DA-NRW Software Suite | ContentBroker
   Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
   Universität zu Köln
+  Copyright (C) 2014 LVRInfoKom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,7 +21,7 @@
 
 package de.uzk.hki.da.model;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertEquals;
 
 import org.hibernate.Session;
 import org.junit.AfterClass;
@@ -27,18 +29,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.model.ConversionInstruction;
-import de.uzk.hki.da.model.ConversionRoutine;
-import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.utils.TESTHelper;
  
 
 /**
- * The Class CentralDatabaseDAOTests.
+ * @author Daniel M. de Oliveira
  */
 public class CentralDatabaseDAOTests {
-	
-	/** The dao. */
-//	private static CentralDatabaseDAO dao = new CentralDatabaseDAO();
 	
 	/** The Constant inserts. */
 	private static final String inserts[] = new String[]{
@@ -47,19 +44,21 @@ public class CentralDatabaseDAOTests {
 			"VALUES ('abc','de.uzk.hki.da.cb.CLIConversionStrategy','convert input output','png')",
 		"INSERT INTO conversion_routines (name,type,params,target_suffix) " +
 			"VALUES ('def','de.uzk.hki.da.cb.CLIConversionStrategy','convert input output','png')",
-		"INSERT INTO contractors (short_name,forbidden_nodes,email_contact,id) " +
+		"INSERT INTO users (short_name,forbidden_nodes,email_contact,id) " +
 			"VALUES ('TEST_1','','da-nrw-notifier@uni-koeln.de','1')",
-		"INSERT INTO contractors (short_name,forbidden_nodes,email_contact,id) " +
+		"INSERT INTO users (short_name,forbidden_nodes,email_contact,id) " +
 			"VALUES ('TEST_2','','da-nrw-notifier@uni-koeln.de','2')",
 		"INSERT INTO objects (data_pk,initial_node,urn,orig_name,date_created,date_modified,zone," +
-			"published_flag,contractor_id,object_state) VALUES ('109733','da-nrw-vm3.hki.uni-koeln.de'," +
+			"published_flag,user_id,object_state) VALUES ('109733','da-nrw-vm3.hki.uni-koeln.de'," +
 			"'urn+nbn+de+danrw-1-2012113022771','test_object','1354276007948','1354276113286','da-nrw','0','1','100')",
 		"INSERT INTO objects (data_pk,initial_node,urn,orig_name,date_created,date_modified,zone," +
-			"published_flag,contractor_id,object_state) VALUES ('109734','da-nrw-vm3.hki.uni-koeln.de'," +
+			"published_flag,user_id,object_state) VALUES ('109734','da-nrw-vm3.hki.uni-koeln.de'," +
 			"'urn+nbn+de+danrw-1-2012113022772','test_object_double','1354276007948','1354276113286','da-nrw','0','1','100')",
 		"INSERT INTO objects (data_pk,initial_node,urn,orig_name,date_created,date_modified,zone," +
-			"published_flag,contractor_id,object_state) VALUES ('109735','da-nrw-vm3.hki.uni-koeln.de'," +
-			"'urn+nbn+de+danrw-1-2012113022773','test_object_double','1354276007948','1354276113286','da-nrw','0','1','100')"
+			"published_flag,user_id,object_state) VALUES ('109735','da-nrw-vm3.hki.uni-koeln.de'," +
+			"'urn+nbn+de+danrw-1-2012113022773','test_object_double','1354276007948','1354276113286','da-nrw','0','1','100')",
+		"INSERT INTO queue (id,objects_id,user_id,status) VALUES (1,109735,1,'110')",
+		"INSERT INTO psystem (id,sidecar_extensions) VALUES (1,'xmp')",
 	};
 	
 	/**
@@ -70,14 +69,8 @@ public class CentralDatabaseDAOTests {
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		
-		// necesarry because some previously written test left garbage behind
-		session.createSQLQuery("DELETE FROM conversion_routines_nodes").executeUpdate(); 
-		session.createSQLQuery("DELETE FROM nodes").executeUpdate();
-		
 		for (int i=0;i<inserts.length;i++)
 			session.createSQLQuery(inserts[i]).executeUpdate();
-		
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -86,35 +79,35 @@ public class CentralDatabaseDAOTests {
 	 * Tear down after class.
 	 */
 	@AfterClass
-	public static void tearDownAfterClass(){}
-	
-	
-	/**
-	 * Test add conversion instruction with invalid routine.
-	 */
-	@Test
-	public void testAddConversionInstructionWithInvalidRoutine(){
+	public static void tearDownAfterClass(){
+		TESTHelper.clearDB();
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		
-		Job job = new Job("testContractor", "testNode");
-		session.save(job);
-		
-		ConversionRoutine routine = new ConversionRoutine();
-		routine.setId(444);
-		
-		ConversionInstruction ci = new ConversionInstruction(
-				job.getId(),  "target", 
-				routine, "");
-		
-		try{
-			session.save(ci);
-			fail();
-		}catch(Exception e)
-		{                 }
-		
+		session.createSQLQuery("DELETE FROM psystem").executeUpdate();
+		session.createSQLQuery("DELETE FROM conversion_routines").executeUpdate();
+		session.createSQLQuery("DELETE FROM nodes").executeUpdate();
+		session.createSQLQuery("DELETE FROM users").executeUpdate();
+		session.getTransaction().commit();
 		session.close();
-		
 	}
 	
+	
+	@Test
+	public void fetchJob(){
+		Node node = new Node(); node.setId(1);
+		PSystem pSystem = new PSystem(); pSystem.setId(1);
+		CentralDatabaseDAO dao = new CentralDatabaseDAO();
+		dao.fetchJobFromQueue("110", "112", node, pSystem);
+		assertEquals("xmp",pSystem.getSidecarExtensions());
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 }

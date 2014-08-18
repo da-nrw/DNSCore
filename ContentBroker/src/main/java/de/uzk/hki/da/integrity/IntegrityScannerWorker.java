@@ -35,6 +35,7 @@ import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.service.Mail;
@@ -66,20 +67,25 @@ public class IntegrityScannerWorker {
 	/** The irods grid connector. */
 	private GridFacade gridFacade;
 	
-	/** The min nodes. */
-	private Integer minNodes;
-	
-	/** The node admin email. */
-	private String nodeAdminEmail;
-	
 	/** The local node name. */
 	private String localNodeId;
 	
-	/** The system Email Address */
-	private String systemFromEmailAddress;
-
-
 	private CentralDatabaseDAO dao;
+
+	private PSystem pSystem;
+	private Node node;
+
+	public void init(){
+		node = new Node(); node.setId(Integer.parseInt(localNodeId));
+		setpSystem(new PSystem()); getPSystem().setId(1);
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.refresh(getPSystem());
+		session.refresh(node);
+		session.getTransaction().commit();
+		session.close();
+	}
+	
 	
 	/**
 	 * Checking for the AIPs related to this node.
@@ -140,9 +146,9 @@ public class IntegrityScannerWorker {
 		// send Mail to Admin with Package in Error
 		logger.debug("Trying to send email");
 		String subject = "[" + "da-nrw".toUpperCase() +  "] Problem Report für " + obj.getIdentifier() + " auf " + localNodeId;
-		if (nodeAdminEmail != null && !nodeAdminEmail.equals("")) {
+		if (node.getAdmin().getEmailAddress() != null && !node.getAdmin().getEmailAddress().equals("")) {
 			try {
-				Mail.sendAMail(systemFromEmailAddress, nodeAdminEmail, subject, "Es gibt ein Problem mit dem Objekt an Ihrem Knoten " + obj.getContractor().getShort_name()+ "/" + obj.getIdentifier());
+				Mail.sendAMail( getPSystem().getAdmin().getEmailAddress() , node.getAdmin().getEmailAddress(), subject, "Es gibt ein Problem mit dem Objekt an Ihrem Knoten " + obj.getContractor().getShort_name()+ "/" + obj.getIdentifier());
 			} catch (MessagingException e) {
 				logger.error("Sending email problem report for " + obj.getIdentifier() + "failed");
 			}
@@ -181,10 +187,10 @@ public class IntegrityScannerWorker {
 	 * @return the new object state. Either archivedAndValidState or errorState.
 	 */
 	int checkObjectValidity(Object obj) {
-		if (minNodes == null || minNodes ==0) throw new IllegalStateException("minNodes not set correctly!");
+		if (getPSystem().getMinRepls() == null || getPSystem().getMinRepls() ==0) throw new IllegalStateException("minNodes not set correctly!");
 		Node node = new Node("tobefactoredout");
 		StoragePolicy sp = new StoragePolicy(node);
-		sp.setMinNodes(minNodes);
+		sp.setMinNodes(getPSystem().getMinRepls());
 		
 		boolean completelyValid = true;
 		for (Package pack : obj.getPackages()) {
@@ -223,34 +229,6 @@ public class IntegrityScannerWorker {
 		this.gridFacade = gridFacade;
 	}
 
-	/**
-	 * Gets the min nodes.
-	 *
-	 * @return the min nodes
-	 */
-	public Integer getMinNodes() {
-		return minNodes;
-	}
-	
-	/**
-	 * Gets the node admin email.
-	 *
-	 * @return the node admin email
-	 */
-	public String getNodeAdminEmail() {
-		return nodeAdminEmail;
-	}
-
-	/**
-	 * Sets the node admin email.
-	 *
-	 * @param nodeAdminEmail the new node admin email
-	 */
-	public void setNodeAdminEmail(String nodeAdminEmail) {
-		this.nodeAdminEmail = nodeAdminEmail;
-	}
-
-
 	public String getLocalNodeId() {
 		return localNodeId;
 	}
@@ -259,29 +237,22 @@ public class IntegrityScannerWorker {
 		this.localNodeId = localNodeId;
 	}
 
-	/**
-	 * Sets the min nodes.
-	 *
-	 * @param minNodes the new min nodes
-	 */
-	public void setMinNodes(Integer minNodes) {
-		this.minNodes = minNodes;
-	}
-
-	public String getSystemFromEmailAddress() {
-		return systemFromEmailAddress;
-	}
-
-	public void setSystemFromEmailAddress(String systemFromEmailAddress) {
-		this.systemFromEmailAddress = systemFromEmailAddress;
-	}
-
 	public CentralDatabaseDAO getDao() {
 		return dao;
 	}
 
 	public void setDao(CentralDatabaseDAO dao) {
 		this.dao = dao;
+	}
+
+
+	public PSystem getPSystem() {
+		return pSystem;
+	}
+
+
+	public void setpSystem(PSystem pSystem) {
+		this.pSystem = pSystem;
 	}
 
 }

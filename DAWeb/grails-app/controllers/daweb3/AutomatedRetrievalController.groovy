@@ -38,7 +38,7 @@ class AutomatedRetrievalController {
 		
 		if (instance!=null) {
 			
-			if (instance.contractor.shortName != session.bauthuser) {
+			if (instance.user.shortName != session.bauthuser) {
 				result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt " + jsonObject['identifier'] + " anzufordern!"
 				render result as JSON
 				return
@@ -51,7 +51,7 @@ class AutomatedRetrievalController {
 			}
 		instance = Object.findByUrn(jsonObject['urn'])
 		if (instance!=null) {
-			if (instance.contractor.shortName != session.bauthuser) {
+			if (instance.user.shortName != session.bauthuser) {
 				result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt "+ jsonObject['urn'] + " anzufordern!"
 				render result as JSON
 				return
@@ -64,7 +64,7 @@ class AutomatedRetrievalController {
 		}
 		instance = Object.findByOrigName(jsonObject['origName'])
 		if (instance!=null) {
-			if (instance.contractor.shortName != session.bauthuser) {
+			if (instance.user.shortName != session.bauthuser) {
 				result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt "+ jsonObject['origName'] + " anzufordern!"
 				render result as JSON
 				return

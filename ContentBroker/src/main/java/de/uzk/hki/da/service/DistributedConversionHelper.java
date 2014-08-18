@@ -61,7 +61,7 @@ public class DistributedConversionHelper {
 	 * @param routines the routines
 	 * @return the map
 	 */
-	public static Map<ConversionRoutine,Node> selectProcessingNodes(Node actualNode,Set<ConversionRoutine> routines) {
+	private static Map<ConversionRoutine,Node> selectProcessingNodes(Node actualNode,Set<ConversionRoutine> routines) {
 		Map<ConversionRoutine,Node> conversionRoutinesSelectedNodes= new HashMap<ConversionRoutine,Node>();
 		Set<Node> selectedNodes= new HashSet<Node>();
 		
@@ -120,7 +120,7 @@ public class DistributedConversionHelper {
 	 * @param routines the routines
 	 * @return the map
 	 */
-	public static Map<ConversionRoutine, Node> determineProcessingNodesForConversionInstructions(Job job,Node localNode,Set<ConversionRoutine> routines){
+	private static Map<ConversionRoutine, Node> determineProcessingNodesForConversionInstructions(Job job,Node localNode,Set<ConversionRoutine> routines){
 		Map<ConversionRoutine, Node> conversionRoutinesSelectedNodes = 
 				DistributedConversionHelper.selectProcessingNodes(localNode, routines);
 		for (ConversionRoutine routine : conversionRoutinesSelectedNodes

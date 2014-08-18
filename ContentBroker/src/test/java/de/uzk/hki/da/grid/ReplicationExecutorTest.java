@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.model.User;
 
 /**
  * @author Jens Peters
@@ -37,9 +38,11 @@ public class ReplicationExecutorTest {
 		
 		isc = mock(IrodsSystemConnector.class);	
 		Node node = new Node();
+		User nodeadmin = new User(); nodeadmin.setEmailAddress("noreply@danrw.de");
+		node.setAdmin(nodeadmin);
+		
 		node.setWorkingResource("cacheresc");
 		node.setReplDestinations("lvr,hbz");
-		node.setAdminEmail("test@test.de");
 
 		List<String> targetResgroups = Arrays.asList(node.getReplDestinations().split(","));
 		String data_name = "/zone/aip/Cont/aip.tar";

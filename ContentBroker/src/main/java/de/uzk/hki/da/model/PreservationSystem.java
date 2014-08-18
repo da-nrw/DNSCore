@@ -51,7 +51,7 @@ public class PreservationSystem {
 	private Map<String,List<ConversionPolicy>> policiesMap;
 	
 	/** The contractors. */
-	private List<Contractor> contractors = new ArrayList<Contractor>();
+	private List<User> contractors = new ArrayList<User>();
 	
 	
 	/**
@@ -66,13 +66,13 @@ public class PreservationSystem {
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
 		
-		Contractor presenter = dao.getContractor(session, "PRESENTER");
+		User presenter = dao.getContractor(session, "PRESENTER");
 		if (presenter==null) {
 			session.close();
 			throw new IllegalStateException("contractor PRESENTER not found in db");
 		}
 		
-		Contractor archive = dao.getContractor(session, "DEFAULT");
+		User archive = dao.getContractor(session, "DEFAULT");
 		if (archive==null) {
 			session.close();
 			throw new IllegalStateException("contractor DEFAULT not found in db");

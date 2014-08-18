@@ -23,6 +23,7 @@ package de.uzk.hki.da.core;
 import java.util.List;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -33,6 +34,7 @@ import de.uzk.hki.da.cb.AbstractAction;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.service.UserExceptionManager;
 
 
@@ -62,15 +64,23 @@ public class ActionFactory implements ApplicationContextAware {
 	/** The context. */
 	private ApplicationContext context;
 	
-	/** The systemFrom Email Adress **/
-	private String systemFromEmailAddress;
-	 
 	/** The on halt. */
 	private boolean onHalt = false;
 	
 	/** *The Active MQ Connection factory */
 	private ActiveMQConnectionFactory mqConnectionFactory;
 
+	private PSystem pSystem;
+
+
+	public void init(){
+		pSystem = new PSystem(); pSystem.setId(1);
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.refresh(pSystem);
+		session.getTransaction().commit();
+		session.close();
+	}
 	
 	/**
 	 * Following the defined priorities (context) of
@@ -95,6 +105,8 @@ public class ActionFactory implements ApplicationContextAware {
 			logger.info("ActionFactory is on halt. Waiting to resume work ...");
 			return null;
 		}
+
+		PSystem pSystem = new PSystem(); pSystem.setId(1);
 		
 		// iterate over available job types in order of priority,
 		// start action if a corresponding job exists in the database 
@@ -107,7 +119,7 @@ public class ActionFactory implements ApplicationContextAware {
 			String workingStatus = action.getStartStatus().substring(0,action.getStartStatus().length()-1) + "2";
 			
 			Job jobCandidate = dao.fetchJobFromQueue(action.getStartStatus(), workingStatus
-					, localNode);
+					, localNode, pSystem);
 			if (jobCandidate == null) {
 				logger.trace("No job for type {}, checking for types with lower priority", jobType);
 				continue;
@@ -120,11 +132,11 @@ public class ActionFactory implements ApplicationContextAware {
 			action.setUserExceptionManager(userExceptionManager);
 			action.setMqConnectionFactory(mqConnectionFactory);
 			action.setLocalNode(localNode);
-			action.setSystemFromEmailAddress(systemFromEmailAddress);
 			jobCandidate.getObject().setTransientNodeRef(localNode);
 			action.setObject(jobCandidate.getObject());
 			action.setActionMap(getActionRegistry());			
 			action.setJob(jobCandidate);
+			action.setPSystem(pSystem);
 			return action;
 		}
 		
@@ -229,13 +241,4 @@ public class ActionFactory implements ApplicationContextAware {
 	public void setMqConnectionFactory(ActiveMQConnectionFactory mqConnectionFactory) {
 		this.mqConnectionFactory = mqConnectionFactory;
 	}
-
-	public String getSystemFromEmailAddress() {
-		return systemFromEmailAddress;
-	}
-
-	public void setSystemFromEmailAddress(String systemFromEmailAddress) {
-		this.systemFromEmailAddress = systemFromEmailAddress;
-	}
-	
 }

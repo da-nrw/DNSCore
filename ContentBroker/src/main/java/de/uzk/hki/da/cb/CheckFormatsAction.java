@@ -40,8 +40,6 @@ import de.uzk.hki.da.utils.CommaSeparatedList;
 public class CheckFormatsAction extends AbstractAction {
 
 
-	private String sidecarExtensions;
-
 	private FormatScanService formatScanService;
 
 	private JhoveScanService jhoveScanService;
@@ -61,8 +59,7 @@ public class CheckFormatsAction extends AbstractAction {
 		}
 		attachJhoveInfoToAllFiles(allFiles);
 		
-
-		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(sidecarExtensions);
+		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(pSystem.getSidecarExtensions());
 		
 		Set<String> mostRecentFormats = new HashSet<String>();
 		Set<String> mostRecentSecondaryAttributes = new HashSet<String>();
@@ -132,13 +129,4 @@ public class CheckFormatsAction extends AbstractAction {
 	public void setJhoveScanService(JhoveScanService jhoveScanService) {
 		this.jhoveScanService = jhoveScanService;
 	}
-
-	public void setSidecarExtensions(String sidecarExtensions) {
-		this.sidecarExtensions = sidecarExtensions;
-	}
-
-	public String getSidecarExtensions() {
-		return sidecarExtensions;
-	}
-
 }

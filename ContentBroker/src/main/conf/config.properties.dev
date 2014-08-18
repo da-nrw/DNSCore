@@ -1,16 +1,3 @@
-system.min_repls=2
-system.sidecar_extensions=xmp;txt;xml
-system.presServer=localnode
-system.urnNameSpace=urn:nbn:de:danrw
-system.uris.file=http://data.danrw.de/file
-system.uris.cho=http://data.danrw.de/cho
-system.uris.aggr=http://data.danrw.de/aggregation
-system.uris.local=info:
-system.openCollectionName=danrw
-system.closedCollectionName=danrw-closed
-system.emailFrom=noreply@danrw.de
-
-localNode.admin_email=root@localhost
 localNode.userAreaRootPath=CONTENTBROKER_ROOT/storage/user
 localNode.ingestAreaRootPath=CONTENTBROKER_ROOT/storage/ingest
 localNode.workAreaRootPath=CONTENTBROKER_ROOT/storage

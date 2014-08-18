@@ -33,7 +33,7 @@ import org.junit.Test;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -71,7 +71,7 @@ public class PrepareSendToPresenterActionTests {
 	private File institutionFile = new File(workingAreaRoot+"/pips/institution/TEST/identifier_1_1/a.txt");
 
 	/** The contractor. */
-	private Contractor contractor;
+	private User contractor;
 	
 	/**
 	 * Sets the up.
@@ -88,7 +88,7 @@ public class PrepareSendToPresenterActionTests {
 		Node dipNode = new Node(); dipNode.setName("dipNode");
 		action.setLocalNode(node);
 
-		contractor = new Contractor();
+		contractor = new User();
 		contractor.setShort_name("TEST");
 		
 		job = new Job();

@@ -17,7 +17,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package de.uzk.hki.da.utils;
-import de.uzk.hki.da.model.Contractor;
+import org.hibernate.classic.Session;
+
+import de.uzk.hki.da.core.HibernateUtil;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
@@ -56,7 +59,7 @@ public class TESTHelper {
 		node.setWorkAreaRootPath(workAreaRootPath);
 		node.setIngestAreaRootPath(ingestAreaRootPath);
 		
-		Contractor contractor = new Contractor();
+		User contractor = new User();
 		contractor.setShort_name("TEST");
 		
 		Package pkg = new Package();
@@ -73,4 +76,19 @@ public class TESTHelper {
 		
 		return o;
 	}
+	
+	public static void clearDB() {
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.createSQLQuery("DELETE FROM events").executeUpdate();
+		session.createSQLQuery("DELETE FROM dafiles").executeUpdate();
+		session.createSQLQuery("DELETE FROM conversion_queue").executeUpdate();
+		session.createSQLQuery("DELETE FROM queue").executeUpdate();
+		session.createSQLQuery("DELETE FROM objects_packages").executeUpdate();
+		session.createSQLQuery("DELETE FROM packages").executeUpdate();
+		session.createSQLQuery("DELETE FROM objects").executeUpdate();
+		session.getTransaction().commit();
+		session.close();
+	}
+	
 }

@@ -69,7 +69,6 @@ environments {
     }
     production {
         grails.logging.jul.usebridge = false
-        // TODO: grails.serverURL = "http://www.changeme.com"
     }
 }
 
@@ -110,6 +109,46 @@ log4j = {
 	warn   'grails.app'	
 }
 
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'daweb3.User'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'daweb3.UserRole'
+grails.plugin.springsecurity.authority.className = 'daweb3.Role'
+// if all components are secured true should be the default
+grails.plugin.springsecurity.rejectIfNoRule = true
+grails.plugin.springsecurity.fii.rejectPublicInvocations = false
+grails.plugin.springsecurity.useSecurityEventListener = true
+// Basic auth is needed for REST style interface to DNS
+grails.plugin.springsecurity.useBasicAuth = true
+grails.plugin.springsecurity.basic.realmName = "DAWEB - DNSCORE"
+grails.plugin.springsecurity.filterChain.chainMap = [
+	'/status/**': 'JOINED_FILTERS,-exceptionTranslationFilter',
+    '/**': 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
+]
+grails.plugin.springsecurity.onAbstractAuthenticationFailureEvent = { e, appCtx ->
+   println "\nERROR auth failed for user $e.authentication.name: $e.exception.message\n"
+}
+grails.plugin.springsecurity.securityConfigType = "InterceptUrlMap"
+grails.plugin.springsecurity.interceptUrlMap = [
+	'/':                  ['ROLE_CONTRACTOR'],
+	'/index':             ['ROLE_CONTRACTOR'],
+	'/index.gsp':         ['ROLE_CONTRACTOR'],
+	'/**/js/**':          ['permitAll'],
+	'/**/css/**':         ['permitAll'],
+	'/**/images/**':      ['permitAll'],
+	'/**/favicon.ico':    ['permitAll'],
+	'/login/**':          ['permitAll'],
+	'/logout/**':         ['permitAll'],
+	'/contractor/**':         ['permitAll'],
+	'/queueEntry/**':     ['ROLE_CONTRACTOR'],
+	'/automatedRetrieval/**':     ['ROLE_CONTRACTOR'],
+	'/object/**':    	  ['ROLE_CONTRACTOR'],
+	'/incoming/**':       ['ROLE_CONTRACTOR'],
+	'/outgoing/**':       ['ROLE_CONTRACTOR'],
+	'/status/**':       ['ROLE_CONTRACTOR'],
+	'/info/**':       ['ROLE_CONTRACTOR'],
+	'/conversionPolicies/**':       ['ROLE_CONTRACTOR'],
+	'/cbtalk/**':       ['ROLE_NODEADMIN'],
+	'/user/**':         ['ROLE_DAADMIN'],
+ ]
 // Uncomment and edit the following lines to start using Grails encoding & escaping improvements
 
 /* remove this line 

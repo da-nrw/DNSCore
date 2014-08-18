@@ -52,6 +52,7 @@ import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.Mail;
 import de.uzk.hki.da.service.UserExceptionManager;
@@ -93,7 +94,8 @@ public abstract class AbstractAction implements Runnable {
 	protected int concurrentJobs = 3;
 	private UserExceptionManager userExceptionManager;
 	private ActiveMQConnectionFactory mqConnectionFactory;
-	private String systemFromEmailAdress;
+	protected PSystem pSystem;
+	
 	
 	AbstractAction(){}
 	
@@ -127,6 +129,7 @@ public abstract class AbstractAction implements Runnable {
 	 */
 	public void checkCommonPreConditions() throws Exception{
 		if (dao==null) throw new ConfigurationException("dao not set");
+		if (pSystem==null) throw new ConfigurationException("pSystem not set");
 		if (actionMap==null) throw new ConfigurationException("actionMap not set");
 		if (object==null) throw new ConfigurationException("object not set");
 		if (localNode==null) throw new ConfigurationException("localNode not set");
@@ -308,7 +311,7 @@ public abstract class AbstractAction implements Runnable {
 	private void createAdminReport(Exception e) {
 
 		String errorStatus = getStartStatus().substring(0,getStartStatus().length()-1) + "1";
-		String email = localNode.getAdminEmail();
+		String email = localNode.getAdmin().getEmailAddress();
 		String subject = "Fehlerreport für " + object.getIdentifier() + " : Status (" + errorStatus + ")" ;
 		String msg = e.getMessage();
 		msg +="\n\n";
@@ -318,7 +321,7 @@ public abstract class AbstractAction implements Runnable {
 		
 		if (email!=null && !email.equals("")) {
 		try {
-			Mail.sendAMail(systemFromEmailAdress, email, subject, msg);
+			Mail.sendAMail(pSystem.getAdmin().getEmailAddress(), email, subject, msg);
 		} catch (MessagingException ex) {
 			logger.error("Sending email reciept for " + object.getIdentifier() + " failed",ex);
 		}
@@ -333,7 +336,7 @@ public abstract class AbstractAction implements Runnable {
 	 */
 	private void createUserReport(UserException e) {
 		
-		String email = object.getContractor().getEmail_contact();
+		String email = object.getContractor().getEmailAddress();
 		String subject = "Fehlerreport für " + object.getIdentifier();
 		String message = userExceptionManager.getMessage(e.getUserExceptionId());
 		
@@ -349,7 +352,7 @@ public abstract class AbstractAction implements Runnable {
 			return;
 		}
 		try {
-			Mail.sendAMail(systemFromEmailAdress,email, subject, message);
+			Mail.sendAMail(pSystem.getAdmin().getEmailAddress(),email, subject, message);
 		} catch (MessagingException ex) {
 			logger.error("Sending email reciept for " + object.getIdentifier() + " failed", ex);
 		}
@@ -492,11 +495,11 @@ public abstract class AbstractAction implements Runnable {
 		return HibernateUtil.openSession();
 	}
 
-	public String getSystemFromEmailAdress() {
-		return systemFromEmailAdress;
+	public PSystem getpSystem() {
+		return pSystem;
 	}
 
-	public void setSystemFromEmailAddress(String systemFromEmailAdress) {
-		this.systemFromEmailAdress = systemFromEmailAdress;
+	public void setPSystem(PSystem pSystem) {
+		this.pSystem = pSystem;
 	}
 }

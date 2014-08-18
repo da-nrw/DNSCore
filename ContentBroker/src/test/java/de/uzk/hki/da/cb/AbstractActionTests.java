@@ -39,10 +39,11 @@ import de.uzk.hki.da.core.ActionRegistry;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.service.UserExceptionManager;
 
@@ -81,7 +82,7 @@ public class AbstractActionTests {
 		action.setLocalNode(mock(Node.class));
 		Job job = new Job();
 		action.setJob(job);
-		Contractor c = new Contractor(); c.setShort_name("TEST");
+		User c = new User(); c.setShort_name("TEST");
 		Object object = new Object();
 		object.setIdentifier("ID");
 		object.setContractor(c);
@@ -90,6 +91,7 @@ public class AbstractActionTests {
 		action.setStartStatus(startStatus);
 		action.setEndStatus(endStatus);
 		action.SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
+		action.setPSystem(new PSystem());
 	}
 	
 	

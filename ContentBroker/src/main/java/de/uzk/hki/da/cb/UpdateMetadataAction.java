@@ -84,7 +84,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	private Map<String,String> xpathsToUrls = new HashMap<String,String>();
 	private boolean writePackageTypeToDC = false;	
 	private String[] repNames;	
-	private String absUrlPrefix;
+	private boolean presMode=false;
 	private Map<String,String> dcMappings = new HashMap<String,String>();
 	
 	private MimeTypeDetectionService mtds = new MimeTypeDetectionService();
@@ -96,9 +96,9 @@ public class UpdateMetadataAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException {
 		
-		if(isLZA()) {
-			logger.debug(":::::::::::::::::::::::::::::: LZA ::::::::::::::::::::::::::::::");
-		} else logger.debug(":::::::::::::::::::::::::::::: Presentation ::::::::::::::::::::::::::::::");
+		if(!isPresMode()) {
+			logger.trace(":::::::::::::::::::::::::::::: LZA ::::::::::::::::::::::::::::::");
+		} else logger.trace(":::::::::::::::::::::::::::::: Presentation ::::::::::::::::::::::::::::::");
 		
 		this.setMtds(mtds);
 		
@@ -115,12 +115,13 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		logConvertEventsOnDebugLevel();
 
-		
 		String absUrlPrefixFull = "";
-		if (getAbsUrlPrefix() != null && !getAbsUrlPrefix().isEmpty()) {
-			absUrlPrefixFull = getAbsUrlPrefix() + "/" + job.getObject().getIdentifier() + "/";
+		if (presMode){
+			if (pSystem.getUrisFile() != null && !pSystem.getUrisFile().isEmpty()) {
+				absUrlPrefixFull = pSystem.getUrisFile() + "/" + job.getObject().getIdentifier() + "/";
+			}
 		}
-	
+			
 		if (repNames == null || repNames.length == 0) {
 			repNames = new String[]{ object.getNameOfNewestRep() };
 		}
@@ -436,7 +437,7 @@ public class UpdateMetadataAction extends AbstractAction {
 						
 						Attribute attrMT = element.getAttribute("MIMETYPE");
 						nodes.add(attrMT);
-						if(!(absUrlPrefix==null)) {
+						if(presMode) {
 							Element FLocat = element.getChild("FLocat", METS_NS);
 							updateLoctypeInMetsFile(FLocat, "URL");
 						}
@@ -462,10 +463,10 @@ public class UpdateMetadataAction extends AbstractAction {
 							targetValue = replacements.get(value).getMimeType();
 						} 
 						else {
-							if(isLZA()) {
+							if(!isPresMode()) {
 								targetValue = replacements.get(value).getRelative_path();
 							} else {
-								targetValue = absUrlPrefix + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
+								targetValue = pSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
 							}
 							entitiesReplaced++;
 						}
@@ -478,10 +479,10 @@ public class UpdateMetadataAction extends AbstractAction {
 					String value = elem.getText();
 					
 					if (replacements.containsKey(value)) {
-						if(isLZA()) {
+						if(!isPresMode()) {
 							targetValue = replacements.get(value).getRelative_path();
 						} else {
-							targetValue = absUrlPrefix + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
+							targetValue = pSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
 						}
 						if (replacements.containsKey(value)) {
 							logger.debug("-- Replacing element \"{}\" with \"{}\"", elem.getValue(),replacements.get(value));
@@ -813,24 +814,6 @@ public class UpdateMetadataAction extends AbstractAction {
 	}
 
 	/**
-	 * Gets the prefix prepended to the updated file URLs.
-	 * @return
-	 */
-	public String getAbsUrlPrefix() {
-		return absUrlPrefix;
-	}
-
-	/**
-	 * Sets the prefix prepended to the updated file URLs.
-	 * If the prefix is null (default) the generated URLs
-	 * will be relative.
-	 * @param absUrlPrefix
-	 */
-	public void setAbsUrlPrefix(String absUrlPrefix) {
-		this.absUrlPrefix = absUrlPrefix;
-	}
-
-	/**
 	 * Gets the map that describes which XSLTs should be
 	 * used to convert Metadata to Dublin Core.
 	 * @return a map, keys represent metadata formats,
@@ -894,12 +877,12 @@ public class UpdateMetadataAction extends AbstractAction {
 		this.mtds = mtds;
 	}
 	
-	public boolean isLZA() {
-		if(absUrlPrefix==null) {
-			return true;
-		} else {
-			return false;
-		}
+	public boolean isPresMode() {
+		return presMode;
+	}
+
+	public void setPresMode(boolean presMode) {
+		this.presMode = presMode;
 	}
 
 }

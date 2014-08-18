@@ -37,6 +37,7 @@ import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
@@ -70,7 +71,9 @@ public class UnpackActionTests {
 
 	private UnpackAction action = new UnpackAction();
 	private Object o;
-
+	private static final PSystem pSystem = new PSystem();
+	
+	
 	/**
 	 * Sets the up.
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -92,6 +95,7 @@ public class UnpackActionTests {
 		action.setJob(new Job());
 		action.setObject(o);
 		action.setIngestGate(gate);
+		action.setPSystem(pSystem);
 	}
 
 	/**
@@ -171,7 +175,7 @@ public class UnpackActionTests {
 		FileUtils.copyFile(Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE+"_"),Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE));
 		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE);
 	
-		action.setSidecarExtensions(SIDECAR_EXTENSIONS);
+		pSystem.setSidecarExtensions(SIDECAR_EXTENSIONS);
 		try{
 			action.implementation();
 		}catch(UserException e){
@@ -191,7 +195,7 @@ public class UnpackActionTests {
 		FileUtils.copyFile(Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE_WHICH_BROKE+"_"),Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE_WHICH_BROKE));
 		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE_WHICH_BROKE);
 	
-		action.setSidecarExtensions(SIDECAR_EXTENSIONS);
+		pSystem.setSidecarExtensions(SIDECAR_EXTENSIONS);
 		try{
 			action.implementation();
 		}catch(UserException e){
@@ -208,7 +212,7 @@ public class UnpackActionTests {
 		FileUtils.copyFile(Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE+"_"),Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE));
 		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE);
 	
-		action.setSidecarExtensions(SIDECAR_EXTENSIONS_COMMA_SPLIT);
+		pSystem.setSidecarExtensions(SIDECAR_EXTENSIONS_COMMA_SPLIT);
 		try{
 			action.implementation();
 		}catch(UserException e){
@@ -223,7 +227,7 @@ public class UnpackActionTests {
 		FileUtils.copyFile(Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE+"_"),Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE));
 		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE);
 	
-		action.setSidecarExtensions(SIDECAR_EXTENSIONS_SEMIKOLON_SPLIT);
+		pSystem.setSidecarExtensions(SIDECAR_EXTENSIONS_SEMIKOLON_SPLIT);
 		try{
 			action.implementation();
 		}catch(UserException e){

@@ -125,9 +125,9 @@ public class ReplicationExecutor extends Thread {
 			if (i>=retries) {
 				
 				String err = "Failed to replicate :" + data_name + " giving up on node "+ targetResgroup; 
-				if (node.getAdminEmail()!=null && !node.getAdminEmail().equals("")) {
+				if (node.getAdmin().getEmailAddress()!=null && !node.getAdmin().getEmailAddress().equals("")) {
 					try {
-						Mail.sendAMail(node.getAdminEmail(), node.getAdminEmail(), err , err);
+						Mail.sendAMail(node.getAdmin().getEmailAddress(), node.getAdmin().getEmailAddress(), err , err);
 					} catch (MessagingException ex) {
 						logger.error("Sending Email failed " + ex.toString());
 					}

@@ -51,7 +51,6 @@ import de.uzk.hki.da.utils.Path;
  */
 public class RestructureAction extends AbstractAction{
 	
-	private String sidecarExtensions="";	
 	private FormatScanService formatScanService;
 	private IngestGate ingestGate;
 	private List<IOFileFilter> unwantedFilesFilters;
@@ -108,7 +107,7 @@ public class RestructureAction extends AbstractAction{
 		
 		object.reattach();
 		logger.debug("scanning files with format identifier(s)");
-		List<DAFile> scannedFiles = formatScanService.identify(object.getNewestFilesFromAllRepresentations(sidecarExtensions));
+		List<DAFile> scannedFiles = formatScanService.identify(object.getNewestFilesFromAllRepresentations(pSystem.getSidecarExtensions()));
 		for (DAFile f:scannedFiles){
 			logger.debug(f+":"+f.getFormatPUID());
 		}
@@ -207,13 +206,5 @@ public class RestructureAction extends AbstractAction{
 
 	public void setFormatScanService(FormatScanService formatScanService) {
 		this.formatScanService = formatScanService;
-	}
-
-	public String getSidecarExtensions() {
-		return sidecarExtensions;
-	}
-
-	public void setSidecarExtensions(String sidecarExtensions) {
-		this.sidecarExtensions = sidecarExtensions;
 	}
 }

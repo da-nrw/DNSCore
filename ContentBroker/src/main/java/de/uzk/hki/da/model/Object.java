@@ -59,7 +59,7 @@ import de.uzk.hki.da.utils.Utilities;
 
 
 /**
- * The Class Object.
+ * The Class DNS Object.
  *
  * @author Jens Peters
  * @author Daniel M. de Oliveira
@@ -159,8 +159,8 @@ public class Object {
 	
 	/** The contractor. */
 	@ManyToOne
-	@JoinColumn(name = "contractor_id")
-	private Contractor contractor;
+	@JoinColumn(name = "user_id")
+	private User user;
 	 
 	/** The packages. */
 	@OneToMany(targetEntity=Package.class, fetch=FetchType.EAGER, cascade=CascadeType.ALL)
@@ -332,7 +332,7 @@ public class Object {
 		if (transientNodeRef.getWorkAreaRootPath()==null||transientNodeRef.getWorkAreaRootPath().toString().isEmpty()) 
 			throw new IllegalStateException("WorkAreaRootPath of related object is null or empty. Physical path cannot be calculated");
 		
-		return Path.make(transientNodeRef.getWorkAreaRootPath(),"work",contractor.getShort_name(),identifier);
+		return Path.make(transientNodeRef.getWorkAreaRootPath(),"work",user.getShort_name(),identifier);
 	}
 	
 	
@@ -348,7 +348,7 @@ public class Object {
 		return 
 				"Object["
 		+ identifier + "," + urn + "," + "," + orig_name + "," +
-		contractor.getShort_name() +
+		user.getShort_name() +
 						"]";
 	}
 	
@@ -398,8 +398,8 @@ public class Object {
 	 *
 	 * @param contractor the new contractor
 	 */
-	public void setContractor(Contractor contractor) {
-		this.contractor = contractor;
+	public void setContractor(User contractor) {
+		this.user = contractor;
 	}
 	
 	
@@ -408,8 +408,8 @@ public class Object {
 	 *
 	 * @return the contractor
 	 */
-	public Contractor getContractor() {
-		return contractor;
+	public User getContractor() {
+		return user;
 	}
 	
 	/**

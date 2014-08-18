@@ -35,10 +35,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.utils.Path;
@@ -74,6 +75,12 @@ public class RetrievalActionTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+
+		PSystem pSystem = new PSystem();
+		pSystem.setSidecarExtensions("xmp");
+		User sysadmin = new User(); sysadmin.setEmailAddress("noreply@danrw.de");
+		pSystem.setAdmin(sysadmin);
+		
 		
 		FileUtils.copyDirectory(Path.makeFile(forkAndTransferPath,"work/csn/Source"), 
 				                Path.makeFile(forkAndTransferPath,"work/csn/1")); 
@@ -81,9 +88,9 @@ public class RetrievalActionTest {
 		node.setWorkAreaRootPath(new RelativePath(forkAndTransferPath));
 		node.setUserAreaRootPath(new RelativePath(forkAndTransferPath,"work"));
 		
-		Contractor contractor = new Contractor(); 
+		User contractor = new User(); 
 		contractor.setShort_name("csn"); 
-		contractor.setEmail_contact("abc@hki.uni-koeln.de");
+		contractor.setEmailAddress("abc@hki.uni-koeln.de");
 		Object object = new Object(); 
 		object.setContractor(contractor); 
 		object.setIdentifier(objectIdentifier);
@@ -107,11 +114,11 @@ public class RetrievalActionTest {
 		dca = mock (DistributedConversionAdapter.class);
 		
 		action = new RetrievalAction();
-		action.setSystemFromEmailAddress("noreply@system.de");
 		action.setDistributedConversionAdapter(dca);
 		action.setObject(object);
 		action.setJob(job);
 		action.setLocalNode(node);
+		action.setPSystem(pSystem);
 	}
 	
 	/**
@@ -137,9 +144,6 @@ public class RetrievalActionTest {
 	 */
 	@Test
 	public void test() throws Exception {
-		
-		// action.setIrodsSystemConnector(irods);
-		action.setSidecarExtensions("xmp");
 		
 		action.implementation();
 		assertFalse(Path.makeFile(forkAndTransferPath,"csn/1_").exists());

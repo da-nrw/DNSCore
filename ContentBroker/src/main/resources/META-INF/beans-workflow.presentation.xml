@@ -27,8 +27,6 @@
 		<property name="viewerUrls" ref="viewerUrls" />
 		<property name="testContractors" ref="testContractors" />
 		<property name="dcReader" ref="dcReader" />
-		<property name="openCollectionName" value="${system.openCollectionName}" />
-		<property name="closedCollectionName" value="${system.closedCollectionName}" />
 		<property name="fileFilter">
 	        <set>
 	            <value>premis.xml</value>
@@ -42,9 +40,6 @@
 		<property name="endStatus" value="570" />
 		<property name="repositoryFacade" ref="${cb.implementation.repository}" />
 		<property name="name" value="CreateEDMAction" />
-		<property name="choBaseUri" value="${system.uris.cho}" />
-		<property name="aggrBaseUri" value="${system.uris.aggr}" />
-		<property name="localBaseUri" value="${system.uris.local}" />
 		<property name="edmMappings">
 			<map>
 				<entry key="METS" value="conf/xslt/edm/mets-mods_to_edm.xsl" />

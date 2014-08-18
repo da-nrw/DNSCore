@@ -17,26 +17,16 @@ package daweb3
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/** 
- * The Contractor of DNS 
-@Author Jens Peters
-@Author Sebastian Cuy
-*/
-class Contractor {
 
-    static constraints = {
-    }
-	
-	static mapping = {
-		table 'contractors'
-		version false
-    }
-	
-	int id
-	String shortName
-	int admin
-	
-	String toString() {
-		return "$shortName"
-	}
+class Role {
+
+String authority
+int id
+
+static mapping = { cache true 
+	version false
 }
+
+static constraints = { authority blank: false, unique: true } 
+}
+

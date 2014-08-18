@@ -30,12 +30,10 @@ import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Node;
 
 public class CleanWorkAreaAction extends AbstractAction{
 
 	private DistributedConversionAdapter distributedConversionAdapter;
-	private Node presentationRepositoryNodeName;
 	
 	
 	@Override
@@ -64,9 +62,9 @@ public class CleanWorkAreaAction extends AbstractAction{
 	 */
 	private void createPublicationJob(){
 		
-		logger.info("Creating child job with state 540 on "+   getRepositoryNodeName().getName()+" for possible publication of this object.");
+		logger.info("Creating child job with state 540 on "+   pSystem.getPresServer() + " for possible publication of this object.");
 		Job child = new Job (job, "540");
-		child.setResponsibleNodeName(getRepositoryNodeName().getName());
+		child.setResponsibleNodeName( pSystem.getPresServer() );
 		child.setObject(getObject());
 		child.setDate_created(String.valueOf(new Date().getTime()/1000L));
 		
@@ -92,13 +90,5 @@ public class CleanWorkAreaAction extends AbstractAction{
 	public void setDistributedConversionAdapter(
 			DistributedConversionAdapter distributedConversionAdapter) {
 		this.distributedConversionAdapter = distributedConversionAdapter;
-	}
-
-	public Node getRepositoryNodeName() {
-		return presentationRepositoryNodeName;
-	}
-
-	public void setPresentationRepositoryNodeName(Node presentationRepositoryNodeName) {
-		this.presentationRepositoryNodeName = presentationRepositoryNodeName;
 	}
 }

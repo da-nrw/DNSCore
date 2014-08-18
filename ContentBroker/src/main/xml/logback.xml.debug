@@ -82,7 +82,7 @@
                 <appender-ref ref="FILE" />
         </logger>
 
-        <logger name="de.uzk.hki.da.core.IngestAreaScannerWorker"  additivity="false" level="TRACE">
+        <logger name="de.uzk.hki.da.core.IngestAreaScannerWorker"  additivity="false" level="DEBUG">
                 <appender-ref ref="INGEST" />
         </logger>
 
@@ -94,7 +94,7 @@
                 <appender-ref ref="GRID" />
         </logger>
 
-        <logger name="de.uzk.hki.da"  additivity="false" level="TRACE">
+        <logger name="de.uzk.hki.da"  additivity="false" level="DEBUG">
                 <appender-ref ref="OBJECT" />
         </logger>
 

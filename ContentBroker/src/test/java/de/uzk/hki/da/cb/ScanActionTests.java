@@ -36,7 +36,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.ConversionRoutine;
@@ -95,7 +95,7 @@ public class ScanActionTests {
 				"de.uzk.hki.da.cb.CLIConversionStrategy",
 				"cp input output","bmp");
 		ConversionPolicy policy = new ConversionPolicy(
-				new Contractor("DEFAULT","",""),
+				new User("DEFAULT","",""),
 				"fmt/353",
 				toPng,
 				null,

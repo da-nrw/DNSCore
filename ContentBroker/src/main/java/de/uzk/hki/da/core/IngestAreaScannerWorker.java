@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.RegisterObjectService;
 import de.uzk.hki.da.utils.Utilities;
@@ -88,7 +88,6 @@ public class IngestAreaScannerWorker {
 	private String localNodeId;
 	
 	/**
-	 * 
 	 */
 	private CentralDatabaseDAO dao = null;
 	
@@ -139,7 +138,7 @@ public class IngestAreaScannerWorker {
 			
 				Session session = HibernateUtil.openSession();
 				session.beginTransaction();
-				Contractor contractor = dao.getContractor(session, contractorShortName);
+				User contractor = dao.getContractor(session, contractorShortName);
 				session.close();
 				
 				

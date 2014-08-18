@@ -27,7 +27,8 @@
 <property name="format_sql">true</property>
 <property name="hbm2ddl.auto">validate</property>
  
- <mapping class="de.uzk.hki.da.model.Contractor"/>
+ <mapping class="de.uzk.hki.da.model.User"/>
+ <mapping class="de.uzk.hki.da.model.Role"/>
  <mapping class="de.uzk.hki.da.model.Node"/>
  <mapping class="de.uzk.hki.da.model.ConversionInstruction"/>
  <mapping class="de.uzk.hki.da.model.ConversionPolicy"/>
@@ -37,6 +38,7 @@
  <mapping class="de.uzk.hki.da.model.DAFile"/>
  <mapping class="de.uzk.hki.da.model.Package"/>
  <mapping class="de.uzk.hki.da.model.Event"/>
+ <mapping class="de.uzk.hki.da.model.PSystem"/>
  <mapping class="de.uzk.hki.da.model.SecondStageScanPolicy"/>
  
 </session-factory>

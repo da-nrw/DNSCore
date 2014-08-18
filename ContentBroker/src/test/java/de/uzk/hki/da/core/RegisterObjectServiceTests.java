@@ -29,9 +29,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PSystem;
 import de.uzk.hki.da.service.RegisterObjectService;
 import de.uzk.hki.da.service.URNCheckDigitGenerator;
 import de.uzk.hki.da.utils.Utilities;
@@ -43,7 +44,7 @@ import de.uzk.hki.da.utils.Utilities;
 public class RegisterObjectServiceTests {
 
 	private Node node;
-	private Contractor contractor;
+	private User contractor;
 
 
 	/**
@@ -72,7 +73,7 @@ public class RegisterObjectServiceTests {
 		
 		node = new Node("vm1","vm1-01");
 		node.setUrn_index(92);
-		contractor = new Contractor();
+		contractor = new User();
 		contractor.setShort_name("TEST");
 
 		Session session2 = HibernateUtil.openSession();
@@ -105,11 +106,13 @@ public class RegisterObjectServiceTests {
 	 */
 	@Test
 	public void testGenerateURNForNode(){
+		PSystem pSystem = new PSystem();
+		pSystem.setUrnNameSpace("urn:nbn:de:danrw");
 		
 		RegisterObjectService registerObjectService = new RegisterObjectService();
+		registerObjectService.setpSystem(pSystem);
 		CentralDatabaseDAO dao = new CentralDatabaseDAO();
 		registerObjectService.setDao(dao);
-		registerObjectService.setNameSpace("urn:nbn:de:danrw");
 		registerObjectService.setLocalNode(node);
 		
 		Object object = registerObjectService.registerObject("containerName", contractor);

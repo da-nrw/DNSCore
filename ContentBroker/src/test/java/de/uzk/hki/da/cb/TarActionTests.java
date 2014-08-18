@@ -33,7 +33,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.Contractor;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -86,7 +86,7 @@ public class TarActionTests {
 		node.setWorkingResource("vm3");
 		node.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
 		
-		Contractor contractor = new Contractor();
+		User contractor = new User();
 		contractor.setShort_name("csn");
 		Object o = new Object();
 		o.setContractor(contractor);

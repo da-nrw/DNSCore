@@ -22,7 +22,7 @@ package de.uzk.hki.da.utils;
 import java.io.File;
 
 /**
- * @author Daniel M. de Oliveira
+ * @author Daniel M. de Oliveira & the DA-NRW team
  */
 public class C {
 

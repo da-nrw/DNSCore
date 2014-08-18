@@ -44,7 +44,6 @@ public class ScanForPresentationAction extends AbstractAction{
 	private FormatScanService formatScanService;
 	private PreservationSystem preservationSystem;
 	private final ConversionInstructionBuilder ciB = new ConversionInstructionBuilder();
-	private String sidecarExtensions;
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
 	public ScanForPresentationAction(){}
@@ -59,7 +58,7 @@ public class ScanForPresentationAction extends AbstractAction{
 		// check if object package type is set
 		
 		
-		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(sidecarExtensions);
+		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(pSystem.getSidecarExtensions());
 		if (newestFiles.size() == 0)
 			throw new RuntimeException("No files found!");
 		newestFiles = formatScanService.identify(newestFiles);
@@ -153,14 +152,6 @@ public class ScanForPresentationAction extends AbstractAction{
 		this.formatScanService = formatScanService;
 	}
 	
-	public void setSidecarExtensions(String sidecarExtensions) {
-		this.sidecarExtensions = sidecarExtensions;
-	}
-
-	public String getSidecarExtensions() {
-		return sidecarExtensions;
-	}
-
 	@Override
 	void rollback() {
 		

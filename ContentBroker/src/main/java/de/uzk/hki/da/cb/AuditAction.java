@@ -44,10 +44,6 @@ public class AuditAction extends AbstractAction {
 
 	
 	private String nodeAdminEmail;
-	private String systemFromEmailAddress;
-
-
-	private int minNodes;
 	private GridFacade gridRoot;
 
 	private static class ObjectState {
@@ -64,12 +60,12 @@ public class AuditAction extends AbstractAction {
 	boolean implementation() {
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 		if (nodeAdminEmail == null) throw new ConfigurationException("nodeAdminEmail is null!");
-		if (minNodes==0) throw new ConfigurationException("minNodes, 0 is not allowed!");
-		if (systemFromEmailAddress==null)  throw new ConfigurationException("systemFromEmailAdress is not set!");
+		if (pSystem.getMinRepls()==0) throw new ConfigurationException("minNodes, 0 is not allowed!");
+		if (pSystem.getAdmin().getEmailAddress()==null)  throw new ConfigurationException("systemFromEmailAdress is not set!");
 		setKILLATEXIT(true);
 		setObjectState(job,ObjectState.UnderAudit);
 		StoragePolicy sp = new StoragePolicy(localNode);
-		sp.setMinNodes(minNodes);
+		sp.setMinNodes(pSystem.getMinRepls());
 		
 		String msg= "";
 		// TODO: refactor to same implementation IntegrityScanner uses
@@ -118,9 +114,9 @@ public class AuditAction extends AbstractAction {
 		// send Mail to Admin with Package in Error
 
 		String subject = "[" + "da-nrw".toUpperCase() + "] Problem Report für " + obj.getIdentifier();
-		if (nodeAdminEmail != null && !nodeAdminEmail.equals("") && getSystemFromEmailAdress() != null && !getSystemFromEmailAdress().equals("")) {
+		if (nodeAdminEmail != null && !nodeAdminEmail.equals("") && pSystem.getAdmin().getEmailAddress() != null && !pSystem.getAdmin().getEmailAddress().equals("")) {
 			try {
-				Mail.sendAMail(getSystemFromEmailAdress(), nodeAdminEmail, subject, msg);
+				Mail.sendAMail(pSystem.getAdmin().getEmailAddress(), nodeAdminEmail, subject, msg);
 			} catch (MessagingException e) {
 				logger.error("Sending email problem report for " +  obj.getIdentifier() + " failed");
 			}
@@ -155,20 +151,7 @@ public class AuditAction extends AbstractAction {
 	public String getNodeAdminEmail() {
 		return nodeAdminEmail;
 	}
-	/**
-	 * @param minNodes
-	 *            the minNodes to set
-	 */
-	public void setMinNodes(int minNodes) {
-		this.minNodes = minNodes;
-	}
-
-	/**
-	 * @return the minNodes
-	 */
-	public int getMinNodes() {
-		return minNodes;
-	}
+	
 
 	public GridFacade getGridRoot() {
 		return gridRoot;
@@ -177,12 +160,4 @@ public class AuditAction extends AbstractAction {
 	public void setGridRoot(GridFacade gridRoot) {
 		this.gridRoot = gridRoot;
 	}
-	public String getSystemFromEmailAddress() {
-		return systemFromEmailAddress;
-	}
-
-	public void setSystemFromEmailAddress(String systemFromEmailAddress) {
-		this.systemFromEmailAddress = systemFromEmailAddress;
-	}
-
 }
