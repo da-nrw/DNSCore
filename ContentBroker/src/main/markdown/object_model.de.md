@@ -18,3 +18,11 @@
 	*/
 
 # Objektmodell-Referenz
+
+## Object - Das Objekt
+
+## Package - Das Informationspaket
+
+## User - Der Benutzer
+
+## System - Das Gesamtsystem
