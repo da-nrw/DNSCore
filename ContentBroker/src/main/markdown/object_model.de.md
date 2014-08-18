@@ -33,4 +33,10 @@ Die fundamentale Klasse des Datenmodells heisst einfach "Object". Ein Objekt rep
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_object_users.jpg)
 
-### System - Das Gesamtsystem
+### PreservationSystem - Das Gesamtsystem
+
+### ConversionRoutine - Die Konversionsroutine
+
+### ConversionPolicy - Die Regel zur Anwendung einer Konversion
+
+### DAFile
