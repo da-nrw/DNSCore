@@ -42,13 +42,8 @@ import de.uzk.hki.da.model.Object;
 
 /**
  * Scans the files and builds ConversionInstructions for them if MIGRATION right is granted.
- * Populates the files collection of the jobs package with entries for each file of rep+a.
- * Scans the files of rep+a and attaches format info to them.
- * 
- * As a side effect this action not only counts up its own Jobs state up so that
- * the following ConvertAction is triggered but also creates Jobs for collections
- * of ConversionInstructions which can't be done on the local node due to the lack
- * of the necessary ConversionRoutines.
+ * If the MIGRATION right is not granted, sets the jobs state to ProcessUserDecisionsAction so that
+ * the user can decide how to procede further 
  * 
  * @author Daniel M. de Oliveira
  */
@@ -61,21 +56,28 @@ public class ScanAction extends AbstractAction{
 	@Override
 	boolean implementation() throws IOException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
+
+
 		
-		String repPath = object.getDataPath() +"/"+ job.getRep_name();
-		Object premisObject = parsePremisToMetadata(repPath+"a");
+		job.getConversion_instructions().addAll(
+				generateConversionInstructions(object.getLatestPackage().getFiles()));
+
 		
-		if (premisObject.grantsRight("MIGRATION"))
+		
+		Object premisObject = parsePremisToMetadata(object.getDataPath() +"/"+ job.getRep_name()+"a");
+		if (!premisObject.grantsRight("MIGRATION"))
 		{
-			List<ConversionInstruction> cisArch = generateConversionInstructions(object.getLatestPackage().getFiles());
-			job.getConversion_instructions().addAll(cisArch);
+			logger.info("PREMIS says migration is not granted. Will ask the user what to do next.");
+
+			// "Manipulate" the end status to point to ProcessUserDecisionsAction
+			this.setEndStatus("640");
 		}
-		else
-			logger.info("No migration rights granted. No files will be converted for archival storage.");
-		
 		return true;
 	}
 
+	
+	
+	
 	/**
 	 * @author Daniel M. de Oliveira
 	 * @param filesArchival

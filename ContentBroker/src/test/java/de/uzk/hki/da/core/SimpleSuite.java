@@ -37,6 +37,8 @@ import de.uzk.hki.da.cb.FetchPIPsActionTest;
 import de.uzk.hki.da.cb.IndexMetadataActionTests;
 import de.uzk.hki.da.cb.ObjectFSTests;
 import de.uzk.hki.da.cb.PrepareSendToPresenterActionTests;
+import de.uzk.hki.da.cb.ProcessUserDecisionsAction;
+import de.uzk.hki.da.cb.ProcessUserDecisionsActionTests;
 import de.uzk.hki.da.cb.ProperRefreshOfJobChildrenTest;
 import de.uzk.hki.da.cb.RestructureActionTests;
 import de.uzk.hki.da.cb.RetrievalActionTest;
@@ -159,7 +161,8 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	UpdateMetadataActionLIDOTests.class,
 	IndexMetadataActionTests.class,
 	RestructureActionTests.class,
-	ValidateMetadataActionTests.class
+	ValidateMetadataActionTests.class,
+	ProcessUserDecisionsActionTests.class
 })
 public class SimpleSuite {
 

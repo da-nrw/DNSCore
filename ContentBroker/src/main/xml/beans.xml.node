@@ -37,6 +37,7 @@
 	
 	
 	<util:map id="actionThreads">
+		<entry key="ProcessUserDecisionsAction" value="3" />
 		<entry key="DeleteObjectAction" value="3" />
 		<entry key="RestartIngestWorkflowAction" value="3" />
 		<entry key="IngestUnpackAction" value="3" />
@@ -69,6 +70,7 @@
 		<entry key="PIPGenCleanWorkAreaAction" value="3" />
 	</util:map>
 	<util:list id="actionOrdering">
+    	<value>ProcessUserDecisionsAction</value>
     	<value>DeleteObjectAction</value>
 		<value>RestartIngestWorkflowAction</value>
 		<value>IngestArchiveReplicationCheckAction</value>

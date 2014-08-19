@@ -36,6 +36,7 @@
 	<task:scheduler id="taskScheduler" pool-size="20" />
 
 	<util:map id="actionThreads">
+		<entry key="ProcessUserDecisionsAction" value="3" />
 		<entry key="DeleteObjectAction" value="3" />
 		<entry key="RestartIngestWorkflowAction" value="3" />
 		<entry key="IngestRegisterURNAction" value="3" />
@@ -73,6 +74,7 @@
 		<entry key="PIPGenCleanWorkAreaAction" value="3" />
 	</util:map>
 	<util:list id="actionOrdering">
+   		<value>ProcessUserDecisionsAction</value>
    		<value>DeleteObjectAction</value>
 		<value>RestartIngestWorkflowAction</value>
 		<value>RetrievalAction</value>

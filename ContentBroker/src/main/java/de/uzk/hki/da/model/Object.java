@@ -578,7 +578,7 @@ public class Object {
 				&& !rights.getPublicationRights().isEmpty()) {
 			return true;
 		} else if (eventType.equals("MIGRATION") && rights.getMigrationRight() != null) {
-			return true;
+			if (!rights.getMigrationRight().getCondition().equals(MigrationRight.Condition.CONFIRM)) return true;
 		}
 		return false;
 	}

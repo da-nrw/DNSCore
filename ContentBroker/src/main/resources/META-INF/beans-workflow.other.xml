@@ -8,7 +8,13 @@
            http://www.springframework.org/schema/util/spring-util-3.0.xsd
            http://www.springframework.org/schema/task
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
-          
+    
+    <bean id="ProcessUserDecisionsAction" class="de.uzk.hki.da.cb.ProcessUserDecisionsAction"
+		scope="prototype">
+		<property name="startStatus" value="640" />
+		<property name="endStatus" value="640" />
+		<property name="name" value="ProcessUserDecisionsAction" />
+	</bean>      
 	<bean id="RestartIngestWorkflowAction" class="de.uzk.hki.da.cb.RestartIngestWorkflowAction"
 		scope="prototype">
 		<property name="startStatus" value="600" />

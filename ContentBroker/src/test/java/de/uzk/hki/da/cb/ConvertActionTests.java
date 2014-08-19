@@ -95,16 +95,12 @@ public class ConvertActionTests {
 		allNodes.add(vm2);
 		allNodes.add(vm3);
 		
-		@SuppressWarnings("serial")
-		Set<Node> nodes2 = new HashSet<Node>(){{add(vm2);}};
 		ConversionRoutine im = new ConversionRoutine(
 				"IM",
 				"de.uzk.hki.da.format.CLIConversionStrategy",
 				"convert input output",
 				"png");
 		
-		@SuppressWarnings("serial")
-		Set<Node> nodes3 = new HashSet<Node>(){{add(vm3);}};
 		ConversionRoutine copy = new ConversionRoutine(
 				"COPY",
 				"de.uzk.hki.da.format.CLIConversionStrategy",
