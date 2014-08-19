@@ -22,7 +22,6 @@ package de.uzk.hki.da.format;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
-import java.util.HashSet;
 
 import org.junit.After;
 import org.junit.Test;
@@ -30,13 +29,12 @@ import org.junit.Test;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
-import de.uzk.hki.da.utils.TESTHelper;
 import de.uzk.hki.da.utils.TC;
+import de.uzk.hki.da.utils.TESTHelper;
 
 
 

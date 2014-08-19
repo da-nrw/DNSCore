@@ -19,8 +19,13 @@
 
 # Objektmodell-Referenz
 
+Die Java [Object](../java/de/uzk/hki/da/model/Object.java) Klasse.
 
 ### Object - Das Objekt
+
+![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_objects_packages.jpg)
+
+Die fundamentale Klasse des Datenmodells heisst einfach "Object". Ein Objekt repräsentiert eine logisch zusammenhängende Sammlung von Dateien. Den Zusammenhang der Dateien legt dabei der User fest (siehe pre_ingest.md). Jedes Objekt innerhalb innerhalb eines PreservationSystems trägt einen eindeutigen technischen Identifier, der zum Identifizieren und Auffinden von Objekten innerhalb des PreservationSystems dienen kann. Dieser technische Identifier wird einem User daher  (Contractor) am Ende eines Ingest-Workflows übermittelt.
 
 ### Package - Das Informationspaket
 
@@ -28,4 +33,24 @@
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_object_users.jpg)
 
-### System - Das Gesamtsystem
+Ein Benutzer ist ein Anwender der Applikation. Endnutzer verwenden das System auf verschiedene Art und Weise, je nach Rolle. Derzeit sind drei Benutzerrollen möglich:
+
+* PreservationSystem Administrator - Fachlicher Ansprechpartner für ein PreservationSystem
+* Node Administrator - Technischer Ansprechpartner für einen Knoten
+* Contractor - 
+
+Contractoren sind die Endanwender der Applikation. Sie liefern ihre Pakete immer auf jeweils einem Knoten ein.
+
+### PreservationSystem - Das Gesamtsystem
+
+Die Klasse PreservationSystem repräsentiert das Gesamtsystem. Es besteht aus einzelnen Knoten, auf denen Contractoren ihre Objekte einliefern. Das Gesamtsystem hält die global gültigen Regeln zur Anwendung von Konversionen vor und bestimmt, welche Konversionsroutinen von allen Knoten gleichermaßen angeboten werden. 
+
+### Node - Der Knoten
+
+An einem Knoten liefern Contractoren ihre Objekte ein. Die Zuordnung eines Contractors zu einem Knoten, seinem sogenannten Primärknoten, ist eindeutig. Jeder Contractor liefert seine Objekte immer an seinem Primärknoten ein. Der Knoten steht dabei für ein konkretes technisches System am Standort eines Betreibers. Verschiedene Knoten verschiedener Betreiber an verschiedenen Standorten formen ein PreservationSystem. Die Daten der Contractoren werden zwischen den Knoten, die das PreservationSystem formen, gespiegelt. Die Am Primärknoten eingelieferten Kopien der Objekte werden daher formell auch Primärkopien genannt.
+
+### ConversionRoutine - Die Konversionsroutine
+
+### ConversionPolicy - Die Regel zur Anwendung einer Konversion
+
+### DAFile

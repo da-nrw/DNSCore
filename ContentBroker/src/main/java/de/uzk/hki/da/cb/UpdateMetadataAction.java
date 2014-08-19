@@ -234,8 +234,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					actualReplacements+= updatePathsInFile(pkg, repName, value, xpathsToUrls.get("METS"), replacements);
 					
 					for (Event e:pkg.getEvents()) {
-//						if(e.getType().equals("COPY") || e.getType().equals("CONVERT")) {
-						if(e.getType().equals("CONVERT")) {
+						if(e.getType().equals("COPY") || e.getType().equals("CONVERT")) {
 							if(e.getSource_file().getRelative_path().contains(value)) {
 								metsReplacements.put(value, e.getTarget_file());
 							}

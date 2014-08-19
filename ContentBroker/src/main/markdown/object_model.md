@@ -50,7 +50,7 @@ Every object in DNSCore will get a unique technical identifier within the system
 identifier is the primary means of identifying and finding an object within the system. Therefore
 it gets "handed over" to the user at the end of the ingest workflow.
 
-![](https://raw2.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_1.jpg)
+![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_objects_packages.jpg)
 
 Also each object is always in a certain object_state which indicates if the object is 
 
@@ -89,11 +89,11 @@ DIP generation. Since this was a source of confusion in the early days of the pr
 the different functions of original DIPs and DIPs for constant access (which we call presentation or publication) by
 introducing the PIP concept.
 
-### Contractor
+### User
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_object_users.jpg)
 
-The Java [Contractor](../java/de/uzk/hki/da/model/Contractor.java) class.
+The Java [User](../java/de/uzk/hki/da/model/User.java) class.
 
 The contractor is modeled to describe a party which delivers content to a system consisting of nodes running DNSCore.
 Every contractor has one specific node to which it can deliver its content. This node processes the data and stores the
@@ -110,16 +110,48 @@ TODO administrator, default, presenter
 
 TODO contractor_short_name
 
-### System
+### PreservationSystem
 
-The system as a whole, consisting of nodes (TODO).
+The PreservationSystem represents the system as a  whole. It consists of several [Nodes](object_model.md#Node), to which contractors deliver content. The PreservationSystem provides rules for application of conversions ([ConversionPolicy](object_model.md#ConversionPolicy))s which are in effect globally as well as information about the [ConversionRoutine](object_model.md#ConversionRoutine)s which all nodes have to provide in a uniform manner.
 
 ### Node
 
-The node is the abstract notion for a location at which a box running DNSCore sits.
-It is part of the a grid of sites which replicate data for each other and share common policies.
-The grid of nodes in this documentation is often referred to as the "system". Each node has a list of contractors
-for which it provides the DNSCore functionality and for whose objects storage and distribution it is mainly/solely responsible.
+Contractors deliver content to nodes. The relationship between a contractor and "its" node (which is called primary node) is unique. Every Contractor delivers its objects always to the primary node. The node is a notion for a concrete technical system on the location of an operating company. Different nodes of different operating companies form a [PreservationSystem](object_model.md#PreservationSystem). The contractors content get mirrored between the nodes which form the PreservationSystem. The copies of the objects delivered to the primary node are formally called primary copies. 
+
+### ConversionPolicy
+
+The Java [ConversionPolicy](../java/de/uzk/hki/da/model/ConversionPolicy.java) class.
+
+![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_2.jpg)
+
+A ConversionPolicy is a system wide property which describes which ConversionRoutine is to be executed by the system
+for every given file found in a SIP, either in the context of long term archival or in the context of publication.
+It links the [PRONOM](http://www.nationalarchives.gov.uk/PRONOM/Default.aspx) format PUID against an associated ConversionRoutine via
+the special contractor used for either publication (contractor PRESENTER) or long term archvial (contractor DEFAULT). The PUID is
+determined by the system by making use of the [FIDO](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/3rdPartyTools.md) 
+tool for format identification which is then stored as a property of DAFile which in turn is part of a ConversionInstruction which 
+gets generated based on the ConversionProperty. To see how the system operates in context have a look at this [document](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/format_module.md#how-it-works---a-simple-example).
+
+### ConversionRoutine
+
+The Java [ConversionRoutine](../java/de/uzk/hki/da/model/ConversionRoutine.java) class.
+
+A ConversionRoutine describes, how exactly a conversion has to be executed. It is a global property of the system 
+and has to deliver reproducable outcomes on every node. A ConversionRoutine can consist of a block of JavaCode
+or can make use of Unix CLI programs to execute the actual conversion. The exact behaviour of a conversion routine
+consists of a block of Java code (the type property which refers to a ConversionStrategy) plus the arguments "params"
+and optionally "target_suffix".
+
+See also how it is used in [context](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/format_module.md#how-it-works---a-simple-example).
+
+#### ConversionRoutine in the context of long term archival
+
+It is in the responsibility of a domain expert to ensure that a specific ConversionRoutine does what it does in 
+a quality assured and reproducible way, indepentently of the actual machine executing the conversion. The domain expert
+has to decide that the configuration of the ConversionRoutine in the system wide database plus the code and the underlying
+command line tools deliver the desired outcome. **Not yet implemented**, but planned for future versions is, that if cli plugins
+are used, that DNSCore is able to enforce specific versions of a tool (requires an additional property "version"), which makes
+it possible to make it testable in component tests after the domain expert has prepared it conceptually and tested it manually.
 
 
 
@@ -197,39 +229,3 @@ AIPs and are used to store the PIPs for publication. These representations are
 
     dip/public
     dip/institution
-
-### ConversionPolicy
-
-The Java [ConversionPolicy](../java/de/uzk/hki/da/model/ConversionPolicy.java) class.
-
-![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_2.jpg)
-
-A ConversionPolicy is a system wide property which describes which ConversionRoutine is to be executed by the system
-for every given file found in a SIP, either in the context of long term archival or in the context of publication.
-It links the [PRONOM](http://www.nationalarchives.gov.uk/PRONOM/Default.aspx) format PUID against an associated ConversionRoutine via
-the special contractor used for either publication (contractor PRESENTER) or long term archvial (contractor DEFAULT). The PUID is
-determined by the system by making use of the [FIDO](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/3rdPartyTools.md) 
-tool for format identification which is then stored as a property of DAFile which in turn is part of a ConversionInstruction which 
-gets generated based on the ConversionProperty. To see how the system operates in context have a look at this [document](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/format_module.md#how-it-works---a-simple-example).
-
-### ConversionRoutine
-
-The Java [ConversionRoutine](../java/de/uzk/hki/da/model/ConversionRoutine.java) class.
-
-A ConversionRoutine describes, how exactly a conversion has to be executed. It is a global property of the system 
-and has to deliver reproducable outcomes on every node. A ConversionRoutine can consist of a block of JavaCode
-or can make use of Unix CLI programs to execute the actual conversion. The exact behaviour of a conversion routine
-consists of a block of Java code (the type property which refers to a ConversionStrategy) plus the arguments "params"
-and optionally "target_suffix".
-
-See also how it is used in [context](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/format_module.md#how-it-works---a-simple-example).
-
-#### ConversionRoutine in the context of long term archival
-
-It is in the responsibility of a domain expert to ensure that a specific ConversionRoutine does what it does in 
-a quality assured and reproducible way, indepentently of the actual machine executing the conversion. The domain expert
-has to decide that the configuration of the ConversionRoutine in the system wide database plus the code and the underlying
-command line tools deliver the desired outcome. **Not yet implemented**, but planned for future versions is, that if cli plugins
-are used, that DNSCore is able to enforce specific versions of a tool (requires an additional property "version"), which makes
-it possible to make it testable in component tests after the domain expert has prepared it conceptually and tested it manually.
-

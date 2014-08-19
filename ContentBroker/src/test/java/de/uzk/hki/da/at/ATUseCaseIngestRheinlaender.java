@@ -26,12 +26,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
+import org.jdom.xpath.XPath;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +44,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.TESTHelper;
+import de.uzk.hki.da.utils.XMLUtils;
 
 
 /**
@@ -50,10 +55,11 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class ATUseCaseIngestRheinlaender extends Base{
 
-	private static final String origName = "ATUseCaseIngestRheinlaender";
+	private static final String origName = 		"ATUseCaseIngestRheinlaender";
 	private Object object;
-	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
-	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
+	private static final Namespace METS_NS = 	Namespace.getNamespace("http://www.loc.gov/METS/");
+	private static final Namespace XLINK_NS = 	Namespace.getNamespace("http://www.w3.org/1999/xlink");
+	private String EAD_XPATH_EXPRESSION = 		"//daoloc/@href";
 	
 	@Before
 	public void setUp() throws IOException{
@@ -86,11 +92,24 @@ public class ATUseCaseIngestRheinlaender extends Base{
 		assertEquals("URL", getLoctype(doc));
 		assertEquals("image/jpeg", getMimetype(doc));
 		
-//		SAXBuilder new_builder = new SAXBuilder();
-//		Document new_doc;
-//		InputStream metsStreamPublic = repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "METS");
-//		assertNotNull(metsStreamPublic);
-//		new_doc = new_builder.build(metsStreamPublic);
+		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(localNode.getWorkAreaRootPath(),"pips", "public", "TEST", object.getIdentifier(), "EAD.XML").toFile()));
+		
+		List<String> metsReferences = getMetsRefsInEad(eadDoc);
+		assertTrue(metsReferences.size()==5);
+		for(String metsRef : metsReferences) {
+			if(metsRef.contains("mets_2_32044.xml")) {
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/mets_2_32044.xml"));
+			} else if(metsRef.contains("mets_2_32045.xml")) {
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/mets_2_32045.xml"));
+			} else if(metsRef.contains("mets_2_32046.xml")) {
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/mets_2_32046.xml"));
+			} else if(metsRef.contains("mets_2_32047.xml")) {
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/mets_2_32047.xml"));
+			} else {
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/mets_2_32048.xml"));
+			}
+		}
 	}
 	
 	private String getURL(Document doc){
@@ -118,5 +137,22 @@ public class ATUseCaseIngestRheinlaender extends Base{
 				.getChild("file", METS_NS)
 				.getAttributeValue("MIMETYPE");
 	}
+	
+	private List<String> getMetsRefsInEad(Document eadDoc) throws JDOMException, IOException {
+		
+		List<String> metsReferences = new ArrayList<String>();
+	
+		XPath xPath = XPath.newInstance(EAD_XPATH_EXPRESSION);
+		
+		@SuppressWarnings("rawtypes")
+		List allNodes = xPath.selectNodes(eadDoc);
+		
+		for (java.lang.Object node : allNodes) {
+			Attribute attr = (Attribute) node;
+			String href = attr.getValue();
+			metsReferences.add(href);
+		}
+		return metsReferences;
+	}	
 }
 	
