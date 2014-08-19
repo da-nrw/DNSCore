@@ -38,6 +38,8 @@ import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.SAXException;
 
+import de.uzk.hki.da.utils.C;
+
 
 /**
  * The Class PremisXmlValidator.
@@ -46,12 +48,6 @@ public class PremisXmlValidator {
 
 	/** The logger. */
 	private static Logger logger = LoggerFactory.getLogger(PremisXmlValidator.class);
-	
-	/** The Constant pathToPremisXsd. */
-	private static final String pathToPremisXsd = "conf/premis.xsd";
-	
-	/** The Constant pathToXlinkXsd. */
-	private static final String pathToXlinkXsd = "conf/xlink.xsd";
 	
 	/**
 	 * Validate premis file.
@@ -72,7 +68,7 @@ public class PremisXmlValidator {
 		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		factory.setResourceResolver(new PremisResourceResolver());
 		
-		Source schemaFile = new StreamSource(new File(pathToPremisXsd));
+		Source schemaFile = new StreamSource(new File(C.PREMIS_XSD_PATH));
 		Schema schema = null;
 		try {
 			schema = factory.newSchema(schemaFile);
@@ -101,9 +97,9 @@ public class PremisXmlValidator {
 				LSInput input = new DOMInputImpl();
 				FileInputStream stream;
 				try {
-					stream = new FileInputStream(new File(pathToXlinkXsd));
+					stream = new FileInputStream(new File(C.XLINK_XSD_PATH));
 				} catch (FileNotFoundException e) {
-					throw new RuntimeException("File " + pathToXlinkXsd + " not found", e);
+					throw new RuntimeException("File " + C.XLINK_XSD_PATH + " not found", e);
 				}
 				input.setByteStream(stream);
 				return input;

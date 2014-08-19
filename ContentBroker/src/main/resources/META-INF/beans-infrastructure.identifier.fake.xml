@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/util
+           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+           http://www.springframework.org/schema/task
+           http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+        
+    <bean class="de.uzk.hki.da.format.CLIFormatIdentifier" id="pronomFormatIdentifier">
+         <property name="conversionScript" value="src/main/bash/fido.sh.fake"/>
+         <property name="healthCheckTestFile" value="src/main/resources/healthCheck.tif"/>
+         <property name="healthCheckExpectedOutcome" value="fmt/353"/>
+    </bean>
+    <bean class="de.uzk.hki.da.format.CLIFormatIdentifier" id="videoCodecFormatIdentifier">
+         <property name="conversionScript" value="src/main/bash/ffmpeg.sh.fake"/>
+         <property name="healthCheckTestFile" value="src/main/resources/healthCheck.avi"/>
+         <property name="healthCheckExpectedOutcome" value="cinepak"/>
+    </bean>
+    <bean class="de.uzk.hki.da.format.FormatScanService" id="formatScanService">
+        <constructor-arg ref="centralDao" />
+
+        <property name="pronomFormatIdentifier" ref="pronomFormatIdentifier"/>
+        <property name="formatSecondaryAttributeIdentifiers">
+            <util:set>
+                <ref bean="videoCodecFormatIdentifier" />
+            </util:set>
+        </property>
+    </bean>   
+</beans>
