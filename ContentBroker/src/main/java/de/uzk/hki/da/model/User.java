@@ -61,8 +61,6 @@ public class User{
 	@Column(name="email_contact")
 	private String emailAddress;
 	
-	private Integer admin; // TODO factor out
-	
 	private String username;
 	private String password;
 	   
@@ -205,20 +203,6 @@ public class User{
 	public boolean equals(java.lang.Object o){
 		User other = (User) o;
 		return (this.short_name.equals(other.short_name));
-	}
-
-	/**
-	 * @param admin the admin to set
-	 */
-	public void setAdmin(int admin) {
-		this.admin = admin;
-	}
-
-	/**
-	 * @return the admin
-	 */
-	public int getAdmin() {
-		return admin;
 	}
 
 	public Boolean getEnabled() {

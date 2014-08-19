@@ -20,8 +20,10 @@
 package de.uzk.hki.da.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -65,6 +67,10 @@ public class PreservationSystem {
 	@OneToMany
 	@JoinColumn(name="psystem_id")
 	private List<ConversionPolicy> conversion_policies = new ArrayList<ConversionPolicy>();
+	
+	@OneToMany
+	@JoinColumn(name="psystem_id")
+	private Set<Node> nodes = new HashSet<Node>();
 	
 	@Transient
 	private List<User> contractors = new ArrayList<User>();

@@ -23,6 +23,8 @@ import javax.persistence.*;
 import de.uzk.hki.da.utils.Path;
 
 import java.lang.Object;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -40,6 +42,13 @@ public class Node{
 	@OneToOne
 	@JoinColumn(name="admin_id",unique=true)
 	private User admin;
+	
+	@ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name="nodes_contractors", 
+                joinColumns={@JoinColumn(name="node_id")}, 
+                inverseJoinColumns={@JoinColumn(name="contractor_user_id")})
+    private Set<User> contractors = new HashSet<User>();
+	
 	
 	/** The name. */
 	private String name;
@@ -350,6 +359,14 @@ public class Node{
 
 	public void setAdmin(User admin) {
 		this.admin = admin;
+	}
+
+	public Set<User> getContractors() {
+		return contractors;
+	}
+
+	public void setContractors(Set<User> contractors) {
+		this.contractors = contractors;
 	}
 	
 }
