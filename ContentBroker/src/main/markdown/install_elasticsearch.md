@@ -22,7 +22,9 @@ Anschließend muss der in der ContentBroker-Konfiguration angegebene Index erste
 
 und das Mapping für diesen Index festgelegt werden:
 
-    curl -XPUT 'http://localhost:9200/portal_test/aggregation/_mapping' -d @config/es_mapping.json
+cd []/DNSCore/ContentBroker/src/main/conf/
+
+    curl -XPUT 'http://localhost:9200/portal_test/aggregation/_mapping' -d @es_mapping.json
     
 Achten Sie auf die Angabe des richtigen Indexes!
 
