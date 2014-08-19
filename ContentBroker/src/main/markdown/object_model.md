@@ -116,11 +116,7 @@ The system as a whole, consisting of nodes (TODO).
 
 ### Node
 
-The node is the abstract notion for a location at which a box running DNSCore sits.
-It is part of the a grid of sites which replicate data for each other and share common policies.
-The grid of nodes in this documentation is often referred to as the "system". Each node has a list of contractors
-for which it provides the DNSCore functionality and for whose objects storage and distribution it is mainly/solely responsible.
-
+Contractors deliver content to nodes. The relationship between a contractor and "its" node (which is called primary node) is unique. Every Contractor delivers its objects always to the primary node. The node is a notion for a concrete technical system on the location of an operating company. Different nodes of different operating companies form a [PreservationSystem](object_mode.md#PreservationSystem). The contractors content get mirrored between the nodes which form the PreservationSystem. The copies of the objects delivered to the primary node are formally called primary copies. 
 
 ### ConversionPolicy
 
