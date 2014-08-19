@@ -112,9 +112,14 @@ TODO contractor_short_name
 
 ### PreservationSystem
 
+
+The Java [PreservationSystem](../java/de/uzk/hki/da/model/PreservationSystem.java) class.
+
 The PreservationSystem represents the system as a  whole. It consists of several [Nodes](object_model.md#Node), to which contractors deliver content. The PreservationSystem provides rules for application of conversions ([ConversionPolicy](object_model.md#ConversionPolicy))s which are in effect globally as well as information about the [ConversionRoutine](object_model.md#ConversionRoutine)s which all nodes have to provide in a uniform manner.
 
 ### Node
+
+The Java [Node](../java/de/uzk/hki/da/model/Node.java) class.
 
 Contractors deliver content to nodes. The relationship between a contractor and "its" node (which is called primary node) is unique. Every Contractor delivers its objects always to the primary node. The node is a notion for a concrete technical system on the location of an operating company. Different nodes of different operating companies form a [PreservationSystem](object_model.md#PreservationSystem). The contractors content get mirrored between the nodes which form the PreservationSystem. The copies of the objects delivered to the primary node are formally called primary copies. 
 
@@ -122,7 +127,7 @@ Contractors deliver content to nodes. The relationship between a contractor and 
 
 The Java [ConversionPolicy](../java/de/uzk/hki/da/model/ConversionPolicy.java) class.
 
-![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_2.jpg)
+![](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model_conversion_dafiles.jpg)
 
 A ConversionPolicy is a system wide property which describes which ConversionRoutine is to be executed by the system
 for every given file found in a SIP, either in the context of long term archival or in the context of publication.
