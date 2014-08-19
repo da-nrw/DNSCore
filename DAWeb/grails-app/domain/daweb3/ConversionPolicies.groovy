@@ -4,7 +4,6 @@ class ConversionPolicies {
 	
 	int id
 	String source_format
-	User user
 	ConversionRoutine conversion_routine;
 	
 	static mapping = {
@@ -13,7 +12,6 @@ class ConversionPolicies {
 	}
 	
     static constraints = {
-		user column: 'user_id'
 		conversion_routine column: 'conversion_routine_id'
 	  }
 }

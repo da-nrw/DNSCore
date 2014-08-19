@@ -77,7 +77,7 @@
 							
 							<g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}" />
 						
-							<g:sortableColumn property="contractor" title="${message(code: 'object.contractor.label', default: 'Contractor')}" />
+							<g:sortableColumn property="contractor" title="${message(code: 'object.user.label', default: 'Contractor')}" />
 							<!-- <th><g:message code="object.contractor.label" default="Contractor" /></th> -->
 							
 							
@@ -113,7 +113,7 @@
 						
 							<td><g:link action="show" id="${objectInstance.id}">${objectInstance.getFormattedUrn()}</g:link></td>
 						
-							<td>${fieldValue(bean: objectInstance, field: "contractor")}</td>
+							<td>${fieldValue(bean: objectInstance, field: "user")}</td>
 						
 							<td>${fieldValue(bean: objectInstance, field: "origName")}</td>
 							

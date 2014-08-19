@@ -22,11 +22,11 @@
 			</g:if>
 			<ol class="property-list object">
 			
-				<g:if test="${objectInstance?.contractor}">
+				<g:if test="${objectInstance?.user}">
 				<li class="fieldcontain">
-					<span id="contractor-label" class="property-label"><g:message code="object.contractor.label" default="Contractor" /></span>
+					<span id="contractor-label" class="property-label"><g:message code="object.user.label" default="Contractor" /></span>
 					
-						<span class="property-value" aria-labelledby="contractor-label">${objectInstance?.contractor?.encodeAsHTML()}</span>
+						<span class="property-value" aria-labelledby="contractor-label">${objectInstance?.user?.encodeAsHTML()}</span>
 					
 				</li>
 				</g:if>

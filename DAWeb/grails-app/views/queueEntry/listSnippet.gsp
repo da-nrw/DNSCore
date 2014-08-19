@@ -23,7 +23,7 @@
 			</th>
 			
 			<th class="sortable field-contractorShortName">
-				<a href="#" onClick="return sortQueue('contractorShortName');">${message(code: 'queueEntry.obj.contractor.shortName.label', default: 'Contractor')}</a>
+				<a href="#" onClick="return sortQueue('contractorShortName');">${message(code: 'queueEntry.obj.user.shortName.label', default: 'Contractor')}</a>
 			</th>
 			
 			<th class="sortable field-created">
@@ -100,7 +100,7 @@
 				</td>
 				<td>
 				<g:if test="${queueEntryInstance.obj != null}">
-					${fieldValue(bean: queueEntryInstance.obj.contractor, field: "shortName")}
+					${fieldValue(bean: queueEntryInstance.obj.user, field: "shortName")}
 				</g:if>
 				</td>
 

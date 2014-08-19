@@ -114,12 +114,12 @@ class QueueEntryController {
 					}
 				} else {
 				admin = 1;
-				if (params.search?.contractor){
-					if(params.search?.contractor !="null"){
+				if (params.search?.user){
+					if(params.search?.user !="null"){
 						projections {
 							obj {
 									user {
-										eq("shortName", params.search.contractor)
+										eq("shortName", params.search.user)
 									}
 								}
 							}	
