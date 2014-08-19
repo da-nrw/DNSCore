@@ -110,13 +110,13 @@ TODO administrator, default, presenter
 
 TODO contractor_short_name
 
-### System
+### PreservationSystem
 
-The system as a whole, consisting of nodes (TODO).
+The PreservationSystem represents the system as a  whole. It consists of several [Nodes](object_model.md#Node), to which contractors deliver content. The PreservationSystem provides rules for application of conversions ([ConversionPolicy](object_model.md#ConversionPolicy))s which are in effect globally as well as information about the [ConversionRoutine](object_model.md#ConversionRoutine)s which all nodes have to provide in a uniform manner.
 
 ### Node
 
-Contractors deliver content to nodes. The relationship between a contractor and "its" node (which is called primary node) is unique. Every Contractor delivers its objects always to the primary node. The node is a notion for a concrete technical system on the location of an operating company. Different nodes of different operating companies form a [PreservationSystem](object_mode.md#PreservationSystem). The contractors content get mirrored between the nodes which form the PreservationSystem. The copies of the objects delivered to the primary node are formally called primary copies. 
+Contractors deliver content to nodes. The relationship between a contractor and "its" node (which is called primary node) is unique. Every Contractor delivers its objects always to the primary node. The node is a notion for a concrete technical system on the location of an operating company. Different nodes of different operating companies form a [PreservationSystem](object_model.md#PreservationSystem). The contractors content get mirrored between the nodes which form the PreservationSystem. The copies of the objects delivered to the primary node are formally called primary copies. 
 
 ### ConversionPolicy
 
