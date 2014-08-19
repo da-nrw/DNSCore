@@ -60,17 +60,14 @@ public class ProcessUserDecisionsActionTests {
 			throws FileNotFoundException, UserException, IOException, 
 				RepositoryException, JDOMException, ParserConfigurationException, SAXException{
 		
-		Job job = new Job();
-		ConversionInstruction ins = new ConversionInstruction();
-		job.getConversion_instructions().add(ins);
-		ProcessUserDecisionsAction action = new ProcessUserDecisionsAction();
-		action.setJob(job);
-		action.implementation();
-		assertFalse(job.getConversion_instructions().isEmpty());
+//		Job job = new Job();
+//		ConversionInstruction ins = new ConversionInstruction();
+//		job.getConversion_instructions().add(ins);
+//		ProcessUserDecisionsAction action = new ProcessUserDecisionsAction();
+//		action.setJob(job);
+//		action.implementation();
+//		assertFalse(job.getConversion_instructions().isEmpty());
 	}
-	
-	
-	
 	
 	
 	
