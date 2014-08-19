@@ -47,7 +47,7 @@ Die Klasse PreservationSystem repräsentiert das Gesamtsystem. Es besteht aus ei
 
 ### Node - Der Knoten
 
-An einem Knoten liefern Contractoren ihre Objekte ein. Der Knoten steht dabei für ein konkretes technisches System am Standort eines Betreibers. Verschiedene Knoten verschiedener Betreiber an verschiedenen Standorten formen ein PreservationSystem. 
+An einem Knoten liefern Contractoren ihre Objekte ein. Die Zuordnung eines Contractors zu einem Knoten, seinem sogenannten Primärknoten, ist eindeutig. Jeder Contractor liefert seine Objekte immer an seinem Primärknoten ein. Der Knoten steht dabei für ein konkretes technisches System am Standort eines Betreibers. Verschiedene Knoten verschiedener Betreiber an verschiedenen Standorten formen ein PreservationSystem. Die Daten der Contractoren werden zwischen den Knoten, die das PreservationSystem formen, gespiegelt. Die Am Primärknoten eingelieferten Kopien der Objekte werden daher formell auch Primärkopien genannt.
 
 ### ConversionRoutine - Die Konversionsroutine
 
