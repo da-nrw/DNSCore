@@ -19,8 +19,6 @@
 
 package de.uzk.hki.da.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -32,7 +30,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -66,11 +63,6 @@ public class User{
 	
 	private Integer admin; // TODO factor out
 	
-	/** The conversion_policies. */
-	@OneToMany
-	@JoinColumn(name="user_id")
-	private List<ConversionPolicy> conversion_policies = new ArrayList<ConversionPolicy>();
-	
 	private String username;
 	private String password;
 	   
@@ -84,6 +76,7 @@ public class User{
 	private Boolean accountexpired;
 	private Boolean accountlocked;
 	private Boolean passwordexpired;
+	
 	/**
 	 * Gets the Roles.
 	 *
@@ -212,24 +205,6 @@ public class User{
 	public boolean equals(java.lang.Object o){
 		User other = (User) o;
 		return (this.short_name.equals(other.short_name));
-	}
-
-	/**
-	 * Gets the conversion_policies.
-	 *
-	 * @return the conversion_policies
-	 */
-	public List<ConversionPolicy> getConversion_policies() {
-		return conversion_policies;
-	}
-
-	/**
-	 * Sets the conversion_policies.
-	 *
-	 * @param conversion_policies the new conversion_policies
-	 */
-	public void setConversion_policies(List<ConversionPolicy> conversion_policies) {
-		this.conversion_policies = conversion_policies;
 	}
 
 	/**

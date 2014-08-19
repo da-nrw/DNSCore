@@ -91,7 +91,7 @@ public class ScanForPresentationAction extends AbstractAction{
 			// get cps for fileanduser. do with cps: assemble
 			
 			logger.trace("Generating ConversionInstructions for PRESENTER");
-			List<ConversionPolicy> policies = pSystem.getApplicablePolicies(file, "PRESENTER");
+			List<ConversionPolicy> policies = pSystem.getApplicablePolicies(file, true);
 			if ( object.grantsRight("PUBLICATION")
 					&& !file.toRegularFile().getName().toLowerCase().endsWith(".xml")
 					&& !file.toRegularFile().getName().toLowerCase().endsWith(".rdf")

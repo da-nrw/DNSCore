@@ -20,7 +20,6 @@
 package de.uzk.hki.da.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +61,10 @@ public class PreservationSystem {
 	@OneToMany
 	@JoinColumn(name="psystem_id")
 	private List<ConversionRoutine> conversionRoutines = new ArrayList<ConversionRoutine>();
+	
+	@OneToMany
+	@JoinColumn(name="psystem_id")
+	private List<ConversionPolicy> conversion_policies = new ArrayList<ConversionPolicy>();
 	
 	@Transient
 	private List<User> contractors = new ArrayList<User>();
@@ -182,39 +185,6 @@ public class PreservationSystem {
 	
 	
 	
-	@SuppressWarnings("unused")
-	public void initialize(CentralDatabaseDAO dao){
-		policiesMap = new HashMap<String,List<ConversionPolicy>>();
-		
-		Session session = HibernateUtil.openSession();
-		session.getTransaction().begin();
-		
-		User presenter = dao.getContractor(session, "PRESENTER");
-		if (presenter==null) {
-			session.close();
-			throw new IllegalStateException("contractor PRESENTER not found in db");
-		}
-		
-		User archive = dao.getContractor(session, "DEFAULT");
-		if (archive==null) {
-			session.close();
-			throw new IllegalStateException("contractor DEFAULT not found in db");
-		}
-		
-		
-		contractors.add(archive);
-		contractors.add(presenter);
-		
-		// to avoid lazy initialization issues
-		for (ConversionPolicy p:archive.getConversion_policies());
-		for (ConversionPolicy p:presenter.getConversion_policies());
-		
-		policiesMap.put(
-				"DEFAULT",archive.getConversion_policies());
-		policiesMap.put(
-				"PRESENTER",presenter.getConversion_policies());
-		session.close();
-	}
 
 	
 	/**
@@ -223,31 +193,45 @@ public class PreservationSystem {
 	 * will be logged.
 	 *
 	 * @param file the file
-	 * @param contractor_short_name the contractor_short_name
 	 * @return the result list. can be empty if no matching policies can be found. This might even be the case
 	 * if there is no evaluable file format information in file. Can also be empty if there are no policies for
 	 * a contractor. We do not consider it a special case if the contractor does not exists. In any case a warning is
 	 * logged.
 	 */
-	public List<ConversionPolicy> getApplicablePolicies(DAFile file,String contractor_short_name) {
+	public List<ConversionPolicy> getApplicablePolicies(DAFile file,Boolean presentation) {
+		
+		
+		
 		if (file.getFormatPUID().isEmpty()){
 			logger.warn("No FileFormat information available in DAFile: "+file.toString());
 			return new ArrayList<ConversionPolicy>(); 
 		}
-		if (policiesMap.get(contractor_short_name)==null){
-			logger.warn("no ConversionPolicies found for: "+contractor_short_name);
-			return new ArrayList<ConversionPolicy>(); 
-		}
 		
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+
+		session.refresh(this);
+
+		// circumvent lazy initialization issues
 		
 		List<ConversionPolicy> result = new ArrayList<ConversionPolicy>();
-		for (ConversionPolicy cp:policiesMap.get(contractor_short_name)){
-			if (cp.getSource_format() == null) throw new RuntimeException("cp.getSourceFormat returned null.");
-			if (cp.getSource_format().equals(file.getFormatPUID())){
-				result.add(cp);
+		for (ConversionPolicy p:conversion_policies){
+			if ((p.getSource_format().equals(file.getFormatPUID()))&&(presentation.equals(p.isPresentation()))){
+				result.add(p);
 			}
 		}
+		session.close();
+		
 		return result;
+	}
+	
+	
+	
+	public List<ConversionPolicy> getConversion_policies() {
+		return conversion_policies;
+	}
+	public void setConversion_policies(List<ConversionPolicy> conversion_policies) {
+		this.conversion_policies = conversion_policies;
 	}
 	
 }

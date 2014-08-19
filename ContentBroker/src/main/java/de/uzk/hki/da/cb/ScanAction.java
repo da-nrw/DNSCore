@@ -87,7 +87,7 @@ public class ScanAction extends AbstractAction{
 		for (DAFile file : filesArchival){
 			
 			for	(ConversionPolicy p:
-				pSystem.getApplicablePolicies(file, "DEFAULT"))
+				pSystem.getApplicablePolicies(file, false))
 			{
 				logger.info("Found applicable Policy for FileFormat "+
 						p.getSource_format()+" -> "+p.getConversion_routine().getName() + "("+ file.getRelative_path()+ ")");

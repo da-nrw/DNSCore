@@ -23,6 +23,7 @@ package de.uzk.hki.da.core;
 import java.util.List;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ import org.springframework.context.ApplicationContextAware;
 
 import de.uzk.hki.da.cb.AbstractAction;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
+import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
@@ -70,18 +72,21 @@ public class ActionFactory implements ApplicationContextAware {
 	/** *The Active MQ Connection factory */
 	private ActiveMQConnectionFactory mqConnectionFactory;
 
-	private PreservationSystem pSystem;
+	private PreservationSystem preservationSystem;
 
 
 	public void init(){
 		if (dao==null) throw new ConfigurationException("dao not set");
-		pSystem = new PreservationSystem(); pSystem.setId(1);
+		preservationSystem = new PreservationSystem(); preservationSystem.setId(1);
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		session.refresh(pSystem);
+		session.refresh(preservationSystem);
+		// circumvent lazy initialization issues
+		Hibernate.initialize(preservationSystem.getConversion_policies());
+		// circumvent lazy initialization issues
+		for (ConversionPolicy p:preservationSystem.getConversion_policies());
 		session.getTransaction().commit();
 		session.close();
-		pSystem.initialize(dao);
 	}
 	
 	/**
@@ -119,7 +124,7 @@ public class ActionFactory implements ApplicationContextAware {
 			String workingStatus = action.getStartStatus().substring(0,action.getStartStatus().length()-1) + "2";
 			
 			Job jobCandidate = dao.fetchJobFromQueue(action.getStartStatus(), workingStatus
-					, localNode, pSystem);
+					, localNode, preservationSystem);
 			if (jobCandidate == null) {
 				logger.trace("No job for type {}, checking for types with lower priority", jobType);
 				continue;
@@ -136,7 +141,7 @@ public class ActionFactory implements ApplicationContextAware {
 			action.setObject(jobCandidate.getObject());
 			action.setActionMap(getActionRegistry());			
 			action.setJob(jobCandidate);
-			action.setPSystem(pSystem);
+			action.setPSystem(preservationSystem);
 			return action;
 		}
 		

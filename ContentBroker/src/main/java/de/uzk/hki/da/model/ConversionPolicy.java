@@ -42,10 +42,7 @@ public class ConversionPolicy {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
-	
-	/** The contractor. */
-	@ManyToOne(targetEntity=User.class)
-	private User user;
+	private boolean presentation = false; 
 	
 	/** The source_format. */
 	private String source_format;
@@ -71,13 +68,11 @@ public class ConversionPolicy {
 	 * @param audience the audience
 	 */
 	public ConversionPolicy(
-			User contractor,
 			String sourceFormat,
 			ConversionRoutine conversionRoutine,
 			ConversionRoutine fallbackRoutine,
 			String audience){
 		
-		this.user= contractor;
 		this.source_format= sourceFormat;
 		this.conversion_routine= conversionRoutine;
 	}
@@ -99,25 +94,6 @@ public class ConversionPolicy {
 	 */
 	public Integer getId() {
 		return id;
-	}
-
-	/**
-	 * Sets the contractor.
-	 *
-	 * @param contractor the new contractor
-	 */
-	public void setContractor(User contractor) {
-		this.user = contractor;
-	}
-
-	
-	/**
-	 * Gets the contractor.
-	 *
-	 * @return the contractor
-	 */
-	public User getContractor() {
-		return user;
 	}
 
 	/**
@@ -163,7 +139,15 @@ public class ConversionPolicy {
 	public String toString(){
 		
 		return "ConversionPolicy[" +
-			user.getShort_name()+","+source_format+","
+			source_format+","
 		+conversion_routine.getName()+"]";
+	}
+
+	public boolean isPresentation() {
+		return presentation;
+	}
+
+	public void setPresentation(boolean presentation) {
+		this.presentation = presentation;
 	}
 }

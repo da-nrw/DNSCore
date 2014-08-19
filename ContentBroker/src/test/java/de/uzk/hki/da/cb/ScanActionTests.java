@@ -20,7 +20,6 @@
 package de.uzk.hki.da.cb;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -44,7 +43,6 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
@@ -95,7 +93,6 @@ public class ScanActionTests {
 				"de.uzk.hki.da.cb.CLIConversionStrategy",
 				"cp input output","bmp");
 		ConversionPolicy policy = new ConversionPolicy(
-				new User("DEFAULT","",""),
 				"fmt/353",
 				toPng,
 				null,
@@ -106,7 +103,7 @@ public class ScanActionTests {
 
 		PreservationSystem pSystem = mock (PreservationSystem.class);
 		
-		when(pSystem.getApplicablePolicies((DAFile) anyObject(), anyString())).thenReturn(policies).thenReturn(noPolicies);
+		when(pSystem.getApplicablePolicies((DAFile) anyObject(), (Boolean)anyObject())).thenReturn(policies).thenReturn(noPolicies);
 		action.setPSystem(pSystem);
 		action.setObject(obj);
 		action.setDistributedConversionAdapter(mock (DistributedConversionAdapter.class));
