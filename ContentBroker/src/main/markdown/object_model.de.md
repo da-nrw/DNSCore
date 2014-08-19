@@ -43,14 +43,26 @@ Contractoren sind die Endanwender der Applikation. Sie liefern ihre Pakete immer
 
 ### PreservationSystem - Das Gesamtsystem
 
+The Java [PreservationSystem](../java/de/uzk/hki/da/model/PreservationSystem.java) class.
+
 Die Klasse PreservationSystem repräsentiert das Gesamtsystem. Es besteht aus einzelnen Knoten, auf denen Contractoren ihre Objekte einliefern. Das Gesamtsystem hält die global gültigen Regeln zur Anwendung von Konversionen vor und bestimmt, welche Konversionsroutinen von allen Knoten gleichermaßen angeboten werden. 
 
 ### Node - Der Knoten
 
+
+The Java [Node](../java/de/uzk/hki/da/model/Node.java) class.
+
 An einem Knoten liefern Contractoren ihre Objekte ein. Die Zuordnung eines Contractors zu einem Knoten, seinem sogenannten Primärknoten, ist eindeutig. Jeder Contractor liefert seine Objekte immer an seinem Primärknoten ein. Der Knoten steht dabei für ein konkretes technisches System am Standort eines Betreibers. Verschiedene Knoten verschiedener Betreiber an verschiedenen Standorten formen ein PreservationSystem. Die Daten der Contractoren werden zwischen den Knoten, die das PreservationSystem formen, gespiegelt. Die Am Primärknoten eingelieferten Kopien der Objekte werden daher formell auch Primärkopien genannt.
+
+
+### ConversionPolicy - Die Regel zur Anwendung einer Konversion
+
+The Java [ConversionPolicy](../java/de/uzk/hki/da/model/ConversionPolicy.java) class.
+
+![](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model_conversion_dafiles.jpg)
 
 ### ConversionRoutine - Die Konversionsroutine
 
-### ConversionPolicy - Die Regel zur Anwendung einer Konversion
+The Java [ConversionRoutine](../java/de/uzk/hki/da/model/ConversionRoutine.java) class.
 
 ### DAFile
