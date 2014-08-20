@@ -31,6 +31,7 @@
 				<li><a class="list" href="${createLink(controller: 'conversionPolicies', action: 'index')}">Conversion Policies</a></li>
 				<li><a class="list" href="${createLink(controller: 'user', action: 'index')}">Users</a></li>
 				<li><a class="list" href="${createLink(controller: 'role', action: 'index')}">Roles</a></li>
+				<li><a class="list" href="${createLink(controller: 'userRole', action: 'index')}">Roles</a></li>
 			</ul>
 		</div>
     <div class="body">
