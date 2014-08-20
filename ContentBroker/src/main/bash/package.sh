@@ -18,12 +18,12 @@ echo "calling package.sh $1 $2"
 
 function createStorageFolder(){
 	mkdir $CBTAR_SRC/storage/
-	mkdir $CBTAR_SRC/storage/grid
+	mkdir $CBTAR_SRC/storage/GridCacheArea
 	mkdir -p $CBTAR_SRC/storage/pips/institution/TEST
 	mkdir -p $CBTAR_SRC/storage/pips/public/TEST
-	mkdir -p $CBTAR_SRC/storage/user/TEST/outgoing
-	mkdir -p $CBTAR_SRC/storage/work/TEST
-	mkdir -p $CBTAR_SRC/storage/ingest/TEST
+	mkdir -p $CBTAR_SRC/storage/UserArea/TEST/outgoing
+	mkdir -p $CBTAR_SRC/storage/WorkArea/TEST
+	mkdir -p $CBTAR_SRC/storage/IngestArea/TEST
 }
 
 mkdir $INSTALLER

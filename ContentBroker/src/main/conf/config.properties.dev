@@ -1,7 +1,7 @@
-localNode.userAreaRootPath=/ci/storage/UserArea
-localNode.ingestAreaRootPath=/ci/storage/IngestArea
-localNode.workAreaRootPath=/ci/storage/WorkArea
-localNode.gridCacheAreaRootPath=/ci/storage/GridCacheArea
+localNode.userAreaRootPath=CONTENTBROKER_ROOT/storage/UserArea
+localNode.ingestAreaRootPath=CONTENTBROKER_ROOT/storage/IngestArea
+localNode.workAreaRootPath=CONTENTBROKER_ROOT/storage/WorkArea
+localNode.gridCacheAreaRootPath=CONTENTBROKER_ROOT/storage/GridCacheArea
 localNode.workingResource=ciWorkingResource
 localNode.replDestinations=ciArchiveResourceGroup
 localNode.id=1
