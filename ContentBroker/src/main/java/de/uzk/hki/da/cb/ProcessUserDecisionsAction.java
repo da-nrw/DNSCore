@@ -63,12 +63,15 @@ public class ProcessUserDecisionsAction extends AbstractAction{
 			return false;
 		} 
 		else if (job.getAnswer().equals(C.YES)){
+			logger.info("System Question: "+C.MIGRATION_ALLOWED+" User response: "+C.YES);
 		} 
 		else {
+			logger.info("System Question: "+C.MIGRATION_ALLOWED+" User response: "+C.NO);
+			logger.trace("will delete conversion instructions for long term preservation now");
 			job.getConversion_instructions().clear();
 		}
 		this.setEndStatus(C.INGEST_REGISTER_URN_ACTION_START_STATUS);
-		return false;
+		return true;
 	}
 
 	@Override
