@@ -6,9 +6,9 @@ _**Achtung**: Die eingesetzte Version von Elasticsearch muss der der Elasticsear
 
 Die Installationsmethode hängt vom eingesetzten Betriebssystem ab. Empfohlen wird die Intallation unter Linux aus dem DEB- oder RPM-Repository (siehe http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/setup-repositories.html). Bei Installation einer dieser Pakete wird gleichzeitig ein Service eingerichtet, damit Elasticsearch nicht manuell gestartet werden muss. Weitere Informationen zur Installation finden sich unter: http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/setup.html
 
-rpm --import http://packages.elasticsearch.org/GPG-KEY-elasticsearch
-cd /etc/yum.repos.d/
-vi elasticsearch.repo
+    rpm --import http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+    cd /etc/yum.repos.d/
+    vi elasticsearch.repo
 
 Füge folgenden Text ein
 
@@ -19,7 +19,7 @@ gpgcheck=1
 gpgkey=http://packages.elasticsearch.org/GPG-KEY-elasticsearch
 enabled=1
 
-yum install elasticsearch
+    yum install elasticsearch
 
 Wenn die Installation erfolgreich war sollte folgender Befehl eine sinnvolle Ausgabe liefern:
 
