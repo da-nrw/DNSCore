@@ -53,13 +53,22 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 
 	public ArchiveReplicationCheckAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
 	
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+	}
+
 	/**
 	 * @throws IOException 
 	 */
 	@Override
 	public
 	boolean implementation() throws IOException {
-		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 		setKILLATEXIT(true);
 
 		StoragePolicy sp = new StoragePolicy(localNode);
@@ -81,6 +90,11 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	}
 	
 	
+	@Override
+	void rollback() {
+		throw new NotImplementedException("No rollback implemented for this action");
+	}
+
 	private void delay(){
 		try {
 			Thread.sleep(timeOut); // to prevent unnecessary small intervals when checking
@@ -182,12 +196,6 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		return true;
 	}
 
-	@Override
-	void rollback() {
-		throw new NotImplementedException("No rollback implemented for this action");
-	}
-
-
 	public GridFacade getGridRoot() {
 		return gridRoot;
 	}
@@ -196,6 +204,5 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	public void setGridRoot(GridFacade gridRoot) {
 		this.gridRoot = gridRoot;
 	}
-
 }
 	

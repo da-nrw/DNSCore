@@ -58,6 +58,8 @@ public class Job {
 	/** The status. */
 	private String status;
 
+	private String answer = "";
+	
 	/** 
 	 * The name of the node of the system which is instructed to do the job.
 	 */
@@ -388,5 +390,14 @@ public class Job {
 
 	public void setContainer_extension(String container_extension) {
 		this.container_extension = container_extension;
+	}
+
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		if (answer==null) answer="";
+		this.answer = answer;
 	}
 }

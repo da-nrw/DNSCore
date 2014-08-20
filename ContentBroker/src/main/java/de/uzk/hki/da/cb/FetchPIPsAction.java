@@ -27,8 +27,21 @@ public class FetchPIPsAction extends AbstractAction {
 	Path institutionContractorFolder = null;
 	
 	@Override
-	boolean implementation() throws FileNotFoundException, IOException {
+	void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("irodsSystemConnector not set");
+	}
+
+
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+	}
+
+
+
+	@Override
+	boolean implementation() throws FileNotFoundException, IOException {
 		
 		publicContractorFolder = Path.make("pips", "public", object.getContractor().getShort_name());
 		institutionContractorFolder = Path.make("pips", "institution", object.getContractor().getShort_name());
@@ -47,6 +60,13 @@ public class FetchPIPsAction extends AbstractAction {
 		distributedConversionAdapter.remove(Path.make(institutionContractorFolder,sourceDIPName).toString());
 
 		return true;
+	}
+
+
+
+	@Override
+	void rollback() throws Exception {
+		throw new NotImplementedException("No rollback implemented for this action");
 	}
 
 
@@ -102,13 +122,6 @@ public class FetchPIPsAction extends AbstractAction {
 	}
 	
 	
-	@Override
-	void rollback() throws Exception {
-		throw new NotImplementedException("No rollback implemented for this action");
-	}
-
-
-
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
 		return distributedConversionAdapter;
 	}

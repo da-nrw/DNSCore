@@ -25,6 +25,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
+import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.utils.Path;
 
@@ -35,6 +36,16 @@ import de.uzk.hki.da.utils.Path;
  * @author Daniel M. de Oliveira
  */
 public class DeleteObjectAction extends AbstractAction {
+
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		// Auto-generated method stub
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+	}
 
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException,

@@ -55,6 +55,7 @@ public class CTDiagnosticsTests {
 	private static final File FFMPEG_SH = new File("ffmpeg.sh");
 	private static final File TEST_PACKAGE_SRC = Path.makeFile(TC.TEST_ROOT_AT,"AT_CON2.tgz");
 	private static final File CI_DATABASE_CFG = new RelativePath("src","main","xml","hibernateCentralDB.cfg.xml.ci").toFile();
+	private static final File FIDO_SH_SRC = new File("src/main/bash/fido.sh");
 	
 	
 	@Before
@@ -67,6 +68,7 @@ public class CTDiagnosticsTests {
 		FileUtils.copyFile(TEST_PACKAGE_SRC, C.BASIC_TEST_PACKAGE);
 		FileUtils.copyFile(CI_DATABASE_CFG, C.HIBERNATE_CFG);
 
+		FileUtils.copyFile(FIDO_SH_SRC, FIDO_SH);
 		FileUtils.copyFile(FFMPEG_SH_FAKE_SRC, FFMPEG_SH);
 		Runtime.getRuntime().exec(CHMOD_777+FFMPEG_SH);
 		

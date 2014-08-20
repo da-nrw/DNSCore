@@ -50,10 +50,20 @@ public class ConvertAction extends AbstractAction {
 	
 	public ConvertAction(){}
 	
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+		
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public boolean implementation() throws IOException {
-		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 		
 		if (job.getConversion_instructions().size()==0)
 			logger.warn("No Conversion Instruction could be found for job with id: "+job.getId());
@@ -83,6 +93,24 @@ public class ConvertAction extends AbstractAction {
 		
 		
 		return true;
+	}
+
+	/**
+	 * @author Thomas Kleinke
+	 */
+	@Override
+	void rollback() throws IOException {
+		
+		if (localConversionEvents != null) {
+			for (Event e : localConversionEvents) {
+				e.getTarget_file().toRegularFile().delete();
+				
+				object.getLatestPackage().getEvents().remove(e);
+				object.getLatestPackage().getFiles().remove(e.getTarget_file());
+			}
+		}
+		
+		logger.info("@Admin: You can safely roll back this job to status "+this.getStartStatus()+" now.");
 	}
 
 	// TODO remove code duplication with scan action
@@ -130,24 +158,6 @@ public class ConvertAction extends AbstractAction {
 	}
 
 	
-	/**
-	 * @author Thomas Kleinke
-	 */
-	@Override
-	void rollback() throws IOException {
-		
-		if (localConversionEvents != null) {
-			for (Event e : localConversionEvents) {
-				e.getTarget_file().toRegularFile().delete();
-				
-				object.getLatestPackage().getEvents().remove(e);
-				object.getLatestPackage().getFiles().remove(e.getTarget_file());
-			}
-		}
-		
-		logger.info("@Admin: You can safely roll back this job to status "+this.getStartStatus()+" now.");
-	}
-
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
 		return distributedConversionAdapter;
 	}

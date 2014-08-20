@@ -51,6 +51,19 @@ public class AuditAction extends AbstractAction {
 		private static final Integer Error = 51;
 		private static final Integer archivedAndValidState = 100;
 	}
+	
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		if (nodeAdminEmail == null) throw new ConfigurationException("nodeAdminEmail is null!");
+		if (pSystem.getMinRepls()==0) throw new ConfigurationException("minNodes, 0 is not allowed!");
+		if (pSystem.getAdmin().getEmailAddress()==null)  throw new ConfigurationException("systemFromEmailAdress is not set!");
+	}
+
 	/*
 	 * 
 	 * (non-Javadoc)
@@ -58,10 +71,6 @@ public class AuditAction extends AbstractAction {
 	 */
 	@Override
 	boolean implementation() {
-		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
-		if (nodeAdminEmail == null) throw new ConfigurationException("nodeAdminEmail is null!");
-		if (pSystem.getMinRepls()==0) throw new ConfigurationException("minNodes, 0 is not allowed!");
-		if (pSystem.getAdmin().getEmailAddress()==null)  throw new ConfigurationException("systemFromEmailAdress is not set!");
 		setKILLATEXIT(true);
 		setObjectState(job,ObjectState.UnderAudit);
 		StoragePolicy sp = new StoragePolicy(localNode);

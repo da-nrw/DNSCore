@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
+import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.utils.BagitUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
@@ -37,6 +38,11 @@ import de.uzk.hki.da.utils.RelativePath;
  * @author Daniel M. de Oliveira
  */
 public class BuildAIPAction extends AbstractAction {
+
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		// Auto-generated method stub
+	}
 
 	@Override
 	boolean implementation() {
@@ -110,5 +116,11 @@ public class BuildAIPAction extends AbstractAction {
 		logger.debug("Deleting " + oldPremis.getAbsolutePath());
 				
 		oldPremis.delete();
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -28,6 +28,7 @@ import javax.mail.MessagingException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
+import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
@@ -55,11 +56,21 @@ public class RetrievalAction extends AbstractAction {
 	public RetrievalAction(){}
 	
 	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		// Auto-generated method stub
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+	}
+
+	@Override
 	protected
 	boolean implementation() {
 		
 		ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(new File(".tar"));
-
+	
 		String tempFolder = Path.make(localNode.getWorkAreaRootPath(),
 				object.getContractor().getShort_name(), object.getIdentifier(), object.getIdentifier()) + "/";
 		
@@ -88,7 +99,7 @@ public class RetrievalAction extends AbstractAction {
 		try {
 			builder.archiveFolder(new File(tempFolder),
 								  newTar.toFile(), true);
-
+	
 		} catch (Exception e) {
 			throw new UserException(UserExceptionId.RETRIEVAL_ERROR, "Tar couldn't be packed", e);
 		} 
@@ -114,12 +125,11 @@ public class RetrievalAction extends AbstractAction {
 		return true;
 	}
 
-	
-	
-	
-	
-	
-	
+	@Override
+	void rollback() {
+		throw new NotImplementedException("No rollback implemented for this action");
+	}
+
 	/**
 	 * @param destinationFolder
 	 * @throws RuntimeException
@@ -165,11 +175,6 @@ public class RetrievalAction extends AbstractAction {
 		} else {
 			logger.warn(csn + " has no valid Email address!");
 		}
-	}
-	
-	@Override
-	void rollback() {
-		throw new NotImplementedException("No rollback implemented for this action");
 	}
 	
 	public DistributedConversionAdapter getDistributedConversionAdapter() {

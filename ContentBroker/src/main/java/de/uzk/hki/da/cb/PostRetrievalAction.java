@@ -24,6 +24,8 @@ import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import de.uzk.hki.da.core.ConfigurationException;
+
 /**
  * 
  * @author Jens Peters
@@ -33,6 +35,16 @@ import org.apache.commons.lang.NotImplementedException;
  */
 
 public class PostRetrievalAction extends AbstractAction {
+
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		// Auto-generated method stub
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+	}
 
 	@Override
 	boolean implementation() {

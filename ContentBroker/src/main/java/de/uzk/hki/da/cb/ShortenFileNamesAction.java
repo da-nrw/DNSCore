@@ -30,6 +30,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
+import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 
@@ -41,6 +42,16 @@ import de.uzk.hki.da.model.Event;
 public class ShortenFileNamesAction extends AbstractAction {
 	
 	Map<String,String> map = new HashMap<String,String>();
+
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		// Auto-generated method stub
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+	}
 
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException {

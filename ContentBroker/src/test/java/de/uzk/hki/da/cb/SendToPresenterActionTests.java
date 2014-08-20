@@ -106,7 +106,7 @@ public class SendToPresenterActionTests {
 	public void testThrowErrorWhenTryingToExecuteWithoutURNSet(){
 		object.setUrn(null);
 		try {
-			action.implementation();
+			action.checkSystemStatePreconditions();
 			fail();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

@@ -54,10 +54,23 @@ public class ScanAction extends AbstractAction{
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
 	@Override
-	boolean implementation() throws IOException {
+	void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
+	}
 
 
+
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+	}
+
+
+
+
+	@Override
+	boolean implementation() throws IOException {
 		
 		job.getConversion_instructions().addAll(
 				generateConversionInstructions(object.getLatestPackage().getFiles()));
@@ -78,6 +91,19 @@ public class ScanAction extends AbstractAction{
 	
 	
 	
+	@Override
+	void rollback() {
+	
+		job.getConversion_instructions().clear();
+		for (ConversionInstruction ci: job.getConversion_instructions()){
+			logger.warn("still exists: "+ci);
+		}
+		
+	}
+
+
+
+
 	/**
 	 * @author Daniel M. de Oliveira
 	 * @param filesArchival
@@ -130,17 +156,6 @@ public class ScanAction extends AbstractAction{
 		return o;
 	}
 	
-	@Override
-	void rollback() {
-
-		job.getConversion_instructions().clear();
-		for (ConversionInstruction ci: job.getConversion_instructions()){
-			logger.warn("still exists: "+ci);
-		}
-		
-	}
-
-
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
 		return distributedConversionAdapter;
 	}

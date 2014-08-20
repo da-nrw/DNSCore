@@ -47,12 +47,19 @@ public class ScanForPresentationAction extends AbstractAction{
 	public ScanForPresentationAction(){}
 	
 	@Override
-	boolean implementation() throws FileNotFoundException {
+	void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 		if (formatScanService==null) throw new ConfigurationException("formatScanService not set");
-		
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+	}
+
+	@Override
+	boolean implementation() throws FileNotFoundException {
 		// check if object package type is set
-		
 		
 		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(pSystem.getSidecarExtensions());
 		if (newestFiles.size() == 0)
@@ -71,6 +78,15 @@ public class ScanForPresentationAction extends AbstractAction{
 	}
 	
 	
+
+	@Override
+	void rollback() {
+		
+		job.getConversion_instructions().clear();
+		for (ConversionInstruction ci: job.getConversion_instructions()){
+			logger.warn("still exists: "+ci);
+		}
+	}
 
 	/**
 	 * Every file in the files list gets tested with respect to if a ConversionPolicies of contractor PRESENTER will apply to it.
@@ -139,15 +155,6 @@ public class ScanForPresentationAction extends AbstractAction{
 		this.formatScanService = formatScanService;
 	}
 	
-	@Override
-	void rollback() {
-		
-		job.getConversion_instructions().clear();
-		for (ConversionInstruction ci: job.getConversion_instructions()){
-			logger.warn("still exists: "+ci);
-		}
-	}
-
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
 		return distributedConversionAdapter;
 	}

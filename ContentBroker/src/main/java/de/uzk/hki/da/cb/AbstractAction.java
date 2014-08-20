@@ -143,13 +143,29 @@ public abstract class AbstractAction implements Runnable {
 		if (object.getLatestPackage().getContainerName()==null) throw new IllegalStateException("containerName of latest package not set");
 	}
 
+	/**
+	 * Implementations should check if an action is wired up correctly in terms of spring configuration. 
+	 * @throws ConfigurationException
+	 */
+	abstract void checkActionSpecificConfiguration() throws ConfigurationException;
+	
+	/**
+	 * Checks the system state wise preconditions which have to be met that the action can operate properly.
+	 * @throws IllegalStateException
+	 */
+	abstract void checkSystemStatePreconditions() throws IllegalStateException;
+	
 	
 	public void run() {
+		
 		
 		logger.info("Running \""+this.getClass().getName()+"\"");
 		logger.debug(LinuxEnvironmentUtils.logHeapSpaceInformation());
 		
-		try {checkCommonPreConditions();} catch (Exception e) {
+		try {
+			checkActionSpecificConfiguration();
+			checkCommonPreConditions();
+		} catch (Exception e) {
 			logger.error(e.getMessage()); return;
 		}
 		

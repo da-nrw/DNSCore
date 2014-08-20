@@ -37,8 +37,20 @@ public class CleanWorkAreaAction extends AbstractAction{
 	
 	
 	@Override
-	boolean implementation() {
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		// Auto-generated method stub
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
+		
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+		
+	}
+
+	@Override
+	boolean implementation() {
 		setKILLATEXIT(true);
 		
 		// to prevent leftover files from irods collection removal we delete the dirs on the filesystem first.
@@ -56,6 +68,11 @@ public class CleanWorkAreaAction extends AbstractAction{
 		return true;
 	}
 	
+	@Override
+	void rollback() throws Exception {
+		throw new NotImplementedException("No rollback implemented for this action");
+	}
+
 	/**
 	 * XXX code duplicated from archivereplicationcheckaction
 	 * @author Daniel M. de Oliveira Jens Peters
@@ -76,12 +93,6 @@ public class CleanWorkAreaAction extends AbstractAction{
 	}
 
 	
-	@Override
-	void rollback() throws Exception {
-		throw new NotImplementedException("No rollback implemented for this action");
-	}
-
-
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
 		return distributedConversionAdapter;
 	}

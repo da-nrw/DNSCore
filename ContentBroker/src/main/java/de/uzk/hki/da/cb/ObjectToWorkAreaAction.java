@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
@@ -39,6 +40,17 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 	
 	public ObjectToWorkAreaAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;}
 	
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		// Auto-generated method stub
+		
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+	}
+
 	@Override
 	boolean implementation() {
 		

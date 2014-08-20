@@ -61,10 +61,19 @@ public class RestructureAction extends AbstractAction{
 	}
 	
 	@Override
-	boolean implementation() throws FileNotFoundException, IOException,
-			UserException, RepositoryException {
+	void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 		if (getFormatScanService()==null) throw new ConfigurationException("formatScanService not set");
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+	}
+
+	@Override
+	boolean implementation() throws FileNotFoundException, IOException,
+			UserException, RepositoryException {
 		
 		deleteUnwantedFiles(object.getPath().toFile()); // unwanted content can be configured in beans-actions.xml
 		

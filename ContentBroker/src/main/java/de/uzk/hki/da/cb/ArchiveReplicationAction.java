@@ -46,9 +46,18 @@ public class ArchiveReplicationAction extends AbstractAction {
 	private GridFacade gridRoot;
 	
 	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		if (gridRoot==null) throw new ConfigurationException("gridRoot not set");
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+	}
+
+	@Override
 	public
 	boolean implementation() {
-		if (gridRoot==null) throw new ConfigurationException("gridRoot not set");
 		
 		String filename = object.getIdentifier() + ".pack_" + object.getLatestPackage().getName() + ".tar";
 		Path target = Path.make(object.getContractor().getShort_name(), object.getIdentifier(), filename);
@@ -71,6 +80,11 @@ public class ArchiveReplicationAction extends AbstractAction {
 		return true;
 	}
 	
+	@Override
+	void rollback() {
+		throw new NotImplementedException("No rollback implemented for this action");
+	}
+
 	/**
 	 * @author Jens Peters
 	 * @author Daniel M. de Oliveira
@@ -90,11 +104,6 @@ public class ArchiveReplicationAction extends AbstractAction {
 	}
 	
 	
-	@Override
-	void rollback() {
-		throw new NotImplementedException("No rollback implemented for this action");
-	}
-
 	public GridFacade getGridRoot() {
 		return gridRoot;
 	}

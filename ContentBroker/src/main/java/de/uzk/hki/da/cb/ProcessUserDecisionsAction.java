@@ -30,8 +30,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
+import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.utils.C;
 
 /**
  * Tests if a user has made a choice for a decision request issued automatically by the system.
@@ -43,15 +45,29 @@ public class ProcessUserDecisionsAction extends AbstractAction{
 	static final Logger logger = LoggerFactory.getLogger(ProcessUserDecisionsAction.class);
 	
 	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		// Auto-generated method stub
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+	}
+
+	@Override
 	boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException, JDOMException,
 			ParserConfigurationException, SAXException {
 		
-		// todo delete conversion instructions if migration not allowed
-		
-		job.getConversion_instructions().clear();
-		
-		logger.debug("abcS");
+		if (job.getAnswer().isEmpty()) {
+			return false;
+		} 
+		else if (job.getAnswer().equals(C.YES)){
+		} 
+		else {
+			job.getConversion_instructions().clear();
+		}
+		this.setEndStatus(C.INGEST_REGISTER_URN_ACTION_START_STATUS);
 		return false;
 	}
 

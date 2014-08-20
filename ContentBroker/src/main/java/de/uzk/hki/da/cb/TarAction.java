@@ -54,8 +54,17 @@ public class TarAction extends AbstractAction {
 	public TarAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
 	
 	@Override
-	boolean implementation() throws IOException {
+	void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+	}
+
+	@Override
+	boolean implementation() throws IOException {
 		
 		tar = localNode.getWorkAreaRootPath() + "/work/" +
 				object.getContractor().getShort_name() + "/" + object.getIdentifier() 

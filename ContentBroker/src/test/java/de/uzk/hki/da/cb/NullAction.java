@@ -21,6 +21,8 @@ package de.uzk.hki.da.cb;
 
 import org.hibernate.Session;
 
+import de.uzk.hki.da.core.ConfigurationException;
+
 /**
  * The Class NullAction.
  * @author Daniel M. de Oliveira
@@ -61,5 +63,17 @@ public class NullAction extends AbstractAction{
 
 	public void setSession(Session session) {
 		this.session = session;
+	}
+
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// TODO Auto-generated method stub
+		
 	}
 }

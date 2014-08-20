@@ -46,9 +46,23 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	private File publicDir;
 	private File instDir;
 	
+	/**
+	 * @
+	 */
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
+	}
+
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+	}
+
+
 	@Override
 	boolean implementation() throws IOException {
-		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 		
 		String dipName = object.getContractor().getShort_name() + "/" + object.getIdentifier()+"_"+object.getLatestPackage().getId();
 		publicDir = Path.makeFile(localNode.getWorkAreaRootPath(),"pips","public",dipName);
@@ -75,6 +89,14 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 		
 		registerPIPSforReplication(dipName);
 		return true;
+	}
+
+
+	@Override
+	void rollback() throws Exception {
+		if (publicDir.exists()) FileUtils.deleteDirectory(publicDir);
+		if (instDir.exists()) FileUtils.deleteDirectory(instDir);
+		logger.info("@Admin: You can safely roll back this job to status "+this.getStartStatus()+" now.");
 	}
 
 
@@ -149,14 +171,6 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	}
 	
 	
-
-	@Override
-	void rollback() throws Exception {
-		if (publicDir.exists()) FileUtils.deleteDirectory(publicDir);
-		if (instDir.exists()) FileUtils.deleteDirectory(instDir);
-		logger.info("@Admin: You can safely roll back this job to status "+this.getStartStatus()+" now.");
-	}
-
 
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
 		return distributedConversionAdapter;

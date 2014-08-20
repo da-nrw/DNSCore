@@ -58,19 +58,35 @@ public class CreateEDMAction extends AbstractAction {
 	private RepositoryFacade repositoryFacade;
 	private Map<String,String> edmMappings;
 
+	/**
+	 * @
+	 */
 	@Override
-	boolean implementation() throws IOException, RepositoryException {
-		if (pSystem.getUrisCho()==null||pSystem.getUrisCho().isEmpty()) throw new ConfigurationException("choBaseUri not set");
-		if (pSystem.getUrisAggr()==null||pSystem.getUrisAggr().isEmpty()) throw new ConfigurationException("aggrBaseUri not set");
-		if (pSystem.getUrisLocal()==null||pSystem.getUrisLocal().isEmpty()) throw new ConfigurationException("localBaseUri not set");
+	void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (repositoryFacade == null) 
 			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
+	}
+
+
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		if (pSystem.getUrisCho()==null||pSystem.getUrisCho().isEmpty()) throw new IllegalStateException("choBaseUri not set");
+		if (pSystem.getUrisAggr()==null||pSystem.getUrisAggr().isEmpty()) throw new IllegalStateException("aggrBaseUri not set");
+		if (pSystem.getUrisLocal()==null||pSystem.getUrisLocal().isEmpty()) throw new IllegalStateException("localBaseUri not set");
 		if (edmMappings == null)
-			throw new ConfigurationException("edmMappings not set.");
+			throw new IllegalStateException("edmMappings not set.");
 		for (String filePath:edmMappings.values())
 			if (!new File(filePath).exists())
-				throw new ConfigurationException("mapping file "+filePath+" does not exist");
+				throw new IllegalStateException("mapping file "+filePath+" does not exist");
 		
+		
+	}
+
+
+
+	@Override
+	boolean implementation() throws IOException, RepositoryException {
 		
 		String objectId = object.getIdentifier();
 		
@@ -108,6 +124,13 @@ public class CreateEDMAction extends AbstractAction {
 
 	
 	
+	@Override
+	void rollback() throws Exception {
+		throw new NotImplementedException();	
+	}
+
+
+
 	private String generateEDM(String objectId, String xsltFile,
 			InputStream metadataStream) throws FileNotFoundException {
 		
@@ -181,11 +204,6 @@ public class CreateEDMAction extends AbstractAction {
 	
 	
 	
-	@Override
-	void rollback() throws Exception {
-		throw new NotImplementedException();	
-	}
-
 	/**
 	 * Gets the map that describes which XSLTs should be
 	 * used to convert Metadata to EDM.

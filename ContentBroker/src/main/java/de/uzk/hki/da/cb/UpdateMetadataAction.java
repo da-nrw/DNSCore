@@ -94,6 +94,16 @@ public class UpdateMetadataAction extends AbstractAction {
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 
 	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		// Auto-generated method stub
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+	}
+
+	@Override
 	public boolean implementation() throws IOException {
 		
 		if(!isPresMode()) {

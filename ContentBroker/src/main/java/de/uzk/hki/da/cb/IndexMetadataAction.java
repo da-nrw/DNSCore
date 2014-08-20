@@ -66,16 +66,28 @@ public class IndexMetadataAction extends AbstractAction {
 	private String contextUriPrefix;
 
 	@Override
-	boolean implementation() throws RepositoryException, IOException {
-		setKILLATEXIT(true);
+	void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (getRepositoryFacade() == null) 
 			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
+	}
+
+
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
 		if (indexName == null) 
-			throw new ConfigurationException("Index name not set. Make sure the action is configured properly");
+			throw new IllegalStateException("Index name not set. Make sure the action is configured properly");
 		if (getFrames()==null)
-			throw new ConfigurationException("Frames not set.");
+			throw new IllegalStateException("Frames not set.");
 		if (getTestContractors()==null)
-			throw new ConfigurationException("testContractors not set");
+			throw new IllegalStateException("testContractors not set");
+	}
+
+
+
+	@Override
+	boolean implementation() throws RepositoryException, IOException {
+		setKILLATEXIT(true);
 		
 			for (String framePath : getFrames().keySet()) {
 				if (!new File(framePath).exists())
@@ -98,6 +110,14 @@ public class IndexMetadataAction extends AbstractAction {
 	
 
 	
+	@Override
+	void rollback() throws Exception {
+		throw new NotImplementedException();
+	}
+
+
+
+
 	/**
 	 * use test index for test packages
 	 * @param originalIndexName
@@ -171,11 +191,6 @@ public class IndexMetadataAction extends AbstractAction {
 	
 	
 	
-	@Override
-	void rollback() throws Exception {
-		throw new NotImplementedException();
-	}
-
 	/**
 	 * Get the name of the index
 	 * the data will be indexed in.

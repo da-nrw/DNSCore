@@ -28,6 +28,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.format.FormatScanService;
 import de.uzk.hki.da.format.JhoveScanService;
 import de.uzk.hki.da.model.DAFile;
@@ -43,6 +44,17 @@ public class CheckFormatsAction extends AbstractAction {
 	private FormatScanService formatScanService;
 
 	private JhoveScanService jhoveScanService;
+
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		// Auto-generated method stub
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+		
+	}
 
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException {
@@ -81,6 +93,11 @@ public class CheckFormatsAction extends AbstractAction {
 		return true;
 	}
 
+	@Override
+	void rollback() throws Exception {
+		throw new NotImplementedException("No rollback implemented for this action");
+	}
+
 	/**
 	 * @return
 	 */
@@ -107,11 +124,6 @@ public class CheckFormatsAction extends AbstractAction {
 			f.setPathToJhoveOutput(jhoveOut);
 			logger.debug("Path to jhove output for file \""+f+"\": " + jhoveOut);
 		}
-	}
-
-	@Override
-	void rollback() throws Exception {
-		throw new NotImplementedException("No rollback implemented for this action");
 	}
 
 	public FormatScanService getFormatScanService() {

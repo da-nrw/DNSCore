@@ -32,6 +32,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 
+import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
@@ -72,6 +73,16 @@ public class UnpackAction extends AbstractAction {
 	
 	private IngestGate ingestGate;
 	
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		// Auto-generated method stub
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+	}
+
 	boolean implementation() throws IOException{
 		
 		Path absoluteSIPPath = Path.make(
@@ -86,7 +97,6 @@ public class UnpackAction extends AbstractAction {
 		
 		String sipInForkPath = copySIPToWorkArea(absoluteSIPPath);
 		unpack(new File(sipInForkPath),object.getPath().toString());
-		
 		
 		throwUserExceptionIfDuplicatesExist();
 		throwUserExceptionIfNotBagitConsistent();
@@ -103,6 +113,20 @@ public class UnpackAction extends AbstractAction {
 
 
 	
+	@Override
+	void rollback() throws IOException {
+		FileUtils.deleteDirectory(Path.make(object.getPath()).toFile());
+		
+		new File(localNode.getWorkAreaRootPath() + object.getContractor().getShort_name() + "/" + 
+				object.getLatestPackage().getContainerName()).delete();
+		
+		object.getLatestPackage().getFiles().clear();
+		job.setRep_name("");
+	}
+
+
+
+
 	private void throwUserExceptionIfNotPremisConsistent() throws IOException {
 		
 		try {
@@ -382,17 +406,6 @@ public class UnpackAction extends AbstractAction {
 
 
 	
-
-	@Override
-	void rollback() throws IOException {
-		FileUtils.deleteDirectory(Path.make(object.getPath()).toFile());
-		
-		new File(localNode.getWorkAreaRootPath() + object.getContractor().getShort_name() + "/" + 
-				object.getLatestPackage().getContainerName()).delete();
-		
-		object.getLatestPackage().getFiles().clear();
-		job.setRep_name("");
-	}
 
 	public IngestGate getIngestGate() {
 		return ingestGate;

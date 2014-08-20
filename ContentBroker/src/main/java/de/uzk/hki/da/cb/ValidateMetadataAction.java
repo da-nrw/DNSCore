@@ -30,6 +30,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.jdom.JDOMException;
 import org.xml.sax.SAXException;
 
+import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.metadata.MetadataStructure;
@@ -55,6 +56,18 @@ public class ValidateMetadataAction extends AbstractAction {
 	private boolean packageTypeInObjectWasSetBeforeRunningAction=false;
 	private MetadataStructureFactory msf = new MetadataStructureFactory();
 	
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		// Auto-generated method stub
+		
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+		
+	}
+
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException {
@@ -102,6 +115,14 @@ public class ValidateMetadataAction extends AbstractAction {
 		}
 		
 		return true;
+	}
+
+	@Override
+	void rollback() throws Exception {
+		if (!packageTypeInObjectWasSetBeforeRunningAction){
+			object.setMetadata_file(null);
+			object.setPackage_type(null);
+		}
 	}
 
 	/**
@@ -164,14 +185,6 @@ public class ValidateMetadataAction extends AbstractAction {
 		return result;
 	}
 	
-	
-	@Override
-	void rollback() throws Exception {
-		if (!packageTypeInObjectWasSetBeforeRunningAction){
-			object.setMetadata_file(null);
-			object.setPackage_type(null);
-		}
-	}
 	
 	public void setMsf(MetadataStructureFactory msf) {
 		this.msf = msf;

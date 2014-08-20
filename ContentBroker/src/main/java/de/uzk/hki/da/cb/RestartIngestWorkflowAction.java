@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
+import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.format.JhoveScanService;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.Path;
@@ -20,6 +21,18 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 
 	private JhoveScanService jhoveScanService;
 	
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		// Auto-generated method stub
+		
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+		
+	}
+
 	@Override
 	boolean implementation() {
 		
@@ -47,6 +60,11 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 		return true;
 	}
 	
+	@Override
+	void rollback() throws Exception {
+		throw new NotImplementedException("No rollback implemented for this action");
+	}
+
 	/**
 	 * 
 	 * Deletes the AIP tar file (in working area) if it exists
@@ -142,11 +160,6 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 		}
 	}
 	
-	@Override
-	void rollback() throws Exception {
-		throw new NotImplementedException("No rollback implemented for this action");
-	}
-
 	public JhoveScanService getJhoveScanService() {
 		return jhoveScanService;
 	}

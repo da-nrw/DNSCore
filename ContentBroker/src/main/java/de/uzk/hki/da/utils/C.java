@@ -63,6 +63,8 @@ public class C {
 	public static final String QUEUE_TO_CLIENT = "CB.CLIENT";
 	public static final String PREMIS_XSD_PATH = "conf/premis.xsd";
 	public static final String XLINK_XSD_PATH = "conf/xlink.xsd";
+	public static final String INGEST_REGISTER_URN_ACTION_START_STATUS = "150";
+	public static final String YES = "YES";
 	
 	
 }

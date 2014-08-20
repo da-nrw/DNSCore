@@ -34,6 +34,7 @@ import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.utils.C;
 
 /**
  * @author Daniel M. de Oliveira
@@ -46,6 +47,7 @@ public class ProcessUserDecisionsActionTests {
 				RepositoryException, JDOMException, ParserConfigurationException, SAXException{
 		
 		Job job = new Job();
+		job.setAnswer("NO");
 		ConversionInstruction ins = new ConversionInstruction();
 		job.getConversion_instructions().add(ins);
 		
@@ -53,20 +55,35 @@ public class ProcessUserDecisionsActionTests {
 		action.setJob(job);
 		action.implementation();
 		assertTrue(job.getConversion_instructions().isEmpty());
+		assertEquals(C.INGEST_REGISTER_URN_ACTION_START_STATUS,action.getEndStatus());
 	}
 	
 	@Test
-	public void testLeaveConversionInstructionsIfAnswerIsPositive() 
+	public void testContinueConversionIfAnswerIsPositive() 
 			throws FileNotFoundException, UserException, IOException, 
 				RepositoryException, JDOMException, ParserConfigurationException, SAXException{
 		
-//		Job job = new Job();
-//		ConversionInstruction ins = new ConversionInstruction();
-//		job.getConversion_instructions().add(ins);
-//		ProcessUserDecisionsAction action = new ProcessUserDecisionsAction();
-//		action.setJob(job);
-//		action.implementation();
-//		assertFalse(job.getConversion_instructions().isEmpty());
+		Job job = new Job();
+		job.setAnswer("YES");
+		ConversionInstruction ins = new ConversionInstruction();
+		job.getConversion_instructions().add(ins);
+		ProcessUserDecisionsAction action = new ProcessUserDecisionsAction();
+		action.setJob(job);
+		action.implementation();
+		assertFalse(job.getConversion_instructions().isEmpty());
+		assertEquals(C.INGEST_REGISTER_URN_ACTION_START_STATUS,action.getEndStatus());
+	}
+	
+	@Test
+	public void procedeWithoutDoingAnythingWhenNoAnswer() throws FileNotFoundException, UserException, IOException, RepositoryException, JDOMException, ParserConfigurationException, SAXException{
+		Job job = new Job();
+		job.setAnswer("");
+		ConversionInstruction ins = new ConversionInstruction();
+		job.getConversion_instructions().add(ins);
+		ProcessUserDecisionsAction action = new ProcessUserDecisionsAction();
+		action.setJob(job);
+		assertFalse(action.implementation());
+		assertFalse(job.getConversion_instructions().isEmpty());
 	}
 	
 	

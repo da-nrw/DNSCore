@@ -30,6 +30,7 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.commons.io.FileUtils;
 
+import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.format.JhoveScanService;
 import de.uzk.hki.da.metadata.PremisXmlJhoveExtractor;
 import de.uzk.hki.da.metadata.PremisXmlReader;
@@ -52,6 +53,17 @@ public class CreatePremisAction extends AbstractAction {
 	private JhoveScanService jhoveScanService;
 	
 	private List<Event> addedEvents = new ArrayList<Event>();
+
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		// Auto-generated method stub
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		// Auto-generated method stub
+		
+	}
 
 	@Override
 	public boolean implementation() throws IOException	{

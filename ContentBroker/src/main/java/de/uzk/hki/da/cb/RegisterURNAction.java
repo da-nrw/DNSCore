@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.shared.ConfigException;
 
+import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.metadata.MetsURNXmlReader;
@@ -45,34 +46,6 @@ import de.uzk.hki.da.model.Object;
 public class RegisterURNAction extends AbstractAction {
 	
 	static final Logger logger = LoggerFactory.getLogger(RegisterURNAction.class);
-	
-	@Override
-	boolean implementation() {
-		if (pSystem.getUrnNameSpace()==null) throw new ConfigException("URN NameSpace parameter not set!");
-		
-		if (object.isDelta())
-			logger.info("Object URN: " + object.getUrn());
-		else {
-			String urn;
-
-			String premisUrn = extractURNFromPremisFile();
-			if (premisUrn != null)
-				urn = premisUrn;
-			else {				
-				String metsUrn = extractURNFromMetsFile();
-				
-				if (metsUrn != null)
-					urn = metsUrn;
-				else				
-					urn = pSystem.getUrnNameSpace() + "-" + object.getIdentifier();
-			}
-			
-			logger.info("Object URN: " + urn);
-			object.setUrn(urn);
-		}	
-		
-		return true;
-	}	
 	
 	/**
 	 * @author Thomas Kleinke
@@ -136,6 +109,43 @@ public class RegisterURNAction extends AbstractAction {
 		return null;
 	}
 	
+
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		// Auto-generated method stub
+	}
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		if (pSystem.getUrnNameSpace()==null) throw new IllegalStateException("URN NameSpace parameter not set!");
+	}
+
+	@Override
+	boolean implementation() {
+		
+		if (object.isDelta())
+			logger.info("Object URN: " + object.getUrn());
+		else {
+			String urn;
+	
+			String premisUrn = extractURNFromPremisFile();
+			if (premisUrn != null)
+				urn = premisUrn;
+			else {				
+				String metsUrn = extractURNFromMetsFile();
+				
+				if (metsUrn != null)
+					urn = metsUrn;
+				else				
+					urn = pSystem.getUrnNameSpace() + "-" + object.getIdentifier();
+			}
+			
+			logger.info("Object URN: " + urn);
+			object.setUrn(urn);
+		}	
+		
+		return true;
+	}
 
 	@Override
 	void rollback() {

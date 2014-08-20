@@ -94,6 +94,28 @@ public class SendToPresenterAction extends AbstractAction {
 	
 	private DCReader dcReader;
 	
+	@Override
+	void checkActionSpecificConfiguration() throws ConfigurationException {
+		if (repositoryFacade == null) 
+			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
+		
+	}
+
+
+	@Override
+	void checkSystemStatePreconditions() throws IllegalStateException {
+		if (viewerUrls == null)
+			throw new IllegalStateException("viewerUrls is not set.");
+		if (fileFilter == null)
+			throw new IllegalStateException("fileFilter is not set");
+		if (testContractors == null)
+			throw new IllegalStateException("testContractors is not set");
+		
+		if (object.getUrn()==null||object.getUrn().isEmpty())
+			throw new RuntimeException("urn not set");
+	}
+
+
 	/**
 	 * Preconditions:
 	 * There can be two pips at
@@ -105,19 +127,6 @@ public class SendToPresenterAction extends AbstractAction {
 	 */
 	@Override
 	public boolean implementation() throws IOException {
-		if (repositoryFacade == null) 
-			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
-		if (viewerUrls == null)
-			throw new ConfigurationException("viewerUrls is not set.");
-		if (fileFilter == null)
-			throw new ConfigurationException("fileFilter is not set");
-		if (testContractors == null)
-			throw new ConfigurationException("testContractors is not set");
-		
-		if (object.getUrn()==null||object.getUrn().isEmpty())
-			throw new RuntimeException("urn not set");
-		
-		
 
 		purgeObjectsIfExist();
 		buildMapWithOriginalFilenamesForLabeling();
