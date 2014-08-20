@@ -3,6 +3,7 @@
 -- # @author : Daniel M. de Oliveira
 -- #   under partial usage of apgdiff 2.4
 
+BEGIN;
 drop sequence user_id_seq;
 alter table contractors rename to users;
 alter table users drop column admin;
@@ -150,6 +151,8 @@ ALTER TABLE queue
 ALTER TABLE second_stage_scans
 	ALTER COLUMN id DROP DEFAULT;
 
+delete from conversion_queue where job_id not in (select id from queue);
+
 ALTER TABLE conversion_policies
 	ADD CONSTRAINT conversion_policies_pkey PRIMARY KEY (id);
 
@@ -269,4 +272,4 @@ ALTER TABLE user_role
 
 ALTER TABLE user_role
 	ADD CONSTRAINT fk143bf46a70dc1073 FOREIGN KEY (role_id) REFERENCES role(id);
-
+ROLLBACK;
