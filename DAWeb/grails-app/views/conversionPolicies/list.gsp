@@ -24,7 +24,7 @@
 				<thead>
 					<tr>
 					
-						<th><g:message code="conversionPolicies.contractor.label" default="Zielsystem" /></th>
+						<th><g:message code="conversionPolicies.contractor.label" default="ID" /></th>
 					
 						<th><g:message code="conversionPolicies.conversion_routine.label" default="Konversionsroutine" /></th>
 					
@@ -38,7 +38,7 @@
 				<g:each in="${conversionPoliciesInstanceList}" status="i" var="conversionPoliciesInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${conversionPoliciesInstance.id}">${fieldValue(bean: conversionPoliciesInstance, field: "contractor")}</g:link></td>
+						<td><g:link action="show" id="${conversionPoliciesInstance.id}">${conversionPoliciesInstance.id}</g:link></td>
 					
 						<td>${fieldValue(bean: conversionPoliciesInstance, field: "conversion_routine")}</td>
 					
