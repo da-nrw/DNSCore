@@ -152,6 +152,12 @@ ALTER TABLE second_stage_scans
 	ALTER COLUMN id DROP DEFAULT;
 
 delete from conversion_queue where job_id not in (select id from queue);
+delete from conversion_queue where source_file_id not in (select id from dafiles);
+delete from dafiles where pkg_id not in (select id from packages);
+delete from events where pkg_id not in (select id from packages);
+delete from events where type in ('CONVERT','COPY') and source_file_id not in (select id from dafiles);
+delete from objects_packages where objects_data_pk not in (select data_pk from objects);
+delete from objects_packages where packages_id not in (select id from packages);
 
 ALTER TABLE conversion_policies
 	ADD CONSTRAINT conversion_policies_pkey PRIMARY KEY (id);
@@ -181,8 +187,7 @@ ALTER TABLE packages
 	ADD CONSTRAINT packages_pkey PRIMARY KEY (id);
 
 ALTER TABLE preservation_system
-	ADD CONSTRAINT preservation_system_pkey PRIMARY KEY (id);
-
+	ADD CONSTRAINT preservation_system_pkey PRIMARY KEY (id); 
 ALTER TABLE queue
 	ADD CONSTRAINT queue_pkey PRIMARY KEY (id);
 
