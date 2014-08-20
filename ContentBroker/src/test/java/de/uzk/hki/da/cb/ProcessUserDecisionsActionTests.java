@@ -27,6 +27,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.jdom.JDOMException;
+import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -41,19 +42,28 @@ import de.uzk.hki.da.utils.C;
  */
 public class ProcessUserDecisionsActionTests {
 	
+	
+	private Job job;
+	private ProcessUserDecisionsAction action;
+
+	@Before
+	public void test(){
+		
+		job = new Job();
+		ConversionInstruction ins = new ConversionInstruction();
+		job.getConversion_instructions().add(ins);
+		action = new ProcessUserDecisionsAction();
+		action.setJob(job);
+		
+	}
+	
 	@Test
 	public void testRemoveConversionInstructionsIfAnswerIsNegative() 
 			throws FileNotFoundException, UserException, IOException, 
 				RepositoryException, JDOMException, ParserConfigurationException, SAXException{
 		
-		Job job = new Job();
 		job.setAnswer("NO");
-		ConversionInstruction ins = new ConversionInstruction();
-		job.getConversion_instructions().add(ins);
-		
-		ProcessUserDecisionsAction action = new ProcessUserDecisionsAction();
-		action.setJob(job);
-		action.implementation();
+		assertTrue(action.implementation());
 		assertTrue(job.getConversion_instructions().isEmpty());
 		assertEquals(C.INGEST_REGISTER_URN_ACTION_START_STATUS,action.getEndStatus());
 	}
@@ -63,25 +73,16 @@ public class ProcessUserDecisionsActionTests {
 			throws FileNotFoundException, UserException, IOException, 
 				RepositoryException, JDOMException, ParserConfigurationException, SAXException{
 		
-		Job job = new Job();
 		job.setAnswer("YES");
-		ConversionInstruction ins = new ConversionInstruction();
-		job.getConversion_instructions().add(ins);
-		ProcessUserDecisionsAction action = new ProcessUserDecisionsAction();
-		action.setJob(job);
-		action.implementation();
+		assertTrue(action.implementation());
 		assertFalse(job.getConversion_instructions().isEmpty());
 		assertEquals(C.INGEST_REGISTER_URN_ACTION_START_STATUS,action.getEndStatus());
 	}
 	
 	@Test
 	public void procedeWithoutDoingAnythingWhenNoAnswer() throws FileNotFoundException, UserException, IOException, RepositoryException, JDOMException, ParserConfigurationException, SAXException{
-		Job job = new Job();
+
 		job.setAnswer("");
-		ConversionInstruction ins = new ConversionInstruction();
-		job.getConversion_instructions().add(ins);
-		ProcessUserDecisionsAction action = new ProcessUserDecisionsAction();
-		action.setJob(job);
 		assertFalse(action.implementation());
 		assertFalse(job.getConversion_instructions().isEmpty());
 	}

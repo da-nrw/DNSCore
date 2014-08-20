@@ -65,6 +65,8 @@ public class C {
 	public static final String XLINK_XSD_PATH = "conf/xlink.xsd";
 	public static final String INGEST_REGISTER_URN_ACTION_START_STATUS = "150";
 	public static final String YES = "YES";
+	public static final String NO = "NO";
+	public static final String MIGRATION_ALLOWED = "MIGRATION_ALLOWED?";
 	
 	
 }

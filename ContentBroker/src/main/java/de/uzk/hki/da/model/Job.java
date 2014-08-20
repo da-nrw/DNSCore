@@ -58,6 +58,8 @@ public class Job {
 	/** The status. */
 	private String status;
 
+	private String question = "";
+	
 	private String answer = "";
 	
 	/** 
@@ -399,5 +401,14 @@ public class Job {
 	public void setAnswer(String answer) {
 		if (answer==null) answer="";
 		this.answer = answer;
+	}
+
+	public String getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(String question) {
+		if (question==null) question="";
+		this.question = question;
 	}
 }
