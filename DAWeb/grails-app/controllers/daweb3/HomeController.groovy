@@ -36,7 +36,11 @@ class HomeController {
 		User user = User.findByUsername(username)
 		
 		if (user.authorities.any { it.authority == "ROLE_PSADMIN" 
-								it.authority == "ROLE_NODEADMIN" }) {
+							}) {
+			admin = 1;
+		}
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN"
+							}) {
 			admin = 1;
 		}
 		

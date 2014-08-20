@@ -17,12 +17,12 @@ class ConversionPoliciesController {
         [conversionPoliciesInstanceList: ConversionPolicies.list(params), conversionPoliciesInstanceTotal: ConversionPolicies.count()]
     }
 
-	@Secured(['ROLE_DAADMIN'])
+	@Secured(['ROLE_PSADMIN'])
     def create() {
         [conversionPoliciesInstance: new ConversionPolicies(params)]
 	}
 
-	@Secured(['ROLE_DAADMIN'])
+	@Secured(['ROLE_PSADMIN'])
     def save() {
 		 def conversionPoliciesInstance = new ConversionPolicies(params)
         if (!conversionPoliciesInstance.save(flush: true)) {

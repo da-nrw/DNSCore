@@ -147,7 +147,9 @@ grails.plugin.springsecurity.interceptUrlMap = [
 	'/info/**':       ['ROLE_CONTRACTOR'],
 	'/conversionPolicies/**':       ['ROLE_CONTRACTOR'],
 	'/cbtalk/**':       ['ROLE_NODEADMIN'],
-	'/users/**':         ['ROLE_PSADMIN'],
+	'/user/**':         ['ROLE_PSADMIN'],
+	'/userRole/**':         ['ROLE_PSADMIN'],
+	'/role/**':         ['ROLE_PSADMIN']
  ]
 // Uncomment and edit the following lines to start using Grails encoding & escaping improvements
 
