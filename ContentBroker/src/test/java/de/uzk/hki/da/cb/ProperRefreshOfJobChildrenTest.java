@@ -65,8 +65,8 @@ public class ProperRefreshOfJobChildrenTest extends Thread{
 		"INSERT INTO users (id,short_name) VALUES (1,'TEST')",
 		"INSERT INTO objects (data_pk,identifier,object_state,published_flag) VALUES (1,'ID','0',1)",
 		"INSERT INTO packages (id,name) VALUES (1,'1')",
-		"INSERT INTO queue (id,objects_id,user_id,status,initial_node) VALUES (1,1,1,'240','vm1')",
-		"INSERT INTO queue (id,objects_id,user_id,status,initial_node,parent_id) VALUES (2,1,1,'580','vm2',1)",
+		"INSERT INTO queue (id,objects_id,status,initial_node) VALUES (1,1,'240','vm1')",
+		"INSERT INTO queue (id,objects_id,status,initial_node,parent_id) VALUES (2,1,'580','vm2',1)",
 		"INSERT INTO conversion_queue (id,job_id) VALUES (1,2)",
 		};
 		

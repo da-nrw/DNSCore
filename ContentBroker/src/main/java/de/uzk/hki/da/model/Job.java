@@ -89,9 +89,9 @@ public class Job {
 	
 	
 	/** The contractor. */
-	@ManyToOne
-	@PrimaryKeyJoinColumn( name = "user_id" )
-	private User user;
+//	@ManyToOne
+//	@PrimaryKeyJoinColumn( name = "user_id" )
+//	private User user;
 	
 	/** The children. */
 	@OneToMany (orphanRemoval = true )
@@ -131,7 +131,7 @@ public class Job {
 		this.status=status;
 		this.rep_name=rhs.rep_name;
 		this.responsibleNodeName=rhs.responsibleNodeName;
-		this.user = rhs.user;
+//		this.user = rhs.user;
 	}
 
 	

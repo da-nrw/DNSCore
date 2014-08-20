@@ -57,7 +57,7 @@ public class CentralDatabaseDAOTests {
 		"INSERT INTO objects (data_pk,initial_node,urn,orig_name,date_created,date_modified,zone," +
 			"published_flag,user_id,object_state) VALUES ('109735','da-nrw-vm3.hki.uni-koeln.de'," +
 			"'urn+nbn+de+danrw-1-2012113022773','test_object_double','1354276007948','1354276113286','da-nrw','0','1','100')",
-		"INSERT INTO queue (id,objects_id,user_id,status) VALUES (1,109735,1,'110')",
+		"INSERT INTO queue (id,objects_id,status) VALUES (1,109735,'110')",
 		"INSERT INTO preservation_system (id,sidecar_extensions) VALUES (1,'xmp')",
 	};
 	
