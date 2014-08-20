@@ -29,6 +29,8 @@
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 				<li><a class="list" href="${createLink(controller: 'conversionPolicies', action: 'index')}">Conversion Policies</a></li>
+				<li><a class="list" href="${createLink(controller: 'user', action: 'index')}">Users</a></li>
+				<li><a class="list" href="${createLink(controller: 'role', action: 'index')}">Roles</a></li>
 			</ul>
 		</div>
     <div class="body">

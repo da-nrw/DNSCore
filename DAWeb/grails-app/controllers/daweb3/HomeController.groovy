@@ -35,7 +35,12 @@ class HomeController {
 		def admin = 0;
 		User user = User.findByUsername(username)
 		
-		if (user.authorities.any { it.authority == "ROLE_DAADMIN" }) {
+		if (user.authorities.any { it.authority == "ROLE_PSADMIN" 
+							}) {
+			admin = 1;
+		}
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN"
+							}) {
 			admin = 1;
 		}
 		

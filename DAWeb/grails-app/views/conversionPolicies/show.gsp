@@ -13,6 +13,7 @@
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
+				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
 		<div id="show-conversionPolicies" class="content scaffold-show" role="main">
@@ -22,11 +23,11 @@
 			</g:if>
 			<ol class="property-list conversionPolicies">
 			
-				<g:if test="${conversionPoliciesInstance?.contractor}">
+				<g:if test="${conversionPoliciesInstance?.id}">
 				<li class="fieldcontain">
-					<span id="contractor-label" class="property-label"><g:message code="conversionPolicies.contractor.label" default="Zielsystem" /></span>
+					<span id="contractor-label" class="property-label"><g:message code="conversionPolicies.contractor.label" default="id" /></span>
 					
-						<span class="property-value" aria-labelledby="contractor-label">${conversionPoliciesInstance?.contractor?.encodeAsHTML()}</span>
+						<span class="property-value" aria-labelledby="contractor-label">${conversionPoliciesInstance?.id?.encodeAsHTML()}</span>
 					
 				</li>
 				</g:if>
@@ -48,9 +49,9 @@
 					
 				</li>
 				</g:if>
-					<g:if test="${conversionPoliciesInstance?.conversionRoutine?.target_suffix}">
+					<g:if test="${conversionPoliciesInstance?.conversion_routine?.target_suffix}">
 				<li class="fieldcontain">
-					<span id="source_format-label" class="property-label"><g:message code="conversionPolicies.conversionRoutine.target_suffix.label" default="Zielformat" /></span>
+					<span id="source_format-label" class="property-label"><g:message code="conversionPolicies.conversion_routine.target_suffix.label" default="Zielformat" /></span>
 					
 						<span class="property-value" aria-labelledby="source_format-label"><g:fieldValue bean="${conversionRoutine}" field="target_suffix"/></span>
 					
