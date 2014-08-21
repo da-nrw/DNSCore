@@ -1,11 +1,7 @@
 #!/bin/bash
 
-#HOWTO Create Contractor
+#Create folders need on the Storage level
 #Contentbroker User must have read access to all directories created.
-#This is being done by this script.
-
-#don't forget to: (examples!)
-# insert into contractors (short_name,email_contact,id,admin) values ('TEST1','da-nrw-notifier@uni-koeln.de',7,0);
 
 asksure() {
 echo -n "Are you sure (Y/N)? "
@@ -64,5 +60,4 @@ ichmod -M own contentbroker /da-nrw/pips/public/$1
 ichmod -M own contentbroker /da-nrw/pips/institution/$1
 echo -e "\nUSER $1 created!"
 echo "Don't forget to"
-echo "insert into contractors (short_name,email_contact,id,admin) values ('$1','email@rechner.de',ID,0);"
-echo "And to configure ingest and retrieval folders as needed by ContentBroker."
+echo "To configure ingest and retrieval folders as needed by ContentBroker."
