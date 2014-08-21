@@ -56,10 +56,12 @@ Please execute after doing graceful shutdown
 Users in Role ROLE_PSADMIN are able to adminster Users (CRUD), Roles (CRUD) and membership of Users in certain Roles. 
 At present we suppose to use the Roles:
 
+<pre>
 ROLE_PSADMIN The Admin of the preservational system
 ROLE_CONTRACTOR The standard Role of contractors
 ROLE_SYSTEM Agents (TBD), not used yet
 ROLE_NODEADMIN The Admin of a node in the preservational system's domain. 
+</pre>
 
 #### Edit ConversionRoutines
 
