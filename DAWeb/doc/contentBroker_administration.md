@@ -77,7 +77,7 @@ The PIP is being built on basis of the latest version, including all deltas. Thi
 For convinence Admins can perform a rebuild of elastic search index insertion on basis of latest
 PIP. This feature is accessible on the "list objects" view for admin users only.
 
-#### Manually checking status of AIP
+#### Perform check status of AIP
 
 Although automated service is carrying out integrity checks on AIP stored in the repository all 
 the time, administrators can perform checks on demand as well. This feature is accessible on the "list objects" view for admin users only.
