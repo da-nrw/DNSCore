@@ -28,25 +28,30 @@ then
   echo "Usage: `basename $0` {contractor_short_name}"
   exit $E_BADARGS
 fi
-echo "iRODS Password"
-read INPUT
-if [ $(echo -n "$INPUT" | wc -m) -ge 6 ]
-then 
-	if asksure; then
 
-		iadmin mkuser $1 rodsuser
-		iadmin moduser $1 password $INPUT
-		echo "user successfully created"
-		echo "configured users"
-		iadmin lu
-	else 
-		echo "something went wrong"
-		exit $E_BADARGS
-	fi
-else 
-	echo "Password has to be longer then 6 characters"	
-	exit $E_BADARGS
+if asksure; then
+	echo "creating necessary folders"
 fi
+# We don't need autentication on the storage layer anymore
+#echo "iRODS Password"
+#read INPUT
+#if [ $(echo -n "$INPUT" | wc -m) -ge 6 ]
+#then 
+#	if asksure; then
+#
+#		iadmin mkuser $1 rodsuser
+#		iadmin moduser $1 password $INPUT
+#		echo "user successfully created"
+#		echo "configured users"
+#		iadmin lu
+#	else 
+#		echo "something went wrong"
+#		exit $E_BADARGS
+#	fi
+##lse 
+#	echo "Password has to be longer then 6 characters"	
+#	exit $E_BADARGS
+#fi
 imkdir /da-nrw/work/$1
 imkdir /da-nrw/aip/$1
 ichmod -M own rods /da-nrw/aip/$1
