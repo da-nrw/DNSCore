@@ -81,6 +81,7 @@ public class Object {
 	/** 
 	 * The identifier. In javadoc comments throughout the source code base often refered to as oid.
 	 * */
+	@Column(unique=true)
 	private String identifier;
 	
 	/** The urn. */
