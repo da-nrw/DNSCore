@@ -51,7 +51,10 @@ running actions. Please notice : There might be still processes called
 Please execute after doing graceful shutdown
 <pre>ContentBroker_stop.sh</pre> otherwise starting ContentBroker will be denied.
 
+
 #### Edit Users, Roles and UserRole Membership
+
+DNSCore uses SpringSecurity to administer it's users of DA-Web GUI. 
 
 Users in Role ROLE_PSADMIN are able to adminster Users (CRUD), Roles (CRUD) and membership of Users in certain Roles. 
 At present we suppose to use the Roles:
