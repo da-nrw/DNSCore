@@ -19,7 +19,7 @@ then
 	then
 		echo you chose a development environment as target environment. call
 		echo "./install.sh dev <contentBrokerInstallationRootPath>"
-		exit
+		exit 1
 	fi
 	INSTALL_PATH=$2
 	if [[ "${INSTALL_PATH:${#INSTALL_PATH}-1}" == "/" ]]; then
@@ -27,12 +27,12 @@ then
 	fi	
 	if [ ! -d "$INSTALL_PATH" ]; then
 		echo Error: $INSTALL_PATH is not a directory.
-	  	exit
+	  	exit 1
 	fi
 	HOME=`pwd`
 	if [ $INSTALL_PATH = $HOME ]; then 
 		echo Error target environment $INSTALL_PATH and current src tree are identical!
-		exit
+		exit 1
 	fi
 else 
 	INSTALL_PATH=/ci/ContentBroker

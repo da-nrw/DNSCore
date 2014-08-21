@@ -4,6 +4,15 @@
 
 echo call src/main/bash/collect $1 $2
 
+
+SED_BIN=sed
+OS=`uname -s`
+case "$OS" in
+SunOS)
+				SED_BIN=gsed
+        ;;
+esac
+
 mkdir $1/conf
 cp src/main/resources/healthCheck.avi $1/conf
 cp src/main/resources/healthCheck.tif $1/conf
@@ -28,3 +37,8 @@ mkdir $1/activemq-data
 mkdir $1/log
 touch $1/log/contentbroker.log
 echo -e "ContentBroker Version $2\nWritten by\n Daniel M. de Oliveira\n Jens Peters\n Sebastian Cuy\n Thomas Kleinke\n Polina Gubaidullina" > $1/README.txt
+
+echo "copying Version and Build Info to DaWeb"
+mv ../DAWeb/application.properties ../DAWeb/application.properties.tmp
+$SED_BIN "s@app\.version=.*@app\.version=$2@" ../DAWeb/application.properties.tmp >> ../DAWeb/application.properties
+rm ../DAWeb/application.properties.tmp
