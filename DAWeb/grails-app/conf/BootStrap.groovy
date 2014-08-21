@@ -8,8 +8,23 @@ class BootStrap {
 		
 		if (Environment.current == Environment.DEVELOPMENT) {	
 			println "BOOTSTRAPPED DEV Environment activated"
-			def testuser = User.findByUsername('rods')
+			User testuser = User.findByUsername('rods')
 			testuser.setPassword("rods")
+			if (!testuser.save(flush: true)) {
+				println "Error updating Admin DEV User!"
+				testuser.errors.allErrors.each {
+					println it
+				}
+			}
+			testuser = User.findByUsername('TEST')
+			testuser.setPassword("TEST")
+			if (!testuser.save(flush: true)) {
+				println "Error updating TEST DEV User!"
+				testuser.errors.allErrors.each {
+					println it
+				}
+			}
+
 		}
 	}
     def destroy = {

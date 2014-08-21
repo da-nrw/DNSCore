@@ -9,14 +9,23 @@ class User {
 	 
 	 String username 
 	 String password 
+	 
 	 boolean enabled = true
 	 boolean accountExpired 
 	 boolean accountLocked 
 	 boolean passwordExpired
+	 String description
+	 String email_contact
+	 String forbidden_nodes
 
 	 static constraints = {
+		 email_contact blank: false
+		 shortName blank: false, unique: true
 		 username blank: false, unique: true 
-		 password blank: true }
+		 password blank: false 
+		 description(nullable:true)
+		 forbidden_nodes(nullable:true)
+		 }
 
 	 static mapping = { 
 		table 'users'
