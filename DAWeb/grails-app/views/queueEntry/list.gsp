@@ -122,7 +122,7 @@
 		<div id="legend">
 			<h1><a href="#">Hinweise zu den Statuscodes:</a></h1>
 			<div>
-			<p style="font-style:italic">(xx1,xx3,xx4 bezeichnet einen Fehler, xx2: bezeichnet	arbeitend)</p> 
+			<p style="font-style:italic">(xx0 bedeutet "wartend" - hingegen bezeichnen xx1,xx3,xx4 einen Fehler, xx2: bezeichnet arbeitend)</p> 
 			<table>
 			<tr><th>Statuscode</th><th>Kurzbezeichnung</th><th>Beschreibung</th></tr>
 			<tr><td>110</td><td>IngestUnpackAction</td><td>Auspacken & Vollständigkeitstests</td></tr>
