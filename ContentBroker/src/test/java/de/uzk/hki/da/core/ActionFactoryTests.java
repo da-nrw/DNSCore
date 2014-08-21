@@ -27,7 +27,6 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,12 +34,13 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import de.uzk.hki.da.cb.AbstractAction;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.User;
+import de.uzk.hki.da.service.UserExceptionManager;
 
 
 
@@ -63,17 +63,6 @@ public class ActionFactoryTests {
 	@BeforeClass
 	public static void beforeClass() {
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
-		
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		
-		Node node = new Node("localnode");
-		session.save(node);
-		session.getTransaction().commit();	
-		nodeId = node.getId();
-		session.close();		
-		
-		
 	}
 	
 	/**
@@ -90,6 +79,12 @@ public class ActionFactoryTests {
 		factory.setApplicationContext(context);
 		factory.setDao(dao);
 		factory.setActionRegistry((ActionRegistry)context.getBean("actionRegistry"));
+		PreservationSystem ps = new PreservationSystem(); ps.setId(1); ps.setMinRepls(1);
+		User psadmin = new User(); psadmin.setUsername("psadmin");
+		ps.setAdmin(psadmin);
+		factory.setPreservationSystem(ps);
+		factory.setUserExceptionManager(new UserExceptionManager());
+		
 	}
 	
 	/**
@@ -102,7 +97,9 @@ public class ActionFactoryTests {
 
 		Job j = new Job("localnode", "450"); 
 		Object o = new Object();
-		Package p = new Package();
+		o.setIdentifier("identifier");
+		o.setContractor(c);
+		Package p = new Package(); p.setName("1"); p.setContainerName("cname");
 		o.getPackages().add(p);
 		j.setObject(o);
 		

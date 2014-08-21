@@ -57,7 +57,7 @@ public class PreservationSystem {
 	private int id;
 
 	@OneToOne
-	@JoinColumn(name="admin_id",unique=true)
+	@JoinColumn(name="admin_id",unique=true,nullable=false)
 	private User admin;
 	
 	@OneToMany
@@ -78,7 +78,7 @@ public class PreservationSystem {
 	@Transient
 	private Map<String,List<ConversionPolicy>> policiesMap;
 	
-	@Column(name="min_repls")
+	@Column(name="min_repls",nullable=false)
 	private Integer minRepls;
 
 	@Column(name="sidecar_extensions")

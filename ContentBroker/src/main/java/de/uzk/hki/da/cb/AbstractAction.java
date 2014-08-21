@@ -124,26 +124,6 @@ public abstract class AbstractAction implements Runnable {
 	abstract void rollback() throws Exception;
 	
 	/**
-	 * Checks settings that are common for all actions.
-	 * Can be overridden by extensions.
-	 */
-	public void checkCommonPreConditions() throws Exception{
-		if (dao==null) throw new ConfigurationException("dao not set");
-		if (pSystem==null) throw new ConfigurationException("pSystem not set");
-		if (actionMap==null) throw new ConfigurationException("actionMap not set");
-		if (object==null) throw new ConfigurationException("object not set");
-		if (localNode==null) throw new ConfigurationException("localNode not set");
-		if (job==null) throw new ConfigurationException("job not set");
-		if (object.getContractor()==null) throw new ConfigurationException("contractor not set in job");
-		if (userExceptionManager==null) throw new ConfigurationException("user exception manager not set");
-
-		if (object.getContractor().getShort_name()==null) throw new IllegalStateException("contractor short name not set in job");
-		if (object.getIdentifier()==null) throw new IllegalStateException("object identifier not set");
-		object.getLatestPackage();
-		if (object.getLatestPackage().getContainerName()==null) throw new IllegalStateException("containerName of latest package not set");
-	}
-
-	/**
 	 * Implementations should check if an action is wired up correctly in terms of spring configuration. 
 	 * @throws ConfigurationException
 	 */
@@ -164,7 +144,7 @@ public abstract class AbstractAction implements Runnable {
 		
 		try {
 			checkActionSpecificConfiguration();
-			checkCommonPreConditions();
+			checkSystemStatePreconditions();
 		} catch (Exception e) {
 			logger.error(e.getMessage()); return;
 		}
@@ -511,7 +491,7 @@ public abstract class AbstractAction implements Runnable {
 		return HibernateUtil.openSession();
 	}
 
-	public PreservationSystem getpSystem() {
+	public PreservationSystem getPreservationSystem() {
 		return pSystem;
 	}
 
