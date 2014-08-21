@@ -17,7 +17,7 @@
 	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 	
-### Administration of DNSCore (using DA-Web)
+### Administration of DNSCore (via DA-Web GUI)
 
 Users owner of Role ROLE_PSADMIN, ROLE_NODEADMIN are able to perform several tasks a normal user ROLE_CONTRACTOR can't.
 Some of the features being available are listed below.
