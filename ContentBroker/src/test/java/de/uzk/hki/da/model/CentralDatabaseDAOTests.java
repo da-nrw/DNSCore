@@ -58,7 +58,7 @@ public class CentralDatabaseDAOTests {
 			"published_flag,user_id,object_state) VALUES ('109735','da-nrw-vm3.hki.uni-koeln.de'," +
 			"'urn+nbn+de+danrw-1-2012113022773','test_object_double','1354276007948','1354276113286','da-nrw','0','1','100')",
 		"INSERT INTO queue (id,objects_id,status) VALUES (1,109735,'110')",
-		"INSERT INTO preservation_system (id,sidecar_extensions) VALUES (1,'xmp')",
+		"INSERT INTO preservation_system (id,sidecar_extensions,min_repls,admin_id) VALUES (1,'xmp',1,1)",
 	};
 	
 	/**

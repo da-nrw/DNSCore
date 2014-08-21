@@ -77,17 +77,48 @@ public class ActionFactory implements ApplicationContextAware {
 
 	public void init(){
 		if (dao==null) throw new ConfigurationException("dao not set");
-		preservationSystem = new PreservationSystem(); preservationSystem.setId(1);
+		setPreservationSystem(new PreservationSystem()); getPreservationSystem().setId(1);
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		session.refresh(preservationSystem);
+		session.refresh(getPreservationSystem());
 		// circumvent lazy initialization issues
-		Hibernate.initialize(preservationSystem.getConversion_policies());
+		Hibernate.initialize(getPreservationSystem().getConversion_policies());
 		// circumvent lazy initialization issues
-		for (ConversionPolicy p:preservationSystem.getConversion_policies());
+		for (ConversionPolicy p:getPreservationSystem().getConversion_policies());
 		session.getTransaction().commit();
 		session.close();
 	}
+	
+	private void injectProperties(AbstractAction action, Job job){
+		action.setDao(dao);
+		action.setUserExceptionManager(userExceptionManager);
+		action.setMqConnectionFactory(mqConnectionFactory);
+		action.setLocalNode(localNode);
+		job.getObject().setTransientNodeRef(localNode);
+		action.setObject(job.getObject());
+		action.setActionMap(getActionRegistry());			
+		action.setJob(job);
+		action.setPSystem(getPreservationSystem());
+	}
+	
+	private void checkSystemState(AbstractAction action) {
+		if (action.getDao() == null) throw new IllegalStateException("Unable to build action. DAO has not been set.");
+		if (action.getActionMap() == null) throw new IllegalStateException("Unable to build action. Action map has not been set.");
+		if (action.getLocalNode()==null) throw new IllegalStateException("Unable to build action. Node not set.");
+		if (action.getPreservationSystem()==null) throw new IllegalStateException("preservationSystem not set");
+		if (action.getPreservationSystem().getMinRepls()==null) throw new IllegalStateException("min repls not set");
+		if (action.getPreservationSystem().getMinRepls()<3) logger.warn("min_repls lower than 3 not recommended for lta");
+		if (action.getPreservationSystem().getAdmin()==null) throw new IllegalStateException("node admin not set");
+		if (action.getObject()==null) throw new IllegalStateException("object not set");
+		if (action.getObject().getContractor()==null) throw new IllegalStateException("contractor not set");
+		if (action.getObject().getContractor().getShort_name()==null) throw new IllegalStateException("contractor short name not set.");
+		if (action.getObject().getIdentifier()==null) throw new IllegalStateException("object identifier not set");
+		if (action.getUserExceptionManager()==null) throw new IllegalStateException("user exception manager not set");
+		action.getObject().getLatestPackage();
+		if (action.getObject().getLatestPackage().getContainerName()==null) throw new IllegalStateException("containerName of latest package not set");
+		if (action.getJob()==null) throw new IllegalStateException("job not set");
+	}
+	
 	
 	/**
 	 * Following the defined priorities (context) of
@@ -100,13 +131,9 @@ public class ActionFactory implements ApplicationContextAware {
 	 * that can be started.
 	 */
 	public AbstractAction buildNextAction() {		
+		if (context == null) throw new ConfigurationException("Unable to build action. Application context has not been set.");
 		
 		logger.trace("building action");
-		
-		if (dao == null) throw new ConfigurationException("Unable to build action. DAO has not been set.");
-		if (actionRegistry == null) throw new ConfigurationException("Unable to build action. Action map has not been set.");
-		if (context == null) throw new ConfigurationException("Unable to build action. Application context has not been set.");
-		if (localNode==null) throw new ConfigurationException("Unable to build action. Node not set.");
 		
 		if (onHalt){
 			logger.info("ActionFactory is on halt. Waiting to resume work ...");
@@ -124,7 +151,7 @@ public class ActionFactory implements ApplicationContextAware {
 			String workingStatus = action.getStartStatus().substring(0,action.getStartStatus().length()-1) + "2";
 			
 			Job jobCandidate = dao.fetchJobFromQueue(action.getStartStatus(), workingStatus
-					, localNode, preservationSystem);
+					, localNode, getPreservationSystem());
 			if (jobCandidate == null) {
 				logger.trace("No job for type {}, checking for types with lower priority", jobType);
 				continue;
@@ -133,15 +160,8 @@ public class ActionFactory implements ApplicationContextAware {
 
 			actionRegistry.registerAction(action);
 			
-			action.setDao(dao);
-			action.setUserExceptionManager(userExceptionManager);
-			action.setMqConnectionFactory(mqConnectionFactory);
-			action.setLocalNode(localNode);
-			jobCandidate.getObject().setTransientNodeRef(localNode);
-			action.setObject(jobCandidate.getObject());
-			action.setActionMap(getActionRegistry());			
-			action.setJob(jobCandidate);
-			action.setPSystem(preservationSystem);
+			injectProperties(action,jobCandidate);
+			checkSystemState(action);
 			return action;
 		}
 		
@@ -245,5 +265,13 @@ public class ActionFactory implements ApplicationContextAware {
 	 */
 	public void setMqConnectionFactory(ActiveMQConnectionFactory mqConnectionFactory) {
 		this.mqConnectionFactory = mqConnectionFactory;
+	}
+
+	public PreservationSystem getPreservationSystem() {
+		return preservationSystem;
+	}
+
+	public void setPreservationSystem(PreservationSystem preservationSystem) {
+		this.preservationSystem = preservationSystem;
 	}
 }

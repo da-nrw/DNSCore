@@ -47,7 +47,7 @@ CREATE TABLE nodes_contractors (
 CREATE TABLE preservation_system (
         id integer NOT NULL,
         closed_collection_name character varying(255),
-        min_repls integer,
+        min_repls integer NOT NULL,
         open_collection_name character varying(255),
         pres_server character varying(255),
         sidecar_extensions character varying(255),
@@ -56,11 +56,11 @@ CREATE TABLE preservation_system (
         uris_file character varying(255),
         uris_local character varying(255),
         urn_name_space character varying(255),
-        admin_id integer
+        admin_id integer NOT NULL
 );
 
-INSERT INTO preservation_system (id,admin_id) VALUES (1,(select id from users
-where short_name='rods'));
+INSERT INTO preservation_system (id,admin_id,min_repls) VALUES (1,(select id from users
+where short_name='rods'),3);
 
 ALTER TABLE conversion_queue DROP CONSTRAINT uniqueness;
 

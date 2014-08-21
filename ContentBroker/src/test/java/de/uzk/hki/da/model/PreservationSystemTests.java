@@ -113,7 +113,12 @@ public class PreservationSystemTests {
 		policies2.add(three);
 		policies2.add(four);
 
+		User admin = new User(); 
+		
 		preservationSystem = new PreservationSystem();
+		
+		preservationSystem.setAdmin(admin);
+		preservationSystem.setMinRepls(1);
 		preservationSystem.getConversion_policies().add(one);
 		preservationSystem.getConversion_policies().add(two);
 		preservationSystem.getConversion_policies().add(three);
@@ -121,6 +126,7 @@ public class PreservationSystemTests {
 		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
+		session.save(admin);
 		session.save(routine);
 		session.save(one);
 		session.save(two);
