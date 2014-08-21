@@ -55,6 +55,8 @@ Please execute after doing graceful shutdown
 #### Edit Users, Roles and UserRole Membership
 
 DNSCore uses SpringSecurity to administer it's users of DA-Web GUI. 
+To perfom ingest & retrieval, more configuration even on the storage level and the node storage level is needed.
+To help and assist preservation system administrators, we provide the script: 
 
 Users in Role ROLE_PSADMIN are able to adminster Users (CRUD), Roles (CRUD) and membership of Users in certain Roles. 
 At present we suppose to use the Roles:
