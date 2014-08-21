@@ -61,7 +61,7 @@ public class ScanForPresentationAction extends AbstractAction{
 	boolean implementation() throws FileNotFoundException {
 		// check if object package type is set
 		
-		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(pSystem.getSidecarExtensions());
+		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
 		if (newestFiles.size() == 0)
 			throw new RuntimeException("No files found!");
 		newestFiles = formatScanService.identify(newestFiles);
@@ -107,7 +107,7 @@ public class ScanForPresentationAction extends AbstractAction{
 			// get cps for fileanduser. do with cps: assemble
 			
 			logger.trace("Generating ConversionInstructions for PRESENTER");
-			List<ConversionPolicy> policies = pSystem.getApplicablePolicies(file, true);
+			List<ConversionPolicy> policies = preservationSystem.getApplicablePolicies(file, true);
 			if ( object.grantsRight("PUBLICATION")
 					&& !file.toRegularFile().getName().toLowerCase().endsWith(".xml")
 					&& !file.toRegularFile().getName().toLowerCase().endsWith(".rdf")

@@ -71,7 +71,7 @@ public class CheckFormatsAction extends AbstractAction {
 		}
 		attachJhoveInfoToAllFiles(allFiles);
 		
-		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(pSystem.getSidecarExtensions());
+		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
 		
 		Set<String> mostRecentFormats = new HashSet<String>();
 		Set<String> mostRecentSecondaryAttributes = new HashSet<String>();

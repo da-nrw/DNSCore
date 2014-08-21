@@ -116,7 +116,7 @@ public class RestructureAction extends AbstractAction{
 		
 		object.reattach();
 		logger.debug("scanning files with format identifier(s)");
-		List<DAFile> scannedFiles = formatScanService.identify(object.getNewestFilesFromAllRepresentations(pSystem.getSidecarExtensions()));
+		List<DAFile> scannedFiles = formatScanService.identify(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
 		for (DAFile f:scannedFiles){
 			logger.debug(f+":"+f.getFormatPUID());
 		}

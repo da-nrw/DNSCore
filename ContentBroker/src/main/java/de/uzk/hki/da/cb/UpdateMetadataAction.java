@@ -127,8 +127,8 @@ public class UpdateMetadataAction extends AbstractAction {
 
 		String absUrlPrefixFull = "";
 		if (presMode){
-			if (pSystem.getUrisFile() != null && !pSystem.getUrisFile().isEmpty()) {
-				absUrlPrefixFull = pSystem.getUrisFile() + "/" + job.getObject().getIdentifier() + "/";
+			if (preservationSystem.getUrisFile() != null && !preservationSystem.getUrisFile().isEmpty()) {
+				absUrlPrefixFull = preservationSystem.getUrisFile() + "/" + job.getObject().getIdentifier() + "/";
 			}
 		}
 			
@@ -475,7 +475,7 @@ public class UpdateMetadataAction extends AbstractAction {
 							if(!isPresMode()) {
 								targetValue = replacements.get(value).getRelative_path();
 							} else {
-								targetValue = pSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
+								targetValue = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
 							}
 							entitiesReplaced++;
 						}
@@ -491,7 +491,7 @@ public class UpdateMetadataAction extends AbstractAction {
 						if(!isPresMode()) {
 							targetValue = replacements.get(value).getRelative_path();
 						} else {
-							targetValue = pSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
+							targetValue = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + replacements.get(value).getRelative_path();
 						}
 						if (replacements.containsKey(value)) {
 							logger.debug("-- Replacing element \"{}\" with \"{}\"", elem.getValue(),replacements.get(value));

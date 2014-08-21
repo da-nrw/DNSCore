@@ -26,8 +26,6 @@ import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.hp.hpl.jena.shared.ConfigException;
-
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
@@ -117,7 +115,7 @@ public class RegisterURNAction extends AbstractAction {
 
 	@Override
 	void checkSystemStatePreconditions() throws IllegalStateException {
-		if (pSystem.getUrnNameSpace()==null) throw new IllegalStateException("URN NameSpace parameter not set!");
+		if (preservationSystem.getUrnNameSpace()==null) throw new IllegalStateException("URN NameSpace parameter not set!");
 	}
 
 	@Override
@@ -137,7 +135,7 @@ public class RegisterURNAction extends AbstractAction {
 				if (metsUrn != null)
 					urn = metsUrn;
 				else				
-					urn = pSystem.getUrnNameSpace() + "-" + object.getIdentifier();
+					urn = preservationSystem.getUrnNameSpace() + "-" + object.getIdentifier();
 			}
 			
 			logger.info("Object URN: " + urn);

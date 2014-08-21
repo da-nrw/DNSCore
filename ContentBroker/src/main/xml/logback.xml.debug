@@ -89,6 +89,9 @@
 		<logger name="de.uzk.hki.da.service.RegisterObjectService"  additivity="false" level="DEBUG">
                 <appender-ref ref="INGEST" />
         </logger>
+		<logger name="de.uzk.hki.da.service.MailContents"  additivity="false" level="DEBUG">
+                <appender-ref ref="FILE" />
+        </logger>
 
 		<logger name="de.uzk.hki.da.integrity" additivity="false" level="DEBUG">
                 <appender-ref ref="INTEGRITY" />
@@ -101,7 +104,7 @@
         <logger name="de.uzk.hki.da"  additivity="false" level="DEBUG">
                 <appender-ref ref="OBJECT" />
         </logger>
-
+		
 
         <logger name="org.hibernate" level="INFO">
                 <appender-ref ref="OBJECT" />

@@ -19,8 +19,6 @@
 
 package de.uzk.hki.da.cb;
 
-import javax.mail.MessagingException;
-
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.core.ConfigurationException;
@@ -29,7 +27,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
-import de.uzk.hki.da.service.Mail;
+import de.uzk.hki.da.service.MailContents;
 import de.uzk.hki.da.utils.RelativePath;
 
 /**
@@ -60,8 +58,8 @@ public class AuditAction extends AbstractAction {
 	@Override
 	void checkSystemStatePreconditions() throws IllegalStateException {
 		if (nodeAdminEmail == null) throw new ConfigurationException("nodeAdminEmail is null!");
-		if (pSystem.getMinRepls()==0) throw new ConfigurationException("minNodes, 0 is not allowed!");
-		if (pSystem.getAdmin().getEmailAddress()==null)  throw new ConfigurationException("systemFromEmailAdress is not set!");
+		if (preservationSystem.getMinRepls()==0) throw new ConfigurationException("minNodes, 0 is not allowed!");
+		if (preservationSystem.getAdmin().getEmailAddress()==null)  throw new ConfigurationException("systemFromEmailAdress is not set!");
 	}
 
 	/*
@@ -74,7 +72,7 @@ public class AuditAction extends AbstractAction {
 		setKILLATEXIT(true);
 		setObjectState(job,ObjectState.UnderAudit);
 		StoragePolicy sp = new StoragePolicy(localNode);
-		sp.setMinNodes(pSystem.getMinRepls());
+		sp.setMinNodes(preservationSystem.getMinRepls());
 		
 		String msg= "";
 		// TODO: refactor to same implementation IntegrityScanner uses
@@ -101,7 +99,7 @@ public class AuditAction extends AbstractAction {
 			object.setObject_state(ObjectState.Error);
 			logger.error("Object " + object.getIdentifier()  + " has following errors :" +  msg);
 			unloadAndRepair(object);
-			informNodeAdmin(object, msg);
+			new MailContents(preservationSystem,localNode).auditInformNodeAdmin(object, msg);
 		}		
 		return true;
 	}
@@ -111,28 +109,7 @@ public class AuditAction extends AbstractAction {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 	
-	/**
-	 * Informs the Node Admin about the problems being found
-	 * 
-	 * @param logicalPath
-	 * @param msg
-	 * @author Jens Peters
-	 */
 	
-	void informNodeAdmin(Object obj, String msg) {
-		// send Mail to Admin with Package in Error
-
-		String subject = "[" + "da-nrw".toUpperCase() + "] Problem Report für " + obj.getIdentifier();
-		if (nodeAdminEmail != null && !nodeAdminEmail.equals("") && pSystem.getAdmin().getEmailAddress() != null && !pSystem.getAdmin().getEmailAddress().equals("")) {
-			try {
-				Mail.sendAMail(pSystem.getAdmin().getEmailAddress(), nodeAdminEmail, subject, msg);
-			} catch (MessagingException e) {
-				logger.error("Sending email problem report for " +  obj.getIdentifier() + " failed");
-			}
-		} else {
-			logger.error("Node Admin / SystemFromEmail has no be a valid Email address!");
-		}
-	}
 	
 	
 	

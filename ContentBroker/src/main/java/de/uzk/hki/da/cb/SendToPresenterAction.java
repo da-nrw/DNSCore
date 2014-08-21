@@ -146,9 +146,9 @@ public class SendToPresenterAction extends AbstractAction {
 		boolean publicPIPSuccesfullyIngested = false;
 		boolean institutionPIPSuccessfullyIngested = false;
 		if (pipPathPublic.toFile().exists())
-			publicPIPSuccesfullyIngested = createXEpicurAndIngest(pipPathPublic,pSystem.getOpenCollectionName(),packageType,object.getUrn(),true);
+			publicPIPSuccesfullyIngested = createXEpicurAndIngest(pipPathPublic,preservationSystem.getOpenCollectionName(),packageType,object.getUrn(),true);
 		if (pipPathInstitution.toFile().exists()) 
-			institutionPIPSuccessfullyIngested = createXEpicurAndIngest(pipPathInstitution, pSystem.getClosedCollectionName(), packageType, object.getUrn(), false);
+			institutionPIPSuccessfullyIngested = createXEpicurAndIngest(pipPathInstitution, preservationSystem.getClosedCollectionName(), packageType, object.getUrn(), false);
 		
 		setPublishedFlag(publicPIPSuccesfullyIngested,
 				institutionPIPSuccessfullyIngested);
@@ -177,8 +177,8 @@ public class SendToPresenterAction extends AbstractAction {
 	 */
 	private void purgeObjectsIfExist(){
 		try {
-			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), pSystem.getOpenCollectionName());
-			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), pSystem.getClosedCollectionName());
+			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), preservationSystem.getOpenCollectionName());
+			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), preservationSystem.getClosedCollectionName());
 		} catch (RepositoryException e) {
 			throw new RuntimeException(e);
 		}
@@ -310,7 +310,7 @@ public class SendToPresenterAction extends AbstractAction {
 			
 			// add collection membership
 			String collectionUri;
-			if (pSystem.getClosedCollectionName().equals(collection)) {
+			if (preservationSystem.getClosedCollectionName().equals(collection)) {
 				collectionUri = CLOSED_COLLECTION_URI;
 			} else {
 				collectionUri = OPEN_COLLECTION_URI;
@@ -319,7 +319,7 @@ public class SendToPresenterAction extends AbstractAction {
 			logger.debug("Added relationship: "+MEMBER_COLLECTION+" "+ collectionUri);
 			
 			// add oai identifier
-			if (!(pSystem.getClosedCollectionName()+":").equals(collection) && 
+			if (!(preservationSystem.getClosedCollectionName()+":").equals(collection) && 
 				// don't add test packages to OAI-PMH
 				!testContractors.contains(contractorShortName)
 			) {

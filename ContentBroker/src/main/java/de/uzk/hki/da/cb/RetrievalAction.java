@@ -23,8 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import javax.mail.MessagingException;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
@@ -34,7 +32,7 @@ import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.service.Mail;
+import de.uzk.hki.da.service.MailContents;
 import de.uzk.hki.da.utils.ArchiveBuilder;
 import de.uzk.hki.da.utils.ArchiveBuilderFactory;
 import de.uzk.hki.da.utils.BagitUtils;
@@ -121,7 +119,7 @@ public class RetrievalAction extends AbstractAction {
 		
 		distributedConversionAdapter.remove("work/" + relativePackagePath.replaceAll("/$", "")); // replace all -> iRODS doesn't like trailing slashes
 		
-		emailReport(object.getContractor().getEmailAddress(),object.getIdentifier(),object.getContractor().getShort_name());
+		new MailContents(preservationSystem,localNode).retrievalReport(object);
 		return true;
 	}
 
@@ -137,7 +135,7 @@ public class RetrievalAction extends AbstractAction {
 	private void copySurfaceRepresentation(Object o, String destinationFolder)
 			throws RuntimeException {
 		
-		List<DAFile> files = o.getNewestFilesFromAllRepresentations(pSystem.getSidecarExtensions());
+		List<DAFile> files = o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
 		for (DAFile f : files)
 		{
 			if (!f.toRegularFile().getName().equals("premis.xml"))
@@ -160,22 +158,7 @@ public class RetrievalAction extends AbstractAction {
 	
 	
 	
-	private void emailReport(String email,String objectIdentifier,String csn){
-		
-		String subject = "Retrieval Report für " + objectIdentifier;
-		String msg = "Ihr angefordertes Objekt mit dem Namen \""+ objectIdentifier + "\" wurde unter Ihrem Outgoing Ordner unter " 
-				+ csn + "/outgoing/ abgelegt und steht jetzt"
-				+ " zum Retrieval bereit!\n\n";
-		if (email != null) {
-			try {
-				Mail.sendAMail(pSystem.getAdmin().getEmailAddress(),email, subject, msg);
-			} catch (MessagingException e) {
-				logger.error("Sending email retrieval reciept for " + objectIdentifier + "failed", e);
-			}
-		} else {
-			logger.warn(csn + " has no valid Email address!");
-		}
-	}
+	
 	
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
 		return distributedConversionAdapter;

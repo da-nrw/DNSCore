@@ -31,14 +31,11 @@ import javax.mail.internet.MimeMessage;
 
 
 /**
- * The Class Mail.
- * Adds E-Mail functions 
+ * The Class Mail. 
  * @author Jens Peters
  */
 public class Mail {
 
-
-	
 	/**
 	 * Send a mail.
 	 *
@@ -48,8 +45,8 @@ public class Mail {
 	 * @throws MessagingException the messaging exception
 	 */
 	public static void sendAMail(String fromAdress, String toAdress, String subject, String mailText) throws MessagingException{
+		
 		Properties props= new Properties();
-//		props.put("mail.smtp.host","smtp.uni-koeln.de");
 		
 		Session session= Session.getInstance(props,null);
 		MimeMessage message= new MimeMessage(session);
@@ -62,9 +59,6 @@ public class Mail {
 		message.setFrom(fromAddress);
 		message.setRecipient(Message.RecipientType.TO, toAddress);
 		
-		//Authenticator auth= new MyAuthenticator();
-		//Transport transport= session.getTransport("smtp");
-		//transport
 		Transport.send(message);
 		
 	}
