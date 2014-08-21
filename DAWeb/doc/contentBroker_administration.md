@@ -17,10 +17,12 @@
 	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 	
-### Administration of DNS (using DA-Web)
+### Administration of DNSCore (using DA-Web)
 
-Users member of Role ROLE_PSADMIN are able to perform several tasks a normal user can't.
+Users owner of Role ROLE_PSADMIN, ROLE_NODEADMIN are able to perform several tasks a normal user ROLE_CONTRACTOR can't.
 Some of the features being available are listed below.
+
+The features pop up logging in as owner of (ROLE_PSADMIN, ROLE_NODEADMIN) in the home screen or as additional features visible in the objects view or in qeue list view. 
 
 #### View CB Error Messages 
 
@@ -37,7 +39,7 @@ In case of shutting down CB, you should use the Stop Factory button,
 avoiding uncontrolled interruption of work done by CB. After hitting the button "stop factory "
 CB will stop working after having performed all running tasks completely. 
 
-#### Show Actions 
+#### Show Actions performed by CB 
 
 To view what your CB process actually is performing you may hit the "show actions" button. 
 
