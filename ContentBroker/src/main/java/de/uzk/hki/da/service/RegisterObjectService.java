@@ -94,7 +94,7 @@ public class RegisterObjectService {
 	 * @param containerName the file name of the container
 	 * @param contractor the contractor who owns the container
 	 */
-	public Object registerObject(String containerName,User contractor){
+	public synchronized Object registerObject(String containerName,User contractor){
 		
 		if (contractor==null) 
 			throw new ConfigurationException("contractor is null");

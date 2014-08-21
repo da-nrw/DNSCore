@@ -4,6 +4,9 @@
 -- #   under partial usage of apgdiff 2.4
 
 BEGIN;
+
+ALTER TABLE objects ADD CONSTRAINT unique_object_identifier UNIQUE (identifier);
+
 drop sequence user_id_seq;
 alter table contractors rename to users;
 alter table users drop column admin;
@@ -151,6 +154,8 @@ ALTER TABLE queue
 ALTER TABLE second_stage_scans
 	ALTER COLUMN id DROP DEFAULT;
 
+
+delete from queue where objects_id not in (select data_pk from objects);
 delete from conversion_queue where job_id not in (select id from queue);
 delete from conversion_queue where source_file_id not in (select id from dafiles);
 delete from dafiles where pkg_id not in (select id from packages);

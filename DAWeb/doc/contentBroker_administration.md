@@ -17,10 +17,12 @@
 	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 	
-### Administration of DNS (using DA-Web)
+### Administration of DNSCore (via DA-Web GUI)
 
-Users being "Administrators" are able to perform several tasks a normal user can't.
+Users owner of Role ROLE_PSADMIN, ROLE_NODEADMIN are able to perform several tasks a normal user ROLE_CONTRACTOR can't.
 Some of the features being available are listed below.
+
+The features pop up logging in as owner of (ROLE_PSADMIN, ROLE_NODEADMIN) in the home screen or as additional features visible in the objects view or in qeue list view. 
 
 #### View CB Error Messages 
 
@@ -37,7 +39,7 @@ In case of shutting down CB, you should use the Stop Factory button,
 avoiding uncontrolled interruption of work done by CB. After hitting the button "stop factory "
 CB will stop working after having performed all running tasks completely. 
 
-#### Show Actions 
+#### Show Actions performed by CB 
 
 To view what your CB process actually is performing you may hit the "show actions" button. 
 
@@ -46,10 +48,34 @@ To view what your CB process actually is performing you may hit the "show action
 Hitting this button will cause CB to stop main execution thread after having completed all 
 running actions. Please notice : There might be still processes called 
 
-<pre>java -jar ContenBroker.jar</pre>
+    java -jar ContenBroker.jar
 
 Please execute after doing graceful shutdown
-<pre>ContentBroker_stop.sh</pre> otherwise starting ContentBroker will be denied.
+    ContentBroker_stop.sh 
+    
+otherwise starting ContentBroker will be denied next time.
+
+
+#### Edit Users, Roles and UserRole Membership
+
+
+DNSCore uses SpringSecurity to administer it's users of DA-Web GUI. 
+To perfom ingest & retrieval, more configuration even on the storage level and the node storage level is needed.
+To help and assist preservation system administrators to create the necessary folders on the iRODS storage level, we provide the script: [CreateContractorScript](../../ContentBroker/src/main/bash/createiRODSContractor.sh)
+
+Users in Role ROLE_PSADMIN are able to adminster Users (CRUD), Roles (CRUD) and membership of Users in certain Roles. 
+At present we suppose to use the Roles:
+
+<pre>
+ROLE_PSADMIN The Admin of the preservational system
+ROLE_CONTRACTOR The standard Role of contractors
+ROLE_SYSTEM Agents (TBD), not used yet
+ROLE_NODEADMIN The Admin of a node in the preservational system's domain. 
+</pre>
+
+#### Edit ConversionRoutines
+
+Users in Role ROLE_PSADMIN are able to adminster ConversionPolicies related to the system.
  
 #### Reload PIP
 
@@ -61,7 +87,7 @@ The PIP is being built on basis of the latest version, including all deltas. Thi
 For convinence Admins can perform a rebuild of elastic search index insertion on basis of latest
 PIP. This feature is accessible on the "list objects" view for admin users only.
 
-#### Manually checking status of AIP
+#### Perform check status of AIP
 
 Although automated service is carrying out integrity checks on AIP stored in the repository all 
 the time, administrators can perform checks on demand as well. This feature is accessible on the "list objects" view for admin users only.

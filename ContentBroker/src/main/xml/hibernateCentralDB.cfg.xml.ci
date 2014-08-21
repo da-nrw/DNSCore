@@ -12,7 +12,7 @@
 <property name="connection.password">vb9gpJq/TjrkFcJ0jaJu+w==</property>
  
 <!-- JDBC connection pool, use Hibernate internal connection pool -->
-<property name="connection.pool_size">5</property>
+<property name="connection.pool_size">2</property>
 <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 
  
