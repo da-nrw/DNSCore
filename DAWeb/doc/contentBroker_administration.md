@@ -19,7 +19,7 @@
 	
 ### Administration of DNS (using DA-Web)
 
-Users being "Administrators" are able to perform several tasks a normal user can't.
+Users member of Role ROLE_PSADMIN are able to perform several tasks a normal user can't.
 Some of the features being available are listed below.
 
 #### View CB Error Messages 
@@ -50,6 +50,20 @@ running actions. Please notice : There might be still processes called
 
 Please execute after doing graceful shutdown
 <pre>ContentBroker_stop.sh</pre> otherwise starting ContentBroker will be denied.
+
+#### Edit Users, Roles and UserRole Membership
+
+Users in Role ROLE_PSADMIN are able to adminster Users (CRUD), Roles (CRUD) and membership of Users in certain Roles. 
+At present we suppose to use the Roles:
+
+ROLE_PSADMIN The Admin of the preservational system
+ROLE_CONTRACTOR The standard Role of contractors
+ROLE_SYSTEM Agents (TBD), not used yet
+ROLE_NODEADMIN The Admin of a node in the preservational system's domain. 
+
+#### Edit ConversionRoutines
+
+Users in Role ROLE_PSADMIN are able to adminster ConversionPolicies related to the system.
  
 #### Reload PIP
 
