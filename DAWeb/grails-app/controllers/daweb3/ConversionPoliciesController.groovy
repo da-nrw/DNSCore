@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException
 class ConversionPoliciesController {
 
 	
+	def springSecurityService
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -34,6 +35,12 @@ class ConversionPoliciesController {
 	 }
 
     def show(Long id) {
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		if (user.authorities.any { it.authority == "ROLE_PSADMIN"
+		}) {
+		admin = 1;
+			}
         def conversionPoliciesInstance = ConversionPolicies.get(id)
         if (!conversionPoliciesInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'conversionPolicies.label', default: 'ConversionPolicies'), id])
@@ -41,9 +48,9 @@ class ConversionPoliciesController {
             return
         } 
 
-        [conversionPoliciesInstance: conversionPoliciesInstance]
+        [conversionPoliciesInstance: conversionPoliciesInstance, admin: admin]
     }
-	@Secured(['ROLE_DAADMIN'])
+	@Secured(['ROLE_PSADMIN'])
     def edit(Long id) {
       
 			def conversionPoliciesInstance = ConversionPolicies.get(id)
@@ -56,7 +63,7 @@ class ConversionPoliciesController {
         [conversionPoliciesInstance: conversionPoliciesInstance]
        } 
 
-	@Secured(['ROLE_DAADMIN'])
+	@Secured(['ROLE_PSADMIN'])
     def update(Long id, Long version) {
         def conversionPoliciesInstance = ConversionPolicies.get(id)
         if (!conversionPoliciesInstance) {

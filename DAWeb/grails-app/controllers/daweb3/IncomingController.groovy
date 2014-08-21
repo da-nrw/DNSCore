@@ -29,8 +29,12 @@ import java.io.File
 
 class IncomingController {
 	
+	def springSecurityService
+	
     def index = { 
-		def relativeDir = session.contractor.shortName + "/incoming"
+		def user = springSecurityService.currentUser
+		
+		def relativeDir = user.getShortName() + "/incoming"
 		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
 		def msg = ""
 		def baseDir;
@@ -59,6 +63,8 @@ class IncomingController {
 	}
 	
 	def save = {
+		def user = springSecurityService.currentUser
+		
 		def files = params.list("currentFiles")
 
 		def msg = ""
@@ -66,9 +72,9 @@ class IncomingController {
 			 log.info "Datei ${it}" 
 			 
 			 File source = new File(grailsApplication.config.localNode.userAreaRootPath +"/" 
-				 		+ session.irodsAccount.userName + "/incoming/" + it);
+				 		+ user.getShortName() + "/incoming/" + it);
 			File target =  new File(grailsApplication.config.localNode.ingestAreaRootPath
-				 		+"/"+session.irodsAccount.userName + "/"+ it)
+				 		+"/"+user.getShortName() + "/"+ it)
 			if (target.exists()) {
 				msg = "Datei existiert bereits ${it}"
 				[msg:msg]

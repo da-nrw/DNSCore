@@ -5,6 +5,7 @@ class ConversionPolicies {
 	int id
 	String source_format
 	ConversionRoutine conversion_routine;
+	boolean presentation = false
 	
 	static mapping = {
 		table 'conversion_policies'

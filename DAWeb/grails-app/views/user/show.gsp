@@ -23,6 +23,24 @@
 			</g:if>
 			<ol class="property-list user">
 			
+				<g:if test="${userInstance?.email_contact}">
+				<li class="fieldcontain">
+					<span id="email_contact-label" class="property-label"><g:message code="user.email_contact.label" default="Emailcontact" /></span>
+					
+						<span class="property-value" aria-labelledby="email_contact-label"><g:fieldValue bean="${userInstance}" field="email_contact"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${userInstance?.shortName}">
+				<li class="fieldcontain">
+					<span id="shortName-label" class="property-label"><g:message code="user.shortName.label" default="Short Name" /></span>
+					
+						<span class="property-value" aria-labelledby="shortName-label"><g:fieldValue bean="${userInstance}" field="shortName"/></span>
+					
+				</li>
+				</g:if>
+			
 				<g:if test="${userInstance?.username}">
 				<li class="fieldcontain">
 					<span id="username-label" class="property-label"><g:message code="user.username.label" default="Username" /></span>
@@ -37,6 +55,24 @@
 					<span id="password-label" class="property-label"><g:message code="user.password.label" default="Password" /></span>
 					
 						<span class="property-value" aria-labelledby="password-label"><g:fieldValue bean="${userInstance}" field="password"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${userInstance?.description}">
+				<li class="fieldcontain">
+					<span id="description-label" class="property-label"><g:message code="user.description.label" default="Description" /></span>
+					
+						<span class="property-value" aria-labelledby="description-label"><g:fieldValue bean="${userInstance}" field="description"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${userInstance?.forbidden_nodes}">
+				<li class="fieldcontain">
+					<span id="forbidden_nodes-label" class="property-label"><g:message code="user.forbidden_nodes.label" default="Forbiddennodes" /></span>
+					
+						<span class="property-value" aria-labelledby="forbidden_nodes-label"><g:fieldValue bean="${userInstance}" field="forbidden_nodes"/></span>
 					
 				</li>
 				</g:if>
@@ -73,15 +109,6 @@
 					<span id="passwordExpired-label" class="property-label"><g:message code="user.passwordExpired.label" default="Password Expired" /></span>
 					
 						<span class="property-value" aria-labelledby="passwordExpired-label"><g:formatBoolean boolean="${userInstance?.passwordExpired}" /></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${userInstance?.shortName}">
-				<li class="fieldcontain">
-					<span id="shortName-label" class="property-label"><g:message code="user.shortName.label" default="Short Name" /></span>
-					
-						<span class="property-value" aria-labelledby="shortName-label"><g:fieldValue bean="${userInstance}" field="shortName"/></span>
 					
 				</li>
 				</g:if>

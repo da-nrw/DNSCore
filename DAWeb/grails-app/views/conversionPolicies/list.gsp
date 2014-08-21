@@ -32,6 +32,8 @@
 					
 						<th><g:message code="conversionPolicies.conversion_routine.label" default="Zielformat" /></th>
 					
+						<th><g:message code="conversionPolicies.presentation.label" default="Presentation Repository Policy" /></th>
+					
 					</tr>
 				</thead>
 				<tbody>
@@ -46,6 +48,7 @@
 						  	 <g:link target='pronom' url="http://www.nationalarchives.gov.uk/PRONOM/${fieldValue(bean: conversionPoliciesInstance, field: "source_format")}">${fieldValue(bean: conversionPoliciesInstance, field: "source_format")}</g:link>
 						   </g:if><g:else>${fieldValue(bean: conversionPoliciesInstance, field: "source_format")}</g:else></td>
 						<td>${fieldValue(bean: conversionPoliciesInstance.conversion_routine, field: "target_suffix")}</td>
+						<td>${fieldValue(bean: conversionPoliciesInstance, field: "presentation")}</td>
 					
 					
 					</tr>
