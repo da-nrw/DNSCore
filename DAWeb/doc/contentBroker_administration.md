@@ -48,13 +48,16 @@ To view what your CB process actually is performing you may hit the "show action
 Hitting this button will cause CB to stop main execution thread after having completed all 
 running actions. Please notice : There might be still processes called 
 
-<pre>java -jar ContenBroker.jar</pre>
+    java -jar ContenBroker.jar
 
 Please execute after doing graceful shutdown
-<pre>ContentBroker_stop.sh</pre> otherwise starting ContentBroker will be denied.
+    ContentBroker_stop.sh 
+    
+otherwise starting ContentBroker will be denied next time.
 
 
 #### Edit Users, Roles and UserRole Membership
+
 
 DNSCore uses SpringSecurity to administer it's users of DA-Web GUI. 
 To perfom ingest & retrieval, more configuration even on the storage level and the node storage level is needed.
