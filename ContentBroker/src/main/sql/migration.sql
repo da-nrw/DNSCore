@@ -17,6 +17,7 @@ alter table users add column accountlocked boolean;
 alter table users add column enabled boolean;
 alter table users add column passwordexpired boolean;
 alter table users add column accountexpired boolean;
+alter table users add column description varchar(255);
 
 update users set accountlocked=false;
 update users set accountexpired=false;
