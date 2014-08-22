@@ -76,7 +76,4 @@ public class C {
 	public static final String CONTRACT_NS = "http://www.danrw.de/contract/v1";
 	public static final String CONTRACT_V1_URL = "http://www.danrw.de/contract/v1";
 	public static final String CONTRACT_V1_SCHEMA_LOCATION = "http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd";
-	public static final String HTTP_WWW_DANRW_DE_OBJECTS = "http://www.danrw.de/objects/";
-	
-	
 }

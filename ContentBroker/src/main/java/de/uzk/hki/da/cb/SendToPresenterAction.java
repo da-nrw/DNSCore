@@ -200,7 +200,7 @@ public class SendToPresenterAction extends AbstractAction {
 		XepicurWriter.createXepicur(
 				object.getIdentifier(), packageType, 
 				viewerUrls.get(packageType), 
-				path.toString());
+				path.toString(),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
 		
 		String[] sets = null;
 		if (checkSets){
@@ -272,7 +272,6 @@ public class SendToPresenterAction extends AbstractAction {
 		ingestDir(objectId, collection, pack, packagePath.toString(), packageType);
 		
 		// add identifiers to DC datastream
-		String url = C.HTTP_WWW_DANRW_DE_OBJECTS + objectId;
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc;
 		try {
@@ -290,9 +289,6 @@ public class SendToPresenterAction extends AbstractAction {
 			doc.getRootElement().addContent(
 					new Element(IDENTIFIER,DC,PURL_ORG_DC)
 					.setText(urn));
-			doc.getRootElement().addContent(
-					new Element(IDENTIFIER,DC,PURL_ORG_DC)
-					.setText(url));
 		} catch (Exception e) {
 			throw new RepositoryException("Failed to add identifiers to object in repository",e);
 		}
