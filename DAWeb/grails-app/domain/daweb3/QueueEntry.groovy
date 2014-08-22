@@ -33,6 +33,8 @@ class QueueEntry {
 	String created
 	String modified
 	Object obj
+	String question
+	String answer
 
     static constraints = {
 		status(nullable:false)
