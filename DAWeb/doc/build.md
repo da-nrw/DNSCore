@@ -28,10 +28,15 @@ A template can be found here: [daweb3_properties.groovy](daweb3_properties.groov
 ## Deploy Da-Web3 WAR
 
 ### Build Da-Web3
+
+You may need to copy the application.properties.template file to application.properties if you want 
+to build DA-Web on your own.
+
 In normal build processes this is done automatically by the install processes called in
 the maven build process. If you want to build DA-Web as isolated project, you will need 
 to have GRAILS installed on your command line, while the project itself is not mavenized 
 yet. 
+
 
 Builds without having a related build of CB are strongly discouraged, while the both 
 applications share the same model. 
