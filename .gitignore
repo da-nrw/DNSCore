@@ -6,7 +6,6 @@ ContentBroker/.settings
 DAWeb/target/
 DAWeb/target-eclipse/
 DAWeb/.settings/
-DAWeb/application.properties
 PasswordEncryptor/target/
 PasswordEncryptor/.settings/
 deliverable.tar
