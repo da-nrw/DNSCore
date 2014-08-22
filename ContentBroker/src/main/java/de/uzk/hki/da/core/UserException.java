@@ -24,7 +24,9 @@ public class UserException extends RuntimeException {
 		RETRIEVAL_ERROR,
 		DUPLICATE_DOCUMENT_NAMES,
 		DUPLICATE_METADATA_FILE,
-		INVALID_METADATA_FILE
+		INVALID_METADATA_FILE,
+		DELTA_RECIEVED_BEFORE_ARCHIVED
+		
 	};
 	
 	private static final long serialVersionUID = -6346016039624940492L;
