@@ -61,7 +61,7 @@ public class XepicurWriterTests {
 			"1-2011111110",
 			"METS",
 			"http://dfg-viewer.de/show/?set[mets]=",
-			"src/test/resources/metadata/"
+			"src/test/resources/metadata/","urn:nbn","url/file"
 		);
 		
 		assertTrue(new File("src/test/resources/metadata/epicur.xml").exists());

@@ -37,7 +37,6 @@ import de.uzk.hki.da.cb.FetchPIPsActionTest;
 import de.uzk.hki.da.cb.IndexMetadataActionTests;
 import de.uzk.hki.da.cb.ObjectFSTests;
 import de.uzk.hki.da.cb.PrepareSendToPresenterActionTests;
-import de.uzk.hki.da.cb.ProcessUserDecisionsAction;
 import de.uzk.hki.da.cb.ProcessUserDecisionsActionTests;
 import de.uzk.hki.da.cb.ProperRefreshOfJobChildrenTest;
 import de.uzk.hki.da.cb.RestructureActionTests;

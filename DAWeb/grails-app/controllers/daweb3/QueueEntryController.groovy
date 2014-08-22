@@ -26,6 +26,7 @@ package daweb3
  * @Author Sebastian Cuy 
  */
 import java.util.logging.Logger;
+import grails.plugin.springsecurity.annotation.Secured
 import org.hibernate.criterion.CriteriaSpecification;
 
 import org.springframework.aop.TrueClassFilter;
@@ -150,6 +151,7 @@ class QueueEntryController {
 	/**
 	 * Applies button and functionality to retry the last workflow step for an item
 	 */
+	@Secured(['ROLE_NODEADMIN'])
 	def queueRetry() {
 		def queueEntryInstance = QueueEntry.get(params.id)
 		if (queueEntryInstance) {
@@ -160,9 +162,9 @@ class QueueEntryController {
 				queueEntryInstance.status = newstat
 				queueEntryInstance.modified = Math.round(new Date().getTime()/1000L)
 				if( !queueEntryInstance.save() ) {
-					log.debug("Validation errors on save")
+					log.error("Validation errors on save")
 					queueEntryInstance.errors.each {
-						log.debug(it)
+						log.error(it)
 					}
 				} 
 				flash.message = "Status zurückgesetzt!" 
@@ -180,6 +182,7 @@ class QueueEntryController {
 	/**
 	 * Applies button and functionality to recover all the workflow for an item
 	 */
+	@Secured(['ROLE_NODEADMIN'])
 	def queueRecover() {
 		def queueEntryInstance = QueueEntry.get(params.id)
 		if (queueEntryInstance) {
@@ -192,9 +195,9 @@ class QueueEntryController {
 				queueEntryInstance.status = newstat
 				queueEntryInstance.modified = Math.round(new Date().getTime()/1000L)
 				if( !queueEntryInstance.save() ) {
-					log.debug("Validation errors on save")
+					log.error("Validation errors on save")
 					queueEntryInstance.errors.each {
-						log.debug(it)
+						log.error(it)
 					}
 				}
 				flash.message = "Paket recovered!"
@@ -212,6 +215,7 @@ class QueueEntryController {
 	/**
 	 * Applies button and functionality to remove an item from ContentBroker workflow
 	 */
+	@Secured(['ROLE_NODEADMIN'])
 	def queueDelete() {
 		def queueEntryInstance = QueueEntry.get(params.id)
 		if (queueEntryInstance) {
@@ -224,9 +228,9 @@ class QueueEntryController {
 				queueEntryInstance.status = newstat
 				queueEntryInstance.modified = Math.round(new Date().getTime()/1000L)
 				if( !queueEntryInstance.save() ) {
-					log.debug("Validation errors on save")
+					log.error("Validation errors on save")
 					queueEntryInstance.errors.each {
-						log.debug(it)
+						log.error(it)
 					}
 				}
 				flash.message = "Paket für Löschung vorgesehen"
@@ -236,6 +240,82 @@ class QueueEntryController {
 			
 		} else flash.message = message(code: 'default.not.found.message', args: [message(code: 'queueEntry.label', default: 'QueueEntry'), params.id])
 		redirect(action: "list")
+		return
+
+		[queueEntryInstance: queueEntryInstance]
+	}
+	
+	def listMigrationRequests () {
+		User user = springSecurityService.currentUser
+		def queueEntries
+		def admin = 0;
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		if (params.search==null){
+			if (admin != 1) {
+				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.status='640'",
+				 [csn: user.shortName])
+			} else {
+				admin = true;
+				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.status='640'")
+				
+			}
+			[queueEntryInstanceList: queueEntries,
+				admin:admin ]
+	}
+	}
+	/**
+	 * Applies status and functionality to answer with yes on migration requests
+	 */
+	def performMigrationRequestYes() {
+		def queueEntryInstance = QueueEntry.get(params.id)
+		if (queueEntryInstance) {
+			def status = queueEntryInstance.getStatus()
+			int state = status.toInteger();
+				def newstat = "640"
+				queueEntryInstance.status = newstat
+				queueEntryInstance.answer = "YES"
+				queueEntryInstance.modified = Math.round(new Date().getTime()/1000L)
+				if( !queueEntryInstance.save() ) {
+					log.error("Validation errors on save")
+					queueEntryInstance.errors.each {
+						log.error(it)
+					}
+				}
+				flash.message = "Antwort Ja"
+			} else flash.message = "Nachfrage konnte nicht beantwortet werden- Fehler"
+			redirect(action: "listMigrationRequests")
+			return
+		redirect(action: "listMigrationRequests")
+		return
+
+		[queueEntryInstance: queueEntryInstance]
+	}
+	
+	/**
+	 * Applies status and functionality to answer with yes on migration requests
+	 */
+	def performMigrationRequestNo() {
+		def queueEntryInstance = QueueEntry.get(params.id)
+		if (queueEntryInstance) {
+			def status = queueEntryInstance.getStatus()
+			int state = status.toInteger();
+				def newstat = "640"
+				queueEntryInstance.status = newstat
+				queueEntryInstance.answer = "NO"
+				queueEntryInstance.modified = Math.round(new Date().getTime()/1000L)
+				if( !queueEntryInstance.save() ) {
+					log.error("Validation errors on save")
+					queueEntryInstance.errors.each {
+						log.error(it)
+					}
+				}
+				flash.message = "Antwort Nein"
+			} else flash.message = "Nachfrage konnte nicht beantwortet werden- Fehler"
+			redirect(action: "listMigrationRequests")
+			return
+		redirect(action: "listMigrationRequests")
 		return
 
 		[queueEntryInstance: queueEntryInstance]

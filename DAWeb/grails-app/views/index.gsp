@@ -22,6 +22,7 @@
 			<h2>Funktionen:</h2>
 			<ul>
 				<li class="controller"><g:link controller="queueEntry">Bearbeitungsübersicht</g:link></li>
+				<li class="controller"><g:link controller="queueEntry" action="listMigrationRequests">Entscheidungsübersicht</g:link></li>
 				<li class="controller"><g:link controller="object">Eingelieferte Objekte (AIP)</g:link></li>
 				<li class="controller"><g:link controller="incoming">Verarbeitung für abgelieferte SIP starten</g:link></li>
 				<li class="controller"><g:link controller="outgoing">Objekt entnehmen (DIP)</g:link></li>
