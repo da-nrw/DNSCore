@@ -5,6 +5,6 @@
 app.grails.version=2.3.8
 app.name=daweb3
 app.servlet.version=2.5
-app.version=will be inserted by build DNSCore
+app.version=will be inserted by build DNSCore (unsupported build)
 plugins.activemq=0.4.1
 plugins.jms=1.2
