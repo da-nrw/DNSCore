@@ -96,7 +96,8 @@ public class IndexMetadataAction extends AbstractAction {
 				String metadataFileId = getFrames().get(framePath);
 				InputStream metadataStream;
 				metadataStream = getRepositoryFacade().retrieveFile(
-					object.getIdentifier(), preservationSystem.getOpenCollectionName(), metadataFileId);
+					object.getIdentifier(), 
+					preservationSystem.getOpenCollectionName(), metadataFileId);
 				if (metadataStream == null) {
 					logger.warn("Metadata file {} not found in repository! Skipping indexing.", metadataFileId);
 					continue;
