@@ -12,5 +12,7 @@
 	<userExceptionMessage id="REPLACE_URLS_IN_METADATA_ERROR">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Die URLs in der Datei %ERROR_INFO konnten nicht aktualisiert werden. Bitte prüfen Sie, ob die Datei dem verwendeten Metadatenstandard entspricht.</userExceptionMessage>
 	<userExceptionMessage id="RETRIEVAL_ERROR">Beim Retrieval des von Ihnen angeforderten Objekts mit dem Identifier %OBJECT_IDENTIFIER ist ein Fehler aufgetreten.\nBitte wenden Sie sich an den Knoten-Administrator.</userExceptionMessage>
 	<userExceptionMessage id="DUPLICATE_DOCUMENT_NAMES">Beim Ingest des Objektes mit dem Identifier %OBJECT_IDENTIFIER ist ein Fehler aufgetreten. Mehr als ein Dokument mit demselben Namen gefunden. Abbruch des Ingest.</userExceptionMessage>
-	<userExceptionMessage id="DUPLICATE_METADATA_FILE">Beim Ingest des Objecktes mit dem Identifier %OBJECT_IDENTIFIER ist ein Fehler aufgetreten. Mehr als eine Metadatendatei wurde gefunden.</userExceptionMessage>
+	<userExceptionMessage id="DUPLICATE_METADATA_FILE">Beim Ingest des Objektes mit dem Identifier %OBJECT_IDENTIFIER ist ein Fehler aufgetreten. Mehr als eine Metadatendatei wurde gefunden.</userExceptionMessage>
+	<userExceptionMessage id="DELTA_RECIEVED_BEFORE_ARCHIVED">Beim Ingest des Objektes mit dem Identifier %OBJECT_IDENTIFIER ist ein Fehler aufgetreten. Es wurde ein Delta angeliefert, obwohl das Primärobjekt noch nicht fertig archiviert wurde</userExceptionMessage>
+	
 </userExceptionMessages>

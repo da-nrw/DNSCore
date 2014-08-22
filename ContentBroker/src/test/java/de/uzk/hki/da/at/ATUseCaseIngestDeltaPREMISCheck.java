@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -64,7 +65,7 @@ public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
 	public void setUp() throws IOException{
 		setUpBase();
 
-		object = putPackageToStorage(IDENTIFIER,ORIG_NAME,containerName);
+		object = putPackageToStorage(IDENTIFIER,ORIG_NAME,containerName,new Date(),100);
 		FileUtils.copyFile(Path.makeFile(TC.TEST_ROOT_AT,ORIG_NAME+"2.tgz"), 
 				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME,containerName));
 	}

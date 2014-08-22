@@ -32,6 +32,8 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
+import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
@@ -113,7 +115,7 @@ public class RegisterObjectService {
 			Package newPkg = new Package();
 			newPkg.setName(generateNewPackageName(packs));
 			newPkg.setContainerName(containerName);
-
+			if (obj.getObject_state()<50) throw new UserException(UserExceptionId.DELTA_RECIEVED_BEFORE_ARCHIVED, "Delta Record für ein nicht fertig archiviertes Objekt");
 			logger.info("Package is a delta record for Object with identifier: "+obj.getIdentifier());
 			obj.getPackages().add(newPkg);
 			obj.setObject_state(50);
