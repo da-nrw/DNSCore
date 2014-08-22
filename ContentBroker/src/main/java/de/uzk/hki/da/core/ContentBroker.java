@@ -41,7 +41,15 @@ import de.uzk.hki.da.utils.Utilities;
 /**
  * Facade to a whole bunch of processes that we will probably model later as iRods-Microservices.
  * 
- * @author: daniel & the danrw team
+ * @author: Daniel M. de Oliveira
+ * @author: Sebastian Cuy
+ * @author: Jens Peters
+ * @author: Thomas Kleinke
+ * @author: Polina Gubaidullina
+ * @author: Martin Fischer
+ * @author: Johanna Puhl
+ * @author: Lisa Rau
+ * @author: Chris Weitz
  */
 public class ContentBroker {
 	

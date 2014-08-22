@@ -7,7 +7,7 @@
 # If some of these functions are not implemented for your MSS, just let this function as it is.
 #
 
-# Anpassungen fuer DANRW TSM: Jens Peters
+# Anpassungen fuer DNSCORE  TSM: Jens Peters
 
 LOG="../log/mss_`date +%m-%Y`.log"
 DSMBIN=     

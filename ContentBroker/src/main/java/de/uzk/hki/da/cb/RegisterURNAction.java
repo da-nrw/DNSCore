@@ -33,6 +33,7 @@ import de.uzk.hki.da.metadata.MetsURNXmlReader;
 import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.C;
 
 
 /**
@@ -83,7 +84,7 @@ public class RegisterURNAction extends AbstractAction {
 		
 		List<DAFile> files = object.getLatestPackage().getFiles();
 		for (DAFile file : files) {
-			if (file.getFormatPUID().equals("danrw-fmt/1"))
+			if (file.getFormatPUID().equals(C.METS_PUID))
 				metsFile = file;
 		}
 

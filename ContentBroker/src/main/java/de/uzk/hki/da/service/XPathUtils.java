@@ -51,6 +51,7 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 import de.uzk.hki.da.metadata.PremisXmlReaderNodeFactory;
+import de.uzk.hki.da.utils.C;
 
 
 /**
@@ -191,7 +192,7 @@ public class XPathUtils {
 			else if (prefix.equals("premis"))
 				return "info:lc/xmlns/premis-v2";
 			else if (prefix.equals("contract"))
-				return "http://www.danrw.de/contract/v1";
+				return C.CONTRACT_V1_URL;
 			
 			return XMLConstants.NULL_NS_URI;
 		}

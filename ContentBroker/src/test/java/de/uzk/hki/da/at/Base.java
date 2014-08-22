@@ -54,6 +54,8 @@ import de.uzk.hki.da.utils.Utilities;
 
 public class Base {
 
+	private static final String URN_NBN_DE_DANRW = "urn:nbn:de:danrw:";
+
 	private static final int wait_interval=2000; // in ms
 	
 	protected Path testDataRootPath = new RelativePath("src/test/resources/at/");
@@ -321,7 +323,7 @@ public class Base {
 	 */
 	protected Object putPackageToStorage(String identifier,String originalName,String containerName, Date createddate, int object_state) throws IOException{
 		if (createddate==null) createddate = new Date();
-		String urn =   "urn:nbn:de:danrw:"+identifier;
+		String urn =   URN_NBN_DE_DANRW+identifier;
 		int timeout = 2000;
 		StoragePolicy sp = new StoragePolicy(localNode);
 		ArrayList<String> destinations = new ArrayList<String>();

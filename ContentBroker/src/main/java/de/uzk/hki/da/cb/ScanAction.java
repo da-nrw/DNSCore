@@ -47,6 +47,7 @@ import de.uzk.hki.da.service.MailContents;
  */
 public class ScanAction extends AbstractAction{
 	
+	private static final String MIGRATION = "MIGRATION";
 	private final ConversionInstructionBuilder ciB = new ConversionInstructionBuilder();
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
@@ -69,7 +70,7 @@ public class ScanAction extends AbstractAction{
 		
 		
 		Object premisObject = parsePremisToMetadata(object.getDataPath() +"/"+ job.getRep_name()+"a");
-		if (!premisObject.grantsRight("MIGRATION"))
+		if (!premisObject.grantsRight(MIGRATION))
 		{
 			logger.info("PREMIS says migration is not granted. Will ask the user what to do next.");
 			new MailContents(preservationSystem,localNode).informUserAboutPendingDecision(object); 

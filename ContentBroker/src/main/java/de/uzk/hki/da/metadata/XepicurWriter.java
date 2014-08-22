@@ -35,6 +35,11 @@ import org.jdom.output.XMLOutputter;
  */
 public class XepicurWriter {
 	
+	private static final String XSI_NAMESPACE = "http://www.w3.org/2001/XMLSchema-instance";
+	private static final String XEPICUR_SCHEMA_LOCATION = "urn:nbn:de:1111-2004033116 http://www.persistent-identifier.de/xepicur/version1.0/xepicur.xsd";
+	private static final String URN_PREFIX = "urn:nbn:de:danrw-";
+	private static final String FILE_COLLECTION = "http://data.danrw.de/file/";
+
 	/**
 	 * Creates a file named "epicur.xml" containing the urn and the
 	 * corresponing url of the object in context of a viewer.
@@ -45,12 +50,12 @@ public class XepicurWriter {
 	 */
 	public static void createXepicur(String objectId, String packageType, String viewerUrl, String path) {
 		
-		Namespace xsi = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+		Namespace xsi = Namespace.getNamespace("xsi", XSI_NAMESPACE);
 		Namespace epicur = Namespace.getNamespace("urn:nbn:de:1111-2004033116");
 		
 		Element root = new Element("epicur", epicur);
 		root.addNamespaceDeclaration(xsi);
-		root.setAttribute("schemaLocation", "urn:nbn:de:1111-2004033116 http://www.persistent-identifier.de/xepicur/version1.0/xepicur.xsd", xsi);
+		root.setAttribute("schemaLocation", XEPICUR_SCHEMA_LOCATION, xsi);
 		
 		Element admin = new Element("administrative_data", epicur);
 		Element delivery = new Element("delivery", epicur);
@@ -63,14 +68,14 @@ public class XepicurWriter {
 		Element record = new Element("record", epicur);
 		Element identifier = new Element("identifier", epicur);
 		identifier.setAttribute("scheme", "urn:nbn:de");
-		identifier.addContent("urn:nbn:de:danrw-" + objectId);
+		identifier.addContent(URN_PREFIX + objectId);
 		record.addContent(identifier);
 		Element resource = new Element("resource", epicur);
 		identifier = new Element("identifier", epicur);
 		identifier.setAttribute("scheme", "url");
 		identifier.setAttribute("role", "primary");
 		@SuppressWarnings("deprecation")
-		String fileUrl = URLEncoder.encode("http://data.danrw.de/file/" + objectId + "/" + packageType);
+		String fileUrl = URLEncoder.encode(FILE_COLLECTION + objectId + "/" + packageType);
 		identifier.addContent(viewerUrl + fileUrl);
 		resource.addContent(identifier);
 		Element format = new Element("format", epicur);

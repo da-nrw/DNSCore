@@ -78,7 +78,7 @@ public class RetrievalActionTest {
 
 		PreservationSystem pSystem = new PreservationSystem();
 		pSystem.setSidecarExtensions("xmp");
-		User sysadmin = new User(); sysadmin.setEmailAddress("noreply@danrw.de");
+		User sysadmin = new User(); sysadmin.setEmailAddress("noreply");
 		pSystem.setAdmin(sysadmin);
 		
 		

@@ -22,6 +22,7 @@ import de.uzk.hki.da.utils.TESTHelper;
 
 public class ATUseCaseIngestLIDO extends Base{
 
+	private static final String DATA_DANRW_DE = "http://data.danrw.de";
 	private static final String origName = "ATUseCaseIngestLIDO";
 	private Object object;
 	private static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
@@ -57,7 +58,7 @@ public class ATUseCaseIngestLIDO extends Base{
 		
 		Document doc = builder.build
 				(new FileReader(Path.make(localNode.getWorkAreaRootPath(),"pips", "public", "TEST", object.getIdentifier(), object.getPackage_type()+".xml").toFile()));
-		assertTrue(getLIDOURL(doc).contains("http://data.danrw.de"));
+		assertTrue(getLIDOURL(doc).contains(DATA_DANRW_DE));
 	}
 	
 	private String getLIDOURL(Document doc){
