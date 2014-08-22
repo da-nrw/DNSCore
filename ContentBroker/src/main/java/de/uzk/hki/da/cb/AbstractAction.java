@@ -21,8 +21,6 @@ package de.uzk.hki.da.cb;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Date;
 
 import javax.jms.Connection;
@@ -31,7 +29,6 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 import javax.jms.TextMessage;
-import javax.mail.MessagingException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -54,7 +51,7 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.service.Mail;
+import de.uzk.hki.da.service.MailContents;
 import de.uzk.hki.da.service.UserExceptionManager;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
@@ -94,7 +91,7 @@ public abstract class AbstractAction implements Runnable {
 	protected int concurrentJobs = 3;
 	private UserExceptionManager userExceptionManager;
 	private ActiveMQConnectionFactory mqConnectionFactory;
-	protected PreservationSystem pSystem;
+	protected PreservationSystem preservationSystem;
 	
 	
 	AbstractAction(){}
@@ -217,21 +214,21 @@ public abstract class AbstractAction implements Runnable {
 			logger.error(this.getClass().getName()+": UserException in action: ",e);
 			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + C.USER_ERROR_STATE_DIGIT;
 			handleError(errorStatus);
-			createUserReport(e);
+			new MailContents(preservationSystem,localNode).userExceptionCreateUserReport(userExceptionManager,e,object);
 			if (e.checkForAdminReport())
-				createAdminReport(e);
+				new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(e, object, this);
 			sendJMSException(e);
 		} catch (org.hibernate.exception.GenericJDBCException sql) {
 			logger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sql);
 			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "1";
 			handleError(errorStatus);
-			createAdminReport(sql);
+			new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(sql, object, this);
 			sendJMSException(sql);
 		} catch (Exception e) {
 			logger.error(this.getClass().getName()+": Exception in action: ",e);
 			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "1";
 			handleError(errorStatus);
-			createAdminReport(e);
+			new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(e, object, this);
 			sendJMSException(e);
 		} finally {			
 			unsetObjectLogging();
@@ -299,60 +296,7 @@ public abstract class AbstractAction implements Runnable {
 		
 	}
 	
-	/**
-	 * Creates report about the error
-	 * Sends Email to the Admin
-	 * @author Jpeters
-	 */
-	private void createAdminReport(Exception e) {
 
-		String errorStatus = getStartStatus().substring(0,getStartStatus().length()-1) + "1";
-		String email = localNode.getAdmin().getEmailAddress();
-		String subject = "Fehlerreport für " + object.getIdentifier() + " : Status (" + errorStatus + ")" ;
-		String msg = e.getMessage();
-		msg +="\n\n";
-		StringWriter s = new StringWriter();
-	    e.printStackTrace(new PrintWriter(s));
-	    msg += s.toString();
-		
-		if (email!=null && !email.equals("")) {
-		try {
-			Mail.sendAMail(pSystem.getAdmin().getEmailAddress(), email, subject, msg);
-		} catch (MessagingException ex) {
-			logger.error("Sending email reciept for " + object.getIdentifier() + " failed",ex);
-		}
-		} else logger.info(localNode.getName() + " has no valid email address!");
-		
-	}
-	
-	/**
-	 * Creates report about the error
-	 * Sends e-mail to the User
-	 * @author Thomas Kleinke
-	 */
-	private void createUserReport(UserException e) {
-		
-		String email = object.getContractor().getEmailAddress();
-		String subject = "Fehlerreport für " + object.getIdentifier();
-		String message = userExceptionManager.getMessage(e.getUserExceptionId());
-		
-		message = message.replace("%OBJECT_IDENTIFIER", object.getIdentifier())
-			 .replace("%CONTAINER_NAME", object.getLatestPackage().getContainerName())
-			 .replace("%ERROR_INFO", e.getErrorInfo());
-				
-		
-		logger.debug("Sending mail to: " + email + "\n" + subject + "\n" + message);
-		
-		if (email == null){
-			logger.warn(object.getContractor().getShort_name() + " has no valid email address!");		
-			return;
-		}
-		try {
-			Mail.sendAMail(pSystem.getAdmin().getEmailAddress(),email, subject, message);
-		} catch (MessagingException ex) {
-			logger.error("Sending email reciept for " + object.getIdentifier() + " failed", ex);
-		}
-	}	
 	
 	/**
 	 * Sets the file name for package logger dynamically
@@ -492,10 +436,10 @@ public abstract class AbstractAction implements Runnable {
 	}
 
 	public PreservationSystem getPreservationSystem() {
-		return pSystem;
+		return preservationSystem;
 	}
 
 	public void setPSystem(PreservationSystem pSystem) {
-		this.pSystem = pSystem;
+		this.preservationSystem = pSystem;
 	}
 }

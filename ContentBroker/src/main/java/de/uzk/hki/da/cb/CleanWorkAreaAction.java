@@ -79,9 +79,9 @@ public class CleanWorkAreaAction extends AbstractAction{
 	 */
 	private void createPublicationJob(){
 		
-		logger.info("Creating child job with state 540 on "+   pSystem.getPresServer() + " for possible publication of this object.");
+		logger.info("Creating child job with state 540 on "+   preservationSystem.getPresServer() + " for possible publication of this object.");
 		Job child = new Job (job, "540");
-		child.setResponsibleNodeName( pSystem.getPresServer() );
+		child.setResponsibleNodeName( preservationSystem.getPresServer() );
 		child.setObject(getObject());
 		child.setDate_created(String.valueOf(new Date().getTime()/1000L));
 		

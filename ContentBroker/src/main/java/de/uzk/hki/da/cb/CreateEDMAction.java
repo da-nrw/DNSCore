@@ -71,9 +71,9 @@ public class CreateEDMAction extends AbstractAction {
 
 	@Override
 	void checkSystemStatePreconditions() throws IllegalStateException {
-		if (pSystem.getUrisCho()==null||pSystem.getUrisCho().isEmpty()) throw new IllegalStateException("choBaseUri not set");
-		if (pSystem.getUrisAggr()==null||pSystem.getUrisAggr().isEmpty()) throw new IllegalStateException("aggrBaseUri not set");
-		if (pSystem.getUrisLocal()==null||pSystem.getUrisLocal().isEmpty()) throw new IllegalStateException("localBaseUri not set");
+		if (preservationSystem.getUrisCho()==null||preservationSystem.getUrisCho().isEmpty()) throw new IllegalStateException("choBaseUri not set");
+		if (preservationSystem.getUrisAggr()==null||preservationSystem.getUrisAggr().isEmpty()) throw new IllegalStateException("aggrBaseUri not set");
+		if (preservationSystem.getUrisLocal()==null||preservationSystem.getUrisLocal().isEmpty()) throw new IllegalStateException("localBaseUri not set");
 		if (edmMappings == null)
 			throw new IllegalStateException("edmMappings not set.");
 		for (String filePath:edmMappings.values())
@@ -141,9 +141,9 @@ public class CreateEDMAction extends AbstractAction {
 			throw new RuntimeException(e1);
 		}	
 		edmGenerator.setParameter("urn", object.getUrn());
-		edmGenerator.setParameter("cho-base-uri", pSystem.getUrisCho() + "/" + objectId);
-		edmGenerator.setParameter("aggr-base-uri", pSystem.getUrisAggr() + "/" + objectId);
-		edmGenerator.setParameter("local-base-uri", pSystem.getUrisLocal());
+		edmGenerator.setParameter("cho-base-uri", preservationSystem.getUrisCho() + "/" + objectId);
+		edmGenerator.setParameter("aggr-base-uri", preservationSystem.getUrisAggr() + "/" + objectId);
+		edmGenerator.setParameter("local-base-uri", preservationSystem.getUrisLocal());
 		String edmResult=null;
 		try {
 			edmResult = edmGenerator.generate();

@@ -71,6 +71,7 @@ public class ActionFactoryTests {
 	@Before
 	public void setUp() {
 		c.setShort_name("csn");
+		c.setEmailAddress("useremail");
 		
 		CentralDatabaseDAO dao = new CentralDatabaseDAO();
 

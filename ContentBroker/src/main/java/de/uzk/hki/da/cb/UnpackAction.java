@@ -160,7 +160,7 @@ public class UnpackAction extends AbstractAction {
 			
 			boolean isOKWhenSidecarFilesAreSubtracted = false;
 			for (File file:duplicates.get(duplicate)){
-				if (Utilities.hasSidecarExtension(file,pSystem.getSidecarExtensions())&&(duplicates.get(duplicate).size()-1)==1) {
+				if (Utilities.hasSidecarExtension(file,preservationSystem.getSidecarExtensions())&&(duplicates.get(duplicate).size()-1)==1) {
 					isOKWhenSidecarFilesAreSubtracted=true;
 					break;
 				}

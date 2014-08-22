@@ -22,8 +22,6 @@ package de.uzk.hki.da.cb;
 import java.io.IOException;
 import java.util.Date;
 
-import javax.mail.MessagingException;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
@@ -33,7 +31,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
-import de.uzk.hki.da.service.Mail;
+import de.uzk.hki.da.service.MailContents;
 
 /**
  * Checks if the minimum number of replications of an AIP, as specified by minNodes, is available on any
@@ -72,7 +70,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		setKILLATEXIT(true);
 
 		StoragePolicy sp = new StoragePolicy(localNode);
-		sp.setMinNodes(pSystem.getMinRepls());
+		sp.setMinNodes(preservationSystem.getMinRepls());
 		do{
 			delay();
 		}
@@ -82,7 +80,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 				sp));
 		
 		prepareObjectForObjectDBStorage(object);
-		sendReciept(job, object);
+		new MailContents(preservationSystem,localNode).sendReciept(job, object);
 		
 		toCreate = createPublicationJob(job);
 		FileUtils.deleteDirectory(object.getPath().toFile());
@@ -113,9 +111,9 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		Job result = new Job();
 		
 		logger.info("Creating child job with state 540 on "+ 
-				pSystem.getPresServer()+" for possible publication of this object.");
+				preservationSystem.getPresServer()+" for possible publication of this object.");
 		result = new Job (parent, "540");
-		result.setResponsibleNodeName(pSystem.getPresServer());
+		result.setResponsibleNodeName(preservationSystem.getPresServer());
 		result.setObject(getObject());
 		result.setDate_created(String.valueOf(new Date().getTime()/1000L));
 		
@@ -155,47 +153,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	}
 	
 	
-	/**
-	 * @author Jens Peters
-	 * Sends an Reciept to the deliverer of package
-	 */
-	public boolean sendReciept(Job job, Object obj){
-		if (dao==null) throw new IllegalStateException("centralDatabaseDAO not set");
-		
-		String objectIdentifier=obj.getIdentifier();
-		String email = obj.getContractor().getEmailAddress();
-		String subject;
-		String msg;
-		if (obj.isDelta())
-		{
-			subject = "[DA-NRW] Einlieferungsbeleg für Ihr Delta zum Objekt " + objectIdentifier;
-			msg = "Ihrem archivierten Objekt mit dem Identifier " + objectIdentifier + " und der URN " + obj.getUrn() +
-					" wurde erfolgreich ein Delta mit dem Paketnamen \"" + object.getOrig_name() + "\" hinzugefügt.";
-		}
-		else
-		{
-			subject = "[DA-NRW] Einlieferungsbeleg für " + objectIdentifier;
-			msg = "Ihr eingeliefertes Paket mit dem Namen \""+ object.getOrig_name() + "\" wurde erfolgreich im DA-NRW archiviert.\n\n" +
-			"Identifier: " + objectIdentifier + "\n" +
-			"URN: " + obj.getUrn();
-		}
-		
-		logger.debug(subject);
-		logger.debug("");
-		logger.debug(msg);
-		
-		if (email!=null) {
-		try {
-			Mail.sendAMail(pSystem.getAdmin().getEmailAddress(), email, subject, msg);
-		} catch (MessagingException e) {
-			logger.error("Sending email reciept for " + objectIdentifier + " failed",e);
-			return false;
-		}
-		} else logger.info(obj.getContractor().getShort_name() + " has no valid Email Adress!");
-		
-		return true;
-	}
-
+	
 	public GridFacade getGridRoot() {
 		return gridRoot;
 	}

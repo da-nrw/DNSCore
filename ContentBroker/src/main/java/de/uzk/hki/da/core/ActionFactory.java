@@ -112,6 +112,7 @@ public class ActionFactory implements ApplicationContextAware {
 		if (action.getObject()==null) throw new IllegalStateException("object not set");
 		if (action.getObject().getContractor()==null) throw new IllegalStateException("contractor not set");
 		if (action.getObject().getContractor().getShort_name()==null) throw new IllegalStateException("contractor short name not set.");
+		if (action.getObject().getContractor().getEmailAddress()==null||action.getObject().getContractor().getEmailAddress().isEmpty()) throw new IllegalStateException("user email not set");
 		if (action.getObject().getIdentifier()==null) throw new IllegalStateException("object identifier not set");
 		if (action.getUserExceptionManager()==null) throw new IllegalStateException("user exception manager not set");
 		action.getObject().getLatestPackage();

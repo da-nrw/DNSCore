@@ -85,6 +85,7 @@ public class RetrievalActionTest {
 		FileUtils.copyDirectory(Path.makeFile(forkAndTransferPath,"work/csn/Source"), 
 				                Path.makeFile(forkAndTransferPath,"work/csn/1")); 
 		Node node = new Node();
+		node.setAdmin(sysadmin);
 		node.setWorkAreaRootPath(new RelativePath(forkAndTransferPath));
 		node.setUserAreaRootPath(new RelativePath(forkAndTransferPath,"work"));
 		

@@ -25,9 +25,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
@@ -38,6 +35,7 @@ import de.uzk.hki.da.model.ConversionInstructionBuilder;
 import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.service.MailContents;
 
 
 /**
@@ -49,7 +47,6 @@ import de.uzk.hki.da.model.Object;
  */
 public class ScanAction extends AbstractAction{
 	
-	static final Logger logger = LoggerFactory.getLogger(ScanAction.class);
 	private final ConversionInstructionBuilder ciB = new ConversionInstructionBuilder();
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
@@ -58,16 +55,10 @@ public class ScanAction extends AbstractAction{
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 	}
 
-
-
-
 	@Override
 	void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 	}
-
-
-
 
 	@Override
 	boolean implementation() throws IOException {
@@ -81,7 +72,8 @@ public class ScanAction extends AbstractAction{
 		if (!premisObject.grantsRight("MIGRATION"))
 		{
 			logger.info("PREMIS says migration is not granted. Will ask the user what to do next.");
-
+			new MailContents(preservationSystem,localNode).informUserAboutPendingDecision(object); 
+			
 			// "Manipulate" the end status to point to ProcessUserDecisionsAction
 			this.setEndStatus("640");
 		}
@@ -101,9 +93,9 @@ public class ScanAction extends AbstractAction{
 		
 	}
 
-
-
-
+	
+	
+	
 	/**
 	 * @author Daniel M. de Oliveira
 	 * @param filesArchival
@@ -115,7 +107,7 @@ public class ScanAction extends AbstractAction{
 		for (DAFile file : filesArchival){
 			
 			for	(ConversionPolicy p:
-				pSystem.getApplicablePolicies(file, false))
+				preservationSystem.getApplicablePolicies(file, false))
 			{
 				logger.info("Found applicable Policy for FileFormat "+
 						p.getSource_format()+" -> "+p.getConversion_routine().getName() + "("+ file.getRelative_path()+ ")");
@@ -130,12 +122,6 @@ public class ScanAction extends AbstractAction{
 		
 		return cis;
 	}
-	
-	
-
-	
-	
-	
 	
 	
 	
@@ -156,10 +142,15 @@ public class ScanAction extends AbstractAction{
 		return o;
 	}
 	
+	
+	
+	
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
 		return distributedConversionAdapter;
 	}
 
+	
+	
 
 	public void setDistributedConversionAdapter(
 			DistributedConversionAdapter distributedConversionAdapter) {

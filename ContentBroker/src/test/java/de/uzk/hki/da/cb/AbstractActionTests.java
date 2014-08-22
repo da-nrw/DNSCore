@@ -79,10 +79,9 @@ public class AbstractActionTests {
 		
 		action.setDao(mock(CentralDatabaseDAO.class));
 		action.setActionMap(mock(ActionRegistry.class));
-		action.setLocalNode(mock(Node.class));
 		Job job = new Job();
 		action.setJob(job);
-		User c = new User(); c.setShort_name("TEST");
+		User c = new User(); c.setShort_name("TEST"); c.setEmailAddress("useremail");
 		Object object = new Object();
 		object.setIdentifier("ID");
 		object.setContractor(c);
@@ -91,7 +90,10 @@ public class AbstractActionTests {
 		action.setStartStatus(startStatus);
 		action.setEndStatus(endStatus);
 		action.SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
-		action.setPSystem(new PreservationSystem());
+		PreservationSystem ps = new PreservationSystem(); ps.setAdmin(c);
+		action.setPSystem(ps);
+		Node node = new Node(); node.setAdmin(c);
+		action.setLocalNode(node);
 	}
 	
 	
