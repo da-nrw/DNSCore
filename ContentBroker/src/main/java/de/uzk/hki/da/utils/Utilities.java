@@ -112,7 +112,7 @@ public class Utilities {
 			sidecarExtensions = sidecarExts.split(";");
 		
 		for (int i=0;i<sidecarExtensions.length;i++){
-			if (FilenameUtils.getExtension(file.toString()).equals(sidecarExtensions[i])){
+			if (FilenameUtils.getExtension(file.toString()).toLowerCase().equals(sidecarExtensions[i].toLowerCase())){
 				System.out.println(file+" has sidecar ext "+sidecarExtensions[i]);
 				return true;
 			}

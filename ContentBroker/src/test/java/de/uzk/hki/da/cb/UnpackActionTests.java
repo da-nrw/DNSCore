@@ -60,6 +60,7 @@ public class UnpackActionTests {
 	private static final String BAGIT_PACKAGE = "bagitPackage.tgz";
 	private static final String DUPLICATE_DOCUMENTS_PACKAGE = "duplicateDocuments.tgz";
 	private static final String WHEN_DUPLICATES_PACKAGE = "whenDuplicatesAreNotDuplicates.tgz";
+	private static final String SIDECAR_UPPERCASE_PACKAGE = "SidecarFileWithUppercaseExtension.tgz";
 	private static final String SIDECAR_FILES_PACKAGE = "sidecarFiles.tgz";
 	private static final String SIDECAR_FILES_PACKAGE_WHICH_BROKE = "LVR_ILR_4_PDF_TF18.tar";
 
@@ -117,6 +118,8 @@ public class UnpackActionTests {
 		Path.makeFile(csnPath,SIDECAR_FILES_PACKAGE).delete();
 		Path.makeFile(ingestPath,WHEN_DUPLICATES_PACKAGE).delete();
 		Path.makeFile(csnPath,WHEN_DUPLICATES_PACKAGE).delete();
+		Path.makeFile(csnPath,SIDECAR_UPPERCASE_PACKAGE).delete();
+		Path.makeFile(ingestPath,SIDECAR_UPPERCASE_PACKAGE).delete();
 
 	}
 
@@ -204,6 +207,19 @@ public class UnpackActionTests {
 	}
 	
 	
+	@Test
+	public void acceptSidecarFile_withUppercaseExtension() throws IOException{
+		
+		FileUtils.copyFile(Path.makeFile(ingestPath,SIDECAR_UPPERCASE_PACKAGE+"_"),Path.makeFile(ingestPath,SIDECAR_UPPERCASE_PACKAGE));
+		o.getPackages().get(0).setContainerName(SIDECAR_UPPERCASE_PACKAGE);
+		
+		pSystem.setSidecarExtensions(SIDECAR_EXTENSIONS);
+		try{
+			action.implementation();
+		}catch(UserException e){
+			fail(e.getMessage());
+		}
+	}
 	
 	
 	@Test
