@@ -119,7 +119,7 @@ public class CreatePremisActionTests {
 		object.getPackages().add(pkg);
 		object.getPackages().add(pkg2);
 		object.setIdentifier("identifier");
-		object.setUrn("urn:nbn:de:danrw-1-20130731121553");
+		object.setUrn("urn");
 		object.setContractor(contractor);
 		object.setTransientNodeRef(node);
 		
@@ -376,7 +376,7 @@ public class CreatePremisActionTests {
 			
 			if (identifierText.equals("identifier")) {
 				List<Element> identifierEls = e.getChildren("objectIdentifier", ns);
-				assertEquals("urn:nbn:de:danrw-1-20130731121553", identifierEls.get(1).getChildText("objectIdentifierValue", ns));
+				assertEquals("urn", identifierEls.get(1).getChildText("objectIdentifierValue", ns));
 				checkedObjects++;
 			}
 				
@@ -665,7 +665,7 @@ public class CreatePremisActionTests {
 			
 			if (identifierText.equals("identifier_deltas")) {
 				List<Element> identifierEls = e.getChildren("objectIdentifier", ns);
-				assertEquals("urn:nbn:de:danrw-1-20130731121553", identifierEls.get(1).getChildText("objectIdentifierValue", ns));
+				assertEquals("urn", identifierEls.get(1).getChildText("objectIdentifierValue", ns));
 				checkedObjects++;
 			}
 				

@@ -52,7 +52,7 @@ import de.uzk.hki.da.utils.XMLUtils;
  * This action implements the ingest into the presentation repository.
  * 
  * It creates the epicur metadata for URN/URL mapping and creates
- * one object and the in the collections "danrw" and "danrw-closed"
+ * one object and the in the collections open and closed collections
  * depending on the audiences it should be accessible to according
  * to the contract and sets the published flag in the database
  * accordingly.
@@ -78,7 +78,6 @@ public class SendToPresenterAction extends AbstractAction {
 	private static final String PURL_ORG_DC = "http://purl.org/dc/elements/1.1/";
 	private static final String ENCODING = "UTF-8";
 	private static final String OPENARCHIVES_OAI_IDENTIFIER = "http://www.openarchives.org/OAI/2.0/identifier";
-	private static final String OAI_DANRW_DE = "oai:danrw.de:";
 	private static final String MEMBER = "info:fedora/fedora-system:def/relations-external#isMemberOf";
 	private static final String MEMBER_COLLECTION = "info:fedora/fedora-system:def/relations-external#isMemberOfCollection";
 	private static final String dip = "dip";
@@ -162,7 +161,7 @@ public class SendToPresenterAction extends AbstractAction {
 	private void buildMapWithOriginalFilenamesForLabeling() {
 		labelMap = new HashMap<String,String>();
 		for (Event e:object.getLatestPackage().getEvents()) {			
-			if (!"CONVERT".equals(e.getType())) continue;
+			if (!C.EVENT_TYPE_CONVERT.equals(e.getType())) continue;
 			DAFile targetFile = e.getTarget_file();
 			if (!targetFile.getRep_name().startsWith(dip)) continue;			
 			DAFile sourceFile = e.getSource_file();
@@ -201,7 +200,7 @@ public class SendToPresenterAction extends AbstractAction {
 		XepicurWriter.createXepicur(
 				object.getIdentifier(), packageType, 
 				viewerUrls.get(packageType), 
-				path.toString());
+				path.toString(),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
 		
 		String[] sets = null;
 		if (checkSets){
@@ -273,7 +272,6 @@ public class SendToPresenterAction extends AbstractAction {
 		ingestDir(objectId, collection, pack, packagePath.toString(), packageType);
 		
 		// add identifiers to DC datastream
-		String url = "http://www.danrw.de/objects/" + objectId;
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc;
 		try {
@@ -291,9 +289,6 @@ public class SendToPresenterAction extends AbstractAction {
 			doc.getRootElement().addContent(
 					new Element(IDENTIFIER,DC,PURL_ORG_DC)
 					.setText(urn));
-			doc.getRootElement().addContent(
-					new Element(IDENTIFIER,DC,PURL_ORG_DC)
-					.setText(url));
 		} catch (Exception e) {
 			throw new RepositoryException("Failed to add identifiers to object in repository",e);
 		}
@@ -323,7 +318,7 @@ public class SendToPresenterAction extends AbstractAction {
 				// don't add test packages to OAI-PMH
 				!testContractors.contains(contractorShortName)
 			) {
-				String oaiId = OAI_DANRW_DE + objectId;
+				String oaiId = C.OAI_DANRW_DE + objectId;
 				repositoryFacade.addRelationship(objectId, collection, OPENARCHIVES_OAI_IDENTIFIER, oaiId);
 				logger.debug("Added relationship: "+OPENARCHIVES_OAI_IDENTIFIER+" " + oaiId);
 			}

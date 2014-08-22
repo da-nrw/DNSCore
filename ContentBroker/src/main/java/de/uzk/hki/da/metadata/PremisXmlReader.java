@@ -62,6 +62,7 @@ import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.RightsStatement;
 import de.uzk.hki.da.model.TextRestriction;
 import de.uzk.hki.da.model.VideoRestriction;
+import de.uzk.hki.da.utils.C;
 
 
 /**
@@ -93,9 +94,6 @@ public class PremisXmlReader implements XmlReader{
 	
 	/** The Constant PREMIS_NS. */
 	private static final String PREMIS_NS = "info:lc/xmlns/premis-v2";
-	
-	/** The Constant CONTRACT_NS. */
-	private static final String CONTRACT_NS = "http://www.danrw.de/contract/v1";
 	
 	/** The jhove temp folder. */
 	private String jhoveTempFolder = "";
@@ -297,9 +295,9 @@ public class PremisXmlReader implements XmlReader{
 		logger.debug("non convert event identifier: " + nonConvertEventIdentifier);
 		
 		boolean eventAdded = false;		
-		if (eventType.toUpperCase().equals("CONVERT")
-				|| eventType.toUpperCase().equals("COPY")
-				|| eventType.toUpperCase().equals("CREATE")) {
+		if (eventType.toUpperCase().equals(C.EVENT_TYPE_CONVERT)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_COPY)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_CREATE)) {
 			for (Package pkg : object.getPackages()) {
 				for (DAFile f : pkg.getFiles()) {
 					if (sourceFile.equals("") && outcomeFile.equals("")
@@ -390,22 +388,22 @@ public class PremisXmlReader implements XmlReader{
 			}
 			
 			Element rightsExtEl = rightsEl.getFirstChildElement("rightsExtension", PREMIS_NS)
-					.getFirstChildElement("rightsGranted", CONTRACT_NS);
+					.getFirstChildElement("rightsGranted", C.CONTRACT_NS);
 			
 			Element migrationRightEl = rightsExtEl
-					.getFirstChildElement("migrationRight", CONTRACT_NS);
+					.getFirstChildElement("migrationRight", C.CONTRACT_NS);
 			if (migrationRightEl != null) {
 				migrationRight.setCondition(enumValue(migrationRightEl
-						.getFirstChildElement("condition",CONTRACT_NS),
+						.getFirstChildElement("condition",C.CONTRACT_NS),
 						MigrationRight.Condition.class));
 				right.setMigrationRight(migrationRight);
 			}
 			
-			Element ddbExclusionEl = rightsEl.getFirstChildElement("DDBexclusion", CONTRACT_NS);
+			Element ddbExclusionEl = rightsEl.getFirstChildElement("DDBexclusion", C.CONTRACT_NS);
 			object.setDdbExclusion(ddbExclusionEl != null);
 			
 			Elements publicationRightEls = rightsExtEl
-					.getChildElements("publicationRight", CONTRACT_NS);
+					.getChildElements("publicationRight", C.CONTRACT_NS);
 			
 			for (int i = 0; i < publicationRightEls.size(); i++) {
 				
@@ -413,83 +411,83 @@ public class PremisXmlReader implements XmlReader{
 				
 				PublicationRight publicationRight = new PublicationRight();
 				publicationRight.setAudience(enumValue(publicationRightEl
-						.getFirstChildElement("audience", CONTRACT_NS),
+						.getFirstChildElement("audience", C.CONTRACT_NS),
 						PublicationRight.Audience.class));
 
 				Element startDateEl = publicationRightEl
-						.getFirstChildElement("startDate", CONTRACT_NS);
+						.getFirstChildElement("startDate", C.CONTRACT_NS);
 				if (startDateEl != null)
 					publicationRight.setStartDate(
-							(readDate(publicationRightEl.getFirstChildElement("startDate", CONTRACT_NS).getValue())));
+							(readDate(publicationRightEl.getFirstChildElement("startDate", C.CONTRACT_NS).getValue())));
 				
 				publicationRight.setLawID(stringValue(publicationRightEl
-						.getFirstChildElement("lawID", CONTRACT_NS)));
+						.getFirstChildElement("lawID", C.CONTRACT_NS)));
 				
 				Element restrictionsEl = publicationRightEl
-						.getFirstChildElement("restrictions", CONTRACT_NS);
+						.getFirstChildElement("restrictions", C.CONTRACT_NS);
 				
 				if (restrictionsEl != null) {					
 					Element restrictImageEl = restrictionsEl
-							.getFirstChildElement("restrictImage", CONTRACT_NS);
+							.getFirstChildElement("restrictImage", C.CONTRACT_NS);
 					if (restrictImageEl != null) {
 						ImageRestriction imageRestriction = new ImageRestriction();
 						imageRestriction.setWidth(stringValue(restrictImageEl
-								.getFirstChildElement("width", CONTRACT_NS)));
+								.getFirstChildElement("width", C.CONTRACT_NS)));
 						imageRestriction.setHeight(stringValue(restrictImageEl
-								.getFirstChildElement("height", CONTRACT_NS)));
+								.getFirstChildElement("height", C.CONTRACT_NS)));
 						Element footerTextEl = restrictImageEl
-								.getFirstChildElement("footerText", CONTRACT_NS);
+								.getFirstChildElement("footerText", C.CONTRACT_NS);
 						if (footerTextEl != null) {
 							logger.debug("FooterText: " + stringValue(footerTextEl));
 							imageRestriction.setFooterText(stringValue(footerTextEl));
 						}
 						Element watermarkEl = restrictImageEl
-								.getFirstChildElement("watermark", CONTRACT_NS);
+								.getFirstChildElement("watermark", C.CONTRACT_NS);
 						if (watermarkEl != null) {
 							logger.debug("WatermarkString: " + stringValue(watermarkEl
-									.getFirstChildElement("watermarkString", CONTRACT_NS)));
+									.getFirstChildElement("watermarkString", C.CONTRACT_NS)));
 						imageRestriction.setWatermarkString(stringValue(watermarkEl
-								.getFirstChildElement("watermarkString", CONTRACT_NS)));
+								.getFirstChildElement("watermarkString", C.CONTRACT_NS)));
 						imageRestriction.setWatermarkPointSize(stringValue(watermarkEl
-								.getFirstChildElement("pointSize", CONTRACT_NS)));
+								.getFirstChildElement("pointSize", C.CONTRACT_NS)));
 						imageRestriction.setWatermarkPosition(stringValue(watermarkEl
-								.getFirstChildElement("position", CONTRACT_NS)));
+								.getFirstChildElement("position", C.CONTRACT_NS)));
 						imageRestriction.setWatermarkOpacity(stringValue(watermarkEl
-								.getFirstChildElement("opacity", CONTRACT_NS)));
+								.getFirstChildElement("opacity", C.CONTRACT_NS)));
 						}
 						publicationRight.setImageRestriction(imageRestriction);
 					}
 					
 					Element restrictVideoEl = restrictionsEl
-							.getFirstChildElement("restrictVideo", CONTRACT_NS);
+							.getFirstChildElement("restrictVideo", C.CONTRACT_NS);
 					if (restrictVideoEl != null) {
 						VideoRestriction videoRestriction = new VideoRestriction();
 						videoRestriction.setWidth(stringValue(restrictVideoEl
-								.getFirstChildElement("width", CONTRACT_NS)));
+								.getFirstChildElement("width", C.CONTRACT_NS)));
 						videoRestriction.setHeight(stringValue(restrictVideoEl
-								.getFirstChildElement("height", CONTRACT_NS)));
+								.getFirstChildElement("height", C.CONTRACT_NS)));
 						videoRestriction.setDuration(intValue(restrictVideoEl
-								.getFirstChildElement("duration", CONTRACT_NS)));
+								.getFirstChildElement("duration", C.CONTRACT_NS)));
 						publicationRight.setVideoRestriction(videoRestriction);
 					}
 					
 					Element restrictAudioEl = restrictionsEl
-							.getFirstChildElement("restrictAudio", CONTRACT_NS);
+							.getFirstChildElement("restrictAudio", C.CONTRACT_NS);
 					if (restrictAudioEl != null) {
 						AudioRestriction AudioRestriction = new AudioRestriction();
 						AudioRestriction.setDuration(intValue(restrictAudioEl
-								.getFirstChildElement("duration", CONTRACT_NS)));
+								.getFirstChildElement("duration", C.CONTRACT_NS)));
 						publicationRight.setAudioRestriction(AudioRestriction);
 					}
 					
 					Element restrictTextEl = restrictionsEl
-							.getFirstChildElement("restrictText", CONTRACT_NS);
+							.getFirstChildElement("restrictText", C.CONTRACT_NS);
 					if (restrictTextEl != null) {
 						TextRestriction textRestriction = new TextRestriction();
 						textRestriction.setPages(intValue(restrictTextEl
-								.getFirstChildElement("numberOfPages", CONTRACT_NS)));
+								.getFirstChildElement("numberOfPages", C.CONTRACT_NS)));
 						Element certainPagesEl = restrictTextEl
-								.getFirstChildElement("certainPages", CONTRACT_NS);
+								.getFirstChildElement("certainPages", C.CONTRACT_NS);
 						if (stringValue(certainPagesEl) != null) {
 							String[] certainPagesValues = certainPagesEl.getValue().split("\\s");
 							int[] certainPages = new int[certainPagesValues.length];

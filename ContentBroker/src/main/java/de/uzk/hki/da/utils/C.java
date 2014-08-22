@@ -67,6 +67,13 @@ public class C {
 	public static final String YES = "YES";
 	public static final String NO = "NO";
 	public static final String MIGRATION_ALLOWED = "MIGRATION_ALLOWED?";
-	
-	
+	public static final String OAI_DANRW_DE = "oai:danrw.de:";
+	public static final String XSI_NS = "http://www.w3.org/2001/XMLSchema-instance";
+	public static final String EVENT_TYPE_CREATE = "CREATE";
+	public static final String EVENT_TYPE_COPY = "COPY";
+	public static final String EVENT_TYPE_CONVERT = "CONVERT";
+	public static final String UTF_8 = "UTF-8";
+	public static final String CONTRACT_NS = "http://www.danrw.de/contract/v1";
+	public static final String CONTRACT_V1_URL = "http://www.danrw.de/contract/v1";
+	public static final String CONTRACT_V1_SCHEMA_LOCATION = "http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd";
 }

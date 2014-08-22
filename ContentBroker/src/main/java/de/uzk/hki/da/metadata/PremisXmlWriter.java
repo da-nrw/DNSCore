@@ -52,6 +52,7 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.RightsStatement;
 import de.uzk.hki.da.model.VideoRestriction;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.MD5Checksum;
 
 
@@ -66,9 +67,6 @@ public class PremisXmlWriter {
 	
 	/** The logger. */
 	private static Logger logger = LoggerFactory.getLogger(PremisXmlWriter.class);
-	
-	/** The Constant XSI_NS. */
-	private static final String XSI_NS = "http://www.w3.org/2001/XMLSchema-instance";
 	
 	/** The Constant dateFormat. */
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
@@ -103,17 +101,17 @@ public class PremisXmlWriter {
 		FileOutputStream outputStream = new FileOutputStream(f);		
 
 		try {
-	    	writer = outputFactory.createXMLStreamWriter(outputStream, "UTF-8");
+	    	writer = outputFactory.createXMLStreamWriter(outputStream, C.UTF_8);
 			} catch (XMLStreamException e) {
 			throw new IOException("Failed to create XMLStreamWriter", e);
 			}
 	    
 	    try {	    
-			writer.writeStartDocument("UTF-8", "1.0");
-			writer.setPrefix("xsi", XSI_NS);
+			writer.writeStartDocument(C.UTF_8, "1.0");
+			writer.setPrefix("xsi", C.XSI_NS);
 			  
 			createOpenElement("premis", 0);
-					createAttribute(XSI_NS, "schemaLocation", "info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd");
+					createAttribute(C.XSI_NS, "schemaLocation", "info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd");
 			  		createAttribute("version", "2.2");
 					createAttribute("xmlns", "info:lc/xmlns/premis-v2");
 					createAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -163,9 +161,9 @@ public class PremisXmlWriter {
 		
 		for (Package pkg : object.getPackages())
 		  for (Event e : pkg.getEvents()){
-			if (e.getType().toUpperCase().equals("CONVERT")
-					|| e.getType().toUpperCase().equals("COPY")
-					|| e.getType().toUpperCase().equals("CREATE")){
+			if (e.getType().toUpperCase().equals(C.EVENT_TYPE_CONVERT)
+					|| e.getType().toUpperCase().equals(C.EVENT_TYPE_COPY)
+					|| e.getType().toUpperCase().equals(C.EVENT_TYPE_CREATE)){
 				logger.debug("Serializing convert event: "+e);
 				createConvertEventElement(e);
 			}else{
@@ -186,7 +184,7 @@ public class PremisXmlWriter {
 	private void createObjectElement(String objectIdentifier, String urn, String orig_name) throws XMLStreamException{
 		
 		createOpenElement("object", 1);
-		createAttribute(XSI_NS, "type", "representation");
+		createAttribute(C.XSI_NS, "type", "representation");
 			createOpenElement("objectIdentifier", 2);
 				createTextElement("objectIdentifierType", "OBJECT_BUSINESS_KEY", 3);
 				createTextElement("objectIdentifierValue", objectIdentifier, 3);
@@ -214,7 +212,7 @@ public class PremisXmlWriter {
 		logger.debug("Start serializing file \"" + f.toString() + "\" as object element to PREMIS");
 		
 		createOpenElement("object", 1);
-		createAttribute(XSI_NS, "type", "file");
+		createAttribute(C.XSI_NS, "type", "file");
 		createOpenElement("objectIdentifier", 2);
 			createTextElement("objectIdentifierType", "FILE_PATH", 3);
 			createTextElement("objectIdentifierValue", f.getRep_name()+"/"+f.getRelative_path(), 3);
@@ -268,7 +266,7 @@ public class PremisXmlWriter {
 		
 		String originalName = null;
 		for (Event e : f.getPackage().getEvents()) {
-			if (e.getType().toUpperCase().equals("CONVERT")
+			if (e.getType().toUpperCase().equals(C.EVENT_TYPE_CONVERT)
 					&& e.getTarget_file().getRelative_path().equals(f.getRelative_path()))
 				originalName = FilenameUtils.getName(e.getSource_file().getRelative_path());
 		}
@@ -335,7 +333,7 @@ public class PremisXmlWriter {
 		createTextElement("linkingAgentIdentifierValue", a.getName(), 3);
 		createCloseElement(2);
 		
-		if (e.getType().equals("CONVERT") || e.getType().equals("COPY")) {
+		if (e.getType().equals(C.EVENT_TYPE_CONVERT) || e.getType().equals(C.EVENT_TYPE_COPY)) {
 			createOpenElement("linkingObjectIdentifier", 2);
 			createTextElement("linkingObjectIdentifierType", "FILE_PATH", 3);
 			createTextElement("linkingObjectIdentifierValue", e.getSource_file().getRep_name() + "/" + e.getSource_file().getRelative_path(), 3);
@@ -416,7 +414,7 @@ public class PremisXmlWriter {
 	 */
 	private void createPackageElement(Object o, Package pkg) throws XMLStreamException{
 		createOpenElement("object", 1);
-		createAttribute(XSI_NS, "type", "representation");
+		createAttribute(C.XSI_NS, "type", "representation");
 		createOpenElement("objectIdentifier", 2);
 			createTextElement("objectIdentifierType", "PACKAGE_NAME", 3);
 			createTextElement("objectIdentifierValue", o.getIdentifier()+".pack_"+pkg.getName()+".tar", 3);
@@ -516,9 +514,9 @@ public class PremisXmlWriter {
 		logger.trace("Start serializing rights granted element");
 		
 		createOpenElement("rightsGranted", 3);
-		createAttribute("xmlns", "http://www.danrw.de/contract/v1");
+		createAttribute("xmlns", C.CONTRACT_V1_URL);
 		createAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-		createAttribute("xsi:schemaLocation", "http://www.danrw.de/contract/v1 http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd");
+		createAttribute("xsi:schemaLocation", C.CONTRACT_V1_URL+" "+C.CONTRACT_V1_SCHEMA_LOCATION);
 		
 		if (right.getMigrationRight() != null) {
 			createOpenElement("migrationRight", 4);

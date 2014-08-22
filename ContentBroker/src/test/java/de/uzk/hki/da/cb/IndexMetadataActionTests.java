@@ -39,6 +39,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
@@ -58,6 +59,11 @@ public class IndexMetadataActionTests {
 		Object object = TESTHelper.setUpObject("123", new RelativePath("workArea"));
 		
 		IndexMetadataAction action = new IndexMetadataAction();
+		
+		PreservationSystem ps = new PreservationSystem();
+		ps.setOpenCollectionName("collection-open");
+		action.setPSystem(ps);
+		
 		action.setObject(object);
 		
 		Set<String> testContractors = new HashSet<String>();

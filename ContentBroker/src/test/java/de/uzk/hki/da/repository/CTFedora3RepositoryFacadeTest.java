@@ -41,8 +41,10 @@ import de.uzk.hki.da.utils.PasswordUtils;
  */
 public class CTFedora3RepositoryFacadeTest {
 
+	private static final String TEST = "TEST";
+	private static final String OBJECTS_URL = "http://www.danrw.de/objects/";
 	private static final String OBJECT_ID = "1-120";
-	private static final String COLL_NAME = "danrw";
+	private static final String COLL_NAME = "collection-open";
 	private Fedora3RepositoryFacade fedora;
 
 	
@@ -66,10 +68,10 @@ public class CTFedora3RepositoryFacadeTest {
 		
 		String content=null;
 		FileInputStream fileInputStream = new FileInputStream(new File("src/test/resources/ct/Fedora3RepositoryFacadeTest/ead.xml"));
-		content = IOUtils.toString(fileInputStream, "UTF-8");
+		content = IOUtils.toString(fileInputStream, C.UTF_8);
 		fileInputStream.close();
 		
-		fedora.createObject(OBJECT_ID, COLL_NAME, "TEST");
+		fedora.createObject(OBJECT_ID, COLL_NAME, TEST);
 		
 		fedora.createMetadataFile(OBJECT_ID, COLL_NAME, "ead123.xml", content, "label", "text/xml");
 	
@@ -79,8 +81,8 @@ public class CTFedora3RepositoryFacadeTest {
 	@Test
 	public void testAddRelationship() throws RepositoryException{
 		
-		fedora.createObject(OBJECT_ID, COLL_NAME, "TEST");
-		fedora.addRelationship(OBJECT_ID, COLL_NAME, C.OWL_SAMEAS, "http://www.danrw.de/objects/"+OBJECT_ID);
+		fedora.createObject(OBJECT_ID, COLL_NAME, TEST);
+		fedora.addRelationship(OBJECT_ID, COLL_NAME, C.OWL_SAMEAS, OBJECTS_URL+OBJECT_ID);
 		
 	}
 
@@ -90,7 +92,7 @@ public class CTFedora3RepositoryFacadeTest {
 	public void testAddRelationshipWithMalformedURL(){
 		
 		try{
-			fedora.createObject(OBJECT_ID, COLL_NAME, "TEST");
+			fedora.createObject(OBJECT_ID, COLL_NAME, TEST);
 			fedora.addRelationship(OBJECT_ID, COLL_NAME, C.OWL_SAMEAS,null); // it seems that null is a problem
 			fail();
 		}catch(RepositoryException e){}

@@ -45,6 +45,9 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class ATPIPGen extends Base{
 
+	private static final String XLINK_NAMESPACE = "http://www.w3.org/1999/xlink";
+	private static final String METS_NAMESPACE = "http://www.loc.gov/METS/";
+
 	@Before
 	public void setUp() throws IOException{
 		setUpBase();
@@ -74,16 +77,16 @@ public class ATPIPGen extends Base{
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		
 		
-		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
-		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
-		InputStream metsStreamPublic = repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "METS");
+		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-open", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		InputStream metsStreamPublic = repositoryFacade.retrieveFile(object.getIdentifier(), "collection-open", "METS");
 		assertNotNull(metsStreamPublic);
 		assertTrue(metsStreamPublic.toString().length() > 0);
-		InputStream metsStreamClosed = repositoryFacade.retrieveFile(object.getIdentifier(), "danrw-closed", "METS");
+		InputStream metsStreamClosed = repositoryFacade.retrieveFile(object.getIdentifier(), "collection-closed", "METS");
 		assertNotNull(metsStreamClosed);
 		
-		Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
-		Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
+		Namespace METS_NS = Namespace.getNamespace(METS_NAMESPACE);
+		Namespace XLINK_NS = Namespace.getNamespace(XLINK_NAMESPACE);
 		
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build(metsStreamPublic);
@@ -120,8 +123,8 @@ public class ATPIPGen extends Base{
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		
-		assertNull(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
-		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "danrw-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		assertNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-open", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
 		
 	}
 	
@@ -133,7 +136,7 @@ public class ATPIPGen extends Base{
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		
-		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "danrw"));
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
 		
 	}
 	
@@ -145,7 +148,7 @@ public class ATPIPGen extends Base{
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		
-		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "danrw"));
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
 		
 	}
 	
@@ -158,8 +161,8 @@ public class ATPIPGen extends Base{
 		waitForJobsToFinish("ATPIPGen"+name,  500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		
-		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "danrw"));
-		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "danrw-closed"));
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-closed"));
 		
 	}
 	
@@ -171,8 +174,8 @@ public class ATPIPGen extends Base{
 		waitForJobsToFinish("ATPIPGen"+name,  500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		
-		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), "danrw"));
-		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), "danrw-closed"));
+		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
+		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), "collection-closed"));
 		
 	}
 	
