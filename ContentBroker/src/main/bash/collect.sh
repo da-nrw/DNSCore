@@ -39,6 +39,7 @@ touch $1/log/contentbroker.log
 echo -e "ContentBroker Version $2\nWritten by\n Daniel M. de Oliveira\n Jens Peters\n Sebastian Cuy\n Thomas Kleinke\n Polina Gubaidullina" > $1/README.txt
 
 echo "copying Version and Build Info to DaWeb"
+cp -f ../DAWeb/application.properties.template ../DAWeb/application.properties
 mv ../DAWeb/application.properties ../DAWeb/application.properties.tmp
 $SED_BIN "s@app\.version=.*@app\.version=$2@" ../DAWeb/application.properties.tmp >> ../DAWeb/application.properties
 rm ../DAWeb/application.properties.tmp

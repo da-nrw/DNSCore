@@ -5,9 +5,7 @@ environments {
 		//log4j = {
 		//		debug   'grails.app'
 		//}
-		daweb3.loginManager = "de.uzk.hki.da.login.IrodsLogin"
 		cb.port = 4455
-		
 		/* Configure to customize layout */
 		daweb3.logo = "DANRW-Logo_small.png"
 		// To integrate your own logo, place your logo at web-app/images/ and replace file name here
@@ -15,16 +13,11 @@ environments {
 		// To integrate a customized css-file, please change file name accordingly 
 		main.css = "main.css"
 		mobile.css = "mobile.css"
-
-		irods.server = "localhost"
-		irods.default_resc = "your irods resc name"
-		irods.zone = "your home zone name"
 		localNode.userAreaRootPath = "/path_to_/userhome/SIP"
 		localNode.ingestAreaRootPath = "path_to_/ingest"
 		transferNode.downloadLinkPrefix = "prefix for URL to download DIP"
 		fedora.urlPrefix = "http://prefix_for_fedora/fedora/objects/"
-		cb.presServer= "CB nodename of fedora Server"
-		
+		cb.presServer= "CB nodename of fedora Server"		
 		// here it's up to you to decide whether environment you want to use:
 		dataSource {
 			pooled = true

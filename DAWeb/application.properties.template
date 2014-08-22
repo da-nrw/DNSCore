@@ -1,0 +1,10 @@
+#Copy file and rename it to application.properties
+#Please keep in mind: the interface may depend on the mentioned build of ContentBroker
+#Grails Metadata file
+#Fri May 09 06:47:30 PDT 2014
+app.grails.version=2.3.8
+app.name=daweb3
+app.servlet.version=2.5
+app.version=Version number will be inserted by build DNSCore (Build is unsupported!)
+plugins.activemq=0.4.1
+plugins.jms=1.2
