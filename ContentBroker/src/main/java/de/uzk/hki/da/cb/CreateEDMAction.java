@@ -78,6 +78,8 @@ public class CreateEDMAction extends AbstractAction {
 		for (String filePath:edmMappings.values())
 			if (!new File(filePath).exists())
 				throw new IllegalStateException("mapping file "+filePath+" does not exist");
+		
+		
 	}
 
 
@@ -85,7 +87,9 @@ public class CreateEDMAction extends AbstractAction {
 	@Override
 	boolean implementation() throws IOException, RepositoryException {
 		
-		InputStream dcStream = getDCdatastreamFromPresRepo(object.getIdentifier(), preservationSystem.getOpenCollectionName());
+		String objectId = object.getIdentifier();
+		
+		InputStream dcStream = getDCdatastreamFromPresRepo(objectId, preservationSystem.getOpenCollectionName());
 
 		String packageType = parseFormatElement(dcStream);
 		if (packageType == null) {
@@ -98,21 +102,21 @@ public class CreateEDMAction extends AbstractAction {
 			throw new RuntimeException("No conversion available for package type '" + packageType + "'. EDM can not be created.");
 		}
 		
-		InputStream metadataStream = repositoryFacade.retrieveFile(object.getIdentifier(),preservationSystem.getOpenCollectionName(), packageType);
+		InputStream metadataStream = repositoryFacade.retrieveFile(objectId,preservationSystem.getOpenCollectionName(), packageType);
 		if (metadataStream==null){
 			throw new RuntimeException("Could not retrieve some of the metadata files  : " + packageType);
 		}
 		
-		String edmResult = generateEDM(xsltFile, metadataStream);
+		String edmResult = generateEDM(objectId, xsltFile, metadataStream);
 		logger.debug(edmResult);
 		
 		try {
-			repositoryFacade.createMetadataFile(object.getIdentifier(),preservationSystem.getOpenCollectionName(), "EDM", edmResult, "Object representation in Europeana Data Model", "application/rdf+xml");
+			repositoryFacade.createMetadataFile(objectId,preservationSystem.getOpenCollectionName(), "EDM", edmResult, "Object representation in Europeana Data Model", "application/rdf+xml");
 		} catch (RepositoryException e) {
 			throw new RuntimeException(e);
 		}
 		
-		logger.info("Successfully created EDM datastream for object {}.", object.getIdentifier());
+		logger.info("Successfully created EDM datastream for object {}.", objectId);
 
 		return true;
 	}
@@ -126,7 +130,7 @@ public class CreateEDMAction extends AbstractAction {
 
 
 
-	private String generateEDM(String xsltFile,
+	private String generateEDM(String objectId, String xsltFile,
 			InputStream metadataStream) throws FileNotFoundException {
 		
 		XsltEDMGenerator edmGenerator=null;
@@ -136,8 +140,8 @@ public class CreateEDMAction extends AbstractAction {
 			throw new RuntimeException(e1);
 		}	
 		edmGenerator.setParameter("urn", object.getUrn());
-		edmGenerator.setParameter("cho-base-uri", preservationSystem.getUrisCho() + "/" + object.getIdentifier());
-		edmGenerator.setParameter("aggr-base-uri", preservationSystem.getUrisAggr() + "/" + object.getIdentifier());
+		edmGenerator.setParameter("cho-base-uri", preservationSystem.getUrisCho() + "/" + objectId);
+		edmGenerator.setParameter("aggr-base-uri", preservationSystem.getUrisAggr() + "/" + objectId);
 		edmGenerator.setParameter("local-base-uri", preservationSystem.getUrisLocal());
 		String edmResult=null;
 		try {

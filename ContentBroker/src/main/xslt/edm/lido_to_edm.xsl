@@ -145,11 +145,7 @@ Technical Contact : Rodolphe Bailly - rbailly@cite-musique.fr
 						</xsl:if>
 					</xsl:for-each>
 					<xsl:for-each select="$var3_descriptiveMetadata/ns0:objectIdentificationWrap/ns0:titleWrap/ns0:titleSet/ns0:appellationValue">
-						<xsl:variable name="var213_lang" as="node()?" select="@xml:lang"/>
 						<dc:title>
-							<xsl:if test="fn:exists($var213_lang)">
-								<xsl:attribute name="xml:lang" select="fn:string($var213_lang)"/>
-							</xsl:if>
 							<xsl:sequence select="fn:string(.)"/>
 						</dc:title>
 					</xsl:for-each>
