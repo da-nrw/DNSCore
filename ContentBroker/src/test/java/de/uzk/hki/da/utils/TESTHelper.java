@@ -46,13 +46,27 @@ public class TESTHelper {
 		return setUpObject(identifier,workAreaRootPath,workAreaRootPath,workAreaRootPath);
 	}
 	
-	public static PreservationSystem setUpPS(){
+	
+	public static PreservationSystem setUpPS(
+			Path workAreaRootPath,
+			Path ingestAreaRootPath,
+			Path userAreaRootPath){
+		
 		PreservationSystem ps = new PreservationSystem();
 		ps.setId(1);
 		User psadmin = new User();
 		psadmin.setShort_name("TEST_PSADMIN");
 		psadmin.setEmailAddress("noreply");
 		ps.setAdmin(psadmin);
+		
+		Node node = new Node(); 
+		node.setName("testnode");
+		node.setWorkAreaRootPath(workAreaRootPath);
+		node.setIngestAreaRootPath(ingestAreaRootPath);
+		node.setUserAreaRootPath(userAreaRootPath);
+		node.setAdmin(psadmin);
+		
+		ps.getNodes().add(node);
 		return ps;
 	}
 	

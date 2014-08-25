@@ -14,7 +14,6 @@
 		scope="prototype">
 		<property name="startStatus" value="900" />
 		<property name="endStatus" value="910" />
-		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
 		<property name="gridFacade" ref="${cb.implementation.grid}"/>
 		<property name="name" value="RetrievalObjectToWorkAreaAction" />
 		<property name="ingestGate" ref="ingestGate" />
@@ -24,7 +23,6 @@
 		<property name="startStatus" value="910" />
 		<property name="endStatus" value="950" />
 		<property name="name" value="RetrievalAction" />
-		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
 	</bean>	
 	<bean id="PostRetrievalAction" class="de.uzk.hki.da.cb.PostRetrievalAction"
 		scope="prototype">

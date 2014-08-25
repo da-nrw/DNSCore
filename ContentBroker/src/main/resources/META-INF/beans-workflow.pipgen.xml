@@ -26,7 +26,6 @@
 		scope="prototype">
 		<property name="startStatus" value="700" />
 		<property name="endStatus" value="710" />
-		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
 		<property name="gridFacade" ref="${cb.implementation.grid}"/>
 		<property name="name" value="PIPGenObjectToWorkAreaAction" />
 		<property name="ingestGate" ref="ingestGate" />

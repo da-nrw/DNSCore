@@ -24,7 +24,6 @@ package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFactory;
 import gov.loc.repository.bagit.utilities.SimpleResult;
@@ -38,9 +37,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
@@ -61,9 +58,7 @@ public class RetrievalActionTest {
 	
 	private static String objectIdentifier = "1";
 	private static RetrievalAction action;
-	private static DistributedConversionAdapter dca;
 
-	private static Node node;
 	private static PreservationSystem pSystem;
 	private static Object object;
 
@@ -72,12 +67,7 @@ public class RetrievalActionTest {
 	@BeforeClass
 	public static void setUpBeforeClass(){
 		
-		pSystem = TESTHelper.setUpPS();
-		node = new Node();
-		node.setAdmin(pSystem.getAdmin());
-		node.setWorkAreaRootPath(workAreaRootPath);
-		node.setUserAreaRootPath(userAreaRootPath);
-		
+		pSystem = TESTHelper.setUpPS(workAreaRootPath,userAreaRootPath,userAreaRootPath);
 		object = TESTHelper.setUpObject(objectIdentifier, workAreaRootPath, 
 				userAreaRootPath,
 				userAreaRootPath);
@@ -85,19 +75,7 @@ public class RetrievalActionTest {
 		object.reattach();
 		object.getLatestPackage().setTransientBackRefToObject(object);
 		
-		
-		dca = mock (DistributedConversionAdapter.class);
-		
-		Job job = new Job(); 
-		job.setObject(object);
-		action = new RetrievalAction();
-		action.setDistributedConversionAdapter(dca);
-		action.setObject(object);
-		action.setJob(job);
-		action.setLocalNode(node);
-		action.setPSystem(pSystem);
-		
-	
+		action = (RetrievalAction) wireUpAction(new RetrievalAction(),object,pSystem);
 	}
 
 	
@@ -182,6 +160,19 @@ public class RetrievalActionTest {
 		NativeJavaTarArchiveBuilder tar = new NativeJavaTarArchiveBuilder();
 		tar.unarchiveFolder(Path.makeFile(userAreaRootPath,"TEST/outgoing/1.tar"),
 				            Path.makeFile(userAreaRootPath,"TEST/outgoing"));
-		
 	}
+	
+	private static AbstractAction wireUpAction(AbstractAction action,Object o,PreservationSystem ps){
+		
+		Job job = new Job(); 
+		job.setObject(o);
+		action.setObject(o);
+		action.setJob(job);
+		action.setLocalNode(ps.getNodes().iterator().next());
+		action.setPSystem(ps);
+		return action;
+	}
+	
+	
+	
 }

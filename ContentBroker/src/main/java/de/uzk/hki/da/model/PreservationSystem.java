@@ -239,5 +239,11 @@ public class PreservationSystem {
 	public void setConversion_policies(List<ConversionPolicy> conversion_policies) {
 		this.conversion_policies = conversion_policies;
 	}
+	public Set<Node> getNodes() {
+		return nodes;
+	}
+	public void setNodes(Set<Node> nodes) {
+		this.nodes = nodes;
+	}
 	
 }

@@ -51,12 +51,6 @@ import de.uzk.hki.da.utils.Path;
 
 public class RetrievalAction extends AbstractAction {
 	
-	private DistributedConversionAdapter distributedConversionAdapter;
-	
-	public RetrievalAction(){}
-	
-	
-	
 	
 	@Override
 	void checkActionSpecificConfiguration() throws ConfigurationException {
@@ -129,7 +123,7 @@ public class RetrievalAction extends AbstractAction {
 		FileUtils.deleteDirectory(tempFolder.toFile());
 		FileUtils.deleteDirectory(packageFolder);
 		
-		distributedConversionAdapter.remove("work/" + relativePackagePath.replaceAll("/$", "")); // replace all -> iRODS doesn't like trailing slashes
+//		distributedConversionAdapter.remove("work/" + relativePackagePath.replaceAll("/$", "")); // replace all -> iRODS doesn't like trailing slashes
 		
 		new MailContents(preservationSystem,localNode).retrievalReport(object);
 		return true;
@@ -170,22 +164,5 @@ public class RetrievalAction extends AbstractAction {
 				throw new UserException(UserExceptionId.RETRIEVAL_ERROR, "Couldn't copy file " + f.toRegularFile().getAbsolutePath() + " to folder " + destFolder, e);
 			}
 		}
-	}
-	
-	
-	
-	
-	
-	
-	public DistributedConversionAdapter getDistributedConversionAdapter() {
-		return distributedConversionAdapter;
-	}
-
-	
-	
-	
-	public void setDistributedConversionAdapter(
-			DistributedConversionAdapter distributedConversionAdapter) {
-		this.distributedConversionAdapter = distributedConversionAdapter;
 	}
 }
