@@ -20,6 +20,7 @@ package de.uzk.hki.da.utils;
 import org.hibernate.classic.Session;
 
 import de.uzk.hki.da.core.HibernateUtil;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -42,8 +43,19 @@ public class TESTHelper {
 	 */
 	public static Object setUpObject(String identifier,Path workAreaRootPath){
 		
-		return setUpObject(identifier,workAreaRootPath,workAreaRootPath);
+		return setUpObject(identifier,workAreaRootPath,workAreaRootPath,workAreaRootPath);
 	}
+	
+	public static PreservationSystem setUpPS(){
+		PreservationSystem ps = new PreservationSystem();
+		ps.setId(1);
+		User psadmin = new User();
+		psadmin.setShort_name("TEST_PSADMIN");
+		psadmin.setEmailAddress("noreply");
+		ps.setAdmin(psadmin);
+		return ps;
+	}
+	
 	
 	/**
 	 * Sets up the object.
@@ -52,15 +64,20 @@ public class TESTHelper {
 	 * @param workAreaRootPath the base path
 	 * @return the object
 	 */
-	public static Object setUpObject(String identifier,Path workAreaRootPath,Path ingestAreaRootPath){
+	public static Object setUpObject(String identifier,
+			Path workAreaRootPath,
+			Path ingestAreaRootPath,
+			Path userAreaRootPath){
 		
 		Node node = new Node(); 
 		node.setName("testnode");
 		node.setWorkAreaRootPath(workAreaRootPath);
 		node.setIngestAreaRootPath(ingestAreaRootPath);
+		node.setUserAreaRootPath(userAreaRootPath);
 		
 		User contractor = new User();
 		contractor.setShort_name("TEST");
+		contractor.setEmailAddress("noreply");
 		
 		Package pkg = new Package();
 		pkg.setName("1");

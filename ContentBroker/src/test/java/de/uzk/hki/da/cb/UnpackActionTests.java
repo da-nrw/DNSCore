@@ -86,7 +86,7 @@ public class UnpackActionTests {
 		FileUtils.copyFileToDirectory(C.PREMIS_XSD, new File(CONF));
 		FileUtils.copyFileToDirectory(C.XLINK_XSD, new File(CONF));
 		
-		o = TESTHelper.setUpObject(IDENTIFIER, new RelativePath(workAreaRootPath), new RelativePath(workAreaRootPath,INGEST));
+		o = TESTHelper.setUpObject(IDENTIFIER, new RelativePath(workAreaRootPath), new RelativePath(workAreaRootPath,INGEST), new RelativePath(workAreaRootPath,INGEST));
 		action.setLocalNode(o.getTransientNodeRef());
 		
 		gate.setWorkAreaRootPath(workAreaRootPath.toString());

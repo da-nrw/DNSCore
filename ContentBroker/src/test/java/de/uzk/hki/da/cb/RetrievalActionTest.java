@@ -3,6 +3,8 @@
   DA-NRW Software Suite | ContentBroker
   Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
   Universität zu Köln
+  Copyright (C) 2014 LVRInfoKom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -31,19 +33,20 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.utils.TC;
+import de.uzk.hki.da.utils.TESTHelper;
 
 
 /**
@@ -53,58 +56,81 @@ import de.uzk.hki.da.utils.RelativePath;
  */
 public class RetrievalActionTest {
 	
-	/** The job. */
-	Job job;
+	private static Path userAreaRootPath = Path.make(TC.TEST_ROOT_CB,"RetrievalActionTests","user");
+	private static Path workAreaRootPath = Path.make(TC.TEST_ROOT_CB,"RetrievalActionTests","work");
 	
-	/** The fork and transfer path. */
-	Path forkAndTransferPath = new RelativePath("src/test/resources/cb/RetrievalActionTests/");
+	private static String objectIdentifier = "1";
+	private static RetrievalAction action;
+	private static DistributedConversionAdapter dca;
+
+	private static Node node;
+	private static PreservationSystem pSystem;
+	private static Object object;
+
 	
-	/** The object identifier. */
-	String objectIdentifier = "1";
 	
-	/** The action. */
-	RetrievalAction action;
+	@BeforeClass
+	public static void setUpBeforeClass(){
+		
+		pSystem = TESTHelper.setUpPS();
+		node = new Node();
+		node.setAdmin(pSystem.getAdmin());
+		node.setWorkAreaRootPath(workAreaRootPath);
+		node.setUserAreaRootPath(userAreaRootPath);
+		
+		object = TESTHelper.setUpObject(objectIdentifier, workAreaRootPath, 
+				userAreaRootPath,
+				userAreaRootPath);
+
+		object.reattach();
+		object.getLatestPackage().setTransientBackRefToObject(object);
+		
+		
+		dca = mock (DistributedConversionAdapter.class);
+		
+		Job job = new Job(); 
+		job.setObject(object);
+		action = new RetrievalAction();
+		action.setDistributedConversionAdapter(dca);
+		action.setObject(object);
+		action.setJob(job);
+		action.setLocalNode(node);
+		action.setPSystem(pSystem);
+		
 	
-	/** The irods. */
-	DistributedConversionAdapter dca;
+	}
+
+	
+	@AfterClass
+	public static void tearDownAfterClass() throws IOException{
+		;
+	}
+	
+	
 	
 	/**
-	 * Sets the up.
-	 *
-	 * @throws Exception the exception
+	 * Tear down.
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	@After
+	public void tearDown () throws IOException {
+		FileUtils.deleteDirectory(Path.makeFile(workAreaRootPath,"work/TEST/1"));
+		FileUtils.deleteDirectory(Path.makeFile(userAreaRootPath,"TEST/outgoing/1"));
+		Path.makeFile(userAreaRootPath,"TEST/outgoing/1.tar").delete();
+		FileUtils.deleteDirectory(userAreaRootPath.toFile());
+	}
+	
+	
+	
+	/**
 	 */
 	@Before
 	public void setUp() throws Exception {
-
-		PreservationSystem pSystem = new PreservationSystem();
-		pSystem.setSidecarExtensions("xmp");
-		User sysadmin = new User(); sysadmin.setEmailAddress("noreply");
-		pSystem.setAdmin(sysadmin);
 		
+		FileUtils.copyDirectory(Path.makeFile(workAreaRootPath,"work",object.getContractor().getShort_name(),"_1"), 
+				                Path.makeFile(workAreaRootPath,"work",object.getContractor().getShort_name(),"1")); 
+		Path.makeFile(userAreaRootPath,"TEST","outgoing").mkdirs();
 		
-		FileUtils.copyDirectory(Path.makeFile(forkAndTransferPath,"work/csn/Source"), 
-				                Path.makeFile(forkAndTransferPath,"work/csn/1")); 
-		Node node = new Node();
-		node.setAdmin(sysadmin);
-		node.setWorkAreaRootPath(new RelativePath(forkAndTransferPath));
-		node.setUserAreaRootPath(new RelativePath(forkAndTransferPath,"work"));
-		
-		User contractor = new User(); 
-		contractor.setShort_name("csn"); 
-		contractor.setEmailAddress("abc@hki.uni-koeln.de");
-		Object object = new Object(); 
-		object.setContractor(contractor); 
-		object.setIdentifier(objectIdentifier);
-		
-		Package pkg = new Package(); pkg.setId(1); 
-		pkg.setName("1");
-		object.getPackages().add(pkg); 
-		Job job = new Job(); 
-		object.setIdentifier(objectIdentifier);
-		job.setObject(object);
-		object.setTransientNodeRef(node);
-		object.reattach();
-		object.getLatestPackage().setTransientBackRefToObject(object);
 		object.getLatestPackage().scanRepRecursively("1+a");
 		object.getLatestPackage().scanRepRecursively("1+b");
 		object.getLatestPackage().scanRepRecursively("2+a");
@@ -112,61 +138,50 @@ public class RetrievalActionTest {
 		object.getLatestPackage().scanRepRecursively("3+a");
 		object.getLatestPackage().scanRepRecursively("3+b");
 		
-		dca = mock (DistributedConversionAdapter.class);
-		
-		action = new RetrievalAction();
-		action.setDistributedConversionAdapter(dca);
-		action.setObject(object);
-		action.setJob(job);
-		action.setLocalNode(node);
-		action.setPSystem(pSystem);
 	}
 	
-	/**
-	 * Tear down.
-	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	@After
-	public void tearDown () throws IOException {
+
+	@Test
+	public void testContainerAndBag() throws Exception{
+
+		action.implementation();
+		assertFalse(Path.makeFile(workAreaRootPath,"TEST/1_").exists());
+		assertTrue( Path.makeFile(userAreaRootPath,"TEST/outgoing/1.tar").exists() );
+		unpack();
 		
-		FileUtils.deleteDirectory(Path.makeFile(forkAndTransferPath,"csn/1"));
-		FileUtils.deleteDirectory(Path.makeFile(forkAndTransferPath,"csn/1_"));
-		FileUtils.deleteDirectory(Path.makeFile(forkAndTransferPath,"csn/outgoing/1"));
-		Path.makeFile(forkAndTransferPath,"csn/outgoing/urn.tar").delete();
-		Path.makeFile(forkAndTransferPath,"csn/outgoing/1.tar").delete();
+		BagFactory bagFactory = new BagFactory();
+		Bag bag = bagFactory.createBag(Path.makeFile(userAreaRootPath,"TEST/outgoing/1/"));
+		SimpleResult result = bag.verifyValid();
+		assertTrue(result.isSuccess());
 	}
 	
 	
 	/**
 	 * Test.
-	 *
 	 * @throws Exception the exception
 	 */
 	@Test
 	public void test() throws Exception {
 		
 		action.implementation();
-		assertFalse(Path.makeFile(forkAndTransferPath,"csn/1_").exists());
-		assertTrue( Path.makeFile(forkAndTransferPath,"work/csn/outgoing/1.tar").exists() );
+		unpack();
 		
-		// checking contents of package
+		assertTrue(Path.makeFile(userAreaRootPath,"TEST/outgoing/1/data/folder1/pic5.txt").exists());
+		assertTrue(Path.makeFile(userAreaRootPath,"TEST/outgoing/1/data/folder2/pic5.txt").exists());
+		assertTrue(Path.makeFile(userAreaRootPath,"TEST/outgoing/1/data/pic1.txt").exists());
+		assertTrue(Path.makeFile(userAreaRootPath,"TEST/outgoing/1/data/pic2.txt").exists());
+		assertTrue(Path.makeFile(userAreaRootPath,"TEST/outgoing/1/data/pic3.txt").exists());
+		assertTrue(Path.makeFile(userAreaRootPath,"TEST/outgoing/1/data/pic4.txt").exists());
 		
+		
+	}
+
+
+
+	private static void unpack() throws Exception{
 		NativeJavaTarArchiveBuilder tar = new NativeJavaTarArchiveBuilder();
-		tar.unarchiveFolder(Path.makeFile(forkAndTransferPath,"work/csn/outgoing/1.tar"),
-				            Path.makeFile(forkAndTransferPath,"work/csn/outgoing/"));
+		tar.unarchiveFolder(Path.makeFile(userAreaRootPath,"TEST/outgoing/1.tar"),
+				            Path.makeFile(userAreaRootPath,"TEST/outgoing"));
 		
-		assertTrue(Path.makeFile(forkAndTransferPath,"work/csn/outgoing/1/data/folder1/pic5.txt").exists());
-		assertTrue(Path.makeFile(forkAndTransferPath,"work/csn/outgoing/1/data/folder2/pic5.txt").exists());
-		assertTrue(Path.makeFile(forkAndTransferPath,"work/csn/outgoing/1/data/pic1.txt").exists());
-		assertTrue(Path.makeFile(forkAndTransferPath,"work/csn/outgoing/1/data/pic2.txt").exists());
-		assertTrue(Path.makeFile(forkAndTransferPath,"work/csn/outgoing/1/data/pic3.txt").exists());
-		assertTrue(Path.makeFile(forkAndTransferPath,"work/csn/outgoing/1/data/pic4.txt").exists());
-		
-		// check bag
-		BagFactory bagFactory = new BagFactory();
-		Bag bag = bagFactory.createBag(Path.makeFile(forkAndTransferPath,"work/csn/outgoing/1/"));
-		SimpleResult result = bag.verifyValid();
-		assertTrue(result.isSuccess());
 	}
 }

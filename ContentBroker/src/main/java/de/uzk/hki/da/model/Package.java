@@ -179,14 +179,17 @@ public class Package {
 	 */
 	public List<DAFile> scanRepRecursively(
 			String repName) {
-		List<DAFile> result = new ArrayList<DAFile>();
+		
 		String repFolderPath = Path.make( getTransientBackRefToObject().getDataPath(), repName).toString();
-		int offset = repFolderPath.length();
+		if (!new File(repFolderPath).exists()) throw new IllegalArgumentException(repFolderPath+" does not exist");
+
 		
 		logger.debug("scanning "+repFolderPath);
 		
 		Collection<File> found = FileUtils.listFiles(new File(repFolderPath),
 		        TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+		List<DAFile> result = new ArrayList<DAFile>();
+		int offset = repFolderPath.length();
 		for (File f:found){
 			DAFile newFile = new DAFile(this,repName,f.getPath().
 					substring(offset+1, f.getPath().length()));

@@ -2,6 +2,8 @@
   DA-NRW Software Suite | ContentBroker
   Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
   Universität zu Köln
+  Copyright (C) 2014 LVRInfoKom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -53,69 +55,79 @@ public class RetrievalAction extends AbstractAction {
 	
 	public RetrievalAction(){}
 	
+	
+	
+	
 	@Override
 	void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
 	}
 
+	
+	
+	
 	@Override
 	void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 	}
 
+	
+	
+	
+	private Path createTmpFolder(){
+		Path tmpFolder = Path.make(localNode.getWorkAreaRootPath(),"work",
+				object.getContractor().getShort_name(), object.getIdentifier(), object.getIdentifier()); 
+		tmpFolder.toFile().mkdir();
+		return tmpFolder;
+	}
+	
+	
+	
+	
 	@Override
 	protected
-	boolean implementation() {
-		
-		ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(new File(".tar"));
+	boolean implementation() throws IOException {
 	
-		String tempFolder = Path.make(localNode.getWorkAreaRootPath(),
-				object.getContractor().getShort_name(), object.getIdentifier(), object.getIdentifier()) + "/";
+		Path tempFolder = createTmpFolder();
 		
-		new File(tempFolder).mkdir();
-		File premisFile = Path.makeFile(object.getDataPath(),object.getNameOfNewestBRep(),"/premis.xml");
+
 		
-		if (premisFile.exists())
-		{
-			File dest = new File(tempFolder + "data/premis.xml");
-			try {
-				FileUtils.copyFile(premisFile, dest);
-			} catch (IOException e) {
-				throw new UserException(UserExceptionId.RETRIEVAL_ERROR, "Couldn't copy file " + premisFile.getAbsolutePath() + " to " + dest.getAbsolutePath(), e);
-			}
-		} else
-			throw new UserException(UserExceptionId.RETRIEVAL_ERROR, "Invalid AIP: No premis file in folder " + object.getDataPath() + object.getNameOfNewestBRep());
+		// ********
+		
+		// copy premis file to
+		File premisFile = Path.makeFile(object.getDataPath(),object.getNameOfNewestBRep(),"premis.xml");
+		if (!premisFile.exists()) throw new RuntimeException("CRITICAL ERROR: premis file could has not been found");
+		File dest = Path.makeFile(tempFolder,"data","premis.xml");
+		FileUtils.copyFile(premisFile, dest);
 		
 		copySurfaceRepresentation(object,tempFolder);
+
 		
-		logger.trace("Building BagIt");
-		BagitUtils.buildBagit(tempFolder);
+		// ********
+		
+		
 		
 		// Repacking
+		logger.trace("Building BagIt");
+		BagitUtils.buildBagit(tempFolder.toString());
+		
 		Path newTar = Path.make(localNode.getUserAreaRootPath(),object.getContractor().getShort_name(),"outgoing",object.getIdentifier() + ".tar");
 		logger.debug("Building tar at " + newTar);
 		try {
-			builder.archiveFolder(new File(tempFolder),
-								  newTar.toFile(), true);
-	
+			ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(new File(".tar"));
+			builder.archiveFolder(tempFolder.toFile(),
+							  newTar.toFile(), true);
 		} catch (Exception e) {
-			throw new UserException(UserExceptionId.RETRIEVAL_ERROR, "Tar couldn't be packed", e);
+			throw new RuntimeException("Tar couldn't be packed", e);
 		} 
 		
-		try {
-			FileUtils.deleteDirectory(new File(tempFolder));
-		} catch (Exception e) {
-			throw new UserException(UserExceptionId.RETRIEVAL_ERROR, "Error while deleting temp folder", e);
-		}
 		
+		// cleanup
 		String relativePackagePath = object.getContractor().getShort_name() + "/" + object.getIdentifier() + "/";
 		File packageFolder = Path.makeFile(localNode.getWorkAreaRootPath(),relativePackagePath);
 		
-		try {
-			FileUtils.deleteDirectory(packageFolder);
-		} catch (IOException e) {
-			throw new UserException(UserExceptionId.RETRIEVAL_ERROR, "Couldn't delete folder " + packageFolder.getAbsolutePath(), e);
-		}
+		FileUtils.deleteDirectory(tempFolder.toFile());
+		FileUtils.deleteDirectory(packageFolder);
 		
 		distributedConversionAdapter.remove("work/" + relativePackagePath.replaceAll("/$", "")); // replace all -> iRODS doesn't like trailing slashes
 		
@@ -123,34 +135,39 @@ public class RetrievalAction extends AbstractAction {
 		return true;
 	}
 
+	
+	
+	
 	@Override
 	void rollback() {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 
+	
+	
+	
 	/**
 	 * @param destinationFolder
 	 * @throws RuntimeException
 	 */
-	private void copySurfaceRepresentation(Object o, String destinationFolder)
+	private void copySurfaceRepresentation(Object o, Path destinationFolder)
 			throws RuntimeException {
 		
 		List<DAFile> files = o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
 		for (DAFile f : files)
 		{
-			if (!f.toRegularFile().getName().equals("premis.xml"))
-			{
-				File dest = new File(destinationFolder + "data/" + f.getRelative_path());
-				logger.info("file will be part of dip: "+dest.getAbsolutePath());
-				String destFolder = dest.getAbsolutePath().substring(0, dest.getAbsolutePath().lastIndexOf("/"));
+			if (f.toRegularFile().getName().equals("premis.xml")) continue;
+				
+			File dest = Path.makeFile(destinationFolder,"data",f.getRelative_path());
+			logger.info("file will be part of dip: "+dest.getAbsolutePath());
+			String destFolder = dest.getAbsolutePath().substring(0, dest.getAbsolutePath().lastIndexOf("/"));
 
-				new File(destFolder).mkdirs();
+			new File(destFolder).mkdirs();
 
-				try {
-					FileUtils.copyFile(f.toRegularFile(), dest);
-				} catch (IOException e) {
-					throw new UserException(UserExceptionId.RETRIEVAL_ERROR, "Couldn't copy file " + f.toRegularFile().getAbsolutePath() + " to folder " + destFolder, e);
-				}
+			try {
+				FileUtils.copyFile(f.toRegularFile(), dest);
+			} catch (IOException e) {
+				throw new UserException(UserExceptionId.RETRIEVAL_ERROR, "Couldn't copy file " + f.toRegularFile().getAbsolutePath() + " to folder " + destFolder, e);
 			}
 		}
 	}
@@ -164,6 +181,9 @@ public class RetrievalAction extends AbstractAction {
 		return distributedConversionAdapter;
 	}
 
+	
+	
+	
 	public void setDistributedConversionAdapter(
 			DistributedConversionAdapter distributedConversionAdapter) {
 		this.distributedConversionAdapter = distributedConversionAdapter;

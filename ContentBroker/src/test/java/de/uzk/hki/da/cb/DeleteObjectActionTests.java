@@ -86,7 +86,7 @@ public class DeleteObjectActionTests {
 	@Test
 	public void testSetDeleteObjectFlag() throws FileNotFoundException, UserException, IOException{
 		action = new DeleteObjectAction();
-		action.setObject(TESTHelper.setUpObject("123", new RelativePath(workAreaRootPath), new RelativePath(ingestAreaRootPath)));
+		action.setObject(TESTHelper.setUpObject("123", new RelativePath(workAreaRootPath), new RelativePath(ingestAreaRootPath),new RelativePath(ingestAreaRootPath)));
 		action.implementation();
 
 		assertTrue(action.DELETEOBJECT);
@@ -95,7 +95,7 @@ public class DeleteObjectActionTests {
 	@Test
 	public void testSetDeletePackage() throws FileNotFoundException, UserException, IOException{
 		action = new DeleteObjectAction();
-		Object o = TESTHelper.setUpObject("123", new RelativePath(workAreaRootPath), new RelativePath(ingestAreaRootPath));
+		Object o = TESTHelper.setUpObject("123", new RelativePath(workAreaRootPath), new RelativePath(ingestAreaRootPath), new RelativePath(ingestAreaRootPath));
 		Package p2 = new Package(); p2.setName("2"); p2.setContainerName("testcontainer.tgz");
 		o.getPackages().add(p2);
 		action.setObject(o);
