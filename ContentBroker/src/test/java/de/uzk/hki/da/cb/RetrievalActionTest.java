@@ -53,10 +53,12 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class RetrievalActionTest {
 	
-	private static Path userAreaRootPath = Path.make(TC.TEST_ROOT_CB,"RetrievalActionTests","user");
-	private static Path workAreaRootPath = Path.make(TC.TEST_ROOT_CB,"RetrievalActionTests","work");
+	private static final Path userAreaRootPath = Path.make(TC.TEST_ROOT_CB,"RetrievalActionTests","user");
+	private static final Path workAreaRootPath = Path.make(TC.TEST_ROOT_CB,"RetrievalActionTests","work");
+	private static final Path outgoingFolder = Path.make(userAreaRootPath,"TEST","outgoing");
+	private static final Path container = Path.make(outgoingFolder,"1.tar");
 	
-	private static String objectIdentifier = "1";
+	private static final String objectIdentifier = "1";
 	private static RetrievalAction action;
 
 	private static PreservationSystem pSystem;
@@ -68,14 +70,7 @@ public class RetrievalActionTest {
 	public static void setUpBeforeClass(){
 		
 		pSystem = TESTHelper.setUpPS(workAreaRootPath,userAreaRootPath,userAreaRootPath);
-		object = TESTHelper.setUpObject(objectIdentifier, workAreaRootPath, 
-				userAreaRootPath,
-				userAreaRootPath);
-
-		object.reattach();
-		object.getLatestPackage().setTransientBackRefToObject(object);
 		
-		action = (RetrievalAction) wireUpAction(new RetrievalAction(),object,pSystem);
 	}
 
 	
@@ -104,10 +99,22 @@ public class RetrievalActionTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+
+		object = TESTHelper.setUpObject(objectIdentifier, workAreaRootPath, 
+				userAreaRootPath,
+				userAreaRootPath);
 		
+		
+		object.reattach();
+		object.getLatestPackage().setTransientBackRefToObject(object);
+		action = (RetrievalAction) wireUpAction(new RetrievalAction(),object,pSystem);
+		
+		
+
 		FileUtils.copyDirectory(Path.makeFile(workAreaRootPath,"work",object.getContractor().getShort_name(),"_1"), 
 				                Path.makeFile(workAreaRootPath,"work",object.getContractor().getShort_name(),"1")); 
 		Path.makeFile(userAreaRootPath,"TEST","outgoing").mkdirs();
+		
 		
 		object.getLatestPackage().scanRepRecursively("1+a");
 		object.getLatestPackage().scanRepRecursively("1+b");
@@ -115,10 +122,10 @@ public class RetrievalActionTest {
 		object.getLatestPackage().scanRepRecursively("2+b");
 		object.getLatestPackage().scanRepRecursively("3+a");
 		object.getLatestPackage().scanRepRecursively("3+b");
-		
 	}
 	
 
+	
 	@Test
 	public void testContainerAndBag() throws Exception{
 
@@ -134,32 +141,62 @@ public class RetrievalActionTest {
 	}
 	
 	
+	
+	
 	/**
 	 * Test.
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void test() throws Exception {
+	public void testNormalRetrieval() throws Exception {
 		
 		action.implementation();
 		unpack();
 		
-		assertTrue(Path.makeFile(userAreaRootPath,"TEST/outgoing/1/data/folder1/pic5.txt").exists());
-		assertTrue(Path.makeFile(userAreaRootPath,"TEST/outgoing/1/data/folder2/pic5.txt").exists());
-		assertTrue(Path.makeFile(userAreaRootPath,"TEST/outgoing/1/data/pic1.txt").exists());
-		assertTrue(Path.makeFile(userAreaRootPath,"TEST/outgoing/1/data/pic2.txt").exists());
-		assertTrue(Path.makeFile(userAreaRootPath,"TEST/outgoing/1/data/pic3.txt").exists());
-		assertTrue(Path.makeFile(userAreaRootPath,"TEST/outgoing/1/data/pic4.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/folder1/pic5.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/folder2/pic5.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/pic1.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/pic2.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/pic3.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/pic4.txt").exists());
 		
 		
 	}
 
+	
+	@Test
+	public void testSpecialRetrieval() throws IOException{
+		
+		action.getJob().setQuestion("RETRIEVE:1,2,3");
+		action.implementation();
+	}
+	
+	
+	/**
+	 * @throws IOException 
+	 */
+	@Test
+	public void testCleanup() throws IOException{
+		action.implementation();
+		
+		assertFalse(Path.makeFile(workAreaRootPath,"work","TEST/1").exists());
+	}
+	
+
+	@Test 
+	public void testRollback() throws IOException{
+		action.implementation();
+		action.rollback();
+		assertFalse(container.toFile().exists());
+	}
+	
+	
 
 
 	private static void unpack() throws Exception{
 		NativeJavaTarArchiveBuilder tar = new NativeJavaTarArchiveBuilder();
-		tar.unarchiveFolder(Path.makeFile(userAreaRootPath,"TEST/outgoing/1.tar"),
-				            Path.makeFile(userAreaRootPath,"TEST/outgoing"));
+		tar.unarchiveFolder(Path.makeFile(outgoingFolder,"1.tar"),
+				            outgoingFolder.toFile());
 	}
 	
 	private static AbstractAction wireUpAction(AbstractAction action,Object o,PreservationSystem ps){

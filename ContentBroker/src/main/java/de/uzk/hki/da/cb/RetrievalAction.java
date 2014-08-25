@@ -26,12 +26,10 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
-import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.MailContents;
@@ -51,7 +49,9 @@ import de.uzk.hki.da.utils.Path;
 
 public class RetrievalAction extends AbstractAction {
 	
-	
+	private Path newTar;
+
+
 	@Override
 	void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
@@ -68,44 +68,71 @@ public class RetrievalAction extends AbstractAction {
 	
 	
 	
+	@Override
+	protected
+	boolean implementation() throws IOException {
+
+		newTar = Path.make(localNode.getUserAreaRootPath(),object.getContractor().getShort_name(),"outgoing",object.getIdentifier() + ".tar");
+		
+		Path tempFolder = createTmpFolder();
+		
+
+		if (job.getQuestion()==null||job.getQuestion().isEmpty()){
+			stdRetrieval(tempFolder);
+		}
+		else {
+			System.out.println("other");
+			return true;
+		}
+		
+		
+		bagitAndTarit(tempFolder);
+
+		cleanupFS();
+		
+		new MailContents(preservationSystem,localNode).retrievalReport(object);
+		return true;
+	}
+
+	
+	@Override
+	void rollback() {
+		
+		newTar.toFile().delete();
+	}
+	
+	private void stdRetrieval(Path tempFolder) throws IOException{
+		moveNewestPremisToDIP(tempFolder);
+		copySurfaceRepresentation(tempFolder);
+	}
+
+
+
+
+	private void moveNewestPremisToDIP(Path tempFolder) throws IOException {
+		File premisFile = Path.makeFile(object.getDataPath(),object.getNameOfNewestBRep(),"premis.xml");
+		if (!premisFile.exists()) throw new RuntimeException("CRITICAL ERROR: premis file could has not been found");
+		File dest = Path.makeFile(tempFolder,"data","premis.xml");
+		FileUtils.copyFile(premisFile, dest);
+	}
+
+
+
+
 	private Path createTmpFolder(){
 		Path tmpFolder = Path.make(localNode.getWorkAreaRootPath(),"work",
 				object.getContractor().getShort_name(), object.getIdentifier(), object.getIdentifier()); 
 		tmpFolder.toFile().mkdir();
 		return tmpFolder;
 	}
-	
-	
-	
-	
-	@Override
-	protected
-	boolean implementation() throws IOException {
-	
-		Path tempFolder = createTmpFolder();
-		
 
-		
-		// ********
-		
-		// copy premis file to
-		File premisFile = Path.makeFile(object.getDataPath(),object.getNameOfNewestBRep(),"premis.xml");
-		if (!premisFile.exists()) throw new RuntimeException("CRITICAL ERROR: premis file could has not been found");
-		File dest = Path.makeFile(tempFolder,"data","premis.xml");
-		FileUtils.copyFile(premisFile, dest);
-		
-		copySurfaceRepresentation(object,tempFolder);
 
-		
-		// ********
-		
-		
-		
-		// Repacking
-		logger.trace("Building BagIt");
+
+
+	private void bagitAndTarit(Path tempFolder){
+
 		BagitUtils.buildBagit(tempFolder.toString());
 		
-		Path newTar = Path.make(localNode.getUserAreaRootPath(),object.getContractor().getShort_name(),"outgoing",object.getIdentifier() + ".tar");
 		logger.debug("Building tar at " + newTar);
 		try {
 			ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(new File(".tar"));
@@ -114,29 +141,17 @@ public class RetrievalAction extends AbstractAction {
 		} catch (Exception e) {
 			throw new RuntimeException("Tar couldn't be packed", e);
 		} 
-		
+	}
+	
+	
+	private void cleanupFS() throws IOException{
 		
 		// cleanup
 		String relativePackagePath = object.getContractor().getShort_name() + "/" + object.getIdentifier() + "/";
-		File packageFolder = Path.makeFile(localNode.getWorkAreaRootPath(),relativePackagePath);
+		File packageFolder = Path.makeFile(localNode.getWorkAreaRootPath(),"work",relativePackagePath);
 		
-		FileUtils.deleteDirectory(tempFolder.toFile());
 		FileUtils.deleteDirectory(packageFolder);
-		
-//		distributedConversionAdapter.remove("work/" + relativePackagePath.replaceAll("/$", "")); // replace all -> iRODS doesn't like trailing slashes
-		
-		new MailContents(preservationSystem,localNode).retrievalReport(object);
-		return true;
 	}
-
-	
-	
-	
-	@Override
-	void rollback() {
-		throw new NotImplementedException("No rollback implemented for this action");
-	}
-
 	
 	
 	
@@ -144,10 +159,10 @@ public class RetrievalAction extends AbstractAction {
 	 * @param destinationFolder
 	 * @throws RuntimeException
 	 */
-	private void copySurfaceRepresentation(Object o, Path destinationFolder)
+	private void copySurfaceRepresentation(Path destinationFolder)
 			throws RuntimeException {
 		
-		List<DAFile> files = o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
+		List<DAFile> files = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
 		for (DAFile f : files)
 		{
 			if (f.toRegularFile().getName().equals("premis.xml")) continue;
