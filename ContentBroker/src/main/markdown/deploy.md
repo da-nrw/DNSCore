@@ -62,6 +62,8 @@ context:
 
 Just to repeat an important fact, if one calls for example "mvn verify" all previous maven build lifecycle phases until verify get executed, one by one.
 
+
+
 ## Build and acceptance test the application on a development workstation
 
 In order to run the tests on a development workstation and to reduce the dependencies to the workstation, one can
@@ -94,12 +96,12 @@ here. To execute the build process run:
 
 Remarks:
 
-* -Pvm3 
+* -Pci
 this is the environment setting of the install script which indicates we're on a development workstation. This
 leads to a ContentBroker configuration which provides access to the real iRODS storage layer and the real
 Fedora presentation layer. 
-* missing -DappHome this param is not necessary when -Pvm3 is selected as the paths are preconfigured.
-* mvn deploy instead of mvn verify: The one additional phase executed at the end of the build phase deploys the
+* missing -DappHome this param is not necessary when -Pci is selected as the paths are preconfigured.
+* mvn install instead of mvn verify: The one additional phase executed at the end of the build phase deploys the
 completely tested release candidate to a precondigured folder were all release candidates are collected. This 
 is done to support continuous integration workflows.
 
@@ -111,9 +113,19 @@ if you want to bugfix a certain acceptance test or if you write a new acceptance
 
 1. cd [...]/DNSCore/ContentBroker
 1. mvn clean && mvn pre-integration-test -Pdev -DappHome=[appHome] **no ending slash!!!**
+1. or mvn clean && mvn pre-integration-test -Pci
+
+**Note** For quick acceptance test runs you can add params to deactivate the building of DAWeb and execution of JUnit tests. The switches are
+
+    -DDAWeb=skip
+    -Dskip.surefire.tests=true
 
 If you run mvn pre-integration-test, the applications gets unit tested, build and installed automatically
 to [appHome]. There you can debug the running ContentBroker manually or you can run single acceptance tests
 by calling
 
 1. mvn failsafe:integration-test -Dit.test=AT[TestName]
+
+
+
+
