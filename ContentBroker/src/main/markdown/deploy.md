@@ -63,7 +63,7 @@ context:
 Just to repeat an important fact, if one calls for example "mvn verify" all previous maven build lifecycle phases until verify get executed, one by one.
 
 
-*Note* For quick acceptance test runs you are always able to deactivate the building of DAWeb and JUnit tests with the switches
+**Note** For quick acceptance test runs you are always able to deactivate the building of DAWeb and JUnit tests with the switches
 
     -DDAWeb=skip
     -Dskip.surefire.tests=true
