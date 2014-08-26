@@ -183,19 +183,29 @@ it is not modelled as an own class. Instead, the representation is modelled as p
 are used during processing packages by the workflows of the ContentBroker. Therefore, DAFile is targeted at files which reside in the 
 [WorkArea](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md#workarea).
 
-#### Relative path
 
-The relative path of a file is always relative to the representation the file is contained in. A file
-
-    [WorkArea]/[csn]/[oid]/data/2014_10_01+12+12+a/subfolder/abc.tif
-    
-therefore has the relative path
-
-    subfolder/abc.tif
 
 
 
 ### Representation
+
+Representations make it possible to model the objects history on a file system level. For every package belonging to an object there are initially two representations. The +a representation contains the users data in unmodified form. The +b representatioins contains converted or modified versions of selected files. A representation has the form "yyyy_mm_dd+hh_mm+x". An example for an object consisting of one initial import and two deltas could look like this (contents of the data folder):
+
+    2014_10_01+12_12+a
+    2014_10_01+12_12+b
+    2015_10_03+10_00+a
+    2015_10_03+10_00+b
+    2016_09_03+01_10+a
+    2016_09_03+01_10+b
+
+The relative path of a file is always relative to the representation the file is contained in. A file
+
+    [WorkArea]/[csn]/[oid]/data/2014_10_01+12_12+a/subfolder/abc.tif
+    
+therefore has the rep_name "2014_10_01+12_12+a" has the relative path "subfolder/abc.tif".
+
+It is important to understand that the representations are independent of the package. They belong directly to the object (TODO repackaging)
+
 
 A representation is a model entity of second order so to speak and
 is not modeled as a java class in its own right. Representations are a means of organizing
@@ -216,21 +226,3 @@ or in packages itself. If the system recognizes a package as a delta to an exist
 object during ingest. When this happens the system possibly needs to regenerate PIPs. Since in these cases
 data from older packages are needed the older packages get loaded from long term archival resources to
 the WorkArea. Then you will find old representations alongside new ones. This could look like that:
-
-    2014_10_01+12_12+a
-    2014_10_01+12_12+b
-    2015_10_03+10_00+a
-    2015_10_03+10_00+b
-    2016_09_03+01_10+a
-    2016_09_03+01_10+b
-
-After building PIPs everything except the newest two representations get deleted again from the WorkArea and
-the newest get repackaged an put on long term resources. But there also a use case which is yet to be implemented
-which will the system allow to repackage object contents distributed across several packages into a new single package
-which then contains more than one representation and the complete object content respectively. 
-
-Just because it was simple to do so, packages in WorkArea get two additional representations which never are part of
-AIPs and are used to store the PIPs for publication. These representations are
-
-    dip/public
-    dip/institution
