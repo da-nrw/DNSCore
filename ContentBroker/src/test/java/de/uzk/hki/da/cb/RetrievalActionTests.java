@@ -189,6 +189,9 @@ public class RetrievalActionTests {
 		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/3+b/folder2/pic5.txt").exists());
 		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/3+b/pic3.txt").exists());
 		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/3+b/premis.xml").exists());
+
+		assertFalse(Path.makeFile(outgoingFolder,objectIdentifier,"data/2+a/pic3.txt").exists());
+		assertFalse(Path.makeFile(outgoingFolder,objectIdentifier,"data/2+b/pic4.txt").exists());
 	}
 	
 	
