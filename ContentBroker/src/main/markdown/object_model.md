@@ -196,4 +196,14 @@ therefore has the rep_name "2014_10_01+12_12+a" has the relative path "subfolder
 
 It is important to understand that the representations are independent of the package. They belong directly to the object (TODO repackaging)
 
+#### Document
+
+A document is uniquely definied by its DAFile's relative path subtracting the extension. The two files
+
+    2014_10_01+12_12+a/subfolder/1.jpg
+    2014_10_01+12_12+b/subfolder/1.tif
+    
+both share the document name "subfolder/1". The system treats them as one logical document. The file "1.tif" is treated as the successor of "1.jpg", independently of its origin, which can be either by modification, conversion or a delta by a user.  
+    
+
 
