@@ -149,7 +149,6 @@ Additional documentation
 * Metadata [Workflow](ContentBroker/src/main/markdown/metadata_workflow.md). Technical description.
 * [click here](ContentBroker/src/main/markdown/3rdPartyTools.md) to get general information about the use and redistribution of used 3rd party libraries and tools.
 * [click here](ContentBroker/src/main/markdown/deploy.md) if you want to deploy the software yourself and build the source code on your local or on a continuous integration machine.
-* [click here](ContentBroker/src/main/markdown/manual_testing_rc.md) to learn more about how our software is being tested.
 * [click here](DAWeb/doc/deploy.md) for information about deploying DAWeb
 * [click here](ContentBroker/src/main/markdown/javadoc.md) if you want to recreate the JavaDoc files and publish them on GitHub Pages
 
