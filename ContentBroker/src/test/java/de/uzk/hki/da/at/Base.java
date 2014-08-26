@@ -186,6 +186,7 @@ public class Base {
 						|| job.getStatus().endsWith("4")) {
 					String msg = "ERROR: Job in error state: " + job.getStatus();
 					System.out.println(msg);
+					
 					throw new RuntimeException(msg);
 				}
 			}
@@ -233,6 +234,17 @@ public class Base {
 				String oid=job.getObject().getIdentifier();
 				String msg = "ERROR: Job in error state: " + job.getStatus() + " in Object-Id "+ oid;
 				System.out.println(msg);
+				
+				if (job.getObject().getIdentifier()!=null){
+					try {
+						System.out.println("SHOWING OBJECT LOG:");
+						System.out.println(FileUtils.readFileToString(new File("/ci/ContentBroker/log/object-logs/"+job.getObject().getIdentifier()+".log")));
+						System.out.println("END OF OBJECT LOG: "+job.getObject().getIdentifier());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				
 				throw new RuntimeException(msg);
 			}
 			
