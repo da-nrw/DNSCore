@@ -63,10 +63,6 @@ context:
 Just to repeat an important fact, if one calls for example "mvn verify" all previous maven build lifecycle phases until verify get executed, one by one.
 
 
-**Note** For quick acceptance test runs you are always able to deactivate the building of DAWeb and JUnit tests with the switches
-
-    -DDAWeb=skip
-    -Dskip.surefire.tests=true
 
 ## Build and acceptance test the application on a development workstation
 
@@ -117,9 +113,19 @@ if you want to bugfix a certain acceptance test or if you write a new acceptance
 
 1. cd [...]/DNSCore/ContentBroker
 1. mvn clean && mvn pre-integration-test -Pdev -DappHome=[appHome] **no ending slash!!!**
+1. or mvn clean && mvn pre-integration-test -Pci
+
+**Note** For quick acceptance test runs you can add params to deactivate the building of DAWeb and execution of JUnit tests. The switches are
+
+    -DDAWeb=skip
+    -Dskip.surefire.tests=true
 
 If you run mvn pre-integration-test, the applications gets unit tested, build and installed automatically
 to [appHome]. There you can debug the running ContentBroker manually or you can run single acceptance tests
 by calling
 
 1. mvn failsafe:integration-test -Dit.test=AT[TestName]
+
+
+
+
