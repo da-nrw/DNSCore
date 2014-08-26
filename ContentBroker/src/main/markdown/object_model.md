@@ -170,26 +170,16 @@ The java [DAFile](../java/de/uzk/hki/da/model/DAFile.java) class.
 Each file stored within a package has a correspondent DAFile instance, which captures some properties
 relevant to the business logic of the application.
 
-#### PUID
-
 The puid is used to store the file format of the file, determined by 
 [FIDO](http://www.openplanetsfoundation.org/software/fido), 
 and encoded in the [PRONOM](http://www.nationalarchives.gov.uk/PRONOM/Default.aspx) format.
 
-#### Representation
-
-The representation under which the concrete DAfile can be found has been described in a following paragraph . However, as stated there,
-it is not modelled as an own class. Instead, the representation is modelled as part of the DAFile class. At the moment DAFile instances
-are used during processing packages by the workflows of the ContentBroker. Therefore, DAFile is targeted at files which reside in the 
-[WorkArea](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md#workarea).
-
-
-
-
 
 ### Representation
 
-Representations make it possible to model the objects history on a file system level. For every package belonging to an object there are initially two representations. The +a representation contains the users data in unmodified form. The +b representatioins contains converted or modified versions of selected files. A representation has the form "yyyy_mm_dd+hh_mm+x". An example for an object consisting of one initial import and two deltas could look like this (contents of the data folder):
+Representations make it possible to model the objects history on a file system level. For every package belonging to an object there are initially two representations. The +a representation contains the users data in unmodified form. The +b representatioins contains converted or modified versions of selected files. A representation has the form "yyyy_mm_dd+hh_mm+x". By sorting the rep_names alphabetically one can get a quick glance on the objects history (see also section "document").
+
+An example for an object consisting of one initial import and two deltas could look like this (contents of the data folder):
 
     2014_10_01+12_12+a
     2014_10_01+12_12+b
@@ -207,22 +197,3 @@ therefore has the rep_name "2014_10_01+12_12+a" has the relative path "subfolder
 It is important to understand that the representations are independent of the package. They belong directly to the object (TODO repackaging)
 
 
-A representation is a model entity of second order so to speak and
-is not modeled as a java class in its own right. Representations are a means of organizing
-the data within packages. When the ContentBroker ingests a SIP, it puts the original
-data into one representation and puts the data it generates itself into another representation.
-Therefore after repacking as AIP every package contains at least two representations. The
-naming scheme for a representation always looks like this:
-
-    yyyy_mm_dd+hh_mm+x
-    
-The x always is an a for original user content while x is b for system generated data. 
-
-By alphabetical ordering of representations it is possible to have a quick glance on the objects history.
-
-But while it seems obvious at first that every package has exactly two representations there are
-some occasions where you find more than two representations at the same time, either on the file system
-or in packages itself. If the system recognizes a package as a delta to an existing
-object during ingest. When this happens the system possibly needs to regenerate PIPs. Since in these cases
-data from older packages are needed the older packages get loaded from long term archival resources to
-the WorkArea. Then you will find old representations alongside new ones. This could look like that:
