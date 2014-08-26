@@ -77,9 +77,11 @@ So wird zum Beispiel die PUID ([PRONOM Identifier]((http://www.nationalarchives.
 
 Weiterhin wird über die Klasse DAFile die Zugehörigkeit des Files zu einer bestimmten Repräsentation des Objektes modelliert. Die Repräsentation ist dabei als rep_name gekennzeichnet. Der Pfad der Datei innerhalb der Repräsentation als relative_path.
 
-#### Repräsentationen
+#### Representation - Die Repräsentationen
 
-Repräsentationen dienen dazu, die Objekthistorie nachvollziehbar im Dateisystem abzubilden. Für jedes Paket, welches zu einem Objekt abgeliefert wird, werden zwei Repräsentation eingeliefert. Die +a Repräsentation enthält die Daten des Nutzers in unveränderter Form. Die +b Repräsentation enthält konvertierte oder modifizierte Daten. Eine Repräsentation hat die Form yyyy_mm_dd+hh_mm+x. Ein Beispielobjekt, welches eine Originallieferung und zwei Deltas umfasst, könnte dann z.B. die folgenden sechs Repräsentationen umfassen
+Repräsentationen dienen dazu, die Objekthistorie nachvollziehbar im Dateisystem abzubilden. Für jedes Paket, welches zu einem Objekt abgeliefert wird, werden zwei Repräsentation eingeliefert. Die +a Repräsentation enthält die Daten des Nutzers in unveränderter Form. Die +b Repräsentation enthält konvertierte oder modifizierte Daten. Eine Repräsentation hat die Form yyyy_mm_dd+hh_mm+x. Durch alphabetische Sortierung über die Repräsentationsnamen ist die Objekthistorie sofort transparent (siehe auch Abschnitt "Dokument").  
+
+Ein Beispielobjekt, welches eine Originallieferung und zwei Deltas umfasst, könnte dann z.B. die folgenden sechs Repräsentationen umfassen
 
     2014_10_01+12_12+a
     2014_10_01+12_12+b
@@ -94,6 +96,6 @@ Der relative Pfad einer Datei wird immer relativ zu einer dieser Repräsentation
 
 hat den Repräsentationsnamen "2014_10_01+12_12+a" und den relativen Pfad "subfolder/abc.tif". 
 
-Wichtig ist, dass die Repräsentationen Teil des Objektes sind und unabhängig vom Paket sind, in dem sie sich befinden (TODO Repackaging).
+Wichtig ist, dass die Repräsentationen ein von den konkreten Paketen eines Objektes unabhängiges Konzept darstellen (TODO Repackaging).
 
-
+#### Document - Das Dokument
