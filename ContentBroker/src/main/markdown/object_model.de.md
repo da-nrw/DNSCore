@@ -66,3 +66,34 @@ The Java [ConversionPolicy](../java/de/uzk/hki/da/model/ConversionPolicy.java) c
 The Java [ConversionRoutine](../java/de/uzk/hki/da/model/ConversionRoutine.java) class.
 
 ### DAFile
+
+Die Java [DAFile](../java/de/uzk/hki/da/model/DAFile.java) Klasse.
+
+![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_1a.jpg)
+
+Jede der zu einem Objekt gehörenden Dateien entspricht einem DAFile im Datenmodell. Das DAFile speichert einige Metadaten, die für die Geschäftslogik von DNSCore wichtig sind.
+
+So wird zum Beispiel die PUID ([PRONOM Identifier]((http://www.nationalarchives.gov.uk/PRONOM/Default.aspx)))gespeichert, welche das Format der Datei, wie es von [FIDO](http://www.openplanetsfoundation.org/software/fido) ermittelt wurde.
+
+Weiterhin wird über die Klasse DAFile die Zugehörigkeit des Files zu einer bestimmten Repräsentation des Objektes modelliert. Die Repräsentation ist dabei als rep_name gekennzeichnet. Der Pfad der Datei innerhalb der Repräsentation als relative_path.
+
+#### Repräsentationen
+
+Repräsentationen dienen dazu, die Objekthistorie nachvollziehbar im Dateisystem abzubilden. Für jedes Paket, welches zu einem Objekt abgeliefert wird, werden zwei Repräsentation eingeliefert. Die +a Repräsentation enthält die Daten des Nutzers in unveränderter Form. Die +b Repräsentation enthält konvertierte oder modifizierte Daten. Eine Repräsentation hat die Form yyyy_mm_dd+hh_mm+x. Ein Beispielobjekt, welches eine Originallieferung und zwei Deltas umfasst, könnte dann z.B. die folgenden sechs Repräsentationen umfassen
+
+    2014_10_01+12_12+a
+    2014_10_01+12_12+b
+    2015_10_03+10_00+a
+    2015_10_03+10_00+b
+    2016_09_03+01_10+a
+    2016_09_03+01_10+b
+
+Der relative Pfad einer Datei wird immer relativ zu einer dieser Repräsentation ausgedrückt. Eine Datei
+
+    [WorkArea]/[csn]/[oid]/data/2014_10_01+12_12+a/subfolder/abc.tif
+
+hat den Repräsentationsnamen "2014_10_01+12_12+a" und den relativen Pfad "subfolder/abc.tif". 
+
+Wichtig ist, dass die Repräsentationen Teil des Objektes sind und unabhängig vom Paket sind, in dem sie sich befinden (TODO Repackaging).
+
+
