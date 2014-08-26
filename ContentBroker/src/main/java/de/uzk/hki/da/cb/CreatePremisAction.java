@@ -31,7 +31,7 @@ import javax.xml.stream.XMLStreamException;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.format.JhoveScanService;
+import de.uzk.hki.da.format.MetadataExtractor;
 import de.uzk.hki.da.metadata.PremisXmlJhoveExtractor;
 import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.metadata.PremisXmlValidator;
@@ -50,7 +50,7 @@ import de.uzk.hki.da.utils.Path;
  */
 public class CreatePremisAction extends AbstractAction {
 
-	private JhoveScanService jhoveScanService;
+	private MetadataExtractor jhoveScanService;
 	
 	private List<Event> addedEvents = new ArrayList<Event>();
 
@@ -216,6 +216,10 @@ public class CreatePremisAction extends AbstractAction {
 		PremisXmlReader reader = new PremisXmlReader();
 		reader.setJhoveTempFolder(new File(jhoveScanService.getJhoveFolder()).getAbsolutePath() + 
 				"/temp/" + job.getId());
+		
+		
+		
+		
 		try {
 			premisData = reader.deserialize(premisFile);
 		} catch (IOException e) {
@@ -280,7 +284,7 @@ public class CreatePremisAction extends AbstractAction {
 		job.setDynamic_nondisclosure_limit(null);
 	}
 
-	public void setJhoveScanService(JhoveScanService jhoveScanService) {
+	public void setJhoveScanService(MetadataExtractor jhoveScanService) {
 		this.jhoveScanService = jhoveScanService;
 	}
 

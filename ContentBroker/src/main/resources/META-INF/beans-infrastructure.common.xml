@@ -85,9 +85,14 @@
 		<property name="localNode" ref="localNode" />
   	</bean>
   
-    <bean class="de.uzk.hki.da.format.JhoveScanService" id="jhoveScanService" scope="prototype">
+  
+  
+    <bean class="de.uzk.hki.da.format.JhoveMetadataExtractor" id="jhoveMetadataExtractor" scope="prototype">
         <property name="jhoveFolder" value="jhove"/>
     </bean>
+    <bean class="de.uzk.hki.da.format.FakeMetadataExtractor" id="fakeMetadataExtractor" scope="prototype">
+        <property name="jhoveFolder" value="jhove"/>
+    </bean>   
     
     
     <bean class="de.uzk.hki.da.service.MimeTypeDetectionService" id="mtds"/>

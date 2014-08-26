@@ -71,13 +71,13 @@
 		<property name="endStatus" value="270" />
 		<property name="name" value="IngestCheckFormatsAction" />
 		<property name="formatScanService" ref="formatScanService" />
-		<property name="jhoveScanService" ref="jhoveScanService" />
+		<property name="jhoveScanService" ref="${cb.implementation.metadataExtractor:jhoveMetadataExtractor}" />
 	</bean>
 	<bean id="IngestCreatePremisAction" class="de.uzk.hki.da.cb.CreatePremisAction" scope="prototype">
 		<property name="startStatus" value="270" />
 		<property name="endStatus" value="310" />
 		<property name="name" value="IngestCreatePremisAction" />
-		<property name="jhoveScanService" ref="jhoveScanService" />
+		<property name="jhoveScanService" ref="${cb.implementation.metadataExtractor:jhoveMetadataExtractor}" />
 	</bean>
 	<bean id="IngestScanForPresentationAction" class="de.uzk.hki.da.cb.ScanForPresentationAction" scope="prototype">
 		<property name="startStatus" value="310" />

@@ -142,3 +142,10 @@ cp $INSTALL_PATH/conf/config.properties conf/
 
 startContentBroker $INSTALL_PATH
 
+
+## in case fake jhove will get used
+echo -e "<fakejhove>\n</fakejhove>" > /tmp/abc.txt
+
+
+
+

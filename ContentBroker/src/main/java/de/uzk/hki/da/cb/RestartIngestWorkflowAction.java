@@ -7,7 +7,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.format.JhoveScanService;
+import de.uzk.hki.da.format.JhoveMetadataExtractor;
+import de.uzk.hki.da.format.MetadataExtractor;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.Path;
 
@@ -19,7 +20,7 @@ import de.uzk.hki.da.utils.Path;
  */
 public class RestartIngestWorkflowAction extends AbstractAction {
 
-	private JhoveScanService jhoveScanService;
+	private MetadataExtractor metadataExtractor;
 	
 	@Override
 	void checkActionSpecificConfiguration() throws ConfigurationException {
@@ -148,7 +149,7 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	 */
 	private void deleteJhoveTempData() {
 		
-		String pathToJhoveFolder = new File(jhoveScanService.getJhoveFolder()).getAbsolutePath();
+		String pathToJhoveFolder = new File(metadataExtractor.getJhoveFolder()).getAbsolutePath();
 		File jhoveTempFolder = new File(pathToJhoveFolder + "/temp/" + job.getId() + "/");
 		
 		if (jhoveTempFolder.exists()) {
@@ -160,11 +161,11 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 		}
 	}
 	
-	public JhoveScanService getJhoveScanService() {
-		return jhoveScanService;
+	public MetadataExtractor getJhoveScanService() {
+		return metadataExtractor;
 	}
 
-	public void setJhoveScanService(JhoveScanService jhoveScanService) {
-		this.jhoveScanService = jhoveScanService;
+	public void setJhoveScanService(MetadataExtractor jhoveScanService) {
+		this.metadataExtractor = jhoveScanService;
 	}
 }

@@ -45,7 +45,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.format.JhoveScanService;
+import de.uzk.hki.da.format.JhoveMetadataExtractor;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.DAFile;
@@ -127,7 +127,7 @@ public class CreatePremisActionTests {
 		action.setDao(dao);
 		
 
-		JhoveScanService jhoveScanService = mock(JhoveScanService.class);
+		JhoveMetadataExtractor jhoveScanService = mock(JhoveMetadataExtractor.class);
 		when(jhoveScanService.getJhoveFolder()).
 			thenReturn(workAreaRootPath + "/JhoveFolder");				
 		action.setJhoveScanService(jhoveScanService);		

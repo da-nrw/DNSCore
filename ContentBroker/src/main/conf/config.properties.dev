@@ -10,6 +10,7 @@ cb.serverSocketNumber=4455
 cb.implementation.grid=fakeGridFacade
 cb.implementation.distributedConversion=fakeDistributedConversionAdapter
 cb.implementation.repository=fakeRepositoryFacade
+cb.implementation.metadataExtractor=fakeMetadataExtractor
 cb.bin.python=python
 
 elasticsearch.index=portal_test

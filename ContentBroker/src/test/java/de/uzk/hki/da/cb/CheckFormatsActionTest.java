@@ -37,7 +37,7 @@ import org.mockito.stubbing.Answer;
 import org.springframework.util.StringUtils;
 
 import de.uzk.hki.da.format.FormatScanService;
-import de.uzk.hki.da.format.JhoveScanService;
+import de.uzk.hki.da.format.JhoveMetadataExtractor;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
@@ -135,7 +135,7 @@ public class CheckFormatsActionTest {
 		contractor.setShort_name("TEST");
 		localNode.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
 
-		JhoveScanService jhove = mock(JhoveScanService.class);
+		JhoveMetadataExtractor jhove = mock(JhoveMetadataExtractor.class);
 		when(jhove.extract((File)anyObject(),anyInt())).thenReturn("abc");
 		
 		final Package sipPackage = new Package(); sipPackage.setName("2"); // the SIP / Delta

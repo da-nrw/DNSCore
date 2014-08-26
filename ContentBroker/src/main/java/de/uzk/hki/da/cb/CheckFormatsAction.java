@@ -30,7 +30,8 @@ import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.format.FormatScanService;
-import de.uzk.hki.da.format.JhoveScanService;
+import de.uzk.hki.da.format.JhoveMetadataExtractor;
+import de.uzk.hki.da.format.MetadataExtractor;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.CommaSeparatedList;
@@ -43,7 +44,7 @@ public class CheckFormatsAction extends AbstractAction {
 
 	private FormatScanService formatScanService;
 
-	private JhoveScanService jhoveScanService;
+	private MetadataExtractor jhoveScanService;
 
 	@Override
 	void checkActionSpecificConfiguration() throws ConfigurationException {
@@ -134,11 +135,11 @@ public class CheckFormatsAction extends AbstractAction {
 		this.formatScanService = formatScanService;
 	}
 
-	public JhoveScanService getJhoveScanService() {
+	public MetadataExtractor getJhoveScanService() {
 		return jhoveScanService;
 	}
 
-	public void setJhoveScanService(JhoveScanService jhoveScanService) {
+	public void setJhoveScanService(MetadataExtractor jhoveScanService) {
 		this.jhoveScanService = jhoveScanService;
 	}
 }

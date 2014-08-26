@@ -37,12 +37,12 @@ import de.uzk.hki.da.utils.Utilities;
  *
  * @author Thomas Kleinke
  */
-public class JhoveScanService {
+public class JhoveMetadataExtractor implements MetadataExtractor {
 	
 	private static final String JHOVE_CONF = "conf/jhove.conf";
 
 	/** The Constant logger. */
-	static final Logger logger = LoggerFactory.getLogger(JhoveScanService.class);
+	static final Logger logger = LoggerFactory.getLogger(JhoveMetadataExtractor.class);
 	
 	/** The jhove folder. */
 	private String jhoveFolder;
@@ -52,6 +52,7 @@ public class JhoveScanService {
 	 *
 	 * @return the jhove folder
 	 */
+	@Override
 	public String getJhoveFolder(){
 		return jhoveFolder;
 	}
@@ -61,6 +62,7 @@ public class JhoveScanService {
 	 *
 	 * @param jhoveFolder the new jhove folder
 	 */
+	@Override
 	public void setJhoveFolder(String jhoveFolder){
 		this.jhoveFolder = jhoveFolder;
 	}
@@ -73,6 +75,7 @@ public class JhoveScanService {
 	 * @return the string
 	 * @throws Exception the exception
 	 */
+	@Override
 	public String extract(File file, int jobId) throws IOException {
 		if (jhoveFolder==null) throw new RuntimeException("jhove folder is null");
 		if (!new File(jhoveFolder).exists()) throw new FileNotFoundException("jhove folder does not exist");
