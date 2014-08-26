@@ -77,7 +77,7 @@ Jede der zu einem Objekt gehörenden Dateien entspricht einem DAFile im Datenmod
 
 So wird zum Beispiel die PUID ([PRONOM Identifier]((http://www.nationalarchives.gov.uk/PRONOM/Default.aspx)))gespeichert, welche das Format der Datei, wie es von [FIDO](http://www.openplanetsfoundation.org/software/fido) ermittelt wurde.
 
-Weiterhin wird über die Klasse DAFile die Zugehörigkeit des Files zu einer bestimmten Repräsentation des Objektes modelliert. Die Repräsentation ist dabei als rep_name gekennzeichnet. Der Pfad der Datei innerhalb der Repräsentation als relative_path.
+Weiterhin wird über die Klasse DAFile die Zugehörigkeit des Files zu einer bestimmten Repräsentation des Objektes modelliert. Die Repräsentation ist dabei als rep_name gekennzeichnet. Der Pfad der Datei innerhalb der Repräsentation als relative_path. Konkrete Beispiele für die Verwendung von Repräsentationen siehe [AIP-Spezifikation](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/aip_specification.md).
 
 #### Representation - Die Repräsentationen
 
