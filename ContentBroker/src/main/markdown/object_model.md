@@ -206,7 +206,7 @@ A document is uniquely definied by its DAFile's relative path subtracting the ex
     2014_10_01+12_12+a/subfolder/1.jpg
     2014_10_01+12_12+b/subfolder/1.tif
     
-both share the document name "subfolder/1". The system treats them as one logical document. The file "1.tif" is treated as the successor of "1.jpg", independently of its origin, which can be either by modification, conversion or a delta by a user.  
+both share the document name "subfolder/1". The system treats them as one logical document. The file "1.tif" is treated as the successor of "1.jpg", independently of its origin, which can be either by modification, conversion or a delta by a user. For this system to work properly it is important that only one DAFile with a certain document name exists inside a representation.
     
 
 
