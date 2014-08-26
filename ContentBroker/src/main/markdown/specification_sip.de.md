@@ -23,6 +23,23 @@
 
 [Englische](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_sip.md) Version.
 
+## SIP - Generelle Struktur
+
+### Containerformate
+
+### Containername
+
+### Bagit
+
+### PREMIS
+
+### Original Name
+
+### Encoding
+
+## Richtlinien für die Strukturierung von DIPs
+
+#### Dateinamen
 
 
 Siehe
