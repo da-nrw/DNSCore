@@ -21,6 +21,8 @@
 
 # SIP Specification
 
+[German](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_sip.de.md) Version.
+
 This document specifies how a SIP must be structured so that any node running DNSCore can ingest it. Following these specifications, a developer should be able to let existing domain specific software output SIPs suitable for getting ingested into DNSCore nodes. It should even be possible doing it manually. 
 
 However, there is a special tool called "SIP-Builder", which is also part of "DA-NRW" project on github. Its source code can be found [here](https://github.com/da-nrw/SIP-Builder). This tool helps users build SIPs providing a comfortable graphical user interface. Power users can also run the SIP builder in headless mode via command line. 
@@ -92,12 +94,15 @@ to take into consideration when assembling the contents for a SIP.
 
 #### File names
 
+
 If you take away the extension away from a file name, you have what is considered a "document" by the system.
 Documents have to be unique which means you shouldn't place two files with the same document name into a SIP:
 
     forbidden:
     data/abc.jpg
     data/abc.tif
+
+For more information see [documents](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#document).
     
 Typically, with choosing the same base names for different files the users wants to signal a correspondence of
 two or more files (e.g. same content but encoded in different formats). 

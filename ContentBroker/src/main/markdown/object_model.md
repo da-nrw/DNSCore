@@ -165,6 +165,9 @@ it possible to make it testable in component tests after the domain expert has p
 
 The java [DAFile](../java/de/uzk/hki/da/model/DAFile.java) class.
 
+Note that the concrete model is implemented a little bit different from the conceptual model outlined in the following sketch. The representation is modeled as part of dafile and the document is only modelled implicitely by the rep_name in combination with relative_path.
+
+
 ![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_dafiles_documents.jpg)
 
 Each file stored within a package has a correspondent DAFile instance, which captures some properties
@@ -203,7 +206,7 @@ A document is uniquely definied by its DAFile's relative path subtracting the ex
     2014_10_01+12_12+a/subfolder/1.jpg
     2014_10_01+12_12+b/subfolder/1.tif
     
-both share the document name "subfolder/1". The system treats them as one logical document. The file "1.tif" is treated as the successor of "1.jpg", independently of its origin, which can be either by modification, conversion or a delta by a user.  
+both share the document name "subfolder/1". The system treats them as one logical document. The file "1.tif" is treated as the successor of "1.jpg", independently of its origin, which can be either by modification, conversion or a delta by a user. For this system to work properly it is important that only one DAFile with a certain document name exists inside a representation.
     
 
 
