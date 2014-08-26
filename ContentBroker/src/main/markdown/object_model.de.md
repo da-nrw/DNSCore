@@ -77,11 +77,11 @@ Jede der zu einem Objekt gehörenden Dateien entspricht einem DAFile im Datenmod
 
 So wird zum Beispiel die PUID ([PRONOM Identifier]((http://www.nationalarchives.gov.uk/PRONOM/Default.aspx)))gespeichert, welche das Format der Datei, wie es von [FIDO](http://www.openplanetsfoundation.org/software/fido) ermittelt wurde.
 
-Weiterhin wird über die Klasse DAFile die Zugehörigkeit des Files zu einer bestimmten Repräsentation des Objektes modelliert. Die Repräsentation ist dabei als rep_name gekennzeichnet. Der Pfad der Datei innerhalb der Repräsentation als relative_path.
+Weiterhin wird über die Klasse DAFile die Zugehörigkeit des Files zu einer bestimmten Repräsentation des Objektes modelliert. Die Repräsentation ist dabei als rep_name gekennzeichnet. Der Pfad der Datei innerhalb der Repräsentation als relative_path. Konkrete Beispiele für die Verwendung von Repräsentationen siehe [AIP-Spezifikation](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/aip_specification.md).
 
 #### Representation - Die Repräsentationen
 
-Repräsentationen dienen dazu, die Objekthistorie nachvollziehbar im Dateisystem abzubilden. Für jedes Paket, welches zu einem Objekt abgeliefert wird, werden zwei Repräsentation eingeliefert. Die +a Repräsentation enthält die Daten des Nutzers in unveränderter Form. Die +b Repräsentation enthält konvertierte oder modifizierte Daten. Eine Repräsentation hat die Form yyyy_mm_dd+hh_mm+x. Durch alphabetische Sortierung über die Repräsentationsnamen ist die Objekthistorie sofort transparent (siehe auch Abschnitt "Dokument").  
+Repräsentationen dienen dazu, die Objekthistorie nachvollziehbar im Dateisystem abzubilden. Für jedes Paket, welches zu einem Objekt abgeliefert wird, werden zwei Repräsentation eingeliefert. Die +a Repräsentation enthält die Daten des Nutzers in unveränderter Form. Die +b Repräsentation enthält konvertierte oder modifizierte Daten. Eine Repräsentation hat die Form jjjj_mm_tt+ss_mm+x. Durch alphabetische Sortierung über die Repräsentationsnamen ist die Objekthistorie sofort transparent (siehe auch Abschnitt "Dokument").  
 
 Ein Beispielobjekt, welches eine Originallieferung und zwei Deltas umfasst, könnte dann z.B. die folgenden sechs Repräsentationen umfassen
 
