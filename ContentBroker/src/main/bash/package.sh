@@ -16,6 +16,8 @@ fi
 echo "calling package.sh $1 $2"
 
 
+
+
 function createStorageFolder(){
 	mkdir $CBTAR_SRC/storage/
 	mkdir $CBTAR_SRC/storage/GridCacheArea
@@ -67,15 +69,17 @@ ci)
 esac
 
 
-cd ../DAWeb
-./build.sh prod
-if [ "$?" = "1" ]
+if [ "${!#}" != "skip" ]
 then
-	echo there was an error in ./build.sh prod
-	exit 1
-fi 
-cd ../ContentBroker
-
+	cd ../DAWeb
+	./build.sh prod
+	if [ "$?" = "1" ]
+	then
+		echo there was an error in ./build.sh prod
+		exit 1
+	fi 
+	cd ../ContentBroker
+fi
 
 cd $CBTAR_SRC
 rm ../installation/ContentBroker.tar 2>/dev/null

@@ -160,6 +160,7 @@
 						<include>${include.tests}</include>
 					</includes>
 					<argLine>-Dfile.encoding=UTF-8</argLine>
+    				<skipTests>${skip.surefire.tests}</skipTests>
 				</configuration>
 			</plugin>
 
@@ -257,7 +258,7 @@
 								<exec dir="${basedir}"
 									executable="${basedir}/src/main/bash/package.sh"
 									failonerror="true">
-									<arg line="${env} ${appHome}"/>
+									<arg line="${env} ${appHome} ${DAWeb}"/>
 								</exec>
 							</tasks>
 						</configuration>
