@@ -59,6 +59,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		
 		logger.debug("set elasticsearch nodes: {}", client.transportAddresses());
 		
+		
 		try {
 			client.prepareIndex(indexName, type)
 				.setId(objectId).setSource(data).execute().actionGet();
