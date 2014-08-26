@@ -92,6 +92,8 @@ to take into consideration when assembling the contents for a SIP.
 
 #### File names
 
+https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#document
+
 If you take away the extension away from a file name, you have what is considered a "document" by the system.
 Documents have to be unique which means you shouldn't place two files with the same document name into a SIP:
 
