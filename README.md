@@ -98,7 +98,8 @@ the releases page, follow the source code link for the corresponding version and
 * Presentation of the [Object model](ContentBroker/src/main/markdown/object_model.md).
 * Presentation of the [Delta feature](ContentBroker/src/main/markdown/the_delta_feature.md).
 * [DIP](ContentBroker/src/main/markdown/dip_specification.md) Specification
-* [SIP](ContentBroker/src/main/markdown/sip_specification.md) Specification
+* [SIP](ContentBroker/src/main/markdown/specification_sip.md) Specification
+* [SIP](ContentBroker/src/main/markdown/specification_sip.de.md) Specification (german version).
 * [AIP](ContentBroker/src/main/markdown/aip_specification.md) Specification
 * [PREMIS Specification](ContentBroker/src/main/markdown/premis_specification.md)
 
