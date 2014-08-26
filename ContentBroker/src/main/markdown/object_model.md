@@ -177,6 +177,7 @@ The puid is used to store the file format of the file, determined by
 [FIDO](http://www.openplanetsfoundation.org/software/fido), 
 and encoded in the [PRONOM](http://www.nationalarchives.gov.uk/PRONOM/Default.aspx) format.
 
+Examples for the usage of representations can be found in [AIP specification](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/aip_specification.md).
 
 ### Representation
 
