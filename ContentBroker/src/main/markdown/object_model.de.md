@@ -99,3 +99,12 @@ hat den Repräsentationsnamen "2014_10_01+12_12+a" und den relativen Pfad "subfo
 Wichtig ist, dass die Repräsentationen ein von den konkreten Paketen eines Objektes unabhängiges Konzept darstellen (TODO Repackaging).
 
 #### Document - Das Dokument
+
+Ein Dokument innerhalb eines Objektes ist eindeutig definiert über den relativen Pfad eines DAFile ohne die Extension. Die Dateien
+
+    2014_10_01+12_12+a/subfolder/1.jpg
+    2014_10_01+12_12+b/subfolder/1.tif
+    
+tragen beide den Dokumentennamen "subfolder/1" und werden somit vom System als ein logisches Dokument aufgefasst. Die Datei "1.tif" wird als Nachfolger der Datei "1.jpg" aufgefasst. Dieser kann durch Modifikation, Konversion oder durch Nachlieferung per Delta zustandegekommen sein. 
+    
+
