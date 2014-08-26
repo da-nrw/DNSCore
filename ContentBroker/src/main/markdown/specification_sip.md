@@ -21,6 +21,8 @@
 
 # SIP Specification
 
+[German](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_sip.de.md) Version.
+
 This document specifies how a SIP must be structured so that any node running DNSCore can ingest it. Following these specifications, a developer should be able to let existing domain specific software output SIPs suitable for getting ingested into DNSCore nodes. It should even be possible doing it manually. 
 
 However, there is a special tool called "SIP-Builder", which is also part of "DA-NRW" project on github. Its source code can be found [here](https://github.com/da-nrw/SIP-Builder). This tool helps users build SIPs providing a comfortable graphical user interface. Power users can also run the SIP builder in headless mode via command line. 
