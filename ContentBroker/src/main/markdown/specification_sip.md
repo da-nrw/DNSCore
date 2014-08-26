@@ -92,7 +92,6 @@ to take into consideration when assembling the contents for a SIP.
 
 #### File names
 
-https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#document
 
 If you take away the extension away from a file name, you have what is considered a "document" by the system.
 Documents have to be unique which means you shouldn't place two files with the same document name into a SIP:
@@ -100,6 +99,8 @@ Documents have to be unique which means you shouldn't place two files with the s
     forbidden:
     data/abc.jpg
     data/abc.tif
+
+For more information see [documents](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#document).
     
 Typically, with choosing the same base names for different files the users wants to signal a correspondence of
 two or more files (e.g. same content but encoded in different formats). 
