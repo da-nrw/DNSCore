@@ -165,7 +165,7 @@ it possible to make it testable in component tests after the domain expert has p
 
 The java [DAFile](../java/de/uzk/hki/da/model/DAFile.java) class.
 
-![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_1a.jpg)
+![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_dafiles_documents.jpg)
 
 Each file stored within a package has a correspondent DAFile instance, which captures some properties
 relevant to the business logic of the application.

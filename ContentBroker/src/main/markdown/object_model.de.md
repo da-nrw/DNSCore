@@ -69,7 +69,7 @@ The Java [ConversionRoutine](../java/de/uzk/hki/da/model/ConversionRoutine.java)
 
 Die Java [DAFile](../java/de/uzk/hki/da/model/DAFile.java) Klasse.
 
-![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_1a.jpg)
+![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_dafiles_documents.jpg)
 
 Jede der zu einem Objekt gehörenden Dateien entspricht einem DAFile im Datenmodell. Das DAFile speichert einige Metadaten, die für die Geschäftslogik von DNSCore wichtig sind.
 
