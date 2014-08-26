@@ -96,12 +96,12 @@ here. To execute the build process run:
 
 Remarks:
 
-* -Pvm3 
+* -Pci
 this is the environment setting of the install script which indicates we're on a development workstation. This
 leads to a ContentBroker configuration which provides access to the real iRODS storage layer and the real
 Fedora presentation layer. 
-* missing -DappHome this param is not necessary when -Pvm3 is selected as the paths are preconfigured.
-* mvn deploy instead of mvn verify: The one additional phase executed at the end of the build phase deploys the
+* missing -DappHome this param is not necessary when -Pci is selected as the paths are preconfigured.
+* mvn install instead of mvn verify: The one additional phase executed at the end of the build phase deploys the
 completely tested release candidate to a precondigured folder were all release candidates are collected. This 
 is done to support continuous integration workflows.
 
