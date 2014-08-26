@@ -21,14 +21,6 @@
 		<property name="startStatus" value="120" />
 		<property name="endStatus" value="130" />
 		<property name="name" value="IngestRestructureAction" />
-		<property name="unwantedFilesFilters">
-			<util:list value-type="org.apache.commons.io.filefilter.IOFileFilter">
-				<bean class="org.apache.commons.io.filefilter.WildcardFileFilter">
-					<constructor-arg value="__MACOSX"/>
-				</bean>
-				<util:constant static-field="org.apache.commons.io.filefilter.HiddenFileFilter.HIDDEN"/>
-			</util:list>
-		</property>
 		<property name="ingestGate" ref="ingestGate" />
 		<property name="gridRoot" ref="${cb.implementation.grid}"/>
 		<property name="formatScanService" ref="formatScanService" />
