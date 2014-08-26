@@ -165,6 +165,9 @@ it possible to make it testable in component tests after the domain expert has p
 
 The java [DAFile](../java/de/uzk/hki/da/model/DAFile.java) class.
 
+Note that the concrete model is implemented a little bit different from the conceptual model outlined in the following sketch. The representation is modeled as part of dafile and the document is only modelled implicitely by the rep_name in combination with relative_path.
+
+
 ![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_dafiles_documents.jpg)
 
 Each file stored within a package has a correspondent DAFile instance, which captures some properties
