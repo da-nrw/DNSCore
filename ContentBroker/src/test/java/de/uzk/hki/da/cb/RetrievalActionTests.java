@@ -39,6 +39,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.utils.Path;
@@ -51,7 +52,7 @@ import de.uzk.hki.da.utils.TESTHelper;
  *
  * @author Daniel M. de Oliveira
  */
-public class RetrievalActionTest {
+public class RetrievalActionTests {
 	
 	private static final Path userAreaRootPath = Path.make(TC.TEST_ROOT_CB,"RetrievalActionTests","user");
 	private static final Path workAreaRootPath = Path.make(TC.TEST_ROOT_CB,"RetrievalActionTests","work");
@@ -104,6 +105,15 @@ public class RetrievalActionTest {
 				userAreaRootPath,
 				userAreaRootPath);
 		
+		Package pkg1 = object.getLatestPackage();
+		Package pkg2 = new Package();
+		pkg2.setName("2");
+		Package pkg3 = new Package();
+		pkg3.setName("3");
+		object.getPackages().add(pkg2);
+		object.getPackages().add(pkg3);
+		
+		
 		
 		object.reattach();
 		object.getLatestPackage().setTransientBackRefToObject(object);
@@ -116,12 +126,12 @@ public class RetrievalActionTest {
 		Path.makeFile(userAreaRootPath,"TEST","outgoing").mkdirs();
 		
 		
-		object.getLatestPackage().scanRepRecursively("1+a");
-		object.getLatestPackage().scanRepRecursively("1+b");
-		object.getLatestPackage().scanRepRecursively("2+a");
-		object.getLatestPackage().scanRepRecursively("2+b");
-		object.getLatestPackage().scanRepRecursively("3+a");
-		object.getLatestPackage().scanRepRecursively("3+b");
+		pkg1.scanRepRecursively("1+a");
+		pkg1.scanRepRecursively("1+b");
+		pkg2.scanRepRecursively("2+a");
+		pkg2.scanRepRecursively("2+b");
+		pkg3.scanRepRecursively("3+a");
+		pkg3.scanRepRecursively("3+b");
 	}
 	
 
@@ -165,10 +175,20 @@ public class RetrievalActionTest {
 
 	
 	@Test
-	public void testSpecialRetrieval() throws IOException{
+	public void testSpecialRetrieval() throws Exception{
 		
-		action.getJob().setQuestion("RETRIEVE:1,2,3");
+		action.getJob().setQuestion("RETRIEVE:1,3");
 		action.implementation();
+		
+		unpack();
+		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/1+a/pic1.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/1+b/pic2.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/1+b/premis.xml").exists());
+		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/3+a/pic1.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/3+b/folder1/pic5.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/3+b/folder2/pic5.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/3+b/pic3.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/3+b/premis.xml").exists());
 	}
 	
 	

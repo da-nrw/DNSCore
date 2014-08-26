@@ -23,15 +23,18 @@ package de.uzk.hki.da.cb;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.service.MailContents;
 import de.uzk.hki.da.utils.ArchiveBuilder;
 import de.uzk.hki.da.utils.ArchiveBuilderFactory;
@@ -39,9 +42,17 @@ import de.uzk.hki.da.utils.BagitUtils;
 import de.uzk.hki.da.utils.Path;
 
 
+
 /**
- * Retrieves Packages from the DataGrid.
- * Does a MD5 Check and copies DIP to the outgoing folder of User. 
+ * Generates a DIP based on the objects content and copies it to the user's outgoing folder.
+ * 
+ * There are two retrieval modes.
+ * <ol>
+ * <li>Normally the DIP will consist of just the surface representation of the package.
+ * <li>In the second mode the DIP will consist of the contents of selected packages.
+ * job.question has contain a string like RETRIEVE:1,2 to retrieve the packages with 
+ * package.name==1 and package.name==2.
+ * </ol>
  * @author Jens Peters
  * @author Daniel M. de Oliveira
  * @author Thomas Kleinke
@@ -53,6 +64,7 @@ public class RetrievalAction extends AbstractAction {
 
 
 	@Override
+	protected
 	void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
 	}
@@ -61,8 +73,9 @@ public class RetrievalAction extends AbstractAction {
 	
 	
 	@Override
+	protected
 	void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
+		if (!object.getDataPath().toFile().exists()) throw new IllegalStateException("object data path on fs doesn't exist on fs");
 	}
 
 	
@@ -73,16 +86,14 @@ public class RetrievalAction extends AbstractAction {
 	boolean implementation() throws IOException {
 
 		newTar = Path.make(localNode.getUserAreaRootPath(),object.getContractor().getShort_name(),"outgoing",object.getIdentifier() + ".tar");
-		
 		Path tempFolder = createTmpFolder();
 		
 
 		if (job.getQuestion()==null||job.getQuestion().isEmpty()){
 			stdRetrieval(tempFolder);
 		}
-		else {
-			System.out.println("other");
-			return true;
+		else if (job.getQuestion().startsWith("RETRIEVE:")){
+			specialRetrieval(tempFolder);
 		}
 		
 		
@@ -95,16 +106,57 @@ public class RetrievalAction extends AbstractAction {
 	}
 
 	
+	
+	
 	@Override
 	void rollback() {
 		
 		newTar.toFile().delete();
 	}
 	
+	
+	
+	
 	private void stdRetrieval(Path tempFolder) throws IOException{
 		moveNewestPremisToDIP(tempFolder);
 		copySurfaceRepresentation(tempFolder);
 	}
+
+
+
+
+	private void specialRetrieval(Path tempFolder) throws IOException {
+
+		for (Package p:packagesToRetrieve()){
+
+			for (DAFile f:p.getFiles()){
+			
+				File destDir = Path.makeFile(tempFolder,"data",f.getRep_name(),FilenameUtils.getPath(f.getRelative_path()));
+				destDir.mkdirs();
+				FileUtils.copyFileToDirectory(f.toRegularFile(), destDir);
+			}
+		}
+	}
+
+	
+	
+	
+	private Set<Package> packagesToRetrieve(){
+		
+		String pp[] = job.getQuestion().replace("RETRIEVE:","").split(",");
+		Set<Package> packagesToRetrieve = new HashSet<Package>(); 
+		
+		for (int i=0;i<pp.length;i++){
+			
+			for (Package p_:object.getPackages()){
+				if (p_.getName().equals(pp[i]))
+					packagesToRetrieve.add(p_);
+			}
+		}
+		
+		return packagesToRetrieve;
+	}
+	
 
 
 
@@ -156,10 +208,10 @@ public class RetrievalAction extends AbstractAction {
 	
 	
 	/**
-	 * @param destinationFolder
+	 * @param tempFolder
 	 * @throws RuntimeException
 	 */
-	private void copySurfaceRepresentation(Path destinationFolder)
+	private void copySurfaceRepresentation(Path tempFolder)
 			throws RuntimeException {
 		
 		List<DAFile> files = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
@@ -167,7 +219,7 @@ public class RetrievalAction extends AbstractAction {
 		{
 			if (f.toRegularFile().getName().equals("premis.xml")) continue;
 				
-			File dest = Path.makeFile(destinationFolder,"data",f.getRelative_path());
+			File dest = Path.makeFile(tempFolder,"data",f.getRelative_path());
 			logger.info("file will be part of dip: "+dest.getAbsolutePath());
 			String destFolder = dest.getAbsolutePath().substring(0, dest.getAbsolutePath().lastIndexOf("/"));
 

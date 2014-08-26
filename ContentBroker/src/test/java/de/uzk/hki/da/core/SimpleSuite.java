@@ -40,7 +40,7 @@ import de.uzk.hki.da.cb.PrepareSendToPresenterActionTests;
 import de.uzk.hki.da.cb.ProcessUserDecisionsActionTests;
 import de.uzk.hki.da.cb.ProperRefreshOfJobChildrenTest;
 import de.uzk.hki.da.cb.RestructureActionTests;
-import de.uzk.hki.da.cb.RetrievalActionTest;
+import de.uzk.hki.da.cb.RetrievalActionTests;
 import de.uzk.hki.da.cb.ScanActionTests;
 import de.uzk.hki.da.cb.SendToPresenterActionTests;
 import de.uzk.hki.da.cb.ShortenFileNamesActionTests;
@@ -119,7 +119,7 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	FetchPIPsActionTest.class,
 	PreservationSystemTests.class,
 	GetNewestFilesFromAllRepresentationsTests.class,
-	RetrievalActionTest.class,
+	RetrievalActionTests.class,
 	PremisXmlWriterTest.class,
 	IrodsGridFacadeTest.class,
 	PublishImageConversionStrategyTest.class,
