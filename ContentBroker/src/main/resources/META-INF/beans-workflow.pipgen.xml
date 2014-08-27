@@ -26,7 +26,7 @@
 		scope="prototype">
 		<property name="startStatus" value="700" />
 		<property name="endStatus" value="710" />
-		<property name="gridFacade" ref="${cb.implementation.grid}"/>
+		<property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}"/>
 		<property name="name" value="PIPGenObjectToWorkAreaAction" />
 		<property name="ingestGate" ref="ingestGate" />
 	</bean>	
@@ -34,7 +34,7 @@
 		<property name="startStatus" value="710" />
 		<property name="endStatus" value="720" />
 		<property name="name" value="PIPGenScanForPresentationAction" />
-		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
 		<property name="formatScanService" ref="formatScanService" />
 	</bean>
 	<bean id="PIPGenConvertAction" class="de.uzk.hki.da.cb.ConvertAction"
@@ -42,7 +42,7 @@
 		<property name="startStatus" value="720" />
 		<property name="endStatus" value="740" />
 		<property name="name" value="PIPGenConvertAction" />
-		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
 	</bean>
 	<bean id="PIPGenShortenFileNamesAction" class="de.uzk.hki.da.cb.ShortenFileNamesAction"
 		scope="prototype">
@@ -76,13 +76,13 @@
 		<property name="startStatus" value="760" />
 		<property name="endStatus" value="770" />
 		<property name="name" value="PIPGenPrepareSendToPresenterAction" />
-		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
 	</bean>
 	<bean id="PIPGenCleanWorkAreaAction" class="de.uzk.hki.da.cb.CleanWorkAreaAction" scope="prototype">
 		<property name="startStatus" value="770" />
 		<property name="endStatus" value="799" />
 		<property name="name" value="PIPGenCleanWorkAreaAction" />
-		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
 	</bean>
 	<!-- END UseCase PIPCreation END -->
 </beans>

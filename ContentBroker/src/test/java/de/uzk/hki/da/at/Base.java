@@ -69,7 +69,6 @@ public class Base {
 	
 	protected void setUpBase() throws IOException{
 		
-		Properties properties = Utilities.read(new File("conf/config.properties"));
 
 		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
 	
@@ -77,14 +76,12 @@ public class Base {
 		if (localNode==null) throw new IllegalStateException("localNode could not be instantiated");
 
 		System.out.println("localnode: "+localNode.getName());
-
 		
-		instantiateGrid(
-				properties.getProperty("cb.implementation.grid"),
-				properties.getProperty("cb.implementation.distributedConversion"));
+		Properties properties = Utilities.read(new File("conf/config.properties"));
+		instantiateGrid(properties);
 		if (gridFacade==null) throw new IllegalStateException("gridFacade could not be instantiated");
 		
-		instantiateRepository(properties.getProperty("cb.implementation.repository"));
+		instantiateRepository(properties);
 		if (repositoryFacade==null) throw new IllegalStateException("repositoryFacade could not be instantiated");
 
 		CentralDatabaseDAO centralDB = new CentralDatabaseDAO();
@@ -100,15 +97,24 @@ public class Base {
 	 * @return
 	 */
 	
-	private void instantiateGrid(String gridImplBeanName,String dcaImplBeanName) {
+	private void instantiateGrid(Properties properties) {
+		
+		String gridImplBeanName = properties.getProperty("cb.implementation.grid");
+		String dcaImplBeanName  = properties.getProperty("cb.implementation.distributedConversion");
+		
+		if (gridImplBeanName==null) gridImplBeanName="fakeGridFacade";
+		if (dcaImplBeanName==null) dcaImplBeanName="fakeDistributedConversionAdapter";
+		
 		AbstractApplicationContext context =
 				new FileSystemXmlApplicationContext("conf/beans.xml");
+		
 		gridFacade = (GridFacade) context.getBean(gridImplBeanName);
 		distributedConversionAdapter = (DistributedConversionAdapter) context.getBean(dcaImplBeanName);
 		context.close();
 	}
 	
 	private void instantiateNode() {
+		
 		AbstractApplicationContext context = 
 				new FileSystemXmlApplicationContext("conf/beans.xml");
 		localNode = (Node) context.getBean("localNode");
@@ -121,7 +127,11 @@ public class Base {
 		context.close();
 	}
 	
-	private void instantiateRepository(String repImplBeanName) {
+	private void instantiateRepository(Properties properties) {
+		
+		String repImplBeanName=properties.getProperty("cb.implementation.repository");
+		if (repImplBeanName==null) repImplBeanName="fakeRepositoryFacade";
+		
 		AbstractApplicationContext context =
 				new FileSystemXmlApplicationContext("conf/beans.xml");
 		repositoryFacade = (RepositoryFacade) context.getBean(repImplBeanName);

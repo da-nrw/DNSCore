@@ -33,7 +33,7 @@
 		scope="prototype">
 		<property name="startStatus" value="5000" />
 		<property name="endStatus" value="6000" />
-		<property name="gridRoot" ref="${cb.implementation.grid}"/>
+		<property name="gridRoot" ref="${cb.implementation.grid:fakeGridFacade}"/>
 		<property name="name" value="AuditAction" /> 
 	</bean>
 </beans>

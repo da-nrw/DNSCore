@@ -22,7 +22,7 @@
 		<property name="endStatus" value="130" />
 		<property name="name" value="IngestRestructureAction" />
 		<property name="ingestGate" ref="ingestGate" />
-		<property name="gridRoot" ref="${cb.implementation.grid}"/>
+		<property name="gridRoot" ref="${cb.implementation.grid:fakeGridFacade}"/>
 		<property name="formatScanService" ref="formatScanService" />
 	</bean>
 	<bean id="IngestValidateMetadataAction" class="de.uzk.hki.da.cb.ValidateMetadataAction"
@@ -36,7 +36,7 @@
 		<property name="endStatus" value="150" />
 		<property name="name" value="IngestScanAction" />
 		<property name="description" value="Format Scan Service" /> <!-- WTF?? -->
-		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
 	</bean>
 	<bean id="IngestRegisterURNAction" class="de.uzk.hki.da.cb.RegisterURNAction" scope="prototype">
 		<property name="startStatus" value="150" />
@@ -48,7 +48,7 @@
 		<property name="startStatus" value="230" />
 		<property name="endStatus" value="250" />
 		<property name="name" value="IngestConvertAction" />
-		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
 	</bean>
 	<bean id="IngestUpdateMetadataAction" class="de.uzk.hki.da.cb.UpdateMetadataAction" scope="prototype">
 		<property name="startStatus" value="250" />
@@ -83,7 +83,7 @@
 		<property name="startStatus" value="310" />
 		<property name="endStatus" value="320" />
 		<property name="name" value="IngestScanForPresentationAction" />
-		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
 		<property name="formatScanService" ref="formatScanService" />
 	</bean>
 	<bean id="IngestConvertForPresentationAction" class="de.uzk.hki.da.cb.ConvertAction"
@@ -91,7 +91,7 @@
 		<property name="startStatus" value="320" />
 		<property name="endStatus" value="340" />
 		<property name="name" value="IngestConvertForPresentationAction" />
-		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
 	</bean>
 	<bean id="IngestShortenFileNamesAction" class="de.uzk.hki.da.cb.ShortenFileNamesAction"
 		scope="prototype">
@@ -127,7 +127,7 @@
 		<property name="startStatus" value="360" />
 		<property name="endStatus" value="370" />
 		<property name="name" value="IngestPrepareSendToPresenterAction" />
-		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
 	</bean>
 	<bean id="IngestBuildAIPAction" class="de.uzk.hki.da.cb.BuildAIPAction" scope="prototype">
 		<property name="startStatus" value="370" />
@@ -137,7 +137,7 @@
 	<bean id="IngestTarAction" class="de.uzk.hki.da.cb.TarAction" scope="prototype">
 		<property name="startStatus" value="380" />
 		<property name="endStatus" value="400" />
-		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
 		<property name="name" value="IngestTarAction" />
 	</bean>
 	<bean id="IngestArchiveReplicationAction" class="de.uzk.hki.da.cb.ArchiveReplicationAction"
@@ -145,14 +145,14 @@
 		<property name="startStatus" value="400" />
 		<property name="endStatus" value="440" />
 		<property name="name" value="IngestArchiveReplicationAction" />
-		<property name="gridRoot" ref="${cb.implementation.grid}"/>
+		<property name="gridRoot" ref="${cb.implementation.grid:fakeGridFacade}"/>
 	</bean>
 	<bean id="IngestArchiveReplicationCheckAction" class="de.uzk.hki.da.cb.ArchiveReplicationCheckAction"
 		scope="prototype">
 		<property name="startStatus" value="440" />
 		<property name="endStatus" value="500" />
 		<property name="timeOut" value="2000" />
-		<property name="gridRoot" ref="${cb.implementation.grid}"/>
+		<property name="gridRoot" ref="${cb.implementation.grid:fakeGridFacade}"/>
 		<property name="name" value="IngestArchiveReplicationCheckAction" />
 	</bean>
 </beans>

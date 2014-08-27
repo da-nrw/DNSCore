@@ -14,7 +14,7 @@
 		scope="prototype">
 		<property name="startStatus" value="900" />
 		<property name="endStatus" value="910" />
-		<property name="gridFacade" ref="${cb.implementation.grid}"/>
+		<property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}"/>
 		<property name="name" value="RetrievalObjectToWorkAreaAction" />
 		<property name="ingestGate" ref="ingestGate" />
 	</bean>	

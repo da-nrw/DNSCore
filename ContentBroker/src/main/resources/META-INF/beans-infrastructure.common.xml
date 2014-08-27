@@ -68,7 +68,7 @@
     
     <bean id="integrityScannerWorker" class="de.uzk.hki.da.integrity.IntegrityScannerWorker" init-method="init">
         <property name="localNodeId" value="${localNode.id}" />
-        <property name="gridFacade" ref="${cb.implementation.grid}" />
+        <property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}" />
         <property name="dao" ref="centralDao" />
     </bean>
     

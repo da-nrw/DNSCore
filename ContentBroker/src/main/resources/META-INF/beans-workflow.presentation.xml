@@ -16,13 +16,13 @@
 		<property name="endStatus" value="550" />
 		<property name="name" value="FetchPIPsAction" />
 		<property name="ingestGate" ref="ingestGate" />
-		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion}" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
 	</bean>
 	<bean id="SendToPresenterAction" class="de.uzk.hki.da.cb.SendToPresenterAction"
 		scope="prototype">
 		<property name="startStatus" value="550" />
 		<property name="endStatus" value="560" />
-		<property name="repositoryFacade" ref="${cb.implementation.repository}" />
+		<property name="repositoryFacade" ref="${cb.implementation.repository:fakeRepositoryFacade}" />
 		<property name="name" value="SendToPresenterAction" />
 		<property name="viewerUrls" ref="viewerUrls" />
 		<property name="testContractors" ref="testContractors" />
@@ -38,7 +38,7 @@
 		scope="prototype">
 		<property name="startStatus" value="560" />
 		<property name="endStatus" value="570" />
-		<property name="repositoryFacade" ref="${cb.implementation.repository}" />
+		<property name="repositoryFacade" ref="${cb.implementation.repository:fakeRepositoryFacade}" />
 		<property name="name" value="CreateEDMAction" />
 		<property name="edmMappings">
 			<map>
@@ -53,7 +53,7 @@
 		scope="prototype">
 		<property name="startStatus" value="570" />
 		<property name="endStatus" value="579" />
-		<property name="repositoryFacade" ref="${cb.implementation.repository}" />
+		<property name="repositoryFacade" ref="${cb.implementation.repository:fakeRepositoryFacade}" />
 		<property name="name" value="IndexMetadataAction" />
 		<property name="indexName" value="${elasticsearch.index}" />
 		<property name="testContractors" ref="testContractors" />

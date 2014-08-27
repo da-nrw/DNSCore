@@ -1,17 +1,3 @@
-fedora.url=http://localhost:8080/fedora
-fedora.user=fedoraAdmin
-fedora.password=BYi/MFjKDFd5Dpe52PSUoA==
-
-irods.user=rods
-irods.password=WpXlLLg3a4/S/iYrs6UhtQ==
-irods.server=cihost
-irods.zone=c-i
-irods.default_resc=ciWorkingResource
-irods.pam=false
-irods.keyStorePassword=
-irods.keyStorePath=
-irods.trustStorePath=
-
 localNode.userAreaRootPath=/ci/storage/UserArea
 localNode.ingestAreaRootPath=/ci/storage/IngestArea
 localNode.workAreaRootPath=/ci/storage/WorkArea
@@ -25,7 +11,5 @@ elasticsearch.hosts=localhost
 elasticsearch.cluster=cluster_ci
 
 cb.serverSocketNumber=4455
-cb.implementation.grid=fakeGridFacade
-cb.implementation.distributedConversion=fakeDistributedConversionAdapter
-cb.implementation.repository=fakeRepositoryFacade
+cb.implementation.metadataExtractor=fakeMetadataExtractor
 cb.bin.python=/ci/python/python
