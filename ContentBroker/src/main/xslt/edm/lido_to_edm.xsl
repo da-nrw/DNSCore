@@ -145,7 +145,11 @@ Technical Contact : Rodolphe Bailly - rbailly@cite-musique.fr
 						</xsl:if>
 					</xsl:for-each>
 					<xsl:for-each select="$var3_descriptiveMetadata/ns0:objectIdentificationWrap/ns0:titleWrap/ns0:titleSet/ns0:appellationValue">
+						<xsl:variable name="var213_lang" as="node()?" select="@xml:lang"/>
 						<dc:title>
+							<xsl:if test="fn:exists($var213_lang)">
+								<xsl:attribute name="xml:lang" select="fn:string($var213_lang)"/>
+							</xsl:if>
 							<xsl:sequence select="fn:string(.)"/>
 						</dc:title>
 					</xsl:for-each>
@@ -286,10 +290,10 @@ Technical Contact : Rodolphe Bailly - rbailly@cite-musique.fr
 					</xsl:for-each>
 					<edm:aggregatedCHO>
 						<xsl:for-each select="$var1_lidoRecID">
-							<xsl:attribute name="rdf:resource" select="xs:string(xs:anyURI(fn:concat('#', fn:string(.))))"/>
+							<xsl:attribute name="rdf:resource" select="xs:string(xs:anyURI(fn:concat('', fn:string(.))))"/>
 						</xsl:for-each>
 					</edm:aggregatedCHO>
-					<xsl:for-each select="$var2_administrativeMetadata/ns0:resourceWrap/ns0:resourceSet/ns0:resourceRepresentation">
+					<xsl:for-each select="$var2_administrativeMetadata/ns0:resourceWrap/ns0:resourceSet/ns0:resourcePresentation">
 						<edm:hasView>
 							<xsl:for-each select="ns0:linkResource">
 								<xsl:attribute name="rdf:resource" select="xs:string(xs:anyURI(fn:string(.)))"/>

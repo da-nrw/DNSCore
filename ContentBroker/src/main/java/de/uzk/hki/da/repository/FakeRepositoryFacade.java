@@ -38,6 +38,8 @@ import org.slf4j.LoggerFactory;
  */
 public class FakeRepositoryFacade implements RepositoryFacade {
 	
+	private MetadataIndex metadataIndex;
+	
 	static final Logger logger = LoggerFactory.getLogger(FakeRepositoryFacade.class);
 	
 	private String workAreaRootPath;
@@ -45,7 +47,6 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	@Override
 	public boolean purgeObjectIfExists(String objectId, String collection)
 			throws RepositoryException {
-		logger.debug("purgeObjectIfExists");
 		try {
 			if (objectExists(objectId, collection)) {
 				FileUtils.deleteDirectory(getFile(objectId, collection, null));
@@ -61,7 +62,6 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	@Override
 	public void createObject(String objectId, String collection,
 			String ownerId) throws RepositoryException {
-		logger.debug("createObject");
 		if(!getFile(objectId, collection, null).mkdirs()) {
 			throw new RepositoryException("Unable to create folder for object "
 					+ collection + "/" + objectId);
@@ -74,7 +74,6 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	public void ingestFile(String objectId, String collection,
 			String fileId, File file, String label, String mimeType)
 			throws RepositoryException, IOException {
-		logger.debug("ingestFile");
 		try {
 			File destFile = getFile(objectId, collection, fileId);
 			FileUtils.copyFile(file, destFile);
@@ -88,7 +87,6 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	public void createMetadataFile(String objectId, String collection,
 			String fileId, String content, String label, String mimeType)
 			throws RepositoryException {
-		logger.debug("createMetadataFile");
 		PrintWriter pw = null;
 		try {
 			pw = new PrintWriter(getFile(objectId, collection, fileId), "UTF-8");
@@ -158,7 +156,24 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	@Override
 	public void indexMetadata(String indexName, String type, String id,
 			Map<String, Object> data) throws RepositoryException {
+//		
+		if(metadataIndex!=null) {
+			try {
+			metadataIndex.indexMetadata(indexName, type, id, data);
+			} catch (MetadataIndexException e) {
+				throw new RepositoryException("Unable to index metadata", e);			
+			}	
+		}
+//		
+//		orig
 		// stub, fake repository does not handle indexing
 	}
-
+	
+	public void setMetadataIndex(MetadataIndex metadataIndex) {
+		this.metadataIndex = metadataIndex;
+	}
+	
+	public MetadataIndex getMetadataIndex() {
+		return metadataIndex;
+	}
 }

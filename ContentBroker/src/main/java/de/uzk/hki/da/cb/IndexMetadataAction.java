@@ -95,9 +95,6 @@ public class IndexMetadataAction extends AbstractAction {
 				
 				String metadataFileId = getFrames().get(framePath);
 				InputStream metadataStream;
-				System.out.println("object.getIdentifier(): "+object.getIdentifier());
-				System.out.println("preservationSystem.getOpenCollectionName(): "+preservationSystem.getOpenCollectionName());
-				System.out.println("metadataFileId: "+metadataFileId);
 				metadataStream = getRepositoryFacade().retrieveFile(
 					object.getIdentifier(), 
 					preservationSystem.getOpenCollectionName(), metadataFileId);

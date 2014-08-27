@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- exportiert aus Datenbank: Museum
+ am: 04.07.2014
+  //exportiert mit FAUST (c) Land Software-Entwicklung, Oberasbach   -->
+<lido:lidoWrap xmlns:lido="http://www.lido-schema.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.lido-schema.org http://www.lido-schema.org/schema/v1.0/lido-v1.0.xsd">
+<lido:lido>
+<lido:lidoRecID lido:type="" lido:source="" lido:encodinganalog="" lido:label="">ISIL/lido/Inventarnummer</lido:lidoRecID>
+<lido:descriptiveMetadata xml:lang="de">
+<lido:objectClassificationWrap>
+<lido:objectWorkTypeWrap>
+<lido:objectWorkType lido:type="Quellentyp">
+<lido:term>Objekt</lido:term>
+</lido:objectWorkType>
+</lido:objectWorkTypeWrap>
+<lido:classificationWrap>
+<lido:classification lido:type="Schlagwort">
+<lido:conceptID>WNK-Identifikator</lido:conceptID>
+<lido:term>Ernährung</lido:term><lido:term>Küche (Architektur) (wk003216)</lido:term><lido:term>Kochen (wk006656)</lido:term><lido:term>Haushalt</lido:term><lido:term>Maschine (wk003561)</lido:term><lido:term>Nudelmaschine</lido:term><lido:term>Küchenmaschine (wk013072)</lido:term><lido:term>Rheinland</lido:term>
+</lido:classification>
+</lido:classificationWrap>
+</lido:objectClassificationWrap>
+<lido:objectIdentificationWrap>
+<lido:titleWrap>
+<lido:titleSet>
+<lido:sourceAppellation>Titel</lido:sourceAppellation>
+</lido:titleSet>
+<lido:titleSet>
+<lido:appellationValue>Nudelmaschine in Originalverpackung</lido:appellationValue>
+<lido:sourceAppellation>Objektbezeichnung</lido:sourceAppellation>
+</lido:titleSet>
+<lido:titleSet>
+<lido:sourceAppellation>weitere Bezeichnung</lido:sourceAppellation>
+</lido:titleSet>
+</lido:titleWrap>
+<lido:inscriptionsWrap>
+<lido:inscriptions>
+<lido:inscriptionDescription>
+<lido:descriptiveNoteID>Inschrift/Kennzeichnung</lido:descriptiveNoteID>
+<lido:descriptiveNoteValue>Ampia &lt;P/&gt;TIPO LUSSO MOD. 110&lt;P/&gt;MADE IN ITALY</lido:descriptiveNoteValue>
+</lido:inscriptionDescription>
+<lido:inscriptionDescription>
+<lido:descriptiveNoteValue>MARCATO&lt;P/&gt;MADE IN ITALY</lido:descriptiveNoteValue>
+</lido:inscriptionDescription>
+<lido:inscriptionDescription>
+<lido:descriptiveNoteValue>OMC&lt;P/&gt;MARCATO&lt;P/&gt;Ampia&lt;P/&gt;MACCHINA PER PASTA&lt;P/&gt;MACHINE A' PATE NOODLE MAKER MACHINE NUDELMASCHINE&lt;P/&gt;[...]</lido:descriptiveNoteValue>
+</lido:inscriptionDescription>
+</lido:inscriptions>
+</lido:inscriptionsWrap>
+<lido:repositoryWrap>
+<lido:repositorySet>
+<lido:repositoryName>
+<lido:legalBodyID>uri>info:isil</lido:legalBodyID>
+<lido:legalBodyName>
+<lido:appellationValue>Bergisches Freilichtmuseum Lindlar</lido:appellationValue>
+</lido:legalBodyName>
+</lido:repositoryName>
+<lido:workID lido:type="" lido:source="" lido:encodinganalog="" lido:label="Inventarnummer"/>
+</lido:repositorySet>
+</lido:repositoryWrap>
+<lido:objectDescriptionWrap>
+<lido:objectDescriptionSet>
+<lido:descriptiveNoteValue>Handbetriebene Nudelmaschine in Originalverpackung. Nudelmaschine aus Metall für drei verschiedene Nudelsorten. An der Seite befindet sich ein runder Drehregler mit einer eingerpägten Skala von 1 bis 7 zur Verstellung des Abstandes der Teigrollen. Für jede Nudelsorte gibt es je zwei Teigrollen. Auf der anderen Seite befinden sich drei Löcher mit Gewinde, in denen die Kurbel eingesteckt wird. Mit der Kurbel werden die jeweils benötigten Teigrollen in Bewegung gesetzt. Zusätzlich gibt eine Schraubvorrichtung zur Befestigung der Nudelmaschine auf dem Tisch/auf der Arbeitsplatte. Vorne auf dem Gehäuse ist "ampia TIPO LUSSO MOD. 110 MADE IN ITALY" eingeprägt, hinten ein Logo und "MARCATO MADE IN ITALY". Auf der Vorder und Rückseite der Verpackung befindet sich neben der Schrift und des Logos ein Foto der Nudelmaschine vor einem Hintergrundfoto mit einem Getreidefeld. Auf den Klappen des Kartons befindet sich die Anleitung und die Garantie der Nudelmaschine in italienischer Sprache.</lido:descriptiveNoteValue>
+</lido:objectDescriptionSet>
+<lido:objectDescriptionSet>
+<lido:descriptiveNoteValue>Die italienische Firma Marcato produziert seit über 80 Jahren Küchengeräte zur Herstellung von Pasta. </lido:descriptiveNoteValue>
+</lido:objectDescriptionSet>
+</lido:objectDescriptionWrap>
+<lido:objectMeasurementWrap>
+<lido:objectMeasurementsSet>
+<lido:displayObjectMeasurements>Gesamt</lido:displayObjectMeasurements>
+<lido:objectMeasurements>
+<lido:MeasurementsSet>
+<lido:measurementType>Höhe</lido:measurementType>
+<lido:measurementUnit>cm</lido:measurementUnit>
+<lido:measurementValue>16</lido:measurementValue>
+</lido:MeasurementsSet>
+<lido:MeasurementsSet>
+<lido:measurementType>Breite</lido:measurementType>
+<lido:measurementUnit>cm</lido:measurementUnit>
+<lido:measurementValue>20</lido:measurementValue>
+</lido:MeasurementsSet>
+<lido:MeasurementsSet>
+<lido:measurementType>Tiefe/Länge</lido:measurementType>
+<lido:measurementUnit>cm</lido:measurementUnit>
+<lido:measurementValue>18</lido:measurementValue>
+</lido:MeasurementsSet>
+<lido:MeasurementsSet>
+<lido:measurementType>Gewicht</lido:measurementType>
+<lido:measurementUnit>kg</lido:measurementUnit>
+</lido:MeasurementsSet>
+<lido:MeasurementsSet>
+<lido:measurementType>Anderer Messwert</lido:measurementType>
+</lido:MeasurementsSet>
+</lido:objectMeasurements>
+</lido:objectMeasurementsSet>
+</lido:objectMeasurementWrap>
+</lido:objectIdentificationWrap>
+<lido:eventWrap>
+<lido:eventSet>
+<lido:event>
+<lido:eventType>
+<lido:conceptId>Verknüpfung event-LIDO-Terminologie</lido:conceptId>
+<lido:term>Herstellung</lido:term>
+</lido:eventType>
+<lido:eventType>
+<lido:term>Verwendung</lido:term>
+</lido:eventType>
+<lido:eventActor>
+<lido:actorInRole>
+<lido:actor lido:type="Person">
+<lido:actorID></lido:actorID>
+<lido:nameActorSet>
+<lido:appellationValue>Hamacher, Hermann-Josef</lido:appellationValue>
+</lido:nameActorSet>
+</lido:actor>
+</lido:actorInRole>
+</lido:eventActor>
+<lido:eventActor>
+<lido:actorInRole>
+<lido:actor lido:type="Körperschaft">
+<lido:actorID></lido:actorID>
+<lido:nameActorSet>
+<lido:appellationValue>Hamacher, Hermann-Josef</lido:appellationValue>
+</lido:nameActorSet>
+</lido:actor>
+</lido:actorInRole>
+</lido:eventActor>
+<lido:eventActor>
+<lido:actorInRole>
+<lido:actor lido:type="">
+<lido:actorID></lido:actorID>
+</lido:actor>
+</lido:actorInRole>
+</lido:eventActor>
+<lido:eventDate>
+<lido:date>
+<lido:earliestDate>01.01.1970</lido:earliestDate>
+<lido:latestDate>31.12.1989</lido:latestDate>
+</lido:date>
+</lido:eventDate>
+<lido:periodName>
+<lido:term>70er-Jahre</lido:term>
+</lido:periodName>
+<lido:periodName>
+<lido:term>70er-Jahre</lido:term><lido:term>80er-Jahre</lido:term>
+</lido:periodName>
+<lido:eventPlace>
+<lido:place>
+<lido:namePlaceSet>
+<lido:appellationValue>Italien</lido:appellationValue>
+</lido:namePlaceSet>
+<lido:namePlaceSet>
+<lido:appellationValue>Overath</lido:appellationValue>
+</lido:namePlaceSet>
+</lido:place>
+</lido:eventPlace>
+<lido:eventMaterials>
+<lido:displayMaterialsTech>bedruckt</lido:displayMaterialsTech>
+<lido:materialsTech>
+<lido:termMaterialsTech>
+<lido:term>Metall</lido:term><lido:term>Kunststoff</lido:term><lido:term>Gummi</lido:term>
+</lido:termMaterialsTech>
+<lido:termMaterialsTech>
+<lido:term>Pappe</lido:term>
+</lido:termMaterialsTech>
+</lido:materialsTech>
+</lido:eventMaterials>
+</lido:event>
+</lido:eventSet>
+</lido:eventWrap>
+</lido:descriptiveMetadata>
+<lido:administrativeMetadata xml:lang="de">
+<lido:rightsWorkWrap>
+<lido:rightsWorkSet>
+<lido:rightsType>
+<lido:term>Bergisches Freilichtmuseum Lindlar</lido:term>
+</lido:rightsType>
+</lido:rightsWorkSet>
+</lido:rightsWorkWrap>
+<lido:recordWrap>
+<lido:recordID lido:type="local">2007-405/1-4</lido:recordID>
+<lido:recordType>
+<lido:term>Einzelobjekt</lido:term>
+</lido:recordType>
+<lido:recordSource>
+<lido:legalBodyName>
+<lido:appellationValue>Bergisches Freilichtmuseum Lindlar</lido:appellationValue>
+</lido:legalBodyName>
+</lido:recordSource>
+<lido:recordRights>
+<lido:rightsType>
+<lido:term>intern</lido:term>
+</lido:rightsType>
+</lido:recordRights>
+</lido:recordWrap>
+<lido:resourceWrap>
+<lido:resourceSet>
+<lido:resourceRepresentation>
+<lido:linkResource>LVR_DFG-Alltagskultur_0000050177.tif</lido:linkResource>
+</lido:resourceRepresentation>
+</lido:resourceSet>
+</lido:resourceWrap>
+</lido:administrativeMetadata>
+</lido:lido>
+<lido:lido>
+<lido:lidoRecID lido:type="" lido:source="" lido:encodinganalog="" lido:label="">ISIL/lido/Inventarnummer</lido:lidoRecID>
+<lido:descriptiveMetadata xml:lang="de">
+<lido:objectClassificationWrap>
+<lido:objectWorkTypeWrap>
+<lido:objectWorkType lido:type="Quellentyp">
+<lido:term>Objekt</lido:term>
+</lido:objectWorkType>
+</lido:objectWorkTypeWrap>
+<lido:classificationWrap>
+<lido:classification lido:type="Schlagwort">
+<lido:conceptID>WNK-Identifikator</lido:conceptID>
+<lido:term>Ernährung</lido:term><lido:term>Haushalt</lido:term><lido:term>Kochen (wk006656)</lido:term><lido:term>Küche (Architektur) (wk003216)</lido:term><lido:term>Gerät (wk004570)</lido:term><lido:term>Küchengerät (wk004966)</lido:term><lido:term>Maschine (wk003561)</lido:term><lido:term>Küchenmaschine (wk013072)</lido:term><lido:term>Bosch</lido:term><lido:term>Rheinland</lido:term>
+</lido:classification>
+</lido:classificationWrap>
+</lido:objectClassificationWrap>
+<lido:objectIdentificationWrap>
+<lido:titleWrap>
+<lido:titleSet>
+<lido:sourceAppellation>Titel</lido:sourceAppellation>
+</lido:titleSet>
+<lido:titleSet>
+<lido:appellationValue>Küchenmaschine</lido:appellationValue>
+<lido:sourceAppellation>Objektbezeichnung</lido:sourceAppellation>
+</lido:titleSet>
+<lido:titleSet>
+<lido:sourceAppellation>weitere Bezeichnung</lido:sourceAppellation>
+</lido:titleSet>
+</lido:titleWrap>
+<lido:inscriptionsWrap>
+<lido:inscriptions>
+<lido:inscriptionDescription>
+<lido:descriptiveNoteID>Inschrift/Kennzeichnung</lido:descriptiveNoteID>
+<lido:descriptiveNoteValue>Bosch Germany</lido:descriptiveNoteValue>
+</lido:inscriptionDescription>
+<lido:inscriptionDescription>
+<lido:descriptiveNoteValue>HM/KA1/220B&lt;P/&gt;220 V 400 W</lido:descriptiveNoteValue>
+</lido:inscriptionDescription>
+</lido:inscriptions>
+</lido:inscriptionsWrap>
+<lido:repositoryWrap>
+<lido:repositorySet>
+<lido:repositoryName>
+<lido:legalBodyID>uri>info:isil</lido:legalBodyID>
+<lido:legalBodyName>
+<lido:appellationValue>Bergisches Freilichtmuseum Lindlar</lido:appellationValue>
+</lido:legalBodyName>
+</lido:repositoryName>
+<lido:workID lido:type="" lido:source="" lido:encodinganalog="" lido:label="Inventarnummer"/>
+</lido:repositorySet>
+</lido:repositoryWrap>
+<lido:objectDescriptionWrap>
+<lido:objectDescriptionSet>
+<lido:descriptiveNoteValue>Bosch-Küchenmaschine mit 33 verschiedenen Teilen. Als Aufsätze gibt es neben zwei Rührschüsseln mit Deckel und Knet- und Rührhaken zwei Mixer, sieben Reiben, eine Kaffemühle, einen Fleischwolf mit Fruchtpresse-, Teigpresse-, Reibe- und Spritzgepäck-Vorsatz. Die Aufsätze können je nach Größe an einem der zwei Anschlüsse der Maschine befestigt werden. An der Seite des Gehäuses befindet sich ein Drehschalter mit der Kennzeichnung "0 0 I II", darunter steht "Bosch Germany Importe d'Allemagne". Unter der Beschriftung sitzt das Stromkabel. An beiden Seiten der Maschine steht jeweils "Bosch Germany". Beigelegt ist eine Anleitung zur Benutzung der Kaffeemühle sowie zur Benutzung der verschiedenen Vorsätze am Fleischwolf. Die Anleitung ist mit Schwarz-weiß-Fotos sowie Zeichnungen illustriert. Darüber hinaus gibt es in einer Originalverpackung zwei Ersatzteile zur Küchenmaschine: ein Dichtring für den Mixer und ein Mitnehmer mit Schraube. Auf der Verpackung befindet sich eine mit einer Zeichnung illustrierte Erklärung, wie man den Mitnehmer auswechselt. </lido:descriptiveNoteValue>
+</lido:objectDescriptionSet>
+<lido:objectDescriptionSet>
+<lido:descriptiveNoteValue>Bereits um die Jahrhundertwende kamen mechanische und etwas später elektrische Küchengeräte in den Handel. Nach Ende des Zweiten Weltkriegs, insbesondere seit den 1950er Jahren, ersetzten Universal-Küchenmaschinen die einzelnen Geräte und führten sie in einem Gehäuse zusammen.&lt;P/&gt;Die Firma Bosch wurde 1886 von Robert Bosch gegründet. 1952 begann sie mit der Herstellung von Küchenmaschinen. Heute ist Bosch Zulieferer der Kraftfahrzeugindustrie, Hersteller von Gebrauchsgütern (Elektrowerkzeuge, Haushaltsgeräte), Industrie- und Gebäudetechnik (Sicherheitstechnik) sowie Verpackungstechnik. </lido:descriptiveNoteValue>
+</lido:objectDescriptionSet>
+</lido:objectDescriptionWrap>
+<lido:objectMeasurementWrap>
+<lido:objectMeasurementsSet>
+<lido:displayObjectMeasurements>Gerät</lido:displayObjectMeasurements>
+<lido:objectMeasurements>
+<lido:MeasurementsSet>
+<lido:measurementType>Höhe</lido:measurementType>
+<lido:measurementUnit>cm</lido:measurementUnit>
+<lido:measurementValue>22</lido:measurementValue>
+</lido:MeasurementsSet>
+<lido:MeasurementsSet>
+<lido:measurementType>Breite</lido:measurementType>
+<lido:measurementUnit>cm</lido:measurementUnit>
+<lido:measurementValue>28</lido:measurementValue>
+</lido:MeasurementsSet>
+<lido:MeasurementsSet>
+<lido:measurementType>Tiefe/Länge</lido:measurementType>
+<lido:measurementUnit>cm</lido:measurementUnit>
+<lido:measurementValue>40</lido:measurementValue>
+</lido:MeasurementsSet>
+<lido:MeasurementsSet>
+<lido:measurementType>Gewicht</lido:measurementType>
+<lido:measurementUnit>kg</lido:measurementUnit>
+</lido:MeasurementsSet>
+<lido:MeasurementsSet>
+<lido:measurementType>Anderer Messwert</lido:measurementType>
+</lido:MeasurementsSet>
+</lido:objectMeasurements>
+</lido:objectMeasurementsSet>
+</lido:objectMeasurementWrap>
+</lido:objectIdentificationWrap>
+<lido:eventWrap>
+<lido:eventSet>
+<lido:event>
+<lido:eventType>
+<lido:conceptId>Verknüpfung event-LIDO-Terminologie</lido:conceptId>
+<lido:term>Herstellung</lido:term>
+</lido:eventType>
+<lido:eventType>
+<lido:term>Verwendung</lido:term>
+</lido:eventType>
+<lido:eventActor>
+<lido:actorInRole>
+<lido:actor lido:type="Person">
+<lido:actorID></lido:actorID>
+<lido:nameActorSet>
+<lido:appellationValue>Schlieker, Gisela</lido:appellationValue>
+</lido:nameActorSet>
+</lido:actor>
+</lido:actorInRole>
+</lido:eventActor>
+<lido:eventActor>
+<lido:actorInRole>
+<lido:actor lido:type="Körperschaft">
+<lido:actorID></lido:actorID>
+<lido:nameActorSet>
+<lido:appellationValue>Schlieker, Gisela</lido:appellationValue>
+</lido:nameActorSet>
+</lido:actor>
+</lido:actorInRole>
+</lido:eventActor>
+<lido:eventActor>
+<lido:actorInRole>
+<lido:actor lido:type="">
+<lido:actorID></lido:actorID>
+</lido:actor>
+</lido:actorInRole>
+</lido:eventActor>
+<lido:eventDate>
+<lido:date>
+<lido:earliestDate>01.01.1950</lido:earliestDate>
+<lido:latestDate>31.12.1959</lido:latestDate>
+</lido:date>
+<lido:date>
+<lido:earliestDate>01.01.1950</lido:earliestDate>
+<lido:latestDate>31.12.1969</lido:latestDate>
+</lido:date>
+</lido:eventDate>
+<lido:periodName>
+<lido:term>50er-Jahre</lido:term>
+</lido:periodName>
+<lido:periodName>
+<lido:term>50er-Jahre</lido:term><lido:term>60er-Jahre</lido:term>
+</lido:periodName>
+<lido:eventPlace>
+<lido:place>
+<lido:namePlaceSet>
+<lido:appellationValue>Bergisch Gladbach</lido:appellationValue>
+</lido:namePlaceSet>
+</lido:place>
+</lido:eventPlace>
+<lido:eventMaterials>
+<lido:displayMaterialsTech>bedruckt</lido:displayMaterialsTech>
+<lido:materialsTech>
+<lido:termMaterialsTech>
+<lido:term>Metall</lido:term><lido:term>Kunststoff</lido:term><lido:term>Papier</lido:term><lido:term>Gummi</lido:term>
+</lido:termMaterialsTech>
+</lido:materialsTech>
+</lido:eventMaterials>
+<lido:eventMaterials>
+<lido:displayMaterialsTech>bedruckt</lido:displayMaterialsTech>
+<lido:materialsTech>
+<lido:termMaterialsTech>
+<lido:term>Papier</lido:term>
+</lido:termMaterialsTech>
+</lido:materialsTech>
+</lido:eventMaterials>
+<lido:eventMaterials>
+<lido:materialsTech>
+<lido:termMaterialsTech>
+<lido:term>Pappe</lido:term>
+</lido:termMaterialsTech>
+</lido:materialsTech>
+</lido:eventMaterials>
+</lido:event>
+</lido:eventSet>
+</lido:eventWrap>
+</lido:descriptiveMetadata>
+<lido:administrativeMetadata xml:lang="de">
+<lido:rightsWorkWrap>
+<lido:rightsWorkSet>
+<lido:rightsType>
+<lido:term>Bergisches Freilichtmuseum Lindlar</lido:term>
+</lido:rightsType>
+</lido:rightsWorkSet>
+</lido:rightsWorkWrap>
+<lido:recordWrap>
+<lido:recordID lido:type="local">2013-373/1-33</lido:recordID>
+<lido:recordType>
+<lido:term>Einzelobjekt</lido:term>
+</lido:recordType>
+<lido:recordSource>
+<lido:legalBodyName>
+<lido:appellationValue>Bergisches Freilichtmuseum Lindlar</lido:appellationValue>
+</lido:legalBodyName>
+</lido:recordSource>
+<lido:recordRights>
+<lido:rightsType>
+<lido:term>intern</lido:term>
+</lido:rightsType>
+</lido:recordRights>
+</lido:recordWrap>
+<lido:resourceWrap>
+<lido:resourceSet>
+<lido:resourceRepresentation>
+<lido:linkResource>LVR_DFG-Alltagskultur_0000050178.tif</lido:linkResource>
+</lido:resourceRepresentation>
+</lido:resourceSet>
+</lido:resourceWrap>
+</lido:administrativeMetadata>
+</lido:lido>
+</lido:lidoWrap>

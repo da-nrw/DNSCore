@@ -38,5 +38,6 @@ public interface MetadataIndex {
 	 */
 	void indexMetadata(String indexName, String type, String id, Map<String, Object> data)
 			throws MetadataIndexException;
-
+	
+//	void indexMetadata(String metadataContent);
 }

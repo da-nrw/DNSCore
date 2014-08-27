@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -18,9 +19,12 @@ import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.repository.ElasticsearchMetadataIndex;
 import de.uzk.hki.da.repository.FakeRepositoryFacade;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
@@ -29,9 +33,13 @@ import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
 
-public class ConvertLidoToJsonTests {
+public class CTConvertLidoToJsonTests {
+	
+	static final Logger logger = LoggerFactory.getLogger(CTConvertLidoToJsonTests.class);
 	
 	private static final Path workAreaRootPathPath = new RelativePath("src/test/resources/cb/ConvertLidoToJSON/");
+	private static final String dataFolder = "data_1";
+	private static final String fileName = "LIDO";
 	private static String packageType = "LIDO";
 	private static Object object = null;
 	private static PreservationSystem pSystem;
@@ -50,13 +58,10 @@ public class ConvertLidoToJsonTests {
 		
 		object = TESTHelper.setUpObject("42", workAreaRootPathPath);
 		lidoToEDM();
-		edmToJSON();
-
 	}
 	
 	@AfterClass
 	public static void cleanUp() {
-		System.out.println("CleanUp");
 		Path.makeFile(workAreaRootPathPath,"work/_data/danrw/42/DC").delete();
 		Path.makeFile(workAreaRootPathPath,"work/_data/danrw/42/LIDO").delete();
 		Path.makeFile(workAreaRootPathPath,"work/_data/danrw/42/EDM").delete();
@@ -66,21 +71,21 @@ public class ConvertLidoToJsonTests {
 	} 
 	
 	@Test
-	public void convertLidoToEDM() {
-		
-	}
-	
-	@Test
-	public void convertEdmToJSON() {
-		
+	public void testEdmToJson() throws RepositoryException, IOException {
+		edmToJSON();
 	}
 	
 	private static void lidoToEDM() throws IOException, RepositoryException {
 		CreateEDMAction createEDMAction = new CreateEDMAction();
 		repo.setWorkAreaRootPath(workAreaRootPathPath.toString());
 		repo.createObject(object.getIdentifier(), "danrw", "42");
+		ElasticsearchMetadataIndex esmi = new ElasticsearchMetadataIndex(); 
+		esmi.setCluster("cluster_ci");
+		String[] hosts={"localhost"};
+		esmi.setHosts(hosts);
+		repo.setMetadataIndex(esmi);
 		
-		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"data/LIDO").toFile(), Path.make(workAreaRootPathPath,"work/_data/danrw/42/").toFile());
+		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath, dataFolder, fileName).toFile(), Path.make(workAreaRootPathPath,"work/_data/danrw/42/").toFile());
 		
 		
 		String fakeDCFile = "<root xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n"+
@@ -112,10 +117,12 @@ public class ConvertLidoToJsonTests {
 			fail();
 		}
 		
-		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/_data/danrw/42/EDM").toFile(), Path.make(workAreaRootPathPath,"results/").toFile());
+//		show EDM file in result folder
+//		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/_data/danrw/42/EDM").toFile(), Path.make(workAreaRootPathPath,"results/").toFile());
 	}
 	
 	public static void edmToJSON() throws RepositoryException, IOException {
+		
 		Map<String,String> frames = new HashMap<String,String>();
 		frames.put("src/main/resources/frame.jsonld","EDM");
 		Set<String> testContractors = new HashSet<String>();
@@ -126,7 +133,7 @@ public class ConvertLidoToJsonTests {
 		indexMetadataAction.setRepositoryFacade(repo);
 		indexMetadataAction.setTestContractors(testContractors);
 		indexMetadataAction.setFrames(frames);
-		indexMetadataAction.setIndexName("indexName");
+		indexMetadataAction.setIndexName("portal_ci");
 		indexMetadataAction.setRepositoryFacade(repo);
 		indexMetadataAction.implementation();
 	}
