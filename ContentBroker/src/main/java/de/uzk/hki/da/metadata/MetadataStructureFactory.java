@@ -14,8 +14,12 @@ public class MetadataStructureFactory {
 	public MetadataStructure create (String type, File file) throws FileNotFoundException, JDOMException, IOException, ParserConfigurationException, SAXException {
 		if (type.equalsIgnoreCase ("EAD")){
               return new EadMetsMetadataStructure(file);
-		} else if(type. equalsIgnoreCase ("LIDO")){
+		} else if(type.equalsIgnoreCase ("LIDO")){
               return new LidoMetadataStructure(file);
-		} else return null;
+		} else if(type.equalsIgnoreCase ("METS")) {
+			return new MetsMetadataStructure(file);
+		} else if (type.equalsIgnoreCase ("XMP")) {
+			return new XMPMetadataStructure(file);
+		} else return new UnknownMetadataStructure(file);
 	}
 }
