@@ -94,14 +94,25 @@ public class FetchPIPsAction extends AbstractAction {
 	private void renamePIPs(String sourceDIPName,
 			String targetDIPName) throws IOException {
 		
-		if (Path.make(localNode.getWorkAreaRootPath(),publicContractorFolder.toString(),sourceDIPName).toFile().exists())
+		Path sourcePIPPublic = Path.make(localNode.getWorkAreaRootPath(),publicContractorFolder,sourceDIPName);
+		Path targetPIPPublic = Path.make(localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName);
+		
+		Path sourcePIPInst = Path.make(localNode.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName);
+		Path targetPIPInst = Path.make(localNode.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName);
+		
+		logger.debug("Rename PIP Public " +sourcePIPPublic.toString()  + " to "  + targetPIPPublic.toString() );
+		logger.debug("Rename PIP Institution " +sourcePIPInst.toString()  + " to "  + targetPIPInst.toString() );
+		
+		if (sourcePIPPublic.toFile().exists()) {
 			FileUtils.moveDirectory(
-					Path.make(localNode.getWorkAreaRootPath(),publicContractorFolder,sourceDIPName).toFile(), 
-					Path.make(localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile());
-		if (Path.make(localNode.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName).toFile().exists())
+					sourcePIPPublic.toFile(), 
+					targetPIPPublic.toFile());
+		} else logger.debug(sourcePIPPublic.toString()+ " does not exist, could not perform rename!" );
+		if (sourcePIPInst.toFile().exists()) {
 			FileUtils.moveDirectory(
-					Path.make(localNode.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName).toFile(), 
-					Path.make(localNode.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName).toFile());
+					sourcePIPInst.toFile(), 
+					targetPIPInst.toFile());
+		} else logger.debug(sourcePIPInst.toString()+ " does not exist, could not perform rename!" );
 	}
 
 
