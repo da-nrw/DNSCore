@@ -8,6 +8,32 @@ These artefacts comprise the interface to the ContentBroker with which administr
 
 **Note** that, as the interfaces can change from time to time, in doubt you should look at the right version of this document. Go to the releases page and you'll find the source tree for this specific version. 
 
+## System Configuration
+
+TODO
+
+System properties apply to all nodes comprising the so called "system" (TODO link to glossary or data model). As
+a consequence, for a properly working system all the nodes system properties have to be exactly the same. If the
+nodes are maintained by different administrators (perhaps if the nodes are distributed geographically or organisationally) the administrators must agree upon the common setings.
+
+TODO
+    
+The minimum number of replications the ContentBroker asks the grid component for to fulfill to consider a copy (an AIP) long term archived. Normally it is 3.
+    
+TODO
+    
+This is the name of the node which hosts the presentation repository. It must be the same name which is configured on the conf/config.properties of the presentation repositories ContentBroker installation.
+    
+    
+This path gets added to all metadata streams which get updated during creation of the PIPs. Local file system paths inside metadata which point to the files inside the packages get prefixed by system.uris.local during metadata update. It denotes the path to every single datestream in the presentation repository.
+
+TODO 
+
+First note that these three properties are only needed on installations of type "pres" or "full". Normal node installations do not need them. DNS makes it possible to feed a search index with different references to objects. Objects are split into aggregations, files, and chos. 
+
+TODO
+
+These settings also are only necessary on nodes of type "pres" or "full". The open collection is the collection of the presentation repository which hosts the public datastreams. The closed collection is the collection which hosts the datastream which can only be accessed by the institutions themselves.
 ## Application configuration
 
     ${CB_HOME}/conf/config.properties
@@ -24,7 +50,6 @@ according block:
 
 Example from [config.properties.ci](../conf/config.properties.ci)
 
-    localNode.admin_email=da-nrw-notifier@uni-koeln.de
     localNode.userAreaRootPath=/ci/storage/UserArea
     localNode.ingestAreaRootPath=/ci/storage/IngestArea 
     localNode.workAreaRootPath=/ci/storage/WorkArea
@@ -33,7 +58,6 @@ Example from [config.properties.ci](../conf/config.properties.ci)
     localNode.replDestinations=ciArchiveResourceGroup
     localNode.name=localnode
     localNode.id=
-
 
 The localNode block contains all the settings related to the configuration of the machine itself as well as information
 regarding the administrator role. Note that the localNode is the implementation of the node concept of the domain business model.
@@ -68,57 +92,6 @@ This setting must contain the integer value primary key of the nodes correspodin
 
 The email address of the administrator responsible for the node. Note that who is meant here is the administrator in the domain model sense, the person who takes responsibility for the working of the node and supervision of packages and workflow. It can be but has not necessarily to be the same person who is responsible for maintaining the machine in the infrastructure sense.
 
-### system
-
-Example from [config.properties.ci](../conf/config.properties.ci)
-
-    system.min_repls=1
-    system.sidecar_extensions=xmp;txt;xml
-    system.presServer=localnode
-    system.urnNameSpace=urn:nbn:de:danrw
-    system.uris.local=info:
-    system.uris.file=http://data.danrw.de/file
-    system.uris.cho=http://data.danrw.de/cho
-    system.uris.aggr=http://data.danrw.de/aggregation
-    system.uris.openCollectionName=danrw
-    system.uris.closedCollectionName=danrw-closed
-    system.emailFrom=noreply@danrw.de
-
-System properties apply to all nodes comprising the so called "system" (TODO link to glossary or data model). As
-a consequence, for a properly working system all the nodes system properties have to be exactly the same. If the
-nodes are maintained by different administrators (perhaps if the nodes are distributed geographically or organisationally) the administrators must agree upon the common setings.
-
-    system.min_repls=1
-    
-The minimum number of replications the ContentBroker asks the grid component for to fulfill to consider a copy (an AIP) long term archived. Normally it is 3.
-    
-    system.sidecar_extensions=xmp;txt;xml
-
-TODO describe   
-
-    system.presServer=localnode
-    
-This is the name of the node which hosts the presentation repository. It must be the same name which is configured on the conf/config.properties of the presentation repositories ContentBroker installation.
-    
-    system.urnNameSpace=
-    
-TODO explanation
-
-    system.uris.local=
-    
-This path gets added to all metadata streams which get updated during creation of the PIPs. Local file system paths inside metadata which point to the files inside the packages get prefixed by system.uris.local during metadata update. It denotes the path to every single datestream in the presentation repository.
-
-    system.uris.file=
-    system.uris.cho=
-    system.uris.aggr=
-
-First note that these three properties are only needed on installations of type "pres" or "full". Normal node installations do not need them. DNS makes it possible to feed a search index with different references to objects. Objects are split into aggregations, files, and chos. 
-
-    system.openCollectionName=
-    system.closedCollectionName=
-
-These settings also are only necessary on nodes of type "pres" or "full". The open collection is the collection of the presentation repository which hosts the public datastreams. The closed collection is the collection which hosts the datastream which can only be accessed by the institutions themselves.
-
 ### cb
 
 Example from [config.properties.ci](../conf/config.properties.ci)
@@ -127,6 +100,7 @@ Example from [config.properties.ci](../conf/config.properties.ci)
     cb.implementation.grid=irodsGridFacade
     cb.implementation.distributedConversion=irodsDistributedConversionAdapter
     cb.implementation.repository=fedoraRepositoryFacade
+    cb.implementation.metadataExtractor=jhoveMetadataExtractor
     cb.bin.python=/ci/python/python
 
 There are a couple of settings that relate strongly to the node concept, but are not related to business concepts in any way. Instead they relate to technical concepts only. Hence they merit their own category which is called "cb" which stands for ContentBroker settings.
@@ -166,22 +140,23 @@ When selecting the irodsDistributedConversionAdapter, an installation of iRODS (
 
 This implementation is useful for testing or evaluation purposes.
     
-    cb.implementation.repository=
-
 This setting determines the connection to the presentation repository subsystem.
     
+    cb.implementation.repository=
     cb.implementation.repository=fedoraRepositoryFacade
+    cb.implementation.repository=fakeRepositoryFacade (default)
     
 When choosing fedoraRepositoryFacade, Fedora is used as the presentation layer subsystem.
-
-    cb.implementation.repository=fakeRepositoryFacade
-
-This implementation is useful for testing or evaluation purposes.
+This fakeRepositoryFacade implementation is useful for testing or evaluation purposes.
 
     cb.bin.python=
 
 Here you have to insert the command to run an instance of python (at the moment >= 2.7 is required). If you are sure the required command is globally visible in the environment (the shell or process) in which the ContentBroker.jar is intended to run, you simple can insert something as simple as "python" as a value. If this is not the case, for example if the packaging system of your distro has only python in a version < 2.7 and you have a self compiled version at another path
 on your file system, you should insert the full path to the python binary as a value.
+
+	cb.implementation.metadataExtractor=
+	cb.implementation.metadataExtractor=jhoveMetadataExtractor (defaul)
+	cb.implementation.metadataExtractor=fakeMetadataExtractor
 
 ### irods
 
