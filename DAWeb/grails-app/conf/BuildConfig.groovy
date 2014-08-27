@@ -41,7 +41,7 @@ grails.project.dependency.resolution = {
         mavenRepo "http://download.java.net/maven/2/"
         mavenRepo "http://repo.fusesource.com/nexus/content/groups/public" 
 	//mavenRepo "http://mvnrepository.com/artifact/"
-	mavenRepo "http://ci-dev.renci.org/nexus/content/repositories/public"
+	//mavenRepo "http://ci-dev.renci.org/nexus/content/repositories/public"
     	mavenRepo "http://repo.grails.org/grails/plugins"
 	}
     dependencies {
@@ -61,9 +61,9 @@ grails.project.dependency.resolution = {
 			 excludes 'xml-apis'
 			 exported = false
 		}
-		compile('org.irods.jargon:jargon-core:3.3.2-beta1') {
-			excludes "slf4j-api", "slf4j-log4j12", "commons-io", "commons-codec","cog-jglobus"
-		}
+		//compile('org.irods.jargon:jargon-core:3.3.2-beta1') {
+		//	excludes "slf4j-api", "slf4j-log4j12", "commons-io", "commons-codec","cog-jglobus"
+		//}
     }
 
     plugins {

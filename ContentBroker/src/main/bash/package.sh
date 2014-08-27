@@ -5,7 +5,7 @@
 INSTALLER=target/installation
 CBTAR_SRC=target/installation_tar
 
-VERSION="v`cat ../VERSION.txt` (build: `git rev-parse HEAD` created on `date`)"
+VERSION="v`cat ../VERSION.txt` (build: `echo $BUILD_NUMBER` rev: `git rev-parse HEAD` created on `date`)"
 
 
 if [ $# -lt 1 ]
