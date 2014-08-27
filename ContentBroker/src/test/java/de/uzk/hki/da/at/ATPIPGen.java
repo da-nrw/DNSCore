@@ -76,7 +76,6 @@ public class ATPIPGen extends Base{
 		waitForJobsToFinish("ATPIPGen"+name, 500);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		
-		
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-open", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
 		InputStream metsStreamPublic = repositoryFacade.retrieveFile(object.getIdentifier(), "collection-open", "METS");
