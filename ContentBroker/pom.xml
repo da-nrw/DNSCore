@@ -54,31 +54,17 @@
 -->
 
 	<repositories>
-		<repository>
-			<id>da-nrw-maven-repo</id>
-			<url>http://repositories.hki.uni-koeln.de/repositories/mvn/</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>jboss-public-repository-group</id>
-			<name>JBoss Public Maven Repository Group</name>
-			<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-			<layout>default</layout>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-			</snapshots>
-		</repository>
+	<repository>
+      <id>central</id>
+      <name>Maven Repository Switchboard</name>
+      <layout>default</layout>
+      <url>http://repo1.maven.org/maven2</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+	
+	
 		<repository>
 			<id>renci.repository</id>
 			<name>renci.repository</name>
@@ -388,6 +374,13 @@
 	</build>
 
 	<dependencies>
+	
+		<dependency>
+			<groupId>org.apache.qpid</groupId>
+			<artifactId>proton-jms</artifactId>
+			<version>0.6</version>
+		</dependency>
+	
 	    <dependency>
            <groupId>org.json</groupId>
            <artifactId>json</artifactId>
@@ -442,7 +435,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.6.4</version>
+			<version>1.7.7</version>
 		</dependency>
 		<dependency>                                    
     		<groupId>org.slf4j</groupId>                
@@ -548,7 +541,7 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.3</version>
+			<version>2.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.irods.jargon</groupId>
@@ -563,6 +556,10 @@
 					<groupId>log4j</groupId>
 					<artifactId>log4j</artifactId>
 				</exclusion>
+					<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j-api</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -574,21 +571,6 @@
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-all</artifactId>
 			<version>1.8.0</version>
-		</dependency>
-		<dependency>
-			<groupId>edu.harvard.hul.ois</groupId>
-			<artifactId>jhove</artifactId>
-			<version>1.9b3</version>
-		</dependency>
-		<dependency>
-			<groupId>edu.harvard.hul.ois</groupId>
-			<artifactId>jhove.module</artifactId>
-			<version>1.9b3</version>
-		</dependency>
-		<dependency>
-			<groupId>edu.harvard.hul.ois</groupId>
-			<artifactId>jhove.handler</artifactId>
-			<version>1.9b3</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.saxon</groupId>

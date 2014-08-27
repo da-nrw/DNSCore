@@ -24,7 +24,10 @@
 			<g:link controller="home"><img src="${resource(dir: 'images', file: grailsApplication.config.daweb3.logo)}" alt="Grails"/></g:link>
 			<h1>Web Konsole</h1>
 			<div id="header-menu">
-					<g:link controller="logout" action="index">Logout</a></g:link>
+					<form name="submitForm" method="POST" action="${createLink(controller: 'logout')}">
+<input type="hidden" name="" value="">
+<a HREF="javascript:document.submitForm.submit()">Logout</a>
+</form> 
 			</div>
 		</div>
 		
