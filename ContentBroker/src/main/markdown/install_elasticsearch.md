@@ -39,7 +39,7 @@ und das Mapping für diesen Index festgelegt werden:
 
 cd []/DNSCore/ContentBroker/src/main/conf/
 
-    curl -XPUT 'http://localhost:9200/portal_test/aggregation/_mapping' -d @es_mapping.json
+    curl -XPUT 'http://localhost:9200/portal_test/ore:Aggregation/_mapping' -d @es_mapping.json
     
 Achten Sie auf die Angabe des richtigen Indexes!
 
