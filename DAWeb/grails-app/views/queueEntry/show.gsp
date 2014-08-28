@@ -65,7 +65,7 @@
 				<li class="fieldcontain">
 					<span id="contractorShortName-label" class="property-label"><g:message code="queueEntry.contractorShortName.label" default="Contractor Short Name" /></span>
 					
-						<span class="property-value" aria-labelledby="contractorShortName-label">${queueEntryInstance?.obj.getContractor().getShortName()}</span>
+						<span class="property-value" aria-labelledby="contractorShortName-label">${queueEntryInstance?.obj.getUser().getShortName()}</span>
 					
 				</li>
 				</g:if>
