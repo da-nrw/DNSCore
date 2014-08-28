@@ -129,12 +129,15 @@ public interface RepositoryFacade {
 	/**
 	 * Indexes metadata
 	 * @param indexName the name of the index
-	 * @param type the type or collection in the index
+	 * @param collection in the index
 	 * @param data nested key value data to be indexed
 	 * @throws RepositoryException
 	 */
-	void indexMetadata(String indexName, String type, String id, Map<String, Object> data)
+	void indexMetadata(String indexName, String contextUriPrefix, String framePath, String id, String edmContent)
 			throws RepositoryException;
+	
+//	void indexMetadata(String indexName, String collection, String id, String edmContent)
+//			throws RepositoryException;
 	
 	/**
 	 * Generate a file id from a file path.

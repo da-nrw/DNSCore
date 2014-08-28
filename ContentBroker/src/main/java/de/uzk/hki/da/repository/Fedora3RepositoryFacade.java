@@ -23,11 +23,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.jsonldjava.utils.JSONUtils;
 import com.yourmediashelf.fedora.client.FedoraClient;
 import com.yourmediashelf.fedora.client.FedoraClientException;
 import com.yourmediashelf.fedora.client.FedoraCredentials;
@@ -38,6 +41,8 @@ import com.yourmediashelf.fedora.client.request.GetObjectProfile;
 import com.yourmediashelf.fedora.client.request.Ingest;
 import com.yourmediashelf.fedora.client.request.ModifyDatastream;
 import com.yourmediashelf.fedora.client.request.PurgeObject;
+
+import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
 
 public class Fedora3RepositoryFacade implements RepositoryFacade {
 	
@@ -187,14 +192,32 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		}
 	}
 
+	
 	@Override
-	public void indexMetadata(String indexName, String type, String id,
-			Map<String, Object> data) throws RepositoryException {
+	public void indexMetadata(String indexName, String contextUriPrefix, String framePath,  String id,
+			String edmContent) throws RepositoryException {
+		
+		if(metadataIndex==null) {
+			throw new IllegalStateException("Metadata index not set");
+		}
+		
+		RdfToJsonLdConverter converter = new RdfToJsonLdConverter(framePath);
+		Map<String, Object> json = null;
 		try {
-			metadataIndex.indexMetadata(indexName, type, id, data);
-		} catch (MetadataIndexException e) {
-			throw new RepositoryException("Unable to index metadata", e);			
-		}		
+			json = converter.convert(edmContent);
+		} catch (Exception e) {
+			throw new RuntimeException("An error occured during metadata conversion",e);
+		}
+		
+		logger.debug("transformed RDF into JSON. Result: {}", JSONUtils.toPrettyString(json));
+		
+		@SuppressWarnings("unchecked")
+		List<Object> graph = (List<Object>) json.get("@graph");
+		
+		// create index entry for every subject in graph (subject?)
+		for (Object object : graph) {
+			createIndexEntry(indexName, contextUriPrefix, framePath, object);
+		}	
 	}
 
 	public MetadataIndex getMetadataIndex() {
@@ -207,6 +230,27 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	
 	private String generatePid(String objectId, String collection) {
 		return (collection + ":" + objectId);
+	}
+	
+	private void createIndexEntry(String indexName, String contextUriPrefix, String framePath, Object object)
+			throws RepositoryException {
+		
+		@SuppressWarnings("unchecked")
+		Map<String,Object> subject = (Map<String,Object>) object;
+		// Add @context attribute
+		String contextUri = contextUriPrefix + FilenameUtils.getName(framePath);
+		subject.put("@context", contextUri);
+		String[] splitId = ((String) subject.get("@id")).split("/");
+		String id = splitId[splitId.length-1];
+		// extract index name from type
+		String[] splitType = ((String) subject.get("@type")).split("/");
+		String type = splitType[splitType.length-1];
+		
+		try {
+			metadataIndex.indexMetadata(indexName, type, id, subject);
+		} catch (MetadataIndexException e) {
+			throw new RepositoryException("Unable to index metadata", e);			
+		}	
 	}
 
 }

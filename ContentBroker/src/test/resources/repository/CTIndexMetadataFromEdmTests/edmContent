@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:dcterms="http://purl.org/dc/terms/"
+         xmlns:edm="http://www.europeana.eu/schemas/edm/"
+         xmlns:enrichment="http://www.europeana.eu/schemas/edm/enrichment/"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:wgs84="http://www.w3.org/2003/01/geo/wgs84_pos#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:ore="http://www.openarchives.org/ore/terms/"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.w3.org/1999/02/22-rdf-syntax-ns# EDM.xsd">
+   <edm:ProvidedCHO rdf:about="#ISIL/lido/Inventarnummer">
+      <dc:coverage/>
+      <dc:description>
+            Handbetriebene Nudelmaschine in Originalverpackung. Nudelmaschine aus Metall für drei verschiedene Nudelsorten. An der Seite befindet sich ein runder Drehregler mit einer eingerpägten Skala von 1 bis 7 zur Verstellung des Abstandes der Teigrollen. Für jede Nudelsorte gibt es je zwei Teigrollen. Auf der anderen Seite befinden sich drei Löcher mit Gewinde, in denen die Kurbel eingesteckt wird. Mit der Kurbel werden die jeweils benötigten Teigrollen in Bewegung gesetzt. Zusätzlich gibt eine Schraubvorrichtung zur Befestigung der Nudelmaschine auf dem Tisch/auf der Arbeitsplatte. Vorne auf dem Gehäuse ist "ampia TIPO LUSSO MOD. 110 MADE IN ITALY" eingeprägt, hinten ein Logo und "MARCATO MADE IN ITALY". Auf der Vorder und Rückseite der Verpackung befindet sich neben der Schrift und des Logos ein Foto der Nudelmaschine vor einem Hintergrundfoto mit einem Getreidefeld. Auf den Klappen des Kartons befindet sich die Anleitung und die Garantie der Nudelmaschine in italienischer Sprache.
+          </dc:description>
+      <dc:description>
+            Die italienische Firma Marcato produziert seit über 80 Jahren Küchengeräte zur Herstellung von Pasta.
+          </dc:description>
+      <dc:title>Nudelmaschine in Originalverpackung</dc:title>
+      <edm:type>IMAGE</edm:type>
+   </edm:ProvidedCHO>
+   <edm:WebResource/>
+   <edm:Place>
+      <skos:prefLabel>Italien</skos:prefLabel>
+      <skos:prefLabel>Overath</skos:prefLabel>
+   </edm:Place>
+   <ore:Aggregation rdf:about="http://www.mimo-db.eu/ISIL/lido/Inventarnummer">
+      <edm:aggregatedCHO rdf:resource="ISIL/lido/Inventarnummer"/>
+      <edm:provider>DA-NRW - Digitales Archiv Nordrhein-Westfalen</edm:provider>
+      <edm:isShownBy/>
+      <edm:isShownAt rdf:resource="http://www.mimo-db.eu/ISIL/lido/Inventarnummer"/>
+      <edm:object/>
+   </ore:Aggregation>
+   <edm:ProvidedCHO rdf:about="#ISIL/lido/Inventarnummer">
+      <dc:coverage/>
+      <dc:description>
+            Bosch-Küchenmaschine mit 33 verschiedenen Teilen. Als Aufsätze gibt es neben zwei Rührschüsseln mit Deckel und Knet- und Rührhaken zwei Mixer, sieben Reiben, eine Kaffemühle, einen Fleischwolf mit Fruchtpresse-, Teigpresse-, Reibe- und Spritzgepäck-Vorsatz. Die Aufsätze können je nach Größe an einem der zwei Anschlüsse der Maschine befestigt werden. An der Seite des Gehäuses befindet sich ein Drehschalter mit der Kennzeichnung "0 0 I II", darunter steht "Bosch Germany Importe d'Allemagne". Unter der Beschriftung sitzt das Stromkabel. An beiden Seiten der Maschine steht jeweils "Bosch Germany". Beigelegt ist eine Anleitung zur Benutzung der Kaffeemühle sowie zur Benutzung der verschiedenen Vorsätze am Fleischwolf. Die Anleitung ist mit Schwarz-weiß-Fotos sowie Zeichnungen illustriert. Darüber hinaus gibt es in einer Originalverpackung zwei Ersatzteile zur Küchenmaschine: ein Dichtring für den Mixer und ein Mitnehmer mit Schraube. Auf der Verpackung befindet sich eine mit einer Zeichnung illustrierte Erklärung, wie man den Mitnehmer auswechselt.
+          </dc:description>
+      <dc:description>
+            Bereits um die Jahrhundertwende kamen mechanische und etwas später elektrische Küchengeräte in den Handel. Nach Ende des Zweiten Weltkriegs, insbesondere seit den 1950er Jahren, ersetzten Universal-Küchenmaschinen die einzelnen Geräte und führten sie in einem Gehäuse zusammen.&lt;P/&gt;Die Firma Bosch wurde 1886 von Robert Bosch gegründet. 1952 begann sie mit der Herstellung von Küchenmaschinen. Heute ist Bosch Zulieferer der Kraftfahrzeugindustrie, Hersteller von Gebrauchsgütern (Elektrowerkzeuge, Haushaltsgeräte), Industrie- und Gebäudetechnik (Sicherheitstechnik) sowie Verpackungstechnik.
+          </dc:description>
+      <dc:title>Küchenmaschine</dc:title>
+      <edm:type>IMAGE</edm:type>
+   </edm:ProvidedCHO>
+   <edm:WebResource/>
+   <edm:Place>
+      <skos:prefLabel>Bergisch Gladbach</skos:prefLabel>
+   </edm:Place>
+   <ore:Aggregation rdf:about="http://www.mimo-db.eu/ISIL/lido/Inventarnummer">
+      <edm:aggregatedCHO rdf:resource="ISIL/lido/Inventarnummer"/>
+      <edm:provider>DA-NRW - Digitales Archiv Nordrhein-Westfalen</edm:provider>
+      <edm:isShownBy/>
+      <edm:isShownAt rdf:resource="http://www.mimo-db.eu/ISIL/lido/Inventarnummer"/>
+      <edm:object/>
+   </ore:Aggregation>
+</rdf:RDF>

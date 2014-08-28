@@ -22,6 +22,7 @@ package de.uzk.hki.da.repository;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -154,19 +155,41 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	}
 
 	@Override
-	public void indexMetadata(String indexName, String type, String id,
-			Map<String, Object> data) throws RepositoryException {
-//		
-		if(metadataIndex!=null) {
-			try {
-			metadataIndex.indexMetadata(indexName, type, id, data);
-			} catch (MetadataIndexException e) {
-				throw new RepositoryException("Unable to index metadata", e);			
-			}	
-		}
-//		
-//		orig
-		// stub, fake repository does not handle indexing
+	public void indexMetadata(String indexName, String contextUri, String framePath, String id,
+			String content) throws RepositoryException {
+		
+		FileOutputStream fop = null;
+		File file;
+ 
+		try {
+ 
+			file = new File("/tmp/edmContent");
+			fop = new FileOutputStream(file);
+ 
+			// if file doesnt exists, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+ 
+			// get the content in bytes
+			byte[] contentInBytes = content.getBytes();
+			fop.write(contentInBytes);
+			fop.flush();
+			fop.close();
+ 
+			System.out.println("Done");
+ 
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (fop != null) {
+						fop.close();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 	}
 	
 	public void setMetadataIndex(MetadataIndex metadataIndex) {

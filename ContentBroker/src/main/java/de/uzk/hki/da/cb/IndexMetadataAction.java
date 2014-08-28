@@ -144,50 +144,14 @@ public class IndexMetadataAction extends AbstractAction {
 	 * @throws IOException
 	 * @throws JSONLDProcessingError
 	 */
-	private void transformMetadataToJson(String framePath,InputStream metadataStream,String tempIndexName) 
+	private void transformMetadataToJson(String framePath,InputStream edmStream,String tempIndexName) 
 			throws RepositoryException, IOException {
-		String metadataContent = IOUtils.toString(metadataStream, "UTF-8");
+		String edmContent = IOUtils.toString(edmStream, "UTF-8");
 		
-		RdfToJsonLdConverter converter = new RdfToJsonLdConverter(framePath);
-		Map<String, Object> json = null;
-		try {
-			json = converter.convert(metadataContent);
-		} catch (Exception e) {
-			throw new RuntimeException("An error occured during metadata conversion",e);
-		}
+		getRepositoryFacade().indexMetadata(tempIndexName, contextUriPrefix, framePath, object.getIdentifier(), edmContent);
 		
-		logger.debug("transformed RDF into JSON. Result: {}", JSONUtils.toPrettyString(json));
-		
-		@SuppressWarnings("unchecked")
-		List<Object> graph = (List<Object>) json.get("@graph");
-		
-		// create index entry for every subject in graph (subject?)
-		for (Object object : graph) {
-			createIndexEntry(framePath, object);
-		}
 	}
 
-
-	/**
-	 * @param framePath
-	 * @param object
-	 * @throws RepositoryException
-	 */
-	private void createIndexEntry(String framePath, Object object)
-			throws RepositoryException {
-		
-		@SuppressWarnings("unchecked")
-		Map<String,Object> subject = (Map<String,Object>) object;
-		// Add @context attribute
-		String contextUri = contextUriPrefix + FilenameUtils.getName(framePath);
-		subject.put("@context", contextUri);
-		String[] splitId = ((String) subject.get("@id")).split("/");
-		String id = splitId[splitId.length-1];
-		// extract index name from type
-		String[] splitType = ((String) subject.get("@type")).split("/");
-		String type = splitType[splitType.length-1];
-		getRepositoryFacade().indexMetadata(indexName, type, id, subject);
-	}
 	
 	
 	
