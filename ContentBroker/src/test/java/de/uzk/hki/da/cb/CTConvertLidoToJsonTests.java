@@ -38,7 +38,7 @@ public class CTConvertLidoToJsonTests {
 	static final Logger logger = LoggerFactory.getLogger(CTConvertLidoToJsonTests.class);
 	
 	private static final Path workAreaRootPathPath = new RelativePath("src/test/resources/cb/ConvertLidoToJSON/");
-	private static final String dataFolder = "data_1";
+	private static final String dataFolder = "data_lido_orig";
 	private static final String fileName = "LIDO";
 	private static String packageType = "LIDO";
 	private static Object object = null;

@@ -61,6 +61,12 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		
 		
 		try {
+			logger.debug("prepare index "+indexName+". Insert "+data.size()+" objects.");
+			for(String name:data.keySet()) {
+				logger.debug("***************************************************");
+				logger.debug("Object name: "+name);
+				logger.debug("Object content: "+data.get(name));
+			}
 			client.prepareIndex(indexName, type)
 				.setId(objectId).setSource(data).execute().actionGet();
 		} catch(ElasticSearchException e) {
