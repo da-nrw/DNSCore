@@ -12,7 +12,7 @@ To build DNS Core successfully you'll need at least a developer engine with
 * JAVA 1.6
 * MAVEN
 * GIT
-* Grails 2.2.4
+* Grails 2.3.8
 * Imagemagick 6.7.8 (with jasper, to use jpg2000, with tiff)
 
 Please ensure, the shells (bash and sh) of your workstation run in UTF-8 mode:
