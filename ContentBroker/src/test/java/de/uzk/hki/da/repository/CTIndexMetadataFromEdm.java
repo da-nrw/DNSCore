@@ -19,7 +19,7 @@
 
 package de.uzk.hki.da.repository;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,9 +31,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.cb.CreateEDMAction;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
 
@@ -47,9 +45,6 @@ public class CTIndexMetadataFromEdm {
 	@Before 
 	public void setUp() throws MalformedURLException {
 		repo = new Fedora3RepositoryFacade("http://localhost:8080/fedora", "fedoraAdmin", "BYi/MFjKDFd5Dpe52PSUoA==");
-		CreateEDMAction createEDMAction = new CreateEDMAction();
-//		repo.setWorkAreaRootPath(workAreaRootPathPath.toString());
-//		repo.createObject(object.getIdentifier(), "danrw", "42");
 		ElasticsearchMetadataIndex esmi = new ElasticsearchMetadataIndex(); 
 		esmi.setCluster("cluster_ci");
 		String[] hosts={"localhost"};
@@ -66,8 +61,8 @@ public class CTIndexMetadataFromEdm {
 		try {
 			repo.indexMetadata("portal_ci", "da-nrw", "src/main/resources/frame.jsonld", "1", edmContent);
 		} catch (RepositoryException e) {
-			fail();
 			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 	

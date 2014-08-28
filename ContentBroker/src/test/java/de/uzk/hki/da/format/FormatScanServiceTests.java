@@ -40,7 +40,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import de.uzk.hki.da.format.CLIFormatIdentifier;
-import de.uzk.hki.da.format.FormatScanService;
+import de.uzk.hki.da.format.FidoFormatScanService;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
@@ -55,7 +55,7 @@ import de.uzk.hki.da.utils.TC;
  */
 public class FormatScanServiceTests {
 
-	private static FormatScanService formatScanService;
+	private static FidoFormatScanService formatScanService;
 	private static Path workAreaRootPath = Path.make(TC.TEST_ROOT_FORMAT,"FormatIdentificationTests");
 	private static Object object;
 	
@@ -79,7 +79,7 @@ public class FormatScanServiceTests {
 		scans.add(scan);
 		when(dao.getSecondStageScanPolicies((Session)anyObject())).thenReturn(scans);
 		
-		formatScanService = new FormatScanService(dao);
+		formatScanService = new FidoFormatScanService(dao);
 		
 		CLIFormatIdentifier pronomMockIdentifier = mock(CLIFormatIdentifier.class);
 		Set<String> puid = new HashSet<String>(); puid.add("fmt/353");

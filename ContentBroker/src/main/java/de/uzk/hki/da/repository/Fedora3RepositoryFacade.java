@@ -214,6 +214,10 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		@SuppressWarnings("unchecked")
 		List<Object> graph = (List<Object>) json.get("@graph");
 		
+		
+		
+		
+		
 		// create index entry for every subject in graph (subject?)
 		for (Object object : graph) {
 			createIndexEntry(indexName, contextUriPrefix, framePath, object);
@@ -237,7 +241,12 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		
 		@SuppressWarnings("unchecked")
 		Map<String,Object> subject = (Map<String,Object>) object;
-		// Add @context attribute
+			
+		Object temp = subject.get("edm:object;");
+		if (temp==null) subject.remove("edm:object");
+		
+			
+			// Add @context attribute
 		String contextUri = contextUriPrefix + FilenameUtils.getName(framePath);
 		subject.put("@context", contextUri);
 		String[] splitId = ((String) subject.get("@id")).split("/");
@@ -245,6 +254,8 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		// extract index name from type
 		String[] splitType = ((String) subject.get("@type")).split("/");
 		String type = splitType[splitType.length-1];
+
+		type="ore:Aggregation"; // override on purpose, so that everything is mapped against es_mapping.json
 		
 		try {
 			metadataIndex.indexMetadata(indexName, type, id, subject);

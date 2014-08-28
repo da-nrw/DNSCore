@@ -19,7 +19,7 @@
          <property name="healthCheckTestFile" value="src/main/resources/healthCheck.avi"/>
          <property name="healthCheckExpectedOutcome" value="cinepak"/>
     </bean>
-    <bean class="de.uzk.hki.da.format.FormatScanService" id="formatScanService">
+    <bean class="de.uzk.hki.da.format.FidoFormatScanService" id="fidoFormatScanService">
         <constructor-arg ref="centralDao" />
 
         <property name="pronomFormatIdentifier" ref="pronomFormatIdentifier"/>

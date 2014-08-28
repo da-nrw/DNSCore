@@ -35,7 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.format.FormatScanService;
+import de.uzk.hki.da.format.FidoFormatScanService;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.model.DAFile;
@@ -82,7 +82,7 @@ public class RestructureActionTests {
 		
 		
 		
-		FormatScanService ffs = mock(FormatScanService.class);
+		FidoFormatScanService ffs = mock(FidoFormatScanService.class);
 	
 		DAFile file = new DAFile(object.getLatestPackage(),"rep+a","140849.tif");
 		file.setFormatPUID("fmt/353");

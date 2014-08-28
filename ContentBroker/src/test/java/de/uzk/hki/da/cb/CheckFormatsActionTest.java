@@ -36,7 +36,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.util.StringUtils;
 
-import de.uzk.hki.da.format.FormatScanService;
+import de.uzk.hki.da.format.FidoFormatScanService;
 import de.uzk.hki.da.format.JhoveMetadataExtractor;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.DAFile;
@@ -77,9 +77,9 @@ public class CheckFormatsActionTest {
 	 * @author Daniel M. de Oliveira
 	 */
 	@SuppressWarnings("unchecked")
-	private FormatScanService setUpformatScanServiceBehaviour()
+	private FidoFormatScanService setUpformatScanServiceBehaviour()
 			throws FileNotFoundException {
-		FormatScanService formatScanService = mock(FormatScanService.class);
+		FidoFormatScanService formatScanService = mock(FidoFormatScanService.class);
 		
 		when(formatScanService.identify((List<DAFile>)anyObject())).thenAnswer(new Answer< List<DAFile> >(){
 			@Override
@@ -162,7 +162,7 @@ public class CheckFormatsActionTest {
 		object.setTransientNodeRef(localNode);
 		object.reattach();
 		
-		FormatScanService formatScanService = setUpformatScanServiceBehaviour();
+		FidoFormatScanService formatScanService = setUpformatScanServiceBehaviour();
 		
 		job = new Job();
 		job.setId(1000);

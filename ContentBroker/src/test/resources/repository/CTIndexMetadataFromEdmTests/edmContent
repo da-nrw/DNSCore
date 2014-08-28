@@ -26,6 +26,7 @@
       <skos:prefLabel>Italien</skos:prefLabel>
       <skos:prefLabel>Overath</skos:prefLabel>
    </edm:Place>
+   
    <ore:Aggregation rdf:about="http://www.mimo-db.eu/ISIL/lido/Inventarnummer">
       <edm:aggregatedCHO rdf:resource="ISIL/lido/Inventarnummer"/>
       <edm:provider>DA-NRW - Digitales Archiv Nordrhein-Westfalen</edm:provider>
@@ -33,6 +34,7 @@
       <edm:isShownAt rdf:resource="http://www.mimo-db.eu/ISIL/lido/Inventarnummer"/>
       <edm:object/>
    </ore:Aggregation>
+   
    <edm:ProvidedCHO rdf:about="#ISIL/lido/Inventarnummer">
       <dc:coverage/>
       <dc:description>

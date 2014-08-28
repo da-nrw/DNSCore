@@ -12,4 +12,5 @@ elasticsearch.cluster=cluster_ci
 
 cb.serverSocketNumber=4455
 cb.implementation.metadataExtractor=fakeMetadataExtractor
+cb.implementation.formatScanService=fakeFormatScanService
 cb.bin.python=/ci/python/python

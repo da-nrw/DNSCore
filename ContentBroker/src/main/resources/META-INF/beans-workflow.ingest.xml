@@ -23,7 +23,7 @@
 		<property name="name" value="IngestRestructureAction" />
 		<property name="ingestGate" ref="ingestGate" />
 		<property name="gridRoot" ref="${cb.implementation.grid:fakeGridFacade}"/>
-		<property name="formatScanService" ref="formatScanService" />
+		<property name="formatScanService" ref="${cb.implementation.formatScanService:fidoFormatScanService}" />
 	</bean>
 	<bean id="IngestValidateMetadataAction" class="de.uzk.hki.da.cb.ValidateMetadataAction"
 		scope="prototype">
@@ -70,7 +70,7 @@
 		<property name="startStatus" value="260" />
 		<property name="endStatus" value="270" />
 		<property name="name" value="IngestCheckFormatsAction" />
-		<property name="formatScanService" ref="formatScanService" />
+		<property name="formatScanService" ref="${cb.implementation.formatScanService:fidoFormatScanService}" />
 		<property name="jhoveScanService" ref="${cb.implementation.metadataExtractor:jhoveMetadataExtractor}" />
 	</bean>
 	<bean id="IngestCreatePremisAction" class="de.uzk.hki.da.cb.CreatePremisAction" scope="prototype">
@@ -84,7 +84,7 @@
 		<property name="endStatus" value="320" />
 		<property name="name" value="IngestScanForPresentationAction" />
 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
-		<property name="formatScanService" ref="formatScanService" />
+		<property name="formatScanService" ref="${cb.implementation.formatScanService:fidoFormatScanService}" />
 	</bean>
 	<bean id="IngestConvertForPresentationAction" class="de.uzk.hki.da.cb.ConvertAction"
 		scope="prototype">

@@ -35,7 +35,7 @@
 		<property name="endStatus" value="720" />
 		<property name="name" value="PIPGenScanForPresentationAction" />
 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
-		<property name="formatScanService" ref="formatScanService" />
+		<property name="formatScanService" ref="${cb.implementation.formatScanService:fidoFormatScanService}" />
 	</bean>
 	<bean id="PIPGenConvertAction" class="de.uzk.hki.da.cb.ConvertAction"
 		scope="prototype">
