@@ -25,6 +25,7 @@ package de.uzk.hki.da.cb;
 
 import static org.mockito.Mockito.mock;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.junit.After;
@@ -110,7 +111,7 @@ public class PostRetrievalActionTest {
 		Job job = new Job();
 		GregorianCalendar gc = new GregorianCalendar();
 			System.out.println("is now: " + gc.getTime());
-		gc.set(GregorianCalendar.HOUR, gc.get(GregorianCalendar.HOUR)-25);
+		gc.set(Calendar.HOUR, gc.get(Calendar.HOUR)-25);
 		System.out.println("read: " + gc.getTime());
 		job.setDate_created(String.valueOf(Math.round(gc.getTimeInMillis()/1000L)));
 		PostRetrievalAction action = new PostRetrievalAction();

@@ -88,6 +88,7 @@ public class XmpCollector {
 			
 			final String baseName = FilenameUtils.removeExtension(file.getName());
 			String[] list = file.getParentFile().list(new FilenameFilter() {
+				@Override
 				public boolean accept(File dir, String name) {
 					String baseName2 = FilenameUtils.removeExtension(name);
 					if (baseName.equals(baseName2) && !name.toLowerCase().endsWith(".xmp")) return true;

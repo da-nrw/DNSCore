@@ -90,6 +90,7 @@ public class PremisXmlValidator {
 		/* (non-Javadoc)
 		 * @see org.w3c.dom.ls.LSResourceResolver#resolveResource(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 		 */
+		@Override
 		public LSInput resolveResource(String type, String namespaceURI, String publicId,
 				String systemId, String baseURI) {
 			

@@ -59,6 +59,7 @@ public class BagitConsistencyChecker implements ConsistencyChecker {
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.utils.ConsistencyChecker#checkPackage()
 	 */
+	@Override
 	public boolean checkPackage() {
 		
 		logger.debug("Starting BagIt consistency check.");
@@ -79,6 +80,7 @@ public class BagitConsistencyChecker implements ConsistencyChecker {
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.utils.ConsistencyChecker#getMessages()
 	 */
+	@Override
 	public List<String> getMessages() {
 		return messages;
 	}

@@ -47,6 +47,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.grid.IrodsGridFacade#put(java.io.File, java.lang.String, de.uzk.hki.da.model.StoragePolicy)
 	 */
+	@Override
 	public boolean put (File file, String gridPath, StoragePolicy sp){
 		irodsSystemConnector.connect();
 		
@@ -67,6 +68,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.grid.IrodsGridFacade#storagePolicyAchieved(java.lang.String, de.uzk.hki.da.model.StoragePolicy)
 	 */
+	@Override
 	public boolean storagePolicyAchieved(String gridPath, StoragePolicy sp) {
 		irodsSystemConnector.connect();
 		

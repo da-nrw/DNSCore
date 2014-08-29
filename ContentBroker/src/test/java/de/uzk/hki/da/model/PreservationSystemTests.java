@@ -19,8 +19,6 @@
 
 package de.uzk.hki.da.model;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-
 import java.util.ArrayList;
 import java.util.List;
 

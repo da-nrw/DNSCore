@@ -58,6 +58,7 @@ public class RightsContainer {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		StringBuffer buf = new StringBuffer("PreservationMetadata[");
 		buf.append("\n\tRightsStatements: ");

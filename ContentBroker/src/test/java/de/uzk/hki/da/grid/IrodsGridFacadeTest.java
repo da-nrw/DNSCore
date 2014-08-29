@@ -147,7 +147,7 @@ public class IrodsGridFacadeTest {
 		when ( isc.executeRule( anyString(), anyString()) )
 		.thenReturn( "1" );
 		
-		when ( isc.fileExists((String)anyString())). thenReturn(true);
+		when ( isc.fileExists(anyString())). thenReturn(true);
 		
 		assertEquals(true,ig.put(temp, "123456/urn.tar", sp));
 		assertEquals(true, new File(irodsDir+ "/aip/123456/urn.tar").exists());

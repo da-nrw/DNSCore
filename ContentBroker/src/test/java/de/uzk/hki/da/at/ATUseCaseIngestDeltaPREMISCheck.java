@@ -139,7 +139,7 @@ public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
 			if (identifierText.equals(objectIdentifier)) {
 				Element identifierEl = e.getChild("objectIdentifier", ns);
 				assertEquals(objectIdentifier, identifierEl.getChildText("objectIdentifierValue", ns));
-				String originalName = (String) e.getChildText("originalName", ns);
+				String originalName = e.getChildText("originalName", ns);
 				assertEquals(object.getOrig_name(),originalName);
 				checkedObjects++;
 			}				

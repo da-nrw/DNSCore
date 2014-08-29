@@ -73,6 +73,7 @@ public class ProperRefreshOfJobChildrenTest extends Thread{
 	/* (non-Javadoc)
 	 * @see java.lang.Thread#run()
 	 */
+	@Override
 	public void run(){
 		try {Thread.sleep(4000);} catch (InterruptedException e){}
 		// 'test:urn'

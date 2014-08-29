@@ -76,6 +76,7 @@ public class MetsConsistencyChecker implements ConsistencyChecker {
 	 * @throws Exception the exception
 	 * @see MetsConsistencyChecker#checkPackageBasedOnFiles()
 	 */
+	@Override
 	public boolean checkPackage() throws Exception {
 		return checkPackageBasedOnFiles();
 	}
@@ -275,6 +276,7 @@ public class MetsConsistencyChecker implements ConsistencyChecker {
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.utils.ConsistencyChecker#getMessages()
 	 */
+	@Override
 	public List<String> getMessages() {
 		return messages;
 	}
@@ -354,6 +356,7 @@ public class MetsConsistencyChecker implements ConsistencyChecker {
 		/* (non-Javadoc)
 		 * @see java.util.concurrent.Callable#call()
 		 */
+		@Override
 		public ChecksumResult call() throws Exception {
 			String calcChecksum = calculateHash(algorithm, file);
 			logger.debug("{} - Expected checksum:\t {}", file.getName(), expectedChecksum);

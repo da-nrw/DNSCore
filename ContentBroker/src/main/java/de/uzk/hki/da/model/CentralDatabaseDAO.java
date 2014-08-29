@@ -71,7 +71,7 @@ public class CentralDatabaseDAO {
 			session.refresh(node);
 			session.refresh(pSystem);
 			
-			joblist = (List<Job>) session
+			joblist = session
 					.createQuery("SELECT j FROM Job j LEFT JOIN j.obj as o where j.status=?1 and "
 							+ "j.responsibleNodeName=?2 and o.object_state IN (100, 50, 40) and o.orig_name!=?3 order by j.date_modified asc ")
 					.setParameter("1", status).setParameter("2", node.getName()).setParameter("3","integrationTest").setCacheable(false).setMaxResults(1).list();
@@ -125,7 +125,7 @@ public class CentralDatabaseDAO {
 		List<Job> l = null;
 	
 		try {
-			l = (List<Job>) session.createQuery(
+			l = session.createQuery(
 					"SELECT j FROM Job j left join j.obj as o left join o.user as c where o.orig_name=?1 and c.short_name=?2"
 					)
 							.setParameter("1", orig_name)
@@ -308,7 +308,7 @@ public class CentralDatabaseDAO {
 	 */
 	public List<SecondStageScanPolicy> getSecondStageScanPolicies(Session session) {
 		@SuppressWarnings("unchecked")
-		List<SecondStageScanPolicy> l = (List<SecondStageScanPolicy>) session
+		List<SecondStageScanPolicy> l = session
 				.createQuery("from SecondStageScanPolicy").list();
 
 		return l;

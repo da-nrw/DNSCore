@@ -18,33 +18,7 @@
 */
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
-import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
-import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.repository.RepositoryFacade;
-import de.uzk.hki.da.utils.RelativePath;
-import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * @author Daniel M. de Oliveira
@@ -88,7 +62,7 @@ public class IndexMetadataActionTests {
 //			doAnswer(new Answer<Void>(){
 //				@Override
 //		        public Void answer(InvocationOnMock invocation) throws Throwable {
-//					if ("1-20140702256699".equals(((String) invocation.getArguments()[2]))){
+//					if ("1-20140702256699".equals((invocation.getArguments()[2]))){
 //						invocations++;
 //						if (!
 //							((Map<String,java.lang.Object>)invocation.getArguments()[3]).toString()

@@ -186,6 +186,7 @@ public class XPathUtils {
 		/* (non-Javadoc)
 		 * @see javax.xml.namespace.NamespaceContext#getNamespaceURI(java.lang.String)
 		 */
+		@Override
 		public String getNamespaceURI(String prefix) {
 			if (prefix == null)
 				throw new IllegalArgumentException("No prefix");
@@ -200,6 +201,7 @@ public class XPathUtils {
 		/* (non-Javadoc)
 		 * @see javax.xml.namespace.NamespaceContext#getPrefix(java.lang.String)
 		 */
+		@Override
 		public String getPrefix(String namespaceURI) {
 	        return null;
 	    }
@@ -207,7 +209,8 @@ public class XPathUtils {
 	    /* (non-Javadoc)
     	 * @see javax.xml.namespace.NamespaceContext#getPrefixes(java.lang.String)
     	 */
-    	@SuppressWarnings("rawtypes")
+    	@Override
+		@SuppressWarnings("rawtypes")
 		public Iterator getPrefixes(String namespaceURI) {
 	        return null;
 	    }

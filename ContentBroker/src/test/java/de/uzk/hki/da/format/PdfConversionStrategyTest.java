@@ -86,6 +86,7 @@ public class PdfConversionStrategyTest {
 		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
 					
 		when(cli.execute((String[]) anyObject())).thenAnswer(new Answer () {
+			@Override
 			public Boolean answer(InvocationOnMock invocation) {
 			    java.lang.Object[] args = invocation.getArguments();
 		         String[] cmdarr = (String[]) args[0];

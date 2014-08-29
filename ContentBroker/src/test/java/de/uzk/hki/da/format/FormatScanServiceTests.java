@@ -37,6 +37,7 @@ import org.hibernate.Session;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import de.uzk.hki.da.format.CLIFormatIdentifier;
@@ -84,7 +85,7 @@ public class FormatScanServiceTests {
 		CLIFormatIdentifier pronomMockIdentifier = mock(CLIFormatIdentifier.class);
 		Set<String> puid = new HashSet<String>(); puid.add("fmt/353");
 		when(pronomMockIdentifier.healthCheck()).thenReturn(true);
-		when(pronomMockIdentifier.identify((File) Mockito.any())).thenReturn(puid);
+		when(pronomMockIdentifier.identify((File) Matchers.any())).thenReturn(puid);
 		formatScanService.setPronomFormatIdentifier(pronomMockIdentifier);
 		
 		tiffCompressionMockIdentifier = mock(CLIFormatIdentifier.class);
@@ -109,7 +110,7 @@ public class FormatScanServiceTests {
 	@Test
 	public void foundCodecIsNotAllowed() throws FileNotFoundException {
 		Set<String> compression = new HashSet<String>(); compression.add("jpeg");
-		when(tiffCompressionMockIdentifier.identify((File) Mockito.any())).thenReturn(compression);
+		when(tiffCompressionMockIdentifier.identify((File) Matchers.any())).thenReturn(compression);
 		
 		files.add(new DAFile(object.getLatestPackage(),"","140849.tif"));
 		
@@ -129,7 +130,7 @@ public class FormatScanServiceTests {
 	public void identifyFileWithCompressionAlgorithm() throws FileNotFoundException{
 		
 		Set<String> compression = new HashSet<String>(); compression.add("lzw");
-		when(tiffCompressionMockIdentifier.identify((File) Mockito.any())).thenReturn(compression);
+		when(tiffCompressionMockIdentifier.identify((File) Matchers.any())).thenReturn(compression);
 		
 		files.add(new DAFile(object.getLatestPackage(),"","140849.tif"));
 		
@@ -147,7 +148,7 @@ public class FormatScanServiceTests {
 	public void identifyFileWithoutCompressionAlgorithm() throws FileNotFoundException {
 		
 		Set<String> compression = new HashSet<String>();
-		when(tiffCompressionMockIdentifier.identify((File) Mockito.any())).thenReturn(compression);
+		when(tiffCompressionMockIdentifier.identify((File) Matchers.any())).thenReturn(compression);
 		
 		files.add(new DAFile(object.getLatestPackage(),"","140849.tif"));
 		

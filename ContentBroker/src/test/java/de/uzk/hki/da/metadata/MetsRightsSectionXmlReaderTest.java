@@ -60,7 +60,7 @@ public class MetsRightsSectionXmlReaderTest {
 		assertEquals(640,Integer.parseInt(rights.get(0).getPublicationRights().get(0).getImageRestriction().getWidth()));
 		assertEquals(480,Integer.parseInt(rights.get(0).getPublicationRights().get(0).getImageRestriction().getHeight()));
 
-		Calendar calendar = GregorianCalendar.getInstance();
+		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(0);
 		calendar.set(2023, 5, 23, 0, 0, 0);
 

@@ -7,7 +7,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.format.JhoveMetadataExtractor;
 import de.uzk.hki.da.format.MetadataExtractor;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.Path;

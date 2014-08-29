@@ -185,7 +185,7 @@ public class ConverterService {
 		Class<ConversionStrategy> c;
 		c = (Class<ConversionStrategy>) Class.forName(strategyName);
 		java.lang.reflect.Constructor<ConversionStrategy> co = c.getConstructor();
-		strategy= (ConversionStrategy) co.newInstance();
+		strategy= co.newInstance();
 
 		return strategy;
 	}

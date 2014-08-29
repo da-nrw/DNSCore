@@ -68,6 +68,7 @@ public class PdfConversionStrategy implements ConversionStrategy {
 	 * @throws FileNotFoundException the file not found exception
 	 * @Author : jens Peters
 	 */
+	@Override
 	public List<Event> convertFile(ConversionInstruction ci)
 			throws FileNotFoundException {
 		if (object.getLatestPackage() == null)

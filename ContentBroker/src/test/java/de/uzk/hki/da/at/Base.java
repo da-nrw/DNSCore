@@ -445,7 +445,7 @@ public class Base {
 	protected void createJob(Map<Session, Object> sessionObject, String status) {
 		
 		Session session = (Session) sessionObject.keySet().toArray()[0];
-		Object object = (Object) sessionObject.get(session);
+		Object object = sessionObject.get(session);
 	
 		Job job = new Job();
 		job.setStatus(status);
