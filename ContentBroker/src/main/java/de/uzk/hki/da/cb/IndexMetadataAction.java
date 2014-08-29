@@ -148,9 +148,6 @@ public class IndexMetadataAction extends AbstractAction {
 	}
 
 	
-	
-	
-	
 	/**
 	 * Get the name of the index
 	 * the data will be indexed in.

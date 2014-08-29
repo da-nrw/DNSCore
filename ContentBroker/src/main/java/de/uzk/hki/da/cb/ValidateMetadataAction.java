@@ -88,7 +88,9 @@ public class ValidateMetadataAction extends AbstractAction {
 		}
 		
 		object.setPackage_type(detectedPackageType);
+		logger.debug("set package type: "+detectedPackageType);
 		object.setMetadata_file(detectedMetadataFile);
+		logger.debug("set metadata file: "+detectedMetadataFile);
 		
 		DAFile metadataDAFile = new DAFile();
 		List<DAFile> DAFiles = object.getLatestPackage().getFiles();
@@ -99,11 +101,11 @@ public class ValidateMetadataAction extends AbstractAction {
 			}
 		}
 		
-		File eadFile = metadataDAFile.toRegularFile();
+		File file = metadataDAFile.toRegularFile();
 		
 		MetadataStructure ms;
 		try {
-			ms = msf.create(object.getPackage_type(), eadFile);
+			ms = msf.create(object.getPackage_type(), file);
 			boolean metadataStructureIsValid = ms.isValid();
 			System.out.println("metadataStructureIsValid: "+metadataStructureIsValid);
 		} catch (JDOMException e) {

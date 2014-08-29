@@ -199,7 +199,6 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	public void makeReplacementsInMetsFile(File metsFile, String mimetype, String loctype, String currentHref, String targetHref) throws IOException, JDOMException {
 		
 		File targetMetsFile = metsFile;
-		
 		Document currentMetsDocument = metsPathToDocument.get(targetMetsFile.getAbsolutePath());
 		
 		allFileNodesInMets = metsXPath.selectNodes(currentMetsDocument);
