@@ -8,7 +8,7 @@ localNode.id=1
 
 cb.serverSocketNumber=4455
 cb.implementation.metadataExtractor=fakeMetadataExtractor
-cb.implementation.formatScanService=fakeFormatScanService
+cb.implementation.fileFormatFacade=fakeFileFormatFacade
 cb.bin.python=python
 
 elasticsearch.index=portal_test

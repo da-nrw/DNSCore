@@ -1,7 +1,7 @@
 /*
   DA-NRW Software Suite | ContentBroker
   Copyright (C) 2014 LVRInfoKom
-  Lanschaftsverband Rheinland
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 package de.uzk.hki.da.format;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
@@ -30,12 +31,13 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.utils.C;
 
 /**
+ * Fake implementation
  * @author Daniel M. de Oliveira
  */
-public class FakeFormatScanService implements FormatScanService {
-	
+public class FakeFileFormatFacade implements FileFormatFacade {
+
 	@Override
-	public List<DAFile> identify(List<DAFile> files) throws IOException{
+	public List<DAFile> identify(List<DAFile> files) throws FileNotFoundException{
 		
 		for (DAFile f:files){
 			
@@ -88,25 +90,35 @@ public class FakeFormatScanService implements FormatScanService {
 			
 			BufferedReader br=new BufferedReader(new FileReader(f.toRegularFile()));
 	        String line;
-	        while((line=br.readLine())!=null){
-		        if (patternFound(line,"<mets.*>")){
-		        	f.setFormatPUID(C.METS_PUID);
-		        	break;
-		        	}
-		        if (patternFound(line,"<ead .*>")){
-		        	f.setFormatPUID(C.EAD_PUID);
-		        	break;
-		        	}
-		        if (patternFound(line,"<lido:lido>")){
-		        	f.setFormatPUID(C.LIDO_PUID);
-		        	break;
-		        	}
-		        if (patternFound(line,"<x:xmpmeta.*")){
-		        	f.setFormatPUID(C.XMP_PUID);
-		        	break;
-		        	}
-	        }		
-	        br.close();
+	        try {
+				while((line=br.readLine())!=null){
+				    if (patternFound(line,"<mets.*>")){
+				    	f.setFormatPUID(C.METS_PUID);
+				    	break;
+				    	}
+				    if (patternFound(line,"<ead .*>")){
+				    	f.setFormatPUID(C.EAD_PUID);
+				    	break;
+				    	}
+				    if (patternFound(line,"<lido:lido>")){
+				    	f.setFormatPUID(C.LIDO_PUID);
+				    	break;
+				    	}
+				    if (patternFound(line,"<x:xmpmeta.*")){
+				    	f.setFormatPUID(C.XMP_PUID);
+				    	break;
+				    	}
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
+	        try {
+				br.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	        
 	    	
 		}
@@ -121,4 +133,7 @@ public class FakeFormatScanService implements FormatScanService {
         return false;
 	}
 	
+	
+	
+
 }

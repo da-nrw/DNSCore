@@ -25,7 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.format.FormatScanService;
+import de.uzk.hki.da.format.FileFormatException;
+import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionInstructionBuilder;
@@ -40,7 +41,7 @@ import de.uzk.hki.da.model.Package;
  */
 public class ScanForPresentationAction extends AbstractAction{
 	
-	private FormatScanService formatScanService;
+	private FileFormatFacade fileFormatFacade;
 	private final ConversionInstructionBuilder ciB = new ConversionInstructionBuilder();
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
@@ -49,7 +50,7 @@ public class ScanForPresentationAction extends AbstractAction{
 	@Override
 	void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
-		if (formatScanService==null) throw new ConfigurationException("formatScanService not set");
+		if (fileFormatFacade==null) throw new ConfigurationException("formatScanService not set");
 	}
 
 	@Override
@@ -64,7 +65,11 @@ public class ScanForPresentationAction extends AbstractAction{
 		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
 		if (newestFiles.size() == 0)
 			throw new RuntimeException("No files found!");
-		newestFiles = formatScanService.identify(newestFiles);
+		try {
+			newestFiles = fileFormatFacade.identify(newestFiles);
+		} catch (FileFormatException e) {
+			e.printStackTrace();
+		}
 		
 		List<ConversionInstruction> cisPres = generateConversionInstructionsForPresentation(
 			object.getLatestPackage(),
@@ -147,12 +152,12 @@ public class ScanForPresentationAction extends AbstractAction{
 		return is;
 	}
 		
-	public FormatScanService getFormatScanService() {
-		return formatScanService;
+	public FileFormatFacade getFormatScanService() {
+		return fileFormatFacade;
 	}
 
-	public void setFormatScanService(FormatScanService formatScanService) {
-		this.formatScanService = formatScanService;
+	public void setFormatScanService(FileFormatFacade fileFormatFacade) {
+		this.fileFormatFacade = fileFormatFacade;
 	}
 	
 	public DistributedConversionAdapter getDistributedConversionAdapter() {

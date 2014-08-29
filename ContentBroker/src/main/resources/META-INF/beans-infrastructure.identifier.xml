@@ -29,4 +29,8 @@
             </util:set>
         </property>
     </bean>   
+
+    <bean class="de.uzk.hki.da.format.FileFormatFacade" id="standardFileFormatFacade">
+    	<property name="fidoFormatScanService" ref="fidoFormatScanService" />
+    </bean>
 </beans>

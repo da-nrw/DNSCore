@@ -54,7 +54,7 @@ import de.uzk.hki.da.cb.UpdateMetadataActionXMPTests;
 import de.uzk.hki.da.cb.ValidateMetadataActionTests;
 import de.uzk.hki.da.format.CLIConversionStrategyTests;
 import de.uzk.hki.da.format.ConverterServiceTests;
-import de.uzk.hki.da.format.FakeFormatScanServiceTests;
+import de.uzk.hki.da.format.FakeFileFormatFacadeTests;
 import de.uzk.hki.da.format.FidoCLITest;
 import de.uzk.hki.da.format.FormatScanServiceTests;
 import de.uzk.hki.da.format.PDFServiceTests;
@@ -163,7 +163,7 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	RestructureActionTests.class,
 	ValidateMetadataActionTests.class,
 	ProcessUserDecisionsActionTests.class,
-	FakeFormatScanServiceTests.class
+	FakeFileFormatFacadeTests.class
 })
 public class SimpleSuite {
 

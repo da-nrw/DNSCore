@@ -35,7 +35,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.format.FidoFormatScanService;
+import de.uzk.hki.da.format.FileFormatException;
+import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.format.StandardFileFormatFacade;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.model.DAFile;
@@ -62,7 +64,7 @@ public class RestructureActionTests {
 	
 	@SuppressWarnings("unchecked")
 	@Before
-	public void setUp() throws IOException{
+	public void setUp() throws IOException, FileFormatException{
 		PreservationSystem pSystem = new PreservationSystem();
 		
 		
@@ -82,13 +84,13 @@ public class RestructureActionTests {
 		
 		
 		
-		FidoFormatScanService ffs = mock(FidoFormatScanService.class);
+		FileFormatFacade ffs = mock(StandardFileFormatFacade.class);
 	
 		DAFile file = new DAFile(object.getLatestPackage(),"rep+a","140849.tif");
 		file.setFormatPUID("fmt/353");
 		List<DAFile> files = new ArrayList<DAFile>(); files.add(file);
 		when( ffs.identify((List<DAFile>)anyObject()) ).thenReturn(files);
-		action.setFormatScanService(ffs);
+		action.setFileFormatFacade(ffs);
 		
 	}
 	
