@@ -81,6 +81,7 @@ public class PublishXSLTConversionStrategy implements ConversionStrategy {
 	 * @author Daniel M. de Oliveira
 	 * @author Sebastian Cuy
 	 */
+	@Override
 	public List<Event> convertFile(ConversionInstruction ci) 
 			throws FileNotFoundException,
 			IllegalStateException{
@@ -194,6 +195,7 @@ public class PublishXSLTConversionStrategy implements ConversionStrategy {
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setParam(java.lang.String)
 	 */
+	@Override
 	public void setParam(String param) {
 		logger.debug("setting param {}", param);
 		setStylesheet(param);
@@ -246,6 +248,7 @@ public class PublishXSLTConversionStrategy implements ConversionStrategy {
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setObject(de.uzk.hki.da.model.Object)
 	 */
+	@Override
 	public void setObject(Object object){
 		this.object = object;
 	}

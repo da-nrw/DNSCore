@@ -36,7 +36,8 @@ public class RepresentationFilter implements FilenameFilter {
 	  /* (non-Javadoc)
   	 * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)
   	 */
-  	public boolean accept (File dir, String name) {
+  	@Override
+	public boolean accept (File dir, String name) {
 		  
 	      Pattern p = Pattern.compile(pattern);
 	      Matcher m = p.matcher(name);

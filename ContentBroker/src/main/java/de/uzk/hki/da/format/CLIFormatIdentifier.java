@@ -62,6 +62,7 @@ public class CLIFormatIdentifier implements FormatIdentifier{
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.format.FormatIdentifier#identify(java.io.File)
 	 */
+	@Override
 	public Set<String> identify(File file) {
 		
 		if (!file.exists()) throw new Error("File doesn't exist");
@@ -115,6 +116,7 @@ public class CLIFormatIdentifier implements FormatIdentifier{
 	 *
 	 * @return true, if successful
 	 */
+	@Override
 	public boolean healthCheck() {
 		
 		if (conversionScript==null) throw new IllegalStateException("conversionScript not set");

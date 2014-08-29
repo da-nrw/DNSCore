@@ -342,6 +342,7 @@ public class SendToPresenterAction extends AbstractAction {
 	private void ingestDir(String objectId, String collection, File dir, String packagePath, String packageType) throws RepositoryException, IOException {
 			
 		File files[] = dir.listFiles(new FilenameFilter() {
+			@Override
 			public boolean accept(File dir, String name) {
 				if (getFileFilter().contains(name)) return false;
 				else return true;

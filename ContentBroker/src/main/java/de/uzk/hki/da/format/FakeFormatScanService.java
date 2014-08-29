@@ -34,6 +34,7 @@ import de.uzk.hki.da.utils.C;
  */
 public class FakeFormatScanService implements FormatScanService {
 	
+	@Override
 	public List<DAFile> identify(List<DAFile> files) throws IOException{
 		
 		for (DAFile f:files){

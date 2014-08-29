@@ -117,6 +117,7 @@ public class RightsStatement {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {		
 		return String.format("RightsStatement[id:%s]",
 				getId());

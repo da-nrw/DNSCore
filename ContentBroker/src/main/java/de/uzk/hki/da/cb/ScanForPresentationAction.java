@@ -20,13 +20,11 @@
 package de.uzk.hki.da.cb;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.format.FidoFormatScanService;
 import de.uzk.hki.da.format.FormatScanService;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.ConversionInstruction;

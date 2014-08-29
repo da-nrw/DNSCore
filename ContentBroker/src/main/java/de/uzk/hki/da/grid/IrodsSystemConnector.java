@@ -1324,6 +1324,7 @@ public class IrodsSystemConnector {
 	 * @author Jens Peters
 	 */
 	
+	@Deprecated
 	public String verifyChecksumAll(String data_name) {
 		if (!fileExists(data_name)) throw new IrodsRuntimeException(data_name + " does not exist");
 		
@@ -1508,6 +1509,7 @@ public class IrodsSystemConnector {
 	 * @deprecated
 	 * @author Jens Peters
 	 */
+	@Deprecated
 	public String copyDAO(String data_name, String dest_data_name, String destResc) {
 		String copy = "copy||msiDataObjCopy(" + data_name +"," + dest_data_name + ", destRescName=" +  destResc +"++++forceFlag=++++verifyChksum=,*copy)|nop\n"
 		 + "null\n"
@@ -1631,6 +1633,7 @@ public class IrodsSystemConnector {
 	 * @deprecated
 	 * @author Jens Peters
 	 */
+	@Deprecated
 	public void buildTar(String targetDataObject, String sourceCollection, String workingRes) {
 		String tarRule =
 			"tar||"+	
@@ -1655,7 +1658,8 @@ public class IrodsSystemConnector {
 	 * @author Jens Peters
 	 */
 	
-	 public void federateDataObjectToZoneAsynchronously(String data_name, String zone, String destPath, String destresource) {
+	 @Deprecated
+	public void federateDataObjectToZoneAsynchronously(String data_name, String zone, String destPath, String destresource) {
 		 	String resc = "null";
 			if (!destresource.equals("")) {
 				resc=destresource;

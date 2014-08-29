@@ -85,7 +85,7 @@ public class CheckFormatsActionTest {
 			@Override
 			public List<DAFile> answer(InvocationOnMock invocation)
 					throws Throwable {
-				java.lang.Object[] args = (java.lang.Object[]) invocation.getArguments();
+				java.lang.Object[] args = invocation.getArguments();
 				List<DAFile> list = (List<DAFile>) args[0];
 				
 				for (DAFile f:list){

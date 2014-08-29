@@ -35,6 +35,7 @@ public class PremisXmlReaderNodeFactory extends NodeFactory {
 	/* (non-Javadoc)
 	 * @see nu.xom.NodeFactory#startMakingElement(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public Element startMakingElement(String name, String namespace) {
 
 		if (name.equals("objectCharacteristicsExtension"))
@@ -49,6 +50,7 @@ public class PremisXmlReaderNodeFactory extends NodeFactory {
 	/* (non-Javadoc)
 	 * @see nu.xom.NodeFactory#finishMakingElement(nu.xom.Element)
 	 */
+	@Override
 	public Nodes finishMakingElement(Element element) {
 
 		if (element.getLocalName().equals("objectCharacteristics"))
@@ -60,6 +62,7 @@ public class PremisXmlReaderNodeFactory extends NodeFactory {
 	/* (non-Javadoc)
 	 * @see nu.xom.NodeFactory#makeText(java.lang.String)
 	 */
+	@Override
 	public Nodes makeText(String data) {
 
 		if (jhoveSection)

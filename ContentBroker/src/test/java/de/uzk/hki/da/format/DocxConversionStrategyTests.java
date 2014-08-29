@@ -99,6 +99,7 @@ public class DocxConversionStrategyTests {
 		
 		HttpFileTransmissionClient httpclient = mock( HttpFileTransmissionClient.class );
 		when( httpclient.postFileAndReadResponse((File)anyObject(),(File)anyObject()) ).thenAnswer(new Answer<java.lang.Object> () {
+			@Override
 			public File answer(InvocationOnMock invocation) {
 				
 				File f = new File(basePath + "TEST/1/data/rep+b/Docx.pdf");
@@ -115,6 +116,7 @@ public class DocxConversionStrategyTests {
 		
 		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
 		when(cli.execute((String[]) anyObject())).thenAnswer(new Answer<java.lang.Object> () {
+			@Override
 			public Boolean answer(InvocationOnMock invocation) {
 			    java.lang.Object[] args = invocation.getArguments();
 		         String[] cmdarr = (String[]) args[0];

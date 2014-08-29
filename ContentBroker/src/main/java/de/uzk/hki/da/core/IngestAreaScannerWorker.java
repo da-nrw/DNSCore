@@ -70,6 +70,7 @@ public class IngestAreaScannerWorker {
 		/* (non-Javadoc)
 		 * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)
 		 */
+		@Override
 		public boolean accept(File dir, String name) {
 			return (name.endsWith(".zip")
 					||name.endsWith(".tar.gz")

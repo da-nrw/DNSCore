@@ -87,6 +87,7 @@ public class FidoFormatScanService implements FormatScanService {
 	 * @throws FileNotFoundException if any of the files can not be found on the file system.
 	 * @author Daniel M. de Oliveira
 	 */
+	@Override
 	public List<DAFile> identify(List<DAFile> files) throws FileNotFoundException {
 		for (DAFile f:files){
 			if (!f.toRegularFile().exists()) throw new FileNotFoundException("file "+f.toRegularFile().getPath()+" doesn't exist");

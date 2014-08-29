@@ -23,19 +23,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import com.github.jsonldjava.core.JSONLDProcessingError;
-import com.github.jsonldjava.utils.JSONUtils;
-
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 

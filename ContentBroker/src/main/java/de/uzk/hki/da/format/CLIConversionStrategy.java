@@ -72,6 +72,7 @@ public class CLIConversionStrategy implements ConversionStrategy{
 	 * @return the list
 	 * @throws FileNotFoundException the file not found exception
 	 */
+	@Override
 	public List<Event> convertFile(ConversionInstruction ci) throws FileNotFoundException {
 		if (pkg==null) throw new IllegalStateException("Package not set");
 		Path.make(object.getDataPath(),object.getNameOfNewestRep(),ci.getTarget_folder()).toFile().mkdirs();
@@ -177,6 +178,7 @@ public class CLIConversionStrategy implements ConversionStrategy{
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setParam(java.lang.String)
 	 */
+	@Override
 	public
 	void setParam(String param) {
 		this.commandLine=param;

@@ -52,6 +52,7 @@ public class PublishCLIConversionStrategy extends CLIConversionStrategy {
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.CLIConversionStrategy#convertFile(de.uzk.hki.da.model.ConversionInstruction)
 	 */
+	@Override
 	public List<Event> convertFile(ConversionInstruction ci) throws FileNotFoundException {
 		if (pkg==null) throw new IllegalStateException("Package not set");
 		
