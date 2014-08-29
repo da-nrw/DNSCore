@@ -39,35 +39,57 @@ public class FakeFormatScanService implements FormatScanService {
 		
 		for (DAFile f:files){
 			
-			if (f.getRelative_path().endsWith(".tif")){
+			if (f.getRelative_path().toLowerCase().endsWith(".avi")){
+				f.setFormatPUID("fmt/5");
+				f.setFormatSecondaryAttribute("cinepak");
+				continue;
+			}
+			
+			if (f.getRelative_path().toLowerCase().endsWith(".mxf")){
+				f.setFormatPUID("fmt/200");
+				f.setFormatSecondaryAttribute("dvvideo");
+				continue;
+			}
+			
+			if (f.getRelative_path().toLowerCase().endsWith(".mov")){
+				f.setFormatPUID("x-fmt/384");
+				f.setFormatSecondaryAttribute("svq1");
+				continue;
+			}
+			
+			if (f.getRelative_path().toLowerCase().endsWith(".tif")){
 				f.setFormatPUID("fmt/353");
 				continue;
 			}
 			
-			if (f.getRelative_path().endsWith(".bmp")){
+			if (f.getRelative_path().toLowerCase().endsWith(".bmp")){
 				f.setFormatPUID("fmt/116");
 				continue;
 			}
 			
-			if (f.getRelative_path().endsWith(".jp2")){
+			if (f.getRelative_path().toLowerCase().endsWith(".jp2")){
 				f.setFormatPUID("x-fmt/392");
 				continue;
 			}
 			
-			if (f.getRelative_path().endsWith(".gif")){
+			if (f.getRelative_path().toLowerCase().endsWith(".gif")){
 				f.setFormatPUID("fmt/4");
 				continue;
 			}
 			
-			if (f.getRelative_path().endsWith(".pdf")){
+			if (f.getRelative_path().toLowerCase().endsWith(".pdf")){
 				f.setFormatPUID("fmt/16");
 				continue;
 			}
+
+			if (f.getRelative_path().toLowerCase().endsWith(".xml")){
+				f.setFormatPUID("fmt/101");
+			}
 			
-			BufferedReader br=new BufferedReader(new FileReader(files.get(0).toRegularFile()));
+			BufferedReader br=new BufferedReader(new FileReader(f.toRegularFile()));
 	        String line;
 	        while((line=br.readLine())!=null){
-		        if (patternFound(line,"<mets .*>")){
+		        if (patternFound(line,"<mets.*>")){
 		        	f.setFormatPUID(C.METS_PUID);
 		        	break;
 		        	}
@@ -85,6 +107,8 @@ public class FakeFormatScanService implements FormatScanService {
 		        	}
 	        }		
 	        br.close();
+	        
+	    	
 		}
 		return files;
 	}

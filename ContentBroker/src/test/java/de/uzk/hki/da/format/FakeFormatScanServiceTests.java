@@ -47,6 +47,19 @@ public class FakeFormatScanServiceTests {
 		
 		assertEquals(C.EAD_PUID,files.get(0).getFormatPUID());	
 	}
+
+	@Test
+	public void testEAD2() throws IOException{
+		DAFile ead2 = new DAFile(object.getLatestPackage(),"1+a","EAD_Export.XML");
+		List<DAFile> files = new ArrayList<DAFile>();
+		files.add(ead2);
+		
+		fss.identify(files);
+		
+		assertEquals(C.EAD_PUID,files.get(0).getFormatPUID());	
+	}
+	
+	
 	
 	@Test
 	public void testLIDO() throws IOException{
@@ -126,19 +139,36 @@ public class FakeFormatScanServiceTests {
 		
 		assertEquals("fmt/16",files.get(0).getFormatPUID());	
 	}
+
+	@Test
+	public void testXml() throws IOException{
+		DAFile xml = new DAFile(object.getLatestPackage(),"1+a","b.xml");
+		List<DAFile> files = new ArrayList<DAFile>();
+		files.add(xml);
+		
+		fss.identify(files);
+		
+		assertEquals("fmt/101",files.get(0).getFormatPUID());	
+	}
 	
 	@Test
-	public void testTwoFiles() throws IOException{
+	public void testMoreFiles() throws IOException{
 		DAFile gif = new DAFile(object.getLatestPackage(),"1+a","gif.gif");
 		DAFile pdf = new DAFile(object.getLatestPackage(),"1+a","pdf.pdf");
+		DAFile ead2 = new DAFile(object.getLatestPackage(),"1+a","EAD_Export.XML");
+		DAFile mets = new DAFile(object.getLatestPackage(),"1+a","mets_mods_example.xml");
 		List<DAFile> files = new ArrayList<DAFile>();
 		files.add(pdf);
 		files.add(gif);
+		files.add(ead2);
+		files.add(mets);
 		
 		fss.identify(files);
 		
 		assertEquals("fmt/16",files.get(0).getFormatPUID());
 		assertEquals("fmt/4",files.get(1).getFormatPUID());
+		assertEquals(C.EAD_PUID,files.get(2).getFormatPUID());
+		assertEquals(C.METS_PUID,files.get(3).getFormatPUID());
 	}
 	
 	
