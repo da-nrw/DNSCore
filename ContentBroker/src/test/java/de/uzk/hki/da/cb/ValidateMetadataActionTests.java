@@ -62,9 +62,8 @@ public class ValidateMetadataActionTests {
 	private static final String VDA03_XML = "vda03.xml";
 	private static final String METS_2_99_XML = "mets_2_99.xml";
 	private static final String IDENTIFIER = "identifier";
-	private static final Path WORK_AREA_ROOT = Path.make(TC.TEST_ROOT_CB,"ValidateMetadataActionTests");
+	private static final Path WORK_AREA_ROOT = Path.make(TC.TEST_ROOT_CB,"ValidateMetadataActionTests","work");
 	private static final String XMP1_XML = "xmp1.xmp";
-	private static final String XMP_RDF = "XMP.rdf";
 	private static final String LIDO_XML = "lido1.xml";
 	
 	private static MetadataStructureFactory msf;
@@ -78,7 +77,6 @@ public class ValidateMetadataActionTests {
 	DAFile f_mets1 = new DAFile(null,"",METS_2_99_XML); 
 	DAFile f_mets2 = new DAFile(null,"",METS_2_998_XML);
 	DAFile f_xmp1 = new DAFile(null,"",XMP1_XML);
-	DAFile f_rdf = new DAFile(null,"",XMP_RDF);
 	DAFile f_lido1 = new DAFile(null,"",LIDO_XML);
 	DAFile f_lido2 = new DAFile(null,"",LIDO_XML);
 
@@ -101,7 +99,6 @@ public class ValidateMetadataActionTests {
 		f_mets1.setPackage(object.getLatestPackage());
 		f_mets2.setPackage(object.getLatestPackage());
 		f_xmp1.setPackage(object.getLatestPackage());
-		f_rdf.setPackage(object.getLatestPackage());
 		f_lido1.setPackage(object.getLatestPackage());
 		f_lido2.setPackage(object.getLatestPackage());
 		
@@ -199,18 +196,6 @@ public class ValidateMetadataActionTests {
 		}
 	}
 	
-	@Test
-	public void testXMPWithRDF() throws FileNotFoundException, UserException, IOException, RepositoryException{
-		
-		object.getLatestPackage().getFiles().add(f_xmp1);
-		object.getLatestPackage().getFiles().add(f_rdf);
-		
-		action.implementation();
-		
-		assertEquals(C.XMP,object.getPackage_type());
-//		assertEquals(C.XMP_RDF,object.getMetadata_file());
-	}
-	
 	
 	@Test
 	public void testXMPWithoutRDF() throws FileNotFoundException, UserException, IOException, RepositoryException{
@@ -220,6 +205,7 @@ public class ValidateMetadataActionTests {
 		action.implementation();
 		
 		assertEquals(C.XMP,object.getPackage_type());
+		assertEquals(C.XMP_RDF,object.getMetadata_file());
 	}
 	
 

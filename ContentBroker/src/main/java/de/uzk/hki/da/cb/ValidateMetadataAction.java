@@ -35,13 +35,18 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
 
 /**
- * Detects the package type of an object and validates the metadatastructure.
+ * Detects the package type of an object and validates the metadata structure.
  * 
  * The package type can be of the four types
+ * <ul>
  * <li>METS
  * <li>EAD
  * <li>XMP
  * <li>LIDO
+ * </ul>
+ * 
+ * When package type XMP is detected, and no XMP.rdf has been found, a XMP.rdf
+ * manifest gets generated an put to the temp representation.
  * 
  * @author Daniel M. de Oliveira
  */
@@ -84,20 +89,15 @@ public class ValidateMetadataAction extends AbstractAction {
 		}
 		
 		object.setPackage_type(detectedPackageType);
-		if (detectedMetadataFile!=null)
-			object.setMetadata_file(detectedMetadataFile.getRelative_path());
+		object.setMetadata_file(detectedMetadataFile.getRelative_path());
 		return true;
 	}
-
-	
 	
 	
 	private MetadataStructure createMetadataStructure() {
 		MetadataStructure ms=null;
 		try {
-			File d = null;
-			if (detectedMetadataFile!=null)
-				d = detectedMetadataFile.toRegularFile();
+			File d = detectedMetadataFile.toRegularFile();
 			ms = msf.create(detectedPackageType, d);
 		} catch (Exception e){
 			throw new RuntimeException("problem occured during creation of metadata structure",e);
@@ -105,6 +105,9 @@ public class ValidateMetadataAction extends AbstractAction {
 		return ms;
 	}
 
+	
+	
+	
 	
 	
 	
@@ -164,7 +167,8 @@ public class ValidateMetadataAction extends AbstractAction {
 		}
 		
 		if ((getFilesWithPUID(C.XMP_PUID)).size()>=1){
-//			detectedMetadataFile=C.XMP_RDF;
+			detectedMetadataFile=new DAFile(object.getLatestPackage(),
+					object.getNameOfNewestARep().replace("+a", "+b"),C.XMP_RDF);
 			detectedPackageType=C.XMP;
 			ptypeCount++;
 		}
