@@ -105,7 +105,7 @@ public class XmpCollector {
 			logger.debug("found matching file {}", list[0]);
 			// read XMP with matching file as base name
 			// use "http://www.danrw.de/temp/" as a pseudo base URI in order to allow relative resource URIs
-			model.read(new StringReader(xmpWriter.toString()),"http://www.danrw.de/temp/" + list[0]);
+			model.read(new StringReader(xmpWriter.toString().trim().replaceFirst("^([\\W]+)<","<")),"http://www.danrw.de/temp/" + list[0]);
 		}
 		
 		try {
