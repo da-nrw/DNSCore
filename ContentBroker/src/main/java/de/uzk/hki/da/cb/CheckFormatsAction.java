@@ -29,7 +29,8 @@ import java.util.Set;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.format.FormatScanService;
+import de.uzk.hki.da.format.FileFormatException;
+import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.MetadataExtractor;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
@@ -41,7 +42,7 @@ import de.uzk.hki.da.utils.CommaSeparatedList;
 public class CheckFormatsAction extends AbstractAction {
 
 
-	private FormatScanService formatScanService;
+	private FileFormatFacade fileFormatFacade;
 
 	private MetadataExtractor jhoveScanService;
 
@@ -64,7 +65,12 @@ public class CheckFormatsAction extends AbstractAction {
 				allFiles.addAll(p.getFiles());
 				
 		}
-		allFiles = getFormatScanService().identify(allFiles);
+		try {
+			allFiles = getFileFormatFacade().identify(allFiles);
+		} catch (FileFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		for (DAFile f:allFiles){
 			if (f.getFormatPUID()==null) throw new RuntimeException("file \""+f+"\" has no format puid");
@@ -126,19 +132,19 @@ public class CheckFormatsAction extends AbstractAction {
 		}
 	}
 
-	public FormatScanService getFormatScanService() {
-		return formatScanService;
-	}
-
-	public void setFormatScanService(FormatScanService formatScanService) {
-		this.formatScanService = formatScanService;
-	}
-
 	public MetadataExtractor getJhoveScanService() {
 		return jhoveScanService;
 	}
 
 	public void setJhoveScanService(MetadataExtractor jhoveScanService) {
 		this.jhoveScanService = jhoveScanService;
+	}
+
+	public FileFormatFacade getFileFormatFacade() {
+		return fileFormatFacade;
+	}
+
+	public void setFileFormatFacade(FileFormatFacade fileFormatFacade) {
+		this.fileFormatFacade = fileFormatFacade;
 	}
 }

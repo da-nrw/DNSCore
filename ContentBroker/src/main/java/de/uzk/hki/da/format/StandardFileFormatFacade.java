@@ -17,30 +17,36 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.metadata;
+package de.uzk.hki.da.format;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.util.List;
 
-import org.jdom.JDOMException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import de.uzk.hki.da.model.DAFile;
 
 /**
- * @author Polina Gubaidullina
+ * Implementation for file identification: FIDO.
+ * 
+ * @author Daniel M. de Oliveira
  */
-public abstract class MetadataStructure {
+public class StandardFileFormatFacade implements FileFormatFacade{
+
+	private FidoFormatScanService fidoFormatScanService;
 	
-	/** The logger. */
-	public Logger logger = LoggerFactory
-			.getLogger(MetadataStructure.class);
-	
-	public boolean isValid = true;
-	
-	public MetadataStructure(File metadataFile) 
-			throws FileNotFoundException, JDOMException, IOException {
+	@Override
+	public List<DAFile> identify(List<DAFile> files)
+			throws FileNotFoundException {
+		if (fidoFormatScanService==null) throw new IllegalStateException("fidoFormatScanService must not be null");
+		
+		return fidoFormatScanService.identify(files);
 	}
-	
-	public abstract boolean isValid();
+
+	public FidoFormatScanService getFidoFormatScanService() {
+		return fidoFormatScanService;
+	}
+
+	public void setFidoFormatScanService(FidoFormatScanService fidoFormatScanService) {
+		this.fidoFormatScanService = fidoFormatScanService;
+	}
+
 }

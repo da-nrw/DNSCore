@@ -19,11 +19,11 @@ import de.uzk.hki.da.utils.TESTHelper;
 /**
  * @author Daniel M. de Oliveira
  */
-public class FakeFormatScanServiceTests {
+public class FakeFileFormatFacadeTests {
 	
 	private static final Path workAreaRootPath = Path.make(TC.TEST_ROOT_FORMAT,"FakeFormatScanServiceTests","work");
 	private static final Object object = TESTHelper.setUpObject("identifier", workAreaRootPath);
-	private static final FakeFormatScanService fss = new FakeFormatScanService();
+	private static final FakeFileFormatFacade fss = new FakeFileFormatFacade();
 	
 	@Test
 	public void testMets() throws IOException{

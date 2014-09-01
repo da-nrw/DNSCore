@@ -31,7 +31,8 @@ import org.apache.commons.lang.NotImplementedException;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.format.FormatScanService;
+import de.uzk.hki.da.format.FileFormatException;
+import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.repository.RepositoryException;
@@ -48,7 +49,7 @@ import de.uzk.hki.da.utils.Path;
  */
 public class RestructureAction extends AbstractAction{
 	
-	private FormatScanService formatScanService;
+	private FileFormatFacade fileFormatFacade;
 	private IngestGate ingestGate;
 	private GridFacade gridRoot;
 	
@@ -59,7 +60,7 @@ public class RestructureAction extends AbstractAction{
 	@Override
 	void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
-		if (getFormatScanService()==null) throw new ConfigurationException("formatScanService not set");
+		if (getFileFormatFacade()==null) throw new ConfigurationException("fileFormatFacade not set");
 	}
 
 	@Override
@@ -110,7 +111,13 @@ public class RestructureAction extends AbstractAction{
 		
 		object.reattach();
 		logger.debug("scanning files with format identifier(s)");
-		List<DAFile> scannedFiles = formatScanService.identify(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
+		List<DAFile> scannedFiles = null;
+		try {
+			scannedFiles = fileFormatFacade.identify(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
+		} catch (FileFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for (DAFile f:scannedFiles){
 			logger.debug(f+":"+f.getFormatPUID());
 		}
@@ -167,11 +174,11 @@ public class RestructureAction extends AbstractAction{
 		this.gridRoot = gridRoot;
 	}
 	
-	public FormatScanService getFormatScanService() {
-		return formatScanService;
+	public FileFormatFacade getFileFormatFacade() {
+		return fileFormatFacade;
 	}
 
-	public void setFormatScanService(FormatScanService formatScanService) {
-		this.formatScanService = formatScanService;
+	public void setFileFormatFacade(FileFormatFacade fileFormatFacade) {
+		this.fileFormatFacade = fileFormatFacade;
 	}
 }

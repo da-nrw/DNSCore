@@ -25,11 +25,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.jdom.JDOMException;
-import org.xml.sax.SAXException;
-
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
@@ -40,21 +35,29 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
 
 /**
- * Detects the package type of an object.
- * It can be one of
+ * Detects the package type of an object and validates the metadata structure.
+ * 
+ * The package type can be of the four types
+ * <ul>
  * <li>METS
  * <li>EAD
  * <li>XMP
  * <li>LIDO
+ * </ul>
+ * 
+ * When package type XMP is detected, and no XMP.rdf has been found, a XMP.rdf
+ * manifest gets generated an put to the temp representation.
  * 
  * @author Daniel M. de Oliveira
  */
 public class ValidateMetadataAction extends AbstractAction {
 	
-	private String detectedPackageType;
-	private String detectedMetadataFile;
+	private static final String PACKAGE_TYPE_FOR_OBJECT_DETERMINDED = "Package type for object determinded: ";
+	private String detectedPackageType = "NONE";
+	private DAFile detectedMetadataFile;
 	private boolean packageTypeInObjectWasSetBeforeRunningAction=false;
-	private MetadataStructureFactory msf = new MetadataStructureFactory();
+	MetadataStructureFactory msf = new MetadataStructureFactory();
+	
 	
 	@Override
 	void checkActionSpecificConfiguration() throws ConfigurationException {
@@ -73,12 +76,46 @@ public class ValidateMetadataAction extends AbstractAction {
 			UserException, RepositoryException {
 		
 		detect();
-		
-		if (detectedPackageType == null || detectedMetadataFile == null) {
-			logger.warn("Could not determine package type. ");
+		throwExceptionIfPackageTypeCollision();
+		logger.info(PACKAGE_TYPE_FOR_OBJECT_DETERMINDED+detectedPackageType);
+		if (detectedPackageType.equals("NONE")){
 			return true;
 		}
 		
+		MetadataStructure ms = createMetadataStructure();
+		if (!ms.isValid()){
+			throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE, 
+					"Package of type "+detectedPackageType+" is not consistent");
+		}
+		
+		object.setPackage_type(detectedPackageType);
+		object.setMetadata_file(detectedMetadataFile.getRelative_path());
+		return true;
+	}
+	
+	
+	private MetadataStructure createMetadataStructure() {
+		MetadataStructure ms=null;
+		try {
+			File d = detectedMetadataFile.toRegularFile();
+			ms = msf.create(detectedPackageType, d);
+		} catch (Exception e){
+			throw new RuntimeException("problem occured during creation of metadata structure",e);
+		}
+		return ms;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * if something else has been detected in a previous SIP.
+	 */
+	private void throwExceptionIfPackageTypeCollision() {
 		if (!(object.getPackage_type()==null||object.getPackage_type().isEmpty())){
 			packageTypeInObjectWasSetBeforeRunningAction=true;
 			if ((!detectedPackageType.equals(object.getPackage_type()))
@@ -86,38 +123,8 @@ public class ValidateMetadataAction extends AbstractAction {
 				throw new RuntimeException("COLLISION");
 			}
 		}
-		
-		object.setPackage_type(detectedPackageType);
-		logger.debug("set package type: "+detectedPackageType);
-		object.setMetadata_file(detectedMetadataFile);
-		logger.debug("set metadata file: "+detectedMetadataFile);
-		
-		DAFile metadataDAFile = new DAFile();
-		List<DAFile> DAFiles = object.getLatestPackage().getFiles();
-		
-		for(DAFile daFile : DAFiles) {
-			if (daFile.toRegularFile().getName().equals(object.getMetadata_file())) {
-				metadataDAFile = daFile;
-			}
-		}
-		
-		File file = metadataDAFile.toRegularFile();
-		
-		MetadataStructure ms;
-		try {
-			ms = msf.create(object.getPackage_type(), file);
-			boolean metadataStructureIsValid = ms.isValid();
-			System.out.println("metadataStructureIsValid: "+metadataStructureIsValid);
-		} catch (JDOMException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		}
-		
-		return true;
 	}
+	
 
 	@Override
 	void rollback() throws Exception {
@@ -143,7 +150,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		int ptypeCount=0;
 		
 		if (getFilesWithPUID(C.EAD_PUID).size()==1){
-			detectedMetadataFile=getFilesWithPUID(C.EAD_PUID).get(0).getRelative_path();
+			detectedMetadataFile=getFilesWithPUID(C.EAD_PUID).get(0);
 			detectedPackageType=C.EAD;
 			ptypeCount++;
 		}
@@ -154,19 +161,20 @@ public class ValidateMetadataAction extends AbstractAction {
 		}  
 				
 		if (getFilesWithPUID(C.METS_PUID).size()==1){
-			detectedMetadataFile=getFilesWithPUID(C.METS_PUID).get(0).getRelative_path();
+			detectedMetadataFile=getFilesWithPUID(C.METS_PUID).get(0);
 			detectedPackageType=C.METS;
 			ptypeCount++;
 		}
 		
 		if ((getFilesWithPUID(C.XMP_PUID)).size()>=1){
-			detectedMetadataFile=C.XMP_RDF;
+			detectedMetadataFile=new DAFile(object.getLatestPackage(),
+					object.getNameOfNewestARep().replace("+a", "+b"),C.XMP_RDF);
 			detectedPackageType=C.XMP;
 			ptypeCount++;
 		}
 		
 		if ((getFilesWithPUID(C.LIDO_PUID)).size()==1){
-			detectedMetadataFile=getFilesWithPUID(C.LIDO_PUID).get(0).getRelative_path();
+			detectedMetadataFile=getFilesWithPUID(C.LIDO_PUID).get(0);
 			detectedPackageType=C.LIDO;
 			ptypeCount++;
 		}
