@@ -53,6 +53,8 @@ public class XMPCollectorTests {
 	public void test(){
 		Object object = TESTHelper.setUpObject("identifier", WORK_AREA_ROOT_PATH);
 		
+		// document the badness in the file encoding of the tes packages abc.xmp
+		
 		DAFile xmp = new DAFile(object.getLatestPackage(),"1+a","abc.xmp");
 		target = new DAFile(object.getLatestPackage(),"1+a","target.rdf");
 		
