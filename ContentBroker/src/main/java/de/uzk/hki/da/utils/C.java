@@ -21,6 +21,8 @@ package de.uzk.hki.da.utils;
 
 import java.io.File;
 
+import org.jdom.Namespace;
+
 /**
  * @author Daniel M. de Oliveira & the DA-NRW team
  */
@@ -76,4 +78,7 @@ public class C {
 	public static final String CONTRACT_NS = "http://www.danrw.de/contract/v1";
 	public static final String CONTRACT_V1_URL = "http://www.danrw.de/contract/v1";
 	public static final String CONTRACT_V1_SCHEMA_LOCATION = "http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd";
+	public static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
+	public static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
+	public static final String EDM_METADATA_STREAM_ID = "EDM";
 }

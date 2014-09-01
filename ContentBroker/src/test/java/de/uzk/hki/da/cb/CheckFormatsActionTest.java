@@ -36,16 +36,15 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.util.StringUtils;
 
-import de.uzk.hki.da.format.FidoFormatScanService;
 import de.uzk.hki.da.format.JhoveMetadataExtractor;
 import de.uzk.hki.da.format.StandardFileFormatFacade;
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.utils.RelativePath;
 
 
