@@ -18,7 +18,27 @@
 */
 package de.uzk.hki.da.cb;
 
+import static org.junit.Assert.*;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+
+import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
+import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.repository.RepositoryFacade;
+import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * @author Daniel M. de Oliveira

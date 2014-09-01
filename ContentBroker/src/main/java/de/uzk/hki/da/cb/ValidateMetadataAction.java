@@ -120,8 +120,8 @@ public class ValidateMetadataAction extends AbstractAction {
 				throw new RuntimeException("COLLISION");
 			}
 		}
-		
 	}
+	
 
 	@Override
 	void rollback() throws Exception {

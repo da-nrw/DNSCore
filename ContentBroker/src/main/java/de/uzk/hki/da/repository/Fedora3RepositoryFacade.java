@@ -214,10 +214,6 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		@SuppressWarnings("unchecked")
 		List<Object> graph = (List<Object>) json.get("@graph");
 		
-		
-		
-		
-		
 		// create index entry for every subject in graph (subject?)
 		for (Object object : graph) {
 			createIndexEntry(indexName, contextUriPrefix, framePath, object);
