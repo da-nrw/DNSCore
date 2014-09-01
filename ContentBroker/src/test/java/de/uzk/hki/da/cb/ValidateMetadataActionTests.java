@@ -200,7 +200,7 @@ public class ValidateMetadataActionTests {
 	}
 	
 	@Test
-	public void testXMP() throws FileNotFoundException, UserException, IOException, RepositoryException{
+	public void testXMPWithRDF() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
 		object.getLatestPackage().getFiles().add(f_xmp1);
 		object.getLatestPackage().getFiles().add(f_rdf);
@@ -208,7 +208,18 @@ public class ValidateMetadataActionTests {
 		action.implementation();
 		
 		assertEquals(C.XMP,object.getPackage_type());
-		assertEquals(C.XMP_RDF,object.getMetadata_file());
+//		assertEquals(C.XMP_RDF,object.getMetadata_file());
+	}
+	
+	
+	@Test
+	public void testXMPWithoutRDF() throws FileNotFoundException, UserException, IOException, RepositoryException{
+		
+		object.getLatestPackage().getFiles().add(f_xmp1);
+		
+		action.implementation();
+		
+		assertEquals(C.XMP,object.getPackage_type());
 	}
 	
 

@@ -30,7 +30,7 @@
         </property>
     </bean>   
 
-    <bean class="de.uzk.hki.da.format.FileFormatFacade" id="standardFileFormatFacade">
+    <bean class="de.uzk.hki.da.format.StandardFileFormatFacade" id="standardFileFormatFacade">
     	<property name="fidoFormatScanService" ref="fidoFormatScanService" />
     </bean>
 </beans>
