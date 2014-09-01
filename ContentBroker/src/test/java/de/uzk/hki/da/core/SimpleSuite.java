@@ -34,7 +34,6 @@ import de.uzk.hki.da.cb.CreateEDMActionTests;
 import de.uzk.hki.da.cb.CreatePremisActionTests;
 import de.uzk.hki.da.cb.DeleteObjectActionTests;
 import de.uzk.hki.da.cb.FetchPIPsActionTest;
-import de.uzk.hki.da.cb.IndexMetadataActionTests;
 import de.uzk.hki.da.cb.ObjectFSTests;
 import de.uzk.hki.da.cb.PrepareSendToPresenterActionTests;
 import de.uzk.hki.da.cb.ProcessUserDecisionsActionTests;
@@ -156,10 +155,8 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	XsltEDMGeneratorTests.class,
 	SendToPresenterActionTests.class,
 	CreateEDMActionTests.class,
-	IndexMetadataActionTests.class,
 	UpdateMetadataActionEADMultilevelPackagesTest.class,
 	UpdateMetadataActionLIDOTests.class,
-	IndexMetadataActionTests.class,
 	RestructureActionTests.class,
 	ValidateMetadataActionTests.class,
 	ProcessUserDecisionsActionTests.class,

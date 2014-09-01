@@ -20,6 +20,7 @@
 package de.uzk.hki.da.repository;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -48,8 +49,9 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	
 	private static Logger logger = LoggerFactory.getLogger(Fedora3RepositoryFacade.class);
 	private MetadataIndex metadataIndex;
-	
+	private String contextUriPrefix;
 	private FedoraClient fedora;
+	private String edmJsonFrame;
 	
 	/**
 	 * Instantiates a new fedora 3 repository facade.
@@ -58,9 +60,11 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	 * @param fedoraPass the corresponding password
 	 * @throws MalformedURLException 
 	 */
-	public Fedora3RepositoryFacade(String fedoraUrl, String fedoraUser, String fedoraPass) throws MalformedURLException {
+	public Fedora3RepositoryFacade(String fedoraUrl, String fedoraUser, String fedoraPass, String edmJsonFrame) throws MalformedURLException {
 		FedoraCredentials fedoraCredentials = new FedoraCredentials(fedoraUrl, fedoraUser, fedoraPass);
 		this.fedora = new FedoraClient(fedoraCredentials);
+		this.edmJsonFrame = edmJsonFrame;
+		System.out.println("contextUriPrefix: "+getContextUriPrefix());
 	}
 
 	@Override
@@ -76,6 +80,8 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		}
 		return true;
 	}
+	
+	
 
 	@Override 
 	public void createObject(String objectId, String collection, String ownerId) throws RepositoryException {
@@ -194,14 +200,24 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 
 	
 	@Override
-	public void indexMetadata(String indexName, String contextUriPrefix, String framePath,  String id,
-			String edmContent) throws RepositoryException {
+	public void indexMetadata(String indexName, String id, String edmContent
+			) throws RepositoryException, FileNotFoundException {
+		
+		if(edmJsonFrame==null) {
+			throw new IllegalStateException("Frames must not be null");
+		}
+		
+
+		if (!new File(edmJsonFrame).exists())
+			throw new FileNotFoundException(edmJsonFrame+" does not exist.");
+
+		System.out.println("indexMetadata");
 		
 		if(metadataIndex==null) {
 			throw new IllegalStateException("Metadata index not set");
 		}
 		
-		RdfToJsonLdConverter converter = new RdfToJsonLdConverter(framePath);
+		RdfToJsonLdConverter converter = new RdfToJsonLdConverter(edmJsonFrame);
 		Map<String, Object> json = null;
 		try {
 			json = converter.convert(edmContent);
@@ -216,8 +232,8 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		
 		// create index entry for every subject in graph (subject?)
 		for (Object object : graph) {
-			createIndexEntry(indexName, contextUriPrefix, framePath, object);
-		}	
+			createIndexEntry(indexName, edmJsonFrame, object);
+		}		
 	}
 
 	public MetadataIndex getMetadataIndex() {
@@ -232,7 +248,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		return (collection + ":" + objectId);
 	}
 	
-	private void createIndexEntry(String indexName, String contextUriPrefix, String framePath, Object object)
+	private void createIndexEntry(String indexName, String framePath, Object object)
 			throws RepositoryException {
 		
 		@SuppressWarnings("unchecked")
@@ -259,5 +275,22 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			throw new RepositoryException("Unable to index metadata", e);			
 		}	
 	}
+	
+	/**
+	 * Get the name of the index
+	 * the data will be indexed in.
+//	 * @return the index name
+	 */
+	public String getContextUriPrefix() {
+		return contextUriPrefix;
+	}
 
+	/**
+	 * Set the name of the index
+	 * the data will be indexed in.
+	 * @param the index name
+	 */
+	public void setContextUriPrefix(String contextUriPrefix) {
+		this.contextUriPrefix = contextUriPrefix;
+	}
 }

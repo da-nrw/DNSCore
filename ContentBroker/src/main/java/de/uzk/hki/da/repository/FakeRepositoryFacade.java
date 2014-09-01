@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,8 @@ import org.slf4j.LoggerFactory;
  */
 public class FakeRepositoryFacade implements RepositoryFacade {
 	
+	private static final String EDM = "EDM";
+
 	private MetadataIndex metadataIndex;
 	
 	static final Logger logger = LoggerFactory.getLogger(FakeRepositoryFacade.class);
@@ -153,8 +156,8 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	}
 
 	@Override
-	public void indexMetadata(String indexName, String contextUri, String framePath, String id,
-			String content) throws RepositoryException {
+	public void indexMetadata(String indexName, String id,
+			String edmContent) throws RepositoryException {
 		
 		FileOutputStream fop = null;
 		File file;
@@ -170,24 +173,22 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 			}
  
 			// get the content in bytes
-			byte[] contentInBytes = content.getBytes();
+			byte[] contentInBytes = edmContent.getBytes();
 			fop.write(contentInBytes);
 			fop.flush();
 			fop.close();
  
-			System.out.println("Done");
- 
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (fop != null) {
+					fop.close();
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
-			} finally {
-				try {
-					if (fop != null) {
-						fop.close();
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
 			}
+		}
 	}
 	
 	public void setMetadataIndex(MetadataIndex metadataIndex) {

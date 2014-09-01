@@ -13,6 +13,8 @@
 		<constructor-arg value="${fedora.url}" />
 		<constructor-arg value="${fedora.user}" />
 		<constructor-arg ref="fedoPass" />
+		<constructor-arg value="conf/frame.jsonld" />
+		<property name="contextUriPrefix" value="http://data.danrw.de/contexts/" />
 		<property name="metadataIndex" ref="esMetadataIndex"/>
     </bean>
     <bean id="fedoPass" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">

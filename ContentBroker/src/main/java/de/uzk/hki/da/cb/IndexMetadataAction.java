@@ -19,17 +19,13 @@
 
 package de.uzk.hki.da.cb;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.NotImplementedException;
 
-import com.github.jsonldjava.core.JSONLDProcessingError;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
@@ -57,8 +53,7 @@ public class IndexMetadataAction extends AbstractAction {
 	private RepositoryFacade repositoryFacade;
 	private Set<String> testContractors;
 	private String indexName;
-	private Map<String,String> frames;
-	private String contextUriPrefix;
+	private static final String edmMetadataFileId = "EDM";
 
 	@Override
 	void checkActionSpecificConfiguration() throws ConfigurationException {
@@ -72,8 +67,6 @@ public class IndexMetadataAction extends AbstractAction {
 	void checkSystemStatePreconditions() throws IllegalStateException {
 		if (indexName == null) 
 			throw new IllegalStateException("Index name not set. Make sure the action is configured properly");
-		if (getFrames()==null)
-			throw new IllegalStateException("Frames not set.");
 		if (getTestContractors()==null)
 			throw new IllegalStateException("testContractors not set");
 	}
@@ -83,22 +76,17 @@ public class IndexMetadataAction extends AbstractAction {
 	@Override
 	boolean implementation() throws RepositoryException, IOException {
 		setKILLATEXIT(true);
-		
-			for (String framePath : getFrames().keySet()) {
-				if (!new File(framePath).exists())
-					throw new FileNotFoundException(framePath+" does not exist.");
-				
-				String metadataFileId = getFrames().get(framePath);
-				InputStream metadataStream;
-				metadataStream = getRepositoryFacade().retrieveFile(
-					object.getIdentifier(), 
-					preservationSystem.getOpenCollectionName(), metadataFileId);
-				if (metadataStream == null) {
-					logger.warn("Metadata file {} not found in repository! Skipping indexing.", metadataFileId);
-					continue;
-				}
-				transformMetadataToJson(framePath,metadataStream,adjustIndexName(indexName));
-			}
+	
+		InputStream metadataStream;
+		metadataStream = getRepositoryFacade().retrieveFile(
+			object.getIdentifier(), 
+			preservationSystem.getOpenCollectionName(), edmMetadataFileId);
+		if (metadataStream == null) {
+			logger.warn("Metadata file {} not found in repository! Skipping indexing.", edmMetadataFileId);
+			return true;
+		}
+		String edmContent = IOUtils.toString(metadataStream, "UTF-8");
+		getRepositoryFacade().indexMetadata(adjustIndexName(indexName), object.getIdentifier(), edmContent);		
 		
 		return true;
 	}
@@ -127,24 +115,6 @@ public class IndexMetadataAction extends AbstractAction {
 			adjustedIndexName += "_test";
 		}
 		return adjustedIndexName;
-	}
-	
-	
-	
-	/**
-	 * @param framePath
-	 * @param metadataStream
-	 * @param tempIndexName
-	 * @throws RepositoryException
-	 * @throws IOException
-	 * @throws JSONLDProcessingError
-	 */
-	private void transformMetadataToJson(String framePath,InputStream edmStream,String tempIndexName) 
-			throws RepositoryException, IOException {
-		String edmContent = IOUtils.toString(edmStream, "UTF-8");
-		
-		getRepositoryFacade().indexMetadata(tempIndexName, contextUriPrefix, framePath, object.getIdentifier(), edmContent);
-		
 	}
 
 	
@@ -186,49 +156,6 @@ public class IndexMetadataAction extends AbstractAction {
 		this.testContractors = testContractors;
 	}
 
-	/**
-	 * Get the map of frames that defines the JSON-Structure
-	 * of the objects being indexed. Different frames can be
-	 * configured to allow for indexes of different granularity
-	 * or based on different metadata.
-	 * @return the map of frames, keys represent relative paths
-	 * 	to a JSON-LD frame definition, values the name of the
-	 * 	file in the repository
-	 */
-	public Map<String,String> getFrames() {
-		return frames;
-	}
-	
-	/**
-	 * Set the map of frames that defines the JSON-Structure
-	 * of the objects being indexed. Different frames can be
-	 * configured to allow for indexes of different granularity
-	 * or based on different metadata.
-	 * @param the map of frames, keys represent relative paths
-	 * 	to a JSON-LD frame definition, values the name of the
-	 * 	file in the repository
-	 */
-	public void setFrames(Map<String,String> frames) {
-		this.frames = frames;
-	}
-
-	/**
-	 * Get the prefix for URIs to context files that
-	 * are linked in JSON-LD output.
-	 * @return the prefix
-	 */
-	public String getContextUriPrefix() {
-		return contextUriPrefix;
-	}
-
-	/**
-	 * Get the prefix for URIs to context files that
-	 * are linked in JSON-LD output.
-	 * @param the prefix
-	 */
-	public void setContextUriPrefix(String contextUriPrefix) {
-		this.contextUriPrefix = contextUriPrefix;
-	}
 
 	/**
 	 * Get the repository implementation

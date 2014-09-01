@@ -44,7 +44,8 @@ public class CTIndexMetadataFromEdm {
 	
 	@Before 
 	public void setUp() throws MalformedURLException {
-		repo = new Fedora3RepositoryFacade("http://localhost:8080/fedora", "fedoraAdmin", "BYi/MFjKDFd5Dpe52PSUoA==");
+		repo = new Fedora3RepositoryFacade("http://localhost:8080/fedora", "fedoraAdmin", "BYi/MFjKDFd5Dpe52PSUoA==", 
+				new RelativePath("src", "main", "resources", "frame.jsonld").toString());
 		ElasticsearchMetadataIndex esmi = new ElasticsearchMetadataIndex(); 
 		esmi.setCluster("cluster_ci");
 		String[] hosts={"localhost"};
@@ -59,12 +60,10 @@ public class CTIndexMetadataFromEdm {
 		String edmContent = IOUtils.toString(new FileInputStream(edmFile), C.UTF_8);
 	
 		try {
-			repo.indexMetadata("portal_ci", "da-nrw", "src/main/resources/frame.jsonld", "1", edmContent);
+			repo.indexMetadata("portal_ci", "1", edmContent);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
-	}
-	
-	
+	}	
 }

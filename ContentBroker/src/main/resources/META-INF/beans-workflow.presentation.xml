@@ -57,12 +57,6 @@
 		<property name="name" value="IndexMetadataAction" />
 		<property name="indexName" value="${elasticsearch.index}" />
 		<property name="testContractors" ref="testContractors" />
-		<property name="frames">
-			<map>
-				<entry key="conf/frame.jsonld" value="EDM" />
-			</map>
-		</property>
-		<property name="contextUriPrefix" value="http://data.danrw.de/contexts/" />
 	</bean>
 	<!-- END Fedora and ElasticSearch related END -->
 	

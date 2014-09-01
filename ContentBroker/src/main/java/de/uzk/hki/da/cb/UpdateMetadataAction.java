@@ -80,18 +80,17 @@ public class UpdateMetadataAction extends AbstractAction {
 
 	/** The namespaces. */
 	private Map<String,String> namespaces;
+//	temporary
+	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
+	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	/** The xpaths to urls. */
 	private Map<String,String> xpathsToUrls = new HashMap<String,String>();
 	private boolean writePackageTypeToDC = false;	
 	private String[] repNames;	
 	private boolean presMode=false;
 	private Map<String,String> dcMappings = new HashMap<String,String>();
-	
 	private MimeTypeDetectionService mtds = new MimeTypeDetectionService();
-	
-//	temporary
-	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
-	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
+	private String absUrlPrefixFull = "";
 
 	@Override
 	void checkActionSpecificConfiguration() throws ConfigurationException {
@@ -106,17 +105,14 @@ public class UpdateMetadataAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException {
 		
-		if(!isPresMode()) {
-			logger.trace(":::::::::::::::::::::::::::::: LZA ::::::::::::::::::::::::::::::");
-		} else logger.trace(":::::::::::::::::::::::::::::: Presentation ::::::::::::::::::::::::::::::");
+		updateAbsUrlPrefix();
+		updateRepNames();
 		
 		this.setMtds(mtds);
 		
-		if (job==null) throw new ConfigurationException("job not set");
-		
 		String packageType = object.getPackage_type();
 		String metadataFileName = object.getMetadata_file();
-		
+		if (job==null) throw new ConfigurationException("job not set");
 		if (packageType == null || metadataFileName == null) {
 			logger.warn("Could not determine package type. No metadata to update.");
 			return true;
@@ -124,17 +120,12 @@ public class UpdateMetadataAction extends AbstractAction {
 		logger.debug("Got data from ACS - package_type: {}, metadata_file: {}", packageType, metadataFileName);
 		
 		logConvertEventsOnDebugLevel();
+		
+//		if("LIDO".equals(packageType))
 
-		String absUrlPrefixFull = "";
-		if (presMode){
-			if (preservationSystem.getUrisFile() != null && !preservationSystem.getUrisFile().isEmpty()) {
-				absUrlPrefixFull = preservationSystem.getUrisFile() + "/" + job.getObject().getIdentifier() + "/";
-			}
-		}
-			
-		if (repNames == null || repNames.length == 0) {
-			repNames = new String[]{ object.getNameOfNewestRep() };
-		}
+		
+		
+		
 		
 		if ("XMP".equals(packageType)){
 			collectXMP();
@@ -894,4 +885,20 @@ public class UpdateMetadataAction extends AbstractAction {
 		this.presMode = presMode;
 	}
 
+	public void updateAbsUrlPrefix() {
+		if (presMode){
+			if (preservationSystem.getUrisFile() != null && !preservationSystem.getUrisFile().isEmpty()) {
+				absUrlPrefixFull = preservationSystem.getUrisFile() + "/" + job.getObject().getIdentifier() + "/";
+				logger.trace(":::::::::::::::::::::::::::::: Presentation ::::::::::::::::::::::::::::::");
+			} else {
+				logger.trace(":::::::::::::::::::::::::::::: LZA ::::::::::::::::::::::::::::::");
+			}
+		}
+	}
+	
+	public void updateRepNames() {
+		if (repNames == null || repNames.length == 0) {
+			repNames = new String[]{ object.getNameOfNewestRep() };
+		}
+	}
 }

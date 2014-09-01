@@ -51,7 +51,7 @@ public class CTFedora3RepositoryFacadeTest {
 	@Before
 	public void setUp(){
 		try {
-			fedora = new Fedora3RepositoryFacade("http://localhost:8080/fedora", "fedoraAdmin", PasswordUtils.decryptPassword("BYi/MFjKDFd5Dpe52PSUoA=="));
+			fedora = new Fedora3RepositoryFacade("http://localhost:8080/fedora", "fedoraAdmin", PasswordUtils.decryptPassword("BYi/MFjKDFd5Dpe52PSUoA=="), null);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}

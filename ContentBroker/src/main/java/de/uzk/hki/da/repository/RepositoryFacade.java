@@ -20,8 +20,10 @@
 package de.uzk.hki.da.repository;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+
 import com.yourmediashelf.fedora.client.FedoraClientException;
 
 /**
@@ -130,12 +132,10 @@ public interface RepositoryFacade {
 	 * @param collection in the index
 	 * @param data nested key value data to be indexed
 	 * @throws RepositoryException
+	 * @throws FileNotFoundException 
 	 */
-	void indexMetadata(String indexName, String contextUriPrefix, String framePath, String id, String edmContent)
-			throws RepositoryException;
-	
-//	void indexMetadata(String indexName, String collection, String id, String edmContent)
-//			throws RepositoryException;
+	void indexMetadata(String indexName, String id, String edmContent)
+			throws RepositoryException, FileNotFoundException;
 	
 	/**
 	 * Generate a file id from a file path.
