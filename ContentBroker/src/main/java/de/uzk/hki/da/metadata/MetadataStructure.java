@@ -38,7 +38,8 @@ public abstract class MetadataStructure {
 	
 	public boolean isValid = true;
 	
-	public MetadataStructure(File metadataFile) throws FileNotFoundException, JDOMException, IOException {
+	public MetadataStructure(File metadataFile) 
+			throws FileNotFoundException, JDOMException, IOException {
 	}
 	
 	public abstract boolean isValid();
