@@ -19,6 +19,7 @@
 
 package de.uzk.hki.da.repository;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -35,7 +36,11 @@ import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.RelativePath;
 
 
-
+/**
+ * @author Polina Gubaidullina
+ * @author Daniel M. de Oliveira
+ *
+ */
 public class CTIndexMetadataFromEdm {
 
     // index name generated from elasticsearch.indexName + _test for the TEST contractors
@@ -56,6 +61,7 @@ public class CTIndexMetadataFromEdm {
 		repo.setMetadataIndex(esmi);
 	}
 	
+	
 	@Test
 	public void test() throws FileNotFoundException, IOException {
 		
@@ -67,6 +73,8 @@ public class CTIndexMetadataFromEdm {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
+		
+		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "Inventarnummer").contains("\"edm:provider\":\"DA-NRW - Digitales Archiv Nordrhein-Westfalen\""));
 	}	
 
 }

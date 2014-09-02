@@ -24,8 +24,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -47,6 +50,7 @@ import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
 
 public class Fedora3RepositoryFacade implements RepositoryFacade {
 	
+	private static final String ORE_AGGREGATION = "ore:Aggregation";
 	private static Logger logger = LoggerFactory.getLogger(Fedora3RepositoryFacade.class);
 	private MetadataIndex metadataIndex;
 	private String contextUriPrefix;
@@ -228,6 +232,10 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			createIndexEntry(indexName, edmJsonFrame, object);
 		}		
 	}
+	
+	
+	
+	
 
 	public MetadataIndex getMetadataIndex() {
 		return metadataIndex;
@@ -253,7 +261,8 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			subject.remove("edm:object");
 		}
 			
-			// Add @context attribute
+		
+		// Add @context attribute
 		String contextUri = contextUriPrefix + FilenameUtils.getName(framePath);
 		subject.put("@context", contextUri);
 		String[] splitId = ((String) subject.get("@id")).split("/");
@@ -262,7 +271,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		String[] splitType = ((String) subject.get("@type")).split("/");
 		String type = splitType[splitType.length-1];
 
-		type="ore:Aggregation"; // override on purpose, so that everything is mapped against es_mapping.json
+		type=ORE_AGGREGATION; // override on purpose, so that everything is mapped against es_mapping.json
 		
 		try {
 			metadataIndex.indexMetadata(indexName, type, id, subject);
@@ -287,5 +296,31 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	 */
 	public void setContextUriPrefix(String contextUriPrefix) {
 		this.contextUriPrefix = contextUriPrefix;
+	}
+
+	@Override
+	public String getIndexedMetadata(String indexName, String objectId) {
+		
+		try {
+			String requestURL = 
+					"http://localhost:9200/"+indexName+"/"+ORE_AGGREGATION+"/_search?q=_id:"+objectId;
+			URL wikiRequest;
+			wikiRequest = new URL(requestURL);
+			URLConnection connection;
+			connection = wikiRequest.openConnection();
+			connection.setDoOutput(true);  
+			
+			
+			
+			Scanner scanner;
+			scanner = new Scanner(wikiRequest.openStream());
+			String response = scanner.useDelimiter("\\Z").next();
+			
+			scanner.close();
+			return response;
+    	}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "";
 	}
 }

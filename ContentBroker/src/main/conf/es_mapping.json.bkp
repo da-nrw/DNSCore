@@ -1,0 +1,217 @@
+{
+    "aggregation": {
+        "properties": {
+            "@id": {
+                "type": "string"
+            },
+            "@type": {
+                "type": "string"
+            },
+            "edm:aggregatedCHO": {
+                "dynamic": "true",
+                "path": "just_name",
+                "properties": {
+                    "@id": {
+                        "type": "string"
+                    },
+                    "@type": {
+                        "type": "string"
+                    },
+                    "dc:contributor": {
+                        "type": "string",
+                        "index_name": "danrw_contributor"
+                    },
+                    "dc:creator": {
+                        "type": "string",
+                        "index_name": "danrw_contributor"
+                    },
+                    "dc:date": {
+                        "type": "date",
+                        "index_name": "danrw_date",
+                        "format": "dateOptionalTime"
+                    },
+                    "dc:description": {
+                        "type": "string",
+                        "index_name": "danrw_title"
+                    },
+                    "dc:format": {
+                        "type": "string"
+                    },
+                    "dc:identifier": {
+                        "type": "multi_field",
+                        "fields": {
+                            "dc:identifier": {
+                                "type": "string",
+                                "index_name": "danrw_institution"
+                            },
+                            "identifier_facet": {
+                                "type": "string",
+                                "index": "not_analyzed",
+                                "omit_norms": true,
+                                "index_options": "docs",
+                                "include_in_all": false
+                            }
+                        }
+                    },
+                    "dc:language": {
+                        "type": "string"
+                    },
+                    "dc:publisher": {
+                        "type": "string",
+                        "index_name": "danrw_institution"
+                    },
+                    "dc:relation": {
+                        "type": "string"
+                    },
+                    "dc:rights": {
+                        "type": "string"
+                    },
+                    "dc:source": {
+                        "type": "string",
+                        "index_name": "danrw_institution"
+                    },
+                    "dc:subject": {
+                        "type": "string",
+                        "index_name": "danrw_subject"
+                    },
+                    "dc:title": {
+                        "type": "string",
+                        "index_name": "danrw_title"
+                    },
+                    "dc:type": {
+                        "type": "string"
+                    },
+                    "dcterms:alternative": {
+                        "type": "string",
+                        "index_name": "danrw_title"
+                    },
+                    "dcterms:created": {
+                        "type": "date",
+                        "format": "dateOptionalTime"
+                    },
+                    "dcterms:date": {
+                        "type": "string"
+                    },
+                    "dcterms:extent": {
+                        "type": "string"
+                    },
+                    "dcterms:isPartOf": {
+                        "type": "multi_field",
+                        "fields": {
+                            "dcterms:isPartOf": {
+                                "type": "string",
+                                "index_name": "danrw_collection"
+                            },
+                            "isPartOf_facet": {
+                                "type": "string",
+                                "index": "not_analyzed",
+                                "omit_norms": true,
+                                "index_options": "docs",
+                                "include_in_all": false
+                            }
+                        }
+                    },
+                    "dcterms:issued": {
+                        "type": "string"
+                    },
+                    "dcterms:provenance": {
+                        "type": "string",
+                        "index_name": "danrw_institution"
+                    },
+                    "dcterms:references": {
+                        "type": "string"
+                    },
+                    "dcterms:spatial": {
+                        "type": "string",
+                        "index_name": "danrw_place"
+                    },
+                    "dcterms:temporal": {
+                        "type": "string"
+                    },
+                    "edm:isNextInSequence": {
+                        "dynamic": "true",
+                        "path": "just_name",
+                        "properties": {
+                            "@id": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "edm:type": {
+                        "type": "string"
+                    },
+                    "owl:sameAs": {
+                        "type": "string"
+                    }
+                }
+            },
+            "edm:dataProvider": {
+                "type": "multi_field",
+                "fields": {
+                    "edm:dataProvider": {
+                        "type": "string",
+                        "index_name": "danrw_institution"
+                    },
+                    "data_provider_facet": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "omit_norms": true,
+                        "index_options": "docs",
+                        "include_in_all": false
+                    }
+                }
+            },
+            "edm:hasView": {
+                "dynamic": "true",
+                "path": "just_name",
+                "properties": {
+                    "@id": {
+                        "type": "string"
+                    },
+                    "dc:format": {
+                        "type": "string",
+                        "index_name": "danrw_mediaType",
+                        "index": "not_analyzed",
+                        "omit_norms": true,
+                        "index_options": "docs"
+                    }
+                }
+            },
+            "edm:isShownAt": {
+                "properties": {
+                    "@id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "edm:object": {
+                "dynamic": "true",
+                "path": "just_name",
+                "properties": {
+                    "@id": {
+                        "type": "string"
+                    },
+                    "dc:format": {
+                        "type": "string"
+                    }
+                }
+            },
+            "edm:provider": {
+                "type": "string"
+            },
+            "edm:rights": {
+                "properties": {
+                    "@id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "id": {
+                "type": "string"
+            },
+            "type": {
+                "type": "string"
+            }
+        }
+    }
+}
