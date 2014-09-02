@@ -82,6 +82,7 @@ public class IndexMetadataAction extends AbstractAction {
 			return true;
 		}
 		String edmContent = IOUtils.toString(metadataStream, "UTF-8");
+		logger.debug("will index metadata in "+adjustIndexName(indexName));
 		getRepositoryFacade().indexMetadata(adjustIndexName(indexName), object.getIdentifier(), edmContent);		
 		
 		return true;

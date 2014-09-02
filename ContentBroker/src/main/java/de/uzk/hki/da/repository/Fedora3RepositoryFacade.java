@@ -202,20 +202,13 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	@Override
 	public void indexMetadata(String indexName, String id, String edmContent
 			) throws RepositoryException, FileNotFoundException {
-		
-		if(edmJsonFrame==null) {
+		if(edmJsonFrame==null) 
 			throw new IllegalStateException("Frames must not be null");
-		}
-		
-
+		if(metadataIndex==null)
+			throw new IllegalStateException("Metadata index not set");
 		if (!new File(edmJsonFrame).exists())
 			throw new FileNotFoundException(edmJsonFrame+" does not exist.");
 
-		System.out.println("indexMetadata");
-		
-		if(metadataIndex==null) {
-			throw new IllegalStateException("Metadata index not set");
-		}
 		
 		RdfToJsonLdConverter converter = new RdfToJsonLdConverter(edmJsonFrame);
 		Map<String, Object> json = null;
@@ -255,8 +248,10 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		Map<String,Object> subject = (Map<String,Object>) object;
 			
 		Object temp = subject.get("edm:object;");
-		if (temp==null) subject.remove("edm:object");
-		
+		if (temp==null) {
+			logger.warn("removing edm:object from graph since it is null");
+			subject.remove("edm:object");
+		}
 			
 			// Add @context attribute
 		String contextUri = contextUriPrefix + FilenameUtils.getName(framePath);

@@ -38,6 +38,9 @@ import de.uzk.hki.da.utils.RelativePath;
 
 public class CTIndexMetadataFromEdm {
 
+    // index name generated from elasticsearch.indexName + _test for the TEST contractors
+	private static final String INDEX_NAME = "portal_ci_test";
+	
 	File edmFile = new RelativePath("src", "test", "resources", "repository", "CTIndexMetadataFromEdmTests", "edmContent").toFile();
 	private Fedora3RepositoryFacade repo;
 	
@@ -56,14 +59,14 @@ public class CTIndexMetadataFromEdm {
 	@Test
 	public void test() throws FileNotFoundException, IOException {
 		
-		
 		String edmContent = IOUtils.toString(new FileInputStream(edmFile), C.UTF_8);
 	
 		try {
-			repo.indexMetadata("portal_ci", "1", edmContent);
+			repo.indexMetadata(INDEX_NAME, "1", edmContent);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
 	}	
+
 }
