@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export http_proxy=
 echo rebuilding index
 curl -XDELETE 'localhost:9200/portal_ci_test'
 curl -XPUT 'localhost:9200/portal_ci_test'
