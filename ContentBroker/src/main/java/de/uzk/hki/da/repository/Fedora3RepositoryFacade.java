@@ -254,17 +254,27 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		
 		@SuppressWarnings("unchecked")
 		Map<String,Object> subject = (Map<String,Object>) object;
-			
+		
+		
+		// validation
 		Object temp = subject.get("edm:object;");
 		if (temp==null) {
 			logger.warn("removing edm:object from graph since it is null");
 			subject.remove("edm:object");
 		}
+		Object isShownBy = subject.get("edm:isShownBy");
+		if (isShownBy!=null) {
+			logger.warn("removing edm:object from graph since it is null");
+			subject.remove("edm:isShownBy");
+		}
+		
+		
+		
 			
 		
 		// Add @context attribute
-		String contextUri = contextUriPrefix + FilenameUtils.getName(framePath);
-		subject.put("@context", contextUri);
+//		String contextUri = contextUriPrefix + FilenameUtils.getName(framePath);
+//		subject.put("@context", contextUri);
 		String[] splitId = ((String) subject.get("@id")).split("/");
 		String id = splitId[splitId.length-1];
 		// extract index name from type
@@ -315,6 +325,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			Scanner scanner;
 			scanner = new Scanner(wikiRequest.openStream());
 			String response = scanner.useDelimiter("\\Z").next();
+			System.out.println("R:"+response);
 			
 			scanner.close();
 			return response;

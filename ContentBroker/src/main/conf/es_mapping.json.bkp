@@ -1,5 +1,6 @@
 {
-    "aggregation": {
+    "ore:Aggregation": {
+    	"dynamic" : "strict",
         "properties": {
             "@id": {
                 "type": "string"
@@ -26,7 +27,7 @@
                         "index_name": "danrw_contributor"
                     },
                     "dc:date": {
-                        "type": "date",
+                        "type": "string",
                         "index_name": "danrw_date",
                         "format": "dateOptionalTime"
                     },
