@@ -28,12 +28,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.utils.Utilities;
 
 
 /**
@@ -59,6 +63,7 @@ public class CTIndexMetadataFromEdm {
 		String[] hosts={"localhost"};
 		esmi.setHosts(hosts);
 		repo.setMetadataIndex(esmi);
+		
 	}
 	
 	
@@ -73,6 +78,10 @@ public class CTIndexMetadataFromEdm {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
+		
+		try {
+			Thread.sleep(4711);
+		} catch (InterruptedException e) {}
 		
 		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "Inventarnummer").contains("\"edm:provider\":\"DA-NRW - Digitales Archiv Nordrhein-Westfalen\""));
 	}	

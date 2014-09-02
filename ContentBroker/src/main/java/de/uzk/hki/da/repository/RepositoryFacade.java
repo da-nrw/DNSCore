@@ -33,7 +33,7 @@ import com.yourmediashelf.fedora.client.FedoraClientException;
  * this interface and changing the corresponding class in the spring configuration.
  * 
  * @author Sebastian Cuy
- * 
+ * @author Daniel M. de Oliveira
  */
 public interface RepositoryFacade {
 	
@@ -145,8 +145,6 @@ public interface RepositoryFacade {
 	 * Return the indexed metadata for the object with objectId from index indexName.
 	 */
 	String getIndexedMetadata(String indexName, String objectId);
-	
-	
 	
 	/**
 	 * Generate a file id from a file path.

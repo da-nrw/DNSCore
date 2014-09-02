@@ -308,6 +308,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		this.contextUriPrefix = contextUriPrefix;
 	}
 
+	
 	@Override
 	public String getIndexedMetadata(String indexName, String objectId) {
 		
@@ -319,8 +320,6 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			URLConnection connection;
 			connection = wikiRequest.openConnection();
 			connection.setDoOutput(true);  
-			
-			
 			
 			Scanner scanner;
 			scanner = new Scanner(wikiRequest.openStream());
