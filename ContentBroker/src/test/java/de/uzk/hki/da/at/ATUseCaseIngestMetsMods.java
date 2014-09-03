@@ -60,6 +60,7 @@ public class ATUseCaseIngestMetsMods extends Base{
 	public static void setUpBeforeClass() throws IOException{
 		setUpBase();
 		object = ingest(origName);
+		
 	}
 	
 	@AfterClass
@@ -93,7 +94,11 @@ public class ATUseCaseIngestMetsMods extends Base{
 	
 	@Test
 	public void checkIndex(){
-		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-md801613").
-				contains("ULB (Stadt) [Electronic ed.]"));
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {}
+		String abc = repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-md801613");
+		System.out.println("abc:"+abc);
+		assertTrue(abc.contains("ULB (Stadt) [Electronic ed.]"));
 	}
 }

@@ -319,6 +319,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		try {
 			String requestURL = 
 					"http://localhost:9200/"+indexName+"/"+ORE_AGGREGATION+"/_search?q=_id:"+objectId;
+			logger.debug("requestURL:"+requestURL);
 			URL wikiRequest;
 			wikiRequest = new URL(requestURL);
 			URLConnection connection;
