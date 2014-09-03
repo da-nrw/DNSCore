@@ -25,7 +25,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 	
 	private static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
 	private Document doc;
-	private List<Element> linkResources;
+	private List<Element> lidoLinkResources;
 	private File currentMetadataFile;
 	
 	public LidoMetadataStructure(File metadataFile) throws FileNotFoundException, JDOMException,
@@ -39,12 +39,20 @@ public class LidoMetadataStructure extends MetadataStructure{
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		
 		doc = builder.build(bomInputStream);
-		linkResources = getLinkResourceElements();
+		lidoLinkResources = parseLinkResourceElements();
 	}
 	
-	public List<Element> getLinkResourceElements() {
+	public List<String> getLidoLinkResources() {
+		List<String> linkResources = new ArrayList<String>();
+		for(Element element : lidoLinkResources) {
+			linkResources.add(element.getValue());
+		}
+		return linkResources;
+	}
+	
+	public List<Element> parseLinkResourceElements() {
 		
-		linkResources = new ArrayList<Element>();
+		List<Element> currentLinkResources = new ArrayList<Element>();
 		
 		@SuppressWarnings("unchecked")
 		List<Element> lidoElements = doc.getRootElement().getChildren();
@@ -56,19 +64,18 @@ public class LidoMetadataStructure extends MetadataStructure{
 				.getChild("resourceSet", LIDO_NS)
 				.getChild("resourceRepresentation", LIDO_NS)
 				.getChild("linkResource", LIDO_NS);
-				
-				linkResources.add(currentLinkResource);
+				currentLinkResources.add(currentLinkResource);
 			}
 		}
-		return linkResources;
+		return currentLinkResources;
 	}
 	
-	public void setRefResources(HashMap<String, String> linkResourceReplacements) throws IOException {
+	public void replaceRefResources(HashMap<String, String> linkResourceReplacements) throws IOException {
 		
 		for(String sourceLinkResource : linkResourceReplacements.keySet()) {
-			for(int i=0; i<linkResources.size(); i++) {
-				if(sourceLinkResource.equals(linkResources.get(i).getValue())) {
-					linkResources.get(i).setText(linkResourceReplacements.get(sourceLinkResource));
+			for(int i=0; i<lidoLinkResources.size(); i++) {
+				if(sourceLinkResource.equals(lidoLinkResources.get(i).getValue())) {
+					lidoLinkResources.get(i).setText(linkResourceReplacements.get(sourceLinkResource));
 				}
 			}
 		}

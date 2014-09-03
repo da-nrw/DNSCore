@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -20,6 +22,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -102,7 +105,7 @@ public class UpdateMetadataActionLIDOTests {
 	}
 	
 	@Test
-	public void test() throws IOException, JDOMException {
+	public void test() throws IOException, JDOMException, ParserConfigurationException, SAXException {
 		
 		action.setPresMode(true);
 		action.implementation();

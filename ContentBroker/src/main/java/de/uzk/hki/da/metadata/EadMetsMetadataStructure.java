@@ -44,7 +44,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	@SuppressWarnings("rawtypes")
 	private List allFileNodesInMets;
 	
-	HashMap<File, HashMap<String, String>> metsInfo = new HashMap<File, HashMap<String,String>>();
+	private HashMap<File, HashMap<String, String>> metsInfo = new HashMap<File, HashMap<String,String>>();
 	HashMap<String, Document> metsPathToDocument = new HashMap<String, Document>();
 	
 	public EadMetsMetadataStructure(File metadataFile) throws JDOMException, 
@@ -145,11 +145,16 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	}
 	
 	public List<File> getMetsFiles() {
+		
+		System.out.println("get mets files");
+		
 		List<File> metsFiles = new ArrayList<File>();
 		packageFile = eadFile.getParentFile();
+		System.out.println("packageFile: "+packageFile.getAbsolutePath());
 		
 		for(int i=0; i<metsReferencesInEAD.size(); i++) {
 			String href = metsReferencesInEAD.get(i);
+			System.out.println("mets reference: "+href);
 			File metsFile = Path.make(packageFile.getAbsolutePath(), href).toFile();
 			metsFiles.add(metsFile);
 		}
@@ -178,6 +183,10 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		return FLocat.getAttribute("href", XLINK_NS).getValue();
 	}
 	
+	public HashMap<File, HashMap<String, String>> getMetsInfo() {
+		return metsInfo;
+	}
+	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  SETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
 	public void setMimetype(Element file, String mimetype) {
@@ -196,7 +205,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::  REPLACEMENTS  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
-	public void makeReplacementsInMetsFile(File metsFile, String mimetype, String loctype, String currentHref, String targetHref) throws IOException, JDOMException {
+	public void makeReplacementsInMetsFile(File metsFile, String currentHref, String targetHref, String mimetype, String loctype) throws IOException, JDOMException {
 		
 		File targetMetsFile = metsFile;
 		Document currentMetsDocument = metsPathToDocument.get(targetMetsFile.getAbsolutePath());
@@ -208,7 +217,9 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	
 		setMimetype(metsFileElement, mimetype);
 		
-		setLoctype(FLocat, loctype);
+		if(loctype!=null) {
+			setLoctype(FLocat, loctype);
+		}
 		
 		setHref(FLocat, currentHref, targetHref);
 		
@@ -217,12 +228,41 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		outputter.output(currentMetsDocument, new FileWriter(targetMetsFile));
 	}
 	
+	
+	public void replaceMetsRefsInEad(File eadFile, HashMap<String, String> eadReplacements) throws JDOMException, IOException {
+		
+		File targetEadFile = eadFile;
+		
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		FileInputStream fileInputStream = new FileInputStream(eadFile);
+		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
+		Document currentEadDoc = builder.build(bomInputStream);
+				
+		XPath xPath = XPath.newInstance(EAD_XPATH_EXPRESSION);
+		
+		@SuppressWarnings("rawtypes")
+		List allNodes = xPath.selectNodes(currentEadDoc);
+		
+		for (Object node : allNodes) {
+			Attribute attr = (Attribute) node;
+			for(String replacement : eadReplacements.keySet()) {
+				if(attr.getValue().equals(replacement)) {
+					System.out.println("setValue "+eadReplacements.get(replacement));
+					attr.setValue(eadReplacements.get(replacement));
+				}
+			}
+		}
+		
+		XMLOutputter outputter = new XMLOutputter();
+		outputter.setFormat(Format.getPrettyFormat());
+		outputter.output(currentEadDoc, new FileWriter(targetEadFile));
+	}
+	
+	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  PRINTS  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
 	public void printMetsContent() {
 		for(File metsFile : metsInfo.keySet()) {
-			System.out.println("");
-			System.out.println("mets file: "+metsFile.getAbsolutePath());
 			for(String metsRef : metsInfo.get(metsFile).keySet()) {
 				System.out.println("metsInfo: "+metsRef+": "+metsInfo.get(metsFile).get(metsRef));
 			}

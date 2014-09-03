@@ -26,20 +26,28 @@ import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.io.FileUtils;
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
+import org.jdom.xpath.XPath;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.DAFile;
@@ -51,6 +59,7 @@ import de.uzk.hki.da.service.MimeTypeDetectionService;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TESTHelper;
+import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * @author Daniel M. de Oliveira
@@ -63,6 +72,7 @@ public class UpdateMetadataActionEADTests {
 	private static MimeTypeDetectionService mtds;
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
+	private String EAD_XPATH_EXPRESSION = "//daoloc/@href";
 	private static final Path workAreaRootPathPath = new RelativePath("src/test/resources/cb/UpdateMetadataActionEADTests/");
 	private static final UpdateMetadataAction action = new UpdateMetadataAction();
 	private Event event;
@@ -75,7 +85,7 @@ public class UpdateMetadataActionEADTests {
 	}
 	
 	@Before
-	public void setUp() throws IOException{
+	public void setUp() throws IOException, JDOMException, ParserConfigurationException, SAXException{
 		PreservationSystem pSystem = new PreservationSystem();
 		pSystem.setUrisFile("http://data.danrw.de/file");
 		
@@ -115,6 +125,9 @@ public class UpdateMetadataActionEADTests {
 		action.setObject(object);
 		action.setJob(job);
 		action.setPSystem(pSystem);
+		
+		action.setPresMode(true);
+		action.implementation();
 	}
 	
 	@After 
@@ -127,31 +140,41 @@ public class UpdateMetadataActionEADTests {
 	
 	
 	@Test
-	public void test() throws IOException, JDOMException {
-		
-		action.setPresMode(true);
-		action.implementation();
+	public void test() throws IOException, JDOMException, ParserConfigurationException, SAXException {
 		
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_B_REP,"mets_2_99.xml").toFile()));
 
 		assertEquals("http://data.danrw.de/file/42/renamed067.tif", getURL(doc));
-		System.out.println("DC: "+action.getDcMappings());
+		assertEquals("image/tiff", getMimetypeInMets(doc));
+		assertEquals("URL", getLoctypeInMets(doc));
 	}
-	
-	
 	
 	@Test
-	public void upperLowerCaseMismatch() throws IOException, JDOMException {
-		event.setSource_file(new DAFile(object.getLatestPackage(),_1_A_REP,"alvr_Nr_4547_Aufn_067.tif"));
+	public void checkReplacementsInEad() throws FileNotFoundException, JDOMException, IOException {
 		
-		try{
-			action.implementation();
-			fail();
-		}catch(UserException e){
-			assertTrue(e.getMessage().contains("but only"));
+		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_B_REP,"vda3.XML").toFile()));
+
+		List<String> eadRefs = getMetsRefsInEad(eadDoc);
+		for(String ref : eadRefs) {
+			assertEquals("http://data.danrw.de/file/42/mets_2_99.xml", ref);
 		}
 	}
+	
+	
+	
+//	@Test
+//	public void upperLowerCaseMismatch() throws IOException, JDOMException, ParserConfigurationException, SAXException {
+//		event.setSource_file(new DAFile(object.getLatestPackage(),_1_A_REP,"alvr_Nr_4547_Aufn_067.tif"));
+//		
+//		try{
+//			action.implementation();
+//			fail();
+//		}catch(UserException e){
+//			assertTrue(e.getMessage().contains("but only"));
+//		}
+//	}
 	
 	private String getURL(Document doc){
 		
@@ -161,5 +184,40 @@ public class UpdateMetadataActionEADTests {
 				.getChild("file", METS_NS)
 				.getChild("FLocat", METS_NS)
 				.getAttributeValue("href", XLINK_NS);
+	}
+	
+	private String getLoctypeInMets(Document doc) {
+		return doc.getRootElement()
+				.getChild("fileSec", METS_NS)
+				.getChild("fileGrp", METS_NS)
+				.getChild("file", METS_NS)
+				.getChild("FLocat", METS_NS)
+				.getAttributeValue("LOCTYPE");
+	}
+	
+	private String getMimetypeInMets(Document doc) {
+		return doc.getRootElement()
+				.getChild("fileSec", METS_NS)
+				.getChild("fileGrp", METS_NS)
+				.getChild("file", METS_NS)
+				.getAttribute("MIMETYPE")
+				.getValue();
+	}
+	
+	private List<String> getMetsRefsInEad(Document eadDoc) throws JDOMException, IOException {
+		
+		List<String> metsReferences = new ArrayList<String>();
+	
+		XPath xPath = XPath.newInstance(EAD_XPATH_EXPRESSION);
+		
+		@SuppressWarnings("rawtypes")
+		List allNodes = xPath.selectNodes(eadDoc);
+		
+		for (java.lang.Object node : allNodes) {
+			Attribute attr = (Attribute) node;
+			String href = attr.getValue();
+			metsReferences.add(href);
+		}
+		return metsReferences;
 	}
 }

@@ -23,16 +23,14 @@ import de.uzk.hki.da.utils.XMLUtils;
 public class MetsMetadataStructure extends MetadataStructure {
 
 	private File metsFile;
-	private Document doc;
 	private String METS_XPATH_EXPRESSION= 		"//mets:file";
 	private XPath metsXPath = 					XPath.newInstance(METS_XPATH_EXPRESSION);
 	private static final Namespace METS_NS = 	Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = 	Namespace.getNamespace("http://www.w3.org/1999/xlink");
 
 	@SuppressWarnings("rawtypes")
-	List fileElements = new ArrayList<Element>();
+	List fileElements;
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public MetsMetadataStructure(File metadataFile)
 			throws FileNotFoundException, JDOMException, IOException {
 		super(metadataFile);
@@ -43,13 +41,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 		FileInputStream fileInputStream = new FileInputStream(metsFile);
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Document metsDoc = builder.build(bomInputStream);
-		
-		List allNodes = metsXPath.selectNodes(metsDoc);
-		
-		for (java.lang.Object node : allNodes) {
-			Element fileElement = (Element) node;
-			fileElements.add(fileElement);
-		}
+		fileElements = getFileElementsFromMetsDoc(metsDoc);
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -66,18 +58,40 @@ public class MetsMetadataStructure extends MetadataStructure {
 		return fileElement.getChild("FLocat", METS_NS).getAttribute("href", XLINK_NS).getValue();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Element> getMetsFileElements() {
 		return fileElements;
+	} 
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private List<Element> getFileElementsFromMetsDoc(Document doc) throws JDOMException {
+		List currentFileElements = new ArrayList<Element>();
+		List allNodes = metsXPath.selectNodes(doc);
+		for (java.lang.Object node : allNodes) {
+			Element fileElement = (Element) node;
+			currentFileElements.add(fileElement);
+		}
+		return currentFileElements;
 	} 
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  SETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
 	public void setMimetype(Element fileElement, String mimetype) {
-		fileElement.getAttribute("MIMETYPE").setValue(mimetype);
+		if(fileElement.getAttribute("MIMETYPE")!=null) {
+			fileElement.getAttribute("MIMETYPE").setValue(mimetype);
+		} else {
+			fileElement.setAttribute("MIMETYPE", mimetype);
+		}
 	}
 	
 	public void setLoctype(Element fileElement, String loctype) {
-		fileElement.getChild("FLocat", METS_NS).getAttribute("LOCTYPE").setValue(loctype);
+		if(loctype!=null) {
+			if(fileElement.getChild("FLocat", METS_NS).getAttribute("LOCTYPE")!=null) {
+				fileElement.getChild("FLocat", METS_NS).getAttribute("LOCTYPE").setValue(loctype);
+			} else {
+				fileElement.getChild("FLocat", METS_NS).setAttribute("LOCTYPE", loctype);
+			}
+		}
 	}
 	
 	public void setHref(Element fileElement, String newHref) {
@@ -85,25 +99,29 @@ public class MetsMetadataStructure extends MetadataStructure {
 	}
 	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::  REPLACEMENTS  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	
-	public void makeReplacementsForMetsFileElement(File metsFile, String currentHref, String targetHref, String mimetype, String loctype) throws IOException, JDOMException {
 
+	public void makeReplacementsInMetsFileElement(File metsFile, String currentHref, String targetHref, String mimetype, String loctype) throws IOException, JDOMException {
+
+		File targetMetsFile = metsFile;
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		FileInputStream fileInputStream = new FileInputStream(metsFile);
+		FileInputStream fileInputStream = new FileInputStream(targetMetsFile);
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Document metsDoc = builder.build(bomInputStream);
 		
-		for (int i=0; i<fileElements.size(); i++) { 
-			Element fileElement = (Element) fileElements.get(i);
+		List<Element> metsFileElements = getFileElementsFromMetsDoc(metsDoc);
+		
+		for (int i=0; i<metsFileElements.size(); i++) { 
+			Element fileElement = (Element) metsFileElements.get(i);
 			if(getHref(fileElement).equals(currentHref)) {
 				setHref(fileElement, targetHref);
 				setMimetype(fileElement, mimetype);
+				setLoctype(fileElement, loctype);
 			}
 		}
 		
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.setFormat(Format.getPrettyFormat());
-		outputter.output(metsDoc, new FileWriter(metsFile));
+		outputter.output(metsDoc, new FileWriter(targetMetsFile));
 	}
 
 	@Override

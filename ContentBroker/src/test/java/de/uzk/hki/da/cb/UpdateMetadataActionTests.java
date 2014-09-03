@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -42,6 +44,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
@@ -172,9 +175,11 @@ public class UpdateMetadataActionTests {
 	 * @throws FileNotFoundException the file not found exception
 	 * @throws JDOMException the jDOM exception
 	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
 	 */
 	@Test
-	public void testUpdatePathsInMetadata() throws FileNotFoundException, JDOMException, IOException {
+	public void testUpdatePathsInMetadata() throws FileNotFoundException, JDOMException, IOException, ParserConfigurationException, SAXException {
 		
 		Object obj = TESTHelper.setUpObject("23",workAreaPath);
 
