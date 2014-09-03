@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -221,14 +222,13 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			throw new RuntimeException("An error occured during metadata conversion",e);
 		}
 		
-		logger.debug("transformed RDF into JSON. Result: {}", JSONUtils.toPrettyString(json));
 		
 		@SuppressWarnings("unchecked")
 		List<Object> graph = (List<Object>) json.get("@graph");
-		
-		// create index entry for every subject in graph (subject?)
 		for (Object object : graph) {
-			createIndexEntry(indexName, edmJsonFrame, object);
+			
+			logger.debug("Preparing json graph for indexing in elasticsearch: \n{}", JSONUtils.toPrettyString(object));
+			createIndexEntryForGraphObject(indexName, edmJsonFrame, object);
 		}		
 	}
 	
@@ -248,28 +248,14 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		return (collection + ":" + objectId);
 	}
 	
-	private void createIndexEntry(String indexName, String framePath, Object object)
+	private void createIndexEntryForGraphObject(String indexName, String framePath, Object object)
 			throws RepositoryException {
 		
 		@SuppressWarnings("unchecked")
 		Map<String,Object> subject = (Map<String,Object>) object;
 		
-		
-		// validation
-		Object temp = subject.get("edm:object;");
-		if (temp==null) {
-			logger.warn("removing edm:object from graph since it is null");
-			subject.remove("edm:object");
-		}
-		Object isShownBy = subject.get("edm:isShownBy");
-		if (isShownBy!=null) {
-			logger.warn("removing edm:object from graph since it is null");
-			subject.remove("edm:isShownBy");
-		}
-		
-		
-		
-			
+		eraseUnmappableContent(subject);
+		logger.debug("Will index adjusted json graph in elasticsearch: \n{}", JSONUtils.toPrettyString(subject));	
 		
 		// Add @context attribute
 //		String contextUri = contextUriPrefix + FilenameUtils.getName(framePath);
@@ -280,6 +266,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		String[] splitType = ((String) subject.get("@type")).split("/");
 		String type = splitType[splitType.length-1];
 
+		logger.debug("indexName: "+indexName+", type: "+type+", id: "+id);
 		type=ORE_AGGREGATION; // override on purpose, so that everything is mapped against es_mapping.json
 		
 		try {
@@ -287,6 +274,24 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		} catch (MetadataIndexException e) {
 			throw new RepositoryException("Unable to index metadata", e);			
 		}	
+	}
+
+	private void eraseUnmappableContent(Map<String, Object> subject) {
+		
+		Object temp = subject.get("edm:object");
+		if (temp==null) {
+			logger.warn("removing edm:object from graph since it is null");
+			subject.remove("edm:object");
+		}else
+		if (((String)temp==null)||((String)temp).isEmpty()){
+			logger.warn("removing edm:object from graph since it is an empty string");
+			subject.remove("edm:object");
+		}
+		Object isShownBy = subject.get("edm:isShownBy");
+		if (isShownBy!=null) {
+			logger.warn("removing edm:isShownBy from graph since it is null");
+			subject.remove("edm:isShownBy");
+		}
 	}
 	
 	/**

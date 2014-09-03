@@ -26,18 +26,19 @@ import java.util.Map;
  * metadata from specific implementations.
  * 
  * @author Sebastian Cuy
- *
+ * @author Daniel M. de Oliveira
  */
 public interface MetadataIndex {
 	
 	/**
-	 * Indexes metadata
+	 * Indexes metadata.
+	 * 
 	 * @param indexName the name of the index
-	 * @param type the type or collection in the index
+	 * @param collection (also called type) in the index
+	 * @param id 
 	 * @param data nested key value data to be indexed
+	 * @throws MetadataIndexException if implementation cannot handle the request due to corrupt data or connection problems. 
 	 */
-	void indexMetadata(String indexName, String type, String id, Map<String, Object> data)
+	void indexMetadata(String indexName, String collection, String id, Map<String, Object> data)
 			throws MetadataIndexException;
-	
-//	void indexMetadata(String metadataContent);
 }
