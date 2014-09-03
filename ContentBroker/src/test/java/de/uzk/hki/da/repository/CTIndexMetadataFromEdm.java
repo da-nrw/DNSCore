@@ -28,16 +28,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.CommandLineConnector;
-import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.RelativePath;
-import de.uzk.hki.da.utils.Utilities;
 
 
 /**

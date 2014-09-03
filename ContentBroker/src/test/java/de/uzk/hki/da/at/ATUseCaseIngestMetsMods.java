@@ -19,15 +19,14 @@
 
 package de.uzk.hki.da.at;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -45,63 +44,50 @@ import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * @author Polina Gubaidullina
+ * @author Daniel M. de Oliveira
  */
 public class ATUseCaseIngestMetsMods extends Base{
 	
 	private static final String origName = 		"ATUseCaseIngestMetsMods";
 	private Object object;
 	private String METS_XPATH_EXPRESSION = 		"//mets:file";
-//	private static final String MODS_NS = 		"http://www.loc.gov/mods/v3";
 	private static Document metsDoc;
 	
 	
 	@Before
 	public void setUp() throws IOException{
 		setUpBase();
-		ingest(origName);
-		object = retrievePackage(origName,"1");
-		System.out.println("object identifier: "+object.getIdentifier());
+		object = ingest(origName);
 	}
-	
-	
-	
 	
 	@After
 	public void tearDown(){
-		try{
-			new File("/tmp/"+object.getIdentifier()+".pack_1.tar").delete();
-			FileUtils.deleteDirectory(new File("/tmp/"+object.getIdentifier()+".pack_1"));
-		}catch(Exception e){
-			System.out.println(e.getMessage());
-		}
-		
 		TESTHelper.clearDB();
 		cleanStorage();
 	}
 	
-	
-	
-	
 	@Test
 	public void checkReferencesAndMimetype() throws JDOMException, FileNotFoundException, IOException {
-		
-		SAXBuilder builder = new SAXBuilder();
-		
-		metsDoc = builder.build
-				(new FileReader(Path.make(localNode.getWorkAreaRootPath(),"pips", "public", "TEST", object.getIdentifier(), object.getPackage_type()+".xml").toFile()));
 
+		assertEquals(C.PACKAGETYPE_METS,object.getPackage_type());
 		
-		XPath xPath = XPath.newInstance(METS_XPATH_EXPRESSION);
+		metsDoc = new SAXBuilder().build
+			(new FileReader(
+				Path.make(localNode.getWorkAreaRootPath(),"pips", "public", "TEST", 
+					object.getIdentifier(), C.PACKAGETYPE_METS+C.FILE_EXTENSION_XML).toFile()));
 		
 		@SuppressWarnings("rawtypes")
-		List allNodes = xPath.selectNodes(metsDoc);
+		List allNodes = XPath.newInstance(METS_XPATH_EXPRESSION).selectNodes(metsDoc);
 		
 		for (java.lang.Object node : allNodes) {
 			Element fileElement = (Element) node;
 			Attribute attr = fileElement.getChild("FLocat", C.METS_NS).getAttribute("href", C.XLINK_NS);
 			Attribute attrMT = fileElement.getAttribute("MIMETYPE");
-			assertTrue(attr.getValue().contains("http://data.danrw.de/") && attr.getValue().endsWith(".jpg"));
-			assertTrue(attrMT.getValue().equals("image/jpeg"));
+			assertTrue(attr.getValue().contains("http://data.danrw.de/") && attr.getValue().endsWith(C.FILE_EXTENSION_JPG));
+			assertTrue(attrMT.getValue().equals(C.MIMETYPE_IMAGE_JPEG));
 		}
+		
+		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", "1-2014090308-md801613").
+				contains("ULB (Stadt) [Electronic ed.]"));
 	}
 }

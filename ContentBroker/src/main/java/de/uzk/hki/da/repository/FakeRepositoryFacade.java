@@ -201,6 +201,9 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 
 	@Override
 	public String getIndexedMetadata(String indexName, String objectId) {
-		return "\"edm:provider\":\"DA-NRW - Digitales Archiv Nordrhein-Westfalen\"";
+		if (objectId.equals("Inventarnummer"))
+			return "\"edm:provider\":\"DA-NRW - Digitales Archiv Nordrhein-Westfalen\"";
+		else
+			return "ULB (Stadt) [Electronic ed.]";
 	}
 }
