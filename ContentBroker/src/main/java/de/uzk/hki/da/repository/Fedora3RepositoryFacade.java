@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -254,8 +253,9 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		@SuppressWarnings("unchecked")
 		Map<String,Object> subject = (Map<String,Object>) object;
 		
+		
 		eraseUnmappableContent(subject);
-		logger.debug("Will index adjusted json graph in elasticsearch: \n{}", JSONUtils.toPrettyString(subject));	
+		logger.debug("Will index adjusted json graph in elasticsearch: \n{}", JSONUtils.toPrettyString(object));	
 		
 		// Add @context attribute
 //		String contextUri = contextUriPrefix + FilenameUtils.getName(framePath);
@@ -283,7 +283,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			logger.warn("removing edm:object from graph since it is null");
 			subject.remove("edm:object");
 		}else
-		if (((String)temp==null)||((String)temp).isEmpty()){
+		if ((temp instanceof String)&&(((String)temp==null)||((String)temp).isEmpty())){
 			logger.warn("removing edm:object from graph since it is an empty string");
 			subject.remove("edm:object");
 		}

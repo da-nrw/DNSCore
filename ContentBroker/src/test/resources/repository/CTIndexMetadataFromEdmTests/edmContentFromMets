@@ -1,0 +1,39 @@
+<rdf:RDF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:dcterms="http://purl.org/dc/terms/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:ore="http://www.openarchives.org/ore/terms/"
+         xmlns:edm="http://www.europeana.eu/schemas/edm/"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:dv="http://dfg-viewer.de/">
+   <edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/1-2014090312-md801613">
+      <owl:sameAs rdf:resource="urn:nbn:de:hbz:42-md801613"/>
+      <dc:identifier>urn:nbn:de:hbz:42-md801613</dc:identifier>
+      <dc:identifier>http://data.danrw.de/cho/1-2014090312-md801613</dc:identifier>
+      <dc:title>Text Text// mahels///Titel</dc:title>
+      <dcterms:alternative>Text Text</dcterms:alternative>
+      <dc:creator>Nachname, Vorname</dc:creator>
+      <edm:type>TEXT</edm:type>
+      <dc:type>book</dc:type>
+      <dcterms:issued>1523</dcterms:issued>
+      <dc:publisher>Grimm] ([Augsburg)</dc:publisher>
+      <dc:publisher>ULB (Stadt) [Electronic ed.]</dc:publisher>
+      <dc:language>ger</dc:language>
+      <dcterms:extent>[9] Bl. ; 4-o</dcterms:extent>
+      <dc:description>Titel</dc:description>
+      <dc:description>Referenz 1</dc:description>
+      <dc:description>Referenznummer</dc:description>
+      <dc:relation/>
+      <dc:identifier>id42</dc:identifier>
+      <owl:sameAs rdf:resource="info:hbz-idn/id42"/>
+      <dc:identifier>urn:nbn:de:hbz:42</dc:identifier>
+      <owl:sameAs rdf:resource="urn:nbn:de:hbz:42"/>
+   </edm:ProvidedCHO>
+   <ore:Aggregation rdf:about="http://data.danrw.de/aggregation/1-2014090312-md801613">
+      <edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/1-2014090312-md801613"/>
+      <edm:dataProvider>ULB</edm:dataProvider>
+      <edm:provider/>
+      <edm:isShownAt rdf:resource="http://data.danrw.de/aggregation/1-2014090312-md801613"/>
+      <edm:object rdf:resource="http://data.danrw.de/file/1-2014090312/_bee84f142bba34a1036ecc4667b54615.jpg"/>
+   </ore:Aggregation>
+</rdf:RDF>

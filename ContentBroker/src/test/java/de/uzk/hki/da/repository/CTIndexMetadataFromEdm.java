@@ -47,6 +47,7 @@ public class CTIndexMetadataFromEdm {
 	private static final String INDEX_NAME = "portal_ci_test";
 	
 	File edmFile = new RelativePath("src", "test", "resources", "repository", "CTIndexMetadataFromEdmTests", "edmContent").toFile();
+	File edmFromMetsFile = new RelativePath("src", "test", "resources", "repository", "CTIndexMetadataFromEdmTests", "edmContentFromMets").toFile();
 	private Fedora3RepositoryFacade repo;
 	
 	
@@ -61,6 +62,27 @@ public class CTIndexMetadataFromEdm {
 		repo.setMetadataIndex(esmi);
 		
 	}
+	
+	
+	@Test
+	public void testMetsEdm() throws FileNotFoundException, IOException {
+		
+		String edmContent = IOUtils.toString(new FileInputStream(edmFromMetsFile), C.UTF_8);
+	
+		try {
+			repo.indexMetadata(INDEX_NAME, "1", edmContent);
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+		
+		try {
+			Thread.sleep(4711);
+		} catch (InterruptedException e) {}
+		
+		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "Inventarnummer").contains("\"edm:provider\":\"DA-NRW - Digitales Archiv Nordrhein-Westfalen\""));
+	}	
+	
 	
 	
 	@Test

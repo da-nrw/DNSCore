@@ -33,14 +33,16 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.TESTHelper;
+
+
 
 /**
  * @author Polina Gubaidullina
@@ -49,19 +51,19 @@ import de.uzk.hki.da.utils.TESTHelper;
 public class ATUseCaseIngestMetsMods extends Base{
 	
 	private static final String origName = 		"ATUseCaseIngestMetsMods";
-	private Object object;
+	private static Object object;
 	private String METS_XPATH_EXPRESSION = 		"//mets:file";
 	private static Document metsDoc;
 	
 	
-	@Before
-	public void setUp() throws IOException{
+	@BeforeClass
+	public static void setUpBeforeClass() throws IOException{
 		setUpBase();
 		object = ingest(origName);
 	}
 	
-	@After
-	public void tearDown(){
+	@AfterClass
+	public static void tearDownAfterClass(){
 		TESTHelper.clearDB();
 		cleanStorage();
 	}
@@ -87,7 +89,11 @@ public class ATUseCaseIngestMetsMods extends Base{
 			assertTrue(attrMT.getValue().equals(C.MIMETYPE_IMAGE_JPEG));
 		}
 		
-		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", "1-2014090308-md801613").
+	}
+	
+	@Test
+	public void checkIndex(){
+		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-md801613").
 				contains("ULB (Stadt) [Electronic ed.]"));
 	}
 }
