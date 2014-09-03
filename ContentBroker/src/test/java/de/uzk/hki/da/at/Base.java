@@ -549,6 +549,7 @@ public class Base {
 		waitForJobsToFinish(originalName,500);
 		
 		Object object = fetchObjectFromDB(originalName);
+		System.out.println("successfully ingested object with id "+object.getIdentifier());
 		return object;
 	}	
 }
