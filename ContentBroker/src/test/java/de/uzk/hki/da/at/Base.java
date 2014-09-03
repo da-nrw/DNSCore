@@ -58,16 +58,16 @@ public class Base {
 
 	private static final int wait_interval=2000; // in ms
 	
-	protected Path testDataRootPath = new RelativePath("src/test/resources/at/");
-	protected Node localNode;
-	protected GridFacade gridFacade;
-	protected RepositoryFacade repositoryFacade;
-	protected DistributedConversionAdapter distributedConversionAdapter;
-	protected CentralDatabaseDAO dao = new CentralDatabaseDAO();
-	protected User testContractor;
+	protected static Path testDataRootPath = new RelativePath("src/test/resources/at/");
+	protected static Node localNode;
+	protected static GridFacade gridFacade;
+	protected static RepositoryFacade repositoryFacade;
+	protected static DistributedConversionAdapter distributedConversionAdapter;
+	protected static CentralDatabaseDAO dao = new CentralDatabaseDAO();
+	protected static User testContractor;
 
 	
-	protected void setUpBase() throws IOException{
+	protected static void setUpBase() throws IOException{
 		
 
 		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
@@ -97,7 +97,7 @@ public class Base {
 	 * @return
 	 */
 	
-	private void instantiateGrid(Properties properties) {
+	private static void instantiateGrid(Properties properties) {
 		
 		String gridImplBeanName = properties.getProperty("cb.implementation.grid");
 		String dcaImplBeanName  = properties.getProperty("cb.implementation.distributedConversion");
@@ -113,7 +113,7 @@ public class Base {
 		context.close();
 	}
 	
-	private void instantiateNode() {
+	private static void instantiateNode() {
 		
 		AbstractApplicationContext context = 
 				new FileSystemXmlApplicationContext("conf/beans.xml");
@@ -127,7 +127,7 @@ public class Base {
 		context.close();
 	}
 	
-	private void instantiateRepository(Properties properties) {
+	private static void instantiateRepository(Properties properties) {
 		
 		String repImplBeanName=properties.getProperty("cb.implementation.repository");
 		if (repImplBeanName==null) repImplBeanName="fakeRepositoryFacade";
@@ -205,7 +205,7 @@ public class Base {
 		}
 	}
 	
-	protected void waitForJobsToFinish(String originalName, int timeout){
+	protected static void waitForJobsToFinish(String originalName, int timeout){
 
 		// wait for job to appear
 		Job job = null;
@@ -266,7 +266,7 @@ public class Base {
 		}
 	}
 	
-	protected Object fetchObjectFromDB(String originalName){
+	protected static Object fetchObjectFromDB(String originalName){
 		Object object = null;
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
@@ -308,7 +308,7 @@ public class Base {
 	}
 
 
-	protected void cleanStorage(){
+	protected static void cleanStorage(){
 		FileUtils.deleteQuietly(Path.make(localNode.getWorkAreaRootPath(),"/work/TEST").toFile());
 		FileUtils.deleteQuietly(Path.make(localNode.getIngestAreaRootPath(),"/TEST").toFile());
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getGridCacheAreaRootPath(),C.AIP,C.TEST_USER_SHORT_NAME));
@@ -524,7 +524,7 @@ public class Base {
 	 * ingest(String,String).
 	 * @return the database entry for the object of the ingested package.
 	 */
-	protected Object ingest(String originalName){
+	protected static Object ingest(String originalName){
 		
 		return ingest(originalName,"tgz");
 	}
@@ -537,7 +537,7 @@ public class Base {
 	 * @param containerSuffix
 	 * @return
 	 */
-	protected Object ingest(String originalName,String containerSuffix){
+	protected static Object ingest(String originalName,String containerSuffix){
 		
 		try {
 			System.out.println("copy "+Path.makeFile( testDataRootPath, originalName+"."+containerSuffix )+" to "+Path.makeFile(localNode.getIngestAreaRootPath(),"TEST"));
@@ -549,6 +549,7 @@ public class Base {
 		waitForJobsToFinish(originalName,500);
 		
 		Object object = fetchObjectFromDB(originalName);
+		System.out.println("successfully ingested object with id "+object.getIdentifier());
 		return object;
 	}	
 }

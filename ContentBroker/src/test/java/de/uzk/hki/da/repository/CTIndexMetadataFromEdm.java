@@ -19,6 +19,7 @@
 
 package de.uzk.hki.da.repository;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -35,10 +36,18 @@ import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.RelativePath;
 
 
-
+/**
+ * @author Polina Gubaidullina
+ * @author Daniel M. de Oliveira
+ *
+ */
 public class CTIndexMetadataFromEdm {
 
+    // index name generated from elasticsearch.indexName + _test for the TEST contractors
+	private static final String INDEX_NAME = "portal_ci_test";
+	
 	File edmFile = new RelativePath("src", "test", "resources", "repository", "CTIndexMetadataFromEdmTests", "edmContent").toFile();
+	File edmFromMetsFile = new RelativePath("src", "test", "resources", "repository", "CTIndexMetadataFromEdmTests", "edmContentFromMets").toFile();
 	private Fedora3RepositoryFacade repo;
 	
 	
@@ -51,19 +60,48 @@ public class CTIndexMetadataFromEdm {
 		String[] hosts={"localhost"};
 		esmi.setHosts(hosts);
 		repo.setMetadataIndex(esmi);
+		
 	}
 	
+	
 	@Test
-	public void test() throws FileNotFoundException, IOException {
+	public void testMetsEdm() throws FileNotFoundException, IOException {
 		
-		
-		String edmContent = IOUtils.toString(new FileInputStream(edmFile), C.UTF_8);
+		String edmContent = IOUtils.toString(new FileInputStream(edmFromMetsFile), C.UTF_8);
 	
 		try {
-			repo.indexMetadata("portal_ci", "1", edmContent);
+			repo.indexMetadata(INDEX_NAME, "1", edmContent);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
+		
+		try {
+			Thread.sleep(4711);
+		} catch (InterruptedException e) {}
+		
+		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "Inventarnummer").contains("\"edm:provider\":\"DA-NRW - Digitales Archiv Nordrhein-Westfalen\""));
 	}	
+	
+	
+	
+	@Test
+	public void test() throws FileNotFoundException, IOException {
+		
+		String edmContent = IOUtils.toString(new FileInputStream(edmFile), C.UTF_8);
+	
+		try {
+			repo.indexMetadata(INDEX_NAME, "1", edmContent);
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+		
+		try {
+			Thread.sleep(4711);
+		} catch (InterruptedException e) {}
+		
+		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "Inventarnummer").contains("\"edm:provider\":\"DA-NRW - Digitales Archiv Nordrhein-Westfalen\""));
+	}	
+
 }

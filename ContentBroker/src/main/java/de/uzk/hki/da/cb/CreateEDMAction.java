@@ -39,6 +39,7 @@ import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.XMLUtils;
 
 /**
@@ -93,13 +94,13 @@ public class CreateEDMAction extends AbstractAction {
 
 		String packageType = parseFormatElement(dcStream);
 		if (packageType == null) {
-			logger.warn("No format element found in DC. EDM cannot be created!");
+			logger.warn("No format element found in DC. "+C.EDM_METADATA_STREAM_ID+" cannot be created!");
 			return true;
 		}
 		
 		String xsltFile = getEdmMappings().get(packageType);
 		if (xsltFile == null) {
-			throw new RuntimeException("No conversion available for package type '" + packageType + "'. EDM can not be created.");
+			throw new RuntimeException("No conversion available for package type '" + packageType + "'. "+C.EDM_METADATA_STREAM_ID+" can not be created.");
 		}
 		
 		InputStream metadataStream = repositoryFacade.retrieveFile(objectId,preservationSystem.getOpenCollectionName(), packageType);
@@ -111,7 +112,7 @@ public class CreateEDMAction extends AbstractAction {
 		logger.debug(edmResult);
 		
 		try {
-			repositoryFacade.createMetadataFile(objectId,preservationSystem.getOpenCollectionName(), "EDM", edmResult, "Object representation in Europeana Data Model", "application/rdf+xml");
+			repositoryFacade.createMetadataFile(objectId,preservationSystem.getOpenCollectionName(), C.EDM_METADATA_STREAM_ID, edmResult, "Object representation in Europeana Data Model", "application/rdf+xml");
 		} catch (RepositoryException e) {
 			throw new RuntimeException(e);
 		}

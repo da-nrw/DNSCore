@@ -32,6 +32,7 @@ public class TC {
 	public static final Path TEST_ROOT_AT = Path.make(TEST_ROOT,"at");
 	public static final Path TEST_ROOT_CB = Path.make(TEST_ROOT,"cb");
 	public static final Path TEST_ROOT_MODEL = Path.make(TEST_ROOT,"model");
+	public static final Path TEST_ROOT_METADATA = Path.make(TEST_ROOT,"metadata");
 	
 	public static final File CONFIG_PROPS_CI = new RelativePath("src","main","conf","config.properties.ci").toFile();
 }

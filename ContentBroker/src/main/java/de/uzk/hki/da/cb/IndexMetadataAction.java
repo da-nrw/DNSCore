@@ -29,6 +29,7 @@ import org.apache.commons.lang.NotImplementedException;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
+import de.uzk.hki.da.utils.C;
 
 /**
  * Action that indexes metadata into a search index.
@@ -53,15 +54,12 @@ public class IndexMetadataAction extends AbstractAction {
 	private RepositoryFacade repositoryFacade;
 	private Set<String> testContractors;
 	private String indexName;
-	private static final String edmMetadataFileId = "EDM";
-
+	
 	@Override
 	void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (getRepositoryFacade() == null) 
 			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
 	}
-
-
 
 	@Override
 	void checkSystemStatePreconditions() throws IllegalStateException {
@@ -71,8 +69,6 @@ public class IndexMetadataAction extends AbstractAction {
 			throw new IllegalStateException("testContractors not set");
 	}
 
-
-
 	@Override
 	boolean implementation() throws RepositoryException, IOException {
 		setKILLATEXIT(true);
@@ -80,12 +76,13 @@ public class IndexMetadataAction extends AbstractAction {
 		InputStream metadataStream;
 		metadataStream = getRepositoryFacade().retrieveFile(
 			object.getIdentifier(), 
-			preservationSystem.getOpenCollectionName(), edmMetadataFileId);
+			preservationSystem.getOpenCollectionName(), C.EDM_METADATA_STREAM_ID);
 		if (metadataStream == null) {
-			logger.warn("Metadata file {} not found in repository! Skipping indexing.", edmMetadataFileId);
+			logger.warn("Metadata file {} not found in repository! Skipping indexing.", C.EDM_METADATA_STREAM_ID);
 			return true;
 		}
 		String edmContent = IOUtils.toString(metadataStream, "UTF-8");
+		logger.debug("will index metadata in "+adjustIndexName(indexName));
 		getRepositoryFacade().indexMetadata(adjustIndexName(indexName), object.getIdentifier(), edmContent);		
 		
 		return true;

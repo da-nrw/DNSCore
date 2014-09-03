@@ -41,11 +41,29 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 	
 	private String[] hosts;
 	private String cluster;
+
+	private TransportClient client;
 	
 	@Override
 	public void indexMetadata(String indexName, String type, String objectId,
 			Map<String, Object> data) throws MetadataIndexException {
-				
+
+		client = initialize();
+		if (client==null) throw new IllegalStateException("transport client not initialized");
+		
+		try {
+			client.prepareIndex(indexName, type)
+				.setId(objectId).setSource(data).execute().actionGet();
+		} catch(ElasticSearchException e) {
+			throw new MetadataIndexException("Unable to index metadata.", e);
+		} finally {
+			client.close();
+		}
+		
+	}
+
+	private TransportClient initialize() {
+		
 		if (cluster == null || hosts == null || hosts.length == 0) 
 			throw new ConfigurationException("Elasticsearch cluster not set. Make sure the action is configured properly");
 				
@@ -56,26 +74,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		for (String esHost : hosts) {
 			client.addTransportAddress(new InetSocketTransportAddress(esHost, 9300));
 		}
-		
-		logger.debug("set elasticsearch nodes: {}", client.transportAddresses());
-		
-		
-		try {
-			logger.debug("prepare index "+indexName+". Insert "+data.size()+" objects.");
-			for(String name:data.keySet()) {
-				logger.debug("***************************************************");
-				logger.debug("Object name: "+name);
-				logger.debug("Object content: "+data.get(name));
-				
-			}
-			client.prepareIndex(indexName, type)
-				.setId(objectId).setSource(data).execute().actionGet();
-		} catch(ElasticSearchException e) {
-			throw new MetadataIndexException("Unable to index metadata.", e);
-		} finally {
-			client.close();
-		}
-		
+		return client;
 	}
 
 	public String[] getHosts() {

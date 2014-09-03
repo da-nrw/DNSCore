@@ -33,7 +33,7 @@ import com.yourmediashelf.fedora.client.FedoraClientException;
  * this interface and changing the corresponding class in the spring configuration.
  * 
  * @author Sebastian Cuy
- * 
+ * @author Daniel M. de Oliveira
  */
 public interface RepositoryFacade {
 	
@@ -126,16 +126,25 @@ public interface RepositoryFacade {
 	void addRelationship(String objectId, String collection, String predicate, String object)
 			throws RepositoryException;
 	
+	
 	/**
-	 * Indexes metadata
+	 * Uses the metadata from edmContent to index an object with objectId at 
+	 * the index with the name indexName.
+	 * 
 	 * @param indexName the name of the index
-	 * @param collection in the index
-	 * @param data nested key value data to be indexed
+	 * @param objectId the unique object id
+	 * @param edmContent
+	 * 
 	 * @throws RepositoryException
 	 * @throws FileNotFoundException 
 	 */
-	void indexMetadata(String indexName, String id, String edmContent)
+	void indexMetadata(String indexName, String objectId, String edmContent)
 			throws RepositoryException, FileNotFoundException;
+
+	/**
+	 * Return the indexed metadata for the object with objectId from index indexName.
+	 */
+	String getIndexedMetadata(String indexName, String objectId);
 	
 	/**
 	 * Generate a file id from a file path.
