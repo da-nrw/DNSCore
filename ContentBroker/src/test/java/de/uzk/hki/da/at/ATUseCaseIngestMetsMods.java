@@ -50,6 +50,9 @@ import de.uzk.hki.da.utils.TESTHelper;
  */
 public class ATUseCaseIngestMetsMods extends Base{
 	
+	private static final String PORTAL_CI_TEST = "portal_ci_test";
+	private static final String XML_ATTRIBUTE_HREF = "href";
+	private static final Path testContractorPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, "TEST");
 	private static final String origName = 		"ATUseCaseIngestMetsMods";
 	private static Object object;
 	private String METS_XPATH_EXPRESSION = 		"//mets:file";
@@ -72,19 +75,19 @@ public class ATUseCaseIngestMetsMods extends Base{
 	@Test
 	public void checkReferencesAndMimetype() throws JDOMException, FileNotFoundException, IOException {
 
-		assertEquals(C.PACKAGETYPE_METS,object.getPackage_type());
+		assertEquals(C.CB_PACKAGETYPE_METS,object.getPackage_type());
 		
 		metsDoc = new SAXBuilder().build
 			(new FileReader(
-				Path.make(localNode.getWorkAreaRootPath(),"pips", "public", "TEST", 
-					object.getIdentifier(), C.PACKAGETYPE_METS+C.FILE_EXTENSION_XML).toFile()));
+				Path.make(testContractorPipsPublic, 
+					object.getIdentifier(), C.CB_PACKAGETYPE_METS+C.FILE_EXTENSION_XML).toFile()));
 		
 		@SuppressWarnings("rawtypes")
 		List allNodes = XPath.newInstance(METS_XPATH_EXPRESSION).selectNodes(metsDoc);
 		
 		for (java.lang.Object node : allNodes) {
 			Element fileElement = (Element) node;
-			Attribute attr = fileElement.getChild("FLocat", C.METS_NS).getAttribute("href", C.XLINK_NS);
+			Attribute attr = fileElement.getChild("FLocat", C.METS_NS).getAttribute(XML_ATTRIBUTE_HREF, C.XLINK_NS);
 			Attribute attrMT = fileElement.getAttribute("MIMETYPE");
 			assertTrue(attr.getValue().contains("http://data.danrw.de/") && attr.getValue().endsWith(C.FILE_EXTENSION_JPG));
 			assertTrue(attrMT.getValue().equals(C.MIMETYPE_IMAGE_JPEG));
@@ -97,8 +100,7 @@ public class ATUseCaseIngestMetsMods extends Base{
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {}
-		String abc = repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-md801613");
-		System.out.println("abc:"+abc);
+		String abc = repositoryFacade.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613");
 		assertTrue(abc.contains("ULB (Stadt) [Electronic ed.]"));
 	}
 }

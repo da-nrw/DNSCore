@@ -29,8 +29,8 @@ import org.jdom.Namespace;
 public class C {
 
 	// file extensions
-	public static final String ZIP = "zip";
-	public static final String TGZ = "tgz";
+	public static final String FILE_EXTENSION_ZIP = "zip";
+	public static final String FILE_EXTENSION_TGZ = "tgz";
 	public static final String FILE_EXTENSION_XML = ".xml";
 	public static final String FILE_EXTENSION_JPG = ".jpg";
 
@@ -45,10 +45,16 @@ public class C {
 	public static final String XMP = "XMP";
 	public static final String METS = "METS";
 	public static final String EAD = "EAD";
-	public static final String LIDO = "LIDO";
-	public static final String PACKAGETYPE_METS = "METS";
-	public static final String PACKAGETYPE_EAD = "EAD";
-	public static final String XMP_RDF = "XMP.rdf";
+	public static final String LIDO = "LIDO";                  
+		/** marker for METS type packages */
+	public static final String CB_PACKAGETYPE_METS = "METS";
+		/** marker for EAD type packages */
+	public static final String CB_PACKAGETYPE_EAD = "EAD";     
+		/** common metadata file for all XMP type packages */
+	public static final String XMP_METADATA_FILE = "XMP.rdf";
+		/** Fedora datastream id for EDM. */
+	public static final String EDM_METADATA_STREAM_ID = "EDM"; 
+	
 
 	// Systems communication
 	public static final String STOP_FACTORY = "STOP_FACTORY";
@@ -70,11 +76,16 @@ public class C {
 	public static final String ERROR_ROLLBACK_NOT_IMPLEMENTED = "rollback not implemented yet.";
 	public static final String ERROR_NOTCONFIGURED = " not configured properly.";
 
-	// WorkArea
-	public static final String DIP = "dip";
-	public static final String AIP = "aip";
-	public static final String DATA = "data";
-	public static final String WORK = "work";
+	// WorkArea organization
+	public static final String WA_DIP = "dip";
+	public static final String WA_AIP = "aip";
+	public static final String WA_DATA = "data";
+	public static final String WA_WORK = "work";
+	public static final String WA_PIPS = "pips";
+	public static final String WA_PUBLIC = "public";
+
+	//
+	public static final String TEST_USER_SHORT_NAME = "TEST";
 
 	// File system
 	public static final Path CONF = new RelativePath("conf");
@@ -83,6 +94,7 @@ public class C {
 	public static final File HIBERNATE_CFG = new RelativePath(CONF,"hibernateCentralDB.cfg.xml").toFile();
 	public static final File XLINK_XSD = new File("src/main/xsd/xlink.xsd");
 	public static final File PREMIS_XSD = new File("src/main/xsd/premis.xsd");
+	public static final String XLINK_XSD_PATH = "conf/xlink.xsd";
 
 	// Xml
 	public static final String OWL_SAMEAS = "http://www.w3.org/2002/07/owl#sameAs";
@@ -94,17 +106,19 @@ public class C {
 	public static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	
 	// Other
-	public static final String USER_ERROR_STATE_DIGIT="4";
-	public static final String TEST_USER_SHORT_NAME = "TEST";
 	public static final String LOCAL_NODE_BEAN_NAME = "localNode";
 	public static final File BASIC_TEST_PACKAGE = Path.makeFile(CONF,"basic_test_package.tgz");
 	public static final String QUEUE_TO_SERVER = "CB.SYSTEM";
 	public static final String QUEUE_TO_CLIENT = "CB.CLIENT";
-	public static final String XLINK_XSD_PATH = "conf/xlink.xsd";
-	public static final String INGEST_REGISTER_URN_ACTION_START_STATUS = "150";
 	public static final String OAI_DANRW_DE = "oai:danrw.de:";
-	public static final String UTF_8 = "UTF-8";
-	public static final String EDM_METADATA_STREAM_ID = "EDM";
+	
+	//
+	public static final String ENCODING_UTF_8 = "UTF-8";
+	
+	// Action organization
+	public static final String USER_ERROR_STATE_DIGIT="4";
+	public static final String INGEST_REGISTER_URN_ACTION_START_STATUS = "150";
+	
 	
 	
 }

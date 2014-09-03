@@ -60,8 +60,8 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		String address_dest = gridPath;
 		if (!gridPath.startsWith("/")) 
 			address_dest = "/" + gridPath;
-		String targetPhysically = localNode.getGridCacheAreaRootPath() + "/" + C.AIP + address_dest;
-		String targetLogically  = "/" + irodsSystemConnector.getZone() + "/" + C.AIP  + address_dest;	
+		String targetPhysically = localNode.getGridCacheAreaRootPath() + "/" + C.WA_AIP + address_dest;
+		String targetLogically  = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP  + address_dest;	
 		File gridfile = new File (targetPhysically); 
 		
 		if (registerOnWorkingResourceAndComputeChecksum(file,targetLogically,gridfile))
@@ -131,7 +131,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 	public boolean storagePolicyAchieved(String gridPath2, StoragePolicy sp) {
 		irodsSystemConnector.connect();
 		
-		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + C.AIP + "/" + gridPath2;
+		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + "/" + gridPath2;
 		
 		int minNodes = sp.getMinNodes();
 		if (minNodes == 0 ) {

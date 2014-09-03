@@ -101,13 +101,13 @@ public class PremisXmlWriter {
 		FileOutputStream outputStream = new FileOutputStream(f);		
 
 		try {
-	    	writer = outputFactory.createXMLStreamWriter(outputStream, C.UTF_8);
+	    	writer = outputFactory.createXMLStreamWriter(outputStream, C.ENCODING_UTF_8);
 			} catch (XMLStreamException e) {
 			throw new IOException("Failed to create XMLStreamWriter", e);
 			}
 	    
 	    try {	    
-			writer.writeStartDocument(C.UTF_8, "1.0");
+			writer.writeStartDocument(C.ENCODING_UTF_8, "1.0");
 			writer.setPrefix("xsi", C.XSI_NS);
 			  
 			createOpenElement("premis", 0);

@@ -58,7 +58,7 @@ public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
 	Object object = null;
 	private static final String ORIG_NAME = "ATUseCaseIngestDelta";
 	private static final String IDENTIFIER =   "ATUseCaseIngestDeltaIdentifier";
-	private static final String containerName = ORIG_NAME+"."+C.TGZ;
+	private static final String containerName = ORIG_NAME+"."+C.FILE_EXTENSION_TGZ;
 	
 
 	@Before

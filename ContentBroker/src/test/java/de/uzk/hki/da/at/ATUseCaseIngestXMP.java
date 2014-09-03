@@ -19,14 +19,14 @@
 
 package de.uzk.hki.da.at;
 
-import java.io.File;
+import static org.junit.Assert.assertTrue;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.jdom.JDOMException;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
@@ -38,35 +38,27 @@ import de.uzk.hki.da.utils.TESTHelper;
 public class ATUseCaseIngestXMP extends Base{
 
 	private static final String origName = "ATUseCaseIngestXMP";
-	private Object object;
+	private static Object object;
 	
 
-	@Before
-	public void setUp() throws IOException{
+	@BeforeClass
+	public static void setUpBeforeClass() throws IOException{
 		setUpBase();
-		ingest(origName);
-		object = retrievePackage(origName,"1");
-		System.out.println("object identifier: "+object.getIdentifier());
+		object = ingest(origName);
 	}
 	
 	
-	@After
-	public void tearDown(){
-		try{
-			new File("/tmp/"+object.getIdentifier()+".pack_1.tar").delete();
-			FileUtils.deleteDirectory(new File("/tmp/"+object.getIdentifier()+".pack_1"));
-		}catch(Exception e){
-			System.out.println(e.getMessage());
-		}
-		
+	@AfterClass
+	public static void tearDownAfterClass(){
 		TESTHelper.clearDB();
 		cleanStorage();
 	}
 	
 	
 	@Test
-	public void checkReferencesAndMimetype() throws JDOMException, FileNotFoundException, IOException {
-		;
+	public void testIndex() throws JDOMException, FileNotFoundException, IOException {
+		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-1").
+				contains("Dieser Brauch zum Sankt Martinstag"));
 	}
 	
 }

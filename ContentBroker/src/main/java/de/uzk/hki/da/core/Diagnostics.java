@@ -225,7 +225,7 @@ public class Diagnostics {
 		System.out.print("CHECKING IRODS CONNECTION: ");
 		try{
 			irods.connect();
-			irods.removeFileAndEatException(Path.make(properties.getProperty(PROP_IRODS_ZONE),C.AIP,C.TEST_USER_SHORT_NAME,TEST_TGZ).toString());
+			irods.removeFileAndEatException(Path.make(properties.getProperty(PROP_IRODS_ZONE),C.WA_AIP,C.TEST_USER_SHORT_NAME,TEST_TGZ).toString());
 			irods.logoff();
 			System.out.println("OK");
 		}

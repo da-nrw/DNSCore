@@ -39,7 +39,7 @@ public class ATUseCaseIngestDeltaValidationNotPassed extends UserErrorBase {
 	                                            
 	private static final String ORIG_NAME =    "ATUseCaseIngestDeltaDuplicateEAD";
 	private static final String IDENTIFIER =   "ATUseCaseIngestDeltaDuplicateEADIdentifier";
-	private static final String CONTAINER_NAME = ORIG_NAME+"."+C.TGZ;
+	private static final String CONTAINER_NAME = ORIG_NAME+"."+C.FILE_EXTENSION_TGZ;
 
 	Object object = null;
 	

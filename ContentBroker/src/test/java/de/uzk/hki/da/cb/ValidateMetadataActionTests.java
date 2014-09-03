@@ -205,7 +205,7 @@ public class ValidateMetadataActionTests {
 		action.implementation();
 		
 		assertEquals(C.XMP,object.getPackage_type());
-		assertEquals(C.XMP_RDF,object.getMetadata_file());
+		assertEquals(C.XMP_METADATA_FILE,object.getMetadata_file());
 	}
 	
 

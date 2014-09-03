@@ -104,8 +104,8 @@ public class RestructureActionTests {
 		
 		action.implementation();
 		
-		assertTrue(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,C.DATA,job.getRep_name()+"a").exists());
-		assertTrue(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,C.DATA,job.getRep_name()+"a","vda3.XML").exists());
+		assertTrue(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,C.WA_DATA,job.getRep_name()+"a").exists());
+		assertTrue(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,C.WA_DATA,job.getRep_name()+"a","vda3.XML").exists());
 	}
 	
 	@Test

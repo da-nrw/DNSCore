@@ -50,7 +50,7 @@ import de.uzk.hki.da.utils.TESTHelper;
 public class ATUseCaseAudit extends Base{
 	
 	private static final String ORIGINAL_NAME = "ATUseCaseAudit";
-	private static final String CONTAINER_NAME = ORIGINAL_NAME+"."+C.TGZ;
+	private static final String CONTAINER_NAME = ORIGINAL_NAME+"."+C.FILE_EXTENSION_TGZ;
 	private static final String IDENTIFIER =   "ATUseCaseAuditIdentifier";
 	private static final Path archiveStoragePath = Path.make("/ci/archiveStorage/aip/TEST/");
 	private Object object = null;

@@ -54,8 +54,8 @@ import de.uzk.hki.da.utils.TC;
 public class PublishPDFConversionStrategyTests {
 	
 	Path workAreaRootPath= Path.make(TC.TEST_ROOT_FORMAT,"PublishPDFConversionStrategyTests");
-	Path dataPath = Path.make(workAreaRootPath,"work/TEST/1",C.DATA);
-	Path dipPath = Path.make(dataPath,C.DIP);
+	Path dataPath = Path.make(workAreaRootPath,"work/TEST/1",C.WA_DATA);
+	Path dipPath = Path.make(dataPath,C.WA_DIP);
 	
 	/** The cs. */
 	PublishPDFConversionStrategy cs = new PublishPDFConversionStrategy();

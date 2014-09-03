@@ -36,7 +36,7 @@ public class UserErrorBase extends Base{
 	private static final int timeout = 20000;
 	
 	Object ingestAndWaitForErrorState(String originalName,String errorState) throws IOException, InterruptedException{
-		return ingestAndWaitForErrorState(originalName, errorState, C.TGZ);
+		return ingestAndWaitForErrorState(originalName, errorState, C.FILE_EXTENSION_TGZ);
 	}
 		
 	Object ingestAndWaitForErrorState(String originalName,String errorStateLastDigit,String containerSuffix) throws IOException, InterruptedException{

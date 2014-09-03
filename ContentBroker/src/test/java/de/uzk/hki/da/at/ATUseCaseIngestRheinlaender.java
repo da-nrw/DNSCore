@@ -22,26 +22,24 @@ package de.uzk.hki.da.at;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.JDOMException;
-import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.TESTHelper;
 import de.uzk.hki.da.utils.XMLUtils;
@@ -50,50 +48,50 @@ import de.uzk.hki.da.utils.XMLUtils;
 /**
  * Relates to AK-T/02 Ingest - Sunny Day Scenario.
  * The Rheinlaender package is of type EAD.
- * This test checks if the metadata have been updated correctly. 
+ * This test checks if the metadata have been updated correctly.
+ *  
  * @author Daniel M. de Oliveira
+ * @author Polina Gubaidullina
  */
 public class ATUseCaseIngestRheinlaender extends Base{
 
+	private static final String METS_ELEMENT_F_LOCAT = "FLocat";
+	private static final String METS_ELEMENT_FILE = "file";
+	private static final String METS_ELEMENT_FILE_GRP = "fileGrp";
+	private static final String METS_ELEMENT_FILE_SEC = "fileSec";
+	private static final String URL = "URL";
+	private static final String EAD_XML = "EAD.XML";
+	private static Path contractorsPipsPublic;
 	private static final String origName = 		"ATUseCaseIngestRheinlaender";
-	private Object object;
-	private static final Namespace METS_NS = 	Namespace.getNamespace("http://www.loc.gov/METS/");
-	private static final Namespace XLINK_NS = 	Namespace.getNamespace("http://www.w3.org/1999/xlink");
+	private static Object object;
 	private String EAD_XPATH_EXPRESSION = 		"//daoloc/@href";
 	
-	@Before
-	public void setUp() throws IOException{
+	@BeforeClass
+	public static void setUp() throws IOException{
 		setUpBase();
-		ingest(origName);
+		object = ingest(origName);
+		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
-	@After
-	public void tearDown(){
-		try{
-			new File("/tmp/"+object.getIdentifier()+".pack_1.tar").delete();
-			FileUtils.deleteDirectory(new File("/tmp/"+object.getIdentifier()+".pack_1"));
-		}catch(Exception e){
-			System.out.println(e.getMessage());
-		}
+	@AfterClass
+	public static void tearDown(){
 		
 		TESTHelper.clearDB();
 		cleanStorage();
 	}
 	
 	@Test
-	public void test() throws FileNotFoundException, JDOMException, IOException, RepositoryException{
-		object = retrievePackage(origName,"1");
-		System.out.println("object identifier: "+object.getIdentifier());
+	public void testReferencesInPip() throws FileNotFoundException, JDOMException, IOException, RepositoryException{
 		
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build
-				(new FileReader(Path.make(localNode.getWorkAreaRootPath(),"pips", "public", "TEST", object.getIdentifier(), "mets_2_32044.xml").toFile()));
+				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "mets_2_32044.xml").toFile()));
 		assertTrue(getURL(doc).contains("http://data.danrw.de"));
-		assertEquals("URL", getLoctype(doc));
-		assertEquals("image/jpeg", getMimetype(doc));
+		assertEquals(URL, getLoctype(doc));
+		assertEquals(C.MIMETYPE_IMAGE_JPEG, getMimetype(doc));
 		
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(localNode.getWorkAreaRootPath(),"pips", "public", "TEST", object.getIdentifier(), "EAD.XML").toFile()));
+		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), EAD_XML).toFile()));
 		
 		List<String> metsReferences = getMetsRefsInEad(eadDoc);
 		assertTrue(metsReferences.size()==5);
@@ -112,29 +110,39 @@ public class ATUseCaseIngestRheinlaender extends Base{
 		}
 	}
 	
+	@Test
+	public void testIndex(){
+		
+		repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-d1e15821").
+			contains("VDA - Forschungsstelle Rheinlländer in aller Welt");
+	}
+	
+	
+	
+	
 	private String getURL(Document doc){
 		return doc.getRootElement()
-				.getChild("fileSec", METS_NS)
-				.getChild("fileGrp", METS_NS)
-				.getChild("file", METS_NS)
-				.getChild("FLocat", METS_NS)
-				.getAttributeValue("href", XLINK_NS);
+				.getChild(METS_ELEMENT_FILE_SEC, C.METS_NS)
+				.getChild(METS_ELEMENT_FILE_GRP, C.METS_NS)
+				.getChild(METS_ELEMENT_FILE, C.METS_NS)
+				.getChild(METS_ELEMENT_F_LOCAT, C.METS_NS)
+				.getAttributeValue("href", C.XLINK_NS);
 	}
 	
 	private String getLoctype(Document doc){
 		return doc.getRootElement()
-				.getChild("fileSec", METS_NS)
-				.getChild("fileGrp", METS_NS)
-				.getChild("file", METS_NS)
-				.getChild("FLocat", METS_NS)
+				.getChild(METS_ELEMENT_FILE_SEC, C.METS_NS)
+				.getChild(METS_ELEMENT_FILE_GRP, C.METS_NS)
+				.getChild(METS_ELEMENT_FILE, C.METS_NS)
+				.getChild(METS_ELEMENT_F_LOCAT, C.METS_NS)
 				.getAttributeValue("LOCTYPE");
 	}
 
 	private String getMimetype(Document doc){
 		return doc.getRootElement()
-				.getChild("fileSec", METS_NS)
-				.getChild("fileGrp", METS_NS)
-				.getChild("file", METS_NS)
+				.getChild(METS_ELEMENT_FILE_SEC, C.METS_NS)
+				.getChild(METS_ELEMENT_FILE_GRP, C.METS_NS)
+				.getChild(METS_ELEMENT_FILE, C.METS_NS)
 				.getAttributeValue("MIMETYPE");
 	}
 	

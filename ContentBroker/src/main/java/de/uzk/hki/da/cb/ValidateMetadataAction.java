@@ -168,7 +168,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		
 		if ((getFilesWithPUID(C.XMP_PUID)).size()>=1){
 			detectedMetadataFile=new DAFile(object.getLatestPackage(),
-					object.getNameOfNewestARep().replace("+a", "+b"),C.XMP_RDF);
+					object.getNameOfNewestARep().replace("+a", "+b"),C.XMP_METADATA_FILE);
 			detectedPackageType=C.XMP;
 			ptypeCount++;
 		}

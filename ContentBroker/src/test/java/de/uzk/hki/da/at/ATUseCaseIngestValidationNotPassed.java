@@ -84,7 +84,7 @@ public class ATUseCaseIngestValidationNotPassed extends UserErrorBase{
 	@Test
 	public void testInvalidPremis() throws Exception{
 		
-		ingestAndWaitForErrorState(AT_INVALID_PREMIS, C.USER_ERROR_STATE_DIGIT,C.ZIP);
+		ingestAndWaitForErrorState(AT_INVALID_PREMIS, C.USER_ERROR_STATE_DIGIT,C.FILE_EXTENSION_ZIP);
 		System.out.println(YEAH);
 	}
 	

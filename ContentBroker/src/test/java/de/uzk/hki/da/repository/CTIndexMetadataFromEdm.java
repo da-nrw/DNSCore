@@ -67,7 +67,7 @@ public class CTIndexMetadataFromEdm {
 	@Test
 	public void testMetsEdm() throws FileNotFoundException, IOException {
 		
-		String edmContent = IOUtils.toString(new FileInputStream(edmFromMetsFile), C.UTF_8);
+		String edmContent = IOUtils.toString(new FileInputStream(edmFromMetsFile), C.ENCODING_UTF_8);
 	
 		try {
 			repo.indexMetadata(INDEX_NAME, "1", edmContent);
@@ -88,7 +88,7 @@ public class CTIndexMetadataFromEdm {
 	@Test
 	public void test() throws FileNotFoundException, IOException {
 		
-		String edmContent = IOUtils.toString(new FileInputStream(edmFile), C.UTF_8);
+		String edmContent = IOUtils.toString(new FileInputStream(edmFile), C.ENCODING_UTF_8);
 	
 		try {
 			repo.indexMetadata(INDEX_NAME, "1", edmContent);

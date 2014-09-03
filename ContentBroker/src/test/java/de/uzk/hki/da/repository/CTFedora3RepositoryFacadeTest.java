@@ -68,7 +68,7 @@ public class CTFedora3RepositoryFacadeTest {
 		
 		String content=null;
 		FileInputStream fileInputStream = new FileInputStream(new File("src/test/resources/ct/Fedora3RepositoryFacadeTest/ead.xml"));
-		content = IOUtils.toString(fileInputStream, C.UTF_8);
+		content = IOUtils.toString(fileInputStream, C.ENCODING_UTF_8);
 		fileInputStream.close();
 		
 		fedora.createObject(OBJECT_ID, COLL_NAME, TEST);
