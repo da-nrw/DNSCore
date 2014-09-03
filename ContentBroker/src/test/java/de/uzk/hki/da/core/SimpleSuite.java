@@ -50,6 +50,7 @@ import de.uzk.hki.da.cb.UpdateMetadataActionEADTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionLIDOTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionXMPTests;
+import de.uzk.hki.da.cb.UpdateMetadataRheinlaender;
 import de.uzk.hki.da.cb.ValidateMetadataActionTests;
 import de.uzk.hki.da.format.CLIConversionStrategyTests;
 import de.uzk.hki.da.format.ConverterServiceTests;
@@ -160,7 +161,8 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	RestructureActionTests.class,
 	ValidateMetadataActionTests.class,
 	ProcessUserDecisionsActionTests.class,
-	FakeFileFormatFacadeTests.class
+	FakeFileFormatFacadeTests.class,
+	UpdateMetadataRheinlaender.class
 })
 public class SimpleSuite {
 
