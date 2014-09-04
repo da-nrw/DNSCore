@@ -113,7 +113,6 @@ public class ATUseCaseIngestRheinlaender extends Base{
 	
 	@Test
 	public void testIndex(){
-		
 		repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-d1e15821").
 			contains("VDA - Forschungsstelle Rheinlländer in aller Welt");
 	}

@@ -52,7 +52,7 @@ public class ATUseCaseIngestMetsMods extends Base{
 	
 	private static final String PORTAL_CI_TEST = "portal_ci_test";
 	private static final String XML_ATTRIBUTE_HREF = "href";
-	private static final Path testContractorPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, "TEST");
+	private static Path testContractorPipsPublic;
 	private static final String origName = 		"ATUseCaseIngestMetsMods";
 	private static Object object;
 	private String METS_XPATH_EXPRESSION = 		"//mets:file";
@@ -63,7 +63,6 @@ public class ATUseCaseIngestMetsMods extends Base{
 	public static void setUpBeforeClass() throws IOException{
 		setUpBase();
 		object = ingest(origName);
-		
 	}
 	
 	@AfterClass
@@ -74,7 +73,8 @@ public class ATUseCaseIngestMetsMods extends Base{
 	
 	@Test
 	public void checkReferencesAndMimetype() throws JDOMException, FileNotFoundException, IOException {
-
+		testContractorPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, "TEST");
+		
 		assertEquals(C.CB_PACKAGETYPE_METS,object.getPackage_type());
 		
 		metsDoc = new SAXBuilder().build
@@ -97,6 +97,7 @@ public class ATUseCaseIngestMetsMods extends Base{
 	
 	@Test
 	public void checkIndex(){
+		testContractorPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, "TEST");
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {}
