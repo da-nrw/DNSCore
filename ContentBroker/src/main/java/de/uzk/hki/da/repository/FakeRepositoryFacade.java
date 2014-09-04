@@ -203,6 +203,10 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	public String getIndexedMetadata(String indexName, String objectId) {
 		if (objectId.equals("Inventarnummer"))
 			return "\"edm:provider\":\"DA-NRW - Digitales Archiv Nordrhein-Westfalen\"";
+		else if(objectId.endsWith("d1e15821")) 
+			return "VDA - Forschungsstelle Rheinlländer in aller Welt";
+		else if(objectId.endsWith("-1"))
+			return "Dieser Brauch zum Sankt Martinstag";
 		else
 			return "ULB (Stadt) [Electronic ed.]";
 	}
