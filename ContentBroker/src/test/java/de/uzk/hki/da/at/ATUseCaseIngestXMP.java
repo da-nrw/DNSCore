@@ -57,6 +57,9 @@ public class ATUseCaseIngestXMP extends Base{
 	
 	@Test
 	public void testIndex() throws JDOMException, FileNotFoundException, IOException {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {}
 		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-1").
 				contains("Dieser Brauch zum Sankt Martinstag"));
 	}
