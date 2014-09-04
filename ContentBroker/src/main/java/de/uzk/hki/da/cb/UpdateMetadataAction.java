@@ -347,8 +347,7 @@ public class UpdateMetadataAction extends AbstractAction {
 				metadataFileName = packageType + "." + extension;
 			}
 			
-			File destFile = new File(object.getDataPath() + "/" + repName + "/" // XXX same problem with subdirs as above? Daniel M. de Oliveira
-					+ metadataFileName);
+			File destFile = new File(object.getDataPath() + "/" + repName + "/" + metadataFileName);
 			FileUtils.copyFile(srcMetadataFile.toRegularFile(), destFile);
 			DAFile destMetadataFile = new DAFile(object.getLatestPackage(), repName, metadataFileName);
 			destMetadataFile.setFormatPUID(srcMetadataFile.getFormatPUID());
