@@ -121,6 +121,8 @@ public class RestructureAction extends AbstractAction{
 		for (DAFile f:scannedFiles){
 			logger.debug(f+":"+f.getFormatPUID());
 		}
+		
+		Path.makeFile(object.getDataPath(),"jhove_temp").mkdirs();
 		return true;
 	}
 

@@ -19,7 +19,9 @@
 
 package de.uzk.hki.da.format;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import de.uzk.hki.da.model.DAFile;
@@ -33,6 +35,9 @@ import de.uzk.hki.da.model.DAFile;
 public interface FileFormatFacade {
 
 	/**
+	 * Scans all files and determines the pronom PUID and possibly a secondary format attribute
+	 * for each of them. Then sets a value for each of the files formatPUID and formatSecondaryAttribute fields.
+	 * 
 	 * @param files
 	 * @return return files. Used for easier testing.
 	 * @throws FileNotFoundException if one or more files cannot be found.
@@ -40,4 +45,14 @@ public interface FileFormatFacade {
 	 */
 	public List<DAFile> identify(List<DAFile> files) 
 			throws FileNotFoundException, FileFormatException;
+
+	/**
+	 * The target directory must exist
+	 * 
+	 * @param file
+	 * @param jobId
+	 * @return
+	 * @throws IOException
+	 */
+	public void extract(File file, File extractedMetadata) throws IOException;
 }

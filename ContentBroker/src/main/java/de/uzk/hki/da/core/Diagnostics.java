@@ -31,7 +31,8 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import de.uzk.hki.da.format.CLIFormatIdentifier;
-import de.uzk.hki.da.format.JhoveMetadataExtractor;
+import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.format.StandardFileFormatFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.Node;
@@ -124,10 +125,9 @@ public class Diagnostics {
 	private static int checkJhove() {
 		
 		System.out.print("CHECKING JHOVE: ");
-		JhoveMetadataExtractor jhove = new JhoveMetadataExtractor();
-		jhove.setJhoveFolder("jhove");
+		FileFormatFacade jhove = new StandardFileFormatFacade();
 		try {
-			jhove.extract(new File("conf/healthCheck.tif"), 1);
+			jhove.extract(new File("conf/healthCheck.tif"), new File("/tmp/abc"));
 			System.out.println("OK");
 		} catch (IOException e) {
 			System.out.println(WARN+" jhove scan service doesnt work");

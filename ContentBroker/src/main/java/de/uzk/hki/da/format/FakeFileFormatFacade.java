@@ -20,6 +20,7 @@
 package de.uzk.hki.da.format;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -131,6 +132,11 @@ public class FakeFileFormatFacade implements FileFormatFacade {
         Matcher m=p.matcher(line);
         if (m.find()) return true;
         return false;
+	}
+
+
+	@Override
+	public void extract(File file, File targetFile) throws IOException {
 	}
 	
 	

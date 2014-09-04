@@ -19,6 +19,7 @@
 
 package de.uzk.hki.da.cb;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,17 +27,29 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
-import de.uzk.hki.da.format.MetadataExtractor;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.CommaSeparatedList;
+import de.uzk.hki.da.utils.Path;
 
 /**
+ * Creates metadata files from extracted jhove output and puts them to the folder jhove_temp
+ * below the objects data folder, which can be used in following actions. 
+ * The metadata files are named by a md5 hash.
+ * <br><br>
+ * Example:
+ * <ul>
+ * <li>File: WorkAreaRootPath/work/csn/oid/data/repname/sub/a.jpg
+ * <li>Jhove: WorkAreaRootPath/work/csn/oid/data/jhove_temp/repname/md5hashed(sub/a.jpg)
+ * </ul>
+ * 
  * @author Daniel M. de Oliveira
  */
 public class CheckFormatsAction extends AbstractAction {
@@ -44,7 +57,6 @@ public class CheckFormatsAction extends AbstractAction {
 
 	private FileFormatFacade fileFormatFacade;
 
-	private MetadataExtractor jhoveScanService;
 
 	@Override
 	void checkActionSpecificConfiguration() throws ConfigurationException {
@@ -125,19 +137,16 @@ public class CheckFormatsAction extends AbstractAction {
 	 */
 	private void attachJhoveInfoToAllFiles(List<DAFile> files) throws IOException {
 		for (DAFile f : files) {
-			String jhoveOut = jhoveScanService.extract(f.toRegularFile(), job.getId());
-
-			f.setPathToJhoveOutput(jhoveOut);
-			logger.debug("Path to jhove output for file \""+f+"\": " + jhoveOut);
+			// dir
+			String dir = Path.make(object.getDataPath(),"jhove_temp",f.getRep_name()).toString();
+			String fileName = DigestUtils.md5Hex(f.getRelative_path());
+			
+			if (!new File(dir).exists()) new File(dir).mkdirs();
+			
+			File target = Path.makeFile(dir,fileName);
+			logger.debug("will write jhove output to: "+target);
+			fileFormatFacade.extract(f.toRegularFile(), target);
 		}
-	}
-
-	public MetadataExtractor getJhoveScanService() {
-		return jhoveScanService;
-	}
-
-	public void setJhoveScanService(MetadataExtractor jhoveScanService) {
-		this.jhoveScanService = jhoveScanService;
 	}
 
 	public FileFormatFacade getFileFormatFacade() {

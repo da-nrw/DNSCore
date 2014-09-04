@@ -25,7 +25,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,15 +44,15 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.format.JhoveMetadataExtractor;
+import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
@@ -77,9 +76,6 @@ public class CreatePremisActionTests {
 	/** The main folder. */
 	Path workAreaRootPath = new RelativePath("src/test/resources/cb/CreatePremisActionTests/");
 
-	String objCharTifAFilePath = workAreaRootPath + "/jhove_output_2013_07_21+14_28+a_image_tif.xml";
-	String objCharTifBFilePath = workAreaRootPath + "/jhove_output_2013_07_21+14_28+b_image_tif.xml";
-	String objCharPremisAFilePath = workAreaRootPath + "/jhove_output_2013_07_21+14_28+a_premis_xml.xml";
 	
 	/** The object. */
 	Object object;
@@ -127,20 +123,18 @@ public class CreatePremisActionTests {
 		action.setDao(dao);
 		
 
-		JhoveMetadataExtractor jhoveScanService = mock(JhoveMetadataExtractor.class);
-		when(jhoveScanService.getJhoveFolder()).
-			thenReturn(workAreaRootPath + "/JhoveFolder");				
-		action.setJhoveScanService(jhoveScanService);		
+		FileFormatFacade jhoveScanService = mock(FileFormatFacade.class);
+		action.setFileFormatFacade(jhoveScanService);		
 		
 		DAFile a = new DAFile(pkg2,"2013_07_31+11_54+a","140864.tif");
 		a.setFormatPUID("fmt/10");
-		a.setPathToJhoveOutput(objCharTifAFilePath);
+//		a.setPathToJhoveOutput(objCharTifAFilePath);
 		DAFile b = new DAFile(pkg2,"2013_07_31+11_54+b","140864.tif");
 		b.setFormatPUID("fmt/10");
-		b.setPathToJhoveOutput(objCharTifBFilePath);
+//		b.setPathToJhoveOutput(objCharTifBFilePath);
 		DAFile c = new DAFile(pkg2,"2013_07_31+11_54+a","premis.xml");
 		c.setFormatPUID("da-fmt/1");
-		c.setPathToJhoveOutput(objCharPremisAFilePath);
+//		c.setPathToJhoveOutput(objCharPremisAFilePath);
 		
 		pkg2.getFiles().add(a);
 		pkg2.getFiles().add(b);
@@ -195,7 +189,10 @@ public class CreatePremisActionTests {
 		object.getPackages().remove(pkg);
 		
 		action.implementation();
-		checkPremisFile();
+		File premisFile = Path.makeFile(workAreaRootPath,"work/TEST/identifier/data/2013_07_31+11_54+b/premis.xml");
+		assertTrue(premisFile.exists());
+		
+		checkPremisFile(premisFile);
 		
 		
 		
@@ -266,26 +263,19 @@ public class CreatePremisActionTests {
 	 * @author Daniel M. de Oliveira
 	 */
 	@SuppressWarnings({ "unchecked" })
-	private void checkPremisFile() {
+	private void checkPremisFile(File premisFile) {
 		
 		SAXBuilder builder = new SAXBuilder();
 		Document doc;
-		Element objectCharTifARoot;
-		Element objectCharTifBRoot;
-		Element objectCharPremisARoot;
 		try {
-			doc = builder.build(Path.makeFile(workAreaRootPath,"work/TEST/identifier/data/2013_07_31+11_54+b/premis.xml"));
+			doc = builder.build(premisFile);
 			
-			objectCharTifARoot = builder.build(objCharTifAFilePath).getRootElement();
-			objectCharTifBRoot = builder.build(objCharTifBFilePath).getRootElement();
-			objectCharPremisARoot = builder.build(objCharPremisAFilePath).getRootElement();
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to read premis file", e);
 		}
 				
 		Element rootElement = doc.getRootElement();
 		Namespace ns = rootElement.getNamespace();
-		Namespace jhoveNs = objectCharTifARoot.getNamespace();
 		
 		List<Element> objectElements = rootElement.getChildren("object", ns);
 		
@@ -310,10 +300,8 @@ public class CreatePremisActionTests {
 				assertEquals("PRONOM", formatRegistry.getChild("formatRegistryName", ns).getValue());
 				assertEquals("fmt/10", formatRegistry.getChild("formatRegistryKey", ns).getValue());
 				assertEquals("specification", formatRegistry.getChild("formatRegistryRole", ns).getValue());				
-				assertEquals(objectCharTifARoot.getChild("repInfo", jhoveNs).getAttribute("uri").getValue(),
-						tifAObjCharElement.getChild("objectCharacteristicsExtension", ns)
-						.getChild("mdSec", ns).getChild("mdWrap", ns).getChild("xmlData", ns).getChild("jhove", jhoveNs)
-						.getChild("repInfo", jhoveNs).getAttribute("uri").getValue());
+				assertEquals("abc",tifAObjCharElement.getChild("objectCharacteristicsExtension",ns)
+						.getChild("mdSec",ns).getChild("mdWrap",ns).getChild("xmlData",ns).getChildText("jhove",ns));
 				Element tifAStorageElement = e.getChild("storage", ns).getChild("contentLocation", ns).getChild("contentLocationValue", ns);
 				assertEquals("2013_07_31+11_54+a/140864.tif", tifAStorageElement.getValue());
 				assertEquals("identifier.pack_2.tar", e.getChild("relationship", ns)
@@ -337,10 +325,8 @@ public class CreatePremisActionTests {
 				assertEquals("PRONOM", formatRegistry.getChild("formatRegistryName", ns).getValue());
 				assertEquals("da-fmt/1", formatRegistry.getChild("formatRegistryKey", ns).getValue());
 				assertEquals("specification", formatRegistry.getChild("formatRegistryRole", ns).getValue());	
-				assertEquals(objectCharPremisARoot.getChild("repInfo", jhoveNs).getAttribute("uri").getValue(),
-						premisAObjCharElement.getChild("objectCharacteristicsExtension", ns)
-						.getChild("mdSec", ns).getChild("mdWrap", ns).getChild("xmlData", ns).getChild("jhove", jhoveNs)
-						.getChild("repInfo", jhoveNs).getAttribute("uri").getValue());
+				assertEquals("abc",premisAObjCharElement.getChild("objectCharacteristicsExtension",ns)
+						.getChild("mdSec",ns).getChild("mdWrap",ns).getChild("xmlData",ns).getChildText("jhove",ns));
 				Element premisBStorageElement = e.getChild("storage", ns).getChild("contentLocation", ns).getChild("contentLocationValue", ns);
 				assertEquals("2013_07_31+11_54+a/premis.xml", premisBStorageElement.getValue());
 				assertEquals("identifier.pack_2.tar", e.getChild("relationship", ns)
@@ -363,10 +349,8 @@ public class CreatePremisActionTests {
 				assertEquals("PRONOM", formatRegistry.getChild("formatRegistryName", ns).getValue());
 				assertEquals("fmt/10", formatRegistry.getChild("formatRegistryKey", ns).getValue());
 				assertEquals("specification", formatRegistry.getChild("formatRegistryRole", ns).getValue());
-				assertEquals(objectCharTifBRoot.getChild("repInfo", jhoveNs).getAttribute("uri").getValue(),
-						tifBObjCharElement.getChild("objectCharacteristicsExtension", ns)
-						.getChild("mdSec", ns).getChild("mdWrap", ns).getChild("xmlData", ns).getChild("jhove", jhoveNs)
-						.getChild("repInfo", jhoveNs).getAttribute("uri").getValue());
+				assertEquals("abc",tifBObjCharElement.getChild("objectCharacteristicsExtension",ns)
+						.getChild("mdSec",ns).getChild("mdWrap",ns).getChild("xmlData",ns).getChildText("jhove",ns));
 				Element tifBStorageElement = e.getChild("storage", ns).getChild("contentLocation", ns).getChild("contentLocationValue", ns);
 				assertEquals("2013_07_31+11_54+b/140864.tif", tifBStorageElement.getValue());
 				assertEquals("identifier.pack_2.tar", e.getChild("relationship", ns)
@@ -495,16 +479,12 @@ public class CreatePremisActionTests {
 		try {
 			doc = builder.build(workAreaRootPath + "/work/TEST/identifier_deltas/data/2013_07_31+11_54+b/premis.xml");
 			
-			objectCharTifARoot = builder.build(objCharTifAFilePath).getRootElement();
-			objectCharTifBRoot = builder.build(objCharTifBFilePath).getRootElement();
-			objectCharPremisARoot = builder.build(objCharPremisAFilePath).getRootElement();
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to read premis file", e);
 		}
 		
 		Element rootElement = doc.getRootElement();
 		Namespace ns = rootElement.getNamespace();
-		Namespace jhoveNs = objectCharTifARoot.getNamespace();
 		
 		List<Element> objectElements = rootElement.getChildren("object", ns);
 		
@@ -599,10 +579,8 @@ public class CreatePremisActionTests {
 				assertEquals("PRONOM", formatRegistry.getChild("formatRegistryName", ns).getValue());
 				assertEquals("fmt/10", formatRegistry.getChild("formatRegistryKey", ns).getValue());
 				assertEquals("specification", formatRegistry.getChild("formatRegistryRole", ns).getValue());				
-				assertEquals(objectCharTifARoot.getChild("repInfo", jhoveNs).getAttribute("uri").getValue(),
-						tifAObjCharElement.getChild("objectCharacteristicsExtension", ns)
-						.getChild("mdSec", ns).getChild("mdWrap", ns).getChild("xmlData", ns).getChild("jhove", jhoveNs)
-						.getChild("repInfo", jhoveNs).getAttribute("uri").getValue());
+				assertEquals("abc",tifAObjCharElement.getChild("objectCharacteristicsExtension",ns)
+						.getChild("mdSec",ns).getChild("mdWrap",ns).getChild("xmlData",ns).getChildText("jhove",ns));
 				Element tifAStorageElement = e.getChild("storage", ns).getChild("contentLocation", ns).getChild("contentLocationValue", ns);
 				assertEquals("2013_07_31+11_54+a/140864.tif", tifAStorageElement.getValue());
 				assertEquals("identifier_deltas.pack_2.tar", e.getChild("relationship", ns)
@@ -626,10 +604,8 @@ public class CreatePremisActionTests {
 				assertEquals("PRONOM", formatRegistry.getChild("formatRegistryName", ns).getValue());
 				assertEquals("da-fmt/1", formatRegistry.getChild("formatRegistryKey", ns).getValue());
 				assertEquals("specification", formatRegistry.getChild("formatRegistryRole", ns).getValue());	
-				assertEquals(objectCharPremisARoot.getChild("repInfo", jhoveNs).getAttribute("uri").getValue(),
-						premisAObjCharElement.getChild("objectCharacteristicsExtension", ns)
-						.getChild("mdSec", ns).getChild("mdWrap", ns).getChild("xmlData", ns).getChild("jhove", jhoveNs)
-						.getChild("repInfo", jhoveNs).getAttribute("uri").getValue());
+				assertEquals("abc",premisAObjCharElement.getChild("objectCharacteristicsExtension",ns)
+						.getChild("mdSec",ns).getChild("mdWrap",ns).getChild("xmlData",ns).getChildText("jhove",ns));
 				Element premisBStorageElement = e.getChild("storage", ns).getChild("contentLocation", ns).getChild("contentLocationValue", ns);
 				assertEquals("2013_07_31+11_54+a/premis.xml", premisBStorageElement.getValue());
 				assertEquals("identifier_deltas.pack_2.tar", e.getChild("relationship", ns)
@@ -652,10 +628,8 @@ public class CreatePremisActionTests {
 				assertEquals("PRONOM", formatRegistry.getChild("formatRegistryName", ns).getValue());
 				assertEquals("fmt/10", formatRegistry.getChild("formatRegistryKey", ns).getValue());
 				assertEquals("specification", formatRegistry.getChild("formatRegistryRole", ns).getValue());
-				assertEquals(objectCharTifBRoot.getChild("repInfo", jhoveNs).getAttribute("uri").getValue(),
-						tifBObjCharElement.getChild("objectCharacteristicsExtension", ns)
-						.getChild("mdSec", ns).getChild("mdWrap", ns).getChild("xmlData", ns).getChild("jhove", jhoveNs)
-						.getChild("repInfo", jhoveNs).getAttribute("uri").getValue());
+				assertEquals("abc",tifBObjCharElement.getChild("objectCharacteristicsExtension",ns)
+						.getChild("mdSec",ns).getChild("mdWrap",ns).getChild("xmlData",ns).getChildText("jhove",ns));
 				Element tifBStorageElement = e.getChild("storage", ns).getChild("contentLocation", ns).getChild("contentLocationValue", ns);
 				assertEquals("2013_07_31+11_54+b/140864.tif", tifBStorageElement.getValue());
 				assertEquals("identifier_deltas.pack_2.tar", e.getChild("relationship", ns)

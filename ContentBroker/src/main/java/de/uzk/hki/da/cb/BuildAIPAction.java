@@ -50,8 +50,6 @@ public class BuildAIPAction extends AbstractAction {
 		Path relativePathOfSource = new RelativePath(object.getContractor().getShort_name(),object.getIdentifier());
 		Path physicalPackagePathOfSource = Path.make(localNode.getWorkAreaRootPath(),"work",relativePathOfSource);
 		
-		
-		
 		logger.info ( "Preparing AIP at \"" + physicalPackagePathOfSource +"\" for archival." );
 		deleteOldPremisFile();
 		deleteUnnecessaryReps(physicalPackagePathOfSource,job.getRep_name());		

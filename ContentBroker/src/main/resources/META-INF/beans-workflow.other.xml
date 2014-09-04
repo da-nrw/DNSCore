@@ -20,7 +20,6 @@
 		<property name="startStatus" value="600" />
 		<property name="endStatus" value="120" />
 		<property name="name" value="RestartIngestWorkflowAction" />
-		<property name="jhoveScanService" ref="${cb.implementation.metadataExtractor:jhoveMetadataExtractor}" />	
 	</bean>
 	<bean id="DeleteObjectAction" class="de.uzk.hki.da.cb.DeleteObjectAction"
 		scope="prototype">
