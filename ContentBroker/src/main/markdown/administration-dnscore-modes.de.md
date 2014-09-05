@@ -14,6 +14,8 @@ In diesem Modus hostet ein Knoten (Node) die beiden Komponenten DAWeb und Conten
 
 ### Pres - Nur Presentation Repository
 
+![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/system-modi2.jpg)
+
 Dieser Modus sollte bei der Installation von Knoten verwendet werden, die lediglich das PresentationRepository hosten. Auf solch einem Knoten laufen die Komponenten ContentBroker, Fedora und Elasticsearch. Es werden keine Einlieferungen von Usern an solch einem Knoten angenommen, sondern lediglich PIPs, die auf anderen Knoten erstellt wurden.
 
 ### Full - Knoten und Presentation Repository
