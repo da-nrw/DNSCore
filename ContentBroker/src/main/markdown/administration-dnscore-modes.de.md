@@ -74,5 +74,3 @@ Weiterhin importiert die beans.xml folgende Workflows:
     <import resource="classpath*:META-INF/beans-workflow.other.xml"/>
 
 Es werden sowohl Präsentationsworkflows als auch normale Paketverarbeitungsworkflows unterstützt.
-
-# Organisation der Beans
