@@ -5,6 +5,8 @@ DNSCore kann grundsätzlich in drei verschiedenen Funktionsumfängen installiert
 * (N)ode 
 * (F)ull
 * (P)res
+ 
+Je nach Auswahl liefert der Installer den ContentBroker mit einer bestimmten Konfiguration aus (beans.xml), die die gewünschten Komponenten und Funktionalitäten des ContentBroker.jar aktiviert. Wenn diese Komponenten aktiviert sind, müssen auch die entsprechenden Blöcke in den config.properties korrekt ausgefüllt sein (siehe jeweils Abschnitte beans.xml), damit die Komponenten die notwendigen Konfigurationsinformationen enthalten.
 
 ## Node - Knotenmodus
 
