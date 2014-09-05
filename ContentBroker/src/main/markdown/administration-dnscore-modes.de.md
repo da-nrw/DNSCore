@@ -1,0 +1,2 @@
+# DNSCore - Funktionsmodi
+
