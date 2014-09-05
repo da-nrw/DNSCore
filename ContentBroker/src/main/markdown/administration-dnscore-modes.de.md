@@ -20,4 +20,8 @@ Dieser Modus sollte bei der Installation von Knoten verwendet werden, die ledigl
 
 ### Full - Knoten und Presentation Repository
 
+![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/system-modi3.jpg)
+
+Dieser Modus erlaubt es, den Knoten sowohl als normalen Einlieferungsknoten fungieren zu lassen, der SIPs annimmt, AIPs generiert und diese mit anderen Knoten austauscht. Gleichzeitig aber kann er sowohl seine eigenen PIPs als auch die PIPs anderer Knoten zur Präsentation aufbereiten und vorhalten.
+
 # Organisation der Beans
