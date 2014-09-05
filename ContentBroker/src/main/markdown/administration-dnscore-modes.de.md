@@ -8,6 +8,10 @@ DNSCore kann grundsätzlich in drei verschiedenen Funktionsumfängen installiert
 
 ### Node - Knotenmodus
 
+![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/system-modi1.jpg)
+
+In diesem Modus hostet ein Knoten (Node) die beiden Komponenten DAWeb und ContentBroker. AIPs für die Langzeitarchivierung werden generiert und im Grid verteilt. PIPs für die Präsentation werden generiert und an den dafür vorgesehenen Präsentationsknoten (PresNode) gesendet.
+
 ### Pres - Nur Presentation Repository
 
 ### Full - Knoten und Presentation Repository
