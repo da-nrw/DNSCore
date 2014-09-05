@@ -232,15 +232,23 @@ public class Diagnostics {
 		catch(Exception e){
 			errorCount++;
 			System.out.println(WARN+"cannot connect to irods via irodsSystemConnector and delete test file. "+e.getMessage());
+			e.printStackTrace();
 		}
 		
 		System.out.print("CHECKING GRID FACADE PUT: ");
 		try {
-			irodsGridFacade.put( C.BASIC_TEST_PACKAGE, new RelativePath(C.TEST_USER_SHORT_NAME,TEST_TGZ).toString(), sp);
-			System.out.println("OK");
+			
+			boolean returnValue = irodsGridFacade.put( C.BASIC_TEST_PACKAGE, new RelativePath(C.TEST_USER_SHORT_NAME,TEST_TGZ).toString(), sp);
+			if (returnValue==false){
+				errorCount++;
+				System.out.println(WARN+"put returned false.");
+			}else
+				System.out.println("OK");
+			
 		} catch (Exception e) {
 			errorCount++;
 			System.out.println(WARN+"cannot put file via irodsGridFacade");
+			e.printStackTrace();
 		}
 		
 		System.out.print("CHECKING GRID FACADE GET: ");
@@ -251,6 +259,7 @@ public class Diagnostics {
 		} catch (Exception e) {
 			errorCount++;
 			System.out.println(WARN+"connot retrieve file via irodsGridFacade");
+			e.printStackTrace();
 		}
 		if (DIAGNOSTICS_RETRIEVAL_FILE.exists()) DIAGNOSTICS_RETRIEVAL_FILE.delete();
 		
