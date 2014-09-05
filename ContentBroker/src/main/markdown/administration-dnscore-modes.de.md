@@ -41,10 +41,14 @@ Die ausgelieferte beans.xml enhält in diesem Fall folgende Imports:
     <import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>
     <import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>
 
+Es werden die Kompontenten irods und fedora importiert. Da sich hinter fedora Fedora und Elasticsearch verbergen, heisst dass, dass insgesamt die Blöcke irods.*, fedora.* als auch elasticsearch.* ausgefüllt sein müssen.
+
 Weiterhin importiert die beans.xml folgende Workflows:
 
     <import resource="classpath*:META-INF/beans-workflow.presentation.xml"/>
     <import resource="classpath*:META-INF/beans-workflow.other.xml"/>
+    
+Es werden lediglich Präsentationsworkflows unterstützt. D.h. die Ingest und Retrieval-Workflows werden nicht unterstützt.
 
 ### Full - Knoten und Presentation Repository
 
@@ -59,6 +63,8 @@ Die ausgelieferte beans.xml enhält in diesem Fall folgende Imports:
     <import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>
     <import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>
 
+Es werden die Kompontenten irods und fedora importiert. Da sich hinter fedora Fedora und Elasticsearch verbergen, heisst dass, dass insgesamt die Blöcke irods.*, fedora.* als auch elasticsearch.* ausgefüllt sein müssen.
+
 Weiterhin importiert die beans.xml folgende Workflows:
 
     <import resource="classpath*:META-INF/beans-workflow.presentation.xml"/>
@@ -66,5 +72,7 @@ Weiterhin importiert die beans.xml folgende Workflows:
     <import resource="classpath*:META-INF/beans-workflow.retrieval.xml"/>
     <import resource="classpath*:META-INF/beans-workflow.pipgen.xml"/>
     <import resource="classpath*:META-INF/beans-workflow.other.xml"/>
+
+Es werden sowohl Präsentationsworkflows als auch normale Paketverarbeitungsworkflows unterstützt.
 
 # Organisation der Beans
