@@ -7,7 +7,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.format.MetadataExtractor;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.Path;
 
@@ -19,8 +18,6 @@ import de.uzk.hki.da.utils.Path;
  */
 public class RestartIngestWorkflowAction extends AbstractAction {
 
-	private MetadataExtractor metadataExtractor;
-	
 	@Override
 	void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
@@ -148,23 +145,7 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	 */
 	private void deleteJhoveTempData() {
 		
-		String pathToJhoveFolder = new File(metadataExtractor.getJhoveFolder()).getAbsolutePath();
-		File jhoveTempFolder = new File(pathToJhoveFolder + "/temp/" + job.getId() + "/");
+		Path.makeFile(object.getDataPath(),"temp");
 		
-		if (jhoveTempFolder.exists()) {
-			try {
-				FileUtils.deleteDirectory(jhoveTempFolder);
-			} catch (IOException e) {
-				throw new RuntimeException("Failed to delete directory " + jhoveTempFolder.getAbsolutePath(), e);
-			}
-		}
-	}
-	
-	public MetadataExtractor getJhoveScanService() {
-		return metadataExtractor;
-	}
-
-	public void setJhoveScanService(MetadataExtractor jhoveScanService) {
-		this.metadataExtractor = jhoveScanService;
 	}
 }

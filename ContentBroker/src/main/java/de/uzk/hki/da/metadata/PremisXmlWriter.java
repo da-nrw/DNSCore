@@ -38,6 +38,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -54,6 +55,7 @@ import de.uzk.hki.da.model.RightsStatement;
 import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.MD5Checksum;
+import de.uzk.hki.da.utils.Path;
 
 
 /**
@@ -206,8 +208,9 @@ public class PremisXmlWriter {
 	 * @throws XMLStreamException the xML stream exception
 	 * @author Daniel M. de Oliveira
 	 * @author Thomas Kleinke
+	 * @throws FileNotFoundException 
 	 */
-	private void createFileElement(DAFile f, Object object) throws XMLStreamException{
+	private void createFileElement(DAFile f, Object object) throws XMLStreamException, FileNotFoundException{
 		
 		logger.debug("Start serializing file \"" + f.toString() + "\" as object element to PREMIS");
 		
@@ -244,11 +247,6 @@ public class PremisXmlWriter {
 		createCloseElement(3);
 
 		
-		// create jhove data
-		if (f.getPathToJhoveOutput() == null || f.getPathToJhoveOutput().equals(""))
-			throw new RuntimeException("Couldn't find path to jhove output for object " +
-					object.getIdentifier());
-										
 		createOpenElement("objectCharacteristicsExtension", 3);
 			createOpenElement("mdSec", 4);
 			createAttribute("ID", "_" + jhoveMDSecIdCounter); jhoveMDSecIdCounter++;
@@ -256,7 +254,9 @@ public class PremisXmlWriter {
 				createAttribute("MDTYPE", "OTHER");
 				createAttribute("OTHERMDTYPE", "JHOVE");
 					createOpenElement("xmlData", 6);
-						integrateJhoveData(f.getPathToJhoveOutput(), 7);
+						System.out.println(DigestUtils.md5Hex(f.getRelative_path()));
+						integrateJhoveData(Path.make(object.getDataPath(),"jhove_temp",f.getRep_name(),
+								DigestUtils.md5Hex(f.getRelative_path())).toString(), 7);
 					createCloseElement(6);
 				createCloseElement(5);
 			createCloseElement(4);
@@ -619,16 +619,15 @@ public class PremisXmlWriter {
 	 * @param tab the tab
 	 * @throws XMLStreamException the xML stream exception
 	 * @author Thomas Kleinke
+	 * @throws FileNotFoundException 
 	 */
-	private void integrateJhoveData(String jhoveFilePath, int tab) throws XMLStreamException {
+	private void integrateJhoveData(String jhoveFilePath, int tab) throws XMLStreamException, FileNotFoundException {
+		File jhoveFile = new File(jhoveFilePath);
+		if (!jhoveFile.exists()) throw new FileNotFoundException("file does not exist. "+jhoveFile);
 		
 		FileInputStream inputStream = null;
 		
-		try {
-			inputStream = new FileInputStream(jhoveFilePath);
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException("Couldn't find file " + jhoveFilePath, e);
-		}
+		inputStream = new FileInputStream(jhoveFile);
 		
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 		XMLStreamReader streamReader = inputFactory.createXMLStreamReader(inputStream);

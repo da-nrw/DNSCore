@@ -682,12 +682,17 @@ public class Object {
 		
 		List<String> list = new ArrayList<String>();
 		for (String f:files){
-			if (!f.startsWith("dip") && !f.startsWith("premis"))
+			if (isNormalRep(f) && !f.startsWith("premis"))
 				list.add(f); 
 		}
 		return list.get(list.size()-1);
 	}
 	
+	
+	private boolean isNormalRep(String f){
+		if (f.startsWith("dip") || f.startsWith("jhove_temp") || f.startsWith("premis")) return false;
+		else return true;
+	}
 	
 	
 	
@@ -705,7 +710,7 @@ public class Object {
 		
 		List<String> list = new ArrayList<String>();
 		for (String f:files){
-			if (!f.startsWith("dip") && !f.startsWith("premis") && f.endsWith("a"))
+			if (isNormalRep(f) && f.endsWith("a"))
 				list.add(f); 
 		}
 		
@@ -726,7 +731,7 @@ public class Object {
 		
 		List<String> list = new ArrayList<String>();
 		for (String f:files){
-			if (!f.startsWith("dip") && !f.startsWith("premis") && f.endsWith("b"))
+			if (isNormalRep(f) && f.endsWith("b"))
 				list.add(f); 
 		}
 		

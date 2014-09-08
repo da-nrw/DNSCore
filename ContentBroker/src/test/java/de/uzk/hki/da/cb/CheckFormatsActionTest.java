@@ -19,12 +19,10 @@
 package de.uzk.hki.da.cb;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,7 +34,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.util.StringUtils;
 
-import de.uzk.hki.da.format.JhoveMetadataExtractor;
 import de.uzk.hki.da.format.StandardFileFormatFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
@@ -135,9 +132,6 @@ public class CheckFormatsActionTest {
 		contractor.setShort_name("TEST");
 		localNode.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
 
-		JhoveMetadataExtractor jhove = mock(JhoveMetadataExtractor.class);
-		when(jhove.extract((File)anyObject(),anyInt())).thenReturn("abc");
-		
 		final Package sipPackage = new Package(); sipPackage.setName("2"); // the SIP / Delta
 		final Package aipPackage = new Package(); aipPackage.setName("1"); // the existing AIP
 		
@@ -173,7 +167,7 @@ public class CheckFormatsActionTest {
 		action.setFileFormatFacade(fileFormatFacade);
 		action.setJob(job);
 		action.setLocalNode(localNode);
-		action.setJhoveScanService(jhove);
+		action.setFileFormatFacade(fileFormatFacade);
 		action.setPSystem(pSystem);
 		
 	}

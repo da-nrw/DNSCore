@@ -87,9 +87,6 @@ public class DAFile{
 	/** The size. */
 	private String size;
 	
-	/** The path to jhove output. */
-	private String pathToJhoveOutput;
-	
 	/**
 	 * Instantiates a new dA file.
 	 */
@@ -261,25 +258,6 @@ public class DAFile{
 	 */
 	public void setConversion_instruction_id(int conversion_instruction_id) {
 		this.conversion_instruction_id = conversion_instruction_id;
-	}
-
-	/**
-	 * Gets the path to jhove output.
-	 *
-	 * @return the path to jhove output
-	 */
-	@Column(name="path_to_jhove_output")
-	public String getPathToJhoveOutput(){
-		return pathToJhoveOutput;
-	}
-	
-	/**
-	 * Sets the path to jhove output.
-	 *
-	 * @param pathToJhoveOutput the new path to jhove output
-	 */
-	public void setPathToJhoveOutput(String pathToJhoveOutput) {
-		this.pathToJhoveOutput = pathToJhoveOutput;
 	}
 
 	/**

@@ -31,7 +31,8 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import de.uzk.hki.da.format.CLIFormatIdentifier;
-import de.uzk.hki.da.format.JhoveMetadataExtractor;
+import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.format.StandardFileFormatFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.Node;
@@ -124,10 +125,9 @@ public class Diagnostics {
 	private static int checkJhove() {
 		
 		System.out.print("CHECKING JHOVE: ");
-		JhoveMetadataExtractor jhove = new JhoveMetadataExtractor();
-		jhove.setJhoveFolder("jhove");
+		FileFormatFacade jhove = new StandardFileFormatFacade();
 		try {
-			jhove.extract(new File("conf/healthCheck.tif"), 1);
+			jhove.extract(new File("conf/healthCheck.tif"), new File("/tmp/abc"));
 			System.out.println("OK");
 		} catch (IOException e) {
 			System.out.println(WARN+" jhove scan service doesnt work");
@@ -232,15 +232,23 @@ public class Diagnostics {
 		catch(Exception e){
 			errorCount++;
 			System.out.println(WARN+"cannot connect to irods via irodsSystemConnector and delete test file. "+e.getMessage());
+			e.printStackTrace();
 		}
 		
 		System.out.print("CHECKING GRID FACADE PUT: ");
 		try {
-			irodsGridFacade.put( C.BASIC_TEST_PACKAGE, new RelativePath(C.TEST_USER_SHORT_NAME,TEST_TGZ).toString(), sp);
-			System.out.println("OK");
+			
+			boolean returnValue = irodsGridFacade.put( C.BASIC_TEST_PACKAGE, new RelativePath(C.TEST_USER_SHORT_NAME,TEST_TGZ).toString(), sp);
+			if (returnValue==false){
+				errorCount++;
+				System.out.println(WARN+"put returned false.");
+			}else
+				System.out.println("OK");
+			
 		} catch (Exception e) {
 			errorCount++;
 			System.out.println(WARN+"cannot put file via irodsGridFacade");
+			e.printStackTrace();
 		}
 		
 		System.out.print("CHECKING GRID FACADE GET: ");
@@ -251,6 +259,7 @@ public class Diagnostics {
 		} catch (Exception e) {
 			errorCount++;
 			System.out.println(WARN+"connot retrieve file via irodsGridFacade");
+			e.printStackTrace();
 		}
 		if (DIAGNOSTICS_RETRIEVAL_FILE.exists()) DIAGNOSTICS_RETRIEVAL_FILE.delete();
 		

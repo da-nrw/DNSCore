@@ -31,7 +31,7 @@ import javax.xml.stream.XMLStreamException;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.format.MetadataExtractor;
+import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.metadata.PremisXmlJhoveExtractor;
 import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.metadata.PremisXmlValidator;
@@ -45,12 +45,19 @@ import de.uzk.hki.da.utils.Path;
 
 /**
  * 
+ * Expects that below the objects data folder there is a directory jhove_temp which contains
+ * xml files with the metadata extracted from jhove.
+ * The metadata file names are md5 hashed.
+ * Example:
+ * <li>File: WorkAreaRootPath/work/csn/oid/data/repname/sub/a.jpg
+ * <li>Jhove: WorkAreaRootPath/work/csn/oid/data/jhove_temp/repname/md5hashed(sub/a.jpg)
+ * 
  * @author Thomas Kleinke
  * @author Daniel M. de Oliveira
  */
 public class CreatePremisAction extends AbstractAction {
 
-	private MetadataExtractor jhoveScanService;
+	private FileFormatFacade fileFormatFacade;
 	
 	private List<Event> addedEvents = new ArrayList<Event>();
 
@@ -65,6 +72,9 @@ public class CreatePremisAction extends AbstractAction {
 		
 	}
 
+	/**
+	 * @throws FileNotFoundException if one or more of the jhove output files are not present.
+	 */
 	@Override
 	public boolean implementation() throws IOException	{
 		logger.debug("Listing all files attached to all packages of the object:");
@@ -73,6 +83,7 @@ public class CreatePremisAction extends AbstractAction {
 			   		logger.debug(fi.toString());
 		
 		Object newPREMISObject = new Object();
+		newPREMISObject.setTransientNodeRef(object.getTransientNodeRef());;
 		newPREMISObject.setOrig_name(object.getOrig_name());
 		newPREMISObject.setIdentifier(object.getIdentifier());
 		newPREMISObject.setUrn(object.getUrn());
@@ -207,14 +218,14 @@ public class CreatePremisAction extends AbstractAction {
 		PremisXmlJhoveExtractor jhoveExtractor = new PremisXmlJhoveExtractor();
 		try {
 			jhoveExtractor.extractJhoveData(premisFile.getAbsolutePath(),
-					new File(jhoveScanService.getJhoveFolder()).getAbsolutePath() +
+					new File("jhove").getAbsolutePath() +
 					"/temp/" + job.getId());
 		} catch (XMLStreamException e) {
 			throw new RuntimeException("Couldn't extract jhove sections of file " + premisFile.getAbsolutePath(), e);
 		}
 
 		PremisXmlReader reader = new PremisXmlReader();
-		reader.setJhoveTempFolder(new File(jhoveScanService.getJhoveFolder()).getAbsolutePath() + 
+		reader.setJhoveTempFolder(new File("jhove").getAbsolutePath() + 
 				"/temp/" + job.getId());
 		
 		
@@ -257,7 +268,7 @@ public class CreatePremisAction extends AbstractAction {
 	}
 			
 	private void deleteJhoveTempFiles() {
-		File tempFolder = new File(jhoveScanService.getJhoveFolder() + "/temp/" + job.getId());
+		File tempFolder = new File("jhove/temp/" + job.getId());
 		if (tempFolder.exists())
 		try {
 			FileUtils.deleteDirectory(tempFolder);
@@ -274,7 +285,7 @@ public class CreatePremisAction extends AbstractAction {
 		
 		Path.make(object.getDataPath(),object.getNameOfNewestBRep(),"premis.xml").toFile().delete();
 		
-		File tempFolder = new File(jhoveScanService.getJhoveFolder() + "/temp/" + job.getId() + "/premis_output/");
+		File tempFolder = new File("jhove/temp/" + job.getId() + "/premis_output/");
 		if (tempFolder.exists())
 			FileUtils.deleteDirectory(tempFolder);
 		
@@ -284,8 +295,12 @@ public class CreatePremisAction extends AbstractAction {
 		job.setDynamic_nondisclosure_limit(null);
 	}
 
-	public void setJhoveScanService(MetadataExtractor jhoveScanService) {
-		this.jhoveScanService = jhoveScanService;
+	public FileFormatFacade getFileFormatFacade() {
+		return fileFormatFacade;
+	}
+
+	public void setFileFormatFacade(FileFormatFacade fff) {
+		this.fileFormatFacade = fff;
 	}
 
 }

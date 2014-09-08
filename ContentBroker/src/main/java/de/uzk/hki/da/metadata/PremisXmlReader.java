@@ -673,7 +673,7 @@ public class PremisXmlReader implements XmlReader{
 									.getFirstChildElement("formatRegistryKey", PREMIS_NS);
 		f.setFormatPUID(formatEl.getValue());
 		
-		f.setPathToJhoveOutput(jhoveTempFolder + "/premis_output/" + fullPath.replace('/', '_').replace('.', '_') + ".xml");
+//		f.setPathToJhoveOutput(jhoveTempFolder + "/premis_output/" + fullPath.replace('/', '_').replace('.', '_') + ".xml");
 		
 		pkg.getFiles().add(f);
 		
