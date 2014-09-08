@@ -51,6 +51,7 @@ public class ATUseCaseUpdateMetadataLZA extends Base{
 	private static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
+	private static final Namespace RDF_NS = Namespace.getNamespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 	private String METS_XPATH_EXPRESSION = 		"//mets:file";
 	
 	private static String origName;
@@ -72,6 +73,37 @@ public class ATUseCaseUpdateMetadataLZA extends Base{
 		TESTHelper.clearDB();
 		cleanStorage();
 	}
+
+	
+	@Test
+	public void updateXMPMetadataForLZA_BMPtoTIFF() throws Exception{
+		
+		origName = "ATUseCaseUpdateMetadataLZA_XMP";
+		
+		ingest(origName);
+		
+		object = retrievePackage(origName,"1");
+		System.out.println("object identifier: "+object.getIdentifier());
+		
+		Path tmpObjectDirPath = Path.make("tmp", object.getIdentifier()+".pack_1", "data");	
+		File[] tmpObjectSubDirs = new File (Path.make("tmp", object.getIdentifier()+".pack_1", "data").toString()).listFiles();
+		String bRep = "";
+		
+		for (int i=0; i<tmpObjectSubDirs.length; i++) {
+			if(tmpObjectSubDirs[i].getName().contains("+b")) {
+				bRep = tmpObjectSubDirs[i].getName();
+			}
+		}
+		
+		String xmpFileName = "XMP.rdf";
+		
+		SAXBuilder builder = new SAXBuilder();
+		Document doc = builder.build
+				(new FileReader(Path.make(tmpObjectDirPath, bRep, xmpFileName).toFile()));
+		assertTrue(getXmpRdfDescription(doc).equals("LVR_ILR_0000008126.tif"));
+	}
+	
+	
 	
 	@Test
 	public void updateLidoMetadataForLZA_BMPtoTIFF() throws Exception{
@@ -207,6 +239,13 @@ public class ATUseCaseUpdateMetadataLZA extends Base{
 				.getChild("fileGrp", METS_NS)
 				.getChild("file", METS_NS)
 				.getAttributeValue("MIMETYPE");
+	}
+	
+	
+	public String getXmpRdfDescription(Document doc) {
+		return doc.getRootElement()
+				.getChild("Description", RDF_NS)
+				.getAttributeValue("about", RDF_NS);
 	}
 	
 	public void checkReferencesAndMimetype(Document doc) throws JDOMException, FileNotFoundException, IOException {

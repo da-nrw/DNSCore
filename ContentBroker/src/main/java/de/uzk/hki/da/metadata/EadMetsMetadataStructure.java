@@ -22,6 +22,7 @@ import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
 import org.xml.sax.SAXException;
 
+import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
@@ -47,9 +48,9 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	private HashMap<File, HashMap<String, String>> metsInfo = new HashMap<File, HashMap<String,String>>();
 	HashMap<String, Document> metsPathToDocument = new HashMap<String, Document>();
 	
-	public EadMetsMetadataStructure(File metadataFile) throws JDOMException, 
+	public EadMetsMetadataStructure(File metadataFile, List<DAFile> daFiles) throws JDOMException, 
 		IOException, ParserConfigurationException, SAXException {
-		super(metadataFile);
+		super(metadataFile, daFiles);
 		
 		eadFile = metadataFile;
 		packageFile = eadFile.getParentFile();

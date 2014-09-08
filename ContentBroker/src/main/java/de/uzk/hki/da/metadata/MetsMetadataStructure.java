@@ -18,6 +18,7 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
 
+import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.utils.XMLUtils;
 
 public class MetsMetadataStructure extends MetadataStructure {
@@ -31,9 +32,9 @@ public class MetsMetadataStructure extends MetadataStructure {
 	@SuppressWarnings("rawtypes")
 	List fileElements;
 	
-	public MetsMetadataStructure(File metadataFile)
+	public MetsMetadataStructure(File metadataFile, List<DAFile> daFiles)
 			throws FileNotFoundException, JDOMException, IOException {
-		super(metadataFile);
+		super(metadataFile, daFiles);
 		
 		metsFile = metadataFile;
 		

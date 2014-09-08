@@ -22,10 +22,13 @@ package de.uzk.hki.da.metadata;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import org.jdom.JDOMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import de.uzk.hki.da.model.DAFile;
 
 /**
  * @author Polina Gubaidullina
@@ -38,7 +41,7 @@ public abstract class MetadataStructure {
 	
 	public boolean isValid = true;
 	
-	public MetadataStructure(File metadataFile) 
+	public MetadataStructure(File metadataFile, List<DAFile> daFiles) 
 			throws FileNotFoundException, JDOMException, IOException {
 	}
 	

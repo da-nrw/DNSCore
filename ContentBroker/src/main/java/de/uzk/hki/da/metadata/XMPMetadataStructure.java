@@ -20,25 +20,97 @@
 package de.uzk.hki.da.metadata;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.input.BOMInputStream;
+import org.jdom.Attribute;
+import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.Namespace;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
+
+import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * @author Polina Gubaidullina
  */
 public class XMPMetadataStructure extends MetadataStructure{
-
-	XMPMetadataStructure(File metadataFile)
-			throws FileNotFoundException, JDOMException, IOException {
-		super(metadataFile);
-		System.out.println("XMPMetadataStructure; TODO Parse file");
+	
+	private static final Namespace RDF_NS = Namespace.getNamespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+	private File xmpFile;
+	private List<Element> descriptionElements;
+	private Document rdfDoc;
+	
+	public XMPMetadataStructure(File metadataFile, List<DAFile> daFiles) throws FileNotFoundException, JDOMException, IOException {
+		super(metadataFile, daFiles);
+		
+//		xmpFile = metadataFile;
+//		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+//		FileInputStream fileInputStream = new FileInputStream(xmpFile);
+//		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
+//		rdfDoc = builder.build(bomInputStream);
+//		descriptionElements = getXMPDescriptionElements();
 	}
 
 	@Override
 	public boolean isValid() {
 		return true;
 	}
-
+	
+	public String getReference(Element element) {
+		return element.getAttributeValue("about", RDF_NS);
+	} 
+	
+	public List<String> getReferences(List<Element> descriptionElements) {
+		List<String> references = new ArrayList<String>();
+			for(Element element : descriptionElements) {
+				if(element.getName().equals("Description")) {
+					String reference = element.getAttributeValue("about", RDF_NS);
+					references.add(reference);
+				}
+			}
+		return references;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Element> getXMPDescriptionElements() {
+		List<Element> descriptionElements = new ArrayList<Element>();
+		for(Element element : (List<Element>)rdfDoc.getRootElement().getChildren()) {
+			if(element.getName().equals("Description")) {
+				descriptionElements.add(element);
+			}
+		}
+		return descriptionElements;
+	}
+	
+	public void makeReplacementsInRDf(Map<String, String> replacements) throws IOException {
+		for(Element element : descriptionElements) {
+			if(element.getName().equals("Description")) {
+				Attribute attr = element.getAttribute("about", RDF_NS);
+				for(String ref : replacements.keySet()) {
+					if(ref.equals(attr.getValue())) {
+						System.out.println("Replace "+ref+" by "+replacements.get(ref));
+						attr.setValue(replacements.get(ref));
+					}
+				}
+			}
+		}
+		XMLOutputter outputter = new XMLOutputter();
+		outputter.setFormat(Format.getPrettyFormat());
+		outputter.output(rdfDoc, new FileWriter(xmpFile));
+	}
 }

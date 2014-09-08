@@ -23,16 +23,26 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructureFactory;
+import de.uzk.hki.da.metadata.XmpCollector;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * Detects the package type of an object and validates the metadata structure.
@@ -82,14 +92,17 @@ public class ValidateMetadataAction extends AbstractAction {
 			return true;
 		}
 		
+		object.setPackage_type(detectedPackageType);
+		
+	
 		MetadataStructure ms = createMetadataStructure();
 		if (!ms.isValid()){
 			throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE, 
 					"Package of type "+detectedPackageType+" is not consistent");
 		}
 		
-		object.setPackage_type(detectedPackageType);
 		object.setMetadata_file(detectedMetadataFile.getRelative_path());
+
 		return true;
 	}
 	
@@ -97,20 +110,17 @@ public class ValidateMetadataAction extends AbstractAction {
 	private MetadataStructure createMetadataStructure() {
 		MetadataStructure ms=null;
 		try {
+			if(object.getPackage_type().equals("XMP")) {
+//				collectXMP();
+			}
 			File d = detectedMetadataFile.toRegularFile();
-			ms = msf.create(detectedPackageType, d);
+			List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(detectedPackageType);
+			ms = msf.create(detectedPackageType, d, newestFiles);
 		} catch (Exception e){
 			throw new RuntimeException("problem occured during creation of metadata structure",e);
 		}
 		return ms;
 	}
-
-	
-	
-	
-	
-	
-	
 	
 	/**
 	 * if something else has been detected in a previous SIP.
@@ -199,4 +209,47 @@ public class ValidateMetadataAction extends AbstractAction {
 	public void setMsf(MetadataStructureFactory msf) {
 		this.msf = msf;
 	}
+	
+	/**
+	 * Copy xmp sidecar files and collect them into one "XMP manifest"
+	 * @author Sebastian Cuy
+	 * @author Daniel M. de Oliveira
+	 * @author Thomas Kleinke
+	 * @throws IOException
+	 */
+	private void collectXMP() throws IOException {
+		
+		logger.debug("collectXMP");
+		Map<DAFile,DAFile> copyCommands = new HashMap<DAFile,DAFile>();
+		String repName = object.getNameOfNewestBRep();
+		logger.debug("looking for xmp files in rep "+repName);
+		String repPath = Path.make(object.getDataPath(),repName).toString();
+		File repDir = new File(repPath);
+			
+		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations("xmp");
+		List<DAFile> newestXmpFiles = new ArrayList<DAFile>();
+		for (DAFile dafile : newestFiles) {
+			if (dafile.getRelative_path().toLowerCase().endsWith(".xmp"))
+				newestXmpFiles.add(dafile);
+		}
+			
+		logger.debug("found {} xmp files", newestXmpFiles.size());
+		XmpCollector.collect(newestXmpFiles, new File(repPath + "/XMP.rdf"));	
+		logger.debug("collecting files in path: {}", repPath);
+		DAFile xmpFile = new DAFile(object.getLatestPackage(),repName,"XMP.rdf");	
+		object.getLatestPackage().getFiles().add(xmpFile);
+		object.getLatestPackage().getEvents().add(createCreateEvent(xmpFile));		
+	}
+	
+	private Event createCreateEvent(DAFile targetFile) {
+		
+		Event e = new Event();
+		e.setTarget_file(targetFile);
+		e.setType("CREATE");
+		e.setDate(new Date());
+		e.setAgent_type("NODE");
+		e.setAgent_name(object.getTransientNodeRef().getName());
+		return e;
+	}
+	
 }

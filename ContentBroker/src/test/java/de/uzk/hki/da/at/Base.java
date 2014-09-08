@@ -248,7 +248,9 @@ public class Base {
 				if (job.getObject().getIdentifier()!=null){
 					try {
 						System.out.println("SHOWING OBJECT LOG:");
-						System.out.println(FileUtils.readFileToString(new File("/ci/ContentBroker/log/object-logs/"+job.getObject().getIdentifier()+".log")));
+						String localNodeWorkArea = localNode.getWorkAreaRootPath().toString();
+						String localNode = localNodeWorkArea.replace("/storage/WorkArea", "");
+						System.out.println(FileUtils.readFileToString(new File(Path.make(localNode, "log", "object-logs")+"/"+job.getObject().getIdentifier()+".log")));
 						System.out.println("END OF OBJECT LOG: "+job.getObject().getIdentifier());
 					} catch (IOException e) {
 						e.printStackTrace();
