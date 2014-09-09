@@ -25,6 +25,7 @@ import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.metadata.LidoMetadataStructure;
+import de.uzk.hki.da.metadata.MetsMetadataStructure;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
@@ -47,8 +48,8 @@ public class MetadataFileParserTest {
 	private static File eadFile2;
 	private static File lidoFile;
 	
-	private static EadMetsMetadataStructure eadXML;
-	private static LidoMetadataStructure lidoXML;
+	private static EadMetsMetadataStructure eadStructure;
+	private static LidoMetadataStructure lidoStructure;
 	
 	private static SAXBuilder builder;
 	
@@ -67,10 +68,10 @@ public class MetadataFileParserTest {
 		
 		
 		eadFile2 = Path.make(workAreaRootPathPath, "replacementsTest", EAD2_FILENAME).toFile();
-		eadXML = new EadMetsMetadataStructure(eadFile2, dafiles);
+		eadStructure = new EadMetsMetadataStructure(eadFile2, dafiles);
 		
 		lidoFile = Path.make(workAreaRootPathPath, "replacementsTest", LIDO_FILENAME).toFile();
-		lidoXML = new LidoMetadataStructure(lidoFile, dafiles);
+		lidoStructure = new LidoMetadataStructure(lidoFile, dafiles);
 		
 		builder = XMLUtils.createNonvalidatingSaxBuilder();
 	}
@@ -101,7 +102,7 @@ public class MetadataFileParserTest {
 		lidoTestReplacements.put("LVR_DFG-Alltagskultur_0000050177.tif", "bild1.jpg");
 		lidoTestReplacements.put("LVR_DFG-Alltagskultur_0000050178.tif", "bild2.jpg");
 		
-		lidoXML.replaceRefResources(lidoTestReplacements);
+		lidoStructure.replaceRefResources(lidoTestReplacements);
 		
 		Document lidoDoc = builder.build(new FileReader(Path.make(workAreaRootPathPath, "replacementsTest", LIDO_FILENAME).toFile()));
 		List<String> linkResources = getLidoLinkResources(lidoDoc);
@@ -110,47 +111,48 @@ public class MetadataFileParserTest {
 		}	
 	}
 	
-//	@Test 
-//	public void testMetsReplacementsInEadStructure() throws IOException, JDOMException {
-//		
-//		String mimetype = "image/jpeg";
-//		String loctype = "url";
-//		
-//		File metsFile1 = Path.make(workAreaRootPathPath, "replacementsTest", "/mets_361/mets_2_32044.xml").toFile();
-//		makeReplacementsInMetsFile(metsFile1, "mets_361/ALVR_Nr_4547_Aufn_002.tif", "https://bla/ALVR_Nr_4547_Aufn_002.jpg", mimetype, loctype);
-//		Document metsDoc1 = builder.build(new FileReader(metsFile1));
-//		assertEquals( "https://bla/ALVR_Nr_4547_Aufn_002.jpg", getMetsURL(metsDoc1));
-//		assertEquals( "url", getMetsLoctype(metsDoc1));
-//		assertEquals( "image/jpeg", getMetsMimetype(metsDoc1));
-//		
-//		File metsFile2 = Path.make(workAreaRootPathPath, "replacementsTest", "/mets_361/mets_2_32045.xml").toFile();
-//		eadXML.makeReplacementsInMetsFile(metsFile2, "mets_361/ALVR_Nr_4547_Aufn_003.tif", "https://bla/ALVR_Nr_4547_Aufn_003.jpg", mimetype, loctype);
-//		Document metsDoc2 = builder.build(new FileReader(metsFile2));
-//		assertEquals( "https://bla/ALVR_Nr_4547_Aufn_003.jpg", getMetsURL(metsDoc2));
-//		assertEquals( "url", getMetsLoctype(metsDoc2));
-//		assertEquals( "image/jpeg", getMetsMimetype(metsDoc2));
-//		
-//		File metsFile3 = Path.make(workAreaRootPathPath, "replacementsTest", "/mets_361/mets_2_32046.xml").toFile();
-//		eadXML.makeReplacementsInMetsFile(metsFile3, "mets_361/ALVR_Nr_4547_Aufn_004.tif", "https://bla/ALVR_Nr_4547_Aufn_004.jpg", mimetype, loctype);
-//		Document metsDoc3 = builder.build(new FileReader(metsFile3));
-//		assertEquals( "https://bla/ALVR_Nr_4547_Aufn_004.jpg", getMetsURL(metsDoc3));
-//		assertEquals( "url", getMetsLoctype(metsDoc3));
-//		assertEquals( "image/jpeg", getMetsMimetype(metsDoc3));
-//		
-//		File metsFile4 = Path.make(workAreaRootPathPath, "replacementsTest", "/mets_361/mets_2_32047.xml").toFile();
-//		eadXML.makeReplacementsInMetsFile(metsFile4, "mets_361/ALVR_Nr_4547_Aufn_005.tif", "https://bla/ALVR_Nr_4547_Aufn_005.jpg", mimetype, loctype);
-//		Document metsDoc4 = builder.build(new FileReader(metsFile4));
-//		assertEquals( "https://bla/ALVR_Nr_4547_Aufn_005.jpg", getMetsURL(metsDoc4));
-//		assertEquals( "url", getMetsLoctype(metsDoc4));
-//		assertEquals( "image/jpeg", getMetsMimetype(metsDoc4));
-//		
-//		File metsFile5 = Path.make(workAreaRootPathPath, "replacementsTest", "/mets_361/mets_2_32048.xml").toFile();
-//		eadXML.makeReplacementsInMetsFile(metsFile5, "mets_361/ALVR_Nr_4547_Aufn_006.tif", "https://bla/ALVR_Nr_4547_Aufn_006.jpg", mimetype, loctype);
-//		Document metsDoc5 = builder.build(new FileReader(metsFile5));
-//		assertEquals( "https://bla/ALVR_Nr_4547_Aufn_006.jpg", getMetsURL(metsDoc5));
-//		assertEquals( "url", getMetsLoctype(metsDoc5));
-//		assertEquals( "image/jpeg", getMetsMimetype(metsDoc5));
-//	}
+	@Test 
+	public void testMetsReplacementsInEadStructure() throws IOException, JDOMException {
+		
+		String mimetype = "image/jpeg";
+		String loctype = "url";
+		
+		for(MetsMetadataStructure mms : eadStructure.getMetsMetadataStructures()) {
+			File metsFile = mms.getMetadataFile();
+			
+			if(metsFile.getName().equals("mets_2_32044.xml")) {
+				mms.makeReplacementsInMetsFile(mms.getMetadataFile(), "mets_361/ALVR_Nr_4547_Aufn_002.tif", "https://bla/ALVR_Nr_4547_Aufn_002.jpg", mimetype, loctype);
+				Document metsDoc = builder.build(new FileReader(mms.getMetadataFile()));
+				assertEquals( "https://bla/ALVR_Nr_4547_Aufn_002.jpg", getMetsURL(metsDoc));
+				assertEquals( "url", getMetsLoctype(metsDoc));
+				assertEquals( "image/jpeg", getMetsMimetype(metsDoc));
+			} else if(metsFile.getName().equals("mets_2_32045.xml")) {
+				mms.makeReplacementsInMetsFile(mms.getMetadataFile(), "mets_361/ALVR_Nr_4547_Aufn_003.tif", "https://bla/ALVR_Nr_4547_Aufn_003.jpg", mimetype, loctype);
+				Document metsDoc = builder.build(new FileReader(mms.getMetadataFile()));
+				assertEquals( "https://bla/ALVR_Nr_4547_Aufn_003.jpg", getMetsURL(metsDoc));
+				assertEquals( "url", getMetsLoctype(metsDoc));
+				assertEquals( "image/jpeg", getMetsMimetype(metsDoc));
+			} else if(metsFile.getName().equals("mets_2_32046.xml")) {
+				mms.makeReplacementsInMetsFile(mms.getMetadataFile(), "mets_361/ALVR_Nr_4547_Aufn_004.tif", "https://bla/ALVR_Nr_4547_Aufn_004.jpg", mimetype, loctype);
+				Document metsDoc = builder.build(new FileReader(mms.getMetadataFile()));
+				assertEquals( "https://bla/ALVR_Nr_4547_Aufn_004.jpg", getMetsURL(metsDoc));
+				assertEquals( "url", getMetsLoctype(metsDoc));
+				assertEquals( "image/jpeg", getMetsMimetype(metsDoc));
+			} else if(metsFile.getName().equals("mets_2_32047.xml")) {
+				mms.makeReplacementsInMetsFile(mms.getMetadataFile(), "mets_361/ALVR_Nr_4547_Aufn_005.tif", "https://bla/ALVR_Nr_4547_Aufn_005.jpg", mimetype, loctype);
+				Document metsDoc = builder.build(new FileReader(mms.getMetadataFile()));
+				assertEquals( "https://bla/ALVR_Nr_4547_Aufn_005.jpg", getMetsURL(metsDoc));
+				assertEquals( "url", getMetsLoctype(metsDoc));
+				assertEquals( "image/jpeg", getMetsMimetype(metsDoc));
+			} else {
+				mms.makeReplacementsInMetsFile(mms.getMetadataFile(), "mets_361/ALVR_Nr_4547_Aufn_006.tif", "https://bla/ALVR_Nr_4547_Aufn_006.jpg", mimetype, loctype);
+				Document metsDoc = builder.build(new FileReader(mms.getMetadataFile()));
+				assertEquals( "https://bla/ALVR_Nr_4547_Aufn_006.jpg", getMetsURL(metsDoc));
+				assertEquals( "url", getMetsLoctype(metsDoc));
+				assertEquals( "image/jpeg", getMetsMimetype(metsDoc));
+			}
+		}
+	}
 	
 	public List<String> getLidoLinkResources(Document doc) {
 		

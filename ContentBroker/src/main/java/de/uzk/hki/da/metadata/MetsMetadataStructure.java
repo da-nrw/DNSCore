@@ -105,7 +105,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::  REPLACEMENTS  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-	public void makeReplacementsInMetsFileElement(File metsFile, String currentHref, String targetHref, String mimetype, String loctype) throws IOException, JDOMException {
+	public void makeReplacementsInMetsFile(File metsFile, String currentHref, String targetHref, String mimetype, String loctype) throws IOException, JDOMException {
 
 		File targetMetsFile = metsFile;
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();

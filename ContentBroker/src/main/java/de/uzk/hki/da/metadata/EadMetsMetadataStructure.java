@@ -87,7 +87,6 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			String href = metsReferencesInEAD.get(i);
 			File metsFile = Path.make(packageFile.getAbsolutePath(), href).toFile();
 			if(metsFile.exists()) {
-				System.out.println("Add mets file "+metsFile.getAbsolutePath());
 				metsFiles.add(metsFile);
 			}
 		}

@@ -184,7 +184,8 @@ public class UpdateMetadataAction extends AbstractAction {
 		xms.makeReplacementsInRDf(replacementsMap);	
 	}
 	
-	private void updatePathsInEad(EadMetsMetadataStructure emms, String repName) throws JDOMException, IOException {
+	private int updatePathsInEad(EadMetsMetadataStructure emms, String repName) throws JDOMException, IOException {
+		int replacementCount = 0;
 		HashMap<String, String> eadReplacements = new HashMap<String, String>(); 
 		for (Event e:object.getLatestPackage().getEvents()) {
 			if(e.getType().equals("COPY") || e.getType().equals("CONVERT")) {
@@ -195,22 +196,27 @@ public class UpdateMetadataAction extends AbstractAction {
 				} else {
 					targetValue = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + targetFile.getRelative_path();
 				}
-				System.out.println("eadReplacements.put("+e.getSource_file().getRelative_path()+", "+targetValue+")");
 				eadReplacements.put(e.getSource_file().getRelative_path(), targetValue);
 			}
 		}
 		emms.replaceMetsRefsInEad(metadataFile, eadReplacements);
-		updatePathsInEADMetsFiles(emms, repName);
+		replacementCount = eadReplacements.size();
+		
+		replacementCount = replacementCount + updatePathsInEADMetsFiles(emms, repName);
+		return replacementCount;
 	}
 	
-	private void updatePathsInEADMetsFiles(EadMetsMetadataStructure emms, String repName) throws IOException, JDOMException {
+	private int updatePathsInEADMetsFiles(EadMetsMetadataStructure emms, String repName) throws IOException, JDOMException {
+		int replacementCount = 0;
 		List<MetsMetadataStructure> mmsList = emms.getMetsMetadataStructures();
 		for (MetsMetadataStructure mms : mmsList) {
-			updatePathsInMets(mms, repName, mms.getMetadataFile());
+			replacementCount = replacementCount + updatePathsInMets(mms, repName, mms.getMetadataFile());
 		}
+		return replacementCount;
 	}
 	
-	private void updatePathsInMets(MetsMetadataStructure mms, String repName, File metsFile) throws IOException, JDOMException {
+	private int updatePathsInMets(MetsMetadataStructure mms, String repName, File metsFile) throws IOException, JDOMException {
+		int replacementCount = 0;
 		Map<String,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
 		List<Element> metsFileElemens = mms.getMetsFileElements();
 		@SuppressWarnings("rawtypes")
@@ -230,11 +236,12 @@ public class UpdateMetadataAction extends AbstractAction {
 						loctype = "URL";
 					}
 					String mimetype = targetFile.getMimeType();
-					System.out.println("make mets replacements with "+(String)entry.getKey()+", "+targetValue+", "+mimetype+", "+loctype);
-					mms.makeReplacementsInMetsFileElement(metsFile, (String)entry.getKey(), targetValue, mimetype, loctype);
+					mms.makeReplacementsInMetsFile(metsFile, (String)entry.getKey(), targetValue, mimetype, loctype);
+					replacementCount++;
 				}
 			}
 		}
+		return replacementCount;
 	}
 	
 	private void updatePathsInLido(LidoMetadataStructure lms, String repName) throws IOException {
@@ -293,12 +300,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			String metadataFileName) throws IOException {
 		// copy other metadata to rep(s)
 		
-		System.out.println("metadataFileName: "+metadataFileName);
-		
 		DAFile srcMetadataFile = object.getLatest(metadataFileName);
-		
-		System.out.println("srcMetadataFile: "+srcMetadataFile);
-		
 		String extension = FilenameUtils.getExtension(srcMetadataFile.toRegularFile().getName());
 		
 		for (String repName : getRepNames()) {
