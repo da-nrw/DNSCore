@@ -38,13 +38,18 @@ public class C {
 	public static final String EAD_PUID = "danrw-fmt/2";
 	public static final String LIDO_PUID = "danrw-fmt/4";
 	public static final String METS_PUID = "danrw-fmt/1";
+	public static final String XML_PUID = "fmt/101";
 	
 	public static final String MIMETYPE_IMAGE_JPEG = "image/jpeg";
 
 	// Presentation Metadata related 
+		/** used to encode package type and secondary format attribute */
 	public static final String XMP = "XMP";
+	/** used to encode package type and secondary format attribute */
 	public static final String METS = "METS";
+	/** used to encode package type and secondary format attribute */
 	public static final String EAD = "EAD";
+	/** used to encode package type and secondary format attribute */
 	public static final String LIDO = "LIDO";                  
 		/** marker for METS type packages */
 	public static final String CB_PACKAGETYPE_METS = "METS";

@@ -64,7 +64,6 @@ public class Diagnostics {
 	private static final File DIAGNOSTICS_RETRIEVAL_FILE = Path.makeFile("tmp","diagnostics.tgz");
 	
 	private static final String BEANS_DIAGNOSTICS_IRODS = "classpath*:META-INF/beans-diagnostics.irods.xml";
-	private static final String BEANS_DIAGNOSTICS_IDENTIFIER = "classpath*:META-INF/beans-diagnostics.identifier.xml";
 	private static final String BEANS_DIAGNOSTICS_FEDORA = "classpath*:META-INF/beans-diagnostics.fedora.xml";
 	
 	private static final String BEAN_NAME_IRODS_GRID_FACADE = "irodsGridFacade";

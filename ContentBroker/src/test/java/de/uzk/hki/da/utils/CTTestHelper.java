@@ -54,8 +54,11 @@ public class CTTestHelper {
 		FileUtils.deleteQuietly(C.FIDO_INSTALLATION.toFile());
 		FileUtils.deleteQuietly(new File(C.FIDO_GLUE_SCRIPT));
 		FileUtils.deleteQuietly(C.CONF.toFile());
+		FileUtils.deleteQuietly(new File("jhove"));
 		FileUtils.deleteQuietly(new File(C.CONFIGURE_SCRIPT));
 		FileUtils.deleteQuietly(new File("ContentBroker_start.sh.template"));
 		FileUtils.deleteQuietly(new File("ContentBroker_stop.sh.template"));
+		FileUtils.deleteQuietly(new File("cbTalk.sh"));
+		FileUtils.deleteQuietly(new File("ffmpeg.sh"));
 	}
 }

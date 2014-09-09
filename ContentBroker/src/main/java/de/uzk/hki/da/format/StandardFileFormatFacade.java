@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.CentralDatabaseDAO;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.Utilities;
@@ -57,7 +58,29 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 
 		fidoFormatScanService = new FidoFormatScanService();
 		
-		return fidoFormatScanService.identify(files);
+		
+		fidoFormatScanService.identify(files);
+		
+		for (FileWithFileFormat f:files){
+			if (f.getFormatPUID().equals(C.EAD_PUID)){
+				f.setFormatPUID(C.XML_PUID);
+				f.setFormatSecondaryAttribute(C.EAD);
+			}
+			if (f.getFormatPUID().equals(C.XMP_PUID)){
+				f.setFormatPUID(C.XML_PUID);
+				f.setFormatSecondaryAttribute(C.XMP);
+			}
+			if (f.getFormatPUID().equals(C.METS_PUID)){
+				f.setFormatPUID(C.XML_PUID);
+				f.setFormatSecondaryAttribute(C.METS);
+			}
+			if (f.getFormatPUID().equals(C.LIDO_PUID)){
+				f.setFormatPUID(C.XML_PUID);
+				f.setFormatSecondaryAttribute(C.LIDO);
+			}
+		}
+		
+		return files;
 	}
 
 	

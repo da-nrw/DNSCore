@@ -33,7 +33,10 @@ import org.junit.Test;
 
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CTTestHelper;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.TC;
 
 /**
  * @author Daniel M. de Oliveira
@@ -41,6 +44,7 @@ import de.uzk.hki.da.utils.CTTestHelper;
 public class CTFileFormatFacadeTests {
 
 	private static final StandardFileFormatFacade sfff = new StandardFileFormatFacade();
+	private static final Path testPath = Path.make(TC.TEST_ROOT_FORMAT,"CTFileFormatFacadeTests");
 	
 	
 	@BeforeClass
@@ -67,4 +71,56 @@ public class CTFileFormatFacadeTests {
 		
 		assertEquals("fmt/353",files.get(0).getFormatPUID());
 	}
+	
+	// Testtiff
+	
+	@Test
+	public void testEAD() throws FileNotFoundException{
+		FakeFileWithFileFormat ffff = new FakeFileWithFileFormat(Path.makeFile(testPath,"vda3.XML"));
+		
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		files.add(ffff);
+		sfff.identify(files);
+		
+		assertEquals(C.XML_PUID,files.get(0).getFormatPUID());
+		assertEquals(C.EAD,files.get(0).getFormatSecondaryAttribute());
+	}
+	
+	@Test
+	public void testMETS() throws FileNotFoundException{
+		FakeFileWithFileFormat ffff = new FakeFileWithFileFormat(Path.makeFile(testPath,"mets_2_99.xml"));
+		
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		files.add(ffff);
+		sfff.identify(files);
+		
+		assertEquals(C.XML_PUID,files.get(0).getFormatPUID());
+		assertEquals(C.METS,files.get(0).getFormatSecondaryAttribute());
+	}
+	
+	@Test
+	public void testLIDO() throws FileNotFoundException{
+		FakeFileWithFileFormat ffff = new FakeFileWithFileFormat(Path.makeFile(testPath,"LIDO-Testexport2014-07-04-FML-Auswahl.xml"));
+		
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		files.add(ffff);
+		sfff.identify(files);
+		
+		assertEquals(C.XML_PUID,files.get(0).getFormatPUID());
+		assertEquals(C.LIDO,files.get(0).getFormatSecondaryAttribute());
+	}
+
+	@Test
+	public void testXMP() throws FileNotFoundException{
+		FakeFileWithFileFormat ffff = new FakeFileWithFileFormat(Path.makeFile(testPath,"a.xmp"));
+		
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		files.add(ffff);
+		sfff.identify(files);
+		
+		assertEquals(C.XML_PUID,files.get(0).getFormatPUID());
+		assertEquals(C.XMP,files.get(0).getFormatSecondaryAttribute());
+	}
+	
+	
 }
