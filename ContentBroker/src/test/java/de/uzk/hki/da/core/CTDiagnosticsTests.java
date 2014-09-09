@@ -30,7 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.CTTestHelper;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.TC;
@@ -48,31 +48,24 @@ public class CTDiagnosticsTests {
 	
 	private static final File FIDO_DIR = new File("fido");
 	private static final File JHOVE_DIR = new File("jhove");
-	private static final File FFMPEG_SH_FAKE_SRC = new File("src/main/bash/ffmpeg.sh.fake");
-	private static final String CHMOD_777 = "chmod 777 ";
-	private static final File CONFIGURE_SH = new File("configure.sh");
-	private static final File FIDO_SH = new File("fido.sh");
-	private static final File FFMPEG_SH = new File("ffmpeg.sh");
 	private static final File TEST_PACKAGE_SRC = Path.makeFile(TC.TEST_ROOT_AT,"AT_CON2.tgz");
 	private static final File CI_DATABASE_CFG = new RelativePath("src","main","xml","hibernateCentralDB.cfg.xml.ci").toFile();
-	private static final File FIDO_SH_SRC = new File("src/main/bash/fido.sh");
+
+	
+	private static final File FIDO_SH = new File("fido.sh");
 	
 	
 	@Before
 	public void setUp() throws IOException{
+
+		CTTestHelper.prepareWhiteBoxTest();
 		
-		CommandLineConnector.runCmdSynchronously(new String[] {
-                "src/main/bash/collect.sh", "./" });
-		
-		FileUtils.copyFile(TC.CONFIG_PROPS_CI, C.CONFIG_PROPS);
 		FileUtils.copyFile(TEST_PACKAGE_SRC, C.BASIC_TEST_PACKAGE);
 		FileUtils.copyFile(CI_DATABASE_CFG, C.HIBERNATE_CFG);
 
-		FileUtils.copyFile(FIDO_SH_SRC, FIDO_SH);
-		FileUtils.copyFile(FFMPEG_SH_FAKE_SRC, FFMPEG_SH);
-		Runtime.getRuntime().exec(CHMOD_777+FFMPEG_SH);
+		FileUtils.copyFile(new File(TC.FIDO_SH_SRC), FIDO_SH);
 		
-		Runtime.getRuntime().exec("./"+CONFIGURE_SH);
+		Runtime.getRuntime().exec("./"+C.CONFIGURE_SCRIPT);
 	}
 
 	
@@ -81,9 +74,8 @@ public class CTDiagnosticsTests {
 		FileUtils.deleteQuietly(C.CONF.toFile());
 		FileUtils.deleteQuietly(FIDO_DIR);
 		FileUtils.deleteQuietly(JHOVE_DIR);
-		FileUtils.deleteQuietly(CONFIGURE_SH);
+		FileUtils.deleteQuietly(new File(C.CONFIGURE_SCRIPT));
 		FileUtils.deleteQuietly(FIDO_SH);
-		FileUtils.deleteQuietly(FFMPEG_SH);
 	}
 	
 	

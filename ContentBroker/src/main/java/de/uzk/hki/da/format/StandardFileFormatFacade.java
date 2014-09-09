@@ -27,6 +27,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.Utilities;
@@ -44,6 +45,8 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	private static final String JHOVE_CONF = "conf/jhove.conf";
 	private String jhoveFolder = "jhove";
 	
+	private CentralDatabaseDAO dao;
+	
 	/**
 	 * The output of fido typically is a comma separated list of puids for each file. Only the last entry of the list
 	 * will be taken.
@@ -51,18 +54,12 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	@Override
 	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files)
 			throws FileNotFoundException {
-		if (fidoFormatScanService==null) throw new IllegalStateException("fidoFormatScanService must not be null");
+
+		fidoFormatScanService = new FidoFormatScanService();
 		
 		return fidoFormatScanService.identify(files);
 	}
 
-	public FidoFormatScanService getFidoFormatScanService() {
-		return fidoFormatScanService;
-	}
-
-	public void setFidoFormatScanService(FidoFormatScanService fidoFormatScanService) {
-		this.fidoFormatScanService = fidoFormatScanService;
-	}
 	
 	/**
 	 * Extract.
@@ -115,5 +112,15 @@ public class StandardFileFormatFacade implements FileFormatFacade{
                 throw new RuntimeException("Jhove error");
             }
 		}
+	}
+
+
+	public CentralDatabaseDAO getDao() {
+		return dao;
+	}
+
+
+	public void setDao(CentralDatabaseDAO dao) {
+		this.dao = dao;
 	}
 }

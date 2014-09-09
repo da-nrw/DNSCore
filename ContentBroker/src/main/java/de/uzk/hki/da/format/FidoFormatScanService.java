@@ -19,18 +19,14 @@
 
 package de.uzk.hki.da.format;
 
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.SecondStageScanPolicy;
+import de.uzk.hki.da.utils.C;
 
 
 
@@ -44,29 +40,16 @@ public class FidoFormatScanService implements FormatScanService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(FidoFormatScanService.class);
 	
-	private PronomFormatIdentifierWrapper pronomFormatIdentifier;
+	private PronomFormatIdentifierWrapper pronom;
 	
-	/** The format second attribute identifiers. */
-	private Set<CLIFormatIdentifier> formatSecondAttributeIdentifiers = new HashSet<CLIFormatIdentifier>();
-	
-	/** The second stage scans. */
-	private List<SecondStageScanPolicy> secondStageScans;
-
 	/**
 	 * Instantiates a new format scan service.
 	 *
 	 * @param ops the ops
 	 */
-	public FidoFormatScanService(CentralDatabaseDAO dao){
-		Session session = HibernateUtil.openSession();
-		secondStageScans = 
-				dao.getSecondStageScanPolicies(session);
-		session.close();
+	public FidoFormatScanService(){
 		
-		logger.debug("Listing policies for second stage scan:");
-		for (SecondStageScanPolicy scan:secondStageScans){
-			logger.debug(scan.toString());
-		}
+		pronom = new PronomFormatIdentifierWrapper(new File(C.FIDO_GLUE_SCRIPT));
 	}
 	
 	
@@ -89,78 +72,11 @@ public class FidoFormatScanService implements FormatScanService {
 //			if (!f.toRegularFile().exists()) throw new FileNotFoundException("file "+f.toRegularFile().getPath()+" doesn't exist");
 //		}	
 		for (FileWithFileFormat f:files){
-			f.setFormatPUID(getPronomFormatIdentifier().getPuidForFile(f));
+
+			f.setFormatPUID(pronom.getPuidForFile(f));
 			logger.debug(f+" has puid "+f.getFormatPUID()+". Now searching if second stage scan policy is applicable");
 			
-			for (SecondStageScanPolicy scan:secondStageScans){
-				if (!f.getFormatPUID().equals(scan.getPUID())) continue;
-				logger.trace("Policy found: "+scan);
-				
-				for (CLIFormatIdentifier additionalIdentifier:formatSecondAttributeIdentifiers){
-					if (!additionalIdentifier.getConversionScript().getName().equals(scan.getFormatIdentifierScriptName())) continue;
-					logger.trace("found an identifier with identification script \""+scan.getFormatIdentifierScriptName()+"\" required by policy");	
-					
-					// TODO resolve
-					Set<String> resultList = additionalIdentifier.identify(f);
-					String result="";
-					for (String r:resultList){
-						result=r;
-					}
-					
-					if (!scan.getAllowedValues().contains(result))
-						throw new RuntimeException("result \""+result+"\" not part of allowed values \""+scan.getAllowedValues()+"\" for policy");
-					
-					f.setFormatSecondaryAttribute(result);
-					break;
-				}
-				// TODO resolve possibly multiple values. For now, just take the last result
-			}
 		}
-	
 		return files;
-	}
-	
-	
-	
-	/**
-	 * Gets the pronom format identifier.
-	 *
-	 * @return the pronom format identifier
-	 */
-	public PronomFormatIdentifierWrapper getPronomFormatIdentifier() {
-		return pronomFormatIdentifier;
-	}
-
-	/**
-	 * Sets the pronom format identifier.
-	 *
-	 * @param pronomFormatIdentifier the new pronom format identifier
-	 */
-	public void setPronomFormatIdentifier(PronomFormatIdentifierWrapper pronomFormatIdentifier) {
-		this.pronomFormatIdentifier = pronomFormatIdentifier;
-	}
-
-
-
-	/**
-	 * The format identifiers which can identify codecs or compression algorithms.
-	 *
-	 * @return the format second attribute identifiers
-	 */
-	public Set<CLIFormatIdentifier> getFormatSecondAttributeIdentifiers() {
-		return formatSecondAttributeIdentifiers;
-	}
-
-
-
-
-	/**
-	 * Sets the format secondary attribute identifiers.
-	 *
-	 * @param formatSecondAttributeIdentifiers the new format secondary attribute identifiers
-	 */
-	public void setFormatSecondaryAttributeIdentifiers(
-			Set<CLIFormatIdentifier> formatSecondAttributeIdentifiers) {
-		this.formatSecondAttributeIdentifiers = formatSecondAttributeIdentifiers;
 	}
 }

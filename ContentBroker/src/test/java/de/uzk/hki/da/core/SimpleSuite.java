@@ -56,7 +56,6 @@ import de.uzk.hki.da.format.CLIConversionStrategyTests;
 import de.uzk.hki.da.format.ConverterServiceTests;
 import de.uzk.hki.da.format.FakeFileFormatFacadeTests;
 import de.uzk.hki.da.format.FidoCLITest;
-import de.uzk.hki.da.format.FidoFormatScanServiceTests;
 import de.uzk.hki.da.format.PDFServiceTests;
 import de.uzk.hki.da.format.PdfConversionStrategyTest;
 import de.uzk.hki.da.format.PublishAudioConversionStrategyTests;
@@ -117,7 +116,6 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	ConverterServiceTests.class,
 	ScanActionTests.class,
 	ArchiveBuilderTests.class,
-	FidoFormatScanServiceTests.class,
 	FetchPIPsActionTest.class,
 	PreservationSystemTests.class,
 	GetNewestFilesFromAllRepresentationsTests.class,

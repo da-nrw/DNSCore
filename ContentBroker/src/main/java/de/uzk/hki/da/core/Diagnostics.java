@@ -20,6 +20,7 @@
 package de.uzk.hki.da.core;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import de.uzk.hki.da.format.CLIFormatIdentifier;
+import de.uzk.hki.da.format.FakeFileWithFileFormat;
 import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.format.StandardFileFormatFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
@@ -67,8 +69,6 @@ public class Diagnostics {
 	
 	private static final String BEAN_NAME_IRODS_GRID_FACADE = "irodsGridFacade";
 	private static final String BEAN_NAME_IRODS_SYSTEM_CONNECTOR = "irodsSystemConnector";
-	private static final String BEAN_NAME_PRONOM_FORMAT_IDENTIFIER = "pronomFormatIdentifier";
-	private static final String BEAN_NAME_VIDEO_CODEC_FORMAT_IDENTIFIER = "videoCodecFormatIdentifier";
 	private static final String BEAN_NAME_FEDORA_REPOSITORY_FACADE = "fedoraRepositoryFacade";
 	
 	private static final String PROP_GRID_CACHE_AREA_ROOT_PATH = "localNode.gridCacheAreaRootPath";
@@ -93,7 +93,7 @@ public class Diagnostics {
 		
 		Properties properties = null;
 		try {
-			properties = Utilities.read(C.CONFIG_PROPS);
+			properties = Utilities.read(new File(C.CONFIG_PROPS));
 		} catch (IOException e) {
 			System.out.println(WARN+"error while reading "+C.CONFIG_PROPS);
 			return 1;
@@ -172,25 +172,24 @@ public class Diagnostics {
 	private static int checkFormatIdentifiers() {
 		
 		int errorCount=0;
-		AbstractApplicationContext context =
-				new ClassPathXmlApplicationContext(BEANS_DIAGNOSTICS_IDENTIFIER);
-		CLIFormatIdentifier pronomFormatIdentifier = (CLIFormatIdentifier) context.getBean(BEAN_NAME_PRONOM_FORMAT_IDENTIFIER);
-		CLIFormatIdentifier videoCodecFormatIdentifier = (CLIFormatIdentifier) context.getBean(BEAN_NAME_VIDEO_CODEC_FORMAT_IDENTIFIER);
-		context.close();
-
+		StandardFileFormatFacade sfff = new StandardFileFormatFacade();
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		FakeFileWithFileFormat ffff = new FakeFileWithFileFormat(new File("conf/healthCheck.tif"));
+		files.add(ffff);
 		
 		System.out.print("CHECKING PRONOM FORMAT IDENTIFIER: ");
-		if (!pronomFormatIdentifier.healthCheck()){
+		try {
+			sfff.identify(files);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		if (!files.get(0).getFormatPUID().equals("fmt/353")){
 			errorCount++;
 			System.out.println(WARN+"pronomFormatIdentifier health check not passed.");
 		}else System.out.println("OK");
 
 		
-		System.out.print("CHECKING VIDEO FORMAT IDENTIFIER: ");
-		if (!videoCodecFormatIdentifier.healthCheck()){
-			errorCount++;
-			System.out.println(WARN+"videoFormatIdentifier health check not passed.");
-		}else System.out.println("OK");
 		
 		return errorCount;
 	}

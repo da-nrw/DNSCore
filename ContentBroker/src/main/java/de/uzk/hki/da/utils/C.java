@@ -90,11 +90,15 @@ public class C {
 	// File system
 	public static final Path CONF = new RelativePath("conf");
 	public static final String PREMIS_XSD_PATH = "conf/premis.xsd";
-	public static final File CONFIG_PROPS = new RelativePath(CONF,"config.properties").toFile();
+	public static final String CONFIG_PROPS = "conf/config.properties";
 	public static final File HIBERNATE_CFG = new RelativePath(CONF,"hibernateCentralDB.cfg.xml").toFile();
 	public static final File XLINK_XSD = new File("src/main/xsd/xlink.xsd");
 	public static final File PREMIS_XSD = new File("src/main/xsd/premis.xsd");
 	public static final String XLINK_XSD_PATH = "conf/xlink.xsd";
+	public static final String FIDO_GLUE_SCRIPT = "fido.sh";
+	public static final Path FIDO_INSTALLATION = new RelativePath("fido");
+	public static final String CONFIGURE_SCRIPT = "configure.sh"; 
+	
 
 	// Xml
 	public static final String OWL_SAMEAS = "http://www.w3.org/2002/07/owl#sameAs";

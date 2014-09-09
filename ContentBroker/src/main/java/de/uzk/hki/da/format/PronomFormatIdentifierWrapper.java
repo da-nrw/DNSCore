@@ -43,6 +43,10 @@ public class PronomFormatIdentifierWrapper {
 
 	private File conversionScript = null;
 	
+	PronomFormatIdentifierWrapper(File cs){
+		this.conversionScript=cs;
+	}
+	
 	/**
 	 * Lets the fido program determine a set of pronom identifiers, 
 	 * from which the last one is chosen and returned.
