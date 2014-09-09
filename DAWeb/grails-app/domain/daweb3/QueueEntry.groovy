@@ -40,6 +40,8 @@ class QueueEntry {
 		status(nullable:false)
 		created(nullable:true)
 		modified(nullable:true)
+		question(nullable:true)
+		answer(nullable:true)
 	}
 	
 	static mapping = {
