@@ -29,6 +29,7 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -82,11 +83,13 @@ public class ValidateMetadataActionTests {
 
 	
 //	@SuppressWarnings("static-access")
+	@SuppressWarnings("unchecked")
 	@BeforeClass
 	public static void mockDca() throws IOException, JDOMException, ParserConfigurationException, SAXException {
 		msf = mock(MetadataStructureFactory.class);
 		File file = null;
-		when(msf.create((String)anyObject(),(File)anyObject())).thenReturn(new FakeMetadataStructure(file));	
+		List<DAFile> dafiles = null;
+		when(msf.create((String)anyObject(),(File)anyObject(), (List<DAFile>)anyObject())).thenReturn(new FakeMetadataStructure(file, dafiles));	
 	}
 	
 	@Before

@@ -81,7 +81,6 @@ public class RestructureAction extends AbstractAction{
 			throw new RuntimeException("problems during creating new representation",e);
 		}
 		object.getLatestPackage().scanRepRecursively(repName+"a");
-		logger.debug("REPNAME: " + repName);
 		job.setRep_name(repName);
 		
 		if (object.isDelta()) {
@@ -126,7 +125,10 @@ public class RestructureAction extends AbstractAction{
 		for (FileWithFileFormat f:scannedFiles){
 			logger.debug(f+":"+f.getFormatPUID());
 		}
-		
+
+		logger.debug("Create new b representation "+repName+"b");
+		Path.makeFile(object.getDataPath(), repName+"b").mkdir();
+
 		Path.makeFile(object.getDataPath(),"jhove_temp").mkdirs();
 		return true;
 	}

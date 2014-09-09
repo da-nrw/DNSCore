@@ -26,14 +26,21 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
+import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.Namespace;
+import org.jdom.input.SAXBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -58,6 +65,7 @@ public class UpdateMetadataActionXMPTests {
 	private static final String _1_A_REP = "1+a";
 	private static MimeTypeDetectionService mtds;
 	private final Path workAreaRootPath = new RelativePath("src/test/resources/cb/UpdateMetadataActionXMPTests/");
+	private static final Namespace RDF_NS = Namespace.getNamespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 	
 	@BeforeClass
 	public static void mockDca() throws IOException {
@@ -68,27 +76,7 @@ public class UpdateMetadataActionXMPTests {
 	@Before
 	public void setUp() throws Exception {
 		FileUtils.copyDirectoryToDirectory(new File("src/main/xslt"), new File("conf/"));
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/hasha.xmp").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/hasha.xmp").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/hashb.xmp").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/hashb.xmp").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/XMP.rdf").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/XMP.rdf").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/DC.xml").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/DC.xml").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/a.xmp").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/a.xmp").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/b.xmp").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/b.xmp").toFile().delete();
-		FileUtils.deleteDirectory(new File("conf/xslt"));
-	}
-
-	@Test
-	public void test() throws IOException, JDOMException, ParserConfigurationException, SAXException {
+		
 		Object obj = TESTHelper.setUpObject("123", workAreaRootPath);
 		
 		DAFile daf1 = new DAFile(obj.getLatestPackage(),_1_A_REP,"a.txt");
@@ -149,7 +137,6 @@ public class UpdateMetadataActionXMPTests {
 		obj.getLatestPackage().getEvents().add(evt5);
 		obj.getLatestPackage().getEvents().add(evt6);
 		
-		// set up object - end
 		UpdateMetadataAction action = new UpdateMetadataAction();
 		
 		HashMap<String,String> xpaths = new HashMap<String,String>();
@@ -174,7 +161,27 @@ public class UpdateMetadataActionXMPTests {
 		action.setDcMappings(dcMappings);
 		
 		action.implementation();
-		
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/hasha.xmp").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/hasha.xmp").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/hashb.xmp").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/hashb.xmp").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/XMP.rdf").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/XMP.rdf").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/DC.xml").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/DC.xml").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/a.xmp").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/a.xmp").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/b.xmp").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/b.xmp").toFile().delete();
+		FileUtils.deleteDirectory(new File("conf/xslt"));
+	}
+
+	@Test
+	public void test() throws IOException, JDOMException, ParserConfigurationException, SAXException {
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/dip/public/hasha.xmp").exists());
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/dip/institution/hasha.xmp").exists());
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/dip/public/hashb.xmp").exists());
@@ -183,5 +190,31 @@ public class UpdateMetadataActionXMPTests {
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/dip/institution/XMP.rdf").exists());
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/dip/public/DC.xml").exists());
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/dip/institution/DC.xml").exists());
+		
+		SAXBuilder builder = new SAXBuilder();
+		Document doc = builder.build(new FileReader(Path.make(workAreaRootPath, "work/TEST/123/data/dip/public/XMP.rdf").toFile()));
+		assertTrue(checkRefs(doc));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean checkRefs(Document doc) {
+		Boolean status = false;
+		List<Boolean> statusList = new ArrayList<Boolean>();
+		for(Element element : (List<Element>) doc.getRootElement().getChildren()) {
+			if(element.getName().equals("Description") && element.getAttributeValue("about", RDF_NS).equals("hashb.txt") || 
+					element.getName().equals("Description") && element.getAttributeValue("about", RDF_NS).equals("hasha.txt")) {
+				status = true;
+				statusList.add(status);
+			}
+		}
+		Boolean test = true;
+		if(statusList.size()!=2) {
+			return false;
+		} else {
+			for(Boolean b : statusList) {
+				test = test & b;
+			}
+			return status;
+		}
 	}
 }

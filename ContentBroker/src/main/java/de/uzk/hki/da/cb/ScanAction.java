@@ -66,8 +66,6 @@ public class ScanAction extends AbstractAction{
 		
 		job.getConversion_instructions().addAll(
 				generateConversionInstructions(object.getLatestPackage().getFiles()));
-
-		
 		
 		Object premisObject = parsePremisToMetadata(object.getDataPath() +"/"+ job.getRep_name()+"a");
 		if (!premisObject.grantsRight(MIGRATION))
@@ -106,18 +104,23 @@ public class ScanAction extends AbstractAction{
 		List<ConversionInstruction> cis = new ArrayList<ConversionInstruction>();
 		
 		for (DAFile file : filesArchival){
-			
-			for	(ConversionPolicy p:
-				preservationSystem.getApplicablePolicies(file, false))
-			{
-				logger.info("Found applicable Policy for FileFormat "+
-						p.getSource_format()+" -> "+p.getConversion_routine().getName() + "("+ file.getRelative_path()+ ")");
-				
-				ConversionInstruction ci = ciB.assembleConversionInstruction(file, p);
-				ci.setSource_file(file);
-				cis.add(ci);
-				
-				logger.info("Built conversionInstructionForArchival: "+ci.toString());
+			logger.debug("File: "+file.getRelative_path());
+			if(file.getRelative_path().equals("XMP.rdf")) {
+				logger.debug("Skipping rdf file");
+			} else {
+				for	(ConversionPolicy p:
+					preservationSystem.getApplicablePolicies(file, false))
+					{
+					logger.info("Found applicable Policy for FileFormat "+
+							p.getSource_format()+" -> "+p.getConversion_routine().getName() + "("+ file.getRelative_path()+ ")");
+					
+					ConversionInstruction ci = ciB.assembleConversionInstruction(file, p);
+					logger.debug("Set source file "+file.getRelative_path());
+					ci.setSource_file(file);
+					cis.add(ci);
+					
+					logger.info("Built conversionInstructionForArchival: "+ci.toString());
+				}
 			}
 		}
 		

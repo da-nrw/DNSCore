@@ -18,6 +18,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
+import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.utils.XMLUtils;
 
 
@@ -28,9 +29,9 @@ public class LidoMetadataStructure extends MetadataStructure{
 	private List<Element> lidoLinkResources;
 	private File currentMetadataFile;
 	
-	public LidoMetadataStructure(File metadataFile) throws FileNotFoundException, JDOMException,
+	public LidoMetadataStructure(File metadataFile, List<DAFile> daFiles) throws FileNotFoundException, JDOMException,
 			IOException {
-		super(metadataFile);
+		super(metadataFile, daFiles);
 		
 		currentMetadataFile = metadataFile;
 		

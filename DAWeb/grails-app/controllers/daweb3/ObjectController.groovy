@@ -138,8 +138,7 @@ class ObjectController {
      */
 		def queueAllForRetrieval = {
 			def result = [success:true]
-			def username = springSecurityService.currentUser
-			User user = User.findByUsername(username)
+			User user = springSecurityService.currentUser
 			def admin = 0
 			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 				admin = 1;
@@ -160,12 +159,14 @@ class ObjectController {
 					result.msg += "${object.urn} - NICHT GEFUNDEN. "
 					result.success = false
 				} else {
-				if (object.user.shortName != username) {
+				if (object.user.shortName != user.getShortName()) {
 					result.msg += "${object.urn} - KEINE BERECHTIGUNG. "
 					result.success = false
 				} else {
 					try {
-					qu.createJob( object ,"900", grailsApplication.config.irods.server) + "\n"	
+					CbNode cbn = CbNode.get(grailsApplication.config.localNode.id)
+					
+					qu.createJob( object ,"900", cbn.getName()) + "\n"	
 					result.msg += "${object.urn} - OK. " 
 					} catch ( Exception e ) { 
 					result.msg += "${object.urn} - FEHLER. "
@@ -185,19 +186,22 @@ class ObjectController {
 
     def queueForRetrieval = {
 			def result = [success:false]
-			def username = springSecurityService.currentUser
+			User user = springSecurityService.currentUser
 			def object = Object.get(params.id)
 		
 			if ( object == null ) {
 				 result.msg = "Das Objekt ${object.urn} konnte nicht gefunden werden!"
 			}
 			else {
-				if (object.user.shortName != username) {
+				if (object.user.shortName != user.getShortName()) {
 					result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt ${object.urn} anzufordern!"
 					
 				} else {
 					try {
-					qu.createJob( object ,"900", grailsApplication.config.irods.server) 
+						
+					CbNode cbn = CbNode.get(grailsApplication.config.localNode.id)
+						
+					qu.createJob( object ,"900", cbn.getName()) 
 					result.msg = "Objekt ${object.urn} erfolgreich angefordert."
 					result.success = true
 					} catch ( Exception e ) { 
@@ -269,7 +273,8 @@ class ObjectController {
 				log.debug "object.contractor.shortName: " + object.user.shortName
 					
 				try {
-						qu.createJob( object, "5000" , grailsApplication.config.irods.server)
+						CbNode cbn = CbNode.get(grailsApplication.config.localNode.id)
+						qu.createJob( object, "5000" , cbn.getName())
 						result.msg = "Das Objekt mit der URN ${object.urn} wurde zur Überprüfung in die Queue eingestellt!"
 						result.success = true
 					} catch(Exception e) {

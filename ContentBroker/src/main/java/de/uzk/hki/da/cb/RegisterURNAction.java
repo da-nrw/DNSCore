@@ -52,7 +52,8 @@ public class RegisterURNAction extends AbstractAction {
 	 */
 	private String extractURNFromPremisFile() {
 		
-		File premisFile = new File(object.getDataPath() + "/"+ object.getNameOfNewestRep() + "/" + "premis.xml");
+//		File premisFile = new File(object.getDataPath() + "/"+ object.getNameOfNewestRep() + "/" + "premis.xml");
+		File premisFile = new File(object.getDataPath() + "/"+ object.getNameOfNewestARep() + "/" + "premis.xml");
 		
 		
 		Object premisObject = null;
@@ -84,8 +85,11 @@ public class RegisterURNAction extends AbstractAction {
 		
 		List<DAFile> files = object.getLatestPackage().getFiles();
 		for (DAFile file : files) {
-			if (file.getFormatPUID().equals(C.METS_PUID))
+			if(!file.getRelative_path().contains("XMP.rdf")) {
+				if (file.getFormatPUID().equals(C.METS_PUID))
 				metsFile = file;
+			}
+			
 		}
 
 		if (metsFile != null) {
