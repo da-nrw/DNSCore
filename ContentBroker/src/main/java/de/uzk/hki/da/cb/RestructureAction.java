@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +34,7 @@ import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.repository.RepositoryException;
@@ -110,14 +112,17 @@ public class RestructureAction extends AbstractAction{
 		
 		object.reattach();
 		logger.debug("scanning files with format identifier(s)");
-		List<DAFile> scannedFiles = null;
+		List<FileWithFileFormat> scannedFiles = null;
 		try {
-			scannedFiles = fileFormatFacade.identify(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
+			List<FileWithFileFormat> fffl = new ArrayList<FileWithFileFormat>();
+			fffl.addAll(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
+			
+			scannedFiles = fileFormatFacade.identify(fffl);
 		} catch (FileFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for (DAFile f:scannedFiles){
+		for (FileWithFileFormat f:scannedFiles){
 			logger.debug(f+":"+f.getFormatPUID());
 		}
 

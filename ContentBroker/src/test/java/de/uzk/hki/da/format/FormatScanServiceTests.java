@@ -22,9 +22,9 @@ package de.uzk.hki.da.format;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Matchers.anyObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,18 +38,15 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Matchers;
-import org.mockito.Mockito;
 
-import de.uzk.hki.da.format.CLIFormatIdentifier;
-import de.uzk.hki.da.format.FidoFormatScanService;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
-import de.uzk.hki.da.utils.TESTHelper;
 import de.uzk.hki.da.utils.TC;
+import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * @author Daniel M. de Oliveira
@@ -60,7 +57,7 @@ public class FormatScanServiceTests {
 	private static Path workAreaRootPath = Path.make(TC.TEST_ROOT_FORMAT,"FormatIdentificationTests");
 	private static Object object;
 	
-	private List<DAFile> files = new ArrayList<DAFile>();
+	private List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 	private static CLIFormatIdentifier tiffCompressionMockIdentifier;
 	private static CentralDatabaseDAO dao;
 	
@@ -179,7 +176,7 @@ public class FormatScanServiceTests {
 	@Test
 	public void fileDoesNotExist(){
 		
-		List<DAFile> files = new ArrayList<DAFile>(); 
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>(); 
 		files.add(new DAFile(object.getLatestPackage(),"","nonexistent.tif"));
 		try{
 			formatScanService.identify(files);

@@ -7,5 +7,5 @@ import de.uzk.hki.da.model.DAFile;
 
 public interface FormatScanService {
 
-	public List<DAFile> identify(List<DAFile> files) throws IOException;
+	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws IOException;
 }

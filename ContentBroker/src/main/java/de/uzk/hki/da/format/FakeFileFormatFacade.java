@@ -24,11 +24,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.utils.C;
 
 /**
@@ -38,58 +38,58 @@ import de.uzk.hki.da.utils.C;
 public class FakeFileFormatFacade implements FileFormatFacade {
 
 	@Override
-	public List<DAFile> identify(List<DAFile> files) throws FileNotFoundException{
+	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws FileNotFoundException{
 		
-		for (DAFile f:files){
+		for (FileWithFileFormat f:files){
 			
-			if (f.getRelative_path().toLowerCase().endsWith(".avi")){
+			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".avi")){
 				f.setFormatPUID("fmt/5");
 				f.setFormatSecondaryAttribute("cinepak");
 				continue;
 			}
 			
-			if (f.getRelative_path().toLowerCase().endsWith(".mxf")){
+			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".mxf")){
 				f.setFormatPUID("fmt/200");
 				f.setFormatSecondaryAttribute("dvvideo");
 				continue;
 			}
 			
-			if (f.getRelative_path().toLowerCase().endsWith(".mov")){
+			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".mov")){
 				f.setFormatPUID("x-fmt/384");
 				f.setFormatSecondaryAttribute("svq1");
 				continue;
 			}
 			
-			if (f.getRelative_path().toLowerCase().endsWith(".tif")){
+			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".tif")){
 				f.setFormatPUID("fmt/353");
 				continue;
 			}
 			
-			if (f.getRelative_path().toLowerCase().endsWith(".bmp")){
+			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".bmp")){
 				f.setFormatPUID("fmt/116");
 				continue;
 			}
 			
-			if (f.getRelative_path().toLowerCase().endsWith(".jp2")){
+			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".jp2")){
 				f.setFormatPUID("x-fmt/392");
 				continue;
 			}
 			
-			if (f.getRelative_path().toLowerCase().endsWith(".gif")){
+			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".gif")){
 				f.setFormatPUID("fmt/4");
 				continue;
 			}
 			
-			if (f.getRelative_path().toLowerCase().endsWith(".pdf")){
+			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".pdf")){
 				f.setFormatPUID("fmt/16");
 				continue;
 			}
 
-			if (f.getRelative_path().toLowerCase().endsWith(".xml")){
+			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".xml")){
 				f.setFormatPUID("fmt/101");
 			}
 			
-			if (f.getRelative_path().toLowerCase().endsWith(".rdf")){
+			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".rdf")){
 				f.setFormatPUID("fmt/101");
 			}
 			
@@ -115,13 +115,11 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 				    	}
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}		
 	        try {
 				br.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	        
@@ -141,6 +139,9 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 
 	@Override
 	public void extract(File file, File targetFile) throws IOException {
+		PrintWriter writer = new PrintWriter(targetFile, "UTF-8");
+		writer.println("<jhove>abc</jhove>");
+		writer.close();
 	}
 	
 	

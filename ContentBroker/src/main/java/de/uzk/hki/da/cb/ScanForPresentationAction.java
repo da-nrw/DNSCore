@@ -27,6 +27,7 @@ import java.util.List;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionInstructionBuilder;
@@ -62,11 +63,14 @@ public class ScanForPresentationAction extends AbstractAction{
 	boolean implementation() throws IOException {
 		// check if object package type is set
 		
-		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
-		if (newestFiles.size() == 0)
+		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()); 
+		List <FileWithFileFormat> fffl = new ArrayList<FileWithFileFormat>();
+		fffl.addAll(newestFiles);
+		
+		if (fffl.size() == 0)
 			throw new RuntimeException("No files found!");
 		try {
-			newestFiles = fileFormatFacade.identify(newestFiles);
+			fffl = fileFormatFacade.identify(fffl);
 		} catch (FileFormatException e) {
 			e.printStackTrace();
 		}

@@ -33,6 +33,7 @@ import org.apache.commons.lang.NotImplementedException;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.CommaSeparatedList;
@@ -71,10 +72,11 @@ public class CheckFormatsAction extends AbstractAction {
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException {
 		
-		List<DAFile> allFiles = new ArrayList<DAFile>();
+		List<FileWithFileFormat> allFiles = new ArrayList<FileWithFileFormat>();
+		List<DAFile> allDAFiles = new ArrayList<DAFile>();
 		for (Package p:object.getPackages()){
 				allFiles.addAll(p.getFiles());
-				
+				allDAFiles.addAll(p.getFiles());
 		}
 		try {
 			allFiles = getFileFormatFacade().identify(allFiles);
@@ -83,10 +85,10 @@ public class CheckFormatsAction extends AbstractAction {
 			e.printStackTrace();
 		}
 		
-		for (DAFile f:allFiles){
+		for (FileWithFileFormat f:allFiles){
 			if (f.getFormatPUID()==null) throw new RuntimeException("file \""+f+"\" has no format puid");
 		}
-		attachJhoveInfoToAllFiles(allFiles);
+		attachJhoveInfoToAllFiles(allDAFiles);
 		
 		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
 		
@@ -104,7 +106,7 @@ public class CheckFormatsAction extends AbstractAction {
 		object.setMost_recent_formats(new CommaSeparatedList(new ArrayList<String>(mostRecentFormats)).toString());
 		object.setMostRecentSecondaryAttributes(new CommaSeparatedList(new ArrayList<String>(mostRecentSecondaryAttributes)).toString());
 		object.setOriginal_formats(
-				new CommaSeparatedList(new ArrayList<String>(getPUIDsForAllRepAFiles(allFiles))).toString() // hack necessary again?
+				new CommaSeparatedList(new ArrayList<String>(getPUIDsForAllRepAFiles(allDAFiles))).toString() // hack necessary again?
 						);
 		
 		return true;
