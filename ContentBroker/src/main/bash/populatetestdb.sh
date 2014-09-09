@@ -52,9 +52,9 @@ then
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (5,1,'fmt/4',2,true);"
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (6,1,'fmt/16',4,true);"
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (7,1,'fmt/354',4,true);"
-        "INSERT INTO second_stage_scans (id,puid,allowed_values,format_identifier_script_name) VALUES (1,'x-fmt/384','svq1','ffmpeg.sh');"
-        "INSERT INTO second_stage_scans (id,puid,allowed_values,format_identifier_script_name) VALUES (2,'fmt/200','dvvideo','ffmpeg.sh');"
-        "INSERT INTO second_stage_scans (id,puid,allowed_values,format_identifier_script_name) VALUES (3,'fmt/5','cinepak','ffmpeg.sh');"
+        "INSERT INTO second_stage_scans (id,puid,allowed_values,format_identifier_script_name) VALUES (1,'x-fmt/384','svq1','script:ffmpeg.sh');"
+        "INSERT INTO second_stage_scans (id,puid,allowed_values,format_identifier_script_name) VALUES (2,'fmt/200','dvvideo','script:ffmpeg.sh');"
+        "INSERT INTO second_stage_scans (id,puid,allowed_values,format_identifier_script_name) VALUES (3,'fmt/5','cinepak','script:ffmpeg.sh');"
 	)
 fi
 

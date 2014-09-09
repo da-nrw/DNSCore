@@ -140,41 +140,41 @@ public class ValidateMetadataAction extends AbstractAction {
 	 */
 	private void detect(){
 		
-		if (getFilesWithPUID(C.EAD_PUID).size()>=2){
+		if (getFilesOfMetadataType(C.EAD).size()>=2){
 			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate EAD");
 		}
-		if (getFilesWithPUID(C.LIDO_PUID).size()>1){
+		if (getFilesOfMetadataType(C.LIDO).size()>1){
 			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate LIDO");
 		}
 
 		int ptypeCount=0;
 		
-		if (getFilesWithPUID(C.EAD_PUID).size()==1){
-			detectedMetadataFile=getFilesWithPUID(C.EAD_PUID).get(0);
+		if (getFilesOfMetadataType(C.EAD).size()==1){
+			detectedMetadataFile=getFilesOfMetadataType(C.EAD).get(0);
 			detectedPackageType=C.EAD;
 			ptypeCount++;
 		}
 		
-		if ((getFilesWithPUID(C.EAD_PUID).size()!=1)&&
-				getFilesWithPUID(C.METS_PUID).size()>1){
+		if ((getFilesOfMetadataType(C.EAD).size()!=1)&&
+				getFilesOfMetadataType(C.METS).size()>1){
 			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate METS");
 		}  
 				
-		if (getFilesWithPUID(C.METS_PUID).size()==1){
-			detectedMetadataFile=getFilesWithPUID(C.METS_PUID).get(0);
+		if (getFilesOfMetadataType(C.METS).size()==1){
+			detectedMetadataFile=getFilesOfMetadataType(C.METS).get(0);
 			detectedPackageType=C.METS;
 			ptypeCount++;
 		}
 		
-		if ((getFilesWithPUID(C.XMP_PUID)).size()>=1){
+		if ((getFilesOfMetadataType(C.XMP)).size()>=1){
 			detectedMetadataFile=new DAFile(object.getLatestPackage(),
 					object.getNameOfNewestARep().replace("+a", "+b"),C.XMP_METADATA_FILE);
 			detectedPackageType=C.XMP;
 			ptypeCount++;
 		}
 		
-		if ((getFilesWithPUID(C.LIDO_PUID)).size()==1){
-			detectedMetadataFile=getFilesWithPUID(C.LIDO_PUID).get(0);
+		if ((getFilesOfMetadataType(C.LIDO)).size()==1){
+			detectedMetadataFile=getFilesOfMetadataType(C.LIDO).get(0);
 			detectedPackageType=C.LIDO;
 			ptypeCount++;
 		}
@@ -184,11 +184,11 @@ public class ValidateMetadataAction extends AbstractAction {
 	}
 	
 	
-	private List<DAFile> getFilesWithPUID(String PUID){
+	private List<DAFile> getFilesOfMetadataType(String metadataFormatIdentifier){
 		List<DAFile> result = new ArrayList<DAFile>();
 		
 		for (DAFile f:object.getLatestPackage().getFiles()){
-			if (PUID.equals(f.getFormatPUID())) {
+			if (metadataFormatIdentifier.equals(f.getFormatSecondaryAttribute())) {
 				result.add(f);
 			}
 		}

@@ -105,13 +105,13 @@ public class ValidateMetadataActionTests {
 		action.setMsf(msf);
 		action.setObject(object);
 
-		f_ead1.setFormatPUID(C.EAD_PUID);
-		f_ead2.setFormatPUID(C.EAD_PUID);
-		f_mets1.setFormatPUID(C.METS_PUID);
-		f_mets2.setFormatPUID(C.METS_PUID);
-		f_xmp1.setFormatPUID(C.XMP_PUID);
-		f_lido1.setFormatPUID(C.LIDO_PUID);
-		f_lido2.setFormatPUID(C.LIDO_PUID);
+		f_ead1.setFormatSecondaryAttribute(C.EAD);
+		f_ead2.setFormatSecondaryAttribute(C.EAD);
+		f_mets1.setFormatSecondaryAttribute(C.METS);
+		f_mets2.setFormatSecondaryAttribute(C.METS);
+		f_xmp1.setFormatSecondaryAttribute(C.XMP);
+		f_lido1.setFormatSecondaryAttribute(C.LIDO);
+		f_lido2.setFormatSecondaryAttribute(C.LIDO);
 	}
 	
 	
