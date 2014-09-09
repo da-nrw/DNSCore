@@ -154,6 +154,8 @@ public class UpdateMetadataAction extends AbstractAction {
 			collectXMP();
 			
 			for (String repName : getRepNames()) {
+				logger.debug("repName: "+repName);
+				logger.debug("Search for metadata file "+Path.make(object.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName));
 				metadataFile = Path.makeFile(object.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName);
 	            if (!metadataFile.exists()) throw new FileNotFoundException();
 	            XMPMetadataStructure xms = new XMPMetadataStructure(metadataFile, daFiles);
