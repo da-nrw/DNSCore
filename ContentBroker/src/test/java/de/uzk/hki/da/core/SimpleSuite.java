@@ -64,6 +64,7 @@ import de.uzk.hki.da.format.PublishImageConversionStrategyTest;
 import de.uzk.hki.da.format.PublishImageMultipageTIFFTests;
 import de.uzk.hki.da.format.PublishPDFConversionStrategyTests;
 import de.uzk.hki.da.format.PublishXsltConversionStrategyTests;
+import de.uzk.hki.da.format.SecondaryFormatScanTests;
 import de.uzk.hki.da.format.TiffConversionStrategyTests;
 import de.uzk.hki.da.grid.IrodsGridFacadeTest;
 import de.uzk.hki.da.grid.ReplicationExecutorTest;
@@ -162,7 +163,8 @@ import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 	ValidateMetadataActionTests.class,
 	ProcessUserDecisionsActionTests.class,
 	FakeFileFormatFacadeTests.class,
-	UpdateMetadataRheinlaender.class
+	UpdateMetadataRheinlaender.class,
+	SecondaryFormatScanTests.class
 })
 public class SimpleSuite {
 
