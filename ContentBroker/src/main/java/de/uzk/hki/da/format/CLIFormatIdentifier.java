@@ -63,10 +63,13 @@ public class CLIFormatIdentifier implements FormatIdentifier{
 	 * @see de.uzk.hki.da.format.FormatIdentifier#identify(java.io.File)
 	 */
 	@Override
-	public Set<String> identify(File file) {
+	public Set<String> identify(FileWithFileFormat f) {
+		
+		File file = f.toRegularFile();
 		
 		if (!file.exists()) throw new Error("File doesn't exist");
-
+		
+		
 		if (!conversionScript.exists()) throw new IllegalStateException(
 				"ConversionScript doesn't exist: "+conversionScript.getAbsolutePath());
 		
@@ -177,6 +180,14 @@ public class CLIFormatIdentifier implements FormatIdentifier{
 	 */
 	public void setHealthCheckExpectedOutcome(String healthCheckExpectedOutcome) {
 		this.healthCheckExpectedOutcome = healthCheckExpectedOutcome;
+	}
+
+
+
+
+	public String getPuidForFile(FileWithFileFormat file) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

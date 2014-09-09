@@ -27,7 +27,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.Utilities;
@@ -45,6 +44,10 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	private static final String JHOVE_CONF = "conf/jhove.conf";
 	private String jhoveFolder = "jhove";
 	
+	/**
+	 * The output of fido typically is a comma separated list of puids for each file. Only the last entry of the list
+	 * will be taken.
+	 */
 	@Override
 	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files)
 			throws FileNotFoundException {

@@ -38,7 +38,7 @@ public interface FormatIdentifier {
 	 * @param file the file
 	 * @return the sets the
 	 */
-	public Set<String> identify(File file);
+	public Set<String> identify(FileWithFileFormat file);
 	
 	
 	/**

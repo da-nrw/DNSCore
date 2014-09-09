@@ -19,7 +19,6 @@
 
 package de.uzk.hki.da.format;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.List;
@@ -31,7 +30,6 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
 
 
@@ -44,11 +42,9 @@ import de.uzk.hki.da.model.SecondStageScanPolicy;
  */
 public class FidoFormatScanService implements FormatScanService {
 	
-	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(FidoFormatScanService.class);
 	
-	/** The pronom format identifier. */
-	private CLIFormatIdentifier pronomFormatIdentifier;
+	private PronomFormatIdentifierWrapper pronomFormatIdentifier;
 	
 	/** The format second attribute identifiers. */
 	private Set<CLIFormatIdentifier> formatSecondAttributeIdentifiers = new HashSet<CLIFormatIdentifier>();
@@ -89,12 +85,12 @@ public class FidoFormatScanService implements FormatScanService {
 	 */
 	@Override
 	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws FileNotFoundException {
+//		for (FileWithFileFormat f:files){
+//			if (!f.toRegularFile().exists()) throw new FileNotFoundException("file "+f.toRegularFile().getPath()+" doesn't exist");
+//		}	
 		for (FileWithFileFormat f:files){
-			if (!f.toRegularFile().exists()) throw new FileNotFoundException("file "+f.toRegularFile().getPath()+" doesn't exist");
-		}	
-		for (FileWithFileFormat f:files){
-			f.setFormatPUID(identify(f.toRegularFile()));
-			logger.trace(f+" has puid "+f.getFormatPUID()+". Now searching if second stage scan policy is applicable");
+			f.setFormatPUID(getPronomFormatIdentifier().getPuidForFile(f));
+			logger.debug(f+" has puid "+f.getFormatPUID()+". Now searching if second stage scan policy is applicable");
 			
 			for (SecondStageScanPolicy scan:secondStageScans){
 				if (!f.getFormatPUID().equals(scan.getPUID())) continue;
@@ -105,7 +101,7 @@ public class FidoFormatScanService implements FormatScanService {
 					logger.trace("found an identifier with identification script \""+scan.getFormatIdentifierScriptName()+"\" required by policy");	
 					
 					// TODO resolve
-					Set<String> resultList = additionalIdentifier.identify(f.toRegularFile());
+					Set<String> resultList = additionalIdentifier.identify(f);
 					String result="";
 					for (String r:resultList){
 						result=r;
@@ -126,42 +122,12 @@ public class FidoFormatScanService implements FormatScanService {
 	
 	
 	
-	
-	
-	/**
-	 * Identifies a file format of a file. The file format is encoded as PRONOM puid.
-	 * 
-	 * TODO inline method and then refactor whole class and break down in smaller pieces
-	 *
-	 * @param file the file
-	 * @return <li>UNDEFINED if no output from identifier.
-	 * <li> puid, if only one format puid comes from the identifier.
-	 * <li> the last puid from the output of the identifier, if there are more than one.
-	 */
-	private String identify(File file) {
-
-		Set<String> fileFormats = getPronomFormatIdentifier().identify(file);
-		if (fileFormats.isEmpty()){
-			logger.warn("Identified format for file: \""+file.getName()+"\" is declared UNDEFINED due to the missing result of the" +
-					"used identifier. Try testing this manually.");
-			return "UNDEFINED";
-		}
-		
-		// TODO for now return the last one
-		String result="";
-		for (String r:fileFormats){
-			result=r;
-		}
-		return result;
-	}
-	
-
 	/**
 	 * Gets the pronom format identifier.
 	 *
 	 * @return the pronom format identifier
 	 */
-	public CLIFormatIdentifier getPronomFormatIdentifier() {
+	public PronomFormatIdentifierWrapper getPronomFormatIdentifier() {
 		return pronomFormatIdentifier;
 	}
 
@@ -170,7 +136,7 @@ public class FidoFormatScanService implements FormatScanService {
 	 *
 	 * @param pronomFormatIdentifier the new pronom format identifier
 	 */
-	public void setPronomFormatIdentifier(CLIFormatIdentifier pronomFormatIdentifier) {
+	public void setPronomFormatIdentifier(PronomFormatIdentifierWrapper pronomFormatIdentifier) {
 		this.pronomFormatIdentifier = pronomFormatIdentifier;
 	}
 

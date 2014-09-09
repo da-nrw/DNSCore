@@ -12,7 +12,6 @@
     <!-- beans.xml.full.dev -->
 
 	<import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.identifier.fake.xml"/>
 
 	<import resource="classpath*:META-INF/beans-workflow.presentation.xml"/>
 	<import resource="classpath*:META-INF/beans-workflow.ingest.xml"/>

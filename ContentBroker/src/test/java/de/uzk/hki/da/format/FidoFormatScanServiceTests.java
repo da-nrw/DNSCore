@@ -37,8 +37,8 @@ import org.hibernate.Session;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Matchers;
 
+import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
@@ -51,7 +51,7 @@ import de.uzk.hki.da.utils.TESTHelper;
 /**
  * @author Daniel M. de Oliveira
  */
-public class FormatScanServiceTests {
+public class FidoFormatScanServiceTests {
 
 	private static FidoFormatScanService formatScanService;
 	private static Path workAreaRootPath = Path.make(TC.TEST_ROOT_FORMAT,"FormatIdentificationTests");
@@ -62,9 +62,14 @@ public class FormatScanServiceTests {
 	private static CentralDatabaseDAO dao;
 	
 	
+	private static FileWithFileFormat tiff = new DAFile(null,"","tiff"); 
+	private static FileWithFileFormat xml  = new DAFile(null,"","xml");
+	
 	
 	@BeforeClass
 	public static void setUpBeforeClass(){
+		
+		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		
 		dao = mock(CentralDatabaseDAO.class);
 		
@@ -79,10 +84,9 @@ public class FormatScanServiceTests {
 		
 		formatScanService = new FidoFormatScanService(dao);
 		
-		CLIFormatIdentifier pronomMockIdentifier = mock(CLIFormatIdentifier.class);
-		Set<String> puid = new HashSet<String>(); puid.add("fmt/353");
-		when(pronomMockIdentifier.healthCheck()).thenReturn(true);
-		when(pronomMockIdentifier.identify((File) Matchers.any())).thenReturn(puid);
+		PronomFormatIdentifierWrapper pronomMockIdentifier = mock(PronomFormatIdentifierWrapper.class);
+		when(pronomMockIdentifier.getPuidForFile((tiff))).thenReturn("fmt/353");
+		when(pronomMockIdentifier.getPuidForFile((xml))).thenReturn("fmt/101");
 		formatScanService.setPronomFormatIdentifier(pronomMockIdentifier);
 		
 		tiffCompressionMockIdentifier = mock(CLIFormatIdentifier.class);
@@ -107,9 +111,9 @@ public class FormatScanServiceTests {
 	@Test
 	public void foundCodecIsNotAllowed() throws FileNotFoundException {
 		Set<String> compression = new HashSet<String>(); compression.add("jpeg");
-		when(tiffCompressionMockIdentifier.identify((File) Matchers.any())).thenReturn(compression);
+		when(tiffCompressionMockIdentifier.identify(tiff)).thenReturn(compression);
 		
-		files.add(new DAFile(object.getLatestPackage(),"","140849.tif"));
+		files.add(tiff);
 		
 		try{
 			formatScanService.identify(files);
@@ -127,15 +131,14 @@ public class FormatScanServiceTests {
 	public void identifyFileWithCompressionAlgorithm() throws FileNotFoundException{
 		
 		Set<String> compression = new HashSet<String>(); compression.add("lzw");
-		when(tiffCompressionMockIdentifier.identify((File) Matchers.any())).thenReturn(compression);
+		when(tiffCompressionMockIdentifier.identify(tiff)).thenReturn(compression);
 		
-		files.add(new DAFile(object.getLatestPackage(),"","140849.tif"));
+		files.add(tiff);
 		
 		formatScanService.identify(files);
 		
 		assertThat(files.get(0).getFormatPUID()).isEqualTo("fmt/353");
 		assertThat(files.get(0).getFormatSecondaryAttribute()).isEqualTo("lzw");
-		
 	}
 	
 	
@@ -145,9 +148,9 @@ public class FormatScanServiceTests {
 	public void identifyFileWithoutCompressionAlgorithm() throws FileNotFoundException {
 		
 		Set<String> compression = new HashSet<String>();
-		when(tiffCompressionMockIdentifier.identify((File) Matchers.any())).thenReturn(compression);
+		when(tiffCompressionMockIdentifier.identify(tiff)).thenReturn(compression);
 		
-		files.add(new DAFile(object.getLatestPackage(),"","140849.tif"));
+		files.add(tiff);
 		
 		formatScanService.identify(files);
 		assertThat(files.get(0).getFormatPUID()).isEqualTo("fmt/353");
@@ -161,13 +164,13 @@ public class FormatScanServiceTests {
 	@Test
 	public void identifyListOfFiles() throws FileNotFoundException{
 		
-		files.add(new DAFile(object.getLatestPackage(),"","140849.tif")); 
-		files.add(new DAFile(object.getLatestPackage(),"","sub/140849.tif"));
+		files.add(tiff); 
+		files.add(xml);
 		
 		formatScanService.identify(files);
 		
-		assertEquals("fmt/353",files.get(0).getFormatPUID());
-		assertEquals("fmt/353",files.get(1).getFormatPUID());
+		assertEquals("fmt/353",tiff.getFormatPUID());
+		assertEquals("fmt/101",xml.getFormatPUID());
 	}
 	
 	
