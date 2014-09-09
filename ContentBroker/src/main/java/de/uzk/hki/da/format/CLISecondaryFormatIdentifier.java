@@ -18,16 +18,57 @@
 */
 package de.uzk.hki.da.format;
 
+import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import de.uzk.hki.da.utils.CommaSeparatedList;
+import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.ProcessInformation;
+
 /**
  * @author Daniel M. de Oliveira
  */
 public class CLISecondaryFormatIdentifier implements SecondaryFormatIdentifier{
 
+	private static final Logger logger = LoggerFactory.getLogger(CLISecondaryFormatIdentifier.class);
+	
 	private String scriptName = null;
 	
 	@Override
 	public String identify(FileWithFileFormat fff) {
-		return "EAD";
+		
+		File conversionScript = new File(scriptName);
+		
+		File file = fff.toRegularFile();
+		
+		if (!file.exists()) throw new Error("File doesn't exist");
+		
+		
+		if (!conversionScript.exists()) throw new IllegalStateException(
+				"ConversionScript doesn't exist: "+conversionScript.getAbsolutePath());
+		
+		ProcessInformation pi= CommandLineConnector.runCmdSynchronously( new String[]{
+				
+				conversionScript.getAbsolutePath(),
+				file.getAbsolutePath()
+		});
+		
+		
+		if (pi.getExitValue()!=0){
+			logger.warn("stdout from identification: "+pi.getStdErr());
+			logger.warn("FormatIdentifier with exit value: " + pi.getExitValue());
+			
+			return "";
+		}
+		
+		logger.debug("stdout from identification: "+pi.getStdOut());
+		Set<String> fileFormatsIdentifiers= new HashSet<String>(new CommaSeparatedList(pi.getStdOut()).toList());
+
+		return fileFormatsIdentifiers.iterator().next();
 	}
 
 	public String getScriptName() {

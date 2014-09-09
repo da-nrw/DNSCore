@@ -22,6 +22,7 @@ package de.uzk.hki.da.format;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,7 +83,7 @@ public class SecondaryFormatScanTests {
 	
 	@Test
 	public void testIdentifiedByScript() throws InvalidArgumentException{
-		DAFile f = new DAFile(null,null,"xml");
+		FakeFileWithFileFormat f = new FakeFileWithFileFormat(new File("src/test/resources/format/SecondaryFormatScanTests/xml"));
 		f.setFormatPUID("fmt/101");
 		
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
