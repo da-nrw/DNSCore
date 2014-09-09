@@ -206,8 +206,6 @@ public class PreservationSystem {
 	 */
 	public List<ConversionPolicy> getApplicablePolicies(DAFile file,Boolean presentation) {
 		
-		
-		
 		if (file.getFormatPUID().isEmpty()){
 			logger.warn("No FileFormat information available in DAFile: "+file.toString());
 			return new ArrayList<ConversionPolicy>(); 

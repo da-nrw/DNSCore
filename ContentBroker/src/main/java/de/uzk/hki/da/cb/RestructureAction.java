@@ -120,10 +120,9 @@ public class RestructureAction extends AbstractAction{
 		for (DAFile f:scannedFiles){
 			logger.debug(f+":"+f.getFormatPUID());
 		}
-		
 
-//		logger.debug("Create new b representation "+repName+"b");
-//		Path.makeFile(object.getDataPath(), repName+"b").mkdir();
+		logger.debug("Create new b representation "+repName+"b");
+		Path.makeFile(object.getDataPath(), repName+"b").mkdir();
 
 		Path.makeFile(object.getDataPath(),"jhove_temp").mkdirs();
 		return true;

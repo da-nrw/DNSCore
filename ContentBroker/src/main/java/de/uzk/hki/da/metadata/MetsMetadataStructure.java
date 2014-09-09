@@ -47,6 +47,10 @@ public class MetsMetadataStructure extends MetadataStructure {
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
+	public File getMetadataFile() {
+		return metsFile;
+	}
+	
 	public String getMimetype(Element fileElement) {
 		return fileElement.getAttribute("MIMETYPE").getValue();
 	}

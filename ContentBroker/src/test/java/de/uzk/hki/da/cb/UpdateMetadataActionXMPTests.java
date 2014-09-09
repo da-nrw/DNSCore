@@ -20,7 +20,6 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
@@ -197,6 +196,7 @@ public class UpdateMetadataActionXMPTests {
 		assertTrue(checkRefs(doc));
 	}
 	
+	@SuppressWarnings("unchecked")
 	public boolean checkRefs(Document doc) {
 		Boolean status = false;
 		List<Boolean> statusList = new ArrayList<Boolean>();

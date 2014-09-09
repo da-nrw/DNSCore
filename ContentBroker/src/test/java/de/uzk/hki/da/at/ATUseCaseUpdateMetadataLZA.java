@@ -258,7 +258,7 @@ public class ATUseCaseUpdateMetadataLZA extends Base{
 		for (java.lang.Object node : allNodes) {
 			Element fileElement = (Element) node;
 			Attribute attr = fileElement.getChild("FLocat", METS_NS).getAttribute("href", XLINK_NS);
-			Attribute attrLoctype = fileElement.getChild("FLocat", METS_NS).getAttribute("LOCTYPE");
+//			Attribute attrLoctype = fileElement.getChild("FLocat", METS_NS).getAttribute("LOCTYPE");
 			Attribute attrMT = fileElement.getAttribute("MIMETYPE");
 			assertTrue(attr.getValue().endsWith(".tif"));
 			assertTrue(attrMT.getValue().equals("image/tiff"));

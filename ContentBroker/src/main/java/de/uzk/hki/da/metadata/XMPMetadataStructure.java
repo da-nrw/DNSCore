@@ -25,12 +25,9 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.jdom.Attribute;
 import org.jdom.Document;
@@ -42,7 +39,6 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
 /**
@@ -58,12 +54,13 @@ public class XMPMetadataStructure extends MetadataStructure{
 	public XMPMetadataStructure(File metadataFile, List<DAFile> daFiles) throws FileNotFoundException, JDOMException, IOException {
 		super(metadataFile, daFiles);
 		
-//		xmpFile = metadataFile;
-//		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-//		FileInputStream fileInputStream = new FileInputStream(xmpFile);
-//		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
-//		rdfDoc = builder.build(bomInputStream);
-//		descriptionElements = getXMPDescriptionElements();
+		xmpFile = metadataFile;
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		FileInputStream fileInputStream = new FileInputStream(xmpFile);
+		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
+		rdfDoc = builder.build(bomInputStream);
+		descriptionElements = getXMPDescriptionElements();
+		
 	}
 
 	@Override

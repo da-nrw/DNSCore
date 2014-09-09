@@ -58,7 +58,7 @@ public class ATUseCaseIngestXMP extends Base{
 	@AfterClass
 	public static void tearDownAfterClass(){
 		TESTHelper.clearDB();
-//		cleanStorage();
+		cleanStorage();
 	}
 	
 	@Test

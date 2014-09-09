@@ -83,6 +83,7 @@ public class ValidateMetadataActionTests {
 
 	
 //	@SuppressWarnings("static-access")
+	@SuppressWarnings("unchecked")
 	@BeforeClass
 	public static void mockDca() throws IOException, JDOMException, ParserConfigurationException, SAXException {
 		msf = mock(MetadataStructureFactory.class);
