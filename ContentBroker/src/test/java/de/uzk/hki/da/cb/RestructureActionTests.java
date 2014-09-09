@@ -37,6 +37,7 @@ import org.junit.Test;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.format.StandardFileFormatFacade;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
@@ -88,8 +89,8 @@ public class RestructureActionTests {
 	
 		DAFile file = new DAFile(object.getLatestPackage(),"rep+a","140849.tif");
 		file.setFormatPUID("fmt/353");
-		List<DAFile> files = new ArrayList<DAFile>(); files.add(file);
-		when( ffs.identify((List<DAFile>)anyObject()) ).thenReturn(files);
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>(); files.add(file);
+		when( ffs.identify((List<FileWithFileFormat>)anyObject()) ).thenReturn(files);
 		action.setFileFormatFacade(ffs);
 		
 	}

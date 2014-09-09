@@ -34,6 +34,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.util.StringUtils;
 
+import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.format.StandardFileFormatFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
@@ -78,7 +79,7 @@ public class CheckFormatsActionTest {
 			throws FileNotFoundException {
 		StandardFileFormatFacade formatScanService = mock(StandardFileFormatFacade.class);
 		
-		when(formatScanService.identify((List<DAFile>)anyObject())).thenAnswer(new Answer< List<DAFile> >(){
+		when(formatScanService.identify((List<FileWithFileFormat>)anyObject())).thenAnswer(new Answer< List<DAFile> >(){
 			@Override
 			public List<DAFile> answer(InvocationOnMock invocation)
 					throws Throwable {

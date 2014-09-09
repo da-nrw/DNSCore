@@ -24,8 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-import de.uzk.hki.da.model.DAFile;
-
 /**
  * Provides access to the file format subsystem, which is responsible for identification of file and container 
  * formats, extraction of metadata from files, and validation of file formats.
@@ -43,15 +41,14 @@ public interface FileFormatFacade {
 	 * @throws FileNotFoundException if one or more files cannot be found.
 	 * @throws FileFormatException if format could not get determinded.
 	 */
-	public List<DAFile> identify(List<DAFile> files) 
+	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files) 
 			throws FileNotFoundException, FileFormatException;
 
 	/**
-	 * The target directory must exist
+	 * Extracts metadata from file and creates a xml file which contains the results.
 	 * 
-	 * @param file
-	 * @param jobId
-	 * @return
+	 * @param file the file to extract the metadata from.
+	 * @param extractedMetadata the resulting xml .
 	 * @throws IOException
 	 */
 	public void extract(File file, File extractedMetadata) throws IOException;

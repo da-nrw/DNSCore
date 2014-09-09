@@ -46,7 +46,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	private String jhoveFolder = "jhove";
 	
 	@Override
-	public List<DAFile> identify(List<DAFile> files)
+	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files)
 			throws FileNotFoundException {
 		if (fidoFormatScanService==null) throw new IllegalStateException("fidoFormatScanService must not be null");
 		
