@@ -22,8 +22,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import de.uzk.hki.da.utils.ConsistencyChecker;
-import de.uzk.hki.da.utils.MetsConsistencyChecker;
+import de.uzk.hki.da.pkg.ConsistencyChecker;
+import de.uzk.hki.da.pkg.MetsConsistencyChecker;
 
 
 

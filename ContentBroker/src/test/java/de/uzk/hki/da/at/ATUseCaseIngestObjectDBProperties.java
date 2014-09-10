@@ -32,7 +32,7 @@ import org.junit.Test;
 import org.springframework.util.StringUtils;
 
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.utils.TESTHelper;
+import de.uzk.hki.da.test.TESTHelper;
 
 /**
  * @author Thomas KLeinke

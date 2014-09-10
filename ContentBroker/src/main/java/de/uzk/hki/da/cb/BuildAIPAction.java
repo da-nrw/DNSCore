@@ -25,9 +25,9 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.utils.BagitUtils;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.path.RelativePath;
+import de.uzk.hki.da.pkg.BagitUtils;
 
 /**
  * <ol>

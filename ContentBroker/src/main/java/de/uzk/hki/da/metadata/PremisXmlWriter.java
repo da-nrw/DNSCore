@@ -53,9 +53,9 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.RightsStatement;
 import de.uzk.hki.da.model.VideoRestriction;
+import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.MD5Checksum;
-import de.uzk.hki.da.utils.Path;
 
 
 /**

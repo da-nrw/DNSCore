@@ -10,8 +10,8 @@ import org.junit.After;
 import org.junit.Test;
 
 import de.uzk.hki.da.format.PdfService;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.TC;
+import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.test.TC;
 
 /**
  * @author Daniel M. de Oliveira

@@ -35,21 +35,21 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.format.FileFormatException;
-import de.uzk.hki.da.format.FileFormatFacade;
-import de.uzk.hki.da.format.FileWithFileFormat;
-import de.uzk.hki.da.format.StandardFileFormatFacade;
+import de.uzk.hki.da.ff.FileFormatException;
+import de.uzk.hki.da.ff.FileFormatFacade;
+import de.uzk.hki.da.ff.FileWithFileFormat;
+import de.uzk.hki.da.ff.StandardFileFormatFacade;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.TC;
-import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * @author Daniel M. de Oliveira

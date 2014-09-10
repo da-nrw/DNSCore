@@ -33,6 +33,9 @@ import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.cli.CommandLineConnector;
+import de.uzk.hki.da.cli.ProcessInformation;
+import de.uzk.hki.da.cli.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.ConversionInstruction;
@@ -40,10 +43,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
-import de.uzk.hki.da.utils.CommandLineConnector;
-import de.uzk.hki.da.utils.ProcessInformation;
+import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.utils.Utilities;
 
 

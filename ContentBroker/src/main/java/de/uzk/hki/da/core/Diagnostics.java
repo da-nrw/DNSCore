@@ -31,20 +31,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import de.uzk.hki.da.format.FakeFileWithFileFormat;
-import de.uzk.hki.da.format.FileFormatFacade;
-import de.uzk.hki.da.format.FileWithFileFormat;
-import de.uzk.hki.da.format.StandardFileFormatFacade;
+import de.uzk.hki.da.ff.FileFormatFacade;
+import de.uzk.hki.da.ff.FileWithFileFormat;
+import de.uzk.hki.da.ff.PlainFileWithFileFormat;
+import de.uzk.hki.da.ff.StandardFileFormatFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.path.RelativePath;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.Utilities;
 
 /**
@@ -175,7 +175,7 @@ public class Diagnostics {
 		StandardFileFormatFacade sfff = new StandardFileFormatFacade();
 		sfff.setDao(new CentralDatabaseDAO());
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
-		FakeFileWithFileFormat ffff = new FakeFileWithFileFormat(new File("conf/healthCheck.tif"));
+		PlainFileWithFileFormat ffff = new PlainFileWithFileFormat(new File("conf/healthCheck.tif"));
 		files.add(ffff);
 		
 		System.out.print("CHECKING PRONOM FORMAT IDENTIFIER: ");

@@ -36,11 +36,11 @@ import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.TESTHelper;
+import de.uzk.hki.da.test.TESTHelper;
 
 
 /**

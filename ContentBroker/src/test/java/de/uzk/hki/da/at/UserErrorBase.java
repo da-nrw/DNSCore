@@ -24,9 +24,9 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.TC;
 
 /**
  * @author Daniel M. de Oliveira

@@ -27,8 +27,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.TESTHelper;
+import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.test.TESTHelper;
 
 /**
  * Relates to AK-T/02 Ingest - Sunny Day Szenario (mit besonderen Bedingungen).

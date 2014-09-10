@@ -23,8 +23,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import de.uzk.hki.da.utils.BagitConsistencyChecker;
-import de.uzk.hki.da.utils.ConsistencyChecker;
+import de.uzk.hki.da.pkg.BagitConsistencyChecker;
+import de.uzk.hki.da.pkg.ConsistencyChecker;
 
 
 /**

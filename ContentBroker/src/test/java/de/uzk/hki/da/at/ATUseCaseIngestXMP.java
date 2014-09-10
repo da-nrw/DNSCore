@@ -34,9 +34,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.TESTHelper;
 
 /**
  * @author Daniel M. de Oliveira

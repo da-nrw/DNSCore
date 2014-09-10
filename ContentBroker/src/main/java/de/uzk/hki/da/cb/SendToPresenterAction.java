@@ -42,10 +42,10 @@ import de.uzk.hki.da.metadata.DCReader;
 import de.uzk.hki.da.metadata.XepicurWriter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
 /** 

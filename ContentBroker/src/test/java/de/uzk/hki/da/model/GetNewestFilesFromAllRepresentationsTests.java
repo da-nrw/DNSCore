@@ -30,9 +30,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.TC;
-import de.uzk.hki.da.utils.TESTHelper;
+import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.test.TESTHelper;
 
 
 /**

@@ -24,8 +24,8 @@ import java.io.IOException;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
+import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.utils.MD5Checksum;
-import de.uzk.hki.da.utils.NativeJavaTarArchiveBuilder;
 
 
 /**

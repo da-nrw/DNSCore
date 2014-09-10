@@ -35,11 +35,11 @@ import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.pkg.ArchiveBuilder;
+import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
+import de.uzk.hki.da.pkg.BagitUtils;
 import de.uzk.hki.da.service.MailContents;
-import de.uzk.hki.da.utils.ArchiveBuilder;
-import de.uzk.hki.da.utils.ArchiveBuilderFactory;
-import de.uzk.hki.da.utils.BagitUtils;
-import de.uzk.hki.da.utils.Path;
 
 
 
