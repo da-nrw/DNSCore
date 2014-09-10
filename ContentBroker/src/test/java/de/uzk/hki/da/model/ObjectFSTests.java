@@ -17,12 +17,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.cb;
+package de.uzk.hki.da.model;
 
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -67,10 +65,11 @@ public class ObjectFSTests {
 
 	
 	
+	
 	@Test
 	public void testGetLatestReturnsAttachedInstance(){
 		
-		assertSame(f2,o.getLatest("a.txt"));
+		assertEquals(f2,o.getLatest("a.txt"));
 	}
 	
 	

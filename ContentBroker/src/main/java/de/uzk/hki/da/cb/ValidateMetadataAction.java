@@ -81,6 +81,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		
 		detect();
 		throwExceptionIfPackageTypeCollision();
+		
 		logger.info(PACKAGE_TYPE_FOR_OBJECT_DETERMINDED+detectedPackageType);
 		if (detectedPackageType.equals("NONE")){
 			return true;
@@ -190,8 +191,9 @@ public class ValidateMetadataAction extends AbstractAction {
 	
 	private List<DAFile> getFilesOfMetadataType(String metadataFormatIdentifier){
 		List<DAFile> result = new ArrayList<DAFile>();
-		
-		for (DAFile f:object.getLatestPackage().getFiles()){
+
+		for (DAFile f:object.getNewestFilesFromAllRepresentations("xmp")){
+			
 			if (metadataFormatIdentifier.equals(f.getFormatSecondaryAttribute())) {
 				result.add(f);
 			}

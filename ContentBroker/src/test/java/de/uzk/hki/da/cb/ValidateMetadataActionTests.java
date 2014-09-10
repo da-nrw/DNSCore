@@ -44,6 +44,7 @@ import de.uzk.hki.da.metadata.FakeMetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.test.TC;
@@ -66,6 +67,7 @@ public class ValidateMetadataActionTests {
 	private static final Path WORK_AREA_ROOT = Path.make(TC.TEST_ROOT_CB,"ValidateMetadataActionTests","work");
 	private static final String XMP1_XML = "xmp1.xmp";
 	private static final String LIDO_XML = "lido1.xml";
+	private static final String LIDO2_XML = "lido2.xml";
 	
 	private static MetadataStructureFactory msf;
 	
@@ -77,9 +79,9 @@ public class ValidateMetadataActionTests {
 	DAFile f_ead2 = new DAFile(null,REP_B,EAD_XML);
 	DAFile f_mets1 = new DAFile(null,"",METS_2_99_XML); 
 	DAFile f_mets2 = new DAFile(null,"",METS_2_998_XML);
-	DAFile f_xmp1 = new DAFile(null,"",XMP1_XML);
+	DAFile f_xmp1 = new DAFile(null,"1+a",XMP1_XML);
 	DAFile f_lido1 = new DAFile(null,"",LIDO_XML);
-	DAFile f_lido2 = new DAFile(null,"",LIDO_XML);
+	DAFile f_lido2 = new DAFile(null,"",LIDO2_XML);
 
 	
 //	@SuppressWarnings("static-access")
@@ -362,22 +364,21 @@ public class ValidateMetadataActionTests {
 	}
 	
 	
-	// TODO cannot test this before getNewestFilesFromAllRepresentations is not separated from looking onto the actual file system.
 	@Test
-	public void testConsiderPreviousPackagesWhenDetectingMetadataFiles() throws FileNotFoundException, IOException, RepositoryException{
+	public void testRejectDuplicateEADWhichComesWithDelta() throws FileNotFoundException, IOException, RepositoryException{
 		
-//		object.getLatestPackage().getFiles().add(f_ead1);
-//		Package pkg2 = new Package();
-//		pkg2.setName("2");
-//		pkg2.getFiles().add(f_ead2);
-//		object.getPackages().add(pkg2);
-//		
-//		try{
-//			action.implementation();
-//			fail();
-//		}catch(UserException e){
-//			System.out.println(e.getMessage());
-//			assertTrue(e.getMessage().contains(C.EAD));
-//		}
+		object.getLatestPackage().getFiles().add(f_ead1);
+		Package pkg2 = new Package();
+		pkg2.setName("2");
+		pkg2.getFiles().add(f_ead2);
+		object.getPackages().add(pkg2);
+		
+		try{
+			action.implementation();
+			fail();
+		}catch(UserException e){
+			System.out.println(e.getMessage());
+			assertTrue(e.getMessage().contains(C.EAD));
+		}
 	}
 }

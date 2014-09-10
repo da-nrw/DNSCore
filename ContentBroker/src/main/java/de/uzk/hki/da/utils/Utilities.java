@@ -103,7 +103,7 @@ public class Utilities {
 	 * @return
 	 * @author Daniel M. de Oliveira
 	 */
-	public static boolean hasSidecarExtension(File file,String sidecarExts){
+	public static boolean hasSidecarExtension(String filename,String sidecarExts){
 
 		String[] sidecarExtensions;
 		if (sidecarExts.contains(","))
@@ -112,8 +112,8 @@ public class Utilities {
 			sidecarExtensions = sidecarExts.split(";");
 		
 		for (int i=0;i<sidecarExtensions.length;i++){
-			if (FilenameUtils.getExtension(file.toString()).toLowerCase().equals(sidecarExtensions[i].toLowerCase())){
-				System.out.println(file+" has sidecar ext "+sidecarExtensions[i]);
+			if (FilenameUtils.getExtension(filename).toLowerCase().equals(sidecarExtensions[i].toLowerCase())){
+				System.out.println(filename+" has sidecar ext "+sidecarExtensions[i]);
 				return true;
 			}
 		}

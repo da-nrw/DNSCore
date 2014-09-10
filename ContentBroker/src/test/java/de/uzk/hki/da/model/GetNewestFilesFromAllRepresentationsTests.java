@@ -21,11 +21,8 @@
 
 package de.uzk.hki.da.model;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -43,8 +40,11 @@ public class GetNewestFilesFromAllRepresentationsTests {
 
 	Path workAreaRootPath = Path.make(TC.TEST_ROOT_MODEL,"Object","GetNewestFiles");
 	
-	/** The o. */
 	Object o;
+
+	Package p1;
+	
+	Package p2;
 	
 	/**
 	 * Sets the up.
@@ -52,132 +52,65 @@ public class GetNewestFilesFromAllRepresentationsTests {
 	@Before
 	public void setUp() {
 		o = TESTHelper.setUpObject("1",workAreaRootPath);
+		p1 = o.getLatestPackage();
+		p2 = new Package();
+		p2.setTransientBackRefToObject(o);
+		o.getPackages().add(p2);
 	}
 	
-	
-	
-	
-	
-	
-	/**
-	 * Test ianus pkg.
-	 *
-	 * @author Daniel M. de Oliveira
-	 */
-	@Test
-	public void testIanusPkg(){
-		Node n = new Node(); n.setWorkAreaRootPath(Path.make(workAreaRootPath));
-		Package pkg = new Package(); pkg.setId(2); 
-		pkg.setName("2");
-		o.setIdentifier("2");
-		o.getPackages().clear();
-		o.getPackages().add(pkg);
-		pkg.setTransientBackRefToObject(o);
-		o.getLatestPackage().scanRepRecursively("2013_06_19+10_26+a");
-		o.getLatestPackage().scanRepRecursively("2013_06_19+10_26+b");
-		
-		List<DAFile> fileList = o.getNewestFilesFromAllRepresentations("xmp;xml");
-		
-		assertTrue(fileList.contains(new DAFile(null,"2013_06_19+10_26+b","ead_XSLT_ead_to_dc.xml")));
-		
-		assertTrue(fileList.contains(new DAFile(null,"2013_06_19+10_26+b","ALVR_Nr_4547_Aufn_002.xml")));
-		assertTrue(fileList.contains(new DAFile(null,"2013_06_19+10_26+b","ALVR_Nr_4547_Aufn_003.xml")));
-		assertTrue(fileList.contains(new DAFile(null,"2013_06_19+10_26+b","ALVR_Nr_4547_Aufn_004.xml")));
-		
-		assertTrue(fileList.contains(new DAFile(null,"2013_06_19+10_26+b","ALVR_Nr_4547_Aufn_004_XSLT_mets_mods_to_dc.xml")));
-		assertTrue(fileList.contains(new DAFile(null,"2013_06_19+10_26+b","ALVR_Nr_4547_Aufn_003_XSLT_mets_mods_to_dc.xml")));
-		assertTrue(fileList.contains(new DAFile(null,"2013_06_19+10_26+b","ALVR_Nr_4547_Aufn_002_XSLT_mets_mods_to_dc.xml")));
-		assertTrue(fileList.contains(new DAFile(null,"2013_06_19+10_26+a","ead.xml")));
-		
-		assertTrue(fileList.contains(new DAFile(null,"2013_06_19+10_26+a","premis.xml")));
-		
-		assertTrue(fileList.contains(new DAFile(null,"2013_06_19+10_26+b","ALVR_Nr_4547_Aufn_002.tif")));
-		assertTrue(fileList.contains(new DAFile(null,"2013_06_19+10_26+b","ALVR_Nr_4547_Aufn_003.tif")));
-		assertTrue(fileList.contains(new DAFile(null,"2013_06_19+10_26+b","ALVR_Nr_4547_Aufn_004.tif")));
-	}
-	
-	
-	
-	/**
-	 * TODO the method seems not to be working as expected since we expect only
-	 * one document testImage_2 to be existent and it should be in the latest folder.
-	 *
-	 * @return the newest file for document
-	 */
-	@Test
-	public void getNewestFileForDocument(){
-		
-		o.getLatestPackage().scanRepRecursively("2012_11_05+12_49+a");
-		o.getLatestPackage().scanRepRecursively("2012_11_05+12_49+b");
-		o.getLatestPackage().scanRepRecursively("2012_11_05+13_32+a");
-		o.getLatestPackage().scanRepRecursively("2012_11_05+13_32+b");
-		List<DAFile> fileList = o.getNewestFilesFromAllRepresentations("xmp");
-	
-		boolean justOne = true;
-		for (DAFile f:fileList){
-			if (f.getRelative_path().endsWith("testImage_2.tif")){
-				if (!justOne) fail();
-				assertEquals("testImage_2.tif",f.getRelative_path());
-				assertEquals("2012_11_05+13_32+b",f.getRep_name());
-				justOne = false;
-			}
-		}
-	}
-	
-	
-	/**
-	 * Should create a list of the newest (last modified) files for each Document from all
-	 * representation folders.
-	 *
-	 * @return the newest files from all representations
-	 */
+
+	 /**
+	  * @author Daniel M. de Oliveira
+	  */
 	 @Test
-	 public void getNewestFilesFromAllRepresentations()
-	 {
-		 o.getLatestPackage().scanRepRecursively("2012_11_05+12_49+a");
-		 o.getLatestPackage().scanRepRecursively("2012_11_05+12_49+b");
-		 o.getLatestPackage().scanRepRecursively("2012_11_05+13_32+a");
-		 o.getLatestPackage().scanRepRecursively("2012_11_05+13_32+b");
+	 public void testOneOverwritesTheOther(){
 		 
+		 DAFile f1 = new DAFile(p1,"1+a","abc.tif");
+		 DAFile f2 = new DAFile(p2,"1+b","abc.jpg");
+		 p1.getFiles().add(f1);
+		 p2.getFiles().add(f2);
 		 
-		 List<DAFile> fileList = o.getNewestFilesFromAllRepresentations("xmp;xml;txt");
-		 String[][] correctRelativePaths = new String[][] { {"testImage_1.tif", "2012_11_05+12_49+b"},
-				 											{"testImage_2.tif", "2012_11_05+13_32+b"},
-				 											{"testImage_3.tif", "2012_11_05+12_49+b"},
-				 											{"folder_1/testImage_4.tif", "2012_11_05+12_49+b"},
-				 											{"folder_1/testImage_5.tif", "2012_11_05+12_49+b"},
-				 											{"folder_2/testImage_4.tif", "2012_11_05+12_49+b"},
-				 											{"folder_2/testImage_5.tif", "2012_11_05+12_49+b"},
-				 											{"testImage_1.xmp", "2012_11_05+12_49+b"},
-				 											{"testImage_1.txt", "2012_11_05+12_49+b"} };
-		 for (DAFile f : fileList)
-		 {
-			 System.out.println("Name: " + f.toRegularFile().getName());
-			 System.out.println("Relative path: " + f.getRelative_path());
-			 System.out.println("Representation name: " + f.getRep_name());
-			 System.out.println("");
-			 
-			 boolean validPath = false;
-			 for (int i = 0; i < 9; i++)
-			 {
-				 if (correctRelativePaths[i][0].equals(f.getRelative_path())
-						 && correctRelativePaths[i][1].equals(f.getRep_name()))
-				 {
-					 correctRelativePaths[i][0] = "";
-					 correctRelativePaths[i][1] = "";
-					 validPath = true;
-					 break;
-				 }
-			 }
-			 
-			 assertTrue(validPath);
-		 }
-		
-		 assertEquals(9, fileList.size());
+		 assertTrue(o.getNewestFilesFromAllRepresentations("").contains(f2));
+		 assertFalse(o.getNewestFilesFromAllRepresentations("").contains(f1));
 	 }
 	 
 	 
-	 
 	
+	/**
+	  * @author Daniel M. de Oliveira
+	  */
+	 @Test
+	 public void testOnlyOneGetsOverwritten(){
+		 
+		 DAFile f1 = new DAFile(p1,"1+a","abc.tif");
+		 DAFile f2 = new DAFile(p2,"1+b","abc.jpg");
+		 DAFile f3 = new DAFile(p2,"1+a","bcd.jpg");
+		 p1.getFiles().add(f1);
+		 p2.getFiles().add(f2);
+		 p2.getFiles().add(f3);
+		 
+		 assertTrue(o.getNewestFilesFromAllRepresentations("").contains(f2));
+		 assertTrue(o.getNewestFilesFromAllRepresentations("").contains(f3));
+		 assertFalse(o.getNewestFilesFromAllRepresentations("").contains(f1));
+	 }
 
+	 
+	 
+	 /**
+	  * @author Daniel M. de Oliveira
+	  */
+	 @Test
+	 public void testSidecar(){
+		 
+		 DAFile f1 = new DAFile(p1,"1+a","abc.tif");
+		 DAFile f2 = new DAFile(p2,"1+b","abc.jpg");
+		 DAFile f3 = new DAFile(p2,"1+a","abc.xmp");
+		 p1.getFiles().add(f1);
+		 p2.getFiles().add(f2);
+		 p2.getFiles().add(f3);
+		 
+		 assertTrue(o.getNewestFilesFromAllRepresentations("xmp").contains(f2));
+		 assertTrue(o.getNewestFilesFromAllRepresentations("xmp").contains(f3));
+		 assertFalse(o.getNewestFilesFromAllRepresentations("xmp").contains(f1));
+	 }
 }

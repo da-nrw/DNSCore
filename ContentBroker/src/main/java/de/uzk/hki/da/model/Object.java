@@ -26,6 +26,7 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -623,13 +624,13 @@ public class Object {
 	 * @author Daniel M. de Oliveira 
 	 * @return
 	 */
-	private Collection<DAFile> getFilesFromRepresentation(File rep){
+	private Collection<DAFile> getFilesFromRepresentation(String rep){
 
 		ArrayList<DAFile> list = new ArrayList<DAFile>();
 		
 		for (Package pkg:getPackages()){
 			for (DAFile f:pkg.getFiles()){
-				if (f.getRep_name().equals(rep.getName())) list.add(f);
+				if (f.getRep_name().equals(rep)) list.add(f);
 			}
 		}
 		
@@ -649,13 +650,15 @@ public class Object {
 	 * DAFile in this object.
 	 */
 	
+	// TODO make it a set
 	public List<DAFile> getNewestFilesFromAllRepresentations(String sidecarExts)
 	{
+		// document name to newest file instance
 		Map<String, DAFile> documentMap = new HashMap<String, DAFile>();
 		
-		for (File rep : getRepresentations())
+		for (String rep : getReps())
 			for (DAFile f: getFilesFromRepresentation(rep)){
-				if (Utilities.hasSidecarExtension(f.toRegularFile(),sidecarExts))
+				if (Utilities.hasSidecarExtension(f.getRelative_path(),sidecarExts))
 					documentMap.put(f.getRelative_path(), f);
 				else
 					documentMap.put(FilenameUtils.removeExtension(f.getRelative_path()), f);
@@ -665,11 +668,21 @@ public class Object {
 	}
 	
 	
+	/**
+	 * Gets the representations based on the existing folders in the objects folder on the file system.
+	 * @author Daniel M. de Oliveira
+	 * @return representations as sorted array
+	 */
+	private List<String> getReps() {
+		List<String> representations = new ArrayList<String>();
+		for (Package p:this.getPackages())
+			for (DAFile f:p.getFiles())
+				representations.add(f.getRep_name());
+		Collections.sort(representations);
+		return representations;
+	}
 	
-	
-	
-	
-	
+
 	/**
 	 * Note that since this is not a path we don't close with ending slash as usual.
 	 *
@@ -754,16 +767,11 @@ public class Object {
 	public DAFile getLatest(String filename) {
 		
 		DAFile result = null;
-		for (File rep : getRepresentations()) {
-			if (new File(getDataPath()+"/"+rep.getName()+"/"+filename).exists()){
+		for (String rep : getReps()) {
 
-				for (Package p:this.getPackages())
-					for (DAFile f:p.getFiles()){
-						if (f.equals(new DAFile(this.getLatestPackage(),rep.getName(),filename))) result=f;
-					}
-				if (result==null) throw new IllegalStateException("found a file without an associated dafile instance "+
-						new DAFile(this.getLatestPackage(),rep.getName(),filename));
-			}
+			Collection<DAFile> filesFromRep = getFilesOfRepresentation(rep);
+			for (DAFile f:filesFromRep)
+				if (f.getRelative_path().endsWith(filename)) result = f;
 		}
 		
 		logger.debug("getLatest(). result is {}", result);
@@ -886,17 +894,33 @@ public class Object {
 		
 		boolean consistent = true;
 		
-		for (File rep : getRepresentations()) {
-			for (File f:getFilesOfRepresentation(rep)){
+		for (File rep : getRepsFromFS()) {
+			
+			for (File fileSystemFile:getFilesOfRepresentationFS(rep.getName())){
 				
-				if (!existsAsAttachedDAFile(new DAFile(null,rep.getName(),getRelativePath(f, rep.getName()))))
+				if (!existsAsAttachedDAFile(
+						new DAFile(null,rep.getName(),getRelativePath(fileSystemFile, rep.getName()))))
 					consistent = false;
 			}
-			
 		}
 		return consistent;
 	}
 
+	
+	private List<File> getRepsFromFS() {
+
+		FileFilter fileFilter = new RegexFileFilter(REPRESENTATION_FILTER);
+		
+		File[] representations = getDataPath().toFile().listFiles(fileFilter);
+		if (representations==null)
+			return new ArrayList<File>();
+		
+		Arrays.sort(representations);
+		return Arrays.asList(representations);
+	}
+	
+	
+	
 	
 	/**
 	 * @author Daniel M. de Oliveira
@@ -926,36 +950,42 @@ public class Object {
 	
 	
 	/**
-	 * Gets the files of a repreentation. Operates on the basis of the FS.
+	 * Gets the files of a representation based on the information stored
+	 * in the object tree. 
+	 * 
 	 * @author Daniel M. de Oliveira
-	 * @param rep
+	 * @param repName
 	 * @return
 	 */
-	private Collection<File> getFilesOfRepresentation(File rep){
+	private Collection<DAFile> getFilesOfRepresentation(String repName){
 		
-		return FileUtils.listFiles(rep,
-				TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+		Collection<DAFile> files = new ArrayList<DAFile>();
+		
+		for (Package pkg:this.getPackages()){
+			for (DAFile f:pkg.getFiles()){
+				if (f.getRep_name().equals(repName))
+					files.add(f);
+			}
+		}
+		
+		return files;
 	}
+	
+	
 	
 	
 	/**
-	 * Gets the representations based on the existing folders in the objects folder on the file system.
+	 * Gets the files of a representation. Operates on the basis of the FS.
+	 * 
 	 * @author Daniel M. de Oliveira
-	 * @return representations as sorted array
+	 * @param repName
+	 * @return
 	 */
-	private List<File> getRepresentations() {
-
-		FileFilter fileFilter = new RegexFileFilter(REPRESENTATION_FILTER);
+	private Collection<File> getFilesOfRepresentationFS(String repName){
 		
-		File[] representations = getDataPath().toFile().listFiles(fileFilter);
-		if (representations==null)
-			return new ArrayList<File>();
-		
-		Arrays.sort(representations);
-		return Arrays.asList(representations);
+		return FileUtils.listFiles(Path.makeFile(this.getDataPath(),repName),
+				TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
 	}
-	
-	
 	
 	
 	
