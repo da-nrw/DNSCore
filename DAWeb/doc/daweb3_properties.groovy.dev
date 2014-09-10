@@ -12,7 +12,7 @@ environments {
 		provider.logo = "provider-logo.svg"
 		// To integrate a customized css-file, please change file name accordingly 
 		main.css = "main.css"
-		// same as listed in CB config.properties 
+		// please configure same id as listed in CB config.properties 
 		localNode.id = 1
 		mobile.css = "mobile.css"
 		localNode.userAreaRootPath = "/path_to_/userhome/SIP"
