@@ -152,22 +152,19 @@ class QueueEntryController {
 		def queueEntryInstance = QueueEntry.get(params.id)
 		if (queueEntryInstance) {
 			def status = queueEntryInstance.getStatus()
-			if (status.endsWith("1")) {
-				def newstat = status.substring(0,status.length()-1)
-				newstat = newstat + "0"
-				queueEntryInstance.status = newstat
-				queueEntryInstance.modified = Math.round(new Date().getTime()/1000L)
-				if( !queueEntryInstance.save() ) {
-					log.error("Validation errors on save")
-					queueEntryInstance.errors.each {
-						log.error(it)
-					}
-				} 
-				flash.message = "Status zurückgesetzt!" 
-			}
+			def newstat = status.substring(0,status.length()-1)
+			newstat = newstat + "0"
+			queueEntryInstance.status = newstat
+			queueEntryInstance.modified = Math.round(new Date().getTime()/1000L)
+			if( !queueEntryInstance.save() ) {
+				log.error("Validation errors on save")
+				queueEntryInstance.errors.each {
+					log.error(it)
+				}
+			} 
+			flash.message = "Status zurückgesetzt!" 			
 			redirect(action: "list")
 			return
-			
 		} else flash.message = message(code: 'default.not.found.message', args: [message(code: 'queueEntry.label', default: 'QueueEntry'), params.id])
 		redirect(action: "list")
 		return
