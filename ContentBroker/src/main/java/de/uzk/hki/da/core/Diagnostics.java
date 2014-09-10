@@ -37,6 +37,7 @@ import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.format.StandardFileFormatFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
+import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
@@ -172,6 +173,7 @@ public class Diagnostics {
 		
 		int errorCount=0;
 		StandardFileFormatFacade sfff = new StandardFileFormatFacade();
+		sfff.setDao(new CentralDatabaseDAO());
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		FakeFileWithFileFormat ffff = new FakeFileWithFileFormat(new File("conf/healthCheck.tif"));
 		files.add(ffff);
