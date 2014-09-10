@@ -34,9 +34,9 @@ import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.metadata.XmpCollector;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Path;
 
 /**
  * Detects the package type of an object and validates the metadata structure.

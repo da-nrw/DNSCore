@@ -52,9 +52,10 @@ import de.uzk.hki.da.cb.UpdateMetadataActionTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionXMPTests;
 import de.uzk.hki.da.cb.UpdateMetadataRheinlaender;
 import de.uzk.hki.da.cb.ValidateMetadataActionTests;
+import de.uzk.hki.da.ff.FakeFileFormatFacadeTests;
+import de.uzk.hki.da.ff.SecondaryFormatScanTests;
 import de.uzk.hki.da.format.CLIConversionStrategyTests;
 import de.uzk.hki.da.format.ConverterServiceTests;
-import de.uzk.hki.da.format.FakeFileFormatFacadeTests;
 import de.uzk.hki.da.format.FidoCLITest;
 import de.uzk.hki.da.format.PDFServiceTests;
 import de.uzk.hki.da.format.PdfConversionStrategyTest;
@@ -63,7 +64,6 @@ import de.uzk.hki.da.format.PublishImageConversionStrategyTest;
 import de.uzk.hki.da.format.PublishImageMultipageTIFFTests;
 import de.uzk.hki.da.format.PublishPDFConversionStrategyTests;
 import de.uzk.hki.da.format.PublishXsltConversionStrategyTests;
-import de.uzk.hki.da.format.SecondaryFormatScanTests;
 import de.uzk.hki.da.format.TiffConversionStrategyTests;
 import de.uzk.hki.da.grid.IrodsGridFacadeTest;
 import de.uzk.hki.da.grid.ReplicationExecutorTest;
@@ -80,13 +80,13 @@ import de.uzk.hki.da.model.ModelTest;
 import de.uzk.hki.da.model.PackageTests;
 import de.uzk.hki.da.model.PreservationSystemTests;
 import de.uzk.hki.da.model.SaveConversionInstructionsByJob;
+import de.uzk.hki.da.path.PathTest;
+import de.uzk.hki.da.path.PathTypeEditorSupportTests;
+import de.uzk.hki.da.pkg.ArchiveBuilderTests;
 import de.uzk.hki.da.service.RetrievePackagesHelperTest;
 import de.uzk.hki.da.service.URNCheckDigitGeneratorTests;
 import de.uzk.hki.da.service.XPathUtilsTests;
-import de.uzk.hki.da.utils.ArchiveBuilderTests;
 import de.uzk.hki.da.utils.CommaSeparatedListTests;
-import de.uzk.hki.da.utils.PathTest;
-import de.uzk.hki.da.utils.PathTypeEditorSupportTests;
 
 /**
  * The collection of all our unit tests which should run pre and post commit.

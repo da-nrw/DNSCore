@@ -8,7 +8,7 @@ import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.path.Path;
 
 /**
  * 

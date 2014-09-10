@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.format.FileFormatException;
-import de.uzk.hki.da.format.FileFormatFacade;
-import de.uzk.hki.da.format.FileWithFileFormat;
+import de.uzk.hki.da.ff.FileFormatException;
+import de.uzk.hki.da.ff.FileFormatFacade;
+import de.uzk.hki.da.ff.FileWithFileFormat;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionInstructionBuilder;

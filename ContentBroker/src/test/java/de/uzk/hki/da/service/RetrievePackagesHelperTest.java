@@ -33,9 +33,9 @@ import de.uzk.hki.da.grid.FakeGridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.RelativePath;
-import de.uzk.hki.da.utils.TESTHelper;
+import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.path.RelativePath;
+import de.uzk.hki.da.test.TESTHelper;
 
 /**
  * @author Daniel M. de Oliveira

@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 
 import org.junit.Test;
 
+import de.uzk.hki.da.cli.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.format.PublishAudioConversionStrategy;
 import de.uzk.hki.da.model.AudioRestriction;
 import de.uzk.hki.da.model.ConversionInstruction;
@@ -34,10 +35,9 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.PublicationRight.Audience;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.RelativePath;
-import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
-import de.uzk.hki.da.utils.TESTHelper;
+import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.path.RelativePath;
+import de.uzk.hki.da.test.TESTHelper;
 
 
 

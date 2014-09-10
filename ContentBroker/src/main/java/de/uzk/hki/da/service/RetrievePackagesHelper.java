@@ -33,8 +33,8 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.utils.ArchiveBuilder;
-import de.uzk.hki.da.utils.ArchiveBuilderFactory;
+import de.uzk.hki.da.pkg.ArchiveBuilder;
+import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 
 
 /**

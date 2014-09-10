@@ -37,11 +37,11 @@ import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.metadata.PremisXmlValidator;
-import de.uzk.hki.da.utils.ArchiveBuilder;
-import de.uzk.hki.da.utils.ArchiveBuilderFactory;
-import de.uzk.hki.da.utils.BagitConsistencyChecker;
-import de.uzk.hki.da.utils.ConsistencyChecker;
-import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.pkg.ArchiveBuilder;
+import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
+import de.uzk.hki.da.pkg.BagitConsistencyChecker;
+import de.uzk.hki.da.pkg.ConsistencyChecker;
 import de.uzk.hki.da.utils.Utilities;
 
 /**

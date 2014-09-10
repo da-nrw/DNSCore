@@ -40,7 +40,7 @@ import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.path.Path;
 
 
 /**

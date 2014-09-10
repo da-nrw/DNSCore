@@ -23,6 +23,9 @@ import java.io.File;
 
 import org.jdom.Namespace;
 
+import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.path.RelativePath;
+
 /**
  * @author Daniel M. de Oliveira & the DA-NRW team
  */

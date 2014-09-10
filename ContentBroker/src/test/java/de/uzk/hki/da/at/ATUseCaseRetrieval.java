@@ -31,8 +31,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.utils.ArchiveBuilderFactory;
-import de.uzk.hki.da.utils.TESTHelper;
+import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
+import de.uzk.hki.da.test.TESTHelper;
 
 /**
  * Relates to AK-T/05 RetrieveObject - Happy Path Scenario.

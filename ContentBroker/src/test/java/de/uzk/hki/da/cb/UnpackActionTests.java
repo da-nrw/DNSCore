@@ -38,10 +38,10 @@ import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.path.RelativePath;
+import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.RelativePath;
-import de.uzk.hki.da.utils.TESTHelper;
 
 
 /**

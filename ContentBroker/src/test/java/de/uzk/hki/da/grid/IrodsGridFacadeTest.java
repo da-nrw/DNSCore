@@ -38,7 +38,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
-import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.path.Path;
 
 
 /**

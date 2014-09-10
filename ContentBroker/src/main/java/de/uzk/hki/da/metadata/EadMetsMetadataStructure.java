@@ -21,7 +21,7 @@ import org.jdom.xpath.XPath;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
 

@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.StoragePolicy;
-import de.uzk.hki.da.utils.ArchiveBuilderFactory;
+import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.utils.Utilities;
 
 /**

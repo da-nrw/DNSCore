@@ -41,11 +41,11 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.TextRestriction;
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.path.RelativePath;
+import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.RelativePath;
-import de.uzk.hki.da.utils.TESTHelper;
-import de.uzk.hki.da.utils.TC;
 
 
 /**

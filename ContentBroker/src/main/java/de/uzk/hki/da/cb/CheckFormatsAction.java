@@ -31,13 +31,13 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.format.FileFormatException;
-import de.uzk.hki.da.format.FileFormatFacade;
-import de.uzk.hki.da.format.FileWithFileFormat;
+import de.uzk.hki.da.ff.FileFormatException;
+import de.uzk.hki.da.ff.FileFormatFacade;
+import de.uzk.hki.da.ff.FileWithFileFormat;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.utils.CommaSeparatedList;
-import de.uzk.hki.da.utils.Path;
 
 /**
  * Creates metadata files from extracted jhove output and puts them to the folder jhove_temp

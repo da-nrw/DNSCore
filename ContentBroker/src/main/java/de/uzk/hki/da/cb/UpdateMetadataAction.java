@@ -58,8 +58,8 @@ import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.service.MimeTypeDetectionService;
-import de.uzk.hki.da.utils.Path;
 
 /**
  * Performs updates to metadata files that are necessary

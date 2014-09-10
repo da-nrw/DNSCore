@@ -27,8 +27,8 @@ import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.metadata.LidoMetadataStructure;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.path.RelativePath;
 import de.uzk.hki.da.utils.XMLUtils;
 
 public class MetadataFileParserTest {

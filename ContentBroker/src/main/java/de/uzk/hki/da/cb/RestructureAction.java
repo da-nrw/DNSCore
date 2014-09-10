@@ -32,14 +32,14 @@ import org.apache.commons.lang.NotImplementedException;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.format.FileFormatException;
-import de.uzk.hki.da.format.FileFormatFacade;
-import de.uzk.hki.da.format.FileWithFileFormat;
+import de.uzk.hki.da.ff.FileFormatException;
+import de.uzk.hki.da.ff.FileFormatFacade;
+import de.uzk.hki.da.ff.FileWithFileFormat;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.RetrievePackagesHelper;
-import de.uzk.hki.da.utils.Path;
 
 /**
  * <li>Creates a new Representation and copies the contents of the submission into it.

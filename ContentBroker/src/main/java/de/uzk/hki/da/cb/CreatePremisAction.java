@@ -31,7 +31,7 @@ import javax.xml.stream.XMLStreamException;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.ff.FileFormatFacade;
 import de.uzk.hki.da.metadata.PremisXmlJhoveExtractor;
 import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.metadata.PremisXmlValidator;
@@ -41,7 +41,7 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PublicationRight;
-import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.path.Path;
 
 /**
  * 

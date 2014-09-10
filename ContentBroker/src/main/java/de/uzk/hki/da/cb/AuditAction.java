@@ -27,8 +27,8 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.path.RelativePath;
 import de.uzk.hki.da.service.MailContents;
-import de.uzk.hki.da.utils.RelativePath;
 
 /**
  * Audit Action.

@@ -86,14 +86,7 @@
   	</bean>
   
   
-  
-    <bean class="de.uzk.hki.da.format.JhoveMetadataExtractor" id="jhoveMetadataExtractor" scope="prototype">
-        <property name="jhoveFolder" value="jhove"/>
-    </bean>
-    <bean class="de.uzk.hki.da.format.FakeMetadataExtractor" id="fakeMetadataExtractor" scope="prototype">
-        <property name="jhoveFolder" value="jhove"/>
-    </bean>   
-     <bean class="de.uzk.hki.da.format.StandardFileFormatFacade" id="standardFileFormatFacade">
+	<bean class="de.uzk.hki.da.ff.StandardFileFormatFacade" id="standardFileFormatFacade">
     	<property name="dao" ref="centralDao" />
     </bean>
     
