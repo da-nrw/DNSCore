@@ -45,10 +45,8 @@ class QueueEntryController {
     def list() {
 		def contractorList
 		def cbNodeList = CbNode.list()
-		def username = springSecurityService.currentUser
+		User user = springSecurityService.currentUser
 		def admin = 0;
-		User user = User.findByUsername(username)
-		
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
 		}
@@ -64,20 +62,19 @@ class QueueEntryController {
     
 
     def listSnippet() {
-		def username = springSecurityService.currentUser
+		User us = springSecurityService.currentUser
     	def queueEntries = null	
 		def periodical = true;	
 		def contractorList = User.list()
 		def admin = 0;
-		User user = User.findByUsername(username)
-		
-		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+		if (us.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
 		}
+
 		if (params.search==null){	
 			if (admin != 1) {	
 				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn",
-	             [csn: user.shortName])
+	             [csn: us.shortName])
 			} else {
 				admin = true;
 				queueEntries = QueueEntry.findAll("from QueueEntry as q")
@@ -100,7 +97,7 @@ class QueueEntryController {
 				}
 				if (params.search?.initialNode) { 
 					if (params.search?.initialNode !="null"){ 
-						like("initialNode", params.search.initialNode+"%")
+						eq("initialNode", params.search.initialNode)
 					}
 				}
 				if (params.search?.status) 
@@ -109,12 +106,11 @@ class QueueEntryController {
 					projections {
 						obj {
 								user {
-									eq("shortName", user.shortName)								
+									eq("shortName", us.getShortName())								
 								}
 						}
 					}
 				} else {
-				admin = 1;
 				if (params.search?.user){
 					if(params.search?.user !="null"){
 						projections {
