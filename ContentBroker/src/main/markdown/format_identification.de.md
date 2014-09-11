@@ -10,9 +10,17 @@ Zunächst ein Beispiel. Eine Tiff Datei enthält einen lzw-komprimierten Datenst
 
 ### SubFormatIdentificationPolicy
 
+Jede SubFormatIdentificationPolicy hat drei Felder.
+
     String puid: PRONOM Unique Identifier
     Allowed Values: Komma separierte Liste der akzeptierten Werte
     SubFormatIdentificationRoutine: Link zu den Routines
+   
+'''puid''' abc
+   
+   
+   
+   
    
 ### SubFormatIdentificationRoutine
 
@@ -20,7 +28,7 @@ Zunächst ein Beispiel. Eine Tiff Datei enthält einen lzw-komprimierten Datenst
     String healthCheckFile: relativer Pfad von CBHome zu einem Testfile
     String healthCheckExpectedOutcome: Erwarteter Output, wenn das script die healthCheckFile scannt.
     
-   
+## Standardkonfigurationen, mitgelieferte und empfohlene Konfigurationen.   
    
 
 
