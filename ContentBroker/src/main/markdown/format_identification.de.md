@@ -16,7 +16,7 @@ Jede SubFormatIdentificationPolicy hat drei Felder.
     Allowed Values: Komma separierte Liste der akzeptierten Werte
     SubFormatIdentificationRoutine: Link zu den Routines
    
-'''puid''' abc
+**puid** abc
    
    
    
