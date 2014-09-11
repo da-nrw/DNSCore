@@ -25,19 +25,23 @@ Jede SubFormatIdentificationPolicy hat drei Felder. Die entsprechende Datenbankt
    
 ### SubformatIdentificationRoutine
 
-    scriptName: varchar / String (java)
+Eine Routine kapselt im wesentlich zwei Informationen. Einmal der name eines Skriptes oder einer Java-Klasse, die die Identifikation auf ein File durchführen kann. Zum anderen Informationen, um auf allen Knoten eines PreservationSystems einen HealthCheck durchführen zu können. Policies und Routinen sind Eigenschaften des Gesamtsystems. Daher muss es einen Weg geben, automatisiert festzustellen, ob jeder Knoten des Systems die entsprechenden Skripte zur Verfügung hat und ob diese grundsätzlich Einsatzfähig sind.
+
+    testMethod: varchar / String (java)
     healthCheckFile: varchar / String (java)
     healthCheckExpectedOutcome: varchar / String (java)
     
-**scriptName** (eventuell mit script: prefix)
+**testMethod** (eventuell mit script: prefix)
 
-**healthCheckFile** relativer Pfad von CBHome zu einem Testfile
+**healthCheckFile** Relativer Pfad von CBHome zu einem Testfile, welches mit dem 
 
 **healthCheckExpectedOutcome** Erwarteter Output, wenn das script die healthCheckFile scannt.
     
-## Sekundäre Formaterkennung: Standardkonfigurationen, mitgelieferte und empfohlene Konfigurationen.   
+## Sekundäre Formaterkennung: Standardkonfigurationen
    
+Zum aktuellen Zeitpunkt der Entwicklung ...
 TODO: tiff
+TODO: diagnostics
 
 
 
