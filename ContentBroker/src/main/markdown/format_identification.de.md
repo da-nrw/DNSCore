@@ -20,7 +20,7 @@ Jede SubFormatIdentificationPolicy hat drei Felder. Die entsprechende Datenbankt
 
 **allowed_values** Komma separierte Liste der akzeptierten Werte. Wenn die entsprechend referenzierte Routine auf eine Datei ausgeführt wird, darf sie exakt einen der erlaubten Werte zurückliefern. In jedem anderen Fall wird die Verarbeitung mit einem technischen Fehler beendet.
 
-**subformat_identification_policy_id** Primärschlüsselverknüpfung zur entprechenden Routine, welche ausgeführt werden soll, wenn die Policy getriggert wird.
+**subformat_identification_routine_id** Primärschlüsselverknüpfung zur entprechenden Routine, welche ausgeführt werden soll, wenn die Policy getriggert wird.
    
    
 ### SubformatIdentificationRoutine
