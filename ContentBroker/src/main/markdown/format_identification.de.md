@@ -13,24 +13,31 @@ Zunächst ein Beispiel. Eine Tiff Datei enthält einen lzw-komprimierten Datenst
 Jede SubFormatIdentificationPolicy hat drei Felder. Die entsprechende Datenbanktabelle heisst subformat_identification_policies.
 
     puid: varchar / String (java)
-    allowed_values: varchar / String (java) Komma separierte Liste der akzeptierten Werte
+    allowed_values: varchar / String (java)
     subformat_identification_routine: int / int (java)
    
 **puid** Der PRONOM Uniqe Identifier. Nachdem ein File seine PUID erhalten hat, wird ein Abgleich gegen die SubFormatIdentificationPolicy vorgenommen. Stimmt das Format mit einer Policy überein, wird die entsprechend verlinkte Routine ausgeführt.
 
-**allowed_values** abc
+**allowed_values** Komma separierte Liste der akzeptierten Werte. Wenn die entsprechend referenzierte Routine auf eine Datei ausgeführt wird, darf sie exakt einen der erlaubten Werte zurückliefern. In jedem anderen Fall wird die Verarbeitung mit einem technischen Fehler beendet.
 
 **subformat_identification_policy_id** Primärschlüsselverknüpfung zur entprechenden Routine, welche ausgeführt werden soll, wenn die Policy getriggert wird.
    
    
 ### SubformatIdentificationRoutine
 
-    String scriptName: (eventuell mit script: prefix)
-    String healthCheckFile: relativer Pfad von CBHome zu einem Testfile
-    String healthCheckExpectedOutcome: Erwarteter Output, wenn das script die healthCheckFile scannt.
+    scriptName: varchar / String (java)
+    healthCheckFile: varchar / String (java)
+    healthCheckExpectedOutcome: varchar / String (java)
+    
+**scriptName** (eventuell mit script: prefix)
+
+**healthCheckFile** relativer Pfad von CBHome zu einem Testfile
+
+**healthCheckExpectedOutcome** Erwarteter Output, wenn das script die healthCheckFile scannt.
     
 ## Standardkonfigurationen, mitgelieferte und empfohlene Konfigurationen.   
    
+TODO: tiff
 
 
 
