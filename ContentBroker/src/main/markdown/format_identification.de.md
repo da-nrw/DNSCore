@@ -35,7 +35,7 @@ Jede SubFormatIdentificationPolicy hat drei Felder. Die entsprechende Datenbankt
 
 **healthCheckExpectedOutcome** Erwarteter Output, wenn das script die healthCheckFile scannt.
     
-## Standardkonfigurationen, mitgelieferte und empfohlene Konfigurationen.   
+## Sekundäre Formaterkennung: Standardkonfigurationen, mitgelieferte und empfohlene Konfigurationen.   
    
 TODO: tiff
 
