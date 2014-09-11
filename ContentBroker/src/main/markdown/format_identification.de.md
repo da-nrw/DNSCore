@@ -25,17 +25,22 @@ Jede SubFormatIdentificationPolicy hat drei Felder. Die entsprechende Datenbankt
    
 ### SubformatIdentificationRoutine
 
-Eine Routine kapselt im wesentlich zwei Informationen. Einmal der name eines Skriptes oder einer Java-Klasse, die die Identifikation auf ein File durchführen kann. Zum anderen Informationen, um auf allen Knoten eines PreservationSystems einen HealthCheck durchführen zu können. Policies und Routinen sind Eigenschaften des Gesamtsystems. Daher muss es einen Weg geben, automatisiert festzustellen, ob jeder Knoten des Systems die entsprechenden Skripte zur Verfügung hat und ob diese grundsätzlich Einsatzfähig sind.
+Eine Routine kapselt im wesentlich zwei Informationen. Einmal der name eines Skriptes oder einer Java-Klasse, die die Identifikation auf ein File durchführen kann. Zum anderen Informationen, um auf allen Knoten eines PreservationSystems einen HealthCheck durchführen zu können. Policies und Routinen sind Eigenschaften des Gesamtsystems. Daher muss es einen Weg geben, automatisiert festzustellen, ob jeder Knoten des Systems die entsprechenden Skripte zur Verfügung hat und ob diese grundsätzlich Einsatzfähig sind. Der HealthCheck wird typischerweise vom diagnostics-Tool angetriggert.
 
     testMethod: varchar / String (java)
     healthCheckFile: varchar / String (java)
     healthCheckExpectedOutcome: varchar / String (java)
     
-**testMethod** (eventuell mit script: prefix)
+**testMethod** Entweder der Pfad zu einem Skript oder der vollqualifizierte Name einer Java-Klasse.
 
-**healthCheckFile** Relativer Pfad von CBHome zu einem Testfile, welches mit dem 
+*** Als Skript: "script:{relativer Pfad zum Skript von CBHome}", z.B. "script:bash/ffmpeg.sh"
+*** Als Klasse: "fqjavaname", z.B. "de.uzk.hki.da.ff.TiffCompressionIdentifier"
 
-**healthCheckExpectedOutcome** Erwarteter Output, wenn das script die healthCheckFile scannt.
+(eventuell mit script: prefix)
+
+**healthCheckFile** Relativer Pfad von CBHome zu einem Testfile, welches durch den sich hinter testMethod aufgerufenen Code überprüft wird.
+
+**healthCheckExpectedOutcome** Erwarteter Output, wenn das script die healthCheckFile scannt. HealthCheck ist FAILED, wenn der Output nicht übereinstimmt oder es einen anderen Fehler gibt (z.B. testMethod nicht vorhanden):
     
 ## Sekundäre Formaterkennung: Standardkonfigurationen
    
