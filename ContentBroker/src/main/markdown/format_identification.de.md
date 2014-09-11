@@ -8,21 +8,20 @@ Auf der Erkennung der PUIDs basiert die Migrationskomponente von DNSCore. Für j
 
 Zunächst ein Beispiel. Eine Tiff Datei enthält einen lzw-komprimierten Datenstrom. FIDO erkennt die Datei als vom Typ fmt/353. Das System führt daraufhin eine auf Tiff abgestimmte Überprüfung des Kompressionsformates durch und stellt lzw fest. Somit haben wir die Formatkombination [fmt/353, lzw] festgestellt. Um dieses Verhalten des Systems einzurichten, müssen einige Konfigurationen vorgenommen werden.
 
-### SubFormatIdentificationPolicy
+### SubformatIdentificationPolicy
 
 Jede SubFormatIdentificationPolicy hat drei Felder.
 
-    String puid: PRONOM Unique Identifier
-    Allowed Values: Komma separierte Liste der akzeptierten Werte
-    SubFormatIdentificationRoutine: Link zu den Routines
+    puid: PRONOM Unique Identifier
+    allowed_values: Komma separierte Liste der akzeptierten Werte
+    subformat_identification_routine: Link zu den Routines
    
-**puid** abc
+**puid** Nachdem ein File seine PUID erhalten hat, wird ein Abgleich gegen die SubFormatIdentificationPolicy vorgenommen. Stimmt das Format mit einer Policy überein, wird die entsprechend verlinkte Routine ausgeführt.
+**allowed_values** abc
+**subformat_identification_policy_id** abc
    
    
-   
-   
-   
-### SubFormatIdentificationRoutine
+### SubformatIdentificationRoutine
 
     String scriptName: (eventuell mit script: prefix)
     String healthCheckFile: relativer Pfad von CBHome zu einem Testfile
