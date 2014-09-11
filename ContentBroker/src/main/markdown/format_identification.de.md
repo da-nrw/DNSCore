@@ -17,7 +17,9 @@ Jede SubFormatIdentificationPolicy hat drei Felder. Die entsprechende Datenbankt
     subformat_identification_routine: int / int (java)
    
 **puid** Der PRONOM Uniqe Identifier. Nachdem ein File seine PUID erhalten hat, wird ein Abgleich gegen die SubFormatIdentificationPolicy vorgenommen. Stimmt das Format mit einer Policy überein, wird die entsprechend verlinkte Routine ausgeführt.
+
 **allowed_values** abc
+
 **subformat_identification_policy_id** Primärschlüsselverknüpfung zur entprechenden Routine, welche ausgeführt werden soll, wenn die Policy getriggert wird.
    
    
