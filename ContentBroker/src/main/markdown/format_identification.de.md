@@ -16,7 +16,10 @@ Zunächst ein Beispiel. Eine Tiff Datei enthält einen lzw-komprimierten Datenst
    
 ### SubFormatIdentificationRoutine
 
-   String scriptName: (eventuell mit script: prefix)
+    String scriptName: (eventuell mit script: prefix)
+    String healthCheckFile: relativer Pfad von CBHome zu einem Testfile
+    String healthCheckExpectedOutcome: Erwarteter Output, wenn das script die healthCheckFile scannt.
+    
    
    
 
