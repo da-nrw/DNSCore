@@ -10,15 +10,15 @@ Zunächst ein Beispiel. Eine Tiff Datei enthält einen lzw-komprimierten Datenst
 
 ### SubformatIdentificationPolicy
 
-Jede SubFormatIdentificationPolicy hat drei Felder.
+Jede SubFormatIdentificationPolicy hat drei Felder. Die entsprechende Datenbanktabelle heisst subformat_identification_policies.
 
-    puid: PRONOM Unique Identifier
-    allowed_values: Komma separierte Liste der akzeptierten Werte
-    subformat_identification_routine: Link zu den Routines
+    puid: varchar / String (java)
+    allowed_values: varchar / String (java) Komma separierte Liste der akzeptierten Werte
+    subformat_identification_routine: int / int (java)
    
-**puid** Nachdem ein File seine PUID erhalten hat, wird ein Abgleich gegen die SubFormatIdentificationPolicy vorgenommen. Stimmt das Format mit einer Policy überein, wird die entsprechend verlinkte Routine ausgeführt.
+**puid** Der PRONOM Uniqe Identifier. Nachdem ein File seine PUID erhalten hat, wird ein Abgleich gegen die SubFormatIdentificationPolicy vorgenommen. Stimmt das Format mit einer Policy überein, wird die entsprechend verlinkte Routine ausgeführt.
 **allowed_values** abc
-**subformat_identification_policy_id** abc
+**subformat_identification_policy_id** Primärschlüsselverknüpfung zur entprechenden Routine, welche ausgeführt werden soll, wenn die Policy getriggert wird.
    
    
 ### SubformatIdentificationRoutine
