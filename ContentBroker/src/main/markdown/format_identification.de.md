@@ -33,8 +33,8 @@ Eine Routine kapselt im wesentlich zwei Informationen. Einmal der name eines Skr
     
 **testMethod** Entweder der Pfad zu einem Skript oder der vollqualifizierte Name einer Java-Klasse.
 
-*** Als Skript: "script:{relativer Pfad zum Skript von CBHome}", z.B. "script:bash/ffmpeg.sh"
-*** Als Klasse: "fqjavaname", z.B. "de.uzk.hki.da.ff.TiffCompressionIdentifier"
+* Als Skript: "script:{relativer Pfad zum Skript von CBHome}", z.B. "script:bash/ffmpeg.sh"
+* Als Klasse: "fqjavaname", z.B. "de.uzk.hki.da.ff.TiffCompressionIdentifier"
 
 (eventuell mit script: prefix)
 
