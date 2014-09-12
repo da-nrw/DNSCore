@@ -71,7 +71,6 @@ public class Object {
 	
 	private static final String REPRESENTATION_FILTER = "^.*[+][ab]";
 
-	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(Object.class);
 	
 	/** The data_pk. */
