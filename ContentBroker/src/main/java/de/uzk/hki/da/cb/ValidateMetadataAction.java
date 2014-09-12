@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
+
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
@@ -173,7 +175,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		
 		if ((getFilesOfMetadataType(C.XMP)).size()>=1){
 			detectedMetadataFile=new DAFile(object.getLatestPackage(),
-					object.getNameOfNewestARep().replace("+a", "+b"),C.XMP_METADATA_FILE);
+					FilenameUtils.getBaseName(object.getPath("newest").toString()),C.XMP_METADATA_FILE);
 			detectedPackageType=C.XMP;
 			ptypeCount++;
 		}
@@ -216,9 +218,8 @@ public class ValidateMetadataAction extends AbstractAction {
 	private void collectXMP() throws IOException {
 		
 		logger.debug("collectXMP");
-		String repName = object.getNameOfNewestBRep();
-		logger.debug("looking for xmp files in rep "+repName);
-		String repPath = Path.make(object.getDataPath(),repName).toString();
+		
+		String repPath = object.getPath("newest").toString();
 			
 		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations("xmp");
 		List<DAFile> newestXmpFiles = new ArrayList<DAFile>();
@@ -231,7 +232,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		File rdfFile = new File(repPath + "/XMP.rdf");
 		XmpCollector.collect(newestXmpFiles, rdfFile);	
 		logger.debug("collecting files in path: {}", repPath);
-		DAFile xmpFile = new DAFile(object.getLatestPackage(),repName,"XMP.rdf");
+		DAFile xmpFile = new DAFile(object.getLatestPackage(),FilenameUtils.getBaseName(object.getPath("newest").toString()),"XMP.rdf");
 		object.getLatestPackage().getFiles().add(xmpFile);
 		object.getLatestPackage().getEvents().add(createCreateEvent(xmpFile));		
 	}

@@ -53,7 +53,7 @@ public class RegisterURNAction extends AbstractAction {
 	private String extractURNFromPremisFile() {
 		
 //		File premisFile = new File(object.getDataPath() + "/"+ object.getNameOfNewestRep() + "/" + "premis.xml");
-		File premisFile = new File(object.getDataPath() + "/"+ object.getNameOfNewestARep() + "/" + "premis.xml");
+		File premisFile = object.getLatest("premis.xml").toRegularFile();
 		
 		
 		Object premisObject = null;

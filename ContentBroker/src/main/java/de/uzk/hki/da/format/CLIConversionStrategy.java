@@ -75,14 +75,14 @@ public class CLIConversionStrategy implements ConversionStrategy{
 	@Override
 	public List<Event> convertFile(ConversionInstruction ci) throws FileNotFoundException {
 		if (pkg==null) throw new IllegalStateException("Package not set");
-		Path.make(object.getDataPath(),object.getNameOfNewestRep(),ci.getTarget_folder()).toFile().mkdirs();
+		Path.make(object.getDataPath(),FilenameUtils.getBaseName(object.getPath("newest").toString()),ci.getTarget_folder()).toFile().mkdirs();
 		
-		String[] commandAsArray = assemble(ci, object.getNameOfNewestRep());
+		String[] commandAsArray = assemble(ci, FilenameUtils.getBaseName(object.getPath("newest").toString()));
 		if (!cliConnector.execute(commandAsArray)) throw new RuntimeException("convert did not succeed");
 		
 		String targetSuffix= ci.getConversion_routine().getTarget_suffix();
 		if (targetSuffix.equals("*")) targetSuffix= FilenameUtils.getExtension(ci.getSource_file().toRegularFile().getAbsolutePath());
-		DAFile result = new DAFile(pkg,object.getNameOfNewestRep(),
+		DAFile result = new DAFile(pkg,FilenameUtils.getBaseName(object.getPath("newest").toString()),
 				ci.getTarget_folder()+"/"+FilenameUtils.removeExtension(Matcher.quoteReplacement(
 				FilenameUtils.getName(ci.getSource_file().toRegularFile().getAbsolutePath()))) + "." + targetSuffix);
 		

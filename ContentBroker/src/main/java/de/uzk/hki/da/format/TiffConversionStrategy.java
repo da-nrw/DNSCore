@@ -80,7 +80,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 		if (getEncoding(input).equals("None")) return resultEvents;
 		
 		// create subfolder if necessary
-		Path.make(object.getDataPath(),object.getNameOfNewestRep(),ci.getTarget_folder()).toFile().mkdirs();
+		Path.make(object.getPath("newest"),ci.getTarget_folder()).toFile().mkdirs();
 		
 		String[] commandAsArray = new String [] {"convert","+compress",input,generateTargetFilePath(ci)};
 		logger.info("Executing conversion command: {}", commandAsArray);
@@ -102,7 +102,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 				new File(FilenameUtils.getFullPath(result.getAbsolutePath())), baseName+"*."+extension);
 		
 		for (File f : results){
-			DAFile daf = new DAFile(pkg,object.getNameOfNewestRep(),Utilities.slashize(ci.getTarget_folder())+f.getName());
+			DAFile daf = new DAFile(pkg,FilenameUtils.getBaseName(object.getPath("newest").toString()),Utilities.slashize(ci.getTarget_folder())+f.getName());
 			logger.debug("new dafile:"+daf);
 								
 			Event e = new Event();
@@ -176,7 +176,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 	 */
 	public String generateTargetFilePath(ConversionInstruction ci) {
 		String input  = ci.getSource_file().toRegularFile().getAbsolutePath();
-		return object.getDataPath()+"/"+object.getNameOfNewestRep()+"/"+Utilities.slashize(ci.getTarget_folder())
+		return object.getPath("newest")+"/"+Utilities.slashize(ci.getTarget_folder())
 				+ FilenameUtils.getName(input);
 	}
 	

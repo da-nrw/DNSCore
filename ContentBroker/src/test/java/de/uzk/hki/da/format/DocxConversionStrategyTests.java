@@ -77,7 +77,7 @@ public class DocxConversionStrategyTests {
 		
 		o = TESTHelper.setUpObject("1", new RelativePath(basePath));
 		cs.setObject(o);
-		Path.make(o.getDataPath(),o.getNameOfNewestRep()+"/_Docx.pdf").toFile().createNewFile();
+		Path.make(o.getPath("newest")+"/_Docx.pdf").toFile().createNewFile();
 	}
 	
 	

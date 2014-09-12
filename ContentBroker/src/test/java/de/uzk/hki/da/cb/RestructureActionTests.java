@@ -34,22 +34,22 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
 import de.uzk.hki.da.ff.FileWithFileFormat;
 import de.uzk.hki.da.ff.StandardFileFormatFacade;
-import de.uzk.hki.da.grid.GridFacade;
-import de.uzk.hki.da.grid.IrodsGridFacade;
+import de.uzk.hki.da.grid.FakeGridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
-import de.uzk.hki.da.utils.C;
 
 /**
  * @author Daniel M. de Oliveira
@@ -59,32 +59,43 @@ public class RestructureActionTests {
 	private static final String IDENTIFIER = "identifier";
 	private static final Path WORK_AREA_ROOT = Path.make(TC.TEST_ROOT_CB,"RestructureActionTests");
 	private static final Path TEST_CONTRACTOR_WORK_FOLDER = Path.make(WORK_AREA_ROOT,"work","TEST");
+	private static final Path DATA_FOLDER = Path.make(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,"data");
 	private RestructureAction action;
 	private Job job;
 	private Object object;
+	private FakeGridFacade grid;
+	private Package p1;
+	
 	
 	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() throws IOException, FileFormatException{
 		PreservationSystem pSystem = new PreservationSystem();
 		
-		
-		FileUtils.copyDirectory(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER+"_"), Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER));
-		
+		FileUtils.copyDirectory(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER+"_"), 
+				Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER));
+		Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,"loadedAIPs").mkdirs();
+
 		object = TESTHelper.setUpObject(IDENTIFIER, WORK_AREA_ROOT);
+		p1 = object.getLatestPackage();
+		
 		
 		job = new Job();
 		job.setObject(object);
 		
-		GridFacade grid = mock(IrodsGridFacade.class);
+		grid = new FakeGridFacade();
+		grid.setGridCacheAreaRootPath("/tmp/");
+		
 		action = new RestructureAction();
 		action.setGridRoot(grid);
 		action.setObject(object);
 		action.setJob(job);
 		action.setPSystem(pSystem);
 		
-		
-		
+		IngestGate gate = mock(IngestGate.class);
+		when(gate.canHandle((Long)anyObject())).thenReturn(true);
+		action.setIngestGate(gate);
+
 		FileFormatFacade ffs = mock(StandardFileFormatFacade.class);
 	
 		DAFile file = new DAFile(object.getLatestPackage(),"rep+a","140849.tif");
@@ -105,16 +116,46 @@ public class RestructureActionTests {
 		
 		action.implementation();
 		
-		assertTrue(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,C.WA_DATA,job.getRep_name()+"a").exists());
-		assertTrue(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,C.WA_DATA,job.getRep_name()+"a","vda3.XML").exists());
+		assertTrue(Path.makeFile(DATA_FOLDER,job.getRep_name()+"a").exists());
+		assertTrue(Path.makeFile(DATA_FOLDER,job.getRep_name()+"a","vda3.XML").exists());
+		assertTrue(Path.makeFile(DATA_FOLDER,"jhove_temp").exists());
+		
+		assertTrue(p1.getFiles().contains(new DAFile(null,job.getRep_name()+"a","vda3.XML")));
 	}
 	
+	
 	@Test
-	public void scanPuids() throws FileNotFoundException, UserException, IOException, RepositoryException{
-
+	public void testDelta() throws FileNotFoundException, UserException, IOException, RepositoryException{
+		
+		grid.put(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,"identifier.pack_1.tar"), "TEST/identifier/identifier.pack_1.tar", null);
+		
+		Package p2 = new Package();
+		p2.setName("2");
+		object.getPackages().add(p2);
+		p2.setTransientBackRefToObject(object);
+		
 		action.implementation();
-		// TODO test retrieved format identifiers.
+		
+		assertTrue(Path.makeFile(DATA_FOLDER,job.getRep_name()+"a").exists());
+		assertTrue(Path.makeFile(DATA_FOLDER,job.getRep_name()+"a","vda3.XML").exists());
+		assertTrue(Path.makeFile(DATA_FOLDER,"2014_09_12+11_32+a","premis.xml").exists());
+		assertTrue(Path.makeFile(DATA_FOLDER,"2014_09_12+11_32+b","premis.xml").exists());
+		assertTrue(Path.makeFile(DATA_FOLDER,"jhove_temp").exists());
+		
+		
+		for (Package p:object.getPackages()){
+			System.out.println(p.getName());
+			for (DAFile f:p.getFiles())
+				System.out.println(":"+f);
+		}
+		assertTrue(p2.getFiles().contains(new DAFile(null,job.getRep_name()+"a","vda3.XML")));
+		assertTrue(p1.getFiles().contains(new DAFile(null,"2014_09_12+11_32+a","premis.xml")));
+		assertTrue(p1.getFiles().contains(new DAFile(null,"2014_09_12+11_32+b","premis.xml")));
+		assertTrue(p1.getFiles().contains(new DAFile(null,"2014_09_12+11_32+a","SIP-Builder Anleitung.pdf")));
+		
 	}
+	
+	
 	
 	
 	

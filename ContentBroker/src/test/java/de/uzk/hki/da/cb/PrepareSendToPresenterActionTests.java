@@ -31,14 +31,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
-import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.User;
+import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.path.RelativePath;
+import de.uzk.hki.da.test.TESTHelper;
 
 
 /**
@@ -52,16 +52,8 @@ public class PrepareSendToPresenterActionTests {
 	/** The action. */
 	PrepareSendToPresenterAction action = new PrepareSendToPresenterAction();
 	
-	/** The irods. */
-	IrodsSystemConnector irods;
-	
-	/** The dao. */
-	CentralDatabaseDAO dao;
-	
-	/** The job. */
 	Job job;
-	
-	/** The node. */
+	Object o;
 	Node node;
 	
 	/** The public file. */
@@ -88,11 +80,20 @@ public class PrepareSendToPresenterActionTests {
 		Node dipNode = new Node(); dipNode.setName("dipNode");
 		action.setLocalNode(node);
 
+		o = TESTHelper.setUpObject("identifier_1", new RelativePath(workingAreaRoot));
+		DAFile premis = new DAFile(o.getLatestPackage(),"rep_b","premis.xml");
+		o.getLatestPackage().getFiles().add(premis);
+		action.setObject(o);
+		
 		contractor = new User();
 		contractor.setShort_name("TEST");
 		
 		job = new Job();
+		action.setJob(job);
+		job.setObject(o);
 		
+		o.setTransientNodeRef(node);
+
 		new File(workingAreaRoot+"/pips/institution").mkdirs();
 		new File(workingAreaRoot+"/pips/public").mkdirs();
 		
@@ -106,20 +107,11 @@ public class PrepareSendToPresenterActionTests {
 	 */
 	@Test
 	public void publishEverything() throws IOException {
-		Package pkg = new Package(); pkg.setId(1); 
-		pkg.setName("1");
-		Object  obj = new Object(); obj.getPackages().add(pkg);  obj.setContractor(contractor); obj.setIdentifier("identifier_1");
-		job.setObject(obj);
-		obj.setTransientNodeRef(node);
-		action.setJob(job);
-		action.setObject(obj);
+		
 		action.implementation();
 		
-//		assertTrue (new File(basePath+"dip/urn_1/thumbnail/a.txt").exists() );
 		assertTrue (publicFile.exists() );
 		assertTrue (institutionFile.exists() );
-		
-		// TODO create random files previously and test for non existence of everything except dip/public and dip/institution here.
 	}
 	
 	/**
@@ -128,13 +120,9 @@ public class PrepareSendToPresenterActionTests {
 	 */
 	@Test
 	public void publishNothing() throws IOException {
-		Package pkg = new Package(); pkg.setId(2); 
-		pkg.setName("2");
-		Object  obj = new Object(); obj.getPackages().add(pkg); obj.setContractor(contractor); obj.setIdentifier("identifier_2");
-		job.setObject(obj);
-		obj.setTransientNodeRef(node);
-		action.setObject(obj);
-		action.setJob(job);
+		o.setIdentifier("identifier_2");
+		o.getLatestPackage().setName("2");
+		
 		action.implementation();
 		
 		assertFalse (publicFile.exists() );

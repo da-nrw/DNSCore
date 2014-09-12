@@ -20,6 +20,7 @@
 package de.uzk.hki.da.cb;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 
@@ -42,6 +43,7 @@ import de.uzk.hki.da.path.RelativePath;
  */
 public class PrepareSendToPresenterAction extends AbstractAction {
 
+	private static final String PREMIS_XML = "premis.xml";
 	private DistributedConversionAdapter distributedConversionAdapter;
 	private File publicDir;
 	private File instDir;
@@ -104,11 +106,15 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	 * @author Daniel M. de Oliveira
 	 */
 	private Object readRightsFromPREMIS() throws IOException {
+		if (object.getLatest(PREMIS_XML)==null) throw new FileNotFoundException("premis.xml not present in obect");
+		
 		Object premisObject = null;
 		try {
 
-			premisObject = new PremisXmlReader().deserialize(Path.makeFile(object.getDataPath(),
-					object.getNameOfNewestBRep(),"premis.xml"));
+			premisObject = new PremisXmlReader().deserialize(
+					object.
+					getLatest(PREMIS_XML).
+					toRegularFile());
 			
 		} catch (ParseException pe){
 			throw new RuntimeException("error while parsing PREMIS-file",pe);

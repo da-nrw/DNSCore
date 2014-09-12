@@ -90,7 +90,7 @@ public class CreatePremisAction extends AbstractAction {
 		newPREMISObject.setContractor(object.getContractor());
 		
 		Object sipPREMISObject = parseSipPremisFile(
-				Path.makeFile(object.getDataPath(),object.getNameOfNewestARep(),"premis.xml"));
+				new File(Path.make(object.getPath("newest"),"premis.xml").toString().replace("+b", "+a")));
 		
 		if (sipPREMISObject.getPackages().size() > 0) {
 			object.getLatestPackage().getEvents().addAll(sipPREMISObject.getPackages().get(0).getEvents());
@@ -135,8 +135,8 @@ public class CreatePremisAction extends AbstractAction {
 				
 		checkConvertEvents(newPREMISObject);
 	
-		File newPREMISXml = Path.make(object.getDataPath(), 
-				object.getNameOfNewestBRep(),"premis.xml").toFile();
+		File newPREMISXml = Path.make( 
+				object.getPath("newest"),"premis.xml").toFile();
 		logger.trace("trying to write new Premis file at " + newPREMISXml.getAbsolutePath());
 		new PremisXmlWriter().serialize(newPREMISObject, newPREMISXml);
 		
@@ -283,7 +283,7 @@ public class CreatePremisAction extends AbstractAction {
 	@Override
 	void rollback() throws Exception {
 		
-		Path.make(object.getDataPath(),object.getNameOfNewestBRep(),"premis.xml").toFile().delete();
+		Path.make(object.getPath("newest"),"premis.xml").toFile().delete();
 		
 		File tempFolder = new File("jhove/temp/" + job.getId() + "/premis_output/");
 		if (tempFolder.exists())

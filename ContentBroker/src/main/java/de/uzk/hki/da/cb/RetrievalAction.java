@@ -162,7 +162,7 @@ public class RetrievalAction extends AbstractAction {
 
 
 	private void moveNewestPremisToDIP(Path tempFolder) throws IOException {
-		File premisFile = Path.makeFile(object.getDataPath(),object.getNameOfNewestBRep(),"premis.xml");
+		File premisFile = object.getLatest("premis.xml").toRegularFile();
 		if (!premisFile.exists()) throw new RuntimeException("CRITICAL ERROR: premis file could has not been found");
 		File dest = Path.makeFile(tempFolder,"data","premis.xml");
 		FileUtils.copyFile(premisFile, dest);

@@ -56,7 +56,7 @@ public class IngestGate {
 	 * @param sourceFileOriginalSize the source file original size
 	 * @return true, if successful
 	 */
-	public boolean canHandle(long sourceFileOriginalSize){
+	public boolean canHandle(Long sourceFileOriginalSize){
 		
 		if (!checkAvailableDiskSpace())
 			return false;

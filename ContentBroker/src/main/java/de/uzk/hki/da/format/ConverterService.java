@@ -68,11 +68,7 @@ public class ConverterService {
 		
 		// to register the dip subfolder into irods, it must exist (even if it is empty).
 		Path.make(object.getDataPath(),"dip").toFile().mkdir();
-		String latestRep = object.getNameOfNewestRep();
-		// XXX little hack
-		String repName = latestRep.replace("a", "b");
-		Path.make(object.getDataPath(),repName).toFile().mkdir();
-		logger.debug("repname:"+repName);
+		Path.makeFile(object.getPath("newest")).mkdir();
 		
 		for (ConversionInstruction ci:conversionInstructions){
 			waitUntilThereIsSufficientSpaceOnCacheResource(object.getDataPath().toString(),2097152,10000);

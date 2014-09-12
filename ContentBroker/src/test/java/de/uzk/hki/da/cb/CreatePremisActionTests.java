@@ -126,15 +126,17 @@ public class CreatePremisActionTests {
 		FileFormatFacade jhoveScanService = mock(FileFormatFacade.class);
 		action.setFileFormatFacade(jhoveScanService);		
 		
+
+
+		
+		
+		
 		DAFile a = new DAFile(pkg2,"2013_07_31+11_54+a","140864.tif");
 		a.setFormatPUID("fmt/10");
-//		a.setPathToJhoveOutput(objCharTifAFilePath);
 		DAFile b = new DAFile(pkg2,"2013_07_31+11_54+b","140864.tif");
 		b.setFormatPUID("fmt/10");
-//		b.setPathToJhoveOutput(objCharTifBFilePath);
 		DAFile c = new DAFile(pkg2,"2013_07_31+11_54+a","premis.xml");
 		c.setFormatPUID("da-fmt/1");
-//		c.setPathToJhoveOutput(objCharPremisAFilePath);
 		
 		pkg2.getFiles().add(a);
 		pkg2.getFiles().add(b);
@@ -195,7 +197,6 @@ public class CreatePremisActionTests {
 		checkPremisFile(premisFile);
 		
 		
-		
 		assertTrue(job.getStatic_nondisclosure_limit() != null) ;
 		assertTrue(job.getDynamic_nondisclosure_limit() == null);
 	}
@@ -206,6 +207,14 @@ public class CreatePremisActionTests {
 	 */
 	@Test
 	public void testDeltaPremisFileCreation() throws IOException {
+		
+		
+//		DAFile dd = new DAFile(pkg,"2013_07_21+14_28+a","image.tif");
+//		DAFile ee = new DAFile(pkg,"2013_07_21+14_28+a","premis.xml");
+//		DAFile ff = new DAFile(pkg,"2013_07_21+14_28+b","image.tif");
+//		pkg.getFiles().add(ee);
+//		pkg.getFiles().add(ff);
+//		pkg.getFiles().add(dd);
 		
 		object.setIdentifier("identifier_deltas");
 		
@@ -247,7 +256,7 @@ public class CreatePremisActionTests {
 		action.implementation();
 		action.rollback();
 		
-		assertFalse(Path.makeFile(object.getDataPath(),object.getNameOfNewestBRep(),"premis.xml").exists());
+		assertFalse(object.getLatest("premis.xml").toRegularFile().exists());
 		assertFalse(Path.makeFile(workAreaRootPath,"JhoveFolder","temp",new Integer(job.getId()).toString(),"premis_output").exists());
 		
 		assertEquals(1, object.getLatestPackage().getEvents().size());
@@ -318,7 +327,6 @@ public class CreatePremisActionTests {
 				assertTrue(premisAFixityElement.getChild("messageDigestAlgorithm", ns).getValue() != null);
 				assertTrue(premisAFixityElement.getChild("messageDigest", ns).getValue() != null);
 				assertTrue(premisAFixityElement.getChild("messageDigestOriginator", ns).getValue() != null);
-				assertEquals("3856", premisAObjCharElement.getChild("size", ns).getValue());
 				Element format = premisAObjCharElement.getChild("format", ns);
 				assertTrue(format != null);
 				Element formatRegistry = format.getChild("formatRegistry", ns);
@@ -331,6 +339,7 @@ public class CreatePremisActionTests {
 				assertEquals("2013_07_31+11_54+a/premis.xml", premisBStorageElement.getValue());
 				assertEquals("identifier.pack_2.tar", e.getChild("relationship", ns)
 						.getChild("relatedObjectIdentification", ns).getChildText("relatedObjectIdentifierValue", ns));
+				assertEquals("3856", premisAObjCharElement.getChild("size", ns).getValue());
 				checkedObjects++;
 			}
 			

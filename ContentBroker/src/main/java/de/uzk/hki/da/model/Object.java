@@ -336,6 +336,24 @@ public class Object {
 		
 		return Path.make(transientNodeRef.getWorkAreaRootPath(),"work",user.getShort_name(),identifier);
 	}
+
+	/**
+	 * 
+	 * @param t
+	 * @return the path to the newest b representation.
+	 * @throws IllegalStateException if no dafiles present in object.
+	 */
+	public Path getPath(String t){
+		if (getReps().isEmpty()) throw new IllegalStateException("no files present. reps could not get determined from dafiles.");
+		
+		String newestRep = getReps().get(getReps().size()-1);
+		
+		return Path.make(getPath(),"data", newestRep.replace("+a", "+b"));
+	}
+	
+	
+	
+	
 	
 	
 	
@@ -683,76 +701,7 @@ public class Object {
 	}
 	
 
-	/**
-	 * Note that since this is not a path we don't close with ending slash as usual.
-	 *
-	 * @return the name of newest rep
-	 * @author daniel
-	 */
-	public String getNameOfNewestRep(){
-		String[] files = getDataPath().toFile().list();
-		Arrays.sort(files);
-		
-		List<String> list = new ArrayList<String>();
-		for (String f:files){
-			if (isNormalRep(f) && !f.startsWith("premis"))
-				list.add(f); 
-		}
-		return list.get(list.size()-1);
-	}
 	
-	
-	private boolean isNormalRep(String f){
-		if (f.startsWith("dip") || f.startsWith("jhove_temp") || f.startsWith("premis")) return false;
-		else return true;
-	}
-	
-	
-	
-	/**
-	 * Note that since this is not a path we don't close with ending slash as usual.
-	 *
-	 * @return the name of newest a rep
-	 * @author Daniel M. de Oliveira
-	 * @author Thomas Kleinke
-	 */
-	public String getNameOfNewestARep(){
-		
-		String[] files = getDataPath().toFile().list();
-		Arrays.sort(files);
-		
-		List<String> list = new ArrayList<String>();
-		for (String f:files){
-			if (isNormalRep(f) && f.endsWith("a"))
-				list.add(f); 
-		}
-		
-		return list.get(list.size()-1);
-	}
-	
-	
-	/**
-	 * Note that since this is not a path we don't close with ending slash as usual.
-	 *
-	 * @return the name of newest b rep or null if no b rep exists
-	 * @author Daniel M. de Oliveira
-	 * @author Thomas Kleinke
-	 */
-	public String getNameOfNewestBRep(){
-		String[] files = getDataPath().toFile().list();
-		Arrays.sort(files);
-		
-		List<String> list = new ArrayList<String>();
-		for (String f:files){
-			if (isNormalRep(f) && f.endsWith("b"))
-				list.add(f); 
-		}
-		
-		if (list.size() == 0)
-			return null;
-		else
-			return list.get(list.size()-1);
-	}
 	
 	
 	/**
@@ -774,7 +723,6 @@ public class Object {
 				if (f.getRelative_path().endsWith(filename)) result = f;
 		}
 		
-		logger.debug("getLatest(). result is {}", result);
 		return result;
 	}
 	

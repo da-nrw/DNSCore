@@ -67,7 +67,7 @@ public class PdfConversionStrategyTest {
 	public void setUp(){
 		
 		o = TESTHelper.setUpObject("1", new RelativePath(workAreaRootPath));
-		
+		o.getLatestPackage().getFiles().add(new DAFile(o.getLatestPackage(),"rep+a","Pdf.pdf"));
 		cs.setObject(o);
 	}
 	

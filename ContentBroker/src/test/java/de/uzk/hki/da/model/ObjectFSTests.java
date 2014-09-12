@@ -31,12 +31,14 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.utils.C;
 
 /**
  * @author Daniel M. de Oliveira
  */
 public class ObjectFSTests {
 	
+	private static final String identifier = "123";
 	private static final String _1_B_REP = "2000_00_00+00_00+b";
 	private static final String _1_A_REP = "2000_00_00+00_00+a";
 	private static final Path workAreaRootPath = Path.make(TC.TEST_ROOT_MODEL,"ObjectTests");
@@ -54,7 +56,7 @@ public class ObjectFSTests {
 		Node n = new Node();
 		n.setWorkAreaRootPath(Path.make(workAreaRootPath));
 		
-		o = TESTHelper.setUpObject("123", workAreaRootPath);
+		o = TESTHelper.setUpObject(identifier, workAreaRootPath);
 
 		f1 = new DAFile(o.getLatestPackage(),_1_A_REP,"a.txt");
 		f2 = new DAFile(o.getLatestPackage(),_1_B_REP,"a.txt");
@@ -138,4 +140,71 @@ public class ObjectFSTests {
 		
 		assertTrue(o.isDBtoFSconsistent());
 	}
+	
+	
+	
+	
+	
+	@Test
+	public void testGetPath(){
+		
+		assertEquals(
+				Path.make(workAreaRootPath,C.WA_WORK,C.TEST_USER_SHORT_NAME,identifier),
+				o.getPath());
+	}
+	
+	
+	
+	@Test
+	public void testGetPathNewestRep(){
+		
+		assertEquals(
+				Path.make(workAreaRootPath,C.WA_WORK,C.TEST_USER_SHORT_NAME,identifier,C.WA_DATA,_1_B_REP),
+				o.getPath("newest")
+				);
+				
+	}
+	
+	@Test
+	public void testGetPathNewestRepNoRepsPresent(){
+		o.getLatestPackage().getFiles().clear();
+
+		try{
+			o.getPath("newest");
+			fail();
+		}catch(IllegalStateException e){
+		}
+	}
+	
+	
+	
+	
+	@Test 
+	public void testGetLatest(){
+
+		DAFile premis = new DAFile(null,_1_A_REP,"premis.xml");
+		o.getLatestPackage().getFiles().add(premis);
+		
+		assertEquals(
+				premis,
+				o.getLatest("premis.xml")
+				);
+	}
+	
+	@Test 
+	public void testGetLatestNotPresent(){
+
+		assertEquals(
+				null,
+				o.getLatest("premis.xml")
+				);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

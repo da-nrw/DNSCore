@@ -74,15 +74,10 @@ public class RestructureAction extends AbstractAction{
 	boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException {
 		
-		String repName;
-		try {
-			repName = transduceDateFolderContentsToNewRep(object.getPath().toString());
-		} catch (IOException e) {		
-			throw new RuntimeException("problems during creating new representation",e);
-		}
-		object.getLatestPackage().scanRepRecursively(repName+"a");
-		job.setRep_name(repName);
-		
+		FileUtils.moveDirectory(object.getDataPath().toFile(), 
+				new File(object.getPath()+"/sipData"));
+		object.getDataPath().toFile().mkdirs();
+
 		if (object.isDelta()) {
 			
 			RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot());
@@ -96,19 +91,28 @@ public class RestructureAction extends AbstractAction{
 				throw new RuntimeException("Failed to determine object size for object " + object.getIdentifier(), e);
 			}
 			
-			object.getDataPath().toFile().mkdirs();
 			logger.info("object already exists. Moving existing packages to work area.");
 			try {
 				retrievePackagesHelper.loadPackages(object, false);
 				logger.info("Packages of object \""+object.getIdentifier()+
 						"\" are now available on cache resource at: " + Path.make(object.getPath(),"existingAIPs"));
-				FileUtils.copyFile(Path.makeFile(object.getDataPath(),object.getNameOfNewestBRep(),"premis.xml"),
+				FileUtils.copyFile(Path.makeFile(object.getPath("newest"),"premis.xml"),
 						Path.makeFile(object.getDataPath(),"premis_old.xml"));
 			} catch (IOException e) {
 				throw new RuntimeException("error while trying to get existing packages from lza area",e);
 			}
 		}
 		
+		
+		String repName;
+		try {
+			repName = transduceDateFolderContentsToNewRep(object.getPath().toString());
+		} catch (IOException e) {		
+			throw new RuntimeException("problems during creating new representation",e);
+		}
+		object.getLatestPackage().scanRepRecursively(repName+"a");
+		job.setRep_name(repName);
+
 		
 		object.reattach();
 		logger.debug("scanning files with format identifier(s)");
@@ -157,11 +161,9 @@ public class RestructureAction extends AbstractAction{
 	    SimpleDateFormat ft = new SimpleDateFormat ("yyyy'_'MM'_'dd'+'HH'_'mm'+'");
 	    String repName = ft.format(dNow);
 	    
-		FileUtils.moveDirectory(new File(physicalPathToAIP+"/data"), 
-				new File(physicalPathToAIP+"/temp"));
+		
 	
-	    new File(physicalPathToAIP+"/data").mkdir();
-	    FileUtils.moveDirectory(new File(physicalPathToAIP+"/temp"), 
+	    FileUtils.moveDirectory(new File(physicalPathToAIP+"/sipData"), 
 	    		new File(physicalPathToAIP+"/data/"+repName+"a"));
 	    
 	    return repName;

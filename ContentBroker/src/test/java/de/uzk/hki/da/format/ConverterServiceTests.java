@@ -69,6 +69,9 @@ public class ConverterServiceTests {
 		final Node vm3 = new Node("vm3","01-vm3");
 		
 		o = TESTHelper.setUpObject("123",new RelativePath(workAreaRootPath));
+		DAFile f1 = new DAFile(o.getLatestPackage(),"2011+11+01+b","abc.xml");
+		o.getLatestPackage().getFiles().add(f1);
+		
 		
 		@SuppressWarnings("serial")
 		Set<Node> nodes = new HashSet<Node>(){{add(vm3);}};

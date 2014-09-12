@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.core.ConfigurationException;
@@ -88,7 +89,7 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	private void cleanDataFolder() {
 		
 		File dataFolder = object.getDataPath().toFile();
-		File newestBRepFolder = new File(dataFolder, object.getNameOfNewestARep().replace("+a", "+b"));
+		File newestBRepFolder = object.getPath("newest").toFile();
 		File dipFolder = new File(dataFolder, "dip");
 		
 		if (newestBRepFolder.exists()) {

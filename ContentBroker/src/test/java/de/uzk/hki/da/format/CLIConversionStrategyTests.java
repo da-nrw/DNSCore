@@ -80,6 +80,7 @@ public class CLIConversionStrategyTests {
 		ConversionInstruction ci= new ConversionInstruction();
 		
 		DAFile f = new DAFile(o.getLatestPackage(),"2012_12_12+12_12+a","Bild 4-1.jpg");
+		o.getLatestPackage().getFiles().add(f);
 		ci.setSource_file(f);
 		
 		ci.setTarget_folder("");
@@ -104,6 +105,8 @@ public class CLIConversionStrategyTests {
 				"convert -resize {institution.width}x{institution.height} input output","png");
 		
 		Object o = TESTHelper.setUpObject("1244",new RelativePath(workAreaRootPath));
+		DAFile source = new DAFile(o.getLatestPackage(),"2011+11+01+a","140849.tif");
+		o.getLatestPackage().getFiles().add(source);
 		
 		CLIConversionStrategy strat= new CLIConversionStrategy();
 		strat.setCLIConnector(new SimplifiedCommandLineConnector());
@@ -112,7 +115,7 @@ public class CLIConversionStrategyTests {
 		
 		ConversionInstruction ci= new ConversionInstruction();
 		
-		ci.setSource_file(new DAFile(o.getLatestPackage(),"2011+11+01+a","140849.tif"));
+		ci.setSource_file(source);
 		
 		ci.setTarget_folder("");
 		ci.setConversion_routine(conversionRoutineResize);
@@ -143,6 +146,8 @@ public class CLIConversionStrategyTests {
 	public void testOutputParameterAfterEqualsSign() throws FileNotFoundException{
 		
 		Object o = TESTHelper.setUpObject("1255",new RelativePath(workAreaRootPath));
+		DAFile source =new DAFile(o.getLatestPackage(),"2012_12_12+12_12+a","3512.pdf");
+		o.getLatestPackage().getFiles().add(new DAFile(o.getLatestPackage(),"2012_12_12+12_12+a","3512.pdf"));
 		
 		CLIConversionStrategy strat= new CLIConversionStrategy();
 		strat.setObject(o);
@@ -152,7 +157,7 @@ public class CLIConversionStrategyTests {
 	
 		ConversionInstruction ci= new ConversionInstruction();
 		
-		ci.setSource_file(new DAFile(o.getLatestPackage(),"2012_12_12+12_12+a","3512.pdf"));
+		ci.setSource_file(source);
 		
 		ci.setTarget_folder("");
 		ci.setConversion_routine(conversionRoutinePdfToPdfA);
