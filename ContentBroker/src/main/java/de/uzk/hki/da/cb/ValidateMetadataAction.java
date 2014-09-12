@@ -175,7 +175,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		
 		if ((getFilesOfMetadataType(C.XMP)).size()>=1){
 			detectedMetadataFile=new DAFile(object.getLatestPackage(),
-					FilenameUtils.getBaseName(object.getPath("newest").toString()),C.XMP_METADATA_FILE);
+					object.getPath("newest").getLastElement(),C.XMP_METADATA_FILE);
 			detectedPackageType=C.XMP;
 			ptypeCount++;
 		}
@@ -232,7 +232,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		File rdfFile = new File(repPath + "/XMP.rdf");
 		XmpCollector.collect(newestXmpFiles, rdfFile);	
 		logger.debug("collecting files in path: {}", repPath);
-		DAFile xmpFile = new DAFile(object.getLatestPackage(),FilenameUtils.getBaseName(object.getPath("newest").toString()),"XMP.rdf");
+		DAFile xmpFile = new DAFile(object.getLatestPackage(),object.getPath("newest").getLastElement(),"XMP.rdf");
 		object.getLatestPackage().getFiles().add(xmpFile);
 		object.getLatestPackage().getEvents().add(createCreateEvent(xmpFile));		
 	}

@@ -187,5 +187,11 @@ public class PathTest {
 		assertEquals("src/test".hashCode(),new RelativePath("src","test").hashCode());
 	}
 	
+	@Test
+	public void testGetLastElement(){
+		
+		assertEquals("def",Path.make("abc","def").getLastElement());
+	}
+	
 	
 }

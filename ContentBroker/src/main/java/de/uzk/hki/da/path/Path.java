@@ -175,5 +175,13 @@ public class Path{
 		
 		return this.toString().hashCode();
 	}
+
+	public String getLastElement() {
+		String lastElem = "";
+		for (String s:finalPathArray){
+			lastElem=s;
+		}
+		return lastElem;
+	}
 	
 }

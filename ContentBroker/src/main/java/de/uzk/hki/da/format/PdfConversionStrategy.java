@@ -88,7 +88,7 @@ public class PdfConversionStrategy implements ConversionStrategy {
 		}
 
 		if (result.exists()) {
-			DAFile daf = new DAFile(object.getLatestPackage(), FilenameUtils.getBaseName(object.getPath("newest").toString()),
+			DAFile daf = new DAFile(object.getLatestPackage(), object.getPath("newest").getLastElement(),
 					Utilities.slashize(ci.getTarget_folder())
 							+ result.getName());
 			logger.debug("new dafile:" + daf);
