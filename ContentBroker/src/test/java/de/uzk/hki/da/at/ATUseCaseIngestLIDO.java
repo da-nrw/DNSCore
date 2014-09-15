@@ -31,8 +31,8 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
@@ -45,18 +45,18 @@ import de.uzk.hki.da.test.TESTHelper;
 public class ATUseCaseIngestLIDO extends Base{
 
 	private static final String DATA_DANRW_DE = "http://data.danrw.de";
-	private static final String origName = "ATUseCaseIngestLIDO";
-	private Object object;
+	private static final String origName = "ATUseCaseUpdateMetadataLZA_LIDO";
+	private static Object object;
 	private static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
 	
-	@Before
-	public void setUp() throws IOException{
+	@BeforeClass
+	public static void setUp() throws IOException{
 		setUpBase();
-		ingest(origName);
+		object = ingest(origName);
 	}
 	
-	@After
-	public void tearDown(){
+	@AfterClass
+	public static void tearDown(){
 		try{
 			new File("/tmp/"+object.getIdentifier()+".pack_1.tar").delete();
 			FileUtils.deleteDirectory(new File("/tmp/"+object.getIdentifier()+".pack_1"));
@@ -69,7 +69,30 @@ public class ATUseCaseIngestLIDO extends Base{
 	}
 	
 	@Test
-	public void test() throws FileNotFoundException, JDOMException, IOException{
+	public void testLZA() throws FileNotFoundException, JDOMException, IOException {
+		
+		Object lzaObject = retrievePackage(origName,"1");
+		System.out.println("object identifier: "+lzaObject.getIdentifier());
+		
+		Path tmpObjectDirPath = Path.make("tmp", lzaObject.getIdentifier()+".pack_1", "data");	
+		File[] tmpObjectSubDirs = new File (Path.make("tmp", lzaObject.getIdentifier()+".pack_1", "data").toString()).listFiles();
+		String bRep = "";
+		
+		for (int i=0; i<tmpObjectSubDirs.length; i++) {
+			if(tmpObjectSubDirs[i].getName().contains("+b")) {
+				bRep = tmpObjectSubDirs[i].getName();
+			}
+		}
+		
+		SAXBuilder builder = new SAXBuilder();
+		String LidoFileName = "LIDO-Testexport2014-07-04-FML-Auswahl.xml";
+		Document doc = builder.build
+				(new FileReader(Path.make(tmpObjectDirPath, bRep, LidoFileName).toFile()));
+		assertTrue(getLIDOURL(doc).equals("Picture2.tif"));
+	}
+	
+	@Test
+	public void testPres() throws FileNotFoundException, JDOMException, IOException{
 		object = retrievePackage(origName,"1");
 		System.out.println("object identifier: "+object.getIdentifier());
 		
@@ -81,8 +104,11 @@ public class ATUseCaseIngestLIDO extends Base{
 		Document doc = builder.build
 				(new FileReader(Path.make(localNode.getWorkAreaRootPath(),"pips", "public", "TEST", object.getIdentifier(), object.getPackage_type()+".xml").toFile()));
 		assertTrue(getLIDOURL(doc).contains(DATA_DANRW_DE));
+	}
+	
+	@Test
+	public void testIndex() {
 		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", "Inventarnummer").contains("\"edm:provider\":\"DA-NRW - Digitales Archiv Nordrhein-Westfalen\""));
-		
 	}
 	
 	private String getLIDOURL(Document doc){

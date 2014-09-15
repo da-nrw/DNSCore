@@ -75,7 +75,6 @@ public class ATUseCaseIngestRheinlaender extends Base{
 	
 	@AfterClass
 	public static void tearDown(){
-		
 		TESTHelper.clearDB();
 		cleanStorage();
 	}
@@ -116,9 +115,6 @@ public class ATUseCaseIngestRheinlaender extends Base{
 		repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-d1e15821").
 			contains("VDA - Forschungsstelle Rheinlländer in aller Welt");
 	}
-	
-	
-	
 	
 	private String getURL(Document doc){
 		return doc.getRootElement()
