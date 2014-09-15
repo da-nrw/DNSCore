@@ -7,12 +7,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.test.TESTHelper;
-import de.uzk.hki.da.utils.C;
 
-public class ATUseCaseIngestEadMetsMultiRefs extends Base{
-	private static final String origName = "ATUseCaseIngestEadMetsMultiRefs";
+public class ATUseCaseIngestEadMetsVariousRefs extends Base{
+	private static final String origName = "ATUseCaseIngestEadMetsVariousRefs";
 	private static Object object;
 	private static Path contractorsPipsPublic;
 	
@@ -31,6 +31,5 @@ public class ATUseCaseIngestEadMetsMultiRefs extends Base{
 	@Test
 	public void test() {
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
-		System.out.println("Test");
 	}
 }
