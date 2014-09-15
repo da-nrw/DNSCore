@@ -38,6 +38,7 @@ import org.junit.Test;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.utils.C;
 
 /**
  * @author Polina Gubaidullina
@@ -48,11 +49,13 @@ public class ATUseCaseIngestLIDO extends Base{
 	private static final String origName = "ATUseCaseUpdateMetadataLZA_LIDO";
 	private static Object object;
 	private static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
+	private static Path contractorsPipsPublic;
 	
 	@BeforeClass
 	public static void setUp() throws IOException{
 		setUpBase();
 		object = ingest(origName);
+		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
 	@AfterClass
@@ -93,16 +96,11 @@ public class ATUseCaseIngestLIDO extends Base{
 	
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException{
-		object = retrievePackage(origName,"1");
-		System.out.println("object identifier: "+object.getIdentifier());
-		
-		String packageType = object.getPackage_type();
-		System.out.println("package type: "+packageType);
 		
 		SAXBuilder builder = new SAXBuilder();
 		
 		Document doc = builder.build
-				(new FileReader(Path.make(localNode.getWorkAreaRootPath(),"pips", "public", "TEST", object.getIdentifier(), object.getPackage_type()+".xml").toFile()));
+				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "LIDO.xml").toFile()));
 		assertTrue(getLIDOURL(doc).contains(DATA_DANRW_DE));
 	}
 	
