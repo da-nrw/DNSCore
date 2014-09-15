@@ -64,7 +64,7 @@ class OutgoingController {
 		def idn = params.filename.substring(0,params.filename.length()-4)
 		log.debug("Setting read status of object <" + idn + ">")
 		def user = springSecurityService.currentUser
-		def que = QueueEntry.findAll("from QueueEntry as q where q.obj.contractor.shortName=:csn and q.obj.identifier=:idn",
+		def que = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.obj.identifier=:idn",
              [csn: user.getShortName(),
 				idn: idn])
 		que.each {

@@ -144,6 +144,7 @@ grails.plugin.springsecurity.interceptUrlMap = [
 	'/incoming/**':       ['ROLE_CONTRACTOR'],
 	'/outgoing/**':       ['ROLE_CONTRACTOR'],
 	'/status/**':       ['ROLE_CONTRACTOR'],
+	'/package/**':       ['ROLE_CONTRACTOR'],
 	'/info/**':       ['ROLE_CONTRACTOR'],
 	'/conversionPolicies/**':       ['ROLE_CONTRACTOR'],
 	'/cbtalk/**':       ['ROLE_NODEADMIN'],

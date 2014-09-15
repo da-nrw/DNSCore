@@ -100,7 +100,7 @@ public class RetrievalAction extends AbstractAction {
 		bagitAndTarit(tempFolder);
 
 		cleanupFS();
-		
+		object.setObject_state(100);
 		new MailContents(preservationSystem,localNode).retrievalReport(object);
 		return true;
 	}

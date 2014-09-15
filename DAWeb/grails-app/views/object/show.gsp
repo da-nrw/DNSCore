@@ -7,6 +7,13 @@
 		<g:set var="entityName" value="${message(code: 'object.label', default: 'Object')}" />
 		<title>DA-NRW Objekt</title>
 	</head>
+	<r:script>
+function toggle(source) {
+	  checkboxes = document.getElementsByName('currentPackages');
+	  for(var i in checkboxes) {
+	    checkboxes[i].checked = source.checked;
+		}
+	}</r:script>
 	<body>
 		<a href="#show-object" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
@@ -38,19 +45,19 @@
 						<span class="property-value" aria-labelledby="origName-label"><g:fieldValue bean="${objectInstance}" field="origName"/></span>
 					
 				</li>
-				</g:if>
-			
+				</g:if><li class="fieldcontain">
+				<span id="packages-label" class="property-label"><g:message code="object.packages.label" default="Packages" /></span>
+				<g:form controller="package" action="retrievePackages">
+				<g:hiddenField name="oid" value="${objectInstance?.id}" />
+				<span class="property-value" ><input type="checkbox"  onClick="toggle(this)"/>Alle an-/abwählen</span><br>
 				<g:if test="${objectInstance?.packages}">
-				<li class="fieldcontain">
-					<span id="packages-label" class="property-label"><g:message code="object.packages.label" default="Packages" /></span>
-					
-						<g:each in="${objectInstance.packages}" var="p">
-							<span class="property-value" aria-labelledby="packages-label"><g:link controller="package" action="show" id="${p?.id}">${p?.encodeAsHTML()}</g:link></span>
-						</g:each>
-					
-				</li>
+							<g:each in="${objectInstance.packages}" var="p">
+							<span class="property-value" ><g:checkBox name="currentPackages" value="${p.getId()}" checked="false" />${p?.encodeAsHTML()}</span>
+						</g:each>	
+				<span class="property-value" ><g:actionSubmit value="Versioniertes Retrieval starten" controller="package" action="retrievePackages"/></span>
 				</g:if>
-				
+				</g:form>
+				</li>
 				<g:if test="${objectInstance?.object_state}">
 				<g:set var="statusCode" value="${objectInstance.getStatusCode()}" />
 				<li class="fieldcontain">
