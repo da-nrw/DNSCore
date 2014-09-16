@@ -46,15 +46,43 @@ Die ausgelieferte beans.xml enhält in diesem Fall folgende Imports:
     <import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>
     <import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>
     <import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>
-
-Es werden die Kompontenten irods und fedora importiert. Da sich hinter fedora Fedora und Elasticsearch verbergen, heisst dass, dass insgesamt die Blöcke irods.*, fedora.* als auch elasticsearch.* ausgefüllt sein müssen.
-
-Weiterhin importiert die beans.xml folgende Workflows:
+    <import resource="classpath*:META-INF/beans-infrastructure.irodsdistributedconversionadapter.xml"/>
 
     <import resource="classpath*:META-INF/beans-workflow.presentation.xml"/>
     <import resource="classpath*:META-INF/beans-workflow.other.xml"/>
+
+Es werden die Komponenten IrodsDistributedConversionAdapter und Fedora3RepositoryFacade eingebunden.
+Nur Präsentationsworkflows werden unterstützt. D.h. die Ingest und Retrieval-Workflows werden nicht unterstützt.
+
+##### config.properties
+
+Die oben gezeigte Beankonfiguration macht folgende Einträge in der config.properties nötig.
+
+    localNode.id=
+    localNode.workAreaRootPath=
     
-Es werden lediglich Präsentationsworkflows unterstützt. D.h. die Ingest und Retrieval-Workflows werden nicht unterstützt.
+    fedora.url=
+    fedora.user=
+    fedora.password=
+
+    irods.user=
+    irods.password=
+    irods.server=
+    irods.zone=
+    irods.default_resc=
+    irods.pam=
+    irods.keyStorePassword=
+    irods.keyStorePath=
+    irods.trustStorePath=
+
+    elasticsearch.index=portal_ci
+    elasticsearch.hosts=localhost
+    elasticsearch.cluster=cluster_ci
+
+    cb.serverSocketNumber=
+    cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+    cb.implementation.repository=fedoraRepositoryFacade
+    cb.bin.python=/ci/python/python
 
 ## Full - Knoten und Presentation Repository
 
