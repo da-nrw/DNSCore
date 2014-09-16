@@ -43,6 +43,7 @@ class QueueEntryController {
     }
 
     def list() {
+		
 		def contractorList
 		def cbNodeList = CbNode.list()
 		User user = springSecurityService.currentUser
@@ -56,9 +57,15 @@ class QueueEntryController {
 			contractorList = User.findAll("from User as c where c.shortName=:csn",
 	        [csn: user.getShortName()])
 		}
+		
 		[contractorList:contractorList,
 		cbNodeList:cbNodeList]
-    }
+		// different List View per Role
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+		render(view:"adminList", model:[contractorList:contractorList,
+		cbNodeList:cbNodeList]);
+		}
+	}
     
 
     def listSnippet() {
@@ -71,18 +78,25 @@ class QueueEntryController {
 			admin = 1;
 		}
 
-		if (params.search==null){	
+		if (!params.search){	
 			if (admin != 1) {	
 				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn",
-	             [csn: us.shortName])
+	             [csn: us.getShortName()])
+				
 			} else {
-				admin = true;
+				admin = 1;
 				queueEntries = QueueEntry.findAll("from QueueEntry as q")
 				
 			}
 			[queueEntryInstanceList: queueEntries,
-				admin:admin, periodical:periodical ]
+				admin:admin, periodical:periodical,
+				contractorList:contractorList ]
+			if (us.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+					render(view:"adminListSnippet", model:[queueEntryInstanceList: queueEntries, admin:admin, periodical:periodical, contractorList:contractorList]);
+			} else render(view:"listSnippet", model:[queueEntryInstanceList: queueEntries, admin:admin, periodical:periodical, contractorList:contractorList]);
+			
 		} else {
+			
 			periodical = false;
 			def c = QueueEntry.createCriteria()
 			queueEntries = c.list() {
@@ -100,17 +114,21 @@ class QueueEntryController {
 						eq("initialNode", params.search.initialNode)
 					}
 				}
-				if (params.search?.status) 
+				if (params.search?.status) {
 					like("status", params.search.status+"%")
+				}
+				
 				if (admin==0) {
 					projections {
 						obj {
+								
 								user {
 									eq("shortName", us.getShortName())								
 								}
 						}
 					}
 				} else {
+		
 				if (params.search?.user){
 					if(params.search?.user !="null"){
 						projections {
@@ -124,10 +142,11 @@ class QueueEntryController {
 					}
 				}
 			}
-		} 
-		[queueEntryInstanceList: queueEntries,
-			admin:admin, periodical:periodical,
-			contractorList:contractorList ]
+			
+		}
+		if (us.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+				render(view:"adminListSnippet", model:[queueEntryInstanceList: queueEntries, admin:admin, periodical:periodical, contractorList:contractorList]);
+		} else render(view:"listSnippet", model:[queueEntryInstanceList: queueEntries, admin:admin, periodical:periodical, contractorList:contractorList]);
     }
 	
 	/** 

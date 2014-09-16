@@ -22,10 +22,6 @@
 				<a href="#" onClick="return sortQueue('urn');">${message(code: 'queueEntry.obj.urn', default: 'URN')}</a>
 			</th>
 			
-			<th class="sortable field-contractorShortName">
-				<a href="#" onClick="return sortQueue('contractorShortName');">${message(code: 'queueEntry.obj.user.shortName.label', default: 'Contractor')}</a>
-			</th>
-			
 			<th class="sortable field-created">
 				<a href="#" onClick="return sortQueue('created');">${message(code: 'queueEntry.created.label', default: 'Erstellt')}</a>
 			</th>
@@ -36,10 +32,6 @@
 			
 			<th class="sortable field-origName">
 				<a href="#" onClick="return sortQueue('origName');">${message(code: 'queueEntry.obj.origName.label', default: 'Orig. Name')}</a>
-			</th>
-			
-			<th class="sortable field-initialNode">
-				<a href="#" onClick="return sortQueue('initialNode');">${message(code: 'queueEntry.initialNode.label', default: 'Initialer Knoten')}</a>
 			</th>
 
 		</tr>
@@ -99,12 +91,6 @@
 					${fieldValue(bean: queueEntryInstance.obj, field: "urn")}
 				</td>
 				<td>
-				<g:if test="${queueEntryInstance.obj != null}">
-					${fieldValue(bean: queueEntryInstance.obj.user, field: "shortName")}
-				</g:if>
-				</td>
-
-				<td>
 					${queueEntryInstance.getFormattedCreatedDate()}
 				</td>
 
@@ -113,10 +99,6 @@
 				</td>
 				<td>
 					${fieldValue(bean: queueEntryInstance.obj, field: "origName")}
-				</td>
-
-				<td>
-					${fieldValue(bean: queueEntryInstance, field: "initialNode")}
 				</td>
 
 			</tr>
@@ -128,3 +110,4 @@
 		</g:if>
 	</tbody>
 </table>
+(Standard view)

@@ -76,8 +76,7 @@
             	<tr>
             		<td>Status:</td>
             			<td><g:textField name="search.status" value="${params.search?.status}" size="5"/></td>
-            		</tr>
-            		
+            		</tr>  		
             		<tr>
             			<td>Originalname:</td>
             			<td><g:textField name="search.obj.origName" value="${params.search?.obj?.origName}" size="50"/></td>
@@ -90,23 +89,11 @@
             			<td>Identifier:</td>
             			<td><g:textField name="search.obj.identifier" value="${params.search?.obj?.identifier}" size="50"/></td>
             		</tr>
-
-            			<tr>
-            			<td>Contractor:</td>
-            			<td>
-            				<g:select id="user" name="search.user" from="${contractorList}" optionKey="shortName" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
-            			</td>
-            		</tr>
-            			<tr>
-            			<td>InitialNode:</td>
-            			<td>
-            				<g:select id="initialNode" name="search.initialNode" from="${cbNodeList}" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.cbNodeList?.name}" class="many-to-one"/>
-            			</td>
-            		</tr>
-
+            	
             		<tr>
             			<td></td>
-            			<td><g:submitButton name="submit" value="Filter anwenden"/></td>
+            			<td>
+            			<g:submitButton name="submit" value="Filter anwenden"/></td>
             		</tr>
             	</table>     
             </g:form>
