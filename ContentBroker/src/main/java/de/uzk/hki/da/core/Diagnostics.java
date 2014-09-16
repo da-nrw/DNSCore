@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -105,13 +106,18 @@ public class Diagnostics {
 			return 1;
 		}
 		
-		logger.info("Setting up HibernateUtil ..");
+		System.out.print("CHECKING DATABASE CONNECTIVITY ... ");
 		try {
 			HibernateUtil.init(C.HIBERNATE_CFG.getAbsolutePath());
+			Session session = HibernateUtil.openSession();
+			session.createSQLQuery("select * from users;").list();
+			session.close();
 		} catch (Exception e) {
-			System.out.println("Cannot instantiate database!");
+			System.out.println("ERROR (CANNOT CONNECT TO DATABASE) ");
+			e.printStackTrace();
 			return 1;
 		}
+		System.out.println("OK");
 		
 		
 		errorCount+=checkJhove();
