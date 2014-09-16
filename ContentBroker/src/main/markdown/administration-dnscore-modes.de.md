@@ -64,7 +64,7 @@ Folgende Paremeter müssen aufgrund der Bean Configuration vorhanden sein.
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/system-modi2.jpg)
 
-Dieser Modus sollte bei der Installation von Knoten verwendet werden, die lediglich das PresentationRepository hosten. Auf solch einem Knoten laufen die Komponenten ContentBroker, Fedora und Elasticsearch. Es werden keine Einlieferungen von Usern an solch einem Knoten angenommen, sondern lediglich PIPs, die auf anderen Knoten erstellt wurden.
+Dieser Modus sollte bei der Installation von Knoten verwendet werden, die lediglich das PresentationRepository hosten. Auf solch einem Knoten laufen die Komponenten ContentBroker, iRODS, Fedora und Elasticsearch. Es werden keine Einlieferungen von Usern an solch einem Knoten angenommen, sondern lediglich PIPs, die auf anderen Knoten erstellt wurden.
 
 ##### beans.xml
 
