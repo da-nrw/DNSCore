@@ -21,17 +21,44 @@ Die ausgelieferte beans.xml enhält in diesem Fall folgende Imports:
     <import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>
     <import resource="classpath*:META-INF/beans-infrastructure.identifier.xml"/>
     <import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>
-
-Der Import der beans-infrastructure.irods.xml bedeutet, dass neben Basiskomponenten auch die iRODS-Komponente eingebunden ist. Deshalb muss der Block irods.* in der config.properties korrekt ausgefüllt sein.
-
-Weiterhin importiert die beans.xml folgende Workflows:
+    <import resource="classpath*:META-INF/beans-infrastructure.irodsgridfacade.xml"/>
+    <import resource="classpath*:META-INF/beans-infrastructure.irodsdistributedconversionadapter.xml"/>
 
     <import resource="classpath*:META-INF/beans-workflow.ingest.xml"/>
     <import resource="classpath*:META-INF/beans-workflow.retrieval.xml"/>
     <import resource="classpath*:META-INF/beans-workflow.pipgen.xml"/>
     <import resource="classpath*:META-INF/beans-workflow.other.xml"/>
 
-Dies bedeutet, dass Der Knoten die normalen Knotenworkflows kennt und durchführen kann, jedoch keine Workflows zur PIP-Aufbereitung.
+Die Module IrodsGridFacade und IrodsDistributedConversionAdapter werden eingebunden. 
+Der Knoten kennt die normalen Knotenworkflows kennt und kann sie durchführen. Jedoch kennt er keine Workflows zur PIP-Aufbereitung.
+
+##### config.properties
+
+Folgende Paremeter müssen aufgrund der Bean Configuration vorhanden sein.
+
+irods.user=rods
+irods.password=
+irods.server=
+irods.zone=
+irods.default_resc=
+irods.pam=
+irods.keyStorePassword=
+irods.keyStorePath=
+irods.trustStorePath=
+
+localNode.userAreaRootPath=
+localNode.ingestAreaRootPath=
+localNode.workAreaRootPath=
+localNode.gridCacheAreaRootPath=
+localNode.workingResource=
+localNode.replDestinations=ciArchiveResourceGroup
+localNode.id=1
+
+cb.serverSocketNumber=
+cb.implementation.grid=irodsGridFacade
+cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+cb.implementation.repository=fedoraRepositoryFacade
+cb.bin.python=/ci/python/python
 
 ## Pres - Nur Presentation Repository
 
@@ -110,3 +137,37 @@ Weiterhin importiert die beans.xml folgende Workflows:
     <import resource="classpath*:META-INF/beans-workflow.other.xml"/>
 
 Es werden sowohl Präsentationsworkflows als auch normale Paketverarbeitungsworkflows unterstützt.
+
+##### config.properties
+
+fedora.url=
+fedora.user=
+fedora.password=
+
+irods.user=rods
+irods.password=
+irods.server=
+irods.zone=
+irods.default_resc=
+irods.pam=
+irods.keyStorePassword=
+irods.keyStorePath=
+irods.trustStorePath=
+
+localNode.userAreaRootPath=
+localNode.ingestAreaRootPath=
+localNode.workAreaRootPath=
+localNode.gridCacheAreaRootPath=
+localNode.workingResource=
+localNode.replDestinations=ciArchiveResourceGroup
+localNode.id=1
+
+elasticsearch.index=
+elasticsearch.hosts=
+elasticsearch.cluster=
+
+cb.serverSocketNumber=
+cb.implementation.grid=irodsGridFacade
+cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+cb.implementation.repository=fedoraRepositoryFacade
+cb.bin.python=/ci/python/python
