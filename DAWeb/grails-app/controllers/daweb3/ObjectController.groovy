@@ -59,7 +59,6 @@ class ObjectController {
 					log.debug(params.toString())
 					def objects = c.list(max: params.max, offset: params.offset ?: 0) {
 						
-						if (session==null) throw new RuntimeException("Session not configured!")
 						if (params.search) params.search.each { key, value ->
 								like(key, "%" + value + "%")
 						}
