@@ -48,17 +48,20 @@ class PackageController {
 			   log.error ("Das Objekt ist null!")
 			  flash.message = "Das Objekt darf nicht null sein!"
 			  redirect(action: "error")
+			  return
 			}
 		   
 		   Object obj = Object.get(params.oid)
 		   if (!obj) {
 		   		flash.message = "Das Object konnte nicht gefunden werden!"
 				redirect(action: "error")
+				return
 			}
 	   		User user = springSecurityService.currentUser
 			if (user.getShortName() != obj.getUser().getShortName()) {
 				result = "Sie sind nicht berechtigt das Retrieval für das Package zu starten!"
 				redirect(controller: "object", action: "index")
+				return
 			}
 			def packagesIds = params.list("currentPackages")
 			
@@ -75,7 +78,7 @@ class PackageController {
 				result = "Packages konnten nicht angefordert werden: "+ packages
 			}		
 			flash.message = result
-			//redirect(controller: "object", action: "show", id:obj.getId())
+			redirect(controller: "object", action: "show", id:obj.getId())
    
 	}
 	
