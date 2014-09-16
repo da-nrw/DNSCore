@@ -12,7 +12,7 @@ Je nach Auswahl liefert der Installer den ContentBroker mit einer bestimmten Kon
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/system-modi1.jpg)
 
-In diesem Modus hostet ein Knoten (Node) die beiden Komponenten DAWeb und ContentBroker. AIPs für die Langzeitarchivierung werden generiert und im Grid verteilt. PIPs für die Präsentation werden generiert und an den dafür vorgesehenen Präsentationsknoten (PresNode) gesendet.
+In diesem Modus hostet ein Knoten (Node) die Komponenten DAWeb, ContentBroker und iRODS. AIPs für die Langzeitarchivierung werden generiert und im Grid verteilt. PIPs für die Präsentation werden generiert und an den dafür vorgesehenen Präsentationsknoten (PresNode) gesendet. 
 
 ##### beans.xml
 
