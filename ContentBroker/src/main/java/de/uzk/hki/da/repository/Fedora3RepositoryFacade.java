@@ -67,7 +67,6 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		FedoraCredentials fedoraCredentials = new FedoraCredentials(fedoraUrl, fedoraUser, fedoraPass);
 		this.fedora = new FedoraClient(fedoraCredentials);
 		this.edmJsonFrame = edmJsonFrame;
-		System.out.println("contextUriPrefix: "+getContextUriPrefix());
 	}
 
 	@Override

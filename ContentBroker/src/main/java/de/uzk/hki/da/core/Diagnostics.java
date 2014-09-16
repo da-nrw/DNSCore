@@ -57,6 +57,10 @@ import de.uzk.hki.da.utils.Utilities;
  */
 public class Diagnostics {
 
+	private static final String BEAN_NAME_IRODS_ZONE = "irods.zone";
+
+	private static final String BEAN_NAME_IMPLEMENTATION_GRID = "cb.implementation.grid";
+
 	private static final Logger logger = LoggerFactory.getLogger(Diagnostics.class);
 	
 	private static final String WARN = "WARN: ";
@@ -76,19 +80,21 @@ public class Diagnostics {
 	private static final String PROP_INGEST_AREA_ROOT_PATH = "localNode.ingestAreaRootPath";
 	private static final String PROP_WORK_AREA_ROOT_PATH = "localNode.workAreaRootPath";
 	private static final String PROP_REPL_DESTINATIONS = "localNode.replDestinations";
-	private static final String PROP_IRODS_ZONE = "irods.zone";
+	private static final String PROP_IRODS_ZONE = BEAN_NAME_IRODS_ZONE;
 
-	private static final String MSG_USER_AREA_NOT_EXISTS = WARN+"path localNode.userAreaRootPath points to not exists";
-	private static final String MSG_GRID_CACHE_AREA_NOT_EXISTS = WARN+"path localNode.gridCacheAreaRootPath points to not exists";
-	private static final String MSG_WORK_AREA_NOT_EXISTS = WARN+"path localNode.workAreaRootPath not exists";
-	private static final String MSG_INGEST_AREA_NOT_EXISTS = WARN+"path localNode.ingestAreaRootPath points to not exists";
+	private static final String MSG_USER_AREA_NOT_EXISTS = "ERROR (path configured by localNode.userAreaRootPath does not exist)";
+	private static final String MSG_GRID_CACHE_AREA_NOT_EXISTS = "ERROR (path configured by localNode.gridCacheAreaRootPath does not exist)";
+	private static final String MSG_WORK_AREA_NOT_EXISTS = "ERROR (path configured by localNode.workAreaRootPath does not exist)";
+	private static final String MSG_INGEST_AREA_NOT_EXISTS = "ERROR (path configured by localNode.ingestAreaRootPath does not exist)";
 
 	
 	
 	
 	public static Integer run() {
 	
-		System.out.println("Smoke test the application");
+		System.out.println("::::::::::::::::::::::::::::::::::");
+		System.out.println("::: Smoke test the application :::");
+		System.out.println("::::::::::::::::::::::::::::::::::");
 		int errorCount = 0;
 		
 		Properties properties = null;
@@ -124,7 +130,7 @@ public class Diagnostics {
 	
 	private static int checkJhove() {
 		
-		System.out.print("CHECKING JHOVE: ");
+		System.out.print("CHECKING JHOVE ... ");
 		FileFormatFacade jhove = new StandardFileFormatFacade();
 		try {
 			jhove.extract(new File("conf/healthCheck.tif"), new File("/tmp/abc"));
@@ -152,7 +158,7 @@ public class Diagnostics {
 		Fedora3RepositoryFacade fedora = (Fedora3RepositoryFacade) context.getBean(BEAN_NAME_FEDORA_REPOSITORY_FACADE);		
 		context.close();
 		
-		System.out.print("CHECKING FEDORA CONNECTIVITY: ");
+		System.out.print("CHECKING FEDORA CONNECTIVITY .... ");
 		try {
 			fedora.purgeObjectIfExists("abc", "coll1");
 			fedora.createObject("abc", "coll1", "TEST");
@@ -178,7 +184,7 @@ public class Diagnostics {
 		PlainFileWithFileFormat ffff = new PlainFileWithFileFormat(new File("conf/healthCheck.tif"));
 		files.add(ffff);
 		
-		System.out.print("CHECKING PRONOM FORMAT IDENTIFIER: ");
+		System.out.print("CHECKING PRONOM FORMAT IDENTIFIER ... ");
 		try {
 			sfff.identify(files);
 		} catch (FileNotFoundException e) {
@@ -187,7 +193,7 @@ public class Diagnostics {
 		
 		if (!files.get(0).getFormatPUID().equals("fmt/353")){
 			errorCount++;
-			System.out.println(WARN+"pronomFormatIdentifier health check not passed.");
+			System.out.println("ERROR pronomFormatIdentifier health check not passed.");
 		}else System.out.println("OK");
 
 		
@@ -198,44 +204,53 @@ public class Diagnostics {
 
 	private static int checkIrods(Properties properties){
 		
-		if (((String)properties.get("irods.zone"))==null||((String)properties.get("irods.zone")).isEmpty()){
-			System.out.println("WARN: WILL NOT CHECK IRODS ! ! ! irods.zone is empty");
+		if (((String)properties.get(BEAN_NAME_IRODS_ZONE))==null||((String)properties.get(BEAN_NAME_IRODS_ZONE)).isEmpty()){
+			System.out.println("WARN: WILL NOT CHECK IRODS ! ! ! "+BEAN_NAME_IRODS_ZONE+" is empty");
 			return 0;
 		}
 		
-		
-		
-		
-		int errorCount = 0;
-		
+		System.out.print("CHECKING IRODS CONNECTION ... ");
+
 		AbstractApplicationContext context =
 				new ClassPathXmlApplicationContext(BEANS_DIAGNOSTICS_IRODS);
 		IrodsSystemConnector irods = (IrodsSystemConnector) context.getBean(BEAN_NAME_IRODS_SYSTEM_CONNECTOR);
-		IrodsGridFacade irodsGridFacade = (IrodsGridFacade) context.getBean(BEAN_NAME_IRODS_GRID_FACADE);
-		Node node = (Node) context.getBean(C.LOCAL_NODE_BEAN_NAME);
-		context.close();
 		
+		int errorCount = 0;
+		if (!irods.connect()){
+			System.out.println("ERROR (COULD NOT CONNECT TO IRODS)");
+			errorCount++;
+			context.close();
+			return errorCount;
+		}
+		
+		irods.removeFileAndEatException(Path.make(properties.getProperty(PROP_IRODS_ZONE),C.WA_AIP,C.TEST_USER_SHORT_NAME,TEST_TGZ).toString());
+		irods.logoff();
+		
+		
+		// Check iRODS grid facade
+		if (((String)properties.get(BEAN_NAME_IMPLEMENTATION_GRID))==null||((String)properties.get(BEAN_NAME_IMPLEMENTATION_GRID)).isEmpty()){
+			System.out.println("WARN: CONNECTION ESTABLISHED. CHECKING FOR GRID FACADE SKIPPED (REASON: "+BEAN_NAME_IMPLEMENTATION_GRID+" is empty. This is ok for presentation only nodes.)");
+			context.close();
+			return errorCount;
+		}
+
+		System.out.println("OK");
+		
+
+		IrodsGridFacade irodsGridFacade = (IrodsGridFacade) context.getBean(BEAN_NAME_IRODS_GRID_FACADE);
+		
+		
+		Node node = (Node) context.getBean(C.LOCAL_NODE_BEAN_NAME);
 		StoragePolicy sp = new StoragePolicy(node);
 		sp.setMinNodes(1);
 		List<String> replDestinations = new ArrayList<String>();
 		replDestinations.add((String)properties.get(PROP_REPL_DESTINATIONS));
 		
 		sp.setDestinations(replDestinations);
+		context.close();
 		
-		System.out.print("CHECKING IRODS CONNECTION: ");
-		try{
-			irods.connect();
-			irods.removeFileAndEatException(Path.make(properties.getProperty(PROP_IRODS_ZONE),C.WA_AIP,C.TEST_USER_SHORT_NAME,TEST_TGZ).toString());
-			irods.logoff();
-			System.out.println("OK");
-		}
-		catch(Exception e){
-			errorCount++;
-			System.out.println(WARN+"cannot connect to irods via irodsSystemConnector and delete test file. "+e.getMessage());
-			e.printStackTrace();
-		}
 		
-		System.out.print("CHECKING GRID FACADE PUT: ");
+		System.out.print("CHECKING GRID FACADE PUT ... ");
 		try {
 			
 			boolean returnValue = irodsGridFacade.put( C.BASIC_TEST_PACKAGE, new RelativePath(C.TEST_USER_SHORT_NAME,TEST_TGZ).toString(), sp);
@@ -247,18 +262,18 @@ public class Diagnostics {
 			
 		} catch (Exception e) {
 			errorCount++;
-			System.out.println(WARN+"cannot put file via irodsGridFacade");
+			System.out.println("ERROR (cannot put file via irodsGridFacade)");
 			e.printStackTrace();
 		}
 		
-		System.out.print("CHECKING GRID FACADE GET: ");
+		System.out.print("CHECKING GRID FACADE GET ... ");
 		if (DIAGNOSTICS_RETRIEVAL_FILE.exists()) DIAGNOSTICS_RETRIEVAL_FILE.delete();
 		try {
 			irodsGridFacade.get(DIAGNOSTICS_RETRIEVAL_FILE, new RelativePath(C.TEST_USER_SHORT_NAME,TEST_TGZ).toString());
 			System.out.println("OK");
 		} catch (Exception e) {
 			errorCount++;
-			System.out.println(WARN+"connot retrieve file via irodsGridFacade");
+			System.out.println("ERROR (cannot retrieve file via irodsGridFacade)");
 			e.printStackTrace();
 		}
 		if (DIAGNOSTICS_RETRIEVAL_FILE.exists()) DIAGNOSTICS_RETRIEVAL_FILE.delete();
@@ -272,24 +287,46 @@ public class Diagnostics {
 		
 		int errorCount = 0;
 		
-		System.out.print("CHECKING LOCAL NODE PATHS: ");
-		if (!new File(properties.getProperty(PROP_USER_AREA_ROOT_PATH)).exists()){
-			System.out.println(MSG_USER_AREA_NOT_EXISTS);
-			errorCount++;
+		System.out.print("CHECKING LOCAL NODE PATHS ... ");
+		
+		if ((properties.getProperty(PROP_USER_AREA_ROOT_PATH)==null) ||
+			((String)properties.getProperty(PROP_USER_AREA_ROOT_PATH)).isEmpty())
+			
+			logger.warn("WARN ("+PROP_USER_AREA_ROOT_PATH+" is empty. will not check for path) ");
+		else {
+			if (!new File(properties.getProperty(PROP_USER_AREA_ROOT_PATH)).exists()){
+				System.out.println(MSG_USER_AREA_NOT_EXISTS);
+				errorCount++;
+			}
 		}
-		if (!new File(properties.getProperty(PROP_INGEST_AREA_ROOT_PATH)).exists()) {
-			System.out.println(MSG_INGEST_AREA_NOT_EXISTS);
-			errorCount++;
+		
+		if ((properties.getProperty(PROP_INGEST_AREA_ROOT_PATH)==null) ||
+				((String)properties.getProperty(PROP_INGEST_AREA_ROOT_PATH)).isEmpty())
+				
+				logger.warn("WARN ("+PROP_INGEST_AREA_ROOT_PATH+" is empty. will not check for path) ");
+		else {
+			if (!new File(properties.getProperty(PROP_INGEST_AREA_ROOT_PATH)).exists()){
+				System.out.println(MSG_INGEST_AREA_NOT_EXISTS);
+				errorCount++;
+			}
 		}
+		
+		if ((properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH)==null) ||
+				((String)properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH)).isEmpty())
+		
+			logger.warn("WARN ("+PROP_INGEST_AREA_ROOT_PATH+" is empty. will not check for path) ");
+		else{
+			if (!new File(properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH)).exists()) {
+				System.out.println(MSG_GRID_CACHE_AREA_NOT_EXISTS);
+				errorCount++;
+			}
+		}
+		
 		if (!new File(properties.getProperty(PROP_WORK_AREA_ROOT_PATH)).exists()) {
 			System.out.println(MSG_WORK_AREA_NOT_EXISTS);
 			errorCount++;
 		}
-		if (!new File(properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH)).exists()) {
-			System.out.println(MSG_GRID_CACHE_AREA_NOT_EXISTS);
-			errorCount++;
-		}
-		System.out.println("OK");
+		if (errorCount==0) System.out.println("OK");
 		
 		return errorCount;
 	}
