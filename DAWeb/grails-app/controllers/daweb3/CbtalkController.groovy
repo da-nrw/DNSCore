@@ -81,6 +81,7 @@ class CbtalkController {
 			flash.message= "Fehler in der Sendekommunikation mit dem ActiveMQ Broker! " + e.getCause()
 			log.error(e);
 		}
+		redirect(action: "index")
 		
 	} 
 	
