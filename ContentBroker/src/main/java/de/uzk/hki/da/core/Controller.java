@@ -124,7 +124,7 @@ public class Controller implements Runnable {
 					logger.debug(C.START_FACTORY);
 					messageSend = "...STARTING FACTORY done";
 					actionFactory.pause(false);
-				} else if (command.startsWith(C.SHOW_ACTIONS)) {
+				} else if (command.equals(C.SHOW_ACTION)) {
 					String []arr = command.split("=");
 					if (arr.length==2) {
 						logger.debug("SHOW_DESCRIPTION OF STATE: "+arr[1]);

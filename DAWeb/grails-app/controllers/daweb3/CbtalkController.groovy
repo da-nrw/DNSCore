@@ -38,6 +38,8 @@ class CbtalkController {
 	def cberrorService
 
 	def index() { 	
+		if (grailsApplication.config.localNode.id==null || grailsApplication.config.localNode.id=="")
+		flash.message = "LOCALNODE.ID not set!"
 	}
 	def messageSnippet() {
 		def messages = cbtalkService.getMessages()
@@ -79,6 +81,7 @@ class CbtalkController {
 			flash.message= "Fehler in der Sendekommunikation mit dem ActiveMQ Broker! " + e.getCause()
 			log.error(e);
 		}
+		redirect(action: "index")
 		
 	} 
 	

@@ -6,6 +6,7 @@
 		<g:set var="entityName" value="${message(code: 'queueEntry.label', default: 'QueueEntry')}" />
 		<title>Status der Verarbeitung</title>
 		<r:require modules="periodicalupdater, jqueryui"/>
+		 <jqui:resources/>
 		<r:script>
 			var order = "asc";
 			var sort = "id";
@@ -15,6 +16,7 @@
 			$(function() {
 				$("#filter").accordion({ collapsible: true, active: false });
 			});
+	
 	<g:if test="${ !params.search }">		
 			var obj = $.PeriodicalUpdater("./listSnippet",
 				{
@@ -52,7 +54,8 @@
 		</r:script>
 	</head>
 	<body>
-		
+	
+
 		<a href="#list-queueEntry" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		
 		<div class="nav" role="navigation">
@@ -60,7 +63,7 @@
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 			</ul>
 		</div>
-		
+	
 		<div id="list-queueEntry" class="content scaffold-list" role="main">			
 			<h1>Bearbeitungsübersicht</h1>			
 			<g:if test="${flash.message}">

@@ -70,6 +70,7 @@ public class C {
 	public static final String SHOW_DESCRIPTION = "SHOW_DESCRIPTION";
 	public static final String SHOW_VERSION = "SHOW_VERSION";
 	public static final String SHOW_ACTIONS = "SHOW_ACTIONS";
+	public static final String SHOW_ACTION = "SHOW_ACTION";
 	public static final String GRACEFUL_SHUTDOWN = "GRACEFUL_SHUTDOWN";
 	public static final String MIGRATION_ALLOWED = "MIGRATION_ALLOWED?";
 	public static final String YES = "YES";

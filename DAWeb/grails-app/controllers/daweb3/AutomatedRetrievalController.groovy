@@ -27,23 +27,28 @@ import grails.converters.*
  */
 class AutomatedRetrievalController {
 	
+	
+	def springSecurityService
+	
     def index() { }
 	
 	def queueForRetrievalJSON () {
+		User user = springSecurityService.currentUser
 		def QueueUtils qu = new QueueUtils(); 
 		def result = [success:false]
+		CbNode cbn = CbNode.get(grailsApplication.config.localNode.id)
 		def jsonObject = request.JSON
 		
 		def instance = Object.findByIdentifier(jsonObject['identifier'])
 		
 		if (instance!=null) {
 			
-			if (instance.user.shortName != session.bauthuser) {
+			if (instance.user.shortName != user.getShortName()) {
 				result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt " + jsonObject['identifier'] + " anzufordern!"
 				render result as JSON
 				return
 			}
-			qu.createJob( instance ,"900", grailsApplication.config.irods.server)
+			qu.createJob( instance ,"900", cbn.getName())
 			result = [success:true]
 			result.msg = "Erfolgreich Arbeitsauftrag erstellt für "  + jsonObject['identifier']
 			render result as JSON
@@ -51,12 +56,12 @@ class AutomatedRetrievalController {
 			}
 		instance = Object.findByUrn(jsonObject['urn'])
 		if (instance!=null) {
-			if (instance.user.shortName != session.bauthuser) {
+			if (instance.user.shortName != user.getShortName()) {
 				result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt "+ jsonObject['urn'] + " anzufordern!"
 				render result as JSON
 				return
 			}
-			qu.createJob( instance ,"900", null)
+			qu.createJob( instance ,"900", cbn.getName())
 			result = [success:true]
 			result.msg = "Erfolgreich Arbeitsauftrag erstellt für "  + jsonObject['urn']
 			render result as JSON
@@ -64,12 +69,12 @@ class AutomatedRetrievalController {
 		}
 		instance = Object.findByOrigName(jsonObject['origName'])
 		if (instance!=null) {
-			if (instance.user.shortName != session.bauthuser) {
+			if (instance.user.shortName != user.getShortName()) {
 				result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt "+ jsonObject['origName'] + " anzufordern!"
 				render result as JSON
 				return
 			}
-			qu.createJob( instance ,"900", null)
+			qu.createJob( instance ,"900", cbn.getName())
 			result = [success:true]
 			result.msg = "Erfolgreich Arbeitsauftrag erstellt für "  + jsonObject['origName']
 			render result as JSON

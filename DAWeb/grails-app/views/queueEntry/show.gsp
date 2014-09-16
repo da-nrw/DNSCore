@@ -61,7 +61,7 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${queueEntryInstance?.obj.getContractor().getShortName()}">
+				<g:if test="${queueEntryInstance?.obj.getUser().getShortName()}">
 				<li class="fieldcontain">
 					<span id="contractorShortName-label" class="property-label"><g:message code="queueEntry.contractorShortName.label" default="Contractor Short Name" /></span>
 					

@@ -22,15 +22,18 @@ package de.uzk.hki.da.at;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 import org.junit.AfterClass;
@@ -50,10 +53,11 @@ import de.uzk.hki.da.utils.C;
  */
 public class ATUseCaseIngestMetsMods extends Base{
 	
+	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
+	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	private static final String PORTAL_CI_TEST = "portal_ci_test";
-	private static final String XML_ATTRIBUTE_HREF = "href";
 	private static Path testContractorPipsPublic;
-	private static final String origName = 		"ATUseCaseIngestMetsMods";
+	private static final String origName = "ATUseCaseUpdateMetadataLZA_METS";
 	private static Object object;
 	private String METS_XPATH_EXPRESSION = 		"//mets:file";
 	private static Document metsDoc;
@@ -67,12 +71,40 @@ public class ATUseCaseIngestMetsMods extends Base{
 	
 	@AfterClass
 	public static void tearDownAfterClass(){
+		try{
+			new File("/tmp/"+object.getIdentifier()+".pack_1.tar").delete();
+			FileUtils.deleteDirectory(new File("/tmp/"+object.getIdentifier()+".pack_1"));
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+		}
 		TESTHelper.clearDB();
 		cleanStorage();
 	}
 	
 	@Test
-	public void checkReferencesAndMimetype() throws JDOMException, FileNotFoundException, IOException {
+	public void testLZA() throws Exception{
+		Object lzaObject = retrievePackage(origName,"1");
+		System.out.println("object identifier: "+lzaObject.getIdentifier());		
+		
+		Path tmpObjectDirPath = Path.make("tmp", lzaObject.getIdentifier()+".pack_1", "data");	
+		File[] tmpObjectSubDirs = new File (Path.make("tmp", lzaObject.getIdentifier()+".pack_1", "data").toString()).listFiles();
+		String bRep = "";
+		
+		for (int i=0; i<tmpObjectSubDirs.length; i++) {
+			if(tmpObjectSubDirs[i].getName().contains("+b")) {
+				bRep = tmpObjectSubDirs[i].getName();
+			}
+		}
+		
+		SAXBuilder builder = new SAXBuilder();
+		String metsFileName = "export_mets.xml";
+		Document doc = builder.build
+				(new FileReader(Path.make(tmpObjectDirPath, bRep, metsFileName).toFile()));
+		checkReferencesAndMimetype(doc, ".tif", "image/tiff", null);
+	}
+	
+	@Test
+	public void testPres() throws JDOMException, FileNotFoundException, IOException {
 		testContractorPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, "TEST");
 		
 		assertEquals(C.CB_PACKAGETYPE_METS,object.getPackage_type());
@@ -82,17 +114,7 @@ public class ATUseCaseIngestMetsMods extends Base{
 				Path.make(testContractorPipsPublic, 
 					object.getIdentifier(), C.CB_PACKAGETYPE_METS+C.FILE_EXTENSION_XML).toFile()));
 		
-		@SuppressWarnings("rawtypes")
-		List allNodes = XPath.newInstance(METS_XPATH_EXPRESSION).selectNodes(metsDoc);
-		
-		for (java.lang.Object node : allNodes) {
-			Element fileElement = (Element) node;
-			Attribute attr = fileElement.getChild("FLocat", C.METS_NS).getAttribute(XML_ATTRIBUTE_HREF, C.XLINK_NS);
-			Attribute attrMT = fileElement.getAttribute("MIMETYPE");
-			assertTrue(attr.getValue().contains("http://data.danrw.de/") && attr.getValue().endsWith(C.FILE_EXTENSION_JPG));
-			assertTrue(attrMT.getValue().equals(C.MIMETYPE_IMAGE_JPEG));
-		}
-		
+		checkReferencesAndMimetype(metsDoc, "http://data.danrw.de/", C.MIMETYPE_IMAGE_JPEG, "URL");
 	}
 	
 	@Test
@@ -103,5 +125,24 @@ public class ATUseCaseIngestMetsMods extends Base{
 		} catch (InterruptedException e) {}
 		String abc = repositoryFacade.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613");
 		assertTrue(abc.contains("ULB (Stadt) [Electronic ed.]"));
+	}
+	
+	public void checkReferencesAndMimetype(Document doc, String href, String mimetype, String loctype) throws JDOMException, FileNotFoundException, IOException {
+		XPath xPath = XPath.newInstance(METS_XPATH_EXPRESSION);
+		
+		@SuppressWarnings("rawtypes")
+		List allNodes = xPath.selectNodes(doc);
+		
+		for (java.lang.Object node : allNodes) {
+			Element fileElement = (Element) node;
+			Attribute attr = fileElement.getChild("FLocat", METS_NS).getAttribute("href", XLINK_NS);
+			Attribute attrLoctype = fileElement.getChild("FLocat", METS_NS).getAttribute("LOCTYPE");
+			Attribute attrMT = fileElement.getAttribute("MIMETYPE");
+			assertTrue(attr.getValue().contains(href));
+			assertTrue(attrMT.getValue().equals(mimetype));
+			if(loctype!=null) {
+				assertTrue(attrLoctype.getValue().equals(loctype));
+			}
+		}
 	}
 }

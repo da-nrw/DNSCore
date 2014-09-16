@@ -41,11 +41,11 @@ class ObjectController {
     }
 
     def list() {
-				def username = springSecurityService.currentUser
+				User user = springSecurityService.currentUser
 				
 				def contractorList = User.list()
 				def admin = 0;
-				def relativeDir = username.toString() + "/outgoing"
+				def relativeDir = user.getShortName() + "/outgoing"
 				def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir				
 					params.max = Math.min(params.max ? params.int('max') : 10, 100)
 
@@ -65,7 +65,6 @@ class ObjectController {
 						}
 						
 						
-						User user = User.findByUsername(username)
 						
 						if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 							admin = 1;
@@ -108,7 +107,6 @@ class ObjectController {
 		def username = springSecurityService.currentUser
 		
 		def c = Object.createCriteria()
-		log.debug(params.toString())
 		def objectInstance;
 		def contractor;
 		User user = User.findByUsername(username)
@@ -198,15 +196,14 @@ class ObjectController {
 					
 				} else {
 					try {
-						
-					CbNode cbn = CbNode.get(grailsApplication.config.localNode.id)
-						
+					
+					CbNode cbn = CbNode.get(grailsApplication.config.localNode.id)						
 					qu.createJob( object ,"900", cbn.getName()) 
 					result.msg = "Objekt ${object.urn} erfolgreich angefordert."
 					result.success = true
 					} catch ( Exception e ) { 
 					result.msg = "Objekt ${object.urn} konnte nicht angefordert werden."
-					println e
+					log.error("Error saving Retrieval request : " + e.printStackTrace())
 					}
 				}
 			}

@@ -21,10 +21,12 @@ package de.uzk.hki.da.at;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
@@ -44,7 +46,7 @@ import de.uzk.hki.da.utils.C;
 public class ATUseCaseIngestXMP extends Base{
 
 	private static final Namespace RDF_NS = Namespace.getNamespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-	private static final String origName = "ATUseCaseIngestXMP";
+	private static final String origName = "ATUseCaseUpdateMetadataLZA_XMP";
 	private static Object object;
 	private static Path contractorsPipsPublic;
 
@@ -57,19 +59,47 @@ public class ATUseCaseIngestXMP extends Base{
 	
 	@AfterClass
 	public static void tearDownAfterClass(){
+		try{
+			new File("/tmp/"+object.getIdentifier()+".pack_1.tar").delete();
+			FileUtils.deleteDirectory(new File("/tmp/"+object.getIdentifier()+".pack_1"));
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+		}
 		TESTHelper.clearDB();
 		cleanStorage();
 	}
 	
 	@Test
-	public void testReplacements() throws FileNotFoundException, JDOMException, IOException {
+	public void testLZA() throws FileNotFoundException, JDOMException, IOException {
+		Object lzaObject = retrievePackage(origName,"1");
+		System.out.println("object identifier: "+lzaObject.getIdentifier());
+		
+		Path tmpObjectDirPath = Path.make("tmp", lzaObject.getIdentifier()+".pack_1", "data");	
+		File[] tmpObjectSubDirs = new File (Path.make("tmp", lzaObject.getIdentifier()+".pack_1", "data").toString()).listFiles();
+		String bRep = "";
+		
+		for (int i=0; i<tmpObjectSubDirs.length; i++) {
+			if(tmpObjectSubDirs[i].getName().contains("+b")) {
+				bRep = tmpObjectSubDirs[i].getName();
+			}
+		}
+		
+		String xmpFileName = "XMP.rdf";
+		
+		SAXBuilder builder = new SAXBuilder();
+		Document doc = builder.build
+				(new FileReader(Path.make(tmpObjectDirPath, bRep, xmpFileName).toFile()));
+		assertTrue(getURL(doc).equals("LVR_ILR_0000008126.tif"));
+	}
+	
+	@Test
+	public void testPres() throws FileNotFoundException, JDOMException, IOException {
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "XMP.rdf").toFile()));
 		assertTrue(getURL(doc).contains("http://data.danrw.de/file/"+object.getIdentifier()) && (getURL(doc).endsWith(".jpg")));
 	}
-	
 	
 	@Test
 	public void testIndex() throws JDOMException, FileNotFoundException, IOException {
