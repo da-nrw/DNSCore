@@ -18,16 +18,16 @@ In diesem Modus hostet ein Knoten (Node) die beiden Komponenten DAWeb und Conten
 
 Die ausgelieferte beans.xml enhält in diesem Fall folgende Imports:
 
-    <import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>
-    <import resource="classpath*:META-INF/beans-infrastructure.identifier.xml"/>
-    <import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>
-    <import resource="classpath*:META-INF/beans-infrastructure.irodsgridfacade.xml"/>
-    <import resource="classpath*:META-INF/beans-infrastructure.irodsdistributedconversionadapter.xml"/>
+     <import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>
+     <import resource="classpath*:META-INF/beans-infrastructure.identifier.xml"/>
+     <import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>
+     <import resource="classpath*:META-INF/beans-infrastructure.irodsgridfacade.xml"/>
+     <import resource="classpath*:META-INF/beans-infrastructure.irodsdistributedconversionadapter.xml"/>
 
-    <import resource="classpath*:META-INF/beans-workflow.ingest.xml"/>
-    <import resource="classpath*:META-INF/beans-workflow.retrieval.xml"/>
-    <import resource="classpath*:META-INF/beans-workflow.pipgen.xml"/>
-    <import resource="classpath*:META-INF/beans-workflow.other.xml"/>
+     <import resource="classpath*:META-INF/beans-workflow.ingest.xml"/>
+     <import resource="classpath*:META-INF/beans-workflow.retrieval.xml"/>
+     <import resource="classpath*:META-INF/beans-workflow.pipgen.xml"/>
+     <import resource="classpath*:META-INF/beans-workflow.other.xml"/>
 
 Die Module IrodsGridFacade und IrodsDistributedConversionAdapter werden eingebunden. 
 Der Knoten kennt die normalen Knotenworkflows kennt und kann sie durchführen. Jedoch kennt er keine Workflows zur PIP-Aufbereitung.
