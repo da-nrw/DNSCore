@@ -36,30 +36,30 @@ Der Knoten kennt die normalen Knotenworkflows kennt und kann sie durchführen. J
 
 Folgende Paremeter müssen aufgrund der Bean Configuration vorhanden sein.
 
-irods.user=rods
-irods.password=
-irods.server=
-irods.zone=
-irods.default_resc=
-irods.pam=
-irods.keyStorePassword=
-irods.keyStorePath=
-irods.trustStorePath=
+    irods.user=rods
+    irods.password=
+    irods.server=
+    irods.zone=
+    irods.default_resc=
+    irods.pam=
+    irods.keyStorePassword=
+    irods.keyStorePath=
+    irods.trustStorePath=
 
-localNode.userAreaRootPath=
-localNode.ingestAreaRootPath=
-localNode.workAreaRootPath=
-localNode.gridCacheAreaRootPath=
-localNode.workingResource=
-localNode.replDestinations=ciArchiveResourceGroup
-localNode.id=1
+    localNode.userAreaRootPath=
+    localNode.ingestAreaRootPath=
+    localNode.workAreaRootPath=
+    localNode.gridCacheAreaRootPath=
+    localNode.workingResource=
+    localNode.replDestinations=ciArchiveResourceGroup
+    localNode.id=1
 
-cb.serverSocketNumber=
-cb.implementation.grid=irodsGridFacade
-cb.implementation.distributedConversion=irodsDistributedConversionAdapter
-cb.implementation.repository=fedoraRepositoryFacade
-cb.bin.python=/ci/python/python
-
+    cb.serverSocketNumber=
+    cb.implementation.grid=irodsGridFacade
+    cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+    cb.implementation.repository=fedoraRepositoryFacade
+    cb.bin.python=/ci/python/python
+ 
 ## Pres - Nur Presentation Repository
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/system-modi2.jpg)
@@ -125,10 +125,8 @@ Die ausgelieferte beans.xml enhält in diesem Fall folgende Imports:
     <import resource="classpath*:META-INF/beans-infrastructure.identifier.xml"/>
     <import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>
     <import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>
-
-Es werden die Kompontenten irods und fedora importiert. Da sich hinter fedora Fedora und Elasticsearch verbergen, heisst dass, dass insgesamt die Blöcke irods.*, fedora.* als auch elasticsearch.* ausgefüllt sein müssen.
-
-Weiterhin importiert die beans.xml folgende Workflows:
+    <import resource="classpath*:META-INF/beans-infrastructure.irodsgridfacade.xml"/>
+    <import resource="classpath*:META-INF/beans-infrastructure.irodsdistributedconversionadapter.xml"/>
 
     <import resource="classpath*:META-INF/beans-workflow.presentation.xml"/>
     <import resource="classpath*:META-INF/beans-workflow.ingest.xml"/> 
@@ -136,38 +134,40 @@ Weiterhin importiert die beans.xml folgende Workflows:
     <import resource="classpath*:META-INF/beans-workflow.pipgen.xml"/>
     <import resource="classpath*:META-INF/beans-workflow.other.xml"/>
 
-Es werden sowohl Präsentationsworkflows als auch normale Paketverarbeitungsworkflows unterstützt.
+Es werden sowohl Präsentationsworkflows als auch normale Paketverarbeitungsworkflows unterstützt. Die Komponenten iRODSDistributedConversionAdapter, iRODSGridFacade, sowie Fedora3RepositoryFacade sind eingebunden.
 
 ##### config.properties
 
-fedora.url=
-fedora.user=
-fedora.password=
+Solch eine Konfiguration erfordert die folgenden Parameter.
 
-irods.user=rods
-irods.password=
-irods.server=
-irods.zone=
-irods.default_resc=
-irods.pam=
-irods.keyStorePassword=
-irods.keyStorePath=
-irods.trustStorePath=
+    fedora.url=
+    fedora.user=
+    fedora.password=
 
-localNode.userAreaRootPath=
-localNode.ingestAreaRootPath=
-localNode.workAreaRootPath=
-localNode.gridCacheAreaRootPath=
-localNode.workingResource=
-localNode.replDestinations=ciArchiveResourceGroup
-localNode.id=1
+    irods.user=rods
+    irods.password=
+    irods.server=
+    irods.zone=
+    irods.default_resc=
+    irods.pam=
+    irods.keyStorePassword=
+    irods.keyStorePath=
+    irods.trustStorePath=
 
-elasticsearch.index=
-elasticsearch.hosts=
-elasticsearch.cluster=
+    localNode.userAreaRootPath=
+    localNode.ingestAreaRootPath=
+    localNode.workAreaRootPath=
+    localNode.gridCacheAreaRootPath=
+    localNode.workingResource=
+    localNode.replDestinations=ciArchiveResourceGroup
+    localNode.id=1
 
-cb.serverSocketNumber=
-cb.implementation.grid=irodsGridFacade
-cb.implementation.distributedConversion=irodsDistributedConversionAdapter
-cb.implementation.repository=fedoraRepositoryFacade
-cb.bin.python=/ci/python/python
+    elasticsearch.index=
+    elasticsearch.hosts=
+    elasticsearch.cluster=
+
+    cb.serverSocketNumber=
+    cb.implementation.grid=irodsGridFacade
+    cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+    cb.implementation.repository=fedoraRepositoryFacade
+    cb.bin.python=/ci/python/python
