@@ -56,7 +56,7 @@ public class ATUseCaseIngestMetsMods extends Base{
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	private static final String PORTAL_CI_TEST = "portal_ci_test";
-	private static final File unpackedDIP = new File("/tmp/unpackedMetsMods");
+	private static final File retrievalFolder = new File("/tmp/unpackedMetsMods");
 	private static Path testContractorPipsPublic;
 	private static final String origName = "ATUseCaseUpdateMetadataLZA_METS";
 	private static Object object;
@@ -72,18 +72,18 @@ public class ATUseCaseIngestMetsMods extends Base{
 	
 	@AfterClass
 	public static void tearDownAfterClass() throws IOException{
-		FileUtils.deleteDirectory(unpackedDIP);
+		FileUtils.deleteDirectory(retrievalFolder);
 		TESTHelper.clearDB();
 		cleanStorage();
 	}
 	
 	@Test
 	public void testLZA() throws Exception{
-		retrievePackage(object,unpackedDIP,"1");
+		retrievePackage(object,retrievalFolder,"1");
 		System.out.println("object identifier: "+object.getIdentifier());		
 		
-		Path tmpObjectDirPath = Path.make("tmp", object.getIdentifier()+".pack_1", "data");	
-		File[] tmpObjectSubDirs = new File (Path.make("tmp", object.getIdentifier()+".pack_1", "data").toString()).listFiles();
+		Path tmpObjectDirPath = Path.make(retrievalFolder.getAbsolutePath(), "data");	
+		File[] tmpObjectSubDirs = new File (tmpObjectDirPath.toString()).listFiles();
 		String bRep = "";
 		
 		for (int i=0; i<tmpObjectSubDirs.length; i++) {

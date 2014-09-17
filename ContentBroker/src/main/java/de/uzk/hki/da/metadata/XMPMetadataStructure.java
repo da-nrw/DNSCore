@@ -55,6 +55,10 @@ public class XMPMetadataStructure extends MetadataStructure{
 	public XMPMetadataStructure(File metadataFile, List<DAFile> daFiles) throws FileNotFoundException, JDOMException, IOException {
 		super(metadataFile, daFiles);
 		
+		for(DAFile file : daFiles) {
+			System.out.println("DAFILE: "+file.getRelative_path());
+		}
+		
 		xmpFile = metadataFile;
 		currentDAFiles = daFiles;
 		

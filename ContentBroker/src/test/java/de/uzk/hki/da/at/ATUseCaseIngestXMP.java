@@ -70,8 +70,8 @@ public class ATUseCaseIngestXMP extends Base{
 		retrievePackage(object,retrievalFolder,"1");
 		System.out.println("object identifier: "+object.getIdentifier());
 		
-		Path tmpObjectDirPath = Path.make("tmp", object.getIdentifier()+".pack_1", "data");	
-		File[] tmpObjectSubDirs = new File (Path.make("tmp", object.getIdentifier()+".pack_1", "data").toString()).listFiles();
+		Path tmpObjectDirPath = Path.make(retrievalFolder.getAbsolutePath(), "data");	
+		File[] tmpObjectSubDirs = new File (tmpObjectDirPath.toString()).listFiles();
 		String bRep = "";
 		
 		for (int i=0; i<tmpObjectSubDirs.length; i++) {
