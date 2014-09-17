@@ -34,7 +34,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.test.TESTHelper;
 
@@ -43,8 +42,6 @@ import de.uzk.hki.da.test.TESTHelper;
  */
 public class ATUseCaseIngestDeltaContract extends Base{
 
-	private static final String COLLECTION_OPEN = "collection-open";
-	
 	private static final String OUTPUT_JPG_2 = "/tmp/abc2.jpg";
 	private static final String OUTPUT_JPG_1 = "/tmp/abc.jpg";
 	private static final int _1_MINUTE = 60000;

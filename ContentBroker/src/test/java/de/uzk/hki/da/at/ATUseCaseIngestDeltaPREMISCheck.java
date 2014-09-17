@@ -61,6 +61,7 @@ public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
 	private static final String ORIG_NAME = "ATUseCaseIngestDelta";
 	private static final String IDENTIFIER =   "ATUseCaseIngestDeltaIdentifier";
 	private static final String containerName = ORIG_NAME+"."+C.FILE_EXTENSION_TGZ;
+	private static final File unpackedDIP = new File("/tmp/unpackedPREMISCheck");
 	
 
 	@Before
@@ -73,13 +74,8 @@ public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
 	}
 	
 	@After
-	public void tearDown(){
-		try{
-			new File("/tmp/"+object.getIdentifier()+".pack_2.tar").delete();
-			FileUtils.deleteDirectory(new File("/tmp/"+object.getIdentifier()+".pack_2"));
-		}catch(Exception e){
-			System.out.println(e.getMessage());
-		}
+	public void tearDown() throws IOException{
+		FileUtils.deleteDirectory(unpackedDIP);
 		
 		TESTHelper.clearDB();
 		cleanStorage();
@@ -91,8 +87,8 @@ public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
 	@Test
 	public void testProperPREMISCreation() throws Exception{
 		
-		waitForJobsToFinish(ORIG_NAME,500);
-		object = retrievePackage(ORIG_NAME,"2");
+		object = waitForJobsToFinish(ORIG_NAME,500);
+		retrievePackage(object,unpackedDIP,"2");
 		
 		assertEquals(ORIG_NAME,object.getOrig_name());
 		assertEquals(100,object.getObject_state());

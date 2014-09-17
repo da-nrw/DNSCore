@@ -50,8 +50,9 @@ import de.uzk.hki.da.test.TESTHelper;
  */
 public class ATUseCaseIngestPREMISCheck extends PREMISBase{
 	
-	private String originalName = "ATUseCaseIngest1";
-	private String containerName = originalName+".tgz";
+	private static final String originalName = "ATUseCaseIngest1";
+	private static final String containerName = originalName+".tgz";
+	private static final File unpackedDIP = new File("/tmp/unpackedPREMIS");
 	private Object object = null;
 	
 	@Before
@@ -76,9 +77,9 @@ public class ATUseCaseIngestPREMISCheck extends PREMISBase{
 	@Test
 	public void testProperPREMISCreation() throws Exception {
 		
-		ingest(originalName);
+		object = ingest(originalName);
 		
-		object = retrievePackage(originalName,"1");
+		retrievePackage(object,unpackedDIP,"1");
 		assertThat(object.getObject_state()).isEqualTo(100);
 		String unpackedObjectPath = "/tmp/"+object.getIdentifier()+".pack_1/";
 		
