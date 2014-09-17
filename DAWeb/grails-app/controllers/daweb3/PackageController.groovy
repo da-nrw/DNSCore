@@ -57,6 +57,7 @@ class PackageController {
 				redirect(action: "error")
 				return
 			}
+		   
 	   		User user = springSecurityService.currentUser
 			if (user.getShortName() != obj.getUser().getShortName()) {
 				flash.message = "Sie sind nicht berechtigt das Retrieval für das Package zu starten!"

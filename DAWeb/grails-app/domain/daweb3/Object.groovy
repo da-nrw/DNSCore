@@ -28,6 +28,7 @@ class Object {
 
     static constraints = {
 		dynamic_nondisclosure_limit nullable : true
+		static_nondisclosure_limit nullable: true
     }
     
     static mapping = {

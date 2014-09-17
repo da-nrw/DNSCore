@@ -23,7 +23,7 @@ import java.io.File
  * 
  * @author Jens Peters DANRW 2013
  * Incoming Controller, lists all existing data objects 
- * beneath tje incomingfolderprefix + irodsAcoountName + icoming
+ * beneath tje incomingfolderprefix + userfolder + icoming
  * for selecting them as work items for the archival workflow. 
  */
 
