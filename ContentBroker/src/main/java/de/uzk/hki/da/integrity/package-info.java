@@ -18,6 +18,6 @@
 */
 
 /**
- * Classes used for integrity checking of AIPs.
+ * Classes used for integrity checking of AIPs and reflecting their state to the object DB.
  */
 package de.uzk.hki.da.integrity;

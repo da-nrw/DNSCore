@@ -18,7 +18,6 @@
 */
 
 /**
- * Action classes implementing the basic workflow steps of the DNS
- * for SIP, AIP and PIP processing 
+ * Command line operations
  */
-package de.uzk.hki.da.cb;
+package de.uzk.hki.da.cli;
