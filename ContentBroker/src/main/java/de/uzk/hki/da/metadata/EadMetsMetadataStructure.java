@@ -78,16 +78,20 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		List<DAFile> existingMetsFiles = new ArrayList<DAFile>();
 		for(String ref : metsReferencesInEAD) {
 			Boolean fileExists = false;
+			String path = "";
 			for(DAFile dafile : daFiles) {
-				if(ref.equals(dafile.getRelative_path())) {
+				path = dafile.getRelative_path();
+				if(ref.equals(path)) {
 					fileExists = true;
 					existingMetsFiles.add(dafile);
-				}
-				if(fileExists) {
-					logger.debug("File "+dafile.getRelative_path()+" exists.");
 				} else {
-					logger.error("File "+dafile.getRelative_path()+" does not exist.");
+					fileExists = false;
 				}
+			}
+			if(fileExists) {
+				logger.debug("File "+path+" exists.");
+			} else {
+				logger.error("File "+path+" does not exist.");
 			}
 		}
 		return existingMetsFiles;

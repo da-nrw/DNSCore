@@ -92,18 +92,20 @@ public class XMPMetadataStructure extends MetadataStructure{
 	private List<DAFile> getReferencedFiles(List<DAFile> daFiles) {
 		List<String> references = getReferences(descriptionElements);
 		List<DAFile> existingFiles = new ArrayList<DAFile>();
-		Boolean fileExists = false;
 		for(String ref : references) {
+			Boolean fileExists = false;
+			String path = "";
 			for(DAFile dafile : daFiles) {
-				if(ref.equals(dafile.getRelative_path())) {
+				path = dafile.getRelative_path();
+				if(ref.equals(path)) {
 					fileExists = true;
 					existingFiles.add(dafile);
 				}
-				if(fileExists) {
-					logger.debug("File "+dafile.getRelative_path()+" exists.");
-				} else {
-					logger.error("File "+dafile.getRelative_path()+" does not exist.");
-				}
+			}
+			if(fileExists) {
+				logger.debug("File "+path+" exists.");
+			} else {
+				logger.error("File "+path+" does not exist.");
 			}
 		}
 		return existingFiles;
