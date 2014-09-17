@@ -59,39 +59,32 @@
 					<g:link action="show" id="${queueEntryInstance.id}">
 						${fieldValue(bean: queueEntryInstance, field: "status")}
 					</g:link>
-					<g:set var="statusType" value="${queueEntryInstance.status[-1]}" />
-					<g:if test="${statusType == "1" && admin }">
+					<g:if test="${queueEntryInstance.showRetryButton()}">
 								<g:link action="queueRetry" id="${queueEntryInstance.id}">
 									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png" title="Workflow für Paket neu starten" alt="Workflow für Objekt neu starten"/>
 								</g:link>
 					</g:if>
-					<g:set var="statusInt" value="${queueEntryInstance.getStatusAsInteger()}" />
-						<g:if test="${statusType == "2" && admin }">
-								<g:if test="${ queueEntryInstance.showRetryButtonAfterSomeTime()}">
-								<g:link action="queueRetry" id="${queueEntryInstance.id}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png" 
-									title="${message(code: 'default.workflow.icon.retry', default: 'Workflow für Paket neu starten')}" 
-									alt="${message(code: 'default.workflow.icon.retry', default: 'Workflow für Paket neu starten')}"/>
-								</g:link>
-						</g:if>
+					
+					<g:if test="${ queueEntryInstance.showRetryButtonAfterSomeTime()}">
+						<g:link action="queueRetry" id="${queueEntryInstance.id}">
+							<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png" 
+							title="${message(code: 'default.workflow.icon.retry', default: 'Workflow für Paket neu starten')}" 
+							alt="${message(code: 'default.workflow.icon.retry', default: 'Workflow für Paket neu starten')}"/>
+						</g:link>
 					</g:if>
-					<g:if test="${ statusType == "3" && admin }">
-						<g:if test="${statusInt >= 123 && statusInt <= 353 }">
+					<g:if test="${queueEntryInstance.showRecoverButton() }">
 						<g:link action="queueRecover" id="${queueEntryInstance.id}">
 							<g:img style="width:16px; height:16px" uri="/images/icons/back-icon.png"
 									title="${message(code: 'default.workflow.icon.restart', default: 'Gesamten Workflow für Paket neu starten')}" 
 									alt="${message(code: 'default.workflow.icon.restart', default: 'Gesamten Workflow für Paket neu starten')}"/>
 					</g:link>
-					</g:if>
 					</g:if> 
 					<g:if test="${ queueEntryInstance.showDeletionButton()}">
-						<g:if test="${ statusInt<401 && admin }">
 					<g:link onclick="return confirm('Eintrag löschen. Sind Sie sicher?');" action="queueDelete" id="${queueEntryInstance.id}">
 						<g:img style="width:16px; height:16px" uri="/images/icons/list_remove.png" 
 									title="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}" 
 									alt="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}"/>
 					</g:link>
-					</g:if>
 					</g:if>
 				</td>
 

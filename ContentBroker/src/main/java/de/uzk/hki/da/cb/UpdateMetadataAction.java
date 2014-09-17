@@ -124,10 +124,10 @@ public class UpdateMetadataAction extends AbstractAction {
 			
 		if(!"XMP".equals(packageType)) {
 			
-			daFiles = object.getNewestFilesFromAllRepresentations("");
-			
 			metadataFileName = copyMetadataFileToNewReps(packageType,
 					metadataFileName);
+			
+			daFiles = object.getNewestFilesFromAllRepresentations("");
 			
 			for (String repName : getRepNames()) {
 				

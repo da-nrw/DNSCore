@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.io.FilenameUtils;
-
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
@@ -36,7 +34,6 @@ import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.metadata.XmpCollector;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
-import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
 

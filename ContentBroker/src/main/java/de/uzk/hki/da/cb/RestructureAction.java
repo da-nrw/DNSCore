@@ -36,7 +36,6 @@ import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
 import de.uzk.hki.da.ff.FileWithFileFormat;
 import de.uzk.hki.da.grid.GridFacade;
-import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.RetrievePackagesHelper;

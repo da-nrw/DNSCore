@@ -50,29 +50,24 @@ public class XMPMetadataStructure extends MetadataStructure{
 	private File xmpFile;
 	private List<Element> descriptionElements;
 	private Document rdfDoc;
+	private List<DAFile> currentDAFiles;
 	
 	public XMPMetadataStructure(File metadataFile, List<DAFile> daFiles) throws FileNotFoundException, JDOMException, IOException {
 		super(metadataFile, daFiles);
 		
 		xmpFile = metadataFile;
+		currentDAFiles = daFiles;
+		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		FileInputStream fileInputStream = new FileInputStream(xmpFile);
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		rdfDoc = builder.build(bomInputStream);
 		descriptionElements = getXMPDescriptionElements();
-		
-	}
-
-	@Override
-	public boolean isValid() {
-		return true;
 	}
 	
-	public String getReference(Element element) {
-		return element.getAttributeValue("about", RDF_NS);
-	} 
+//	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
-	public List<String> getReferences(List<Element> descriptionElements) {
+	private List<String> getReferences(List<Element> descriptionElements) {
 		List<String> references = new ArrayList<String>();
 			for(Element element : descriptionElements) {
 				if(element.getName().equals("Description")) {
@@ -84,7 +79,7 @@ public class XMPMetadataStructure extends MetadataStructure{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Element> getXMPDescriptionElements() {
+	private List<Element> getXMPDescriptionElements() {
 		List<Element> descriptionElements = new ArrayList<Element>();
 		for(Element element : (List<Element>)rdfDoc.getRootElement().getChildren()) {
 			if(element.getName().equals("Description")) {
@@ -94,13 +89,37 @@ public class XMPMetadataStructure extends MetadataStructure{
 		return descriptionElements;
 	}
 	
+	private List<DAFile> getReferencedFiles(List<DAFile> daFiles) {
+		List<String> references = getReferences(descriptionElements);
+		List<DAFile> existingFiles = new ArrayList<DAFile>();
+		for(String ref : references) {
+			Boolean fileExists = false;
+			String path = "";
+			for(DAFile dafile : daFiles) {
+				path = dafile.getRelative_path();
+				if(ref.equals(path)) {
+					fileExists = true;
+					existingFiles.add(dafile);
+				}
+			}
+			if(fileExists) {
+				logger.debug("File "+path+" exists.");
+			} else {
+				logger.error("File "+path+" does not exist.");
+			}
+		}
+		return existingFiles;
+	}
+	
+//	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::  REPLACEMENTS  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	
 	public void makeReplacementsInRDf(Map<String, String> replacements) throws IOException {
 		for(Element element : descriptionElements) {
 			if(element.getName().equals("Description")) {
 				Attribute attr = element.getAttribute("about", RDF_NS);
 				for(String ref : replacements.keySet()) {
 					if(ref.equals(attr.getValue())) {
-						System.out.println("Replace "+ref+" by "+replacements.get(ref));
+						logger.debug("Replace "+ref+" by "+replacements.get(ref));
 						attr.setValue(replacements.get(ref));
 					}
 				}
@@ -109,5 +128,21 @@ public class XMPMetadataStructure extends MetadataStructure{
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.setFormat(Format.getPrettyFormat());
 		outputter.output(rdfDoc, new FileWriter(xmpFile));
+	}
+	
+//	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::   VALIDATION   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	
+//	private boolean checkReferencedFiles() {
+//		Boolean valid = true;
+//		if(getReferences(descriptionElements).size()!=getReferencedFiles(currentDAFiles).size()) {
+//			valid = false;
+//		}
+//		return valid;
+//	}
+	
+	@Override
+	public boolean isValid() {
+		return true;
+//		return checkReferencedFiles();
 	}
 }

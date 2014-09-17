@@ -27,13 +27,15 @@ public class LidoMetadataStructure extends MetadataStructure{
 	private static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
 	private Document doc;
 	private List<Element> lidoLinkResources;
-	private File currentMetadataFile;
+	private File lidoFile;
+	private List<DAFile> currentDAFiles;
 	
 	public LidoMetadataStructure(File metadataFile, List<DAFile> daFiles) throws FileNotFoundException, JDOMException,
 			IOException {
 		super(metadataFile, daFiles);
 		
-		currentMetadataFile = metadataFile;
+		lidoFile = metadataFile;
+		currentDAFiles = daFiles;
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		FileInputStream fileInputStream = new FileInputStream(metadataFile);
@@ -43,7 +45,9 @@ public class LidoMetadataStructure extends MetadataStructure{
 		lidoLinkResources = parseLinkResourceElements();
 	}
 	
-	public List<String> getLidoLinkResources() {
+//	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	
+	private List<String> getLidoLinkResources() {
 		List<String> linkResources = new ArrayList<String>();
 		for(Element element : lidoLinkResources) {
 			linkResources.add(element.getValue());
@@ -51,7 +55,33 @@ public class LidoMetadataStructure extends MetadataStructure{
 		return linkResources;
 	}
 	
-	public List<Element> parseLinkResourceElements() {
+	private List<DAFile> getReferencedFiles(List<DAFile> daFiles) {
+		List<String> references = getLidoLinkResources();
+		List<DAFile> existingFiles = new ArrayList<DAFile>();
+		for(String ref : references) {
+			Boolean fileExists = false;
+			String path = "";
+			for(DAFile dafile : daFiles) {
+				path = dafile.getRelative_path();
+				if(ref.equals(path)) {
+					fileExists = true;
+					existingFiles.add(dafile);
+				} else {
+					fileExists = false;
+				}
+			}
+			if(fileExists) {
+				logger.debug("File "+path+" exists.");
+			} else {
+				logger.error("File "+path+" does not exist.");
+			}
+		}
+		return existingFiles;
+	}
+	
+//	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::  REPLACEMENTS  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	
+	private List<Element> parseLinkResourceElements() {
 		
 		List<Element> currentLinkResources = new ArrayList<Element>();
 		
@@ -83,12 +113,21 @@ public class LidoMetadataStructure extends MetadataStructure{
 		
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.setFormat(Format.getPrettyFormat());
-		outputter.output(doc, new FileWriter(currentMetadataFile));
+		outputter.output(doc, new FileWriter(lidoFile));
 	}
-
+	
+//	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::   VALIDATION   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	
+	private boolean checkReferencedFiles() {
+		Boolean valid = true;
+		if(getLidoLinkResources().size()!=getReferencedFiles(currentDAFiles).size()) {
+			valid = false;
+		}
+		return valid;
+	}
+	
 	@Override
 	public boolean isValid() {
-		return isValid;
+		return checkReferencedFiles();
 	}
-
 }

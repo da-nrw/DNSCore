@@ -39,8 +39,6 @@ public abstract class MetadataStructure {
 	public Logger logger = LoggerFactory
 			.getLogger(MetadataStructure.class);
 	
-	public boolean isValid = true;
-	
 	public MetadataStructure(File metadataFile, List<DAFile> daFiles) 
 			throws FileNotFoundException, JDOMException, IOException {
 	}

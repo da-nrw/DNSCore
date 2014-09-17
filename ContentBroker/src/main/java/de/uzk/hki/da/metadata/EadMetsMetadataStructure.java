@@ -21,7 +21,6 @@ import org.jdom.xpath.XPath;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
 
@@ -30,9 +29,8 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	private String EAD_XPATH_EXPRESSION = 		"//daoloc/@href";
 	
 	private final File eadFile;
-	private File packageFile;
 	private List<String> metsReferencesInEAD;
-	private List<File> metsFiles;
+	private List<DAFile> metsFiles;
 	private List<MetsMetadataStructure> mmsList;
 	
 	HashMap<String, Document> metsPathToDocument = new HashMap<String, Document>();
@@ -40,16 +38,14 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	public EadMetsMetadataStructure(File metadataFile, List<DAFile> daFiles) throws JDOMException, 
 		IOException, ParserConfigurationException, SAXException {
 		super(metadataFile, daFiles);
-		
+	
 		eadFile = metadataFile;
-		packageFile = eadFile.getParentFile();
-		
 		metsReferencesInEAD = getMetsRefsInEad();
-		metsFiles = getMetsFiles();
+		metsFiles = getMetsFiles(daFiles);
 				
 		mmsList = new ArrayList<MetsMetadataStructure>();
-		for(File metsFile : metsFiles) {
-			MetsMetadataStructure mms = new MetsMetadataStructure(metsFile, daFiles);
+		for(DAFile metsFile : metsFiles) {
+			MetsMetadataStructure mms = new MetsMetadataStructure(metsFile.toRegularFile(), daFiles);
 			mmsList.add(mms);
 		}
 	}
@@ -78,27 +74,34 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		return metsReferences;
 	}
 	
-	public List<File> getMetsFiles() {
-		
-		List<File> metsFiles = new ArrayList<File>();
-		packageFile = eadFile.getParentFile();
-		
-		for(int i=0; i<metsReferencesInEAD.size(); i++) {
-			String href = metsReferencesInEAD.get(i);
-			File metsFile = Path.make(packageFile.getAbsolutePath(), href).toFile();
-			if(metsFile.exists()) {
-				metsFiles.add(metsFile);
+	private List<DAFile> getMetsFiles(List<DAFile> daFiles) {
+		List<DAFile> existingMetsFiles = new ArrayList<DAFile>();
+		for(String ref : metsReferencesInEAD) {
+			Boolean fileExists = false;
+			String path = "";
+			for(DAFile dafile : daFiles) {
+				path = dafile.getRelative_path();
+				if(ref.equals(path)) {
+					fileExists = true;
+					existingMetsFiles.add(dafile);
+				} else {
+					fileExists = false;
+				}
+			}
+			if(fileExists) {
+				logger.debug("File "+path+" exists.");
+			} else {
+				logger.error("File "+path+" does not exist.");
 			}
 		}
-		
-		if(metsReferencesInEAD.size()>metsFiles.size()) {
-			isValid = false;
-			logger.error("EAD file refers to "+metsReferencesInEAD.size()+" METS files, but there are only "+metsFiles.size()+" METS files.");
-		}
-		
-		return metsFiles;
+		return existingMetsFiles;
 	}
 	
+	public List<MetsMetadataStructure> getMetsMetadataStructures() {
+		return mmsList;
+	}
+	
+//	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::  REPLACEMENTS  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
 	public void replaceMetsRefsInEad(File eadFile, HashMap<String, String> eadReplacements) throws JDOMException, IOException {
 		
@@ -118,7 +121,6 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			Attribute attr = (Attribute) node;
 			for(String replacement : eadReplacements.keySet()) {
 				if(attr.getValue().equals(replacement)) {
-					System.out.println("setValue "+eadReplacements.get(replacement));
 					attr.setValue(eadReplacements.get(replacement));
 				}
 			}
@@ -129,15 +131,30 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		outputter.output(currentEadDoc, new FileWriter(targetEadFile));
 	}
 	
-	public List<MetsMetadataStructure> getMetsMetadataStructures() {
-		return mmsList;
+//	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::   VALIDATION   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+	private boolean checkReferencedFilesInEad() {
+		if(metsReferencesInEAD.size()==getMetsMetadataStructures().size()) {
+			return true;
+		} else {
+			logger.error("Expected "+metsReferencesInEAD.size()+" METS files but found "+metsFiles.size()+" METS files.");
+			return false;
+		}
 	}
 	
+	private boolean checkReferencedFilesInMetsFiles() {
+		Boolean mmsIsValid = true;
+		List<MetsMetadataStructure> mmss = getMetsMetadataStructures();
+		for (MetsMetadataStructure mms : mmss) {
+			if(!mms.isValid()) {
+				mmsIsValid = false;
+			}
+		}
+		return mmsIsValid;
+	}
 	
-//	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  PRINTS  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 	@Override
 	public boolean isValid() {
-		return isValid;
+		return (checkReferencedFilesInEad() && checkReferencedFilesInMetsFiles());
 	}
 }

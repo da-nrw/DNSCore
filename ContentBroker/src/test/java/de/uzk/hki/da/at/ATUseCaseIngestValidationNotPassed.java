@@ -103,8 +103,4 @@ public class ATUseCaseIngestValidationNotPassed extends UserErrorBase{
 		ingestAndWaitForErrorState("ATDuplicateDocumentName",C.USER_ERROR_STATE_DIGIT);
 		System.out.println(YEAH);
 	}
-	
-	
-	
-	
 }

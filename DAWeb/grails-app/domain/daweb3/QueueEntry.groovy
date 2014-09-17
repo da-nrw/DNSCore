@@ -96,7 +96,25 @@ class QueueEntry {
 	boolean showDeletionButton() {
 		def checkfor = ["1","3","4"]
 		def ch = status[-1]
-		if (checkfor.contains(ch)) return true;
+		if (checkfor.contains(ch) && getStatusAsInteger()<401) return true;
+		return false;
+	}
+	
+	boolean showRecoverButton() {
+		def checkfor = ["1","3"]
+		def ch = status[-1]
+		if (checkfor.contains(ch)) {
+			if (getStatusAsInteger()>=123 & getStatusAsInteger()<=353) return true;
+		}
+		return false;
+	}
+	
+	boolean showRetryButton() {
+		def checkfor = ["1"]
+		def ch = status[-1]
+		if (checkfor.contains(ch)) {
+			return true;
+		}
 		return false;
 	}
 	
@@ -110,10 +128,14 @@ class QueueEntry {
 	 */
 	
 	boolean showRetryButtonAfterSomeTime(){
-		if (modified!=null && modified!="" && modified!="NULL" && modified.length()>5) {
-			long diff = new Date().getTime()-Long.valueOf(modified).longValue()*1000L;
-			if (diff > 2 * 24 * 60 * 60 * 1000) {
-				return true;
+		def checkfor = ["2"]
+		def ch = status[-1]
+		if (checkfor.contains(ch)) {
+			if (modified!=null && modified!="" && modified!="NULL" && modified.length()>5) {
+				long diff = new Date().getTime()-Long.valueOf(modified).longValue()*1000L;
+				if (diff > 2 * 24 * 60 * 60 * 1000) {
+					return true;
+				}
 			}
 		}
 		return false;
