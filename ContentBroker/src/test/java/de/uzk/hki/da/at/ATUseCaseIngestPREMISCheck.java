@@ -75,9 +75,9 @@ public class ATUseCaseIngestPREMISCheck extends PREMISBase{
 		
 		ath.retrievePackage(object,unpackedDIP,"1");
 		assertThat(object.getObject_state()).isEqualTo(100);
-		String unpackedObjectPath = unpackedDIP.getAbsolutePath();
+		String unpackedObjectPath = unpackedDIP.getAbsolutePath()+"/";
 		
-		String folders[] = new File(unpackedObjectPath + "/data/").list();
+		String folders[] = new File(unpackedObjectPath + "data/").list();
 		String repAName="";
 		String repBName="";
 		for (String f:folders){
