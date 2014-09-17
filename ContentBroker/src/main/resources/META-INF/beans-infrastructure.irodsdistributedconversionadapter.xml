@@ -8,9 +8,12 @@
            http://www.springframework.org/schema/util/spring-util-3.0.xsd
            http://www.springframework.org/schema/task
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
-
-	<import resource="classpath*:META-INF/beans-infrastructure.core.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.irodsgridfacade.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.irodsdistributedconversionadapter.xml"/>	
+          
+	<!-- beans-infrastructure.irods.xml -->
+	
+	<bean id="irodsDistributedConversionAdapter" class="de.uzk.hki.da.grid.IrodsDistributedConversionAdapter">
+		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
+		<property name="zonePath" value="${irods.zone}"/>
+		<property name="workingResource" value="${localNode.workingResource}"/>
+	</bean>
 </beans>

@@ -18,6 +18,6 @@
 */
 
 /**
- * Main converison functions and actions.
+ * The FileFormat Package
  */
 package de.uzk.hki.da.ff;

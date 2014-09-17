@@ -85,7 +85,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 	public void testTARContainer() throws Exception{
 		
 		originalName = "AT_CON1";
-		object = ingest(originalName,"tar");
+		object = ingest(originalName,"tar",originalName);
 		System.out.println("yeah!");
 	}
 	
@@ -101,7 +101,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 	public void testZIPContainer() throws Exception{
 		
 		originalName = "AT_CON3";
-		object = ingest(originalName,"zip");
+		object = ingest(originalName,"zip",originalName);
 		System.out.println("yeah!");
 	}
 	

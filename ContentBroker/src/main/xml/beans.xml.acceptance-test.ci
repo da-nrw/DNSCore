@@ -21,4 +21,6 @@
 	<import resource="classpath*:META-INF/beans-infrastructure.core.xml"/>
 	<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>
 	<import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>
+	<import resource="classpath*:META-INF/beans-infrastructure.irodsgridfacade.xml"/>
+	<import resource="classpath*:META-INF/beans-infrastructure.irodsdistributedconversionadapter.xml"/>
 </beans>

@@ -50,6 +50,8 @@ import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
 
 /**
+ * Tests the aspect of proper PREMIS file creation for deltas.
+ * 
  * @author Daniel M. de Oliveira
  * @author Thomas Kleinke
  */

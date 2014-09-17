@@ -19,15 +19,13 @@
 
 package de.uzk.hki.da.model;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import de.uzk.hki.da.core.HibernateUtil;
 
@@ -133,10 +131,11 @@ public class PreservationSystemTests {
 		session.save(preservationSystem);
 		session.getTransaction().commit();
 		session.close();
-		
+
 		// creating a valid file
 		file = new DAFile(null,"","");
 		file.setFormatPUID("fmt/10");
+		
 	}
 
 	/**
@@ -159,14 +158,15 @@ public class PreservationSystemTests {
 	@Test
 	public void testFileHasNoFileFormat(){
 		
-		file = new DAFile(null,"","");
-		file.setFormatPUID("");
-		
+		DAFile fileundef = new DAFile(null,"","");
+		fileundef.setFormatPUID("");
+		try {
 		List<ConversionPolicy> policies =
-				preservationSystem.getApplicablePolicies(file, false);
-		assertTrue(policies.isEmpty());
-				
-	}
+				preservationSystem.getApplicablePolicies(fileundef, false);
+				fail();
+		} catch (Exception  e) {
+			
+		} 	}
 	
 	/**
 	 * Test success scenario.

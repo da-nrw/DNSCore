@@ -11,20 +11,6 @@
           
 	<!-- beans-infrastructure.irods.xml -->
 	
-	<bean id="irodsDistributedConversionAdapter" class="de.uzk.hki.da.grid.IrodsDistributedConversionAdapter">
-		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
-		<property name="zonePath" value="${irods.zone}"/>
-		<property name="workingResource" value="${localNode.workingResource}"/>
-	</bean>
-	
-	<bean id="irodsGridFacade" class="de.uzk.hki.da.grid.IrodsGridFacade">
-		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
-		<property name="localNode" ref="localNode"/>
-	</bean>	
-	<bean id="federatedGridFacade" class="de.uzk.hki.da.grid.IrodsFederatedGridFacade">
-		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
-		<property name="localNode" ref="localNode"/>
-	</bean>	
 	<bean id="irodsSystemConnector" class="de.uzk.hki.da.grid.IrodsSystemConnector" scope="prototype">
         <!-- iRODS user to be used by ContentBroker -->
         <constructor-arg value="${irods.user}" />

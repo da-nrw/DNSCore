@@ -92,6 +92,9 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".rdf")){
 				f.setFormatPUID("fmt/101");
 			}
+			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".jpg")){
+				f.setFormatPUID("fmt/42");
+			}
 			
 			BufferedReader br=new BufferedReader(new FileReader(f.toRegularFile()));
 	        String line;
