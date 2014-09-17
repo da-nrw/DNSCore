@@ -17,7 +17,7 @@
 				$("#filter").accordion({ collapsible: true, active: false });
 			});
 	
-	<g:if test="${ !params.search }">		
+		<g:if test="${ !params.search }">		
 			var obj = $.PeriodicalUpdater("./listSnippet",
 				{
 					method: "get",
@@ -33,7 +33,7 @@
 					}
 				}
 			);
-	</g:if>
+			</g:if>
 			function stopUpdater() {		
 				obj.stop();
 			}

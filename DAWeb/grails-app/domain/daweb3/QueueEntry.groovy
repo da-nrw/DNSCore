@@ -93,12 +93,23 @@ class QueueEntry {
 		return Integer.parseInt(status);
 	}
 	
+	/**
+	 * @author jpeters
+	 * Show Deletion button
+	 * @return
+	 */
 	boolean showDeletionButton() {
 		def checkfor = ["1","3","4"]
 		def ch = status[-1]
 		if (checkfor.contains(ch) && getStatusAsInteger()<401) return true;
 		return false;
 	}
+	
+	/**
+	 * Show RecoverButton on workflow items
+	 * @author jpeters 
+	 * @return
+	 */
 	
 	boolean showRecoverButton() {
 		def checkfor = ["1","3"]
@@ -108,6 +119,11 @@ class QueueEntry {
 		}
 		return false;
 	}
+	/**
+	 * @author jpeters 
+	 * Show Retry Button if state is 1
+	 * @return
+	 */
 	
 	boolean showRetryButton() {
 		def checkfor = ["1"]
@@ -141,4 +157,21 @@ class QueueEntry {
 		return false;
 	}
 	
+	String getInformation() {
+			if (getStatusAsInteger()<440) {
+					def checkfor = ["2","0"]
+					def ch = status[-1]
+					if (checkfor.contains(ch)) {
+						return "arbeitend (" + status +")"
+					} else return "fehlerhaft (" + status +")"
+			} 
+			if (getStatusAsInteger()>500 && getStatusAsInteger()<600) {
+					def checkfor = ["2","0"]
+					def ch = status[-1]
+					if (checkfor.contains(ch)) {
+						return "archiviert. Verarbeite PIP (" + status +")"
+					} else return "archiviert. Fehler beim PIP (" + status +")"
+			}
+			return status
+	}
 }

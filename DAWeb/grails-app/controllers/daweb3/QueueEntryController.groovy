@@ -79,14 +79,18 @@ class QueueEntryController {
 			admin = 1;
 		}
 
-		if (!params.search){	
-			if (admin != 1) {	
-				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn",
-	             [csn: us.getShortName()])
+		if (!params.search){
+
 				
+			if (admin != 1) {
+				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn "
+					+ (params.sort ? " order by q.${params.sort} ${params.order}": ''),
+	             [csn: us.getShortName()]
+				 )
 			} else {
 				admin = 1;
-				queueEntries = QueueEntry.findAll("from QueueEntry as q")
+				queueEntries = QueueEntry.findAll("from QueueEntry as q"
+						+ (params.sort ? " order by q.${params.sort} ${params.order}": ''))
 				
 			}
 			[queueEntryInstanceList: queueEntries,
@@ -142,6 +146,7 @@ class QueueEntryController {
 						}
 					}
 				}
+				
 			}
 			
 		}
