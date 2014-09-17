@@ -11,19 +11,18 @@
 		<tr>
 			
 			<th class="sortable field-id">
-				<a href="#" onClick="return sortQueue('queueEntry.obj.identifier');">${message(code: 'queueEntry.obj.identifier.label', default: 'Identifier')}</a>
+				<a href="#" onClick="return sortQueue('obj.identifier');">${message(code: 'queueEntry.obj.identifier.label', default: 'Identifier')}</a>
 			</th>
-			
 			<th class="sortable field-status">
 				<a href="#" onClick="return sortQueue('status');">${message(code: 'queueEntry.status.label', default: 'Status')}</a>
 			</th>
 			
 			<th class="sortable field-urn">
-				<a href="#" onClick="return sortQueue('urn');">${message(code: 'queueEntry.obj.urn', default: 'URN')}</a>
+				${message(code: 'queueEntry.obj.urn', default: 'URN')}
 			</th>
 			
 			<th class="sortable field-contractorShortName">
-				<a href="#" onClick="return sortQueue('contractorShortName');">${message(code: 'queueEntry.obj.user.shortName.label', default: 'Contractor')}</a>
+				<a href="#" onClick="return sortQueue('user.shortName');">${message(code: 'queueEntry.obj.user.shortName.label', default: 'Contractor')}</a>
 			</th>
 			
 			<th class="sortable field-created">
