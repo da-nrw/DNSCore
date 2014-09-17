@@ -55,7 +55,7 @@ public class ATUseCaseIngestLIDO extends Base{
 	@BeforeClass
 	public static void setUp() throws IOException{
 		setUpBase();
-		object = ingest(origName);
+		object = ath.ingest(origName);
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
@@ -69,7 +69,7 @@ public class ATUseCaseIngestLIDO extends Base{
 	@Test
 	public void testLZA() throws FileNotFoundException, JDOMException, IOException {
 		
-		retrievePackage(object,retrievalFolder,"1");
+		ath.retrievePackage(object,retrievalFolder,"1");
 		System.out.println("object identifier: "+object.getIdentifier());
 		
 		Path tmpObjectDirPath = Path.make(retrievalFolder.getAbsolutePath(), "data");	

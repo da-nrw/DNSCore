@@ -54,7 +54,7 @@ public class ATUseCaseIngestXMP extends Base{
 	@BeforeClass
 	public static void setUpBeforeClass() throws IOException{
 		setUpBase();
-		object = ingest(origName);
+		object = ath.ingest(origName);
 	}
 	
 	
@@ -67,7 +67,7 @@ public class ATUseCaseIngestXMP extends Base{
 	
 	@Test
 	public void testLZA() throws FileNotFoundException, JDOMException, IOException {
-		retrievePackage(object,retrievalFolder,"1");
+		ath.retrievePackage(object,retrievalFolder,"1");
 		System.out.println("object identifier: "+object.getIdentifier());
 		
 		Path tmpObjectDirPath = Path.make(retrievalFolder.getAbsolutePath(), "data");	

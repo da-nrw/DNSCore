@@ -46,7 +46,7 @@ public class ATUseCaseIngestMigrationAllowed extends Base {
 	@Before
 	public void setUp() throws IOException{
 		setUpBase();
-		o = ingest(ORIG_NAME);
+		o = ath.ingest(ORIG_NAME);
 	}
 	
 	@After
@@ -59,7 +59,7 @@ public class ATUseCaseIngestMigrationAllowed extends Base {
 	
 	@Test
 	public void test() throws IOException{
-		retrievePackage(o, UNPACKED_DIP, "1");
+		ath.retrievePackage(o, UNPACKED_DIP, "1");
 		
 		System.out.println(":::");
 		

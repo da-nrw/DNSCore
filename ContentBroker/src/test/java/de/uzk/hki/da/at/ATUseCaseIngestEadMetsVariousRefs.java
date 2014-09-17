@@ -19,7 +19,7 @@ public class ATUseCaseIngestEadMetsVariousRefs extends Base{
 	@BeforeClass
 	public static void setUp() throws IOException{
 		setUpBase();
-		object = ingest(origName);
+		object = ath.ingest(origName);
 	}
 	
 	@AfterClass

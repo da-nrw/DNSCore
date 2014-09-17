@@ -18,15 +18,8 @@
  */
 package de.uzk.hki.da.at;
 
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -38,28 +31,20 @@ import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
-import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.path.RelativePath;
-import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.repository.RepositoryFacade;
-import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Utilities;
 
 public class Base {
 
-	private static final String URN_NBN_DE_DANRW = "urn:nbn:de:danrw:";
-
-	private static final int wait_interval=2000; // in ms
 	
-	protected static Path testDataRootPath = new RelativePath("src/test/resources/at/");
+
+	
+	
 	protected static Node localNode;
 	protected static GridFacade gridFacade;
 	protected static RepositoryFacade repositoryFacade;
@@ -68,31 +53,8 @@ public class Base {
 	protected static User testContractor;
 	protected static PreservationSystem preservationSystem;
 	
+	protected static AcceptanceTestHelper ath = null;
 	
-	protected static void setUpBase() throws IOException{
-		
-		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
-		
-		instantiateNode();
-		if (localNode==null) throw new IllegalStateException("localNode could not be instantiated");
-
-		System.out.println("localnode: "+localNode.getName());
-		
-		Properties properties = Utilities.read(new File("conf/config.properties"));
-		instantiateGrid(properties);
-		if (gridFacade==null) throw new IllegalStateException("gridFacade could not be instantiated");
-		
-		instantiateRepository(properties);
-		if (repositoryFacade==null) throw new IllegalStateException("repositoryFacade could not be instantiated");
-
-		CentralDatabaseDAO centralDB = new CentralDatabaseDAO();
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		testContractor = centralDB.getContractor(session, "TEST");
-
-		preservationSystem = (PreservationSystem) session.get(PreservationSystem.class, 1);
-		session.close();
-	}
 	
 	/**
 	 * @param gridImplBeanName bean name 
@@ -143,204 +105,33 @@ public class Base {
 	
 	
 	
-	/**
-	 * Checking the database in regular intervals for a job in an error state ending with errorStatusLastDigit.
-	 * 
-	 * @param originalName
-	 * @param errorStatusLastDigit
-	 * @param timeout wait timeout ms until you consider the test failed.
-	 * @return job if found job in error state
-	 * @throws RuntimeException to signal the test considered failed. For example if it takes longer than timeout to reach the status.
-	 * 
-	 * @author Daniel M. de Oliveira
-	 */
-	protected Job waitForJobToBeInErrorStatus(String originalName,String errorStatusLastDigit,int timeout) throws InterruptedException{
+	protected static void setUpBase() throws IOException{
 		
-		int waited_ms_total=0;
-		while (true){
-			if (waited_ms_total>timeout) throw new RuntimeException("waited to long. test considered failed");
-			
-			Session session = HibernateUtil.openSession();
-			session.beginTransaction();
-			Job job = dao.getJob(session, originalName, C.TEST_USER_SHORT_NAME);
-			session.close();
-			
-			if (job==null) continue;
-			
-			Thread.sleep(wait_interval);
-			waited_ms_total+=wait_interval;
-
-			System.out.println("waiting for job to be ready ... "+job.getStatus());
-			if (job.getStatus().endsWith(errorStatusLastDigit)){
-				System.out.println("ready");
-				return job;
-			}
-		}
-	}
-	
-	/**
-	 * Waits for a job to reach a certain status.
-	 * 
-	 * @param originalName
-	 * @param status
-	 * @param timeout
-	 * @return
-	 * @throws InterruptedException
-	 */
-	protected Job waitForJobToBeInStatus(String originalName,String status,int timeout) 
-			throws InterruptedException{
-
-		while (true){
-
-			Session session = HibernateUtil.openSession();
-			session.beginTransaction();
-			Job job = dao.getJob(session, originalName, "TEST");
-
-			session.close();
-			
-			if (job!=null){
-				
-				System.out.println("waiting for job to be ready ... "+job.getStatus());
-				if (job.getStatus().equals(status)){
-					System.out.println("ready");
-					return job;
-				} else if (job.getStatus().endsWith("1") || job.getStatus().endsWith("3")
-						|| job.getStatus().endsWith("4")) {
-					String msg = "ERROR: Job in error state: " + job.getStatus();
-					System.out.println(msg);
-					
-					throw new RuntimeException(msg);
-				}
-			}
-			
-			Thread.sleep(timeout);
-		}
-	}
-	
-	/**
-	 * Waits that a job appears and disappears again.
-	 * 
-	 * @param originalName
-	 * @param timeout
-	 * @return
-	 * @throws RuntimeException if errorState occured.
-	 */
-	protected static Object waitForJobsToFinish(String originalName, int timeout){
-
-		// wait for job to appear
-		Job job = null;
-		int waited_ms_total=0;
-		while(job == null) {
-			if (waited_ms_total>timeout) throw new RuntimeException("waited to long. test considered failed");
-			
-			System.out.println("waiting for job to appear ... " + originalName);
-			Session session = HibernateUtil.openSession();
-			session.beginTransaction();
-			job = dao.getJob(session, originalName, "TEST");
-			session.close();
-			
-			try {
-				Thread.sleep(wait_interval);
-			} catch (InterruptedException e) {} // no problem
-			waited_ms_total+=wait_interval;
-		}
+		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
 		
-		Object resultO = job.getObject();
-
-		// wait for jobs to disappear
-		while (true){
-			if (waited_ms_total>timeout) throw new RuntimeException("waited to long. test considered failed");
-			
-			Session session = HibernateUtil.openSession();
-			session.beginTransaction();
-			job = dao.getJob(session, originalName, "TEST");
-
-			session.close();
-			
-			if (job==null) {
-				System.out.println("finished! " + originalName);
-				return resultO;
-				
-			} else if (job.getStatus().endsWith("1") || job.getStatus().endsWith("3")
-					|| job.getStatus().endsWith("4")) {
-				String oid=job.getObject().getIdentifier();
-				String msg = "ERROR: Job in error state: " + job.getStatus() + " in Object-Id "+ oid;
-				System.out.println(msg);
-				
-				if (job.getObject().getIdentifier()!=null){
-					try {
-						System.out.println("SHOWING OBJECT LOG:");
-						String localNodeWorkArea = localNode.getWorkAreaRootPath().toString();
-						String localNode = localNodeWorkArea.replace("/storage/WorkArea", "");
-						System.out.println(FileUtils.readFileToString(new File(Path.make(localNode, "log", "object-logs")+"/"+job.getObject().getIdentifier()+".log")));
-						System.out.println("END OF OBJECT LOG: "+job.getObject().getIdentifier());
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-				
-				throw new RuntimeException(msg);
-			}
-			
-			System.out.println("waiting for jobs to finish ... "+job.getStatus());
-			
-			try {
-				Thread.sleep(wait_interval);
-			} catch (InterruptedException e) {}
-			waited_ms_total+=wait_interval;
-		}
-	}
+		instantiateNode();
+		if (localNode==null) throw new IllegalStateException("localNode could not be instantiated");
 	
-	protected static Object fetchObjectFromDB(String originalName){
-		Object object = null;
+		System.out.println("localnode: "+localNode.getName());
+		
+		Properties properties = Utilities.read(new File("conf/config.properties"));
+		instantiateGrid(properties);
+		if (gridFacade==null) throw new IllegalStateException("gridFacade could not be instantiated");
+		
+		instantiateRepository(properties);
+		if (repositoryFacade==null) throw new IllegalStateException("repositoryFacade could not be instantiated");
+	
+		CentralDatabaseDAO centralDB = new CentralDatabaseDAO();
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		try {
-			object = dao.getUniqueObject(session,originalName, "TEST");
-		} catch (Exception e) {
-			fail("more than 1 Object found!"); 
-		}
-		session.close();
-		return object;
-	}
+		testContractor = centralDB.getContractor(session, "TEST");
 	
-	/**
-	 * Retrieves a package and unpacks it to a target folder.
-	 * <br>
-	 * <strong>!</strong> Make sure to delete targetFolder at tearDown in acceptance tests.
-	 * 
-	 * @param originalName of the object.
-	 * @param targetFolder to extract the DIP to.
-	 * @param packageName number of the package of the object.
-	 * @return the object entry from the database. 
-	 * @throws IOException if cannot fetch file from grid.
-	 * 
-	 * @author Daniel M. de Oliveira
-	 */
-	protected Object retrievePackage(Object o,File targetFolder,String packageName) throws IOException{
+		preservationSystem = (PreservationSystem) session.get(PreservationSystem.class, 1);
+		session.close();
 		
-		Object object=fetchObjectFromDB(o.getOrig_name());
+		ath = new AcceptanceTestHelper(gridFacade, dao, localNode,testContractor);
 		
-		System.out.println("object: "+object.getIdentifier());
-		
-		gridFacade.get(new File("/tmp/"+object.getIdentifier()+".pack_"+packageName+".tar"), 
-			"TEST/"+object.getIdentifier()+"/"+object.getIdentifier()+".pack_"+packageName+".tar");
-		
-		NativeJavaTarArchiveBuilder tar = new NativeJavaTarArchiveBuilder();
-		
-		try {
-			tar.unarchiveFolder(new File("/tmp/"+object.getIdentifier()+".pack_"+packageName+".tar"), 
-					new File("/tmp/"));
-		} catch (Exception e) {
-			fail("could not find source file or unarchive source file to tmp");
-		}
-		
-		new File("/tmp/"+object.getIdentifier()+".pack_"+packageName+".tar").delete();
-		FileUtils.moveDirectory(new File("/tmp/"+object.getIdentifier()+".pack_"+packageName),targetFolder);
-		
-		return object;
 	}
-
 
 	protected static void cleanStorage(){
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getWorkAreaRootPath(),"work","TEST"));
@@ -368,234 +159,7 @@ public class Base {
 		Path.make(localNode.getWorkAreaRootPath(),"/pips/institution/TEST").toFile().mkdirs();
 	}
 	
-
-	/**
-	 * @author Daniel M. de Oliveira
-	 * @throws IOException 
-	 */
-	protected Object putPackageToStorage(String identifier,String originalName,String containerName, Date createddate, int object_state) throws IOException{
-		if (createddate==null) createddate = new Date();
-		String urn =   URN_NBN_DE_DANRW+identifier;
-		int timeout = 2000;
-		StoragePolicy sp = new StoragePolicy(localNode);
-		ArrayList<String> destinations = new ArrayList<String>();
-		destinations.add("ciArchiveResourceGroup");
-		sp.setDestinations(destinations);
-		sp.setMinNodes(1);
-		
-		gridFacade.put(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_1.tar"), 
-				new RelativePath(C.TEST_USER_SHORT_NAME,identifier,identifier+".pack_1.tar").toString(), sp);
-		int i = 0;
-		while (!gridFacade.storagePolicyAchieved(new RelativePath(C.TEST_USER_SHORT_NAME,identifier,identifier+".pack_1.tar").toString(), sp)) {
-			try {
-				Thread.sleep(timeout);
-			} catch (InterruptedException e) {} // no problem
-			if (i>200) fail("Package was not replicated to archive resc");
-		}
-		Object object = new Object();
-		object.setContractor(testContractor);
-		object.setInitial_node("localnode");
-		object.setIdentifier(identifier);
-		object.setObject_state(object_state);
-		object.setUrn(urn);
-		object.setDate_created(String.valueOf(createddate.getTime()));
-		object.setDate_modified(String.valueOf(createddate.getTime()));
-		object.setLast_checked(createddate);
-		object.setOrig_name(originalName);
-		Package pkg = new Package();
-		pkg.setName("1");
-		pkg.setContainerName(containerName);
-		object.getPackages().add(pkg);
-		
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		session.save(object);
-		session.getTransaction().commit();
-		session.close();
-		
-		return object;
-	}
 	
 
-	/**
-	 * @author jpeters
-	 * @throws IOException 
-	 */
-	protected Object putPackageToStorage(String identifier,String originalName,String containerName) throws IOException{
-		 return putPackageToStorage(identifier,originalName,containerName ,null,0);
-	}
 	
-	
-	protected Map<Session, Object> createObject(String name, String packageType,String metadataFile) throws IOException {
-		
-		Map<Session, Object> sessionObjectMap = new HashMap<Session, Object>();
-		
-		gridFacade.put(
-				new File("src/test/resources/at/"+name+".pack_1.tar"),
-				"TEST/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
-		
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		
-		Object object = new Object();
-		object.setUrn("");
-		object.setIdentifier("ID-"+name);
-		object.setOrig_name(name);
-		
-		object.setContractor(testContractor);
-		object.setMetadata_file(metadataFile);
-		object.setPackage_type(packageType);
-		object.setObject_state(100);
-		object.setPublished_flag(0);
-		object.setDdbExclusion(false);
-		session.save(object);
-
-		int current_data_pk = object.getData_pk();
-		System.out.println("CREATED Object with id " + current_data_pk);
-		String current_data_pk_string = String.valueOf(current_data_pk);
-		object.setUrn("urn:nbn:de:danrw-test-"+current_data_pk_string);
-		session.saveOrUpdate(object);
-		
-		Package currentPackage = new Package();
-		currentPackage.setName("1");
-		currentPackage.setContainerName(name);
-		List<Package> packages = new ArrayList<Package>();
-		packages.add(currentPackage);
-		object.setPackages(packages);		
-		session.saveOrUpdate(object);	
-		
-		sessionObjectMap.put(session, object);
-		
-		return sessionObjectMap;
-	}
-	
-	/**
-	 * @throws IOException 
-	 */
-	protected void createJob(Map<Session, Object> sessionObject, String status) {
-		
-		Session session = (Session) sessionObject.keySet().toArray()[0];
-		Object object = sessionObject.get(session);
-	
-		Job job = new Job();
-		job.setStatus(status);
-		Node node = (Node)session.load(Node.class, localNode .getId());
-		job.setResponsibleNodeName(node.getName());
-		job.setObject(object);
-		session.save(job);
-		
-		session.getTransaction().commit();
-		session.close();
-	}
-	
-	protected void createObjectAndJob(String name,String status) throws IOException{
-		createObjectAndJob(name,status,null,null);
-	}
-
-	/**
-	 * @throws IOException 
-	 */
-	protected void createObjectAndJob(String name, 
-			String status,
-			String packageType,
-			String metadataFile) throws IOException{
-		gridFacade.put(
-				new File("src/test/resources/at/"+name+".pack_1.tar"),
-				"TEST/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
-		
-		
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		
-		Object object = new Object();
-		object.setUrn("");
-		object.setIdentifier("ID-"+name);
-		object.setOrig_name(name);
-		
-		object.setContractor(testContractor);
-		object.setMetadata_file(metadataFile);
-		object.setPackage_type(packageType);
-		object.setObject_state(100);
-		object.setPublished_flag(0);
-		object.setDdbExclusion(false);
-		session.save(object);
-
-		int data_pk = object.getData_pk();
-		System.out.println("CREATED Object with id " + data_pk);
-		String data_pk_string = String.valueOf(data_pk);
-		object.setUrn("urn:nbn:de:danrw-test-"+data_pk_string);
-		session.saveOrUpdate(object);
-		
-		
-		Package currentPackage = new Package();
-		currentPackage.setName("1");
-		currentPackage.setContainerName(name);
-		List<Package> packages = new ArrayList<Package>();
-		packages.add(currentPackage);
-		object.setPackages(packages);		
-		session.saveOrUpdate(object);
-		
-		Job job = new Job();
-//		job.setStatus(status);
-		Node node = (Node)session.load(Node.class, localNode .getId());
-		job.setResponsibleNodeName(node.getName());
-		job.setObject(object);
-		
-		job.setStatus(status);
-	
-		session.save(job);
-		
-		session.getTransaction().commit();
-		session.close();
-	}
-	
-	/**
-	 * Copies src/test/resources/at/[originalName].tgz to
-	 * IngestAreaRootPath/TEST/[originalName].tgz.
-	 * Waits until the package has been ingsted.
-	 * 
-	 * @return the database entry for the object.
-	 * @throws IOException 
-	 * 
-	 * @see {@link Base#ingest(String, String, String)}
-	 * 
-	 * @author Daniel M. de Oliveira
-	 */
-	protected static Object ingest(String originalName) throws IOException{
-		
-		return ingest(originalName,"tgz",originalName);
-	}
-	
-	/**
-	 * Copies src/test/resources/at/[sourcePackageName].[ext] 
-	 * to ingestAreaRootPath/TEST/[originalName].[ext]. 
-	 * Waits until the package has been ingested.
-	 * 
-	 * @param sourcePackageName
-	 * @param originalName
-	 * @param ext
-	 * @return the database entry for the object.
-	 * @throws IOException 
-	 * 
-	 * @author Daniel M. de Oliveira
-	 */
-	protected static Object ingest(
-			String sourcePackageName,
-			String ext,
-			String originalName) throws IOException{
-		
-		if (localNode==null) throw new IllegalStateException();
-		if (localNode.getIngestAreaRootPath()==null) throw new IllegalStateException();
-		
-		File sourceFile = Path.makeFile(testDataRootPath,sourcePackageName+"."+ext);
-		File targetFile = Path.makeFile(localNode.getIngestAreaRootPath(),"TEST",originalName+"."+ext);
-		
-		FileUtils.copyFile( sourceFile, targetFile );
-			
-		waitForJobsToFinish(originalName,300000);
-		
-		Object object = fetchObjectFromDB(originalName);
-		System.out.println("successfully ingested object with id "+object.getIdentifier());
-		return object;
-	}	
 }

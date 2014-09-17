@@ -51,8 +51,7 @@ import de.uzk.hki.da.test.TESTHelper;
 public class ATUseCaseIngestPREMISCheck extends PREMISBase{
 	
 	private static final String originalName = "ATUseCaseIngest1";
-	private static final String containerName = originalName+".tgz";
-	private static final File unpackedDIP = new File("/tmp/unpackedPREMIS");
+	private static final File unpackedDIP = new File("/tmp/ATUseCaseIngestPREMISCheck");
 	private Object object = null;
 	
 	@Before
@@ -61,14 +60,9 @@ public class ATUseCaseIngestPREMISCheck extends PREMISBase{
 	}
 	
 	@After
-	public void tearDown(){ 
-		try{
-			new File(localNode.getIngestAreaRootPath()+"/TEST/"+containerName).delete();
-			new File("/tmp/"+object.getIdentifier()+".pack_1.tar").delete();
-			FileUtils.deleteDirectory(new File("/tmp/"+object.getIdentifier()+".pack_1"));
-		}catch(Exception e){
-			System.out.println(e.getMessage());
-		}
+	public void tearDown() throws IOException{
+		
+		FileUtils.deleteDirectory(unpackedDIP);
 		
 		TESTHelper.clearDB();
 		cleanStorage();
@@ -77,13 +71,13 @@ public class ATUseCaseIngestPREMISCheck extends PREMISBase{
 	@Test
 	public void testProperPREMISCreation() throws Exception {
 		
-		object = ingest(originalName);
+		object = ath.ingest(originalName);
 		
-		retrievePackage(object,unpackedDIP,"1");
+		ath.retrievePackage(object,unpackedDIP,"1");
 		assertThat(object.getObject_state()).isEqualTo(100);
-		String unpackedObjectPath = "/tmp/"+object.getIdentifier()+".pack_1/";
+		String unpackedObjectPath = unpackedDIP.getAbsolutePath();
 		
-		String folders[] = new File(unpackedObjectPath + "data/").list();
+		String folders[] = new File(unpackedObjectPath + "/data/").list();
 		String repAName="";
 		String repBName="";
 		for (String f:folders){

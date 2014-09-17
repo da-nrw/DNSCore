@@ -68,7 +68,7 @@ public class ATUseCaseIngestDeltaContract extends Base{
 	public void test() throws IOException, InterruptedException, RepositoryException{
 		
 		Object 
-		o = ingest(ORIG_NAME+"1",DEFAULT_CONTAINER_EXTENSION,ORIG_NAME);
+		o = ath.ingest(ORIG_NAME+"1",DEFAULT_CONTAINER_EXTENSION,ORIG_NAME);
 
 		InputStream is = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
 				JPG_STREAM_ID);
@@ -78,7 +78,7 @@ public class ATUseCaseIngestDeltaContract extends Base{
 		
 		Thread.sleep(_1_MINUTE); // to prevent the repnames to match the ones of the previous package
 		
-		o = ingest(ORIG_NAME+"2",DEFAULT_CONTAINER_EXTENSION,ORIG_NAME);
+		o = ath.ingest(ORIG_NAME+"2",DEFAULT_CONTAINER_EXTENSION,ORIG_NAME);
 
 		InputStream is2 = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
 				JPG_STREAM_ID);
@@ -88,7 +88,7 @@ public class ATUseCaseIngestDeltaContract extends Base{
 
 		Thread.sleep(_1_MINUTE); // to prevent the repnames to match the ones of the previous package
 		
-		o = ingest(ORIG_NAME+"3",DEFAULT_CONTAINER_EXTENSION,ORIG_NAME);
+		o = ath.ingest(ORIG_NAME+"3",DEFAULT_CONTAINER_EXTENSION,ORIG_NAME);
 
 		InputStream is3 = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
 				JPG_STREAM_ID);

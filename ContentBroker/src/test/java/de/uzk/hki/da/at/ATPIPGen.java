@@ -71,10 +71,10 @@ public class ATPIPGen extends Base{
 	public void testUpdateUrls() throws InterruptedException, IOException, JDOMException, RepositoryException{
 		
 		String name = "UpdateUrls";
-		createObjectAndJob("ATPIPGen"+name,"700","METS","mets.xml");
+		ath.createObjectAndJob("ATPIPGen"+name,"700","METS","mets.xml");
 
-		waitForJobsToFinish("ATPIPGen"+name, 90000);
-		Object object = fetchObjectFromDB("ATPIPGen"+name);
+		ath.waitForJobsToFinish("ATPIPGen"+name, 90000);
+		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-open", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
@@ -118,9 +118,9 @@ public class ATPIPGen extends Base{
 	public void testPublishInstOnly() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "InstOnly";
-		createObjectAndJob("ATPIPGen"+name,"700");
-		waitForJobsToFinish("ATPIPGen"+name, 90000);
-		Object object = fetchObjectFromDB("ATPIPGen"+name);
+		ath.createObjectAndJob("ATPIPGen"+name,"700");
+		ath.waitForJobsToFinish("ATPIPGen"+name, 90000);
+		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-open", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
@@ -131,9 +131,9 @@ public class ATPIPGen extends Base{
 	public void testNoPubWithLawSet() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "NoPubWithLawSet";
-		createObjectAndJob("ATPIPGen"+name,"700");
-		waitForJobsToFinish("ATPIPGen"+name, 90000);
-		Object object = fetchObjectFromDB("ATPIPGen"+name);
+		ath.createObjectAndJob("ATPIPGen"+name,"700");
+		ath.waitForJobsToFinish("ATPIPGen"+name, 90000);
+		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
 		
@@ -143,9 +143,9 @@ public class ATPIPGen extends Base{
 	public void testNoPubWithStartDateSet() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "NoPubWithStartDateSet";
-		createObjectAndJob("ATPIPGen"+name,"700");
-		waitForJobsToFinish("ATPIPGen"+name, 90000);
-		Object object = fetchObjectFromDB("ATPIPGen"+name);
+		ath.createObjectAndJob("ATPIPGen"+name,"700");
+		ath.waitForJobsToFinish("ATPIPGen"+name, 90000);
+		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
 		
@@ -156,9 +156,9 @@ public class ATPIPGen extends Base{
 	public void testPublishNothing() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "PublishNothing";
-		createObjectAndJob("ATPIPGen"+name,"700");
-		waitForJobsToFinish("ATPIPGen"+name,  90000);
-		Object object = fetchObjectFromDB("ATPIPGen"+name);
+		ath.createObjectAndJob("ATPIPGen"+name,"700");
+		ath.waitForJobsToFinish("ATPIPGen"+name,  90000);
+		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-closed"));
@@ -169,9 +169,9 @@ public class ATPIPGen extends Base{
 	public void testPublishAll() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "AllPublic";
-		createObjectAndJob("ATPIPGen"+name,"700");
-		waitForJobsToFinish("ATPIPGen"+name,  90000);
-		Object object = fetchObjectFromDB("ATPIPGen"+name);
+		ath.createObjectAndJob("ATPIPGen"+name,"700");
+		ath.waitForJobsToFinish("ATPIPGen"+name,  90000);
+		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
 		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), "collection-closed"));

@@ -66,8 +66,8 @@ public class ATUseCaseRetrieval extends Base{
 	public void testHappyPath() throws Exception{
 		
 		String name = "ATUseCaseRetrieval";
-		createObjectAndJob(name,"900");
-		waitForJobToBeInStatus(name, "950", 2000);
+		ath.createObjectAndJob(name,"900");
+		ath.waitForJobToBeInStatus(name, "950", 2000);
 		
 		System.out.println(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/ID-ATUseCaseRetrieval.tar").getAbsolutePath());
 		assertTrue(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/ID-ATUseCaseRetrieval.tar").exists());

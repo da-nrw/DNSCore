@@ -61,7 +61,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 	public void testUmlautsInPackageName() throws Exception{
 		
 		originalName = "ATÜÄÖ";
-		object = ingest(originalName);
+		object = ath.ingest(originalName);
 		System.out.println("yeah!");
 	}
 	
@@ -69,7 +69,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 	public void testSpecialCharactersInFileNames() throws Exception{
 		
 		originalName = "ATSonderzeichen_in_Dateinamen";
-		object = ingest(originalName);
+		object = ath.ingest(originalName);
 		System.out.println("yeah!");
 	}
 	
@@ -77,7 +77,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 	public void testUmlautsInFileNames() throws Exception{
 		
 		originalName = "ATUmlaute_in_Dateinamen";
-		object = ingest(originalName);
+		object = ath.ingest(originalName);
 		System.out.println("yeah!");
 	}
 	
@@ -85,7 +85,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 	public void testTARContainer() throws Exception{
 		
 		originalName = "AT_CON1";
-		object = ingest(originalName,"tar",originalName);
+		object = ath.ingest(originalName,"tar",originalName);
 		System.out.println("yeah!");
 	}
 	
@@ -93,7 +93,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 	public void testTGZContainer() throws Exception{
 		
 		originalName = "AT_CON2";
-		object = ingest(originalName);
+		object = ath.ingest(originalName);
 		System.out.println("yeah!");
 	}
 	
@@ -101,7 +101,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 	public void testZIPContainer() throws Exception{
 		
 		originalName = "AT_CON3";
-		object = ingest(originalName,"zip",originalName);
+		object = ath.ingest(originalName,"zip",originalName);
 		System.out.println("yeah!");
 	}
 	
@@ -109,7 +109,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 	public void testSpecialCharsInPackageName() throws Exception{
 		
 		originalName = "AT&Sonderzeichen%in#Paketnamen";
-		object = ingest(originalName);
+		object = ath.ingest(originalName);
 		System.out.println("yeah!");
 	}
 	
@@ -119,7 +119,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 	public void testWhiteSpacesInFileNames() throws Exception{
 		
 		originalName = "ATLeerzeichen_in_Dateinamen";
-		object = ingest(originalName);
+		object = ath.ingest(originalName);
 		System.out.println("yeah!");
 	}
 }

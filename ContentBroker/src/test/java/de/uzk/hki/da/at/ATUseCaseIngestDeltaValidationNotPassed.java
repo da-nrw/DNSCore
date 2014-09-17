@@ -35,7 +35,7 @@ import de.uzk.hki.da.utils.C;
 /**
  * @author Daniel M. de Oliveira
  */
-public class ATUseCaseIngestDeltaValidationNotPassed extends UserErrorBase {
+public class ATUseCaseIngestDeltaValidationNotPassed extends Base {
 	                                            
 	private static final String ORIG_NAME =    "ATUseCaseIngestDeltaDuplicateEAD";
 	private static final String IDENTIFIER =   "ATUseCaseIngestDeltaDuplicateEADIdentifier";
@@ -47,7 +47,7 @@ public class ATUseCaseIngestDeltaValidationNotPassed extends UserErrorBase {
 	public void setUp() throws IOException{
 		setUpBase();
 
-		object = putPackageToStorage(IDENTIFIER,ORIG_NAME,CONTAINER_NAME,null,100);
+		object = ath.putPackageToStorage(IDENTIFIER,ORIG_NAME,CONTAINER_NAME,null,100);
 		FileUtils.copyFile(Path.makeFile(TC.TEST_ROOT_AT,CONTAINER_NAME), 
 				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME,CONTAINER_NAME));
 	}
@@ -60,6 +60,6 @@ public class ATUseCaseIngestDeltaValidationNotPassed extends UserErrorBase {
 	
 	@Test
 	public void testRejectDuplicateEADFiles() throws IOException, InterruptedException{
-		ingestAndWaitForErrorState(ORIG_NAME, C.USER_ERROR_STATE_DIGIT);
+		ath.ingestAndWaitForErrorState(ORIG_NAME, C.USER_ERROR_STATE_DIGIT);
 	}
 }

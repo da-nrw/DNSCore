@@ -61,14 +61,14 @@ public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
 	private static final String ORIG_NAME = "ATUseCaseIngestDelta";
 	private static final String IDENTIFIER =   "ATUseCaseIngestDeltaIdentifier";
 	private static final String containerName = ORIG_NAME+"."+C.FILE_EXTENSION_TGZ;
-	private static final File unpackedDIP = new File("/tmp/unpackedPREMISCheck");
+	private static final File unpackedDIP = new File("/tmp/ATUseCaseIngestDeltaPREMISCheck");
 	
 
 	@Before
 	public void setUp() throws IOException{
 		setUpBase();
 
-		object = putPackageToStorage(IDENTIFIER,ORIG_NAME,containerName,new Date(),100);
+		object = ath.putPackageToStorage(IDENTIFIER,ORIG_NAME,containerName,new Date(),100);
 		FileUtils.copyFile(Path.makeFile(TC.TEST_ROOT_AT,ORIG_NAME+"2.tgz"), 
 				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME,containerName));
 	}
@@ -87,13 +87,13 @@ public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
 	@Test
 	public void testProperPREMISCreation() throws Exception{
 		
-		object = waitForJobsToFinish(ORIG_NAME,20000);
-		retrievePackage(object,unpackedDIP,"2");
+		object = ath.waitForJobsToFinish(ORIG_NAME,20000);
+		ath.retrievePackage(object,unpackedDIP,"2");
 		
 		assertEquals(ORIG_NAME,object.getOrig_name());
 		assertEquals(100,object.getObject_state());
 		checkPremis(object.getIdentifier(),
-				"/tmp/" + object.getIdentifier() + ".pack_2/data/"
+				unpackedDIP.getAbsolutePath() + "/data/"
 				);
 	}
 	

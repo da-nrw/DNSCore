@@ -61,7 +61,7 @@ public class ATUseCaseIngestObjectDBProperties extends Base{
 	 */
 	@Test
 	public void testStartDateAndFormatsGetSaved() throws IOException, InterruptedException, ParseException{
-		Object object = ingest("ATUseCaseIngestStartDateFormats");
+		Object object = ath.ingest("ATUseCaseIngestStartDateFormats");
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));		
@@ -90,7 +90,7 @@ public class ATUseCaseIngestObjectDBProperties extends Base{
 	 */
 	@Test
 	public void testLawGetsSaved() throws IOException, InterruptedException, ParseException{
-		Object object = ingest("ATUseCaseIngestLaw");
+		Object object = ath.ingest("ATUseCaseIngestLaw");
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
@@ -118,7 +118,7 @@ public class ATUseCaseIngestObjectDBProperties extends Base{
 	 */
 	@Test
 	public void testCodecsGetSaved() throws IOException, InterruptedException{
-		Object object = ingest("ATUseCaseIngestCodecs");
+		Object object = ath.ingest("ATUseCaseIngestCodecs");
 		
 		assertThat(object.getOriginal_formats()).contains("x-fmt/384");
 		assertThat(StringUtils.countOccurrencesOf(object.getOriginal_formats(), "x-fmt/384")).isEqualTo(1);

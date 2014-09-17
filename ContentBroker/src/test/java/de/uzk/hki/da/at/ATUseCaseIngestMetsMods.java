@@ -67,7 +67,7 @@ public class ATUseCaseIngestMetsMods extends Base{
 	@BeforeClass
 	public static void setUpBeforeClass() throws IOException{
 		setUpBase();
-		object = ingest(origName);
+		object = ath.ingest(origName);
 	}
 	
 	@AfterClass
@@ -79,7 +79,7 @@ public class ATUseCaseIngestMetsMods extends Base{
 	
 	@Test
 	public void testLZA() throws Exception{
-		retrievePackage(object,retrievalFolder,"1");
+		ath.retrievePackage(object,retrievalFolder,"1");
 		System.out.println("object identifier: "+object.getIdentifier());		
 		
 		Path tmpObjectDirPath = Path.make(retrievalFolder.getAbsolutePath(), "data");	

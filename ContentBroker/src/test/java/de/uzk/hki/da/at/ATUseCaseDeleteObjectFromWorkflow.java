@@ -24,7 +24,7 @@ public class ATUseCaseDeleteObjectFromWorkflow extends Base{
 	@Test
 	public void test() throws InterruptedException, IOException {
 		String name = "ATUseCaseDeleteObjectFromWorkflow";
-		createObjectAndJob(name,"800","METS","mets.xml");
-		waitForJobsToFinish(name, 20000);
+		ath.createObjectAndJob(name,"800","METS","mets.xml");
+		ath.waitForJobsToFinish(name, 20000);
 	}
 }

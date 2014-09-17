@@ -69,7 +69,7 @@ public class ATUseCaseIngestRheinlaender extends Base{
 	@BeforeClass
 	public static void setUp() throws IOException{
 		setUpBase();
-		object = ingest(origName);
+		object = ath.ingest(origName);
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
