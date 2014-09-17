@@ -150,7 +150,7 @@ public class Base {
 	 * @param errorStatusLastDigit
 	 * @param timeout wait timeout ms until you consider the test failed.
 	 * @return job if found job in error state
-	 * @throws RuntimeException to signal the test considered failed.
+	 * @throws RuntimeException to signal the test considered failed. For example if it takes longer than timeout to reach the status.
 	 * 
 	 * @author Daniel M. de Oliveira
 	 */
@@ -178,7 +178,15 @@ public class Base {
 		}
 	}
 	
-	
+	/**
+	 * Waits for a job to reach a certain status.
+	 * 
+	 * @param originalName
+	 * @param status
+	 * @param timeout
+	 * @return
+	 * @throws InterruptedException
+	 */
 	protected Job waitForJobToBeInStatus(String originalName,String status,int timeout) 
 			throws InterruptedException{
 
@@ -213,20 +221,17 @@ public class Base {
 	 * Waits that a job appears and disappears again.
 	 * 
 	 * @param originalName
-	 * @param timeout the intervals for checking the jobs state
+	 * @param timeout
 	 * @return
-	 * @throws RuntimeException if errorState occured
+	 * @throws RuntimeException if errorState occured.
 	 */
 	protected static Object waitForJobsToFinish(String originalName, int timeout){
 
 		// wait for job to appear
 		Job job = null;
-		int count = 0;
+		int waited_ms_total=0;
 		while(job == null) {
-			
-			if(++count * timeout > 60000) {
-				throw new RuntimeException("ERROR: Job did not appear after 1 minute! " + originalName);
-			}
+			if (waited_ms_total>timeout) throw new RuntimeException("waited to long. test considered failed");
 			
 			System.out.println("waiting for job to appear ... " + originalName);
 			Session session = HibernateUtil.openSession();
@@ -235,15 +240,17 @@ public class Base {
 			session.close();
 			
 			try {
-				Thread.sleep(timeout);
+				Thread.sleep(wait_interval);
 			} catch (InterruptedException e) {} // no problem
+			waited_ms_total+=wait_interval;
 		}
 		
 		Object resultO = job.getObject();
 
 		// wait for jobs to disappear
 		while (true){
-
+			if (waited_ms_total>timeout) throw new RuntimeException("waited to long. test considered failed");
+			
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
 			job = dao.getJob(session, originalName, "TEST");
@@ -278,8 +285,9 @@ public class Base {
 			System.out.println("waiting for jobs to finish ... "+job.getStatus());
 			
 			try {
-				Thread.sleep(timeout);
-			} catch (InterruptedException e) {} // no problem
+				Thread.sleep(wait_interval);
+			} catch (InterruptedException e) {}
+			waited_ms_total+=wait_interval;
 		}
 	}
 	
@@ -328,7 +336,7 @@ public class Base {
 		}
 		
 		new File("/tmp/"+object.getIdentifier()+".pack_"+packageName+".tar").delete();
-		new File("/tmp/"+object.getIdentifier()).renameTo(targetFolder);
+		FileUtils.moveDirectory(new File("/tmp/"+object.getIdentifier()+".pack_"+packageName),targetFolder);
 		
 		return object;
 	}
@@ -584,7 +592,7 @@ public class Base {
 		
 		FileUtils.copyFile( sourceFile, targetFile );
 			
-		waitForJobsToFinish(originalName,500);
+		waitForJobsToFinish(originalName,60000);
 		
 		Object object = fetchObjectFromDB(originalName);
 		System.out.println("successfully ingested object with id "+object.getIdentifier());

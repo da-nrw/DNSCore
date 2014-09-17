@@ -119,7 +119,7 @@ public class ATPIPGen extends Base{
 		
 		String name = "InstOnly";
 		createObjectAndJob("ATPIPGen"+name,"700");
-		waitForJobsToFinish("ATPIPGen"+name, 500);
+		waitForJobsToFinish("ATPIPGen"+name, 20000);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-open", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
@@ -132,7 +132,7 @@ public class ATPIPGen extends Base{
 		
 		String name = "NoPubWithLawSet";
 		createObjectAndJob("ATPIPGen"+name,"700");
-		waitForJobsToFinish("ATPIPGen"+name, 500);
+		waitForJobsToFinish("ATPIPGen"+name, 20000);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
@@ -144,7 +144,7 @@ public class ATPIPGen extends Base{
 		
 		String name = "NoPubWithStartDateSet";
 		createObjectAndJob("ATPIPGen"+name,"700");
-		waitForJobsToFinish("ATPIPGen"+name, 500);
+		waitForJobsToFinish("ATPIPGen"+name, 20000);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
@@ -157,7 +157,7 @@ public class ATPIPGen extends Base{
 		
 		String name = "PublishNothing";
 		createObjectAndJob("ATPIPGen"+name,"700");
-		waitForJobsToFinish("ATPIPGen"+name,  500);
+		waitForJobsToFinish("ATPIPGen"+name,  20000);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
@@ -170,7 +170,7 @@ public class ATPIPGen extends Base{
 		
 		String name = "AllPublic";
 		createObjectAndJob("ATPIPGen"+name,"700");
-		waitForJobsToFinish("ATPIPGen"+name,  500);
+		waitForJobsToFinish("ATPIPGen"+name,  20000);
 		Object object = fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
