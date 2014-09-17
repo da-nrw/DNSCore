@@ -28,15 +28,16 @@ public class MetsMetadataStructure extends MetadataStructure {
 	private XPath metsXPath = 					XPath.newInstance(METS_XPATH_EXPRESSION);
 	private static final Namespace METS_NS = 	Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = 	Namespace.getNamespace("http://www.w3.org/1999/xlink");
+	private List<DAFile> currentDAFiles;
 
-	@SuppressWarnings("rawtypes")
-	List fileElements;
+	List<Element> fileElements;
 	
 	public MetsMetadataStructure(File metadataFile, List<DAFile> daFiles)
 			throws FileNotFoundException, JDOMException, IOException {
 		super(metadataFile, daFiles);
 		
 		metsFile = metadataFile;
+		currentDAFiles = daFiles;
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		FileInputStream fileInputStream = new FileInputStream(metsFile);
@@ -51,19 +52,10 @@ public class MetsMetadataStructure extends MetadataStructure {
 		return metsFile;
 	}
 	
-	public String getMimetype(Element fileElement) {
-		return fileElement.getAttribute("MIMETYPE").getValue();
-	}
-	
-	public String getLoctype(Element fileElement) {
-		return fileElement.getChild("FLocat", METS_NS).getAttribute("LOCTYPE").getValue();
-	}
-	
 	public String getHref(Element fileElement) {
 		return fileElement.getChild("FLocat", METS_NS).getAttribute("href", XLINK_NS).getValue();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<Element> getMetsFileElements() {
 		return fileElements;
 	} 
@@ -79,9 +71,17 @@ public class MetsMetadataStructure extends MetadataStructure {
 		return currentFileElements;
 	} 
 	
+	private List<String> getReferences() {
+		List<String> references = new ArrayList<String>();
+		for(Element fileElement : fileElements) {
+			references.add(getHref(fileElement));
+		}
+		return references;
+	}
+	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  SETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
-	public void setMimetype(Element fileElement, String mimetype) {
+	private void setMimetype(Element fileElement, String mimetype) {
 		if(fileElement.getAttribute("MIMETYPE")!=null) {
 			fileElement.getAttribute("MIMETYPE").setValue(mimetype);
 		} else {
@@ -89,7 +89,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 		}
 	}
 	
-	public void setLoctype(Element fileElement, String loctype) {
+	private void setLoctype(Element fileElement, String loctype) {
 		if(loctype!=null) {
 			if(fileElement.getChild("FLocat", METS_NS).getAttribute("LOCTYPE")!=null) {
 				fileElement.getChild("FLocat", METS_NS).getAttribute("LOCTYPE").setValue(loctype);
@@ -99,9 +99,30 @@ public class MetsMetadataStructure extends MetadataStructure {
 		}
 	}
 	
-	public void setHref(Element fileElement, String newHref) {
+	private void setHref(Element fileElement, String newHref) {
 		fileElement.getChild("FLocat", METS_NS).getAttribute("href", XLINK_NS).setValue(newHref);
 	}
+	
+	private List<DAFile> getReferencedFiles(List<DAFile> daFiles) {
+		List<String> references = getReferences();
+		List<DAFile> existingFiles = new ArrayList<DAFile>();
+		Boolean fileExists = false;
+		for(String ref : references) {
+			for(DAFile dafile : daFiles) {
+				if(ref.equals(dafile.getRelative_path())) {
+					fileExists = true;
+					existingFiles.add(dafile);
+				}
+				if(fileExists) {
+					logger.debug("File "+dafile.getRelative_path()+" exists.");
+				} else {
+					logger.error("File "+dafile.getRelative_path()+" does not exist.");
+				}
+			}
+		}
+		return existingFiles;
+	}
+	
 	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::  REPLACEMENTS  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -129,9 +150,18 @@ public class MetsMetadataStructure extends MetadataStructure {
 		outputter.output(metsDoc, new FileWriter(targetMetsFile));
 	}
 
+//	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::   VALIDATION   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+	private boolean checkReferencedFiles() {
+		Boolean valid = true;
+		if(getReferences().size()!=getReferencedFiles(currentDAFiles).size()) {
+			valid = false;
+		}
+		return valid;
+	}
+	
 	@Override
 	public boolean isValid() {
-		return true;
+		return checkReferencedFiles();
 	}
-
 }
