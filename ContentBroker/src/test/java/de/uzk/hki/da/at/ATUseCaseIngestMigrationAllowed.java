@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +61,18 @@ public class ATUseCaseIngestMigrationAllowed extends Base {
 	public void test() throws IOException{
 		retrievePackage(o, UNPACKED_DIP, "1");
 		
-//		assertFalse(Path.makeFile(UNPACKED_DIP.toString(),"data","image42.jpg").exists());
-//		assertTrue(Path.makeFile(UNPACKED_DIP.toString(),"data","image42.tif").exists());
+		System.out.println(":::");
+		
+		String brep="";
+		File[] fList = Path.makeFile(UNPACKED_DIP.toString(),"data").listFiles();
+		for (File file : fList){
+			if (file.getAbsolutePath().endsWith("+b")){
+				brep=FilenameUtils.getBaseName(file.getAbsolutePath());
+				System.out.println(":"+brep);
+			}
+		}
+
+		assertTrue(Path.makeFile(UNPACKED_DIP.toString(),"data",brep,"image42.tif").exists());
+		
 	}
 }
