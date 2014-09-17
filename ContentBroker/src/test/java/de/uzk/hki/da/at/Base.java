@@ -592,7 +592,7 @@ public class Base {
 		
 		FileUtils.copyFile( sourceFile, targetFile );
 			
-		waitForJobsToFinish(originalName,60000);
+		waitForJobsToFinish(originalName,180000);
 		
 		Object object = fetchObjectFromDB(originalName);
 		System.out.println("successfully ingested object with id "+object.getIdentifier());

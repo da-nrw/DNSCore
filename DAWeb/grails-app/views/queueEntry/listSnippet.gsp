@@ -11,11 +11,10 @@
 		<tr>
 			
 			<th class="sortable field-id">
-				<a href="#" onClick="return sortQueue('queueEntry.obj.identifier');">${message(code: 'queueEntry.obj.identifier.label', default: 'Identifier')}</a>
+				<a href="#" onClick="return sortQueue('obj.identifier');">${message(code: 'obj.identifier.label', default: 'Identifier')}</a>
 			</th>
-			
 			<th class="sortable field-status">
-				<a href="#" onClick="return sortQueue('status');">${message(code: 'queueEntry.status.label', default: 'Status')}</a>
+				<a href="#" onClick="return sortQueue('status');">${message(code: 'queueEntry.status.label', default: 'Information (Status)')}</a>
 			</th>
 			
 			<th class="sortable field-urn">
@@ -42,17 +41,14 @@
 			<tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' ' + statusType}">
 
 				<td>
-					<g:if test="${queueEntryInstance.obj != null}">
+					<g:link action="show" id="${queueEntryInstance.id}"><g:if test="${queueEntryInstance.obj != null}">
 						${fieldValue(bean: queueEntryInstance.obj, field: "identifier")}
 					</g:if>
+						</g:link>
 				</td>
-
 				<td>
-					<g:link action="show" id="${queueEntryInstance.id}">
-						${fieldValue(bean: queueEntryInstance, field: "status")}
-					</g:link>
+						${queueEntryInstance.getInformation()}
 				</td>
-
 				<td>
 					${fieldValue(bean: queueEntryInstance.obj, field: "urn")}
 				</td>
