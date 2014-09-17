@@ -58,10 +58,10 @@ public class ATUseCaseIngestDeltaContract extends Base{
 	public void tearDown(){
 
 		TESTHelper.clearDB();
-//		cleanStorage();
-//		
-//		new File(OUTPUT_JPG_1).delete();
-//		new File(OUTPUT_JPG_2).delete();
+		cleanStorage();
+		
+		new File(OUTPUT_JPG_1).delete();
+		new File(OUTPUT_JPG_2).delete();
 	}
 	
 	@Test
