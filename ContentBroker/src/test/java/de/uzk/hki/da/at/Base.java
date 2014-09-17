@@ -38,6 +38,7 @@ import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -65,13 +66,13 @@ public class Base {
 	protected static DistributedConversionAdapter distributedConversionAdapter;
 	protected static CentralDatabaseDAO dao = new CentralDatabaseDAO();
 	protected static User testContractor;
-
+	protected static PreservationSystem preservationSystem;
+	
 	
 	protected static void setUpBase() throws IOException{
 		
-
 		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
-	
+		
 		instantiateNode();
 		if (localNode==null) throw new IllegalStateException("localNode could not be instantiated");
 
@@ -88,6 +89,8 @@ public class Base {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		testContractor = centralDB.getContractor(session, "TEST");
+
+		preservationSystem = (PreservationSystem) session.get(PreservationSystem.class, 1);
 		session.close();
 	}
 	
@@ -337,10 +340,6 @@ public class Base {
 	}
 	
 
-	protected void createObjectAndJob(String name,String status) throws IOException{
-		createObjectAndJob(name,status,null,null);
-	}
-	
 	/**
 	 * @author Daniel M. de Oliveira
 	 * @throws IOException 
@@ -460,10 +459,17 @@ public class Base {
 		session.close();
 	}
 	
+	protected void createObjectAndJob(String name,String status) throws IOException{
+		createObjectAndJob(name,status,null,null);
+	}
+
 	/**
 	 * @throws IOException 
 	 */
-	protected void createObjectAndJob(String name, String status,String packageType,String metadataFile) throws IOException{
+	protected void createObjectAndJob(String name, 
+			String status,
+			String packageType,
+			String metadataFile) throws IOException{
 		gridFacade.put(
 				new File("src/test/resources/at/"+name+".pack_1.tar"),
 				"TEST/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
@@ -515,39 +521,48 @@ public class Base {
 	}
 	
 	/**
-	 * Puts the file with named originalName into the contractor TEST's
-	 * subfolder of the ingest area of the running ContentBroker. Waits until 
-	 * the file has been ingested.
+	 * Copies src/test/resources/at/[originalName].tgz to
+	 * IngestAreaRootPath/TEST/[originalName].tgz.
+	 * Waits until the package has been ingsted.
 	 * 
-	 * For the source file will be searched for in testDataRootPath.
+	 * @return the database entry for the object.
+	 * @throws IOException 
+	 * 
+	 * @see {@link Base#ingest(String, String, String)}
 	 * 
 	 * @author Daniel M. de Oliveira
-	 * @param originalName just the basename of the file. the extension default to tgz. if you want to explicitely change that use 
-	 * ingest(String,String).
-	 * @return the database entry for the object of the ingested package.
 	 */
-	protected static Object ingest(String originalName){
+	protected static Object ingest(String originalName) throws IOException{
 		
-		return ingest(originalName,"tgz");
+		return ingest(originalName,"tgz",originalName);
 	}
-			
+	
 	/**
-	 * @see Base#ingest(String)
+	 * Copies src/test/resources/at/[sourcePackageName].[ext] 
+	 * to ingestAreaRootPath/TEST/[originalName].[ext]. 
+	 * Waits until the package has been ingested.
+	 * 
+	 * @param sourcePackageName
+	 * @param originalName
+	 * @param ext
+	 * @return the database entry for the object.
+	 * @throws IOException 
 	 * 
 	 * @author Daniel M. de Oliveira
-	 * @param originalName
-	 * @param containerSuffix
-	 * @return
 	 */
-	protected static Object ingest(String originalName,String containerSuffix){
+	protected static Object ingest(
+			String sourcePackageName,
+			String ext,
+			String originalName) throws IOException{
 		
-		try {
-			System.out.println("copy "+Path.makeFile( testDataRootPath, originalName+"."+containerSuffix )+" to "+Path.makeFile(localNode.getIngestAreaRootPath(),"TEST"));
-			FileUtils.copyFileToDirectory( Path.makeFile( testDataRootPath, originalName+"."+containerSuffix ), 
-					Path.makeFile(localNode.getIngestAreaRootPath(),"TEST"));
-		} catch (IOException e) {
-			fail("could not copy file to ingest area. \n"+e);
-		}
+		if (localNode==null) throw new IllegalStateException();
+		if (localNode.getIngestAreaRootPath()==null) throw new IllegalStateException();
+		
+		File sourceFile = Path.makeFile(testDataRootPath,sourcePackageName+"."+ext);
+		File targetFile = Path.makeFile(localNode.getIngestAreaRootPath(),"TEST",originalName+"."+ext);
+		
+		FileUtils.copyFile( sourceFile, targetFile );
+			
 		waitForJobsToFinish(originalName,500);
 		
 		Object object = fetchObjectFromDB(originalName);
