@@ -179,7 +179,8 @@ public class Base {
 	}
 	
 	
-	protected Job waitForJobToBeInStatus(String originalName,String status,int timeout) throws InterruptedException{
+	protected Job waitForJobToBeInStatus(String originalName,String status,int timeout) 
+			throws InterruptedException{
 
 		while (true){
 
@@ -208,7 +209,15 @@ public class Base {
 		}
 	}
 	
-	protected static void waitForJobsToFinish(String originalName, int timeout){
+	/**
+	 * Waits that a job appears and disappears again.
+	 * 
+	 * @param originalName
+	 * @param timeout the intervals for checking the jobs state
+	 * @return
+	 * @throws RuntimeException if errorState occured
+	 */
+	protected static Object waitForJobsToFinish(String originalName, int timeout){
 
 		// wait for job to appear
 		Job job = null;
@@ -230,6 +239,8 @@ public class Base {
 			} catch (InterruptedException e) {} // no problem
 		}
 		
+		Object resultO = job.getObject();
+
 		// wait for jobs to disappear
 		while (true){
 
@@ -241,7 +252,8 @@ public class Base {
 			
 			if (job==null) {
 				System.out.println("finished! " + originalName);
-				return;
+				return resultO;
+				
 			} else if (job.getStatus().endsWith("1") || job.getStatus().endsWith("3")
 					|| job.getStatus().endsWith("4")) {
 				String oid=job.getObject().getIdentifier();
@@ -285,29 +297,38 @@ public class Base {
 	}
 	
 	/**
-	 * @return physical path to unpacked object
-	 * @throws Exception 
+	 * Retrieves a package and unpacks it to a target folder.
+	 * <br>
+	 * <strong>!</strong> Make sure to delete targetFolder at tearDown in acceptance tests.
+	 * 
+	 * @param originalName of the object.
+	 * @param targetFolder to extract the DIP to.
+	 * @param packageName number of the package of the object.
+	 * @return the object entry from the database. 
+	 * @throws IOException if cannot fetch file from grid.
+	 * 
+	 * @author Daniel M. de Oliveira
 	 */
-	protected Object retrievePackage(String originalName,String packageName){
+	protected Object retrievePackage(Object o,File targetFolder,String packageName) throws IOException{
 		
-		Object object=fetchObjectFromDB(originalName);
+		Object object=fetchObjectFromDB(o.getOrig_name());
 		
 		System.out.println("object: "+object.getIdentifier());
 		
-		try {
-			gridFacade.get(new File("/tmp/"+object.getIdentifier()+".pack_"+packageName+".tar"), 
-					"TEST/"+object.getIdentifier()+"/"+object.getIdentifier()+".pack_"+packageName+".tar");
-		} catch (IOException e) {
-			fail("could not fetch object from grid");
-		}
+		gridFacade.get(new File("/tmp/"+object.getIdentifier()+".pack_"+packageName+".tar"), 
+			"TEST/"+object.getIdentifier()+"/"+object.getIdentifier()+".pack_"+packageName+".tar");
 		
 		NativeJavaTarArchiveBuilder tar = new NativeJavaTarArchiveBuilder();
 		
 		try {
-			tar.unarchiveFolder(new File("/tmp/"+object.getIdentifier()+".pack_"+packageName+".tar"), new File("/tmp/"));
+			tar.unarchiveFolder(new File("/tmp/"+object.getIdentifier()+".pack_"+packageName+".tar"), 
+					new File("/tmp/"));
 		} catch (Exception e) {
 			fail("could not find source file or unarchive source file to tmp");
 		}
+		
+		new File("/tmp/"+object.getIdentifier()+".pack_"+packageName+".tar").delete();
+		new File("/tmp/"+object.getIdentifier()).renameTo(targetFolder);
 		
 		return object;
 	}

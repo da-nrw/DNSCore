@@ -47,6 +47,7 @@ public class ATUseCaseIngestLIDO extends Base{
 
 	private static final String DATA_DANRW_DE = "http://data.danrw.de";
 	private static final String origName = "ATUseCaseUpdateMetadataLZA_LIDO";
+	private static final File unpackedDIP = new File("/abc/LIDOunpacked");
 	private static Object object;
 	private static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
 	private static Path contractorsPipsPublic;
@@ -59,14 +60,8 @@ public class ATUseCaseIngestLIDO extends Base{
 	}
 	
 	@AfterClass
-	public static void tearDown(){
-		try{
-			new File("/tmp/"+object.getIdentifier()+".pack_1.tar").delete();
-			FileUtils.deleteDirectory(new File("/tmp/"+object.getIdentifier()+".pack_1"));
-		}catch(Exception e){
-			System.out.println(e.getMessage());
-		}
-		
+	public static void tearDown() throws IOException{
+		FileUtils.deleteDirectory(unpackedDIP);
 		TESTHelper.clearDB();
 		cleanStorage();
 	}
@@ -74,11 +69,11 @@ public class ATUseCaseIngestLIDO extends Base{
 	@Test
 	public void testLZA() throws FileNotFoundException, JDOMException, IOException {
 		
-		Object lzaObject = retrievePackage(origName,"1");
-		System.out.println("object identifier: "+lzaObject.getIdentifier());
+		retrievePackage(object,unpackedDIP,"1");
+		System.out.println("object identifier: "+object.getIdentifier());
 		
-		Path tmpObjectDirPath = Path.make("tmp", lzaObject.getIdentifier()+".pack_1", "data");	
-		File[] tmpObjectSubDirs = new File (Path.make("tmp", lzaObject.getIdentifier()+".pack_1", "data").toString()).listFiles();
+		Path tmpObjectDirPath = Path.make("tmp", object.getIdentifier()+".pack_1", "data");	
+		File[] tmpObjectSubDirs = new File (Path.make("tmp", object.getIdentifier()+".pack_1", "data").toString()).listFiles();
 		String bRep = "";
 		
 		for (int i=0; i<tmpObjectSubDirs.length; i++) {

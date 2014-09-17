@@ -49,7 +49,8 @@ public class ATUseCaseIngestXMP extends Base{
 	private static final String origName = "ATUseCaseUpdateMetadataLZA_XMP";
 	private static Object object;
 	private static Path contractorsPipsPublic;
-
+	private static final File retrievalFolder = new File("/tmp/XMPunpacked");
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws IOException{
 		setUpBase();
@@ -58,24 +59,19 @@ public class ATUseCaseIngestXMP extends Base{
 	
 	
 	@AfterClass
-	public static void tearDownAfterClass(){
-		try{
-			new File("/tmp/"+object.getIdentifier()+".pack_1.tar").delete();
-			FileUtils.deleteDirectory(new File("/tmp/"+object.getIdentifier()+".pack_1"));
-		}catch(Exception e){
-			System.out.println(e.getMessage());
-		}
+	public static void tearDownAfterClass() throws IOException{
+		FileUtils.deleteDirectory(retrievalFolder);
 		TESTHelper.clearDB();
 		cleanStorage();
 	}
 	
 	@Test
 	public void testLZA() throws FileNotFoundException, JDOMException, IOException {
-		Object lzaObject = retrievePackage(origName,"1");
-		System.out.println("object identifier: "+lzaObject.getIdentifier());
+		retrievePackage(object,retrievalFolder,"1");
+		System.out.println("object identifier: "+object.getIdentifier());
 		
-		Path tmpObjectDirPath = Path.make("tmp", lzaObject.getIdentifier()+".pack_1", "data");	
-		File[] tmpObjectSubDirs = new File (Path.make("tmp", lzaObject.getIdentifier()+".pack_1", "data").toString()).listFiles();
+		Path tmpObjectDirPath = Path.make("tmp", object.getIdentifier()+".pack_1", "data");	
+		File[] tmpObjectSubDirs = new File (Path.make("tmp", object.getIdentifier()+".pack_1", "data").toString()).listFiles();
 		String bRep = "";
 		
 		for (int i=0; i<tmpObjectSubDirs.length; i++) {
