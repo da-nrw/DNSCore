@@ -53,14 +53,15 @@ class PackageController {
 		   
 		   Object obj = Object.get(params.oid)
 		   if (!obj) {
-		   		flash.message = "Das Object konnte nicht gefunden werden!"
+		   		flash.message = "Das Objekt konnte nicht gefunden werden!"
 				redirect(action: "error")
 				return
 			}
+		   
 	   		User user = springSecurityService.currentUser
 			if (user.getShortName() != obj.getUser().getShortName()) {
-				result = "Sie sind nicht berechtigt das Retrieval für das Package zu starten!"
-				redirect(controller: "object", action: "index")
+				flash.message = "Sie sind nicht berechtigt das Retrieval für das Package zu starten!"
+				redirect(action: "error")
 				return
 			}
 			def packagesIds = params.list("currentPackages")
@@ -76,6 +77,7 @@ class PackageController {
 				result = "Packages konnten angefordert werden."
 			} catch ( Exception e ) { 
 				result = "Packages konnten nicht angefordert werden: "+ packages
+				log.error(result + " "+e.printStackTrace())
 			}		
 			flash.message = result
 			redirect(controller: "object", action: "show", id:obj.getId())

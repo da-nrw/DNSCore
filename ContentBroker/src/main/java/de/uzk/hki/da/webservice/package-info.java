@@ -18,6 +18,6 @@
 */
 
 /**
- * Classes dealing with web communication.
+ * Classes dealing with conversion services provided by webservices.
  */
 package de.uzk.hki.da.webservice;

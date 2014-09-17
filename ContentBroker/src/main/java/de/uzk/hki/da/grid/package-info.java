@@ -18,6 +18,6 @@
 */
 
 /**
- * Classes to access DataGrids.
+ * Classes to access DataGrids - and implementation for iRODS Data Grid
  */
 package de.uzk.hki.da.grid;

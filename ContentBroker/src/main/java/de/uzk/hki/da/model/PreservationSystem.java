@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.naming.ConfigurationException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -200,16 +201,13 @@ public class PreservationSystem {
 	 *
 	 * @param file the file
 	 * @return the result list. can be empty if no matching policies can be found. This might even be the case
-	 * if there is no evaluable file format information in file. Can also be empty if there are no policies for
-	 * a contractor. We do not consider it a special case if the contractor does not exists. In any case a warning is
-	 * logged.
+	 * if there is no evaluable file format information in file.
+	 * @throws IllegalStateException 
 	 */
-	public List<ConversionPolicy> getApplicablePolicies(DAFile file,Boolean presentation) {
-		
-		if (file.getFormatPUID().isEmpty()){
-			logger.warn("No FileFormat information available in DAFile: "+file.toString());
-			return new ArrayList<ConversionPolicy>(); 
-		}
+	public List<ConversionPolicy> getApplicablePolicies(DAFile file,Boolean presentation) throws IllegalStateException {
+		if (file==null) throw new IllegalStateException("DAFile file is null!");
+		if (file.getFormatPUID()==null) throw new IllegalStateException("Format PUID is null!");
+		if (file.getFormatPUID().isEmpty())throw new IllegalStateException("Format PUID is empty!");
 		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
