@@ -37,6 +37,7 @@ import de.uzk.hki.da.cb.FetchPIPsActionTest;
 import de.uzk.hki.da.cb.PrepareSendToPresenterActionTests;
 import de.uzk.hki.da.cb.ProcessUserDecisionsActionTests;
 import de.uzk.hki.da.cb.ProperRefreshOfJobChildrenTest;
+import de.uzk.hki.da.cb.RestartIngestWorkflowActionTests;
 import de.uzk.hki.da.cb.RestructureActionTests;
 import de.uzk.hki.da.cb.RetrievalActionTests;
 import de.uzk.hki.da.cb.ScanActionTests;
@@ -162,7 +163,8 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	ProcessUserDecisionsActionTests.class,
 	FakeFileFormatFacadeTests.class,
 	UpdateMetadataRheinlaender.class,
-	SecondaryFormatScanTests.class
+	SecondaryFormatScanTests.class,
+	RestartIngestWorkflowActionTests.class
 })
 public class SimpleSuite {
 

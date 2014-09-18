@@ -93,6 +93,7 @@ public class C {
 	public static final String WA_WORK = "work";
 	public static final String WA_PIPS = "pips";
 	public static final String WA_PUBLIC = "public";
+	public static final String WA_INSTITUTION = "institution";
 
 	//
 	public static final String TEST_USER_SHORT_NAME = "TEST";
