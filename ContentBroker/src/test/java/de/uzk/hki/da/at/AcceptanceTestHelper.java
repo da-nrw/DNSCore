@@ -85,7 +85,7 @@ public class AcceptanceTestHelper {
 	 * @param originalName of the object.
 	 * @param targetFolder to extract the DIP to.
 	 * @param packageName number of the package of the object.
-	 * @return the object entry from the database. 
+	 * @return a new instance that represents the object. fetched from the from the database. 
 	 * @throws IOException if cannot fetch file from grid.
 	 * 
 	 * @author Daniel M. de Oliveira

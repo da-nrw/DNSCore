@@ -88,7 +88,7 @@ public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
 	public void testProperPREMISCreation() throws Exception{
 		
 		object = ath.waitForJobsToFinish(ORIG_NAME,300000);
-		ath.retrievePackage(object,unpackedDIP,"2");
+		object = ath.retrievePackage(object,unpackedDIP,"2");
 		
 		assertEquals(ORIG_NAME,object.getOrig_name());
 		assertEquals(100,object.getObject_state());
