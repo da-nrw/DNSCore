@@ -73,13 +73,13 @@
 				<td>
 				<g:link onclick="return confirm('Antwort Nein - Sind Sie sicher?');" action="performMigrationRequestNo" id="${queueEntryInstance.id}">
 						<g:img style="width:16px; height:16px" uri="/images/icons/list_remove.png" 
-									title="${message(code: 'default.workflow.icon.delete', default: 'Antwort Nein')}" 
-									alt="${message(code: 'default.workflow.icon.delete', default: 'Antwort Nein')}"/>
+									title="${message(code: 'default.workflow.icon.no', default: 'Antwort Nein')}" 
+									alt="${message(code: 'default.workflow.icon.no', default: 'Antwort Nein')}"/>
 					</g:link>
 				<g:link onclick="return confirm('Antwort Ja - Sind Sie sicher?');" action="performMigrationRequestYes" id="${queueEntryInstance.id}">
 						<g:img style="width:16px; height:16px" uri="/images/icons/check32.png" 
-									title="${message(code: 'default.workflow.icon.check', default: 'Antwort Ja')}" 
-									alt="${message(code: 'default.workflow.icon.check', default: 'Antwort Ja')}"/>
+									title="${message(code: 'default.workflow.icon.yes', default: 'Antwort Ja')}" 
+									alt="${message(code: 'default.workflow.icon.yes', default: 'Antwort Ja')}"/>
 					</g:link>
 					
 				</td>
