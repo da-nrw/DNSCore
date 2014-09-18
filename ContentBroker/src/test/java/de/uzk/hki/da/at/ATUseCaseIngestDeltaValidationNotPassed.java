@@ -60,6 +60,6 @@ public class ATUseCaseIngestDeltaValidationNotPassed extends Base {
 	
 	@Test
 	public void testRejectDuplicateEADFiles() throws IOException, InterruptedException{
-		ath.ingestAndWaitForErrorState(ORIG_NAME, C.USER_ERROR_STATE_DIGIT);
+		ath.ingestAndWaitForErrorState(ORIG_NAME, C.STATE_DIGIT_USER_ERROR);
 	}
 }

@@ -67,7 +67,7 @@ public class ATUseCaseRetrieval extends Base{
 		
 		String name = "ATUseCaseRetrieval";
 		ath.createObjectAndJob(name,"900");
-		ath.waitForJobToBeInStatus(name, "950", 300000);
+		ath.waitForJobToBeInStatus(name, "950");
 		
 		System.out.println(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/ID-ATUseCaseRetrieval.tar").getAbsolutePath());
 		assertTrue(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/ID-ATUseCaseRetrieval.tar").exists());

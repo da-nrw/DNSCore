@@ -73,8 +73,7 @@ public class ATUseCaseIngestDeltaContract extends Base{
 		InputStream is = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
 				JPG_STREAM_ID);
 		assertNotNull(is);
-		OutputStream os = new FileOutputStream(OUTPUT_JPG_1); 
-		IOUtils.copy(is,os);
+		IOUtils.copy(is,new FileOutputStream(OUTPUT_JPG_1));
 		
 		Thread.sleep(_1_MINUTE); // to prevent the repnames to match the ones of the previous package
 		
@@ -83,8 +82,7 @@ public class ATUseCaseIngestDeltaContract extends Base{
 		InputStream is2 = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
 				JPG_STREAM_ID);
 		assertNotNull(is2);
-		OutputStream os2 = new FileOutputStream(OUTPUT_JPG_2); 
-		IOUtils.copy(is2,os2);
+		IOUtils.copy(is2,new FileOutputStream(OUTPUT_JPG_2));
 
 		Thread.sleep(_1_MINUTE); // to prevent the repnames to match the ones of the previous package
 		

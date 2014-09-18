@@ -61,8 +61,6 @@ public class ATUseCaseIngestMigrationAllowed extends Base {
 	public void test() throws IOException{
 		ath.retrievePackage(o, UNPACKED_DIP, "1");
 		
-		System.out.println(":::");
-		
 		String brep="";
 		File[] fList = Path.makeFile(UNPACKED_DIP.toString(),"data").listFiles();
 		for (File file : fList){

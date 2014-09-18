@@ -73,7 +73,7 @@ public class ATPIPGen extends Base{
 		String name = "UpdateUrls";
 		ath.createObjectAndJob("ATPIPGen"+name,"700","METS","mets.xml");
 
-		ath.waitForJobsToFinish("ATPIPGen"+name, 90000);
+		ath.waitForJobsToFinish("ATPIPGen"+name);
 		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-open", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
@@ -119,7 +119,7 @@ public class ATPIPGen extends Base{
 		
 		String name = "InstOnly";
 		ath.createObjectAndJob("ATPIPGen"+name,"700");
-		ath.waitForJobsToFinish("ATPIPGen"+name, 90000);
+		ath.waitForJobsToFinish("ATPIPGen"+name);
 		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-open", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
@@ -132,7 +132,7 @@ public class ATPIPGen extends Base{
 		
 		String name = "NoPubWithLawSet";
 		ath.createObjectAndJob("ATPIPGen"+name,"700");
-		ath.waitForJobsToFinish("ATPIPGen"+name, 90000);
+		ath.waitForJobsToFinish("ATPIPGen"+name);
 		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
@@ -144,7 +144,7 @@ public class ATPIPGen extends Base{
 		
 		String name = "NoPubWithStartDateSet";
 		ath.createObjectAndJob("ATPIPGen"+name,"700");
-		ath.waitForJobsToFinish("ATPIPGen"+name, 90000);
+		ath.waitForJobsToFinish("ATPIPGen"+name);
 		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
@@ -157,7 +157,7 @@ public class ATPIPGen extends Base{
 		
 		String name = "PublishNothing";
 		ath.createObjectAndJob("ATPIPGen"+name,"700");
-		ath.waitForJobsToFinish("ATPIPGen"+name,  90000);
+		ath.waitForJobsToFinish("ATPIPGen"+name);
 		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
@@ -170,7 +170,7 @@ public class ATPIPGen extends Base{
 		
 		String name = "AllPublic";
 		ath.createObjectAndJob("ATPIPGen"+name,"700");
-		ath.waitForJobsToFinish("ATPIPGen"+name,  90000);
+		ath.waitForJobsToFinish("ATPIPGen"+name);
 		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
 		
 		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));

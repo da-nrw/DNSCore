@@ -31,25 +31,25 @@ public class ATUseCaseUncompletedReferences extends Base {
 	
 	@Test
 	public void testMETS() throws IOException, InterruptedException {
-		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_METS, C.USER_ERROR_STATE_DIGIT);
+		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_METS, C.STATE_DIGIT_USER_ERROR);
 		System.out.println(YEAH);
 	}
 	
 	@Test
 	public void testEAD() throws IOException, InterruptedException {
-		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_EAD, C.USER_ERROR_STATE_DIGIT);
+		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_EAD, C.STATE_DIGIT_USER_ERROR);
 		System.out.println(YEAH);
 	}
 	
 	@Test
 	public void testMetsInEAD() throws IOException, InterruptedException {
-		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_METS_in_EAD, C.USER_ERROR_STATE_DIGIT);
+		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_METS_in_EAD, C.STATE_DIGIT_USER_ERROR);
 		System.out.println(YEAH);
 	}
 	
 	@Test
 	public void testLIDO() throws IOException, InterruptedException {
-		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_LIDO, C.USER_ERROR_STATE_DIGIT);
+		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_LIDO, C.STATE_DIGIT_USER_ERROR);
 		System.out.println(YEAH);
 	}
 	

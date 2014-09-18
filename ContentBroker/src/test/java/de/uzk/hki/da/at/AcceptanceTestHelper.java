@@ -25,9 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.hibernate.classic.Session;
@@ -36,8 +34,8 @@ import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.User;
@@ -52,10 +50,13 @@ import de.uzk.hki.da.utils.C;
  */
 public class AcceptanceTestHelper {
 
+	private static final String MSG_READY = "ready";
+	private static final String MSG_ERROR_WHEN_TIMEOUT_REACHED = "waited to long. test considered failed";
+	private static final String TEMP_FOLDER = "/tmp/";
 	private static final String URN_NBN_DE_DANRW = "urn:nbn:de:danrw:";
-	protected static Path testDataRootPath = new RelativePath("src/test/resources/at/");
+	protected static Path TEST_DATA_ROOT_PATH = new RelativePath("src/test/resources/at/");
 	
-	private static final int wait_interval=2000; // in ms
+	private static final int INTERVAL=2000; // in ms
 	private static final int TIMEOUT=300000; // ins ms
 	
 	private GridFacade gridFacade;
@@ -90,36 +91,36 @@ public class AcceptanceTestHelper {
 	 * 
 	 * @author Daniel M. de Oliveira
 	 */
-	protected Object retrievePackage(Object o,File targetFolder,String packageName) throws IOException{
+	Object retrievePackage(Object o,File targetFolder,String packageName) throws IOException{
+
+		final String packSuffix = ".pack_";
 		
 		Object object=fetchObjectFromDB(o.getOrig_name());
-		
 		System.out.println("object: "+object.getIdentifier());
 		
-		gridFacade.get(new File("/tmp/"+object.getIdentifier()+".pack_"+packageName+".tar"), 
-			"TEST/"+object.getIdentifier()+"/"+object.getIdentifier()+".pack_"+packageName+".tar");
-		
-		NativeJavaTarArchiveBuilder tar = new NativeJavaTarArchiveBuilder();
-		
+		gridFacade.get(Path.makeFile(TEMP_FOLDER,object.getIdentifier()+packSuffix+packageName+C.FILE_EXTENSION_TAR), 
+			testContractor.getShort_name()+
+			    "/"+object.getIdentifier()+"/"+object.getIdentifier()+packSuffix+packageName+C.FILE_EXTENSION_TAR);
 		try {
-			tar.unarchiveFolder(new File("/tmp/"+object.getIdentifier()+".pack_"+packageName+".tar"), 
-					new File("/tmp/"));
+			new NativeJavaTarArchiveBuilder().unarchiveFolder(Path.makeFile(TEMP_FOLDER,object.getIdentifier()+packSuffix+packageName+C.FILE_EXTENSION_TAR), 
+					Path.makeFile(TEMP_FOLDER));
 		} catch (Exception e) {
 			fail("could not find source file or unarchive source file to tmp");
 		}
 		
-		new File("/tmp/"+object.getIdentifier()+".pack_"+packageName+".tar").delete();
-		FileUtils.moveDirectory(new File("/tmp/"+object.getIdentifier()+".pack_"+packageName),targetFolder);
+		if (targetFolder.exists()) FileUtils.deleteDirectory(targetFolder);
+		FileUtils.moveDirectory(Path.makeFile(TEMP_FOLDER,object.getIdentifier()+packSuffix+packageName),targetFolder);
+		Path.makeFile(TEMP_FOLDER,object.getIdentifier()+packSuffix+packageName+C.FILE_EXTENSION_TAR).delete();
 		
 		return object;
 	}
 	
-	protected Object fetchObjectFromDB(String originalName){
+	Object fetchObjectFromDB(String originalName){
 		Object object = null;
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		try {
-			object = dao.getUniqueObject(session,originalName, "TEST");
+			object = dao.getUniqueObject(session,originalName, testContractor.getShort_name());
 		} catch (Exception e) {
 			fail("more than 1 Object found!"); 
 		}
@@ -138,25 +139,25 @@ public class AcceptanceTestHelper {
 	 * 
 	 * @author Daniel M. de Oliveira
 	 */
-	protected Job waitForJobToBeInErrorStatus(String originalName,String errorStatusLastDigit,int timeout) throws InterruptedException{
+	Job waitForJobToBeInErrorStatus(String originalName,String errorStatusLastDigit,int timeout) throws InterruptedException{
 		
 		int waited_ms_total=0;
 		while (true){
-			if (waited_ms_total>timeout) throw new RuntimeException("waited to long. test considered failed");
+			if (waited_ms_total>timeout) throw new RuntimeException(MSG_ERROR_WHEN_TIMEOUT_REACHED);
 			
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
-			Job job = dao.getJob(session, originalName, C.TEST_USER_SHORT_NAME);
+			Job job = dao.getJob(session, originalName, testContractor.getShort_name());
 			session.close();
 			
 			if (job==null) continue;
 			
-			Thread.sleep(wait_interval);
-			waited_ms_total+=wait_interval;
+			Thread.sleep(INTERVAL);
+			waited_ms_total+=INTERVAL;
 	
 			System.out.println("waiting for job to be ready ... "+job.getStatus());
 			if (job.getStatus().endsWith(errorStatusLastDigit)){
-				System.out.println("ready");
+				System.out.println(MSG_READY);
 				return job;
 			}
 		}
@@ -171,16 +172,16 @@ public class AcceptanceTestHelper {
 	 * @return
 	 * @throws InterruptedException
 	 */
-	protected Job waitForJobToBeInStatus(String originalName,String status,int timeout) 
+	Job waitForJobToBeInStatus(String originalName,String status) 
 			throws InterruptedException{
 	
 		int waited_ms_total=0;
 		while (true){
-			if (waited_ms_total>timeout) throw new RuntimeException("waited to long. test considered failed");
+			if (waited_ms_total>TIMEOUT) throw new RuntimeException(MSG_ERROR_WHEN_TIMEOUT_REACHED);
 	
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
-			Job job = dao.getJob(session, originalName, "TEST");
+			Job job = dao.getJob(session, originalName, testContractor.getShort_name());
 	
 			session.close();
 			
@@ -189,7 +190,7 @@ public class AcceptanceTestHelper {
 				System.out.println("waiting for job to be ready ... "+job.getStatus());
 				
 				if (job.getStatus().equals(status)){
-					System.out.println("ready");
+					System.out.println(MSG_READY);
 					return job;
 				} else if (isInErrorState(job)) {
 					String msg = "ERROR: Job in error state: " + job.getStatus();
@@ -199,18 +200,11 @@ public class AcceptanceTestHelper {
 				}
 			}
 	
-			Thread.sleep(wait_interval);
-			waited_ms_total+=wait_interval;
+			Thread.sleep(INTERVAL);
+			waited_ms_total+=INTERVAL;
 		}
 	}
 
-	private boolean isInErrorState(Job job){
-		if (job.getStatus().endsWith("1") || job.getStatus().endsWith("3")
-				|| job.getStatus().endsWith("4")) return true;
-		return false;
-	}
-	
-	
 	/**
 	 * Waits that a job appears and disappears again.
 	 * 
@@ -219,35 +213,35 @@ public class AcceptanceTestHelper {
 	 * @return
 	 * @throws RuntimeException if errorState occured.
 	 */
-	protected Object waitForJobsToFinish(String originalName, int timeout){
+	Object waitForJobsToFinish(String originalName){
 	
 		// wait for job to appear
 		Job job = null;
 		int waited_ms_total=0;
 		while(job == null) {
-			if (waited_ms_total>timeout) throw new RuntimeException("waited to long. test considered failed");
+			if (waited_ms_total>TIMEOUT) throw new RuntimeException(MSG_ERROR_WHEN_TIMEOUT_REACHED);
 			
 			System.out.println("waiting for job to appear ... " + originalName);
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
-			job = dao.getJob(session, originalName, "TEST");
+			job = dao.getJob(session, originalName, testContractor.getShort_name());
 			session.close();
 			
 			try {
-				Thread.sleep(wait_interval);
+				Thread.sleep(INTERVAL);
 			} catch (InterruptedException e) {} // no problem
-			waited_ms_total+=wait_interval;
+			waited_ms_total+=INTERVAL;
 		}
 		
 		Object resultO = job.getObject();
 	
 		// wait for jobs to disappear
 		while (true){
-			if (waited_ms_total>timeout) throw new RuntimeException("waited to long. test considered failed");
+			if (waited_ms_total>TIMEOUT) throw new RuntimeException(MSG_ERROR_WHEN_TIMEOUT_REACHED);
 			
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
-			job = dao.getJob(session, originalName, "TEST");
+			job = dao.getJob(session, originalName, testContractor.getShort_name());
 	
 			session.close();
 			
@@ -255,8 +249,7 @@ public class AcceptanceTestHelper {
 				System.out.println("finished! " + originalName);
 				return resultO;
 				
-			} else if (job.getStatus().endsWith("1") || job.getStatus().endsWith("3")
-					|| job.getStatus().endsWith("4")) {
+			} else if (isInErrorState(job)) {
 				String oid=job.getObject().getIdentifier();
 				String msg = "ERROR: Job in error state: " + job.getStatus() + " in Object-Id "+ oid;
 				System.out.println(msg);
@@ -279,9 +272,9 @@ public class AcceptanceTestHelper {
 			System.out.println("waiting for jobs to finish ... "+job.getStatus());
 			
 			try {
-				Thread.sleep(wait_interval);
+				Thread.sleep(INTERVAL);
 			} catch (InterruptedException e) {}
-			waited_ms_total+=wait_interval;
+			waited_ms_total+=INTERVAL;
 		}
 	}
 
@@ -297,9 +290,9 @@ public class AcceptanceTestHelper {
 	 * 
 	 * @author Daniel M. de Oliveira
 	 */
-	protected Object ingest(String originalName) throws IOException{
+	Object ingest(String originalName) throws IOException{
 		
-		return ingest(originalName,"tgz",originalName);
+		return ingest(originalName,C.FILE_EXTENSION_TGZ,originalName);
 	}
 	
 	/**
@@ -315,7 +308,7 @@ public class AcceptanceTestHelper {
 	 * 
 	 * @author Daniel M. de Oliveira
 	 */
-	protected Object ingest(
+	Object ingest(
 			String sourcePackageName,
 			String ext,
 			String originalName) throws IOException{
@@ -323,12 +316,12 @@ public class AcceptanceTestHelper {
 		if (localNode==null) throw new IllegalStateException();
 		if (localNode.getIngestAreaRootPath()==null) throw new IllegalStateException();
 		
-		File sourceFile = Path.makeFile(testDataRootPath,sourcePackageName+"."+ext);
-		File targetFile = Path.makeFile(localNode.getIngestAreaRootPath(),"TEST",originalName+"."+ext);
+		File sourceFile = Path.makeFile(TEST_DATA_ROOT_PATH,sourcePackageName+"."+ext);
+		File targetFile = Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getShort_name(),originalName+"."+ext);
 		
 		FileUtils.copyFile( sourceFile, targetFile );
 			
-		waitForJobsToFinish(originalName,TIMEOUT);
+		waitForJobsToFinish(originalName);
 		
 		Object object = fetchObjectFromDB(originalName);
 		System.out.println("successfully ingested object with id "+object.getIdentifier());
@@ -345,7 +338,7 @@ public class AcceptanceTestHelper {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	protected Object ingestAndWaitForErrorState(String originalName,String errorState) throws IOException, InterruptedException{
+	Object ingestAndWaitForErrorState(String originalName,String errorState) throws IOException, InterruptedException{
 		
 		return ingestAndWaitForErrorState(originalName, errorState, C.FILE_EXTENSION_TGZ);
 	}
@@ -362,15 +355,15 @@ public class AcceptanceTestHelper {
 	 * @throws IOException
 	 * @throws RuntimeException if a no job found in specified state within the timeframe specified by TIMEOUT.
 	 */
-	protected Object ingestAndWaitForJobInState(String originalName,String status) throws IOException, InterruptedException{
+	Object ingestAndWaitForJobInState(String originalName,String status) throws IOException, InterruptedException{
 		
 		if (localNode==null) throw new IllegalStateException();
 		if (localNode.getIngestAreaRootPath()==null) throw new IllegalStateException();
 		
 		FileUtils.copyFileToDirectory(Path.makeFile(TC.TEST_ROOT_AT,originalName+"."+C.FILE_EXTENSION_TGZ), 
-				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME));
+				Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getShort_name()));
 		
-		waitForJobToBeInStatus(originalName,status,TIMEOUT);
+		waitForJobToBeInStatus(originalName,status);
 		return fetchObjectFromDB(originalName);
 	}
 	
@@ -384,13 +377,13 @@ public class AcceptanceTestHelper {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	protected Object ingestAndWaitForErrorState(String originalName,String errorStateLastDigit,String containerSuffix) throws IOException, InterruptedException{
+	Object ingestAndWaitForErrorState(String originalName,String errorStateLastDigit,String containerSuffix) throws IOException, InterruptedException{
 		
 		if (!containerSuffix.isEmpty()) containerSuffix="."+containerSuffix;
 		
 		FileUtils.copyFileToDirectory(Path.makeFile(TC.TEST_ROOT_AT,originalName+containerSuffix), 
 				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME));
-		waitForJobToBeInErrorStatus(originalName,errorStateLastDigit,300000);
+		waitForJobToBeInErrorStatus(originalName,errorStateLastDigit,TIMEOUT);
 		return fetchObjectFromDB(originalName);
 	}
 
@@ -400,20 +393,24 @@ public class AcceptanceTestHelper {
 	 * @author Daniel M. de Oliveira
 	 * @throws IOException 
 	 */
-	protected Object putPackageToStorage(String identifier,String originalName,String containerName, Date createddate, int object_state) throws IOException{
+	Object putPackageToStorage(String identifier,String originalName,String containerName, Date createddate, int object_state) throws IOException{
+		
+		String PACKAGE_NAME = "1";
+		int timeout = 2000;
+		int minNodes = 1;
+		
 		if (createddate==null) createddate = new Date();
 		String urn =   URN_NBN_DE_DANRW+identifier;
-		int timeout = 2000;
 		StoragePolicy sp = new StoragePolicy(localNode);
 		ArrayList<String> destinations = new ArrayList<String>();
 		destinations.add("ciArchiveResourceGroup");
 		sp.setDestinations(destinations);
-		sp.setMinNodes(1);
+		sp.setMinNodes(minNodes);
 		
-		gridFacade.put(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_1.tar"), 
-				new RelativePath(C.TEST_USER_SHORT_NAME,identifier,identifier+".pack_1.tar").toString(), sp);
+		gridFacade.put(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR), 
+				new RelativePath(C.TEST_USER_SHORT_NAME,identifier,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR).toString(), sp);
 		int i = 0;
-		while (!gridFacade.storagePolicyAchieved(new RelativePath(C.TEST_USER_SHORT_NAME,identifier,identifier+".pack_1.tar").toString(), sp)) {
+		while (!gridFacade.storagePolicyAchieved(new RelativePath(C.TEST_USER_SHORT_NAME,identifier,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR).toString(), sp)) {
 			try {
 				Thread.sleep(timeout);
 			} catch (InterruptedException e) {} // no problem
@@ -430,7 +427,7 @@ public class AcceptanceTestHelper {
 		object.setLast_checked(createddate);
 		object.setOrig_name(originalName);
 		Package pkg = new Package();
-		pkg.setName("1");
+		pkg.setName(PACKAGE_NAME);
 		pkg.setContainerName(containerName);
 		object.getPackages().add(pkg);
 		
@@ -449,19 +446,29 @@ public class AcceptanceTestHelper {
 	 * @author jpeters
 	 * @throws IOException 
 	 */
-	protected Object putPackageToStorage(String identifier,String originalName,String containerName) throws IOException{
+	Object putPackageToStorage(String identifier,String originalName,String containerName) throws IOException{
 		 return putPackageToStorage(identifier,originalName,containerName ,null,0);
 	}
 
 
 
-	protected Map<Session, Object> createObject(String name, String packageType,String metadataFile) throws IOException {
-		
-		Map<Session, Object> sessionObjectMap = new HashMap<Session, Object>();
-		
+	void createObjectAndJob(String name,String status) throws IOException{
+		createObjectAndJob(name,status,null,null);
+	}
+
+
+
+	/**
+		 * @throws IOException 
+		 */
+	void createObjectAndJob(String name, 
+			String status,
+			String packageType,
+			String metadataFile) throws IOException{
 		gridFacade.put(
-				new File("src/test/resources/at/"+name+".pack_1.tar"),
-				"TEST/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
+				Path.makeFile(TEST_DATA_ROOT_PATH,name+".pack_1.tar"),
+				testContractor.getShort_name()+"/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
+		
 		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
@@ -478,12 +485,13 @@ public class AcceptanceTestHelper {
 		object.setPublished_flag(0);
 		object.setDdbExclusion(false);
 		session.save(object);
-	
-		int current_data_pk = object.getData_pk();
-		System.out.println("CREATED Object with id " + current_data_pk);
-		String current_data_pk_string = String.valueOf(current_data_pk);
-		object.setUrn("urn:nbn:de:danrw-test-"+current_data_pk_string);
+
+		int data_pk = object.getData_pk();
+		System.out.println("CREATED Object with id " + data_pk);
+		String data_pk_string = String.valueOf(data_pk);
+		object.setUrn("urn:nbn:de:danrw-test-"+data_pk_string);
 		session.saveOrUpdate(object);
+		
 		
 		Package currentPackage = new Package();
 		currentPackage.setName("1");
@@ -491,28 +499,15 @@ public class AcceptanceTestHelper {
 		List<Package> packages = new ArrayList<Package>();
 		packages.add(currentPackage);
 		object.setPackages(packages);		
-		session.saveOrUpdate(object);	
+		session.saveOrUpdate(object);
 		
-		sessionObjectMap.put(session, object);
-		
-		return sessionObjectMap;
-	}
-
-
-
-	/**
-	 * @throws IOException 
-	 */
-	protected void createJob(Map<Session, Object> sessionObject, String status) {
-		
-		Session session = (Session) sessionObject.keySet().toArray()[0];
-		Object object = sessionObject.get(session);
-	
 		Job job = new Job();
-		job.setStatus(status);
 		Node node = (Node)session.load(Node.class, localNode .getId());
 		job.setResponsibleNodeName(node.getName());
 		job.setObject(object);
+		
+		job.setStatus(status);
+	
 		session.save(job);
 		
 		session.getTransaction().commit();
@@ -521,66 +516,10 @@ public class AcceptanceTestHelper {
 
 
 
-	protected void createObjectAndJob(String name,String status) throws IOException{
-		createObjectAndJob(name,status,null,null);
+	private boolean isInErrorState(Job job){
+		if (job.getStatus().endsWith(C.STATE_DIGIT_ERROR_PROPERLY_HANDLED) || 
+				job.getStatus().endsWith(C.STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED)
+				|| job.getStatus().endsWith(C.STATE_DIGIT_USER_ERROR)) return true;
+		return false;
 	}
-
-
-
-	/**
-		 * @throws IOException 
-		 */
-		protected void createObjectAndJob(String name, 
-				String status,
-				String packageType,
-				String metadataFile) throws IOException{
-			gridFacade.put(
-					new File("src/test/resources/at/"+name+".pack_1.tar"),
-					"TEST/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
-			
-			
-			Session session = HibernateUtil.openSession();
-			session.beginTransaction();
-			
-			Object object = new Object();
-			object.setUrn("");
-			object.setIdentifier("ID-"+name);
-			object.setOrig_name(name);
-			
-			object.setContractor(testContractor);
-			object.setMetadata_file(metadataFile);
-			object.setPackage_type(packageType);
-			object.setObject_state(100);
-			object.setPublished_flag(0);
-			object.setDdbExclusion(false);
-			session.save(object);
-	
-			int data_pk = object.getData_pk();
-			System.out.println("CREATED Object with id " + data_pk);
-			String data_pk_string = String.valueOf(data_pk);
-			object.setUrn("urn:nbn:de:danrw-test-"+data_pk_string);
-			session.saveOrUpdate(object);
-			
-			
-			Package currentPackage = new Package();
-			currentPackage.setName("1");
-			currentPackage.setContainerName(name);
-			List<Package> packages = new ArrayList<Package>();
-			packages.add(currentPackage);
-			object.setPackages(packages);		
-			session.saveOrUpdate(object);
-			
-			Job job = new Job();
-	//		job.setStatus(status);
-			Node node = (Node)session.load(Node.class, localNode .getId());
-			job.setResponsibleNodeName(node.getName());
-			job.setObject(object);
-			
-			job.setStatus(status);
-		
-			session.save(job);
-			
-			session.getTransaction().commit();
-			session.close();
-		}
 }

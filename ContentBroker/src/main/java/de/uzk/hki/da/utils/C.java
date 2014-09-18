@@ -36,6 +36,7 @@ public class C {
 	public static final String FILE_EXTENSION_TGZ = "tgz";
 	public static final String FILE_EXTENSION_XML = ".xml";
 	public static final String FILE_EXTENSION_JPG = ".jpg";
+	public static final String FILE_EXTENSION_TAR = ".tar";
 
 	public static final String XMP_PUID = "danrw-fmt/3";
 	public static final String EAD_PUID = "danrw-fmt/2";
@@ -129,7 +130,9 @@ public class C {
 	public static final String ENCODING_UTF_8 = "UTF-8";
 	
 	// Action organization
-	public static final String USER_ERROR_STATE_DIGIT="4";
+	public static final String STATE_DIGIT_USER_ERROR="4";
+	public static final String STATE_DIGIT_ERROR_PROPERLY_HANDLED = "1";
+	public static final String STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED = "3";
 	public static final String INGEST_REGISTER_URN_ACTION_START_STATUS = "150";
 	
 	

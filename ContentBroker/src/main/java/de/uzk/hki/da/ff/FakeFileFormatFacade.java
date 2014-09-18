@@ -93,7 +93,7 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 				f.setFormatPUID("fmt/101");
 			}
 			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".jpg")){
-				f.setFormatPUID("fmt/42");
+				f.setFormatPUID("fmt/43");
 			}
 			
 			BufferedReader br=new BufferedReader(new FileReader(f.toRegularFile()));

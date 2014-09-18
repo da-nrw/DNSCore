@@ -63,35 +63,35 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 	@Test
 	public void testFirst_tagmanifest1ZeichenChanged() throws Exception{
 		
-		ath.ingestAndWaitForErrorState(AT_ERSTE_ZEILE_TAGMANIFEST1_ZEICHENGEAENDERT, C.USER_ERROR_STATE_DIGIT);
+		ath.ingestAndWaitForErrorState(AT_ERSTE_ZEILE_TAGMANIFEST1_ZEICHENGEAENDERT, C.STATE_DIGIT_USER_ERROR);
 		System.out.println(YEAH);
 	}
 	
 	@Test
 	public void testManifestMd5_2filesChanged() throws Exception{
 		
-		ath.ingestAndWaitForErrorState(AT_MANIFEST_MD5_2FILESGEAENDERT, C.USER_ERROR_STATE_DIGIT);
+		ath.ingestAndWaitForErrorState(AT_MANIFEST_MD5_2FILESGEAENDERT, C.STATE_DIGIT_USER_ERROR);
 		System.out.println(YEAH);
 	}
 	
 	@Test
 	public void testOneFileDeleted() throws Exception{
 		
-		ath.ingestAndWaitForErrorState(AT_EINE_DATEI_GELOESCHT, C.USER_ERROR_STATE_DIGIT);
+		ath.ingestAndWaitForErrorState(AT_EINE_DATEI_GELOESCHT, C.STATE_DIGIT_USER_ERROR);
 		System.out.println(YEAH);
 	}
 	
 	@Test
 	public void testInvalidPremis() throws Exception{
 		
-		ath.ingestAndWaitForErrorState(AT_INVALID_PREMIS, C.USER_ERROR_STATE_DIGIT,C.FILE_EXTENSION_ZIP);
+		ath.ingestAndWaitForErrorState(AT_INVALID_PREMIS, C.STATE_DIGIT_USER_ERROR,C.FILE_EXTENSION_ZIP);
 		System.out.println(YEAH);
 	}
 	
 	@Test
 	public void testDuplicateMetadataFiles() throws IOException, InterruptedException{
 		
-		Object object = ath.ingestAndWaitForErrorState(AT_DUPLICATE_METADATA_FILES,C.USER_ERROR_STATE_DIGIT);
+		Object object = ath.ingestAndWaitForErrorState(AT_DUPLICATE_METADATA_FILES,C.STATE_DIGIT_USER_ERROR);
 		System.out.println(YEAH);
 		
 		assertEquals(null,object.getPackage_type());
@@ -100,7 +100,7 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 	
 	@Test
 	public void testDuplicateDocumentName() throws IOException, InterruptedException{
-		ath.ingestAndWaitForErrorState("ATDuplicateDocumentName",C.USER_ERROR_STATE_DIGIT);
+		ath.ingestAndWaitForErrorState("ATDuplicateDocumentName",C.STATE_DIGIT_USER_ERROR);
 		System.out.println(YEAH);
 	}
 }
