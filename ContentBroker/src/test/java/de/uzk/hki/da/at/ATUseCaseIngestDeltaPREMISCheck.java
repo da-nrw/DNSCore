@@ -46,7 +46,6 @@ import org.junit.Test;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
 
 /**
@@ -66,7 +65,6 @@ public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
 
 	@Before
 	public void setUp() throws IOException{
-		setUpBase();
 
 		object = ath.putPackageToStorage(IDENTIFIER,ORIG_NAME,containerName,new Date(),100);
 		FileUtils.copyFile(Path.makeFile(TC.TEST_ROOT_AT,ORIG_NAME+"2.tgz"), 
@@ -76,9 +74,6 @@ public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
 	@After
 	public void tearDown() throws IOException{
 		FileUtils.deleteDirectory(unpackedDIP);
-		
-		TESTHelper.clearDB();
-		cleanStorage();
 	}
 	
 

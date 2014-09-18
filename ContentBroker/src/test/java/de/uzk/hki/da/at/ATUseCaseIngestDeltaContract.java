@@ -29,17 +29,15 @@ import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.test.TESTHelper;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class ATUseCaseIngestDeltaContract extends Base{
+public class ATUseCaseIngestDeltaContract extends AcceptanceTest{
 
 	private static final String OUTPUT_JPG_2 = "/tmp/abc2.jpg";
 	private static final String OUTPUT_JPG_1 = "/tmp/abc.jpg";
@@ -48,17 +46,9 @@ public class ATUseCaseIngestDeltaContract extends Base{
 	private static final String DEFAULT_CONTAINER_EXTENSION = "tgz";
 	private static final String ORIG_NAME = "ATContractRightDeltas";
 	
-	@Before
-	public void setUp() throws IOException{
-		setUpBase();
-	}
-	
 	@After
 	public void tearDown(){
 
-		TESTHelper.clearDB();
-		cleanStorage();
-		
 		new File(OUTPUT_JPG_1).delete();
 		new File(OUTPUT_JPG_2).delete();
 	}

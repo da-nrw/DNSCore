@@ -19,7 +19,7 @@
 
 package de.uzk.hki.da.at;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,14 +30,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.path.Path;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class ATUseCaseIngestMigrationAllowed extends Base {
+public class ATUseCaseIngestMigrationAllowed extends AcceptanceTest {
 
 	private static final File UNPACKED_DIP = new File("/tmp/MigrationUnpacked");
 	private static final String ORIG_NAME = "ATMigrationAllowed";
@@ -45,7 +44,6 @@ public class ATUseCaseIngestMigrationAllowed extends Base {
 	
 	@Before
 	public void setUp() throws IOException{
-		setUpBase();
 		o = ath.ingest(ORIG_NAME);
 	}
 	
@@ -53,8 +51,6 @@ public class ATUseCaseIngestMigrationAllowed extends Base {
 	public void tearDown(){
 
 		FileUtils.deleteQuietly(UNPACKED_DIP);
-		TESTHelper.clearDB();
-		cleanStorage();
 	}
 	
 	@Test

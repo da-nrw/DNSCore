@@ -38,16 +38,15 @@ import org.junit.Test;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
 
 
 /**
  * Relates to AK-T Audit 
- * @author jpeters
+ * @author Jens Peters
  * 
  */
-public class ATUseCaseAudit extends Base{
+public class ATUseCaseAudit extends AcceptanceTest{
 	
 	private static final String ORIGINAL_NAME = "ATUseCaseAudit";
 	private static final String CONTAINER_NAME = ORIGINAL_NAME+"."+C.FILE_EXTENSION_TGZ;
@@ -57,7 +56,6 @@ public class ATUseCaseAudit extends Base{
 	
 	@Before
 	public void setUp() throws IOException{
-		setUpBase();
 		
 		// set object to older creationdate than one day
 		Calendar now = Calendar.getInstance();
@@ -75,9 +73,6 @@ public class ATUseCaseAudit extends Base{
 		}catch(Exception e){
 			System.out.println(e.getMessage());
 		}
-		
-		TESTHelper.clearDB();
-		cleanStorage();
 	}
 	
 	@Test

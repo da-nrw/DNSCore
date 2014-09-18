@@ -47,7 +47,14 @@ public class TESTHelper {
 		return setUpObject(identifier,workAreaRootPath,workAreaRootPath,workAreaRootPath);
 	}
 	
-	
+	/**
+	 * @deprecated use ActionTest as a framework for the only caller retrievalactiontests.
+	 *  
+	 * @param workAreaRootPath
+	 * @param ingestAreaRootPath
+	 * @param userAreaRootPath
+	 * @return
+	 */
 	public static PreservationSystem setUpPS(
 			Path workAreaRootPath,
 			Path ingestAreaRootPath,

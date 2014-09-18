@@ -31,20 +31,18 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
 
 /**
  * @author Polina Gubaidullina
  */
-
-public class ATUseCaseIngestXMP extends Base{
+public class ATUseCaseIngestXMP extends AcceptanceTest{
 
 	private static final Namespace RDF_NS = Namespace.getNamespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 	private static final String origName = "ATUseCaseUpdateMetadataLZA_XMP";
@@ -52,18 +50,15 @@ public class ATUseCaseIngestXMP extends Base{
 	private static Path contractorsPipsPublic;
 	private static final File retrievalFolder = new File("/tmp/XMPunpacked");
 	
-	@BeforeClass
-	public static void setUpBeforeClass() throws IOException{
-		setUpBase();
+	@Before
+	public void setUp() throws IOException{
 		object = ath.ingest(origName);
 	}
 	
 	
-	@AfterClass
-	public static void tearDownAfterClass() throws IOException{
+	@After
+	public void tearDown() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
-		TESTHelper.clearDB();
-		cleanStorage();
 	}
 	
 	@Test

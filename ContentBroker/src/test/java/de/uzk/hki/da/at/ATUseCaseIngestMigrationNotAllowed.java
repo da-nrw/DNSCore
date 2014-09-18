@@ -1,7 +1,7 @@
 /*
   DA-NRW Software Suite | ContentBroker
-  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
-  Universität zu Köln
+  Copyright (C) 2014 LVRInfoKom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -16,33 +16,23 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 package de.uzk.hki.da.at;
 
-import static org.junit.Assert.assertEquals;
 
-import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
-
-import de.uzk.hki.da.model.Object;
-
 /**
- * @author Thomas Kleinke
- *
+ * @author Daniel M. de Oliveira
  */
-public class ATReadURNFromSIP extends AcceptanceTest {
+public class ATUseCaseIngestMigrationNotAllowed extends AcceptanceTest {
 
+	private static final String ORIG_NAME = "ATMigrationNotAllowed";
+	
 	@Test
 	public void test() throws IOException, InterruptedException {
-		String originalName = "ATReadURNFromSIP";
-		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+originalName+".tgz"), 
-				new File(localNode.getIngestAreaRootPath()+"/TEST"));
-		ath.waitForJobsToFinish(originalName);
-		Object object = ath.fetchObjectFromDB(originalName);
-		
-		assertEquals("urn:nbn:de:xyz-1-20131008367735", object.getUrn());
+		ath.ingestAndWaitForJobInState(ORIG_NAME, "640");
 	}
 
 }

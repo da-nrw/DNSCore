@@ -33,14 +33,12 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.XMLUtils;
 
@@ -53,7 +51,7 @@ import de.uzk.hki.da.utils.XMLUtils;
  * @author Daniel M. de Oliveira
  * @author Polina Gubaidullina
  */
-public class ATUseCaseIngestRheinlaender extends Base{
+public class ATUseCaseIngestRheinlaender extends AcceptanceTest{
 
 	private static final String METS_ELEMENT_F_LOCAT = "FLocat";
 	private static final String METS_ELEMENT_FILE = "file";
@@ -66,17 +64,10 @@ public class ATUseCaseIngestRheinlaender extends Base{
 	private static Object object;
 	private String EAD_XPATH_EXPRESSION = 		"//daoloc/@href";
 	
-	@BeforeClass
-	public static void setUp() throws IOException{
-		setUpBase();
+	@Before
+	public void setUp() throws IOException{
 		object = ath.ingest(origName);
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
-	}
-	
-	@AfterClass
-	public static void tearDown(){
-		TESTHelper.clearDB();
-		cleanStorage();
 	}
 	
 	@Test

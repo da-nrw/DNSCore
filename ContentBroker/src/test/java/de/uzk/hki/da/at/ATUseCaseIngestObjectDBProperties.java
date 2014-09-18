@@ -26,32 +26,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.util.StringUtils;
 
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.test.TESTHelper;
 
 /**
  * @author Thomas KLeinke
  * @author Daniel M. de Oliveira
  *
  */
-public class ATUseCaseIngestObjectDBProperties extends Base{
+public class ATUseCaseIngestObjectDBProperties extends AcceptanceTest{
 
-	@Before
-	public void setUp() throws IOException{
-		setUpBase();
-	}
-	
-	@After
-	public void tearDown(){
-		TESTHelper.clearDB();
-		cleanStorage();
-	}
-	
 	/**
 	 * @author Thomas Kleinke 
 	 * @author Daniel M. de Oliveira

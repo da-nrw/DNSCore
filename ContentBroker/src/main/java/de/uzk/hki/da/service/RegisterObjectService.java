@@ -186,7 +186,7 @@ public class RegisterObjectService {
 	 * Gets the object.
 	 *
 	 * @param job the job
-	 * @param localNode the local node
+	 * @param n the local node
 	 * @return null if not found.
 	 * @author Daniel M. de Oliveira
 	 * @author Thomas Kleinke

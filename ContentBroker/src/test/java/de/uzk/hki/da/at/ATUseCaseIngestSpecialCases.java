@@ -19,30 +19,22 @@
 
 package de.uzk.hki.da.at;
 
-import java.io.IOException;
-
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.test.TESTHelper;
 
 /**
  * Relates to AK-T/02 Ingest - Sunny Day Szenario (mit besonderen Bedingungen).
  * @author Daniel M. de Oliveira
  */
-public class ATUseCaseIngestSpecialCases extends Base{
+public class ATUseCaseIngestSpecialCases extends AcceptanceTest{
 
+	private static final String YEAH = "yeah!";
 	private String originalName = "ATUseCaseIngest1";
 	private Object object;
-	
-	@Before
-	public void setUp() throws IOException{
-		setUpBase();
-	}
 	
 	@After
 	public void tearDown(){
@@ -52,9 +44,6 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		Path.make(localNode.getIngestAreaRootPath(),"/TEST/AT_CON1.tar").toFile().delete();
 		Path.make(localNode.getIngestAreaRootPath(),"/TEST/AT_CON2.tgz").toFile().delete();
 		Path.make(localNode.getIngestAreaRootPath(),"/TEST/AT_CON3.zip").toFile().delete();
-		
-		TESTHelper.clearDB();
-		cleanStorage();
 	}
 	
 	@Test
@@ -62,7 +51,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		
 		originalName = "ATÜÄÖ";
 		object = ath.ingest(originalName);
-		System.out.println("yeah!");
+		System.out.println(YEAH);
 	}
 	
 	@Test
@@ -70,7 +59,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		
 		originalName = "ATSonderzeichen_in_Dateinamen";
 		object = ath.ingest(originalName);
-		System.out.println("yeah!");
+		System.out.println(YEAH);
 	}
 	
 	@Test
@@ -78,7 +67,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		
 		originalName = "ATUmlaute_in_Dateinamen";
 		object = ath.ingest(originalName);
-		System.out.println("yeah!");
+		System.out.println(YEAH);
 	}
 	
 	@Test
@@ -86,7 +75,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		
 		originalName = "AT_CON1";
 		object = ath.ingest(originalName,"tar",originalName);
-		System.out.println("yeah!");
+		System.out.println(YEAH);
 	}
 	
 	@Test
@@ -94,7 +83,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		
 		originalName = "AT_CON2";
 		object = ath.ingest(originalName);
-		System.out.println("yeah!");
+		System.out.println(YEAH);
 	}
 	
 	@Test
@@ -102,7 +91,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		
 		originalName = "AT_CON3";
 		object = ath.ingest(originalName,"zip",originalName);
-		System.out.println("yeah!");
+		System.out.println(YEAH);
 	}
 	
 	@Test
@@ -110,7 +99,7 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		
 		originalName = "AT&Sonderzeichen%in#Paketnamen";
 		object = ath.ingest(originalName);
-		System.out.println("yeah!");
+		System.out.println(YEAH);
 	}
 	
 	
@@ -120,6 +109,6 @@ public class ATUseCaseIngestSpecialCases extends Base{
 		
 		originalName = "ATLeerzeichen_in_Dateinamen";
 		object = ath.ingest(originalName);
-		System.out.println("yeah!");
+		System.out.println(YEAH);
 	}
 }

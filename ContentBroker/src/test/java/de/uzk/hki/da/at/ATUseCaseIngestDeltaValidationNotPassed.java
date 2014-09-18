@@ -22,20 +22,18 @@ package de.uzk.hki.da.at;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class ATUseCaseIngestDeltaValidationNotPassed extends Base {
+public class ATUseCaseIngestDeltaValidationNotPassed extends AcceptanceTest {
 	                                            
 	private static final String ORIG_NAME =    "ATUseCaseIngestDeltaDuplicateEAD";
 	private static final String IDENTIFIER =   "ATUseCaseIngestDeltaDuplicateEADIdentifier";
@@ -45,17 +43,10 @@ public class ATUseCaseIngestDeltaValidationNotPassed extends Base {
 	
 	@Before
 	public void setUp() throws IOException{
-		setUpBase();
 
 		object = ath.putPackageToStorage(IDENTIFIER,ORIG_NAME,CONTAINER_NAME,null,100);
 		FileUtils.copyFile(Path.makeFile(TC.TEST_ROOT_AT,CONTAINER_NAME), 
 				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME,CONTAINER_NAME));
-	}
-	
-	@After
-	public void tearDown(){
-		TESTHelper.clearDB();
-		cleanStorage();
 	}
 	
 	@Test

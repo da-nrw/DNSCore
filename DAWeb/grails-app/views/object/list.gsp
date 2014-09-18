@@ -174,7 +174,7 @@
 							</g:else>
 							<td style="text-align: center">
 								<g:if test="${new File(baseFolder+ "/"+ objectInstance.identifier +".tar").exists()}">
-									 <g:link controller="outgoing" action="webdav" params="['filename':objectInstance.identifier +'.tar']">
+									 <g:link controller="outgoing" action="download" params="['filename':objectInstance.identifier +'.tar']">
 										<g:img style="width:16px; height:16px" uri="/images/icons/delivery.png"/>
 									</g:link>
 								</g:if>

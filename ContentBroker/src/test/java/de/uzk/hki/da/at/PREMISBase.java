@@ -34,7 +34,7 @@ import org.jdom.Namespace;
  * @author Daniel M. de Oliveira
  * @author Thomas Kleinke
  */
-public class PREMISBase extends Base {
+public class PREMISBase extends AcceptanceTest {
 
 	/**
 	 * Does some assertions for PREMIS file objects to make sure they're structured according to our specifications.
