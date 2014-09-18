@@ -165,6 +165,14 @@ class QueueEntry {
 						return "arbeitend (" + status +")"
 					} else return "fehlerhaft (" + status +")"
 			} 
+			if (getStatusAsInteger()>=440 && getStatusAsInteger()<500 ) {
+				def checkfor = ["2","0"]
+				def ch = status[-1]
+				if (checkfor.contains(ch)) {
+					return "repliziere (" + status +")"
+				} else return "Replikation fehlerhaft (" + status +")"
+		}
+		
 			if (getStatusAsInteger()>500 && getStatusAsInteger()<600) {
 					def checkfor = ["2","0"]
 					def ch = status[-1]

@@ -36,6 +36,7 @@ class QueueEntryController {
 
 	
 	def springSecurityService
+	def cberrorService
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	static QueueUtils que = new QueueUtils();
 	
@@ -165,8 +166,14 @@ class QueueEntryController {
             redirect(action: "list")
             return
         }
-
-        [queueEntryInstance: queueEntryInstance]
+		def errors = cberrorService.getMessages()
+		def error = ""
+		errors.each { 
+			if (it.toString().contains(queueEntryInstance.obj.getIdentifier())) {
+				error = it.toString()
+			}
+		}
+        [queueEntryInstance: queueEntryInstance, systemInfo:error]
     }
 	
 	/**

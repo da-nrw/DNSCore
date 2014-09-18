@@ -20,6 +20,14 @@
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
 			<ol class="property-list queueEntry">
+			<g:if test="${systemInfo}">
+				<li class="fieldcontain">
+					<span id="urn-label" class="property-label"><g:message code="queueEntry.id.label" default="Systeminformation" /></span>
+					
+						<span class="property-value" aria-labelledby="urn-label">${systemInfo }</span>
+					
+				</li>
+				</g:if>
 				<g:if test="${queueEntryInstance?.id}">
 				<li class="fieldcontain">
 					<span id="urn-label" class="property-label"><g:message code="queueEntry.id.label" default="Job-Id" /></span>
