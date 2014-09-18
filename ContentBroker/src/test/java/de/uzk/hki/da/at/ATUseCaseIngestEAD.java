@@ -17,17 +17,16 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.XMLUtils;
 
-public class ATUseCaseIngestEAD extends Base{
+public class ATUseCaseIngestEAD extends AcceptanceTest{
 	
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
@@ -39,19 +38,15 @@ public class ATUseCaseIngestEAD extends Base{
 	private static final String EAD_XML = "EAD.XML";
 	private static final File retrievalFolder = new File("/tmp/unpackedDIP");
 	
-	@BeforeClass
-	public static void setUp() throws IOException {
-		setUpBase();
+	@Before
+	public void setUp() throws IOException {
 		object = ath.ingest(origName);
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
-	@AfterClass
-	public static void tearDown() throws IOException{
+	@After
+	public void tearDown() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
-		
-		TESTHelper.clearDB();
-		cleanStorage();
 	}
 	
 	@Test

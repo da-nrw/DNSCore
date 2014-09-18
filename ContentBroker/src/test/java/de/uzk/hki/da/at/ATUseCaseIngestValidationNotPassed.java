@@ -24,12 +24,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
 
 /**
@@ -37,7 +34,7 @@ import de.uzk.hki.da.utils.C;
  * @author Daniel M. de Oliveira
  *
  */
-public class ATUseCaseIngestValidationNotPassed extends Base{
+public class ATUseCaseIngestValidationNotPassed extends AcceptanceTest{
 
 	private static final String AT_EINE_DATEI_GELOESCHT = "ATEineDatei_geloescht";
 	private static final String AT_DUPLICATE_METADATA_FILES = "ATDuplicateMetadataFiles";
@@ -47,19 +44,6 @@ public class ATUseCaseIngestValidationNotPassed extends Base{
 	private static final String YEAH = "yeah!";
 	
 
-	@Before
-	public void setUp() throws IOException{
-		setUpBase();
-	}
-	
-	@After
-	public void tearDown(){
-		TESTHelper.clearDB();
-		cleanStorage();
-	}
-	
-
-	
 	@Test
 	public void testFirst_tagmanifest1ZeichenChanged() throws Exception{
 		

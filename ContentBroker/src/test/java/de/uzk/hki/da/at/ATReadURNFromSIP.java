@@ -24,36 +24,15 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.test.TESTHelper;
 
 /**
  * @author Thomas Kleinke
  *
  */
-public class ATReadURNFromSIP extends Base {
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		setUpBase();
-	}
-
-	/**
-	 * @throws IOException 
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown(){
-		TESTHelper.clearDB();
-		cleanStorage();
-	}
+public class ATReadURNFromSIP extends AcceptanceTest {
 
 	@Test
 	public void test() throws IOException, InterruptedException {

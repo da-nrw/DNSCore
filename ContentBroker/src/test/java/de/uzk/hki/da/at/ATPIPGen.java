@@ -32,32 +32,18 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.test.TESTHelper;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class ATPIPGen extends Base{
+public class ATPIPGen extends AcceptanceTest{
 
 	private static final String XLINK_NAMESPACE = "http://www.w3.org/1999/xlink";
 	private static final String METS_NAMESPACE = "http://www.loc.gov/METS/";
-
-	@Before
-	public void setUp() throws IOException{
-		setUpBase();
-	}
-	
-	@After
-	public void tearDown(){
-		TESTHelper.clearDB();
-		cleanStorage();
-	}
 
 	/**
 	 * @author ???

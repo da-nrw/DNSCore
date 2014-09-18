@@ -36,13 +36,12 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
 
 
@@ -51,7 +50,7 @@ import de.uzk.hki.da.utils.C;
  * @author Polina Gubaidullina
  * @author Daniel M. de Oliveira
  */
-public class ATUseCaseIngestMetsMods extends Base{
+public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 	
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
@@ -64,17 +63,14 @@ public class ATUseCaseIngestMetsMods extends Base{
 	private static Document metsDoc;
 	
 	
-	@BeforeClass
-	public static void setUpBeforeClass() throws IOException{
-		setUpBase();
+	@Before
+	public void setUpBeforeClass() throws IOException{
 		object = ath.ingest(origName);
 	}
 	
-	@AfterClass
-	public static void tearDownAfterClass() throws IOException{
+	@After
+	public void tearDownAfterClass() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
-		TESTHelper.clearDB();
-		cleanStorage();
 	}
 	
 	@Test

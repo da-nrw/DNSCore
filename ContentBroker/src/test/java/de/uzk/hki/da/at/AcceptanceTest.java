@@ -24,6 +24,8 @@ import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.hibernate.classic.Session;
+import org.junit.After;
+import org.junit.Before;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
@@ -36,14 +38,14 @@ import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.repository.RepositoryFacade;
+import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Utilities;
 
-public class Base {
-
-	
-
-	
+/**
+ * @author Daniel M. de Oliveira
+ */
+public class AcceptanceTest {
 	
 	protected static Node localNode;
 	protected static GridFacade gridFacade;
@@ -104,8 +106,8 @@ public class Base {
 	}
 	
 	
-	
-	protected static void setUpBase() throws IOException{
+	@Before
+	public void setUpAcceptanceTest() throws IOException{
 		
 		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
 		
@@ -130,10 +132,16 @@ public class Base {
 		session.close();
 		
 		ath = new AcceptanceTestHelper(gridFacade, dao, localNode,testContractor);
-		
 	}
 
-	protected static void cleanStorage(){
+	@After
+	public void tearDownAcceptanceTest(){
+		TESTHelper.clearDB();
+		cleanStorage();
+	}
+	
+
+	private void cleanStorage(){
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getWorkAreaRootPath(),"work","TEST"));
 		FileUtils.deleteQuietly(Path.make(localNode.getIngestAreaRootPath(),"TEST").toFile());
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getGridCacheAreaRootPath(),C.WA_AIP,C.TEST_USER_SHORT_NAME));

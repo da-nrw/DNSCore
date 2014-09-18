@@ -37,11 +37,9 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.test.TESTHelper;
 
 
 /**
@@ -54,18 +52,9 @@ public class ATUseCaseIngestPREMISCheck extends PREMISBase{
 	private static final File unpackedDIP = new File("/tmp/ATUseCaseIngestPREMISCheck");
 	private Object object = null;
 	
-	@Before
-	public void setUp() throws IOException{
-		setUpBase();
-	}
-	
 	@After
 	public void tearDown() throws IOException{
-		
 		FileUtils.deleteDirectory(unpackedDIP);
-		
-		TESTHelper.clearDB();
-		cleanStorage();
 	}
 	
 	@Test

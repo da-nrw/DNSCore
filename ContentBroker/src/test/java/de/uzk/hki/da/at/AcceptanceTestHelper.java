@@ -286,7 +286,7 @@ public class AcceptanceTestHelper {
 	 * @return the database entry for the object.
 	 * @throws IOException 
 	 * 
-	 * @see {@link Base#ingest(String, String, String)}
+	 * @see {@link AcceptanceTest#ingest(String, String, String)}
 	 * 
 	 * @author Daniel M. de Oliveira
 	 */

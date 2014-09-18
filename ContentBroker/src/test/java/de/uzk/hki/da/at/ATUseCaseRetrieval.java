@@ -24,50 +24,33 @@ import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFactory;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
-import de.uzk.hki.da.test.TESTHelper;
 
 /**
  * Relates to AK-T/05 RetrieveObject - Happy Path Scenario.
  * @author Daniel M. de Oliveira
  */
-public class ATUseCaseRetrieval extends Base{
-	
-	// SETUP
-	
-	@Before()
-	public void setUp() throws IOException{
-		setUpBase();
-//		gridFacade.put(
-//				new File("src/test/resources/at/ATUseCaseRetrieval.pack_1.tar"),
-//				"TEST/ID-ATUseCaseRetrieval/ID-ATUseCaseRetrieval.pack_1.tar",new StoragePolicy(new Node()));
-	}
+public class ATUseCaseRetrieval extends AcceptanceTest{
 	
 	@After
 	public void tearDown(){
 		distributedConversionAdapter.remove("aip/TEST/ID-ATUseCaseRetrieval"); // TODO does it work?
 		new File("/tmp/ID-ATUseCaseRetrieval.tar").delete();
 		FileUtils.deleteQuietly(new File("/tmp/ID-ATUseCaseRetrieval"));
-		
-		cleanStorage();
-		TESTHelper.clearDB();
 	}
-	
-	// TEST
 	
 	@Test
 	public void testHappyPath() throws Exception{
 		
-		String name = "ATUseCaseRetrieval";
-		ath.createObjectAndJob(name,"900");
-		ath.waitForJobToBeInStatus(name, "950");
+		String originalName = "ATUseCaseRetrieval";
+		
+		ath.createObjectAndJob(originalName,"900");
+		ath.waitForJobToBeInStatus(originalName, "950");
 		
 		System.out.println(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/ID-ATUseCaseRetrieval.tar").getAbsolutePath());
 		assertTrue(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/ID-ATUseCaseRetrieval.tar").exists());
@@ -82,18 +65,10 @@ public class ATUseCaseRetrieval extends Base{
 		if (!new File("/tmp/ID-ATUseCaseRetrieval/data/"+"image/713091.tif").exists()) fail();
 		if (!new File("/tmp/ID-ATUseCaseRetrieval/data/"+"premis.xml").exists()) fail();
 		
-		if (!checkBag(new File("/tmp/ID-ATUseCaseRetrieval"))) fail();
+		if (!bagIsValid(new File("/tmp/ID-ATUseCaseRetrieval"))) fail();
 	}
-	
-	// ----------
-	
-	/**
-	 * Check bag.
-	 *
-	 * @param file the file
-	 * @return true, if successful
-	 */
-	private boolean checkBag(File file){
+
+	private boolean bagIsValid(File file){
 		BagFactory bagFactory = new BagFactory();
 		Bag bag = bagFactory.createBag(file);
 		return bag.verifyValid().isSuccess();

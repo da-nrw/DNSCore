@@ -31,19 +31,18 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
 
 /**
  * @author Polina Gubaidullina
  */
-public class ATUseCaseIngestLIDO extends Base{
+public class ATUseCaseIngestLIDO extends AcceptanceTest{
 
 	private static final String DATA_DANRW_DE = "http://data.danrw.de";
 	private static final String origName = "ATUseCaseUpdateMetadataLZA_LIDO";
@@ -52,18 +51,15 @@ public class ATUseCaseIngestLIDO extends Base{
 	private static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
 	private static Path contractorsPipsPublic;
 	
-	@BeforeClass
-	public static void setUp() throws IOException{
-		setUpBase();
+	@Before
+	public void setUp() throws IOException{
 		object = ath.ingest(origName);
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
-	@AfterClass
-	public static void tearDown() throws IOException{
+	@After
+	public void tearDown() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
-		TESTHelper.clearDB();
-		cleanStorage();
 	}
 	
 	@Test
