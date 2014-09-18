@@ -179,7 +179,7 @@ public class UpdateMetadataActionXMPTests {
 		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/b.xmp").toFile().delete();
 		FileUtils.deleteDirectory(new File("conf/xslt"));
 	}
-
+	
 	@Test
 	public void test() throws IOException, JDOMException, ParserConfigurationException, SAXException {
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/dip/public/hasha.xmp").exists());

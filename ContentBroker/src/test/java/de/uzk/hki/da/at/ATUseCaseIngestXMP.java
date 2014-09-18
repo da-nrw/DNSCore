@@ -41,8 +41,9 @@ import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
 
 /**
- * @author Daniel M. de Oliveira
+ * @author Polina Gubaidullina
  */
+
 public class ATUseCaseIngestXMP extends Base{
 
 	private static final Namespace RDF_NS = Namespace.getNamespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");

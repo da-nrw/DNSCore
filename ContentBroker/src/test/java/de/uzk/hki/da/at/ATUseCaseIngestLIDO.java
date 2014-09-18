@@ -41,8 +41,11 @@ import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
 
 /**
+ * 
  * @author Polina Gubaidullina
+ *
  */
+
 public class ATUseCaseIngestLIDO extends Base{
 
 	private static final String DATA_DANRW_DE = "http://data.danrw.de";

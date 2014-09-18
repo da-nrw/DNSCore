@@ -9,6 +9,12 @@ import org.junit.Test;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
 
+/**
+ * 
+ * @author Polina Gubaidullina
+ *
+ */
+
 public class ATUseCaseUncompletedReferences extends Base {
 	
 	private static final String AT_UncompletedReferences_METS = "ATUseCaseIngestMetsWithUncompletedReferences";
@@ -53,9 +59,9 @@ public class ATUseCaseUncompletedReferences extends Base {
 		System.out.println(YEAH);
 	}
 	
-//	@Test
-//	public void testXMP() throws IOException, InterruptedException {
-//		ingestAndWaitForErrorState(AT_UncompletedReferences_XMP, C.USER_ERROR_STATE_DIGIT);
-//		System.out.println(YEAH);
-//	}
+	@Test
+	public void testXMP() throws IOException, InterruptedException {
+		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_XMP, C.STATE_DIGIT_USER_ERROR);
+		System.out.println(YEAH);
+	}
 }
