@@ -23,14 +23,16 @@ import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.BeforeClass;
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
@@ -39,61 +41,56 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.path.RelativePath;
-import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.utils.C;
 
 
 
 /**
- * The Class ScanActionTests.
+ * Tests the ScanAction.
+ * 
+ * @author Daniel M. de Oliveira
  */
-public class ScanActionTests {
+public class ScanActionTests extends ConcreteActionUnitTest{
 
 	private static final Path workAreaRootPath = new RelativePath("src/test/resources/cb/ScanActionTests/");
 	
-	/** The Constant action. */
-	private static final ScanAction action = new ScanAction();
+	private static final String TIFF_TESTFILE = "140849.tif";
+	private static final String TIF_PUID = "fmt/353";
+	private static final String REPNAME = "2011_11_01+00_01+";
+
+	private static final File premisFile = Path.makeFile(workAreaRootPath,"work","TEST","identifier","data","2011_11_01+00_01+a","premis.xml");
 	
-	
-	/** The Constant job. */
-	private static final Job job = new Job();
-	
+	@ActionUnderTest
+	ScanAction action = new ScanAction();
+
 	
 	/**
 	 * Sets the up before class.
-	 *
-	 * @throws FileNotFoundException the file not found exception
+	 * @throws IOException 
 	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws FileNotFoundException{
+	@Before
+	public void setUp() throws IOException{
 		
-		Object obj = TESTHelper.setUpObject("1234",workAreaRootPath);
 		
-		job.setObject(obj);
-		job.setRep_name("2011_11_01+00_01+");
+		j.setRep_name(REPNAME);
 		
-		DAFile file = new DAFile(obj.getLatestPackage(),"2011_11_01+00_01+a","140849.tif");
-		file.setFormatPUID("fmt/353");
-		
+		DAFile file = new DAFile(o.getLatestPackage(),REPNAME+"a",TIFF_TESTFILE);
+		file.setFormatPUID(TIF_PUID);
 		List<DAFile> files = new ArrayList<DAFile>(); files.add(file);
-		obj.getLatestPackage().getFiles().addAll(files);
+		o.getLatestPackage().getFiles().addAll(files);
+
 		
-		Node localNode = new Node("vm2","01-vm2");
-		localNode.setWorkAreaRootPath(Path.make(workAreaRootPath));
-		action.setLocalNode(localNode);
-		
-		Set<Node> nodes = new HashSet<Node>(); nodes.add(localNode);
+		Set<Node> nodes = new HashSet<Node>(); nodes.add(n);
 		ConversionRoutine toPng = new ConversionRoutine(
 				"TOPNG", 
 				"de.uzk.hki.da.cb.CLIConversionStrategy",
 				"cp input output","bmp");
 		ConversionPolicy policy = new ConversionPolicy(
-				"fmt/353",
+				TIF_PUID,
 				toPng,
 				null,
 				"");
@@ -104,12 +101,43 @@ public class ScanActionTests {
 		PreservationSystem pSystem = mock (PreservationSystem.class);
 		
 		when(pSystem.getApplicablePolicies((DAFile) anyObject(), (Boolean)anyObject())).thenReturn(policies).thenReturn(noPolicies);
-		action.setPSystem(pSystem);
-		action.setObject(obj);
+		when(pSystem.getAdmin()).thenReturn(o.getContractor()); // quick fix
 		action.setDistributedConversionAdapter(mock (DistributedConversionAdapter.class));
 		action.setDao(mock ( CentralDatabaseDAO.class ));
-		action.setJob(job);
+		action.setPSystem(pSystem);
+		n.setWorkAreaRootPath(workAreaRootPath);
+
+		
+		FileUtils.copyFile(Path.makeFile(workAreaRootPath,"premis.xml_MIGRATION_NOTIFY"), 
+				premisFile);
 	}
+	
+	@After
+	public void tearDown() {
+		premisFile.delete();
+	}
+	
+	
+	@Test
+	public void testMigrationToConfirm() throws IOException {
+		premisFile.delete();
+		FileUtils.copyFile(Path.makeFile(workAreaRootPath,"premis.xml_MIGRATION_CONFIRM"),
+				premisFile);
+		
+		action.implementation();
+		assertEquals(C.QUESTION_MIGRATION_ALLOWED,j.getQuestion());
+		assertEquals(C.PROCESS_FOR_USER_DECISION_ACTION_WAIT_STATE,
+				action.getEndStatus());
+	}
+	
+	@Test
+	public void testMigrationJustNotify() throws IOException {
+		
+		action.implementation();
+		assertEquals("",j.getQuestion());
+		assertEquals(null,action.getEndStatus());
+	}
+	
 	
 	
 	/**
@@ -118,16 +146,13 @@ public class ScanActionTests {
 	 */
 	@Test 
 	public void conversionInstructionsGetCreatedProperly() throws IOException{
-		
 		action.implementation();
 		
-		Job job = action.getJob();
-		
-		ConversionInstruction[] instrs = job.getConversion_instructions().toArray(new ConversionInstruction[0]);
+		ConversionInstruction[] instrs = j.getConversion_instructions().toArray(new ConversionInstruction[0]);
 		
 		System.out.println(instrs[0]);
 		
-		assertEquals("2011_11_01+00_01+a/140849.tif",instrs[0].getSource_file().getRep_name()+"/"+instrs[0].getSource_file().getRelative_path());
+		assertEquals(REPNAME+"a/"+TIFF_TESTFILE,instrs[0].getSource_file().getRep_name()+"/"+instrs[0].getSource_file().getRelative_path());
 		assertEquals("",instrs[0].getTarget_folder());
 		assertEquals("TOPNG",instrs[0].getConversion_routine().getName());
 	}

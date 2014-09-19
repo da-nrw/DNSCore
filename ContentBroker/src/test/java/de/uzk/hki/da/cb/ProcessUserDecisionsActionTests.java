@@ -62,7 +62,7 @@ public class ProcessUserDecisionsActionTests {
 			throws FileNotFoundException, UserException, IOException, 
 				RepositoryException, JDOMException, ParserConfigurationException, SAXException{
 		
-		job.setAnswer("NO");
+		job.setAnswer(C.ANSWER_NO);
 		assertTrue(action.implementation());
 		assertTrue(job.getConversion_instructions().isEmpty());
 		assertEquals(C.INGEST_REGISTER_URN_ACTION_START_STATUS,action.getEndStatus());
@@ -73,21 +73,9 @@ public class ProcessUserDecisionsActionTests {
 			throws FileNotFoundException, UserException, IOException, 
 				RepositoryException, JDOMException, ParserConfigurationException, SAXException{
 		
-		job.setAnswer("YES");
+		job.setAnswer(C.ANSWER_YO);
 		assertTrue(action.implementation());
 		assertFalse(job.getConversion_instructions().isEmpty());
 		assertEquals(C.INGEST_REGISTER_URN_ACTION_START_STATUS,action.getEndStatus());
 	}
-	
-	@Test
-	public void procedeWithoutDoingAnythingWhenNoAnswer() throws FileNotFoundException, UserException, IOException, RepositoryException, JDOMException, ParserConfigurationException, SAXException{
-
-		job.setAnswer("");
-		assertFalse(action.implementation());
-		assertFalse(job.getConversion_instructions().isEmpty());
-	}
-	
-	
-	
-	
 }

@@ -28,7 +28,6 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
-import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.test.TC;
 
 /**
@@ -50,7 +49,6 @@ import de.uzk.hki.da.test.TC;
 public class ConcreteActionUnitTest {
 
 	PreservationSystem ps;
-	Path workAreaRoot;
 	Node n = null;
 	Object o;
 	Job j;

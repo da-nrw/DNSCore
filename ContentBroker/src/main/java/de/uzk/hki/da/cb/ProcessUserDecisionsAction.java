@@ -34,6 +34,7 @@ import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Utilities;
 
 /**
  * Tests if a user has made a choice for a decision request issued automatically by the system.
@@ -59,14 +60,15 @@ public class ProcessUserDecisionsAction extends AbstractAction{
 			UserException, RepositoryException, JDOMException,
 			ParserConfigurationException, SAXException {
 		
-		if (job.getAnswer().isEmpty()) {
-			return false;
-		} 
-		else if (job.getAnswer().equals(C.YES)){
-			logger.info("System Question: "+C.MIGRATION_ALLOWED+" User response: "+C.YES);
+		if (Utilities.isNotSet(job.getAnswer())){
+			throw new IllegalStateException("job.getAnswer() must not be null or empty.");
+		}
+		
+		else if (job.getAnswer().equals(C.ANSWER_YO)){
+			logger.info("System Question: "+C.QUESTION_MIGRATION_ALLOWED+" User response: "+C.ANSWER_YO);
 		} 
 		else {
-			logger.info("System Question: "+C.MIGRATION_ALLOWED+" User response: "+C.NO);
+			logger.info("System Question: "+C.QUESTION_MIGRATION_ALLOWED+" User response: "+C.ANSWER_NO);
 			logger.trace("will delete conversion instructions for long term preservation now");
 			job.getConversion_instructions().clear();
 		}
@@ -74,6 +76,10 @@ public class ProcessUserDecisionsAction extends AbstractAction{
 		return true;
 	}
 
+	
+	
+	
+	
 	@Override
 	void rollback() throws Exception {
 		throw new NotImplementedException("rollback not yet implemented");

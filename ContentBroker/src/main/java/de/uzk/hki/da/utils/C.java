@@ -73,9 +73,9 @@ public class C {
 	public static final String SHOW_ACTIONS = "SHOW_ACTIONS";
 	public static final String SHOW_ACTION = "SHOW_ACTION";
 	public static final String GRACEFUL_SHUTDOWN = "GRACEFUL_SHUTDOWN";
-	public static final String MIGRATION_ALLOWED = "MIGRATION_ALLOWED?";
-	public static final String YES = "YES";
-	public static final String NO = "NO";
+	public static final String QUESTION_MIGRATION_ALLOWED = "MIGRATION_ALLOWED?";
+	public static final String ANSWER_YO = "YES";
+	public static final String ANSWER_NO = "NO";
 	
 	// Premis related
 	public static final String EVENT_TYPE_CREATE = "CREATE";
@@ -135,6 +135,7 @@ public class C {
 	public static final String STATE_DIGIT_ERROR_PROPERLY_HANDLED = "1";
 	public static final String STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED = "3";
 	public static final String INGEST_REGISTER_URN_ACTION_START_STATUS = "150";
+	public static final String PROCESS_FOR_USER_DECISION_ACTION_WAIT_STATE = "645";
 	
 	
 	
