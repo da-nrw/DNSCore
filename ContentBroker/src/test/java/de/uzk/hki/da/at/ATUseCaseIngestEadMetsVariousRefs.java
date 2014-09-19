@@ -8,6 +8,12 @@ import org.junit.Test;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.utils.C;
 
+/**
+ * 
+ * @author Polina Gubaidullina
+ *
+ */
+
 public class ATUseCaseIngestEadMetsVariousRefs extends AcceptanceTest{
 	private static final String origName = "ATUseCaseIngestEadMetsVariousRefs";
 	

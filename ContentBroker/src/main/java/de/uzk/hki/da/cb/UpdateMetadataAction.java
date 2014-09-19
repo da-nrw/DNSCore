@@ -121,6 +121,14 @@ public class UpdateMetadataAction extends AbstractAction {
 		logConvertEventsOnDebugLevel();
 		
 		List<DAFile> daFiles = new ArrayList<DAFile>();
+		
+		for (String repName : getRepNames()) {
+			String repPath = Path.make(object.getDataPath(),repName).toString();
+			File repDir = new File(repPath);
+			if (!repDir.exists() && (repName.contains("dip/institution") || repName.contains("dip/public"))) {
+				throw new RuntimeException("Unable to present object! The dip folder does not exist!");
+			}
+		}
 			
 		if(!"XMP".equals(packageType)) {
 			
@@ -154,10 +162,10 @@ public class UpdateMetadataAction extends AbstractAction {
 			collectXMP();
 			
 			for (String repName : getRepNames()) {
-				logger.debug("repName: "+repName);
+				logger.debug("representation: "+repName);
 				logger.debug("Search for metadata file "+Path.make(object.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName));
 				metadataFile = Path.makeFile(object.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName);
-	            if (!metadataFile.exists()) throw new FileNotFoundException();
+				if (!metadataFile.exists()) throw new FileNotFoundException();
 	            XMPMetadataStructure xms = new XMPMetadataStructure(metadataFile, daFiles);
 				updatePathsInRDF(xms, repName);
 			}

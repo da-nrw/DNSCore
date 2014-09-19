@@ -44,6 +44,7 @@ import de.uzk.hki.da.utils.XMLUtils;
 /**
  * @author Polina Gubaidullina
  */
+
 public class XMPMetadataStructure extends MetadataStructure{
 	
 	private static final Namespace RDF_NS = Namespace.getNamespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
@@ -55,8 +56,9 @@ public class XMPMetadataStructure extends MetadataStructure{
 	public XMPMetadataStructure(File metadataFile, List<DAFile> daFiles) throws FileNotFoundException, JDOMException, IOException {
 		super(metadataFile, daFiles);
 		
+		logger.debug("Instantiate new xmp metadata structure with metadata file "+metadataFile.getAbsolutePath()+" & DAFiles ");
 		for(DAFile file : daFiles) {
-			System.out.println("DAFILE: "+file.getRelative_path());
+			logger.debug(file.getRelative_path());
 		}
 		
 		xmpFile = metadataFile;
@@ -97,19 +99,42 @@ public class XMPMetadataStructure extends MetadataStructure{
 		List<String> references = getReferences(descriptionElements);
 		List<DAFile> existingFiles = new ArrayList<DAFile>();
 		for(String ref : references) {
+			String fileRelPath = "";
 			Boolean fileExists = false;
-			String path = "";
 			for(DAFile dafile : daFiles) {
-				path = dafile.getRelative_path();
-				if(ref.equals(path)) {
+				fileRelPath = dafile.getRelative_path();
+				logger.debug("Check dafile: "+fileRelPath);
+				if(ref.equals(fileRelPath)) {
+					logger.debug("File "+fileRelPath+" exists.");
 					fileExists = true;
-					existingFiles.add(dafile);
+					
+//					calculate file path without suffix
+					int indexOfSuffix = fileRelPath.indexOf(dafile.toRegularFile().getName()+".");
+					String fileRelPathWithoutSuffix = fileRelPath.substring(0, indexOfSuffix+dafile.toRegularFile().getName().length()-2);
+					
+					Boolean sidecarFileExists = false;
+					for(DAFile sidecarFile : daFiles) {
+						if(sidecarFile.getRelative_path().toLowerCase().contains(".xmp")) {
+							logger.debug("Check sidecar file "+sidecarFile.getRelative_path());						
+//							calculate sidecar file path without suffix
+							String sidecarFileRelPath = sidecarFile.getRelative_path();
+							int indexOfXMPSuffix = sidecarFileRelPath.lastIndexOf(sidecarFile.toRegularFile().getName()+".");
+							String sidecarFileRelPathWithoutSuffix = sidecarFileRelPath.substring(0, indexOfXMPSuffix+sidecarFile.toRegularFile().getName().length()-2);
+
+							if(sidecarFileRelPathWithoutSuffix.equals(fileRelPathWithoutSuffix)) {
+								logger.debug("Sidecare file "+sidecarFile.getRelative_path()+" found!");
+								sidecarFileExists = true;
+								existingFiles.add(dafile);
+							}
+						}
+					}
+					if(!sidecarFileExists) {
+						logger.error("No matching sidecare file for "+fileRelPath);
+					}
 				}
 			}
-			if(fileExists) {
-				logger.debug("File "+path+" exists.");
-			} else {
-				logger.error("File "+path+" does not exist.");
+			if(!fileExists) {
+				logger.error("Referenced file "+fileRelPath+" does not exist.");
 			}
 		}
 		return existingFiles;
@@ -136,17 +161,20 @@ public class XMPMetadataStructure extends MetadataStructure{
 	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::   VALIDATION   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
-//	private boolean checkReferencedFiles() {
-//		Boolean valid = true;
-//		if(getReferences(descriptionElements).size()!=getReferencedFiles(currentDAFiles).size()) {
-//			valid = false;
-//		}
-//		return valid;
-//	}
+	private boolean checkReferencedFiles() {
+		Boolean valid = true;
+		if(getReferences(descriptionElements).size()==0) {
+			logger.error("XMP.rdf does not contain any file references");
+			valid = false;
+		}
+		if(getReferences(descriptionElements).size()!=getReferencedFiles(currentDAFiles).size()) {
+			valid = false;
+		}
+		return valid;
+	}
 	
 	@Override
 	public boolean isValid() {
-		return true;
-//		return checkReferencedFiles();
+		return checkReferencedFiles();
 	}
 }

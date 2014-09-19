@@ -40,8 +40,11 @@ import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.utils.C;
 
 /**
+ * 
  * @author Polina Gubaidullina
+ *
  */
+
 public class ATUseCaseIngestLIDO extends AcceptanceTest{
 
 	private static final String DATA_DANRW_DE = "http://data.danrw.de";

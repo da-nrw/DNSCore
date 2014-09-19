@@ -26,6 +26,12 @@ import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.XMLUtils;
 
+/**
+ * 
+ * @author Polina Gubaidullina
+ *
+ */
+
 public class ATUseCaseIngestEAD extends AcceptanceTest{
 	
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");

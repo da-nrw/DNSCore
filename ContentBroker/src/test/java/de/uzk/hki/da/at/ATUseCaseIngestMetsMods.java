@@ -50,6 +50,7 @@ import de.uzk.hki.da.utils.C;
  * @author Polina Gubaidullina
  * @author Daniel M. de Oliveira
  */
+
 public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 	
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");

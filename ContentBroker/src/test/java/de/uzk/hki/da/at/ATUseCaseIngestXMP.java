@@ -40,7 +40,7 @@ import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.utils.C;
 
 /**
- * @author Daniel M. de Oliveira
+ * @author Polina Gubaidullina
  */
 public class ATUseCaseIngestXMP extends AcceptanceTest{
 
