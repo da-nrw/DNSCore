@@ -225,10 +225,6 @@ public class CreatePremisAction extends AbstractAction {
 		}
 
 		PremisXmlReader reader = new PremisXmlReader();
-		reader.setJhoveTempFolder(new File("jhove").getAbsolutePath() + 
-				"/temp/" + job.getId());
-		
-		
 		
 		
 		try {

@@ -161,9 +161,8 @@ public class PreservationSystemTests {
 		DAFile fileundef = new DAFile(null,"","");
 		fileundef.setFormatPUID("");
 		try {
-		List<ConversionPolicy> policies =
-				preservationSystem.getApplicablePolicies(fileundef, false);
-				fail();
+			preservationSystem.getApplicablePolicies(fileundef, false);
+			fail();
 		} catch (Exception  e) {
 			
 		} 	}
