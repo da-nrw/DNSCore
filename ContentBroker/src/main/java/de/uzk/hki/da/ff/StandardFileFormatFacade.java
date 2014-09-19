@@ -22,17 +22,15 @@ package de.uzk.hki.da.ff;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
 import org.irods.jargon.core.exception.InvalidArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.cli.CommandLineConnector;
 import de.uzk.hki.da.cli.ProcessInformation;
-import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Utilities;
@@ -53,7 +51,8 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	private static final String JHOVE_CONF = "conf/jhove.conf";
 	private String jhoveFolder = "jhove";
 	
-	private CentralDatabaseDAO dao;
+	private List<SecondStageScanPolicy> subformatIdentificationPolicies =
+			new ArrayList<SecondStageScanPolicy>();
 	
 	/**
 	 * The output of fido typically is a comma separated list of puids for each file. Only the last entry of the list
@@ -65,17 +64,12 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 
 		fidoFormatScanService = new FidoFormatScanService();
 		fidoFormatScanService.identify(files);
-
-
-		Session session = HibernateUtil.openSession();
-		List<SecondStageScanPolicy> policies = dao.getSecondStageScanPolicies(session);
-		session.close();
 		
-		for (SecondStageScanPolicy p:policies)
+		for (SecondStageScanPolicy p:subformatIdentificationPolicies)
 			logger.debug("policy available: "+p);
 		
 		secondaryFormatScan = new SecondaryFormatScan();
-		secondaryFormatScan.setSecondStageScanPolicies(policies);
+		secondaryFormatScan.setSecondStageScanPolicies(subformatIdentificationPolicies);
 		
 		try {
 			secondaryFormatScan.identify(files);
@@ -161,12 +155,12 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	}
 
 
-	public CentralDatabaseDAO getDao() {
-		return dao;
-	}
 
-
-	public void setDao(CentralDatabaseDAO dao) {
-		this.dao = dao;
+	@Override
+	public void setSubformatIdentificationPolicies(
+			List<SecondStageScanPolicy> subformatIdentificationPolicies) {
+		
+		this.subformatIdentificationPolicies = subformatIdentificationPolicies;
+		
 	}
 }

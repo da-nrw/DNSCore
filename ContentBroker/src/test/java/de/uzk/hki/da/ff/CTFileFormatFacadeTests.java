@@ -53,7 +53,6 @@ public class CTFileFormatFacadeTests {
 	@BeforeClass
 	public static void setUp() throws IOException{
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
-		sfff.setDao(new CentralDatabaseDAO());
 
 		CTTestHelper.prepareWhiteBoxTest();
 	}

@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.utils.C;
 
 /**
@@ -153,6 +154,10 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 	}
 	
 	
-	
 
+
+	@Override
+	public void setSubformatIdentificationPolicies(
+			List<SecondStageScanPolicy> subformatIdentificationPolicies) {
+	}
 }

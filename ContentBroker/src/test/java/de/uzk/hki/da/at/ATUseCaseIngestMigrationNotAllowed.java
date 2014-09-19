@@ -23,6 +23,8 @@ package de.uzk.hki.da.at;
 import java.io.IOException;
 
 import org.junit.Test;
+
+import de.uzk.hki.da.utils.C;
 /**
  * @author Daniel M. de Oliveira
  */
@@ -32,7 +34,7 @@ public class ATUseCaseIngestMigrationNotAllowed extends AcceptanceTest {
 	
 	@Test
 	public void test() throws IOException, InterruptedException {
-		ath.ingestAndWaitForJobInState(ORIG_NAME, "640");
+		ath.ingestAndWaitForJobInState(ORIG_NAME, C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
 	}
 
 }
