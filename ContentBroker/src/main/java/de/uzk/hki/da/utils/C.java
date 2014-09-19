@@ -38,10 +38,6 @@ public class C {
 	public static final String FILE_EXTENSION_JPG = ".jpg";
 	public static final String FILE_EXTENSION_TAR = ".tar";
 
-	public static final String XMP_PUID = "danrw-fmt/3";
-	public static final String EAD_PUID = "danrw-fmt/2";
-	public static final String LIDO_PUID = "danrw-fmt/4";
-	public static final String METS_PUID = "danrw-fmt/1";
 	public static final String XML_PUID = "fmt/101";
 	
 	public static final String MIMETYPE_IMAGE_JPEG = "image/jpeg";

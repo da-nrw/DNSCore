@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.ff.FFConstants;
 import de.uzk.hki.da.metadata.MetsURNXmlReader;
 import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.model.DAFile;
@@ -86,7 +87,7 @@ public class RegisterURNAction extends AbstractAction {
 		List<DAFile> files = object.getLatestPackage().getFiles();
 		for (DAFile file : files) {
 			if(!file.getRelative_path().contains("XMP.rdf")) {
-				if (file.getFormatPUID().equals(C.METS_PUID))
+				if (file.getFormatPUID().equals(FFConstants.METS_PUID))
 				metsFile = file;
 			}
 			

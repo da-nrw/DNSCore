@@ -30,10 +30,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.ff.FileFormatException;
@@ -41,6 +43,7 @@ import de.uzk.hki.da.ff.FileFormatFacade;
 import de.uzk.hki.da.ff.FileWithFileFormat;
 import de.uzk.hki.da.ff.StandardFileFormatFacade;
 import de.uzk.hki.da.grid.FakeGridFacade;
+import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
@@ -70,6 +73,8 @@ public class RestructureActionTests {
 	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() throws IOException, FileFormatException{
+		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
+		
 		PreservationSystem pSystem = new PreservationSystem();
 		
 		FileUtils.copyDirectory(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER+"_"), 
@@ -103,6 +108,10 @@ public class RestructureActionTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>(); files.add(file);
 		when( ffs.identify((List<FileWithFileFormat>)anyObject()) ).thenReturn(files);
 		action.setFileFormatFacade(ffs);
+		
+		CentralDatabaseDAO dao = mock(CentralDatabaseDAO.class);
+		when(dao.getSecondStageScanPolicies((Session)anyObject())).thenReturn(null);
+		action.setDao(dao);
 		
 	}
 	

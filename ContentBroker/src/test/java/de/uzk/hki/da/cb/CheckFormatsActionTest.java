@@ -28,14 +28,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.util.StringUtils;
 
+import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.ff.FileWithFileFormat;
 import de.uzk.hki.da.ff.StandardFileFormatFacade;
+import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -125,7 +128,7 @@ public class CheckFormatsActionTest {
 	 */
 	@Before
 	public void setUp() throws Exception{
-		
+		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		
 		PreservationSystem pSystem = new PreservationSystem();
 		localNode = new Node();
@@ -170,6 +173,10 @@ public class CheckFormatsActionTest {
 		action.setLocalNode(localNode);
 		action.setFileFormatFacade(fileFormatFacade);
 		action.setPSystem(pSystem);
+		
+		CentralDatabaseDAO dao = mock(CentralDatabaseDAO.class);
+		when(dao.getSecondStageScanPolicies((Session)anyObject())).thenReturn(null);
+		action.setDao(dao);
 		
 	}
 

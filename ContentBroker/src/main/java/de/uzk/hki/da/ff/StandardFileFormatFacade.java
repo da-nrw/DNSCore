@@ -51,8 +51,8 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	private static final String JHOVE_CONF = "conf/jhove.conf";
 	private String jhoveFolder = "jhove";
 	
-	private List<SecondStageScanPolicy> subformatIdentificationPolicies =
-			new ArrayList<SecondStageScanPolicy>();
+	private List<SubformatIdentificationPolicy> subformatIdentificationPolicies =
+			new ArrayList<SubformatIdentificationPolicy>();
 	
 	/**
 	 * The output of fido typically is a comma separated list of puids for each file. Only the last entry of the list
@@ -65,7 +65,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		fidoFormatScanService = new FidoFormatScanService();
 		fidoFormatScanService.identify(files);
 		
-		for (SecondStageScanPolicy p:subformatIdentificationPolicies)
+		for (SubformatIdentificationPolicy p:subformatIdentificationPolicies)
 			logger.debug("policy available: "+p);
 		
 		secondaryFormatScan = new SecondaryFormatScan();
@@ -79,19 +79,19 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		
 		
 		for (FileWithFileFormat f:files){
-			if (f.getFormatPUID().equals(C.EAD_PUID)){
+			if (f.getFormatPUID().equals(FFConstants.EAD_PUID)){
 				f.setFormatPUID(C.XML_PUID);
 				f.setFormatSecondaryAttribute(C.EAD);
 			}
-			if (f.getFormatPUID().equals(C.XMP_PUID)){
+			if (f.getFormatPUID().equals(FFConstants.XMP_PUID)){
 				f.setFormatPUID(C.XML_PUID);
 				f.setFormatSecondaryAttribute(C.XMP);
 			}
-			if (f.getFormatPUID().equals(C.METS_PUID)){
+			if (f.getFormatPUID().equals(FFConstants.METS_PUID)){
 				f.setFormatPUID(C.XML_PUID);
 				f.setFormatSecondaryAttribute(C.METS);
 			}
-			if (f.getFormatPUID().equals(C.LIDO_PUID)){
+			if (f.getFormatPUID().equals(FFConstants.LIDO_PUID)){
 				f.setFormatPUID(C.XML_PUID);
 				f.setFormatSecondaryAttribute(C.LIDO);
 			}
@@ -158,7 +158,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 
 	@Override
 	public void setSubformatIdentificationPolicies(
-			List<SecondStageScanPolicy> subformatIdentificationPolicies) {
+			List<SubformatIdentificationPolicy> subformatIdentificationPolicies) {
 		
 		this.subformatIdentificationPolicies = subformatIdentificationPolicies;
 		

@@ -60,9 +60,9 @@ public class SecondaryFormatScanTests {
 		scan2.setAllowedValues("EAD,METS");
 		scan2.setFormatIdentifierScriptName("script:src/test/resources/format/SecondaryFormatScanTests/abs.sh");
 		
-		List<SecondStageScanPolicy> secondStageScanPolicies = new ArrayList<SecondStageScanPolicy>();
-		secondStageScanPolicies.add(scan);
-		secondStageScanPolicies.add(scan2);
+		List<SubformatIdentificationPolicy> secondStageScanPolicies = new ArrayList<SubformatIdentificationPolicy>();
+		secondStageScanPolicies.add((SubformatIdentificationPolicy)scan);
+		secondStageScanPolicies.add((SubformatIdentificationPolicy)scan2);
 		sfs.setSecondStageScanPolicies(secondStageScanPolicies);
 		
 	}
