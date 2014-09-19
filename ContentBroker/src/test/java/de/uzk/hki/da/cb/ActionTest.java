@@ -32,6 +32,13 @@ import de.uzk.hki.da.test.TC;
 /**
  * Provides the basic framework for effective tests of the business code
  * distributed over the different actions.
+ * <br>
+ * Note that subclasses have to have a method
+ * <pre>@BeforeClass
+ * public void initAction(){
+ *     a = (AbstractAction) action;
+ * }</pre>
+ * And a field <pre>protected static ConcreteAction action = new ConcreteAction();</pre> with in order to work properly.
  *
  * 
  * @author Daniel M. de Oliveira
@@ -44,6 +51,9 @@ public class ActionTest {
 	Node n = null;
 	Object o;
 	Job j;
+	User c;
+	
+	protected static AbstractAction a;
 	
 	@Before
 	public void setUpBeforeActionTest(){
@@ -60,9 +70,9 @@ public class ActionTest {
 		
 		ps.getNodes().add(n);
 		
-		User contractor = new User();
-		contractor.setShort_name("TEST");
-		contractor.setEmailAddress("noreply");
+		c = new User();
+		c.setShort_name("TEST");
+		c.setEmailAddress("noreply");
 		
 		Package pkg = new Package();
 		pkg.setName("1");
@@ -70,7 +80,7 @@ public class ActionTest {
 		pkg.setContainerName("testcontainer.tgz");
 		
 		o = new Object();
-		o.setContractor(contractor);
+		o.setContractor(c);
 		o.setTransientNodeRef(n);
 		o.setIdentifier(TC.IDENTIFIER);
 		o.getPackages().add(pkg);
@@ -78,5 +88,9 @@ public class ActionTest {
 		o.setUrn("urn");
 		
 		j = new Job();
+		
+		a.setObject(o);
+		a.setLocalNode(n);
+		a.setJob(j);
 	}
 }

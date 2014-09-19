@@ -27,6 +27,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.ConversionInstruction;
@@ -53,7 +54,12 @@ public class RestartIngestWorkflowActionTests extends ActionTest{
 	private final Path pipsFolder = Path.make(
 			workAreaRootPath,C.WA_PIPS);
 	
-	private final RestartIngestWorkflowAction action = new RestartIngestWorkflowAction();
+	private static final RestartIngestWorkflowAction action = new RestartIngestWorkflowAction();
+	
+	@BeforeClass
+	public static void initAction(){
+		a = (AbstractAction) action;
+	}
 	
 	@Before
 	public void setUp() throws IOException{
@@ -65,9 +71,7 @@ public class RestartIngestWorkflowActionTests extends ActionTest{
 				pipsFolder.toFile());
 		
 		n.setWorkAreaRootPath(workAreaRootPath);
-		action.setObject(o);
-		action.setLocalNode(n);
-		action.setJob(j);
+
 	}
 
 	@After
@@ -85,8 +89,8 @@ public class RestartIngestWorkflowActionTests extends ActionTest{
 	@Test
 	public void emptyPIPFolders() throws IOException{
 		action.implementation();
-		assertFalse(Path.makeFile(pipsFolder,"institution","TEST",TC.IDENTIFIER+"_1").exists());
-		assertFalse(Path.makeFile(pipsFolder,"public","TEST",TC.IDENTIFIER+"_1").exists());
+		assertFalse(Path.makeFile(pipsFolder,C.WA_INSTITUTION,c.getShort_name(),TC.IDENTIFIER+"_1").exists());
+		assertFalse(Path.makeFile(pipsFolder,C.WA_PUBLIC,c.getShort_name(),TC.IDENTIFIER+"_1").exists());
 	}
 	
 	
