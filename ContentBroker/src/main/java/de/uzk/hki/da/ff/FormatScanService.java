@@ -32,5 +32,5 @@ public interface FormatScanService {
 	 * @return files, which allows easier testing.
 	 * @throws IOException
 	 */
-	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws IOException;
+	public List<IFileWithFileFormat> identify(List<IFileWithFileFormat> files) throws IOException;
 }

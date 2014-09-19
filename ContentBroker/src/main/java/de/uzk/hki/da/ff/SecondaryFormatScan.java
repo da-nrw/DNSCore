@@ -29,7 +29,7 @@ import org.irods.jargon.core.exception.InvalidArgumentException;
  */
 public class SecondaryFormatScan {
 
-	List<SubformatIdentificationPolicy> secondStageScanPolicies = null;
+	List<ISubformatIdentificationPolicy> secondStageScanPolicies = null;
 	
 	
 	/**
@@ -38,13 +38,13 @@ public class SecondaryFormatScan {
 	 * @return files, for easy mock testing.
 	 * @throws 
 	 */
-	List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws InvalidArgumentException{
+	List<IFileWithFileFormat> identify(List<IFileWithFileFormat> files) throws InvalidArgumentException{
 
-		for (FileWithFileFormat f:files){
+		for (IFileWithFileFormat f:files){
 			if (f.getFormatPUID()==null||f.getFormatPUID().isEmpty())
 				throw new InvalidArgumentException(f+" has no puid");
 			
-			for (SubformatIdentificationPolicy p:secondStageScanPolicies){
+			for (ISubformatIdentificationPolicy p:secondStageScanPolicies){
 				if (f.getFormatPUID().equals(p.getPUID())){
 					
 					SecondaryFormatIdentifier fi = null;
@@ -76,7 +76,7 @@ public class SecondaryFormatScan {
 	}
 
 	void setSecondStageScanPolicies(
-			List<SubformatIdentificationPolicy> secondStageScanPolicies) {
+			List<ISubformatIdentificationPolicy> secondStageScanPolicies) {
 		this.secondStageScanPolicies = secondStageScanPolicies;
 	}
 

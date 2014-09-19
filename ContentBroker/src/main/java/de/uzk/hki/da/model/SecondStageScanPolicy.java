@@ -26,7 +26,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import de.uzk.hki.da.ff.SubformatIdentificationPolicy;
+import de.uzk.hki.da.ff.ISubformatIdentificationPolicy;
 
 
 /**
@@ -34,7 +34,7 @@ import de.uzk.hki.da.ff.SubformatIdentificationPolicy;
  */
 @Entity
 @Table(name="second_stage_scans")
-public class SecondStageScanPolicy implements SubformatIdentificationPolicy {
+public class SecondStageScanPolicy implements ISubformatIdentificationPolicy {
 
 	/** The id. */
 	@Id

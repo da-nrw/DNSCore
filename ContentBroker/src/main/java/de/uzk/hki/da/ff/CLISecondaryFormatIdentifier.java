@@ -39,7 +39,7 @@ public class CLISecondaryFormatIdentifier implements SecondaryFormatIdentifier{
 	private String scriptName = null;
 	
 	@Override
-	public String identify(FileWithFileFormat fff) {
+	public String identify(IFileWithFileFormat fff) {
 		
 		File conversionScript = new File(scriptName);
 		

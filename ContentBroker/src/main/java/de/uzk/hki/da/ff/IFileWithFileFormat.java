@@ -16,22 +16,23 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 package de.uzk.hki.da.ff;
+
+import java.io.File;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public interface SubformatIdentificationPolicy {
+public interface IFileWithFileFormat {
 
-	public String getPUID();
+	public String getFormatPUID();
+
+	public void setFormatPUID(String formatPUID);
+
+	public String getFormatSecondaryAttribute();
+
+	public void setFormatSecondaryAttribute(String formatSecondaryAttribute);
 	
-	public void setPUID(String PUID);
-
-	public String getAllowedValues();
-
-	public void setAllowedValues(String expectedValues);
-
-	public String getFormatIdentifierScriptName();
-
-	public void setFormatIdentifierScriptName(String conversionScriptName);
+	public File toRegularFile();
 }

@@ -30,8 +30,8 @@ import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
-import de.uzk.hki.da.ff.FileWithFileFormat;
-import de.uzk.hki.da.ff.SubformatIdentificationPolicy;
+import de.uzk.hki.da.ff.IFileWithFileFormat;
+import de.uzk.hki.da.ff.ISubformatIdentificationPolicy;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionInstructionBuilder;
@@ -69,7 +69,7 @@ public class ScanForPresentationAction extends AbstractAction{
 		// check if object package type is set
 		
 		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()); 
-		List <FileWithFileFormat> fffl = new ArrayList<FileWithFileFormat>();
+		List <IFileWithFileFormat> fffl = new ArrayList<IFileWithFileFormat>();
 		fffl.addAll(newestFiles);
 		
 		if (fffl.size() == 0)
@@ -80,9 +80,9 @@ public class ScanForPresentationAction extends AbstractAction{
 			List<SecondStageScanPolicy> policies = 
 					dao.getSecondStageScanPolicies(session);
 			session.close();
-			List<SubformatIdentificationPolicy> polys = new ArrayList<SubformatIdentificationPolicy>();
+			List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
 			for (SecondStageScanPolicy s:policies)
-				polys.add((SubformatIdentificationPolicy) s);
+				polys.add((ISubformatIdentificationPolicy) s);
 			fileFormatFacade.setSubformatIdentificationPolicies(polys);
 			fffl = fileFormatFacade.identify(fffl);
 		} catch (FileFormatException e) {

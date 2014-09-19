@@ -30,8 +30,8 @@ import org.irods.jargon.core.exception.InvalidArgumentException;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.ff.FileWithFileFormat;
-import de.uzk.hki.da.ff.PlainFileWithFileFormat;
 import de.uzk.hki.da.ff.SecondaryFormatScan;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
@@ -60,9 +60,9 @@ public class SecondaryFormatScanTests {
 		scan2.setAllowedValues("EAD,METS");
 		scan2.setFormatIdentifierScriptName("script:src/test/resources/format/SecondaryFormatScanTests/abs.sh");
 		
-		List<SubformatIdentificationPolicy> secondStageScanPolicies = new ArrayList<SubformatIdentificationPolicy>();
-		secondStageScanPolicies.add((SubformatIdentificationPolicy)scan);
-		secondStageScanPolicies.add((SubformatIdentificationPolicy)scan2);
+		List<ISubformatIdentificationPolicy> secondStageScanPolicies = new ArrayList<ISubformatIdentificationPolicy>();
+		secondStageScanPolicies.add((ISubformatIdentificationPolicy)scan);
+		secondStageScanPolicies.add((ISubformatIdentificationPolicy)scan2);
 		sfs.setSecondStageScanPolicies(secondStageScanPolicies);
 		
 	}
@@ -77,7 +77,7 @@ public class SecondaryFormatScanTests {
 		DAFile f = new DAFile(null,null,"tif");
 		f.setFormatPUID("fmt/353");
 		
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(f);
 		sfs.identify(files);
 		
@@ -86,10 +86,10 @@ public class SecondaryFormatScanTests {
 	
 	@Test
 	public void testIdentifiedByScript() throws InvalidArgumentException{
-		PlainFileWithFileFormat f = new PlainFileWithFileFormat(new File("src/test/resources/format/SecondaryFormatScanTests/xml"));
+		FileWithFileFormat f = new FileWithFileFormat(new File("src/test/resources/format/SecondaryFormatScanTests/xml"));
 		f.setFormatPUID("fmt/101");
 		
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(f);
 		sfs.identify(files);
 		
@@ -100,7 +100,7 @@ public class SecondaryFormatScanTests {
 	public void testPUIDNotSet(){
 		DAFile f = new DAFile(null,null,"tif");
 		
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(f);
 		try {
 			sfs.identify(files);

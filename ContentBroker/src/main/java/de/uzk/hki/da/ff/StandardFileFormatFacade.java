@@ -31,7 +31,6 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.cli.CommandLineConnector;
 import de.uzk.hki.da.cli.ProcessInformation;
-import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -51,21 +50,21 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	private static final String JHOVE_CONF = "conf/jhove.conf";
 	private String jhoveFolder = "jhove";
 	
-	private List<SubformatIdentificationPolicy> subformatIdentificationPolicies =
-			new ArrayList<SubformatIdentificationPolicy>();
+	private List<ISubformatIdentificationPolicy> subformatIdentificationPolicies =
+			new ArrayList<ISubformatIdentificationPolicy>();
 	
 	/**
 	 * The output of fido typically is a comma separated list of puids for each file. Only the last entry of the list
 	 * will be taken.
 	 */
 	@Override
-	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files)
+	public List<IFileWithFileFormat> identify(List<IFileWithFileFormat> files)
 			throws FileNotFoundException {
 
 		fidoFormatScanService = new FidoFormatScanService();
 		fidoFormatScanService.identify(files);
 		
-		for (SubformatIdentificationPolicy p:subformatIdentificationPolicies)
+		for (ISubformatIdentificationPolicy p:subformatIdentificationPolicies)
 			logger.debug("policy available: "+p);
 		
 		secondaryFormatScan = new SecondaryFormatScan();
@@ -78,7 +77,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		}
 		
 		
-		for (FileWithFileFormat f:files){
+		for (IFileWithFileFormat f:files){
 			if (f.getFormatPUID().equals(FFConstants.EAD_PUID)){
 				f.setFormatPUID(C.XML_PUID);
 				f.setFormatSecondaryAttribute(C.EAD);
@@ -158,7 +157,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 
 	@Override
 	public void setSubformatIdentificationPolicies(
-			List<SubformatIdentificationPolicy> subformatIdentificationPolicies) {
+			List<ISubformatIdentificationPolicy> subformatIdentificationPolicies) {
 		
 		this.subformatIdentificationPolicies = subformatIdentificationPolicies;
 		

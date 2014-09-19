@@ -40,7 +40,7 @@ import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
-import de.uzk.hki.da.ff.FileWithFileFormat;
+import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.ff.StandardFileFormatFacade;
 import de.uzk.hki.da.grid.FakeGridFacade;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
@@ -49,6 +49,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.test.TC;
@@ -105,12 +106,12 @@ public class RestructureActionTests {
 	
 		DAFile file = new DAFile(object.getLatestPackage(),"rep+a","140849.tif");
 		file.setFormatPUID("fmt/353");
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>(); files.add(file);
-		when( ffs.identify((List<FileWithFileFormat>)anyObject()) ).thenReturn(files);
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>(); files.add(file);
+		when( ffs.identify((List<IFileWithFileFormat>)anyObject()) ).thenReturn(files);
 		action.setFileFormatFacade(ffs);
 		
 		CentralDatabaseDAO dao = mock(CentralDatabaseDAO.class);
-		when(dao.getSecondStageScanPolicies((Session)anyObject())).thenReturn(null);
+		when(dao.getSecondStageScanPolicies((Session)anyObject())).thenReturn(new ArrayList<SecondStageScanPolicy>());
 		action.setDao(dao);
 		
 	}

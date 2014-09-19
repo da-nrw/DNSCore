@@ -41,7 +41,7 @@ public interface FileFormatFacade {
 	 * @throws FileNotFoundException if one or more files cannot be found.
 	 * @throws FileFormatException if format could not get determinded.
 	 */
-	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files) 
+	public List<IFileWithFileFormat> identify(List<IFileWithFileFormat> files) 
 			throws FileNotFoundException, FileFormatException;
 
 	/**
@@ -59,6 +59,6 @@ public interface FileFormatFacade {
 	 * @param subformatIdentificationPolicies
 	 */
 	public void setSubformatIdentificationPolicies(
-			List<SubformatIdentificationPolicy> subformatIdentificationPolicies);
+			List<ISubformatIdentificationPolicy> subformatIdentificationPolicies);
 	
 }

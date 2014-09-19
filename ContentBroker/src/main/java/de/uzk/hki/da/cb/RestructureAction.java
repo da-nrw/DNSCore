@@ -36,8 +36,8 @@ import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
-import de.uzk.hki.da.ff.FileWithFileFormat;
-import de.uzk.hki.da.ff.SubformatIdentificationPolicy;
+import de.uzk.hki.da.ff.IFileWithFileFormat;
+import de.uzk.hki.da.ff.ISubformatIdentificationPolicy;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.path.Path;
@@ -119,25 +119,25 @@ public class RestructureAction extends AbstractAction{
 		
 		object.reattach();
 		logger.debug("scanning files with format identifier(s)");
-		List<FileWithFileFormat> scannedFiles = null;
+		List<IFileWithFileFormat> scannedFiles = null;
 		try {
-			List<FileWithFileFormat> fffl = new ArrayList<FileWithFileFormat>();
+			List<IFileWithFileFormat> fffl = new ArrayList<IFileWithFileFormat>();
 			fffl.addAll(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
 			
 			Session session = HibernateUtil.openSession();
 			List<SecondStageScanPolicy> policies = 
 					dao.getSecondStageScanPolicies(session);
 			session.close();
-			List<SubformatIdentificationPolicy> polys = new ArrayList<SubformatIdentificationPolicy>();
+			List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
 			for (SecondStageScanPolicy s:policies)
-				polys.add((SubformatIdentificationPolicy) s);
+				polys.add((ISubformatIdentificationPolicy) s);
 			getFileFormatFacade().setSubformatIdentificationPolicies(polys);
 			scannedFiles = fileFormatFacade.identify(fffl);
 		} catch (FileFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for (FileWithFileFormat f:scannedFiles){
+		for (IFileWithFileFormat f:scannedFiles){
 			logger.debug(f+":"+f.getFormatPUID());
 		}
 
