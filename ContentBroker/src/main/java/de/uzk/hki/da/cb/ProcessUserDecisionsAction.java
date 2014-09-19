@@ -72,7 +72,7 @@ public class ProcessUserDecisionsAction extends AbstractAction{
 			logger.trace("will delete conversion instructions for long term preservation now");
 			job.getConversion_instructions().clear();
 		}
-		this.setEndStatus(C.INGEST_REGISTER_URN_ACTION_START_STATUS);
+		this.setEndStatus(C.WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION);
 		return true;
 	}
 

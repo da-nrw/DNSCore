@@ -61,7 +61,7 @@ public class ProcessUserDecisionsActionTests extends ConcreteActionUnitTest {
 		j.setAnswer(C.ANSWER_NO);
 		assertTrue(action.implementation());
 		assertTrue(j.getConversion_instructions().isEmpty());
-		assertEquals(C.INGEST_REGISTER_URN_ACTION_START_STATUS,action.getEndStatus());
+		assertEquals(C.WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION,action.getEndStatus());
 	}
 	
 	@Test
@@ -72,6 +72,6 @@ public class ProcessUserDecisionsActionTests extends ConcreteActionUnitTest {
 		j.setAnswer(C.ANSWER_YO);
 		assertTrue(action.implementation());
 		assertFalse(j.getConversion_instructions().isEmpty());
-		assertEquals(C.INGEST_REGISTER_URN_ACTION_START_STATUS,action.getEndStatus());
+		assertEquals(C.WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION,action.getEndStatus());
 	}
 }

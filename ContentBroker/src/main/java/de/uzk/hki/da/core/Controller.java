@@ -114,17 +114,17 @@ public class Controller implements Runnable {
             	TextMessage textMessage = (TextMessage) messageRecieve;
                 String command = textMessage.getText();
                 if (!command.equals("")) logger.debug("Received: " + command);
-                if (command.indexOf(C.STOP_FACTORY) >= 0) {
+                if (command.indexOf(C.COMMAND_STOP_FACTORY) >= 0) {
 					
-                	logger.debug(C.STOP_FACTORY);
+                	logger.debug(C.COMMAND_STOP_FACTORY);
 					messageSend = "...STOPPING FACTORY done";
 					actionFactory.pause(true);
 					
-				} else if (command.indexOf(C.START_FACTORY)>=0) {
-					logger.debug(C.START_FACTORY);
+				} else if (command.indexOf(C.COMMAND_START_FACTORY)>=0) {
+					logger.debug(C.COMMAND_START_FACTORY);
 					messageSend = "...STARTING FACTORY done";
 					actionFactory.pause(false);
-				} else if (command.equals(C.SHOW_ACTION)) {
+				} else if (command.equals(C.COMMAND_SHOW_ACTION)) {
 					String []arr = command.split("=");
 					if (arr.length==2) {
 						logger.debug("SHOW_DESCRIPTION OF STATE: "+arr[1]);
@@ -132,8 +132,8 @@ public class Controller implements Runnable {
 						if (ad!=null) messageSend = ad.getDescription();
 						else messageSend = "Action is unknown to CB at " + serverName;
 					} else messageSend = "Command not understood!";
-				} else if (command.indexOf(C.SHOW_VERSION)>=0) {
-					logger.debug(C.SHOW_VERSION);
+				} else if (command.indexOf(C.COMMAND_SHOW_VERSION)>=0) {
+					logger.debug(C.COMMAND_SHOW_VERSION);
 					FileReader fr = null;
 						int c;
 						StringBuffer buff = new StringBuffer();
@@ -147,14 +147,14 @@ public class Controller implements Runnable {
 				            logger.error("Readme not found");
 				        } 
 				        messageSend = buff.toString();
-				} else if (command.indexOf(C.SHOW_ACTIONS)>=0){ 
+				} else if (command.indexOf(C.COMMAND_SHOW_ACTIONS)>=0){ 
 					list = actionRegistry.getCurrentActionDescriptions();
-					logger.debug(C.SHOW_ACTIONS);
+					logger.debug(C.COMMAND_SHOW_ACTIONS);
 					messageSend = "found " + list.size()+ " working actions"; 
 					ObjectMessage om = session.createObjectMessage((Serializable) list);
 		            om.setJMSReplyTo(toServer);
 					producer.send(om);
-				} else if (command.indexOf(C.GRACEFUL_SHUTDOWN)>=0){ 
+				} else if (command.indexOf(C.COMMAND_GRACEFUL_SHUTDOWN)>=0){ 
 					list = actionRegistry.getCurrentActionDescriptions();
 					actionFactory.pause(true);
 					while (list.size()>0) {

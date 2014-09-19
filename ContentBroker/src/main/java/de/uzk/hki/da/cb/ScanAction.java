@@ -76,7 +76,7 @@ public class ScanAction extends AbstractAction{
 			
 			// "Manipulate" the end status to point to ProcessUserDecisionsAction
 			job.setQuestion(C.QUESTION_MIGRATION_ALLOWED);
-			this.setEndStatus(C.PROCESS_FOR_USER_DECISION_ACTION_WAIT_STATE);
+			this.setEndStatus(C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
 		}
 		return true;
 	}

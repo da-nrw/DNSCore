@@ -126,7 +126,7 @@ public class ScanActionTests extends ConcreteActionUnitTest{
 		
 		action.implementation();
 		assertEquals(C.QUESTION_MIGRATION_ALLOWED,j.getQuestion());
-		assertEquals(C.PROCESS_FOR_USER_DECISION_ACTION_WAIT_STATE,
+		assertEquals(C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION,
 				action.getEndStatus());
 	}
 	
