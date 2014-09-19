@@ -8,7 +8,6 @@ public class ActionUnderTestAnnotationParser {
 	      Field[] fields = clazz.getDeclaredFields();
 	      for (Field method : fields) {
 	         if (method.isAnnotationPresent(ActionUnderTest.class)) {
-	        	 System.out.println(method.getName()+" is annotated");
 	        	 return method;
 	         }
 	      }
