@@ -32,19 +32,15 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.utils.C;
 
 
 /**
@@ -52,78 +48,44 @@ import de.uzk.hki.da.test.TESTHelper;
  *
  * @author Daniel M. de Oliveira
  */
-public class RetrievalActionTests {
+public class RetrievalActionTests extends ConcreteActionUnitTest{
 	
 	private static final Path userAreaRootPath = Path.make(TC.TEST_ROOT_CB,"RetrievalActionTests","user");
 	private static final Path workAreaRootPath = Path.make(TC.TEST_ROOT_CB,"RetrievalActionTests","work");
-	private static final Path outgoingFolder = Path.make(userAreaRootPath,"TEST","outgoing");
-	private static final Path container = Path.make(outgoingFolder,"1.tar");
+	private static final Path outgoingFolder = Path.make(userAreaRootPath,C.TEST_USER_SHORT_NAME,"outgoing");
+	private static final Path container = Path.make(outgoingFolder,TC.IDENTIFIER+C.FILE_EXTENSION_TAR);
 	
-	private static final String objectIdentifier = "1";
-	private static RetrievalAction action;
-
-	private static PreservationSystem pSystem;
-	private static Object object;
-
-	
+	private static RetrievalAction action = new RetrievalAction();
 	
 	@BeforeClass
-	public static void setUpBeforeClass(){
-		
-		pSystem = TESTHelper.setUpPS(workAreaRootPath,userAreaRootPath,userAreaRootPath);
-		
+	public static void initAction(){
+		a = (AbstractAction) action;
 	}
-
-	
-	@AfterClass
-	public static void tearDownAfterClass() throws IOException{
-		;
-	}
-	
-	
-	
-	/**
-	 * Tear down.
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	@After
-	public void tearDown () throws IOException {
-		FileUtils.deleteDirectory(Path.makeFile(workAreaRootPath,"work/TEST/1"));
-		FileUtils.deleteDirectory(Path.makeFile(userAreaRootPath,"TEST/outgoing/1"));
-		Path.makeFile(userAreaRootPath,"TEST/outgoing/1.tar").delete();
-		FileUtils.deleteDirectory(userAreaRootPath.toFile());
-	}
-	
 	
 	
 	/**
 	 */
 	@Before
 	public void setUp() throws Exception {
-
-		object = TESTHelper.setUpObject(objectIdentifier, workAreaRootPath, 
-				userAreaRootPath,
-				userAreaRootPath);
-		
-		Package pkg1 = object.getLatestPackage();
+	
+		Package pkg1 = o.getLatestPackage();
 		Package pkg2 = new Package();
 		pkg2.setName("2");
 		Package pkg3 = new Package();
 		pkg3.setName("3");
-		object.getPackages().add(pkg2);
-		object.getPackages().add(pkg3);
+		o.getPackages().add(pkg2);
+		o.getPackages().add(pkg3);
 		
-		
-		
-		object.reattach();
-		object.getLatestPackage().setTransientBackRefToObject(object);
-		action = (RetrievalAction) wireUpAction(new RetrievalAction(),object,pSystem);
-		
-		
+		pkg2.setTransientBackRefToObject(o);
+		pkg3.setTransientBackRefToObject(o);
+		o.reattach();
 
-		FileUtils.copyDirectory(Path.makeFile(workAreaRootPath,"work",object.getContractor().getShort_name(),"_1"), 
-				                Path.makeFile(workAreaRootPath,"work",object.getContractor().getShort_name(),"1")); 
-		Path.makeFile(userAreaRootPath,"TEST","outgoing").mkdirs();
+		n.setWorkAreaRootPath(workAreaRootPath);
+		n.setUserAreaRootPath(userAreaRootPath);
+	
+		FileUtils.copyDirectory(Path.makeFile(workAreaRootPath,"work",o.getContractor().getShort_name(),"_"+TC.IDENTIFIER), 
+				                Path.makeFile(workAreaRootPath,"work",o.getContractor().getShort_name(),TC.IDENTIFIER)); 
+		Path.makeFile(outgoingFolder).mkdirs();
 		
 		
 		pkg1.scanRepRecursively("1+a");
@@ -133,19 +95,32 @@ public class RetrievalActionTests {
 		pkg3.scanRepRecursively("3+a");
 		pkg3.scanRepRecursively("3+b");
 	}
-	
 
+	
+	/**
+	 * Tear down.
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	@After
+	public void tearDown () throws IOException {
+		FileUtils.deleteDirectory(Path.makeFile(workAreaRootPath,C.WA_WORK,o.getContractor().getShort_name(),TC.IDENTIFIER));
+		FileUtils.deleteDirectory(Path.makeFile(outgoingFolder,TC.IDENTIFIER));
+		Path.makeFile(outgoingFolder,TC.IDENTIFIER+C.FILE_EXTENSION_TAR).delete();
+		FileUtils.deleteDirectory(userAreaRootPath.toFile());
+	}
+	
+	
 	
 	@Test
 	public void testContainerAndBag() throws Exception{
 
 		action.implementation();
-		assertFalse(Path.makeFile(workAreaRootPath,"TEST/1_").exists());
-		assertTrue( Path.makeFile(userAreaRootPath,"TEST/outgoing/1.tar").exists() );
+		assertFalse(Path.makeFile(workAreaRootPath,o.getContractor().getShort_name(),TC.IDENTIFIER+"_").exists());
+		assertTrue( Path.makeFile(outgoingFolder,TC.IDENTIFIER+C.FILE_EXTENSION_TAR).exists() );
 		unpack();
 		
 		BagFactory bagFactory = new BagFactory();
-		Bag bag = bagFactory.createBag(Path.makeFile(userAreaRootPath,"TEST/outgoing/1/"));
+		Bag bag = bagFactory.createBag(Path.makeFile(outgoingFolder,TC.IDENTIFIER));
 		SimpleResult result = bag.verifyValid();
 		assertTrue(result.isSuccess());
 	}
@@ -163,12 +138,12 @@ public class RetrievalActionTests {
 		action.implementation();
 		unpack();
 		
-		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/folder1/pic5.txt").exists());
-		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/folder2/pic5.txt").exists());
-		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/pic1.txt").exists());
-		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/pic2.txt").exists());
-		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/pic3.txt").exists());
-		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/pic4.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,TC.IDENTIFIER,"data/folder1/pic5.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,TC.IDENTIFIER,"data/folder2/pic5.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,TC.IDENTIFIER,"data/pic1.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,TC.IDENTIFIER,"data/pic2.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,TC.IDENTIFIER,"data/pic3.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,TC.IDENTIFIER,"data/pic4.txt").exists());
 		
 		
 	}
@@ -181,17 +156,17 @@ public class RetrievalActionTests {
 		action.implementation();
 		
 		unpack();
-		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/1+a/pic1.txt").exists());
-		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/1+b/pic2.txt").exists());
-		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/1+b/premis.xml").exists());
-		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/3+a/pic1.txt").exists());
-		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/3+b/folder1/pic5.txt").exists());
-		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/3+b/folder2/pic5.txt").exists());
-		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/3+b/pic3.txt").exists());
-		assertTrue(Path.makeFile(outgoingFolder,objectIdentifier,"data/3+b/premis.xml").exists());
+		assertTrue(Path.makeFile(outgoingFolder,TC.IDENTIFIER,"data/1+a/pic1.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,TC.IDENTIFIER,"data/1+b/pic2.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,TC.IDENTIFIER,"data/1+b/premis.xml").exists());
+		assertTrue(Path.makeFile(outgoingFolder,TC.IDENTIFIER,"data/3+a/pic1.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,TC.IDENTIFIER,"data/3+b/folder1/pic5.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,TC.IDENTIFIER,"data/3+b/folder2/pic5.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,TC.IDENTIFIER,"data/3+b/pic3.txt").exists());
+		assertTrue(Path.makeFile(outgoingFolder,TC.IDENTIFIER,"data/3+b/premis.xml").exists());
 
-		assertFalse(Path.makeFile(outgoingFolder,objectIdentifier,"data/2+a/pic3.txt").exists());
-		assertFalse(Path.makeFile(outgoingFolder,objectIdentifier,"data/2+b/pic4.txt").exists());
+		assertFalse(Path.makeFile(outgoingFolder,TC.IDENTIFIER,"data/2+a/pic3.txt").exists());
+		assertFalse(Path.makeFile(outgoingFolder,TC.IDENTIFIER,"data/2+b/pic4.txt").exists());
 	}
 	
 	
@@ -202,7 +177,7 @@ public class RetrievalActionTests {
 	public void testCleanup() throws IOException{
 		action.implementation();
 		
-		assertFalse(Path.makeFile(workAreaRootPath,"work","TEST/1").exists());
+		assertFalse(Path.makeFile(workAreaRootPath,C.WA_WORK,o.getContractor().getShort_name(),TC.IDENTIFIER).exists());
 	}
 	
 
@@ -218,21 +193,7 @@ public class RetrievalActionTests {
 
 	private static void unpack() throws Exception{
 		NativeJavaTarArchiveBuilder tar = new NativeJavaTarArchiveBuilder();
-		tar.unarchiveFolder(Path.makeFile(outgoingFolder,"1.tar"),
+		tar.unarchiveFolder(Path.makeFile(outgoingFolder,TC.IDENTIFIER+C.FILE_EXTENSION_TAR),
 				            outgoingFolder.toFile());
 	}
-	
-	private static AbstractAction wireUpAction(AbstractAction action,Object o,PreservationSystem ps){
-		
-		Job job = new Job(); 
-		job.setObject(o);
-		action.setObject(o);
-		action.setJob(job);
-		action.setLocalNode(ps.getNodes().iterator().next());
-		action.setPSystem(ps);
-		return action;
-	}
-	
-	
-	
 }

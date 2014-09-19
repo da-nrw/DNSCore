@@ -35,7 +35,7 @@ import de.uzk.hki.da.test.TC;
  * <br>
  * Note that subclasses have to have a method
  * <pre>@BeforeClass
- * public void initAction(){
+ * public static void initAction(){
  *     a = (AbstractAction) action;
  * }</pre>
  * And a field <pre>protected static ConcreteAction action = new ConcreteAction();</pre> with in order to work properly.
@@ -44,14 +44,14 @@ import de.uzk.hki.da.test.TC;
  * @author Daniel M. de Oliveira
  *
  */
-public class ActionTest {
+public class ConcreteActionUnitTest {
 
 	PreservationSystem ps;
 	Path workAreaRoot;
 	Node n = null;
 	Object o;
 	Job j;
-	User c;
+	private User c;
 	
 	protected static AbstractAction a;
 	
@@ -92,5 +92,6 @@ public class ActionTest {
 		a.setObject(o);
 		a.setLocalNode(n);
 		a.setJob(j);
+		a.setPSystem(ps);
 	}
 }

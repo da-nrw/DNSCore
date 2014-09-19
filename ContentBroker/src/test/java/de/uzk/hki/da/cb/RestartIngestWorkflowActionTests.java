@@ -43,7 +43,7 @@ import de.uzk.hki.da.utils.C;
  * 
  * @author Daniel M. de Oliveira
  */
-public class RestartIngestWorkflowActionTests extends ActionTest{
+public class RestartIngestWorkflowActionTests extends ConcreteActionUnitTest{
 	
 	private final Path workAreaRootPath = new RelativePath(
 			TC.TEST_ROOT_CB,"RestartIngestWorkflowActionTests");
@@ -89,8 +89,8 @@ public class RestartIngestWorkflowActionTests extends ActionTest{
 	@Test
 	public void emptyPIPFolders() throws IOException{
 		action.implementation();
-		assertFalse(Path.makeFile(pipsFolder,C.WA_INSTITUTION,c.getShort_name(),TC.IDENTIFIER+"_1").exists());
-		assertFalse(Path.makeFile(pipsFolder,C.WA_PUBLIC,c.getShort_name(),TC.IDENTIFIER+"_1").exists());
+		assertFalse(Path.makeFile(pipsFolder,C.WA_INSTITUTION,o.getContractor().getShort_name(),TC.IDENTIFIER+"_1").exists());
+		assertFalse(Path.makeFile(pipsFolder,C.WA_PUBLIC,o.getContractor().getShort_name(),TC.IDENTIFIER+"_1").exists());
 	}
 	
 	

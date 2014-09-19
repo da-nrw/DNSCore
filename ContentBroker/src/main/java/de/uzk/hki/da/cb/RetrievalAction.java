@@ -214,7 +214,11 @@ public class RetrievalAction extends AbstractAction {
 	private void copySurfaceRepresentation(Path tempFolder)
 			throws RuntimeException {
 		
-		List<DAFile> files = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
+		String sce = "";
+		if (preservationSystem.getSidecarExtensions()!=null) 
+			sce = preservationSystem.getSidecarExtensions();
+		
+		List<DAFile> files = object.getNewestFilesFromAllRepresentations(sce);
 		for (DAFile f : files)
 		{
 			if (f.toRegularFile().getName().equals("premis.xml")) continue;
