@@ -33,7 +33,6 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Package;
@@ -55,13 +54,10 @@ public class RetrievalActionTests extends ConcreteActionUnitTest{
 	private static final Path outgoingFolder = Path.make(userAreaRootPath,C.TEST_USER_SHORT_NAME,"outgoing");
 	private static final Path container = Path.make(outgoingFolder,TC.IDENTIFIER+C.FILE_EXTENSION_TAR);
 	
-	private static RetrievalAction action = new RetrievalAction();
+	@ActionUnderTest
+	RetrievalAction action = new RetrievalAction();
 	
-	@BeforeClass
-	public static void initAction(){
-		a = (AbstractAction) action;
-	}
-	
+
 	
 	/**
 	 */

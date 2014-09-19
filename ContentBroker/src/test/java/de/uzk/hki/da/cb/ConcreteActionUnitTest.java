@@ -18,6 +18,8 @@
 */
 package de.uzk.hki.da.cb;
 
+import java.lang.reflect.Field;
+
 import org.junit.Before;
 
 import de.uzk.hki.da.model.Job;
@@ -32,14 +34,15 @@ import de.uzk.hki.da.test.TC;
 /**
  * Provides the basic framework for effective tests of the business code
  * distributed over the different actions.
+ * 
+ * Subclasses should use 
+ * <pre>
+ * "@ActionUnderTest
+ * ConcreteAction action = new ConcreteAction();
+ * </pre> to mark which action is under test. The action then gets initialized
+ * automatically as if it came directly from the ActionFactory.
  * <br>
- * Note that subclasses have to have a method
- * <pre>@BeforeClass
- * public static void initAction(){
- *     a = (AbstractAction) action;
- * }</pre>
- * And a field <pre>protected static ConcreteAction action = new ConcreteAction();</pre> with in order to work properly.
- *
+ * <b>Note</b> that you must not use the JUnit @Before and @After annotations in subclasses.
  * 
  * @author Daniel M. de Oliveira
  *
@@ -55,8 +58,10 @@ public class ConcreteActionUnitTest {
 	
 	protected static AbstractAction a;
 	
+
+	
 	@Before
-	public void setUpBeforeActionTest(){
+	public void setUpBeforeActionTest() throws Exception{
 		ps = new PreservationSystem();
 		ps.setId(1);
 		User psadmin = new User();
@@ -88,6 +93,10 @@ public class ConcreteActionUnitTest {
 		o.setUrn("urn");
 		
 		j = new Job();
+		
+		ActionUnderTestAnnotationParser parser = new ActionUnderTestAnnotationParser();
+		Field f = parser.parse(this.getClass());
+		AbstractAction a = (AbstractAction) f.get(this);
 		
 		a.setObject(o);
 		a.setLocalNode(n);

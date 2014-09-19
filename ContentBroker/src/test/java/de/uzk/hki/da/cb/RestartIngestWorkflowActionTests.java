@@ -19,7 +19,9 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +29,6 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.ConversionInstruction;
@@ -53,13 +54,9 @@ public class RestartIngestWorkflowActionTests extends ConcreteActionUnitTest{
 			contractorFolder,TC.IDENTIFIER);
 	private final Path pipsFolder = Path.make(
 			workAreaRootPath,C.WA_PIPS);
-	
-	private static final RestartIngestWorkflowAction action = new RestartIngestWorkflowAction();
-	
-	@BeforeClass
-	public static void initAction(){
-		a = (AbstractAction) action;
-	}
+
+	@ActionUnderTest
+	RestartIngestWorkflowAction action = new RestartIngestWorkflowAction();
 	
 	@Before
 	public void setUp() throws IOException{
