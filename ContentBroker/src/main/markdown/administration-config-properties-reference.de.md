@@ -157,7 +157,7 @@ are set to use the corresponding irods specific implementations. Nodes not using
     irods.server=
     irods.zone=
     irods.default_resc=
-    irods.pam=false 
+    irods.pam=
     irods.keyStorePassword=
     irods.keyStorePath=
     irods.trustStorePath=
