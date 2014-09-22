@@ -38,9 +38,9 @@ import de.uzk.hki.da.utils.C;
 public class FakeFileFormatFacade implements FileFormatFacade {
 
 	@Override
-	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws FileNotFoundException{
+	public List<IFileWithFileFormat> identify(List<IFileWithFileFormat> files) throws FileNotFoundException{
 		
-		for (FileWithFileFormat f:files){
+		for (IFileWithFileFormat f:files){
 			
 			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".avi")){
 				f.setFormatPUID("fmt/5");
@@ -153,6 +153,10 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 	}
 	
 	
-	
 
+
+	@Override
+	public void setSubformatIdentificationPolicies(
+			List<ISubformatIdentificationPolicy> subformatIdentificationPolicies) {
+	}
 }

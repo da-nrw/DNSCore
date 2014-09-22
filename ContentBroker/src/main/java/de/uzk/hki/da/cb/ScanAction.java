@@ -36,6 +36,7 @@ import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.MailContents;
+import de.uzk.hki.da.utils.C;
 
 
 /**
@@ -74,7 +75,8 @@ public class ScanAction extends AbstractAction{
 			new MailContents(preservationSystem,localNode).informUserAboutPendingDecision(object); 
 			
 			// "Manipulate" the end status to point to ProcessUserDecisionsAction
-			this.setEndStatus("640");
+			job.setQuestion(C.QUESTION_MIGRATION_ALLOWED);
+			this.setEndStatus(C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
 		}
 		return true;
 	}

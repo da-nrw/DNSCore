@@ -38,8 +38,6 @@ import org.slf4j.LoggerFactory;
  */
 public class FakeRepositoryFacade implements RepositoryFacade {
 	
-	private static final String EDM = "EDM";
-
 	private MetadataIndex metadataIndex;
 	
 	static final Logger logger = LoggerFactory.getLogger(FakeRepositoryFacade.class);

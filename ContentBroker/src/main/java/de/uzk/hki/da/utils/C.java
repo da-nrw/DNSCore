@@ -38,10 +38,6 @@ public class C {
 	public static final String FILE_EXTENSION_JPG = ".jpg";
 	public static final String FILE_EXTENSION_TAR = ".tar";
 
-	public static final String XMP_PUID = "danrw-fmt/3";
-	public static final String EAD_PUID = "danrw-fmt/2";
-	public static final String LIDO_PUID = "danrw-fmt/4";
-	public static final String METS_PUID = "danrw-fmt/1";
 	public static final String XML_PUID = "fmt/101";
 	
 	public static final String MIMETYPE_IMAGE_JPEG = "image/jpeg";
@@ -66,16 +62,16 @@ public class C {
 	
 
 	// Systems communication
-	public static final String STOP_FACTORY = "STOP_FACTORY";
-	public static final String START_FACTORY = "START_FACTORY";
-	public static final String SHOW_DESCRIPTION = "SHOW_DESCRIPTION";
-	public static final String SHOW_VERSION = "SHOW_VERSION";
-	public static final String SHOW_ACTIONS = "SHOW_ACTIONS";
-	public static final String SHOW_ACTION = "SHOW_ACTION";
-	public static final String GRACEFUL_SHUTDOWN = "GRACEFUL_SHUTDOWN";
-	public static final String MIGRATION_ALLOWED = "MIGRATION_ALLOWED?";
-	public static final String YES = "YES";
-	public static final String NO = "NO";
+	public static final String COMMAND_STOP_FACTORY = "STOP_FACTORY";
+	public static final String COMMAND_START_FACTORY = "START_FACTORY";
+	public static final String COMMAND_SHOW_DESCRIPTION = "SHOW_DESCRIPTION";
+	public static final String COMMAND_SHOW_VERSION = "SHOW_VERSION";
+	public static final String COMMAND_SHOW_ACTIONS = "SHOW_ACTIONS";
+	public static final String COMMAND_SHOW_ACTION = "SHOW_ACTION";
+	public static final String COMMAND_GRACEFUL_SHUTDOWN = "GRACEFUL_SHUTDOWN";
+	public static final String QUESTION_MIGRATION_ALLOWED = "MIGRATION_ALLOWED?";
+	public static final String ANSWER_YO = "YES";
+	public static final String ANSWER_NO = "NO";
 	
 	// Premis related
 	public static final String EVENT_TYPE_CREATE = "CREATE";
@@ -131,10 +127,11 @@ public class C {
 	public static final String ENCODING_UTF_8 = "UTF-8";
 	
 	// Action organization
-	public static final String STATE_DIGIT_USER_ERROR="4";
-	public static final String STATE_DIGIT_ERROR_PROPERLY_HANDLED = "1";
-	public static final String STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED = "3";
-	public static final String INGEST_REGISTER_URN_ACTION_START_STATUS = "150";
+	public static final String WORKFLOW_STATE_DIGIT_USER_ERROR="4";
+	public static final String WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED = "1";
+	public static final String WORKFLOW_STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED = "3";
+	public static final String WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION = "150";
+	public static final String WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION = "645";
 	
 	
 	

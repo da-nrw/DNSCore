@@ -32,8 +32,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.HibernateUtil;
+import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.ff.FileWithFileFormat;
-import de.uzk.hki.da.ff.PlainFileWithFileFormat;
 import de.uzk.hki.da.ff.StandardFileFormatFacade;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.path.Path;
@@ -53,7 +53,6 @@ public class CTFileFormatFacadeTests {
 	@BeforeClass
 	public static void setUp() throws IOException{
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
-		sfff.setDao(new CentralDatabaseDAO());
 
 		CTTestHelper.prepareWhiteBoxTest();
 	}
@@ -67,8 +66,8 @@ public class CTFileFormatFacadeTests {
 	
 	@Test
 	public void test() throws FileNotFoundException{
-		PlainFileWithFileFormat ffff = new PlainFileWithFileFormat(new File("conf/healthCheck.tif"));
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		FileWithFileFormat ffff = new FileWithFileFormat(new File("conf/healthCheck.tif"));
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(ffff);
 		sfff.identify(files);
 		
@@ -79,9 +78,9 @@ public class CTFileFormatFacadeTests {
 	
 	@Test
 	public void testEAD() throws FileNotFoundException{
-		PlainFileWithFileFormat ffff = new PlainFileWithFileFormat(Path.makeFile(testPath,"vda3.XML"));
+		FileWithFileFormat ffff = new FileWithFileFormat(Path.makeFile(testPath,"vda3.XML"));
 		
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(ffff);
 		sfff.identify(files);
 		
@@ -91,9 +90,9 @@ public class CTFileFormatFacadeTests {
 	
 	@Test
 	public void testMETS() throws FileNotFoundException{
-		PlainFileWithFileFormat ffff = new PlainFileWithFileFormat(Path.makeFile(testPath,"mets_2_99.xml"));
+		FileWithFileFormat ffff = new FileWithFileFormat(Path.makeFile(testPath,"mets_2_99.xml"));
 		
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(ffff);
 		sfff.identify(files);
 		
@@ -103,9 +102,9 @@ public class CTFileFormatFacadeTests {
 	
 	@Test
 	public void testLIDO() throws FileNotFoundException{
-		PlainFileWithFileFormat ffff = new PlainFileWithFileFormat(Path.makeFile(testPath,"LIDO-Testexport2014-07-04-FML-Auswahl.xml"));
+		FileWithFileFormat ffff = new FileWithFileFormat(Path.makeFile(testPath,"LIDO-Testexport2014-07-04-FML-Auswahl.xml"));
 		
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(ffff);
 		sfff.identify(files);
 		
@@ -115,9 +114,9 @@ public class CTFileFormatFacadeTests {
 
 	@Test
 	public void testXMP() throws FileNotFoundException{
-		PlainFileWithFileFormat ffff = new PlainFileWithFileFormat(Path.makeFile(testPath,"a.xmp"));
+		FileWithFileFormat ffff = new FileWithFileFormat(Path.makeFile(testPath,"a.xmp"));
 		
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(ffff);
 		sfff.identify(files);
 		

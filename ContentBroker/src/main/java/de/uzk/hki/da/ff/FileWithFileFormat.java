@@ -16,23 +16,50 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package de.uzk.hki.da.ff;
 
 import java.io.File;
 
 /**
+ * The simplest possible implementation of FileWithFileFormat.
+ * 
  * @author Daniel M. de Oliveira
  */
-public interface FileWithFileFormat {
+public class FileWithFileFormat implements IFileWithFileFormat {
 
-	public String getFormatPUID();
+	File file;
+	String formatPUID;
+	String secondary;
 
-	public void setFormatPUID(String formatPUID);
-
-	public String getFormatSecondaryAttribute();
-
-	public void setFormatSecondaryAttribute(String formatSecondaryAttribute);
+	public FileWithFileFormat(File f){
+		this.file=f;
+	}
 	
-	public File toRegularFile();
+	@Override
+	public String getFormatPUID() {
+		return formatPUID;
+	}
+
+	@Override
+	public void setFormatPUID(String formatPUID) {
+		this.formatPUID = formatPUID;
+	}
+
+	@Override
+	public String getFormatSecondaryAttribute() {
+		return secondary;
+	}
+
+	@Override
+	public void setFormatSecondaryAttribute(String formatSecondaryAttribute) {
+		this.secondary = formatSecondaryAttribute;
+		
+	}
+
+	@Override
+	public File toRegularFile() {
+
+		return file;
+	}
+
 }

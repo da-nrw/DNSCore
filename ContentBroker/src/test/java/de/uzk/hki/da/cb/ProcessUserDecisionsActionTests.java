@@ -19,7 +19,9 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,28 +35,22 @@ import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.ConversionInstruction;
-import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class ProcessUserDecisionsActionTests {
+public class ProcessUserDecisionsActionTests extends ConcreteActionUnitTest {
 	
-	
-	private Job job;
-	private ProcessUserDecisionsAction action;
+	@ActionUnderTest
+	ProcessUserDecisionsAction action = new ProcessUserDecisionsAction();
 
 	@Before
 	public void test(){
-		
-		job = new Job();
+
 		ConversionInstruction ins = new ConversionInstruction();
-		job.getConversion_instructions().add(ins);
-		action = new ProcessUserDecisionsAction();
-		action.setJob(job);
-		
+		j.getConversion_instructions().add(ins);
 	}
 	
 	@Test
@@ -62,10 +58,10 @@ public class ProcessUserDecisionsActionTests {
 			throws FileNotFoundException, UserException, IOException, 
 				RepositoryException, JDOMException, ParserConfigurationException, SAXException{
 		
-		job.setAnswer("NO");
+		j.setAnswer(C.ANSWER_NO);
 		assertTrue(action.implementation());
-		assertTrue(job.getConversion_instructions().isEmpty());
-		assertEquals(C.INGEST_REGISTER_URN_ACTION_START_STATUS,action.getEndStatus());
+		assertTrue(j.getConversion_instructions().isEmpty());
+		assertEquals(C.WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION,action.getEndStatus());
 	}
 	
 	@Test
@@ -73,21 +69,9 @@ public class ProcessUserDecisionsActionTests {
 			throws FileNotFoundException, UserException, IOException, 
 				RepositoryException, JDOMException, ParserConfigurationException, SAXException{
 		
-		job.setAnswer("YES");
+		j.setAnswer(C.ANSWER_YO);
 		assertTrue(action.implementation());
-		assertFalse(job.getConversion_instructions().isEmpty());
-		assertEquals(C.INGEST_REGISTER_URN_ACTION_START_STATUS,action.getEndStatus());
+		assertFalse(j.getConversion_instructions().isEmpty());
+		assertEquals(C.WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION,action.getEndStatus());
 	}
-	
-	@Test
-	public void procedeWithoutDoingAnythingWhenNoAnswer() throws FileNotFoundException, UserException, IOException, RepositoryException, JDOMException, ParserConfigurationException, SAXException{
-
-		job.setAnswer("");
-		assertFalse(action.implementation());
-		assertFalse(job.getConversion_instructions().isEmpty());
-	}
-	
-	
-	
-	
 }

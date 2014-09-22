@@ -85,10 +85,7 @@
 		<property name="localNode" ref="localNode" />
   	</bean>
   
-  
-	<bean class="de.uzk.hki.da.ff.StandardFileFormatFacade" id="standardFileFormatFacade">
-    	<property name="dao" ref="centralDao" />
-    </bean>
+	<bean class="de.uzk.hki.da.ff.StandardFileFormatFacade" id="standardFileFormatFacade"/>
     
     <bean class="de.uzk.hki.da.service.MimeTypeDetectionService" id="mtds"/>
     

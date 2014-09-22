@@ -276,4 +276,11 @@ public class Utilities {
 		
         return output;
 	}
+	
+	
+	
+	public static boolean isNotSet(String s) {
+		if (s==null||s.isEmpty()) return true;
+		return false;
+	}
 }

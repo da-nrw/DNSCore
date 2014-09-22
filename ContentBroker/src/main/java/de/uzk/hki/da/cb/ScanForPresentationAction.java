@@ -24,16 +24,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Session;
+
 import de.uzk.hki.da.core.ConfigurationException;
+import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
-import de.uzk.hki.da.ff.FileWithFileFormat;
+import de.uzk.hki.da.ff.IFileWithFileFormat;
+import de.uzk.hki.da.ff.ISubformatIdentificationPolicy;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionInstructionBuilder;
 import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.SecondStageScanPolicy;
 
 
 /**
@@ -64,12 +69,21 @@ public class ScanForPresentationAction extends AbstractAction{
 		// check if object package type is set
 		
 		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()); 
-		List <FileWithFileFormat> fffl = new ArrayList<FileWithFileFormat>();
+		List <IFileWithFileFormat> fffl = new ArrayList<IFileWithFileFormat>();
 		fffl.addAll(newestFiles);
 		
 		if (fffl.size() == 0)
 			throw new RuntimeException("No files found!");
 		try {
+			
+			Session session = HibernateUtil.openSession();
+			List<SecondStageScanPolicy> policies = 
+					dao.getSecondStageScanPolicies(session);
+			session.close();
+			List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
+			for (SecondStageScanPolicy s:policies)
+				polys.add((ISubformatIdentificationPolicy) s);
+			fileFormatFacade.setSubformatIdentificationPolicies(polys);
 			fffl = fileFormatFacade.identify(fffl);
 		} catch (FileFormatException e) {
 			e.printStackTrace();

@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.Test;
 
 import de.uzk.hki.da.ff.FakeFileFormatFacade;
-import de.uzk.hki.da.ff.FileWithFileFormat;
+import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.path.Path;
@@ -31,7 +31,7 @@ public class FakeFileFormatFacadeTests {
 	public void testMets() throws IOException{
 
 		DAFile mets = new DAFile(object.getLatestPackage(),"1+a","mets_mods_example.xml");
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(mets);
 		
 		fss.identify(files);
@@ -43,7 +43,7 @@ public class FakeFileFormatFacadeTests {
 	@Test
 	public void testEAD() throws IOException{
 		DAFile ead = new DAFile(object.getLatestPackage(),"1+a","vda3.XML");
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(ead);
 		
 		fss.identify(files);
@@ -55,7 +55,7 @@ public class FakeFileFormatFacadeTests {
 	@Test
 	public void testEAD2() throws IOException{
 		DAFile ead2 = new DAFile(object.getLatestPackage(),"1+a","EAD_Export.XML");
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(ead2);
 		
 		fss.identify(files);
@@ -69,7 +69,7 @@ public class FakeFileFormatFacadeTests {
 	@Test
 	public void testLIDO() throws IOException{
 		DAFile ead = new DAFile(object.getLatestPackage(),"1+a","LIDO-Testexport2014-07-04-FML-Auswahl.xml");
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(ead);
 		
 		fss.identify(files);
@@ -81,7 +81,7 @@ public class FakeFileFormatFacadeTests {
 	@Test
 	public void testXMP() throws IOException{
 		DAFile xmp = new DAFile(object.getLatestPackage(),"1+a","b.xmp");
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(xmp);
 		
 		fss.identify(files);
@@ -93,7 +93,7 @@ public class FakeFileFormatFacadeTests {
 	@Test
 	public void testTiff() throws IOException{
 		DAFile tif = new DAFile(object.getLatestPackage(),"1+a","tif.tif");
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(tif);
 		
 		fss.identify(files);
@@ -105,7 +105,7 @@ public class FakeFileFormatFacadeTests {
 	@Test
 	public void testBmp() throws IOException{
 		DAFile bmp = new DAFile(object.getLatestPackage(),"1+a","bmp.bmp");
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(bmp);
 		
 		fss.identify(files);
@@ -117,7 +117,7 @@ public class FakeFileFormatFacadeTests {
 	@Test
 	public void testJp2() throws IOException{
 		DAFile jp2 = new DAFile(object.getLatestPackage(),"1+a","jp2.jp2");
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(jp2);
 		
 		fss.identify(files);
@@ -128,7 +128,7 @@ public class FakeFileFormatFacadeTests {
 	@Test
 	public void testGif() throws IOException{
 		DAFile gif = new DAFile(object.getLatestPackage(),"1+a","gif.gif");
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(gif);
 		
 		fss.identify(files);
@@ -139,7 +139,7 @@ public class FakeFileFormatFacadeTests {
 	@Test
 	public void testPdf() throws IOException{
 		DAFile pdf = new DAFile(object.getLatestPackage(),"1+a","pdf.pdf");
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(pdf);
 		
 		fss.identify(files);
@@ -150,7 +150,7 @@ public class FakeFileFormatFacadeTests {
 	@Test
 	public void testXml() throws IOException{
 		DAFile xml = new DAFile(object.getLatestPackage(),"1+a","b.xml");
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(xml);
 		
 		fss.identify(files);
@@ -164,7 +164,7 @@ public class FakeFileFormatFacadeTests {
 		DAFile pdf = new DAFile(object.getLatestPackage(),"1+a","pdf.pdf");
 		DAFile ead2 = new DAFile(object.getLatestPackage(),"1+a","EAD_Export.XML");
 		DAFile mets = new DAFile(object.getLatestPackage(),"1+a","mets_mods_example.xml");
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(pdf);
 		files.add(gif);
 		files.add(ead2);

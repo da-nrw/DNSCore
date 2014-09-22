@@ -25,5 +25,5 @@ package de.uzk.hki.da.ff;
  */
 public interface SecondaryFormatIdentifier {
 
-	public String identify(FileWithFileFormat fff);
+	public String identify(IFileWithFileFormat fff);
 }

@@ -51,8 +51,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.path.Path;
@@ -70,8 +68,6 @@ import de.uzk.hki.da.utils.Utilities;
 public class Object {
 	
 	private static final String REPRESENTATION_FILTER = "^.*[+][ab]";
-
-	private static final Logger logger = LoggerFactory.getLogger(Object.class);
 	
 	/** The data_pk. */
 	@Id

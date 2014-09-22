@@ -28,20 +28,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.util.StringUtils;
 
-import de.uzk.hki.da.ff.FileWithFileFormat;
+import de.uzk.hki.da.core.HibernateUtil;
+import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.ff.StandardFileFormatFacade;
+import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.path.RelativePath;
 
@@ -79,7 +83,7 @@ public class CheckFormatsActionTest {
 			throws FileNotFoundException {
 		StandardFileFormatFacade formatScanService = mock(StandardFileFormatFacade.class);
 		
-		when(formatScanService.identify((List<FileWithFileFormat>)anyObject())).thenAnswer(new Answer< List<DAFile> >(){
+		when(formatScanService.identify((List<IFileWithFileFormat>)anyObject())).thenAnswer(new Answer< List<DAFile> >(){
 			@Override
 			public List<DAFile> answer(InvocationOnMock invocation)
 					throws Throwable {
@@ -125,7 +129,7 @@ public class CheckFormatsActionTest {
 	 */
 	@Before
 	public void setUp() throws Exception{
-		
+		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		
 		PreservationSystem pSystem = new PreservationSystem();
 		localNode = new Node();
@@ -170,6 +174,10 @@ public class CheckFormatsActionTest {
 		action.setLocalNode(localNode);
 		action.setFileFormatFacade(fileFormatFacade);
 		action.setPSystem(pSystem);
+		
+		CentralDatabaseDAO dao = mock(CentralDatabaseDAO.class);
+		when(dao.getSecondStageScanPolicies((Session)anyObject())).thenReturn(new ArrayList<SecondStageScanPolicy>());
+		action.setDao(dao);
 		
 	}
 

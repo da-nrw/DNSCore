@@ -29,35 +29,22 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
-import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.path.RelativePath;
 
 
 /**
  * The Class ShortenFileNamesActionTests.
  */
-public class ShortenFileNamesActionTests {
+public class ShortenFileNamesActionTests extends ConcreteActionUnitTest{
 
 	/** The base path. */
 	private String workAreaRootPath = "src/test/resources/cb/ShortenFileNamesActionTests/";
-	
-	/** The action. */
+
+	@ActionUnderTest
 	ShortenFileNamesAction action = new ShortenFileNamesAction();
 	
-	/** The job. */
-	Job job;
-	
-	/** The node. */
-	Node node;
-
-	/** The contractor. */
-	private User contractor;
 	
 	/**
 	 * Sets the up.
@@ -66,18 +53,9 @@ public class ShortenFileNamesActionTests {
 	 */
 	@Before
 	public void setUp() throws IOException {
-		
-		node = new Node();
-		node.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
-		Node dipNode = new Node(); dipNode.setName("dipNode");
-		action.setLocalNode(node);
-		
-		contractor = new User();
-		contractor.setShort_name("TEST");
-		
-		job = new Job();
-		
-		FileUtils.copyDirectory(new File(workAreaRootPath+"work/sources/1"), new File(workAreaRootPath+"work/TEST/1"));
+
+		n.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
+		FileUtils.copyDirectory(new File(workAreaRootPath+"work/sources/identifier"), new File(workAreaRootPath+"work/TEST/identifier"));
 		
 	}
 
@@ -90,51 +68,37 @@ public class ShortenFileNamesActionTests {
 	@Test
 	public void test() throws FileNotFoundException, IOException {
 		
-		Package pkg = new Package();
-		pkg.setId(1); 
-		pkg.setName("1");
-		
-		Object obj = new Object();
-		obj.setContractor(contractor);
-		obj.getPackages().add(pkg);
-		obj.setIdentifier("1");
-		obj.setTransientNodeRef(node);
-		obj.reattach();
-		
 		Event event1 = new Event();
 		event1.setType("CONVERT");
-		event1.setSource_file(new DAFile(pkg, "rep", "a.txt"));
-		event1.setTarget_file(new DAFile(pkg, "dip/public", "a.txt"));
-		pkg.getEvents().add(event1);
+		event1.setSource_file(new DAFile(o.getLatestPackage(), "rep", "a.txt"));
+		event1.setTarget_file(new DAFile(o.getLatestPackage(), "dip/public", "a.txt"));
+		o.getLatestPackage().getEvents().add(event1);
 		Event event2 = new Event();
 		event2.setType("CONVERT");
-		event2.setSource_file(new DAFile(pkg, "rep", "b.txt"));
-		event2.setTarget_file(new DAFile(pkg, "dip/public", "b.txt"));
+		event2.setSource_file(new DAFile(o.getLatestPackage(), "rep", "b.txt"));
+		event2.setTarget_file(new DAFile(o.getLatestPackage(), "dip/public", "b.txt"));
 		Event event3 = new Event();
-		pkg.getEvents().add(event2);
+		o.getLatestPackage().getEvents().add(event2);
 		event3.setType("CONVERT");
-		event3.setSource_file(new DAFile(pkg, "rep", "a.txt"));
-		event3.setTarget_file(new DAFile(pkg, "dip/institution", "a.txt"));
+		event3.setSource_file(new DAFile(o.getLatestPackage(), "rep", "a.txt"));
+		event3.setTarget_file(new DAFile(o.getLatestPackage(), "dip/institution", "a.txt"));
 		Event event4 = new Event();
-		pkg.getEvents().add(event3);
+		o.getLatestPackage().getEvents().add(event3);
 		event4.setType("CONVERT");
-		event4.setSource_file(new DAFile(pkg, "rep", "b.txt"));
-		event4.setTarget_file(new DAFile(pkg, "dip/institution", "b.txt"));
-		pkg.getEvents().add(event4);
+		event4.setSource_file(new DAFile(o.getLatestPackage(), "rep", "b.txt"));
+		event4.setTarget_file(new DAFile(o.getLatestPackage(), "dip/institution", "b.txt"));
+		o.getLatestPackage().getEvents().add(event4);
 		
-		job.setObject(obj);
-		action.setObject(obj);
-		action.setJob(job);
 		action.implementation();
 		
 		String newFileName = "_a5e54d1fd7bb69a228ef0dcd2431367e.txt";
-		assertTrue(new File(workAreaRootPath + "work/TEST/1/data/dip/public/" + newFileName).exists());
+		assertTrue(new File(workAreaRootPath + "work/TEST/identifier/data/dip/public/" + newFileName).exists());
 		newFileName = "_ce506ace22f28ac2bc4f933d4cf989fd.txt";
-		assertTrue(new File(workAreaRootPath + "work/TEST/1/data/dip/public/" + newFileName).exists());
+		assertTrue(new File(workAreaRootPath + "work/TEST/identifier/data/dip/public/" + newFileName).exists());
 		newFileName = "_a5e54d1fd7bb69a228ef0dcd2431367e.txt";
-		assertTrue(new File(workAreaRootPath + "work/TEST/1/data/dip/institution/" + newFileName).exists());
+		assertTrue(new File(workAreaRootPath + "work/TEST/identifier/data/dip/institution/" + newFileName).exists());
 		newFileName = "_ce506ace22f28ac2bc4f933d4cf989fd.txt";
-		assertTrue(new File(workAreaRootPath + "work/TEST/1/data/dip/institution/" + newFileName).exists());
+		assertTrue(new File(workAreaRootPath + "work/TEST/identifier/data/dip/institution/" + newFileName).exists());
 		
 	}
 	
@@ -145,7 +109,7 @@ public class ShortenFileNamesActionTests {
 	 */
 	@After
 	public void tearDown() throws IOException {		
-		FileUtils.deleteDirectory(new File(workAreaRootPath+"work/TEST/1"));
+		FileUtils.deleteDirectory(new File(workAreaRootPath+"work/TEST/identifier"));
 	}
 
 }

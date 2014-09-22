@@ -67,11 +67,11 @@ public class FidoFormatScanService implements FormatScanService {
 	 * @author Daniel M. de Oliveira
 	 */
 	@Override
-	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws FileNotFoundException {
+	public List<IFileWithFileFormat> identify(List<IFileWithFileFormat> files) throws FileNotFoundException {
 //		for (FileWithFileFormat f:files){
 //			if (!f.toRegularFile().exists()) throw new FileNotFoundException("file "+f.toRegularFile().getPath()+" doesn't exist");
 //		}	
-		for (FileWithFileFormat f:files){
+		for (IFileWithFileFormat f:files){
 
 			f.setFormatPUID(pronom.getPuidForFile(f));
 			logger.debug(f+" has puid "+f.getFormatPUID()+". Now searching if second stage scan policy is applicable");

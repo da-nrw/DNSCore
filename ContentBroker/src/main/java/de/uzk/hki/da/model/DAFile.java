@@ -32,7 +32,7 @@ import javax.persistence.Transient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.ff.FileWithFileFormat;
+import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.path.Path;
 
 
@@ -53,7 +53,7 @@ import de.uzk.hki.da.path.Path;
  */
 @Entity
 @Table(name="dafiles")
-public class DAFile implements FileWithFileFormat{
+public class DAFile implements IFileWithFileFormat{
 
 	/** The Constant logger. */
 	static final Logger logger = LoggerFactory.getLogger(DAFile.class);

@@ -29,13 +29,17 @@ import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.NotImplementedException;
+import org.hibernate.Session;
 
 import de.uzk.hki.da.core.ConfigurationException;
+import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
-import de.uzk.hki.da.ff.FileWithFileFormat;
+import de.uzk.hki.da.ff.IFileWithFileFormat;
+import de.uzk.hki.da.ff.ISubformatIdentificationPolicy;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.utils.CommaSeparatedList;
 
@@ -72,20 +76,29 @@ public class CheckFormatsAction extends AbstractAction {
 	@Override
 	boolean implementation() throws FileNotFoundException, IOException {
 		
-		List<FileWithFileFormat> allFiles = new ArrayList<FileWithFileFormat>();
+		List<IFileWithFileFormat> allFiles = new ArrayList<IFileWithFileFormat>();
 		List<DAFile> allDAFiles = new ArrayList<DAFile>();
 		for (Package p:object.getPackages()){
 				allFiles.addAll(p.getFiles());
 				allDAFiles.addAll(p.getFiles());
 		}
 		try {
+			Session session = HibernateUtil.openSession();
+			List<SecondStageScanPolicy> policies = 
+					dao.getSecondStageScanPolicies(session);
+			session.close();
+			
+			List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
+			for (SecondStageScanPolicy s:policies)
+				polys.add((ISubformatIdentificationPolicy) s);
+			getFileFormatFacade().setSubformatIdentificationPolicies(polys);
 			allFiles = getFileFormatFacade().identify(allFiles);
 		} catch (FileFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		for (FileWithFileFormat f:allFiles){
+		for (IFileWithFileFormat f:allFiles){
 			if (f.getFormatPUID()==null) throw new RuntimeException("file \""+f+"\" has no format puid");
 		}
 		attachJhoveInfoToAllFiles(allDAFiles);

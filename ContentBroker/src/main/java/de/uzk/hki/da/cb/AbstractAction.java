@@ -213,7 +213,7 @@ public abstract class AbstractAction implements Runnable {
 			
 		} catch (UserException e) {
 			logger.error(this.getClass().getName()+": UserException in action: ",e);
-			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + C.STATE_DIGIT_USER_ERROR;
+			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + C.WORKFLOW_STATE_DIGIT_USER_ERROR;
 			handleError(errorStatus);
 			new MailContents(preservationSystem,localNode).userExceptionCreateUserReport(userExceptionManager,e,object);
 			if (e.checkForAdminReport())

@@ -17,24 +17,16 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.at;
+package de.uzk.hki.da.ff;
 
-
-import java.io.IOException;
-
-import org.junit.Test;
-
-import de.uzk.hki.da.utils.C;
 /**
  * @author Daniel M. de Oliveira
  */
-public class ATUseCaseIngestMigrationNotAllowed extends AcceptanceTest {
+public class FFConstants {
 
-	private static final String ORIG_NAME = "ATMigrationNotAllowed";
-	
-	@Test
-	public void test() throws IOException, InterruptedException {
-		ath.ingestAndWaitForJobInState(ORIG_NAME, C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
-	}
+	static final String XMP_PUID = "danrw-fmt/3";
+	static final String EAD_PUID = "danrw-fmt/2";
+	static final String LIDO_PUID = "danrw-fmt/4";
+	public static final String METS_PUID = "danrw-fmt/1"; // TODO make it package private
 
 }

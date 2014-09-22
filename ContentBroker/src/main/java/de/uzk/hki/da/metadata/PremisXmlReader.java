@@ -95,9 +95,6 @@ public class PremisXmlReader implements XmlReader{
 	/** The Constant PREMIS_NS. */
 	private static final String PREMIS_NS = "info:lc/xmlns/premis-v2";
 	
-	/** The jhove temp folder. */
-	private String jhoveTempFolder = "";
-	
 	/** The logger. */
 	private static Logger logger = LoggerFactory.getLogger(PremisXmlReader.class);
 	
@@ -757,12 +754,4 @@ public class PremisXmlReader implements XmlReader{
 		return null;
 	}
 	
-	/**
-	 * Sets the jhove temp folder.
-	 *
-	 * @param jhoveTempFolder the new jhove temp folder
-	 */
-	public void setJhoveTempFolder(String jhoveTempFolder) {
-		this.jhoveTempFolder = jhoveTempFolder;
-	}
 }

@@ -33,12 +33,11 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import de.uzk.hki.da.ff.FileFormatFacade;
+import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.ff.FileWithFileFormat;
-import de.uzk.hki.da.ff.PlainFileWithFileFormat;
 import de.uzk.hki.da.ff.StandardFileFormatFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.path.Path;
@@ -185,9 +184,8 @@ public class Diagnostics {
 		
 		int errorCount=0;
 		StandardFileFormatFacade sfff = new StandardFileFormatFacade();
-		sfff.setDao(new CentralDatabaseDAO());
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
-		PlainFileWithFileFormat ffff = new PlainFileWithFileFormat(new File("conf/healthCheck.tif"));
+		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
+		FileWithFileFormat ffff = new FileWithFileFormat(new File("conf/healthCheck.tif"));
 		files.add(ffff);
 		
 		System.out.print("CHECKING PRONOM FORMAT IDENTIFIER ... ");

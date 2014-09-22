@@ -16,25 +16,22 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package de.uzk.hki.da.ff;
 
-package de.uzk.hki.da.at;
-
-
-import java.io.IOException;
-
-import org.junit.Test;
-
-import de.uzk.hki.da.utils.C;
 /**
  * @author Daniel M. de Oliveira
  */
-public class ATUseCaseIngestMigrationNotAllowed extends AcceptanceTest {
+public interface ISubformatIdentificationPolicy {
 
-	private static final String ORIG_NAME = "ATMigrationNotAllowed";
+	public String getPUID();
 	
-	@Test
-	public void test() throws IOException, InterruptedException {
-		ath.ingestAndWaitForJobInState(ORIG_NAME, C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
-	}
+	public void setPUID(String PUID);
 
+	public String getAllowedValues();
+
+	public void setAllowedValues(String expectedValues);
+
+	public String getFormatIdentifierScriptName();
+
+	public void setFormatIdentifierScriptName(String conversionScriptName);
 }

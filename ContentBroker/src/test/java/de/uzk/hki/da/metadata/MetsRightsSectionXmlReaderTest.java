@@ -27,14 +27,13 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.RightsStatement;
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.model.RightsStatement;
 
 
 /**

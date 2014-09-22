@@ -22,18 +22,15 @@ package de.uzk.hki.da.ff;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
 import org.irods.jargon.core.exception.InvalidArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.cli.CommandLineConnector;
 import de.uzk.hki.da.cli.ProcessInformation;
-import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -53,29 +50,25 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	private static final String JHOVE_CONF = "conf/jhove.conf";
 	private String jhoveFolder = "jhove";
 	
-	private CentralDatabaseDAO dao;
+	private List<ISubformatIdentificationPolicy> subformatIdentificationPolicies =
+			new ArrayList<ISubformatIdentificationPolicy>();
 	
 	/**
 	 * The output of fido typically is a comma separated list of puids for each file. Only the last entry of the list
 	 * will be taken.
 	 */
 	@Override
-	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files)
+	public List<IFileWithFileFormat> identify(List<IFileWithFileFormat> files)
 			throws FileNotFoundException {
 
 		fidoFormatScanService = new FidoFormatScanService();
 		fidoFormatScanService.identify(files);
-
-
-		Session session = HibernateUtil.openSession();
-		List<SecondStageScanPolicy> policies = dao.getSecondStageScanPolicies(session);
-		session.close();
 		
-		for (SecondStageScanPolicy p:policies)
+		for (ISubformatIdentificationPolicy p:subformatIdentificationPolicies)
 			logger.debug("policy available: "+p);
 		
 		secondaryFormatScan = new SecondaryFormatScan();
-		secondaryFormatScan.setSecondStageScanPolicies(policies);
+		secondaryFormatScan.setSecondStageScanPolicies(subformatIdentificationPolicies);
 		
 		try {
 			secondaryFormatScan.identify(files);
@@ -84,20 +77,20 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		}
 		
 		
-		for (FileWithFileFormat f:files){
-			if (f.getFormatPUID().equals(C.EAD_PUID)){
+		for (IFileWithFileFormat f:files){
+			if (f.getFormatPUID().equals(FFConstants.EAD_PUID)){
 				f.setFormatPUID(C.XML_PUID);
 				f.setFormatSecondaryAttribute(C.EAD);
 			}
-			if (f.getFormatPUID().equals(C.XMP_PUID)){
+			if (f.getFormatPUID().equals(FFConstants.XMP_PUID)){
 				f.setFormatPUID(C.XML_PUID);
 				f.setFormatSecondaryAttribute(C.XMP);
 			}
-			if (f.getFormatPUID().equals(C.METS_PUID)){
+			if (f.getFormatPUID().equals(FFConstants.METS_PUID)){
 				f.setFormatPUID(C.XML_PUID);
 				f.setFormatSecondaryAttribute(C.METS);
 			}
-			if (f.getFormatPUID().equals(C.LIDO_PUID)){
+			if (f.getFormatPUID().equals(FFConstants.LIDO_PUID)){
 				f.setFormatPUID(C.XML_PUID);
 				f.setFormatSecondaryAttribute(C.LIDO);
 			}
@@ -161,12 +154,12 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	}
 
 
-	public CentralDatabaseDAO getDao() {
-		return dao;
-	}
 
-
-	public void setDao(CentralDatabaseDAO dao) {
-		this.dao = dao;
+	@Override
+	public void setSubformatIdentificationPolicies(
+			List<ISubformatIdentificationPolicy> subformatIdentificationPolicies) {
+		
+		this.subformatIdentificationPolicies = subformatIdentificationPolicies;
+		
 	}
 }
