@@ -119,3 +119,87 @@ on your file system, you should insert the full path to the python binary as a v
 	cb.implementation.metadataExtractor=
 	cb.implementation.metadataExtractor=jhoveMetadataExtractor (defaul)
 	cb.implementation.metadataExtractor=fakeMetadataExtractor
+	
+	
+### irods
+
+Wenn mindestens eines der Subsysteme "gridFacade" bzw. "distributedConversionAdapter", konfigurierbar per
+
+    cb.implementation.grid=
+    cb.implementation.distributedConversionAdapter=
+    
+auf die Verwendung von iRODS hin konfiguriert sind, siehe
+
+    cb.implementation.grid=irodsGridFacade
+    cb.implementation.distributedConversionAdapter=irodsDistributedConversionAdapter
+    
+so ist es erforderlich, dass der optionale "irods.*"-Block auch innerhalb der config.properties vorhanden ist.
+
+Ein vollständiges Beispiel für den Block ist [config.properties.ci](../conf/config.properties.ci)
+
+    irods.user=rods
+    irods.password=WpXlLLg3a4/S/iYrs6UhtQ==
+    irods.server=cihost
+    irods.zone=c-i
+    irods.default_resc=ciWorkingResource
+    irods.pam=false
+    irods.keyStorePassword=
+    irods.keyStorePath=
+    irods.trustStorePath=
+
+
+ 
+
+These settings are optional and must be set only if cb.implementation.grid or cb.implementaion.districutedConversion
+are set to use the corresponding irods specific implementations. Nodes not using irods dont need these parameters.
+
+    irods.user=
+    irods.server=
+    irods.zone=
+    irods.default_resc=
+    irods.pam=false 
+    irods.keyStorePassword=
+    irods.keyStorePath=
+    irods.trustStorePath=
+
+asdf
+
+    irods.password= 
+
+The password has to be encrypted with the password encryptor/decryptor which is part of the DNSCore project itself (if you haven't already, you can see the sub project [here](https://github.com/da-nrw/DNSCore/tree/master/PasswordEncryptor).
+
+### fedora
+
+Beispiel aus [config.properties.ci](../conf/config.properties.ci)
+
+    fedora.url=http://localhost:8080/fedora
+    fedora.user=fedoraAdmin
+    fedora.password=BYi/MFjKDFd5Dpe52PSUoA==
+
+When the application has been installed in one of wither pres or full mode, the presentation module is activated via its respective import in the import section of the beans.xml (see down below).
+
+    fedora.url=
+    fedora.user=
+
+In pres or full mode the ContentBroker and the presentation repository are hosted on one and the same machine. Fedora runs on a tomcat and fedora.url points to the http://... adress of Fedora while fedora.user is a fedora user prepared
+for usage by the ContentBroker.
+
+    fedora.password=
+    
+The passwort has to be encrypted/decrypted with the PasswordEncryptor of DNSCore.
+
+### elasticsearch 
+
+Beispiel [config.properties.ci](../conf/config.properties.ci)
+
+    elasticsearch.index=portal_ci
+    elasticsearch.hosts=localhost
+    elasticsearch.cluster=cluster_ci
+
+The elasticsearch settings only are necessary on nodes which provide presentation repository functionality, which is enabled by choosing either the full or pres setting during installation.
+
+    elasticsearch.index=
+    elasticsearch.hosts=
+    elasticsearch.cluster=
+    
+Make sure you insert the same settings you have used during your elasticsearch installation.
