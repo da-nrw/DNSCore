@@ -180,6 +180,9 @@ class QueueEntry {
 						return "archiviert. Verarbeite PIP (" + status +")"
 					} else return "archiviert. Fehler beim PIP (" + status +")"
 			}
+			if (getStatusAsInteger()>640 && getStatusAsInteger()<=645 ) {
+				return "Warten auf Rückfrage (" + status +")"
+			}
 			return status
 	}
 }

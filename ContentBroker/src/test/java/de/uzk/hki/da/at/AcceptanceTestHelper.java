@@ -505,7 +505,8 @@ public class AcceptanceTestHelper {
 		Node node = (Node)session.load(Node.class, localNode .getId());
 		job.setResponsibleNodeName(node.getName());
 		job.setObject(object);
-		
+		job.setDate_created(String.valueOf(new Date().getTime()/1000L));
+		job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
 		job.setStatus(status);
 	
 		session.save(job);
