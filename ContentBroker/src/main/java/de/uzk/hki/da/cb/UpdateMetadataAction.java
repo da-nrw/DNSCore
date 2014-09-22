@@ -51,6 +51,7 @@ import org.xml.sax.SAXException;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.metadata.LidoMetadataStructure;
+import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;
 import de.uzk.hki.da.metadata.XMPMetadataStructure;
 import de.uzk.hki.da.metadata.XmpCollector;
@@ -130,6 +131,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			}
 		}
 			
+		int finishedReplacements = 0;
 		if(!"XMP".equals(packageType)) {
 			
 			metadataFileName = copyMetadataFileToNewReps(packageType,
@@ -144,14 +146,16 @@ public class UpdateMetadataAction extends AbstractAction {
 				
 				if("EAD".equals(packageType)) {
 					EadMetsMetadataStructure emms = new EadMetsMetadataStructure(metadataFile, daFiles);
-					updatePathsInEad(emms, repName);
+					finishedReplacements = updatePathsInEad(emms, repName);
 				} else if ("METS".equals(packageType)) {
+					Map<DAFile,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
 					MetsMetadataStructure mms = new MetsMetadataStructure(metadataFile, daFiles);
-					updatePathsInMets(mms, repName, metadataFile);
+					finishedReplacements = updatePathsInMets(mms, repName, metadataFile, replacements);
 				} else if("LIDO".equals(packageType)) {
 					LidoMetadataStructure lms = new LidoMetadataStructure(metadataFile, daFiles);
-					updatePathsInLido(lms, repName);
+					finishedReplacements = updatePathsInLido(lms, repName);
 				}
+				logger.debug("Successfully replaced "+finishedReplacements+" references!");
 			}
 		}
 		
@@ -179,36 +183,54 @@ public class UpdateMetadataAction extends AbstractAction {
 	}
 	
 	private void updatePathsInRDF(XMPMetadataStructure xms, String repName) throws IOException {
-		Map<String,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
+		logger.debug("Update paths in XMP file "+xms.getMetadataFile().getAbsolutePath());
+		Map<DAFile,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
 		Map<String, String> replacementsMap = new HashMap<String, String>();
-		for(String sourceRef : replacements.keySet()) {
-			DAFile targetFile = (DAFile)replacements.get(sourceRef);
+		for(DAFile sourceFile : replacements.keySet()) {
+			DAFile targetFile = (DAFile)replacements.get(sourceFile);
 			String targetValue;
 			if(!isPresMode()) {
 				targetValue = targetFile.getRelative_path();
 			} else {
 				targetValue = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + targetFile.getRelative_path();
 			}
-			replacementsMap.put(sourceRef, targetValue);
+			replacementsMap.put(sourceFile.getRelative_path(), targetValue);
 		}
 		xms.makeReplacementsInRDf(replacementsMap);	
 	}
 	
 	private int updatePathsInEad(EadMetsMetadataStructure emms, String repName) throws JDOMException, IOException {
+		logger.debug("Update paths in EAD file "+emms.getMetadataFile().getAbsolutePath());
 		int replacementCount = 0;
-		HashMap<String, String> eadReplacements = new HashMap<String, String>(); 
+		
+		HashMap<String, String> eadReplacements = new HashMap<String, String>();
+		List<String> eadRefs = emms.getMetsRefsInEad();
+		
 		for (Event e:object.getLatestPackage().getEvents()) {
 			if(e.getType().equals("COPY") || e.getType().equals("CONVERT")) {
-				DAFile targetFile = e.getTarget_file();
-				String targetValue;
-				if(!isPresMode()) {
-					targetValue = targetFile.getRelative_path();
-				} else {
-					targetValue = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + targetFile.getRelative_path();
+				DAFile sourceFile = e.getSource_file();
+				
+				for(String href : eadRefs) {
+					File file = emms.getCanonicalFileFromReference(href, emms.getMetadataFile());
+					String relPathOfRefFile = getRelPathFromRepDir(file, repName);
+					
+					if(sourceFile.getRelative_path().equals(relPathOfRefFile)) {
+						DAFile targetDAFile = e.getTarget_file();
+						File targetFile = targetDAFile.toRegularFile();
+						String targetPath = href.replace(file.getName(), targetFile.getName());
+						String targetValue;
+						if(!isPresMode()) {
+							targetValue = targetPath;
+						} else {
+							targetValue = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + targetDAFile.getRelative_path();
+						}
+						logger.debug("replaceMetsRefsInEad put "+href+" & "+targetValue);
+						eadReplacements.put(href, targetValue);
+					}
 				}
-				eadReplacements.put(e.getSource_file().getRelative_path(), targetValue);
 			}
 		}
+		
 		emms.replaceMetsRefsInEad(metadataFile, eadReplacements);
 		replacementCount = eadReplacements.size();
 		
@@ -217,36 +239,53 @@ public class UpdateMetadataAction extends AbstractAction {
 	}
 	
 	private int updatePathsInEADMetsFiles(EadMetsMetadataStructure emms, String repName) throws IOException, JDOMException {
+		Map<DAFile,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
 		int replacementCount = 0;
 		List<MetsMetadataStructure> mmsList = emms.getMetsMetadataStructures();
 		for (MetsMetadataStructure mms : mmsList) {
-			replacementCount = replacementCount + updatePathsInMets(mms, repName, mms.getMetadataFile());
+			logger.debug("Update paths in METS file "+mms.getMetadataFile().getAbsolutePath());
+			replacementCount = replacementCount + updatePathsInMets(mms, repName, mms.getMetadataFile(), replacements);
 		}
 		return replacementCount;
 	}
 	
-	private int updatePathsInMets(MetsMetadataStructure mms, String repName, File metsFile) throws IOException, JDOMException {
+	private String getRelPathFromRepDir (File file, String repName) {
+		String relPath = "";
+		int index = file.getAbsolutePath().indexOf(repName)+repName.length()+1;
+		relPath = file.getAbsolutePath().substring(index, file.getAbsolutePath().length());
+		return relPath;
+	}
+	
+	private int updatePathsInMets(MetsMetadataStructure mms, String repName, File metsFile, Map<DAFile,DAFile> replacements) throws IOException, JDOMException {
+		
 		int replacementCount = 0;
-		Map<String,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
 		List<Element> metsFileElemens = mms.getMetsFileElements();
 		@SuppressWarnings("rawtypes")
 		Iterator it = replacements.entrySet().iterator();
 		while (it.hasNext()) {
 			@SuppressWarnings("rawtypes")
 			Map.Entry entry = (Map.Entry)it.next();
+			DAFile sourceFile = (DAFile)entry.getKey();
 			for(Element metsFileElement : metsFileElemens) {
-				if(mms.getHref(metsFileElement).equals(entry.getKey())) {
-					DAFile targetFile = (DAFile)entry.getValue();
+				
+				String href = mms.getHref(metsFileElement);
+				File file = mms.getCanonicalFileFromReference(href, metsFile);
+				String relPathOfRefFile = getRelPathFromRepDir(file, repName);
+				
+				if(sourceFile.getRelative_path().equals(relPathOfRefFile)) {
+					DAFile targetDAFile = (DAFile)entry.getValue();
+					File targetFile = targetDAFile.toRegularFile();
+					String targetPath = href.replace(file.getName(), targetFile.getName());
 					String targetValue;
 					String loctype = null;
 					if(!isPresMode()) {
-						targetValue = targetFile.getRelative_path();
+						targetValue = targetPath;
 					} else {
-						targetValue = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + targetFile.getRelative_path();
+						targetValue = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + targetDAFile.getRelative_path();
 						loctype = "URL";
 					}
-					String mimetype = targetFile.getMimeType();
-					mms.makeReplacementsInMetsFile(metsFile, (String)entry.getKey(), targetValue, mimetype, loctype);
+					String mimetype = targetDAFile.getMimeType();
+					mms.makeReplacementsInMetsFile(metsFile, href, targetValue, mimetype, loctype);
 					replacementCount++;
 				}
 			}
@@ -254,8 +293,9 @@ public class UpdateMetadataAction extends AbstractAction {
 		return replacementCount;
 	}
 	
-	private void updatePathsInLido(LidoMetadataStructure lms, String repName) throws IOException {
-		Map<String,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
+	private int updatePathsInLido(LidoMetadataStructure lms, String repName) throws IOException {
+		int replacementCount = 0;
+		Map<DAFile,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
 		HashMap<String, String> lidoReplacements = new HashMap<String, String>();
 		@SuppressWarnings("rawtypes")
 		Iterator it = replacements.entrySet().iterator();
@@ -269,18 +309,21 @@ public class UpdateMetadataAction extends AbstractAction {
 			} else {
 				targetValue = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + targetFile.getRelative_path();
 			}
-	        lidoReplacements.put((String)entry.getKey(), targetValue);
+			DAFile sourceFile = (DAFile)entry.getKey();
+	        lidoReplacements.put(sourceFile.getRelative_path(), targetValue);
 		}
+		replacementCount = lidoReplacements.size();
 		lms.replaceRefResources(lidoReplacements);
+		return replacementCount;
 	}
 
-	private Map<String,DAFile> generateReplacementsMap(Package pkg,String repName,String absUrlPrefix) throws IOException{
+	private Map<DAFile,DAFile> generateReplacementsMap(Package pkg,String repName,String absUrlPrefix) throws IOException{
 		
 		logger.debug("Generate replacements");
 		   
 		//  relativePath,DAFile
 		//  Mimetype, DAFile
-		Map<String,DAFile> replacements = new HashMap<String,DAFile>();
+		Map<DAFile,DAFile> replacements = new HashMap<DAFile,DAFile>();
 		
 		// collect paths to be replaced in map
 		for (Event e:pkg.getEvents()) {
@@ -294,7 +337,8 @@ public class UpdateMetadataAction extends AbstractAction {
 				continue;
 			}
 			targetFile.setMimeType(getMtds().detectMimeType(targetFile));
-			replacements.put(sourceFile.getRelative_path(), targetFile);
+			
+			replacements.put(sourceFile, targetFile);
 		}
 		logger.debug("Planned replacements: {}", replacements);
 		return replacements;
@@ -445,9 +489,6 @@ public class UpdateMetadataAction extends AbstractAction {
 		}
 	}
 	
-	
-
-
 	/**
 	 * Copy xmp sidecar files and collect them into one "XMP manifest"
 	 * @author Sebastian Cuy

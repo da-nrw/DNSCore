@@ -23,6 +23,9 @@ import org.xml.sax.SAXException;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.utils.XMLUtils;
 
+/**
+ * @author Polina Gubaidullina
+ */
 
 public class EadMetsMetadataStructure extends MetadataStructure{
 	
@@ -40,7 +43,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		super(metadataFile, daFiles);
 	
 		eadFile = metadataFile;
-		metsReferencesInEAD = getMetsRefsInEad();
+		metsReferencesInEAD = extractMetsRefsInEad();
 		metsFiles = getMetsFiles(daFiles);
 				
 		mmsList = new ArrayList<MetsMetadataStructure>();
@@ -52,7 +55,15 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
-	private List<String> getMetsRefsInEad() throws JDOMException, IOException {
+	public File getMetadataFile() {
+		return eadFile;
+	}
+	
+	public List<String> getMetsRefsInEad() {
+		return metsReferencesInEAD;
+	}
+	
+	private List<String> extractMetsRefsInEad() throws JDOMException, IOException {
 		
 		List<String> metsReferences = new ArrayList<String>();
 		
@@ -73,25 +84,35 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		}
 		return metsReferences;
 	}
-	
+
 	private List<DAFile> getMetsFiles(List<DAFile> daFiles) {
 		List<DAFile> existingMetsFiles = new ArrayList<DAFile>();
 		for(String ref : metsReferencesInEAD) {
-			Boolean fileExists = false;
-			String path = "";
-			for(DAFile dafile : daFiles) {
-				path = dafile.getRelative_path();
-				if(ref.equals(path)) {
-					fileExists = true;
-					existingMetsFiles.add(dafile);
-				} else {
-					fileExists = false;
+			File refFile;
+			try {
+				refFile = getCanonicalFileFromReference(ref, eadFile);
+				logger.debug("Check referenced file: "+refFile.getAbsolutePath());
+				Boolean fileExists = false;
+				for(DAFile dafile : daFiles) {
+					File file = dafile.toRegularFile();
+					String dafilePath = file.getAbsolutePath();
+					logger.debug("DAFile: "+dafilePath);
+					if(dafilePath.contains(refFile.getAbsolutePath())) {
+						fileExists = true;
+						existingMetsFiles.add(dafile);
+						break;
+					} else {
+						fileExists = false;
+					}
 				}
-			}
-			if(fileExists) {
-				logger.debug("File "+path+" exists.");
-			} else {
-				logger.error("File "+path+" does not exist.");
+				if(fileExists) {
+					logger.debug("File "+ref+" exists.");
+				} else {
+					logger.error("File "+ref+" does not exist.");
+				}
+			} catch (IOException e) {
+				logger.error("File "+ref+" does not exist.");
+				e.printStackTrace();
 			}
 		}
 		return existingMetsFiles;
@@ -147,6 +168,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		List<MetsMetadataStructure> mmss = getMetsMetadataStructures();
 		for (MetsMetadataStructure mms : mmss) {
 			if(!mms.isValid()) {
+				logger.error("METS metadata structure "+mms.getMetadataFile().getName()+" is not valid!");
 				mmsIsValid = false;
 			}
 		}

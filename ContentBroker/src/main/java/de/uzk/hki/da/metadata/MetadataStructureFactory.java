@@ -12,6 +12,10 @@ import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.model.DAFile;
 
+/**
+ * @author Polina Gubaidullina
+ */
+
 public class MetadataStructureFactory {
 
 	public MetadataStructure create (String type, File file, List<DAFile> daFiles) throws FileNotFoundException, JDOMException, IOException, ParserConfigurationException, SAXException {

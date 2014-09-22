@@ -73,6 +73,11 @@ public class XMPMetadataStructure extends MetadataStructure{
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
+	@Override
+	public File getMetadataFile() {
+		return xmpFile;
+	}
+	
 	private List<String> getReferences(List<Element> descriptionElements) {
 		List<String> references = new ArrayList<String>();
 			for(Element element : descriptionElements) {

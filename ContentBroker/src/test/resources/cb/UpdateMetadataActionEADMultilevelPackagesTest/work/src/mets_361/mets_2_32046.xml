@@ -15,7 +15,7 @@
 <mets:amdSec ID="amdSec"><mets:rightsMD ID="rightsMD"><mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS"><mets:xmlData><dv:rights><dv:owner>Digitales Archiv NRW</dv:owner><dv:ownerContact/><dv:ownerLogo>http://www.danrw.de/images/logos/danrw-dfg-viewer.png</dv:ownerLogo><dv:ownerSiteUrl>http://www.danrw.de</dv:ownerSiteUrl></dv:rights></mets:xmlData></mets:mdWrap></mets:rightsMD><mets:digiprovMD ID="digiprovMD"><mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVLINKS"><mets:xmlData><dv:links/></mets:xmlData></mets:mdWrap></mets:digiprovMD></mets:amdSec>
 <mets:fileSec>
 <mets:fileGrp USE="DEFAULT">
-<mets:file ID="item_0" MIMETYPE="image/tiff"><mets:FLocat xlink:href="mets_361/ALVR_Nr_4547_Aufn_004.tif" LOCTYPE="OTHER"/></mets:file></mets:fileGrp>
+<mets:file ID="item_0" MIMETYPE="image/tiff"><mets:FLocat xlink:href="./ALVR_Nr_4547_Aufn_004.tif" LOCTYPE="OTHER"/></mets:file></mets:fileGrp>
 </mets:fileSec>
 
 <mets:structMap TYPE="PHYSICAL">

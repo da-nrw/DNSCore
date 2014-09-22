@@ -64,6 +64,7 @@ import de.uzk.hki.da.utils.XMLUtils;
 /**
  * @author Daniel M. de Oliveira
  * @author jpeters
+ * @author Polina Gubaidullina
  */
 public class UpdateMetadataActionEADTests {
 	

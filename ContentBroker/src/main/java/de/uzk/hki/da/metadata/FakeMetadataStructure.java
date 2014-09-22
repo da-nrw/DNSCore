@@ -9,6 +9,10 @@ import org.jdom.JDOMException;
 
 import de.uzk.hki.da.model.DAFile;
 
+/**
+ * @author Polina Gubaidullina
+ */
+
 public class FakeMetadataStructure extends MetadataStructure{
 
 	public FakeMetadataStructure(File metadataFile, List<DAFile> daFiles)
@@ -20,6 +24,11 @@ public class FakeMetadataStructure extends MetadataStructure{
 	@Override
 	public boolean isValid() {
 		return true;
+	}
+
+	@Override
+	public File getMetadataFile() {
+		return null;
 	}
 	
 }

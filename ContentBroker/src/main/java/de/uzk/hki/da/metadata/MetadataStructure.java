@@ -29,6 +29,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.path.Path;
+
+/**
+ * @author Polina Gubaidullina
+ */
 
 /**
  * @author Polina Gubaidullina
@@ -44,4 +49,11 @@ public abstract class MetadataStructure {
 	}
 	
 	public abstract boolean isValid();
+	
+	public File getCanonicalFileFromReference(String ref, File metadataFile) throws IOException {
+		String tmpFilePath = Path.make(metadataFile.getParentFile().getAbsolutePath(), ref).toString();
+		return new File(tmpFilePath).getCanonicalFile();
+	}
+	
+	public abstract File getMetadataFile();
 }

@@ -52,10 +52,12 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.service.MimeTypeDetectionService;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.utils.XMLUtils;
 
 
 /**
@@ -93,24 +95,29 @@ public class UpdateMetadataActionTests {
 	}
 	
 	@Before
-	public void setUp() throws IOException {		
+	public void setUp() throws IOException {
+		PreservationSystem pSystem = new PreservationSystem();
+		pSystem.setUrisFile("http://data.danrw.de/file");
+		
 		action = new UpdateMetadataAction();		
 		node = new Node();
 		node.setWorkingResource("vm3");
 		node.setWorkAreaRootPath(Path.make(workAreaPath));
-		action.setLocalNode(node);	
+		action.setLocalNode(node);
+		action.setPSystem(pSystem);
+		action.setPresMode(true);
 		
 		FileUtils.copyDirectoryToDirectory(new File("src/main/xslt"), new File("conf/"));
 	}
 	
 	@After
 	public void tearDown () throws IOException {
-		new File(workAreaPath + "/work/TEST/23/data/dip/institution/DC.xml").delete();
-		new File(workAreaPath + "/work/TEST/23/data/dip/institution/METS.xml").delete();
-		new File(workAreaPath + "/work/TEST/23/data/dip/public/DC.xml").delete();
-		new File(workAreaPath + "/work/TEST/23/data/dip/public/METS.xml").delete();
+		new File(workAreaPath + "/work/TEST/23/data/pips/institution/DC.xml").delete();
+		new File(workAreaPath + "/work/TEST/23/data/pips/institution/mets.xml").delete();
+		new File(workAreaPath + "/work/TEST/23/data/pips/public/DC.xml").delete();
+		new File(workAreaPath + "/work/TEST/23/data/pips/public/mets.xml").delete();
 		new File(workAreaPath + "/work/TEST/42/data/DC_.xml").delete();
-		FileUtils.deleteDirectory(new File(workAreaPath + "/TEST/42/data/dip"));
+		FileUtils.deleteDirectory(new File(workAreaPath + "/TEST/42/data/pips"));
 		FileUtils.deleteDirectory(new File("conf/xslt"));
 	}
 	
@@ -128,8 +135,8 @@ public class UpdateMetadataActionTests {
 		
 		Object o = TESTHelper.setUpObject("42",workAreaPath);
 		
-		o.getLatestPackage().getFiles().add(new DAFile(o.getLatestPackage(), "dip/public", "DC.xml"));
-		o.getLatestPackage().getFiles().add(new DAFile(o.getLatestPackage(), "dip/institution", "DC.xml"));
+		o.getLatestPackage().getFiles().add(new DAFile(o.getLatestPackage(), "pips/public", "DC.xml"));
+		o.getLatestPackage().getFiles().add(new DAFile(o.getLatestPackage(), "pips/institution", "DC.xml"));
 		
 		Job job = new Job();
 		job.setRep_name("rep42");
@@ -139,18 +146,18 @@ public class UpdateMetadataActionTests {
 		action.setObject(o);
 		action.setJob(job);
 		
-		action.setRepNames(new String[]{"dip/public", "dip/institution"});
+		action.setRepNames(new String[]{"pips/public", "pips/institution"});
 
 		String dcPath = o.getDataPath() +"/"+ "test_dc.xml";
 		File dcFile = new File(dcPath);
-		File publicDcFile = new File(o.getDataPath() + "/dip/public/DC.xml");
-		File instDcFile = new File(o.getDataPath() + "/dip/institution/DC.xml");
+		File publicDcFile = new File(o.getDataPath() + "/pips/public/DC.xml");
+		File instDcFile = new File(o.getDataPath() + "/pips/institution/DC.xml");
 		FileUtils.copyFile(dcFile, publicDcFile);
 		FileUtils.copyFile(dcFile, instDcFile);
 		
 		action.writePackageTypeToDC("TEST");
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build(new FileReader(publicDcFile));
 		Element child = doc.getRootElement()
 				.getChild("format", Namespace.getNamespace("http://purl.org/dc/elements/1.1/"));
@@ -183,8 +190,8 @@ public class UpdateMetadataActionTests {
 		
 		Object obj = TESTHelper.setUpObject("23",workAreaPath);
 
-		DAFile t1 = new DAFile(obj.getLatestPackage(), "dip/public", "Ye_old_duckroll.jpg");
-		DAFile t2 = new DAFile(obj.getLatestPackage(), "dip/institution", "Ye_old_duckroll.jpg");
+		DAFile t1 = new DAFile(obj.getLatestPackage(), "pips/public", "Ye_old_duckroll.jpg");
+		DAFile t2 = new DAFile(obj.getLatestPackage(), "pips/institution", "Ye_old_duckroll.jpg");
 		DAFile s = new DAFile(obj.getLatestPackage(), REP_NAME, "tif/enne09=v0001.tif");
 		DAFile m = new DAFile(obj.getLatestPackage(), REP_NAME, "mets.xml");
 		
@@ -214,8 +221,8 @@ public class UpdateMetadataActionTests {
 
 		String metsPath = Path.make( obj.getDataPath(), REP_NAME,"mets.xml").toString();
 		File metsFile = new File(metsPath);
-		File publicMetsFile = new File(obj.getDataPath() + "/dip/public/mets.xml");
-		File instMetsFile = new File(obj.getDataPath() + "/dip/institution/mets.xml");
+		File publicMetsFile = new File(obj.getDataPath() + "/pips/public/mets.xml");
+		File instMetsFile = new File(obj.getDataPath() + "/pips/institution/mets.xml");
 		FileUtils.copyFile(metsFile, publicMetsFile);
 		FileUtils.copyFile(metsFile, instMetsFile);
 		
@@ -238,15 +245,15 @@ public class UpdateMetadataActionTests {
 		nsMap.put("xlink", XLINK_NS.getURI());
 		action.setNamespaces(nsMap);
 		
-		action.setRepNames(new String[]{"dip/public", "dip/institution"});
+		action.setRepNames(new String[]{"pips/public", "pips/institution"});
 		Map<String, String> dcMappings = new HashMap<String,String>();
 		dcMappings.put("METS", "conf/xslt/dc/mets-mods_to_dc.xsl");
 		action.setDcMappings(dcMappings);
 		
 		action.implementation();
 		
-		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(new FileReader(new File(workAreaPath + "/work/TEST/23/data/dip/public/METS.xml")));
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		Document doc = builder.build(new FileReader(new File(workAreaPath + "/work/TEST/23/data/pips/public/mets.xml")));
 
 		String url = doc.getRootElement()
 				.getChild("fileSec", METS_NS)
@@ -255,9 +262,9 @@ public class UpdateMetadataActionTests {
 				.getChild("FLocat", METS_NS)
 				.getAttributeValue("href", XLINK_NS);
 		
-		assertEquals("Ye_old_duckroll.jpg", url);
+		assertEquals("http://data.danrw.de/file/23/Ye_old_duckroll.jpg", url);
 		
-		doc = builder.build(new FileReader(new File(workAreaPath + "/work/TEST/23/data/dip/institution/METS.xml")));
+		doc = builder.build(new FileReader(new File(workAreaPath + "/work/TEST/23/data/pips/institution/mets.xml")));
 
 		url = doc.getRootElement()
 				.getChild("fileSec", METS_NS)
@@ -266,7 +273,7 @@ public class UpdateMetadataActionTests {
 				.getChild("FLocat", METS_NS)
 				.getAttributeValue("href", XLINK_NS);
 		
-		assertEquals("Ye_old_duckroll.jpg", url);
+		assertEquals("http://data.danrw.de/file/23/Ye_old_duckroll.jpg", url);
 		
 		publicMetsFile.delete();
 		instMetsFile.delete();

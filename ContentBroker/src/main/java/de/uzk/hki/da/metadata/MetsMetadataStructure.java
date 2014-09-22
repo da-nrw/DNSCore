@@ -21,6 +21,10 @@ import org.jdom.xpath.XPath;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.utils.XMLUtils;
 
+/**
+ * @author Polina Gubaidullina
+ */
+
 public class MetsMetadataStructure extends MetadataStructure {
 
 	private File metsFile;
@@ -102,26 +106,37 @@ public class MetsMetadataStructure extends MetadataStructure {
 	private void setHref(Element fileElement, String newHref) {
 		fileElement.getChild("FLocat", METS_NS).getAttribute("href", XLINK_NS).setValue(newHref);
 	}
-	
+
 	private List<DAFile> getReferencedFiles(List<DAFile> daFiles) {
 		List<String> references = getReferences();
 		List<DAFile> existingFiles = new ArrayList<DAFile>();
 		for(String ref : references) {
-			Boolean fileExists = false;
-			String path = "";
-			for(DAFile dafile : daFiles) {
-				path = dafile.getRelative_path();
-				if(ref.equals(path)) {
-					fileExists = true;
-					existingFiles.add(dafile);
-				} else {
-					fileExists = false;
+			logger.debug("Reference in METS: "+ref);
+			File refFile;
+			try {
+				refFile = getCanonicalFileFromReference(ref, metsFile);
+				logger.debug("Check referenced file: "+refFile.getAbsolutePath());
+				Boolean fileExists = false;
+				for(DAFile dafile : daFiles) {
+					File file = dafile.toRegularFile();
+					String dafilePath = file.getAbsolutePath();
+					logger.debug("DAFile: "+dafilePath);
+					if(dafilePath.contains(refFile.getAbsolutePath())) {
+						fileExists = true;
+						existingFiles.add(dafile);
+						break;
+					} else {
+						fileExists = false;
+					}
 				}
-			}
-			if(fileExists) {
-				logger.debug("File "+path+" exists.");
-			} else {
-				logger.error("File "+path+" does not exist.");
+				if(fileExists) {
+					logger.debug("File "+ref+" exists.");
+				} else {
+					logger.error("File "+ref+" does not exist.");
+				}
+			} catch (IOException e1) {
+				logger.error("File "+ref+" does not exist.");
+				e1.printStackTrace();
 			}
 		}
 		return existingFiles;

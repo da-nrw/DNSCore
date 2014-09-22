@@ -21,6 +21,9 @@ import org.jdom.output.XMLOutputter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.utils.XMLUtils;
 
+/**
+ * @author Polina Gubaidullina
+ */
 
 public class LidoMetadataStructure extends MetadataStructure{
 	
@@ -46,6 +49,11 @@ public class LidoMetadataStructure extends MetadataStructure{
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	
+	@Override
+	public File getMetadataFile() {
+		return lidoFile;
+	}
 	
 	private List<String> getLidoLinkResources() {
 		List<String> linkResources = new ArrayList<String>();
