@@ -51,7 +51,7 @@ Im Falle einer Erstinstallation befindet sich in
 nun eine vollständige ContentBroker Installation. Der ContentBroker muss nun konfiguriert werden über die Dateien
     
     conf/hibernateCentralDB.cfg.xml
-    conf/config.properties.
+    conf/config.properties
 
 ## Update einer bestehenden Installation
 
