@@ -52,16 +52,25 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		irodsSystemConnector.connect();
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + "/" + gridPath2;
 		
-		String nr = irodsSystemConnector.executeRule("checkNumber { \n " +
+		String number = irodsSystemConnector.executeRule("checkNumber { \n " +
 				"*numberOfCopies=0;\n" +
 				"acGetNumberOfCopies(*dao,*numberOfCopies);\n"
 				+"}\n"
 				+"INPUT *dao=\""+gridPath+"\"\n"
 				+"OUTPUT *numberOfCopies","*numberOfCopies");
-				logger.debug("iRODS tells us, file " +gridPath+ " has already >" +nr+"< Copies");
-		if (nr.equals("2")) {
-			irodsSystemConnector.logoff();
-			return true;
+				logger.debug("iRODS tells us, file " +gridPath+ " has already >" + number +"< Copies");
+		if (number!=null && !number.isEmpty()) {
+			int nr = 0;
+			try {
+				nr = Integer.parseInt(number);
+			} catch (NumberFormatException e) {
+				logger.warn("Could not determine Integer out of Value " + number);
+			}
+			if (nr>= sp.getMinNodes()) {
+				logger.debug ("Reached number of Copies :" + nr);
+				irodsSystemConnector.logoff();
+				return true;
+			}
 		}
 		irodsSystemConnector.logoff();
 		return false;
