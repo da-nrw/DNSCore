@@ -42,21 +42,63 @@ Wenn der Installer dann ausgeführt wird mittels
 wird man aufgefordert, das gewünschte Featureset anzugeben. Hier hat man die Auswahl zwischen den Optionen (f)ull, (p)res und
 (n)ode. Die Erklärung für diese Modi findet sich [hier](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/administration-dnscore-modes.de.md).
 
-## template-Dateien
+## Anpassen einer frischen Installation
 
+Im Falle einer Erstinstallation befindet sich in
 
-
-## Starting the ContentBroker
-
-    cd [ContentBroker]
-    ./ContentBroker_start.sh
+    $CB_HOME
     
-1. Watch if the ContentBroker comes up with tail -f log/contentbroker.log
-1. If everything goes well, you will see him greedily searching for jobs soon.
+nun eine vollständige ContentBroker Installation. Der ContentBroker muss nun konfiguriert werden über die Dateien
+    
+    conf/hibernateCentralDB.cfg.xml
+    conf/config.properties.
 
-## Test the ContentBroker
+## Update einer bestehenden Installation
 
-1. Test the software with a testpackage.
-  1. Ingest a package
-  1. Retrieve a package
+Das Installationskript liefert immer aktuelle Versionen der folgenden Dateien mit
+
+    $CB_HOME/ContentBroker_start.sh.template
+    $CB_HOME/ContentBroker_stop.sh.template
+    $CB_HOME/conf/logback.xml.template
+
+Diese werden bei der Erstinstallation automatisch umkopiert in
+
+    $CB_HOME/ContentBroker_start.sh
+    $CB_HOME/ContentBroker_stop.sh
+    $CB_HOME/logback.xml
+    
+Dem Administrator steht es frei, diese Dateien nach seinem Gusto zu modifizieren. Z.B. können in der logback.xml
+die Loggereinstellungen angepasst werden. 
+
+Bei einem Update werden die letztgenannten Dateien nicht überschrieben, sondern so belassen, wie sie sind. Der Installer
+liefert lediglich die template-Dateien nach, so dass der Administrator bei Bedarf die neuesten Stände dieser Dateien zur Verfügung hat.
+
+## Installation - Vorgehensweise
+
+1. Zunächst sollte ein bestehender CB-Prozess heruntergefahren werden mit
+
+    ./ContentBroker_stop.sh
+    
+2. Ausführen des Installers
+
+    ./install.sh $CB_HOME
+    
+3. Auswahl des Feature Sets.
+
+4. Test des CB mittels
+
+    cd $CB_HOME
+    java -jar ContentBroker.jar diagnostics
+
+5. Wenn das durchläuft, hochfahren des ContentBroker mittels
+
+    ./ContentBroker_start.sh
+
+6. Nachschauen, ob alles läuft mit
+
+    tail -f log $CB_HOME/log/contentbroker.log
+    
+Wenn es läuft, sucht er nach Jobs.
+
+7. Ausführen des Basistests: Einspielen und Retrieven eines Paketes.
   
