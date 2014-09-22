@@ -20,6 +20,7 @@
 package de.uzk.hki.da.cb;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
@@ -36,6 +37,8 @@ import de.uzk.hki.da.core.ConfigurationException;
 
 public class PostRetrievalAction extends AbstractAction {
 
+	public PostRetrievalAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;}
+	
 	@Override
 	void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
@@ -55,7 +58,13 @@ public class PostRetrievalAction extends AbstractAction {
 		
 		String transferAreaRootPath = localNode.getUserAreaRootPath().toString();
 		
-		if (new Date().getTime()/1000L > (Long.parseLong(job.getDate_created())+(3600L*24))){
+		
+
+	;
+		
+		
+		
+		if ((new Date().getTime())/1000L > (Long.parseLong(job.getDate_modified())+(86400L*1))){
 			
 			if (transferAreaRootPath!= null && !transferAreaRootPath.equals("")) {
 			String webDavOutgoingPath = transferAreaRootPath +"/"+ csn +"/outgoing/";

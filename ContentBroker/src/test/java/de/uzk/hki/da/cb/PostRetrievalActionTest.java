@@ -19,77 +19,36 @@
 
 package de.uzk.hki.da.cb;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Calendar;
+import java.util.Date;
+
+import javax.validation.constraints.AssertTrue;
+
+import org.junit.After;
+import org.junit.Test;
+
+import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.test.TC;
+
 /**
  * @author: Jens Peters
  */
-
-import static org.mockito.Mockito.mock;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.grid.IrodsSystemConnector;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.User;
-import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.path.Path;
 
 
 /**
  * The Class PostRetrievalActionTest.
  */
-public class PostRetrievalActionTest {
-
-	/** The dao. */
-	private static CentralDatabaseDAO dao = new CentralDatabaseDAO();
+public class PostRetrievalActionTest  extends ConcreteActionUnitTest {
 	
-	/** The irods. */
-	IrodsSystemConnector irods;
+	private static final Path userAreaRootPath = Path.make(TC.TEST_ROOT_CB,"RetrievalActionTests","user");
 	
-	/** The node. */
-	Node node;
 	
-	/**
-	 * Sets the up before class.
-	 *
-	 * @throws Exception the exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	@ActionUnderTest
+	PostRetrievalAction action = new PostRetrievalAction();
 
-		HibernateUtil.init("conf/hibernateCentralDbWithInmem.cfg.xml");
-		
-	}
-
-	/**
-	 * Tear down after class.
-	 *
-	 * @throws Exception the exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * Sets the up.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		 irods = mock (IrodsSystemConnector.class);
-		 node = new Node();
-			node.setUserAreaRootPath(Path.make("/tmp/webdav"));
-			
-	}
 
 	/**
 	 * Tear down.
@@ -104,23 +63,27 @@ public class PostRetrievalActionTest {
 	 * Post retrieval.
 	 */
 	@Test 
-	public void postRetrieval() {
-		User c = new User();
-		c.setShort_name("TEST");
-		
-		Job job = new Job();
-		GregorianCalendar gc = new GregorianCalendar();
-			System.out.println("is now: " + gc.getTime());
-		gc.set(Calendar.HOUR, gc.get(Calendar.HOUR)-25);
-		System.out.println("read: " + gc.getTime());
-		job.setDate_created(String.valueOf(Math.round(gc.getTimeInMillis()/1000L)));
-		PostRetrievalAction action = new PostRetrievalAction();
-		action.setJob(job);
-		
-		action.setLocalNode(node);
-		action.setDao(dao);
-		action.implementation();
-		
+	public void testPostRetrievalDeletionAfterSomeTime() {
+		n.setUserAreaRootPath(userAreaRootPath);
+		j.setStatus("950");
+		Calendar now = Calendar.getInstance();
+		now.add(Calendar.HOUR_OF_DAY, -25);
+		j.setDate_created(String.valueOf(now.getTimeInMillis()/1000L));
+		j.setDate_modified(String.valueOf(now.getTimeInMillis()/1000L));
+		assertTrue(action.implementation());
+	}
+	/**
+	 * Post retrieval.
+	 */
+	@Test 
+	public void testPostRetrievalNoDeletionAfterSomeTime() {
+		n.setUserAreaRootPath(userAreaRootPath);
+		j.setStatus("950");
+		Calendar now = Calendar.getInstance();
+		now.add(Calendar.HOUR_OF_DAY, -9);
+		j.setDate_created(String.valueOf(now.getTimeInMillis()/1000L));
+		j.setDate_modified(String.valueOf(now.getTimeInMillis()/1000L));
+		assertFalse(action.implementation());
 	}
 
 }

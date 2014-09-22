@@ -90,16 +90,23 @@ class ObjectController {
 						paramsList.putAt("searchContractorName", params?.searchContractorName)
 					}
 
-					return [
-						objectInstanceList: objects,
+					if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+						render(view:"adminList", model:[	objectInstanceList: objects,
 						objectInstanceTotal: objects.getTotalCount(),
 						searchParams: params.search,
 						paramsList: paramsList,
 						paginate: true,
 						admin: admin,
 						baseFolder: baseFolder,
-						contractorList: contractorList
-				]
+						contractorList: contractorList]);
+					} else render(view:"list", model:[	objectInstanceList: objects,
+						objectInstanceTotal: objects.getTotalCount(),
+						searchParams: params.search,
+						paramsList: paramsList,
+						paginate: true,
+						admin: admin,
+						baseFolder: baseFolder,
+						contractorList: contractorList]);
     }
 
     def show() {

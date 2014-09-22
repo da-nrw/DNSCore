@@ -44,6 +44,14 @@
             			<td>Identifier:</td>
             			<td><g:textField name="search.identifier" value="${params.search?.identifier}" size="50"/></td>
             		</tr>
+            		<g:if test="${admin}">
+            			<tr>
+            			<td>Contractor:</td>
+            			<td>
+            				<g:select id="contractor" name="searchContractorName" from="${contractorList}" noSelection="[null:'Alle auswählen']" optionKey="shortName" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
+						</td>
+            		</tr>
+            		</g:if>
             		<tr>
             			<td></td>
             			<td><g:submitButton name="submit" value="Filter anwenden"/></td>
@@ -67,7 +75,12 @@
 						<tr>
 							<th><g:message code="object.identifier.label" default="Ident" /></th>
 							
-							<g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}" />						
+							<g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}" />
+						
+							<g:sortableColumn property="contractor" title="${message(code: 'object.user.label', default: 'Contractor')}" />
+							<!-- <th><g:message code="object.contractor.label" default="Contractor" /></th> -->
+							
+							
 							<g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name')}" />
 							<g:sortableColumn property="created" title="${message(code: 'object.created.label', default: 'Erstellt')}" />
 							<g:sortableColumn property="modified" title="${message(code: 'object.modified.label', default: 'Geändert')}" />
@@ -103,10 +116,11 @@
 						
 							<td><g:link action="show" id="${objectInstance.id}">${objectInstance.getFormattedUrn()}</g:link></td>
 						
+							<td>${fieldValue(bean: objectInstance, field: "user")}</td>
+						
 							<td>${fieldValue(bean: objectInstance, field: "origName")}</td>
 							<td>${objectInstance.getFormattedCreatedDate()}</td>
 							<td>${objectInstance.getFormattedModifiedDate()}</td>
-							
 							<g:if test="${admin}">
 							<td style="text-align: center">
 								<g:if test="${statusCode == 1}">
@@ -172,8 +186,7 @@
 						</tr>
 					</g:each>
 					</tbody>
-				</table>
-				StandardView
+				</table>AdminView
 			</g:formRemote>
 
 

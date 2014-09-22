@@ -69,7 +69,7 @@ class OutgoingController {
 				idn: idn])
 		que.each {
 			
-			it.setStatus("960")
+			//it.setStatus("960")
 			
 			def dateCode = Math.round(new Date().getTime()/1000L)
 			log.debug("dateCode:"+dateCode)

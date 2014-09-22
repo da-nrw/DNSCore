@@ -238,7 +238,7 @@ class QueueEntryController {
 		}
 		if (params.search==null){
 			if (admin != 1) {
-				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.status='640'",
+				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.status='645'",
 				 [csn: user.shortName])
 			} else {
 				admin = true;
