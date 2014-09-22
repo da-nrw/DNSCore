@@ -1,18 +1,16 @@
-## Application configuration
+## config.properties - Referenzdokumentation
+
+Die Datei ist in einer ContentBroker immer unter 
 
     ${CB_HOME}/conf/config.properties
+    
+abzulegen bzw. zu finden. Sie ist notwendiger Bestandteil jeder DNSCore Installation.
 
-The file config.properties is a necessary part of every DNSCore installation. It has always to be stored
-in the conf directory directly under the DNSCore main directory (which is the one that contains the ContentBroker.jar).
-With the exception of the database settings, the config properties is intended to hold the settings necessary to
-let your ContentBroker know how its environment is configured. Directory paths, adapter configurations etc. are alle stored in this single file.
-
-The file is logically devided into several blocks of which each has a prefix to mark a property as beloning to the
-according block:
+Die Datei ist in verschiedene Blöcke unterteilt, die je nach gewünschter Gesamtkonfiguration (zusammen mit der beans.xml) vorhanden sein müssen.
 
 ### localNode
 
-Example from [config.properties.ci](../conf/config.properties.ci)
+Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
     localNode.userAreaRootPath=/ci/storage/UserArea
     localNode.ingestAreaRootPath=/ci/storage/IngestArea 
@@ -58,7 +56,7 @@ The email address of the administrator responsible for the node. Note that who i
 
 ### cb
 
-Example from [config.properties.ci](../conf/config.properties.ci)
+Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
     cb.serverSocketNumber=4455
     cb.implementation.grid=irodsGridFacade
