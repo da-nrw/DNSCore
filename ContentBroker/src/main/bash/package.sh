@@ -53,8 +53,12 @@ cp src/main/xml/beans.xml.node $INSTALLER
 cp src/main/xml/beans.xml.pres $INSTALLER
 cp src/main/xml/beans.xml.full $INSTALLER
 cp src/main/xml/beans.xml.full.dev $INSTALLER
-cp src/main/xml/logback.xml.debug $INSTALLER/logback.xml
+cp src/main/xml/logback.xml $INSTALLER/logback.xml.template
+cp src/main/bash/ContentBroker_stop.sh $INSTALLER/ContentBroker_stop.sh.template
+cp src/main/bash/ContentBroker_start.sh $INSTALLER/ContentBroker_start.sh.template
 
+
+	
 cp src/main/xml/hibernateCentralDB.cfg.xml.$1 $INSTALLER/hibernateCentralDB.cfg.xml
 case "$1" in
 dev)

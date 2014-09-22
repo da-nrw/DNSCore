@@ -24,8 +24,6 @@ cp src/test/resources/at/ATUseCaseIngest1.tgz $1/conf/basic_test_package.tgz
 cp src/main/bash/fido.sh $1/
 cp src/main/bash/ffmpeg.sh $1/
 cp src/main/bash/configure.sh $1/
-cp src/main/bash/ContentBroker_stop.sh $1/ContentBroker_stop.sh.template
-cp src/main/bash/ContentBroker_start.sh $1/ContentBroker_start.sh.template
 cp src/main/bash/cbTalk.sh $1/
 cp -r src/main/xslt $1/conf
 cp src/main/xsd/premis.xsd $1/conf

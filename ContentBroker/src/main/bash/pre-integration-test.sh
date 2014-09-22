@@ -129,10 +129,15 @@ cp src/main/conf/config.properties.$1 conf/config.properties
 java -jar target/ContentBroker-SNAPSHOT.jar createSchema
 src/main/bash/populatetestdb.sh populate $1
 
+
+## remove some stuff so that the installer can make the real files out of the template files again
 rm $INSTALL_PATH/conf/beans.xml
 rm $INSTALL_PATH/conf/config.properties
 rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
-rm $INSTALL_PATH/actionCommunicatorService.recovery
+rm $INSTALL_PATH/conf/logback.xml
+rm $INSTALL_PATH/ContentBroker_start.sh
+rm $INSTALL_PATH/ContentBroker_stop.sh
+
 
 install $INSTALL_PATH $BEANS
 # TODO 1. really needed on a ci machine? 2. duplication with installer?

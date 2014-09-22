@@ -95,8 +95,31 @@ echo Copying beans.xml.$BEANS_TYPE to $INSTALLATION_TARGET/conf/beans.xml
 cp -f beans.xml.$BEANS_TYPE $INSTALLATION_TARGET/conf/beans.xml
 fi
 
-cp -f logback.xml $INSTALLATION_TARGET/conf
-echo "copied new logback.xml to your installation, but check for settings needed for your system you made to this file earlier."
+
+##### deliver template files and copy them to the regular names if they do not exist #######
+##### logback.xml #######
+##### ContentBroker_stop.sh #######
+##### ContentBroker_start.sh #######
+cp -f logback.xml.template $INSTALLATION_TARGET/conf # overwrite existing template file.
+if  [ ! -e $INSTALLATION_TARGET/conf/logback.xml ]
+then 
+	cp -f $INSTALLATION_TARGET/conf/logback.xml.template $INSTALLATION_TARGET/conf/logback.xml
+fi
+cp -f ContentBroker_stop.sh.template $INSTALLATION_TARGET/ # overwrite existing template file.
+if  [ ! -e $INSTALLATION_TARGET/ContentBroker_stop.sh ]
+then 
+	cp -f $INSTALLATION_TARGET/ContentBroker_stop.sh.template $INSTALLATION_TARGET/ContentBroker_stop.sh
+fi
+cp -f ContentBroker_start.sh.template $INSTALLATION_TARGET/ # overwrite existing template file.
+if  [ ! -e $INSTALLATION_TARGET/ContentBroker_start.sh ]
+then 
+	cp -f $INSTALLATION_TARGET/ContentBroker_start.sh.template $INSTALLATION_TARGET/ContentBroker_start.sh
+fi
+#############################
+
+
+
+
 if [ -e ffmpeg.sh ] 
 then
 	echo copy new ffmpeg

@@ -1,6 +1,7 @@
 #!/bin/bash
 # The Contentbroker Start Skript
 
+
 OS=`uname -s`
 case "$OS" in
 SunOS)
