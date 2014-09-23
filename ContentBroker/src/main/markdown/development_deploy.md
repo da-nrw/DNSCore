@@ -85,6 +85,18 @@ Remarks:
         leads to a ContentBroker configuration which provides access to the real iRODS storage layer and the real
         Fedora presentation layer. 
 
+### Getting the build
+
+The ContentBroker which gets tested is automatically installed from the installer which is build at 
+
+    [...]/DNSCore/ContentBroker/target/installation
+    
+or 
+
+    /ci/DNSCore/ContentBroker/target/installation
+    
+After the test have passed successfully, you can use this installer to set up a ContentBroker on another machine.
+
 ### Running application at the build machine
 
 If the build passes, a running ContentBroker installation is present on your system, which you can find at
@@ -126,18 +138,6 @@ to [appHome]. There you can debug the running ContentBroker manually or you can 
 by calling
 
 1. mvn failsafe:integration-test -Dit.test=AT[TestName]
-
-### Getting the build
-
-The ContentBroker which gets tested is automatically installed from the installer which is build at 
-
-    [...]/DNSCore/ContentBroker/target/installation
-    
-or 
-
-    /ci/DNSCore/ContentBroker/target/installation
-    
-After the test have passed successfully, you can use this installer to set up a ContentBroker on another machine.
 
 ## Understanding the test system
 
