@@ -33,13 +33,11 @@ the releases page, follow the source code link for the corresponding version and
 * [PREMIS](specification_premis.md) Specification
 * Description of the [Delta](the_delta_feature.md) feature.
 
-## Using DNSCore
-### End Users
+## Using DNSCore<br>[End Users]
 
 * [Ingest and Retrieval](../../../../DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
 
-## Providing services to end users.
-### System administrators / Node administrators / Operators
+## Providing services to end users<br>[System administrators / Node administrators / Operators]
 
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
 * Job [states](administration-troubleshooting.md). How to deal with jobs in error states.
@@ -50,8 +48,7 @@ the releases page, follow the source code link for the corresponding version and
 * [Controlling](administration-services.md) the application. Description of the non gui interfaces to the application.
 * Information on the [installer](administration-the-installer.md) script.
 
-## Setting up Environments with DNSCore
-### Node administrators
+## Setting up Environments with DNSCore<br>[Node administrators]
 
 * Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
 * How to perfom a minimal installation of [DNSCore](installation_minimal.md).
@@ -70,8 +67,7 @@ the releases page, follow the source code link for the corresponding version and
 * Reference for the most common configuration file [config.properties](administration-config-properties-reference.md).
 * Reference for the [beans.xml](administration-beans.md) configuration file.
 
-## Enhancing the functions of DNSCore
-### Development
+## Enhancing the functions of DNSCore<br>[Development]
 
 * Metadata [Workflow](metadata_workflow.md). Technical description.
 * [click here](3rdPartyTools.md) to get general information about the use and redistribution of used 3rd party libraries and tools.
