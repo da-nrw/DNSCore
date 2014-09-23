@@ -57,7 +57,17 @@ Um einen Überblick über die laufenden Jobs zu erhalten, kann das cbTalk Skript
 
     ./cbTalk.sh SHOW_ACTIONS
     
+Es ist weiterhin möglich, den ContentBroker zwar eingeschaltet zu lassen, jedoch das anfassen neuer Jobs zu unterbinden
 
+    ./cbTalk.sh STOP_FACTORY
+    
+sobald kein Job mehr in Arbeit ist, kann er nun entweder heruntergefahren werden, oder veranlasst werden, die Arbeit wieder aufzunehmen mittels
+
+    ./cbTalk.sh START_FACTORY
+    
+Einige zusätzliche Informationen über den gerade laufenden ContentBroker bekommt man mit
+
+    ./cbTalk.sh SHOW_VERSION
 
 
 
