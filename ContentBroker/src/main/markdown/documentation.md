@@ -40,7 +40,10 @@ the releases page, follow the source code link for the corresponding version and
 
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
 * Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
-* Job [states](administration-troubleshooting.md). How to deal with jobs in error states
+* Job [states](administration-troubleshooting.md). How to deal with jobs in error states.
+* Reference for the most common configuration file [config.properties](administration-config-properties-reference.md).
+* Reference for the [beans.xml](administration-beans.md) configuration file.
+* Information on the [installer](administration-the-installer.md) script.
 * [click here](administration-interfaces.md) for a description of the non gui interfaces to the application.
 * [click here](ContentBroker/src/main/markdown/open_ports.md) for a list of ports your firewall has to allow connections to.
 * [clck here](ContentBroker/src/main/markdown/audit.md) to get information how the AIP are being checked automatically.
