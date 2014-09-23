@@ -33,6 +33,15 @@ Um den ContentBroker zu verwalten, existieren einige Schnittstellen. Dies ist na
     ./cbTalk.sh SHOW_VERSION
     ./cbTalk.sh GRACEFUL_SHUTDOWN
     
+Vor jedem Start des ContentBroker sollte aufgerufen werden:
+
+    java -jar $JAVA_OPTS ContentBroker.jar diagnostics
+    
+diagnostics checkt alle wichtigen Subsysteme im Vorfeld durch und gibt somit Aufschluss darüber, ob
+die Umgebung (Konfiguration der Maschine, Konfiguration der Applikation) ordnungsgemäß eingerichtet und
+der ContentBroker betriebsbereit ist. Diagnostics sollte in jedem Fall sauber durchlaufen, bevor der 
+ContentBroker gestartet wird.
+    
 Um den ContentBroker testweise zu starten, kann er prinzipiell gestartet werden mit 
 
     java -jar $JAVA_OPTS ContentBroker.jar
@@ -69,21 +78,15 @@ Einige zusätzliche Informationen über den gerade laufenden ContentBroker bekom
 
     ./cbTalk.sh SHOW_VERSION
 
+Sollte es sich um eine Erstinstallation der DNSCore handeln, so kann das ContentBroker.jar auch verwendet werden, um
+ein Datenbankschema zu kreieren.
+
+        java -jar $JAVA_OPTS ContentBroker.jar createSchema (careful)
+        
+Sobald ein Schema kreiert ist, sollte der Administrator die Tabellen gegen weiteren Schreibzugriff sichern.
 
 
-
-
-
-
-
-
-
-
-    
-Diagnostics help to check the state of the environment and should be executed before starting the ContentBroker. Only when the diagnostics show everything is ok, the ContentBroker should be started. CreateSchema helps the admin to create the right database schema on new nodes.
-
-
-## Starting the ContentBroker
+## Starten und Stoppen der Gesamtapplikation
 
 In order to start the ContentBroker, other services have to be started anterior. The complete Startup sequence is:
 
