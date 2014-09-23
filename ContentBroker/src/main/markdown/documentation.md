@@ -43,7 +43,7 @@ the releases page, follow the source code link for the corresponding version and
 * [clck here](audit.md) to get information how the AIP are being checked automatically.
 * [Create user](create_user.md)
 * Processing [stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
-
+* Format [identification](administration_format_identification.de.md) (german version).
 
 ## Installation related
 
