@@ -51,9 +51,6 @@ For Documentation see:
 
 * Documentation. English [version](ContentBroker/src/main/markdown/documentation.md)
 * Documentation. German  [version](ContentBroker/src/main/markdown/documentation.de.md)
-* the [Java API documentation](http://da-nrw.github.io/DNSCore/apidocs/)
-* the [Java test documentation](http://da-nrw.github.io/DNSCore/testapidocs/)
-
 
 ## Building the application
 
