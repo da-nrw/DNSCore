@@ -11,7 +11,9 @@ In general, DNSCore gets build in one of two modes,
     ci  ( fully installed, node-like, machine with irods, fedora, elasticsearch )
     dev ( local development workstation with less prerequisites )
 
-which will both get described later.
+The "ci" mode is there for doing continuous integration. For continuous integration, the environment has to be production-similar. This means that like on a real "node", iRODS and a some other subssystems have to be installed prior to beeing able to executing the tests and creating builds.
+
+The "dev" mode somewhat lightweight compared to the "ci" mode. The internal connectors to the subsystem are configured in a way that fake version of the connectors are used while doing tests and creating builds. This is useful for development purposes, where one wants to check out the sources, modify them, and see if they run on a local laptop, for example.
 
 ## Common prerequisites
 
@@ -42,43 +44,6 @@ is a place somewhere on your file system, where your local clone of the DNSCore 
 Your maven commands have then to be executed from the ContentBroker subfolder, so make sure you cd into it by
 
     cd [...]/DNSCore/ContentBroker
-    
-## Understanding the test system
-
-![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/blackbox_whitebox.jpg)
-
-To understand how acceptance tests are done with DNSCore, you have to keep in mind, that you have your source code repository location
-
-    [...]/DNSCore/ContentBroker
-
-and your target location, which is either
-
-    [appHome]/ContentBroker
-    
-or
-    
-    /ci/ContentBroker
-    
-depending which environment you choose. The repository location is the place where the sources are and where the build is unit tested (white box testing) and packaged.
-
-In addition to the unit tests, another set of tests, which is there to verify that business criteria are matched, can be executed. This is done by running "mvn verify", which builds and installer and installs the ContentBroker to one of the aforementioned target locations. This acceptance test communicate to the then running ContentBroker from the outside, through its interfaces (database, incoming and outgoing folders), as any other client would do (black box testing).
-
-
-The build system is based on the standard maven build lifecycle. Here is a short summary of the phases that are of interest in the current
-context:
-
-    test - The JUnit tests get executed
-    package (including src/main/bash/package.sh) - The binaries are build and bundled to an installer.
-    pre-integration-test (including src/main/bash/pre-integration-test.sh) - The installer gets called automatically to install the 
-        freshly build ContentBroker to [appHome]. A lightweight database is set up. The source code configures itself so it knows 
-        how to speak to the ContentBroker at [appHome].
-    integration-test (including src/main/bash/integration-test.sh) - The acceptance tests (src/main/java/de/uzk/hki/da/at/AT*) are executed.
-    verify - The results of the acceptance tests get evaluated and summarized by maven.
-    deploy - The build system puts the installer to another location where all succesful builds are stored (useful for continuous integration).
-
-Just to repeat an important fact, if one calls for example "mvn verify" all previous maven build lifecycle phases until verify get executed, one by one.
-
-
 
 ### Build and acceptance test the application on a development workstation
 
@@ -92,27 +57,9 @@ To build the software from source and run the unit and acceptance tests follow t
     1. cd [...]/DNSCore/ContentBroker
     1. mvn clean -Pdev && mvn verify -Pdev -DappHome=[appHome]
 
-This will automatically build and test the whole application which should result in a message "BUILD SUCCESS" stated by Maven. If the build passes, a running ContentBroker installation is present on your system, which you can find at
+This will automatically build and test the whole application which should result in a message "BUILD SUCCESS" stated by Maven. 
 
-    [appHome]
-    
-You can verify that it runs by observing the main log file at
 
-    [appHome]/log/contentbroker.log
-
-You can ingest a testpackage to 
-
-    [appHome]/storage/ingest/TEST
-    
-and observe the ContentBroker fetching it in
-
-    [appHome]/log/ingest.log
-
-The ContentBroker which gets tested is automatically installed from the installer which is build at 
-
-    [...]/DNSCore/ContentBroker/target/installation
-    
-You can use this installer to set up a ContentBroker on another machine.
 
 Remarks:
 
@@ -124,9 +71,6 @@ Remarks:
     [appHome] - appHome is the full physical path to a local installation of the ContentBroker
         which automatically gets installed by the test system 
         in order to run the automated acceptance tests.
-
-
-
 
 ### Build and acceptance test the application on a Continuous Integration machine
 
@@ -147,15 +91,37 @@ Fedora presentation layer.
 completely tested release candidate to a precondigured folder were all release candidates are collected. This 
 is done to support continuous integration workflows.
 
- 
+
+### Running application at the build machine
+
+If the build passes, a running ContentBroker installation is present on your system, which you can find at
+
+    [appHome] 
+    /ci/ContentBroker
+    
+You can verify that it runs by observing the main log file at
+
+    [appHome]/log/contentbroker.log
+    /ci/ContentBroker/log/contentbroker.log
+
+You can ingest a testpackage to 
+
+    [appHome]/storage/IngestArea/TEST
+    /ci/ContentBroker/storage/IngestArea/TEST
+    
+and observe the ContentBroker fetching it in
+
+    [appHome]/log/ingest.log
+    /ci/ContentBroker/log/ingest.log
+
 ### Debugging and Development
 
 Sometimes it is necessary to have more fine grained control over the build and test process. For example,
 if you want to bugfix a certain acceptance test or if you write a new acceptance test. 
 
-1. cd [...]/DNSCore/ContentBroker
-1. mvn clean && mvn pre-integration-test -Pdev -DappHome=[appHome] **no ending slash!!!**
-1. or mvn clean && mvn pre-integration-test -Pci
+    1. cd [...]/DNSCore/ContentBroker
+    1. mvn clean -Pdev && mvn pre-integration-test -Pdev -DappHome=[appHome] **no ending slash!!!**
+    1. or mvn clean -Pci && mvn pre-integration-test -Pci
 
 **Note** For quick acceptance test runs you can add params to deactivate the building of DAWeb and execution of JUnit tests. The switches are
 
@@ -168,6 +134,48 @@ by calling
 
 1. mvn failsafe:integration-test -Dit.test=AT[TestName]
 
+### Getting the build
 
+The ContentBroker which gets tested is automatically installed from the installer which is build at 
 
+    [...]/DNSCore/ContentBroker/target/installation
+    
+or 
 
+    /ci/DNSCore/ContentBroker/target/installation
+    
+After the test have passed successfully, you can use this installer to set up a ContentBroker on another machine.
+
+## Understanding the test system
+
+![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/blackbox_whitebox.jpg)
+
+To understand how acceptance tests are done with DNSCore, you have to keep in mind, that you have your source code repository location
+
+    [...]/DNSCore/ContentBroker
+
+and your target location, which is either
+
+    [appHome]/ContentBroker
+    
+or
+    
+    /ci/ContentBroker
+    
+depending which environment you choose. The repository location is the place where the sources are and where the build is unit tested (white box testing) and packaged.
+
+In addition to the unit tests, another set of tests, which is there to verify that business criteria are matched, can be executed. This is done by running "mvn verify", which builds and installer and installs the ContentBroker to one of the aforementioned target locations. This acceptance test communicate to the then running ContentBroker from the outside, through its interfaces (database, incoming and outgoing folders), as any other client would do (black box testing).
+
+The build system is based on the standard maven build lifecycle. Here is a short summary of the phases that are of interest in the current
+context:
+
+    test - The JUnit tests get executed
+    package (including src/main/bash/package.sh) - The binaries are build and bundled to an installer.
+    pre-integration-test (including src/main/bash/pre-integration-test.sh) - The installer gets called automatically to install the 
+        freshly build ContentBroker to [appHome]. A lightweight database is set up. The source code configures itself so it knows 
+        how to speak to the ContentBroker at [appHome].
+    integration-test (including src/main/bash/integration-test.sh) - The acceptance tests (src/main/java/de/uzk/hki/da/at/AT*) are executed.
+    verify - The results of the acceptance tests get evaluated and summarized by maven.
+    deploy - The build system puts the installer to another location where all succesful builds are stored (useful for continuous integration).
+
+Just to repeat an important fact, if one calls for example "mvn verify" all previous maven build lifecycle phases until verify get executed, one by one.
