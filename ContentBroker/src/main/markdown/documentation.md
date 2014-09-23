@@ -26,14 +26,14 @@ the releases page, follow the source code link for the corresponding version and
 
 ### General concepts, for all Audiences including End Users
 
-* [Ingest and Retrieval](../../../DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
+* [Ingest and Retrieval](../../../../DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
 * [DIP](specification_dip.md) Specification
 * [SIP](specification_sip.md) Specification
-* [AIP](specification.md_aip) Specification
-* [PREMIS Specification](premis_specification.md)
-* Presentation of the [Object model](ContentBroker/src/main/markdown/object_model.md).
-* Presentation of the [Delta feature](ContentBroker/src/main/markdown/the_delta_feature.md).
+* [AIP](specification_aip.md) Specification
+* [PREMIS](specification.md) Specification
+* The DNSCore [Object](ContentBroker/src/main/markdown/object_model.md) mode.
 * Feature [list](features.md)
+* Description of the [Delta](ContentBroker/src/main/markdown/the_delta_feature.md) feature.
 
 ### Administration
 
