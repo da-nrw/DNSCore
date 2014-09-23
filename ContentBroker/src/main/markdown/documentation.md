@@ -51,17 +51,17 @@ the releases page, follow the source code link for the corresponding version and
 ## Installation related
 
 * How to set up [iRODS](installation_irods.md) for DNSCore.
-* Set up the minimal installation [ContentBroker](ContentBroker/src/main/markdown/installation_cb.md) on a node.
-* [Connect](installation_irods_cb.md) minimal ContentBroker installation to iRODS [click here]( to learn how connect iRODS and the ContentBroker
-* [Connect](install_fedora.md) Fedora and DNSCore
+* How to perfom a minimal installation of [DNSCore](installation_cb.md).
+* How to extend the minimal installation to work with [iRODS](installation_irods_cb.md).
+* How to install [Fedora](install_fedora.md) for DNSCore.
+* How to connect DNSCore and [Fedora](install_fedora.md).
+* How to install [PrOAI](install_proai.md) for DNSCore
+* How to install [Elasticsearch](install_elasticsearch.md) for DNSCore.
 * [click here](installation.md) if you want to update your node to a new version of DNSCore
 * [click here](installation_ci.md) to learn how to set up a machine for continuous integration.
 * [click here](needed_packages.md) contains information on needed packages to run DNSCore.
 * How to how to setup DNSCore for iRODS [PAM](using_iRODS_PAM_auth.md) Authentication
-* How to install [Fedora](ContentBroker/src/main/markdown/install_fedora.md)
-* How to install [PrOAI](ContentBroker/src/main/markdown/install_proai.md)
-* How to install [Elasticsearch](ContentBroker/src/main/markdown/install_elasticsearch.md)
-* [How to setup iRODS for Presentation Repository](ContentBroker/src/main/markdown/setup_irods.md)
+* [How to setup iRODS for Presentation Repository](setup_irods.md)
  
 ## Development
 
@@ -73,6 +73,6 @@ the releases page, follow the source code link for the corresponding version and
 * the [Java API documentation](http://da-nrw.github.io/DNSCore/apidocs/)
 * the [Java test documentation](http://da-nrw.github.io/DNSCore/testapidocs/)
 * [Processing Stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
-* Overview over the system [components](ContentBroker/src/main/markdown/components_connectors.md)
-* Overview of the [format module](src/main/markdown/format_module.md).
-* Overview of the [metadata workflow](ContentBroker/src/main/markdown/metadata_workflow.md).
+* Overview over the system [components](components_connectors.md)
+* Overview of the [format module](format_module.md).
+* Overview of the [metadata workflow](metadata_workflow.md).
