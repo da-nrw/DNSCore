@@ -22,7 +22,8 @@ All the links below refer to documentation stored in one of these places.
 **Note** that under the abovementioned links you'll always find the documentation attached to the master (e.g. snapshot) version. In most cases this should be what you need. In rare cases however, you want a documentation artifact that matches the exact state of implementation. In these cases you can go to
 the releases page, follow the source code link for the corresponding version and then search for the document you're after in this special repository snapshot.
 
-## General / All Audiences
+## Understanding long term preservation with DNSCore 
+### General / All Audiences
 
 * Feature [list](features.md)
 * The DNSCore [Object](object_model.md) model.
@@ -33,11 +34,13 @@ the releases page, follow the source code link for the corresponding version and
 * [PREMIS](specification_premis.md) Specification
 * Description of the [Delta](the_delta_feature.md) feature.
 
-## End Users - Using DNSCore
+## Using DNSCore
+### End Users
 
 * [Ingest and Retrieval](../../../../DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
 
-## System administrators / Node administrators / Operators - Providing services to end users.
+## Providing services to end users.
+### System administrators / Node administrators / Operators
 
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
 * Job [states](administration-troubleshooting.md). How to deal with jobs in error states.
@@ -48,7 +51,8 @@ the releases page, follow the source code link for the corresponding version and
 * [Controlling](administration-services.md) the application. Description of the non gui interfaces to the application.
 * Information on the [installer](administration-the-installer.md) script.
 
-## Node administrators - Setting up Environments with DNSCore
+## Setting up Environments with DNSCore
+### Node administrators
 
 * Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
 * How to perfom a minimal installation of [DNSCore](installation_minimal.md).
@@ -66,8 +70,9 @@ the releases page, follow the source code link for the corresponding version and
 * [How to setup iRODS for Presentation Repository](installation_setup_irods.md)
 * Reference for the most common configuration file [config.properties](administration-config-properties-reference.md).
 * Reference for the [beans.xml](administration-beans.md) configuration file.
- 
-## Development
+
+## Enhancing the functions of DNSCore
+### Development
 
 * Metadata [Workflow](metadata_workflow.md). Technical description.
 * [click here](3rdPartyTools.md) to get general information about the use and redistribution of used 3rd party libraries and tools.
