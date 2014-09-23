@@ -1,5 +1,7 @@
 	/*
 	  DA-NRW Software Suite | ContentBroker
+	  Copyright (C) 2014 Historisch-Kulturwissenschaftliche Informationsverarbeitung
+	  Universität zu Köln
 	  Copyright (C) 2014 LVRInfoKom
 	  Landschaftsverband Rheinland
 	
