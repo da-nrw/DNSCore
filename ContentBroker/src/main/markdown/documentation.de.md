@@ -1,1 +1,3 @@
-# DNSCore - Dokumantation
+# DNSCore - Dokumentation
+
+Under construction.
