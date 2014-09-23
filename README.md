@@ -64,8 +64,8 @@ a command line interface.
 
 For Documentation see:
 
-* Documentation. English [version](documentation.md)
-* Documentation. German  [version](documentation.de.md)
+* Documentation. English [version](src/main/markdown/documentation.md)
+* Documentation. German  [version](src/main/markdown/documentation.de.md)
 * the [Java API documentation](http://da-nrw.github.io/DNSCore/apidocs/)
 * the [Java test documentation](http://da-nrw.github.io/DNSCore/testapidocs/)
 
