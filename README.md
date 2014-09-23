@@ -47,20 +47,7 @@ software must handle the organization of objects and packages in the background.
 speak of an object in the context of DNSCore as our main entity in the object model, we have
 a unit of data which can consist of data of more than one package/SIP at the same time. 
 
-## Other Features
-
-* DAWeb - Graphical user interface for administrators and users
-* Storage Layer - geographical distribution/replication of data
-* Self validating ("audit")
-* Format identification
-* Codec identification
-* Automatic format conversion
-
-To build streamlined SIP based based on the used SIP specifications, take a look at:
-
-* SIPBuilder - Graphical user interface for End-Users, which allows high degree control over 
-SIP submitted to the DNS. The software could be easily integrated in subsystems, due to having 
-a command line interface.
+For a more extensive feature list, see [here](ContentBroker/src/main/markdown/features.md)
 
 ## Documentation
 
