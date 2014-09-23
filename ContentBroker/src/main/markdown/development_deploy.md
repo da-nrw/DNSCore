@@ -50,7 +50,7 @@ Your maven commands have then to be executed from the ContentBroker subfolder, s
 The build process on a dedicated build machine works more or less the same, with a few exceptions discussed
 here. To execute the build process run:
 
-    mvn clean && mvn verify -Pci 
+    mvn clean -Pci && mvn verify -Pci 
 
 Remarks:
 
