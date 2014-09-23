@@ -35,7 +35,7 @@ Please ensure, the shells (bash and sh) of your workstation run in UTF-8 mode:
   
 How to set up a node for continuous integration is part of [this](installation_ci.md) tutorial.
 
-### Getting the source code (dev).
+### dev - Getting the source code.
     
 Of course you need a clean checkout of our source repo containing both DA-Web and ContentBroker
 
