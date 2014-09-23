@@ -30,18 +30,28 @@ the releases page, follow the source code link for the corresponding version and
 * [DIP](specification_dip.md) Specification
 * [SIP](specification_sip.md) Specification
 * [AIP](specification_aip.md) Specification
-* [PREMIS](specification.md) Specification
-* The DNSCore [Object](ContentBroker/src/main/markdown/object_model.md) mode.
+* [PREMIS](specification_premis.md) Specification
+* The DNSCore [Object](object_model.md) mode.
 * Feature [list](features.md)
-* Description of the [Delta](ContentBroker/src/main/markdown/the_delta_feature.md) feature.
+* Description of the [Delta](the_delta_feature.md) feature.
+
 
 ### Administration
 
-#### General concepts
-* [Processing Stages](ContentBroker/src/main/markdown/processing_stages.md) demonstrates basic concepts necessary to administrate the system
+* [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
+* [click here](ContentBroker/src/main/markdown/system_configuration.md) to get an overview of how to set up the config files so that DNSCore will work in your environment.
+* [click here](ContentBroker/src/main/markdown/administration-troubleshooting.md) to get help how to administrate the system when errors occur.
+* [click here](ContentBroker/src/main/markdown/administration-interfaces.md) for a description of the non gui interfaces to the application.
+* [click here](ContentBroker/src/main/markdown/open_ports.md) for a list of ports your firewall has to allow connections to.
+* [clck here](ContentBroker/src/main/markdown/audit.md) to get information how the AIP are being checked automatically.
+
+### Technical / Development
+
+* [Processing Stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
 * Overview over the system [components](ContentBroker/src/main/markdown/components_connectors.md)
 * Overview of the [format module](src/main/markdown/format_module.md).
 * Overview of the [metadata workflow](ContentBroker/src/main/markdown/metadata_workflow.md).
+
 
 #### Installation related
 * [click here](ContentBroker/src/main/markdown/installation_irods.md) to learn how to set up / upgrade iRODS for DNSCore node.
@@ -54,12 +64,6 @@ the releases page, follow the source code link for the corresponding version and
 * [clck here](ContentBroker/src/main/markdown/using_iRODS_PAM_auth.md ) how to setup DNSCore for iRODS PAM Authentication
 
 #### Running a node
-* [click here](DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.  
-* [click here](ContentBroker/src/main/markdown/system_configuration.md) to get an overview of how to set up the config files so that DNSCore will work in your environment.
-* [click here](ContentBroker/src/main/markdown/administration-troubleshooting.md) to get help how to administrate the system when errors occur.
-* [click here](ContentBroker/src/main/markdown/administration-interfaces.md) for a description of the non gui interfaces to the application.
-* [click here](ContentBroker/src/main/markdown/open_ports.md) for a list of ports your firewall has to allow connections to.
-* [clck here](ContentBroker/src/main/markdown/audit.md) to get information how the AIP are being checked automatically.
 
 #### Presentation Repository Specific
 
