@@ -59,18 +59,6 @@ Remarks:
         leads to a ContentBroker configuration which provides access to the real iRODS storage layer and the real
         Fedora presentation layer. 
 
-### Getting the build
-
-The ContentBroker which gets tested is automatically installed from the installer which is build at 
-
-    [...]/DNSCore/ContentBroker/target/installation
-    
-or 
-
-    /ci/DNSCore/ContentBroker/target/installation
-    
-After the test have passed successfully, you can use this installer to set up a ContentBroker on another machine.
-
 ### Build and acceptance test the application on a development workstation
 
 In order to run the tests on a development workstation and to reduce the dependencies to the workstation, one can
@@ -95,6 +83,18 @@ Remarks:
     [appHome] - appHome is the full physical path to a local installation of the ContentBroker
         which automatically gets installed by the test system 
         in order to run the automated acceptance tests.
+
+### Getting the build
+
+The ContentBroker which gets tested is automatically installed from the installer which is build at 
+
+    [...]/DNSCore/ContentBroker/target/installation
+    
+or 
+
+    /ci/DNSCore/ContentBroker/target/installation
+    
+After the test have passed successfully, you can use this installer to set up a ContentBroker on another machine.
 
 ### Running application at the build machine
 
