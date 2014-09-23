@@ -37,7 +37,7 @@ the releases page, follow the source code link for the corresponding version and
 
 * [Ingest and Retrieval](../../../../DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
 
-## System / Node administrators / Operators
+## System administrators / Node administrators / Operators
 
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
 * Job [states](administration-troubleshooting.md). How to deal with jobs in error states.
@@ -48,7 +48,7 @@ the releases page, follow the source code link for the corresponding version and
 * Processing [stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
 * Format [identification](administration_format_identification.de.md) (german version).
 
-## Node administrators
+## Node administrators - Setting up Environments with DNSCore
 
 * Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
 * How to perfom a minimal installation of [DNSCore](installation_minimal.md).
