@@ -31,6 +31,10 @@ Please ensure, the shells (bash and sh) of your workstation run in UTF-8 mode:
     export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
     export LANG='de_DE.UTF-8'
   
+### ci - prerequisites.
+  
+How to set up a node for continuous integration is part of [this](installation_ci.md) tutorial.
+
 ### Getting the source code (dev).
     
 Of course you need a clean checkout of our source repo containing both DA-Web and ContentBroker
@@ -69,9 +73,6 @@ Remarks:
         in order to run the automated acceptance tests.
 
 ### Build and acceptance test the application on a continuous integration machine
-
-**Note** that how to set up a node for continuous integration is part of [this](installation_ci.md) tutorial.
-
 
 The build process on a dedicated build machine works more or less the same, but easier, since all paths are preconfigured on a ci machine.
 
