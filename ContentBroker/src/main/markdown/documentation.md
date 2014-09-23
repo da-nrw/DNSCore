@@ -23,7 +23,7 @@ All the links below refer to documentation stored in one of these places.
 the releases page, follow the source code link for the corresponding version and then search for the document you're after in this special repository snapshot.
 
 ## Understanding long term preservation with DNSCore 
-### General / All Audiences
+<br>General / All Audiences
 
 * Feature [list](features.md)
 * The DNSCore [Object](object_model.md) model.
