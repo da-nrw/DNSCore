@@ -44,7 +44,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	
 		eadFile = metadataFile;
 		metsReferencesInEAD = extractMetsRefsInEad();
-		metsFiles = getMetsFiles(daFiles);
+		metsFiles = getReferencedFiles(eadFile, metsReferencesInEAD, daFiles);
 				
 		mmsList = new ArrayList<MetsMetadataStructure>();
 		for(DAFile metsFile : metsFiles) {
@@ -83,39 +83,6 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			metsReferences.add(href);
 		}
 		return metsReferences;
-	}
-
-	private List<DAFile> getMetsFiles(List<DAFile> daFiles) {
-		List<DAFile> existingMetsFiles = new ArrayList<DAFile>();
-		for(String ref : metsReferencesInEAD) {
-			File refFile;
-			try {
-				refFile = getCanonicalFileFromReference(ref, eadFile);
-				logger.debug("Check referenced file: "+refFile.getAbsolutePath());
-				Boolean fileExists = false;
-				for(DAFile dafile : daFiles) {
-					File file = dafile.toRegularFile();
-					String dafilePath = file.getAbsolutePath();
-					logger.debug("DAFile: "+dafilePath);
-					if(refFile.getAbsolutePath().contains(dafilePath)) {
-						fileExists = true;
-						existingMetsFiles.add(dafile);
-						break;
-					} else {
-						fileExists = false;
-					}
-				}
-				if(fileExists) {
-					logger.debug("File "+ref+" exists.");
-				} else {
-					logger.error("File "+ref+" does not exist.");
-				}
-			} catch (IOException e) {
-				logger.error("File "+ref+" does not exist.");
-				e.printStackTrace();
-			}
-		}
-		return existingMetsFiles;
 	}
 	
 	public List<MetsMetadataStructure> getMetsMetadataStructures() {

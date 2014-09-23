@@ -63,30 +63,6 @@ public class LidoMetadataStructure extends MetadataStructure{
 		return linkResources;
 	}
 	
-	private List<DAFile> getReferencedFiles(List<DAFile> daFiles) {
-		List<String> references = getLidoLinkResources();
-		List<DAFile> existingFiles = new ArrayList<DAFile>();
-		for(String ref : references) {
-			Boolean fileExists = false;
-			String path = "";
-			for(DAFile dafile : daFiles) {
-				path = dafile.getRelative_path();
-				if(ref.equals(path)) {
-					fileExists = true;
-					existingFiles.add(dafile);
-				} else {
-					fileExists = false;
-				}
-			}
-			if(fileExists) {
-				logger.debug("File "+path+" exists.");
-			} else {
-				logger.error("File "+path+" does not exist.");
-			}
-		}
-		return existingFiles;
-	}
-	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::  REPLACEMENTS  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
 	private List<Element> parseLinkResourceElements() {
@@ -128,7 +104,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 	
 	private boolean checkReferencedFiles() {
 		Boolean valid = true;
-		if(getLidoLinkResources().size()!=getReferencedFiles(currentDAFiles).size()) {
+		if(getLidoLinkResources().size()!=getReferencedFiles(lidoFile, getLidoLinkResources(), currentDAFiles).size()) {
 			valid = false;
 		}
 		return valid;

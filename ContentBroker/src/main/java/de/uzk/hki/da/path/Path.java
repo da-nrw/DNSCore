@@ -101,7 +101,20 @@ public class Path{
 		return make(list).toFile();
 	}
 	
-
+	
+	/**
+	 * Returns relative path of file from specified directory
+	 * 
+	 * @author Polina Gubaidullina
+	 * @return
+	 */
+	public static String extractRelPathFromDir(File file, String dirName) {
+		String relPath = "";
+		int index = file.getAbsolutePath().indexOf(dirName)+dirName.length()+1;
+		relPath = file.getAbsolutePath().substring(index, file.getAbsolutePath().length());
+		return relPath;
+	}
+	
 	
 	
 	/**

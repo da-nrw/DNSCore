@@ -22,6 +22,8 @@ package de.uzk.hki.da.metadata;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.jdom.JDOMException;
@@ -35,9 +37,6 @@ import de.uzk.hki.da.path.Path;
  * @author Polina Gubaidullina
  */
 
-/**
- * @author Polina Gubaidullina
- */
 public abstract class MetadataStructure {
 	
 	/** The logger. */
@@ -56,4 +55,49 @@ public abstract class MetadataStructure {
 	}
 	
 	public abstract File getMetadataFile();
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private HashMap<DAFile, Boolean> checkExistenceOfReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
+		HashMap fileExistenceMap = new HashMap<File, Boolean>();
+		for(String ref : references) {
+			File refFile;
+			DAFile daFile = null;
+			try {
+				refFile = getCanonicalFileFromReference(ref, metadataFile);
+				logger.debug("Check referenced file: "+refFile.getAbsolutePath());
+				Boolean fileExists = false;
+				for(DAFile currentDafile : daFiles) {
+					daFile = currentDafile;
+					logger.debug("DAFile: "+daFile.getRelative_path());
+					if(refFile.getAbsolutePath().contains(daFile.getRelative_path())) {
+						fileExists = true;
+						break;
+					} else {
+						fileExists = false;
+					}
+				}
+				fileExistenceMap.put(daFile, fileExists);
+				if(fileExists) {
+					logger.debug("File "+ref+" exists.");
+				} else {
+					logger.error("File "+ref+" does not exist.");
+				}
+			} catch (IOException e) {
+				logger.error("File "+ref+" does not exist.");
+				e.printStackTrace();
+			}
+		}
+		return fileExistenceMap;
+	}
+	
+	public List<DAFile> getReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
+		HashMap<DAFile, Boolean> fileExistenceMap = checkExistenceOfReferencedFiles(metadataFile, references, daFiles);
+		List<DAFile> existingMetsFiles = new ArrayList<DAFile>();
+		for(DAFile dafile : fileExistenceMap.keySet()) {
+			if(fileExistenceMap.get(dafile)==true) {
+				existingMetsFiles.add(dafile);
+			}
+		}
+		return existingMetsFiles;
+	}
 }

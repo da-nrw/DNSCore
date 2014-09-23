@@ -51,7 +51,6 @@ import org.xml.sax.SAXException;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.metadata.LidoMetadataStructure;
-import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;
 import de.uzk.hki.da.metadata.XMPMetadataStructure;
 import de.uzk.hki.da.metadata.XmpCollector;
@@ -212,8 +211,7 @@ public class UpdateMetadataAction extends AbstractAction {
 				
 				for(String href : eadRefs) {
 					File file = emms.getCanonicalFileFromReference(href, emms.getMetadataFile());
-					String relPathOfRefFile = getRelPathFromRepDir(file, repName);
-					
+					String relPathOfRefFile = Path.extractRelPathFromDir(file, repName);					
 					if(sourceFile.getRelative_path().equals(relPathOfRefFile)) {
 						DAFile targetDAFile = e.getTarget_file();
 						File targetFile = targetDAFile.toRegularFile();
@@ -249,13 +247,6 @@ public class UpdateMetadataAction extends AbstractAction {
 		return replacementCount;
 	}
 	
-	private String getRelPathFromRepDir (File file, String repName) {
-		String relPath = "";
-		int index = file.getAbsolutePath().indexOf(repName)+repName.length()+1;
-		relPath = file.getAbsolutePath().substring(index, file.getAbsolutePath().length());
-		return relPath;
-	}
-	
 	private int updatePathsInMets(MetsMetadataStructure mms, String repName, File metsFile, Map<DAFile,DAFile> replacements) throws IOException, JDOMException {
 		
 		int replacementCount = 0;
@@ -270,8 +261,8 @@ public class UpdateMetadataAction extends AbstractAction {
 				
 				String href = mms.getHref(metsFileElement);
 				File file = mms.getCanonicalFileFromReference(href, metsFile);
-				String relPathOfRefFile = getRelPathFromRepDir(file, repName);
-				
+				String relPathOfRefFile = Path.extractRelPathFromDir(file, repName);
+
 				if(sourceFile.getRelative_path().equals(relPathOfRefFile)) {
 					DAFile targetDAFile = (DAFile)entry.getValue();
 					File targetFile = targetDAFile.toRegularFile();
