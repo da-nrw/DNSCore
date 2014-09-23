@@ -22,7 +22,7 @@ All the links below refer to documentation stored in one of these places.
 **Note** that under the abovementioned links you'll always find the documentation attached to the master (e.g. snapshot) version. In most cases this should be what you need. In rare cases however, you want a documentation artifact that matches the exact state of implementation. In these cases you can go to
 the releases page, follow the source code link for the corresponding version and then search for the document you're after in this special repository snapshot.
 
-## General / All Audiences.
+## General / All Audiences
 
 * Feature [list](features.md)
 * The DNSCore [Object](object_model.md) model.
@@ -37,7 +37,7 @@ the releases page, follow the source code link for the corresponding version and
 
 * [Ingest and Retrieval](../../../../DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
 
-## System / Node administrators / Operators.
+## System / Node administrators / Operators
 
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
 * Job [states](administration-troubleshooting.md). How to deal with jobs in error states.
@@ -48,7 +48,7 @@ the releases page, follow the source code link for the corresponding version and
 * Processing [stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
 * Format [identification](administration_format_identification.de.md) (german version).
 
-## Node administrators.
+## Node administrators
 
 * Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
 * How to perfom a minimal installation of [DNSCore](installation_minimal.md).
