@@ -29,7 +29,7 @@ the releases page, follow the source code link for the corresponding version and
 * [SIP](specification_sip.md) Specification
 * [AIP](specification_aip.md) Specification
 * [PREMIS](specification_premis.md) Specification
-* The DNSCore [Object](object_model.md) mode.
+* The DNSCore [Object](object_model.md) model.
 * Feature [list](features.md)
 * Description of the [Delta](the_delta_feature.md) feature.
 * Medata [specification](metadata_specification.md). The metadata formats accepted by DNS that will enable proper presentation.
