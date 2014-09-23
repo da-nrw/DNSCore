@@ -8,7 +8,7 @@ distributed, self-validating repository, allowing depositors a high degree of co
 the methods applied to individual objects submitted for preservation and
 distribution.
 
-### Feature list
+#### Feature list
 
 As a result of various research programs in the recent years there are some 
 software solutions available which handle preservation tasks. Since each of
@@ -61,6 +61,8 @@ To build streamlined SIP based based on the used SIP specifications, take a look
 * SIPBuilder - Graphical user interface for End-Users, which allows high degree control over 
 SIP submitted to the DNS. The software could be easily integrated in subsystems, due to having 
 a command line interface.
+
+#### Documentation
 
 For Documentation see:
 
