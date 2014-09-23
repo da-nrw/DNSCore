@@ -8,16 +8,12 @@ distributed, self-validating repository, allowing depositors a high degree of co
 the methods applied to individual objects submitted for preservation and
 distribution.
 
-## Feature list
-
 As a result of various research programs in the recent years there are some 
 software solutions available which handle preservation tasks. Since each of
 these solutions was designed under a different focus and to solve different sets of
 problems within the field of longterm preservation, it is worth mentioning
 the two most distinctive features of DNSCore at first, before diving in into
 a richer feature list.
-
-## Distinctive Features
 
 The first big feature is the possibility for users to let the system automatically
 generate derivates of your material destined for long term preservation which are
