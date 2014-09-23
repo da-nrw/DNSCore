@@ -24,17 +24,20 @@ the releases page, follow the source code link for the corresponding version and
 
 ## General / All Audiences.
 
-* [Ingest and Retrieval](../../../../DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
+* Feature [list](features.md)
+* The DNSCore [Object](object_model.md) model.
 * [DIP](specification_dip.md) Specification
 * [SIP](specification_sip.md) Specification
 * [AIP](specification_aip.md) Specification
-* [PREMIS](specification_premis.md) Specification
-* The DNSCore [Object](object_model.md) model.
-* Feature [list](features.md)
-* Description of the [Delta](the_delta_feature.md) feature.
 * Medata [specification](metadata_specification.md). The metadata formats accepted by DNS that will enable proper presentation.
+* [PREMIS](specification_premis.md) Specification
+* Description of the [Delta](the_delta_feature.md) feature.
 
-## Operating / administrating a node.
+## End Users
+
+* [Ingest and Retrieval](../../../../DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
+
+## System / Node administrators / Operators.
 
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
 * Job [states](administration-troubleshooting.md). How to deal with jobs in error states.
@@ -45,7 +48,7 @@ the releases page, follow the source code link for the corresponding version and
 * Processing [stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
 * Format [identification](administration_format_identification.de.md) (german version).
 
-## Installation related
+## Node administrators.
 
 * Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
 * How to perfom a minimal installation of [DNSCore](installation_minimal.md).
