@@ -158,6 +158,10 @@ depending which environment you choose. The repository location is the place whe
 
 In addition to the unit tests, another set of tests, which is there to verify that business criteria are matched, can be executed. This is done by running "mvn verify", which builds and installer and installs the ContentBroker to one of the aforementioned target locations. This acceptance test communicate to the then running ContentBroker from the outside, through its interfaces (database, incoming and outgoing folders), as any other client would do (black box testing).
 
+While always testing against the interfaces of the ContentBroker, depending on the mode (ci,dev) you work in, the application works with real connectors to underlying subsystems (ci) or with fake connectors (dev) to non existing subsystems. In either case it is worth mentioning that the focus of the acceptance tests is mainly the business code, which is fully tested even in dev mode, while the ci mode tests the business code working on top of the underlying subsystems.
+
+
+
 The build system is based on the standard maven build lifecycle. Here is a short summary of the phases that are of interest in the current
 context:
 
