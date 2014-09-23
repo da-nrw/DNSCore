@@ -22,8 +22,7 @@ All the links below refer to documentation stored in one of these places.
 **Note** that under the abovementioned links you'll always find the documentation attached to the master (e.g. snapshot) version. In most cases this should be what you need. In rare cases however, you want a documentation artifact that matches the exact state of implementation. In these cases you can go to
 the releases page, follow the source code link for the corresponding version and then search for the document you're after in this special repository snapshot.
 
-## Understanding long term preservation with DNSCore 
-<br>General / All Audiences
+## Understanding long term preservation with DNSCore<br>General / All Audiences
 
 * Feature [list](features.md)
 * The DNSCore [Object](object_model.md) model.
