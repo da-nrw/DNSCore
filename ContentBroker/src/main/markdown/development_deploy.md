@@ -75,8 +75,7 @@ Remarks:
 **Note** that how to set up a node for continuous integration is part of [this](installation_ci.md) tutorial.
 
 
-The build process on a dedicated build machine works more or less the same, with a few exceptions discussed
-here. To execute the build process run:
+The build process on a dedicated build machine works more or less the same, but easier, since all paths are preconfigured on a ci machine.
 
     mvn clean -Pci && mvn verify -Pci 
 
