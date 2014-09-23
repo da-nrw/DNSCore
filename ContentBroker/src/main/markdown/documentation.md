@@ -50,8 +50,8 @@ the releases page, follow the source code link for the corresponding version and
 
 ## Installation related
 
+* How to perfom a minimal installation of [DNSCore](installation_minimal.md).
 * How to set up [iRODS](installation_irods.md) for DNSCore.
-* How to perfom a minimal installation of [DNSCore](installation_cb.md).
 * How to extend the minimal installation to work with [iRODS](installation_irods_cb.md).
 * How to install [Fedora](install_fedora.md) for DNSCore.
 * How to connect DNSCore and [Fedora](install_fedora.md).
