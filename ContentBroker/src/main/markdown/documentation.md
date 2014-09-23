@@ -12,50 +12,61 @@ below src/main/markdown/. It should be pointed out, that not all of the document
 Before diving into the documentation in the paragraphs below note that documentation about the
 project is stored mainly in to places.
 General overview you'll find it under:
-<br>ContentBroker/src/main/markdown/
-<br>For more information on DA-Web User Interface refer to:
-<br>DAWeb/doc
-<br>All the links below refer to documentation stored in one of these places.
+
+     ContentBroker/src/main/markdown/
+
+For more information on DA-Web User Interface refer to:
+
+    DAWeb/doc
+
+All the links below refer to documentation stored in one of these places.
 
 **Note** that under the abovementioned links you'll always find the documentation attached to the master (e.g. snapshot) version. In most cases this should be what you need. In rare cases however, you want a documentation artifact that matches the exact state of implementation. In these cases you can go to
 the releases page, follow the source code link for the corresponding version and then search for the document you're after in this special repository snapshot.
 
-### General concepts, for all Audiences including End Users
+### General / All Audiences.
 
-* [Ingest and Retrieval](DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
-* Presentation of the [Object model](ContentBroker/src/main/markdown/object_model.md).
-* Presentation of the [Delta feature](ContentBroker/src/main/markdown/the_delta_feature.md).
-* [DIP](ContentBroker/src/main/markdown/dip_specification.md) Specification
-* [SIP](ContentBroker/src/main/markdown/specification_sip.md) Specification
-* [SIP](ContentBroker/src/main/markdown/specification_sip.de.md) Specification (german version).
-* [AIP](ContentBroker/src/main/markdown/aip_specification.md) Specification
-* [PREMIS Specification](ContentBroker/src/main/markdown/premis_specification.md)
+* [Ingest and Retrieval](../../../../DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
+* [DIP](specification_dip.md) Specification
+* [SIP](specification_sip.md) Specification
+* [AIP](specification_aip.md) Specification
+* [PREMIS](specification_premis.md) Specification
+* The DNSCore [Object](object_model.md) mode.
+* Feature [list](features.md)
+* Description of the [Delta](the_delta_feature.md) feature.
+
 
 ### Administration
 
-#### General concepts
-* [Processing Stages](ContentBroker/src/main/markdown/processing_stages.md) demonstrates basic concepts necessary to administrate the system
+* [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
+* Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
+* Job [states](administration-troubleshooting.md). How to deal with jobs in error states.
+* Reference for the most common configuration file [config.properties](administration-config-properties-reference.md).
+* Reference for the [beans.xml](administration-beans.md) configuration file.
+* Information on the [installer](administration-the-installer.md) script.
+* [click here](administration-interfaces.md) for a description of the non gui interfaces to the application.
+* [click here](ContentBroker/src/main/markdown/open_ports.md) for a list of ports your firewall has to allow connections to.
+* [clck here](ContentBroker/src/main/markdown/audit.md) to get information how the AIP are being checked automatically.
+
+### Technical / Development
+
+* [Processing Stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
 * Overview over the system [components](ContentBroker/src/main/markdown/components_connectors.md)
 * Overview of the [format module](src/main/markdown/format_module.md).
 * Overview of the [metadata workflow](ContentBroker/src/main/markdown/metadata_workflow.md).
 
 #### Installation related
-* [click here](ContentBroker/src/main/markdown/installation_irods.md) to learn how to set up / upgrade iRODS for DNSCore node.
-* [click here](ContentBroker/src/main/markdown/installation_cb.md) to learn how to set up the ContentBroker.
-* [click here](ContentBroker/src/main/markdown/installation_irods_cb.md) to learn how connect iRODS and the ContentBroker
-* [click here](ContentBroker/src/main/markdown/install_fedora.md)) to learn how connect Fedora and DNSCore
-* [click here](ContentBroker/src/main/markdown/installation.md) if you want to update your node to a new version of DNSCore
-* [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_ci.md) to learn how to set up a machine for continuous integration.
-* [clck here](ContentBroker/src/main/markdown/needed_packages.md) contains information on needed packages to run DNSCore.
-* [clck here](ContentBroker/src/main/markdown/using_iRODS_PAM_auth.md ) how to setup DNSCore for iRODS PAM Authentication
+
+* How to set up [iRODS](installation_irods.md) for DNSCore.
+* Set up the minimal installation [ContentBroker](ContentBroker/src/main/markdown/installation_cb.md) on a node.
+* [Connect](installation_irods_cb.md) minimal ContentBroker installation to iRODS [click here]( to learn how connect iRODS and the ContentBroker
+* [Connect](install_fedora.md) Fedora and DNSCore
+* [click here](installation.md) if you want to update your node to a new version of DNSCore
+* [click here](installation_ci.md) to learn how to set up a machine for continuous integration.
+* [clck here](needed_packages.md) contains information on needed packages to run DNSCore.
+* [clck here](using_iRODS_PAM_auth.md ) how to setup DNSCore for iRODS PAM Authentication
 
 #### Running a node
-* [click here](DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.  
-* [click here](ContentBroker/src/main/markdown/system_configuration.md) to get an overview of how to set up the config files so that DNSCore will work in your environment.
-* [click here](ContentBroker/src/main/markdown/administration-troubleshooting.md) to get help how to administrate the system when errors occur.
-* [click here](ContentBroker/src/main/markdown/administration-interfaces.md) for a description of the non gui interfaces to the application.
-* [click here](ContentBroker/src/main/markdown/open_ports.md) for a list of ports your firewall has to allow connections to.
-* [clck here](ContentBroker/src/main/markdown/audit.md) to get information how the AIP are being checked automatically.
 
 #### Presentation Repository Specific
 
@@ -79,3 +90,7 @@ Additional documentation
 * [click here](ContentBroker/src/main/markdown/deploy.md) if you want to deploy the software yourself and build the source code on your local or on a continuous integration machine.
 * [click here](DAWeb/doc/deploy.md) for information about deploying DAWeb
 * [click here](ContentBroker/src/main/markdown/javadoc.md) if you want to recreate the JavaDoc files and publish them on GitHub Pages
+
+
+* the [Java API documentation](http://da-nrw.github.io/DNSCore/apidocs/)
+* the [Java test documentation](http://da-nrw.github.io/DNSCore/testapidocs/)
