@@ -54,12 +54,10 @@ real external systems. So a developer is able to run the tests quickly but is no
 To build the software from source and run the unit and acceptance tests follow these steps:
 
     1. if !exists [appHome], mkdir [appHome]
-    1. cd [...]/DNSCore/ContentBroker
-    1. mvn clean -Pdev && mvn verify -Pdev -DappHome=[appHome]
+    2. cd [...]/DNSCore/ContentBroker
+    3. mvn clean -Pdev && mvn verify -Pdev -DappHome=[appHome]
 
 This will automatically build and test the whole application which should result in a message "BUILD SUCCESS" stated by Maven. 
-
-
 
 Remarks:
 
@@ -77,20 +75,15 @@ Remarks:
 The build process on a dedicated build machine works more or less the same, with a few exceptions discussed
 here. To execute the build process run:
 
-1. cd [...]/DNSCore/ContentBroker
-1. mvn clean && mvn install -Pci 
+    1. cd [...]/DNSCore/ContentBroker
+    2. mvn clean && mvn verify -Pci 
 
 Remarks:
 
-* -Pci
-this is the environment setting of the install script which indicates we're on a development workstation. This
-leads to a ContentBroker configuration which provides access to the real iRODS storage layer and the real
-Fedora presentation layer. 
-* missing -DappHome this param is not necessary when -Pci is selected as the paths are preconfigured.
-* mvn install instead of mvn verify: The one additional phase executed at the end of the build phase deploys the
-completely tested release candidate to a precondigured folder were all release candidates are collected. This 
-is done to support continuous integration workflows.
-
+    * -Pci
+        this is the environment setting of the install script which indicates we're on a development workstation. This
+        leads to a ContentBroker configuration which provides access to the real iRODS storage layer and the real
+        Fedora presentation layer. 
 
 ### Running application at the build machine
 
@@ -157,9 +150,9 @@ To understand how acceptance tests are done with DNSCore, you have to keep in mi
 and your target location, which is either
 
     [appHome]/ContentBroker
-    
-or
-    
+
+or    
+
     /ci/ContentBroker
     
 depending which environment you choose. The repository location is the place where the sources are and where the build is unit tested (white box testing) and packaged.
@@ -176,6 +169,5 @@ context:
         how to speak to the ContentBroker at [appHome].
     integration-test (including src/main/bash/integration-test.sh) - The acceptance tests (src/main/java/de/uzk/hki/da/at/AT*) are executed.
     verify - The results of the acceptance tests get evaluated and summarized by maven.
-    deploy - The build system puts the installer to another location where all succesful builds are stored (useful for continuous integration).
 
 Just to repeat an important fact, if one calls for example "mvn verify" all previous maven build lifecycle phases until verify get executed, one by one.
