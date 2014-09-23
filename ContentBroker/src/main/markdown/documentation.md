@@ -61,11 +61,10 @@ the releases page, follow the source code link for the corresponding version and
 * How to install [Fedora](ContentBroker/src/main/markdown/install_fedora.md)
 * How to install [PrOAI](ContentBroker/src/main/markdown/install_proai.md)
 * How to install [Elasticsearch](ContentBroker/src/main/markdown/install_elasticsearch.md)
+* [How to setup iRODS for Presentation Repository](ContentBroker/src/main/markdown/setup_irods.md)
  
-
 ## Development
 
-* [How to setup iRODS for Presentation Repository](ContentBroker/src/main/markdown/setup_irods.md)
 * Metadata [Workflow](metadata_workflow.md). Technical description.
 * [click here](3rdPartyTools.md) to get general information about the use and redistribution of used 3rd party libraries and tools.
 * [click here](development_deploy.md) if you want to deploy the software yourself and build the source code on your local or on a continuous integration machine.
