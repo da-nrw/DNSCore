@@ -48,7 +48,7 @@ the releases page, follow the source code link for the corresponding version and
 * [Create user](create_user.md)
 
 
-#### Installation related
+## Installation related
 
 * How to set up [iRODS](installation_irods.md) for DNSCore.
 * Set up the minimal installation [ContentBroker](ContentBroker/src/main/markdown/installation_cb.md) on a node.
@@ -63,7 +63,7 @@ the releases page, follow the source code link for the corresponding version and
 * How to install [Elasticsearch](ContentBroker/src/main/markdown/install_elasticsearch.md)
  
 
-#### Development
+## Development
 
 * [How to setup iRODS for Presentation Repository](ContentBroker/src/main/markdown/setup_irods.md)
 * Metadata [Workflow](metadata_workflow.md). Technical description.
