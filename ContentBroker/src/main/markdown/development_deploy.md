@@ -124,9 +124,8 @@ and observe the ContentBroker fetching it in
 Sometimes it is necessary to have more fine grained control over the build and test process. For example,
 if you want to bugfix a certain acceptance test or if you write a new acceptance test. 
 
-    1. cd [...]/DNSCore/ContentBroker
-    1. mvn clean -Pdev && mvn pre-integration-test -Pdev -DappHome=[appHome] **no ending slash!!!**
-    1. or mvn clean -Pci && mvn pre-integration-test -Pci
+    mvn clean -Pdev && mvn pre-integration-test -Pdev -DappHome=[appHome] **no ending slash!!!**
+    mvn clean -Pci && mvn pre-integration-test -Pci
 
 **Note** For quick acceptance test runs you can add params to deactivate the building of DAWeb and execution of JUnit tests. The switches are
 
@@ -137,7 +136,7 @@ If you run mvn pre-integration-test, the applications gets unit tested, build an
 to [appHome]. There you can debug the running ContentBroker manually or you can run single acceptance tests
 by calling
 
-1. mvn failsafe:integration-test -Dit.test=AT[TestName]
+    mvn failsafe:integration-test -Dit.test=AT[TestName]
 
 ## Understanding the test system
 
