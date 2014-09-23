@@ -85,30 +85,42 @@ ein Datenbankschema zu kreieren.
         
 Sobald ein Schema kreiert ist, sollte der Administrator die Tabellen gegen weiteren Schreibzugriff sichern.
 
+If you are setting up a new node and this node should be the primary node (which is hosting the object database) of the system, then you have to create a database and create the correct schema in order for all the nodes to work within the system.
+
+
+Make sure that you have created a database and a user prior to calling that command. The connection to that database has to be configured in 
+
+    $CONTENTBROKER_HOME/conf/hibernateCentralDB.cfg.xml
+    
+If you don't have this file, you can download the file [hibernateCentralDB.cfg.xml](../xml/hibernateCentralDB.cfg.xml.ci)
+    
+and use it as a template.
+For more infos about how to configure that file, see this [document](administration-interfaces.md#application-database-configuration)
+
 
 ## Starten und Stoppen der Gesamtapplikation
 
-In order to start the ContentBroker, other services have to be started anterior. The complete Startup sequence is:
+In einer typischen Knotenumgebung hängt der ContentBroker von weiteren Services ab. Die empfohlene Start- und Stopsequenz lautet daher:
 
-1. Start the database.
-1. Start iRODS.
-1. Start the Tomcat application server.
-1. cd $CONTENTBROKER_HOME
-1. java -jar $JAVA_OPTS ContentBroker.jar diagnostics
-1. ./ContentBroker_start.sh
+**Starten:**
 
-## Shutting down the ContentBroker
+1. Starten der Datenbank.
+2. Starten des Tomcat Application Servers.
+2. Starten von iRODS.
+3. Ausführen von Diagnostics.
+4. Starten des ContentBroker.
 
-Please stop the following applications in sequence: (when available) 
+**Stoppen:**
 
-1. graceful shutdown on ActionFactory (via DAWEB or ./cbTalk GRACEFUL_SHUTDOWN)
-2. Be sure, no jobs are currently processed.
-1. stop Tomcat
-1. stop ContentBroker
-2. stop iRODS
-3. stop Database
+1. Warten, bis alle Jobs beendet sind.
+2. Herunterfahren des ContentBroker.
+3. Herunterfahren von iRODS
+4. Herunterfahren des Tomcat Application Server.
+5. Herunterfahren der Datenbank.
 
-## Monitoring
+
+
+## Monitoring (TODO translate)
 
 As for now, you have to consider the Queue via at least once a day for only a few minutes to be sure all of your jobs are performing as expected. Most errors on your node are shown at the admin interface of DA-WEB in a very convienent way.  
 
@@ -119,21 +131,4 @@ Please monitor the availibilty on the ports 1247, 8080 . The command
 should show some kind of useful information. 
 
 As node admin it you to check your long term resources and the throughput of your whole system. As watermark: there should be not much jobs (less than 20 packages) in your queue in failed or error states where your system has care of. (initial_node)  
-
-## Creating the database Schema
-
-If you are setting up a new node and this node should be the primary node (which is hosting the object database) of the system, then you have to create a database and create the correct schema in order for all the nodes to work within the system.
-
-You can create the schema by 'cd'ing into the $CONTENTBROKER_HOME and calling
-
-    java -jar $JAVA_OPTS ContentBroker.jar createSchema
-
-Make sure that you have created a database and a user prior to calling that command. The connection to that database has to be configured in 
-
-    $CONTENTBROKER_HOME/conf/hibernateCentralDB.cfg.xml
-    
-If you don't have this file, you can download the file [hibernateCentralDB.cfg.xml](../xml/hibernateCentralDB.cfg.xml.ci)
-    
-and use it as a template.
-For more infos about how to configure that file, see this [document](administration-interfaces.md#application-database-configuration)
 
