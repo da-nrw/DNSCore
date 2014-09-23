@@ -18,20 +18,40 @@
 	*/
 
 
-# Services Administration
+# Administrationsservices
 
-There are certain artifacts that are designed to control DNSCore from the command line.
- 
-    ./ContentBroker_start.sh.template
-    ./ContentBroker_stop.sh.template
+Um den ContentBroker zu verwalten, existieren einige Schnittstellen. Dies ist natürlich zum einen die DAWeb, mit der der ContentBroker zusammen die DNSCore bildet. Zum anderen existieren eine Reihe von Tools, mit der sich der ContentBroker von der Kommandozeile aus steuern lässt.
+
+    java -jar $JAVA_OPTS ContentBroker.jar
+    ./ContentBroker_start.sh
+    ./ContentBroker_stop.sh
     ./cbTalk.sh
-    
-The start and stop scripte are suffixed with .template on purpose. The admin should rename them to ContentBroker_start.sh and ContentBroker_stop.sh. When updating the ContentBroker, the admins renamed files get not overwritten so he is free to modify them on purpose. 
-
-Also the jarfile of the ContentBroker can be executed directly
-    
     java -jar $JAVA_OPTS ContentBroker.jar diagnostics
     java -jar $JAVA_OPTS ContentBroker.jar createSchema (careful)
+    
+Um den ContentBroker testweise zu starten, kann er prinzipiell gestartet werden mit 
+
+    java -jar $JAVA_OPTS ContentBroker.jar
+    
+Die für den Produktivbetrieb einzusetzende Variante ist jedoch
+
+    ./ContentBroker_start.sh
+    
+ein Wrapperskript mit ein wenig zusätzlicher Funktionalität. Dieses Skript startet den ContentBroker als einen Hintergrundprozess. Ein so gestarteter Prozess kann heruntergefahren werden mit
+
+    ./ContentBroker_stop.sh (careful)
+
+Achtung: Diese Variante reisst den ContentBroker hart herunter. In Bearbeitung befindliche Jobs werden jäh unterbrochen. Es ist daher dafür zu sorgen, dass vorher alle Jobs sauber heruntergefahren werden (s.u.).
+
+
+
+
+
+
+
+
+
+
     
 Diagnostics help to check the state of the environment and should be executed before starting the ContentBroker. Only when the diagnostics show everything is ok, the ContentBroker should be started. CreateSchema helps the admin to create the right database schema on new nodes.
 
