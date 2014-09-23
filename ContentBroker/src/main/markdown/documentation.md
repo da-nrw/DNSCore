@@ -79,3 +79,7 @@ Additional documentation
 * [click here](ContentBroker/src/main/markdown/deploy.md) if you want to deploy the software yourself and build the source code on your local or on a continuous integration machine.
 * [click here](DAWeb/doc/deploy.md) for information about deploying DAWeb
 * [click here](ContentBroker/src/main/markdown/javadoc.md) if you want to recreate the JavaDoc files and publish them on GitHub Pages
+
+
+* the [Java API documentation](http://da-nrw.github.io/DNSCore/apidocs/)
+* the [Java test documentation](http://da-nrw.github.io/DNSCore/testapidocs/)
