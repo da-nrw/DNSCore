@@ -15,7 +15,7 @@ The **"ci" mode** is there for doing continuous integration. For continuous inte
 
 The **"dev" mode** somewhat lightweight compared to the "ci" mode. The internal connectors to the subsystem are configured in a way that fake version of the connectors are used while doing tests and creating builds. This is useful for development purposes, where one wants to check out the sources, modify them, and see if they run on a local laptop, for example.
 
-## Common prerequisites
+### Common prerequisites
 
 Wheter in the dev or ci environment, to build DNS Core successfully you'll need a machine with
 
@@ -30,6 +30,8 @@ Please ensure, the shells (bash and sh) of your workstation run in UTF-8 mode:
     export MAVEN_OPTS='-Dfile.encoding=UTF-8'
     export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
     export LANG='de_DE.UTF-8'
+  
+### Getting the source code (dev).
     
 Of course you need a clean checkout of our source repo containing both DA-Web and ContentBroker
 
@@ -40,10 +42,6 @@ where
     [...]/DNSCore
     
 is a place somewhere on your file system, where your local clone of the DNSCore gets placed.
-
-Your maven commands have then to be executed from the ContentBroker subfolder, so make sure you cd into it by
-
-    cd [...]/DNSCore/ContentBroker
 
 ### Build and acceptance test the application on a development workstation
 
