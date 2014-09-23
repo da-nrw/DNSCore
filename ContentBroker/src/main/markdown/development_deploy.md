@@ -25,14 +25,6 @@ Of course you need a clean checkout of our source repo containing both DA-Web an
 
     git clone https://github.com/da-nrw/DNSCore DNSCore
     
-Before you start please note the following distinction of two different locations we'll work with
-
-    [...]/DNSCore/ContentBroker - this is the local clone of the DNSCore git repository 
-        which you can place somewhere
-        onto your file system (which is what the [...] should indicate)
-    [appHome]/ - appHome is the full physical path to a local installation of the ContentBroker
-        which automatically gets installed by the test system 
-        in order to run the automated acceptance tests.
 
 ## Testing strategies and setup
 
@@ -100,12 +92,17 @@ You can use this installer to set up a ContentBroker on another machine.
 
 Remarks:
 
-* -Pdev 
-this is the environment setting of the install script which indicates we're on a development workstation. 
-In this case the ContentBroker gets configured so that it gets provided with fake versions of the necessary
-adapters to the storage and presentation layer.
-* -DappHome=[appHome]  **no ending slash!!!**
+    -Pdev this is the environment setting of the install script which indicates we're on a development workstation. 
+       In this case the ContentBroker gets configured so that it gets provided with fake versions of the necessary
+       adapters to the storage and presentation layer.
+    -DappHome=[appHome]  **no ending slash!!!**
 
+    [...]/DNSCore/ContentBroker - this is the local clone of the DNSCore git repository 
+        which you can place somewhere
+        onto your file system (which is what the [...] should indicate)
+    [appHome] - appHome is the full physical path to a local installation of the ContentBroker
+        which automatically gets installed by the test system 
+        in order to run the automated acceptance tests.
 
 
 
