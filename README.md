@@ -66,8 +66,8 @@ a command line interface.
 
 For Documentation see:
 
-* Documentation. English [version](src/main/markdown/documentation.md)
-* Documentation. German  [version](src/main/markdown/documentation.de.md)
+* Documentation. English [version](ContentBroker/src/main/markdown/documentation.md)
+* Documentation. German  [version](ContentBroker/src/main/markdown/documentation.de.md)
 * the [Java API documentation](http://da-nrw.github.io/DNSCore/apidocs/)
 * the [Java test documentation](http://da-nrw.github.io/DNSCore/testapidocs/)
 
@@ -102,7 +102,7 @@ Run the tests and build the software
     cd [...]/DNSCore/ContentBroker
     mvn clean -Pdev && mvn verify -Pdev -DappHome=[appHome]
     
-For a more information on building and testing DNSCore look [here](src/main/markdown/development_deploy.md)
+For a more information on building and testing DNSCore look [here](ContentBroker/src/main/markdown/development_deploy.md)
     
     
 
