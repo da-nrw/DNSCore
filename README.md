@@ -8,7 +8,7 @@ distributed, self-validating repository, allowing depositors a high degree of co
 the methods applied to individual objects submitted for preservation and
 distribution.
 
-#### Feature list
+## Feature list
 
 As a result of various research programs in the recent years there are some 
 software solutions available which handle preservation tasks. Since each of
@@ -17,7 +17,7 @@ problems within the field of longterm preservation, it is worth mentioning
 the two most distinctive features of DNSCore at first, before diving in into
 a richer feature list.
 
-#### Distinctive Features
+## Distinctive Features
 
 The first big feature is the possibility for users to let the system automatically
 generate derivates of your material destined for long term preservation which are
@@ -47,7 +47,7 @@ software must handle the organization of objects and packages in the background.
 speak of an object in the context of DNSCore as our main entity in the object model, we have
 a unit of data which can consist of data of more than one package/SIP at the same time. 
 
-#### Other Features
+## Other Features
 
 * DAWeb - Graphical user interface for administrators and users
 * Storage Layer - geographical distribution/replication of data
@@ -62,7 +62,7 @@ To build streamlined SIP based based on the used SIP specifications, take a look
 SIP submitted to the DNS. The software could be easily integrated in subsystems, due to having 
 a command line interface.
 
-#### Documentation
+## Documentation
 
 For Documentation see:
 
@@ -72,6 +72,37 @@ For Documentation see:
 * the [Java test documentation](http://da-nrw.github.io/DNSCore/testapidocs/)
 
 
+## Building the application
+
+Prerequisites:
+
+    JAVA 1.6
+    MAVEN
+    GIT 
+    Grails 2.3.8
+    Imagemagick 6.7.8 (with jasper, to use jpg2000, with tiff)
+    Please ensure, the shells (bash and sh) of your workstation run in UTF-8 mode:
 
 
+    export MAVEN_OPTS='-Dfile.encoding=UTF-8'
+    export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
+    export LANG='de_DE.UTF-8'
+
+
+Download the sourcecode
+
+    git clone https://github.com/da-nrw/DNSCore [...]/DNSCore
+    
+Create an empty directory where the application get deployed into during testing.
+
+    mkdir [...]/[appHome]
+    
+Run the tests and build the software
+
+    cd [...]/DNSCore/ContentBroker
+    mvn clean -Pdev && mvn verify -Pdev -DappHome=[appHome]
+    
+For a more information on building and testing DNSCore look [here](src/main/markdown/development_deploy.md)
+    
+    
 
