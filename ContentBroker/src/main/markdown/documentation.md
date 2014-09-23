@@ -22,7 +22,7 @@ All the links below refer to documentation stored in one of these places.
 **Note** that under the abovementioned links you'll always find the documentation attached to the master (e.g. snapshot) version. In most cases this should be what you need. In rare cases however, you want a documentation artifact that matches the exact state of implementation. In these cases you can go to
 the releases page, follow the source code link for the corresponding version and then search for the document you're after in this special repository snapshot.
 
-### General / All Audiences.
+## General / All Audiences.
 
 * [Ingest and Retrieval](../../../../DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
 * [DIP](specification_dip.md) Specification
@@ -34,8 +34,7 @@ the releases page, follow the source code link for the corresponding version and
 * Description of the [Delta](the_delta_feature.md) feature.
 * Medata [specification](metadata_specification.md). The metadata formats accepted by DNS that will enable proper presentation.
 
-
-### Administration
+## Administration
 
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
 * Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
@@ -44,16 +43,10 @@ the releases page, follow the source code link for the corresponding version and
 * Reference for the [beans.xml](administration-beans.md) configuration file.
 * Information on the [installer](administration-the-installer.md) script.
 * [click here](administration-interfaces.md) for a description of the non gui interfaces to the application.
-* [click here](ContentBroker/src/main/markdown/open_ports.md) for a list of ports your firewall has to allow connections to.
-* [clck here](ContentBroker/src/main/markdown/audit.md) to get information how the AIP are being checked automatically.
+* [click here](open_ports.md) for a list of ports your firewall has to allow connections to.
+* [clck here](audit.md) to get information how the AIP are being checked automatically.
 * [Create user](create_user.md)
 
-### Technical / Development
-
-* [Processing Stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
-* Overview over the system [components](ContentBroker/src/main/markdown/components_connectors.md)
-* Overview of the [format module](src/main/markdown/format_module.md).
-* Overview of the [metadata workflow](ContentBroker/src/main/markdown/metadata_workflow.md).
 
 #### Installation related
 
@@ -80,3 +73,7 @@ the releases page, follow the source code link for the corresponding version and
 * [click here](javadoc.md) if you want to recreate the JavaDoc files and publish them on GitHub Pages
 * the [Java API documentation](http://da-nrw.github.io/DNSCore/apidocs/)
 * the [Java test documentation](http://da-nrw.github.io/DNSCore/testapidocs/)
+* [Processing Stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
+* Overview over the system [components](ContentBroker/src/main/markdown/components_connectors.md)
+* Overview of the [format module](src/main/markdown/format_module.md).
+* Overview of the [metadata workflow](ContentBroker/src/main/markdown/metadata_workflow.md).
