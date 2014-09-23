@@ -64,7 +64,7 @@ Just to repeat an important fact, if one calls for example "mvn verify" all prev
 
 
 
-## Build and acceptance test the application on a development workstation
+### Build and acceptance test the application on a development workstation
 
 In order to run the tests on a development workstation and to reduce the dependencies to the workstation, one can
 execute the acceptance tests against a version of the ContentBroker which runs with fake connectors which replace the
@@ -72,11 +72,31 @@ real external systems. So a developer is able to run the tests quickly but is no
 
 To build the software from source and run the unit and acceptance tests follow these steps:
 
-1. if !exists [appHome], mkdir [appHome]
-1. cd [...]/DNSCore/ContentBroker
-1. mvn clean && mvn verify -Pdev -DappHome=[appHome]
+    1. if !exists [appHome], mkdir [appHome]
+    1. cd [...]/DNSCore/ContentBroker
+    1. mvn clean -Pdev && mvn verify -Pdev -DappHome=[appHome]
 
-This will automatically build and test the whole application which should result in a message "BUILD SUCCESS" stated by Maven.
+This will automatically build and test the whole application which should result in a message "BUILD SUCCESS" stated by Maven. If the build passes, a running ContentBroker installation is present on your system, which you can find at
+
+    [appHome]
+    
+You can verify that it runs by observing the main log file at
+
+    [appHome]/log/contentbroker.log
+
+You can ingest a testpackage to 
+
+    [appHome]/storage/ingest/TEST
+    
+and observe the ContentBroker fetching it in
+
+    [appHome]/log/ingest.log
+
+The ContentBroker which gets tested is automatically installed from the installer which is build at 
+
+    [...]/DNSCore/ContentBroker/target/installation
+    
+You can use this installer to set up a ContentBroker on another machine.
 
 Remarks:
 
@@ -85,7 +105,11 @@ this is the environment setting of the install script which indicates we're on a
 In this case the ContentBroker gets configured so that it gets provided with fake versions of the necessary
 adapters to the storage and presentation layer.
 * -DappHome=[appHome]  **no ending slash!!!**
- 
+
+
+
+
+
 ### Build and acceptance test the application on a Continuous Integration machine
 
 The build process on a dedicated build machine works more or less the same, with a few exceptions discussed
@@ -106,7 +130,7 @@ completely tested release candidate to a precondigured folder were all release c
 is done to support continuous integration workflows.
 
  
-## Debugging and Development
+### Debugging and Development
 
 Sometimes it is necessary to have more fine grained control over the build and test process. For example,
 if you want to bugfix a certain acceptance test or if you write a new acceptance test. 
