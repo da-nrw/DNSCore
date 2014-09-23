@@ -43,21 +43,26 @@ Your maven commands have then to be executed from the ContentBroker subfolder, s
 
     cd [...]/DNSCore/ContentBroker
     
-## Testing strategies and setup
+## Understanding the test system
 
 ![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/blackbox_whitebox.jpg)
 
+To understand how acceptance tests are done with DNSCore, you have to keep in mind, that you have your source code repository location
 
+    [...]/DNSCore/ContentBroker
 
-As stated in the previous paragraph, the build system always works on two different locations. The "DNSCore/ContentBroker" location
-is your local clone of the source code. Here any sources can be modified and the source code can be build and packaged.
-Also testing is done here. On the one hand JUnit tests are executed here. This is done in a classical white box manner, as the code
-you test and the code thats being under test are both within the source tree. You can step debug through the code etc.
-On the other hand, there is a test suite of acceptance tests which can be executed in order to verify business criteria are met.
-This test suite runs against a running ContentBroker which is automatically build from the sources. So, when the acceptance tests run,
-they run from the source code location !against the "appHome" location. The tests communicate with the running ContentBroker as
-any other client would do. As this is done in a "black box" manner the test code speaks to the ContentBroker through the interfaces
-it provides to its clients (database, incoming and outgoing folders) which also means that step debugging is not possible for example.
+and your target location, which is either
+
+    [appHome]/ContentBroker
+    
+or
+    
+    /ci/ContentBroker
+    
+depending which environment you choose. The repository location is the place where the sources are and where the build is unit tested (white box testing) and packaged.
+
+In addition to the unit tests, another set of tests, which is there to verify that business criteria are matched, can be executed. This is done by running "mvn verify", which builds and installer and installs the ContentBroker to one of the aforementioned target locations. This acceptance test communicate to the then running ContentBroker from the outside, through its interfaces (database, incoming and outgoing folders), as any other client would do (black box testing).
+
 
 The build system is based on the standard maven build lifecycle. Here is a short summary of the phases that are of interest in the current
 context:
