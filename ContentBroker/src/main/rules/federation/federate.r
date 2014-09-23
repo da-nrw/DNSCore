@@ -1,8 +1,8 @@
 # Federates items between connected zones based on time schedule
 # Jens Peters, LVR InfoKom 2014
 federateService {
-	delay("<PLUSET>1m</PLUSET><EF>REPEAT FOREVER</EF>") {
-	*zones=""
+	#delay("<PLUSET>1m</PLUSET><EF>REPEAT FOREVER</EF>") {
+	*zones=list()
 	writeLine("serverLog","started Federation Service");
 	msiExecStrCondQuery("SELECT COLL_NAME where COLL_NAME like '/*homezone/aip/%'",*colls)
 	foreach(*colls) {
@@ -26,27 +26,43 @@ federateService {
 			*sync=split(*syncs,",")
 			if (size(*sync)==0) {
 				acGetHostsOrderedByFreeSpaceOnGridDesc(*zones,*destResc,*forb)
-				acFederateToZones(*srcColl,*zones,*successZones)
+				
+				acFederateToZones(*srcColl,*destColl,*destResc,*zones,*successZones,*min_copies)
 				*syncs=*successZones
 			} else {
 				*syncs="*syncs*forb"
 				acGetHostsOrderedByFreeSpaceOnGridDesc(*zones,*destResc,*syncs)
-				acFederateToZones(*srcColl,*zones,*successZones)
+				*lis=list();
+				*syc=split(*syncs,",")
+				foreach(*syc) {
+					*lis=cons(list("*syc","9999"),*lis)
+				}
+				*log="checking already synced Zones: *lis"
+				writeLine("stdout",*log)
+				writeLine("serverLog",*log)
+				acFederateToZones(*srcColl,*destColl,*destResc,*lis,*successZones,*min_copies)
 				*syncs="*syncs*successZones"
+				acFederateToZones(*srcColl,*destColl,*destResc,*zones,*successZones,*min_copies)
+                                *syncs="*syncs*successZones"
 			}
-			writeLine("stdout","Replicated to [*successZones]")
-                        msiGetSystemTime(*hu,*bulk)
+			*log="(InRule) *colls synchronized to [*syncs]"
+                        writeLine("serverLog",*log)
+			writeLine("stdout",*log)
+			msiGetSystemTime(*hu,*bulk)
                         msiString2KeyValPair("SYNCHRONIZE_EVENT=*hu",*kvpaircs)
                         msiSetKeyValuePairsToObj(*kvpaircs,*srcColl,"-C")
-                        
-			msiString2KeyValPair("SYNCHRONIZED_TO=*syncs",*kvpaircs2)
-                        msiSetKeyValuePairsToObj(*kvpaircs2,*srcColl,"-C")
+                       	if (size(split(*syncs,","))>0) {
+				msiString2KeyValPair("SYNCHRONIZED_TO=*syncs",*kvpaircs2)
+                        	msiSetKeyValuePairsToObj(*kvpaircs2,*srcColl,"-C")
+			} else {
+				writeLine("serverLog", "Not reached any zone!")
+			}
 			writeLine("serverLog","---Ended Federation Service---");
 			msiCloseGenQuery(*GenQ,*status)
 		}
 
-	}
+	#}
 	}
 }
-INPUT *destResc="lza", *homezone="krz", *min_repls=3
+INPUT *destResc=$"lza", *homezone=$"krz", *min_copies=$3
 OUTPUT ruleExecOut

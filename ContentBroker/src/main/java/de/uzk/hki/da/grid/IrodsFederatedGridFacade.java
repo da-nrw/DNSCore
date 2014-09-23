@@ -49,7 +49,14 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	
 	@Override
 	public boolean storagePolicyAchieved(String gridPath2, StoragePolicy sp) {
+		int minNodes = sp.getMinNodes();
+		
+		if (minNodes == 0 ) {
+			logger.error("Given minnodes setting 0 violates long term preservation");
+			return false;
+		}
 		irodsSystemConnector.connect();
+		
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + "/" + gridPath2;
 		
 		String number = irodsSystemConnector.executeRule("checkNumber { \n " +
@@ -66,19 +73,27 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 			} catch (NumberFormatException e) {
 				logger.warn("Could not determine Integer out of Value " + number);
 			}
-			if (nr>= sp.getMinNodes()) {
+			if (nr>= minNodes) {
 				logger.debug ("Reached number of Copies :" + nr);
 				irodsSystemConnector.logoff();
 				return true;
-			}
+			} 
 		}
 		irodsSystemConnector.logoff();
 		return false;
 	}
 	
 	public boolean isValid(String gridPath, StoragePolicy sp, String md5Checksum) {
-		irodsSystemConnector.connect();
-		
+		irodsSystemConnector.connect();	
+		String check = "checkItemsQuick {\n"
+	      + "*status=0\n"
+	      + "acIsValid(*dao,*status)\n"
+	      + "}\n"
+	      + "INPUT *dao=\"" + gridPath +"\"\n"
+	      + "OUTPUT *status";
+		if (check!=null && !check.isEmpty() ) {
+			if (check.equals("1")) return true;
+		}	
 		irodsSystemConnector.logoff();
 		return false;
 	}

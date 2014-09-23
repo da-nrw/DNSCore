@@ -229,6 +229,11 @@ class QueueEntryController {
 		redirect(action: "list")
 	}
 	
+	/**
+	 * List Migration requests
+	 * 
+	 * @return
+	 */
 	def listMigrationRequests () {
 		User user = springSecurityService.currentUser
 		def queueEntries
@@ -242,7 +247,7 @@ class QueueEntryController {
 				 [csn: user.shortName])
 			} else {
 				admin = true;
-				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.status='640'")
+				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.status='645'")
 				
 			}
 			[queueEntryInstanceList: queueEntries,
