@@ -33,16 +33,14 @@ the releases page, follow the source code link for the corresponding version and
 * [PREMIS](specification_premis.md) Specification
 * Description of the [Delta](the_delta_feature.md) feature.
 
-## End Users
+## End Users - Using DNSCore
 
 * [Ingest and Retrieval](../../../../DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
 
-## System administrators / Node administrators / Operators
+## System administrators / Node administrators / Operators - Providing services to end users.
 
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
 * Job [states](administration-troubleshooting.md). How to deal with jobs in error states.
-* Information on the [installer](administration-the-installer.md) script.
-* [click here](administration-interfaces.md) for a description of the non gui interfaces to the application.
 * [clck here](audit.md) to get information how the AIP are being checked automatically.
 * [Create user](create_user.md)
 * Processing [stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
@@ -50,6 +48,8 @@ the releases page, follow the source code link for the corresponding version and
 
 ## Node administrators - Setting up Environments with DNSCore
 
+* [click here](administration-interfaces.md) for a description of the non gui interfaces to the application.
+* Information on the [installer](administration-the-installer.md) script.
 * Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
 * How to perfom a minimal installation of [DNSCore](installation_minimal.md).
 * How to set up [iRODS](installation_irods.md) for DNSCore.
