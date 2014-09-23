@@ -175,20 +175,22 @@ choose the following settings
     cluster_ci
 
 
-## Performing a testrun by hand
+## Creating builds on the continuos integration machine.
 
-* git clone https://github.com/da-nrw/DNSCore DNSCore
+See [this](development_deploy.md) documentation to learn how to trigger a build.
+After each run of mvn verify a new build gets deployed to
+    
+    .../DNSCore/ContentBroker/target
+    
+which can be deployed to the 
 
-* cd DNSCore/ContentBroker
+    /ci/BuildRepository
+    
+automatically by calling 
 
-* mvn clean && mvn install -Pci
-
-## Settings
-
-As opposed to a regular node install or an installation on a local development workstation,
-the dirs are fixed and correspond to the settings in src/main/conf/config.properties.vm3
-
-
+    .../DNSCore/ContentBroker/src/main/bash/install_buildrepo.sh
+    
+So make sure you let your build server run this script as a post build step for every successful build.
 
 
 
