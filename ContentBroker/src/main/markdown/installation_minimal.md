@@ -28,10 +28,10 @@ the basic version you easily can extend the software by the other components if 
 configuration settings. We think this is a great way for administrators to get up and running quickly while
 getting an understanding of the basic behaviour and configuration possibilities of the software.
 
-A second [tutorial](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/preparing_irods_for_dnscore.md) then describes
+A second [tutorial](preparing_irods_for_dnscore.md) then describes
 how to convert the existing DNSCore into a full-fledged installation including the iRODS storage layer.
 
-**Note** that if you want to learn how to build a new version of the software from scratch, using the build system and the deploy scripts, look [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/deploy.md).
+**Note** that if you want to learn how to build a new version of the software from scratch, using the build system and the deploy scripts, look [here](development_deploy.md).
 
 ## Prerequisites
 
