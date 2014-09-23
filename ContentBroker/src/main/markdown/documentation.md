@@ -12,24 +12,28 @@ below src/main/markdown/. It should be pointed out, that not all of the document
 Before diving into the documentation in the paragraphs below note that documentation about the
 project is stored mainly in to places.
 General overview you'll find it under:
-<br>ContentBroker/src/main/markdown/
-<br>For more information on DA-Web User Interface refer to:
-<br>DAWeb/doc
-<br>All the links below refer to documentation stored in one of these places.
+
+     ContentBroker/src/main/markdown/
+
+For more information on DA-Web User Interface refer to:
+
+    DAWeb/doc
+
+All the links below refer to documentation stored in one of these places.
 
 **Note** that under the abovementioned links you'll always find the documentation attached to the master (e.g. snapshot) version. In most cases this should be what you need. In rare cases however, you want a documentation artifact that matches the exact state of implementation. In these cases you can go to
 the releases page, follow the source code link for the corresponding version and then search for the document you're after in this special repository snapshot.
 
 ### General concepts, for all Audiences including End Users
 
-* [Ingest and Retrieval](DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
+* [Ingest and Retrieval](../../../DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
+* [DIP](specification_dip.md) Specification
+* [SIP](specification_sip.md) Specification
+* [AIP](specification.md_aip) Specification
+* [PREMIS Specification](premis_specification.md)
 * Presentation of the [Object model](ContentBroker/src/main/markdown/object_model.md).
 * Presentation of the [Delta feature](ContentBroker/src/main/markdown/the_delta_feature.md).
-* [DIP](ContentBroker/src/main/markdown/dip_specification.md) Specification
-* [SIP](ContentBroker/src/main/markdown/specification_sip.md) Specification
-* [SIP](ContentBroker/src/main/markdown/specification_sip.de.md) Specification (german version).
-* [AIP](ContentBroker/src/main/markdown/aip_specification.md) Specification
-* [PREMIS Specification](ContentBroker/src/main/markdown/premis_specification.md)
+* Feature [list](features.md)
 
 ### Administration
 
