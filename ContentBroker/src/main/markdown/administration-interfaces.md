@@ -1,46 +1,4 @@
-# Administration - Interface Reference 
 
-While we have an administration and user frontend called DA-Web which lets users (end users and administrators) interact in a dynamic manner, there are several configuration options of DNSCore which are considered static properties of the system. They are configured in the old fashioned way of good old configuration files which can be edited with your good old favorite linux editor. Easy! 
-
-These artefacts comprise the interface to the ContentBroker with which administrators must learn to deal with in order to configure and run a proper node of a DNSCore based system. The document is structed in that way that each configuration file is described extensively in its own passage.
-
-**Note** that for the purporse of the discussion of this document, we call the ContentBroker installation directory ${CB_HOME}
-
-**Note** that, as the interfaces can change from time to time, in doubt you should look at the right version of this document. Go to the releases page and you'll find the source tree for this specific version. 
-
-
-
-## Application Database configuration
-
-&{CB_HOME}/conf/hibernateCentralDB.cfg.xml
-
-    <property name="connection.driver_class">org.postgresql.Driver</property>
-    <property name="connection.url">jdbc:postgresql://localhost:5432/CB</property>
-    <property name="connection.username">cb_usr</property>
-    <property name="connection.password">vb9gpJq/TjrkFcJ0jaJu+w==</property>
-
-TODO ergänzen. auf encryption hinweisen
- 
-    <property name="connection.pool_size">5</property>
-    <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-
-    <property name="current_session_context_class">thread</property>
- 
-    <property name="format_sql">true</property>
-    <property name="hbm2ddl.auto">validate</property>
- 
-TODO hinweis auf contentbroker -create, validate sollte nicht verwendet werden.
- 
-    <mapping class="de.uzk.hki.da.model.Contractor"/>
-    <mapping class="de.uzk.hki.da.model.Node"/>
-    ...
-    <mapping class="de.uzk.hki.da.model.SecondStageScanPolicy"/>
-
-TODO description 
-
-    <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
-
-TODO anmerkung feststehende properties.
 
 ## Application module configuration
 
@@ -207,7 +165,49 @@ Show running Actions of working CB
 Same operations could be carried out via DAWeb
 
 	
+# Administration - Interface Reference 
 
+While we have an administration and user frontend called DA-Web which lets users (end users and administrators) interact in a dynamic manner, there are several configuration options of DNSCore which are considered static properties of the system. They are configured in the old fashioned way of good old configuration files which can be edited with your good old favorite linux editor. Easy! 
+
+These artefacts comprise the interface to the ContentBroker with which administrators must learn to deal with in order to configure and run a proper node of a DNSCore based system. The document is structed in that way that each configuration file is described extensively in its own passage.
+
+**Note** that for the purporse of the discussion of this document, we call the ContentBroker installation directory ${CB_HOME}
+
+**Note** that, as the interfaces can change from time to time, in doubt you should look at the right version of this document. Go to the releases page and you'll find the source tree for this specific version. 
+
+
+
+## Application Database configuration
+
+&{CB_HOME}/conf/hibernateCentralDB.cfg.xml
+
+    <property name="connection.driver_class">org.postgresql.Driver</property>
+    <property name="connection.url">jdbc:postgresql://localhost:5432/CB</property>
+    <property name="connection.username">cb_usr</property>
+    <property name="connection.password">vb9gpJq/TjrkFcJ0jaJu+w==</property>
+
+TODO ergänzen. auf encryption hinweisen
+ 
+    <property name="connection.pool_size">5</property>
+    <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+    <property name="current_session_context_class">thread</property>
+ 
+    <property name="format_sql">true</property>
+    <property name="hbm2ddl.auto">validate</property>
+ 
+TODO hinweis auf contentbroker -create, validate sollte nicht verwendet werden.
+ 
+    <mapping class="de.uzk.hki.da.model.Contractor"/>
+    <mapping class="de.uzk.hki.da.model.Node"/>
+    ...
+    <mapping class="de.uzk.hki.da.model.SecondStageScanPolicy"/>
+
+TODO description 
+
+    <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+
+TODO anmerkung feststehende properties.
 
 
 
