@@ -34,7 +34,7 @@ the releases page, follow the source code link for the corresponding version and
 * Description of the [Delta](the_delta_feature.md) feature.
 * Medata [specification](metadata_specification.md). The metadata formats accepted by DNS that will enable proper presentation.
 
-## Administration
+## Administration - Concepts related to operating a node.
 
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
 * Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
@@ -43,10 +43,8 @@ the releases page, follow the source code link for the corresponding version and
 * Reference for the [beans.xml](administration-beans.md) configuration file.
 * Information on the [installer](administration-the-installer.md) script.
 * [click here](administration-interfaces.md) for a description of the non gui interfaces to the application.
-* [click here](open_ports.md) for a list of ports your firewall has to allow connections to.
 * [clck here](audit.md) to get information how the AIP are being checked automatically.
 * [Create user](create_user.md)
-
 
 ## Installation related
 
@@ -61,7 +59,8 @@ the releases page, follow the source code link for the corresponding version and
 * [click here](installation_ci.md) to learn how to set up a machine for continuous integration.
 * [click here](needed_packages.md) contains information on needed packages to run DNSCore.
 * How to how to setup DNSCore for iRODS [PAM](using_iRODS_PAM_auth.md) Authentication
-* [How to setup iRODS for Presentation Repository](setup_irods.md)
+* [click here](installation_open_ports.md) for a list of ports your firewall has to allow connections to.
+* [How to setup iRODS for Presentation Repository](installation_setup_irods.md)
  
 ## Development
 
