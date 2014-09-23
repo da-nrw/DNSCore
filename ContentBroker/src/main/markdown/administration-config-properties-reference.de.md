@@ -1,4 +1,4 @@
-## config.properties - Referenzdokumentation
+## Die Konfigurationsdatei "config.properties" - Referenzdokumentation
 
 Die Datei ist in einer ContentBroker immer unter 
 
@@ -53,7 +53,7 @@ This property lets you specify the name which identifies the node in the system.
     
 This setting must contain the integer value primary key of the nodes correspoding entry in the nodes table of the object db.
 
-### cb
+### Der "cb.*-Block" der config.properties
 
 Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
@@ -120,7 +120,7 @@ on your file system, you should insert the full path to the python binary as a v
 	cb.implementation.metadataExtractor=fakeMetadataExtractor
 	
 	
-### irods
+### Der "irods.*"-Block der config.properties
 
 Wenn mindestens eines der Subsysteme "gridFacade" bzw. "distributedConversionAdapter", konfigurierbar per
 
@@ -167,7 +167,7 @@ asdf
 
 The password has to be encrypted with the password encryptor/decryptor which is part of the DNSCore project itself (if you haven't already, you can see the sub project [here](https://github.com/da-nrw/DNSCore/tree/master/PasswordEncryptor).
 
-### fedora
+### Der "fedora.*"-Block der config.properties.
 
 Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
@@ -187,7 +187,7 @@ for usage by the ContentBroker.
     
 The passwort has to be encrypted/decrypted with the PasswordEncryptor of DNSCore.
 
-### elasticsearch 
+### Der "elasticsearch.*"-Block der config.properties.
 
 Beispiel [config.properties.ci](../conf/config.properties.ci)
 
