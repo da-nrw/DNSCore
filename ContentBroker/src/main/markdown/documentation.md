@@ -43,7 +43,6 @@ the releases page, follow the source code link for the corresponding version and
 * [clck here](audit.md) to get information how the AIP are being checked automatically.
 * [Create user](create_user.md)
 * Processing [stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
-* Overview over the system [components](components_connectors.md)
 
 
 ## Installation related
@@ -74,7 +73,6 @@ the releases page, follow the source code link for the corresponding version and
 * [click here](javadoc.md) if you want to recreate the JavaDoc files and publish them on GitHub Pages
 * the [Java API documentation](http://da-nrw.github.io/DNSCore/apidocs/)
 * the [Java test documentation](http://da-nrw.github.io/DNSCore/testapidocs/)
-* [Processing Stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
 * Overview over the system [components](components_connectors.md)
 * Overview of the [format module](format_module.md).
 * Overview of the [metadata workflow](metadata_workflow.md).
