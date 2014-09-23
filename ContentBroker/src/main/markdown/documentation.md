@@ -34,20 +34,21 @@ the releases page, follow the source code link for the corresponding version and
 * Description of the [Delta](the_delta_feature.md) feature.
 * Medata [specification](metadata_specification.md). The metadata formats accepted by DNS that will enable proper presentation.
 
-## Administration - Concepts related to operating a node.
+## Operating / administrating a node.
 
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
-* Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
 * Job [states](administration-troubleshooting.md). How to deal with jobs in error states.
-* Reference for the most common configuration file [config.properties](administration-config-properties-reference.md).
-* Reference for the [beans.xml](administration-beans.md) configuration file.
 * Information on the [installer](administration-the-installer.md) script.
 * [click here](administration-interfaces.md) for a description of the non gui interfaces to the application.
 * [clck here](audit.md) to get information how the AIP are being checked automatically.
 * [Create user](create_user.md)
+* Processing [stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
+* Overview over the system [components](components_connectors.md)
+
 
 ## Installation related
 
+* Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
 * How to perfom a minimal installation of [DNSCore](installation_minimal.md).
 * How to set up [iRODS](installation_irods.md) for DNSCore.
 * How to extend the minimal installation to work with [iRODS](installation_irods_cb.md).
@@ -61,6 +62,8 @@ the releases page, follow the source code link for the corresponding version and
 * How to how to setup DNSCore for iRODS [PAM](using_iRODS_PAM_auth.md) Authentication
 * [click here](installation_open_ports.md) for a list of ports your firewall has to allow connections to.
 * [How to setup iRODS for Presentation Repository](installation_setup_irods.md)
+* Reference for the most common configuration file [config.properties](administration-config-properties-reference.md).
+* Reference for the [beans.xml](administration-beans.md) configuration file.
  
 ## Development
 
