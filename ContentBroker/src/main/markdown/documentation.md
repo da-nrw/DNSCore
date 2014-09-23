@@ -39,9 +39,9 @@ the releases page, follow the source code link for the corresponding version and
 ### Administration
 
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
-* [click here](ContentBroker/src/main/markdown/system_configuration.md) to get an overview of how to set up the config files so that DNSCore will work in your environment.
-* [click here](ContentBroker/src/main/markdown/administration-troubleshooting.md) to get help how to administrate the system when errors occur.
-* [click here](ContentBroker/src/main/markdown/administration-interfaces.md) for a description of the non gui interfaces to the application.
+* Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
+* Job [states](administration-troubleshooting.md). How to deal with jobs in error states
+* [click here](administration-interfaces.md) for a description of the non gui interfaces to the application.
 * [click here](ContentBroker/src/main/markdown/open_ports.md) for a list of ports your firewall has to allow connections to.
 * [clck here](ContentBroker/src/main/markdown/audit.md) to get information how the AIP are being checked automatically.
 
