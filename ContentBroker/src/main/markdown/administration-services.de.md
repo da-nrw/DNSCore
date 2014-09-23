@@ -25,9 +25,12 @@ Um den ContentBroker zu verwalten, existieren einige Schnittstellen. Dies ist na
     java -jar $JAVA_OPTS ContentBroker.jar
     ./ContentBroker_start.sh
     ./ContentBroker_stop.sh
-    ./cbTalk.sh
     java -jar $JAVA_OPTS ContentBroker.jar diagnostics
     java -jar $JAVA_OPTS ContentBroker.jar createSchema (careful)
+    ./cbTalk.sh STOP_FACTORY
+    ./cbTalk.sh START_FACTORY
+    ./cbTalk.sh SHOW_VERSION
+    ./cbTalk.sh GRACEFUL_SHUTDOWN
     
 Um den ContentBroker testweise zu starten, kann er prinzipiell gestartet werden mit 
 
@@ -39,9 +42,9 @@ Die für den Produktivbetrieb einzusetzende Variante ist jedoch
     
 ein Wrapperskript mit ein wenig zusätzlicher Funktionalität. Dieses Skript startet den ContentBroker als einen Hintergrundprozess. Ein so gestarteter Prozess kann heruntergefahren werden mit
 
-    ./ContentBroker_stop.sh (careful)
+    ./ContentBroker_stop.sh
 
-Achtung: Diese Variante reisst den ContentBroker hart herunter. In Bearbeitung befindliche Jobs werden jäh unterbrochen. Es ist daher dafür zu sorgen, dass vorher alle Jobs sauber heruntergefahren werden (s.u.).
+**Achtung:** Diese Variante reisst den ContentBroker hart herunter. In Bearbeitung befindliche Jobs werden jäh unterbrochen. Es ist daher dafür zu sorgen, dass vorher alle Jobs sauber heruntergefahren werden (s.u.).
 
 
 
