@@ -29,6 +29,7 @@ Um den ContentBroker zu verwalten, existieren einige Schnittstellen. Dies ist na
     java -jar $JAVA_OPTS ContentBroker.jar createSchema (careful)
     ./cbTalk.sh STOP_FACTORY
     ./cbTalk.sh START_FACTORY
+    ./cbTalk.sh SHOW_ACTIONS
     ./cbTalk.sh SHOW_VERSION
     ./cbTalk.sh GRACEFUL_SHUTDOWN
     
@@ -44,7 +45,20 @@ ein Wrapperskript mit ein wenig zusätzlicher Funktionalität. Dieses Skript sta
 
     ./ContentBroker_stop.sh
 
-**Achtung:** Diese Variante reisst den ContentBroker hart herunter. In Bearbeitung befindliche Jobs werden jäh unterbrochen. Es ist daher dafür zu sorgen, dass vorher alle Jobs sauber heruntergefahren werden (s.u.).
+**Achtung:** Diese Variante reisst den ContentBroker hart herunter. In Bearbeitung befindliche Jobs werden jäh unterbrochen. Es ist daher dafür zu sorgen, dass vorher alle Jobs sauber heruntergefahren werden.
+
+Dies kann automatisch geschehen durch den Aufruf von
+
+    ./cbTalk.sh GRACEFUL_SHUTDOWN
+    
+Wenn dieses Kommando aufgerufen wird, wartet der ContentBroker so lange, bis er alle angefangenen Jobs auch ordnungsgemäß beendet hat, und fährt sich dann selbständig herunter.
+
+Um einen Überblick über die laufenden Jobs zu erhalten, kann das cbTalk Skript auch aufgerufen werden mit
+
+    ./cbTalk.sh SHOW_ACTIONS
+    
+
+
 
 
 
