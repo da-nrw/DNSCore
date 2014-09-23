@@ -1,12 +1,21 @@
 # Building and testing DNSCore.
 
-Following the steps will enable you to check out a local copy of the code, modify it
-and build and test the modified application. The endproduct of a build is an installer, which you can
-use to install the software on other machines.
+Following the steps will enable you to check out a local copy of the code and build and test the DNSCore. Building
+DNSCore gives you an installer, which can be used to install DNSCore on other machines.
 
-## Prerequisites
+DNSCore gets build following the guidelines of the maven build cycle. There are a lot of scripts working in the 
+background which are mapped to the maven lifecycle phases. 
 
-To build DNS Core successfully you'll need a machine with
+In general, DNSCore gets build in one of two modes, 
+
+    ci  ( fully installed, node-like, machine with irods, fedora, elasticsearch )
+    dev ( local development workstation with less prerequisites )
+
+which will both get described later.
+
+## Common prerequisites
+
+Wheter in the dev or ci environment, to build DNS Core successfully you'll need a machine with
 
 * JAVA 1.6
 * MAVEN
@@ -22,12 +31,23 @@ Please ensure, the shells (bash and sh) of your workstation run in UTF-8 mode:
     
 Of course you need a clean checkout of our source repo containing both DA-Web and ContentBroker
 
-    git clone https://github.com/da-nrw/DNSCore DNSCore
+    git clone https://github.com/da-nrw/DNSCore [...]/DNSCore
     
+where 
 
+    [...]/DNSCore
+    
+is a place somewhere on your file system, where your local clone of the DNSCore gets placed.
+
+Your maven commands have then to be executed from the ContentBroker subfolder, so make sure you cd into it by
+
+    cd [...]/DNSCore/ContentBroker
+    
 ## Testing strategies and setup
 
 ![](https://raw.github.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/blackbox_whitebox.jpg)
+
+
 
 As stated in the previous paragraph, the build system always works on two different locations. The "DNSCore/ContentBroker" location
 is your local clone of the source code. Here any sources can be modified and the source code can be build and packaged.
@@ -96,9 +116,6 @@ Remarks:
        adapters to the storage and presentation layer.
     -DappHome=[appHome]  **no ending slash!!!**
 
-    [...]/DNSCore/ContentBroker - this is the local clone of the DNSCore git repository 
-        which you can place somewhere
-        onto your file system (which is what the [...] should indicate)
     [appHome] - appHome is the full physical path to a local installation of the ContentBroker
         which automatically gets installed by the test system 
         in order to run the automated acceptance tests.
