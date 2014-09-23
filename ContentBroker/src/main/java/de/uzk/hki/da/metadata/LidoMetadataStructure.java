@@ -55,7 +55,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 		return lidoFile;
 	}
 	
-	private List<String> getLidoLinkResources() {
+	public List<String> getLidoLinkResources() {
 		List<String> linkResources = new ArrayList<String>();
 		for(Element element : lidoLinkResources) {
 			linkResources.add(element.getValue());

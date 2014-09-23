@@ -210,9 +210,8 @@ public class UpdateMetadataAction extends AbstractAction {
 				DAFile sourceFile = e.getSource_file();
 				
 				for(String href : eadRefs) {
-					File file = emms.getCanonicalFileFromReference(href, emms.getMetadataFile());
-					String relPathOfRefFile = Path.extractRelPathFromDir(file, repName);					
-					if(sourceFile.getRelative_path().equals(relPathOfRefFile)) {
+					File file = emms.getCanonicalFileFromReference(href, emms.getMetadataFile());					
+					if(file.getAbsolutePath().contains(sourceFile.getRelative_path())) {
 						DAFile targetDAFile = e.getTarget_file();
 						File targetFile = targetDAFile.toRegularFile();
 						String targetPath = href.replace(file.getName(), targetFile.getName());
@@ -222,7 +221,6 @@ public class UpdateMetadataAction extends AbstractAction {
 						} else {
 							targetValue = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + targetDAFile.getRelative_path();
 						}
-						logger.debug("replaceMetsRefsInEad put "+href+" & "+targetValue);
 						eadReplacements.put(href, targetValue);
 					}
 				}
@@ -261,9 +259,7 @@ public class UpdateMetadataAction extends AbstractAction {
 				
 				String href = mms.getHref(metsFileElement);
 				File file = mms.getCanonicalFileFromReference(href, metsFile);
-				String relPathOfRefFile = Path.extractRelPathFromDir(file, repName);
-
-				if(sourceFile.getRelative_path().equals(relPathOfRefFile)) {
+				if(file.getAbsolutePath().contains(sourceFile.getRelative_path())) {
 					DAFile targetDAFile = (DAFile)entry.getValue();
 					File targetFile = targetDAFile.toRegularFile();
 					String targetPath = href.replace(file.getName(), targetFile.getName());
@@ -288,20 +284,29 @@ public class UpdateMetadataAction extends AbstractAction {
 		int replacementCount = 0;
 		Map<DAFile,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
 		HashMap<String, String> lidoReplacements = new HashMap<String, String>();
+		List<String> lidoRefs = lms.getLidoLinkResources();
 		@SuppressWarnings("rawtypes")
 		Iterator it = replacements.entrySet().iterator();
 		while (it.hasNext()) {
 	        @SuppressWarnings("rawtypes")
 			Map.Entry entry = (Map.Entry)it.next();
-			DAFile targetFile = (DAFile)entry.getValue();
-			String targetValue;
-			if(!isPresMode()) {
-				targetValue = targetFile.getRelative_path();
-			} else {
-				targetValue = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + targetFile.getRelative_path();
+	        DAFile sourceFile = (DAFile)entry.getKey();
+	 
+	        for(String href : lidoRefs) {
+				File file = lms.getCanonicalFileFromReference(href, lms.getMetadataFile());					
+				if(file.getAbsolutePath().contains(sourceFile.getRelative_path())) {
+					DAFile targetDAFile = (DAFile)entry.getValue();
+					File targetFile = targetDAFile.toRegularFile();
+					String targetPath = href.replace(file.getName(), targetFile.getName());
+					String targetValue;
+					if(!isPresMode()) {
+						targetValue = targetPath;
+					} else {
+						targetValue = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + targetDAFile.getRelative_path();
+					}
+					lidoReplacements.put(href, targetValue);
+				}
 			}
-			DAFile sourceFile = (DAFile)entry.getKey();
-	        lidoReplacements.put(sourceFile.getRelative_path(), targetValue);
 		}
 		replacementCount = lidoReplacements.size();
 		lms.replaceRefResources(lidoReplacements);
