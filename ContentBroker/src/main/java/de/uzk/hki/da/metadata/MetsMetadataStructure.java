@@ -121,7 +121,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 					File file = dafile.toRegularFile();
 					String dafilePath = file.getAbsolutePath();
 					logger.debug("DAFile: "+dafilePath);
-					if(dafilePath.contains(refFile.getAbsolutePath())) {
+					if(refFile.getAbsolutePath().contains(dafilePath)) {
 						fileExists = true;
 						existingFiles.add(dafile);
 						break;
