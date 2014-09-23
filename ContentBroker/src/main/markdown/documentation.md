@@ -45,11 +45,11 @@ the releases page, follow the source code link for the corresponding version and
 * [Create user](create_user.md)
 * Processing [stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
 * Format [identification](administration_format_identification.de.md) (german version).
+* [Controlling](administration-services.md) the application. Description of the non gui interfaces to the application.
+* Information on the [installer](administration-the-installer.md) script.
 
 ## Node administrators - Setting up Environments with DNSCore
 
-* [click here](administration-interfaces.md) for a description of the non gui interfaces to the application.
-* Information on the [installer](administration-the-installer.md) script.
 * Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
 * How to perfom a minimal installation of [DNSCore](installation_minimal.md).
 * How to set up [iRODS](installation_irods.md) for DNSCore.
