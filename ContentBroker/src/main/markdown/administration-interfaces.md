@@ -42,17 +42,6 @@ The grid log provides information about from the package grid.
 TODO describe
 
 **Note** that it is also possible to override the default settings by modifying the logback.xml. This is for experimental purposes only. The logback.xml gets automatically overwritten by the installer on every update of the application so all changes will be lost after an update.
-	
-# Administration - Interface Reference 
-
-While we have an administration and user frontend called DA-Web which lets users (end users and administrators) interact in a dynamic manner, there are several configuration options of DNSCore which are considered static properties of the system. They are configured in the old fashioned way of good old configuration files which can be edited with your good old favorite linux editor. Easy! 
-
-These artefacts comprise the interface to the ContentBroker with which administrators must learn to deal with in order to configure and run a proper node of a DNSCore based system. The document is structed in that way that each configuration file is described extensively in its own passage.
-
-**Note** that for the purporse of the discussion of this document, we call the ContentBroker installation directory ${CB_HOME}
-
-**Note** that, as the interfaces can change from time to time, in doubt you should look at the right version of this document. Go to the releases page and you'll find the source tree for this specific version. 
-
 
 
 ## Application Database configuration
