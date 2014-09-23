@@ -180,7 +180,7 @@ choose the following settings
 See [this](development_deploy.md) documentation to learn how to trigger a build.
 After each run of mvn verify a new build gets deployed to
     
-    .../DNSCore/ContentBroker/target
+    /ci/DNSCore/ContentBroker/target
     
 which can be deployed to the 
 
@@ -188,7 +188,7 @@ which can be deployed to the
     
 automatically by calling 
 
-    .../DNSCore/ContentBroker/src/main/bash/install_buildrepo.sh
+    /ci/DNSCore/ContentBroker/src/main/bash/install_buildrepo.sh
     
 So make sure you let your build server run this script as a post build step for every successful build.
 
