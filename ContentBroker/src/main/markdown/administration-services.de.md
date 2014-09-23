@@ -80,25 +80,20 @@ Einige zusätzliche Informationen über den gerade laufenden ContentBroker bekom
 
     ./cbTalk.sh SHOW_VERSION
 
-Sollte es sich um eine Erstinstallation der DNSCore handeln, so kann das ContentBroker.jar auch verwendet werden, um
-ein Datenbankschema zu kreieren.
+Sollte es sich um eine Erstinstallation der DNSCore handeln, muss für das Gesamtsystem eine zentrale Datenbank eingerichtet werden. Das ContentBroker.jar kann auch verwendet werden, um
+das erforderliche Datenbankschema zu kreieren.
 
         java -jar $JAVA_OPTS ContentBroker.jar createSchema (careful)
         
-Sobald ein Schema kreiert ist, sollte der Administrator die Tabellen gegen weiteren Schreibzugriff sichern.
-
-If you are setting up a new node and this node should be the primary node (which is hosting the object database) of the system, then you have to create a database and create the correct schema in order for all the nodes to work within the system.
-
-
-Make sure that you have created a database and a user prior to calling that command. The connection to that database has to be configured in 
+Voraussetzung ist, dass unter 
 
     $CONTENTBROKER_HOME/conf/hibernateCentralDB.cfg.xml
     
-If you don't have this file, you can download the file [hibernateCentralDB.cfg.xml](../xml/hibernateCentralDB.cfg.xml.ci)
-    
-and use it as a template.
-For more infos about how to configure that file, see this [document](administration-interfaces.md#application-database-configuration)
+die Zieldatenbank [ordnungsgemäß](administration-interfaces.md#application-database-configuration) angelegt und beschreibbar ist. Sobald ein Schema kreiert ist, sollte der Administrator die Tabellen gegen weiteren Schreibzugriff sichern.
 
+Eine template der Konfigurationsdatei kann jederzeit heruntergeladen werden:
+[hibernateCentralDB.cfg.xml](../xml/hibernateCentralDB.cfg.xml.ci)
+    
 
 ## Starten und Stoppen der Gesamtapplikation
 
