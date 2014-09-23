@@ -1,13 +1,12 @@
-# Build process
+# Building and testing DNSCore.
 
-This paragraph describes how you build and test DNS (essentially ContentBroker+DAWeb with some plugins) 
-on a development workstation.
 Following the steps will enable you to check out a local copy of the code, modify it
-and build and test the modified application. 
+and build and test the modified application. The endproduct of a build is an installer, which you can
+use to install the software on other machines.
 
 ## Prerequisites
 
-To build DNS Core successfully you'll need at least a developer engine with
+To build DNS Core successfully you'll need a machine with
 
 * JAVA 1.6
 * MAVEN
