@@ -24,7 +24,7 @@ All the links below refer to documentation stored in one of these places.
 **Note** that under the abovementioned links you'll always find the documentation attached to the master (e.g. snapshot) version. In most cases this should be what you need. In rare cases however, you want a documentation artifact that matches the exact state of implementation. In these cases you can go to
 the releases page, follow the source code link for the corresponding version and then search for the document you're after in this special repository snapshot.
 
-### General concepts, for all Audiences including End Users
+### General / All Audiences.
 
 * [Ingest and Retrieval](../../../../DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
 * [DIP](specification_dip.md) Specification
@@ -52,16 +52,16 @@ the releases page, follow the source code link for the corresponding version and
 * Overview of the [format module](src/main/markdown/format_module.md).
 * Overview of the [metadata workflow](ContentBroker/src/main/markdown/metadata_workflow.md).
 
-
 #### Installation related
-* [click here](ContentBroker/src/main/markdown/installation_irods.md) to learn how to set up / upgrade iRODS for DNSCore node.
-* [click here](ContentBroker/src/main/markdown/installation_cb.md) to learn how to set up the ContentBroker.
-* [click here](ContentBroker/src/main/markdown/installation_irods_cb.md) to learn how connect iRODS and the ContentBroker
-* [click here](ContentBroker/src/main/markdown/install_fedora.md)) to learn how connect Fedora and DNSCore
-* [click here](ContentBroker/src/main/markdown/installation.md) if you want to update your node to a new version of DNSCore
-* [click here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_ci.md) to learn how to set up a machine for continuous integration.
-* [clck here](ContentBroker/src/main/markdown/needed_packages.md) contains information on needed packages to run DNSCore.
-* [clck here](ContentBroker/src/main/markdown/using_iRODS_PAM_auth.md ) how to setup DNSCore for iRODS PAM Authentication
+
+* How to set up [iRODS](installation_irods.md) for DNSCore.
+* Set up the minimal installation [ContentBroker](ContentBroker/src/main/markdown/installation_cb.md) on a node.
+* [Connect](installation_irods_cb.md) minimal ContentBroker installation to iRODS [click here]( to learn how connect iRODS and the ContentBroker
+* [Connect](install_fedora.md) Fedora and DNSCore
+* [click here](installation.md) if you want to update your node to a new version of DNSCore
+* [click here](installation_ci.md) to learn how to set up a machine for continuous integration.
+* [clck here](needed_packages.md) contains information on needed packages to run DNSCore.
+* [clck here](using_iRODS_PAM_auth.md ) how to setup DNSCore for iRODS PAM Authentication
 
 #### Running a node
 
