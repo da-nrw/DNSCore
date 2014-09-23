@@ -72,6 +72,9 @@ Remarks:
 
 ### Build and acceptance test the application on a continuous integration machine
 
+**Note** that how to set up a node for continuous integration is part of [this](installation_ci.md) tutorial.
+
+
 The build process on a dedicated build machine works more or less the same, with a few exceptions discussed
 here. To execute the build process run:
 
