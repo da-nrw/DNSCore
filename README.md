@@ -82,7 +82,7 @@ Run the tests and build the software
     cd [...]/DNSCore/ContentBroker
     mvn clean -Pdev && mvn verify -Pdev -DappHome=[appHome]
     
-For a more information on building and testing DNSCore look [here](ContentBroker/src/main/markdown/development_deploy.md)
+For more information on building and testing DNSCore look [here](ContentBroker/src/main/markdown/development_deploy.md)
     
     
 
