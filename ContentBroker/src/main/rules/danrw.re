@@ -8,135 +8,9 @@
 # And iRODS Server is still working. Try with ils. 
 
 #The ressources on which we aren't allowed to delete items on
-acDataDeletePolicy {ON($rescName == "") {msiDeleteDisallowed; }}
-acDataDeletePolicy {ON($rescName == "") {msiDeleteDisallowed; }}
-acDataDeletePolicy {ON($rescName == "") {msiDeleteDisallowed; }}
+acDataDeletePolicy {ON($rescName == "lza1") {msiDeleteDisallowed; }}
+acDataDeletePolicy {ON($rescName == "lza2") {msiDeleteDisallowed; }}
 
-#Returns a string of ReplDestinations given in Resc Group Names
-acGetReplDests(*replDests) {
-*replDests = "";
-}
-
-#Returns myNode and myserver
-acGetMyNode(*myNode,*myServer) {
-*myNode = "";
-*myServer = ""
-}
-
-#Returns Node Admin email address
-acGetNodeAdmin(*email) {
-*email = ""
-}
-
-#Action to replicate Objects to resources
-acReplicate(*objPath,*rescLoc) {
- delay("<EF>30s REPEAT UNTIL SUCCESS</EF>") {
-                #PLEASE CHANGE IF NECESSARY: we have to repeat the settings for the repls, due to the RE calling us
-                *replList = list("","");
-				*rescName = "";
-                *err=0;
-                foreach(*repl in *replList)
-                {
-
-                    *error=errorcode(remote(*rescLoc,"null") {
-							writeLine("serverLog","Replicate *objPath on *rescLoc to *repl: delayed after put operation");
-							msiDataObjRepl(*objPath,"backupRescName=*repl++++rescName=*rescName++++all=++++verifyChksum=",*status);
-							});
-                    if (*error<0){ *err=*err+1; }
-                }
-                #if there are errors we'll fail and retry later, until we recieve a complete success in repl
-                if (*err>0) { fail(); }
-                #Trim the caches
-                msiExecStrCondQuery("SELECT RESC_NAME WHERE RESC_GROUP_NAME = 'cache' ",*rescl);
-                foreach(*rescl) {
-                    msiGetValByKey(*rescl,"RESC_NAME",*rn);
-                    msiDataObjTrim(*objPath,*rn,"null","null","null",*status);
-                }
-			    #Trim TSM Cache
-				msiExecStrCondQuery("SELECT RESC_NAME WHERE RESC_GROUP_NAME = 'tsm' and RESC_NAME like '%cache%' ",*rescl);
-                foreach(*rescl) {
-                    msiGetValByKey(*rescl,"RESC_NAME",*rn);
-                    msiDataObjTrim(*objPath,*rn,"null","null","null",*status);
-                }
-				
-}
-}
-
-#Author: Jens Peters
-#Archival rule, works on the aip folder 
-#computes Checksum on DO
-#triggers the delayed execution on other nodes
-acPostProcForPut { ON($objPath like "/da-nrw/aip/*.tar") {
-	#acGetMyNode(*node,*myServer)
-	#msiWriteRodsLog("Replicate $objPath to LZA: *node after put operation on $rescLoc", *out);
-	#msiDataObjRepl($objPath,"backupRescName=*node++++all=++++verifyChksum=",*status);
-	*obj=$objPath
-	*rl=$rescLoc
-	#acPostIngestOperations(*obj, *rl)	
-}
-}
-
-#Author: Jens Peters
-acPostProcForFilePathReg { ON($objPath like "/da-nrw/aip/*.tar") {
-	#if (errorcode(acPostIngestOperations($objPath, $rescLoc)) < 0) {
-	#	cut;
-	#	fail;
-	#}
-}
-}	
-
-acPostIngestOperations(*obj, *rl) {
-	if (errorcode(acComputeChecksum(*obj)) < 0) {
-        cut;
-        fail;
-    }
-    if (errorcode(acReplicate(*obj,*rl)) < 0) {
-        cut;
-        fail;
-    }
-}
-
-#Author: Jens Peters
-#Returns 0 or 1 (true or false) if the given objPath is 
-#available on the required resources
-acCheckReplPolicy(*objPath,*min_repls,*status){
-     *status=0;
-    if (*min_repls==0){ fail;}
-    *lzares="";
-    *replDests="";
-    acGetReplDests(*replDests)
-    *replList=split(*replDests, ",");
-    foreach(*repl in *replList){
-        msiExecStrCondQuery("SELECT RESC_NAME WHERE RESC_GROUP_NAME = '*repl'",*rescl);
-        foreach(*rescl) {
-            msiGetValByKey(*rescl,"RESC_NAME",*rn);
-            *lzares="'*rn',*lzares";
-        }
-    }
-    #to support old style lza group
-	*lzares="*lzares,'lza'";
-
-	#sets MV To Object and Coll
-    #replicate_to
-    msiString2KeyValPair("replicate_to=*replDests",*kvpaircs)
-	msiSplitPath(*objPath,*coll,*dn);
-	msiSetKeyValuePairsToObj(*kvpaircs,*coll,"-C")
-    msiSetKeyValuePairsToObj(*kvpaircs,*objPath,"-d")
-	msiExecStrCondQuery("SELECT DATA_NAME,DATA_RESC_NAME,DATA_REPL_NUM WHERE COLL_NAME = '*coll' and DATA_NAME = '*dn' and RESC_NAME in (*lzares) and RESC_NAME NOT LIKE '%cache%'",*grepls);
-    *i=0;
-    foreach(*grepls) {
-        *i=*i+1;
-    }
-
-    if (*i>=*min_repls) {
-         msiString2KeyValPair("replicated=1",*kvrepl)
-		msiSetKeyValuePairsToObj(*kvrepl,*objPath,"-d")
-		*status=1;
-    } else { 
-         msiString2KeyValPair("replicated=0",*kvrepl)
-        msiSetKeyValuePairsToObj(*kvrepl,*objPath,"-d")
-		*status=0; }
-}
 #Author: Jens Peters
 #counts the number of total Repls
 acGetTotalReplNumber(*objPath,*nr) {
@@ -151,56 +25,69 @@ acGetTotalReplNumber(*objPath,*nr) {
 #counts the number of repls per rg
 acGetTotalReplNumberPerGroup(*objPath,*rg,*nr) {
         *ress="";
-		msiExecStrCondQuery("SELECT RESC_NAME WHERE RESC_GROUP_NAME = '*rg'",*rescl);
+	msiExecStrCondQuery("SELECT RESC_NAME WHERE RESC_GROUP_NAME = '*rg'",*rescl);
         foreach(*rescl) {
             msiGetValByKey(*rescl,"RESC_NAME",*rn);
             *ress="'*rn',*ress";
         }
-		msiSplitPath(*objPath,*coll,*dn);
-		msiExecStrCondQuery("SELECT count(DATA_REPL_NUM) WHERE COLL_NAME = '*coll' and DATA_NAME = '*dn' and RESC_NAME in (*ress) ",*grepls);
+	if (*ress=="") {
+	 	writeLine("serverLog","No Resc found in RG *rg!");
+		fail();
+	}
+	msiSplitPath(*objPath,*coll,*dn);
+	msiExecStrCondQuery("SELECT count(DATA_REPL_NUM) WHERE COLL_NAME = '*coll' and DATA_NAME = '*dn' and RESC_NAME in (*ress) ",*grepls);
 		*nr=0;
     	foreach(*grepls) {
          msiGetValByKey(*grepls,"DATA_REPL_NUM",*nr);
     	}
 }
-
-#Author: Jens Peters
-#Checks the availibility of federated items in all zones being connected 
-acCheckFederationPolicy(*myzone,*path,*nrfeds,*status){
-    msiExecStrCondQuery("SELECT ZONE_NAME",*zones)
-    *err=-1;
-	*i=0;
-	*status=0;
-    foreach(*zones){
-		msiGetValByKey(*zones,"ZONE_NAME",*fedzone);
-        if (*myzone!=*fedzone) {
-			*err=errorcode(msiObjStat("/*fedzone/*path",*out));
-        	writeLine("serverLog","*err for /*fedzone/*path");
-			if (*err==0 ) {
-           		*i=*i+1;
-        	}
-		}
-    }
-    if (*i>=*nrfeds) {
-        *status=1;
-    } else { *status=0; }
-
+#Author: Jens Peters LVRInfoKom 2014
+#IRODS TO IRODS Replication check
+acPostProcForPut { ON($objPath like "/$irodsZone/federated/*.tar") {
+	writeLine("serverLog","recieved $objPath as a federated package");
+	acVerifyChecksum($objPath,*status)
+	if (*status==0) {
+		msiDataObjUnlink($objPath,"forceFlag=",*out)
+		fail();
+	}
+}	
+}
+#Author: Jens Peters LVRInfoKo, 2014
+#Checks the number of federated items in all zones being connected 
+acGetNumberOfCopies(*homeDao,*numberOfCopies){
+			*numberOfCopies = 0;
+			msiAddSelectFieldToGenQuery("ZONE_NAME","null", *GenQ2)
+                        msiAddSelectFieldToGenQuery("ZONE_TYPE","null", *GenQ2)
+                        msiAddConditionToGenQuery("ZONE_TYPE"," = ","remote",*GenQ2)
+                        msiExecGenQuery(*GenQ2, *zones)
+                        *ok=0;
+                        *err=errorcode(msiObjStat(*homeDao,*out));
+                         writeLine("serverLog","*err for *homeDao");
+                        if (*err==0 ) {
+                                *numberOfCopies=1;
+                        }
+			foreach(*zones){
+                        	msiGetValByKey(*zones,"ZONE_NAME",*zone);
+				*destColl="/*zone/federated*homeDao"
+				*err=errorcode(msiObjStat(*destColl,*out));
+        			writeLine("serverLog","*err for *destColl");
+				if (*err==0 ) {
+           			*numberOfCopies=*numberOfCopies+1;
+        			}
+			}
+			msiCloseGenQuery(*GenQ2,*status)
 }
 
-#Autor: Jens Peters
-#Checks the integrity of a DO.
-#integrity means that a DO has the required nums of min_repls and
-#has the same checksum it had, when we first ingested it. 
-
-# 0=failure, either the min_repls is not achieved or the checksum failed.
+#Author: Jens Peters
+#Checks the local integrity of a DO by checking it's local replications
+# 0=failure, the checksum failed.
 # 1=ok the object status is ok.
-# 2=To be rechecked (e.g. Resource unavailable)
 acVerifyChecksum(*objPath,*status){
 	*status=0;
 	*checksumchk=0;
 	*replchk=0;
 	msiGetSystemTime(*systime,nop)
-	*error=errorcode( msiDataObjChksum("*objPath","ChksumAll=++++verifyChksum=",*status))
+	*error=errorcode( msiDataObjChksum("*objPath","ChksumAll=++++verifyChksum=",*localCs))
         if (*error < 0 ) {
                     *csf=""
                     if (*error == -314000 ) {
@@ -210,16 +97,283 @@ acVerifyChecksum(*objPath,*status){
 		    if (*error != -314000 ) {
                         *checksumchk=0
                     }
-                    writeLine("stdout","SERVERE *csf FAILURE: *error *objPath");
-                    msiWriteRodsLog("*csf FAILURE: *error *objPath",*junk) 
+                    writeLine("serverLog","SEVERE *csf FAILURE: *error *objPath");
          } else { *checksumchk=1 }
-         msiString2KeyValPair("checked=*checksumchk",*kvpaircs)
-         msiSetKeyValuePairsToObj(*kvpaircs,"*objPath","-d")
-         msiString2KeyValPair("last_checked=*systime",*kvpairts)
-         msiSetKeyValuePairsToObj(*kvpairts,"*objPath","-d")
-		*status=*checksumchk;
+	msiString2KeyValPair("checked=*checksumchk",*kvpaircs)
+        msiSetKeyValuePairsToObj(*kvpaircs,"*objPath","-d")
+        msiString2KeyValPair("last_checked=*systime",*kvpairts)
+        msiSetKeyValuePairsToObj(*kvpairts,"*objPath","-d")
+	*status=*checksumchk;
 }
 
+# Author Jens Peters
+# Verifies federated copies of DAO synchronously
+# Returns amount of errors on registered federated copies
+# 
+acVerifyChecksumFedSync(*objPath,*errors){
+	*errors=0
+	msiAddSelectFieldToGenQuery("ZONE_NAME","null", *GenQ2)
+        msiAddSelectFieldToGenQuery("ZONE_TYPE","null", *GenQ2)
+        msiAddConditionToGenQuery("ZONE_TYPE"," = ","remote",*GenQ2)
+        msiExecGenQuery(*GenQ2, *zones)
+	foreach(*zones){
+             	msiGetValByKey(*zones,"ZONE_NAME",*zone);
+             	*destColl="/*zone/federated*objPath"
+		*err=errorcode(msiObjStat(*destColl,*out));
+                 writeLine("serverLog","*err for *destColl");
+                 if (*err==0 ) {
+         		*error=errorcode( msiDataObjChksum("*destColl","ChksumAll=++++verifyChksum=",*cs))
+        		if (*error < 0 ) {
+                      		writeLine("serverLog","FAILURE VerifyChecksum Source: *objPath federated Destination: *error *destColl")
+				*errors=*errors+1		
+			} 
+		} 
+	}
+	msiCloseGenQuery(*GenQ2,*status)
+	writeLine("serverLog","*objPath has (*errors) Errors on existing federated copies");
+}
+
+# Quick Checking object
+# depends on running Service checkAIP per node
+# Author Jens Peters
+# INPUT objPath the object to check
+# OUTPUT status 0 failure 1 ok
+#
+acIsValid(*objPath,*status) {
+	msiSplitPath(*objPath, *coll, *dname)
+	*lc=""
+	*status=0
+	*ownState="0"
+	*foreignState="0"
+	msiExecStrCondQuery("SELECT DATA_NAME, COLL_NAME, META_DATA_ATTR_NAME, META_DATA_ATTR_VALUE where COLL_NAME = '*coll' and DATA_NAME = '*dname' and META_DATA_ATTR_NAME = 'last_checked'",*lc)
+	foreach(*lc) {
+        	msiGetValByKey(*lc,"META_DATA_ATTR_VALUE",*last_checked);
+        }
+	writeLine("serverLog","Package *objPath *last_checked");
+	msiExecStrCondQuery("SELECT DATA_NAME, COLL_NAME, META_DATA_ATTR_NAME, META_DATA_ATTR_VALUE where COLL_NAME = '*coll' and DATA_NAME = '*dname' and META_DATA_ATTR_NAME = 'checked'",*checkDaos)
+        foreach(*checkDaos) {
+		msiGetValByKey(*checkDaos,"META_DATA_ATTR_VALUE",*ownState);
+		writeLine("serverLog","Package *objPath was checked locally *ownState");
+
+	}
+	msiExecStrCondQuery("SELECT DATA_NAME, COLL_NAME, META_DATA_ATTR_NAME, META_DATA_ATTR_VALUE where COLL_NAME = '*coll' and DATA_NAME = '*dname' and META_DATA_ATTR_NAME = 'checked_foreign'",*foreign)
+       	foreach(*foreign) {
+		msiGetValByKey(*foreign,"META_DATA_ATTR_VALUE",*foreignState);
+		writeLine("serverLog","Package *objPath was checked remote *foreignState");
+		
+       	}
+	if (*ownState=="1") {
+		if (*foreignState=="1") {
+			*status=1
+		}
+	}
+}
+
+# Gets the resource for a given Resource Group name
+# INPUT rg resource group name
+# OUTPUT res resource 
+# Author Jens Peters
+#
+acGetRescForRg(*rg,*res) {
+	*res=""
+        msiExecStrCondQuery("SELECT RESC_NAME WHERE RESC_GROUP_NAME = '*rg' ",*rescl);
+        foreach(*rescl) {
+            msiGetValByKey(*rescl,"RESC_NAME",*res);
+        }
+}
+
+# Gets a list of foreign zones connected to this node
+# INPUT forbiddennodes, nodes to which the syning is disallowed
+# OUTPUT hosts comma seperated values of remote hosts 
+# Author Jens Peters
+#
+
+acGetHostsOnGrid(*hosts,*forbiddenNodes) {
+        *hosts=list()
+        *hst="";
+        msiAddSelectFieldToGenQuery("ZONE_NAME","null", *GenQ2)
+        msiAddSelectFieldToGenQuery("ZONE_TYPE","null", *GenQ2)
+        msiAddSelectFieldToGenQuery("ZONE_CONNECTION","null", *GenQ2)
+        msiAddConditionToGenQuery("ZONE_TYPE"," = ","remote",*GenQ2)
+        *attrVall=split(*forbiddenNodes, ",");
+        foreach(*attrVal in *attrVall) {
+             msiAddConditionToGenQuery("ZONE_NAME"," != ",*attrVal,*GenQ2)
+        }
+        msiExecGenQuery(*GenQ2, *zones)
+        foreach(*zones){
+                 msiGetValByKey(*zones,"ZONE_CONNECTION",*host);
+                *hst="*host;*hst"
+        }
+        msiCloseGenQuery(*GenQ2,*out)
+        *hosts=split(*hst,";")
+}
+
+
+# Helper function to read the local zonename 
+# remotely (workaround) 
+# OUTPUT the zone name
+# Author Jens Peters
+#
+acGetLocalZoneName(*zone) {
+        *zone="";
+        msiAddSelectFieldToGenQuery("ZONE_NAME","null", *GenQ2)
+        msiAddSelectFieldToGenQuery("ZONE_TYPE","null", *GenQ2)
+        msiAddConditionToGenQuery("ZONE_TYPE"," = ","local",*GenQ2)
+        msiExecGenQuery(*GenQ2, *zones)
+        foreach(*zones){
+                 msiGetValByKey(*zones,"ZONE_NAME",*zone);
+        }
+        msiCloseGenQuery(*GenQ2,*out)
+}
+
+# Helper for log out 
+# Author: Jens Peters
+acLog(*log) {
+       writeLine("stdout",*log)
+       writeLine("serverLog",*log)
+}
+# Federates srcColl to the zones list 
+# zones list must be list(list(zone, sizeMBytes))
+# list successfully synced zones to successZones
+# INPUT srcDao the sourceDao to be syned
+# INPUT zones the zones to synchronize to
+# OUTPUT successZones as comma separated values
+# Author Jens Peters
+#
+acFederateToZones(*srcDao,*destResc,*zones,*successZones,*min_copies) {
+	*ok=0
+	*err=0
+	*successZones=""
+	foreach(*zones){
+		if (*ok < *min_copies) {
+            		*zone=elem(*zones,0)
+            		*mspace=elem(*zones,1)
+			*destDao="/*zone/federated*srcDao"
+			*log="Synchronize *srcDao to *destDao *zone which has *mspace MB free"
+           		acLog(*log)	
+			*error=errorcode(msiDataObjRsync(*srcDao,"IRODS_TO_IRODS",*destResc,*destDao,*Status))
+           		if (*error < 0 ) {
+                   		*err=*err+1
+                    		*log="recieved errorcode *error while federating to *zones *destDao"
+				 acLog(*log)
+			} else {
+                   	*ok=*ok+1       
+   	        	*successZones="*zone,*successZones"
+			*log="Synchronized *srcDao"
+			 acLog(*log)
+			}
+		}
+ 	}
+} 
+
+# Gets a List of Hostnames ordered by the actual 
+# amount of free space on resource found in given resc group naem. 
+# Depends on locally running ServerMonitoring rules by Jean Yves
+# Author Jens Peters
+# RETURNS *servers as list(list("zone_name","mb")) by zone names ordered by free space
+# 
+acGetHostsOrderedByFreeSpaceOnGridDesc(*servers, *rg,*forbiddenNodes) {
+	*hst=""
+        *ls=""
+        *mbyte=0
+        *hosts=list()
+        acGetHostsOnGrid(*hosts,*forbiddenNodes)
+        foreach(*hosts) {
+                *err=errorcode(remote(*hosts,"null") {
+                        *resource=""
+                        acGetRescForRg(*rg,*resource)
+                        acGetFreeSpaceOnResc(*resource,*mbyte)
+                        acGetLocalZoneName(*zone)
+                        *ls="*zone,*mbyte;"
+                })
+		if (*err<0) {
+			acLog("recieved Error code *err on remotely determining free space")
+		}
+        }
+	*servers=list()
+	writeLine("stdout","Fill grade List: *ls")
+	
+	*sv=split(*ls,";")
+	foreach(*sv) {
+		*tmp=split(*sv,",")
+		*byte=elem(*tmp,1)
+		*serv=elem(*tmp,0)
+		*servers=cons(list("*serv","*byte"),*servers)
+	}
+	# Do the bubble search
+	*n=size(*servers)-1
+        *unsortiert=1
+        while (*unsortiert==1) {
+                *unsortiert=0
+                for(*i=0; *i < *n; *i=*i+1) {
+                        *t1=int(elem(elem(*servers,*i),1))
+                        *t2=int(elem(elem(*servers,*i+1),1))
+                        if (*t1 > *t2) {
+                                *tempL1=elem(*servers,*i)
+                                *tempL2=elem(*servers,*i+1)
+                                *servers=setelem(*servers,*i,*tempL2)
+                                *servers=setelem(*servers,*i+1,*tempL1)
+                                *unsortiert=1
+                        }
+                }
+        }
+	acLog("Sorted List by fill grades: *servers")
+}
+# Federate Dao to the least loaded connected zones
+# INPUT dao The DataObject
+# INPUT *destResc Group name
+# OUTPUT sucessfully copied zones
+# INPUT Forbidden zones
+# INPUT min_copies
+# Author: Jens Peters
+#
+acFederateLeastLoaded(*dao,*destResc,*successZones,*forb,*min_copies) {
+  	*zones=""	 
+	acGetHostsOrderedByFreeSpaceOnGridDesc(*zones,*destResc,*forb)
+        acFederateToZones(*dao,*destResc,*zones,*successZones,*min_copies)
+}
+
+# Helper Function for Syncing results and stoing AVU Metadata to object
+# INPUT dao The Data object
+# INPUT successful synced zones
+# INPUT min_copies
+# Author: Jens Peters
+#
+acPrintSyncResults(*dao,*syncs,*min_copies) {
+         *copies=size(split(*syncs,","))
+         if (*copies == 0) {
+             acLog("Not reached any zone!")
+         }
+         if (*copies > 0) {
+             msiString2KeyValPair("SYNCHRONIZED_TO=*syncs",*kvpaircs2)
+             msiSetKeyValuePairsToObj(*kvpaircs2,*dao,"-d")
+         }
+         if (*copies < *min_copies) {
+             acLog("...still missing Copies, actually *copies, must have *min_copies!")
+	 }
+         if (*copies >= *min_copies) {
+             msiString2KeyValPair("FEDERATED=1",*kvpaircs3)
+             msiSetKeyValuePairsToObj(*kvpaircs3,*dao,"-d")
+             acLog("...fulfilled Copies of *min_copies")
+         }
+}
+
+# Gets the free space per resource
+# to be called remotely
+# Depends on running daemons
+# serverMonStats.r
+# serverMonStatsDigest.r
+# Author: Jens Peters
+#
+acGetFreeSpaceOnResc(*resc,*mbyte) {
+	*out=0
+	msiExecStrCondQuery("SELECT RESC_NAME, RESC_LOC, RESC_FREE_SPACE WHERE RESC_NAME = '*resc' ",*lc)
+        foreach(*lc) {
+                msiGetValByKey(*lc,"RESC_FREE_SPACE",*out);
+        } 
+	writeLine("stdout","VT02: *resc *out")
+	*mbyte=*out
+}
 
 #old fashioned rules, partly used for backward compatibility
 @backwardCompatible "true"
@@ -229,22 +383,3 @@ acAclPolicy||msiAclPolicy(STRICT)|nop
 
 acPostProcForDelete||nop|nop
 
-#Jens Peters
-#computes Checksum on DO
-acComputeChecksum(*destObject)||msiWriteRodsLog("CS operation on *destObject", *out)##msiDataObjChksum(*destObject,"forceChksum=",*chksum)##msiWriteRodsLog("recieved *chksum",*out)##msiString2KeyValPair("chksum=*chksum",*kvpaircs)##msiSetKeyValuePairsToObj(*kvpaircs,*destObject,"-d")##msiGetSystemTime(*systime,nop)##msiString2KeyValPair("last_checked=*systime",*kvpairts)##msiSetKeyValuePairsToObj(*kvpairts,*destObject,"-d")|nop
-
-#Jens Peters, to secure insert into queue from added temp files done by webdav: we know it is a regular ZIP file: ->URN
-#sets status to 100
-#we check if we've got the Packagename already in the Queue.
-#acPostProcForPut|($objPath like /da-nrw/home/*) && ($objPath not like /da-nrw/home/*._*) && ($dataSize > 0)&& ($objPath not like /da-nrw/home/*/outgoing/*.tar)|msiWriteRodsLog('STANDARD package recieved: $objPath, $dataSize',*junk)##acPutObject($objPath,$rescLoc,$rescName,100)|nop
-
-#Jens Peters
-#call checksum computation
-acPostProcForObjRename(*sourceObject,*destObject)|(*destObject like /da-nrw/aip/*.tar)|acComputeChecksum(*destObject)|nop
-
-#Jens Peters
-#computes Checksum on DO
-acPostProcForObjCreate|($objPath like /da-nrw/aip/*.tar)|acComputeChecksum($objPath)|nop
-
-#Read access on archival storage path
-acPreprocForDataObjOpen|($writeFlag == 0) && ($objPath like /da-nrw/aip/*)|msiWriteRodsLog(open for read AIP on archival storage path from $userNameClient, *junk)|nop
