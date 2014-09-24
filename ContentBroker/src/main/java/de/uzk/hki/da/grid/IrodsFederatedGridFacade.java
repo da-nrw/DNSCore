@@ -47,6 +47,19 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	private static Logger logger = LoggerFactory
 			.getLogger(IrodsFederatedGridFacade.class);
 	
+	
+
+	/* (non-Javadoc)
+	 * @see de.uzk.hki.da.grid.IrodsGridFacadeBase#put(java.io.File, java.lang.String)
+	 */
+	@Override
+	public boolean put(File file, String gridPath , StoragePolicy sp) throws IOException {
+		boolean ret = false;
+		ret = super.put(file, gridPath, sp);
+		irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(gridPath, "FEDERATE", "0");
+		return ret;
+	}
+	
 	@Override
 	public boolean storagePolicyAchieved(String gridPath2, StoragePolicy sp) {
 		int minNodes = sp.getMinNodes();
