@@ -118,7 +118,7 @@ public class NewActionRegistryTests {
 	}
 	
 	@Test
-	public void testDeristerOneWhichIsNotPresent(){
+	public void testDeregisterOneWhichIsNotPresent(){
 		
 		try{ 
 			registry.deregister(action1);
