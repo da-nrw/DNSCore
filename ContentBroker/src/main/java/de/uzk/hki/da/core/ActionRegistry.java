@@ -33,7 +33,7 @@ import de.uzk.hki.da.cb.AbstractAction;
 
 /**
  * Keeps track of all currently running actions (stores references). 
- * 
+ * @deprecated To be replaced by NewActionRegistry
  * @author Sebastian Cuy
  * @author Daniel M. de Oliveira
  */

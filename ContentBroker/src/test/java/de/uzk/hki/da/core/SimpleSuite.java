@@ -166,7 +166,8 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	UpdateMetadataRheinlaender.class,
 	SecondaryFormatScanTests.class,
 	RestartIngestWorkflowActionTests.class,
-	PostRetrievalActionTest.class
+	PostRetrievalActionTest.class,
+	NewActionRegistryTests.class
 })
 public class SimpleSuite {
 
