@@ -62,10 +62,14 @@ public class ArchiveReplicationAction extends AbstractAction {
 		String filename = object.getIdentifier() + ".pack_" + object.getLatestPackage().getName() + ".tar";
 		Path target = Path.make(object.getContractor().getShort_name(), object.getIdentifier(), filename);
 		StoragePolicy sp = new StoragePolicy(localNode);
+		sp.setMinNodes(preservationSystem.getMinRepls());
 		sp.setDestinations(new ArrayList<String>(getDestinations()));
-		
-		// TODO: this is a user/system exception!!
-		if (!sp.isPolicyAchievable()) throw new RuntimeException ("POLICY is not achievable! More forbidden nodens then required minimal copies!");
+		sp.setForbiddenNodes(object.getContractor().getForbidden_nodes());
+		// TODO: this is a user/system exception!! commented out due to federation
+		if (!sp.isPolicyAchievable()) {
+			logger.warn("STORAGE POLICY not achievable!!");
+			//throw new RuntimeException ("POLICY is not achievable!!");
+		}
 		
 		try {
 			Path newFilePath = Path.make(localNode.getWorkAreaRootPath(), "work", object.getContractor().getShort_name(), filename);
