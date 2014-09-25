@@ -121,14 +121,6 @@ public class UpdateMetadataAction extends AbstractAction {
 		logConvertEventsOnDebugLevel();
 		
 		List<DAFile> daFiles = new ArrayList<DAFile>();
-		
-		for (String repName : getRepNames()) {
-			String repPath = Path.make(object.getDataPath(),repName).toString();
-			File repDir = new File(repPath);
-			if (!repDir.exists() && (repName.contains("dip/institution") || repName.contains("dip/public"))) {
-				throw new RuntimeException("Unable to present object! The dip folder does not exist!");
-			}
-		}
 			
 		int finishedReplacements = 0;
 		if(!"XMP".equals(packageType)) {
@@ -140,21 +132,23 @@ public class UpdateMetadataAction extends AbstractAction {
 			
 			for (String repName : getRepNames()) {
 				
-				metadataFile = Path.makeFile(object.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName);
-                if (!metadataFile.exists()) throw new FileNotFoundException();
-				
-				if("EAD".equals(packageType)) {
-					EadMetsMetadataStructure emms = new EadMetsMetadataStructure(metadataFile, daFiles);
-					finishedReplacements = updatePathsInEad(emms, repName);
-				} else if ("METS".equals(packageType)) {
-					Map<DAFile,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
-					MetsMetadataStructure mms = new MetsMetadataStructure(metadataFile, daFiles);
-					finishedReplacements = updatePathsInMets(mms, repName, metadataFile, replacements);
-				} else if("LIDO".equals(packageType)) {
-					LidoMetadataStructure lms = new LidoMetadataStructure(metadataFile, daFiles);
-					finishedReplacements = updatePathsInLido(lms, repName);
+				if(representationExists(repName)) {
+					metadataFile = Path.makeFile(object.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName);
+	                if (!metadataFile.exists()) throw new FileNotFoundException();
+					
+					if("EAD".equals(packageType)) {
+						EadMetsMetadataStructure emms = new EadMetsMetadataStructure(metadataFile, daFiles);
+						finishedReplacements = updatePathsInEad(emms, repName);
+					} else if ("METS".equals(packageType)) {
+						Map<DAFile,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
+						MetsMetadataStructure mms = new MetsMetadataStructure(metadataFile, daFiles);
+						finishedReplacements = updatePathsInMets(mms, repName, metadataFile, replacements);
+					} else if("LIDO".equals(packageType)) {
+						LidoMetadataStructure lms = new LidoMetadataStructure(metadataFile, daFiles);
+						finishedReplacements = updatePathsInLido(lms, repName);
+					}
+					logger.debug("Successfully replaced "+finishedReplacements+" references!");
 				}
-				logger.debug("Successfully replaced "+finishedReplacements+" references!");
 			}
 		}
 		
@@ -165,12 +159,14 @@ public class UpdateMetadataAction extends AbstractAction {
 			collectXMP();
 			
 			for (String repName : getRepNames()) {
-				logger.debug("representation: "+repName);
-				logger.debug("Search for metadata file "+Path.make(object.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName));
-				metadataFile = Path.makeFile(object.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName);
-				if (!metadataFile.exists()) throw new FileNotFoundException();
-	            XMPMetadataStructure xms = new XMPMetadataStructure(metadataFile, daFiles);
-				updatePathsInRDF(xms, repName);
+				if(representationExists(repName)) {
+					logger.debug("representation: "+repName);
+					logger.debug("Search for metadata file "+Path.make(object.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName));
+					metadataFile = Path.makeFile(object.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName);
+					if (!metadataFile.exists()) throw new FileNotFoundException();
+		            XMPMetadataStructure xms = new XMPMetadataStructure(metadataFile, daFiles);
+					updatePathsInRDF(xms, repName);
+				}
 			}
 		}
 		
@@ -400,7 +396,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			}
 			try {
 				for (String repName : getRepNames()) {
-					if (!repName.startsWith("dip")) continue;
+					if (!repName.startsWith("dip") 	|| !representationExists(repName)) continue;
 					FileInputStream inputStream = new FileInputStream(Path.make(object.getDataPath(),repName,metadataFile).toString());
 					BOMInputStream bomInputStream = new BOMInputStream(inputStream);
 					XsltEDMGenerator xsltGenerator = new XsltEDMGenerator(xsltFile, bomInputStream);
@@ -608,30 +604,31 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		if (packageType != null) {
 			for (String repName : getRepNames()) {
-				File file = Path.make(object.getDataPath(),repName,"DC.xml").toFile();
-				if (file.exists()) {
-					try {
-						FileInputStream inputStream = new FileInputStream(file);
-						BOMInputStream bomInputStream = new BOMInputStream(inputStream);
-					
-						SAXBuilder builder = new SAXBuilder();
-						Document doc;
-					
-						doc = builder.build(bomInputStream);
-						writeDCForDIP(doc, packageType, file.getAbsolutePath());
-					} catch (Exception e) {
-						throw new RuntimeException("Unable to write package type to DC!", e);
-					} 
-				} else {
-					logger.warn("Unable to locate DC file, creating one ...");
-					Document doc = new Document();
-					doc.setRootElement(new Element("dc", "oai_dc", "http://www.openarchives.org/OAI/2.0/oai_dc/"));
-					String dcPath = object.getDataPath() +"/"+ repName + "/DC.xml";
-					writeDCForDIP(doc, packageType, dcPath);
+				if(representationExists(repName)) {
+					File file = Path.make(object.getDataPath(),repName,"DC.xml").toFile();
+					if (file.exists()) {
+						try {
+							FileInputStream inputStream = new FileInputStream(file);
+							BOMInputStream bomInputStream = new BOMInputStream(inputStream);
+						
+							SAXBuilder builder = new SAXBuilder();
+							Document doc;
+						
+							doc = builder.build(bomInputStream);
+							writeDCForDIP(doc, packageType, file.getAbsolutePath());
+						} catch (Exception e) {
+							throw new RuntimeException("Unable to write package type to DC!", e);
+						} 
+					} else {
+						logger.warn("Unable to locate DC file, creating one ...");
+						Document doc = new Document();
+						doc.setRootElement(new Element("dc", "oai_dc", "http://www.openarchives.org/OAI/2.0/oai_dc/"));
+						String dcPath = object.getDataPath() +"/"+ repName + "/DC.xml";
+						writeDCForDIP(doc, packageType, dcPath);
+					}
 				}
 			}
-		}
-		
+		}	
 	}
 	
 	private void writeDCForDIP(Document doc, String packageType, String dcPath) {
@@ -645,6 +642,18 @@ public class UpdateMetadataAction extends AbstractAction {
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to write package type to DC!", e);
 		} 
+	}
+	
+	private boolean representationExists(String repName) {
+		boolean repExists = false;
+		String repPath = Path.make(object.getDataPath(),repName).toString();
+		File repDir = new File(repPath);
+		if(repDir.exists()) {
+			repExists = true;
+		} else {
+			logger.error("Representation "+repName+" does not exist!");
+		}
+		return repExists;
 	}
 
 	@Override
