@@ -58,14 +58,7 @@ public class PostRetrievalAction extends AbstractAction {
 		String mergeTarName = object.getIdentifier() + ".tar";
 		
 		String transferAreaRootPath = localNode.getUserAreaRootPath().toString();
-		
-		
-
-	;
-		
-		
-		
-		if ((new Date().getTime())/1000L > (Long.parseLong(job.getDate_modified())+(86400L*1))){
+		if ((new Date().getTime())/1000L > (Long.parseLong(job.getDate_created())+(86400L*1))){
 			
 			if (transferAreaRootPath!= null && !transferAreaRootPath.equals("")) {
 			String webDavOutgoingPath = transferAreaRootPath +"/"+ csn +"/outgoing/";

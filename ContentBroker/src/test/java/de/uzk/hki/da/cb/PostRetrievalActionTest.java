@@ -69,7 +69,6 @@ public class PostRetrievalActionTest  extends ConcreteActionUnitTest {
 		Calendar now = Calendar.getInstance();
 		now.add(Calendar.HOUR_OF_DAY, -25);
 		j.setDate_created(String.valueOf(now.getTimeInMillis()/1000L));
-		j.setDate_modified(String.valueOf(now.getTimeInMillis()/1000L));
 		assertTrue(action.implementation());
 	}
 	/**
@@ -82,7 +81,6 @@ public class PostRetrievalActionTest  extends ConcreteActionUnitTest {
 		Calendar now = Calendar.getInstance();
 		now.add(Calendar.HOUR_OF_DAY, -9);
 		j.setDate_created(String.valueOf(now.getTimeInMillis()/1000L));
-		j.setDate_modified(String.valueOf(now.getTimeInMillis()/1000L));
 		assertFalse(action.implementation());
 	}
 
