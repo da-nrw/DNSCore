@@ -44,6 +44,11 @@ public class SmartActionFactory {
 		this.ar  = ar;
 	}
 
+	
+	/**
+	 * @param jobs
+	 * @return fully instantiated and initialized Actions which are ready to get executed.
+	 */
 	public List<AbstractAction> createActions(Set<Job> jobs) {
 		
 		Map<Job,AbstractAction> jobsWhereThreadLimitNotReached = 

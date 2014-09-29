@@ -19,6 +19,24 @@
 
 package de.uzk.hki.da.action;
 
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import de.uzk.hki.da.core.HibernateUtil;
+import de.uzk.hki.da.model.CentralDatabaseDAO;
+import de.uzk.hki.da.model.ConversionInstruction;
+import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.DAOException;
+import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.PreservationSystem;
+
 /**
  * Fetches Jobs from the db.
  * Asks Smart Action factory which of them can be executed.
@@ -28,4 +46,31 @@ package de.uzk.hki.da.action;
  */
 public class JobManager {
 
+	private static Logger logger = LoggerFactory
+			.getLogger(JobManager.class);
+	
+	public void fetchJobsExecuteActions(Node node) {
+		
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		List<Job> joblist=null;
+		joblist = session
+				.createQuery("SELECT j FROM Job j LEFT JOIN j.obj as o where j.status like '%0' and "
+						+ "j.responsibleNodeName=?2 and o.object_state IN (100, 50, 40) order by j.date_modified asc ")
+						.setParameter("2", node.getName()).setCacheable(false).list();
+		
+
+		for (Job j:joblist) {
+			// To circumvent lazy initialization issues
+			logger.debug(":"+j);
+			for (ConversionInstruction ci:j.getConversion_instructions()){}
+			for (Job j1:j.getChildren()){}
+			for (Package p:j.getObject().getPackages()){
+				for (DAFile f:p.getFiles()){}
+				for (Event e:p.getEvents()){}
+			}
+		}
+		
+		session.close();
+	}
 }
