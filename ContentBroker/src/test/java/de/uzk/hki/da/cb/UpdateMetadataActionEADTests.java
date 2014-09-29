@@ -19,9 +19,7 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertTrue;
-//import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -49,7 +47,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-//import de.uzk.hki.da.core.UserException;
+
+
+import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
@@ -123,12 +123,9 @@ public class UpdateMetadataActionEADTests {
 		action.setDcMappings(dcMappings);
 		
 		action.setMtds(mtds);
-		action.setObject(object);
 		action.setJob(job);
 		action.setPSystem(pSystem);
-		
 		action.setPresMode(true);
-		action.implementation();
 	}
 	
 	@After 
@@ -143,6 +140,9 @@ public class UpdateMetadataActionEADTests {
 	@Test
 	public void test() throws IOException, JDOMException, ParserConfigurationException, SAXException {
 		
+		action.setObject(object);
+		action.implementation();
+		
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_B_REP,"mets_2_99.xml").toFile()));
 
@@ -152,7 +152,10 @@ public class UpdateMetadataActionEADTests {
 	}
 	
 	@Test
-	public void checkReplacementsInEad() throws FileNotFoundException, JDOMException, IOException {
+	public void checkReplacementsInEad() throws FileNotFoundException, JDOMException, IOException, ParserConfigurationException, SAXException {
+		
+		action.setObject(object);
+		action.implementation();
 		
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_B_REP,"vda3.XML").toFile()));
@@ -163,19 +166,17 @@ public class UpdateMetadataActionEADTests {
 		}
 	}
 	
-	
-	
-//	@Test
-//	public void upperLowerCaseMismatch() throws IOException, JDOMException, ParserConfigurationException, SAXException {
-//		event.setSource_file(new DAFile(object.getLatestPackage(),_1_A_REP,"alvr_Nr_4547_Aufn_067.tif"));
-//		
-//		try{
-//			action.implementation();
-//			fail();
-//		}catch(UserException e){
-//			assertTrue(e.getMessage().contains("but only"));
-//		}
-//	}
+	@Test
+	public void upperLowerCaseMismatch() throws IOException, JDOMException, ParserConfigurationException, SAXException {
+		event.setSource_file(new DAFile(object.getLatestPackage(),_1_A_REP,"alvr_Nr_4547_Aufn_067.tif"));
+		try{
+			action.setObject(object);
+			action.implementation();
+			fail();
+		}catch(UserException e){
+			assertTrue(e.getMessage().contains("but only"));
+		}
+	}
 	
 	private String getURL(Document doc){
 		

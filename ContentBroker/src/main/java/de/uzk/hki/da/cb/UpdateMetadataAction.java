@@ -49,6 +49,8 @@ import org.jdom.output.XMLOutputter;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.core.ConfigurationException;
+import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.metadata.LidoMetadataStructure;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;
@@ -122,15 +124,16 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		List<DAFile> daFiles = new ArrayList<DAFile>();
 			
-		int finishedReplacements = 0;
+		List<Integer> replacementList = new ArrayList<Integer>();
 		if(!"XMP".equals(packageType)) {
 			
 			metadataFileName = copyMetadataFileToNewReps(packageType,
 					metadataFileName);
-			
 			daFiles = object.getNewestFilesFromAllRepresentations("");
 			
 			for (String repName : getRepNames()) {
+				
+				logger.debug("Update path in "+repName+".");
 				
 				if(representationExists(repName)) {
 					metadataFile = Path.makeFile(object.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName);
@@ -138,16 +141,23 @@ public class UpdateMetadataAction extends AbstractAction {
 					
 					if("EAD".equals(packageType)) {
 						EadMetsMetadataStructure emms = new EadMetsMetadataStructure(metadataFile, daFiles);
-						finishedReplacements = updatePathsInEad(emms, repName);
+						replacementList = updatePathsInEad(emms, repName);
 					} else if ("METS".equals(packageType)) {
 						Map<DAFile,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
 						MetsMetadataStructure mms = new MetsMetadataStructure(metadataFile, daFiles);
-						finishedReplacements = updatePathsInMets(mms, repName, metadataFile, replacements);
+						replacementList = updatePathsInMets(mms, repName, metadataFile, replacements);
 					} else if("LIDO".equals(packageType)) {
 						LidoMetadataStructure lms = new LidoMetadataStructure(metadataFile, daFiles);
-						finishedReplacements = updatePathsInLido(lms, repName);
+						replacementList = updatePathsInLido(lms, repName);
 					}
-					logger.debug("Successfully replaced "+finishedReplacements+" references!");
+				}
+				int expectedReplacements = replacementList.get(0);
+				int actualReplacements = replacementList.get(1);
+				logger.debug("Successfully replaced "+actualReplacements+" references!");
+				if(expectedReplacements!=actualReplacements) {
+					throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,
+							expectedReplacements+" file(s) have been converted and for each one an entry in a METS file has to be updated. "+
+					"but only "+actualReplacements+" replacements could be done.", metadataFile.getAbsolutePath(), new Exception());
 				}
 			}
 		}
@@ -194,9 +204,9 @@ public class UpdateMetadataAction extends AbstractAction {
 		xms.makeReplacementsInRDf(replacementsMap);	
 	}
 	
-	private int updatePathsInEad(EadMetsMetadataStructure emms, String repName) throws JDOMException, IOException {
+	private List<Integer> updatePathsInEad(EadMetsMetadataStructure emms, String repName) throws JDOMException, IOException {
 		logger.debug("Update paths in EAD file "+emms.getMetadataFile().getAbsolutePath());
-		int replacementCount = 0;
+		List<Integer> replacementList = new ArrayList<Integer>();
 		
 		HashMap<String, String> eadReplacements = new HashMap<String, String>();
 		List<String> eadRefs = emms.getMetsRefsInEad();
@@ -221,29 +231,34 @@ public class UpdateMetadataAction extends AbstractAction {
 					}
 				}
 			}
-		}
-		
+		}		
 		emms.replaceMetsRefsInEad(metadataFile, eadReplacements);
-		replacementCount = eadReplacements.size();
 		
-		replacementCount = replacementCount + updatePathsInEADMetsFiles(emms, repName);
-		return replacementCount;
+		replacementList = updatePathsInEADMetsFiles(emms, repName);
+		return replacementList;
 	}
 	
-	private int updatePathsInEADMetsFiles(EadMetsMetadataStructure emms, String repName) throws IOException, JDOMException {
+	private List<Integer> updatePathsInEADMetsFiles(EadMetsMetadataStructure emms, String repName) throws IOException, JDOMException {
 		Map<DAFile,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
+		List<Integer> replacementList = new ArrayList<Integer>();
+		replacementList.add(replacements.size());
+		
 		int replacementCount = 0;
 		List<MetsMetadataStructure> mmsList = emms.getMetsMetadataStructures();
 		for (MetsMetadataStructure mms : mmsList) {
 			logger.debug("Update paths in METS file "+mms.getMetadataFile().getAbsolutePath());
-			replacementCount = replacementCount + updatePathsInMets(mms, repName, mms.getMetadataFile(), replacements);
+			replacementCount = replacementCount + updatePathsInMets(mms, repName, mms.getMetadataFile(), replacements).get(1);
 		}
-		return replacementCount;
+		replacementList.add(replacementCount);
+		return replacementList;
 	}
 	
-	private int updatePathsInMets(MetsMetadataStructure mms, String repName, File metsFile, Map<DAFile,DAFile> replacements) throws IOException, JDOMException {
+	private List<Integer> updatePathsInMets(MetsMetadataStructure mms, String repName, File metsFile, Map<DAFile,DAFile> replacements) throws IOException, JDOMException {
 		
-		int replacementCount = 0;
+		List<Integer> replacementList = new ArrayList<Integer>();
+		replacementList.add(replacements.size());
+		
+		int actualReplacements = 0;
 		List<Element> metsFileElemens = mms.getMetsFileElements();
 		@SuppressWarnings("rawtypes")
 		Iterator it = replacements.entrySet().iterator();
@@ -269,16 +284,18 @@ public class UpdateMetadataAction extends AbstractAction {
 					}
 					String mimetype = targetDAFile.getMimeType();
 					mms.makeReplacementsInMetsFile(metsFile, href, targetValue, mimetype, loctype);
-					replacementCount++;
+					actualReplacements++;
 				}
 			}
 		}
-		return replacementCount;
+		replacementList.add(actualReplacements);
+		return replacementList;
 	}
 	
-	private int updatePathsInLido(LidoMetadataStructure lms, String repName) throws IOException {
-		int replacementCount = 0;
+	private List<Integer> updatePathsInLido(LidoMetadataStructure lms, String repName) throws IOException {
+		List<Integer> replacementList = new ArrayList<Integer>();
 		Map<DAFile,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
+		replacementList.add(replacements.size());
 		HashMap<String, String> lidoReplacements = new HashMap<String, String>();
 		List<String> lidoRefs = lms.getLidoLinkResources();
 		@SuppressWarnings("rawtypes")
@@ -304,9 +321,9 @@ public class UpdateMetadataAction extends AbstractAction {
 				}
 			}
 		}
-		replacementCount = lidoReplacements.size();
 		lms.replaceRefResources(lidoReplacements);
-		return replacementCount;
+		replacementList.add(lidoReplacements.size());
+		return replacementList;
 	}
 
 	private Map<DAFile,DAFile> generateReplacementsMap(Package pkg,String repName,String absUrlPrefix) throws IOException{

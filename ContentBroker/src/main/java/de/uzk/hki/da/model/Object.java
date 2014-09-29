@@ -690,6 +690,7 @@ public class Object {
 		List<String> representations = new ArrayList<String>();
 		for (Package p:this.getPackages())
 			for (DAFile f:p.getFiles())
+				
 				representations.add(f.getRep_name());
 		Collections.sort(representations);
 		return representations;

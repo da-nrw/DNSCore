@@ -57,31 +57,20 @@ public abstract class MetadataStructure {
 	public abstract File getMetadataFile();
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private HashMap<DAFile, Boolean> checkExistenceOfReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
+	private HashMap<File, Boolean> checkExistenceOfReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
 		HashMap fileExistenceMap = new HashMap<File, Boolean>();
 		for(String ref : references) {
 			File refFile;
-			DAFile daFile = null;
+			Boolean fileExists = false;
 			try {
 				refFile = getCanonicalFileFromReference(ref, metadataFile);
 				logger.debug("Check referenced file: "+refFile.getAbsolutePath());
-				Boolean fileExists = false;
-				for(DAFile currentDafile : daFiles) {
-					daFile = currentDafile;
-					logger.debug("DAFile: "+daFile.getRelative_path());
-					if(refFile.getAbsolutePath().contains(daFile.getRelative_path())) {
-						fileExists = true;
-						break;
-					} else {
-						fileExists = false;
-					}
-				}
-				fileExistenceMap.put(daFile, fileExists);
-				if(fileExists) {
-					logger.debug("File "+ref+" exists.");
+				if(refFile.exists()) {
+					fileExists = true; 
 				} else {
-					logger.error("File "+ref+" does not exist.");
+					fileExists = false;
 				}
+				fileExistenceMap.put(refFile, fileExists);
 			} catch (IOException e) {
 				logger.error("File "+ref+" does not exist.");
 				e.printStackTrace();
@@ -90,12 +79,12 @@ public abstract class MetadataStructure {
 		return fileExistenceMap;
 	}
 	
-	public List<DAFile> getReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
-		HashMap<DAFile, Boolean> fileExistenceMap = checkExistenceOfReferencedFiles(metadataFile, references, daFiles);
-		List<DAFile> existingMetsFiles = new ArrayList<DAFile>();
-		for(DAFile dafile : fileExistenceMap.keySet()) {
-			if(fileExistenceMap.get(dafile)==true) {
-				existingMetsFiles.add(dafile);
+	public List<File> getReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
+		HashMap<File, Boolean> fileExistenceMap = checkExistenceOfReferencedFiles(metadataFile, references, daFiles);
+		List<File> existingMetsFiles = new ArrayList<File>();
+		for(File file : fileExistenceMap.keySet()) {
+			if(fileExistenceMap.get(file)==true) {
+				existingMetsFiles.add(file);
 			}
 		}
 		return existingMetsFiles;
