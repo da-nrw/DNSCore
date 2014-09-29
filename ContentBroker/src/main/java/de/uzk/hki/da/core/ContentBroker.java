@@ -32,7 +32,9 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.core.task.TaskRejectedException;
 
-import de.uzk.hki.da.cb.AbstractAction;
+import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.action.ActionFactory;
+import de.uzk.hki.da.action.ActionInformation;
 import de.uzk.hki.da.utils.Utilities;
 
 

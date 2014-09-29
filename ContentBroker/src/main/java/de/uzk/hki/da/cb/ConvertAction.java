@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.format.ConverterService;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
@@ -51,12 +52,12 @@ public class ConvertAction extends AbstractAction {
 	public ConvertAction(){}
 	
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 		
 	}
@@ -99,7 +100,7 @@ public class ConvertAction extends AbstractAction {
 	 * @author Thomas Kleinke
 	 */
 	@Override
-	void rollback() throws IOException {
+	public void rollback() throws IOException {
 		
 		if (localConversionEvents != null) {
 			for (Event e : localConversionEvents) {

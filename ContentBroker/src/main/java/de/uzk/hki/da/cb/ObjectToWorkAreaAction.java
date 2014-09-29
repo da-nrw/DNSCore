@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.GridFacade;
@@ -39,18 +40,18 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 	public ObjectToWorkAreaAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;}
 	
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
 		
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 	}
 
 	@Override
-	boolean implementation() {
+	public boolean implementation() {
 		
 		object.getDataPath().toFile().mkdirs();
 		
@@ -81,7 +82,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 	
 	
 	@Override
-	void rollback() throws Exception {
+	public void rollback() throws Exception {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 

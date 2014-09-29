@@ -52,7 +52,7 @@
 		<property name="name" value="SendToPresenterAction" />
 	</bean>
 	
-	<bean id="actionRegistry" class="de.uzk.hki.da.core.ActionRegistry" scope="prototype">
+	<bean id="actionRegistry" class="de.uzk.hki.da.action.ActionRegistry" scope="prototype">
 		<property name="maxThreads">
 			<util:map>
 				<entry key="IngestTarAction" value="1"/>

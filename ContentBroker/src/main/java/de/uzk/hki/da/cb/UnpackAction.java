@@ -32,6 +32,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
@@ -74,17 +75,17 @@ public class UnpackAction extends AbstractAction {
 	private IngestGate ingestGate;
 	
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 	}
 
 	@Override
-	boolean implementation() throws IOException{
+	public boolean implementation() throws IOException{
 		
 		Path absoluteSIPPath = Path.make(
 				localNode.getIngestAreaRootPath(),
@@ -115,7 +116,7 @@ public class UnpackAction extends AbstractAction {
 
 	
 	@Override
-	void rollback() throws IOException {
+	public void rollback() throws IOException {
 		FileUtils.deleteDirectory(Path.make(object.getPath()).toFile());
 		
 		new File(localNode.getWorkAreaRootPath() + object.getContractor().getShort_name() + "/" + 

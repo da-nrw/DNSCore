@@ -25,6 +25,7 @@ import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 
 /**
@@ -40,17 +41,17 @@ public class PostRetrievalAction extends AbstractAction {
 	public PostRetrievalAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;}
 	
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 	}
 
 	@Override
-	boolean implementation() {
+	public boolean implementation() {
 		setKILLATEXIT(true);
 		
 		String csn=object.getContractor().getShort_name();
@@ -84,7 +85,7 @@ public class PostRetrievalAction extends AbstractAction {
 	}
 
 	@Override
-	void rollback() throws Exception {
+	public void rollback() throws Exception {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 }

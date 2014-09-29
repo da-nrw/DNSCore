@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.path.RelativePath;
@@ -40,12 +41,12 @@ import de.uzk.hki.da.pkg.BagitUtils;
 public class BuildAIPAction extends AbstractAction {
 
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
 	}
 
 	@Override
-	boolean implementation() {
+	public boolean implementation() {
 
 		Path relativePathOfSource = new RelativePath(object.getContractor().getShort_name(),object.getIdentifier());
 		Path physicalPackagePathOfSource = Path.make(localNode.getWorkAreaRootPath(),"work",relativePathOfSource);
@@ -59,7 +60,7 @@ public class BuildAIPAction extends AbstractAction {
 	}
 
 	@Override
-	void rollback() throws Exception {
+	public void rollback() throws Exception {
 		
 		logger.debug("Deleting bagit files from source");
 		try{
@@ -117,7 +118,7 @@ public class BuildAIPAction extends AbstractAction {
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// TODO Auto-generated method stub
 		
 	}

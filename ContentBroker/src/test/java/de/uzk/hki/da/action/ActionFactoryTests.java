@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.action;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -32,7 +32,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import de.uzk.hki.da.cb.AbstractAction;
+import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.action.ActionFactory;
+import de.uzk.hki.da.action.ActionRegistry;
+import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -50,7 +53,7 @@ import de.uzk.hki.da.service.UserExceptionManager;
 public class ActionFactoryTests {
 	
 	/** The base dir path. */
-	String baseDirPath="src/test/resources/core/ActionFactoryTests/";
+	String baseDirPath="src/test/resources/action/ActionFactoryTests/";
 	
 	/** The factory. */
 	private ActionFactory factory;

@@ -9,7 +9,7 @@
            http://www.springframework.org/schema/task
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-	<bean id="actionRegistry" class="de.uzk.hki.da.core.ActionRegistry" scope="prototype">
+	<bean id="actionRegistry" class="de.uzk.hki.da.action.ActionRegistry" scope="prototype">
 		<property name="maxThreads">
 			<util:map>
 				<entry key="tarAction" value="1"/>

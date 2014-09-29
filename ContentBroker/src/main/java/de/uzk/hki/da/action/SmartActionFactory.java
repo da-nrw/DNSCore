@@ -17,41 +17,37 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.action;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.cb.AbstractAction;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class NewActionFactory {
+public class SmartActionFactory {
 
 	
-	private static final Logger logger = LoggerFactory.getLogger(NewActionFactory.class);
+	private static final Logger logger = LoggerFactory.getLogger(SmartActionFactory.class);
 	
-	
-	private CentralDatabaseDAO dao;
 	private NewActionRegistry ar;
 	
-	NewActionFactory(CentralDatabaseDAO dao,NewActionRegistry ar){
-		this.dao = dao;
+	SmartActionFactory(NewActionRegistry ar){
 		this.ar  = ar;
 	}
 
-	public List<AbstractAction> createActions() {
+	public List<AbstractAction> createActions(Set<Job> jobs) {
 		
 		Map<Job,AbstractAction> jobsWhereThreadLimitNotReached = 
-				sortOutJobsWhereThreadLimitReached(dao.getPendingJobsOfLocalNode());
+				sortOutJobsWhereThreadLimitReached(jobs);
 
 		// filter the types by a set of rules
 
@@ -69,7 +65,7 @@ public class NewActionFactory {
 	}
 
 	private Map<Job,AbstractAction> sortOutJobsWhereThreadLimitReached(
-			List<Job> jobsInStartState) {
+			Set<Job> jobsInStartState) {
 		
 		Map<Job,AbstractAction> resultList = new HashMap<Job,AbstractAction>();
 		

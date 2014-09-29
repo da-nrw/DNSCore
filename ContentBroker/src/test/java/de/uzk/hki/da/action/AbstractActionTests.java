@@ -21,7 +21,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.cb;
+package de.uzk.hki.da.action;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyObject;
@@ -35,16 +35,16 @@ import org.hibernate.Transaction;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.ActionRegistry;
+import de.uzk.hki.da.cb.NullAction;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.UserExceptionManager;
 
 /**
@@ -138,19 +138,22 @@ public class AbstractActionTests {
 	
 	
 	class SuccessfulAction extends NullAction{
-		@Override boolean implementation() {
+		@Override
+		public boolean implementation() {
 			return true;
 		}
 	}
 	
 	class ExecutionAbortedAction extends NullAction{
-		@Override boolean implementation() {
+		@Override
+		public boolean implementation() {
 			return false;
 		}
 	}
 	
 	class UserExceptionAction extends NullAction{
-		@Override boolean implementation() {
+		@Override
+		public boolean implementation() {
 			throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,"ERROR","ERROR");
 		}
 	}

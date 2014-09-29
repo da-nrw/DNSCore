@@ -11,7 +11,7 @@
           
     <import resource="classpath*:META-INF/beans-infrastructure.core.xml"/>      
     
-    <bean id="actionRegistry" class="de.uzk.hki.da.core.ActionRegistry">
+    <bean id="actionRegistry" class="de.uzk.hki.da.action.ActionRegistry">
 		<property name="maxThreads" ref="actionThreads" />
 		<property name="actionPriority" ref="actionOrdering" />
 		<property name="blockedBy">
@@ -72,7 +72,7 @@
         <property name="dao" ref="centralDao" />
     </bean>
     
-   	<bean id="actionFactory" class="de.uzk.hki.da.core.ActionFactory" init-method="init">
+   	<bean id="actionFactory" class="de.uzk.hki.da.action.ActionFactory" init-method="init">
         <property name="actionRegistry" ref="actionRegistry" />
         <property name="localNode" ref="localNode" />
         <property name="dao" ref="centralDao" />
@@ -91,7 +91,7 @@
     
 	<bean class="de.uzk.hki.da.service.UserExceptionManager" id="userExceptionManager" init-method="readConfigFile"/>
 	
-	<bean id="actionInformation" class="de.uzk.hki.da.core.ActionInformation" scope="prototype" init-method="init">
+	<bean id="actionInformation" class="de.uzk.hki.da.action.ActionInformation" scope="prototype" init-method="init">
 		<property name="actionRegistry" ref="actionRegistry" />
 	</bean>
 	

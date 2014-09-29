@@ -22,6 +22,7 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.IOException;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
@@ -54,17 +55,17 @@ public class TarAction extends AbstractAction {
 	public TarAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
 	
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 	}
 
 	@Override
-	boolean implementation() throws IOException {
+	public boolean implementation() throws IOException {
 		
 		tar = localNode.getWorkAreaRootPath() + "/work/" +
 				object.getContractor().getShort_name() + "/" + object.getIdentifier() 
@@ -90,7 +91,7 @@ public class TarAction extends AbstractAction {
 	 * @author Daniel M. de Oliveira
 	 */
 	@Override
-	void rollback() {
+	public void rollback() {
 		if ((tar!=null)&&new File(tar).exists()){
 			logger.info("Deleting previously (possibly only partially) created file "+tar);
 			new File(tar).delete();

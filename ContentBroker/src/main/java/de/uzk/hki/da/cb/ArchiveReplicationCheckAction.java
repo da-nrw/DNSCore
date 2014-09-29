@@ -25,6 +25,7 @@ import java.util.Date;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Job;
@@ -52,12 +53,12 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	public ArchiveReplicationCheckAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
 	
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 	}
 
@@ -89,7 +90,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	
 	
 	@Override
-	void rollback() {
+	public void rollback() {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 

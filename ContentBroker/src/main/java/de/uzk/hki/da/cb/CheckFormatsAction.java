@@ -31,6 +31,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.NotImplementedException;
 import org.hibernate.Session;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.ff.FileFormatException;
@@ -63,18 +64,18 @@ public class CheckFormatsAction extends AbstractAction {
 
 
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 		
 	}
 
 	@Override
-	boolean implementation() throws FileNotFoundException, IOException {
+	public boolean implementation() throws FileNotFoundException, IOException {
 		
 		List<IFileWithFileFormat> allFiles = new ArrayList<IFileWithFileFormat>();
 		List<DAFile> allDAFiles = new ArrayList<DAFile>();
@@ -126,7 +127,7 @@ public class CheckFormatsAction extends AbstractAction {
 	}
 
 	@Override
-	void rollback() throws Exception {
+	public void rollback() throws Exception {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 

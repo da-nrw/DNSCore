@@ -26,6 +26,7 @@ import java.util.Set;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.NotImplementedException;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
@@ -56,13 +57,13 @@ public class IndexMetadataAction extends AbstractAction {
 	private String indexName;
 	
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (getRepositoryFacade() == null) 
 			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		if (indexName == null) 
 			throw new IllegalStateException("Index name not set. Make sure the action is configured properly");
 		if (getTestContractors()==null)
@@ -70,7 +71,7 @@ public class IndexMetadataAction extends AbstractAction {
 	}
 
 	@Override
-	boolean implementation() throws RepositoryException, IOException {
+	public boolean implementation() throws RepositoryException, IOException {
 		setKILLATEXIT(true);
 	
 		InputStream metadataStream;
@@ -92,7 +93,7 @@ public class IndexMetadataAction extends AbstractAction {
 
 	
 	@Override
-	void rollback() throws Exception {
+	public void rollback() throws Exception {
 		throw new NotImplementedException();
 	}
 

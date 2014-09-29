@@ -17,9 +17,14 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.action;
 
 import org.junit.Test;
+
+import de.uzk.hki.da.action.ActionFactory;
+import de.uzk.hki.da.action.ActionInformation;
+import de.uzk.hki.da.core.Controller;
+import de.uzk.hki.da.core.HibernateUtil;
 
 
 /**

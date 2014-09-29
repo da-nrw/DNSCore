@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
@@ -63,19 +64,19 @@ public class ValidateMetadataAction extends AbstractAction {
 	
 	
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
 		
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 		
 	}
 
 	@Override
-	boolean implementation() throws FileNotFoundException, IOException,
+	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException {
 		
 		detect();
@@ -131,7 +132,7 @@ public class ValidateMetadataAction extends AbstractAction {
 	
 
 	@Override
-	void rollback() throws Exception {
+	public void rollback() throws Exception {
 		if (!packageTypeInObjectWasSetBeforeRunningAction){
 			object.setMetadata_file(null);
 			object.setPackage_type(null);
