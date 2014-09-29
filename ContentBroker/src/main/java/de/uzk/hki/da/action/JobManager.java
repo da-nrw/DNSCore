@@ -19,23 +19,21 @@
 
 package de.uzk.hki.da.action;
 
-import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.DAOException;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.PreservationSystem;
 
 /**
  * Fetches Jobs from the db.
@@ -46,31 +44,73 @@ import de.uzk.hki.da.model.PreservationSystem;
  */
 public class JobManager {
 
+	private static final String QUERY = "SELECT j FROM Job j LEFT JOIN j.obj as o where j.status like '%0' " +
+			"and j.responsibleNodeName=?2 and o.object_state IN (100, 50, 40) order by j.date_modified asc ";
 	private static Logger logger = LoggerFactory
 			.getLogger(JobManager.class);
+	private SmartActionFactory saf;
+	
+	
+	
 	
 	public void fetchJobsExecuteActions(Node node) {
+		
+		Set<Job> jobSet = new HashSet<Job>(getJobsFromDB(node));
+		
+		// get action for jobs with smartactionfactory.createinstances.
+		List<AbstractAction> actionInstancesToExecute = saf.createActions(jobSet);
+		
+		for (AbstractAction toExec:actionInstancesToExecute) {
+			Job j = toExec.getJob();
+			setJobsRunningStateAndSaveItToDB(j);
+			// execute action
+			
+			// if task executor rejects, ...
+		}
+		
+	}
+
+
+	/**
+	 * set to xx2
+	 * @param j
+	 */
+	private void setJobsRunningStateAndSaveItToDB(Job j) {
+		j.setStatus(j.getStatus().substring(0, j.getStatus().length() - 1) + "2");
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.update(j);
+		session.getTransaction().commit();
+		session.close();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	private List<Job> getJobsFromDB(Node node) {
 		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		List<Job> joblist=null;
 		joblist = session
-				.createQuery("SELECT j FROM Job j LEFT JOIN j.obj as o where j.status like '%0' and "
-						+ "j.responsibleNodeName=?2 and o.object_state IN (100, 50, 40) order by j.date_modified asc ")
+				.createQuery(QUERY)
 						.setParameter("2", node.getName()).setCacheable(false).list();
 		
 
 		for (Job j:joblist) {
 			// To circumvent lazy initialization issues
-			logger.debug(":"+j);
-			for (ConversionInstruction ci:j.getConversion_instructions()){}
-			for (Job j1:j.getChildren()){}
+			for (@SuppressWarnings("unused") ConversionInstruction ci:j.getConversion_instructions()){}
+			for (@SuppressWarnings("unused") Job j1:j.getChildren()){}
 			for (Package p:j.getObject().getPackages()){
-				for (DAFile f:p.getFiles()){}
-				for (Event e:p.getEvents()){}
+				for (@SuppressWarnings("unused") DAFile f:p.getFiles()){}
+				for (@SuppressWarnings("unused") Event e:p.getEvents()){}
 			}
 		}
-		
 		session.close();
+		return joblist;
+	}
+
+
+	public void setSmartActionFactory(SmartActionFactory saf) {
+		this.saf=saf;
 	}
 }

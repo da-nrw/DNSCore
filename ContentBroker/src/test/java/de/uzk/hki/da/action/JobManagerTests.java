@@ -19,12 +19,26 @@
 
 package de.uzk.hki.da.action;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.hibernate.Session;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
+import de.uzk.hki.da.cb.NullAction;
 import de.uzk.hki.da.core.HibernateUtil;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node; 
 
 /**
@@ -58,13 +72,52 @@ public class JobManagerTests {
 	}
 	
 	@Test
-	public void test() {
+	public void test() throws InterruptedException {
+		
+		SmartActionFactory saf = prepare();
+		
 		Node node = new Node();
 		node.setName("testnode");
 		
 		JobManager jm = new JobManager();
+		jm.setSmartActionFactory(saf);
 		jm.fetchJobsExecuteActions(node);
 		
+		Thread.sleep(100);
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		Job j = (Job) session.get(Job.class,1);
+		session.close();
 		
+		assertEquals("112",j.getStatus());
+		
+	}
+
+	
+	/**
+	 * Like the createActionsMethod, return Action with are initialized, which means in this case that
+	 * theiry job field is set with the jobs from the params.
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	private SmartActionFactory prepare() {
+		SmartActionFactory saf = mock(SmartActionFactory.class);
+		when(saf.createActions((Set<Job>) anyObject())).thenAnswer(new Answer<List<AbstractAction>>() {
+			    @Override
+			    public List<AbstractAction> answer(InvocationOnMock invocation) throws Throwable {
+			      Object[] args = invocation.getArguments();
+			      Set<Job> jobs = ((Set<Job>) args[0]);
+			      
+			      List<AbstractAction> list = new ArrayList<AbstractAction>();
+			      for (Job j:jobs) {
+			    	  AbstractAction a = new NullAction();
+			    	  a.setJob(j);
+			    	  list.add(a);
+			      }
+			      
+			      return list;
+			    }
+			  });
+		return saf;
 	}
 }
