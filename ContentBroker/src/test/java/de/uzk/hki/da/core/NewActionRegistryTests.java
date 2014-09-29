@@ -40,40 +40,44 @@ public class NewActionRegistryTests {
 
 	private static final String ACTION_NAME = "NullAction";
 	private NewActionRegistry registry;
-	private AbstractAction action1;
-	private AbstractAction action2;
-	private AbstractAction action3;
+	private AbstractAction actionInstance1;
+	private AbstractAction actionInstance2;
+	private AbstractAction actionInstance3;
+	private NullAction actionType1;
 
 	@Before
 	public void setUp(){
 		registry = new NewActionRegistry();
 		
-		Map<String,Integer> maxThreads = new HashMap<String,Integer>();
-		maxThreads.put("NullAction", 3);
-		registry.setMaxThreads(maxThreads);
+		Map<AbstractAction,Integer> maxThreads = new HashMap<AbstractAction,Integer>();
+		actionType1 = new NullAction();
+		actionType1.setName(ACTION_NAME);
+		maxThreads.put(actionType1, 3);
+		registry.setActionTypeThreadsAllowed(maxThreads);
 		
-		action1 = new NullAction();
-		action1.setName(ACTION_NAME);
-		action2 = new NullAction();
-		action2.setName(ACTION_NAME);
-		action3 = new NullAction();
-		action3.setName(ACTION_NAME);
+		
+		actionInstance1 = new NullAction();
+		actionInstance1.setName(ACTION_NAME);
+		actionInstance2 = new NullAction();
+		actionInstance2.setName(ACTION_NAME);
+		actionInstance3 = new NullAction();
+		actionInstance3.setName(ACTION_NAME);
 	}
 	
 	@Test
 	public void testSimpleRegistration() {
 		
-		registry.register(action1);
+		registry.register(actionInstance1);
 		
-		assertSame(action1,registry.getRunningActions().get(0));
+		assertSame(actionInstance1,registry.getRunningActionsInstances().get(0));
 	}
 	
 	@Test
 	public void testNoNameSet() {
 		
-		action1.setName(null);
+		actionInstance1.setName(null);
 		try {
-			registry.register(action1);
+			registry.register(actionInstance1);
 			fail();
 		} catch (IllegalArgumentException e) {}
 	}
@@ -81,9 +85,9 @@ public class NewActionRegistryTests {
 	
 	@Test
 	public void maxThreadsNotDefinedForAction(){
-		action1.setName("anActionTypeWhereThreadsHasNotBeenDefinedForPreviously");
+		registry.setActionTypeThreadsAllowed(new HashMap<AbstractAction,Integer>());
 		try {
-			registry.register(action1);
+			registry.register(actionInstance1);
 			fail();
 		} catch (IllegalStateException e) {}
 	}
@@ -91,18 +95,18 @@ public class NewActionRegistryTests {
 	@Test
 	public void testRegisterTwoActionsOfSameType() {
 		
-		registry.register(action1);
-		registry.register(action2);
+		registry.register(actionInstance1);
+		registry.register(actionInstance2);
 		
-		assertEquals(2,registry.getRunningActions().size());
+		assertEquals(2,registry.getRunningActionsInstances().size());
 	}
 	
 	@Test
 	public void testDontRegisterSameActionTwice() {
 
-		registry.register(action1);
+		registry.register(actionInstance1);
 		try {
-			registry.register(action1);
+			registry.register(actionInstance1);
 			fail();
 		} catch (IllegalArgumentException e) {}
 	}
@@ -110,18 +114,18 @@ public class NewActionRegistryTests {
 	@Test
 	public void deregisterOne() {
 
-		registry.register(action1);
-		registry.register(action2);
-		registry.deregister(action1);
+		registry.register(actionInstance1);
+		registry.register(actionInstance2);
+		registry.deregister(actionInstance1);
 		
-		assertEquals(1,registry.getRunningActions().size());
+		assertEquals(1,registry.getRunningActionsInstances().size());
 	}
 	
 	@Test
 	public void testDeregisterOneWhichIsNotPresent(){
 		
 		try{ 
-			registry.deregister(action1);
+			registry.deregister(actionInstance1);
 			fail();
 		} catch (Exception e) {}
 	}
@@ -131,17 +135,17 @@ public class NewActionRegistryTests {
 	@Test
 	public void testListRemainingThreads() {
 		
-		registry.register(action1);
+		registry.register(actionInstance1);
 		assertEquals(new Integer(2),
-				registry.calculateRemainingThreadsForNamedActions().get(ACTION_NAME));
+				registry.calculateActionTypeRemainingThreads().get(actionType1));
 		
-		registry.register(action2);
+		registry.register(actionInstance2);
 		assertEquals(new Integer(1),
-				registry.calculateRemainingThreadsForNamedActions().get(ACTION_NAME));
+				registry.calculateActionTypeRemainingThreads().get(actionType1));
 		
-		registry.register(action3);
+		registry.register(actionInstance3);
 		assertEquals(null,
-				registry.calculateRemainingThreadsForNamedActions().get(ACTION_NAME));
+				registry.calculateActionTypeRemainingThreads().get(actionType1));
 	}
 	
 }

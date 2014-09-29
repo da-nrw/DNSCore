@@ -167,7 +167,8 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	SecondaryFormatScanTests.class,
 	RestartIngestWorkflowActionTests.class,
 	PostRetrievalActionTest.class,
-	NewActionRegistryTests.class
+	NewActionRegistryTests.class,
+	NewActionFactoryTests.class
 })
 public class SimpleSuite {
 

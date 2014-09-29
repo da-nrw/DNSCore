@@ -353,4 +353,10 @@ public class CentralDatabaseDAO {
 		Job job = (Job) session.get(Job.class, id);
 		return job;
 	}
+
+
+	public List<Job> getJobForLocalNodeAndInStartState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

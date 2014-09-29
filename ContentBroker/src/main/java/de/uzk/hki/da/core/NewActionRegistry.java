@@ -30,7 +30,7 @@ import org.irods.jargon.core.exception.InvalidArgumentException;
 import de.uzk.hki.da.cb.AbstractAction;
 
 /**
- * Purpose: Maintain an overview of which actions are running and how many
+ * Purpose: Maintain an overview of which actions instances are running and how many
  * of each type are allowed to run.
  * 
  * Rewrite of the classic ActionRegistry
@@ -38,39 +38,57 @@ import de.uzk.hki.da.cb.AbstractAction;
  */
 public class NewActionRegistry {
 
-	private List<AbstractAction> runningActions = new ArrayList<AbstractAction>();
-	private Map<String, Integer> threadsAllowed = new HashMap<String, Integer>();
+	private List<AbstractAction> runningActionInstances = new ArrayList<AbstractAction>();
+	private Map<AbstractAction, Integer> actionTypeThreadsAllowed = new HashMap<AbstractAction, Integer>();
 	
 	
 	
 	/**
-	 * Register an action as running. 
-	 * @param action
-	 * @throws InvalidArgumentException 
+	 * Register an instance of an action as running.
+	 *  
+	 * @param actionInstance
+	 * @throws InvalidArgumentException if the client tries to register the same action instance more than once.
+	 * @throws IllegalStateException if thread limit is not configured for the type of the action.
 	 */
-	public void register(AbstractAction action) {
-		if (action.getName()==null) 
+	public void register(AbstractAction actionInstance) {
+		if (actionInstance.getName()==null) 
 			throw new IllegalArgumentException("actions name must be set");
-		if (!threadsAllowed.keySet().contains(action.getName())) 
-			throw new IllegalStateException("maxThread not set for action type");
-		if (runningActions.contains(action)) throw new IllegalArgumentException("action must not get registered twice");
 		
-		runningActions.add(action);
+		boolean alreadyRegistered=false;
+		for (AbstractAction a:runningActionInstances)
+			if (a==actionInstance) alreadyRegistered=true;
+		if (alreadyRegistered) throw new IllegalArgumentException("action must not get registered twice");
+		
+		boolean threadsAllowedForActionTypeIsConfigured=false;
+		for (AbstractAction a:actionTypeThreadsAllowed.keySet()) {
+			if (a.getClass().getName().equals(actionInstance.getClass().getName())){
+				threadsAllowedForActionTypeIsConfigured=true;
+				break;
+			}
+		}
+		if (!threadsAllowedForActionTypeIsConfigured)
+			throw new IllegalStateException("thread limit not configured for action of type "+actionInstance.getClass().getName());
+		
+		runningActionInstances.add(actionInstance);
 	}
 
 	
 	
-	public List<AbstractAction> getRunningActions() {
-		return runningActions;
+	public List<AbstractAction> getRunningActionsInstances() {
+		return runningActionInstances;
 	}
 
 	
-	
-	public void deregister(AbstractAction actionToRemove) {
-		if (!runningActions.contains(actionToRemove))
+	/**
+	 * Removes an action instance from the list of running actions.
+	 * 
+	 * @param actionInstanceToRemove
+	 */
+	public void deregister(AbstractAction actionInstanceToRemove) {
+		if (!runningActionInstances.contains(actionInstanceToRemove))
 			throw new IllegalStateException("action cannot be deristered since it never was registered.");
 		
-		runningActions.remove(actionToRemove);
+		runningActionInstances.remove(actionInstanceToRemove);
 	}
 
 	
@@ -78,25 +96,28 @@ public class NewActionRegistry {
 	/**
 	 * @param maxThreads |action name, number of allowed instances for action with name|
 	 */
-	public void setMaxThreads(Map<String, Integer> maxThreads) {
-		this.threadsAllowed = maxThreads;
+	public void setActionTypeThreadsAllowed(Map<AbstractAction, Integer> maxThreads) {
+		this.actionTypeThreadsAllowed = maxThreads;
 	}
 
 	
-	
-	public Map<String, Integer> calculateRemainingThreadsForNamedActions() {
+	/**
+	 * @return Map of action type to number of remaining threads.
+	 */
+	public Map<AbstractAction, Integer> calculateActionTypeRemainingThreads() {
 		
-		Map<String, Integer> threadsTotal = new HashMap<String, Integer>();
-		for (AbstractAction a:runningActions) {
-			if (threadsTotal.get(a.getName())==null)
-				threadsTotal.put(a.getName(), 1);
+		Map<AbstractAction, Integer> threadsTotal = new HashMap<AbstractAction, Integer>();
+		for (AbstractAction a:runningActionInstances) {
+			if (threadsTotal.get(a)==null)
+				threadsTotal.put(a, 1);
 			else
-				threadsTotal.put(a.getName(), threadsTotal.get(a.getName())+1);
+				threadsTotal.put(a, threadsTotal.get(a)+1);
 		}
 		
-		Map<String,Integer> threadsRemaining = new HashMap<String, Integer>();
-		for (String n:threadsTotal.keySet()) {
-			int remaining = threadsAllowed.get(n)-threadsTotal.get(n);
+		Map<AbstractAction,Integer> threadsRemaining = new HashMap<AbstractAction, Integer>();
+		for (AbstractAction n:threadsTotal.keySet()) {
+
+			int remaining = actionTypeThreadsAllowed.get(n)-threadsTotal.get(n);
 			if (remaining>0) threadsRemaining.put(n,remaining);
 		}
 		

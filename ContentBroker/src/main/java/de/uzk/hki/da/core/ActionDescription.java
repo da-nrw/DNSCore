@@ -42,6 +42,8 @@ public class ActionDescription implements Serializable{
 	private String endStatus;
 	
 	private String description;
+
+	private String name;
 	
 	/**
 	 * Instantiates a new action description.
@@ -168,6 +170,14 @@ public class ActionDescription implements Serializable{
 	 */
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public void setName(String name) {
+		this.name=name;
+	}
+
+	public String getName() {
+		return name;
 	}
 	
 	

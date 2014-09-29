@@ -443,4 +443,25 @@ public abstract class AbstractAction implements Runnable {
 	public void setPSystem(PreservationSystem pSystem) {
 		this.preservationSystem = pSystem;
 	}
+	
+	
+	@Override
+	public boolean equals(java.lang.Object obj) {
+		
+		AbstractAction other = (AbstractAction) obj;
+		
+		if (this.getClass().getName().equals(other.getClass().getName())
+				&&(this.getName().equals(other.getName()))
+				)
+			return true;
+			
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.getClass().getName().hashCode()+this.getName().hashCode();
+	}
+	
+	
 }
