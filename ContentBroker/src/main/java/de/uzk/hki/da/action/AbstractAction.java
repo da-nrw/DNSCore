@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.cb;
+package de.uzk.hki.da.action;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -41,7 +41,6 @@ import org.xml.sax.SAXException;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
-import de.uzk.hki.da.core.ActionRegistry;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.UserException;
@@ -76,7 +75,7 @@ public abstract class AbstractAction implements Runnable {
 	private boolean KILLATEXIT = false;
 	protected boolean SUPPRESS_OBJECT_CONSISTENCY_CHECK = false;
 	private boolean INTEGRATIONTEST = false;
-	protected boolean DELETEOBJECT = false;
+	public boolean DELETEOBJECT = false;
 	
 	protected ActionRegistry actionMap;
 	private String name;
@@ -94,9 +93,9 @@ public abstract class AbstractAction implements Runnable {
 	protected PreservationSystem preservationSystem;
 	
 	
-	AbstractAction(){}
+	public AbstractAction(){}
 	
-	Logger logger = LoggerFactory.getLogger( this.getClass().getName() );
+	protected Logger logger = LoggerFactory.getLogger( this.getClass().getName() );
 	
 	/**
 	 * false means: i (node) am not responsible 
@@ -111,26 +110,26 @@ public abstract class AbstractAction implements Runnable {
 	 * @throws ParserConfigurationException 
 	 * @throws JDOMException 
 	 */
-	abstract boolean implementation() throws FileNotFoundException, IOException, UserException, RepositoryException, JDOMException, ParserConfigurationException, SAXException;
+	public abstract boolean implementation() throws FileNotFoundException, IOException, UserException, RepositoryException, JDOMException, ParserConfigurationException, SAXException;
 
 	/**
 	 * Implementations which fail (due to exceptions in implementation() which will be caught in run())
 	 * should clean up and set back the file system etc. to the initial state at the beginning of the action.
 	 * @throws Exception 
 	 */
-	abstract void rollback() throws Exception;
+	public abstract void rollback() throws Exception;
 	
 	/**
 	 * Implementations should check if an action is wired up correctly in terms of spring configuration. 
 	 * @throws ConfigurationException
 	 */
-	abstract void checkActionSpecificConfiguration() throws ConfigurationException;
+	public abstract void checkActionSpecificConfiguration() throws ConfigurationException;
 	
 	/**
 	 * Checks the system state wise preconditions which have to be met that the action can operate properly.
 	 * @throws IllegalStateException
 	 */
-	abstract void checkSystemStatePreconditions() throws IllegalStateException;
+	public abstract void checkSystemStatePreconditions() throws IllegalStateException;
 	
 	
 	@Override

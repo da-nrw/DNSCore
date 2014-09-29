@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.action;
 
 
 import java.util.List;
@@ -31,7 +31,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import de.uzk.hki.da.cb.AbstractAction;
+import de.uzk.hki.da.core.ConfigurationException;
+import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.Job;

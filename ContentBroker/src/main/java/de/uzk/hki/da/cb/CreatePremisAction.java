@@ -30,6 +30,7 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.commons.io.FileUtils;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.ff.FileFormatFacade;
 import de.uzk.hki.da.metadata.PremisXmlJhoveExtractor;
@@ -62,12 +63,12 @@ public class CreatePremisAction extends AbstractAction {
 	private List<Event> addedEvents = new ArrayList<Event>();
 
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 		
 	}
@@ -277,7 +278,7 @@ public class CreatePremisAction extends AbstractAction {
 	 * @author Thomas Kleinke
 	 */
 	@Override
-	void rollback() throws Exception {
+	public void rollback() throws Exception {
 		
 		Path.make(object.getPath("newest"),"premis.xml").toFile().delete();
 		

@@ -43,7 +43,7 @@ public class CTDiagnosticsTests {
 
 	// set path to logback xml before anything else happens
 	static { 
-		System.setProperty("logback.configurationFile", "src/main/xml/logback.xml.debug");
+		System.setProperty("logback.configurationFile", "src/main/xml/logback.xml");
 	}
 	
 	private static final File FIDO_DIR = new File("fido");

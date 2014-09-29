@@ -17,61 +17,63 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.action;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.cb.AbstractAction;
+import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.action.NewActionRegistry;
+import de.uzk.hki.da.action.SmartActionFactory;
 import de.uzk.hki.da.cb.NullAction;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class NewActionFactoryTests {
+public class SmartActionFactoryTests {
 
+	private NewActionRegistry ar;
+
+	@Before
+	public void setUp() {
+		ar = mock(NewActionRegistry.class);
+		AbstractAction actionType1 = new NullAction(); 
+		actionType1.setStartStatus("110");
+		actionType1.setName("FirstAction");
+		AbstractAction actionType2 = new NullAction();
+		actionType2.setStartStatus("120");
+		actionType2.setName("SecondAction");
+		Map<AbstractAction,Integer> remainingThreads = new HashMap<AbstractAction,Integer>();
+		remainingThreads.put(actionType1, new Integer(1));
+		when (ar.calculateActionTypeRemainingThreads()).thenReturn(remainingThreads);
+	}
+	
 	@Test
 	public void testSimulateThatSecondActionIsNotAvailabeBecauseThreadLimitReached(){
 	
-		CentralDatabaseDAO dao = mock(CentralDatabaseDAO.class);
-		NewActionRegistry ar = mock(NewActionRegistry.class);
-		NewActionFactory af = new NewActionFactory(dao,ar);
+		SmartActionFactory af = new SmartActionFactory(ar);
 		
-		List<Job> jobList= new ArrayList<Job>();
-		Job j1 = new Job();
+		Set<Job> jobList= new HashSet<Job>();
+		Job j1 = new Job(); 
 		j1.setStatus("110");
-		Job j2 = new Job();
+		Job j2 = new Job(); 
 		j2.setStatus("120");
-		jobList.add(j1);
-		jobList.add(j2);
-		when (dao.getJobForLocalNodeAndInStartState()).thenReturn(jobList);
-
-		AbstractAction ad1 = new NullAction(); 
-		ad1.setStartStatus("110");
-		ad1.setName("FirstAction");
-		AbstractAction ad2 = new NullAction();
-		ad2.setStartStatus("120");
-		ad2.setName("SecondAction");
-
+		jobList.add(j1);    
+		jobList.add(j2);    
 		
-		Map<AbstractAction,Integer> remainingThreads = new HashMap<AbstractAction,Integer>();
-		remainingThreads.put(ad1, new Integer(1));
-		when (ar.calculateActionTypeRemainingThreads()).thenReturn(remainingThreads);
-		
-		AbstractAction a = af.createAction();
-		assertEquals("FirstAction",a.getName());
+		List<AbstractAction> results = af.createActions(jobList);
+		assertEquals("FirstAction",results.get(0).getName());
 	}
 	
 	

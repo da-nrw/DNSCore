@@ -1,4 +1,4 @@
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import de.uzk.hki.da.cb.AbstractAction;
+import de.uzk.hki.da.core.ConfigurationException;
 
 /**
  * @author Jens Peters

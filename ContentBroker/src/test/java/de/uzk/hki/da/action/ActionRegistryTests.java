@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.action;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -32,7 +32,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import de.uzk.hki.da.cb.AbstractAction;
+import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.action.ActionDescription;
+import de.uzk.hki.da.action.ActionRegistry;
 import de.uzk.hki.da.cb.NullAction;
 import de.uzk.hki.da.cb.TarAction;
 import de.uzk.hki.da.model.Job;
@@ -64,7 +66,7 @@ public class ActionRegistryTests {
 				new File("conf/config.properties"));
 		
 		context = new FileSystemXmlApplicationContext(
-				"src/test/resources/core/ActionRegistryTests/action-definitions.xml" );
+				"src/test/resources/action/ActionRegistryTests/action-definitions.xml" );
 		registry = (ActionRegistry) context.getBean("actionRegistry");
 	}
 	

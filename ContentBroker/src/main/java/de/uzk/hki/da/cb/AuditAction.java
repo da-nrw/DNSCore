@@ -21,6 +21,7 @@ package de.uzk.hki.da.cb;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Job;
@@ -51,12 +52,12 @@ public class AuditAction extends AbstractAction {
 	}
 	
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		if (nodeAdminEmail == null) throw new ConfigurationException("nodeAdminEmail is null!");
 		if (preservationSystem.getMinRepls()==0) throw new ConfigurationException("minNodes, 0 is not allowed!");
 		if (preservationSystem.getAdmin().getEmailAddress()==null)  throw new ConfigurationException("systemFromEmailAdress is not set!");
@@ -68,7 +69,7 @@ public class AuditAction extends AbstractAction {
 	 * @see de.uzk.hki.da.cb.AbstractAction#implementation()
 	 */
 	@Override
-	boolean implementation() {
+	public boolean implementation() {
 		setKILLATEXIT(true);
 		setObjectState(job,ObjectState.UnderAudit);
 		StoragePolicy sp = new StoragePolicy(localNode);
@@ -105,7 +106,7 @@ public class AuditAction extends AbstractAction {
 	}
 
 	@Override
-	void rollback() throws Exception {
+	public void rollback() throws Exception {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 	

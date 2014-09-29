@@ -26,6 +26,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 import org.hibernate.classic.Session;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
@@ -37,20 +38,20 @@ public class CleanWorkAreaAction extends AbstractAction{
 	
 	
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 		
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 		
 	}
 
 	@Override
-	boolean implementation() {
+	public boolean implementation() {
 		setKILLATEXIT(true);
 		
 		// to prevent leftover files from irods collection removal we delete the dirs on the filesystem first.
@@ -69,7 +70,7 @@ public class CleanWorkAreaAction extends AbstractAction{
 	}
 	
 	@Override
-	void rollback() throws Exception {
+	public void rollback() throws Exception {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 

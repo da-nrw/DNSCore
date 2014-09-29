@@ -21,6 +21,7 @@ package de.uzk.hki.da.cb;
 
 import org.hibernate.Session;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 
 /**
@@ -37,7 +38,7 @@ public class NullAction extends AbstractAction{
 	 * @return true, if successful
 	 */
 	@Override
-	boolean implementation() {
+	public boolean implementation() {
 		System.out.println("NULL ACTION");
 		return true;
 	}
@@ -48,7 +49,7 @@ public class NullAction extends AbstractAction{
 	 * @throws Exception the exception
 	 */
 	@Override
-	void rollback() throws Exception {}
+	public void rollback() throws Exception {}
 	
 	
 	@Override
@@ -66,13 +67,13 @@ public class NullAction extends AbstractAction{
 	}
 
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// TODO Auto-generated method stub
 		
 	}

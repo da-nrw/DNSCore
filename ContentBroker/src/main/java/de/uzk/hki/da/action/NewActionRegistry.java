@@ -18,7 +18,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.action;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.irods.jargon.core.exception.InvalidArgumentException;
-
-import de.uzk.hki.da.cb.AbstractAction;
 
 /**
  * Purpose: Maintain an overview of which actions instances are running and how many

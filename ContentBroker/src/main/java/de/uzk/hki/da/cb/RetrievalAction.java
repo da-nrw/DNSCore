@@ -30,6 +30,7 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
@@ -64,8 +65,7 @@ public class RetrievalAction extends AbstractAction {
 
 
 	@Override
-	protected
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
 	}
 
@@ -73,8 +73,7 @@ public class RetrievalAction extends AbstractAction {
 	
 	
 	@Override
-	protected
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		if (!object.getDataPath().toFile().exists()) throw new IllegalStateException("object data path on fs doesn't exist on fs");
 	}
 
@@ -82,8 +81,7 @@ public class RetrievalAction extends AbstractAction {
 	
 	
 	@Override
-	protected
-	boolean implementation() throws IOException {
+	public boolean implementation() throws IOException {
 
 		newTar = Path.make(localNode.getUserAreaRootPath(),object.getContractor().getShort_name(),"outgoing",object.getIdentifier() + ".tar");
 		Path tempFolder = createTmpFolder();
@@ -109,7 +107,7 @@ public class RetrievalAction extends AbstractAction {
 	
 	
 	@Override
-	void rollback() {
+	public void rollback() {
 		
 		newTar.toFile().delete();
 	}

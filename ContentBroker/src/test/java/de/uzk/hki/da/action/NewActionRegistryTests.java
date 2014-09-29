@@ -18,7 +18,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.action;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
@@ -30,7 +30,8 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.cb.AbstractAction;
+import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.action.NewActionRegistry;
 import de.uzk.hki.da.cb.NullAction;
 
 /**

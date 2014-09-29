@@ -35,6 +35,7 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.repository.RepositoryException;
@@ -62,7 +63,7 @@ public class CreateEDMAction extends AbstractAction {
 	 * @
 	 */
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (repositoryFacade == null) 
 			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
 	}
@@ -70,7 +71,7 @@ public class CreateEDMAction extends AbstractAction {
 
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		if (preservationSystem.getUrisCho()==null||preservationSystem.getUrisCho().isEmpty()) throw new IllegalStateException("choBaseUri not set");
 		if (preservationSystem.getUrisAggr()==null||preservationSystem.getUrisAggr().isEmpty()) throw new IllegalStateException("aggrBaseUri not set");
 		if (preservationSystem.getUrisLocal()==null||preservationSystem.getUrisLocal().isEmpty()) throw new IllegalStateException("localBaseUri not set");
@@ -86,7 +87,7 @@ public class CreateEDMAction extends AbstractAction {
 
 
 	@Override
-	boolean implementation() throws IOException, RepositoryException {
+	public boolean implementation() throws IOException, RepositoryException {
 		
 		String objectId = object.getIdentifier();
 		
@@ -125,7 +126,7 @@ public class CreateEDMAction extends AbstractAction {
 	
 	
 	@Override
-	void rollback() throws Exception {
+	public void rollback() throws Exception {
 		throw new NotImplementedException();	
 	}
 

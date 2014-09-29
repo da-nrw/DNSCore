@@ -30,6 +30,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -44,17 +45,17 @@ public class ShortenFileNamesAction extends AbstractAction {
 	Map<String,String> map = new HashMap<String,String>();
 
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 	}
 
 	@Override
-	boolean implementation() throws FileNotFoundException, IOException {
+	public boolean implementation() throws FileNotFoundException, IOException {
 
 		String metadataFile = object.getMetadata_file();
 		
@@ -103,7 +104,7 @@ public class ShortenFileNamesAction extends AbstractAction {
 	}
 
 	@Override
-	void rollback() throws Exception {
+	public void rollback() throws Exception {
 		
 		for (Event e:object.getLatestPackage().getEvents()) {
 			if (!"CONVERT".equals(e.getType())) continue;
