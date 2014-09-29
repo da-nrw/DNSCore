@@ -355,7 +355,7 @@ public class CentralDatabaseDAO {
 	}
 
 
-	public List<Job> getJobForLocalNodeAndInStartState() {
+	public List<Job> getPendingJobsOfLocalNode() {
 		// TODO Auto-generated method stub
 		return null;
 	}

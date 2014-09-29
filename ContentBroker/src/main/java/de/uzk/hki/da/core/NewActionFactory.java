@@ -20,7 +20,9 @@
 package de.uzk.hki.da.core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,24 +48,30 @@ public class NewActionFactory {
 		this.ar  = ar;
 	}
 
-	public AbstractAction createAction() {
+	public List<AbstractAction> createActions() {
 		
-		List<Job> jobsInStartState = dao.getJobForLocalNodeAndInStartState();
-		for (Job j:jobsInStartState)
-			logger.debug(j.toString());
-		List<AbstractAction> jobsWhichCanBeExecuted = calculateActionTypesWhichHaveNotReachedThreadLimit(jobsInStartState);
+		Map<Job,AbstractAction> jobsWhereThreadLimitNotReached = 
+				sortOutJobsWhereThreadLimitReached(dao.getPendingJobsOfLocalNode());
 
 		// filter the types by a set of rules
+
+		for (Job j:jobsWhereThreadLimitNotReached.keySet())
+			logger.debug("actionType which has not reached limit:"+
+					jobsWhereThreadLimitNotReached.get(j).getName()+","+jobsWhereThreadLimitNotReached.get(j).getStartStatus());
+		
 		
 		// create !new! instances for the result list
+		List<AbstractAction> instantiatedActions = new ArrayList<AbstractAction>();
+		for (Job j:jobsWhereThreadLimitNotReached.keySet())
+			instantiatedActions.add(jobsWhereThreadLimitNotReached.get(j));
 		
-		return jobsWhichCanBeExecuted.get(0);
+		return instantiatedActions;
 	}
 
-	private List<AbstractAction> calculateActionTypesWhichHaveNotReachedThreadLimit(
+	private Map<Job,AbstractAction> sortOutJobsWhereThreadLimitReached(
 			List<Job> jobsInStartState) {
 		
-		List<AbstractAction> resultList = new ArrayList<AbstractAction>();
+		Map<Job,AbstractAction> resultList = new HashMap<Job,AbstractAction>();
 		
 		for (AbstractAction actionType:ar.calculateActionTypeRemainingThreads().keySet()) { 
 			
@@ -73,9 +81,7 @@ public class NewActionFactory {
 			for (Job j:jobsInStartState) {
 				if (!j.getStatus().equals(actionType.getStartStatus())) continue;
 				
-				System.out.println("actionType which has not reached limit:"+actionType.getName()+","+actionType.getStartStatus());
-				
-				resultList.add(actionType);
+				resultList.put(j,actionType);
 				remainingThreadsForType--;
 				if (remainingThreadsForType==0) break;
 			}

@@ -56,22 +56,22 @@ public class NewActionFactoryTests {
 		j2.setStatus("120");
 		jobList.add(j1);
 		jobList.add(j2);
-		when (dao.getJobForLocalNodeAndInStartState()).thenReturn(jobList);
+		when (dao.getPendingJobsOfLocalNode()).thenReturn(jobList);
 
-		AbstractAction ad1 = new NullAction(); 
-		ad1.setStartStatus("110");
-		ad1.setName("FirstAction");
-		AbstractAction ad2 = new NullAction();
-		ad2.setStartStatus("120");
-		ad2.setName("SecondAction");
+		AbstractAction actionType1 = new NullAction(); 
+		actionType1.setStartStatus("110");
+		actionType1.setName("FirstAction");
+		AbstractAction actionType2 = new NullAction();
+		actionType2.setStartStatus("120");
+		actionType2.setName("SecondAction");
 
 		
 		Map<AbstractAction,Integer> remainingThreads = new HashMap<AbstractAction,Integer>();
-		remainingThreads.put(ad1, new Integer(1));
+		remainingThreads.put(actionType1, new Integer(1));
 		when (ar.calculateActionTypeRemainingThreads()).thenReturn(remainingThreads);
 		
-		AbstractAction a = af.createAction();
-		assertEquals("FirstAction",a.getName());
+		List<AbstractAction> results = af.createActions();
+		assertEquals("FirstAction",results.get(0).getName());
 	}
 	
 	
