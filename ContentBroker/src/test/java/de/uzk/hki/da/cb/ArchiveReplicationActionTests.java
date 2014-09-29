@@ -28,6 +28,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -41,7 +42,7 @@ public class ArchiveReplicationActionTests {
 	
 	private static String workAreaRootPath;
 	private static Node node = new Node();
-
+	private static PreservationSystem ps = new PreservationSystem();
 	Object object = new Object();
 	
 	@BeforeClass
@@ -58,6 +59,7 @@ public class ArchiveReplicationActionTests {
 	@Test
 	public void testHappyPath() throws FileNotFoundException, IOException{
 		node.setReplDestinations("");
+		
 		User c = new User();
 		c.setShort_name("TEST");
 		c.setForbidden_nodes("");
@@ -99,6 +101,8 @@ public class ArchiveReplicationActionTests {
 	
 	private ArchiveReplicationAction setUpAction(Node node){
 		ArchiveReplicationAction action = new ArchiveReplicationAction();
+		ps.setMinRepls(0);
+		action.setPSystem(ps);
 		GridFacade grid = mock (GridFacade.class);
 		action.setGridRoot(grid);
 		action.setObject(object);

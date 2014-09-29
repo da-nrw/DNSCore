@@ -14,6 +14,7 @@ federateService {
 			msiExecStrCondQuery("SELECT META_DATA_ATTR_NAME, META_DATA_ATTR_VALUE where COLL_NAME = '*srcColl' and DATA_NAME = '*dao' ",*attrs)
 			*forb=""
 			*syncs=""
+			*mc=""
 			foreach(*attrs) {
 				msiGetValByKey(*attrs,"META_DATA_ATTR_NAME",*attr);
 				if (*attr=="FORBIDDEN_NODES"){
@@ -22,11 +23,18 @@ federateService {
                                 if (*attr=="SYNCHRONIZED_TO"){
                                         msiGetValByKey(*attrs,"META_DATA_ATTR_VALUE",*syncs);
                                 }
+				if (*attr=="MIN_COPIES"){
+                                        msiGetValByKey(*attrs,"META_DATA_ATTR_VALUE",*mc);
+                                }
                         }
+			if (strlen(*mc)>0 && int(*mc)>0) {
+                                *min_copies=int(*mc)
+                        }
+
 			*sync=split(*syncs,",")
 			if (size(*sync)==0) {
 				acLog("syncing for the first time")	
-				acFederateLeastLoaded("*srcColl/*dao",*destResc,*successZones,*forb,*min_copies)
+				acFederateLeastLoaded(*srcColl,*dao,*destResc,*successZones,*forb,*min_copies)
 				*syncs=*successZones
 			} else {
 				*syncs="*syncs*forb"
@@ -37,9 +45,9 @@ federateService {
 					*lis=cons(list("*syc","9999"),*lis)
 				}
 				acLog("checking already synced Zones: *lis")
-				acFederateToZones("*srcColl/*dao",*destResc,*lis,*successZonesAlready,*min_copies)
+				acFederateToZones(*srcColl,*dao,*destResc,*lis,*successZonesAlready,*min_copies)
 				acLog("now synching to other Zones")
-				acFederateToZones("*srcColl/*dao",*destResc,*zones,*successZones,*min_copies)
+				acFederateToZones(*srcColl,*dao,*destResc,*zones,*successZones,*min_copies)
                                 *syncs="*syncs*successZones"
 			}
 			msiGetSystemTime(*hu,*bulk)
