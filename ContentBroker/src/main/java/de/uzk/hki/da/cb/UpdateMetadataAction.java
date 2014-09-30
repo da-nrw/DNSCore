@@ -267,9 +267,11 @@ public class UpdateMetadataAction extends AbstractAction {
 			@SuppressWarnings("rawtypes")
 			Map.Entry entry = (Map.Entry)it.next();
 			DAFile sourceFile = (DAFile)entry.getKey();
+			logger.debug("Search for replacements for DAFile "+sourceFile.getRelative_path());
+			int tmpActualReplacements = actualReplacements;
 			for(Element metsFileElement : metsFileElemens) {
-				
 				String href = mms.getHref(metsFileElement);
+				logger.debug("Found href in METS "+href);
 				File file = mms.getCanonicalFileFromReference(href, metsFile);
 				if(file.getAbsolutePath().contains(sourceFile.getRelative_path())) {
 					DAFile targetDAFile = (DAFile)entry.getValue();
@@ -284,9 +286,14 @@ public class UpdateMetadataAction extends AbstractAction {
 						loctype = "URL";
 					}
 					String mimetype = targetDAFile.getMimeType();
+					logger.debug("Replace "+href+" by "+targetValue);
 					mms.makeReplacementsInMetsFile(metsFile, href, targetValue, mimetype, loctype);
 					actualReplacements++;
-				}
+					break;
+				} 
+			}
+			if(tmpActualReplacements==actualReplacements) {
+				logger.error("No reference matches the given DAFile "+sourceFile.getRelative_path());
 			}
 		}
 		replacementList.add(actualReplacements);
