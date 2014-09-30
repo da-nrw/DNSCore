@@ -25,17 +25,13 @@ acGetTotalReplNumber(*objPath,*nr) {
 #counts the number of repls per rg
 acGetTotalReplNumberPerGroup(*objPath,*rg,*nr) {
         *ress="";
-	msiExecStrCondQuery("SELECT RESC_NAME WHERE RESC_GROUP_NAME = '*rg'",*rescl);
+		msiExecStrCondQuery("SELECT RESC_NAME WHERE RESC_GROUP_NAME = '*rg'",*rescl);
         foreach(*rescl) {
             msiGetValByKey(*rescl,"RESC_NAME",*rn);
             *ress="'*rn',*ress";
         }
-	if (*ress=="") {
-	 	writeLine("serverLog","No Resc found in RG *rg!");
-		fail();
-	}
-	msiSplitPath(*objPath,*coll,*dn);
-	msiExecStrCondQuery("SELECT count(DATA_REPL_NUM) WHERE COLL_NAME = '*coll' and DATA_NAME = '*dn' and RESC_NAME in (*ress) ",*grepls);
+		msiSplitPath(*objPath,*coll,*dn);
+		msiExecStrCondQuery("SELECT count(DATA_REPL_NUM) WHERE COLL_NAME = '*coll' and DATA_NAME = '*dn' and RESC_NAME in (*ress) ",*grepls);
 		*nr=0;
     	foreach(*grepls) {
          msiGetValByKey(*grepls,"DATA_REPL_NUM",*nr);
@@ -78,7 +74,7 @@ acGetNumberOfCopies(*homeDao,*numberOfCopies){
 			msiCloseGenQuery(*GenQ2,*status)
 }
 
-#Author: Jens Peters
+#Autor: Jens Peters
 #Checks the local integrity of a DO by checking it's local replications
 # 0=failure, the checksum failed.
 # 1=ok the object status is ok.
@@ -106,10 +102,10 @@ acVerifyChecksum(*objPath,*status){
 	*status=*checksumchk;
 }
 
-# Author Jens Peters
+# Autor Jens Peters
+# LVRInfoKom 2014
 # Verifies federated copies of DAO synchronously
 # Returns amount of errors on registered federated copies
-# 
 acVerifyChecksumFedSync(*objPath,*errors){
 	*errors=0
 	msiAddSelectFieldToGenQuery("ZONE_NAME","null", *GenQ2)
@@ -132,13 +128,8 @@ acVerifyChecksumFedSync(*objPath,*errors){
 	msiCloseGenQuery(*GenQ2,*status)
 	writeLine("serverLog","*objPath has (*errors) Errors on existing federated copies");
 }
-
 # Quick Checking object
-# depends on running Service checkAIP per node
-# Author Jens Peters
-# INPUT objPath the object to check
-# OUTPUT status 0 failure 1 ok
-#
+# depends on running Service checkAIP
 acIsValid(*objPath,*status) {
 	msiSplitPath(*objPath, *coll, *dname)
 	*lc=""
@@ -168,76 +159,41 @@ acIsValid(*objPath,*status) {
 		}
 	}
 }
+# Gets the resource for ist Resource Group name
+# Jens Peters LVR InfoKom 2014
 
-# Gets the resource for a given Resource Group name
-# INPUT rg resource group name
-# OUTPUT res resource 
-# Author Jens Peters
-#
 acGetRescForRg(*rg,*res) {
 	*res=""
         msiExecStrCondQuery("SELECT RESC_NAME WHERE RESC_GROUP_NAME = '*rg' ",*rescl);
         foreach(*rescl) {
             msiGetValByKey(*rescl,"RESC_NAME",*res);
         }
+	writeLine("stdout","VT02: *res")
 }
 
-# Gets a list of foreign host names (not zones names) connected to this node
-# INPUT forbiddennodes, nodes as zone names to which the syning is disallowed
-# OUTPUT hosts comma seperated values of remote hosts 
-# Author Jens Peters
+# Gets a list of foreign zones connected to this node
+# Jens Peters LVR InfoKom 2014 
 #
-
 acGetHostsOnGrid(*hosts,*forbiddenNodes) {
-        *hosts=list()
-        *hst="";
-        msiAddSelectFieldToGenQuery("ZONE_NAME","null", *GenQ2)
+	*hosts=list()
+	*hst="";
+	msiAddSelectFieldToGenQuery("ZONE_NAME","null", *GenQ2)
         msiAddSelectFieldToGenQuery("ZONE_TYPE","null", *GenQ2)
-        msiAddSelectFieldToGenQuery("ZONE_CONNECTION","null", *GenQ2)
+	msiAddSelectFieldToGenQuery("ZONE_CONNECTION","null", *GenQ2)
         msiAddConditionToGenQuery("ZONE_TYPE"," = ","remote",*GenQ2)
         *attrVall=split(*forbiddenNodes, ",");
         foreach(*attrVal in *attrVall) {
              msiAddConditionToGenQuery("ZONE_NAME"," != ",*attrVal,*GenQ2)
         }
-        msiExecGenQuery(*GenQ2, *zones)
+	msiExecGenQuery(*GenQ2, *zones)
         foreach(*zones){
-                 msiGetValByKey(*zones,"ZONE_CONNECTION",*host);
-                *hst="*host;*hst"
-        }
-        msiCloseGenQuery(*GenQ2,*out)
-        *hosts=split(*hst,";")
+       		 msiGetValByKey(*zones,"ZONE_CONNECTION",*host);
+		*hst="*host;*hst"
+	} 
+	msiCloseGenQuery(*GenQ2,*out)
+	*hosts=split(*hst,";")
 }
 
-# Gets a List of zone names connectect to this node
-# OUTPUT zone names
-# INPUT forbidden zone names to be not included in *zones
-# author: Jens Peters
-
-acGetZonesOnGrid(*zones,*forbiddenNodes) {
-        *zones=list()
-        *zn="";
-        msiAddSelectFieldToGenQuery("ZONE_NAME","null", *GenQ2)
-        msiAddSelectFieldToGenQuery("ZONE_TYPE","null", *GenQ2)
-        msiAddSelectFieldToGenQuery("ZONE_CONNECTION","null", *GenQ2)
-        msiAddConditionToGenQuery("ZONE_TYPE"," = ","remote",*GenQ2)
-        *attrVall=split(*forbiddenNodes, ",");
-        foreach(*attrVal in *attrVall) {
-             msiAddConditionToGenQuery("ZONE_NAME"," != ",*attrVal,*GenQ2)
-        }
-        msiExecGenQuery(*GenQ2, *zonesRes)
-        foreach(*zonesRes){
-                 msiGetValByKey(*zonesRes,"ZONE_NAME",*zone);
-                *zn="*zone;*zn"
-        }
-        msiCloseGenQuery(*GenQ2,*out)
-        *zones=split(*zn,";")
-}
-
-# Helper function to read the local zonename 
-# remotely (workaround) 
-# OUTPUT the zone name
-# Author Jens Peters
-#
 acGetLocalZoneName(*zone) {
         *zone="";
         msiAddSelectFieldToGenQuery("ZONE_NAME","null", *GenQ2)
@@ -250,96 +206,28 @@ acGetLocalZoneName(*zone) {
         msiCloseGenQuery(*GenQ2,*out)
 }
 
-# Helper for log out 
-# Author: Jens Peters
-acLog(*log) {
-       writeLine("stdout",*log)
-       writeLine("serverLog",*log)
-}
-# Federates srcColl to the zones list 
-# zones list must be list(list(zone, sizeMBytes))
-# list successfully synced zones to successZones
-# INPUT srcDao the sourceDao to be syned
-# INPUT zones the zones to synchronize to
-# OUTPUT successZones as comma separated values
-# Author Jens Peters
-#
-acFederateToZones(*coll,*dao,*destResc,*zones,*successZones,*min_copies) {
-	*ok=0
-	*err=0
-	*successZones=""
-	foreach(*zones){
-		if (*ok < *min_copies) {
-            		*zone=elem(*zones,0)
-            		*mspace=elem(*zones,1)
-			*destColl="/*zone/federated*coll"
-			*err=errorcode(msiCollCreate(*destColl,"1",*nope))
-			*destDao="*destColl/*dao"
-			*log="Synchronize *coll/*dao to *destDao *zone which has *mspace MB free"
-           		acLog(*log)	
-			*error=errorcode(msiDataObjRsync("*coll/*dao","IRODS_TO_IRODS",*destResc,*destDao,*Status))
-           		if (*error < 0 ) {
-                   		*err=*err+1
-                    		*log="recieved errorcode *error while synchronzing *coll/*dao to *destDao"
-				 acLog(*log)
-			} else {
-                   	*ok=*ok+1       
-   	        	*successZones="*zone,*successZones"
-			*log="Synchronized *coll/*dao"
-			 acLog(*log)
-			}
-		}
- 	}
-}
 
-# Synchronizes Source Collections to given Collection
-# Useful for all kinds of distributed actions
-# Author Jens Peters
-acSynchronizeZonesToCollection(*zones,*srcCollWithoutZone,*destColl,*destResc) {
-	*status=0
-	*err=errorcode(msiCollCreate(*destColl,"1",*nope))
-	if (*err < 0 ) {
-             *log="recieved errorcode *error while creating *destColl"
-             acLog(*log)
-        }
-	foreach(*zones){
-		*srcColl="/*zones*srcCollWithoutZone"
-		acLog("Synchronizing now *srcColl to *destColl")
-		*error=errorcode(msiCollRsync(*srcColl,*destColl,*destResc,"IRODS_TO_IRODS",*Status))
-                 if (*error < 0 ) {
-                        *log="recieved errorcode *error while synchronizing *srcColl to *destColl"
-                        acLog(*log)
-                 } 		
-	}
-} 
 
 # Gets a List of Hostnames ordered by the actual 
-# amount of free space on resource found in given resc group naem. 
-# Depends on locally running ServerMonitoring rules by Jean Yves
-# Author Jens Peters
-# RETURNS *servers as list(list("zone_name","mb")) by zone names ordered by free space
-# 
-acGetHostsOrderedByFreeSpaceOnGridDesc(*servers, *rg,*forbiddenNodes) {
+# amount of Data stored on them. 
+# Jens Peters LVRInfoKom 2014
+
+acGetHostsOrderedByLoadOnGrid(*servers, *rg,*forbiddenNodes) {
 	*hst=""
-        *ls=""
-        *mbyte=0
-        *hosts=list()
-        acGetHostsOnGrid(*hosts,*forbiddenNodes)
-        foreach(*hosts) {
-                *err=errorcode(remote(*hosts,"null") {
+	*ls=""
+	*mbyte=0
+	*hosts=list()
+	acGetHostsOnGrid(*hosts,*forbiddenNodes)
+	foreach(*hosts) {
+		remote(*hosts,"null") {
                         *resource=""
                         acGetRescForRg(*rg,*resource)
                         acGetFreeSpaceOnResc(*resource,*mbyte)
-                        acGetLocalZoneName(*zone)
-                        *ls="*zone,*mbyte;"
-                })
-		if (*err<0) {
-			acLog("recieved Error code *err on remotely determining free space")
+			acGetLocalZoneName(*zone)
+			*ls="*zone,*mbyte;"
 		}
         }
 	*servers=list()
-	writeLine("stdout","Fill grade List: *ls")
-	
 	*sv=split(*ls,";")
 	foreach(*sv) {
 		*tmp=split(*sv,",")
@@ -347,7 +235,6 @@ acGetHostsOrderedByFreeSpaceOnGridDesc(*servers, *rg,*forbiddenNodes) {
 		*serv=elem(*tmp,0)
 		*servers=cons(list("*serv","*byte"),*servers)
 	}
-	# Do the bubble sort
 	*n=size(*servers)-1
         *unsortiert=1
         while (*unsortiert==1) {
@@ -364,63 +251,21 @@ acGetHostsOrderedByFreeSpaceOnGridDesc(*servers, *rg,*forbiddenNodes) {
                         }
                 }
         }
-	acLog("Sorted List by fill grades: *servers")
-}
-# Federate Dao to the least loaded connected zones
-# INPUT dao The DataObject
-# INPUT *destResc Group name
-# OUTPUT sucessfully copied zones
-# INPUT Forbidden zones
-# INPUT min_copies
-# Author: Jens Peters
-#
-acFederateLeastLoaded(*coll,*dao,*destResc,*successZones,*forb,*min_copies) {
-  	*zones=""	 
-	acGetHostsOrderedByFreeSpaceOnGridDesc(*zones,*destResc,*forb)
-        acFederateToZones(*coll,*dao,*destResc,*zones,*successZones,*min_copies)
-}
-
-# Helper Function for Syncing results and stoing AVU Metadata to object
-# INPUT dao The Data object
-# INPUT successful synced zones
-# INPUT min_copies
-# Author: Jens Peters
-#
-acPrintSyncResults(*dao,*syncs,*min_copies) {
-         *copies=size(split(*syncs,","))
-         if (*copies == 0) {
-             acLog("Not reached any zone!")
-         }
-         if (*copies > 0) {
-             msiString2KeyValPair("SYNCHRONIZED_TO=*syncs",*kvpaircs2)
-             msiSetKeyValuePairsToObj(*kvpaircs2,*dao,"-d")
-         }
-         if (*copies < *min_copies) {
-             acLog("...still missing Copies, actually *copies, must have *min_copies!")
-	 }
-         if (*copies >= *min_copies) {
-             msiString2KeyValPair("FEDERATED=1",*kvpaircs3)
-             msiSetKeyValuePairsToObj(*kvpaircs3,*dao,"-d")
-             acLog("...fulfilled Copies of *min_copies")
-         }
 }
 
 # Gets the free space per resource
 # to be called remotely
-# Depends on running daemons
-# serverMonStats.r
-# serverMonStatsDigest.r
-# Author: Jens Peters
 #
 acGetFreeSpaceOnResc(*resc,*mbyte) {
 	*out=0
 	msiExecStrCondQuery("SELECT RESC_NAME, RESC_LOC, RESC_FREE_SPACE WHERE RESC_NAME = '*resc' ",*lc)
         foreach(*lc) {
                 msiGetValByKey(*lc,"RESC_FREE_SPACE",*out);
-        } 
+        }
 	writeLine("stdout","VT02: *resc *out")
-	*mbyte=*out
 }
+
+
 
 #old fashioned rules, partly used for backward compatibility
 @backwardCompatible "true"
