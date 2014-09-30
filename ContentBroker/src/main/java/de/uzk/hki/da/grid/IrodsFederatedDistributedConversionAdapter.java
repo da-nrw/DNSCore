@@ -21,7 +21,7 @@ public class IrodsFederatedDistributedConversionAdapter extends
 		if (!irodsSystemConnector.connect()){
 			throw new RuntimeException("Couldn't establish iRODS-Connection");
 		}
-		String rule = "syncPIPS {\n"
+		String rule = "syncToLocalNode {\n"
         + "*zones=\"\"\n"
         + "*forbiddenNodes=\"\"\n"
         + "acGetZonesOnGrid(*zones,*forbiddenNodes)\n"
