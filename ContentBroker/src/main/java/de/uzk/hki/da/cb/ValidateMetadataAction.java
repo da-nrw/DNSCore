@@ -124,7 +124,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		if (!(object.getPackage_type()==null||object.getPackage_type().isEmpty())){
 			packageTypeInObjectWasSetBeforeRunningAction=true;
 			if ((!detectedPackageType.equals(object.getPackage_type()))
-					||(!detectedMetadataFile.equals(object.getMetadata_file()))){
+					||(!detectedMetadataFile.getRelative_path().equals(object.getMetadata_file()))){
 				throw new RuntimeException("COLLISION");
 			}
 		}
