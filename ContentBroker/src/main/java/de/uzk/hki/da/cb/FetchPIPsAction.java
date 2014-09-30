@@ -49,7 +49,7 @@ public class FetchPIPsAction extends AbstractAction {
 	
 	@Override
 	void checkActionSpecificConfiguration() throws ConfigurationException {
-		if (distributedConversionAdapter==null) throw new ConfigurationException("irodsSystemConnector not set");
+		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 	}
 
 
@@ -69,8 +69,6 @@ public class FetchPIPsAction extends AbstractAction {
 		String sourceDIPName = object.getIdentifier()+"_"+object.getLatestPackage().getId();
 		
 		replicateFromSourceResourceToWorkingResource(sourceDIPName);
-		
-		
 		// the rename is necessary because at the moment we donl't have another possibility to delete or trim the irods
 		// collections on specific resources.
 		deletePreviousPIPs(object.getIdentifier());

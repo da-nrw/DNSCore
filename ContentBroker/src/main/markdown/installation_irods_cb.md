@@ -9,11 +9,14 @@
 
 
 This document describes how to set up iRODS as a backend to an existing DNSCore installation.
-Both systems connected, with the DNSCore beeing the business layer and iRODS beeing the storage layer,
+Both systems connected, with the DNSCore being the business layer and iRODS being the storage layer,
 form a fully operational node ready for production use. For the purpose of this document, the system is considered
-as consisting only of this node, e.g. you can see it as a how to of setting up the master node of a system. For setup of
-slave nodes or a consideration of other topologies (federation) see the notes at the bottom of this document.
+as consisting only of this node, e.g. you can see it as a how to of setting up the master node of a system. 
 
+DNSCore supports two topologies of working with iRODS DataGrids. The more integrated "classic" implementation and the 
+more seperated "federated" mode. This depends on your desired use case. To read more about the as well supported "federated mode" 
+please refer to the iRODS federated mode documentation
+([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/administration_irods_federated.md))
 
     [irodsuser] - The irods user we will use to let the ContentBroker talk to the iRODS server.
     [irodspassword] - The password of this user.
@@ -157,7 +160,7 @@ In case there is somethin wrong it will return a RE_PARSER_ERROR.
 Please refer carefully to the iRODS Documentation
 about needed change of other parameters, as wrong parameters could serverly harm your DNS system! There is no test if a ruleBase is operating well, while this file being parsed on demand whenever actions being fired. There are many more actions being neccessary or at least interesting to implement, please consider reading the documentation in these files as well. 
 
- In case you're running the resource server mode, the resource names are your repl_destinations names in config.properties. In case of forming a federation, zone_names are listed in repl_destinations. 
+ In case you're running the resource server mode, the resource names are your repl_destinations names in config.properties.  
 
 Please note the settings of your iRODS installation, as they're needed for config.properties of CB and DA-Web.
 
@@ -165,9 +168,6 @@ Please note the settings of your iRODS installation, as they're needed for confi
 
 Alter "default resource" settings in core.re and in danrw.re for apropiate settings on your system as they might point
 to some dummy resources. 
-
-
-## TODO other stuff
 
 ### Adding users to DNSCore
 
@@ -197,5 +197,5 @@ Other ports such as
     80
     443
     
-could be openend as you might need them, but hey might depend on your setup. Please disable all running desktop firewalls (e.g. iptables) on your server as they may cause problems.  
+could be opened as you might need them, but hey might depend on your setup. Please disable all running desktop firewalls (e.g. iptables) on your server as they may cause problems.  
 
