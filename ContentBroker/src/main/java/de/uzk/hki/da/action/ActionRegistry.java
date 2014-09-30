@@ -18,7 +18,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.action;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,8 +27,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.uzk.hki.da.cb.AbstractAction;
 
 
 /**

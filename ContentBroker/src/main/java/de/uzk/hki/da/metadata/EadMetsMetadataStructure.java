@@ -33,7 +33,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	
 	private final File eadFile;
 	private List<String> metsReferencesInEAD;
-	private List<DAFile> metsFiles;
+	private List<File> metsFiles;
 	private List<MetsMetadataStructure> mmsList;
 	
 	HashMap<String, Document> metsPathToDocument = new HashMap<String, Document>();
@@ -47,8 +47,8 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		metsFiles = getReferencedFiles(eadFile, metsReferencesInEAD, daFiles);
 				
 		mmsList = new ArrayList<MetsMetadataStructure>();
-		for(DAFile metsFile : metsFiles) {
-			MetsMetadataStructure mms = new MetsMetadataStructure(metsFile.toRegularFile(), daFiles);
+		for(File metsFile : metsFiles) {
+			MetsMetadataStructure mms = new MetsMetadataStructure(metsFile, daFiles);
 			mmsList.add(mms);
 		}
 	}

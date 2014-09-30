@@ -30,6 +30,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 import org.hibernate.Session;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.IngestGate;
@@ -63,18 +64,18 @@ public class RestructureAction extends AbstractAction{
 	}
 	
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 		if (getFileFormatFacade()==null) throw new ConfigurationException("fileFormatFacade not set");
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 	}
 
 	@Override
-	boolean implementation() throws FileNotFoundException, IOException,
+	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException {
 		
 		FileUtils.moveDirectory(object.getDataPath().toFile(), 
@@ -149,7 +150,7 @@ public class RestructureAction extends AbstractAction{
 	}
 
 	@Override
-	void rollback() throws Exception {
+	public void rollback() throws Exception {
 		throw new NotImplementedException("rollback for this action not implemented yet");
 	}
 

@@ -26,6 +26,7 @@ import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
@@ -115,17 +116,17 @@ public class RegisterURNAction extends AbstractAction {
 	
 
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		if (preservationSystem.getUrnNameSpace()==null) throw new IllegalStateException("URN NameSpace parameter not set!");
 	}
 
 	@Override
-	boolean implementation() {
+	public boolean implementation() {
 		
 		if (object.isDelta())
 			logger.info("Object URN: " + object.getUrn());
@@ -152,7 +153,7 @@ public class RegisterURNAction extends AbstractAction {
 	}
 
 	@Override
-	void rollback() {
+	public void rollback() {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 }

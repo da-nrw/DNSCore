@@ -27,6 +27,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
@@ -48,21 +49,21 @@ public class FetchPIPsAction extends AbstractAction {
 	Path institutionContractorFolder = null;
 	
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 	}
 
 
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 	}
 
 
 
 	@Override
-	boolean implementation() throws FileNotFoundException, IOException {
+	public boolean implementation() throws FileNotFoundException, IOException {
 		
 		publicContractorFolder = Path.make("pips", "public", object.getContractor().getShort_name());
 		institutionContractorFolder = Path.make("pips", "institution", object.getContractor().getShort_name());
@@ -84,7 +85,7 @@ public class FetchPIPsAction extends AbstractAction {
 
 
 	@Override
-	void rollback() throws Exception {
+	public void rollback() throws Exception {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 

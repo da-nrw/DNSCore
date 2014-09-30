@@ -30,6 +30,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.NotImplementedException;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.StoragePolicy;
@@ -46,12 +47,12 @@ public class ArchiveReplicationAction extends AbstractAction {
 	private GridFacade gridRoot;
 	
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (gridRoot==null) throw new ConfigurationException("gridRoot not set");
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 	}
 
@@ -85,7 +86,7 @@ public class ArchiveReplicationAction extends AbstractAction {
 	}
 	
 	@Override
-	void rollback() {
+	public void rollback() {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 

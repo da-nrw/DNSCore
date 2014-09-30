@@ -17,53 +17,62 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.cb.AbstractAction;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class NewActionFactory {
+public class SmartActionFactory {
 
 	
-	private static final Logger logger = LoggerFactory.getLogger(NewActionFactory.class);
+	private static final Logger logger = LoggerFactory.getLogger(SmartActionFactory.class);
 	
-	
-	private CentralDatabaseDAO dao;
 	private NewActionRegistry ar;
 	
-	NewActionFactory(CentralDatabaseDAO dao,NewActionRegistry ar){
-		this.dao = dao;
+	SmartActionFactory(NewActionRegistry ar){
 		this.ar  = ar;
 	}
 
-	public AbstractAction createAction() {
+	
+	/**
+	 * @param jobs
+	 * @return fully instantiated and initialized Actions which are ready to get executed.
+	 */
+	public List<AbstractAction> createActions(Set<Job> jobs) {
 		
-		List<Job> jobsInStartState = dao.getJobForLocalNodeAndInStartState();
-		for (Job j:jobsInStartState)
-			logger.debug(j.toString());
-		List<AbstractAction> jobsWhichCanBeExecuted = calculateActionTypesWhichHaveNotReachedThreadLimit(jobsInStartState);
+		Map<Job,AbstractAction> jobsWhereThreadLimitNotReached = 
+				sortOutJobsWhereThreadLimitReached(jobs);
 
 		// filter the types by a set of rules
+
+		for (Job j:jobsWhereThreadLimitNotReached.keySet())
+			logger.debug("actionType which has not reached limit:"+
+					jobsWhereThreadLimitNotReached.get(j).getName()+","+jobsWhereThreadLimitNotReached.get(j).getStartStatus());
+		
 		
 		// create !new! instances for the result list
+		List<AbstractAction> instantiatedActions = new ArrayList<AbstractAction>();
+		for (Job j:jobsWhereThreadLimitNotReached.keySet())
+			instantiatedActions.add(jobsWhereThreadLimitNotReached.get(j));
 		
-		return jobsWhichCanBeExecuted.get(0);
+		return instantiatedActions;
 	}
 
-	private List<AbstractAction> calculateActionTypesWhichHaveNotReachedThreadLimit(
-			List<Job> jobsInStartState) {
+	private Map<Job,AbstractAction> sortOutJobsWhereThreadLimitReached(
+			Set<Job> jobsInStartState) {
 		
-		List<AbstractAction> resultList = new ArrayList<AbstractAction>();
+		Map<Job,AbstractAction> resultList = new HashMap<Job,AbstractAction>();
 		
 		for (AbstractAction actionType:ar.calculateActionTypeRemainingThreads().keySet()) { 
 			
@@ -73,9 +82,7 @@ public class NewActionFactory {
 			for (Job j:jobsInStartState) {
 				if (!j.getStatus().equals(actionType.getStartStatus())) continue;
 				
-				System.out.println("actionType which has not reached limit:"+actionType.getName()+","+actionType.getStartStatus());
-				
-				resultList.add(actionType);
+				resultList.put(j,actionType);
 				remainingThreadsForType--;
 				if (remainingThreadsForType==0) break;
 			}

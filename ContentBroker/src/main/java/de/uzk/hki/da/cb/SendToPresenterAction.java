@@ -37,6 +37,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.metadata.DCReader;
 import de.uzk.hki.da.metadata.XepicurWriter;
@@ -94,7 +95,7 @@ public class SendToPresenterAction extends AbstractAction {
 	private DCReader dcReader;
 	
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (repositoryFacade == null) 
 			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
 		
@@ -102,7 +103,7 @@ public class SendToPresenterAction extends AbstractAction {
 
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		if (viewerUrls == null)
 			throw new IllegalStateException("viewerUrls is not set.");
 		if (fileFilter == null)

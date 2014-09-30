@@ -39,6 +39,7 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 	private String EAD_XPATH_EXPRESSION = "//daoloc/@href";
 	private static final String URL = "URL";
 	private static Path contractorsPipsPublic;
+	private static Path contractorsPipsInstitution;
 	private static String origName = "ATUseCaseUpdateMetadataLZA_EAD";
 	private static Object object;
 	private static final String EAD_XML = "EAD.XML";
@@ -48,6 +49,7 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 	public void setUp() throws IOException {
 		object = ath.ingest(origName);
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
+		contractorsPipsInstitution = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_INSTITUTION, C.TEST_USER_SHORT_NAME);
 	}
 	
 	@After
@@ -100,17 +102,33 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 	}
 	
 	@Test
-	public void testPres() throws FileNotFoundException, JDOMException, IOException {
+	public void testPresPublic() throws FileNotFoundException, JDOMException, IOException {
+		testPres(contractorsPipsPublic);
+	}
+	
+//	@Test
+//	public void testPresInstitution() throws FileNotFoundException, JDOMException, IOException {
+//		testPres(contractorsPipsInstitution);
+//	}
+	
+	@Test
+	public void testIndex(){
+		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-d1e15821").
+			contains("VDA - Forschungsstelle Rheinlländer in aller Welt"));
+	}
+	
+	public void testPres(Path presDirPath) throws FileNotFoundException, JDOMException, IOException {
 		
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build
-				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "mets_2_32044.xml").toFile()));
-		assertTrue(getMetsURL(doc).contains("http://data.danrw.de"));
+				(new FileReader(Path.make(presDirPath, object.getIdentifier(), "mets_2_32044.xml").toFile()));
+		String metsURL = getMetsURL(doc);
+		assertTrue(metsURL.startsWith("http://data.danrw.de/file/"+object.getIdentifier()) && metsURL.endsWith(".jpg"));
 		assertEquals(URL, getLoctype(doc));
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, getMetsMimetype(doc));
 		
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), EAD_XML).toFile()));
+		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(presDirPath, object.getIdentifier(), EAD_XML).toFile()));
 		
 		List<String> metsReferences = getMetsRefsInEad(eadDoc);
 		assertTrue(metsReferences.size()==5);
@@ -128,12 +146,6 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/mets_2_32048.xml"));
 			}
 		}
-	}
-	
-	@Test
-	public void testIndex(){
-		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-d1e15821").
-			contains("VDA - Forschungsstelle Rheinlländer in aller Welt"));
 	}
 	
 	private String getMetsURL(Document doc){

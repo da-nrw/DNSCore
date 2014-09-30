@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 
 import org.junit.Before;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;

@@ -23,7 +23,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import de.uzk.hki.da.cb.AbstractActionTests;
+import de.uzk.hki.da.action.AbstractActionTests;
+import de.uzk.hki.da.action.ActionFactoryTests;
+import de.uzk.hki.da.action.ActionRegistryTests;
+import de.uzk.hki.da.action.JobManagerTests;
+import de.uzk.hki.da.action.NewActionRegistryTests;
+import de.uzk.hki.da.action.SmartActionFactoryTests;
 import de.uzk.hki.da.cb.ArchiveReplicationActionTests;
 import de.uzk.hki.da.cb.BuildAIPActionTests;
 import de.uzk.hki.da.cb.CheckFormatsActionTest;
@@ -168,7 +173,8 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	RestartIngestWorkflowActionTests.class,
 	PostRetrievalActionTest.class,
 	NewActionRegistryTests.class,
-	NewActionFactoryTests.class
+	SmartActionFactoryTests.class,
+	JobManagerTests.class
 })
 public class SimpleSuite {
 

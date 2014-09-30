@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 
+import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.ff.FileFormatException;
@@ -54,18 +55,18 @@ public class ScanForPresentationAction extends AbstractAction{
 	public ScanForPresentationAction(){}
 	
 	@Override
-	void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 		if (fileFormatFacade==null) throw new ConfigurationException("formatScanService not set");
 	}
 
 	@Override
-	void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkSystemStatePreconditions() throws IllegalStateException {
 		// Auto-generated method stub
 	}
 
 	@Override
-	boolean implementation() throws IOException {
+	public boolean implementation() throws IOException {
 		// check if object package type is set
 		
 		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()); 
@@ -103,7 +104,7 @@ public class ScanForPresentationAction extends AbstractAction{
 	
 
 	@Override
-	void rollback() {
+	public void rollback() {
 		
 		job.getConversion_instructions().clear();
 		for (ConversionInstruction ci: job.getConversion_instructions()){
