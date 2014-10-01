@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contractRights>
+    <institutionRights>
+        <allowed>true</allowed>
+        <tempPublication>false</tempPublication>
+        <lawPublication>true</lawPublication>
+        <law>URHG_DE</law>
+        <restrictions>
+            <textRestriction>false</textRestriction>
+            <imageRestriction>true</imageRestriction>
+            <imageRestrictionText>true</imageRestrictionText>
+            <audioRestriction>true</audioRestriction>
+            <videoRestriction>false</videoRestriction>
+            <videoDurationRestriction>false</videoDurationRestriction>
+            <imageWidth>1280</imageWidth>
+            <imageHeight>960</imageHeight>
+            <footerText>Test 2</footerText>
+            <imageTextType>footer</imageTextType>
+            <watermarkOpacity>5</watermarkOpacity>
+            <watermarkSize>10</watermarkSize>
+            <audioDuration>15</audioDuration>
+            <videoSize>360</videoSize>
+            <videoDuration>5</videoDuration>
+        </restrictions>
+    </institutionRights>
+    <publicRights>
+        <allowed>true</allowed>
+        <tempPublication>true</tempPublication>
+        <lawPublication>false</lawPublication>
+        <startDate>2018-10-20T00:00:00.000+01:00</startDate>
+        <law>EPFLICHT</law>
+        <restrictions>
+            <textRestriction>true</textRestriction>
+            <imageRestriction>false</imageRestriction>
+            <imageRestrictionText>true</imageRestrictionText>
+            <audioRestriction>false</audioRestriction>
+            <videoRestriction>true</videoRestriction>
+            <videoDurationRestriction>true</videoDurationRestriction>
+            <pages>12,15-20,30</pages>
+            <imageWidth>480</imageWidth>
+            <imageHeight>360</imageHeight>
+            <footerText>Test 1</footerText>
+            <imageTextType>center</imageTextType>
+            <watermarkOpacity>100</watermarkOpacity>
+            <watermarkSize>40</watermarkSize>
+            <audioDuration>5</audioDuration>
+            <videoSize>360</videoSize>
+            <videoDuration>60</videoDuration>
+        </restrictions>
+    </publicRights>
+    <conversionRights>
+        <condition>NOTIFY</condition>
+    </conversionRights>
+    <ddbExclusion>false</ddbExclusion>
+</contractRights>

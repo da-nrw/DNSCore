@@ -2,6 +2,18 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>ContentBroker</artifactId>
+	<version>SNAPSHOT</version> <!-- DONT EDIT, EXACTLY THIS ENTRY NEEDED BY DEPLOY SCRIPTS -->
+	<packaging>jar</packaging>
+	<name>DA-NRW Content Broker</name>
+
+	<parent>
+        <groupId>de.uzk.hki.da</groupId>
+        <artifactId>DNSCore</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
 	<properties>
 		<!-- 
 		<scp.user>irods</scp.user>
@@ -33,12 +45,6 @@
 		</profile>
 	</profiles>
 
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>de.uzk.hki.da</groupId>
-	<artifactId>ContentBroker</artifactId>
-	<version>SNAPSHOT</version> <!-- DONT EDIT, EXACTLY THIS ENTRY NEEDED BY DEPLOY SCRIPTS -->
-	<packaging>jar</packaging>
-	<name>DA-NRW Content Broker</name>
 
 <!-- 
 	<distributionManagement>
