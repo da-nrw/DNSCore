@@ -93,7 +93,6 @@ import de.uzk.hki.da.pkg.ArchiveBuilderTests;
 import de.uzk.hki.da.service.RetrievePackagesHelperTest;
 import de.uzk.hki.da.service.URNCheckDigitGeneratorTests;
 import de.uzk.hki.da.service.XPathUtilsTests;
-import de.uzk.hki.da.utils.CommaSeparatedListTests;
 
 /**
  * The collection of all our unit tests which should run pre and post commit.
@@ -141,7 +140,6 @@ import de.uzk.hki.da.utils.CommaSeparatedListTests;
 	IntegrityScannerWorkerTest.class,
 	ShortenFileNamesActionTests.class,
 	XPathUtilsTests.class,
-	CommaSeparatedListTests.class,
 	CheckFormatsActionTest.class,
 	PdfConversionStrategyTest.class,
 	PublishPDFConversionStrategyTests.class,

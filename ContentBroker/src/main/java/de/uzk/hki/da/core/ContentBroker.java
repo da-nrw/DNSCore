@@ -35,7 +35,7 @@ import org.springframework.core.task.TaskRejectedException;
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.action.ActionFactory;
 import de.uzk.hki.da.action.ActionInformation;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.fs.Utilities;
 
 
 

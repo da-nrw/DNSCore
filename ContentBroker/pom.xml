@@ -2,12 +2,20 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>ContentBroker</artifactId>
+	<version>SNAPSHOT</version> <!-- DONT EDIT, EXACTLY THIS ENTRY NEEDED BY DEPLOY SCRIPTS -->
+	<packaging>jar</packaging>
+	<name>DA-NRW Content Broker</name>
+
+	<parent>
+        <groupId>de.uzk.hki.da</groupId>
+        <artifactId>DNSCore</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
 	<properties>
-		<!-- 
-		<scp.user>irods</scp.user>
-		<scp.host>da-nrw</scp.host>
-		<scp.host2>da-nrw</scp.host2>
-		<scp.toDir>/da-nrw</scp.toDir> -->
 		<maven.test.search.classdir>true</maven.test.search.classdir>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -33,38 +41,17 @@
 		</profile>
 	</profiles>
 
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>de.uzk.hki.da</groupId>
-	<artifactId>ContentBroker</artifactId>
-	<version>SNAPSHOT</version> <!-- DONT EDIT, EXACTLY THIS ENTRY NEEDED BY DEPLOY SCRIPTS -->
-	<packaging>jar</packaging>
-	<name>DA-NRW Content Broker</name>
-
-<!-- 
-	<distributionManagement>
-		<downloadUrl>http://repositories.hki.uni-koeln.de/mvn/</downloadUrl>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>da-nrw-maven-repo</id>
-			<name>DA-NRW Maven Repository</name>
-			<url>scp://repositories.hki.uni-koeln.de/repositories/mvn/</url>
-			<layout>default</layout>
-		</repository>
-	</distributionManagement>
--->
 
 	<repositories>
-	<repository>
-      <id>central</id>
-      <name>Maven Repository Switchboard</name>
-      <layout>default</layout>
-      <url>http://repo1.maven.org/maven2</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-	
-	
+		<repository>
+	      <id>central</id>
+	      <name>Maven Repository Switchboard</name>
+	      <layout>default</layout>
+	      <url>http://repo1.maven.org/maven2</url>
+	      <snapshots>
+	        <enabled>false</enabled>
+	      </snapshots>
+	    </repository>
 		<repository>
 			<id>renci.repository</id>
 			<name>renci.repository</name>
@@ -284,25 +271,8 @@
 							<goal>run</goal>
 						</goals>
 					</execution>
-					<execution>
-						<id>install-it</id>
-						<phase>install</phase>
-						<configuration>
-							<tasks>
-								<exec dir="${basedir}"
-									executable="${basedir}/src/main/bash/install_buildrepo.sh"
-									failonerror="true">
-									<arg line=""/>
-								</exec>
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 
 		<pluginManagement>
@@ -374,6 +344,12 @@
 	</build>
 
 	<dependencies>
+		<dependency>
+			<groupId>de.uzk.hki.da</groupId>
+			<artifactId>DNSCommon</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+	
 	
 		<dependency>
 			<groupId>org.apache.qpid</groupId>
@@ -432,37 +408,13 @@
 			</exclusions>
 		</dependency>
 
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.7</version>
-		</dependency>
-		<dependency>                                    
-    		<groupId>org.slf4j</groupId>                
-    		<artifactId>jcl-over-slf4j</artifactId>    
-    		<version>1.7.5</version>  
-		</dependency>
+		
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.0.3</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-compress</artifactId>
-			<version>1.4</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.9</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.3</version>
-		</dependency>
+
 		<dependency>
 			<groupId>gov.loc</groupId>
 			<artifactId>bagit</artifactId>
@@ -527,22 +479,13 @@
 		        </exclusion>
 		    </exclusions>
 		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>1.9.0</version>
-			<scope>test</scope>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>4.0.0.RELEASE</version>
 		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.irods.jargon</groupId>
 			<artifactId>jargon-core</artifactId>
@@ -612,11 +555,7 @@
 			<artifactId>jsonld-java-jena</artifactId>
 			<version>0.2</version>
 		</dependency>
-		<dependency>
-			<groupId>org.easytesting</groupId>
-			<artifactId>fest-assert</artifactId>
-			<version>1.4</version>
-		</dependency>
+
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>

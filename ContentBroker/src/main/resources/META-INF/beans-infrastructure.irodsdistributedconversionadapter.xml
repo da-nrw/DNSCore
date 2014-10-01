@@ -16,4 +16,9 @@
 		<property name="zonePath" value="${irods.zone}"/>
 		<property name="workingResource" value="${localNode.workingResource}"/>
 	</bean>
+		<bean id="irodsFederatedDistributedConversionAdapter" class="de.uzk.hki.da.grid.IrodsFederatedDistributedConversionAdapter">
+		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
+		<property name="zonePath" value="${irods.zone}"/>
+		<property name="workingResource" value="${localNode.workingResource}"/>
+	</bean>
 </beans>

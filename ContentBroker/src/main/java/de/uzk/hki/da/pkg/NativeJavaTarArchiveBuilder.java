@@ -33,7 +33,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.fs.Utilities;
 
 
 

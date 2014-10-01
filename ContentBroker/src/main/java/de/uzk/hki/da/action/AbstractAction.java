@@ -44,6 +44,7 @@ import ch.qos.logback.core.Appender;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.fs.Utilities;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -54,7 +55,6 @@ import de.uzk.hki.da.service.MailContents;
 import de.uzk.hki.da.service.UserExceptionManager;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
-import de.uzk.hki.da.utils.Utilities;
 
 
 /**

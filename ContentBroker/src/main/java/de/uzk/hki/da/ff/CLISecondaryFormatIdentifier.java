@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.cli.CommandLineConnector;
 import de.uzk.hki.da.cli.ProcessInformation;
-import de.uzk.hki.da.utils.CommaSeparatedList;
+import de.uzk.hki.da.fs.CommaSeparatedList;
 
 /**
  * @author Daniel M. de Oliveira

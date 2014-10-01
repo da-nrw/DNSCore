@@ -29,9 +29,9 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.fs.Utilities;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
-import de.uzk.hki.da.utils.Utilities;
 
 /**
  * For acceptance testing on developer machines

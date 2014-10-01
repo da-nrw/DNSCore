@@ -23,8 +23,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Arrays;
 
+import de.uzk.hki.da.fs.Utilities;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
-import de.uzk.hki.da.utils.Utilities;
 
 
 

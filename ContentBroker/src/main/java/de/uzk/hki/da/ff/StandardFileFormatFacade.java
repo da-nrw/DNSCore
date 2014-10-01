@@ -31,8 +31,8 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.cli.CommandLineConnector;
 import de.uzk.hki.da.cli.ProcessInformation;
+import de.uzk.hki.da.fs.Utilities;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Utilities;
 
 /**
  * Implementation for file identification: FIDO.

@@ -37,13 +37,13 @@ import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.fs.Utilities;
 import de.uzk.hki.da.metadata.PremisXmlValidator;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.pkg.BagitConsistencyChecker;
 import de.uzk.hki.da.pkg.ConsistencyChecker;
-import de.uzk.hki.da.utils.Utilities;
 
 /**
  * If there is sufficient space on the WorkArea, fetches the container (named object.package.containername)

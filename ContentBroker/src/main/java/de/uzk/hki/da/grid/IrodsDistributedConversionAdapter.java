@@ -31,8 +31,8 @@ import de.uzk.hki.da.path.Path;
  */
 public class IrodsDistributedConversionAdapter implements DistributedConversionAdapter {
 
-	private IrodsSystemConnector irodsSystemConnector;
-	private Path zone;
+	protected IrodsSystemConnector irodsSystemConnector;
+	protected Path zone;
 	private String workingResource;
 	
 	@Override

@@ -21,6 +21,8 @@ package de.uzk.hki.da.utils;
 import java.io.IOException;
 import java.io.InputStream;
 
+import de.uzk.hki.da.fs.Utilities;
+
 
 /**
  * 
