@@ -15,11 +15,6 @@
     </parent>
 
 	<properties>
-		<!-- 
-		<scp.user>irods</scp.user>
-		<scp.host>da-nrw</scp.host>
-		<scp.host2>da-nrw</scp.host2>
-		<scp.toDir>/da-nrw</scp.toDir> -->
 		<maven.test.search.classdir>true</maven.test.search.classdir>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -290,25 +285,8 @@
 							<goal>run</goal>
 						</goals>
 					</execution>
-					<execution>
-						<id>install-it</id>
-						<phase>install</phase>
-						<configuration>
-							<tasks>
-								<exec dir="${basedir}"
-									executable="${basedir}/src/main/bash/install_buildrepo.sh"
-									failonerror="true">
-									<arg line=""/>
-								</exec>
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 
 		<pluginManagement>
