@@ -89,4 +89,40 @@ public abstract class MetadataStructure {
 		}
 		return existingMetsFiles;
 	}
+	
+//	public List<File> getReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
+//		List<File> existingFiles = new ArrayList<File>();
+//		for(String ref : references) {
+//			File refFile;
+//			try {
+//				refFile = getCanonicalFileFromReference(ref, metadataFile);
+//				String nameOfMetadataParentFile = metadataFile.getParentFile().getName();
+//				String relPathFromMetadataFile = Path.extractRelPathFromDir(refFile, nameOfMetadataParentFile);
+//				logger.debug("Check referenced file: "+relPathFromMetadataFile);
+//				Boolean fileExists = false;
+//				for(DAFile dafile : daFiles) {
+//					logger.debug("Try to match DAFile "+dafile.getRelative_path()+" to reference "+ref+" ("+relPathFromMetadataFile+")...");
+//					
+//					logger.debug(nameOfMetadataParentFile);
+//					
+//					File file = dafile.toRegularFile();
+//					logger.debug("Compare...");
+//					logger.debug(Path.extractRelPathFromDir(file, nameOfMetadataParentFile));
+//					logger.debug(relPathFromMetadataFile);
+//					logger.debug("...");
+//					if(Path.extractRelPathFromDir(file, nameOfMetadataParentFile).equals(relPathFromMetadataFile)) {
+//						fileExists = true;
+//						existingFiles.add(file);
+//					} 
+//				}
+//				if(!fileExists) {
+//					logger.error("File "+ref+" does not exist.");
+//				}
+//			} catch (IOException e) {
+//				logger.error("File "+ref+" does not exist.");
+//				e.printStackTrace();
+//			}
+//		}
+//		return existingFiles;
+//	}
 }

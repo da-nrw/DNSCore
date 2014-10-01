@@ -99,6 +99,9 @@ public class Object {
 	
 	private String metadata_file;
 	
+	private String DIP_PUBLIC_REPNAME = "dip/public";
+	private String DIP_INSTITUTION_REPNAME = "dip/institution";
+	
 	/** The zone. */
 	private String zone;
 	
@@ -688,10 +691,14 @@ public class Object {
 	 */
 	private List<String> getReps() {
 		List<String> representations = new ArrayList<String>();
-		for (Package p:this.getPackages())
-			for (DAFile f:p.getFiles())
-				
-				representations.add(f.getRep_name());
+		for (Package p:this.getPackages()) {
+			for (DAFile f:p.getFiles()) {
+				String repName = f.getRep_name();
+				if(!repName.equals(DIP_PUBLIC_REPNAME) && !repName.equals(DIP_INSTITUTION_REPNAME)) {
+					representations.add(f.getRep_name());
+				}
+			}
+		}
 		Collections.sort(representations);
 		return representations;
 	}
