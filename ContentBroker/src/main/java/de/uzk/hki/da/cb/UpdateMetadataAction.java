@@ -403,7 +403,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			
 			logger.debug("Copied metadata file \"{}\" to \"{}\"", srcMetadataFile.toString(), destMetadataFile);
 			
-			object.setMetadata_file(metadataFileName);
+//			object.setMetadata_file(metadataFileName);
 			
 			// copy METS-Files if present in EAD-package
 			if ("EAD".equals(packageType)) {
