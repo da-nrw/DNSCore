@@ -13,7 +13,8 @@
     <modules>
         <module>DNSCommon</module>
         <module>ContentBroker</module>
-	<module>SIP-Builder</module>
+		<module>SIP-Builder</module>
+		<module>PasswordEncryptor</module>
     </modules>
 
 	<repositories>
