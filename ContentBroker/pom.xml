@@ -12,6 +12,7 @@
         <groupId>de.uzk.hki.da</groupId>
         <artifactId>DNSCore</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
 	<properties>
