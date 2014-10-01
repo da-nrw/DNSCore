@@ -146,4 +146,41 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	public boolean isValid() {
 		return (checkReferencedFilesInEad() && checkReferencedFilesInMetsFiles());
 	}
+	
+//	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::   OVERRIDE   ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private HashMap<File, Boolean> checkExistenceOfReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
+		HashMap fileExistenceMap = new HashMap<File, Boolean>();
+		for(String ref : references) {
+			File refFile;
+			Boolean fileExists = false;
+			try {
+				refFile = getCanonicalFileFromReference(ref, metadataFile);
+				logger.debug("Check referenced file: "+refFile.getAbsolutePath());
+				if(refFile.exists()) {
+					fileExists = true; 
+				} else {
+					fileExists = false;
+				}
+				fileExistenceMap.put(refFile, fileExists);
+			} catch (IOException e) {
+				logger.error("File "+ref+" does not exist.");
+				e.printStackTrace();
+			}
+		}
+		return fileExistenceMap;
+	}
+	
+	@Override
+	public List<File> getReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
+		HashMap<File, Boolean> fileExistenceMap = checkExistenceOfReferencedFiles(metadataFile, references, daFiles);
+		List<File> existingMetsFiles = new ArrayList<File>();
+		for(File file : fileExistenceMap.keySet()) {
+			if(fileExistenceMap.get(file)==true) {
+				existingMetsFiles.add(file);
+			}
+		}
+		return existingMetsFiles;
+	}
 }

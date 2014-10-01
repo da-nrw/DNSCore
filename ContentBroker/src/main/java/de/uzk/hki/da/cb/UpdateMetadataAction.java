@@ -139,7 +139,13 @@ public class UpdateMetadataAction extends AbstractAction {
 				if(representationExists(repName)) {
 					metadataFile = Path.makeFile(object.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName);
 	                if (!metadataFile.exists()) throw new FileNotFoundException();
-					
+	                logger.debug("Metadata file: "+metadataFile.getAbsolutePath());
+	                logger.debug("DAFiles: ");
+	                for(DAFile dafile : daFiles) {
+	                	logger.debug(""+dafile);
+	                }
+	                logger.debug("---");
+	                
 					if("EAD".equals(packageType)) {
 						EadMetsMetadataStructure emms = new EadMetsMetadataStructure(metadataFile, daFiles);
 						replacementList = updatePathsInEad(emms, repName);
