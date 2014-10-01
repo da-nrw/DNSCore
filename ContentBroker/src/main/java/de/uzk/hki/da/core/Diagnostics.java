@@ -36,6 +36,7 @@ import de.uzk.hki.da.ff.FileFormatFacade;
 import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.ff.FileWithFileFormat;
 import de.uzk.hki.da.ff.StandardFileFormatFacade;
+import de.uzk.hki.da.fs.Utilities;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.Node;
@@ -45,7 +46,6 @@ import de.uzk.hki.da.path.RelativePath;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Utilities;
 
 /**
  * Checks basic connectivity of the application. 

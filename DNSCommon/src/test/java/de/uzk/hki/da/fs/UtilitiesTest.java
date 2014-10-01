@@ -17,16 +17,17 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.utils;
+package de.uzk.hki.da.fs;
 
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 
 /**
@@ -43,8 +44,8 @@ public class UtilitiesTest {
 	public void compareTwoEqualFolders() throws IOException{
 		
 		assertTrue(FolderUtils.compareFolders(
-				new File("src/test/resources/utilities/folderComparison/folder1"),
-				new File("src/test/resources/utilities/folderComparison/folder2")));
+				new File("src/test/resources/fs/folderComparison/folder1"),
+				new File("src/test/resources/fs/folderComparison/folder2")));
 	}
 	
 	/**
@@ -58,8 +59,8 @@ public class UtilitiesTest {
 	public void compareTwoUnequalFolders() throws IOException{
 		
 		assertFalse(FolderUtils.compareFolders(
-				new File("src/test/resources/utilities/folderComparison/folder1"),
-				new File("src/test/resources/utilities/folderComparison/folder3")));
+				new File("src/test/resources/fs/folderComparison/folder1"),
+				new File("src/test/resources/fs/folderComparison/folder3")));
 	}
 	
 	
@@ -73,8 +74,8 @@ public class UtilitiesTest {
 	public void compareTwoUnequalFolders2() throws IOException{
 		
 		assertFalse(FolderUtils.compareFolders(
-				new File("src/test/resources/utilities/folderComparison/folder1"),
-				new File("src/test/resources/utilities/folderComparison/folder3")));
+				new File("src/test/resources/fs/folderComparison/folder1"),
+				new File("src/test/resources/fs/folderComparison/folder3")));
 	}
 	
 	/**
@@ -86,8 +87,8 @@ public class UtilitiesTest {
 	@Test
 	public void comparisonOnDifferentLocations() throws IOException{
 		assertTrue(FolderUtils.compareFolders(
-				new File("src/test/resources/utilities/folderComparison/folder1"),
-				new File("src/test/resources/utilities/folderComparison/alternativeLoc/folder2")));
+				new File("src/test/resources/fs/folderComparison/folder1"),
+				new File("src/test/resources/fs/folderComparison/alternativeLoc/folder2")));
 	}
 	
 	/**
@@ -100,12 +101,12 @@ public class UtilitiesTest {
 	@Test
 	public void copyToTmpAndCompare() throws IOException{
 		FileUtils.copyDirectoryToDirectory(
-				new File("src/test/resources/utilities/folderComparison/folder1"), 
+				new File("src/test/resources/fs/folderComparison/folder1"), 
 				new File("/tmp/"));
 		
 		
 		assertTrue(FolderUtils.compareFolders(
-				new File("src/test/resources/utilities/folderComparison/folder1"),
+				new File("src/test/resources/fs/folderComparison/folder1"),
 				new File("/tmp/folder1")));
 	}
 	

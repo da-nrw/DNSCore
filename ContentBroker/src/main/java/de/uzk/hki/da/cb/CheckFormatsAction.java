@@ -38,11 +38,11 @@ import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
 import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.ff.ISubformatIdentificationPolicy;
+import de.uzk.hki.da.fs.CommaSeparatedList;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.utils.CommaSeparatedList;
 
 /**
  * Creates metadata files from extracted jhove output and puts them to the folder jhove_temp
