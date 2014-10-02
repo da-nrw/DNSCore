@@ -7,7 +7,7 @@
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
 		</encoder>
 	</appender>
-
+<!--
      <appender name="GRID" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>TRACE</level>
@@ -21,7 +21,7 @@
 	        <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
 	    </encoder>
 	</appender>   
-
+-->
      <appender name="INGEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>TRACE</level>
@@ -51,7 +51,7 @@
 	    </encoder>
 	</appender>   
 
-	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="CONTENTBROKER_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>TRACE</level>
         </filter>
@@ -64,6 +64,21 @@
 	        <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
 	    </encoder>
 	</appender>
+	<appender name="UNSORTED_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>TRACE</level>
+        </filter>
+		<file>log/unsorted.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>log/unsorted.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+	    <encoder>
+	        <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
+	    </encoder>
+	</appender>
+
+
 
 	<appender name="OBJECT" class="ch.qos.logback.classic.sift.SiftingAppender">
 		<discriminator>
@@ -71,7 +86,7 @@
 			<defaultValue>default-object-log</defaultValue>
 		</discriminator>
 		<sift>
-			<appender name="FILE-${object_id}" class="ch.qos.logback.core.FileAppender">
+			<appender name="CONTENTBROKER_LOG-${object_id}" class="ch.qos.logback.core.FileAppender">
 				<file>log/object-logs/${object_id}.log</file>
 				<encoder>
 					<pattern>%d %level %logger{35} - %msg%n</pattern>
@@ -81,39 +96,49 @@
 	</appender>
         
 		<logger name="de.uzk.hki.da.core" additivity="false" level="DEBUG">
-                <appender-ref ref="FILE" />
+                <appender-ref ref="CONTENTBROKER_LOG" />
         </logger>
+		<logger name="de.uzk.hki.da.action" additivity="false" level="DEBUG">
+                <appender-ref ref="CONTENTBROKER_LOG" />
+        </logger>
+		<logger name="de.uzk.hki.da.service.MailContents"  additivity="false" level="DEBUG">
+                <appender-ref ref="CONTENTBROKER_LOG" />
+        </logger>
+        <logger name="org.hibernate" level="INFO">
+                <appender-ref ref="CONTENTBROKER_LOG" />
+        </logger>
+        <logger name="org.apache.activemq" level="ERROR">
+                <appender-ref ref="CONTENTBROKER_LOG" />
+        </logger>
+
+
+        <logger name="de.uzk.hki.da.grid"  additivity="false" level="DEBUG">
+                <appender-ref ref="GRID" />
+        </logger>
+
 
         <logger name="de.uzk.hki.da.core.IngestAreaScannerWorker"  additivity="false" level="DEBUG">
                 <appender-ref ref="INGEST" />
         </logger>
-
 		<logger name="de.uzk.hki.da.service.RegisterObjectService"  additivity="false" level="DEBUG">
                 <appender-ref ref="INGEST" />
         </logger>
-		<logger name="de.uzk.hki.da.service.MailContents"  additivity="false" level="DEBUG">
-                <appender-ref ref="FILE" />
-        </logger>
-
 		<logger name="de.uzk.hki.da.integrity" additivity="false" level="DEBUG">
                 <appender-ref ref="INTEGRITY" />
         </logger>
 
-        <logger name="de.uzk.hki.da.grid"  additivity="false" level="TRACE">
-                <appender-ref ref="GRID" />
-        </logger>
 
-        <logger name="de.uzk.hki.da"  additivity="false" level="DEBUG">
+
+        <logger name="de.uzk.hki.da.cb"  additivity="false" level="DEBUG">
                 <appender-ref ref="OBJECT" />
+        </logger>
+        
+        
+        <logger name="de.uzk.hki.da"  additivity="false" level="DEBUG">
+                <appender-ref ref="UNSORTED_LOG" />
         </logger>
 		
 
-        <logger name="org.hibernate" level="INFO">
-                <appender-ref ref="OBJECT" />
-        </logger>
-        <logger name="org.apache.activemq" level="ERROR">
-                <appender-ref ref="FILE" />
-        </logger>
         <root level="OFF" />
 
 
