@@ -25,25 +25,20 @@ public class ATUseCaseIngestDeltaEAD extends AcceptanceTest{
 	private Object object;
 	
 	
-//	@Before
-//	public void setUp() throws IOException, InterruptedException {
-//		FileUtils.copyFileToDirectory(new File("src/test/resources/at/ATUseCaseIngestDeltaEAD_orig/"+ORIG_NAME_ORIG+".tgz"), new File("src/test/resources/at"));
-//		object = ath.ingest(ORIG_NAME_ORIG);
-//		FileUtils.deleteQuietly(new File("src/test/resources/at/ATUseCaseIngestDeltaEAD.tgz"));
-//		
-//		Thread.sleep(_1_MINUTE); // to prevent the repnames to match the ones of the previous package
-//		FileUtils.copyFileToDirectory(new File("src/test/resources/at/ATUseCaseIngestDeltaEAD_delta/"+ORIG_NAME_ORIG+".tgz"), new File("src/test/resources/at"));
-//		object = ath.ingest(ORIG_NAME_ORIG);
-//		FileUtils.deleteQuietly(new File("src/test/resources/at/ATUseCaseIngestDeltaEAD.tgz"));
-//	}
-//	
-//	@Test
-//	public void test() throws IOException, InterruptedException, RepositoryException{
-//		System.out.println("TEST");
-//	}
+	@Before
+	public void setUp() throws IOException, InterruptedException {
+		FileUtils.copyFileToDirectory(new File("src/test/resources/at/ATUseCaseIngestDeltaEAD_orig/"+ORIG_NAME_ORIG+".tgz"), new File("src/test/resources/at"));
+		object = ath.ingest(ORIG_NAME_ORIG);
+		FileUtils.deleteQuietly(new File("src/test/resources/at/ATUseCaseIngestDeltaEAD.tgz"));
+		
+		Thread.sleep(_1_MINUTE); // to prevent the repnames to match the ones of the previous package
+		FileUtils.copyFileToDirectory(new File("src/test/resources/at/ATUseCaseIngestDeltaEAD_delta/"+ORIG_NAME_ORIG+".tgz"), new File("src/test/resources/at"));
+		object = ath.ingest(ORIG_NAME_ORIG);
+		FileUtils.deleteQuietly(new File("src/test/resources/at/ATUseCaseIngestDeltaEAD.tgz"));
+	}
 	
 	@Test
-	public void test() {
-		;
+	public void test() throws IOException, InterruptedException, RepositoryException{
+		System.out.println("TEST");
 	}
 }

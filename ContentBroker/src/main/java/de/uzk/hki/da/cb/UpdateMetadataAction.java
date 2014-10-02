@@ -161,10 +161,16 @@ public class UpdateMetadataAction extends AbstractAction {
 				int expectedReplacements = replacementList.get(0);
 				int actualReplacements = replacementList.get(1);
 				logger.debug("Successfully replaced "+actualReplacements+" references!");
-				if(expectedReplacements!=actualReplacements) {
+				
+				
+				if(!object.isDelta()) {
+					if(expectedReplacements!=actualReplacements) {
 					throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,
 							expectedReplacements+" file(s) have been converted and for each one an entry in a METS file has to be updated. "+
 					"but only "+actualReplacements+" replacements could be done.", metadataFile.getAbsolutePath(), new Exception());
+					}
+				} else {
+					logger.debug("DELTA: Does not compare expected & actual replacements.");
 				}
 			}
 		}
