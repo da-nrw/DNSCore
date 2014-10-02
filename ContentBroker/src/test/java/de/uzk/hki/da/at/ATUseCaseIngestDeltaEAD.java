@@ -30,7 +30,7 @@ public class ATUseCaseIngestDeltaEAD extends AcceptanceTest{
 		FileUtils.deleteQuietly(new File("src/test/resources/at/"+ORIG_NAME_ORIG+".tgz"));
 		
 		Thread.sleep(_1_MINUTE); // to prevent the repnames to match the ones of the previous package
-		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+ORIG_NAME_ORIG+"_delta_oneFile/"+ORIG_NAME_ORIG+".tgz"), new File("src/test/resources/at"));
+		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+ORIG_NAME_ORIG+"_delta/"+ORIG_NAME_ORIG+".tgz"), new File("src/test/resources/at"));
 		object = ath.ingest(ORIG_NAME_ORIG);
 		FileUtils.deleteQuietly(new File("src/test/resources/at/"+ORIG_NAME_ORIG+".tgz"));
 	}
