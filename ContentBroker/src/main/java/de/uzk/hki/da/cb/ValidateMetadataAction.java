@@ -89,11 +89,15 @@ public class ValidateMetadataAction extends AbstractAction {
 		
 		object.setPackage_type(detectedPackageType);
 		
-	
-		MetadataStructure ms = createMetadataStructure();
-		if (!ms.isValid()){
-			throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE, 
-					"Package of type "+detectedPackageType+" is not consistent");
+		if(!object.isDelta()) {
+			logger.debug("Validate package...");
+			MetadataStructure ms = createMetadataStructure();
+			if (!ms.isValid()){
+				throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE, 
+						"Package of type "+detectedPackageType+" is not consistent");
+			}
+		} else {
+			logger.debug("DELTA: Skipping validation...");
 		}
 		
 		object.setMetadata_file(detectedMetadataFile.getRelative_path());

@@ -56,73 +56,40 @@ public abstract class MetadataStructure {
 	
 	public abstract File getMetadataFile();
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private HashMap<File, Boolean> checkExistenceOfReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
-		HashMap fileExistenceMap = new HashMap<File, Boolean>();
+	public List<File> getReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
+		List<File> existingFiles = new ArrayList<File>();
 		for(String ref : references) {
 			File refFile;
-			Boolean fileExists = false;
 			try {
 				refFile = getCanonicalFileFromReference(ref, metadataFile);
-				logger.debug("Check referenced file: "+refFile.getAbsolutePath());
-				if(refFile.exists()) {
-					fileExists = true; 
-				} else {
-					fileExists = false;
+				String nameOfMetadataParentFile = metadataFile.getParentFile().getName();
+				String relPathFromMetadataFile = Path.extractRelPathFromDir(refFile, nameOfMetadataParentFile);
+				logger.debug("Check referenced file: "+relPathFromMetadataFile);
+				Boolean fileExists = false;
+				for(DAFile dafile : daFiles) {
+					logger.debug("Try to match DAFile "+dafile+" to given reference "+ref+" (canonical file path: "+relPathFromMetadataFile+")...");
+					String dafileRelPath = "";	
+					File file = dafile.toRegularFile();
+					if(nameOfMetadataParentFile.endsWith("+a") || nameOfMetadataParentFile.endsWith("+b") || nameOfMetadataParentFile.equals("public") || nameOfMetadataParentFile.equals("institution")) {
+						dafileRelPath = dafile.getRelative_path();
+					} else {
+						dafileRelPath = Path.extractRelPathFromDir(file, nameOfMetadataParentFile);
+					}
+					if(dafileRelPath.equals(relPathFromMetadataFile)) {
+						fileExists = true;
+						logger.debug("File exists!");
+						existingFiles.add(file);
+						break;
+					} 
 				}
-				fileExistenceMap.put(refFile, fileExists);
+				if(!fileExists) {
+					logger.error("File "+ref+" does not exist.");
+				}
 			} catch (IOException e) {
 				logger.error("File "+ref+" does not exist.");
 				e.printStackTrace();
 			}
 		}
-		return fileExistenceMap;
+		return existingFiles;
 	}
-	
-	public List<File> getReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
-		HashMap<File, Boolean> fileExistenceMap = checkExistenceOfReferencedFiles(metadataFile, references, daFiles);
-		List<File> existingMetsFiles = new ArrayList<File>();
-		for(File file : fileExistenceMap.keySet()) {
-			if(fileExistenceMap.get(file)==true) {
-				existingMetsFiles.add(file);
-			}
-		}
-		return existingMetsFiles;
-	}
-	
-//	public List<File> getReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
-//		List<File> existingFiles = new ArrayList<File>();
-//		for(String ref : references) {
-//			File refFile;
-//			try {
-//				refFile = getCanonicalFileFromReference(ref, metadataFile);
-//				String nameOfMetadataParentFile = metadataFile.getParentFile().getName();
-//				String relPathFromMetadataFile = Path.extractRelPathFromDir(refFile, nameOfMetadataParentFile);
-//				logger.debug("Check referenced file: "+relPathFromMetadataFile);
-//				Boolean fileExists = false;
-//				for(DAFile dafile : daFiles) {
-//					logger.debug("Try to match DAFile "+dafile.getRelative_path()+" to reference "+ref+" ("+relPathFromMetadataFile+")...");
-//					
-//					logger.debug(nameOfMetadataParentFile);
-//					
-//					File file = dafile.toRegularFile();
-//					logger.debug("Compare...");
-//					logger.debug(Path.extractRelPathFromDir(file, nameOfMetadataParentFile));
-//					logger.debug(relPathFromMetadataFile);
-//					logger.debug("...");
-//					if(Path.extractRelPathFromDir(file, nameOfMetadataParentFile).equals(relPathFromMetadataFile)) {
-//						fileExists = true;
-//						existingFiles.add(file);
-//					} 
-//				}
-//				if(!fileExists) {
-//					logger.error("File "+ref+" does not exist.");
-//				}
-//			} catch (IOException e) {
-//				logger.error("File "+ref+" does not exist.");
-//				e.printStackTrace();
-//			}
-//		}
-//		return existingFiles;
-//	}
 }
