@@ -67,7 +67,24 @@ import de.uzk.hki.da.path.Path;
 @Table(name="objects")
 public class Object {
 	
+	public static class ObjectStatus {
+		public static final Integer UnderAudit = 60;
+		public static final Integer InWorkflow = 50;
+		public static final Integer Error = 51;
+		public static final Integer ArchivedAndValid = 100;
+	}
+
+	/** The object_state. */ 
+	private int object_state;
+
+	
+	
+	
 	private static final String REPRESENTATION_FILTER = "^.*[+][ab]";
+	
+	
+	
+	
 	
 	/** The data_pk. */
 	@Id
@@ -108,14 +125,6 @@ public class Object {
 	/** The published_flag. */
 	private int published_flag;
 	
-	/** The object_state. 
-	 *
-	 * 100: archived and valid
-	 * 51: corrupt
-	 * 50: in workflow
-	 * 60: under integrity check
-	 */
-	private int object_state;
 	
 	/** The last_checked. */
 	private Date last_checked;

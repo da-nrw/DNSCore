@@ -54,12 +54,7 @@ import de.uzk.hki.da.service.Mail;
 public class IntegrityScannerWorker {
 
 	
-	private static class ObjectState {
-		private static final Integer UnderAudit = 60;
-		private static final Integer InWorkflow = 50;
-		private static final Integer Error = 51;
-		private static final Integer archivedAndValidState = 100;
-	}
+
 	
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(IntegrityScannerWorker.class);
@@ -105,7 +100,7 @@ public class IntegrityScannerWorker {
 			Integer auditResult = checkObjectValidity(object);
 			updateObject(object,auditResult);
 			
-			if (auditResult==ObjectState.Error) {
+			if (auditResult==Object.ObjectStatus.Error) {
 				sendEmail(object);
 			}
 			
@@ -143,14 +138,14 @@ public class IntegrityScannerWorker {
 					+ "order by o.last_checked asc")
 					.setParameter("1", node.getName())
 					.setCalendar("2",now)
-					.setParameter("3", ObjectState.InWorkflow) // don't consider objects under work
-					.setParameter("4", ObjectState.UnderAudit) //           ||
+					.setParameter("3", Object.ObjectStatus.InWorkflow) // don't consider objects under work
+					.setParameter("4", Object.ObjectStatus.UnderAudit) //           ||
 							.setReadOnly(true).list();
 			
 			Object objectToAudit = (Object) l.get(0);
 			
 			// lock object
-			objectToAudit.setObject_state(ObjectState.UnderAudit);
+			objectToAudit.setObject_state(Object.ObjectStatus.UnderAudit);
 			session.update(objectToAudit);
 			session.getTransaction().commit();
 			session.close();
@@ -256,8 +251,8 @@ public class IntegrityScannerWorker {
 				continue;
 			}
 		}
-		if (completelyValid) return ObjectState.archivedAndValidState;
-		else return ObjectState.Error;
+		if (completelyValid) return Object.ObjectStatus.ArchivedAndValid;
+		else return Object.ObjectStatus.Error;
 	}
 
 	/**

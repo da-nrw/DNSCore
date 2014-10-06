@@ -45,11 +45,6 @@ public class AuditAction extends AbstractAction {
 	private String nodeAdminEmail;
 	private GridFacade gridRoot;
 
-	private static class ObjectState {
-		private static final Integer UnderAudit = 60;
-		private static final Integer Error = 51;
-		private static final Integer archivedAndValidState = 100;
-	}
 	
 	@Override
 	public void checkActionSpecificConfiguration() throws ConfigurationException {
@@ -71,7 +66,7 @@ public class AuditAction extends AbstractAction {
 	@Override
 	public boolean implementation() {
 		setKILLATEXIT(true);
-		setObjectState(job,ObjectState.UnderAudit);
+		setObjectState(job,Object.ObjectStatus.UnderAudit);
 		StoragePolicy sp = new StoragePolicy(localNode);
 		sp.setMinNodes(preservationSystem.getMinRepls());
 		
@@ -95,9 +90,9 @@ public class AuditAction extends AbstractAction {
 		}
 		if (completelyValid) {
 			logger.debug("Object checked OK, setting object state to 100");
-			object.setObject_state(ObjectState.archivedAndValidState);
+			object.setObject_state(Object.ObjectStatus.ArchivedAndValid);
 		} else {
-			object.setObject_state(ObjectState.Error);
+			object.setObject_state(Object.ObjectStatus.Error);
 			logger.error("Object " + object.getIdentifier()  + " has following errors :" +  msg);
 			unloadAndRepair(object);
 			new MailContents(preservationSystem,localNode).auditInformNodeAdmin(object, msg);
