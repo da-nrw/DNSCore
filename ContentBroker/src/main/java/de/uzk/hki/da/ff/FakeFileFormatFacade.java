@@ -38,7 +38,7 @@ import de.uzk.hki.da.utils.C;
 public class FakeFileFormatFacade implements FileFormatFacade {
 
 	@Override
-	public List<IFileWithFileFormat> identify(List<IFileWithFileFormat> files) throws FileNotFoundException{
+	public List<IFileWithFileFormat> identify(List<? extends IFileWithFileFormat> files) throws FileNotFoundException{
 		
 		for (IFileWithFileFormat f:files){
 			
@@ -133,7 +133,7 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 	        
 	    	
 		}
-		return files;
+		return (List<IFileWithFileFormat>) files;
 	}
 	
 	

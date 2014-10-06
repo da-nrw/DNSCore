@@ -40,6 +40,7 @@ import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
+import de.uzk.hki.da.utils.C;
 
 
 /**
@@ -69,30 +70,31 @@ public class ScanForPresentationAction extends AbstractAction{
 	public boolean implementation() throws IOException {
 		// check if object package type is set
 		
-		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()); 
-		List <IFileWithFileFormat> fffl = new ArrayList<IFileWithFileFormat>();
-		fffl.addAll(newestFiles);
-		
-		if (fffl.size() == 0)
-			throw new RuntimeException("No files found!");
+		Session session = HibernateUtil.openSession();
+		List<SecondStageScanPolicy> policies = 
+				dao.getSecondStageScanPolicies(session);
+		session.close();
+		List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
+		for (SecondStageScanPolicy s:policies)
+			polys.add((ISubformatIdentificationPolicy) s);
+		fileFormatFacade.setSubformatIdentificationPolicies(polys);
+
+
+//		if (newestFiles.size() == 0)
+//			throw new RuntimeException("No files found!");
+		List<? extends IFileWithFileFormat> fffl=null;
 		try {
-			
-			Session session = HibernateUtil.openSession();
-			List<SecondStageScanPolicy> policies = 
-					dao.getSecondStageScanPolicies(session);
-			session.close();
-			List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
-			for (SecondStageScanPolicy s:policies)
-				polys.add((ISubformatIdentificationPolicy) s);
-			fileFormatFacade.setSubformatIdentificationPolicies(polys);
-			fffl = fileFormatFacade.identify(fffl);
+			fffl = fileFormatFacade.identify(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
 		} catch (FileFormatException e) {
-			e.printStackTrace();
+			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
 		}
 		
+		@SuppressWarnings("unchecked")
 		List<ConversionInstruction> cisPres = generateConversionInstructionsForPresentation(
 			object.getLatestPackage(),
-			newestFiles);
+			(List<DAFile>) fffl);
+		
+		
 		if (cisPres.size() == 0) logger.trace("no Conversion instructions for Presentation found!");				
 		for (ConversionInstruction ci:cisPres) logger.info("Built conversionInstructionForPresentation: "+ci.toString());
 		

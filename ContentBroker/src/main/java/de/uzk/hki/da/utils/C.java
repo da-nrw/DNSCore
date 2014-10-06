@@ -79,8 +79,9 @@ public class C {
 	public static final String EVENT_TYPE_CONVERT = "CONVERT";
 	
 	// Error messages
-	public static final String ERROR_ROLLBACK_NOT_IMPLEMENTED = "rollback not implemented yet.";
-	public static final String ERROR_NOTCONFIGURED = " not configured properly.";
+	public static final String ERROR_MSG_ROLLBACK_NOT_IMPLEMENTED = "rollback not implemented yet.";
+	public static final String ERROR_MSG_NOTCONFIGURED = " not configured properly.";
+	public static final String ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION = "Error during file format identification";
 
 	// WorkArea organization
 	public static final String WA_DIP = "dip";

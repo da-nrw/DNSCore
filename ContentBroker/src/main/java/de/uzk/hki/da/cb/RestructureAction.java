@@ -40,10 +40,12 @@ import de.uzk.hki.da.ff.FileFormatFacade;
 import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.ff.ISubformatIdentificationPolicy;
 import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.RetrievePackagesHelper;
+import de.uzk.hki.da.utils.C;
 
 /**
  * <li>Creates a new Representation and copies the contents of the submission into it.
@@ -120,28 +122,32 @@ public class RestructureAction extends AbstractAction{
 		
 		object.reattach();
 		logger.debug("scanning files with format identifier(s)");
+		Session session = HibernateUtil.openSession();
+		List<SecondStageScanPolicy> policies = 
+				dao.getSecondStageScanPolicies(session);
+		session.close();
+
+
+		List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
+		for (SecondStageScanPolicy s:policies)
+			polys.add((ISubformatIdentificationPolicy) s);
+		getFileFormatFacade().setSubformatIdentificationPolicies(polys);
+
+
+		
 		List<IFileWithFileFormat> scannedFiles = null;
 		try {
-			List<IFileWithFileFormat> fffl = new ArrayList<IFileWithFileFormat>();
-			fffl.addAll(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
-			
-			Session session = HibernateUtil.openSession();
-			List<SecondStageScanPolicy> policies = 
-					dao.getSecondStageScanPolicies(session);
-			session.close();
-			List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
-			for (SecondStageScanPolicy s:policies)
-				polys.add((ISubformatIdentificationPolicy) s);
-			getFileFormatFacade().setSubformatIdentificationPolicies(polys);
-			scannedFiles = fileFormatFacade.identify(fffl);
+			scannedFiles = fileFormatFacade.identify(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
 		} catch (FileFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
 		}
 		for (IFileWithFileFormat f:scannedFiles){
 			logger.debug(f+":"+f.getFormatPUID());
 		}
 
+		
+		
+		
 		logger.debug("Create new b representation "+repName+"b");
 		Path.makeFile(object.getDataPath(), repName+"b").mkdir();
 

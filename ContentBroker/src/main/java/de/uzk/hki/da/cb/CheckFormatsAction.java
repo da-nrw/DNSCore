@@ -43,6 +43,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.utils.C;
 
 /**
  * Creates metadata files from extracted jhove output and puts them to the folder jhove_temp
@@ -83,20 +84,21 @@ public class CheckFormatsAction extends AbstractAction {
 				allFiles.addAll(p.getFiles());
 				allDAFiles.addAll(p.getFiles());
 		}
+		
+		Session session = HibernateUtil.openSession();
+		List<SecondStageScanPolicy> policies = 
+				dao.getSecondStageScanPolicies(session);
+		session.close();
+		
+		List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
+		for (SecondStageScanPolicy s:policies)
+			polys.add((ISubformatIdentificationPolicy) s);
+		getFileFormatFacade().setSubformatIdentificationPolicies(polys);
+
 		try {
-			Session session = HibernateUtil.openSession();
-			List<SecondStageScanPolicy> policies = 
-					dao.getSecondStageScanPolicies(session);
-			session.close();
-			
-			List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
-			for (SecondStageScanPolicy s:policies)
-				polys.add((ISubformatIdentificationPolicy) s);
-			getFileFormatFacade().setSubformatIdentificationPolicies(polys);
 			allFiles = getFileFormatFacade().identify(allFiles);
 		} catch (FileFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
 		}
 		
 		for (IFileWithFileFormat f:allFiles){

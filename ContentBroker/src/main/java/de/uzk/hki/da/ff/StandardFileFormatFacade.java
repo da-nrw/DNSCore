@@ -57,12 +57,13 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	 * The output of fido typically is a comma separated list of puids for each file. Only the last entry of the list
 	 * will be taken.
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<IFileWithFileFormat> identify(List<IFileWithFileFormat> files)
+	public List<IFileWithFileFormat> identify(List<? extends IFileWithFileFormat> files)
 			throws FileNotFoundException {
 
 		fidoFormatScanService = new FidoFormatScanService();
-		fidoFormatScanService.identify(files);
+		fidoFormatScanService.identify((List<IFileWithFileFormat>) files);
 		
 		for (ISubformatIdentificationPolicy p:subformatIdentificationPolicies)
 			logger.debug("policy available: "+p);
@@ -71,7 +72,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		secondaryFormatScan.setSecondStageScanPolicies(subformatIdentificationPolicies);
 		
 		try {
-			secondaryFormatScan.identify(files);
+			secondaryFormatScan.identify((List<IFileWithFileFormat>) files);
 		} catch (InvalidArgumentException e) {
 			e.printStackTrace();
 		}
@@ -96,7 +97,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 			}
 		}
 		
-		return files;
+		return (List<IFileWithFileFormat>) files;
 	}
 
 	
