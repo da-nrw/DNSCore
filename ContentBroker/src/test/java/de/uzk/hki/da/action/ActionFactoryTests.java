@@ -32,9 +32,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.action.ActionFactory;
-import de.uzk.hki.da.action.ActionRegistry;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
@@ -97,7 +94,7 @@ public class ActionFactoryTests {
 	@Test
 	public void testBuildNextAction() {
 		
-		CentralDatabaseDAO dummyDao = mock(CentralDatabaseDAO.class);
+		QueueConnector queueConnector = mock(QueueConnector.class);
 
 		Job j = new Job("localnode", "450"); 
 		Object o = new Object();
@@ -107,10 +104,10 @@ public class ActionFactoryTests {
 		o.getPackages().add(p);
 		j.setObject(o);
 		
-		when(dummyDao.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject(),(PreservationSystem)anyObject())).
+		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject(),(PreservationSystem)anyObject())).
 			thenReturn(j);
 		
-		factory.setDao(dummyDao);	
+		factory.setQueueConnector(queueConnector);	
 		factory.setLocalNode(new Node());
 		
 		AbstractAction a = factory.buildNextAction();
@@ -129,14 +126,14 @@ public class ActionFactoryTests {
 	@Test
 	public void testNoJobFound(){
 		
-		CentralDatabaseDAO dummyDao = mock(CentralDatabaseDAO.class);
+		QueueConnector queueConnector = mock(QueueConnector.class);
 
-		when(dummyDao.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject(),(PreservationSystem)anyObject())).
+		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject(),(PreservationSystem)anyObject())).
 			thenReturn(null);
 		
 		Node node = new Node("localnode");
 		node.setId(nodeId);
-		factory.setDao(dummyDao);
+		factory.setQueueConnector(queueConnector);
 		factory.setLocalNode(node);
 		
 		AbstractAction a = factory.buildNextAction();

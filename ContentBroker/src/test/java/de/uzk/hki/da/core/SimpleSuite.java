@@ -79,7 +79,6 @@ import de.uzk.hki.da.metadata.MetsURNXmlReaderTest;
 import de.uzk.hki.da.metadata.PremisXmlReaderTests;
 import de.uzk.hki.da.metadata.PremisXmlWriterTest;
 import de.uzk.hki.da.metadata.XsltEDMGeneratorTests;
-import de.uzk.hki.da.model.CentralDatabaseDAOTests;
 import de.uzk.hki.da.model.GetNewestFilesFromAllRepresentationsTests;
 import de.uzk.hki.da.model.JobCascadingTest;
 import de.uzk.hki.da.model.ModelTest;
@@ -111,7 +110,6 @@ import de.uzk.hki.da.service.XPathUtilsTests;
 	CLIConversionStrategyTests.class,
 	ObjectFSTests.class,
 	ConversionInstructionsBuilderTests.class,
-	CentralDatabaseDAOTests.class,
 	ActionFactoryTests.class,
 	RetrievePackagesHelperTest.class,
 	ActionRegistryTests.class,

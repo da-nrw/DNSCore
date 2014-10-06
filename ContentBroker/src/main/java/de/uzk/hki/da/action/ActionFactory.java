@@ -60,6 +60,7 @@ public class ActionFactory implements ApplicationContextAware {
 	
 	/** The dao. */
 	private CentralDatabaseDAO dao; // Database Connector
+	private QueueConnector qc;
 	
 	/** The user exception manager. */
 	private UserExceptionManager userExceptionManager;
@@ -153,7 +154,7 @@ public class ActionFactory implements ApplicationContextAware {
 			
 			String workingStatus = action.getStartStatus().substring(0,action.getStartStatus().length()-1) + "2";
 			
-			Job jobCandidate = dao.fetchJobFromQueue(action.getStartStatus(), workingStatus
+			Job jobCandidate = qc.fetchJobFromQueue(action.getStartStatus(), workingStatus
 					, localNode, getPreservationSystem());
 			if (jobCandidate == null) {
 				logger.trace("No job for type {}, checking for types with lower priority", jobType);
@@ -276,5 +277,13 @@ public class ActionFactory implements ApplicationContextAware {
 
 	public void setPreservationSystem(PreservationSystem preservationSystem) {
 		this.preservationSystem = preservationSystem;
+	}
+
+	public QueueConnector getQueueConnector() {
+		return qc;
+	}
+
+	public void setQueueConnector(QueueConnector qc) {
+		this.qc = qc;
 	}
 }
