@@ -31,7 +31,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -73,7 +72,6 @@ public class PrepareSendToPresenterActionTests {
 	@Before
 	public void setUp() throws IOException {
 		action.setDistributedConversionAdapter(mock (DistributedConversionAdapter.class));
-		action.setDao(mock(CentralDatabaseDAO.class));
 
 		node = new Node(); 
 		node.setWorkAreaRootPath(new RelativePath(workingAreaRoot));

@@ -69,6 +69,9 @@ public class PreservationSystem {
 	@JoinColumn(name="psystem_id")
 	private List<ConversionPolicy> conversion_policies = new ArrayList<ConversionPolicy>();
 	
+	@Transient
+	private List<SecondStageScanPolicy> subformatIdentificationPolicies = new ArrayList<SecondStageScanPolicy>();
+	
 	@OneToMany
 	@JoinColumn(name="psystem_id")
 	private Set<Node> nodes = new HashSet<Node>();
@@ -240,6 +243,13 @@ public class PreservationSystem {
 	}
 	public void setNodes(Set<Node> nodes) {
 		this.nodes = nodes;
+	}
+	public List<SecondStageScanPolicy> getSubformatIdentificationPolicies() {
+		return subformatIdentificationPolicies;
+	}
+	public void setSubformatIdentificationPolicies(
+			List<SecondStageScanPolicy> subformatIdentificationPolicies) {
+		this.subformatIdentificationPolicies = subformatIdentificationPolicies;
 	}
 	
 }

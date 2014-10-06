@@ -34,7 +34,6 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.GridFacade;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
@@ -72,8 +71,6 @@ public class IntegrityScannerWorker {
 	/** The local node name. */
 	private String localNodeId;
 	
-	private CentralDatabaseDAO dao;
-
 	private PreservationSystem pSystem;
 	private Node node;
 
@@ -287,14 +284,6 @@ public class IntegrityScannerWorker {
 
 	public void setLocalNodeId(String localNodeId) {
 		this.localNodeId = localNodeId;
-	}
-
-	public CentralDatabaseDAO getDao() {
-		return dao;
-	}
-
-	public void setDao(CentralDatabaseDAO dao) {
-		this.dao = dao;
 	}
 
 

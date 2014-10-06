@@ -46,7 +46,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
@@ -232,9 +231,6 @@ public class UpdateMetadataActionTests {
 		
 		obj.setMetadata_file("mets.xml");
 		obj.setPackage_type("METS");
-		
-		CentralDatabaseDAO dao = mock(CentralDatabaseDAO.class);
-		action.setDao(dao);
 		
 		HashMap<String,String> xpaths = new HashMap<String,String>();
 		xpaths.put("METS", "//mets:file");

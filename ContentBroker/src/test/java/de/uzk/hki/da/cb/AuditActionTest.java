@@ -27,7 +27,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.grid.IrodsGridFacade;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -63,10 +62,7 @@ public class AuditActionTest {
 		Node node = new Node("vm3","01-vm3");
 //		node.setLza_resource("lzares");
 		
-		CentralDatabaseDAO dao = mock (CentralDatabaseDAO.class);
-		
 		action.setLocalNode(node);
-		action.setDao(dao);
 		
 		
 		

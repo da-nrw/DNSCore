@@ -33,13 +33,12 @@ import org.junit.Test;
 
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.model.User;
 
 
 /**
@@ -55,9 +54,6 @@ public class IntegrityScannerWorkerTest {
 	
 	/** The worker. */
 	IntegrityScannerWorker worker = new IntegrityScannerWorker();
-	
-	/** The dao. */
-	CentralDatabaseDAO dao;
 	
 	/** The urn. */
 	String urn = "123456";
@@ -85,7 +81,6 @@ public class IntegrityScannerWorkerTest {
 		PreservationSystem pSystem = new PreservationSystem();
 		pSystem.setMinRepls(3);
 		
-		dao = mock(CentralDatabaseDAO.class);
 		obj = new Object();
 		
 		Package pack1 = new Package();

@@ -33,7 +33,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.grid.IrodsSystemConnector;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -61,9 +60,6 @@ public class BuildAIPActionTests {
 	
 	/** The irods. */
 	static IrodsSystemConnector irods = mock (IrodsSystemConnector.class);
-	
-	/** The dao. */
-	static CentralDatabaseDAO dao = mock (CentralDatabaseDAO.class);
 	
 	/** The action. */
 	static BuildAIPAction action = new BuildAIPAction();
@@ -100,7 +96,6 @@ public class BuildAIPActionTests {
 		job.setRep_name(repName);
 
 		action.setObject(obj);
-		action.setDao(dao);
 		action.setLocalNode(node);
 		action.setJob(job);
 		

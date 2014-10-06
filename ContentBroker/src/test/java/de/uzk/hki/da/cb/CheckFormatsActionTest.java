@@ -38,7 +38,6 @@ import org.springframework.util.StringUtils;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.ff.StandardFileFormatFacade;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -174,11 +173,6 @@ public class CheckFormatsActionTest {
 		action.setLocalNode(localNode);
 		action.setFileFormatFacade(fileFormatFacade);
 		action.setPSystem(pSystem);
-		
-		CentralDatabaseDAO dao = mock(CentralDatabaseDAO.class);
-		when(dao.getSecondStageScanPolicies((Session)anyObject())).thenReturn(new ArrayList<SecondStageScanPolicy>());
-		action.setDao(dao);
-		
 	}
 
 	

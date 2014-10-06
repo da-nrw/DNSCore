@@ -36,7 +36,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.ConversionRoutine;
@@ -103,7 +102,6 @@ public class ScanActionTests extends ConcreteActionUnitTest{
 		when(pSystem.getApplicablePolicies((DAFile) anyObject(), (Boolean)anyObject())).thenReturn(policies).thenReturn(noPolicies);
 		when(pSystem.getAdmin()).thenReturn(o.getContractor()); // quick fix
 		action.setDistributedConversionAdapter(mock (DistributedConversionAdapter.class));
-		action.setDao(mock ( CentralDatabaseDAO.class ));
 		action.setPSystem(pSystem);
 		n.setWorkAreaRootPath(workAreaRootPath);
 

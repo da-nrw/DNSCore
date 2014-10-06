@@ -29,7 +29,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.fs.Utilities;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -111,8 +110,6 @@ public class RegisterObjectServiceTests {
 		
 		RegisterObjectService registerObjectService = new RegisterObjectService();
 		registerObjectService.setpSystem(pSystem);
-		CentralDatabaseDAO dao = new CentralDatabaseDAO();
-		registerObjectService.setDao(dao);
 		registerObjectService.setLocalNode(node);
 		
 		Object object = registerObjectService.registerObject("containerName", contractor);

@@ -72,7 +72,7 @@ public class ScanForPresentationAction extends AbstractAction{
 		
 		Session session = HibernateUtil.openSession();
 		List<SecondStageScanPolicy> policies = 
-				dao.getSecondStageScanPolicies(session);
+				preservationSystem.getSubformatIdentificationPolicies();
 		session.close();
 		List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
 		for (SecondStageScanPolicy s:policies)

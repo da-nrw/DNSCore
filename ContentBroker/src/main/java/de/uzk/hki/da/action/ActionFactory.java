@@ -33,11 +33,11 @@ import org.springframework.context.ApplicationContextAware;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.service.UserExceptionManager;
 
 
@@ -58,8 +58,6 @@ public class ActionFactory implements ApplicationContextAware {
 	/** The local node. */
 	private Node localNode; // Node the ContentBroker actually runs on
 	
-	/** The dao. */
-	private CentralDatabaseDAO dao; // Database Connector
 	private QueueConnector qc;
 	
 	/** The user exception manager. */
@@ -78,10 +76,11 @@ public class ActionFactory implements ApplicationContextAware {
 
 
 	public void init(){
-		if (dao==null) throw new ConfigurationException("dao not set");
 		setPreservationSystem(new PreservationSystem()); getPreservationSystem().setId(1);
+		// attach policies to preservation system
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
+		preservationSystem.setSubformatIdentificationPolicies(getSecondStageScanPolicies(session));
 		session.refresh(getPreservationSystem());
 		// circumvent lazy initialization issues
 		Hibernate.initialize(getPreservationSystem().getConversion_policies());
@@ -93,7 +92,6 @@ public class ActionFactory implements ApplicationContextAware {
 	}
 	
 	private void injectProperties(AbstractAction action, Job job){
-		action.setDao(dao);
 		action.setUserExceptionManager(userExceptionManager);
 		action.setMqConnectionFactory(mqConnectionFactory);
 		action.setLocalNode(localNode);
@@ -105,7 +103,6 @@ public class ActionFactory implements ApplicationContextAware {
 	}
 	
 	private void checkSystemState(AbstractAction action) {
-		if (action.getDao() == null) throw new IllegalStateException("Unable to build action. DAO has not been set.");
 		if (action.getActionMap() == null) throw new IllegalStateException("Unable to build action. Action map has not been set.");
 		if (action.getLocalNode()==null) throw new IllegalStateException("Unable to build action. Node not set.");
 		if (action.getPreservationSystem()==null) throw new IllegalStateException("preservationSystem not set");
@@ -166,12 +163,31 @@ public class ActionFactory implements ApplicationContextAware {
 			
 			injectProperties(action,jobCandidate);
 			checkSystemState(action);
+			
+			
+			
 			return action;
 		}
 		
 		logger.info("(for local node) No jobs in queue, nothing to do, shoobidoowoo, ...");
 		return null;
 		
+	}
+	
+	
+	
+	
+	/**
+	 * Gets the second stage scan policies.
+	 *
+	 * @return the second stage scan policies
+	 */
+	private List<SecondStageScanPolicy> getSecondStageScanPolicies(Session session) {
+		@SuppressWarnings("unchecked")
+		List<SecondStageScanPolicy> l = session
+				.createQuery("from SecondStageScanPolicy").list();
+
+		return l;
 	}
 
 	/* (non-Javadoc)
@@ -181,15 +197,6 @@ public class ActionFactory implements ApplicationContextAware {
 	public void setApplicationContext(ApplicationContext context)
 			throws BeansException {
 		this.context = context;		
-	}
-
-	/**
-	 * Sets the dao.
-	 *
-	 * @param dao the new dao
-	 */
-	public void setDao(CentralDatabaseDAO dao) {
-		this.dao = dao;
 	}
 
 	/**

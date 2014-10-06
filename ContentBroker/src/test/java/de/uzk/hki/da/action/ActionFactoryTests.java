@@ -33,7 +33,6 @@ import org.junit.Test;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -73,12 +72,9 @@ public class ActionFactoryTests {
 		c.setShort_name("csn");
 		c.setEmailAddress("useremail");
 		
-		CentralDatabaseDAO dao = new CentralDatabaseDAO();
-
 		FileSystemXmlApplicationContext context = new FileSystemXmlApplicationContext(baseDirPath+"action-definitions.xml");
 		factory = new ActionFactory();
 		factory.setApplicationContext(context);
-		factory.setDao(dao);
 		factory.setActionRegistry((ActionRegistry)context.getBean("actionRegistry"));
 		PreservationSystem ps = new PreservationSystem(); ps.setId(1); ps.setMinRepls(1);
 		User psadmin = new User(); psadmin.setUsername("psadmin");
@@ -115,7 +111,6 @@ public class ActionFactoryTests {
 		assertEquals("450", a.getStartStatus());
 		assertEquals("460", a.getEndStatus());
 		
-		assertNotNull(a.getDao());
 //		assertEquals("csn", a.getJob().getObject().getContractor().getShort_name()); XXX used?
 		assertNotNull(a.getActionMap());
 	}

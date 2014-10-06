@@ -61,7 +61,6 @@
     <bean id="ingestAreaScannerWorker" class="de.uzk.hki.da.core.IngestAreaScannerWorker" init-method="init">
         <property name="ingestAreaRootPath" value="${localNode.ingestAreaRootPath}" />
         <property name="localNodeId" value="${localNode.id}" />
-        <property name="dao" ref="centralDao" />
         <property name="minAge" value="2000" />
         <property name="registerObjectService" ref="registerObjectService" />
     </bean>
@@ -69,20 +68,17 @@
     <bean id="integrityScannerWorker" class="de.uzk.hki.da.integrity.IntegrityScannerWorker" init-method="init">
         <property name="localNodeId" value="${localNode.id}" />
         <property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}" />
-        <property name="dao" ref="centralDao" />
     </bean>
     
    	<bean id="actionFactory" class="de.uzk.hki.da.action.ActionFactory" init-method="init">
         <property name="actionRegistry" ref="actionRegistry" />
         <property name="localNode" ref="localNode" />
         <property name="queueConnector" ref="queueConnector" />
-        <property name="dao" ref="centralDao" />
         <property name="userExceptionManager" ref="userExceptionManager" />
         <property name="mqConnectionFactory" ref="mqConnectionFactory"/>
     </bean>
     
    <bean id="registerObjectService" class="de.uzk.hki.da.service.RegisterObjectService" init-method="init">
-  		<property name="dao" ref="centralDao" />
 		<property name="localNode" ref="localNode" />
   	</bean>
   

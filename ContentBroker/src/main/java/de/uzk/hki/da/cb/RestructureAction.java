@@ -123,7 +123,7 @@ public class RestructureAction extends AbstractAction{
 		logger.debug("scanning files with format identifier(s)");
 		Session session = HibernateUtil.openSession();
 		List<SecondStageScanPolicy> policies = 
-				dao.getSecondStageScanPolicies(session);
+				preservationSystem.getSubformatIdentificationPolicies();
 		session.close();
 
 

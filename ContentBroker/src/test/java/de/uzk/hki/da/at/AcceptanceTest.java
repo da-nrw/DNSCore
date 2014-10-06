@@ -34,7 +34,6 @@ import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.fs.Utilities;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
@@ -52,7 +51,6 @@ public class AcceptanceTest {
 	protected static GridFacade gridFacade;
 	protected static RepositoryFacade repositoryFacade;
 	protected static DistributedConversionAdapter distributedConversionAdapter;
-	protected static CentralDatabaseDAO dao = new CentralDatabaseDAO();
 	protected static User testContractor;
 	protected static PreservationSystem preservationSystem;
 	

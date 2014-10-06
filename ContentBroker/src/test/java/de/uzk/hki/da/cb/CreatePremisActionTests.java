@@ -45,7 +45,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.ff.FileFormatFacade;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
@@ -119,10 +118,6 @@ public class CreatePremisActionTests {
 		object.setContractor(contractor);
 		object.setTransientNodeRef(node);
 		
-		CentralDatabaseDAO dao = mock (CentralDatabaseDAO.class);
-		action.setDao(dao);
-		
-
 		FileFormatFacade jhoveScanService = mock(FileFormatFacade.class);
 		action.setFileFormatFacade(jhoveScanService);		
 		

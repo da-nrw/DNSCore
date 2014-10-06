@@ -33,7 +33,6 @@ import org.junit.Test;
 import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.ff.FileWithFileFormat;
 import de.uzk.hki.da.ff.SecondaryFormatScan;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
 
@@ -42,7 +41,6 @@ import de.uzk.hki.da.model.SecondStageScanPolicy;
  */
 public class SecondaryFormatScanTests {
 
-	CentralDatabaseDAO dao;
 	SecondaryFormatScan sfs = new SecondaryFormatScan();
 	
 	@Before

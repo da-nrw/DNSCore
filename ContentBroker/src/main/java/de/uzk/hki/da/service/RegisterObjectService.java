@@ -35,12 +35,11 @@ import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.fs.Utilities;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.User;
 
 
 /**
@@ -54,8 +53,6 @@ public class RegisterObjectService {
 
 	static final Logger logger = LoggerFactory.getLogger(RegisterObjectService.class);
 
-	private CentralDatabaseDAO dao;	
-	
 	private Node localNode;
 	private PreservationSystem pSystem;
 	
@@ -349,9 +346,6 @@ public class RegisterObjectService {
 		this.localNode = localNode;
 	}
 
-	public void setDao(CentralDatabaseDAO dao) {
-		this.dao = dao;
-	}
 
 
 

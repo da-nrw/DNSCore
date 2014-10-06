@@ -87,7 +87,7 @@ public class CheckFormatsAction extends AbstractAction {
 		
 		Session session = HibernateUtil.openSession();
 		List<SecondStageScanPolicy> policies = 
-				dao.getSecondStageScanPolicies(session);
+				preservationSystem.getSubformatIdentificationPolicies();
 		session.close();
 		
 		List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();

@@ -45,7 +45,6 @@ import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.fs.Utilities;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -80,7 +79,6 @@ public abstract class AbstractAction implements Runnable {
 	protected ActionRegistry actionMap;
 	private String name;
 	protected Node localNode;
-	protected CentralDatabaseDAO dao;
 	protected String startStatus;
 	protected Job job;
 	protected Job toCreate = null;
@@ -353,14 +351,6 @@ public abstract class AbstractAction implements Runnable {
 
 	public void setLocalNode(Node localNode) {
 		this.localNode = localNode;
-	}
-
-	public CentralDatabaseDAO getDao() {
-		return dao;
-	}
-
-	public void setDao(CentralDatabaseDAO dao) {
-		this.dao = dao;
 	}
 
 	public String getStartStatus() {

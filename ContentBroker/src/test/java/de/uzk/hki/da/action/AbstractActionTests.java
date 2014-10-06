@@ -38,7 +38,6 @@ import org.junit.Test;
 import de.uzk.hki.da.cb.NullAction;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -77,7 +76,6 @@ public class AbstractActionTests {
 		when(userExceptionManager.getMessage((UserExceptionId) anyObject())).thenReturn("Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Package ist nicht konsistent!\n\nMeldung:\n%ERROR_INFO\nEs ist wahrscheinlich, dass Fehler bei der Übertragung aufgetreten sind. Bitte versuchen Sie eine erneute Ablieferung.");
 		action.setUserExceptionManager(userExceptionManager);
 		
-		action.setDao(mock(CentralDatabaseDAO.class));
 		action.setActionMap(mock(ActionRegistry.class));
 		Job job = new Job();
 		action.setJob(job);

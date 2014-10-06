@@ -33,11 +33,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.fs.Utilities;
-import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.RegisterObjectService;
 
 
@@ -91,10 +90,6 @@ public class IngestAreaScannerWorker {
 	/** The local node name. */
 	private String localNodeId;
 	
-	/**
-	 */
-	private CentralDatabaseDAO dao = null;
-	
 	/** The register object service. */
 	private RegisterObjectService registerObjectService;
 	
@@ -127,12 +122,6 @@ public class IngestAreaScannerWorker {
 	 * Checking for new files in the staging area.	
 	 */
 	public void scheduleTask(){
-		
-		if (dao==null) {
-			logger.warn("dao is not set yet");
-			return;
-		}
-	
 		
 		try {
 		
@@ -384,13 +373,4 @@ public class IngestAreaScannerWorker {
 		this.registerObjectService = registerObjectService;
 	}
 
-	public CentralDatabaseDAO getDao() {
-		return dao;
-	}
-
-	public void setDao(CentralDatabaseDAO dao) {
-		this.dao = dao;
-	}
-	
-	
 }
