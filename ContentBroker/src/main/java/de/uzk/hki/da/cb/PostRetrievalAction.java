@@ -20,7 +20,6 @@
 package de.uzk.hki.da.cb;
 
 import java.io.File;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;

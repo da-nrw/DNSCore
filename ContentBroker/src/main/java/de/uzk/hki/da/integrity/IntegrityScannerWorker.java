@@ -22,7 +22,9 @@
  */
 package de.uzk.hki.da.integrity;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.mail.MessagingException;
 
@@ -35,8 +37,8 @@ import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.CentralDatabaseDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.service.Mail;
 
@@ -54,8 +56,8 @@ public class IntegrityScannerWorker {
 
 	
 	private static class ObjectState {
-//		private static final Integer UnderAudit = 60;
-//		private static final Integer InWorkflow = 50;
+		private static final Integer UnderAudit = 60;
+		private static final Integer InWorkflow = 50;
 		private static final Integer Error = 51;
 		private static final Integer archivedAndValidState = 100;
 	}
@@ -98,7 +100,7 @@ public class IntegrityScannerWorker {
 		try {
 			
 			Object object = null;
-			if ((object=getDao().fetchObjectForAudit(localNodeId))==null) { 
+			if ((object=fetchObjectForAudit(localNodeId))==null) { 
 				logger.warn("Found no object to audit.") ;
 				return;
 			}
@@ -114,6 +116,56 @@ public class IntegrityScannerWorker {
 			logger.error("Error in integrityCheck schedule Task " + e.getMessage(),e);
 		}
 	}
+	
+	/**
+	 * Determines which of the objects that the local node is responsible for 
+	 * (since it holds the primary copies of them) is the one which
+	 * has not been checked for the longest period of time. 
+	 * 
+	 * @return the next object that needs audit. null if there is no object in the database which meets the criteria.
+	 * 
+	 * @author Jens Peters
+	 * @author Daniel M. de Oliveira
+	 * 
+	 */
+	private synchronized Object fetchObjectForAudit(String localNodeId) {
+		
+		Session session = null;
+		try {
+			session = HibernateUtil.openSession();
+			session.beginTransaction();
+	
+			Node node = (Node) session.get(Node.class,Integer.parseInt(localNodeId));
+			
+			Calendar now = Calendar.getInstance();
+			now.add(Calendar.HOUR_OF_DAY, -24);
+			@SuppressWarnings("rawtypes")
+			List l = null;
+			l = session.createQuery("from Object o where o.initial_node = ?1 and o.last_checked < ?2 and "
+					+ "o.object_state != ?3 and o.object_state != ?4 and o.object_state >= 50"
+					+ "order by o.last_checked asc")
+					.setParameter("1", node.getName())
+					.setCalendar("2",now)
+					.setParameter("3", ObjectState.InWorkflow) // don't consider objects under work
+					.setParameter("4", ObjectState.UnderAudit) //           ||
+							.setReadOnly(true).list();
+			
+			Object objectToAudit = (Object) l.get(0);
+			
+			// lock object
+			objectToAudit.setObject_state(ObjectState.UnderAudit);
+			session.update(objectToAudit);
+			session.getTransaction().commit();
+			session.close();
+			
+			return objectToAudit;
+		
+		} catch (IndexOutOfBoundsException e){
+			if (session!=null) session.close();
+			return null;
+		}
+	}	
+	
 	
 	/**
 	 * Updates the object state, sets the current time, and updates

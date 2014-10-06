@@ -20,6 +20,7 @@ package de.uzk.hki.da.at;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -123,17 +124,38 @@ public class AcceptanceTest {
 		instantiateRepository(properties);
 		if (repositoryFacade==null) throw new IllegalStateException("repositoryFacade could not be instantiated");
 	
-		CentralDatabaseDAO centralDB = new CentralDatabaseDAO();
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		testContractor = centralDB.getContractor(session, "TEST");
+		testContractor = getContractor(session, "TEST");
 	
 		preservationSystem = (PreservationSystem) session.get(PreservationSystem.class, 1);
 		session.close();
 		
-		ath = new AcceptanceTestHelper(gridFacade, dao, localNode,testContractor);
+		ath = new AcceptanceTestHelper(gridFacade,localNode,testContractor);
 	}
 
+	/**
+	 * Gets the contractor.
+	 *
+	 * @param contractorShortName the contractor short name
+	 * @return null if no contractor for short name could be found
+	 */
+	private User getContractor(Session session, String contractorShortName) {
+	
+		@SuppressWarnings("rawtypes")
+		List list;	
+		list = session.createQuery("from User where short_name=?1")
+	
+				.setParameter("1",contractorShortName).setReadOnly(true).list();
+		
+		if (list.isEmpty())
+			return null;
+	
+		return (User) list.get(0);
+	}
+	
+	
+	
 	@After
 	public void tearDownAcceptanceTest(){
 		TESTHelper.clearDB();

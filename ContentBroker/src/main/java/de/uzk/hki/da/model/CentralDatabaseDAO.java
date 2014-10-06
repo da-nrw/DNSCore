@@ -19,7 +19,6 @@
 
 package de.uzk.hki.da.model;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -35,11 +34,6 @@ import de.uzk.hki.da.core.HibernateUtil;
  */
 public class CentralDatabaseDAO {
 
-	private static class ObjectState {
-		private static final Integer UnderAudit = 60;
-		private static final Integer InWorkflow = 50;
-	}
-	
 	/** The logger. */
 	private static Logger logger = LoggerFactory
 			.getLogger(CentralDatabaseDAO.class);
@@ -113,191 +107,13 @@ public class CentralDatabaseDAO {
 	
 	
 	
-	/**
-	 * Gets the job.
-	 *
-	 * @param orig_name the orig_name
-	 * @param csn the csn
-	 * @return the job
-	 */
-	@SuppressWarnings("unchecked")
-	public Job getJob(Session session, String orig_name, String csn) {
-		List<Job> l = null;
-	
-		try {
-			l = session.createQuery(
-					"SELECT j FROM Job j left join j.obj as o left join o.user as c where o.orig_name=?1 and c.short_name=?2"
-					)
-							.setParameter("1", orig_name)
-							.setParameter("2", csn)
-							.setReadOnly(true).list();
-			
-			return l.get(0);
-		} catch (IndexOutOfBoundsException e) {
-			logger.debug("search for a job with orig_name " + orig_name + " for user " +
-						 csn + " returns null!");
-			return null;
-		}
-	}
 	
 	
-	/**
-	 * Determines which of the objects that the local node is responsible for 
-	 * (since it holds the primary copies of them) is the one which
-	 * has not been checked for the longest period of time. 
-	 * 
-	 * @return the next object that needs audit. null if there is no object in the database which meets the criteria.
-	 * 
-	 * @author Jens Peters
-	 * @author Daniel M. de Oliveira
-	 * 
-	 */
-	public synchronized Object fetchObjectForAudit(String localNodeId) {
-		
-		Session session = null;
-		try {
-			session = HibernateUtil.openSession();
-			session.beginTransaction();
 	
-			Node node = (Node) session.get(Node.class,Integer.parseInt(localNodeId));
-			
-			Calendar now = Calendar.getInstance();
-			now.add(Calendar.HOUR_OF_DAY, -24);
-			@SuppressWarnings("rawtypes")
-			List l = null;
-			l = session.createQuery("from Object o where o.initial_node = ?1 and o.last_checked < ?2 and "
-					+ "o.object_state != ?3 and o.object_state != ?4 and o.object_state >= 50"
-					+ "order by o.last_checked asc")
-					.setParameter("1", node.getName())
-					.setCalendar("2",now)
-					.setParameter("3", ObjectState.InWorkflow) // don't consider objects under work
-					.setParameter("4", ObjectState.UnderAudit) //           ||
-							.setReadOnly(true).list();
-			
-			Object objectToAudit = (Object) l.get(0);
-			
-			// lock object
-			objectToAudit.setObject_state(ObjectState.UnderAudit);
-			session.update(objectToAudit);
-			session.getTransaction().commit();
-			session.close();
-			
-			return objectToAudit;
-		
-		} catch (IndexOutOfBoundsException e){
-			if (session!=null) session.close();
-			return null;
-		}
-	}	
-	
-	
-	/**
-	 * Insert job into queue.
-	 *
-	 * @param contractorShortName the contractor short name
-	 * @param origName the orig name
-	 * @param responsibleNodeName the initial node name
-	 * @return the job
-	 */
-	public Job insertJobIntoQueue(Session session, User c,String origName,String responsibleNodeId,Object object){
 
-		Node node = (Node) session.get(Node.class,Integer.parseInt(responsibleNodeId));
-		
-		Job job = new Job();
-		job.setObject(object);
-		
-		job.setStatus("110");
-		job.setResponsibleNodeName(node.getName());
-		job.setDate_created(String.valueOf(new Date().getTime()/1000L));
-	
-		session.save(job);
-		return job;
-	}
 	
 	
 	
-	/**
-	 * Retrieves Object from the Object Table for a given orig_name and contractor short name.
-	 *
-	 * @param orig_name the orig_name
-	 * @param csn the csn
-	 * @return Object object or null if no object with the given combination of orig_name and
-	 * contractor short name could be found
-	 * @author Stefan Kreinberg
-	 * @author Thomas Kleinke
-	 */
-	public Object getUniqueObject(Session session,String orig_name, String csn) {
-		
-		User contractor = getContractor(session, csn);
-		
-		@SuppressWarnings("rawtypes")
-		List l = null;
-	
-		try {
-			l = session.createQuery("from Object where orig_name=?1 and user_id=?2")
-							.setParameter("1", orig_name)
-							.setParameter("2", contractor.getId())
-							.list();
-
-			if (l.size() > 1)
-				throw new RuntimeException("Found more than one object with name " + orig_name +
-									" for user " + csn + "!");
-			
-			Object o = (Object) l.get(0);
-			o.setContractor(contractor);
-			return o;
-		} catch (IndexOutOfBoundsException e1) {
-			try {
-				logger.debug("Search for an object with orig_name " + orig_name + " for user " +
-						csn + " returns null! Try to find objects with objectIdentifier " + orig_name);
-			
-				l = session.createQuery("from Object where identifier=?1 and user_id=?2")
-					.setParameter("1", orig_name)
-					.setParameter("2", contractor.getId())
-					.list();
-
-				if (l.size() > 1)
-					throw new RuntimeException("Found more than one object with name " + orig_name +
-								" for user " + csn + "!");
-				
-				Object o = (Object) l.get(0);
-				o.setContractor(contractor);
-				return o;
-			} catch (IndexOutOfBoundsException e2) {
-				logger.debug("Search for an object with objectIdentifier " + orig_name + " for user " +
-						csn + " returns null!");	
-			}	
-			
-		} catch (Exception e) {
-			return null;
-		}
-		
-		return null;
-	}
-	
-	
-	
-	
-	/**
-	 * Gets the contractor.
-	 *
-	 * @param contractorShortName the contractor short name
-	 * @return null if no contractor for short name could be found
-	 */
-	public User getContractor(Session session, String contractorShortName) {
-		logger.trace("CentralDatabaseDAO.getContractor(\"" + contractorShortName + "\")");
-	
-		@SuppressWarnings("rawtypes")
-		List list;	
-		list = session.createQuery("from User where short_name=?1")
-	
-				.setParameter("1",contractorShortName).setReadOnly(true).list();
-		
-		if (list.isEmpty())
-			return null;
-	
-		return (User) list.get(0);
-	}
 	
 	
 	
@@ -352,11 +168,5 @@ public class CentralDatabaseDAO {
 	public Job getJob(Session session, int id) {
 		Job job = (Job) session.get(Job.class, id);
 		return job;
-	}
-
-
-	public List<Job> getPendingJobsOfLocalNode() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

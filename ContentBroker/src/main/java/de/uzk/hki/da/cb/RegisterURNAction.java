@@ -35,7 +35,6 @@ import de.uzk.hki.da.metadata.MetsURNXmlReader;
 import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.utils.C;
 
 
 /**

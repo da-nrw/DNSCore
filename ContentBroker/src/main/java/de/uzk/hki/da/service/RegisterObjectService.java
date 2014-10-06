@@ -195,11 +195,94 @@ public class RegisterObjectService {
 
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
-		Object object = dao.getUniqueObject(session,origName, contractorShortName);
+		Object object = getUniqueObject(session,origName, contractorShortName);
 		session.close();
 		return object;
 	}
 
+	
+	/**
+	 * Retrieves Object from the Object Table for a given orig_name and contractor short name.
+	 *
+	 * @param orig_name the orig_name
+	 * @param csn the csn
+	 * @return Object object or null if no object with the given combination of orig_name and
+	 * contractor short name could be found
+	 * @author Stefan Kreinberg
+	 * @author Thomas Kleinke
+	 */
+	private Object getUniqueObject(Session session,String orig_name, String csn) {
+		
+		User contractor = getContractor(session, csn);
+		
+		@SuppressWarnings("rawtypes")
+		List l = null;
+	
+		try {
+			l = session.createQuery("from Object where orig_name=?1 and user_id=?2")
+							.setParameter("1", orig_name)
+							.setParameter("2", contractor.getId())
+							.list();
+
+			if (l.size() > 1)
+				throw new RuntimeException("Found more than one object with name " + orig_name +
+									" for user " + csn + "!");
+			
+			Object o = (Object) l.get(0);
+			o.setContractor(contractor);
+			return o;
+		} catch (IndexOutOfBoundsException e1) {
+			try {
+				logger.debug("Search for an object with orig_name " + orig_name + " for user " +
+						csn + " returns null! Try to find objects with objectIdentifier " + orig_name);
+			
+				l = session.createQuery("from Object where identifier=?1 and user_id=?2")
+					.setParameter("1", orig_name)
+					.setParameter("2", contractor.getId())
+					.list();
+
+				if (l.size() > 1)
+					throw new RuntimeException("Found more than one object with name " + orig_name +
+								" for user " + csn + "!");
+				
+				Object o = (Object) l.get(0);
+				o.setContractor(contractor);
+				return o;
+			} catch (IndexOutOfBoundsException e2) {
+				logger.debug("Search for an object with objectIdentifier " + orig_name + " for user " +
+						csn + " returns null!");	
+			}	
+			
+		} catch (Exception e) {
+			return null;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Gets the contractor.
+	 *
+	 * @param contractorShortName the contractor short name
+	 * @return null if no contractor for short name could be found
+	 */
+	public User getContractor(Session session, String contractorShortName) {
+		logger.trace("CentralDatabaseDAO.getContractor(\"" + contractorShortName + "\")");
+	
+		@SuppressWarnings("rawtypes")
+		List list;	
+		list = session.createQuery("from User where short_name=?1")
+	
+				.setParameter("1",contractorShortName).setReadOnly(true).list();
+		
+		if (list.isEmpty())
+			return null;
+	
+		return (User) list.get(0);
+	}
+	
+	
+	
 	/**
 	 * If the Packages contains names like 1,2 the newly created name will be 3.
 	 *

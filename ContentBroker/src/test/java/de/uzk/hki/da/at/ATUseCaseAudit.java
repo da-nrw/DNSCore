@@ -80,7 +80,7 @@ public class ATUseCaseAudit extends AcceptanceTest{
 		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		object = dao.getUniqueObject(session, ORIGINAL_NAME, "TEST");
+		object = ath.getUniqueObject(session, ORIGINAL_NAME, "TEST");
 		session.close();
 		// We'll destroy it now, if we 're on CI
 		// on dev machines FakeGridFacade will find special file in ATUseCaseAudit
@@ -113,7 +113,7 @@ public class ATUseCaseAudit extends AcceptanceTest{
 			Thread.sleep(6000);
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
-			Object object = dao.getUniqueObject(session, ORIGINAL_NAME, C.TEST_USER_SHORT_NAME);
+			Object object = ath.getUniqueObject(session, ORIGINAL_NAME, C.TEST_USER_SHORT_NAME);
 			session.close();		
 			if (object!=null){
 				
