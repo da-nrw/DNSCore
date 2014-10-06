@@ -42,7 +42,6 @@ import de.uzk.hki.da.cb.FetchPIPsActionTest;
 import de.uzk.hki.da.cb.PostRetrievalActionTest;
 import de.uzk.hki.da.cb.PrepareSendToPresenterActionTests;
 import de.uzk.hki.da.cb.ProcessUserDecisionsActionTests;
-import de.uzk.hki.da.cb.ProperRefreshOfJobChildrenTest;
 import de.uzk.hki.da.cb.RestartIngestWorkflowActionTests;
 import de.uzk.hki.da.cb.RestructureActionTests;
 import de.uzk.hki.da.cb.RetrievalActionTests;
@@ -101,7 +100,6 @@ import de.uzk.hki.da.service.XPathUtilsTests;
 	
 	PrepareSendToPresenterActionTests.class,
 	IngestAreaScannerWorkerTests.class,
-	ProperRefreshOfJobChildrenTest.class,
 	JobCascadingTest.class,
 	ConvertActionTests.class,
 	SaveConversionInstructionsByJob.class,

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Session;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -40,6 +41,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node; 
+import de.uzk.hki.da.test.TESTHelper;
 
 /**
  * @author Daniel M. de Oliveira
@@ -57,11 +59,20 @@ public class JobManagerTests {
 		"INSERT INTO queue (id,objects_id,status,initial_node) VALUES (1,1,'110','testnode')",
 	};
 	
+	@AfterClass
+	public static void tearDownAfterClass() {
+		
+		TESTHelper.clearDB();
+	}
+	
 	/**
 	 * Sets the up before class.
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass(){
+		
+		TESTHelper.clearDB();
+		
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();

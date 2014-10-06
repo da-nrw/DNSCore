@@ -131,34 +131,6 @@ public class ConvertAction extends AbstractAction {
 	
 	
 
-	void waitForFriendJobsToBeReady(List<Job> friendJobs){
-
-		logger.info("Checking status of friend jobs");
-		while (true){
-			boolean allJobsReady = true;
-			
-			for (Job j:friendJobs){
-				j = dao.refreshJob(j); // little trick to get the tests work ( j = )
-				logger.info("Job on "+j.getResponsibleNodeName()+" is in status "+j.getStatus());
-				if (j.getStatus().equals("581")) throw new RuntimeException(
-						"Error in friend job encountered");
-				if (!j.getStatus().equals("590")) allJobsReady = false;
-			}
-			
-			if (allJobsReady){
-				logger.info("Friends Jobs are ready");
-				break;
-			}
-			
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				throw new RuntimeException("Problem with Thread.sleep() encountered");
-			}
-		}
-	}
-
-	
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
 		return distributedConversionAdapter;
 	}

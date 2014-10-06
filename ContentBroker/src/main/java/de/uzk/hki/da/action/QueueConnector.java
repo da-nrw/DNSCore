@@ -28,7 +28,6 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.DAOException;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -99,7 +98,7 @@ public class QueueConnector {
 			session.close();
 			logger.error("Caught error in fetchJobFromQueue");
 			
-			throw new DAOException(e.getMessage(), e);
+			throw new RuntimeException(e.getMessage(), e);
 		}
 		return joblist.get(0);
 	}

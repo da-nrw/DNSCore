@@ -34,7 +34,7 @@ public class JobCascadingTest {
 	 */
 	@Test
 	public void test(){
-		HibernateUtil.init("src/main/conf/hibernateCentralDB.cfg.xml.inmem");
+		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		

@@ -135,11 +135,7 @@ public class ConvertActionTests {
 		job.getConversion_instructions().add(ci2);
 		
 		CentralDatabaseDAO dao = mock(CentralDatabaseDAO.class);
-		when (dao.getJob((Session)anyObject(),anyInt())).thenReturn(job);
 		action.setDao(dao);
-		
-		Job ret = new Job(); ret.setStatus("260");
-		when (dao.refreshJob((Job)anyObject())).thenReturn(ret);
 		
 		action.setDistributedConversionAdapter(mock(DistributedConversionAdapter.class));
 		

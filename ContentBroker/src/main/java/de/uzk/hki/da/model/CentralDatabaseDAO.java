@@ -19,14 +19,11 @@
 
 package de.uzk.hki.da.model;
 
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.uzk.hki.da.core.HibernateUtil;
 
 
 /**
@@ -43,20 +40,6 @@ public class CentralDatabaseDAO {
 	public CentralDatabaseDAO() {}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
 	/**
 	 * Gets the second stage scan policies.
 	 *
@@ -68,45 +51,5 @@ public class CentralDatabaseDAO {
 				.createQuery("from SecondStageScanPolicy").list();
 
 		return l;
-	}
-	
-	
-	
-	
-	/**
-	 * 
-	 * Only needed for proper tests of convert action.
-	 * Updates the jobs status to the current state of the database.
-	 *
-	 * @param job the job
-	 * @return Job
-	 */
-	@SuppressWarnings("unused")
-	public Job refreshJob(Job job) {
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		session.refresh(job);
-		for (ConversionInstruction ci:job.getConversion_instructions()){}
-		for (Job j:job.getChildren()){}
-		for (Package p:job.getObject().getPackages()){
-			for (DAFile f:p.getFiles()){}
-			for (Event e:p.getEvents()){}
-		}
-		session.close();
-		return job;
-	}
-
-	
-	
-	
-	/**
-	 * Only needed for proper tests of convert action.
-	 *
-	 * @param id the id
-	 * @return Job
-	 */
-	public Job getJob(Session session, int id) {
-		Job job = (Job) session.get(Job.class, id);
-		return job;
 	}
 }
