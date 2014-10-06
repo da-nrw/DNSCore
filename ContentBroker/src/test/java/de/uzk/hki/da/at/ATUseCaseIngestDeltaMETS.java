@@ -10,13 +10,17 @@ import org.junit.Test;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
 
+/**
+ * 
+ * @author Polina Gubaidullina
+ *
+ */
 
 public class ATUseCaseIngestDeltaMETS extends AcceptanceTest{
 
 	private static final int _1_MINUTE = 60000;
 	private static final String ORIG_NAME_ORIG = "ATUseCaseIngestDeltaMETS";
 	private Object object;
-	
 	
 	@Before
 	public void setUp() throws IOException, InterruptedException {

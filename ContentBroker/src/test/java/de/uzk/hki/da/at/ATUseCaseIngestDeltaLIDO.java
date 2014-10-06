@@ -16,12 +16,11 @@ import de.uzk.hki.da.repository.RepositoryException;
  *
  */
 
-public class ATUseCaseIngestDeltaEAD extends AcceptanceTest{
-
-	private static final int _1_MINUTE = 60000;
-	private static final String ORIG_NAME_ORIG = "ATUseCaseIngestDeltaEAD";
-	private Object object;
+public class ATUseCaseIngestDeltaLIDO extends AcceptanceTest{
 	
+	private static final int _1_MINUTE = 60000;
+	private static final String ORIG_NAME_ORIG = "ATUseCaseIngestDeltaLIDO";
+	private Object object;
 	
 	@Before
 	public void setUp() throws IOException, InterruptedException {
