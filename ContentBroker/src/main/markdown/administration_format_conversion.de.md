@@ -50,23 +50,23 @@ Hier sind zwei Fälle zu unterscheiden.
 
 Die Java-Klasse [ConversionPolicy](../java/de/uzk/hki/da/model/ConversionPolicy.java).
 
-Für die Policies ist die Tabelle "conversion_policies" eingerichtet.
+Für die Policies ist die Tabelle "conversion_policies" eingerichtet. Sie besitzt folgende wichtige Felder:
 
     source_format: varchar
     conversion_routines_id: int
     presentation: boolean
     
-**source_format** Erklärung
+**source_format** Der Pronom Unique Identifier (PUID). Wird das Format einer Datei mit einem entsprechenden Identifier erkannt, so wird greifen alle Policies, die mit dem entsprechenden source_format übereinstimmen.
 
-**conversion_routines_id** Erklärung
+**conversion_routines_id** Der Primärschlüssel der Datenbanktabelle "conversion_routines". Der ContentBroker wird für die Datei später im Workflow die mit der conversion_routines_id markierte Routine ausführen, um die Datei zu konvertieren.
 
-**presentation** Erklärung
+**presentation** Für LZA-Konversionen ist hier false, für Präsentationskonversionen ist hier true einzutragen.
 
 ### Datenmodell - Konversionroutine
 
 Die Java-Klasse [ConversionRoutine](../java/de/uzk/hki/da/model/ConversionRoutine.java)
 
-Für die Routinen ist die Tabelle
+Für die Routinen ist die Tabelle "conversion_routines" eingerichtet. Sie besitzt folgende wichtige Felder:
 
     name
     type
