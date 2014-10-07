@@ -16,7 +16,7 @@ the "federated" mode sits "on top".
 
 But you can't mix both modes yet.
 
-### Defintions
+### Definitions
 
 The node on which the itmes are stored first is the "primary copy", the node is "the responsible node" for that dedicated item.  
 All other nodes having copies of the stored items are therefore "secondary copies".
