@@ -12,21 +12,22 @@ wobei sich auch noch einige weitere Dokumention unter folgendem Link findet:
 
 **Versionierung** der Dokumentation. Die Dokumentation ist Teil des Git-Repository der DNSCore und wird gemeinsam zur Codebasis versioniert, damit der Stand der Dokumentation möglichst synchron zum Stand der Codebasis gehalten werden kann. Die Links sind, soweit es möglich ist, relativ, damit ein Checkout einer beliebigen Version selbstreferentiell und konsistent ist. Im Falle der Grafiken war dies hinsichtlich der Darstellung in GitHub nicht möglich (wegen der Referenzen auf raw-Dateien). Hier finden sich die Quellen der Grafiken aber immer im ContentBroker/src/main/markdown Verzwichnis wieder.
 
-Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
-
 ## Langzeitarchivierung mit DNSCore verstehen<br>[Alle Benutzergruppen]
 
 * SIP-Spezifikation ([deutsch](specification_sip.de.md)|[englisch](specification_sip.md))
 * AIP-Spezifikation ([englisch](specification_aip.md))
 * DIP-Spezifikation ([englisch](specification_dip.md))
 
+Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
+
 ## DNSCore verwenden<br>[Endnutzer]
 
-* das
+* Ingest und Retrieval ([englisch](../../../../DAWeb/doc/manual_ingest_and_retrieval.md))
 
 ## Bereitstellungen von Dienstleistungen an Endnutzer<br>[Systemadministratoren / Knotenadministratoren / Betreiber]
 
-* todo 
+* Formatidentifikation mit DNSCore ([deutsch](administration_format_identification.de.md))
+* Formatkonversion mit DNSCore ([englisch](administration_format_conversion.de.md))
 
 ## Umgebungen mit DNSCore aufsetzen<br>[Knotenadministratoren]
 
