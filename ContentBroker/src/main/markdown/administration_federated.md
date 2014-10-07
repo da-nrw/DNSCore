@@ -93,7 +93,7 @@ It takes into account all "own" and federated items. This should do a load balan
 2. Order them ascending, the lowest filled resource first.
 3. Trying to copy the items to all reachable nodes (zones) until reached numCopy setting stored by contentbroker - Or if not available, until the given minimal number is being reached. 
 1. Store the original computed checksum to the copied AIP for reference
-5. Retry until reached and copied with equality of checksums. 
+5. Retry until reached and copied with equality of checksums. (synchronize)
 
 ### Administer Federation
 
@@ -113,7 +113,7 @@ The Service asks for some settings after start:
     
 destResc : The resource group name, the syncing should go to,
 homezone : The own zone name 
-min_copies : The minimal copies need if nit aoverruled by Clients (CB client does this in its preservation system)
+min_copies : The minimal copies need if not overruled by Clients (CB client does this in its preservation system)
 	
 check if Federation Service is running
 
@@ -140,9 +140,52 @@ If the responsible node (which means the "primary copy node") is being asked for
 is being trigger it it does the following:
 
 1. Get The MD5 checksum for local primary copy from the ICAT.
-2. Compares 
+2. Compare stored ICAT value with checksum computed at creation
+3. Verify federated Checksums (relies on running service) 
+4. Deep Verify (recompute) local Checksum
 
+### AVU Metadata of iRODS Objects in DNS (AIP/DataObjects) 
 
+Attribute Value Unit (AVU) Metadata are stored in each ICAT. They could be listed with 
+	imeta ls -d 1-20141007788.pack_1.tar
+	attribute: FEDERATED
+	value: 1
+	units: 
+	----
+	attribute: chksum
+	value: 37996b3bedcfabf476a5b9c44b90d45b
+	units: 
+	----
+	attribute: SYNCHRONIZED_TO
+	value: lvr,
+	units: 
+	----
+	attribute: replicate_to
+	value: lza
+	units: 
+	----
+	attribute: MIN_COPIES
+	value: 2
+	units: 
+	----
+	attribute: SYNCHRONIZE_EVENT
+	value: 01412675041
+	units: 
 
+attribute: FEDERATED
+AVU indicates if AIP was synchronized successfully
 
+attribute: chksum
+stores originally computed checksum
+
+attribute: SYNCHRONIZED_TO
+zones with secondary copies
+
+attribute: replicate_to
+Resc group names the item was replicated to after registry in local zone
+
+attribute: MIN_COPIES
+Minimal copies to reach (otherwise federation service's default, 3 is being taken)
  
+attribute: SYNCHRONIZE_EVENT
+timestamp of last synchronizing event 
