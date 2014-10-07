@@ -67,7 +67,7 @@ the releases page, follow the source code link for the corresponding version and
 * Reference for the most common configuration file [config.properties](administration-config-properties-reference.md).
 * Reference for the [beans.xml](administration-beans.md) configuration file.
 
-## Enhancing the functions of DNSCore<br>[Development]
+## Enhancing the functions of DNSCore<br>[Developers]
 
 * Metadata [Workflow](metadata_workflow.md). Technical description.
 * [click here](3rdPartyTools.md) to get general information about the use and redistribution of used 3rd party libraries and tools.
