@@ -35,7 +35,9 @@ Für die Policies ist die Tabelle "conversion_policies" eingerichtet.
     presentation: boolean
     
 **source_format** Erklärung
+
 **conversion_routines_id** Erklärung
+
 **presentation** Erklärung
 
 Für die Routinen ist die Tabelle
@@ -46,8 +48,11 @@ Für die Routinen ist die Tabelle
     params
     
 **name** Erklärung
+
 **type** Erklärung
+
 **target_suffix** Erklärung
+
 **params** Erklärung
 
 
