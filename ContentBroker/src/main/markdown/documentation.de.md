@@ -71,6 +71,8 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 
 * Installation von ElasticSearch für DNSCore ([deutsch](install_elasticsearch.de.md))
 * Installation von Fedora für DNSCore ([englisch](install_fedora.md))
+* Installation von PrOAI für DNSCore ([deutsch](install_proai.md))
+* Installing iRODS for DNSCore ([englisch](installation_irods.md))
 
 #### Funktionalitäten der DNSCore erweitern<br>[Entwickler]
 
@@ -79,6 +81,7 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 * Aufsetzen von Continuous Integration für DNSCore builds ([englisch](development_setting_up_ci.md))
 * Systemkomponenten im Überblick ([english](components_connectors.md))
 * 3rd Party Module ([english](3rdPartyTools.md))
+* Metadata Workflow - Übersicht ([english](metadata_workflow.md))
 
 ###### Java API Dokumentation
 
