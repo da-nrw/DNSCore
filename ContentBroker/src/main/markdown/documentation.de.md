@@ -71,6 +71,7 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 
 * Bauen und Testen der DNSCore ([englisch](development_deploy.md))
 * Bauen DAWeb ([english](../../../../DAWeb/doc/deploy.md))
+* Aufsetzen von Continuous Integration für DNSCore builds ([englisch](development_setting_up_ci.md))
 
 ###### Java API Dokumentation
 
