@@ -36,3 +36,13 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 #### Funktionalitäten der DNSCore erweitern<br>[Entwickler]
 
 * asdf
+* 
+
+###### Java API Dokumentation
+
+Die Java API Dokumentation wird zum jetzigen Zeitpunkt nicht aktiv automatisch geupdatet, so dass er auf Bedarf manuell erzeugt werden muss.
+
+* Javadoc für DNSCore erzeugen und auf GitHub publizieren ([deutsch](javadoc.md))
+* Javadoc API Dokumentation. Älterer Stand. ([hier](http://da-nrw.github.io/DNSCore/apidocs/))
+* Javadoc Test Dokumentation. Älterer Stand. ([hier](http://da-nrw.github.io/DNSCore/testapidocs/))
+
