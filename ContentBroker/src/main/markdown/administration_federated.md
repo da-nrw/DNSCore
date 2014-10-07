@@ -9,9 +9,17 @@ forming a Federation in terms of iRODS Servers.
 In this topology your nodes should be able to administer iRODS Master servers and the federation itself
 (See iRODS documentation about this: https://irods.sdsc.edu/index.php/Federation_Administration)
 
-Although the iRODS servers are more separated, they share some common infrastructure (Object-DB)
+Although the iRODS servers are more separated, they still share some common infrastructure (Object-DB)
 
+The functionalities described below are compatible to a landscape in which "integrated", "one zone" approach has worked before, though
+the "federated" mode sits "on top".
 
+But you can't mix both modes yet.
+
+### Defintions
+
+The node on which the itmes are stored first is the "primary copy", the node is "the responsible node" for that dedicated item.  
+All other nodes having copies of the stored items are therefore "secondary copies".
 
 ### Prerequisites
 
@@ -19,24 +27,26 @@ Although the iRODS servers are more separated, they share some common infrastruc
 1. Running iRODS Server > 3.2 at zoneB
 1. Running ContentBroker
 1. Running Federation between zoneA and zoneB https://irods.sdsc.edu/index.php/Federation_Administration) 
-1. Running iRODS Resource Monitoring  https://irods.sdsc.edu/index.php/Resource_Monitoring_System
+1. Federated RuleSet danrw.re from ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/danrw.re)) activated 
+in server.config. 
 
 ### Changes needed to ContentBroker
+
+Change implementations of grid drivers to:
 
     cb.implementation.grid=federatedGridFacade
     cb.implementation.distributedConversion=irodsFederatedDistributedConversionAdapter
  
- 
 ### Changes needed to iRODS
 
-Create directory for federated items at zoneA
+Create directory for federated items of other zones at zoneA
 
     imkdir /zoneA/federated
 
 Set the rights for federated copies at least to "own" for the federated folders
 e.g.
 
-     ichmod -r own rods#zoneB /zoneA/federated/CONTZONEB
+     ichmod -r own rods#zoneB /zoneA/federated/CONTRACTOR_ZONEB
      
 Please consider the most restrictive permissions you are able to set for this.
 
@@ -48,17 +58,91 @@ Please give a full "own" rights to user rods#zoneB recursively to folder /zoneA/
 Please set inherit mode to enabled
  
  	ichmod -r inherit /zoneA/pips
- 	
-Enable the Resource Monitoring framework for using the load balancing of implemented in IRODS.
-Rules could be found at: https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/federation/
+ 
+Load the federated danrw.re file from ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/danrw.re))
+and install it to folder 
 
-Load the federated danrw.re file from ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/federation/danrw.re))
+	iRODS/server/config/reConfigs 
+	
+Make sure you have enabled the reSet in the server.config as described ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_irods_cb.md)) and you have tested your still working installation by typing at least an 
+"ils" command. 
 
-Start the Federation service, which could be found ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/federation/federate.r))
+
+### Federation Service
+
+The Federation service works permanently on time based schedule. It tries to copy ("federate") your stored AIP like a "cron" daemon, it defines an service 
+
+Start the Federation service, which could be found ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/federate.r))
 
     irule -F federate.r
+    
+Take a look at the reLog (Rule engine log file) which could be found at 
+	
+	iRODs/server/logs/
+	
+The Federation service should claim: 
+
+	--started Federation service---
+	--ended Federation service---
+	
+What it does is: 
+
+1. Takes into account given forbidden nodes settings stored by CB after registry of AIP.
+1. Ask all Servers on your Grid for their already stored items. Measured by counting items sizes beneath "aip" folders and on longterm storage resources (which have to members of resgroup lza). 
+It takes into account all "own" and federated items. This should do a load balancing between federated zones.
+2. Order them ascending, the lowest filled resource first.
+3. Trying to copy the items to all reachable nodes (zones) until reached numCopy setting stored by contentbroker - Or if not available, until the given minimal number is being reached. 
+1. Store the original computed checksum to the copied AIP for reference
+5. Retry until reached and copied with equality of checksums. 
 
 ### Administer Federation
+
+Once activated federation service runs, even iRODs Server is restarted.
+
+Start 
+	irule -F federate.r
+
+The Service asks for some settings after start:
+
+	Default *destResc="lza"  
+    New *destResc=
+	Default *homezone="zone"
+    New *homezone=
+	Default *min_copies=3
+    New *min_copies=
+    
+destResc : The resource group name, the syncing should go to,
+homezone : The own zone name 
+min_copies : The minimal copies need if nit aoverruled by Clients (CB client does this in its preservation system)
+	
+check if Federation Service is running
+
+	iqstat 
+
+Command should list at least the Federation service
+
+Delete Federation service 
+
+	iqstat
+	iqdel <ruleId>
+	
+Check Logfile for errors : reLog
+
+### Audit Infrastructure
+
+To perform Audit (integrity checking) of AIP iRODS each node must at least provide the time based check 
+service of federated copies. 
+
+In this Service checkFederatedAip.r all federated copies MD5 checksums stored for others at "my zone" are recalculated 
+on time basis. This is defined to be a "trust" between all servers of the zone.
+
+If the responsible node (which means the "primary copy node") is being asked for the integrity of AIP e.g. acIsValid() in danrw.re 
+is being trigger it it does the following:
+
+1. Get The MD5 checksum for local primary copy from the ICAT.
+2. Compares 
+
+
 
 
  

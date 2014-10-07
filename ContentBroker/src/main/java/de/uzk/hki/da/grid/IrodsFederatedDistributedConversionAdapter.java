@@ -25,18 +25,19 @@ public class IrodsFederatedDistributedConversionAdapter extends
         + "*zones=\"\"\n"
         + "*forbiddenNodes=\"\"\n"
         + "acGetZonesOnGrid(*zones,*forbiddenNodes)\n"
-        + "acSynchronizeZonesToCollection(*zones,*srcCollWithoutZone,*destColl,*destResc)\n"
+        + "acSynchronizeZonesToCollection(*zones,*srcCollWithoutZone,*destColl,*destResc,1,*status)\n"
 		+ "}\n"
 		+ "INPUT *destColl=\"/" 
 		+  irodsSystemConnector.getZone() 
 		+  relativePath + "\", *destResc=\"" 
 		+ irodsSystemConnector.getDefaultStorage() + "\", *srcCollWithoutZone=\""
 		+ relativePath + "\"\n"
-		+ "OUTPUT ruleExecOut";
+		+ "OUTPUT *status";
 		try {
-			irodsSystemConnector.executeRule(rule, "");
+			irodsSystemConnector.executeRule(rule, "*status");
 		}  catch (Exception e) {
 			logger.error("Ein Fehler ist aufgetreten bei Execute Rule " + rule);
+			throw new RuntimeException("Error executing syncing rule",e);
 		}
 		finally
 		{
