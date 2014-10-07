@@ -67,10 +67,8 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 
 ###### Erweiterte Konfiguration
 
-* a
-* b
-
-###### Installation der Software
+* Installation von ElasticSearch für DNSCore ([deutsch](install_elasticsearch.de.md))
+* Installation von Fedora für DNSCore ([englisch](install_fedora.md))
 
 #### Funktionalitäten der DNSCore erweitern<br>[Entwickler]
 
