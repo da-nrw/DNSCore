@@ -29,6 +29,11 @@ Sowohl **Konversionsrichtlinien** als auch **Konversionsroutinen** sind Eigensch
 
 Im Verlaufe des Ingest-(möglicherweise auch weiterer) Workflow des ContentBroker wird für jede Datei eine SIPs eine [Formaterkennung](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/administration_format_identification.de.md) durchgeführt. Als Ergebnis dieser Formaterkennung wird der Datei ein Identifier nach dem [PRONOM](http://apps.nationalarchives.gov.uk/PRONOM/Default.aspx)-Schema zugeordnet.
 
+Auf die Erkennung eben genau dieser PUIDs hin können Konversionsroutinen ausgeführt werden. Eine Konversionsroutine kann mit beliebig vielen Eingangsformaten verknüpft werden. Die Verknüpfung geschieht mithilfe der Konversionsrichtlinien.
+
+## Datenmodell - Konversionroutine
+
+## Datenmodell - Konversionsrichtlinie
 
 ## Anlegen und Testen von neuen Konversionsrichtlinien und Routinen
 
