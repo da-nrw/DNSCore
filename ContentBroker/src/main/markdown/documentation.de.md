@@ -39,9 +39,10 @@ wobei sich auch noch einige weitere Dokumention unter folgendem Link findet:
 
 * Das DNSCore Objektmodell - Referenzdokumentation ([deutsch](object_model.de.md)|[englisch](object_model.md))
 * SIP-Spezifikation ([deutsch](specification_sip.de.md)|[englisch](specification_sip.md))
-* Publikationsmetadatenformate - Spezifikation ([englisch](specification_publication_metadata.md))
-* AIP-Spezifikation ([englisch](specification_aip.md))
 * DIP-Spezifikation ([englisch](specification_dip.md))
+* Publikationsmetadatenformate - Spezifikation ([englisch](specification_publication_metadata.md))
+* DNSCore Feature Liste ([englisch](features.md))
+* Delta Feature - Beschreibung ([english](the_delta_feature.md))
 
 Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 
@@ -51,6 +52,7 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 
 #### Bereitstellungen von Dienstleistungen an Endnutzer<br>[Systemadministratoren / Knotenadministratoren / Betreiber]
 
+* AIP-Spezifikation ([englisch](specification_aip.md))
 * Formatidentifikation mit DNSCore ([deutsch](operations_format_identification.de.md))
 * Formatkonversion mit DNSCore ([deutsch](operations_format_conversion.de.md))
 
