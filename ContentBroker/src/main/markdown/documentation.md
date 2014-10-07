@@ -22,7 +22,7 @@ All the links below refer to documentation stored in one of these places.
 **Note** that under the abovementioned links you'll always find the documentation attached to the master (e.g. snapshot) version. In most cases this should be what you need. In rare cases however, you want a documentation artifact that matches the exact state of implementation. In these cases you can go to
 the releases page, follow the source code link for the corresponding version and then search for the document you're after in this special repository snapshot.
 
-## Understanding long term preservation with DNSCore<br>[General / All Audiences]
+#### Understanding long term preservation with DNSCore<br>[General / All Audiences]
 
 * Feature [list](features.md)
 * The DNSCore [Object](object_model.md) model.
@@ -39,12 +39,13 @@ the releases page, follow the source code link for the corresponding version and
 
 #### Providing services to end users<br>[System administrators / Node administrators / Operators]
 
+* Formatidentifikation mit DNSCore ([german](operations_format_conversion.de.md))
+* Formatkonversion mit DNSCore ([german](operations_format_conversion.de.md))
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
 * Job [states](administration-troubleshooting.md). How to deal with jobs in error states.
 * [clck here](audit.md) to get information how the AIP are being checked automatically.
 * [Create user](create_user.md)
 * Processing [stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
-* Format [identification](administration_format_identification.de.md) (german version).
 * [Controlling](administration-services.md) the application. Description of the non gui interfaces to the application.
 * Information on the [installer](administration-the-installer.md) script.
 
