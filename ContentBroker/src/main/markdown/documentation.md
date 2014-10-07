@@ -84,12 +84,12 @@ the releases page, follow the source code link for the corresponding version and
 
 ###### Extended configuration
 
+* Installing ElasticSearch for DNSCore ([german](install_elasticsearch.de.md))
+* Installing Fedora for DNSCore ([english](install_fedora.md))
 * [Create user](create_user.md)
-* How to install [Fedora](install_fedora.md) for DNSCore.
 * [click here](needed_packages.md) contains information on needed packages to run DNSCore.
 * [click here](installation_open_ports.md) for a list of ports your firewall has to allow connections to.
 * How to install [PrOAI](install_proai.md) for DNSCore
-* How to install [Elasticsearch](install_elasticsearch.md) for DNSCore.
 * How to how to setup DNSCore for iRODS [PAM](using_iRODS_PAM_auth.md) Authentication
 * How to extend the minimal installation to work with [iRODS](installation_irods_cb.md).
 * How to connect DNSCore and [Fedora](install_fedora.md).
