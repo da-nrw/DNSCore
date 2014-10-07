@@ -68,17 +68,15 @@ the releases page, follow the source code link for the corresponding version and
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
 * Job [states](administration-troubleshooting.md). How to deal with jobs in error states.
 * [clck here](audit.md) to get information how the AIP are being checked automatically.
-* [Create user](create_user.md)
-* Processing [stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
-* [Controlling](administration-services.md) the application. Description of the non gui interfaces to the application.
-* Information on the [installer](administration-the-installer.md) script.
 
 #### Setting up Environments with DNSCore<br>[Node administrators]
 
 ###### Basic configuration
 
+* [Controlling](administration-services.md) the application. Description of the non gui interfaces to the application.
 * config.properties - reference documentation ([config.properties](administration_config_properties_reference.de.md)).
 * beans.xml - reference documentation ([english](administration-beans.md))
+* Processing [stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
 * other interfaces - reference documentation ([english](administration-interfaces.md))
 * the installer script ([english](administration-the-installer.md)|[deutsch](administration-the-installer.de.md))
 * How to perfom a minimal installation of [DNSCore](installation_minimal.md).
@@ -94,6 +92,7 @@ the releases page, follow the source code link for the corresponding version and
 
 ###### Preparing an extended environment for DNSCore
 
+* [Create user](create_user.md)
 * How to install [Fedora](install_fedora.md) for DNSCore.
 * [click here](needed_packages.md) contains information on needed packages to run DNSCore.
 * [click here](installation_open_ports.md) for a list of ports your firewall has to allow connections to.
