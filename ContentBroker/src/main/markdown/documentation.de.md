@@ -4,11 +4,11 @@ Willkommen auf der Startseite der Dokumentation des DNSCore Softwarepaketes! Die
 
 Die Großteil der Dokumentation der DNSCore befindet sich unter
 
-    [DNSCore/ContentBroker/src/main/markdown/](../)
+[DNSCore/ContentBroker/src/main/markdown/](../)
 
 wobei sich auch noch einige weitere Dokumention unter folgendem Link findet:
 
-   [DNSCore/DAWeb/doc](../../../DAWeb/doc)
+[DNSCore/DAWeb/doc](../../../../DAWeb/doc)
 
 
 
