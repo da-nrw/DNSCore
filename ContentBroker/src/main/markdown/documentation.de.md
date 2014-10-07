@@ -60,10 +60,15 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 
 #### Umgebungen mit DNSCore aufsetzen<br>[Knotenadministratoren]
 
-###### Konfiguration der Umgebung
+###### Basiskonfiguration
 
 * config.properties - Referenzdokumentation ([deutsch](administration_config_properties_reference.de.md))
 * beans.xml - Referenzdokumentation ([english](administration-beans.xml))
+
+###### Erweiterte Konfiguration
+
+* a
+* b
 
 ###### Installation der Software
 
