@@ -87,6 +87,7 @@ Der ContentBroker würde die Platzhalter durch die entsprechenden Pfade der Ein-
 
 **target_suffix** Optionaler Parameter für kommandozeilenbasierte Konversionsroutinentypen (type=CLIConversionStrategy bzw. PublishCLIConversionStrategy). Kann für die übrigen Konversionsroutinentypen leer bleiben.
 
+Im Falle von kommandozeilenbasierten Routinentypen wird im Platzhalter output der Dateiname aus input übernommen, das Suffix jedoch durch target_suffix ersetzt. Bei einem Aufruf von ImageMagick determiniert dies automatisch das Zielformat.
 
 ## Typen von Konversionsroutinen
 
@@ -95,12 +96,22 @@ Der ContentBroker würde die Platzhalter durch die entsprechenden Pfade der Ein-
 Setzt einen beliebigen Befehl auf der Kommandozeile ab und kann somit jegliche von dort aufrufbare Converter einbinden. Benötigt entsprechende Werte für "params" und "target_suffix".
 
 **de.uzk.hki.da.format.PublishImageConversionStrategy.java**
+
+Das Zielformat ist jpg. Erstellt jeweils Zielformate für die "public" und "institution" PIPs für die Publikation (Policies -> presentation=true).
+
+Benötigt wird das Programm **ImageMagick**. Die **Version** ist unspezifiziert. Der Kommandozeilenaufruf auf "convert" muss für den ContentBroker global sichtbar sein (evtl. Umgebungsvariablen setzen).
  
 **de.uzk.hki.da.format.PublishAudioConversionStrategy.java**
 
+Das Zielformat ist mp3. Erstellt jeweils Zielformate für die "public" und "institution" PIPs für die Publikation (Policies -> presentation=true). 
+
+Benötigt wird das Programm **sox**. Die **Version** ist unspezifiziert. Der Kommandozeilenaufruf auf "sox" muss für den ContentBroker global sichtbar sein (evtl. Umgebungsvariablen setzen).
+
 **de.uzk.hki.da.format.PublishVideoConversionStrategy.java**
 
-**de.uzk.hki.da.format.PublishImageConversionStrategy.java**
+Das Zielformat ist mpeg4 im avi-Container. Erstellt jeweils Zielformate für die "public" und "institution" PIPs für die Publikation (Policies -> presentation=true). 
+
+Benötigt wird das Programm **HandBrakeCLI**. Die **Version** ist unspezifiziert. Der Kommandozeilenaufruf auf "HandBrakeCLI" muss für den ContentBroker global sichtbar sein (evtl. Umgebungsvariablen setzen).
 
 **de.uzk.hki.da.format.PublishPDFConversionStrategy.java**
 
