@@ -86,14 +86,14 @@ the releases page, follow the source code link for the corresponding version and
 
 * Installing ElasticSearch for DNSCore ([german](install_elasticsearch.de.md))
 * Installing Fedora for DNSCore ([english](install_fedora.md))
+* Installing PrOAI for DNSCore ([german](install_proai.md))
+* Installing iRODS for DNSCore ([english](installation_irods.md))
 * [Create user](create_user.md)
 * [click here](needed_packages.md) contains information on needed packages to run DNSCore.
 * [click here](installation_open_ports.md) for a list of ports your firewall has to allow connections to.
-* How to install [PrOAI](install_proai.md) for DNSCore
 * How to how to setup DNSCore for iRODS [PAM](using_iRODS_PAM_auth.md) Authentication
 * How to extend the minimal installation to work with [iRODS](installation_irods_cb.md).
 * How to connect DNSCore and [Fedora](install_fedora.md).
-* How to set up [iRODS](installation_irods.md) for DNSCore.
 * [How to setup iRODS for Presentation Repository](installation_setup_irods.md)
 
 
@@ -104,7 +104,7 @@ the releases page, follow the source code link for the corresponding version and
 * Setting up Continuous Integration for DNSCore builds ([english](development_setting_up_ci.md))
 * System components overview ([english](components_connectors.md))
 * 3rd party modules ([english](3rdPartyTools.md))
-* Metadata [Workflow](metadata_workflow.md). Technical description.
+* Metadata Workflow - Overview (english](metadata_workflow.md))
 
 ###### Java API documentation
 
