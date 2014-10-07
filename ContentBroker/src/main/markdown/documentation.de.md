@@ -39,7 +39,7 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 
 #### Funktionalitäten der DNSCore erweitern<br>[Entwickler]
 
-* asdf
+* Bauen und Testen der DNSCore. 
 * 
 
 ###### Java API Dokumentation
