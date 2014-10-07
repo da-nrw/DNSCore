@@ -1,5 +1,7 @@
 # DNSCore - Documentation
 
+[Deutsche Version](documentation.de.md)
+
 Welcome to the DNSCore documentation
 
 We have several sources of comprehensive documentation for our project and our codebase.
@@ -75,7 +77,8 @@ the releases page, follow the source code link for the corresponding version and
 
 #### Enhancing the functions of DNSCore<br>[Developers]
 
-* [click here](development_deploy.md) if you want to deploy the software yourself and build the source code on your local or on a continuous integration machine.
+* Building and testing DNSCore ([english](development_deploy.md))
+
 * Metadata [Workflow](metadata_workflow.md). Technical description.
 * [click here](3rdPartyTools.md) to get general information about the use and redistribution of used 3rd party libraries and tools.
 * [click here](../../../../DAWeb/doc/deploy.md) for information about deploying DAWeb
