@@ -135,6 +135,9 @@ service of federated copies.
 In this Service checkFederatedAip.r all federated copies MD5 checksums stored for others at "my zone" are recalculated 
 on time basis. This is defined to be a "trust" between all servers of the zone.
 
+irule -F checkFederatedAip.r ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/checkFederatedAip.r))
+
+
 If the responsible node (which means the "primary copy node") is being asked for the integrity of AIP e.g. acIsValid() in danrw.re 
 is being trigger it it does the following:
 
