@@ -51,6 +51,12 @@ the releases page, follow the source code link for the corresponding version and
 
 #### Setting up Environments with DNSCore<br>[Node administrators]
 
+###### Configuring the environment
+
+* config.properties - reference documentation ([config.properties](administration-config-properties-reference.de.md)).
+
+###### Installing the software
+
 * Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
 * How to perfom a minimal installation of [DNSCore](installation_minimal.md).
 * How to set up [iRODS](installation_irods.md) for DNSCore.
@@ -65,7 +71,6 @@ the releases page, follow the source code link for the corresponding version and
 * How to how to setup DNSCore for iRODS [PAM](using_iRODS_PAM_auth.md) Authentication
 * [click here](installation_open_ports.md) for a list of ports your firewall has to allow connections to.
 * [How to setup iRODS for Presentation Repository](installation_setup_irods.md)
-* Reference for the most common configuration file [config.properties](administration-config-properties-reference.md).
 * Reference for the [beans.xml](administration-beans.md) configuration file.
 
 #### Enhancing the functions of DNSCore<br>[Developers]
