@@ -32,6 +32,8 @@ Sowohl **Konversionsrichtlinien** als auch **Konversionsroutinen** sind Eigensch
 
 ## Workflow des Systems zur Formatkonversion.
 
+![Formatkonversionsworkflow](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/format_conversion_workflow.jpg)
+
 Ingest
 Migration
 PIPGenerierung
