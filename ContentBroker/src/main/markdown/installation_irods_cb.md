@@ -140,8 +140,9 @@ Please add the entry on all connected servers by changing line
 
     reRuleSet   contentbroker,core
 
-And store the corresponding file [danrw.re](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsGridFacade/danrw.re) as:
-
+And store the corresponding file [danrw.re inetrgated one zone ](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsGridFacade/danrw.re) 
+ or [danrw.re federated many zones](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/danrw.re)
+ 
     iRODS/server/config/reConfigs/contentbroker.re
 
 The file contentbroker.re must be changed to your local appropiate settings. 
@@ -161,7 +162,8 @@ about needed change of other parameters, as wrong parameters could serverly harm
 
 Please note the settings of your iRODS installation, as they're needed for config.properties of CB and DA-Web.
 
-1. danrw.re file Template: [danrw.re](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsGridFacade/danrw.re)
+1. danrw.re file Template: [danrw.re inetrgated one zone ](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsGridFacade/danrw.re) 
+ or [danrw.re federated many zones](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/danrw.re)
 
 Alter "default resource" settings in core.re and in danrw.re for apropiate settings on your system as they might point
 to some dummy resourcees.
