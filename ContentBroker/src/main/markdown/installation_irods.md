@@ -63,7 +63,7 @@ Several hardware platforms are supported by iRODS "out-of-the-box", but having a
 Set up a basic iRODS > 3.2 installation. Make sure the installation is installed as ICAT-Enabled. The installer
 will ask you for entering certain properties to which we will refer later.
 
-Copy the [dns.re] (../rules/irdodsGriDFacade/dns.re) to server/config/reConfigs/dns.re
+Read [connect CB and iRODS]() to server/config/reConfigs/dns.re
 Edit server/config/server.config to load dns.re
 
     reRuleSet dns,core
