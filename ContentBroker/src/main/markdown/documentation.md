@@ -53,27 +53,27 @@ the releases page, follow the source code link for the corresponding version and
 
 #### Setting up Environments with DNSCore<br>[Node administrators]
 
-###### Configuring the environment
+###### Basic configuration and 
 
 * config.properties - reference documentation ([config.properties](administration_config_properties_reference.de.md)).
-
-###### Installing the software
-
 * Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
+* Reference for the [beans.xml](administration-beans.md) configuration file.
+* [click here](installation.md) if you want to update your node to a new version of DNSCore
 * How to perfom a minimal installation of [DNSCore](installation_minimal.md).
-* How to set up [iRODS](installation_irods.md) for DNSCore.
+
+###### Setting up nodes for DNSCore
+
 * How to extend the minimal installation to work with [iRODS](installation_irods_cb.md).
 * How to install [Fedora](install_fedora.md) for DNSCore.
 * How to connect DNSCore and [Fedora](install_fedora.md).
 * How to install [PrOAI](install_proai.md) for DNSCore
 * How to install [Elasticsearch](install_elasticsearch.md) for DNSCore.
-* [click here](installation.md) if you want to update your node to a new version of DNSCore
 * [click here](installation_ci.md) to learn how to set up a machine for continuous integration.
 * [click here](needed_packages.md) contains information on needed packages to run DNSCore.
-* How to how to setup DNSCore for iRODS [PAM](using_iRODS_PAM_auth.md) Authentication
+* How to set up [iRODS](installation_irods.md) for DNSCore.
 * [click here](installation_open_ports.md) for a list of ports your firewall has to allow connections to.
 * [How to setup iRODS for Presentation Repository](installation_setup_irods.md)
-* Reference for the [beans.xml](administration-beans.md) configuration file.
+* How to how to setup DNSCore for iRODS [PAM](using_iRODS_PAM_auth.md) Authentication
 
 #### Enhancing the functions of DNSCore<br>[Developers]
 
