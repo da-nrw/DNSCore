@@ -26,3 +26,5 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 # Umgebungen mit DNSCore aufsetzen<br>[Knotenadministratoren]
 
 * todo
+* 
+# Funktionalitäten der DNSCore erweitern<br>[Entwickler]
