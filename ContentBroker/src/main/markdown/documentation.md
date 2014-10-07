@@ -76,9 +76,9 @@ the releases page, follow the source code link for the corresponding version and
 * [Controlling](administration-services.md) the application. Description of the non gui interfaces to the application.
 * config.properties - reference documentation (english](administration_config_properties_reference.de.md)).
 * beans.xml - reference documentation ([english](administration-beans.md))
-* Processing [stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
+* Processing stages - reference documentation ([english](processing_stages.md)
+* The DNSCore installer script ([english](administration-the-installer.md)|[deutsch](administration-the-installer.de.md))
 * other interfaces - reference documentation ([english](administration-interfaces.md))
-* the installer script ([english](administration-the-installer.md)|[deutsch](administration-the-installer.de.md))
 * How to perfom a minimal installation of [DNSCore](installation_minimal.md).
 * Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
 
@@ -102,8 +102,8 @@ the releases page, follow the source code link for the corresponding version and
 * Building and testing DNSCore ([english](development_deploy.md))
 * Building DAWeb ([english](../../../../DAWeb/doc/deploy.md))
 * Setting up Continuous Integration for DNSCore builds ([english](development_setting_up_ci.md))
-* [click here](3rdPartyTools.md) to get general information about the use and redistribution of used 3rd party libraries and tools.
-* Overview over the system [components](components_connectors.md)
+* System components overview ([english](components_connectors.md))
+* 3rd party modules ([english](3rdPartyTools.md))
 * Metadata [Workflow](metadata_workflow.md). Technical description.
 
 ###### Java API documentation
