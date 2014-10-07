@@ -17,6 +17,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 checkFederatedItemsOnLocalZone {
+	delay("<EF>60m</EF>") {
+	acLog("---Audit Service Started---")
 	*i=1
 	msiExecStrCondQuery("SELECT DATA_NAME, COLL_NAME, META_DATA_ATTR_NAME, META_DATA_ATTR_VALUE where COLL_NAME like '%/federated/%' and META_DATA_ATTR_NAME = 'last_checked' ORDER BY META_DATA_ATTR_VALUE ASC",*checkDaos)	
 	foreach(*checkDaos) {
@@ -41,14 +43,20 @@ checkFederatedItemsOnLocalZone {
 				}
 			} else {
 				acLog("Federated COPY in E R R O R: *dao")
+				if (*admin!="test@test.de"){
+					msiSendEmail(*admin,"DNS-ERROR of federated copy",*dao)				
+				}
 			}
+
 		  
 		} else {
 			acLog("No check needed on foreign copies yet!")
 		} 	
 		*i=*i+1		
 		if (*i>=5) { break }
+	}
+acLog("---Audit Service ended---")
 }
 }
-INPUT *zone=$"krz", *admin=$"test@test.de", *numbersPerRun=$5,*trustYears=$0
+INPUT *zone=$"zone", *admin=$"test@test.de", *numbersPerRun=$5,*trustYears=$0
 OUTPUT ruleExecOut
