@@ -115,6 +115,10 @@ Benötigt wird das Programm **HandBrakeCLI**. Die **Version** ist unspezifiziert
 
 **de.uzk.hki.da.format.PublishPDFConversionStrategy.java**
 
+Das Zielformat ist mpeg4 im avi-Container. Erstellt jeweils Zielformate für die "public" und "institution" PIPs für die Publikation (Policies -> presentation=true). 
+
+Benötigt wird das Programm **GhostScript**. Die **Version** ist unspezifiziert. Der Kommandozeilenaufruf auf "ghostscript" muss für den ContentBroker global sichtbar sein (evtl. Umgebungsvariablen setzen).
+
 ## Workflow des Systems zur Formatkonversion.
 
 ![Formatkonversionsworkflow](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/format_conversion_workflow.jpg)
