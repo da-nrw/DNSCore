@@ -27,7 +27,7 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 #### Bereitstellungen von Dienstleistungen an Endnutzer<br>[Systemadministratoren / Knotenadministratoren / Betreiber]
 
 * Formatidentifikation mit DNSCore ([deutsch](operations_format_identification.de.md))
-* Formatkonversion mit DNSCore ([englisch](operations_format_conversion.de.md))
+* Formatkonversion mit DNSCore ([deutsch](operations_format_conversion.de.md))
 
 #### Umgebungen mit DNSCore aufsetzen<br>[Knotenadministratoren]
 
