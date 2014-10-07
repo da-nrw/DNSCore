@@ -51,19 +51,23 @@ Für die Routinen ist die Tabelle
 
 **type** Erklärung
 
-**params** Optionaler Parameter für kommandozeilenbasierte Konversionsroutinen (type=CLIConversionStrategy bzw. PublishCLIConversionStrategy). Spezifiziert den Kommandozeilenaufruf inklusive der Platzhalter für die Ein- und Ausgangsdatei. Im einfachsten Falle kann dies wie folgt aussehen
+**params** Optionaler Parameter für kommandozeilenbasierte Konversionsroutinentypen (type=CLIConversionStrategy bzw. PublishCLIConversionStrategy). Kann bei anderen Konversionsroutinentypen leer bleiben. 
+
+"params" spezifiziert den Kommandozeilenaufruf inklusive der Platzhalter für die Ein- und Ausgangsdatei. Im einfachsten Falle kann dies wie folgt aussehen
 
     convert input output
 
 Der ContentBroker würde die Platzhalter durch die entsprechenden Pfade der Ein- und Ausgangsdateien ersetzen und den Befehl convert (Bestandteil von ImageMagick) auf der Kommandozeile absetzen.
 
-**target_suffix** Optionaler Parameter für kommandozeilenbasierte Konversionsroutinen (type=CLIConversionStrategy bzw. PublishCLIConversionStrategy).
+**target_suffix** Optionaler Parameter für kommandozeilenbasierte Konversionsroutinentypen (type=CLIConversionStrategy bzw. PublishCLIConversionStrategy). Kann für die übrigen Konversionsroutinentypen leer bleiben.
 
 ## Anlegen und Testen von neuen Konversionsrichtlinien und Routinen
 
 ## Typen von Konversionsroutinen
 
 **de.uzk.hki.da.format.CLIConversionStrategy.java**
+
+Setzt einen beliebigen Befehl auf der Kommandozeile ab und kann somit jegliche von dort aufrufbare Converter einbinden. Benötigt entsprechende Werte für "params" und "target_suffix".
 
 **de.uzk.hki.da.format.PublishImageConversionStrategy.java**
  
