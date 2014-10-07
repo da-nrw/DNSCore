@@ -59,17 +59,17 @@ Für die Routinen ist die Tabelle
 
 ## Typen von Konversionsroutinen
 
-### de.uzk.hki.da.format.CLIConversionStrategy.java
+**de.uzk.hki.da.format.CLIConversionStrategy.java**
 
-### de.uzk.hki.da.format.PublishImageConversionStrategy.java
+**de.uzk.hki.da.format.PublishImageConversionStrategy.java**
  
-### de.uzk.hki.da.format.PublishAudioConversionStrategy.java
+**de.uzk.hki.da.format.PublishAudioConversionStrategy.java**
 
-### de.uzk.hki.da.format.PublishVideoConversionStrategy.java
+**de.uzk.hki.da.format.PublishVideoConversionStrategy.java**
 
-### de.uzk.hki.da.format.PublishImageConversionStrategy.java
+**de.uzk.hki.da.format.PublishImageConversionStrategy.java**
 
-### de.uzk.hki.da.format.PublishPDFConversionStrategy.java
+**de.uzk.hki.da.format.PublishPDFConversionStrategy.java**
 
 ## Workflow des Systems zur Formatkonversion.
 
