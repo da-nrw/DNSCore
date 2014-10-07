@@ -14,7 +14,7 @@ wobei sich auch noch einige weitere Dokumention unter folgendem Link findet:
 
 Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 
-## Langzeitarchivierung mit DNSCore verstehen<br>[Alle Benutzer des Systems]
+## Langzeitarchivierung mit DNSCore verstehen<br>[Alle Benutzergruppen]
 
 * SIP-Spezifikation ([deutsch](specification_sip.de.md)|[englisch](specification_sip.md))
 * AIP-Spezifikation ([englisch](specification_aip.md))
