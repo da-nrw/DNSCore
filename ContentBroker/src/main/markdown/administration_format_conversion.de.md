@@ -40,6 +40,8 @@ PIPGenerierung
 
 ## Funktionsweise
 
+![ConversionInstructions](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_conversion_dafiles.jpg)
+
 Generierung der Konversionsinstruktionen
 
 
