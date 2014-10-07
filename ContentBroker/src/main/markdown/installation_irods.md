@@ -65,12 +65,13 @@ will ask you for entering certain properties to which we will refer later.
 
 Read [connect CB and iRODS](installation_irods_cb.md) 
 
-Be sure to have at least one dns.re file configured at server.config reSet ! 
+Be sure to have at least one dns.re file configured at server.config reSet !!!
+This depends on your selected topology
 
 ### Setting up a node topology
 
 Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zones" as well as the concept of 
-having one Zone with several resource servers. Please refer to the iRODS Documentation about this. For working with DNSCo#re in Federations plese read [here](administation_federated.md)
+having one Zone with several resource servers. Please refer to the iRODS Documentation about this. For working with DNSCo#re in Federations plese read [here](administration_federated.md)
 
 DNSCore supports both operational modes, depending on your
 
