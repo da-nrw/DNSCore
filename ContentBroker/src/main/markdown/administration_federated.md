@@ -137,9 +137,22 @@ on time basis. This is defined to be a "trust" between all servers of the zone.
 
 irule -F checkFederatedAip.r ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/checkFederatedAip.r))
 
+	Default *zone="zone"
+	New *zone=
+	Default *admin="test@test.de"
+	New *admin=
+	Default *numbersPerRun=5
+	New *numbersPerRun=
+	Default *trustYears=0
+	New *trustYears=
 
-If the responsible node (which means the "primary copy node") is being asked for the integrity of AIP e.g. acIsValid() in danrw.re 
-is being trigger it it does the following:
+zone: The zone which this service should run-
+admin: The Admin which should be infrmed on errors
+numbersPerRun: Amount of Items being checked each time the service runs
+trustYears: Value in years we trust a chekcsum before recomputation. 0 means each time recalculate, 0.5 means half a year etc. 
+
+If the responsible node (which means the "primary copy node") is being asked for the integrity of AIP e.g. acIsValid() in dns.re 
+is being triggered it it does the following:
 
 1. Get The MD5 checksum for local primary copy from the ICAT.
 2. Compare stored ICAT value with checksum computed at creation
