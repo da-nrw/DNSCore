@@ -16,7 +16,7 @@ as consisting only of this node, e.g. you can see it as a how to of setting up t
 DNSCore supports two topologies of working with iRODS DataGrids. The more integrated "classic" implementation and the 
 more seperated "federated" mode. This depends on your desired use case. To read more about the as well supported "federated mode" 
 please refer to the iRODS federated mode documentation
-([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/administration_irods_federated.md))
+([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/administration_federated.md))
 
     [irodsuser] - The irods user we will use to let the ContentBroker talk to the iRODS server.
     [irodspassword] - The password of this user.
@@ -140,7 +140,7 @@ Please add the entry on all connected servers by changing line
 
     reRuleSet   contentbroker,core
 
-And store the corresponding file [danrw.re inetrgated one zone ](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsGridFacade/danrw.re) 
+And store the corresponding file [danrw.re integrated one zone ](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsGridFacade/danrw.re) 
  or [danrw.re federated many zones](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/danrw.re)
  
     iRODS/server/config/reConfigs/contentbroker.re
@@ -162,8 +162,8 @@ about needed change of other parameters, as wrong parameters could serverly harm
 
 Please note the settings of your iRODS installation, as they're needed for config.properties of CB and DA-Web.
 
-1. danrw.re file Template: [danrw.re inetrgated one zone ](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsGridFacade/danrw.re) 
- or [danrw.re federated many zones](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/danrw.re)
+1. dns.re file Template: [dns.re integrated one zone ](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsGridFacade/dns.re) 
+ or [dns.re federated many zones](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/dns.re)
 
 Alter "default resource" settings in core.re and in danrw.re for apropiate settings on your system as they might point
 to some dummy resourcees.
