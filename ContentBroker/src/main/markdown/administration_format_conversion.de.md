@@ -51,9 +51,9 @@ Für die Routinen ist die Tabelle
 
 **type** Erklärung
 
-**target_suffix** Erklärung
+**target_suffix** Optionaler Parameter für kommandozeilenbasierte Konversionsroutinen (type=CLIConversionStrategy bzw. PublishCLIConversionStrategy).
 
-**params** Erklärung
+**params** Optionaler Parameter für kommandozeilenbasierte Konversionsroutinen (type=CLIConversionStrategy bzw. PublishCLIConversionStrategy). Spezifiziert den Kommandozeilenaufruf TODO Platzhalter input output.
 
 ## Anlegen und Testen von neuen Konversionsrichtlinien und Routinen
 
