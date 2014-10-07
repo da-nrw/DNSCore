@@ -86,7 +86,6 @@ the releases page, follow the source code link for the corresponding version and
 
 * How to extend the minimal installation to work with [iRODS](installation_irods_cb.md).
 * How to connect DNSCore and [Fedora](install_fedora.md).
-* [click here](installation_ci.md) to learn how to set up a machine for continuous integration.
 * How to set up [iRODS](installation_irods.md) for DNSCore.
 * [How to setup iRODS for Presentation Repository](installation_setup_irods.md)
 
@@ -104,10 +103,10 @@ the releases page, follow the source code link for the corresponding version and
 
 * Building and testing DNSCore ([english](development_deploy.md))
 * Building DAWeb ([english](../../../../DAWeb/doc/deploy.md))
-* Metadata [Workflow](metadata_workflow.md). Technical description.
+* Setting up Continuous Integration for DNSCore builds ([english](development_setting_up_ci.md))
 * [click here](3rdPartyTools.md) to get general information about the use and redistribution of used 3rd party libraries and tools.
 * Overview over the system [components](components_connectors.md)
-* Overview of the [metadata workflow](metadata_workflow.md).
+* Metadata [Workflow](metadata_workflow.md). Technical description.
 * 
 ###### Java API documentation
 
