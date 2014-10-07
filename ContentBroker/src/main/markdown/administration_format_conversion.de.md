@@ -28,6 +28,30 @@ Sowohl **Konversionsrichtlinien** als auch **Konversionsroutinen** sind Eigensch
 
 ## Einrichten / DB
 
+Für die Policies ist die Tabelle "conversion_policies" eingerichtet.
+
+    source_format: varchar
+    conversion_routines_id: int
+    presentation: boolean
+    
+**source_format** Erklärung
+**conversion_routines_id** Erklärung
+**presentation** Erklärung
+
+Für die Routinen ist die Tabelle
+
+    name
+    type
+    target_suffix
+    params
+    
+**name** Erklärung
+**type** Erklärung
+**target_suffix** Erklärung
+**params** Erklärung
+
+
+
 ## Hinweise zum Testen
 
 ## Workflow des Systems zur Formatkonversion.
