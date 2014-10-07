@@ -39,8 +39,8 @@ the releases page, follow the source code link for the corresponding version and
 
 #### Providing services to end users<br>[System administrators / Node administrators / Operators]
 
-* Formatidentifikation mit DNSCore ([german](operations_format_conversion.de.md))
-* Formatkonversion mit DNSCore ([german](operations_format_conversion.de.md))
+* Format identification with DNSCore ([german](operations_format_conversion.de.md))
+* Format conversion with DNSCore ([german](operations_format_conversion.de.md))
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
 * Job [states](administration-troubleshooting.md). How to deal with jobs in error states.
 * [clck here](audit.md) to get information how the AIP are being checked automatically.
