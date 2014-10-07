@@ -26,6 +26,19 @@ Formatkonversionen in DNSCore basieren auf einem Modell von [Konversionsrichtlin
 Sowohl **Konversionsrichtlinien** als auch **Konversionsroutinen** sind Eigenschaften des **Gesamtsystems**. Wenn eine Konversionsroutine im System angemeldet wird, so muss sichergestellt werden, dass alle **Knoten** des Systems diese unterstützen. 
 (TODO was heisst das , Konverter vs. Java-Konversionen)
 
+## Anlegen und Testen von neuen Konversionsrichtlinien und Routinen
+
+TODO CLI wird hier beschrieben.
+
+Um eine neue Konversionsroutine systemweit bereitstellen zu können, muss diese zunächst im Vorgeld evaluiert werden. Die Grundvoraussetzung lautet hier, dass das Programm mithilfe eines simplen Unix-Kommandozeilenaufrufes aufgerufen werden kann. Der Kommandozeilenaufruf sollte dann lokal getestet werden.
+
+Als nächstes müssen alle Administratoren des Systems auf den jeweils von ihnen betreuten Knoten die entsprechend benötigten Konverter in der spezifizierten Version eingerichtet werden. 
+
+Dann müssen die Einträge in der Datenbank eingerichtet werden. Dies geschieht "manuell". Die Beschreibungen der Tabllenstruktur ist weiter [unten](#einrichten--db) beschrieben.
+
+
+Das Anlegen der Konversionsrichtlinien und Routinen erfolgt weitestgehend "manuell". 
+
 ## Einrichten / DB
 
 Für die Policies ist die Tabelle "conversion_policies" eingerichtet.
@@ -61,7 +74,6 @@ Der ContentBroker würde die Platzhalter durch die entsprechenden Pfade der Ein-
 
 **target_suffix** Optionaler Parameter für kommandozeilenbasierte Konversionsroutinentypen (type=CLIConversionStrategy bzw. PublishCLIConversionStrategy). Kann für die übrigen Konversionsroutinentypen leer bleiben.
 
-## Anlegen und Testen von neuen Konversionsrichtlinien und Routinen
 
 ## Typen von Konversionsroutinen
 
