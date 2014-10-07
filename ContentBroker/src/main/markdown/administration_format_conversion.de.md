@@ -30,14 +30,14 @@ Sowohl **Konversionsrichtlinien** als auch **Konversionsroutinen** sind Eigensch
 
 TODO CLI wird hier beschrieben.
 
-Um eine neue Konversionsroutine systemweit bereitstellen zu können, muss diese zunächst im Vorgeld evaluiert werden. Die Grundvoraussetzung lautet hier, dass das Programm mithilfe eines simplen Unix-Kommandozeilenaufrufes aufgerufen werden kann. Der Kommandozeilenaufruf sollte dann lokal getestet werden.
+**1 - Evaluationsphase** Um eine neue Konversionsroutine systemweit bereitstellen zu können, muss diese zunächst im Vorgeld evaluiert werden. Die Grundvoraussetzung lautet hier, dass das Programm mithilfe eines simplen Unix-Kommandozeilenaufrufes aufgerufen werden kann. Der Kommandozeilenaufruf sollte dann lokal getestet werden.
 
-Als nächstes müssen alle Administratoren des Systems auf den jeweils von ihnen betreuten Knoten die entsprechend benötigten Konverter in der spezifizierten Version eingerichtet werden. 
+**2 - Installationsphase ** Als nächstes müssen alle Administratoren des Systems auf den jeweils von ihnen betreuten Knoten die entsprechend benötigten Konverter in der spezifizierten Version eingerichtet werden. 
 
-Dann müssen die Einträge in der Datenbank eingerichtet werden. Dies geschieht "manuell". Die Beschreibungen der Tabllenstruktur ist weiter [unten](#einrichten--db) beschrieben.
+**3 - Anmeldungsphase** Dann müssen die Einträge in der Datenbank eingerichtet werden. Dies geschieht "manuell". Die Beschreibungen der Tabllenstruktur ist weiter [unten](#einrichten--db) beschrieben. Es der Eintrag für die Konversionsroutine und verschiedene Einträge für die Konversionrichtlinien hinzugefügt werden.
 
+**4 - Konfigurationstestphase** 
 
-Das Anlegen der Konversionsrichtlinien und Routinen erfolgt weitestgehend "manuell". 
 
 ## Einrichten / DB
 
