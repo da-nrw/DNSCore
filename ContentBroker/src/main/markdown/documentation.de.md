@@ -37,6 +37,8 @@ wobei sich auch noch einige weitere Dokumention unter folgendem Link findet:
 
 #### Langzeitarchivierung mit DNSCore verstehen<br>[Alle Benutzergruppen]
 
+Hier befinden sich alle Dokus, die Grundkonzepte der Langzeitarchivierung im Kontext des Einsatzes von DNSCore beschreiben.
+
 * Das DNSCore Objektmodell - Referenzdokumentation ([deutsch](object_model.de.md)|[englisch](object_model.md))
 * SIP-Spezifikation ([deutsch](specification_sip.de.md)|[englisch](specification_sip.md))
 * DIP-Spezifikation ([englisch](specification_dip.md))
@@ -48,9 +50,13 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 
 #### DNSCore verwenden<br>[Endnutzer]
 
+Dieser Bereich wendet sich an die Anwender der DNSCore Lösung für Langzeitarchivierung.
+
 * Ingest und Retrieval ([englisch](../../../../DAWeb/doc/manual_ingest_and_retrieval.md))
 
 #### Bereitstellungen von Dienstleistungen an Endnutzer<br>[Systemadministratoren / Knotenadministratoren / Betreiber]
+
+Dieser Bereich umfasst Dokumentationen, die sich damit beschäftigen, wie mithilfe eines Verbundes von Knoten, auf denen DNSCore läuft, Langzeitarchivierungsfunktionalität für Endkunden bereitgestellt werden kann.
 
 * AIP-Spezifikation ([englisch](specification_aip.md))
 * PREMIS-Spezifikation([english](specification_premis.md))
@@ -60,7 +66,12 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 
 #### Umgebungen mit DNSCore aufsetzen<br>[Knotenadministratoren]
 
+In diesem Bereich sind Dokumentationen untergebracht, die die Installation der Software DNSCore,
+die vorbereitenden Anpassung von Umgebungen für den Einsatz von DNSCore bzw. Anpassung von DNSCore an die Umgebungen, sowie der Anbindung von DNSCore an Fremdkomponenten thematisieren. 
+
 ###### Basiskonfiguration
+
+Die hier untergebrachten Dokumentationen gelten für generell für den Einsatz von DNSCore.
 
 * config.properties - Referenzdokumentation ([deutsch](administration_config_properties_reference.de.md))
 * beans.xml - Referenzdokumentation ([english](administration-beans.xml))
@@ -69,12 +80,16 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 
 ###### Erweiterte Konfiguration
 
+Die hier untergebrachten Dokumentationen setzen den Einsatz von DNSCore unter bestimmten Bedingungen voraus. Etwa die Anbindung an bestimmte externe Systeme, deren Bedingungen der Anbindung hier genauer beschrieben sind.
+
 * Installation von ElasticSearch für DNSCore ([deutsch](install_elasticsearch.de.md))
 * Installation von Fedora für DNSCore ([englisch](install_fedora.md))
 * Installation von PrOAI für DNSCore ([deutsch](install_proai.md))
 * Installing iRODS for DNSCore ([englisch](installation_irods.md))
 
 #### Funktionalitäten der DNSCore erweitern<br>[Entwickler]
+
+Um DNSCore effektiv bauen, testen und ausliefern zu können, sollten die folgenden Dokus gelesen werden:
 
 * Bauen und Testen der DNSCore ([englisch](development_deploy.md))
 * Bauen DAWeb ([english](../../../../DAWeb/doc/deploy.md))
