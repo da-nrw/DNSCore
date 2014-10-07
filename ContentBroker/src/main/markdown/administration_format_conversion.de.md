@@ -121,13 +121,15 @@ Benötigt wird das Programm **GhostScript**. Die **Version** ist unspezifiziert.
 
 ## Workflow des Systems zur Formatkonversion.
 
+Im IngestWorkflow findet in der **ScanAction** zunächst eine Formaterkennung für alle Dateien der Anlieferung (SIP) und eine erneute Formaterkennung für alle Dateien aus eventuellen vorigen Anlieferungen statt. Pro Datei und Policy, die mit dem erkannten Dateiformat übereinstimmt, wird jeweils eine entsprechende Konversionsinstruktionen erstellt. In der anschließenden **ConvertAction** werden die Konversionsinstruktionen ausgewertet und die Konversionen durchgeführt. Die Konversionsergebnisse werden in der **CheckFormatsAciton** noch einmal gescannt. In der **ScanForPresentationAction** wird eine Oberflächenansicht der neuesten Dateien generiert. Die Dateiformate werden mit den Policies für die Präsentation (presentation=true) abgeglichen. Für jede Datei und alle jeweils mit dem Dateiformat entsprechenden Policies werden erneut Konversionsinstruktionen erstellt. Diese werden anschließend in der **ConvertAction** durchgeführt.
+
 ![Formatkonversionsworkflow](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/format_conversion_workflow.jpg)
 
 Ingest
 Migration
 PIPGenerierung
 
-## Funktionsweise - Workflow
+Der Vollständigkeit halber
 
 ![ConversionInstructions](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_conversion_dafiles.jpg)
 
