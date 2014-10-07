@@ -57,7 +57,8 @@ Für die Routinen ist die Tabelle
 
 
 
-## Hinweise zum Testen
+## Anlegen und Testen von neuen Konversionsrichtlinien und Routinen
+
 
 ## Workflow des Systems zur Formatkonversion.
 
