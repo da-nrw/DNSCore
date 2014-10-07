@@ -1,6 +1,6 @@
 # DNSCore - Dokumentation
 
-[English Version](documentation.md)
+Deutsche Version | [English Version](documentation.md)
 
 Willkommen auf der Startseite der Dokumentation des DNSCore Softwarepaketes! Dies hier ist die primäre Quelle zu allen Fragen bezüglich der Handhabung des Softwarepaketes. 
 
