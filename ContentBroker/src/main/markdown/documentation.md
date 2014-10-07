@@ -71,7 +71,7 @@ the releases page, follow the source code link for the corresponding version and
 
 #### Setting up Environments with DNSCore<br>[Node administrators]
 
-###### Basic configuration
+###### Basic configuration 
 
 * [Controlling](administration-services.md) the application. Description of the non gui interfaces to the application.
 * config.properties - reference documentation (english](administration_config_properties_reference.de.md)).
