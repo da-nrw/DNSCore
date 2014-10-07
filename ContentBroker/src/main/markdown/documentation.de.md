@@ -1,5 +1,7 @@
 # DNSCore - Dokumentation
 
+[English Version](documentation.md)
+
 Willkommen auf der Startseite der Dokumentation des DNSCore Softwarepaketes! Dies hier ist die primäre Quelle zu allen Fragen bezüglich der Handhabung des Softwarepaketes. 
 
 Die Großteil der Dokumentation der DNSCore befindet sich unter
@@ -39,7 +41,7 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 
 #### Funktionalitäten der DNSCore erweitern<br>[Entwickler]
 
-* Bauen und Testen der DNSCore. 
+* Bauen und Testen der DNSCore ([englisch](development_deploy.md))
 * 
 
 ###### Java API Dokumentation
