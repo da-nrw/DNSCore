@@ -1,6 +1,6 @@
 # DNSCore - Documentation
 
-[Deutsche Version](documentation.de.md)
+English Version|[Deutsche Version](documentation.de.md)
 
 Welcome to the DNSCore documentation
 
