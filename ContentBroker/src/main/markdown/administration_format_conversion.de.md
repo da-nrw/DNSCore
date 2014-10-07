@@ -19,7 +19,7 @@
 
 # Formatkonversion mit DNSCore
 
-Formatkonversionen in DNSCore basieren auf einem Modell von [Konversionsrichtlinien](object_model.de.md#conversionpolicy---die-regel-zur-anwendung-einer-konversion) (technisch: [ConversionPolicy](../java/de/uzk/hki/da/model/ConversionPolicy.java)) und [Konversionsroutinen](object_model.de.md#conversionroutine---die-konversionsroutine) (technisch: [ConversionRoutine](../java/de/uzk/hki/da/model/ConversionRoutine.java)). Konversionsroutinen beschreiben ein Verfahren, mit dessen Hilfe eine Datei eines bestimmten Formates in ein anderes Zielformat konvertiert werden kann. Konversionsrichtlinien hingegen legen fest, welche Konversionsroutinen für Dateien mit bestimmten Dateiformaten durchzuführen sind, nachdem ebendiese Dateiformate vom System erkannt wurden.
+Formatkonversionen in DNSCore basieren auf einem Modell von [Konversionsrichtlinien](object_model.de.md#conversionpolicy---die-regel-zur-anwendung-einer-konversion) (technisch: [ConversionPolicy](../java/de/uzk/hki/da/model/ConversionPolicy.java)) und [Konversionsroutinen](object_model.de.md#conversionroutine---die-konversionsroutine) (technisch: [ConversionRoutine](../java/de/uzk/hki/da/model/ConversionRoutine.java)). **Konversionsroutinen** beschreiben ein Verfahren, mit dessen Hilfe eine Datei eines bestimmten Formates in ein anderes Zielformat konvertiert werden kann. **Konversionsrichtlinien** hingegen legen fest, welche **Konversionsroutinen** für Dateien mit bestimmten Dateiformaten durchzuführen sind, nachdem ebendiese Dateiformate vom System erkannt wurden.
 
 ![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_object_users.jpg)
 
@@ -31,9 +31,7 @@ Im Verlaufe des Ingest-(möglicherweise auch weiterer) Workflow des ContentBroke
 
 Auf die Erkennung eben genau dieser PUIDs hin können Konversionsroutinen ausgeführt werden. Eine Konversionsroutine kann mit beliebig vielen Eingangsformaten verknüpft werden. Die Verknüpfung geschieht mithilfe der Konversionsrichtlinien.
 
-## Datenmodell - Konversionroutine
 
-## Datenmodell - Konversionsrichtlinie
 
 ## Anlegen und Testen von neuen Konversionsrichtlinien und Routinen
 
@@ -58,6 +56,8 @@ Hier sind zwei Fälle zu unterscheiden.
 
 ## Einrichten / DB
 
+### Datenmodell - Konversionsrichtlinie
+
 Für die Policies ist die Tabelle "conversion_policies" eingerichtet.
 
     source_format: varchar
@@ -69,6 +69,8 @@ Für die Policies ist die Tabelle "conversion_policies" eingerichtet.
 **conversion_routines_id** Erklärung
 
 **presentation** Erklärung
+
+### Datenmodell - Konversionroutine
 
 Für die Routinen ist die Tabelle
 
