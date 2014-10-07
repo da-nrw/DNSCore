@@ -55,10 +55,13 @@ Für die Routinen ist die Tabelle
 
 **params** Erklärung
 
-
-
 ## Anlegen und Testen von neuen Konversionsrichtlinien und Routinen
 
+## Typen von Konversionsroutinen
+
+* de.uzk.hki.da.format.PublishImageConversionStrategy.java
+* de.uzk.hki.da.format.PublishAudioConversionStrategy.java
+* de.uzk.hki.da.format.PublishVideoConversionStrategy.java
 
 ## Workflow des Systems zur Formatkonversion.
 
