@@ -30,7 +30,19 @@ Sowohl **Konversionsrichtlinien** als auch **Konversionsroutinen** sind Eigensch
 
 TODO CLI wird hier beschrieben.
 
-**1 - Evaluationsphase** Um eine neue Konversionsroutine systemweit bereitstellen zu können, muss diese zunächst im Vorgeld evaluiert werden. Die Grundvoraussetzung lautet hier, dass das Programm mithilfe eines simplen Unix-Kommandozeilenaufrufes aufgerufen werden kann. Der Kommandozeilenaufruf sollte dann lokal getestet werden.
+**1 - Evaluationsphase** Um eine neue Konversionsroutine systemweit bereitstellen zu können, muss diese zunächst im Vorgeld evaluiert werden. 
+
+Hier sind zwei Fälle zu unterscheiden. 
+
+1. Die Routine basiert auf Java-Code. Dies ist für auf die Publikation ausgerichtete Konversionsroutinen immer der Fall, für die LZA gibt es aber auch einige Fälle. In diesem Falle kann die Evaluationsphase insofern abgeschlossen werden, als dass die [Konversionsroutinentypen](#typen-von-konversionsroutinen) selbst genau vorgeben, für welche Eingangsformate sie eingesetzt werden dürfen, welche Zielformate sie produzieren, und welche Tools (falls nicht Java-) auf der Unix-Umgebung eingerichtet werden müssen, damit sie eingebunden werden können.
+
+1. Die Routine basiert auf einem Unix-Kommandozeilenaufruf. Der Kommandozeilenaufruf muss notiert werden. Die Platzhalter "input" und "output" markieren dabei die Stellen, an denen der ContentBroker später die Pfade konkreter Dateien eintragen kann.
+
+
+
+
+
+Die Grundvoraussetzung lautet hier, dass das Programm mithilfe eines simplen Unix-Kommandozeilenaufrufes aufgerufen werden kann. Der Kommandozeilenaufruf sollte dann lokal getestet werden.
 
 **2 - Installationsphase** Als nächstes müssen alle Administratoren des Systems auf den jeweils von ihnen betreuten Knoten die entsprechend benötigten Konverter in der spezifizierten Version eingerichtet werden. 
 
