@@ -38,15 +38,9 @@ Hier sind zwei Fälle zu unterscheiden.
 
 1. Die Routine basiert auf einem Unix-Kommandozeilenaufruf. Der Kommandozeilenaufruf muss notiert werden. Die Platzhalter "input" und "output" markieren dabei die Stellen, an denen der ContentBroker später die Pfade konkreter Dateien eintragen kann.
 
+**2 - Installationsphase** Als nächstes müssen alle Administratoren des Systems auf den jeweils von ihnen betreuten Knoten die entsprechend Konverter (falls durch die Konversionsroutine benötigt) in der spezifizierten Version eingerichtet werden. 
 
-
-
-
-Die Grundvoraussetzung lautet hier, dass das Programm mithilfe eines simplen Unix-Kommandozeilenaufrufes aufgerufen werden kann. Der Kommandozeilenaufruf sollte dann lokal getestet werden.
-
-**2 - Installationsphase** Als nächstes müssen alle Administratoren des Systems auf den jeweils von ihnen betreuten Knoten die entsprechend benötigten Konverter in der spezifizierten Version eingerichtet werden. 
-
-**3 - Anmeldungsphase** Dann müssen die Einträge in der Datenbank eingerichtet werden. Dies geschieht "manuell". Die Beschreibungen der Tabllenstruktur ist weiter [unten](#einrichten--db) beschrieben. Es der Eintrag für die Konversionsroutine und verschiedene Einträge für die Konversionrichtlinien hinzugefügt werden.
+**3 - Anmeldungsphase** Dann müssen die Einträge in der Datenbank eingerichtet werden. Dies geschieht manuell per sql-insert Statements. Die Beschreibungen der Tabllenstruktur ist weiter [unten](#einrichten--db) beschrieben. Es der Eintrag für die Konversionsroutine und verschiedene Einträge für die Konversionrichtlinien hinzugefügt werden. Für jede mögliche PUID, auf die hin eine Konversionsroutine getriggert werden soll, muss eine gesonderte Zeile in die Policies-Tabelle eingefügt werden.
 
 **4 - Konfigurationstestphase** Abschließend muss für jede der neuen Richtlinien ein Test durchgeführt werden, welcher die Konversion durchführt. Eine Datei mit dem spezifizierten Quellformat wird dazu in einem SIP abgelegt und im System zum Ingest abgegeben. Anschließend wird das Paket retrieved und die Zieldatei geprüft.
 
