@@ -53,7 +53,7 @@ the releases page, follow the source code link for the corresponding version and
 
 ###### Configuring the environment
 
-* config.properties - reference documentation ([config.properties](administration-config-properties-reference.de.md)).
+* config.properties - reference documentation ([config.properties](administration_config_properties_reference.de.md)).
 
 ###### Installing the software
 
@@ -75,13 +75,16 @@ the releases page, follow the source code link for the corresponding version and
 
 #### Enhancing the functions of DNSCore<br>[Developers]
 
+* [click here](development_deploy.md) if you want to deploy the software yourself and build the source code on your local or on a continuous integration machine.
 * Metadata [Workflow](metadata_workflow.md). Technical description.
 * [click here](3rdPartyTools.md) to get general information about the use and redistribution of used 3rd party libraries and tools.
-* [click here](development_deploy.md) if you want to deploy the software yourself and build the source code on your local or on a continuous integration machine.
 * [click here](../../../../DAWeb/doc/deploy.md) for information about deploying DAWeb
-* [click here](javadoc.md) if you want to recreate the JavaDoc files and publish them on GitHub Pages
-* the [Java API documentation](http://da-nrw.github.io/DNSCore/apidocs/)
-* the [Java test documentation](http://da-nrw.github.io/DNSCore/testapidocs/)
 * Overview over the system [components](components_connectors.md)
 * Overview of the [format module](format_module.md).
 * Overview of the [metadata workflow](metadata_workflow.md).
+* 
+###### Java API documentation
+
+* [click here](javadoc.md) if you want to recreate the JavaDoc files and publish them on GitHub Pages
+* the [Java API documentation](http://da-nrw.github.io/DNSCore/apidocs/)
+* the [Java test documentation](http://da-nrw.github.io/DNSCore/testapidocs/)
