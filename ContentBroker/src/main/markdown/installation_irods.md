@@ -63,10 +63,10 @@ Several hardware platforms are supported by iRODS "out-of-the-box", but having a
 Set up a basic iRODS > 3.2 installation. Make sure the installation is installed as ICAT-Enabled. The installer
 will ask you for entering certain properties to which we will refer later.
 
-Copy the [danrw.re] (../rules/danrw.re) to server/config/reConfigs/danrw.re
-Edit server/config/server.config to load danrw.re
+Copy the [dns.re] (../rules/irdodsGriDFacade/dns.re) to server/config/reConfigs/dns.re
+Edit server/config/server.config to load dns.re
 
-    reRuleSet danrw,core
+    reRuleSet dns,core
 
 Restart iRODS server.
 
