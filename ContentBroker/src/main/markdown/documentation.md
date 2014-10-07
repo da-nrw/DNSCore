@@ -82,14 +82,7 @@ the releases page, follow the source code link for the corresponding version and
 * How to perfom a minimal installation of [DNSCore](installation_minimal.md).
 * Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
 
-###### Setting up nodes for DNSCore
-
-* How to extend the minimal installation to work with [iRODS](installation_irods_cb.md).
-* How to connect DNSCore and [Fedora](install_fedora.md).
-* How to set up [iRODS](installation_irods.md) for DNSCore.
-* [How to setup iRODS for Presentation Repository](installation_setup_irods.md)
-
-###### Preparing an extended environment for DNSCore
+###### Extended configuration
 
 * [Create user](create_user.md)
 * How to install [Fedora](install_fedora.md) for DNSCore.
@@ -98,6 +91,11 @@ the releases page, follow the source code link for the corresponding version and
 * How to install [PrOAI](install_proai.md) for DNSCore
 * How to install [Elasticsearch](install_elasticsearch.md) for DNSCore.
 * How to how to setup DNSCore for iRODS [PAM](using_iRODS_PAM_auth.md) Authentication
+* How to extend the minimal installation to work with [iRODS](installation_irods_cb.md).
+* How to connect DNSCore and [Fedora](install_fedora.md).
+* How to set up [iRODS](installation_irods.md) for DNSCore.
+* [How to setup iRODS for Presentation Repository](installation_setup_irods.md)
+
 
 #### Enhancing the functions of DNSCore<br>[Developers]
 
