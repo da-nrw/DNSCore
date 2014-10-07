@@ -23,8 +23,12 @@ Formatkonversionen in DNSCore basieren auf einem Modell von [Konversionsrichtlin
 
 ![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_object_users.jpg)
 
-Sowohl **Konversionsrichtlinien** als auch **Konversionsroutinen** sind Eigenschaften des **Gesamtsystems**. Wenn eine Konversionsroutine im System angemeldet wird, so muss sichergestellt werden, dass alle **Knoten** des Systems diese unterstützen. 
-(TODO was heisst das , Konverter vs. Java-Konversionen)
+Sowohl **Konversionsrichtlinien** als auch **Konversionsroutinen** sind Eigenschaften des **Gesamtsystems**. Wenn eine Konversionsroutine im System angemeldet wird, so bedeutet dies, dass alle **Knoten** des Systems diese unterstützen. Das erfordert in den meisten Fällen Synchronisation der Knotenadministratoren untereinander, die entsprechende Konverter in gleicher Version auf den von ihnen betreuten Knoten bereitstellen.
+
+## Funktionsweise - Kurzfassung
+
+Im Verlaufe des Ingest-(möglicherweise auch weiterer) Workflow des ContentBroker wird für jede Datei eine SIPs eine [Formaterkennung](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/administration_format_identification.de.md) durchgeführt. Als Ergebnis dieser Formaterkennung wird der Datei ein Identifier nach dem [PRONOM](http://apps.nationalarchives.gov.uk/PRONOM/Default.aspx)-Schema zugeordnet.
+
 
 ## Anlegen und Testen von neuen Konversionsrichtlinien und Routinen
 
@@ -107,7 +111,7 @@ Ingest
 Migration
 PIPGenerierung
 
-## Funktionsweise
+## Funktionsweise - Workflow
 
 ![ConversionInstructions](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_conversion_dafiles.jpg)
 
