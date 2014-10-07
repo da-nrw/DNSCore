@@ -74,7 +74,7 @@ the releases page, follow the source code link for the corresponding version and
 ###### Basic configuration
 
 * [Controlling](administration-services.md) the application. Description of the non gui interfaces to the application.
-* config.properties - reference documentation ([config.properties](administration_config_properties_reference.de.md)).
+* config.properties - reference documentation (english](administration_config_properties_reference.de.md)).
 * beans.xml - reference documentation ([english](administration-beans.md))
 * Processing [stages](processing_stages.md) demonstrates basic concepts necessary to administrate the system
 * other interfaces - reference documentation ([english](administration-interfaces.md))
@@ -103,12 +103,10 @@ the releases page, follow the source code link for the corresponding version and
 #### Enhancing the functions of DNSCore<br>[Developers]
 
 * Building and testing DNSCore ([english](development_deploy.md))
-
+* Building DAWeb ([english](../../../../DAWeb/doc/deploy.md))
 * Metadata [Workflow](metadata_workflow.md). Technical description.
 * [click here](3rdPartyTools.md) to get general information about the use and redistribution of used 3rd party libraries and tools.
-* [click here](../../../../DAWeb/doc/deploy.md) for information about deploying DAWeb
 * Overview over the system [components](components_connectors.md)
-* Overview of the [format module](format_module.md).
 * Overview of the [metadata workflow](metadata_workflow.md).
 * 
 ###### Java API documentation
