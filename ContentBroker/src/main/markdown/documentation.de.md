@@ -63,13 +63,14 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 ###### Konfiguration der Umgebung
 
 * config.properties - Referenzdokumentation ([deutsch](administration_config_properties_reference.de.md))
+* beans.xml - Referenzdokumentation ([english](administration-beans.xml))
 
 ###### Installation der Software
 
 #### Funktionalitäten der DNSCore erweitern<br>[Entwickler]
 
 * Bauen und Testen der DNSCore ([englisch](development_deploy.md))
-* 
+* Bauen DAWeb ([english](../../../../DAWeb/doc/deploy.md))
 
 ###### Java API Dokumentation
 
