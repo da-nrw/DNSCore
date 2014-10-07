@@ -14,17 +14,17 @@ wobei sich auch noch einige weitere Dokumention unter folgendem Link findet:
 
 Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 
-# Langzeitarchivierung mit DNSCore verstehen<br>[Alle Benutzer des Systems]
+## Langzeitarchivierung mit DNSCore verstehen<br>[Alle Benutzer des Systems]
 
 * todo
 * 
 
-# Bereitstellungen von Dienstleistungen an Endnutzer<br>[Systemadministratoren / Knotenadministratoren / Betreiber]
+## Bereitstellungen von Dienstleistungen an Endnutzer<br>[Systemadministratoren / Knotenadministratoren / Betreiber]
 
 * todo 
 
-# Umgebungen mit DNSCore aufsetzen<br>[Knotenadministratoren]
+## Umgebungen mit DNSCore aufsetzen<br>[Knotenadministratoren]
 
 * todo
 * 
-# Funktionalitäten der DNSCore erweitern<br>[Entwickler]
+## Funktionalitäten der DNSCore erweitern<br>[Entwickler]
