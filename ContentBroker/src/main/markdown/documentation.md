@@ -60,10 +60,11 @@ the releases page, follow the source code link for the corresponding version and
 
 #### Providing services to end users<br>[System administrators / Node administrators / Operators]
 
-* [AIP](specification_aip.md) Specification
-* [PREMIS](specification_premis.md) Specification
+* AIP specification ([english](specification_aip.md))
+* PREMIS specification ([english](specification_premis.md))
 * Format identification with DNSCore ([german](operations_format_conversion.de.md))
 * Format conversion with DNSCore ([german](operations_format_conversion.de.md))
+* format module ([english](format_module.md))
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
 * Job [states](administration-troubleshooting.md). How to deal with jobs in error states.
 * [clck here](audit.md) to get information how the AIP are being checked automatically.
