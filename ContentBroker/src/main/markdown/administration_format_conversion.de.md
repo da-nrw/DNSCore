@@ -51,9 +51,13 @@ Für die Routinen ist die Tabelle
 
 **type** Erklärung
 
-**target_suffix** Optionaler Parameter für kommandozeilenbasierte Konversionsroutinen (type=CLIConversionStrategy bzw. PublishCLIConversionStrategy).
+**params** Optionaler Parameter für kommandozeilenbasierte Konversionsroutinen (type=CLIConversionStrategy bzw. PublishCLIConversionStrategy). Spezifiziert den Kommandozeilenaufruf inklusive der Platzhalter für die Ein- und Ausgangsdatei. Im einfachsten Falle kann dies wie folgt aussehen
 
-**params** Optionaler Parameter für kommandozeilenbasierte Konversionsroutinen (type=CLIConversionStrategy bzw. PublishCLIConversionStrategy). Spezifiziert den Kommandozeilenaufruf TODO Platzhalter input output.
+    convert input output
+
+Der ContentBroker würde die Platzhalter durch die entsprechenden Pfade der Ein- und Ausgangsdateien ersetzen und den Befehl convert (Bestandteil von ImageMagick) auf der Kommandozeile absetzen.
+
+**target_suffix** Optionaler Parameter für kommandozeilenbasierte Konversionsroutinen (type=CLIConversionStrategy bzw. PublishCLIConversionStrategy).
 
 ## Anlegen und Testen von neuen Konversionsrichtlinien und Routinen
 
