@@ -48,6 +48,8 @@ Hier sind zwei Fälle zu unterscheiden.
 
 ### Datenmodell - Konversionsrichtlinie
 
+Die Java-Klasse [ConversionPolicy](../java/de/uzk/hki/da/model/ConversionPolicy.java).
+
 Für die Policies ist die Tabelle "conversion_policies" eingerichtet.
 
     source_format: varchar
@@ -61,6 +63,8 @@ Für die Policies ist die Tabelle "conversion_policies" eingerichtet.
 **presentation** Erklärung
 
 ### Datenmodell - Konversionroutine
+
+Die Java-Klasse [ConversionRoutine](../java/de/uzk/hki/da/model/ConversionRoutine.java)
 
 Für die Routinen ist die Tabelle
 
