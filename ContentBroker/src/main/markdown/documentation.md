@@ -77,8 +77,9 @@ the releases page, follow the source code link for the corresponding version and
 ###### Basic configuration
 
 * config.properties - reference documentation ([config.properties](administration_config_properties_reference.de.md)).
-* Reference for the [beans.xml](administration-beans.md) configuration file.
-* [click here](installation.md) if you want to update your node to a new version of DNSCore
+* beans.xml - reference documentation ([english](administration-beans.md))
+* other interfaces - reference documentation ([english](administration-interfaces.md))
+* the installer script ([english](administration-the-installer.md)|[deutsch](administration-the-installer.de.md))
 * How to perfom a minimal installation of [DNSCore](installation_minimal.md).
 * Overview of the common installation [modes](administration-dnscore-modes.de.md) "pres" and "node" (german version).
 
