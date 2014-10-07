@@ -24,16 +24,16 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 
 * Ingest und Retrieval ([englisch](../../../../DAWeb/doc/manual_ingest_and_retrieval.md))
 
-## Bereitstellungen von Dienstleistungen an Endnutzer<br>[Systemadministratoren / Knotenadministratoren / Betreiber]
+#### Bereitstellungen von Dienstleistungen an Endnutzer<br>[Systemadministratoren / Knotenadministratoren / Betreiber]
 
 * Formatidentifikation mit DNSCore ([deutsch](administration_format_identification.de.md))
 * Formatkonversion mit DNSCore ([englisch](administration_format_conversion.de.md))
 
-## Umgebungen mit DNSCore aufsetzen<br>[Knotenadministratoren]
+#### Umgebungen mit DNSCore aufsetzen<br>[Knotenadministratoren]
 
 * todo
 * 
 
-## Funktionalitäten der DNSCore erweitern<br>[Entwickler]
+#### Funktionalitäten der DNSCore erweitern<br>[Entwickler]
 
 * asdf
