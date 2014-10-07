@@ -47,14 +47,12 @@ the releases page, follow the source code link for the corresponding version and
 
 #### Understanding long term preservation with DNSCore<br>[General / All Audiences]
 
-* Feature [list](features.md)
-* The DNSCore [Object](object_model.md) model.
-* [DIP](specification_dip.md) Specification
-* [SIP](specification_sip.md) Specification
-* [AIP](specification_aip.md) Specification
-* Medata [specification](metadata_specification.md). The metadata formats accepted by DNS that will enable proper presentation.
-* [PREMIS](specification_premis.md) Specification
-* Description of the [Delta](the_delta_feature.md) feature.
+* The DNSCore object model - reference documentation ([english](object_model.md)|[german](object_model.de.md))
+* SIP specification ([english](specification_sip.md)|[german](specification_sip.de.md))
+* DIP specification ([english](specification_dip.md))
+* Publicaton metadata - specification ([english](specification_publication_metadata.md))
+* DNSCore feature list ([english](features.md))
+* Description of the delta feature ([english](the_delta_feature.md))
 
 #### Using DNSCore<br>[End Users]
 
@@ -62,6 +60,8 @@ the releases page, follow the source code link for the corresponding version and
 
 #### Providing services to end users<br>[System administrators / Node administrators / Operators]
 
+* [AIP](specification_aip.md) Specification
+* [PREMIS](specification_premis.md) Specification
 * Format identification with DNSCore ([german](operations_format_conversion.de.md))
 * Format conversion with DNSCore ([german](operations_format_conversion.de.md))
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
