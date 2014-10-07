@@ -47,9 +47,9 @@ Für die Routinen ist die Tabelle
     target_suffix
     params
     
-**name** Erklärung
+**name** Ein beliebig zur wählender Name für die Konversionsroutine. Er kann so gewählt werden, das er z.B. Aufschluss über die eingesetzten Konverter liefert.
 
-**type** Erklärung
+**type** Hier ist ein vollqualifizierter Name einer Java-Klasse einzusetzen. Die zur Verfügung stehenden Typen sind in einem folgenden [Abschnitt](administration_format_conversion.de.md#typen-von-konversionsroutinen) beschrieben.
 
 **params** Optionaler Parameter für kommandozeilenbasierte Konversionsroutinentypen (type=CLIConversionStrategy bzw. PublishCLIConversionStrategy). Kann bei anderen Konversionsroutinentypen leer bleiben. 
 
