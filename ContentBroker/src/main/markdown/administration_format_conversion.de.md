@@ -121,19 +121,17 @@ Benötigt wird das Programm **GhostScript**. Die **Version** ist unspezifiziert.
 
 ## Workflow des Systems zur Formatkonversion.
 
-Im IngestWorkflow findet in der **ScanAction** zunächst eine Formaterkennung für alle Dateien der Anlieferung (SIP) und eine erneute Formaterkennung für alle Dateien aus eventuellen vorigen Anlieferungen statt. Pro Datei und Policy, die mit dem erkannten Dateiformat übereinstimmt, wird jeweils eine entsprechende Konversionsinstruktionen erstellt. In der anschließenden **ConvertAction** werden die Konversionsinstruktionen ausgewertet und die Konversionen durchgeführt. Die Konversionsergebnisse werden in der **CheckFormatsAciton** noch einmal gescannt. In der **ScanForPresentationAction** wird eine Oberflächenansicht der neuesten Dateien generiert. Die Dateiformate werden mit den Policies für die Präsentation (presentation=true) abgeglichen. Für jede Datei und alle jeweils mit dem Dateiformat entsprechenden Policies werden erneut Konversionsinstruktionen erstellt. Diese werden anschließend in der **ConvertAction** durchgeführt.
+Die Formatkonversionen bilden einen zentralen Bestandteil der grundlegenden Workflows des ContentBroker. Während des **Ingest-Workflows** werden Konversionen zur Langzeitarchivierung der Formate vorgenommen. Anschließend werden die konvertierten Dateien (und falls nicht konvertiert die Originale) Dateien, sofern möglich, d.h. sofern entsprechende Policies für die Formate eingerichtet sind, wiederum in für die Präsentation geeignete Formate umgewandelt. Dies geschieht jeweils zweifach, einmal für die Institutions- und einmal für die Public-PIPs.
+
+Die PIPs können auch mithilfe des **PIP-Generierungs-Workflows** nachträglich neu generiert werden, etwa wenn sich die Standardformate der Publikation ändern. Hier werden alle Anlieferungen auf die WorkArea zurückgeladen, und die entsprechenden Konversionsinstruktionen auf Basis der Präsentationspolicies (presentation=true) generiert und ausgeführt.
+
+Weiterhin kann es auch dazu kommen, das Formate im Langzeitspeicher veralten. In diesem Falle greift der **Migrations-Workflow**. Die betroffenen Objekte werden auf die WorkArea zurückgespielt für die veralteten Dateien werden erneut Formatkonversionen vorgenommen.
 
 ![Formatkonversionsworkflow](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/format_conversion_workflow.jpg)
 
-Ingest
-Migration
-PIPGenerierung
+Im IngestWorkflow findet in der **ScanAction** zunächst eine Formaterkennung für alle Dateien der Anlieferung (SIP) und eine erneute Formaterkennung für alle Dateien aus eventuellen vorigen Anlieferungen statt. Pro Datei und Policy, die mit dem erkannten Dateiformat übereinstimmt, wird jeweils eine entsprechende Konversionsinstruktionen erstellt. In der anschließenden **ConvertAction** werden die Konversionsinstruktionen ausgewertet und die Konversionen durchgeführt. Die Konversionsergebnisse werden in der **CheckFormatsAciton** noch einmal gescannt. In der **ScanForPresentationAction** wird eine Oberflächenansicht der neuesten Dateien generiert. Die Dateiformate werden mit den Policies für die Präsentation (presentation=true) abgeglichen. Für jede Datei und alle jeweils mit dem Dateiformat entsprechenden Policies werden erneut Konversionsinstruktionen erstellt. Diese werden anschließend in der **ConvertAction** durchgeführt.
 
-Der Vollständigkeit halber
+Der Vollständigkeit halber werden in der folgenden Skizze noch einmal die ConversionInstructions im Kontext des Datenmodells dargestellt:
 
 ![ConversionInstructions](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_conversion_dafiles.jpg)
-
-Generierung der Konversionsinstruktionen
-
-
 
