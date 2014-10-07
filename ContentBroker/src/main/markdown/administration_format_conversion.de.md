@@ -89,6 +89,16 @@ Der ContentBroker würde die Platzhalter durch die entsprechenden Pfade der Ein-
 
 Im Falle von kommandozeilenbasierten Routinentypen wird im Platzhalter output der Dateiname aus input übernommen, das Suffix jedoch durch target_suffix ersetzt. Bei einem Aufruf von ImageMagick determiniert dies automatisch das Zielformat.
 
+## Datenmodell - KonversionsInstruktion
+
+Die Java-Klasse [ConversionInstruction](../java/de/uzk/hki/da/model/ConversionInstruction.java)
+
+Konversionsinstruktionen werden automatisch vom ContentBroker generiert, um Erkennungs- und Entscheidungsprozesse im ContentBroker von Durchführungsprozessen sauber zu trennen. Da Konversionsinstruktionen automatisch generiert werden, spielen sie für die fachliche Administration des Systems keine Rolle, wohl aber für die technische Administration des Systemes. Bei fehlgeschlagenen Aufräumprozessen kann es notwendig sein, die Datenbank von Zeit zu Zeit zu bereinigen. Hierzu ist ein Verständnis der [Arbeitsweise](#workflow-des-systems-zur-formatkonversion) des ContentBroker bzw. des zugrundeliegenden Datenmodells vonnöten.
+
+![ConversionInstructions](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_conversion_dafiles.jpg)
+
+TODO beschreibung
+
 ## Typen von Konversionsroutinen
 
 **de.uzk.hki.da.format.CLIConversionStrategy.java**
@@ -131,7 +141,5 @@ Weiterhin kann es auch dazu kommen, das Formate im Langzeitspeicher veralten. In
 
 Im IngestWorkflow findet in der **ScanAction** zunächst eine Formaterkennung für alle Dateien der Anlieferung (SIP) und eine erneute Formaterkennung für alle Dateien aus eventuellen vorigen Anlieferungen statt. Pro Datei und Policy, die mit dem erkannten Dateiformat übereinstimmt, wird jeweils eine entsprechende Konversionsinstruktionen erstellt. In der anschließenden **ConvertAction** werden die Konversionsinstruktionen ausgewertet und die Konversionen durchgeführt. Die Konversionsergebnisse werden in der **CheckFormatsAciton** noch einmal gescannt. In der **ScanForPresentationAction** wird eine Oberflächenansicht der neuesten Dateien generiert. Die Dateiformate werden mit den Policies für die Präsentation (presentation=true) abgeglichen. Für jede Datei und alle jeweils mit dem Dateiformat entsprechenden Policies werden erneut Konversionsinstruktionen erstellt. Diese werden anschließend in der **ConvertAction** durchgeführt.
 
-Der Vollständigkeit halber werden in der folgenden Skizze noch einmal die ConversionInstructions im Kontext des Datenmodells dargestellt:
 
-![ConversionInstructions](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_conversion_dafiles.jpg)
 
