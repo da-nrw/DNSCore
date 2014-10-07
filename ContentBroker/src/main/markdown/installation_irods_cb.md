@@ -140,7 +140,7 @@ Please add the entry on all connected servers by changing line
 
     reRuleSet   contentbroker,core
 
-And store the corresponding file [danrw.re](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/irodsGridFacade/danrw.re) as:
+And store the corresponding file [danrw.re](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsGridFacade/danrw.re) as:
 
     iRODS/server/config/reConfigs/contentbroker.re
 
@@ -161,7 +161,7 @@ about needed change of other parameters, as wrong parameters could serverly harm
 
 Please note the settings of your iRODS installation, as they're needed for config.properties of CB and DA-Web.
 
-1. danrw.re file Template: https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/irodsGridFacade/danrw.re
+1. danrw.re file Template: [danrw.re](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsGridFacade/danrw.re)
 
 Alter "default resource" settings in core.re and in danrw.re for apropiate settings on your system as they might point
 to some dummy resourcees.
