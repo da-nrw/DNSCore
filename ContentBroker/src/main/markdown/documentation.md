@@ -105,7 +105,7 @@ the releases page, follow the source code link for the corresponding version and
 * [click here](3rdPartyTools.md) to get general information about the use and redistribution of used 3rd party libraries and tools.
 * Overview over the system [components](components_connectors.md)
 * Metadata [Workflow](metadata_workflow.md). Technical description.
-* 
+
 ###### Java API documentation
 
 * [click here](javadoc.md) if you want to recreate the JavaDoc files and publish them on GitHub Pages
