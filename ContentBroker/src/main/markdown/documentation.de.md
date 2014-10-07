@@ -16,7 +16,9 @@ wobei sich auch noch einige weitere Dokumention unter folgendem Link findet:
 
 #### Langzeitarchivierung mit DNSCore verstehen<br>[Alle Benutzergruppen]
 
+* Das DNSCore Objektmodell - Referenzdokumentation ([deutsch](object_model.de.md)|[englisch](object_model.md))
 * SIP-Spezifikation ([deutsch](specification_sip.de.md)|[englisch](specification_sip.md))
+* Publikationsmetadatenformate - Spezifikation ([englisch](specification_publication_metadata.md))
 * AIP-Spezifikation ([englisch](specification_aip.md))
 * DIP-Spezifikation ([englisch](specification_dip.md))
 
