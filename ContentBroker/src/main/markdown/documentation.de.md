@@ -19,6 +19,10 @@ Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 * todo
 * 
 
+## DNSCore verwenden<br>[Endnutzer]
+
+* das
+
 ## Bereitstellungen von Dienstleistungen an Endnutzer<br>[Systemadministratoren / Knotenadministratoren / Betreiber]
 
 * todo 
