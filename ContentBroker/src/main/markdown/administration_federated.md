@@ -2,14 +2,14 @@
 
 ### Introduction
 
-For more separated and independent "nodes" of DNSCore and to avoid overhead of administration at the Master ICAT Zone Server in the integrated
+For more separated and independent "nodes" of DNSCore and to do "load balancing" having more nodes then just three - and  to avoid overhead of administration at the Master ICAT Zone Server in the integrated
 mode, you could decide to run DNSCore in the so called "federated mode". In the federated mode you have several distinct Master ICAT Zones 
 forming a Federation in terms of iRODS Servers. 
 
 In this topology your nodes should be able to administer iRODS Master servers and the federation itself
 (See iRODS documentation about this: https://irods.sdsc.edu/index.php/Federation_Administration)
 
-Although the iRODS servers are more separated, they still share some common infrastructure (Object-DB)
+Although the iRODS servers are more separated, they still share some common infrastructure (e.g. Object-DB)
 
 The functionalities described below are compatible to a landscape in which "integrated", "one zone" approach has worked before, though
 the "federated" mode sits "on top".
@@ -25,9 +25,9 @@ All other nodes having copies of the stored items are therefore "secondary copie
 
 1. Running iRODS Server > 3.2 at zoneA ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_irods_cb.md))
 1. Running iRODS Server > 3.2 at zoneB
-1. Running ContentBroker
+1. Running ContentBroker 
 1. Running Federation between zoneA and zoneB https://irods.sdsc.edu/index.php/Federation_Administration) 
-1. Federated RuleSet danrw.re from ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/danrw.re)) activated 
+1. Federated RuleSet dns.re from ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/dns.re)) activated 
 in server.config. 
 
 ### Changes needed to ContentBroker
@@ -59,14 +59,13 @@ Please set inherit mode to enabled
  
  	ichmod -r inherit /zoneA/pips
  
-Load the federated danrw.re file from ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/danrw.re))
+Load the federated dns.re file from ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/dns.re))
 and install it to folder 
 
 	iRODS/server/config/reConfigs 
 	
 Make sure you have enabled the reSet in the server.config as described ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_irods_cb.md)) and you have tested your still working installation by typing at least an 
 "ils" command. 
-
 
 ### Federation Service
 
