@@ -269,6 +269,13 @@ public class Diagnostics {
 			System.out.println("ERROR (cannot put file via irodsGridFacade)");
 			e.printStackTrace();
 		}
+		System.out.print("CHECKING GRID FACADE ISVALID METHOD ... ");
+		if (!irodsGridFacade.isValid(new RelativePath(C.TEST_USER_SHORT_NAME,TEST_TGZ).toString())) {
+				errorCount++;
+				System.out.println(WARN+" is valid returned false.");
+		}else
+				System.out.println("OK");
+	
 		
 		System.out.print("CHECKING GRID FACADE GET ... ");
 		if (DIAGNOSTICS_RETRIEVAL_FILE.exists()) DIAGNOSTICS_RETRIEVAL_FILE.delete();
