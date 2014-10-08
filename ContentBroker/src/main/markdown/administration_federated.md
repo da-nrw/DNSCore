@@ -1,27 +1,29 @@
-## Administration federated mode
+## Administration of DNS in iRODS federated mode
 
 ### Introduction
 
 For more separated and independent "nodes" of DNSCore and to do "load balancing" having more nodes then just three - and  to avoid overhead of administration at the Master ICAT Zone Server in the integrated
-mode, you could decide to run DNSCore in the so called "federated mode". In the federated mode you have several distinct Master ICAT Zones 
-forming a Federation in terms of iRODS Servers. 
+mode, you could decide to run DNSCore and iRODS in the so called "federated mode". In the federated mode you have several distinct Master ICAT Zones 
+forming a releativley loosley coupled Federation in terms of iRODS Servers. 
 
-In this topology your nodes should be able to administer iRODS Master servers and the federation itself
-(See iRODS documentation about this: https://irods.sdsc.edu/index.php/Federation_Administration)
+In this topology your nodes admins should be able to administer iRODS Master servers and the federation itself
+(See iRODS documentation about this: https://irods.sdsc.edu/index.php/Federation_Administration). Most of the effort has to be done once during setup. The daly maintenance is quite easily and does not differ from the single zone administration effort.
 
-Although the iRODS servers are more separated, they still share some common infrastructure (e.g. Object-DB)
+Although the iRODS servers are more separated, they still still share some common infrastructure (e.g. Object-DB), they form still a "domain" of shared functionalities.
 
-The functionalities described below are compatible to a landscape in which "integrated", "one zone" approach has worked before, though
-the "federated" mode sits "on top".
+The functionalities described below are compatible to a landscape in which "integrated", "one zone" approach has worked before, though the "federated" mode sits "on top" the integrated mode.
 
-But you can't mix both modes yet.
+But you can't mix both modes in one Domain yet.
 
 ### Definitions
 
-The node on which the itmes are stored first is the "primary copy", the node is "the responsible node" for that dedicated item.  
-All other nodes having copies of the stored items are therefore "secondary copies".
+The node on which the itmes are stored first is the "primary copy", the node is "the responsible node" for that dedicated item. It's supposed to be the primary node for inquires about data, sending deltas etc.
+
+All other nodes having copies of the stored items are therefore called "secondary copies". The serve as backup in case of data loss or bit courruption at the primary one. 
 
 ### Prerequisites
+
+As needed by iRODs Installation you will need PostgreSQL Database support at each node.
 
 1. Running iRODS Server > 3.2 at zoneA ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_irods_cb.md))
 1. Running iRODS Server > 3.2 at zoneB
@@ -32,7 +34,7 @@ in server.config.
 
 ### Changes needed to ContentBroker
 
-Change implementations of grid drivers to:
+Change implementation of grid drivers to:
 
     cb.implementation.grid=federatedGridFacade
     cb.implementation.distributedConversion=irodsFederatedDistributedConversionAdapter
@@ -50,7 +52,8 @@ e.g.
      
 Please consider the most restrictive permissions you are able to set for this.
 
-You should have a RescGroup "lza" containing your long term storage resource at each node
+You should have a RescGroup "lza" containing your long term storage resource at each node. So the name of the RescGroupt must be same for all nodes. 
+
 Please give a full "own" rights to user rods#zoneB recursively to folder /zoneA/pips
    
     ichmod -r own rods#zoneB /zoneA/pips
@@ -66,6 +69,32 @@ and install it to folder
 	
 Make sure you have enabled the reSet in the server.config as described ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_irods_cb.md)) and you have tested your still working installation by typing at least an 
 "ils" command. 
+
+You should be at least familiar with basic icommands such as :
+
+	irsync 
+	imeta
+	iadmin mkresc
+	ichmod
+	ils -A
+	ils -L
+	itrim
+	irule
+	
+Please refer to the iRODS Docs as well!
+	
+### How does it work?
+
+Imagine having an AIP in logical namespace
+
+	/zoneA/aip/TEST/123545/123545_pack.1.tar
+
+While having a running "federation service" and a federation to zoneB you'll find your federated items
+on zoneB at 
+	
+	/zoneB/federated/zoneA/aip/TEST/123545/123545_pack.1.tar
+	
+As you might already noticed: The path beneath federated is logically same as on zoneA.
 
 ### Federation Service
 
@@ -87,8 +116,8 @@ The Federation service should claim:
 What it does is: 
 
 1. Takes into account given forbidden nodes settings stored by CB after registry of AIP.
-1. Ask all Servers on your Grid for their already stored items. Measured by counting items sizes beneath "aip" folders and on longterm storage resources (which have to members of resgroup lza). 
-It takes into account all "own" and federated items. This should do a load balancing between federated zones.
+1. Asks all Servers on your Grid for their already stored items. Measured by counting items sizes beneath "aip" folders and on longterm storage resources (which have to be member of resgroup lza). 
+It takes into account all "own" and already federated items. This should do a load balancing between federated zones.
 2. Order them ascending, the lowest filled resource first.
 3. Trying to copy the items to all reachable nodes (zones) until reached numCopy setting stored by contentbroker - Or if not available, until the given minimal number is being reached. 
 1. Store the original computed checksum to the copied AIP for reference
@@ -96,7 +125,7 @@ It takes into account all "own" and federated items. This should do a load balan
 
 ### Administer Federation
 
-Once activated federation service runs, even iRODs Server is restarted.
+Once activated federation service runs, even iRODsSServer is restarted.
 
 Start 
 	irule -F federate.r
@@ -125,7 +154,10 @@ Delete Federation service
 	iqstat
 	iqdel <ruleId>
 	
-Check Logfile for errors : reLog
+Check Logfile for errors : reLog. 
+If Federation service prints out any error numbers, you might evaluate the error codes to their corresponding textual textual representation with 
+
+	ierror -333000
 
 ### Audit Infrastructure
 
@@ -133,7 +165,9 @@ To perform Audit (integrity checking) of AIP iRODS each node must at least provi
 service of federated copies. 
 
 In this Service checkFederatedAip.r all federated copies MD5 checksums stored for others at "my zone" are recalculated 
-on time basis. This is defined to be a "trust" between all servers of the zone.
+on time basis. 
+
+This is defined to be a "trust" between all servers of the zone.
 
 irule -F checkFederatedAip.r ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/checkFederatedAip.r))
 
