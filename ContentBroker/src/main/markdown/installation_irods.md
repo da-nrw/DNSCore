@@ -63,29 +63,30 @@ Several hardware platforms are supported by iRODS "out-of-the-box", but having a
 Set up a basic iRODS > 3.2 installation. Make sure the installation is installed as ICAT-Enabled. The installer
 will ask you for entering certain properties to which we will refer later.
 
-Copy the [danrw.re] (../rules/danrw.re) to server/config/reConfigs/danrw.re
-Edit server/config/server.config to load danrw.re
+Read [connect CB and iRODS](installation_irods_cb.md) 
 
-    reRuleSet danrw,core
-
-Restart iRODS server.
-
-
+Be sure to have at least one dns.re file configured at server.config reSet !!!
+This depends on your selected topology
 
 ### Setting up a node topology
 
 Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zones" as well as the concept of 
-having one Zone with several resource servers. Please refer to the iRODS Documentation about this. 
+having one Zone with several resource servers. Please refer to the iRODS Documentation about this. For working with DNSCo#re in Federations plese read [here](administration_federated.md)
 
 DNSCore supports both operational modes, depending on your
 
     grid.implemenation 
     
-Parameter in your config.properties. Possible values are so far:
+Parameters in your config.properties. Possible values (one of them) are so far:
 
     cb.implementation.grid=fakeGridFacade
     cb.implementation.grid=irodsGridFacade
     cb.implementation.grid=federatedGridFacade
+    
+    cb.implementation.distributedConversion=fakeDistributedConversionAdapter
+    cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+    cb.implementation.distributedConversion=irodsFederatedDistributedConversionAdapter
+
 
 Each Zone needs at least one database (so called ICAT Server). The use of Postgres is encouraged here. 
 
@@ -108,12 +109,12 @@ The upgrade process differs slightly if your are acting as Master Server ad is m
 12. Start make
 13. Test Server with ils
 14. In case, you are Master: execute nesessary patches found below server/icat/patches/
-15. Copy old rule file from iRODS_old/server/config/reConfigs/danrw.re iRODS/server/config/reConfigs/
-16. Register rule file in iRODS/server/config/server.config ("ruleSet danrw,core")
+15. Copy old rule file from iRODS_old/server/config/reConfigs/dns.re iRODS/server/config/reConfigs/
+16. Register rule file in iRODS/server/config/server.config ("ruleSet dns,core")
 17. Remember setting addtional Server config: e.g. irodsHost
 18. Restart iRODS
 19. ils
 20. Restart ContentBroker
 
-
+We're using iRODS since Version 2.5. Up to iRODS 3.3.1 we encountered not any problems yet. 
 

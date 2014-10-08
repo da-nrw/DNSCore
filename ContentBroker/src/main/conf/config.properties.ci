@@ -20,6 +20,8 @@ localNode.workingResource=ciWorkingResource
 localNode.replDestinations=ciArchiveResourceGroup
 localNode.id=1
 
+localNode.auditSleepFor=10000
+
 elasticsearch.index=portal_ci
 elasticsearch.hosts=localhost
 elasticsearch.cluster=cluster_ci

@@ -68,6 +68,8 @@
     <bean id="integrityScannerWorker" class="de.uzk.hki.da.integrity.IntegrityScannerWorker" init-method="init">
         <property name="localNodeId" value="${localNode.id}" />
         <property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}" />
+        <property name="retries" value="3" />
+        <property name="sleepFor" value="${localNode.auditSleepFor:60*60*1000*2}" />
     </bean>
     
    	<bean id="actionFactory" class="de.uzk.hki.da.action.ActionFactory" init-method="init">

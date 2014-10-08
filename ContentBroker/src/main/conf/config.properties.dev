@@ -6,6 +6,8 @@ localNode.workingResource=ciWorkingResource
 localNode.replDestinations=ciArchiveResourceGroup
 localNode.id=1
 
+localNode.auditSleepFor=6000
+
 cb.serverSocketNumber=4455
 cb.implementation.metadataExtractor=fakeMetadataExtractor
 cb.implementation.fileFormatFacade=fakeFileFormatFacade

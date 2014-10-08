@@ -139,6 +139,7 @@ public class IntegrityScannerWorkerTest {
 		when (gc.isValid(package1Path)).thenReturn(true);
 		when (gc.storagePolicyAchieved(anyString(),(StoragePolicy) anyObject())).thenReturn(true);
 		when (gc.isValid(package2Path)).thenReturn(false);
+		worker.setSleepFor(1000L);
 		worker.setGridFacade(gc);
 		
 		assertEquals(51,worker.checkObjectValidity(obj));
