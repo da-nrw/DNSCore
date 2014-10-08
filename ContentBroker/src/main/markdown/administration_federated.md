@@ -2,7 +2,9 @@
 
 ### Introduction
 
-For more separated and independent "nodes" of DNSCore and to do "load balancing" having more nodes then just three - and  to avoid overhead of administration at the Master ICAT Zone Server in the integrated
+There are two modes in which you might run DNScore with iRODS as storage layer.
+
+For more separated and independent iRODS "nodes" of DNSCore and to do "load balancing" having more nodes then just three - and  to avoid overhead of administration at the Master ICAT Zone Server in the integrated
 mode, you could decide to run DNSCore and iRODS in the so called "federated mode". In the federated mode you have several distinct Master ICAT Zones 
 forming a releativley loosley coupled Federation in terms of iRODS Servers. 
 
