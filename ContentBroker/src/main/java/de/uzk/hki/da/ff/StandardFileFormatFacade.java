@@ -85,7 +85,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 			}
 			if (f.getFormatPUID().equals(FFConstants.XMP_PUID)) {
 				f.setFormatPUID(FFConstants.XML_PUID);
-				f.setFormatSecondaryAttribute(FFConstants.XMP_SUBFORMAT_IDENTIFIER);
+				f.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
 			}
 		}
 		

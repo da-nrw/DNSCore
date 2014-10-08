@@ -8,14 +8,11 @@ import java.util.List;
 
 import org.junit.Test;
 
-import de.uzk.hki.da.ff.FakeFileFormatFacade;
-import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
-import de.uzk.hki.da.utils.C;
 
 
 /**
@@ -36,7 +33,7 @@ public class FakeFileFormatFacadeTests {
 		
 		fss.identify(files);
 		
-		assertEquals(C.METS,files.get(0).getFormatSecondaryAttribute());
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_METS,files.get(0).getFormatSecondaryAttribute());
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
 	}
 	
@@ -49,7 +46,7 @@ public class FakeFileFormatFacadeTests {
 		fss.identify(files);
 		
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
-		assertEquals(C.EAD,files.get(0).getFormatSecondaryAttribute());	
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_EAD,files.get(0).getFormatSecondaryAttribute());	
 	}
 
 	@Test
@@ -60,7 +57,7 @@ public class FakeFileFormatFacadeTests {
 		
 		fss.identify(files);
 		
-		assertEquals(C.EAD,files.get(0).getFormatSecondaryAttribute());	
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_EAD,files.get(0).getFormatSecondaryAttribute());	
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
 	}
 	
@@ -75,7 +72,7 @@ public class FakeFileFormatFacadeTests {
 		fss.identify(files);
 		
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
-		assertEquals(C.LIDO,files.get(0).getFormatSecondaryAttribute());	
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_LIDO,files.get(0).getFormatSecondaryAttribute());	
 	}
 	
 	@Test
@@ -86,7 +83,7 @@ public class FakeFileFormatFacadeTests {
 		
 		fss.identify(files);
 		
-		assertEquals(C.XMP,files.get(0).getFormatSecondaryAttribute());	
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_XMP,files.get(0).getFormatSecondaryAttribute());	
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
 	}
 
@@ -175,9 +172,9 @@ public class FakeFileFormatFacadeTests {
 		assertEquals("fmt/16",files.get(0).getFormatPUID());
 		assertEquals("fmt/4",files.get(1).getFormatPUID());
 		assertEquals(FFConstants.XML_PUID,files.get(2).getFormatPUID());
-		assertEquals(C.EAD,files.get(2).getFormatSecondaryAttribute());
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_EAD,files.get(2).getFormatSecondaryAttribute());
 		assertEquals(FFConstants.XML_PUID,files.get(3).getFormatPUID());
-		assertEquals(C.METS,files.get(3).getFormatSecondaryAttribute());
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_METS,files.get(3).getFormatSecondaryAttribute());
 	}
 	
 	

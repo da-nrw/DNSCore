@@ -29,8 +29,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.uzk.hki.da.utils.C;
-
 /**
  * Fake implementation
  * @author Daniel M. de Oliveira
@@ -101,23 +99,23 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 	        try {
 				while((line=br.readLine())!=null){
 				    if (patternFound(line,"<mets.*>")){
-				    	f.setFormatSecondaryAttribute(C.METS);
+				    	f.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_METS);
 				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}
 				    if (patternFound(line,"<ead .*>")){
-				    	f.setFormatSecondaryAttribute(C.EAD);
+				    	f.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
 				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}
 				    if (patternFound(line,"<lido:lido>")){
 				    	
-				    	f.setFormatSecondaryAttribute(C.LIDO);
+				    	f.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
 				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}
 				    if (patternFound(line,"<x:xmpmeta.*")){
-				    	f.setFormatSecondaryAttribute(C.XMP);
+				    	f.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
 				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}

@@ -23,6 +23,7 @@ import java.io.File;
 
 import org.jdom.Namespace;
 
+import de.uzk.hki.da.ff.FFConstants;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.path.RelativePath;
 
@@ -42,19 +43,13 @@ public class C {
 	
 	public static final String MIMETYPE_IMAGE_JPEG = "image/jpeg";
 
+	
+	
 	// Presentation Metadata related 
-		/** used to encode package type and secondary format attribute */
-	public static final String XMP = "XMP";
-	/** used to encode package type and secondary format attribute */
-	public static final String METS = "METS";
-	/** used to encode package type and secondary format attribute */
-	public static final String EAD = "EAD";
-	/** used to encode package type and secondary format attribute */
-	public static final String LIDO = "LIDO";                  
-		/** marker for METS type packages */
-	public static final String CB_PACKAGETYPE_METS = "METS";
-		/** marker for EAD type packages */
-	public static final String CB_PACKAGETYPE_EAD = "EAD";     
+	public static final String CB_PACKAGETYPE_XMP  = FFConstants.SUBFORMAT_IDENTIFIER_XMP;
+	public static final String CB_PACKAGETYPE_LIDO = FFConstants.SUBFORMAT_IDENTIFIER_LIDO;
+	public static final String CB_PACKAGETYPE_METS = FFConstants.SUBFORMAT_IDENTIFIER_METS;
+	public static final String CB_PACKAGETYPE_EAD  = FFConstants.SUBFORMAT_IDENTIFIER_EAD;     
 		/** common metadata file for all XMP type packages */
 	public static final String XMP_METADATA_FILE = "XMP.rdf";
 		/** Fedora datastream id for EDM. */

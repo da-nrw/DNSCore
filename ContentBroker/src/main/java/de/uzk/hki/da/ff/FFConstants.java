@@ -24,10 +24,10 @@ package de.uzk.hki.da.ff;
  */
 public class FFConstants {
 
-	static final String XMP_SUBFORMAT_IDENTIFIER="XMP";
-	static final String EAD_SUBFORMAT_IDENTIFIER="EAD";
-	static final String LIDO_SUBFORMAT_IDENTIFIER="LIDO";
-	static final String METS_SUBFORMAT_IDENTIFIER="METS";
+	public static final String SUBFORMAT_IDENTIFIER_XMP="XMP";
+	public static final String SUBFORMAT_IDENTIFIER_EAD="EAD";
+	public static final String SUBFORMAT_IDENTIFIER_LIDO="LIDO";
+	public static final String SUBFORMAT_IDENTIFIER_METS="METS";
 	
 	static final String XMP_PUID="fmt/570";
 	public static final String XML_PUID = "fmt/101";

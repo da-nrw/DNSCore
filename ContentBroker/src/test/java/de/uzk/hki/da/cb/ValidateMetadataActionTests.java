@@ -40,6 +40,7 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.ff.FFConstants;
 import de.uzk.hki.da.metadata.FakeMetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.model.DAFile;
@@ -110,13 +111,13 @@ public class ValidateMetadataActionTests {
 		action.setMsf(msf);
 		action.setObject(object);
 
-		f_ead1.setFormatSecondaryAttribute(C.EAD);
-		f_ead2.setFormatSecondaryAttribute(C.EAD);
-		f_mets1.setFormatSecondaryAttribute(C.METS);
-		f_mets2.setFormatSecondaryAttribute(C.METS);
-		f_xmp1.setFormatSecondaryAttribute(C.XMP);
-		f_lido1.setFormatSecondaryAttribute(C.LIDO);
-		f_lido2.setFormatSecondaryAttribute(C.LIDO);
+		f_ead1.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
+		f_ead2.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
+		f_mets1.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_METS);
+		f_mets2.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_METS);
+		f_xmp1.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
+		f_lido1.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
+		f_lido2.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
 	}
 	
 	
@@ -133,7 +134,7 @@ public class ValidateMetadataActionTests {
 			fail();
 		}catch(UserException e){
 			System.out.println(e.getMessage());
-			assertTrue(e.getMessage().contains(C.EAD));
+			assertTrue(e.getMessage().contains(C.CB_PACKAGETYPE_EAD));
 		}
 	}
 	
@@ -146,7 +147,7 @@ public class ValidateMetadataActionTests {
 		
 		action.implementation();
 		
-		assertEquals(C.EAD,object.getPackage_type());
+		assertEquals(C.CB_PACKAGETYPE_EAD,object.getPackage_type());
 		assertEquals(VDA03_XML,object.getMetadata_file());
 	}
 
@@ -160,7 +161,7 @@ public class ValidateMetadataActionTests {
 			action.implementation();
 			fail();
 		} catch (UserException e){
-			assertTrue(e.getMessage().contains(C.METS));
+			assertTrue(e.getMessage().contains(C.CB_PACKAGETYPE_METS));
 		}
 	}
 	
@@ -171,7 +172,7 @@ public class ValidateMetadataActionTests {
 		
 		action.implementation();
 		
-		assertEquals(C.METS,object.getPackage_type());
+		assertEquals(C.CB_PACKAGETYPE_METS,object.getPackage_type());
 		assertEquals(METS_2_99_XML,object.getMetadata_file());
 	}
 
@@ -182,7 +183,7 @@ public class ValidateMetadataActionTests {
 		
 		action.implementation();
 		
-		assertEquals(C.LIDO,object.getPackage_type());
+		assertEquals(C.CB_PACKAGETYPE_LIDO,object.getPackage_type());
 		assertEquals(LIDO_XML,object.getMetadata_file());
 	}
 	
@@ -197,7 +198,7 @@ public class ValidateMetadataActionTests {
 			fail();
 		}catch(UserException e){
 			System.out.println(e.getMessage());
-			assertTrue(e.getMessage().contains(C.LIDO));
+			assertTrue(e.getMessage().contains(C.CB_PACKAGETYPE_LIDO));
 		}
 	}
 	
@@ -209,7 +210,7 @@ public class ValidateMetadataActionTests {
 		
 		action.implementation();
 		
-		assertEquals(C.XMP,object.getPackage_type());
+		assertEquals(C.CB_PACKAGETYPE_XMP,object.getPackage_type());
 		assertEquals(C.XMP_METADATA_FILE,object.getMetadata_file());
 	}
 	
@@ -218,7 +219,7 @@ public class ValidateMetadataActionTests {
 	public void testRollback() throws Exception{
 		
 		object.setMetadata_file(VDA03_XML);
-		object.setPackage_type(C.EAD);
+		object.setPackage_type(C.CB_PACKAGETYPE_XMP);
 		
 		action.rollback();
 		
@@ -232,7 +233,7 @@ public class ValidateMetadataActionTests {
 		object.getLatestPackage().getFiles().add(f_mets1);
 		
 		object.setMetadata_file(VDA03_XML);
-		object.setPackage_type(C.EAD);
+		object.setPackage_type(C.CB_PACKAGETYPE_EAD);
 		
 		try { 
 			action.implementation();
@@ -248,7 +249,7 @@ public class ValidateMetadataActionTests {
 	public void testRollbackMustNotDeletePreviouslyExistentPackageType() throws Exception{
 		
 		object.setMetadata_file(VDA03_XML);
-		object.setPackage_type(C.EAD);
+		object.setPackage_type(C.CB_PACKAGETYPE_EAD);
 		
 		object.getLatestPackage().getFiles().add(f_mets1);
 		
@@ -259,7 +260,7 @@ public class ValidateMetadataActionTests {
 		action.rollback();
 		
 		assertEquals(VDA03_XML,object.getMetadata_file());
-		assertEquals(C.EAD,object.getPackage_type());
+		assertEquals(C.CB_PACKAGETYPE_EAD,object.getPackage_type());
 	}
 	
 	
@@ -378,7 +379,7 @@ public class ValidateMetadataActionTests {
 			fail();
 		}catch(UserException e){
 			System.out.println(e.getMessage());
-			assertTrue(e.getMessage().contains(C.EAD));
+			assertTrue(e.getMessage().contains(C.CB_PACKAGETYPE_EAD));
 		}
 	}
 }

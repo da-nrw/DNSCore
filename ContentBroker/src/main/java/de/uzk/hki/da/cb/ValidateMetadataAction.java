@@ -30,6 +30,7 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.ff.FFConstants;
 import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.metadata.XmpCollector;
@@ -109,7 +110,7 @@ public class ValidateMetadataAction extends AbstractAction {
 	private MetadataStructure createMetadataStructure() {
 		MetadataStructure ms=null;
 		try {
-			if(object.getPackage_type().equals("XMP")) {
+			if(object.getPackage_type().equals(C.CB_PACKAGETYPE_XMP)) {
 				collectXMP();
 			}
 			File d = detectedMetadataFile.toRegularFile();
@@ -149,42 +150,42 @@ public class ValidateMetadataAction extends AbstractAction {
 	 */
 	private void detect(){
 		
-		if (getFilesOfMetadataType(C.EAD).size()>=2){
+		if (getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_EAD).size()>=2){
 			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate EAD");
 		}
-		if (getFilesOfMetadataType(C.LIDO).size()>1){
+		if (getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_LIDO).size()>1){
 			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate LIDO");
 		}
 
 		int ptypeCount=0;
 		
-		if (getFilesOfMetadataType(C.EAD).size()==1){
-			detectedMetadataFile=getFilesOfMetadataType(C.EAD).get(0);
-			detectedPackageType=C.EAD;
+		if (getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_EAD).size()==1){
+			detectedMetadataFile=getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_EAD).get(0);
+			detectedPackageType=C.CB_PACKAGETYPE_EAD;
 			ptypeCount++;
 		}
 		
-		if ((getFilesOfMetadataType(C.EAD).size()!=1)&&
-				getFilesOfMetadataType(C.METS).size()>1){
+		if ((getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_EAD).size()!=1)&&
+				getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_METS).size()>1){
 			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate METS");
 		}  
 				
-		if (getFilesOfMetadataType(C.METS).size()==1){
-			detectedMetadataFile=getFilesOfMetadataType(C.METS).get(0);
-			detectedPackageType=C.METS;
+		if (getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_METS).size()==1){
+			detectedMetadataFile=getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_METS).get(0);
+			detectedPackageType=C.CB_PACKAGETYPE_METS;
 			ptypeCount++;
 		}
 		
-		if ((getFilesOfMetadataType(C.XMP)).size()>=1){
+		if ((getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_XMP)).size()>=1){
 			detectedMetadataFile=new DAFile(object.getLatestPackage(),
 					object.getPath("newest").getLastElement(),C.XMP_METADATA_FILE);
-			detectedPackageType=C.XMP;
+			detectedPackageType=C.CB_PACKAGETYPE_XMP;
 			ptypeCount++;
 		}
 		
-		if ((getFilesOfMetadataType(C.LIDO)).size()==1){
-			detectedMetadataFile=getFilesOfMetadataType(C.LIDO).get(0);
-			detectedPackageType=C.LIDO;
+		if ((getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_LIDO)).size()==1){
+			detectedMetadataFile=getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_LIDO).get(0);
+			detectedPackageType=C.CB_PACKAGETYPE_LIDO;
 			ptypeCount++;
 		}
 		

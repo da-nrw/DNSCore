@@ -46,9 +46,9 @@ public class PublicationMetadataSubformatIdentifier {
 
 		String beginningOfFile = convertFirst10LinesOfFileToString(f);
 		
-		if (beginningOfFile.matches(eadPattern))  return FFConstants.EAD_SUBFORMAT_IDENTIFIER;
-		if (beginningOfFile.matches(metsPattern)) return FFConstants.METS_SUBFORMAT_IDENTIFIER;
-		if (beginningOfFile.matches(lidoPattern)) return FFConstants.LIDO_SUBFORMAT_IDENTIFIER;
+		if (beginningOfFile.matches(eadPattern))  return FFConstants.SUBFORMAT_IDENTIFIER_EAD;
+		if (beginningOfFile.matches(metsPattern)) return FFConstants.SUBFORMAT_IDENTIFIER_METS;
+		if (beginningOfFile.matches(lidoPattern)) return FFConstants.SUBFORMAT_IDENTIFIER_LIDO;
 		
 		return "";
 	}
