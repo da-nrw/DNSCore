@@ -27,16 +27,16 @@ import org.junit.After;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
+import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.core.RelativePath;
 import de.uzk.hki.da.format.PublishVideoConversionStrategy;
+import de.uzk.hki.da.metadata.XPathUtils;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.model.PublicationRight.Audience;
-import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.path.RelativePath;
-import de.uzk.hki.da.service.XPathUtils;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 

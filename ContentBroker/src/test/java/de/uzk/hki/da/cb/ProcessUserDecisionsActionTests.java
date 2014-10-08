@@ -33,10 +33,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.utils.C;
 
 /**
  * @author Daniel M. de Oliveira

@@ -27,6 +27,8 @@ import java.text.ParseException;
 
 import org.junit.Test;
 
+import de.uzk.hki.da.model.RightsSectionURNMetsXmlReader;
+
 
 /**
  * The Class MetsURNXmlReaderTest.
@@ -46,7 +48,7 @@ public class MetsURNXmlReaderTest {
 	 */
 	@Test
 	public void testReadXmlFromMetsFile() throws IOException, ParseException {
-		MetsURNXmlReader urnReader = new MetsURNXmlReader();
+		RightsSectionURNMetsXmlReader urnReader = new RightsSectionURNMetsXmlReader();
 		String urn = urnReader.readURN(new File(pathToTestFile));
 		
 		assertEquals("urn:nbn:de:hbz:5:1-16152", urn);

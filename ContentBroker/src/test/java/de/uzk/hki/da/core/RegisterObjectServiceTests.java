@@ -28,13 +28,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.fs.Utilities;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.service.RegisterObjectService;
-import de.uzk.hki.da.service.URNCheckDigitGenerator;
+import de.uzk.hki.da.utils.Utilities;
 
 
 /**

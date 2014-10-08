@@ -39,7 +39,6 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * @author Polina Gubaidullina

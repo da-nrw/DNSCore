@@ -33,13 +33,13 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.core.RelativePath;
 import de.uzk.hki.da.format.PublishXSLTConversionStrategy;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.path.RelativePath;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 

@@ -35,6 +35,7 @@ import org.mockito.stubbing.Answer;
 import org.springframework.util.StringUtils;
 
 import de.uzk.hki.da.core.HibernateUtil;
+import de.uzk.hki.da.core.RelativePath;
 import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.ff.StandardFileFormatFacade;
 import de.uzk.hki.da.model.DAFile;
@@ -44,7 +45,6 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
-import de.uzk.hki.da.path.RelativePath;
 
 
 /**

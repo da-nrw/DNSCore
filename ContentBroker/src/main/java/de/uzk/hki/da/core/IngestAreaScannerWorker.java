@@ -32,12 +32,11 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.fs.Utilities;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.User;
-import de.uzk.hki.da.service.RegisterObjectService;
+import de.uzk.hki.da.utils.Utilities;
 
 
 /**

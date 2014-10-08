@@ -32,7 +32,9 @@ import org.junit.After;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
-import de.uzk.hki.da.cli.SimplifiedCommandLineConnector;
+import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.core.RelativePath;
+import de.uzk.hki.da.metadata.XPathUtils;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
@@ -41,11 +43,9 @@ import de.uzk.hki.da.model.ImageRestriction;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.PublicationRight.Audience;
-import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.path.RelativePath;
-import de.uzk.hki.da.service.XPathUtils;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 
 
 /**

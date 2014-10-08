@@ -28,10 +28,10 @@ import java.util.List;
 import org.junit.*;
 import org.apache.commons.io.FileUtils;
 
-import de.uzk.hki.da.fs.FolderUtils;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
+import de.uzk.hki.da.utils.FolderUtils;
 
 
 /**

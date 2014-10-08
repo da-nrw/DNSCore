@@ -28,12 +28,12 @@ import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
+import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.core.RelativePath;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
-import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.PublicationRight.Audience;
-import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.path.RelativePath;
 
 
 /**
@@ -112,7 +112,7 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 		Object premisObject = null;
 		try {
 
-			premisObject = new PremisXmlReader().deserialize(
+			premisObject = new ObjectPremisXmlReader().deserialize(
 					object.
 					getLatest(PREMIS_XML).
 					toRegularFile());

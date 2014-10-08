@@ -20,7 +20,7 @@
 		</property>
 	</bean>	
 	
-	<bean id="customPropertyEditorRegistrar" class="de.uzk.hki.da.path.CustomPropertyEditorRegistrar"/>
+	<bean id="customPropertyEditorRegistrar" class="de.uzk.hki.da.core.CustomPropertyEditorRegistrar"/>
 
 	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
 		<property name="propertyEditorRegistrars">

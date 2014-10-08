@@ -22,6 +22,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import de.uzk.hki.da.core.URNCheckDigitGenerator;
+
 
 /**
  * The Class URNCheckDigitGeneratorTests.

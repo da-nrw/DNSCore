@@ -19,7 +19,6 @@ import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
 
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * @author Polina Gubaidullina

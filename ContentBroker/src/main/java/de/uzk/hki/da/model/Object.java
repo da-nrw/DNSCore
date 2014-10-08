@@ -52,9 +52,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 
-import de.uzk.hki.da.fs.Utilities;
+import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.model.PublicationRight.Audience;
-import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.utils.Utilities;
 
 
 /**

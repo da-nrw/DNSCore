@@ -29,9 +29,9 @@ import org.irods.jargon.core.exception.InvalidArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.cli.CommandLineConnector;
-import de.uzk.hki.da.cli.ProcessInformation;
-import de.uzk.hki.da.fs.Utilities;
+import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.ProcessInformation;
+import de.uzk.hki.da.utils.Utilities;
 
 /**
  * Implementation for file identification: FIDO.

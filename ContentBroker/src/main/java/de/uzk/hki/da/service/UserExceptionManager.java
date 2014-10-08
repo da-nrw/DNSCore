@@ -17,6 +17,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
+import de.uzk.hki.da.core.RegisterObjectService;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 
 /**

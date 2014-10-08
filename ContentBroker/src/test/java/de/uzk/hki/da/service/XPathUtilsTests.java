@@ -24,6 +24,8 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
+import de.uzk.hki.da.metadata.XPathUtils;
+
 
 /**
  * The Class XPathUtilsTests.

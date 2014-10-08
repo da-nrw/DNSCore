@@ -20,7 +20,7 @@
 package de.uzk.hki.da.model;
 import javax.persistence.*;
 
-import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.core.Path;
 
 import java.lang.Object;
 import java.util.HashSet;

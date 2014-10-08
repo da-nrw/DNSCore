@@ -35,11 +35,11 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.core.RelativePath;
 import de.uzk.hki.da.metadata.DCReader;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.path.RelativePath;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.test.TESTHelper;

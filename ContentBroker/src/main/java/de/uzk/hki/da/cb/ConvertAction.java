@@ -29,11 +29,10 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.format.ConverterService;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
-import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
-import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.ObjectPremisXmlReader;
 
 
 
@@ -120,7 +119,7 @@ public class ConvertAction extends AbstractAction {
 		Object o = null;
 				
 		try {
-			o = new PremisXmlReader()
+			o = new ObjectPremisXmlReader()
 			.deserialize(new File(pathToPremis));
 		} catch (ParseException e) {
 			throw new RuntimeException("error while parsing premis file",e);

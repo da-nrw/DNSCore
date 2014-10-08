@@ -26,8 +26,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.format.DocxConversionStrategy;
-import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.test.TC;
 
 

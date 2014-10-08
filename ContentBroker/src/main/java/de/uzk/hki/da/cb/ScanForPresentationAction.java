@@ -27,6 +27,7 @@ import java.util.List;
 import org.hibernate.Session;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.ff.FileFormatException;
@@ -40,7 +41,6 @@ import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
-import de.uzk.hki.da.utils.C;
 
 
 /**

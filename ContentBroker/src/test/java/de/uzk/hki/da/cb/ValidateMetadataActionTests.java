@@ -39,6 +39,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.ff.FFConstants;
 import de.uzk.hki.da.metadata.FakeMetadataStructure;
@@ -46,11 +48,9 @@ import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
-import de.uzk.hki.da.utils.C;
 
 /**
  * @author Daniel M. de Oliveira

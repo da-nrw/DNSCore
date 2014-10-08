@@ -41,10 +41,10 @@ import org.xml.sax.SAXException;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.fs.Utilities;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -52,8 +52,8 @@ import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.MailContents;
 import de.uzk.hki.da.service.UserExceptionManager;
-import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
+import de.uzk.hki.da.utils.Utilities;
 
 
 /**

@@ -26,7 +26,6 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.GridFacade;
-import de.uzk.hki.da.service.RetrievePackagesHelper;
 
 /**
  * @author Daniel M. de Oliveira

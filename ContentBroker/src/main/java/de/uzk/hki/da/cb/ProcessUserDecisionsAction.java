@@ -31,11 +31,11 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.fs.Utilities;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Utilities;
 
 /**
  * Tests if a user has made a choice for a decision request issued automatically by the system.

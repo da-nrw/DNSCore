@@ -33,6 +33,8 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.model.AudioRestriction;
+import de.uzk.hki.da.model.ObjectPremisXmlWriter;
+import de.uzk.hki.da.model.PremisXmlValidator;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.ImageRestriction;
@@ -128,7 +130,7 @@ public class PremisXmlWriterTest {
 		
 		object.setRights(rightsStatement);
 		
-		PremisXmlWriter writer = new PremisXmlWriter();
+		ObjectPremisXmlWriter writer = new ObjectPremisXmlWriter();
 
 		writer.serialize(object, new File("src/test/resources/metadata/premis_test_xml_metadata_stream_writer_out.xml"));
 		

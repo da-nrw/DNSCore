@@ -26,18 +26,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
-import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionInstructionBuilder;
 import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.service.MailContents;
-import de.uzk.hki.da.utils.C;
 
 
 /**
@@ -138,7 +138,7 @@ public class ScanAction extends AbstractAction{
 		Object o = null;
 				
 		try {
-			o = new PremisXmlReader()
+			o = new ObjectPremisXmlReader()
 			.deserialize(new File(pathToRepresentation + "/premis.xml"));
 		} catch (ParseException e1) {
 			throw new UserException(UserExceptionId.READ_SIP_PREMIS_ERROR, "Error while parsing premis file", e1);

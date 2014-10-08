@@ -43,7 +43,6 @@ import de.uzk.hki.da.action.ActionDescription;
 import de.uzk.hki.da.action.ActionFactory;
 import de.uzk.hki.da.action.ActionInformation;
 import de.uzk.hki.da.action.ActionRegistry;
-import de.uzk.hki.da.utils.C;
 
 /**
  * Controls and coordinates the work of the action factory and its associate

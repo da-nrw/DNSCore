@@ -25,12 +25,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.core.RelativePath;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
-import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.path.RelativePath;
 
 /**
  * @author Daniel M. de Oliveira

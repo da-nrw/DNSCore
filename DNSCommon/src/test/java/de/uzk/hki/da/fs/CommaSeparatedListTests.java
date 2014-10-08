@@ -27,7 +27,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import de.uzk.hki.da.fs.CommaSeparatedList;
+import de.uzk.hki.da.utils.CommaSeparatedList;
 
 
 /**

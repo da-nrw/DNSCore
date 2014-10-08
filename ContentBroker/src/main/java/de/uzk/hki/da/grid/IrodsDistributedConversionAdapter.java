@@ -22,7 +22,7 @@ package de.uzk.hki.da.grid;
 import java.io.File;
 
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.core.Path;
 
 /**
  * 

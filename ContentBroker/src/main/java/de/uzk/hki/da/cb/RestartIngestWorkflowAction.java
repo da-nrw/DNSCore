@@ -29,9 +29,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.core.Path;
 
 /**
  * Resets job in ingest workflow back to 120.

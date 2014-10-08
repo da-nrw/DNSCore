@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.uzk.hki.da.metadata.MetsURNXmlReader;
+import de.uzk.hki.da.model.RightsSectionURNMetsXmlReader;
 
 public class BomRemoverTest {
 
@@ -48,7 +48,7 @@ public class BomRemoverTest {
 		assertTrue(bom.startsWithBOM(tempBom));
 		bom.stripBomFrom(tempBom);
 		assertFalse(bom.startsWithBOM(tempBom));
-		MetsURNXmlReader metsUrnReader = new MetsURNXmlReader();
+		RightsSectionURNMetsXmlReader metsUrnReader = new RightsSectionURNMetsXmlReader();
 		try {
 			String urn = metsUrnReader.readURN(tempBom);
 			assertEquals(null,urn);

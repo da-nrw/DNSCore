@@ -41,7 +41,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.fs.Utilities;
+import de.uzk.hki.da.utils.Utilities;
 
 /**
  * @author Daniel M. de Oliveira

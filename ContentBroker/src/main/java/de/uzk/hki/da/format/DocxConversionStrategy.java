@@ -42,13 +42,13 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.cli.SimplifiedCommandLineConnector;
-import de.uzk.hki.da.fs.Utilities;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
+import de.uzk.hki.da.utils.Utilities;
 import de.uzk.hki.da.webservice.HttpFileTransmissionClient;
 
 

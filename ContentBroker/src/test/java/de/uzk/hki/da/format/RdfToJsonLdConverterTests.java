@@ -28,8 +28,8 @@ import org.junit.Test;
 
 import com.github.jsonldjava.utils.JSONUtils;
 
+import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
-import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.test.TC;
 
 

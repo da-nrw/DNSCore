@@ -40,9 +40,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.utils.C;
 
 
 

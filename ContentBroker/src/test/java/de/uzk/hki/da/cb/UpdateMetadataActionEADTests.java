@@ -49,17 +49,22 @@ import org.xml.sax.SAXException;
 
 
 
+
+
+
+
+
+import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.core.RelativePath;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.ff.MimeTypeDetectionService;
+import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.path.RelativePath;
-import de.uzk.hki.da.service.MimeTypeDetectionService;
 import de.uzk.hki.da.test.TESTHelper;
-import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * @author Daniel M. de Oliveira

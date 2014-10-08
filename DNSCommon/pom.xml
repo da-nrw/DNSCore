@@ -18,5 +18,22 @@
   
   
   <dependencies>
+  <dependency>
+			<groupId>de.uzk.hki.da</groupId>
+			<artifactId>DNSCommon</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+  <dependency>
+  
+			<groupId>gov.loc</groupId>
+			<artifactId>bagit</artifactId>
+			<version>4.4</version>
+			<exclusions>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
   </dependencies>
 </project>

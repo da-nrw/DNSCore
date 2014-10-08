@@ -19,8 +19,8 @@
 
 package de.uzk.hki.da.test;
 
-import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.path.RelativePath;
+import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.core.RelativePath;
 
 
 /**

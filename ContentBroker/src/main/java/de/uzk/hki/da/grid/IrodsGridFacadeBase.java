@@ -27,9 +27,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
-import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.MD5Checksum;
 
 

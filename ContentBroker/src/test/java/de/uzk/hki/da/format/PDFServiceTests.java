@@ -9,8 +9,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.After;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.format.PdfService;
-import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.test.TC;
 
 /**

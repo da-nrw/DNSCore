@@ -31,9 +31,11 @@ import org.apache.commons.lang.NotImplementedException;
 import org.hibernate.Session;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.IngestGate;
+import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
@@ -41,10 +43,7 @@ import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.ff.ISubformatIdentificationPolicy;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
-import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.service.RetrievePackagesHelper;
-import de.uzk.hki.da.utils.C;
 
 /**
  * <li>Creates a new Representation and copies the contents of the submission into it.

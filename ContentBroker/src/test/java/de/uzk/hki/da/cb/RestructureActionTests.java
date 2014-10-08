@@ -36,6 +36,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.IngestGate;
+import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
@@ -47,7 +48,6 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;

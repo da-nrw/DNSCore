@@ -31,10 +31,10 @@ import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.ff.FFConstants;
-import de.uzk.hki.da.metadata.MetsURNXmlReader;
-import de.uzk.hki.da.metadata.PremisXmlReader;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.RightsSectionURNMetsXmlReader;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.ObjectPremisXmlReader;
 
 
 /**
@@ -58,7 +58,7 @@ public class RegisterURNAction extends AbstractAction {
 		
 		
 		Object premisObject = null;
-		PremisXmlReader reader = new PremisXmlReader();
+		ObjectPremisXmlReader reader = new ObjectPremisXmlReader();
 		try {
 			premisObject = reader.deserialize(premisFile);
 		} catch (Exception e) {
@@ -95,7 +95,7 @@ public class RegisterURNAction extends AbstractAction {
 
 		if (metsFile != null) {
 			String urn = null;
-			MetsURNXmlReader metsUrnReader = new MetsURNXmlReader();
+			RightsSectionURNMetsXmlReader metsUrnReader = new RightsSectionURNMetsXmlReader();
 			try {
 				urn = metsUrnReader.readURN(metsFile.toRegularFile());
 			} catch (Exception e) {

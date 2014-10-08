@@ -31,7 +31,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.path.Path;
+import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.test.CTTestHelper;
 import de.uzk.hki.da.test.TC;
 

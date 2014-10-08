@@ -32,6 +32,7 @@ import java.util.List;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.RightsSectionMetsXmlReader;
 import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.model.RightsStatement;
 
@@ -49,7 +50,7 @@ public class MetsRightsSectionXmlReaderTest {
 	@Test
 	public void testRights() throws IOException {
 
-		MetsRightsSectionXmlReader reader = new MetsRightsSectionXmlReader();
+		RightsSectionMetsXmlReader reader = new RightsSectionMetsXmlReader();
 		List<RightsStatement> rights = reader.deserialize(new File("src/test/resources/metadata/darights_xml_metadata_reader_test.xml"));
 
 		System.out.println(rights);

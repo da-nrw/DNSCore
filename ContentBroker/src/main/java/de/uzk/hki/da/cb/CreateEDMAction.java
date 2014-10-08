@@ -36,12 +36,12 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
+import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
-import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * This action transforms the primary metadata of an

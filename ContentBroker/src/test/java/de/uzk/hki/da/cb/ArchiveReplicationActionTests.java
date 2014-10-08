@@ -27,13 +27,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.path.Path;
 
 /**
  * @author Daniel M. de Oliveira

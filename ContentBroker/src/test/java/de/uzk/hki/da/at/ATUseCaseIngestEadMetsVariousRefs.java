@@ -5,8 +5,8 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.core.Path;
 
 /**
  * 

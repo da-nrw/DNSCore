@@ -29,8 +29,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.StoragePolicy;
-import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.MD5Checksum;
 
 /**

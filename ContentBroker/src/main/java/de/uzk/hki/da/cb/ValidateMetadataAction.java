@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
@@ -37,7 +38,6 @@ import de.uzk.hki.da.metadata.XmpCollector;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.utils.C;
 
 /**
  * Detects the package type of an object and validates the metadata structure.

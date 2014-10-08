@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.core.C;
 
 /**
  * 

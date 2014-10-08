@@ -33,6 +33,7 @@ import org.junit.Test;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.MigrationRight;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PublicationRight.Audience;
 
@@ -50,7 +51,7 @@ public class PremisXmlReaderTests {
 	 */
 	@Test
 	public void test() throws IOException, ParseException{
-		PremisXmlReader reader = new PremisXmlReader();
+		ObjectPremisXmlReader reader = new ObjectPremisXmlReader();
 		Object premisObject = reader.deserialize(new File("src/test/resources/metadata/premisMainSection.xml"));
 		
 		Package pkg = premisObject.getPackages().get(0);
@@ -86,7 +87,7 @@ public class PremisXmlReaderTests {
 	@Test
 	public void testRights() throws IOException, ParseException {
 		
-		PremisXmlReader reader = new PremisXmlReader();
+		ObjectPremisXmlReader reader = new ObjectPremisXmlReader();
 		Object premisObject = reader.deserialize(new File("src/test/resources/metadata/premis_xml_metadata_reader_test.xml"));
 		
 		System.out.println(premisObject.getRights());

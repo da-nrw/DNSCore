@@ -29,6 +29,9 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
+import de.uzk.hki.da.utils.FolderUtils;
+import de.uzk.hki.da.utils.Utilities;
+
 
 /**
  * The Class UtilitiesTest.

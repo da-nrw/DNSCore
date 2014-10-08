@@ -85,8 +85,6 @@ import de.uzk.hki.da.model.ObjectFSTests;
 import de.uzk.hki.da.model.PackageTests;
 import de.uzk.hki.da.model.PreservationSystemTests;
 import de.uzk.hki.da.model.SaveConversionInstructionsByJob;
-import de.uzk.hki.da.path.PathTest;
-import de.uzk.hki.da.path.PathTypeEditorSupportTests;
 import de.uzk.hki.da.pkg.ArchiveBuilderTests;
 import de.uzk.hki.da.service.RetrievePackagesHelperTest;
 import de.uzk.hki.da.service.URNCheckDigitGeneratorTests;

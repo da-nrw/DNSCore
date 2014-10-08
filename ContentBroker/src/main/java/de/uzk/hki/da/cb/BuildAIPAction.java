@@ -26,8 +26,8 @@ import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.path.Path;
-import de.uzk.hki.da.path.RelativePath;
+import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.core.RelativePath;
 import de.uzk.hki.da.pkg.BagitUtils;
 
 /**
