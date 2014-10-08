@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
+import javax.naming.ConfigurationException;
 
 import org.hibernate.Session;
 import org.slf4j.Logger;
@@ -68,6 +69,10 @@ public class IntegrityScannerWorker {
 	
 	private PreservationSystem pSystem;
 	private Node node;
+	
+	private int retries = 3;
+	
+	private long sleepFor = 60*60*1000*2L;
 
 	public void init(){
 		node = new Node(); node.setId(Integer.parseInt(localNodeId));
@@ -235,14 +240,35 @@ public class IntegrityScannerWorker {
 		Node node = new Node("tobefactoredout");
 		StoragePolicy sp = new StoragePolicy(node);
 		sp.setMinNodes(getPSystem().getMinRepls());
-		
-		boolean completelyValid = true;
+		logger.debug("Check Object "+ obj.getIdentifier());
+		boolean completelyValid = true;		
+		if (obj.getContractor()==null) {
+			String err= "Could not determine valid Contractor for object " + obj.getIdentifier();
+			logger.error(err);
+			return Object.ObjectStatus.Error;
+		}
+		String dao_base = obj.getContractor().getShort_name()+"/"+obj.getIdentifier()+"/"+obj.getIdentifier()+".pack_";
 		for (Package pack : obj.getPackages()) {
-			String dao = obj.getContractor().getShort_name()+"/"+obj.getIdentifier()+"/"+obj.getIdentifier()+".pack_" + pack.getName()+".tar"; 
+			String dao = dao_base + pack.getName()+".tar"; 
 			logger.debug("Checking: " + dao );
-			if (!gridFacade.isValid(dao)) {
+			boolean valid = gridFacade.isValid(dao);
+			if (!valid) {
+				logger.debug("Recieved false, retrying once again later!");
+				int i = 0;
+				while (i<retries && !valid) {
+					try {
+						Thread.sleep(sleepFor);
+						logger.debug("...Waking up ");
+						valid = gridFacade.isValid(dao);
+						i++;
+					} catch (InterruptedException e) {
+						
+					}
+				}
+				if (!valid) {
 				logger.error("SEVERE FAULT " + dao + " is not valid, Checksum could not be verified on all systems!" );
 				completelyValid = false;
+				}
 				continue;
 			}
 			if (!gridFacade.storagePolicyAchieved(dao, sp)) {
@@ -289,6 +315,24 @@ public class IntegrityScannerWorker {
 
 	public void setpSystem(PreservationSystem pSystem) {
 		this.pSystem = pSystem;
+	}
+	public int getRetries() {
+		return retries;
+	}
+
+
+	public void setRetries(int retries) {
+		this.retries = retries;
+	}
+
+
+	public long getSleepFor() {
+		return sleepFor;
+	}
+
+
+	public void setSleepFor(long sleepFor) {
+		this.sleepFor = sleepFor;
 	}
 
 }
