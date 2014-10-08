@@ -46,11 +46,6 @@ public class PublicationMetadataSubformatIdentifierTests {
 	}
 	
 	@Test
-	public void testDetectXMP() throws IOException{
-		assertEquals("XMP",identifier.identify(Path.makeFile(TC.TEST_ROOT_FF,"xmp.xml")));
-	}
-	
-	@Test
 	public void testDetectLIDO() throws IOException{
 		assertEquals("LIDO",identifier.identify(Path.makeFile(TC.TEST_ROOT_FF,"lido.xml")));
 	}

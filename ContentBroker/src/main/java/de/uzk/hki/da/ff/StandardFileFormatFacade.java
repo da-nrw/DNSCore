@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.cli.CommandLineConnector;
 import de.uzk.hki.da.cli.ProcessInformation;
 import de.uzk.hki.da.fs.Utilities;
-import de.uzk.hki.da.utils.C;
 
 /**
  * Implementation for file identification: FIDO.
@@ -84,6 +83,10 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 				f.setFormatSecondaryAttribute(
 						new PublicationMetadataSubformatIdentifier().identify(f.toRegularFile()));
 			}
+			if (f.getFormatPUID().equals(FFConstants.XMP_PUID)) {
+				f.setFormatPUID(FFConstants.XML_PUID);
+				f.setFormatSecondaryAttribute(FFConstants.XMP_SUBFORMAT_IDENTIFIER);
+			}
 		}
 		
 		return (List<IFileWithFileFormat>) files;
@@ -105,15 +108,6 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		
 		
 		String filePath = file.getAbsolutePath();
-//		
-//		String path = filePath.replace('/', '_').replace('.', '_');
-//		String outputFileName = DigestUtils.md5Hex(path) + ".xml";
-//		String outputFolderName = new File(jhoveFolder).getAbsolutePath() + "/temp/" + jobId + "/";
-//		
-//		if (!new File(outputFolderName).exists())
-//			new File(outputFolderName).mkdirs();
-//		String outputFilePath = outputFolderName + outputFileName;
-//
 		
 		if (Utilities.checkForWhitespace(filePath))
 		{

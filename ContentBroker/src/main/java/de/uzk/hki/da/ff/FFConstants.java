@@ -29,6 +29,7 @@ public class FFConstants {
 	static final String LIDO_SUBFORMAT_IDENTIFIER="LIDO";
 	static final String METS_SUBFORMAT_IDENTIFIER="METS";
 	
+	static final String XMP_PUID="fmt/570";
 	public static final String XML_PUID = "fmt/101";
 	
 	public static final String METS_PUID = "danrw-fmt/1"; // TODO make it package private

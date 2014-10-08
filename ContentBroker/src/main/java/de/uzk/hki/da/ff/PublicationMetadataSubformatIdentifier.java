@@ -36,7 +36,6 @@ public class PublicationMetadataSubformatIdentifier {
 	private final static String eadPattern = ".*(?s)\\A.{0,500}\\x3cead[^\\x3c]{0,1000}\\x3ceadheader.*";
 	private final static String metsPattern = ".*(?s)\\A.{0,100}\\x3c([^: ]+:)?mets[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.loc.gov/METS.*";
 	private final static String lidoPattern = ".*(?s)\\A.{0,500}\\x3c([^: ]+:)?lidoWrap[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.lido-schema.org.*";
-	private final static String xmpPattern = ".*(?s)\\A.{0,50}\\x3c([^: ]+:)?[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"adobe:ns:meta/.*";
 	
 	/**
 	 * @param f
@@ -50,7 +49,6 @@ public class PublicationMetadataSubformatIdentifier {
 		if (beginningOfFile.matches(eadPattern))  return FFConstants.EAD_SUBFORMAT_IDENTIFIER;
 		if (beginningOfFile.matches(metsPattern)) return FFConstants.METS_SUBFORMAT_IDENTIFIER;
 		if (beginningOfFile.matches(lidoPattern)) return FFConstants.LIDO_SUBFORMAT_IDENTIFIER;
-		if (beginningOfFile.matches(xmpPattern))  return FFConstants.XMP_SUBFORMAT_IDENTIFIER;
 		
 		return "";
 	}
