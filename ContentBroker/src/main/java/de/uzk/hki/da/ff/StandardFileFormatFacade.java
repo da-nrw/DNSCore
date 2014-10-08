@@ -56,11 +56,12 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	/**
 	 * The output of fido typically is a comma separated list of puids for each file. Only the last entry of the list
 	 * will be taken.
+	 * @throws IOException 
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<IFileWithFileFormat> identify(List<? extends IFileWithFileFormat> files)
-			throws FileNotFoundException {
+			throws IOException {
 
 		fidoFormatScanService = new FidoFormatScanService();
 		fidoFormatScanService.identify((List<IFileWithFileFormat>) files);
@@ -79,21 +80,9 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		
 		
 		for (IFileWithFileFormat f:files){
-			if (f.getFormatPUID().equals(FFConstants.EAD_PUID)){
-				f.setFormatPUID(C.XML_PUID);
-				f.setFormatSecondaryAttribute(C.EAD);
-			}
-			if (f.getFormatPUID().equals(FFConstants.XMP_PUID)){
-				f.setFormatPUID(C.XML_PUID);
-				f.setFormatSecondaryAttribute(C.XMP);
-			}
-			if (f.getFormatPUID().equals(FFConstants.METS_PUID)){
-				f.setFormatPUID(C.XML_PUID);
-				f.setFormatSecondaryAttribute(C.METS);
-			}
-			if (f.getFormatPUID().equals(FFConstants.LIDO_PUID)){
-				f.setFormatPUID(C.XML_PUID);
-				f.setFormatSecondaryAttribute(C.LIDO);
+			if (f.getFormatPUID().equals(FFConstants.XML_PUID)) {
+				f.setFormatSecondaryAttribute(
+						new PublicationMetadataSubformatIdentifier().identify(f.toRegularFile()));
 			}
 		}
 		

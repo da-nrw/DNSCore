@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -44,7 +43,6 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.path.RelativePath;
 
@@ -74,12 +72,12 @@ public class CheckFormatsActionTest {
 	 * Sets the upformat scan service behaviour.
 	 *
 	 * @return the format scan service
-	 * @throws FileNotFoundException the file not found exception
 	 * @author Daniel M. de Oliveira
+	 * @throws IOException 
 	 */
 	@SuppressWarnings("unchecked")
 	private StandardFileFormatFacade setUpformatScanServiceBehaviour()
-			throws FileNotFoundException {
+			throws IOException {
 		StandardFileFormatFacade formatScanService = mock(StandardFileFormatFacade.class);
 		
 		when(formatScanService.identify((List<IFileWithFileFormat>)anyObject())).thenAnswer(new Answer< List<DAFile> >(){

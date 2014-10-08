@@ -102,23 +102,23 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 				while((line=br.readLine())!=null){
 				    if (patternFound(line,"<mets.*>")){
 				    	f.setFormatSecondaryAttribute(C.METS);
-				    	f.setFormatPUID(C.XML_PUID);
+				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}
 				    if (patternFound(line,"<ead .*>")){
 				    	f.setFormatSecondaryAttribute(C.EAD);
-				    	f.setFormatPUID(C.XML_PUID);
+				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}
 				    if (patternFound(line,"<lido:lido>")){
 				    	
 				    	f.setFormatSecondaryAttribute(C.LIDO);
-				    	f.setFormatPUID(C.XML_PUID);
+				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}
 				    if (patternFound(line,"<x:xmpmeta.*")){
 				    	f.setFormatSecondaryAttribute(C.XMP);
-				    	f.setFormatPUID(C.XML_PUID);
+				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}
 				}

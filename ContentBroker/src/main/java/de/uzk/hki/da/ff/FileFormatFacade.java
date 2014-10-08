@@ -40,9 +40,10 @@ public interface FileFormatFacade {
 	 * @return return files. Used for easier testing.
 	 * @throws FileNotFoundException if one or more files cannot be found.
 	 * @throws FileFormatException if format could not get determinded.
+	 * @throws IOException 
 	 */
 	public List<IFileWithFileFormat> identify(List<? extends IFileWithFileFormat> files) 
-			throws FileNotFoundException, FileFormatException;
+			throws FileNotFoundException, FileFormatException, IOException;
 
 	/**
 	 * Extracts metadata from file and creates a xml file which contains the results.

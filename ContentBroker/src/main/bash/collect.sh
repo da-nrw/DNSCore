@@ -16,7 +16,7 @@ esac
 mkdir $1/conf
 cp src/main/resources/healthCheck.avi $1/conf
 cp src/main/resources/healthCheck.tif $1/conf
-cp -r ../3rdParty/fido $1/
+cp -r ../3rdParty/fido/fido $1/
 cp -r ../3rdParty/jhove $1/
 cp src/main/sh/jhove $1/jhove
 cp src/main/conf/jhove.conf $1/jhove/conf
