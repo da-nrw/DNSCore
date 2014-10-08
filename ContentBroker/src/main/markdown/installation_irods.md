@@ -116,5 +116,5 @@ The upgrade process differs slightly if your are acting as Master Server ad is m
 19. ils
 20. Restart ContentBroker
 
-
+We're using iRODS since Verison 2.5. Up to iRODS 3.3.1 we encountered not yet any problems. 
 
