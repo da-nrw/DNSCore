@@ -24,9 +24,14 @@ package de.uzk.hki.da.ff;
  */
 public class FFConstants {
 
-	static final String XMP_PUID = "danrw-fmt/3";
-	static final String EAD_PUID = "danrw-fmt/2";
-	static final String LIDO_PUID = "danrw-fmt/4";
+	static final String XMP_SUBFORMAT_IDENTIFIER="XMP";
+	static final String EAD_SUBFORMAT_IDENTIFIER="EAD";
+	static final String LIDO_SUBFORMAT_IDENTIFIER="LIDO";
+	static final String METS_SUBFORMAT_IDENTIFIER="METS";
+	
+	static final String XMP_PUID="fmt/570";
+	public static final String XML_PUID = "fmt/101";
+	
 	public static final String METS_PUID = "danrw-fmt/1"; // TODO make it package private
 
 }

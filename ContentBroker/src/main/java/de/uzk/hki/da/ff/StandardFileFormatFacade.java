@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.cli.CommandLineConnector;
 import de.uzk.hki.da.cli.ProcessInformation;
 import de.uzk.hki.da.fs.Utilities;
-import de.uzk.hki.da.utils.C;
 
 /**
  * Implementation for file identification: FIDO.
@@ -56,11 +55,12 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	/**
 	 * The output of fido typically is a comma separated list of puids for each file. Only the last entry of the list
 	 * will be taken.
+	 * @throws IOException 
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<IFileWithFileFormat> identify(List<? extends IFileWithFileFormat> files)
-			throws FileNotFoundException {
+			throws IOException {
 
 		fidoFormatScanService = new FidoFormatScanService();
 		fidoFormatScanService.identify((List<IFileWithFileFormat>) files);
@@ -79,21 +79,13 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		
 		
 		for (IFileWithFileFormat f:files){
-			if (f.getFormatPUID().equals(FFConstants.EAD_PUID)){
-				f.setFormatPUID(C.XML_PUID);
-				f.setFormatSecondaryAttribute(C.EAD);
+			if (f.getFormatPUID().equals(FFConstants.XML_PUID)) {
+				f.setFormatSecondaryAttribute(
+						new PublicationMetadataSubformatIdentifier().identify(f.toRegularFile()));
 			}
-			if (f.getFormatPUID().equals(FFConstants.XMP_PUID)){
-				f.setFormatPUID(C.XML_PUID);
-				f.setFormatSecondaryAttribute(C.XMP);
-			}
-			if (f.getFormatPUID().equals(FFConstants.METS_PUID)){
-				f.setFormatPUID(C.XML_PUID);
-				f.setFormatSecondaryAttribute(C.METS);
-			}
-			if (f.getFormatPUID().equals(FFConstants.LIDO_PUID)){
-				f.setFormatPUID(C.XML_PUID);
-				f.setFormatSecondaryAttribute(C.LIDO);
+			if (f.getFormatPUID().equals(FFConstants.XMP_PUID)) {
+				f.setFormatPUID(FFConstants.XML_PUID);
+				f.setFormatSecondaryAttribute(FFConstants.XMP_SUBFORMAT_IDENTIFIER);
 			}
 		}
 		
@@ -116,15 +108,6 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		
 		
 		String filePath = file.getAbsolutePath();
-//		
-//		String path = filePath.replace('/', '_').replace('.', '_');
-//		String outputFileName = DigestUtils.md5Hex(path) + ".xml";
-//		String outputFolderName = new File(jhoveFolder).getAbsolutePath() + "/temp/" + jobId + "/";
-//		
-//		if (!new File(outputFolderName).exists())
-//			new File(outputFolderName).mkdirs();
-//		String outputFilePath = outputFolderName + outputFileName;
-//
 		
 		if (Utilities.checkForWhitespace(filePath))
 		{

@@ -22,7 +22,6 @@ package de.uzk.hki.da.ff;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +31,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.ff.IFileWithFileFormat;
-import de.uzk.hki.da.ff.FileWithFileFormat;
-import de.uzk.hki.da.ff.StandardFileFormatFacade;
 import de.uzk.hki.da.path.Path;
 import de.uzk.hki.da.test.CTTestHelper;
 import de.uzk.hki.da.test.TC;
@@ -64,7 +60,7 @@ public class CTFileFormatFacadeTests {
 	
 	
 	@Test
-	public void test() throws FileNotFoundException{
+	public void test() throws IOException{
 		FileWithFileFormat ffff = new FileWithFileFormat(new File("conf/healthCheck.tif"));
 		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(ffff);
@@ -76,50 +72,50 @@ public class CTFileFormatFacadeTests {
 	// Testtiff
 	
 	@Test
-	public void testEAD() throws FileNotFoundException{
+	public void testEAD() throws IOException{
 		FileWithFileFormat ffff = new FileWithFileFormat(Path.makeFile(testPath,"vda3.XML"));
 		
 		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(ffff);
 		sfff.identify(files);
 		
-		assertEquals(C.XML_PUID,files.get(0).getFormatPUID());
+		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
 		assertEquals(C.EAD,files.get(0).getFormatSecondaryAttribute());
 	}
 	
 	@Test
-	public void testMETS() throws FileNotFoundException{
+	public void testMETS() throws IOException{
 		FileWithFileFormat ffff = new FileWithFileFormat(Path.makeFile(testPath,"mets_2_99.xml"));
 		
 		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(ffff);
 		sfff.identify(files);
 		
-		assertEquals(C.XML_PUID,files.get(0).getFormatPUID());
+		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
 		assertEquals(C.METS,files.get(0).getFormatSecondaryAttribute());
 	}
 	
 	@Test
-	public void testLIDO() throws FileNotFoundException{
+	public void testLIDO() throws IOException{
 		FileWithFileFormat ffff = new FileWithFileFormat(Path.makeFile(testPath,"LIDO-Testexport2014-07-04-FML-Auswahl.xml"));
 		
 		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(ffff);
 		sfff.identify(files);
 		
-		assertEquals(C.XML_PUID,files.get(0).getFormatPUID());
+		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
 		assertEquals(C.LIDO,files.get(0).getFormatSecondaryAttribute());
 	}
 
 	@Test
-	public void testXMP() throws FileNotFoundException{
+	public void testXMP() throws IOException{
 		FileWithFileFormat ffff = new FileWithFileFormat(Path.makeFile(testPath,"a.xmp"));
 		
 		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(ffff);
 		sfff.identify(files);
 		
-		assertEquals(C.XML_PUID,files.get(0).getFormatPUID());
+		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
 		assertEquals(C.XMP,files.get(0).getFormatSecondaryAttribute());
 	}
 	

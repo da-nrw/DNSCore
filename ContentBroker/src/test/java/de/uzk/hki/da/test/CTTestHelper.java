@@ -40,7 +40,7 @@ public class CTTestHelper {
 		FileUtils.copyFile(new File(TC.CONFIG_PROPS_CI), new File(C.CONFIG_PROPS));
 		FileUtils.copyFile(new File("src/main/resources/healthCheck.tif"), new File("conf/healthCheck.tif"));
 		FileUtils.copyFile(new File(TC.FIDO_SH_SRC), new File(C.FIDO_GLUE_SCRIPT));
-		FileUtils.copyDirectory(new File("../3rdParty/fido"), C.FIDO_INSTALLATION.toFile());
+		FileUtils.copyDirectory(new File("../3rdParty/fido/fido"), C.FIDO_INSTALLATION.toFile());
 		FileUtils.copyFile(new File("src/main/bash/configure.sh"), new File(C.CONFIGURE_SCRIPT));
 		
 		new File(C.FIDO_GLUE_SCRIPT).setExecutable(true);

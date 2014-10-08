@@ -90,9 +90,8 @@ public class ScanActionTests extends ConcreteActionUnitTest{
 				"cp input output","bmp");
 		ConversionPolicy policy = new ConversionPolicy(
 				TIF_PUID,
-				toPng,
-				null,
-				"");
+				toPng
+				);
 		List<ConversionPolicy> policies = new ArrayList<ConversionPolicy>();
 		List<ConversionPolicy> noPolicies = new ArrayList<ConversionPolicy>();
 		policies.add(policy);

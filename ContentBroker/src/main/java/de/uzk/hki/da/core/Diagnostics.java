@@ -193,6 +193,8 @@ public class Diagnostics {
 			sfff.identify(files);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		
 		if (!files.get(0).getFormatPUID().equals("fmt/353")){

@@ -38,7 +38,7 @@ public class C {
 	public static final String FILE_EXTENSION_JPG = ".jpg";
 	public static final String FILE_EXTENSION_TAR = ".tar";
 
-	public static final String XML_PUID = "fmt/101";
+	
 	
 	public static final String MIMETYPE_IMAGE_JPEG = "image/jpeg";
 

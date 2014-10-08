@@ -6,8 +6,6 @@
 * DNSCore specific iRODS configuration ([here](installation_irods.md))
 * ContentBroker ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_cb.md))
 
-
-
 This document describes how to set up iRODS as a backend to an existing DNSCore installation.
 Both systems connected, with the DNSCore being the business layer and iRODS being the storage layer,
 form a fully operational node ready for production use. For the purpose of this document, the system is considered
@@ -79,7 +77,6 @@ For the distributedConversion mode this setting is needed:
     
 For the long term archive mode, these settings are needed:
 
-    cb.min_repls=1
     localNode.replDestinations=[nameOfYourArchiveResourceGroup]
     
 These settings mean that the ContentBroker will replicate the AIPs to exactly one resource location which
@@ -140,10 +137,10 @@ Please add the entry on all connected servers by changing line
 
     reRuleSet   contentbroker,core
 
-And store the corresponding file [danrw.re integrated one zone ](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsGridFacade/danrw.re) 
- or [danrw.re federated many zones](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/danrw.re)
+And store the corresponding file [dns.re integrated one zone ](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsGridFacade/dns.re) 
+ or [dns.re federated many zones](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/dns.re)
  
-    iRODS/server/config/reConfigs/contentbroker.re
+    iRODS/server/config/reConfigs/dns.re
 
 The file contentbroker.re must be changed to your local appropiate settings. 
 

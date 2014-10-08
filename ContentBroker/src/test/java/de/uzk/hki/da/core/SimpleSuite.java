@@ -58,10 +58,10 @@ import de.uzk.hki.da.cb.UpdateMetadataActionXMPTests;
 import de.uzk.hki.da.cb.UpdateMetadataRheinlaender;
 import de.uzk.hki.da.cb.ValidateMetadataActionTests;
 import de.uzk.hki.da.ff.FakeFileFormatFacadeTests;
+import de.uzk.hki.da.ff.PublicationMetadataSubformatIdentifierTests;
 import de.uzk.hki.da.ff.SecondaryFormatScanTests;
 import de.uzk.hki.da.format.CLIConversionStrategyTests;
 import de.uzk.hki.da.format.ConverterServiceTests;
-import de.uzk.hki.da.format.FidoCLITest;
 import de.uzk.hki.da.format.PDFServiceTests;
 import de.uzk.hki.da.format.PdfConversionStrategyTest;
 import de.uzk.hki.da.format.PublishAudioConversionStrategyTests;
@@ -145,7 +145,6 @@ import de.uzk.hki.da.service.XPathUtilsTests;
 	PDFServiceTests.class,
 	PackageTests.class,
 	ArchiveReplicationActionTests.class,
-	FidoCLITest.class,
 	UpdateMetadataActionEADTests.class,
 	DeleteObjectActionTests.class,
 	UpdateMetadataActionXMPTests.class,
@@ -168,7 +167,8 @@ import de.uzk.hki.da.service.XPathUtilsTests;
 	PostRetrievalActionTest.class,
 	NewActionRegistryTests.class,
 	SmartActionFactoryTests.class,
-	JobManagerTests.class
+	JobManagerTests.class,
+	PublicationMetadataSubformatIdentifierTests.class
 })
 public class SimpleSuite {
 
