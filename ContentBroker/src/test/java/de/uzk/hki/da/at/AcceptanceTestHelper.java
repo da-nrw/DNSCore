@@ -142,6 +142,7 @@ public class AcceptanceTestHelper {
 			updateTimeout(waited_ms_total,timeout);
 			
 			Job job = getJob(originalName);
+
 			if (job==null) {
 				System.out.println("no job found in db");
 				continue;
