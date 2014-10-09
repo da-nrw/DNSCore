@@ -139,7 +139,7 @@ public class AcceptanceTestHelper {
 		
 		int waited_ms_total=0;
 		while (true){
-			updateTimeout(waited_ms_total,timeout);
+			waited_ms_total=updateTimeout(waited_ms_total,timeout);
 			
 			Job job = getJob(originalName);
 
@@ -170,7 +170,7 @@ public class AcceptanceTestHelper {
 	
 		int waited_ms_total=0;
 		while (true){
-			updateTimeout(waited_ms_total, TIMEOUT);
+			waited_ms_total=updateTimeout(waited_ms_total, TIMEOUT);
 	
 			Job job = getJob(originalName);
 			
@@ -219,13 +219,13 @@ public class AcceptanceTestHelper {
 	}
 	
 	
-	private void updateTimeout(int waited_ms_total,int timeout){
+	private int updateTimeout(int waited_ms_total,int timeout){
 		System.out.print("(total time: "+waited_ms_total+"ms / timeout: "+TIMEOUT+"ms) ");
 		if (waited_ms_total>TIMEOUT) throw new RuntimeException(MSG_ERROR_WHEN_TIMEOUT_REACHED);
 		try {
 			Thread.sleep(INTERVAL);
 		} catch (InterruptedException e) {} // no problem
-		waited_ms_total+=INTERVAL;
+		return waited_ms_total+=INTERVAL;
 	}
 	
 	private Job getJob(String originalName) {
@@ -253,7 +253,7 @@ public class AcceptanceTestHelper {
 		Job job = null;
 		int waited_ms_total=0;
 		while(job == null) {
-			updateTimeout(waited_ms_total,TIMEOUT);
+			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT);
 			System.out.println("waiting for job to appear ... " + originalName);
 			job = getJob(originalName);
 		}
@@ -262,7 +262,7 @@ public class AcceptanceTestHelper {
 	
 		// wait for jobs to disappear
 		while (true){
-			updateTimeout(waited_ms_total,TIMEOUT);
+			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT);
 			job = getJob(originalName);
 			
 			if (job==null) {
