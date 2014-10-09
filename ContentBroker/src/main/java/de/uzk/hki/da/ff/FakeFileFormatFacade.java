@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
  */
 public class FakeFileFormatFacade implements FileFormatFacade {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<IFileWithFileFormat> identify(List<? extends IFileWithFileFormat> files) throws FileNotFoundException{
 		

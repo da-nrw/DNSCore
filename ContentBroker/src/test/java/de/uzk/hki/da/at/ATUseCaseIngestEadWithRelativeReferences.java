@@ -21,10 +21,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.qos.logback.classic.Logger;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.Path;
-import de.uzk.hki.da.core.RelativePath;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
 

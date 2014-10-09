@@ -39,7 +39,6 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 	private String EAD_XPATH_EXPRESSION = "//daoloc/@href";
 	private static final String URL = "URL";
 	private static Path contractorsPipsPublic;
-	private static Path contractorsPipsInstitution;
 	private static String origName = "ATUseCaseUpdateMetadataLZA_EAD";
 	private static Object object;
 	private static final String EAD_XML = "EAD.XML";
@@ -49,7 +48,6 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 	public void setUp() throws IOException {
 		object = ath.ingest(origName);
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
-		contractorsPipsInstitution = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_INSTITUTION, C.TEST_USER_SHORT_NAME);
 	}
 	
 	@After
