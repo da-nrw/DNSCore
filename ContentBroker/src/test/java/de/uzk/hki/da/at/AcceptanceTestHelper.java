@@ -139,17 +139,13 @@ public class AcceptanceTestHelper {
 		
 		int waited_ms_total=0;
 		while (true){
-			if (waited_ms_total>timeout) throw new RuntimeException(MSG_ERROR_WHEN_TIMEOUT_REACHED);
+			updateTimeout(waited_ms_total,timeout);
 			
-			Session session = HibernateUtil.openSession();
-			session.beginTransaction();
-			Job job = getJob(session, originalName, testContractor.getShort_name());
-			session.close();
-			
-			if (job==null) continue;
-			
-			Thread.sleep(INTERVAL);
-			waited_ms_total+=INTERVAL;
+			Job job = getJob(originalName);
+			if (job==null) {
+				System.out.println("no job found in db");
+				continue;
+			}
 	
 			System.out.println("waiting for job to be ready ... "+job.getStatus());
 			if (job.getStatus().endsWith(errorStatusLastDigit)){
@@ -173,13 +169,9 @@ public class AcceptanceTestHelper {
 	
 		int waited_ms_total=0;
 		while (true){
-			if (waited_ms_total>TIMEOUT) throw new RuntimeException(MSG_ERROR_WHEN_TIMEOUT_REACHED);
+			updateTimeout(waited_ms_total, TIMEOUT);
 	
-			Session session = HibernateUtil.openSession();
-			session.beginTransaction();
-			Job job = getJob(session, originalName, testContractor.getShort_name());
-	
-			session.close();
+			Job job = getJob(originalName);
 			
 			if (job!=null){
 				
@@ -195,9 +187,6 @@ public class AcceptanceTestHelper {
 					throw new RuntimeException(msg);
 				}
 			}
-	
-			Thread.sleep(INTERVAL);
-			waited_ms_total+=INTERVAL;
 		}
 	}
 
@@ -229,6 +218,25 @@ public class AcceptanceTestHelper {
 	}
 	
 	
+	private void updateTimeout(int waited_ms_total,int timeout){
+		System.out.print("(total time: "+waited_ms_total+"ms / timeout: "+TIMEOUT+"ms) ");
+		if (waited_ms_total>TIMEOUT) throw new RuntimeException(MSG_ERROR_WHEN_TIMEOUT_REACHED);
+		try {
+			Thread.sleep(INTERVAL);
+		} catch (InterruptedException e) {} // no problem
+		waited_ms_total+=INTERVAL;
+	}
+	
+	private Job getJob(String originalName) {
+		Job job;
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		job = getJob(session, originalName, testContractor.getShort_name());
+		session.close();
+		return job;
+	}
+	
+	
 	
 	/**
 	 * Waits that a job appears and disappears again.
@@ -244,31 +252,17 @@ public class AcceptanceTestHelper {
 		Job job = null;
 		int waited_ms_total=0;
 		while(job == null) {
-			if (waited_ms_total>TIMEOUT) throw new RuntimeException(MSG_ERROR_WHEN_TIMEOUT_REACHED);
-			
+			updateTimeout(waited_ms_total,TIMEOUT);
 			System.out.println("waiting for job to appear ... " + originalName);
-			Session session = HibernateUtil.openSession();
-			session.beginTransaction();
-			job = getJob(session, originalName, testContractor.getShort_name());
-			session.close();
-			
-			try {
-				Thread.sleep(INTERVAL);
-			} catch (InterruptedException e) {} // no problem
-			waited_ms_total+=INTERVAL;
+			job = getJob(originalName);
 		}
 		
 		Object resultO = job.getObject();
 	
 		// wait for jobs to disappear
 		while (true){
-			if (waited_ms_total>TIMEOUT) throw new RuntimeException(MSG_ERROR_WHEN_TIMEOUT_REACHED);
-			
-			Session session = HibernateUtil.openSession();
-			session.beginTransaction();
-			job = getJob(session, originalName, testContractor.getShort_name());
-	
-			session.close();
+			updateTimeout(waited_ms_total,TIMEOUT);
+			job = getJob(originalName);
 			
 			if (job==null) {
 				System.out.println("finished! " + originalName);
@@ -296,10 +290,6 @@ public class AcceptanceTestHelper {
 			
 			System.out.println("waiting for jobs to finish ... "+job.getStatus());
 			
-			try {
-				Thread.sleep(INTERVAL);
-			} catch (InterruptedException e) {}
-			waited_ms_total+=INTERVAL;
 		}
 	}
 
