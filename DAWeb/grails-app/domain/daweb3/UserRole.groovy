@@ -27,6 +27,18 @@ private static final long serialVersionUID = 1
 User user 
 Role role
 
+static constraints = { 
+	role validator: { Role r, UserRole ur ->
+	if (ur.user == null) return
+	boolean existing = false
+	UserRole.withNewSession { existing = UserRole.exists(ur.user.id, r.id) }
+	if (existing) { return 'userRole.exists' } } }
+
+static mapping = {
+	id composite: ['user', 'role']
+	version false
+	 }
+
 boolean equals(other) { 
 	if (!(other instanceof UserRole)) {
 		 return false 
@@ -70,13 +82,8 @@ static void removeAll(Role r) {
 	if (r == null) return
 	UserRole.where { role == Role.load(r.id) }.deleteAll() }
 
-static constraints = { role validator: { Role r, UserRole ur -> 
-	if (ur.user == null) return 
-	boolean existing = false 
-	UserRole.withNewSession { existing = UserRole.exists(ur.user.id, r.id) } 
-	if (existing) { return 'userRole.exists' } } }
+def getPKId() {
+	return ['userId': user.id, 'roleId': role.id]
+	}
 
-static mapping = { 
-	id composite: ['role', 'user'] 
-	version false } 
 }

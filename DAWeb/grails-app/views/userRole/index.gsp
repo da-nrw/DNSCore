@@ -25,7 +25,6 @@
 					<tr>
 					
 						<th><g:message code="userRole.role.label" default="Role" /></th>
-					
 						<th><g:message code="userRole.user.label" default="User" /></th>
 					
 					</tr>
@@ -34,7 +33,7 @@
 				<g:each in="${userRoleInstanceList}" status="i" var="userRoleInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td>${fieldValue(bean: userRoleInstance, field: "role")}</td>
+						<td><g:link action="show" params="${userRoleInstance.getPKId()}">${fieldValue(bean: userRoleInstance, field: "role")}</g:link></td>
 					
 						<td>${fieldValue(bean: userRoleInstance, field: "user")}</td>
 					
