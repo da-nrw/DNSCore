@@ -161,6 +161,7 @@ public abstract class AbstractAction implements Runnable {
 			
 			boolean implementationExecutionAborted = implementation();
 			
+			
 			Session session = openSession();
 			session.beginTransaction();
 
@@ -228,8 +229,15 @@ public abstract class AbstractAction implements Runnable {
 			handleError(errorStatus);
 			new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(e, object, this);
 			sendJMSException(e);
-		} finally {			
+		} finally {		
+			
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			unsetObjectLogging();
+			
 			actionMap.deregisterAction(this);
 		}
 	}
@@ -303,7 +311,7 @@ public abstract class AbstractAction implements Runnable {
 		MDC.put("object_id", logFileBase);
 		
 		ch.qos.logback.classic.Logger logger =
-				(ch.qos.logback.classic.Logger) LoggerFactory.getLogger("de.uzk.hki.da.cb");
+				(ch.qos.logback.classic.Logger) LoggerFactory.getLogger("de.uzk.hki.da");
 		Appender<ILoggingEvent> appender = logger.getAppender("OBJECT");
 		if (appender != null)
 			appender.start();
@@ -312,7 +320,7 @@ public abstract class AbstractAction implements Runnable {
 	private void unsetObjectLogging() {
 		// manually close object log in order to prevent "too many open files"
 		ch.qos.logback.classic.Logger logger =
-				(ch.qos.logback.classic.Logger) LoggerFactory.getLogger("de.uzk.hki.da.cb");
+				(ch.qos.logback.classic.Logger) LoggerFactory.getLogger("de.uzk.hki.da");
 		
 		Appender<ILoggingEvent> appender = logger.getAppender("OBJECT");
 		if (appender != null)

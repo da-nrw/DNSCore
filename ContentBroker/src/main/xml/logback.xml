@@ -129,15 +129,16 @@
 
 
 
-        <logger name="de.uzk.hki.da.cb"  additivity="false" level="DEBUG">
+        <logger name="de.uzk.hki.da"  additivity="false" level="DEBUG">
                 <appender-ref ref="OBJECT" />
         </logger>
         
         
+        <!-- 
         <logger name="de.uzk.hki.da"  additivity="false" level="DEBUG">
                 <appender-ref ref="UNSORTED_LOG" />
         </logger>
-		
+		-->
 
         <root level="OFF" />
 
