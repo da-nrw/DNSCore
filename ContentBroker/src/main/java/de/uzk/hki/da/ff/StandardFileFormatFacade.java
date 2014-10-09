@@ -79,10 +79,20 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		
 		
 		for (IFileWithFileFormat f:files){
+			
+			// XXX Hack
+			if (f.getFormatPUID().equals("fmt/120")) {
+				f.setFormatPUID(FFConstants.XML_PUID);
+				f.setFormatSecondaryAttribute(
+						new PublicationMetadataSubformatIdentifier().identify(f.toRegularFile()));
+			}else
+			// Hack end
+				
+				
 			if (f.getFormatPUID().equals(FFConstants.XML_PUID)) {
 				f.setFormatSecondaryAttribute(
 						new PublicationMetadataSubformatIdentifier().identify(f.toRegularFile()));
-			}
+			}else
 			if (f.getFormatPUID().equals(FFConstants.XMP_PUID)) {
 				f.setFormatPUID(FFConstants.XML_PUID);
 				f.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
