@@ -21,26 +21,31 @@
 
 ### Introduction
 
-There are two modes in which you might run DNScore with iRODS as storage layer.
+There are two modes in which you might run DNScore with iRODS as a storage layer.
 
-For more separated and independent iRODS "nodes" of DNSCore and to do "load balancing" having more nodes then just three - and  to avoid overhead of administration at the Master ICAT Zone Server in the integrated
+First, so called "one-zone-approach" (aka integrated mode) in which you decide to use one ICAT-enabled server and serveral resoure hosts. In this approach resources are managed in a more centralized way. Second, 
+in multiple "zone-approach" (aka federated mode) in which the iRODS servers have mostly their own resource management at each site. 
+
+In order to do "load balancing" between nodes, having more nodes then just three - and  to avoid overhead of administration at the Master ICAT Zone Server in the single zone 
 mode, you could decide to run DNSCore and iRODS in the so called "federated mode". In the federated mode you have several distinct Master ICAT Zones 
 forming a releativley loosley coupled Federation in terms of iRODS Servers. 
 
 In this topology your nodes admins should be able to administer iRODS Master servers and the federation itself
-(See iRODS documentation about this: https://irods.sdsc.edu/index.php/Federation_Administration). Most of the effort has to be done once during setup. The daly maintenance is quite easily and does not differ from the single zone administration effort.
+(See iRODS documentation about this: https://irods.sdsc.edu/index.php/Federation_Administration). 
 
-Although the iRODS servers are more separated, they still still share some common infrastructure (e.g. Object-DB), they form still a "domain" of shared functionalities.
+Most of the effort has to be done once during setup. The daily maintenance is quite easy and does not differ by scales from the single zone administration effort at the nodes.
 
-The functionalities described below are compatible to a landscape in which "integrated", "one zone" approach has worked before, though the "federated" mode sits "on top" the integrated mode.
+Although the iRODS servers are more separated, they still share some common infrastructure (e.g. Object-DB, Formats to convert), they form still a "domain" of shared functionalities.
 
-But you can't mix both modes in one Domain yet.
+The feature "iRODS as federated storage layer" described below are compatible to a landscape in which "integrated", "one zone" approach has worked before, though the "federated" mode sits "on top" the integrated mode.
+
+But you can't mix both modes in one Domain yet. Each node will become a "zone" with its own Postgres DB. 
 
 ### Definitions
 
-The node on which the itmes are stored first is the "primary copy", the node is "the responsible node" for that dedicated item. It's supposed to be the primary node for inquires about data, sending deltas etc.
+The node on which the itmes are stored first is the "primary copy node", or "the responsible node" for that dedicated item. It's supposed to be the primary node for inquires about data, sending deltas to etc.
 
-All other nodes having copies of the stored items are therefore called "secondary copies". The serve as backup in case of data loss or bit courruption at the primary one. 
+All other nodes having copies of the stored items are therefore called "secondary copy nodes". The serve as backup in case of data loss or bit courruption at the primary one. 
 
 ### Prerequisites
 
@@ -73,9 +78,11 @@ e.g.
      
 Please consider the most restrictive permissions you are able to set for this.
 
-You should have a RescGroup "lza" containing your long term storage resource at each node. So the name of the RescGroupt must be same for all nodes. 
+You should have a RescGroup "lza" containing your long term storage resource at each node. The name of the RescGroup must be same for all nodes. 
 
-Please give a full "own" rights to user rods#zoneB recursively to folder /zoneA/pips
+     atrg lza <yourLongtermResourceName>
+
+Please give a full "own" rights to user rods#zoneB recursively to folder /zoneA/pips . This folder contains all locally produced Presentation Information Package PIP for the time they needed to be replicated to the presentation node. 
    
     ichmod -r own rods#zoneB /zoneA/pips
 
@@ -103,7 +110,12 @@ You should be at least familiar with basic icommands such as :
 	irule
 	
 Please refer to the iRODS Docs as well!
-	
+
+Please don't forget do do the itrim on your cache devices after some time at each node!
+
+       itrim -age 2000 -N3 -S name_of_cache_resc -r /zoneA/aip
+       
+
 ### How does it work?
 
 Imagine having an AIP in logical namespace
@@ -115,7 +127,7 @@ on zoneB at
 	
 	/zoneB/federated/zoneA/aip/TEST/123545/123545_pack.1.tar
 	
-As you might already noticed: The path beneath federated is logically same as on zoneA.
+As you might already noticed: The path beneath folder federated is (logically) same as on zoneA.
 
 ### Federation Service
 
@@ -137,16 +149,17 @@ The Federation service should claim:
 What it does is: 
 
 1. Takes into account given forbidden nodes settings stored by CB after registry of AIP.
-1. Asks all Servers on your Grid for their already stored items. Measured by counting items sizes beneath "aip" folders and on longterm storage resources (which have to be member of resgroup lza). 
-It takes into account all "own" and already federated items. This should do a load balancing between federated zones.
+1. Asks all Servers on your Grid for their already stored items. Measured by counting items sizes beneath "aip" folders and on longterm storage resources (which have are be member of resgroup lza).
+2. If server isn't available, next server is being taken. 
+It takes into account all "own" and already federated items. This should do a load basic balancing between federated zones.
 2. Order them ascending, the lowest filled resource first.
-3. Trying to copy the items to all reachable nodes (zones) until reached numCopy setting stored by contentbroker - Or if not available, until the given minimal number is being reached. 
-1. Store the original computed checksum to the copied AIP for reference
+3. Trying to copy the items to all reachable nodes (zones) until reached numCopy setting stored by contentbroker - Or if not available, until the given minimal number by the federation service itself is being reached. 
+1. Store the original computed checksum to the copied AIP for reference at each zone. 
 5. Retry until reached and copied with equality of checksums. (synchronize)
 
 ### Administer Federation
 
-Once activated federation service runs, even iRODsSServer is restarted.
+Once activated federation service runs, even iRODS Server is restarted.
 
 Start 
 	irule -F federate.r
@@ -178,6 +191,8 @@ Delete Federation service
 Check Logfile for errors : reLog. 
 If Federation service prints out any error numbers, you might evaluate the error codes to their corresponding textual textual representation with 
 
+e.g.
+
 	ierror -333000
 
 ### Audit Infrastructure
@@ -204,15 +219,16 @@ irule -F checkFederatedAip.r ([here](https://github.com/da-nrw/DNSCore/blob/mast
 zone: The zone which this service should run-
 admin: The Admin which should be infrmed on errors
 numbersPerRun: Amount of Items being checked each time the service runs
-trustYears: Value in years we trust a chekcsum before recomputation. 0 means each time recalculate, 0.5 means half a year etc. 
+trustYears: Value in years we trust a checksum before recomputation. 0 means each time recalculate, 0.5 means half a year etc. 
 
-If the responsible node (which means the "primary copy node") is being asked for the integrity of AIP e.g. acIsValid() in dns.re 
-is being triggered it it does the following:
+If the responsible node (which means the "primary copy node") is being asked for the integrity of AIP e.g. acIsValid() in dns.re, it does the following:
 
 1. Get The MD5 checksum for local primary copy from the ICAT.
 2. Compare stored ICAT value with checksum computed at creation
 3. Verify federated Checksums (relies on running service) 
 4. Deep Verify (recompute) local Checksum
+5. Returns 0 is case of failure
+6. Returns 1 if AIP is valid. 
 
 ### AVU Metadata of iRODS Objects in DNS (AIP/DataObjects) 
 
@@ -244,10 +260,16 @@ Attribute Value Unit (AVU) Metadata are stored in each ICAT. They could be liste
 	units: 
 
 attribute: FEDERATED
-AVU indicates if AIP was synchronized successfully
+AVU indicates if AIP was synchronized successfully 
+
+You might be able to trigger re-federation if desired, just by setting this to 0
+
+     imeta mod -d 1-20141007788.pack_1.tar FEDERATE 0
 
 attribute: chksum
 stores originally computed checksum
+
+This value has never to changed!
 
 attribute: SYNCHRONIZED_TO
 zones with secondary copies
@@ -259,4 +281,4 @@ attribute: MIN_COPIES
 Minimal copies to reach (otherwise federation service's default, 3 is being taken)
  
 attribute: SYNCHRONIZE_EVENT
-timestamp of last synchronizing event 
+timestamp of last synchronizing event
