@@ -30,11 +30,9 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Test;
-import org.w3c.dom.Document;
 
 import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.core.RelativePath;
-import de.uzk.hki.da.metadata.XPathUtils;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
@@ -274,11 +272,6 @@ public class PublishImageConversionStrategyTest {
 	 * @throws FileNotFoundException the file not found exception
 	 */
 	public void testWatermarkWithRealImage() throws FileNotFoundException {
-		
-		Document dom = XPathUtils.parseDom(TC.TEST_ROOT_FORMAT+"/PublishImageConversionStrategyTests/premis.xml");
-		if (dom==null){
-			throw new RuntimeException("Error while parsing premis.xml");
-		}
 		
 		Object o = TESTHelper.setUpObject("123",new RelativePath(workAreaRootPath));
 		

@@ -26,7 +26,6 @@
 		<property name="name" value="SendToPresenterAction" />
 		<property name="viewerUrls" ref="viewerUrls" />
 		<property name="testContractors" ref="testContractors" />
-		<property name="dcReader" ref="dcReader" />
 		<property name="fileFilter">
 	        <set>
 	            <value>premis.xml</value>
@@ -59,6 +58,4 @@
 		<property name="testContractors" ref="testContractors" />
 	</bean>
 	<!-- END Fedora and ElasticSearch related END -->
-	
-	<bean id="dcReader" class="de.uzk.hki.da.metadata.DCReader"/>
 </beans>

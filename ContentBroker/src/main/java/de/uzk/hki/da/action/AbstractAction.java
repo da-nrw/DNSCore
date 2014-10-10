@@ -125,6 +125,10 @@ public abstract class AbstractAction implements Runnable {
 	
 	/**
 	 * Checks the system state wise preconditions which have to be met that the action can operate properly.
+	 * 
+	 * This applies for example if an action expects some properties of object to be set,
+	 * which should have been set in a previous action (if there is a dependency on the action ordering).
+	 * 
 	 * @throws IllegalStateException
 	 */
 	public abstract void checkSystemStatePreconditions() throws IllegalStateException;
