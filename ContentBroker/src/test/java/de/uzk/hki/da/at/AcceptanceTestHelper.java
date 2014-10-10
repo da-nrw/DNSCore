@@ -167,7 +167,6 @@ public class AcceptanceTestHelper {
 	 */
 	Job waitForJobToBeInStatus(String originalName,String status) 
 			throws InterruptedException{
-	
 		int waited_ms_total=0;
 		while (true){
 			waited_ms_total=updateTimeout(waited_ms_total, TIMEOUT);
@@ -175,7 +174,6 @@ public class AcceptanceTestHelper {
 			Job job = getJob(originalName);
 			
 			if (job!=null){
-				
 				System.out.println("waiting for job to be ready ... "+job.getStatus());
 				
 				if (job.getStatus().equals(status)){
@@ -187,7 +185,7 @@ public class AcceptanceTestHelper {
 					
 					throw new RuntimeException(msg);
 				}
-			}
+			}  
 		}
 	}
 
@@ -250,12 +248,13 @@ public class AcceptanceTestHelper {
 	Object waitForJobsToFinish(String originalName){
 	
 		// wait for job to appear
+		// very short running actions could be finished before job is noticed!
 		Job job = null;
 		int waited_ms_total=0;
 		while(job == null) {
-			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT);
-			System.out.println("waiting for job to appear ... " + originalName);
 			job = getJob(originalName);
+			if (job!=null) waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT);
+			System.out.println("waiting for job to appear ... " + originalName);	
 		}
 		
 		Object resultO = job.getObject();
