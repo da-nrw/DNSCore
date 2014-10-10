@@ -223,7 +223,7 @@ public class AcceptanceTestHelper {
 		try {
 			Thread.sleep(interval);
 		} catch (InterruptedException e) {} // no problem
-		return waited_ms_total+=INTERVAL;
+		return waited_ms_total+=interval;
 	}
 	
 	private Job getJob(String originalName) {
