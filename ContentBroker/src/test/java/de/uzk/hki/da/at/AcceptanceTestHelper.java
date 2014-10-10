@@ -218,8 +218,8 @@ public class AcceptanceTestHelper {
 	
 	
 	private int updateTimeout(int waited_ms_total,int timeout, int interval){
-		System.out.print("(total time: "+waited_ms_total+"ms / timeout: "+TIMEOUT+"ms) ");
-		if (waited_ms_total>TIMEOUT) throw new RuntimeException(MSG_ERROR_WHEN_TIMEOUT_REACHED);
+		System.out.print("(total time: "+waited_ms_total+"ms / timeout: "+timeout+"ms) ");
+		if (waited_ms_total>timeout) throw new RuntimeException(MSG_ERROR_WHEN_TIMEOUT_REACHED);
 		try {
 			Thread.sleep(interval);
 		} catch (InterruptedException e) {} // no problem
