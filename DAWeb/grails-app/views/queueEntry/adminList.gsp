@@ -98,7 +98,7 @@
             			</td>
             		</tr>
             			<tr>
-            			<td>InitialNode:</td>
+            			<td>Zuständiger Knoten:</td>
             			<td>
             				<g:select id="initialNode" name="search.initialNode" from="${cbNodeList}" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.cbNodeList?.name}" class="many-to-one"/>
             			</td>

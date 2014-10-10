@@ -38,7 +38,7 @@
 			</th>
 			
 			<th class="sortable field-initialNode">
-				<a href="#" onClick="return sortQueue('initialNode');">${message(code: 'queueEntry.initialNode.label', default: 'Initialer Knoten')}</a>
+				<a href="#" onClick="return sortQueue('initialNode');">${message(code: 'queueEntry.initialNode.label', default: 'Zuständiger Knoten')}</a>
 			</th>
 
 		</tr>
