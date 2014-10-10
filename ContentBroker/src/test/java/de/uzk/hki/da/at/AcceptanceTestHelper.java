@@ -253,7 +253,7 @@ public class AcceptanceTestHelper {
 		int waited_ms_total=0;
 		while(job == null) {
 			job = getJob(originalName);
-			if (job!=null) waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT);
+			if (job==null) waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT);
 			System.out.println("waiting for job to appear ... " + originalName);	
 		}
 		
