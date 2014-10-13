@@ -23,9 +23,9 @@
 
 Deutsche Version | [English Version](documentation.md)
 
-Willkommen auf der Startseite der Dokumentation des DNSCore Softwarepaketes! Dies hier ist die primäre Quelle zu allen Fragen bezüglich der Handhabung des Softwarepaketes. 
+Willkommen auf der Startseite der Dokumentation des DNSCore Softwarepakets! Dies hier ist die primäre Quelle zu allen Fragen bezüglich der Handhabung des Softwarepakets. 
 
-Die Großteil der Dokumentation der DNSCore befindet sich unter
+Der Großteil der Dokumentation befindet sich unter
 
 [DNSCore/ContentBroker/src/main/markdown/](../markdown)
 
