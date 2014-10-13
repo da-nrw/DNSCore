@@ -115,8 +115,10 @@ public class Object {
 	private String package_type;
 	
 	private String metadata_file;
-	
+
+	@Transient
 	private String DIP_PUBLIC_REPNAME = "dip/public";
+	@Transient
 	private String DIP_INSTITUTION_REPNAME = "dip/institution";
 	
 	/** The zone. */
