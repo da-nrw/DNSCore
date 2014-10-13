@@ -65,6 +65,11 @@ public class C {
 	public static final String QUESTION_MIGRATION_ALLOWED = "MIGRATION_ALLOWED?";
 	public static final String ANSWER_YO = "YES";
 	public static final String ANSWER_NO = "NO";
+	public static final String IRODS_START_DELAYED = "START_DELAYED";
+	public static final String IRODS_STOP_DELAYED = "STOP_DELAYED";
+	public static final String QUEUE_TO_SERVER = "CB.SYSTEM";
+	public static final String QUEUE_TO_CLIENT = "CB.CLIENT";
+	public static final String QUEUE_TO_IRODS_SERVER = "IRODS.SYSTEM";
 	
 	// Premis related
 	public static final String EVENT_TYPE_CREATE = "CREATE";
@@ -113,8 +118,6 @@ public class C {
 	// Other
 	public static final String LOCAL_NODE_BEAN_NAME = "localNode";
 	public static final File BASIC_TEST_PACKAGE = Path.makeFile(CONF,"basic_test_package.tgz");
-	public static final String QUEUE_TO_SERVER = "CB.SYSTEM";
-	public static final String QUEUE_TO_CLIENT = "CB.CLIENT";
 	public static final String OAI_DANRW_DE = "oai:danrw.de:";
 	
 	//

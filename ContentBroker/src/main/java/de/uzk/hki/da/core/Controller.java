@@ -98,7 +98,7 @@ public class Controller implements Runnable {
 		    List<ActionDescription> list = null;
           
 		    
-		    for (;;) {
+		    while (true) {
 		    	try {
             	Connection connection = mqConnectionFactory.createConnection();
                 connection.start();
