@@ -112,7 +112,7 @@ public class SendToPresenterAction extends AbstractAction {
 		if (Utilities.isNotSet(object.getUrn()))
 			throw new RuntimeException("urn not set");
 		if (Utilities.isNotSet(object.getPackage_type()))
-			throw new RuntimeException("package type not set");
+			throw new RuntimeException("urn not set");
 	}
 
 
