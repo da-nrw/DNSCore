@@ -41,7 +41,8 @@ import de.uzk.hki.da.utils.Utilities;
 
 
 /**
- * Facade to a whole bunch of processes that we will probably model later as iRods-Microservices.
+ * ContentBroker is the main application for DNSCore, serving all needed actions 
+ * for SIP to AIP and PIP transformation
  * 
  * @author: Daniel M. de Oliveira
  * @author: Sebastian Cuy

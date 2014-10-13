@@ -23,17 +23,18 @@
 
 Deutsche Version | [English Version](documentation.md)
 
-Willkommen auf der Startseite der Dokumentation des DNSCore Softwarepaketes! Dies hier ist die primäre Quelle zu allen Fragen bezüglich der Handhabung des Softwarepaketes. 
+Willkommen auf der Startseite der Dokumentation des DNSCore Softwarepakets! Dies hier ist die primäre Quelle zu allen Fragen bezüglich der Handhabung des Softwarepakets. 
 
-Die Großteil der Dokumentation der DNSCore befindet sich unter
+Der Großteil der Dokumentation befindet sich unter
 
-[DNSCore/ContentBroker/src/main/markdown/](../markdown)
+[DNSCore/ContentBroker/src/main/markdown/](../markdown),
 
 wobei sich auch noch einige weitere Dokumention unter folgendem Link findet:
 
-[DNSCore/DAWeb/doc](../../../../DAWeb/doc)
+[DNSCore/DAWeb/doc](../../../../DAWeb/doc).
 
-**Versionierung** der Dokumentation. Die Dokumentation ist Teil des Git-Repository der DNSCore und wird gemeinsam zur Codebasis versioniert, damit der Stand der Dokumentation möglichst synchron zum Stand der Codebasis gehalten werden kann. Die Links sind, soweit es möglich ist, relativ, damit ein Checkout einer beliebigen Version selbstreferentiell und konsistent ist. Im Falle der Grafiken war dies hinsichtlich der Darstellung in GitHub nicht möglich (wegen der Referenzen auf raw-Dateien). Hier finden sich die Quellen der Grafiken aber immer im ContentBroker/src/main/markdown Verzwichnis wieder.
+**Versionierung** der Dokumentation:
+Die Dokumentation ist Teil des Git-Repository der DNSCore und wird gemeinsam mit der Codebasis versioniert. Auf diese Weise wird der Stand der Dokumentation synchron zum Stand der Codebasis gehalten. Die Links sind, soweit es möglich ist, relativ, damit ein Checkout einer beliebigen Version selbstreferentiell und konsistent ist. Im Falle der Grafiken ist diese Vorgehensweise hinsichtlich der Darstellung in GitHub nicht möglich (wegen der Referenzen auf raw-Dateien). Hier finden sich die Quellen der Grafiken aber immer im ContentBroker/src/main/markdown Verzeichnis wieder.
 
 #### Langzeitarchivierung mit DNSCore verstehen<br>[Alle Benutzergruppen]
 
@@ -42,11 +43,9 @@ Hier befinden sich alle Dokus, die Grundkonzepte der Langzeitarchivierung im Kon
 * Das DNSCore Objektmodell - Referenzdokumentation ([deutsch](object_model.de.md)|[englisch](object_model.md))
 * SIP-Spezifikation ([deutsch](specification_sip.de.md)|[englisch](specification_sip.md))
 * DIP-Spezifikation ([englisch](specification_dip.md))
-* Publikationsmetadatenformate - Spezifikation ([englisch](specification_publication_metadata.md))
+* Dokumentation der Metadaten-Verarbeitung ([deutsch](2014-09-25_Metadaten_in_DA-NRW.pdf)|[englisch](specification_publication_metadata.md))
 * DNSCore Feature Liste ([englisch](features.md))
 * Delta Feature - Beschreibung ([english](the_delta_feature.md))
-
-Dokumentation der [Metadaten](2014-09-25_Metadaten_in_DA-NRW.pdf)-Verarbeitung
 
 #### DNSCore verwenden<br>[Endnutzer]
 
@@ -71,7 +70,7 @@ die vorbereitenden Anpassung von Umgebungen für den Einsatz von DNSCore bzw. An
 
 ###### Basiskonfiguration
 
-Die hier untergebrachten Dokumentationen gelten für generell für den Einsatz von DNSCore.
+Die hier untergebrachten Dokumentationen gelten generell für den Einsatz von DNSCore.
 
 * config.properties - Referenzdokumentation ([deutsch](administration_config_properties_reference.de.md))
 * beans.xml - Referenzdokumentation ([english](administration-beans.xml))
@@ -86,6 +85,10 @@ Die hier untergebrachten Dokumentationen setzen den Einsatz von DNSCore unter be
 * Installation von Fedora für DNSCore ([englisch](install_fedora.md))
 * Installation von PrOAI für DNSCore ([deutsch](install_proai.md))
 * Installing iRODS for DNSCore ([englisch](installation_irods.md))
+
+#### Fehlerbehebung<br>[Systemadministratoren / Knotenadministratoren]
+Die aufgeführten Dokumente geben Hinweise zur Fehlerbehebung bei der Knotenadministration.
+* Spezifikation der Fehlerstatus & Hinweise zur Fehlerbehebung ([english](administration-troubleshooting.md))
 
 #### Funktionalitäten der DNSCore erweitern<br>[Entwickler]
 
