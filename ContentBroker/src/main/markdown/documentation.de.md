@@ -31,9 +31,10 @@ Der Großteil der Dokumentation befindet sich unter
 
 wobei sich auch noch einige weitere Dokumention unter folgendem Link findet:
 
-[DNSCore/DAWeb/doc](../../../../DAWeb/doc)
+[DNSCore/DAWeb/doc](../../../../DAWeb/doc).
 
-**Versionierung** der Dokumentation. Die Dokumentation ist Teil des Git-Repository der DNSCore und wird gemeinsam zur Codebasis versioniert, damit der Stand der Dokumentation möglichst synchron zum Stand der Codebasis gehalten werden kann. Die Links sind, soweit es möglich ist, relativ, damit ein Checkout einer beliebigen Version selbstreferentiell und konsistent ist. Im Falle der Grafiken war dies hinsichtlich der Darstellung in GitHub nicht möglich (wegen der Referenzen auf raw-Dateien). Hier finden sich die Quellen der Grafiken aber immer im ContentBroker/src/main/markdown Verzwichnis wieder.
+**Versionierung** der Dokumentation:
+Die Dokumentation ist Teil des Git-Repository der DNSCore und wird gemeinsam mit der Codebasis versioniert. Auf diese Weise wird der Stand der Dokumentation synchron zum Stand der Codebasis gehalten. Die Links sind, soweit es möglich ist, relativ, damit ein Checkout einer beliebigen Version selbstreferentiell und konsistent ist. Im Falle der Grafiken ist diese Vorgehensweise hinsichtlich der Darstellung in GitHub nicht möglich (wegen der Referenzen auf raw-Dateien). Hier finden sich die Quellen der Grafiken aber immer im ContentBroker/src/main/markdown Verzeichnis wieder.
 
 #### Langzeitarchivierung mit DNSCore verstehen<br>[Alle Benutzergruppen]
 
