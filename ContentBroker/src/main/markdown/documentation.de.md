@@ -86,6 +86,10 @@ Die hier untergebrachten Dokumentationen setzen den Einsatz von DNSCore unter be
 * Installation von PrOAI für DNSCore ([deutsch](install_proai.md))
 * Installing iRODS for DNSCore ([englisch](installation_irods.md))
 
+#### Fehlerbehebung<br>[Systemadministratoren / Knotenadministratoren]
+Die aufgeführten Dokumente geben Hinweise zur Fehlerbehebung bei der Knotenadministration.
+* ([english](administration-troubleshooting.md))
+
 #### Funktionalitäten der DNSCore erweitern<br>[Entwickler]
 
 Um DNSCore effektiv bauen, testen und ausliefern zu können, sollten die folgenden Dokus gelesen werden:
