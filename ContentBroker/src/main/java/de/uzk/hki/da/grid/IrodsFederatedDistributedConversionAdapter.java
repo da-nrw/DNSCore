@@ -3,6 +3,9 @@ package de.uzk.hki.da.grid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.core.Path;
+
 
 public class IrodsFederatedDistributedConversionAdapter extends
 		IrodsDistributedConversionAdapter {

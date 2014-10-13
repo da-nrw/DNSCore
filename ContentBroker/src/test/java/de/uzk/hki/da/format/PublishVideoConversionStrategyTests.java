@@ -25,10 +25,12 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Test;
+import org.w3c.dom.Document;
 
 import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.core.RelativePath;
 import de.uzk.hki.da.format.PublishVideoConversionStrategy;
+import de.uzk.hki.da.metadata.XPathUtils;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
@@ -70,6 +72,11 @@ public class PublishVideoConversionStrategyTests {
 	@Test
 	public void test() throws IOException {
 		
+		Document dom = XPathUtils.parseDom(basePath + "premis.xml");
+		if (dom==null){
+			throw new RuntimeException("Error while parsing premis.xml");
+		}
+		
 		Object o = TESTHelper.setUpObject("1",new RelativePath(basePath));
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
@@ -79,6 +86,7 @@ public class PublishVideoConversionStrategyTests {
 		o.getRights().getPublicationRights().add(right);
 		
 		PublishVideoConversionStrategy s = new PublishVideoConversionStrategy();
+		s.setDom(dom);
 		
 		ConversionInstruction ci = new ConversionInstruction();
 		ci.setSource_file(new DAFile(o.getLatestPackage(),"a","filename.avi"));

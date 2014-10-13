@@ -20,9 +20,9 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.anyObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +35,9 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.core.RelativePath;
+import de.uzk.hki.da.metadata.DCReader;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.repository.RepositoryException;
@@ -48,13 +50,13 @@ import de.uzk.hki.da.test.TESTHelper;
 public class SendToPresenterActionTests {
 
 	private SendToPresenterAction action;
+	private DCReader dcReader;
 	private Object object;
 
 	@Before
 	public void setUp(){
 		object = TESTHelper.setUpObject("id1", new RelativePath("src/test/resources/cb/SendToPresenterActionTests"));
 		object.setUrn("urn");
-		object.setPackage_type("EAD");
 		
 		action = new SendToPresenterAction();
 		action.setObject(object);
@@ -62,6 +64,9 @@ public class SendToPresenterActionTests {
 		RepositoryFacade repositoryFacade = mock(RepositoryFacade.class);
 		action.setRepositoryFacade(repositoryFacade);
 		
+		dcReader = mock(DCReader.class);
+		when(dcReader.getPackageTypeFromDC((Path)anyObject(),(Path)anyObject())).thenReturn("EAD");
+		action.setDcReader(dcReader);
 		
 		Map<String,String> viewerUrls = new HashMap<String,String>();
 		viewerUrls.put("EAD", "http://data.danrw.de/ead-viewer/#/browse?src=");

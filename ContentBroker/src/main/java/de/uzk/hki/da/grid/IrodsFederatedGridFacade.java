@@ -26,12 +26,15 @@ package de.uzk.hki.da.grid;
  */
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.utils.MD5Checksum;
 
 
 

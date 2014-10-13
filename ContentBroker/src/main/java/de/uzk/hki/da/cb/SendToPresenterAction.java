@@ -41,13 +41,13 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.metadata.DCReader;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.metadata.XepicurWriter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
-import de.uzk.hki.da.utils.Utilities;
 
 /** 
  * This action implements the ingest into the presentation repository.
@@ -92,6 +92,8 @@ public class SendToPresenterAction extends AbstractAction {
 	private Map<String,String> labelMap;
 	private Set<String> testContractors;
 	
+	private DCReader dcReader;
+	
 	@Override
 	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (repositoryFacade == null) 
@@ -109,9 +111,7 @@ public class SendToPresenterAction extends AbstractAction {
 		if (testContractors == null)
 			throw new IllegalStateException("testContractors is not set");
 		
-		if (Utilities.isNotSet(object.getUrn()))
-			throw new RuntimeException("urn not set");
-		if (Utilities.isNotSet(object.getPackage_type()))
+		if (object.getUrn()==null||object.getUrn().isEmpty())
 			throw new RuntimeException("urn not set");
 	}
 
@@ -138,15 +138,17 @@ public class SendToPresenterAction extends AbstractAction {
 		if (!pipPathInstitution.toFile().exists()) 
 			logger.warn(pipPathInstitution + " does not exist.");
 
-		if (!viewerUrls.containsKey(object.getPackage_type()))
+		String packageType = getDcReader().getPackageTypeFromDC(pipPathPublic, pipPathInstitution);
+		logger.debug("read package type from dc: "+packageType);
+		if (!viewerUrls.containsKey(packageType))
 			logger.warn("could not determine a viewerUrl for package type");
 
 		boolean publicPIPSuccesfullyIngested = false;
 		boolean institutionPIPSuccessfullyIngested = false;
 		if (pipPathPublic.toFile().exists())
-			publicPIPSuccesfullyIngested = createXEpicurAndIngest(pipPathPublic,preservationSystem.getOpenCollectionName(),object.getPackage_type(),object.getUrn(),true);
+			publicPIPSuccesfullyIngested = createXEpicurAndIngest(pipPathPublic,preservationSystem.getOpenCollectionName(),packageType,object.getUrn(),true);
 		if (pipPathInstitution.toFile().exists()) 
-			institutionPIPSuccessfullyIngested = createXEpicurAndIngest(pipPathInstitution, preservationSystem.getClosedCollectionName(), object.getPackage_type(), object.getUrn(), false);
+			institutionPIPSuccessfullyIngested = createXEpicurAndIngest(pipPathInstitution, preservationSystem.getClosedCollectionName(), packageType, object.getUrn(), false);
 		
 		setPublishedFlag(publicPIPSuccesfullyIngested,
 				institutionPIPSuccessfullyIngested);
@@ -451,6 +453,14 @@ public class SendToPresenterAction extends AbstractAction {
 		this.testContractors = testContractors;
 	}
 
+	public DCReader getDcReader() {
+		return dcReader;
+	}
+
+	public void setDcReader(DCReader dcReader) {
+		this.dcReader = dcReader;
+	}
+	
 	@Override
 	public void rollback() {
 		throw new NotImplementedException("No rollback implemented for this action");

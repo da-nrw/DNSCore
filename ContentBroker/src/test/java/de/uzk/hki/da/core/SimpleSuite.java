@@ -88,6 +88,7 @@ import de.uzk.hki.da.model.SaveConversionInstructionsByJob;
 import de.uzk.hki.da.pkg.ArchiveBuilderTests;
 import de.uzk.hki.da.service.RetrievePackagesHelperTest;
 import de.uzk.hki.da.service.URNCheckDigitGeneratorTests;
+import de.uzk.hki.da.service.XPathUtilsTests;
 
 /**
  * The collection of all our unit tests which should run pre and post commit.
@@ -132,6 +133,7 @@ import de.uzk.hki.da.service.URNCheckDigitGeneratorTests;
 	MetsURNXmlReaderTest.class,
 	IntegrityScannerWorkerTest.class,
 	ShortenFileNamesActionTests.class,
+	XPathUtilsTests.class,
 	CheckFormatsActionTest.class,
 	PdfConversionStrategyTest.class,
 	PublishPDFConversionStrategyTests.class,
