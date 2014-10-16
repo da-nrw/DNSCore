@@ -14,12 +14,13 @@ Der Status ist definiert als eine dreistellige dezimale Zahl. Dabei kodieren die
 
 Die Zuordnung der Status zu den Actions kann jederzeit anhand der ersten beiden Ziffern sowie der oben angeführten beans nachvollzogen werden. Die Interpretation der letzten Ziffer des Status wird im folgenden erläutert.
 
-#### ##1
+#### xx0
+
+Die Null am Ende des Status bedeutet, dass das Objekt sich in einem konsistenten, gemäß der DNS-Spezifikation wohlgeformten Zustand befindet und aktuell von keiner Action verarbeitet wird. Das Objekt wartet darauf, von einer passenden Action (Status = Anfangsstatus der Action) abgeholt zu werden. 
+
+#### xx1
 
 
-
-
-kodieren die Actio die dazugehörige Action und die dritte Ziffer die Verarbeitung innerhalb der Action kodieren.
 
 ### Diagnostics Modus in ContentBroker - Smoke test
 
