@@ -1,4 +1,17 @@
-## Fehleranalyse & -bereinigung
+# Fehleranalyse & -bereinigung
+
+## 1. Sicherstellen der Funktion des Systems
+
+### Diagnostics Modus in ContentBroker - Smoke test
+
+Bei Auftreten von Fehlern in der Paketverarbeitung sollte immer zuerst der sogenannte Smoke Test durchgeführt werden.
+
+    cd DSNCore/Contentbroker
+    java -jar ContentBroker.jar diagnostics
+
+Der Test Überprüft eine Reihe von Verbindungen, z.b. Datenbank-Verbindung, iRODS, Fedora usw.
+
+Erst wenn der Test positiv ausfällt und der Fehlerstatus in der Paketverarbeitung immer noch bestehen bleibt , macht es Sinn, die Fehlersuche fortzusetzen. 
 
 Die Datenverarbeitung in DNSCore ist in kleine logische in sich abgeschlossene Einheiten – Actions – unterteilt. Jeder Workflow, ob Einlieferung ([ingest] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.ingest.xml)), das Wiederabrufen ([retrieval] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.retrieval.xml)) oder Präsentation ([presentation] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.presentation.xml)) besteht aus einer festgelegten Abfolge verschiedener Actions.
 
@@ -33,13 +46,3 @@ These are states where an error occured due to imcomplete or inconsistent data c
 ### Rollback
 
 
-### Diagnostics Modus in ContentBroker - Smoke test
-
-Bei Auftreten von Fehlern in der Paketverarbeitung sollte immer zuerst der sogenannte Smoke Test durchgeführt werden.
-
-    cd DSNCore/Contentbroker
-    java -jar ContentBroker.jar diagnostics
-
-Der Test Überprüft eine Reihe von Verbindungen, z.b. Datenbank-Verbindung, iRODS, Fedora usw.
-
-Erst wenn der Test positiv ausfällt und der Fehlerstatus in der Paketverarbeitung immer noch bestehen bleibt , macht es Sinn, die Fehlersuche fortzusetzen. 
