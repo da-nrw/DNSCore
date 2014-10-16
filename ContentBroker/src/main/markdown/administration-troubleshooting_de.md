@@ -20,6 +20,7 @@ Die Null am Ende des Status bedeutet, dass das Objekt sich in einem konsistenten
 
 #### xx1
 
+### Rollback
 
 
 ### Diagnostics Modus in ContentBroker - Smoke test
