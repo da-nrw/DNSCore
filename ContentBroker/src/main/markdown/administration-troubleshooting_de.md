@@ -1,11 +1,5 @@
 ## Fehleranalyse & -bereinigung
 
-### Allgemein
-
-Zum besseren Verständnis der folgenden Beschreibung empfehlen wir Ihnen, sich zunächst einen Überblick über die verschiedenen Stadien der Datenverarbeitung in DNSCore zu verschaffen.
-
-### Workflow
-
 Die Datenverarbeitung in DNSCore ist in kleine logische in sich abgeschlossene Einheiten – Actions – unterteilt. Jeder Workflow des DNSCore, ob Einlieferung ([ingest] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.ingest.xml)), das Wiederabrufen ([retrieval] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.retrieval.xml)) oder Präsentation ([presentation] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.presentation.xml)) besteht aus einer festgelegten Abfolge verschiedener Actions.
 
 ### Status
