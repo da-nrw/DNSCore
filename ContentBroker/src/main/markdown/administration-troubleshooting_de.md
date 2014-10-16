@@ -1,4 +1,4 @@
-# Fehleranalyse & -bereinigung
+## Fehleranalyse & -bereinigung
 
 ### Allgemein
 
