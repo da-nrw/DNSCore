@@ -2,7 +2,7 @@
 
 Die Datenverarbeitung in DNSCore ist in kleine logische in sich abgeschlossene Einheiten – Actions – unterteilt. Jeder Workflow, ob Einlieferung ([ingest] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.ingest.xml)), das Wiederabrufen ([retrieval] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.retrieval.xml)) oder Präsentation ([presentation] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.presentation.xml)) besteht aus einer festgelegten Abfolge verschiedener Actions.
 
-### Zusammenhang zwischen Action und Status
+### Action & Status
 
 Abhängig von der jeweiligen Aufgabe werden in einer Action unterschiedliche Änderungen am Objekt vorgenommen. Dabei wird das Stadium der Verarbeitung eines Objekts im Bearbeitungsstatus ausgedrückt. Die Angabe des Bearbeitungsstatus eines jeden eingelieferten Pakets befindet sich in der DAWEB in der Spalte „Status“. Anhand des Status lässt sich zu jeder Zeit sowohl die aktuell ausgeführte Action als auch der Zustand der Verarbeitung innerhalb der Action ablesen.
 
@@ -10,6 +10,7 @@ Für jede Action wurde ein Anfangs- sowie ein End-Status definiert. Der Anfangs-
 
 ### Definierte Status
 
+Der Status ist definiert als eine dreistellige Zahl, bei der die ersten beiden Ziffern (von links nach rechts) die dazugehörige Action und die dritte Ziffer die Verarbeitung innerhalb der Action kodieren.
 
 ### Diagnostics Modus in ContentBroker - Smoke test
 
