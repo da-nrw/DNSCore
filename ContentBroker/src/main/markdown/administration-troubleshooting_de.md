@@ -20,6 +20,16 @@ Die Null am Ende des Status bedeutet, dass das Objekt sich in einem konsistenten
 
 #### xx1
 
+Jeder Status, der mit einer Eins endet, kennzeichnet einen Fehler in der Verarbeitung. Desweiteren bedeutet die Eins, dass das Objekt in einen konsistenten Zustand (xx1-1) zurückgeführt werden konnte. Demnach korrspondieren beispielsweise die Status 120 und 121 zu ein und demselben physischen File auf dem Dateisystem sowie in der Datenbank.  
+
+#### xx2
+
+Die Zwei 
+
+xx4
+
+These are states where an error occured due to imcomplete or inconsistent data caused by the user. The xx4 states always result of an action throwing a UserException. In case of such an exception the system autogenerates an error reports which gets instantly delivered to the user via email. If DAWeb encounters an action in a xx4 state, it presents a "delete" button to the admins who are free then to clean up the object from the queue. Depending if the object is a new one or a delta to an existing one either the newest package or the whole objects gets deleted from the database if one clicks the delete button. Also the WorkArea gets clean up. In the case it was a new object the orig name is reusable again. The urn which was given to the object is waste.
+
 ### Rollback
 
 
