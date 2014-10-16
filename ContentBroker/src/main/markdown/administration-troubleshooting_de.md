@@ -16,8 +16,8 @@ Für jede Action wurde ein Anfangs- sowie ein End-Status definiert. Der Anfangs-
 
 Bei Auftreten von Fehlern in der Paketverarbeitung sollte immer zuerst der sogenannte Smoke Test durchgeführt werden.
 
-cd DSNCore/Contentbroker
-java -jar ContentBroker.jar diagnostics
+    cd DSNCore/Contentbroker
+    java -jar ContentBroker.jar diagnostics
 
 Der Test Überprüft eine Reihe von Verbindungen, z.b. Datenbank-Verbindung, iRODS, Fedora usw.
 
