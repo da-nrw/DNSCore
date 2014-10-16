@@ -40,10 +40,10 @@ Die Dokumentation ist Teil des Git-Repository der DNSCore und wird gemeinsam mit
 
 Hier befinden sich alle Dokus, die Grundkonzepte der Langzeitarchivierung im Kontext des Einsatzes von DNSCore beschreiben.
 
-* Das DNSCore Objektmodell - Referenzdokumentation ([deutsch](object_model.de.md)|[englisch](object_model.md))
-* SIP-Spezifikation ([deutsch](specification_sip.de.md)|[englisch](specification_sip.md))
+* Das DNSCore Objektmodell - Referenzdokumentation ([deutsch](object_model.de.md) | [englisch](object_model.md))
+* SIP-Spezifikation ([deutsch](specification_sip.de.md) | [englisch](specification_sip.md))
 * DIP-Spezifikation ([englisch](specification_dip.md))
-* Dokumentation der Metadaten-Verarbeitung ([deutsch](2014-09-25_Metadaten_in_DA-NRW.pdf)|[englisch](specification_publication_metadata.md))
+* Dokumentation der Metadaten-Verarbeitung ([deutsch](2014-09-25_Metadaten_in_DA-NRW.pdf) | [englisch](specification_publication_metadata.md))
 * DNSCore Feature Liste ([englisch](features.md))
 * Delta Feature - Beschreibung ([english](the_delta_feature.md))
 
@@ -75,7 +75,7 @@ Die hier untergebrachten Dokumentationen gelten generell für den Einsatz von DN
 * config.properties - Referenzdokumentation ([deutsch](administration_config_properties_reference.de.md))
 * beans.xml - Referenzdokumentation ([english](administration-beans.xml))
 * Speicherbereiche - Referenzdokumentation ([english](processing_stages.md))
-* Der DNSCore Installer ([english](administration-the-installer.md)|[deutsch](administration-the-installer.de.md))
+* Der DNSCore Installer ([deutsch](administration-the-installer.de.md) | [english](administration-the-installer.md))
 
 ###### Erweiterte Konfiguration
 
@@ -88,7 +88,7 @@ Die hier untergebrachten Dokumentationen setzen den Einsatz von DNSCore unter be
 
 #### Fehlerbehebung<br>[Systemadministratoren / Knotenadministratoren]
 Die aufgeführten Dokumente geben Hinweise zur Fehlerbehebung bei der Knotenadministration.
-* Spezifikation der Fehlerstatus & Hinweise zur Fehlerbehebung ([english](administration-troubleshooting.md))
+* Spezifikation der Fehlerstatus & Hinweise zur Fehlerbehebung ([english](administration-troubleshooting.md) | [deutsch](job_status.md) )
 
 #### Funktionalitäten der DNSCore erweitern<br>[Entwickler]
 
