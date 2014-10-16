@@ -8,6 +8,8 @@ grails.project.dependency.resolver="maven"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 grails.project.dependency.resolution = {
+	pom true
+	legacyResolve true
     inherits("global") {
     	excludes 'spring-asm'
     	excludes "slf4j-api"
@@ -17,12 +19,12 @@ grails.project.dependency.resolution = {
     	
         // uncomment to disable ehcache
         // excludes 'ehcache'
-        		       exclude group: 'org.slf4j', module:'jcl-over-slf4j'
-        exclude group: 'org.slf4j', module:'jul-to-slf4j'
-        exclude group: 'org.slf4j', module:'slf4j-api'
-        exclude group: 'org.slf4j', module:'slf4j-simple'
+        //exclude group: 'org.slf4j', module:'jcl-over-slf4j'
+       // exclude group: 'org.slf4j', module:'jul-to-slf4j'
+        //exclude group: 'org.slf4j', module:'slf4j-api'
+        //exclude group: 'org.slf4j', module:'slf4j-simple'
     }
-    log "verbose" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
+    log "debug" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     checksums true // Whether to verify checksums on resolve
 
     repositories {
@@ -33,6 +35,7 @@ grails.project.dependency.resolution = {
         // uncomment these to enable remote dependency resolution from public Maven repositories
         mavenCentral()
         mavenLocal()
+		mavenRepo 'http://repo.spring.io/milestone'
 	mavenRepo "http://repo.grails.org/grails/repo" 
 	mavenRepo "http://download.java.net/maven/2/"
 	mavenRepo "http://repository.jboss.org/nexus/content/groups/public-jboss/"
@@ -74,7 +77,7 @@ grails.project.dependency.resolution = {
         //runtime ":zipped-resources:1.0"
         //runtime ":cached-resources:1.0"
         //runtime ":yui-minify-resources:0.1.4"
-		compile ':spring-security-core:2.0-RC4'
+		compile ":spring-security-core:2.0-RC4"
 		compile ":scaffolding:2.0.1"
 		build ":tomcat:7.0.42"	
 		compile (":jms:1.3") {
