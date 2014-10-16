@@ -10,7 +10,16 @@ Für jede Action wurde ein Anfangs- sowie ein End-Status definiert. Der Anfangs-
 
 ### Definierte Status
 
-Der Status ist definiert als eine dreistellige Zahl, bei der die ersten beiden Ziffern (von links nach rechts) die dazugehörige Action und die dritte Ziffer die Verarbeitung innerhalb der Action kodieren.
+Der Status ist definiert als eine dreistellige dezimale Zahl. Dabei kodieren die ersten beiden Ziffern (von links nach rechts) zu jeder Zeit die aktuell für die Verarbeitung der Daten eingesetzte Action. Die dritte Ziffer kennzeichnet den Verlauf der Bearbeitung innerhalb der jeweiligen Action.
+
+Die Zuordnung der Status zu den Actions kann jederzeit anhand der ersten beiden Ziffern sowie der oben angeführten beans nachvollzogen werden. Die Interpretation der letzten Ziffer des Status wird im folgenden erläutert.
+
+#### ##1
+
+
+
+
+kodieren die Actio die dazugehörige Action und die dritte Ziffer die Verarbeitung innerhalb der Action kodieren.
 
 ### Diagnostics Modus in ContentBroker - Smoke test
 
