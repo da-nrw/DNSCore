@@ -1,6 +1,6 @@
 # Fehleranalyse & -bereinigung
 
-Landet ein eingeliefertes Paket in einem Fehlerstatus, ist eine Reaktion seitens des Knoten-Admins gefragt. Unabhängig vom ehlerstatus müssen immer folgende zwei Schritte durchgeführt werden:
+Landet ein eingeliefertes Paket in einem Fehlerstatus, ist eine Reaktion seitens des Knoten-Admins gefragt. Unabhängig vom Fehlerstatus müssen immer folgende zwei Schritte durchgeführt werden:
 
 1. Sicherstellen der Funktion des Systems
 2. Fehleranalyse
