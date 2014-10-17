@@ -52,6 +52,10 @@ These are states where an error occured due to imcomplete or inconsistent data c
 
 ### Vollständiges Löschen eines Objektes.
 
+#### Löschen eines Objektes aus der Datenbank
+
+Akteur: **PS-ADMIN**
+
 Ist ein Objekt bereits vollständig archiviert, kann es nur noch händisch aus der Datenbank entfernt werden. Dabei muss wegen der Constraints der Datenbank eine bestimmte Reihenfolge bei der Löschung eingehalten werden. Die folgende Anleitung zeigt dies examplarisch für ein einzelnes Objekt. Einzelne Schritte sind in Pseude-SQL dargestellt.
 
 Zunächst muss der technische Identifier des zu löschenden Objektes ermittelt werden, etwa durch Einsichtnahme in die DAWeb. Zu dem Objekt kann der Primärschlüssel ermittelt werden.
@@ -72,9 +76,17 @@ Anschließend kann das Objekt und seine zugehörigen Packages gelöscht werden.
     DELETE FROM packages WHERE id IN (LIST<PKG_ID>) ;
 	DELETE FROM objects WHERE data_pk='DATA_PK';
 	
-Dies löscht nur die Datenbankeinträge. Die physischen Objekte bleiben weiterhin auf den LZA-Medien vorhanden udn belegen Platz, sind dem System gegenüber jedoch unbekannt.
-	
-	
+Dies löscht nur die Datenbankeinträge. Die physischen Objekte bleiben weiterhin auf den LZA-Medien vorhanden und belegen Platz, sind dem System gegenüber jedoch unbekannt.
+
+#### Löschen eines Objektes auf den LZA-Medien.
+
+Akteur: **PS-ADMIN**
+
+Sollen diese Objekte auch von den Medien gelöscht werden, müssen diese auch aus dem Grid gelöscht werden. In der iRODS-Zonen Architektur kann ein Objekt gelöscht werden mittels
+
+    rm -rf /zone/aip/csn/oid
+    
+
 
 
 
