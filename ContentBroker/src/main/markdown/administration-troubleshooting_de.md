@@ -1,5 +1,12 @@
 # Fehleranalyse & -bereinigung
 
+Landet ein eingeliefertes Paket in einem Fehlerstatus, ist eine Reaktion seitens des Knoten-Admins gefragt. Unabhängig vom ehlerstatus müssen immer folgende zwei Schritte durchgeführt werden:
+
+1. Sicherstellen der Funktion des Systems
+2. Fehleranalyse
+
+Dabei ist die Reihenfolge der genannten Schritte entscheidend. Es macht keinen Sinn, einen Fehler zu debuggen, wenn das System als Ganzes möglicherweise falsch konfiguriert ist. Die einzelnen Schritte werden im Folgenden näher erläutert.
+
 ## 1. Sicherstellen der Funktion des Systems
 
 ### Diagnostics Modus in ContentBroker - Smoke test
