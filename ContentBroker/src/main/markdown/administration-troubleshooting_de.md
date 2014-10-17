@@ -54,7 +54,7 @@ Die Vier am Ende des Staus bedeutet einen Userfehler. Der User bekommt in diesem
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/Delete_button.PNG)
 
-Das Betätigen des Buttons vom Admin führt zur Löschung des Objekts sowhl aus der Datenbank als auch vom Speicher. Der Orig_name kann somit wieder verwendet werden.
+Das Betätigen des Buttons vom Admin führt zur Löschung des Objekts sowohl aus der Datenbank als auch vom Speicher. Der Orig_name kann somit wieder verwendet werden.
 
 Sollte es sich beim eingelieferten Paket um ein Delta handeln, wird nur das neuste Paket gelöscht. Das Originalobjekt bleibt erhalten.
 
