@@ -48,3 +48,35 @@ These are states where an error occured due to imcomplete or inconsistent data c
 ### Rollback
 
 
+## 3. Löschen von Objekten
+
+### Vollständiges Löschen eines Objektes.
+
+Ist ein Objekt bereits vollständig archiviert, kann es nur noch händisch aus der Datenbank entfernt werden. Dabei muss wegen der Constraints der Datenbank eine bestimmte Reihenfolge bei der Löschung eingehalten werden. Die folgende Anleitung zeigt dies examplarisch für ein einzelnes Objekt. Einzelne Schritte sind in Pseude-SQL dargestellt.
+
+Zunächst muss der technische Identifier des zu löschenden Objektes ermittelt werden, etwa durch Einsichtnahme in die DAWeb. Zu dem Objekt kann der Primärschlüssel ermittelt werden.
+    
+    OBJECT_IDENTIFIER = technischer Identifier des Objektes
+    DATA_PK = SELECT data_pk FROM objects WHERE identifier='OBJECT_IDENTIFIER';
+    
+zu dem Object müssen dann die die Packages ermittelt werden. 
+    
+    LIST<PKG_ID>  = SELECT * FROM objects_packages WHERE objects_data_pk='DATA_PK';
+	
+Die Package ids müssen NOTIERT werden. Dann kann zuerst die Verknüpfung aufgehoben werden.
+
+	DELETE FROM objects_packages WHERE objects_data_pk='DATA_PK';
+	
+Anschließend kann das Objekt und seine zugehörigen Packages gelöscht werden.
+    
+    DELETE FROM packages WHERE id IN (LIST<PKG_ID>) ;
+	DELETE FROM objects WHERE data_pk='DATA_PK';
+	
+Dies löscht nur die Datenbankeinträge. Die physischen Objekte bleiben weiterhin auf den LZA-Medien vorhanden udn belegen Platz, sind dem System gegenüber jedoch unbekannt.
+	
+	
+
+
+
+
+
