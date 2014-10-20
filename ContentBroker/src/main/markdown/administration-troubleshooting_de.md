@@ -46,11 +46,17 @@ Jeder Status, der mit einer Eins endet, kennzeichnet einen Fehler in der Verarbe
 
 #### xx2
 
-Die Zwei 
+Die Zwei am Ende bedeutet, dass das Objekt gerade von der aktuell aktiven Action bearbeitet wird. Je nach Größe und Komplexität des Pakets kann dieser Prozess einige Zeit dauern. 
 
-xx4
+#### xx4
 
-These are states where an error occured due to imcomplete or inconsistent data caused by the user. The xx4 states always result of an action throwing a UserException. In case of such an exception the system autogenerates an error reports which gets instantly delivered to the user via email. If DAWeb encounters an action in a xx4 state, it presents a "delete" button to the admins who are free then to clean up the object from the queue. Depending if the object is a new one or a delta to an existing one either the newest package or the whole objects gets deleted from the database if one clicks the delete button. Also the WorkArea gets clean up. In the case it was a new object the orig name is reusable again. The urn which was given to the object is waste.
+Die Vier am Ende des Staus bedeutet einen Userfehler. Der User bekommt in diesem Fall eine Email mit der entsprechenden Exception aus dem Object-Logfile. Darüber hinaus erscheint in der DAWeb neben dem Fehlerstatus ein neuer Button. 
+
+![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/Delete_button.PNG)
+
+Das Betätigen des Buttons vom Admin führt zur Löschung des Objekts sowohl aus der Datenbank als auch vom Speicher. Der Orig_name kann somit wieder verwendet werden.
+
+Sollte es sich beim eingelieferten Paket um ein Delta handeln, wird nur das neuste Paket gelöscht. Das Originalobjekt bleibt erhalten.
 
 ### Rollback
 
