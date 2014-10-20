@@ -191,8 +191,6 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			return commandAsList;
 		} 	
 		
-		commandAsList.add("-background");
-		commandAsList.add("'#0008'");
 		commandAsList.add("-fill");
 		commandAsList.add("white");
 		commandAsList.add("-gravity");
