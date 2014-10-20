@@ -24908,38 +24908,6 @@ DATA: VERSION:160 SECURITY: ENCODING: CHARSET: COMPRESSION: OLDFILEUID: NEWFILEU
     </details>
   </format>
   <format>
-    <puid>fmt/333</puid>
-    <name>Chemical Markup Language</name>
-    <version />
-    <alias />
-    <pronom_id>1078</pronom_id>
-    <extension>cml</extension>
-    <has_priority_over>fmt/101</has_priority_over>
-    <signature>
-      <name>Chemical Markup Language</name>
-      <note>Looking for the CML namespace declaration: xmlns="http://www.xml-cml.org/schema"</note>
-      <pattern>
-        <position>BOF</position>
-        <pronom_pattern>786D6C6E733D22687474703A2F2F7777772E786D6C2D636D6C2E6F72672F736368656D6122</pronom_pattern>
-        <regex>(?s)\A.{0,65535}.{0,1}xmlns="http://www\.xml-cml\.org/schema"</regex>
-      </pattern>
-    </signature>
-    <details>
-      <dc:description>This is an outline record only, and requires further details, research or authentication to provide information that will enable users to further understand the format and to assess digital preservation risks associated with it if appropriate. If you are able to help by supplying any additional information concerning this entry, please return to the main PRONOM page and select &#8216;Add an Entry&#8217;.</dc:description>
-      <dcterms:available />
-      <dc:creator />
-      <dcterms:publisher />
-      <content_type>Text (Mark-up)</content_type>
-      <record_metadata>
-        <status>unknown</status>
-        <dc:creator>University of Southampton / University of Southampton</dc:creator>
-        <dcterms:created>31 Mar 2011</dcterms:created>
-        <dcterms:modified>31 Mar 2011</dcterms:modified>
-        <dc:description>Submitted by Southampton Chemistry Department.</dc:description>
-      </record_metadata>
-    </details>
-  </format>
-  <format>
     <puid>fmt/334</puid>
     <name>Crystallographic Information Framework</name>
     <version />
