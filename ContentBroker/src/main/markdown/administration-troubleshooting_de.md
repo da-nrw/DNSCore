@@ -63,6 +63,8 @@ Sollte es sich beim eingelieferten Paket um ein Delta handeln, wird nur das neus
 
 ## 3. Löschen von Objekten
 
+Das Löschen eines bereits archivierten Objektes ist, so wie LZA aus DNSCore-Sicht konzeptioniert ist, nicht vorgesehen. Sollte es dennoch (Stichwort "Deletion under exceptional circumstances"), z.B. in Testsystemen erforderlich sein, muss dies manuell erfolgen. Im folgenden sind die notwendigen Schritte zusammengefasst.
+
 ### Vollständiges Löschen eines Objektes.
 
 #### Löschen eines Objektes aus der Datenbank
