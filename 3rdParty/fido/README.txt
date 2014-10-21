@@ -1,3 +1,13 @@
+#############
+This version of FIDO contains a modified formats-v77.xml
+formats-77.xml contains signatures for formats fmt/333 and fmt/334 which lead
+to regex compilation errors on Solaris systems.
+
+The DNSCore-Team
+2014
+#############
+
+
 usage: fido.py [-h] [-v] [-q] [-recurse] [-zip] [-nocontainer] [-pronom_only]
                [-input INPUT] [-filename FILENAME] [-useformats INCLUDEPUIDS]
                [-nouseformats EXCLUDEPUIDS] [-matchprintf FORMATSTRING]

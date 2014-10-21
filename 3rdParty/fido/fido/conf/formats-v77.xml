@@ -1,3 +1,5 @@
+<!--  modified by DNSCore team, 2014. See DNSCore/3rdParty/fido/README.txt -->
+
 <formats version="0.3" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="fido-formats.xsd">
   <format>
     <puid>x-fmt/1</puid>
