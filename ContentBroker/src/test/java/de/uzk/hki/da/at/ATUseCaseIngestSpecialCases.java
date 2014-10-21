@@ -19,12 +19,13 @@
 
 package de.uzk.hki.da.at;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.After;
+import java.io.IOException;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.Path;
-import de.uzk.hki.da.model.Object;
 
 /**
  * Relates to AK-T/02 Ingest - Sunny Day Szenario (mit besonderen Bedingungen).
@@ -32,83 +33,67 @@ import de.uzk.hki.da.model.Object;
  */
 public class ATUseCaseIngestSpecialCases extends AcceptanceTest{
 
-	private static final String YEAH = "yeah!";
-	private String originalName = "ATUseCaseIngest1";
-	private Object object;
+	@BeforeClass
+	public static void setUpBeforeClass() throws IOException {
+		ath.putPackageToIngestArea("ATÜÄÖ","tgz","ATÜÄÖ");
+		ath.putPackageToIngestArea("ATSonderzeichen_in_Dateinamen","tgz","ATSonderzeichen_in_Dateinamen");
+		ath.putPackageToIngestArea("ATUmlaute_in_Dateinamen","tgz","ATUmlaute_in_Dateinamen");
+		ath.putPackageToIngestArea("AT_CON1","tar","AT_CON1");
+		ath.putPackageToIngestArea("AT_CON2","tgz","AT_CON2");
+		ath.putPackageToIngestArea("AT_CON3","zip","AT_CON3");
+		ath.putPackageToIngestArea("AT&Sonderzeichen%in#Paketnamen","tgz","AT&Sonderzeichen%in#Paketnamen");
+		ath.putPackageToIngestArea("ATLeerzeichen_in_Dateinamen","tgz","ATLeerzeichen_in_Dateinamen");
+	}
 	
-	@After
-	public void tearDown(){
+	@AfterClass
+	public static void tearDown(){
 		
-		FileUtils.deleteQuietly(Path.make(localNode.getWorkAreaRootPath(),"/work/TEST/"+object.getIdentifier()).toFile());
+//		FileUtils.deleteQuietly(Path.make(localNode.getWorkAreaRootPath(),"/work/TEST/"+object.getIdentifier()).toFile());
 
 		Path.make(localNode.getIngestAreaRootPath(),"/TEST/AT_CON1.tar").toFile().delete();
 		Path.make(localNode.getIngestAreaRootPath(),"/TEST/AT_CON2.tgz").toFile().delete();
 		Path.make(localNode.getIngestAreaRootPath(),"/TEST/AT_CON3.zip").toFile().delete();
+		
+		
 	}
 	
 	@Test
 	public void testUmlautsInPackageName() throws Exception{
-		
-		originalName = "ATÜÄÖ";
-		object = ath.ingest(originalName);
-		System.out.println(YEAH);
+		ath.waitForObjectToBeInFinishState("ATÜÄÖ");
 	}
 	
 	@Test
 	public void testSpecialCharactersInFileNames() throws Exception{
-		
-		originalName = "ATSonderzeichen_in_Dateinamen";
-		object = ath.ingest(originalName);
-		System.out.println(YEAH);
+		ath.waitForObjectToBeInFinishState("ATSonderzeichen_in_Dateinamen");
 	}
 	
 	@Test
 	public void testUmlautsInFileNames() throws Exception{
-		
-		originalName = "ATUmlaute_in_Dateinamen";
-		object = ath.ingest(originalName);
-		System.out.println(YEAH);
+		ath.waitForObjectToBeInFinishState("ATUmlaute_in_Dateinamen");
 	}
 	
 	@Test
 	public void testTARContainer() throws Exception{
-		
-		originalName = "AT_CON1";
-		object = ath.ingest(originalName,"tar",originalName);
-		System.out.println(YEAH);
+		ath.waitForObjectToBeInFinishState("AT_CON1");
 	}
 	
 	@Test
 	public void testTGZContainer() throws Exception{
-		
-		originalName = "AT_CON2";
-		object = ath.ingest(originalName);
-		System.out.println(YEAH);
+		ath.waitForObjectToBeInFinishState("AT_CON2");
 	}
 	
 	@Test
 	public void testZIPContainer() throws Exception{
-		
-		originalName = "AT_CON3";
-		object = ath.ingest(originalName,"zip",originalName);
-		System.out.println(YEAH);
+		ath.waitForObjectToBeInFinishState("AT_CON3");
 	}
 	
 	@Test
 	public void testSpecialCharsInPackageName() throws Exception{
-		
-		originalName = "AT&Sonderzeichen%in#Paketnamen";
-		object = ath.ingest(originalName);
-		System.out.println(YEAH);
+		ath.waitForObjectToBeInFinishState("AT&Sonderzeichen%in#Paketnamen");
 	}
-	
-	
 	
 	@Test
 	public void testWhiteSpacesInFileNames() throws Exception{
-		
-		originalName = "ATLeerzeichen_in_Dateinamen";
-		object = ath.ingest(originalName);
-		System.out.println(YEAH);
+		ath.waitForObjectToBeInFinishState("ATLeerzeichen_in_Dateinamen");
 	}
 }

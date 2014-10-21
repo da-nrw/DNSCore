@@ -252,6 +252,20 @@ public class AcceptanceTestHelper {
 	}
 	
 	
+	void waitForObjectToBeInFinishState(String originalName){
+		int waited_ms_total=0;
+		while (true){
+			System.out.println("waiting for object to be in finished state ... " + originalName);
+			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
+			
+			Object o = fetchObjectFromDB(originalName);
+			if (o==null)continue;
+			if (o.getObject_state()==100) {
+				return;
+			}
+		}
+	}
+	
 	
 	
 	
