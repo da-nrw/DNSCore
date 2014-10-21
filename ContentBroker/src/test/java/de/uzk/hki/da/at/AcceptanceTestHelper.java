@@ -144,6 +144,7 @@ public class AcceptanceTestHelper {
 	 * @author Daniel M. de Oliveira
 	 */
 	Job waitForJobToBeInErrorStatus(String originalName,String errorStatusLastDigit,int timeout) throws InterruptedException{
+		System.out.println("waiting for job of object with original name "+originalName+" to be in error status with digit "+errorStatusLastDigit);
 		
 		int waited_ms_total=0;
 		while (true){
