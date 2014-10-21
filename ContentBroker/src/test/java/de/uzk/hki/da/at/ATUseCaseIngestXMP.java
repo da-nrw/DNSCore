@@ -31,8 +31,8 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
@@ -50,14 +50,14 @@ public class ATUseCaseIngestXMP extends AcceptanceTest{
 	private static Path contractorsPipsPublic;
 	private static final File retrievalFolder = new File("/tmp/XMPunpacked");
 	
-	@Before
-	public void setUp() throws IOException{
+	@BeforeClass
+	public static void setUp() throws IOException{
 		object = ath.ingest(origName);
 	}
 	
 	
-	@After
-	public void tearDown() throws IOException{
+	@AfterClass
+	public static void tearDown() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
 	}
 	

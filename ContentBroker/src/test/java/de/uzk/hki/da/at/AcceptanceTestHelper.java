@@ -124,6 +124,14 @@ public class AcceptanceTestHelper {
 		return object;
 	}
 
+	
+	
+	Job waitForJobToBeInErrorStatus(String originalName,String errorStatusLastDigit) throws InterruptedException{
+		
+		return waitForJobToBeInErrorStatus(originalName,errorStatusLastDigit,TIMEOUT);
+	}
+	
+	
 	/**
 	 * Checking the database in regular intervals for a job in an error state ending with errorStatusLastDigit.
 	 * 
@@ -155,6 +163,11 @@ public class AcceptanceTestHelper {
 			}
 		}
 	}
+	
+	
+	
+	
+	
 
 	/**
 	 * Waits for a job to reach a certain status.
@@ -237,6 +250,8 @@ public class AcceptanceTestHelper {
 	
 	
 	
+	
+	
 	/**
 	 * Waits that a job appears and disappears again.
 	 * 
@@ -312,6 +327,27 @@ public class AcceptanceTestHelper {
 		return ingest(originalName,C.FILE_EXTENSION_TGZ,originalName);
 	}
 	
+	
+	
+	
+	/**
+	 * Makes a copy of a file from src/test/resources/at/[sourcePackagename].[ext]
+	 * and puts it to the nodes IngestArea at ingestAreaRootPath/test/[originalName].[ext].
+	 * 
+	 * @param originalName
+	 * @throws IOException 
+	 */
+	void putPackageToIngestArea(String sourcePackageName,String ext,String originalName) throws IOException {
+		
+		if (localNode==null) throw new IllegalStateException();
+		if (localNode.getIngestAreaRootPath()==null) throw new IllegalStateException();
+		
+		File sourceFile = Path.makeFile(TEST_DATA_ROOT_PATH,sourcePackageName+"."+ext);
+		File targetFile = Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getShort_name(),originalName+"."+ext);
+		
+		FileUtils.copyFile( sourceFile, targetFile );
+	}
+	
 	/**
 	 * Copies src/test/resources/at/[sourcePackageName].[ext] 
 	 * to ingestAreaRootPath/TEST/[originalName].[ext]. 
@@ -330,14 +366,7 @@ public class AcceptanceTestHelper {
 			String ext,
 			String originalName) throws IOException{
 		
-		if (localNode==null) throw new IllegalStateException();
-		if (localNode.getIngestAreaRootPath()==null) throw new IllegalStateException();
-		
-		File sourceFile = Path.makeFile(TEST_DATA_ROOT_PATH,sourcePackageName+"."+ext);
-		File targetFile = Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getShort_name(),originalName+"."+ext);
-		
-		FileUtils.copyFile( sourceFile, targetFile );
-			
+		putPackageToIngestArea(sourcePackageName, ext, originalName);
 		waitForJobsToFinish(originalName);
 		
 		Object object = fetchObjectFromDB(originalName);

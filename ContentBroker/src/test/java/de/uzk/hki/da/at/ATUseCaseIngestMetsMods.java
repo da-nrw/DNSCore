@@ -37,7 +37,9 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
@@ -64,13 +66,13 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 	private static Document metsDoc;
 	
 	
-	@Before
-	public void setUpBeforeClass() throws IOException{
+	@BeforeClass
+	public static void setUpBeforeClass() throws IOException{
 		object = ath.ingest(origName);
 	}
 	
-	@After
-	public void tearDownAfterClass() throws IOException{
+	@AfterClass
+	public static void tearDownAfterClass() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
 	}
 	

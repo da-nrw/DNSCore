@@ -24,10 +24,14 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.test.TC;
 
 /**
  * Relates to AK-T/02 Ingest - Alternative Szenarien.
@@ -36,55 +40,77 @@ import de.uzk.hki.da.model.Object;
  */
 public class ATUseCaseIngestValidationNotPassed extends AcceptanceTest{
 
+	private static final String AT_DUPLICATE_DOCUMENT_NAME = "ATDuplicateDocumentName";
 	private static final String AT_EINE_DATEI_GELOESCHT = "ATEineDatei_geloescht";
 	private static final String AT_DUPLICATE_METADATA_FILES = "ATDuplicateMetadataFiles";
 	private static final String AT_INVALID_PREMIS = "ATInvalidPremis";
 	private static final String AT_ERSTE_ZEILE_TAGMANIFEST1_ZEICHENGEAENDERT = "ATErsteZeile_tagmanifest1Zeichengeaendert";
 	private static final String AT_MANIFEST_MD5_2FILESGEAENDERT = "ATManifestMd5_2filesgeaendert";
-	private static final String YEAH = "yeah!";
 	
+	private static final String ORIG_NAME =    "ATUseCaseIngestDeltaDuplicateEAD";
+	private static final String IDENTIFIER =   "ATUseCaseIngestDeltaDuplicateEADIdentifier";
+	private static final String CONTAINER_NAME = ORIG_NAME+"."+C.FILE_EXTENSION_TGZ;
 
+	@BeforeClass
+	public static void putPackages() throws IOException{
+		
+		ath.putPackageToStorage(IDENTIFIER,ORIG_NAME,CONTAINER_NAME,null,100);
+		FileUtils.copyFile(Path.makeFile(TC.TEST_ROOT_AT,CONTAINER_NAME), 
+				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME,CONTAINER_NAME));
+		
+		
+		ath.putPackageToIngestArea(ORIG_NAME,"tgz",
+				ORIG_NAME);
+		
+		
+		ath.putPackageToIngestArea(AT_ERSTE_ZEILE_TAGMANIFEST1_ZEICHENGEAENDERT,"tgz",
+				AT_ERSTE_ZEILE_TAGMANIFEST1_ZEICHENGEAENDERT);
+		ath.putPackageToIngestArea(AT_MANIFEST_MD5_2FILESGEAENDERT,"tgz",
+				AT_MANIFEST_MD5_2FILESGEAENDERT);
+		ath.putPackageToIngestArea(AT_EINE_DATEI_GELOESCHT,"tgz",
+				AT_EINE_DATEI_GELOESCHT);
+		ath.putPackageToIngestArea(AT_INVALID_PREMIS,"zip",
+				AT_INVALID_PREMIS);
+		ath.putPackageToIngestArea(AT_DUPLICATE_METADATA_FILES,"tgz",
+				AT_DUPLICATE_METADATA_FILES);
+		ath.putPackageToIngestArea(AT_DUPLICATE_DOCUMENT_NAME,"tgz",
+				AT_DUPLICATE_DOCUMENT_NAME);
+	}
+	
 	@Test
 	public void testFirst_tagmanifest1ZeichenChanged() throws Exception{
-		
-		ath.ingestAndWaitForErrorState(AT_ERSTE_ZEILE_TAGMANIFEST1_ZEICHENGEAENDERT, C.WORKFLOW_STATE_DIGIT_USER_ERROR);
-		System.out.println(YEAH);
+		ath.waitForJobToBeInErrorStatus(AT_ERSTE_ZEILE_TAGMANIFEST1_ZEICHENGEAENDERT,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
 	}
 	
 	@Test
 	public void testManifestMd5_2filesChanged() throws Exception{
-		
-		ath.ingestAndWaitForErrorState(AT_MANIFEST_MD5_2FILESGEAENDERT, C.WORKFLOW_STATE_DIGIT_USER_ERROR);
-		System.out.println(YEAH);
+		ath.waitForJobToBeInErrorStatus(AT_MANIFEST_MD5_2FILESGEAENDERT,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
 	}
 	
 	@Test
 	public void testOneFileDeleted() throws Exception{
-		
-		ath.ingestAndWaitForErrorState(AT_EINE_DATEI_GELOESCHT, C.WORKFLOW_STATE_DIGIT_USER_ERROR);
-		System.out.println(YEAH);
+		ath.waitForJobToBeInErrorStatus(AT_EINE_DATEI_GELOESCHT,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
 	}
 	
 	@Test
 	public void testInvalidPremis() throws Exception{
-		
-		ath.ingestAndWaitForErrorState(AT_INVALID_PREMIS, C.WORKFLOW_STATE_DIGIT_USER_ERROR,C.FILE_EXTENSION_ZIP);
-		System.out.println(YEAH);
+		ath.waitForJobToBeInErrorStatus(AT_INVALID_PREMIS,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
 	}
 	
 	@Test
 	public void testDuplicateMetadataFiles() throws IOException, InterruptedException{
-		
-		Object object = ath.ingestAndWaitForErrorState(AT_DUPLICATE_METADATA_FILES,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
-		System.out.println(YEAH);
-		
-		assertEquals(null,object.getPackage_type());
-		assertEquals(null,object.getMetadata_file());
+		Job job = ath.waitForJobToBeInErrorStatus(AT_DUPLICATE_METADATA_FILES,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+		assertEquals(null,job.getObject().getPackage_type());
+		assertEquals(null,job.getObject().getMetadata_file());
 	}
 	
 	@Test
 	public void testDuplicateDocumentName() throws IOException, InterruptedException{
-		ath.ingestAndWaitForErrorState("ATDuplicateDocumentName",C.WORKFLOW_STATE_DIGIT_USER_ERROR);
-		System.out.println(YEAH);
+		ath.waitForJobToBeInErrorStatus(AT_DUPLICATE_DOCUMENT_NAME,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+	}
+	
+	@Test
+	public void testDeltaRejectDuplicateEADFiles() throws IOException, InterruptedException{
+		ath.waitForJobToBeInErrorStatus(ORIG_NAME,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
 	}
 }

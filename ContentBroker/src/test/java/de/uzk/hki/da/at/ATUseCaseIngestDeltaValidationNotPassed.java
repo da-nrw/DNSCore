@@ -49,8 +49,5 @@ public class ATUseCaseIngestDeltaValidationNotPassed extends AcceptanceTest {
 				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME,CONTAINER_NAME));
 	}
 	
-	@Test
-	public void testRejectDuplicateEADFiles() throws IOException, InterruptedException{
-		ath.ingestAndWaitForErrorState(ORIG_NAME, C.WORKFLOW_STATE_DIGIT_USER_ERROR);
-	}
+	
 }

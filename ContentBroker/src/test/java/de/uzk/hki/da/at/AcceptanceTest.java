@@ -26,7 +26,9 @@ import java.util.Properties;
 import org.apache.commons.io.FileUtils;
 import org.hibernate.classic.Session;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
@@ -105,8 +107,8 @@ public class AcceptanceTest {
 	}
 	
 	
-	@Before
-	public void setUpAcceptanceTest() throws IOException{
+	@BeforeClass
+	public static void setUpAcceptanceTest() throws IOException{
 		
 		HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
 		
@@ -138,7 +140,7 @@ public class AcceptanceTest {
 	 * @param contractorShortName the contractor short name
 	 * @return null if no contractor for short name could be found
 	 */
-	private User getContractor(Session session, String contractorShortName) {
+	private static User getContractor(Session session, String contractorShortName) {
 	
 		@SuppressWarnings("rawtypes")
 		List list;	
@@ -154,14 +156,14 @@ public class AcceptanceTest {
 	
 	
 	
-	@After
-	public void tearDownAcceptanceTest(){
+	@AfterClass
+	public static void tearDownAcceptanceTest(){
 		TESTHelper.clearDB();
 		cleanStorage();
 	}
 	
 
-	private void cleanStorage(){
+	private static void cleanStorage(){
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getWorkAreaRootPath(),"work","TEST"));
 		FileUtils.deleteQuietly(Path.make(localNode.getIngestAreaRootPath(),"TEST").toFile());
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getGridCacheAreaRootPath(),C.WA_AIP,C.TEST_USER_SHORT_NAME));

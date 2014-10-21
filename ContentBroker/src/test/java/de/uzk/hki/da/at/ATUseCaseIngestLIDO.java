@@ -32,7 +32,9 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
@@ -54,14 +56,14 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 	private static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
 	private static Path contractorsPipsPublic;
 	
-	@Before
-	public void setUp() throws IOException{
+	@BeforeClass
+	public static void setUp() throws IOException{
 		object = ath.ingest(origName);
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
-	@After
-	public void tearDown() throws IOException{
+	@AfterClass
+	public static void tearDown() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
 	}
 	
