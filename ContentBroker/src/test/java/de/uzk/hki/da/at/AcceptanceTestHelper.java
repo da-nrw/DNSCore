@@ -180,6 +180,8 @@ public class AcceptanceTestHelper {
 	 */
 	Job waitForJobToBeInStatus(String originalName,String status) 
 			throws InterruptedException{
+		System.out.println("waiting for job of object with original name "+originalName+" to be in status"+status);
+		
 		int waited_ms_total=0;
 		while (true){
 			waited_ms_total=updateTimeout(waited_ms_total, TIMEOUT,INTERVAL);
