@@ -32,13 +32,19 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
 
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.xerces.parsers.SAXParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -78,6 +84,7 @@ public class XmpCollector {
 				BufferedReader reader = new BufferedReader(new FileReader(file));
 				BufferedWriter writer = new BufferedWriter(xmpWriter);
 
+				logger.debug("Read the xmp file...");
 				String currentLine;
 				while((currentLine = reader.readLine()) != null) {
 				    String trimmedLine = currentLine.trim();
@@ -108,32 +115,11 @@ public class XmpCollector {
 				logger.warn("No matching file for sidecar file {}. Skipping ...", file.getName());
 				continue;
 			}
-			logger.debug("found matching file {}", list[0]);
 			
-			
-			logger.debug("read XMP with matching file as base name");
-			
-//			StringReader test = new StringReader(xmpWriter.toString().trim());
-//			logger.debug("new Stringreader");
-//			logger.debug("File name: "+list[0]);
-//			logger.debug(xmpWriter.toString().trim().replaceFirst("^([\\W]+)<","<"));
-//			InputStream in = new ByteArrayInputStream(xmpWriter.toString().trim().replaceFirst("^([\\W]+)<","<").getBytes(Charsets.UTF_8));
-//			logger.debug("Create inputStream");
-//			SAXParser sp = new SAXParser();
-//			try {
-//				sp.parse(xmpWriter.toString().trim().replaceFirst("^([\\W]+)<","<"));
-//			} catch (SAXException e) {
-//				logger.debug("huhu");
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				logger.debug("hehe");
-//				e.printStackTrace();
-//			}
-//			model.read(in,"http://www.danrw.de/temp/" + list[0]);
-
-//			// use "http://www.danrw.de/temp/" as a pseudo base URI in order to allow relative resource URIs
-			model.read(new StringReader(xmpWriter.toString().trim().replaceFirst("^([\\W]+)<","<")),"http://www.danrw.de/temp/" + list[0]);
-//			logger.debug("Set preudo URI http://www.danrw.de/temp/ in RDF file");
+            logger.debug("found matching file {}", list[0]);
+            // read XMP with matching file as base name
+            // use "http://www.danrw.de/temp/" as a pseudo base URI in order to allow relative resource URIs
+            model.read(new StringReader(xmpWriter.toString().trim().replaceFirst("^([\\W]+)<","<")),"http://www.danrw.de/temp/" + list[0]);
 		}
 		
 		try {
