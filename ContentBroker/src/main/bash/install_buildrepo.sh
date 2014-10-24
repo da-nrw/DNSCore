@@ -2,6 +2,16 @@
 
 # author: Daniel M. de Oliveira
 
-cd /ci/DNSCore/ContentBroker
 REVISION_NUMBER=`git rev-parse HEAD`
-cp -r target/installation /ci/BuildRepository/installation.$REVISION_NUMBER/ContentBroker
+TARGET=/ci/BuildRepository/installation.$REVISION_NUMBER
+
+mkdir $TARGET
+mkdir $TARGET/ContentBroker
+mkdir $TARGET/DAWeb
+
+cd /ci/DNSCore/ContentBroker
+cp -r target/installation $TARGET/ContentBroker
+
+cd /ci/DNSCore/DAWeb
+cp target/daweb3-0.8.war $TARGET
+cp doc/daweb3_properties.groovy.dev $TARGET/DAWeb/daweb3_properties.groovy.template
