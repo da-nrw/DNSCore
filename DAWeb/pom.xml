@@ -282,6 +282,13 @@
                     <env>prod</env>
                 </configuration>
             	</execution>
+            	<execution>
+            <id>default-maven-functional-test</id>
+            <phase>integration-test</phase>
+            <configuration>
+                <skip>true</skip>
+            </configuration>
+        	</execution>
          		</executions>
                 <extensions>true</extensions>
             </plugin>
