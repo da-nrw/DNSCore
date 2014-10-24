@@ -14,7 +14,7 @@ cd /ci/DNSCore/ContentBroker
 cp -r target/installation $TARGET/ContentBroker
 
 cd /ci/DNSCore/DAWeb
-cp target/daweb3-0.8.war $TARGET/daweb3.war
+cp target/daweb3-0.8.war $TARGET/DAWeb/daweb3.war
 cp doc/daweb3_properties.groovy.dev $TARGET/DAWeb/daweb3_properties.groovy.template
 
 cd /ci/DNSCore/SIP-Builder
