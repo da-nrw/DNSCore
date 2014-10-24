@@ -285,6 +285,28 @@
          		</executions>
                 <extensions>true</extensions>
             </plugin>
+        <plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>packaging</id>
+						<phase>package</phase>
+						<configuration>
+							<tasks>
+								<exec dir="${basedir}"
+									executable="${basedir}/src/package.sh"
+									failonerror="true">
+									<arg line="${env}"/>
+								</exec>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				</plugin>
         </plugins>
     </build>
 
