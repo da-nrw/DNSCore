@@ -7,3 +7,9 @@ cp -f application.properties.template application.properties
 mv application.properties application.properties.tmp
 sed "s@app\.version=.*@app\.version=$VERSION@" application.properties.tmp >> application.properties
 rm application.properties.tmp
+
+TARGET=/ci/BuildRepository/installation.$REVISION_NUMBER/DAWeb
+
+mkdir $TARGET
+cp target/daweb3-0.8.war $TARGET
+cp doc/daweb3_properties.groovy.dev $TARGET/daweb3_properties.groovy.template
