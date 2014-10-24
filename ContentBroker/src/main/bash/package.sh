@@ -16,8 +16,6 @@ fi
 echo "calling package.sh $1 $2"
 
 
-
-
 function createStorageFolder(){
 	mkdir $CBTAR_SRC/storage/
 	mkdir $CBTAR_SRC/storage/GridCacheArea
@@ -43,11 +41,6 @@ fi
 src/main/bash/collect.sh "$CBTAR_SRC" "$VERSION"
 
 
-
-
-
-
-
 cp src/main/bash/install.sh $INSTALLER
 cp src/main/xml/beans.xml.node $INSTALLER
 cp src/main/xml/beans.xml.pres $INSTALLER
@@ -71,19 +64,6 @@ ci)
 	cp src/main/conf/config.properties.ci $INSTALLER/config.properties
 ;;
 esac
-
-
-if [ "${!#}" != "skip" ]
-then
-	cd ../DAWeb
-	./build.sh prod
-	if [ "$?" = "1" ]
-	then
-		echo there was an error in ./build.sh prod
-		exit 1
-	fi 
-	cd ../ContentBroker
-fi
 
 cd $CBTAR_SRC
 rm ../installation/ContentBroker.tar 2>/dev/null
