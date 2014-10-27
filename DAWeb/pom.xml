@@ -6,7 +6,7 @@
     <artifactId>daweb3</artifactId>
     <groupId>DNS</groupId>
     <packaging>grails-app</packaging>
-    <version>0.8</version>
+    <version>SNAPSHOT</version> <!-- DONT EDIT, EXACTLY THIS ENTRY NEEDED BY DEPLOY SCRIPTS -->
 	<parent>
         <groupId>de.uzk.hki.da</groupId>
         <artifactId>DNSCore</artifactId>
@@ -292,7 +292,6 @@
          		</executions>
                 <extensions>true</extensions>
             </plugin>
-<<<<<<< HEAD
         <plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.7</version>
@@ -315,8 +314,6 @@
 					</execution>
 				</executions>
 				</plugin>
-=======
->>>>>>> parent of 58a28b3... set build number into application properties with new script daweb3/src/package.sh
         </plugins>
     </build>
 

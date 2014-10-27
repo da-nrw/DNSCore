@@ -24,13 +24,9 @@ grails.project.dependency.resolution = {
         //exclude group: 'org.slf4j', module:'slf4j-api'
         //exclude group: 'org.slf4j', module:'slf4j-simple'
     }
-<<<<<<< HEAD
-
 
     //log "debug" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
-=======
-    log "debug" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
->>>>>>> parent of 58a28b3... set build number into application properties with new script daweb3/src/package.sh
+
     checksums true // Whether to verify checksums on resolve
 
     repositories {
