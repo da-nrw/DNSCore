@@ -2,9 +2,11 @@
 
 environments {
 	production {
+		/* For logging purposes */
 		//log4j = {
 		//		debug   'grails.app'
 		//}
+		/* Default Port ActiveMQ Broker of ContentBroker isw listening to */
 		cb.port = 4455
 		/* Configure to customize layout */
 		daweb3.logo = "DANRW-Logo_small.png"
@@ -13,11 +15,16 @@ environments {
 		// To integrate a customized css-file, please change file name accordingly 
 		main.css = "main.css"
 		// please configure same id as listed in CB config.properties 
+		/* THIS MUST BE DIFFERENT ON EACH HOST IN DOMAIN */
 		localNode.id = 1
 		mobile.css = "mobile.css"
+		/* Dir the user has write access to, usually a webshare folder (set same as CB) */
 		localNode.userAreaRootPath = "/path_to_/userhome/SIP"
+		/* Dir the Tomcat Appserver has write access to for put some packages */
 		localNode.ingestAreaRootPath = "path_to_/ingest"
+		/* The public webpath of incoming and outgoing folder of webshare */
 		transferNode.downloadLinkPrefix = "prefix for URL to download DIP"
+		/* URL Prefix of published packages */
 		fedora.urlPrefix = "http://prefix_for_fedora/fedora/objects/"
 		cb.presServer= "CB nodename of fedora Server"		
 		// here it's up to you to decide whether environment you want to use:
