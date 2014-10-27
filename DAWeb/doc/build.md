@@ -34,21 +34,17 @@ to build DA-Web on your own.
 
 In normal build processes this is done automatically by the install processes called in
 the maven build process. If you want to build DA-Web as isolated project, you will need 
-to have GRAILS installed on your command line, while the project itself is not mavenized 
-yet. 
+to have GRAILS installed on your command line, the project itself is mavenized. 
 
 
 Builds without having a related build of CB are strongly discouraged, while the both 
 applications share the same model. 
 
 The command 
-<pre>grails war prod</pre>
+<pre>mvn install</pre>
 war will build the target file for you. 
-
-The build.sh script found in the main dir of the appication is called during maven build on
-ContentBroker. 
 
 ### Running DAWeb locally
 
 The DaWeb interface could be executed locally with command 
-<pre>grails dev run-app</pre>
+<pre>mvn grails:run-app</pre>
