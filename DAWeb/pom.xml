@@ -297,12 +297,12 @@
 				<version>1.7</version>
 				<executions>
 					<execution>
-						<id>versioning</id>
-						<phase>clean</phase>
+						<id>packaging</id>
+						<phase>package</phase>
 						<configuration>
 							<tasks>
 								<exec dir="${basedir}"
-									executable="${basedir}/src/updateversion.sh"
+									executable="${basedir}/src/package.sh"
 									failonerror="true">
 									<arg line="${env}"/>
 								</exec>
