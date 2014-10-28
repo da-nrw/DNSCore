@@ -24,12 +24,6 @@
     <dependencies>
         <dependency>
             <groupId>org.grails</groupId>
-            <artifactId>grails-plugin-async</artifactId>
-            <version>${grails.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.grails</groupId>
             <artifactId>grails-plugin-rest</artifactId>
             <version>${grails.version}</version>
         </dependency>
