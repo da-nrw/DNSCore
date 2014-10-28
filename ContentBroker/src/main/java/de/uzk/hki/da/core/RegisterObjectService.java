@@ -350,7 +350,7 @@ public class RegisterObjectService {
 		session.refresh(localNode);
 		session.close();
 		
-		Integer incrementedURNIndex = localNode.getUrn_index()+1;
+		int incrementedURNIndex = localNode.getUrn_index()+1;
 		logger.debug("Updating local node urn index "+localNode.getUrn_index()+" to "+incrementedURNIndex);
 
 		Session session2 = HibernateUtil.openSession();
@@ -361,8 +361,7 @@ public class RegisterObjectService {
 		session2.close();
 		
 		if (incrementedURNIndex!=localNode.getUrn_index()){ 
-			logger.error("SERIOUS TROUBLE. It seems the database has not been updated properly");
-			throw new RuntimeException("SERIOUS TROUBLE. It seems the database has not been updated properly");
+			throw new RuntimeException("SERIOUS TROUBLE. It seems the database has not been updated properly (value:"+localNode.getUrn_index()+")");
 		}
 		
 		return incrementedURNIndex;
