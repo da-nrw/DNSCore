@@ -343,17 +343,25 @@ public class RegisterObjectService {
 		
 		if (localNode==null) throw 
 			new IllegalStateException(MSG_NODE_NULL);
+	
 		
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
 		session.refresh(localNode);
-		logger.debug("["+Thread.currentThread().getId()+"] Updating local node urn index "+localNode.getUrn_index()+" by one");
+		logger.debug("Updating local node urn index "+localNode.getUrn_index()+" by one");
+		int incrementedURNIndex = localNode.getUrn_index()+1;
+		
 		session.update(localNode); // further changes are tracked. 
-		localNode.setUrn_index(localNode.getUrn_index() + 1);
+		
+		
+		localNode.setUrn_index(incrementedURNIndex);
 		session.getTransaction().commit();
 		session.close();
-		logger.debug("["+Thread.currentThread().getId()+ "] Updated. urn index is now"+localNode.getUrn_index());
-		return localNode.getUrn_index();
+		
+		if (incrementedURNIndex!=localNode.getUrn_index()) throw new RuntimeException("SERIOUS TROUBLE. It seems the database has not been updated properly");
+		
+		logger.debug("Updated. urn index is now"+incrementedURNIndex);
+		return incrementedURNIndex;
 	}
 	
 	
