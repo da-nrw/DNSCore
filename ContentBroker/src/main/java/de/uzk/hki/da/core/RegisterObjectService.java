@@ -95,6 +95,8 @@ public class RegisterObjectService {
 	 *
 	 * @param containerName the file name of the container
 	 * @param contractor the contractor who owns the container
+	 * 
+	 * @throws UserException when trying to register a delta record for an object which is not archived (<50) yet
 	 */
 	public Object registerObject(String containerName,User contractor){
 		

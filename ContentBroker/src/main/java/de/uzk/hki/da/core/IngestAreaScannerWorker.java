@@ -143,7 +143,7 @@ public class IngestAreaScannerWorker {
 					try {
 						object = registerObjectService.registerObject( child, contractor);	
 					}
-					catch (Exception e) {
+					catch (UserException e) {
 						logger.error("cannot register object "+child+" for contractor "+contractor+". Skip creating job for object.",e);
 						continue;
 					}
