@@ -132,8 +132,6 @@ public class IntegrityScannerWorker {
 			session = HibernateUtil.openSession();
 			session.beginTransaction();
 	
-			Node node = (Node) session.get(Node.class,Integer.parseInt(localNodeId));
-			
 			Calendar now = Calendar.getInstance();
 			now.add(Calendar.HOUR_OF_DAY, -24);
 			@SuppressWarnings("rawtypes")

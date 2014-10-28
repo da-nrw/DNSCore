@@ -120,7 +120,7 @@
         <logger name="de.uzk.hki.da.core.IngestAreaScannerWorker"  additivity="false" level="DEBUG">
                 <appender-ref ref="INGEST" />
         </logger>
-		<logger name="de.uzk.hki.da.service.RegisterObjectService"  additivity="false" level="DEBUG">
+		<logger name="de.uzk.hki.da.core.RegisterObjectService"  additivity="false" level="DEBUG">
                 <appender-ref ref="INGEST" />
         </logger>
 		<logger name="de.uzk.hki.da.integrity" additivity="false" level="DEBUG">

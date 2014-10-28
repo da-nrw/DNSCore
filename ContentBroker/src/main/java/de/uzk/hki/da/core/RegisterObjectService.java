@@ -48,14 +48,24 @@ import de.uzk.hki.da.utils.Utilities;
  */
 public class RegisterObjectService {
 
-	static final Logger logger = LoggerFactory.getLogger(RegisterObjectService.class);
+	private static final String MSG_NODE_NULL="local node is null. Make sure the init method has been called prior to calling incrementURNindex.";
+	private static final Logger logger = LoggerFactory.getLogger(RegisterObjectService.class);
 
 	private Node localNode;
 	private PreservationSystem pSystem;
+
+	private static boolean initialized = false;
 	
 	/**
-	 * @throws new IllegalStateException if there exists no db entry for localNode or its urn_index is < 0.
-	 * @author Daniel M. de Oliveira
+	 * 
+	 */
+	public RegisterObjectService(){
+		if (initialized) throw new IllegalStateException("Will not instantiate a second instance.");
+		initialized = true;
+	}
+	
+	/**
+	 * Init method for getting wired up by Spring.
 	 */
 	public void init(){
 		pSystem = new PreservationSystem(); pSystem.setId(1);
@@ -72,32 +82,28 @@ public class RegisterObjectService {
 			throw new IllegalStateException("Node's urn_index must not be lower than 0");
 	}
 	
-	
-	
 	/**
-	 * 
-	 * Checks if a container is a new object to the system or 
-	 * if it is a delta to an existing object. Depending on the outcome,
-	 * either an object with a new technical identifier and a package 
-	 * get created or just a new package which
-	 * will be attached to an existing object.
-	 * When generating new a technical identifiers, 
-	 * the urn_index of localNode gets incremented and 
+	 * Compares the containerName of a SIP against the existing container names for that contractor.
+	 * <br>
+	 * If it already exists, the SIP is considered a delta and a new package for an existing object gets created and inserted into the object database.
+	 * <br>
+	 * If it does not exist, a new object and a first package gets created and inserted into the object database.
+	 * In addition to that, a new technical identifier gets created. Therefore the urn_index of localNode gets incremented and 
 	 * written back to the db immediately.
-	 * 
+	 * <br>
 	 * As a side effect sets the objects state always to 50, even if it already exists.
 	 *
 	 * @param containerName the file name of the container
 	 * @param contractor the contractor who owns the container
 	 */
-	public synchronized Object registerObject(String containerName,User contractor){
+	public Object registerObject(String containerName,User contractor){
 		
 		if (contractor==null) 
-			throw new ConfigurationException("contractor is null");
+			throw new IllegalArgumentException("contractor is null");
 		if (contractor.getShort_name()==null||contractor.getShort_name().isEmpty())
-			throw new ConfigurationException("contractor short name not set");
+			throw new IllegalArgumentException("contractor short name not set");
 		if (localNode==null)
-			throw new ConfigurationException("localNode is null");
+			throw new IllegalStateException(MSG_NODE_NULL);
 		
 		String origName = convertMaskedSlashes(FilenameUtils.removeExtension(containerName));
 
@@ -120,41 +126,49 @@ public class RegisterObjectService {
 			session.getTransaction().commit();
 			session.close();
 
-		}else{		
-			String identifier;
-
-			identifier = convertURNtoTechnicalIdentifier(generateURNForNode());
-
-			logger.info("Creating new Object with identifier " + identifier);
-			obj = new Object();
-			obj.setObject_state(40);
-			
-			obj.setIdentifier(identifier);
-
-			logger.debug("Setting package name to 1.");
-			
-			Package newPkg = new Package();
-			newPkg.setName("1");
-			newPkg.setContainerName(containerName);
-			obj.getPackages().add(newPkg);
-
-			obj.setContractor(contractor);
-
-			obj.setDate_created(String.valueOf(new Date().getTime()));
-			obj.setDate_modified(String.valueOf(new Date().getTime()));
-			obj.setLast_checked(new Date());
-			obj.setInitial_node(localNode.getName());
-			obj.setOrig_name(origName);
-			
-			Session session = HibernateUtil.openSession();
-			session.beginTransaction();
-			session.save(obj);
-			session.getTransaction().commit();
-			session.close();
+		}else{
+			obj = createNewObject(containerName,origName,contractor);
 		}
 		return obj;
 	}
 
+	
+	
+	
+	private Object createNewObject(String containerName,String origName,User contractor) {
+		
+		String identifier;
+		
+		identifier = convertURNtoTechnicalIdentifier(generateURNForNode());
+		
+		logger.info("Creating new Object with identifier " + identifier);
+		Object obj = new Object();
+		obj.setObject_state(40);
+		
+		obj.setIdentifier(identifier);
+		
+		Package newPkg = new Package();
+		newPkg.setName("1");
+		newPkg.setContainerName(containerName);
+		obj.getPackages().add(newPkg);
+		
+		obj.setContractor(contractor);
+		
+		obj.setDate_created(String.valueOf(new Date().getTime()));
+		obj.setDate_modified(String.valueOf(new Date().getTime()));
+		obj.setLast_checked(new Date());
+		obj.setInitial_node(localNode.getName());
+		obj.setOrig_name(origName);
+		
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.save(obj);
+		session.getTransaction().commit();
+		session.close();
+		
+		return obj;
+	}
+	
 	
 	/**
 	 * Replaces %2F inside a string to /.
@@ -167,7 +181,6 @@ public class RegisterObjectService {
 	}
 
 	/**
-	 * @author Daniel M. de Oliveira
 	 * @param urn
 	 * @return
 	 */
@@ -182,8 +195,6 @@ public class RegisterObjectService {
 	 * @param job the job
 	 * @param n the local node
 	 * @return null if not found.
-	 * @author Daniel M. de Oliveira
-	 * @author Thomas Kleinke
 	 */
 	private Object getObject(String origName,String contractorShortName) {
 
@@ -260,7 +271,7 @@ public class RegisterObjectService {
 	 * @param contractorShortName the contractor short name
 	 * @return null if no contractor for short name could be found
 	 */
-	public User getContractor(Session session, String contractorShortName) {
+	private User getContractor(Session session, String contractorShortName) {
 		logger.trace("CentralDatabaseDAO.getContractor(\"" + contractorShortName + "\")");
 	
 		@SuppressWarnings("rawtypes")
@@ -309,7 +320,7 @@ public class RegisterObjectService {
 	 * @return the generated URN.
 	 * @author Daniel M. de Oliveira
 	 */
-	private synchronized String generateURNForNode(){
+	private String generateURNForNode(){
 		// Must be synchronized to block other processes from 
 		// fetching and incrementing the same urn_index, upon which [number] is based.
 		
@@ -323,19 +334,28 @@ public class RegisterObjectService {
 
 	
 	
-	
-	private int incrementURNindex(){
+	/**
+	 * @return
+	 */
+	private synchronized int incrementURNindex(){
+		
+		if (localNode==null) throw 
+			new IllegalStateException(MSG_NODE_NULL);
 		
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
 		session.refresh(localNode);
+		logger.debug("["+Thread.currentThread().getId()+"] Updating local node urn index "+localNode.getUrn_index()+" by one");
+		session.update(localNode); // further changes are tracked. 
 		localNode.setUrn_index(localNode.getUrn_index() + 1);
-		session.merge(localNode);
 		session.getTransaction().commit();
 		session.close();
-		
+		logger.debug("["+Thread.currentThread().getId()+ "] Updated. urn index is now"+localNode.getUrn_index());
 		return localNode.getUrn_index();
 	}
+	
+	
+	
 	
 	public void setLocalNode(Node localNode) {
 		if (localNode==null) 
@@ -343,16 +363,11 @@ public class RegisterObjectService {
 		this.localNode = localNode;
 	}
 
-
-
+	public void setpSystem(PreservationSystem pSystem) {
+		this.pSystem = pSystem;
+	}
 
 	public PreservationSystem getpSystem() {
 		return pSystem;
-	}
-
-
-
-	public void setpSystem(PreservationSystem pSystem) {
-		this.pSystem = pSystem;
 	}
 }

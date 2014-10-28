@@ -138,9 +138,17 @@ public class IngestAreaScannerWorker {
 				for (String child:scanContractorFolderForReadyFiles(contractorShortName, currentTimeStamp)){
 					
 					logger.info("Found file \""+child+"\" in ingest Area. Creating job for \""+contractorShortName+"\"");
-					Object object = registerObjectService.registerObject( child, contractor);	
-
-					logger.debug("Created new Object with id: "+object.getData_pk());
+					
+					Object object=null;
+					try {
+						object = registerObjectService.registerObject( child, contractor);	
+					}
+					catch (Exception e) {
+						logger.error("cannot register object "+child+" for contractor "+contractor+". Skip creating job for object.",e);
+						continue;
+					}
+					
+					logger.debug("Created new Object with id: "+object.getData_pk()+ "Now create job for object.");
 					
 					Session session2 = HibernateUtil.openSession();
 					session2.beginTransaction();
@@ -161,6 +169,9 @@ public class IngestAreaScannerWorker {
 		}
 			
 	}
+	
+	
+	
 	
 	/**
 	 * Insert job into queue.
@@ -184,6 +195,8 @@ public class IngestAreaScannerWorker {
 		session.save(job);
 		return job;
 	}
+	
+	
 	
 	
 	/**

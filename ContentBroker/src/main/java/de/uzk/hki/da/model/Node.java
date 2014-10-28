@@ -43,7 +43,7 @@ public class Node{
 	@JoinColumn(name="admin_id",unique=true)
 	private User admin;
 	
-	@ManyToMany(cascade = {CascadeType.ALL})
+	@ManyToMany
     @JoinTable(name="nodes_contractors", 
                 joinColumns={@JoinColumn(name="node_id")}, 
                 inverseJoinColumns={@JoinColumn(name="contractor_user_id")})
