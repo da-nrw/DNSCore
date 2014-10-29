@@ -97,9 +97,9 @@ public class RegisterObjectService {
 	/**
 	 * Compares the containerName of a SIP against the existing container names for that contractor.
 	 * <br>
-	 * If it already exists, the SIP is considered a delta and a new package for an existing object gets created and inserted into the object database.
+	 * If it already exists, the SIP is considered a delta and a new package for an existing object gets created and attached to the object.
 	 * <br>
-	 * If it does not exist, a new object and a first package gets created and inserted into the object database.
+	 * If it does not exist, a new object and a first package gets created.
 	 * In addition to that, a new technical identifier gets created. Therefore the urn_index of localNode gets incremented and 
 	 * written back to the db immediately.
 	 * <br>
@@ -123,21 +123,8 @@ public class RegisterObjectService {
 			!= null) { // is delta then
 
 			updateExistingObject(obj, containerName);
-			
-			Session session = HibernateUtil.openSession();
-			session.beginTransaction();
-			session.update(obj);
-			session.getTransaction().commit();
-			session.close();
-
 		}else{
 			obj = createNewObject(containerName,origName,contractor);
-			
-			Session session = HibernateUtil.openSession();
-			session.beginTransaction();
-			session.save(obj);
-			session.getTransaction().commit();
-			session.close();
 		}
 		return obj;
 	}
