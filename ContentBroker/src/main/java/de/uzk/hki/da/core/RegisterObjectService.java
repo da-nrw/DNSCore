@@ -43,7 +43,7 @@ import de.uzk.hki.da.utils.Utilities;
  * Registers objects at a certain node.
  * 
  * This object is intended to be wired up as a Spring bean and as a singleton. It should get created once and then 
- * the localNode id has to be set. Than it should get initialized via the init method. 
+ * the localNode and preservationSystem ids have to be set. Then it should get initialized via the init method. 
  * Only then registerObject should be called.
  * 
  * @author Daniel M. de Oliveira
