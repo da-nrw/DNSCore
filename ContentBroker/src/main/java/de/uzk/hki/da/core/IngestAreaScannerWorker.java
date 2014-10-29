@@ -99,7 +99,7 @@ public class IngestAreaScannerWorker {
 	private Map<String,Long> files = new HashMap<String,Long>();
 	
 	/** The contractor short names. */
-	private List<String> contractorShortNames = new ArrayList<String>();
+	private List<User> contractors = new ArrayList<User>();
 
 	/**
 	 * Inits the.
@@ -113,7 +113,13 @@ public class IngestAreaScannerWorker {
 		for (int i=0;i<children.length;i++){
 		
 			logger.info(children[i]);
-			contractorShortNames.add(children[i]);
+			
+			Session session = HibernateUtil.openSession();
+			session.beginTransaction();
+			User contractor = getContractor(session, children[i]);
+			session.close();
+			
+			contractors.add(contractor);
 		}
 	}
 	
@@ -126,18 +132,14 @@ public class IngestAreaScannerWorker {
 		
 			long currentTimeStamp = System.currentTimeMillis();
 			
-			for (String contractorShortName:contractorShortNames){
+			for (User contractor:contractors){
 			
-				Session session = HibernateUtil.openSession();
-				session.beginTransaction();
-				User contractor = getContractor(session, contractorShortName);
-				session.close();
 				
 				
-				logger.debug("Scanning folder of contractor: "+contractorShortName);
-				for (String child:scanContractorFolderForReadyFiles(contractorShortName, currentTimeStamp)){
+				logger.debug("Scanning folder of contractor: "+contractor.getShort_name());
+				for (String child:scanContractorFolderForReadyFiles(contractor.getShort_name(), currentTimeStamp)){
 					
-					logger.info("Found file \""+child+"\" in ingest Area. Creating job for \""+contractorShortName+"\"");
+					logger.info("Found file \""+child+"\" in ingest Area. Creating job for \""+contractor.getShort_name()+"\"");
 					
 					Object object=null;
 					try {
@@ -150,17 +152,12 @@ public class IngestAreaScannerWorker {
 					
 					logger.debug("Created new Object with id: "+object.getData_pk()+ "Now create job for object.");
 					
-					Session session2 = HibernateUtil.openSession();
-					session2.beginTransaction();
-					session2.update(object);
-					insertJobIntoQueue(
-							session2,
+					
+					insertJobIntoQueueAndSetWorkFlowState(
 							contractor, 
 							convertMaskedSlashes(FilenameUtils.removeExtension(child)),
 							localNodeId,
 							object);
-					session2.getTransaction().commit();
-					session2.close();
 					
 				}
 			}
@@ -182,8 +179,14 @@ public class IngestAreaScannerWorker {
 	 * @param responsibleNodeName the initial node name
 	 * @return the job
 	 */
-	private Job insertJobIntoQueue(Session session, User c,String origName,String responsibleNodeId,Object object){
+	private Job insertJobIntoQueueAndSetWorkFlowState(User c,String origName,String responsibleNodeId,Object object){
 
+		object.setObject_state(Object.ObjectStatus.InWorkflow);
+		
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.update(object);
+		
 		Node node = (Node) session.get(Node.class,Integer.parseInt(responsibleNodeId));
 		
 		Job job = new Job();
@@ -194,6 +197,10 @@ public class IngestAreaScannerWorker {
 		job.setDate_created(String.valueOf(new Date().getTime()/1000L));
 	
 		session.save(job);
+		session.getTransaction().commit();
+		
+		session.close();
+
 		return job;
 	}
 	
@@ -244,14 +251,13 @@ public class IngestAreaScannerWorker {
 			
 			if (!files.containsKey(children[i])){
 
-				Session session = HibernateUtil.openSession();
-				session.beginTransaction();
-				if (getJob(session, convertMaskedSlashes(FilenameUtils.removeExtension(children[i])),
-						contractorShortName) == null) {				
+				
+				Job job = getJob( convertMaskedSlashes(FilenameUtils.removeExtension(children[i])),
+						contractorShortName);
+				if ( job == null) { // consider only containers for which there is not already a job in queue since it is possible that the CB has stopped and now resumes work.
 					logger.debug("New file found, making timestamp for: "+children[i]);
 					files.put(children[i], currentTimeStamp);
 				}
-				session.close();
 			}
 			else
 			{
@@ -278,7 +284,9 @@ public class IngestAreaScannerWorker {
 	 * @return the job
 	 */
 	@SuppressWarnings("unchecked")
-	private Job getJob(Session session, String orig_name, String csn) {
+	private Job getJob(String orig_name, String csn) {
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
 		List<Job> l = null;
 	
 		try {
@@ -289,8 +297,10 @@ public class IngestAreaScannerWorker {
 							.setParameter("2", csn)
 							.setReadOnly(true).list();
 			
+			session.close();
 			return l.get(0);
 		} catch (IndexOutOfBoundsException e) {
+			session.close();
 			logger.debug("search for a job with orig_name " + orig_name + " for user " +
 						 csn + " returns null!");
 			return null;

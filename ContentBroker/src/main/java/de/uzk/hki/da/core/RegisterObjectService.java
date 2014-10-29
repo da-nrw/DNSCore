@@ -103,7 +103,6 @@ public class RegisterObjectService {
 	 * In addition to that, a new technical identifier gets created. Therefore the urn_index of localNode gets incremented and 
 	 * written back to the db immediately.
 	 * <br>
-	 * As a side effect sets the objects state always to 50, even if it already exists.
 	 *
 	 * @param containerName the file name of the container
 	 * @param contractor the contractor who owns the container
@@ -154,7 +153,6 @@ public class RegisterObjectService {
 		if (obj.getObject_state()<50) throw new UserException(UserExceptionId.DELTA_RECIEVED_BEFORE_ARCHIVED, "Delta Record für ein nicht fertig archiviertes Objekt");
 		logger.info("Package is a delta record for Object with identifier: "+obj.getIdentifier());
 		obj.getPackages().add(newPkg);
-		obj.setObject_state(50);
 	}
 	
 	
@@ -165,7 +163,7 @@ public class RegisterObjectService {
 		
 		logger.info("Creating new Object with identifier " + identifier);
 		Object obj = new Object();
-		obj.setObject_state(40);
+		obj.setObject_state(Object.ObjectStatus.InitState);
 		
 		obj.setIdentifier(identifier);
 		

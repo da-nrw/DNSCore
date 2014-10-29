@@ -68,6 +68,7 @@ import de.uzk.hki.da.utils.Utilities;
 public class Object {
 	
 	public static class ObjectStatus {
+		public static final Integer InitState = 0;
 		public static final Integer UnderAudit = 60;
 		public static final Integer InWorkflow = 50;
 		public static final Integer Error = 51;

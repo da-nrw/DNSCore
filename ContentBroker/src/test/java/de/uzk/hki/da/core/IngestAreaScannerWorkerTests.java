@@ -52,6 +52,8 @@ public class IngestAreaScannerWorkerTests {
 	@Before
 	public void setUp() throws IOException{
 		
+		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
+		
 		context = new FileSystemXmlApplicationContext(basePath+"IngestAreaScanner.xml");
 		
 //		BaseThreadDatabaseOperations ops = mock(BaseThreadDatabaseOperations.class);
