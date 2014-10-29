@@ -152,6 +152,7 @@ public class IngestAreaScannerWorker {
 					
 					Session session2 = HibernateUtil.openSession();
 					session2.beginTransaction();
+					session2.update(object);
 					insertJobIntoQueue(
 							session2,
 							contractor, 

@@ -42,45 +42,57 @@ import de.uzk.hki.da.utils.Utilities;
 /**
  * Registers objects at a certain node.
  * 
+ * This object is intended to be wired up as a Spring bean and as a singleton. It should get created once and then 
+ * the localNode id has to be set. Than it should get initialized via the init method. 
+ * Only then registerObject should be called.
+ * 
  * @author Daniel M. de Oliveira
  * @author Thomas Kleinke
  *
  */
 public class RegisterObjectService {
 
-	private static final String MSG_NODE_NULL="local node is null. Make sure the init method has been called prior to calling incrementURNindex.";
 	private static final Logger logger = LoggerFactory.getLogger(RegisterObjectService.class);
 
-	private Node localNode;
-	private PreservationSystem pSystem;
-
+	private String localNodeName;
+	private String urnNameSpace;
+	
+	private int localNodeId;
+	private int preservationSystemId;
+	
+	private static boolean singletonInstanceCreated = false;
 	private static boolean initialized = false;
 	
 	/**
 	 * 
 	 */
 	public RegisterObjectService(){
-		if (initialized) throw new IllegalStateException("Will not instantiate a second instance.");
-		initialized = true;
+		if (singletonInstanceCreated) throw new IllegalStateException("Will not instantiate a second instance.");
+		singletonInstanceCreated = true;
 	}
 	
 	/**
 	 * Init method for getting wired up by Spring.
 	 */
 	public void init(){
-		pSystem = new PreservationSystem(); pSystem.setId(1);
-		
+		PreservationSystem pSystem = new PreservationSystem(); pSystem.setId(preservationSystemId);
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
+		session.refresh(pSystem);
+		urnNameSpace=pSystem.getUrnNameSpace();
+		Node node=null;
 		try {
-			session.refresh(localNode);
-			session.refresh(pSystem);
+			node = (Node) session.get(Node.class,localNodeId);
 		} catch (UnresolvableObjectException e){
-			throw new IllegalStateException("Node "+localNode.getId()+"does not exist in db");
+			throw new IllegalStateException("Node "+localNodeId+"does not exist in db");
 		}
-		if (localNode.getUrn_index() < 0)
+		if (node.getUrn_index() < 0)
 			throw new IllegalStateException("Node's urn_index must not be lower than 0");
+		localNodeName=node.getName();
+		session.close();
+		initialized=true;
 	}
+	
 	
 	/**
 	 * Compares the containerName of a SIP against the existing container names for that contractor.
@@ -99,28 +111,19 @@ public class RegisterObjectService {
 	 * @throws UserException when trying to register a delta record for an object which is not archived (<50) yet
 	 */
 	public Object registerObject(String containerName,User contractor){
-		
+		if (!initialized) throw new IllegalStateException("call init first");
 		if (contractor==null) 
 			throw new IllegalArgumentException("contractor is null");
 		if (contractor.getShort_name()==null||contractor.getShort_name().isEmpty())
 			throw new IllegalArgumentException("contractor short name not set");
-		if (localNode==null)
-			throw new IllegalStateException(MSG_NODE_NULL);
 		
 		String origName = convertMaskedSlashes(FilenameUtils.removeExtension(containerName));
 
-		Object obj = getObject(origName,contractor.getShort_name());
-		if (obj != null) { // is delta then
+		Object obj;
+		if ((obj=getUniqueObject(origName,contractor.getShort_name())) 
+			!= null) { // is delta then
 
-			List<Package> packs = obj.getPackages();
-
-			Package newPkg = new Package();
-			newPkg.setName(generateNewPackageName(packs));
-			newPkg.setContainerName(containerName);
-			if (obj.getObject_state()<50) throw new UserException(UserExceptionId.DELTA_RECIEVED_BEFORE_ARCHIVED, "Delta Record für ein nicht fertig archiviertes Objekt");
-			logger.info("Package is a delta record for Object with identifier: "+obj.getIdentifier());
-			obj.getPackages().add(newPkg);
-			obj.setObject_state(50);
+			updateExistingObject(obj, containerName);
 			
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
@@ -130,18 +133,35 @@ public class RegisterObjectService {
 
 		}else{
 			obj = createNewObject(containerName,origName,contractor);
+			
+			Session session = HibernateUtil.openSession();
+			session.beginTransaction();
+			session.save(obj);
+			session.getTransaction().commit();
+			session.close();
 		}
 		return obj;
 	}
 
 	
+	private void updateExistingObject(Object obj,String containerName){
+		
+		List<Package> packs = obj.getPackages();
+
+		Package newPkg = new Package();
+		newPkg.setName(generateNewPackageName(packs));
+		newPkg.setContainerName(containerName);
+		if (obj.getObject_state()<50) throw new UserException(UserExceptionId.DELTA_RECIEVED_BEFORE_ARCHIVED, "Delta Record für ein nicht fertig archiviertes Objekt");
+		logger.info("Package is a delta record for Object with identifier: "+obj.getIdentifier());
+		obj.getPackages().add(newPkg);
+		obj.setObject_state(50);
+	}
+	
 	
 	
 	private Object createNewObject(String containerName,String origName,User contractor) {
 		
-		String identifier;
-		
-		identifier = convertURNtoTechnicalIdentifier(generateURNForNode());
+		final String identifier = convertURNtoTechnicalIdentifier(generateURNForNode(localNodeId));
 		
 		logger.info("Creating new Object with identifier " + identifier);
 		Object obj = new Object();
@@ -159,14 +179,8 @@ public class RegisterObjectService {
 		obj.setDate_created(String.valueOf(new Date().getTime()));
 		obj.setDate_modified(String.valueOf(new Date().getTime()));
 		obj.setLast_checked(new Date());
-		obj.setInitial_node(localNode.getName());
+		obj.setInitial_node(localNodeName);
 		obj.setOrig_name(origName);
-		
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		session.save(obj);
-		session.getTransaction().commit();
-		session.close();
 		
 		return obj;
 	}
@@ -188,23 +202,7 @@ public class RegisterObjectService {
 	 */
 	private String convertURNtoTechnicalIdentifier(String urn) {
 		
-		return urn.replace(getpSystem().getUrnNameSpace() + "-", "");
-	}
-
-	/**
-	 * Gets the object.
-	 *
-	 * @param job the job
-	 * @param n the local node
-	 * @return null if not found.
-	 */
-	private Object getObject(String origName,String contractorShortName) {
-
-		Session session = HibernateUtil.openSession();
-		session.getTransaction().begin();
-		Object object = getUniqueObject(session,origName, contractorShortName);
-		session.close();
-		return object;
+		return urn.replace(urnNameSpace + "-", "");
 	}
 
 	
@@ -218,7 +216,9 @@ public class RegisterObjectService {
 	 * @author Stefan Kreinberg
 	 * @author Thomas Kleinke
 	 */
-	private Object getUniqueObject(Session session,String orig_name, String csn) {
+	private Object getUniqueObject(String orig_name, String csn) {
+		Session session = HibernateUtil.openSession();
+		session.getTransaction().begin();
 		
 		User contractor = getContractor(session, csn);
 		
@@ -230,13 +230,16 @@ public class RegisterObjectService {
 							.setParameter("1", orig_name)
 							.setParameter("2", contractor.getId())
 							.list();
-
-			if (l.size() > 1)
-				throw new RuntimeException("Found more than one object with name " + orig_name +
-									" for user " + csn + "!");
 			
+			if (l.size() > 1) {
+				session.close();
+				throw new RuntimeException("Found more than one object with name " + orig_name +
+						" for user " + csn + "!");
+				
+			}
 			Object o = (Object) l.get(0);
 			o.setContractor(contractor);
+			session.close();
 			return o;
 		} catch (IndexOutOfBoundsException e1) {
 			try {
@@ -248,12 +251,14 @@ public class RegisterObjectService {
 					.setParameter("2", contractor.getId())
 					.list();
 
-				if (l.size() > 1)
+				if (l.size() > 1) {
+					session.close();
 					throw new RuntimeException("Found more than one object with name " + orig_name +
-								" for user " + csn + "!");
-				
+							" for user " + csn + "!");
+				}
 				Object o = (Object) l.get(0);
 				o.setContractor(contractor);
+				session.close();
 				return o;
 			} catch (IndexOutOfBoundsException e2) {
 				logger.debug("Search for an object with objectIdentifier " + orig_name + " for user " +
@@ -261,9 +266,11 @@ public class RegisterObjectService {
 			}	
 			
 		} catch (Exception e) {
+			session.close();
 			return null;
 		}
 		
+		session.close();
 		return null;
 	}
 	
@@ -313,23 +320,16 @@ public class RegisterObjectService {
 	
 	/**
 	 * Generates a URN of the form [nameSpace]-[node_id]-[number].
-	 * The generated number is ensured to be unique per node_id 
-	 * (the system never generates the same
-	 * number twice for any given [nodeId] across the database).
-	 * Increments the urn_index of node and writes it back to the 
-	 * database immediately on every call.
 	 * 
 	 * @return the generated URN.
 	 * @author Daniel M. de Oliveira
 	 */
-	private String generateURNForNode(){
-		// Must be synchronized to block other processes from 
-		// fetching and incrementing the same urn_index, upon which [number] is based.
+	private String generateURNForNode(int nodeId){
 		
-		String base = getpSystem().getUrnNameSpace()+"-"
-				+ localNode.getId()+"-"
+		String base = urnNameSpace+"-"
+				+ nodeId+"-"
 				+ Utilities.todayAsSimpleIsoDate(new Date())
-				+ incrementURNindex();
+				+ incrementURNindex(nodeId);
 
 		return base + (new URNCheckDigitGenerator()).checkDigit( base );
 	}
@@ -337,50 +337,52 @@ public class RegisterObjectService {
 	
 	
 	/**
-	 * @return
+	 * Increments the urn_index of node and writes it back to the 
+	 * database immediately on every call.
+	 *
+	 * The generated number is ensured to be unique per node_id 
+	 * (the system never generates the same
+	 * number twice for any given [nodeId] across the database).
+	 *
+	 * @return the new value of the urn index for the node with the id node id. 
 	 */
-	private synchronized int incrementURNindex(){
-		logger.debug("INCREMENT URN INDEX");
-		
-		if (localNode==null) throw 
-			new IllegalStateException(MSG_NODE_NULL);
-	
+	private 
+	synchronized // only one thread per node is allowed to increment the nodes urn index. 
+	int incrementURNindex(int nodeId){
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
-		session.refresh(localNode);
+		
+		Node node = // making sure to work with a local copy of node object to prevent it from being modified by other threads. 
+				(Node) session.get(Node.class,nodeId); 
+
+		int incrementedURNIndex = node.getUrn_index()+1;
+		logger.debug("Updating local node urn index "+node.getUrn_index()+" to "+incrementedURNIndex);
+
+		session.update(node); // further changes are tracked. 
+		node.setUrn_index(incrementedURNIndex);
+		session.getTransaction().commit();
 		session.close();
 		
-		int incrementedURNIndex = localNode.getUrn_index()+1;
-		logger.debug("Updating local node urn index "+localNode.getUrn_index()+" to "+incrementedURNIndex);
-
-		Session session2 = HibernateUtil.openSession();
-		session2.getTransaction().begin();
-		session2.update(localNode); // further changes are tracked. 
-		localNode.setUrn_index(incrementedURNIndex);
-		session2.getTransaction().commit();
-		session2.close();
-		
-		if (incrementedURNIndex!=localNode.getUrn_index()){ 
-			throw new RuntimeException("SERIOUS TROUBLE. It seems the database has not been updated properly (value:"+localNode.getUrn_index()+")");
+		if (incrementedURNIndex!=node.getUrn_index()){ 
+			throw new RuntimeException("SERIOUS TROUBLE. It seems the database has not been updated properly (value:"+node.getUrn_index()+")");
 		}
 		
 		return incrementedURNIndex;
 	}
-	
-	
-	
-	
-	public void setLocalNode(Node localNode) {
-		if (localNode==null) 
-			throw new IllegalArgumentException("localNode is null");
-		this.localNode = localNode;
+
+	public String getLocalNodeId() {
+		return new Integer(localNodeId).toString();
 	}
 
-	public void setpSystem(PreservationSystem pSystem) {
-		this.pSystem = pSystem;
+	public void setLocalNodeId(String localNodeId) {
+		this.localNodeId = Integer.parseInt(localNodeId);
 	}
 
-	public PreservationSystem getpSystem() {
-		return pSystem;
+	public String getPreservationSystemId() {
+		return new Integer(preservationSystemId).toString();
+	}
+
+	public void setPreservationSystemId(String preservationSystemId) {
+		this.preservationSystemId = Integer.parseInt(preservationSystemId);
 	}
 }

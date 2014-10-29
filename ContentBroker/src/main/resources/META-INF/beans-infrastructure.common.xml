@@ -80,9 +80,10 @@
         <property name="mqConnectionFactory" ref="mqConnectionFactory"/>
     </bean>
     
-   <bean id="registerObjectService" class="de.uzk.hki.da.core.RegisterObjectService" init-method="init">
-		<property name="localNode" ref="localNode" />
-  	</bean>
+   <bean id="registerObjectService" class="de.uzk.hki.da.core.RegisterObjectService" init-method="init" >
+   		<property name="localNodeId" value="${localNode.id}"/>
+   		<property name="preservationSystemId" value="1" />
+   </bean>
   
 	<bean class="de.uzk.hki.da.ff.StandardFileFormatFacade" id="standardFileFormatFacade"/>
     <bean class="de.uzk.hki.da.action.QueueConnector" id="queueConnector"/>

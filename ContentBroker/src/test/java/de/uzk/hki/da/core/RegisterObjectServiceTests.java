@@ -42,6 +42,7 @@ public class RegisterObjectServiceTests {
 
 	private Node node;
 	private User contractor;
+	private PreservationSystem pSystem;
 
 
 	/**
@@ -60,25 +61,34 @@ public class RegisterObjectServiceTests {
 	 */
 	@Before
 	public void setUp(){
+
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
 		session.createSQLQuery("DELETE FROM nodes").executeUpdate();
-		
-		session.getTransaction().commit();
-		session.close();
+		session.createSQLQuery("DELETE FROM preservation_system").executeUpdate();
 		
 		node = new Node("vm1","vm1-01");
 		node.setUrn_index(92);
 		contractor = new User();
 		contractor.setShort_name("TEST");
+		session.save(contractor);
+		session.flush();
+		
+		pSystem = new PreservationSystem();
+		pSystem.setUrnNameSpace("urn:nbn:de:danrw");
+		pSystem.setMinRepls(1);
+		pSystem.setAdmin(contractor);
 
-		Session session2 = HibernateUtil.openSession();
-		session2.getTransaction().begin();
-		session2.save(node);
-		session2.save(contractor);
-		session2.getTransaction().commit();
-		session2.close();
+		session.save(node);
+		session.save(pSystem);
+		
+		
+		
+		session.getTransaction().commit();
+		session.close();
+
+
 	}
 	
 	/**
@@ -89,6 +99,7 @@ public class RegisterObjectServiceTests {
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
 		session.createSQLQuery("DELETE FROM nodes").executeUpdate();
+		session.createSQLQuery("DELETE from preservation_system").executeUpdate();
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -103,12 +114,11 @@ public class RegisterObjectServiceTests {
 	 */
 	@Test
 	public void testGenerateURNForNode(){
-		PreservationSystem pSystem = new PreservationSystem();
-		pSystem.setUrnNameSpace("urn:nbn:de:danrw");
 		
 		RegisterObjectService registerObjectService = new RegisterObjectService();
-		registerObjectService.setpSystem(pSystem);
-		registerObjectService.setLocalNode(node);
+		registerObjectService.setLocalNodeId(new Integer(node.getId()).toString());
+		registerObjectService.setPreservationSystemId(new Integer(pSystem.getId()).toString());
+		registerObjectService.init();
 		
 		Object object = registerObjectService.registerObject("containerName", contractor);
 		String identifierWithoutURNCheckDigit =  object.getIdentifier().substring(0, object.getIdentifier().length()-1);
