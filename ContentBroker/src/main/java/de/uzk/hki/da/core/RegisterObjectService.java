@@ -95,19 +95,22 @@ public class RegisterObjectService {
 	
 	
 	/**
-	 * Compares the containerName of a SIP against the existing container names for that contractor.
-	 * <br>
-	 * If it already exists, the SIP is considered a delta and a new package for an existing object gets created and attached to the object.
-	 * <br>
-	 * If it does not exist, a new object and a first package gets created.
-	 * In addition to that, a new technical identifier gets created. Therefore the urn_index of localNode gets incremented and 
-	 * written back to the db immediately.
-	 * <br>
+	 * Compares the csn/origName pair of a SIP which identifies an object uniquely against the database.
+	 * If there is a match, the SIP is considered a delta. If not is considered a primary import.
+	 * <br><br>
+	 * If the SIP is a delta, a new package gets created and attached to the object (which gets fetched from db).
+	 * If it is a primary import, a new object gets created. In this case a new technical identifier gets created, which
+	 * is base on the nodes urn index and the preservation systems urnNameSpace. The nodes urn index gets incremented when
+	 * generating the identifier. The database record gets updated. For security reasons the the object database gets checked of
+	 * the identifier does not already exist.
 	 *
-	 * @param containerName the file name of the container
+	 * @param containerName the file name of the SIP container
 	 * @param contractor the contractor who owns the container
 	 * 
 	 * @throws UserException when trying to register a delta record for an object which is not archived (<50) yet
+	 * @throws IllegalStateException if the system tries to generate an identifier for which an object already exists. 
+	 * 
+	 * @return the object.
 	 */
 	public Object registerObject(String containerName,User contractor){
 		if (!initialized) throw new IllegalStateException("call init first");
@@ -122,9 +125,17 @@ public class RegisterObjectService {
 		if ((obj=getUniqueObject(origName,contractor.getShort_name())) 
 			!= null) { // is delta then
 
+			logger.info("Package is a delta record for Object with identifier: "+obj.getIdentifier());
 			updateExistingObject(obj, containerName);
 		}else{
+			final String identifier = convertURNtoTechnicalIdentifier(generateURNForNode(localNodeId));
+			
+			// check identifier
+			if (getUniqueObject(identifier)!=null) throw new IllegalStateException("CRITICAL SYSTEM ERROR: DUPLICATE IDENTIFIER");
+			
+			logger.info("Creating new Object with identifier " + identifier);
 			obj = createNewObject(containerName,origName,contractor);
+			obj.setIdentifier(identifier);
 		}
 		return obj;
 	}
@@ -138,7 +149,6 @@ public class RegisterObjectService {
 		newPkg.setName(generateNewPackageName(packs));
 		newPkg.setContainerName(containerName);
 		if (obj.getObject_state()<50) throw new UserException(UserExceptionId.DELTA_RECIEVED_BEFORE_ARCHIVED, "Delta Record für ein nicht fertig archiviertes Objekt");
-		logger.info("Package is a delta record for Object with identifier: "+obj.getIdentifier());
 		obj.getPackages().add(newPkg);
 	}
 	
@@ -146,13 +156,8 @@ public class RegisterObjectService {
 	
 	private Object createNewObject(String containerName,String origName,User contractor) {
 		
-		final String identifier = convertURNtoTechnicalIdentifier(generateURNForNode(localNodeId));
-		
-		logger.info("Creating new Object with identifier " + identifier);
 		Object obj = new Object();
 		obj.setObject_state(Object.ObjectStatus.InitState);
-		
-		obj.setIdentifier(identifier);
 		
 		Package newPkg = new Package();
 		newPkg.setName("1");
@@ -190,6 +195,26 @@ public class RegisterObjectService {
 		return urn.replace(urnNameSpace + "-", "");
 	}
 
+	private Object getUniqueObject(String identifier) {
+		Session session = HibernateUtil.openSession();
+		session.getTransaction().begin();
+		
+		@SuppressWarnings("rawtypes")
+		List l = null;
+	
+			l = session.createQuery("from Object where identifier=?1")
+							.setParameter("1", identifier)
+						.list();
+		session.close();
+		try {
+			l.get(0);
+		}catch(IndexOutOfBoundsException e)
+		{
+			return null;
+		}
+		return (Object) l.get(0);
+	}
+			
 	
 	/**
 	 * Retrieves Object from the Object Table for a given orig_name and contractor short name.

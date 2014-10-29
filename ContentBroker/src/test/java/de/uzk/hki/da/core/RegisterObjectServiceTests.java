@@ -20,18 +20,19 @@
 package de.uzk.hki.da.core;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.Date;
 
 import org.hibernate.classic.Session;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -40,13 +41,14 @@ import de.uzk.hki.da.utils.Utilities;
  */
 public class RegisterObjectServiceTests {
 
-	private Node node;
-	private User contractor;
-	private PreservationSystem pSystem;
+	private static Node node;
+	private static User contractor;
+	private static PreservationSystem pSystem;
+	private static RegisterObjectService registerObjectService;
 
 
 	/**
-	 * TODO Up til now i couldn't find a sample test suite of valid URNs.
+	 * TODO Up until now i couldn't find a sample test suite of valid URNs.
 	 * Tests URNCheckDigitGenerator.checkDigit
 	 * @author: Daniel M. de Oliveira
 	 */
@@ -59,8 +61,8 @@ public class RegisterObjectServiceTests {
 	/**
 	 * Sets the up.
 	 */
-	@Before
-	public void setUp(){
+	@BeforeClass
+	public static void setUp(){
 
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		Session session = HibernateUtil.openSession();
@@ -70,6 +72,7 @@ public class RegisterObjectServiceTests {
 		
 		node = new Node("vm1","vm1-01");
 		node.setUrn_index(92);
+		
 		contractor = new User();
 		contractor.setShort_name("TEST");
 		session.save(contractor);
@@ -85,17 +88,22 @@ public class RegisterObjectServiceTests {
 		
 		
 		
+		
 		session.getTransaction().commit();
 		session.close();
 
+		registerObjectService = new RegisterObjectService();
+		registerObjectService.setLocalNodeId(new Integer(node.getId()).toString());
+		registerObjectService.setPreservationSystemId(new Integer(pSystem.getId()).toString());
+		registerObjectService.init();
 
 	}
 	
 	/**
 	 * Tear down.
 	 */
-	@After
-	public void tearDown() {
+	@AfterClass
+	public static void tearDown() {
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
 		session.createSQLQuery("DELETE FROM nodes").executeUpdate();
@@ -103,6 +111,10 @@ public class RegisterObjectServiceTests {
 		session.getTransaction().commit();
 		session.close();
 	}
+	
+	
+
+
 	
 	
 	/**
@@ -115,15 +127,36 @@ public class RegisterObjectServiceTests {
 	@Test
 	public void testGenerateURNForNode(){
 		
-		RegisterObjectService registerObjectService = new RegisterObjectService();
-		registerObjectService.setLocalNodeId(new Integer(node.getId()).toString());
-		registerObjectService.setPreservationSystemId(new Integer(pSystem.getId()).toString());
-		registerObjectService.init();
-		
 		Object object = registerObjectService.registerObject("containerName", contractor);
 		String identifierWithoutURNCheckDigit =  object.getIdentifier().substring(0, object.getIdentifier().length()-1);
 		
 		assertEquals(node.getId()+"-"+ Utilities.todayAsSimpleIsoDate(new Date())+"93",identifierWithoutURNCheckDigit);
 	}
+	
+	
+	@Test
+	public void tryGeneratingExistingIdentifier() {
+		Session session = HibernateUtil.openSession();
+		session.getTransaction().begin();
+		node.setUrn_index(92);
+		session.update(node);
+		Object o = new Object();
+		String urnWithoutCheckDigit=pSystem.getUrnNameSpace()+"-"+node.getId()+"-"+ Utilities.todayAsSimpleIsoDate(new Date())+"93";
+		String urn=urnWithoutCheckDigit+new URNCheckDigitGenerator().checkDigit(urnWithoutCheckDigit);
+		String identifier=urn.replace(pSystem.getUrnNameSpace()+"-", "");
+		o.setIdentifier(identifier);
+		session.save(o);
+		session.getTransaction().commit();
+		session.close();
+		
+		try {
+			registerObjectService.registerObject("containerName", contractor);
+			fail();
+		}catch(IllegalStateException e){
+			System.out.println("Excpected error. "+e);
+		}
+	}
+
+	
 	
 }
