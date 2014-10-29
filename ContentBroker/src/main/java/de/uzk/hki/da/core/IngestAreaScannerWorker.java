@@ -289,18 +289,17 @@ public class IngestAreaScannerWorker {
 		session.beginTransaction();
 		List<Job> l = null;
 	
-		try {
 			l = session.createQuery(
 					"SELECT j FROM Job j left join j.obj as o left join o.user as c where o.orig_name=?1 and c.short_name=?2"
 					)
 							.setParameter("1", orig_name)
 							.setParameter("2", csn)
 							.setReadOnly(true).list();
-			
-			session.close();
+		session.close();
+
+		try {
 			return l.get(0);
 		} catch (IndexOutOfBoundsException e) {
-			session.close();
 			logger.debug("search for a job with orig_name " + orig_name + " for user " +
 						 csn + " returns null!");
 			return null;
