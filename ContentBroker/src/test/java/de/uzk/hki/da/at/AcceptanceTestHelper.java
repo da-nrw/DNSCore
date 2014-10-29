@@ -38,6 +38,7 @@ import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.ObjectNamedQueryDAO;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.User;
@@ -113,14 +114,13 @@ public class AcceptanceTestHelper {
 	
 	Object fetchObjectFromDB(String originalName){
 		Object object = null;
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
 		try {
-			object = getUniqueObject(session,originalName, testContractor.getShort_name());
+			object = new ObjectNamedQueryDAO().getUniqueObject(originalName, testContractor.getShort_name());
 		} catch (Exception e) {
 			fail("more than 1 Object found!"); 
 		}
-		session.close();
+		if (object==null) throw new RuntimeException("cannot find object");
+		
 		return object;
 	}
 
@@ -503,87 +503,7 @@ public class AcceptanceTestHelper {
 		return object;
 	}
 
-	/**
-	 * Retrieves Object from the Object Table for a given orig_name and contractor short name.
-	 *
-	 * @param orig_name the orig_name
-	 * @param csn the csn
-	 * @return Object object or null if no object with the given combination of orig_name and
-	 * contractor short name could be found
-	 * @author Stefan Kreinberg
-	 * @author Thomas Kleinke
-	 */
-	Object getUniqueObject(Session session,String orig_name, String csn) {
-		
-		User contractor = getContractor(session, csn);
-		
-		@SuppressWarnings("rawtypes")
-		List l = null;
-	
-		try {
-			l = session.createQuery("from Object where orig_name=?1 and user_id=?2")
-							.setParameter("1", orig_name)
-							.setParameter("2", contractor.getId())
-							.list();
 
-			if (l.size() > 1)
-				throw new RuntimeException("Found more than one object with name " + orig_name +
-									" for user " + csn + "!");
-			
-			Object o = (Object) l.get(0);
-			o.setContractor(contractor);
-			return o;
-		} catch (IndexOutOfBoundsException e1) {
-			try {
-//				logger.debug("Search for an object with orig_name " + orig_name + " for user " +
-//						csn + " returns null! Try to find objects with objectIdentifier " + orig_name);
-			
-				l = session.createQuery("from Object where identifier=?1 and user_id=?2")
-					.setParameter("1", orig_name)
-					.setParameter("2", contractor.getId())
-					.list();
-
-				if (l.size() > 1)
-					throw new RuntimeException("Found more than one object with name " + orig_name +
-								" for user " + csn + "!");
-				
-				Object o = (Object) l.get(0);
-				o.setContractor(contractor);
-				return o;
-			} catch (IndexOutOfBoundsException e2) {
-//				logger.debug("Search for an object with objectIdentifier " + orig_name + " for user " +
-//						csn + " returns null!");	
-			}	
-			
-		} catch (Exception e) {
-			return null;
-		}
-		
-		return null;
-	}
-	
-
-	/**
-	 * Gets the contractor.
-	 *
-	 * @param contractorShortName the contractor short name
-	 * @return null if no contractor for short name could be found
-	 */
-	private User getContractor(Session session, String contractorShortName) {
-//		logger.trace("CentralDatabaseDAO.getContractor(\"" + contractorShortName + "\")");
-	
-		@SuppressWarnings("rawtypes")
-		List list;	
-		list = session.createQuery("from User where short_name=?1")
-	
-				.setParameter("1",contractorShortName).setReadOnly(true).list();
-		
-		if (list.isEmpty())
-			return null;
-	
-		return (User) list.get(0);
-	}
-	
 	
 
 	/**

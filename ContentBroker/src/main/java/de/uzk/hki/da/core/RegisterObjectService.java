@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.ObjectNamedQueryDAO;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
@@ -122,7 +123,7 @@ public class RegisterObjectService {
 		String origName = convertMaskedSlashes(FilenameUtils.removeExtension(containerName));
 
 		Object obj;
-		if ((obj=getUniqueObject(origName,contractor.getShort_name())) 
+		if ((obj=(new ObjectNamedQueryDAO().getUniqueObject(origName,contractor.getShort_name()))) 
 			!= null) { // is delta then
 
 			logger.info("Package is a delta record for Object with identifier: "+obj.getIdentifier());
@@ -216,94 +217,9 @@ public class RegisterObjectService {
 	}
 			
 	
-	/**
-	 * Retrieves Object from the Object Table for a given orig_name and contractor short name.
-	 *
-	 * @param orig_name the orig_name
-	 * @param csn the csn
-	 * @return Object object or null if no object with the given combination of orig_name and
-	 * contractor short name could be found
-	 * @author Stefan Kreinberg
-	 * @author Thomas Kleinke
-	 */
-	private Object getUniqueObject(String orig_name, String csn) {
-		Session session = HibernateUtil.openSession();
-		session.getTransaction().begin();
-		
-		User contractor = getContractor(session, csn);
-		
-		@SuppressWarnings("rawtypes")
-		List l = null;
 	
-		try {
-			l = session.createQuery("from Object where orig_name=?1 and user_id=?2")
-							.setParameter("1", orig_name)
-							.setParameter("2", contractor.getId())
-							.list();
-			
-			if (l.size() > 1) {
-				session.close();
-				throw new RuntimeException("Found more than one object with name " + orig_name +
-						" for user " + csn + "!");
-				
-			}
-			Object o = (Object) l.get(0);
-			o.setContractor(contractor);
-			session.close();
-			return o;
-		} catch (IndexOutOfBoundsException e1) {
-			try {
-				logger.debug("Search for an object with orig_name " + orig_name + " for user " +
-						csn + " returns null! Try to find objects with objectIdentifier " + orig_name);
-			
-				l = session.createQuery("from Object where identifier=?1 and user_id=?2")
-					.setParameter("1", orig_name)
-					.setParameter("2", contractor.getId())
-					.list();
-
-				if (l.size() > 1) {
-					session.close();
-					throw new RuntimeException("Found more than one object with name " + orig_name +
-							" for user " + csn + "!");
-				}
-				Object o = (Object) l.get(0);
-				o.setContractor(contractor);
-				session.close();
-				return o;
-			} catch (IndexOutOfBoundsException e2) {
-				logger.debug("Search for an object with objectIdentifier " + orig_name + " for user " +
-						csn + " returns null!");	
-			}	
-			
-		} catch (Exception e) {
-			session.close();
-			return null;
-		}
-		
-		session.close();
-		return null;
-	}
 	
-	/**
-	 * Gets the contractor.
-	 *
-	 * @param contractorShortName the contractor short name
-	 * @return null if no contractor for short name could be found
-	 */
-	private User getContractor(Session session, String contractorShortName) {
-		logger.trace("CentralDatabaseDAO.getContractor(\"" + contractorShortName + "\")");
 	
-		@SuppressWarnings("rawtypes")
-		List list;	
-		list = session.createQuery("from User where short_name=?1")
-	
-				.setParameter("1",contractorShortName).setReadOnly(true).list();
-		
-		if (list.isEmpty())
-			return null;
-	
-		return (User) list.get(0);
-	}
 	
 	
 	

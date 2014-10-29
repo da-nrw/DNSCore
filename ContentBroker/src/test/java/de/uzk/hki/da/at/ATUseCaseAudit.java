@@ -39,6 +39,7 @@ import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.ObjectNamedQueryDAO;
 
 
 /**
@@ -78,10 +79,8 @@ public class ATUseCaseAudit extends AcceptanceTest{
 	@Test
 	public void testHappyPath() throws Exception {
 		
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		object = ath.getUniqueObject(session, ORIGINAL_NAME, "TEST");
-		session.close();
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+		
 		// We'll destroy it now, if we 're on CI
 		// on dev machines FakeGridFacade will find special file in ATUseCaseAudit
 		if (System.getProperty("env").equals("ci"))
@@ -111,10 +110,7 @@ public class ATUseCaseAudit extends AcceptanceTest{
 	private boolean waitForObjectInStatus(int status) throws InterruptedException {	
 		while (true){
 			Thread.sleep(6000);
-			Session session = HibernateUtil.openSession();
-			session.beginTransaction();
-			Object object = ath.getUniqueObject(session, ORIGINAL_NAME, C.TEST_USER_SHORT_NAME);
-			session.close();		
+			Object object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, C.TEST_USER_SHORT_NAME);
 			if (object!=null){
 				
 				System.out.println("waiting for Object to be in state " + status + ". Is: "+object.getObject_state() + " last checked " + object.getLast_checked() );
