@@ -38,6 +38,7 @@ import de.uzk.hki.da.utils.Utilities;
 
 /**
  * The Class URNGeneratorTests.
+ * @author: Daniel M. de Oliveira
  */
 public class RegisterObjectServiceTests {
 
@@ -50,7 +51,6 @@ public class RegisterObjectServiceTests {
 	/**
 	 * TODO Up until now i couldn't find a sample test suite of valid URNs.
 	 * Tests URNCheckDigitGenerator.checkDigit
-	 * @author: Daniel M. de Oliveira
 	 */
 	@Test
 	public void testCheckDigit(){

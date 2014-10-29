@@ -150,14 +150,12 @@ public class IngestAreaScannerWorker {
 						continue;
 					}
 					
-					logger.debug("Created new Object with id: "+object.getData_pk()+ "Now create job for object.");
-					
-					
-					insertJobIntoQueueAndSetWorkFlowState(
+					Job job = insertJobIntoQueueAndSetWorkFlowState(
 							contractor, 
 							convertMaskedSlashes(FilenameUtils.removeExtension(child)),
 							localNodeId,
 							object);
+					logger.debug("Created new Object "+object+ ":::: Created job: "+job);
 					
 				}
 			}
@@ -198,7 +196,6 @@ public class IngestAreaScannerWorker {
 	
 		session.save(job);
 		session.getTransaction().commit();
-		
 		session.close();
 
 		return job;
