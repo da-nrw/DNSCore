@@ -28,7 +28,7 @@ in multiple "zone-approach" (aka federated mode) in which the iRODS servers have
 
 In order to do "load balancing" between nodes, having more nodes then just three - and  to avoid overhead of administration at the Master ICAT Zone Server in the single zone 
 mode, you could decide to run DNSCore and iRODS in the so called "federated mode". In the federated mode you have several distinct Master ICAT Zones 
-forming a releativley loosley coupled Federation in terms of iRODS Servers. 
+forming a releativley loosley coupled Federation in terms of iRODS Servers, with all the advantages and disadvantages this may impose to you. 
 
 In this topology your nodes admins should be able to administer iRODS Master servers and the federation itself
 (See iRODS documentation about this: https://irods.sdsc.edu/index.php/Federation_Administration). 
