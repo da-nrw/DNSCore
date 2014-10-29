@@ -40,7 +40,7 @@ import de.uzk.hki.da.utils.Utilities;
 
 
 /**
- * Registers objects at a certain node.
+ * Provides facility to register objects at a certain node.
  * 
  * This object is intended to be wired up as a Spring bean and as a singleton. It should get created once and then 
  * the localNode and preservationSystem ids have to be set. Then it should get initialized via the init method. 
@@ -75,19 +75,19 @@ public class RegisterObjectService {
 	 * Init method for getting wired up by Spring.
 	 */
 	public void init(){
-		PreservationSystem pSystem = new PreservationSystem(); pSystem.setId(preservationSystemId);
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
-		session.refresh(pSystem);
-		urnNameSpace=pSystem.getUrnNameSpace();
 		Node node=null;
+		PreservationSystem pSystem=null;
 		try {
+			pSystem = (PreservationSystem) session.get(PreservationSystem.class,preservationSystemId);
 			node = (Node) session.get(Node.class,localNodeId);
 		} catch (UnresolvableObjectException e){
-			throw new IllegalStateException("Node "+localNodeId+"does not exist in db");
+			throw new IllegalStateException(e);
 		}
 		if (node.getUrn_index() < 0)
 			throw new IllegalStateException("Node's urn_index must not be lower than 0");
+		urnNameSpace=pSystem.getUrnNameSpace();
 		localNodeName=node.getName();
 		session.close();
 		initialized=true;
@@ -128,14 +128,14 @@ public class RegisterObjectService {
 			logger.info("Package is a delta record for Object with identifier: "+obj.getIdentifier());
 			updateExistingObject(obj, containerName);
 		}else{
-			final String identifier = convertURNtoTechnicalIdentifier(generateURNForNode(localNodeId));
+			final String technicalIdentifier = convertURNtoTechnicalIdentifier(generateURNForNode(localNodeId));
 			
 			// check identifier
-			if (getUniqueObject(identifier)!=null) throw new IllegalStateException("CRITICAL SYSTEM ERROR: DUPLICATE IDENTIFIER");
+			if (getUniqueObject(technicalIdentifier)!=null) throw new IllegalStateException("CRITICAL SYSTEM ERROR: DUPLICATE IDENTIFIER");
 			
-			logger.info("Creating new Object with identifier " + identifier);
+			logger.info("Creating new Object with identifier " + technicalIdentifier);
 			obj = createNewObject(containerName,origName,contractor);
-			obj.setIdentifier(identifier);
+			obj.setIdentifier(technicalIdentifier);
 		}
 		return obj;
 	}

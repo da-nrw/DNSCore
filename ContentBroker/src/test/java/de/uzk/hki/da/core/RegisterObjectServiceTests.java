@@ -45,7 +45,7 @@ public class RegisterObjectServiceTests {
 	private static User contractor;
 	private static PreservationSystem pSystem;
 	private static RegisterObjectService registerObjectService;
-
+	private static int urnIndex=92;
 
 	/**
 	 * TODO Up until now i couldn't find a sample test suite of valid URNs.
@@ -63,7 +63,6 @@ public class RegisterObjectServiceTests {
 	 */
 	@BeforeClass
 	public static void setUp(){
-
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
@@ -71,7 +70,7 @@ public class RegisterObjectServiceTests {
 		session.createSQLQuery("DELETE FROM preservation_system").executeUpdate();
 		
 		node = new Node("vm1","vm1-01");
-		node.setUrn_index(92);
+		node.setUrn_index(urnIndex);
 		
 		contractor = new User();
 		contractor.setShort_name("TEST");
@@ -86,9 +85,6 @@ public class RegisterObjectServiceTests {
 		session.save(node);
 		session.save(pSystem);
 		
-		
-		
-		
 		session.getTransaction().commit();
 		session.close();
 
@@ -96,7 +92,6 @@ public class RegisterObjectServiceTests {
 		registerObjectService.setLocalNodeId(new Integer(node.getId()).toString());
 		registerObjectService.setPreservationSystemId(new Integer(pSystem.getId()).toString());
 		registerObjectService.init();
-
 	}
 	
 	/**
@@ -125,26 +120,21 @@ public class RegisterObjectServiceTests {
 	 * @author: Daniel M. de Oliveira
 	 */
 	@Test
-	public void testGenerateURNForNode(){
-		
+	public void generateIdentifier(){
 		Object object = registerObjectService.registerObject("containerName", contractor);
-		String identifierWithoutURNCheckDigit =  object.getIdentifier().substring(0, object.getIdentifier().length()-1);
-		
-		assertEquals(node.getId()+"-"+ Utilities.todayAsSimpleIsoDate(new Date())+"93",identifierWithoutURNCheckDigit);
+		assertEquals(createIdentifier(urnIndex+1),object.getIdentifier());
 	}
 	
 	
 	@Test
-	public void tryGeneratingExistingIdentifier() {
+	public void generateExistingIdentifier() {
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
-		node.setUrn_index(92);
+		node.setUrn_index(urnIndex);
 		session.update(node);
 		Object o = new Object();
-		String urnWithoutCheckDigit=pSystem.getUrnNameSpace()+"-"+node.getId()+"-"+ Utilities.todayAsSimpleIsoDate(new Date())+"93";
-		String urn=urnWithoutCheckDigit+new URNCheckDigitGenerator().checkDigit(urnWithoutCheckDigit);
-		String identifier=urn.replace(pSystem.getUrnNameSpace()+"-", "");
-		o.setIdentifier(identifier);
+		
+		o.setIdentifier(createIdentifier(urnIndex+1));
 		session.save(o);
 		session.getTransaction().commit();
 		session.close();
@@ -159,4 +149,10 @@ public class RegisterObjectServiceTests {
 
 	
 	
+	private String createIdentifier(Integer urnIndex) {
+		String urnWithoutCheckDigit=pSystem.getUrnNameSpace()+"-"+node.getId()+"-"+ Utilities.todayAsSimpleIsoDate(new Date())+urnIndex;
+		String urn=urnWithoutCheckDigit+new URNCheckDigitGenerator().checkDigit(urnWithoutCheckDigit);
+		String identifier=urn.replace(pSystem.getUrnNameSpace()+"-", "");
+		return identifier;
+	}
 }
