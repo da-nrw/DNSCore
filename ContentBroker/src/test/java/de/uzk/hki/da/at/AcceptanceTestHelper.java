@@ -93,6 +93,7 @@ public class AcceptanceTestHelper {
 		final String packSuffix = ".pack_";
 		
 		Object object=fetchObjectFromDB(o.getOrig_name());
+		if (object==null) throw new RuntimeException("cannot find object");
 		System.out.println("object: "+object.getIdentifier());
 		
 		gridFacade.get(Path.makeFile(TEMP_FOLDER,object.getIdentifier()+packSuffix+packageName+C.FILE_EXTENSION_TAR), 
@@ -119,7 +120,6 @@ public class AcceptanceTestHelper {
 		} catch (Exception e) {
 			fail("more than 1 Object found!"); 
 		}
-		if (object==null) throw new RuntimeException("cannot find object");
 		
 		return object;
 	}
@@ -387,6 +387,7 @@ public class AcceptanceTestHelper {
 		waitForJobsToFinish(originalName);
 		
 		Object object = fetchObjectFromDB(originalName);
+		if (object==null) throw new RuntimeException("cannot find object");
 		System.out.println("successfully ingested object with id "+object.getIdentifier());
 		return object;
 	}
@@ -427,7 +428,9 @@ public class AcceptanceTestHelper {
 				Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getShort_name()));
 		
 		waitForJobToBeInStatus(originalName,status);
-		return fetchObjectFromDB(originalName);
+		Object o=fetchObjectFromDB(originalName);
+		if (o==null) throw new RuntimeException("cannot find object");
+		return o;
 	}
 	
 	
@@ -447,7 +450,9 @@ public class AcceptanceTestHelper {
 		FileUtils.copyFileToDirectory(Path.makeFile(TC.TEST_ROOT_AT,originalName+containerSuffix), 
 				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME));
 		waitForJobToBeInErrorStatus(originalName,errorStateLastDigit,TIMEOUT);
-		return fetchObjectFromDB(originalName);
+		Object o = fetchObjectFromDB(originalName);
+		if (o==null) throw new RuntimeException("cannot find object");
+		return o;
 	}
 
 

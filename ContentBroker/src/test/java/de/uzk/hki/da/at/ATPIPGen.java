@@ -61,6 +61,7 @@ public class ATPIPGen extends AcceptanceTest{
 
 		ath.waitForJobsToFinish("ATPIPGen"+name);
 		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
+		assertNotNull(object);
 		
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-open", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
@@ -107,7 +108,7 @@ public class ATPIPGen extends AcceptanceTest{
 		ath.createObjectAndJob("ATPIPGen"+name,"700");
 		ath.waitForJobsToFinish("ATPIPGen"+name);
 		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
-		
+		assertNotNull(object);
 		assertNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-open", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
 		
@@ -120,7 +121,7 @@ public class ATPIPGen extends AcceptanceTest{
 		ath.createObjectAndJob("ATPIPGen"+name,"700");
 		ath.waitForJobsToFinish("ATPIPGen"+name);
 		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
-		
+		assertNotNull(object);
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
 		
 	}
@@ -132,7 +133,7 @@ public class ATPIPGen extends AcceptanceTest{
 		ath.createObjectAndJob("ATPIPGen"+name,"700");
 		ath.waitForJobsToFinish("ATPIPGen"+name);
 		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
-		
+		assertNotNull(object);
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
 		
 	}
@@ -145,6 +146,7 @@ public class ATPIPGen extends AcceptanceTest{
 		ath.createObjectAndJob("ATPIPGen"+name,"700");
 		ath.waitForJobsToFinish("ATPIPGen"+name);
 		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
+		assertNotNull(object);
 		
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-closed"));
@@ -158,7 +160,7 @@ public class ATPIPGen extends AcceptanceTest{
 		ath.createObjectAndJob("ATPIPGen"+name,"700");
 		ath.waitForJobsToFinish("ATPIPGen"+name);
 		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
-		
+		assertNotNull(object);
 		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
 		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), "collection-closed"));
 		

@@ -18,7 +18,7 @@
 */
 package de.uzk.hki.da.at;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class ATReadURNFromSIP extends AcceptanceTest {
 				new File(localNode.getIngestAreaRootPath()+"/TEST"));
 		ath.waitForJobsToFinish(originalName);
 		Object object = ath.fetchObjectFromDB(originalName);
-		
+		assertNotNull(object);
 		assertEquals("urn:nbn:de:xyz-1-20131008367735", object.getUrn());
 	}
 
