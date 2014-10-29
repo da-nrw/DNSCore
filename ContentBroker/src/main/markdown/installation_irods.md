@@ -71,24 +71,30 @@ This depends on your selected topology
 ### Setting up a node topology
 
 Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zones" as well as the concept of 
-having one Zone with several resource servers. Please refer to the iRODS Documentation about this. For working with DNSCo#re in Federations plese read [here](administration_federated.md)
+having one Zone with several resource servers. Please refer to the iRODS Documentation about this. For working with DNSCore in Federations plese read [here](administration_federated.md)
+
+Each Zone needs at least one database (so called ICAT Server). The use of Postgres is encouraged here. 
 
 DNSCore supports both operational modes, depending on your
 
-    grid.implemenation 
+    cb.grid.implemenation 
     
 Parameters in your config.properties. Possible values (one of them) are so far:
 
-    cb.implementation.grid=fakeGridFacade
-    cb.implementation.grid=irodsGridFacade
-    cb.implementation.grid=federatedGridFacade
+    cb.grid.implemenation=fakeGridFacade
+    cb.grid.implemenation=irodsGridFacade
+    cb.grid.implemenation=federatedGridFacade
+    
+fakeGridFacade is an implematation only needed in developer testing environments where a fully flavored iRODS Grid isn't available or necessary.
+irodsGridFacade is the "one zone, only replications" mode. federatedGridFacade is being chosen, if a fully federated iRODS Datagrid is built up.  
+    
     
     cb.implementation.distributedConversion=fakeDistributedConversionAdapter
     cb.implementation.distributedConversion=irodsDistributedConversionAdapter
     cb.implementation.distributedConversion=irodsFederatedDistributedConversionAdapter
 
+The given settings for distributedConversion must be used the same way like the grid implementation. (Don't mix them) 
 
-Each Zone needs at least one database (so called ICAT Server). The use of Postgres is encouraged here. 
 
 
 ## Upgrade iRODS
