@@ -45,12 +45,17 @@ public class ControllerClient {
 	
 	
 	public static void main(String[] args) throws JMSException {
-		if (args.length!=2){
+		if (args==null) throw new ConfigurationException("Needed parameters not set! Specify at least <host> <command>");		
+		if (args.length<2){
 			System.out.print("Specify Active MQ host and specify your command!");
-			throw new ConfigurationException("Needed parameters not set!");
+			throw new ConfigurationException("Needed parameters not set! Specify <host> <command>");
+		}
+		String toQueueName = C.QUEUE_TO_SERVER;
+		if (args.length==3){
+			System.out.print("Specified queue named : " + toQueueName);
+			toQueueName = args[3];
 		}
 		String serverName =  args[0];
-		
 		System.out.println("... Client started, talking to " + args[0]);
 		
 		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(serverName);
@@ -59,8 +64,8 @@ public class ControllerClient {
         connection.start();
         
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        Destination toClient = session.createQueue("CB.CLIENT");
-        Destination toServer = session.createQueue("CB.SYSTEM");
+        Destination toClient = session.createQueue(C.QUEUE_TO_CLIENT);
+        Destination toServer = session.createQueue(toQueueName);
         
         String text = args[1];
        	MessageProducer producer = session.createProducer(toServer);    
