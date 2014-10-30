@@ -73,6 +73,12 @@ public class PostRetrievalAction extends AbstractAction {
 			return false;
 		}
 		
+		
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 
