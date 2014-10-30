@@ -207,7 +207,9 @@ on time basis.
 
 This is defined to be a "trust" between all servers of the zone.
 
-irule -F checkFederatedAip.r ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/checkFederatedAip.r))
+     irule -F checkFederatedAip.
+     
+([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/checkFederatedAip.r))
 
 	Default *zone="zone"
 	New *zone=
