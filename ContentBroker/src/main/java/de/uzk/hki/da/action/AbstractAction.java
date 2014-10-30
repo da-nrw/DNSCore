@@ -215,12 +215,6 @@ public abstract class AbstractAction implements Runnable {
 			Session session = openSession();
 			session.beginTransaction();
 			
-			if (deleteObject) 
-				session.delete(object);
-			else
-				session.update(object);
-			
-			session.flush();
 			
 			if (createJob!=null)
 				session.save(createJob);
@@ -235,6 +229,13 @@ public abstract class AbstractAction implements Runnable {
 				session.update(job);
 				logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Set job to end state ("+endStatus+"). Database transaction successful.");			
 			}
+
+			session.flush();
+			
+			if (deleteObject) 
+				session.delete(object);
+			else
+				session.update(object);
 			
 			
 			session.getTransaction().commit();
