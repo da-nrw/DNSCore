@@ -16,7 +16,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package de.uzk.hki.da.action;
+package de.uzk.hki.da.model;
 
 import java.util.Date;
 import java.util.List;
@@ -26,20 +26,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.model.ConversionInstruction;
-import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.Event;
-import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.PreservationSystem;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class QueueConnector {
+public class JobNamedQueryDAO {
 
-	private static final Logger logger = LoggerFactory.getLogger(QueueConnector.class);
+	private static final Logger logger = LoggerFactory.getLogger(JobNamedQueryDAO.class);
 	
 	/**
 	 * XXX locking synchronized, against itself and against get object need audit
@@ -54,14 +47,13 @@ public class QueueConnector {
 	 * @author Daniel M. de Oliveira
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
-	public Job fetchJobFromQueue(String status, String workingStatus, Node node, PreservationSystem pSystem) {
+	public Job fetchJobFromQueue(String status, String workingStatus, Node node) {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		logger.trace("Fetch job for node name " + node.getName());
 		List<Job> joblist=null;
 		try{
 			session.refresh(node);
-			session.refresh(pSystem);
 			
 			joblist = session
 					.createQuery("SELECT j FROM Job j LEFT JOIN j.obj as o where j.status=?1 and "

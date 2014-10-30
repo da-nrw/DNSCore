@@ -37,6 +37,7 @@ import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.service.UserExceptionManager;
 
@@ -58,7 +59,7 @@ public class ActionFactory implements ApplicationContextAware {
 	/** The local node. */
 	private Node localNode; // Node the ContentBroker actually runs on
 	
-	private QueueConnector qc;
+	private JobNamedQueryDAO qc;
 	
 	/** The user exception manager. */
 	private UserExceptionManager userExceptionManager;
@@ -82,14 +83,14 @@ public class ActionFactory implements ApplicationContextAware {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		session.refresh(preservationSystem);
+		// replace proxies by real objects if loading lazily.
+		Hibernate.initialize(getPreservationSystem().getConversion_policies());
 		preservationSystem.setSubformatIdentificationPolicies(getSecondStageScanPolicies(session));
 
 		
-		// circumvent lazy initialization issues
-		Hibernate.initialize(getPreservationSystem().getConversion_policies());
-		for (ConversionPolicy p:getPreservationSystem().getConversion_policies()){
-			logger.debug("Policy:"+p.getSource_format()+"->"+p.getConversion_routine().getName());
-		}
+//		for (ConversionPolicy p:getPreservationSystem().getConversion_policies()){
+//			logger.debug("Policy:"+p.getSource_format()+"->"+p.getConversion_routine().getName());
+//		}
 //		
 		
 //		session.getTransaction().commit();
@@ -157,7 +158,7 @@ public class ActionFactory implements ApplicationContextAware {
 			String workingStatus = action.getStartStatus().substring(0,action.getStartStatus().length()-1) + "2";
 			
 			Job jobCandidate = qc.fetchJobFromQueue(action.getStartStatus(), workingStatus
-					, localNode, getPreservationSystem());
+					, localNode);
 			if (jobCandidate == null) {
 				logger.trace("No job for type {}, checking for types with lower priority", jobType);
 				continue;
@@ -291,11 +292,11 @@ public class ActionFactory implements ApplicationContextAware {
 		this.preservationSystem = preservationSystem;
 	}
 
-	public QueueConnector getQueueConnector() {
+	public JobNamedQueryDAO getQueueConnector() {
 		return qc;
 	}
 
-	public void setQueueConnector(QueueConnector qc) {
+	public void setQueueConnector(JobNamedQueryDAO qc) {
 		this.qc = qc;
 	}
 }

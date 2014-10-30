@@ -38,6 +38,7 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.UserExceptionManager;
 
@@ -90,7 +91,7 @@ public class ActionFactoryTests {
 	@Test
 	public void testBuildNextAction() {
 		
-		QueueConnector queueConnector = mock(QueueConnector.class);
+		JobNamedQueryDAO queueConnector = mock(JobNamedQueryDAO.class);
 
 		Job j = new Job("localnode", "450"); 
 		Object o = new Object();
@@ -100,7 +101,7 @@ public class ActionFactoryTests {
 		o.getPackages().add(p);
 		j.setObject(o);
 		
-		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject(),(PreservationSystem)anyObject())).
+		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
 			thenReturn(j);
 		
 		factory.setQueueConnector(queueConnector);	
@@ -121,9 +122,9 @@ public class ActionFactoryTests {
 	@Test
 	public void testNoJobFound(){
 		
-		QueueConnector queueConnector = mock(QueueConnector.class);
+		JobNamedQueryDAO queueConnector = mock(JobNamedQueryDAO.class);
 
-		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject(),(PreservationSystem)anyObject())).
+		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
 			thenReturn(null);
 		
 		Node node = new Node("localnode");

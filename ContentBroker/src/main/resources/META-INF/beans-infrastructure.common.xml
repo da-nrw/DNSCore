@@ -86,7 +86,7 @@
    </bean>
   
 	<bean class="de.uzk.hki.da.ff.StandardFileFormatFacade" id="standardFileFormatFacade"/>
-    <bean class="de.uzk.hki.da.action.QueueConnector" id="queueConnector"/>
+    <bean class="de.uzk.hki.da.model.JobNamedQueryDAO" id="queueConnector"/>
     
     <bean class="de.uzk.hki.da.ff.MimeTypeDetectionService" id="mtds"/>
     
