@@ -87,8 +87,9 @@ public class ActionFactory implements ApplicationContextAware {
 		
 		// circumvent lazy initialization issues
 		Hibernate.initialize(getPreservationSystem().getConversion_policies());
-		for (@SuppressWarnings("unused") 
-			ConversionPolicy p:getPreservationSystem().getConversion_policies());
+		for (ConversionPolicy p:getPreservationSystem().getConversion_policies()){
+			logger.debug("Policy:"+p.getSource_format()+"->"+p.getConversion_routine().getName());
+		}
 //		
 		
 //		session.getTransaction().commit();

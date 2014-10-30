@@ -162,7 +162,7 @@ public abstract class AbstractAction implements Runnable {
 			if (!implementation()){				
 				logger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
 				job.setStatus(startStatus);
-
+				toCreate=null;
 			} else {
 				job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
 				logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now commiting changes to database.");
@@ -172,15 +172,9 @@ public abstract class AbstractAction implements Runnable {
 				} else {
 					job.setStatus(endStatus);	
 				}
-				Session session=HibernateUtil.openSession();
-				session.getTransaction().begin();
-				if (toCreate!=null) session.save(toCreate);
-				session.getTransaction().commit();
-				session.close();
 			}
 
-			upateObjectAndJob(object,job,DELETEOBJECT,KILLATEXIT);
-			
+			upateObjectAndJob(object,job,DELETEOBJECT,KILLATEXIT,toCreate);
 			
 		} catch (UserException e) {
 			logger.error(this.getClass().getName()+": UserException in action: ",e);
@@ -190,12 +184,6 @@ public abstract class AbstractAction implements Runnable {
 			if (e.checkForAdminReport())
 				new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(e, object, this);
 			sendJMSException(e);
-		} catch (org.hibernate.exception.GenericJDBCException sql) {
-			logger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sql);
-			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "1";
-			handleError(errorStatus);
-			new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(sql, object, this);
-			sendJMSException(sql);
 		} catch (Exception e) {
 			logger.error(this.getClass().getName()+": Exception in action: ",e);
 			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "1";
@@ -204,11 +192,7 @@ public abstract class AbstractAction implements Runnable {
 			sendJMSException(e);
 		} finally {		
 			
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			
 			unsetObjectLogging();
 			
 			actionMap.deregisterAction(this);
@@ -217,30 +201,53 @@ public abstract class AbstractAction implements Runnable {
 	
 	
 
+	/**
+	 * @param object
+	 * @param job
+	 * @param deleteObject
+	 * @param deleteJob
+	 * @param createJob
+	 */
+	private void upateObjectAndJob(Object object,Job job, boolean deleteObject,boolean deleteJob,Job createJob){
+		
+		try {
+			Session session = openSession();
+			session.beginTransaction();
+			
+			if (deleteObject) 
+				session.delete(object);
+			else
+				session.update(object);
+			
+			session.flush();
+			
+			if (createJob!=null)
+				session.save(createJob);
 
-	private void upateObjectAndJob(Object object,Job job, boolean deleteObject,boolean deleteJob){
-		Session session = openSession();
-		session.beginTransaction();
-		
-		if (deleteObject) 
-			session.delete(object);
-		else
-			session.update(object);
-		
-		session.flush();
-		
-		if (deleteJob) {
-			session.delete(job);
-			logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Job deleted. Database transaction successful.");
-		}
-		else {
-			session.update(job);
-			logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Set job to end state ("+endStatus+"). Database transaction successful.");			
+			session.flush();
+			
+			if (deleteJob) {
+				session.delete(job);
+				logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Job deleted. Database transaction successful.");
+			}
+			else {
+				session.update(job);
+				logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Set job to end state ("+endStatus+"). Database transaction successful.");			
+			}
+			
+			
+			session.getTransaction().commit();
+			session.close();
 		}
 		
-		session.getTransaction().commit();
-		session.close();
-		
+		catch (org.hibernate.exception.GenericJDBCException sql) {
+			
+				logger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sql);
+				String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "1";
+				handleError(errorStatus);
+				new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(sql, object, this);
+				sendJMSException(sql);
+		}	
 	}
 	
 	
@@ -325,6 +332,13 @@ public abstract class AbstractAction implements Runnable {
 	}
 	
 	private void unsetObjectLogging() {
+		
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		// manually close object log in order to prevent "too many open files"
 		ch.qos.logback.classic.Logger logger =
 				(ch.qos.logback.classic.Logger) LoggerFactory.getLogger("de.uzk.hki.da");
