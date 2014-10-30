@@ -45,7 +45,7 @@ But you can't mix both modes in one Domain yet. Each node will become a "zone" w
 
 The node on which the itmes are stored first is the "primary copy node", or "the responsible node" for that dedicated item. It's supposed to be the primary node for inquires about data, sending deltas to etc.
 
-All other nodes having copies of the stored items are therefore called "secondary copy nodes". The serve as backup in case of data loss or bit courruption at the primary one. 
+All other nodes having copies of the stored items are therefore called "secondary copy nodes". They serve as backup in case of data loss or bit courruption at the primary one. 
 
 ### Prerequisites
 
