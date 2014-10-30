@@ -45,7 +45,7 @@ public class DeleteObjectAction extends AbstractAction {
 
 	@Override
 	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
+		setKILLATEXIT(true);
 	}
 
 	@Override

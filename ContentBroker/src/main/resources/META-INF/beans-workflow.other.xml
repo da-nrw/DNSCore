@@ -25,7 +25,6 @@
 		scope="prototype">
 		<property name="startStatus" value="800" />
 		<property name="endStatus" value="809" />
-		<property name="KILLATEXIT" value="true" />
 		<property name="name" value="DeleteObjectAction" />
 	</bean>
 	<bean id="AuditAction" class="de.uzk.hki.da.cb.AuditAction"
