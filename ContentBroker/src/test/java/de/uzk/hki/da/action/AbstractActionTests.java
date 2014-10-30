@@ -96,7 +96,7 @@ public class AbstractActionTests {
 	
 	
 	@Test
-	public void testImplementationSuccesful() {
+	public void implementationSuccesful() {
 		SuccessfulAction action = new SuccessfulAction();
 		action.setSession(mockSession);
 		setCommonProperties(action, "190", "200");
@@ -109,7 +109,46 @@ public class AbstractActionTests {
 	}
 	
 	@Test
-	public void testImplementationExecutionAborted() {
+	public void killAtExit(){
+		KillAtExitAction action = new KillAtExitAction();
+		action.setSession(mockSession);
+		setCommonProperties(action, "190", "200");
+		
+		action.run();
+		
+		verify(mockSession,times(0)).update(action.getJob());
+		verify(mockSession,times(1)).delete(action.getJob());
+	}
+	
+	@Test
+	public void deleteObject(){
+		
+		DeleteObjectAction action = new DeleteObjectAction();
+		action.setSession(mockSession);
+		setCommonProperties(action, "190", "200");
+		
+		action.run();
+		
+		verify(mockSession,times(1)).delete(action.getObject());
+		verify(mockSession,times(0)).update(action.getObject());
+	}
+	
+	@Test
+	public void createJob(){
+		CreateJobAction action = new CreateJobAction();
+		action.setSession(mockSession);
+		setCommonProperties(action, "190", "200");
+		
+		action.run();
+		
+		verify(mockSession,times(1)).save((Job)anyObject());
+	}
+	
+	
+	
+	
+	@Test
+	public void implementationExecutionAborted() {
 		ExecutionAbortedAction action = new ExecutionAbortedAction();
 		action.setSession(mockSession);
 		setCommonProperties(action, "190", "200");
@@ -121,6 +160,20 @@ public class AbstractActionTests {
 		assertEquals("190",action.getJob().getStatus());
 	}
 
+	@Test
+	public void revertModifierWhenimplementationExecutionAborted() {
+		ExecutionAbortedAction action = new ExecutionAbortedAction();
+		action.setSession(mockSession);
+		setCommonProperties(action, "190", "200");
+		
+		action.run();
+		
+		verify(mockSession,times(0)).delete(action.getJob());
+		verify(mockSession,times(0)).delete(action.getObject());
+		verify(mockSession,times(0)).save((Job)anyObject());
+	}
+	
+	
 	@Test
 	public void testImplementationThrowsUserException(){
 		UserExceptionAction action = new UserExceptionAction();
@@ -134,6 +187,29 @@ public class AbstractActionTests {
 	}
 	
 	
+	class CreateJobAction extends NullAction{
+		@Override
+		public boolean implementation() {
+			toCreate=new Job();
+			return true;
+		}
+	}
+
+	class DeleteObjectAction extends NullAction{
+		@Override
+		public boolean implementation() {
+			DELETEOBJECT=true;
+			return true;
+		}
+	}
+	
+	class KillAtExitAction extends NullAction{
+		@Override
+		public boolean implementation() {
+			setKILLATEXIT(true);
+			return true;
+		}
+	}
 	
 	class SuccessfulAction extends NullAction{
 		@Override
@@ -145,6 +221,9 @@ public class AbstractActionTests {
 	class ExecutionAbortedAction extends NullAction{
 		@Override
 		public boolean implementation() {
+			DELETEOBJECT=true;
+			setKILLATEXIT(true);
+			toCreate=new Job();
 			return false;
 		}
 	}

@@ -83,7 +83,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		prepareObjectForObjectDBStorage(object);
 		new MailContents(preservationSystem,localNode).sendReciept(job, object);
 		
-		toCreate = createPublicationJob(job);
+		toCreate=createPublicationJob(job);
 		FileUtils.deleteDirectory(object.getPath().toFile());
 		return true;
 	}

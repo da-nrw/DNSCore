@@ -89,7 +89,7 @@ public class DeleteObjectActionTests {
 		action.setObject(TESTHelper.setUpObject("123", new RelativePath(workAreaRootPath), new RelativePath(ingestAreaRootPath),new RelativePath(ingestAreaRootPath)));
 		action.implementation();
 
-		assertTrue(action.DELETEOBJECT);
+		assertTrue(action.isDELETEOBJECT());
 	}
 	
 	@Test
@@ -101,7 +101,7 @@ public class DeleteObjectActionTests {
 		action.setObject(o);
 		action.implementation();
 
-		assertFalse(action.DELETEOBJECT);
+		assertFalse(action.isDELETEOBJECT());
 		assertEquals(1,o.getPackages().size());
 		assertEquals("1",o.getPackages().get(0).getName());
 	}

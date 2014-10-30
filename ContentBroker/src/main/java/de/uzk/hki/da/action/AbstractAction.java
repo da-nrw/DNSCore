@@ -60,7 +60,7 @@ import de.uzk.hki.da.utils.Utilities;
  * Actions should get extended to execute business code. 
  * Business code should be placed into the implementation method.
  * After performing the implementation, the database gets updated according to the changes 
- * made to the model (object,job) during implementation.
+ * made to the model (object,job) during implementation and according to the behaviour specified through the modifiers.
  * <br>
  * <br> 
  * Template method.
@@ -72,27 +72,37 @@ import de.uzk.hki.da.utils.Utilities;
  */
 public abstract class AbstractAction implements Runnable {	
 	
+	// behaviour modifier
 	private boolean KILLATEXIT = false;
 	protected boolean SUPPRESS_OBJECT_CONSISTENCY_CHECK = false;
-	private boolean INTEGRATIONTEST = false;
-	public boolean DELETEOBJECT = false;
+	protected boolean DELETEOBJECT = false;
+	protected Job toCreate = null;
+	
+	
 	
 	protected ActionRegistry actionMap;
 	private String name;
-	protected Node localNode;
 	protected String startStatus;
 	protected Job job;
-	protected Job toCreate = null;
 	protected Object object;
 	protected String endStatus;
 	protected String description;
-	protected int concurrentJobs = 3;
 	private UserExceptionManager userExceptionManager;
 	private ActiveMQConnectionFactory mqConnectionFactory;
-	protected PreservationSystem preservationSystem;
+
+	
+	protected Node localNode;                        // Implementations should never alter the state of this object to ensure thread safety
+	protected PreservationSystem preservationSystem; // Implementations should never alter the state of this object to ensure thread safety
+
+	
+	
+	
+	protected int concurrentJobs = 3;
+	
 	
 	
 	public AbstractAction(){}
+	
 	
 	protected Logger logger = LoggerFactory.getLogger( this.getClass().getName() );
 	
@@ -163,19 +173,19 @@ public abstract class AbstractAction implements Runnable {
 				logger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
 				job.setStatus(startStatus);
 				toCreate=null;
+				DELETEOBJECT=false;
 				KILLATEXIT=false;
 			} else {
 				job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
 				logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now commiting changes to database.");
 				if (KILLATEXIT)	{
-//					job.setStatus(endStatus); // XXX needed just for integration test	
 					logger.info("Set the job status to the end status "+endStatus+" .");
 				} else {
 					job.setStatus(endStatus);	
 				}
 			}
 
-			upateObjectAndJob(object,job,DELETEOBJECT,KILLATEXIT,toCreate);
+			upateObjectAndJob(object,job,isDELETEOBJECT(),KILLATEXIT,toCreate);
 			
 		} catch (UserException e) {
 			logger.error(this.getClass().getName()+": UserException in action: ",e);
@@ -361,13 +371,6 @@ public abstract class AbstractAction implements Runnable {
 		MDC.remove("object_id");
 	}
 
-	public boolean isKILLATEXIT() {
-		return KILLATEXIT;
-	}
-
-	public void setKILLATEXIT(boolean kILLATEXIT) {
-		KILLATEXIT = kILLATEXIT;
-	}
 
 	public void setEndStatus(String es){
 		this.endStatus=es;
@@ -425,14 +428,6 @@ public abstract class AbstractAction implements Runnable {
 		this.name = name;
 	}
 
-	public boolean isINTEGRATIONTEST() {
-		return INTEGRATIONTEST;
-	}
-
-	public void setINTEGRATIONTEST(boolean iNTEGRATIONTEST) {
-		INTEGRATIONTEST = iNTEGRATIONTEST;
-	}
-	
 	public Object getObject() {
 		return object;
 	}
@@ -491,6 +486,16 @@ public abstract class AbstractAction implements Runnable {
 	public int hashCode() {
 		return this.getClass().getName().hashCode()+this.getName().hashCode();
 	}
+
+	public boolean isDELETEOBJECT() {
+		return DELETEOBJECT;
+	}
+
+	public boolean isKILLATEXIT() {
+		return KILLATEXIT;
+	}
 	
-	
+	protected void setKILLATEXIT(boolean kILLATEXIT) {
+		KILLATEXIT = kILLATEXIT;
+	}
 }
