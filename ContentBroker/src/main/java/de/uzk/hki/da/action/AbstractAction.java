@@ -163,6 +163,7 @@ public abstract class AbstractAction implements Runnable {
 				logger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
 				job.setStatus(startStatus);
 				toCreate=null;
+				KILLATEXIT=false;
 			} else {
 				job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
 				logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now commiting changes to database.");
