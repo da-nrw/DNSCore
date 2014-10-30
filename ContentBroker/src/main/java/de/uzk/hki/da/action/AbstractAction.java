@@ -159,55 +159,28 @@ public abstract class AbstractAction implements Runnable {
 			logger.info("Stubbing implementation of "+this.getClass().getName());
 			logger.debug(Utilities.getHeapSpaceInformation());
 			
-			boolean implementationExecutionAborted = implementation();
-			
-			
-			Session session = openSession();
-			session.beginTransaction();
-
-			if (!implementationExecutionAborted){				
+			if (!implementation()){				
 				logger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
 				job.setStatus(startStatus);
-				
-				session.update(object);
-				session.update(job);
-				
+
 			} else {
 				job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+				logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now commiting changes to database.");
 				if (KILLATEXIT)	{
-					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now committing changes to database.");
-					job.setStatus(endStatus); // XXX needed just for integration test	
+//					job.setStatus(endStatus); // XXX needed just for integration test	
 					logger.info("Set the job status to the end status "+endStatus+" .");
-					if (DELETEOBJECT) {
-						session.flush();
-						session.delete(job);
-						session.flush();
-						session.delete(object);
-					}	
-					else {
-						session.flush();
-						session.update(object);
-						session.flush();
-						session.delete(job);
-					}
-					session.flush();
-					
-					if (toCreate!=null) session.save(toCreate);
-					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Job deleted. Database transaction successful.");
-					
 				} else {
-					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now commiting changes to database.");
 					job.setStatus(endStatus);	
-					session.update(job);
-					session.update(object);
-					session.flush();
-					if (toCreate!=null) session.save(toCreate);
-					logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Set job to end state ("+endStatus+"). Database transaction successful.");
 				}
+				Session session=HibernateUtil.openSession();
+				session.getTransaction().begin();
+				if (toCreate!=null) session.save(toCreate);
+				session.getTransaction().commit();
+				session.close();
 			}
+
+			upateObjectAndJob(object,job,DELETEOBJECT,KILLATEXIT);
 			
-			session.getTransaction().commit();
-			session.close();
 			
 		} catch (UserException e) {
 			logger.error(this.getClass().getName()+": UserException in action: ",e);
@@ -241,6 +214,40 @@ public abstract class AbstractAction implements Runnable {
 			actionMap.deregisterAction(this);
 		}
 	}
+	
+	
+
+
+	private void upateObjectAndJob(Object object,Job job, boolean deleteObject,boolean deleteJob){
+		Session session = openSession();
+		session.beginTransaction();
+		
+		if (deleteObject) 
+			session.delete(object);
+		else
+			session.update(object);
+		
+		session.flush();
+		
+		if (deleteJob) {
+			session.delete(job);
+			logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Job deleted. Database transaction successful.");
+		}
+		else {
+			session.update(job);
+			logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Set job to end state ("+endStatus+"). Database transaction successful.");			
+		}
+		
+		session.getTransaction().commit();
+		session.close();
+		
+	}
+	
+	
+	
+	
+	
+	
 	/**
 	 * Sends Exception to JMS Broker
 	 * @author Jens Peters
