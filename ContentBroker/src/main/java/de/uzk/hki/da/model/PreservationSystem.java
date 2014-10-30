@@ -27,6 +27,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,11 +37,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.classic.Session;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.ff.IFileWithFileFormat;
 
 /**
@@ -62,10 +63,12 @@ public class PreservationSystem {
 	private User admin;
 	
 	@OneToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinColumn(name="psystem_id")
 	private List<ConversionRoutine> conversionRoutines = new ArrayList<ConversionRoutine>();
 	
 	@OneToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinColumn(name="psystem_id")
 	private List<ConversionPolicy> conversion_policies = new ArrayList<ConversionPolicy>();
 	
@@ -211,22 +214,13 @@ public class PreservationSystem {
 		if (file==null) throw new IllegalStateException("DAFile file is null!");
 		if (file.getFormatPUID()==null) throw new IllegalStateException("Format PUID is null!");
 		if (file.getFormatPUID().isEmpty())throw new IllegalStateException("Format PUID is empty!");
-		
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-
-		session.refresh(this);
-
-		// circumvent lazy initialization issues
-		
+				
 		List<ConversionPolicy> result = new ArrayList<ConversionPolicy>();
 		for (ConversionPolicy p:conversion_policies){
 			if ((p.getSource_format().equals(file.getFormatPUID()))&&(presentation.equals(p.isPresentation()))){
 				result.add(p);
 			}
 		}
-		session.close();
-		
 		return result;
 	}
 	

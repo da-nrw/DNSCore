@@ -77,17 +77,21 @@ public class ActionFactory implements ApplicationContextAware {
 
 	public void init(){
 		setPreservationSystem(new PreservationSystem()); getPreservationSystem().setId(1);
+		
 		// attach policies to preservation system
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
+		session.refresh(preservationSystem);
 		preservationSystem.setSubformatIdentificationPolicies(getSecondStageScanPolicies(session));
-		session.refresh(getPreservationSystem());
+
+		
 		// circumvent lazy initialization issues
-		Hibernate.initialize(getPreservationSystem().getConversion_policies());
-		// circumvent lazy initialization issues
-		for (@SuppressWarnings("unused") 
-			ConversionPolicy p:getPreservationSystem().getConversion_policies());
-		session.getTransaction().commit();
+//		Hibernate.initialize(getPreservationSystem().getConversion_policies());
+//		for (@SuppressWarnings("unused") 
+//			ConversionPolicy p:getPreservationSystem().getConversion_policies());
+//		
+		
+//		session.getTransaction().commit();
 		session.close();
 	}
 	
