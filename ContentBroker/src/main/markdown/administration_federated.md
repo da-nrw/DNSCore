@@ -202,17 +202,14 @@ e.g.
 To perform Audit (integrity checking) of AIP iRODS each node must at least provide the time based check 
 service of federated copies. 
 
-In this Service checkFederatedAip.r all federated copies MD5 checksums stored for others at "my zone" are recalculated 
+In this Service checkFederatedAip.r ([code of service here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/checkFederatedAip.r))all federated copies MD5 checksums stored for others at "my zone" are recalculated 
 on time basis. 
 
 This is defined to be a "trust" between all servers of the zone.
 
-     irule -F checkFederatedAip.
-     
-([code of service here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/checkFederatedAip.r))
-
-	Default *zone="zone"
-	New *zone=
+     irule -F checkFederatedAip.r
+     Default *zone="zone"
+     New *zone=
 	Default *admin="test@test.de"
 	New *admin=
 	Default *numbersPerRun=5
