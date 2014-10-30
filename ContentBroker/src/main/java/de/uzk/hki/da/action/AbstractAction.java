@@ -57,17 +57,18 @@ import de.uzk.hki.da.utils.Utilities;
 
 
 /**
- * Fetches Jobs with a given start state, but only when the local
- * ContentBroker is the owner of the Job. The class makes heavy use of the template method pattern.
+ * Actions should get extended to execute business code. 
+ * Business code should be placed into the implementation method.
+ * After performing the implementation, the database gets updated according to the changes 
+ * made to the model (object,job) during implementation.
+ * <br>
+ * <br> 
+ * Template method.
  * 
- * Extension notes: In order to extend the BaseAction please follow a few instructions:
- * 
- * <ol><li>Helper methods of extended classes 
- * which should be separately tested should have default (package) visibility.
- * <li>Constructors which should only be seen by tests should also have default (package) visibility.
- * </ol>
  * @author Daniel M. de Oliveira
- * & the DA-NRW team
+ * @author Thomas Kleinke
+ * @author Sebastian Cuy
+ * @author Jens Peters 
  */
 public abstract class AbstractAction implements Runnable {	
 	
@@ -96,17 +97,16 @@ public abstract class AbstractAction implements Runnable {
 	protected Logger logger = LoggerFactory.getLogger( this.getClass().getName() );
 	
 	/**
-	 * false means: i (node) am not responsible 
-	 * true means: successful
-	 * errors lead to an error status in run()
 	 * 
-	 * For good readability every implementation() should contain only
-	 * the business logic for the action. The details should be package private 
-	 * for unit testing purposes.
+	 * Implementations should place business logic here.
+	 * 
 	 * @throws RepositoryException 
 	 * @throws SAXException 
 	 * @throws ParserConfigurationException 
 	 * @throws JDOMException 
+	 * 
+	 * @return <i>false</i> if the business code decides that the action needs to be re-executed from the start state later
+	 * <br><i>true</i> if business code has been successfully executed. 
 	 */
 	public abstract boolean implementation() throws FileNotFoundException, IOException, UserException, RepositoryException, JDOMException, ParserConfigurationException, SAXException;
 
@@ -256,7 +256,8 @@ public abstract class AbstractAction implements Runnable {
 	
 	
 	/**
-	 * Sends Exception to JMS Broker
+	 * Sends Exception to JMS Broker.
+	 * 
 	 * @author Jens Peters
 	 * @param e
 	 */
@@ -287,6 +288,9 @@ public abstract class AbstractAction implements Runnable {
 		}
 	}
 	
+	/**
+	 * @param errorStatus
+	 */
 	private void handleError(String errorStatus) {
 		
 		try {
@@ -319,6 +323,7 @@ public abstract class AbstractAction implements Runnable {
 
 	
 	/**
+	 * @author Sebastian Cuy
 	 * Sets the file name for package logger dynamically
 	 */
 	private void setupObjectLogging(String logFileBase) {
@@ -331,6 +336,10 @@ public abstract class AbstractAction implements Runnable {
 			appender.start();
 	}
 	
+	/**
+	 * @author Sebastian Cuy
+	 * @author Daniel M. de Oliveira
+	 */
 	private void unsetObjectLogging() {
 		
 		try {
