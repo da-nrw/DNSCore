@@ -17,7 +17,7 @@
 	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 
-## Administration of DNS in iRODS federated mode
+## Administration of DNS in iRODS-Federation
 
 ### Introduction
 
@@ -45,7 +45,7 @@ But you can't mix both modes in one Domain yet. Each node will become a "zone" w
 
 The node on which the itmes are stored first is the "primary copy node", or "the responsible node" for that dedicated item. It's supposed to be the primary node for inquires about data, sending deltas to etc.
 
-All other nodes having copies of the stored items are therefore called "secondary copy nodes". The serve as backup in case of data loss or bit courruption at the primary one. 
+All other nodes having copies of the stored items are therefore called "secondary copy nodes". They serve as backup in case of data loss or bit courruption at the primary one. 
 
 ### Prerequisites
 
@@ -135,6 +135,7 @@ The Federation service works permanently on time based schedule. It tries to cop
 
 Start the Federation service, which could be found ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/federate.r))
 
+  
     irule -F federate.r
     
 Take a look at the reLog (Rule engine log file) which could be found at 
@@ -162,6 +163,7 @@ It takes into account all "own" and already federated items. This should do a lo
 Once activated federation service runs, even iRODS Server is restarted.
 
 Start 
+
 	irule -F federate.r
 
 The Service asks for some settings after start:
@@ -200,15 +202,14 @@ e.g.
 To perform Audit (integrity checking) of AIP iRODS each node must at least provide the time based check 
 service of federated copies. 
 
-In this Service checkFederatedAip.r all federated copies MD5 checksums stored for others at "my zone" are recalculated 
+In this Service checkFederatedAip.r ([code of service here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/checkFederatedAip.r))all federated copies MD5 checksums stored for others at "my zone" are recalculated 
 on time basis. 
 
 This is defined to be a "trust" between all servers of the zone.
 
-irule -F checkFederatedAip.r ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/checkFederatedAip.r))
-
-	Default *zone="zone"
-	New *zone=
+     irule -F checkFederatedAip.r
+     Default *zone="zone"
+     New *zone=
 	Default *admin="test@test.de"
 	New *admin=
 	Default *numbersPerRun=5
