@@ -163,6 +163,7 @@ It takes into account all "own" and already federated items. This should do a lo
 Once activated federation service runs, even iRODS Server is restarted.
 
 Start 
+
 	irule -F federate.r
 
 The Service asks for some settings after start:
