@@ -143,23 +143,13 @@ public abstract class AbstractAction implements Runnable {
 	@Override
 	public void run() {
 		
-		logger.info("Running \""+this.getClass().getName()+"\"");
-		logger.debug(LinuxEnvironmentUtils.logHeapSpaceInformation());
-		
-		try {
-			checkActionSpecificConfiguration();
-			checkSystemStatePreconditions();
-		} catch (Exception e) {
-			logger.error(e.getMessage()); return;
-		}
-		
+		if (!performCommonPreparationsForActionExecution()) return;
 		setupObjectLogging(object.getIdentifier());
-		synchronizeObjectDatabaseAndFileSystemState();
 		
+		synchronizeObjectDatabaseAndFileSystemState();
 		
 		try {
 			execAndPostProcessImplementation();
-			actionMap.deregisterAction(this); // now the action does't block resources anymore. 
 			upateObjectAndJob(object,job,isDELETEOBJECT(),KILLATEXIT,toCreate);
 			
 		} catch (UserException e) {
@@ -176,8 +166,22 @@ public abstract class AbstractAction implements Runnable {
 			
 		} finally {		
 			
+			actionMap.deregisterAction(this); // now the action does't block resources anymore. 
 			unsetObjectLogging();
 		}
+	}
+
+	private boolean performCommonPreparationsForActionExecution() {
+		logger.info("Running \""+this.getClass().getName()+"\"");
+		logger.debug(LinuxEnvironmentUtils.logHeapSpaceInformation());
+		
+		try {
+			checkActionSpecificConfiguration();
+			checkSystemStatePreconditions();
+		} catch (Exception e) {
+			logger.error(e.getMessage()); return false;
+		}
+		return true;
 	}
 
 	
