@@ -8,6 +8,11 @@ then
 fi
 SERVER=tcp://localhost:4455
 COMMAND=""
+
+# Specify the destination queue here
+# normally talking to CB.
+#QUEUE=IRODS.SYSTEM 
+QUEUE=CB.SYSTEM
 if [ $# -eq 2 ] 
 then 
 	SERVER=$1
@@ -19,4 +24,4 @@ then
 fi
 
 echo "launched CBTalk on $SERVER with command $COMMAND"
-java -cp ContentBroker.jar de.uzk.hki.da.core.ControllerClient $SERVER $COMMAND
+java -cp ContentBroker.jar de.uzk.hki.da.core.ControllerClient $SERVER $COMMAND $QUEUE
