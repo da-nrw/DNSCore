@@ -140,6 +140,7 @@ public abstract class AbstractAction implements Runnable {
 	public abstract void checkSystemStatePreconditions() throws IllegalStateException;
 	
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
 		
@@ -163,12 +164,10 @@ public abstract class AbstractAction implements Runnable {
 			execAndPostProcessRollback(object,job,"1");
 			upateObjectAndJob(object, job, false, false, null);
 			reportTechnicalError(e);
+		} 		
 			
-		} finally {		
-			
-			actionMap.deregisterAction(this); // now the action does't block resources anymore. 
-			unsetObjectLogging();
-		}
+		actionMap.deregisterAction(this);
+		unsetObjectLogging();
 	}
 
 	private boolean performCommonPreparationsForActionExecution() {
