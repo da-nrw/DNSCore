@@ -1637,6 +1637,7 @@ public class IrodsSystemConnector {
 		 File dir = new File(folder);
 		 FileFilter fileFilter = new WildcardFileFilter("*.r");
 		 File[] files = dir.listFiles(fileFilter);
+		if (files!= null) {
 		 for (int i = 0; i < files.length; i++) {
 			 logger.debug("Executing rule now " + files[i]);
 			 try {
@@ -1646,6 +1647,7 @@ public class IrodsSystemConnector {
 			allPass = false;
 			}
 		 }
+		}
 		 return allPass;
 	}
 	
