@@ -166,7 +166,12 @@ public abstract class AbstractAction implements Runnable {
 			reportTechnicalError(e);
 		} 		
 			
-		actionMap.deregisterAction(this);
+		// For now, do it after update database was successful to prevent 
+		// new jobs getting fetched. It would be an improvement if we had 
+		// a controller for the action factory that stops it if database 
+		// connection is not possible.
+		actionMap.deregisterAction(this); 
+		
 		unsetObjectLogging();
 	}
 
