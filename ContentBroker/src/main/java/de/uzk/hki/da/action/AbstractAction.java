@@ -143,7 +143,6 @@ public abstract class AbstractAction implements Runnable {
 	@Override
 	public void run() {
 		
-		
 		logger.info("Running \""+this.getClass().getName()+"\"");
 		logger.debug(LinuxEnvironmentUtils.logHeapSpaceInformation());
 		
@@ -154,59 +153,64 @@ public abstract class AbstractAction implements Runnable {
 			logger.error(e.getMessage()); return;
 		}
 		
+		logger.info("AbstractAction fetched job from queue. See logfile: "+object.getIdentifier()+".log");
+		setupObjectLogging(object.getIdentifier());
+		object.reattach();
+		
 		try {
-			logger.info("AbstractAction fetched job from queue. See logfile: "+object.getIdentifier()+".log");
-			setupObjectLogging(object.getIdentifier());
-
-			object.reattach();
 			if (!SUPPRESS_OBJECT_CONSISTENCY_CHECK){
 				if ((!object.isDBtoFSconsistent())||(!object.isFStoDBconsistent())){
 					throw new RuntimeException("Object DB is not consistent with data on FS.");
 				}
 			}
-
-			
-			logger.info("Stubbing implementation of "+this.getClass().getName());
-			logger.debug(Utilities.getHeapSpaceInformation());
-			
-			if (!implementation()){				
-				logger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
-				job.setStatus(startStatus);
-				toCreate=null;
-				DELETEOBJECT=false;
-				KILLATEXIT=false;
-			} else {
-				job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
-				logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now commiting changes to database.");
-				if (KILLATEXIT)	{
-					logger.info("Set the job status to the end status "+endStatus+" .");
-				} else {
-					job.setStatus(endStatus);	
-				}
-			}
-
+			execImplementation();
 			upateObjectAndJob(object,job,isDELETEOBJECT(),KILLATEXIT,toCreate);
 			
 		} catch (UserException e) {
+			
 			logger.error(this.getClass().getName()+": UserException in action: ",e);
-			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + C.WORKFLOW_STATE_DIGIT_USER_ERROR;
-			handleError(errorStatus);
+			handleError(object,job,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
 			new MailContents(preservationSystem,localNode).userExceptionCreateUserReport(userExceptionManager,e,object);
 			if (e.checkForAdminReport())
 				new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(e, object, this);
 			sendJMSException(e);
+			
 		} catch (Exception e) {
+			
 			logger.error(this.getClass().getName()+": Exception in action: ",e);
-			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "1";
-			handleError(errorStatus);
+			handleError(object,job,"1");
 			new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(e, object, this);
 			sendJMSException(e);
+			
 		} finally {		
 			
-			
 			unsetObjectLogging();
-			
 			actionMap.deregisterAction(this);
+			
+		}
+	}
+
+	private void execImplementation() throws FileNotFoundException,
+			IOException, RepositoryException, JDOMException,
+			ParserConfigurationException, SAXException {
+		
+		logger.info("Stubbing implementation of "+this.getClass().getName());
+		logger.debug(Utilities.getHeapSpaceInformation());
+		
+		if (!implementation()){				
+			logger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
+			job.setStatus(startStatus);
+			toCreate=null;
+			DELETEOBJECT=false;
+			KILLATEXIT=false;
+		} else {
+			job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+			logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now commiting changes to database.");
+			if (KILLATEXIT)	{
+				logger.info("Set the job status to the end status "+endStatus+" .");
+			} else {
+				job.setStatus(endStatus);	
+			}
 		}
 	}
 	
@@ -254,11 +258,9 @@ public abstract class AbstractAction implements Runnable {
 		
 		catch (org.hibernate.exception.GenericJDBCException sql) {
 			
-				logger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sql);
-				String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "1";
-				handleError(errorStatus);
-				new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(sql, object, this);
-				sendJMSException(sql);
+			logger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sql);
+			new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(sql, object, this);
+			sendJMSException(sql);
 		}	
 	}
 	
@@ -303,33 +305,23 @@ public abstract class AbstractAction implements Runnable {
 	/**
 	 * @param errorStatus
 	 */
-	private void handleError(String errorStatus) {
+	private void handleError(Object object,Job job,String errorStatusEndDigit) {
 		
+		String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + errorStatusEndDigit;
+		
+		logger.info("Stubbing rollback of "+this.getClass().getName());
 		try {
-			logger.info("Stubbing rollback of "+this.getClass().getName());
 			rollback();
 		} catch (Exception e) {
 			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO ROLLBACK ACTION. DATABASE OR WORKAREA MIGHT BE INCONSISTENT NOW.");
 			logger.error(this.getClass().getName()+": couldn't get rollbacked to previous state. Exception in action.rollback(): ",e);
-			errorStatus = errorStatus.substring(0, errorStatus.length() - 1) + "3";
+			errorStatus = errorStatus.substring(0, errorStatus.length() - 1) + C.WORKFLOW_STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED;
 		}
 
 		job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
 		job.setStatus(errorStatus);
 		
-		try{
-			logger.debug("Set job to error state. Commit changes to database now.");
-			Session session = openSession();
-			session.beginTransaction();
-			session.update(job);
-			session.getTransaction().commit();
-			session.close();
-		}catch(Exception e){
-			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO COMMIT CHANGES AFTER ROLLBACK. DATABASE MIGHT BE INCONSISTENT NOW.",e);
-		}
-		
-		logger.info("Database transaction successful. Job set to error state " + errorStatus);
-		
+		upateObjectAndJob(object, job, false, false, null);
 	}
 	
 
