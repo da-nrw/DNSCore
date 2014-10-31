@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <name>DNSCore</name>
 
+
     <modules>
         <module>DNSCommon</module>
         <module>ContentBroker</module>
