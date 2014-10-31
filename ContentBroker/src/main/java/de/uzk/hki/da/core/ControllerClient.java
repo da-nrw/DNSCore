@@ -75,7 +75,8 @@ public class ControllerClient {
     	producer.send(message);
       	
         MessageConsumer consumer = session.createConsumer(toClient);
-        for (;;) {
+        System.out.println("(to stop client hit CTRL-C)");
+        while (true) {
         Message messageRecieve = consumer.receive(1000);
         	if (messageRecieve instanceof TextMessage) {
         		TextMessage textMessage = (TextMessage) messageRecieve;
