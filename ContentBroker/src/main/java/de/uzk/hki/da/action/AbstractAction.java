@@ -143,7 +143,35 @@ public abstract class AbstractAction implements Runnable {
 	@Override
 	public void run() {
 		
+		if (!performCommonPreparationsForActionExecution()) return;
+		setupObjectLogging(object.getIdentifier());
 		
+		synchronizeObjectDatabaseAndFileSystemState();
+		
+		try {
+			execAndPostProcessImplementation();
+			upateObjectAndJob(object,job,isDELETEOBJECT(),KILLATEXIT,toCreate);
+			
+		} catch (UserException e) {
+			
+			execAndPostProcessRollback(object,job,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+			upateObjectAndJob(object, job, false, false, null);
+			reportUserError(e);
+			
+		} catch (Exception e) {
+			
+			execAndPostProcessRollback(object,job,"1");
+			upateObjectAndJob(object, job, false, false, null);
+			reportTechnicalError(e);
+			
+		} finally {		
+			
+			actionMap.deregisterAction(this); // now the action does't block resources anymore. 
+			unsetObjectLogging();
+		}
+	}
+
+	private boolean performCommonPreparationsForActionExecution() {
 		logger.info("Running \""+this.getClass().getName()+"\"");
 		logger.debug(LinuxEnvironmentUtils.logHeapSpaceInformation());
 		
@@ -151,115 +179,128 @@ public abstract class AbstractAction implements Runnable {
 			checkActionSpecificConfiguration();
 			checkSystemStatePreconditions();
 		} catch (Exception e) {
-			logger.error(e.getMessage()); return;
+			logger.error(e.getMessage()); return false;
 		}
+		return true;
+	}
+
+	
+	/**
+	 * Execute the business code implementation.
+	 * Adjust job properties depending of implementation outcome.
+	 * Adjust modifiers depending of implementation outcome. 
+	 */
+	private void execAndPostProcessImplementation() throws FileNotFoundException,
+			IOException, RepositoryException, JDOMException,
+			ParserConfigurationException, SAXException {
 		
-		try {
-			logger.info("AbstractAction fetched job from queue. See logfile: "+object.getIdentifier()+".log");
-			setupObjectLogging(object.getIdentifier());
-
-			object.reattach();
-			if (!SUPPRESS_OBJECT_CONSISTENCY_CHECK){
-				if ((!object.isDBtoFSconsistent())||(!object.isFStoDBconsistent())){
-					throw new RuntimeException("Object DB is not consistent with data on FS.");
-				}
-			}
-
-			
-			logger.info("Stubbing implementation of "+this.getClass().getName());
-			logger.debug(Utilities.getHeapSpaceInformation());
-			
-			if (!implementation()){				
-				logger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
-				job.setStatus(startStatus);
-				toCreate=null;
-				DELETEOBJECT=false;
-				KILLATEXIT=false;
+		logger.info("Stubbing implementation of "+this.getClass().getName());
+		logger.debug(Utilities.getHeapSpaceInformation());
+		
+		if (!implementation()){				
+			logger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
+			job.setStatus(startStatus);
+			toCreate=null;
+			DELETEOBJECT=false;
+			KILLATEXIT=false;
+		} else {
+			job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+			logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now commiting changes to database.");
+			if (KILLATEXIT)	{
+				logger.info("Set the job status to the end status "+endStatus+" .");
 			} else {
-				job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
-				logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now commiting changes to database.");
-				if (KILLATEXIT)	{
-					logger.info("Set the job status to the end status "+endStatus+" .");
-				} else {
-					job.setStatus(endStatus);	
-				}
+				job.setStatus(endStatus);	
 			}
-
-			upateObjectAndJob(object,job,isDELETEOBJECT(),KILLATEXIT,toCreate);
-			
-		} catch (UserException e) {
-			logger.error(this.getClass().getName()+": UserException in action: ",e);
-			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + C.WORKFLOW_STATE_DIGIT_USER_ERROR;
-			handleError(errorStatus);
-			new MailContents(preservationSystem,localNode).userExceptionCreateUserReport(userExceptionManager,e,object);
-			if (e.checkForAdminReport())
-				new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(e, object, this);
-			sendJMSException(e);
-		} catch (Exception e) {
-			logger.error(this.getClass().getName()+": Exception in action: ",e);
-			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "1";
-			handleError(errorStatus);
-			new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(e, object, this);
-			sendJMSException(e);
-		} finally {		
-			
-			
-			unsetObjectLogging();
-			
-			actionMap.deregisterAction(this);
 		}
 	}
 	
 	
-
-	/**
-	 * @param object
-	 * @param job
-	 * @param deleteObject
-	 * @param deleteJob
-	 * @param createJob
-	 */
-	private void upateObjectAndJob(Object object,Job job, boolean deleteObject,boolean deleteJob,Job createJob){
+	
+	private void execAndPostProcessRollback(Object object,Job job,String errorStatusEndDigit) {
 		
+		String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + errorStatusEndDigit;
+		
+		logger.info("Stubbing rollback of "+this.getClass().getName());
 		try {
-			Session session = openSession();
-			session.beginTransaction();
-			
-			
-			if (createJob!=null)
-				session.save(createJob);
-
-			session.flush();
-			
-			if (deleteJob) {
-				session.delete(job);
-				logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Job deleted. Database transaction successful.");
-			}
-			else {
-				session.update(job);
-				logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Set job to end state ("+endStatus+"). Database transaction successful.");			
-			}
-
-			session.flush();
-			
-			if (deleteObject) 
-				session.delete(object);
-			else
-				session.update(object);
-			
-			
-			session.getTransaction().commit();
-			session.close();
+			rollback();
+		} catch (Exception e) {
+			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO ROLLBACK ACTION. DATABASE OR WORKAREA MIGHT BE INCONSISTENT NOW.");
+			logger.error(this.getClass().getName()+": couldn't get rollbacked to previous state. Exception in action.rollback(): ",e);
+			errorStatus = errorStatus.substring(0, errorStatus.length() - 1) + C.WORKFLOW_STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED;
 		}
+	
+		job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+		job.setStatus(errorStatus);
+	}
+
+	
+	
+	/**
+	 * Perform the database transaction to synchronize the updates of job and object 
+	 * (which happened during implementation) to the database. 
+	 * <br>
+	 * In case of connection related failures retries it until it succeeds.
+	 */
+	private void upateObjectAndJob(
+			Object object,Job job, 
+			boolean deleteObject,boolean deleteJob,
+			Job createJob){
 		
-		catch (org.hibernate.exception.GenericJDBCException sql) {
+		boolean transactionSuccessful=false;
+		do {
 			
+			try {
+				performTransaction(object, job, deleteObject, deleteJob, createJob);
+				transactionSuccessful=true;
+			}
+			catch (org.hibernate.exception.GenericJDBCException sql) {
 				logger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sql);
-				String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "1";
-				handleError(errorStatus);
 				new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(sql, object, this);
 				sendJMSException(sql);
-		}	
+				
+				try {    Thread.sleep(2000);
+				} catch (InterruptedException e) {}
+			}
+		} while(!transactionSuccessful);
+	}
+
+	
+	
+	private void performTransaction(
+			Object object,Job job, 
+			boolean deleteObject,boolean deleteJob,
+			Job createJob){
+	
+		Session session = openSession();
+		session.beginTransaction();
+		
+		
+		if (createJob!=null)
+			session.save(createJob);
+
+		session.flush();
+		
+		if (deleteJob) {
+			session.delete(job);
+			logger.info(this.getClass().getName()+" finished working on job: "+
+					job.getId()+". Job deleted. Database transaction successful.");
+		}
+		else {
+			session.update(job);
+			logger.info(this.getClass().getName()+" finished working on job: "+
+					job.getId()+". Set job to end state ("+endStatus+"). Database transaction successful.");			
+		}
+
+		session.flush();
+		
+		if (deleteObject) 
+			session.delete(object);
+		else
+			session.update(object);
+		
+		
+		session.getTransaction().commit();
+		session.close();
 	}
 	
 	
@@ -267,6 +308,20 @@ public abstract class AbstractAction implements Runnable {
 	
 	
 	
+	private void reportUserError(UserException e) {
+		logger.error(this.getClass().getName()+": UserException in action: ",e);
+		new MailContents(preservationSystem,localNode).userExceptionCreateUserReport(userExceptionManager,e,object);
+		if (e.checkForAdminReport())
+			new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(e, object, this);
+		sendJMSException(e);
+	}
+
+	private void reportTechnicalError(Exception e){
+		logger.error(this.getClass().getName()+": Exception in action: ",e);
+		new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(e, object, this);
+		sendJMSException(e);
+	}
+
 	/**
 	 * Sends Exception to JMS Broker.
 	 * 
@@ -290,50 +345,25 @@ public abstract class AbstractAction implements Runnable {
 			String messageSend = "Package "+  object.getIdentifier() + " " + txt;
 			TextMessage message = session.createTextMessage(messageSend);
 			message.setJMSReplyTo(toServer);
-            producer.send(message);
-            producer.close();
-            session.close();
-            connection.close();
+	        producer.send(message);
+	        producer.close();
+	        session.close();
+	        connection.close();
 		}catch (JMSException e1) {
 			logger.error("Error while connecting to ActiveMQ Broker " + e1.getCause());
 		}
 		}
 	}
-	
-	/**
-	 * @param errorStatus
-	 */
-	private void handleError(String errorStatus) {
-		
-		try {
-			logger.info("Stubbing rollback of "+this.getClass().getName());
-			rollback();
-		} catch (Exception e) {
-			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO ROLLBACK ACTION. DATABASE OR WORKAREA MIGHT BE INCONSISTENT NOW.");
-			logger.error(this.getClass().getName()+": couldn't get rollbacked to previous state. Exception in action.rollback(): ",e);
-			errorStatus = errorStatus.substring(0, errorStatus.length() - 1) + "3";
-		}
 
-		job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
-		job.setStatus(errorStatus);
-		
-		try{
-			logger.debug("Set job to error state. Commit changes to database now.");
-			Session session = openSession();
-			session.beginTransaction();
-			session.update(job);
-			session.getTransaction().commit();
-			session.close();
-		}catch(Exception e){
-			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO COMMIT CHANGES AFTER ROLLBACK. DATABASE MIGHT BE INCONSISTENT NOW.",e);
+	private void synchronizeObjectDatabaseAndFileSystemState() {
+		object.reattach();
+		if (!SUPPRESS_OBJECT_CONSISTENCY_CHECK){
+			if ((!object.isDBtoFSconsistent())||(!object.isFStoDBconsistent())){
+				reportTechnicalError(new RuntimeException("Object DB is not consistent with data on FS."));
+			}
 		}
-		
-		logger.info("Database transaction successful. Job set to error state " + errorStatus);
-		
 	}
-	
 
-	
 	/**
 	 * @author Sebastian Cuy
 	 * Sets the file name for package logger dynamically
@@ -346,6 +376,8 @@ public abstract class AbstractAction implements Runnable {
 		Appender<ILoggingEvent> appender = logger.getAppender("OBJECT");
 		if (appender != null)
 			appender.start();
+		
+		logger.info("AbstractAction fetched job from queue. See logfile: "+object.getIdentifier()+".log");
 	}
 	
 	/**
