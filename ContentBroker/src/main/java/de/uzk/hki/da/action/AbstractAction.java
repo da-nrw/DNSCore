@@ -163,34 +163,35 @@ public abstract class AbstractAction implements Runnable {
 					throw new RuntimeException("Object DB is not consistent with data on FS.");
 				}
 			}
-			execImplementation();
+			execAndPostProcessImplementation();
 			upateObjectAndJob(object,job,isDELETEOBJECT(),KILLATEXIT,toCreate);
 			
 		} catch (UserException e) {
 			
-			logger.error(this.getClass().getName()+": UserException in action: ",e);
-			handleError(object,job,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
-			new MailContents(preservationSystem,localNode).userExceptionCreateUserReport(userExceptionManager,e,object);
-			if (e.checkForAdminReport())
-				new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(e, object, this);
-			sendJMSException(e);
+			execAndPostProcessRollback(object,job,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+			upateObjectAndJob(object, job, false, false, null);
+			reportUserError(e);
 			
 		} catch (Exception e) {
 			
-			logger.error(this.getClass().getName()+": Exception in action: ",e);
-			handleError(object,job,"1");
-			new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(e, object, this);
-			sendJMSException(e);
+			execAndPostProcessRollback(object,job,"1");
+			upateObjectAndJob(object, job, false, false, null);
+			reportTechnicalError(e);
 			
 		} finally {		
 			
 			unsetObjectLogging();
 			actionMap.deregisterAction(this);
-			
 		}
 	}
 
-	private void execImplementation() throws FileNotFoundException,
+	
+	/**
+	 * Execute the business code implementation.
+	 * Adjust job properties depending of implementation outcome.
+	 * Adjust modifiers depending of implementation outcome. 
+	 */
+	private void execAndPostProcessImplementation() throws FileNotFoundException,
 			IOException, RepositoryException, JDOMException,
 			ParserConfigurationException, SAXException {
 		
@@ -215,53 +216,92 @@ public abstract class AbstractAction implements Runnable {
 	}
 	
 	
-
-	/**
-	 * @param object
-	 * @param job
-	 * @param deleteObject
-	 * @param deleteJob
-	 * @param createJob
-	 */
-	private void upateObjectAndJob(Object object,Job job, boolean deleteObject,boolean deleteJob,Job createJob){
+	
+	private void execAndPostProcessRollback(Object object,Job job,String errorStatusEndDigit) {
 		
+		String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + errorStatusEndDigit;
+		
+		logger.info("Stubbing rollback of "+this.getClass().getName());
 		try {
-			Session session = openSession();
-			session.beginTransaction();
-			
-			
-			if (createJob!=null)
-				session.save(createJob);
-
-			session.flush();
-			
-			if (deleteJob) {
-				session.delete(job);
-				logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Job deleted. Database transaction successful.");
-			}
-			else {
-				session.update(job);
-				logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Set job to end state ("+endStatus+"). Database transaction successful.");			
-			}
-
-			session.flush();
-			
-			if (deleteObject) 
-				session.delete(object);
-			else
-				session.update(object);
-			
-			
-			session.getTransaction().commit();
-			session.close();
+			rollback();
+		} catch (Exception e) {
+			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO ROLLBACK ACTION. DATABASE OR WORKAREA MIGHT BE INCONSISTENT NOW.");
+			logger.error(this.getClass().getName()+": couldn't get rollbacked to previous state. Exception in action.rollback(): ",e);
+			errorStatus = errorStatus.substring(0, errorStatus.length() - 1) + C.WORKFLOW_STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED;
 		}
+	
+		job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+		job.setStatus(errorStatus);
+	}
+
+	
+	
+	/**
+	 * Perform the database transaction to synchronize the updates of job and object 
+	 * (which happened during implementation) to the database. 
+	 * <br>
+	 * In case of connection related failures retries it until it succeeds.
+	 */
+	private void upateObjectAndJob(
+			Object object,Job job, 
+			boolean deleteObject,boolean deleteJob,
+			Job createJob){
 		
-		catch (org.hibernate.exception.GenericJDBCException sql) {
+		boolean transactionSuccessful=false;
+		do {
 			
-			logger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sql);
-			new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(sql, object, this);
-			sendJMSException(sql);
-		}	
+			try {
+				performTransaction(object, job, deleteObject, deleteJob, createJob);
+				transactionSuccessful=true;
+			}
+			catch (org.hibernate.exception.GenericJDBCException sql) {
+				logger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sql);
+				new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(sql, object, this);
+				sendJMSException(sql);
+				
+				try {    Thread.sleep(2000);
+				} catch (InterruptedException e) {}
+			}
+		} while(!transactionSuccessful);
+	}
+
+	
+	
+	private void performTransaction(
+			Object object,Job job, 
+			boolean deleteObject,boolean deleteJob,
+			Job createJob){
+	
+		Session session = openSession();
+		session.beginTransaction();
+		
+		
+		if (createJob!=null)
+			session.save(createJob);
+
+		session.flush();
+		
+		if (deleteJob) {
+			session.delete(job);
+			logger.info(this.getClass().getName()+" finished working on job: "+
+					job.getId()+". Job deleted. Database transaction successful.");
+		}
+		else {
+			session.update(job);
+			logger.info(this.getClass().getName()+" finished working on job: "+
+					job.getId()+". Set job to end state ("+endStatus+"). Database transaction successful.");			
+		}
+
+		session.flush();
+		
+		if (deleteObject) 
+			session.delete(object);
+		else
+			session.update(object);
+		
+		
+		session.getTransaction().commit();
+		session.close();
 	}
 	
 	
@@ -269,6 +309,20 @@ public abstract class AbstractAction implements Runnable {
 	
 	
 	
+	private void reportUserError(UserException e) {
+		logger.error(this.getClass().getName()+": UserException in action: ",e);
+		new MailContents(preservationSystem,localNode).userExceptionCreateUserReport(userExceptionManager,e,object);
+		if (e.checkForAdminReport())
+			new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(e, object, this);
+		sendJMSException(e);
+	}
+
+	private void reportTechnicalError(Exception e){
+		logger.error(this.getClass().getName()+": Exception in action: ",e);
+		new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(e, object, this);
+		sendJMSException(e);
+	}
+
 	/**
 	 * Sends Exception to JMS Broker.
 	 * 
@@ -292,40 +346,16 @@ public abstract class AbstractAction implements Runnable {
 			String messageSend = "Package "+  object.getIdentifier() + " " + txt;
 			TextMessage message = session.createTextMessage(messageSend);
 			message.setJMSReplyTo(toServer);
-            producer.send(message);
-            producer.close();
-            session.close();
-            connection.close();
+	        producer.send(message);
+	        producer.close();
+	        session.close();
+	        connection.close();
 		}catch (JMSException e1) {
 			logger.error("Error while connecting to ActiveMQ Broker " + e1.getCause());
 		}
 		}
 	}
-	
-	/**
-	 * @param errorStatus
-	 */
-	private void handleError(Object object,Job job,String errorStatusEndDigit) {
-		
-		String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + errorStatusEndDigit;
-		
-		logger.info("Stubbing rollback of "+this.getClass().getName());
-		try {
-			rollback();
-		} catch (Exception e) {
-			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO ROLLBACK ACTION. DATABASE OR WORKAREA MIGHT BE INCONSISTENT NOW.");
-			logger.error(this.getClass().getName()+": couldn't get rollbacked to previous state. Exception in action.rollback(): ",e);
-			errorStatus = errorStatus.substring(0, errorStatus.length() - 1) + C.WORKFLOW_STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED;
-		}
 
-		job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
-		job.setStatus(errorStatus);
-		
-		upateObjectAndJob(object, job, false, false, null);
-	}
-	
-
-	
 	/**
 	 * @author Sebastian Cuy
 	 * Sets the file name for package logger dynamically
