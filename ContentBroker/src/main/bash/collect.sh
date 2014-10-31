@@ -32,6 +32,7 @@ cp src/main/resources/frame.jsonld $1/conf
 cp src/main/conf/PDFA_def.ps $1/conf
 cp src/main/resources/frame.jsonld $1/conf
 mkdir $1/activemq-data
+mkdir $1/systemRules
 mkdir $1/log
 touch $1/log/contentbroker.log
 echo -e "ContentBroker Version $2\nWritten by\n Daniel M. de Oliveira\n Jens Peters\n Sebastian Cuy\n Thomas Kleinke\n Polina Gubaidullina" > $1/README.txt
