@@ -166,7 +166,7 @@ public abstract class AbstractAction implements Runnable {
 			reportTechnicalError(e);
 		} 		
 			
-		actionMap.deregisterAction(this); // now the action does't block resources anymore.
+		actionMap.deregisterAction(this);
 		unsetObjectLogging();
 	}
 
