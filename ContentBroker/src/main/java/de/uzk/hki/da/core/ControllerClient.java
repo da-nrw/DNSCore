@@ -52,8 +52,8 @@ public class ControllerClient {
 		}
 		String toQueueName = C.QUEUE_TO_SERVER;
 		if (args.length==3){
+			toQueueName = args[2];
 			System.out.print("Specified queue named : " + toQueueName);
-			toQueueName = args[3];
 		}
 		String serverName =  args[0];
 		System.out.println("... Client started, talking to " + args[0]);
