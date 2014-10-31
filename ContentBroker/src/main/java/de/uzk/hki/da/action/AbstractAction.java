@@ -161,7 +161,7 @@ public abstract class AbstractAction implements Runnable {
 			
 		} catch (Exception e) {
 			
-			execAndPostProcessRollback(object,job,"1");
+			execAndPostProcessRollback(object,job,C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED);
 			upateObjectAndJob(object, job, false, false, null);
 			reportTechnicalError(e);
 		} 		
@@ -257,10 +257,9 @@ public abstract class AbstractAction implements Runnable {
 				performTransaction(object, job, deleteObject, deleteJob, createJob);
 				transactionSuccessful=true;
 			}
-			catch (org.hibernate.exception.GenericJDBCException sql) {
-				logger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sql);
-				new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(sql, object, this);
-				sendJMSException(sql);
+			catch (Exception sqlException) {
+				logger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sqlException);
+				sendJMSException(sqlException);
 				
 				try {    Thread.sleep(2000);
 				} catch (InterruptedException e) {}
@@ -301,7 +300,7 @@ public abstract class AbstractAction implements Runnable {
 			session.delete(object);
 		else
 			session.update(object);
-		
+
 		
 		session.getTransaction().commit();
 		session.close();

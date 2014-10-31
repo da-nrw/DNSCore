@@ -29,6 +29,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doThrow;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -36,6 +37,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.cb.NullAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.Job;
@@ -54,6 +56,8 @@ import de.uzk.hki.da.service.UserExceptionManager;
 public class AbstractActionTests {
 
 	Session mockSession = null;
+	private Object object;
+	private Job job;
 	
 	@Before
 	public void setUp(){
@@ -77,10 +81,10 @@ public class AbstractActionTests {
 		action.setUserExceptionManager(userExceptionManager);
 		
 		action.setActionMap(mock(ActionRegistry.class));
-		Job job = new Job();
+		job = new Job();
 		action.setJob(job);
 		User c = new User(); c.setShort_name("TEST"); c.setEmailAddress("useremail");
-		Object object = new Object();
+		object = new Object();
 		object.setIdentifier("ID");
 		object.setContractor(c);
 		object.getPackages().add(pkg);
@@ -145,8 +149,6 @@ public class AbstractActionTests {
 	}
 	
 	
-	
-	
 	@Test
 	public void implementationExecutionAborted() {
 		ExecutionAbortedAction action = new ExecutionAbortedAction();
@@ -160,6 +162,7 @@ public class AbstractActionTests {
 		assertEquals("190",action.getJob().getStatus());
 	}
 
+	
 	@Test
 	public void revertModifierWhenimplementationExecutionAborted() {
 		ExecutionAbortedAction action = new ExecutionAbortedAction();
@@ -175,7 +178,7 @@ public class AbstractActionTests {
 	
 	
 	@Test
-	public void testImplementationThrowsUserException(){
+	public void userException(){
 		UserExceptionAction action = new UserExceptionAction();
 		action.setSession(mockSession);
 		setCommonProperties(action, "190", "200");
@@ -183,8 +186,63 @@ public class AbstractActionTests {
 		action.run();
 		
 		verify(mockSession,times(1)).update(action.getJob());
+		verify(mockSession,times(0)).delete(action.getJob());
+		verify(mockSession,times(0)).delete(action.getObject());
+		verify(mockSession,times(0)).save((Job)anyObject());
 		assertEquals("194",action.getJob().getStatus());
 	}
+	
+	@Test
+	public void technicalExceptionProperlyHandled(){
+		TechnicalExceptionAction action = new TechnicalExceptionAction();
+		action.setSession(mockSession);
+		setCommonProperties(action, "190", "200");
+		
+		action.run();
+		
+		verify(mockSession,times(1)).update(action.getJob());
+		verify(mockSession,times(0)).delete(action.getJob());
+		verify(mockSession,times(0)).delete(action.getObject());
+		verify(mockSession,times(0)).save((Job)anyObject());
+		assertEquals("19"+C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED,action.getJob().getStatus());
+	}
+
+	@Test
+	public void technicalExceptionNotProperlyHandled(){
+		TechnicalExceptionNotProperlyHandledAction action = new TechnicalExceptionNotProperlyHandledAction();
+		action.setSession(mockSession);
+		setCommonProperties(action, "190", "200");
+		
+		action.run();
+		
+		verify(mockSession,times(1)).update(action.getJob());
+		verify(mockSession,times(0)).delete(action.getJob());
+		verify(mockSession,times(0)).delete(action.getObject());
+		verify(mockSession,times(0)).save((Job)anyObject());
+		assertEquals("19"+C.WORKFLOW_STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED,action.getJob().getStatus());
+	}
+	
+
+	@Test
+	public void retryWhenTransactionNotSucceeds() {
+		
+		SuccessfulAction action = new SuccessfulAction();
+		action.setSession(mockSession);
+		setCommonProperties(action, "190", "200");
+		doThrow(new RuntimeException("sqlException_1")).doThrow(
+				new RuntimeException("sqlException_2")).doNothing().
+				when(mockSession).update(object);
+		doThrow(new RuntimeException("sqlException_1")).doThrow(
+				new RuntimeException("sqlException_2")).doNothing().
+				when(mockSession).update(job);
+		
+		action.run();
+		
+		verify(mockSession,times(3)).update(object);
+		verify(mockSession,times(3)).update(object);
+		assertEquals("200",action.getJob().getStatus());
+	}
+	
 	
 	
 	class CreateJobAction extends NullAction{
@@ -231,7 +289,36 @@ public class AbstractActionTests {
 	class UserExceptionAction extends NullAction{
 		@Override
 		public boolean implementation() {
+			DELETEOBJECT=true;
+			setKILLATEXIT(true);
+			toCreate=new Job();
 			throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,"ERROR","ERROR");
 		}
 	}
+	
+	class TechnicalExceptionAction extends NullAction{
+		@Override
+		public boolean implementation() {
+			DELETEOBJECT=true;
+			setKILLATEXIT(true);
+			toCreate=new Job();
+			throw new RuntimeException("RUNTIME ERROR");
+		}
+	}
+	
+	class TechnicalExceptionNotProperlyHandledAction extends NullAction{
+		@Override
+		public boolean implementation() {
+			DELETEOBJECT=true;
+			setKILLATEXIT(true);
+			toCreate=new Job();
+			throw new RuntimeException("RUNTIME ERROR");
+		}
+		
+		@Override
+		public void rollback() {
+			throw new RuntimeException("rollback RUNTIME ERROR");
+		}
+	}
+	
 }

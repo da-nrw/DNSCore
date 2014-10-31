@@ -125,6 +125,8 @@ public class C {
 	
 	// Action organization
 	public static final String WORKFLOW_STATE_DIGIT_USER_ERROR="4";
+	public static final String WORKFLOW_STATE_DIGIT_IDLE="0";
+	public static final String WORKFLOW_STATE_DIGIT_WORKING="2";
 	public static final String WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED = "1";
 	public static final String WORKFLOW_STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED = "3";
 	public static final String WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION = "150";
