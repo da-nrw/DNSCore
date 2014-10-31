@@ -153,17 +153,13 @@ public abstract class AbstractAction implements Runnable {
 			logger.error(e.getMessage()); return;
 		}
 		
-		logger.info("AbstractAction fetched job from queue. See logfile: "+object.getIdentifier()+".log");
 		setupObjectLogging(object.getIdentifier());
-		object.reattach();
+		synchronizeObjectDatabaseAndFileSystemState();
+		
 		
 		try {
-			if (!SUPPRESS_OBJECT_CONSISTENCY_CHECK){
-				if ((!object.isDBtoFSconsistent())||(!object.isFStoDBconsistent())){
-					throw new RuntimeException("Object DB is not consistent with data on FS.");
-				}
-			}
 			execAndPostProcessImplementation();
+			actionMap.deregisterAction(this); // now the action does't block resources anymore. 
 			upateObjectAndJob(object,job,isDELETEOBJECT(),KILLATEXIT,toCreate);
 			
 		} catch (UserException e) {
@@ -181,7 +177,6 @@ public abstract class AbstractAction implements Runnable {
 		} finally {		
 			
 			unsetObjectLogging();
-			actionMap.deregisterAction(this);
 		}
 	}
 
@@ -356,6 +351,15 @@ public abstract class AbstractAction implements Runnable {
 		}
 	}
 
+	private void synchronizeObjectDatabaseAndFileSystemState() {
+		object.reattach();
+		if (!SUPPRESS_OBJECT_CONSISTENCY_CHECK){
+			if ((!object.isDBtoFSconsistent())||(!object.isFStoDBconsistent())){
+				reportTechnicalError(new RuntimeException("Object DB is not consistent with data on FS."));
+			}
+		}
+	}
+
 	/**
 	 * @author Sebastian Cuy
 	 * Sets the file name for package logger dynamically
@@ -368,6 +372,8 @@ public abstract class AbstractAction implements Runnable {
 		Appender<ILoggingEvent> appender = logger.getAppender("OBJECT");
 		if (appender != null)
 			appender.start();
+		
+		logger.info("AbstractAction fetched job from queue. See logfile: "+object.getIdentifier()+".log");
 	}
 	
 	/**
