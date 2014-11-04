@@ -612,9 +612,9 @@ public class IrodsSystemConnector {
 			result = getRuleProcessingAO().executeRule(
 					contents.toString(),  inputparameters,
 					RuleProcessingType.INTERNAL);
-			execOut = result.getOutputParameterResults()
-				.get(RuleProcessingAOImpl.RULE_EXEC_OUT).getResultObject()
-				.toString();
+			//execOut = result.getOutputParameterResults()
+			//	.get(RuleProcessingAOImpl.RULE_EXEC_OUT).getResultObject()
+			//	.toString();
 		} catch (JargonException e) {
 
 			throw new IrodsRuntimeException("Error while executing Rule " + ruleToExec.getAbsolutePath()
