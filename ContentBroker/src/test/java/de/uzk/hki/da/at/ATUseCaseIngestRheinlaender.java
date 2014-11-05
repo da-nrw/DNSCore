@@ -28,12 +28,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
@@ -63,9 +66,10 @@ public class ATUseCaseIngestRheinlaender extends AcceptanceTest{
 	private static final String origName = 		"ATUseCaseIngestRheinlaender";
 	private static Object object;
 	private String EAD_XPATH_EXPRESSION = 		"//daoloc/@href";
+
 	
-	@Before
-	public void setUp() throws IOException{
+	@BeforeClass
+	public static void setUp() throws IOException{
 		object = ath.ingest(origName);
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}

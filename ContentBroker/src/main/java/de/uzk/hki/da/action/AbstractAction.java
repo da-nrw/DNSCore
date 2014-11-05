@@ -254,6 +254,7 @@ public abstract class AbstractAction implements Runnable {
 		do {
 			
 			try {
+				logger.info("perform transaction with object="+object.getOrig_name()+", job="+job.getStatus());
 				performTransaction(object, job, deleteObject, deleteJob, createJob);
 				transactionSuccessful=true;
 			}
