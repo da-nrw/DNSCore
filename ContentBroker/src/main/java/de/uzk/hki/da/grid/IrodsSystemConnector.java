@@ -581,13 +581,14 @@ public class IrodsSystemConnector {
 	public String executeRuleFromFile(File ruleToExec , Map<String, String> parms) throws IOException {
 		
 		List<IRODSRuleParameter> inputparameters = new ArrayList<IRODSRuleParameter>();
+		if (parms!=null) {
 		Iterator<Map.Entry<String, String>> entries = parms.entrySet().iterator();
 		while (entries.hasNext()) {
 		    Map.Entry<String, String> entry = entries.next();
 			IRODSRuleParameter iparm = new IRODSRuleParameter(entry.getKey(),entry.getValue());
 			inputparameters.add(iparm);
 		}
-		
+		}
 		String execOut = "";
 		IRODSRuleExecResult result;	
 		StringBuilder contents = new StringBuilder();
@@ -611,9 +612,9 @@ public class IrodsSystemConnector {
 			result = getRuleProcessingAO().executeRule(
 					contents.toString(),  inputparameters,
 					RuleProcessingType.INTERNAL);
-			execOut = result.getOutputParameterResults()
-				.get(RuleProcessingAOImpl.RULE_EXEC_OUT).getResultObject()
-				.toString();
+			//execOut = result.getOutputParameterResults()
+			//	.get(RuleProcessingAOImpl.RULE_EXEC_OUT).getResultObject()
+			//	.toString();
 		} catch (JargonException e) {
 
 			throw new IrodsRuntimeException("Error while executing Rule " + ruleToExec.getAbsolutePath()
