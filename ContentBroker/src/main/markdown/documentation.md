@@ -100,7 +100,7 @@ the releases page, follow the source code link for the corresponding version and
 #### Enhancing the functions of DNSCore<br>[Developers]
 
 * Building and testing DNSCore ([english](development_deploy.md))
-* Building DAWeb ([english](../../../../DAWeb/doc/deploy.md))
+* Build and Deploy DAWeb ([english](../../../../DAWeb/doc/setup.md))
 * Setting up Continuous Integration for DNSCore builds ([english](development_setting_up_ci.md))
 * System components overview ([english](components_connectors.md))
 * 3rd party modules ([english](3rdPartyTools.md))
