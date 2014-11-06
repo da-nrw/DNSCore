@@ -16,6 +16,13 @@
 	  You should have received a copy of the GNU General Public License
 	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
+
+
+## Prerequisites
+
+* Oracle Java 1.6 (1.7 prooved for DA-WEB)
+* Tomcat6 or Tomcat7 
+* Grails 2.3.8
 	
 ## Configure Runtime Settings of DA-Web
 
@@ -23,19 +30,13 @@ Several runtime settings are needed by DA-Web. All the parameters needed for the
 the Tomcat Server's home in folder .grails, assuming the Tomcat's servers home at /home/tomcat/, there must be a file
 called /home/tomcat/.grails/daweb3_properties.groovy. 
 Most of the parameters are the same as in config.properties of ContentBroker. 
-A template can be found here: [daweb3_properties.groovy](daweb3_properties.groovy.dev)
+A documented template can be found here: [daweb3_properties.groovy](daweb3_properties.groovy.dev)
 	
-## Deploy Da-Web3 WAR
-
-### Build Da-Web3
-
-You may need to copy the application.properties.template file to application.properties if you want 
-to build DA-Web on your own.
+## Build DA-Web WAR
 
 In normal build processes this is done automatically by the install processes called in
 the maven build process. If you want to build DA-Web as isolated project, you will need 
 to have GRAILS installed on your command line, the project itself is mavenized. 
-
 
 Builds without having a related build of CB are strongly discouraged, while the both 
 applications share the same model. 
@@ -44,7 +45,14 @@ The command
 <pre>mvn install</pre>
 war will build the target file for you. 
 
-### Running DAWeb locally
+### Deploy and Running DAWeb locally
 
 The DaWeb interface could be executed locally with command 
 <pre>mvn grails:run-app</pre>
+
+## Encode Database Password 
+
+To encode your own DB Password for production, you must have a groovy compiler (and at least a checkout of the class) run
+
+    groovy grails-app/utils/de/uzk/hki/da/utils/DESCodec.groovy <your password>
+
