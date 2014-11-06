@@ -48,3 +48,10 @@ war will build the target file for you.
 
 The DaWeb interface could be executed locally with command 
 <pre>mvn grails:run-app</pre>
+
+## Encode Database Password 
+
+To encode your own DB Password for production, you must have a groovy compiler (and at least a checkout of the class) run
+
+groovy grails-app/utils/de/uzk/hki/da/utils/DESCodec.groovy <your password>
+
