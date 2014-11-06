@@ -30,7 +30,7 @@ Several runtime settings are needed by DA-Web. All the parameters needed for the
 the Tomcat Server's home in folder .grails, assuming the Tomcat's servers home at /home/tomcat/, there must be a file
 called /home/tomcat/.grails/daweb3_properties.groovy. 
 Most of the parameters are the same as in config.properties of ContentBroker. 
-A template can be found here: [daweb3_properties.groovy](daweb3_properties.groovy.dev)
+A documented template can be found here: [daweb3_properties.groovy](daweb3_properties.groovy.dev)
 	
 ## Build DA-Web WAR
 
@@ -54,5 +54,5 @@ The DaWeb interface could be executed locally with command
 
 To encode your own DB Password for production, you must have a groovy compiler (and at least a checkout of the class) run
 
-groovy grails-app/utils/de/uzk/hki/da/utils/DESCodec.groovy <your password>
+    groovy grails-app/utils/de/uzk/hki/da/utils/DESCodec.groovy <your password>
 
