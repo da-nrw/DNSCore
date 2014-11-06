@@ -43,10 +43,7 @@ at all.
 
 ### Prepare the database 
 
-Create at least one contractor with role admin:
-<pre>
-insert into contractors (id,short_name,admin) values (4,'admin',1)
-</pre>
+Create at least one contractor with role ROLE_PSADMIN in sping security. 
  
 ### Installation Step by step
 
@@ -64,21 +61,6 @@ Please note: some distributions have a distinct home folder of user tomcat (e.g.
 
 ## daweb3_properties.groovy
 
-    irods.server = ""
-    irods.default_resc = ""
-    daweb3.loginManager = "de.uzk.hki.da.login.IrodsLogin"
-
-These settings are responsible for the connection between DAWeb and the
-iRODS server. DAWeb users get authenticated by an iRODS server which acts
-as authentication backbone.
-
-Alternatively if, you are coming from the "Getting started" tutorial or
-want to showcase DNSCore on a local laptop, you can bypass the iRODS authentication
-mechanism by setting the irods properties to
-    
-    irods.server = "" # leave empty
-    irods.default_resc = "" # leave empty
-    daweb3.loginManager = "de.uzk.hki.da.login.PlainLogin"
     
 ### Directory Settings
 
