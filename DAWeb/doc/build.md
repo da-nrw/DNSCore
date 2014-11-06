@@ -32,17 +32,11 @@ called /home/tomcat/.grails/daweb3_properties.groovy.
 Most of the parameters are the same as in config.properties of ContentBroker. 
 A template can be found here: [daweb3_properties.groovy](daweb3_properties.groovy.dev)
 	
-## Deploy Da-Web3 WAR
-
-### Build Da-Web3
-
-You may need to copy the application.properties.template file to application.properties if you want 
-to build DA-Web on your own.
+## Build Da-Web3 WAR
 
 In normal build processes this is done automatically by the install processes called in
 the maven build process. If you want to build DA-Web as isolated project, you will need 
 to have GRAILS installed on your command line, the project itself is mavenized. 
-
 
 Builds without having a related build of CB are strongly discouraged, while the both 
 applications share the same model. 
@@ -51,7 +45,7 @@ The command
 <pre>mvn install</pre>
 war will build the target file for you. 
 
-### Running DAWeb locally
+### Deploy and Running DAWeb locally
 
 The DaWeb interface could be executed locally with command 
 <pre>mvn grails:run-app</pre>
