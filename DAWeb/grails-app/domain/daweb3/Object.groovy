@@ -105,6 +105,18 @@ class Object {
 		return ""
 	}
 	
+	/**
+	 * Ask for Workflow state
+	 * @author jpeters
+	 * @return
+	 */
+	
+	boolean isInWorkflowButton() {
+		if (object_state==50) {
+			return true;
+		}
+		return false;
+	}
 	
 	def getFormattedUrn() {
 		if (urn!=null && urn!="" && urn!="NULL") {

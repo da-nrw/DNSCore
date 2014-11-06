@@ -47,7 +47,7 @@ class StatusController {
 		// listall objects of Contractor
 		results.result = []
 		if (params.listallobjects) {
-			def objects = Object.findAllByUserAndObject_stateGreaterThan(contractor, 50)
+			def objects = Object.findAllByUserAndObject_stateGreaterThan(contractor, 51)
 			objects.each()  { inst ->
 				if (inst.object_state==100) result.status = "archived"
 				else result.status = "archived - but check needed"
@@ -103,13 +103,13 @@ class StatusController {
 		}  
 		
 		if (params.urn) {
-				rList = Object.findAllByUserAndUrnAndObject_stateBetween(contractor, params.urn,50,100)
+				rList = Object.findAllByUserAndUrnAndObject_stateBetween(contractor, params.urn,51,100)
 		}
 		if (params.origName) {
-				rList = Object.findAllByUserAndOrigNameAndObject_stateBetween(contractor, params.origName,50,100)
+				rList = Object.findAllByUserAndOrigNameAndObject_stateBetween(contractor, params.origName,51,100)
 		} 
 		if (params.identifier) {
-				rList = Object.findAllByUserAndIdentifierAndObject_stateBetween(contractor, params.identifier,50,100)	
+				rList = Object.findAllByUserAndIdentifierAndObject_stateBetween(contractor, params.identifier,51,100)	
 		}
 		// Found Object, must be true if we found anything (Queue or Object only)
 		boolean foundObject = false;

@@ -71,13 +71,6 @@
 							<g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name')}" />
 							<g:sortableColumn property="created" title="${message(code: 'object.created.label', default: 'Erstellt')}" />
 							<g:sortableColumn property="modified" title="${message(code: 'object.modified.label', default: 'Geändert')}" />
-							
-							<g:if test="${admin}">
-							<g:sortableColumn style="text-align: center" property="object_state" title="${message(code: 'object.object_state.label', default: 'Objekt Status')}" />
-							<th style="text-align: center">Überprüfen</th>
-							<th style="text-align: center">Pres. Derivate</th>
-							<th style="text-align: center">Index</th>
-							</g:if>
 							<th style="text-align: center">Publ.</th>
 							<th style="text-align: center">Anfordern				
 								<g:if test="${!paginate}">
@@ -106,41 +99,6 @@
 							<td>${fieldValue(bean: objectInstance, field: "origName")}</td>
 							<td>${objectInstance.getFormattedCreatedDate()}</td>
 							<td>${objectInstance.getFormattedModifiedDate()}</td>
-							
-							<g:if test="${admin}">
-							<td style="text-align: center">
-								<g:if test="${statusCode == 1}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/warning32.png"/>
-								</g:if>
-								<g:elseif test="${statusCode == 2}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/clock32.png"/>
-								</g:elseif>
-								<g:elseif test="${statusCode == 0}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/check32.png"/>
-								</g:elseif>
-							</td>
-							<td style="text-align: center">
-								<g:remoteLink action="queueForInspect" onLoaded="queuedFor(data)" id="${objectInstance.id}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/search32.png"
-									title="${message(code: 'default.ltp.icon.queueForInspect', default: 'Objekt zum manuellen Überprüfen anfordern')}" 
-									alt="${message(code: 'default.ltp.icon.queueForInspect', default: 'Objekt zum manuellen Überprüfen anfordern')}"/>
-								</g:remoteLink>
-							</td>
-							<td style="text-align: center">
-								<g:remoteLink action="queueForRebuildPresentation" onLoaded="queuedFor(data)" id="${objectInstance.id}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png"
-									title="${message(code: 'default.ltp.icon.rebuildPR', default: 'Objekt für Präsentation neu erzeugen')}" 
-									alt="${message(code: 'default.ltp.icon.rebuildPR', default: 'Objekt für Präsentation neu erzeugen')}"/>
-								</g:remoteLink>
-							</td>
-							<td style="text-align: center">
-								<g:remoteLink action="queueForIndex" onLoaded="queuedFor(data)" id="${objectInstance.id}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png"
-									title="${message(code: 'default.ltp.icon.rebuildIndex', default: 'Objekt neu indexieren')}" 
-									alt="${message(code: 'default.ltp.icon.rebuildIndex', default: 'Objekt neu indexieren')}"/>
-								</g:remoteLink>
-							</td>
-							</g:if>
 							<td>	
 						<g:if test="${objectInstance.getPublished_flag()==1}">
 							<g:link url="${objectInstance.getPublicPresLink()}" target="_blank"><g:img style="width:16px; height:16px" uri="/images/icons/globe.png"/></g:link>
@@ -152,15 +110,14 @@
 							<g:img style="width:16px; height:16px" uri="/images/icons/globe.png"/>
 						</g:if>
 							</td>
-							<g:if test="${paginate}">
+							<g:if test="${!objectInstance.isInWorkflowButton()}">
 								<td style="text-align: center">
 									<g:remoteLink action="queueForRetrieval" onLoaded="queuedFor(data)" id="${objectInstance.id}">
 										<g:img style="width:16px; height:16px" uri="/images/icons/boxdownload32.png"/>
 									</g:remoteLink>
 								</td>
-							</g:if>
-							<g:else>
-								<td style="text-align: center"><g:checkBox checked="false" value="${objectInstance.id}" name="check" id="i"/></td>	
+							</g:if><g:else><td style="text-align: center">Objekt in der Verarbeitung
+							</td>
 							</g:else>
 							<td style="text-align: center">
 								<g:if test="${new File(baseFolder+ "/"+ objectInstance.identifier +".tar").exists()}">
