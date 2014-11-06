@@ -32,7 +32,7 @@ called /home/tomcat/.grails/daweb3_properties.groovy.
 Most of the parameters are the same as in config.properties of ContentBroker. 
 A template can be found here: [daweb3_properties.groovy](daweb3_properties.groovy.dev)
 	
-## Build Da-Web3 WAR
+## Build DA-Web WAR
 
 In normal build processes this is done automatically by the install processes called in
 the maven build process. If you want to build DA-Web as isolated project, you will need 
