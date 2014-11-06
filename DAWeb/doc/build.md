@@ -16,6 +16,13 @@
 	  You should have received a copy of the GNU General Public License
 	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
+
+
+## Prerequisites
+
+* Oracle Java 1.6 (1.7 prooved for DA-WEB)
+* Tomcat6 or Tomcat7 
+* Grails 2.3.8
 	
 ## Configure Runtime Settings of DA-Web
 
