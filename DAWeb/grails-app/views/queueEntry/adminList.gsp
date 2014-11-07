@@ -8,8 +8,8 @@
 		<r:require modules="periodicalupdater, jqueryui"/>
 		 <jqui:resources/>
 		<r:script>
-			var order = "asc";
-			var sort = "id";
+			var order = "desc";
+			var sort = "created";
 			$(function() {
 				$("#legend").accordion({ collapsible: true, active: false, autoHeight: false });
 			});
