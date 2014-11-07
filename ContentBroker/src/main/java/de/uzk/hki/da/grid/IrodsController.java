@@ -87,10 +87,9 @@ public class IrodsController  {
 				} else if (command.indexOf(C.IRODS_START_DELAYED)>=0) {
 					logger.debug(C.IRODS_START_DELAYED);
 					irodsSystemConnector.connect();
-					irodsSystemConnector.stopAllDelayedRules();
-					irodsSystemConnector.startAllDelayedRules(systemRuleFolder);
+					boolean ret = irodsSystemConnector.startAllDelayedRules(systemRuleFolder);
 					irodsSystemConnector.logoff();
-					messageSend = "...START DELAYED done";
+					messageSend = "...START DELAYED done, "+ret;
 				} 
 		        if (!messageSend.equals("")) {
 		        	TextMessage message = session.createTextMessage(messageSend);

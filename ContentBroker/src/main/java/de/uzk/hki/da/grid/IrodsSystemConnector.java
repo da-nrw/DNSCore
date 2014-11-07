@@ -605,7 +605,7 @@ public class IrodsSystemConnector {
 	    } finally {
 	    	input.close();
 	    }
-	      logger.trace("Execute Rule " + contents.toString());
+	      logger.debug("Execute Rule " + contents.toString());
 		try {
 					
 			result = getRuleProcessingAO().executeRule(
@@ -1650,7 +1650,8 @@ public class IrodsSystemConnector {
 			}
 		 }
 		}
-		 return allPass;
+		logger.debug("started all delayed rules in folder " + folder + " Result " + allPass );
+		return allPass;
 	}
 	
 	/**
