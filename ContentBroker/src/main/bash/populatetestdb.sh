@@ -24,7 +24,7 @@ then
 		"DELETE FROM users;"
 		"DELETE FROM Role;"
 		"INSERT INTO users (id,short_name,username,password,accountlocked,accountexpired,passwordexpired,enabled,email_contact) values (1,'TEST','TEST','\$2a\$10\$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.',FALSE,FALSE,FALSE,TRUE,'noreply');"
-        "INSERT INTO users (id,short_name,username,password,accountlocked,accountexpired,passwordexpired,enabled,email_contact) values (4,'rods','rods','\$2a\$10\$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.',FALSE,FALSE,FALSE,TRUE,'noreply');"
+        "INSERT INTO users (id,short_name,username,password,accountlocked,accountexpired,passwordexpired,enabled,email_contact) values (4,'rods','rods','\$2a\$10\$ZTCS5CwF2uB.URbl8hDtO.fvwTuApfZKHSOtb6dHwXZhZMnKqshhe',FALSE,FALSE,FALSE,TRUE,'noreply');"
         "INSERT INTO users (id,short_name,username,password,accountlocked,accountexpired,passwordexpired,enabled,email_contact) values (5,'CI_ADMIN','CI_ADMIN','\$2a\$10\$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.',FALSE,FALSE,FALSE,TRUE,'noreply');"
 		"INSERT INTO role (id,authority) values (1,'ROLE_PSADMIN');"
 		"INSERT INTO role (id,authority) values (2,'ROLE_CONTRACTOR');"
