@@ -610,7 +610,7 @@ public class IrodsSystemConnector {
 					
 			result = getRuleProcessingAO().executeRule(
 					contents.toString(),  inputparameters,
-					RuleProcessingType.EXTERNAL);
+					RuleProcessingType.INTERNAL);
 			
 			execOut = result.getOutputParameterResults()
 				.get(RuleProcessingAOImpl.RULE_EXEC_OUT).getResultObject()
