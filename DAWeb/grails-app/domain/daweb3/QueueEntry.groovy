@@ -183,6 +183,9 @@ class QueueEntry {
 			if (getStatusAsInteger()>640 && getStatusAsInteger()<=645 ) {
 				return "Warten auf Rückfrage (" + status +")"
 			}
+			if (getStatusAsInteger()>=900 && getStatusAsInteger()<=952 ) {
+				return "Retrieval (" + status +")"
+			}
 			return status
 	}
 }

@@ -47,10 +47,10 @@ class StatusController {
 		// listall objects of Contractor
 		results.result = []
 		if (params.listallobjects) {
-			def objects = Object.findAllByUserAndObject_stateGreaterThan(contractor, 51)
+			def objects = Object.findAllByUserAndObject_stateGreaterThan(contractor, 49)
 			objects.each()  { inst ->
-				if (inst.object_state==100) result.status = "archived"
-				else result.status = "archived - but check needed"
+				result.type = "Object"
+				result.status = inst.getTextualObjectState()
 				result.urn = inst.urn
 				result.contractor = inst.user.shortName
 				result.origName = inst.origName
@@ -78,21 +78,28 @@ class StatusController {
 				 csn: springSecurityService.currentUser.toString()]);
 		}
 		boolean hasAQueueEntry = false
-		def queueResult = "in progress";
+		def queueResult = "package in progress";
 		// found a QueueEntry
 		rList.each()  { instance ->	
+			result.type = "QueueEntry"
 			result.urn = instance.obj.urn
 			result.contractor = instance.obj.user.shortName;
 			result.origName = instance.obj.origName
 			result.identifier = instance.obj.identifier
 			if (instance.status.endsWith("1")) {
-				queueResult = "in progress error : (" + instance.status + ")"
+				queueResult = "package in progress error : (" + instance.status + ")"
+			}
+			if (instance.status.endsWith("3")) {
+				queueResult = "package in progress error : (" + instance.status + ")"
+			}
+			if (instance.status.endsWith("4")) {
+				queueResult = "package in progress error : (" + instance.status + ")"
 			}
 			if (instance.status.endsWith("0")) {
-				queueResult = "in progress waiting : (" + instance.status + ")"
+				queueResult = "package in progress waiting : (" + instance.status + ")"
 			}
 			if (instance.status.endsWith("2")) {
-				queueResult = "in progress working : (" + instance.status + ")"
+				queueResult = "package in progress working : (" + instance.status + ")"
 			}
 			result.status =queueResult
 			
@@ -103,21 +110,19 @@ class StatusController {
 		}  
 		
 		if (params.urn) {
-				rList = Object.findAllByUserAndUrnAndObject_stateBetween(contractor, params.urn,51,100)
+				rList = Object.findAllByUserAndUrnAndObject_stateBetween(contractor, params.urn,50,100)
 		}
 		if (params.origName) {
-				rList = Object.findAllByUserAndOrigNameAndObject_stateBetween(contractor, params.origName,51,100)
+				rList = Object.findAllByUserAndOrigNameAndObject_stateBetween(contractor, params.origName,50,100)
 		} 
 		if (params.identifier) {
-				rList = Object.findAllByUserAndIdentifierAndObject_stateBetween(contractor, params.identifier,51,100)	
+				rList = Object.findAllByUserAndIdentifierAndObject_stateBetween(contractor, params.identifier,50,100)	
 		}
 		// Found Object, must be true if we found anything (Queue or Object only)
 		boolean foundObject = false;
-		rList.each()  { instance ->
-				if (instance.object_state==100) result.status = "archived"
-				else {
-					result.status = "archived - but check needed"
-				}
+		rList.each()  { instance ->	
+				result.type = "Object"		
+				result.status = instance.getTextualObjectState()
 				result.urn = instance.urn
 				result.contractor = instance.user.shortName
 				result.origName = instance.origName

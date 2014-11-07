@@ -118,6 +118,18 @@ class Object {
 		return false;
 	}
 	
+	String getTextualObjectState() {
+		String state = (String)object_state
+		if (object_state==100) {
+			state = "archived"
+		} else if (object_state==50) {
+			state = "Object is in transient state"
+		} else {
+			state = "archived - but check needed"
+		}
+		return state;
+	}
+	
 	def getFormattedUrn() {
 		if (urn!=null && urn!="" && urn!="NULL") {
 			def formurn = urn.replaceAll(~"\\+",":")
