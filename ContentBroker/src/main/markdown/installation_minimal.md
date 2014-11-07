@@ -220,7 +220,7 @@ Always look for the newest object log under
 ## DAWeb 
 
 The second core component of DNSCore is DAWeb, the graphical user interface for the ContentBroker.
-How to set up this component is part of this [tutorial](https://github.com/da-nrw/DNSCore/blob/master/DAWeb/doc/deploy.md).
+How to set up this component is part of this [tutorial](https://github.com/da-nrw/DNSCore/blob/master/DAWeb/doc/setup.md).
 
 
 ## Congratulations
