@@ -605,16 +605,17 @@ public class IrodsSystemConnector {
 	    } finally {
 	    	input.close();
 	    }
-	      
-		
+	      logger.trace("Execute Rule " + contents.toString());
 		try {
-			
+					
 			result = getRuleProcessingAO().executeRule(
 					contents.toString(),  inputparameters,
-					RuleProcessingType.INTERNAL);
-			//execOut = result.getOutputParameterResults()
-			//	.get(RuleProcessingAOImpl.RULE_EXEC_OUT).getResultObject()
-			//	.toString();
+					RuleProcessingType.EXTERNAL);
+			
+			execOut = result.getOutputParameterResults()
+				.get(RuleProcessingAOImpl.RULE_EXEC_OUT).getResultObject()
+				.toString();
+			logger.debug("Rule returned " + execOut);
 		} catch (JargonException e) {
 
 			throw new IrodsRuntimeException("Error while executing Rule " + ruleToExec.getAbsolutePath()
