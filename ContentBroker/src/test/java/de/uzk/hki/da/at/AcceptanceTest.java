@@ -158,7 +158,7 @@ public class AcceptanceTest {
 	
 	@AfterClass
 	public static void tearDownAcceptanceTest(){
-		TESTHelper.clearDB();
+//		TESTHelper.clearDB();
 		cleanStorage();
 	}
 	
