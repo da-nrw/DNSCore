@@ -56,7 +56,6 @@ import org.irods.jargon.core.pub.RuleProcessingAO.RuleProcessingType;
 import org.irods.jargon.core.pub.RuleProcessingAOImpl;
 import org.irods.jargon.core.pub.domain.AvuData;
 import org.irods.jargon.core.pub.domain.DataObject;
-import org.irods.jargon.core.pub.domain.DelayedRuleExecution;
 import org.irods.jargon.core.pub.domain.Resource;
 import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.core.pub.io.IRODSFileFactory;
@@ -293,17 +292,17 @@ public class IrodsSystemConnector {
 					irodsFileSystem.getIrodsSession().setJargonProperties(jargonProperties);
 					
 					
-					irodsAccount.setAuthenticationScheme(AuthScheme.PAM);	
-					EnvironmentalInfoAO environmentalInfoAO = irodsFileSystem
+					irodsAccount.setAuthenticationScheme(AuthScheme.PAM);
+					
+				}
+				EnvironmentalInfoAO environmentalInfoAO = irodsFileSystem
 					.getIRODSAccessObjectFactory().getEnvironmentalInfoAO(
 							irodsAccount);
 					
-					AuthResponse authResponse = environmentalInfoAO.getIRODSProtocol()
+				AuthResponse authResponse = environmentalInfoAO.getIRODSProtocol()
 							.getAuthResponse();
-					irodsAccount = authResponse.getAuthenticatedIRODSAccount();
-					logger.debug("PAM Auth response is " + authResponse.isSuccessful());
-				} 
-				
+				irodsAccount = authResponse.getAuthenticatedIRODSAccount();
+
 				irodsCommands = irodsFileSystem.getIrodsSession().currentConnection(irodsAccount);
 				boolean ret = irodsCommands.isConnected();
 				
