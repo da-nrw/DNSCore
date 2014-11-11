@@ -78,6 +78,19 @@
 	    </encoder>
 	</appender>
 
+	<appender name="TIME_STAMP_ACTIONS_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>TRACE</level>
+        </filter>
+		<file>log/time_stamp_actions.csv</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>log/time_stamp_actions.%d{yyyy-MM-dd}.csv</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+	    <encoder>
+	        <pattern>%msg%n</pattern>
+	    </encoder>
+	</appender>
 
 
 	<appender name="OBJECT" class="ch.qos.logback.classic.sift.SiftingAppender">
@@ -126,11 +139,11 @@
 		<logger name="de.uzk.hki.da.integrity" additivity="false" level="DEBUG">
                 <appender-ref ref="INTEGRITY" />
         </logger>
-
-
-
         <logger name="de.uzk.hki.da"  additivity="false" level="DEBUG">
                 <appender-ref ref="OBJECT" />
+        </logger>
+       	<logger name="de.uzk.hki.da.core.TimeStampLogging"  additivity="false" level="DEBUG">
+                <appender-ref ref="TIME_STAMP_ACTIONS_LOG" />
         </logger>
         
         

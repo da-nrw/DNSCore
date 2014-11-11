@@ -34,6 +34,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.hibernate.Session;
 import org.jdom.JDOMException;
+import org.joda.time.DateTime;
+import org.joda.time.Period;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -44,6 +46,7 @@ import ch.qos.logback.core.Appender;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
+import de.uzk.hki.da.core.TimeStampLogging;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -150,7 +153,17 @@ public abstract class AbstractAction implements Runnable {
 		synchronizeObjectDatabaseAndFileSystemState();
 		
 		try {
+			Date start = new Date();
+			TimeStampLogging tsl = new TimeStampLogging();
+//			tsl.log("START", this.getClass().getName(), start.getTime());
+			
 			execAndPostProcessImplementation();
+			
+			Date stop = new Date();
+			long duration = stop.getTime()-start.getTime(); // in milliseconds
+//			tsl.log("STOP", this.getClass().getName(), stop.getTime());
+			tsl.log(object.getIdentifier(), this.getClass().getName(), duration);
+			
 			upateObjectAndJob(object,job,isDELETEOBJECT(),KILLATEXIT,toCreate);
 			
 		} catch (UserException e) {
@@ -170,9 +183,10 @@ public abstract class AbstractAction implements Runnable {
 		// new jobs getting fetched. It would be an improvement if we had 
 		// a controller for the action factory that stops it if database 
 		// connection is not possible.
-		actionMap.deregisterAction(this); 
+		actionMap.deregisterAction(this);
 		
 		unsetObjectLogging();
+//		tsl.log("Stop", object.getIdentifier(), this.getClass().getName());
 	}
 
 	private boolean performCommonPreparationsForActionExecution() {
