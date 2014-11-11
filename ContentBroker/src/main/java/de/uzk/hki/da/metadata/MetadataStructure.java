@@ -57,16 +57,17 @@ public abstract class MetadataStructure {
 	
 	public List<File> getReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
 		List<File> existingFiles = new ArrayList<File>();
+		List<File> missingFiles = new ArrayList<File>();
 		for(String ref : references) {
 			File refFile;
 			try {
 				refFile = getCanonicalFileFromReference(ref, metadataFile);
 				String nameOfMetadataParentFile = metadataFile.getParentFile().getName();
 				String relPathFromMetadataFile = Path.extractRelPathFromDir(refFile, nameOfMetadataParentFile);
-				logger.debug("Check referenced file: "+relPathFromMetadataFile);
+//				logger.debug("Check referenced file: "+relPathFromMetadataFile);
 				Boolean fileExists = false;
 				for(DAFile dafile : daFiles) {
-					logger.debug("Try to match DAFile "+dafile+" to given reference "+ref+" (canonical file path: "+relPathFromMetadataFile+")...");
+//					logger.debug("Try to match DAFile "+dafile+" to given reference "+ref+" (canonical file path: "+relPathFromMetadataFile+")...");
 					String dafileRelPath = "";	
 					File file = dafile.toRegularFile();
 					if(nameOfMetadataParentFile.endsWith("+a") || nameOfMetadataParentFile.endsWith("+b") || nameOfMetadataParentFile.equals("public") || nameOfMetadataParentFile.equals("institution")) {
@@ -76,7 +77,7 @@ public abstract class MetadataStructure {
 					}
 					if(dafileRelPath.equals(relPathFromMetadataFile)) {
 						fileExists = true;
-						logger.debug("File exists!");
+//						logger.debug("File exists!");
 						existingFiles.add(file);
 						break;
 					} 
