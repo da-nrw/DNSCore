@@ -29,9 +29,5 @@ do
 	then
 	    psql -U cb_usr -d CB -c "$i"
 	fi
-	if [ "$1" = "dev" ]
-	then
-	    java -jar ../3rdParty/hsqldb/lib/sqltool.jar --autoCommit --sql "$i" xdb 
-	fi
 done
 
