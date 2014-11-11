@@ -57,14 +57,14 @@ public abstract class MetadataStructure {
 	
 	public List<File> getReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
 		List<File> existingFiles = new ArrayList<File>();
-		List<File> missingFiles = new ArrayList<File>();
+		List<String> missingFiles = new ArrayList<String>();
 		for(String ref : references) {
 			File refFile;
 			try {
 				refFile = getCanonicalFileFromReference(ref, metadataFile);
 				String nameOfMetadataParentFile = metadataFile.getParentFile().getName();
 				String relPathFromMetadataFile = Path.extractRelPathFromDir(refFile, nameOfMetadataParentFile);
-//				logger.debug("Check referenced file: "+relPathFromMetadataFile);
+				logger.debug("Check referenced file: "+relPathFromMetadataFile);
 				Boolean fileExists = false;
 				for(DAFile dafile : daFiles) {
 //					logger.debug("Try to match DAFile "+dafile+" to given reference "+ref+" (canonical file path: "+relPathFromMetadataFile+")...");
@@ -77,17 +77,24 @@ public abstract class MetadataStructure {
 					}
 					if(dafileRelPath.equals(relPathFromMetadataFile)) {
 						fileExists = true;
-//						logger.debug("File exists!");
+						logger.debug("File exists!");
 						existingFiles.add(file);
 						break;
 					} 
 				}
 				if(!fileExists) {
 					logger.error("File "+ref+" does not exist.");
+					missingFiles.add(ref);
 				}
 			} catch (IOException e) {
 				logger.error("File "+ref+" does not exist.");
 				e.printStackTrace();
+			}
+		}
+		if(!missingFiles.isEmpty()) {
+			logger.error("Missing files: ");
+			for(String missingFile : missingFiles) {
+				logger.error(missingFile);
 			}
 		}
 		return existingFiles;
