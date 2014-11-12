@@ -34,7 +34,6 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	private List<String> metsReferencesInEAD;
 	private List<File> metsFiles;
 	private List<MetsMetadataStructure> mmsList;
-	private List<File> missingMetsFiles = new ArrayList<File>();
 	
 	HashMap<String, Document> metsPathToDocument = new HashMap<String, Document>();
 	
@@ -126,10 +125,6 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			return true;
 		} else {
 			logger.error("Expected "+metsReferencesInEAD.size()+" METS files but found "+metsFiles.size()+" METS files.");
-			logger.error("Missing mets files: ");
-			for(File missingMetsFile : missingMetsFiles) {
-				logger.error(missingMetsFile.getName());
-			}
 			return false;
 		}
 	}
@@ -183,8 +178,6 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		for(File file : fileExistenceMap.keySet()) {
 			if(fileExistenceMap.get(file)==true) {
 				existingMetsFiles.add(file);
-			} else {
-				missingMetsFiles.add(file);
 			}
 		}
 		return existingMetsFiles;
