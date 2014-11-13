@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # author: Daniel M. de Oliveira
+src/main/bash/ContentBroker_stop.sh
 
 rm cbTalk.sh
 rm README.txt
