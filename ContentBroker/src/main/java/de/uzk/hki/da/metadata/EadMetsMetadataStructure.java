@@ -168,7 +168,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 				} else {
 					fileExists = false;
 					logger.error("File "+ref+" does not exist.");
-					missingMetsFiles.add(refFile.getAbsolutePath());
+					missingMetsFiles.add(ref);
 				}
 				fileExistenceMap.put(refFile, fileExists);
 			} catch (IOException e) {
