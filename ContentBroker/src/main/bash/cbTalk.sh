@@ -1,6 +1,7 @@
 #/bin/bash
 # DA-NRW 2013 Jens Peters, CB TALK Client starter
 
+
 if [ $# -eq 0 ] 
 then 
 	echo you have to specify at least a command

@@ -29,6 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.saxon.expr.number.IrregularGroupFormatter;
+
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.irods.jargon.core.connection.IRODSAccount;
 import org.irods.jargon.core.connection.IRODSAccount.AuthScheme;
@@ -130,6 +132,8 @@ public class IrodsSystemConnector {
 
 	/** The port. */
 	private int port = 1247;
+
+	private long sleepFor = 10000L;
 	
 	/**
 	 * Inits the iRODS DataGrid System Connection via Jargon.
@@ -265,7 +269,6 @@ public class IrodsSystemConnector {
 	
 	}
 	
-	
 
 	
 	/**
@@ -306,12 +309,23 @@ public class IrodsSystemConnector {
 				irodsCommands = irodsFileSystem.getIrodsSession().currentConnection(irodsAccount);
 				boolean ret = irodsCommands.isConnected();
 				
-				logger.debug("Connection state: " + ret);
+				logger.debug("Connection claimed state is: " + ret);
+				
+				logger.debug("Testing connection now!");
+				collectionExists("/" +getZone());
+				
 				return ret;
-			} catch (JargonException e) {
-				logger.error("Could not reconnect to the iRODS Data Grid server called: " + irodsAccount.getHost() +" recieved " +e.getUnderlyingIRODSExceptionCode() + " caused by " +e.getCause());
-				return false;
-			}
+			} catch (Exception e) {
+				logger.error("Could not connect to the iRODS Data Grid server called: " + irodsAccount.getHost() +" caused by " +e.getCause());
+				logger.debug("Going to sleep for a while ...");
+				try {
+					Thread.sleep(sleepFor);
+				} catch (InterruptedException e1) {
+				}
+				logger.debug("woke up, try to reconnect now!");
+				logoff();	
+				return connect();
+			} 
 	}
 	
 	/**
@@ -323,6 +337,16 @@ public class IrodsSystemConnector {
 		
 		irodsFileSystem.closeAndEatExceptions(irodsAccount);
 	}
+
+	public long getSleepFor() {
+		return sleepFor;
+	}
+
+	public void setSleepFor(long sleepFor) {
+		this.sleepFor = sleepFor;
+	}
+
+
 
 	/**
 	 * Gets the iRODS access object factory.
