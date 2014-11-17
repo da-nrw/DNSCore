@@ -38,7 +38,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.JobNamedQueryDAO;
-import de.uzk.hki.da.model.SecondStageScanPolicy;
+import de.uzk.hki.da.model.SubformatIdentificationPolicy;
 import de.uzk.hki.da.service.UserExceptionManager;
 
 
@@ -188,10 +188,10 @@ public class ActionFactory implements ApplicationContextAware {
 	 *
 	 * @return the second stage scan policies
 	 */
-	private List<SecondStageScanPolicy> getSecondStageScanPolicies(Session session) {
+	private List<SubformatIdentificationPolicy> getSecondStageScanPolicies(Session session) {
 		@SuppressWarnings("unchecked")
-		List<SecondStageScanPolicy> l = session
-				.createQuery("from SecondStageScanPolicy").list();
+		List<SubformatIdentificationPolicy> l = session
+				.createQuery("from SubformatIdentificationPolicy").list();
 
 		return l;
 	}

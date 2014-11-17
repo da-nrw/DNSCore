@@ -24,8 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-import de.uzk.hki.da.model.SecondStageScanPolicy;
-
 /**
  * Provides access to the file format subsystem, which is responsible for identification of file and container 
  * formats, extraction of metadata from files, and validation of file formats.
@@ -59,9 +57,10 @@ public interface FileFormatFacade {
 	
 	
 	/**
-	 * @param subformatIdentificationPolicies
+	 * 
+	 * @param puids comma separated list
+	 * @param scriptName
 	 */
-	public void setSubformatIdentificationPolicies(
-			List<SecondStageScanPolicy> subformatIdentificationPolicies);
+	public void registerSubformatIdentificationMethod(String puids,String scriptName);
 	
 }

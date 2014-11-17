@@ -28,5 +28,11 @@ import java.io.IOException;
  */
 public interface SecondaryFormatIdentifier {
 
+	/**
+	 * @author Daniel M. de Oliveira
+	 * @param f, empty string if nothing has been detected.
+	 * @return
+	 * @throws IOException signals errors that happen during the process of reading the file.
+	 */
 	public String identify(File f) throws IOException;
 }

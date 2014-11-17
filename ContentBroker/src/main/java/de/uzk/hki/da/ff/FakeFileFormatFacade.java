@@ -29,8 +29,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.uzk.hki.da.model.SecondStageScanPolicy;
-
 /**
  * Fake implementation
  * @author Daniel M. de Oliveira
@@ -152,12 +150,15 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 		writer.println("<jhove>abc</jhove>");
 		writer.close();
 	}
-	
-	
 
 
 	@Override
-	public void setSubformatIdentificationPolicies(
-			List<SecondStageScanPolicy> subformatIdentificationPolicies) {
+	public void registerSubformatIdentificationMethod(String puids,
+			String scriptName) {
+		// TODO Auto-generated method stub
+		
 	}
+	
+	
+
 }

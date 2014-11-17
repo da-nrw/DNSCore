@@ -34,7 +34,7 @@ import org.junit.Test;
 import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.SecondStageScanPolicy;
+import de.uzk.hki.da.model.SubformatIdentificationPolicy;
 import de.uzk.hki.da.test.TESTHelper;
 
 /**
@@ -49,19 +49,17 @@ public class SecondaryFormatScanTests {
 		
 		// This is what is configured in the database.
 		
-		SecondStageScanPolicy scan  = new SecondStageScanPolicy();
-		scan.setAllowedValues("lzw,ccitt");
+		SubformatIdentificationPolicy scan  = new SubformatIdentificationPolicy();
 		scan.setPUID("fmt/353");
 		scan.setFormatIdentifierScriptName("de.uzk.hki.da.ff.FakeCompressionIdentifier");
 
-		SecondStageScanPolicy scan2  = new SecondStageScanPolicy();
+		SubformatIdentificationPolicy scan2  = new SubformatIdentificationPolicy();
 		scan2.setPUID("fmt/101");
-		scan2.setAllowedValues("EAD,METS");
 		scan2.setFormatIdentifierScriptName("script:src/test/resources/format/SecondaryFormatScanTests/abs.sh");
 		
-		List<SecondStageScanPolicy> secondStageScanPolicies = new ArrayList<SecondStageScanPolicy>();
-		secondStageScanPolicies.add((SecondStageScanPolicy)scan);
-		secondStageScanPolicies.add((SecondStageScanPolicy)scan2);
+		List<SubformatIdentificationPolicy> secondStageScanPolicies = new ArrayList<SubformatIdentificationPolicy>();
+		secondStageScanPolicies.add((SubformatIdentificationPolicy)scan);
+		secondStageScanPolicies.add((SubformatIdentificationPolicy)scan2);
 		sfs.setSecondStageScanPolicies(secondStageScanPolicies);
 		
 	}

@@ -39,7 +39,7 @@ import de.uzk.hki.da.model.ConversionInstructionBuilder;
 import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.SecondStageScanPolicy;
+import de.uzk.hki.da.model.SubformatIdentificationPolicy;
 
 
 /**
@@ -70,11 +70,12 @@ public class ScanForPresentationAction extends AbstractAction{
 		// check if object package type is set
 		
 		Session session = HibernateUtil.openSession();
-		List<SecondStageScanPolicy> policies = 
+		List<SubformatIdentificationPolicy> policies = 
 				preservationSystem.getSubformatIdentificationPolicies();
 		session.close();
-		fileFormatFacade.setSubformatIdentificationPolicies(policies);
-
+		for (SubformatIdentificationPolicy sfiP:policies) {
+			fileFormatFacade.registerSubformatIdentificationMethod(sfiP.getPUID(), sfiP.getFormatIdentifierScriptName());
+		}
 
 //		if (newestFiles.size() == 0)
 //			throw new RuntimeException("No files found!");

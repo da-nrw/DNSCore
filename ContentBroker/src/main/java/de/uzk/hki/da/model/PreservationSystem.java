@@ -73,7 +73,7 @@ public class PreservationSystem {
 	private List<ConversionPolicy> conversion_policies = new ArrayList<ConversionPolicy>();
 	
 	@Transient
-	private List<SecondStageScanPolicy> subformatIdentificationPolicies = new ArrayList<SecondStageScanPolicy>();
+	private List<SubformatIdentificationPolicy> subformatIdentificationPolicies = new ArrayList<SubformatIdentificationPolicy>();
 	
 	@OneToMany
 	@JoinColumn(name="psystem_id")
@@ -238,11 +238,11 @@ public class PreservationSystem {
 	public void setNodes(Set<Node> nodes) {
 		this.nodes = nodes;
 	}
-	public List<SecondStageScanPolicy> getSubformatIdentificationPolicies() {
+	public List<SubformatIdentificationPolicy> getSubformatIdentificationPolicies() {
 		return subformatIdentificationPolicies;
 	}
 	public void setSubformatIdentificationPolicies(
-			List<SecondStageScanPolicy> subformatIdentificationPolicies) {
+			List<SubformatIdentificationPolicy> subformatIdentificationPolicies) {
 		this.subformatIdentificationPolicies = subformatIdentificationPolicies;
 	}
 	

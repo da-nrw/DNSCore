@@ -32,23 +32,26 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="second_stage_scans")
-public class SecondStageScanPolicy {
+public class SubformatIdentificationPolicy {
 
-	/** The id. */
+	/** 
+	 * Primary key of db table.
+	 * */
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 
-	/** The puid. */
+	
+	/** 
+	 * Comma separated list of PUIDs the SubformatIdentificationPolicy applies to. 
+	 */
 	@Column(name="puid")
 	private String PUID;
 	
-	/** The allowed values. */
-	@Column(name="allowed_values")
-	private String allowedValues;
 	
 	/**
-	 * Name of the conversion script to determine the outcome (which then should be one of the values listed in allowedValues.
+	 * Name of the conversion script to determine the outcome 
+	 * (which then should be one of the values listed in allowedValues.
 	 */
 	@Column(name="format_identifier_script_name")
 	private String formatIdentifierScriptName;
@@ -56,7 +59,6 @@ public class SecondStageScanPolicy {
 	
 	/**
 	 * Gets the id.
-	 *
 	 * @return the id
 	 */
 	public int getId() {
@@ -65,35 +67,34 @@ public class SecondStageScanPolicy {
 
 	/**
 	 * Sets the id.
-	 *
 	 * @param id the new id
 	 */
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString(){
-		return "SecondStageScanPolicy["+getPUID()+","+getFormatIdentifierScriptName()+","+getAllowedValues()+"]";
+		return "SecondStageScanPolicy["+getPUID()+","+getFormatIdentifierScriptName()+"]";
 	}
-	
 	
 	
 	/**
 	 * Gets the puid.
-	 *
 	 * @return the puid
 	 */
 	public String getPUID() {
 		return PUID;
 	}
 
-	/**
+	
+	/*
+	 * *
 	 * Sets the puid.
-	 *
 	 * @param PUID the new puid
 	 */
 	public void setPUID(String PUID) {
@@ -102,40 +103,19 @@ public class SecondStageScanPolicy {
 
 	
 	/**
-	 * Gets the allowed values.
-	 *
-	 * @return the allowed values
-	 */
-	public String getAllowedValues() {
-		return allowedValues;
-	}
-
-	/**
-	 * Sets the allowed values.
-	 *
-	 * @param expectedValues the new allowed values
-	 */
-	public void setAllowedValues(String expectedValues) {
-		this.allowedValues = expectedValues;
-	}
-
-	/**
 	 * Gets the format identifier script name.
-	 *
 	 * @return the format identifier script name
 	 */
 	public String getFormatIdentifierScriptName() {
 		return formatIdentifierScriptName;
 	}
 
+	
 	/**
 	 * Sets the format identifier script name.
-	 *
 	 * @param conversionScriptName the new format identifier script name
 	 */
 	public void setFormatIdentifierScriptName(String conversionScriptName) {
 		this.formatIdentifierScriptName = conversionScriptName;
 	}
-	
-	
 }

@@ -37,7 +37,7 @@
 <mapping class="de.uzk.hki.da.model.DAFile"/>
 <mapping class="de.uzk.hki.da.model.Event"/>
 <mapping class="de.uzk.hki.da.model.PreservationSystem"/>
-<mapping class="de.uzk.hki.da.model.SecondStageScanPolicy"/>
+<mapping class="de.uzk.hki.da.model.SubformatIdentificationPolicy"/>
    
 </session-factory>
 </hibernate-configuration>

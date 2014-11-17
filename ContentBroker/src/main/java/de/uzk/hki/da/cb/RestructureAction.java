@@ -40,7 +40,7 @@ import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
 import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.grid.GridFacade;
-import de.uzk.hki.da.model.SecondStageScanPolicy;
+import de.uzk.hki.da.model.SubformatIdentificationPolicy;
 import de.uzk.hki.da.repository.RepositoryException;
 
 /**
@@ -119,11 +119,12 @@ public class RestructureAction extends AbstractAction{
 		object.reattach();
 		logger.debug("scanning files with format identifier(s)");
 		Session session = HibernateUtil.openSession();
-		List<SecondStageScanPolicy> policies = 
+		List<SubformatIdentificationPolicy> policies = 
 				preservationSystem.getSubformatIdentificationPolicies();
 		session.close();
-		getFileFormatFacade().setSubformatIdentificationPolicies(policies);
-
+		for (SubformatIdentificationPolicy sfiP:policies) {
+			fileFormatFacade.registerSubformatIdentificationMethod(sfiP.getPUID(), sfiP.getFormatIdentifierScriptName());
+		}
 		
 		
 		List<IFileWithFileFormat> scannedFiles = null;

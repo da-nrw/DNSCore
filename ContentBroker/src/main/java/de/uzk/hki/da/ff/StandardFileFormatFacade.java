@@ -29,7 +29,7 @@ import org.irods.jargon.core.exception.InvalidArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.model.SecondStageScanPolicy;
+import de.uzk.hki.da.model.SubformatIdentificationPolicy;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.Utilities;
@@ -50,8 +50,8 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	private static final String JHOVE_CONF = "conf/jhove.conf";
 	private String jhoveFolder = "jhove";
 	
-	private List<SecondStageScanPolicy> subformatIdentificationPolicies =
-			new ArrayList<SecondStageScanPolicy>();
+	private List<SubformatIdentificationPolicy> subformatIdentificationPolicies =
+			new ArrayList<SubformatIdentificationPolicy>();
 	
 	/**
 	 * The output of fido typically is a comma separated list of puids for each file. Only the last entry of the list
@@ -66,11 +66,12 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		fidoFormatScanService = new FidoFormatScanService();
 		fidoFormatScanService.identify((List<IFileWithFileFormat>) files);
 		
-		for (SecondStageScanPolicy p:subformatIdentificationPolicies)
+		for (SubformatIdentificationPolicy p:subformatIdentificationPolicies)
 			logger.debug("policy available: "+p);
 		
 		secondaryFormatScan = new SecondaryFormatScan();
 		secondaryFormatScan.setSecondStageScanPolicies(subformatIdentificationPolicies);
+		
 		
 		try {
 			secondaryFormatScan.identify((List<IFileWithFileFormat>) files);
@@ -86,7 +87,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	
 	
 	/**
-	 * Compensate for unwanted FIDO behaviour
+	 * Compensate for unwanted FIDO behavior.
 	 * @param files
 	 * @throws IOException
 	 */
@@ -154,10 +155,10 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 
 
 	@Override
-	public void setSubformatIdentificationPolicies(
-			List<SecondStageScanPolicy> subformatIdentificationPolicies) {
-		
-		this.subformatIdentificationPolicies = subformatIdentificationPolicies;
+	public void registerSubformatIdentificationMethod(String puids,
+			String scriptName) {
+		// TODO Auto-generated method stub
 		
 	}
+
 }

@@ -41,7 +41,7 @@ import de.uzk.hki.da.ff.FileFormatFacade;
 import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.SecondStageScanPolicy;
+import de.uzk.hki.da.model.SubformatIdentificationPolicy;
 import de.uzk.hki.da.utils.CommaSeparatedList;
 
 /**
@@ -85,11 +85,13 @@ public class CheckFormatsAction extends AbstractAction {
 		}
 		
 		Session session = HibernateUtil.openSession();
-		List<SecondStageScanPolicy> policies = 
+		List<SubformatIdentificationPolicy> policies = 
 				preservationSystem.getSubformatIdentificationPolicies();
 		session.close();
-		getFileFormatFacade().setSubformatIdentificationPolicies(policies);
-
+		for (SubformatIdentificationPolicy sfiP:policies) {
+			fileFormatFacade.registerSubformatIdentificationMethod(sfiP.getPUID(), sfiP.getFormatIdentifierScriptName());
+		}
+		
 		
 		
 		try {

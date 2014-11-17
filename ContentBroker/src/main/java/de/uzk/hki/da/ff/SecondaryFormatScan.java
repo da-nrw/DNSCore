@@ -25,14 +25,14 @@ import java.util.List;
 
 import org.irods.jargon.core.exception.InvalidArgumentException;
 
-import de.uzk.hki.da.model.SecondStageScanPolicy;
+import de.uzk.hki.da.model.SubformatIdentificationPolicy;
 
 /**
  * @author Daniel M. de Oliveira
  */
 public class SecondaryFormatScan {
 
-	List<SecondStageScanPolicy> secondStageScanPolicies = null;
+	List<SubformatIdentificationPolicy> secondStageScanPolicies = null;
 	
 	
 	/**
@@ -49,7 +49,7 @@ public class SecondaryFormatScan {
 			if (f.getFormatPUID()==null||f.getFormatPUID().isEmpty())
 				throw new InvalidArgumentException(f+" has no puid");
 			
-			for (SecondStageScanPolicy p:secondStageScanPolicies){
+			for (SubformatIdentificationPolicy p:secondStageScanPolicies){
 				if (f.getFormatPUID().equals(p.getPUID())){
 					
 					SecondaryFormatIdentifier fi = null;
@@ -81,7 +81,7 @@ public class SecondaryFormatScan {
 	}
 
 	void setSecondStageScanPolicies(
-			List<SecondStageScanPolicy> secondStageScanPolicies) {
+			List<SubformatIdentificationPolicy> secondStageScanPolicies) {
 		this.secondStageScanPolicies = secondStageScanPolicies;
 	}
 

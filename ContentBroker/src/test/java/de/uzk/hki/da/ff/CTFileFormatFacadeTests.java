@@ -32,7 +32,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.Path;
-import de.uzk.hki.da.model.SecondStageScanPolicy;
+import de.uzk.hki.da.model.SubformatIdentificationPolicy;
 import de.uzk.hki.da.test.CTTestHelper;
 import de.uzk.hki.da.test.TC;
 
@@ -49,6 +49,16 @@ public class CTFileFormatFacadeTests {
 	public static void setUp() throws IOException{
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 
+		SubformatIdentificationPolicy policy = new SubformatIdentificationPolicy();
+		policy.setPUID("fmt/101");
+		policy.setFormatIdentifierScriptName("de.uzk.hki.da.ff.PublicationMetadataSubformatIdentifier");
+		List<SubformatIdentificationPolicy> policies = new ArrayList<SubformatIdentificationPolicy>();
+		policies.add(policy);
+		for (SubformatIdentificationPolicy sfiP:policies) {
+			sfff.registerSubformatIdentificationMethod(sfiP.getPUID(), sfiP.getFormatIdentifierScriptName());
+		}
+		
+		
 		CTTestHelper.prepareWhiteBoxTest();
 	}
 
@@ -100,14 +110,6 @@ public class CTFileFormatFacadeTests {
 	@Test
 	public void testLIDO() throws IOException{
 		FileWithFileFormat ffff = new FileWithFileFormat(Path.makeFile(testPath,"LIDO-Testexport2014-07-04-FML-Auswahl.xml"));
-		
-		SecondStageScanPolicy policy = new SecondStageScanPolicy();
-		policy.setPUID("fmt/101");
-		policy.setFormatIdentifierScriptName("de.uzk.hki.da.ff.PublicationMetadataSubformatIdentifier");
-		List<SecondStageScanPolicy> policies = new ArrayList<SecondStageScanPolicy>();
-		policies.add(policy);
-		
-		sfff.setSubformatIdentificationPolicies(policies);
 		
 		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(ffff);
