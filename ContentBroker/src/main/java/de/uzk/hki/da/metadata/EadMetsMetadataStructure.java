@@ -34,6 +34,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	private List<String> metsReferencesInEAD;
 	private List<File> metsFiles;
 	private List<MetsMetadataStructure> mmsList;
+	private List<String> missingMetsFiles;
 	
 	HashMap<String, Document> metsPathToDocument = new HashMap<String, Document>();
 	
@@ -125,6 +126,10 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			return true;
 		} else {
 			logger.error("Expected "+metsReferencesInEAD.size()+" METS files but found "+metsFiles.size()+" METS files.");
+			logger.error("Missing mets files: ");
+			for(String missingMetsFile: missingMetsFiles) {
+				logger.error(missingMetsFile);
+			}
 			return false;
 		}
 	}
@@ -151,6 +156,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private HashMap<File, Boolean> checkExistenceOfReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
 		HashMap fileExistenceMap = new HashMap<File, Boolean>();
+		missingMetsFiles= new ArrayList<String>();
 		for(String ref : references) {
 			File refFile;
 			Boolean fileExists = false;
@@ -161,10 +167,13 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 					fileExists = true; 
 				} else {
 					fileExists = false;
+					logger.error("File "+ref+" does not exist.");
+					missingMetsFiles.add(ref);
 				}
 				fileExistenceMap.put(refFile, fileExists);
 			} catch (IOException e) {
 				logger.error("File "+ref+" does not exist.");
+				missingMetsFiles.add(ref);
 				e.printStackTrace();
 			}
 		}
