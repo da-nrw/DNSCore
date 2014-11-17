@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.uzk.hki.da.model.SecondStageScanPolicy;
+
 /**
  * Fake implementation
  * @author Daniel M. de Oliveira
@@ -156,6 +158,6 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 
 	@Override
 	public void setSubformatIdentificationPolicies(
-			List<ISubformatIdentificationPolicy> subformatIdentificationPolicies) {
+			List<SecondStageScanPolicy> subformatIdentificationPolicies) {
 	}
 }

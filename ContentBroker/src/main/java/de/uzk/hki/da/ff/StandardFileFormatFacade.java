@@ -29,6 +29,7 @@ import org.irods.jargon.core.exception.InvalidArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.Utilities;
@@ -49,8 +50,8 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	private static final String JHOVE_CONF = "conf/jhove.conf";
 	private String jhoveFolder = "jhove";
 	
-	private List<ISubformatIdentificationPolicy> subformatIdentificationPolicies =
-			new ArrayList<ISubformatIdentificationPolicy>();
+	private List<SecondStageScanPolicy> subformatIdentificationPolicies =
+			new ArrayList<SecondStageScanPolicy>();
 	
 	/**
 	 * The output of fido typically is a comma separated list of puids for each file. Only the last entry of the list
@@ -65,7 +66,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		fidoFormatScanService = new FidoFormatScanService();
 		fidoFormatScanService.identify((List<IFileWithFileFormat>) files);
 		
-		for (ISubformatIdentificationPolicy p:subformatIdentificationPolicies)
+		for (SecondStageScanPolicy p:subformatIdentificationPolicies)
 			logger.debug("policy available: "+p);
 		
 		secondaryFormatScan = new SecondaryFormatScan();
@@ -74,22 +75,27 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		try {
 			secondaryFormatScan.identify((List<IFileWithFileFormat>) files);
 		} catch (InvalidArgumentException e) {
-			e.printStackTrace();
+			throw new RuntimeException("all files must have a PUID by now");
 		}
 		
 		
+		doCorrections(files);
+		return (List<IFileWithFileFormat>) files;
+	}
+
+	
+	
+	/**
+	 * Compensate for unwanted FIDO behaviour
+	 * @param files
+	 * @throws IOException
+	 */
+	private void doCorrections(List<? extends IFileWithFileFormat> files) throws IOException{
 		for (IFileWithFileFormat f:files){
 			
-			// XXX Hack
+			// This is to compensate for a behavior of FIDO where it detects a too specific xml format. 
 			if (f.getFormatPUID().equals("fmt/120")) {
 				f.setFormatPUID(FFConstants.XML_PUID);
-				f.setFormatSecondaryAttribute(
-						new PublicationMetadataSubformatIdentifier().identify(f.toRegularFile()));
-			}else
-			// Hack end
-				
-				
-			if (f.getFormatPUID().equals(FFConstants.XML_PUID)) {
 				f.setFormatSecondaryAttribute(
 						new PublicationMetadataSubformatIdentifier().identify(f.toRegularFile()));
 			}else
@@ -98,10 +104,8 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 				f.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
 			}
 		}
-		
-		return (List<IFileWithFileFormat>) files;
 	}
-
+	
 	
 	/**
 	 * Extract.
@@ -151,7 +155,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 
 	@Override
 	public void setSubformatIdentificationPolicies(
-			List<ISubformatIdentificationPolicy> subformatIdentificationPolicies) {
+			List<SecondStageScanPolicy> subformatIdentificationPolicies) {
 		
 		this.subformatIdentificationPolicies = subformatIdentificationPolicies;
 		

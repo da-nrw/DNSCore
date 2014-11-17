@@ -39,11 +39,9 @@ public class CLISecondaryFormatIdentifier implements SecondaryFormatIdentifier{
 	private String scriptName = null;
 	
 	@Override
-	public String identify(IFileWithFileFormat fff) {
+	public String identify(File file) {
 		
 		File conversionScript = new File(scriptName);
-		
-		File file = fff.toRegularFile();
 		
 		if (!file.exists()) throw new Error("File doesn't exist");
 		

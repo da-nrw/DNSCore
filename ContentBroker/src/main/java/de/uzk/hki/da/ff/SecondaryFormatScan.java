@@ -19,32 +19,37 @@
 
 package de.uzk.hki.da.ff;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.irods.jargon.core.exception.InvalidArgumentException;
+
+import de.uzk.hki.da.model.SecondStageScanPolicy;
 
 /**
  * @author Daniel M. de Oliveira
  */
 public class SecondaryFormatScan {
 
-	List<ISubformatIdentificationPolicy> secondStageScanPolicies = null;
+	List<SecondStageScanPolicy> secondStageScanPolicies = null;
 	
 	
 	/**
+	 * @throws IOException 
 	 * @throws InvalidArgumentException if one of the files has no puid.
 	 * @param files
 	 * @return files, for easy mock testing.
 	 * @throws 
 	 */
-	List<IFileWithFileFormat> identify(List<IFileWithFileFormat> files) throws InvalidArgumentException{
+	List<IFileWithFileFormat> identify(List<IFileWithFileFormat> files) throws InvalidArgumentException, IOException{
 
+		
 		for (IFileWithFileFormat f:files){
 			if (f.getFormatPUID()==null||f.getFormatPUID().isEmpty())
 				throw new InvalidArgumentException(f+" has no puid");
 			
-			for (ISubformatIdentificationPolicy p:secondStageScanPolicies){
+			for (SecondStageScanPolicy p:secondStageScanPolicies){
 				if (f.getFormatPUID().equals(p.getPUID())){
 					
 					SecondaryFormatIdentifier fi = null;
@@ -64,7 +69,7 @@ public class SecondaryFormatScan {
 							e.printStackTrace();
 						}
 					}
-					f.setFormatSecondaryAttribute(fi.identify(f));
+					f.setFormatSecondaryAttribute(fi.identify(f.toRegularFile()));
 						
 						
 					break;
@@ -76,7 +81,7 @@ public class SecondaryFormatScan {
 	}
 
 	void setSecondStageScanPolicies(
-			List<ISubformatIdentificationPolicy> secondStageScanPolicies) {
+			List<SecondStageScanPolicy> secondStageScanPolicies) {
 		this.secondStageScanPolicies = secondStageScanPolicies;
 	}
 

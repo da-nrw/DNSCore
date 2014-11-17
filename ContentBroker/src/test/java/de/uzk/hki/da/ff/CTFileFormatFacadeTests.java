@@ -32,6 +32,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.test.CTTestHelper;
 import de.uzk.hki.da.test.TC;
 
@@ -94,9 +95,19 @@ public class CTFileFormatFacadeTests {
 		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_METS,files.get(0).getFormatSecondaryAttribute());
 	}
 	
+	
+	
 	@Test
 	public void testLIDO() throws IOException{
 		FileWithFileFormat ffff = new FileWithFileFormat(Path.makeFile(testPath,"LIDO-Testexport2014-07-04-FML-Auswahl.xml"));
+		
+		SecondStageScanPolicy policy = new SecondStageScanPolicy();
+		policy.setPUID("fmt/101");
+		policy.setFormatIdentifierScriptName("de.uzk.hki.da.ff.PublicationMetadataSubformatIdentifier");
+		List<SecondStageScanPolicy> policies = new ArrayList<SecondStageScanPolicy>();
+		policies.add(policy);
+		
+		sfff.setSubformatIdentificationPolicies(policies);
 		
 		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
 		files.add(ffff);
@@ -105,6 +116,8 @@ public class CTFileFormatFacadeTests {
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
 		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_LIDO,files.get(0).getFormatSecondaryAttribute());
 	}
+	
+	
 
 	@Test
 	public void testXMP() throws IOException{

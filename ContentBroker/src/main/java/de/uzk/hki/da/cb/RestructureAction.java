@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -40,7 +39,6 @@ import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
 import de.uzk.hki.da.ff.IFileWithFileFormat;
-import de.uzk.hki.da.ff.ISubformatIdentificationPolicy;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.repository.RepositoryException;
@@ -124,14 +122,9 @@ public class RestructureAction extends AbstractAction{
 		List<SecondStageScanPolicy> policies = 
 				preservationSystem.getSubformatIdentificationPolicies();
 		session.close();
+		getFileFormatFacade().setSubformatIdentificationPolicies(policies);
 
-
-		List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
-		for (SecondStageScanPolicy s:policies)
-			polys.add((ISubformatIdentificationPolicy) s);
-		getFileFormatFacade().setSubformatIdentificationPolicies(polys);
-
-
+		
 		
 		List<IFileWithFileFormat> scannedFiles = null;
 		try {

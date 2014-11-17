@@ -19,11 +19,14 @@
 
 package de.uzk.hki.da.ff;
 
+import java.io.File;
+import java.io.IOException;
+
 
 /**
  * @author Daniel M. de Oliveira
  */
 public interface SecondaryFormatIdentifier {
 
-	public String identify(IFileWithFileFormat fff);
+	public String identify(File f) throws IOException;
 }

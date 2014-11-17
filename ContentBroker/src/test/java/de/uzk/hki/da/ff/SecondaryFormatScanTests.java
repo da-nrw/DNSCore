@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,11 +31,11 @@ import org.irods.jargon.core.exception.InvalidArgumentException;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.ff.IFileWithFileFormat;
-import de.uzk.hki.da.ff.FileWithFileFormat;
-import de.uzk.hki.da.ff.SecondaryFormatScan;
+import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
+import de.uzk.hki.da.test.TESTHelper;
 
 /**
  * @author Daniel M. de Oliveira
@@ -58,21 +59,28 @@ public class SecondaryFormatScanTests {
 		scan2.setAllowedValues("EAD,METS");
 		scan2.setFormatIdentifierScriptName("script:src/test/resources/format/SecondaryFormatScanTests/abs.sh");
 		
-		List<ISubformatIdentificationPolicy> secondStageScanPolicies = new ArrayList<ISubformatIdentificationPolicy>();
-		secondStageScanPolicies.add((ISubformatIdentificationPolicy)scan);
-		secondStageScanPolicies.add((ISubformatIdentificationPolicy)scan2);
+		List<SecondStageScanPolicy> secondStageScanPolicies = new ArrayList<SecondStageScanPolicy>();
+		secondStageScanPolicies.add((SecondStageScanPolicy)scan);
+		secondStageScanPolicies.add((SecondStageScanPolicy)scan2);
 		sfs.setSecondStageScanPolicies(secondStageScanPolicies);
 		
 	}
+	
+	
 	
 	@Test 
 	public void testFormatIdentifierUnkown(){
 		// maybe test somewhere up
 	}
 	
+	
+	
 	@Test
-	public void testIdentifiedByJavaClass() throws InvalidArgumentException{
-		DAFile f = new DAFile(null,null,"tif");
+	public void testIdentifiedByJavaClass() throws InvalidArgumentException, IOException{
+		
+		Object o = TESTHelper.setUpObject("identifier", Path.make("src/test/resources"));
+		
+		DAFile f = new DAFile(o.getLatestPackage() ,null,"tif");
 		f.setFormatPUID("fmt/353");
 		
 		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
@@ -82,8 +90,11 @@ public class SecondaryFormatScanTests {
 		assertEquals("lzw",f.getFormatSecondaryAttribute());
 	}
 	
+
+	
 	@Test
-	public void testIdentifiedByScript() throws InvalidArgumentException{
+	public void testIdentifiedByScript() throws InvalidArgumentException, IOException{
+		
 		FileWithFileFormat f = new FileWithFileFormat(new File("src/test/resources/format/SecondaryFormatScanTests/xml"));
 		f.setFormatPUID("fmt/101");
 		
@@ -94,8 +105,10 @@ public class SecondaryFormatScanTests {
 		assertEquals("EAD",f.getFormatSecondaryAttribute());
 	}
 	
+	
+	
 	@Test
-	public void testPUIDNotSet(){
+	public void testPUIDNotSet() throws IOException{
 		DAFile f = new DAFile(null,null,"tif");
 		
 		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();

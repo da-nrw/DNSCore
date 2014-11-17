@@ -10,7 +10,7 @@ then
 	exit 1
 fi
 
-ALLOWED_XXXS=10
+ALLOWED_XXXS=9
 if [ "$XXXS" -gt "$ALLOWED_XXXS" ]
 then
 	echo "Number of XXX entries in java files must not exceed $ALLOWED_XXXS (actually is $XXXS)."

@@ -33,7 +33,6 @@ import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
 import de.uzk.hki.da.ff.IFileWithFileFormat;
-import de.uzk.hki.da.ff.ISubformatIdentificationPolicy;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionInstructionBuilder;
@@ -74,10 +73,7 @@ public class ScanForPresentationAction extends AbstractAction{
 		List<SecondStageScanPolicy> policies = 
 				preservationSystem.getSubformatIdentificationPolicies();
 		session.close();
-		List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
-		for (SecondStageScanPolicy s:policies)
-			polys.add((ISubformatIdentificationPolicy) s);
-		fileFormatFacade.setSubformatIdentificationPolicies(polys);
+		fileFormatFacade.setSubformatIdentificationPolicies(policies);
 
 
 //		if (newestFiles.size() == 0)

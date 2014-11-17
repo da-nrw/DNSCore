@@ -26,15 +26,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import de.uzk.hki.da.ff.ISubformatIdentificationPolicy;
-
 
 /**
  * The Class SecondStageScanPolicy.
  */
 @Entity
 @Table(name="second_stage_scans")
-public class SecondStageScanPolicy implements ISubformatIdentificationPolicy {
+public class SecondStageScanPolicy {
 
 	/** The id. */
 	@Id

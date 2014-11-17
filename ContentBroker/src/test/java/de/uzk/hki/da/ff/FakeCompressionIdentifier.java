@@ -19,16 +19,14 @@
 
 package de.uzk.hki.da.ff;
 
-import de.uzk.hki.da.ff.IFileWithFileFormat;
-import de.uzk.hki.da.ff.SecondaryFormatIdentifier;
-
+import java.io.File;
 
 /**
  * @author Daniel M. de Oliveira
  */
 public class FakeCompressionIdentifier implements SecondaryFormatIdentifier{
 
-	public String identify(IFileWithFileFormat file) {
+	public String identify(File file) {
 		return "lzw";
 	}
 }

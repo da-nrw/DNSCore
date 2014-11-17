@@ -39,7 +39,6 @@ import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
 import de.uzk.hki.da.ff.IFileWithFileFormat;
-import de.uzk.hki.da.ff.ISubformatIdentificationPolicy;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.SecondStageScanPolicy;
@@ -89,12 +88,10 @@ public class CheckFormatsAction extends AbstractAction {
 		List<SecondStageScanPolicy> policies = 
 				preservationSystem.getSubformatIdentificationPolicies();
 		session.close();
-		
-		List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
-		for (SecondStageScanPolicy s:policies)
-			polys.add((ISubformatIdentificationPolicy) s);
-		getFileFormatFacade().setSubformatIdentificationPolicies(polys);
+		getFileFormatFacade().setSubformatIdentificationPolicies(policies);
 
+		
+		
 		try {
 			allFiles = getFileFormatFacade().identify(allFiles);
 		} catch (FileFormatException e) {

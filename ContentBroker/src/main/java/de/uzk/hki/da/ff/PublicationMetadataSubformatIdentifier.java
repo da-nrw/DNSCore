@@ -31,7 +31,7 @@ import java.io.IOException;
  * 
  * @author Daniel M. de Oliveira
  */
-public class PublicationMetadataSubformatIdentifier {
+public class PublicationMetadataSubformatIdentifier implements SecondaryFormatIdentifier{
 
 	private final static String eadPattern = ".*(?s)\\A.{0,500}\\x3cead[^\\x3c]{0,1000}\\x3ceadheader.*";
 	private final static String metsPattern = ".*(?s)\\A.{0,100}\\x3c([^: ]+:)?mets[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.loc.gov/METS.*";
@@ -42,14 +42,12 @@ public class PublicationMetadataSubformatIdentifier {
 	 * @return
 	 * @throws IOException 
 	 */
+	@Override
 	public String identify(File f) throws IOException{
-
 		String beginningOfFile = convertFirst10LinesOfFileToString(f);
-		
 		if (beginningOfFile.matches(eadPattern))  return FFConstants.SUBFORMAT_IDENTIFIER_EAD;
 		if (beginningOfFile.matches(metsPattern)) return FFConstants.SUBFORMAT_IDENTIFIER_METS;
 		if (beginningOfFile.matches(lidoPattern)) return FFConstants.SUBFORMAT_IDENTIFIER_LIDO;
-		
 		return "";
 	}
 	
@@ -69,6 +67,4 @@ public class PublicationMetadataSubformatIdentifier {
 		br.close();
 		return result;
 	}
-	
-	
 }
