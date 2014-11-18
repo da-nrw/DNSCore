@@ -95,7 +95,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		for (IFileWithFileFormat f:files){
 			
 			// This is to compensate for a behavior of FIDO where it detects a too specific xml format. 
-			if (f.getFormatPUID().equals("fmt/120")) {
+			if (f.getFormatPUID().equals(FFConstants.DROID_XML_PUID)) {
 				f.setFormatPUID(FFConstants.XML_PUID);
 				f.setFormatSecondaryAttribute(
 						new PublicationMetadataSubformatIdentifier().identify(f.toRegularFile()));
@@ -109,12 +109,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	
 	
 	/**
-	 * Extract.
-	 *
-	 * @param file the file
-	 * @param jobId the job id
-	 * @return the string
-	 * @throws Exception the exception
+	 * 
 	 */
 	@Override
 	public void extract(File file, File extractedMetadata) throws IOException {
@@ -154,11 +149,18 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 
 
 
+	/**
+	 * @param subformatIdentifier fully qualified java class name a 
+	 * class which can be used to identify subformats for a range of puids.
+	 */
 	@Override
 	public void registerSubformatIdentificationMethod(String puids,
-			String scriptName) {
-		// TODO Auto-generated method stub
+			String subformatIdentifier) {
 		
+		SubformatIdentificationPolicy p = new SubformatIdentificationPolicy();
+		p.setPUID(puids);
+		p.setFormatIdentifierScriptName(subformatIdentifier);
+		
+		subformatIdentificationPolicies.add(p);
 	}
-
 }

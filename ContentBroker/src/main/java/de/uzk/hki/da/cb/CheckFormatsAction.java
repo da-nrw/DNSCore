@@ -29,19 +29,16 @@ import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.NotImplementedException;
-import org.hibernate.Session;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
 import de.uzk.hki.da.ff.IFileWithFileFormat;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.SubformatIdentificationPolicy;
 import de.uzk.hki.da.utils.CommaSeparatedList;
 
 /**
@@ -83,16 +80,6 @@ public class CheckFormatsAction extends AbstractAction {
 				allFiles.addAll(p.getFiles());
 				allDAFiles.addAll(p.getFiles());
 		}
-		
-		Session session = HibernateUtil.openSession();
-		List<SubformatIdentificationPolicy> policies = 
-				preservationSystem.getSubformatIdentificationPolicies();
-		session.close();
-		for (SubformatIdentificationPolicy sfiP:policies) {
-			fileFormatFacade.registerSubformatIdentificationMethod(sfiP.getPUID(), sfiP.getFormatIdentifierScriptName());
-		}
-		
-		
 		
 		try {
 			allFiles = getFileFormatFacade().identify(allFiles);

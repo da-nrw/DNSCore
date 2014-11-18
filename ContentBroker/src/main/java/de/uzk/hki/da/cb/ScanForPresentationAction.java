@@ -24,12 +24,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
-
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
 import de.uzk.hki.da.ff.IFileWithFileFormat;
@@ -39,7 +36,6 @@ import de.uzk.hki.da.model.ConversionInstructionBuilder;
 import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.SubformatIdentificationPolicy;
 
 
 /**
@@ -67,18 +63,7 @@ public class ScanForPresentationAction extends AbstractAction{
 
 	@Override
 	public boolean implementation() throws IOException {
-		// check if object package type is set
 		
-		Session session = HibernateUtil.openSession();
-		List<SubformatIdentificationPolicy> policies = 
-				preservationSystem.getSubformatIdentificationPolicies();
-		session.close();
-		for (SubformatIdentificationPolicy sfiP:policies) {
-			fileFormatFacade.registerSubformatIdentificationMethod(sfiP.getPUID(), sfiP.getFormatIdentifierScriptName());
-		}
-
-//		if (newestFiles.size() == 0)
-//			throw new RuntimeException("No files found!");
 		List<? extends IFileWithFileFormat> fffl=null;
 		try {
 			fffl = fileFormatFacade.identify(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));

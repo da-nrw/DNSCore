@@ -68,9 +68,7 @@ public class FidoFormatScanService implements FormatScanService {
 	 */
 	@Override
 	public List<IFileWithFileFormat> identify(List<IFileWithFileFormat> files) throws FileNotFoundException {
-//		for (FileWithFileFormat f:files){
-//			if (!f.toRegularFile().exists()) throw new FileNotFoundException("file "+f.toRegularFile().getPath()+" doesn't exist");
-//		}	
+
 		for (IFileWithFileFormat f:files){
 
 			f.setFormatPUID(pronom.getPuidForFile(f));

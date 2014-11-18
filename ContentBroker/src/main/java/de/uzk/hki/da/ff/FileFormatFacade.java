@@ -25,16 +25,22 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Provides access to the file format subsystem, which is responsible for identification of file and container 
- * formats, extraction of metadata from files, and validation of file formats.
+ * Provides access to the file format subsystem, which is responsible for 
+ * <ol>
+ * <li>identification of file format (PUID) 
+ * <li>identification of file subformats
+ * <li>extraction of metadata from files
+ * <li>and validation of file formats.
+ * </ol>
  * 
  * @author Daniel M. de Oliveira
  */
 public interface FileFormatFacade {
 
 	/**
-	 * Scans all files and determines the pronom PUID and possibly a secondary format attribute
-	 * for each of them. Then sets a value for each of the files formatPUID and formatSecondaryAttribute fields.
+	 * Scans files and determines the PUID and, if possible, the subformat, 
+	 * depending on the configuration of the FileFormatFacade (see @link #registerSubformatIdentificationMethod(String, String)}).
+	 * The method modifies the PUID and SecondaryFormatAttribute fields of files.
 	 * 
 	 * @param files
 	 * @return return files. Used for easier testing.
@@ -45,6 +51,7 @@ public interface FileFormatFacade {
 	public List<IFileWithFileFormat> identify(List<? extends IFileWithFileFormat> files) 
 			throws FileNotFoundException, FileFormatException, IOException;
 
+	
 	/**
 	 * Extracts metadata from file and creates a xml file which contains the results.
 	 * 
@@ -55,11 +62,15 @@ public interface FileFormatFacade {
 	public void extract(File file, File extractedMetadata) throws IOException;
 	
 	
-	
 	/**
+	 * Registers a piece of subformat identification code which the 
+	 * implementation of FileFormatFacade
+	 * will execute from inside the {@link #identify(List)} method. 
 	 * 
-	 * @param puids comma separated list
-	 * @param scriptName
+	 * @param puids comma separated list of PUIDs which act as trigger for executing the subformatIdentificationMethod. When {@link #identify(List)}
+	 * identifies the PUID of a file, this PUID gets matched against all registered subformat identification methods. For a match the subformat 
+	 * identification method will be used to determine the subformat of the file.
+	 * @param scriptName identifies the piece of code. 
 	 */
 	public void registerSubformatIdentificationMethod(String puids,String scriptName);
 	

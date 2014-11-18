@@ -33,11 +33,11 @@ import org.springframework.context.ApplicationContextAware;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.model.ConversionPolicy;
+import de.uzk.hki.da.ff.FileFormatFacade;
 import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.SubformatIdentificationPolicy;
 import de.uzk.hki.da.service.UserExceptionManager;
 
@@ -55,6 +55,8 @@ public class ActionFactory implements ApplicationContextAware {
 	
 	/** The action registry. */
 	private ActionRegistry actionRegistry;
+	
+	private FileFormatFacade fileFormatFacade;
 	
 	/** The local node. */
 	private Node localNode; // Node the ContentBroker actually runs on
@@ -85,15 +87,11 @@ public class ActionFactory implements ApplicationContextAware {
 		session.refresh(preservationSystem);
 		// replace proxies by real objects if loading lazily.
 		Hibernate.initialize(getPreservationSystem().getConversion_policies());
-		preservationSystem.setSubformatIdentificationPolicies(getSecondStageScanPolicies(session));
 
-		
-//		for (ConversionPolicy p:getPreservationSystem().getConversion_policies()){
-//			logger.debug("Policy:"+p.getSource_format()+"->"+p.getConversion_routine().getName());
-//		}
-//		
-		
-//		session.getTransaction().commit();
+		for (SubformatIdentificationPolicy sfiP:getSecondStageScanPolicies(session)) {
+			fileFormatFacade.registerSubformatIdentificationMethod(sfiP.getPUID(), sfiP.getFormatIdentifierScriptName());
+		}
+
 		session.close();
 	}
 	
@@ -298,5 +296,13 @@ public class ActionFactory implements ApplicationContextAware {
 
 	public void setQueueConnector(JobNamedQueryDAO qc) {
 		this.qc = qc;
+	}
+
+	public FileFormatFacade getFileFormatFacade() {
+		return fileFormatFacade;
+	}
+
+	public void setFileFormatFacade(FileFormatFacade fileFormatFacade) {
+		this.fileFormatFacade = fileFormatFacade;
 	}
 }

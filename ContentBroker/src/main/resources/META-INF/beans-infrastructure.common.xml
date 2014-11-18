@@ -78,6 +78,7 @@
         <property name="queueConnector" ref="queueConnector" />
         <property name="userExceptionManager" ref="userExceptionManager" />
         <property name="mqConnectionFactory" ref="mqConnectionFactory"/>
+        <property name="fileFormatFacade" ref="${cb.implementation.fileFormatFacade:standardFileFormatFacade}" />
     </bean>
     
    <bean id="registerObjectService" class="de.uzk.hki.da.core.RegisterObjectService" init-method="init" >
