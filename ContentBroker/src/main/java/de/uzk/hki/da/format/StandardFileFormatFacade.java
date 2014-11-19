@@ -76,11 +76,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 			logger.debug("policy available: "+p);
 		
 		if (subformatScanService!=null)
-			try {
-				subformatScanService.identify((List<FileWithFileFormat>) files);
-			} catch (IllegalArgumentException e) {
-				throw new RuntimeException("all files must have a PUID by now");
-			}
+			subformatScanService.identify((List<FileWithFileFormat>) files);
 		
 		doCorrections(files);
 		return (List<FileWithFileFormat>) files;
