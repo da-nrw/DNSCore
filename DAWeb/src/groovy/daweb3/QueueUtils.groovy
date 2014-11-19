@@ -106,11 +106,14 @@ class QueueUtils {
 			return "Paket "+ id +"  in Status: " + newStatus + " " + additionalAnswer 
 		} else return "Paket nicht gefunden!"
 	}
-	
+	/**
+	 * Modifies a job and sets it to new Workflow state
+	 * @param id
+	 * @param status
+	 * @author Jens Peters
+	 */
 	String modifyJob (String id, newStatus) {
 		return modifyJob (id, newStatus, "") 
 	
 	}
-		
-
 }
