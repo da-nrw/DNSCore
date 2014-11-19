@@ -93,6 +93,10 @@ Although automated service is carrying out integrity checks on AIP stored in the
 the time, administrators can perform checks on demand as well. This feature is accessible on the "list objects" view for admin users only.
 
 
-#### Recover and Deletion of entries
+#### Trigger Recover and Deletion of workflow entries
 
-Admins can perform adequate recover processes if they could be carried out by the system.  This is being indicated by buttons.  This feature is accessible on the "queue list" view for admin users only.
+Admins can perform adequate recover processes if they could be carried out by the system.  This is being indicated by buttons.  This feature is accessible on the "queue list" view for NODE_ADMIN role users only.
+
+#### Trigger blockwise Actions on several items 
+
+Users owning at least the NODE_ADMIN role are able to perform blockwise actions on several selected items (Retry, Recover, Deletion of SIP). First step is to filter for a dedicated state on which the blockwise operation should be carried out. After setting filter at least for a state, new operations show up at the and of the queue view table. 
