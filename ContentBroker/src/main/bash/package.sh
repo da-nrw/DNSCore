@@ -57,7 +57,6 @@ case "$1" in
 dev)
 	sed "s@CONTENTBROKER_ROOT@$2@" src/main/conf/config.properties.dev  > $INSTALLER/config.properties # TODO move to pre-integration-test.sh
 	createStorageFolder	
-	cp -f src/main/bash/ffmpeg.sh.fake $INSTALLER/ffmpeg.sh
 	cp src/main/conf/sqltool.rc ~/
 ;;
 ci)
