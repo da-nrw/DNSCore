@@ -54,20 +54,10 @@ public class SecondaryFormatScan {
 					
 					SecondaryFormatIdentifier fi = null;
 
-					
-//					System.out.println(p.getFormatIdentifierScriptName());
-					if (p.getFormatIdentifierScriptName().startsWith("script:")){
-						CLISecondaryFormatIdentifier clisfi = new CLISecondaryFormatIdentifier();
-						clisfi.setScriptName(p.getFormatIdentifierScriptName().replace("script:", ""));
-						fi = (SecondaryFormatIdentifier) clisfi;
-					}
-					else
-					{
-						try {
-							fi = getSFI(p.getFormatIdentifierScriptName());
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
+					try {
+						fi = getSFI(p.getFormatIdentifierScriptName());
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 					f.setFormatSecondaryAttribute(fi.identify(f.toRegularFile()));
 						

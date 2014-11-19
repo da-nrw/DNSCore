@@ -90,20 +90,6 @@ public class SecondaryFormatScanTests {
 	
 
 	
-	@Test
-	public void testIdentifiedByScript() throws InvalidArgumentException, IOException{
-		
-		FileWithFileFormat f = new FileWithFileFormat(new File("src/test/resources/format/SecondaryFormatScanTests/xml"));
-		f.setFormatPUID("fmt/101");
-		
-		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
-		files.add(f);
-		sfs.identify(files);
-		
-		assertEquals("EAD",f.getFormatSecondaryAttribute());
-	}
-	
-	
 	
 	@Test
 	public void testPUIDNotSet() throws IOException{
