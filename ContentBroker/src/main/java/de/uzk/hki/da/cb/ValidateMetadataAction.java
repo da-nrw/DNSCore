@@ -31,7 +31,7 @@ import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
-import de.uzk.hki.da.ff.FFConstants;
+import de.uzk.hki.da.format.FFConstants;
 import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.metadata.XmpCollector;

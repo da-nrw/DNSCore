@@ -57,19 +57,19 @@ import de.uzk.hki.da.cb.UpdateMetadataActionTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionXMPTests;
 import de.uzk.hki.da.cb.UpdateMetadataRheinlaender;
 import de.uzk.hki.da.cb.ValidateMetadataActionTests;
-import de.uzk.hki.da.ff.FakeFileFormatFacadeTests;
-import de.uzk.hki.da.ff.PublicationMetadataSubformatIdentifierTests;
-import de.uzk.hki.da.ff.SecondaryFormatScanTests;
-import de.uzk.hki.da.format.CLIConversionStrategyTests;
-import de.uzk.hki.da.format.ConverterServiceTests;
-import de.uzk.hki.da.format.PDFServiceTests;
-import de.uzk.hki.da.format.PdfConversionStrategyTest;
-import de.uzk.hki.da.format.PublishAudioConversionStrategyTests;
-import de.uzk.hki.da.format.PublishImageConversionStrategyTest;
-import de.uzk.hki.da.format.PublishImageMultipageTIFFTests;
-import de.uzk.hki.da.format.PublishPDFConversionStrategyTests;
-import de.uzk.hki.da.format.PublishXsltConversionStrategyTests;
-import de.uzk.hki.da.format.TiffConversionStrategyTests;
+import de.uzk.hki.da.convert.CLIConversionStrategyTests;
+import de.uzk.hki.da.convert.ConverterServiceTests;
+import de.uzk.hki.da.convert.PDFServiceTests;
+import de.uzk.hki.da.convert.PdfConversionStrategyTest;
+import de.uzk.hki.da.convert.PublishAudioConversionStrategyTests;
+import de.uzk.hki.da.convert.PublishImageConversionStrategyTest;
+import de.uzk.hki.da.convert.PublishImageMultipageTIFFTests;
+import de.uzk.hki.da.convert.PublishPDFConversionStrategyTests;
+import de.uzk.hki.da.convert.PublishXsltConversionStrategyTests;
+import de.uzk.hki.da.convert.TiffConversionStrategyTests;
+import de.uzk.hki.da.format.FakeFileFormatFacadeTests;
+import de.uzk.hki.da.format.XMLSubformatIdentifierTests;
+import de.uzk.hki.da.format.SubformatScanServiceTests;
 import de.uzk.hki.da.grid.IrodsGridFacadeTest;
 import de.uzk.hki.da.grid.ReplicationExecutorTest;
 import de.uzk.hki.da.integrity.IntegrityScannerWorkerTest;
@@ -160,13 +160,13 @@ import de.uzk.hki.da.service.XPathUtilsTests;
 	ProcessUserDecisionsActionTests.class,
 	FakeFileFormatFacadeTests.class,
 	UpdateMetadataRheinlaender.class,
-	SecondaryFormatScanTests.class,
+	SubformatScanServiceTests.class,
 	RestartIngestWorkflowActionTests.class,
 	PostRetrievalActionTest.class,
 	NewActionRegistryTests.class,
 	SmartActionFactoryTests.class,
 	JobManagerTests.class,
-	PublicationMetadataSubformatIdentifierTests.class
+	XMLSubformatIdentifierTests.class
 })
 public class SimpleSuite {
 

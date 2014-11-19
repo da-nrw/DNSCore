@@ -86,10 +86,10 @@
    		<property name="preservationSystemId" value="1" />
    </bean>
   
-	<bean class="de.uzk.hki.da.ff.StandardFileFormatFacade" id="standardFileFormatFacade"/>
+	<bean class="de.uzk.hki.da.format.StandardFileFormatFacade" id="standardFileFormatFacade"/>
     <bean class="de.uzk.hki.da.model.JobNamedQueryDAO" id="queueConnector"/>
     
-    <bean class="de.uzk.hki.da.ff.MimeTypeDetectionService" id="mtds"/>
+    <bean class="de.uzk.hki.da.format.MimeTypeDetectionService" id="mtds"/>
     
 	<bean class="de.uzk.hki.da.service.UserExceptionManager" id="userExceptionManager" init-method="readConfigFile"/>
 	

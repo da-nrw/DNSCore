@@ -47,7 +47,7 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.core.Path;
-import de.uzk.hki.da.ff.MimeTypeDetectionService;
+import de.uzk.hki.da.format.MimeTypeDetectionService;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;

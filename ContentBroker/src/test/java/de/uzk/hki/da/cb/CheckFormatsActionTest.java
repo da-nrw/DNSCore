@@ -36,8 +36,8 @@ import org.springframework.util.StringUtils;
 
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.RelativePath;
-import de.uzk.hki.da.ff.FileWithFileFormat;
-import de.uzk.hki.da.ff.StandardFileFormatFacade;
+import de.uzk.hki.da.format.FileWithFileFormat;
+import de.uzk.hki.da.format.StandardFileFormatFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;

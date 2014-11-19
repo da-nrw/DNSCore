@@ -33,7 +33,7 @@ import org.springframework.context.ApplicationContextAware;
 
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.ff.FileFormatFacade;
+import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.Node;

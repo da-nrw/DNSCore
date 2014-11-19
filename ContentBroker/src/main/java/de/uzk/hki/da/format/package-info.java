@@ -18,6 +18,6 @@
 */
 
 /**
- * Main conversion functions and actions related to formats.
+ * The FileFormat Package
  */
 package de.uzk.hki.da.format;

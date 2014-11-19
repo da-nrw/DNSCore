@@ -32,10 +32,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import de.uzk.hki.da.ff.FileFormatFacade;
-import de.uzk.hki.da.ff.FileWithFileFormat;
-import de.uzk.hki.da.ff.SimpleFileWithFileFormat;
-import de.uzk.hki.da.ff.StandardFileFormatFacade;
+import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.format.FileWithFileFormat;
+import de.uzk.hki.da.format.SimpleFileWithFileFormat;
+import de.uzk.hki.da.format.StandardFileFormatFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.Node;

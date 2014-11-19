@@ -34,9 +34,9 @@ import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.ff.FileFormatException;
-import de.uzk.hki.da.ff.FileFormatFacade;
-import de.uzk.hki.da.ff.FileWithFileFormat;
+import de.uzk.hki.da.format.FileFormatException;
+import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 

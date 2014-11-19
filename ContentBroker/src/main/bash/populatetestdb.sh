@@ -41,10 +41,10 @@ then
 		"INSERT INTO nodes_contractors (node_id,contractor_user_id) VALUES (1,1);"
 		"INSERT INTO nodes_contractors (node_id,contractor_user_id) VALUES (1,4);"
 		"INSERT INTO nodes_contractors (node_id,contractor_user_id) VALUES (1,5);"
-        "INSERT INTO conversion_routines (id,name,target_suffix,type,psystem_id) VALUES (1,'TIFF',null,'de.uzk.hki.da.format.TiffConversionStrategy',1);"
-        "INSERT INTO conversion_routines (id,name,target_suffix,type,psystem_id) VALUES (2,'PIMG','jpg','de.uzk.hki.da.format.PublishImageConversionStrategy',1);"
-        "INSERT INTO conversion_routines (id,name,target_suffix,type,params,psystem_id) VALUES (3,'CLITIF','tif','de.uzk.hki.da.format.CLIConversionStrategy','convert input output',1);"
-        "INSERT INTO conversion_routines (id,name,target_suffix,type,params,psystem_id) VALUES (4,'CLICOPY','*','de.uzk.hki.da.format.PublishCLIConversionStrategy','cp input output',1);"
+        "INSERT INTO conversion_routines (id,name,target_suffix,type,psystem_id) VALUES (1,'TIFF',null,'de.uzk.hki.da.convert.TiffConversionStrategy',1);"
+        "INSERT INTO conversion_routines (id,name,target_suffix,type,psystem_id) VALUES (2,'PIMG','jpg','de.uzk.hki.da.convert.PublishImageConversionStrategy',1);"
+        "INSERT INTO conversion_routines (id,name,target_suffix,type,params,psystem_id) VALUES (3,'CLITIF','tif','de.uzk.hki.da.convert.CLIConversionStrategy','convert input output',1);"
+        "INSERT INTO conversion_routines (id,name,target_suffix,type,params,psystem_id) VALUES (4,'CLICOPY','*','de.uzk.hki.da.convert.PublishCLIConversionStrategy','cp input output',1);"
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (1,1,'fmt/353',1,false);"
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (2,1,'fmt/353',2,true);"
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (3,1,'fmt/116',3,false);"
@@ -55,10 +55,10 @@ then
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (8,1,'fmt/43',3,false);"
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (9,1,'fmt/43',2,true);"
         
-        "INSERT INTO second_stage_scans (id,puid,format_identifier_script_name) VALUES (1,'fmt/101','de.uzk.hki.da.ff.XMLSubformatIdentifier');"
- 	"INSERT INTO second_stage_scans (id,puid,format_identifier_script_name) VALUES (2,'x-fmt/384','de.uzk.hki.da.ff.FFmpegSubformatIdentifier');"
-        "INSERT INTO second_stage_scans (id,puid,format_identifier_script_name) VALUES (3,'fmt/200','de.uzk.hki.da.ff.FFmpegSubformatIdentifier');"
-        "INSERT INTO second_stage_scans (id,puid,format_identifier_script_name) VALUES (4,'fmt/5','de.uzk.hki.da.ff.FFmpegSubformatIdentifier');"
+        "INSERT INTO second_stage_scans (id,puid,format_identifier_script_name) VALUES (1,'fmt/101','de.uzk.hki.da.format.XMLSubformatIdentifier');"
+ 	"INSERT INTO second_stage_scans (id,puid,format_identifier_script_name) VALUES (2,'x-fmt/384','de.uzk.hki.da.format.FFmpegSubformatIdentifier');"
+        "INSERT INTO second_stage_scans (id,puid,format_identifier_script_name) VALUES (3,'fmt/200','de.uzk.hki.da.format.FFmpegSubformatIdentifier');"
+        "INSERT INTO second_stage_scans (id,puid,format_identifier_script_name) VALUES (4,'fmt/5','de.uzk.hki.da.format.FFmpegSubformatIdentifier');"
 	)
 fi
 

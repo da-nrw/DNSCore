@@ -42,7 +42,7 @@ import org.xml.sax.SAXException;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.ff.FFConstants;
+import de.uzk.hki.da.format.FFConstants;
 import de.uzk.hki.da.metadata.FakeMetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.model.DAFile;

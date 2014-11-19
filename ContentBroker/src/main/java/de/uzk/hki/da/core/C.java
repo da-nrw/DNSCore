@@ -23,7 +23,7 @@ import java.io.File;
 
 import org.jdom.Namespace;
 
-import de.uzk.hki.da.ff.FFConstants;
+import de.uzk.hki.da.format.FFConstants;
 
 /**
  * @author Daniel M. de Oliveira & the DA-NRW team
