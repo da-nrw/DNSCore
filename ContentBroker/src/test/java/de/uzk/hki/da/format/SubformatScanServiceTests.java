@@ -24,18 +24,18 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.irods.jargon.core.exception.InvalidArgumentException;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.Path;
-import de.uzk.hki.da.format.FileWithFileFormat;
-import de.uzk.hki.da.format.SubformatScanService;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.SubformatIdentificationPolicy;
 import de.uzk.hki.da.test.TESTHelper;
 
 /**
@@ -49,33 +49,17 @@ public class SubformatScanServiceTests {
 	public void setUp(){
 		
 		// This is what is configured in the database.
+		Map<String,List<String>> subformatIdentificationPolicies = new HashMap<String,List<String>>();
 		
-		SubformatIdentificationPolicy scan  = new SubformatIdentificationPolicy();
-		scan.setPUID(FFConstants.FMT_353);
-		scan.setFormatIdentifierScriptName("de.uzk.hki.da.format.FakeCompressionIdentifier");
-
-		SubformatIdentificationPolicy scan2  = new SubformatIdentificationPolicy();
-		scan2.setPUID(FFConstants.FMT_101);
-		scan2.setFormatIdentifierScriptName("script:src/test/resources/format/SecondaryFormatScanTests/abs.sh");
+		subformatIdentificationPolicies.put("de.uzk.hki.da.format.FakeCompressionIdentifier", 
+				Arrays.asList(FFConstants.FMT_353));
 		
-		List<SubformatIdentificationPolicy> secondStageScanPolicies = new ArrayList<SubformatIdentificationPolicy>();
-		secondStageScanPolicies.add((SubformatIdentificationPolicy)scan);
-		secondStageScanPolicies.add((SubformatIdentificationPolicy)scan2);
-		sfs.setSecondStageScanPolicies(secondStageScanPolicies);
-		
+		sfs.setSubformatIdentificationPolicies(subformatIdentificationPolicies);
 	}
-	
-	
-	
-	@Test 
-	public void testFormatIdentifierUnkown(){
-		// maybe test somewhere up
-	}
-	
 	
 	
 	@Test
-	public void testIdentifiedByJavaClass() throws InvalidArgumentException, IOException{
+	public void testIdentify() throws InvalidArgumentException, IOException{
 		
 		Object o = TESTHelper.setUpObject("identifier", Path.make("src/test/resources"));
 		
@@ -88,8 +72,6 @@ public class SubformatScanServiceTests {
 		
 		assertEquals(FFConstants.LZW,f.getSubformatIdentifier());
 	}
-	
-
 	
 	
 	@Test

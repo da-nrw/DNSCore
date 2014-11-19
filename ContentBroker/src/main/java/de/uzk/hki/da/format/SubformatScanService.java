@@ -21,18 +21,18 @@ package de.uzk.hki.da.format;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.irods.jargon.core.exception.InvalidArgumentException;
-
-import de.uzk.hki.da.model.SubformatIdentificationPolicy;
 
 /**
  * @author Daniel M. de Oliveira
  */
 class SubformatScanService implements FormatScanService {
 
-	List<SubformatIdentificationPolicy> secondStageScanPolicies = null;
+	private Map<String,List<String>> subformatIdentificationPolicies = new HashMap<String,List<String>>();
 	
 	
 	/**
@@ -43,25 +43,25 @@ class SubformatScanService implements FormatScanService {
 	 * @throws 
 	 */
 	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws InvalidArgumentException, IOException{
-
 		
 		for (FileWithFileFormat f:files){
 			if (f.getFormatPUID()==null||f.getFormatPUID().isEmpty())
 				throw new InvalidArgumentException(f+" has no puid");
 			
-			for (SubformatIdentificationPolicy p:secondStageScanPolicies){
-				if (f.getFormatPUID().equals(p.getPUID())){
+			for (String formatIdentifierClassName:subformatIdentificationPolicies.keySet()){
+				
+				if (subformatIdentificationPolicies.get(formatIdentifierClassName).contains(f.getFormatPUID())){
 					
 					FormatIdentifier fi = null;
-
+					
 					try {
-						fi = getSFI(p.getFormatIdentifierScriptName());
+						fi = getSFI(formatIdentifierClassName);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 					f.setSubformatIdentifier(fi.identify(f.toRegularFile()));
-						
-						
+					
+					
 					break;
 				}
 			}
@@ -70,9 +70,9 @@ class SubformatScanService implements FormatScanService {
 		return files;
 	}
 
-	void setSecondStageScanPolicies(
-			List<SubformatIdentificationPolicy> secondStageScanPolicies) {
-		this.secondStageScanPolicies = secondStageScanPolicies;
+	void setSubformatIdentificationPolicies(
+			 Map<String,List<String>> subformatIdentificationPolicies) {
+		this.subformatIdentificationPolicies = subformatIdentificationPolicies;
 	}
 
 	

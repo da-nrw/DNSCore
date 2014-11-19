@@ -23,13 +23,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.irods.jargon.core.exception.InvalidArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.model.SubformatIdentificationPolicy;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.Utilities;
@@ -42,16 +43,20 @@ import de.uzk.hki.da.utils.Utilities;
  */
 public class StandardFileFormatFacade implements FileFormatFacade{
 
-	static final Logger logger = LoggerFactory.getLogger(StandardFileFormatFacade.class);
+	private static final Logger logger = LoggerFactory.getLogger(StandardFileFormatFacade.class);
+	private static final String JHOVE_CONF = "conf/jhove.conf";
+	private static final String jhoveFolder = "jhove";
+	
 	
 	private FidoFormatScanService pronomFormatScanService;
 	private SubformatScanService subformatScanService;
 	
-	private static final String JHOVE_CONF = "conf/jhove.conf";
-	private String jhoveFolder = "jhove";
 	
-	private List<SubformatIdentificationPolicy> subformatIdentificationPolicies =
-			new ArrayList<SubformatIdentificationPolicy>();
+	/**
+	 *      formatIdentifierClassName,policyTriggerPUID
+	 */
+	private Map<String,List<String>> subformatIdentificationPolicies = new HashMap<String,List<String>>();
+
 	
 	/**
 	 * The output of fido typically is a comma separated list of puids for each file. Only the last entry of the list
@@ -66,19 +71,17 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		pronomFormatScanService = new FidoFormatScanService();
 		pronomFormatScanService.identify((List<FileWithFileFormat>) files);
 		
-		for (SubformatIdentificationPolicy p:subformatIdentificationPolicies)
+		for (String p:subformatIdentificationPolicies.keySet())
 			logger.debug("policy available: "+p);
 		
 		subformatScanService = new SubformatScanService();
-		subformatScanService.setSecondStageScanPolicies(subformatIdentificationPolicies);
-		
+		subformatScanService.setSubformatIdentificationPolicies(subformatIdentificationPolicies);
 		
 		try {
 			subformatScanService.identify((List<FileWithFileFormat>) files);
 		} catch (InvalidArgumentException e) {
 			throw new RuntimeException("all files must have a PUID by now");
 		}
-		
 		
 		doCorrections(files);
 		return (List<FileWithFileFormat>) files;
@@ -114,9 +117,6 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	@Override
 	public void extract(File file, File extractedMetadata) throws IOException {
 		if (!file.exists()) throw new FileNotFoundException("File to extract Metadata from doesn't exist! ("+file+")");
-		
-		
-		
 		String filePath = file.getAbsolutePath();
 		
 		if (Utilities.checkForWhitespace(filePath))
@@ -157,10 +157,12 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	public void registerSubformatIdentificationMethod(String puids,
 			String subformatIdentifier) {
 		
-		SubformatIdentificationPolicy p = new SubformatIdentificationPolicy();
-		p.setPUID(puids);
-		p.setFormatIdentifierScriptName(subformatIdentifier);
-		
-		subformatIdentificationPolicies.add(p);
+		if (subformatIdentificationPolicies.containsKey(subformatIdentifier)) {
+			subformatIdentificationPolicies.get(subformatIdentifier).add(puids);
+		}else{
+			List<String> puid = new ArrayList<String>();
+			puid.add(puids);
+			subformatIdentificationPolicies.put(subformatIdentifier, puid);
+		}
 	}
 }
