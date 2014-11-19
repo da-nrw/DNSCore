@@ -37,13 +37,13 @@ import de.uzk.hki.da.utils.ProcessInformation;
  * 
  * @author Daniel M. de Oliveira
  */
-public class PronomFormatIdentifierWrapper {
+public class ScriptWrappedPronomFormatIdentifier implements FormatIdentifier {
 
-	private static final Logger logger = LoggerFactory.getLogger(PronomFormatIdentifierWrapper.class);
+	private static final Logger logger = LoggerFactory.getLogger(ScriptWrappedPronomFormatIdentifier.class);
 
 	private File conversionScript = null;
 	
-	PronomFormatIdentifierWrapper(File cs){
+	ScriptWrappedPronomFormatIdentifier(File cs){
 		this.conversionScript=cs;
 	}
 	
@@ -54,11 +54,12 @@ public class PronomFormatIdentifierWrapper {
 	 * @param fff
 	 * @return PUID or UNDEFINED if fido cannot determine the file format. 
 	 */
-	String getPuidForFile(FileWithFileFormat fff){
+	@Override
+	public
+	String identify(File file){
 		if (!conversionScript.exists()) throw new IllegalStateException(
 				"ConversionScript doesn't exist: "+conversionScript.getAbsolutePath());
 		
-		File file = fff.toRegularFile();
 		
 		if (!file.exists()) throw new Error("File doesn't exist");
 

@@ -40,7 +40,7 @@ class FidoFormatScanService implements FormatScanService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(FidoFormatScanService.class);
 	
-	private PronomFormatIdentifierWrapper pronom;
+	private ScriptWrappedPronomFormatIdentifier pronom;
 	
 	/**
 	 * Instantiates a new format scan service.
@@ -49,7 +49,7 @@ class FidoFormatScanService implements FormatScanService {
 	 */
 	public FidoFormatScanService(){
 		
-		pronom = new PronomFormatIdentifierWrapper(new File(C.FIDO_GLUE_SCRIPT));
+		pronom = new ScriptWrappedPronomFormatIdentifier(new File(C.FIDO_GLUE_SCRIPT));
 	}
 	
 	
@@ -72,7 +72,7 @@ class FidoFormatScanService implements FormatScanService {
 
 		for (FileWithFileFormat f:files){
 
-			f.setFormatPUID(pronom.getPuidForFile(f));
+			f.setFormatPUID(pronom.identify(f.toRegularFile()));
 			logger.debug(f+" has puid "+f.getFormatPUID()+". Now searching if second stage scan policy is applicable");
 			
 		}

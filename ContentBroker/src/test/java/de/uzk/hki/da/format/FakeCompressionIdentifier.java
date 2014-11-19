@@ -21,12 +21,12 @@ package de.uzk.hki.da.format;
 
 import java.io.File;
 
-import de.uzk.hki.da.format.SubformatIdentifier;
+import de.uzk.hki.da.format.FormatIdentifier;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class FakeCompressionIdentifier implements SubformatIdentifier{
+public class FakeCompressionIdentifier implements FormatIdentifier{
 
 	public String identify(File file) {
 		return "lzw";

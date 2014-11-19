@@ -52,7 +52,7 @@ class SubformatScanService implements FormatScanService {
 			for (SubformatIdentificationPolicy p:secondStageScanPolicies){
 				if (f.getFormatPUID().equals(p.getPUID())){
 					
-					SubformatIdentifier fi = null;
+					FormatIdentifier fi = null;
 
 					try {
 						fi = getSFI(p.getFormatIdentifierScriptName());
@@ -79,12 +79,12 @@ class SubformatScanService implements FormatScanService {
 	
 	
 	@SuppressWarnings("unchecked")
-	private SubformatIdentifier getSFI(String className) throws ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException{
-		SubformatIdentifier sfi=null;
+	private FormatIdentifier getSFI(String className) throws ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException{
+		FormatIdentifier sfi=null;
 
-		Class<SubformatIdentifier> c;
-		c = (Class<SubformatIdentifier>) Class.forName(className);
-		java.lang.reflect.Constructor<SubformatIdentifier> co = c.getConstructor();
+		Class<FormatIdentifier> c;
+		c = (Class<FormatIdentifier>) Class.forName(className);
+		java.lang.reflect.Constructor<FormatIdentifier> co = c.getConstructor();
 		sfi= co.newInstance();
 
 		return sfi;
