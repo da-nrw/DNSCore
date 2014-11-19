@@ -11,12 +11,19 @@ function toggle(source) {
 	  checkboxes = document.getElementsByName('modifyIds');
 	  for(var i in checkboxes)
 	    checkboxes[i].checked = source.checked;
-	}</script>
+}
+function subForm(text, action) {
+    if (!confirm(text)) return false;
+    document.getElementById('mod').action = action;
+    document.getElementById('mod').submit();
+    return true;
+}
+</script>
 <table>
 	<thead>
 		<tr><g:if test="${params.search?.status != null && params.search?.status.length()==3}">
 			<th>
-			Auswahl:
+			Auswahl
 			</th></g:if>
 			<th class="sortable field-id">
 				<a href="#" onClick="return sortQueue('obj.identifier');">${message(code: 'queueEntry.obj.identifier.label', default: 'Identifier')}</a>
@@ -53,7 +60,7 @@ function toggle(source) {
 	</thead>
 	
 	<tbody>
-	<g:form name="mod" >
+	<form method="POST" id="mod">
 		<g:set var="showDeleteAll" value="false" />
 		<g:set var="showRecoverAll" value="false" />
 		<g:set var="showRetryAll" value="false" />
@@ -136,18 +143,20 @@ function toggle(source) {
 		<g:if test="${params.search?.status != null && params.search?.status.length()==3}">
 		<input type="checkbox" onClick="toggle(this)"/>Alle an-/abwählen, für alle Pakete im Status ${params.search?.status}:
 			<g:if test="${ showRetryAll == "true"}">
-					<g:actionSubmitImage onclick="return confirm('Nur den letzen Arbeitsschritt für alle Pakete wiederholen. Sind Sie sicher?');" src="${resource(dir: 'images/icons', file: 'exchange32.png')}" style="width:16px; height:16px"  value="queueRetryAll"/>
+				<a onClick="return subForm('Nur den letzen Arbeitsschritt für alle Pakete wiederholen. Sind Sie sicher?','../queueRetryAll');"><img src="${resource(dir: 'images/icons', file: 'exchange32.png')}" style="width:16px; height:16px" alt="${message(code: 'default.workflow.icon.restart', default: 'Gesamten Workflow für Paket neu starten')}" title="${message(code: 'default.workflow.icon.retry', default: 'Workflow für Paket neu starten')}"/></a>
 			</g:if>
 			<g:if test="${ showRecoverAll == "true" }">
-				<g:actionSubmitImage onclick="return confirm('Gesamten Workflow für alle Pakete neustarten. Sind Sie sicher?');" src="${resource(dir: 'images/icons', file: 'back-icon.png')}" style="width:16px; height:16px"  value="queueRecoverAll"/>
+				<a onClick="return subForm('Den gesamten Workflow wiederholen? Sind Sie sicher?','../queueRecoverAll');"><img src="${resource(dir: 'images/icons', file: 'back-icon.png')}" style="width:16px; height:16px" title="${message(code: 'default.workflow.icon.restart', default: 'Gesamten Workflow für Paket neu starten')}" 
+									alt="${message(code: 'default.workflow.icon.restart', default: 'Gesamten Workflow für Paket neu starten')}"/></a>
 			</g:if>
 			<g:if test="${ showDeleteAll == "true" }">
-				<g:actionSubmitImage onclick="return confirm('Alle Pakete löschen. Sind Sie sicher?');" src="${resource(dir: 'images/icons', file: 'list_remove.png')}" style="width:16px; height:16px"  value="queueDeleteAll"/>
+				<a onClick="return subForm('Alle Pakete löschen. Sind Sie sicher?','../queueDeleteAll');" ><img src="${resource(dir: 'images/icons', file: 'list_remove.png')}" style="width:16px; height:16px"/ title="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}" 
+									alt="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}"></a>
 			</g:if>
 		</g:if>
 		</td>
 		</tr>
-		</g:form>
+		</form>
 		<g:if test="${queueEntryInstanceList == null || queueEntryInstanceList.isEmpty()}">
 			<tr class="even">
 				<td colspan="8"><i>No objects in queue ...</i></td>

@@ -205,8 +205,9 @@ class QueueEntryController {
 		
 				def modifyIds = params.list("modifyIds")
 				def msg = ""
-				modifyIds.each {
-					try {
+				try {
+					modifyIds.each {
+					
 					def queueEntryInstance = QueueEntry.get(it)
 					if (queueEntryInstance) {
 						def status = queueEntryInstance.getStatus()
@@ -215,10 +216,10 @@ class QueueEntryController {
 						queueEntryInstance.status = newstat
 						def res = que.modifyJob(it, newstat)
 					} 
-					} catch (Exception e) {
-				log.error("Recovery failed for " + it + " " + e.printStackTrace())
+				} 
+				} catch (Exception e) {
+				log.error("Recovery failed " + e.printStackTrace())
 				
-					}
 				}
 				flash.message = " (" +modifyIds.size() + ") Pakete im momentanen Verarbeitungsschritt zurückgesetzt! "
 				redirect(action: "list")
@@ -245,8 +246,7 @@ class QueueEntryController {
 	@Secured(['ROLE_NODEADMIN'])
 	def queueRecoverAll() {
 		try {
-			def modifyIds = params.list("modifyIds")
-			
+			def modifyIds = params.list("modifyIds");
 					def msg = ""
 					modifyIds.each {
 						que.modifyJob(it, 600)
@@ -281,6 +281,7 @@ class QueueEntryController {
 	@Secured(['ROLE_NODEADMIN'])
 	def queueDeleteAll() {
 		try {
+			
 			def modifyIds = params.list("modifyIds")
 			
 					def msg = ""
