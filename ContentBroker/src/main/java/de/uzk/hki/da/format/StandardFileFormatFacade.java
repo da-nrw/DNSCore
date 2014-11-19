@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.irods.jargon.core.exception.InvalidArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +48,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	
 	
 	private FidoFormatScanService pronomFormatScanService;
-	private SubformatScanService subformatScanService;
+	private SubformatScanService subformatScanService = null;
 	
 	
 	/**
@@ -74,14 +73,12 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		for (String p:subformatIdentificationPolicies.keySet())
 			logger.debug("policy available: "+p);
 		
-		subformatScanService = new SubformatScanService();
-		subformatScanService.setSubformatIdentificationPolicies(subformatIdentificationPolicies);
-		
-		try {
-			subformatScanService.identify((List<FileWithFileFormat>) files);
-		} catch (InvalidArgumentException e) {
-			throw new RuntimeException("all files must have a PUID by now");
-		}
+		if (subformatScanService!=null)
+			try {
+				subformatScanService.identify((List<FileWithFileFormat>) files);
+			} catch (IllegalArgumentException e) {
+				throw new RuntimeException("all files must have a PUID by now");
+			}
 		
 		doCorrections(files);
 		return (List<FileWithFileFormat>) files;
@@ -150,19 +147,24 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 
 
 	/**
-	 * @param subformatIdentifier fully qualified java class name a 
+	 * @param subformatIdentifierClassName fully qualified java class name a 
 	 * class which can be used to identify subformats for a range of puids.
 	 */
 	@Override
 	public void registerSubformatIdentificationMethod(String puids,
-			String subformatIdentifier) {
+			String subformatIdentifierClassName) {
 		
-		if (subformatIdentificationPolicies.containsKey(subformatIdentifier)) {
-			subformatIdentificationPolicies.get(subformatIdentifier).add(puids);
+		if (subformatIdentificationPolicies.containsKey(subformatIdentifierClassName)) {
+			subformatIdentificationPolicies.get(subformatIdentifierClassName).add(puids);
 		}else{
 			List<String> puid = new ArrayList<String>();
 			puid.add(puids);
-			subformatIdentificationPolicies.put(subformatIdentifier, puid);
+			subformatIdentificationPolicies.put(subformatIdentifierClassName, puid);
 		}
+		
+		
+		// create new instance every time the registration information changes.
+		subformatScanService = new SubformatScanService();
+		subformatScanService.setSubformatIdentificationPolicies(subformatIdentificationPolicies);
 	}
 }

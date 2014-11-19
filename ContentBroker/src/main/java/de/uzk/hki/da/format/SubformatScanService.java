@@ -19,13 +19,12 @@
 
 package de.uzk.hki.da.format;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.irods.jargon.core.exception.InvalidArgumentException;
 
 /**
  * @author Daniel M. de Oliveira
@@ -37,56 +36,70 @@ class SubformatScanService implements FormatScanService {
 	
 	/**
 	 * @throws IOException 
+	 * @throws IllegalStateException if one of the identifiers cannot get instantiated.
 	 * @throws InvalidArgumentException if one of the files has no puid.
-	 * @param files
-	 * @return files, for easy mock testing.
+	 * @param files the subformatIdentifier gets set by this method.
+	 * @return files the return value is for convenient mock testing only, since files gets modified as side effect.
 	 * @throws 
 	 */
-	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws InvalidArgumentException, IOException{
+	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws IOException{
 		
 		for (FileWithFileFormat f:files){
 			if (f.getFormatPUID()==null||f.getFormatPUID().isEmpty())
-				throw new InvalidArgumentException(f+" has no puid");
+				throw new IllegalArgumentException(f+" has no puid");
 			
-			for (String formatIdentifierClassName:subformatIdentificationPolicies.keySet()){
-				
-				if (subformatIdentificationPolicies.get(formatIdentifierClassName).contains(f.getFormatPUID())){
-					
-					FormatIdentifier fi = null;
-					
-					try {
-						fi = getSFI(formatIdentifierClassName);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					f.setSubformatIdentifier(fi.identify(f.toRegularFile()));
-					
-					
-					break;
-				}
-			}
+			f.setSubformatIdentifier(identifySubformat(f.toRegularFile(),f.getFormatPUID()));
 		}
-		
 		return files;
 	}
 
+
+	private String identifySubformat(File f,String puid) throws IOException {
+		
+		for (String formatIdentifierClassName:subformatIdentificationPolicies.keySet()){
+			
+			// trigger
+			if (subformatIdentificationPolicies.get(
+					formatIdentifierClassName).contains(puid)){
+
+				return createSFIInstance(formatIdentifierClassName).identify(f);
+			}
+		}
+		return "";
+	}
+	
+	
+
 	void setSubformatIdentificationPolicies(
 			 Map<String,List<String>> subformatIdentificationPolicies) {
+		
+		// check if the classes can get instantiated
+		for (String sfi:subformatIdentificationPolicies.keySet()) {
+			try {
+				createSFIInstance(sfi);
+			}catch (RuntimeException e) {
+				throw new IllegalArgumentException("Error while checking if all of the subformat identifiers can get insantiated",e);
+			}
+		}
+			
 		this.subformatIdentificationPolicies = subformatIdentificationPolicies;
+		
 	}
 
 	
 	
 	
 	@SuppressWarnings("unchecked")
-	private FormatIdentifier getSFI(String className) throws ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException{
-		FormatIdentifier sfi=null;
-
-		Class<FormatIdentifier> c;
-		c = (Class<FormatIdentifier>) Class.forName(className);
-		java.lang.reflect.Constructor<FormatIdentifier> co = c.getConstructor();
-		sfi= co.newInstance();
-
-		return sfi;
+	private FormatIdentifier createSFIInstance(String className) {
+		try {
+			FormatIdentifier sfi=null;
+			Class<FormatIdentifier> c;
+			c = (Class<FormatIdentifier>) Class.forName(className);
+			java.lang.reflect.Constructor<FormatIdentifier> co = c.getConstructor();
+			sfi= co.newInstance();
+			return sfi;
+		}catch(Exception e) {
+			throw new RuntimeException("Error creating instance of subformat identifier",e);
+		}
 	}
 }

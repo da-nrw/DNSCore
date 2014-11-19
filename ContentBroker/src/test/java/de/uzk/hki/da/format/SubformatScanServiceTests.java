@@ -83,6 +83,6 @@ public class SubformatScanServiceTests {
 		try {
 			sfs.identify(files);
 			fail();
-		} catch (InvalidArgumentException e){}
+		} catch (IllegalArgumentException e){}
 	}
 }
