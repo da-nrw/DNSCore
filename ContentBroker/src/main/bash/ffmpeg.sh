@@ -3,8 +3,6 @@
 #
 TESTFILEPATH="$1"
 
-
-
 NUMBEROFSTREAMS=`ffmpeg -i "$TESTFILEPATH" 2>&1 >/dev/null | grep 'Stream.*Video' |  wc -l`
 
 # Currently only files with one videostream is supported
