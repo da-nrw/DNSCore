@@ -66,7 +66,7 @@ public class CTFileFormatFacadeTests {
 		policies.add(policy);
 		policies.add(policy2);
 		for (SubformatIdentificationPolicy sfiP:policies) {
-			sfff.registerSubformatIdentificationMethod(sfiP.getPUID(), sfiP.getFormatIdentifierScriptName());
+			sfff.registerSubformatIdentificationMethod( sfiP.getFormatIdentifierScriptName(),sfiP.getPUID());
 		}
 		
 		

@@ -24,8 +24,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +56,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	/**
 	 *      formatIdentifierClassName,policyTriggerPUID
 	 */
-	private Map<String,List<String>> subformatIdentificationPolicies = new HashMap<String,List<String>>();
+	private Map<String,Set<String>> subformatIdentificationPolicies = new HashMap<String,Set<String>>();
 
 	
 	/**
@@ -151,13 +153,13 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	 * class which can be used to identify subformats for a range of puids.
 	 */
 	@Override
-	public void registerSubformatIdentificationMethod(String puids,
-			String subformatIdentifierClassName) {
+	public void registerSubformatIdentificationMethod(
+			String subformatIdentifierClassName,String puids) {
 		
 		if (subformatIdentificationPolicies.containsKey(subformatIdentifierClassName)) {
 			subformatIdentificationPolicies.get(subformatIdentifierClassName).add(puids);
 		}else{
-			List<String> puid = new ArrayList<String>();
+			Set<String> puid = new HashSet<String>();
 			puid.add(puids);
 			subformatIdentificationPolicies.put(subformatIdentifierClassName, puid);
 		}

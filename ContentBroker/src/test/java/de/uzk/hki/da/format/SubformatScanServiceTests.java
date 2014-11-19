@@ -26,8 +26,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.irods.jargon.core.exception.InvalidArgumentException;
 import org.junit.Before;
@@ -49,10 +51,10 @@ public class SubformatScanServiceTests {
 	public void setUp(){
 		
 		// This is what is configured in the database.
-		Map<String,List<String>> subformatIdentificationPolicies = new HashMap<String,List<String>>();
+		Map<String,Set<String>> subformatIdentificationPolicies = new HashMap<String,Set<String>>();
 		
 		subformatIdentificationPolicies.put("de.uzk.hki.da.format.FakeCompressionIdentifier", 
-				Arrays.asList(FFConstants.FMT_353));
+				new HashSet<String>(Arrays.asList(FFConstants.FMT_353) ));
 		
 		sfs.setSubformatIdentificationPolicies(subformatIdentificationPolicies);
 	}

@@ -72,6 +72,6 @@ public interface FileFormatFacade {
 	 * identification method will be used to determine the subformat of the file.
 	 * @param scriptName identifies the piece of code. 
 	 */
-	public void registerSubformatIdentificationMethod(String puids,String scriptName);
+	public void registerSubformatIdentificationMethod(String scriptName,String puids);
 	
 }
