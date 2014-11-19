@@ -20,19 +20,19 @@
 package de.uzk.hki.da.ff;
 
 import java.io.File;
+import java.io.IOException;
+
 
 /**
  * @author Daniel M. de Oliveira
  */
-public interface IFileWithFileFormat {
+public interface SubformatIdentifier {
 
-	public String getFormatPUID();
-
-	public void setFormatPUID(String formatPUID);
-
-	public String getFormatSecondaryAttribute();
-
-	public void setFormatSecondaryAttribute(String formatSecondaryAttribute);
-	
-	public File toRegularFile();
+	/**
+	 * @author Daniel M. de Oliveira
+	 * @param f, empty string if nothing has been detected.
+	 * @return
+	 * @throws IOException signals errors that happen during the process of reading the file.
+	 */
+	public String identify(File f) throws IOException;
 }

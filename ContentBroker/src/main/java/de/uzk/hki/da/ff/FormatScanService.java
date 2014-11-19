@@ -22,15 +22,18 @@ package de.uzk.hki.da.ff;
 import java.io.IOException;
 import java.util.List;
 
+import org.irods.jargon.core.exception.InvalidArgumentException;
+
 /**
  * @author Daniel M. de Oliveira
  */
-public interface FormatScanService {
+interface FormatScanService {
 
 	/**
 	 * @param files
 	 * @return files, which allows easier testing.
 	 * @throws IOException
+	 * @throws InvalidArgumentException 
 	 */
-	public List<IFileWithFileFormat> identify(List<IFileWithFileFormat> files) throws IOException;
+	List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws IOException, InvalidArgumentException;
 }

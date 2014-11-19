@@ -36,7 +36,7 @@ import de.uzk.hki.da.core.C;
  *
  * @author Daniel M. de Oliveira
  */
-public class FidoFormatScanService implements FormatScanService {
+class FidoFormatScanService implements FormatScanService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(FidoFormatScanService.class);
 	
@@ -67,9 +67,10 @@ public class FidoFormatScanService implements FormatScanService {
 	 * @author Daniel M. de Oliveira
 	 */
 	@Override
-	public List<IFileWithFileFormat> identify(List<IFileWithFileFormat> files) throws FileNotFoundException {
+	public
+	List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws FileNotFoundException {
 
-		for (IFileWithFileFormat f:files){
+		for (FileWithFileFormat f:files){
 
 			f.setFormatPUID(pronom.getPuidForFile(f));
 			logger.debug(f+" has puid "+f.getFormatPUID()+". Now searching if second stage scan policy is applicable");

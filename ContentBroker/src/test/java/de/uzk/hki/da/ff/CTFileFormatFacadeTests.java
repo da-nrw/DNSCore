@@ -43,7 +43,7 @@ public class CTFileFormatFacadeTests {
 
 	private static final StandardFileFormatFacade sfff = new StandardFileFormatFacade();
 	private static final Path testPath = Path.make(TC.TEST_ROOT_FORMAT,"CTFileFormatFacadeTests");
-	private List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();;
+	private List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();;
 	
 	
 	@BeforeClass
@@ -52,7 +52,7 @@ public class CTFileFormatFacadeTests {
 
 		SubformatIdentificationPolicy policy = new SubformatIdentificationPolicy();
 		policy.setPUID("fmt/101");
-		policy.setFormatIdentifierScriptName("de.uzk.hki.da.ff.PublicationMetadataSubformatIdentifier");
+		policy.setFormatIdentifierScriptName("de.uzk.hki.da.ff.XMLSubformatIdentifier");
 		
 		SubformatIdentificationPolicy policy2 = new SubformatIdentificationPolicy();
 		policy2.setPUID("fmt/5");
@@ -78,7 +78,7 @@ public class CTFileFormatFacadeTests {
 	
 	@Test
 	public void test() throws IOException{
-		files.add(new FileWithFileFormat(new File("conf/healthCheck.tif")));
+		files.add(new SimpleFileWithFileFormat(new File("conf/healthCheck.tif")));
 		
 		sfff.identify(files);
 		assertEquals("fmt/353",files.get(0).getFormatPUID());
@@ -88,50 +88,50 @@ public class CTFileFormatFacadeTests {
 	
 	@Test
 	public void testEAD() throws IOException{
-		files.add(new FileWithFileFormat(Path.makeFile(testPath,"vda3.XML")));
+		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"vda3.XML")));
 
 		sfff.identify(files);
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_EAD,files.get(0).getFormatSecondaryAttribute());
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_EAD,files.get(0).getSubformatIdentifier());
 	}
 	
 	@Test
 	public void testMETS() throws IOException{
-		files.add(new FileWithFileFormat(Path.makeFile(testPath,"mets_2_99.xml")));
+		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"mets_2_99.xml")));
 
 		sfff.identify(files);
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_METS,files.get(0).getFormatSecondaryAttribute());
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_METS,files.get(0).getSubformatIdentifier());
 	}
 	
 	
 	
 	@Test
 	public void testLIDO() throws IOException{
-		files.add(new FileWithFileFormat(Path.makeFile(testPath,"LIDO-Testexport2014-07-04-FML-Auswahl.xml")));
+		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"LIDO-Testexport2014-07-04-FML-Auswahl.xml")));
 
 		sfff.identify(files);
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_LIDO,files.get(0).getFormatSecondaryAttribute());
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_LIDO,files.get(0).getSubformatIdentifier());
 	}
 	
 	
 
 	@Test
 	public void testXMP() throws IOException{
-		files.add(new FileWithFileFormat(Path.makeFile(testPath,"a.xmp")));
+		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"a.xmp")));
 
 		sfff.identify(files);
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_XMP,files.get(0).getFormatSecondaryAttribute());
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_XMP,files.get(0).getSubformatIdentifier());
 	}
 	
 	@Test
 	public void testAVI() throws IOException {
-		files.add(new FileWithFileFormat(Path.makeFile(testPath,"a.avi")));
+		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"a.avi")));
 		
 		sfff.identify(files);
-		assertTrue(files.get(0).getFormatSecondaryAttribute().equals("cinepak"));
+		assertTrue(files.get(0).getSubformatIdentifier().equals("cinepak"));
 	}
 	
 	

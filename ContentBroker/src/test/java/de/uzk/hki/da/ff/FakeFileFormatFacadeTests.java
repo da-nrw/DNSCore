@@ -28,36 +28,36 @@ public class FakeFileFormatFacadeTests {
 	public void testMets() throws IOException{
 
 		DAFile mets = new DAFile(object.getLatestPackage(),"1+a","mets_mods_example.xml");
-		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(mets);
 		
 		fss.identify(files);
 		
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_METS,files.get(0).getFormatSecondaryAttribute());
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_METS,files.get(0).getSubformatIdentifier());
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
 	}
 	
 	@Test
 	public void testEAD() throws IOException{
 		DAFile ead = new DAFile(object.getLatestPackage(),"1+a","vda3.XML");
-		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(ead);
 		
 		fss.identify(files);
 		
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_EAD,files.get(0).getFormatSecondaryAttribute());	
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_EAD,files.get(0).getSubformatIdentifier());	
 	}
 
 	@Test
 	public void testEAD2() throws IOException{
 		DAFile ead2 = new DAFile(object.getLatestPackage(),"1+a","EAD_Export.XML");
-		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(ead2);
 		
 		fss.identify(files);
 		
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_EAD,files.get(0).getFormatSecondaryAttribute());	
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_EAD,files.get(0).getSubformatIdentifier());	
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
 	}
 	
@@ -66,31 +66,31 @@ public class FakeFileFormatFacadeTests {
 	@Test
 	public void testLIDO() throws IOException{
 		DAFile ead = new DAFile(object.getLatestPackage(),"1+a","LIDO-Testexport2014-07-04-FML-Auswahl.xml");
-		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(ead);
 		
 		fss.identify(files);
 		
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_LIDO,files.get(0).getFormatSecondaryAttribute());	
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_LIDO,files.get(0).getSubformatIdentifier());	
 	}
 	
 	@Test
 	public void testXMP() throws IOException{
 		DAFile xmp = new DAFile(object.getLatestPackage(),"1+a","b.xmp");
-		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(xmp);
 		
 		fss.identify(files);
 		
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_XMP,files.get(0).getFormatSecondaryAttribute());	
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_XMP,files.get(0).getSubformatIdentifier());	
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
 	}
 
 	@Test
 	public void testTiff() throws IOException{
 		DAFile tif = new DAFile(object.getLatestPackage(),"1+a","tif.tif");
-		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(tif);
 		
 		fss.identify(files);
@@ -102,7 +102,7 @@ public class FakeFileFormatFacadeTests {
 	@Test
 	public void testBmp() throws IOException{
 		DAFile bmp = new DAFile(object.getLatestPackage(),"1+a","bmp.bmp");
-		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(bmp);
 		
 		fss.identify(files);
@@ -114,7 +114,7 @@ public class FakeFileFormatFacadeTests {
 	@Test
 	public void testJp2() throws IOException{
 		DAFile jp2 = new DAFile(object.getLatestPackage(),"1+a","jp2.jp2");
-		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(jp2);
 		
 		fss.identify(files);
@@ -125,7 +125,7 @@ public class FakeFileFormatFacadeTests {
 	@Test
 	public void testGif() throws IOException{
 		DAFile gif = new DAFile(object.getLatestPackage(),"1+a","gif.gif");
-		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(gif);
 		
 		fss.identify(files);
@@ -136,7 +136,7 @@ public class FakeFileFormatFacadeTests {
 	@Test
 	public void testPdf() throws IOException{
 		DAFile pdf = new DAFile(object.getLatestPackage(),"1+a","pdf.pdf");
-		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(pdf);
 		
 		fss.identify(files);
@@ -147,7 +147,7 @@ public class FakeFileFormatFacadeTests {
 	@Test
 	public void testXml() throws IOException{
 		DAFile xml = new DAFile(object.getLatestPackage(),"1+a","b.xml");
-		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(xml);
 		
 		fss.identify(files);
@@ -161,7 +161,7 @@ public class FakeFileFormatFacadeTests {
 		DAFile pdf = new DAFile(object.getLatestPackage(),"1+a","pdf.pdf");
 		DAFile ead2 = new DAFile(object.getLatestPackage(),"1+a","EAD_Export.XML");
 		DAFile mets = new DAFile(object.getLatestPackage(),"1+a","mets_mods_example.xml");
-		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(pdf);
 		files.add(gif);
 		files.add(ead2);
@@ -172,9 +172,9 @@ public class FakeFileFormatFacadeTests {
 		assertEquals("fmt/16",files.get(0).getFormatPUID());
 		assertEquals("fmt/4",files.get(1).getFormatPUID());
 		assertEquals(FFConstants.XML_PUID,files.get(2).getFormatPUID());
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_EAD,files.get(2).getFormatSecondaryAttribute());
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_EAD,files.get(2).getSubformatIdentifier());
 		assertEquals(FFConstants.XML_PUID,files.get(3).getFormatPUID());
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_METS,files.get(3).getFormatSecondaryAttribute());
+		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_METS,files.get(3).getSubformatIdentifier());
 	}
 	
 	

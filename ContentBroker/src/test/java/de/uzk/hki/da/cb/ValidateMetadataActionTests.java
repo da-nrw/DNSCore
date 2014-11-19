@@ -111,13 +111,13 @@ public class ValidateMetadataActionTests {
 		action.setMsf(msf);
 		action.setObject(object);
 
-		f_ead1.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
-		f_ead2.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
-		f_mets1.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_METS);
-		f_mets2.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_METS);
-		f_xmp1.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
-		f_lido1.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
-		f_lido2.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
+		f_ead1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
+		f_ead2.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
+		f_mets1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_METS);
+		f_mets2.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_METS);
+		f_xmp1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
+		f_lido1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
+		f_lido2.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
 	}
 	
 	

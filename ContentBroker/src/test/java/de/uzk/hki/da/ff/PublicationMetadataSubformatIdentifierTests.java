@@ -33,7 +33,7 @@ import de.uzk.hki.da.test.TC;
  */
 public class PublicationMetadataSubformatIdentifierTests {
 
-	private PublicationMetadataSubformatIdentifier identifier = new PublicationMetadataSubformatIdentifier();
+	private XMLSubformatIdentifier identifier = new XMLSubformatIdentifier();
 	
 	@Test
 	public void testDetectEAD() throws IOException{

@@ -44,8 +44,8 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 
 	static final Logger logger = LoggerFactory.getLogger(StandardFileFormatFacade.class);
 	
-	private FidoFormatScanService fidoFormatScanService;
-	private SecondaryFormatScan secondaryFormatScan;
+	private FidoFormatScanService pronomFormatScanService;
+	private SubformatScanService subformatScanService;
 	
 	private static final String JHOVE_CONF = "conf/jhove.conf";
 	private String jhoveFolder = "jhove";
@@ -60,28 +60,28 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<IFileWithFileFormat> identify(List<? extends IFileWithFileFormat> files)
+	public List<FileWithFileFormat> identify(List<? extends FileWithFileFormat> files)
 			throws IOException {
 
-		fidoFormatScanService = new FidoFormatScanService();
-		fidoFormatScanService.identify((List<IFileWithFileFormat>) files);
+		pronomFormatScanService = new FidoFormatScanService();
+		pronomFormatScanService.identify((List<FileWithFileFormat>) files);
 		
 		for (SubformatIdentificationPolicy p:subformatIdentificationPolicies)
 			logger.debug("policy available: "+p);
 		
-		secondaryFormatScan = new SecondaryFormatScan();
-		secondaryFormatScan.setSecondStageScanPolicies(subformatIdentificationPolicies);
+		subformatScanService = new SubformatScanService();
+		subformatScanService.setSecondStageScanPolicies(subformatIdentificationPolicies);
 		
 		
 		try {
-			secondaryFormatScan.identify((List<IFileWithFileFormat>) files);
+			subformatScanService.identify((List<FileWithFileFormat>) files);
 		} catch (InvalidArgumentException e) {
 			throw new RuntimeException("all files must have a PUID by now");
 		}
 		
 		
 		doCorrections(files);
-		return (List<IFileWithFileFormat>) files;
+		return (List<FileWithFileFormat>) files;
 	}
 
 	
@@ -91,18 +91,18 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	 * @param files
 	 * @throws IOException
 	 */
-	private void doCorrections(List<? extends IFileWithFileFormat> files) throws IOException{
-		for (IFileWithFileFormat f:files){
+	private void doCorrections(List<? extends FileWithFileFormat> files) throws IOException{
+		for (FileWithFileFormat f:files){
 			
 			// This is to compensate for a behavior of FIDO where it detects a too specific xml format. 
 			if (f.getFormatPUID().equals(FFConstants.DROID_XML_PUID)) {
 				f.setFormatPUID(FFConstants.XML_PUID);
-				f.setFormatSecondaryAttribute(
-						new PublicationMetadataSubformatIdentifier().identify(f.toRegularFile()));
+				f.setSubformatIdentifier(
+						new XMLSubformatIdentifier().identify(f.toRegularFile()));
 			}else
 			if (f.getFormatPUID().equals(FFConstants.XMP_PUID)) {
 				f.setFormatPUID(FFConstants.XML_PUID);
-				f.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
+				f.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
 			}
 		}
 	}

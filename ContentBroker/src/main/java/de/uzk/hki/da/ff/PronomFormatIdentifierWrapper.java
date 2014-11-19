@@ -54,7 +54,7 @@ public class PronomFormatIdentifierWrapper {
 	 * @param fff
 	 * @return PUID or UNDEFINED if fido cannot determine the file format. 
 	 */
-	String getPuidForFile(IFileWithFileFormat fff){
+	String getPuidForFile(FileWithFileFormat fff){
 		if (!conversionScript.exists()) throw new IllegalStateException(
 				"ConversionScript doesn't exist: "+conversionScript.getAbsolutePath());
 		

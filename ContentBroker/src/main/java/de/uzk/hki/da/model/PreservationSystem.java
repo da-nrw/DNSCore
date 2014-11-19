@@ -42,7 +42,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.ff.IFileWithFileFormat;
+import de.uzk.hki.da.ff.FileWithFileFormat;
 
 /**
  * Represents the preservation system.
@@ -210,7 +210,7 @@ public class PreservationSystem {
 	 * if there is no evaluable file format information in file.
 	 * @throws IllegalStateException 
 	 */
-	public List<ConversionPolicy> getApplicablePolicies(IFileWithFileFormat file,Boolean presentation) throws IllegalStateException {
+	public List<ConversionPolicy> getApplicablePolicies(FileWithFileFormat file,Boolean presentation) throws IllegalStateException {
 		if (file==null) throw new IllegalStateException("DAFile file is null!");
 		if (file.getFormatPUID()==null) throw new IllegalStateException("Format PUID is null!");
 		if (file.getFormatPUID().isEmpty())throw new IllegalStateException("Format PUID is empty!");

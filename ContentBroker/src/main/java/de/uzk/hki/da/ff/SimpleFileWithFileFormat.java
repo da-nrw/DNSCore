@@ -16,23 +16,48 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package de.uzk.hki.da.ff;
 
 import java.io.File;
-import java.io.IOException;
-
 
 /**
+ * The simplest possible implementation of FileWithFileFormat.
+ * 
  * @author Daniel M. de Oliveira
  */
-public interface SecondaryFormatIdentifier {
+public class SimpleFileWithFileFormat implements FileWithFileFormat {
 
-	/**
-	 * @author Daniel M. de Oliveira
-	 * @param f, empty string if nothing has been detected.
-	 * @return
-	 * @throws IOException signals errors that happen during the process of reading the file.
-	 */
-	public String identify(File f) throws IOException;
+	File file;
+	String formatPUID;
+	String secondary;
+
+	public SimpleFileWithFileFormat(File f){
+		this.file=f;
+	}
+	
+	@Override
+	public String getFormatPUID() {
+		return formatPUID;
+	}
+
+	@Override
+	public void setFormatPUID(String formatPUID) {
+		this.formatPUID = formatPUID;
+	}
+
+	@Override
+	public String getSubformatIdentifier() {
+		return secondary;
+	}
+
+	@Override
+	public void setSubformatIdentifier(String subformatIdentifier) {
+		this.secondary = subformatIdentifier;
+	}
+
+	@Override
+	public File toRegularFile() {
+		return file;
+	}
+
 }

@@ -41,7 +41,7 @@ import de.uzk.hki.da.test.TESTHelper;
  */
 public class SecondaryFormatScanTests {
 
-	SecondaryFormatScan sfs = new SecondaryFormatScan();
+	SubformatScanService sfs = new SubformatScanService();
 	
 	@Before
 	public void setUp(){
@@ -80,11 +80,11 @@ public class SecondaryFormatScanTests {
 		DAFile f = new DAFile(o.getLatestPackage() ,null,"tif");
 		f.setFormatPUID("fmt/353");
 		
-		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(f);
 		sfs.identify(files);
 		
-		assertEquals("lzw",f.getFormatSecondaryAttribute());
+		assertEquals("lzw",f.getSubformatIdentifier());
 	}
 	
 
@@ -94,7 +94,7 @@ public class SecondaryFormatScanTests {
 	public void testPUIDNotSet() throws IOException{
 		DAFile f = new DAFile(null,null,"tif");
 		
-		List<IFileWithFileFormat> files = new ArrayList<IFileWithFileFormat>();
+		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(f);
 		try {
 			sfs.identify(files);

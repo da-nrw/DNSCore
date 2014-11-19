@@ -30,7 +30,7 @@ import de.uzk.hki.da.model.SubformatIdentificationPolicy;
 /**
  * @author Daniel M. de Oliveira
  */
-public class SecondaryFormatScan {
+class SubformatScanService implements FormatScanService {
 
 	List<SubformatIdentificationPolicy> secondStageScanPolicies = null;
 	
@@ -42,24 +42,24 @@ public class SecondaryFormatScan {
 	 * @return files, for easy mock testing.
 	 * @throws 
 	 */
-	List<IFileWithFileFormat> identify(List<IFileWithFileFormat> files) throws InvalidArgumentException, IOException{
+	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws InvalidArgumentException, IOException{
 
 		
-		for (IFileWithFileFormat f:files){
+		for (FileWithFileFormat f:files){
 			if (f.getFormatPUID()==null||f.getFormatPUID().isEmpty())
 				throw new InvalidArgumentException(f+" has no puid");
 			
 			for (SubformatIdentificationPolicy p:secondStageScanPolicies){
 				if (f.getFormatPUID().equals(p.getPUID())){
 					
-					SecondaryFormatIdentifier fi = null;
+					SubformatIdentifier fi = null;
 
 					try {
 						fi = getSFI(p.getFormatIdentifierScriptName());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					f.setFormatSecondaryAttribute(fi.identify(f.toRegularFile()));
+					f.setSubformatIdentifier(fi.identify(f.toRegularFile()));
 						
 						
 					break;
@@ -79,12 +79,12 @@ public class SecondaryFormatScan {
 	
 	
 	@SuppressWarnings("unchecked")
-	private SecondaryFormatIdentifier getSFI(String className) throws ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException{
-		SecondaryFormatIdentifier sfi=null;
+	private SubformatIdentifier getSFI(String className) throws ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException{
+		SubformatIdentifier sfi=null;
 
-		Class<SecondaryFormatIdentifier> c;
-		c = (Class<SecondaryFormatIdentifier>) Class.forName(className);
-		java.lang.reflect.Constructor<SecondaryFormatIdentifier> co = c.getConstructor();
+		Class<SubformatIdentifier> c;
+		c = (Class<SubformatIdentifier>) Class.forName(className);
+		java.lang.reflect.Constructor<SubformatIdentifier> co = c.getConstructor();
 		sfi= co.newInstance();
 
 		return sfi;

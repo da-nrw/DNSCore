@@ -29,7 +29,7 @@ import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
-import de.uzk.hki.da.ff.IFileWithFileFormat;
+import de.uzk.hki.da.ff.FileWithFileFormat;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionInstructionBuilder;
@@ -64,7 +64,7 @@ public class ScanForPresentationAction extends AbstractAction{
 	@Override
 	public boolean implementation() throws IOException {
 		
-		List<? extends IFileWithFileFormat> fffl=null;
+		List<? extends FileWithFileFormat> fffl=null;
 		try {
 			fffl = fileFormatFacade.identify(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
 		} catch (FileFormatException e) {

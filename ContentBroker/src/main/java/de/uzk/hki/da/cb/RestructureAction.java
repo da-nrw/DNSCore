@@ -36,7 +36,7 @@ import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.ff.FileFormatException;
 import de.uzk.hki.da.ff.FileFormatFacade;
-import de.uzk.hki.da.ff.IFileWithFileFormat;
+import de.uzk.hki.da.ff.FileWithFileFormat;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 
@@ -125,14 +125,14 @@ public class RestructureAction extends AbstractAction{
 
 	
 	private void determineFileFormats() throws FileNotFoundException, IOException {
-		List<IFileWithFileFormat> scannedFiles = null;
+		List<FileWithFileFormat> scannedFiles = null;
 		try {
 			scannedFiles = fileFormatFacade.identify(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
 		} catch (FileFormatException e) {
 			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
 		}
-		for (IFileWithFileFormat f:scannedFiles){
-			logger.info(f+":"+f.getFormatPUID()+":"+f.getFormatSecondaryAttribute());
+		for (FileWithFileFormat f:scannedFiles){
+			logger.info(f+":"+f.getFormatPUID()+":"+f.getSubformatIdentifier());
 		}
 	}
 	

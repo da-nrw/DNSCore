@@ -24,7 +24,7 @@ import java.io.File;
 /**
  * @author Daniel M. de Oliveira
  */
-public class FakeCompressionIdentifier implements SecondaryFormatIdentifier{
+public class FakeCompressionIdentifier implements SubformatIdentifier{
 
 	public String identify(File file) {
 		return "lzw";

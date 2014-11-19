@@ -33,7 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.Path;
-import de.uzk.hki.da.ff.IFileWithFileFormat;
+import de.uzk.hki.da.ff.FileWithFileFormat;
 
 
 /**
@@ -53,7 +53,7 @@ import de.uzk.hki.da.ff.IFileWithFileFormat;
  */
 @Entity
 @Table(name="dafiles")
-public class DAFile implements IFileWithFileFormat{
+public class DAFile implements FileWithFileFormat{
 
 	/** The Constant logger. */
 	static final Logger logger = LoggerFactory.getLogger(DAFile.class);
@@ -77,7 +77,7 @@ public class DAFile implements IFileWithFileFormat{
 	private String formatPUID; // encoded as PRONOM-PUID
 	
 	/** The format secondary attribute. */
-	private String formatSecondaryAttribute = ""; // used to store compression or codec information
+	private String subformatIdentifier = ""; // used to store compression or codec information
 	
 	/** The chksum. */
 	private String chksum;
@@ -300,18 +300,14 @@ public class DAFile implements IFileWithFileFormat{
 	}
 
 	/**
-	 * Gets the format puid.
-	 *
 	 * @return the format puid
 	 */
-	@Column(name="file_format")
+	@Column(name="format_puid")
 	public String getFormatPUID() {
 		return formatPUID;
 	}
 
 	/**
-	 * Sets the format puid.
-	 *
 	 * @param formatPUID the new format puid
 	 */
 	public void setFormatPUID(String formatPUID) {
@@ -319,21 +315,15 @@ public class DAFile implements IFileWithFileFormat{
 	}
 
 	/**
-	 * Gets the format secondary attribute.
-	 *
-	 * @return the format secondary attribute
 	 */
-	@Column(name="format_second_attribute")
-	public String getFormatSecondaryAttribute() {
-		return formatSecondaryAttribute;
+	@Column(name="subformat_identifier")
+	public String getSubformatIdentifier() {
+		return subformatIdentifier;
 	}
 
 	/**
-	 * Sets the format secondary attribute.
-	 *
-	 * @param formatSecondaryAttribute the new format secondary attribute
 	 */
-	public void setFormatSecondaryAttribute(String formatSecondaryAttribute) {
-		this.formatSecondaryAttribute = formatSecondaryAttribute;
+	public void setSubformatIdentifier(String subformatIdentifier) {
+		this.subformatIdentifier = subformatIdentifier;
 	}
 }

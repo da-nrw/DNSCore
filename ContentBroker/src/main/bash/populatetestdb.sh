@@ -55,7 +55,7 @@ then
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (8,1,'fmt/43',3,false);"
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (9,1,'fmt/43',2,true);"
         
-        "INSERT INTO second_stage_scans (id,puid,format_identifier_script_name) VALUES (1,'fmt/101','de.uzk.hki.da.ff.PublicationMetadataSubformatIdentifier');"
+        "INSERT INTO second_stage_scans (id,puid,format_identifier_script_name) VALUES (1,'fmt/101','de.uzk.hki.da.ff.XMLSubformatIdentifier');"
  	"INSERT INTO second_stage_scans (id,puid,format_identifier_script_name) VALUES (2,'x-fmt/384','de.uzk.hki.da.ff.FFmpegSubformatIdentifier');"
         "INSERT INTO second_stage_scans (id,puid,format_identifier_script_name) VALUES (3,'fmt/200','de.uzk.hki.da.ff.FFmpegSubformatIdentifier');"
         "INSERT INTO second_stage_scans (id,puid,format_identifier_script_name) VALUES (4,'fmt/5','de.uzk.hki.da.ff.FFmpegSubformatIdentifier');"

@@ -48,7 +48,7 @@ public interface FileFormatFacade {
 	 * @throws FileFormatException if format could not get determinded.
 	 * @throws IOException 
 	 */
-	public List<IFileWithFileFormat> identify(List<? extends IFileWithFileFormat> files) 
+	public List<FileWithFileFormat> identify(List<? extends FileWithFileFormat> files) 
 			throws FileNotFoundException, FileFormatException, IOException;
 
 	

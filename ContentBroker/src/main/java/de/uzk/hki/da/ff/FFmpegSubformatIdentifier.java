@@ -6,7 +6,7 @@ import java.io.IOException;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 
-public class FFmpegSubformatIdentifier implements SecondaryFormatIdentifier{
+public class FFmpegSubformatIdentifier implements SubformatIdentifier{
 
 	@Override
 	public String identify(File f) throws IOException {

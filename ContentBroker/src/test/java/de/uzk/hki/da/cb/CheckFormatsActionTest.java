@@ -36,7 +36,7 @@ import org.springframework.util.StringUtils;
 
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.RelativePath;
-import de.uzk.hki.da.ff.IFileWithFileFormat;
+import de.uzk.hki.da.ff.FileWithFileFormat;
 import de.uzk.hki.da.ff.StandardFileFormatFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
@@ -80,7 +80,7 @@ public class CheckFormatsActionTest {
 			throws IOException {
 		StandardFileFormatFacade formatScanService = mock(StandardFileFormatFacade.class);
 		
-		when(formatScanService.identify((List<IFileWithFileFormat>)anyObject())).thenAnswer(new Answer< List<DAFile> >(){
+		when(formatScanService.identify((List<FileWithFileFormat>)anyObject())).thenAnswer(new Answer< List<DAFile> >(){
 			@Override
 			public List<DAFile> answer(InvocationOnMock invocation)
 					throws Throwable {
@@ -96,7 +96,7 @@ public class CheckFormatsActionTest {
 					}
 					if (f.equals(new DAFile(null,"2011_11_11+11_11+a","_3.avi"))){
 						f.setFormatPUID("fmt/5");
-						f.setFormatSecondaryAttribute("cinepak");
+						f.setSubformatIdentifier("cinepak");
 					}
 					
 					if (f.equals(new DAFile(null,"2000_01_01+00_00+a","_1.jpg"))){
@@ -108,7 +108,7 @@ public class CheckFormatsActionTest {
 					
 					if (f.equals(new DAFile(null,"2000_01_01+00_00+a","_3.mov"))){
 						f.setFormatPUID("x-fmt/384");
-						f.setFormatSecondaryAttribute("svq1");
+						f.setSubformatIdentifier("svq1");
 					}
 				}
 				return list;

@@ -37,25 +37,25 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<IFileWithFileFormat> identify(List<? extends IFileWithFileFormat> files) throws FileNotFoundException{
+	public List<FileWithFileFormat> identify(List<? extends FileWithFileFormat> files) throws FileNotFoundException{
 		
-		for (IFileWithFileFormat f:files){
+		for (FileWithFileFormat f:files){
 			
 			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".avi")){
 				f.setFormatPUID("fmt/5");
-				f.setFormatSecondaryAttribute("cinepak");
+				f.setSubformatIdentifier("cinepak");
 				continue;
 			}
 			
 			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".mxf")){
 				f.setFormatPUID("fmt/200");
-				f.setFormatSecondaryAttribute("dvvideo");
+				f.setSubformatIdentifier("dvvideo");
 				continue;
 			}
 			
 			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".mov")){
 				f.setFormatPUID("x-fmt/384");
-				f.setFormatSecondaryAttribute("svq1");
+				f.setSubformatIdentifier("svq1");
 				continue;
 			}
 			
@@ -100,23 +100,23 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 	        try {
 				while((line=br.readLine())!=null){
 				    if (patternFound(line,"<mets.*>")){
-				    	f.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_METS);
+				    	f.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_METS);
 				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}
 				    if (patternFound(line,"<ead .*>")){
-				    	f.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
+				    	f.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
 				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}
 				    if (patternFound(line,"<lido:lido>")){
 				    	
-				    	f.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
+				    	f.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
 				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}
 				    if (patternFound(line,"<x:xmpmeta.*")){
-				    	f.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
+				    	f.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
 				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}
@@ -132,7 +132,7 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 	        
 	    	
 		}
-		return (List<IFileWithFileFormat>) files;
+		return (List<FileWithFileFormat>) files;
 	}
 	
 	

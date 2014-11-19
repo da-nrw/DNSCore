@@ -199,7 +199,7 @@ public class ValidateMetadataAction extends AbstractAction {
 
 		for (DAFile f:object.getNewestFilesFromAllRepresentations("xmp")){
 			
-			if (metadataFormatIdentifier.equals(f.getFormatSecondaryAttribute())) {
+			if (metadataFormatIdentifier.equals(f.getSubformatIdentifier())) {
 				result.add(f);
 			}
 		}
