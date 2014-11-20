@@ -95,7 +95,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 			if (f.getFormatPUID().equals(FFConstants.DROID_XML_PUID)) {
 				f.setFormatPUID(FFConstants.XML_PUID);
 				f.setSubformatIdentifier(
-						new XMLSubformatIdentifier().identify(f.toRegularFile()));
+						new XMLSubformatIdentificationStrategy().identify(f.toRegularFile()));
 			}else
 			if (f.getFormatPUID().equals(FFConstants.XMP_PUID)) {
 				f.setFormatPUID(FFConstants.XML_PUID);
@@ -144,19 +144,20 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 
 
 	/**
-	 * @param subformatIdentifierClassName fully qualified java class name a 
-	 * class which can be used to identify subformats for a range of puids.
+	 * @param subformatIdentificationStrategyName fully quallyfied java class name of the piece of 
+	 * code which is used for subformat identification for files of format <i>formatPuid</i>. The class 
+	 * must be of a type which implements {@link FormatIdentificationStrategy}.
 	 */
 	@Override
-	public void registerSubformatIdentificationMethod(
-			String subformatIdentifierClassName,String puids) {
+	public void registerSubformatIdentificationTrigger(
+			String subformatIdentificationStrategyName,String puid) {
 		
-		if (subformatIdentificationPolicies.containsKey(subformatIdentifierClassName)) {
-			subformatIdentificationPolicies.get(subformatIdentifierClassName).add(puids);
+		if (subformatIdentificationPolicies.containsKey(subformatIdentificationStrategyName)) {
+			subformatIdentificationPolicies.get(subformatIdentificationStrategyName).add(puid);
 		}else{
-			Set<String> puid = new HashSet<String>();
-			puid.add(puids);
-			subformatIdentificationPolicies.put(subformatIdentifierClassName, puid);
+			Set<String> puids = new HashSet<String>();
+			puids.add(puid);
+			subformatIdentificationPolicies.put(subformatIdentificationStrategyName, puids);
 		}
 		
 		

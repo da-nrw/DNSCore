@@ -26,7 +26,7 @@ import java.io.IOException;
 /**
  * @author Daniel M. de Oliveira
  */
-public interface FormatIdentifier {
+public interface FormatIdentificationStrategy {
 
 	/**
 	 * @author Daniel M. de Oliveira

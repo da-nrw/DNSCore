@@ -89,7 +89,7 @@ public class ActionFactory implements ApplicationContextAware {
 		Hibernate.initialize(getPreservationSystem().getConversion_policies());
 
 		for (SubformatIdentificationPolicy sfiP:getSecondStageScanPolicies(session)) {
-			fileFormatFacade.registerSubformatIdentificationMethod(sfiP.getFormatIdentifierScriptName(),sfiP.getPUID());
+			fileFormatFacade.registerSubformatIdentificationTrigger(sfiP.getFormatIdentifierScriptName(),sfiP.getPUID());
 		}
 
 		session.close();

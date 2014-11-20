@@ -153,11 +153,10 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 
 
 	@Override
-	public void registerSubformatIdentificationMethod(String puids,
-			String scriptName) {
-		// TODO Auto-generated method stub
-		
+	public void registerSubformatIdentificationTrigger(
+			String subformatIdentificationStrategyName, String formatPuid) {
 	}
+
 	
 	
 

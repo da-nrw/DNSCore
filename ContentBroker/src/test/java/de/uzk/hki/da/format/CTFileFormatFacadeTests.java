@@ -56,17 +56,17 @@ public class CTFileFormatFacadeTests {
 
 		SubformatIdentificationPolicy policy = new SubformatIdentificationPolicy();
 		policy.setPUID("fmt/101");
-		policy.setFormatIdentifierScriptName("de.uzk.hki.da.format.XMLSubformatIdentifier");
+		policy.setFormatIdentifierScriptName("de.uzk.hki.da.format.XMLSubformatIdentificationStrategy");
 		
 		SubformatIdentificationPolicy policy2 = new SubformatIdentificationPolicy();
 		policy2.setPUID("fmt/5");
-		policy2.setFormatIdentifierScriptName("de.uzk.hki.da.format.FFmpegSubformatIdentifier");
+		policy2.setFormatIdentifierScriptName("de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy");
 		
 		List<SubformatIdentificationPolicy> policies = new ArrayList<SubformatIdentificationPolicy>();
 		policies.add(policy);
 		policies.add(policy2);
 		for (SubformatIdentificationPolicy sfiP:policies) {
-			sfff.registerSubformatIdentificationMethod( sfiP.getFormatIdentifierScriptName(),sfiP.getPUID());
+			sfff.registerSubformatIdentificationTrigger( sfiP.getFormatIdentifierScriptName(),sfiP.getPUID());
 		}
 		
 		
