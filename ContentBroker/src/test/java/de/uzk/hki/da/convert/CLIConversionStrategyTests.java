@@ -44,7 +44,7 @@ import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
  */
 public class CLIConversionStrategyTests {
 	
-	private Path workAreaRootPath = Path.make(TC.TEST_ROOT_FORMAT,"CLIConversionStrategyTests");
+	private Path workAreaRootPath = Path.make(TC.TEST_ROOT_CONVERT,"CLIConversionStrategyTests");
 	
 	/**
 	 * Tear down.

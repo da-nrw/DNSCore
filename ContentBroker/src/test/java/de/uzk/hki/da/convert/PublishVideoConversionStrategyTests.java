@@ -48,7 +48,7 @@ import de.uzk.hki.da.test.TESTHelper;
  */
 public class PublishVideoConversionStrategyTests {
 
-	Path basePath = Path.make(TC.TEST_ROOT_FORMAT,"PublishVideoConversionStrategyTests");
+	Path basePath = Path.make(TC.TEST_ROOT_CONVERT,"PublishVideoConversionStrategyTests");
 	
 	/**
 	 * Tear down.

@@ -54,7 +54,7 @@ public class PublishXsltConversionStrategyTests {
 			LoggerFactory.getLogger(PublishXsltConversionStrategyTests.class);
 	
 	private final static Path workAreaRootPath = 
-			Path.make(TC.TEST_ROOT_FORMAT,"XsltConversionStrategyTests");
+			Path.make(TC.TEST_ROOT_CONVERT,"XsltConversionStrategyTests");
 	
 	/** The routine. */
 	ConversionRoutine routine;

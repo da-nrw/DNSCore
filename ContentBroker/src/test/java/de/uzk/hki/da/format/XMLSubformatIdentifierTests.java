@@ -38,21 +38,21 @@ public class XMLSubformatIdentifierTests {
 	
 	@Test
 	public void testDetectEAD() throws IOException{
-		assertEquals("EAD",identifier.identify(Path.makeFile(TC.TEST_ROOT_FF,"ead.xml")));
+		assertEquals("EAD",identifier.identify(Path.makeFile(TC.TEST_ROOT_FORMAT,"ead.xml")));
 	}
 
 	@Test
 	public void testDetectMETS() throws IOException{
-		assertEquals("METS",identifier.identify(Path.makeFile(TC.TEST_ROOT_FF,"mets.xml")));
+		assertEquals("METS",identifier.identify(Path.makeFile(TC.TEST_ROOT_FORMAT,"mets.xml")));
 	}
 	
 	@Test
 	public void testDetectLIDO() throws IOException{
-		assertEquals("LIDO",identifier.identify(Path.makeFile(TC.TEST_ROOT_FF,"lido.xml")));
+		assertEquals("LIDO",identifier.identify(Path.makeFile(TC.TEST_ROOT_FORMAT,"lido.xml")));
 	}
 	
 	@Test
 	public void testDetectNoSubformat() throws IOException{
-		assertEquals("",identifier.identify(Path.makeFile(TC.TEST_ROOT_FF,"other.xml")));
+		assertEquals("",identifier.identify(Path.makeFile(TC.TEST_ROOT_FORMAT,"other.xml")));
 	}
 }

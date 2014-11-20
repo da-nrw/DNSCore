@@ -46,7 +46,7 @@ import de.uzk.hki.da.test.TESTHelper;
  */
 public class ConverterServiceTests {
 
-	private final Path workAreaRootPath = Path.make(TC.TEST_ROOT_FORMAT,"ConverterServiceTests");
+	private final Path workAreaRootPath = Path.make(TC.TEST_ROOT_CONVERT,"ConverterServiceTests");
 	
 	/** The data path. */
 	private final Path dataPath= Path.make(workAreaRootPath,"work/TEST/123/data/");

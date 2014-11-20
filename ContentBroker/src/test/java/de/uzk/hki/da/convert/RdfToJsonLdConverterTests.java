@@ -38,7 +38,7 @@ import de.uzk.hki.da.test.TC;
  */
 public class RdfToJsonLdConverterTests {
 
-	private static final String BASE_DIR = Path.make(TC.TEST_ROOT_FORMAT,"RdfToJsonLdConverterTests").toString();
+	private static final String BASE_DIR = Path.make(TC.TEST_ROOT_CONVERT,"RdfToJsonLdConverterTests").toString();
 	
 	/**
 	 * Test.

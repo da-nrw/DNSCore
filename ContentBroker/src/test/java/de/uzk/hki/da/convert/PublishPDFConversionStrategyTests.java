@@ -53,7 +53,7 @@ import de.uzk.hki.da.test.TESTHelper;
  */
 public class PublishPDFConversionStrategyTests {
 	
-	Path workAreaRootPath= Path.make(TC.TEST_ROOT_FORMAT,"PublishPDFConversionStrategyTests");
+	Path workAreaRootPath= Path.make(TC.TEST_ROOT_CONVERT,"PublishPDFConversionStrategyTests");
 	Path dataPath = Path.make(workAreaRootPath,"work/TEST/1",C.WA_DATA);
 	Path dipPath = Path.make(dataPath,C.WA_DIP);
 	

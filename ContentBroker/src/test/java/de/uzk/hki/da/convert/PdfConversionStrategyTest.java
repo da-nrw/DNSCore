@@ -52,7 +52,7 @@ import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
  */
 public class PdfConversionStrategyTest {
 
-	Path workAreaRootPath=Path.make(TC.TEST_ROOT_FORMAT,"PdfConversionStrategyTests");
+	Path workAreaRootPath=Path.make(TC.TEST_ROOT_CONVERT,"PdfConversionStrategyTests");
 	
 	/** The cs. */
 	PdfConversionStrategy cs = new PdfConversionStrategy();

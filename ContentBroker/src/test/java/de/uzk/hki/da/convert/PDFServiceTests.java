@@ -18,7 +18,7 @@ import de.uzk.hki.da.test.TC;
  */
 public class PDFServiceTests {
 	
-	private static final String BASE_DIR = Path.make(TC.TEST_ROOT_FORMAT,"PDFServiceTests").toString();
+	private static final String BASE_DIR = Path.make(TC.TEST_ROOT_CONVERT,"PDFServiceTests").toString();
 	
 	@After
 	public void tearDown(){

@@ -26,7 +26,7 @@ import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 
 public class PublishImageMultipageTIFFTests {
 
-	Path workAreaRootPathPath= Path.make(TC.TEST_ROOT_FORMAT,"PublishImageMultipageTiffTests");
+	Path workAreaRootPathPath= Path.make(TC.TEST_ROOT_CONVERT,"PublishImageMultipageTiffTests");
 	
 	@Before
 	public void setUp() throws Exception {

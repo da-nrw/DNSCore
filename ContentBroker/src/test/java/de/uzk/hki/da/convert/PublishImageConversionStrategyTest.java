@@ -56,7 +56,7 @@ import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
  */
 public class PublishImageConversionStrategyTest {
 
-	Path workAreaRootPath = Path.make(TC.TEST_ROOT_FORMAT,"PublishImageConversionStrategyTests");
+	Path workAreaRootPath = Path.make(TC.TEST_ROOT_CONVERT,"PublishImageConversionStrategyTests");
 	Path dataPath         = Path.make(workAreaRootPath,"work/TEST/123/data/");
 	
 	
@@ -274,7 +274,7 @@ public class PublishImageConversionStrategyTest {
 	 */
 	public void testWatermarkWithRealImage() throws FileNotFoundException {
 		
-		Document dom = XPathUtils.parseDom(TC.TEST_ROOT_FORMAT+"/PublishImageConversionStrategyTests/premis.xml");
+		Document dom = XPathUtils.parseDom(TC.TEST_ROOT_CONVERT+"/PublishImageConversionStrategyTests/premis.xml");
 		if (dom==null){
 			throw new RuntimeException("Error while parsing premis.xml");
 		}

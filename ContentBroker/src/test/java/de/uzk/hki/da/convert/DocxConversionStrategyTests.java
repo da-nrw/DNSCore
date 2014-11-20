@@ -57,7 +57,7 @@ import de.uzk.hki.da.webservice.HttpFileTransmissionClient;
  */
 public class DocxConversionStrategyTests {
 	
-	Path basePath= Path.make(TC.TEST_ROOT_FORMAT,"DocxConversionStrategyTests");
+	Path basePath= Path.make(TC.TEST_ROOT_CONVERT,"DocxConversionStrategyTests");
 	
 	/** The cs. */
 	DocxConversionStrategy cs = new DocxConversionStrategy();
