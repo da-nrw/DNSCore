@@ -140,7 +140,7 @@ public class IntegrityScannerWorker {
 					+ "o.object_state != ?3 and o.object_state != ?4 and o.object_state >= 50"
 					+ "order by o.last_checked asc")
 					.setParameter("1", node.getName())
-					.setCalendar("2",now)
+					.setTimestamp("2",now.getTime())
 					.setParameter("3", Object.ObjectStatus.InWorkflow) // don't consider objects under work
 					.setParameter("4", Object.ObjectStatus.UnderAudit) //           ||
 							.setReadOnly(true).list();
