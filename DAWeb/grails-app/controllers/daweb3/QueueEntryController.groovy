@@ -197,6 +197,33 @@ class QueueEntryController {
 
 		[queueEntryInstance: queueEntryInstance]
 	}
+	/**
+	 * Applies button and functionality to retry the last workflow step for an item
+	 */
+	@Secured(['ROLE_NODEADMIN'])
+	def queueRetryAll() {
+		
+				def modifyIds = params.list("modifyIds")
+				def msg = ""
+				try {
+					modifyIds.each {
+					
+					def queueEntryInstance = QueueEntry.get(it)
+					if (queueEntryInstance) {
+						def status = queueEntryInstance.getStatus()
+						def newstat = status.substring(0,status.length()-1)
+						newstat = newstat + "0"
+						queueEntryInstance.status = newstat
+						def res = que.modifyJob(it, newstat)
+					} 
+				} 
+				} catch (Exception e) {
+				log.error("Recovery failed " + e.printStackTrace())
+				
+				}
+				flash.message = " (" +modifyIds.size() + ") Pakete im momentanen Verarbeitungsschritt zurückgesetzt! "
+				redirect(action: "list")
+	}
 	
 	/**
 	 * Applies button and functionality to recover all the workflow for an item
@@ -205,12 +232,31 @@ class QueueEntryController {
 	def queueRecover() {
 		try {
 			def res = que.modifyJob(params.id, 600)
-			flash.message = "Paket recovered! " + res 
+			flash.message = "Paket zurückgesetzt! " + res 
 		} catch (Exception e) {
 				log.error("Recovery failed for " + params.id + " " + e.printStackTrace())
-				flash.message = "Ein fehler trat auf beim Zurücksetzen"
+				flash.message = "Ein Fehler trat auf beim Zurücksetzen"
 		}
 		
+		redirect(action: "list")
+	}
+	/**
+	 * Applies button and functionality to remove SIP items from ContentBroker workflow
+	 */
+	@Secured(['ROLE_NODEADMIN'])
+	def queueRecoverAll() {
+		try {
+			def modifyIds = params.list("modifyIds");
+					def msg = ""
+					modifyIds.each {
+						que.modifyJob(it, 600)
+					}
+					flash.message = " (" +modifyIds.size() + ") Pakete für die Rücksetzung des gesamten Workflows vorgesehen! "
+			
+		} catch (Exception e) {
+			log.error("Rücksetzungen in Workflow fehlgeschlagen" + e.printStackTrace())
+			flash.message = "Rücksetzungen in Workflow fehlgeschlagen!"
+		}
 		redirect(action: "list")
 	}
 	
@@ -225,6 +271,28 @@ class QueueEntryController {
 		} catch (Exception e) {
 			log.error("Löschung aus Workflow fehlgeschlagen für " + params.id + " " + e.printStackTrace())
 			flash.message = "Löschung aus Workflow fehlgeschlagen!"
+		}
+		redirect(action: "list")
+	}
+	
+	/**
+	 * Applies button and functionality to remove SIP items from ContentBroker workflow
+	 */
+	@Secured(['ROLE_NODEADMIN'])
+	def queueDeleteAll() {
+		try {
+			
+			def modifyIds = params.list("modifyIds")
+			
+					def msg = ""
+					modifyIds.each {
+						que.modifyJob(it, 800)
+					}
+					flash.message = " (" +modifyIds.size() + ") Pakete zur Löschung vorgesehen! "
+			
+		} catch (Exception e) {
+			log.error("Löschungen aus Workflow fehlgeschlagen" + e.printStackTrace())
+			flash.message = "Löschungen aus Workflow fehlgeschlagen!"
 		}
 		redirect(action: "list")
 	}
