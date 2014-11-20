@@ -266,10 +266,12 @@ public abstract class AbstractAction implements Runnable {
 		
 		boolean transactionSuccessful=false;
 		do {
-			
+			Session session = null;
 			try {
 				logger.info("perform transaction with object="+object.getOrig_name()+", job="+job.getStatus());
-				performTransaction(object, job, deleteObject, deleteJob, createJob);
+				session = openSession();
+				session.beginTransaction();
+				performTransaction(object, job, deleteObject, deleteJob, createJob, session);
 				transactionSuccessful=true;
 			}
 			catch (Exception sqlException) {
@@ -279,6 +281,7 @@ public abstract class AbstractAction implements Runnable {
 				try {    Thread.sleep(2000);
 				} catch (InterruptedException e) {}
 			}
+			session.close();
 		} while(!transactionSuccessful);
 	}
 
@@ -287,11 +290,7 @@ public abstract class AbstractAction implements Runnable {
 	private void performTransaction(
 			Object object,Job job, 
 			boolean deleteObject,boolean deleteJob,
-			Job createJob){
-	
-		Session session = openSession();
-		session.beginTransaction();
-		
+			Job createJob, Session session){
 		
 		if (createJob!=null)
 			session.save(createJob);
@@ -319,7 +318,6 @@ public abstract class AbstractAction implements Runnable {
 			session.update(object);
 
 		session.getTransaction().commit();
-		session.close();
 	}
 	
 	
