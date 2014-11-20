@@ -2,6 +2,10 @@
   DA-NRW Software Suite | ContentBroker
   Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
   Universität zu Köln
+  Copyright (C) 2014 Historisch-Kulturwissenschaftliche Informationsverarbeitung
+  Universität zu Köln
+  Copyright (C) 2014 LVRInfoKom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -28,14 +32,14 @@ import javax.persistence.Table;
 
 
 /**
- * The Class SecondStageScanPolicy.
+ * @author Daniel M. de Oliveira
  */
 @Entity
-@Table(name="second_stage_scans")
-public class SubformatIdentificationPolicy {
+@Table(name="subformat_identification_strategy_puid_mappings")
+public class SubformatIdentificationStrategyPuidMapping {
 
 	/** 
-	 * Primary key of db table.
+	 * Primary key.
 	 * */
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -43,18 +47,18 @@ public class SubformatIdentificationPolicy {
 
 	
 	/** 
-	 * Comma separated list of PUIDs the SubformatIdentificationPolicy applies to. 
+	 * PRONOM Unique Identifier.
 	 */
-	@Column(name="puid")
-	private String PUID;
+	@Column(name="format_puid")
+	private String formatPuid;
 	
 	
 	/**
 	 * Name of the conversion script to determine the outcome 
 	 * (which then should be one of the values listed in allowedValues.
 	 */
-	@Column(name="format_identifier_script_name")
-	private String formatIdentifierScriptName;
+	@Column(name="subformat_identification_strategy_name")
+	private String subformatIdentificationStrategyName;
 	
 	
 	/**
@@ -79,7 +83,7 @@ public class SubformatIdentificationPolicy {
 	 */
 	@Override
 	public String toString(){
-		return "SecondStageScanPolicy["+getPUID()+","+getFormatIdentifierScriptName()+"]";
+		return "SubformatIdentificationStrategyPuidMapping["+getFormatPuid()+","+getSubformatIdentificationStrategyName()+"]";
 	}
 	
 	
@@ -87,18 +91,17 @@ public class SubformatIdentificationPolicy {
 	 * Gets the puid.
 	 * @return the puid
 	 */
-	public String getPUID() {
-		return PUID;
+	public String getFormatPuid() {
+		return formatPuid;
 	}
 
 	
 	/*
-	 * *
 	 * Sets the puid.
 	 * @param PUID the new puid
 	 */
-	public void setPUID(String PUID) {
-		this.PUID = PUID;
+	public void setFormatPuid(String puid) {
+		this.formatPuid = puid;
 	}
 
 	
@@ -106,16 +109,16 @@ public class SubformatIdentificationPolicy {
 	 * Gets the format identifier script name.
 	 * @return the format identifier script name
 	 */
-	public String getFormatIdentifierScriptName() {
-		return formatIdentifierScriptName;
+	public String getSubformatIdentificationStrategyName() {
+		return subformatIdentificationStrategyName;
 	}
 
 	
 	/**
 	 * Sets the format identifier script name.
-	 * @param conversionScriptName the new format identifier script name
+	 * @param subformatIdentificationStrategyName the new format identifier script name
 	 */
-	public void setFormatIdentifierScriptName(String conversionScriptName) {
-		this.formatIdentifierScriptName = conversionScriptName;
+	public void setSubformatIdentificationStrategyName(String subformatIdentificationStrategyName) {
+		this.subformatIdentificationStrategyName = subformatIdentificationStrategyName;
 	}
 }

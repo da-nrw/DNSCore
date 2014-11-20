@@ -153,7 +153,7 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 
 
 	@Override
-	public void registerSubformatIdentificationTrigger(
+	public void registerSubformatIdentificationStrategyPuidMapping(
 			String subformatIdentificationStrategyName, String formatPuid) {
 	}
 

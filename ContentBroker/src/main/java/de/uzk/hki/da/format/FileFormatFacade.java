@@ -66,7 +66,7 @@ public interface FileFormatFacade {
 	 * Lets the user specify which strategy {@link #identify(List)} uses  
 	 * to determine the subformat for files of format <i>formatPuid</i>.
 	 * A strategy can be used for subformat identification of files of different primary formats.  
-	 * {@link #registerSubformatIdentificationTrigger(String, String)} should be called 
+	 * {@link #registerSubformatIdentificationStrategyPuidMapping(String, String)} should be called 
 	 * separately for each <i>formatPuid</i> to associate more formatPUIDs to the same strategy.
 	 * 
 	 * @param subformatIdentificationStrategyName identifier of the piece of code which is used for subformat identification for files of format <i>formatPuid</i>. 
@@ -74,7 +74,7 @@ public interface FileFormatFacade {
 	 * 
 	 * @throws IllegalArgumentException if it is not possible to instantiate the strategy. 
 	 */
-	public void registerSubformatIdentificationTrigger(
+	public void registerSubformatIdentificationStrategyPuidMapping(
 			String subformatIdentificationStrategyName,
 			String formatPuid);
 	

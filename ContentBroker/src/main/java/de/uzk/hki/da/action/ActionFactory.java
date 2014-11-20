@@ -38,7 +38,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.model.SubformatIdentificationPolicy;
+import de.uzk.hki.da.model.SubformatIdentificationStrategyPuidMapping;
 import de.uzk.hki.da.service.UserExceptionManager;
 
 
@@ -88,8 +88,8 @@ public class ActionFactory implements ApplicationContextAware {
 		// replace proxies by real objects if loading lazily.
 		Hibernate.initialize(getPreservationSystem().getConversion_policies());
 
-		for (SubformatIdentificationPolicy sfiP:getSecondStageScanPolicies(session)) {
-			fileFormatFacade.registerSubformatIdentificationTrigger(sfiP.getFormatIdentifierScriptName(),sfiP.getPUID());
+		for (SubformatIdentificationStrategyPuidMapping sfiP:getSecondStageScanPolicies(session)) {
+			fileFormatFacade.registerSubformatIdentificationStrategyPuidMapping(sfiP.getSubformatIdentificationStrategyName(),sfiP.getFormatPuid());
 		}
 
 		session.close();
@@ -186,10 +186,10 @@ public class ActionFactory implements ApplicationContextAware {
 	 *
 	 * @return the second stage scan policies
 	 */
-	private List<SubformatIdentificationPolicy> getSecondStageScanPolicies(Session session) {
+	private List<SubformatIdentificationStrategyPuidMapping> getSecondStageScanPolicies(Session session) {
 		@SuppressWarnings("unchecked")
-		List<SubformatIdentificationPolicy> l = session
-				.createQuery("from SubformatIdentificationPolicy").list();
+		List<SubformatIdentificationStrategyPuidMapping> l = session
+				.createQuery("from SubformatIdentificationStrategyPuidMapping").list();
 
 		return l;
 	}

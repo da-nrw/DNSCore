@@ -39,7 +39,7 @@
  <mapping class="de.uzk.hki.da.model.Package"/>
  <mapping class="de.uzk.hki.da.model.Event"/>
  <mapping class="de.uzk.hki.da.model.PreservationSystem"/>
- <mapping class="de.uzk.hki.da.model.SubformatIdentificationPolicy"/>
+ <mapping class="de.uzk.hki.da.model.SubformatIdentificationStrategyPuidMapping"/>
  
 </session-factory>
 </hibernate-configuration>

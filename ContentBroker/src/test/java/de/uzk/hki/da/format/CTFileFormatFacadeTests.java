@@ -77,7 +77,7 @@ public class CTFileFormatFacadeTests {
 	
 	@Test
 	public void metsFormatIdentification() throws IOException{
-		sfff.registerSubformatIdentificationTrigger("de.uzk.hki.da.format.XMLSubformatIdentificationStrategy", 
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.XMLSubformatIdentificationStrategy", 
 				FFConstants.FMT_101);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"mets_2_99.xml")));
 		
@@ -89,7 +89,7 @@ public class CTFileFormatFacadeTests {
 	
 	@Test
 	public void lidoFormatIdentification() throws IOException{
-		sfff.registerSubformatIdentificationTrigger("de.uzk.hki.da.format.XMLSubformatIdentificationStrategy", 
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.XMLSubformatIdentificationStrategy", 
 				FFConstants.FMT_101);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"LIDO-Testexport2014-07-04-FML-Auswahl.xml")));
 		
@@ -101,7 +101,7 @@ public class CTFileFormatFacadeTests {
 
 	@Test
 	public void xmpFormatIdentification() throws IOException{
-		sfff.registerSubformatIdentificationTrigger("de.uzk.hki.da.format.XMLSubformatIdentificationStrategy", 
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.XMLSubformatIdentificationStrategy", 
 				FFConstants.FMT_101);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"a.xmp")));
 		
@@ -113,7 +113,7 @@ public class CTFileFormatFacadeTests {
 	
 	@Test
 	public void ffmpegStrategySubformatIdentification() throws IOException {
-		sfff.registerSubformatIdentificationTrigger("de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy", 
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy", 
 				FFConstants.FMT_5);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"a.avi")));
 		
@@ -124,7 +124,7 @@ public class CTFileFormatFacadeTests {
 	
 	@Test
 	public void ffmpegStrategySubformatIdentificationFileWithBlanksInFilename() throws IOException {
-		sfff.registerSubformatIdentificationTrigger("de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy", 
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy", 
 				FFConstants.FMT_5);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"a b.avi")));
 		
@@ -135,7 +135,7 @@ public class CTFileFormatFacadeTests {
 	@Test
 	public void registrationNotPossibleUnkownStrategy(){
 		try {
-			sfff.registerSubformatIdentificationTrigger("de.uzk.hki.da.format.UnkownStrategy","");
+			sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.UnkownStrategy","");
 			fail();
 		} catch (IllegalArgumentException expected) {}
 	}

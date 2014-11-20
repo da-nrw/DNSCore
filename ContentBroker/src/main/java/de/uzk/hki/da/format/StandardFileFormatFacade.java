@@ -149,7 +149,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	 * must be of a type which implements {@link FormatIdentificationStrategy}.
 	 */
 	@Override
-	public void registerSubformatIdentificationTrigger(
+	public void registerSubformatIdentificationStrategyPuidMapping(
 			String subformatIdentificationStrategyName,String puid) {
 		
 		if (subformatIdentificationStrategyTriggerMap.containsKey(subformatIdentificationStrategyName)) {
