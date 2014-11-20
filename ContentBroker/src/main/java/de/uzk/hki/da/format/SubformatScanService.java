@@ -78,7 +78,7 @@ class SubformatScanService implements FormatScanService {
 			try {
 				createSFIInstance(sfi);
 			}catch (RuntimeException e) {
-				throw new IllegalArgumentException("Error while checking if all of the subformat identifiers can get insantiated",e);
+				throw new IllegalArgumentException("Error while checking if all of the subformat identifiers can get instantiated",e);
 			}
 		}
 			

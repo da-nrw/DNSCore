@@ -38,5 +38,6 @@ public class FFConstants {
 	public static final String FMT_101 = "fmt/101";
 	public static final String LZW = "lzw";
 	public static final String TIF = "tif";
+	public static final String FMT_5 = "fmt/5";
 
 }

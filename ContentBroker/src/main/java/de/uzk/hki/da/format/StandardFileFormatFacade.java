@@ -55,7 +55,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	/**
 	 *      formatIdentifierClassName,policyTriggerPUID
 	 */
-	private Map<String,Set<String>> subformatIdentificationPolicies = new HashMap<String,Set<String>>();
+	private Map<String,Set<String>> subformatIdentificationStrategyTriggerMap = new HashMap<String,Set<String>>();
 
 	
 	/**
@@ -71,8 +71,8 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		pronomFormatScanService = new FidoFormatScanService();
 		pronomFormatScanService.identify((List<FileWithFileFormat>) files);
 		
-		for (String p:subformatIdentificationPolicies.keySet())
-			logger.debug("policy available: "+p);
+		for (String s:subformatIdentificationStrategyTriggerMap.keySet())
+			logger.debug("strategy available: "+s);
 		
 		if (subformatScanService!=null)
 			subformatScanService.identify((List<FileWithFileFormat>) files);
@@ -152,17 +152,17 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	public void registerSubformatIdentificationTrigger(
 			String subformatIdentificationStrategyName,String puid) {
 		
-		if (subformatIdentificationPolicies.containsKey(subformatIdentificationStrategyName)) {
-			subformatIdentificationPolicies.get(subformatIdentificationStrategyName).add(puid);
+		if (subformatIdentificationStrategyTriggerMap.containsKey(subformatIdentificationStrategyName)) {
+			subformatIdentificationStrategyTriggerMap.get(subformatIdentificationStrategyName).add(puid);
 		}else{
 			Set<String> puids = new HashSet<String>();
 			puids.add(puid);
-			subformatIdentificationPolicies.put(subformatIdentificationStrategyName, puids);
+			subformatIdentificationStrategyTriggerMap.put(subformatIdentificationStrategyName, puids);
 		}
 		
 		
 		// create new instance every time the registration information changes.
 		subformatScanService = new SubformatScanService();
-		subformatScanService.setSubformatIdentificationPolicies(subformatIdentificationPolicies);
+		subformatScanService.setSubformatIdentificationPolicies(subformatIdentificationStrategyTriggerMap);
 	}
 }
