@@ -26,6 +26,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Job;
@@ -83,7 +84,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		prepareObjectForObjectDBStorage(object);
 		new MailContents(preservationSystem,localNode).sendReciept(job, object);
 		
-		toCreate=createPublicationJob(job);
+		toCreate=createPublicationJob(job,object,preservationSystem.getPresServer());
 		FileUtils.deleteDirectory(object.getPath().toFile());
 		return true;
 	}
@@ -107,15 +108,13 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	 * @author Daniel M. de Oliveira 
 	 * @author Jens Peters
 	 */
-	private Job createPublicationJob(Job parent){
+	static Job createPublicationJob(Job parent,Object o,String presServerName){
 		
 		Job result = new Job();
 		
-		logger.info("Creating child job with state 540 on "+ 
-				preservationSystem.getPresServer()+" for possible publication of this object.");
-		result = new Job (parent, "540");
-		result.setResponsibleNodeName(preservationSystem.getPresServer());
-		result.setObject(getObject());
+		result = new Job (parent, C.WORKFLOW_STATUS_START___FETCH_PIPS_ACTION);
+		result.setResponsibleNodeName(presServerName);
+		result.setObject(o);
 		result.setDate_created(String.valueOf(new Date().getTime()/1000L));
 		
 		return result;

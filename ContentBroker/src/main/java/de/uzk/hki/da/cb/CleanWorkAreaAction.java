@@ -20,17 +20,13 @@
 package de.uzk.hki.da.cb;
 
 import java.io.IOException;
-import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
-import org.hibernate.classic.Session;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
-import de.uzk.hki.da.model.Job;
 
 public class CleanWorkAreaAction extends AbstractAction{
 
@@ -65,7 +61,7 @@ public class CleanWorkAreaAction extends AbstractAction{
 		object.getLatestPackage().getFiles().clear();
 		object.getLatestPackage().getEvents().clear();
 		
-		createPublicationJob();
+		toCreate = ArchiveReplicationCheckAction.createPublicationJob(job,object,preservationSystem.getPresServer());
 		return true;
 	}
 	
@@ -74,24 +70,6 @@ public class CleanWorkAreaAction extends AbstractAction{
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 
-	/**
-	 * XXX code duplicated from archivereplicationcheckaction
-	 * @author Daniel M. de Oliveira Jens Peters
-	 */
-	private void createPublicationJob(){
-		
-		logger.info("Creating child job with state 540 on "+   preservationSystem.getPresServer() + " for possible publication of this object.");
-		Job child = new Job (job, "540");
-		child.setResponsibleNodeName( preservationSystem.getPresServer() );
-		child.setObject(getObject());
-		child.setDate_created(String.valueOf(new Date().getTime()/1000L));
-		
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		session.save(child);
-		session.getTransaction().commit();
-		session.close();
-	}
 
 	
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
