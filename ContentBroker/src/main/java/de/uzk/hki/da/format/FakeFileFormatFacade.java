@@ -157,6 +157,12 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 			String subformatIdentificationStrategyName, String formatPuid) {
 	}
 
+
+	@Override
+	public boolean healthCheckSubformatIdentificationStrategies() {
+		return true;
+	}
+
 	
 	
 

@@ -78,4 +78,17 @@ public interface FileFormatFacade {
 			String subformatIdentificationStrategyName,
 			String formatPuid);
 	
+	
+	
+	/**
+	 * Subformat identification strategies normally depend on external connectors which also have to 
+	 * be installed in a specific version.
+	 * This method provides a means of determining if the connectors used by the 
+	 * subformat identification strategies registered with 
+	 * {@link #registerSubformatIdentificationStrategyPuidMapping(String, String)} 
+	 * are connectable and conform to the specifications which the 
+	 * strategies themselve define (see{@link FormatIdentificationStrategy#healthCheck()}.
+	 * @return true if all strategies health checks pass. false otherwise.  
+	 */
+	public boolean healthCheckSubformatIdentificationStrategies();
 }

@@ -165,4 +165,12 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		subformatScanService = new SubformatScanService();
 		subformatScanService.setSubformatIdentificationPolicies(subformatIdentificationStrategyTriggerMap);
 	}
+
+
+
+	@Override
+	public boolean healthCheckSubformatIdentificationStrategies() {
+		
+		return subformatScanService.healthCheckSubformatIdentificationStrategies();
+	}
 }

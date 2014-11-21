@@ -35,4 +35,7 @@ public interface FormatIdentificationStrategy {
 	 * @throws IOException signals errors that happen during the process of reading the file.
 	 */
 	public String identify(File f) throws IOException;
+	
+	
+	public boolean healthCheck();
 }

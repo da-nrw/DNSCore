@@ -2,6 +2,8 @@ package de.uzk.hki.da.format;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
@@ -21,4 +23,18 @@ public class FFmpegSubformatIdentificationStrategy implements FormatIdentificati
 		return ffmpegOutput4[0];
 	}
 
+	@Override
+	public boolean healthCheck() {
+		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {"ffmpeg","-version"});
+		String ffmpegOutput = pi.getStdOut();
+		String ffmpegOutput2[] = ffmpegOutput.split("built");
+		String ffmpegOutput3[] = ffmpegOutput2[0].split("version");
+		String version=ffmpegOutput3[1].trim();
+		
+		List<String> acceptedVersions=Arrays.asList(new String[] {"2.2.10","0.6.5","0.6.7","0.6.6"});
+		if (acceptedVersions.contains(version)) 
+			return true;
+		else
+			return false;
+	}
 }

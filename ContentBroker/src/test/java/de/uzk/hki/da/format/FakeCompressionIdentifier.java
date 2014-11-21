@@ -31,4 +31,9 @@ public class FakeCompressionIdentifier implements FormatIdentificationStrategy{
 	public String identify(File file) {
 		return "lzw";
 	}
+
+	@Override
+	public boolean healthCheck() {
+		return true;
+	}
 }

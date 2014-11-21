@@ -102,4 +102,14 @@ class SubformatScanService implements FormatScanService {
 			throw new RuntimeException("Error creating instance of subformat identifier",e);
 		}
 	}
+	
+	
+	boolean healthCheckSubformatIdentificationStrategies() {
+		
+		boolean passed=true;
+		for (String s:subformatIdentificationPolicies.keySet()) {
+			if (!createSFIInstance(s).healthCheck()) passed=false;
+		}
+		return passed;
+	}
 }

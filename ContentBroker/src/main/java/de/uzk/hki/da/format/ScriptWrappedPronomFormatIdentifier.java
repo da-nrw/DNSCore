@@ -87,4 +87,10 @@ public class ScriptWrappedPronomFormatIdentifier implements FormatIdentification
 		}
 		return result;
 	}
+
+	@Override
+	public boolean healthCheck() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

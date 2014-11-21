@@ -67,4 +67,9 @@ public class XMLSubformatIdentificationStrategy implements FormatIdentificationS
 		br.close();
 		return result;
 	}
+
+	@Override
+	public boolean healthCheck() {
+		return true; // no external connectors used.
+	}
 }

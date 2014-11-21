@@ -19,9 +19,10 @@
 
 package de.uzk.hki.da.format;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +139,16 @@ public class CTFileFormatFacadeTests {
 			sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.UnkownStrategy","");
 			fail();
 		} catch (IllegalArgumentException expected) {}
+	}
+	
+	
+	
+	
+	@Test
+	public void healthCheck() {
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy", 
+				FFConstants.FMT_5);
+		assertTrue(sfff.healthCheckSubformatIdentificationStrategies());
 	}
 	
 	
