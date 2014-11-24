@@ -134,22 +134,33 @@ public class CTFileFormatFacadeTests {
 	}
 	
 	@Test
-	public void registrationNotPossibleUnkownStrategy(){
-		try {
-			sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.UnkownStrategy","");
-			fail();
-		} catch (IllegalArgumentException expected) {}
+	public void imageMagickIdentifySubformatIdentification() throws IOException {
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.ImageMagickIdentifySubformatIdentificationStrategy", 
+				FFConstants.FMT_353);
+		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"CCITT_1_LZW.TIF")));
+		
+		sfff.identify(files);
+		assertTrue(files.get(0).getSubformatIdentifier().equals("Group4"));
+
 	}
-	
-	
 	
 	
 	@Test
 	public void healthCheck() {
 		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy", 
 				FFConstants.FMT_5);
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.ImageMagickIdentifySubformatIdentificationStrategy", 
+				FFConstants.FMT_353);
 		assertTrue(sfff.healthCheckSubformatIdentificationStrategies());
 	}
 	
+	
+	@Test
+	public void registrationNotPossibleUnkownStrategy(){
+		try {
+			sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.UnkownStrategy","");
+			fail();
+		} catch (IllegalArgumentException expected) {}
+	}
 	
 }

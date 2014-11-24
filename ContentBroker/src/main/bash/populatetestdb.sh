@@ -59,6 +59,7 @@ then
  	"INSERT INTO subformat_identification_strategy_puid_mappings (id,format_puid,subformat_identification_strategy_name) VALUES (2,'x-fmt/384','de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy');"
         "INSERT INTO subformat_identification_strategy_puid_mappings (id,format_puid,subformat_identification_strategy_name) VALUES (3,'fmt/200','de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy');"
         "INSERT INTO subformat_identification_strategy_puid_mappings (id,format_puid,subformat_identification_strategy_name) VALUES (4,'fmt/5','de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy');"
+ 	"INSERT INTO subformat_identification_strategy_puid_mappings (id,format_puid,subformat_identification_strategy_name) VALUES (5,'fmt/353','de.uzk.hki.da.format.ImageMagickIdentifySubformatIdentificationStrategy');"
 	)
 fi
 
