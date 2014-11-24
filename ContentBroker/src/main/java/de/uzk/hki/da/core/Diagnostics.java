@@ -20,7 +20,6 @@
 package de.uzk.hki.da.core;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +32,12 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import de.uzk.hki.da.format.FileFormatFacade;
-import de.uzk.hki.da.format.FileWithFileFormat;
-import de.uzk.hki.da.format.SimpleFileWithFileFormat;
 import de.uzk.hki.da.format.StandardFileFormatFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.model.SubformatIdentificationStrategyPuidMapping;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.Utilities;
@@ -181,30 +179,34 @@ public class Diagnostics {
 		
 		int errorCount=0;
 		StandardFileFormatFacade sfff = new StandardFileFormatFacade();
-		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
-		SimpleFileWithFileFormat ffff = new SimpleFileWithFileFormat(new File("conf/healthCheck.tif"));
-		files.add(ffff);
 		
-		System.out.print("CHECKING PRONOM FORMAT IDENTIFIER ... ");
-		try {
-			sfff.identify(files);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		if (!files.get(0).getFormatPUID().equals("fmt/353")){
-			errorCount++;
-			System.out.println("ERROR pronomFormatIdentifier health check not passed.");
-		}else System.out.println("OK");
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
 
-		
+		for (SubformatIdentificationStrategyPuidMapping sfiP:getSecondStageScanPolicies(session)) {
+			sfff.registerSubformatIdentificationStrategyPuidMapping(sfiP.getSubformatIdentificationStrategyName(),sfiP.getFormatPuid());
+		}
+		session.close();
+		sfff.healthCheckSubformatIdentificationStrategies();
 		
 		return errorCount;
 	}
 
+	/**
+	 * TODO remove Duplication with actionfactory.
+	 * Gets the second stage scan policies.
+	 *
+	 * @return the second stage scan policies
+	 */
+	private static List<SubformatIdentificationStrategyPuidMapping> getSecondStageScanPolicies(Session session) {
+		@SuppressWarnings("unchecked")
+		List<SubformatIdentificationStrategyPuidMapping> l = session
+				.createQuery("from SubformatIdentificationStrategyPuidMapping").list();
 
+		return l;
+	}
+	
+	
 	private static int checkIrods(Properties properties){
 		
 		if (((String)properties.get(BEAN_NAME_IRODS_ZONE))==null||((String)properties.get(BEAN_NAME_IRODS_ZONE)).isEmpty()){

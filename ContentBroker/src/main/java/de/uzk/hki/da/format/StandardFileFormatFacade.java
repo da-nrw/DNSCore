@@ -51,6 +51,9 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	private FidoFormatScanService pronomFormatScanService;
 	private SubformatScanService subformatScanService = null;
 	
+	public StandardFileFormatFacade() {
+		pronomFormatScanService = new FidoFormatScanService();
+	}
 	
 	/**
 	 *      formatIdentifierClassName,policyTriggerPUID
@@ -68,7 +71,6 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	public List<FileWithFileFormat> identify(List<? extends FileWithFileFormat> files)
 			throws IOException {
 
-		pronomFormatScanService = new FidoFormatScanService();
 		pronomFormatScanService.identify((List<FileWithFileFormat>) files);
 		
 		for (String s:subformatIdentificationStrategyTriggerMap.keySet())
@@ -171,6 +173,9 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	@Override
 	public boolean healthCheckSubformatIdentificationStrategies() {
 		
-		return subformatScanService.healthCheckSubformatIdentificationStrategies();
+		if (subformatScanService==null) // no strategypuidmapping registered yet 
+			return pronomFormatScanService.healthCheck(); 
+		else
+			return (pronomFormatScanService.healthCheck()&&subformatScanService.healthCheck());
 	}
 }

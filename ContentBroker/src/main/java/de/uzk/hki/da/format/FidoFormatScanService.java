@@ -21,10 +21,8 @@ package de.uzk.hki.da.format;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.C;
 
@@ -37,8 +35,6 @@ import de.uzk.hki.da.core.C;
  * @author Daniel M. de Oliveira
  */
 class FidoFormatScanService implements FormatScanService {
-	
-	private static final Logger logger = LoggerFactory.getLogger(FidoFormatScanService.class);
 	
 	private ScriptWrappedPronomFormatIdentifier pronom;
 	
@@ -54,12 +50,9 @@ class FidoFormatScanService implements FormatScanService {
 	
 	
 	/**
-	 * Iterates over files and determines PUIDs and, if necessary, codec or compression related information.
+	 * Iterates over files and determines PUIDs.
 	 * This means, that if the method runs successfully (without throwing exceptions) each file_format
-	 * property is set to a PRONOM-PUID. Furthermore, if the file format is marked for second stage scanning
-	 * (via configuration in the second_stage_scans table), the format_second_attribute of the dafile object is also set.
-	 * In such cases the attribute has a proper value, which means it contains one of the values listed in the
-	 * expected_values column of the row for the puid in question.
+	 * property is set to a PRONOM-PUID.
 	 *
 	 * @param files the files
 	 * @return files. return value needed for mockup usage in unit tests.
@@ -69,13 +62,24 @@ class FidoFormatScanService implements FormatScanService {
 	@Override
 	public
 	List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws FileNotFoundException {
-
 		for (FileWithFileFormat f:files){
-
 			f.setFormatPUID(pronom.identify(f.toRegularFile()));
-			logger.debug(f+" has puid "+f.getFormatPUID()+". Now searching if second stage scan policy is applicable");
-			
 		}
 		return files;
+	}
+
+
+	@Override
+	public boolean healthCheck() {
+		System.out.print("SELF CHECK - FILE FORMAT FACADE - FIDO FORMAT SCAN SERVICE - fido.sh ");
+		String puid = pronom.identify(new File("conf/healthCheck.tif"));
+		if (Arrays.asList(new String[]{"fmt/353"}).contains(puid)) {
+			System.out.println(".... OK");
+			return true;
+		}
+		else {
+			System.out.println(".... FAIL (check fido installation and fido.sh)");
+			return false;
+		}
 	}
 }

@@ -31,7 +31,7 @@ public class FFmpegSubformatIdentificationStrategy implements FormatIdentificati
 		String ffmpegOutput3[] = ffmpegOutput2[0].split("version");
 		String version=ffmpegOutput3[1].trim();
 		
-		List<String> acceptedVersions=Arrays.asList(new String[] {"2.2.10","0.6.5","0.6.7","0.6.6"});
+		List<String> acceptedVersions=Arrays.asList(new String[] {"2.2.10","0.6.5","0.6.7","0.6.6","0.10.3","2.2.1"});
 		if (acceptedVersions.contains(version)) 
 			return true;
 		else

@@ -36,4 +36,6 @@ interface FormatScanService {
 	 * @throws InvalidArgumentException 
 	 */
 	List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws IOException;
+	
+	boolean healthCheck();
 }
