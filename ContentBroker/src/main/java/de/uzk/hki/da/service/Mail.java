@@ -46,6 +46,8 @@ public class Mail {
 	 */
 	public static void sendAMail(String fromAdress, String toAdress, String subject, String mailText) throws MessagingException{
 		
+		if (toAdress.toLowerCase().startsWith("noreply")) return; 
+		
 		Properties props= new Properties();
 		
 		Session session= Session.getInstance(props,null);
