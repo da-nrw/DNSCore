@@ -144,6 +144,20 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	}
 
 
+	private boolean jhoveCheck() {
+		System.out.print("SELF CHECK - FILE FORMAT FACADE - jhove");
+		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {
+                "/bin/sh", "jhove", "-c", JHOVE_CONF, "--version" },
+                new File(jhoveFolder));
+		if (pi.getStdOut().split("\\(Rel")[0].equals("Jhove ")){
+			System.out.println(" .... OK");
+			return true;
+		}else {
+			System.out.println(" .... FAIL");
+			return false;
+		}
+			
+	}
 
 	/**
 	 * @param subformatIdentificationStrategyName fully quallyfied java class name of the piece of 
@@ -174,8 +188,11 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	public boolean healthCheckSubformatIdentificationStrategies() {
 		
 		if (subformatScanService==null) // no strategypuidmapping registered yet 
-			return pronomFormatScanService.healthCheck(); 
+			return (jhoveCheck()&&pronomFormatScanService.healthCheck()); 
 		else
-			return (pronomFormatScanService.healthCheck()&&subformatScanService.healthCheck());
+			return (jhoveCheck()&&pronomFormatScanService.healthCheck()&&subformatScanService.healthCheck());
 	}
+
+
+
 }
