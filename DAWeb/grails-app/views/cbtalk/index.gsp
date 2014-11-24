@@ -45,7 +45,9 @@
    <g:submitButton name="startFactory" value="start Factory" /> 
    <g:submitButton name="showActions" value="show Actions" /> 
    <g:submitButton name="gracefulShutdown" value="ContentBroker graceful shutdown" />  
-   <g:submitButton name="showVersion" value="Show Version of ContentBroker" />    
+   <g:submitButton name="showVersion" value="Show version of ContentBroker" />   
+   <g:submitButton name="stopDelayed" value="stop delayed Rules" />  
+   <g:submitButton name="startDelayed" value="start delayed Rules" />   
 </g:form>
 Rückmeldungen des ContentBroker (können verzögert eintreffen)
 			<!-- This div is updated through the periodical updater -->
