@@ -83,7 +83,7 @@ public class AbstractActionTests {
 		action.setActionMap(mock(ActionRegistry.class));
 		job = new Job();
 		action.setJob(job);
-		User c = new User(); c.setShort_name("TEST"); c.setEmailAddress("useremail");
+		User c = new User(); c.setShort_name("TEST"); c.setEmailAddress("noreply");
 		object = new Object();
 		object.setIdentifier("ID");
 		object.setContractor(c);

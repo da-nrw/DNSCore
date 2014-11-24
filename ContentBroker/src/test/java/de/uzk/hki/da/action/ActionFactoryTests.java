@@ -71,7 +71,7 @@ public class ActionFactoryTests {
 	@Before
 	public void setUp() {
 		c.setShort_name("csn");
-		c.setEmailAddress("useremail");
+		c.setEmailAddress("noreply");
 		
 		FileSystemXmlApplicationContext context = new FileSystemXmlApplicationContext(baseDirPath+"action-definitions.xml");
 		factory = new ActionFactory();
