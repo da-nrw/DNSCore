@@ -132,6 +132,15 @@ public class CTFileFormatFacadeTests {
 		sfff.identify(files);
 		assertTrue(files.get(0).getSubformatIdentifier().equals("cinepak"));
 	}
+
+	@Test
+	public void healthCheck() {
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy", 
+				FFConstants.FMT_5);
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.ImageMagickIdentifySubformatIdentificationStrategy", 
+				FFConstants.FMT_353);
+		assertTrue(sfff.healthCheckSubformatIdentificationStrategies());
+	}
 	
 	@Test
 	public void imageMagickIdentifySubformatIdentification() throws IOException {
@@ -142,16 +151,6 @@ public class CTFileFormatFacadeTests {
 		sfff.identify(files);
 		assertTrue(files.get(0).getSubformatIdentifier().equals("Group4"));
 
-	}
-	
-	
-	@Test
-	public void healthCheck() {
-		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy", 
-				FFConstants.FMT_5);
-		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.ImageMagickIdentifySubformatIdentificationStrategy", 
-				FFConstants.FMT_353);
-		assertTrue(sfff.healthCheckSubformatIdentificationStrategies());
 	}
 	
 	
