@@ -18,18 +18,20 @@ public class FFmpegSubformatIdentificationStrategy implements FormatIdentificati
 		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {"ffmpeg","-i",f.toString()});
 		String ffmpegOutput = pi.getStdErr();
 		
-		String ffmpegOutput2[] = ffmpegOutput.split("Stream.*Video: ");
-		String ffmpegOutput3[] = ffmpegOutput2[1].split("\n");
-		String ffmpegOutput4[] = ffmpegOutput3[0].split("\\s");
+		Pattern MY_PATTERN = Pattern.compile("Stream.*Video:\\s([a-z]+)\\s.*");
+		Matcher m = MY_PATTERN.matcher(ffmpegOutput); m.find();
+		String codec=m.group(1);
 		
-		return ffmpegOutput4[0];
+		System.out.println("c:"+codec);
+		
+		return codec;
 	}
 
 	@Override
 	public boolean healthCheck() {
 		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {"ffmpeg","-version"});
 		String ffmpegOutput = pi.getStdOut();
-		Pattern MY_PATTERN = Pattern.compile(".*(\\d+\\.\\d\\.\\d).*");
+		Pattern MY_PATTERN = Pattern.compile(".*(\\d+\\.\\d+\\.\\d+).*");
 		Matcher m = MY_PATTERN.matcher(ffmpegOutput); m.find();
 		String version = m.group(1);
 		System.out.println(":"+version);

@@ -132,7 +132,6 @@ public class CTFileFormatFacadeTests {
 		sfff.identify(files);
 		assertTrue(files.get(0).getSubformatIdentifier().equals("cinepak"));
 	}
-
 	@Test
 	public void healthCheck() {
 		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy", 
