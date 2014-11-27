@@ -21,7 +21,6 @@
 package de.uzk.hki.da.core;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.apache.activemq.xbean.XBeanBrokerService;
@@ -35,7 +34,6 @@ import org.springframework.core.task.TaskRejectedException;
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.action.ActionFactory;
 import de.uzk.hki.da.action.ActionInformation;
-import de.uzk.hki.da.utils.Utilities;
 
 
 
@@ -61,9 +59,6 @@ public class ContentBroker {
 		System.setProperty("logback.configurationFile", "conf/logback.xml");
 	}
 
-	/** The props. */
-	private static Properties props = new Properties();
-	
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(ContentBroker.class);
 
@@ -107,29 +102,41 @@ public class ContentBroker {
 				System.exit(0);
 		}
 		
-		logger.info("Starting ContentBroker ..");
+		if (Diagnostics.run()!=0)
+		{
+			logger.error("Diagnostics has detected one or more pre-conditions for running the ContentBroker have not been met.");
+			logger.error("For more information run \"java -jar ContentBroker.jar diagnostics.\"");
+			System.exit(1);
+		}
 		
-		logger.info("Setting up HibernateUtil ..");
+		setUpContentBroker();
+	}
+	
+	private static void setUpContentBroker(){
+		
+		logger.info("Starting ContentBroker ...");
+
+		logger.info("Setting up HibernateUtil ...");
 		try {
 			HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
 		} catch (Exception e) {
 			logger.error("Exception in main!",e);
 		}
 		
-		logger.info("Reading properties");		
-		Utilities.parseArguments(args,props);
-		
+		logger.info("Setting up Spring application context ...");
 		try {
 			@SuppressWarnings("resource")
 			AbstractApplicationContext context =
-					new FileSystemXmlApplicationContext("conf/beans.xml");
+			new FileSystemXmlApplicationContext("conf/beans.xml");
 			context.registerShutdownHook();
 			logger.info("ContentBroker is up and running");
 		} catch (Exception e) {
 			logger.error("Exception in main!",e);
+			System.exit(1);
 		}
-		
 	}
+	
+	
 	
 	
 	/**
@@ -159,20 +166,6 @@ public class ContentBroker {
 
 	}
 	
-	/**
-	 * for testing purposes.
-	 */
-	public void scheduleTaskWithoutCatchingExceptions() {
-		
-		logger.trace("scheduling task");		
-		try {
-			AbstractAction action = actionFactory.buildNextAction();
-			if(action != null) taskExecutor.execute(action);
-		} catch (TaskRejectedException e) {
-			logger.warn("Task rejected!",e);
-		}
-
-	}
 	
 	/**
 	 * to be called after setters.

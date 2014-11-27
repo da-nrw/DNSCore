@@ -28,6 +28,7 @@ public class FFmpegSubformatIdentificationStrategy implements FormatIdentificati
 		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {"ffmpeg","-version"});
 		String ffmpegOutput = pi.getStdOut();
 		String ffmpegOutput2[] = ffmpegOutput.split("built");
+		System.out.println("ffmpegOutput2[0]:"+ffmpegOutput2[0]);
 		String ffmpegOutput3[] = ffmpegOutput2[0].split("version");
 		String version=ffmpegOutput3[1].trim();
 		
