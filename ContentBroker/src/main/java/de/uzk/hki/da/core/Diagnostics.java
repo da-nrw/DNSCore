@@ -22,7 +22,9 @@ package de.uzk.hki.da.core;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -291,9 +293,14 @@ public class Diagnostics {
 		
 		
 		System.out.print("CHECKING - GRID FACADE PUT .... ");
+		
+		SimpleDateFormat df = new SimpleDateFormat( "yyyy-MM-dd+HH-mm-ss" );
+		String testPkgName="smoke_test."+df.format(new Date())+".tgz";
+		
 		try {
 			
-			boolean returnValue = irodsGridFacade.put( C.BASIC_TEST_PACKAGE, new RelativePath(C.TEST_USER_SHORT_NAME,TEST_TGZ).toString(), sp);
+			boolean returnValue = irodsGridFacade.put( C.BASIC_TEST_PACKAGE, 
+					new RelativePath(C.TEST_USER_SHORT_NAME,testPkgName).toString(), sp);
 			if (returnValue==false){
 				errorCount++;
 				System.out.println(WARN+"put returned false.");
@@ -306,7 +313,7 @@ public class Diagnostics {
 			e.printStackTrace();
 		}
 		System.out.print("CHECKING - GRID FACADE ISVALID METHOD ... ");
-		if (!irodsGridFacade.isValid(new RelativePath(C.TEST_USER_SHORT_NAME,TEST_TGZ).toString())) {
+		if (!irodsGridFacade.isValid(new RelativePath(C.TEST_USER_SHORT_NAME,testPkgName).toString())) {
 				errorCount++;
 				System.out.println(WARN+" is valid returned false.");
 		}else
@@ -316,7 +323,7 @@ public class Diagnostics {
 		System.out.print("CHECKING - GRID FACADE GET .... ");
 		if (DIAGNOSTICS_RETRIEVAL_FILE.exists()) DIAGNOSTICS_RETRIEVAL_FILE.delete();
 		try {
-			irodsGridFacade.get(DIAGNOSTICS_RETRIEVAL_FILE, new RelativePath(C.TEST_USER_SHORT_NAME,TEST_TGZ).toString());
+			irodsGridFacade.get(DIAGNOSTICS_RETRIEVAL_FILE, new RelativePath(C.TEST_USER_SHORT_NAME,testPkgName).toString());
 			System.out.println("OK");
 		} catch (Exception e) {
 			errorCount++;
