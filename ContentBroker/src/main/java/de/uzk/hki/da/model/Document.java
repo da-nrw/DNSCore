@@ -61,51 +61,7 @@ public class Document {
 	/** The document name. */
 	@Column(name="doc_name")
 	private String docname;
-	
-//	/** The names of dafiles. */
-//	@ElementCollection
-//	@CollectionTable(name="doc_dafiles", joinColumns=@JoinColumn(name="doc_id"))
-//	@Column(name="dafile_name")
-//	private List<String> dafiles = new ArrayList<String>();
-//	
-//	/**
-//	 * Instantiates a new document.
-//	 *
-//	 */
-//	public Document() {
-//	}
-//	
-//	public Document(DAFile dafile) {
-//		String docname = FilenameUtils.getBaseName(dafile.toRegularFile().getName());
-//		String relPath = dafile.getRelative_path();
-//		logger.debug("Create new document "+getName());
-//		this.name = docname;
-//		this.addDAFile(relPath);
-//	}
-//	
-//	/**
-//	 * Gets the last dafile.
-//	 *
-//	 * @return the last dafile
-//	 */
-//	public String getLastDAFile() {
-//		return dafiles.get(dafiles.size()-1);
-//	}
-//
-//	/**
-//	 * Gets the name.
-//	 *
-//	 * @return the name
-//	 */
-//	public void addDAFile(String relPath) {
-//		logger.debug("Add new dafile "+relPath);
-//		dafiles.add(relPath);
-//	}
-//	
 
-	
-//	
-	
 	/** The last dafiles. */
 	@ManyToOne
 	@PrimaryKeyJoinColumn(

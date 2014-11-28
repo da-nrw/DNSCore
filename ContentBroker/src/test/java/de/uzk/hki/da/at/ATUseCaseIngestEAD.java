@@ -134,7 +134,6 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 		assertTrue(metsReferences.size()==5);
 		for(String metsRef : metsReferences) {
 			if(metsRef.contains("mets_2_32044.xml")) {
-				System.out.println("metsRef: "+metsRef);
 				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/mets_2_32044.xml"));
 			} else if(metsRef.contains("mets_2_32045.xml")) {
 				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/mets_2_32045.xml"));
