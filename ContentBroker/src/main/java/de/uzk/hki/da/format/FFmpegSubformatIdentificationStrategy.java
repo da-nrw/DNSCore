@@ -18,7 +18,7 @@ public class FFmpegSubformatIdentificationStrategy implements FormatIdentificati
 		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {"ffmpeg","-i",f.toString()});
 		String ffmpegOutput = pi.getStdErr();
 		System.out.println("ffmpegOutput:"+ffmpegOutput);
-		Pattern MY_PATTERN = Pattern.compile(".*Stream.*Video:\\s([a-z]+)\\s.*");
+		Pattern MY_PATTERN = Pattern.compile(".*Stream.*Video:\\s([a-z]+)[,\\s].*");
 		Matcher m = MY_PATTERN.matcher(ffmpegOutput); m.find();
 		String codec=m.group(1);
 		
