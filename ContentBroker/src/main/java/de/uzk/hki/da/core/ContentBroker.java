@@ -102,12 +102,12 @@ public class ContentBroker {
 				System.exit(0);
 		}
 		
-		if (Diagnostics.run()!=0)
-		{
-			logger.error("Diagnostics has detected one or more pre-conditions for running the ContentBroker have not been met.");
-			logger.error("For more information run \"java -jar ContentBroker.jar diagnostics.\"");
-			System.exit(1);
-		}
+//		if (Diagnostics.run()!=0)
+//		{
+//			logger.error("Diagnostics has detected one or more pre-conditions for running the ContentBroker have not been met.");
+//			logger.error("For more information run \"java -jar ContentBroker.jar diagnostics.\"");
+//			System.exit(1);
+//		}
 		
 		setUpContentBroker();
 	}
