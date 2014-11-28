@@ -36,8 +36,9 @@ public class FFConstants {
 	public static final String METS_PUID = "danrw-fmt/1"; // TODO make it package private
 	public static final String FMT_353 = "fmt/353";
 	public static final String FMT_101 = "fmt/101";
+	public static final String X_FMT_384 = "x-fmt/384";
 	public static final String LZW = "lzw";
 	public static final String TIF = "tif";
 	public static final String FMT_5 = "fmt/5";
-
+	
 }
