@@ -121,6 +121,18 @@ public class CTFileFormatFacadeTests {
 		sfff.identify(files);
 		assertTrue(files.get(0).getSubformatIdentifier().equals("cinepak"));
 	}
+
+	@Test
+	public void ffmpegStrategySubformatIdentificationCodecContainsDigit() throws IOException {
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy", 
+				FFConstants.X_FMT_384);
+		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"a.mov")));
+		
+		sfff.identify(files);
+		assertTrue(files.get(0).getSubformatIdentifier().equals("svq1"));
+	}
+
+	
 	
 	
 	@Test
