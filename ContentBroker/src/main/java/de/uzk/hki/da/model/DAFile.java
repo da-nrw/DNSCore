@@ -24,9 +24,11 @@ import java.io.File;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -93,6 +95,9 @@ public class DAFile implements FileWithFileFormat{
 	/** The size. */
 	private String size;
 	
+	/** The previous dafile. */
+	private DAFile previousDAFile;
+
 	/** The document */
 	@OneToMany(cascade=CascadeType.ALL)
 	private Document document;
@@ -113,6 +118,7 @@ public class DAFile implements FileWithFileFormat{
 		setRelative_path(relPath);
 		this.setRep_name(repName);
 		this.pkg=pkg;
+		this.previousDAFile = null;
 	}
 		
 	/**
@@ -143,6 +149,16 @@ public class DAFile implements FileWithFileFormat{
 	 */
 	public void setPackage (Package pkg) {
 		this.pkg = pkg;
+	}
+	
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "previousDAFile_ID")
+	public DAFile getPreviousDAFile() {
+		return previousDAFile;
+	}
+
+	public void setPreviousDAFile(DAFile previousDAFile) {
+		this.previousDAFile = previousDAFile;
 	}
 	
 	/**
@@ -220,7 +236,6 @@ public class DAFile implements FileWithFileFormat{
 		return mimeType;
 	}
 	
-//	public
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
