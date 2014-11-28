@@ -7,7 +7,7 @@ HIER=`pwd`
 if [ "$1" = "populate" ]
 then
 	sqls=(
-		"DELETE FROM second_stage_scans;"
+		"DELETE FROM subformat_identification_strategy_puid_mappings;"
 		"DELETE FROM queue;"
 		"DELETE FROM events;"
 		"DELETE FROM documents;"

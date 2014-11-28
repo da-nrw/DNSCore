@@ -58,11 +58,16 @@ function createIrodsDirs(){
 #    cd $SOURCE_PATH
 #}
 
-# $1 = INSTALL_PATH
 function startContentBroker(){
 	cd $1
 	
-	./ContentBroker_start.sh.template
+	if [ "$2" = "dev" ]
+	then
+		./ContentBroker_start.sh.template suppress_diagnostics
+	else
+		./ContentBroker_start.sh.template 	
+	fi
+
 	sleep 15
 	cd $SOURCE_PATH
 }
@@ -145,7 +150,7 @@ cp src/main/bash/ffmpeg.sh.fake $INSTALL_PATH/ffmpeg.sh
 
 cp $INSTALL_PATH/conf/config.properties conf/
 
-startContentBroker $INSTALL_PATH
+startContentBroker $INSTALL_PATH $1
 
 
 ## in case fake jhove will get used

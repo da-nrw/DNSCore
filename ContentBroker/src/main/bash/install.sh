@@ -118,13 +118,6 @@ fi
 #############################
 
 
-
-
-if [ -e ffmpeg.sh ] 
-then
-	echo copy new ffmpeg
-	cp -f ffmpeg.sh $INSTALLATION_TARGET/
-fi
 if [ -e handBrake.sh ]
 then
 	echo copy new handBrake
