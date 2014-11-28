@@ -17,7 +17,7 @@ public class FFmpegSubformatIdentificationStrategy implements FormatIdentificati
 
 		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {"ffmpeg","-i",f.toString()});
 		String ffmpegOutput = pi.getStdErr();
-		
+		System.out.println("ffmpegOutput:"+ffmpegOutput);
 		Pattern MY_PATTERN = Pattern.compile("Stream.*Video:\\s([a-z]+)\\s.*");
 		Matcher m = MY_PATTERN.matcher(ffmpegOutput); m.find();
 		String codec=m.group(1);
@@ -31,19 +31,10 @@ public class FFmpegSubformatIdentificationStrategy implements FormatIdentificati
 	public boolean healthCheck() {
 		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {"ffmpeg","-version"});
 		String ffmpegOutput = pi.getStdOut();
-		System.out.println("healthCheck.pi.getStdOut"+ffmpegOutput);
 		Pattern MY_PATTERN = Pattern.compile(".*(\\d+\\.\\d+\\.\\d+).*");
 		Matcher m = MY_PATTERN.matcher(ffmpegOutput); m.find();
 		String version = m.group(1);
-		System.out.println(":"+version);
-		
-		
-//		String ffmpegOutput2[] = ffmpegOutput.split("built");
-//		System.out.println("ffmpegOutput2[0]:"+ffmpegOutput2[0]);
-//		String ffmpegOutput3[] = ffmpegOutput2[0].split("version");
-//		System.out.println("ffmpegOutput3[0]"+ffmpegOutput3[0]);
-//		String version=ffmpegOutput3[1].trim();
-		
+
 		List<String> acceptedVersions=Arrays.asList(new String[] {"2.2.10","0.6.5","0.6.7","0.6.6","0.10.3","2.2.1"});
 		if (acceptedVersions.contains(version)) 
 			return true;
