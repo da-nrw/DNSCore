@@ -28,6 +28,8 @@ import org.apache.commons.lang.NotImplementedException;
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
@@ -142,6 +144,8 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	 */
 	private void prepareObjectForObjectDBStorage(Object obj) {
 
+		obj.getDocuments().clear();
+		
 		for (Package pkg : obj.getPackages()){
 			pkg.getEvents().clear();
 			pkg.getFiles().clear();

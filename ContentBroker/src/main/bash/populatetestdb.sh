@@ -10,6 +10,7 @@ then
 		"DELETE FROM second_stage_scans;"
 		"DELETE FROM queue;"
 		"DELETE FROM events;"
+		"DELETE FROM documents;"
 		"DELETE FROM dafiles;"
 		"DELETE FROM objects_packages;"
 		"DELETE FROM packages;"

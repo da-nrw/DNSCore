@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -51,6 +50,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.model.PublicationRight.Audience;
@@ -175,8 +178,20 @@ public class Object {
 	private User user;
 	 
 	/** The packages. */
-	@OneToMany(targetEntity=Package.class, fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(targetEntity=Package.class, fetch=FetchType.EAGER)
+	@Cascade(CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Package> packages = new ArrayList<Package>();
+
+	/** The documents. */
+//	@OneToMany(targetEntity=Document.class, fetch=FetchType.EAGER)
+//	@Cascade(CascadeType.ALL)
+//	@Fetch(value = FetchMode.SUBSELECT)
+	@OneToMany(orphanRemoval=true, targetEntity=Document.class, fetch=FetchType.EAGER)
+	@JoinColumn(name="object_id")
+	@Cascade(CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<Document> documents = new ArrayList<Document>();
 	
 	/**
 	 * Sets the data_pk.
@@ -212,6 +227,24 @@ public class Object {
 	 */
 	public List<Package> getPackages() {
 		return this.packages;
+	}	
+	
+	/**
+	 * Sets the documents.
+	 *
+	 * @param documents the new documents
+	 */
+	public void setDocuments(List<Document> documents) {
+		this.documents = documents;
+	}	
+	
+	/**
+	 * Gets the documents.
+	 *
+	 * @return the documents
+	 */
+	public List<Document> getDocuments() {
+		return this.documents;
 	}	
 	
 	/**

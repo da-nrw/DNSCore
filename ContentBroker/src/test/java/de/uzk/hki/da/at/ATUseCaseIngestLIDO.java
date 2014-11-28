@@ -88,6 +88,7 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 		Document doc = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, LidoFileName).toFile()));
 		assertTrue(getLIDOURL(doc).equals("Picture2.tif"));
+
 	}
 	
 	@Test

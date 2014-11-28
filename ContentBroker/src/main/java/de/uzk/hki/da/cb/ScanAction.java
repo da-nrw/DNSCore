@@ -35,6 +35,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionInstructionBuilder;
 import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.service.MailContents;
@@ -53,7 +54,6 @@ public class ScanAction extends AbstractAction{
 	private final ConversionInstructionBuilder ciB = new ConversionInstructionBuilder();
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
-	@Override
 	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 	}
@@ -79,6 +79,9 @@ public class ScanAction extends AbstractAction{
 			job.setQuestion(C.QUESTION_MIGRATION_ALLOWED);
 			this.setEndStatus(C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
 		}
+		
+		addDocumentsToObject();
+		
 		return true;
 	}
 
@@ -95,6 +98,32 @@ public class ScanAction extends AbstractAction{
 		
 	}
 
+
+	/**
+	 * @author Polina Gubaidullina
+	 * @param dafiles
+	 */
+	
+	private List<Document> createDocuments(List<DAFile> dafiles) {
+		List<Document> documents = new ArrayList<Document>();
+		for(DAFile dafile : dafiles) {
+			Document doc = new Document(dafile);
+			documents.add(doc);
+		}
+		return documents;
+	}
+	
+	/**
+	 * @author Polina Gubaidullina
+	 * 
+	 */
+	
+	private void addDocumentsToObject() {
+		List<DAFile> dafiles = object.getLatestPackage().getFiles();
+		logger.debug("Add documents to object...");
+		List<Document> documents = createDocuments(dafiles);
+		object.setDocuments(documents);
+	}
 	
 	
 	
