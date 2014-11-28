@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.core.RelativePath;
-import de.uzk.hki.da.ff.FileFormatFacade;
+import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;

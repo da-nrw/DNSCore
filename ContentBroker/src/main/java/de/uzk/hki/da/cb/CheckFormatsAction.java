@@ -29,20 +29,16 @@ import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.NotImplementedException;
-import org.hibernate.Session;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.Path;
-import de.uzk.hki.da.ff.FileFormatException;
-import de.uzk.hki.da.ff.FileFormatFacade;
-import de.uzk.hki.da.ff.IFileWithFileFormat;
-import de.uzk.hki.da.ff.ISubformatIdentificationPolicy;
+import de.uzk.hki.da.format.FileFormatException;
+import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.utils.CommaSeparatedList;
 
 /**
@@ -78,30 +74,20 @@ public class CheckFormatsAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException {
 		
-		List<IFileWithFileFormat> allFiles = new ArrayList<IFileWithFileFormat>();
+		List<FileWithFileFormat> allFiles = new ArrayList<FileWithFileFormat>();
 		List<DAFile> allDAFiles = new ArrayList<DAFile>();
 		for (Package p:object.getPackages()){
 				allFiles.addAll(p.getFiles());
 				allDAFiles.addAll(p.getFiles());
 		}
 		
-		Session session = HibernateUtil.openSession();
-		List<SecondStageScanPolicy> policies = 
-				preservationSystem.getSubformatIdentificationPolicies();
-		session.close();
-		
-		List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
-		for (SecondStageScanPolicy s:policies)
-			polys.add((ISubformatIdentificationPolicy) s);
-		getFileFormatFacade().setSubformatIdentificationPolicies(polys);
-
 		try {
 			allFiles = getFileFormatFacade().identify(allFiles);
 		} catch (FileFormatException e) {
 			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
 		}
 		
-		for (IFileWithFileFormat f:allFiles){
+		for (FileWithFileFormat f:allFiles){
 			if (f.getFormatPUID()==null) throw new RuntimeException("file \""+f+"\" has no format puid");
 		}
 		attachJhoveInfoToAllFiles(allDAFiles);
@@ -113,9 +99,9 @@ public class CheckFormatsAction extends AbstractAction {
 		
 		for (DAFile f:newestFiles){
 			mostRecentFormats.add(f.getFormatPUID());
-			if (!f.getFormatSecondaryAttribute().isEmpty())
-				mostRecentSecondaryAttributes.add(f.getFormatSecondaryAttribute());
-			if (f.getFormatSecondaryAttribute()==null||f.getFormatSecondaryAttribute().isEmpty()) continue;
+			if (!f.getSubformatIdentifier().isEmpty())
+				mostRecentSecondaryAttributes.add(f.getSubformatIdentifier());
+			if (f.getSubformatIdentifier()==null||f.getSubformatIdentifier().isEmpty()) continue;
 		}
 		
 		// TODO remove. send via communicator. this should not be saved to object this early. 

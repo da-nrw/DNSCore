@@ -24,23 +24,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
-
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.ff.FileFormatException;
-import de.uzk.hki.da.ff.FileFormatFacade;
-import de.uzk.hki.da.ff.IFileWithFileFormat;
-import de.uzk.hki.da.ff.ISubformatIdentificationPolicy;
+import de.uzk.hki.da.format.FileFormatException;
+import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionInstructionBuilder;
 import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.SecondStageScanPolicy;
 
 
 /**
@@ -68,21 +63,8 @@ public class ScanForPresentationAction extends AbstractAction{
 
 	@Override
 	public boolean implementation() throws IOException {
-		// check if object package type is set
 		
-		Session session = HibernateUtil.openSession();
-		List<SecondStageScanPolicy> policies = 
-				preservationSystem.getSubformatIdentificationPolicies();
-		session.close();
-		List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
-		for (SecondStageScanPolicy s:policies)
-			polys.add((ISubformatIdentificationPolicy) s);
-		fileFormatFacade.setSubformatIdentificationPolicies(polys);
-
-
-//		if (newestFiles.size() == 0)
-//			throw new RuntimeException("No files found!");
-		List<? extends IFileWithFileFormat> fffl=null;
+		List<? extends FileWithFileFormat> fffl=null;
 		try {
 			fffl = fileFormatFacade.identify(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
 		} catch (FileFormatException e) {

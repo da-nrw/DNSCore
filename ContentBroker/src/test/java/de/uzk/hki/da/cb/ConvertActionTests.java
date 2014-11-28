@@ -92,13 +92,13 @@ public class ConvertActionTests {
 		
 		ConversionRoutine im = new ConversionRoutine(
 				"IM",
-				"de.uzk.hki.da.format.CLIConversionStrategy",
+				"de.uzk.hki.da.convert.CLIConversionStrategy",
 				"convert input output",
 				"png");
 		
 		ConversionRoutine copy = new ConversionRoutine(
 				"COPY",
-				"de.uzk.hki.da.format.CLIConversionStrategy",
+				"de.uzk.hki.da.convert.CLIConversionStrategy",
 				"cp input output",
 				"*");
 		

@@ -27,7 +27,7 @@ import javax.jms.TextMessage
 
 
 /**
- * Webcontroller to Talk with running ContentBroker via Webinterface
+ * Webcontroller to Administer running ContentBroker and iRODS 
  * @author Jens Peters
  *
  */
@@ -52,6 +52,7 @@ class CbtalkController {
 	
 	def save() {
 			
+		def queue = "CB.SYSTEM"	
 		def message = ""
 		if (params.stopFactory) {
 			message = "STOP_FACTORY"	
@@ -72,11 +73,17 @@ class CbtalkController {
 		if (params.showVersion){	
 			message = "SHOW_VERSION";
 		}
+		if (params.startDelayed){
+			message = "START_DELAYED";
+			queue = "IRODS.SYSTEM"
+		}
+		if (params.stopDelayed){
+			message = "STOP_DELAYED";
+			queue = "IRODS.SYSTEM"
+		}
 		log.debug(message)
 		try {
-			
-	
-		jmsService.send(queue:'CB.SYSTEM', message)
+		jmsService.send(queue:queue, message)
 		} catch (Exception e) {
 			flash.message= "Fehler in der Sendekommunikation mit dem ActiveMQ Broker! " + e.getCause()
 			log.error(e);

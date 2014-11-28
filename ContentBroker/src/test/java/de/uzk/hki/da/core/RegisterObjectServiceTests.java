@@ -102,7 +102,7 @@ public class RegisterObjectServiceTests {
 		Session session = HibernateUtil.openSession();
 		session.getTransaction().begin();
 		session.createSQLQuery("DELETE FROM nodes").executeUpdate();
-		session.createSQLQuery("DELETE from preservation_system").executeUpdate();
+		session.createSQLQuery("DELETE FROM preservation_system").executeUpdate();
 		session.getTransaction().commit();
 		session.close();
 	}

@@ -22,27 +22,22 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
-import org.hibernate.Session;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.ff.FileFormatException;
-import de.uzk.hki.da.ff.FileFormatFacade;
-import de.uzk.hki.da.ff.IFileWithFileFormat;
-import de.uzk.hki.da.ff.ISubformatIdentificationPolicy;
+import de.uzk.hki.da.format.FileFormatException;
+import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.grid.GridFacade;
-import de.uzk.hki.da.model.SecondStageScanPolicy;
 import de.uzk.hki.da.repository.RepositoryException;
 
 /**
@@ -119,32 +114,7 @@ public class RestructureAction extends AbstractAction{
 
 		
 		object.reattach();
-		logger.debug("scanning files with format identifier(s)");
-		Session session = HibernateUtil.openSession();
-		List<SecondStageScanPolicy> policies = 
-				preservationSystem.getSubformatIdentificationPolicies();
-		session.close();
-
-
-		List<ISubformatIdentificationPolicy> polys = new ArrayList<ISubformatIdentificationPolicy>();
-		for (SecondStageScanPolicy s:policies)
-			polys.add((ISubformatIdentificationPolicy) s);
-		getFileFormatFacade().setSubformatIdentificationPolicies(polys);
-
-
-		
-		List<IFileWithFileFormat> scannedFiles = null;
-		try {
-			scannedFiles = fileFormatFacade.identify(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
-		} catch (FileFormatException e) {
-			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
-		}
-		for (IFileWithFileFormat f:scannedFiles){
-			logger.debug(f+":"+f.getFormatPUID());
-		}
-
-		
-		
+		determineFileFormats();
 		
 		logger.debug("Create new b representation "+repName+"b");
 		Path.makeFile(object.getDataPath(), repName+"b").mkdir();
@@ -153,6 +123,21 @@ public class RestructureAction extends AbstractAction{
 		return true;
 	}
 
+	
+	private void determineFileFormats() throws FileNotFoundException, IOException {
+		List<FileWithFileFormat> scannedFiles = null;
+		try {
+			scannedFiles = fileFormatFacade.identify(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
+		} catch (FileFormatException e) {
+			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
+		}
+		for (FileWithFileFormat f:scannedFiles){
+			logger.info(f+":"+f.getFormatPUID()+":"+f.getSubformatIdentifier());
+		}
+	}
+	
+	
+	
 	@Override
 	public void rollback() throws Exception {
 		throw new NotImplementedException("rollback for this action not implemented yet");

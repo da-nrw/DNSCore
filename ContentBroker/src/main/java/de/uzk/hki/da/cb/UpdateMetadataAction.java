@@ -53,7 +53,7 @@ import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
-import de.uzk.hki.da.ff.MimeTypeDetectionService;
+import de.uzk.hki.da.format.MimeTypeDetectionService;
 import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.metadata.LidoMetadataStructure;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;

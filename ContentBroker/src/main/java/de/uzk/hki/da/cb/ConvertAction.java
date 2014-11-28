@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.convert.ConverterService;
 import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.format.ConverterService;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;

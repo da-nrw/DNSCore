@@ -34,8 +34,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.hibernate.Session;
 import org.jdom.JDOMException;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;

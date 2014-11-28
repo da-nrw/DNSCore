@@ -42,7 +42,7 @@ import org.xml.sax.SAXException;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.ff.FFConstants;
+import de.uzk.hki.da.format.FFConstants;
 import de.uzk.hki.da.metadata.FakeMetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.model.DAFile;
@@ -111,13 +111,13 @@ public class ValidateMetadataActionTests {
 		action.setMsf(msf);
 		action.setObject(object);
 
-		f_ead1.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
-		f_ead2.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
-		f_mets1.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_METS);
-		f_mets2.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_METS);
-		f_xmp1.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
-		f_lido1.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
-		f_lido2.setFormatSecondaryAttribute(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
+		f_ead1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
+		f_ead2.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
+		f_mets1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_METS);
+		f_mets2.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_METS);
+		f_xmp1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
+		f_lido1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
+		f_lido2.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
 	}
 	
 	
