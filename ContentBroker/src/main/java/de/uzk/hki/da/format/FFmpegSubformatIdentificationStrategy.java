@@ -31,6 +31,7 @@ public class FFmpegSubformatIdentificationStrategy implements FormatIdentificati
 	public boolean healthCheck() {
 		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {"ffmpeg","-version"});
 		String ffmpegOutput = pi.getStdOut();
+		System.out.println("healthCheck.pi.getStdOut"+ffmpegOutput);
 		Pattern MY_PATTERN = Pattern.compile(".*(\\d+\\.\\d+\\.\\d+).*");
 		Matcher m = MY_PATTERN.matcher(ffmpegOutput); m.find();
 		String version = m.group(1);
