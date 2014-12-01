@@ -19,17 +19,11 @@
 
 package de.uzk.hki.da.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -103,6 +97,18 @@ public class Document {
 	 */
 	public void setLastDAFile(DAFile dafile) {
 		this.lastDAFile = dafile;
+	}
+	
+	
+	/**
+	 * Add dafile.
+	 *
+	 * @param dafile the dafile
+	 */
+	public void addDAFile(DAFile dafile) {
+		DAFile previousDAFile = this.lastDAFile;
+		dafile.setPreviousDAFile(previousDAFile);
+		setLastDAFile(dafile);
 	}
 	
 	/**

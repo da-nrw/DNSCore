@@ -184,9 +184,6 @@ public class Object {
 	private List<Package> packages = new ArrayList<Package>();
 
 	/** The documents. */
-//	@OneToMany(targetEntity=Document.class, fetch=FetchType.EAGER)
-//	@Cascade(CascadeType.ALL)
-//	@Fetch(value = FetchMode.SUBSELECT)
 	@OneToMany(orphanRemoval=true, targetEntity=Document.class, fetch=FetchType.EAGER)
 	@JoinColumn(name="object_id")
 	@Cascade(CascadeType.ALL)
@@ -245,7 +242,23 @@ public class Object {
 	 */
 	public List<Document> getDocuments() {
 		return this.documents;
-	}	
+	}
+	
+	
+	/**
+	 * Gets the document.
+	 *
+	 * @return the document
+	 */
+	public Document getDocument(String docname) {
+		Document document = new Document();
+		for(Document doc : this.documents) {
+			if(doc.getName().equals(docname)) {
+				document = doc;
+			}
+		}
+		return document;
+	}
 	
 	/**
 	 * Sets the identifier.
@@ -982,7 +995,4 @@ public class Object {
 		return FileUtils.listFiles(Path.makeFile(this.getDataPath(),repName),
 				TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
 	}
-	
-	
-	
 }
