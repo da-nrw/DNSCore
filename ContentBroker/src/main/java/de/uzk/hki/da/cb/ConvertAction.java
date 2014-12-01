@@ -25,6 +25,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
+
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.convert.ConverterService;
 import de.uzk.hki.da.core.ConfigurationException;
@@ -83,6 +85,7 @@ public class ConvertAction extends AbstractAction {
 		for (Event e:localConversionEvents){
 			object.getLatestPackage().getEvents().add(e);
 			object.getLatestPackage().getFiles().add(e.getTarget_file());
+			object.getDocument(FilenameUtils.getBaseName(e.getTarget_file().toRegularFile().getName())).addDAFile(e.getTarget_file());
 		}
 		
 		job.getConversion_instructions().clear();

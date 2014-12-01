@@ -395,9 +395,6 @@ public class UpdateMetadataAction extends AbstractAction {
 			File destFile = new File(object.getDataPath() + "/" + repName + "/" + metadataFileName);
 			FileUtils.copyFile(srcMetadataFile.toRegularFile(), destFile);
 			DAFile destMetadataFile = new DAFile(object.getLatestPackage(), repName, metadataFileName);
-			
-			object.getDocument(metadataFileName).addDAFile(destMetadataFile);
-			
 			destMetadataFile.setFormatPUID(srcMetadataFile.getFormatPUID());
 			object.getLatestPackage().getFiles().add(destMetadataFile);
 			

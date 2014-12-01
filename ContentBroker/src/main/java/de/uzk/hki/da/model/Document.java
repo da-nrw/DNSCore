@@ -78,6 +78,7 @@ public class Document {
 	public Document(DAFile dafile) {
 		this.docname = FilenameUtils.getBaseName(dafile.toRegularFile().getName());
 		this.lastDAFile = dafile;
+		this.getLasttDAFile().setPreviousDAFile(null);
 		logger.debug("Create new document "+getLasttDAFile());
 	}
 	
@@ -101,14 +102,14 @@ public class Document {
 	
 	
 	/**
-	 * Add dafile.
+	 * Adds dafile.
 	 *
 	 * @param dafile the dafile
 	 */
 	public void addDAFile(DAFile dafile) {
 		DAFile previousDAFile = this.lastDAFile;
 		dafile.setPreviousDAFile(previousDAFile);
-		setLastDAFile(dafile);
+		this.setLastDAFile(dafile);
 	}
 	
 	/**

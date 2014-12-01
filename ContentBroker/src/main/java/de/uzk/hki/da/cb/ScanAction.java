@@ -120,7 +120,6 @@ public class ScanAction extends AbstractAction{
 	
 	private void addDocumentsToObject() {
 		List<DAFile> dafiles = object.getLatestPackage().getFiles();
-		logger.debug("Add documents to object...");
 		List<Document> documents = createDocuments(dafiles);
 		object.setDocuments(documents);
 	}
