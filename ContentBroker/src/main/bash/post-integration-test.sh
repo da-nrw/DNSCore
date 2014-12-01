@@ -15,6 +15,7 @@ rm target/installation/hibernateCentralDB.cfg.xml
 sqls=(
 	"DELETE FROM events;"
 	"DELETE FROM conversion_queue;"
+	"DELETE FROM documents;"
 	"DELETE FROM dafiles;"
 	"DELETE FROM queue;"
 	"DELETE FROM objects_packages;"
