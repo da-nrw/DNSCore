@@ -16,7 +16,13 @@ Beispiel:
     Subformaterkennungsprozedur: TiffSubformatIdentificationStrategy
     -> Erkanntes Subformat: lzw (lzw-codec)
 
-Für die Subformaterkennung stehen sowohl DNS-eigene Prozesse als auch  Wrapper-Klassen zur Verfügung, die die Dienste externer Programme wie z.B. ffmpeg für DNSCore nutzbar machen. 
+Das Beispiel geht davon aus, dass die Prozedur "TiffSubformatIdentificationStrategy" mit dem Format Identifier "fmt/353" verknüft ist. Die als fmt/353 erkannte Beispieldatei wird daraufhin durchläuft daraufhin die festgelegte Subformaterkennungsprozedur. Diese liefert "lzw" als Bezeichner für ein Kompressionsverfahren den im Tiff enthalteten Datenstrom zurück.
+
+Für die Subformaterkennung stehen sowohl DNS-eigene Prozesse als auch  Wrapper-Klassen zur Verfügung, die die Dienste externer Programme wie z.B. ffmpeg für DNSCore nutzbar machen. Derzeit verfügbare Prozesse sind:
+
+    (../java/de/uzk/hki/da/format/ImageMagickIdentifySubformatIdentificationStrategy.java)
+
+
 
 
 
