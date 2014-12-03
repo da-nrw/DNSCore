@@ -44,11 +44,11 @@ Jeder Datensatz enthält einen PRONOM-Identifier und den Namen einer der durch D
     
 ### Einrichtung auf den Knoten
 
-Die Subformaterkennung ist so konzipiert, dass sie innerhalb eines auf DNSCore basierenden Gesamtsystem in gleicher Weise funkioniert. Datenmodelltechnisch ausgedrückt ist die Zuordnung von Subformaterkennungsprozessen zu PUIDs eine globale Eigenschaft des Gesamtsystems. 
+Die Subformaterkennung ist so konzipiert, dass sie innerhalb eines auf DNSCore basierenden Gesamtsystem in gleicher Weise funkioniert. Datenmodelltechnisch ausgedrückt ist die Zuordnung von Subformaterkennungsprozessen zu PUIDs eine globale Eigenschaft des Gesamtsystems. Dies ist für die rein in Java implementierten Prozeduren unkritisch, da diese als Teil des ContentBroker jar-files ausgeliefert werden und somit automatisch auf jedem Knoten zur Verfügung stehen. Im Normalfall handelt es sich um bei den Prozeduren jedoch um Wrapperklassen, die den Output externer Programme (z.B. ffmpeg) auswerten. 
+Die einzelnen Knoten des Gesamtsystems müssen dann dementsprechend bestimmte Voraussetzungen erfüllen, um die gemeinsam angebotenen Funktionalität auch tatsächlich anbieten zu können. Während die Wrapperklassen Teil des ContentBroker sind, müssen die externen Tools gesondert installiert werden.
 
-Dies ist für die rein in Java implementierten Prozeduren unkritisch, da diese als Teil des ContentBroker jar-files ausgeliefert werden und somit automatisch auf jedem Knoten zur Verfügung stehen. Im Normalfall handelt es sich um bei den Prozeduren jedoch um Wrapperklassen, die den Output externer Programme (z.B. ffmpeg) auswerten. Dies erfordert, dass das jeweilige externe Identifier Tool aufgerufen kann und auch einer Version vorliegt, die einen Output produziert, der von der Wrapper-Klasse korrekt ausgelesen werden kann. 
+Um die einheitliche Funktionalität des Gesamtsystems sicherzustellen, stellt DNSCore daher einen Mechanismus bereit, der automatisch überprüfen kann, ob die entsprechend benötigten externen Format-Identifier auch auf einem Knoten de facto vorliegen. Hierzu stellen die einzelnen Wrapper-Klassen ihrerseits **HealthChecks** bereit. Dabei handelt es sich um gemeinsam mit dem eigentlichen Wrapper-Code entwickeltem Code, der prüft, ob das benötigte externe Identifier-Tool vorliegt, und ob es in einer Version vorliegt, die unterstützt wird. Letzere Maßnahme ist notwendig, da sichergestellt werden muss, dass das Tool seinen Output in einer Format liefert, der von der Wrapper-Klasse entsprechend verarbeitet werden kann.
 
-Um eine einheitliche Funktionalität des Gesamtsystems sicherzustellen, stellt DNSCore daher einen Mechanismus bereit, der automatisch überprüfen kann, ob die entsprechend benötigten externen Format-Identifier auch tatsächlich vorliegen. Hierzu stellen die einzelnen Wrapper-Klassen ihrerseits **HealthChecks** bereit (TODO präziser?)
 Der Aufruf dieser Health-Check-Prozeduren findet dann im Rahmen von **diagnostics** statt, welches Teil der Startup Prozedur des ContentBroker ist. Wenn ein benötigter Identifier nicht oder nicht in der richtigen Version vorliegt, bricht **diagnostics** den Start des ContentBroker ab.
 
 Da nicht in allen Fällen jede der Subformaterkennungsprozeduren benötigt wird, überprüft diagnostics dabei tatsächlich nur diejenigen Prozeduren, die tatsächlich auch global konfiguriert sind. Eine beispielhafte Systemkonfiguration, die lediglich die Erkennung von Tiff-Subformaten vorsieht, andere Subformate jedoch ausser acht lässt, könnte beispielsweise aus dem alleinigen Datensatz wie folgt bestehen:
@@ -56,15 +56,3 @@ Da nicht in allen Fällen jede der Subformaterkennungsprozeduren benötigt wird,
         fmt/353 | de.uzk.hki.da.format.TiffSubformatIdentificationStrategy
 
 diagnostics würde in dem Fall nur für diese eine Prozedur überprüfen, ob die notwendigen Voraussetzungen zu ihrer Ausführung auf dem jeweiligen Knoten gegeben sind (d.h. ob das entsprechende Tool einsatzbereit ist).
-
-
-
-
-
-TODO Welche werden überprüft.
-
-
-
-
-
-
