@@ -141,7 +141,6 @@ public abstract class AbstractAction implements Runnable {
 	public abstract void checkSystemStatePreconditions() throws IllegalStateException;
 	
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
 		
