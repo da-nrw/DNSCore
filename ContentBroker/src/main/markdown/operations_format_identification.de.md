@@ -1,5 +1,7 @@
 # Formaterkennung mit DNSCore
 
+TODO: Hintergrund erläutern.
+
 Die Formaterkennung der DNSCore gliedert sich in zwei Stufen. Die erste Stufe orientiert sich an dem PRONOM (http://apps.nationalarchives.gov.uk/PRONOM/Default.aspx) Standard der National Archives. Die Erkennung der PUIDs (PRONOM Unique Identifier) geschieht dabei mithilfe des Programmes FIDO (https://github.com/openplanets/fido). Die sekundäre Formaterkennung kann mithilfe einer Plugin-Systematik Containerformate oder Kompressionsalgorhythmen erkennen, in abhängigkeit von der PUID.
 
 Auf der Erkennung der PUIDs basiert die Migrationskomponente von DNSCore. Für jede Datei, die im DNSCore eingespielt wird, wird eine Abgleich der erkannten PUID mit den zur Verfügung stehenden ConversionPolicies vorgenommen. Gibt es einen oder mehrere Treffer, so werden die entsprechenden Aufträge erstellt und das System führt eine Formatmigration für die Datei durch.
@@ -24,6 +26,27 @@ Für die Subformaterkennung stehen sowohl DNS-eigene Prozesse als auch  Wrapper-
 * [XMLSubformatIdentificationStrategy](../java/de/uzk/hki/da/format/XMLSubformatIdentificationStrategy.java)
 * [FFmpegSubformatIdentificationStrategy](../java/de/uzk/hki/da/format/FFmpegSubformatIdentificationStrategy.java)
 * TODO: TiffSubformatIdentificationStrategy
+
+# Einrichten der Subformaterkennung
+
+Das Einrichten der Subformaterkennung ist Aufgabe des PreservationSystem-Admin (TODO Link). Ihm kommt die Aufgabe zu, festzulegen, ob, und ja, mit welcher Prozedur Dateien der verschiedenen Primärformate auf Subformate geprüft werden. Diese Zuordnung wird in der Object-DB in der Tabelle "subformat_identification_strategy_puid_mappings" festgehalten. Diese Tabelle ist sehr einfach gehalten:
+
+    format_puid                            | character varying(255) | 
+    subformat_identification_strategy_name | character varying(255) | <- fully qualified Java Name
+
+Jeder Datensatz enthält einen PRONOM-Identifier und den Namen einer der durch DNSCore zur Verfügung gestellten Prozeduren. Dem oben genannte Beispiel liegt der folgende Datensatz zugrunde:
+
+    fmt/353 | de.uzk.hki.da.format.TiffSubformatIdentificationStrategy
+    
+
+
+
+
+
+
+
+
+
 
 Bis auf "XMLSubformatIdentificationStrategy" handelt es sich um Wrapperklassen, die den Output externer Programme (z.B. ffmpeg) auswerten. 
 
