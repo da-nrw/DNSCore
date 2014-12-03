@@ -46,9 +46,7 @@ Jeder Datensatz enthält einen PRONOM-Identifier und den Namen einer der durch D
 
 Die Subformaterkennung ist so konzipiert, dass sie innerhalb eines auf DNSCore basierenden Gesamtsystem in gleicher Weise funkioniert. Datenmodelltechnisch ausgedrückt ist die Zuordnung von Subformaterkennungsprozessen zu PUIDs eine globale Eigenschaft des Gesamtsystems. 
 
-
-
-Bis auf "XMLSubformatIdentificationStrategy" handelt es sich um Wrapperklassen, die den Output externer Programme (z.B. ffmpeg) auswerten. 
+Dies ist für die rein in Java implementierten Prozeduren unkritisch, da diese als Teil des jar files des ContentBroker ausgeliefert werden. Im Normalfall handelt es sich um bei den Prozeduren jedoch um Wrapperklassen, die den Output externer Programme (z.B. ffmpeg) auswerten. Die entsprechenden externen Programme müssen also
 
 
 
