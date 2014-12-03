@@ -4,7 +4,22 @@ Die Formaterkennung der DNSCore gliedert sich in zwei Stufen. Die erste Stufe or
 
 Auf der Erkennung der PUIDs basiert die Migrationskomponente von DNSCore. Für jede Datei, die im DNSCore eingespielt wird, wird eine Abgleich der erkannten PUID mit den zur Verfügung stehenden ConversionPolicies vorgenommen. Gibt es einen oder mehrere Treffer, so werden die entsprechenden Aufträge erstellt und das System führt eine Formatmigration für die Datei durch.
 
-## Sekundäre Formaterkennung
+## Subformaterkennung
+
+Aufbauend auf der primären Formaterkennung kann DNSCore eine erweiterte Formaterkennung durchführen. Der PreservationSystem-Administrator kann an für erkannte Formate festlegen, ob, und wenn ja, mithilfe welcher Prozeduren,
+die Subformaterkennung durchzuführen ist.
+
+Beispiel:
+    abc.tif 
+    Erkanntes Format: fmt/353
+    -> Subformaterkennungsprozedur: TiffSubformatIdentificationStrategy
+    Erkanntes Subformat: lzw (lzw-Codec)
+
+Für die Subformaterkennung stehen sowohl DNS-eigene Prozesse als auch  Wrapper-Klassen zur Verfügung, die die Dienste externer Programme wie z.B. ffmpeg für DNSCore nutzbar machen. 
+
+
+
+
 
 Zunächst ein Beispiel. Eine Tiff Datei enthält einen lzw-komprimierten Datenstrom. FIDO erkennt die Datei als vom Typ fmt/353. Das System führt daraufhin eine auf Tiff abgestimmte Überprüfung des Kompressionsformates durch und stellt lzw fest. Somit haben wir die Formatkombination [fmt/353, lzw] festgestellt. Um dieses Verhalten des Systems einzurichten, müssen einige Konfigurationen vorgenommen werden.
 
