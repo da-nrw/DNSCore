@@ -14,7 +14,7 @@ Beispiel:
     abc.tif 
     Erkanntes Format: fmt/353
     -> Subformaterkennungsprozedur: TiffSubformatIdentificationStrategy
-    Erkanntes Subformat: lzw (lzw-Codec)
+    Erkanntes Subformat: lzw (lzw-codec)
 
 Für die Subformaterkennung stehen sowohl DNS-eigene Prozesse als auch  Wrapper-Klassen zur Verfügung, die die Dienste externer Programme wie z.B. ffmpeg für DNSCore nutzbar machen. 
 
