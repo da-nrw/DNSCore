@@ -22,7 +22,7 @@ Für die Subformaterkennung stehen sowohl DNS-eigene Prozesse als auch  Wrapper-
 
 * [ImageMagickIdentificationStrategy](../java/de/uzk/hki/da/format/ImageMagickIdentifySubformatIdentificationStrategy.java)
 * [XMLSubformatIdentificationStrategy](../java/de/uzk/hki/da/format/XMLSubformatIdentificationStrategy.java)
-
+* [FFmpegSubformatIdentificationStrategy](../java/de/uzk/hki/da/format/FFmpegSubformatIdentificationStrategy.java)
 
 
 
