@@ -23,11 +23,14 @@ Für die Subformaterkennung stehen sowohl DNS-eigene Prozesse als auch  Wrapper-
 * [ImageMagickIdentificationStrategy](../java/de/uzk/hki/da/format/ImageMagickIdentifySubformatIdentificationStrategy.java)
 * [XMLSubformatIdentificationStrategy](../java/de/uzk/hki/da/format/XMLSubformatIdentificationStrategy.java)
 * [FFmpegSubformatIdentificationStrategy](../java/de/uzk/hki/da/format/FFmpegSubformatIdentificationStrategy.java)
+* TODO: TiffSubformatIdentificationStrategy
+
+Bis auf "XMLSubformatIdentificationStrategy" handelt es sich um Wrapperklassen, die den Output externer Programme (z.B. ffmpeg) auswerten. 
 
 
 
+Da nicht in jedem Fall davon ausgegangen werden kann, dass alle Identifier genutzt werden (oder installiert sind) 
 
-Zunächst ein Beispiel. Eine Tiff Datei enthält einen lzw-komprimierten Datenstrom. FIDO erkennt die Datei als vom Typ fmt/353. Das System führt daraufhin eine auf Tiff abgestimmte Überprüfung des Kompressionsformates durch und stellt lzw fest. Somit haben wir die Formatkombination [fmt/353, lzw] festgestellt. Um dieses Verhalten des Systems einzurichten, müssen einige Konfigurationen vorgenommen werden.
 
 ### SubformatIdentificationPolicy
 
