@@ -26,9 +26,6 @@ import org.junit.runners.Suite.SuiteClasses;
 import de.uzk.hki.da.action.AbstractActionTests;
 import de.uzk.hki.da.action.ActionFactoryTests;
 import de.uzk.hki.da.action.ActionRegistryTests;
-import de.uzk.hki.da.action.JobManagerTests;
-import de.uzk.hki.da.action.NewActionRegistryTests;
-import de.uzk.hki.da.action.SmartActionFactoryTests;
 import de.uzk.hki.da.cb.ArchiveReplicationActionTests;
 import de.uzk.hki.da.cb.BuildAIPActionTests;
 import de.uzk.hki.da.cb.CheckFormatsActionTest;
@@ -68,8 +65,8 @@ import de.uzk.hki.da.convert.PublishPDFConversionStrategyTests;
 import de.uzk.hki.da.convert.PublishXsltConversionStrategyTests;
 import de.uzk.hki.da.convert.TiffConversionStrategyTests;
 import de.uzk.hki.da.format.FakeFileFormatFacadeTests;
-import de.uzk.hki.da.format.XMLSubformatIdentifierTests;
 import de.uzk.hki.da.format.SubformatScanServiceTests;
+import de.uzk.hki.da.format.XMLSubformatIdentifierTests;
 import de.uzk.hki.da.grid.IrodsGridFacadeTest;
 import de.uzk.hki.da.grid.ReplicationExecutorTest;
 import de.uzk.hki.da.integrity.IntegrityScannerWorkerTest;
@@ -163,9 +160,6 @@ import de.uzk.hki.da.service.XPathUtilsTests;
 	SubformatScanServiceTests.class,
 	RestartIngestWorkflowActionTests.class,
 	PostRetrievalActionTest.class,
-	NewActionRegistryTests.class,
-	SmartActionFactoryTests.class,
-	JobManagerTests.class,
 	XMLSubformatIdentifierTests.class
 })
 public class SimpleSuite {
