@@ -10,6 +10,7 @@ Aufbauend auf der primären Formaterkennung kann DNSCore eine erweiterte Formate
 die Subformaterkennung durchzuführen ist.
 
 Beispiel:
+
     abc.tif 
     Erkanntes Format: fmt/353
     -> Subformaterkennungsprozedur: TiffSubformatIdentificationStrategy
