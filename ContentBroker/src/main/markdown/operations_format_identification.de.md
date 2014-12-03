@@ -27,17 +27,22 @@ Für die Subformaterkennung stehen sowohl DNS-eigene Prozesse als auch  Wrapper-
 * [FFmpegSubformatIdentificationStrategy](../java/de/uzk/hki/da/format/FFmpegSubformatIdentificationStrategy.java)
 * TODO: TiffSubformatIdentificationStrategy
 
-# Einrichten der Subformaterkennung
+## Einrichten der Subformaterkennung
+
+### Zentrale Einrichtung 
 
 Das Einrichten der Subformaterkennung ist Aufgabe des PreservationSystem-Admin (TODO Link). Ihm kommt die Aufgabe zu, festzulegen, ob, und ja, mit welcher Prozedur Dateien der verschiedenen Primärformate auf Subformate geprüft werden. Diese Zuordnung wird in der Object-DB in der Tabelle "subformat_identification_strategy_puid_mappings" festgehalten. Diese Tabelle ist sehr einfach gehalten:
 
     format_puid                            | character varying(255) | 
     subformat_identification_strategy_name | character varying(255) | <- fully qualified Java Name
 
+**format_puid** Der PRONOM Uniqe Identifier.
+
 Jeder Datensatz enthält einen PRONOM-Identifier und den Namen einer der durch DNSCore zur Verfügung gestellten Prozeduren. Dem oben genannte Beispiel liegt der folgende Datensatz zugrunde:
 
     fmt/353 | de.uzk.hki.da.format.TiffSubformatIdentificationStrategy
     
+### Einrichtung auf den Knoten
 
 
 
@@ -93,6 +98,7 @@ Eine Routine kapselt im wesentlich zwei Informationen. Einmal der name eines Skr
 ## Sekundäre Formaterkennung: Standardkonfigurationen
    
 Zum aktuellen Zeitpunkt der Entwicklung ...
+
 TODO: tiff
 TODO: diagnostics
 
