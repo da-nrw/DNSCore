@@ -20,7 +20,7 @@ Das Beispiel geht davon aus, dass die Prozedur "TiffSubformatIdentificationStrat
 
 Für die Subformaterkennung stehen sowohl DNS-eigene Prozesse als auch  Wrapper-Klassen zur Verfügung, die die Dienste externer Programme wie z.B. ffmpeg für DNSCore nutzbar machen. Derzeit verfügbare Prozesse sind:
 
-    (../java/de/uzk/hki/da/format/ImageMagickIdentifySubformatIdentificationStrategy.java)
+    [s](../java/de/uzk/hki/da/format/ImageMagickIdentifySubformatIdentificationStrategy.java)
 
 
 
