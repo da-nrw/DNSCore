@@ -46,9 +46,15 @@ Jeder Datensatz enthält einen PRONOM-Identifier und den Namen einer der durch D
 
 Die Subformaterkennung ist so konzipiert, dass sie innerhalb eines auf DNSCore basierenden Gesamtsystem in gleicher Weise funkioniert. Datenmodelltechnisch ausgedrückt ist die Zuordnung von Subformaterkennungsprozessen zu PUIDs eine globale Eigenschaft des Gesamtsystems. 
 
-Dies ist für die rein in Java implementierten Prozeduren unkritisch, da diese als Teil des jar files des ContentBroker ausgeliefert werden. Im Normalfall handelt es sich um bei den Prozeduren jedoch um Wrapperklassen, die den Output externer Programme (z.B. ffmpeg) auswerten. 
+Dies ist für die rein in Java implementierten Prozeduren unkritisch, da diese als Teil des ContentBroker jar-files ausgeliefert werden und somit automatisch auf jedem Knoten zur Verfügung stehen. Im Normalfall handelt es sich um bei den Prozeduren jedoch um Wrapperklassen, die den Output externer Programme (z.B. ffmpeg) auswerten. Dies erfordert, dass das jeweilige externe Identifier Tool aufgerufen kann und auch einer Version vorliegt, die einen Output produziert, der von der Wrapper-Klasse korrekt ausgelesen werden kann. 
 
-Um sicherzustellen, dass alle Knoten in gleicher Weise die benötigten externen Programme zur Formatidentifizierung vorliegen haben, stellt diagnostics (TODO link) vor Start des ContentBrokers fest, ob alle
+Um eine einheitliche Funktionalität des Gesamtsystems sicherzustellen, stellt DNSCore daher einen Mechanismus bereit, der automatisch überprüfen kann, ob die entsprechend benötigten externen Format-Identifier auch tatsächlich vorliegen. Hierzu stellen die einzelnen Wrapper-Klassen ihrerseits **HealthChecks** bereit (TODO präziser?)
+Der Aufruf dieser Health-Check-Prozeduren findet dann im Rahmen von **diagnostics** statt, welches Teil der Startup Prozedur des ContentBroker ist. Wenn ein benötigter Identifier nicht oder nicht in der richtigen Version vorliegt, bricht **diagnostics** den Start des ContentBroker ab.
+
+TODO Welche werden überprüft.
+
+
+
 
 
 
