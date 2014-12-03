@@ -22,10 +22,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
@@ -38,6 +40,10 @@ import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Document;
+import de.uzk.hki.da.model.DocumentsGenService;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.repository.RepositoryException;
 
 /**
@@ -53,6 +59,7 @@ public class RestructureAction extends AbstractAction{
 	private FileFormatFacade fileFormatFacade;
 	private IngestGate ingestGate;
 	private GridFacade gridRoot;
+	private DocumentsGenService dgs = new DocumentsGenService();
 	
 	public RestructureAction(){
 		SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;
@@ -102,19 +109,20 @@ public class RestructureAction extends AbstractAction{
 			}
 		}
 		
-		
 		String repName;
 		try {
 			repName = transduceDateFolderContentsToNewRep(object.getPath().toString());
 		} catch (IOException e) {		
 			throw new RuntimeException("problems during creating new representation",e);
 		}
-		object.getLatestPackage().scanRepRecursively(repName+"a");
-		job.setRep_name(repName);
-
 		
+		object.getLatestPackage().scanRepRecursively(repName+"a");
+		
+		job.setRep_name(repName);
 		object.reattach();
+		
 		determineFileFormats();
+		dgs.addDocumentsToObject(object);
 		
 		logger.debug("Create new b representation "+repName+"b");
 		Path.makeFile(object.getDataPath(), repName+"b").mkdir();
@@ -127,7 +135,8 @@ public class RestructureAction extends AbstractAction{
 	private void determineFileFormats() throws FileNotFoundException, IOException {
 		List<FileWithFileFormat> scannedFiles = null;
 		try {
-			scannedFiles = fileFormatFacade.identify(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
+			List<DAFile> dafiles = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
+			scannedFiles = fileFormatFacade.identify(dafiles);
 		} catch (FileFormatException e) {
 			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
 		}
@@ -135,8 +144,6 @@ public class RestructureAction extends AbstractAction{
 			logger.info(f+":"+f.getFormatPUID()+":"+f.getSubformatIdentifier());
 		}
 	}
-	
-	
 	
 	@Override
 	public void rollback() throws Exception {

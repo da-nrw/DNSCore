@@ -80,8 +80,6 @@ public class ScanAction extends AbstractAction{
 			this.setEndStatus(C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
 		}
 		
-		addDocumentsToObject();
-		
 		return true;
 	}
 
@@ -97,33 +95,6 @@ public class ScanAction extends AbstractAction{
 		}
 		
 	}
-
-
-	/**
-	 * @author Polina Gubaidullina
-	 * @param dafiles
-	 */
-	
-	private List<Document> createDocuments(List<DAFile> dafiles) {
-		List<Document> documents = new ArrayList<Document>();
-		for(DAFile dafile : dafiles) {
-			Document doc = new Document(dafile);
-			documents.add(doc);
-		}
-		return documents;
-	}
-	
-	/**
-	 * @author Polina Gubaidullina
-	 * 
-	 */
-	
-	private void addDocumentsToObject() {
-		List<DAFile> dafiles = object.getLatestPackage().getFiles();
-		List<Document> documents = createDocuments(dafiles);
-		object.setDocuments(documents);
-	}
-	
 	
 	
 	/**

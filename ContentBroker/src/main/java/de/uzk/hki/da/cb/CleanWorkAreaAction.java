@@ -58,6 +58,7 @@ public class CleanWorkAreaAction extends AbstractAction{
 					object.getPath()+"\"",e);
 		}
 		
+		object.getDocuments().clear();
 		object.getLatestPackage().getFiles().clear();
 		object.getLatestPackage().getEvents().clear();
 		

@@ -85,7 +85,11 @@ public class ConvertAction extends AbstractAction {
 		for (Event e:localConversionEvents){
 			object.getLatestPackage().getEvents().add(e);
 			object.getLatestPackage().getFiles().add(e.getTarget_file());
-			object.getDocument(FilenameUtils.getBaseName(e.getTarget_file().toRegularFile().getName())).addDAFile(e.getTarget_file());
+			try {
+				object.getDocument(FilenameUtils.getBaseName(e.getTarget_file().toRegularFile().getName())).addDAFile(e.getTarget_file());
+			} catch (Exception e2) {
+				throw new IllegalStateException("Document "+FilenameUtils.getBaseName(e.getTarget_file().toRegularFile().getName())+" does not exists."); 
+			}
 		}
 		
 		job.getConversion_instructions().clear();

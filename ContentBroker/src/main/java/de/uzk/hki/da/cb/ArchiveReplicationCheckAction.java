@@ -144,12 +144,14 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	private void prepareObjectForObjectDBStorage(Object obj) {
 
 		logger.debug("TEST Documents");
-		
 		for(Document doc : obj.getDocuments()) {
 			logger.debug("Name: "+doc.getName());
 			DAFile lastDAFile = doc.getLasttDAFile();
 			logger.debug("Last dafile: "+lastDAFile);
-			logger.debug("Previous dafile: "+lastDAFile.getPreviousDAFile());
+	        while(lastDAFile.getPreviousDAFile() != null){ 
+	        	logger.debug("Previous dafile: "+lastDAFile.getPreviousDAFile());
+	        	lastDAFile = lastDAFile.getPreviousDAFile(); 
+	        }
 		}
 		
 		obj.getDocuments().clear();
