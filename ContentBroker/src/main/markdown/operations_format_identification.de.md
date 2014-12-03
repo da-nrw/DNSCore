@@ -51,6 +51,16 @@ Dies ist für die rein in Java implementierten Prozeduren unkritisch, da diese a
 Um eine einheitliche Funktionalität des Gesamtsystems sicherzustellen, stellt DNSCore daher einen Mechanismus bereit, der automatisch überprüfen kann, ob die entsprechend benötigten externen Format-Identifier auch tatsächlich vorliegen. Hierzu stellen die einzelnen Wrapper-Klassen ihrerseits **HealthChecks** bereit (TODO präziser?)
 Der Aufruf dieser Health-Check-Prozeduren findet dann im Rahmen von **diagnostics** statt, welches Teil der Startup Prozedur des ContentBroker ist. Wenn ein benötigter Identifier nicht oder nicht in der richtigen Version vorliegt, bricht **diagnostics** den Start des ContentBroker ab.
 
+Da nicht in allen Fällen jede der Subformaterkennungsprozeduren benötigt wird, überprüft diagnostics dabei tatsächlich nur diejenigen Prozeduren, die tatsächlich auch global konfiguriert sind. Eine beispielhafte Systemkonfiguration, die lediglich die Erkennung von Tiff-Subformaten vorsieht, andere Subformate jedoch ausser acht lässt, könnte beispielsweise aus dem alleinigen Datensatz wie folgt bestehen:
+
+        fmt/353 | de.uzk.hki.da.format.TiffSubformatIdentificationStrategy
+
+diagnostics würde in dem Fall nur für diese eine Prozedur überprüfen, ob die notwendigen Voraussetzungen zu ihrer Ausführung auf dem jeweiligen Knoten gegeben sind (d.h. ob das entsprechende Tool einsatzbereit ist).
+
+
+
+
+
 TODO Welche werden überprüft.
 
 
