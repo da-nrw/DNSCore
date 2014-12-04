@@ -1,6 +1,8 @@
 # Formaterkennung mit DNSCore
 
-TODO: Hintergrund der Formaterkennung und der Subformaterkennung erläutern.
+Die Erkennung von Formaten ist zentraler Bestandteil der Langzeitarchivierung. Durch das genaue Überprüfen der Formate einer jeden Datei und Hinterlegung dieser Information in der Objekt-Datenbank ist die Voraussetzung gegeben, zu jedem Zeitpunkt Maßnahmen zu ergreifen, die entsprechenden Pakete durch entsprechende Formatmigrationen auf einen neueren technischen Stand zu migrieren. Auf diese Weise können Daten langfristig auch über Technologiebrüche hinweg erhalten werden.
+
+## Aufbau der Formaterkennung in DNSCore
 
 Die Formaterkennung der DNSCore gliedert sich in zwei Stufen. Die erste Stufe orientiert sich an dem [PRONOM](http://apps.nationalarchives.gov.uk/PRONOM/Default.aspx) Standard der National Archives. Die Erkennung der PUIDs (PRONOM Unique Identifier) geschieht dabei mithilfe des Programmes [FIDO](https://github.com/openplanets/fido). Die sekundäre Formaterkennung kann mithilfe einer Plugin-Systematik Containerformate oder Kompressionsalgorhythmen erkennen, in abhängigkeit von der PUID.
 
@@ -56,3 +58,7 @@ Da nicht in allen Fällen jede der Subformaterkennungsprozeduren benötigt wird,
         fmt/353 | de.uzk.hki.da.format.TiffSubformatIdentificationStrategy
 
 diagnostics würde in dem Fall nur für diese eine Prozedur überprüfen, ob die notwendigen Voraussetzungen zu ihrer Ausführung auf dem jeweiligen Knoten gegeben sind (d.h. ob das entsprechende Tool einsatzbereit ist).
+
+## Objektdatenbank
+
+
