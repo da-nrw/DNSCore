@@ -29,6 +29,8 @@ import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
+import de.uzk.hki.da.model.DocumentsGenService;
+
 
 /**
  * @author Daniel M. de Oliveira
@@ -38,6 +40,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 
 	private IngestGate ingestGate;
 	private GridFacade gridFacade;
+	private DocumentsGenService dgs = new DocumentsGenService();
 	
 	public ObjectToWorkAreaAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;}
 	
@@ -75,6 +78,9 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 		} catch (IOException e) {
 			throw new RuntimeException("error while trying to get existing packages from lza area",e);
 		}
+		
+		object.reattach();
+		dgs.addDocumentsToObject(object);
 		
 //		distributedConversionAdapter.register("work/"+object.getContractor().getShort_name()+"/"+object.getIdentifier(),
 //				object.getPath().toString());

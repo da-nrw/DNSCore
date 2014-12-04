@@ -26,7 +26,9 @@ import static org.mockito.Mockito.mock;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -41,6 +43,7 @@ import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -105,10 +108,16 @@ public class ConvertActionTests {
 		ConversionInstruction ci1 = new ConversionInstruction();
 		ci1.setTarget_folder("");
 		
+		List<Document> documents = new ArrayList<Document>();
+		
 		DAFile f = new DAFile(object.getLatestPackage(),"2011+11+01+a","premis.xml");
 		object.getLatestPackage().getFiles().add(f);
+		Document document = new Document(f);
+		documents.add(document);
 		
 		DAFile f1 = new DAFile(object.getLatestPackage(),"2011+11+01+a","abc.xml");
+		Document document1 = new Document(f1);
+		documents.add(document1);
 		ci1.setSource_file(f1);
 		ci1.setNode("vm3");
 		ci1.setConversion_routine(copy);
@@ -120,6 +129,10 @@ public class ConvertActionTests {
 		
 		DAFile f2 = new DAFile(object.getLatestPackage(),"2011+11+01+a","140864.tif");
 		ci2.setSource_file(f2);
+		Document document2 = new Document(f2);
+		documents.add(document2);
+		
+		object.setDocuments(documents);
 		
 		
 		ci2.setNode("vm2");

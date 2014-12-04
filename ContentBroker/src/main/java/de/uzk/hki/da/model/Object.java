@@ -54,6 +54,8 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.model.PublicationRight.Audience;
@@ -78,6 +80,9 @@ public class Object {
 		public static final Integer ArchivedAndValid = 100;
 	}
 
+	/** The Constant logger. */
+	private static final Logger logger = LoggerFactory.getLogger(Package.class);
+	
 	/** The object_state. */ 
 	private int object_state;
 
@@ -236,6 +241,15 @@ public class Object {
 	}	
 	
 	/**
+	 * Adds the documents.
+	 *
+	 * @param documents the new documents
+	 */
+	public void addDocument(Document doc) {
+		this.getDocuments().add(doc);
+	}	
+	
+	/**
 	 * Gets the documents.
 	 *
 	 * @return the documents
@@ -251,12 +265,18 @@ public class Object {
 	 * @return the document
 	 */
 	public Document getDocument(String docname) {
-		Document document = new Document();
-		for(Document doc : this.documents) {
-			if(doc.getName().equals(docname)) {
-				document = doc;
+		Document document = null;
+		if(!this.documents.isEmpty()) {
+			for(Document doc : this.documents) {
+				if(doc.getName().equals(docname)) {
+					document = new Document();
+					document = doc;
+				}
 			}
+		} else {
+			logger.debug("This object does not contain any documents.");
 		}
+		
 		return document;
 	}
 	

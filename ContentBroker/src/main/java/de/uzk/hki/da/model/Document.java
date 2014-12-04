@@ -107,6 +107,7 @@ public class Document {
 	 * @param dafile the dafile
 	 */
 	public void addDAFile(DAFile dafile) {
+		logger.debug("Add dafile "+dafile+" to document "+this.getName());
 		DAFile previousDAFile = this.lastDAFile;
 		dafile.setPreviousDAFile(previousDAFile);
 		this.setLastDAFile(dafile);
