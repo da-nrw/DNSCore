@@ -4,11 +4,11 @@ Die Erkennung von Formaten ist zentraler Bestandteil der Langzeitarchivierung. D
 
 ## Aufbau der Formaterkennung in DNSCore
 
-Die Formaterkennung der DNSCore gliedert sich in zwei Stufen. Die erste Stufe orientiert sich an dem [PRONOM](http://apps.nationalarchives.gov.uk/PRONOM/Default.aspx) Standard der [National Archives](http://www.nationalarchives.gov.uk/). Die Erkennung der PUIDs (PRONOM Unique Identifier) geschieht dabei mithilfe des Programmes [FIDO](https://github.com/openplanets/fido). Eine zweite Stufe der Formaterkennung, die sog. Subformaterkennung baut auf dem Ergebnis der primären Formaterkennung auf und kann die Dateien auf Kompressionsalgorithmen und Codecformate von Datenstreams innerhalb von Containerformaten überprüfen.
+Die Formaterkennung der DNSCore gliedert sich in zwei Stufen. Die erste Stufe orientiert sich an dem [PRONOM](http://apps.nationalarchives.gov.uk/PRONOM/Default.aspx) Standard der [National Archives](http://www.nationalarchives.gov.uk/). Die Erkennung der PUIDs (PRONOM Unique Identifier) geschieht dabei mithilfe des Programmes [FIDO](https://github.com/openplanets/fido). Eine zweite Stufe der Formaterkennung, die sog. Subformaterkennung, baut auf dem Ergebnis der primären Formaterkennung auf und kann die Dateien auf Kompressionsalgorithmen und Codecformate von Datenstreams innerhalb von Containerformaten überprüfen.
 
 ## Ablage der Formatinformationen in der Objektdatenbank
 
-Als Ergebnis dieser Formatüberprüfung wird das einer physischen Datei zugeordnete [DAFile](object_model.de.md#dafile) Objekt mit den entsprechenden Informationen für erkannten Primärformat und Subformat angereichert. Ob ein Wert für das Subformat ermittelt werden kann, hängt von der Konfiguration des Systemes, den installierten zusätzlichen Formatidentifiern, und dem Datenformat ab. Die Konfiguration wird in folgenden Abschnitten näher erläutert.
+Als Ergebnis dieser Formatüberprüfung wird das einer physikalische Datei repräsentierende [DAFile](object_model.de.md#dafile) mit den entsprechenden Informationen für erkannten Primärformat und Subformat angereichert. Ob ein Wert für das Subformat ermittelt werden kann, hängt von der Konfiguration des Systemes, den installierten zusätzlichen Formatidentifiern, und dem Datenformat ab. Die Konfiguration wird in folgenden Abschnitten näher erläutert.
 
     Auszug Postgres Beschreibung der Tabelle "dafiles"
     format_puid               | character varying(255) | 
