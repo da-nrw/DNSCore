@@ -19,6 +19,7 @@ Als Ergebnis dieser Formatüberprüfung wird das einer physischen Datei zugeordn
 
 Die Informationen zum DAFile werden während der Workflows der ContentBroker ermittelt und während der Laufzeit der Workflows in der Objektdatenbank vorgehalten. Am Ende des Ingest-Workflows werden diese Daten in die jedem Package zugehörige premis.xml serialisiert und aus der Objektdatenbank entfernt. Diese Maßnahme soll die Größe der Objektdatenbank minimieren. Um die in den Objekten enthaltenen Formate für spätere Maßnahmen der Langzeitarchivierung recherchierbar zu machen, wird stattdessen eine kommaseparierte Liste aller im Objekt enthaltenen Formate und Subformate generiert und als Teil des Objektes in der Datenbank dauerhaft vorgehalten:
 
+    Auszug Postgres Beschreibung der Tabelle "objects"
     original_formats                 | character varying(255)      | 
     most_recent_formats              | character varying(255)      | 
     most_recent_secondary_attributes | character varying(255)      | 
@@ -54,6 +55,7 @@ Für die Subformaterkennung stehen sowohl DNS-eigene Prozesse als auch  Wrapper-
 
 Das Einrichten der Subformaterkennung ist Aufgabe des PreservationSystem-Admin (TODO Link). Ihm kommt die Aufgabe zu, festzulegen, ob, und ja, mit welcher Prozedur Dateien der verschiedenen Primärformate auf Subformate geprüft werden. Diese Zuordnung wird in der Object-DB in der Tabelle "subformat_identification_strategy_puid_mappings" festgehalten. Diese Tabelle ist sehr einfach gehalten:
 
+    Auszug Postgres Beschreibung der Tabelle "subformat_identification_strategy_puid_mappings"
     format_puid                            | character varying(255) | 
     subformat_identification_strategy_name | character varying(255) | <- fully qualified Java Name
 
