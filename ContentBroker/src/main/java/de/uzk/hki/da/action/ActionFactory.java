@@ -22,7 +22,6 @@ package de.uzk.hki.da.action;
 
 import java.util.List;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.slf4j.Logger;

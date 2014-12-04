@@ -23,15 +23,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 
-import javax.jms.Connection;
-import javax.jms.DeliveryMode;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-import javax.jms.TextMessage;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.hibernate.Session;
 import org.jdom.JDOMException;
 import org.slf4j.Logger;
@@ -51,8 +44,8 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.service.JmsMessage;
+import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.service.MailContents;
 import de.uzk.hki.da.service.UserExceptionManager;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
