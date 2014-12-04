@@ -4,9 +4,18 @@ Die Erkennung von Formaten ist zentraler Bestandteil der Langzeitarchivierung. D
 
 ## Aufbau der Formaterkennung in DNSCore
 
-Die Formaterkennung der DNSCore gliedert sich in zwei Stufen. Die erste Stufe orientiert sich an dem [PRONOM](http://apps.nationalarchives.gov.uk/PRONOM/Default.aspx) Standard der National Archives. Die Erkennung der PUIDs (PRONOM Unique Identifier) geschieht dabei mithilfe des Programmes [FIDO](https://github.com/openplanets/fido). Die sekundäre Formaterkennung kann mithilfe einer Plugin-Systematik Containerformate oder Kompressionsalgorhythmen erkennen, in abhängigkeit von der PUID.
+Die Formaterkennung der DNSCore gliedert sich in zwei Stufen. Die erste Stufe orientiert sich an dem [PRONOM](http://apps.nationalarchives.gov.uk/PRONOM/Default.aspx) Standard der National Archives. Die Erkennung der PUIDs (PRONOM Unique Identifier) geschieht dabei mithilfe des Programmes [FIDO](https://github.com/openplanets/fido). Eine zweite Stufe der Formaterkennung, die sog. Subformaterkennung baut auf dem Ergebnis der primären Formaterkennung auf und kann die Dateien auf Kompressionsalgorithmen und Codecformate von Datenstreams innerhalb von Containerformaten überprüfen.
 
-Auf der Erkennung der PUIDs basiert die Migrationskomponente von DNSCore. Für jede Datei, die im DNSCore eingespielt wird, wird eine Abgleich der erkannten PUID mit den zur Verfügung stehenden ConversionPolicies vorgenommen. Gibt es einen oder mehrere Treffer, so werden die entsprechenden Aufträge erstellt und das System führt eine Formatmigration für die Datei durch.
+## Ablage der Formatinformationen in der Objektdatenbank
+
+Als Ergebnis dieser Formatüberprüfung wird das einer physischen Datei zugeordnete [DAFile](object_model.de.md#dafile) Objekt mit den entsprechenden Informationen für erkannten Primärformat und Subformat angereichert. Ob ein Wert für das Subformat ermittelt werden kann, hängt von der Konfiguration des Systemes, den installierten zusätzlichen Formatidentifiern, und dem Datenformat ab. Die Konfiguration wird in folgenden Abschnitten näher erläutert.
+
+    DAFile
+        format_puid: String          // Format Identifier im PRONOM Format
+        subformat_identifier: String // Subformat identifier
+
+Die Informationen zum DAFile werden während der Workflows der ContentBroker ermittelt und während der Laufzeit der Workflows in der Objektdatenbank vorgehalten.
+
 
 ## Subformaterkennung
 
