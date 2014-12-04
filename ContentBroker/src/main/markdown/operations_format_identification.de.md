@@ -8,7 +8,7 @@ Die Formaterkennung der DNSCore gliedert sich in zwei Stufen. Die erste Stufe or
 
 ## Ablage der Formatinformationen in der Objektdatenbank
 
-Als Ergebnis dieser Formatüberprüfung wird das einer physikalische Datei repräsentierende [DAFile](object_model.de.md#dafile) mit den entsprechenden Informationen für erkannten Primärformat und Subformat angereichert. Ob ein Wert für das Subformat ermittelt werden kann, hängt von der Konfiguration des Systemes, den installierten zusätzlichen Formatidentifiern, und dem Datenformat ab. Die Konfiguration wird in folgenden Abschnitten näher erläutert.
+Als Ergebnis dieser Formatüberprüfung wird das einer physikalische Datei repräsentierende [DAFile](object_model.de.md#dafile) mit den entsprechenden Informationen für erkannten Primärformat und Subformat angereichert. Ob ein Wert für das Subformat ermittelt werden kann, hängt von der Konfiguration des Systemes, den installierten zusätzlichen Formatidentifiern, und dem Datenformat ab. Die Konfiguration wird weiter unten näher erläutert.
 
     Auszug Postgres Beschreibung der Tabelle "dafiles"
     format_puid               | character varying(255) | 
