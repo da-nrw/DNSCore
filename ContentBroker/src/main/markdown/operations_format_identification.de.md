@@ -10,12 +10,22 @@ Die Formaterkennung der DNSCore gliedert sich in zwei Stufen. Die erste Stufe or
 
 Als Ergebnis dieser Formatüberprüfung wird das einer physischen Datei zugeordnete [DAFile](object_model.de.md#dafile) Objekt mit den entsprechenden Informationen für erkannten Primärformat und Subformat angereichert. Ob ein Wert für das Subformat ermittelt werden kann, hängt von der Konfiguration des Systemes, den installierten zusätzlichen Formatidentifiern, und dem Datenformat ab. Die Konfiguration wird in folgenden Abschnitten näher erläutert.
 
-    DAFile
-        format_puid: String          // Format Identifier im PRONOM Format
-        subformat_identifier: String // Subformat identifier
+    Auszug Postgres Beschreibung der Tabelle "dafiles"
+    format_puid               | character varying(255) | 
+    subformat_identifier      | character varying(255) |
 
-Die Informationen zum DAFile werden während der Workflows der ContentBroker ermittelt und während der Laufzeit der Workflows in der Objektdatenbank vorgehalten.
+* **format_puid** Format Identifier im PRONOM Format
+* **subformat_identifier** Subformat Identifier
 
+Die Informationen zum DAFile werden während der Workflows der ContentBroker ermittelt und während der Laufzeit der Workflows in der Objektdatenbank vorgehalten. Am Ende des Ingest-Workflows werden diese Daten in die jedem Package zugehörige premis.xml serialisiert und aus der Objektdatenbank entfernt. Diese Maßnahme soll die Größe der Objektdatenbank minimieren. Um die in den Objekten enthaltenen Formate für spätere Maßnahmen der Langzeitarchivierung recherchierbar zu machen, wird stattdessen eine kommaseparierte Liste aller im Objekt enthaltenen Formate und Subformate generiert und als Teil des Objektes in der Datenbank dauerhaft vorgehalten:
+
+    original_formats                 | character varying(255)      | 
+    most_recent_formats              | character varying(255)      | 
+    most_recent_secondary_attributes | character varying(255)      | 
+
+* **original_formats** Kommasepariertes Set der PUIDs der jeweils neuesten Repräsentation der im Objekt enthaltenen Dateien
+* **most_recent_formats** Kommasepariertes Set der PUIDs der gesamten im Objekt enthaltenen Dateien
+* **most_recent_secondary_attributes** Kommasepariertes Set der Subformatidentifier der jeweils neuesten Repräsentation der im Objekt enthaltenen Dateien.
 
 ## Subformaterkennung
 
