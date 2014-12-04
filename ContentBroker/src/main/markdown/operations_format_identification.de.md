@@ -59,8 +59,8 @@ Das Einrichten der Subformaterkennung ist Aufgabe des PreservationSystem-Admin (
     format_puid                            | character varying(255) | 
     subformat_identification_strategy_name | character varying(255) | 
 
-**format_puid** Der PRONOM Uniqe Identifier.
-**subformat_identification_strategy_name** Voll qualifizierter Name der FormatIdentificationStrategy implementierenden Java-Klasse, die zur Formatidentifikation der Dateien des entprechenden Primärformates fungiert.
+* **format_puid** Der PRONOM Uniqe Identifier.
+* **subformat_identification_strategy_name** Voll qualifizierter Name der FormatIdentificationStrategy implementierenden Java-Klasse, die zur Formatidentifikation der Dateien des entprechenden Primärformates fungiert.
 
 Jeder Datensatz enthält einen PRONOM-Identifier und den Namen einer der durch DNSCore zur Verfügung gestellten Prozeduren. Dem oben genannte Beispiel liegt der folgende Datensatz zugrunde:
 
