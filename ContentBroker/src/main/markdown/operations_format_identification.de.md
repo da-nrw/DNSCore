@@ -37,7 +37,7 @@ Beispiel:
 
     Datei: abc.tif 
     -> Erkanntes Format: fmt/353
-    Subformaterkennungsprozedur: TiffSubformatIdentificationStrategy
+    Subformaterkennungsprozedur: ImageMagickSubformatIdentificationStrategy
     -> Erkanntes Subformat: lzw (lzw-codec)
 
 Das Beispiel geht davon aus, dass die Prozedur "TiffSubformatIdentificationStrategy" mit dem Format Identifier [fmt/353](http://apps.nationalarchives.gov.uk/PRONOM/Format/proFormatSearch.aspx?status=detailReport&id=1099) verknüft ist. Die als fmt/353 erkannte Beispieldatei wird daraufhin durchläuft daraufhin die festgelegte Subformaterkennungsprozedur. Diese liefert "lzw" als Bezeichner für ein Kompressionsverfahren den im Tiff enthalteten Datenstrom zurück.
@@ -47,7 +47,6 @@ Für die Subformaterkennung stehen sowohl DNS-eigene Prozesse als auch  Wrapper-
 * [ImageMagickIdentificationStrategy](../java/de/uzk/hki/da/format/ImageMagickIdentifySubformatIdentificationStrategy.java)
 * [XMLSubformatIdentificationStrategy](../java/de/uzk/hki/da/format/XMLSubformatIdentificationStrategy.java)
 * [FFmpegSubformatIdentificationStrategy](../java/de/uzk/hki/da/format/FFmpegSubformatIdentificationStrategy.java)
-* TODO: TiffSubformatIdentificationStrategy
 
 ## Einrichten der Subformaterkennung
 
