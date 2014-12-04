@@ -30,8 +30,8 @@ Die Informationen zum DAFile werden während der Workflows der ContentBroker erm
 
 ## Subformaterkennung
 
-Aufbauend auf der primären Formaterkennung kann DNSCore eine erweiterte Formaterkennung durchführen. Der PreservationSystem-Administrator kann an für erkannte Formate festlegen, ob, und wenn ja, mithilfe welcher Prozeduren,
-die Subformaterkennung durchzuführen ist. Ergebnis dieser Subforamterkennung ist, dass File Format einer Datei um eine zustätzliche Information, den Subformat-Identifier angereichert wird. Die Identifier sind derzeit nicht standartisiert und hängen teilweise vom Output externer Programme ab.
+Aufbauend auf der primären Formaterkennung kann DNSCore eine erweiterte Formaterkennung durchführen. Der PreservationSystem-Administrator kann für erkannte Formate festlegen, ob, und wenn ja, mithilfe welcher Prozeduren,
+die Subformaterkennung durchzuführen ist. Ergebnis dieser Subformaterkennung ist, dass File Format einer Datei um eine zustätzliche Information, den Subformat-Identifier angereichert wird. Die Identifier sind derzeit nicht standartisiert und hängen teilweise vom Output externer Programme ab.
 
 Beispiel:
 
