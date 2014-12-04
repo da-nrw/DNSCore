@@ -52,7 +52,7 @@ Für die Subformaterkennung stehen sowohl DNS-eigene Prozesse als auch  Wrapper-
 
 ### Zentrale Einrichtung 
 
-Das Einrichten der Subformaterkennung ist Aufgabe des [PreservationSystem](object_model.de.md#preservationsystem---das-gesamtsystem)-[Administrator](object_model.de.md#user---der-benutzer). Ihm kommt die Aufgabe zu, festzulegen, ob, und ja, mit welcher Prozedur Dateien der verschiedenen Primärformate auf Subformate geprüft werden. Diese Zuordnung wird in der Object-DB in der Tabelle "subformat_identification_strategy_puid_mappings" festgehalten. Diese Tabelle ist sehr einfach gehalten:
+Das Einrichten der Subformaterkennung ist Aufgabe des [PreservationSystem-Administrator](object_model.de.md#user---der-benutzer). Ihm kommt die Aufgabe zu, festzulegen, ob, und ja, mit welcher Prozedur Dateien der verschiedenen Primärformate auf Subformate geprüft werden. Diese Zuordnung wird in der Object-DB in der Tabelle "subformat_identification_strategy_puid_mappings" festgehalten. Diese Tabelle ist sehr einfach gehalten:
 
     Auszug Postgres Beschreibung der Tabelle "subformat_identification_strategy_puid_mappings"
     format_puid                            | character varying(255) | 
