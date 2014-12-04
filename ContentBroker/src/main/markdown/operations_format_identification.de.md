@@ -17,7 +17,7 @@ Als Ergebnis dieser Formatüberprüfung wird das einer physikalische Datei repr�
 * **format_puid** Format Identifier im PRONOM Format
 * **subformat_identifier** Subformat Identifier
 
-Die Informationen zum DAFile werden während der Workflows der ContentBroker ermittelt und während der Laufzeit der Workflows in der Objektdatenbank vorgehalten. Am Ende des Ingest-Workflows werden diese Daten in die jedem Package zugehörige [premis.xml](specification_premis.md) serialisiert und aus der Objektdatenbank entfernt. Diese Maßnahme soll die Größe der Objektdatenbank minimieren. Um die in den Objekten enthaltenen Formate für spätere Maßnahmen der Langzeitarchivierung recherchierbar zu machen, werdeb stattdessen kommaseparierte Sets aller im Objekt enthaltenen Formate und Subformate generiert und als Teil des Objektes in der Datenbank dauerhaft vorgehalten:
+Die Informationen zum DAFile werden während der Workflows der ContentBroker ermittelt und während der Laufzeit der Workflows in der Objektdatenbank vorgehalten. Am Ende des Ingest-Workflows werden diese Daten in die jedem Package zugehörige [premis.xml](specification_premis.md) serialisiert und aus der Objektdatenbank entfernt. Diese Maßnahme soll die Größe der Objektdatenbank minimieren. Um die in den Objekten enthaltenen Formate für spätere Maßnahmen der Langzeitarchivierung recherchierbar zu machen, werden stattdessen kommaseparierte Sets aller im Objekt enthaltenen Formate und Subformate generiert und als Teil des Objektes in der Datenbank dauerhaft vorgehalten:
 
     Auszug Postgres Beschreibung der Tabelle "objects"
     original_formats                 | character varying(255)      | 
