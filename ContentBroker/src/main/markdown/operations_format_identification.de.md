@@ -81,6 +81,4 @@ Da nicht in allen Fällen jede der Subformaterkennungsprozeduren benötigt wird,
 
 diagnostics würde in dem Fall nur für diese eine Prozedur überprüfen, ob die notwendigen Voraussetzungen zu ihrer Ausführung auf dem jeweiligen Knoten gegeben sind (d.h. ob das entsprechende Tool einsatzbereit ist).
 
-## Objektdatenbank
-
 
