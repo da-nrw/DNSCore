@@ -33,6 +33,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.Path;
@@ -43,6 +44,7 @@ import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.pkg.BagitConsistencyChecker;
 import de.uzk.hki.da.pkg.ConsistencyChecker;
+import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.utils.Utilities;
 
 /**
@@ -93,6 +95,8 @@ public class UnpackAction extends AbstractAction {
 				object.getLatestPackage().getContainerName());
 	
 		if (!ingestGate.canHandle(absoluteSIPPath.toFile().length())){
+			JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,object.getIdentifier() + " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
+			super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
 			logger.warn("ResourceMonitor prevents further processing of package due to space limitations. Setting job back to start state.");
 			return false;
 		}

@@ -25,6 +25,7 @@ package de.uzk.hki.da.action;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -46,6 +47,8 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
+import de.uzk.hki.da.service.JmsMessage;
+import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.service.UserExceptionManager;
 
 /**
@@ -58,6 +61,7 @@ public class AbstractActionTests {
 	Session mockSession = null;
 	private Object object;
 	private Job job;
+	JmsMessageServiceHandler ams;
 	
 	@Before
 	public void setUp(){
@@ -75,6 +79,7 @@ public class AbstractActionTests {
 		Package pkg = new Package();
 		pkg.setName("1");
 		pkg.setContainerName("CONTAINER");
+		ams = mock (JmsMessageServiceHandler.class);
 		
 		UserExceptionManager userExceptionManager = mock(UserExceptionManager.class);
 		when(userExceptionManager.getMessage((UserExceptionId) anyObject())).thenReturn("Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Package ist nicht konsistent!\n\nMeldung:\n%ERROR_INFO\nEs ist wahrscheinlich, dass Fehler bei der Übertragung aufgetreten sind. Bitte versuchen Sie eine erneute Ablieferung.");
@@ -89,6 +94,7 @@ public class AbstractActionTests {
 		object.setContractor(c);
 		object.getPackages().add(pkg);
 		action.setObject(object);
+		action.setJmsMessageServiceHandler(ams);
 		action.setStartStatus(startStatus);
 		action.setEndStatus(endStatus);
 		action.SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
@@ -189,6 +195,7 @@ public class AbstractActionTests {
 		verify(mockSession,times(0)).delete(action.getJob());
 		verify(mockSession,times(0)).delete(action.getObject());
 		verify(mockSession,times(0)).save((Job)anyObject());
+		verify(ams, times(1)).sendJMSMessage((JmsMessage)anyObject());
 		assertEquals("194",action.getJob().getStatus());
 	}
 	
@@ -204,6 +211,7 @@ public class AbstractActionTests {
 		verify(mockSession,times(0)).delete(action.getJob());
 		verify(mockSession,times(0)).delete(action.getObject());
 		verify(mockSession,times(0)).save((Job)anyObject());
+		verify(ams, times(1)).sendJMSMessage((JmsMessage)anyObject());
 		assertEquals("19"+C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED,action.getJob().getStatus());
 	}
 
@@ -219,6 +227,7 @@ public class AbstractActionTests {
 		verify(mockSession,times(0)).delete(action.getJob());
 		verify(mockSession,times(0)).delete(action.getObject());
 		verify(mockSession,times(0)).save((Job)anyObject());
+		verify(ams, times(1)).sendJMSMessage((JmsMessage)anyObject());
 		assertEquals("19"+C.WORKFLOW_STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED,action.getJob().getStatus());
 	}
 	

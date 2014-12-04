@@ -34,6 +34,7 @@ import org.springframework.core.task.TaskRejectedException;
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.action.ActionFactory;
 import de.uzk.hki.da.action.ActionInformation;
+import de.uzk.hki.da.service.JmsMessageServiceHandler;
 
 
 
@@ -78,7 +79,7 @@ public class ContentBroker {
 	private int serverSocketNumber;
 	
 	/** The MqBroker */
-	private ActiveMQConnectionFactory mqConnectionFactory;
+	private JmsMessageServiceHandler jmsMessageServiceHandler ;
 	
 
 	private XBeanBrokerService mqBroker;
@@ -176,11 +177,19 @@ public class ContentBroker {
 
 		controller = new Controller("localhost",
 				getServerSocketNumber(),
-				actionFactory, actionInformation, mqBroker, mqConnectionFactory);
+				actionFactory, actionInformation, mqBroker, jmsMessageServiceHandler );
 		(new Thread(controller)).start();
 	}
 	
 	
+
+	public JmsMessageServiceHandler getJmsMessageService() {
+		return jmsMessageServiceHandler;
+	}
+
+	public void setJmsMessageServiceHandler(JmsMessageServiceHandler jmsMessageService) {
+		this.jmsMessageServiceHandler = jmsMessageService;
+	}
 
 	/**
 	 * Gets the task executor.
@@ -258,15 +267,6 @@ public class ContentBroker {
 	public XBeanBrokerService getMqBroker() {
 		return mqBroker;
 	}	
-
-	public ActiveMQConnectionFactory getMqConnectionFactory() {
-		return mqConnectionFactory;
-	}
-
-
-	public void setMqConnectionFactory(ActiveMQConnectionFactory mqConnectionFactory) {
-		this.mqConnectionFactory = mqConnectionFactory;
-	}
 
 
 	/**

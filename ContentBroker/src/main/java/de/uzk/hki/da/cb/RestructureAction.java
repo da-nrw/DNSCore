@@ -39,6 +39,7 @@ import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.service.JmsMessage;
 
 /**
  * <li>Creates a new Representation and copies the contents of the submission into it.
@@ -83,6 +84,8 @@ public class RestructureAction extends AbstractAction{
 
 			try {
 				if (!getIngestGate().canHandle(retrievePackagesHelper.getObjectSize(object, job ))){
+					JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,object.getIdentifier() + " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
+					super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
 					logger.info("no disk space available at working resource. will not fetch new data.");
 					return false;
 				}
