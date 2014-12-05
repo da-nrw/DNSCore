@@ -22,7 +22,6 @@ package de.uzk.hki.da.action;
 
 import java.util.List;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.slf4j.Logger;
@@ -39,6 +38,7 @@ import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.SubformatIdentificationStrategyPuidMapping;
+import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.service.UserExceptionManager;
 
 
@@ -72,8 +72,8 @@ public class ActionFactory implements ApplicationContextAware {
 	/** The on halt. */
 	private boolean onHalt = false;
 	
-	/** *The Active MQ Connection factory */
-	private ActiveMQConnectionFactory mqConnectionFactory;
+	/** *The JmsMessageService */
+	private JmsMessageServiceHandler jmsMessageServiceHandler;
 
 	private PreservationSystem preservationSystem;
 
@@ -97,7 +97,7 @@ public class ActionFactory implements ApplicationContextAware {
 	
 	private void injectProperties(AbstractAction action, Job job){
 		action.setUserExceptionManager(userExceptionManager);
-		action.setMqConnectionFactory(mqConnectionFactory);
+		action.setJmsMessageServiceHandler(jmsMessageServiceHandler);
 		action.setLocalNode(localNode);
 		job.getObject().setTransientNodeRef(localNode);
 		action.setObject(job.getObject());
@@ -178,9 +178,15 @@ public class ActionFactory implements ApplicationContextAware {
 		
 	}
 	
-	
-	
-	
+
+	public JmsMessageServiceHandler getJmsMessageService() {
+		return jmsMessageServiceHandler;
+	}
+
+	public void setJmsMessageServiceHandler(JmsMessageServiceHandler jmsMessageService) {
+		this.jmsMessageServiceHandler = jmsMessageService;
+	}
+
 	/**
 	 * Gets the second stage scan policies.
 	 *
@@ -266,20 +272,6 @@ public class ActionFactory implements ApplicationContextAware {
 	 */
 	public void setLocalNode(Node localNode) {
 		this.localNode = localNode;
-	}
-
-	/**
-	 * @return the mqConnectionFactory
-	 */
-	public ActiveMQConnectionFactory getMqConnectionFactory() {
-		return mqConnectionFactory;
-	}
-
-	/**
-	 * @param mqConnectionFactory the mqConnectionFactory to set
-	 */
-	public void setMqConnectionFactory(ActiveMQConnectionFactory mqConnectionFactory) {
-		this.mqConnectionFactory = mqConnectionFactory;
 	}
 
 	public PreservationSystem getPreservationSystem() {

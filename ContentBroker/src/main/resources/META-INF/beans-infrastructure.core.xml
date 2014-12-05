@@ -66,4 +66,7 @@
   <amq:connectionFactory brokerURL="tcp://localhost:${cb.serverSocketNumber}"
   id="mqConnectionFactory" />
   
+  <bean id="jmsMessageServiceHandler" class="de.uzk.hki.da.service.JmsMessageServiceHandler">
+  	<property name="mqConnectionFactory" ref="mqConnectionFactory"/>
+  </bean>
  </beans>

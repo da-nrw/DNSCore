@@ -255,7 +255,7 @@ public class IntegrityScannerWorker {
 				while (i<retries && !valid) {
 					try {
 						Thread.sleep(sleepFor);
-						logger.debug("...Waking up ");
+						logger.debug("...Waking up. Is still " + valid);
 						valid = gridFacade.isValid(dao);
 						i++;
 					} catch (InterruptedException e) {

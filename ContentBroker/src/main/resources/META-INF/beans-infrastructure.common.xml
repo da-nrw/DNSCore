@@ -25,8 +25,8 @@
         <property name="taskExecutor" ref="taskExecutor" />
         <property name="actionFactory" ref="actionFactory" />
         <property name="serverSocketNumber" value="${cb.serverSocketNumber}" />
-          <property name="mqBroker" ref="mqBroker" />
-       <property name="mqConnectionFactory" ref="mqConnectionFactory" />
+        <property name="mqBroker" ref="mqBroker" />
+       <property name="jmsMessageServiceHandler" ref="jmsMessageServiceHandler"/>
        <property name="actionInformation" ref="actionInformation" />
     </bean>
           
@@ -77,7 +77,7 @@
         <property name="localNode" ref="localNode" />
         <property name="queueConnector" ref="queueConnector" />
         <property name="userExceptionManager" ref="userExceptionManager" />
-        <property name="mqConnectionFactory" ref="mqConnectionFactory"/>
+        <property name="jmsMessageServiceHandler" ref="jmsMessageServiceHandler"/>
         <property name="fileFormatFacade" ref="${cb.implementation.fileFormatFacade:standardFileFormatFacade}" />
     </bean>
     

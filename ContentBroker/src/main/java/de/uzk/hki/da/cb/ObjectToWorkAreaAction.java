@@ -23,10 +23,13 @@ import java.io.IOException;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DocumentsGenService;
+import de.uzk.hki.da.service.JmsMessage;
+
 
 /**
  * @author Daniel M. de Oliveira
@@ -60,7 +63,9 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 		
 		try {
 			if (!ingestGate.canHandle(retrievePackagesHelper.getObjectSize(object, job))) {
-				logger.warn("ResourceMonitor prevents further processing of package due to space limitations. Setting job back to start state.");
+				JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,object.getIdentifier() + " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
+				super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
+				logger.warn("ResourceMonitor prevents further processing of package due to space limitations - Setting job back to start state.");
 				return false;
 			}
 		} catch (IOException e) {

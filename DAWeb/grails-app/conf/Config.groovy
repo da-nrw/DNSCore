@@ -116,6 +116,7 @@ grails.plugin.springsecurity.authority.className = 'daweb3.Role'
 grails.plugin.springsecurity.rejectIfNoRule = true
 grails.plugin.springsecurity.fii.rejectPublicInvocations = false
 grails.plugin.springsecurity.useSecurityEventListener = true
+grails.plugin.springsecurity.successHandler.defaultTargetUrl = '/'
 // Basic auth is needed for REST style interface to DNS
 grails.plugin.springsecurity.useBasicAuth = true
 grails.plugin.springsecurity.basic.realmName = "DAWEB - DNSCORE"

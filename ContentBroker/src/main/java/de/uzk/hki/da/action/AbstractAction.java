@@ -23,15 +23,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 
-import javax.jms.Connection;
-import javax.jms.DeliveryMode;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-import javax.jms.TextMessage;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.hibernate.Session;
 import org.jdom.JDOMException;
 import org.slf4j.Logger;
@@ -51,6 +44,8 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.service.JmsMessage;
+import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.service.MailContents;
 import de.uzk.hki.da.service.UserExceptionManager;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
@@ -89,7 +84,8 @@ public abstract class AbstractAction implements Runnable {
 	protected String endStatus;
 	protected String description;
 	private UserExceptionManager userExceptionManager;
-	private ActiveMQConnectionFactory mqConnectionFactory;
+	
+	private JmsMessageServiceHandler jmsMessageServiceHandler;
 
 	
 	protected Node localNode;                        // Implementations should never alter the state of this object to ensure thread safety
@@ -341,30 +337,11 @@ public abstract class AbstractAction implements Runnable {
 	 * @param e
 	 */
 	private void sendJMSException(Exception e) {
-		if (mqConnectionFactory!=null) {
-		try {
-		 
-			Connection connection = mqConnectionFactory.createConnection();
-			connection.start();
-			javax.jms.Session session = connection.createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
-			Destination toClient = session.createQueue("CB.ERROR");
-			Destination toServer = session.createQueue("CB.ERROR.SERVER");
-			MessageProducer producer;
-			producer = session.createProducer(toClient);
-			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);   
-			String txt =  e.getMessage(); 	
-			if  (e.getMessage()=="null") txt = "-keine weiteren Details- (NPE)"; 	
-			String messageSend = "Package "+  object.getIdentifier() + " " + txt;
-			TextMessage message = session.createTextMessage(messageSend);
-			message.setJMSReplyTo(toServer);
-	        producer.send(message);
-	        producer.close();
-	        session.close();
-	        connection.close();
-		}catch (JMSException e1) {
-			logger.error("Error while connecting to ActiveMQ Broker " + e1.getCause());
-		}
-		}
+	
+		String txt =  e.getMessage(); 	
+		if  (e.getMessage().equals("null")) txt = "-keine weiteren Details- (NPE)"; 	
+		JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,txt);
+		jmsMessageServiceHandler.sendJMSMessage(jms);
 	}
 
 	private void synchronizeObjectDatabaseAndFileSystemState() {
@@ -415,6 +392,14 @@ public abstract class AbstractAction implements Runnable {
 		MDC.remove("object_id");
 	}
 
+
+	public JmsMessageServiceHandler getJmsMessageServiceHandler() {
+		return jmsMessageServiceHandler;
+	}
+
+	public void setJmsMessageServiceHandler(JmsMessageServiceHandler jmsMessageServiceHandler) {
+		this.jmsMessageServiceHandler = jmsMessageServiceHandler;
+	}
 
 	public void setEndStatus(String es){
 		this.endStatus=es;
@@ -492,12 +477,6 @@ public abstract class AbstractAction implements Runnable {
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	public ActiveMQConnectionFactory getMqConnectionFactory() {
-		return mqConnectionFactory;
-	}
-	public void setMqConnectionFactory(ActiveMQConnectionFactory mqConnectionFactory) {
-		this.mqConnectionFactory = mqConnectionFactory;
 	}
 
 	public Session openSession() {

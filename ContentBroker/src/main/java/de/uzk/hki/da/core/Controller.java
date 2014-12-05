@@ -43,6 +43,8 @@ import de.uzk.hki.da.action.ActionDescription;
 import de.uzk.hki.da.action.ActionFactory;
 import de.uzk.hki.da.action.ActionInformation;
 import de.uzk.hki.da.action.ActionRegistry;
+import de.uzk.hki.da.service.JmsMessage;
+import de.uzk.hki.da.service.JmsMessageServiceHandler;
 
 /**
  * Controls and coordinates the work of the action factory and its associate
@@ -64,136 +66,118 @@ public class Controller implements Runnable {
 	private String serverName;
 
 	private XBeanBrokerService mqBroker;
-	private ActiveMQConnectionFactory mqConnectionFactory;
+	private JmsMessageServiceHandler jms;
 	public Controller(String serverName, int socketNumber,
-			ActionFactory actionFactory, ActionInformation actionInformation, XBeanBrokerService mqBroker, ActiveMQConnectionFactory mqConnectionFactory) {
+			ActionFactory actionFactory, ActionInformation actionInformation, XBeanBrokerService mqBroker, JmsMessageServiceHandler ams) {
 		this.actionInformation = actionInformation;
 		this.serverName = serverName;
 		this.socketNumber = socketNumber;
 		this.actionFactory = actionFactory;
 		this.actionRegistry = actionFactory.getActionRegistry();
 		this.mqBroker = mqBroker;
-		this.mqConnectionFactory = mqConnectionFactory;
+		this.jms = ams;
 	}
 
- 	/**
- 	 * (non-Javadoc)
- 	 * @see java.lang.Runnable#run()
- 	 * @Author Jens Peters
- 	 */
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 * @Author Jens Peters
+	 */
 	@Override
 	public void run() {
+		List<ActionDescription> list = null;
 		try {
 			if (mqBroker==null) {
-				logger.error("");
+				logger.error("no Broker defined!");
 				return;
 			}
 			logger.debug("starting JMS -Service at: " + serverName + " "+ socketNumber);
 			mqBroker.start();
 		} catch (Exception e) {
 			logger.error("Error creating CB-Controller thread: " + e,e );
-		}
-		
 			logger.debug("MQ-Broker is started: " + mqBroker.isStarted());
-		    List<ActionDescription> list = null;
-          
-		    
-		    while (true) {
-		    	try {
-            	Connection connection = mqConnectionFactory.createConnection();
-                connection.start();
-                
-                Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-                Destination toServer = session.createQueue(C.QUEUE_TO_SERVER);
-                Destination toClient = session.createQueue(C.QUEUE_TO_CLIENT);
-                
-            	MessageProducer producer = session.createProducer(toClient);
-            	producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-            	 MessageConsumer consumer = session.createConsumer(toServer);
-                 
-			String messageSend = "";
-            Message messageRecieve = consumer.receive(1000);
-            
-            if (messageRecieve instanceof TextMessage) {
-            	TextMessage textMessage = (TextMessage) messageRecieve;
-                String command = textMessage.getText();
-                if (!command.equals("")) logger.debug("Received: " + command);
-                if (command.indexOf(C.COMMAND_STOP_FACTORY) >= 0) {
-					
-                	logger.debug(C.COMMAND_STOP_FACTORY);
-					messageSend = "...STOPPING FACTORY done";
-					actionFactory.pause(true);
-					
-				} else if (command.indexOf(C.COMMAND_START_FACTORY)>=0) {
-					logger.debug(C.COMMAND_START_FACTORY);
-					messageSend = "...STARTING FACTORY done";
-					actionFactory.pause(false);
-				} else if (command.equals(C.COMMAND_SHOW_ACTION)) {
-					String []arr = command.split("=");
-					if (arr.length==2) {
-						logger.debug("SHOW_DESCRIPTION OF STATE: "+arr[1]);
-						ActionDescription ad = actionInformation.findStateInActionList(arr[1]);
-						if (ad!=null) messageSend = ad.getDescription();
-						else messageSend = "Action is unknown to CB at " + serverName;
-					} else messageSend = "Command not understood!";
-				} else if (command.indexOf(C.COMMAND_SHOW_VERSION)>=0) {
-					logger.debug(C.COMMAND_SHOW_VERSION);
-					FileReader fr = null;
+			return;
+		} 
+		while (true) {
+				try {
+				JmsMessage incoming = jms.recieveJMSMessage(C.QUEUE_TO_SERVER);
+				JmsMessage outgoing = new JmsMessage(C.QUEUE_TO_CLIENT, C.QUEUE_TO_SERVER, "");
+				String messageSend = "";
+				if (!incoming.getText().isEmpty()) {
+					String command = incoming.getText();
+					if (!command.equals("")) logger.debug("Received: " + command);
+					if (command.indexOf(C.COMMAND_STOP_FACTORY) >= 0) {
+
+						logger.debug(C.COMMAND_STOP_FACTORY);
+						messageSend = "...STOPPING FACTORY done";
+						actionFactory.pause(true);	
+					} else if (command.indexOf(C.COMMAND_START_FACTORY)>=0) {
+						logger.debug(C.COMMAND_START_FACTORY);
+						messageSend = "...STARTING FACTORY done";
+						actionFactory.pause(false);
+					} else if (command.equals(C.COMMAND_SHOW_ACTION)) {
+						String []arr = command.split("=");
+						if (arr.length==2) {
+							logger.debug("SHOW_DESCRIPTION OF STATE: "+arr[1]);
+							ActionDescription ad = actionInformation.findStateInActionList(arr[1]);
+							if (ad!=null) messageSend = ad.getDescription();
+							else messageSend = "Action is unknown to CB at " + serverName;
+						} else messageSend = "Command not understood!";
+					} else if (command.indexOf(C.COMMAND_SHOW_VERSION)>=0) {
+						logger.debug(C.COMMAND_SHOW_VERSION);
+						FileReader fr = null;
 						int c;
 						StringBuffer buff = new StringBuffer();
-				        try {
-				        	fr = new FileReader("./README.txt");
-				            while ((c = fr.read()) != -1) {
-				                buff.append((char) c);
-				            }
-				            fr.close();
-				        } catch (IOException e) {
-				            logger.error("Readme not found");
-				        } 
-				        messageSend = buff.toString();
-				} else if (command.indexOf(C.COMMAND_SHOW_ACTIONS)>=0){ 
-					list = actionRegistry.getCurrentActionDescriptions();
-					logger.debug(C.COMMAND_SHOW_ACTIONS);
-					messageSend = "found " + list.size()+ " working actions"; 
-					ObjectMessage om = session.createObjectMessage((Serializable) list);
-		            om.setJMSReplyTo(toServer);
-					producer.send(om);
-				} else if (command.indexOf(C.COMMAND_GRACEFUL_SHUTDOWN)>=0){ 
-					list = actionRegistry.getCurrentActionDescriptions();
-					actionFactory.pause(true);
-					while (list.size()>0) {
-						String text = "waiting for actions to complete before shut down (" + list.size() +")";
-						TextMessage message = session.createTextMessage(text);
-	                    message.setJMSReplyTo(toServer);
-						producer.send(message);
-	                    Thread.sleep(3000);
-	                    list = actionRegistry.getCurrentActionDescriptions();
-	                }
-					String text = "ContentBroker at " + serverName + " exiting now!";
-					TextMessage message = session.createTextMessage(text);
-                    message.setJMSReplyTo(toServer);
-					producer.send(message);
-                    Thread.sleep(3000);
-                    System.exit(0);
-				} 
-                if (!messageSend.equals("")) {
-                	TextMessage message = session.createTextMessage(messageSend);
-                	message.setJMSReplyTo(toServer);
-                	producer.send(message);
-                }
-            }
-            consumer.close();
-            producer.close();
-            session.close();
-            connection.close();	
-		    } catch (Exception e) {
+						try {
+							fr = new FileReader("./README.txt");
+							while ((c = fr.read()) != -1) {
+								buff.append((char) c);
+							}
+							fr.close();
+						} catch (IOException e) {
+							logger.error("Readme not found");
+						} 
+						messageSend = buff.toString();
+					} else if (command.indexOf(C.COMMAND_SHOW_ACTIONS)>=0){ 
+						list = actionRegistry.getCurrentActionDescriptions();
+						logger.debug(C.COMMAND_SHOW_ACTIONS);
+						messageSend = "found " + list.size()+ " working actions"; 
+						outgoing.setBody(list);
+						jms.sendJMSMessage(outgoing);
+						outgoing.setBody(messageSend);
+						jms.sendJMSMessage(outgoing);
+					} else if (command.indexOf(C.COMMAND_GRACEFUL_SHUTDOWN)>=0){ 
+						list = actionRegistry.getCurrentActionDescriptions();
+						actionFactory.pause(true);
+						while (list.size()>0) {
+							String text = "waiting for actions to complete before shut down (" + list.size() +")";
+							outgoing.setBody(text);
+							jms.sendJMSMessage(outgoing);
+							Thread.sleep(3000);
+							list = actionRegistry.getCurrentActionDescriptions();
+						}
+						String text = "ContentBroker at " + serverName + " exiting now!";
+						outgoing.setBody(text);
+						jms.sendJMSMessage(outgoing);
+						Thread.sleep(3000);
+						System.exit(0);
+					} 
+					if (!messageSend.equals("")) {
+						outgoing.setBody(messageSend);
+						jms.sendJMSMessage(outgoing);
+					}
+				}
+			
+
+			} catch (Exception e) {
 				logger.error("Error using CB-Controller thread: " + e,e );
 			} finally {
 				if (!mqBroker.isStarted()){
 					logger.error("Controller thread seems to be dead, too!");
 					break;
 				}
-			}
-		    }
+			}} 
 		}
 }
+			
+		

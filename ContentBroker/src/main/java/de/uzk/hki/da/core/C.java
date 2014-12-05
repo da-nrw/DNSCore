@@ -55,6 +55,7 @@ public class C {
 	
 
 	// Systems communication
+	public static final String JMS_NO_BODY = "-keine weiteren Details-";
 	public static final String COMMAND_STOP_FACTORY = "STOP_FACTORY";
 	public static final String COMMAND_START_FACTORY = "START_FACTORY";
 	public static final String COMMAND_SHOW_DESCRIPTION = "SHOW_DESCRIPTION";

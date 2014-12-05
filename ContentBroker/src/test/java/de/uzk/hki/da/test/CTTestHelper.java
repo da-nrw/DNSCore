@@ -48,7 +48,7 @@ public class CTTestHelper {
 		
 		Runtime.getRuntime().exec("./"+C.CONFIGURE_SCRIPT);
 		try {
-			Thread.sleep(100);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 		}
 	}
@@ -63,5 +63,7 @@ public class CTTestHelper {
 		FileUtils.deleteQuietly(new File("ContentBroker_stop.sh.template"));
 		FileUtils.deleteQuietly(new File("cbTalk.sh"));
 		FileUtils.deleteQuietly(new File("ffmpeg.sh"));
+		FileUtils.deleteQuietly(new File("systemRules"));
+		FileUtils.deleteQuietly(new File("activemq-data"));
 	}
 }
