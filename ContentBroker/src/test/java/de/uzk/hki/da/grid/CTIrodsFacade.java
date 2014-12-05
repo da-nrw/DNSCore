@@ -142,6 +142,8 @@ public class CTIrodsFacade {
 		writer.close(); 
 		
 		logicalPath = "/"+ isc.getZone()+ "/"+ aipFolder +"/" + testColl;
+		
+		context.close();
 	}
 	
 	/**
