@@ -274,9 +274,8 @@ public class Object {
 				}
 			}
 		} else {
-			logger.debug("This object does not contain any documents.");
+			logger.debug("This object doesn't contain any documents.");
 		}
-		
 		return document;
 	}
 	

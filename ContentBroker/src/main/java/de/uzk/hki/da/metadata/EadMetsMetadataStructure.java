@@ -20,8 +20,6 @@ import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
 import org.xml.sax.SAXException;
 
-import de.uzk.hki.da.model.DAFile;
-
 /**
  * @author Polina Gubaidullina
  */
@@ -38,17 +36,17 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	
 	HashMap<String, Document> metsPathToDocument = new HashMap<String, Document>();
 	
-	public EadMetsMetadataStructure(File metadataFile, List<DAFile> daFiles) throws JDOMException, 
+	public EadMetsMetadataStructure(File metadataFile, List<de.uzk.hki.da.model.Document> documents) throws JDOMException, 
 		IOException, ParserConfigurationException, SAXException {
-		super(metadataFile, daFiles);
+		super(metadataFile, documents);
 	
 		eadFile = metadataFile;
 		metsReferencesInEAD = extractMetsRefsInEad();
-		metsFiles = getReferencedFiles(eadFile, metsReferencesInEAD, daFiles);
+		metsFiles = getReferencedFiles(eadFile, metsReferencesInEAD, documents);
 				
 		mmsList = new ArrayList<MetsMetadataStructure>();
 		for(File metsFile : metsFiles) {
-			MetsMetadataStructure mms = new MetsMetadataStructure(metsFile, daFiles);
+			MetsMetadataStructure mms = new MetsMetadataStructure(metsFile, documents);
 			mmsList.add(mms);
 		}
 	}
@@ -154,7 +152,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::   OVERRIDE   ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private HashMap<File, Boolean> checkExistenceOfReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
+	private HashMap<File, Boolean> checkExistenceOfReferencedFiles(File metadataFile, List<String> references, List<de.uzk.hki.da.model.Document> documents) {
 		HashMap fileExistenceMap = new HashMap<File, Boolean>();
 		missingMetsFiles= new ArrayList<String>();
 		for(String ref : references) {
@@ -181,8 +179,8 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	}
 	
 	@Override
-	public List<File> getReferencedFiles(File metadataFile, List<String> references, List<DAFile> daFiles) {
-		HashMap<File, Boolean> fileExistenceMap = checkExistenceOfReferencedFiles(metadataFile, references, daFiles);
+	public List<File> getReferencedFiles(File metadataFile, List<String> references, List<de.uzk.hki.da.model.Document> documents) {
+		HashMap<File, Boolean> fileExistenceMap = checkExistenceOfReferencedFiles(metadataFile, references, documents);
 		List<File> existingMetsFiles = new ArrayList<File>();
 		for(File file : fileExistenceMap.keySet()) {
 			if(fileExistenceMap.get(file)==true) {

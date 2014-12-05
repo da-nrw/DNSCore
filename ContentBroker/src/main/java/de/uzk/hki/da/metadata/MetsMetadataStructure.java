@@ -18,8 +18,6 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
 
-import de.uzk.hki.da.model.DAFile;
-
 /**
  * @author Polina Gubaidullina
  */
@@ -31,16 +29,16 @@ public class MetsMetadataStructure extends MetadataStructure {
 	private XPath metsXPath = 					XPath.newInstance(METS_XPATH_EXPRESSION);
 	private static final Namespace METS_NS = 	Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = 	Namespace.getNamespace("http://www.w3.org/1999/xlink");
-	private List<DAFile> currentDAFiles;
+	private List<de.uzk.hki.da.model.Document> currentDocuments;
 
 	List<Element> fileElements;
 	
-	public MetsMetadataStructure(File metadataFile, List<DAFile> daFiles)
+	public MetsMetadataStructure(File metadataFile, List<de.uzk.hki.da.model.Document> documents)
 			throws FileNotFoundException, JDOMException, IOException {
-		super(metadataFile, daFiles);
+		super(metadataFile, documents);
 		
 		metsFile = metadataFile;
-		currentDAFiles = daFiles;
+		currentDocuments = documents;
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		FileInputStream fileInputStream = new FileInputStream(metsFile);
@@ -136,7 +134,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 
 	private boolean checkReferencedFiles() {
 		Boolean valid = true;
-		if(getReferences().size()!=getReferencedFiles(metsFile, getReferences(), currentDAFiles).size()) {
+		if(getReferences().size()!=getReferencedFiles(metsFile, getReferences(), currentDocuments).size()) {
 			valid = false;
 		}
 		return valid;

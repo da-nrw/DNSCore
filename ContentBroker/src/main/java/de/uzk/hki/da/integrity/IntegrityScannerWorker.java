@@ -27,7 +27,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
-import javax.naming.ConfigurationException;
 
 import org.hibernate.Session;
 import org.slf4j.Logger;

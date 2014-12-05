@@ -22,12 +22,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
@@ -41,9 +39,7 @@ import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.DocumentsGenService;
-import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.JmsMessage;
 

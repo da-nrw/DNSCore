@@ -291,13 +291,11 @@ public abstract class AbstractAction implements Runnable {
 		session.flush();
 		
 		if (deleteJob) {
-			logger.info("delete job...");
 			session.delete(job);
 			logger.info(this.getClass().getName()+" finished working on job: "+
 					job.getId()+". Job deleted. Database transaction successful.");
 		}
 		else {
-			logger.info("update job...");
 			session.update(job);
 			logger.info(this.getClass().getName()+" finished working on job: "+
 					job.getId()+". Set job to end state ("+endStatus+"). Database transaction successful.");			

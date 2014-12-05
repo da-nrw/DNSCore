@@ -10,7 +10,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.jdom.JDOMException;
 import org.xml.sax.SAXException;
 
-import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Document;
 
 /**
  * @author Polina Gubaidullina
@@ -18,15 +18,15 @@ import de.uzk.hki.da.model.DAFile;
 
 public class MetadataStructureFactory {
 
-	public MetadataStructure create (String type, File file, List<DAFile> daFiles) throws FileNotFoundException, JDOMException, IOException, ParserConfigurationException, SAXException {
+	public MetadataStructure create(String type, File file, List<Document> documents) throws FileNotFoundException, JDOMException, IOException, ParserConfigurationException, SAXException {
 		if (type.equalsIgnoreCase ("EAD")){
-              return new EadMetsMetadataStructure(file, daFiles);
+              return new EadMetsMetadataStructure(file, documents);
 		} else if(type. equalsIgnoreCase ("LIDO")){
-              return new LidoMetadataStructure(file, daFiles);
+              return new LidoMetadataStructure(file, documents);
 		} else if(type.equalsIgnoreCase ("METS")) {
-			return new MetsMetadataStructure(file, daFiles);
+			return new MetsMetadataStructure(file, documents);
 		} else if (type.equalsIgnoreCase ("XMP")) {
-			return new XMPMetadataStructure(file, daFiles);
-		} else return new UnknownMetadataStructure(file, daFiles);
+			return new XMPMetadataStructure(file, documents);
+		} else return new UnknownMetadataStructure(file, documents);
 	}
 }

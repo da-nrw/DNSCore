@@ -17,9 +17,7 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -105,11 +103,6 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 	public void testPresPublic() throws FileNotFoundException, JDOMException, IOException {
 		testPres(contractorsPipsPublic);
 	}
-	
-//	@Test
-//	public void testPresInstitution() throws FileNotFoundException, JDOMException, IOException {
-//		testPres(contractorsPipsInstitution);
-//	}
 	
 	@Test
 	public void testIndex(){

@@ -120,7 +120,7 @@ public class ATUseCaseAudit extends AcceptanceTest{
 			
 				
 		}	
-		}
+	}
 }
 	
 	
