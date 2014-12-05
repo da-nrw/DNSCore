@@ -101,8 +101,12 @@ public class UpdateMetadataActionEADTests {
 		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/mets_2_99.xml").toFile(), Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_A_REP).toFile());
 		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/vda3.XML").toFile(), Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_A_REP).toFile());
 		DAFile f1 = new DAFile(object.getLatestPackage(),_1_A_REP,"mets_2_99.xml");
+		de.uzk.hki.da.model.Document doc1 = new de.uzk.hki.da.model.Document(f1);
+		object.addDocument(doc1);
 		object.getLatestPackage().getFiles().add(f1);
 		DAFile f3 = new DAFile(object.getLatestPackage(),_1_A_REP,"vda3.XML");
+		de.uzk.hki.da.model.Document doc3 = new de.uzk.hki.da.model.Document(f3);
+		object.addDocument(doc3);
 		object.getLatestPackage().getFiles().add(f3);
 		
 		event = new Event();

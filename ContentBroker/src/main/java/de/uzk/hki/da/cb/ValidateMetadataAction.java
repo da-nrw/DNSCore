@@ -36,6 +36,7 @@ import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.metadata.XmpCollector;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.repository.RepositoryException;
 
@@ -90,15 +91,12 @@ public class ValidateMetadataAction extends AbstractAction {
 		
 		object.setPackage_type(detectedPackageType);
 		
-		if(!object.isDelta()) {
-			logger.debug("Validate package...");
-			MetadataStructure ms = createMetadataStructure();
-			if (!ms.isValid()){
-				throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE, 
-						"Package of type "+detectedPackageType+" is not consistent");
-			}
-		} else {
-			logger.debug("DELTA: Skipping validation...");
+		
+		logger.debug("Validate package...");
+		MetadataStructure ms = createMetadataStructure();
+		if (!ms.isValid()){
+			throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE, 
+					"Package of type "+detectedPackageType+" is not consistent");
 		}
 		
 		object.setMetadata_file(detectedMetadataFile.getRelative_path());
@@ -114,8 +112,8 @@ public class ValidateMetadataAction extends AbstractAction {
 				collectXMP();
 			}
 			File d = detectedMetadataFile.toRegularFile();
-			List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(detectedPackageType);
-			ms = msf.create(detectedPackageType, d, newestFiles);
+			List<Document> documents = object.getDocuments();
+			ms = msf.create(detectedPackageType, d, documents);
 		} catch (Exception e){
 			throw new RuntimeException("problem occured during creation of metadata structure",e);
 		}

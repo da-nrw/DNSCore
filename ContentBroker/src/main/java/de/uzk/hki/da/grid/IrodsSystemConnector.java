@@ -29,8 +29,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.saxon.expr.number.IrregularGroupFormatter;
-
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.irods.jargon.core.connection.IRODSAccount;
 import org.irods.jargon.core.connection.IRODSAccount.AuthScheme;

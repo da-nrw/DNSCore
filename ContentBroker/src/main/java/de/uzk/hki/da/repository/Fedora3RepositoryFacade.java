@@ -229,10 +229,6 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			createIndexEntryForGraphObject(indexName, edmJsonFrame, object);
 		}		
 	}
-	
-	
-	
-	
 
 	public MetadataIndex getMetadataIndex() {
 		return metadataIndex;

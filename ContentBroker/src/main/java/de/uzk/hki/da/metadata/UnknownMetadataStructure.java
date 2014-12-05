@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.jdom.JDOMException;
 
-import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Document;
 
 /**
  * @author Polina Gubaidullina
@@ -15,9 +15,9 @@ import de.uzk.hki.da.model.DAFile;
 
 public class UnknownMetadataStructure extends MetadataStructure{
 
-	public UnknownMetadataStructure(File metadataFile, List<DAFile> daFiles)
+	public UnknownMetadataStructure(File metadataFile, List<Document> documents)
 			throws FileNotFoundException, JDOMException, IOException {
-		super(metadataFile, daFiles);
+		super(metadataFile, documents);
 		System.out.println("UnknownMetadataStructure; TODO Parse file");
 	}
 

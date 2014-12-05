@@ -23,9 +23,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
-import java.util.Date;
-
-import javax.validation.constraints.AssertTrue;
 
 import org.junit.After;
 import org.junit.Test;

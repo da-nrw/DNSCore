@@ -38,8 +38,6 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-import de.uzk.hki.da.model.DAFile;
-
 /**
  * @author Polina Gubaidullina
  */
@@ -50,18 +48,15 @@ public class XMPMetadataStructure extends MetadataStructure{
 	private File xmpFile;
 	private List<Element> descriptionElements;
 	private Document rdfDoc;
-	private List<DAFile> currentDAFiles;
+	private List<de.uzk.hki.da.model.Document> currentDocuments;
 	
-	public XMPMetadataStructure(File metadataFile, List<DAFile> daFiles) throws FileNotFoundException, JDOMException, IOException {
-		super(metadataFile, daFiles);
+	public XMPMetadataStructure(File metadataFile, List<de.uzk.hki.da.model.Document> documents) throws FileNotFoundException, JDOMException, IOException {
+		super(metadataFile, documents);
 		
-		logger.debug("Instantiate new xmp metadata structure with metadata file "+metadataFile.getAbsolutePath()+" & DAFiles ");
-		for(DAFile file : daFiles) {
-			logger.debug(file.getRelative_path());
-		}
+		logger.debug("Instantiate new xmp metadata structure with metadata file "+metadataFile.getAbsolutePath()+" ... ");
 		
 		xmpFile = metadataFile;
-		currentDAFiles = daFiles;
+		currentDocuments = documents;
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		FileInputStream fileInputStream = new FileInputStream(xmpFile);
@@ -99,50 +94,6 @@ public class XMPMetadataStructure extends MetadataStructure{
 		return descriptionElements;
 	}
 	
-	private List<DAFile> getReferencedFiles(List<DAFile> daFiles) {
-		List<String> references = getReferences(descriptionElements);
-		List<DAFile> existingFiles = new ArrayList<DAFile>();
-		for(String ref : references) {
-			String fileRelPath = "";
-			Boolean fileExists = false;
-			for(DAFile dafile : daFiles) {
-				fileRelPath = dafile.getRelative_path();
-				logger.debug("Check dafile: "+fileRelPath);
-				if(ref.equals(fileRelPath)) {
-					logger.debug("File "+fileRelPath+" exists.");
-					fileExists = true;
-					
-//					calculate file path without suffix
-					int indexOfSuffix = fileRelPath.indexOf(dafile.toRegularFile().getName()+".");
-					String fileRelPathWithoutSuffix = fileRelPath.substring(0, indexOfSuffix+dafile.toRegularFile().getName().length()-2);
-					
-					Boolean sidecarFileExists = false;
-					for(DAFile sidecarFile : daFiles) {
-						if(sidecarFile.getRelative_path().toLowerCase().contains(".xmp")) {
-							logger.debug("Check sidecar file "+sidecarFile.getRelative_path());						
-//							calculate sidecar file path without suffix
-							String sidecarFileRelPath = sidecarFile.getRelative_path();
-							int indexOfXMPSuffix = sidecarFileRelPath.lastIndexOf(sidecarFile.toRegularFile().getName()+".");
-							String sidecarFileRelPathWithoutSuffix = sidecarFileRelPath.substring(0, indexOfXMPSuffix+sidecarFile.toRegularFile().getName().length()-2);
-
-							if(sidecarFileRelPathWithoutSuffix.equals(fileRelPathWithoutSuffix)) {
-								logger.debug("Sidecare file "+sidecarFile.getRelative_path()+" found!");
-								sidecarFileExists = true;
-								existingFiles.add(dafile);
-							}
-						}
-					}
-					if(!sidecarFileExists) {
-						logger.error("No matching sidecare file for "+fileRelPath);
-					}
-				}
-			}
-			if(!fileExists) {
-				logger.error("Referenced file "+fileRelPath+" does not exist.");
-			}
-		}
-		return existingFiles;
-	}
 	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::  REPLACEMENTS  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
@@ -171,7 +122,9 @@ public class XMPMetadataStructure extends MetadataStructure{
 			logger.error("XMP.rdf does not contain any file references");
 			valid = false;
 		}
-		if(getReferences(descriptionElements).size()!=getReferencedFiles(currentDAFiles).size()) {
+		List<String> references = getReferences(descriptionElements);
+		List<File> existingFiles = getReferencedFiles(xmpFile, references, currentDocuments);
+		if(getReferences(descriptionElements).size()!=existingFiles.size()) {
 			valid = false;
 		}
 		return valid;

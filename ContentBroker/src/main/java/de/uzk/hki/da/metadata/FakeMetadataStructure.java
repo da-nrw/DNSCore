@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.jdom.JDOMException;
 
-import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Document;
 
 /**
  * @author Polina Gubaidullina
@@ -15,9 +15,9 @@ import de.uzk.hki.da.model.DAFile;
 
 public class FakeMetadataStructure extends MetadataStructure{
 
-	public FakeMetadataStructure(File metadataFile, List<DAFile> daFiles)
+	public FakeMetadataStructure(File metadataFile, List<Document> documents)
 			throws FileNotFoundException, JDOMException, IOException {
-		super(metadataFile, daFiles);
+		super(metadataFile, documents);
 		logger.debug("Create fake metadata structure.");
 	}
 

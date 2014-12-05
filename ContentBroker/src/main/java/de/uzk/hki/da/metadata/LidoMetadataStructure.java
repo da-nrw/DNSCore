@@ -18,8 +18,6 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-import de.uzk.hki.da.model.DAFile;
-
 /**
  * @author Polina Gubaidullina
  */
@@ -30,14 +28,14 @@ public class LidoMetadataStructure extends MetadataStructure{
 	private Document doc;
 	private List<Element> lidoLinkResources;
 	private File lidoFile;
-	private List<DAFile> currentDAFiles;
+	private List<de.uzk.hki.da.model.Document> currentDocuments;
 	
-	public LidoMetadataStructure(File metadataFile, List<DAFile> daFiles) throws FileNotFoundException, JDOMException,
+	public LidoMetadataStructure(File metadataFile, List<de.uzk.hki.da.model.Document> documents) throws FileNotFoundException, JDOMException,
 			IOException {
-		super(metadataFile, daFiles);
+		super(metadataFile, documents);
 		
 		lidoFile = metadataFile;
-		currentDAFiles = daFiles;
+		currentDocuments = documents;
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		FileInputStream fileInputStream = new FileInputStream(metadataFile);
@@ -103,7 +101,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 	
 	private boolean checkReferencedFiles() {
 		Boolean valid = true;
-		if(getLidoLinkResources().size()!=getReferencedFiles(lidoFile, getLidoLinkResources(), currentDAFiles).size()) {
+		if(getLidoLinkResources().size()!=getReferencedFiles(lidoFile, getLidoLinkResources(), currentDocuments).size()) {
 			valid = false;
 		}
 		return valid;

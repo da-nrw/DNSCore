@@ -29,7 +29,6 @@ import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.metadata.LidoMetadataStructure;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;
 import de.uzk.hki.da.metadata.XMLUtils;
-import de.uzk.hki.da.model.DAFile;
 
 public class MetadataFileParserTest {
 	
@@ -42,7 +41,8 @@ public class MetadataFileParserTest {
 	private static String LIDO_FILENAME = "LIDO-Testexport2014-07-04-FML-Auswahl.xml";
 	private static String EAD1_FILENAME = "EAD_Export_1.XML";
 	private static String EAD2_FILENAME = "EAD_Export_2.XML";
-	private static List<DAFile> dafiles;
+//	private static List<DAFile> dafiles;
+	private static List<de.uzk.hki.da.model.Document> documents;
 	
 //	private static File eadFile1;
 	private static File eadFile2;
@@ -68,10 +68,10 @@ public class MetadataFileParserTest {
 		
 		
 		eadFile2 = Path.make(workAreaRootPathPath, "replacementsTest", EAD2_FILENAME).toFile();
-		eadStructure = new EadMetsMetadataStructure(eadFile2, dafiles);
+		eadStructure = new EadMetsMetadataStructure(eadFile2, documents);
 		
 		lidoFile = Path.make(workAreaRootPathPath, "replacementsTest", LIDO_FILENAME).toFile();
-		lidoStructure = new LidoMetadataStructure(lidoFile, dafiles);
+		lidoStructure = new LidoMetadataStructure(lidoFile, documents);
 		
 		builder = XMLUtils.createNonvalidatingSaxBuilder();
 	}

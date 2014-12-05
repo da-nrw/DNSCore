@@ -123,14 +123,13 @@ public class UpdateMetadataAction extends AbstractAction {
 		logger.debug("Got data from ACS - package_type: {}, metadata_file: {}", packageType, metadataFileName);
 		logConvertEventsOnDebugLevel();
 		
-		List<DAFile> daFiles = new ArrayList<DAFile>();
+		List<de.uzk.hki.da.model.Document> documents = object.getDocuments();
 			
 		List<Integer> replacementList = new ArrayList<Integer>();
 		if(!"XMP".equals(packageType)) {
 			
 			metadataFileName = copyMetadataFileToNewReps(packageType,
 					metadataFileName);
-			daFiles = object.getNewestFilesFromAllRepresentations("");
 			
 			for (String repName : getRepNames()) {
 				
@@ -140,21 +139,16 @@ public class UpdateMetadataAction extends AbstractAction {
 					metadataFile = Path.makeFile(object.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName);
 	                if (!metadataFile.exists()) throw new FileNotFoundException();
 	                logger.debug("Metadata file: "+metadataFile.getAbsolutePath());
-	                logger.debug("DAFiles: ");
-	                for(DAFile dafile : daFiles) {
-	                	logger.debug(""+dafile);
-	                }
-	                logger.debug("---");
 	                
 					if("EAD".equals(packageType)) {
-						EadMetsMetadataStructure emms = new EadMetsMetadataStructure(metadataFile, daFiles);
+						EadMetsMetadataStructure emms = new EadMetsMetadataStructure(metadataFile, documents);
 						replacementList = updatePathsInEad(emms, repName);
 					} else if ("METS".equals(packageType)) {
 						Map<DAFile,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
-						MetsMetadataStructure mms = new MetsMetadataStructure(metadataFile, daFiles);
+						MetsMetadataStructure mms = new MetsMetadataStructure(metadataFile, documents);
 						replacementList = updatePathsInMets(mms, repName, metadataFile, replacements);
 					} else if("LIDO".equals(packageType)) {
-						LidoMetadataStructure lms = new LidoMetadataStructure(metadataFile, daFiles);
+						LidoMetadataStructure lms = new LidoMetadataStructure(metadataFile, documents);
 						replacementList = updatePathsInLido(lms, repName);
 					}
 				}
@@ -177,8 +171,6 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		if ("XMP".equals(packageType)){
 			
-			daFiles = object.getNewestFilesFromAllRepresentations("xmp");
-			
 			collectXMP();
 			
 			for (String repName : getRepNames()) {
@@ -187,7 +179,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					logger.debug("Search for metadata file "+Path.make(object.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName));
 					metadataFile = Path.makeFile(object.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName);
 					if (!metadataFile.exists()) throw new FileNotFoundException();
-		            XMPMetadataStructure xms = new XMPMetadataStructure(metadataFile, daFiles);
+		            XMPMetadataStructure xms = new XMPMetadataStructure(metadataFile, documents);
 					updatePathsInRDF(xms, repName);
 				}
 			}
@@ -283,8 +275,10 @@ public class UpdateMetadataAction extends AbstractAction {
 			int tmpActualReplacements = actualReplacements;
 			for(Element metsFileElement : metsFileElemens) {
 				String href = mms.getHref(metsFileElement);
-				logger.debug("Found href in METS "+href);
+				logger.debug("Found href "+href+" in mets file "+mms.getMetadataFile().getAbsolutePath());
 				File file = mms.getCanonicalFileFromReference(href, metsFile);
+				logger.debug("Referenced file: "+file);
+				logger.debug("Source file: "+sourceFile.getRelative_path());
 				if(file.getAbsolutePath().contains(sourceFile.getRelative_path())) {
 					DAFile targetDAFile = (DAFile)entry.getValue();
 					File targetFile = targetDAFile.toRegularFile();

@@ -46,6 +46,7 @@ import de.uzk.hki.da.format.FFConstants;
 import de.uzk.hki.da.metadata.FakeMetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.repository.RepositoryException;
@@ -91,8 +92,8 @@ public class ValidateMetadataActionTests {
 	public static void mockDca() throws IOException, JDOMException, ParserConfigurationException, SAXException {
 		msf = mock(MetadataStructureFactory.class);
 		File file = null;
-		List<DAFile> dafiles = null;
-		when(msf.create((String)anyObject(),(File)anyObject(), (List<DAFile>)anyObject())).thenReturn(new FakeMetadataStructure(file, dafiles));	
+		List<Document> documents = null;
+		when(msf.create((String)anyObject(),(File)anyObject(), (List<Document>)anyObject())).thenReturn(new FakeMetadataStructure(file, documents));	
 	}
 	
 	@Before
