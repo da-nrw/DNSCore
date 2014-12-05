@@ -63,7 +63,7 @@ Das Einrichten der Subformaterkennung ist Aufgabe des [PreservationSystem-Admini
 
 Jeder Datensatz enthält einen PRONOM-Identifier und den Namen einer der durch DNSCore zur Verfügung gestellten Prozeduren. Dem oben genannte Beispiel liegt der folgende Datensatz zugrunde:
 
-    fmt/353 | de.uzk.hki.da.format.TiffSubformatIdentificationStrategy
+    fmt/353 | de.uzk.hki.da.format.ImageMagickSubformatIdentificationStrategy
     
 Die Subformaterkennung ist so konzipiert, dass sie innerhalb eines auf DNSCore basierenden [Gesamtsystem](object_model.de.md#preservationsystem---das-gesamtsystem) in gleicher Weise funkioniert. Datenmodelltechnisch ausgedrückt ist die Zuordnung von Subformaterkennungsprozessen zu PUIDs eine globale Eigenschaft des Gesamtsystems. Dies ist für die rein in Java implementierten Prozeduren unkritisch, da diese als Teil des ContentBroker jar-files ausgeliefert werden und somit automatisch auf jedem Knoten zur Verfügung stehen. Im Normalfall handelt es sich um bei den Prozeduren jedoch um Wrapperklassen, die den Output externer Programme (z.B. ffmpeg) auswerten. 
 Die einzelnen Knoten des Gesamtsystems müssen dann dementsprechend bestimmte Voraussetzungen erfüllen, um die gemeinsam angebotenen Funktionalität auch tatsächlich anbieten zu können. Während die Wrapperklassen Teil des ContentBroker sind, müssen die externen Tools gesondert installiert werden, und zwar auf jedem der Knoten des Gesamtsystems.
@@ -76,7 +76,7 @@ Der Aufruf dieser Health-Check-Prozeduren findet dann im Rahmen von **diagnostic
 
 Da nicht in allen Fällen jede der Subformaterkennungsprozeduren benötigt wird, überprüft *diagnostics* dabei tatsächlich nur diejenigen Prozeduren, die tatsächlich auch global konfiguriert sind. Eine beispielhafte Systemkonfiguration, die lediglich die Erkennung von Tiff-Subformaten vorsieht, andere Subformate jedoch ausser acht lässt, könnte beispielsweise aus dem alleinigen Datensatz wie folgt bestehen:
 
-        fmt/353 | de.uzk.hki.da.format.TiffSubformatIdentificationStrategy
+        fmt/353 | de.uzk.hki.da.format.ImageMagickSubformatIdentificationStrategy
 
 diagnostics würde in dem Fall nur für diese eine Prozedur überprüfen, ob die notwendigen Voraussetzungen zu ihrer Ausführung auf dem jeweiligen Knoten gegeben sind (d.h. ob das entsprechende Tool einsatzbereit ist).
 
