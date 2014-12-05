@@ -26,16 +26,20 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.model.Package;
 
 /**
- * Resets job in ingest workflow back to 120.
- * Suited to reset jobs from between 12x and 36x.
+ * Resets job in ingest workflow back to the start status of the ingest workflow.
+ * Suited to reset jobs from between 12x and 36x, which is a portion of the ingest workflow (beans-workflow.ingest.xml).
+ * Removes all artifacts generated during the ingest workflow and puts the contents of only the newest a representation back
+ * to the data folder which is by definition similar to the state of the unpacked SIP.
  * 
  * @author Thomas Kleinke
  * @author Daniel M. de Oliveira
@@ -60,12 +64,15 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 		if (!object.isDelta())
 			object.setUrn(null);
 		
-		revertDataFolderToSIPContent();		
-		
+		String newestRepName = determineNameOfNewestARepresentation();
+		convertNewestARepToDataFolder(newestRepName);		
 		deletePIPS();
 		
-		object.getLatestPackage().getEvents().clear();
-		object.getLatestPackage().getFiles().clear();
+		object.getDocuments().clear();
+		for (Package pkg : object.getPackages()){
+			pkg.getEvents().clear();
+			pkg.getFiles().clear();
+		}
 		job.getConversion_instructions().clear();
 
 		return true;
@@ -76,23 +83,23 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 
+	private String determineNameOfNewestARepresentation() {
+		List<File> filesC = Arrays.asList(object.getDataPath().toFile().listFiles(new RepresentationFilter()));
+		Collections.sort(filesC,Collections.reverseOrder());
+		String newestRepname = FilenameUtils.getBaseName(filesC.iterator().next().toString());
+		if (newestRepname.endsWith("+b")) newestRepname=newestRepname.replace("+b", "+a");
+		return newestRepname;
+	}
+	
 	/**
 	 * Leaves only the representation with the SIP content. 
 	 *
 	 * @author Daniel M. de Oliveira
 	 * @throws IOException 
 	 */
-	private void revertDataFolderToSIPContent() throws IOException {
+	private void convertNewestARepToDataFolder(String newestARepresentationName) throws IOException {
 
-		List<String> filesC = Arrays.asList(object.getDataPath().toFile().list());
-		Collections.sort(filesC,Collections.reverseOrder());
-		String newestRep = filesC.iterator().next();
-		if (newestRep.endsWith("+b")){
-			FileUtils.deleteDirectory(Path.makeFile(object.getDataPath(),newestRep));
-			newestRep = newestRep.replace("+b", "+a");
-		}
-		
-		File sipContent = Path.makeFile(object.getDataPath(),newestRep);
+		File sipContent = Path.makeFile(object.getDataPath(),newestARepresentationName);
 		File sipTemp = Path.makeFile(object.getPath(),"___sipContent");
 		
 		FileUtils.moveDirectory(sipContent, sipTemp);

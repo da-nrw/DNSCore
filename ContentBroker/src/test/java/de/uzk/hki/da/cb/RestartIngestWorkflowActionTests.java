@@ -23,7 +23,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
@@ -50,8 +49,6 @@ public class RestartIngestWorkflowActionTests extends ConcreteActionUnitTest{
 			TC.TEST_ROOT_CB,"RestartIngestWorkflowActionTests");
 	private final Path contractorFolder = Path.make(
 			workAreaRootPath,C.WA_WORK,C.TEST_USER_SHORT_NAME);
-	private final Path objectFolder = Path.make(
-			contractorFolder,TC.IDENTIFIER);
 	private final Path pipsFolder = Path.make(
 			workAreaRootPath,C.WA_PIPS);
 
@@ -62,7 +59,7 @@ public class RestartIngestWorkflowActionTests extends ConcreteActionUnitTest{
 	public void setUp() throws IOException{
 		FileUtils.copyDirectory(
 				Path.makeFile(contractorFolder,"_"+TC.IDENTIFIER), 
-				new File(objectFolder.toString()));
+				Path.makeFile(contractorFolder,TC.IDENTIFIER));
 		
 		FileUtils.copyDirectory(Path.makeFile(workAreaRootPath,"_"+C.WA_PIPS), 
 				pipsFolder.toFile());
@@ -73,14 +70,14 @@ public class RestartIngestWorkflowActionTests extends ConcreteActionUnitTest{
 
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteDirectory(objectFolder.toFile());
+		FileUtils.deleteDirectory(Path.makeFile(contractorFolder,TC.IDENTIFIER));
 		FileUtils.deleteDirectory(pipsFolder.toFile());
 	}
 	
 	@Test
 	public void leaveOnlySIPContents() throws IOException{
 		action.implementation();
-		assertTrue(Path.makeFile(objectFolder,"data","contentLatest.txt").exists());
+		assertTrue(Path.makeFile(contractorFolder,TC.IDENTIFIER,"data","contentLatest.txt").exists());
 	}
 	
 	@Test
@@ -119,6 +116,4 @@ public class RestartIngestWorkflowActionTests extends ConcreteActionUnitTest{
 		assertTrue(o.getLatestPackage().getFiles().isEmpty());
 		assertTrue(j.getConversion_instructions().isEmpty());
 	}
-	
-	
 }

@@ -89,7 +89,7 @@ public class Object {
 	
 	
 	
-	private static final String REPRESENTATION_FILTER = "^.*[+][ab]";
+	public static final String REPRESENTATION_FILTER = "^.*[+][ab]";
 	
 	
 	
