@@ -282,15 +282,15 @@ public class UpdateMetadataAction extends AbstractAction {
 		return reference;
 	}
 	
-	private String completeReferencesInDelta(String href, String fileName, DAFile sourceFile, String sidecarExts) {
-		logger.debug("Completing references in delta ...");
-		String reference = null;
-		
-		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(sidecarExts);
-		for(DAFile dafile : newestFiles) {
-			String fname = FilenameUtils.getBaseName(dafile.toRegularFile().getName());
-			if(fname.equals(fileName))
-		}
+//	private String completeReferencesInDelta(String href, String fileName, DAFile sourceFile, String sidecarExts) {
+//		logger.debug("Completing references in delta ...");
+//		String reference = null;
+//		
+//		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(sidecarExts);
+//		for(DAFile dafile : newestFiles) {
+//			String fname = FilenameUtils.getBaseName(dafile.toRegularFile().getName());
+//			if(fname.equals(fileName))
+//		}
 		
 		
 //		DAFile lastDAFile = doc.getLasttDAFile();
@@ -312,8 +312,8 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		
 		
-		return reference;
-	}
+//		return reference;
+//	}
 	
 	
 	private List<Integer> updatePathsInMets(MetsMetadataStructure mms, String repName, File metsFile, Map<DAFile,DAFile> replacements) throws IOException, JDOMException {

@@ -140,11 +140,11 @@ public abstract class AbstractAction implements Runnable {
 	@Override
 	public void run() {
 		
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			Thread.sleep(5000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 		
 		if (!performCommonPreparationsForActionExecution()) return;
 		setupObjectLogging(object.getIdentifier());
