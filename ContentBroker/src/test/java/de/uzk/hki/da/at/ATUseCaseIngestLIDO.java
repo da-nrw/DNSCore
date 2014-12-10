@@ -25,11 +25,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
 import org.jdom.JDOMException;
-import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -37,6 +38,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.metadata.MetadataHelper;
 import de.uzk.hki.da.model.Object;
 
 /**
@@ -51,8 +53,8 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 	private static final String origName = "ATUseCaseUpdateMetadataLZA_LIDO";
 	private static final File retrievalFolder = new File("/tmp/LIDOunpacked");
 	private static Object object;
-	private static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
 	private static Path contractorsPipsPublic;
+	private static MetadataHelper mh = new MetadataHelper();
 	
 	@BeforeClass
 	public static void setUp() throws IOException{
@@ -85,7 +87,23 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 		String LidoFileName = "LIDO-Testexport2014-07-04-FML-Auswahl.xml";
 		Document doc = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, LidoFileName).toFile()));
-		assertTrue(getLIDOURL(doc).equals("Picture2.tif"));
+		
+		List<String> lidoUrls =  mh.getLIDOURL(doc);
+		
+		Boolean pic1Exists = false;
+		Boolean pic2Exists = false;
+		
+		for(String url : lidoUrls) {
+			if(url.equals("Picture1.tif")) {
+				pic1Exists = true;
+			}
+			if(url.equals("Picture2.tif")) {
+				pic2Exists = true;
+			}
+		}
+		
+		assertTrue(pic1Exists);
+		assertTrue(pic2Exists);
 
 	}
 	
@@ -96,23 +114,21 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 		
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "LIDO.xml").toFile()));
-		assertTrue(getLIDOURL(doc).contains(DATA_DANRW_DE));
+		
+		List<String> lidoUrls =  mh.getLIDOURL(doc);
+		int danrwRewritings = 0;
+		for(String url : lidoUrls) {
+			if(url.contains(DATA_DANRW_DE)) {
+				danrwRewritings++;
+			}
+		}
+		
+		assertTrue(danrwRewritings==2);		
 	}
 	
 	@Test
 	public void testIndex() {
 		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", "Inventarnummer").contains("\"edm:provider\":\"DA-NRW - Digitales Archiv Nordrhein-Westfalen\""));
-	}
-	
-	private String getLIDOURL(Document doc){
-		return doc.getRootElement()
-				.getChild("lido", LIDO_NS)
-				.getChild("administrativeMetadata", LIDO_NS)
-				.getChild("resourceWrap", LIDO_NS)
-				.getChild("resourceSet", LIDO_NS)
-				.getChild("resourceRepresentation", LIDO_NS)
-				.getChild("linkResource", LIDO_NS)
-				.getValue();
 	}
 }
 	

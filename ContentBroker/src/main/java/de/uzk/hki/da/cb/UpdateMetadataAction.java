@@ -105,6 +105,11 @@ public class UpdateMetadataAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException, JDOMException, ParserConfigurationException, SAXException {
 		
+		logger.debug("UpdateMetadataAction ...");
+		
+		logger.debug("Package type: "+object.getPackage_type());
+		logger.debug("Metadata file: "+object.getMetadata_file());
+		
 		updateAbsUrlPrefix();
 		updateRepNames();
 		
@@ -156,15 +161,10 @@ public class UpdateMetadataAction extends AbstractAction {
 				int actualReplacements = replacementList.get(1);
 				logger.debug("Successfully replaced "+actualReplacements+" references!");
 				
-				
-				if(!object.isDelta()) {
-					if(expectedReplacements!=actualReplacements) {
+				if(expectedReplacements!=actualReplacements) {
 					throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,
 							expectedReplacements+" file(s) have been converted and for each one an entry in a METS file has to be updated. "+
 					"but only "+actualReplacements+" replacements could be done.", metadataFile.getAbsolutePath(), new Exception());
-					}
-				} else {
-					logger.debug("DELTA: Does not compare expected & actual replacements.");
 				}
 			}
 		}
@@ -258,6 +258,64 @@ public class UpdateMetadataAction extends AbstractAction {
 		return replacementList;
 	}
 	
+	private String calculateCorrRef(String href, String fileName, DAFile sourceFile) {
+		logger.debug("Search in document ...");
+		String reference = null;
+		
+		de.uzk.hki.da.model.Document doc = object.getDocument(FilenameUtils.getBaseName(fileName));
+		DAFile lastDAFile = doc.getLasttDAFile();
+		if(lastDAFile.toRegularFile().getAbsolutePath().contains(sourceFile.getRelative_path())) {
+			logger.debug("Replace "+sourceFile.toRegularFile().getName()+" by "+lastDAFile.toRegularFile().getName());
+			reference = href.replace(sourceFile.toRegularFile().getName(), lastDAFile.toRegularFile().getName());
+		} else {
+			while(lastDAFile.getPreviousDAFile() != null){
+	        	DAFile previousDAFile = lastDAFile.getPreviousDAFile();
+	        	if(previousDAFile.toRegularFile().getAbsolutePath().contains(sourceFile.getRelative_path())) {
+	        		logger.debug("Replace "+sourceFile.toRegularFile().getName()+" by "+lastDAFile.toRegularFile().getName());
+	        		reference = href.replace(sourceFile.toRegularFile().getName(), previousDAFile.toRegularFile().getName());
+	        		break;
+	        	}
+	        	lastDAFile = lastDAFile.getPreviousDAFile(); 
+			}
+		}
+		logger.debug("Found reference "+reference);
+		return reference;
+	}
+	
+	private String completeReferencesInDelta(String href, String fileName, DAFile sourceFile, String sidecarExts) {
+		logger.debug("Completing references in delta ...");
+		String reference = null;
+		
+		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(sidecarExts);
+		for(DAFile dafile : newestFiles) {
+			String fname = FilenameUtils.getBaseName(dafile.toRegularFile().getName());
+			if(fname.equals(fileName))
+		}
+		
+		
+//		DAFile lastDAFile = doc.getLasttDAFile();
+//		logger.debug("Checking last dafile "+lastDAFile+" ...");
+//		if(lastDAFile.getRelative_path().equals(sourceFile.getRelative_path())) {
+//			reference = lastDAFile.getRelative_path();
+//		} else {
+//			while(lastDAFile.getPreviousDAFile() != null){
+//				logger.debug("Checking previous dafile "+lastDAFile.getPreviousDAFile()+" ...");
+//	        	DAFile previousDAFile = lastDAFile.getPreviousDAFile();
+//	        	if(previousDAFile.toRegularFile().getAbsolutePath().contains(sourceFile.getRelative_path())) {
+//	        		logger.debug("Replace "+sourceFile.toRegularFile().getName()+" by "+lastDAFile.toRegularFile().getName());
+//	        		reference = href.replace(sourceFile.toRegularFile().getName(), previousDAFile.toRegularFile().getName());
+//	        		break;
+//	        	}
+//	        	lastDAFile = lastDAFile.getPreviousDAFile(); 
+//			}
+//		}
+		
+		
+		
+		return reference;
+	}
+	
+	
 	private List<Integer> updatePathsInMets(MetsMetadataStructure mms, String repName, File metsFile, Map<DAFile,DAFile> replacements) throws IOException, JDOMException {
 		
 		List<Integer> replacementList = new ArrayList<Integer>();
@@ -265,41 +323,56 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		int actualReplacements = 0;
 		List<Element> metsFileElemens = mms.getMetsFileElements();
-		@SuppressWarnings("rawtypes")
-		Iterator it = replacements.entrySet().iterator();
-		while (it.hasNext()) {
+		
+		for(Element metsFileElement : metsFileElemens) {
+			String origHref = mms.getHref(metsFileElement);
+			String href = origHref;
+			logger.debug("Search for matching dafile for reference "+href+" ... ");
+			Boolean fileExists = false;
+			
 			@SuppressWarnings("rawtypes")
-			Map.Entry entry = (Map.Entry)it.next();
-			DAFile sourceFile = (DAFile)entry.getKey();
-			logger.debug("Search for replacements for DAFile "+sourceFile.getRelative_path());
-			int tmpActualReplacements = actualReplacements;
-			for(Element metsFileElement : metsFileElemens) {
-				String href = mms.getHref(metsFileElement);
-				logger.debug("Found href "+href+" in mets file "+mms.getMetadataFile().getAbsolutePath());
+			Iterator it = replacements.entrySet().iterator();
+			while (it.hasNext()) {
+				@SuppressWarnings("rawtypes")
+				Map.Entry entry = (Map.Entry)it.next();
+				DAFile sourceFile = (DAFile)entry.getKey();
+			
 				File file = mms.getCanonicalFileFromReference(href, metsFile);
-				logger.debug("Referenced file: "+file);
-				logger.debug("Source file: "+sourceFile.getRelative_path());
-				if(file.getAbsolutePath().contains(sourceFile.getRelative_path())) {
-					DAFile targetDAFile = (DAFile)entry.getValue();
-					File targetFile = targetDAFile.toRegularFile();
-					String targetPath = href.replace(file.getName(), targetFile.getName());
-					String targetValue;
-					String loctype = null;
-					if(!isPresMode()) {
-						targetValue = targetPath;
-					} else {
-						targetValue = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + targetDAFile.getRelative_path();
-						loctype = "URL";
+				String fileName = FilenameUtils.getBaseName(file.getName());
+
+				if(file.getAbsolutePath().contains(FilenameUtils.getBaseName(sourceFile.toRegularFile().getName()))) {
+				
+					if(file.getAbsolutePath().contains(sourceFile.getRelative_path())) {
+						fileExists = true;
+					} else if (object.isDelta()){
+						logger.debug("Delta!");
+						href = calculateCorrRef(href, fileName, sourceFile);
+						if(href!=null) {
+							fileExists = true;
+						}
 					}
-					String mimetype = targetDAFile.getMimeType();
-					logger.debug("Replace "+href+" by "+targetValue);
-					mms.makeReplacementsInMetsFile(metsFile, href, targetValue, mimetype, loctype);
-					actualReplacements++;
-					break;
-				} 
+					if(fileExists) {
+						DAFile targetDAFile = (DAFile)entry.getValue();
+						File targetFile = targetDAFile.toRegularFile();
+						String targetPath = href.replace(file.getName(), targetFile.getName());
+						String targetValue;
+						String loctype = null;
+						if(!isPresMode()) {
+							targetValue = targetPath;
+						} else {
+							targetValue = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + targetDAFile.getRelative_path();
+							loctype = "URL";
+						}
+						String mimetype = targetDAFile.getMimeType();
+						logger.debug("Replace "+href+" by "+targetValue);
+						mms.makeReplacementsInMetsFile(metsFile, href, targetValue, mimetype, loctype);
+						actualReplacements++;
+						break;
+					} 
+				}
 			}
-			if(tmpActualReplacements==actualReplacements) {
-				logger.error("No reference matches the given DAFile "+sourceFile.getRelative_path());
+			if(!fileExists) {
+				logger.error("There is no matching file! Reference: "+origHref);
 			}
 		}
 		replacementList.add(actualReplacements);
@@ -307,31 +380,49 @@ public class UpdateMetadataAction extends AbstractAction {
 	}
 	
 	private List<Integer> updatePathsInLido(LidoMetadataStructure lms, String repName) throws IOException {
+		logger.debug("Update paths in LIDO file "+lms.getMetadataFile().getAbsolutePath());
 		List<Integer> replacementList = new ArrayList<Integer>();
 		Map<DAFile,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
 		replacementList.add(replacements.size());
 		HashMap<String, String> lidoReplacements = new HashMap<String, String>();
 		List<String> lidoRefs = lms.getLidoLinkResources();
-		@SuppressWarnings("rawtypes")
-		Iterator it = replacements.entrySet().iterator();
-		while (it.hasNext()) {
-	        @SuppressWarnings("rawtypes")
-			Map.Entry entry = (Map.Entry)it.next();
-	        DAFile sourceFile = (DAFile)entry.getKey();
-	 
-	        for(String href : lidoRefs) {
-				File file = lms.getCanonicalFileFromReference(href, lms.getMetadataFile());					
-				if(file.getAbsolutePath().contains(sourceFile.getRelative_path())) {
-					DAFile targetDAFile = (DAFile)entry.getValue();
-					File targetFile = targetDAFile.toRegularFile();
-					String targetPath = href.replace(file.getName(), targetFile.getName());
-					String targetValue;
-					if(!isPresMode()) {
-						targetValue = targetPath;
-					} else {
-						targetValue = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + targetDAFile.getRelative_path();
+		
+		for(String href : lidoRefs) {
+			logger.debug("Search for matching dafile for reference "+href+" ... ");
+			Boolean fileExists = false;
+			
+			@SuppressWarnings("rawtypes")
+			Iterator it = replacements.entrySet().iterator();
+			while (it.hasNext()) {
+				@SuppressWarnings("rawtypes")
+				Map.Entry entry = (Map.Entry)it.next();
+		        DAFile sourceFile = (DAFile)entry.getKey();
+		        
+		        File file = lms.getCanonicalFileFromReference(href, lms.getMetadataFile());	
+				String fileName = FilenameUtils.getBaseName(file.getName());
+				
+				if(file.getAbsolutePath().contains(FilenameUtils.getBaseName(sourceFile.toRegularFile().getName()))) {
+					if(file.getAbsolutePath().contains(sourceFile.getRelative_path())) {
+						fileExists = true;
+					} else if (object.isDelta()){
+						logger.debug("Delta!");
+						href = calculateCorrRef(href, fileName, sourceFile);
+						if(href!=null) {
+							fileExists = true;
+						}
 					}
-					lidoReplacements.put(href, targetValue);
+					if(fileExists) {
+						DAFile targetDAFile = (DAFile)entry.getValue();
+						File targetFile = targetDAFile.toRegularFile();
+						String targetPath = href.replace(file.getName(), targetFile.getName());
+						String targetValue;
+						if(!isPresMode()) {
+							targetValue = targetPath;
+						} else {
+							targetValue = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator + targetDAFile.getRelative_path();
+						}
+						lidoReplacements.put(href, targetValue);
+					}
 				}
 			}
 		}

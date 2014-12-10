@@ -61,12 +61,22 @@ public class UpdateMetadataActionLIDOTests {
 
 		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/LIDO-Testexport2014-07-04-FML-Auswahl.xml").toFile(), Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_A_REP).toFile());
 		DAFile f1 = new DAFile(object.getLatestPackage(),_1_A_REP,"LIDO-Testexport2014-07-04-FML-Auswahl.xml");
+		de.uzk.hki.da.model.Document doc1 = new de.uzk.hki.da.model.Document(f1);
+		object.addDocument(doc1);
 		object.getLatestPackage().getFiles().add(f1);
 		
+		DAFile f2 = new DAFile(object.getLatestPackage(),_1_A_REP,"LVR_DFG-Alltagskultur_0000050177.tif");
+		de.uzk.hki.da.model.Document doc2 = new de.uzk.hki.da.model.Document(f2);
+		object.addDocument(doc2);
+		
 		event1 = new Event();
-		event1.setSource_file(new DAFile(object.getLatestPackage(),_1_A_REP,"LVR_DFG-Alltagskultur_0000050177.tif"));
+		event1.setSource_file(f2);
 		event1.setTarget_file(new DAFile(object.getLatestPackage(),_1_B_REP,"renamed0000050177.tif"));
 		event1.setType("CONVERT");
+		
+		DAFile f4 = new DAFile(object.getLatestPackage(),_1_A_REP,"LVR_DFG-Alltagskultur_0000050178.tif");
+		de.uzk.hki.da.model.Document doc4 = new de.uzk.hki.da.model.Document(f4);
+		object.addDocument(doc4);
 		
 		event2 = new Event();
 		event2.setSource_file(new DAFile(object.getLatestPackage(),_1_A_REP,"LVR_DFG-Alltagskultur_0000050178.tif"));

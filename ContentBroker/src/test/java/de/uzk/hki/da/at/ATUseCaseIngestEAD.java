@@ -21,8 +21,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uzk.hki.da.cb.MetadataFileParserTest;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.metadata.MetadataHelper;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
 
@@ -34,15 +36,13 @@ import de.uzk.hki.da.model.Object;
 
 public class ATUseCaseIngestEAD extends AcceptanceTest{
 	
-	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
-	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
-	private String EAD_XPATH_EXPRESSION = "//daoloc/@href";
 	private static final String URL = "URL";
 	private static Path contractorsPipsPublic;
 	private static String origName = "ATUseCaseUpdateMetadataLZA_EAD";
 	private static Object object;
 	private static final String EAD_XML = "EAD.XML";
 	private static final File retrievalFolder = new File("/tmp/unpackedDIP");
+	private MetadataHelper mf = new MetadataHelper();
 	
 	@BeforeClass
 	public static void setUp() throws IOException {
@@ -74,28 +74,28 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 		SAXBuilder builder = new SAXBuilder();
 		Document doc1 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32044.xml").toFile()));
-		assertTrue(getMetsURL(doc1).equals("Picture1.tif"));
-		assertTrue(getMetsMimetype(doc1).equals("image/tiff"));
+		assertTrue(mf.getMetsURL(doc1).equals("Picture1.tif"));
+		assertTrue(mf.getMetsMimetype(doc1).equals("image/tiff"));
 		
 		Document doc2 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32045.xml").toFile()));
-		assertTrue(getMetsURL(doc2).equals("Picture2.tif"));
-		assertTrue(getMetsMimetype(doc2).equals("image/tiff"));
+		assertTrue(mf.getMetsURL(doc2).equals("Picture2.tif"));
+		assertTrue(mf.getMetsMimetype(doc2).equals("image/tiff"));
 		
 		Document doc3 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32046.xml").toFile()));
-		assertTrue(getMetsURL(doc3).equals("Picture3.tif"));
-		assertTrue(getMetsMimetype(doc3).equals("image/tiff"));
+		assertTrue(mf.getMetsURL(doc3).equals("Picture3.tif"));
+		assertTrue(mf.getMetsMimetype(doc3).equals("image/tiff"));
 		
 		Document doc4 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32047.xml").toFile()));
-		assertTrue(getMetsURL(doc4).equals("Picture4.tif"));
-		assertTrue(getMetsMimetype(doc4).equals("image/tiff"));
+		assertTrue(mf.getMetsURL(doc4).equals("Picture4.tif"));
+		assertTrue(mf.getMetsMimetype(doc4).equals("image/tiff"));
 		
 		Document doc5 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32048.xml").toFile()));
-		assertTrue(getMetsURL(doc5).equals("Picture5.tif"));
-		assertTrue(getMetsMimetype(doc5).equals("image/tiff"));
+		assertTrue(mf.getMetsURL(doc5).equals("Picture5.tif"));
+		assertTrue(mf.getMetsMimetype(doc5).equals("image/tiff"));
 		
 	}
 	
@@ -115,15 +115,15 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(presDirPath, object.getIdentifier(), "mets_2_32044.xml").toFile()));
-		String metsURL = getMetsURL(doc);
+		String metsURL = mf.getMetsURL(doc);
 		assertTrue(metsURL.startsWith("http://data.danrw.de/file/"+object.getIdentifier()) && metsURL.endsWith(".jpg"));
-		assertEquals(URL, getLoctype(doc));
-		assertEquals(C.MIMETYPE_IMAGE_JPEG, getMetsMimetype(doc));
+		assertEquals(URL, mf.getLoctype(doc));
+		assertEquals(C.MIMETYPE_IMAGE_JPEG, mf.getMetsMimetype(doc));
 		
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(presDirPath, object.getIdentifier(), EAD_XML).toFile()));
 		
-		List<String> metsReferences = getMetsRefsInEad(eadDoc);
+		List<String> metsReferences = mf.getMetsRefsInEad(eadDoc);
 		assertTrue(metsReferences.size()==5);
 		for(String metsRef : metsReferences) {
 			if(metsRef.contains("mets_2_32044.xml")) {
@@ -139,49 +139,4 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 			}
 		}
 	}
-	
-	private String getMetsURL(Document doc){
-		
-		return doc.getRootElement()
-				.getChild("fileSec", METS_NS)
-				.getChild("fileGrp", METS_NS)
-				.getChild("file", METS_NS)
-				.getChild("FLocat", METS_NS)
-				.getAttributeValue("href", XLINK_NS);
-	}
-	
-	private String getMetsMimetype(Document doc){
-		
-		return doc.getRootElement()
-				.getChild("fileSec", METS_NS)
-				.getChild("fileGrp", METS_NS)
-				.getChild("file", METS_NS)
-				.getAttributeValue("MIMETYPE");
-	}
-	
-	private String getLoctype(Document doc){
-		return doc.getRootElement()
-				.getChild("fileSec", C.METS_NS)
-				.getChild("fileGrp", C.METS_NS)
-				.getChild("file", C.METS_NS)
-				.getChild("FLocat", C.METS_NS)
-				.getAttributeValue("LOCTYPE");
-	}
-	
-	private List<String> getMetsRefsInEad(Document eadDoc) throws JDOMException, IOException {
-		
-		List<String> metsReferences = new ArrayList<String>();
-	
-		XPath xPath = XPath.newInstance(EAD_XPATH_EXPRESSION);
-		
-		@SuppressWarnings("rawtypes")
-		List allNodes = xPath.selectNodes(eadDoc);
-		
-		for (java.lang.Object node : allNodes) {
-			Attribute attr = (Attribute) node;
-			String href = attr.getValue();
-			metsReferences.add(href);
-		}
-		return metsReferences;
-	}	
 }

@@ -29,8 +29,6 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.grid.GridFacade;
-import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
@@ -142,17 +140,6 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	 * @author Daniel M. de Oliveira
 	 */
 	private void prepareObjectForObjectDBStorage(Object obj) {
-
-		logger.debug("TEST Documents");
-		for(Document doc : obj.getDocuments()) {
-			logger.debug("Name: "+doc.getName());
-			DAFile lastDAFile = doc.getLasttDAFile();
-			logger.debug("Last dafile: "+lastDAFile);
-	        while(lastDAFile.getPreviousDAFile() != null){ 
-	        	logger.debug("Previous dafile: "+lastDAFile.getPreviousDAFile());
-	        	lastDAFile = lastDAFile.getPreviousDAFile(); 
-	        }
-		}
 		
 		obj.getDocuments().clear();
 		
