@@ -102,7 +102,7 @@ public class IrodsController  {
 		    session.close();
 		    connection.close();
 		    } catch (Exception e) {
-				logger.error("Error using IRODS-Controller thread: " + e,e );
+				logger.error("Error using IRODS-Controller thread: " + e);
 			} 
 	}
 
