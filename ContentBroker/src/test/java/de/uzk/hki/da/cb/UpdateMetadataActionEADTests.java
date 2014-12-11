@@ -84,6 +84,7 @@ public class UpdateMetadataActionEADTests {
 	private static final UpdateMetadataAction action = new UpdateMetadataAction();
 	private Event event;
 	private Object object;
+	DAFile f4;
 	
 	@BeforeClass
 	public static void mockDca() throws IOException {
@@ -104,13 +105,24 @@ public class UpdateMetadataActionEADTests {
 		de.uzk.hki.da.model.Document doc1 = new de.uzk.hki.da.model.Document(f1);
 		object.addDocument(doc1);
 		object.getLatestPackage().getFiles().add(f1);
+		
+		DAFile f2 = new DAFile(object.getLatestPackage(),_1_A_REP,"ALVR_Nr_4547_Aufn_067.tif");
+		de.uzk.hki.da.model.Document doc2 = new de.uzk.hki.da.model.Document(f2);
+		object.addDocument(doc2);
+		object.getLatestPackage().getFiles().add(f2);
+		
 		DAFile f3 = new DAFile(object.getLatestPackage(),_1_A_REP,"vda3.XML");
 		de.uzk.hki.da.model.Document doc3 = new de.uzk.hki.da.model.Document(f3);
 		object.addDocument(doc3);
 		object.getLatestPackage().getFiles().add(f3);
 		
+		f4 = new DAFile(object.getLatestPackage(),_1_A_REP,"alvr_Nr_4547_Aufn_067.tif");
+		de.uzk.hki.da.model.Document doc4 = new de.uzk.hki.da.model.Document(f4);
+		object.addDocument(doc4);
+		object.getLatestPackage().getFiles().add(f4);
+		
 		event = new Event();
-		event.setSource_file(new DAFile(object.getLatestPackage(),_1_A_REP,"ALVR_Nr_4547_Aufn_067.tif"));
+		event.setSource_file(f2);
 		event.setTarget_file(new DAFile(object.getLatestPackage(),_1_B_REP,"renamed067.tif"));
 		event.setType("CONVERT");
 		object.getLatestPackage().getEvents().add(event);
@@ -178,7 +190,9 @@ public class UpdateMetadataActionEADTests {
 	
 	@Test
 	public void upperLowerCaseMismatch() throws IOException, JDOMException, ParserConfigurationException, SAXException {
-		event.setSource_file(new DAFile(object.getLatestPackage(),_1_A_REP,"alvr_Nr_4547_Aufn_067.tif"));
+		
+		event.setSource_file(f4);
+		
 		try{
 			action.setObject(object);
 			action.implementation();

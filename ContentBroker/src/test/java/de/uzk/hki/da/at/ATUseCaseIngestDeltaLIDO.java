@@ -53,9 +53,7 @@ public class ATUseCaseIngestDeltaLIDO extends AcceptanceTest{
 
 	@Test
 	public void testLZA() throws IOException, InterruptedException, RepositoryException, JDOMException{
-		
-		System.out.println("LZA ...");
-		
+
 		ath.retrievePackage(object,retrievalFolder,"2");
 		System.out.println("object identifier: "+object.getIdentifier());
 		
@@ -76,35 +74,36 @@ public class ATUseCaseIngestDeltaLIDO extends AcceptanceTest{
 		
 		List<String> lidoUrls =  mh.getLIDOURL(doc);
 		
+		Boolean pic1Exists = false;
+		Boolean pic2Exists = false;
+		
 		for(String url : lidoUrls) {
-			System.out.println("URL: "+url);
+			if(url.equals("Picture1.tif")) {
+				pic1Exists = true;
+			}
+			if(url.equals("Picture2.tif")) {
+				pic2Exists = true;
+			}
 		}
+		
+		assertTrue(pic1Exists);
+		assertTrue(pic2Exists);
 	}
 	
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException{
 		
-		System.out.println("Presentation ...");
-		
-		File[] files = (Path.makeFile(contractorsPipsPublic, object.getIdentifier()).listFiles());
-		for(File f : files) {
-			System.out.println(f.getName());
-		}
-		
 		SAXBuilder builder = new SAXBuilder();
-		
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "LIDO.xml").toFile()));
 		
 		List<String> lidoUrls =  mh.getLIDOURL(doc);
 		int danrwRewritings = 0;
 		for(String url : lidoUrls) {
-			System.out.println("URL: "+url);
 			if(url.contains(DATA_DANRW_DE)) {
 				danrwRewritings++;
 			}
 		}
-		
 		assertTrue(danrwRewritings==2);		
 	}
 }

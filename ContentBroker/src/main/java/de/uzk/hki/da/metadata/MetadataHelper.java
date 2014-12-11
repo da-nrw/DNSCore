@@ -41,35 +41,34 @@ public class MetadataHelper {
 	
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
-	private String EAD_XPATH_EXPRESSION = "//daoloc/@href";	
 	
-	public String getMetsURL(Document doc){
-		
-		return doc.getRootElement()
+	@SuppressWarnings("unchecked")
+	public List<Element> getMetsFileElements (Document doc) {
+		return (List<Element>) doc.getRootElement()
 				.getChild("fileSec", METS_NS)
 				.getChild("fileGrp", METS_NS)
-				.getChild("file", METS_NS)
+				.getChildren("file", METS_NS);	
+	} 
+
+	public String getMetsHref(Element fileElement){
+		return fileElement
 				.getChild("FLocat", METS_NS)
 				.getAttributeValue("href", XLINK_NS);
 	}
 	
-	public String getMetsMimetype(Document doc){
-		
-		return doc.getRootElement()
-				.getChild("fileSec", METS_NS)
-				.getChild("fileGrp", METS_NS)
-				.getChild("file", METS_NS)
-				.getAttributeValue("MIMETYPE");
+	public String getMetsMimetype(Element fileElement){
+		return fileElement.getAttributeValue("MIMETYPE");
 	}
 	
-	public String getLoctype(Document doc){
-		return doc.getRootElement()
-				.getChild("fileSec", C.METS_NS)
-				.getChild("fileGrp", C.METS_NS)
-				.getChild("file", C.METS_NS)
+	public String getMetsLoctype(Element fileElement){
+		return fileElement
 				.getChild("FLocat", C.METS_NS)
 				.getAttributeValue("LOCTYPE");
 	}
+	
+//	EAD
+	
+	private String EAD_XPATH_EXPRESSION = "//daoloc/@href";
 	
 	public List<String> getMetsRefsInEad(Document eadDoc) throws JDOMException, IOException {
 		

@@ -83,9 +83,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 	}
 	
 	public void replaceRefResources(HashMap<String, String> linkResourceReplacements) throws IOException {
-		logger.debug("Replace references in LIDO ...");
 		for(String sourceLinkResource : linkResourceReplacements.keySet()) {
-			logger.debug("source: "+sourceLinkResource);
 			for(int i=0; i<lidoLinkResources.size(); i++) {
 				if(sourceLinkResource.equals(lidoLinkResources.get(i).getValue())) {
 					lidoLinkResources.get(i).setText(linkResourceReplacements.get(sourceLinkResource));
