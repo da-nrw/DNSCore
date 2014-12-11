@@ -59,8 +59,6 @@ public class ATUseCaseIngestDeltaMETS extends AcceptanceTest{
 	@Test
 	public void testLZA() throws IOException, InterruptedException, RepositoryException, JDOMException{
 		
-		System.out.println("LZA");
-
 		ath.retrievePackage(object,retrievalFolder,"2");
 		System.out.println("object identifier: "+object.getIdentifier());
 		

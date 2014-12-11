@@ -74,6 +74,7 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 		Element fileElement1 = metsFileElements1.get(0);
 		assertTrue(mh.getMetsHref(fileElement1).equals("Picture1.tif"));
 		assertTrue(mh.getMetsMimetype(fileElement1).equals("image/tiff"));
+		System.out.println("Loctype: "+mh.getMetsHref(fileElement1));
 
 		Document doc2 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32045.xml").toFile()));

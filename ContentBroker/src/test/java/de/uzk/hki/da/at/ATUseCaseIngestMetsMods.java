@@ -57,7 +57,7 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	private static final String PORTAL_CI_TEST = "portal_ci_test";
 	private static final File retrievalFolder = new File("/tmp/unpackedMetsMods");
-	private static Path testContractorPipsPublic;
+	private static Path contractorsPipsPublic;
 	private static final String origName = "ATUseCaseUpdateMetadataLZA_METS";
 	private static Object object;
 	private String METS_XPATH_EXPRESSION = 		"//mets:file";
@@ -65,12 +65,13 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 	
 	
 	@BeforeClass
-	public static void setUpBeforeClass() throws IOException{
+	public static void setUp() throws IOException{
 		object = ath.ingest(origName);
+		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
 	@AfterClass
-	public static void tearDownAfterClass() throws IOException{
+	public static void tearDown() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
 	}
 	
@@ -98,13 +99,11 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 	
 	@Test
 	public void testPres() throws JDOMException, FileNotFoundException, IOException {
-		testContractorPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, "TEST");
-		
 		assertEquals(C.CB_PACKAGETYPE_METS,object.getPackage_type());
 		
 		metsDoc = new SAXBuilder().build
 			(new FileReader(
-				Path.make(testContractorPipsPublic, 
+				Path.make(contractorsPipsPublic, 
 					object.getIdentifier(), C.CB_PACKAGETYPE_METS+C.FILE_EXTENSION_XML).toFile()));
 		
 		checkReferencesAndMimetype(metsDoc, "http://data.danrw.de/", C.MIMETYPE_IMAGE_JPEG, "URL");
@@ -112,7 +111,6 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 	
 	@Test
 	public void checkIndex(){
-		testContractorPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, "TEST");
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {}

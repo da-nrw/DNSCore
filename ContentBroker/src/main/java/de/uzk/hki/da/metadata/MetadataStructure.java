@@ -57,7 +57,7 @@ public abstract class MetadataStructure {
 	
 	public abstract File getMetadataFile();
 	
-	public List<File> getReferencedFiles(File metadataFile, List<String> references, List<Document> documents) {
+	protected List<File> getReferencedFiles(File metadataFile, List<String> references, List<Document> documents) {
 		List<File> existingFiles = new ArrayList<File>();
 		List<String> missingFiles = new ArrayList<String>();
 		for(String ref : references) {
