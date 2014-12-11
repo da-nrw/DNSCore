@@ -69,20 +69,17 @@ public abstract class MetadataStructure {
 				Boolean docExists = false;
 				for(Document doc : documents) {
 					if(doc.getName().equals(fileName)) {
-						logger.debug("Document found!");
 						docExists = true;
 						
 						Boolean fileExists = false;
 						
 						DAFile lastDAFile = doc.getLasttDAFile();
-						logger.debug("Check last dafile "+lastDAFile);
 						
 						File f = getExistingFile(metadataFile, refFile, lastDAFile);
 						if(f!=null) {
 							fileExists = true;
 						} else {
-							while(lastDAFile.getPreviousDAFile() != null){ 
-					        	logger.debug("Check previous dafile: "+lastDAFile.getPreviousDAFile()+" ... ");
+							while(lastDAFile.getPreviousDAFile() != null){
 					        	f = getExistingFile(metadataFile, refFile, lastDAFile.getPreviousDAFile());
 					        	if(f!=null) {
 					        		fileExists = true;
@@ -92,7 +89,6 @@ public abstract class MetadataStructure {
 					        }
 						}
 						if(fileExists) {
-							logger.debug("Adding "+f+" to existing files ...");
 							existingFiles.add(f);
 						} else {
 							logger.error("File "+ref+" does not exist.");

@@ -83,7 +83,6 @@ public class LidoMetadataStructure extends MetadataStructure{
 	}
 	
 	public void replaceRefResources(HashMap<String, String> linkResourceReplacements) throws IOException {
-		
 		for(String sourceLinkResource : linkResourceReplacements.keySet()) {
 			for(int i=0; i<lidoLinkResources.size(); i++) {
 				if(sourceLinkResource.equals(lidoLinkResources.get(i).getValue())) {

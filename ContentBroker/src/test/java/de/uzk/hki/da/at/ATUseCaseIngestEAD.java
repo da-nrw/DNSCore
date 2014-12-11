@@ -7,22 +7,20 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.jdom.Attribute;
 import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
-import org.jdom.xpath.XPath;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.metadata.MetadataHelper;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
 
@@ -34,15 +32,13 @@ import de.uzk.hki.da.model.Object;
 
 public class ATUseCaseIngestEAD extends AcceptanceTest{
 	
-	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
-	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
-	private String EAD_XPATH_EXPRESSION = "//daoloc/@href";
 	private static final String URL = "URL";
 	private static Path contractorsPipsPublic;
 	private static String origName = "ATUseCaseUpdateMetadataLZA_EAD";
 	private static Object object;
 	private static final String EAD_XML = "EAD.XML";
 	private static final File retrievalFolder = new File("/tmp/unpackedDIP");
+	private MetadataHelper mh = new MetadataHelper();
 	
 	@BeforeClass
 	public static void setUp() throws IOException {
@@ -74,28 +70,38 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 		SAXBuilder builder = new SAXBuilder();
 		Document doc1 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32044.xml").toFile()));
-		assertTrue(getMetsURL(doc1).equals("Picture1.tif"));
-		assertTrue(getMetsMimetype(doc1).equals("image/tiff"));
-		
+		List<Element> metsFileElements1 = mh.getMetsFileElements(doc1);
+		Element fileElement1 = metsFileElements1.get(0);
+		assertTrue(mh.getMetsHref(fileElement1).equals("Picture1.tif"));
+		assertTrue(mh.getMetsMimetype(fileElement1).equals("image/tiff"));
+
 		Document doc2 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32045.xml").toFile()));
-		assertTrue(getMetsURL(doc2).equals("Picture2.tif"));
-		assertTrue(getMetsMimetype(doc2).equals("image/tiff"));
+		List<Element> metsFileElements2 = mh.getMetsFileElements(doc2);
+		Element fileElement2 = metsFileElements2.get(0);
+		assertTrue(mh.getMetsHref(fileElement2).equals("Picture2.tif"));
+		assertTrue(mh.getMetsMimetype(fileElement2).equals("image/tiff"));
 		
 		Document doc3 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32046.xml").toFile()));
-		assertTrue(getMetsURL(doc3).equals("Picture3.tif"));
-		assertTrue(getMetsMimetype(doc3).equals("image/tiff"));
+		List<Element> metsFileElements3 = mh.getMetsFileElements(doc3);
+		Element fileElement3 = metsFileElements3.get(0);
+		assertTrue(mh.getMetsHref(fileElement3).equals("Picture3.tif"));
+		assertTrue(mh.getMetsMimetype(fileElement3).equals("image/tiff"));
 		
 		Document doc4 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32047.xml").toFile()));
-		assertTrue(getMetsURL(doc4).equals("Picture4.tif"));
-		assertTrue(getMetsMimetype(doc4).equals("image/tiff"));
+		List<Element> metsFileElements4 = mh.getMetsFileElements(doc4);
+		Element fileElement4 = metsFileElements4.get(0);
+		assertTrue(mh.getMetsHref(fileElement4).equals("Picture4.tif"));
+		assertTrue(mh.getMetsMimetype(fileElement4).equals("image/tiff"));
 		
 		Document doc5 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32048.xml").toFile()));
-		assertTrue(getMetsURL(doc5).equals("Picture5.tif"));
-		assertTrue(getMetsMimetype(doc5).equals("image/tiff"));
+		List<Element> metsFileElements5 = mh.getMetsFileElements(doc5);
+		Element fileElement5 = metsFileElements5.get(0);
+		assertTrue(mh.getMetsHref(fileElement5).equals("Picture5.tif"));
+		assertTrue(mh.getMetsMimetype(fileElement5).equals("image/tiff"));
 		
 	}
 	
@@ -115,15 +121,17 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(presDirPath, object.getIdentifier(), "mets_2_32044.xml").toFile()));
-		String metsURL = getMetsURL(doc);
+		List<Element> metsFileElements = mh.getMetsFileElements(doc);
+		Element fileElement = metsFileElements.get(0);
+		String metsURL = mh.getMetsHref(fileElement);
 		assertTrue(metsURL.startsWith("http://data.danrw.de/file/"+object.getIdentifier()) && metsURL.endsWith(".jpg"));
-		assertEquals(URL, getLoctype(doc));
-		assertEquals(C.MIMETYPE_IMAGE_JPEG, getMetsMimetype(doc));
+		assertEquals(URL, mh.getMetsLoctype(fileElement));
+		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMetsMimetype(fileElement));
 		
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(presDirPath, object.getIdentifier(), EAD_XML).toFile()));
 		
-		List<String> metsReferences = getMetsRefsInEad(eadDoc);
+		List<String> metsReferences = mh.getMetsRefsInEad(eadDoc);
 		assertTrue(metsReferences.size()==5);
 		for(String metsRef : metsReferences) {
 			if(metsRef.contains("mets_2_32044.xml")) {
@@ -139,49 +147,4 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 			}
 		}
 	}
-	
-	private String getMetsURL(Document doc){
-		
-		return doc.getRootElement()
-				.getChild("fileSec", METS_NS)
-				.getChild("fileGrp", METS_NS)
-				.getChild("file", METS_NS)
-				.getChild("FLocat", METS_NS)
-				.getAttributeValue("href", XLINK_NS);
-	}
-	
-	private String getMetsMimetype(Document doc){
-		
-		return doc.getRootElement()
-				.getChild("fileSec", METS_NS)
-				.getChild("fileGrp", METS_NS)
-				.getChild("file", METS_NS)
-				.getAttributeValue("MIMETYPE");
-	}
-	
-	private String getLoctype(Document doc){
-		return doc.getRootElement()
-				.getChild("fileSec", C.METS_NS)
-				.getChild("fileGrp", C.METS_NS)
-				.getChild("file", C.METS_NS)
-				.getChild("FLocat", C.METS_NS)
-				.getAttributeValue("LOCTYPE");
-	}
-	
-	private List<String> getMetsRefsInEad(Document eadDoc) throws JDOMException, IOException {
-		
-		List<String> metsReferences = new ArrayList<String>();
-	
-		XPath xPath = XPath.newInstance(EAD_XPATH_EXPRESSION);
-		
-		@SuppressWarnings("rawtypes")
-		List allNodes = xPath.selectNodes(eadDoc);
-		
-		for (java.lang.Object node : allNodes) {
-			Attribute attr = (Attribute) node;
-			String href = attr.getValue();
-			metsReferences.add(href);
-		}
-		return metsReferences;
-	}	
 }

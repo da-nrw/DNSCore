@@ -140,6 +140,12 @@ public abstract class AbstractAction implements Runnable {
 	@Override
 	public void run() {
 		
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		if (!performCommonPreparationsForActionExecution()) return;
 		setupObjectLogging(object.getIdentifier());
 		
@@ -176,6 +182,7 @@ public abstract class AbstractAction implements Runnable {
 		// new jobs getting fetched. It would be an improvement if we had 
 		// a controller for the action factory that stops it if database 
 		// connection is not possible.
+		
 		actionMap.deregisterAction(this);
 		
 		unsetObjectLogging();
@@ -375,11 +382,11 @@ public abstract class AbstractAction implements Runnable {
 	 */
 	private void unsetObjectLogging() {
 		
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			Thread.sleep(5000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 		
 		// manually close object log in order to prevent "too many open files"
 		ch.qos.logback.classic.Logger logger =
