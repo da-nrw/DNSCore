@@ -159,7 +159,7 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 
 
 	@Override
-	public boolean healthCheckSubformatIdentificationStrategies() {
+	public boolean connectivityCheck() {
 		return true;
 	}
 

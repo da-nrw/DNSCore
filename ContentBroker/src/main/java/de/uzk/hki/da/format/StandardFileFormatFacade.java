@@ -145,7 +145,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 
 
 	private boolean jhoveCheck() {
-		System.out.print("SELF CHECK - FILE FORMAT FACADE - jhove");
+		System.out.print("CONNECTIVITY CHECK - StandardFileFormatFacade - JHOVE");
 		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {
                 "/bin/sh", "jhove", "-c", JHOVE_CONF, "--version" },
                 new File(jhoveFolder));
@@ -156,7 +156,6 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 			System.out.println(" .... FAIL");
 			return false;
 		}
-			
 	}
 
 	/**
@@ -185,7 +184,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 
 
 	@Override
-	public boolean healthCheckSubformatIdentificationStrategies() {
+	public boolean connectivityCheck() {
 		
 		if (subformatScanService==null) // no strategypuidmapping registered yet 
 			return (jhoveCheck()&&pronomFormatScanService.healthCheck()); 

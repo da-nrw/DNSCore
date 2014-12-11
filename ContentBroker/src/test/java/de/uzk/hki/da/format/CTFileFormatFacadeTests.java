@@ -150,7 +150,7 @@ public class CTFileFormatFacadeTests {
 				FFConstants.FMT_5);
 		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.ImageMagickIdentifySubformatIdentificationStrategy", 
 				FFConstants.FMT_353);
-		assertTrue(sfff.healthCheckSubformatIdentificationStrategies());
+		assertTrue(sfff.connectivityCheck());
 	}
 	
 	@Test
