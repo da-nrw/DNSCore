@@ -109,7 +109,7 @@ class SubformatScanService implements FormatScanService {
 		
 		boolean passed=true;
 		for (String s:subformatIdentificationPolicies.keySet()) {
-			System.out.print("SELF CHECK - FILE FORMAT FACADE - SUBFORMAT SCAN SERVICE - "+s);
+			System.out.print("CONNECTIVITY CHECK - "+s+".healthCheck()");
 			if (!createSFIInstance(s).healthCheck()) {
 				System.out.println(" .... FAIL");
 				passed=false;

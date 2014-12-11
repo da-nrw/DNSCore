@@ -71,9 +71,9 @@ class FidoFormatScanService implements FormatScanService {
 
 	@Override
 	public boolean healthCheck() {
-		System.out.print("SELF CHECK - FILE FORMAT FACADE - FIDO FORMAT SCAN SERVICE - fido.sh ");
+		System.out.print("CONNECTIVITY CHECK - FidoFormatScanService - fido.sh ");
 		String puid = pronom.identify(new File("conf/healthCheck.tif"));
-		if (Arrays.asList(new String[]{"fmt/353"}).contains(puid)) {
+		if (Arrays.asList(new String[] {FFConstants.FMT_353}).contains(puid)) {
 			System.out.println(".... OK");
 			return true;
 		}

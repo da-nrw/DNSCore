@@ -81,14 +81,16 @@ public interface FileFormatFacade {
 	
 	
 	/**
-	 * Subformat identification strategies normally depend on external connectors which also have to 
-	 * be installed in a specific version.
-	 * This method provides a means of determining if the connectors used by the 
-	 * subformat identification strategies registered with 
-	 * {@link #registerSubformatIdentificationStrategyPuidMapping(String, String)} 
-	 * are connectable and conform to the specifications which the 
-	 * strategies themselve define (see{@link FormatIdentificationStrategy#healthCheck()}.
-	 * @return true if all strategies health checks pass. false otherwise.  
+	 * Implementations of FileFormatFacade typically depend upon external programs. 
+	 * These connectors are either a fixed part of a specific implementation or are 
+	 * configured at runtime, which is normally the case when plugging in SubformatIdentificationStrategies on demand
+	 * (via {@link #registerSubformatIdentificationStrategyPuidMapping(String, String)}).
+	 * 
+	 * {@link #connectivityCheck()} provides a way to let the implementation of FileFormatFacade check itself 
+	 * whether its connectors can reach the necessary external programs and if these programs are present in versions supported 
+	 * by the connectors.
+	 *  
+	 * @return true if necessary external programs are present in versions supported by the connectors. false otherwise.  
 	 */
-	public boolean healthCheckSubformatIdentificationStrategies();
+	public boolean connectivityCheck();
 }

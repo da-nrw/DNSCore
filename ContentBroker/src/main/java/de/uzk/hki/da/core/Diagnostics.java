@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import de.uzk.hki.da.format.FFConstants;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.format.SimpleFileWithFileFormat;
@@ -57,6 +58,8 @@ import de.uzk.hki.da.utils.Utilities;
  */
 public class Diagnostics {
 
+	private static final String TIFF_TESTFILE_PATH = "conf/healthCheck.tif";
+	
 	private static final String BEAN_NAME_IRODS_ZONE = "irods.zone";
 
 	private static final String BEAN_NAME_IMPLEMENTATION_GRID = "cb.implementation.grid";
@@ -64,6 +67,10 @@ public class Diagnostics {
 	private static final Logger logger = LoggerFactory.getLogger(Diagnostics.class);
 	
 	private static final String WARN = "WARN: ";
+	private static final String INFO = "INFO: ";
+	private static final String ERROR = "ERROR: ";
+	private static final String OK = "OK";
+	private static final String FAIL = "FAIL";
 
 	private static final String TEST_TGZ = "test.tgz";
 	private static final File DIAGNOSTICS_RETRIEVAL_FILE = Path.makeFile("tmp","diagnostics.tgz");
@@ -105,25 +112,23 @@ public class Diagnostics {
 			return 1;
 		}
 		
-		System.out.print("CHECKING - DATABASE CONNECTIVITY ... ");
+		System.out.print(INFO+"CHECKING - DATABASE CONNECTIVITY ... ");
 		try {
 			HibernateUtil.init(C.HIBERNATE_CFG.getAbsolutePath());
 			Session session = HibernateUtil.openSession();
 			session.createSQLQuery("select * from users;").list();
 			session.close();
 		} catch (Exception e) {
-			System.out.println("ERROR (CANNOT CONNECT TO DATABASE) ");
+			System.out.println(ERROR+"CANNOT CONNECT TO DATABASE ");
 			e.printStackTrace();
 			return 1;
 		}
-		System.out.println("OK");
+		System.out.println(OK);
 		
 		
 		errorCount+=checkPaths(properties);
 		errorCount+=checkIrods(properties);
-		errorCount+=checkFormatFacade();
-		errorCount+=checkFormatFido();
-		errorCount+=checkJhove();
+		errorCount+=checkFormatFacade(properties);
 		errorCount+=checkFedora(properties);
 		
 		
@@ -134,26 +139,13 @@ public class Diagnostics {
 
 	
 	
-	private static int checkJhove() {
-		
-		System.out.print("CHECKING - FILE FORMAT FACADE - extract ... ");
-		FileFormatFacade jhove = new StandardFileFormatFacade();
-		try {
-			jhove.extract(new File("conf/healthCheck.tif"), new File("/tmp/abc"));
-			System.out.println("OK");
-		} catch (IOException e) {
-			System.out.println(WARN+" jhove scan service doesnt work");
-			return 1;
-		}
-		return 0;
-	}
 
 
 
 	private static int checkFedora(Properties properties) {
 		
 		if (((String)properties.get("fedora.user"))==null||((String)properties.get("fedora.user")).isEmpty()){
-			System.out.println("WARN: WILL NOT CHECK FEDORA ! ! ! fedora.user is empty");
+			System.out.println(INFO+"WILL NOT CHECK FEDORA ! ! ! fedora.user is empty.");
 			return 0;
 		}
 		
@@ -164,12 +156,12 @@ public class Diagnostics {
 		Fedora3RepositoryFacade fedora = (Fedora3RepositoryFacade) context.getBean(BEAN_NAME_FEDORA_REPOSITORY_FACADE);		
 		context.close();
 		
-		System.out.print("CHECKING - FEDORA CONNECTIVITY .... ");
+		System.out.print(INFO+"CHECKING - FEDORA CONNECTIVITY .... ");
 		try {
 			fedora.purgeObjectIfExists("abc", "coll1");
 			fedora.createObject("abc", "coll1", "TEST");
 			fedora.purgeObjectIfExists("abc", "coll1");
-			System.out.println("OK");
+			System.out.println(OK);
 		} catch (RepositoryException e) {
 			errorCount++;
 			System.out.println(WARN+"connection to fedora cannot be established");
@@ -181,13 +173,42 @@ public class Diagnostics {
 	
 	
 	
-	private static int checkFormatFacade() {
+	private static int checkFormatFacade(Properties properties) {
 		
+		
+		if (!Utilities.isNotSet(((String)properties.get("cb.implementation.fileFormatFacade")))){
+			System.out.println(INFO+"WILL NOT CHECK FILEFORMATFACADE ! ! ! fileFormatFacade is set to \"fakeFileFormatFacade\"");
+			return 0;
+		}
+
+		int errorCount = 0;
 		StandardFileFormatFacade sfff = new StandardFileFormatFacade();
 		
 		
+		System.out.print(INFO+"CHECKING - StandardFileFormatFacade.identify() ... ");
+		if (!standardFileFormatFacadeFidoWorkingProperly(sfff)) {
+			errorCount+=1;
+			System.out.println(FAIL);
+		}
+		else
+			System.out.println(OK);
 		
+		System.out.print(INFO+"CHECKING - StandardFileFormatFacade.extract() ... ");
+		if (!standardFileFormatFacadeJhoveWorkingProperly(sfff)) {
+			errorCount+=1;
+			System.out.println(FAIL);
+		}
+		else
+			System.out.println(OK);
+
+		System.out.println(INFO+"CHECKING - StandardFileFormatFacade.healthCheckSubformatIdentificationStrategies() ... ");
+		if (!standardFileFormatFacadeHealthSubformatsPassedCheckPassed(sfff))
+			errorCount+=1;
 		
+		return errorCount;
+	}
+	
+	private static boolean standardFileFormatFacadeHealthSubformatsPassedCheckPassed(StandardFileFormatFacade sfff) {
 		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
@@ -196,20 +217,28 @@ public class Diagnostics {
 			sfff.registerSubformatIdentificationStrategyPuidMapping(sfiP.getSubformatIdentificationStrategyName(),sfiP.getFormatPuid());
 		}
 		session.close();
-		if (!sfff.healthCheckSubformatIdentificationStrategies()) return 1;
-		else return 0;
+		if (!sfff.connectivityCheck()) return false;
+		return true;
 	}
 	
-	
-	private static int checkFormatFido() {
+	private static boolean standardFileFormatFacadeJhoveWorkingProperly(StandardFileFormatFacade sfff) {
+		String TIFF_TESTFILE_TEMPPATH="/tmp/abc";
 		
-		int errorCount=0;
-		StandardFileFormatFacade sfff = new StandardFileFormatFacade();
+		FileFormatFacade jhove = new StandardFileFormatFacade();
+		try {
+			jhove.extract(new File(TIFF_TESTFILE_PATH), new File(TIFF_TESTFILE_TEMPPATH));
+		} catch (IOException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	private static boolean standardFileFormatFacadeFidoWorkingProperly(StandardFileFormatFacade sfff) {
+		
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
-		FileWithFileFormat ffff = new SimpleFileWithFileFormat(new File("conf/healthCheck.tif"));
+		FileWithFileFormat ffff = new SimpleFileWithFileFormat(new File(TIFF_TESTFILE_PATH));
 		files.add(ffff);
 		
-		System.out.print("CHECKING - FILE FORMAT FACADE - identify .... ");
 		try {
 			sfff.identify(files);
 		} catch (FileNotFoundException e) {
@@ -218,14 +247,9 @@ public class Diagnostics {
 			e.printStackTrace();
 		}
 		
-		if (!files.get(0).getFormatPUID().equals("fmt/353")){
-			errorCount++;
-			System.out.println("ERROR (check fileFormatFacade configuration)");
-		}else System.out.println("OK");
-
-		
-		
-		return errorCount;
+		if (!files.get(0).getFormatPUID().equals(FFConstants.FMT_353))
+			return false;
+		return true;
 	}
 	
 
@@ -251,7 +275,7 @@ public class Diagnostics {
 			return 0;
 		}
 		
-		System.out.print("CHECKING - IRODS CONNECTION .... ");
+		System.out.print(INFO+"CHECKING - IRODS CONNECTION .... ");
 
 		AbstractApplicationContext context =
 				new ClassPathXmlApplicationContext(BEANS_DIAGNOSTICS_IRODS);
@@ -259,7 +283,7 @@ public class Diagnostics {
 		
 		int errorCount = 0;
 		if (!irods.connect()){
-			System.out.println("ERROR (COULD NOT CONNECT TO IRODS)");
+			System.out.println(ERROR+"COULD NOT CONNECT TO IRODS");
 			errorCount++;
 			context.close();
 			return errorCount;
@@ -271,12 +295,12 @@ public class Diagnostics {
 		
 		// Check iRODS grid facade
 		if (((String)properties.get(BEAN_NAME_IMPLEMENTATION_GRID))==null||((String)properties.get(BEAN_NAME_IMPLEMENTATION_GRID)).isEmpty()){
-			System.out.println("WARN: CONNECTION ESTABLISHED. CHECKING FOR GRID FACADE SKIPPED (REASON: "+BEAN_NAME_IMPLEMENTATION_GRID+" is empty. This is ok for presentation only nodes.)");
+			System.out.println(WARN+"CONNECTION ESTABLISHED. CHECKING FOR GRID FACADE SKIPPED (REASON: "+BEAN_NAME_IMPLEMENTATION_GRID+" is empty. This is ok for presentation only nodes.)");
 			context.close();
 			return errorCount;
 		}
 
-		System.out.println("OK");
+		System.out.println(OK);
 		
 
 		IrodsGridFacade irodsGridFacade = (IrodsGridFacade) context.getBean(BEAN_NAME_IRODS_GRID_FACADE);
@@ -292,7 +316,7 @@ public class Diagnostics {
 		context.close();
 		
 		
-		System.out.print("CHECKING - GRID FACADE PUT .... ");
+		System.out.print(INFO+"CHECKING - GridFacade.put() .... ");
 		
 		SimpleDateFormat df = new SimpleDateFormat( "yyyy-MM-dd+HH-mm-ss" );
 		String testPkgName="smoke_test."+df.format(new Date())+".tgz";
@@ -305,29 +329,29 @@ public class Diagnostics {
 				errorCount++;
 				System.out.println(WARN+"put returned false.");
 			}else
-				System.out.println("OK");
+				System.out.println(OK);
 			
 		} catch (Exception e) {
 			errorCount++;
-			System.out.println("ERROR (cannot put file via irodsGridFacade)");
+			System.out.println(ERROR+"cannot put file via irodsGridFacade");
 			e.printStackTrace();
 		}
-		System.out.print("CHECKING - GRID FACADE ISVALID METHOD ... ");
+		System.out.print(INFO+"CHECKING - GridFacade.isValid() ... ");
 		if (!irodsGridFacade.isValid(new RelativePath(C.TEST_USER_SHORT_NAME,testPkgName).toString())) {
 				errorCount++;
-				System.out.println(WARN+" is valid returned false.");
+				System.out.println(WARN+" GridFacade.isValid() returned false.");
 		}else
-				System.out.println("OK");
+				System.out.println(OK);
 	
 		
-		System.out.print("CHECKING - GRID FACADE GET .... ");
+		System.out.print(INFO+"CHECKING - GridFacade.get() .... ");
 		if (DIAGNOSTICS_RETRIEVAL_FILE.exists()) DIAGNOSTICS_RETRIEVAL_FILE.delete();
 		try {
 			irodsGridFacade.get(DIAGNOSTICS_RETRIEVAL_FILE, new RelativePath(C.TEST_USER_SHORT_NAME,testPkgName).toString());
-			System.out.println("OK");
+			System.out.println(OK);
 		} catch (Exception e) {
 			errorCount++;
-			System.out.println("ERROR (cannot retrieve file via irodsGridFacade)");
+			System.out.println(ERROR+"cannot retrieve file via irodsGridFacade");
 			e.printStackTrace();
 		}
 		if (DIAGNOSTICS_RETRIEVAL_FILE.exists()) DIAGNOSTICS_RETRIEVAL_FILE.delete();
@@ -341,12 +365,12 @@ public class Diagnostics {
 		
 		int errorCount = 0;
 		
-		System.out.print("CHECKING - LOCAL NODE PATHS ... ");
+		System.out.print(INFO+"CHECKING - LOCAL NODE PATHS ... ");
 		
 		if ((properties.getProperty(PROP_USER_AREA_ROOT_PATH)==null) ||
 			((String)properties.getProperty(PROP_USER_AREA_ROOT_PATH)).isEmpty())
 			
-			logger.warn("WARN ("+PROP_USER_AREA_ROOT_PATH+" is empty. will not check for path) ");
+			logger.warn(INFO+PROP_USER_AREA_ROOT_PATH+" is empty. will not check for path");
 		else {
 			if (!new File(properties.getProperty(PROP_USER_AREA_ROOT_PATH)).exists()){
 				System.out.println(MSG_USER_AREA_NOT_EXISTS);
@@ -357,7 +381,7 @@ public class Diagnostics {
 		if ((properties.getProperty(PROP_INGEST_AREA_ROOT_PATH)==null) ||
 				((String)properties.getProperty(PROP_INGEST_AREA_ROOT_PATH)).isEmpty())
 				
-				logger.warn("WARN ("+PROP_INGEST_AREA_ROOT_PATH+" is empty. will not check for path) ");
+				logger.warn(INFO+PROP_INGEST_AREA_ROOT_PATH+" is empty. will not check for path");
 		else {
 			if (!new File(properties.getProperty(PROP_INGEST_AREA_ROOT_PATH)).exists()){
 				System.out.println(MSG_INGEST_AREA_NOT_EXISTS);
@@ -368,7 +392,7 @@ public class Diagnostics {
 		if ((properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH)==null) ||
 				((String)properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH)).isEmpty())
 		
-			logger.warn("WARN ("+PROP_INGEST_AREA_ROOT_PATH+" is empty. will not check for path) ");
+			logger.warn(INFO+PROP_INGEST_AREA_ROOT_PATH+" is empty. will not check for path");
 		else{
 			if (!new File(properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH)).exists()) {
 				System.out.println(MSG_GRID_CACHE_AREA_NOT_EXISTS);
@@ -380,7 +404,7 @@ public class Diagnostics {
 			System.out.println(MSG_WORK_AREA_NOT_EXISTS);
 			errorCount++;
 		}
-		if (errorCount==0) System.out.println("OK");
+		if (errorCount==0) System.out.println(OK);
 		
 		return errorCount;
 	}
