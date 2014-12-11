@@ -12,6 +12,7 @@ import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -49,6 +50,11 @@ public class ATUseCaseIngestDeltaLIDO extends AcceptanceTest{
 		FileUtils.deleteQuietly(new File("src/test/resources/at/"+ORIG_NAME_ORIG+".tgz"));
 		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
+	}
+	
+	@AfterClass
+	public static void tearDown() throws IOException{
+		FileUtils.deleteDirectory(retrievalFolder);
 	}
 
 	@Test
