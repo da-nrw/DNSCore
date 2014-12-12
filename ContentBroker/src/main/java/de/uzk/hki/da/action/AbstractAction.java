@@ -375,11 +375,11 @@ public abstract class AbstractAction implements Runnable {
 	 */
 	private void unsetObjectLogging() {
 		
-//		try {
-//			Thread.sleep(5000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
 		// manually close object log in order to prevent "too many open files"
 		ch.qos.logback.classic.Logger logger =
