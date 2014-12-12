@@ -102,7 +102,7 @@ public abstract class AbstractAction implements Runnable {
 	
 	
 	protected Logger logger = LoggerFactory.getLogger( this.getClass().getName() );
-	private Logger baseLogger = LoggerFactory.getLogger("de.uzk.hki.da.action"); // contentbrokerlog
+	private Logger baseLogger = LoggerFactory.getLogger("de.uzk.hki.da.action.AbstractAction"); // contentbrokerlog
 	
 	
 	/**
@@ -183,14 +183,14 @@ public abstract class AbstractAction implements Runnable {
 	}
 
 	private boolean performCommonPreparationsForActionExecution() {
-		logger.info("Running \""+this.getClass().getName()+"\"");
-		logger.debug(LinuxEnvironmentUtils.logHeapSpaceInformation());
+		baseLogger.info("Running \""+this.getClass().getName()+"\"");
+		baseLogger.debug(LinuxEnvironmentUtils.logHeapSpaceInformation());
 		
 		try {
 			checkActionSpecificConfiguration();
 			checkSystemStatePreconditions();
 		} catch (Exception e) {
-			logger.error(e.getMessage()); return false;
+			baseLogger.error(e.getMessage()); return false;
 		}
 		return true;
 	}
@@ -374,12 +374,6 @@ public abstract class AbstractAction implements Runnable {
 	 * @author Daniel M. de Oliveira
 	 */
 	private void unsetObjectLogging() {
-		
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		
 		// manually close object log in order to prevent "too many open files"
 		ch.qos.logback.classic.Logger logger =
