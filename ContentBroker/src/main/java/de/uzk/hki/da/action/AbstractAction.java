@@ -102,6 +102,8 @@ public abstract class AbstractAction implements Runnable {
 	
 	
 	protected Logger logger = LoggerFactory.getLogger( this.getClass().getName() );
+	private Logger baseLogger = LoggerFactory.getLogger("de.uzk.hki.da.action"); // contentbrokerlog
+	
 	
 	/**
 	 * 
@@ -140,12 +142,6 @@ public abstract class AbstractAction implements Runnable {
 	@Override
 	public void run() {
 		
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
 		if (!performCommonPreparationsForActionExecution()) return;
 		setupObjectLogging(object.getIdentifier());
 		
@@ -154,39 +150,36 @@ public abstract class AbstractAction implements Runnable {
 		try {
 			Date start = new Date();
 			TimeStampLogging tsl = new TimeStampLogging();
-//			tsl.log("START", this.getClass().getName(), start.getTime());
 			
 			execAndPostProcessImplementation();
 			
 			Date stop = new Date();
 			long duration = stop.getTime()-start.getTime(); // in milliseconds
-//			tsl.log("STOP", this.getClass().getName(), stop.getTime());
 			tsl.log(object.getIdentifier(), this.getClass().getName(), duration);
 			
+			unsetObjectLogging();
 			upateObjectAndJob(object,job,isDELETEOBJECT(),KILLATEXIT,toCreate);
 			
 		} catch (UserException e) {
 			
 			execAndPostProcessRollback(object,job,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
-			upateObjectAndJob(object, job, false, false, null);
 			reportUserError(e);
+			unsetObjectLogging();
+			upateObjectAndJob(object, job, false, false, null);
 			
 		} catch (Exception e) {
 			
 			execAndPostProcessRollback(object,job,C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED);
-			upateObjectAndJob(object, job, false, false, null);
 			reportTechnicalError(e);
+			unsetObjectLogging();
+			upateObjectAndJob(object, job, false, false, null);
 		} 		
 			
 		// For now, do it after update database was successful to prevent 
 		// new jobs getting fetched. It would be an improvement if we had 
 		// a controller for the action factory that stops it if database 
 		// connection is not possible.
-		
 		actionMap.deregisterAction(this);
-		
-		unsetObjectLogging();
-//		tsl.log("Stop", object.getIdentifier(), this.getClass().getName());
 	}
 
 	private boolean performCommonPreparationsForActionExecution() {
@@ -212,20 +205,20 @@ public abstract class AbstractAction implements Runnable {
 			IOException, RepositoryException, JDOMException,
 			ParserConfigurationException, SAXException {
 		
-		logger.info("Stubbing implementation of "+this.getClass().getName());
-		logger.debug(Utilities.getHeapSpaceInformation());
+		baseLogger.info("Stubbing implementation of "+this.getClass().getName());
+		baseLogger.debug(Utilities.getHeapSpaceInformation());
 		
 		if (!implementation()){				
-			logger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
+			baseLogger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
 			job.setStatus(startStatus);
 			toCreate=null;
 			DELETEOBJECT=false;
 			KILLATEXIT=false;
 		} else {
 			job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
-			logger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now commiting changes to database.");
+			baseLogger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now commiting changes to database.");
 			if (KILLATEXIT)	{
-				logger.info("Set the job status to the end status "+endStatus+" .");
+				baseLogger.info("Set the job status to the end status "+endStatus+" .");
 			} else {
 				job.setStatus(endStatus);	
 			}
@@ -238,7 +231,7 @@ public abstract class AbstractAction implements Runnable {
 		
 		String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + errorStatusEndDigit;
 		
-		logger.info("Stubbing rollback of "+this.getClass().getName());
+		baseLogger.info("Stubbing rollback of "+this.getClass().getName());
 		try {
 			rollback();
 		} catch (Exception e) {
@@ -268,14 +261,14 @@ public abstract class AbstractAction implements Runnable {
 		do {
 			Session session = null;
 			try {
-				logger.info("perform transaction with object="+object.getOrig_name()+", job="+job.getStatus());
+				baseLogger.info("perform transaction with object="+object.getOrig_name()+", job="+job.getStatus());
 				session = openSession();
 				session.beginTransaction();
 				performTransaction(object, job, deleteObject, deleteJob, createJob, session);
 				transactionSuccessful=true;
 			}
 			catch (Exception sqlException) {
-				logger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sqlException);
+				baseLogger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sqlException);
 				sendJMSException(sqlException);
 				
 				try {    Thread.sleep(2000);
@@ -299,12 +292,12 @@ public abstract class AbstractAction implements Runnable {
 		
 		if (deleteJob) {
 			session.delete(job);
-			logger.info(this.getClass().getName()+" finished working on job: "+
+			baseLogger.info(this.getClass().getName()+" finished working on job: "+
 					job.getId()+". Job deleted. Database transaction successful.");
 		}
 		else {
 			session.update(job);
-			logger.info(this.getClass().getName()+" finished working on job: "+
+			baseLogger.info(this.getClass().getName()+" finished working on job: "+
 					job.getId()+". Set job to end state ("+endStatus+"). Database transaction successful.");			
 		}
 
