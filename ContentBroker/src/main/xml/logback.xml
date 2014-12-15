@@ -108,52 +108,50 @@
 		</sift>
 	</appender>
         
-		<logger name="de.uzk.hki.da.core" additivity="false" level="DEBUG">
-                <appender-ref ref="CONTENTBROKER_LOG" />
-        </logger>
-		<logger name="de.uzk.hki.da.action" additivity="false" level="DEBUG">
-                <appender-ref ref="CONTENTBROKER_LOG" />
-        </logger>
-		<logger name="de.uzk.hki.da.service.MailContents"  additivity="false" level="DEBUG">
-                <appender-ref ref="CONTENTBROKER_LOG" />
-        </logger>
-        <logger name="org.hibernate" level="INFO">
-                <appender-ref ref="CONTENTBROKER_LOG" />
-        </logger>
-        <logger name="org.apache.activemq" level="ERROR">
-                <appender-ref ref="CONTENTBROKER_LOG" />
-        </logger>
-
-
-        <logger name="de.uzk.hki.da.grid"  additivity="false" level="DEBUG">
-                <appender-ref ref="GRID" />
-        </logger>
-
-
-        <logger name="de.uzk.hki.da.core.IngestAreaScannerWorker"  additivity="false" level="DEBUG">
-                <appender-ref ref="INGEST" />
-        </logger>
-		<logger name="de.uzk.hki.da.core.RegisterObjectService"  additivity="false" level="DEBUG">
-                <appender-ref ref="INGEST" />
-        </logger>
-		<logger name="de.uzk.hki.da.integrity" additivity="false" level="DEBUG">
-                <appender-ref ref="INTEGRITY" />
-        </logger>
-        <logger name="de.uzk.hki.da"  additivity="false" level="DEBUG">
-                <appender-ref ref="OBJECT" />
-        </logger>
-       	<logger name="de.uzk.hki.da.core.TimeStampLogging"  additivity="false" level="DEBUG">
-                <appender-ref ref="TIME_STAMP_ACTIONS_LOG" />
-        </logger>
+    <logger name="de.uzk.hki.da"  additivity="false" level="DEBUG">
+    	<appender-ref ref="OBJECT" />
+	</logger>
         
         
-        <!-- 
-        <logger name="de.uzk.hki.da"  additivity="false" level="DEBUG">
-                <appender-ref ref="UNSORTED_LOG" />
-        </logger>
-		-->
-
-        <root level="OFF" />
-
-
+	<logger name="de.uzk.hki.da.core" additivity="false" level="DEBUG">
+		<appender-ref ref="CONTENTBROKER_LOG" />
+	</logger>
+	<logger name="de.uzk.hki.da.action" additivity="false" level="DEBUG">
+		<appender-ref ref="CONTENTBROKER_LOG" />
+	</logger>
+	<logger name="de.uzk.hki.da.service.MailContents"  additivity="false" level="DEBUG">
+		<appender-ref ref="CONTENTBROKER_LOG" />
+	</logger>
+	<logger name="org.hibernate" level="INFO">
+		<appender-ref ref="CONTENTBROKER_LOG" />
+	</logger>
+	<logger name="org.apache.activemq" level="ERROR">
+		<appender-ref ref="CONTENTBROKER_LOG" />
+	</logger>
+	
+	
+	<logger name="de.uzk.hki.da.grid"  additivity="false" level="DEBUG">
+		<appender-ref ref="GRID" />
+	</logger>
+	<logger name="de.uzk.hki.da.core.IngestAreaScannerWorker"  additivity="false" level="DEBUG">
+		<appender-ref ref="INGEST" />
+	</logger>
+	<logger name="de.uzk.hki.da.core.RegisterObjectService"  additivity="false" level="DEBUG">
+		<appender-ref ref="INGEST" />
+	</logger>
+	<logger name="de.uzk.hki.da.integrity" additivity="false" level="DEBUG">
+		<appender-ref ref="INTEGRITY" />
+	</logger>
+	      
+	<logger name="de.uzk.hki.da.core.TimeStampLogging"  additivity="false" level="DEBUG">
+		<appender-ref ref="TIME_STAMP_ACTIONS_LOG" />
+	</logger>
+	      
+	      <!-- 
+	<logger name="de.uzk.hki.da"  additivity="false" level="DEBUG">
+	        <appender-ref ref="UNSORTED_LOG" />
+	</logger>
+	-->
+	
+      <root level="OFF" />
 </configuration>

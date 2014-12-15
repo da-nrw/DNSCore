@@ -139,6 +139,7 @@ public abstract class AbstractAction implements Runnable {
 	public abstract void checkSystemStatePreconditions() throws IllegalStateException;
 	
 	
+	
 	@Override
 	public void run() {
 		
@@ -147,40 +148,52 @@ public abstract class AbstractAction implements Runnable {
 		
 		synchronizeObjectDatabaseAndFileSystemState();
 		
+		Date start = new Date();
+		executeConcreteAction();
+		Date stop = new Date();
+		long duration = stop.getTime()-start.getTime(); // in milliseconds
+		new TimeStampLogging().log(object.getIdentifier(), this.getClass().getName(), duration);
+		
+		// The order of the next two statements must not be changed.
+		// The object logging must be unset in order to prevent another appender to start
+		// its lifecycle before the current one has stop its lifecycle.
+		unsetObjectLogging(); 
+		upateObjectAndJob(object, job, DELETEOBJECT, KILLATEXIT, toCreate);
+
+		actionMap.deregisterAction(this); 
+	}
+
+	
+	
+	private void executeConcreteAction() {
+		
 		try {
-			Date start = new Date();
-			TimeStampLogging tsl = new TimeStampLogging();
-			
 			execAndPostProcessImplementation();
 			
-			Date stop = new Date();
-			long duration = stop.getTime()-start.getTime(); // in milliseconds
-			tsl.log(object.getIdentifier(), this.getClass().getName(), duration);
-			
-			unsetObjectLogging();
-			upateObjectAndJob(object,job,isDELETEOBJECT(),KILLATEXIT,toCreate);
-			
 		} catch (UserException e) {
-			
+			resetModifiers();
 			execAndPostProcessRollback(object,job,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
 			reportUserError(e);
-			unsetObjectLogging();
-			upateObjectAndJob(object, job, false, false, null);
 			
 		} catch (Exception e) {
-			
+			resetModifiers();
 			execAndPostProcessRollback(object,job,C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED);
 			reportTechnicalError(e);
-			unsetObjectLogging();
-			upateObjectAndJob(object, job, false, false, null);
-		} 		
-			
-		// For now, do it after update database was successful to prevent 
-		// new jobs getting fetched. It would be an improvement if we had 
-		// a controller for the action factory that stops it if database 
-		// connection is not possible.
-		actionMap.deregisterAction(this);
+		}
 	}
+	
+	
+	
+	
+	
+	private void resetModifiers(){
+		DELETEOBJECT=false;
+		KILLATEXIT=false;
+		toCreate=null;
+	}
+	
+	
+	
 
 	private boolean performCommonPreparationsForActionExecution() {
 		baseLogger.info("Running \""+this.getClass().getName()+"\"");
@@ -248,7 +261,7 @@ public abstract class AbstractAction implements Runnable {
 	
 	/**
 	 * Perform the database transaction to synchronize the updates of job and object 
-	 * (which happened during implementation) to the database. 
+	 * (which happened during {@link #implementation()}) to the database. 
 	 * <br>
 	 * In case of connection related failures retries it until it succeeds.
 	 */
@@ -363,10 +376,9 @@ public abstract class AbstractAction implements Runnable {
 		ch.qos.logback.classic.Logger logger =
 				(ch.qos.logback.classic.Logger) LoggerFactory.getLogger("de.uzk.hki.da");
 		Appender<ILoggingEvent> appender = logger.getAppender("OBJECT");
+		
 		if (appender != null)
 			appender.start();
-		
-		logger.info("AbstractAction fetched job from queue. See logfile: "+object.getIdentifier()+".log");
 	}
 	
 	/**
