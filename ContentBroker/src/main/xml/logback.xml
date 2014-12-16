@@ -22,33 +22,6 @@
 	    </encoder>
 	</appender>   
 	
-	<appender name="CONTENTBROKER_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>TRACE</level>
-        </filter>
-		<file>log/contentbroker.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>log/contentbroker.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-	    <encoder>
-	        <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
-	    </encoder>
-	</appender>
-	<appender name="UNSORTED_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>TRACE</level>
-        </filter>
-		<file>log/unsorted.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>log/unsorted.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-	    <encoder>
-	        <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
-	    </encoder>
-	</appender>
-
 	<appender name="TIME_STAMP_ACTIONS_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>TRACE</level>
@@ -64,6 +37,21 @@
 	</appender>
 
 
+
+    <appender name="WORKER" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<key>worker_id</key>
+			<defaultValue>contentbroker</defaultValue>
+		</discriminator>
+		<sift>
+			<appender name="WORKER-${worker_id}" class="ch.qos.logback.core.FileAppender">
+				<file>log/${worker_id}.log</file>
+				<encoder>
+					<pattern>%d %level %logger{35} - %msg%n</pattern>
+				</encoder>
+			</appender>
+		</sift>
+	</appender>
 	<appender name="OBJECT" class="ch.qos.logback.classic.sift.SiftingAppender">
 		<discriminator>
 			<key>object_id</key>
@@ -78,23 +66,13 @@
 			</appender>
 		</sift>
 	</appender>
-        
-    <appender name="WORKER" class="ch.qos.logback.classic.sift.SiftingAppender">
-		<discriminator>
-			<key>worker_id</key>
-			<defaultValue>contentbroker</defaultValue>
-		</discriminator>
-		<sift>
-			<appender name="WORKER_LOG-${worker_id}" class="ch.qos.logback.core.FileAppender">
-				<file>log/${worker_id}.log</file>
-				<encoder>
-					<pattern>%d %level %logger{35} - %msg%n</pattern>
-				</encoder>
-			</appender>
-		</sift>
-	</appender>
+
+
         
     <logger name="de.uzk.hki.da"  additivity="false" level="DEBUG">
+    	<appender-ref ref="OBJECT" />
+	</logger>
+	<logger name="de.uzk.hki.da.cb"  additivity="false" level="DEBUG">
     	<appender-ref ref="OBJECT" />
 	</logger>
 	<logger name="de.uzk.hki.da.core"  additivity="false" level="DEBUG">
@@ -109,15 +87,6 @@
 	<logger name="org.hibernate" level="INFO">
 		<appender-ref ref="WORKER" />
 	</logger>
-
- 	<!--        
-	<logger name="org.apache.activemq" level="ERROR">
-		<appender-ref ref="CONTENTBROKER_LOG" />
-	</logger>
-	<logger name="de.uzk.hki.da.core.ContentBroker" level="DEBUG">
-		<appender-ref ref="CONTENTBROKER_LOG" />
-	</logger>
-	-->
 	
 	
 	<logger name="de.uzk.hki.da.grid"  additivity="false" level="DEBUG">

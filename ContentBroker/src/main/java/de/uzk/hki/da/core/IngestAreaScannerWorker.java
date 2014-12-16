@@ -29,11 +29,8 @@ import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
-import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.Appender;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -123,19 +120,17 @@ public class IngestAreaScannerWorker extends Worker{
 		}
 	}
 	
+	@Override
+	public void setMDC() {
+		MDC.put(WORKER_ID, "ingest");
+	}
+	
+	
 	/**
 	 * Checking for new files in the staging area.	
 	 */
-	public void scheduleTask(){
-		
-		MDC.put("worker_id", "ingest");
-		
-		ch.qos.logback.classic.Logger logger =
-				(ch.qos.logback.classic.Logger) LoggerFactory.getLogger("de.uzk.hki.da.core");
-		Appender<ILoggingEvent> appender = logger.getAppender("WORKER");
-		
-		if (appender != null)
-			appender.start();
+	@Override
+	public void scheduleTaskImplementation(){
 		
 		try {
 		
@@ -165,17 +160,12 @@ public class IngestAreaScannerWorker extends Worker{
 							localNodeId,
 							object);
 					logger.debug("Created new Object "+object+ ":::: Created job: "+job);
-					
 				}
 			}
 		}
 		catch (Exception e){ // Should catch everything in scheduleTask. Otherwise thread dies without notice.
 			logger.error("Caught: "+e,e);
 		}
-	
-		if (appender != null)
-			appender.stop();
-		
 	}
 	
 	

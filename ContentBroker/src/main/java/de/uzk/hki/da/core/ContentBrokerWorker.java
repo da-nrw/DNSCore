@@ -1,12 +1,9 @@
 package de.uzk.hki.da.core;
 
-import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.core.task.TaskRejectedException;
 
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.Appender;
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.action.ActionFactory;
 
@@ -18,19 +15,15 @@ public class ContentBrokerWorker extends Worker{
 	/** The action factory. */
 	private ActionFactory actionFactory;
 	
+	public void setMDC(){
+		MDC.put(WORKER_ID, "contentbroker");
+	}
+	
 	/**
 	 * Schedule task.
 	 */
-	public void scheduleTask() {
-		
-		MDC.put("worker_id", "contentbroker");
-		
-		ch.qos.logback.classic.Logger logger =
-				(ch.qos.logback.classic.Logger) LoggerFactory.getLogger("de.uzk.hki.da.core");
-		Appender<ILoggingEvent> appender = logger.getAppender("WORKER");
-		
-		if (appender != null)
-			appender.start();
+	@Override
+	public void scheduleTaskImplementation() {
 		
 		logger.trace("scheduling task");		
 		try {
@@ -44,10 +37,6 @@ public class ContentBrokerWorker extends Worker{
 		} catch (Exception e) {
 			logger.error("Exception while scheduling task", e);
 		}
-
-		
-		if (appender != null)
-			appender.stop();
 	}
 	
 	

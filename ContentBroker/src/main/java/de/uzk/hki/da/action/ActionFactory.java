@@ -51,7 +51,7 @@ import de.uzk.hki.da.service.UserExceptionManager;
 public class ActionFactory implements ApplicationContextAware {
 	
 	/** The Constant logger. */
-	private static final Logger logger = LoggerFactory.getLogger(ActionFactory.class);
+	private static final Logger logger = LoggerFactory.getLogger("de.uzk.hki.da.core");
 	
 	/** The action registry. */
 	private ActionRegistry actionRegistry;

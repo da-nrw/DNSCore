@@ -29,11 +29,8 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import org.hibernate.Session;
-import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.Appender;
 import de.uzk.hki.da.core.HibernateUtil;
 import de.uzk.hki.da.core.Worker;
 import de.uzk.hki.da.grid.GridFacade;
@@ -81,24 +78,19 @@ public class IntegrityScannerWorker extends Worker{
 		session.close();
 	}
 	
+	@Override
+	public void setMDC() {
+		MDC.put(WORKER_ID, "integrity");
+	} 
+	
 	
 	/**
 	 * Checking for the AIPs related to this node.
 	 * @author Daniel M. de Oliveira
 	 * @author Jens Peters
 	 */
-	public void scheduleTask(){
-		MDC.put("worker_id", "integrity");
-		
-		ch.qos.logback.classic.Logger logger =
-				(ch.qos.logback.classic.Logger) LoggerFactory.getLogger("de.uzk.hki.da.core");
-		Appender<ILoggingEvent> appender = logger.getAppender("WORKER");
-		
-		if (appender != null)
-			appender.start();
-		
-		
-		
+	@Override
+	public void scheduleTaskImplementation(){
 		logger.trace("Scanning AIP s of node " + localNodeId );
 
 		try {
@@ -119,9 +111,6 @@ public class IntegrityScannerWorker extends Worker{
 		} catch (Exception e) {
 			logger.error("Error in integrityCheck schedule Task " + e.getMessage(),e);
 		}
-		
-		if (appender != null)
-			appender.stop();
 	}
 	
 	/**

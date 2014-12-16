@@ -32,8 +32,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.xml.sax.SAXException;
 
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.Appender;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.HibernateUtil;
@@ -224,9 +222,7 @@ public abstract class AbstractAction implements Runnable {
 		if (!implementation()){				
 			baseLogger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
 			job.setStatus(startStatus);
-			toCreate=null;
-			DELETEOBJECT=false;
-			KILLATEXIT=false;
+			resetModifiers();
 		} else {
 			job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
 			baseLogger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now commiting changes to database.");
@@ -372,13 +368,6 @@ public abstract class AbstractAction implements Runnable {
 	 */
 	private void setupObjectLogging(String logFileBase) {
 		MDC.put("object_id", logFileBase);
-		
-		ch.qos.logback.classic.Logger logger =
-				(ch.qos.logback.classic.Logger) LoggerFactory.getLogger("de.uzk.hki.da");
-		Appender<ILoggingEvent> appender = logger.getAppender("OBJECT");
-		
-		if (appender != null)
-			appender.start();
 	}
 	
 	/**
@@ -386,15 +375,7 @@ public abstract class AbstractAction implements Runnable {
 	 * @author Daniel M. de Oliveira
 	 */
 	private void unsetObjectLogging() {
-		
-		// manually close object log in order to prevent "too many open files"
-		ch.qos.logback.classic.Logger logger =
-				(ch.qos.logback.classic.Logger) LoggerFactory.getLogger("de.uzk.hki.da");
-		
-		Appender<ILoggingEvent> appender = logger.getAppender("OBJECT");
-		if (appender != null)
-			appender.stop();
-		
+		// manually close object log in order to prevent "too many open files" TOD0 Discuss this.
 		MDC.remove("object_id");
 	}
 
