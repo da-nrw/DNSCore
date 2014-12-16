@@ -19,5 +19,6 @@
 
 /**
  * Classes to access DataGrids - and implementation for iRODS Data Grid
+ * @author Jens Peters
  */
 package de.uzk.hki.da.grid;

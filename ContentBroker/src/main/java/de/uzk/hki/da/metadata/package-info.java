@@ -18,6 +18,10 @@
 */
 
 /**
- * Classes dealing with conversion and IO of various metadata formats.
+ * Comprises classes which form the facility to support 
+ * various metadata formats natively in AIPs formed by DNSCore.  
+ * 
+ * @author Sebastian Cuy
+ * @author Polina Gubaidullina
  */
 package de.uzk.hki.da.metadata;

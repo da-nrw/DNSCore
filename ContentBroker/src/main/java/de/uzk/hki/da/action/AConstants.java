@@ -1,7 +1,7 @@
 /*
   DA-NRW Software Suite | ContentBroker
-  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
-  Universität zu Köln
+  Copyright (C) 2014 LVRInfoKom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -17,19 +17,19 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+package de.uzk.hki.da.action;
+
 /**
- * The core package contains the classes the basic 
- * which form the basic business logic infrastructure.
- * 
- * It is the entry point of the application layer which is comprised
- * by the action, cb, metadata, convert and format packages.
- *  
- * Therefore, its classes have unidirectional access 
- * to all of the aforementioned packages.
- * 
  * @author Daniel M. de Oliveira
- * @author Jens Peters
- * @author Sebastian Cuy
- * @author Thomas Kleinke
  */
-package de.uzk.hki.da.core;
+public class AConstants {
+
+	public static final String COMMAND_STOP_FACTORY = "STOP_FACTORY";
+	public static final String COMMAND_START_FACTORY = "START_FACTORY";
+	public static final String COMMAND_SHOW_DESCRIPTION = "SHOW_DESCRIPTION";
+	public static final String COMMAND_SHOW_VERSION = "SHOW_VERSION";
+	public static final String COMMAND_SHOW_ACTIONS = "SHOW_ACTIONS";
+	public static final String COMMAND_SHOW_ACTION = "SHOW_ACTION";
+	public static final String COMMAND_GRACEFUL_SHUTDOWN = "GRACEFUL_SHUTDOWN";
+	
+}

@@ -18,6 +18,9 @@
 */
 
 /**
- * Service classes encapsulating reusable business logic.
+ * Classes providing services which could 
+ * theoretically work for other applications as well.
+ * 
+ * @author Daniel M. de Oliveira
  */
 package de.uzk.hki.da.service;

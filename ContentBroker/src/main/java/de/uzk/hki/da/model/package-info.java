@@ -19,5 +19,11 @@
 
 /**
  * The basic domain model.
+ * Plus serialization facilities into two formats.
+ * <li>1. to database: by hibernate and jpa annotations
+ * <li>2. to premis: by providing specialized serialization classes.
+ * 
+ * @author Daniel M. de Oliveira
+ * @author Thomas Kleinke
  */
 package de.uzk.hki.da.model;

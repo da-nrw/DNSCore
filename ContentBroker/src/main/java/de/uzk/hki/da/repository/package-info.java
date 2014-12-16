@@ -19,5 +19,8 @@
 
 /**
  * Interface and implementations for accessing the presentation repository.
+ * 
+ * @author Sebastian Cuy
+ * @author Daniel M. de Oliveira
  */
 package de.uzk.hki.da.repository;

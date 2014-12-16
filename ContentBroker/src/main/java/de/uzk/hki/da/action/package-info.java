@@ -18,6 +18,11 @@
 */
 
 /**
- * Main conversion functions and actions related to formats.
+ * The action package contains the engine which can handle 
+ * workflows consisting of actions. 
+ * 
+ * @author Daniel M. de Oliveira
+ * @author Sebastian Cuy
+ * @author Jens Peters
  */
 package de.uzk.hki.da.action;

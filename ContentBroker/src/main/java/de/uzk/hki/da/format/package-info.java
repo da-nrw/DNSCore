@@ -18,6 +18,13 @@
 */
 
 /**
- * The FileFormat Package
+ * The FileFormat Package. Provides services of 
+ * file format identification, validation, and metadata extraction 
+ * through its unique entry point {@link de.uzk.hki.da.format.FileFormatFacade}.
+ * 
+ * @author Daniel M. de Oliveira 
+ * @author Sebastian Cuy
+ * @author Jens Peters
+ * @author Thomas Kleinke 
  */
 package de.uzk.hki.da.format;

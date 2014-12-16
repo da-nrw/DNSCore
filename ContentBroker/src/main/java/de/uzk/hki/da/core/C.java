@@ -58,14 +58,7 @@ public class C {
 
 	// Systems communication
 	public static final String JMS_NO_BODY = "-keine weiteren Details-";
-	public static final String COMMAND_STOP_FACTORY = "STOP_FACTORY";
-	public static final String COMMAND_START_FACTORY = "START_FACTORY";
-	public static final String COMMAND_SHOW_DESCRIPTION = "SHOW_DESCRIPTION";
-	public static final String COMMAND_SHOW_VERSION = "SHOW_VERSION";
-	public static final String COMMAND_SHOW_ACTIONS = "SHOW_ACTIONS";
-	public static final String COMMAND_SHOW_ACTION = "SHOW_ACTION";
-	public static final String COMMAND_GRACEFUL_SHUTDOWN = "GRACEFUL_SHUTDOWN";
-	public static final String QUESTION_MIGRATION_ALLOWED = "MIGRATION_ALLOWED?";
+	
 	public static final String ANSWER_YO = "YES";
 	public static final String ANSWER_NO = "NO";
 	public static final String IRODS_START_DELAYED = "START_DELAYED";
@@ -73,6 +66,7 @@ public class C {
 	public static final String QUEUE_TO_SERVER = "CB.SYSTEM";
 	public static final String QUEUE_TO_CLIENT = "CB.CLIENT";
 	public static final String QUEUE_TO_IRODS_SERVER = "IRODS.SYSTEM";
+	public static final String QUESTION_MIGRATION_ALLOWED = "MIGRATION_ALLOWED?";
 	
 	// Premis related
 	public static final String EVENT_TYPE_CREATE = "CREATE";

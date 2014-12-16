@@ -18,6 +18,11 @@
 */
 
 /**
- * Main conversion functions and actions related to formats.
+ * Format conversion.
+ * 
+ * @author Daniel M. de Oliveira
+ * @author Jens Peters
+ * @author Thomas Kleinke
+ * @author Sebastian Cuy
  */
 package de.uzk.hki.da.convert;

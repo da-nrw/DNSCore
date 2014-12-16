@@ -18,18 +18,11 @@
 */
 
 /**
- * The core package contains the classes the basic 
- * which form the basic business logic infrastructure.
+ * Small application infrastructure supporting components which could work
+ * for other applications as well.
  * 
- * It is the entry point of the application layer which is comprised
- * by the action, cb, metadata, convert and format packages.
- *  
- * Therefore, its classes have unidirectional access 
- * to all of the aforementioned packages.
- * 
+ * @author Polina Gubaidullina
  * @author Daniel M. de Oliveira
- * @author Jens Peters
- * @author Sebastian Cuy
  * @author Thomas Kleinke
  */
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.util;
