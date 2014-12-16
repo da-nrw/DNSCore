@@ -29,9 +29,11 @@ import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.Appender;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -58,10 +60,8 @@ import de.uzk.hki.da.utils.Utilities;
  * @author Daniel M. de Oliveira
  *
  */
-public class IngestAreaScannerWorker {
+public class IngestAreaScannerWorker extends Worker{
 
-	/** The Constant logger. */
-	private static final Logger logger = LoggerFactory.getLogger(IngestAreaScannerWorker.class);
 	
 	/**
 	 * To rule everything out except containers of valid formats.
@@ -128,15 +128,24 @@ public class IngestAreaScannerWorker {
 	 */
 	public void scheduleTask(){
 		
+		MDC.put("worker_id", "ingest");
+		
+		ch.qos.logback.classic.Logger logger =
+				(ch.qos.logback.classic.Logger) LoggerFactory.getLogger("de.uzk.hki.da.core");
+		Appender<ILoggingEvent> appender = logger.getAppender("WORKER");
+		
+		if (appender != null)
+			appender.start();
+		
 		try {
 		
 			long currentTimeStamp = System.currentTimeMillis();
 			
 			for (User contractor:contractors){
-			
+				logger.debug("Scanning");
+				logger.debug("folder of contractor: "+contractor.getShort_name());
+				logger.debug("!");
 				
-				
-				logger.debug("Scanning folder of contractor: "+contractor.getShort_name());
 				for (String child:scanContractorFolderForReadyFiles(contractor.getShort_name(), currentTimeStamp)){
 					
 					logger.info("Found file \""+child+"\" in ingest Area. Creating job for \""+contractor.getShort_name()+"\"");
@@ -163,7 +172,10 @@ public class IngestAreaScannerWorker {
 		catch (Exception e){ // Should catch everything in scheduleTask. Otherwise thread dies without notice.
 			logger.error("Caught: "+e,e);
 		}
-			
+	
+		if (appender != null)
+			appender.stop();
+		
 	}
 	
 	
