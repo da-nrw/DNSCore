@@ -82,11 +82,11 @@
     <appender name="WORKER" class="ch.qos.logback.classic.sift.SiftingAppender">
 		<discriminator>
 			<key>worker_id</key>
-			<defaultValue>default-worker-log</defaultValue>
+			<defaultValue>contentbroker</defaultValue>
 		</discriminator>
 		<sift>
 			<appender name="WORKER_LOG-${worker_id}" class="ch.qos.logback.core.FileAppender">
-				<file>log/worker-logs/${worker_id}.log</file>
+				<file>log/${worker_id}.log</file>
 				<encoder>
 					<pattern>%d %level %logger{35} - %msg%n</pattern>
 				</encoder>
@@ -110,14 +110,14 @@
 		<appender-ref ref="WORKER" />
 	</logger>
 
-        
+ 	<!--        
 	<logger name="org.apache.activemq" level="ERROR">
 		<appender-ref ref="CONTENTBROKER_LOG" />
 	</logger>
 	<logger name="de.uzk.hki.da.core.ContentBroker" level="DEBUG">
 		<appender-ref ref="CONTENTBROKER_LOG" />
 	</logger>
-	
+	-->
 	
 	
 	<logger name="de.uzk.hki.da.grid"  additivity="false" level="DEBUG">

@@ -22,16 +22,13 @@ package de.uzk.hki.da.core;
 
 import java.io.IOException;
 
-import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.apache.activemq.xbean.XBeanBrokerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.core.task.TaskRejectedException;
 
-import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.action.ActionFactory;
 import de.uzk.hki.da.action.ActionInformation;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
@@ -61,7 +58,7 @@ public class ContentBroker {
 	}
 
 	/** The Constant logger. */
-	private static final Logger logger = LoggerFactory.getLogger(ContentBroker.class);
+	private static final Logger logger = LoggerFactory.getLogger("de.uzk.hki.da.core");
 
 	/** The task executor. */
 	private TaskExecutor taskExecutor;
@@ -147,26 +144,6 @@ public class ContentBroker {
 	 */
 	public ContentBroker() {
 		
-	}
-	
-	/**
-	 * Schedule task.
-	 */
-	public void scheduleTask() {
-		
-		logger.trace("scheduling task");		
-		try {
-			AbstractAction action = actionFactory.buildNextAction();
-			if(action != null) {
-				logger.debug("executing... "+action.getName());
-				taskExecutor.execute(action);
-			}
-		} catch (TaskRejectedException e) {
-			logger.warn("Task rejected!",e);
-		} catch (Exception e) {
-			logger.error("Exception while scheduling task", e);
-		}
-
 	}
 	
 	

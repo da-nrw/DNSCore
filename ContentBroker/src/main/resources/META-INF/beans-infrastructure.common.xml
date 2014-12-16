@@ -22,13 +22,17 @@
 	</bean>
     
     <bean id="contentBroker" class="de.uzk.hki.da.core.ContentBroker" init-method="init">
-        <property name="taskExecutor" ref="taskExecutor" />
-        <property name="actionFactory" ref="actionFactory" />
         <property name="serverSocketNumber" value="${cb.serverSocketNumber}" />
         <property name="mqBroker" ref="mqBroker" />
        <property name="jmsMessageServiceHandler" ref="jmsMessageServiceHandler"/>
        <property name="actionInformation" ref="actionInformation" />
+       <property name="actionFactory" ref="actionFactory" />
     </bean>
+    <bean id="contentBrokerWorker" class="de.uzk.hki.da.core.ContentBrokerWorker">
+        <property name="taskExecutor" ref="taskExecutor" />
+        <property name="actionFactory" ref="actionFactory" />
+    </bean>
+    
           
 	<util:map id="updateMetadataNamespaces">
   		<entry key="mets" value="http://www.loc.gov/METS/"/>
