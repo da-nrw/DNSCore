@@ -32,13 +32,13 @@ import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommaSeparatedList;
 
 /**

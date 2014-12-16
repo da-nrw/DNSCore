@@ -19,7 +19,7 @@
 
 package de.uzk.hki.da.model;
 
-import de.uzk.hki.da.core.Path;
+import de.uzk.hki.da.util.Path;
 
 /**
  * Knows how the WorkArea is structured and how files and objects are organized on it.

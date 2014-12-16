@@ -39,6 +39,7 @@ import org.junit.Test;
 import de.uzk.hki.da.cb.NullAction;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserExceptionManager;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -48,7 +49,6 @@ import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
-import de.uzk.hki.da.service.UserExceptionManager;
 
 /**
  * 

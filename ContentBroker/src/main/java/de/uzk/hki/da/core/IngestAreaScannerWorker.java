@@ -35,6 +35,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.User;
+import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.Utilities;
 
 

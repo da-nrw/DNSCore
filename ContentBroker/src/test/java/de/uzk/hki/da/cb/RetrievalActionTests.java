@@ -36,10 +36,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.util.Path;
 
 
 /**

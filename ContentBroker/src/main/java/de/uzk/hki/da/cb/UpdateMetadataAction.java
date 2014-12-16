@@ -49,8 +49,6 @@ import org.jdom.output.XMLOutputter;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.MimeTypeDetectionService;
@@ -63,6 +61,8 @@ import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.util.Path;
 
 /**
  * Performs updates to metadata files that are necessary

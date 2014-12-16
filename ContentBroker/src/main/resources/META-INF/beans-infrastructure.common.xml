@@ -21,13 +21,14 @@
 		</property>
 	</bean>
     
-    <bean id="contentBroker" class="de.uzk.hki.da.core.ContentBroker" init-method="init">
+    <bean id="contentBroker" class="de.uzk.hki.da.main.ContentBroker" init-method="init">
         <property name="serverSocketNumber" value="${cb.serverSocketNumber}" />
         <property name="mqBroker" ref="mqBroker" />
        <property name="jmsMessageServiceHandler" ref="jmsMessageServiceHandler"/>
        <property name="actionInformation" ref="actionInformation" />
        <property name="actionFactory" ref="actionFactory" />
     </bean>
+    
     <bean id="contentBrokerWorker" class="de.uzk.hki.da.core.ContentBrokerWorker">
         <property name="taskExecutor" ref="taskExecutor" />
         <property name="actionFactory" ref="actionFactory" />
@@ -69,7 +70,7 @@
         <property name="registerObjectService" ref="registerObjectService" />
     </bean>
     
-    <bean id="integrityScannerWorker" class="de.uzk.hki.da.integrity.IntegrityScannerWorker" init-method="init">
+    <bean id="integrityScannerWorker" class="de.uzk.hki.da.core.IntegrityScannerWorker" init-method="init">
         <property name="localNodeId" value="${localNode.id}" />
         <property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}" />
         <property name="retries" value="3" />
@@ -95,7 +96,7 @@
     
     <bean class="de.uzk.hki.da.format.MimeTypeDetectionService" id="mtds"/>
     
-	<bean class="de.uzk.hki.da.service.UserExceptionManager" id="userExceptionManager" init-method="readConfigFile"/>
+	<bean class="de.uzk.hki.da.core.UserExceptionManager" id="userExceptionManager" init-method="readConfigFile"/>
 	
 	<bean id="actionInformation" class="de.uzk.hki.da.action.ActionInformation" scope="prototype" init-method="init">
 		<property name="actionRegistry" ref="actionRegistry" />

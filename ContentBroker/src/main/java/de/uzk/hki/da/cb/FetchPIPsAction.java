@@ -28,10 +28,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.ConfigurationException;
 import de.uzk.hki.da.core.IngestGate;
-import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
+import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.util.Path;
 
 /**
  * Fetches the PIPs from the nodes on which they've originally been created.

@@ -30,13 +30,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.cb.RetrievePackagesHelper;
-import de.uzk.hki.da.core.Path;
-import de.uzk.hki.da.core.RelativePath;
 import de.uzk.hki.da.grid.FakeGridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.util.RelativePath;
 
 /**
  * @author Daniel M. de Oliveira

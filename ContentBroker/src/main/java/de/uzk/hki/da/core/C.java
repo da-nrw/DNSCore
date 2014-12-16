@@ -24,6 +24,8 @@ import java.io.File;
 import org.jdom.Namespace;
 
 import de.uzk.hki.da.format.FFConstants;
+import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.util.RelativePath;
 
 /**
  * @author Daniel M. de Oliveira & the DA-NRW team

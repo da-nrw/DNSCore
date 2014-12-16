@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.hibernate.classic.Session;
 
-import de.uzk.hki.da.core.HibernateUtil;
+import de.uzk.hki.da.service.HibernateUtil;
 
 /**
  * @author Daniel M. de Oliveira

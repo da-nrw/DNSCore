@@ -36,8 +36,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.core.Path;
-import de.uzk.hki.da.core.RelativePath;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionPolicy;
@@ -45,6 +43,8 @@ import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.util.RelativePath;
 
 
 

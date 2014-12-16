@@ -29,7 +29,7 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.core.ConfigurationException;
+import de.uzk.hki.da.util.ConfigurationException;
 
 /**
  * Metadata index implementation for elasticsearch.

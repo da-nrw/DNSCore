@@ -35,10 +35,10 @@ import org.irods.jargon.core.exception.InvalidArgumentException;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.util.Path;
 
 /**
  * @author Daniel M. de Oliveira

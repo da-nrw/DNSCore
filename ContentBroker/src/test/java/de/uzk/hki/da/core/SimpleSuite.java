@@ -69,7 +69,6 @@ import de.uzk.hki.da.format.SubformatScanServiceTests;
 import de.uzk.hki.da.format.XMLSubformatIdentifierTests;
 import de.uzk.hki.da.grid.IrodsGridFacadeTest;
 import de.uzk.hki.da.grid.ReplicationExecutorTest;
-import de.uzk.hki.da.integrity.IntegrityScannerWorkerTest;
 import de.uzk.hki.da.metadata.MetsRightsSectionXmlReaderTest;
 import de.uzk.hki.da.metadata.MetsURNXmlReaderTest;
 import de.uzk.hki.da.metadata.PremisXmlReaderTests;
@@ -86,6 +85,7 @@ import de.uzk.hki.da.pkg.ArchiveBuilderTests;
 import de.uzk.hki.da.service.RetrievePackagesHelperTest;
 import de.uzk.hki.da.service.URNCheckDigitGeneratorTests;
 import de.uzk.hki.da.service.XPathUtilsTests;
+import de.uzk.hki.da.util.PathTest;
 
 /**
  * The collection of all our unit tests which should run pre and post commit.

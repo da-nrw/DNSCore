@@ -17,32 +17,17 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.action;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
 
-import javax.jms.Connection;
-import javax.jms.DeliveryMode;
-import javax.jms.Destination;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.jms.ObjectMessage;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.xbean.XBeanBrokerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.action.ActionDescription;
-import de.uzk.hki.da.action.ActionFactory;
-import de.uzk.hki.da.action.ActionInformation;
-import de.uzk.hki.da.action.ActionRegistry;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
 

@@ -18,7 +18,7 @@
 
 
 
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.util;
 
 import java.io.File;
 import java.util.ArrayList;

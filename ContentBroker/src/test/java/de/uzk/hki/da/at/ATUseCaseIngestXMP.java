@@ -36,8 +36,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.util.Path;
 
 /**
  * @author Polina Gubaidullina

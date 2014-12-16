@@ -1,4 +1,4 @@
-package de.uzk.hki.da.service;
+package de.uzk.hki.da.core;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,7 +17,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
-import de.uzk.hki.da.core.RegisterObjectService;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 
 /**

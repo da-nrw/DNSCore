@@ -26,9 +26,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.util.Path;
 
 /**
  * For a given object 

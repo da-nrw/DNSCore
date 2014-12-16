@@ -12,7 +12,7 @@
            http://activemq.apache.org/schema/core 
            http://activemq.apache.org/schema/core/activemq-core.xsd">
           
-	<bean id="customPropertyEditorRegistrar" class="de.uzk.hki.da.core.CustomPropertyEditorRegistrar"/>
+	<bean id="customPropertyEditorRegistrar" class="de.uzk.hki.da.util.CustomPropertyEditorRegistrar"/>
 
 	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
 		<property name="propertyEditorRegistrars">

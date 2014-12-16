@@ -25,7 +25,7 @@ import java.util.Date;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.ConfigurationException;
+import de.uzk.hki.da.util.ConfigurationException;
 
 /**
  * 

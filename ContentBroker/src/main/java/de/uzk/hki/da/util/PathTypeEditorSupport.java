@@ -1,7 +1,6 @@
 /*
   DA-NRW Software Suite | ContentBroker
-  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
-  Universität zu Köln
+  Copyright (C) 2014 LVRInfoKom, Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -17,7 +16,22 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+package de.uzk.hki.da.util;
+
+import java.beans.PropertyEditorSupport;
+
 /**
- * Classes used for integrity checking of AIPs and reflecting their state to the object DB.
+ * @author Daniel M. de Oliveira
  */
-package de.uzk.hki.da.integrity;
+public class PathTypeEditorSupport extends PropertyEditorSupport {
+
+	@Override
+	public void setAsText(String text) throws IllegalArgumentException {
+		setValue(Path.make(text));
+	}
+
+	@Override
+	public String getAsText()  {
+		return ((Path)getValue()).toString();
+	}
+}

@@ -37,6 +37,7 @@ import de.uzk.hki.da.model.ObjectNamedQueryDAO;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
+import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.Utilities;
 
 

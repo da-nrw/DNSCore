@@ -28,6 +28,8 @@ import org.junit.Test;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import de.uzk.hki.da.service.HibernateUtil;
+
 //import de.uzk.hki.da.db.BaseThreadDatabaseOperations;
 
 

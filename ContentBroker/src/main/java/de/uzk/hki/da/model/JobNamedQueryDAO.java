@@ -25,7 +25,7 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.core.HibernateUtil;
+import de.uzk.hki.da.service.HibernateUtil;
 
 /**
  * @author Daniel M. de Oliveira

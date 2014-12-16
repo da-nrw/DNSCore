@@ -29,9 +29,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.util.Path;
 
 /**
  * Relates to AK-T/02 Ingest - Alternative Szenarien.

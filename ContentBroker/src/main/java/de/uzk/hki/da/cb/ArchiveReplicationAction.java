@@ -31,10 +31,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.ConfigurationException;
-import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.util.Path;
 
 /**
  * Does the decoupled and time based Archive Replication to the given minimum number of required nodes. 

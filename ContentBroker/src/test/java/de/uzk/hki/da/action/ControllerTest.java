@@ -23,8 +23,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.action.ActionFactory;
 import de.uzk.hki.da.action.ActionInformation;
-import de.uzk.hki.da.core.Controller;
-import de.uzk.hki.da.core.HibernateUtil;
+import de.uzk.hki.da.service.HibernateUtil;
 
 
 /**

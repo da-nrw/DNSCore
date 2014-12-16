@@ -20,7 +20,7 @@
 /**
  * The package integrity.
  */
-package de.uzk.hki.da.integrity;
+package de.uzk.hki.da.core;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -31,14 +31,13 @@ import javax.mail.MessagingException;
 import org.hibernate.Session;
 import org.slf4j.MDC;
 
-import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.core.Worker;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.service.Mail;
 
 

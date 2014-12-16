@@ -28,7 +28,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.HibernateUtil;
+import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.test.TESTHelper;
 
 /**

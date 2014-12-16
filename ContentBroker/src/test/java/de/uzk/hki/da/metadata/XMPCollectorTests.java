@@ -27,11 +27,11 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.util.Path;
 
 /**
  * @author Daniel M. de Oliveira

@@ -4,11 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.util.Path;
 
 public class WorkAreaTests {
 

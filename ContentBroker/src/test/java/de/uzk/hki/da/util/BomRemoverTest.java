@@ -1,4 +1,4 @@
-package de.uzk.hki.da.utils;
+package de.uzk.hki.da.util;
 
 
 import static org.junit.Assert.*;
@@ -14,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.RightsSectionURNMetsXmlReader;
+import de.uzk.hki.da.utils.BomRemover;
 
 public class BomRemoverTest {
 

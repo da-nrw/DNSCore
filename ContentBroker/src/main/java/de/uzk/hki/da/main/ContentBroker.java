@@ -18,7 +18,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.main;
 
 import java.io.IOException;
 
@@ -31,6 +31,8 @@ import org.springframework.core.task.TaskExecutor;
 
 import de.uzk.hki.da.action.ActionFactory;
 import de.uzk.hki.da.action.ActionInformation;
+import de.uzk.hki.da.action.Controller;
+import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
 
 

@@ -30,9 +30,9 @@ import org.jdom.JDOMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Document;
+import de.uzk.hki.da.util.Path;
 
 /**
  * @author Polina Gubaidullina

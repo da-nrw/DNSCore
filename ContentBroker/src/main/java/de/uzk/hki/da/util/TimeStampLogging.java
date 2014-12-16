@@ -1,4 +1,4 @@
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

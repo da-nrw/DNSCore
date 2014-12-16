@@ -37,8 +37,8 @@ import javax.persistence.Transient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.format.FileWithFileFormat;
+import de.uzk.hki.da.util.Path;
 
 
 /**

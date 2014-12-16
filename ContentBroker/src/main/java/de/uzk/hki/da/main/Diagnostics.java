@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.main;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.format.FFConstants;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
@@ -46,6 +47,9 @@ import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.SubformatIdentificationStrategyPuidMapping;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.util.RelativePath;
 import de.uzk.hki.da.utils.Utilities;
 
 /**

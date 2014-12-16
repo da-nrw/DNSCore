@@ -22,7 +22,7 @@ package de.uzk.hki.da.cb;
 import org.hibernate.Session;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.ConfigurationException;
+import de.uzk.hki.da.util.ConfigurationException;
 
 /**
  * The Class NullAction.

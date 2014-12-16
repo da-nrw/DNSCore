@@ -27,8 +27,8 @@ import java.util.Calendar;
 import org.junit.After;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.Path;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.util.Path;
 
 /**
  * @author: Jens Peters

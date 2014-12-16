@@ -34,8 +34,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.util.StringUtils;
 
-import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.core.RelativePath;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.format.StandardFileFormatFacade;
 import de.uzk.hki.da.model.DAFile;
@@ -45,6 +43,8 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
+import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.util.RelativePath;
 
 
 /**

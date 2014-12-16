@@ -30,7 +30,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.HibernateUtil;
+import de.uzk.hki.da.service.HibernateUtil;
 
 
 /**

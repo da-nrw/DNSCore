@@ -13,8 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.convert.PublishImageConversionStrategy;
-import de.uzk.hki.da.core.Path;
-import de.uzk.hki.da.core.RelativePath;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
@@ -22,6 +20,8 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.util.RelativePath;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 
 public class PublishImageMultipageTIFFTests {

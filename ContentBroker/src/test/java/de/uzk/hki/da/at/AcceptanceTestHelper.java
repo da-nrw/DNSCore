@@ -31,9 +31,6 @@ import org.apache.commons.io.FileUtils;
 import org.hibernate.classic.Session;
 
 import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.core.HibernateUtil;
-import de.uzk.hki.da.core.Path;
-import de.uzk.hki.da.core.RelativePath;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -43,7 +40,10 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
+import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.util.RelativePath;
 
 /**
  * @author Daniel M. de Oliveira
