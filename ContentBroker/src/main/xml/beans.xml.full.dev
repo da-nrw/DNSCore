@@ -28,7 +28,7 @@
 	<task:executor id="taskExecutor" pool-size="10"
 		queue-capacity="20" rejection-policy="CALLER_RUNS" />
 		<task:scheduled-tasks scheduler="taskScheduler">
-		<task:scheduled ref="contentBroker" method="scheduleTask" fixed-delay="100" />
+		<task:scheduled ref="contentBrokerWorker" method="scheduleTask" fixed-delay="200" />
 		<task:scheduled ref="ingestAreaScannerWorker" method="scheduleTask" fixed-delay="100" />
 		<task:scheduled ref="integrityScannerWorker" method="scheduleTask" fixed-delay="100" />
 	</task:scheduled-tasks> 
