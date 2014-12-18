@@ -375,7 +375,6 @@ public abstract class AbstractAction implements Runnable {
 	 * @author Daniel M. de Oliveira
 	 */
 	private void unsetObjectLogging() {
-		// manually close object log in order to prevent "too many open files" TOD0 Discuss this.
 		MDC.remove("object_id");
 	}
 

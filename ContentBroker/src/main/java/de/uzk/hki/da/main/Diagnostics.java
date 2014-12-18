@@ -205,7 +205,7 @@ public class Diagnostics {
 		else
 			System.out.println(OK);
 
-		System.out.println(INFO+"CHECKING - StandardFileFormatFacade.healthCheckSubformatIdentificationStrategies() ... ");
+		System.out.println(INFO+"CHECKING - StandardFileFormatFacade.connectivityCheck() ... ");
 		if (!standardFileFormatFacadeHealthSubformatsPassedCheckPassed(sfff))
 			errorCount+=1;
 		
