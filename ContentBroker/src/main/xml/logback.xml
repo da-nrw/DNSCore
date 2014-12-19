@@ -92,7 +92,7 @@
 	<logger name="de.uzk.hki.da.grid"  additivity="false" level="DEBUG">
 		<appender-ref ref="GRID" />
 	</logger>
-	<logger name="de.uzk.hki.da.core.TimeStampLogging"  additivity="false" level="DEBUG">
+	<logger name="de.uzk.hki.da.util.TimeStampLogging"  additivity="false" level="DEBUG">
 		<appender-ref ref="TIME_STAMP_ACTIONS_LOG" />
 	</logger>
 	      
