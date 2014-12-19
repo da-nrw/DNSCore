@@ -138,10 +138,7 @@ public class IngestAreaScannerWorker extends Worker{
 			long currentTimeStamp = System.currentTimeMillis();
 			
 			for (User contractor:contractors){
-				logger.debug("Scanning");
-				logger.debug("folder of contractor: "+contractor.getShort_name());
-				logger.debug("!");
-				
+
 				for (String child:scanContractorFolderForReadyFiles(contractor.getShort_name(), currentTimeStamp)){
 					
 					logger.info("Found file \""+child+"\" in ingest Area. Creating job for \""+contractor.getShort_name()+"\"");

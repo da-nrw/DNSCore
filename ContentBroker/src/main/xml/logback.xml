@@ -44,12 +44,16 @@
 			<defaultValue>contentbroker</defaultValue>
 		</discriminator>
 		<sift>
-			<appender name="WORKER-${worker_id}" class="ch.qos.logback.core.FileAppender">
-				<file>log/${worker_id}.log</file>
-				<encoder>
-					<pattern>%d %level %logger{35} - %msg%n</pattern>
-				</encoder>
-			</appender>
+			<appender name="WORKER-${worker_id}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		        <file>log/${worker_id}.log</file>
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                    <fileNamePattern>log/${worker_id}.%d{yyyy-MM-dd}.log</fileNamePattern>
+                    <maxHistory>30</maxHistory>
+                </rollingPolicy>
+	            <encoder>
+	                <pattern>%d %level %logger{35} - %msg%n</pattern>
+	            </encoder>
+	        </appender>   
 		</sift>
 	</appender>
 	<appender name="OBJECT" class="ch.qos.logback.classic.sift.SiftingAppender">
