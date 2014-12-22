@@ -197,6 +197,7 @@ public class CTIrodsFacade {
 	public void destroyChecksumInStorage() throws Exception {
 		
 		putFileAndWaitUntilReplicatedAccordingToStoragePolicy();
+		assertTrue(ig.isValid(testColl + "/urn.tar"));
 		destroyTestFileOnLongTermStorage();
 		assertFalse(ig.isValid(testColl + "/urn.tar"));
 	}
