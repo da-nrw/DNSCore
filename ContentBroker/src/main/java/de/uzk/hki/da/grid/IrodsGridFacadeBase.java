@@ -80,14 +80,15 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 		if (!relative_address_dest.startsWith("/")) 
 			address_dest = "/" + relative_address_dest;
 		String targetPhysically = localNode.getGridCacheAreaRootPath() + "/" + C.WA_AIP + address_dest;
-		String targetLogically  = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + address_dest;	
+		String targetAbsoluteLogicalPath  = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + address_dest;	
 		
 		File gridfile = new File (targetPhysically); 	
+		System.out.println("gridfile "+gridfile+"exits: "+gridfile.exists());
 		
 		if (gridfile.exists()) {
 			
-			if (!replicationIsSolelyOnCache(targetLogically))
-				throw new java.io.IOException("Grid File " +gridfile+" "+targetLogically+" has already LZA Repls, do not try to put it again!");
+			if (!replicatedOnlyToCache(targetAbsoluteLogicalPath))
+				throw new java.io.IOException("Grid File " +gridfile+" "+targetAbsoluteLogicalPath+" has already LTA Repls, do not try to put it again!");
 			
 			if (MD5Checksum.getMD5checksumForLocalFile(file).equals(MD5Checksum.getMD5checksumForLocalFile(gridfile))){
 				// then the only thing left to do is to replicate again
@@ -97,14 +98,14 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 				irodsSystemConnector.executeRule("post { \n " +
 						"acPostIngestOperations(*obj,\"" + irodsSystemConnector.getHost() + "\");\n"
 				+"}\n"
-				+"INPUT *obj=\""+targetLogically+"\"\n"
+				+"INPUT *obj=\""+targetAbsoluteLogicalPath+"\"\n"
 				+"OUTPUT ruleExecOut","");
 				return true;
 
 			} else {
 				
 				logger.error("Leftovers or invalid file on the grid!");
-				irodsSystemConnector.removeFile(targetLogically);
+				irodsSystemConnector.removeFile(targetAbsoluteLogicalPath);
 				if (gridfile.exists()) gridfile.delete();
 			}
 		} 
@@ -159,7 +160,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	 * @return true, if successful
 	 * @author Jens Peters
 	 */
-	private boolean replicationIsSolelyOnCache(String targetLogically) {
+	private boolean replicatedOnlyToCache(String targetLogically) {
 		String nr = irodsSystemConnector.executeRule("repls { \n " +
 				"*nr=0;\n" +
 				"acGetTotalReplNumber(*obj,*nr);\n"

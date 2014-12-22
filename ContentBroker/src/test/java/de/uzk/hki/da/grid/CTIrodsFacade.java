@@ -18,7 +18,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -34,7 +37,6 @@ import org.junit.Test;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.util.Path;
@@ -43,108 +45,72 @@ import de.uzk.hki.da.utils.Utilities;
 /**
  * Component testing for the irods Datagrid
  * 
- * @author jpeters
- *
+ * @author Jens Peters
+ * @author Daniel M. de Oliveira
  */
-
 public class CTIrodsFacade {
 
-	IrodsGridFacade ig;
+	private static final String PROPERTIES_FILE_PATH = "src/main/conf/config.properties.ci";
+	private static IrodsSystemConnector isc;
+	private static IrodsGridFacade ig;
 	
 	private static final String BEANS_DIAGNOSTICS_IRODS = "classpath*:META-INF/beans-diagnostics.irods.xml";
 	private static final String BEAN_NAME_IRODS_GRID_FACADE = "cb.implementation.grid";
-	
 	private static final String BEAN_NAME_IRODS_SYSTEM_CONNECTOR = "irodsSystemConnector";
 	private static final String PROP_GRID_CACHE_AREA_ROOT_PATH = "localNode.gridCacheAreaRootPath";
 	private static final String PROP_WORK_AREA_ROOT_PATH = "localNode.workAreaRootPath";
 	
-	static final String aipFolder = "aip"; 
+	private static final String aipFolder = "aip"; 
+	private static String tmpDir = "/tmp/forkDir/";
+	private static String testColl = "123456";
+//	staticString aipDir = "/ci/archiveStorage/";
+	private static String testCollLogicalPath = null;
+	private static String testCollPhysicalPathOnGridCache = null;
+	private static String testCollPhysicalPathOnLTA = null;
 	
-	/** The isc. */
-	IrodsSystemConnector isc;
-	
-	/** The fork dir. */
-	static String tmpDir = "/tmp/forkDir/";
-	
-	/** The fork dir. */
-	static String testColl = "123456";
-	
-	
-	/** AIP dir **/
-	static String aipDir = "/ci/archiveStorage/";
-	
-	String logicalPath = null;
-	
-	/** The temp. */
 	File temp;
 	
-	StoragePolicy sp ;
+	private static Node node;
 	
-	Properties properties = null;
+	private static StoragePolicy sp ;
 	
 	/**
-	 * Sets the up before class.
-	 *
 	 * @throws Exception the exception
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	
+		createConfDir();
+		Properties properties = readProperties();
+		setUpGridInfrastructure(properties);
+				
+		testCollLogicalPath = "/"+ isc.getZone()+ "/"+ aipFolder +"/" + testColl;
+		testCollPhysicalPathOnGridCache = properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH) + "/" + aipFolder+"/"+testColl;
+		testCollPhysicalPathOnLTA = "/ci/archiveStorage/"+aipFolder+"/"+testColl;
+		
+		
+		sp = new StoragePolicy(node);
+		sp.setMinNodes(1);
 	}
 	
+	
+	
 	/**
-	 * Tear down after class.
-	 *
 	 * @throws Exception the exception
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		 FileUtils.deleteDirectory(new File(tmpDir));
+		FileUtils.deleteDirectory(new File(tmpDir));
+		removeConfDir();
 	}
 	
+	
 	/**
-	 * Sets the up.
-	 *
 	 * @throws Exception the exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		File conf = new File("conf");
-		conf.mkdir();
-		
-		FileUtils.copyFile(new File ("src/main/conf/config.properties.ci"), new File(C.CONFIG_PROPS));
-		try {
-			properties = Utilities.read(new File(C.CONFIG_PROPS));
-		} catch (IOException e) {
-			System.out.println("error while reading " + C.CONFIG_PROPS);
-
-		}
-
-		AbstractApplicationContext context =
-				new ClassPathXmlApplicationContext(BEANS_DIAGNOSTICS_IRODS);
-		isc = (IrodsSystemConnector) context.getBean(BEAN_NAME_IRODS_SYSTEM_CONNECTOR);
-		ig = (IrodsGridFacade) context.getBean(properties.getProperty(BEAN_NAME_IRODS_GRID_FACADE));
-		
-		ig.setIrodsSystemConnector(isc);
-				
-		Node node = new Node();
-		node.setWorkingResource("ciWorkingResource");
-		node.setGridCacheAreaRootPath(Path.make(properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH)));
-		node.setWorkAreaRootPath(Path.make(properties.getProperty(PROP_WORK_AREA_ROOT_PATH)));
-		node.setReplDestinations("ciArchiveResourceGroup");
-		ig.setLocalNode(node);
-		
-		sp = new StoragePolicy(node);
-		sp.setMinNodes(1);
-		new File(tmpDir).mkdir();
-		temp = new File(tmpDir + "urn.tar");
-		FileWriter writer = new FileWriter(temp ,false);
-		writer.write("Hallo Wie gehts?");
-		writer.close(); 
-		
-		logicalPath = "/"+ isc.getZone()+ "/"+ aipFolder +"/" + testColl;
-		
-		context.close();
+		temp = createTestFile();
 	}
 	
 	/**
@@ -154,8 +120,8 @@ public class CTIrodsFacade {
 	 */
 	@After
 	public void tearDown() throws Exception {
-		isc.removeCollectionAndEatException(logicalPath);
-		FileUtils.deleteQuietly(new File(C.CONFIG_PROPS)); 
+		FileUtils.deleteQuietly(new File(testCollPhysicalPathOnGridCache));
+		isc.removeCollectionAndEatException(testCollLogicalPath);
 	}
 	
 	/**
@@ -165,30 +131,28 @@ public class CTIrodsFacade {
 	 */
 	@Test 
 	public void putFileDoesNotExist() throws Exception {
-		isc.removeCollectionAndEatException(logicalPath);
 		assertTrue(ig.put(temp, testColl + "/urn.tar", sp));
-		assertTrue(new File(properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH) + "/" + aipFolder+"/"+testColl + "/urn.tar").exists());
+		assertTrue(new File(testCollPhysicalPathOnGridCache + "/urn.tar").exists());
 	}
 	
 	/**
-	 * Put file already exists
 	 * @author Jens Peters
-	 * @throws Exception the exception
+	 * @author Daniel M. de Oliveira
 	 */
 	@Test 
-	public void putFileAlreadyExists() throws Exception {
-		isc.removeCollectionAndEatException(logicalPath);
-		assertTrue(ig.put(temp, testColl + "/urn.tar", sp));
-		assertTrue(new File(properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH) + "/" + aipFolder+"/"+testColl + "/urn.tar").exists());
+	public void mustNotPutFileAgainWhenAlreadyHasReplsOnLongTermStorage() throws Exception {
+		putFileAndWaitUntilReplicatedAccordingToStoragePolicy();
 		
 		try {
-		ig.put(temp, testColl + "/urn.tar", sp);
-		} catch (IrodsRuntimeException irex) {
-			assertTrue(true);
-			return;
-		}
-		fail();
-		}
+			ig.put(temp, testColl + "/urn.tar", sp);
+			fail();
+		} catch (IOException ex) {
+			System.out.println("Caught expected exception");
+		} 
+	}
+	
+	
+	
 	
 	/**
 	 * Put file and test replications
@@ -198,16 +162,12 @@ public class CTIrodsFacade {
 	 */
 	@Test 
 	public void putFileAndTestReplications() throws Exception {
-		isc.removeCollectionAndEatException(logicalPath);
-		assertTrue(ig.put(temp, testColl + "/urn.tar", sp));
-		assertTrue(ig.isValid(testColl + "/urn.tar"));
+		putFileAndWaitUntilReplicatedAccordingToStoragePolicy();
 		
-		while (true) {
-			if (ig.storagePolicyAchieved(testColl + "/urn.tar", sp)) break;
-			System.out.println("Storage Policy not yet achieved");
-			Thread.sleep(3000);
-		}
+		assertTrue(ig.isValid(testColl + "/urn.tar"));
 	}
+	
+	
 	
 	/**
 	 * Test that the checksum AVU Metadata exists
@@ -217,26 +177,108 @@ public class CTIrodsFacade {
 	@Test 
 	public void testChecksumAVUMetadata() throws Exception {
 		assertTrue(ig.put(temp, testColl + "/urn.tar", sp));
-		String cs1 = isc.getAVUMetadataDataObjectValue(logicalPath+"/urn.tar", "chksum");
-		String cs2 = isc.getChecksum(logicalPath + "/urn.tar");
+		String cs1 = isc.getAVUMetadataDataObjectValue(testCollLogicalPath+"/urn.tar", "chksum");
+		String cs2 = isc.getChecksum(testCollLogicalPath + "/urn.tar");
 		assertTrue(cs1.length()>10);
 		assertEquals(cs1,cs2);
 	} 
 	
+	
+	
+	
 	/**
-	 * Destroy checksum in Long term storage
+	 * Destroy checksum in Long term storage and verify
+	 * that grid facade diagnoses it as not valid.
+	 * 
 	 * @author Jens Peters
+	 * @author Daniel M. de Oliveira
 	 */
 	@Test
 	public void destroyChecksumInStorage() throws Exception {
-		temp = new File(aipDir + "urn.tar");
-		FileWriter writer = new FileWriter(temp ,false);
+		
+		putFileAndWaitUntilReplicatedAccordingToStoragePolicy();
+		destroyTestFileOnLongTermStorage();
+		assertFalse(ig.isValid(testColl + "/urn.tar"));
+	}
+
+	
+	
+	private void destroyTestFileOnLongTermStorage() throws IOException {
+		File testFile = new File(testCollPhysicalPathOnLTA+"/urn.tar");
+		FileWriter writer = new FileWriter(testFile ,false);
 		writer.write("Hallo Wie gehts? DESTROYED");
 		writer.close(); 
-		assertFalse(ig.isValid(testColl + "/urn.tar"));
+	}
+	
+	
+	
+	private void putFileAndWaitUntilReplicatedAccordingToStoragePolicy() throws InterruptedException, IOException {
+		assertTrue(ig.put(temp, testColl + "/urn.tar", sp));
+		
+		while (true) {
+			if (ig.storagePolicyAchieved(testColl + "/urn.tar", sp)) break;
+			Thread.sleep(1000);
+		}
 	}
 	
 	
 	
 	
+	/**
+	 * Sets up 
+	 * <li>node
+	 * <li>irodsGridConnector
+	 * <li>gridFacade
+	 * @param properties
+	 */
+	private static void setUpGridInfrastructure(Properties properties) {
+		
+		AbstractApplicationContext context =
+				new ClassPathXmlApplicationContext(BEANS_DIAGNOSTICS_IRODS);
+		isc = (IrodsSystemConnector) context.getBean(BEAN_NAME_IRODS_SYSTEM_CONNECTOR);
+		ig = (IrodsGridFacade) context.getBean(properties.getProperty(BEAN_NAME_IRODS_GRID_FACADE));
+		
+		ig.setIrodsSystemConnector(isc);
+		
+		node = new Node();
+		node.setWorkingResource("ciWorkingResource");
+		node.setGridCacheAreaRootPath(Path.make(properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH)));
+		node.setWorkAreaRootPath(Path.make(properties.getProperty(PROP_WORK_AREA_ROOT_PATH)));
+		node.setReplDestinations("ciArchiveResourceGroup");
+		ig.setLocalNode(node);
+		
+		context.close();
+	}
+
+	private static Properties readProperties() throws IOException {
+	
+		Properties properties = null;
+		File propertiesFile = new File (PROPERTIES_FILE_PATH);
+		try {
+			properties = Utilities.read(propertiesFile);
+		} catch (IOException e) {
+			System.out.println("error while reading " + propertiesFile);
+			return null;
+		}
+		return properties;
+	}
+
+	private static void createConfDir() throws IOException {
+		new File("conf").mkdir();
+		FileUtils.copyFile(new File(PROPERTIES_FILE_PATH), new File("conf/config.properties"));
+	}
+
+	private static void removeConfDir() {
+		FileUtils.deleteQuietly(new File("conf")); 
+	}
+
+	private File createTestFile() throws IOException {
+		
+		new File(tmpDir).mkdir();
+		File temp = new File(tmpDir + "urn.tar");
+		FileWriter writer = new FileWriter(temp ,false);
+		writer.write("Hallo Wie gehts?");
+		writer.close();
+		return temp;
+	}
 }
