@@ -46,6 +46,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	private static final Logger logger = LoggerFactory.getLogger(StandardFileFormatFacade.class);
 	private static final String JHOVE_CONF = "conf/jhove.conf";
 	private static final String jhoveFolder = "jhove";
+	private static final long jhoveTimeout = 100000;
 	
 	
 	private FidoFormatScanService pronomFormatScanService;
@@ -123,7 +124,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {
                 "/bin/sh", "jhove", "-c", JHOVE_CONF, "-h", "XML",
                 filePath, "-o", extractedMetadata.getAbsolutePath() },
-                new File(jhoveFolder));
+                new File(jhoveFolder),jhoveTimeout);
 				
 		if ((pi == null) || (pi.getExitValue() != 0)) {
             if (pi != null)
@@ -133,7 +134,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
             pi = CommandLineConnector.runCmdSynchronously(new String[] {
                     "/bin/sh", "jhove", "-c", JHOVE_CONF, "-h", "XML", "-s",
                     filePath, "-o", extractedMetadata.getAbsolutePath() },
-                    new File(jhoveFolder));
+                    new File(jhoveFolder),jhoveTimeout);
             
             if ((pi == null) || (pi.getExitValue() != 0)) {
                 if (pi != null)
@@ -150,7 +151,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 		try {
 			pi = CommandLineConnector.runCmdSynchronously(new String[] {
 			        "/bin/sh", "jhove", "-c", JHOVE_CONF, "--version" },
-			        new File(jhoveFolder));
+			        new File(jhoveFolder),jhoveTimeout);
 		} catch (IOException e) {
 			return false;
 		}

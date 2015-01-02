@@ -70,7 +70,7 @@ public class ScriptWrappedPronomFormatIdentifier implements FormatIdentification
 				
 				conversionScript.getAbsolutePath(),
 				file.getAbsolutePath()
-		});
+		},null,10000);
 		
 		
 		if (pi.getExitValue()!=0){

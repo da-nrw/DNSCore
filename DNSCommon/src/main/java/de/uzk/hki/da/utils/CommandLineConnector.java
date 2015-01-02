@@ -40,18 +40,15 @@ public class CommandLineConnector {
 	 * @param workingDir the working dir
 	 * @return the process information
 	 * 
-	 * @throws IOException if the program cannot run for some reason.
+	 * @throws IOException if the program cannot run for some reason or timeout reached.
 	 * 
 	 * @author Daniel M. de Oliveira
 	 */
-	public static ProcessInformation runCmdSynchronously(String cmd[],File workingDir) 
+	public static ProcessInformation runCmdSynchronously(String cmd[],File workingDir,long timeout) 
 			throws IOException{
+
+		if (timeout==0) timeout=Long.MAX_VALUE;
 		
-		String stdErr="";
-		String stdOut="";
-		
-		
-		// TODO log message without delimiter
 		if ((workingDir==null)||(workingDir.equals("")))
 			Utilities.logger.debug("Running cmd \"{}\"", Arrays.toString(cmd));
 		else
@@ -60,52 +57,83 @@ public class CommandLineConnector {
 		
 		Process p = null;
 		ProcessInformation pi= new ProcessInformation();
-		try{
+		try {
 			ProcessBuilder pb = new ProcessBuilder(cmd);
 			if (workingDir!=null) pb.directory(workingDir);
+			p = pb.start(); 
 			
-			p = pb.start();
+			waitForProcessToTerminate(p,timeout);
 			
-			InputStream errStr= p.getErrorStream();
-			int c1;
-			while ((c1= errStr.read()) != -1){
-				stdErr+=(char) c1;
-			}
-			pi.setStdErr(stdErr);
-			errStr.close();
-			
-			InputStream outStr= p.getInputStream();
-			int c2;
-			while ((c2= outStr.read()) != -1){
-				stdOut+=(char) c2;
-			}
-			pi.setStdOut(stdOut);
-			outStr.close();
-	
-			p.waitFor();
+			redirectStreams(pi,p);
 			pi.setExitValue(p.exitValue());
 		}
-		catch (IOException ioexception) {
-			throw ioexception;
-		}
-		catch (Exception e){		
-			Utilities.logger.error("Error in runShellCommand",e);
-			throw new RuntimeException(e);
-		}
 		finally {
-			if (p != null)
-				LinuxEnvironmentUtils.closeStreams(p);
+			closeStreams(p);
 		}
 		return pi;
 	}
 
+	private static void waitForProcessToTerminate(Process p,long timeout) throws IOException {
+		
+		int timeElapsed=0;
+		while(true) {
+			
+			try {
+				p.exitValue();
+				break;
+			}catch(IllegalThreadStateException e) {
+				
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e1) {}
+				timeElapsed+=100;
+				
+				if (timeElapsed>timeout) {
+					p.destroy();
+					throw new IOException("timeout reached");
+				}
+			}
+		}
+	}
+	
+	private static void closeStreams(Process p) throws IOException {
+		
+		if (p != null){
+			p.getInputStream().close();
+			p.getErrorStream().close();
+			p.getOutputStream().close();
+		}
+	}
+	
+	private static void redirectStreams(ProcessInformation pi,Process p) throws IOException {
+		String stdErr="";
+		String stdOut="";
+		
+		InputStream errStr= p.getErrorStream();
+		int c1;
+		while ((c1= errStr.read()) != -1){
+			stdErr+=(char) c1;
+		}
+		pi.setStdErr(stdErr);
+		errStr.close();
+		
+		InputStream outStr= p.getInputStream();
+		int c2;
+		while ((c2= outStr.read()) != -1){
+			stdOut+=(char) c2;
+		}
+		pi.setStdOut(stdOut);
+		outStr.close();
+	}
+	
+	
 	/**
 	 * Convenience method for {@link #runCmdSynchronously(String[], File)}
 	 * @author Daniel M. de Oliveira
 	 * @throws IOException 
 	 */
 	public static ProcessInformation runCmdSynchronously(String cmd[]) throws IOException{
-		return runCmdSynchronously(cmd, null);
+		return runCmdSynchronously(cmd, null, 0);
 	}
 
 }

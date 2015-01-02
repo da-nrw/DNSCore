@@ -32,24 +32,33 @@ import org.junit.Test;
  */
 public class CommandLineConnectorTests {
 
+	private static final String testfolder="src/test/resources/utils/CommandLineConnectorTests/";
+	
 	@Test
 	public void programCannotRun() {
 		
 		try {
 			CommandLineConnector.runCmdSynchronously(new String[] {"/hello"});
 			fail();
-		} catch (Exception expected) {
-			if (!(expected instanceof IOException)) fail();
-		}
+		} catch (IOException expected) {}
 	}
 	
 	@Test 
-	public void testProgramRunsWithoutProblems() {
+	public void validStringOnStdOut() {
 		try {
-			CommandLineConnector.runCmdSynchronously(new String[] {"src/test/resources/utils/CommandLineConnectorTests/ok.sh"});
+			ProcessInformation pi=CommandLineConnector.runCmdSynchronously(new String[] {testfolder+"printhallo.sh"});
+			assertEquals("hallo\n",pi.getStdOut());
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}
+	}
+	
+	@Test
+	public void testTimeout() {
+		try {
+			CommandLineConnector.runCmdSynchronously(new String[] {testfolder+"waiting.sh"},null,2000);
+			fail();
+		} catch (IOException expected) {}
 	}
 	
 	
