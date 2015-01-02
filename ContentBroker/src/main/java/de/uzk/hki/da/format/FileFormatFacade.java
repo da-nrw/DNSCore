@@ -38,15 +38,17 @@ import java.util.List;
 public interface FileFormatFacade {
 
 	/**
-	 * Scans files and determines the PUID and, if possible, the subformat, 
+	 * Scans files and determines the PUID and, if possible, the sub-format, 
 	 * depending on the configuration of the FileFormatFacade (see @link #registerSubformatIdentificationMethod(String, String)}).
 	 * The method modifies the PUID and SecondaryFormatAttribute fields of files.
 	 * 
 	 * @param files
 	 * @return return files. Used for easier testing.
 	 * @throws FileNotFoundException if one or more files cannot be found.
-	 * @throws FileFormatException if format could not get determinded.
-	 * @throws IOException 
+	 * @throws FileFormatException if format could not get determined.
+	 * @throws IOException if one or more of the files formats 
+	 * could not get determined as a result of IO problems. This can has something to do with 
+	 * the files to identify, but also with the helper programs used to identify the files. 
 	 */
 	public List<FileWithFileFormat> identify(List<? extends FileWithFileFormat> files) 
 			throws FileNotFoundException, FileFormatException, IOException;

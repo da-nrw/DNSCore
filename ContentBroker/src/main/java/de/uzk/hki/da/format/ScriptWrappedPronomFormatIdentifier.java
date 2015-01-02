@@ -20,6 +20,7 @@
 package de.uzk.hki.da.format;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -53,10 +54,11 @@ public class ScriptWrappedPronomFormatIdentifier implements FormatIdentification
 	 * 
 	 * @param fff
 	 * @return PUID or UNDEFINED if fido cannot determine the file format. 
+	 * @throws IOException if it is not possible to run the script successfully for some reason.
 	 */
 	@Override
 	public
-	String identify(File file){
+	String identify(File file) throws IOException{
 		if (!conversionScript.exists()) throw new IllegalStateException(
 				"ConversionScript doesn't exist: "+conversionScript.getAbsolutePath());
 		

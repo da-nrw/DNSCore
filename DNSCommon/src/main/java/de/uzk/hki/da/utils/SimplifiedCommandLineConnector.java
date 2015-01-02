@@ -19,6 +19,8 @@
 
 package de.uzk.hki.da.utils;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,8 +43,13 @@ public class SimplifiedCommandLineConnector {
 	 */
 	public boolean execute(String cmd[]) {
 	
-		logger.trace("Executing conversion command: {}", cmd);
-		ProcessInformation pi= CommandLineConnector.runCmdSynchronously( cmd );
+		logger.trace("SimplifiedCommandLineConnector executing conversion command: {}", cmd.toString());
+		ProcessInformation pi = null;
+		try {
+			pi = CommandLineConnector.runCmdSynchronously( cmd );
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		if (pi.getExitValue()!=0) {
 			logger.error( this.getClass()+": Recieved return code from terminal based command: "+
 					pi.getExitValue() );

@@ -146,9 +146,14 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 
 	private boolean jhoveCheck() {
 		System.out.print("CONNECTIVITY CHECK - StandardFileFormatFacade - JHOVE");
-		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {
-                "/bin/sh", "jhove", "-c", JHOVE_CONF, "--version" },
-                new File(jhoveFolder));
+		ProcessInformation pi;
+		try {
+			pi = CommandLineConnector.runCmdSynchronously(new String[] {
+			        "/bin/sh", "jhove", "-c", JHOVE_CONF, "--version" },
+			        new File(jhoveFolder));
+		} catch (IOException e) {
+			return false;
+		}
 		if (pi.getStdOut().split("\\(Rel")[0].equals("Jhove ")){
 			System.out.println(" .... OK");
 			return true;

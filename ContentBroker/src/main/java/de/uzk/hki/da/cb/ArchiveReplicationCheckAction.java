@@ -29,8 +29,6 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.grid.GridFacade;
-import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;

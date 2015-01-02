@@ -22,6 +22,7 @@ package de.uzk.hki.da.convert;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -164,7 +165,12 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 	private String getImageWidth(String absolutePath) {
 		String[] cmd = new String[]{"identify", "-format", "%w",
 				absolutePath};
-		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(cmd);
+		ProcessInformation pi;
+		try {
+			pi = CommandLineConnector.runCmdSynchronously(cmd);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		if (pi.getExitValue() != 0) {
 			throw new RuntimeException("Unable to get image width. " + pi.getStdErr());
 		}

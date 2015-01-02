@@ -20,7 +20,7 @@
 package de.uzk.hki.da.format;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,12 +56,12 @@ class FidoFormatScanService implements FormatScanService {
 	 *
 	 * @param files the files
 	 * @return files. return value needed for mockup usage in unit tests.
-	 * @throws FileNotFoundException if any of the files can not be found on the file system.
 	 * @author Daniel M. de Oliveira
+	 * @throws IOException 
 	 */
 	@Override
 	public
-	List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws FileNotFoundException {
+	List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws IOException {
 		for (FileWithFileFormat f:files){
 			f.setFormatPUID(pronom.identify(f.toRegularFile()));
 		}
@@ -72,7 +72,13 @@ class FidoFormatScanService implements FormatScanService {
 	@Override
 	public boolean healthCheck() {
 		System.out.print("CONNECTIVITY CHECK - FidoFormatScanService - fido.sh ");
-		String puid = pronom.identify(new File("conf/healthCheck.tif"));
+		String puid;
+		try {
+			puid = pronom.identify(new File("conf/healthCheck.tif"));
+		} catch (IOException e) {
+			System.out.println(".... FAIL (check fido installation and fido.sh)");
+			return false;
+		}
 		if (Arrays.asList(new String[] {FFConstants.FMT_353}).contains(puid)) {
 			System.out.println(".... OK");
 			return true;

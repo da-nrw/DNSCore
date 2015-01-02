@@ -21,6 +21,7 @@ package de.uzk.hki.da.convert;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -84,7 +85,12 @@ public class TiffConversionStrategy implements ConversionStrategy {
 		
 		String[] commandAsArray = new String [] {"convert","+compress",input,generateTargetFilePath(ci)};
 		logger.info("Executing conversion command: {}", commandAsArray);
-		ProcessInformation pi= CommandLineConnector.runCmdSynchronously( commandAsArray );
+		ProcessInformation pi;
+		try {
+			pi = CommandLineConnector.runCmdSynchronously( commandAsArray );
+		} catch (IOException e1) {
+			throw new RuntimeException(e1);
+		}
 		if (pi.getExitValue()!=0) {
 			logger.error( this.getClass()+": Recieved return code from terminal based command: "+
 					pi.getExitValue() );
@@ -148,7 +154,12 @@ public class TiffConversionStrategy implements ConversionStrategy {
 		
 		String[] cmd = new String []{
 					"identify","-format","'%C'",input};
-		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(cmd);
+		ProcessInformation pi;
+		try {
+			pi = CommandLineConnector.runCmdSynchronously(cmd);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		if (pi.getExitValue()!=0){
 			logger.error("recieved exit code " + pi.getExitValue());
 			throw new RuntimeException("Stderr: "+pi.getStdErr());

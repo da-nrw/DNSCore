@@ -32,7 +32,11 @@ interface FormatScanService {
 	/**
 	 * @param files
 	 * @return files, which allows easier testing.
-	 * @throws IOException
+	 * 
+	 * @throws IOException if one or more of the files formats 
+	 * could not get determined as a result of IO problems. This can has something to do with 
+	 * the files to identify, but also with the helper programs used to identify the files.  
+	 * 
 	 * @throws InvalidArgumentException 
 	 */
 	List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws IOException;

@@ -25,7 +25,12 @@ public class ImageMagickIdentifySubformatIdentificationStrategy implements Forma
 		
 		String[] cmd = new String []{
 					"identify","-format","'%C'",input};
-		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(cmd);
+		ProcessInformation pi;
+		try {
+			pi = CommandLineConnector.runCmdSynchronously(cmd);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		if (pi.getExitValue()!=0){
 			throw new RuntimeException("Stderr: "+pi.getStdErr());
 		}
@@ -41,7 +46,12 @@ public class ImageMagickIdentifySubformatIdentificationStrategy implements Forma
 	public boolean healthCheck() {
 		String[] cmd = new String []{
 					"identify","--version"};
-		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(cmd);
+		ProcessInformation pi;
+		try {
+			pi = CommandLineConnector.runCmdSynchronously(cmd);
+		} catch (IOException e) {
+			return false;
+		}
 		if (pi.getStdOut().split("Magick")[0].endsWith("Image")) return true;
 		else
 			return false;

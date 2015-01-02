@@ -19,11 +19,9 @@
 package de.uzk.hki.da.utils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-
-import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
 
 
 
@@ -41,8 +39,13 @@ public class CommandLineConnector {
 	 * @param cmd the cmd
 	 * @param workingDir the working dir
 	 * @return the process information
+	 * 
+	 * @throws IOException if the program cannot run for some reason.
+	 * 
+	 * @author Daniel M. de Oliveira
 	 */
-	public static ProcessInformation runCmdSynchronously(String cmd[],File workingDir){
+	public static ProcessInformation runCmdSynchronously(String cmd[],File workingDir) 
+			throws IOException{
 		
 		String stdErr="";
 		String stdOut="";
@@ -82,10 +85,9 @@ public class CommandLineConnector {
 			p.waitFor();
 			pi.setExitValue(p.exitValue());
 		}
-		catch( FileNotFoundException e){			
-			Utilities.logger.error("File not found in runShellCommand",e);
-			throw new RuntimeException(e);
-		}	
+		catch (IOException ioexception) {
+			throw ioexception;
+		}
 		catch (Exception e){		
 			Utilities.logger.error("Error in runShellCommand",e);
 			throw new RuntimeException(e);
@@ -98,13 +100,11 @@ public class CommandLineConnector {
 	}
 
 	/**
-	 * Run cmd synchronously.
-	 *
-	 * @param cmd the cmd
-	 * @return the process information
+	 * Convenience method for {@link #runCmdSynchronously(String[], File)}
 	 * @author Daniel M. de Oliveira
+	 * @throws IOException 
 	 */
-	public static ProcessInformation runCmdSynchronously(String cmd[]){
+	public static ProcessInformation runCmdSynchronously(String cmd[]) throws IOException{
 		return runCmdSynchronously(cmd, null);
 	}
 

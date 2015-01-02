@@ -29,7 +29,12 @@ public class FFmpegSubformatIdentificationStrategy implements FormatIdentificati
 
 	@Override
 	public boolean healthCheck() {
-		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {"ffmpeg","-version"});
+		ProcessInformation pi;
+		try {
+			pi = CommandLineConnector.runCmdSynchronously(new String[] {"ffmpeg","-version"});
+		} catch (IOException e) {
+			return false;
+		}
 		String ffmpegOutput = pi.getStdOut();
 		Pattern MY_PATTERN = Pattern.compile(".*(\\d+\\.\\d+\\.\\d+).*");
 		Matcher m = MY_PATTERN.matcher(ffmpegOutput); m.find();
