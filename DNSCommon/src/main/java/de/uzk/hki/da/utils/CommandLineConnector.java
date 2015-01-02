@@ -33,14 +33,17 @@ import java.util.Arrays;
 
 public class CommandLineConnector {
 
+	private static final int INTERVAL = 100;
+
 	/**
-	 * Run cmd synchronously.
+	 * Run cmd synchronously. When timeout is reached, the process gets killed. 
 	 *
 	 * @param cmd the cmd
 	 * @param workingDir the working dir
+	 * @param timeout in ms. if set to 0, timeout is automatically set to Long.MAX_VALUE.
 	 * @return the process information
 	 * 
-	 * @throws IOException if the program cannot run for some reason or timeout reached.
+	 * @throws IOException if the program cannot run for some reason or does not finish in time.
 	 * 
 	 * @author Daniel M. de Oliveira
 	 */
@@ -49,29 +52,39 @@ public class CommandLineConnector {
 
 		if (timeout==0) timeout=Long.MAX_VALUE;
 		
-		if ((workingDir==null)||(workingDir.equals("")))
-			Utilities.logger.debug("Running cmd \"{}\"", Arrays.toString(cmd));
-		else
-			Utilities.logger.debug("Running cmd \"{}\" in working dir \"{}\"", Arrays.toString(cmd), workingDir);
+		logCmd(cmd, workingDir);
 		
 		
 		Process p = null;
-		ProcessInformation pi= new ProcessInformation();
+		ProcessInformation pi=null;
 		try {
-			ProcessBuilder pb = new ProcessBuilder(cmd);
-			if (workingDir!=null) pb.directory(workingDir);
-			p = pb.start(); 
-			
+			p=startProcess(cmd, workingDir);
 			waitForProcessToTerminate(p,timeout);
-			
-			redirectStreams(pi,p);
-			pi.setExitValue(p.exitValue());
+			pi=assembleProcessInformation(p);
 		}
 		finally {
 			closeStreams(p);
 		}
 		return pi;
 	}
+
+
+	private static void logCmd(String[] cmd, File workingDir) {
+		if ((workingDir==null)||(workingDir.equals("")))
+			Utilities.logger.debug("Running cmd \"{}\"", Arrays.toString(cmd));
+		else
+			Utilities.logger.debug("Running cmd \"{}\" in working dir \"{}\"", Arrays.toString(cmd), workingDir);
+	}
+	
+	
+	private static Process startProcess(String[] cmd,File workingDir) throws IOException {
+		Process p=null;
+		ProcessBuilder pb = new ProcessBuilder(cmd);
+		if (workingDir!=null) pb.directory(workingDir);
+		p = pb.start(); 
+		return p;
+	}
+	
 
 	private static void waitForProcessToTerminate(Process p,long timeout) throws IOException {
 		
@@ -84,16 +97,24 @@ public class CommandLineConnector {
 			}catch(IllegalThreadStateException e) {
 				
 				try {
-					Thread.sleep(100);
+					Thread.sleep(INTERVAL);
 				} catch (InterruptedException e1) {}
-				timeElapsed+=100;
+				timeElapsed+=INTERVAL;
 				
 				if (timeElapsed>timeout) {
 					p.destroy();
-					throw new IOException("timeout reached");
+					throw new IOException("Process did not finished. Timeout at "+timeout+".");
 				}
 			}
 		}
+	}
+	
+	private static ProcessInformation assembleProcessInformation(Process p) throws IOException {
+		ProcessInformation pi= new ProcessInformation();
+		pi.setStdErr(convertStream(p.getErrorStream()));
+		pi.setStdOut(convertStream(p.getInputStream()));
+		pi.setExitValue(p.exitValue());
+		return pi;
 	}
 	
 	private static void closeStreams(Process p) throws IOException {
@@ -105,25 +126,17 @@ public class CommandLineConnector {
 		}
 	}
 	
-	private static void redirectStreams(ProcessInformation pi,Process p) throws IOException {
-		String stdErr="";
+	
+	private static String convertStream(InputStream is) throws IOException {
+		
 		String stdOut="";
-		
-		InputStream errStr= p.getErrorStream();
-		int c1;
-		while ((c1= errStr.read()) != -1){
-			stdErr+=(char) c1;
-		}
-		pi.setStdErr(stdErr);
-		errStr.close();
-		
-		InputStream outStr= p.getInputStream();
+		InputStream outStr= is;
 		int c2;
 		while ((c2= outStr.read()) != -1){
 			stdOut+=(char) c2;
 		}
-		pi.setStdOut(stdOut);
 		outStr.close();
+		return stdOut;
 	}
 	
 	
@@ -136,4 +149,22 @@ public class CommandLineConnector {
 		return runCmdSynchronously(cmd, null, 0);
 	}
 
+	/**
+	 * Convenience method for {@link #runCmdSynchronously(String[], File)}
+	 * @author Daniel M. de Oliveira
+	 * @throws IOException 
+	 */
+	public static ProcessInformation runCmdSynchronously(String cmd[],long timeout) throws IOException{
+		return runCmdSynchronously(cmd, null, timeout);
+	}
+
+	/**
+	 * Convenience method for {@link #runCmdSynchronously(String[], File)}
+	 * @author Daniel M. de Oliveira
+	 * @throws IOException 
+	 */
+	public static ProcessInformation runCmdSynchronously(String cmd[],File workingDir) throws IOException{
+		return runCmdSynchronously(cmd, workingDir, 0);
+	}
+	
 }

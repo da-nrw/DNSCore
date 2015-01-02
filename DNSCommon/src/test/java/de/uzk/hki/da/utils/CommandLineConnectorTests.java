@@ -23,6 +23,7 @@ package de.uzk.hki.da.utils;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -56,13 +57,16 @@ public class CommandLineConnectorTests {
 	@Test
 	public void testTimeout() {
 		try {
-			CommandLineConnector.runCmdSynchronously(new String[] {testfolder+"waiting.sh"},null,2000);
+			CommandLineConnector.runCmdSynchronously(new String[] {testfolder+"sleep20seconds.sh"},1000);
 			fail();
 		} catch (IOException expected) {}
 	}
 	
-	
-	
-	
-	
+	@Test
+	public void testWorkingDir() {
+		try {
+			CommandLineConnector.runCmdSynchronously(new String[] {"printhallo.sh"},new File(testfolder));
+			fail();
+		} catch (IOException e) {}
+	}
 }
