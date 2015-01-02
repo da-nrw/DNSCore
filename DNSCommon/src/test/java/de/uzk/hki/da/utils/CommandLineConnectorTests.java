@@ -42,4 +42,18 @@ public class CommandLineConnectorTests {
 			if (!(expected instanceof IOException)) fail();
 		}
 	}
+	
+	@Test 
+	public void testProgramRunsWithoutProblems() {
+		try {
+			CommandLineConnector.runCmdSynchronously(new String[] {"src/test/resources/utils/CommandLineConnectorTests/ok.sh"});
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
+	}
+	
+	
+	
+	
+	
 }
