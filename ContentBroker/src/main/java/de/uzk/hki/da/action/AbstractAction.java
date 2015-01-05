@@ -34,6 +34,7 @@ import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.MailContents;
+import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserExceptionManager;
 import de.uzk.hki.da.model.Job;
@@ -73,7 +74,7 @@ public abstract class AbstractAction implements Runnable {
 	protected Job toCreate = null;
 	
 	
-	
+	private ActionFactory actionFactory;
 	protected ActionRegistry actionMap;
 	private String name;
 	protected String startStatus;
@@ -115,7 +116,9 @@ public abstract class AbstractAction implements Runnable {
 	 * @return <i>false</i> if the business code decides that the action needs to be re-executed from the start state later
 	 * <br><i>true</i> if business code has been successfully executed. 
 	 */
-	public abstract boolean implementation() throws FileNotFoundException, IOException, UserException, RepositoryException, JDOMException, ParserConfigurationException, SAXException;
+	public abstract boolean implementation() 
+			throws FileNotFoundException, IOException, UserException, RepositoryException, JDOMException, 
+			ParserConfigurationException, SAXException, SubsystemNotAvailableException;
 
 	/**
 	 * Implementations which fail (due to exceptions in implementation() which will be caught in run())
@@ -172,7 +175,11 @@ public abstract class AbstractAction implements Runnable {
 			resetModifiers();
 			execAndPostProcessRollback(object,job,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
 			reportUserError(e);
-			
+		} catch (SubsystemNotAvailableException e) {
+			resetModifiers();
+			execAndPostProcessRollback(object,job,C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED);
+			reportTechnicalError(e);
+			actionFactory.pause(true);
 		} catch (Exception e) {
 			resetModifiers();
 			execAndPostProcessRollback(object,job,C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED);
@@ -211,10 +218,12 @@ public abstract class AbstractAction implements Runnable {
 	 * Execute the business code implementation.
 	 * Adjust job properties depending of implementation outcome.
 	 * Adjust modifiers depending of implementation outcome. 
+	 * @throws SubsystemNotAvailableException 
+	 * @throws UserException 
 	 */
 	private void execAndPostProcessImplementation() throws FileNotFoundException,
 			IOException, RepositoryException, JDOMException,
-			ParserConfigurationException, SAXException {
+			ParserConfigurationException, SAXException, UserException, SubsystemNotAvailableException {
 		
 		baseLogger.info("Stubbing implementation of "+this.getClass().getName());
 		baseLogger.debug(Utilities.getHeapSpaceInformation());
@@ -506,5 +515,13 @@ public abstract class AbstractAction implements Runnable {
 	
 	protected void setKILLATEXIT(boolean kILLATEXIT) {
 		KILLATEXIT = kILLATEXIT;
+	}
+
+	public ActionFactory getActionFactory() {
+		return actionFactory;
+	}
+
+	public void setActionFactory(ActionFactory actionFactory) {
+		this.actionFactory = actionFactory;
 	}
 }

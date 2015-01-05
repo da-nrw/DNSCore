@@ -22,6 +22,7 @@ package de.uzk.hki.da.cb;
 import org.hibernate.Session;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.util.ConfigurationException;
 
 /**
@@ -36,9 +37,10 @@ public class NullAction extends AbstractAction{
 	 * Implementation.
 	 *
 	 * @return true, if successful
+	 * @throws SubsystemNotAvailableException 
 	 */
 	@Override
-	public boolean implementation() {
+	public boolean implementation() throws SubsystemNotAvailableException {
 		System.out.println("NULL ACTION");
 		return true;
 	}

@@ -101,12 +101,14 @@ public class ActionFactory implements ApplicationContextAware {
 		action.setLocalNode(localNode);
 		job.getObject().setTransientNodeRef(localNode);
 		action.setObject(job.getObject());
-		action.setActionMap(getActionRegistry());			
+		action.setActionMap(getActionRegistry());
+		action.setActionFactory(this);
 		action.setJob(job);
 		action.setPSystem(getPreservationSystem());
 	}
 	
 	private void checkSystemState(AbstractAction action) {
+		if (action.getActionFactory() == null) throw new IllegalStateException("Unable to build action. ActionFactory has not been set.");
 		if (action.getActionMap() == null) throw new IllegalStateException("Unable to build action. Action map has not been set.");
 		if (action.getLocalNode()==null) throw new IllegalStateException("Unable to build action. Node not set.");
 		if (action.getPreservationSystem()==null) throw new IllegalStateException("preservationSystem not set");

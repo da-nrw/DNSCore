@@ -38,6 +38,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.cb.NullAction;
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserExceptionManager;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
@@ -85,6 +86,8 @@ public class AbstractActionTests {
 		action.setUserExceptionManager(userExceptionManager);
 		
 		action.setActionMap(mock(ActionRegistry.class));
+		action.setActionFactory(mock(ActionFactory.class));
+		
 		job = new Job();
 		action.setJob(job);
 		User c = new User(); c.setShort_name("TEST"); c.setEmailAddress("noreply");
@@ -198,6 +201,34 @@ public class AbstractActionTests {
 		assertEquals("194",action.getJob().getStatus());
 	}
 	
+	
+	@Test
+	public void subsystemNotAvailableExceptionProperlyHandled() {
+		SubsystemNotAvailableExceptionAction action = new SubsystemNotAvailableExceptionAction();
+		action.setSession(mockSession);
+		setCommonProperties(action, "190", "200");
+		
+		action.run();
+		
+		verifyTechnicalExceptionProperlyHandled(action, mockSession);
+		
+		verify(action.getActionFactory(),times(1)).pause(true);
+	}
+	
+	
+	
+	private void verifyTechnicalExceptionProperlyHandled(AbstractAction action,Session mockSession) {
+
+
+		verify(mockSession,times(1)).update(action.getJob());
+		verify(mockSession,times(0)).delete(action.getJob());
+		verify(mockSession,times(0)).delete(action.getObject());
+		verify(mockSession,times(0)).save((Job)anyObject());
+		verify(ams, times(1)).sendJMSMessage((JmsMessage)anyObject());
+		assertEquals("19"+C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED,action.getJob().getStatus());
+	}
+	
+	
 	@Test
 	public void technicalExceptionProperlyHandled(){
 		TechnicalExceptionAction action = new TechnicalExceptionAction();
@@ -206,12 +237,7 @@ public class AbstractActionTests {
 		
 		action.run();
 		
-		verify(mockSession,times(1)).update(action.getJob());
-		verify(mockSession,times(0)).delete(action.getJob());
-		verify(mockSession,times(0)).delete(action.getObject());
-		verify(mockSession,times(0)).save((Job)anyObject());
-		verify(ams, times(1)).sendJMSMessage((JmsMessage)anyObject());
-		assertEquals("19"+C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED,action.getJob().getStatus());
+		verifyTechnicalExceptionProperlyHandled(action, mockSession);
 	}
 
 	@Test
@@ -301,6 +327,13 @@ public class AbstractActionTests {
 			setKILLATEXIT(true);
 			toCreate=new Job();
 			throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,"ERROR","ERROR");
+		}
+	}
+	
+	class SubsystemNotAvailableExceptionAction extends NullAction{
+		@Override
+		public boolean implementation() throws SubsystemNotAvailableException {
+			throw new SubsystemNotAvailableException("SUBSYSTEM NOT AVAILABLE");
 		}
 	}
 	
