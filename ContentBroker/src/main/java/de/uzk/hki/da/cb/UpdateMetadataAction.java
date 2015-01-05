@@ -151,26 +151,28 @@ public class UpdateMetadataAction extends AbstractAction {
 					if("EAD".equals(packageType)) {
 						EadMetsMetadataStructure emms = new EadMetsMetadataStructure(metadataFile, documents);
 						updatePathsInEad(emms, repName, replacements);
-					} else if ("METS".equals(packageType)) {
+					} else if ("METS".equals(packageType) && (!replacements.isEmpty() && replacements!=null)) {
 						MetsMetadataStructure mms = new MetsMetadataStructure(metadataFile, documents);
 						updatePathsInMets(mms, metadataFile, replacements);
-					} else if("LIDO".equals(packageType)) {
+					} else if("LIDO".equals(packageType) && (!replacements.isEmpty() && replacements!=null)) {
 						LidoMetadataStructure lms = new LidoMetadataStructure(metadataFile, documents);
 						updatePathsInLido(lms, replacements);
 					}
 				}
 				
-				for(String sourceHref : fileName_convertRewritingCount.keySet()) {
+				if(!replacements.isEmpty() && replacements!=null) {
+					for(String sourceHref : fileName_convertRewritingCount.keySet()) {
 					logger.debug((Integer)fileName_convertRewritingCount.get(sourceHref)+" convert replacements for "+sourceHref);
-				}
-				
-				int actualReplacements = fileName_convertRewritingCount.size();
-				logger.debug("Successfully replaced references for "+actualReplacements+" files!");
+					}
 					
-				if(expectedReplacements!=actualReplacements) {
-					throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,
-							expectedReplacements+" file(s) have been converted and for each one an entry in a METS file has to be updated. "+
-					"but only "+actualReplacements+" replacements could be done.", metadataFile.getAbsolutePath(), new Exception());
+					int actualReplacements = fileName_convertRewritingCount.size();
+					logger.debug("Successfully replaced references for "+actualReplacements+" files!");
+						
+					if(expectedReplacements!=actualReplacements) {
+						throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,
+								expectedReplacements+" file(s) have been converted and for each one an entry in a METS file has to be updated. "+
+						"but only "+actualReplacements+" replacements could be done.", metadataFile.getAbsolutePath(), new Exception());
+					}
 				}
 			}
 		}
@@ -242,7 +244,9 @@ public class UpdateMetadataAction extends AbstractAction {
 			}
 		}		
 		emms.replaceMetsRefsInEad(metadataFile, eadReplacements);
-		updatePathsInEADMetsFiles(emms, repName, replacements);
+		if(!replacements.isEmpty() && replacements!=null) {
+			updatePathsInEADMetsFiles(emms, repName, replacements);
+		}
 	}
 	
 	
@@ -330,8 +334,10 @@ public class UpdateMetadataAction extends AbstractAction {
 				}
 			}
 			if(!fileExists) {
-				targetPath = getCorrReferencesAndMimetypeInDelta(href, "").get(0);
-				if(targetPath!=null) {
+				logger.debug("File not found! Search in previouos packages ...");
+				List<String> references = getCorrReferencesAndMimetypeInDelta(href, "");
+				if(!references.isEmpty() && references.get(0)!=null) {
+					targetPath = references.get(0);
 					fileExists = true;
 				}
 			}
