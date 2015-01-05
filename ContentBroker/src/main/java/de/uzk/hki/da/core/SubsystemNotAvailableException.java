@@ -18,6 +18,8 @@
 */
 package de.uzk.hki.da.core;
 
+import java.io.IOException;
+
 /**
  * Used to signal that a subsystem on which actions may depend 
  * is not available. 
@@ -26,10 +28,14 @@ package de.uzk.hki.da.core;
  */
 public class SubsystemNotAvailableException extends Exception{
 
+	public SubsystemNotAvailableException(IOException e) {
+		super(e);
+	}
+
 	public SubsystemNotAvailableException(String msg) {
 		super(msg);
 	}
-
+	
 	/**
 	 * 
 	 */

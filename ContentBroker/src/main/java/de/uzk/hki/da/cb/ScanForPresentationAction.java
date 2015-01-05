@@ -26,6 +26,7 @@ import java.util.List;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
@@ -62,13 +63,15 @@ public class ScanForPresentationAction extends AbstractAction{
 	}
 
 	@Override
-	public boolean implementation() throws IOException {
+	public boolean implementation() throws SubsystemNotAvailableException{
 		
 		List<? extends FileWithFileFormat> fffl=null;
 		try {
 			fffl = fileFormatFacade.identify(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
 		} catch (FileFormatException e) {
 			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
+		} catch (IOException e) {
+			throw new SubsystemNotAvailableException(e);
 		}
 		
 		@SuppressWarnings("unchecked")

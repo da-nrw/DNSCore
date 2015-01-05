@@ -31,6 +31,7 @@ import org.apache.commons.lang.NotImplementedException;
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.IngestGate;
+import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
@@ -75,7 +76,7 @@ public class RestructureAction extends AbstractAction{
 
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,
-			UserException, RepositoryException {
+			UserException, RepositoryException, SubsystemNotAvailableException {
 		
 		FileUtils.moveDirectory(object.getDataPath().toFile(), 
 				new File(object.getPath()+"/sipData"));
@@ -131,13 +132,15 @@ public class RestructureAction extends AbstractAction{
 	}
 
 	
-	private void determineFileFormats() throws FileNotFoundException, IOException {
+	private void determineFileFormats() throws FileNotFoundException, SubsystemNotAvailableException {
 		List<FileWithFileFormat> scannedFiles = null;
 		try {
 			List<DAFile> dafiles = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
 			scannedFiles = fileFormatFacade.identify(dafiles);
 		} catch (FileFormatException e) {
 			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
+		} catch (IOException e) {
+			throw new SubsystemNotAvailableException(e);
 		}
 		for (FileWithFileFormat f:scannedFiles){
 			logger.info(f+":"+f.getFormatPUID()+":"+f.getSubformatIdentifier());

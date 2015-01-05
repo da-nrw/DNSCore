@@ -35,6 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.IngestGate;
+import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
@@ -116,7 +117,7 @@ public class RestructureActionTests {
 	}
 	
 	@Test
-	public void test() throws FileNotFoundException, UserException, IOException, RepositoryException{
+	public void test() throws FileNotFoundException, UserException, IOException, RepositoryException, SubsystemNotAvailableException{
 		
 		action.implementation();
 		
@@ -129,7 +130,7 @@ public class RestructureActionTests {
 	
 	
 	@Test
-	public void testDelta() throws FileNotFoundException, UserException, IOException, RepositoryException{
+	public void testDelta() throws FileNotFoundException, UserException, IOException, RepositoryException, SubsystemNotAvailableException{
 		
 		grid.put(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,"identifier.pack_1.tar"), "TEST/identifier/identifier.pack_1.tar", null);
 		

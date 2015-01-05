@@ -32,6 +32,7 @@ import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
@@ -72,7 +73,7 @@ public class CheckFormatsAction extends AbstractAction {
 	}
 
 	@Override
-	public boolean implementation() throws FileNotFoundException, IOException {
+	public boolean implementation() throws IOException, SubsystemNotAvailableException {
 		
 		List<FileWithFileFormat> allFiles = new ArrayList<FileWithFileFormat>();
 		List<DAFile> allDAFiles = new ArrayList<DAFile>();
@@ -85,6 +86,8 @@ public class CheckFormatsAction extends AbstractAction {
 			allFiles = getFileFormatFacade().identify(allFiles);
 		} catch (FileFormatException e) {
 			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
+		} catch (IOException e) {
+			throw new SubsystemNotAvailableException(e);
 		}
 		
 		for (FileWithFileFormat f:allFiles){

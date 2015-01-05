@@ -34,6 +34,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.util.StringUtils;
 
+import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.format.StandardFileFormatFacade;
 import de.uzk.hki.da.model.DAFile;
@@ -178,9 +179,10 @@ public class CheckFormatsActionTest {
 	 * Test that new converted file has correct format info.
 	 *
 	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws SubsystemNotAvailableException 
 	 */
 	@Test
-	public void testThatNewConvertedFileHasCorrectFormatInfo() throws IOException{
+	public void testThatNewConvertedFileHasCorrectFormatInfo() throws IOException, SubsystemNotAvailableException{
 		action.implementation();
 		
 		assertThat(job.getObject().getLatestPackage().getFiles().get(2).getFormatPUID()).isEqualTo("fmt/353");
@@ -190,9 +192,10 @@ public class CheckFormatsActionTest {
 	 * Test that new converted file has correct format info with deltas.
 	 *
 	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws SubsystemNotAvailableException 
 	 */
 	@Test
-	public void testThatNewConvertedFileHasCorrectFormatInfoWithDeltas() throws IOException{
+	public void testThatNewConvertedFileHasCorrectFormatInfoWithDeltas() throws IOException, SubsystemNotAvailableException{
 		
 		Package oldPackage = new Package(); // the AIP
 		oldPackage.setName("1"); oldPackage.setTransientBackRefToObject(object);
@@ -215,9 +218,10 @@ public class CheckFormatsActionTest {
 	 *
 	 * @throws FileNotFoundException the file not found exception
 	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws SubsystemNotAvailableException 
 	 */
 	@Test
-	public void testThatObjectsFormatListsAreCorrect() throws FileNotFoundException, IOException{
+	public void testThatObjectsFormatListsAreCorrect() throws FileNotFoundException, IOException, SubsystemNotAvailableException{
 		action.implementation();
 		
 		assertThat(job.getObject().getMost_recent_formats().toString()).contains("fmt/353");
@@ -240,9 +244,10 @@ public class CheckFormatsActionTest {
 	 *
 	 * @throws FileNotFoundException the file not found exception
 	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws SubsystemNotAvailableException 
 	 */
 	@Test
-	public void testThatObjectsCodecListsAreCorrect() throws FileNotFoundException, IOException{
+	public void testThatObjectsCodecListsAreCorrect() throws FileNotFoundException, IOException, SubsystemNotAvailableException{
 		action.implementation();
 		
 		assertThat(job.getObject().getMostRecentSecondaryAttributes().toString()).contains("cinepak");
@@ -256,9 +261,10 @@ public class CheckFormatsActionTest {
 	 *
 	 * @throws FileNotFoundException the file not found exception
 	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws SubsystemNotAvailableException 
 	 */
 	@Test
-	public void testThatObjectsFormatsListsAreCorrectWithDeltas() throws FileNotFoundException, IOException{
+	public void testThatObjectsFormatsListsAreCorrectWithDeltas() throws FileNotFoundException, IOException, SubsystemNotAvailableException{
 		
 		Package aipPackage = new Package(); 
 		aipPackage.setName("1"); 
@@ -290,9 +296,10 @@ public class CheckFormatsActionTest {
 	 *
 	 * @throws FileNotFoundException the file not found exception
 	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws SubsystemNotAvailableException 
 	 */
 	@Test
-	public void testThatObjectsCodecListsAreCorrectWithDeltas() throws FileNotFoundException, IOException{
+	public void testThatObjectsCodecListsAreCorrectWithDeltas() throws FileNotFoundException, IOException, SubsystemNotAvailableException{
 		
 		Package aipPackage = new Package(); 
 		aipPackage.setName("1"); 
