@@ -12,15 +12,14 @@ public class ATUseCaseIngestMetadataWithManyRefsToOneFile extends AcceptanceTest
 
 	private static String eadOrigName = "ATUseCaseIngestEadMetsManyRefsToOneFile";
 	private static String metsOrigName = "ATUseCaseIngestMetsManyRefsToOneFile";
-//	private static String lidoOrigName = "ATUseCaseIngestLIDOManyRefsToOneFile";
+	private static String lidoOrigName = "ATUseCaseIngestLIDOManyRefsToOneFile";
 	private static final File retrievalFolder = new File("/tmp/unpackedDIP");
 	
 	@BeforeClass
 	public static void setUp() throws IOException {
 		ath.ingest(eadOrigName);
 		ath.ingest(metsOrigName);
-//		ath.ingest(lidoOrigName);
-		
+		ath.ingest(lidoOrigName);
 	}
 	
 	@AfterClass
