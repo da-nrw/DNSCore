@@ -26,7 +26,6 @@ import java.io.FileNotFoundException;
 import org.junit.After;
 import org.junit.Test;
 
-import de.uzk.hki.da.convert.CLIConversionStrategy;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
@@ -35,7 +34,7 @@ import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
-import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
+import de.uzk.hki.da.utils.CommandLineConnector;
 
 
 
@@ -75,7 +74,7 @@ public class CLIConversionStrategyTests {
 		Object o = TESTHelper.setUpObject("1233",new RelativePath(workAreaRootPath));
 		
 		CLIConversionStrategy strat= new CLIConversionStrategy();
-		strat.setCLIConnector(new SimplifiedCommandLineConnector());
+		strat.setCLIConnector(new CommandLineConnector());
 		strat.setParam("cp input output");
 		strat.setObject(o);
 		ConversionInstruction ci= new ConversionInstruction();
@@ -110,7 +109,7 @@ public class CLIConversionStrategyTests {
 		o.getLatestPackage().getFiles().add(source);
 		
 		CLIConversionStrategy strat= new CLIConversionStrategy();
-		strat.setCLIConnector(new SimplifiedCommandLineConnector());
+		strat.setCLIConnector(new CommandLineConnector());
 		strat.setParam("convert -resize {institution.width}x{institution.height} input output");
 		strat.setObject(o);
 		
@@ -163,7 +162,7 @@ public class CLIConversionStrategyTests {
 		ci.setTarget_folder("");
 		ci.setConversion_routine(conversionRoutinePdfToPdfA);
 		
-		strat.setCLIConnector(new SimplifiedCommandLineConnector());
+		strat.setCLIConnector(new CommandLineConnector());
 		strat.setParam("gs -dPDFA -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sProcessColorModel=DeviceGray -sOutputFile=output input");
 		strat.convertFile(ci);
 		

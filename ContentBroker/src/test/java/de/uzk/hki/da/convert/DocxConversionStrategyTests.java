@@ -25,7 +25,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.junit.After;
@@ -34,7 +33,6 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import de.uzk.hki.da.convert.DocxConversionStrategy;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
@@ -43,7 +41,8 @@ import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
-import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
+import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.webservice.HttpFileTransmissionClient;
 
 
@@ -85,11 +84,10 @@ public class DocxConversionStrategyTests {
 	
 	/**
 	 * Test docx converison.
-	 *
-	 * @throws FileNotFoundException the file not found exception
+	 * @throws IOException 
 	 */
 	@Test
-	public void testDocxConverison () throws FileNotFoundException {
+	public void testDocxConverison () throws IOException {
 		ConversionInstruction ci = new ConversionInstruction();
 		
 		ConversionRoutine cr = new ConversionRoutine();
@@ -112,21 +110,25 @@ public class DocxConversionStrategyTests {
 		    }
 		});	cs.setHttpclient(httpclient);
 		
+		ProcessInformation pi = new ProcessInformation();
+		pi.setExitValue(0);
 		
+		CommandLineConnector cli = mock (CommandLineConnector.class );
+		when(cli.runCmdSynchronously((String[]) anyObject())).thenReturn(pi);
 		
-		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
-		when(cli.execute((String[]) anyObject())).thenAnswer(new Answer<java.lang.Object> () {
-			@Override
-			public Boolean answer(InvocationOnMock invocation) {
-			    java.lang.Object[] args = invocation.getArguments();
-		         String[] cmdarr = (String[]) args[0];
-				
-		         for (String s : cmdarr) {
-		        	 System.out.print(s + " ");
-		         }
-		         return true;
-		    }
-		});	cs.setCLIConnector(cli);
+//		when(cli.execute((String[]) anyObject())).thenAnswer(new Answer<java.lang.Object> () {
+//			@Override
+//			public Boolean answer(InvocationOnMock invocation) {
+//			    java.lang.Object[] args = invocation.getArguments();
+//		         String[] cmdarr = (String[]) args[0];
+//				
+//		         for (String s : cmdarr) {
+//		        	 System.out.print(s + " ");
+//		         }
+//		         return true;
+//		    }
+//		});	
+		cs.setCLIConnector(cli);
 		
 		
 		

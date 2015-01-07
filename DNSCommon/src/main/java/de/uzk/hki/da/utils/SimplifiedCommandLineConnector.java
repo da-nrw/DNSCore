@@ -35,6 +35,15 @@ public class SimplifiedCommandLineConnector {
 	private static Logger logger = 
 			LoggerFactory.getLogger(SimplifiedCommandLineConnector.class);
 	
+	private CommandLineConnector cl;
+	
+	public SimplifiedCommandLineConnector() {
+		this.cl = new CommandLineConnector();
+	}
+	
+	public SimplifiedCommandLineConnector(CommandLineConnector cl) {
+		this.cl= cl;	
+	}
 	/**
 	 * Execute.
 	 *
@@ -46,7 +55,7 @@ public class SimplifiedCommandLineConnector {
 		logger.trace("SimplifiedCommandLineConnector executing conversion command: {}", cmd.toString());
 		ProcessInformation pi = null;
 		try {
-			pi = CommandLineConnector.runCmdSynchronously( cmd );
+			pi = cl.runCmdSynchronously( cmd );
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

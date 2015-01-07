@@ -5,14 +5,14 @@ import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.convert.PublishImageConversionStrategy;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
@@ -22,7 +22,8 @@ import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
-import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
+import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.ProcessInformation;
 
 public class PublishImageMultipageTIFFTests {
 
@@ -38,15 +39,30 @@ public class PublishImageMultipageTIFFTests {
 	}
 
 	@Test
-	public void testMultipage() throws FileNotFoundException {
+	public void testMultipage() throws IOException {
 		PublishImageConversionStrategy cs = new PublishImageConversionStrategy();
 		Object o = TESTHelper.setUpObject("123",new RelativePath(workAreaRootPathPath));
+		ProcessInformation pi = new ProcessInformation();
+		pi.setExitValue(0);
+		CommandLineConnector cli = mock ( CommandLineConnector.class );
+		DAFile sourceFile = new DAFile(o.getLatestPackage(),"source","ALVR{}_Nr_4557_Aufn_249.tif");
 		
-		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );		
-		when(cli.execute((String[]) anyObject())).thenReturn(true);
+		String cmdPublic[] = new String[]{
+				"convert",
+				new File(workAreaRootPathPath+"/work/TEST/123/data/source/ALVR{}_Nr_4557_Aufn_249.tif").getAbsolutePath(),
+				new File(workAreaRootPathPath+"/work/TEST/123/data/dip/public/ALVR{}_Nr_4557_Aufn_249.jpg").getAbsolutePath()
+		};
+		when(cli.runCmdSynchronously(cmdPublic)).thenReturn(pi);
+		
+		String cmdInstitution[] = new String[]{
+				"convert",
+				new File(workAreaRootPathPath+"/work/TEST/123/data/source/ALVR{}_Nr_4557_Aufn_249.tif").getAbsolutePath(),
+				new File(workAreaRootPathPath+"/work/TEST/123/data/dip/institution/ALVR{}_Nr_4557_Aufn_249.jpg").getAbsolutePath()
+		};
+		when(cli.runCmdSynchronously(cmdInstitution)).thenReturn(pi);
+		
 		
 		cs.setCLIConnector(cli);
-		DAFile sourceFile = new DAFile(o.getLatestPackage(),"source","ALVR{}_Nr_4557_Aufn_249.tif");
 		
 		ConversionInstruction ci = new ConversionInstruction();
 		ci.setSource_file(sourceFile);

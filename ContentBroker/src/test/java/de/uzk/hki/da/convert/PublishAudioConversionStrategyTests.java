@@ -23,11 +23,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.junit.Test;
 
-import de.uzk.hki.da.convert.PublishAudioConversionStrategy;
 import de.uzk.hki.da.model.AudioRestriction;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
@@ -37,7 +36,8 @@ import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
-import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
+import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.ProcessInformation;
 
 
 
@@ -55,27 +55,30 @@ public class PublishAudioConversionStrategyTests {
 	
 	/**
 	 * Test.
-	 *
-	 * @throws FileNotFoundException the file not found exception
+	 * @throws IOException 
 	 */
 	@Test
-	public void test() throws FileNotFoundException{
+	public void test() throws IOException{
 		
-		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
+		CommandLineConnector cli = mock ( CommandLineConnector.class );
 		String cmdPUBLIC[] = new String[]{
 				"sox",
 				new File(workAreaRootPathPath+"/work/TEST/123/data/a/audiofile.wav").getAbsolutePath(),
 				workAreaRootPathPath+"/work/TEST/123/data/dip/public/target/audiofile.mp3",
 				"trim","0","10"
 		};
-		when(cli.execute(cmdPUBLIC)).thenReturn(true);
+		
+		ProcessInformation pi = new ProcessInformation();
+		pi.setExitValue(0);
+		
+		when(cli.runCmdSynchronously(cmdPUBLIC)).thenReturn(pi);
 		
 		String cmdINSTITUTION[] = new String[]{
 				"sox",
 				new File(workAreaRootPathPath+"/work/TEST/123/data/a/audiofile.wav").getAbsolutePath(),
 				workAreaRootPathPath+"/work/TEST/123/data/dip/institution/target/audiofile.mp3"
 		};
-		when(cli.execute(cmdINSTITUTION)).thenReturn(true);
+		when(cli.runCmdSynchronously(cmdINSTITUTION)).thenReturn(pi);
 		
 		PublishAudioConversionStrategy strategy = new PublishAudioConversionStrategy();
 		strategy.setCLIConnector( cli );

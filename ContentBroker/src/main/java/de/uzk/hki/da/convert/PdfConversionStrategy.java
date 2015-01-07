@@ -21,6 +21,7 @@ package de.uzk.hki.da.convert;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +35,8 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -58,7 +61,7 @@ public class PdfConversionStrategy implements ConversionStrategy {
 	private Object object;
 
 	/** The cli connector. */
-	protected SimplifiedCommandLineConnector cliConnector;
+	protected CommandLineConnector cliConnector;
 
 	/**
 	 * Convert file.
@@ -83,9 +86,13 @@ public class PdfConversionStrategy implements ConversionStrategy {
 				"-sProcessColorModel=DeviceCMYK", "-sDEVICE=pdfwrite",
 				"-sOutputFile=" + result.getAbsolutePath(), "conf/PDFA_def.ps",
 				ci.getSource_file().toRegularFile().getAbsolutePath() };
-		if (!cliConnector.execute(commandAsArray)) {
-			throw new RuntimeException("GS command not succeeded");
+		ProcessInformation pi = null;
+		try {
+			pi = cliConnector.runCmdSynchronously(commandAsArray);
+		} catch (IOException e1) {
+			throw new RuntimeException("GS command not succeeded, not found");
 		}
+		if (pi.getExitValue()!=0) throw new RuntimeException("GS command not succeeded");
 
 		if (result.exists()) {
 			DAFile daf = new DAFile(object.getLatestPackage(), object.getPath("newest").getLastElement(),
@@ -133,7 +140,7 @@ public class PdfConversionStrategy implements ConversionStrategy {
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
 	 */
 	@Override
-	public void setCLIConnector(SimplifiedCommandLineConnector cliConnector) {
+	public void setCLIConnector(CommandLineConnector cliConnector) {
 		this.cliConnector = cliConnector;
 	}
 	

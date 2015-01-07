@@ -33,7 +33,7 @@ import de.uzk.hki.da.utils.CommandLineConnector;
 public class CTTestHelper {
 
 	public static void prepareWhiteBoxTest() throws IOException{
-		CommandLineConnector.runCmdSynchronously(new String[] {
+		new  CommandLineConnector().runCmdSynchronously(new String[] {
                 "src/main/bash/collect.sh", "./" });
 		
 		new File("conf").mkdir();

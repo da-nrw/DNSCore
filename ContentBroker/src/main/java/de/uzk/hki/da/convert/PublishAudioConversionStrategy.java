@@ -20,6 +20,7 @@
 package de.uzk.hki.da.convert;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,13 +36,14 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.Utilities;
 
 
 /**
  * The Class PublishAudioConversionStrategy.
- * @author unknown
  * @author Daniel M. de Oliveira
  */
 public class PublishAudioConversionStrategy extends PublishConversionStrategyBase {
@@ -51,7 +53,7 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 			LoggerFactory.getLogger(PublishAudioConversionStrategy.class);
 	
 	/** The cli connector. */
-	private SimplifiedCommandLineConnector cliConnector;
+	private CommandLineConnector cliConnector;
 
 	
 	/* (non-Javadoc)
@@ -83,9 +85,15 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 			};
 			logger.debug("source:"+source);
 			logger.debug("target:"+target);
-			if (!cliConnector.execute((String[]) ArrayUtils.addAll(cmdPUBLIC,getDurationRestrictionsForAudience(audience)))){
-				throw new RuntimeException("command not succeeded");
+			ProcessInformation pi = null;
+			try {
+				pi = cliConnector.runCmdSynchronously((String[]) ArrayUtils.addAll(cmdPUBLIC,getDurationRestrictionsForAudience(audience)));
+			} catch (IOException e1) {
+				throw new RuntimeException("command not succeeded, not found!");
 			}
+			if (pi.getExitValue()!=0)
+				throw new RuntimeException("command not succeeded");
+			
 			
 			DAFile f1 = new DAFile(object.getLatestPackage(), pips+"/"+audience.toLowerCase(), Utilities.slashize(ci.getTarget_folder()) + 
 					FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp3");
@@ -142,7 +150,7 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
 	 */
 	@Override
-	public void setCLIConnector(SimplifiedCommandLineConnector cliConnector) {
+	public void setCLIConnector(CommandLineConnector cliConnector) {
 		this.cliConnector = cliConnector;
 	}
 
