@@ -19,6 +19,9 @@
 package de.uzk.hki.da.cb;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -28,6 +31,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -38,13 +43,9 @@ import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.format.StandardFileFormatFacade;
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
 
 
@@ -53,21 +54,21 @@ import de.uzk.hki.da.util.RelativePath;
  *
  * @author Daniel M. de Oliveira
  */
-public class CheckFormatsActionTest {
+public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 
-	private String workAreaRootPath = "src/test/resources/cb/CheckFormatsActionTests/";
-	
-	/** The action. */
+	private static final String REP2B = "2011_11_11+11_11+b";
+
+	private static final String REP2A = "2011_11_11+11_11+a";
+
+	private static final String REP1B = "2000_01_01+00_00+b";
+
+	private static final String REP1A = "2000_01_01+00_00+a";
+
+	private Path workAreaRootPath = new RelativePath("src/test/resources/cb/CheckFormatsActionTests/");
+
+	@ActionUnderTest
 	CheckFormatsAction action = new CheckFormatsAction();
 	
-	/** The job. */
-	private Job job;
-
-	/** The local node. */
-	private Node localNode;
-
-	/** The object. */
-	private Object object;
 	
 	/**
 	 * Sets the upformat scan service behaviour.
@@ -77,7 +78,7 @@ public class CheckFormatsActionTest {
 	 * @throws IOException 
 	 */
 	@SuppressWarnings("unchecked")
-	private StandardFileFormatFacade setUpformatScanServiceBehaviour()
+	private StandardFileFormatFacade setUpFakeFormatScanService()
 			throws IOException {
 		StandardFileFormatFacade formatScanService = mock(StandardFileFormatFacade.class);
 		
@@ -89,25 +90,25 @@ public class CheckFormatsActionTest {
 				List<DAFile> list = (List<DAFile>) args[0];
 				
 				for (DAFile f:list){
-					if (f.equals(new DAFile(null,"2011_11_11+11_11+a","_2.jpg"))){
+					if (f.equals(new DAFile(null,REP2A,"_2.jpg"))){
 						f.setFormatPUID("fmt/43");
 					}
-					if (f.equals(new DAFile(null,"2011_11_11+11_11+b","_2.tif"))){
+					if (f.equals(new DAFile(null,REP2B,"_2.tif"))){
 						f.setFormatPUID("fmt/353");
 					}
-					if (f.equals(new DAFile(null,"2011_11_11+11_11+a","_3.avi"))){
+					if (f.equals(new DAFile(null,REP2A,"_3.avi"))){
 						f.setFormatPUID("fmt/5");
 						f.setSubformatIdentifier("cinepak");
 					}
 					
-					if (f.equals(new DAFile(null,"2000_01_01+00_00+a","_1.jpg"))){
+					if (f.equals(new DAFile(null,REP1A,"_1.jpg"))){
 						f.setFormatPUID("fmt/43");
 					}
-					if (f.equals(new DAFile(null,"2000_01_01+00_00+b","_1.tif"))){
+					if (f.equals(new DAFile(null,REP1B,"_1.tif"))){
 						f.setFormatPUID("fmt/353");
 					}
 					
-					if (f.equals(new DAFile(null,"2000_01_01+00_00+a","_3.mov"))){
+					if (f.equals(new DAFile(null,REP1A,"_3.mov"))){
 						f.setFormatPUID("x-fmt/384");
 						f.setSubformatIdentifier("svq1");
 					}
@@ -119,7 +120,6 @@ public class CheckFormatsActionTest {
 		return formatScanService;
 	}
 
-
 	/**
 	 * Sets the up.
 	 *
@@ -128,52 +128,65 @@ public class CheckFormatsActionTest {
 	@Before
 	public void setUp() throws Exception{
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
-		
-		PreservationSystem pSystem = new PreservationSystem();
-		localNode = new Node();
-		User contractor = new User();
-		contractor.setShort_name("TEST");
-		localNode.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
 
 		final Package sipPackage = new Package(); sipPackage.setName("2"); // the SIP / Delta
-		final Package aipPackage = new Package(); aipPackage.setName("1"); // the existing AIP
+		sipPackage.setTransientBackRefToObject(o);
 		
-		DAFile a  = new DAFile(sipPackage,"2000_01_01+00_00+a","_1.jpg");
-		DAFile b  = new DAFile(sipPackage,"2000_01_01+00_00+a","_3.mov");
-		DAFile c = new DAFile(sipPackage,"2000_01_01+00_00+b","_1.tif"); 
-		DAFile sipPackageOriginalFile  = new DAFile(sipPackage,"2011_11_11+11_11+a","_2.jpg");
-		DAFile sipPackageOriginalFile2  = new DAFile(sipPackage,"2011_11_11+11_11+a","_3.avi");
-		DAFile sipPackageConvertedFile = new DAFile(sipPackage,"2011_11_11+11_11+b","_2.tif"); 
-		aipPackage.getFiles().add(a);
-		aipPackage.getFiles().add(b);
-		aipPackage.getFiles().add(c);
+		DAFile a  = new DAFile(sipPackage,REP1A,"_1.jpg");
+		DAFile b  = new DAFile(sipPackage,REP1A,"_3.mov");
+		DAFile c = new DAFile(sipPackage,REP1B,"_1.tif");
+		o.getPackages().get(0).getFiles().add(a);
+		o.getPackages().get(0).getFiles().add(b);
+		o.getPackages().get(0).getFiles().add(c);
+		
+		DAFile sipPackageOriginalFile  = new DAFile(sipPackage,REP2A,"_2.jpg");
+		DAFile sipPackageOriginalFile2  = new DAFile(sipPackage,REP2A,"_3.avi");
+		DAFile sipPackageConvertedFile = new DAFile(sipPackage,REP2B,"_2.tif"); 
 		sipPackage.getFiles().add(sipPackageOriginalFile);
 		sipPackage.getFiles().add(sipPackageOriginalFile2);
 		sipPackage.getFiles().add(sipPackageConvertedFile);
+		o.getPackages().add(sipPackage);
 		
-		object = new Object();
-		List<Package> packages = new ArrayList<Package>(); packages.add(sipPackage); packages.add(aipPackage);
-		object.setPackages(packages);
-		object.setContractor(contractor);
-		object.setIdentifier("identifier");
-		object.setTransientNodeRef(localNode);
-		object.reattach();
 		
-		StandardFileFormatFacade fileFormatFacade = setUpformatScanServiceBehaviour();
+		n.setWorkAreaRootPath(Path.make(workAreaRootPath));
 		
-		job = new Job();
-		job.setId(1000);
-		job.setRep_name("2011_11_11+11_11+");
-		job.setObject(object);
+		action.setFileFormatFacade(setUpFakeFormatScanService());
+		j.setRep_name("2011_11_11+11_11+");
 		
-		action.setObject(object);
-		action.setFileFormatFacade(fileFormatFacade);
-		action.setJob(job);
-		action.setLocalNode(localNode);
-		action.setFileFormatFacade(fileFormatFacade);
-		action.setPSystem(pSystem);
 	}
 
+	@After
+	public void tearDown() throws IOException {
+		FileUtils.deleteDirectory(Path.makeFile(o.getDataPath(),"jhove_temp"));
+	}
+	
+	@Test
+	public void rollbackIsImplemented() {
+		try {
+			action.rollback();
+		} catch (Exception e) {
+			fail();
+		}
+	}
+	
+	@Test
+	public void technicalMetadataFoldersForTechnicalMetadataArePresent() throws IOException, SubsystemNotAvailableException {
+		action.implementation();
+		
+		assertTrue(Path.makeFile(o.getDataPath(),REP1A).exists());
+		assertTrue(Path.makeFile(o.getDataPath(),REP1B).exists());
+		assertTrue(Path.makeFile(o.getDataPath(),REP2A).exists());
+		assertTrue(Path.makeFile(o.getDataPath(),REP2B).exists());
+	}
+	
+	@Test
+	public void removeExtractedTechnicalMetadata() throws Exception{
+		action.implementation();
+		action.rollback();
+		
+		assertFalse(Path.makeFile(o.getDataPath(),"jhove_temp").exists());
+		
+	}
 	
 	/**
 	 * Test that new converted file has correct format info.
@@ -185,7 +198,8 @@ public class CheckFormatsActionTest {
 	public void testThatNewConvertedFileHasCorrectFormatInfo() throws IOException, SubsystemNotAvailableException{
 		action.implementation();
 		
-		assertThat(job.getObject().getLatestPackage().getFiles().get(2).getFormatPUID()).isEqualTo("fmt/353");
+		assertThat(o.getLatestPackage().
+				getFiles().get(2).getFormatPUID()).isEqualTo("fmt/353");
 	}
 	
 	/**
@@ -198,16 +212,16 @@ public class CheckFormatsActionTest {
 	public void testThatNewConvertedFileHasCorrectFormatInfoWithDeltas() throws IOException, SubsystemNotAvailableException{
 		
 		Package oldPackage = new Package(); // the AIP
-		oldPackage.setName("1"); oldPackage.setTransientBackRefToObject(object);
-		DAFile newPackageOriginalFile  = new DAFile(oldPackage,"2000_01_01+00_00+a","_1.jpg");
-		DAFile newPackageConvertedFile = new DAFile(oldPackage,"2000_01_01+00_00+b","_1.tif"); 
+		oldPackage.setName("1"); oldPackage.setTransientBackRefToObject(o);
+		DAFile newPackageOriginalFile  = new DAFile(oldPackage,REP1A,"_1.jpg");
+		DAFile newPackageConvertedFile = new DAFile(oldPackage,REP1B,"_1.tif"); 
 		List<DAFile> allFiles = new ArrayList<DAFile>(); allFiles.add(newPackageConvertedFile); allFiles.add(newPackageOriginalFile);
 		oldPackage.getFiles().addAll(allFiles);
-		object.getPackages().add(oldPackage);
+		o.getPackages().add(oldPackage);
 		
 		action.implementation();
 		
-		assertThat(job.getObject().getLatestPackage().getFiles().get(2).getFormatPUID()).isEqualTo("fmt/353");
+		assertThat(o.getLatestPackage().getFiles().get(2).getFormatPUID()).isEqualTo("fmt/353");
 	}
 
 	
@@ -224,19 +238,19 @@ public class CheckFormatsActionTest {
 	public void testThatObjectsFormatListsAreCorrect() throws FileNotFoundException, IOException, SubsystemNotAvailableException{
 		action.implementation();
 		
-		assertThat(job.getObject().getMost_recent_formats().toString()).contains("fmt/353");
-		assertThat(job.getObject().getMost_recent_formats().toString()).contains("fmt/5");
+		assertThat(o.getMost_recent_formats().toString()).contains("fmt/353");
+		assertThat(o.getMost_recent_formats().toString()).contains("fmt/5");
 		assertThat(StringUtils.countOccurrencesOf(
-				job.getObject().getMost_recent_formats().toString(),"fmt/353")).isEqualTo(1);
+				o.getMost_recent_formats().toString(),"fmt/353")).isEqualTo(1);
 		assertThat(StringUtils.countOccurrencesOf(
-				job.getObject().getMost_recent_formats().toString(),"fmt/5")).isEqualTo(1);
+				o.getMost_recent_formats().toString(),"fmt/5")).isEqualTo(1);
 		
-		assertThat(job.getObject().getOriginal_formats().toString()).contains("fmt/43");
+		assertThat(o.getOriginal_formats().toString()).contains("fmt/43");
 		assertThat(StringUtils.countOccurrencesOf(
-				job.getObject().getOriginal_formats().toString(),"fmt/43")).isEqualTo(1);
-		assertThat(job.getObject().getOriginal_formats().toString()).contains("fmt/5");
+				o.getOriginal_formats().toString(),"fmt/43")).isEqualTo(1);
+		assertThat(o.getOriginal_formats().toString()).contains("fmt/5");
 		assertThat(StringUtils.countOccurrencesOf(
-				job.getObject().getOriginal_formats().toString(),"fmt/5")).isEqualTo(1);
+				o.getOriginal_formats().toString(),"fmt/5")).isEqualTo(1);
 	}
 	
 	/**
@@ -250,9 +264,9 @@ public class CheckFormatsActionTest {
 	public void testThatObjectsCodecListsAreCorrect() throws FileNotFoundException, IOException, SubsystemNotAvailableException{
 		action.implementation();
 		
-		assertThat(job.getObject().getMostRecentSecondaryAttributes().toString()).contains("cinepak");
+		assertThat(o.getMostRecentSecondaryAttributes().toString()).contains("cinepak");
 		assertThat(StringUtils.countOccurrencesOf(
-				job.getObject().getMostRecentSecondaryAttributes().toString(),"cinepak")).isEqualTo(1);
+				o.getMostRecentSecondaryAttributes().toString(),"cinepak")).isEqualTo(1);
 	}
 	
 	
@@ -268,26 +282,26 @@ public class CheckFormatsActionTest {
 		
 		Package aipPackage = new Package(); 
 		aipPackage.setName("1"); 
-		object.getPackages().add(aipPackage);
+		o.getPackages().add(aipPackage);
 		
 		action.implementation();
 		
-		assertThat(job.getObject().getMost_recent_formats().toString()).contains("fmt/353");
+		assertThat(o.getMost_recent_formats().toString()).contains("fmt/353");
 		assertThat(StringUtils.countOccurrencesOf(
-				job.getObject().getMost_recent_formats().toString(),"fmt/353")).isEqualTo(1);
-		assertThat(job.getObject().getMost_recent_formats().toString()).contains("fmt/5");
+				o.getMost_recent_formats().toString(),"fmt/353")).isEqualTo(1);
+		assertThat(o.getMost_recent_formats().toString()).contains("fmt/5");
 		assertThat(StringUtils.countOccurrencesOf(
-				job.getObject().getMost_recent_formats().toString(),"fmt/5")).isEqualTo(1);
+				o.getMost_recent_formats().toString(),"fmt/5")).isEqualTo(1);
 		
-		assertThat(job.getObject().getOriginal_formats().toString()).contains("fmt/43");
-		assertThat(job.getObject().getOriginal_formats().toString()).contains("fmt/5");
-		assertThat(job.getObject().getOriginal_formats().toString()).contains("x-fmt/384");
+		assertThat(o.getOriginal_formats().toString()).contains("fmt/43");
+		assertThat(o.getOriginal_formats().toString()).contains("fmt/5");
+		assertThat(o.getOriginal_formats().toString()).contains("x-fmt/384");
 		assertThat(StringUtils.countOccurrencesOf(
-				job.getObject().getOriginal_formats().toString(),"fmt/43")).isEqualTo(1);
+				o.getOriginal_formats().toString(),"fmt/43")).isEqualTo(1);
 		assertThat(StringUtils.countOccurrencesOf(
-				job.getObject().getOriginal_formats().toString(),"fmt/5")).isEqualTo(1);
+				o.getOriginal_formats().toString(),"fmt/5")).isEqualTo(1);
 		assertThat(StringUtils.countOccurrencesOf(
-				job.getObject().getOriginal_formats().toString(),"x-fmt/384")).isEqualTo(1);
+				o.getOriginal_formats().toString(),"x-fmt/384")).isEqualTo(1);
 	}
 	
 	
@@ -303,13 +317,13 @@ public class CheckFormatsActionTest {
 		
 		Package aipPackage = new Package(); 
 		aipPackage.setName("1"); 
-		object.getPackages().add(aipPackage);
+		o.getPackages().add(aipPackage);
 		
 		action.implementation();
 		
-		assertThat(job.getObject().getMostRecentSecondaryAttributes().toString()).contains("cinepak");
+		assertThat(o.getMostRecentSecondaryAttributes().toString()).contains("cinepak");
 		assertThat(StringUtils.countOccurrencesOf(
-				job.getObject().getMostRecentSecondaryAttributes().toString(),"cinepak")).isEqualTo(1);
+				o.getMostRecentSecondaryAttributes().toString(),"cinepak")).isEqualTo(1);
 		
 	}
 	
