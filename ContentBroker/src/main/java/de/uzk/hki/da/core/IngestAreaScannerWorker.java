@@ -103,7 +103,6 @@ public class IngestAreaScannerWorker extends Worker{
 	 * Inits the.
 	 */
 	public void init(){
-		logger.debug("Initialize  IngestScannerWorker ...");
 		if (!rootDir.exists()) throw new RuntimeException("path ingestAreaRootPath points to does not exist.");
 		
 		logger.info("Scanning staging area for contractor folders");
@@ -255,6 +254,8 @@ public class IngestAreaScannerWorker extends Worker{
 				if ( job == null) { // consider only containers for which there is not already a job in queue since it is possible that the CB has stopped and now resumes work.
 					logger.debug("New file found, making timestamp for: "+children[i]);
 					files.put(children[i], currentTimeStamp);
+				} else {
+//					USER EMAIL 
 				}
 			}
 			else

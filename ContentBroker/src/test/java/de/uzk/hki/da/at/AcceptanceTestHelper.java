@@ -363,7 +363,6 @@ public class AcceptanceTestHelper {
 		File targetFile = Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getShort_name(),originalName+"."+ext);
 		
 		FileUtils.copyFile( sourceFile, targetFile );
-		System.out.println("finished");
 	}
 	
 	/**
