@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
@@ -117,7 +117,7 @@ public class CheckFormatsAction extends AbstractAction {
 	private void attachJhoveInfoToAllFiles(List<DAFile> files) throws IOException {
 		for (DAFile f : files) {
 			// dir
-			String dir = Path.make(object.getDataPath(),"jhove_temp",f.getRep_name()).toString();
+			String dir = Path.make(object.getDataPath(),C.JHOVE_TEMP,f.getRep_name()).toString();
 			String fileName = DigestUtils.md5Hex(f.getRelative_path());
 			
 			if (!new File(dir).exists()) new File(dir).mkdirs();
@@ -185,7 +185,7 @@ public class CheckFormatsAction extends AbstractAction {
 	
 	@Override
 	public void rollback() throws Exception {
-		throw new NotImplementedException("No rollback implemented for this action");
+		FileUtils.deleteQuietly(Path.makeFile(object.getDataPath(),C.JHOVE_TEMP));
 	}
 
 
