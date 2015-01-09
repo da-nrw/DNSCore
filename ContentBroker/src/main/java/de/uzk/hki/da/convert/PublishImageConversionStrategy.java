@@ -63,7 +63,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			LoggerFactory.getLogger(PublishImageConversionStrategy.class);
 	
 	/** The cli connector. */
-	private SimplifiedCommandLineConnector cliConnector;
+	private CommandLineConnector cliConnector;
 	
 	private String resizeWidth = null;
 	
@@ -106,9 +106,15 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			logger.debug(commandAsList.toString());
 			String[] commandAsArray = new String[commandAsList.size()];
 			commandAsArray = commandAsList.toArray(commandAsArray);
-			if (!cliConnector.execute(commandAsArray))
+			ProcessInformation pi = null;
+			try {
+				pi = cliConnector.runCmdSynchronously(commandAsArray);
+			} catch (IOException e1) {
+				throw new RuntimeException("convert did not succeed, not found: " + Arrays.toString(commandAsArray));
+			}
+			if (pi.getExitValue()!=0) {
 				throw new RuntimeException("convert did not succeed: " + Arrays.toString(commandAsArray));
-			
+			}		
 			// In order to support multipage tiffs, we check for files by wildcard expression
 			String extension = FilenameUtils.getExtension(target.toRegularFile().getAbsolutePath());
 			List<File> wild = findFilesWithRegex(
@@ -167,7 +173,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 				absolutePath};
 		ProcessInformation pi;
 		try {
-			pi = CommandLineConnector.runCmdSynchronously(cmd);
+			pi = cliConnector.runCmdSynchronously(cmd);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -317,7 +323,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
 	 */
 	@Override
-	public void setCLIConnector(SimplifiedCommandLineConnector cliConnector) {
+	public void setCLIConnector(CommandLineConnector cliConnector) {
 		this.cliConnector = cliConnector;
 	}
 

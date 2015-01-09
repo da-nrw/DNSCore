@@ -24,16 +24,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
-import de.uzk.hki.da.convert.PdfConversionStrategy;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
@@ -42,7 +38,8 @@ import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
-import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
+import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.ProcessInformation;
 
 
 /**
@@ -73,31 +70,35 @@ public class PdfConversionStrategyTest {
 	
 	/**
 	 * Test pdf conversion.
-	 *
-	 * @throws FileNotFoundException the file not found exception
+	 * @throws IOException 
 	 */
 	@SuppressWarnings("rawtypes")
 	@Test
-	public void testPdfConversion () throws FileNotFoundException {
+	public void testPdfConversion () throws IOException {
 		ConversionInstruction ci = new ConversionInstruction();
 		
 		ConversionRoutine cr = new ConversionRoutine();
 		
-		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
-					
-		when(cli.execute((String[]) anyObject())).thenAnswer(new Answer () {
-			@Override
-			public Boolean answer(InvocationOnMock invocation) {
-			    java.lang.Object[] args = invocation.getArguments();
-		         String[] cmdarr = (String[]) args[0];
-				
-		         for (String s : cmdarr) {
-		        	 System.out.print(s + " ");
-		         }
-		         return true;
-		    }
-		});		
+		CommandLineConnector cli = mock ( CommandLineConnector.class );
+		
+		ProcessInformation pi = new ProcessInformation();
+		pi.setExitValue(0);
+		when(cli.runCmdSynchronously((String[]) anyObject())).thenReturn(pi);
 			
+//		
+//		when(cli.runCmdSynchronously(((String[]) anyObject())).thenAnswer(new Answer () {
+//			@Override
+//			public Boolean answer(InvocationOnMock invocation) {
+//			    java.lang.Object[] args = invocation.getArguments();
+//		         String[] cmdarr = (String[]) args[0];
+//				
+//		         for (String s : cmdarr) {
+//		        	 System.out.print(s + " ");
+//		         }
+//		         return true;
+//		    }
+//		});		
+//			
 		cs.setCLIConnector(cli);
 		
 		cr.setTarget_suffix("pdf");

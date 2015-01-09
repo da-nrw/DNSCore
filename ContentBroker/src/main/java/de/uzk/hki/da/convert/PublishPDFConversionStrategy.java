@@ -33,7 +33,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
+import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -133,7 +133,8 @@ public class PublishPDFConversionStrategy extends PublishConversionStrategyBase 
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
 	 */
 	@Override
-	public void setCLIConnector(SimplifiedCommandLineConnector cliConnector) {}
+	public void setCLIConnector(CommandLineConnector cliConnector) {
+	}
 
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setObject(de.uzk.hki.da.model.Object)

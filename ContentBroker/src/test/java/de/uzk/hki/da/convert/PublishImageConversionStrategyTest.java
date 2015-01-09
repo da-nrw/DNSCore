@@ -32,7 +32,6 @@ import org.junit.After;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
-import de.uzk.hki.da.convert.PublishImageConversionStrategy;
 import de.uzk.hki.da.metadata.XPathUtils;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
@@ -46,7 +45,8 @@ import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
-import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
+import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.ProcessInformation;
 
 
 /**
@@ -96,8 +96,10 @@ public class PublishImageConversionStrategyTest {
 		right.getImageRestriction().setWatermarkPointSize("10");
 		right.getImageRestriction().setWatermarkString("Hallo");
 		o.getRights().getPublicationRights().add(right);
+		ProcessInformation pi = new ProcessInformation();
+		pi.setExitValue(0);
 		
-		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
+		CommandLineConnector cli = mock ( CommandLineConnector.class );
 		
 		String cmdPUBLIC[] = new String[]{
 				"convert",
@@ -107,14 +109,14 @@ public class PublishImageConversionStrategyTest {
 				 "gravity north fill #0000007f text 0,15 'Hallo' fill #ffffff7f text 0,14 'Hallo'",
 				Path.makeFile(dataPath,"dip/public/target/filename.jpg").getAbsolutePath(),
 		};		
-		when(cli.execute(cmdPUBLIC)).thenReturn(true);
+		when(cli.runCmdSynchronously(cmdPUBLIC)).thenReturn(pi);
 		
 		String cmdINST[] = new String[]{
 				"convert",
 				Path.makeFile(dataPath,"a/filename.tif").getAbsolutePath(),
 				Path.makeFile(dataPath,"dip/institution/target/filename.jpg").getAbsolutePath()
 		};
-		when(cli.execute(cmdINST)).thenReturn(true);		
+		when(cli.runCmdSynchronously(cmdINST)).thenReturn(pi);		
 		
 		PublishImageConversionStrategy s = new PublishImageConversionStrategy();
 		s.setCLIConnector( cli );
@@ -157,7 +159,10 @@ public class PublishImageConversionStrategyTest {
 		right.getImageRestriction().setFooterText("Hallo");
 		o.getRights().getPublicationRights().add(right);
 		
-		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
+		ProcessInformation pi = new ProcessInformation();
+		pi.setExitValue(0);
+		
+		CommandLineConnector cli = mock ( CommandLineConnector.class );
 		
 		String cmdPUBLIC[] = new String[]{
 				"convert",
@@ -171,14 +176,14 @@ public class PublishImageConversionStrategyTest {
 					"-composite",
 					Path.makeFile(dataPath,"dip/public/target/filename.jpg").getAbsolutePath()
 		};		
-		when(cli.execute(cmdPUBLIC)).thenReturn(true);
+		when(cli.runCmdSynchronously(cmdPUBLIC)).thenReturn(pi);
 		
 		String cmdINST[] = new String[]{
 				"convert",
 				Path.makeFile(dataPath,"a/filename.tif").getAbsolutePath(),
 				Path.makeFile(dataPath,"dip/institution/target/filename.jpg").getAbsolutePath()
 		};
-		when(cli.execute(cmdINST)).thenReturn(true);
+		when(cli.runCmdSynchronously(cmdINST)).thenReturn(pi);
 		
 		PublishImageConversionStrategy s = new PublishImageConversionStrategy();
 		s.setCLIConnector( cli );
@@ -220,7 +225,10 @@ public class PublishImageConversionStrategyTest {
 		right.getImageRestriction().setFooterText("Hallo");
 		o.getRights().getPublicationRights().add(right);
 		
-		SimplifiedCommandLineConnector cli = mock ( SimplifiedCommandLineConnector.class );
+		ProcessInformation pi = new ProcessInformation();
+		pi.setExitValue(0);
+		
+		CommandLineConnector cli = mock ( CommandLineConnector.class );
 		
 		String cmdPUBLIC[] = new String[]{
 				"convert",
@@ -233,14 +241,20 @@ public class PublishImageConversionStrategyTest {
 					"-composite",
 					Path.makeFile(dataPath,"dip/public/target/filename.jpg").getAbsolutePath()
 		};		
-		when(cli.execute(cmdPUBLIC)).thenReturn(true);
+		when(cli.runCmdSynchronously(cmdPUBLIC)).thenReturn(pi);
 		
 		String cmdINST[] = new String[]{
 				"convert",
 				Path.makeFile(dataPath,"a/filename.tif").getAbsolutePath(),
 				Path.makeFile(dataPath,"dip/institution/target/filename.jpg").getAbsolutePath()
 		};
-		when(cli.execute(cmdINST)).thenReturn(true);
+		when(cli.runCmdSynchronously(cmdINST)).thenReturn(pi);
+		
+		String cmdIdentify[] = new String[] {
+				"identify", "-format", "%w", Path.makeFile(dataPath,"a/filename.tif").getAbsolutePath()
+		};
+		pi.setStdOut("520");
+		when(cli.runCmdSynchronously(cmdIdentify)).thenReturn(pi);
 		
 		PublishImageConversionStrategy s = new PublishImageConversionStrategy();
 		s.setCLIConnector( cli );
@@ -282,7 +296,7 @@ public class PublishImageConversionStrategyTest {
 		Object o = TESTHelper.setUpObject("123",new RelativePath(workAreaRootPath));
 		
 		PublishImageConversionStrategy s = new PublishImageConversionStrategy();
-		s.setCLIConnector( new SimplifiedCommandLineConnector() );
+		s.setCLIConnector( new CommandLineConnector() );
 		
 		DAFile sourceFile = new DAFile(o.getLatestPackage(),"a","filename.tif");
 		

@@ -39,7 +39,7 @@ public class CommandLineConnectorTests {
 	public void programCannotRun() {
 		
 		try {
-			CommandLineConnector.runCmdSynchronously(new String[] {"/hello"});
+			new CommandLineConnector().runCmdSynchronously(new String[] {"/hello"});
 			fail();
 		} catch (IOException expected) {}
 	}
@@ -47,7 +47,7 @@ public class CommandLineConnectorTests {
 	@Test 
 	public void validStringOnStdOut() {
 		try {
-			ProcessInformation pi=CommandLineConnector.runCmdSynchronously(new String[] {testfolder+"printhallo.sh"});
+			ProcessInformation pi= new CommandLineConnector().runCmdSynchronously(new String[] {testfolder+"printhallo.sh"});
 			assertEquals("hallo\n",pi.getStdOut());
 		} catch (IOException e) {
 			fail(e.getMessage());
@@ -57,7 +57,7 @@ public class CommandLineConnectorTests {
 	@Test
 	public void testTimeout() {
 		try {
-			CommandLineConnector.runCmdSynchronously(new String[] {testfolder+"sleep20seconds.sh"},1000);
+			new CommandLineConnector().runCmdSynchronously(new String[] {testfolder+"sleep20seconds.sh"},1000);
 			fail();
 		} catch (IOException expected) {}
 	}
@@ -65,7 +65,7 @@ public class CommandLineConnectorTests {
 	@Test
 	public void testWorkingDir() {
 		try {
-			CommandLineConnector.runCmdSynchronously(new String[] {"printhallo.sh"},new File(testfolder));
+			new CommandLineConnector().runCmdSynchronously(new String[] {"printhallo.sh"},new File(testfolder));
 			fail();
 		} catch (IOException e) {}
 	}

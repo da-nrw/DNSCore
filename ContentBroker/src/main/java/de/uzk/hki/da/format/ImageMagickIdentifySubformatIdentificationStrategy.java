@@ -27,7 +27,7 @@ public class ImageMagickIdentifySubformatIdentificationStrategy implements Forma
 					"identify","-format","'%C'",input};
 		ProcessInformation pi;
 		try {
-			pi = CommandLineConnector.runCmdSynchronously(cmd);
+			pi =  new CommandLineConnector().runCmdSynchronously(cmd);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -48,7 +48,7 @@ public class ImageMagickIdentifySubformatIdentificationStrategy implements Forma
 					"identify","--version"};
 		ProcessInformation pi;
 		try {
-			pi = CommandLineConnector.runCmdSynchronously(cmd);
+			pi =  new CommandLineConnector().runCmdSynchronously(cmd);
 		} catch (IOException e) {
 			return false;
 		}

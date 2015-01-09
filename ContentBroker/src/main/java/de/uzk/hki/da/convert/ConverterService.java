@@ -34,6 +34,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 
 /**
@@ -143,7 +144,7 @@ public class ConverterService {
 
 		ci.getSource_file().setPackage(object.getLatestPackage());
 		
-		strategy.setCLIConnector(new SimplifiedCommandLineConnector());
+		strategy.setCLIConnector(new CommandLineConnector());
 		strategy.setObject(object);
 		strategy.setParam(ci.getConversion_routine().getParams());
 		

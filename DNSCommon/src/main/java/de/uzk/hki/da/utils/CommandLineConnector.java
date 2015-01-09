@@ -145,7 +145,7 @@ public class CommandLineConnector {
 	 * @author Daniel M. de Oliveira
 	 * @throws IOException 
 	 */
-	public static ProcessInformation runCmdSynchronously(String cmd[]) throws IOException{
+	public ProcessInformation runCmdSynchronously(String cmd[]) throws IOException{
 		return runCmdSynchronously(cmd, null, 0);
 	}
 

@@ -39,8 +39,8 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
-import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -226,7 +226,7 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
 	 */
 	@Override
-	public void setCLIConnector(SimplifiedCommandLineConnector cliConnector) {}
+	public void setCLIConnector(CommandLineConnector cliConnector) {}
 	
 	
 	/* (non-Javadoc)
