@@ -20,7 +20,6 @@
 package de.uzk.hki.da.cb;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,15 +42,17 @@ import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommaSeparatedList;
 
 /**
- * Creates metadata files from extracted jhove output and puts them to the folder jhove_temp
- * below the objects data folder, which can be used in following actions. 
- * The metadata files are named by a md5 hash.
- * <br><br>
- * Example:
- * <ul>
- * <li>File: WorkAreaRootPath/work/csn/oid/data/repname/sub/a.jpg
- * <li>Jhove: WorkAreaRootPath/work/csn/oid/data/jhove_temp/repname/md5hashed(sub/a.jpg)
- * </ul>
+ * Executes a file format identification and technical metadata extraction 
+ * on all files of the object.
+ * 
+ * For every file a corresponding file which contains the metadata is created, 
+ * following this a naming convention shown by this example:
+ * 
+ * <br>
+ * <strong>File:</strong> WorkAreaRootPath/work/csn/oid/data/repname/sub/a.jpg
+ * <br>
+ * <strong>Metadata file:</strong> WorkAreaRootPath/work/csn/oid/data/jhove_temp/repname/md5hashed(sub/a.jpg)
+ * 
  * 
  * @author Daniel M. de Oliveira
  */
@@ -75,11 +76,22 @@ public class CheckFormatsAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException, SubsystemNotAvailableException {
 		
+		identifyFileFormatsOfAllFilesOfObject();
+		
+		// TODO remove. send via communicator. this should not be saved to object this early. 
+		object.setMost_recent_formats(getFormatsAsCommaSeparatedString(getNewestFilesOfObject()));
+		object.setMostRecentSecondaryAttributes(getSubformatsAsCommaSeparatedString(getNewestFilesOfObject()).toString());
+		object.setOriginal_formats(getFormatsOfAllOriginalFilesAsCommaSeparatedString(getAllFilesOfObject()));
+		
+		attachJhoveInfoToAllFiles(getAllFilesOfObject());
+		return true;
+	}
+	
+	private void identifyFileFormatsOfAllFilesOfObject() throws SubsystemNotAvailableException{
 		List<FileWithFileFormat> allFiles = new ArrayList<FileWithFileFormat>();
-		List<DAFile> allDAFiles = new ArrayList<DAFile>();
+		
 		for (Package p:object.getPackages()){
 				allFiles.addAll(p.getFiles());
-				allDAFiles.addAll(p.getFiles());
 		}
 		
 		try {
@@ -93,47 +105,8 @@ public class CheckFormatsAction extends AbstractAction {
 		for (FileWithFileFormat f:allFiles){
 			if (f.getFormatPUID()==null) throw new RuntimeException("file \""+f+"\" has no format puid");
 		}
-		attachJhoveInfoToAllFiles(allDAFiles);
-		
-		List<DAFile> newestFiles = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
-		
-		Set<String> mostRecentFormats = new HashSet<String>();
-		Set<String> mostRecentSecondaryAttributes = new HashSet<String>();
-		
-		for (DAFile f:newestFiles){
-			mostRecentFormats.add(f.getFormatPUID());
-			if (!f.getSubformatIdentifier().isEmpty())
-				mostRecentSecondaryAttributes.add(f.getSubformatIdentifier());
-			if (f.getSubformatIdentifier()==null||f.getSubformatIdentifier().isEmpty()) continue;
-		}
-		
-		// TODO remove. send via communicator. this should not be saved to object this early. 
-		object.setMost_recent_formats(new CommaSeparatedList(new ArrayList<String>(mostRecentFormats)).toString());
-		object.setMostRecentSecondaryAttributes(new CommaSeparatedList(new ArrayList<String>(mostRecentSecondaryAttributes)).toString());
-		object.setOriginal_formats(
-				new CommaSeparatedList(new ArrayList<String>(getPUIDsForAllRepAFiles(allDAFiles))).toString() // hack necessary again?
-						);
-		
-		return true;
 	}
-
-	@Override
-	public void rollback() throws Exception {
-		throw new NotImplementedException("No rollback implemented for this action");
-	}
-
-	/**
-	 * @return
-	 */
-	private Set<String> getPUIDsForAllRepAFiles(List<DAFile> allFiles) {
-		Set<String> originalFormatsSet = new HashSet<String>();
-		for (DAFile f : allFiles) {
-			if (f.getRep_name().endsWith("a"))
-				originalFormatsSet.add(f.getFormatPUID());
-		}
-		return originalFormatsSet;
-	}
-
+	
 	/**
 	 * Scans every file in files with jhove and sets the pathToJhoveOutput
 	 * property accordingly
@@ -154,6 +127,67 @@ public class CheckFormatsAction extends AbstractAction {
 			fileFormatFacade.extract(f.toRegularFile(), target);
 		}
 	}
+
+	private List<DAFile> getNewestFilesOfObject(){
+		return object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
+	}
+
+	private List<DAFile> getAllFilesOfObject(){
+		List<DAFile> allDAFiles = new ArrayList<DAFile>();
+		for (Package p:object.getPackages()){
+				allDAFiles.addAll(p.getFiles());
+		}
+		return allDAFiles;
+	}
+	
+	private String getFormatsAsCommaSeparatedString(List<DAFile> files) {
+		
+		Set<String> mostRecentFormats = new HashSet<String>();
+		for (DAFile f:files){
+			mostRecentFormats.add(f.getFormatPUID());
+		}
+		return new CommaSeparatedList(new ArrayList<String>(mostRecentFormats)).toString();
+	}
+	
+	
+	private String getSubformatsAsCommaSeparatedString(List<DAFile> files) {
+		
+		Set<String> mostRecentSubformats = new HashSet<String>();
+		for (DAFile f:files){
+			if (!f.getSubformatIdentifier().isEmpty())
+				mostRecentSubformats.add(f.getSubformatIdentifier());
+		}
+		return new CommaSeparatedList(new ArrayList<String>(mostRecentSubformats)).toString();
+	}
+
+	private String getFormatsOfAllOriginalFilesAsCommaSeparatedString(List<DAFile> files) {
+		return new CommaSeparatedList(new ArrayList<String>(getPUIDsForAllRepAFiles(files))).toString();
+	}
+	
+	
+	private Set<String> getPUIDsForAllRepAFiles(List<DAFile> allFiles) {
+		Set<String> originalFormatsSet = new HashSet<String>();
+		for (DAFile f : allFiles) {
+			if (f.getRep_name().endsWith("a"))
+				originalFormatsSet.add(f.getFormatPUID());
+		}
+		return originalFormatsSet;
+	}
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public void rollback() throws Exception {
+		throw new NotImplementedException("No rollback implemented for this action");
+	}
+
 
 	public FileFormatFacade getFileFormatFacade() {
 		return fileFormatFacade;
