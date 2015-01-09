@@ -103,6 +103,7 @@ public class IngestAreaScannerWorker extends Worker{
 	 * Inits the.
 	 */
 	public void init(){
+		logger.debug("Initialize  IngestScannerWorker ...");
 		if (!rootDir.exists()) throw new RuntimeException("path ingestAreaRootPath points to does not exist.");
 		
 		logger.info("Scanning staging area for contractor folders");

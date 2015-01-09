@@ -181,7 +181,7 @@ public class AcceptanceTestHelper {
 	 */
 	Job waitForJobToBeInStatus(String originalName,String status) 
 			throws InterruptedException{
-		System.out.println("waiting for job of object with original name "+originalName+" to be in status"+status);
+		System.out.println("waiting for job of object with original name "+originalName+" to be in status "+status);
 		
 		int waited_ms_total=0;
 		while (true){
@@ -234,7 +234,7 @@ public class AcceptanceTestHelper {
 	
 	
 	private int updateTimeout(int waited_ms_total,int timeout, int interval){
-		System.out.print("(total time: "+waited_ms_total+"ms / timeout: "+timeout+"ms) ");
+		System.out.println("(total time: "+waited_ms_total+"ms / timeout: "+timeout+"ms) ");
 		if (waited_ms_total>timeout) throw new RuntimeException(MSG_ERROR_WHEN_TIMEOUT_REACHED);
 		try {
 			Thread.sleep(interval);
@@ -242,7 +242,7 @@ public class AcceptanceTestHelper {
 		return waited_ms_total+=interval;
 	}
 	
-	private Job getJob(String originalName) {
+	public Job getJob(String originalName) {
 		Job job;
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
@@ -363,6 +363,7 @@ public class AcceptanceTestHelper {
 		File targetFile = Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getShort_name(),originalName+"."+ext);
 		
 		FileUtils.copyFile( sourceFile, targetFile );
+		System.out.println("finished");
 	}
 	
 	/**
@@ -383,8 +384,20 @@ public class AcceptanceTestHelper {
 			String ext,
 			String originalName) throws IOException{
 		
-		putPackageToIngestArea(sourcePackageName, ext, originalName);
-		waitForJobsToFinish(originalName);
+		System.out.println("ingest "+originalName);
+		try {
+			putPackageToIngestArea(sourcePackageName, ext, originalName);
+		} catch (Exception e) {
+			new Exception("Cannot put");
+		}
+
+		try {
+			System.out.println("Wait for jobs to finish ...");
+			waitForJobsToFinish(originalName);
+		} catch (Exception e) {
+			new Exception("=(");
+		}
+		
 		
 		Object object = fetchObjectFromDB(originalName);
 		if (object==null) throw new RuntimeException("cannot find object");
