@@ -27,7 +27,7 @@ elasticsearch.hosts=localhost
 elasticsearch.cluster=cluster_ci
 
 cb.serverSocketNumber=4455
-cb.implementation.grid=irodsGridFacade
-cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+cb.implementation.grid=federatedGridFacade
+cb.implementation.distributedConversion=irodsFederatedDistributedConversionAdapter
 cb.implementation.repository=fedoraRepositoryFacade
 cb.bin.python=/ci/python/python

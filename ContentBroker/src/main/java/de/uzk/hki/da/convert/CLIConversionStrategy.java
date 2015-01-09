@@ -37,6 +37,7 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -188,9 +189,8 @@ public class CLIConversionStrategy implements ConversionStrategy{
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
 	 */
 	@Override
-	public void setCLIConnector(SimplifiedCommandLineConnector cliConnector) {
-		this.cliConnector = cliConnector;
-		
+	public void setCLIConnector(CommandLineConnector cliConnector) {
+		this.cliConnector = new SimplifiedCommandLineConnector();
 	}
 
 	/* (non-Javadoc)

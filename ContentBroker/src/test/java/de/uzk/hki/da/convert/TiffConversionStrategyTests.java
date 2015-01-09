@@ -20,6 +20,8 @@ package de.uzk.hki.da.convert;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,8 +31,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.convert.TiffConversionStrategy;
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
@@ -39,7 +41,8 @@ import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
-
+import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.ProcessInformation;
 
 /**
  * The Class TiffConversionStrategyTests.
@@ -51,15 +54,13 @@ public class TiffConversionStrategyTests {
 	Path workAreaRootPath=Path.make(TC.TEST_ROOT_CONVERT,TIFF_CONVERSION_STRATEGY_TESTS);
 	Path contractorFolder=Path.make(workAreaRootPath,"work",C.TEST_USER_SHORT_NAME);
 	
-	TiffConversionStrategy cs = new TiffConversionStrategy();
-	
 	private Object o;
 
 	@Before
 	public void setUp(){
 		
 		o = TESTHelper.setUpObject("1", new RelativePath(workAreaRootPath));
-		cs.setObject(o);
+		
 		o.reattach();
 		DAFile f = new DAFile(o.getLatestPackage(),"rep+b","CCITT_1.TIF");
 		DAFile f2 = new DAFile(o.getLatestPackage(),"rep+b","CCITT_1.UNCOMPRESSED.TIF");
@@ -82,6 +83,10 @@ public class TiffConversionStrategyTests {
 	 */
 	@Test
 	public void testSubfolderCreation () {
+
+		TiffConversionStrategy cs = new TiffConversionStrategy();
+		cs.setObject(o);
+		cs.setCLIConnector(new CommandLineConnector());
 		ConversionInstruction ci = new ConversionInstruction();
 		ConversionRoutine cr = new ConversionRoutine();
 		ci.setConversion_routine(cr);
@@ -98,6 +103,10 @@ public class TiffConversionStrategyTests {
 	 */
 	@Test
 	public void testConversionCompressedTiff () {
+
+		TiffConversionStrategy cs = new TiffConversionStrategy();
+		cs.setCLIConnector(new CommandLineConnector());
+		cs.setObject(o);
 		ConversionInstruction ci = new ConversionInstruction();
 		ConversionRoutine cr = new ConversionRoutine();
 		ci.setConversion_routine(cr);
@@ -115,6 +124,10 @@ public class TiffConversionStrategyTests {
 	 */
 	@Test
 	public void testConversionUnCompressedTiff () {
+
+		TiffConversionStrategy cs = new TiffConversionStrategy();
+		cs.setObject(o);
+		cs.setCLIConnector(new CommandLineConnector());
 		ConversionInstruction ci = new ConversionInstruction();
 		ConversionRoutine cr = new ConversionRoutine();
 		ci.setConversion_routine(cr);
@@ -131,6 +144,10 @@ public class TiffConversionStrategyTests {
 	 */
 	@Test
 	public void testConversionProblematicTiff () {
+
+		TiffConversionStrategy cs = new TiffConversionStrategy();
+		cs.setObject(o);
+		cs.setCLIConnector(new CommandLineConnector());
 		ConversionInstruction ci = new ConversionInstruction();
 		ConversionRoutine cr = new ConversionRoutine();
 		ci.setConversion_routine(cr);
@@ -148,6 +165,10 @@ public class TiffConversionStrategyTests {
 	 */
 	@Test
 	public void testConversionBuggyTiff () {
+
+		TiffConversionStrategy cs = new TiffConversionStrategy();
+		cs.setObject(o);
+		cs.setCLIConnector(new CommandLineConnector());
 		ConversionInstruction ci = new ConversionInstruction();
 		ConversionRoutine cr = new ConversionRoutine();
 		ci.setConversion_routine(cr);
@@ -161,6 +182,52 @@ public class TiffConversionStrategyTests {
 			
 		}
 		assertFalse(new File(workAreaRootPath + "work/TEST/1/data/rep+b/notanytiff.tif").exists());
+		
+	}
+	
+	/**
+	 * Test if UserException is thrown on Tiff containing RichIPTC Images
+	 * depends on specific version of IM, therefore we need to mock the commandLine 
+	 * converter (not each IM behaves the same:-)
+	 * @throws IOException 
+	 */
+	@Test
+	public void testUserExceptionOnIPTCField() throws IOException {
+		
+		ProcessInformation pi = new ProcessInformation();
+		
+		pi.setExitValue(1);
+		
+		pi.setStdOut("");
+		pi.setStdErr("wrong data type 2 for \"RichTIFFIPTC\"; tag ignored");
+		CommandLineConnector cli = mock ( CommandLineConnector.class );
+		
+		String cmdIdentify[] = new String[] {
+				"identify", "-format", "'%C'", new File(workAreaRootPath + "/work/TEST/1/data/rep+a/0001_L.TIF").getAbsolutePath()
+		};
+
+		when(cli.runCmdSynchronously(cmdIdentify)).thenReturn(pi);
+		
+		TiffConversionStrategy cs = new TiffConversionStrategy();
+		cs.setCLIConnector(cli);
+		cs.setObject(o);
+		ConversionInstruction ci = new ConversionInstruction();
+		ConversionRoutine cr = new ConversionRoutine();
+		ci.setConversion_routine(cr);
+		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","0001_L.TIF"));
+		ci.setTarget_folder("");
+		try {
+		cs.convertFile(ci);
+		assertTrue(false);
+		} catch (UserException e) {
+			;
+			assertTrue(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assertFalse(true);
+			
+		}
+		assertFalse(new File(workAreaRootPath + "work/TEST/1/data/rep+b/0001_L.TIF").exists());
 		
 	}
 	

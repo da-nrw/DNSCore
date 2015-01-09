@@ -31,6 +31,8 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -39,7 +41,6 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
-import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.Utilities;
 
 
@@ -69,6 +70,8 @@ public class TiffConversionStrategy implements ConversionStrategy {
 	/** The object. */
 	private Object object;
 	
+	private CommandLineConnector cliConnector;
+	
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#convertFile(de.uzk.hki.da.model.ConversionInstruction)
 	 */
@@ -87,7 +90,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 		logger.info("Executing conversion command: {}", commandAsArray);
 		ProcessInformation pi;
 		try {
-			pi = CommandLineConnector.runCmdSynchronously( commandAsArray );
+			pi = cliConnector.runCmdSynchronously( commandAsArray );
 		} catch (IOException e1) {
 			throw new RuntimeException(e1);
 		}
@@ -155,14 +158,16 @@ public class TiffConversionStrategy implements ConversionStrategy {
 		String[] cmd = new String []{
 					"identify","-format","'%C'",input};
 		ProcessInformation pi;
+		System.out.println(input);
 		try {
-			pi = CommandLineConnector.runCmdSynchronously(cmd);
+			pi = cliConnector.runCmdSynchronously(cmd);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		if (pi.getExitValue()!=0){
 			logger.error("recieved exit code " + pi.getExitValue());
-			throw new RuntimeException("Stderr: "+pi.getStdErr());
+			parseStdErrAndThrowAdaquateEx(pi.getStdErr());
+			
 		}
 		String compression = pi.getStdOut().trim();
 		if (compression.length()>0) 
@@ -171,7 +176,20 @@ public class TiffConversionStrategy implements ConversionStrategy {
 		return compression;
 		
 	}
+	
+	/**
+	 * Parses StdErr and throws corresponding Error
+	 * @author Jens Peters
+	 * @param errorCode
+	 * @throws Exception
+	 */
 
+	private void parseStdErrAndThrowAdaquateEx(String stdErr) {
+		if (stdErr.indexOf("RichTIFFIPTC")>=0) {
+			throw new UserException(UserExceptionId.WRONG_DATA_TYPE_IPTC, "Stderr: "+ stdErr);
+		} else throw new RuntimeException("Stderr: "+ stdErr);
+	}
+	
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setParam(java.lang.String)
 	 */
@@ -196,7 +214,10 @@ public class TiffConversionStrategy implements ConversionStrategy {
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setCLIConnector(de.uzk.hki.da.convert.CLIConnector)
 	 */
 	@Override
-	public void setCLIConnector(SimplifiedCommandLineConnector cliConnector) {}
+	public void setCLIConnector(CommandLineConnector cliConnector) {
+		this.cliConnector = cliConnector;
+		
+	}
 
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#setObject(de.uzk.hki.da.model.Object)

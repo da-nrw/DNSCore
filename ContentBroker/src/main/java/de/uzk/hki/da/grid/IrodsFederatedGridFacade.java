@@ -53,6 +53,8 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	public boolean put(File file, String gridPath , StoragePolicy sp) throws IOException {
 		boolean ret = false;
 		ret = super.put(file, gridPath, sp);
+		if (!gridPath.startsWith("/")) 
+			gridPath = "/" + gridPath;
 		gridPath = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + gridPath;
 		irodsSystemConnector.connect();
 		if (sp.getForbiddenNodes()!=null && !sp.getForbiddenNodes().isEmpty()) irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(gridPath, "FORBIDDEN_NODES", String.valueOf(sp));

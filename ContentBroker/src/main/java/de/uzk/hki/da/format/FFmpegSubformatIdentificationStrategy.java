@@ -15,7 +15,7 @@ public class FFmpegSubformatIdentificationStrategy implements FormatIdentificati
 	@Override
 	public String identify(File f) throws IOException {
 
-		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {"ffmpeg","-i",f.toString()});
+		ProcessInformation pi = new CommandLineConnector().runCmdSynchronously(new String[] {"ffmpeg","-i",f.toString()});
 		String ffmpegOutput = pi.getStdErr();
 		System.out.println("ffmpegOutput:"+ffmpegOutput);
 		Pattern MY_PATTERN = Pattern.compile(".*Stream.*Video:\\s([a-z0-9]+)[,\\s].*");
@@ -31,7 +31,7 @@ public class FFmpegSubformatIdentificationStrategy implements FormatIdentificati
 	public boolean healthCheck() {
 		ProcessInformation pi;
 		try {
-			pi = CommandLineConnector.runCmdSynchronously(new String[] {"ffmpeg","-version"});
+			pi =  new CommandLineConnector().runCmdSynchronously(new String[] {"ffmpeg","-version"});
 		} catch (IOException e) {
 			return false;
 		}

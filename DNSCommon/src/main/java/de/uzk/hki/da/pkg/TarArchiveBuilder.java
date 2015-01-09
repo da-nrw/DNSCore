@@ -48,7 +48,7 @@ public class TarArchiveBuilder implements ArchiveBuilder {
 	public void unarchiveFolder(File srcTar, File destFolder)
 	throws Exception{
 		
-		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[]{
+		ProcessInformation pi =  new CommandLineConnector().runCmdSynchronously(new String[]{
 				"/bin/tar","xf",
 				 srcTar.getAbsolutePath(),
 				"-C",
@@ -74,7 +74,7 @@ public class TarArchiveBuilder implements ArchiveBuilder {
 		if (includeFolder)
 		{
 			String parent = srcFile.getParentFile().getAbsolutePath();
-			ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[]{
+			ProcessInformation pi = new CommandLineConnector().runCmdSynchronously(new String[]{
 					"/bin/tar",
 					"-C",
 					parent,
@@ -94,7 +94,7 @@ public class TarArchiveBuilder implements ArchiveBuilder {
 		else
 		{
 			String folder = srcFile.getAbsolutePath();
-			ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[]{
+			ProcessInformation pi = new CommandLineConnector().runCmdSynchronously(new String[]{
 					"/bin/tar",
 					"-C",
 					folder,
