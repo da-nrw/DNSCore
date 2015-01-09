@@ -44,37 +44,38 @@ class QueueUtils {
 	String createJob( daweb3.Object object, status, responsibleNodeName, additionalQuestion) {
 		if (object == null) throw new IllegalArgumentException ( "Object is not valid" )
 		if (responsibleNodeName == null) throw new IllegalArgumentException("responsibleNodeName must not be null")
-		object.object_state = 50
+		object.setObject_state(50)
 
-		log.debug "object.user.shortName: " + object.user.shortName
-		log.debug "session.user.shortName: " + object.user.shortName
-		
+		log.debug "Create job object.user.shortName: " + object.user.shortName
+	
 		def list = QueueEntry.findByObjAndStatus(object, status)
 		if (list != null) throw new RuntimeException ("Bereits angefordert.");
 		
 		def job = new QueueEntry()
-		job.status = status
+		job.setStatus(status)
 		job.setObj(object);
 		if (additionalQuestion!=null || additionalQuestion!= "")
-		job.setQuestion(additionalQuestion)
-		job.created = Math.round(new Date().getTime()/1000L)
-		job.modified = Math.round(new Date().getTime()/1000L)
+			job.setQuestion(additionalQuestion)
+			
+		job.setCreated(String.valueOf(Math.round(new Date().getTime()/1000L)))
+		job.setModified(String.valueOf(Math.round(new Date().getTime()/1000L)))
 		
 		job.setInitialNode(responsibleNodeName)
 		
 					
 		def errorMsg = ""
-		if( !object.save() ) {
-			
+		if( !object.save() ) {	
 			object.errors.each { errorMsg += it }
+			log.error "Saving object failed " + errorMsg
 			throw new Exception(errorMsg)
 		}
 		errorMsg = ""
 		if( !job.save()  ) {
-			
 			job.errors.each { errorMsg += it }
+			log.error "Saving job failed " + errorMsg
 			throw new Exception(errorMsg)
 		}
+		
 	}
 	String createJob( daweb3.Object object, status, responsibleNodeName) {
 		return createJob(object,status,responsibleNodeName, "" )

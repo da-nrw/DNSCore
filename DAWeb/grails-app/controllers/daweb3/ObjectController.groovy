@@ -202,8 +202,9 @@ class ObjectController {
 					
 				} else {
 					try {
-					
-					CbNode cbn = CbNode.get(grailsApplication.config.localNode.id)						
+					String lnid = grailsApplication.config.localNode.id
+					log.debug("Create Retrieval job on node id: " + lnid)
+					CbNode cbn = CbNode.get(lnid)					
 					qu.createJob( object ,"900", cbn.getName()) 
 					result.msg = "Objekt ${object.urn} erfolgreich angefordert."
 					result.success = true

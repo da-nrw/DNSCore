@@ -18,10 +18,6 @@ modules = {
     	dependsOn 'jqueryui'
     	resource url: 'js/jquery.ui.message.min.js'
     }
-    idroplite {
-    	resource url: 'js/idroplite.js'
-    }
-
 	
 	
 }
