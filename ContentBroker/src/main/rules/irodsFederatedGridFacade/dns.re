@@ -4,8 +4,8 @@
 # LVR InfoKom 2014
 # This file is published under the GPL v3 
 #  DA-NRW Software Suite
-#   Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
-#   Universität zu Köln, 2014 LVR InfoKom
+#   Copyright (C)
+#   2015 LVR InfoKom
 # 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -325,6 +325,7 @@ acFederateToZones(*coll,*dao,*destResc,*zones,*successZones,*min_copies) {
 	*err=0
 	*successZones=""
 	*chksum="X"
+	acLog("Federating *coll/*dao")
 	acGetOrigChecksum("*coll/*dao",*chksum)		
 	foreach(*zones){
 		if (*ok < *min_copies) {
@@ -490,6 +491,7 @@ acGetUsedSpaceOnResc(*resc,*byte,*coll) {
         foreach(*lc) {
                 msiGetValByKey(*lc,"DATA_SIZE",*out);
         }
+	if (*out=="") { *out=0 }
 	writeLine("stdout","RESC *resc *out B")
         *byte=*out
 }
