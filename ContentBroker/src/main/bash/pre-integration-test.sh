@@ -145,9 +145,8 @@ rm $INSTALL_PATH/ContentBroker_stop.sh
 
 
 install $INSTALL_PATH $BEANS
-# TODO 1. really needed on a ci machine? 2. duplication with installer?
-cp src/main/bash/ffmpeg.sh.fake $INSTALL_PATH/ffmpeg.sh
-
+#
+#
 cp $INSTALL_PATH/conf/config.properties conf/
 
 startContentBroker $INSTALL_PATH $1
