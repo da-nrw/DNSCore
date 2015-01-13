@@ -88,6 +88,7 @@ acGetNumberOfCopies(*homeDao,*numberOfCopies){
 			foreach(*zones){
                         	msiGetValByKey(*zones,"ZONE_NAME",*zone);
 				*destColl="/*zone/federated*homeDao"
+				acLog("Check existence at *destColl")
 				*err=errorcode(msiObjStat(*destColl,*out));
 				if (*err==0 ) {
            			*numberOfCopies=*numberOfCopies+1;
@@ -325,6 +326,7 @@ acFederateToZones(*coll,*dao,*destResc,*zones,*successZones,*min_copies) {
 	*err=0
 	*successZones=""
 	*chksum="X"
+	
 	acLog("Federating *coll/*dao")
 	acGetOrigChecksum("*coll/*dao",*chksum)		
 	foreach(*zones){
@@ -407,7 +409,7 @@ acGetHostsOrderedByDataStoredAsc(*servers, *rg,*forbiddenNodes) {
                         *ls="*zone,*mbyte;"
                 })
 		if (*err<0) {
-			acLog("recieved Error code *err on remotely determining free space")
+			acLog("recieved Error code *err on remotely determining free space on *hosts")
 		}
         }
 	*servers=list()

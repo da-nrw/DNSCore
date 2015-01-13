@@ -19,7 +19,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 federateService {
-	delay("<PLUSET>1m</PLUSET><EF>REPEAT FOREVER</EF>") {
+	delay("<PLUSET>1m</PLUSET><EF>1m</EF>") {
 	acLog("---started Federation Service---");
 	msiExecStrCondQuery("SELECT DATA_NAME, COLL_NAME, META_DATA_ATTR_NAME, META_DATA_ATTR_VALUE where COLL_NAME like '/*homezone/aip/%' and META_DATA_ATTR_NAME = 'FEDERATED' and META_DATA_ATTR_VALUE = '0'",*colls)
 	foreach(*colls) {
@@ -78,5 +78,6 @@ federateService {
 	acLog("---Ended Federation Service---");
 }
 }
-INPUT *destResc=$"lza", *homezone=$"krz", *min_copies=$3
+INPUT *destResc=$"lza", *homezone=$"lvr", *min_copies=$3
 OUTPUT ruleExecOut
+
