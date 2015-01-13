@@ -31,6 +31,7 @@ public class ContentBrokerWorker extends Worker{
 			if(action != null) {
 				logger.debug("executing... "+action.getName());
 				getTaskExecutor().execute(action);
+				
 			}
 		} catch (TaskRejectedException e) {
 			logger.warn("Task rejected!",e);

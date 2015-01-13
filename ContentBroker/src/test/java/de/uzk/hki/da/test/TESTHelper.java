@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package de.uzk.hki.da.test;
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;

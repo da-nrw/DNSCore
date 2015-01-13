@@ -10,7 +10,7 @@
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
           
 	<bean id="IngestUnpackAction" class="de.uzk.hki.da.cb.UnpackAction"
-		scope="prototype">
+		scope="prototype" destroy-method="cleanUp">
 		<property name="startStatus" value="110" />
 		<property name="endStatus" value="120" />
 		<property name="name" value="IngestUnpackAction" />

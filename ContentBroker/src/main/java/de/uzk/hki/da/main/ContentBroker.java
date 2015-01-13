@@ -93,6 +93,7 @@ public class ContentBroker {
 
 		if ((args.length>0)&&(args[0].equals("createSchema"))){
 			HibernateUtil.createSchema("conf/hibernateCentralDB.cfg.xml");
+			System.exit(0);
 		}
 		
 		if ((args.length>0)&&(args[0].equals("diagnostics"))){
@@ -123,6 +124,7 @@ public class ContentBroker {
 			HibernateUtil.init("conf/hibernateCentralDB.cfg.xml");
 		} catch (Exception e) {
 			logger.error("Exception in main!",e);
+			System.exit(1);
 		}
 		
 		logger.info("Setting up Spring application context ...");

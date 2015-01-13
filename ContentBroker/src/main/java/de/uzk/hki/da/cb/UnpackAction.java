@@ -418,6 +418,16 @@ public class UnpackAction extends AbstractAction {
 	}
 
 	public void setIngestGate(IngestGate ingestGate) {
+
+		
+		
 		this.ingestGate = ingestGate;
+	}
+	
+	
+	
+	
+	public void cleanUp() {
+		System.out.println("clean up "+this.getClass().getName());
 	}
 }

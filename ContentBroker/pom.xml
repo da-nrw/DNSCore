@@ -412,17 +412,23 @@
 		</dependency>
 
 		
+		
+		
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>3.5.4-Final</version>
+			<artifactId>hibernate-core</artifactId>
+			<version>4.3.8.Final</version>
 			<exclusions>
-				<exclusion>
+			<exclusion>
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-api</artifactId>
 				</exclusion>
-			</exclusions>
+				</exclusions>
 		</dependency>
+		
+		
+		
+		
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
@@ -442,7 +448,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.0.0.Final</version>
+			<version>4.3.8.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>

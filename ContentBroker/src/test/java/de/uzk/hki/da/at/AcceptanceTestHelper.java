@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.grid.GridFacade;

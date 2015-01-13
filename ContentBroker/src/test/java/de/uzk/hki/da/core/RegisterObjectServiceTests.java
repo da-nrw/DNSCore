@@ -24,7 +24,7 @@ import static org.junit.Assert.fail;
 
 import java.util.Date;
 
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

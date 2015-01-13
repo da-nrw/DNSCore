@@ -21,7 +21,7 @@ package de.uzk.hki.da.model;
 
 import java.util.List;
 
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 
 import de.uzk.hki.da.service.HibernateUtil;
 
