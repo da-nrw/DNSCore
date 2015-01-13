@@ -27,7 +27,6 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.CommandLineConnector;
-import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 
 
 /**

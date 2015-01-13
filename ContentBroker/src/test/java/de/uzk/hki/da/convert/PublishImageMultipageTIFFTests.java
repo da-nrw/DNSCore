@@ -1,7 +1,6 @@
 package de.uzk.hki.da.convert;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

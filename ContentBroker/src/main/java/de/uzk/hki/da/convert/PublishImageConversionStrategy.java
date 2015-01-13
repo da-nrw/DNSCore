@@ -44,7 +44,6 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
-import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.Utilities;
 
 

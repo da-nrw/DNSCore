@@ -35,7 +35,6 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
-import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 
 /**
  * Helps converting files based on lists of ConversionInstructions.
