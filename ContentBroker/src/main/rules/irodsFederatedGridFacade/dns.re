@@ -486,7 +486,9 @@ acPrintSyncResults(*dao,*syncs,*min_copies) {
 # Determines the used space in Bytes per collection and resc_name 
 # INPUT resc_name the resource name
 # OUTPUT bytes used
+# Author: Jens Peters
 # INPUT Collection name
+
 acGetUsedSpaceOnResc(*resc,*byte,*coll) {
 	*out=0
         msiExecStrCondQuery("SELECT sum(DATA_SIZE) where COLL_NAME like '%/*coll/%' and RESC_NAME = '*resc' ",*lc)
