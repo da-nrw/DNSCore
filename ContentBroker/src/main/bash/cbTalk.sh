@@ -25,4 +25,4 @@ then
 fi
 
 echo "launched CBTalk on $SERVER with command $COMMAND"
-java -cp ContentBroker.jar de.uzk.hki.da.core.ControllerClient $SERVER $COMMAND $QUEUE
+java -cp ContentBroker.jar de.uzk.hki.da.main.ControllerClient $SERVER $COMMAND $QUEUE
