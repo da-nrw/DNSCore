@@ -21,6 +21,8 @@ package de.uzk.hki.da.core;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.List;
+import java.util.Set;
 
 import javax.mail.MessagingException;
 
@@ -28,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -149,6 +152,32 @@ public class MailContents {
 			"Identifier: " + obj.getIdentifier() + "\n" +
 			"URN: " + obj.getUrn();
 		}
+		
+		logger.debug(subject);
+		logger.debug("");
+		logger.debug(msg);
+		
+		try {
+			Mail.sendAMail(preservationSystem.getAdmin().getEmailAddress(), obj.getContractor().getEmailAddress(), subject, msg);
+		} catch (MessagingException e) {
+			logger.error("Sending email reciept for " + obj.getIdentifier() + " failed",e);
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * @author Polina Gubaidullina
+	 * Sends Email to the User
+	 */
+	public boolean missingReferences(Object obj, List<String> missingReferences){
+		checkObject(obj);
+		
+		String subject = "[DA-NRW] Fehlende Referenzen in den Metadaten des Objekts " + obj.getIdentifier();
+		String msg = "Ihr archiviertes Objekt mit dem Identifier " + obj.getIdentifier() + " und der URN " + obj.getUrn() +
+					" ist nicht konsistent. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
+					+ missingReferences+". Die Verarbeitung findet dennoch statt.";
 		
 		logger.debug(subject);
 		logger.debug("");

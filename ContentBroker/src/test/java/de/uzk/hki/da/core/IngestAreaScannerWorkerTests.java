@@ -42,6 +42,7 @@ public class IngestAreaScannerWorkerTests {
 
 	String basePath = "src/test/resources/core/IngestAreaScannerWorker/";
 	String ingestAreaRootPath = basePath+"ingest/";
+
 	private static User user1;
 	private static User user2;
 	
@@ -55,7 +56,9 @@ public class IngestAreaScannerWorkerTests {
 		user2 = new User(); user2.setShort_name("USER2"); session.save(user2);
 		session.getTransaction().commit();
 		session.close();
+	
 	}
+
 	
 	@AfterClass
 	public static void tearDown() throws IOException{
@@ -79,4 +82,5 @@ public class IngestAreaScannerWorkerTests {
 		assertSame(contractorsWhoseFoldersGetScanned.size(),2); 
 		// which means a) ignoring USER3 because he is not in the DB and b) ignoring files below ingestAreaRootPath.
 	}
+	
 }

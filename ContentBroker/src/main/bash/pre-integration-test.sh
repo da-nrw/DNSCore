@@ -136,13 +136,21 @@ src/main/bash/populatetestdb.sh populate $1
 
 
 ## remove some stuff so that the installer can make the real files out of the template files again
+<<<<<<< HEAD
+rm $INSTALL_PATH/conf/beans.xml
+rm $INSTALL_PATH/conf/config.properties
+rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
+rm $INSTALL_PATH/conf/logback.xml
+rm $INSTALL_PATH/ContentBroker_start.sh
+rm $INSTALL_PATH/ContentBroker_stop.sh
+rm $INSTALL_PATH/log/contentbroker.log
+> $INSTALL_PATH/log/contentbroker.log
 rm $INSTALL_PATH/conf/beans.xml > /dev/null
 rm $INSTALL_PATH/conf/config.properties > /dev/null
 rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml > /dev/null
 rm $INSTALL_PATH/conf/logback.xml > /dev/null
 rm $INSTALL_PATH/ContentBroker_start.sh > /dev/null
 rm $INSTALL_PATH/ContentBroker_stop.sh > /dev/null
-
 
 install $INSTALL_PATH $BEANS
 sed -i "s/INFO/DEBUG/g" $INSTALL_PATH/conf/logback.xml

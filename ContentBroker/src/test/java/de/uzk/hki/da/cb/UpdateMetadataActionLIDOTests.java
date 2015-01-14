@@ -2,6 +2,8 @@ package de.uzk.hki.da.cb;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -28,8 +30,10 @@ import de.uzk.hki.da.format.MimeTypeDetectionService;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
@@ -45,6 +49,9 @@ public class UpdateMetadataActionLIDOTests {
 	private Event event1;
 	private Event event2;
 	private Object object;
+	private PreservationSystem pSystem;
+	private Node n;
+	private DAFile f5;
 	
 	@BeforeClass
 	public static void mockDca() throws IOException {
@@ -54,8 +61,23 @@ public class UpdateMetadataActionLIDOTests {
 	
 	@Before
 	public void setUp() throws IOException {
-		PreservationSystem pSystem = new PreservationSystem();
+		
+		pSystem = new PreservationSystem();
+		pSystem.setId(1);
+		pSystem.setMinRepls(0);
+		User psadmin = new User();
+		psadmin.setShort_name("TEST_PSADMIN");
+		psadmin.setEmailAddress("noreply");
+		pSystem.setAdmin(psadmin);
 		pSystem.setUrisFile("http://data.danrw.de/file");
+		
+		n = new Node();
+		n.setName("testnode");
+		n.setAdmin(psadmin);
+		pSystem.getNodes().add(n);
+		
+		action.setLocalNode(n);
+		action.setPSystem(pSystem);
 		
 		object = TESTHelper.setUpObject("42",workAreaRootPathPath);
 
@@ -82,6 +104,10 @@ public class UpdateMetadataActionLIDOTests {
 		event2.setSource_file(new DAFile(object.getLatestPackage(),_1_A_REP,"LVR_DFG-Alltagskultur_0000050178.tif"));
 		event2.setTarget_file(new DAFile(object.getLatestPackage(),_1_B_REP,"renamed0000050178.tif"));
 		event2.setType("CONVERT");
+		
+		f5 = new DAFile(object.getLatestPackage(),_1_A_REP,"lvr_dfg-alltagskultur_0000050178.tif");
+		de.uzk.hki.da.model.Document doc5 = new de.uzk.hki.da.model.Document(f5);
+		object.addDocument(doc5);
 		
 		object.getLatestPackage().getEvents().add(event1);
 		object.getLatestPackage().getEvents().add(event2);
@@ -125,6 +151,23 @@ public class UpdateMetadataActionLIDOTests {
 		assertEquals("http://data.danrw.de/file/42/renamed0000050177.tif", getLIDOURL(doc));
 		
 	}
+	
+//	@Test
+//	public void upperLowerCaseMismatch() throws IOException, JDOMException, ParserConfigurationException, SAXException {
+//		
+//		event2.setSource_file(f5);
+//		
+//		try{
+//			action.setObject(object);
+//			action.implementation();
+//			fail();
+//		} catch(Error e){
+//			System.out.println(e.getMessage());
+//			assertTrue(e.getMessage().equals(
+//					"1 unreferenced file(s) have been converted! Missing reference(s) to [lvr_dfg-alltagskultur_0000050178.tif]. "
+//					+ "Executed conversions: {[1+a]/[lvr_dfg-alltagskultur_0000050178.tif]=[1+b]/[renamed0000050178.tif]}"));
+//		}
+//	}
 		
 	private String getLIDOURL(Document doc){
 		
