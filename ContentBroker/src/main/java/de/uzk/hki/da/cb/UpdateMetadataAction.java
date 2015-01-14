@@ -178,9 +178,12 @@ public class UpdateMetadataAction extends AbstractAction {
 						for(DAFile sourceFile : unreferencedConvertedFiles.keySet()) {
 							missingReferences.add(sourceFile.getRelative_path());
 						}
-						new MailContents(preservationSystem,localNode).missingReferences(object, missingReferences);
-						throw new Error(missingReferences.size()+" unreferenced file(s) have been converted! Missing reference(s) for "+missingReferences+
+						logger.error(missingReferences.size()+" unreferenced file(s) have been converted! Missing reference(s) to "+missingReferences+
 								". Executed conversions: "+unreferencedConvertedFiles);
+//						Nur für die LZA, also beim nur beim ersten Update!
+						if(!presMode) {
+							new MailContents(preservationSystem,localNode).missingReferences(object, missingReferences);
+						}
 					}
 				}
 			}

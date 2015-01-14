@@ -142,7 +142,8 @@ rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
 rm $INSTALL_PATH/conf/logback.xml
 rm $INSTALL_PATH/ContentBroker_start.sh
 rm $INSTALL_PATH/ContentBroker_stop.sh
-
+rm $INSTALL_PATH/log/contentbroker.log
+> $INSTALL_PATH/log/contentbroker.log
 
 install $INSTALL_PATH $BEANS
 #
