@@ -332,15 +332,6 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		<!-- 
-		<extensions>
-      		<extension>
-        		<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ssh</artifactId>
-				<version>2.6</version>
-      		</extension>
-    	</extensions>
-		-->
 	</build>
 
 	<dependencies>
@@ -370,7 +361,7 @@
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
-			<version>2.3.1</version>
+			<version>2.3.2</version>
 		</dependency>
 	
 		<dependency>
@@ -433,17 +424,6 @@
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>1.0.0.GA</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>4.1.0.Final</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>

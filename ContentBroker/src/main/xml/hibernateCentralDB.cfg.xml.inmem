@@ -23,7 +23,7 @@
 <!-- Display and format all executed SQL to stdout -->
 <!--<property name="show_sql">false</property>-->
 <property name="format_sql">true</property>
-<property name="hbm2ddl.auto">create</property>
+<property name="hbm2ddl.auto">create-drop</property>
  
 <mapping class="de.uzk.hki.da.model.ConversionInstruction"/>
 <mapping class="de.uzk.hki.da.model.ConversionRoutine"/>

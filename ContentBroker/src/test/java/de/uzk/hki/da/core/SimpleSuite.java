@@ -160,7 +160,8 @@ import de.uzk.hki.da.util.PathTest;
 	SubformatScanServiceTests.class,
 	RestartIngestWorkflowActionTests.class,
 	PostRetrievalActionTest.class,
-	XMLSubformatIdentifierTests.class
+	XMLSubformatIdentifierTests.class,
+	IngestAreaScannerWorkerTests.class
 })
 public class SimpleSuite {
 

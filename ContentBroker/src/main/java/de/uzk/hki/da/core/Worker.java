@@ -31,7 +31,7 @@ import org.slf4j.MDC;
  */
 public abstract class Worker {
 
-	protected static final Logger logger = LoggerFactory.getLogger("de.uzk.hki.da.core");
+	protected final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 	protected static final String WORKER_ID = "worker_id";
 	
 	public abstract void scheduleTaskImplementation();

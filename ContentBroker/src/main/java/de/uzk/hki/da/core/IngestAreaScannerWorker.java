@@ -24,8 +24,10 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
@@ -90,9 +92,6 @@ public class IngestAreaScannerWorker extends Worker{
 	/** The register object service. */
 	private RegisterObjectService registerObjectService;
 	
-	/** The root dir. */
-	File rootDir = null; 
-	
 	/** The files. */
 	private Map<String,Long> files = new HashMap<String,Long>();
 	
@@ -100,25 +99,32 @@ public class IngestAreaScannerWorker extends Worker{
 	private List<User> contractors = new ArrayList<User>();
 
 	/**
-	 * Inits the.
+	 * @return The contractors whose ingest folder will get scanned for files. 
 	 */
-	public void init(){
-		if (!rootDir.exists()) throw new RuntimeException("path ingestAreaRootPath points to does not exist.");
+	public Set<User> init(){
+		if (ingestAreaRootPath==null) throw new IllegalStateException("ingestAreaRootPath must not be null");
+		if (!new File(ingestAreaRootPath).exists()) throw new RuntimeException("No file or directory: "+ingestAreaRootPath);
 		
 		logger.info("Scanning staging area for contractor folders");
-		String children[] = rootDir.list();
+		String children[] = new File(ingestAreaRootPath).list();
 
 		for (int i=0;i<children.length;i++){
-		
-			logger.info(children[i]);
+			if (! new File(ingestAreaRootPath+children[i]).isDirectory())
+				continue;
 			
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
 			User contractor = getContractor(session, children[i]);
 			session.close();
+			if (contractor==null) {
+				logger.warn("Cannot find in ObjectDB: "+children[i]+" -  will not scan files for contractor");
+				continue;
+			}else
+				logger.info("Will scan files for contractor: "+children[i]);
 			
 			contractors.add(contractor);
 		}
+		return new HashSet<User>(contractors);
 	}
 	
 	@Override
@@ -211,8 +217,6 @@ public class IngestAreaScannerWorker extends Worker{
 	 * @return null if no contractor for short name could be found
 	 */
 	private User getContractor(Session session, String contractorShortName) {
-		logger.trace("CentralDatabaseDAO.getContractor(\"" + contractorShortName + "\")");
-	
 		@SuppressWarnings("rawtypes")
 		List list;	
 		list = session.createQuery("from User where short_name=?1")
@@ -337,7 +341,6 @@ public class IngestAreaScannerWorker extends Worker{
 		ingestAreaRootPath = Utilities.slashize(ingestAreaRootPath);
 		
 		this.ingestAreaRootPath = ingestAreaRootPath;
-		rootDir = new File(ingestAreaRootPath);
 	}
 	
 	/**
