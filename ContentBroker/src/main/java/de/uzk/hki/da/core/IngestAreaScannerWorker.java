@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
@@ -90,9 +91,6 @@ public class IngestAreaScannerWorker extends Worker{
 	/** The register object service. */
 	private RegisterObjectService registerObjectService;
 	
-	/** The root dir. */
-	File rootDir = null; 
-	
 	/** The files. */
 	private Map<String,Long> files = new HashMap<String,Long>();
 	
@@ -102,11 +100,12 @@ public class IngestAreaScannerWorker extends Worker{
 	/**
 	 * Inits the.
 	 */
-	public void init(){
-		if (!rootDir.exists()) throw new RuntimeException("path ingestAreaRootPath points to does not exist.");
+	public Set<String> init(){
+		if (ingestAreaRootPath==null) throw new IllegalStateException("ingestAreaRootPath must not be null");
+		if (!new File(ingestAreaRootPath).exists()) throw new RuntimeException("No file or directory: "+ingestAreaRootPath);
 		
 		logger.info("Scanning staging area for contractor folders");
-		String children[] = rootDir.list();
+		String children[] = new File(ingestAreaRootPath).list();
 
 		for (int i=0;i<children.length;i++){
 		
@@ -119,6 +118,7 @@ public class IngestAreaScannerWorker extends Worker{
 			
 			contractors.add(contractor);
 		}
+		return null;
 	}
 	
 	@Override
@@ -337,7 +337,6 @@ public class IngestAreaScannerWorker extends Worker{
 		ingestAreaRootPath = Utilities.slashize(ingestAreaRootPath);
 		
 		this.ingestAreaRootPath = ingestAreaRootPath;
-		rootDir = new File(ingestAreaRootPath);
 	}
 	
 	/**
