@@ -19,7 +19,9 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -47,24 +49,15 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-
-
-
-
-
-
-
-
-
-
-import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.format.MimeTypeDetectionService;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
@@ -86,6 +79,8 @@ public class UpdateMetadataActionEADTests {
 	private static final UpdateMetadataAction action = new UpdateMetadataAction();
 	private Event event;
 	private Object object;
+	private PreservationSystem pSystem;
+	private Node n;
 	DAFile f4;
 	
 	@BeforeClass
@@ -96,8 +91,23 @@ public class UpdateMetadataActionEADTests {
 	
 	@Before
 	public void setUp() throws IOException, JDOMException, ParserConfigurationException, SAXException{
-		PreservationSystem pSystem = new PreservationSystem();
+		
+		pSystem = new PreservationSystem();
+		pSystem.setId(1);
+		pSystem.setMinRepls(0);
+		User psadmin = new User();
+		psadmin.setShort_name("TEST_PSADMIN");
+		psadmin.setEmailAddress("noreply");
+		pSystem.setAdmin(psadmin);
 		pSystem.setUrisFile("http://data.danrw.de/file");
+		
+		n = new Node();
+		n.setName("testnode");
+		n.setAdmin(psadmin);
+		pSystem.getNodes().add(n);
+		
+		action.setLocalNode(n);
+		action.setPSystem(pSystem);
 		
 		object = TESTHelper.setUpObject("42",workAreaRootPathPath);
 
@@ -150,6 +160,7 @@ public class UpdateMetadataActionEADTests {
 		action.setJob(job);
 		action.setPSystem(pSystem);
 		action.setPresMode(true);
+	
 	}
 	
 	@After 
@@ -199,8 +210,11 @@ public class UpdateMetadataActionEADTests {
 			action.setObject(object);
 			action.implementation();
 			fail();
-		}catch(UserException e){
-			assertTrue(e.getMessage().contains("but only"));
+		} catch(Error e){
+			System.out.println(e.getMessage());
+			assertTrue(e.getMessage().equals(
+					"1 unreferenced file(s) have been converted! Missing reference(s) to [alvr_Nr_4547_Aufn_067.tif]. "
+					+ "Executed conversions: {[1+a]/[alvr_Nr_4547_Aufn_067.tif]=[1+b]/[renamed067.tif]}"));
 		}
 	}
 	

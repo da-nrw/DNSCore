@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -49,8 +50,7 @@ import org.jdom.output.XMLOutputter;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.format.MimeTypeDetectionService;
 import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.metadata.LidoMetadataStructure;
@@ -63,6 +63,7 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.core.MailContents;
 
 /**
  * Performs updates to metadata files that are necessary
@@ -74,8 +75,10 @@ import de.uzk.hki.da.util.Path;
  * 
  * Special actions are taken for XMP and EAD metadata.
  * 
+ * @author Polina Gubaidullina
  * @author Sebastian Cuy
  * @author Daniel M. de Oliveira
+ *
  *
  */
 public class UpdateMetadataAction extends AbstractAction {
@@ -92,6 +95,8 @@ public class UpdateMetadataAction extends AbstractAction {
 	private String absUrlPrefix = "";
 	private File metadataFile;
 	private HashMap<String, Integer> fileName_convertRewritingCount;
+	private Map<DAFile,DAFile> unreferencedConvertedFiles;
+	
 
 	@Override
 	public void checkActionSpecificConfiguration() throws ConfigurationException {
@@ -140,7 +145,7 @@ public class UpdateMetadataAction extends AbstractAction {
 				
 				logger.debug("Update path in "+repName+".");
 				Map<DAFile,DAFile> replacements = generateReplacementsMap(object.getLatestPackage(), repName, absUrlPrefix);
-				int expectedReplacements = replacements.size();
+				unreferencedConvertedFiles = replacements;
 				
 				if(representationExists(repName)) {
 					metadataFile = Path.makeFile(object.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName);
@@ -162,16 +167,20 @@ public class UpdateMetadataAction extends AbstractAction {
 				
 				if(!replacements.isEmpty() && replacements!=null) {
 					for(String sourceHref : fileName_convertRewritingCount.keySet()) {
-					logger.debug((Integer)fileName_convertRewritingCount.get(sourceHref)+" convert replacements for "+sourceHref);
+						logger.debug((Integer)fileName_convertRewritingCount.get(sourceHref)+" convert replacements for "+sourceHref);
 					}
 					
 					int actualReplacements = fileName_convertRewritingCount.size();
 					logger.debug("Successfully replaced references for "+actualReplacements+" files!");
-						
-					if(expectedReplacements!=actualReplacements) {
-						throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,
-								expectedReplacements+" file(s) have been converted and for each one an entry in a METS file has to be updated. "+
-						"but only "+actualReplacements+" replacements could be done.", metadataFile.getAbsolutePath(), new Exception());
+					
+					if(!unreferencedConvertedFiles.isEmpty() || unreferencedConvertedFiles!=null) {
+						List<String> missingReferences = new ArrayList<String>();
+						for(DAFile sourceFile : unreferencedConvertedFiles.keySet()) {
+							missingReferences.add(sourceFile.getRelative_path());
+						}
+						new MailContents(preservationSystem,localNode).missingReferences(object, missingReferences);
+						throw new Error(missingReferences.size()+" unreferenced file(s) have been converted! Missing reference(s) for "+missingReferences+
+								". Executed conversions: "+unreferencedConvertedFiles);
 					}
 				}
 			}
@@ -283,8 +292,11 @@ public class UpdateMetadataAction extends AbstractAction {
 					File targetFile = targetDAFile.toRegularFile();
 					targetPath = href.replace(file.getName(), targetFile.getName());
 					addRefToFileNameConvertRewritingCountMap(href);
+					if(unreferencedConvertedFiles.get(sourceFile)!=null) {
+						unreferencedConvertedFiles.remove(sourceFile);
+					}
 					break;
-				}
+				} 
 			}
 			if(!fileExists) {
 				logger.debug("File not found! Search in previouos packages ...");
@@ -329,7 +341,10 @@ public class UpdateMetadataAction extends AbstractAction {
 					targetDAFile = (DAFile)entry.getValue();
 					File targetFile = targetDAFile.toRegularFile();
 					targetPath = href.replace(file.getName(), targetFile.getName());
-					addRefToFileNameConvertRewritingCountMap(href);		
+					addRefToFileNameConvertRewritingCountMap(href);
+					if(unreferencedConvertedFiles.get(sourceFile)!=null) {
+						unreferencedConvertedFiles.remove(sourceFile);
+					}
 					break;
 				}
 			}
