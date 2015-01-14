@@ -73,19 +73,19 @@
 
 
         
-    <logger name="de.uzk.hki.da"  additivity="false" level="DEBUG">
+    <logger name="de.uzk.hki.da"  additivity="false" level="INFO">
     	<appender-ref ref="OBJECT" />
 	</logger>
-	<logger name="de.uzk.hki.da.cb"  additivity="false" level="DEBUG">
+	<logger name="de.uzk.hki.da.cb"  additivity="false" level="INFO">
     	<appender-ref ref="OBJECT" />
 	</logger>
-	<logger name="de.uzk.hki.da.core"  additivity="false" level="DEBUG">
+	<logger name="de.uzk.hki.da.core"  additivity="false" level="INFO">
 		<appender-ref ref="WORKER" />
 	</logger>
-	<logger name="de.uzk.hki.da.action" additivity="false" level="DEBUG">
+	<logger name="de.uzk.hki.da.action" additivity="false" level="INFO">
 		<appender-ref ref="WORKER" />
 	</logger>
-	<logger name="de.uzk.hki.da.service" additivity="false" level="DEBUG">
+	<logger name="de.uzk.hki.da.service" additivity="false" level="INFO">
 		<appender-ref ref="WORKER" />
 	</logger>
 	<logger name="org.hibernate" level="INFO">
@@ -93,10 +93,10 @@
 	</logger>
 	
 	
-	<logger name="de.uzk.hki.da.grid"  additivity="false" level="DEBUG">
+	<logger name="de.uzk.hki.da.grid"  additivity="false" level="INFO">
 		<appender-ref ref="GRID" />
 	</logger>
-	<logger name="de.uzk.hki.da.util.TimeStampLogging"  additivity="false" level="DEBUG">
+	<logger name="de.uzk.hki.da.util.TimeStampLogging"  additivity="false" level="INFO">
 		<appender-ref ref="TIME_STAMP_ACTIONS_LOG" />
 	</logger>
 	      
