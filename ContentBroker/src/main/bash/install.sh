@@ -100,29 +100,33 @@ fi
 ##### logback.xml #######
 ##### ContentBroker_stop.sh #######
 ##### ContentBroker_start.sh #######
+echo "INSTALL -Copying template file logback.xml.template to $INSTALLATION_TARGET/conf/logback.xml.template"
 cp -f logback.xml.template $INSTALLATION_TARGET/conf # overwrite existing template file.
 if  [ ! -e $INSTALLATION_TARGET/conf/logback.xml ]
 then 
+	echo "INSTALL - No logback.xml present in $INSTALLATION_TARGET." 
+	echo "INSTALL - Installer will use logback.xml.template to create a logback.xml file."
 	cp -f $INSTALLATION_TARGET/conf/logback.xml.template $INSTALLATION_TARGET/conf/logback.xml
 fi
+echo "INSTALL -Copying template file ContentBroker_stop.sh.template to $INSTALLATION_TARGET/conf/ContentBroker_stop.sh.template"
 cp -f ContentBroker_stop.sh.template $INSTALLATION_TARGET/ # overwrite existing template file.
 if  [ ! -e $INSTALLATION_TARGET/ContentBroker_stop.sh ]
 then 
+	echo "INSTALL - No ContentBroker_stop.sh present in $INSTALLATION_TARGET."
+	echo "INSTALL - Installer will use ContentBroker_stop.sh.template to create a ContentBroker_stop.sh file."
 	cp -f $INSTALLATION_TARGET/ContentBroker_stop.sh.template $INSTALLATION_TARGET/ContentBroker_stop.sh
 fi
+echo "INSTALL - Copying template file ContentBroker_start.sh.template to $INSTALLATION_TARGET/conf/ContentBroker_start.sh.template"
 cp -f ContentBroker_start.sh.template $INSTALLATION_TARGET/ # overwrite existing template file.
 if  [ ! -e $INSTALLATION_TARGET/ContentBroker_start.sh ]
-then 
+then
+	echo "INSTALL - No ContentBroker_start.sh present in $INSTALLATION_TARGET."
+	echo "INSTALL - Installer will use ContentBroker_stop.sh.template to create a ContentBroker_start.sh file." 
 	cp -f $INSTALLATION_TARGET/ContentBroker_start.sh.template $INSTALLATION_TARGET/ContentBroker_start.sh
 fi
 #############################
 
 
-if [ -e handBrake.sh ]
-then
-	echo copy new handBrake
-	cp -f handBrake.sh $INSTALLATION_TARGET/
-fi
 cd $INSTALLATION_TARGET
 ./configure.sh
 exit 0

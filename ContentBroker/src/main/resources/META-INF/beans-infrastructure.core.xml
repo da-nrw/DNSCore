@@ -53,7 +53,7 @@
     <amq:broker id="mqBroker" useShutdownHook="true" useJmx="false" deleteAllMessagesOnStartup="true" start="false">
     <amq:systemUsage>
     <amq:systemUsage>
-    	<amq:memoryUsage><amq:memoryUsage limit="16Mb" /></amq:memoryUsage>
+    	<amq:memoryUsage><amq:memoryUsage limit="4Mb" /></amq:memoryUsage>
     	<amq:tempUsage><amq:tempUsage limit="100Mb" /></amq:tempUsage>
     	<amq:storeUsage><amq:storeUsage limit="1GB" /></amq:storeUsage>
    	</amq:systemUsage>
