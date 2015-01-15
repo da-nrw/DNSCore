@@ -329,6 +329,7 @@ acFederateToZones(*coll,*dao,*destResc,*zones,*successZones,*min_copies) {
 	
 	acLog("Federating *coll/*dao")
 	acGetOrigChecksum("*coll/*dao",*chksum)		
+	acLog(*chksum)
 	foreach(*zones){
 		if (*ok < *min_copies) {
             		*zone=elem(*zones,0)
@@ -400,13 +401,14 @@ acGetHostsOrderedByDataStoredAsc(*servers, *rg,*forbiddenNodes) {
         *mbyte=0
         *hosts=list()
         acGetHostsOnGrid(*hosts,*forbiddenNodes)
-        foreach(*hosts) {
+	acLog(*hosts)
+	foreach(*hosts) {
                 *err=errorcode(remote(*hosts,"null") {
                         *resource=""
                         acGetRescForRg(*rg,*resource)
                         acGetUsedSpaceOnResc(*resource,*mbyte,"aip")
                         acGetLocalZoneName(*zone)
-                        *ls="*zone,*mbyte;"
+                        *ls="*zone,*mbyte;*ls"
                 })
 		if (*err<0) {
 			acLog("recieved Error code *err on remotely determining free space on *hosts")
@@ -455,6 +457,25 @@ acFederateLeastLoaded(*coll,*dao,*destResc,*successZones,*forb,*min_copies) {
         acFederateToZones(*coll,*dao,*destResc,*zones,*successZones,*min_copies)
 }
 
+# Federate still outstanding federation copies 
+# to all connected zones except to ones we have already
+# copied to
+# Author: Jens Peters
+acFederateMissing(*coll,*dao,*destResc,*syncs,*min_copies) {
+		*zones=""
+		acGetHostsOrderedByDataStoredAsc(*zones,*destResc,*syncs)
+                *lis=list();
+                *syc=split(*syncs,",")
+                foreach(*syc) {
+                      *lis=cons(list("*syc","9999"),*lis)
+                }
+                #acLog("checking already synced Zones: *lis")
+                #acFederateToZones(*coll,*dao,*destResc,*lis,*successZonesAlready,*min_copies)
+                acLog("now synching to other Zones")
+                acFederateToZones(*coll,*dao,*destResc,*zones,*successZones,*min_copies)
+                *syncs="*syncs*successZones"
+}
+
 # Helper Function for Syncing results and stoing AVU Metadata to object
 # Final method to mark objects as correctly federated
 # INPUT dao The Data object
@@ -486,9 +507,7 @@ acPrintSyncResults(*dao,*syncs,*min_copies) {
 # Determines the used space in Bytes per collection and resc_name 
 # INPUT resc_name the resource name
 # OUTPUT bytes used
-# Author: Jens Peters
 # INPUT Collection name
-
 acGetUsedSpaceOnResc(*resc,*byte,*coll) {
 	*out=0
         msiExecStrCondQuery("SELECT sum(DATA_SIZE) where COLL_NAME like '%/*coll/%' and RESC_NAME = '*resc' ",*lc)
