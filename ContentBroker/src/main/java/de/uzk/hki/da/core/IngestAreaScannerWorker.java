@@ -196,7 +196,7 @@ public class IngestAreaScannerWorker extends Worker{
 		Job job = new Job();
 		job.setObject(object);
 		
-		job.setStatus("110");
+		job.setStatus(C.WORKFLOW_STATUS_START___INGEST_UNPACK_ACTION);
 		job.setResponsibleNodeName(node.getName());
 		job.setDate_created(String.valueOf(new Date().getTime()/1000L));
 	
