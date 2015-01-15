@@ -38,6 +38,7 @@
         <property name="workingResource" value="${localNode.workingResource}" />
         <property name="id" value="${localNode.id}" />
         <property name="replDestinations" value="${localNode.replDestinations}" />
+        <property name="logFolder" value="${localNode.logFolder:log}" />
    	</bean>
            
     <bean id="fakeDistributedConversionAdapter" class="de.uzk.hki.da.grid.FakeDistributedConversionAdapter"/>

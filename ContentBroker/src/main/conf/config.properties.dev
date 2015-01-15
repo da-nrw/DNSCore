@@ -5,6 +5,7 @@ localNode.gridCacheAreaRootPath=CONTENTBROKER_ROOT/storage/GridCacheArea
 localNode.workingResource=ciWorkingResource
 localNode.replDestinations=ciArchiveResourceGroup
 localNode.id=1
+localNode.logFolder=CONTENTBROKER_ROOT/log
 
 localNode.auditSleepFor=6000
 

@@ -76,6 +76,9 @@ public class Node{
 	
 	/** The dip resource. */
 	@Transient private String dipResource;
+	
+	/** The log area. */
+	@Transient private String logFolder;
 
 	/**
 	 * Instantiates a new node.
@@ -142,6 +145,25 @@ public class Node{
 	 */
 	public String getName() {
 		return name;
+	}
+	
+	/**
+	 * Sets the log folder.
+	 *
+	 * @param the log folder
+	 */
+	public void setLogFolder(String logFolder) {
+		this.logFolder = logFolder;
+	}
+	
+	
+	/**
+	 * Gets the log folder.
+	 *
+	 * @return the log folder
+	 */
+	public String getLogFolder() {
+		return logFolder;
 	}
 	
 	

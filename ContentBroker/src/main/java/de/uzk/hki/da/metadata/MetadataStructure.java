@@ -99,6 +99,7 @@ public abstract class MetadataStructure {
 				if(!docExists) {
 					logger.debug("There is no document "+fileName+"!");
 					logger.error("File "+ref+" does not exist.");
+					missingFiles.add(ref);
 				}
 			} catch (IOException e) {
 				logger.error("File "+ref+" does not exist.");

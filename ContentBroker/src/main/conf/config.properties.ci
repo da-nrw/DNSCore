@@ -19,6 +19,7 @@ localNode.gridCacheAreaRootPath=/ci/storage/GridCacheArea
 localNode.workingResource=ciWorkingResource
 localNode.replDestinations=ciArchiveResourceGroup
 localNode.id=1
+localNode.logFolder=/ci/log
 
 localNode.auditSleepFor=10000
 
