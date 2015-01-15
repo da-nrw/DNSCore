@@ -48,25 +48,14 @@ federateService {
 			if (strlen(*mc)>0 && int(*mc)>0) {
                                 *min_copies=int(*mc)
                         }
-
-			*sync=split(*syncs,",")
-			if (size(*sync)==0) {
+			if (strlen(*syncs)<=1) {
 				acLog("syncing for the first time")	
 				acFederateLeastLoaded(*srcColl,*dao,*destResc,*successZones,*forb,*min_copies)
 				*syncs=*successZones
 			} else {
+				acLog("trying to fulfill copy rule")
 				*syncs="*syncs*forb"
-				acGetHostsOrderedByDataStoredAsc(*zones,*destResc,*syncs)
-				*lis=list();
-				*syc=split(*syncs,",")
-				foreach(*syc) {
-					*lis=cons(list("*syc","9999"),*lis)
-				}
-				acLog("checking already synced Zones: *lis")
-				acFederateToZones(*srcColl,*dao,*destResc,*lis,*successZonesAlready,*min_copies)
-				acLog("now synching to other Zones")
-				acFederateToZones(*srcColl,*dao,*destResc,*zones,*successZones,*min_copies)
-                                *syncs="*syncs*successZones"
+				acFederateMissing(*srcColl,*dao,*destResc,*syncs,*min_copies) 
 			}
 			msiGetSystemTime(*hu,*bulk)
                         msiString2KeyValPair("SYNCHRONIZE_EVENT=*hu",*kvpaircs)
