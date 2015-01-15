@@ -177,7 +177,7 @@ public class MailContents {
 		String subject = "[DA-NRW] Fehlende Referenzen in den Metadaten des Objekts " + obj.getIdentifier();
 		String msg = "Ihr archiviertes Objekt mit dem Identifier " + obj.getIdentifier() + " und der URN " + obj.getUrn() +
 					" ist nicht konsistent. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
-					+ missingReferences+". Die Verarbeitung findet dennoch statt.";
+					+ missingReferences;
 		
 		logger.debug(subject);
 		logger.debug("");

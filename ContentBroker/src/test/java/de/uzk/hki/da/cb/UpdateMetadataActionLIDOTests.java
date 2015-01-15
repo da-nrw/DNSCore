@@ -2,8 +2,6 @@ package de.uzk.hki.da.cb;
 
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -48,10 +46,10 @@ public class UpdateMetadataActionLIDOTests {
 	private static final UpdateMetadataAction action = new UpdateMetadataAction();
 	private Event event1;
 	private Event event2;
+	private Event event3;
 	private Object object;
 	private PreservationSystem pSystem;
 	private Node n;
-	private DAFile f5;
 	
 	@BeforeClass
 	public static void mockDca() throws IOException {
@@ -105,12 +103,18 @@ public class UpdateMetadataActionLIDOTests {
 		event2.setTarget_file(new DAFile(object.getLatestPackage(),_1_B_REP,"renamed0000050178.tif"));
 		event2.setType("CONVERT");
 		
-		f5 = new DAFile(object.getLatestPackage(),_1_A_REP,"lvr_dfg-alltagskultur_0000050178.tif");
+		DAFile f5 = new DAFile(object.getLatestPackage(),_1_A_REP,"Test.tif");
 		de.uzk.hki.da.model.Document doc5 = new de.uzk.hki.da.model.Document(f5);
 		object.addDocument(doc5);
 		
+		event3 = new Event();
+		event3.setSource_file(new DAFile(object.getLatestPackage(),_1_A_REP,"lvr_dfg-alltagskultur_0000050178"));
+		event3.setTarget_file(new DAFile(object.getLatestPackage(),_1_B_REP,"renamed0000050178_1.tif"));
+		event3.setType("CONVERT");
+		
 		object.getLatestPackage().getEvents().add(event1);
 		object.getLatestPackage().getEvents().add(event2);
+		object.getLatestPackage().getEvents().add(event3);
 		
 		Job job = new Job(); job.setObject(object); job.setId(1);
 		object.setPackage_type("LIDO");
@@ -151,23 +155,6 @@ public class UpdateMetadataActionLIDOTests {
 		assertEquals("http://data.danrw.de/file/42/renamed0000050177.tif", getLIDOURL(doc));
 		
 	}
-	
-//	@Test
-//	public void upperLowerCaseMismatch() throws IOException, JDOMException, ParserConfigurationException, SAXException {
-//		
-//		event2.setSource_file(f5);
-//		
-//		try{
-//			action.setObject(object);
-//			action.implementation();
-//			fail();
-//		} catch(Error e){
-//			System.out.println(e.getMessage());
-//			assertTrue(e.getMessage().equals(
-//					"1 unreferenced file(s) have been converted! Missing reference(s) to [lvr_dfg-alltagskultur_0000050178.tif]. "
-//					+ "Executed conversions: {[1+a]/[lvr_dfg-alltagskultur_0000050178.tif]=[1+b]/[renamed0000050178.tif]}"));
-//		}
-//	}
 		
 	private String getLIDOURL(Document doc){
 		

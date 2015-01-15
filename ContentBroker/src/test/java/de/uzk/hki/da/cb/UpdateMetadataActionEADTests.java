@@ -201,22 +201,22 @@ public class UpdateMetadataActionEADTests {
 		}
 	}
 	
-//	@Test
-//	public void upperLowerCaseMismatch() throws IOException, JDOMException, ParserConfigurationException, SAXException {
-//		
-//		event.setSource_file(f4);
-//		
-//		try{
-//			action.setObject(object);
-//			action.implementation();
-//			fail();
-//		} catch(Error e){
-//			System.out.println(e.getMessage());
-//			assertTrue(e.getMessage().equals(
-//					"1 unreferenced file(s) have been converted! Missing reference(s) to [alvr_Nr_4547_Aufn_067.tif]. "
-//					+ "Executed conversions: {[1+a]/[alvr_Nr_4547_Aufn_067.tif]=[1+b]/[renamed067.tif]}"));
-//		}
-//	}
+	@Test
+	public void upperLowerCaseMismatch() throws IOException, JDOMException, ParserConfigurationException, SAXException {
+		
+		event.setSource_file(f4);
+		
+		try{
+			action.setObject(object);
+			action.implementation();
+			fail();
+		} catch(Error e){
+			System.out.println(e.getMessage());
+			assertTrue(e.getMessage().equals(
+					"1 unreferenced file(s) have been converted! Missing reference(s) to [alvr_Nr_4547_Aufn_067.tif]. "
+					+ "Executed conversions: {[1+a]/[alvr_Nr_4547_Aufn_067.tif]=[1+b]/[renamed067.tif]}"));
+		}
+	}
 	
 	private String getURL(Document doc){
 		
