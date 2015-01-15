@@ -142,9 +142,6 @@ rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml
 rm $INSTALL_PATH/conf/logback.xml
 rm $INSTALL_PATH/ContentBroker_start.sh
 rm $INSTALL_PATH/ContentBroker_stop.sh
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 rm $INSTALL_PATH/conf/beans.xml > /dev/null
 rm $INSTALL_PATH/conf/config.properties > /dev/null
 rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml > /dev/null
@@ -153,15 +150,6 @@ rm $INSTALL_PATH/ContentBroker_start.sh > /dev/null
 rm $INSTALL_PATH/ContentBroker_stop.sh > /dev/null
 m $INSTALL_PATH/log/contentbroker.log
 > $INSTALL_PATH/log/contentbroker.log
-=======
-
->>>>>>> parent of 3994129... New ATs: Unreferenced Files
-=======
-
->>>>>>> parent of 3994129... New ATs: Unreferenced Files
-=======
-
->>>>>>> parent of 3994129... New ATs: Unreferenced Files
 
 install $INSTALL_PATH $BEANS
 sed -i "s/INFO/DEBUG/g" $INSTALL_PATH/conf/logback.xml
