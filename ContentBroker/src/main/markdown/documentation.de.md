@@ -43,7 +43,7 @@ Hier befinden sich alle Dokus, die Grundkonzepte der Langzeitarchivierung im Kon
 * Das DNSCore Objektmodell - Referenzdokumentation ([deutsch](object_model.de.md) | [englisch](object_model.md))
 * SIP-Spezifikation ([deutsch](specification_sip.de.md) | [englisch](specification_sip.md))
 * DIP-Spezifikation ([englisch](specification_dip.md))
-* Dokumentation der Metadaten-Verarbeitung ([deutsch](2014-09-25_Metadaten_in_DA-NRW.pdf) | [englisch](specification_publication_metadata.md))
+* Dokumentation der Metadaten-Verarbeitung ([deutsch](2015-01-14_Metadaten_in_DA-NRW.pdf) | [englisch](specification_publication_metadata.md))
 * DNSCore Feature Liste ([englisch](features.md))
 * Delta Feature - Beschreibung ([english](the_delta_feature.md))
 
