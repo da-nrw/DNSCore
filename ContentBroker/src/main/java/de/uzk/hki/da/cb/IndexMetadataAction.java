@@ -84,8 +84,9 @@ public class IndexMetadataAction extends AbstractAction {
 		}
 		String edmContent = IOUtils.toString(metadataStream, "UTF-8");
 		logger.debug("will index metadata in "+adjustIndexName(indexName));
-		getRepositoryFacade().indexMetadata(adjustIndexName(indexName), object.getIdentifier(), edmContent);		
 		
+
+		getRepositoryFacade().indexMetadata(adjustIndexName(indexName), object.getIdentifier(), edmContent);		
 		return true;
 	}
 
@@ -94,7 +95,9 @@ public class IndexMetadataAction extends AbstractAction {
 	
 	@Override
 	public void rollback() throws Exception {
-		throw new NotImplementedException();
+		// not implemented. Retry is possible. The last point where the action fails
+		// is when indexMetadata gets called. So we know when the action fails the 
+		// metadata has not been indexed properly.
 	}
 
 

@@ -128,6 +128,7 @@ public class C {
 	public static final String WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED = "1";
 	public static final String WORKFLOW_STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED = "3";
 	public static final String WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION = "150";
+	public static final String WORKFLOW_STATUS_START___INGEST_UNPACK_ACTION = "110";
 	public static final String WORKFLOW_STATUS_START___FETCH_PIPS_ACTION = "540";
 	public static final String WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION = "645";
 	
