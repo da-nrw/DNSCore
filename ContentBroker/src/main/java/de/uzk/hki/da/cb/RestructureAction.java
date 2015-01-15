@@ -26,7 +26,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
@@ -43,6 +42,7 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Utilities;
 
 /**
  * <li>Creates a new Representation and copies the contents of the submission into it.
@@ -78,59 +78,73 @@ public class RestructureAction extends AbstractAction{
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException, SubsystemNotAvailableException {
 		
+		RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot());
+		if (object.isDelta()
+				&&(! checkIfOnWorkAreaIsSpaceAvailabeForDeltaPackages(retrievePackagesHelper)))
+			return false;
+		
+		
+		
 		FileUtils.moveDirectory(object.getDataPath().toFile(), 
 				new File(object.getPath()+"/sipData"));
 		object.getDataPath().toFile().mkdirs();
 
-		if (object.isDelta()) {
-			
-			RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot());
-
-			try {
-				if (!getIngestGate().canHandle(retrievePackagesHelper.getObjectSize(object, job ))){
-					JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,object.getIdentifier() + " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
-					super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
-					logger.info("no disk space available at working resource. will not fetch new data.");
-					return false;
-				}
-			} catch (IOException e) {
-				throw new RuntimeException("Failed to determine object size for object " + object.getIdentifier(), e);
-			}
-			
-			logger.info("object already exists. Moving existing packages to work area.");
-			try {
-				retrievePackagesHelper.loadPackages(object, false);
-				logger.info("Packages of object \""+object.getIdentifier()+
-						"\" are now available on cache resource at: " + Path.make(object.getPath(),"existingAIPs"));
-				FileUtils.copyFile(Path.makeFile(object.getPath("newest"),"premis.xml"),
-						Path.makeFile(object.getDataPath(),"premis_old.xml"));
-			} catch (IOException e) {
-				throw new RuntimeException("error while trying to get existing packages from lza area",e);
-			}
-		}
-		
-		String repName;
 		try {
-			repName = transduceDateFolderContentsToNewRep(object.getPath().toString());
+			job.setRep_name(transduceDateFolderContentsToNewRep(object.getPath().toString()));
 		} catch (IOException e) {		
 			throw new RuntimeException("problems during creating new representation",e);
 		}
 		
-		object.getLatestPackage().scanRepRecursively(repName+"a");
 		
-		job.setRep_name(repName);
+		if (object.isDelta())
+			retrieveDeltaPackages(retrievePackagesHelper);
+		
+		
+		object.getLatestPackage().scanRepRecursively(job.getRep_name()+"a");
 		object.reattach();
 		
 		determineFileFormats();
 		dgs.addDocumentsToObject(object);
 		
-		logger.debug("Create new b representation "+repName+"b");
-		Path.makeFile(object.getDataPath(), repName+"b").mkdir();
-
+		logger.debug("Create new b representation "+job.getRep_name()+"b");
+		Path.makeFile(object.getDataPath(), job.getRep_name()+"b").mkdir();
 		Path.makeFile(object.getDataPath(),"jhove_temp").mkdirs();
 		return true;
 	}
 
+	
+	
+	private boolean checkIfOnWorkAreaIsSpaceAvailabeForDeltaPackages(RetrievePackagesHelper retrievePackagesHelper) {
+		try {
+			if (!getIngestGate().canHandle(retrievePackagesHelper.getObjectSize(object, job ))){
+				JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,object.getIdentifier() 
+						+ " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
+				super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
+				logger.info("no disk space available at working resource. will not fetch new data.");
+				return false;
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to determine object size for object " + object.getIdentifier(), e);
+		}
+		return true;
+	}
+	
+	private void retrieveDeltaPackages(RetrievePackagesHelper retrievePackagesHelper) {
+		
+		logger.info("object already exists. Moving existing packages to work area.");
+		try {
+			retrievePackagesHelper.loadPackages(object, false);
+			logger.info("Packages of object \""+object.getIdentifier()+
+					"\" are now available on cache resource at: " + Path.make(object.getPath(),"existingAIPs"));
+			FileUtils.copyFile(Path.makeFile(object.getPath("newest"),"premis.xml"),
+					Path.makeFile(object.getDataPath(),"premis_old.xml"));
+		} catch (IOException e) {
+			throw new RuntimeException("error while trying to get existing packages from lza area",e);
+		}
+	}
+	
+	
+	
 	
 	private void determineFileFormats() throws FileNotFoundException, SubsystemNotAvailableException {
 		List<FileWithFileFormat> scannedFiles = null;
@@ -149,7 +163,18 @@ public class RestructureAction extends AbstractAction{
 	
 	@Override
 	public void rollback() throws Exception {
-		throw new NotImplementedException("rollback for this action not implemented yet");
+		if (! Utilities.isNotSet(job.getRep_name())) { // since we know that the SIP content has been moved successfully when rep_name is set.
+			FileUtils.moveDirectory(
+				Path.makeFile( object.getDataPath(), job.getRep_name()+"a" ), 
+				Path.makeFile( object.getPath(), "data_" ));
+			
+			FileUtils.deleteDirectory( object.getDataPath().toFile() );
+			
+			FileUtils.moveDirectory(
+				Path.makeFile( object.getPath(), "data_" ), 
+				Path.makeFile( object.getDataPath() ));
+		} else 
+			throw new RuntimeException("REP NAME WAS NOT SET YET. ROLLBACK IS NOT POSSIBLE. MANUAL CLEANUP REQUIRED.");
 	}
 
 	
@@ -190,7 +215,7 @@ public class RestructureAction extends AbstractAction{
 	public GridFacade getGridRoot() {
 		return gridRoot;
 	}
-
+ 
 	public void setGridRoot(GridFacade gridRoot) {
 		this.gridRoot = gridRoot;
 	}

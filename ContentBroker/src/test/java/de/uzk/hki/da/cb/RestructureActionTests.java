@@ -19,6 +19,7 @@
 
 package de.uzk.hki.da.cb;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
@@ -43,30 +44,32 @@ import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.format.StandardFileFormatFacade;
 import de.uzk.hki.da.grid.FakeGridFacade;
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class RestructureActionTests {
+public class RestructureActionTests extends ConcreteActionUnitTest{
+
+	@ActionUnderTest
+	RestructureAction action = new RestructureAction();
 
 	private static final String IDENTIFIER = "identifier";
 	private static final Path WORK_AREA_ROOT = Path.make(TC.TEST_ROOT_CB,"RestructureActionTests");
 	private static final Path TEST_CONTRACTOR_WORK_FOLDER = Path.make(WORK_AREA_ROOT,"work","TEST");
 	private static final Path DATA_FOLDER = Path.make(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,"data");
-	private RestructureAction action;
-	private Job job;
-	private Object object;
+	
 	private FakeGridFacade grid;
-	private Package p1;
+	private IngestGate gate;
+	private Package pkg1;
+	private Package pkg2;
+	
+	
 	
 	
 	@SuppressWarnings("unchecked")
@@ -74,92 +77,146 @@ public class RestructureActionTests {
 	public void setUp() throws IOException, FileFormatException{
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		
-		PreservationSystem pSystem = new PreservationSystem();
-		
 		FileUtils.copyDirectory(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER+"_"), 
 				Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER));
-		Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,"loadedAIPs").mkdirs();
-
-		object = TESTHelper.setUpObject(IDENTIFIER, WORK_AREA_ROOT);
-		p1 = object.getLatestPackage();
 		
-		
-		job = new Job();
-		job.setObject(object);
+		o.getTransientNodeRef().setWorkAreaRootPath(WORK_AREA_ROOT);
 		
 		grid = new FakeGridFacade();
 		grid.setGridCacheAreaRootPath("/tmp/");
-		
-		action = new RestructureAction();
 		action.setGridRoot(grid);
-		action.setObject(object);
-		action.setJob(job);
-		action.setPSystem(pSystem);
 		
-		IngestGate gate = mock(IngestGate.class);
-		when(gate.canHandle((Long)anyObject())).thenReturn(true);
-		action.setIngestGate(gate);
 
+		gate = mock(IngestGate.class);
+		when(gate.canHandle((Long)anyObject())).thenReturn(true);
+		JmsMessageServiceHandler jms = mock(JmsMessageServiceHandler.class);
+		action.setJmsMessageServiceHandler(jms);
+		action.setIngestGate(gate);
+		
+		
 		FileFormatFacade ffs = mock(StandardFileFormatFacade.class);
 	
-		DAFile file = new DAFile(object.getLatestPackage(),"rep+a","140849.tif");
+		DAFile file = new DAFile(o.getLatestPackage(),"rep+a","140849.tif");
 		file.setFormatPUID("fmt/353");
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>(); files.add(file);
 		when( ffs.identify((List<FileWithFileFormat>)anyObject()) ).thenReturn(files);
 		action.setFileFormatFacade(ffs);
-		
-		
 	}
+	
+	
+	
 	
 	@After
 	public void tearDown(){
 		FileUtils.deleteQuietly(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER));
 	}
 	
+	
+	
+	
 	@Test
-	public void test() throws FileNotFoundException, UserException, IOException, RepositoryException, SubsystemNotAvailableException{
+	public void implementation() throws FileNotFoundException, UserException, IOException, RepositoryException, SubsystemNotAvailableException{
 		
 		action.implementation();
 		
-		assertTrue(Path.makeFile(DATA_FOLDER,job.getRep_name()+"a").exists());
-		assertTrue(Path.makeFile(DATA_FOLDER,job.getRep_name()+"a","vda3.XML").exists());
+		assertTrue(Path.makeFile(DATA_FOLDER,j.getRep_name()+"a").exists());
+		assertTrue(Path.makeFile(DATA_FOLDER,j.getRep_name()+"a","vda3.XML").exists());
 		assertTrue(Path.makeFile(DATA_FOLDER,"jhove_temp").exists());
 		
-		assertTrue(p1.getFiles().contains(new DAFile(null,job.getRep_name()+"a","vda3.XML")));
+		assertTrue(o.getLatestPackage().getFiles().contains(new DAFile(o.getLatestPackage(),j.getRep_name()+"a","vda3.XML")));
 	}
+	
+	
+	
+	
+	@Test
+	public void rollbackToPreviousState() throws Exception {
+		
+		action.implementation();
+		action.rollback();
+		
+		assertTrue(dataFolderIsInOriginalState());
+		
+	}
+	
+	
+	@Test
+	public void dontMoveAnythingWhenNoSpaceForDeltaPackages() 
+			throws FileNotFoundException, UserException, IOException, RepositoryException, SubsystemNotAvailableException {
+
+		putAIPAndPrepareForDeltaIngest();
+		
+		when(gate.canHandle((Long)anyObject())).thenReturn(false);
+		assertFalse(action.implementation());
+		
+		assertTrue(dataFolderIsInOriginalState());
+	}
+	
 	
 	
 	@Test
 	public void testDelta() throws FileNotFoundException, UserException, IOException, RepositoryException, SubsystemNotAvailableException{
 		
-		grid.put(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,"identifier.pack_1.tar"), "TEST/identifier/identifier.pack_1.tar", null);
-		
-		Package p2 = new Package();
-		p2.setName("2");
-		object.getPackages().add(p2);
-		p2.setTransientBackRefToObject(object);
+		putAIPAndPrepareForDeltaIngest();
 		
 		action.implementation();
 		
-		assertTrue(Path.makeFile(DATA_FOLDER,job.getRep_name()+"a").exists());
-		assertTrue(Path.makeFile(DATA_FOLDER,job.getRep_name()+"a","vda3.XML").exists());
+		assertTrue(Path.makeFile(DATA_FOLDER,j.getRep_name()+"a").exists());
+		assertTrue(Path.makeFile(DATA_FOLDER,j.getRep_name()+"a","vda3.XML").exists());
 		assertTrue(Path.makeFile(DATA_FOLDER,"2014_09_12+11_32+a","premis.xml").exists());
 		assertTrue(Path.makeFile(DATA_FOLDER,"2014_09_12+11_32+b","premis.xml").exists());
 		assertTrue(Path.makeFile(DATA_FOLDER,"jhove_temp").exists());
 		
 		
-		for (Package p:object.getPackages()){
+		for (Package p:o.getPackages()){
 			System.out.println(p.getName());
 			for (DAFile f:p.getFiles())
 				System.out.println(":"+f);
 		}
-		assertTrue(p2.getFiles().contains(new DAFile(null,job.getRep_name()+"a","vda3.XML")));
-		assertTrue(p1.getFiles().contains(new DAFile(null,"2014_09_12+11_32+a","premis.xml")));
-		assertTrue(p1.getFiles().contains(new DAFile(null,"2014_09_12+11_32+b","premis.xml")));
-		assertTrue(p1.getFiles().contains(new DAFile(null,"2014_09_12+11_32+a","SIP-Builder Anleitung.pdf")));
+		assertTrue(pkg2.getFiles().contains(new DAFile(null,j.getRep_name()+"a","vda3.XML")));
+		assertTrue(pkg1.getFiles().contains(new DAFile(null,"2014_09_12+11_32+a","premis.xml")));
+		assertTrue(pkg1.getFiles().contains(new DAFile(null,"2014_09_12+11_32+b","premis.xml")));
+		assertTrue(pkg1.getFiles().contains(new DAFile(null,"2014_09_12+11_32+a","SIP-Builder Anleitung.pdf")));
 		
 	}
 	
+	
+	
+	
+	@Test
+	public void rollbackToPreviousStateWithDelta() throws Exception {
+		
+		putAIPAndPrepareForDeltaIngest();
+		
+		action.implementation();
+		action.rollback();
+		
+		assertTrue(dataFolderIsInOriginalState());
+	}
+
+
+
+
+	private void putAIPAndPrepareForDeltaIngest() throws IOException {
+		
+		grid.put(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,"identifier.pack_1.tar"), "TEST/identifier/identifier.pack_1.tar", null);
+		
+		pkg1 = o.getLatestPackage();
+		pkg2 = new Package();
+		pkg2.setName("2");
+		o.getPackages().add(pkg2);
+		pkg2.setTransientBackRefToObject(o);
+	}
+
+
+
+
+	private boolean dataFolderIsInOriginalState() {
+		if (! Path.makeFile(DATA_FOLDER,"vda3.XML").exists()) return false;
+		String files[] = Path.makeFile(DATA_FOLDER).list();
+		if (! (files.length==1)) return false;
+		return true;
+	}
 	
 	
 	
