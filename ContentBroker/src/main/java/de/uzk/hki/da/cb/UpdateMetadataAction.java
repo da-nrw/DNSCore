@@ -292,7 +292,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					break;
 				} 
 			}
-			if(!fileExists && object.isDelta()) {
+			if(!fileExists && object.isDelta() && !isPresMode()) {
 				logger.debug("File not found! Search in previouos packages ...");
 				List<String> referenceWithMimetype = getCorrReferencesAndMimetypeInDelta(href, "");
 				if(!referenceWithMimetype.isEmpty()) {
@@ -342,7 +342,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					break;
 				}
 			}
-			if(!fileExists && object.isDelta()) {
+			if(!fileExists && object.isDelta() && !isPresMode()) {
 				List<String> references = getCorrReferencesAndMimetypeInDelta(href, "");
 				if(!references.isEmpty() && references.get(0)!=null) {
 					targetPath = references.get(0);
