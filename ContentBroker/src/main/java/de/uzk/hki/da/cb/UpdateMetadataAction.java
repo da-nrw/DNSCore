@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -63,7 +62,6 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.core.MailContents;
 
 /**
  * Performs updates to metadata files that are necessary
