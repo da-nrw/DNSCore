@@ -76,7 +76,7 @@ the releases page, follow the source code link for the corresponding version and
 * [Controlling](administration-services.de.md) the application. Description of the non gui interfaces to the application.
 * config.properties - reference documentation (english](administration_config_properties_reference.de.md)).
 * beans.xml - reference documentation ([english](administration-beans.md))
-* Processing stages - reference documentation ([english](processing_stages.md)
+* Processing stages - reference documentation ([english](processing_stages.md))
 * The DNSCore installer script ([english](administration-the-installer.md)|[deutsch](administration-the-installer.de.md))
 * other interfaces - reference documentation ([english](administration-interfaces.md))
 * How to perfom a minimal installation of [DNSCore](installation_minimal.md).
