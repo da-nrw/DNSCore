@@ -97,7 +97,8 @@ public class JmsMessageServiceHandler {
 				}
 				consumer.close();
 				session.close();
-				connection.close();;
+				closeConnection();
+				
 			}catch (JMSException e1) {
 				logger.error("Error while connecting to ActiveMQ Broker " + e1.getCause());
 			} 

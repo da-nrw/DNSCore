@@ -19,7 +19,8 @@ package daweb3
 */
 /** 
  * The ContentBroker Node of DNS 
-@Author Andres Quast
+@Author Andres Quast, Jens Peters
+
 */
 class CbNode {
 
@@ -29,12 +30,12 @@ class CbNode {
 	static mapping = {
 		table 'nodes'
 		version false
+		contractors joinTable: [name: "nodes_contractors", key: 'node_id', column: 'contractor_user_id'] 
     }
-	
+	static hasMany = [contractors: User]
 	int id
 	String name
 	int urn_index
-	
 	String toString() {
 		return "$name"
 	}
