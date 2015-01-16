@@ -66,17 +66,17 @@ the releases page, follow the source code link for the corresponding version and
 * Format conversion with DNSCore ([german](operations_format_conversion.de.md))
 * format module ([english](format_module.md))
 * [click here](../../../../DAWeb/doc/contentBroker_administration.md) how to administer CB with DA-Web web user interface.
-* Job states: How to deal with jobs in error states ([deutsch](administration-troubleshooting_de.md) | [english] (administration-troubleshooting.md)).
+* Job states: How to deal with jobs in error states ([deutsch](administration-troubleshooting.de.md) | [english] (administration-troubleshooting.md)).
 * [clck here](audit.md) to get information how the AIP are being checked automatically.
 
 #### Setting up Environments with DNSCore<br>[Node administrators]
 
 ###### Basic configuration 
 
-* [Controlling](administration-services.md) the application. Description of the non gui interfaces to the application.
+* [Controlling](administration-services.de.md) the application. Description of the non gui interfaces to the application.
 * config.properties - reference documentation (english](administration_config_properties_reference.de.md)).
 * beans.xml - reference documentation ([english](administration-beans.md))
-* Processing stages - reference documentation ([english](processing_stages.md)
+* Processing stages - reference documentation ([english](processing_stages.md))
 * The DNSCore installer script ([english](administration-the-installer.md)|[deutsch](administration-the-installer.de.md))
 * other interfaces - reference documentation ([english](administration-interfaces.md))
 * How to perfom a minimal installation of [DNSCore](installation_minimal.md).
