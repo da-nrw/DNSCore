@@ -34,14 +34,16 @@ import org.junit.Test;
 
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.util.RelativePath;
 
 /**
  * @author Daniel M. de Oliveira
  */
 public class IngestAreaScannerWorkerTests {
 
-	String basePath = "src/test/resources/core/IngestAreaScannerWorker/";
-	String ingestAreaRootPath = basePath+"ingest/";
+	Path basePath = new RelativePath("src/test/resources/core/IngestAreaScannerWorker/");
+	Path ingestAreaRootPath = Path.make(basePath,"ingest");
 
 	private static User user1;
 	private static User user2;

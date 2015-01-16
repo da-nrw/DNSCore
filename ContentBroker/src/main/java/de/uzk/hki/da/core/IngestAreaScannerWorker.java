@@ -38,7 +38,7 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.HibernateUtil;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.util.Path;
 
 
 /**
@@ -83,8 +83,7 @@ public class IngestAreaScannerWorker extends Worker{
 	/** The min age. */
 	private int minAge; // required minimum age in milliseconds
 	
-	/** The ingest area root path. */
-	private String ingestAreaRootPath;
+	private Path ingestAreaRootPath;
 	
 	/** The local node name. */
 	private String localNodeId;
@@ -102,14 +101,17 @@ public class IngestAreaScannerWorker extends Worker{
 	 * @return The contractors whose ingest folder will get scanned for files. 
 	 */
 	public Set<User> init(){
-		if (ingestAreaRootPath==null) throw new IllegalStateException("ingestAreaRootPath must not be null");
-		if (!new File(ingestAreaRootPath).exists()) throw new RuntimeException("No file or directory: "+ingestAreaRootPath);
+		if ((ingestAreaRootPath==null)
+			||(ingestAreaRootPath.toString().isEmpty())) 
+			throw new IllegalStateException("ingestAreaRootPath must not set");
+		
+		if (! ingestAreaRootPath.toFile().exists()) throw new RuntimeException("No file or directory: "+ingestAreaRootPath);
 		
 		logger.info("Scanning staging area for contractor folders");
-		String children[] = new File(ingestAreaRootPath).list();
+		String children[] = ingestAreaRootPath.toFile().list();
 
 		for (int i=0;i<children.length;i++){
-			if (! new File(ingestAreaRootPath+children[i]).isDirectory())
+			if (! Path.makeFile(ingestAreaRootPath,children[i]).isDirectory())
 				continue;
 			
 			Session session = HibernateUtil.openSession();
@@ -245,7 +247,7 @@ public class IngestAreaScannerWorker extends Worker{
 	 */
 	private List<String> scanContractorFolderForReadyFiles(String contractorShortName,long currentTimeStamp){
 		
-		String children[] = new File(ingestAreaRootPath+contractorShortName).list(new AcceptedContainerFormatsFilter());
+		String children[] = Path.makeFile(ingestAreaRootPath,contractorShortName).list(new AcceptedContainerFormatsFilter());
 		List<String> childrenWhichAreReady = new ArrayList<String>();
 		
 		for (int i=0;i<children.length;i++){
@@ -323,23 +325,14 @@ public class IngestAreaScannerWorker extends Worker{
 	} 
 	
 	/**
-	 * The rootFolderPath is an absolute path on the local file system which contains
-	 * the contractors staging folders. These folders will be scanned for new files.
-	 *
-	 * @return the ingest area root path
 	 */
-	public String getIngestAreaRootPath() {
+	public Path getIngestAreaRootPath() {
 		return ingestAreaRootPath;
 	}
 
 	/**
-	 * Sets the ingest area root path.
-	 *
-	 * @param ingestAreaRootPath the new ingest area root path
 	 */
-	public void setIngestAreaRootPath(String ingestAreaRootPath) {
-		ingestAreaRootPath = Utilities.slashize(ingestAreaRootPath);
-		
+	public void setIngestAreaRootPath(Path ingestAreaRootPath) {
 		this.ingestAreaRootPath = ingestAreaRootPath;
 	}
 	
