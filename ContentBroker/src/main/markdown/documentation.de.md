@@ -72,7 +72,7 @@ die vorbereitenden Anpassung von Umgebungen für den Einsatz von DNSCore bzw. An
 
 Die hier untergebrachten Dokumentationen gelten generell für den Einsatz von DNSCore.
 
-* config.properties - Referenzdokumentation ([deutsch](administration_config_properties_reference.de.md))
+* config.properties - Referenzdokumentation ([deutsch]( administration_config_properties_reference.de.md ))
 * beans.xml - Referenzdokumentation ([english](administration-beans.xml))
 * Speicherbereiche - Referenzdokumentation ([english](processing_stages.md))
 * Der DNSCore Installer ([deutsch](administration-the-installer.de.md) | [english](administration-the-installer.md))
