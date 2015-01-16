@@ -73,7 +73,7 @@ the releases page, follow the source code link for the corresponding version and
 
 ###### Basic configuration 
 
-* [Controlling](administration-services.md) the application. Description of the non gui interfaces to the application.
+* [Controlling](administration-services.de.md) the application. Description of the non gui interfaces to the application.
 * config.properties - reference documentation (english](administration_config_properties_reference.de.md)).
 * beans.xml - reference documentation ([english](administration-beans.md))
 * Processing stages - reference documentation ([english](processing_stages.md)
