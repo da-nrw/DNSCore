@@ -179,9 +179,9 @@ public class MailContents {
 					" ist nicht konsistent. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
 					+ missingReferences+". Die Verarbeitung findet dennoch statt.";
 		
-		logger.debug(subject);
-		logger.debug("");
-		logger.debug(msg);
+		logger.info(subject);
+		logger.info("");
+		logger.info(msg);
 		
 		try {
 			Mail.sendAMail(preservationSystem.getAdmin().getEmailAddress(), obj.getContractor().getEmailAddress(), subject, msg);
