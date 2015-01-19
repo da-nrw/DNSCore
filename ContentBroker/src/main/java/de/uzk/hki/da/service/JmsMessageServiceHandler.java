@@ -58,14 +58,15 @@ public class JmsMessageServiceHandler {
 
 	public void sendJMSMessage(JmsMessage jms) {
 		if (mqConnectionFactory!=null) {
+			javax.jms.Session session = null;
+			MessageProducer producer = null;
 			try {
 				openConnection();
-				javax.jms.Session session = connection.createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
+				session = connection.createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
 				Destination toClient = session.createQueue(jms.getToClient());
 				Destination toServer = session.createQueue(jms.getQueueToServer());
-				MessageProducer producer;
 				producer = session.createProducer(toClient);
-				producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);   
+				producer.setDeliveryMode(DeliveryMode.PERSISTENT);   
 				Message message = jms.getMessage(session);
 				message.setJMSReplyTo(toServer);
 				producer.send(message);
@@ -75,18 +76,37 @@ public class JmsMessageServiceHandler {
 				closeConnection();
 			}catch (JMSException e1) {
 				logger.error("Error while connecting to ActiveMQ Broker " + e1.getCause());
+			} finally {
+				if (producer!=null) {
+					try {
+						producer.close();
+					} catch (JMSException e) {
+						logger.error("error closing the producer");
+					}
+				}
+				if (session!=null) {
+					try {
+						session.close();
+					} catch (JMSException e) {
+						logger.error("error closing the session");
+					}
+				}	
+				
+				
 			}
 		} else logger.error("send JMS Message failed!");
 	}
 
 	public JmsMessage recieveJMSMessage(String toServer) {
 		JmsMessage jms = new JmsMessage("",toServer,"");
+		Session session = null;
+		MessageConsumer consumer = null;
 		if (mqConnectionFactory!=null) {
 			try {
 				openConnection();
-				Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+				session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 				Destination destToServer = session.createQueue(toServer);
-				MessageConsumer consumer = session.createConsumer(destToServer);
+				consumer = session.createConsumer(destToServer);
 				Message messageRecieve = consumer.receive(1000);
 				if (messageRecieve instanceof TextMessage) {
 					TextMessage textMessage = (TextMessage) messageRecieve;
@@ -97,10 +117,26 @@ public class JmsMessageServiceHandler {
 				}
 				consumer.close();
 				session.close();
-				connection.close();;
+				closeConnection();
+				
 			}catch (JMSException e1) {
 				logger.error("Error while connecting to ActiveMQ Broker " + e1.getCause());
-			} 
+			} finally {
+				if (consumer!=null) {
+					try {
+						consumer.close();
+					} catch (JMSException e) {
+						logger.error("error closing the consumer");
+					}
+				}
+				if (session!=null) {
+					try {
+						session.close();
+					} catch (JMSException e) {
+						logger.error("error closing the session");
+					}
+				}	
+				}
 		} else logger.error("recieve JMS Message failed");
 		return jms;
 	}

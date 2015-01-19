@@ -51,7 +51,10 @@
     <bean id="fakeFileFormatFacade" class="de.uzk.hki.da.format.FakeFileFormatFacade"/>
  
     
-    <amq:broker id="mqBroker" useShutdownHook="true" useJmx="false" deleteAllMessagesOnStartup="true" start="false">
+    <amq:broker id="mqBroker" useShutdownHook="true" useJmx="false" persistent="true" deleteAllMessagesOnStartup="true" start="false">
+	<amq:persistenceAdapter>
+   <amq:kahaDB directory="activemq-data" journalMaxFileLength="32mb"/>
+   </amq:persistenceAdapter>
     <amq:systemUsage>
     <amq:systemUsage>
     	<amq:memoryUsage><amq:memoryUsage limit="4Mb" /></amq:memoryUsage>

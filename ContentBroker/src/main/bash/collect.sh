@@ -33,6 +33,7 @@ cp src/main/conf/PDFA_def.ps $1/conf
 cp src/main/resources/frame.jsonld $1/conf
 mkdir $1/activemq-data
 mkdir $1/systemRules
+cp -r src/main/rules/* $1/systemRules
 mkdir $1/log
 touch $1/log/contentbroker.log
 touch $1/log/time_stamp_actions.csv

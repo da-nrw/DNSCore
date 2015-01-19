@@ -277,7 +277,8 @@ class ObjectController {
 				log.debug "object.contractor.shortName: " + object.user.shortName
 					
 				try {
-						CbNode cbn = CbNode.get(grailsApplication.config.localNode.id)
+						def ids= grailsApplication.config.localNode.id
+						CbNode cbn = CbNode.get(Integer.valueOf(ids))
 						qu.createJob( object, "5000" , cbn.getName())
 						result.msg = "Das Objekt mit der URN ${object.urn} wurde zur Überprüfung in die Queue eingestellt!"
 						result.success = true
