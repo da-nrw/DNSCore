@@ -175,15 +175,18 @@ public abstract class AbstractAction implements Runnable {
 			resetModifiers();
 			execAndPostProcessRollback(object,job,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
 			reportUserError(e);
+			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		} catch (SubsystemNotAvailableException e) {
 			resetModifiers();
 			execAndPostProcessRollback(object,job,C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED);
 			reportTechnicalError(e);
 			actionFactory.pause(true);
+			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		} catch (Exception e) {
 			resetModifiers();
 			execAndPostProcessRollback(object,job,C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED);
 			reportTechnicalError(e);
+			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		}
 	}
 	
@@ -237,6 +240,7 @@ public abstract class AbstractAction implements Runnable {
 			baseLogger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now commiting changes to database.");
 			if (KILLATEXIT)	{
 				baseLogger.info("Set the job status to the end status "+endStatus+" .");
+				logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 			} else {
 				job.setStatus(endStatus);	
 			}
