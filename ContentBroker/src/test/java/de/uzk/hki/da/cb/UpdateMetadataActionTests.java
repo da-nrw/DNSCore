@@ -90,7 +90,7 @@ public class UpdateMetadataActionTests {
 	@BeforeClass
 	public static void mockDca() throws IOException {
 		mtds = mock(MimeTypeDetectionService.class);
-		when(mtds.detectMimeType((DAFile)anyObject())).thenReturn("image/tiff");
+		when(mtds.identify((File)anyObject())).thenReturn("image/tiff");
 	}
 	
 	@Before
