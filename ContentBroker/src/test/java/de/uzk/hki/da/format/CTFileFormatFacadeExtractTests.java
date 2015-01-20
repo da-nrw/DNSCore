@@ -68,7 +68,7 @@ public class CTFileFormatFacadeExtractTests {
 		assertTrue(fff.connectivityCheck());
 		
 		try {
-			fff.extract(Path.makeFile(testRoot,"mets_2_99.xml"), Path.makeFile(testRoot,"vda3.XML.output"));
+			fff.extract(Path.makeFile(testRoot,"vda3.XML"), Path.makeFile(testRoot,"vda3.XML.output"));
 		} catch (IOException e) {
 			fail();
 		} catch (ConnectionException e) {
@@ -81,7 +81,7 @@ public class CTFileFormatFacadeExtractTests {
 		CTTestHelper.cleanUpWhiteBoxTest();
 
 		try {
-			fff.extract(Path.makeFile(testRoot,"mets_2_99.xml"), Path.makeFile(testRoot,"vda3.XML.output"));
+			fff.extract(Path.makeFile(testRoot,"vda3.XML"), Path.makeFile(testRoot,"vda3.XML.output"));
 			fail();
 		} catch (IOException e) {
 			fail();
