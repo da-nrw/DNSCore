@@ -89,7 +89,7 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 			if (f.getFormatPUID().equals(FFConstants.DROID_XML_PUID)) {
 				f.setFormatPUID(FFConstants.XML_PUID);
 				f.setSubformatIdentifier(
-						new XMLSubformatIdentificationStrategy().identify(f.toRegularFile()));
+						new XMLSubformatIdentifier().identify(f.toRegularFile()));
 			}else
 			if (f.getFormatPUID().equals(FFConstants.XMP_PUID)) {
 				f.setFormatPUID(FFConstants.XML_PUID);
@@ -115,7 +115,7 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 	/**
 	 * @param subformatIdentificationStrategyName fully quallyfied java class name of the piece of 
 	 * code which is used for subformat identification for files of format <i>formatPuid</i>. The class 
-	 * must be of a type which implements {@link FormatIdentificationStrategy}.
+	 * must be of a type which implements {@link FormatIdentifier}.
 	 */
 	@Override
 	public void registerSubformatIdentificationStrategyPuidMapping(

@@ -25,7 +25,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import de.uzk.hki.da.format.XMLSubformatIdentificationStrategy;
+import de.uzk.hki.da.format.XMLSubformatIdentifier;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
 
@@ -34,7 +34,7 @@ import de.uzk.hki.da.util.Path;
  */
 public class XMLSubformatIdentifierTests {
 
-	private XMLSubformatIdentificationStrategy identifier = new XMLSubformatIdentificationStrategy();
+	private XMLSubformatIdentifier identifier = new XMLSubformatIdentifier();
 	
 	@Test
 	public void testDetectEAD() throws IOException{

@@ -38,7 +38,7 @@ import de.uzk.hki.da.utils.ProcessInformation;
  * 
  * @author Daniel M. de Oliveira
  */
-public class ScriptWrappedPronomFormatIdentifier implements FormatIdentificationStrategy, Connector {
+public class ScriptWrappedPronomFormatIdentifier implements FormatIdentifier, Connector {
 
 	private static final Logger logger = LoggerFactory.getLogger(ScriptWrappedPronomFormatIdentifier.class);
 

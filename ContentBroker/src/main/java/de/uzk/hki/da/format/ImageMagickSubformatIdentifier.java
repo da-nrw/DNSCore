@@ -6,7 +6,7 @@ import java.io.IOException;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 
-public class ImageMagickIdentifySubformatIdentificationStrategy implements FormatIdentificationStrategy, Connector{
+public class ImageMagickSubformatIdentifier implements FormatIdentifier, Connector{
 
 	@Override
 	public String identify(File f) throws IOException {

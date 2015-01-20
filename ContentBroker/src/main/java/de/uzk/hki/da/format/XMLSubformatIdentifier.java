@@ -31,7 +31,7 @@ import java.io.IOException;
  * 
  * @author Daniel M. de Oliveira
  */
-public class XMLSubformatIdentificationStrategy implements FormatIdentificationStrategy, Connector{
+public class XMLSubformatIdentifier implements FormatIdentifier, Connector{
 
 	private final static String eadPattern = ".*(?s)\\A.{0,500}\\x3cead[^\\x3c]{0,1000}\\x3ceadheader.*";
 	private final static String metsPattern = ".*(?s)\\A.{0,100}\\x3c([^: ]+:)?mets[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.loc.gov/METS.*";

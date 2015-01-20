@@ -90,12 +90,12 @@ public class SubformatScanService implements FormatScanService, Connector {
 	
 	
 	@SuppressWarnings("unchecked")
-	private FormatIdentificationStrategy createSFIInstance(String className) {
+	private FormatIdentifier createSFIInstance(String className) {
 		try {
-			FormatIdentificationStrategy sfi=null;
-			Class<FormatIdentificationStrategy> c;
-			c = (Class<FormatIdentificationStrategy>) Class.forName(className);
-			java.lang.reflect.Constructor<FormatIdentificationStrategy> co = c.getConstructor();
+			FormatIdentifier sfi=null;
+			Class<FormatIdentifier> c;
+			c = (Class<FormatIdentifier>) Class.forName(className);
+			java.lang.reflect.Constructor<FormatIdentifier> co = c.getConstructor();
 			sfi= co.newInstance();
 			return sfi;
 		}catch(Exception e) {

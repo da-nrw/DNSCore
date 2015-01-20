@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 
-public class FFmpegSubformatIdentificationStrategy implements FormatIdentificationStrategy, Connector{
+public class FFmpegSubformatIdentifier implements FormatIdentifier, Connector{
 
 	@Override
 	public String identify(File f) throws IOException {

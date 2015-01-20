@@ -81,7 +81,7 @@ public class CTFileFormatFacadeTests {
 	
 	@Test
 	public void metsFormatIdentification() throws IOException{
-		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.XMLSubformatIdentificationStrategy", 
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.XMLSubformatIdentifier", 
 				FFConstants.FMT_101);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"mets_2_99.xml")));
 		
@@ -93,7 +93,7 @@ public class CTFileFormatFacadeTests {
 	
 	@Test
 	public void lidoFormatIdentification() throws IOException{
-		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.XMLSubformatIdentificationStrategy", 
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.XMLSubformatIdentifier", 
 				FFConstants.FMT_101);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"LIDO-Testexport2014-07-04-FML-Auswahl.xml")));
 		
@@ -105,7 +105,7 @@ public class CTFileFormatFacadeTests {
 
 	@Test
 	public void xmpFormatIdentification() throws IOException{
-		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.XMLSubformatIdentificationStrategy", 
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.XMLSubformatIdentifier", 
 				FFConstants.FMT_101);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"a.xmp")));
 		
@@ -117,7 +117,7 @@ public class CTFileFormatFacadeTests {
 	
 	@Test
 	public void ffmpegStrategySubformatIdentification() throws IOException {
-		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy", 
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentifier", 
 				FFConstants.FMT_5);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"a.avi")));
 		
@@ -127,7 +127,7 @@ public class CTFileFormatFacadeTests {
 
 	@Test
 	public void ffmpegStrategySubformatIdentificationCodecContainsDigit() throws IOException {
-		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy", 
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentifier", 
 				FFConstants.X_FMT_384);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"a.mov")));
 		
@@ -140,7 +140,7 @@ public class CTFileFormatFacadeTests {
 	
 	@Test
 	public void ffmpegStrategySubformatIdentificationFileWithBlanksInFilename() throws IOException {
-		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy", 
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentifier", 
 				FFConstants.FMT_5);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"a b.avi")));
 		
@@ -149,16 +149,16 @@ public class CTFileFormatFacadeTests {
 	}
 	@Test
 	public void healthCheck() {
-		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentificationStrategy", 
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentifier", 
 				FFConstants.FMT_5);
-		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.ImageMagickIdentifySubformatIdentificationStrategy", 
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.ImageMagickSubformatIdentifier", 
 				FFConstants.FMT_353);
 		assertTrue(sfff.connectivityCheck());
 	}
 	
 	@Test
 	public void imageMagickIdentifySubformatIdentification() throws IOException {
-		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.ImageMagickIdentifySubformatIdentificationStrategy", 
+		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.ImageMagickSubformatIdentifier", 
 				FFConstants.FMT_353);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"CCITT_1_LZW.TIF")));
 		
@@ -167,13 +167,13 @@ public class CTFileFormatFacadeTests {
 
 	}
 	
-	
-	@Test
-	public void registrationNotPossibleUnkownStrategy(){
-		try {
-			sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.UnkownStrategy","");
-			fail();
-		} catch (IllegalArgumentException expected) {}
-	}
+//	
+//	@Test
+//	public void registrationNotPossibleUnkownStrategy(){
+//		try {
+//			sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.UnkownStrategy","");
+//			fail();
+//		} catch (IllegalArgumentException expected) {}
+//	}
 	
 }
