@@ -20,7 +20,6 @@
 package de.uzk.hki.da.format;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,8 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.utils.CommandLineConnector;
-import de.uzk.hki.da.utils.ProcessInformation;
-import de.uzk.hki.da.utils.Utilities;
 
 /**
  * Implementation for file identification: FIDO.
@@ -44,16 +41,15 @@ import de.uzk.hki.da.utils.Utilities;
 public class StandardFileFormatFacade implements FileFormatFacade{
 
 	private static final Logger logger = LoggerFactory.getLogger(StandardFileFormatFacade.class);
-	private static final String JHOVE_CONF = "conf/jhove.conf";
-	private static final String jhoveFolder = "jhove";
-	private static final long jhoveTimeout = 100000;
-	
 	
 	private FidoFormatScanService pronomFormatScanService;
 	private SubformatScanService subformatScanService = null;
+	private JhoveMetadataExtractor metadataExtractor = new JhoveMetadataExtractor();
+	
 	
 	public StandardFileFormatFacade() {
 		pronomFormatScanService = new FidoFormatScanService();
+		metadataExtractor.setCli(new CommandLineConnector());
 	}
 	
 	/**
@@ -109,60 +105,18 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	
 	
 	/**
+	 * @throws ConnectionException 
 	 * 
 	 */
 	@Override
-	public void extract(File file, File extractedMetadata) throws IOException {
-		if (!file.exists()) throw new FileNotFoundException("File to extract Metadata from doesn't exist! ("+file+")");
-		String filePath = file.getAbsolutePath();
-		
-		if (Utilities.checkForWhitespace(filePath))
-		{
-			filePath = "\"" + filePath + "\"";
-		}
+	public boolean extract(File file, File extractedMetadata) throws IOException, ConnectionException {
 
-		ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {
-                "/bin/sh", "jhove", "-c", JHOVE_CONF, "-h", "XML",
-                filePath, "-o", extractedMetadata.getAbsolutePath() },
-                new File(jhoveFolder),jhoveTimeout);
-				
-		if ((pi == null) || (pi.getExitValue() != 0)) {
-            if (pi != null)
-            	logger.warn(pi.getStdErr());
-            logger.warn("Jhove error. Will try again without complete file parsing.");
-            
-            pi = CommandLineConnector.runCmdSynchronously(new String[] {
-                    "/bin/sh", "jhove", "-c", JHOVE_CONF, "-h", "XML", "-s",
-                    filePath, "-o", extractedMetadata.getAbsolutePath() },
-                    new File(jhoveFolder),jhoveTimeout);
-            
-            if ((pi == null) || (pi.getExitValue() != 0)) {
-                if (pi != null)
-                	logger.error(pi.getStdErr());
-                throw new RuntimeException("Jhove error");
-            }
-		}
+		return metadataExtractor.extract(file, extractedMetadata);
 	}
+	
+	
 
-
-	private boolean jhoveCheck() {
-		System.out.print("CONNECTIVITY CHECK - StandardFileFormatFacade - JHOVE");
-		ProcessInformation pi;
-		try {
-			pi = CommandLineConnector.runCmdSynchronously(new String[] {
-			        "/bin/sh", "jhove", "-c", JHOVE_CONF, "--version" },
-			        new File(jhoveFolder),jhoveTimeout);
-		} catch (IOException e) {
-			return false;
-		}
-		if (pi.getStdOut().split("\\(Rel")[0].equals("Jhove ")){
-			System.out.println(" .... OK");
-			return true;
-		}else {
-			System.out.println(" .... FAIL");
-			return false;
-		}
-	}
+	
 
 	/**
 	 * @param subformatIdentificationStrategyName fully quallyfied java class name of the piece of 
@@ -193,9 +147,12 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	public boolean connectivityCheck() {
 		
 		if (subformatScanService==null) // no strategypuidmapping registered yet 
-			return (jhoveCheck()&&pronomFormatScanService.healthCheck()); 
+			return (metadataExtractor.isConnectable()
+					&&pronomFormatScanService.isConnectable()); 
 		else
-			return (jhoveCheck()&&pronomFormatScanService.healthCheck()&&subformatScanService.healthCheck());
+			return (metadataExtractor.isConnectable()
+					&&pronomFormatScanService.isConnectable()
+					&&subformatScanService.isConnectable());
 	}
 
 

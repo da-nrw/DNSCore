@@ -35,6 +35,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.format.ConnectionException;
 import de.uzk.hki.da.format.FFConstants;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
@@ -232,6 +233,8 @@ public class Diagnostics {
 		try {
 			jhove.extract(new File(TIFF_TESTFILE_PATH), new File(TIFF_TESTFILE_TEMPPATH));
 		} catch (IOException e) {
+			return false;
+		} catch (ConnectionException e) {
 			return false;
 		}
 		return true;

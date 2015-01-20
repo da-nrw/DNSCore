@@ -26,12 +26,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.management.RuntimeErrorException;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
+import de.uzk.hki.da.format.ConnectionException;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
@@ -113,8 +116,9 @@ public class CheckFormatsAction extends AbstractAction {
 	 * 
 	 * @param files
 	 * @throws IOException 
+	 * @throws SubsystemNotAvailableException 
 	 */
-	private void attachJhoveInfoToAllFiles(List<DAFile> files) throws IOException {
+	private void attachJhoveInfoToAllFiles(List<DAFile> files) throws IOException, SubsystemNotAvailableException {
 		for (DAFile f : files) {
 			// dir
 			String dir = Path.make(object.getDataPath(),C.JHOVE_TEMP,f.getRep_name()).toString();
@@ -124,7 +128,12 @@ public class CheckFormatsAction extends AbstractAction {
 			
 			File target = Path.makeFile(dir,fileName);
 			logger.debug("will write jhove output to: "+target);
-			fileFormatFacade.extract(f.toRegularFile(), target);
+			try {
+				if (!fileFormatFacade.extract(f.toRegularFile(), target)) 
+					throw new RuntimeException("Problem occured during metadata file extraction.");
+			} catch (ConnectionException e) {
+				throw new SubsystemNotAvailableException(e.getMessage());
+			}
 		}
 	}
 

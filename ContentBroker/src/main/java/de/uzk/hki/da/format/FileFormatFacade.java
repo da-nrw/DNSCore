@@ -60,8 +60,9 @@ public interface FileFormatFacade {
 	 * @param file the file to extract the metadata from.
 	 * @param extractedMetadata the resulting xml .
 	 * @throws IOException
+	 * @throws ConnectionException 
 	 */
-	public void extract(File file, File extractedMetadata) throws IOException;
+	public boolean extract(File file, File extractedMetadata) throws IOException, ConnectionException;
 	
 	
 	/**

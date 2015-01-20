@@ -22,10 +22,11 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ import org.mockito.stubbing.Answer;
 import org.springframework.util.StringUtils;
 
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
+import de.uzk.hki.da.format.ConnectionException;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.format.StandardFileFormatFacade;
 import de.uzk.hki.da.model.DAFile;
@@ -76,13 +78,15 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 	 * @return the format scan service
 	 * @author Daniel M. de Oliveira
 	 * @throws IOException 
+	 * @throws ConnectionException 
 	 */
 	@SuppressWarnings("unchecked")
 	private StandardFileFormatFacade setUpFakeFormatScanService()
-			throws IOException {
-		StandardFileFormatFacade formatScanService = mock(StandardFileFormatFacade.class);
+			throws IOException, ConnectionException {
+		StandardFileFormatFacade fff = mock(StandardFileFormatFacade.class);
+		when(fff.extract((File)anyObject(), (File)anyObject())).thenReturn(true);
 		
-		when(formatScanService.identify((List<FileWithFileFormat>)anyObject())).thenAnswer(new Answer< List<DAFile> >(){
+		when(fff.identify((List<FileWithFileFormat>)anyObject())).thenAnswer(new Answer< List<DAFile> >(){
 			@Override
 			public List<DAFile> answer(InvocationOnMock invocation)
 					throws Throwable {
@@ -117,7 +121,7 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 			}}
 		);
 		
-		return formatScanService;
+		return fff;
 	}
 
 	/**

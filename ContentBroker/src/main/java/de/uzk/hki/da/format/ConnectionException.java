@@ -17,22 +17,20 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
 package de.uzk.hki.da.format;
-
-import java.io.File;
-import java.io.IOException;
-
 
 /**
  * @author Daniel M. de Oliveira
  */
-public interface FormatIdentificationStrategy {
+public class ConnectionException extends Exception{
 
 	/**
-	 * @author Daniel M. de Oliveira
-	 * @param f, empty string if nothing has been detected.
-	 * @return
-	 * @throws IOException signals errors that happen during the process of reading the file.
+	 * 
 	 */
-	public String identify(File f) throws IOException;
+	private static final long serialVersionUID = 1L;
+
+	public ConnectionException(String msg) {
+		super(msg);
+	}
 }

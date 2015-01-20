@@ -6,7 +6,7 @@ import java.io.IOException;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 
-public class ImageMagickIdentifySubformatIdentificationStrategy implements FormatIdentificationStrategy{
+public class ImageMagickIdentifySubformatIdentificationStrategy implements FormatIdentificationStrategy, Connector{
 
 	@Override
 	public String identify(File f) throws IOException {
@@ -43,7 +43,7 @@ public class ImageMagickIdentifySubformatIdentificationStrategy implements Forma
 	}
 
 	@Override
-	public boolean healthCheck() {
+	public boolean isConnectable() {
 		String[] cmd = new String []{
 					"identify","--version"};
 		ProcessInformation pi;

@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 
-public class FFmpegSubformatIdentificationStrategy implements FormatIdentificationStrategy{
+public class FFmpegSubformatIdentificationStrategy implements FormatIdentificationStrategy, Connector{
 
 	@Override
 	public String identify(File f) throws IOException {
@@ -28,7 +28,7 @@ public class FFmpegSubformatIdentificationStrategy implements FormatIdentificati
 	}
 
 	@Override
-	public boolean healthCheck() {
+	public boolean isConnectable() {
 		ProcessInformation pi;
 		try {
 			pi =  new CommandLineConnector().runCmdSynchronously(new String[] {"ffmpeg","-version"});

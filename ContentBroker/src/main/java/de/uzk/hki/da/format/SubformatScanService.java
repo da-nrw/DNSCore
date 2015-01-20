@@ -29,7 +29,7 @@ import java.util.Set;
 /**
  * @author Daniel M. de Oliveira
  */
-class SubformatScanService implements FormatScanService {
+class SubformatScanService implements FormatScanService, Connector {
 
 	private Map<String,Set<String>> subformatIdentificationPolicies = new HashMap<String,Set<String>>();
 	
@@ -105,12 +105,12 @@ class SubformatScanService implements FormatScanService {
 	
 	
 	@Override
-	public boolean healthCheck() {
+	public boolean isConnectable() {
 		
 		boolean passed=true;
 		for (String s:subformatIdentificationPolicies.keySet()) {
 			System.out.print("CONNECTIVITY CHECK - "+s+".healthCheck()");
-			if (!createSFIInstance(s).healthCheck()) {
+			if (!((Connector)createSFIInstance(s)).isConnectable()) {
 				System.out.println(" .... FAIL");
 				passed=false;
 			}

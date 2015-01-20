@@ -42,7 +42,7 @@ import de.uzk.hki.da.util.Path;
 public class CTFileFormatFacadeTests {
 
 	private static final StandardFileFormatFacade sfff = new StandardFileFormatFacade();
-	private static final Path testPath = Path.make(TC.TEST_ROOT_FORMAT,"CTFileFormatFacadeTests");
+	private static final Path testPath = Path.make(TC.TEST_ROOT_FORMAT,"CTFileFormatFacade");
 	private List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();;
 	
 	
@@ -52,7 +52,6 @@ public class CTFileFormatFacadeTests {
 		CTTestHelper.prepareWhiteBoxTest();
 	}
 
-	
 	@AfterClass
 	public static void tearDownAfterClass(){
 		CTTestHelper.cleanUpWhiteBoxTest();

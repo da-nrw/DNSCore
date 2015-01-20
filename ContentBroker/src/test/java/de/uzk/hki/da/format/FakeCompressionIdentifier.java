@@ -26,14 +26,14 @@ import de.uzk.hki.da.format.FormatIdentificationStrategy;
 /**
  * @author Daniel M. de Oliveira
  */
-public class FakeCompressionIdentifier implements FormatIdentificationStrategy{
+public class FakeCompressionIdentifier implements FormatIdentificationStrategy, Connector{
 
 	public String identify(File file) {
 		return "lzw";
 	}
 
 	@Override
-	public boolean healthCheck() {
+	public boolean isConnectable() {
 		return true;
 	}
 }
