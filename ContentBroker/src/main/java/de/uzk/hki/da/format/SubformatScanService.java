@@ -29,7 +29,7 @@ import java.util.Set;
 /**
  * @author Daniel M. de Oliveira
  */
-class SubformatScanService implements FormatScanService, Connector {
+public class SubformatScanService implements FormatScanService, Connector {
 
 	private Map<String,Set<String>> subformatIdentificationPolicies = new HashMap<String,Set<String>>();
 	
@@ -70,7 +70,7 @@ class SubformatScanService implements FormatScanService, Connector {
 	
 	
 
-	void setSubformatIdentificationPolicies(
+	public void setSubformatIdentificationPolicies(
 			 Map<String,Set<String>> subformatIdentificationPolicies) {
 		
 		// check if the classes can get instantiated

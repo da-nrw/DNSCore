@@ -91,7 +91,30 @@
    		<property name="preservationSystemId" value="1" />
    </bean>
   
-	<bean class="de.uzk.hki.da.format.StandardFileFormatFacade" id="standardFileFormatFacade"/>
+  
+  
+  	<bean class="de.uzk.hki.da.utils.CommandLineConnector" id="formatPackageCommandLineConnector"/>
+  	<bean class="de.uzk.hki.da.format.FidoFormatScanService" id="fidoFormatScanService"/>
+  	<bean class="de.uzk.hki.da.format.JhoveMetadataExtractor" id="jhoveMetadataExtractor">
+  		<property name="cli" ref="formatPackageCommandLineConnector"/>
+  	</bean>
+  	<bean class="de.uzk.hki.da.format.SubformatScanService" id="subformatScanService"/>
+	<bean class="de.uzk.hki.da.format.ConfigurableFileFormatFacade" id="standardFileFormatFacade">
+		<property name="formatScanService" ref="fidoFormatScanService"/>
+		<property name="metadataExtractor" ref="jhoveMetadataExtractor"/>
+		<property name="subformatScanService" ref="subformatScanService"/>
+	</bean>
+	<bean class="de.uzk.hki.da.format.FakeFormatScanService" id="fakeFormatScanService"/>
+	<bean class="de.uzk.hki.da.format.FakeMetadataExtractor" id="fakeMetadataExtractor"/>
+	<bean class="de.uzk.hki.da.format.FakeSubformatScanService" id="fakeSubformatScanService"/>
+	<bean class="de.uzk.hki.da.format.ConfigurableFileFormatFacade" id="fakeFileFormatFacade">
+		<property name="formatScanService" ref="fakeFormatScanService"/>
+		<property name="metadataExtractor" ref="fakeMetadataExtractor"/>
+		<property name="subformatScanService" ref="fakeSubformatScanService"/>
+	</bean>
+	
+	
+	
     <bean class="de.uzk.hki.da.model.JobNamedQueryDAO" id="queueConnector"/>
     
     <bean class="de.uzk.hki.da.format.MimeTypeDetectionService" id="mtds"/>

@@ -43,7 +43,7 @@ import org.springframework.util.StringUtils;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.format.ConnectionException;
 import de.uzk.hki.da.format.FileWithFileFormat;
-import de.uzk.hki.da.format.StandardFileFormatFacade;
+import de.uzk.hki.da.format.ConfigurableFileFormatFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.service.HibernateUtil;
@@ -81,9 +81,9 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 	 * @throws ConnectionException 
 	 */
 	@SuppressWarnings("unchecked")
-	private StandardFileFormatFacade setUpFakeFormatScanService()
+	private ConfigurableFileFormatFacade setUpFakeFormatScanService()
 			throws IOException, ConnectionException {
-		StandardFileFormatFacade fff = mock(StandardFileFormatFacade.class);
+		ConfigurableFileFormatFacade fff = mock(ConfigurableFileFormatFacade.class);
 		when(fff.extract((File)anyObject(), (File)anyObject())).thenReturn(true);
 		
 		when(fff.identify((List<FileWithFileFormat>)anyObject())).thenAnswer(new Answer< List<DAFile> >(){

@@ -19,27 +19,27 @@
 
 package de.uzk.hki.da.format;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.List;
-
-import org.irods.jargon.core.exception.InvalidArgumentException;
+import java.io.PrintWriter;
 
 /**
  * @author Daniel M. de Oliveira
  */
-interface FormatScanService {
+public class FakeMetadataExtractor implements MetadataExtractor{
 
-	/**
-	 * @param files
-	 * @return files, which allows easier testing.
-	 * 
-	 * @throws IOException if one or more of the files formats 
-	 * could not get determined as a result of IO problems. This can has something to do with 
-	 * the files to identify, but also with the helper programs used to identify the files.  
-	 * 
-	 * @throws InvalidArgumentException 
-	 */
-	List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws IOException;
+	@Override
+	public boolean extract(File file, File targetFile) throws IOException {
+		PrintWriter writer = new PrintWriter(targetFile, "UTF-8");
+		writer.println("<jhove>abc</jhove>");
+		writer.close();
+		return true;
+	}
+
 	
-	public boolean isConnectable();
+	
+	@Override
+	public boolean isConnectable() {
+		return true;
+	}
 }

@@ -30,27 +30,22 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.utils.CommandLineConnector;
-
 /**
  * Implementation for file identification: FIDO.
  * Implementation for basic metadata extraction: JHOVE.
  * 
  * @author Daniel M. de Oliveira
  */
-public class StandardFileFormatFacade implements FileFormatFacade{
+public class ConfigurableFileFormatFacade implements FileFormatFacade{
 
-	private static final Logger logger = LoggerFactory.getLogger(StandardFileFormatFacade.class);
+	private static final Logger logger = LoggerFactory.getLogger(ConfigurableFileFormatFacade.class);
 	
-	private FidoFormatScanService pronomFormatScanService;
-	private SubformatScanService subformatScanService = null;
-	private JhoveMetadataExtractor metadataExtractor = new JhoveMetadataExtractor();
+	private FormatScanService formatScanService;
+	private FormatScanService subformatScanService;
+	private MetadataExtractor metadataExtractor;
 	
 	
-	public StandardFileFormatFacade() {
-		pronomFormatScanService = new FidoFormatScanService();
-		metadataExtractor.setCli(new CommandLineConnector());
-	}
+	public ConfigurableFileFormatFacade() {}
 	
 	/**
 	 *      formatIdentifierClassName,policyTriggerPUID
@@ -68,13 +63,13 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	public List<FileWithFileFormat> identify(List<? extends FileWithFileFormat> files)
 			throws IOException {
 
-		pronomFormatScanService.identify((List<FileWithFileFormat>) files);
+		getFormatScanService().identify((List<FileWithFileFormat>) files);
 		
 		for (String s:subformatIdentificationStrategyTriggerMap.keySet())
 			logger.debug("strategy available: "+s);
 		
-		if (subformatScanService!=null)
-			subformatScanService.identify((List<FileWithFileFormat>) files);
+		if (getSubformatScanService()!=null)
+			getSubformatScanService().identify((List<FileWithFileFormat>) files);
 		
 		doCorrections(files);
 		return (List<FileWithFileFormat>) files;
@@ -110,8 +105,7 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	 */
 	@Override
 	public boolean extract(File file, File extractedMetadata) throws IOException, ConnectionException {
-
-		return metadataExtractor.extract(file, extractedMetadata);
+		return getMetadataExtractor().extract(file, extractedMetadata);
 	}
 	
 	
@@ -135,10 +129,8 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 			subformatIdentificationStrategyTriggerMap.put(subformatIdentificationStrategyName, puids);
 		}
 		
-		
-		// create new instance every time the registration information changes.
-		subformatScanService = new SubformatScanService();
-		subformatScanService.setSubformatIdentificationPolicies(subformatIdentificationStrategyTriggerMap);
+		if (subformatScanService instanceof SubformatScanService)
+			((SubformatScanService) subformatScanService).setSubformatIdentificationPolicies(subformatIdentificationStrategyTriggerMap);
 	}
 
 
@@ -146,13 +138,49 @@ public class StandardFileFormatFacade implements FileFormatFacade{
 	@Override
 	public boolean connectivityCheck() {
 		
-		if (subformatScanService==null) // no strategypuidmapping registered yet 
-			return (metadataExtractor.isConnectable()
-					&&pronomFormatScanService.isConnectable()); 
+		if (getSubformatScanService()==null) // no strategypuidmapping registered yet 
+			return ( metadataExtractor.isConnectable() 
+					&&getFormatScanService().isConnectable() ); 
 		else
 			return (metadataExtractor.isConnectable()
-					&&pronomFormatScanService.isConnectable()
-					&&subformatScanService.isConnectable());
+					&&getFormatScanService().isConnectable()
+					&&getSubformatScanService().isConnectable());
+	}
+
+
+	@Override
+	public FormatScanService getFormatScanService() {
+		return formatScanService;
+	}
+
+
+	@Override
+	public void setFormatScanService(FormatScanService formatScanService) {
+		this.formatScanService = formatScanService;
+	}
+
+
+	@Override
+	public MetadataExtractor getMetadataExtractor() {
+		return metadataExtractor;
+	}
+
+
+	@Override
+	public void setMetadataExtractor(MetadataExtractor metadataExtractor) {
+		this.metadataExtractor = metadataExtractor;
+	}
+
+
+	@Override
+	public FormatScanService getSubformatScanService() {
+		return subformatScanService;
+	}
+
+
+	@Override
+	public void setSubformatScanService(FormatScanService subformatScanService) {
+		this.subformatScanService = subformatScanService;
 	}
 
 

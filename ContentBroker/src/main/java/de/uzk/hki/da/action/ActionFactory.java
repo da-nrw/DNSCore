@@ -77,7 +77,7 @@ public class ActionFactory implements ApplicationContextAware {
 
 	private PreservationSystem preservationSystem;
 
-
+	
 	public void init(){
 		setPreservationSystem(new PreservationSystem()); getPreservationSystem().setId(1);
 		
@@ -91,7 +91,7 @@ public class ActionFactory implements ApplicationContextAware {
 		for (SubformatIdentificationStrategyPuidMapping sfiP:getSecondStageScanPolicies(session)) {
 			fileFormatFacade.registerSubformatIdentificationStrategyPuidMapping(sfiP.getSubformatIdentificationStrategyName(),sfiP.getFormatPuid());
 		}
-
+		
 		session.close();
 	}
 	

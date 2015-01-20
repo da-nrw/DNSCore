@@ -41,13 +41,17 @@ import de.uzk.hki.da.util.Path;
  */
 public class CTFileFormatFacadeTests {
 
-	private static final StandardFileFormatFacade sfff = new StandardFileFormatFacade();
+	private static final ConfigurableFileFormatFacade sfff = new ConfigurableFileFormatFacade();
 	private static final Path testPath = Path.make(TC.TEST_ROOT_FORMAT,"CTFileFormatFacade");
 	private List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();;
 	
 	
 	@BeforeClass
 	public static void setUp() throws IOException{
+		sfff.setFormatScanService(new FidoFormatScanService());
+		sfff.setMetadataExtractor(new FakeMetadataExtractor());
+		sfff.setSubformatScanService(new SubformatScanService());
+		
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 		CTTestHelper.prepareWhiteBoxTest();
 	}

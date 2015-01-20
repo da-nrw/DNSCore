@@ -33,7 +33,7 @@ import de.uzk.hki.da.utils.Utilities;
  * @author Daniel M. de Oliveira
  *
  */
-public class JhoveMetadataExtractor implements Connector {
+public class JhoveMetadataExtractor implements MetadataExtractor {
 
 	private static final String JHOVE_CONF = "conf/jhove.conf";
 	private static final long jhoveTimeout = 100000;

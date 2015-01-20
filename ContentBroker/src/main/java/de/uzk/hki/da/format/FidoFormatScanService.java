@@ -34,7 +34,7 @@ import de.uzk.hki.da.core.C;
  *
  * @author Daniel M. de Oliveira
  */
-class FidoFormatScanService implements FormatScanService, Connector {
+public class FidoFormatScanService implements FormatScanService, Connector {
 	
 	private ScriptWrappedPronomFormatIdentifier pronom;
 	

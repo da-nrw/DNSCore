@@ -37,10 +37,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.format.ConnectionException;
 import de.uzk.hki.da.format.FFConstants;
+import de.uzk.hki.da.format.FidoFormatScanService;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
+import de.uzk.hki.da.format.JhoveMetadataExtractor;
 import de.uzk.hki.da.format.SimpleFileWithFileFormat;
-import de.uzk.hki.da.format.StandardFileFormatFacade;
+import de.uzk.hki.da.format.ConfigurableFileFormatFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.Node;
@@ -51,6 +53,7 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.Utilities;
 
 /**
@@ -187,8 +190,11 @@ public class Diagnostics {
 		}
 
 		int errorCount = 0;
-		StandardFileFormatFacade sfff = new StandardFileFormatFacade();
-		
+		ConfigurableFileFormatFacade sfff = new ConfigurableFileFormatFacade();
+		sfff.setFormatScanService(new FidoFormatScanService());
+		JhoveMetadataExtractor meta = new JhoveMetadataExtractor();
+		meta.setCli(new CommandLineConnector());
+		sfff.setMetadataExtractor(meta);
 		
 		System.out.print(INFO+"CHECKING - StandardFileFormatFacade.identify() ... ");
 		if (!standardFileFormatFacadeFidoWorkingProperly(sfff)) {
@@ -213,7 +219,7 @@ public class Diagnostics {
 		return errorCount;
 	}
 	
-	private static boolean standardFileFormatFacadeHealthSubformatsPassedCheckPassed(StandardFileFormatFacade sfff) {
+	private static boolean standardFileFormatFacadeHealthSubformatsPassedCheckPassed(ConfigurableFileFormatFacade sfff) {
 		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
@@ -226,12 +232,12 @@ public class Diagnostics {
 		return true;
 	}
 	
-	private static boolean standardFileFormatFacadeJhoveWorkingProperly(StandardFileFormatFacade sfff) {
+	private static boolean standardFileFormatFacadeJhoveWorkingProperly(ConfigurableFileFormatFacade sfff) {
 		String TIFF_TESTFILE_TEMPPATH="/tmp/abc";
 		
-		FileFormatFacade jhove = new StandardFileFormatFacade();
+//		FileFormatFacade jhove = new ConfigurableFileFormatFacade();
 		try {
-			jhove.extract(new File(TIFF_TESTFILE_PATH), new File(TIFF_TESTFILE_TEMPPATH));
+			sfff.extract(new File(TIFF_TESTFILE_PATH), new File(TIFF_TESTFILE_TEMPPATH));
 		} catch (IOException e) {
 			return false;
 		} catch (ConnectionException e) {
@@ -240,7 +246,7 @@ public class Diagnostics {
 		return true;
 	}
 	
-	private static boolean standardFileFormatFacadeFidoWorkingProperly(StandardFileFormatFacade sfff) {
+	private static boolean standardFileFormatFacadeFidoWorkingProperly(ConfigurableFileFormatFacade sfff) {
 		
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		FileWithFileFormat ffff = new SimpleFileWithFileFormat(new File(TIFF_TESTFILE_PATH));

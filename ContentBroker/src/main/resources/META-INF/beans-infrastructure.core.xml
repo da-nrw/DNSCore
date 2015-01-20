@@ -48,7 +48,6 @@
     <bean id="fakeRepositoryFacade" class="de.uzk.hki.da.repository.FakeRepositoryFacade">
         <property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
 	</bean>  
-    <bean id="fakeFileFormatFacade" class="de.uzk.hki.da.format.FakeFileFormatFacade"/>
  
     
     <amq:broker id="mqBroker" useShutdownHook="true" useJmx="false" persistent="true" deleteAllMessagesOnStartup="true" start="false">

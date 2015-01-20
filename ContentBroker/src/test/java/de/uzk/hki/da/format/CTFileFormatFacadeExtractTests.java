@@ -27,11 +27,13 @@ import java.io.IOException;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.test.CTTestHelper;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.CommandLineConnector;
 
 /**
  * @author Daniel M. de Oliveira
@@ -39,10 +41,20 @@ import de.uzk.hki.da.util.Path;
 public class CTFileFormatFacadeExtractTests {
 
 	private static final Path testRoot = Path.make(TC.TEST_ROOT_FORMAT,"CTFileFormatFacadeExtract");
-	private static final StandardFileFormatFacade fff= new StandardFileFormatFacade();;
+	private static final ConfigurableFileFormatFacade fff = new ConfigurableFileFormatFacade();;
+	private static final JhoveMetadataExtractor metadataExtractor = new JhoveMetadataExtractor();
+	
+	@BeforeClass
+	public static void setUpBeforeClass() {
+		metadataExtractor.setCli(new CommandLineConnector());
+		fff.setMetadataExtractor(metadataExtractor);
+		fff.setFormatScanService(new FakeFormatScanService());
+	}
+	
 	
 	@Before
 	public void setUp() throws IOException {
+		
 		CTTestHelper.prepareWhiteBoxTest();
 	}
 	

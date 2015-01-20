@@ -96,4 +96,22 @@ public interface FileFormatFacade {
 	 * @return true if necessary external programs are present in versions supported by the connectors. false otherwise.  
 	 */
 	public boolean connectivityCheck();
+
+
+	public FormatScanService getFormatScanService();
+
+
+	public MetadataExtractor getMetadataExtractor();
+
+
+	public void setMetadataExtractor(MetadataExtractor metadataExtractor);
+
+
+	public void setFormatScanService(FormatScanService formatScanService);
+
+
+	public FormatScanService getSubformatScanService();
+
+
+	public void setSubformatScanService(FormatScanService subformatScanService);
 }
