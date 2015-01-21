@@ -82,8 +82,6 @@ public class SendToPresenterAction extends AbstractAction {
 	private static final String MEMBER = "info:fedora/fedora-system:def/relations-external#isMemberOf";
 	private static final String MEMBER_COLLECTION = "info:fedora/fedora-system:def/relations-external#isMemberOfCollection";
 	private static final String dip = "dip";
-	private static final String institution = "institution";
-	private static final String _public = "public";
 	private static final String pips = "pips";
 
 	private RepositoryFacade repositoryFacade;
@@ -131,29 +129,58 @@ public class SendToPresenterAction extends AbstractAction {
 		purgeObjectsIfExist();
 		buildMapWithOriginalFilenamesForLabeling();
 		
-		Path pipPathPublic = Path.make(localNode.getWorkAreaRootPath(),pips,_public,object.getContractor().getShort_name(),object.getIdentifier());
-		Path pipPathInstitution = Path.make(localNode.getWorkAreaRootPath(),pips,institution,object.getContractor().getShort_name(),object.getIdentifier());
-		if (!pipPathPublic.toFile().exists()) 
-			logger.warn(pipPathPublic+" does not exist.");
-		if (!pipPathInstitution.toFile().exists()) 
-			logger.warn(pipPathInstitution + " does not exist.");
-
-		String packageType = getDcReader().getPackageTypeFromDC(pipPathPublic, pipPathInstitution);
-		logger.debug("read package type from dc: "+packageType);
-		if (!viewerUrls.containsKey(packageType))
-			logger.warn("could not determine a viewerUrl for package type");
-
-		boolean publicPIPSuccesfullyIngested = false;
-		boolean institutionPIPSuccessfullyIngested = false;
-		if (pipPathPublic.toFile().exists())
-			publicPIPSuccesfullyIngested = createXEpicurAndIngest(pipPathPublic,preservationSystem.getOpenCollectionName(),packageType,object.getUrn(),true);
-		if (pipPathInstitution.toFile().exists()) 
-			institutionPIPSuccessfullyIngested = createXEpicurAndIngest(pipPathInstitution, preservationSystem.getClosedCollectionName(), packageType, object.getUrn(), false);
+		boolean publicPIPSuccessfullyIngested = publishPackage(
+				C.WA_PUBLIC,true,preservationSystem.getOpenCollectionName());
+		boolean institutionPIPSuccessfullyIngested = publishPackage(
+				C.WA_INSTITUTION,false,preservationSystem.getClosedCollectionName());	
 		
-		setPublishedFlag(publicPIPSuccesfullyIngested,
+		setPublishedFlag(publicPIPSuccessfullyIngested,
 				institutionPIPSuccessfullyIngested);
 		return true;
 	}
+	
+	
+	/**
+	 * 
+	 * @param pipType institution or public
+	 * @return
+	 * @throws IOException 
+	 */
+	private boolean publishPackage(String pipType,boolean checkSets, String collectionName) throws IOException {
+		Path pipPath = Path.make(localNode.getWorkAreaRootPath(),pips,pipType,object.getContractor().getShort_name(),object.getIdentifier());
+		if (!pipPath.toFile().exists()) {
+			logger.warn(pipPath + " does not exist.");
+			return false;
+		}
+		String pkgType = getDcReader().getPackageTypeFromDC(pipPath);
+		if (!viewerUrls.containsKey(pkgType))
+			logger.warn("could not determine a viewerUrl for package type of pip institution");
+		
+		XepicurWriter.createXepicur(
+				object.getIdentifier(), pkgType, 
+				viewerUrls.get(pkgType), 
+				pipPath.toString(),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
+		
+		try {
+			return ingestPackage(object.getUrn(), object.getIdentifier(), collectionName, pipPath, 
+					object.getContractor().getShort_name(), pkgType, makeSets(checkSets));
+		} catch (RepositoryException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
+	
+	private String[] makeSets(boolean checkSets) {
+		String[] sets = null;
+		if (checkSets){
+			if (!object.ddbExcluded()) {
+				sets = new String[]{ ddb };
+			}
+		}
+		return sets;
+	}
+	
 
 
 	/**
@@ -185,38 +212,6 @@ public class SendToPresenterAction extends AbstractAction {
 	}
 	
 	
-	/**
-	 * write xepicur file for urn resolving and ingest into collection
-	 * @param path
-	 * @param collectionName
-	 * @param packageType
-	 * @param urn
-	 * @param checkSets
-	 * @return
-	 * @throws IOException
-	 * @throws RuntimeException if catched RepositoryException from ingest.
-	 */
-	private boolean createXEpicurAndIngest(Path path,String collectionName,String packageType,String urn,boolean checkSets) throws IOException{
-
-		XepicurWriter.createXepicur(
-				object.getIdentifier(), packageType, 
-				viewerUrls.get(packageType), 
-				path.toString(),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
-		
-		String[] sets = null;
-		if (checkSets){
-			if (!object.ddbExcluded()) {
-				sets = new String[]{ ddb };
-			}
-		}
-			
-		try {
-			return ingestPackage(urn, object.getIdentifier(), collectionName, path, object.getContractor().getShort_name(), packageType, sets);
-		} catch (RepositoryException e) {
-			throw new RuntimeException(e);
-		}
-		
-	}
 
 	/**
 	 * @param publicPIPSuccesfullyIngested
@@ -391,7 +386,7 @@ public class SendToPresenterAction extends AbstractAction {
 		if (file.getName().equalsIgnoreCase(DC+".xml")) {
 			fileId = DC;
 			isMetadataFile = true;
-			mimeType = "text/xml";
+			mimeType = C.MIMETYPE_TEXT_XML;
 		} else if (file.getName().equalsIgnoreCase(packageType + ".xml") || file.getName().equalsIgnoreCase(packageType + ".rdf")) {
 			fileId = packageType;
 			isMetadataFile = true;

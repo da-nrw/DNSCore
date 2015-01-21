@@ -20,9 +20,9 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Matchers.anyObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,36 +36,34 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.metadata.DCReader;
-import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
-import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class SendToPresenterActionTests {
+public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 
-	private SendToPresenterAction action;
+	@ActionUnderTest
+	SendToPresenterAction action = new SendToPresenterAction();
+	
+	
+	Path workAreaRootPath = Path.make(TC.TEST_ROOT_CB,"SendToPresenterActionTests");
+	
 	private DCReader dcReader;
-	private Object object;
 
 	@Before
 	public void setUp(){
-		object = TESTHelper.setUpObject("id1", new RelativePath("src/test/resources/cb/SendToPresenterActionTests"));
-		object.setUrn("urn");
 		
-		action = new SendToPresenterAction();
-		action.setObject(object);
-		action.setLocalNode(object.getTransientNodeRef());
+		n.setWorkAreaRootPath(workAreaRootPath);
+
 		RepositoryFacade repositoryFacade = mock(RepositoryFacade.class);
 		action.setRepositoryFacade(repositoryFacade);
 		
 		dcReader = mock(DCReader.class);
-		when(dcReader.getPackageTypeFromDC((Path)anyObject(),(Path)anyObject())).thenReturn("EAD");
+		when(dcReader.getPackageTypeFromDC((Path)anyObject())).thenReturn("EAD");
 		action.setDcReader(dcReader);
 		
 		Map<String,String> viewerUrls = new HashMap<String,String>();
@@ -89,7 +87,6 @@ public class SendToPresenterActionTests {
 		
 		Set<String> testContractors = new HashSet<String>();
 		action.setTestContractors(testContractors);
-		action.setPSystem(new PreservationSystem());
 	}
 	
 	@Test
@@ -104,7 +101,7 @@ public class SendToPresenterActionTests {
 	// happened during refactoring of atusecaseingestdelta
 	@Test 
 	public void testThrowErrorWhenTryingToExecuteWithoutURNSet(){
-		object.setUrn(null);
+		o.setUrn(null);
 		try {
 			action.checkSystemStatePreconditions();
 			fail();
