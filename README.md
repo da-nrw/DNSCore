@@ -78,7 +78,7 @@ The following five commands will get you started:
     mvn clean && mvn verify
     
 These commands will download the sourcecode, deploy the DNSCommon Library to your local Maven Repository,
-build the ContentBroker using the library, and executing a automated acceptance test suite against a 
+build the ContentBroker using the library, and execute an automated acceptance test suite against a 
 running ContentBroker which will get installed from an automatically generated installer. You'll find these at:
 
     [...]/DNSCore/ContentBroker/target/installation
