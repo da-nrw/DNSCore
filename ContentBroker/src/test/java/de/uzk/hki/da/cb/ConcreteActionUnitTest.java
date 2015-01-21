@@ -63,6 +63,8 @@ public class ConcreteActionUnitTest {
 	public void setUpBeforeActionTest() throws Exception{
 		ps = new PreservationSystem();
 		ps.setId(1);
+		ps.setOpenCollectionName("open-collection");
+		ps.setClosedCollectionName("closed-collection");
 		User psadmin = new User();
 		psadmin.setShort_name("TEST_PSADMIN");
 		psadmin.setEmailAddress("noreply");

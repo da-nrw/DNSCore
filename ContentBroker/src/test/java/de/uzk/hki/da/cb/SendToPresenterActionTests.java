@@ -19,7 +19,7 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -50,7 +50,7 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	SendToPresenterAction action = new SendToPresenterAction();
 	
 	
-	Path workAreaRootPath = Path.make(TC.TEST_ROOT_CB,"SendToPresenterActionTests");
+	Path workAreaRootPath = Path.make(TC.TEST_ROOT_CB,"SendToPresenterAction");
 	
 	private DCReader dcReader;
 
@@ -63,7 +63,7 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 		action.setRepositoryFacade(repositoryFacade);
 		
 		dcReader = mock(DCReader.class);
-		when(dcReader.getPackageTypeFromDC((Path)anyObject())).thenReturn("EAD");
+		when(dcReader.getPackageTypeFromDC((Path)anyObject())).thenReturn("METS");
 		action.setDcReader(dcReader);
 		
 		Map<String,String> viewerUrls = new HashMap<String,String>();
@@ -93,6 +93,7 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	public void testEADPackage(){
 		try {
 			action.implementation();
+			assertSame(1,o.getPublished_flag());
 		} catch (IOException e) {
 			fail();
 		}

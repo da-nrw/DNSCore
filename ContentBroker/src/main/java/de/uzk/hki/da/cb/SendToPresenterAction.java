@@ -48,6 +48,7 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Utilities;
 
 /** 
  * This action implements the ingest into the presentation repository.
@@ -108,9 +109,12 @@ public class SendToPresenterAction extends AbstractAction {
 			throw new IllegalStateException("fileFilter is not set");
 		if (testContractors == null)
 			throw new IllegalStateException("testContractors is not set");
-		
 		if (object.getUrn()==null||object.getUrn().isEmpty())
 			throw new RuntimeException("urn not set");
+		if (Utilities.isNotSet(preservationSystem.getOpenCollectionName()))
+			throw new RuntimeException("open collection name must be set");
+		if (Utilities.isNotSet(preservationSystem.getClosedCollectionName()))
+			throw new RuntimeException("closed collection name must be set");
 	}
 
 
@@ -390,6 +394,7 @@ public class SendToPresenterAction extends AbstractAction {
 		} else if (file.getName().equalsIgnoreCase(packageType + ".xml") || file.getName().equalsIgnoreCase(packageType + ".rdf")) {
 			fileId = packageType;
 			isMetadataFile = true;
+			System.out.println("aaa");
 		}
 
 		String label = file.getName();
