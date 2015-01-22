@@ -2,12 +2,15 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:amq="http://activemq.apache.org/schema/core"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
            http://www.springframework.org/schema/util
            http://www.springframework.org/schema/util/spring-util-3.0.xsd
            http://www.springframework.org/schema/task
-           http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+           http://www.springframework.org/schema/task/spring-task-3.0.xsd
+           http://activemq.apache.org/schema/core 
+           http://activemq.apache.org/schema/core/activemq-core.xsd">
           
     <import resource="classpath*:META-INF/beans-infrastructure.core.xml"/>      
     
@@ -124,5 +127,29 @@
 	<bean id="actionInformation" class="de.uzk.hki.da.action.ActionInformation" scope="prototype" init-method="init">
 		<property name="actionRegistry" ref="actionRegistry" />
 	</bean>
+	
+	<amq:broker id="mqBroker" useShutdownHook="true" useJmx="false" persistent="true" deleteAllMessagesOnStartup="true" start="false">
+	<amq:persistenceAdapter>
+   <amq:kahaDB directory="activemq-data" journalMaxFileLength="32mb"/>
+   </amq:persistenceAdapter>
+    <amq:systemUsage>
+    <amq:systemUsage>
+    	<amq:memoryUsage><amq:memoryUsage limit="4Mb" /></amq:memoryUsage>
+    	<amq:tempUsage><amq:tempUsage limit="100Mb" /></amq:tempUsage>
+    	<amq:storeUsage><amq:storeUsage limit="1GB" /></amq:storeUsage>
+   	</amq:systemUsage>
+   	</amq:systemUsage>
+    <amq:transportConnectors>
+      <amq:transportConnector uri="tcp://localhost:${cb.serverSocketNumber}" />
+    </amq:transportConnectors>
+  </amq:broker>
+  
+  <amq:connectionFactory brokerURL="tcp://localhost:${cb.serverSocketNumber}"
+  	id="mqConnectionFactory" />
+  
+  <bean id="jmsMessageServiceHandler" class="de.uzk.hki.da.service.JmsMessageServiceHandler">
+  	<property name="mqConnectionFactory" ref="mqConnectionFactory"/>
+  </bean>
+	
 	
 </beans>
