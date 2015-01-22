@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.tika.Tika;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -48,6 +47,7 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Utilities;
 
 /** 
  * This action implements the ingest into the presentation repository.
@@ -64,11 +64,6 @@ import de.uzk.hki.da.util.Path;
  * @author Sebastian Cuy
  * @author Daniel M. de Oliveira
  */
-/*
- * TODO refactor in a way that a single FOXML-File is created
- * and ingested based on the conversion events (and package type).
- * Set datastream labels from the events' source file.
-*/
 public class SendToPresenterAction extends AbstractAction {
 
 	private static final String OPEN_COLLECTION_URI = "info:fedora/collection:open";
@@ -82,9 +77,6 @@ public class SendToPresenterAction extends AbstractAction {
 	private static final String MEMBER = "info:fedora/fedora-system:def/relations-external#isMemberOf";
 	private static final String MEMBER_COLLECTION = "info:fedora/fedora-system:def/relations-external#isMemberOfCollection";
 	private static final String dip = "dip";
-	private static final String institution = "institution";
-	private static final String _public = "public";
-	private static final String pips = "pips";
 
 	private RepositoryFacade repositoryFacade;
 	private Map<String,String> viewerUrls;
@@ -110,9 +102,12 @@ public class SendToPresenterAction extends AbstractAction {
 			throw new IllegalStateException("fileFilter is not set");
 		if (testContractors == null)
 			throw new IllegalStateException("testContractors is not set");
-		
 		if (object.getUrn()==null||object.getUrn().isEmpty())
-			throw new RuntimeException("urn not set");
+			throw new IllegalStateException("urn not set");
+		if (Utilities.isNotSet(preservationSystem.getOpenCollectionName()))
+			throw new IllegalStateException("open collection name must be set");
+		if (Utilities.isNotSet(preservationSystem.getClosedCollectionName()))
+			throw new IllegalStateException("closed collection name must be set");
 	}
 
 
@@ -131,29 +126,120 @@ public class SendToPresenterAction extends AbstractAction {
 		purgeObjectsIfExist();
 		buildMapWithOriginalFilenamesForLabeling();
 		
-		Path pipPathPublic = Path.make(localNode.getWorkAreaRootPath(),pips,_public,object.getContractor().getShort_name(),object.getIdentifier());
-		Path pipPathInstitution = Path.make(localNode.getWorkAreaRootPath(),pips,institution,object.getContractor().getShort_name(),object.getIdentifier());
-		if (!pipPathPublic.toFile().exists()) 
-			logger.warn(pipPathPublic+" does not exist.");
-		if (!pipPathInstitution.toFile().exists()) 
-			logger.warn(pipPathInstitution + " does not exist.");
-
-		String packageType = getDcReader().getPackageTypeFromDC(pipPathPublic, pipPathInstitution);
-		logger.debug("read package type from dc: "+packageType);
-		if (!viewerUrls.containsKey(packageType))
-			logger.warn("could not determine a viewerUrl for package type");
-
-		boolean publicPIPSuccesfullyIngested = false;
+		boolean publicPIPSuccessfullyIngested = false;
 		boolean institutionPIPSuccessfullyIngested = false;
-		if (pipPathPublic.toFile().exists())
-			publicPIPSuccesfullyIngested = createXEpicurAndIngest(pipPathPublic,preservationSystem.getOpenCollectionName(),packageType,object.getUrn(),true);
-		if (pipPathInstitution.toFile().exists()) 
-			institutionPIPSuccessfullyIngested = createXEpicurAndIngest(pipPathInstitution, preservationSystem.getClosedCollectionName(), packageType, object.getUrn(), false);
+		try {
+			publicPIPSuccessfullyIngested = publishPackage(
+					C.WA_PUBLIC,true,preservationSystem.getOpenCollectionName());
+			institutionPIPSuccessfullyIngested = publishPackage(
+					C.WA_INSTITUTION,false,preservationSystem.getClosedCollectionName());	
+		} catch (RepositoryException e) {
+			throw new RuntimeException(e);
+		}
 		
-		setPublishedFlag(publicPIPSuccesfullyIngested,
+		setPublishedFlag(publicPIPSuccessfullyIngested,
 				institutionPIPSuccessfullyIngested);
 		return true;
 	}
+	
+	
+	@Override
+	public void rollback() {
+		purgeObjectsIfExist();
+		setPublishedFlag(false, false);
+		deleteXepicur();
+	}
+
+	private void deleteXepicur() {
+		
+		Path.makeFile(localNode.getWorkAreaRootPath(),C.WA_PIPS,
+				C.WA_PUBLIC,object.getContractor().getShort_name(),object.getIdentifier(),"epicur.xml").delete();
+		Path.makeFile(localNode.getWorkAreaRootPath(),C.WA_PIPS,
+				C.WA_INSTITUTION,object.getContractor().getShort_name(),object.getIdentifier(),"epicur.xml").delete();
+	}
+	
+
+	/**
+	 * 
+	 * @param pipType institution or public
+	 * @return
+	 * @throws IOException 
+	 * @throws RepositoryException 
+	 */
+	private boolean publishPackage(String pipType,boolean checkSets, String collectionName) throws IOException, RepositoryException {
+		Path pipPath = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS,pipType,object.getContractor().getShort_name(),object.getIdentifier());
+		if (!pipPath.toFile().exists()) {
+			logger.warn(pipPath + " does not exist.");
+			return false;
+		}
+		String pkgType = getDcReader().getPackageTypeFromDC(pipPath);
+		if (!viewerUrls.containsKey(pkgType))
+			logger.warn("could not determine a viewerUrl for package type of pip institution");
+		
+		XepicurWriter.createXepicur(
+				object.getIdentifier(), pkgType, 
+				viewerUrls.get(pkgType), 
+				pipPath.toString(),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
+		
+		boolean packageIngested=ingestPackage(object.getUrn(), object.getIdentifier(), collectionName, pipPath, 
+				object.getContractor().getShort_name(), pkgType, makeSets(checkSets));
+		addRelsExtRelationships(collectionName,makeSets(checkSets));
+		return packageIngested;
+	}
+	
+	
+	
+	private void addRelsExtRelationships(String collection,String[] sets) throws RepositoryException {
+		
+		// add RELS-EXT relationships
+		try {
+	
+			// add urn as owl:sameAs
+			repositoryFacade.addRelationship(object.getIdentifier(), collection, C.OWL_SAMEAS, object.getUrn());
+			logger.debug("Added relationship: "+C.OWL_SAMEAS+" "+object.getUrn());
+			
+			// add collection membership
+			String collectionUri;
+			if (preservationSystem.getClosedCollectionName().equals(collection)) {
+				collectionUri = CLOSED_COLLECTION_URI;
+			} else {
+				collectionUri = OPEN_COLLECTION_URI;
+			}
+			repositoryFacade.addRelationship(object.getIdentifier(), collection, MEMBER_COLLECTION, collectionUri);
+			logger.debug("Added relationship: "+MEMBER_COLLECTION+" "+ collectionUri);
+			
+			// add oai identifier
+			if (!(preservationSystem.getClosedCollectionName()+":").equals(collection) && 
+				// don't add test packages to OAI-PMH
+				!testContractors.contains(object.getContractor().getShort_name())
+			) {
+				String oaiId = C.OAI_DANRW_DE + object.getIdentifier();
+				repositoryFacade.addRelationship(object.getIdentifier(), collection, OPENARCHIVES_OAI_IDENTIFIER, oaiId);
+				logger.debug("Added relationship: "+OPENARCHIVES_OAI_IDENTIFIER+" " + oaiId);
+			}
+			
+			// add oai sets
+			if (sets != null) for (String set : sets) {
+				repositoryFacade.addRelationship(object.getIdentifier(), collection, MEMBER, "info:fedora/set:" + set);
+				logger.debug("Added relationship: "+MEMBER+" info:fedora/set:" + set);
+			}
+			
+		} catch (Exception e) {
+			throw new RepositoryException("Failed to add relationships for package in fedora",e);
+		}
+	}
+
+
+	private String[] makeSets(boolean checkSets) {
+		String[] sets = null;
+		if (checkSets){
+			if (!object.ddbExcluded()) {
+				sets = new String[]{ ddb };
+			}
+		}
+		return sets;
+	}
+	
 
 
 	/**
@@ -177,46 +263,14 @@ public class SendToPresenterAction extends AbstractAction {
 	 */
 	private void purgeObjectsIfExist(){
 		try {
-			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), preservationSystem.getOpenCollectionName());
-			getRepositoryFacade().purgeObjectIfExists(object.getIdentifier(), preservationSystem.getClosedCollectionName());
+			repositoryFacade.purgeObjectIfExists(object.getIdentifier(), preservationSystem.getOpenCollectionName());
+			repositoryFacade.purgeObjectIfExists(object.getIdentifier(), preservationSystem.getClosedCollectionName());
 		} catch (RepositoryException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
 	
-	/**
-	 * write xepicur file for urn resolving and ingest into collection
-	 * @param path
-	 * @param collectionName
-	 * @param packageType
-	 * @param urn
-	 * @param checkSets
-	 * @return
-	 * @throws IOException
-	 * @throws RuntimeException if catched RepositoryException from ingest.
-	 */
-	private boolean createXEpicurAndIngest(Path path,String collectionName,String packageType,String urn,boolean checkSets) throws IOException{
-
-		XepicurWriter.createXepicur(
-				object.getIdentifier(), packageType, 
-				viewerUrls.get(packageType), 
-				path.toString(),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
-		
-		String[] sets = null;
-		if (checkSets){
-			if (!object.ddbExcluded()) {
-				sets = new String[]{ ddb };
-			}
-		}
-			
-		try {
-			return ingestPackage(urn, object.getIdentifier(), collectionName, path, object.getContractor().getShort_name(), packageType, sets);
-		} catch (RepositoryException e) {
-			throw new RuntimeException(e);
-		}
-		
-	}
 
 	/**
 	 * @param publicPIPSuccesfullyIngested
@@ -296,50 +350,11 @@ public class SendToPresenterAction extends AbstractAction {
 		String content = new XMLOutputter().outputString(doc);
 		repositoryFacade.updateMetadataFile(objectId, collection, DC, content, DC+".xml", "text/xml");
 		logger.info("Successfully added identifiers to DC datastream");
-		
-		// add RELS-EXT relationships
-		try {
-
-			// add urn as owl:sameAs
-			repositoryFacade.addRelationship(objectId, collection, C.OWL_SAMEAS, urn);
-			logger.debug("Added relationship: "+C.OWL_SAMEAS+" "+urn);
-			
-			// add collection membership
-			String collectionUri;
-			if (preservationSystem.getClosedCollectionName().equals(collection)) {
-				collectionUri = CLOSED_COLLECTION_URI;
-			} else {
-				collectionUri = OPEN_COLLECTION_URI;
-			}
-			repositoryFacade.addRelationship(objectId, collection, MEMBER_COLLECTION, collectionUri);
-			logger.debug("Added relationship: "+MEMBER_COLLECTION+" "+ collectionUri);
-			
-			// add oai identifier
-			if (!(preservationSystem.getClosedCollectionName()+":").equals(collection) && 
-				// don't add test packages to OAI-PMH
-				!testContractors.contains(contractorShortName)
-			) {
-				String oaiId = C.OAI_DANRW_DE + objectId;
-				repositoryFacade.addRelationship(objectId, collection, OPENARCHIVES_OAI_IDENTIFIER, oaiId);
-				logger.debug("Added relationship: "+OPENARCHIVES_OAI_IDENTIFIER+" " + oaiId);
-			}
-			
-			// add oai sets
-			if (sets != null) for (String set : sets) {
-				repositoryFacade.addRelationship(objectId, collection, MEMBER, "info:fedora/set:" + set);
-				logger.debug("Added relationship: "+MEMBER+" info:fedora/set:" + set);
-			}
-			
-		} catch (Exception e) {
-			throw new RepositoryException("Failed to add relationships for package "+packagePath+" in fedora",e);
-		}
+	
 
 		return true;
 	}
 
-	
-	
-	
 	private void ingestDir(String objectId, String collection, File dir, String packagePath, String packageType) throws RepositoryException, IOException {
 			
 		File files[] = dir.listFiles(new FilenameFilter() {
@@ -391,7 +406,7 @@ public class SendToPresenterAction extends AbstractAction {
 		if (file.getName().equalsIgnoreCase(DC+".xml")) {
 			fileId = DC;
 			isMetadataFile = true;
-			mimeType = "text/xml";
+			mimeType = C.MIMETYPE_TEXT_XML;
 		} else if (file.getName().equalsIgnoreCase(packageType + ".xml") || file.getName().equalsIgnoreCase(packageType + ".rdf")) {
 			fileId = packageType;
 			isMetadataFile = true;
@@ -459,11 +474,6 @@ public class SendToPresenterAction extends AbstractAction {
 
 	public void setDcReader(DCReader dcReader) {
 		this.dcReader = dcReader;
-	}
-	
-	@Override
-	public void rollback() {
-		throw new NotImplementedException("No rollback implemented for this action");
 	}
 	
 	/**

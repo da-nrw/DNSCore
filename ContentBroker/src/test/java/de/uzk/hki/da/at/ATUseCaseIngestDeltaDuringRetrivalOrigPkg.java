@@ -16,7 +16,6 @@ import de.uzk.hki.da.service.HibernateUtil;
 
 public class ATUseCaseIngestDeltaDuringRetrivalOrigPkg extends AcceptanceTest{
 
-	private static final int _1_MINUTE = 60000;
 	private static String ORIG_NAME = "ATUseCaseIngestDeltaDuringRetrivalOrigPkg";
 	private static Object object;
 	private static final File retrievalFolder = new File("/tmp/unpackedDIP");
@@ -52,8 +51,6 @@ public class ATUseCaseIngestDeltaDuringRetrivalOrigPkg extends AcceptanceTest{
 	@Test
 	public void test() throws IOException, InterruptedException {
 		
-		Thread.sleep(_1_MINUTE);
-
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+ORIG_NAME+"_delta/"+ORIG_NAME+".tgz"), new File("src/test/resources/at"));
 		object = ath.ingestAndWaitForJobInState(ORIG_NAME, "950");
 		

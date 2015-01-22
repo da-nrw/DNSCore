@@ -41,7 +41,6 @@ public class ATUseCaseIngestDeltaContract extends AcceptanceTest{
 
 	private static final String OUTPUT_JPG_2 = "/tmp/abc2.jpg";
 	private static final String OUTPUT_JPG_1 = "/tmp/abc.jpg";
-	private static final int _1_MINUTE = 60000;
 	private static final String JPG_STREAM_ID = "_c9d29e93707f67182b6542a48214d95c.jpg";
 	private static final String DEFAULT_CONTAINER_EXTENSION = "tgz";
 	private static final String ORIG_NAME = "ATContractRightDeltas";
@@ -64,8 +63,6 @@ public class ATUseCaseIngestDeltaContract extends AcceptanceTest{
 		assertNotNull(is);
 		IOUtils.copy(is,new FileOutputStream(OUTPUT_JPG_1));
 		
-		Thread.sleep(_1_MINUTE); // to prevent the repnames to match the ones of the previous package
-		
 		o = ath.ingest(ORIG_NAME+"2",DEFAULT_CONTAINER_EXTENSION,ORIG_NAME);
 
 		InputStream is2 = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
@@ -73,8 +70,6 @@ public class ATUseCaseIngestDeltaContract extends AcceptanceTest{
 		assertNotNull(is2);
 		IOUtils.copy(is2,new FileOutputStream(OUTPUT_JPG_2));
 
-		Thread.sleep(_1_MINUTE); // to prevent the repnames to match the ones of the previous package
-		
 		o = ath.ingest(ORIG_NAME+"3",DEFAULT_CONTAINER_EXTENSION,ORIG_NAME);
 
 		InputStream is3 = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
