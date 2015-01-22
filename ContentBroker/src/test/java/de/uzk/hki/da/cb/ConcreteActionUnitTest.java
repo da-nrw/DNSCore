@@ -23,6 +23,7 @@ import java.lang.reflect.Field;
 import org.junit.Before;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -77,7 +78,7 @@ public class ConcreteActionUnitTest {
 		ps.getNodes().add(n);
 		
 		c = new User();
-		c.setShort_name("TEST");
+		c.setShort_name(C.TEST_USER_SHORT_NAME);
 		c.setEmailAddress("noreply");
 		
 		Package pkg = new Package();

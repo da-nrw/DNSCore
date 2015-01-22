@@ -23,6 +23,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,9 +33,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.metadata.DCReader;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
@@ -50,19 +53,17 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	SendToPresenterAction action = new SendToPresenterAction();
 	
 	
-	Path workAreaRootPath = Path.make(TC.TEST_ROOT_CB,"SendToPresenterAction");
-	
-	private DCReader dcReader;
+	private static final Path workAreaRootPath = Path.make(TC.TEST_ROOT_CB,"SendToPresenterAction");
+	private static final Path pipPublic = Path.make(workAreaRootPath,C.WA_PIPS,C.WA_PUBLIC,C.TEST_USER_SHORT_NAME,TC.IDENTIFIER);
+	private final DCReader dcReader = mock(DCReader.class);
+	private final RepositoryFacade repositoryFacade = mock(RepositoryFacade.class);
 
 	@Before
 	public void setUp(){
 		
 		n.setWorkAreaRootPath(workAreaRootPath);
-
-		RepositoryFacade repositoryFacade = mock(RepositoryFacade.class);
 		action.setRepositoryFacade(repositoryFacade);
 		
-		dcReader = mock(DCReader.class);
 		when(dcReader.getPackageTypeFromDC((Path)anyObject())).thenReturn("METS");
 		action.setDcReader(dcReader);
 		
@@ -89,8 +90,13 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 		action.setTestContractors(testContractors);
 	}
 	
+	@After
+	public void tearDown() {
+		Path.makeFile(pipPublic,"epicur.xml").delete();
+	}
+	
 	@Test
-	public void testEADPackage(){
+	public void implementationEADPackage(){
 		try {
 			action.implementation();
 			assertSame(1,o.getPublished_flag());
@@ -99,19 +105,62 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 		}
 	}
 	
-	// happened during refactoring of atusecaseingestdelta
+	@Test
+	public void createXepicur() throws IOException {
+		action.implementation();
+		assertTrue(Path.makeFile(pipPublic,"epicur.xml").exists());
+	}
+	
+	
 	@Test 
-	public void testThrowErrorWhenTryingToExecuteWithoutURNSet(){
+	public void preconditionsThrowErrorUrnNotSet(){
 		o.setUrn(null);
 		try {
 			action.checkSystemStatePreconditions();
 			fail();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		} catch (IllegalStateException e) {}
+	}
+	
+	@Test 
+	public void preconditionsThrowErrorClosedCollectionNotSet(){
+		ps.setOpenCollectionName(null);
+		try {
+			action.checkSystemStatePreconditions();
+			fail();
+		} catch (IllegalStateException e) {}
+	}
+	
+	@Test 
+	public void preconditionsThrowErrorOpenCollectionSet(){
+		ps.setClosedCollectionName(null);
+		try {
+			action.checkSystemStatePreconditions();
+			fail();
+		} catch (IllegalStateException e) {}
 	}
 	
 	
+	@Test
+	public void rollbackPurgeObject() throws RepositoryException {
+		action.rollback();
+		verify(repositoryFacade).purgeObjectIfExists(o.getIdentifier(), ps.getOpenCollectionName());
+		verify(repositoryFacade).purgeObjectIfExists(o.getIdentifier(), ps.getClosedCollectionName());
+	}
+	
+	@Test
+	public void rollbackResetPublishedFlag() {
+		o.setPublished_flag(3);
+		action.rollback();
+		assertSame(0,o.getPublished_flag());
+	}
+	
+	@Test
+	public void rollbackDeleteXepicur() throws IOException { 
+		action.implementation(); 
+		// xepicur proven to be created by Test createXepicur()
+		action.rollback();
+		assertFalse(Path.makeFile(pipPublic,"epicur.xml").exists());
+	}
 	
 	
 }
