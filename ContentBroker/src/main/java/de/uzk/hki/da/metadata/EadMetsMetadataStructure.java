@@ -7,12 +7,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.input.BOMInputStream;
 import org.jdom.Attribute;
 import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
@@ -33,6 +35,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	private List<File> metsFiles;
 	private List<MetsMetadataStructure> mmsList;
 	private List<String> missingMetsFiles;
+	private Document eadDoc;
 	
 	HashMap<String, Document> metsPathToDocument = new HashMap<String, Document>();
 	
@@ -41,6 +44,12 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		super(metadataFile, documents);
 	
 		eadFile = metadataFile;
+		
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		FileInputStream fileInputStream = new FileInputStream(eadFile);
+		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
+		eadDoc = builder.build(bomInputStream);
+		
 		metsReferencesInEAD = extractMetsRefsInEad();
 		metsFiles = getReferencedFiles(eadFile, metsReferencesInEAD, documents);
 				
@@ -49,9 +58,97 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			MetsMetadataStructure mms = new MetsMetadataStructure(metsFile, documents);
 			mmsList.add(mms);
 		}
+		
+		printIndexInfo();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+	@Override
+	protected HashMap<String, HashMap<String, String>> getIndexInfo() {
+		
+//		<ID<Attribut, Value>>
+		HashMap<String, HashMap<String, String>> indexInfo = new HashMap<String, HashMap<String,String>>();
+		
+//		Root
+		Element archdesc = eadDoc.getRootElement().getChild("archdesc");
+		
+//		First Level
+		Element dsc = archdesc.getChild("dsc");
+		List<Element> c01 = dsc.getChildren("c01");
+		
+//		Element: childElement
+//		String: isPartOf parentID
+		HashMap<Element, String> childElements = new HashMap<Element, String>();
+		for(Element e : c01) {
+			childElements.put(e, "root");
+		}
+		
+		for(int i=1; i<13; i++) {
+			
+			String nextLevel = (Integer.toString(i+1));
+			if(i<10) {
+				nextLevel = "c0"+nextLevel;
+			} else nextLevel = "c"+nextLevel;
+			
+			HashMap<Element, String> currentElements = new HashMap<Element, String>();
+			currentElements = childElements;
+			
+			for(Element element : currentElements.keySet()) {
+				HashMap<String, String> nodeInfo = new HashMap<String, String>();
+				childElements = new HashMap<Element, String>();
+				String uniqueID = UUID.randomUUID().toString();
+				String isPartOf = currentElements.get(element);
+				
+				nodeInfo.put("Level", Integer.toString(i));
+				nodeInfo.put("isPartOf", isPartOf);
+				
+				List<Element> children = element.getChildren();
+				for(Element child : children) {
+					if(child.getName().equals("did")) {
+						nodeInfo.put("Title", getTitle(child));
+						nodeInfo.put("Date", getDate(child));
+					} else if(child.getName().equals("daogrp")) {
+						nodeInfo.put("Reference", getHref(child));
+					} else if(child.getName().equals(nextLevel)) {
+						childElements.put(child, uniqueID);
+					}
+				}
+				indexInfo.put(uniqueID, nodeInfo);
+			}	
+		}
+		return indexInfo;
+	}
+	
+	private String getTitle(Element element) {
+		String title = "";
+		try {
+			title = element.getChild("unittitle").getValue();
+		} catch (Exception e) {
+			logger.error("No unittitle element found");
+		}
+		return title;
+	}
+	
+	private String getDate(Element element) {
+		String date = "";
+		try {
+			date = element.getChild("unitdate").getValue();
+		} catch (Exception e) {
+			logger.error("No unitdate element found");
+		}
+		return date;
+	}
+	
+	private String getHref(Element element) {
+		String href = "";
+		try {
+			href = element.getChild("daogrp").getChild("daoloc").getAttributeValue("href");
+		} catch (Exception e) {
+			logger.error("No unitdate element found");
+		}
+		return href;
+	}
 	
 	public File getMetadataFile() {
 		return eadFile;
@@ -64,11 +161,6 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	private List<String> extractMetsRefsInEad() throws JDOMException, IOException {
 		
 		List<String> metsReferences = new ArrayList<String>();
-		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		FileInputStream fileInputStream = new FileInputStream(eadFile);
-		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
-		Document eadDoc = builder.build(bomInputStream);
 	
 		XPath xPath = XPath.newInstance(EAD_XPATH_EXPRESSION);
 		

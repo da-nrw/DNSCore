@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -133,5 +134,11 @@ public class XMPMetadataStructure extends MetadataStructure{
 	@Override
 	public boolean isValid() {
 		return checkReferencedFiles();
+	}
+
+	@Override
+	protected HashMap<String, HashMap<String, String>> getIndexInfo() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

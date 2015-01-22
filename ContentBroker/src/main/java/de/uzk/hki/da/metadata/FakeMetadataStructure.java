@@ -3,6 +3,7 @@ package de.uzk.hki.da.metadata;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import org.jdom.JDOMException;
@@ -30,5 +31,10 @@ public class FakeMetadataStructure extends MetadataStructure{
 	public File getMetadataFile() {
 		return null;
 	}
-	
+
+	@Override
+	protected HashMap<String, HashMap<String, String>> getIndexInfo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

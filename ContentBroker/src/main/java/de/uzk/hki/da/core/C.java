@@ -112,6 +112,8 @@ public class C {
 	public static final String CONTRACT_V1_SCHEMA_LOCATION = "http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd";
 	public static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	public static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
+	public static final Namespace MODS_NS = Namespace.getNamespace("http://www.loc.gov/mods/v3");
+	public static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
 	
 	// Other
 	public static final String LOCAL_NODE_BEAN_NAME = "localNode";

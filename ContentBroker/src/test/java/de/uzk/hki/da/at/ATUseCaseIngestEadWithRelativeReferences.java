@@ -84,7 +84,7 @@ public class ATUseCaseIngestEadWithRelativeReferences extends AcceptanceTest {
 		
 		Document doc1 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_361", "mets_2_32044.xml").toFile()));
-		assertTrue(getMetsURL(doc1).equals("./Picture01.tif"));
+		assertTrue(getMetsURL(doc1).equals("Picture01.tif"));
 		assertTrue(getMetsMimetype(doc1).equals("image/tiff"));
 		
 		Document doc2 = builder.build
