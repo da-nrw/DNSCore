@@ -34,7 +34,7 @@ cp src/main/resources/frame.jsonld $1/conf
 mkdir $1/activemq-data
 mkdir $1/systemRules
 cp -r src/main/rules/* $1/systemRules
-mkdir $1/log
+sed "s@BUILD_NUMBER@$BUILD_NUMBER@" src/main/rules/irodsFederatedGridFacade/dns.re  > $1/systemRules/irodsFederatedGridFacade/dns.re
 touch $1/log/contentbroker.log
 touch $1/log/time_stamp_actions.csv
 echo -e "ContentBroker Version $2\nWritten by\n Daniel M. de Oliveira\n Jens Peters\n Sebastian Cuy\n Thomas Kleinke\n Polina Gubaidullina" > $1/README.txt

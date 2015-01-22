@@ -1692,48 +1692,27 @@ public class IrodsSystemConnector {
 	
 	/**
 	 * Federation to other zones.
-	 *
+	 * Depends on dns.re rule base
 	 * @param data_name the data_name
 	 * @param zone the zone
 	 * @param destPath the dest path
 	 * @param destresource the destresource
-	 * @deprecated use execute from file instead!
 	 * @author Jens Peters
 	 */
-	
-	 @Deprecated
-	public void federateDataObjectToZoneAsynchronously(String data_name, String zone, String destPath, String destresource) {
-		 	String resc = "null";
-			if (!destresource.equals("")) {
-				resc=destresource;
-			}	
-			String fed = "federateDAO||"
-				+"delayExec('<PLUSET>10s</PLUSET>',msiWriteRodsLog(\"Federating *data_name to " + zone + " \",*junk)##"
-				+"msiDataObjRsync(*data_name,IRODS_TO_IRODS," + resc + "," +destPath+",*replStatus),"
-				+"nop)|nop\n"
-				+ "%*data_name=" 
-				+ data_name
-				+"\nruleExecOut";
-			logger.debug("Rule: "+fed);
-			String result = executeRule(fed,
-					"*result");
-			logger.debug("Result: "+result);
-		
-	 }
-	 
-	 /**
-	  * At this point we have trust the IRODS ReServer the feration rules are up'n'runnin 
-	  * and it evaluates the AVU correctly 
-	  * 
-	  * @param data_name
-	  * @param zones
-	  * @return
-	  * @author Jens Peters
-	  */
-	 public boolean federateDao(String data_name, List<String> zones) {
-		 saveOrUpdateAVUMetadataDataObject(data_name, "federated_zones",  StringUtils.collectionToCommaDelimitedString(zones));
-		 if (!getAVUMetadataDataObjectValue(data_name, "federated_zones").equals("")) return true;
-		 return false;
+	public boolean federateDataObjectToConnectedZones(String data_name, String destresource, int min_defaultcopies) {
+	String fed = "federateObject {\n" 
+	       + "msiSplitPath(*data_name,*srcColl,*dao)\n"
+	       + "federateObject(*srcColl,*dao,*destResc,*min_copies)\n"
+	       +  "}\n"
+	       + "INPUT *destResc=\"" + destresource + "\", *data_name=\"" + data_name + "\", *min_copies=" + min_defaultcopies + "\n"
+		   + "OUTPUT ruleExecOut\n";       
+	logger.debug("Rule: "+fed);
+	String result = executeRule(fed,
+	"ruleExecOut");
+	logger.debug("Result: "+result);
+	if (result.contains("missing")) return false;
+	if (result.contains("fulfilled")) return true;
+	return false;
 	 }
 
 	/**
