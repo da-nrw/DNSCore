@@ -76,7 +76,6 @@ public class SendToPresenterAction extends AbstractAction {
 	private static final String OPENARCHIVES_OAI_IDENTIFIER = "http://www.openarchives.org/OAI/2.0/identifier";
 	private static final String MEMBER = "info:fedora/fedora-system:def/relations-external#isMemberOf";
 	private static final String MEMBER_COLLECTION = "info:fedora/fedora-system:def/relations-external#isMemberOfCollection";
-	private static final String dip = "dip";
 
 	private RepositoryFacade repositoryFacade;
 	private Map<String,String> viewerUrls;
@@ -250,7 +249,7 @@ public class SendToPresenterAction extends AbstractAction {
 		for (Event e:object.getLatestPackage().getEvents()) {			
 			if (!C.EVENT_TYPE_CONVERT.equals(e.getType())) continue;
 			DAFile targetFile = e.getTarget_file();
-			if (!targetFile.getRep_name().startsWith(dip)) continue;			
+			if (!targetFile.getRep_name().startsWith(C.WA_DIP)) continue;			
 			DAFile sourceFile = e.getSource_file();
 			labelMap.put(targetFile.getRelative_path(), sourceFile.getRelative_path());			
 		}

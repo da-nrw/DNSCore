@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
@@ -49,14 +50,14 @@ public class PublishImageMultipageTIFFTests {
 		String cmdPublic[] = new String[]{
 				"convert",
 				new File(workAreaRootPathPath+"/work/TEST/123/data/source/ALVR{}_Nr_4557_Aufn_249.tif").getAbsolutePath(),
-				new File(workAreaRootPathPath+"/work/TEST/123/data/dip/public/ALVR{}_Nr_4557_Aufn_249.jpg").getAbsolutePath()
+				new File(workAreaRootPathPath+"/work/TEST/123/data/"+C.WA_DIP+"/public/ALVR{}_Nr_4557_Aufn_249.jpg").getAbsolutePath()
 		};
 		when(cli.runCmdSynchronously(cmdPublic)).thenReturn(pi);
 		
 		String cmdInstitution[] = new String[]{
 				"convert",
 				new File(workAreaRootPathPath+"/work/TEST/123/data/source/ALVR{}_Nr_4557_Aufn_249.tif").getAbsolutePath(),
-				new File(workAreaRootPathPath+"/work/TEST/123/data/dip/institution/ALVR{}_Nr_4557_Aufn_249.jpg").getAbsolutePath()
+				new File(workAreaRootPathPath+"/work/TEST/123/data/"+C.WA_DIP+"/institution/ALVR{}_Nr_4557_Aufn_249.jpg").getAbsolutePath()
 		};
 		when(cli.runCmdSynchronously(cmdInstitution)).thenReturn(pi);
 		

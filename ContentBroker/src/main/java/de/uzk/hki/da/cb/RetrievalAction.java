@@ -222,7 +222,7 @@ public class RetrievalAction extends AbstractAction {
 			if (f.toRegularFile().getName().equals("premis.xml")) continue;
 				
 			File dest = Path.makeFile(tempFolder,"data",f.getRelative_path());
-			logger.info("file will be part of dip: "+dest.getAbsolutePath());
+			logger.info("file will be part of pip: "+dest.getAbsolutePath());
 			String destFolder = dest.getAbsolutePath().substring(0, dest.getAbsolutePath().lastIndexOf("/"));
 
 			new File(destFolder).mkdirs();

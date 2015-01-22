@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -111,7 +112,7 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 
 		cmdINSTITUTION = (String[]) ArrayUtils.addAll(cmdINSTITUTION, getRestrictionParametersForAudience("INSTITUTION"));
 		
-		DAFile instFile = new DAFile(pkg, "dip/institution", Utilities.slashize(ci.getTarget_folder()) + 
+		DAFile instFile = new DAFile(pkg, C.WA_DIP+"/institution", Utilities.slashize(ci.getTarget_folder()) + 
 				FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp4");
 		
 		if (!executeConversionTool(cmdINSTITUTION, instFile.toRegularFile()))

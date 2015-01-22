@@ -47,8 +47,8 @@
 		<property name="writePackageTypeToDC" value="true" />
 		<property name="repNames">
 			<util:list>
-				<value>dip/public</value>
-				<value>dip/institution</value>
+				<value>temp_pips/public</value>
+				<value>temp_pips/institution</value>
 			</util:list>
 		</property>		
 		<property name="dcMappings">

@@ -27,6 +27,7 @@ import java.text.ParseException;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
@@ -153,26 +154,26 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	 * get into the archive we extract the derivate before we build a tar file around the xIP.
 	 * 
 	 * Moves 
-	 * <li>from work/[csn]/[oid]/data/dip/public -> dip/public/[csn]/[oid]
-	 * <li>from work/[csn]/[oid]/data/dip/institution -> dip/institution/[csn]/[oid]
+	 * <li>from work/[csn]/[oid]/data/temp_pips/public -> dip/public/[csn]/[oid]
+	 * <li>from work/[csn]/[oid]/data/temp_pips/institution -> dip/institution/[csn]/[oid]
 	 * 
 	 * @param dipName has the form urn_pkgid
 	 * @throws IOException 
 	 */
 	private void copyPIPSforReplication() throws IOException {
 
-		if (Path.makeFile(object.getDataPath(),"dip","public").exists()){
+		if (Path.makeFile(object.getDataPath(),C.WA_DIP,"public").exists()){
 			logger.info("Copying public datastreams to " + publicDir.getAbsolutePath());
 			if (publicDir.exists()) FileUtils.deleteDirectory(publicDir);
 			FileUtils.copyDirectory(
-					Path.make(object.getDataPath(),"dip","public").toFile(), 
+					Path.make(object.getDataPath(),C.WA_DIP,"public").toFile(), 
 					publicDir);
 		}
-		if (Path.makeFile(object.getDataPath(),"dip","institution").exists()){
+		if (Path.makeFile(object.getDataPath(),C.WA_DIP,"institution").exists()){
 			logger.info("Copying institution datastreams to " + instDir);
 			if (instDir.exists()) FileUtils.deleteDirectory(instDir);
 			FileUtils.copyDirectory(
-					Path.make(object.getDataPath(),"dip","institution").toFile(), 
+					Path.make(object.getDataPath(),C.WA_DIP,"institution").toFile(), 
 					instDir);
 		}
 	}

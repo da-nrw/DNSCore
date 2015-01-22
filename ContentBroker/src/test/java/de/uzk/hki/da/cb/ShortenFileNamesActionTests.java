@@ -29,6 +29,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.util.RelativePath;
@@ -71,34 +72,34 @@ public class ShortenFileNamesActionTests extends ConcreteActionUnitTest{
 		Event event1 = new Event();
 		event1.setType("CONVERT");
 		event1.setSource_file(new DAFile(o.getLatestPackage(), "rep", "a.txt"));
-		event1.setTarget_file(new DAFile(o.getLatestPackage(), "dip/public", "a.txt"));
+		event1.setTarget_file(new DAFile(o.getLatestPackage(), C.WA_DIP+"/public", "a.txt"));
 		o.getLatestPackage().getEvents().add(event1);
 		Event event2 = new Event();
 		event2.setType("CONVERT");
 		event2.setSource_file(new DAFile(o.getLatestPackage(), "rep", "b.txt"));
-		event2.setTarget_file(new DAFile(o.getLatestPackage(), "dip/public", "b.txt"));
+		event2.setTarget_file(new DAFile(o.getLatestPackage(), C.WA_DIP+"/public", "b.txt"));
 		Event event3 = new Event();
 		o.getLatestPackage().getEvents().add(event2);
 		event3.setType("CONVERT");
 		event3.setSource_file(new DAFile(o.getLatestPackage(), "rep", "a.txt"));
-		event3.setTarget_file(new DAFile(o.getLatestPackage(), "dip/institution", "a.txt"));
+		event3.setTarget_file(new DAFile(o.getLatestPackage(), C.WA_DIP+"/institution", "a.txt"));
 		Event event4 = new Event();
 		o.getLatestPackage().getEvents().add(event3);
 		event4.setType("CONVERT");
 		event4.setSource_file(new DAFile(o.getLatestPackage(), "rep", "b.txt"));
-		event4.setTarget_file(new DAFile(o.getLatestPackage(), "dip/institution", "b.txt"));
+		event4.setTarget_file(new DAFile(o.getLatestPackage(), C.WA_DIP+"/institution", "b.txt"));
 		o.getLatestPackage().getEvents().add(event4);
 		
 		action.implementation();
 		
 		String newFileName = "_a5e54d1fd7bb69a228ef0dcd2431367e.txt";
-		assertTrue(new File(workAreaRootPath + "work/TEST/identifier/data/dip/public/" + newFileName).exists());
+		assertTrue(new File(workAreaRootPath + "work/TEST/identifier/data/"+C.WA_DIP+"/public/" + newFileName).exists());
 		newFileName = "_ce506ace22f28ac2bc4f933d4cf989fd.txt";
-		assertTrue(new File(workAreaRootPath + "work/TEST/identifier/data/dip/public/" + newFileName).exists());
+		assertTrue(new File(workAreaRootPath + "work/TEST/identifier/data/"+C.WA_DIP+"/public/" + newFileName).exists());
 		newFileName = "_a5e54d1fd7bb69a228ef0dcd2431367e.txt";
-		assertTrue(new File(workAreaRootPath + "work/TEST/identifier/data/dip/institution/" + newFileName).exists());
+		assertTrue(new File(workAreaRootPath + "work/TEST/identifier/data/"+C.WA_DIP+"/institution/" + newFileName).exists());
 		newFileName = "_ce506ace22f28ac2bc4f933d4cf989fd.txt";
-		assertTrue(new File(workAreaRootPath + "work/TEST/identifier/data/dip/institution/" + newFileName).exists());
+		assertTrue(new File(workAreaRootPath + "work/TEST/identifier/data/"+C.WA_DIP+"/institution/" + newFileName).exists());
 		
 	}
 	
