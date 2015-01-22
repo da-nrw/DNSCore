@@ -15,13 +15,13 @@ in OAIS terms could look like this, for example:
         	manifest-md5.txt
         	tagmanifest-md5.txt
         	data/
-        		2014_01_03+12_15+a/premis.xml
-        		2014_01_03+12_15+a/abc.jpg
-        		2014_01_03+12_15+a/cde.tif
-        		2014_01_03+12_15+a/subfolder/fgh.jpg
-        		2014_01_03+12_15+b/premis.xml
-        		2014_01_03+12_15+b/abc.tif
-        		2014_01_03+12_15+b/subfolder/fgh.tif
+        		2014_01_03+12_15_12+a/premis.xml
+        		2014_01_03+12_15_12+a/abc.jpg
+        		2014_01_03+12_15_12+a/cde.tif
+        		2014_01_03+12_15_12+a/subfolder/fgh.jpg
+        		2014_01_03+12_15_12+b/premis.xml
+        		2014_01_03+12_15_12+b/abc.tif
+        		2014_01_03+12_15_12+b/subfolder/fgh.tif
         		
 Here one has to note several details:
 
@@ -49,15 +49,15 @@ new entirely system generated files.
 
 Here an explanation for each of the newly generated files:
 
-        		2014_01_03+12_15+b/premis.xml
+        		2014_01_03+12_15_12+b/premis.xml
         		
 A premis file gets regenerated every time a package passes one of the workflows of the ContentBroker which lead
 to a new AIP. This means every time an alteration (more correct: addition) to the material destined for long term
 preservation gets made. It contains the events explaining the changes and the object history which the systems
 collects from different resources (file system, database, original premis files).
         		
-        		2014_01_03+12_15+b/abc.tif
-        		2014_01_03+12_15+b/subfolder/fgh.tif 
+        		2014_01_03+12_15_12+b/abc.tif
+        		2014_01_03+12_15_12+b/subfolder/fgh.tif 
         		
 These two are files created by the format module of the ContentBroker. For each of the jpg files of the a-rep the
 ContentBroker has done an ImageMagick conversion to create copies of them in the TIFF-format. Note that the hierarchy
@@ -65,7 +65,7 @@ of the files gets preserved.
         		
 But wait, for one original file there is no new version in the b-rep. We are speaking of
         		
-        		2014_01_03+12_15+a/cde.tif
+        		2014_01_03+12_15_12+a/cde.tif
         		
 Here the ContentBroker decided not to do any conversions to create a new datastream out of the original file. This
 is according to the rules and policies the system is configured with. Since TIFF is considered long term preservation
@@ -97,13 +97,13 @@ TODO anpassungen in metadaten
         	manifest-md5.txt
         	tagmanifest-md5.txt
         	data/
-        		2073_10_10+15_20+a/premis.xml
-        		2073_10_10+15_20+a/abc.[fmt_a]
-        		2073_10_10+15_20+a/cde.[fmt_b]
-        		2073_10_10+15_20+a/subfolder/fgh.[fmt_c]
-        		2073_10_10+15_20+b/premis.xml
-        		2073_10_10+15_20+b/abc.[fmt_c]
-        		2073_10_10+15_20+b/subfolder/fgh.[fmt_c]
+        		2073_10_10+15_20_37+a/premis.xml
+        		2073_10_10+15_20_37+a/abc.[fmt_a]
+        		2073_10_10+15_20_37+a/cde.[fmt_b]
+        		2073_10_10+15_20_37+a/subfolder/fgh.[fmt_c]
+        		2073_10_10+15_20_37+b/premis.xml
+        		2073_10_10+15_20_37+b/abc.[fmt_c]
+        		2073_10_10+15_20_37+b/subfolder/fgh.[fmt_c]
 
 ### Packages in WorkArea
 
@@ -123,20 +123,20 @@ the storage media.
         	manifest-md5.txt
         	tagmanifest-md5.txt
         	data/
-        		2014_01_03+12_15+a/premis.xml
-        		2014_01_03+12_15+a/abc.[fmt_a]
-        		2014_01_03+12_15+a/cde.[fmt_b]
-        		2014_01_03+12_15+a/subfolder/fgh.[fmt_c]
-        		2014_01_03+12_15+b/premis.xml
-        		2014_01_03+12_15+b/abc.[fmt_c]
-        		2014_01_03+12_15+b/subfolder/fgh.[fmt_c]
-        		2073_10_10+15_20+a/premis.xml
-        		2073_10_10+15_20+a/abc.[fmt_a]
-        		2073_10_10+15_20+a/cde.[fmt_b]
-        		2073_10_10+15_20+a/subfolder/fgh.[fmt_c]
-        		2073_10_10+15_20+b/premis.xml
-        		2073_10_10+15_20+b/abc.[fmt_c]
-        		2073_10_10+15_20+b/subfolder/fgh.[fmt_c]
+        		2014_01_03+12_15_13+a/premis.xml
+        		2014_01_03+12_15_13+a/abc.[fmt_a]
+        		2014_01_03+12_15_13+a/cde.[fmt_b]
+        		2014_01_03+12_15_13+a/subfolder/fgh.[fmt_c]
+        		2014_01_03+12_15_13+b/premis.xml
+        		2014_01_03+12_15_13+b/abc.[fmt_c]
+        		2014_01_03+12_15_13+b/subfolder/fgh.[fmt_c]
+        		2073_10_10+15_20_13+a/premis.xml
+        		2073_10_10+15_20_13+a/abc.[fmt_a]
+        		2073_10_10+15_20_13+a/cde.[fmt_b]
+        		2073_10_10+15_20_13+a/subfolder/fgh.[fmt_c]
+        		2073_10_10+15_20_13+b/premis.xml
+        		2073_10_10+15_20_13+b/abc.[fmt_c]
+        		2073_10_10+15_20_13+b/subfolder/fgh.[fmt_c]
         		
 ### State of AIP
 
