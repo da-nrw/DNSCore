@@ -193,7 +193,7 @@ public class RestructureAction extends AbstractAction{
 		logger.trace("createFirstRepresentation(job,"+physicalPathToAIP+")");
 		
 		Date dNow = new Date( );
-	    SimpleDateFormat ft = new SimpleDateFormat ("yyyy'_'MM'_'dd'+'HH'_'mm'+'");
+	    SimpleDateFormat ft = new SimpleDateFormat ("yyyy'_'MM'_'dd'+'HH'_'mm'_'ss'+'");
 	    String repName = ft.format(dNow);
 	    
 		

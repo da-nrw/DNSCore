@@ -7,17 +7,16 @@ import org.apache.tika.Tika;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.model.DAFile;
-
-public class MimeTypeDetectionService{
+public class MimeTypeDetectionService implements FormatIdentifier{
 
 	protected static Logger logger = LoggerFactory.getLogger(MimeTypeDetectionService.class);
 
-	public String detectMimeType(DAFile dafile) throws IOException {
+	
+	@Override
+	public String identify(File file) throws IOException {
 		
 		logger.debug("Detect MIMETYPE ");
 		
-		File file = dafile.toRegularFile();
 		String mimeType;
 
 		Tika tika = new Tika();

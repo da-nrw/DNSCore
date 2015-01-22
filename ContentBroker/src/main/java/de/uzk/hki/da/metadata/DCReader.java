@@ -40,12 +40,10 @@ public class DCReader {
 
 	static final Logger logger = LoggerFactory.getLogger(SendToPresenterAction.class);
 	
-	public String getPackageTypeFromDC(Path dipPathPublic, Path dipPathInstitution) {
+	public String getPackageTypeFromDC(Path pipPath) {
 			
 		String packageType = null;
-		File dcFile = Path.makeFile(dipPathPublic,"DC.xml");
-		if (!dcFile.exists())
-			dcFile = Path.makeFile(dipPathInstitution,"DC.xml");
+		File dcFile = Path.makeFile(pipPath,"DC.xml");
 		if (dcFile.exists()) {
 			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 			Document doc;

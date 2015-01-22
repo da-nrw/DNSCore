@@ -19,10 +19,11 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,40 +33,38 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.metadata.DCReader;
-import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
-import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class SendToPresenterActionTests {
+public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 
-	private SendToPresenterAction action;
-	private DCReader dcReader;
-	private Object object;
+	@ActionUnderTest
+	SendToPresenterAction action = new SendToPresenterAction();
+	
+	
+	private static final Path workAreaRootPath = Path.make(TC.TEST_ROOT_CB,"SendToPresenterAction");
+	private static final Path pipPublic = Path.make(workAreaRootPath,C.WA_PIPS,C.WA_PUBLIC,C.TEST_USER_SHORT_NAME,TC.IDENTIFIER);
+	private final DCReader dcReader = mock(DCReader.class);
+	private final RepositoryFacade repositoryFacade = mock(RepositoryFacade.class);
 
 	@Before
 	public void setUp(){
-		object = TESTHelper.setUpObject("id1", new RelativePath("src/test/resources/cb/SendToPresenterActionTests"));
-		object.setUrn("urn");
 		
-		action = new SendToPresenterAction();
-		action.setObject(object);
-		action.setLocalNode(object.getTransientNodeRef());
-		RepositoryFacade repositoryFacade = mock(RepositoryFacade.class);
+		n.setWorkAreaRootPath(workAreaRootPath);
 		action.setRepositoryFacade(repositoryFacade);
 		
-		dcReader = mock(DCReader.class);
-		when(dcReader.getPackageTypeFromDC((Path)anyObject(),(Path)anyObject())).thenReturn("EAD");
+		when(dcReader.getPackageTypeFromDC((Path)anyObject())).thenReturn("METS");
 		action.setDcReader(dcReader);
 		
 		Map<String,String> viewerUrls = new HashMap<String,String>();
@@ -89,31 +88,79 @@ public class SendToPresenterActionTests {
 		
 		Set<String> testContractors = new HashSet<String>();
 		action.setTestContractors(testContractors);
-		action.setPSystem(new PreservationSystem());
+	}
+	
+	@After
+	public void tearDown() {
+		Path.makeFile(pipPublic,"epicur.xml").delete();
 	}
 	
 	@Test
-	public void testEADPackage(){
+	public void implementationEADPackage(){
 		try {
 			action.implementation();
+			assertSame(1,o.getPublished_flag());
 		} catch (IOException e) {
 			fail();
 		}
 	}
 	
-	// happened during refactoring of atusecaseingestdelta
-	@Test 
-	public void testThrowErrorWhenTryingToExecuteWithoutURNSet(){
-		object.setUrn(null);
-		try {
-			action.checkSystemStatePreconditions();
-			fail();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+	@Test
+	public void createXepicur() throws IOException {
+		action.implementation();
+		assertTrue(Path.makeFile(pipPublic,"epicur.xml").exists());
 	}
 	
 	
+	@Test 
+	public void preconditionsThrowErrorUrnNotSet(){
+		o.setUrn(null);
+		try {
+			action.checkSystemStatePreconditions();
+			fail();
+		} catch (IllegalStateException e) {}
+	}
+	
+	@Test 
+	public void preconditionsThrowErrorClosedCollectionNotSet(){
+		ps.setOpenCollectionName(null);
+		try {
+			action.checkSystemStatePreconditions();
+			fail();
+		} catch (IllegalStateException e) {}
+	}
+	
+	@Test 
+	public void preconditionsThrowErrorOpenCollectionSet(){
+		ps.setClosedCollectionName(null);
+		try {
+			action.checkSystemStatePreconditions();
+			fail();
+		} catch (IllegalStateException e) {}
+	}
+	
+	
+	@Test
+	public void rollbackPurgeObject() throws RepositoryException {
+		action.rollback();
+		verify(repositoryFacade).purgeObjectIfExists(o.getIdentifier(), ps.getOpenCollectionName());
+		verify(repositoryFacade).purgeObjectIfExists(o.getIdentifier(), ps.getClosedCollectionName());
+	}
+	
+	@Test
+	public void rollbackResetPublishedFlag() {
+		o.setPublished_flag(3);
+		action.rollback();
+		assertSame(0,o.getPublished_flag());
+	}
+	
+	@Test
+	public void rollbackDeleteXepicur() throws IOException { 
+		action.implementation(); 
+		// xepicur proven to be created by Test createXepicur()
+		action.rollback();
+		assertFalse(Path.makeFile(pipPublic,"epicur.xml").exists());
+	}
 	
 	
 }

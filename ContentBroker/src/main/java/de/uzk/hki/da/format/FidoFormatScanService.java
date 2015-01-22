@@ -34,7 +34,7 @@ import de.uzk.hki.da.core.C;
  *
  * @author Daniel M. de Oliveira
  */
-class FidoFormatScanService implements FormatScanService {
+public class FidoFormatScanService implements FormatScanService, Connector {
 	
 	private ScriptWrappedPronomFormatIdentifier pronom;
 	
@@ -70,7 +70,7 @@ class FidoFormatScanService implements FormatScanService {
 
 
 	@Override
-	public boolean healthCheck() {
+	public boolean isConnectable() {
 		System.out.print("CONNECTIVITY CHECK - FidoFormatScanService - fido.sh ");
 		String puid;
 		try {

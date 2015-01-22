@@ -20,12 +20,11 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -86,7 +85,7 @@ public class UpdateMetadataActionEADTests {
 	@BeforeClass
 	public static void mockDca() throws IOException {
 		mtds = mock(MimeTypeDetectionService.class);
-		when(mtds.detectMimeType((DAFile)anyObject())).thenReturn("image/tiff");
+		when(mtds.identify((File)anyObject())).thenReturn("image/tiff");
 	}
 	
 	@Before

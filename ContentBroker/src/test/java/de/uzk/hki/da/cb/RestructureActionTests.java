@@ -41,7 +41,7 @@ import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
-import de.uzk.hki.da.format.StandardFileFormatFacade;
+import de.uzk.hki.da.format.ConfigurableFileFormatFacade;
 import de.uzk.hki.da.grid.FakeGridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
@@ -94,7 +94,7 @@ public class RestructureActionTests extends ConcreteActionUnitTest{
 		action.setIngestGate(gate);
 		
 		
-		FileFormatFacade ffs = mock(StandardFileFormatFacade.class);
+		FileFormatFacade ffs = mock(ConfigurableFileFormatFacade.class);
 	
 		DAFile file = new DAFile(o.getLatestPackage(),"rep+a","140849.tif");
 		file.setFormatPUID("fmt/353");

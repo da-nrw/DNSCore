@@ -239,7 +239,8 @@ acGetRescForRg(*rg,*res) {
 acGetHostsOnGrid(*hosts,*forbiddenNodes) {
         *hosts=list()
         *hst="";
-        msiAddSelectFieldToGenQuery("ZONE_NAME","null", *GenQ2)
+        *dont="vpn-hbz-pres:1247"
+	msiAddSelectFieldToGenQuery("ZONE_NAME","null", *GenQ2)
         msiAddSelectFieldToGenQuery("ZONE_TYPE","null", *GenQ2)
         msiAddSelectFieldToGenQuery("ZONE_CONNECTION","null", *GenQ2)
         msiAddConditionToGenQuery("ZONE_TYPE"," = ","remote",*GenQ2)
@@ -250,7 +251,9 @@ acGetHostsOnGrid(*hosts,*forbiddenNodes) {
         msiExecGenQuery(*GenQ2, *zones)
         foreach(*zones){
                  msiGetValByKey(*zones,"ZONE_CONNECTION",*host);
-                *hst="*host;*hst"
+                if (*host != *dont) {
+			*hst="*host;*hst"
+		}
         }
         msiCloseGenQuery(*GenQ2,*out)
         *hosts=split(*hst,";")
@@ -264,10 +267,10 @@ acGetHostsOnGrid(*hosts,*forbiddenNodes) {
 acGetZonesOnGrid(*zones,*forbiddenNodes) {
         *zones=list()
         *zn="";
-        msiAddSelectFieldToGenQuery("ZONE_NAME","null", *GenQ2)
+	msiAddSelectFieldToGenQuery("ZONE_NAME","null", *GenQ2)
         msiAddSelectFieldToGenQuery("ZONE_TYPE","null", *GenQ2)
         msiAddSelectFieldToGenQuery("ZONE_CONNECTION","null", *GenQ2)
-        msiAddConditionToGenQuery("ZONE_TYPE"," = ","remote",*GenQ2)
+	msiAddConditionToGenQuery("ZONE_TYPE"," = ","remote",*GenQ2)
         *attrVall=split(*forbiddenNodes, ",");
         foreach(*attrVal in *attrVall) {
              msiAddConditionToGenQuery("ZONE_NAME"," != ",*attrVal,*GenQ2)
@@ -275,7 +278,7 @@ acGetZonesOnGrid(*zones,*forbiddenNodes) {
         msiExecGenQuery(*GenQ2, *zonesRes)
         foreach(*zonesRes){
                  msiGetValByKey(*zonesRes,"ZONE_NAME",*zone);
-                *zn="*zone;*zn"
+			*zn="*zone;*zn"
         }
         msiCloseGenQuery(*GenQ2,*out)
         *zones=split(*zn,";")
@@ -288,10 +291,11 @@ acGetZonesOnGrid(*zones,*forbiddenNodes) {
 #
 acGetLocalZoneName(*zone) {
         *zone="";
-        msiAddSelectFieldToGenQuery("ZONE_NAME","null", *GenQ2)
+	msiAddSelectFieldToGenQuery("ZONE_NAME","null", *GenQ2)
         msiAddSelectFieldToGenQuery("ZONE_TYPE","null", *GenQ2)
         msiAddConditionToGenQuery("ZONE_TYPE"," = ","local",*GenQ2)
-        msiExecGenQuery(*GenQ2, *zones)
+ 
+	msiExecGenQuery(*GenQ2, *zones)
         foreach(*zones){
                  msiGetValByKey(*zones,"ZONE_NAME",*zone);
         }

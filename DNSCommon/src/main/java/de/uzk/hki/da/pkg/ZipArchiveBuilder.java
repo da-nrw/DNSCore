@@ -56,7 +56,7 @@ public class ZipArchiveBuilder implements ArchiveBuilder {
                     srcTar,
                     destFolder,false );
 
-        ProcessInformation pi = CommandLineConnector.runCmdSynchronously(new String[] {
+        ProcessInformation pi = new CommandLineConnector().runCmdSynchronously(new String[] {
                 "/usr/bin/jar", "-xf", FilenameUtils.getName(srcTar.getAbsolutePath()) },
                 destFolder,0);
         

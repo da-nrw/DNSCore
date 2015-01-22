@@ -41,5 +41,5 @@ interface FormatScanService {
 	 */
 	List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws IOException;
 	
-	boolean healthCheck();
+	public boolean isConnectable();
 }

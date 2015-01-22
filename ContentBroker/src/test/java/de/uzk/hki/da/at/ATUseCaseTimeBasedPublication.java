@@ -34,17 +34,20 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class ATPIPGen extends AcceptanceTest{
+public class ATUseCaseTimeBasedPublication extends AcceptanceTest{
 
 	private static final String XLINK_NAMESPACE = "http://www.w3.org/1999/xlink";
 	private static final String METS_NAMESPACE = "http://www.loc.gov/METS/";
 
+	private static final String ORIG_NAME_PREFIX =  "ATUCTimeBasedPubl";
+	
 	/**
 	 * @author ???
 	 * 
@@ -58,18 +61,18 @@ public class ATPIPGen extends AcceptanceTest{
 	public void testUpdateUrls() throws InterruptedException, IOException, JDOMException, RepositoryException{
 		
 		String name = "UpdateUrls";
-		ath.createObjectAndJob("ATPIPGen"+name,"700","METS","mets.xml");
+		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,C.WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION,"METS","mets.xml");
 
-		ath.waitForJobsToFinish("ATPIPGen"+name);
-		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
+		ath.waitForJobsToFinish(ORIG_NAME_PREFIX+name);
+		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
 		assertNotNull(object);
 		
-		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-open", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
-		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
-		InputStream metsStreamPublic = repositoryFacade.retrieveFile(object.getIdentifier(), "collection-open", "METS");
+		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		InputStream metsStreamPublic = repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "METS");
 		assertNotNull(metsStreamPublic);
 		assertTrue(metsStreamPublic.toString().length() > 0);
-		InputStream metsStreamClosed = repositoryFacade.retrieveFile(object.getIdentifier(), "collection-closed", "METS");
+		InputStream metsStreamClosed = repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "METS");
 		assertNotNull(metsStreamClosed);
 		
 		Namespace METS_NS = Namespace.getNamespace(METS_NAMESPACE);
@@ -106,12 +109,12 @@ public class ATPIPGen extends AcceptanceTest{
 	public void testPublishInstOnly() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "InstOnly";
-		ath.createObjectAndJob("ATPIPGen"+name,"700");
-		ath.waitForJobsToFinish("ATPIPGen"+name);
-		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
+		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,C.WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.waitForJobsToFinish(ORIG_NAME_PREFIX+name);
+		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
 		assertNotNull(object);
-		assertNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-open", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
-		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), "collection-closed", "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		assertNull(repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg"));
 		
 	}
 	
@@ -119,11 +122,11 @@ public class ATPIPGen extends AcceptanceTest{
 	public void testNoPubWithLawSet() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "NoPubWithLawSet";
-		ath.createObjectAndJob("ATPIPGen"+name,"700");
-		ath.waitForJobsToFinish("ATPIPGen"+name);
-		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
+		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,C.WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.waitForJobsToFinish(ORIG_NAME_PREFIX+name);
+		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
 		assertNotNull(object);
-		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
 		
 	}
 	
@@ -131,11 +134,11 @@ public class ATPIPGen extends AcceptanceTest{
 	public void testNoPubWithStartDateSet() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "NoPubWithStartDateSet";
-		ath.createObjectAndJob("ATPIPGen"+name,"700");
-		ath.waitForJobsToFinish("ATPIPGen"+name);
-		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
+		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,C.WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.waitForJobsToFinish(ORIG_NAME_PREFIX+name);
+		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
 		assertNotNull(object);
-		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
 		
 	}
 	
@@ -144,13 +147,13 @@ public class ATPIPGen extends AcceptanceTest{
 	public void testPublishNothing() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "PublishNothing";
-		ath.createObjectAndJob("ATPIPGen"+name,"700");
-		ath.waitForJobsToFinish("ATPIPGen"+name);
-		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
+		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,C.WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.waitForJobsToFinish(ORIG_NAME_PREFIX+name);
+		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
 		assertNotNull(object);
 		
-		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
-		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), "collection-closed"));
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getClosedCollectionName()));
 		
 	}
 	
@@ -158,12 +161,12 @@ public class ATPIPGen extends AcceptanceTest{
 	public void testPublishAll() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "AllPublic";
-		ath.createObjectAndJob("ATPIPGen"+name,"700");
-		ath.waitForJobsToFinish("ATPIPGen"+name);
-		Object object = ath.fetchObjectFromDB("ATPIPGen"+name);
+		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,C.WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.waitForJobsToFinish(ORIG_NAME_PREFIX+name);
+		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
 		assertNotNull(object);
-		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), "collection-open"));
-		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), "collection-closed"));
+		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
+		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getClosedCollectionName()));
 		
 	}
 	

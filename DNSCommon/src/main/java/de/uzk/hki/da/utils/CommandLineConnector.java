@@ -47,7 +47,7 @@ public class CommandLineConnector {
 	 * 
 	 * @author Daniel M. de Oliveira
 	 */
-	public static ProcessInformation runCmdSynchronously(String cmd[],File workingDir,long timeout) 
+	public ProcessInformation runCmdSynchronously(String cmd[],File workingDir,long timeout) 
 			throws IOException{
 
 		if (timeout==0) timeout=Long.MAX_VALUE;
@@ -69,7 +69,37 @@ public class CommandLineConnector {
 	}
 
 
-	private static void logCmd(String[] cmd, File workingDir) {
+	/**
+	 * Convenience method for {@link #runCmdSynchronously(String[], File)}
+	 * @author Daniel M. de Oliveira
+	 * @throws IOException 
+	 */
+	public ProcessInformation runCmdSynchronously(String cmd[]) throws IOException{
+		return runCmdSynchronously(cmd, null, 0);
+	}
+
+
+	/**
+	 * Convenience method for {@link #runCmdSynchronously(String[], File)}
+	 * @author Daniel M. de Oliveira
+	 * @throws IOException 
+	 */
+	public ProcessInformation runCmdSynchronously(String cmd[],long timeout) throws IOException{
+		return runCmdSynchronously(cmd, null, timeout);
+	}
+
+
+	/**
+	 * Convenience method for {@link #runCmdSynchronously(String[], File)}
+	 * @author Daniel M. de Oliveira
+	 * @throws IOException 
+	 */
+	public ProcessInformation runCmdSynchronously(String cmd[],File workingDir) throws IOException{
+		return runCmdSynchronously(cmd, workingDir, 0);
+	}
+
+
+	private void logCmd(String[] cmd, File workingDir) {
 		if ((workingDir==null)||(workingDir.equals("")))
 			Utilities.logger.debug("Running cmd \"{}\"", Arrays.toString(cmd));
 		else
@@ -77,7 +107,7 @@ public class CommandLineConnector {
 	}
 	
 	
-	private static Process startProcess(String[] cmd,File workingDir) throws IOException {
+	private Process startProcess(String[] cmd,File workingDir) throws IOException {
 		Process p=null;
 		ProcessBuilder pb = new ProcessBuilder(cmd);
 		if (workingDir!=null) pb.directory(workingDir);
@@ -86,7 +116,7 @@ public class CommandLineConnector {
 	}
 	
 
-	private static void waitForProcessToTerminate(Process p,long timeout) throws IOException {
+	private void waitForProcessToTerminate(Process p,long timeout) throws IOException {
 		
 		int timeElapsed=0;
 		while(true) {
@@ -109,7 +139,7 @@ public class CommandLineConnector {
 		}
 	}
 	
-	private static ProcessInformation assembleProcessInformation(Process p) throws IOException {
+	private ProcessInformation assembleProcessInformation(Process p) throws IOException {
 		ProcessInformation pi= new ProcessInformation();
 		pi.setStdErr(convertStream(p.getErrorStream()));
 		pi.setStdOut(convertStream(p.getInputStream()));
@@ -117,7 +147,7 @@ public class CommandLineConnector {
 		return pi;
 	}
 	
-	private static void closeStreams(Process p) throws IOException {
+	private void closeStreams(Process p) throws IOException {
 		
 		if (p != null){
 			p.getInputStream().close();
@@ -127,7 +157,7 @@ public class CommandLineConnector {
 	}
 	
 	
-	private static String convertStream(InputStream is) throws IOException {
+	private String convertStream(InputStream is) throws IOException {
 		
 		String stdOut="";
 		InputStream outStr= is;
@@ -137,34 +167,6 @@ public class CommandLineConnector {
 		}
 		outStr.close();
 		return stdOut;
-	}
-	
-	
-	/**
-	 * Convenience method for {@link #runCmdSynchronously(String[], File)}
-	 * @author Daniel M. de Oliveira
-	 * @throws IOException 
-	 */
-	public ProcessInformation runCmdSynchronously(String cmd[]) throws IOException{
-		return runCmdSynchronously(cmd, null, 0);
-	}
-
-	/**
-	 * Convenience method for {@link #runCmdSynchronously(String[], File)}
-	 * @author Daniel M. de Oliveira
-	 * @throws IOException 
-	 */
-	public static ProcessInformation runCmdSynchronously(String cmd[],long timeout) throws IOException{
-		return runCmdSynchronously(cmd, null, timeout);
-	}
-
-	/**
-	 * Convenience method for {@link #runCmdSynchronously(String[], File)}
-	 * @author Daniel M. de Oliveira
-	 * @throws IOException 
-	 */
-	public static ProcessInformation runCmdSynchronously(String cmd[],File workingDir) throws IOException{
-		return runCmdSynchronously(cmd, workingDir, 0);
 	}
 	
 }

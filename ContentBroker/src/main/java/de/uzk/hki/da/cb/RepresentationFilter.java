@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 public class RepresentationFilter implements FilenameFilter {
 	  
   	/** The pattern. */
-  	protected String pattern= "[0-9]{4}\\_[0-9]{2}\\_[0-9]{2}\\+[0-9]{2}\\_[0-9]{2}\\+[a-z]{1}";
+  	protected String pattern= "[0-9]{4}\\_[0-9]{2}\\_[0-9]{2}\\+[0-9]{2}\\_[0-9]{2}\\_[0-9]{2}\\+[a-z]{1}";
 	  
 	  /* (non-Javadoc)
   	 * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)

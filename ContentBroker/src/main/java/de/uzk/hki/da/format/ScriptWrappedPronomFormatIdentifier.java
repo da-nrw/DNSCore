@@ -38,7 +38,7 @@ import de.uzk.hki.da.utils.ProcessInformation;
  * 
  * @author Daniel M. de Oliveira
  */
-public class ScriptWrappedPronomFormatIdentifier implements FormatIdentificationStrategy {
+public class ScriptWrappedPronomFormatIdentifier implements FormatIdentifier, Connector {
 
 	private static final Logger logger = LoggerFactory.getLogger(ScriptWrappedPronomFormatIdentifier.class);
 
@@ -66,7 +66,7 @@ public class ScriptWrappedPronomFormatIdentifier implements FormatIdentification
 		if (!file.exists()) throw new Error("File doesn't exist");
 
 		
-		ProcessInformation pi = CommandLineConnector.runCmdSynchronously( new String[]{
+		ProcessInformation pi = new CommandLineConnector().runCmdSynchronously( new String[]{
 				
 				conversionScript.getAbsolutePath(),
 				file.getAbsolutePath()
@@ -91,7 +91,7 @@ public class ScriptWrappedPronomFormatIdentifier implements FormatIdentification
 	}
 
 	@Override
-	public boolean healthCheck() {
+	public boolean isConnectable() {
 		// TODO Auto-generated method stub
 		return false;
 	}

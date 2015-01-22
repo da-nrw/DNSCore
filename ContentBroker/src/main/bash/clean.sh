@@ -1,11 +1,11 @@
 #!/bin/bash
-
 # author: Daniel M. de Oliveira
 # author: Jens Peters
-echo clean iRODS Stuff
+
 
 if [ "$1" = "ci" ]
 then
+	echo clean iRODS Stuff
 	irm -rf /c-i/aip/TEST                2>/dev/null
 	irm -rf /c-i/pips/institution/TEST   2>/dev/null
 	irm -rf /c-i/pips/public/TEST        2>/dev/null
@@ -17,5 +17,12 @@ then
 	rm -r /ci/storage/IngestArea/TEST
 	mkdir /ci/storage/IngestArea/TEST
 	src/main/bash/rebuildIndex.sh
+
+else
+	src/main/bash/cleanHSQLDB.sh
 fi
+
+echo Stopping ContentBroker
+src/main/bash/ContentBroker_stop.sh
+
 

@@ -30,7 +30,6 @@ import de.uzk.hki.da.util.Path;
 
 public class ATUseCaseIngestDeltaLIDO extends AcceptanceTest{
 	
-	private static final int _1_MINUTE = 60000;
 	private static final String ORIG_NAME_ORIG = "ATUseCaseIngestDeltaLIDO";
 	private static final String DATA_DANRW_DE = "http://data.danrw.de";
 	private static Object object;
@@ -44,7 +43,6 @@ public class ATUseCaseIngestDeltaLIDO extends AcceptanceTest{
 		ath.ingest(ORIG_NAME_ORIG);
 		FileUtils.deleteQuietly(new File("src/test/resources/at/"+ORIG_NAME_ORIG+".tgz"));
 		
-		Thread.sleep(_1_MINUTE); // to prevent the repnames to match the ones of the previous package
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+ORIG_NAME_ORIG+"_delta/"+ORIG_NAME_ORIG+".tgz"), new File("src/test/resources/at"));
 		object = ath.ingest(ORIG_NAME_ORIG);
 		FileUtils.deleteQuietly(new File("src/test/resources/at/"+ORIG_NAME_ORIG+".tgz"));

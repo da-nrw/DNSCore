@@ -60,8 +60,9 @@ public interface FileFormatFacade {
 	 * @param file the file to extract the metadata from.
 	 * @param extractedMetadata the resulting xml .
 	 * @throws IOException
+	 * @throws ConnectionException 
 	 */
-	public void extract(File file, File extractedMetadata) throws IOException;
+	public boolean extract(File file, File extractedMetadata) throws IOException, ConnectionException;
 	
 	
 	/**
@@ -95,4 +96,22 @@ public interface FileFormatFacade {
 	 * @return true if necessary external programs are present in versions supported by the connectors. false otherwise.  
 	 */
 	public boolean connectivityCheck();
+
+
+	public FormatScanService getFormatScanService();
+
+
+	public MetadataExtractor getMetadataExtractor();
+
+
+	public void setMetadataExtractor(MetadataExtractor metadataExtractor);
+
+
+	public void setFormatScanService(FormatScanService formatScanService);
+
+
+	public FormatScanService getSubformatScanService();
+
+
+	public void setSubformatScanService(FormatScanService subformatScanService);
 }

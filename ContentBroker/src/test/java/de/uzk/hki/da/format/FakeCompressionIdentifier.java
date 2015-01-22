@@ -21,19 +21,19 @@ package de.uzk.hki.da.format;
 
 import java.io.File;
 
-import de.uzk.hki.da.format.FormatIdentificationStrategy;
+import de.uzk.hki.da.format.FormatIdentifier;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class FakeCompressionIdentifier implements FormatIdentificationStrategy{
+public class FakeCompressionIdentifier implements FormatIdentifier, Connector{
 
 	public String identify(File file) {
 		return "lzw";
 	}
 
 	@Override
-	public boolean healthCheck() {
+	public boolean isConnectable() {
 		return true;
 	}
 }

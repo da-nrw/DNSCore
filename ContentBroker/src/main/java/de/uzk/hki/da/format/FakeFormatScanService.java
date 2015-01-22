@@ -20,24 +20,20 @@
 package de.uzk.hki.da.format;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Fake implementation
  * @author Daniel M. de Oliveira
  */
-public class FakeFileFormatFacade implements FileFormatFacade {
+public class FakeFormatScanService implements FormatScanService{
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<FileWithFileFormat> identify(List<? extends FileWithFileFormat> files) throws FileNotFoundException{
+	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws FileNotFoundException{
 		
 		for (FileWithFileFormat f:files){
 			
@@ -144,26 +140,9 @@ public class FakeFileFormatFacade implements FileFormatFacade {
 	}
 
 
+	
 	@Override
-	public void extract(File file, File targetFile) throws IOException {
-		PrintWriter writer = new PrintWriter(targetFile, "UTF-8");
-		writer.println("<jhove>abc</jhove>");
-		writer.close();
-	}
-
-
-	@Override
-	public void registerSubformatIdentificationStrategyPuidMapping(
-			String subformatIdentificationStrategyName, String formatPuid) {
-	}
-
-
-	@Override
-	public boolean connectivityCheck() {
+	public boolean isConnectable() {
 		return true;
 	}
-
-	
-	
-
 }

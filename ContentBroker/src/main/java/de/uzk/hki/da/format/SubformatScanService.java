@@ -29,7 +29,7 @@ import java.util.Set;
 /**
  * @author Daniel M. de Oliveira
  */
-class SubformatScanService implements FormatScanService {
+public class SubformatScanService implements FormatScanService, Connector {
 
 	private Map<String,Set<String>> subformatIdentificationPolicies = new HashMap<String,Set<String>>();
 	
@@ -70,7 +70,7 @@ class SubformatScanService implements FormatScanService {
 	
 	
 
-	void setSubformatIdentificationPolicies(
+	public void setSubformatIdentificationPolicies(
 			 Map<String,Set<String>> subformatIdentificationPolicies) {
 		
 		// check if the classes can get instantiated
@@ -90,12 +90,12 @@ class SubformatScanService implements FormatScanService {
 	
 	
 	@SuppressWarnings("unchecked")
-	private FormatIdentificationStrategy createSFIInstance(String className) {
+	private FormatIdentifier createSFIInstance(String className) {
 		try {
-			FormatIdentificationStrategy sfi=null;
-			Class<FormatIdentificationStrategy> c;
-			c = (Class<FormatIdentificationStrategy>) Class.forName(className);
-			java.lang.reflect.Constructor<FormatIdentificationStrategy> co = c.getConstructor();
+			FormatIdentifier sfi=null;
+			Class<FormatIdentifier> c;
+			c = (Class<FormatIdentifier>) Class.forName(className);
+			java.lang.reflect.Constructor<FormatIdentifier> co = c.getConstructor();
 			sfi= co.newInstance();
 			return sfi;
 		}catch(Exception e) {
@@ -105,12 +105,12 @@ class SubformatScanService implements FormatScanService {
 	
 	
 	@Override
-	public boolean healthCheck() {
+	public boolean isConnectable() {
 		
 		boolean passed=true;
 		for (String s:subformatIdentificationPolicies.keySet()) {
 			System.out.print("CONNECTIVITY CHECK - "+s+".healthCheck()");
-			if (!createSFIInstance(s).healthCheck()) {
+			if (!((Connector)createSFIInstance(s)).isConnectable()) {
 				System.out.println(" .... FAIL");
 				passed=false;
 			}
