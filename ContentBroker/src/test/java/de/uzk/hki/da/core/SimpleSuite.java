@@ -163,7 +163,7 @@ import de.uzk.hki.da.util.PathTest;
 	PostRetrievalActionTest.class,
 	XMLSubformatIdentifierTests.class,
 	IngestAreaScannerWorkerTests.class,
-	JhoveMetadataExtractorTests.class
+	JhoveMetadataExtractorTests.class,
 })
 public class SimpleSuite {
 
