@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
@@ -48,6 +49,7 @@ import org.jdom.output.XMLOutputter;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.format.MimeTypeDetectionService;
 import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
@@ -456,7 +458,7 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		for (String repName : getRepNames()) {
 			// rename metadatafile for presentation
-			if (repName.startsWith("dip")) {
+			if (repName.startsWith(C.WA_DIP)) {
 				metadataFileName = packageType + "." + extension;
 			}
 			
@@ -501,7 +503,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			}
 			try {
 				for (String repName : getRepNames()) {
-					if (!repName.startsWith("dip") 	|| !representationExists(repName)) continue;
+					if (!repName.startsWith(C.WA_DIP) 	|| !representationExists(repName)) continue;
 					FileInputStream inputStream = new FileInputStream(Path.make(object.getDataPath(),repName,metadataFile).toString());
 					BOMInputStream bomInputStream = new BOMInputStream(inputStream);
 					XsltEDMGenerator xsltGenerator = new XsltEDMGenerator(xsltFile, bomInputStream);

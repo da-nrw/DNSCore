@@ -31,6 +31,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.util.ConfigurationException;
@@ -69,7 +70,7 @@ public class ShortenFileNamesAction extends AbstractAction {
 			logger.debug("event is CONVERT: {}", e);
 
 			DAFile daFile = e.getTarget_file();
-			if (!daFile.getRep_name().startsWith("dip")) continue;
+			if (!daFile.getRep_name().startsWith(C.WA_DIP)) continue;
 			
 			final File file = daFile.toRegularFile();
 			final String filePath = daFile.getRelative_path();

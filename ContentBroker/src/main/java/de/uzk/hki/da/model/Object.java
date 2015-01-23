@@ -57,6 +57,7 @@ import org.hibernate.annotations.FetchMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.Utilities;
@@ -126,9 +127,9 @@ public class Object {
 	private String metadata_file;
 
 	@Transient
-	private String DIP_PUBLIC_REPNAME = "dip/public";
+	private String DIP_PUBLIC_REPNAME = C.WA_DIP+"/public";
 	@Transient
-	private String DIP_INSTITUTION_REPNAME = "dip/institution";
+	private String DIP_INSTITUTION_REPNAME = C.WA_DIP+"/institution";
 	
 	/** The zone. */
 	private String zone;

@@ -47,6 +47,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.format.MimeTypeDetectionService;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -82,10 +83,10 @@ public class UpdateMetadataActionXMPTests {
 		DAFile daf1 = new DAFile(obj.getLatestPackage(),_1_A_REP,"a.txt");
 		DAFile daf2 = new DAFile(obj.getLatestPackage(),_1_B_REP,"a.txt");
 		DAFile daf3 = new DAFile(obj.getLatestPackage(),_1_B_REP,"a.xmp");
-		DAFile daf4 = new DAFile(obj.getLatestPackage(),"dip/institution","hasha.txt");
-		DAFile daf5 = new DAFile(obj.getLatestPackage(),"dip/public","hasha.txt");
-		DAFile daf6 = new DAFile(obj.getLatestPackage(),"dip/public","hashb.txt");
-		DAFile daf7 = new DAFile(obj.getLatestPackage(),"dip/institution","hashb.txt");
+		DAFile daf4 = new DAFile(obj.getLatestPackage(),C.WA_DIP+"/institution","hasha.txt");
+		DAFile daf5 = new DAFile(obj.getLatestPackage(),C.WA_DIP+"/public","hasha.txt");
+		DAFile daf6 = new DAFile(obj.getLatestPackage(),C.WA_DIP+"/public","hashb.txt");
+		DAFile daf7 = new DAFile(obj.getLatestPackage(),C.WA_DIP+"/institution","hashb.txt");
 		DAFile daf8 = new DAFile(obj.getLatestPackage(),_1_A_REP,"b.txt");
 		DAFile daf9 = new DAFile(obj.getLatestPackage(),_1_B_REP,"b.txt");
 		DAFile daf10 = new DAFile(obj.getLatestPackage(),_1_B_REP,"b.xmp");
@@ -151,7 +152,7 @@ public class UpdateMetadataActionXMPTests {
 		action.setMtds(mtds);
 		action.setObject(obj);
 		action.setJob(job);
-		action.setRepNames(new String[]{"dip/public", "dip/institution"});
+		action.setRepNames(new String[]{C.WA_DIP+"/public", C.WA_DIP+"/institution"});
 		
 		obj.setMetadata_file("XMP.rdf");
 		obj.setPackage_type("XMP");
@@ -165,34 +166,34 @@ public class UpdateMetadataActionXMPTests {
 
 	@After
 	public void tearDown() throws Exception {
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/hasha.xmp").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/hasha.xmp").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/hashb.xmp").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/hashb.xmp").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/XMP.rdf").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/XMP.rdf").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/DC.xml").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/DC.xml").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/a.xmp").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/a.xmp").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/public/b.xmp").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/dip/institution/b.xmp").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/public/hasha.xmp").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/institution/hasha.xmp").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/public/hashb.xmp").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/institution/hashb.xmp").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/public/XMP.rdf").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/institution/XMP.rdf").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/public/DC.xml").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/institution/DC.xml").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/public/a.xmp").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/institution/a.xmp").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/public/b.xmp").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/institution/b.xmp").toFile().delete();
 		FileUtils.deleteDirectory(new File("conf/xslt"));
 	}
 	
 	@Test
 	public void test() throws IOException, JDOMException, ParserConfigurationException, SAXException {
-		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/dip/public/hasha.xmp").exists());
-		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/dip/institution/hasha.xmp").exists());
-		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/dip/public/hashb.xmp").exists());
-		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/dip/institution/hashb.xmp").exists());
-		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/dip/public/XMP.rdf").exists());
-		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/dip/institution/XMP.rdf").exists());
-		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/dip/public/DC.xml").exists());
-		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/dip/institution/DC.xml").exists());
+		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/public/hasha.xmp").exists());
+		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/institution/hasha.xmp").exists());
+		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/public/hashb.xmp").exists());
+		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/institution/hashb.xmp").exists());
+		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/public/XMP.rdf").exists());
+		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/institution/XMP.rdf").exists());
+		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/public/DC.xml").exists());
+		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/institution/DC.xml").exists());
 		
 		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(new FileReader(Path.make(workAreaRootPath, "work/TEST/123/data/dip/public/XMP.rdf").toFile()));
+		Document doc = builder.build(new FileReader(Path.make(workAreaRootPath, "work/TEST/123/data/"+C.WA_DIP+"/public/XMP.rdf").toFile()));
 		assertTrue(checkRefs(doc));
 	}
 	

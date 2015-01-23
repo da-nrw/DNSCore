@@ -30,6 +30,7 @@ import org.apache.commons.io.FileSystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
@@ -66,8 +67,8 @@ public class ConverterService {
 		
 		List<Event> results = new ArrayList<Event>();
 		
-		// to register the dip subfolder into irods, it must exist (even if it is empty).
-		Path.make(object.getDataPath(),"dip").toFile().mkdir();
+		// to register the pip subfolder into irods, it must exist (even if it is empty).
+		Path.make(object.getDataPath(),C.WA_DIP).toFile().mkdir();
 		Path.makeFile(object.getPath("newest")).mkdir();
 		
 		for (ConversionInstruction ci:conversionInstructions){

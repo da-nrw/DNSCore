@@ -1,4 +1,4 @@
-# DNS Rule Base dns.re
+# DNS Rule Base dns.re Build No.: BUILD_NUMBER
 # 
 # HKI (2011-2013)
 # LVR InfoKom 2014
@@ -337,11 +337,11 @@ acFederateToZones(*coll,*dao,*destResc,*zones,*successZones,*min_copies) {
 	foreach(*zones){
 		if (*ok < *min_copies) {
             		*zone=elem(*zones,0)
-            		*mspace=elem(*zones,1)
+            		*items=elem(*zones,1)
 			*destColl="/*zone/federated*coll"
 			*err=errorcode(msiCollCreate(*destColl,"1",*nope))
 			*destDao="*destColl/*dao"
-			*log="Synchronize *coll/*dao to *destDao *zone which has already *mspace B used"
+			*log="Synchronize *coll/*dao to *destDao *zone which has already *items Items stored on it"
            		acLog(*log)	
 			*error=errorcode(msiDataObjRsync("*coll/*dao","IRODS_TO_IRODS",*destResc,*destDao,*Status))
            		if (*error < 0 ) {
@@ -358,6 +358,52 @@ acFederateToZones(*coll,*dao,*destResc,*zones,*successZones,*min_copies) {
 			}
 		}
  	}
+}
+
+# Federates dedicated object to zones 
+# INPUT srcColl the srcCollection
+# INPUT dao the data_name
+# INPUT default min_copies
+# OUTPUT 
+# Author Jens Peters
+federateObject(*srcColl, *dao, *destResc, *min_copies) {
+        acLog("---started federate Object---");
+        msiExecStrCondQuery("SELECT DATA_NAME, COLL_NAME, META_DATA_ATTR_NAME, META_DATA_ATTR_VALUE where COLL_NAME = '*srcColl' and DATA_NAME ='*dao' and META_DATA_ATTR_NAME = 'FEDERATED' and META_DATA_ATTR_VALUE = '0'",*colls)
+        foreach(*colls) {
+                        msiExecStrCondQuery("SELECT META_DATA_ATTR_NAME, META_DATA_ATTR_VALUE where COLL_NAME = '*srcColl' and DATA_NAME = '*dao' ",*attrs)
+                        *forb=""
+                        *syncs=""
+                        *mc=""
+                        foreach(*attrs) {
+                                msiGetValByKey(*attrs,"META_DATA_ATTR_NAME",*attr);
+                                if (*attr=="FORBIDDEN_NODES"){
+                                        msiGetValByKey(*attrs,"META_DATA_ATTR_VALUE",*forb);
+                                }
+                                if (*attr=="SYNCHRONIZED_TO"){
+                                        msiGetValByKey(*attrs,"META_DATA_ATTR_VALUE",*syncs);
+                                }
+                                if (*attr=="MIN_COPIES"){
+                                        msiGetValByKey(*attrs,"META_DATA_ATTR_VALUE",*mc);
+                                }
+                        }
+                        if (strlen(*mc)>0 && int(*mc)>0) {
+                                *min_copies=int(*mc)
+                        }
+                        if (strlen(*syncs)<=1) {
+                                acLog("syncing for the first time")
+                                acFederateLeastLoaded(*srcColl,*dao,*destResc,*successZones,*forb,*min_copies)
+                                *syncs=*successZones
+                        } else {
+                                acLog("trying to fulfill copy rule")
+                                *syncs="*syncs*forb"
+                                acFederateMissing(*srcColl,*dao,*destResc,*syncs,*min_copies)
+                        }
+                        msiGetSystemTime(*hu,*bulk)
+                        msiString2KeyValPair("SYNCHRONIZE_EVENT=*hu",*kvpaircs)
+                        msiSetKeyValuePairsToObj(*kvpaircs,"*srcColl/*dao","-d")
+                        acPrintSyncResults("*srcColl/*dao",*syncs,*min_copies)
+                }
+acLog("---Ended federate Object ---");
 }
 
 # Synchronizes Source Collections of n zones to given Collection
@@ -395,7 +441,6 @@ acSynchronizeZonesToCollection(*zones,*srcCollWithoutZone,*destColl,*destResc,*d
 
 # Gets a List of Hostnames ordered by the actual 
 # amount of free space on resource found in given resc group naem. 
-# Depends on locally running ServerMonitoring rules by Jean Yves
 # Author Jens Peters
 # RETURNS *servers as list(list("zone_name","mb")) by zone names ordered by free space
 # 
@@ -410,12 +455,12 @@ acGetHostsOrderedByDataStoredAsc(*servers, *rg,*forbiddenNodes) {
                 *err=errorcode(remote(*hosts,"null") {
                         *resource=""
                         acGetRescForRg(*rg,*resource)
-                        acGetUsedSpaceOnResc(*resource,*mbyte,"aip")
+                        acGetStoredItemsOnResc(*resource,*items,"aip")
                         acGetLocalZoneName(*zone)
-                        *ls="*zone,*mbyte;*ls"
+                        *ls="*zone,*items;*ls"
                 })
 		if (*err<0) {
-			acLog("recieved Error code *err on remotely determining free space on *hosts")
+			acLog("recieved Error code *err on remotely determining stored items on *hosts")
 		}
         }
 	*servers=list()
@@ -473,8 +518,8 @@ acFederateMissing(*coll,*dao,*destResc,*syncs,*min_copies) {
                 foreach(*syc) {
                       *lis=cons(list("*syc","9999"),*lis)
                 }
-                #acLog("checking already synced Zones: *lis")
-                #acFederateToZones(*coll,*dao,*destResc,*lis,*successZonesAlready,*min_copies)
+                acLog("checking already synced Zones: *lis")
+                acFederateToZones(*coll,*dao,*destResc,*lis,*successZonesAlready,*min_copies)
                 acLog("now synching to other Zones")
                 acFederateToZones(*coll,*dao,*destResc,*zones,*successZones,*min_copies)
                 *syncs="*syncs*successZones"
@@ -508,18 +553,18 @@ acPrintSyncResults(*dao,*syncs,*min_copies) {
          }
 }
 
-# Determines the used space in Bytes per collection and resc_name 
+# Determines the used space in items per collection and resc_name 
 # INPUT resc_name the resource name
 # OUTPUT bytes used
 # INPUT Collection name
-acGetUsedSpaceOnResc(*resc,*byte,*coll) {
+acGetStoredItemsOnResc(*resc,*byte,*coll) {
 	*out=0
-        msiExecStrCondQuery("SELECT sum(DATA_SIZE) where COLL_NAME like '%/*coll/%' and RESC_NAME = '*resc' ",*lc)
+        msiExecStrCondQuery("SELECT count(DATA_NAME) where COLL_NAME like '%/*coll/%' and RESC_NAME = '*resc' ",*lc)
         foreach(*lc) {
-                msiGetValByKey(*lc,"DATA_SIZE",*out);
+                msiGetValByKey(*lc,"DATA_NAME",*out);
         }
 	if (*out=="") { *out=0 }
-	writeLine("stdout","RESC *resc *out B")
+	writeLine("stdout","RESC *resc *out items")
         *byte=*out
 }
 #old fashioned rules, partly used for backward compatibility

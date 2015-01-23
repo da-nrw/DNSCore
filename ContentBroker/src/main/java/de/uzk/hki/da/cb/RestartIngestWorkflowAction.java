@@ -109,7 +109,7 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	
 	/**
 	 * 
-	 * Deletes previously created dips
+	 * Deletes previously created pips
 	 * 
 	 * @author Thomas Kleinke
 	 * @throws IOException 
