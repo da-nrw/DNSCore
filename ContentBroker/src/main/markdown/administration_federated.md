@@ -122,21 +122,21 @@ Imagine having an AIP in logical namespace
 
 	/zoneA/aip/TEST/123545/123545_pack.1.tar
 
-While having a running "federation service" and a federation to zoneB you'll find your federated items
-on zoneB at 
+While ingesting items with ContentBroker, it will initiate the request to fulfill the federation to all connected and writable other zones. It's the iRODS server's obligation to the copies in loosely coupled manner. All information about this process are being logged in CB's grid.log.
 	
 	/zoneB/federated/zoneA/aip/TEST/123545/123545_pack.1.tar
 	
 As you might already noticed: The path beneath folder federated is (logically) same as on zoneA.
 
-### Federation Service
+### Synchronizing Service
 
-The Federation service works permanently on time based schedule. It tries to copy ("federate") your stored AIP like a "cron" daemon, it defines an service 
+For all objects, which aren't successfully copied by the gridFacade an independent synchronzing service tries to fulfill 
+the needed copies. The Synchronizing service works permanently on time based schedule in IRODs, bt it needs to be started once. It tries to copy ("federate") your stored AIP like a "cron" daemon, which 
 
-Start the Federation service, which could be found ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/federate.r))
+Start the Synchronizing service, which could be found ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/synchronize.r))
 
   
-    irule -F federate.r
+    irule -F synchronize.r
     
 Take a look at the reLog (Rule engine log file) which could be found at 
 	
@@ -144,10 +144,16 @@ Take a look at the reLog (Rule engine log file) which could be found at
 	
 The Federation service should claim: 
 
-	--started Federation service---
-	--ended Federation service---
-	
-What it does is: 
+	--started Synchronize service---
+	--ended Synchronize service---
+
+Also you can control working rules by typing
+
+    iqstat
+
+Please be sure having only one synchronizing job! 
+
+What it does is (same as being fired by the gridFacade as client action): 
 
 1. Takes into account given forbidden nodes settings stored by CB after registry of AIP.
 1. Asks all Servers on your Grid for their already stored items. Measured by counting items sizes beneath "aip" folders and on longterm storage resources (which have are be member of resgroup lza).
@@ -158,13 +164,13 @@ It takes into account all "own" and already federated items. This should do a lo
 1. Store the original computed checksum to the copied AIP for reference at each zone. 
 5. Retry until reached and copied with equality of checksums. (synchronize)
 
-### Administer Federation
+### Administer Synchronizing
 
 Once activated federation service runs, even iRODS Server is restarted.
 
 Start 
 
-	irule -F federate.r
+	irule -F synchronize.r
 
 The Service asks for some settings after start:
 
@@ -174,24 +180,29 @@ The Service asks for some settings after start:
     New *homezone=
 	Default *min_copies=3
     New *min_copies=
-    
+    	Default *retryOlderThanHours=24
+    New *retryOlderThanHours=
+
 destResc : The resource group name, the syncing should go to,
 homezone : The own zone name 
 min_copies : The minimal copies need if not overruled by Clients (CB client does this in its preservation system)
+retryOlderThanHours: Retry all not fulfilled copies older than given hours.
+
+For easier maninting these actions you might pass your settings directly to the job!
 	
-check if Federation Service is running
+check if Synchronzing Service is running
 
 	iqstat 
 
 Command should list at least the Federation service
 
-Delete Federation service 
+Delete Synchronzing service 
 
 	iqstat
 	iqdel <ruleId>
 	
 Check Logfile for errors : reLog. 
-If Federation service prints out any error numbers, you might evaluate the error codes to their corresponding textual textual representation with 
+If Synchronzing service prints out any error numbers, you might evaluate the error codes to their corresponding textual textual representation with 
 
 e.g.
 
