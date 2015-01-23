@@ -71,7 +71,7 @@ This depends on your selected topology
 ### Setting up a node topology
 
 Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zones" as well as the concept of 
-having one Zone with several resource servers. Please refer to the iRODS Documentation about this. For working with DNSCore in Federations plese read [here](administration_federated.md)
+having one Zone with several resource servers. Please refer to the iRODS Documentation about this. For working with DNSCore in Federations plese read [here](administration_federated.md) DNS encourages usage of federation.
 
 Each Zone needs at least one database (so called ICAT Server). The use of Postgres is encouraged here. 
 
@@ -94,7 +94,7 @@ irodsGridFacade is the "one zone, only replications" mode. federatedGridFacade i
     cb.implementation.distributedConversion=irodsFederatedDistributedConversionAdapter
 
 The given settings for distributedConversion must be used the same way like the grid implementation. (Don't mix them) 
-
+In case of having an isolated presentation node, you might only have to define the respective  cb.implementation.distributedConversion setting .
 
 
 ## Upgrade iRODS
