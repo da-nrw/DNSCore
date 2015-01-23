@@ -27,6 +27,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.AudioRestriction;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
@@ -64,7 +65,7 @@ public class PublishAudioConversionStrategyTests {
 		String cmdPUBLIC[] = new String[]{
 				"sox",
 				new File(workAreaRootPathPath+"/work/TEST/123/data/a/audiofile.wav").getAbsolutePath(),
-				workAreaRootPathPath+"/work/TEST/123/data/dip/public/target/audiofile.mp3",
+				workAreaRootPathPath+"/work/TEST/123/data/"+C.WA_DIP+"/public/target/audiofile.mp3",
 				"trim","0","10"
 		};
 		
@@ -76,7 +77,7 @@ public class PublishAudioConversionStrategyTests {
 		String cmdINSTITUTION[] = new String[]{
 				"sox",
 				new File(workAreaRootPathPath+"/work/TEST/123/data/a/audiofile.wav").getAbsolutePath(),
-				workAreaRootPathPath+"/work/TEST/123/data/dip/institution/target/audiofile.mp3"
+				workAreaRootPathPath+"/work/TEST/123/data/"+C.WA_DIP+"/institution/target/audiofile.mp3"
 		};
 		when(cli.runCmdSynchronously(cmdINSTITUTION)).thenReturn(pi);
 		

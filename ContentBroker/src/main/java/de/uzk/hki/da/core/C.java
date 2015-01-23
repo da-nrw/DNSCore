@@ -79,7 +79,7 @@ public class C {
 	public static final String ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION = "Error during file format identification";
 
 	// WorkArea organization
-	public static final String WA_DIP = "dip";
+	public static final String WA_DIP = "temp_pips";
 	public static final String WA_AIP = "aip";
 	public static final String WA_DATA = "data";
 	public static final String WA_WORK = "work";

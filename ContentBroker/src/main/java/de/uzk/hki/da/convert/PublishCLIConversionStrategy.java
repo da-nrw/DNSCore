@@ -29,6 +29,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -61,7 +62,7 @@ public class PublishCLIConversionStrategy extends CLIConversionStrategy {
 		for (String audience: audiences ) {
 			
 			String audience_lc = audience.toLowerCase();
-			String repName = "dip/"+audience_lc;
+			String repName = C.WA_DIP+"/"+audience_lc;
 		
 			Path.make(object.getDataPath(),repName,ci.getTarget_folder()).toFile().mkdirs();
 			

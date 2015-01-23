@@ -32,6 +32,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.metadata.XPathUtils;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
@@ -69,8 +70,8 @@ public class PublishImageConversionStrategyTest {
 	@After
 	public void tearDown() {
 	try {
-			if (Path.makeFile(dataPath,"dip").exists())
-				FileUtils.deleteDirectory(Path.makeFile(dataPath,"dip"));			
+			if (Path.makeFile(dataPath,C.WA_DIP).exists())
+				FileUtils.deleteDirectory(Path.makeFile(dataPath,C.WA_DIP));			
 		} catch (IOException e) {}
 	}
 	
@@ -107,14 +108,14 @@ public class PublishImageConversionStrategyTest {
 				 "-resize","480x360", // ! ImageMagick expects this to be 2 params 
 				 "-font", "Arial", "-pointsize", "10", "-draw",
 				 "gravity north fill #0000007f text 0,15 'Hallo' fill #ffffff7f text 0,14 'Hallo'",
-				Path.makeFile(dataPath,"dip/public/target/filename.jpg").getAbsolutePath(),
+				Path.makeFile(dataPath,C.WA_DIP+"/public/target/filename.jpg").getAbsolutePath(),
 		};		
 		when(cli.runCmdSynchronously(cmdPUBLIC)).thenReturn(pi);
 		
 		String cmdINST[] = new String[]{
 				"convert",
 				Path.makeFile(dataPath,"a/filename.tif").getAbsolutePath(),
-				Path.makeFile(dataPath,"dip/institution/target/filename.jpg").getAbsolutePath()
+				Path.makeFile(dataPath,C.WA_DIP+"/institution/target/filename.jpg").getAbsolutePath()
 		};
 		when(cli.runCmdSynchronously(cmdINST)).thenReturn(pi);		
 		
@@ -138,8 +139,8 @@ public class PublishImageConversionStrategyTest {
 		assertEquals(sourceFile,events.get(0).getSource_file());
 		assertEquals(sourceFile,events.get(1).getSource_file());
 		
-		assertEquals(new DAFile(null,"dip/public","target/filename.jpg"),events.get(0).getTarget_file());
-		assertEquals(new DAFile(null,"dip/institution","target/filename.jpg"),events.get(1).getTarget_file());
+		assertEquals(new DAFile(null,C.WA_DIP+"/public","target/filename.jpg"),events.get(0).getTarget_file());
+		assertEquals(new DAFile(null,C.WA_DIP+"/institution","target/filename.jpg"),events.get(1).getTarget_file());
 	}
 	
 	/**
@@ -174,14 +175,14 @@ public class PublishImageConversionStrategyTest {
 					"caption:\"Hallo\"",
 					"-gravity", "south",
 					"-composite",
-					Path.makeFile(dataPath,"dip/public/target/filename.jpg").getAbsolutePath()
+					Path.makeFile(dataPath,C.WA_DIP+"/public/target/filename.jpg").getAbsolutePath()
 		};		
 		when(cli.runCmdSynchronously(cmdPUBLIC)).thenReturn(pi);
 		
 		String cmdINST[] = new String[]{
 				"convert",
 				Path.makeFile(dataPath,"a/filename.tif").getAbsolutePath(),
-				Path.makeFile(dataPath,"dip/institution/target/filename.jpg").getAbsolutePath()
+				Path.makeFile(dataPath,C.WA_DIP+"/institution/target/filename.jpg").getAbsolutePath()
 		};
 		when(cli.runCmdSynchronously(cmdINST)).thenReturn(pi);
 		
@@ -205,8 +206,8 @@ public class PublishImageConversionStrategyTest {
 		assertEquals(sourceFile,events.get(0).getSource_file());
 		assertEquals(sourceFile,events.get(1).getSource_file());
 		
-		assertEquals(new DAFile(null,"dip/public","target/filename.jpg"),events.get(0).getTarget_file());
-		assertEquals(new DAFile(null,"dip/institution","target/filename.jpg"),events.get(1).getTarget_file());
+		assertEquals(new DAFile(null,C.WA_DIP+"/public","target/filename.jpg"),events.get(0).getTarget_file());
+		assertEquals(new DAFile(null,C.WA_DIP+"/institution","target/filename.jpg"),events.get(1).getTarget_file());
 	}
 	
 	
@@ -239,14 +240,14 @@ public class PublishImageConversionStrategyTest {
 					"caption:\"Hallo\"",
 					"-gravity", "south",
 					"-composite",
-					Path.makeFile(dataPath,"dip/public/target/filename.jpg").getAbsolutePath()
+					Path.makeFile(dataPath,C.WA_DIP+"/public/target/filename.jpg").getAbsolutePath()
 		};		
 		when(cli.runCmdSynchronously(cmdPUBLIC)).thenReturn(pi);
 		
 		String cmdINST[] = new String[]{
 				"convert",
 				Path.makeFile(dataPath,"a/filename.tif").getAbsolutePath(),
-				Path.makeFile(dataPath,"dip/institution/target/filename.jpg").getAbsolutePath()
+				Path.makeFile(dataPath,C.WA_DIP+"/institution/target/filename.jpg").getAbsolutePath()
 		};
 		when(cli.runCmdSynchronously(cmdINST)).thenReturn(pi);
 		
@@ -276,8 +277,8 @@ public class PublishImageConversionStrategyTest {
 		assertEquals(sourceFile,events.get(0).getSource_file());
 		assertEquals(sourceFile,events.get(1).getSource_file());
 		
-		assertEquals(new DAFile(null,"dip/public","target/filename.jpg"),events.get(0).getTarget_file());
-		assertEquals(new DAFile(null,"dip/institution","target/filename.jpg"),events.get(1).getTarget_file());
+		assertEquals(new DAFile(null,C.WA_DIP+"/public","target/filename.jpg"),events.get(0).getTarget_file());
+		assertEquals(new DAFile(null,C.WA_DIP+"/institution","target/filename.jpg"),events.get(1).getTarget_file());
 	}
 	
 	//@Test
