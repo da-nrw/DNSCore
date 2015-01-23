@@ -38,11 +38,11 @@ public class ReplicationExecutorTest {
 		
 		isc = mock(IrodsSystemConnector.class);	
 		Node node = new Node();
-		User nodeadmin = new User(); nodeadmin.setEmailAddress("noreply@danrw.de");
+		User nodeadmin = new User(); nodeadmin.setEmailAddress("admin@zone.de");
 		node.setAdmin(nodeadmin);
 		
 		node.setWorkingResource("cacheresc");
-		node.setReplDestinations("lvr,hbz");
+		node.setReplDestinations("zoneA,zoneB");
 
 		List<String> targetResgroups = Arrays.asList(node.getReplDestinations().split(","));
 		String data_name = "/zone/aip/Cont/aip.tar";

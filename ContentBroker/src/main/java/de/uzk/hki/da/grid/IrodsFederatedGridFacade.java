@@ -60,8 +60,10 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		if (sp.getForbiddenNodes()!=null && !sp.getForbiddenNodes().isEmpty()) irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(gridPath, "FORBIDDEN_NODES", String.valueOf(sp));
 		irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(gridPath, "MIN_COPIES", String.valueOf(sp.getMinNodes()));
 		irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(gridPath, "FEDERATED", "0");
-		
 		irodsSystemConnector.logoff();
+		// We're using the localNode.replDestinations as federated commonly shared group name here (!)
+		Thread  fe = new FederationExecutor(irodsSystemConnector, localNode, gridPath,localNode.getReplDestinations());
+		fe.start();
 		return ret;
 	}
 	
