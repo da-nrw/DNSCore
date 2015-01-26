@@ -8,6 +8,8 @@
 ################# 
 
 REPO=target/installation/
+CI_INSTALL_PATH=/ci/ContentBroker
+DEV_INSTALL_PATH=target/ContentBroker
 VERSION=`cat ../VERSION.txt`
 SOURCE_PATH=`pwd`
 LANG="de_DE.UTF-8"
@@ -15,27 +17,12 @@ export LANG
 
 if [ "$1" = "dev" ]
 then
-		if [ $# -ne 2 ] 
-	then
-		echo you chose a development environment as target environment. call
-		echo "./install.sh dev <contentBrokerInstallationRootPath>"
-		exit 1
-	fi
-	INSTALL_PATH=$2
-	if [[ "${INSTALL_PATH:${#INSTALL_PATH}-1}" == "/" ]]; then
-		INSTALL_PATH="${INSTALL_PATH%?}"
-	fi	
-	if [ ! -d "$INSTALL_PATH" ]; then
-		echo Error: $INSTALL_PATH is not a directory.
-	  	exit 1
-	fi
 	HOME=`pwd`
-	if [ $INSTALL_PATH = $HOME ]; then 
-		echo Error target environment $INSTALL_PATH and current src tree are identical!
-		exit 1
-	fi
+	INSTALL_PATH=${HOME}/${DEV_INSTALL_PATH}
+	mkdir $INSTALL_PATH
+
 else 
-	INSTALL_PATH=/ci/ContentBroker
+	INSTALL_PATH=${CI_INSTALL_PATH}
 fi
 
 #############################
@@ -47,16 +34,6 @@ function createIrodsDirs(){
 	imkdir /c-i/pips/institution/TEST   2>/dev/null
 	imkdir /c-i/pips/public/TEST        2>/dev/null
 }
-
-# $1 = INSTALL_PATH
-#function stopContentBroker(){
-#	cd $1
-	#echo -e "\nTrying to start ContentBroker "
-	#kill -9 `ps -aef | grep ContentBroker.jar | grep -v grep | awk '{print $2}'` 2>/dev/null
-	#rm -f /tmp/cb.running
-#	./ContentBroker_stop.sh.template
-#    cd $SOURCE_PATH
-#}
 
 function startContentBroker(){
 	cd $1
@@ -87,7 +64,18 @@ function install(){
 }
 
 function launchXDB(){
+	DATABASE_PROC_ID=`ps -aef | grep hsqldb.jar | grep -v grep | awk '{print $2}'`
+	if [ "$DATABASE_PROC_ID" != "" ]
+	then
+	        echo Killing hsql database process $DATABASE_PROC_ID.
+	        kill -9 $DATABASE_PROC_ID
+	fi
+	
+	sleep 2
+	
 	echo Recreating da-nrw schema in hsql database.
+	rm -r mydb.tmp 2> /dev/null
+	rm mydb.*      2> /dev/null
 	
 	cd $HIER
 	java -cp ../3rdParty/hsqldb/lib/hsqldb.jar org.hsqldb.server.Server --database.0 file:mydb --dbname.0 xdb &
@@ -96,13 +84,26 @@ function launchXDB(){
 }
 
 
+## remove some stuff so that the installer can make the real files out of the template files again
+function cleanUpExistingInstallation(){
 
+	rm $1/conf/beans.xml > /dev/null
+	rm $1/conf/config.properties > /dev/null
+	rm $1/conf/hibernateCentralDB.cfg.xml > /dev/null
+	rm $1/conf/logback.xml > /dev/null
+	rm $1/ContentBroker_start.sh > /dev/null
+	rm $1/ContentBroker_stop.sh > /dev/null
+	rm $1/log/contentbroker.log
+	# > $INSTALL_PATH/log/contentbroker.log
+}
 
 #############################
 ######## MAIN ###############
 ############################# 
 
+
 src/main/bash/ContentBroker_stop.sh
+
 
 case "$1" in
 dev)
@@ -123,16 +124,7 @@ cp src/main/conf/config.properties.$1 conf/config.properties
 java -jar target/ContentBroker-SNAPSHOT.jar createSchema
 src/main/bash/populatetestdb.sh populate $1
 
-
-## remove some stuff so that the installer can make the real files out of the template files again
-rm $INSTALL_PATH/conf/beans.xml > /dev/null
-rm $INSTALL_PATH/conf/config.properties > /dev/null
-rm $INSTALL_PATH/conf/hibernateCentralDB.cfg.xml > /dev/null
-rm $INSTALL_PATH/conf/logback.xml > /dev/null
-rm $INSTALL_PATH/ContentBroker_start.sh > /dev/null
-rm $INSTALL_PATH/ContentBroker_stop.sh > /dev/null
-rm $INSTALL_PATH/log/contentbroker.log
-> $INSTALL_PATH/log/contentbroker.log
+cleanUpExistingInstallation $INSTALL_PATH
 
 install $INSTALL_PATH $BEANS
 sed -i "s/INFO/DEBUG/g" $INSTALL_PATH/conf/logback.xml
@@ -143,7 +135,4 @@ startContentBroker $INSTALL_PATH $1
 
 ## in case fake jhove will get used
 echo -e "<fakejhove>\n</fakejhove>" > /tmp/abc.txt
-
-
-
 

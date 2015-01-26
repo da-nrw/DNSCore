@@ -55,7 +55,8 @@ cp src/main/bash/ContentBroker_start.sh $INSTALLER/ContentBroker_start.sh.templa
 cp src/main/xml/hibernateCentralDB.cfg.xml.$1 $INSTALLER/hibernateCentralDB.cfg.xml
 case "$1" in
 dev)
-	sed "s@CONTENTBROKER_ROOT@$2@" src/main/conf/config.properties.dev  > $INSTALLER/config.properties # TODO move to pre-integration-test.sh
+	HOME=`pwd` 
+	sed "s@CONTENTBROKER_ROOT@${HOME}/target/ContentBroker@" src/main/conf/config.properties.dev  > $INSTALLER/config.properties # TODO move to pre-integration-test.sh
 	createStorageFolder	
 	cp src/main/conf/sqltool.rc ~/
 ;;
