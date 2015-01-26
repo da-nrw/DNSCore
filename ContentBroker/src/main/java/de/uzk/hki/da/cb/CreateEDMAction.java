@@ -20,6 +20,7 @@
 package de.uzk.hki.da.cb;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,6 +43,7 @@ import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.util.Path;
 
 /**
  * This action transforms the primary metadata of an
@@ -104,10 +106,15 @@ public class CreateEDMAction extends AbstractAction {
 			throw new RuntimeException("No conversion available for package type '" + packageType + "'. "+C.EDM_METADATA_STREAM_ID+" can not be created.");
 		}
 		
-		InputStream metadataStream = repositoryFacade.retrieveFile(objectId,preservationSystem.getOpenCollectionName(), packageType);
-		if (metadataStream==null){
-			throw new RuntimeException("Could not retrieve some of the metadata files  : " + packageType);
-		}
+		InputStream metadataStream = new FileInputStream(
+				Path.makeFile(localNode.getWorkAreaRootPath(),C.WA_PIPS,
+						C.WA_PUBLIC,object.getContractor().getShort_name(),object.getIdentifier(),packageType+C.FILE_EXTENSION_XML));
+				
+				
+//				repositoryFacade.retrieveFile(objectId,preservationSystem.getOpenCollectionName(), packageType);
+//		if (metadataStream==null){
+//			throw new RuntimeException("Could not retrieve some of the metadata files  : " + packageType);
+//		}
 		
 		String edmResult = generateEDM(objectId, xsltFile, metadataStream);
 		logger.debug(edmResult);

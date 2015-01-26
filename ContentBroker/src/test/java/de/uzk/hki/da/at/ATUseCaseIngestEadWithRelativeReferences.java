@@ -41,7 +41,7 @@ public class ATUseCaseIngestEadWithRelativeReferences extends AcceptanceTest {
 	private static Path contractorsPipsPublic;
 	private static String origName = "ATUseCaseIngestEADwithRelativeReferences";
 	private static Object object;
-	private static final String EAD_XML = "EAD.XML";
+	private static final String EAD_XML = "EAD.xml";
 	private static final File retrievalFolder = new File("/tmp/unpackedDIP");
 	
 	@BeforeClass
@@ -141,7 +141,7 @@ public class ATUseCaseIngestEadWithRelativeReferences extends AcceptanceTest {
 	
 	@Test
 	public void testIndex(){
-		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-d1e15821").
+		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-d1e8282").
 			contains("VDA - Forschungsstelle Rheinlländer in aller Welt"));
 	}
 	

@@ -458,8 +458,12 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		for (String repName : getRepNames()) {
 			// rename metadatafile for presentation
+			
+			logger.debug("metadataFileName="+metadataFileName);
 			if (repName.startsWith(C.WA_DIP)) {
-				metadataFileName = packageType + "." + extension;
+				metadataFileName = packageType + ".xml";
+				logger.debug("metadataFileName="+metadataFileName);
+				//+ extension;
 			}
 			
 			File destFile = new File(object.getDataPath() + "/" + repName + "/" + metadataFileName);

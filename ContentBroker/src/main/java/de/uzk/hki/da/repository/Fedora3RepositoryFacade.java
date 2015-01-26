@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +45,7 @@ import com.yourmediashelf.fedora.client.request.GetObjectProfile;
 import com.yourmediashelf.fedora.client.request.Ingest;
 import com.yourmediashelf.fedora.client.request.ModifyDatastream;
 import com.yourmediashelf.fedora.client.request.PurgeObject;
+import com.yourmediashelf.fedora.client.response.FedoraResponse;
 
 import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
 
@@ -122,6 +124,17 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			throw new RepositoryException("Unable to create metadata file: " + dsId, e);
 		}
 	}
+	
+	public void printDissemination(String objectId,String collection,String dsId) throws FedoraClientException, IOException {
+		String pid = generatePid(objectId, collection);
+		FedoraResponse resp=new GetDatastreamDissemination(pid, dsId).execute(fedora);
+		
+		String content = IOUtils.toString(resp.getEntityInputStream(), "UTF-8");
+		System.out.println("fedora says: "+content);
+	}
+	
+	
+	
 	
 	@Override
 	public void updateMetadataFile(String objectId, String collection, String dsId, String content, String label, String mimeType) throws RepositoryException {

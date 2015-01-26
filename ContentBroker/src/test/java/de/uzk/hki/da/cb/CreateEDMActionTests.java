@@ -34,25 +34,29 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
-import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
 
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class CreateEDMActionTests {
+public class CreateEDMActionTests extends ConcreteActionUnitTest{
 
+	@ActionUnderTest
+	CreateEDMAction action = new CreateEDMAction();
+	
+	
+	private static final Path WORK_AREA_ROOT_PATH = Path.make(TC.TEST_ROOT_CB,"CreateEDMAction");
+	
 	@Test
 	public void test() throws FileNotFoundException{
-		Object object = TESTHelper.setUpObject("123", Path.make("src/test/resources"));
+		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
 		
-		CreateEDMAction action = new CreateEDMAction();
 		RepositoryFacade repo = mock(Fedora3RepositoryFacade.class);
 
 		try {
@@ -62,7 +66,7 @@ public class CreateEDMActionTests {
 			when(repo.retrieveFile(anyString(),anyString(),anyString())).
 				thenReturn(
 						IOUtils.toInputStream(fakeDCFile, "UTF-8"),
-						new FileInputStream("src/test/resources/cb/CreateEDMActionTests/vda3.XML"));
+						new FileInputStream("src/test/resources/cb/CreateEDMAction/vda3.XML"));
 			
 		} catch (RepositoryException e) {
 			e.printStackTrace();
@@ -82,7 +86,6 @@ public class CreateEDMActionTests {
 
 		action.setPSystem(pSystem);
 		action.setRepositoryFacade(repo);
-		action.setObject(object);
 		try {
 			action.implementation();
 		} catch (IOException e) {

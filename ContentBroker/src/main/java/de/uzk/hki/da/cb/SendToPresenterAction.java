@@ -262,6 +262,8 @@ public class SendToPresenterAction extends AbstractAction {
 	 */
 	private void purgeObjectsIfExist(){
 		try {
+			logger.debug("purging: "+preservationSystem.getOpenCollectionName()+":"+object.getIdentifier());
+			logger.debug("purging: "+preservationSystem.getClosedCollectionName()+":"+object.getIdentifier());
 			repositoryFacade.purgeObjectIfExists(object.getIdentifier(), preservationSystem.getOpenCollectionName());
 			repositoryFacade.purgeObjectIfExists(object.getIdentifier(), preservationSystem.getClosedCollectionName());
 		} catch (RepositoryException e) {
@@ -391,8 +393,6 @@ public class SendToPresenterAction extends AbstractAction {
 	 * @throws IOException
 	 */
 	private boolean ingestFile(String objectId, String collection, File file, String packagePath, String packageType) throws RepositoryException, IOException {
-		
-		boolean isMetadataFile = false;
 
 		// Detect MIME-Type
 		String mimeType = detectMimeType(file);
@@ -401,31 +401,21 @@ public class SendToPresenterAction extends AbstractAction {
 		String relPath = file.getAbsolutePath().replace(packagePath + "/","");
 		String fileId = repositoryFacade.generateFileId(relPath);
 		
-		// special file IDs for metadata files
-		if (file.getName().equalsIgnoreCase(DC+".xml")) {
-			fileId = DC;
-			isMetadataFile = true;
-			mimeType = C.MIMETYPE_TEXT_XML;
-		} else if (file.getName().equalsIgnoreCase(packageType + ".xml") || file.getName().equalsIgnoreCase(packageType + ".rdf")) {
-			fileId = packageType;
-			isMetadataFile = true;
-		}
-
 		String label = file.getName();
 		if (labelMap.containsKey(fileId)) {
 			label = labelMap.get(fileId);
 		}
-		if (isMetadataFile) {
+		
+		if (file.getName().equalsIgnoreCase(DC+".xml")) {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			String content = IOUtils.toString(fileInputStream, ENCODING);
 			fileInputStream.close();
-			
-			repositoryFacade.createMetadataFile(objectId, collection, fileId, content, label, mimeType);
+			repositoryFacade.createMetadataFile(objectId, collection, DC, content, label, mimeType = C.MIMETYPE_TEXT_XML);
 		} else {
 			repositoryFacade.ingestFile(objectId, collection, fileId, file, label, mimeType);
 		}
+
 		logger.info("Successfully created datastream with fileId {} for file {}.",fileId,file.getName());
-		
 		return true;
 		
 	}

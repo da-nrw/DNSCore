@@ -19,9 +19,8 @@
 
 package de.uzk.hki.da.repository;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -32,8 +31,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
-import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.PasswordUtils;
 
 /**
@@ -42,8 +41,8 @@ import de.uzk.hki.da.utils.PasswordUtils;
 public class CTFedora3RepositoryFacadeTest {
 
 	private static final String TEST = "TEST";
+	private static final Path TEST_DIR = Path.make(TC.TEST_ROOT_REPOSITORY,"Fedora3RepositoryFacade");
 	private static final String OBJECTS_URL = "http://www.danrw.de/objects/";
-	private static final String OBJECT_ID = "1-120";
 	private static final String COLL_NAME = "collection-open";
 	private Fedora3RepositoryFacade fedora;
 
@@ -51,7 +50,12 @@ public class CTFedora3RepositoryFacadeTest {
 	@Before
 	public void setUp(){
 		try {
-			fedora = new Fedora3RepositoryFacade("http://localhost:8080/fedora", "fedoraAdmin", PasswordUtils.decryptPassword("BYi/MFjKDFd5Dpe52PSUoA=="), null);
+			
+			fedora = new Fedora3RepositoryFacade(
+					"http://localhost:8080/fedora", 
+					"fedoraAdmin", 
+					PasswordUtils.decryptPassword("BYi/MFjKDFd5Dpe52PSUoA=="), null);
+			
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -59,7 +63,7 @@ public class CTFedora3RepositoryFacadeTest {
 	
 	@After
 	public void tearDown() throws RepositoryException{
-		fedora.purgeObjectIfExists(OBJECT_ID, COLL_NAME);
+		fedora.purgeObjectIfExists(TC.IDENTIFIER, COLL_NAME);
 	}
 	
 	
@@ -67,13 +71,13 @@ public class CTFedora3RepositoryFacadeTest {
 	public void test() throws RepositoryException, IOException{
 		
 		String content=null;
-		FileInputStream fileInputStream = new FileInputStream(new File("src/test/resources/ct/Fedora3RepositoryFacadeTest/ead.xml"));
+		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(TEST_DIR,"ead.xml"));
 		content = IOUtils.toString(fileInputStream, C.ENCODING_UTF_8);
 		fileInputStream.close();
 		
-		fedora.createObject(OBJECT_ID, COLL_NAME, TEST);
+		fedora.createObject(TC.IDENTIFIER, COLL_NAME, TEST);
 		
-		fedora.createMetadataFile(OBJECT_ID, COLL_NAME, "ead123.xml", content, "label", "text/xml");
+		fedora.createMetadataFile(TC.IDENTIFIER, COLL_NAME, "ead123.xml", content, "label", C.MIMETYPE_TEXT_XML);
 	
 	}
 
@@ -81,8 +85,8 @@ public class CTFedora3RepositoryFacadeTest {
 	@Test
 	public void testAddRelationship() throws RepositoryException{
 		
-		fedora.createObject(OBJECT_ID, COLL_NAME, TEST);
-		fedora.addRelationship(OBJECT_ID, COLL_NAME, C.OWL_SAMEAS, OBJECTS_URL+OBJECT_ID);
+		fedora.createObject(TC.IDENTIFIER, COLL_NAME, TEST);
+		fedora.addRelationship(TC.IDENTIFIER, COLL_NAME, C.OWL_SAMEAS, OBJECTS_URL+TC.IDENTIFIER);
 		
 	}
 
@@ -92,8 +96,8 @@ public class CTFedora3RepositoryFacadeTest {
 	public void testAddRelationshipWithMalformedURL(){
 		
 		try{
-			fedora.createObject(OBJECT_ID, COLL_NAME, TEST);
-			fedora.addRelationship(OBJECT_ID, COLL_NAME, C.OWL_SAMEAS,null); // it seems that null is a problem
+			fedora.createObject(TC.IDENTIFIER, COLL_NAME, TEST);
+			fedora.addRelationship(TC.IDENTIFIER, COLL_NAME, C.OWL_SAMEAS,null); // it seems that null is a problem
 			fail();
 		}catch(RepositoryException e){}
 	}
