@@ -58,7 +58,7 @@ public class ATUseCaseIngestRheinlaender extends AcceptanceTest{
 	private static final String METS_ELEMENT_FILE_GRP = "fileGrp";
 	private static final String METS_ELEMENT_FILE_SEC = "fileSec";
 	private static final String URL = "URL";
-	private static final String EAD_XML = "EAD.XML";
+	private static final String EAD_XML = "EAD.xml";
 	private static Path contractorsPipsPublic;
 	private static final String origName = 		"ATUseCaseIngestRheinlaender";
 	private static Object object;
@@ -104,7 +104,7 @@ public class ATUseCaseIngestRheinlaender extends AcceptanceTest{
 	
 	@Test
 	public void testIndex(){
-		repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-d1e15821").
+		repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-d1e8282").
 			contains("VDA - Forschungsstelle Rheinlländer in aller Welt");
 	}
 	

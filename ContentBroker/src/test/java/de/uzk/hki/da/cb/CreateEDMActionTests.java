@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.PreservationSystem;
@@ -47,15 +48,26 @@ import de.uzk.hki.da.util.Path;
  */
 public class CreateEDMActionTests extends ConcreteActionUnitTest{
 
+	private static final String METS_MODS_TO_EDM_XSL = "src/main/xslt/edm/mets-mods_to_edm.xsl";
+
+
+	private static final String EAD_TO_EDM_XSL = "src/main/xslt/edm/ead_to_edm.xsl";
+
+
 	@ActionUnderTest
 	CreateEDMAction action = new CreateEDMAction();
 	
 	
 	private static final Path WORK_AREA_ROOT_PATH = Path.make(TC.TEST_ROOT_CB,"CreateEDMAction");
 	
+	@Before
+	public void setUp() {
+		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
+		
+	}
+	
 	@Test
 	public void test() throws FileNotFoundException{
-		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
 		
 		RepositoryFacade repo = mock(Fedora3RepositoryFacade.class);
 
@@ -75,8 +87,8 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 		}
 		
 		Map<String,String> edmMappings = new HashMap<String,String>();
-		edmMappings.put("EAD", "src/main/xslt/edm/ead_to_edm.xsl");
-		edmMappings.put("METS","src/main/xslt/edm/mets-mods_to_edm.xsl");
+		edmMappings.put("EAD", EAD_TO_EDM_XSL);
+		edmMappings.put("METS",METS_MODS_TO_EDM_XSL);
 		action.setEdmMappings(edmMappings);
 		
 		PreservationSystem pSystem = new PreservationSystem();
