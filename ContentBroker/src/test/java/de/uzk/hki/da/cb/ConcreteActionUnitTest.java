@@ -70,6 +70,9 @@ public class ConcreteActionUnitTest {
 		psadmin.setShort_name("TEST_PSADMIN");
 		psadmin.setEmailAddress("noreply");
 		ps.setAdmin(psadmin);
+		ps.setUrisCho("cho");
+		ps.setUrisAggr("aggr");
+		ps.setUrisLocal("local");
 		
 		n = new Node();
 		n.setName("testnode");

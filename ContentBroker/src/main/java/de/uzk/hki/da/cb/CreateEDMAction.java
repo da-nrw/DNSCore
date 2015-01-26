@@ -106,17 +106,14 @@ public class CreateEDMAction extends AbstractAction {
 			throw new RuntimeException("No conversion available for package type '" + packageType + "'. "+C.EDM_METADATA_STREAM_ID+" can not be created.");
 		}
 		
-		InputStream metadataStream = new FileInputStream(
-				Path.makeFile(localNode.getWorkAreaRootPath(),C.WA_PIPS,
-						C.WA_PUBLIC,object.getContractor().getShort_name(),object.getIdentifier(),packageType+C.FILE_EXTENSION_XML));
-				
-				
-//				repositoryFacade.retrieveFile(objectId,preservationSystem.getOpenCollectionName(), packageType);
-//		if (metadataStream==null){
-//			throw new RuntimeException("Could not retrieve some of the metadata files  : " + packageType);
-//		}
+		File metadataFile = Path.makeFile(localNode.getWorkAreaRootPath(),C.WA_PIPS,
+				C.WA_PUBLIC,object.getContractor().getShort_name(),object.getIdentifier(),packageType+C.FILE_EXTENSION_XML);
+		if (!metadataFile.exists())
+			throw new RuntimeException("Missing file in public PIP: "+packageType+C.FILE_EXTENSION_XML);
 		
-		String edmResult = generateEDM(objectId, xsltFile, metadataStream);
+		
+		
+		String edmResult = generateEDM(objectId, xsltFile, new FileInputStream(metadataFile));
 		logger.debug(edmResult);
 		
 		try {
