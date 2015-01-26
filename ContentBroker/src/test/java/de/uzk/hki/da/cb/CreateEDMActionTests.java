@@ -83,7 +83,7 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 		try {
 			action.checkSystemStatePreconditions();
 			fail();
-		} catch (RuntimeException e) {
+		} catch (IllegalStateException e) {
 			assertTrue(e.getMessage().contains("package type"));
 		}
 	}
