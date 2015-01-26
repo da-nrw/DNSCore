@@ -88,7 +88,7 @@ class QueueUtils {
 	 * @author Jens Peters
 	 */
 	String modifyJob (String id, newStatus, String additionalAnswer) {
-		def queueEntryInstance = QueueEntry.get(id)
+		def queueEntryInstance = QueueEntry.get(Integer.parseInt(id))
 		if (queueEntryInstance) {
 			def status = queueEntryInstance.getStatus()
 			int state = newStatus.toInteger();

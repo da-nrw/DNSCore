@@ -38,24 +38,56 @@ html * {
 
 body {
 	background: #ffffff;
-	color: #333333;
+	color: #51194b;
 	margin: 0 auto;
-	max-width: 960px;
+	max-width: 95%;
 	overflow-x: hidden; /* prevents box-shadow causing a horizontal scrollbar in firefox when viewport < 960px wide */
-	   -moz-box-shadow: 0 0 0.3em #255b17;
-	-webkit-box-shadow: 0 0 0.3em #255b17;
-	        box-shadow: 0 0 0.3em #255b17;
+	   -moz-box-shadow: 0 0 0.3em #333;
+	-webkit-box-shadow: 0 0 0.3em #333;
+	        box-shadow: 0 0 0.3em #333;
 }
 
-#grailsLogo {
-	background-color: #abbf78;
+#header {
+	background: #7a4274;
+	background: -moz-linear-gradient(top, #7a4274 0%, #51194b 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7a4274), color-stop(100%,#51194b));
+	background: -webkit-linear-gradient(top, #7a4274 0%,#51194b 100%);
+	background: -o-linear-gradient(top, #7a4274 0%,#51194b 100%);
+	background: -ms-linear-gradient(top, #7a4274 0%,#51194b 100%);
+	background: linear-gradient(top, #7a4274 0%,#51194b 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7a4274', endColorstr='#51194b',GradientType=0 );
+}
+
+#header h1 {
+	color: #fff;
+	display: inline;
+}
+
+#header-menu {
+	background-color: #fff;
+	margin: 0;
+	padding: 0;
+	text-align: right;
+}
+
+.message-box {
+	margin: 1em 0;
+}
+
+.message-box p {
+	padding: .5em;
+}
+
+.message-box .message-dismiss {
+	margin-left: 1em;
+	color: #ccc;
 }
 
 /* replace with .no-boxshadow body if you have modernizr available */
 .ie6 body,
 .ie7 body,
 .ie8 body {
-	border-color: #255b17;
+	border-color: #333;
 	border-style: solid;
 	border-width: 0 1px;
 }
@@ -65,7 +97,7 @@ body {
 }
 
 a:link, a:visited, a:hover {
-	color: #48802c;
+	color: #333;
 }
 
 a:hover, a:active {
@@ -73,7 +105,7 @@ a:hover, a:active {
 }
 
 h1 {
-	color: #48802c;
+	color: #333;
 	font-weight: normal;
 	font-size: 1.25em;
 	margin: 0.8em 0 0.3em 0;
@@ -89,9 +121,13 @@ img {
 
 /* GENERAL */
 
-#grailsLogo a {
+#header a {
 	display: inline-block;
 	margin: 1em;
+}
+
+#page-body {
+	padding: 1em;
 }
 
 .content {
@@ -108,8 +144,15 @@ img {
 }
 
 .footer {
-	background: #abbf78;
-	color: #000;
+	background: #7a4274;
+	background: -moz-linear-gradient(top, #7a4274 0%, #51194b 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7a4274), color-stop(100%,#51194b));
+	background: -webkit-linear-gradient(top, #7a4274 0%,#51194b 100%);
+	background: -o-linear-gradient(top, #7a4274 0%,#51194b 100%);
+	background: -ms-linear-gradient(top, #7a4274 0%,#51194b 100%);
+	background: linear-gradient(top, #7a4274 0%,#51194b 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7a4274', endColorstr='#51194b',GradientType=0 );
+	color: #FFFFFF;
 	clear: both;
 	font-size: 0.8em;
 	margin-top: 1.5em;
@@ -172,7 +215,7 @@ img {
 }
 
 .nav a:focus, .nav a:hover {
-	background-color: #999999;
+	background-color: #7a4274;
 	color: #ffffff;
 	outline: none;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
@@ -261,8 +304,8 @@ select[multiple] {
 }
 
 textarea {
-	width: 250px;
-	height: 150px;
+	width: 800px;
+	height: 300px;
 	overflow: auto; /* IE always renders vertical scrollbar without this */
 	vertical-align: top;
 }
@@ -450,7 +493,7 @@ th a:link, th a:visited {
 }
 
 th a:hover, th a:focus {
-	color: #333333;
+	color: #51194b;
 }
 
 th.sortable a {
@@ -475,8 +518,40 @@ th.desc a {
 	background: #ffffff;
 }
 
+.odd.status-type-1 {
+	background: #f7dada;
+}
+
+.even.status-type-1 {
+	background: #ffe0e0;
+}
+
+.odd.status-type-3 {
+	background: #f7dada;
+}
+
+.even.status-type-3 {
+	background: #ffe0e0;
+}
+
+.odd.status-type-4 {
+	background: #f7dada;
+}
+
+.even.status-type-4 {
+	background: #ffe0e0;
+}
+
+.odd.status-type-2 {
+	background: #f7f7da;
+}
+
+.even.status-type-2 {
+	background: #ffffe0;
+}
+
 th:hover, tr:hover {
-	background: #E1F2B6;
+	background: #b3eec5 !important;
 }
 
 /* PAGINATION */
@@ -506,7 +581,7 @@ th:hover, tr:hover {
 
 .pagination a:hover, .pagination a:focus,
 .pagination .currentStep {
-	background-color: #999999;
+	background-color: #7a4274;
 	color: #ffffff;
 	outline: none;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
@@ -551,7 +626,7 @@ th:hover, tr:hover {
 
 .buttons input:hover, .buttons input:focus,
 .buttons a:hover, .buttons a:focus {
-	background-color: #999999;
+	background-color: #7a4274;
 	color: #ffffff;
 	outline: none;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
@@ -571,11 +646,6 @@ th:hover, tr:hover {
 	background-position: 0.7em center;
 	background-repeat: no-repeat;
 	text-indent: 25px;
-}
-
-.ie6 .buttons input.delete, .ie6 .buttons input.edit, .ie6 .buttons input.save,
-.ie7 .buttons input.delete, .ie7 .buttons input.edit, .ie7 .buttons input.save {
-	padding-left: 36px;
 }
 
 .buttons .delete {

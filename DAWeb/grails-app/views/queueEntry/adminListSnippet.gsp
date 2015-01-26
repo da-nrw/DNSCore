@@ -68,7 +68,7 @@ function subForm(text, action) {
 			<g:set var="statusType" value="status-type-${queueEntryInstance.status[-1]}" />
 			<tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' ' + statusType}">
 				<g:if test="${params.search?.status != null && params.search?.status.length()==3}"><td>
-				<g:checkBox name="modifyIds" value="${fieldValue(bean: queueEntryInstance, field: "id")}" checked="false" />
+				<g:checkBox name="modifyIds" value="${queueEntryInstance.getId()}" checked="false" />
 				</td></g:if>
 				<td>
 					<g:if test="${queueEntryInstance.obj != null}">
@@ -143,7 +143,7 @@ function subForm(text, action) {
 		<g:if test="${params.search?.status != null && params.search?.status.length()==3}">
 		<input type="checkbox" onClick="toggle(this)"/>Alle an-/abwählen, für alle Pakete im Status ${params.search?.status}:
 			<g:if test="${ showRetryAll == "true"}">
-				<a onClick="return subForm('Nur den letzen Arbeitsschritt für alle Pakete wiederholen. Sind Sie sicher?','../queueRetryAll');"><img src="${resource(dir: 'images/icons', file: 'exchange32.png')}" style="width:16px; height:16px" alt="${message(code: 'default.workflow.icon.restart', default: 'Gesamten Workflow für Paket neu starten')}" title="${message(code: 'default.workflow.icon.retry', default: 'Workflow für Paket neu starten')}"/></a>
+				<a onClick="return subForm('Nur den letzten Arbeitsschritt für alle Pakete wiederholen. Sind Sie sicher?','../queueRetryAll');"><img src="${resource(dir: 'images/icons', file: 'exchange32.png')}" style="width:16px; height:16px" alt="${message(code: 'default.workflow.icon.restart', default: 'Gesamten Workflow für Paket neu starten')}" title="${message(code: 'default.workflow.icon.retry', default: 'Workflow für Paket neu starten')}"/></a>
 			</g:if>
 			<g:if test="${ showRecoverAll == "true" }">
 				<a onClick="return subForm('Den gesamten Workflow wiederholen? Sind Sie sicher?','../queueRecoverAll');"><img src="${resource(dir: 'images/icons', file: 'back-icon.png')}" style="width:16px; height:16px" title="${message(code: 'default.workflow.icon.restart', default: 'Gesamten Workflow für Paket neu starten')}" 
