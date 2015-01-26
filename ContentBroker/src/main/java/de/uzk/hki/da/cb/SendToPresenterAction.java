@@ -138,6 +138,9 @@ public class SendToPresenterAction extends AbstractAction {
 		
 		setPublishedFlag(publicPIPSuccessfullyIngested,
 				institutionPIPSuccessfullyIngested);
+		if (Utilities.isNotSet(object.getPackage_type())) {
+			setKILLATEXIT(true); // indexing and creating edm not possible
+		}
 		return true;
 	}
 	

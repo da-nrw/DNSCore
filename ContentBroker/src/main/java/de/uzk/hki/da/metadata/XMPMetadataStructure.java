@@ -119,7 +119,7 @@ public class XMPMetadataStructure extends MetadataStructure{
 	private boolean checkReferencedFiles() {
 		Boolean valid = true;
 		if(getReferences(descriptionElements).size()==0) {
-			logger.error("XMP.rdf does not contain any file references");
+			logger.error("XMP.xml does not contain any file references");
 			valid = false;
 		}
 		List<String> references = getReferences(descriptionElements);

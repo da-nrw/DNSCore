@@ -90,28 +90,32 @@ public class CreateEDMAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException, RepositoryException {
 		
-		String objectId = object.getIdentifier();
-		
 		String xsltFile = getEdmMappings().get(object.getPackage_type());
 		if (xsltFile == null) {
-			throw new RuntimeException("No conversion available for package type '" + object.getPackage_type() + "'. "+C.EDM_METADATA_STREAM_ID+" can not be created.");
+			throw new RuntimeException("No mapping for package type: '" + object.getPackage_type());
 		}
+		if (! new File(xsltFile).exists()) {
+			throw new FileNotFoundException("Missing file: "+xsltFile);
+		}
+		
+		
+		
 		
 		File metadataFile = Path.makeFile(localNode.getWorkAreaRootPath(),C.WA_PIPS,
 				C.WA_PUBLIC,object.getContractor().getShort_name(),object.getIdentifier(),object.getPackage_type()+C.FILE_EXTENSION_XML);
 		if (!metadataFile.exists())
 			throw new RuntimeException("Missing file in public PIP: "+object.getPackage_type()+C.FILE_EXTENSION_XML);
 		
-		String edmResult = generateEDM(objectId, xsltFile, new FileInputStream(metadataFile));
+		String edmResult = generateEDM(object.getIdentifier(), xsltFile, new FileInputStream(metadataFile));
 		logger.debug(edmResult);
 		
 		try {
-			repositoryFacade.createMetadataFile(objectId,preservationSystem.getOpenCollectionName(), C.EDM_METADATA_STREAM_ID, edmResult, "Object representation in Europeana Data Model", "application/rdf+xml");
+			repositoryFacade.createMetadataFile(object.getIdentifier(),preservationSystem.getOpenCollectionName(), C.EDM_METADATA_STREAM_ID, edmResult, "Object representation in Europeana Data Model", "application/rdf+xml");
 		} catch (RepositoryException e) {
 			throw new RuntimeException(e);
 		}
 		
-		logger.info("Successfully created EDM datastream for object {}.", objectId);
+		logger.info("Successfully created EDM datastream for object {}.", object.getIdentifier());
 
 		return true;
 	}

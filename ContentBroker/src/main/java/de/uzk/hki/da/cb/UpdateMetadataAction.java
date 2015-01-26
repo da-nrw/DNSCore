@@ -637,8 +637,8 @@ public class UpdateMetadataAction extends AbstractAction {
 			}
 			logger.debug("collecting files in path: {}", repPath);
 			
-			XmpCollector.collect(newestXmpFiles, new File(repPath + "/XMP.rdf"));
-			DAFile xmpFile = new DAFile(object.getLatestPackage(),repName,"XMP.rdf");
+			XmpCollector.collect(newestXmpFiles, new File(repPath + "/XMP.xml"));
+			DAFile xmpFile = new DAFile(object.getLatestPackage(),repName,"XMP.xml");
 			object.getLatestPackage().getFiles().add(xmpFile);
 			object.getLatestPackage().getEvents().add(createCreateEvent(xmpFile));
 			

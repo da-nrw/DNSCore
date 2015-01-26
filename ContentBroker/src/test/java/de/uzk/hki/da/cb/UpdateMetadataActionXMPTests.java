@@ -154,7 +154,7 @@ public class UpdateMetadataActionXMPTests {
 		action.setJob(job);
 		action.setRepNames(new String[]{C.WA_DIP+"/public", C.WA_DIP+"/institution"});
 		
-		obj.setMetadata_file("XMP.rdf");
+		obj.setMetadata_file("XMP.xml");
 		obj.setPackage_type("XMP");
 		
 		Map<String, String> dcMappings = new HashMap<String,String>();
@@ -170,8 +170,8 @@ public class UpdateMetadataActionXMPTests {
 		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/institution/hasha.xmp").toFile().delete();
 		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/public/hashb.xmp").toFile().delete();
 		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/institution/hashb.xmp").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/public/XMP.rdf").toFile().delete();
-		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/institution/XMP.rdf").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/public/XMP.xml").toFile().delete();
+		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/institution/XMP.xml").toFile().delete();
 		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/public/DC.xml").toFile().delete();
 		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/institution/DC.xml").toFile().delete();
 		Path.make(workAreaRootPath,"work/TEST/123/data/"+C.WA_DIP+"/public/a.xmp").toFile().delete();
@@ -187,13 +187,13 @@ public class UpdateMetadataActionXMPTests {
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/institution/hasha.xmp").exists());
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/public/hashb.xmp").exists());
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/institution/hashb.xmp").exists());
-		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/public/XMP.rdf").exists());
-		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/institution/XMP.rdf").exists());
+		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/public/XMP.xml").exists());
+		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/institution/XMP.xml").exists());
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/public/DC.xml").exists());
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/institution/DC.xml").exists());
 		
 		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(new FileReader(Path.make(workAreaRootPath, "work/TEST/123/data/"+C.WA_DIP+"/public/XMP.rdf").toFile()));
+		Document doc = builder.build(new FileReader(Path.make(workAreaRootPath, "work/TEST/123/data/"+C.WA_DIP+"/public/XMP.xml").toFile()));
 		assertTrue(checkRefs(doc));
 	}
 	
