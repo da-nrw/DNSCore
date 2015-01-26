@@ -208,7 +208,7 @@ class QueueEntryController {
 				try {
 					modifyIds.each {
 					
-					def queueEntryInstance = QueueEntry.get(it)
+					def queueEntryInstance = QueueEntry.get(Integer.parseInt(it))
 					if (queueEntryInstance) {
 						def status = queueEntryInstance.getStatus()
 						def newstat = status.substring(0,status.length()-1)
@@ -221,6 +221,7 @@ class QueueEntryController {
 				log.error("Recovery failed " + e.printStackTrace())
 				
 				}
+				params.remove("modifyIds")
 				flash.message = " (" +modifyIds.size() + ") Pakete im momentanen Verarbeitungsschritt zurückgesetzt! "
 				redirect(action: "list")
 	}
@@ -257,6 +258,7 @@ class QueueEntryController {
 			log.error("Rücksetzungen in Workflow fehlgeschlagen" + e.printStackTrace())
 			flash.message = "Rücksetzungen in Workflow fehlgeschlagen!"
 		}
+		params.remove("modifyIds")
 		redirect(action: "list")
 	}
 	
@@ -294,6 +296,7 @@ class QueueEntryController {
 			log.error("Löschungen aus Workflow fehlgeschlagen" + e.printStackTrace())
 			flash.message = "Löschungen aus Workflow fehlgeschlagen!"
 		}
+		params.remove("modifyIds")
 		redirect(action: "list")
 	}
 	
