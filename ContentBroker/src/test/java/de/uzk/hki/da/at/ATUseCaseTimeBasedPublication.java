@@ -25,6 +25,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -37,6 +39,7 @@ import org.junit.Test;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.util.Path;
 
 /**
  * @author Daniel M. de Oliveira
@@ -69,17 +72,26 @@ public class ATUseCaseTimeBasedPublication extends AcceptanceTest{
 		
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg"));
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg"));
-		InputStream metsStreamPublic = repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "METS");
-		assertNotNull(metsStreamPublic);
-		assertTrue(metsStreamPublic.toString().length() > 0);
-		InputStream metsStreamClosed = repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "METS");
-		assertNotNull(metsStreamClosed);
+		
+		
+		File publicFile = Path.makeFile(localNode.getWorkAreaRootPath(),
+				C.WA_PIPS,C.WA_PUBLIC,object.getContractor().getShort_name(),
+				object.getIdentifier(),"METS"+C.FILE_EXTENSION_XML);
+		assertTrue(publicFile.exists());
+				
+		File institutionFile = Path.makeFile(localNode.getWorkAreaRootPath(),
+				C.WA_PIPS,C.WA_INSTITUTION,object.getContractor().getShort_name(),
+				object.getIdentifier(),"METS"+C.FILE_EXTENSION_XML);
+		assertTrue(institutionFile.exists());
+		
+		
+		
 		
 		Namespace METS_NS = Namespace.getNamespace(METS_NAMESPACE);
 		Namespace XLINK_NS = Namespace.getNamespace(XLINK_NAMESPACE);
 		
 		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(metsStreamPublic);
+		Document doc = builder.build(new FileInputStream(publicFile));
 
 		System.out.println("doc: " + doc);
 		
@@ -92,7 +104,7 @@ public class ATUseCaseTimeBasedPublication extends AcceptanceTest{
 		
 		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", url);
 		
-		doc = builder.build(metsStreamClosed);
+		doc = builder.build(new FileInputStream(institutionFile));
 
 		url = doc.getRootElement()
 				.getChild("fileSec", METS_NS)

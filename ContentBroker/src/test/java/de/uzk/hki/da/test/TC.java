@@ -36,6 +36,7 @@ public class TC {
 	public static final Path TEST_ROOT_CB = Path.make(TEST_ROOT,"cb");
 	public static final Path TEST_ROOT_MODEL = Path.make(TEST_ROOT,"model");
 	public static final Path TEST_ROOT_METADATA = Path.make(TEST_ROOT,"metadata");
+	public static final Path TEST_ROOT_REPOSITORY = Path.make(TEST_ROOT,"repository");
 	
 	public static final String CONFIG_PROPS_CI = "src/main/conf/config.properties.ci";
 	public static final String FIDO_SH_SRC = "src/main/bash/fido.sh";

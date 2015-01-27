@@ -38,7 +38,7 @@ public class ATUseCaseIngestDeltaEAD extends AcceptanceTest{
 	private static Object object;
 	private static final File retrievalFolder = new File("/tmp/unpackedDIP");
 	private MetadataHelper mh = new MetadataHelper();
-	private static final String EAD_XML = "EAD.XML";
+	private static final String EAD_XML = "EAD.xml";
 	
 	
 	@BeforeClass

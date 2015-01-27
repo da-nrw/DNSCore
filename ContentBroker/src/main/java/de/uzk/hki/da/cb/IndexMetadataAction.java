@@ -74,9 +74,13 @@ public class IndexMetadataAction extends AbstractAction {
 		setKILLATEXIT(true);
 	
 		InputStream metadataStream;
+		
+		
 		metadataStream = getRepositoryFacade().retrieveFile(
 			object.getIdentifier(), 
 			preservationSystem.getOpenCollectionName(), C.EDM_METADATA_STREAM_ID);
+		
+		
 		if (metadataStream == null) {
 			logger.warn("Metadata file {} not found in repository! Skipping indexing.", C.EDM_METADATA_STREAM_ID);
 			return true;

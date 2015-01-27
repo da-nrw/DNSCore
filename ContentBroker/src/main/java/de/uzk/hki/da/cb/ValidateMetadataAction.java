@@ -230,10 +230,11 @@ public class ValidateMetadataAction extends AbstractAction {
 		}
 			
 		logger.debug("found {} xmp files", newestXmpFiles.size());
-		File rdfFile = new File(repPath + "/XMP.rdf");
+		File rdfFile = new File(repPath + "/XMP.xml");
 		XmpCollector.collect(newestXmpFiles, rdfFile);	
-		logger.debug("collecting files in path: {}", repPath);
-		DAFile xmpFile = new DAFile(object.getLatestPackage(),object.getPath("newest").getLastElement(),"XMP.rdf");
+		logger.debug("collecting files in path: {}", rdfFile.getAbsolutePath());
+		DAFile xmpFile = new DAFile(object.getLatestPackage(),object.getPath("newest").getLastElement(),"XMP.xml");
+		xmpFile.setFormatPUID("fmt/101");
 		object.getLatestPackage().getFiles().add(xmpFile);
 		object.getLatestPackage().getEvents().add(createCreateEvent(xmpFile));		
 	}

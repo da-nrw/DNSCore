@@ -20,6 +20,7 @@
 package de.uzk.hki.da.cb;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,19 +30,16 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.Namespace;
-import org.jdom.input.SAXBuilder;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.util.Path;
+
+import static de.uzk.hki.da.utils.Utilities.isNotSet;
 
 /**
  * This action transforms the primary metadata of an
@@ -72,16 +70,19 @@ public class CreateEDMAction extends AbstractAction {
 
 	@Override
 	public void checkSystemStatePreconditions() throws IllegalStateException {
-		if (preservationSystem.getUrisCho()==null||preservationSystem.getUrisCho().isEmpty()) throw new IllegalStateException("choBaseUri not set");
-		if (preservationSystem.getUrisAggr()==null||preservationSystem.getUrisAggr().isEmpty()) throw new IllegalStateException("aggrBaseUri not set");
-		if (preservationSystem.getUrisLocal()==null||preservationSystem.getUrisLocal().isEmpty()) throw new IllegalStateException("localBaseUri not set");
+		if (isNotSet(preservationSystem.getUrisCho())) 
+			throw new IllegalStateException("missing choBaseUri");
+		if (isNotSet(preservationSystem.getUrisAggr())) 
+			throw new IllegalStateException("missing aggrBaseUri");
+		if (isNotSet(preservationSystem.getUrisLocal())) 
+			throw new IllegalStateException("localBaseUri not set");
 		if (edmMappings == null)
 			throw new IllegalStateException("edmMappings not set.");
 		for (String filePath:edmMappings.values())
 			if (!new File(filePath).exists())
 				throw new IllegalStateException("mapping file "+filePath+" does not exist");
-		
-		
+		if (isNotSet(object.getPackage_type()))
+			throw new IllegalStateException("missing package type");
 	}
 
 
@@ -89,36 +90,32 @@ public class CreateEDMAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException, RepositoryException {
 		
-		String objectId = object.getIdentifier();
-		
-		InputStream dcStream = getDCdatastreamFromPresRepo(objectId, preservationSystem.getOpenCollectionName());
-
-		String packageType = parseFormatElement(dcStream);
-		if (packageType == null) {
-			logger.warn("No format element found in DC. "+C.EDM_METADATA_STREAM_ID+" cannot be created!");
-			return true;
-		}
-		
-		String xsltFile = getEdmMappings().get(packageType);
+		String xsltFile = getEdmMappings().get(object.getPackage_type());
 		if (xsltFile == null) {
-			throw new RuntimeException("No conversion available for package type '" + packageType + "'. "+C.EDM_METADATA_STREAM_ID+" can not be created.");
+			throw new RuntimeException("No mapping for package type: '" + object.getPackage_type());
+		}
+		if (! new File(xsltFile).exists()) {
+			throw new FileNotFoundException("Missing file: "+xsltFile);
 		}
 		
-		InputStream metadataStream = repositoryFacade.retrieveFile(objectId,preservationSystem.getOpenCollectionName(), packageType);
-		if (metadataStream==null){
-			throw new RuntimeException("Could not retrieve some of the metadata files  : " + packageType);
-		}
 		
-		String edmResult = generateEDM(objectId, xsltFile, metadataStream);
+		
+		
+		File metadataFile = Path.makeFile(localNode.getWorkAreaRootPath(),C.WA_PIPS,
+				C.WA_PUBLIC,object.getContractor().getShort_name(),object.getIdentifier(),object.getPackage_type()+C.FILE_EXTENSION_XML);
+		if (!metadataFile.exists())
+			throw new RuntimeException("Missing file in public PIP: "+object.getPackage_type()+C.FILE_EXTENSION_XML);
+		
+		String edmResult = generateEDM(object.getIdentifier(), xsltFile, new FileInputStream(metadataFile));
 		logger.debug(edmResult);
 		
 		try {
-			repositoryFacade.createMetadataFile(objectId,preservationSystem.getOpenCollectionName(), C.EDM_METADATA_STREAM_ID, edmResult, "Object representation in Europeana Data Model", "application/rdf+xml");
+			repositoryFacade.createMetadataFile(object.getIdentifier(),preservationSystem.getOpenCollectionName(), C.EDM_METADATA_STREAM_ID, edmResult, "Object representation in Europeana Data Model", "application/rdf+xml");
 		} catch (RepositoryException e) {
 			throw new RuntimeException(e);
 		}
 		
-		logger.info("Successfully created EDM datastream for object {}.", objectId);
+		logger.info("Successfully created EDM datastream for object {}.", object.getIdentifier());
 
 		return true;
 	}
@@ -153,56 +150,6 @@ public class CreateEDMAction extends AbstractAction {
 		}
 		return edmResult;
 	}
-	
-	/**
-	 * 
-	 * @param dcStream
-	 * @return null if format el not found
-	 * @throws IOException 
-	 */
-	private String parseFormatElement(InputStream dcStream) throws IOException{
-
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document doc;
-		try {
-			doc = builder.build(dcStream);
-		} catch (JDOMException e) {
-			throw new RuntimeException(e);
-		}
-		
-		Element formatEl = doc.getRootElement().getChild("format",
-				Namespace.getNamespace("http://purl.org/dc/elements/1.1/"));
-		if (formatEl==null) return null;
-		
-		String packageType = formatEl.getTextNormalize();
-		logger.debug("Read package type: {}", packageType);
-		return packageType;
-	}
-	
-
-	/**
-	 * @param objectId
-	 * @param collName
-	 * @return
-	 * @trows RuntimeException if file could not be retrieved or there was an error while trying to retrieve the file
-	 */
-	private InputStream getDCdatastreamFromPresRepo(String objectId,
-			String collName) {
-		
-		logger.debug("Getting DC datastream for object: {}", objectId);
-		InputStream dcStream;
-		try {
-			dcStream = repositoryFacade.retrieveFile(objectId,collName, "DC");
-		} catch (RepositoryException e) {
-			throw new RuntimeException("Error while trying to retrieve file from presentation repository.",e);
-		}
-		if (dcStream==null){
-			throw new RuntimeException("File DC not existent in collection "+collName+ " of presentation repository.");
-		}
-		return dcStream;
-	}
-
-	
 	
 	
 	/**

@@ -9,7 +9,7 @@ SED_BIN=sed
 OS=`uname -s`
 case "$OS" in
 SunOS)
-				SED_BIN=gsed
+	SED_BIN=gsed
         ;;
 esac
 

@@ -76,7 +76,7 @@ public class ATUseCaseIngestXMP extends AcceptanceTest{
 			}
 		}
 		
-		String xmpFileName = "XMP.rdf";
+		String xmpFileName = "XMP.xml";
 		
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build
@@ -89,7 +89,7 @@ public class ATUseCaseIngestXMP extends AcceptanceTest{
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build
-				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "XMP.rdf").toFile()));
+				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "XMP.xml").toFile()));
 		assertTrue(getURL(doc).contains("http://data.danrw.de/file/"+object.getIdentifier()) && (getURL(doc).endsWith(".jpg")));
 	}
 	

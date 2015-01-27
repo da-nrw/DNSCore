@@ -51,7 +51,7 @@ public class C {
 	public static final String CB_PACKAGETYPE_METS = FFConstants.SUBFORMAT_IDENTIFIER_METS;
 	public static final String CB_PACKAGETYPE_EAD  = FFConstants.SUBFORMAT_IDENTIFIER_EAD;     
 		/** common metadata file for all XMP type packages */
-	public static final String XMP_METADATA_FILE = "XMP.rdf";
+	public static final String XMP_METADATA_FILE = "XMP.xml";
 		/** Fedora datastream id for EDM. */
 	public static final String EDM_METADATA_STREAM_ID = "EDM"; 
 	
