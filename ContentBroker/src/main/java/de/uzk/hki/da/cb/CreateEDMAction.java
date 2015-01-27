@@ -19,27 +19,26 @@
 
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.utils.Utilities.isNotSet;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.Map;
 
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.C;
+import static de.uzk.hki.da.core.C.*;
 import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
-
-import static de.uzk.hki.da.utils.Utilities.isNotSet;
 
 /**
  * This action transforms the primary metadata of an
@@ -56,6 +55,7 @@ public class CreateEDMAction extends AbstractAction {
 	
 	private RepositoryFacade repositoryFacade;
 	private Map<String,String> edmMappings;
+	private File edmDestinationFile;
 
 	/**
 	 * @
@@ -90,33 +90,35 @@ public class CreateEDMAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException, RepositoryException {
 		
-		String xsltFile = getEdmMappings().get(object.getPackage_type());
-		if (xsltFile == null) {
+		String xsltTransformationFile = getEdmMappings().get(object.getPackage_type());
+		if (xsltTransformationFile == null)
 			throw new RuntimeException("No mapping for package type: '" + object.getPackage_type());
-		}
-		if (! new File(xsltFile).exists()) {
-			throw new FileNotFoundException("Missing file: "+xsltFile);
-		}
-		
-		
-		
-		
-		File metadataFile = Path.makeFile(localNode.getWorkAreaRootPath(),C.WA_PIPS,
-				C.WA_PUBLIC,object.getContractor().getShort_name(),object.getIdentifier(),object.getPackage_type()+C.FILE_EXTENSION_XML);
-		if (!metadataFile.exists())
-			throw new RuntimeException("Missing file in public PIP: "+object.getPackage_type()+C.FILE_EXTENSION_XML);
-		
-		String edmResult = generateEDM(object.getIdentifier(), xsltFile, new FileInputStream(metadataFile));
-		logger.debug(edmResult);
-		
-		try {
-			repositoryFacade.createMetadataFile(object.getIdentifier(),preservationSystem.getOpenCollectionName(), C.EDM_METADATA_STREAM_ID, edmResult, "Object representation in Europeana Data Model", "application/rdf+xml");
-		} catch (RepositoryException e) {
-			throw new RuntimeException(e);
-		}
-		
-		logger.info("Successfully created EDM datastream for object {}.", object.getIdentifier());
+		if (! new File(xsltTransformationFile).exists())
+			throw new FileNotFoundException("Missing file: "+xsltTransformationFile);
 
+		
+		File metadataSourceFile = Path.makeFile(localNode.getWorkAreaRootPath(),WA_PIPS,
+				WA_PUBLIC,object.getContractor().getShort_name(),object.getIdentifier(),object.getPackage_type()+FILE_EXTENSION_XML);
+		if (!metadataSourceFile.exists())
+			throw new RuntimeException("Missing file in public PIP: "+object.getPackage_type()+FILE_EXTENSION_XML);
+		
+
+		edmDestinationFile = Path.makeFile(localNode.getWorkAreaRootPath(),WA_PIPS,WA_PUBLIC,object.getContractor().getShort_name(),
+				object.getIdentifier(),EDM_METADATA_STREAM_ID+FILE_EXTENSION_XML);
+
+		String edmResult = generateEDM(object.getIdentifier(), xsltTransformationFile, new FileInputStream(metadataSourceFile));
+		PrintWriter out = null;
+		try {
+			out = new PrintWriter(edmDestinationFile);
+			out.println(edmResult);}
+		finally {
+			out.close();
+		}
+		
+		repositoryFacade.ingestFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), 
+					EDM_METADATA_STREAM_ID+FILE_EXTENSION_XML, edmDestinationFile, 
+					"Object representation in Europeana Data Model", "application/rdf+xml");
+		
 		return true;
 	}
 
@@ -124,7 +126,7 @@ public class CreateEDMAction extends AbstractAction {
 	
 	@Override
 	public void rollback() throws Exception {
-		throw new NotImplementedException();	
+		if (edmDestinationFile.exists()) edmDestinationFile.delete();
 	}
 
 

@@ -20,10 +20,10 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -55,6 +55,7 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 	private static final Path WORK_AREA_ROOT_PATH = Path.make(TC.TEST_ROOT_CB,"CreateEDMAction");
 	private static final String METADATAFILENAME = C.CB_PACKAGETYPE_EAD+C.FILE_EXTENSION_XML;
 	
+	private File edmFile;
 	
 	@Before
 	public void setUp() throws FileNotFoundException, RepositoryException, IOException {
@@ -70,6 +71,9 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 		action.setRepositoryFacade(repo);
 		
 		FileUtils.copyDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,"_"+C.WA_PIPS),Path.makeFile(WORK_AREA_ROOT_PATH,C.WA_PIPS));
+		
+		edmFile = Path.makeFile(WORK_AREA_ROOT_PATH,C.WA_PIPS,C.WA_PUBLIC,C.TEST_USER_SHORT_NAME,
+				TC.IDENTIFIER,C.EDM_METADATA_STREAM_ID+C.FILE_EXTENSION_XML);
 	}
 	
 	@After
@@ -102,8 +106,21 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 	}
 	
 	@Test
-	public void test() throws IOException, RepositoryException{
+	public void fileCreation() throws IOException, RepositoryException{
 		
 		action.implementation();
+		assertTrue(edmFile.exists());
 	}
+	
+	@Test
+	public void fileDeletion() throws Exception {
+		
+		action.implementation();
+		assertTrue(edmFile.exists());
+		action.rollback();
+		assertFalse(edmFile.exists());
+	}
+
+	
+	
 }
