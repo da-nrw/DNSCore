@@ -64,12 +64,12 @@ public abstract class MetadataStructure {
 	protected void printIndexInfo() {
 		HashMap<String, HashMap<String, String>> indexInfo = getIndexInfo();
 		for(String id : indexInfo.keySet()) {
-			logger.info("____________________________________________________");
+			logger.info("-----------------------------------------------------");
 			logger.info("ID: "+id);
 			for(String info : indexInfo.get(id).keySet()) {
 				logger.info(info+": "+indexInfo.get(id).get(info));
 			}
-			logger.info("____________________________________________________");
+			logger.info("-----------------------------------------------------");
 		}
 	}
 	

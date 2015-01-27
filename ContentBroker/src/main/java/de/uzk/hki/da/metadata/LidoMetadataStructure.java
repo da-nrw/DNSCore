@@ -44,8 +44,6 @@ public class LidoMetadataStructure extends MetadataStructure{
 		
 		doc = builder.build(bomInputStream);
 		lidoLinkResources = parseLinkResourceElements();
-		
-		printIndexInfo();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -54,22 +52,21 @@ public class LidoMetadataStructure extends MetadataStructure{
 	protected HashMap<String, HashMap<String, String>> getIndexInfo() {
 		
 		HashMap<String, HashMap<String, String>> indexInfo = new HashMap<String, HashMap<String,String>>();
-		HashMap<String, String> lidoElementInfo = new HashMap<String, String>();
+		HashMap<String, String> lidoElementInfo;
 		List<Element> lidoElements = getLidoElements();
 		
 		for(Element lidoElement : lidoElements) {
+			lidoElementInfo = new HashMap<String, String>();
 			String uniqueID = UUID.randomUUID().toString();
-			lidoElementInfo.put("Title", getTitle(lidoElement));
-			
+			uniqueID = uniqueID.replace("-", "");
+			lidoElementInfo.put("title", getTitle(lidoElement));
 			
 			List<String> places = getPlaces(lidoElement);
 			for(String place : places) {
-				lidoElementInfo.put("Place", place);
+				lidoElementInfo.put("publisher", place);
 			}
 			
-			getDate(lidoElement);
-			
-			
+			lidoElementInfo.put("date", getDate(lidoElement));
 			indexInfo.put(uniqueID, lidoElementInfo);
 		}
 		return indexInfo;
@@ -129,43 +126,62 @@ public class LidoMetadataStructure extends MetadataStructure{
 		} catch (Exception e) {
 			logger.debug("No eventDate element found!");
 		}
-		
-		
-		
-//		.getChild("date", C.LIDO_NS)
-		
-//		lido:eventWrap> 
-//		-<lido:eventSet> -
-//		<lido:event> 
-//		-<lido:eventDate> -
-//		<lido:date>
-//		<lido:earliestDate
-		
-		return null;
+		for(Element e: eventDateChildren) {
+			if(e.getName().equals("displayDate")) {
+				date = e.getValue();
+			}
+			if(date.equals("")&&e.getName().equals("date")) {
+				try {
+					String earliestDate = e.getChild("earliestDate", C.LIDO_NS).getValue();
+					String latestDate = e.getChild("latestDate", C.LIDO_NS).getValue();
+					date = earliestDate+"-"+latestDate;
+				} catch (Exception e2) {
+					
+				}
+			}
+		}
+		return date;
 	}
 	
 	@SuppressWarnings("unchecked")
 	private List<String> getPlaces(Element lidoElement) {
 		List<String> places = new ArrayList<String>();
 		List<Element> placeElementChildren = new ArrayList<Element>();
+		
+		String displayPlace = "";
 		try {
-			placeElementChildren =lidoElement
+			displayPlace = lidoElement
 					.getChild("descriptiveMetadata", C.LIDO_NS)
 					.getChild("eventWrap", C.LIDO_NS)
 					.getChild("eventSet", C.LIDO_NS)
 					.getChild("event", C.LIDO_NS)
 					.getChild("eventPlace", C.LIDO_NS)
-					.getChild("place", C.LIDO_NS)
-					.getChildren();
+					.getChild("displayPlace", C.LIDO_NS)
+					.getValue();
+			places.add(displayPlace);
 		} catch (Exception e) {
-			logger.error("No place element found!");
 		}
-		for(Element e : placeElementChildren) {
-			if(e.getName().equals("namePlaceSet")) {
-				try {
-					places.add(e.getChild("appellationValue", C.LIDO_NS).getValue());
-				} catch (Exception e2) {
-					logger.error("No appellationValue found!");
+		
+		if(displayPlace.equals("")) {
+			try {
+				placeElementChildren = lidoElement
+						.getChild("descriptiveMetadata", C.LIDO_NS)
+						.getChild("eventWrap", C.LIDO_NS)
+						.getChild("eventSet", C.LIDO_NS)
+						.getChild("event", C.LIDO_NS)
+						.getChild("eventPlace", C.LIDO_NS)
+						.getChild("place", C.LIDO_NS)
+						.getChildren();
+			} catch (Exception e) {
+				logger.error("No place element found!");
+			}
+			for(Element e : placeElementChildren) {
+				if(e.getName().equals("namePlaceSet")) {
+					try {
+						places.add(e.getChild("appellationValue", C.LIDO_NS).getValue());
+					} catch (Exception e2) {
+						logger.error("No appellationValue found!");
+					}
 				}
 			}
 		}

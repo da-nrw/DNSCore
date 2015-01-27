@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.input.BOMInputStream;
-import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -50,8 +49,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		metsDoc = builder.build(bomInputStream);
 		fileElements = getFileElementsFromMetsDoc(metsDoc);
-		
-		printIndexInfo();
+
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -65,21 +63,68 @@ public class MetsMetadataStructure extends MetadataStructure {
 			Element e = dmdSections.get(id);
 			HashMap<String, String> dmdSecInfo = new HashMap<String, String>();
 			
-			dmdSecInfo.put("Title", getTitle(e));
-			dmdSecInfo.put("Author", getAuthor(e));
-			dmdSecInfo.put("Date", getDate(e));
-			dmdSecInfo.put("Place", getPlace(e));
+//			Title
+			List<String> titleValues = getTitle(e);
+			for(int i=0; i<titleValues.size(); i++) {
+				if(i==0) dmdSecInfo.put("title", getTitle(e).get(i));
+				if(i==1) dmdSecInfo.put("subtitle", getTitle(e).get(i));
+			}
 			
+//			Names
+			for(Element name : getNameElements(e)) {
+				String creator = getCreator(name);
+				String contributor = getContributor(name);
+				if(!creator.equals("")) {
+					dmdSecInfo.put("creator", getCreator(name));
+				}
+				if(!contributor.equals("")) {
+					dmdSecInfo.put("contributor", getContributor(name));
+				}
+			}
+			
+//			Date
+			dmdSecInfo.put("date", getDate(e));
+			dmdSecInfo.put("publisher", getPublisherPlace(e));
+			
+//			Place
 			indexInfo.put(id, dmdSecInfo);
+			
+//			dataProvider
+			dmdSecInfo.put("dataProvider", getDataProvider());
 		}
 		return indexInfo;
 	}
+		
+	private String getDataProvider() {
+		String dataProvider = "";
+		try {
+			@SuppressWarnings("unchecked")
+			List<Element> amdSections = metsDoc.getRootElement().getChildren("amdSec", C.METS_NS);
+			for(Element amdSec : amdSections) {
+				if(amdSec.getChild("rightsMD", C.METS_NS).getChild("mdWrap", C.METS_NS).getAttribute("OTHERMDTYPE").getValue().equals("DVRIGHTS")) {
+					dataProvider = amdSec
+							.getChild("rightsMD", C.METS_NS)
+							.getChild("mdWrap", C.METS_NS)
+							.getChild("xmlData", C.METS_NS)
+							.getChild("rights", C.DV)
+							.getChild("owner", C.DV)
+							.getValue();
+				}
+			}
+		} catch (Exception e) {
+			logger.debug("No amd section found!");
+		}
+		return dataProvider;
+	}
 	
-	private String getPlace(Element dmdSec) {
+	private String getPublisherPlace(Element dmdSec) {
 		Element modsXmlData = getModsXmlData(dmdSec);
 		String place = "";
 		try {
-			place = modsXmlData.getChild("originInfo", C.MODS_NS).getChild("place", C.MODS_NS).getChild("placeTerm", C.MODS_NS).getValue();
+			String type = modsXmlData.getChild("originInfo", C.MODS_NS).getChild("place", C.MODS_NS).getChild("placeTerm", C.MODS_NS).getAttributeValue("type");
+			if(type.equals("text")) {
+				place = modsXmlData.getChild("originInfo", C.MODS_NS).getChild("place", C.MODS_NS).getChild("placeTerm", C.MODS_NS).getValue();
+			}
 		} catch (Exception e) {
 			logger.debug("Element placeTerm does not exist!");
 		}
@@ -107,65 +152,95 @@ public class MetsMetadataStructure extends MetadataStructure {
 		return date;
 	}
 	
-	private String getAuthor(Element dmdSec) {
+	private List<Element> getNameElements(Element dmdSec) {
+		List<Element> nameElements = new ArrayList<Element>();
 		Element modsXmlData = getModsXmlData(dmdSec);
-		String namePartValue = "";
-		
 		try {
-			Element name = modsXmlData.getChild("name", C.MODS_NS);
-			
-			if(name.getAttribute("type", C.MODS_NS)==null || name.getAttribute("type", C.MODS_NS).equals("personal")) {
-				try {
-					@SuppressWarnings("unchecked")
-					List<Element> nameParts = name.getChildren("namePart", C.MODS_NS);
-					
-					String given = "";
-					String family = "";
-			
-					for(Element element :  nameParts) {
-						if(element.getAttributes()==null) {
-							namePartValue = element.getValue();
-						} else {
-							if(element.getAttribute("given", C.MODS_NS)!=null) {
-								given = element.getAttributeValue("given", C.MODS_NS);
-							} 
-							if(element.getAttribute("family", C.MODS_NS)!=null) {
-								family = element.getAttributeValue("family", C.MODS_NS);
-							}
-							
-							if(given.equals("")&&family.equals("")) {
-								namePartValue = element.getValue();
-							} else if(!given.equals("")) {
-								namePartValue = given + " " + family;	
-							} else namePartValue = family;
-						}
-					}
-				} catch (Exception e) {
-					logger.debug("Element namePart does not exist!");
-				}
-				
-				if(namePartValue.isEmpty()) {
-					try {
-						namePartValue = name.getChild("displayForm", C.MODS_NS).getValue();
-					} catch (Exception e) {
-						logger.error("No name found");
-					}
-				}
+			nameElements = modsXmlData.getChildren("name", C.MODS_NS);
+		} catch (Exception e) {
+			logger.debug("No name element found!");
+		}
+		return nameElements;
+	}
+	
+	private String getCreator(Element name) {
+		String namePartValue = "";
+		try {
+			String role = name.getChild("role", C.MODS_NS).getValue();
+			if(role.equals("aut")||role.equals("creator")) {
+				namePartValue = getName(name);
 			}
 		} catch (Exception e) {
-			logger.error("Element name does not exist!");
+			logger.debug("No creator found!");
 		}
 		return namePartValue;
 	}
 	
-	private String getTitle(Element dmdSec) {
+	private String getContributor(Element name) {
+		String namePartValue = "";
+		try {
+			String role = name.getChild("role", C.MODS_NS).getValue();
+			if(!(role.equals("aut")||role.equals("creator"))) {
+				namePartValue = getName(name);
+			}
+		} catch (Exception e) {
+			logger.debug("No contributor found!");
+		}
+		return namePartValue;
+	}
+	
+	private String getName(Element name) {
+		String namePartValue = "";
+		if(name.getAttribute("type", C.MODS_NS)==null || name.getAttribute("type", C.MODS_NS).equals("personal")) {
+			try {
+				@SuppressWarnings("unchecked")
+				List<Element> nameParts = name.getChildren("namePart", C.MODS_NS);
+				
+				String given = "";
+				String family = "";
+		
+				for(Element element :  nameParts) {
+					if(element.getAttributes()==null) {
+						namePartValue = element.getValue();
+					} else {
+						if(element.getAttribute("given", C.MODS_NS)!=null) {
+							given = element.getAttributeValue("given", C.MODS_NS);
+						} 
+						if(element.getAttribute("family", C.MODS_NS)!=null) {
+							family = element.getAttributeValue("family", C.MODS_NS);
+						}
+						
+						if(given.equals("")&&family.equals("")) {
+							namePartValue = element.getValue();
+						} else if(!given.equals("")) {
+							namePartValue = given + " " + family;	
+						} else namePartValue = family;
+					}
+				}
+			} catch (Exception e) {
+				logger.debug("Element namePart does not exist!");
+			}
+			
+			if(namePartValue.isEmpty()) {
+				try {
+					namePartValue = name.getChild("displayForm", C.MODS_NS).getValue();
+				} catch (Exception e) {
+					logger.error("No name found");
+				}
+			}
+		}
+		return namePartValue;
+	}
+	
+	private List<String> getTitle(Element dmdSec) {
+		List<String> title = new ArrayList<String>();
 		Element modsXmlData = getModsXmlData(dmdSec);
 		
 		String titleValue = "";
 		String displayLabelValue = "";
 		String nonSortValue = "";
 		String subTitleValue = "";
-		String returnTitleValue = "";
+		String MainTitleValue = "";
 		
 		try {
 			Element titleInfo = modsXmlData.getChild("titleInfo", C.MODS_NS);
@@ -198,14 +273,18 @@ public class MetsMetadataStructure extends MetadataStructure {
 				if(!nonSortValue.equals("")) {
 					titleValue = nonSortValue + " " + titleValue;
 				}
-				returnTitleValue = titleValue;
+				MainTitleValue = titleValue;
 			} else {
-				returnTitleValue = displayLabelValue;
+				MainTitleValue = displayLabelValue;
 			}
 		} catch(Exception e) {
 			logger.error("Element titleInfo does not exist!!!");
 		}
-		return returnTitleValue;
+		title.add(MainTitleValue);
+		if(!subTitleValue.equals("")) {
+			title.add(subTitleValue);
+		}
+		return title;
 	}
 	
 	private HashMap<String, Element> getSections() {

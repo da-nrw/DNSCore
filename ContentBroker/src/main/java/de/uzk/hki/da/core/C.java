@@ -114,6 +114,7 @@ public class C {
 	public static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	public static final Namespace MODS_NS = Namespace.getNamespace("http://www.loc.gov/mods/v3");
 	public static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
+	public static final Namespace DV = Namespace.getNamespace("http://dfg-viewer.de/");
 	
 	// Other
 	public static final String LOCAL_NODE_BEAN_NAME = "localNode";

@@ -98,6 +98,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 				HashMap<String, String> nodeInfo = new HashMap<String, String>();
 				childElements = new HashMap<Element, String>();
 				String uniqueID = UUID.randomUUID().toString();
+				uniqueID = uniqueID.replace("-", "");
 				String isPartOf = currentElements.get(element);
 				
 				nodeInfo.put("Level", Integer.toString(i));
@@ -106,10 +107,10 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 				List<Element> children = element.getChildren();
 				for(Element child : children) {
 					if(child.getName().equals("did")) {
-						nodeInfo.put("Title", getTitle(child));
-						nodeInfo.put("Date", getDate(child));
+						nodeInfo.put("title", getTitle(child));
+						nodeInfo.put("date", getDate(child));
 					} else if(child.getName().equals("daogrp")) {
-						nodeInfo.put("Reference", getHref(child));
+						nodeInfo.put("href", getHref(child));
 					} else if(child.getName().equals(nextLevel)) {
 						childElements.put(child, uniqueID);
 					}
@@ -138,6 +139,32 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			logger.error("No unitdate element found");
 		}
 		return date;
+	}
+	
+	private String getUnitIDs(Element element) {
+		String unitID = "";
+		try {
+			List<Element> unitIdElements = element.getChildren("unitdate");
+			if(unitIdElements.size()>1) {
+				for(Element id : unitIdElements) {
+					String altsignatur = "";
+					if(id.getAttribute("type").getName().equals("altsignatur")) {
+						altsignatur = id.getValue();
+					} else if(id.getAttribute("type").getName().equals("altsignatur")) {
+						
+					}
+				}
+			}
+			
+			
+		} catch (Exception e) {
+			logger.error("No unitdate element found");
+		}
+		
+		
+		
+		
+		return null;
 	}
 	
 	private String getHref(Element element) {
