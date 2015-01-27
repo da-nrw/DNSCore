@@ -80,9 +80,9 @@ public class CheckFormatsAction extends AbstractAction {
 		identifyFileFormatsOfAllFilesOfObject();
 		
 		// TODO remove. send via communicator. this should not be saved to object this early. 
-		object.setMost_recent_formats(getFormatsAsCommaSeparatedString(getNewestFilesOfObject()));
-		object.setMostRecentSecondaryAttributes(getSubformatsAsCommaSeparatedString(getNewestFilesOfObject()).toString());
-		object.setOriginal_formats(getFormatsOfAllOriginalFilesAsCommaSeparatedString(getAllFilesOfObject()));
+		o.setMost_recent_formats(getFormatsAsCommaSeparatedString(getNewestFilesOfObject()));
+		o.setMostRecentSecondaryAttributes(getSubformatsAsCommaSeparatedString(getNewestFilesOfObject()).toString());
+		o.setOriginal_formats(getFormatsOfAllOriginalFilesAsCommaSeparatedString(getAllFilesOfObject()));
 		
 		attachJhoveInfoToAllFiles(getAllFilesOfObject());
 		return true;
@@ -91,7 +91,7 @@ public class CheckFormatsAction extends AbstractAction {
 	private void identifyFileFormatsOfAllFilesOfObject() throws SubsystemNotAvailableException{
 		List<FileWithFileFormat> allFiles = new ArrayList<FileWithFileFormat>();
 		
-		for (Package p:object.getPackages()){
+		for (Package p:o.getPackages()){
 				allFiles.addAll(p.getFiles());
 		}
 		
@@ -119,7 +119,7 @@ public class CheckFormatsAction extends AbstractAction {
 	private void attachJhoveInfoToAllFiles(List<DAFile> files) throws IOException, SubsystemNotAvailableException {
 		for (DAFile f : files) {
 			// dir
-			String dir = Path.make(object.getDataPath(),C.JHOVE_TEMP,f.getRep_name()).toString();
+			String dir = Path.make(o.getDataPath(),C.JHOVE_TEMP,f.getRep_name()).toString();
 			String fileName = DigestUtils.md5Hex(f.getRelative_path());
 			
 			if (!new File(dir).exists()) new File(dir).mkdirs();
@@ -136,12 +136,12 @@ public class CheckFormatsAction extends AbstractAction {
 	}
 
 	private List<DAFile> getNewestFilesOfObject(){
-		return object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
+		return o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
 	}
 
 	private List<DAFile> getAllFilesOfObject(){
 		List<DAFile> allDAFiles = new ArrayList<DAFile>();
-		for (Package p:object.getPackages()){
+		for (Package p:o.getPackages()){
 				allDAFiles.addAll(p.getFiles());
 		}
 		return allDAFiles;
@@ -192,7 +192,7 @@ public class CheckFormatsAction extends AbstractAction {
 	
 	@Override
 	public void rollback() throws Exception {
-		FileUtils.deleteQuietly(Path.makeFile(object.getDataPath(),C.JHOVE_TEMP));
+		FileUtils.deleteQuietly(Path.makeFile(o.getDataPath(),C.JHOVE_TEMP));
 	}
 
 

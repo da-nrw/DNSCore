@@ -65,15 +65,15 @@ public class FetchPIPsAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException {
 		
-		publicContractorFolder = Path.make("pips", "public", object.getContractor().getShort_name());
-		institutionContractorFolder = Path.make("pips", "institution", object.getContractor().getShort_name());
-		String sourceDIPName = object.getIdentifier()+"_"+object.getLatestPackage().getId();
+		publicContractorFolder = Path.make("pips", "public", o.getContractor().getShort_name());
+		institutionContractorFolder = Path.make("pips", "institution", o.getContractor().getShort_name());
+		String sourceDIPName = o.getIdentifier()+"_"+o.getLatestPackage().getId();
 		
 		replicateFromSourceResourceToWorkingResource(sourceDIPName);
 		// the rename is necessary because at the moment we donl't have another possibility to delete or trim the irods
 		// collections on specific resources.
-		deletePreviousPIPs(object.getIdentifier());
-		renamePIPs(sourceDIPName, object.getIdentifier());
+		deletePreviousPIPs(o.getIdentifier());
+		renamePIPs(sourceDIPName, o.getIdentifier());
 		
 		// cleanup
 		distributedConversionAdapter.remove(Path.make(publicContractorFolder,sourceDIPName).toString());
@@ -96,12 +96,12 @@ public class FetchPIPsAction extends AbstractAction {
 	 * @throws IOException
 	 */
 	private void deletePreviousPIPs(String targetDIPName) throws IOException{	
-		if (Path.make(localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile().exists());
+		if (Path.make(n.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile().exists());
 			FileUtils.deleteDirectory(Path.make(
-					localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile());
-		if (Path.make(localNode.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName).toFile().exists())
+					n.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile());
+		if (Path.make(n.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName).toFile().exists())
 			FileUtils.deleteDirectory(Path.make(
-					localNode.getWorkAreaRootPath(),institutionContractorFolder, targetDIPName).toFile());
+					n.getWorkAreaRootPath(),institutionContractorFolder, targetDIPName).toFile());
 	}
 
 
@@ -114,11 +114,11 @@ public class FetchPIPsAction extends AbstractAction {
 	private void renamePIPs(String sourceDIPName,
 			String targetDIPName) throws IOException {
 		
-		Path sourcePIPPublic = Path.make(localNode.getWorkAreaRootPath(),publicContractorFolder,sourceDIPName);
-		Path targetPIPPublic = Path.make(localNode.getWorkAreaRootPath(),publicContractorFolder,targetDIPName);
+		Path sourcePIPPublic = Path.make(n.getWorkAreaRootPath(),publicContractorFolder,sourceDIPName);
+		Path targetPIPPublic = Path.make(n.getWorkAreaRootPath(),publicContractorFolder,targetDIPName);
 		
-		Path sourcePIPInst = Path.make(localNode.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName);
-		Path targetPIPInst = Path.make(localNode.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName);
+		Path sourcePIPInst = Path.make(n.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName);
+		Path targetPIPInst = Path.make(n.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName);
 		
 		logger.debug("Rename PIP Public " +sourcePIPPublic.toString()  + " to "  + targetPIPPublic.toString() );
 		logger.debug("Rename PIP Institution " +sourcePIPInst.toString()  + " to "  + targetPIPInst.toString() );

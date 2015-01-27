@@ -81,7 +81,7 @@ public class CreateEDMAction extends AbstractAction {
 		for (String filePath:edmMappings.values())
 			if (!new File(filePath).exists())
 				throw new IllegalStateException("mapping file "+filePath+" does not exist");
-		if (isNotSet(object.getPackage_type()))
+		if (isNotSet(o.getPackage_type()))
 			throw new IllegalStateException("missing package type");
 	}
 
@@ -90,16 +90,16 @@ public class CreateEDMAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException, RepositoryException {
 		
-		String xsltTransformationFile = getEdmMappings().get(object.getPackage_type());
+		String xsltTransformationFile = getEdmMappings().get(o.getPackage_type());
 		if (xsltTransformationFile == null)
-			throw new RuntimeException("No mapping for package type: '" + object.getPackage_type());
+			throw new RuntimeException("No mapping for package type: '" + o.getPackage_type());
 		if (! new File(xsltTransformationFile).exists())
 			throw new FileNotFoundException("Missing file: "+xsltTransformationFile);
 
 		
-		File metadataSourceFile = makeSourceFile(object.getPackage_type());
+		File metadataSourceFile = makeSourceFile(o.getPackage_type());
 		if (!metadataSourceFile.exists())
-			throw new RuntimeException("Missing file in public PIP: "+object.getPackage_type()+FILE_EXTENSION_XML);
+			throw new RuntimeException("Missing file in public PIP: "+o.getPackage_type()+FILE_EXTENSION_XML);
 		
 
 		edmDestinationFile = generateEDM(xsltTransformationFile, metadataSourceFile);
@@ -111,20 +111,20 @@ public class CreateEDMAction extends AbstractAction {
 	
 	
 	private File makeSourceFile(String packageType) {
-		return Path.makeFile(localNode.getWorkAreaRootPath(),WA_PIPS,
-				WA_PUBLIC,object.getContractor().getShort_name(),object.getIdentifier(),packageType+FILE_EXTENSION_XML);
+		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,
+				WA_PUBLIC,o.getContractor().getShort_name(),o.getIdentifier(),packageType+FILE_EXTENSION_XML);
 	}
 	
 	private File makeEDMFile() {
-		return Path.makeFile(localNode.getWorkAreaRootPath(),WA_PIPS,WA_PUBLIC,object.getContractor().getShort_name(),
-				object.getIdentifier(),EDM_METADATA_STREAM_ID+FILE_EXTENSION_XML);
+		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),
+				o.getIdentifier(),EDM_METADATA_STREAM_ID+FILE_EXTENSION_XML);
 	}
 	
 	private File generateEDM(String xsltTransformationFile,File metadataSourceFile) throws FileNotFoundException {
 		
 		File edm = makeEDMFile(); 
 		
-		String edmResult = generateEDM(object.getIdentifier(), xsltTransformationFile, new FileInputStream(metadataSourceFile));
+		String edmResult = generateEDM(o.getIdentifier(), xsltTransformationFile, new FileInputStream(metadataSourceFile));
 		PrintWriter out = null;
 		try {
 			out = new PrintWriter(edm);
@@ -140,7 +140,7 @@ public class CreateEDMAction extends AbstractAction {
 
 	
 	private void putToRepository(File file) throws RepositoryException, IOException {
-		repositoryFacade.ingestFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), 
+		repositoryFacade.ingestFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
 				EDM_METADATA_STREAM_ID+FILE_EXTENSION_XML, file, 
 				"Object representation in Europeana Data Model", "application/rdf+xml");
 	}
@@ -164,7 +164,7 @@ public class CreateEDMAction extends AbstractAction {
 		} catch (TransformerConfigurationException e1) {
 			throw new RuntimeException(e1);
 		}	
-		edmGenerator.setParameter("urn", object.getUrn());
+		edmGenerator.setParameter("urn", o.getUrn());
 		edmGenerator.setParameter("cho-base-uri", preservationSystem.getUrisCho() + "/" + objectId);
 		edmGenerator.setParameter("aggr-base-uri", preservationSystem.getUrisAggr() + "/" + objectId);
 		edmGenerator.setParameter("local-base-uri", preservationSystem.getUrisLocal());

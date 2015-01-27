@@ -58,10 +58,10 @@ public class ShortenFileNamesAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException {
 
-		String metadataFile = object.getMetadata_file();
+		String metadataFile = o.getMetadata_file();
 		
 		// rename results of conversions
-		for (Event e:object.getLatestPackage().getEvents()) {
+		for (Event e:o.getLatestPackage().getEvents()) {
 			
 			logger.debug("checking if event is CONVERT for {}", e);
 			
@@ -107,7 +107,7 @@ public class ShortenFileNamesAction extends AbstractAction {
 	@Override
 	public void rollback() throws Exception {
 		
-		for (Event e:object.getLatestPackage().getEvents()) {
+		for (Event e:o.getLatestPackage().getEvents()) {
 			if (!"CONVERT".equals(e.getType())) continue;
 			
 			DAFile daFile = e.getTarget_file();

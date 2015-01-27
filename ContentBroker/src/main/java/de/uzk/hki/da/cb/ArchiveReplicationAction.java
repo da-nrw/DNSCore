@@ -60,12 +60,12 @@ public class ArchiveReplicationAction extends AbstractAction {
 	public
 	boolean implementation() {
 		
-		String filename = object.getIdentifier() + ".pack_" + object.getLatestPackage().getName() + ".tar";
-		Path target = Path.make(object.getContractor().getShort_name(), object.getIdentifier(), filename);
-		StoragePolicy sp = new StoragePolicy(localNode);
+		String filename = o.getIdentifier() + ".pack_" + o.getLatestPackage().getName() + ".tar";
+		Path target = Path.make(o.getContractor().getShort_name(), o.getIdentifier(), filename);
+		StoragePolicy sp = new StoragePolicy(n);
 		sp.setMinNodes(preservationSystem.getMinRepls());
 		sp.setDestinations(new ArrayList<String>(getDestinations()));
-		sp.setForbiddenNodes(object.getContractor().getForbidden_nodes());
+		sp.setForbiddenNodes(o.getContractor().getForbidden_nodes());
 		// TODO: this is a user/system exception!! commented out due to federation
 		if (!sp.isPolicyAchievable()) {
 			logger.warn("STORAGE POLICY not achievable!!");
@@ -73,7 +73,7 @@ public class ArchiveReplicationAction extends AbstractAction {
 		}
 		
 		try {
-			Path newFilePath = Path.make(localNode.getWorkAreaRootPath(), "work", object.getContractor().getShort_name(), filename);
+			Path newFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), filename);
 			if (gridRoot.put(new File(newFilePath.toString()), 
 					target.toString(), sp )) {
 					new File(newFilePath.toString()).delete();
@@ -98,8 +98,8 @@ public class ArchiveReplicationAction extends AbstractAction {
 	private Collection<String> getDestinations() {
 		String replDestinations = "";
 		String forbiddenNodes = "";
-		if (localNode.getReplDestinations()!=null) replDestinations = localNode.getReplDestinations();
-		if (object.getContractor().getForbidden_nodes()!=null) forbiddenNodes = object.getContractor().getForbidden_nodes();
+		if (n.getReplDestinations()!=null) replDestinations = n.getReplDestinations();
+		if (o.getContractor().getForbidden_nodes()!=null) forbiddenNodes = o.getContractor().getForbidden_nodes();
 		
 		List<String> targetDest = Arrays.asList(replDestinations.split(","));
 		List<String> forbidden = Arrays.asList(forbiddenNodes.split(","));

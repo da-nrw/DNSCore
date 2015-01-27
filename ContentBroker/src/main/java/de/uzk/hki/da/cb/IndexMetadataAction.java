@@ -71,8 +71,8 @@ public class IndexMetadataAction extends AbstractAction {
 			throw new IllegalStateException("testContractors not set");
 		
 		
-		edmFile = Path.makeFile(localNode.getWorkAreaRootPath(),WA_PIPS,WA_PUBLIC,object.getContractor().getShort_name(),
-				object.getIdentifier(),EDM_METADATA_STREAM_ID+FILE_EXTENSION_XML);
+		edmFile = Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),
+				o.getIdentifier(),EDM_METADATA_STREAM_ID+FILE_EXTENSION_XML);
 		if (! edmFile.exists())
 			throw new IllegalStateException("Missing file: "+edmFile);
 
@@ -84,7 +84,7 @@ public class IndexMetadataAction extends AbstractAction {
 		
 		InputStream metadataStream  = new FileInputStream(edmFile);
 		String edmContent = IOUtils.toString(metadataStream, ENCODING_UTF_8);
-		getRepositoryFacade().indexMetadata(adjustIndexName(indexName), object.getIdentifier(), edmContent);
+		getRepositoryFacade().indexMetadata(adjustIndexName(indexName), o.getIdentifier(), edmContent);
 		return true;
 	}
 
@@ -108,7 +108,7 @@ public class IndexMetadataAction extends AbstractAction {
 	 */
 	private String adjustIndexName(String originalIndexName){
 		
-		String contractorShortName = object.getContractor().getShort_name();
+		String contractorShortName = o.getContractor().getShort_name();
 		String adjustedIndexName = indexName;
 		if(testContractors != null && testContractors.contains(contractorShortName)) {
 			adjustedIndexName += "_test";

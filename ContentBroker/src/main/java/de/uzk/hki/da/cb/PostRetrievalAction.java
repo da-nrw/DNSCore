@@ -53,11 +53,11 @@ public class PostRetrievalAction extends AbstractAction {
 	public boolean implementation() {
 		setKILLATEXIT(true);
 		
-		String csn=object.getContractor().getShort_name();
-		String mergeTarName = object.getIdentifier() + ".tar";
+		String csn=o.getContractor().getShort_name();
+		String mergeTarName = o.getIdentifier() + ".tar";
 		
-		String transferAreaRootPath = localNode.getUserAreaRootPath().toString();
-		if ((new Date().getTime())/1000L > (Long.parseLong(job.getDate_created())+(86400L*1))){
+		String transferAreaRootPath = n.getUserAreaRootPath().toString();
+		if ((new Date().getTime())/1000L > (Long.parseLong(j.getDate_created())+(86400L*1))){
 			
 			if (transferAreaRootPath!= null && !transferAreaRootPath.equals("")) {
 			String webDavOutgoingPath = transferAreaRootPath +"/"+ csn +"/outgoing/";

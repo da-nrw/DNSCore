@@ -67,36 +67,36 @@ public class ConvertAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException {
 		
-		if (job.getConversion_instructions().size()==0)
-			logger.warn("No Conversion Instruction could be found for job with id: "+job.getId());
+		if (j.getConversion_instructions().size()==0)
+			logger.warn("No Conversion Instruction could be found for job with id: "+j.getId());
 		
-		Object premisObject = parsePremisToMetadata(object.getLatest("premis.xml").toRegularFile().getAbsolutePath());
-		object.setRights(premisObject.getRights());
+		Object premisObject = parsePremisToMetadata(o.getLatest("premis.xml").toRegularFile().getAbsolutePath());
+		o.setRights(premisObject.getRights());
 		
 		localConversionEvents = new ConverterService().convertBatch(
-					object, 
-					new ArrayList(job.getConversion_instructions()));
+					o, 
+					new ArrayList(j.getConversion_instructions()));
 		
 		logger.debug("listing file instances attached to latest package");
-		for (DAFile f:object.getLatestPackage().getFiles()){
+		for (DAFile f:o.getLatestPackage().getFiles()){
 			logger.debug(f.toString());
 		}
 		
 		for (Event e:localConversionEvents){
-			object.getLatestPackage().getEvents().add(e);
-			object.getLatestPackage().getFiles().add(e.getTarget_file());
+			o.getLatestPackage().getEvents().add(e);
+			o.getLatestPackage().getFiles().add(e.getTarget_file());
 			try {
-				object.getDocument(FilenameUtils.getBaseName(e.getTarget_file().toRegularFile().getName())).addDAFile(e.getTarget_file());
+				o.getDocument(FilenameUtils.getBaseName(e.getTarget_file().toRegularFile().getName())).addDAFile(e.getTarget_file());
 			} catch (Exception e2) {
 				throw new IllegalStateException("Document "+FilenameUtils.getBaseName(e.getTarget_file().toRegularFile().getName())+" does not exists."); 
 			}
 		}
 		
-		job.getConversion_instructions().clear();
-		job.getChildren().clear();
+		j.getConversion_instructions().clear();
+		j.getChildren().clear();
 		
 		// This is a hack because redmine #309 caused problems due to long replication times
-		job.setRepl_destinations( localNode.getWorkingResource() );
+		j.setRepl_destinations( n.getWorkingResource() );
 		
 		
 		return true;
@@ -112,8 +112,8 @@ public class ConvertAction extends AbstractAction {
 			for (Event e : localConversionEvents) {
 				e.getTarget_file().toRegularFile().delete();
 				
-				object.getLatestPackage().getEvents().remove(e);
-				object.getLatestPackage().getFiles().remove(e.getTarget_file());
+				o.getLatestPackage().getEvents().remove(e);
+				o.getLatestPackage().getFiles().remove(e.getTarget_file());
 			}
 		}
 		

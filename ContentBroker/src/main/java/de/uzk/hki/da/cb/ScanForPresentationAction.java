@@ -67,7 +67,7 @@ public class ScanForPresentationAction extends AbstractAction{
 		
 		List<? extends FileWithFileFormat> fffl=null;
 		try {
-			fffl = fileFormatFacade.identify(object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
+			fffl = fileFormatFacade.identify(o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()));
 		} catch (FileFormatException e) {
 			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
 		} catch (IOException e) {
@@ -76,14 +76,14 @@ public class ScanForPresentationAction extends AbstractAction{
 		
 		@SuppressWarnings("unchecked")
 		List<ConversionInstruction> cisPres = generateConversionInstructionsForPresentation(
-			object.getLatestPackage(),
+			o.getLatestPackage(),
 			(List<DAFile>) fffl);
 		
 		
 		if (cisPres.size() == 0) logger.trace("no Conversion instructions for Presentation found!");				
 		for (ConversionInstruction ci:cisPres) logger.info("Built conversionInstructionForPresentation: "+ci.toString());
 		
-		job.getConversion_instructions().addAll(cisPres);
+		j.getConversion_instructions().addAll(cisPres);
 		
 		return true;
 	}
@@ -93,8 +93,8 @@ public class ScanForPresentationAction extends AbstractAction{
 	@Override
 	public void rollback() {
 		
-		job.getConversion_instructions().clear();
-		for (ConversionInstruction ci: job.getConversion_instructions()){
+		j.getConversion_instructions().clear();
+		for (ConversionInstruction ci: j.getConversion_instructions()){
 			logger.warn("still exists: "+ci);
 		}
 	}
@@ -119,7 +119,7 @@ public class ScanForPresentationAction extends AbstractAction{
 			
 			logger.trace("Generating ConversionInstructions for PRESENTER");
 			List<ConversionPolicy> policies = preservationSystem.getApplicablePolicies(file, true);
-			if ( object.grantsRight("PUBLICATION")
+			if ( o.grantsRight("PUBLICATION")
 					&& !file.toRegularFile().getName().toLowerCase().endsWith(".xml")
 					&& !file.toRegularFile().getName().toLowerCase().endsWith(".rdf")
 					&& !file.toRegularFile().getName().toLowerCase().endsWith(".xmp")

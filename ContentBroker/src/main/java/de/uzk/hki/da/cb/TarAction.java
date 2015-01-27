@@ -67,21 +67,21 @@ public class TarAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException {
 		
-		tar = localNode.getWorkAreaRootPath() + "/work/" +
-				object.getContractor().getShort_name() + "/" + object.getIdentifier() 
-				+ ".pack_" + object.getLatestPackage().getName() + ".tar";
+		tar = n.getWorkAreaRootPath() + "/work/" +
+				o.getContractor().getShort_name() + "/" + o.getIdentifier() 
+				+ ".pack_" + o.getLatestPackage().getName() + ".tar";
 		
 		logger.info ( "Building tar for AIP at: " + tar );
 		try {
 			NativeJavaTarArchiveBuilder builder = new NativeJavaTarArchiveBuilder();
-			builder.setFirstLevelEntryName(object.getIdentifier()+".pack_"+object.getLatestPackage().getName());
-			builder.archiveFolder(object.getPath().toFile(),new File(tar),true);
+			builder.setFirstLevelEntryName(o.getIdentifier()+".pack_"+o.getLatestPackage().getName());
+			builder.archiveFolder(o.getPath().toFile(),new File(tar),true);
 			
 		} catch (Exception e) {
 			throw new RuntimeException("Error while creating tar.",e);
 		}
 
-		object.getLatestPackage().setChecksum(MD5Checksum.getMD5checksumForLocalFile(
+		o.getLatestPackage().setChecksum(MD5Checksum.getMD5checksumForLocalFile(
 				new File(tar)));
 		return true;
 	}

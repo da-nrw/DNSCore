@@ -66,17 +66,17 @@ public class AuditAction extends AbstractAction {
 	@Override
 	public boolean implementation() {
 		setKILLATEXIT(true);
-		setObjectState(job,Object.ObjectStatus.UnderAudit);
-		StoragePolicy sp = new StoragePolicy(localNode);
+		setObjectState(j,Object.ObjectStatus.UnderAudit);
+		StoragePolicy sp = new StoragePolicy(n);
 		sp.setMinNodes(preservationSystem.getMinRepls());
 		
 		String msg= "";
 		// TODO: refactor to same implementation IntegrityScanner uses
 		boolean completelyValid = true; 
-		for (Package pack : object.getPackages()) {
+		for (Package pack : o.getPackages()) {
 			String pname = pack.getName();
 			if (pname.equals("")) pname = "1";
-			String logicalPath = new RelativePath(object.getContractor().getShort_name(), object.getIdentifier(), object.getIdentifier()).toString() + ".pack_"+pname+".tar";
+			String logicalPath = new RelativePath(o.getContractor().getShort_name(), o.getIdentifier(), o.getIdentifier()).toString() + ".pack_"+pname+".tar";
 			if (!gridRoot.isValid(logicalPath)) {
 				msg+="SEVERE FAULT " + logicalPath + " is not valid, Checksum could not be verified on all systems! Please refer to the Storage Layer logs for further information! \n";
 				 completelyValid = false;
@@ -90,12 +90,12 @@ public class AuditAction extends AbstractAction {
 		}
 		if (completelyValid) {
 			logger.debug("Object checked OK, setting object state to 100");
-			object.setObject_state(Object.ObjectStatus.ArchivedAndValid);
+			o.setObject_state(Object.ObjectStatus.ArchivedAndValid);
 		} else {
-			object.setObject_state(Object.ObjectStatus.Error);
-			logger.error("Object " + object.getIdentifier()  + " has following errors :" +  msg);
-			unloadAndRepair(object);
-			new MailContents(preservationSystem,localNode).auditInformNodeAdmin(object, msg);
+			o.setObject_state(Object.ObjectStatus.Error);
+			logger.error("Object " + o.getIdentifier()  + " has following errors :" +  msg);
+			unloadAndRepair(o);
+			new MailContents(preservationSystem,n).auditInformNodeAdmin(o, msg);
 		}		
 		return true;
 	}
@@ -114,8 +114,8 @@ public class AuditAction extends AbstractAction {
 	}
 	
 	public void setObjectState(Job job, int state) {	
-		if (object!=null) { 
-			object.setObject_state(state);
+		if (o!=null) { 
+			o.setObject_state(state);
 		}
 		
 	}
