@@ -777,12 +777,15 @@ public class IrodsSystemConnector {
 	 * @param logicalPath the logical irods path to which the physical path should be registered
 	 * @param physicalPackage the path to the files on the file system
 	 * @param workingResource the working resource
-	 * @author Daniel M. de Oliveira
+	 * @author Daniel M. de Oliveira & Jens Peters
 	 */
 	public void registerFilesInCollection(String logicalPath, File physicalPackage,
 			String workingResource) {
 		logger.trace("registerFilesInCollection: "  + physicalPackage.getAbsolutePath() + " as " + logicalPath);
-		
+		if (!collectionExists(logicalPath)) {
+			logger.trace("Collection doesn't exist, creating now!");
+			createCollection(logicalPath);
+		}
 		String rule = "register||msiPhyPathReg("
 				+ logicalPath+ ","
 				+ workingResource + ","
