@@ -21,6 +21,7 @@ package de.uzk.hki.da.repository;
 
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -30,8 +31,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.test.TC;
+import static de.uzk.hki.da.core.C.*;
+import static de.uzk.hki.da.test.TC.*;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.PasswordUtils;
 
@@ -41,14 +42,16 @@ import de.uzk.hki.da.utils.PasswordUtils;
 public class CTFedora3RepositoryFacadeTest {
 
 	private static final String TEST = "TEST";
-	private static final Path TEST_DIR = Path.make(TC.TEST_ROOT_REPOSITORY,"Fedora3RepositoryFacade");
+	private static final Path TEST_DIR = Path.make(TEST_ROOT_REPOSITORY,"Fedora3RepositoryFacade");
 	private static final String OBJECTS_URL = "http://www.danrw.de/objects/";
 	private static final String COLL_NAME = "collection-open";
 	private Fedora3RepositoryFacade fedora;
+	private static final File abc = new File("/tmp/adc.txt");
+	private static final File abd = new File("/tmp/abd.txt");
 
 	
 	@Before
-	public void setUp(){
+	public void setUp() throws IOException{
 		try {
 			
 			fedora = new Fedora3RepositoryFacade(
@@ -59,11 +62,16 @@ public class CTFedora3RepositoryFacadeTest {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
+		
+		 if (!abc.exists()) abc.createNewFile();
+		 if (!abd.exists()) abd.createNewFile();
 	}
 	
 	@After
 	public void tearDown() throws RepositoryException{
-		fedora.purgeObjectIfExists(TC.IDENTIFIER, COLL_NAME);
+		fedora.purgeObjectIfExists(IDENTIFIER, COLL_NAME);
+		abc.delete();
+		abd.delete();
 	}
 	
 	
@@ -75,9 +83,9 @@ public class CTFedora3RepositoryFacadeTest {
 		content = IOUtils.toString(fileInputStream, C.ENCODING_UTF_8);
 		fileInputStream.close();
 		
-		fedora.createObject(TC.IDENTIFIER, COLL_NAME, TEST);
+		fedora.createObject(IDENTIFIER, COLL_NAME, TEST);
 		
-		fedora.createMetadataFile(TC.IDENTIFIER, COLL_NAME, "ead123.xml", content, "label", C.MIMETYPE_TEXT_XML);
+		fedora.createMetadataFile(IDENTIFIER, COLL_NAME, "ead123.xml", content, "label", MIMETYPE_TEXT_XML);
 	
 	}
 
@@ -85,8 +93,8 @@ public class CTFedora3RepositoryFacadeTest {
 	@Test
 	public void testAddRelationship() throws RepositoryException{
 		
-		fedora.createObject(TC.IDENTIFIER, COLL_NAME, TEST);
-		fedora.addRelationship(TC.IDENTIFIER, COLL_NAME, C.OWL_SAMEAS, OBJECTS_URL+TC.IDENTIFIER);
+		fedora.createObject(IDENTIFIER, COLL_NAME, TEST);
+		fedora.addRelationship(IDENTIFIER, COLL_NAME, OWL_SAMEAS, OBJECTS_URL+IDENTIFIER);
 		
 	}
 
@@ -96,9 +104,23 @@ public class CTFedora3RepositoryFacadeTest {
 	public void testAddRelationshipWithMalformedURL(){
 		
 		try{
-			fedora.createObject(TC.IDENTIFIER, COLL_NAME, TEST);
-			fedora.addRelationship(TC.IDENTIFIER, COLL_NAME, C.OWL_SAMEAS,null); // it seems that null is a problem
+			fedora.createObject(IDENTIFIER, COLL_NAME, TEST);
+			fedora.addRelationship(IDENTIFIER, COLL_NAME, OWL_SAMEAS,null); // it seems that null is a problem
 			fail();
 		}catch(RepositoryException e){}
 	}
+	
+	
+	// to show that duplicate ingest in createEDMAction is possible
+	@Test
+	public void overwritingFileDatastreamPossible() throws IOException {
+		
+		try{
+			fedora.createObject(IDENTIFIER, COLL_NAME, TEST);
+			fedora.ingestFile(IDENTIFIER, COLL_NAME, "abc", abc, "a label", "text/xml");
+			fedora.ingestFile(IDENTIFIER, COLL_NAME, "abc", abd, "a label", "text/xml");
+		}catch(RepositoryException e){}
+	}
+	
+	
 }
