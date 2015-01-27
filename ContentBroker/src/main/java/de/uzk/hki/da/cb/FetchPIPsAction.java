@@ -21,6 +21,7 @@
 
 package de.uzk.hki.da.cb;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -28,6 +29,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
+import static de.uzk.hki.da.core.C.*;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.util.ConfigurationException;
@@ -65,43 +67,42 @@ public class FetchPIPsAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException {
 		
-		publicContractorFolder = Path.make("pips", "public", o.getContractor().getShort_name());
-		institutionContractorFolder = Path.make("pips", "institution", o.getContractor().getShort_name());
-		String sourceDIPName = o.getIdentifier()+"_"+o.getLatestPackage().getId();
-		
-		replicateFromSourceResourceToWorkingResource(sourceDIPName);
+		replicateFromSourceResourceToWorkingResource();
 		// the rename is necessary because at the moment we donl't have another possibility to delete or trim the irods
 		// collections on specific resources.
-		deletePreviousPIPs(o.getIdentifier());
-		renamePIPs(sourceDIPName, o.getIdentifier());
+		deletePreviousPIPs();
+		renamePIPs();
 		
 		// cleanup
-		distributedConversionAdapter.remove(Path.make(publicContractorFolder,sourceDIPName).toString());
-		distributedConversionAdapter.remove(Path.make(institutionContractorFolder,sourceDIPName).toString());
+		distributedConversionAdapter.remove(makePIPSourceFolder(WA_PUBLIC).toString());
+		distributedConversionAdapter.remove(makePIPSourceFolder(WA_INSTITUTION).toString());
 
 		return true;
 	}
-
-
 
 	@Override
 	public void rollback() throws Exception {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 
+	private File makePIPFolder(String pipType) {
+		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier());
+	}
+	
+	private File makePIPSourceFolder(String pipType) {
+		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier()+"_"+o.getLatestPackage().getId());
+	}
+	
+	
 
 
-	/**
-	 * @param dipTargetPartialPath
-	 * @throws IOException
-	 */
-	private void deletePreviousPIPs(String targetDIPName) throws IOException{	
-		if (Path.make(n.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile().exists());
-			FileUtils.deleteDirectory(Path.make(
-					n.getWorkAreaRootPath(),publicContractorFolder,targetDIPName).toFile());
-		if (Path.make(n.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName).toFile().exists())
-			FileUtils.deleteDirectory(Path.make(
-					n.getWorkAreaRootPath(),institutionContractorFolder, targetDIPName).toFile());
+	private void deletePreviousPIPs() throws IOException{	
+		
+		if (makePIPFolder(WA_PUBLIC).exists());
+			FileUtils.deleteDirectory(makePIPFolder(WA_PUBLIC));
+		
+		if (makePIPFolder(WA_INSTITUTION).exists())
+			FileUtils.deleteDirectory(makePIPFolder(WA_INSTITUTION));
 	}
 
 
@@ -111,30 +112,26 @@ public class FetchPIPsAction extends AbstractAction {
 	 * @param targetDIPName
 	 * @throws IOException
 	 */
-	private void renamePIPs(String sourceDIPName,
-			String targetDIPName) throws IOException {
+	private void renamePIPs() throws IOException {
 		
-		Path sourcePIPPublic = Path.make(n.getWorkAreaRootPath(),publicContractorFolder,sourceDIPName);
-		Path targetPIPPublic = Path.make(n.getWorkAreaRootPath(),publicContractorFolder,targetDIPName);
+		logger.debug("Rename PIP Public " +makePIPSourceFolder(WA_PUBLIC).toString()  + " to "  + makePIPFolder(WA_PUBLIC).toString() );
+		logger.debug("Rename PIP Institution " +makePIPSourceFolder(WA_INSTITUTION).toString()  + " to "  + makePIPFolder(WA_INSTITUTION).toString() );
 		
-		Path sourcePIPInst = Path.make(n.getWorkAreaRootPath(),institutionContractorFolder,sourceDIPName);
-		Path targetPIPInst = Path.make(n.getWorkAreaRootPath(),institutionContractorFolder,targetDIPName);
-		
-		logger.debug("Rename PIP Public " +sourcePIPPublic.toString()  + " to "  + targetPIPPublic.toString() );
-		logger.debug("Rename PIP Institution " +sourcePIPInst.toString()  + " to "  + targetPIPInst.toString() );
-		
-		if (sourcePIPPublic.toFile().exists()) {
+		if (makePIPSourceFolder(WA_PUBLIC).exists()) {
 			FileUtils.moveDirectory(
-					sourcePIPPublic.toFile(), 
-					targetPIPPublic.toFile());
-		} else logger.debug(sourcePIPPublic.toString()+ " does not exist, could not perform rename!" );
-		if (sourcePIPInst.toFile().exists()) {
+					makePIPSourceFolder(WA_PUBLIC), 
+					makePIPFolder(WA_PUBLIC));
+		} else logger.debug(makePIPSourceFolder(WA_PUBLIC).toString()+ " does not exist, could not perform rename!" );
+		if (makePIPSourceFolder(WA_INSTITUTION).exists()) {
 			FileUtils.moveDirectory(
-					sourcePIPInst.toFile(), 
-					targetPIPInst.toFile());
-		} else logger.debug(sourcePIPInst.toString()+ " does not exist, could not perform rename!" );
+					makePIPSourceFolder(WA_INSTITUTION), 
+					makePIPFolder(WA_INSTITUTION));
+		} else logger.debug(makePIPSourceFolder(WA_INSTITUTION).toString()+ " does not exist, could not perform rename!" );
 	}
 
+	
+	
+	
 
 
 	/**
@@ -142,14 +139,13 @@ public class FetchPIPsAction extends AbstractAction {
 	 * @author Jens Peters
 	 * @param dipSourcePartialPath
 	 */
-	private void replicateFromSourceResourceToWorkingResource(
-			String dipSourcePartial) {
+	private void replicateFromSourceResourceToWorkingResource() {
 //		TODO check if source exists
 			distributedConversionAdapter.replicateToLocalNode(
-					Path.make(publicContractorFolder,dipSourcePartial).toString());
+					makePIPSourceFolder(WA_PUBLIC).toString());
 //		TODO check if source exists
 			 distributedConversionAdapter.replicateToLocalNode(
-				Path.make(institutionContractorFolder,dipSourcePartial).toString());
+					 makePIPSourceFolder(WA_INSTITUTION).toString());
 	}
 	
 	
