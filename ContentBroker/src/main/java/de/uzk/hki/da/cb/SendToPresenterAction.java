@@ -37,8 +37,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.metadata.DCReader;
+import static de.uzk.hki.da.core.C.*;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.metadata.XepicurWriter;
 import de.uzk.hki.da.model.DAFile;
@@ -83,7 +82,6 @@ public class SendToPresenterAction extends AbstractAction {
 	private Map<String,String> labelMap;
 	private Set<String> testContractors;
 	
-	private DCReader dcReader;
 	
 	@Override
 	public void checkActionSpecificConfiguration() throws ConfigurationException {
@@ -128,10 +126,15 @@ public class SendToPresenterAction extends AbstractAction {
 		boolean publicPIPSuccessfullyIngested = false;
 		boolean institutionPIPSuccessfullyIngested = false;
 		try {
-			publicPIPSuccessfullyIngested = publishPackage(
-					C.WA_PUBLIC,true,preservationSystem.getOpenCollectionName());
-			institutionPIPSuccessfullyIngested = publishPackage(
-					C.WA_INSTITUTION,false,preservationSystem.getClosedCollectionName());	
+			
+			if (makePIPFolder(WA_PUBLIC).exists()) 
+				publicPIPSuccessfullyIngested = publishPackage(
+					WA_PUBLIC,true,preservationSystem.getOpenCollectionName());
+			
+			if (makePIPFolder(WA_INSTITUTION).exists()) 
+				institutionPIPSuccessfullyIngested = publishPackage(
+					WA_INSTITUTION,false,preservationSystem.getClosedCollectionName());	
+			
 		} catch (RepositoryException e) {
 			throw new RuntimeException(e);
 		}
@@ -154,11 +157,24 @@ public class SendToPresenterAction extends AbstractAction {
 
 	private void deleteXepicur() {
 		
-		Path.makeFile(localNode.getWorkAreaRootPath(),C.WA_PIPS,
-				C.WA_PUBLIC,object.getContractor().getShort_name(),object.getIdentifier(),"epicur.xml").delete();
-		Path.makeFile(localNode.getWorkAreaRootPath(),C.WA_PIPS,
-				C.WA_INSTITUTION,object.getContractor().getShort_name(),object.getIdentifier(),"epicur.xml").delete();
+		makeMetadataFile("epicur",WA_INSTITUTION).delete();
+		makeMetadataFile("epicur",WA_PUBLIC).delete();
 	}
+	
+	
+	
+	private File makeMetadataFile(String fileName,String pipType) {
+		return Path.makeFile(localNode.getWorkAreaRootPath(),WA_PIPS,
+				pipType,object.getContractor().getShort_name(),object.getIdentifier(),fileName+FILE_EXTENSION_XML);
+	}
+	
+	private File makePIPFolder(String pipType) {
+		return Path.makeFile(localNode.getWorkAreaRootPath(),WA_PIPS,
+			pipType,object.getContractor().getShort_name(),object.getIdentifier());
+	}
+	
+	
+	
 	
 
 	/**
@@ -169,21 +185,17 @@ public class SendToPresenterAction extends AbstractAction {
 	 * @throws RepositoryException 
 	 */
 	private boolean publishPackage(String pipType,boolean checkSets, String collectionName) throws IOException, RepositoryException {
-		Path pipPath = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS,pipType,object.getContractor().getShort_name(),object.getIdentifier());
-		if (!pipPath.toFile().exists()) {
-			logger.warn(pipPath + " does not exist.");
-			return false;
-		}
-		String pkgType = getDcReader().getPackageTypeFromDC(pipPath);
+		
+		String pkgType = object.getPackage_type(); 
 		if (!viewerUrls.containsKey(pkgType))
 			logger.warn("could not determine a viewerUrl for package type of pip institution");
 		
 		XepicurWriter.createXepicur(
 				object.getIdentifier(), pkgType, 
 				viewerUrls.get(pkgType), 
-				pipPath.toString(),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
+				makeMetadataFile("epicur",pipType),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
 		
-		boolean packageIngested=ingestPackage(object.getUrn(), object.getIdentifier(), collectionName, pipPath, 
+		boolean packageIngested=ingestPackage(object.getUrn(), object.getIdentifier(), collectionName, makePIPFolder(pipType), 
 				object.getContractor().getShort_name(), pkgType, makeSets(checkSets));
 		addRelsExtRelationships(collectionName,makeSets(checkSets));
 		return packageIngested;
@@ -197,8 +209,8 @@ public class SendToPresenterAction extends AbstractAction {
 		try {
 	
 			// add urn as owl:sameAs
-			repositoryFacade.addRelationship(object.getIdentifier(), collection, C.OWL_SAMEAS, object.getUrn());
-			logger.debug("Added relationship: "+C.OWL_SAMEAS+" "+object.getUrn());
+			repositoryFacade.addRelationship(object.getIdentifier(), collection, OWL_SAMEAS, object.getUrn());
+			logger.debug("Added relationship: "+OWL_SAMEAS+" "+object.getUrn());
 			
 			// add collection membership
 			String collectionUri;
@@ -215,7 +227,7 @@ public class SendToPresenterAction extends AbstractAction {
 				// don't add test packages to OAI-PMH
 				!testContractors.contains(object.getContractor().getShort_name())
 			) {
-				String oaiId = C.OAI_DANRW_DE + object.getIdentifier();
+				String oaiId = OAI_DANRW_DE + object.getIdentifier();
 				repositoryFacade.addRelationship(object.getIdentifier(), collection, OPENARCHIVES_OAI_IDENTIFIER, oaiId);
 				logger.debug("Added relationship: "+OPENARCHIVES_OAI_IDENTIFIER+" " + oaiId);
 			}
@@ -250,9 +262,9 @@ public class SendToPresenterAction extends AbstractAction {
 	private void buildMapWithOriginalFilenamesForLabeling() {
 		labelMap = new HashMap<String,String>();
 		for (Event e:object.getLatestPackage().getEvents()) {			
-			if (!C.EVENT_TYPE_CONVERT.equals(e.getType())) continue;
+			if (!EVENT_TYPE_CONVERT.equals(e.getType())) continue;
 			DAFile targetFile = e.getTarget_file();
-			if (!targetFile.getRep_name().startsWith(C.WA_DIP)) continue;			
+			if (!targetFile.getRep_name().startsWith(WA_DIP)) continue;			
 			DAFile sourceFile = e.getSource_file();
 			labelMap.put(targetFile.getRelative_path(), sourceFile.getRelative_path());			
 		}
@@ -313,11 +325,11 @@ public class SendToPresenterAction extends AbstractAction {
 	 * @throws IOException
 	 */
 	private boolean ingestPackage(String urn, String objectId, String collection,
-			Path packagePath, String contractorShortName, String packageType,
+			File packagePath, String contractorShortName, String packageType,
 			String[] sets) throws RepositoryException, IOException {
 		
 		// check if pip exists
-		File pack = packagePath.toFile();
+		File pack = packagePath;
 		if (!pack.exists()) {
 			throw new IOException("Directory " + packagePath +" does not exist");
 		}
@@ -413,7 +425,7 @@ public class SendToPresenterAction extends AbstractAction {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			String content = IOUtils.toString(fileInputStream, ENCODING);
 			fileInputStream.close();
-			repositoryFacade.createMetadataFile(objectId, collection, DC, content, label, mimeType = C.MIMETYPE_TEXT_XML);
+			repositoryFacade.createMetadataFile(objectId, collection, DC, content, label, mimeType = MIMETYPE_TEXT_XML);
 		} else {
 			repositoryFacade.ingestFile(objectId, collection, fileId, file, label, mimeType);
 		}
@@ -460,14 +472,6 @@ public class SendToPresenterAction extends AbstractAction {
 		this.testContractors = testContractors;
 	}
 
-	public DCReader getDcReader() {
-		return dcReader;
-	}
-
-	public void setDcReader(DCReader dcReader) {
-		this.dcReader = dcReader;
-	}
-	
 	/**
 	 * For every package type read from the DC.xml (like "EAD"), there is a viewer url 
 	 * @return

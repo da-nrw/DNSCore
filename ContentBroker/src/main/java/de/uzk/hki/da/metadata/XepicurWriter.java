@@ -46,7 +46,7 @@ public class XepicurWriter {
 	 * @param viewerUrl The prefix for the viewer to be used
 	 * @param path The folder the XML will be created in
 	 */
-	public static void createXepicur(String objectId, String packageType, String viewerUrl, String path,String urn_prefix,String file_url) {
+	public static void createXepicur(String objectId, String packageType, String viewerUrl, File outputFile,String urn_prefix,String file_url) {
 		
 		Namespace xsi = Namespace.getNamespace("xsi", XSI_NAMESPACE);
 		Namespace epicur = Namespace.getNamespace("urn:nbn:de:1111-2004033116");
@@ -86,7 +86,7 @@ public class XepicurWriter {
 		Document doc = new Document(root);
 		XMLOutputter out = new XMLOutputter();
 		try {
-			FileWriter fw = new FileWriter(new File(path + "/epicur.xml"));
+			FileWriter fw = new FileWriter(outputFile);
 			out.output(doc, fw);
 		} catch (IOException e) {
 			throw new RuntimeException("Unable to write epicur XML!", e);

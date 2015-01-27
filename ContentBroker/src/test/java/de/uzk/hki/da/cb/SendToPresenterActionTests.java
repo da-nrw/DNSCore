@@ -25,6 +25,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -37,11 +38,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static de.uzk.hki.da.core.C.*;
 import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.metadata.DCReader;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
-import de.uzk.hki.da.test.TC;
+import static de.uzk.hki.da.test.TC.*;
 import de.uzk.hki.da.util.Path;
 
 /**
@@ -53,22 +54,18 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	SendToPresenterAction action = new SendToPresenterAction();
 	
 	
-	private static final Path workAreaRootPath = Path.make(TC.TEST_ROOT_CB,"SendToPresenterAction");
-	private static final Path pipPublic = Path.make(workAreaRootPath,C.WA_PIPS,C.WA_PUBLIC,C.TEST_USER_SHORT_NAME,TC.IDENTIFIER);
-	private final DCReader dcReader = mock(DCReader.class);
+	private static final Path WORKAREAROOTPATH = Path.make(TEST_ROOT_CB,"SendToPresenterAction");
+	
 	private final RepositoryFacade repositoryFacade = mock(RepositoryFacade.class);
 
 	@Before
 	public void setUp(){
 		
-		n.setWorkAreaRootPath(workAreaRootPath);
+		n.setWorkAreaRootPath(WORKAREAROOTPATH);
 		action.setRepositoryFacade(repositoryFacade);
 		
-		when(dcReader.getPackageTypeFromDC((Path)anyObject())).thenReturn("METS");
-		action.setDcReader(dcReader);
-		
 		Map<String,String> viewerUrls = new HashMap<String,String>();
-		viewerUrls.put("EAD", "http://data.danrw.de/ead-viewer/#/browse?src=");
+		viewerUrls.put(CB_PACKAGETYPE_EAD, "http://data.danrw.de/ead-viewer/#/browse?src=");
 		action.setViewerUrls(viewerUrls);
 		
 		Set<String> fileFilter = new HashSet<String>();
@@ -90,9 +87,14 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 		action.setTestContractors(testContractors);
 	}
 	
+	private File makeMetadataFile(String fileName,String pipType) {
+		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier(),fileName+C.FILE_EXTENSION_XML);
+	}
+	
+	
 	@After
 	public void tearDown() {
-		Path.makeFile(pipPublic,"epicur.xml").delete();
+		makeMetadataFile("epicur",WA_PUBLIC).delete();
 	}
 	
 	@Test
@@ -108,7 +110,7 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	@Test
 	public void createXepicur() throws IOException {
 		action.implementation();
-		assertTrue(Path.makeFile(pipPublic,"epicur.xml").exists());
+		assertTrue(makeMetadataFile("epicur",WA_PUBLIC).exists());
 	}
 	
 	
@@ -159,7 +161,7 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 		action.implementation(); 
 		// xepicur proven to be created by Test createXepicur()
 		action.rollback();
-		assertFalse(Path.makeFile(pipPublic,"epicur.xml").exists());
+		assertFalse(makeMetadataFile("epicur",WA_PUBLIC).exists());
 	}
 	
 	
