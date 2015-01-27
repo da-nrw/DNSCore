@@ -38,7 +38,7 @@ public class ReplicationExecutorTest {
 		
 		isc = mock(IrodsSystemConnector.class);	
 		Node node = new Node();
-		User nodeadmin = new User(); nodeadmin.setEmailAddress("admin@zone.de");
+		User nodeadmin = new User(); nodeadmin.setEmailAddress("noreply");
 		node.setAdmin(nodeadmin);
 		
 		node.setWorkingResource("cacheresc");
