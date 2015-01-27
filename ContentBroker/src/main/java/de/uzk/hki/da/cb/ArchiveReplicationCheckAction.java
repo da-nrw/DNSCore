@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
@@ -92,7 +91,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	
 	@Override
 	public void rollback() {
-		throw new NotImplementedException("No rollback implemented for this action");
+		
 	}
 
 	private void delay(){
