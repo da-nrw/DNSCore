@@ -55,7 +55,7 @@ public class CreateEDMAction extends AbstractAction {
 	
 	private RepositoryFacade repositoryFacade;
 	private Map<String,String> edmMappings;
-	private File edmDestinationFile;
+	private File edmDestinationFile = null;
 
 	/**
 	 * @
@@ -97,36 +97,60 @@ public class CreateEDMAction extends AbstractAction {
 			throw new FileNotFoundException("Missing file: "+xsltTransformationFile);
 
 		
-		File metadataSourceFile = Path.makeFile(localNode.getWorkAreaRootPath(),WA_PIPS,
-				WA_PUBLIC,object.getContractor().getShort_name(),object.getIdentifier(),object.getPackage_type()+FILE_EXTENSION_XML);
+		File metadataSourceFile = makeSourceFile(object.getPackage_type());
 		if (!metadataSourceFile.exists())
 			throw new RuntimeException("Missing file in public PIP: "+object.getPackage_type()+FILE_EXTENSION_XML);
 		
 
-		edmDestinationFile = Path.makeFile(localNode.getWorkAreaRootPath(),WA_PIPS,WA_PUBLIC,object.getContractor().getShort_name(),
+		edmDestinationFile = generateEDM(xsltTransformationFile, metadataSourceFile);
+		putToRepository(edmDestinationFile);
+		
+		return true;
+	}
+	
+	
+	
+	private File makeSourceFile(String packageType) {
+		return Path.makeFile(localNode.getWorkAreaRootPath(),WA_PIPS,
+				WA_PUBLIC,object.getContractor().getShort_name(),object.getIdentifier(),packageType+FILE_EXTENSION_XML);
+	}
+	
+	private File makeEDMFile() {
+		return Path.makeFile(localNode.getWorkAreaRootPath(),WA_PIPS,WA_PUBLIC,object.getContractor().getShort_name(),
 				object.getIdentifier(),EDM_METADATA_STREAM_ID+FILE_EXTENSION_XML);
-
+	}
+	
+	private File generateEDM(String xsltTransformationFile,File metadataSourceFile) throws FileNotFoundException {
+		
+		File edm = makeEDMFile(); 
+		
 		String edmResult = generateEDM(object.getIdentifier(), xsltTransformationFile, new FileInputStream(metadataSourceFile));
 		PrintWriter out = null;
 		try {
-			out = new PrintWriter(edmDestinationFile);
+			out = new PrintWriter(edm);
 			out.println(edmResult);}
 		finally {
 			out.close();
 		}
 		
+		return edm;
+
+	}
+	
+
+	
+	private void putToRepository(File file) throws RepositoryException, IOException {
 		repositoryFacade.ingestFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), 
-					EDM_METADATA_STREAM_ID+FILE_EXTENSION_XML, edmDestinationFile, 
-					"Object representation in Europeana Data Model", "application/rdf+xml");
-		
-		return true;
+				EDM_METADATA_STREAM_ID+FILE_EXTENSION_XML, file, 
+				"Object representation in Europeana Data Model", "application/rdf+xml");
 	}
 
 	
 	
 	@Override
 	public void rollback() throws Exception {
-		if (edmDestinationFile.exists()) edmDestinationFile.delete();
+		if ((edmDestinationFile!=null)&&(edmDestinationFile.exists())) 
+			edmDestinationFile.delete();
 	}
 
 
