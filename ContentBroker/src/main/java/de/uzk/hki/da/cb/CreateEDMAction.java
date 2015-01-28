@@ -19,6 +19,10 @@
 
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.core.C.EDM_METADATA_STREAM_ID;
+import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
+import static de.uzk.hki.da.core.C.WA_PIPS;
+import static de.uzk.hki.da.core.C.WA_PUBLIC;
 import static de.uzk.hki.da.utils.Utilities.isNotSet;
 
 import java.io.File;
@@ -33,7 +37,6 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import de.uzk.hki.da.action.AbstractAction;
-import static de.uzk.hki.da.core.C.*;
 import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
@@ -97,7 +100,7 @@ public class CreateEDMAction extends AbstractAction {
 			throw new FileNotFoundException("Missing file: "+xsltTransformationFile);
 
 		
-		File metadataSourceFile = makeSourceFile(o.getPackage_type());
+		File metadataSourceFile = makeMetadataFile(o.getPackage_type(),WA_PUBLIC);
 		if (!metadataSourceFile.exists())
 			throw new RuntimeException("Missing file in public PIP: "+o.getPackage_type()+FILE_EXTENSION_XML);
 		
@@ -110,19 +113,14 @@ public class CreateEDMAction extends AbstractAction {
 	
 	
 	
-	private File makeSourceFile(String packageType) {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,
-				WA_PUBLIC,o.getContractor().getShort_name(),o.getIdentifier(),packageType+FILE_EXTENSION_XML);
+	private File makeMetadataFile(String packageType,String pipType) {
+		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier(),packageType+FILE_EXTENSION_XML);
 	}
 	
-	private File makeEDMFile() {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),
-				o.getIdentifier(),EDM_METADATA_STREAM_ID+FILE_EXTENSION_XML);
-	}
 	
 	private File generateEDM(String xsltTransformationFile,File metadataSourceFile) throws FileNotFoundException {
 		
-		File edm = makeEDMFile(); 
+		File edm = makeMetadataFile(EDM_METADATA_STREAM_ID,WA_PUBLIC); 
 		
 		String edmResult = generateEDM(o.getIdentifier(), xsltTransformationFile, new FileInputStream(metadataSourceFile));
 		PrintWriter out = null;
