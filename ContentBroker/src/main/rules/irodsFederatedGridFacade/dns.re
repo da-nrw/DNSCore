@@ -91,8 +91,13 @@ acGetNumberOfCopies(*homeDao,*numberOfCopies){
 				acLog("Check existence at *destColl")
 				*err=errorcode(msiObjStat(*destColl,*out));
 				if (*err==0 ) {
-           			*numberOfCopies=*numberOfCopies+1;
+					msiDataObjChksum(*destColl,"",*destCs)	
+					acGetOrigChecksum(*homeDao,*origCs)
+           			if (*destCs == *origCs ) {
+           				acLog("remote checksum of *destColl verified!")
+           				*numberOfCopies=*numberOfCopies+1;
         			}
+        		}
 			}
 			msiCloseGenQuery(*GenQ2,*status)
 }
