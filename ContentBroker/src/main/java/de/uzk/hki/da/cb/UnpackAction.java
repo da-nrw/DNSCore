@@ -90,19 +90,19 @@ public class UnpackAction extends AbstractAction {
 	public boolean implementation() throws IOException{
 		
 		Path absoluteSIPPath = Path.make(
-				localNode.getIngestAreaRootPath(),
-				object.getContractor().getShort_name(), 
-				object.getLatestPackage().getContainerName());
+				n.getIngestAreaRootPath(),
+				o.getContractor().getShort_name(), 
+				o.getLatestPackage().getContainerName());
 	
 		if (!ingestGate.canHandle(absoluteSIPPath.toFile().length())){
-			JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,object.getIdentifier() + " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
+			JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,o.getIdentifier() + " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
 			super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
 			logger.warn("ResourceMonitor prevents further processing of package due to space limitations. Setting job back to start state.");
 			return false;
 		}
 		
 		String sipInForkPath = copySIPToWorkArea(absoluteSIPPath);
-		unpack(new File(sipInForkPath),object.getPath().toString());
+		unpack(new File(sipInForkPath),o.getPath().toString());
 		
 		throwUserExceptionIfDuplicatesExist();
 		throwUserExceptionIfNotBagitConsistent();
@@ -121,13 +121,13 @@ public class UnpackAction extends AbstractAction {
 	
 	@Override
 	public void rollback() throws IOException {
-		FileUtils.deleteDirectory(Path.make(object.getPath()).toFile());
+		FileUtils.deleteDirectory(Path.make(o.getPath()).toFile());
 		
-		new File(localNode.getWorkAreaRootPath() + object.getContractor().getShort_name() + "/" + 
-				object.getLatestPackage().getContainerName()).delete();
+		new File(n.getWorkAreaRootPath() + o.getContractor().getShort_name() + "/" + 
+				o.getLatestPackage().getContainerName()).delete();
 		
-		object.getLatestPackage().getFiles().clear();
-		job.setRep_name("");
+		o.getLatestPackage().getFiles().clear();
+		j.setRep_name("");
 	}
 
 
@@ -136,7 +136,7 @@ public class UnpackAction extends AbstractAction {
 	private void throwUserExceptionIfNotPremisConsistent() throws IOException {
 		
 		try {
-			if (!PremisXmlValidator.validatePremisFile(Path.make(object.getDataPath(),"premis.xml").toFile()))
+			if (!PremisXmlValidator.validatePremisFile(Path.make(o.getDataPath(),"premis.xml").toFile()))
 				throw new UserException(UserExceptionId.INVALID_SIP_PREMIS, "PREMIS file is not valid");
 		} catch (FileNotFoundException e1) {
 			throw new UserException(UserExceptionId.SIP_PREMIS_NOT_FOUND, "Couldn't find PREMIS file", e1);
@@ -215,10 +215,10 @@ public class UnpackAction extends AbstractAction {
 		
 		Map<String,List<File>> documentsToFiles = new HashMap<String,List<File>>();
 		
-		Collection<File> files = FileUtils.listFiles(object.getDataPath().toFile(), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+		Collection<File> files = FileUtils.listFiles(o.getDataPath().toFile(), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
 		for (File file : files) {
 			String document = 
-					file.getAbsolutePath().replace(object.getDataPath().toFile().getAbsolutePath(),"");
+					file.getAbsolutePath().replace(o.getDataPath().toFile().getAbsolutePath(),"");
 			document = document.substring(1);
 			document = FilenameUtils.removeExtension(document);
 			
@@ -257,7 +257,7 @@ public class UnpackAction extends AbstractAction {
 	private String copySIPToWorkArea(Path ingestFilePath) {
 		
 		File ingestFile = ingestFilePath.toFile();
-		File destFile = Path.make(localNode.getWorkAreaRootPath(),"work",object.getContractor().getShort_name(), 
+		File destFile = Path.make(n.getWorkAreaRootPath(),"work",o.getContractor().getShort_name(), 
 				  FilenameUtils.getName(ingestFilePath.toString())).toFile();
 		
 		if (!ingestFile.exists())
@@ -351,12 +351,12 @@ public class UnpackAction extends AbstractAction {
 	private PackageType throwUserExceptionIfNotBagitConsistent(){
 		
 		PackageType pType = null;
-		pType = determinePackageType(object.getPath().toFile());
+		pType = determinePackageType(o.getPath().toFile());
 
 		if (pType == null)
 			throw new UserException(UserExceptionId.UNKNOWN_PACKAGE_TYPE, "Package type couldn't be determined");
 
-		ConsistencyChecker checker = new BagitConsistencyChecker(object.getPath().toString());
+		ConsistencyChecker checker = new BagitConsistencyChecker(o.getPath().toString());
 		
 		try{
 			if (!checker.checkPackage())

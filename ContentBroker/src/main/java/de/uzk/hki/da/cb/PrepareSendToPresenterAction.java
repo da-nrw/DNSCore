@@ -68,9 +68,9 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException {
 		
-		String dipName = object.getContractor().getShort_name() + "/" + object.getIdentifier()+"_"+object.getLatestPackage().getId();
-		publicDir = Path.makeFile(localNode.getWorkAreaRootPath(),"pips","public",dipName);
-		instDir = Path.makeFile(localNode.getWorkAreaRootPath(),"pips","institution",dipName);
+		String dipName = o.getContractor().getShort_name() + "/" + o.getIdentifier()+"_"+o.getLatestPackage().getId();
+		publicDir = Path.makeFile(n.getWorkAreaRootPath(),"pips","public",dipName);
+		instDir = Path.makeFile(n.getWorkAreaRootPath(),"pips","institution",dipName);
 		
 		logger.trace("Moving the dip content for presentation purposes out of the archival package.");
 		copyPIPSforReplication();
@@ -108,13 +108,13 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	 * @author Daniel M. de Oliveira
 	 */
 	private Object readRightsFromPREMIS() throws IOException {
-		if (object.getLatest(PREMIS_XML)==null) throw new FileNotFoundException("premis.xml not present in obect");
+		if (o.getLatest(PREMIS_XML)==null) throw new FileNotFoundException("premis.xml not present in obect");
 		
 		Object premisObject = null;
 		try {
 
 			premisObject = new ObjectPremisXmlReader().deserialize(
-					object.
+					o.
 					getLatest(PREMIS_XML).
 					toRegularFile());
 			
@@ -162,18 +162,18 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	 */
 	private void copyPIPSforReplication() throws IOException {
 
-		if (Path.makeFile(object.getDataPath(),C.WA_DIP,"public").exists()){
+		if (Path.makeFile(o.getDataPath(),C.WA_DIP,"public").exists()){
 			logger.info("Copying public datastreams to " + publicDir.getAbsolutePath());
 			if (publicDir.exists()) FileUtils.deleteDirectory(publicDir);
 			FileUtils.copyDirectory(
-					Path.make(object.getDataPath(),C.WA_DIP,"public").toFile(), 
+					Path.make(o.getDataPath(),C.WA_DIP,"public").toFile(), 
 					publicDir);
 		}
-		if (Path.makeFile(object.getDataPath(),C.WA_DIP,"institution").exists()){
+		if (Path.makeFile(o.getDataPath(),C.WA_DIP,"institution").exists()){
 			logger.info("Copying institution datastreams to " + instDir);
 			if (instDir.exists()) FileUtils.deleteDirectory(instDir);
 			FileUtils.copyDirectory(
-					Path.make(object.getDataPath(),C.WA_DIP,"institution").toFile(), 
+					Path.make(o.getDataPath(),C.WA_DIP,"institution").toFile(), 
 					instDir);
 		}
 	}

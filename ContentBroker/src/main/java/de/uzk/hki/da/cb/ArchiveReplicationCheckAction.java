@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
@@ -71,28 +70,28 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	boolean implementation() throws IOException {
 		setKILLATEXIT(true);
 
-		StoragePolicy sp = new StoragePolicy(localNode);
+		StoragePolicy sp = new StoragePolicy(n);
 		sp.setMinNodes(preservationSystem.getMinRepls());
 		do{
 			delay();
 		}
 		while (!gridRoot.storagePolicyAchieved(
-				object.getContractor().getShort_name() + 
-				"/" + object.getIdentifier() + "/"+ object.getIdentifier() + ".pack_" + object.getLatestPackage().getName() + ".tar", 
+				o.getContractor().getShort_name() + 
+				"/" + o.getIdentifier() + "/"+ o.getIdentifier() + ".pack_" + o.getLatestPackage().getName() + ".tar", 
 				sp));
 		
-		prepareObjectForObjectDBStorage(object);
-		new MailContents(preservationSystem,localNode).sendReciept(job, object);
+		prepareObjectForObjectDBStorage(o);
+		new MailContents(preservationSystem,n).sendReciept(j, o);
 		
-		toCreate=createPublicationJob(job,object,preservationSystem.getPresServer());
-		FileUtils.deleteDirectory(object.getPath().toFile());
+		toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());
+		FileUtils.deleteDirectory(o.getPath().toFile());
 		return true;
 	}
 	
 	
 	@Override
 	public void rollback() {
-		throw new NotImplementedException("No rollback implemented for this action");
+		
 	}
 
 	private void delay(){
@@ -150,8 +149,8 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		
 		obj.setObject_state(100);
 		obj.setDate_modified(String.valueOf(new Date().getTime()));
-		obj.setStatic_nondisclosure_limit(job.getStatic_nondisclosure_limit());
-		obj.setDynamic_nondisclosure_limit(job.getDynamic_nondisclosure_limit());
+		obj.setStatic_nondisclosure_limit(j.getStatic_nondisclosure_limit());
+		obj.setDynamic_nondisclosure_limit(j.getDynamic_nondisclosure_limit());
 	}
 	
 	

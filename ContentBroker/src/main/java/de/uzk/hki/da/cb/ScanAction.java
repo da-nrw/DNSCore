@@ -65,17 +65,17 @@ public class ScanAction extends AbstractAction{
 	@Override
 	public boolean implementation() throws IOException {
 		
-		job.getConversion_instructions().addAll(
-				generateConversionInstructions(object.getLatestPackage().getFiles()));
+		j.getConversion_instructions().addAll(
+				generateConversionInstructions(o.getLatestPackage().getFiles()));
 		
-		Object premisObject = parsePremisToMetadata(object.getDataPath() +"/"+ job.getRep_name()+"a");
+		Object premisObject = parsePremisToMetadata(o.getDataPath() +"/"+ j.getRep_name()+"a");
 		if (!premisObject.grantsRight(MIGRATION))
 		{
 			logger.info("PREMIS says migration is not granted. Will ask the user what to do next.");
-			new MailContents(preservationSystem,localNode).informUserAboutPendingDecision(object); 
+			new MailContents(preservationSystem,n).informUserAboutPendingDecision(o); 
 			
 			// "Manipulate" the end status to point to ProcessUserDecisionsAction
-			job.setQuestion(C.QUESTION_MIGRATION_ALLOWED);
+			j.setQuestion(C.QUESTION_MIGRATION_ALLOWED);
 			this.setEndStatus(C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
 		}
 		
@@ -88,8 +88,8 @@ public class ScanAction extends AbstractAction{
 	@Override
 	public void rollback() {
 	
-		job.getConversion_instructions().clear();
-		for (ConversionInstruction ci: job.getConversion_instructions()){
+		j.getConversion_instructions().clear();
+		for (ConversionInstruction ci: j.getConversion_instructions()){
 			logger.warn("still exists: "+ci);
 		}
 		

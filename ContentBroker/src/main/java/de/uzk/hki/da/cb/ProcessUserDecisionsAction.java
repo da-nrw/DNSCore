@@ -61,17 +61,17 @@ public class ProcessUserDecisionsAction extends AbstractAction{
 			UserException, RepositoryException, JDOMException,
 			ParserConfigurationException, SAXException {
 		
-		if (Utilities.isNotSet(job.getAnswer())){
+		if (Utilities.isNotSet(j.getAnswer())){
 			throw new IllegalStateException("job.getAnswer() must not be null or empty.");
 		}
 		
-		else if (job.getAnswer().equals(C.ANSWER_YO)){
+		else if (j.getAnswer().equals(C.ANSWER_YO)){
 			logger.info("System Question: "+C.QUESTION_MIGRATION_ALLOWED+" User response: "+C.ANSWER_YO);
 		} 
 		else {
 			logger.info("System Question: "+C.QUESTION_MIGRATION_ALLOWED+" User response: "+C.ANSWER_NO);
 			logger.trace("will delete conversion instructions for long term preservation now");
-			job.getConversion_instructions().clear();
+			j.getConversion_instructions().clear();
 		}
 		this.setEndStatus(C.WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION);
 		return true;

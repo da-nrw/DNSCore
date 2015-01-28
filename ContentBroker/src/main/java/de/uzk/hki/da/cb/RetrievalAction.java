@@ -74,7 +74,7 @@ public class RetrievalAction extends AbstractAction {
 	
 	@Override
 	public void checkSystemStatePreconditions() throws IllegalStateException {
-		if (!object.getDataPath().toFile().exists()) throw new IllegalStateException("object data path on fs doesn't exist on fs");
+		if (!o.getDataPath().toFile().exists()) throw new IllegalStateException("object data path on fs doesn't exist on fs");
 	}
 
 	
@@ -83,14 +83,14 @@ public class RetrievalAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException {
 
-		newTar = Path.make(localNode.getUserAreaRootPath(),object.getContractor().getShort_name(),"outgoing",object.getIdentifier() + ".tar");
+		newTar = Path.make(n.getUserAreaRootPath(),o.getContractor().getShort_name(),"outgoing",o.getIdentifier() + ".tar");
 		Path tempFolder = createTmpFolder();
 		
 
-		if (job.getQuestion()==null||job.getQuestion().isEmpty()){
+		if (j.getQuestion()==null||j.getQuestion().isEmpty()){
 			stdRetrieval(tempFolder);
 		}
-		else if (job.getQuestion().startsWith("RETRIEVE:")){
+		else if (j.getQuestion().startsWith("RETRIEVE:")){
 			specialRetrieval(tempFolder);
 		}
 		
@@ -98,8 +98,8 @@ public class RetrievalAction extends AbstractAction {
 		bagitAndTarit(tempFolder);
 
 		cleanupFS();
-		object.setObject_state(100);
-		new MailContents(preservationSystem,localNode).retrievalReport(object);
+		o.setObject_state(100);
+		new MailContents(preservationSystem,n).retrievalReport(o);
 		return true;
 	}
 
@@ -141,12 +141,12 @@ public class RetrievalAction extends AbstractAction {
 	
 	private Set<Package> packagesToRetrieve(){
 		
-		String pp[] = job.getQuestion().replace("RETRIEVE:","").split(",");
+		String pp[] = j.getQuestion().replace("RETRIEVE:","").split(",");
 		Set<Package> packagesToRetrieve = new HashSet<Package>(); 
 		
 		for (int i=0;i<pp.length;i++){
 			
-			for (Package p_:object.getPackages()){
+			for (Package p_:o.getPackages()){
 				if (p_.getName().equals(pp[i]))
 					packagesToRetrieve.add(p_);
 			}
@@ -160,7 +160,7 @@ public class RetrievalAction extends AbstractAction {
 
 
 	private void moveNewestPremisToDIP(Path tempFolder) throws IOException {
-		File premisFile = object.getLatest("premis.xml").toRegularFile();
+		File premisFile = o.getLatest("premis.xml").toRegularFile();
 		if (!premisFile.exists()) throw new RuntimeException("CRITICAL ERROR: premis file could has not been found");
 		File dest = Path.makeFile(tempFolder,"data","premis.xml");
 		FileUtils.copyFile(premisFile, dest);
@@ -170,8 +170,8 @@ public class RetrievalAction extends AbstractAction {
 
 
 	private Path createTmpFolder(){
-		Path tmpFolder = Path.make(localNode.getWorkAreaRootPath(),"work",
-				object.getContractor().getShort_name(), object.getIdentifier(), object.getIdentifier()); 
+		Path tmpFolder = Path.make(n.getWorkAreaRootPath(),"work",
+				o.getContractor().getShort_name(), o.getIdentifier(), o.getIdentifier()); 
 		tmpFolder.toFile().mkdir();
 		return tmpFolder;
 	}
@@ -197,8 +197,8 @@ public class RetrievalAction extends AbstractAction {
 	private void cleanupFS() throws IOException{
 		
 		// cleanup
-		String relativePackagePath = object.getContractor().getShort_name() + "/" + object.getIdentifier() + "/";
-		File packageFolder = Path.makeFile(localNode.getWorkAreaRootPath(),"work",relativePackagePath);
+		String relativePackagePath = o.getContractor().getShort_name() + "/" + o.getIdentifier() + "/";
+		File packageFolder = Path.makeFile(n.getWorkAreaRootPath(),"work",relativePackagePath);
 		
 		FileUtils.deleteDirectory(packageFolder);
 	}
@@ -216,7 +216,7 @@ public class RetrievalAction extends AbstractAction {
 		if (preservationSystem.getSidecarExtensions()!=null) 
 			sce = preservationSystem.getSidecarExtensions();
 		
-		List<DAFile> files = object.getNewestFilesFromAllRepresentations(sce);
+		List<DAFile> files = o.getNewestFilesFromAllRepresentations(sce);
 		for (DAFile f : files)
 		{
 			if (f.toRegularFile().getName().equals("premis.xml")) continue;

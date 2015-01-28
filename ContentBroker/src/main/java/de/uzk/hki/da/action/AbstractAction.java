@@ -78,8 +78,8 @@ public abstract class AbstractAction implements Runnable {
 	protected ActionRegistry actionMap;
 	private String name;
 	protected String startStatus;
-	protected Job job;
-	protected Object object;
+	protected Job j;
+	protected Object o;
 	protected String endStatus;
 	protected String description;
 	private UserExceptionManager userExceptionManager;
@@ -87,7 +87,7 @@ public abstract class AbstractAction implements Runnable {
 	private JmsMessageServiceHandler jmsMessageServiceHandler;
 
 	
-	protected Node localNode;                        // Implementations should never alter the state of this object to ensure thread safety
+	protected Node n;                        // Implementations should never alter the state of this object to ensure thread safety
 	protected PreservationSystem preservationSystem; // Implementations should never alter the state of this object to ensure thread safety
 
 	
@@ -145,7 +145,7 @@ public abstract class AbstractAction implements Runnable {
 	public void run() {
 		
 		if (!performCommonPreparationsForActionExecution()) return;
-		setupObjectLogging(object.getIdentifier());
+		setupObjectLogging(o.getIdentifier());
 		
 		synchronizeObjectDatabaseAndFileSystemState();
 		
@@ -153,13 +153,13 @@ public abstract class AbstractAction implements Runnable {
 		executeConcreteAction();
 		Date stop = new Date();
 		long duration = stop.getTime()-start.getTime(); // in milliseconds
-		new TimeStampLogging().log(object.getIdentifier(), this.getClass().getName(), duration);
+		new TimeStampLogging().log(o.getIdentifier(), this.getClass().getName(), duration);
 		
 		// The order of the next two statements must not be changed.
 		// The object logging must be unset in order to prevent another appender to start
 		// its lifecycle before the current one has stop its lifecycle.
 		unsetObjectLogging(); 
-		upateObjectAndJob(object, job, DELETEOBJECT, KILLATEXIT, toCreate);
+		upateObjectAndJob(o, j, DELETEOBJECT, KILLATEXIT, toCreate);
 
 		actionMap.deregisterAction(this); 
 	}
@@ -173,18 +173,18 @@ public abstract class AbstractAction implements Runnable {
 			
 		} catch (UserException e) {
 			resetModifiers();
-			execAndPostProcessRollback(object,job,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+			execAndPostProcessRollback(o,j,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
 			reportUserError(e);
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		} catch (SubsystemNotAvailableException e) {
 			resetModifiers();
-			execAndPostProcessRollback(object,job,C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED);
+			execAndPostProcessRollback(o,j,C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED);
 			reportTechnicalError(e);
 			actionFactory.pause(true);
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		} catch (Exception e) {
 			resetModifiers();
-			execAndPostProcessRollback(object,job,C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED);
+			execAndPostProcessRollback(o,j,C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED);
 			reportTechnicalError(e);
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		}
@@ -233,16 +233,16 @@ public abstract class AbstractAction implements Runnable {
 		
 		if (!implementation()){				
 			baseLogger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
-			job.setStatus(startStatus);
+			j.setStatus(startStatus);
 			resetModifiers();
 		} else {
-			job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
-			baseLogger.info(this.getClass().getName()+" finished working on job: "+job.getId()+". Now commiting changes to database.");
+			j.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+			baseLogger.info(this.getClass().getName()+" finished working on job: "+j.getId()+". Now commiting changes to database.");
 			if (KILLATEXIT)	{
 				baseLogger.info("Set the job status to the end status "+endStatus+" .");
 				logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 			} else {
-				job.setStatus(endStatus);	
+				j.setStatus(endStatus);	
 			}
 		}
 	}
@@ -340,15 +340,15 @@ public abstract class AbstractAction implements Runnable {
 	
 	private void reportUserError(UserException e) {
 		logger.error(this.getClass().getName()+": UserException in action: ",e);
-		new MailContents(preservationSystem,localNode).userExceptionCreateUserReport(userExceptionManager,e,object);
+		new MailContents(preservationSystem,n).userExceptionCreateUserReport(userExceptionManager,e,o);
 		if (e.checkForAdminReport())
-			new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(e, object, this);
+			new MailContents(preservationSystem,n).abstractActionCreateAdminReport(e, o, this);
 		sendJMSException(e);
 	}
 
 	private void reportTechnicalError(Exception e){
 		logger.error(this.getClass().getName()+": Exception in action: ",e);
-		new MailContents(preservationSystem,localNode).abstractActionCreateAdminReport(e, object, this);
+		new MailContents(preservationSystem,n).abstractActionCreateAdminReport(e, o, this);
 		sendJMSException(e);
 	}
 
@@ -367,9 +367,9 @@ public abstract class AbstractAction implements Runnable {
 	}
 
 	private void synchronizeObjectDatabaseAndFileSystemState() {
-		object.reattach();
+		o.reattach();
 		if (!SUPPRESS_OBJECT_CONSISTENCY_CHECK){
-			if ((!object.isDBtoFSconsistent())||(!object.isFStoDBconsistent())){
+			if ((!o.isDBtoFSconsistent())||(!o.isFStoDBconsistent())){
 				reportTechnicalError(new RuntimeException("Object DB is not consistent with data on FS."));
 			}
 		}
@@ -405,7 +405,7 @@ public abstract class AbstractAction implements Runnable {
 	}
 	
 	public void setJob(Job job){
-		this.job=job;
+		this.j=job;
 	}
 	
 	public void setActionMap(ActionRegistry actionMap) {
@@ -417,11 +417,11 @@ public abstract class AbstractAction implements Runnable {
 	}
 
 	public Node getLocalNode() {
-		return localNode;
+		return n;
 	}
 
 	public void setLocalNode(Node localNode) {
-		this.localNode = localNode;
+		this.n = localNode;
 	}
 
 	public String getStartStatus() {
@@ -445,7 +445,7 @@ public abstract class AbstractAction implements Runnable {
 	}
 
 	public Job getJob() {
-		return job;
+		return j;
 	}
 
 	public String getName() {
@@ -457,11 +457,11 @@ public abstract class AbstractAction implements Runnable {
 	}
 
 	public Object getObject() {
-		return object;
+		return o;
 	}
 
 	public void setObject(Object object) {
-		this.object = object;
+		this.o = object;
 	}
 	
 	public UserExceptionManager getUserExceptionManager() {

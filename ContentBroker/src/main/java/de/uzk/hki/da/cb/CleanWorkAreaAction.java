@@ -52,17 +52,17 @@ public class CleanWorkAreaAction extends AbstractAction{
 		
 		// to prevent leftover files from irods collection removal we delete the dirs on the filesystem first.
 		try {
-			FileUtils.deleteDirectory(object.getPath().toFile());
+			FileUtils.deleteDirectory(o.getPath().toFile());
 		} catch (IOException e) {
 			throw new RuntimeException("Exception while deleting \""+
-					object.getPath()+"\"",e);
+					o.getPath()+"\"",e);
 		}
 		
-		object.getDocuments().clear();
-		object.getLatestPackage().getFiles().clear();
-		object.getLatestPackage().getEvents().clear();
+		o.getDocuments().clear();
+		o.getLatestPackage().getFiles().clear();
+		o.getLatestPackage().getEvents().clear();
 		
-		toCreate = ArchiveReplicationCheckAction.createPublicationJob(job,object,preservationSystem.getPresServer());
+		toCreate = ArchiveReplicationCheckAction.createPublicationJob(j,o,preservationSystem.getPresServer());
 		return true;
 	}
 	

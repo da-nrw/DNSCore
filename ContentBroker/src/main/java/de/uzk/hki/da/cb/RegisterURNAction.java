@@ -54,7 +54,7 @@ public class RegisterURNAction extends AbstractAction {
 	private String extractURNFromPremisFile() {
 		
 //		File premisFile = new File(object.getDataPath() + "/"+ object.getNameOfNewestRep() + "/" + "premis.xml");
-		File premisFile = object.getLatest("premis.xml").toRegularFile();
+		File premisFile = o.getLatest("premis.xml").toRegularFile();
 		
 		
 		Object premisObject = null;
@@ -84,7 +84,7 @@ public class RegisterURNAction extends AbstractAction {
 		
 		DAFile metsFile = null;		
 		
-		List<DAFile> files = object.getLatestPackage().getFiles();
+		List<DAFile> files = o.getLatestPackage().getFiles();
 		for (DAFile file : files) {
 			if(!file.getRelative_path().contains("XMP.rdf")) {
 				if (file.getFormatPUID().equals(FFConstants.METS_PUID))
@@ -127,8 +127,8 @@ public class RegisterURNAction extends AbstractAction {
 	@Override
 	public boolean implementation() {
 		
-		if (object.isDelta())
-			logger.info("Object URN: " + object.getUrn());
+		if (o.isDelta())
+			logger.info("Object URN: " + o.getUrn());
 		else {
 			String urn;
 	
@@ -141,11 +141,11 @@ public class RegisterURNAction extends AbstractAction {
 				if (metsUrn != null)
 					urn = metsUrn;
 				else				
-					urn = preservationSystem.getUrnNameSpace() + "-" + object.getIdentifier();
+					urn = preservationSystem.getUrnNameSpace() + "-" + o.getIdentifier();
 			}
 			
 			logger.info("Object URN: " + urn);
-			object.setUrn(urn);
+			o.setUrn(urn);
 		}	
 		
 		return true;

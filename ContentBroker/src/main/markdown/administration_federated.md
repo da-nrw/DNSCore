@@ -113,7 +113,7 @@ Please refer to the iRODS Docs as well!
 
 Please don't forget do do the itrim on your cache devices after some time at each node!
 
-       itrim -age 2000 -N3 -S name_of_cache_resc -r /zoneA/aip
+       itrim -age 2000 -N1 -S name_of_cache_resc_at_zone -r /zoneA/aip
        
 
 ### How does it work?
@@ -188,7 +188,7 @@ homezone : The own zone name
 min_copies : The minimal copies need if not overruled by Clients (CB client does this in its preservation system)
 retryOlderThanHours: Retry all not fulfilled copies older than given hours.
 
-For easier maninting these actions you might pass your settings directly to the job!
+For easier mantaintng these actions you might pass your settings directly to the job!
 	
 check if Synchronzing Service is running
 
@@ -207,6 +207,12 @@ If Synchronzing service prints out any error numbers, you might evaluate the err
 e.g.
 
 	ierror -333000
+
+As stated in the AVU section of this document, re-synchronizing is possible manually by doing the equivalent irsync command or (the better way) let the synchronizing service do that for you:
+
+    imeta mod -d 1-20141007788.pack_1.tar FEDERATE 0
+	
+This changes the AVU to "federation not yet performed"
 
 ### Audit Infrastructure
 

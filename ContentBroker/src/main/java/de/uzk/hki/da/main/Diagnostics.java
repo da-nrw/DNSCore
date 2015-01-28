@@ -35,14 +35,13 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.format.ConfigurableFileFormatFacade;
 import de.uzk.hki.da.format.ConnectionException;
 import de.uzk.hki.da.format.FFConstants;
 import de.uzk.hki.da.format.FidoFormatScanService;
-import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.format.JhoveMetadataExtractor;
 import de.uzk.hki.da.format.SimpleFileWithFileFormat;
-import de.uzk.hki.da.format.ConfigurableFileFormatFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.Node;

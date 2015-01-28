@@ -37,8 +37,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.metadata.DCReader;
+import static de.uzk.hki.da.core.C.*;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.metadata.XepicurWriter;
 import de.uzk.hki.da.model.DAFile;
@@ -72,7 +71,6 @@ public class SendToPresenterAction extends AbstractAction {
 	private static final String ddb = "ddb";
 	private static final String DC = "DC";
 	private static final String PURL_ORG_DC = "http://purl.org/dc/elements/1.1/";
-	private static final String ENCODING = "UTF-8";
 	private static final String OPENARCHIVES_OAI_IDENTIFIER = "http://www.openarchives.org/OAI/2.0/identifier";
 	private static final String MEMBER = "info:fedora/fedora-system:def/relations-external#isMemberOf";
 	private static final String MEMBER_COLLECTION = "info:fedora/fedora-system:def/relations-external#isMemberOfCollection";
@@ -83,7 +81,6 @@ public class SendToPresenterAction extends AbstractAction {
 	private Map<String,String> labelMap;
 	private Set<String> testContractors;
 	
-	private DCReader dcReader;
 	
 	@Override
 	public void checkActionSpecificConfiguration() throws ConfigurationException {
@@ -101,7 +98,7 @@ public class SendToPresenterAction extends AbstractAction {
 			throw new IllegalStateException("fileFilter is not set");
 		if (testContractors == null)
 			throw new IllegalStateException("testContractors is not set");
-		if (object.getUrn()==null||object.getUrn().isEmpty())
+		if (o.getUrn()==null||o.getUrn().isEmpty())
 			throw new IllegalStateException("urn not set");
 		if (Utilities.isNotSet(preservationSystem.getOpenCollectionName()))
 			throw new IllegalStateException("open collection name must be set");
@@ -128,17 +125,22 @@ public class SendToPresenterAction extends AbstractAction {
 		boolean publicPIPSuccessfullyIngested = false;
 		boolean institutionPIPSuccessfullyIngested = false;
 		try {
-			publicPIPSuccessfullyIngested = publishPackage(
-					C.WA_PUBLIC,true,preservationSystem.getOpenCollectionName());
-			institutionPIPSuccessfullyIngested = publishPackage(
-					C.WA_INSTITUTION,false,preservationSystem.getClosedCollectionName());	
+			
+			if (makePIPFolder(WA_PUBLIC).exists()) 
+				publicPIPSuccessfullyIngested = publishPackage(
+					WA_PUBLIC,true,preservationSystem.getOpenCollectionName());
+			
+			if (makePIPFolder(WA_INSTITUTION).exists()) 
+				institutionPIPSuccessfullyIngested = publishPackage(
+					WA_INSTITUTION,false,preservationSystem.getClosedCollectionName());	
+			
 		} catch (RepositoryException e) {
 			throw new RuntimeException(e);
 		}
 		
 		setPublishedFlag(publicPIPSuccessfullyIngested,
 				institutionPIPSuccessfullyIngested);
-		if (Utilities.isNotSet(object.getPackage_type())) {
+		if (Utilities.isNotSet(o.getPackage_type())) {
 			setKILLATEXIT(true); // indexing and creating edm not possible
 		}
 		return true;
@@ -154,11 +156,24 @@ public class SendToPresenterAction extends AbstractAction {
 
 	private void deleteXepicur() {
 		
-		Path.makeFile(localNode.getWorkAreaRootPath(),C.WA_PIPS,
-				C.WA_PUBLIC,object.getContractor().getShort_name(),object.getIdentifier(),"epicur.xml").delete();
-		Path.makeFile(localNode.getWorkAreaRootPath(),C.WA_PIPS,
-				C.WA_INSTITUTION,object.getContractor().getShort_name(),object.getIdentifier(),"epicur.xml").delete();
+		makeMetadataFile("epicur",WA_INSTITUTION).delete();
+		makeMetadataFile("epicur",WA_PUBLIC).delete();
 	}
+	
+	
+	
+	private File makeMetadataFile(String fileName,String pipType) {
+		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,
+				pipType,o.getContractor().getShort_name(),o.getIdentifier(),fileName+FILE_EXTENSION_XML);
+	}
+	
+	private File makePIPFolder(String pipType) {
+		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,
+			pipType,o.getContractor().getShort_name(),o.getIdentifier());
+	}
+	
+	
+	
 	
 
 	/**
@@ -169,22 +184,18 @@ public class SendToPresenterAction extends AbstractAction {
 	 * @throws RepositoryException 
 	 */
 	private boolean publishPackage(String pipType,boolean checkSets, String collectionName) throws IOException, RepositoryException {
-		Path pipPath = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS,pipType,object.getContractor().getShort_name(),object.getIdentifier());
-		if (!pipPath.toFile().exists()) {
-			logger.warn(pipPath + " does not exist.");
-			return false;
-		}
-		String pkgType = getDcReader().getPackageTypeFromDC(pipPath);
+		
+		String pkgType = o.getPackage_type(); 
 		if (!viewerUrls.containsKey(pkgType))
 			logger.warn("could not determine a viewerUrl for package type of pip institution");
 		
 		XepicurWriter.createXepicur(
-				object.getIdentifier(), pkgType, 
+				o.getIdentifier(), pkgType, 
 				viewerUrls.get(pkgType), 
-				pipPath.toString(),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
+				makeMetadataFile("epicur",pipType),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
 		
-		boolean packageIngested=ingestPackage(object.getUrn(), object.getIdentifier(), collectionName, pipPath, 
-				object.getContractor().getShort_name(), pkgType, makeSets(checkSets));
+		boolean packageIngested=ingestPackage(o.getUrn(), o.getIdentifier(), collectionName, makePIPFolder(pipType), 
+				o.getContractor().getShort_name(), pkgType, makeSets(checkSets));
 		addRelsExtRelationships(collectionName,makeSets(checkSets));
 		return packageIngested;
 	}
@@ -197,8 +208,8 @@ public class SendToPresenterAction extends AbstractAction {
 		try {
 	
 			// add urn as owl:sameAs
-			repositoryFacade.addRelationship(object.getIdentifier(), collection, C.OWL_SAMEAS, object.getUrn());
-			logger.debug("Added relationship: "+C.OWL_SAMEAS+" "+object.getUrn());
+			repositoryFacade.addRelationship(o.getIdentifier(), collection, OWL_SAMEAS, o.getUrn());
+			logger.debug("Added relationship: "+OWL_SAMEAS+" "+o.getUrn());
 			
 			// add collection membership
 			String collectionUri;
@@ -207,22 +218,22 @@ public class SendToPresenterAction extends AbstractAction {
 			} else {
 				collectionUri = OPEN_COLLECTION_URI;
 			}
-			repositoryFacade.addRelationship(object.getIdentifier(), collection, MEMBER_COLLECTION, collectionUri);
+			repositoryFacade.addRelationship(o.getIdentifier(), collection, MEMBER_COLLECTION, collectionUri);
 			logger.debug("Added relationship: "+MEMBER_COLLECTION+" "+ collectionUri);
 			
 			// add oai identifier
 			if (!(preservationSystem.getClosedCollectionName()+":").equals(collection) && 
 				// don't add test packages to OAI-PMH
-				!testContractors.contains(object.getContractor().getShort_name())
+				!testContractors.contains(o.getContractor().getShort_name())
 			) {
-				String oaiId = C.OAI_DANRW_DE + object.getIdentifier();
-				repositoryFacade.addRelationship(object.getIdentifier(), collection, OPENARCHIVES_OAI_IDENTIFIER, oaiId);
+				String oaiId = OAI_DANRW_DE + o.getIdentifier();
+				repositoryFacade.addRelationship(o.getIdentifier(), collection, OPENARCHIVES_OAI_IDENTIFIER, oaiId);
 				logger.debug("Added relationship: "+OPENARCHIVES_OAI_IDENTIFIER+" " + oaiId);
 			}
 			
 			// add oai sets
 			if (sets != null) for (String set : sets) {
-				repositoryFacade.addRelationship(object.getIdentifier(), collection, MEMBER, "info:fedora/set:" + set);
+				repositoryFacade.addRelationship(o.getIdentifier(), collection, MEMBER, "info:fedora/set:" + set);
 				logger.debug("Added relationship: "+MEMBER+" info:fedora/set:" + set);
 			}
 			
@@ -235,7 +246,7 @@ public class SendToPresenterAction extends AbstractAction {
 	private String[] makeSets(boolean checkSets) {
 		String[] sets = null;
 		if (checkSets){
-			if (!object.ddbExcluded()) {
+			if (!o.ddbExcluded()) {
 				sets = new String[]{ ddb };
 			}
 		}
@@ -249,10 +260,10 @@ public class SendToPresenterAction extends AbstractAction {
 	 */
 	private void buildMapWithOriginalFilenamesForLabeling() {
 		labelMap = new HashMap<String,String>();
-		for (Event e:object.getLatestPackage().getEvents()) {			
-			if (!C.EVENT_TYPE_CONVERT.equals(e.getType())) continue;
+		for (Event e:o.getLatestPackage().getEvents()) {			
+			if (!EVENT_TYPE_CONVERT.equals(e.getType())) continue;
 			DAFile targetFile = e.getTarget_file();
-			if (!targetFile.getRep_name().startsWith(C.WA_DIP)) continue;			
+			if (!targetFile.getRep_name().startsWith(WA_DIP)) continue;			
 			DAFile sourceFile = e.getSource_file();
 			labelMap.put(targetFile.getRelative_path(), sourceFile.getRelative_path());			
 		}
@@ -265,10 +276,10 @@ public class SendToPresenterAction extends AbstractAction {
 	 */
 	private void purgeObjectsIfExist(){
 		try {
-			logger.debug("purging: "+preservationSystem.getOpenCollectionName()+":"+object.getIdentifier());
-			logger.debug("purging: "+preservationSystem.getClosedCollectionName()+":"+object.getIdentifier());
-			repositoryFacade.purgeObjectIfExists(object.getIdentifier(), preservationSystem.getOpenCollectionName());
-			repositoryFacade.purgeObjectIfExists(object.getIdentifier(), preservationSystem.getClosedCollectionName());
+			logger.debug("purging: "+preservationSystem.getOpenCollectionName()+":"+o.getIdentifier());
+			logger.debug("purging: "+preservationSystem.getClosedCollectionName()+":"+o.getIdentifier());
+			repositoryFacade.purgeObjectIfExists(o.getIdentifier(), preservationSystem.getOpenCollectionName());
+			repositoryFacade.purgeObjectIfExists(o.getIdentifier(), preservationSystem.getClosedCollectionName());
 		} catch (RepositoryException e) {
 			throw new RuntimeException(e);
 		}
@@ -289,9 +300,9 @@ public class SendToPresenterAction extends AbstractAction {
 		if (publicPIPSuccesfullyIngested) publishedFlag += 1;
 		if (institutionPIPSuccessfullyIngested) publishedFlag += 2;
 
-		object.setPublished_flag(publishedFlag);
+		o.setPublished_flag(publishedFlag);
 		
-		logger.debug("Set published flag of object to '{}'", object.getPublished_flag());
+		logger.debug("Set published flag of object to '{}'", o.getPublished_flag());
 		
 		// if no public DIP is created EDM creation and ES indexing is skipped
 		if (publishedFlag % 2 == 0) {
@@ -313,11 +324,11 @@ public class SendToPresenterAction extends AbstractAction {
 	 * @throws IOException
 	 */
 	private boolean ingestPackage(String urn, String objectId, String collection,
-			Path packagePath, String contractorShortName, String packageType,
+			File packagePath, String contractorShortName, String packageType,
 			String[] sets) throws RepositoryException, IOException {
 		
 		// check if pip exists
-		File pack = packagePath.toFile();
+		File pack = packagePath;
 		if (!pack.exists()) {
 			throw new IOException("Directory " + packagePath +" does not exist");
 		}
@@ -411,9 +422,9 @@ public class SendToPresenterAction extends AbstractAction {
 		
 		if (file.getName().equalsIgnoreCase(DC+".xml")) {
 			FileInputStream fileInputStream = new FileInputStream(file);
-			String content = IOUtils.toString(fileInputStream, ENCODING);
+			String content = IOUtils.toString(fileInputStream, ENCODING_UTF_8);
 			fileInputStream.close();
-			repositoryFacade.createMetadataFile(objectId, collection, DC, content, label, mimeType = C.MIMETYPE_TEXT_XML);
+			repositoryFacade.createMetadataFile(objectId, collection, DC, content, label, mimeType = MIMETYPE_TEXT_XML);
 		} else {
 			repositoryFacade.ingestFile(objectId, collection, fileId, file, label, mimeType);
 		}
@@ -460,14 +471,6 @@ public class SendToPresenterAction extends AbstractAction {
 		this.testContractors = testContractors;
 	}
 
-	public DCReader getDcReader() {
-		return dcReader;
-	}
-
-	public void setDcReader(DCReader dcReader) {
-		this.dcReader = dcReader;
-	}
-	
 	/**
 	 * For every package type read from the DC.xml (like "EAD"), there is a viewer url 
 	 * @return

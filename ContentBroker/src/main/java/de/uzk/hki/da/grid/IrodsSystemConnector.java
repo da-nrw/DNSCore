@@ -72,7 +72,6 @@ import org.irods.jargon.core.transfer.DefaultTransferControlBlock;
 import org.irods.jargon.core.transfer.TransferControlBlock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 import de.uzk.hki.da.utils.PasswordUtils;
 
@@ -777,12 +776,15 @@ public class IrodsSystemConnector {
 	 * @param logicalPath the logical irods path to which the physical path should be registered
 	 * @param physicalPackage the path to the files on the file system
 	 * @param workingResource the working resource
-	 * @author Daniel M. de Oliveira
+	 * @author Daniel M. de Oliveira & Jens Peters
 	 */
 	public void registerFilesInCollection(String logicalPath, File physicalPackage,
 			String workingResource) {
 		logger.trace("registerFilesInCollection: "  + physicalPackage.getAbsolutePath() + " as " + logicalPath);
-		
+		if (!collectionExists(logicalPath)) {
+			logger.trace("Collection doesn't exist, creating now!");
+			createCollection(logicalPath);
+		}
 		String rule = "register||msiPhyPathReg("
 				+ logicalPath+ ","
 				+ workingResource + ","

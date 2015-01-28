@@ -61,19 +61,19 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException {
 		
-		if (!object.isDelta())
-			object.setUrn(null);
+		if (!o.isDelta())
+			o.setUrn(null);
 		
 		String newestRepName = determineNameOfNewestARepresentation();
 		convertNewestARepToDataFolder(newestRepName);		
 		deletePIPS();
 		
-		object.getDocuments().clear();
-		for (Package pkg : object.getPackages()){
+		o.getDocuments().clear();
+		for (Package pkg : o.getPackages()){
 			pkg.getEvents().clear();
 			pkg.getFiles().clear();
 		}
-		job.getConversion_instructions().clear();
+		j.getConversion_instructions().clear();
 
 		return true;
 	}
@@ -84,7 +84,7 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	}
 
 	private String determineNameOfNewestARepresentation() {
-		List<File> filesC = Arrays.asList(object.getDataPath().toFile().listFiles(new RepresentationFilter()));
+		List<File> filesC = Arrays.asList(o.getDataPath().toFile().listFiles(new RepresentationFilter()));
 		Collections.sort(filesC,Collections.reverseOrder());
 		String newestRepname = FilenameUtils.getBaseName(filesC.iterator().next().toString());
 		if (newestRepname.endsWith("+b")) newestRepname=newestRepname.replace("+b", "+a");
@@ -99,12 +99,12 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	 */
 	private void convertNewestARepToDataFolder(String newestARepresentationName) throws IOException {
 
-		File sipContent = Path.makeFile(object.getDataPath(),newestARepresentationName);
-		File sipTemp = Path.makeFile(object.getPath(),"___sipContent");
+		File sipContent = Path.makeFile(o.getDataPath(),newestARepresentationName);
+		File sipTemp = Path.makeFile(o.getPath(),"___sipContent");
 		
 		FileUtils.moveDirectory(sipContent, sipTemp);
-		FileUtils.deleteDirectory(object.getDataPath().toFile());
-		FileUtils.moveDirectory(sipTemp, object.getDataPath().toFile());
+		FileUtils.deleteDirectory(o.getDataPath().toFile());
+		FileUtils.moveDirectory(sipTemp, o.getDataPath().toFile());
 	}
 	
 	/**
@@ -115,10 +115,10 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	 * @throws IOException 
 	 */
 	private void deletePIPS() throws IOException {
-		File publicDipFolder = Path.makeFile(localNode.getWorkAreaRootPath(),C.WA_PIPS,C.WA_PUBLIC,
-			object.getContractor().getShort_name(),object.getIdentifier() + "_" + object.getLatestPackage().getId());
-		File institutionDipFolder = Path.makeFile(localNode.getWorkAreaRootPath(),C.WA_PIPS,C.WA_INSTITUTION,
-				object.getContractor().getShort_name(),object.getIdentifier() + "_" + object.getLatestPackage().getId());
+		File publicDipFolder = Path.makeFile(n.getWorkAreaRootPath(),C.WA_PIPS,C.WA_PUBLIC,
+			o.getContractor().getShort_name(),o.getIdentifier() + "_" + o.getLatestPackage().getId());
+		File institutionDipFolder = Path.makeFile(n.getWorkAreaRootPath(),C.WA_PIPS,C.WA_INSTITUTION,
+				o.getContractor().getShort_name(),o.getIdentifier() + "_" + o.getLatestPackage().getId());
 		
 		if (publicDipFolder.exists())
 			FileUtils.deleteDirectory(publicDipFolder);

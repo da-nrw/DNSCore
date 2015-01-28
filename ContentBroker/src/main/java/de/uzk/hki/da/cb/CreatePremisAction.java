@@ -96,39 +96,39 @@ public class CreatePremisAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException	{
 		logger.debug("Listing all files attached to all packages of the object:");
-		 for (Package pkg : object.getPackages()) 
+		 for (Package pkg : o.getPackages()) 
 		   		for (DAFile fi : pkg.getFiles())
 			   		logger.debug(fi.toString());
 		
 		Object newPREMISObject = new Object();
-		newPREMISObject.setTransientNodeRef(object.getTransientNodeRef());;
-		newPREMISObject.setOrig_name(object.getOrig_name());
-		newPREMISObject.setIdentifier(object.getIdentifier());
-		newPREMISObject.setUrn(object.getUrn());
-		newPREMISObject.setContractor(object.getContractor());
+		newPREMISObject.setTransientNodeRef(o.getTransientNodeRef());;
+		newPREMISObject.setOrig_name(o.getOrig_name());
+		newPREMISObject.setIdentifier(o.getIdentifier());
+		newPREMISObject.setUrn(o.getUrn());
+		newPREMISObject.setContractor(o.getContractor());
 		
 		Object sipPREMISObject = parseSipPremisFile(
-				new File(Path.make(object.getPath("newest"),"premis.xml").toString().replace("+b", "+a")));
+				new File(Path.make(o.getPath("newest"),"premis.xml").toString().replace("+b", "+a")));
 		
 		if (sipPREMISObject.getPackages().size() > 0) {
-			object.getLatestPackage().getEvents().addAll(sipPREMISObject.getPackages().get(0).getEvents());
+			o.getLatestPackage().getEvents().addAll(sipPREMISObject.getPackages().get(0).getEvents());
 			addedEvents.addAll(sipPREMISObject.getPackages().get(0).getEvents());
 		}
 		
 		newPREMISObject.setRights(sipPREMISObject.getRights());
-		newPREMISObject.getRights().setId(object.getIdentifier() + "#rights");
+		newPREMISObject.getRights().setId(o.getIdentifier() + "#rights");
 		newPREMISObject.getAgents().addAll(sipPREMISObject.getAgents());
 		
 		Event ingestEventElement = generateIngestEventElement();
-		object.getLatestPackage().getEvents().add(ingestEventElement);
+		o.getLatestPackage().getEvents().add(ingestEventElement);
 		addedEvents.add(ingestEventElement);
 		
-		newPREMISObject.getPackages().add(object.getLatestPackage());
+		newPREMISObject.getPackages().add(o.getLatestPackage());
 		
-		if (object.isDelta()){
+		if (o.isDelta()){
 		
 			Object mainPREMISObject = parseOldPremisFile(
-					Path.makeFile(object.getDataPath(),"premis_old.xml"));
+					Path.makeFile(o.getDataPath(),"premis_old.xml"));
 
 			if (mainPREMISObject==null) throw new RuntimeException("mainPREMISObject is null");
 			if (mainPREMISObject.getPackages()==null) throw new RuntimeException("mainPREMISObject.getPackages is null");
@@ -139,13 +139,13 @@ public class CreatePremisAction extends AbstractAction {
 				logger.debug("attaching "+mainPREMISPackage+" to temp object which waits for serialization into PREMIS");
 				
 				Package newPREMISPackage = new Package();
-				newPREMISPackage.setId(object.getLatestPackage().getId());
+				newPREMISPackage.setId(o.getLatestPackage().getId());
 				newPREMISPackage.setName(mainPREMISPackage.getName());
 				newPREMISPackage.setContainerName(mainPREMISPackage.getContainerName());
 				newPREMISPackage.setFiles(mainPREMISPackage.getFiles());
 				newPREMISPackage.setEvents(mainPREMISPackage.getEvents());
 				newPREMISObject.getPackages().add(newPREMISPackage);
-				newPREMISObject.setTransientNodeRef(localNode);
+				newPREMISObject.setTransientNodeRef(n);
 				newPREMISObject.reattach();
 			}
 			newPREMISObject.getAgents().addAll(mainPREMISObject.getAgents());
@@ -154,14 +154,14 @@ public class CreatePremisAction extends AbstractAction {
 		checkConvertEvents(newPREMISObject);
 	
 		File newPREMISXml = Path.make( 
-				object.getPath("newest"),"premis.xml").toFile();
+				o.getPath("newest"),"premis.xml").toFile();
 		logger.trace("trying to write new Premis file at " + newPREMISXml.getAbsolutePath());
 		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml);
 		
 		if (!PremisXmlValidator.validatePremisFile(newPREMISXml))
 			throw new RuntimeException("PREMIS that has recently been created is not valid");
 		logger.trace("Successfully created premis file");
-		object.getLatestPackage().getFiles().add(new DAFile(object.getLatestPackage(),job.getRep_name()+"b","premis.xml"));
+		o.getLatestPackage().getFiles().add(new DAFile(o.getLatestPackage(),j.getRep_name()+"b","premis.xml"));
 		
 		for (Package p : newPREMISObject.getPackages()){
 			logger.debug("pname:" + p.getName());
@@ -196,18 +196,18 @@ public class CreatePremisAction extends AbstractAction {
 			}
 		}
 		
-		job.setDynamic_nondisclosure_limit(dynamic_nondisclosure_limit);
-		job.setStatic_nondisclosure_limit(static_nondisclosure_limit);
+		j.setDynamic_nondisclosure_limit(dynamic_nondisclosure_limit);
+		j.setStatic_nondisclosure_limit(static_nondisclosure_limit);
 	}
 	
 	private Event generateIngestEventElement() {
 		
 		Event ingestEventElement = new Event();
 		ingestEventElement.setType("INGEST");
-		ingestEventElement.setIdentifier(object.getIdentifier() + "+" + object.getLatestPackage().getName());
+		ingestEventElement.setIdentifier(o.getIdentifier() + "+" + o.getLatestPackage().getName());
 		ingestEventElement.setIdType(Event.IdType.INGEST_ID);
 		ingestEventElement.setDate(new Date());
-		ingestEventElement.setAgent_name(object.getContractor().getShort_name());
+		ingestEventElement.setAgent_name(o.getContractor().getShort_name());
 		ingestEventElement.setAgent_type("CONTRACTOR");
 		return ingestEventElement;		
 	}
@@ -236,7 +236,7 @@ public class CreatePremisAction extends AbstractAction {
 		try {
 			extractJhoveData(premisFile.getAbsolutePath(),
 					new File("jhove").getAbsolutePath() +
-					"/temp/" + job.getId());
+					"/temp/" + j.getId());
 		} catch (XMLStreamException e) {
 			throw new RuntimeException("Couldn't extract jhove sections of file " + premisFile.getAbsolutePath(), e);
 		}
@@ -281,7 +281,7 @@ public class CreatePremisAction extends AbstractAction {
 	}
 			
 	private void deleteJhoveTempFiles() {
-		File tempFolder = new File("jhove/temp/" + job.getId());
+		File tempFolder = new File("jhove/temp/" + j.getId());
 		if (tempFolder.exists())
 		try {
 			FileUtils.deleteDirectory(tempFolder);
@@ -296,16 +296,16 @@ public class CreatePremisAction extends AbstractAction {
 	@Override
 	public void rollback() throws Exception {
 		
-		Path.make(object.getPath("newest"),"premis.xml").toFile().delete();
+		Path.make(o.getPath("newest"),"premis.xml").toFile().delete();
 		
-		File tempFolder = new File("jhove/temp/" + job.getId() + "/premis_output/");
+		File tempFolder = new File("jhove/temp/" + j.getId() + "/premis_output/");
 		if (tempFolder.exists())
 			FileUtils.deleteDirectory(tempFolder);
 		
-		object.getLatestPackage().getEvents().removeAll(addedEvents);
+		o.getLatestPackage().getEvents().removeAll(addedEvents);
 		
-		job.setStatic_nondisclosure_limit(null);
-		job.setDynamic_nondisclosure_limit(null);
+		j.setStatic_nondisclosure_limit(null);
+		j.setDynamic_nondisclosure_limit(null);
 	}
 
 	public FileFormatFacade getFileFormatFacade() {

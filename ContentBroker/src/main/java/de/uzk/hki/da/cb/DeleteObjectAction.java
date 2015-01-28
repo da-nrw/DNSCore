@@ -52,29 +52,29 @@ public class DeleteObjectAction extends AbstractAction {
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException {
 
-		if (object.getPackages().size()==1){
+		if (o.getPackages().size()==1){
 			logger.info("Deleting object from database");
 			DELETEOBJECT=true;
 		}
 		else 
-		if (object.getPackages().size()>1){
-			object.getPackages().remove(object.getLatestPackage());
+		if (o.getPackages().size()>1){
+			o.getPackages().remove(o.getLatestPackage());
 		}
 		
-		logger.info("Deleting object from WorkArea: "+object.getPath());
-		FileUtils.deleteDirectory(object.getPath().toFile());
+		logger.info("Deleting object from WorkArea: "+o.getPath());
+		FileUtils.deleteDirectory(o.getPath().toFile());
 		
 		File fileInWorkArea = Path.makeFile(
-				object.getTransientNodeRef().getWorkAreaRootPath(),"work",
-				object.getContractor().getShort_name(),object.getLatestPackage().getContainerName());
+				o.getTransientNodeRef().getWorkAreaRootPath(),"work",
+				o.getContractor().getShort_name(),o.getLatestPackage().getContainerName());
 		if (fileInWorkArea.exists()) {
 			logger.info("Delete latest package from WorkArea: " + fileInWorkArea );
 			fileInWorkArea.delete();
 		}
 		
 		File fileInIngestArea = Path.makeFile(
-				object.getTransientNodeRef().getIngestAreaRootPath(),
-				object.getContractor().getShort_name(),object.getLatestPackage().getContainerName());
+				o.getTransientNodeRef().getIngestAreaRootPath(),
+				o.getContractor().getShort_name(),o.getLatestPackage().getContainerName());
 		if (fileInIngestArea.exists()) {
 			logger.info("Delete latest package from WorkArea: " + fileInIngestArea );
 			fileInIngestArea.delete();

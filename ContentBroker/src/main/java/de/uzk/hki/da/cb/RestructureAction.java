@@ -79,36 +79,36 @@ public class RestructureAction extends AbstractAction{
 			UserException, RepositoryException, SubsystemNotAvailableException {
 		
 		RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot());
-		if (object.isDelta()
+		if (o.isDelta()
 				&&(! checkIfOnWorkAreaIsSpaceAvailabeForDeltaPackages(retrievePackagesHelper)))
 			return false;
 		
 		
 		
-		FileUtils.moveDirectory(object.getDataPath().toFile(), 
-				new File(object.getPath()+"/sipData"));
-		object.getDataPath().toFile().mkdirs();
+		FileUtils.moveDirectory(o.getDataPath().toFile(), 
+				new File(o.getPath()+"/sipData"));
+		o.getDataPath().toFile().mkdirs();
 
 		try {
-			job.setRep_name(transduceDateFolderContentsToNewRep(object.getPath().toString()));
+			j.setRep_name(transduceDateFolderContentsToNewRep(o.getPath().toString()));
 		} catch (IOException e) {		
 			throw new RuntimeException("problems during creating new representation",e);
 		}
 		
 		
-		if (object.isDelta())
+		if (o.isDelta())
 			retrieveDeltaPackages(retrievePackagesHelper);
 		
 		
-		object.getLatestPackage().scanRepRecursively(job.getRep_name()+"a");
-		object.reattach();
+		o.getLatestPackage().scanRepRecursively(j.getRep_name()+"a");
+		o.reattach();
 		
 		determineFileFormats();
-		dgs.addDocumentsToObject(object);
+		dgs.addDocumentsToObject(o);
 		
-		logger.debug("Create new b representation "+job.getRep_name()+"b");
-		Path.makeFile(object.getDataPath(), job.getRep_name()+"b").mkdir();
-		Path.makeFile(object.getDataPath(),"jhove_temp").mkdirs();
+		logger.debug("Create new b representation "+j.getRep_name()+"b");
+		Path.makeFile(o.getDataPath(), j.getRep_name()+"b").mkdir();
+		Path.makeFile(o.getDataPath(),"jhove_temp").mkdirs();
 		return true;
 	}
 
@@ -116,15 +116,15 @@ public class RestructureAction extends AbstractAction{
 	
 	private boolean checkIfOnWorkAreaIsSpaceAvailabeForDeltaPackages(RetrievePackagesHelper retrievePackagesHelper) {
 		try {
-			if (!getIngestGate().canHandle(retrievePackagesHelper.getObjectSize(object, job ))){
-				JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,object.getIdentifier() 
+			if (!getIngestGate().canHandle(retrievePackagesHelper.getObjectSize(o, j ))){
+				JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,o.getIdentifier() 
 						+ " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
 				super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
 				logger.info("no disk space available at working resource. will not fetch new data.");
 				return false;
 			}
 		} catch (IOException e) {
-			throw new RuntimeException("Failed to determine object size for object " + object.getIdentifier(), e);
+			throw new RuntimeException("Failed to determine object size for object " + o.getIdentifier(), e);
 		}
 		return true;
 	}
@@ -133,11 +133,11 @@ public class RestructureAction extends AbstractAction{
 		
 		logger.info("object already exists. Moving existing packages to work area.");
 		try {
-			retrievePackagesHelper.loadPackages(object, false);
-			logger.info("Packages of object \""+object.getIdentifier()+
-					"\" are now available on cache resource at: " + Path.make(object.getPath(),"existingAIPs"));
-			FileUtils.copyFile(Path.makeFile(object.getPath("newest"),"premis.xml"),
-					Path.makeFile(object.getDataPath(),"premis_old.xml"));
+			retrievePackagesHelper.loadPackages(o, false);
+			logger.info("Packages of object \""+o.getIdentifier()+
+					"\" are now available on cache resource at: " + Path.make(o.getPath(),"existingAIPs"));
+			FileUtils.copyFile(Path.makeFile(o.getPath("newest"),"premis.xml"),
+					Path.makeFile(o.getDataPath(),"premis_old.xml"));
 		} catch (IOException e) {
 			throw new RuntimeException("error while trying to get existing packages from lza area",e);
 		}
@@ -149,7 +149,7 @@ public class RestructureAction extends AbstractAction{
 	private void determineFileFormats() throws FileNotFoundException, SubsystemNotAvailableException {
 		List<FileWithFileFormat> scannedFiles = null;
 		try {
-			List<DAFile> dafiles = object.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
+			List<DAFile> dafiles = o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
 			scannedFiles = fileFormatFacade.identify(dafiles);
 		} catch (FileFormatException e) {
 			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
@@ -163,16 +163,16 @@ public class RestructureAction extends AbstractAction{
 	
 	@Override
 	public void rollback() throws Exception {
-		if (! Utilities.isNotSet(job.getRep_name())) { // since we know that the SIP content has been moved successfully when rep_name is set.
+		if (! Utilities.isNotSet(j.getRep_name())) { // since we know that the SIP content has been moved successfully when rep_name is set.
 			FileUtils.moveDirectory(
-				Path.makeFile( object.getDataPath(), job.getRep_name()+"a" ), 
-				Path.makeFile( object.getPath(), "data_" ));
+				Path.makeFile( o.getDataPath(), j.getRep_name()+"a" ), 
+				Path.makeFile( o.getPath(), "data_" ));
 			
-			FileUtils.deleteDirectory( object.getDataPath().toFile() );
+			FileUtils.deleteDirectory( o.getDataPath().toFile() );
 			
 			FileUtils.moveDirectory(
-				Path.makeFile( object.getPath(), "data_" ), 
-				Path.makeFile( object.getDataPath() ));
+				Path.makeFile( o.getPath(), "data_" ), 
+				Path.makeFile( o.getDataPath() ));
 		} else 
 			throw new RuntimeException("REP NAME WAS NOT SET YET. ROLLBACK IS NOT POSSIBLE. MANUAL CLEANUP REQUIRED.");
 	}
@@ -184,7 +184,7 @@ public class RestructureAction extends AbstractAction{
 	 * to a newly created subfolder of data which is named like yyyy_MM_dd+HH_mm+a (java simple date format notation).
 	 * 
 	 * @author Daniel M. de Oliveira
-	 * @param job
+	 * @param j
 	 * @param physicalPathToAIP
 	 * @return the representations
 	 * @throws IOException 

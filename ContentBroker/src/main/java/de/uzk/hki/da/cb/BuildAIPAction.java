@@ -48,12 +48,12 @@ public class BuildAIPAction extends AbstractAction {
 	@Override
 	public boolean implementation() {
 
-		Path relativePathOfSource = new RelativePath(object.getContractor().getShort_name(),object.getIdentifier());
-		Path physicalPackagePathOfSource = Path.make(localNode.getWorkAreaRootPath(),"work",relativePathOfSource);
+		Path relativePathOfSource = new RelativePath(o.getContractor().getShort_name(),o.getIdentifier());
+		Path physicalPackagePathOfSource = Path.make(n.getWorkAreaRootPath(),"work",relativePathOfSource);
 		
 		logger.info ( "Preparing AIP at \"" + physicalPackagePathOfSource +"\" for archival." );
 		deleteOldPremisFile();
-		deleteUnnecessaryReps(physicalPackagePathOfSource,job.getRep_name());		
+		deleteUnnecessaryReps(physicalPackagePathOfSource,j.getRep_name());		
 		BagitUtils.buildBagit ( physicalPackagePathOfSource.toString() );
 		
 		return true;
@@ -65,10 +65,10 @@ public class BuildAIPAction extends AbstractAction {
 		logger.debug("Deleting bagit files from source");
 		try{
 		
-			Path.make(object.getPath(),"bag-info.txt").toFile().delete();
-			Path.make(object.getPath(),"bagit.txt").toFile().delete();
-			Path.make(object.getPath(),"manifest-md5.txt").toFile().delete();
-			Path.make(object.getPath(),"tagmanifest-md5.txt").toFile().delete();
+			Path.make(o.getPath(),"bag-info.txt").toFile().delete();
+			Path.make(o.getPath(),"bagit.txt").toFile().delete();
+			Path.make(o.getPath(),"manifest-md5.txt").toFile().delete();
+			Path.make(o.getPath(),"tagmanifest-md5.txt").toFile().delete();
 		}catch(Exception e){
 			logger.error("Couldn't delete bagit files");
 		}
@@ -110,7 +110,7 @@ public class BuildAIPAction extends AbstractAction {
 	 */
 	void deleteOldPremisFile() {
 
-		File oldPremis = Path.make(object.getDataPath(),"premis_old.xml").toFile();
+		File oldPremis = Path.make(o.getDataPath(),"premis_old.xml").toFile();
 		
 		logger.debug("Deleting " + oldPremis.getAbsolutePath());
 				
