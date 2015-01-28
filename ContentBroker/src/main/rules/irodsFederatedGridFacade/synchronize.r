@@ -18,7 +18,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 synchronizeService {
-	delay("<PLUSET>1m</PLUSET><EF>2h</EF>") {
+	delay("<PLUSET>1m</PLUSET><EF>1h</EF>") {
 	acLog("---started Synchronize Service---");
 	msiGetSystemTime(*timeNow,"")
 	*ts=(*retryOlderThanHours*3600)
