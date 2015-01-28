@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
-import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,10 +58,10 @@ public abstract class MetadataStructure {
 	
 	public abstract File getMetadataFile();
 	
-	protected abstract HashMap<String, HashMap<String, String>> getIndexInfo();
+	protected abstract HashMap<String, HashMap<String, List<String>>> getIndexInfo();
 	
 	protected void printIndexInfo() {
-		HashMap<String, HashMap<String, String>> indexInfo = getIndexInfo();
+		HashMap<String, HashMap<String, List<String>>> indexInfo = getIndexInfo();
 		for(String id : indexInfo.keySet()) {
 			logger.info("-----------------------------------------------------");
 			logger.info("ID: "+id);

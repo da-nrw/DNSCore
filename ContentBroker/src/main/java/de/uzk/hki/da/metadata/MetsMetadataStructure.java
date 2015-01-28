@@ -55,36 +55,48 @@ public class MetsMetadataStructure extends MetadataStructure {
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
 	@Override
-	protected HashMap<String, HashMap<String, String>> getIndexInfo() {
-		HashMap<String, HashMap<String, String>> indexInfo = new HashMap<String, HashMap<String,String>>();
+	protected HashMap<String, HashMap<String, List<String>>> getIndexInfo() {
+		HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();
 		HashMap<String, Element> dmdSections = getSections();
 		
 		for(String id : dmdSections.keySet()) {
 			Element e = dmdSections.get(id);
-			HashMap<String, String> dmdSecInfo = new HashMap<String, String>();
+			HashMap<String, List<String>> dmdSecInfo = new HashMap<String, List<String>>();
 			
 //			Title
-			List<String> titleValues = getTitle(e);
-			for(int i=0; i<titleValues.size(); i++) {
-				if(i==0) dmdSecInfo.put("title", getTitle(e).get(i));
-				if(i==1) dmdSecInfo.put("subtitle", getTitle(e).get(i));
-			}
+			dmdSecInfo.put("title", getTitle(e));
 			
 //			Names
+			List<String> creators = new ArrayList<String>();
+			List<String> contributors = new ArrayList<String>();
 			for(Element name : getNameElements(e)) {
 				String creator = getCreator(name);
 				String contributor = getContributor(name);
-				if(!creator.equals("")) {
-					dmdSecInfo.put("creator", getCreator(name));
+				if(creator.equals("")) {
+					creators.add(creator);
 				}
-				if(!contributor.equals("")) {
-					dmdSecInfo.put("contributor", getContributor(name));
+				if(contributor.equals("")) {
+					contributors.add(contributor);
 				}
 			}
+			dmdSecInfo.put("creator", creators);
+			dmdSecInfo.put("contributor", contributors);
 			
-//			Date
-			dmdSecInfo.put("date", getDate(e));
-			dmdSecInfo.put("publisher", getPublisherPlace(e));
+//			Date && Place
+			List<String> dates = new ArrayList<String>();
+			List<String> places = new ArrayList<String>();
+			for(Element origInfo : getOrigInfoElements(e)) {
+				String date = getDate(origInfo);
+				String place = getPublisherPlace(origInfo);
+				if(!date.equals("")) {
+					dates.add(date);
+				}
+				if(!place.equals("")) {
+					places.add(place);
+				}
+			}
+			dmdSecInfo.put("date", dates);
+			dmdSecInfo.put("publisher", places);
 			
 //			Place
 			indexInfo.put(id, dmdSecInfo);
@@ -95,20 +107,20 @@ public class MetsMetadataStructure extends MetadataStructure {
 		return indexInfo;
 	}
 		
-	private String getDataProvider() {
-		String dataProvider = "";
+	private List<String> getDataProvider() {
+		List<String> dataProvider = new ArrayList<String>();
 		try {
 			@SuppressWarnings("unchecked")
 			List<Element> amdSections = metsDoc.getRootElement().getChildren("amdSec", C.METS_NS);
 			for(Element amdSec : amdSections) {
 				if(amdSec.getChild("rightsMD", C.METS_NS).getChild("mdWrap", C.METS_NS).getAttribute("OTHERMDTYPE").getValue().equals("DVRIGHTS")) {
-					dataProvider = amdSec
+					dataProvider.add(amdSec
 							.getChild("rightsMD", C.METS_NS)
 							.getChild("mdWrap", C.METS_NS)
 							.getChild("xmlData", C.METS_NS)
 							.getChild("rights", C.DV)
 							.getChild("owner", C.DV)
-							.getValue();
+							.getValue());
 				}
 			}
 		} catch (Exception e) {
@@ -117,13 +129,12 @@ public class MetsMetadataStructure extends MetadataStructure {
 		return dataProvider;
 	}
 	
-	private String getPublisherPlace(Element dmdSec) {
-		Element modsXmlData = getModsXmlData(dmdSec);
+	private String getPublisherPlace(Element origInfo) {
 		String place = "";
 		try {
-			String type = modsXmlData.getChild("originInfo", C.MODS_NS).getChild("place", C.MODS_NS).getChild("placeTerm", C.MODS_NS).getAttributeValue("type");
+			String type = origInfo.getChild("place", C.MODS_NS).getChild("placeTerm", C.MODS_NS).getAttributeValue("type");
 			if(type.equals("text")) {
-				place = modsXmlData.getChild("originInfo", C.MODS_NS).getChild("place", C.MODS_NS).getChild("placeTerm", C.MODS_NS).getValue();
+				place = origInfo.getChild("place", C.MODS_NS).getChild("placeTerm", C.MODS_NS).getValue();
 			}
 		} catch (Exception e) {
 			logger.debug("Element placeTerm does not exist!");
@@ -131,27 +142,28 @@ public class MetsMetadataStructure extends MetadataStructure {
 		return place;
 	}
 	
-	private String getDate(Element dmdSec) {
-		Element modsXmlData = getModsXmlData(dmdSec);
-		String date = "";
+	@SuppressWarnings("unchecked")
+	private List<Element> getOrigInfoElements(Element dmdSec) {
+		List<Element> origInfoElements = new ArrayList<Element>();
 		try {
-			Element name = modsXmlData.getChild("originInfo", C.MODS_NS);
+			origInfoElements = getModsXmlData(dmdSec).getChildren("originInfo", C.MODS_NS);
+		} catch (Exception e) {
+			logger.debug("No origInfo element found!");
+		}
+		return origInfoElements;
+	}
+	
+	private String getDate(Element originInfo) {
+		String date = "";
 			try {
-				date = name.getChild("dateIssued", C.MODS_NS).getValue(); 
+				date = originInfo.getChild("dateIssued", C.MODS_NS).getValue(); 
 			} catch (Exception e) {
 				logger.debug("Element dateIssued does not exist!");
 			}
-			try {
-				date = name.getChild("dateCreated", C.MODS_NS).getValue();
-			} catch (Exception e) {
-				logger.debug("Element dateCreated does not exist!");
-			}
-		} catch (Exception e) {
-			logger.error("Element originInfo does not exist!");
-		}
 		return date;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private List<Element> getNameElements(Element dmdSec) {
 		List<Element> nameElements = new ArrayList<Element>();
 		Element modsXmlData = getModsXmlData(dmdSec);
@@ -181,7 +193,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 		try {
 			String role = name.getChild("role", C.MODS_NS).getValue();
 			if(!(role.equals("aut")||role.equals("creator"))) {
-				namePartValue = getName(name);
+				namePartValue = role+": "+getName(name);
 			}
 		} catch (Exception e) {
 			logger.debug("No contributor found!");

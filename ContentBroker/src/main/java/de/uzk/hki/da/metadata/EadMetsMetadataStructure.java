@@ -58,17 +58,16 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			MetsMetadataStructure mms = new MetsMetadataStructure(metsFile, documents);
 			mmsList.add(mms);
 		}
-		
-		printIndexInfo();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+	@SuppressWarnings("unchecked")
 	@Override
-	protected HashMap<String, HashMap<String, String>> getIndexInfo() {
+	protected HashMap<String, HashMap<String, List<String>>> getIndexInfo() {
 		
 //		<ID<Attribut, Value>>
-		HashMap<String, HashMap<String, String>> indexInfo = new HashMap<String, HashMap<String,String>>();
+		HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();
 		
 //		Root
 		Element archdesc = eadDoc.getRootElement().getChild("archdesc");
@@ -87,30 +86,34 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		for(int i=1; i<13; i++) {
 			
 			String nextLevel = (Integer.toString(i+1));
-			if(i<10) {
+			if(i<9) {
 				nextLevel = "c0"+nextLevel;
 			} else nextLevel = "c"+nextLevel;
 			
 			HashMap<Element, String> currentElements = new HashMap<Element, String>();
 			currentElements = childElements;
+			childElements = new HashMap<Element, String>();
 			
 			for(Element element : currentElements.keySet()) {
-				HashMap<String, String> nodeInfo = new HashMap<String, String>();
-				childElements = new HashMap<Element, String>();
+				HashMap<String, List<String>> nodeInfo = new HashMap<String, List<String>>();
 				String uniqueID = UUID.randomUUID().toString();
 				uniqueID = uniqueID.replace("-", "");
 				String isPartOf = currentElements.get(element);
 				
-				nodeInfo.put("Level", Integer.toString(i));
-				nodeInfo.put("isPartOf", isPartOf);
+				ArrayList<String> partOf = new ArrayList<String>();
+				partOf.add(isPartOf);
+
+				nodeInfo.put("isPartOf", partOf);
 				
 				List<Element> children = element.getChildren();
 				for(Element child : children) {
+					
 					if(child.getName().equals("did")) {
 						nodeInfo.put("title", getTitle(child));
 						nodeInfo.put("date", getDate(child));
+						nodeInfo.put("identifier", getUnitIDs(child));
 					} else if(child.getName().equals("daogrp")) {
-						nodeInfo.put("href", getHref(child));
+						nodeInfo.put("hasView", getHref(child));
 					} else if(child.getName().equals(nextLevel)) {
 						childElements.put(child, uniqueID);
 					}
@@ -121,60 +124,64 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		return indexInfo;
 	}
 	
-	private String getTitle(Element element) {
-		String title = "";
+	private List<String> getTitle(Element element) {
+		List<String> title = new ArrayList<String>();
+		@SuppressWarnings("unused")
+		String t = "";
 		try {
-			title = element.getChild("unittitle").getValue();
+			t = element.getChild("unittitle").getValue();
 		} catch (Exception e) {
 			logger.error("No unittitle element found");
 		}
+		title.add(element.getChild("unittitle").getValue());
 		return title;
 	}
 	
-	private String getDate(Element element) {
-		String date = "";
+	private List<String> getDate(Element element) {
+		List<String> date = new ArrayList<String>();
+		String d = "";
 		try {
-			date = element.getChild("unitdate").getValue();
+			d = element.getChild("unitdate").getAttribute("normal").getValue();
+			if(d.equals("")) {
+				d = element.getChild("unitdate").getValue();
+			}
 		} catch (Exception e) {
 			logger.error("No unitdate element found");
 		}
+		date.add(d);
 		return date;
 	}
 	
-	private String getUnitIDs(Element element) {
-		String unitID = "";
-		try {
-			List<Element> unitIdElements = element.getChildren("unitdate");
-			if(unitIdElements.size()>1) {
-				for(Element id : unitIdElements) {
-					String altsignatur = "";
-					if(id.getAttribute("type").getName().equals("altsignatur")) {
-						altsignatur = id.getValue();
-					} else if(id.getAttribute("type").getName().equals("altsignatur")) {
-						
-					}
-				}
+	private List<String> getUnitIDs(Element did) {
+		List<String> unitIDs = new ArrayList<String>();
+		@SuppressWarnings("unchecked")
+		List<Element> children = did.getChildren("unitid");
+		
+		for(Element child : children) {
+			String unitID = "";
+			String type = "";
+			try {
+				type = child.getAttribute("type").getValue();
+				if(!type.equals("")) {
+					unitID = type+": "+child.getValue();
+					unitIDs.add(unitID);
+				} else unitID = child.getValue();
+			} catch (Exception e) {
 			}
-			
-			
-		} catch (Exception e) {
-			logger.error("No unitdate element found");
 		}
-		
-		
-		
-		
-		return null;
+		return unitIDs;
 	}
 	
-	private String getHref(Element element) {
+	private List<String> getHref(Element daogrp) {
+		List<String> hrefs = new ArrayList<String>();
 		String href = "";
 		try {
-			href = element.getChild("daogrp").getChild("daoloc").getAttributeValue("href");
+			href = daogrp.getChild("daoloc").getAttributeValue("href");
 		} catch (Exception e) {
 			logger.error("No unitdate element found");
 		}
-		return href;
+		hrefs.add(href);
+		return hrefs;
 	}
 	
 	public File getMetadataFile() {

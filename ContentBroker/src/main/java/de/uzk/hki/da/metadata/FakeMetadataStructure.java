@@ -33,7 +33,7 @@ public class FakeMetadataStructure extends MetadataStructure{
 	}
 
 	@Override
-	protected HashMap<String, HashMap<String, String>> getIndexInfo() {
+	protected HashMap<String, HashMap<String, List<String>>> getIndexInfo() {
 		// TODO Auto-generated method stub
 		return null;
 	}

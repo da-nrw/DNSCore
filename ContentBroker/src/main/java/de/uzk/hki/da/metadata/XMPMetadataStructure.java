@@ -137,8 +137,7 @@ public class XMPMetadataStructure extends MetadataStructure{
 	}
 
 	@Override
-	protected HashMap<String, HashMap<String, String>> getIndexInfo() {
-		// TODO Auto-generated method stub
+	protected HashMap<String, HashMap<String, List<String>>> getIndexInfo() {
 		return null;
 	}
 }
