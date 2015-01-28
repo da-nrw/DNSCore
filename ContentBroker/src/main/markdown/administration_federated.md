@@ -208,6 +208,12 @@ e.g.
 
 	ierror -333000
 
+As stated in the AVU section of this document, re-synchronizing is possible manually by doing the equivalent irsync command or (the better way) let the synchronizing service do that for you:
+
+    imeta mod -d 1-20141007788.pack_1.tar FEDERATE 0
+	
+This changes the AVU to "federation not yet performed"
+
 ### Audit Infrastructure
 
 To perform Audit (integrity checking) of AIP iRODS each node must at least provide the time based check 
