@@ -70,10 +70,11 @@ public class FetchPIPsAction extends AbstractAction {
 
 		deletePreviousPIPs(); // Must be done at the beginning to make sure rollback() can act properly
 		
+//		TODO check if source exists
 		distributedConversionAdapter.replicateToLocalNode(
-				makePIPSourceFolder(WA_PUBLIC).toString());
+				makeRelativePIPSourceFolder(WA_PUBLIC).toString());
 		distributedConversionAdapter.replicateToLocalNode(
-				makePIPSourceFolder(WA_INSTITUTION).toString());
+				makeRelativePIPSourceFolder(WA_INSTITUTION).toString());
 		
 		
 		if (makePIPSourceFolder(WA_PUBLIC).exists()) {
@@ -93,8 +94,8 @@ public class FetchPIPsAction extends AbstractAction {
 					makePIPFolder(WA_INSTITUTION));
 		}
 		
-		distributedConversionAdapter.remove(makePIPSourceFolder(WA_PUBLIC).toString());
-		distributedConversionAdapter.remove(makePIPSourceFolder(WA_INSTITUTION).toString());
+		distributedConversionAdapter.remove(makeRelativePIPSourceFolder(WA_PUBLIC).toString());
+		distributedConversionAdapter.remove(makeRelativePIPSourceFolder(WA_INSTITUTION).toString());
 
 		return true;
 	}
@@ -126,6 +127,9 @@ public class FetchPIPsAction extends AbstractAction {
 		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId());
 	}
 	
+	private File makeRelativePIPSourceFolder(String pipType) {
+		return Path.makeFile(WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId());
+	}
 	
 
 
