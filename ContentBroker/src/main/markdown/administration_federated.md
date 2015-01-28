@@ -113,7 +113,7 @@ Please refer to the iRODS Docs as well!
 
 Please don't forget do do the itrim on your cache devices after some time at each node!
 
-       itrim -age 2000 -N3 -S name_of_cache_resc -r /zoneA/aip
+       itrim -age 2000 -N1 -S name_of_cache_resc_at_zone -r /zoneA/aip
        
 
 ### How does it work?
@@ -188,7 +188,7 @@ homezone : The own zone name
 min_copies : The minimal copies need if not overruled by Clients (CB client does this in its preservation system)
 retryOlderThanHours: Retry all not fulfilled copies older than given hours.
 
-For easier maninting these actions you might pass your settings directly to the job!
+For easier mantaintng these actions you might pass your settings directly to the job!
 	
 check if Synchronzing Service is running
 
