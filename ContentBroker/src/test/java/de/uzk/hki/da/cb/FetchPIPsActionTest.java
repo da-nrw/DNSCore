@@ -19,95 +19,71 @@
 
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.core.C.WA_INSTITUTION;
+import static de.uzk.hki.da.core.C.WA_PIPS;
+import static de.uzk.hki.da.core.C.WA_PUBLIC;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.FakeDistributedConversionAdapter;
-import de.uzk.hki.da.model.User;
-import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
 
 /**
  * @author Polina Gubaidullina
+ * @author Daniel M. de Oliveira
  */
-public class FetchPIPsActionTest{
+public class FetchPIPsActionTest extends ConcreteActionUnitTest {
 	
+
+	@ActionUnderTest
 	static FetchPIPsAction action = new FetchPIPsAction();
 
+	private static final Path TESTDIR = new RelativePath(TC.TEST_ROOT_CB, "FetchPIPsAction");
+	private static final String UNDERSCORE = "_";
 	private static DistributedConversionAdapter distributedConversionAdapter;
 	
-	private static Node localNode = new Node();
-	
-	private static Object object = new Object();
-	
-	private static Package testPackage = new Package();
-	
-	private static List<Package> packages = new ArrayList<Package>(); 
-	
-	String sourceDIPName;
-	
-	
-	private static Path testDir = new RelativePath("src", "test", "resources", "cb", "FetchPIPsActionTest");
-	private static Path sourcePIPsPath = Path.make(testDir, "sourceDir"); 
-	private static Path institutionPartialPath = Path.make("pips", "institution", "TEST");
-	private static Path publicPartialPath = Path.make("pips", "public", "TEST");
-	private static Path workAreaRootPartialPath = Path.make(testDir, "work");
-	private static String packageName = "1";
-	private static String objectId = "1";
-	
-	@AfterClass
-	public static void cleanUp() {
-		FileUtils.deleteQuietly(Path.make(workAreaRootPartialPath, institutionPartialPath).toFile());
-		FileUtils.deleteQuietly(Path.make(workAreaRootPartialPath, publicPartialPath).toFile());
-	}
-	
-	@BeforeClass
-	public static void initObject() {
-		distributedConversionAdapter = mock(FakeDistributedConversionAdapter.class);
-		localNode.setWorkAreaRootPath(workAreaRootPartialPath);
-		User contractor = new User();
-		contractor.setShort_name("TEST");
-		object.setContractor(contractor);
-		object.setIdentifier(objectId);
-		testPackage.setId(1);
-		testPackage.setName(packageName);
-		packages.add(testPackage);
-		object.setPackages(packages);
-		try {
-			FileUtils.copyDirectory(Path.make(sourcePIPsPath, institutionPartialPath).toFile(), Path.make(workAreaRootPartialPath, institutionPartialPath).toFile());
-			FileUtils.copyDirectory(Path.make(sourcePIPsPath, publicPartialPath).toFile(), Path.make(workAreaRootPartialPath, publicPartialPath).toFile());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	@Before
-	public void initImpementation() throws FileNotFoundException, IOException {
-		action.setLocalNode(localNode);
-		action.setObject(object);
+	public void setUp() throws IOException {
+		n.setWorkAreaRootPath(TESTDIR);
+		
+		distributedConversionAdapter = mock(FakeDistributedConversionAdapter.class);
+		FileUtils.copyDirectory(Path.makeFile( TESTDIR, WA_PIPS+UNDERSCORE ), Path.makeFile( TESTDIR, WA_PIPS ));
+		
 		action.setDistributedConversionAdapter(distributedConversionAdapter);
-		action.implementation();
 	}
+	
+	
+	
+	@After
+	public void cleanUp() {
+		FileUtils.deleteQuietly(Path.makeFile( TESTDIR, WA_PIPS ));
+	}
+	
 	
 	
 	@Test
-	public void testRenamePIPs(){
-		assertTrue(Path.makeFile(workAreaRootPartialPath, publicPartialPath, objectId).exists());
-		assertTrue(Path.makeFile(workAreaRootPartialPath, institutionPartialPath, objectId).exists());
+	public void renamePIPs() throws FileNotFoundException, IOException{
+		action.implementation();
+		assertTrue(makePIPFolder( WA_PUBLIC ).exists());
+		assertTrue(makePIPFolder( WA_INSTITUTION ).exists());
+	}
+	
+	
+	
+	private File makePIPFolder(String pipType) {
+		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier());
 	}
 }
