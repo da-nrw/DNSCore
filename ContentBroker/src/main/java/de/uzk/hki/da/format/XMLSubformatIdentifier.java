@@ -33,9 +33,9 @@ import java.io.IOException;
  */
 public class XMLSubformatIdentifier implements FormatIdentifier, Connector{
 
-	private final static String eadPattern = ".*(?s)\\A.{0,500}\\x3cead[^\\x3c]{0,1000}\\x3ceadheader.*";
-	private final static String metsPattern = ".*(?s)\\A.{0,100}\\x3c([^: ]+:)?mets[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.loc.gov/METS.*";
-	private final static String lidoPattern = ".*(?s)\\A.{0,500}\\x3c([^: ]+:)?lidoWrap[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.lido-schema.org.*";
+	private final static String eadPattern = ".*(?s)\\A.{0,1000}\\x3cead[^\\x3c]{0,1000}\\x3ceadheader.*";
+	private final static String metsPattern = ".*(?s)\\A.{0,1000}\\x3c([^: ]+:)?mets[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.loc.gov/METS.*";
+	private final static String lidoPattern = ".*(?s)\\A.{0,1000}\\x3c([^: ]+:)?lidoWrap[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.lido-schema.org.*";
 	
 	/**
 	 * @param f
