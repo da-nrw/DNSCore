@@ -69,9 +69,9 @@ public class CTFileFormatFacadeExtractTests {
 		
 		try {
 			fff.extract(Path.makeFile(testRoot,"vda3.XML"), Path.makeFile(testRoot,"vda3.XML.output"));
-		} catch (IOException e) {
-			fail();
 		} catch (ConnectionException e) {
+			fail();
+		} catch (Exception e) {
 			fail();
 		}
 	}
@@ -83,10 +83,10 @@ public class CTFileFormatFacadeExtractTests {
 		try {
 			fff.extract(Path.makeFile(testRoot,"vda3.XML"), Path.makeFile(testRoot,"vda3.XML.output"));
 			fail();
-		} catch (IOException e) {
-			fail();
 		} catch (ConnectionException e) {
 			assertTrue(e!=null);
+		} catch (Exception e) {
+			fail();
 		}
 	}
 	

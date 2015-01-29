@@ -58,11 +58,13 @@ public interface FileFormatFacade {
 	 * Extracts metadata from file and creates a xml file which contains the results.
 	 * 
 	 * @param file the file to extract the metadata from.
+	 * @param extractedMetadata parent folder of the file must exist.
 	 * @param extractedMetadata the resulting xml .
-	 * @throws IOException
+	 * 
 	 * @throws ConnectionException 
+	 * @throws IllegalArgumentException if parent folder of extracted Metadata does not exist.
 	 */
-	public boolean extract(File file, File extractedMetadata) throws IOException, ConnectionException;
+	public boolean extract(File file, File extractedMetadata) throws ConnectionException;
 	
 	
 	/**

@@ -25,12 +25,14 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Matchers.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.uzk.hki.da.test.TC;
+import static de.uzk.hki.da.test.TC.*;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
@@ -42,98 +44,136 @@ import de.uzk.hki.da.utils.ProcessInformation;
  */
 public class JhoveMetadataExtractorTests {
 
+	private static final String VDA3_XML = "vda3.XML";
+	private static final String TIMEOUT = "timeout";
+	private static final String TMP_OUT_TXT = "/tmp/out.txt";
+	private static final Path TEST_DIR = Path.make(TEST_ROOT_FORMAT,"JhoveMetadataExtractor");
+	private static final ProcessInformation piRetval0=new ProcessInformation();
+	private static final ProcessInformation piRetval1=new ProcessInformation();
+	
 	CommandLineConnector cli = mock(CommandLineConnector.class);
 	JhoveMetadataExtractor jhove = new JhoveMetadataExtractor();
 
+	@BeforeClass
+	public static void setUpBeforeClass() {
+		piRetval0.setExitValue(0);
+		piRetval1.setExitValue(1);
+	}
+	
 	@Before
 	public void setUp() {
 		jhove.setCli(cli);
 	}
 	
+	
+	@Test
+	public void InputFileDoesNotExist() {
+		try {
+			jhove.extract(Path.makeFile(TEST_DIR,"notexistent.xml"), 
+					new File(TMP_OUT_TXT));
+			fail();
+		} 
+		catch (FileNotFoundException expected) {}
+		catch (ConnectionException e) {fail();}
+		catch (Exception e) {fail();} 
+	}
+	
+	@Test
+	public void targetFolderDoesNotExist() {
+		try {
+			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), 
+					Path.makeFile(TEST_DIR,"dirNotExists","outputfile.txt"));
+			fail();
+		} 
+		catch (IllegalArgumentException expected) {}
+		catch (ConnectionException e) {fail();}
+		catch (Exception e) {fail();} 
+	}
+	
+	
+	
 	@Test
 	public void extractSuccessful() throws IOException {
 		
-		ProcessInformation pi=new ProcessInformation();
-		pi.setExitValue(0);
-		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyInt())).thenReturn(pi);
+		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyInt())).thenReturn(piRetval0);
 		
 		try {
-			assertTrue(jhove.extract(Path.makeFile(TC.TEST_ROOT_FORMAT,"JhoveMetadataExtractor","vda3.XML"), new File("")));
+			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
 		} 
 		catch (IOException e) { fail(); } 
 		catch (ConnectionException e) { fail(); }
 	}
 	
 	@Test
-	public void extractNotSuccessful() throws IOException {
+	public void extractNotSuccessfulWithErrorCodes() throws IOException {
 		
-		ProcessInformation pi=new ProcessInformation();
-		pi.setExitValue(1);
-		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyInt())).thenReturn(pi);
+		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyInt()))
+			.thenReturn(piRetval1)
+			.thenReturn(piRetval1);
 		
 		try {
-			assertFalse(jhove.extract(Path.makeFile(TC.TEST_ROOT_FORMAT,"JhoveMetadataExtractor","vda3.XML"), new File("")));
+			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
+			fail();
 		} 
-		catch (IOException e) { fail(); } 
-		catch (ConnectionException e) { fail(); }
+		catch (ConnectionException e) {}
+		catch (Exception e) { fail(); } 
 	}
 	
 	@Test
-	public void cliConnectionError() throws IOException {
+	public void extractSuccessfulAfterRetry() throws IOException {
 		
-		ProcessInformation pi=new ProcessInformation();
-		pi.setExitValue(1);
-		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyLong())).thenThrow(new IOException("io"));
+		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyInt()))
+			.thenReturn(piRetval1)
+			.thenReturn(piRetval0); // let it work with the simple version
+		
 		try {
-			jhove.extract(Path.makeFile(TC.TEST_ROOT_FORMAT,"JhoveMetadataExtractor","vda3.XML"), new File(""));
+			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
+		} 
+		catch (ConnectionException e) { fail(); }
+		catch (Exception e) { fail(); } 
+	}
+	
+	
+	
+	@Test
+	public void timeout() throws IOException {
+		
+		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyLong()))
+			.thenThrow(new IOException(TIMEOUT))
+			.thenThrow(new IOException(TIMEOUT));
+		try {
+			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
 			fail();
 		} catch (ConnectionException e) {}
 	}
 	
 	@Test
-	public void extractSuccessfulAfterTryingThe2ndTime() throws IOException {
+	public void timeoutNotHappeningWithRetry() throws IOException {
 		
-		ProcessInformation pi=new ProcessInformation();
-		pi.setExitValue(1);
-		ProcessInformation pi2=new ProcessInformation();
-		pi2.setExitValue(0);
-		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyInt())).thenReturn(pi).thenReturn(pi2);
-		
+		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyLong()))
+			.thenThrow(new IOException(TIMEOUT))
+			.thenReturn(piRetval0); // let it work with the simple version
 		try {
-			assertTrue(jhove.extract(Path.makeFile(TC.TEST_ROOT_FORMAT,"JhoveMetadataExtractor","vda3.XML"), new File("")));
+			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
+			
 		} 
-		catch (IOException e) { fail(); } 
-		catch (ConnectionException e) { fail(); }
+		catch (ConnectionException e) {fail();}
+		catch (Exception e) { fail(); }  
 	}
+	
+	
 	
 	@Test
-	public void extractNotSuccessfulAfterTryingThe2ndTime() throws IOException {
+	public void firstTimeoutThenError() throws IOException {
 		
-		ProcessInformation pi=new ProcessInformation();
-		pi.setExitValue(1);
-		ProcessInformation pi2=new ProcessInformation();
-		pi2.setExitValue(1);
-		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyInt())).thenReturn(pi).thenReturn(pi2);
-		
+		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyLong()))
+			.thenThrow(new IOException(TIMEOUT))
+			.thenReturn(piRetval1);
 		try {
-			assertFalse(jhove.extract(Path.makeFile(TC.TEST_ROOT_FORMAT,"JhoveMetadataExtractor","vda3.XML"), new File("")));
+			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
+			
 		} 
-		catch (IOException e) { fail(); } 
-		catch (ConnectionException e) { fail(); }
+		catch (ConnectionException e) {}
+		catch (Exception e) { fail(); }  
 	}
-	
-	@Test
-	public void cliConnectionErrorAfterTryingThe2ndTime() throws IOException {
-		
-		ProcessInformation pi=new ProcessInformation();
-		pi.setExitValue(1);
-		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyLong())).thenReturn(pi).thenThrow(new IOException("io"));
-		try {
-			jhove.extract(Path.makeFile(TC.TEST_ROOT_FORMAT,"JhoveMetadataExtractor","vda3.XML"), new File(""));
-			fail();
-		} catch (ConnectionException e) {}
-	}
-	
-	
-	
 }
