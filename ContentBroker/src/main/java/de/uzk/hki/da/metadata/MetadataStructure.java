@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
@@ -56,6 +57,20 @@ public abstract class MetadataStructure {
 	}
 	
 	public abstract File getMetadataFile();
+	
+	protected abstract HashMap<String, HashMap<String, List<String>>> getIndexInfo();
+	
+	protected void printIndexInfo() {
+		HashMap<String, HashMap<String, List<String>>> indexInfo = getIndexInfo();
+		for(String id : indexInfo.keySet()) {
+			logger.info("-----------------------------------------------------");
+			logger.info("ID: "+id);
+			for(String info : indexInfo.get(id).keySet()) {
+				logger.info(info+": "+indexInfo.get(id).get(info));
+			}
+			logger.info("-----------------------------------------------------");
+		}
+	}
 	
 	protected List<File> getReferencedFiles(File metadataFile, List<String> references, List<Document> documents) {
 		List<File> existingFiles = new ArrayList<File>();
@@ -134,4 +149,5 @@ public abstract class MetadataStructure {
 		} 
 		return existingFile;
 	}
+
 }

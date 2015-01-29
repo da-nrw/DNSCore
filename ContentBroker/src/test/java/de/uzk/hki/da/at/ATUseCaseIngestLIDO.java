@@ -117,11 +117,11 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 		List<String> lidoUrls =  mh.getLIDOURL(doc);
 		int danrwRewritings = 0;
 		for(String url : lidoUrls) {
+			System.out.println("URL: "+url);
 			if(url.contains(DATA_DANRW_DE)) {
 				danrwRewritings++;
 			}
 		}
-		
 		assertTrue(danrwRewritings==2);		
 	}
 	

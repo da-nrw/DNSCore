@@ -66,6 +66,13 @@ public class MetadataHelper {
 				.getAttributeValue("LOCTYPE");
 	}
 	
+	public Element getXmlData(Document doc) {
+		return (Element) doc.getRootElement()
+				.getChild("dmdSec", C.METS_NS)
+				.getChild("mdWrap", C.METS_NS)
+				.getChild("xmlData", C.METS_NS);
+	}
+	
 //	EAD
 	
 	private String EAD_XPATH_EXPRESSION = "//daoloc/@href";
