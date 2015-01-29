@@ -174,6 +174,7 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 
 	@Override
 	public void setMetadataExtractor(MetadataExtractor metadataExtractor) {
+		if (!metadataExtractor.isConnectable()) throw new RuntimeException("cannot connect");
 		this.metadataExtractor = metadataExtractor;
 	}
 
