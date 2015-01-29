@@ -61,9 +61,31 @@ public class JhoveMetadataExtractorTests {
 	}
 	
 	@Before
-	public void setUp() {
+	public void setUp() throws IOException {
 		jhove.setCli(cli);
+		ProcessInformation pi=new ProcessInformation();
+		pi.setStdOut("Jhove (Rel");
+		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyInt())).thenReturn(pi);
+		jhove.isConnectable();
 	}
+	
+	
+	@Test
+	public void connectabilityNotChecked() {
+		JhoveMetadataExtractor jhove = new JhoveMetadataExtractor();
+		CommandLineConnector cli = mock(CommandLineConnector.class);
+		jhove.setCli(cli);
+		try {
+			jhove.extract(Path.makeFile(TEST_DIR,"notexistent.xml"), 
+					new File(TMP_OUT_TXT));
+			fail();
+		} 
+		catch (IllegalStateException expected) {}
+		catch (FileNotFoundException expected) {fail();}
+		catch (ConnectionException e) {fail();}
+		catch (Exception e) {fail();} 
+	}
+	
 	
 	
 	@Test

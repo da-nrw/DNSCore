@@ -195,7 +195,11 @@ public class Diagnostics {
 		meta.setCli(new CommandLineConnector());
 		sfff.setMetadataExtractor(meta);
 		
-		System.out.print(INFO+"CHECKING - StandardFileFormatFacade.identify() ... ");
+		System.out.println(INFO+"CHECKING - ConfigurableFileFormatFacade.connectivityCheck() ... ");
+		if (!standardFileFormatFacadeHealthSubformatsPassedCheckPassed(sfff))
+			errorCount+=1;
+		
+		System.out.print(INFO+"CHECKING - ConfigurableFileFormatFacade.identify() ... ");
 		if (!standardFileFormatFacadeFidoWorkingProperly(sfff)) {
 			errorCount+=1;
 			System.out.println(FAIL);
@@ -203,7 +207,7 @@ public class Diagnostics {
 		else
 			System.out.println(OK);
 		
-		System.out.print(INFO+"CHECKING - StandardFileFormatFacade.extract() ... ");
+		System.out.print(INFO+"CHECKING - ConfigurableFileFormatFacade.extract() ... ");
 		if (!standardFileFormatFacadeJhoveWorkingProperly(sfff)) {
 			errorCount+=1;
 			System.out.println(FAIL);
@@ -211,10 +215,6 @@ public class Diagnostics {
 		else
 			System.out.println(OK);
 
-		System.out.println(INFO+"CHECKING - StandardFileFormatFacade.connectivityCheck() ... ");
-		if (!standardFileFormatFacadeHealthSubformatsPassedCheckPassed(sfff))
-			errorCount+=1;
-		
 		return errorCount;
 	}
 	
