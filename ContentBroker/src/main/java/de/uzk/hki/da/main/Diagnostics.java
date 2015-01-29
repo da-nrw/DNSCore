@@ -237,9 +237,9 @@ public class Diagnostics {
 //		FileFormatFacade jhove = new ConfigurableFileFormatFacade();
 		try {
 			sfff.extract(new File(TIFF_TESTFILE_PATH), new File(TIFF_TESTFILE_TEMPPATH));
-		} catch (IOException e) {
-			return false;
 		} catch (ConnectionException e) {
+			return false;
+		} catch (Exception e) {
 			return false;
 		}
 		return true;

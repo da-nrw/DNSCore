@@ -24,6 +24,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.Utilities;
@@ -35,40 +38,80 @@ import de.uzk.hki.da.utils.Utilities;
  */
 public class JhoveMetadataExtractor implements MetadataExtractor {
 
+	private static final Logger logger = LoggerFactory.getLogger(JhoveMetadataExtractor.class);
+	
+	private static final int _6_MINUTES = 3600000; // ms
 	private static final String JHOVE_CONF = "conf/jhove.conf";
-	private static final long jhoveTimeout = 100000;
+	private static final long JHOVE_TIMEOUT = _6_MINUTES;
 	private static final String jhoveFolder = "jhove";
 	private static final String JHOVE_BIN = "jhove";
 	private static final String SHELL = "/bin/sh";
 	
 	private CommandLineConnector cli;
 	
+	
+	
 	/**
-	 * @throws ConnectionException 
+	 * Scans a file with jhove and extracts technical metadata to a xml file. 
+	 * Tries it a second time if the first time fails.
 	 * 
+	 * @throws ConnectionException when timeout limit reached two times. 
+	 * @throws FileNotFoundException 
 	 */
-	public boolean extract(File file, File extractedMetadata) throws IOException, ConnectionException {
+	public void extract(File file, File extractedMetadata) throws ConnectionException, FileNotFoundException {
 		if (cli==null) throw new IllegalStateException("cli not set");
-		if (!file.exists()) throw new FileNotFoundException("File to extract Metadata from doesn't exist! ("+file+")");
-		String filePath = file.getAbsolutePath();
+		if (!file.exists()) 
+			throw new FileNotFoundException("Missing file or directory: "+file);
+		if (!extractedMetadata.getParentFile().exists())
+			throw new IllegalArgumentException("ParentFolder "+extractedMetadata.getParentFile()+" must exist in order to create "+extractedMetadata);
+		
+		String filePath = makeFilePath(file);
+
+		int retval=0;
+		try {
+			retval=execCMD(jhoveCmd(extractedMetadata, filePath));
+		}catch(RuntimeException possibleTimeOut) {
+			retval=1;
+		} 
+		if (retval==0) return;
+		
+		logger.info("Problem during extracting technical metadata. Will retry without parsing the whole file.");
+		
+		retval=0;
+		try {
+			retval=execCMD(jhoveCmdSkipWholeFileParsing(extractedMetadata, filePath));
+		}catch(RuntimeException posssibleTimeOut) {
+			throw new ConnectionException("Call to JHOVE ended with possible timeout (the 2nd time already).");
+		}
+
+		if (retval==0) return;
+		throw new ConnectionException("Call to jhove was not successful.");
+	}
+	
+	
+
+
+	private String makeFilePath(File file) {
+		String filePath;
+		filePath=file.getAbsolutePath();
 		if (Utilities.checkForWhitespace(filePath))
 			filePath = "\"" + filePath + "\"";
+		return filePath;
+	}
 
-		String CMD[] = new String[] {
+
+	private String[] jhoveCmd(File extractedMetadata, String filePath) {
+		return new String[] {
                 SHELL, JHOVE_BIN, "-c", JHOVE_CONF, "-h", "XML",
                 filePath, "-o", extractedMetadata.getAbsolutePath() };
-		String CMD2[] = new String[] {
+	}
+
+
+	private String[] jhoveCmdSkipWholeFileParsing(File extractedMetadata, String filePath) {
+		return new String[] {
                 SHELL, JHOVE_BIN, "-c", JHOVE_CONF, "-h", "XML", 
                 "-s", // skip parsing of the whole file
                 filePath, "-o", extractedMetadata.getAbsolutePath() };
-		
-		if (execCMD(CMD) != 0) {
-			if (execCMD(CMD2) !=0 )
-				return false;
-			return true;
-		}
-		
-		return true;
 	}
 	
 	
@@ -76,9 +119,9 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		ProcessInformation pi=null;
 		try {
 			pi = cli.runCmdSynchronously(cmd,
-	                new File(jhoveFolder),jhoveTimeout);
+	                new File(jhoveFolder),JHOVE_TIMEOUT);
 		}catch(IOException e) {
-			throw new ConnectionException("Call to JHOVE was not successful.");
+			throw new RuntimeException("Call to JHOVE ended with possible timeout.");
 		}
 		if (pi==null) {
 			throw new ConnectionException("Call to JHOVE terminated with empty ProcessInformation");
@@ -95,7 +138,7 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		try {
 			pi = cli.runCmdSynchronously(new String[] {
 			        "/bin/sh", "jhove", "-c", JHOVE_CONF, "--version" },
-			        new File(jhoveFolder),jhoveTimeout);
+			        new File(jhoveFolder),JHOVE_TIMEOUT);
 		} catch (IOException e) {
 			return false;
 		}
