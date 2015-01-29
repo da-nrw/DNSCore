@@ -29,11 +29,10 @@ import java.io.PrintWriter;
 public class FakeMetadataExtractor implements MetadataExtractor{
 
 	@Override
-	public boolean extract(File file, File targetFile) throws IOException {
+	public void extract(File file, File targetFile) throws IOException {
 		PrintWriter writer = new PrintWriter(targetFile, "UTF-8");
 		writer.println("<jhove>abc</jhove>");
 		writer.close();
-		return true;
 	}
 
 	

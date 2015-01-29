@@ -105,7 +105,8 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 	 */
 	@Override
 	public boolean extract(File file, File extractedMetadata) throws IOException, ConnectionException {
-		return getMetadataExtractor().extract(file, extractedMetadata);
+		getMetadataExtractor().extract(file, extractedMetadata);
+		return true;
 	}
 	
 	

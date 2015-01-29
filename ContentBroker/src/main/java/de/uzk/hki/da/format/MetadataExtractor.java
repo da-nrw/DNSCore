@@ -28,7 +28,7 @@ import java.io.IOException;
  */
 public interface MetadataExtractor{
 
-	public boolean extract(File file, File extractedMetadata) 
+	public void extract(File file, File extractedMetadata) 
 			throws IOException, ConnectionException;
 
 	public boolean isConnectable();
