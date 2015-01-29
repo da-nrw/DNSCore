@@ -110,7 +110,6 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 			pi = cli.runCmdSynchronously(cmd,
 	                new File(jhoveFolder),JHOVE_TIMEOUT);
 		}catch(IOException e) {
-			System.out.println("abc");
 			throw new RuntimeException("Call to JHOVE ended with possible timeout.");
 		}
 		if (pi==null) {
