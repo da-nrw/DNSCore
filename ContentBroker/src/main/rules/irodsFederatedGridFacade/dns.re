@@ -416,7 +416,7 @@ acLog("---Ended federate Object ---");
 # Author Jens Peters
 acSynchronizeZonesToCollection(*zones,*srcCollWithoutZone,*destColl,*destResc,*deleteSource,*status) {
 	*status=0
-	# as workaround for some weird api bug this is deactivated
+	# as workaround for some weird api bug this is deactivated ref. https://github.com/irods/irods/issues/2404
 	*deleteSource=0
 	*err=errorcode(msiCollCreate(*destColl,"1",*nope))
 	if (*err < 0 ) {
