@@ -64,7 +64,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 			HashMap<String, List<String>> dmdSecInfo = new HashMap<String, List<String>>();
 			
 //			Title
-			dmdSecInfo.put("title", getTitle(e));
+			dmdSecInfo.put(C.EDM_TITLE, getTitle(e));
 			
 //			Names
 			List<String> creators = new ArrayList<String>();
@@ -79,8 +79,8 @@ public class MetsMetadataStructure extends MetadataStructure {
 					contributors.add(contributor);
 				}
 			}
-			dmdSecInfo.put("creator", creators);
-			dmdSecInfo.put("contributor", contributors);
+			dmdSecInfo.put(C.EDM_CREATOR, creators);
+			dmdSecInfo.put(C.EDM_CONTRIBUTOR, contributors);
 			
 //			Date && Place
 			List<String> dates = new ArrayList<String>();
@@ -95,14 +95,14 @@ public class MetsMetadataStructure extends MetadataStructure {
 					places.add(place);
 				}
 			}
-			dmdSecInfo.put("date", dates);
-			dmdSecInfo.put("publisher", places);
+			dmdSecInfo.put(C.EDM_DATE, dates);
+			dmdSecInfo.put(C.EDM_PUBLISHER, places);
 			
 //			Place
 			indexInfo.put(id, dmdSecInfo);
 			
 //			dataProvider
-			dmdSecInfo.put("dataProvider", getDataProvider());
+			dmdSecInfo.put(C.EDM_DATA_PROVIDER, getDataProvider());
 		}
 		return indexInfo;
 	}
