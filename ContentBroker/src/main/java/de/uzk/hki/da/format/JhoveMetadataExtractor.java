@@ -24,6 +24,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.Utilities;
@@ -35,6 +38,8 @@ import de.uzk.hki.da.utils.Utilities;
  */
 public class JhoveMetadataExtractor implements MetadataExtractor {
 
+	private static final Logger logger = LoggerFactory.getLogger(JhoveMetadataExtractor.class);
+	
 	private static final int _6_MINUTES = 3600000; // ms
 	private static final String JHOVE_CONF = "conf/jhove.conf";
 	private static final long JHOVE_TIMEOUT = _6_MINUTES;
@@ -49,12 +54,16 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 	/**
 	 * Scans a file with jhove and extracts technical metadata to a xml file. 
 	 * Tries it a second time if the first time fails.
+	 * 
 	 * @throws ConnectionException when timeout limit reached two times. 
+	 * @throws FileNotFoundException 
 	 */
-	public void extract(File file, File extractedMetadata) throws IOException, ConnectionException {
+	public void extract(File file, File extractedMetadata) throws ConnectionException, FileNotFoundException {
 		if (cli==null) throw new IllegalStateException("cli not set");
-		if (!file.exists()) throw new FileNotFoundException("Missing file or directory: "+file);
-		if (!extractedMetadata.getParentFile().exists()) throw new FileNotFoundException("Missing file or directory: "+extractedMetadata.getParentFile());
+		if (!file.exists()) 
+			throw new FileNotFoundException("Missing file or directory: "+file);
+		if (!extractedMetadata.getParentFile().exists())
+			throw new IllegalArgumentException("ParentFolder "+extractedMetadata.getParentFile()+" must exist in order to create "+extractedMetadata);
 		
 		String filePath = makeFilePath(file);
 
@@ -65,6 +74,8 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 			retval=1;
 		} 
 		if (retval==0) return;
+		
+		logger.info("Problem during extracting technical metadata. Will retry without parsing the whole file.");
 		
 		retval=0;
 		try {

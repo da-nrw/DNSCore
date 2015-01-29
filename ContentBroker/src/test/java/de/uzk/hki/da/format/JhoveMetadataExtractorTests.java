@@ -75,7 +75,7 @@ public class JhoveMetadataExtractorTests {
 		} 
 		catch (FileNotFoundException expected) {}
 		catch (ConnectionException e) {fail();}
-		catch (IOException e) {fail();} 
+		catch (Exception e) {fail();} 
 	}
 	
 	@Test
@@ -85,9 +85,9 @@ public class JhoveMetadataExtractorTests {
 					Path.makeFile(TEST_DIR,"dirNotExists","outputfile.txt"));
 			fail();
 		} 
-		catch (FileNotFoundException expected) {}
+		catch (IllegalArgumentException expected) {}
 		catch (ConnectionException e) {fail();}
-		catch (IOException e) {fail();} 
+		catch (Exception e) {fail();} 
 	}
 	
 	
@@ -115,8 +115,8 @@ public class JhoveMetadataExtractorTests {
 			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
 			fail();
 		} 
-		catch (IOException e) { fail(); } 
 		catch (ConnectionException e) {}
+		catch (Exception e) { fail(); } 
 	}
 	
 	@Test
@@ -129,8 +129,8 @@ public class JhoveMetadataExtractorTests {
 		try {
 			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
 		} 
-		catch (IOException e) { fail(); } 
 		catch (ConnectionException e) { fail(); }
+		catch (Exception e) { fail(); } 
 	}
 	
 	
@@ -157,8 +157,8 @@ public class JhoveMetadataExtractorTests {
 			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
 			
 		} 
-		catch (IOException e) { fail(); }  
 		catch (ConnectionException e) {fail();}
+		catch (Exception e) { fail(); }  
 	}
 	
 	
@@ -173,7 +173,7 @@ public class JhoveMetadataExtractorTests {
 			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
 			
 		} 
-		catch (IOException e) { fail(); }  
 		catch (ConnectionException e) {}
+		catch (Exception e) { fail(); }  
 	}
 }

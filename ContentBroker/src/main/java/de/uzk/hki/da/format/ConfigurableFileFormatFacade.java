@@ -20,6 +20,7 @@
 package de.uzk.hki.da.format;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -104,8 +105,12 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 	 * 
 	 */
 	@Override
-	public boolean extract(File file, File extractedMetadata) throws IOException, ConnectionException {
-		getMetadataExtractor().extract(file, extractedMetadata);
+	public boolean extract(File file, File extractedMetadata) throws ConnectionException {
+		try {
+			getMetadataExtractor().extract(file, extractedMetadata);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 		return true;
 	}
 	

@@ -20,8 +20,9 @@
 package de.uzk.hki.da.format;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
 /**
  * @author Daniel M. de Oliveira
@@ -29,8 +30,12 @@ import java.io.PrintWriter;
 public class FakeMetadataExtractor implements MetadataExtractor{
 
 	@Override
-	public void extract(File file, File targetFile) throws IOException {
-		PrintWriter writer = new PrintWriter(targetFile, "UTF-8");
+	public void extract(File file, File targetFile) throws FileNotFoundException {
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(targetFile, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+		}
 		writer.println("<jhove>abc</jhove>");
 		writer.close();
 	}
