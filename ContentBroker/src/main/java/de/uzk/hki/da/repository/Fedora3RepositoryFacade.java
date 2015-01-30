@@ -197,15 +197,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			} else {
 				throw new RepositoryException("Failed to retrieve datastream: " + fileId, e);
 			}
-		} finally {
-			if (r!=null) r.close();
-			if (is!=null)
-				try {
-					is.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-		}
+		} finally {}
 	}
 	
 	@Override

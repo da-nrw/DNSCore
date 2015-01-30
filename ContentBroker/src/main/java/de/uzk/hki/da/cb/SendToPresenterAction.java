@@ -341,7 +341,6 @@ public class SendToPresenterAction extends AbstractAction {
 		InputStream in=null;
 		try {
 			in = repositoryFacade.retrieveFile(objectId, collection, DC);
-			
 			try{
 				in.reset();
 			}catch(IOException io){}

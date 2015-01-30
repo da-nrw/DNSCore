@@ -196,6 +196,4 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 		action.rollback();
 		assertFalse(makeMetadataFile("epicur",WA_PUBLIC).exists());
 	}
-	
-	
 }
