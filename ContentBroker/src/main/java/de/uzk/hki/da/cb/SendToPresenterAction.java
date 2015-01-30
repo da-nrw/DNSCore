@@ -338,15 +338,19 @@ public class SendToPresenterAction extends AbstractAction {
 		// add identifiers to DC datastream
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc;
+		InputStream in=null;
 		try {
-			InputStream in = repositoryFacade.retrieveFile(objectId, collection, DC);
+			in = repositoryFacade.retrieveFile(objectId, collection, DC);
 			
 			try{
 				in.reset();
 			}catch(IOException io){}
+			
 			doc = builder.build(in);
 		} catch (JDOMException e) {
 			throw new RuntimeException(e);
+		} finally {
+			in.close();
 		}
 		
 		try {
