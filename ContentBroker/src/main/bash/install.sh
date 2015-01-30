@@ -130,4 +130,8 @@ fi
 
 cd $INSTALLATION_TARGET
 ./configure.sh
+if [ $? -eq 0 ]
+then
+  rm configure.sh
+fi
 exit 0
