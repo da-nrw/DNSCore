@@ -140,7 +140,7 @@ public class SendToPresenterAction extends AbstractAction {
 		
 		setPublishedFlag(publicPIPSuccessfullyIngested,
 				institutionPIPSuccessfullyIngested);
-		if (Utilities.isNotSet(o.getPackage_type())) {
+		if (Utilities.isNotSet(o.getPackage_type())||(!publicPIPSuccessfullyIngested)) {
 			setKILLATEXIT(true); // indexing and creating edm not possible
 		}
 		return true;
@@ -301,13 +301,7 @@ public class SendToPresenterAction extends AbstractAction {
 		if (institutionPIPSuccessfullyIngested) publishedFlag += 2;
 
 		o.setPublished_flag(publishedFlag);
-		
 		logger.debug("Set published flag of object to '{}'", o.getPublished_flag());
-		
-		// if no public DIP is created EDM creation and ES indexing is skipped
-		if (publishedFlag % 2 == 0) {
-			setKILLATEXIT(true);
-		}
 	}
 
 	

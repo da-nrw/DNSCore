@@ -19,11 +19,18 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.*;
+import static de.uzk.hki.da.core.C.CB_PACKAGETYPE_EAD;
+import static de.uzk.hki.da.core.C.WA_PIPS;
+import static de.uzk.hki.da.core.C.WA_PUBLIC;
+import static de.uzk.hki.da.test.TC.TEST_ROOT_CB;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,16 +40,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static de.uzk.hki.da.core.C.*;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
-import static de.uzk.hki.da.test.TC.*;
 import de.uzk.hki.da.util.Path;
 
 /**
@@ -52,14 +58,15 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 
 	@ActionUnderTest
 	SendToPresenterAction action = new SendToPresenterAction();
+
 	
-	
+	private static final String UNDERSCORE = "_";
 	private static final Path WORKAREAROOTPATH = Path.make(TEST_ROOT_CB,"SendToPresenterAction");
 	
 	private final RepositoryFacade repositoryFacade = mock(RepositoryFacade.class);
 
 	@Before
-	public void setUp(){
+	public void setUp() throws IOException{
 		
 		n.setWorkAreaRootPath(WORKAREAROOTPATH);
 		action.setRepositoryFacade(repositoryFacade);
@@ -85,6 +92,8 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 		
 		Set<String> testContractors = new HashSet<String>();
 		action.setTestContractors(testContractors);
+		
+		FileUtils.copyDirectory(Path.makeFile(WORKAREAROOTPATH,WA_PIPS+UNDERSCORE), Path.makeFile(WORKAREAROOTPATH,WA_PIPS));
 	}
 	
 	private File makeMetadataFile(String fileName,String pipType) {
@@ -93,8 +102,32 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	
 	
 	@After
-	public void tearDown() {
+	public void tearDown() throws IOException {
 		makeMetadataFile("epicur",WA_PUBLIC).delete();
+		FileUtils.deleteDirectory(Path.makeFile(WORKAREAROOTPATH,WA_PIPS));
+	}
+	
+	
+	@Test
+	public void endWorkflowWhenNothingToIndex() throws IOException {
+		action.implementation();
+		assertTrue(action.isKILLATEXIT());
+	}
+	
+	// if no public DIP is created EDM creation and ES indexing is skipped
+	@Test
+	public void endWorkflowWhenPublicPIPWasNotSuccessfullyIngested() throws IOException {
+		o.setPackage_type(CB_PACKAGETYPE_EAD);
+		FileUtils.deleteDirectory(Path.makeFile(WORKAREAROOTPATH,WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),o.getIdentifier()));
+		action.implementation();
+		assertTrue(action.isKILLATEXIT());
+	}
+	
+	@Test
+	public void continueWhenNothingToIndex() throws IOException {
+		o.setPackage_type(CB_PACKAGETYPE_EAD);
+		action.implementation();
+		assertFalse(action.isKILLATEXIT());
 	}
 	
 	@Test
