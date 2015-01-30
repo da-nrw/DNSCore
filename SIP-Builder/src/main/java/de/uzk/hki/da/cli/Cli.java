@@ -50,6 +50,7 @@ import de.uzk.hki.da.sb.MessageWriter.UserInput;
 import de.uzk.hki.da.sb.SIPFactory.Feedback;
 import de.uzk.hki.da.sb.SIPFactory.KindOfSIPBuilding;
 import de.uzk.hki.da.utils.StringUtilities;
+import de.uzk.hki.da.utils.Utilities;
 
 /**
  * Runs the SIP-Builder in CLI mode
@@ -682,7 +683,7 @@ public class Cli {
     	
 		System.out.println("");
 		System.out.println("");
-		System.out.println(SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder v" + StringUtilities.getSipBuilderVersion());
+		System.out.println(SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder v" + Utilities.getSipBuilderVersion());
 		System.out.println("");
 		System.out.println("Aufruf: java -jar SipBuilder.jar [-source | -filelist | -siplist] -destination [Weitere Optionen]");
 		System.out.println("");

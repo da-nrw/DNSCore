@@ -40,6 +40,7 @@ import de.uzk.hki.da.metadata.PremisXmlWriter;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.CopyUtility;
 import de.uzk.hki.da.utils.StringUtilities;
+import de.uzk.hki.da.utils.Utilities;
 
 /**
  * The central SIP production class
@@ -219,7 +220,7 @@ public class SIPFactory {
 			return Feedback.SUCCESS;
 		}
 
-		if (StringUtilities.checkForZeroByteFiles(sourceFolder, packageName, messageWriter)) {
+		if (Utilities.checkForZeroByteFiles(sourceFolder, packageName, messageWriter)) {
 			if (!ignoreZeroByteFiles) {
 				String message = "WARNING: Found zero byte files in folder " + sourceFolder + ":\n";
 				for (String s : messageWriter.getZeroByteFiles()) {
@@ -571,7 +572,7 @@ public class SIPFactory {
 	}
 
 	public void setKindofSIPBuilding(String kindofSIPBuildingName) {
-		this.kindofSIPBuilding = StringUtilities.translateKindOfSIPBuilding(kindofSIPBuildingName);
+		this.kindofSIPBuilding = Utilities.translateKindOfSIPBuilding(kindofSIPBuildingName);
 	}
 
 	public ContractRights getContractRights() {

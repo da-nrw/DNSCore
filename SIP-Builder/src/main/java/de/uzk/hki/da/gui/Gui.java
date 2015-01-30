@@ -65,6 +65,7 @@ import de.uzk.hki.da.sb.UserInputValidator;
 import de.uzk.hki.da.sb.SIPFactory.Feedback;
 import de.uzk.hki.da.sb.SIPFactory.KindOfSIPBuilding;
 import de.uzk.hki.da.utils.StringUtilities;
+import de.uzk.hki.da.utils.Utilities;
 
 /**
  * Displays the graphical user interface and reacts to user input
@@ -479,7 +480,7 @@ public class Gui extends JFrame{
 	 */
 	private void initializeTextLabels() {
 
-		versionInfoLabel = new JLabel("SIP-Builder v" + StringUtilities.getSipBuilderShortVersion() + 
+		versionInfoLabel = new JLabel("SIP-Builder v" + Utilities.getSipBuilderShortVersion() + 
 				" ®2011-2014 Historisch-Kulturwissenschaftliche Informationsverarbeitung");
 		versionInfoLabel.setFont(standardFont.deriveFont(10.0f));
 		versionInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -1846,7 +1847,7 @@ public class Gui extends JFrame{
 		helpIconButton.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e){
-				messageWriter.showMessage(SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder v" + StringUtilities.getSipBuilderVersion() + "\n\n" +
+				messageWriter.showMessage(SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder v" + Utilities.getSipBuilderVersion() + "\n\n" +
 										  "Copyright (C) 2014 Historisch-Kulturwissenschaftliche\n" +
 										  "Informationsverarbeitung Universität zu Köln\n\n" +
 										  "www.danrw.de");
@@ -1861,7 +1862,7 @@ public class Gui extends JFrame{
 				if (sourcePath != null) {
 					sourcePathTextField.setText(sourcePath);
 					try {
-						StringUtilities.writeFile(new File(dataFolderPath + File.separator + "srcPath.sav"), sourcePath);
+						Utilities.writeFile(new File(dataFolderPath + File.separator + "srcPath.sav"), sourcePath);
 					} catch (Exception ex) {
 						logger.log("WARNING: Failed to create file " + new File(dataFolderPath + File.separator + "srcPath.sav").getAbsolutePath(), ex);
 					}
@@ -1877,7 +1878,7 @@ public class Gui extends JFrame{
 				if (destinationPath != null) {
 					destinationPathTextField.setText(destinationPath);
 					try {
-						StringUtilities.writeFile(new File(dataFolderPath + File.separator + "destPath.sav"), destinationPath);
+						Utilities.writeFile(new File(dataFolderPath + File.separator + "destPath.sav"), destinationPath);
 					} catch (Exception ex) {
 						logger.log("WARNING: Failed to create file " + new File(dataFolderPath + File.separator + "destPath.sav").getAbsolutePath(), ex);
 					}
@@ -1907,7 +1908,7 @@ public class Gui extends JFrame{
 				String contractRightsFilePath = searchXmlFile();
 				if (contractRightsFilePath != null) {
 					try {
-						StringUtilities.writeFile(new File(dataFolderPath + File.separator + "crloadPath.sav"), contractRightsFilePath);
+						Utilities.writeFile(new File(dataFolderPath + File.separator + "crloadPath.sav"), contractRightsFilePath);
 					} catch (Exception ex) {
 						logger.log("WARNING: Failed to create file " + new File(dataFolderPath + File.separator + "crloadPath.sav").getAbsolutePath(), ex);
 					}
@@ -2062,7 +2063,7 @@ public class Gui extends JFrame{
 
 				if (fileName != null && !fileName.equals("")) {
 					try {
-						StringUtilities.writeFile(new File(dataFolderPath + File.separator + "crsavePath.sav"), fileName);
+						Utilities.writeFile(new File(dataFolderPath + File.separator + "crsavePath.sav"), fileName);
 					} catch (Exception ex) {
 						logger.log("WARNING: Failed to write file " + new File(dataFolderPath + File.separator +
 								   "crsavePath.sav").getAbsolutePath(), ex);
@@ -2596,7 +2597,7 @@ public class Gui extends JFrame{
 				
 				String compressionSetting = String.valueOf(compressionCheckBox.isSelected()); 
 				try {
-					StringUtilities.writeFile(new File(dataFolderPath + File.separator + "compSetting.sav"), compressionSetting);
+					Utilities.writeFile(new File(dataFolderPath + File.separator + "compSetting.sav"), compressionSetting);
 				} catch (Exception ex) {
 					logger.log("WARNING: Failed to create file " + new File(dataFolderPath + File.separator + "compSetting.sav").getAbsolutePath(), ex);
 				}
@@ -2606,7 +2607,7 @@ public class Gui extends JFrame{
 		kindOfSIPBuildingDropDown.addActionListener(new ActionListener(){
 			
 			public void actionPerformed(ActionEvent e){
-				if (StringUtilities.translateKindOfSIPBuilding((String) kindOfSIPBuildingDropDown.getSelectedItem())
+				if (Utilities.translateKindOfSIPBuilding((String) kindOfSIPBuildingDropDown.getSelectedItem())
 						== SIPFactory.KindOfSIPBuilding.MULTIPLE_FOLDERS) {
 					;
 				} else {
@@ -2770,7 +2771,7 @@ public class Gui extends JFrame{
 
 			UserInputValidator.Feedback feedback = UserInputValidator.checkPaths(sourcePathTextField.getText(),
 					destinationPathTextField.getText(),
-					StringUtilities.translateKindOfSIPBuilding(
+					Utilities.translateKindOfSIPBuilding(
 							(String) kindOfSIPBuildingDropDown.getSelectedItem()));
 
 			switch(feedback) {
@@ -2881,7 +2882,7 @@ public class Gui extends JFrame{
 				if (institutionRestrictionImageTextField.getText() == null ||
 						institutionRestrictionImageTextField.getText().equals("")) {
 
-					if (StringUtilities.translateTextType((String) institutionImageTextDropDown.getSelectedItem()) == PublicationRights.TextType.footer)
+					if (Utilities.translateTextType((String) institutionImageTextDropDown.getSelectedItem()) == PublicationRights.TextType.footer)
 						messageWriter.showMessage("Bitte geben Sie den Text der Fußzeile an.", JOptionPane.ERROR_MESSAGE);
 					else
 						messageWriter.showMessage("Bitte geben Sie den Text des Wasserzeichens an.", JOptionPane.ERROR_MESSAGE);
@@ -2890,14 +2891,14 @@ public class Gui extends JFrame{
 				}
 
 				int imageTextSize = institutionRestrictionImageTextField.getText().length();
-				if (StringUtilities.translateTextType((String) institutionImageTextDropDown.getSelectedItem()) == PublicationRights.TextType.footer
+				if (Utilities.translateTextType((String) institutionImageTextDropDown.getSelectedItem()) == PublicationRights.TextType.footer
 						&& imageTextSize > 65) {
 					messageWriter.showMessage("Fußzeilen dürfen nicht mehr als 65 Zeichen lang sein.\n" +
 							"Ihr Text ist " + (imageTextSize - 65) + " Zeichen zu lang.");
 					return false;
 				}
 
-				if (StringUtilities.translateTextType((String) institutionImageTextDropDown.getSelectedItem()) != PublicationRights.TextType.footer
+				if (Utilities.translateTextType((String) institutionImageTextDropDown.getSelectedItem()) != PublicationRights.TextType.footer
 						&& imageTextSize > 20) {
 					messageWriter.showMessage("Wasserzeichen dürfen nicht mehr als 20 Zeichen lang sein.\n" +
 							"Ihr Text ist " + (imageTextSize - 20) + " Zeichen zu lang.");
@@ -2930,7 +2931,7 @@ public class Gui extends JFrame{
 				if (publicRestrictionImageTextField.getText() == null ||
 						publicRestrictionImageTextField.getText().equals("")) {
 
-					if (StringUtilities.translateTextType((String) publicImageTextDropDown.getSelectedItem()) == PublicationRights.TextType.footer)
+					if (Utilities.translateTextType((String) publicImageTextDropDown.getSelectedItem()) == PublicationRights.TextType.footer)
 						messageWriter.showMessage("Bitte geben Sie den Text der Fußzeile an.", JOptionPane.ERROR_MESSAGE);
 					else
 						messageWriter.showMessage("Bitte geben Sie den Text des Wasserzeichens an.", JOptionPane.ERROR_MESSAGE);
@@ -2939,14 +2940,14 @@ public class Gui extends JFrame{
 				}
 
 				int imageTextSize = publicRestrictionImageTextField.getText().length();
-				if (StringUtilities.translateTextType((String) publicImageTextDropDown.getSelectedItem()) == PublicationRights.TextType.footer
+				if (Utilities.translateTextType((String) publicImageTextDropDown.getSelectedItem()) == PublicationRights.TextType.footer
 						&& imageTextSize > 65) {
 					messageWriter.showMessage("Fußzeilen dürfen nicht mehr als 65 Zeichen lang sein.\n" +
 							"Ihr Text ist " + (imageTextSize - 65) + " Zeichen zu lang.");
 					return false;
 				}
 
-				if (StringUtilities.translateTextType((String) publicImageTextDropDown.getSelectedItem()) != PublicationRights.TextType.footer
+				if (Utilities.translateTextType((String) publicImageTextDropDown.getSelectedItem()) != PublicationRights.TextType.footer
 						&& imageTextSize > 20) {
 					messageWriter.showMessage("Wasserzeichen dürfen nicht mehr als 20 Zeichen lang sein.\n" +
 							"Ihr Text ist " + (imageTextSize - 20) + " Zeichen zu lang.");
@@ -3259,7 +3260,7 @@ public class Gui extends JFrame{
 		institutionRights.setTempPublication(institutionTempRadioButton.isSelected());
 		institutionRights.setLawPublication(institutionLawRadioButton.isSelected());
 		institutionRights.setStartDate(institutionTempStartDateTextField.getText());
-		institutionRights.setLaw(StringUtilities.translateLaw((String) institutionLawIdDropDown.getSelectedItem()));
+		institutionRights.setLaw(Utilities.translateLaw((String) institutionLawIdDropDown.getSelectedItem()));
 		institutionRights.setTextRestriction(institutionTextRestrictionCheckBox.isSelected());
 		institutionRights.setImageRestriction(institutionImageRestrictionCheckBox.isSelected());
 		institutionRights.setAudioRestriction(institutionAudioRestrictionCheckBox.isSelected());
@@ -3269,7 +3270,7 @@ public class Gui extends JFrame{
 		institutionRights.setImageHeight(contractSettings.getHeightImage(institutionImageDropDown.getSelectedIndex()));
 		institutionRights.setImageRestrictionText(institutionImageTextCheckBox.isSelected());
 		institutionRights.setFooterText(institutionRestrictionImageTextField.getText());
-		institutionRights.setImageTextType(StringUtilities.translateTextType((String) institutionImageTextDropDown.getSelectedItem()));
+		institutionRights.setImageTextType(Utilities.translateTextType((String) institutionImageTextDropDown.getSelectedItem()));
 		institutionRights.setWatermarkSize(contractSettings.getTextSizeImage(institutionImageTextSizeDropDown.getSelectedIndex()));
 		institutionRights.setWatermarkOpacity(contractSettings.getOpacityImage(institutionImageTextOpacityDropDown.getSelectedIndex()));
 		institutionRights.setAudioDuration(contractSettings.getDuration(institutionAudioDurationDropDown.getSelectedIndex()));
@@ -3279,7 +3280,7 @@ public class Gui extends JFrame{
 		publicRights.setTempPublication(publicTempRadioButton.isSelected());
 		publicRights.setLawPublication(publicLawRadioButton.isSelected());
 		publicRights.setStartDate(publicTempStartDateTextField.getText());
-		publicRights.setLaw(StringUtilities.translateLaw((String) publicLawIdDropDown.getSelectedItem()));
+		publicRights.setLaw(Utilities.translateLaw((String) publicLawIdDropDown.getSelectedItem()));
 		publicRights.setTextRestriction(publicTextRestrictionCheckBox.isSelected());
 		publicRights.setImageRestriction(publicImageRestrictionCheckBox.isSelected());
 		publicRights.setAudioRestriction(publicAudioRestrictionCheckBox.isSelected());
@@ -3289,7 +3290,7 @@ public class Gui extends JFrame{
 		publicRights.setImageHeight(contractSettings.getHeightImage(publicImageDropDown.getSelectedIndex()));
 		publicRights.setImageRestrictionText(publicImageTextCheckBox.isSelected());
 		publicRights.setFooterText(publicRestrictionImageTextField.getText());
-		publicRights.setImageTextType(StringUtilities.translateTextType((String) publicImageTextDropDown.getSelectedItem()));
+		publicRights.setImageTextType(Utilities.translateTextType((String) publicImageTextDropDown.getSelectedItem()));
 		publicRights.setWatermarkSize(contractSettings.getTextSizeImage(publicImageTextSizeDropDown.getSelectedIndex()));
 		publicRights.setWatermarkOpacity(contractSettings.getOpacityImage(publicImageTextOpacityDropDown.getSelectedIndex()));
 		publicRights.setAudioDuration(contractSettings.getDuration(publicAudioDurationDropDown.getSelectedIndex()));
@@ -3318,7 +3319,7 @@ public class Gui extends JFrame{
 
 		institutionRestrictionImageTextField.setText(institutionRights.getFooterText());
 
-		institutionImageTextDropDown.setSelectedItem(StringUtilities.translateTextType(institutionRights.getImageTextType()));
+		institutionImageTextDropDown.setSelectedItem(Utilities.translateTextType(institutionRights.getImageTextType()));
 
 		int imageTextOpacityIndex = contractSettings.getOpacityImageIndex(institutionRights.getWatermarkOpacity());
 		if (imageTextOpacityIndex >= 0)
@@ -3443,7 +3444,7 @@ public class Gui extends JFrame{
 			institutionTempStartDateTextField.setText(dateFormat.format(institutionRights.getStartDate()));
 		else
 			institutionTempStartDateTextField.setText("");
-		institutionLawIdDropDown.setSelectedItem(StringUtilities.translateLaw(institutionRights.getLaw()));
+		institutionLawIdDropDown.setSelectedItem(Utilities.translateLaw(institutionRights.getLaw()));
 
 		institutionTextRestrictionCheckBox.setSelected(institutionRights.getTextRestriction());
 		institutionImageRestrictionCheckBox.setSelected(institutionRights.getImageRestriction());
@@ -3454,7 +3455,7 @@ public class Gui extends JFrame{
 
 		institutionRestrictionTextPagesTextField.setText(institutionRights.getPages());
 
-		publicImageTextDropDown.setSelectedItem(StringUtilities.translateTextType(publicRights.getImageTextType()));
+		publicImageTextDropDown.setSelectedItem(Utilities.translateTextType(publicRights.getImageTextType()));
 
 		imageTextOpacityIndex = contractSettings.getOpacityImageIndex(publicRights.getWatermarkOpacity());
 		if (imageTextOpacityIndex >= 0)
@@ -3592,7 +3593,7 @@ public class Gui extends JFrame{
 			publicTempStartDateTextField.setText(dateFormat.format(publicRights.getStartDate()));
 		else
 			publicTempStartDateTextField.setText("");
-		publicLawIdDropDown.setSelectedItem(StringUtilities.translateLaw(publicRights.getLaw()));
+		publicLawIdDropDown.setSelectedItem(Utilities.translateLaw(publicRights.getLaw()));
 
 		publicTextRestrictionCheckBox.setSelected(publicRights.getTextRestriction());
 		publicImageRestrictionCheckBox.setSelected(publicRights.getImageRestriction());
@@ -3612,7 +3613,7 @@ public class Gui extends JFrame{
 
 		publicRestrictionImageTextField.setText(publicRights.getFooterText());
 
-		migrationDropDown.setSelectedItem(StringUtilities.translateConversionCondition(contractRights.getConversionCondition()));
+		migrationDropDown.setSelectedItem(Utilities.translateConversionCondition(contractRights.getConversionCondition()));
 		publicDDBCheckBox.setSelected(!contractRights.getDdbExclusion());
 	}
 	
@@ -3639,7 +3640,7 @@ public class Gui extends JFrame{
 			if (publicRights.getTempPublication())
 				settingsOverview += "     Startdatum: " + dateFormat.format(publicRights.getStartDate()) + "\n";
 			else if (publicRights.getLawPublication())
-				settingsOverview += "     Sperrgesetz: " + StringUtilities.translateLaw(publicRights.getLaw()) + "\n";
+				settingsOverview += "     Sperrgesetz: " + Utilities.translateLaw(publicRights.getLaw()) + "\n";
 			if (publicRights.getTextRestriction())
 				settingsOverview += "     Angezeigte Textseiten: " + publicRights.getPages() + "\n";
 			if (publicRights.getImageRestriction())
@@ -3649,7 +3650,7 @@ public class Gui extends JFrame{
 					settingsOverview += "     Fußzeile: \"" + publicRights.getFooterText() + "\"\n";
 				else {
 					settingsOverview += "     Wasserzeichen: \"" + publicRights.getFooterText() + "\"\n";
-					settingsOverview += "          Position: " + StringUtilities.translateTextTypePosition(publicRights.getImageTextType()) + "\n";
+					settingsOverview += "          Position: " + Utilities.translateTextTypePosition(publicRights.getImageTextType()) + "\n";
 					settingsOverview += "          Sichtbarkeit: " + publicRights.getWatermarkOpacity() + "%\n";
 					settingsOverview += "          Schriftgröße: " + publicRights.getWatermarkSize() + "\n";
 				}					
@@ -3672,7 +3673,7 @@ public class Gui extends JFrame{
 			if (institutionRights.getTempPublication())
 				settingsOverview += "     Startdatum: " + dateFormat.format(institutionRights.getStartDate()) + "\n";
 			else if (institutionRights.getLawPublication())
-				settingsOverview += "     Sperrgesetz: " + StringUtilities.translateLaw(institutionRights.getLaw()) + "\n";
+				settingsOverview += "     Sperrgesetz: " + Utilities.translateLaw(institutionRights.getLaw()) + "\n";
 			if (institutionRights.getTextRestriction())
 				settingsOverview += "     Angezeigte Textseiten: " + institutionRights.getPages() + "\n";
 			if (institutionRights.getImageRestriction())
@@ -3682,7 +3683,7 @@ public class Gui extends JFrame{
 					settingsOverview += "     Fußzeile: \"" + institutionRights.getFooterText() + "\"\n";
 				else {
 					settingsOverview += "     Wasserzeichen: \"" + institutionRights.getFooterText() + "\"\n";
-					settingsOverview += "          Position: " + StringUtilities.translateTextTypePosition(institutionRights.getImageTextType()) + "\n";
+					settingsOverview += "          Position: " + Utilities.translateTextTypePosition(institutionRights.getImageTextType()) + "\n";
 					settingsOverview += "          Sichtbarkeit: " + institutionRights.getWatermarkOpacity() + "%\n";
 					settingsOverview += "          Schriftgröße: " + institutionRights.getWatermarkSize() + "\n";
 				}					
