@@ -45,7 +45,7 @@ import de.uzk.hki.da.pkg.ConsistencyChecker;
 import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.SidecarUtils;
 
 /**
  * If there is sufficient space on the WorkArea, fetches the container (named object.package.containername)
@@ -166,7 +166,7 @@ public class UnpackAction extends AbstractAction {
 			
 			boolean isOKWhenSidecarFilesAreSubtracted = false;
 			for (File file:duplicates.get(duplicate)){
-				if (Utilities.hasSidecarExtension(file.getAbsolutePath(),preservationSystem.getSidecarExtensions())&&(duplicates.get(duplicate).size()-1)==1) {
+				if (SidecarUtils.hasSidecarExtension(file.getAbsolutePath(),preservationSystem.getSidecarExtensions())&&(duplicates.get(duplicate).size()-1)==1) {
 					isOKWhenSidecarFilesAreSubtracted=true;
 					break;
 				}

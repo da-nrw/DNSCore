@@ -42,7 +42,7 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /**
  * <li>Creates a new Representation and copies the contents of the submission into it.
@@ -163,7 +163,7 @@ public class RestructureAction extends AbstractAction{
 	
 	@Override
 	public void rollback() throws Exception {
-		if (! Utilities.isNotSet(j.getRep_name())) { // since we know that the SIP content has been moved successfully when rep_name is set.
+		if (! StringUtilities.isNotSet(j.getRep_name())) { // since we know that the SIP content has been moved successfully when rep_name is set.
 			FileUtils.moveDirectory(
 				Path.makeFile( o.getDataPath(), j.getRep_name()+"a" ), 
 				Path.makeFile( o.getPath(), "data_" ));

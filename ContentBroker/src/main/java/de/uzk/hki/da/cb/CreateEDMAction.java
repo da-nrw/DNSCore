@@ -23,7 +23,7 @@ import static de.uzk.hki.da.core.C.EDM_METADATA_STREAM_ID;
 import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
 import static de.uzk.hki.da.core.C.WA_PIPS;
 import static de.uzk.hki.da.core.C.WA_PUBLIC;
-import static de.uzk.hki.da.utils.Utilities.isNotSet;
+import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -20,21 +20,17 @@
 package de.uzk.hki.da.utils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,26 +41,11 @@ import org.slf4j.LoggerFactory;
 /**
  * The Class Utilities.
  */
-public class Utilities {
+public class StringUtilities {
 	
 	/** The logger. */
-	public static Logger logger = LoggerFactory.getLogger(Utilities.class);
+	public static Logger logger = LoggerFactory.getLogger(StringUtilities.class);
 
-	/**
-	 * @param propertiesFile
-	 * @return properties
-	 * @throws IOException
-	 * @throws FileNotFoundException if propertiesfile does not exist
-	 * @author Daniel M. de Oliveira
-	 */
-	public static Properties read(File propertiesFile) throws IOException{
-		if (!propertiesFile.exists()) throw new FileNotFoundException(propertiesFile+" does not exist");
-		InputStream in = new FileInputStream(propertiesFile);
-		Properties props = new Properties();
-		props.load(in);
-		return props;
-	}
-	
 	/**
 	 * Slashize.
 	 *
@@ -97,55 +78,8 @@ public class Utilities {
 	}
 	
 	
-	/**
-	 * TODO remove duplicate from UnpackAction
-	 * @param file
-	 * @return
-	 * @author Daniel M. de Oliveira
-	 */
-	public static boolean hasSidecarExtension(String filename,String sidecarExts){
-
-		String[] sidecarExtensions;
-		if (sidecarExts.contains(","))
-			sidecarExtensions = sidecarExts.split(",");
-		else
-			sidecarExtensions = sidecarExts.split(";");
-		
-		for (int i=0;i<sidecarExtensions.length;i++){
-			if (FilenameUtils.getExtension(filename).toLowerCase().equals(sidecarExtensions[i].toLowerCase())){
-				System.out.println(filename+" has sidecar ext "+sidecarExtensions[i]);
-				return true;
-			}
-		}
-		return false;
-	}
 	
 	
-	/**
-	 * Parses the arguments.
-	 *
-	 * @param args the args
-	 * @param props the props
-	 */
-	public static void parseArguments(String[] args,Properties props) {
-		if (props==null){
-			logger.error("props is null in parseArguments");
-			return;
-		}
-		
-		for (String arg : args) {
-			if (arg.startsWith("--")) {
-				arg = arg.substring(2);
-				if (arg.contains("=")) {
-					String[] split = arg.split("=");
-					props.put(split[0], split[1]);
-				} else {
-					props.put(arg, arg);
-				}
-			}
-		}
-	}
-
 	
 	/**
 	 * Today as simple iso date.
@@ -160,31 +94,7 @@ public class Utilities {
 		
 	}
 	
-	/**
-	 * Checks if is sidecar file.
-	 *
-	 * @param filename the filename
-	 * @param extensionList the extension list
-	 * @return true, if is sidecar file
-	 * @author Thomas Kleinke
-	 */
-	public static boolean isSidecarFile(String filename, String extensionList) {
-		
-		int position = 0;
-		while (position < extensionList.length())
-		{
-			int index = extensionList.indexOf(';', position);
-			if (index == -1)
-				index = extensionList.length();
-			String extension = extensionList.substring(position, index).toLowerCase();
-			position = index + 1;
-			
-			if (filename.toLowerCase().endsWith("." + extension))
-				return true;			
-		}
-		
-		return false;
-	}
+	
 	
 	/**
 	 * Check for whitespace.
@@ -264,23 +174,17 @@ public class Utilities {
 		return result.toString();
 	}
 	
-	public static String getHeapSpaceInformation() {
-		
-		String output;
-		Runtime runtime = Runtime.getRuntime();
-		
-		output = "Used Memory: " + (runtime.totalMemory() - runtime.freeMemory()) / (1024*1024) + " MB\n";
-        output += "Free Memory: " + runtime.freeMemory() / (1024*1024) + "MB \n";
-        output += "Total available Memory:" + runtime.totalMemory() / (1024*1024) + "MB \n";
-        output += "Max Memory:" + runtime.maxMemory() / (1024*1024) + "MB \n";
-		
-        return output;
+	
+	
+	
+	public static boolean isNotSet(Object s) {
+		if (s==null) return true;
+		if (s instanceof String)
+			if (((String)s).isEmpty()) return true;
+		return false;
 	}
 	
-	
-	
-	public static boolean isNotSet(String s) {
-		if (s==null||s.isEmpty()) return true;
-		return false;
+	public static boolean isSet(Object s) {
+		return (!isNotSet(s));
 	}
 }

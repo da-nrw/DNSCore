@@ -38,7 +38,7 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.HibernateUtil;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -255,7 +255,7 @@ public class RegisterObjectService {
 		
 		String base = urnNameSpace+"-"
 				+ nodeId+"-"
-				+ Utilities.todayAsSimpleIsoDate(new Date())
+				+ StringUtilities.todayAsSimpleIsoDate(new Date())
 				+ incrementURNindex(nodeId);
 
 		return base + (new URNCheckDigitGenerator()).checkDigit( base );

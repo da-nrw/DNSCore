@@ -49,7 +49,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.webservice.HttpFileTransmissionClient;
 
 
@@ -114,7 +114,7 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 		getHttpclient().postFileAndReadResponse(ci.getSource_file().toRegularFile(), result);
 		
 		if (result.exists()) {
-		DAFile daf = new DAFile(pkg,object.getPath("newest").getLastElement(),Utilities.slashize(ci.getTarget_folder())+result.getName());
+		DAFile daf = new DAFile(pkg,object.getPath("newest").getLastElement(),StringUtilities.slashize(ci.getTarget_folder())+result.getName());
 		logger.debug("new dafile:"+daf);
 							
 		// TODO Doing PDF/A Conversion with a temp file, due to recieve PDF 1.5 from MS instead of PDF/A . 
@@ -144,7 +144,7 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 		
 		Event e = new Event();
 		e.setType("CONVERT");
-		e.setDetail("Webservice DOCX2PDF "+ ci.getConversion_routine().getParams() + " AND "+Utilities.createString(commandAsArray));
+		e.setDetail("Webservice DOCX2PDF "+ ci.getConversion_routine().getParams() + " AND "+StringUtilities.createString(commandAsArray));
 		e.setSource_file(daf);
 		e.setTarget_file(daf);
 		e.setDate(new Date());	
@@ -162,7 +162,7 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 	 */
 	public String generateTargetFilePath(ConversionInstruction ci) {
 		String input  = ci.getSource_file().toRegularFile().getAbsolutePath();
-		return object.getPath("newest")+"/"+Utilities.slashize(ci.getTarget_folder())
+		return object.getPath("newest")+"/"+StringUtilities.slashize(ci.getTarget_folder())
 				+ FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix();
 	}
 

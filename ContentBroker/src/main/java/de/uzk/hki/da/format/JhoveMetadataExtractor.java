@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /**
  * 
@@ -99,7 +99,7 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 	private String makeFilePath(File file) {
 		String filePath;
 		filePath=file.getAbsolutePath();
-		if (Utilities.checkForWhitespace(filePath))
+		if (StringUtilities.checkForWhitespace(filePath))
 			filePath = "\"" + filePath + "\"";
 		return filePath;
 	}

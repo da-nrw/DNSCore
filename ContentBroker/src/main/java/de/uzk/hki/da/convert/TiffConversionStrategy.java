@@ -41,7 +41,7 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 
@@ -111,12 +111,12 @@ public class TiffConversionStrategy implements ConversionStrategy {
 				new File(FilenameUtils.getFullPath(result.getAbsolutePath())), baseName+"*."+extension);
 		
 		for (File f : results){
-			DAFile daf = new DAFile(pkg,object.getPath("newest").getLastElement(),Utilities.slashize(ci.getTarget_folder())+f.getName());
+			DAFile daf = new DAFile(pkg,object.getPath("newest").getLastElement(),StringUtilities.slashize(ci.getTarget_folder())+f.getName());
 			logger.debug("new dafile:"+daf);
 								
 			Event e = new Event();
 			e.setType("CONVERT");
-			e.setDetail(Utilities.createString(commandAsArray));
+			e.setDetail(StringUtilities.createString(commandAsArray));
 			e.setSource_file(ci.getSource_file());
 			e.setTarget_file(daf);
 			e.setDate(new Date());
@@ -205,7 +205,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 	 */
 	public String generateTargetFilePath(ConversionInstruction ci) {
 		String input  = ci.getSource_file().toRegularFile().getAbsolutePath();
-		return object.getPath("newest")+"/"+Utilities.slashize(ci.getTarget_folder())
+		return object.getPath("newest")+"/"+StringUtilities.slashize(ci.getTarget_folder())
 				+ FilenameUtils.getName(input);
 	}
 	

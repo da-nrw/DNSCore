@@ -41,7 +41,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.PropertiesUtils;
 
 /**
  * @author Daniel M. de Oliveira
@@ -69,7 +69,7 @@ public class CTElasticSearchMetadataIndexTests {
 	
 	@Before
 	public void setUp() throws MalformedURLException, ProtocolException, IOException{
-		Properties properties = Utilities.read(propertiesFile);
+		Properties properties = PropertiesUtils.read(propertiesFile);
 
 		portal = properties.getProperty("elasticsearch.index");
 		url = URL_PREFIX+portal+"/test_collection/test_object_1";

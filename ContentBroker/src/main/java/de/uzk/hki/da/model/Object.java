@@ -60,7 +60,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.SidecarUtils;
 
 
 /**
@@ -752,7 +752,7 @@ public class Object {
 		
 		for (String rep : getReps())
 			for (DAFile f: getFilesFromRepresentation(rep)){
-				if (Utilities.hasSidecarExtension(f.getRelative_path(),sidecarExts))
+				if (SidecarUtils.hasSidecarExtension(f.getRelative_path(),sidecarExts))
 					documentMap.put(f.getRelative_path(), f);
 				else
 					documentMap.put(FilenameUtils.removeExtension(f.getRelative_path()), f);

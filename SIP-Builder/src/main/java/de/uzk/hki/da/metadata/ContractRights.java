@@ -37,7 +37,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 
@@ -200,7 +200,7 @@ public class ContractRights {
 	}
 
 	public void setConversionCondition(String conversionCondition) {
-		this.conversionCondition = Utilities.translateConversionCondition(conversionCondition);
+		this.conversionCondition = StringUtilities.translateConversionCondition(conversionCondition);
 	}
 
 	public boolean getDdbExclusion() {

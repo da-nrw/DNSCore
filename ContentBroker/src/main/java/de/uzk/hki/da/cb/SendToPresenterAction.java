@@ -46,7 +46,7 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /** 
  * This action implements the ingest into the presentation repository.
@@ -100,9 +100,9 @@ public class SendToPresenterAction extends AbstractAction {
 			throw new IllegalStateException("testContractors is not set");
 		if (o.getUrn()==null||o.getUrn().isEmpty())
 			throw new IllegalStateException("urn not set");
-		if (Utilities.isNotSet(preservationSystem.getOpenCollectionName()))
+		if (StringUtilities.isNotSet(preservationSystem.getOpenCollectionName()))
 			throw new IllegalStateException("open collection name must be set");
-		if (Utilities.isNotSet(preservationSystem.getClosedCollectionName()))
+		if (StringUtilities.isNotSet(preservationSystem.getClosedCollectionName()))
 			throw new IllegalStateException("closed collection name must be set");
 	}
 
@@ -140,7 +140,7 @@ public class SendToPresenterAction extends AbstractAction {
 		
 		setPublishedFlag(publicPIPSuccessfullyIngested,
 				institutionPIPSuccessfullyIngested);
-		if (Utilities.isNotSet(o.getPackage_type())||(!publicPIPSuccessfullyIngested)) {
+		if (StringUtilities.isNotSet(o.getPackage_type())||(!publicPIPSuccessfullyIngested)) {
 			setKILLATEXIT(true); // indexing and creating edm not possible
 		}
 		return true;

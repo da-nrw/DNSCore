@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.fs;
+package de.uzk.hki.da.utils;
 
 
 import static org.junit.Assert.assertFalse;
@@ -30,13 +30,13 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 import de.uzk.hki.da.utils.FolderUtils;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
  * The Class UtilitiesTest.
  */
-public class UtilitiesTest {
+public class FolderUtilsTest {
 
 	/**
 	 * Compare two equal folders.
@@ -121,9 +121,9 @@ public class UtilitiesTest {
 	public void testCheckForWhitespace() {
 		
 		String testString = "XYZ 123467";
-		assertTrue(Utilities.checkForWhitespace(testString));
+		assertTrue(StringUtilities.checkForWhitespace(testString));
 		
 		testString = "XYZ123467";
-		assertFalse(Utilities.checkForWhitespace(testString));
+		assertFalse(StringUtilities.checkForWhitespace(testString));
 	}	
 }

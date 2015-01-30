@@ -42,7 +42,7 @@ import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -82,13 +82,13 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 				"-i",
 				ci.getSource_file().toRegularFile().getAbsolutePath(),
 				"-o",
-				object.getDataPath()+"/"+pips.toString()+"/public/"+Utilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4",
+				object.getDataPath()+"/"+pips.toString()+"/public/"+StringUtilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4",
 				"-e","x264","-f","mp4","-E","faac"
 		};
 		
 		cmdPUBLIC = (String[]) ArrayUtils.addAll(cmdPUBLIC, getRestrictionParametersForAudience("PUBLIC"));
 		
-		DAFile pubFile = new DAFile(pkg, pips+"/public", Utilities.slashize(ci.getTarget_folder()) + 
+		DAFile pubFile = new DAFile(pkg, pips+"/public", StringUtilities.slashize(ci.getTarget_folder()) + 
 				FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp4");
 		
 		if (!executeConversionTool(cmdPUBLIC, pubFile.toRegularFile()))
@@ -96,7 +96,7 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 		
 		Event e = new Event();
 		e.setType("CONVERT");
-		e.setDetail(Utilities.createString(cmdPUBLIC));
+		e.setDetail(StringUtilities.createString(cmdPUBLIC));
 		e.setSource_file(ci.getSource_file());
 		e.setTarget_file(pubFile);
 		e.setDate(new Date());
@@ -106,13 +106,13 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 				"-i",
 				ci.getSource_file().toRegularFile().getAbsolutePath(),
 				"-o",
-				object.getDataPath()+"/"+pips+"/institution/"+Utilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4",
+				object.getDataPath()+"/"+pips+"/institution/"+StringUtilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4",
 				"-e","x264","-f","mp4","-E","faac"
 		};
 
 		cmdINSTITUTION = (String[]) ArrayUtils.addAll(cmdINSTITUTION, getRestrictionParametersForAudience("INSTITUTION"));
 		
-		DAFile instFile = new DAFile(pkg, C.WA_DIP+"/institution", Utilities.slashize(ci.getTarget_folder()) + 
+		DAFile instFile = new DAFile(pkg, C.WA_DIP+"/institution", StringUtilities.slashize(ci.getTarget_folder()) + 
 				FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp4");
 		
 		if (!executeConversionTool(cmdINSTITUTION, instFile.toRegularFile()))
@@ -120,7 +120,7 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 				
 		Event e2 = new Event();
 		e2.setType("CONVERT");
-		e2.setDetail(Utilities.createString(cmdINSTITUTION));
+		e2.setDetail(StringUtilities.createString(cmdINSTITUTION));
 		e2.setSource_file(ci.getSource_file());
 		e2.setTarget_file(instFile);
 		

@@ -37,7 +37,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.sb.SIPFactory;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /**
  * Provides methods for XML file creation (premis.xml and Contract-XML)
@@ -245,7 +245,7 @@ public class PremisXmlWriter {
 			createTextElement("eventDateTime", formatDate(creationDate, dateFormat), 2);
 			createOpenElement("linkingAgentIdentifier", 2);
 				createTextElement("linkingAgentIdentifierType", "APPLICATION_NAME", 3);
-				createTextElement("linkingAgentIdentifierValue", SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder " + Utilities.getSipBuilderVersion(), 3);
+				createTextElement("linkingAgentIdentifierValue", SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder " + StringUtilities.getSipBuilderVersion(), 3);
 			createCloseElement(2);
 			createOpenElement("linkingObjectIdentifier", 2);
 				createTextElement("linkingObjectIdentifierType", "PACKAGE_NAME", 3);
@@ -264,7 +264,7 @@ public class PremisXmlWriter {
 		createOpenElement("agent", 1);
 			createOpenElement("agentIdentifier", 2);
 				createTextElement("agentIdentifierType", "APPLICATION_NAME", 3);
-				createTextElement("agentIdentifierValue", SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder " + Utilities.getSipBuilderVersion(), 3);
+				createTextElement("agentIdentifierValue", SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder " + StringUtilities.getSipBuilderVersion(), 3);
 			createCloseElement(2);
 			createTextElement("agentType", "APPLICATION", 2);
 		createCloseElement(1);		

@@ -49,7 +49,7 @@ import de.uzk.hki.da.sb.UserInputValidator;
 import de.uzk.hki.da.sb.MessageWriter.UserInput;
 import de.uzk.hki.da.sb.SIPFactory.Feedback;
 import de.uzk.hki.da.sb.SIPFactory.KindOfSIPBuilding;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /**
  * Runs the SIP-Builder in CLI mode
@@ -483,7 +483,7 @@ public class Cli {
     	
     	String fileList = "";
     	try {
-    		fileList = Utilities.readFile(fileListFile);
+    		fileList = StringUtilities.readFile(fileListFile);
     	} catch (Exception e) {
     		logger.log("ERROR: Failed to read file " + fileListFile.getAbsolutePath(), e);
     		System.out.println("Die Datei " + fileListFile.getAbsolutePath() + " konnte nicht gelesen werden.");
@@ -682,7 +682,7 @@ public class Cli {
     	
 		System.out.println("");
 		System.out.println("");
-		System.out.println(SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder v" + Utilities.getSipBuilderVersion());
+		System.out.println(SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder v" + StringUtilities.getSipBuilderVersion());
 		System.out.println("");
 		System.out.println("Aufruf: java -jar SipBuilder.jar [-source | -filelist | -siplist] -destination [Weitere Optionen]");
 		System.out.println("");
