@@ -20,7 +20,7 @@ package de.uzk.hki.da.cb;
 
 import java.io.IOException;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
@@ -29,6 +29,7 @@ import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DocumentsGenService;
 import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.util.Path;
 
 
 /**
@@ -80,9 +81,6 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 		
 		o.reattach();
 		dgs.addDocumentsToObject(o);
-		
-//		distributedConversionAdapter.register("work/"+object.getContractor().getShort_name()+"/"+object.getIdentifier(),
-//				object.getPath().toString());
 		return true;
 	}
 
@@ -92,7 +90,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 	
 	@Override
 	public void rollback() throws Exception {
-		throw new NotImplementedException("No rollback implemented for this action");
+		FileUtils.deleteQuietly(Path.makeFile(o.getDataPath()));
 	}
 
 
