@@ -176,7 +176,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		
 		if ((getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_XMP)).size()>=1){
 			detectedMetadataFile=new DAFile(o.getLatestPackage(),
-					o.getPath("newest").getLastElement(),C.XMP_METADATA_FILE);
+					o.getPath("newest").getLastElement(),C.METADATA_FILE_XMP);
 			detectedPackageType=C.CB_PACKAGETYPE_XMP;
 			ptypeCount++;
 		}

@@ -22,7 +22,7 @@ package de.uzk.hki.da.cb;
 
 import static de.uzk.hki.da.core.C.CB_PACKAGETYPE_EAD;
 import static de.uzk.hki.da.core.C.CB_PACKAGETYPE_METS;
-import static de.uzk.hki.da.core.C.EDM_METADATA_STREAM_ID;
+import static de.uzk.hki.da.core.C.METADATA_STREAM_ID_EDM;
 import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
 import static de.uzk.hki.da.core.C.WA_PIPS;
 import static de.uzk.hki.da.core.C.WA_PUBLIC;
@@ -115,16 +115,16 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 	public void fileCreation() throws IOException, RepositoryException{
 		
 		action.implementation();
-		assertTrue(makeMetadataFile(EDM_METADATA_STREAM_ID).exists());
+		assertTrue(makeMetadataFile(METADATA_STREAM_ID_EDM).exists());
 	}
 	
 	@Test
 	public void fileDeletion() throws Exception {
 		
 		action.implementation();
-		assertTrue(makeMetadataFile(EDM_METADATA_STREAM_ID).exists());
+		assertTrue(makeMetadataFile(METADATA_STREAM_ID_EDM).exists());
 		action.rollback();
-		assertFalse(makeMetadataFile(EDM_METADATA_STREAM_ID).exists());
+		assertFalse(makeMetadataFile(METADATA_STREAM_ID_EDM).exists());
 	}
 
 	

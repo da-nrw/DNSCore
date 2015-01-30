@@ -72,7 +72,7 @@ public class IndexMetadataAction extends AbstractAction {
 		
 		
 		edmFile = Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),
-				o.getIdentifier(),EDM_METADATA_STREAM_ID+FILE_EXTENSION_XML);
+				o.getIdentifier(),METADATA_STREAM_ID_EDM+FILE_EXTENSION_XML);
 		if (! edmFile.exists())
 			throw new IllegalStateException("Missing file: "+edmFile);
 

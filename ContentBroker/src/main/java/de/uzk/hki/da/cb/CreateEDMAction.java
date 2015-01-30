@@ -19,7 +19,7 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.EDM_METADATA_STREAM_ID;
+import static de.uzk.hki.da.core.C.METADATA_STREAM_ID_EDM;
 import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
 import static de.uzk.hki.da.core.C.WA_PIPS;
 import static de.uzk.hki.da.core.C.WA_PUBLIC;
@@ -120,7 +120,7 @@ public class CreateEDMAction extends AbstractAction {
 	
 	private File generateEDM(String xsltTransformationFile,File metadataSourceFile) throws FileNotFoundException {
 		
-		File edm = makeMetadataFile(EDM_METADATA_STREAM_ID,WA_PUBLIC); 
+		File edm = makeMetadataFile(METADATA_STREAM_ID_EDM,WA_PUBLIC); 
 		
 		String edmResult = generateEDM(o.getIdentifier(), xsltTransformationFile, new FileInputStream(metadataSourceFile));
 		PrintWriter out = null;
@@ -139,7 +139,7 @@ public class CreateEDMAction extends AbstractAction {
 	
 	private void putToRepository(File file) throws RepositoryException, IOException {
 		repositoryFacade.ingestFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
-				EDM_METADATA_STREAM_ID+FILE_EXTENSION_XML, file, 
+				METADATA_STREAM_ID_EDM+FILE_EXTENSION_XML, file, 
 				"Object representation in Europeana Data Model", "application/rdf+xml");
 	}
 

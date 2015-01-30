@@ -51,9 +51,11 @@ public class C {
 	public static final String CB_PACKAGETYPE_METS = FFConstants.SUBFORMAT_IDENTIFIER_METS;
 	public static final String CB_PACKAGETYPE_EAD  = FFConstants.SUBFORMAT_IDENTIFIER_EAD;     
 		/** common metadata file for all XMP type packages */
-	public static final String XMP_METADATA_FILE = "XMP.xml";
+	public static final String METADATA_FILE_XMP = "XMP.xml";
 		/** Fedora datastream id for EDM. */
-	public static final String EDM_METADATA_STREAM_ID = "EDM"; 
+	public static final String METADATA_STREAM_ID_EDM = "EDM";
+	public static final String METADATA_STREAM_ID_DC = "DC";
+	public static final String METADATA_STREAM_ID_EPICUR = "epicur";
 	
 
 	// Systems communication

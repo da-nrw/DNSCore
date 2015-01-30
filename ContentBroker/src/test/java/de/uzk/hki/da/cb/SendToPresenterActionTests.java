@@ -19,10 +19,8 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.CB_PACKAGETYPE_EAD;
-import static de.uzk.hki.da.core.C.WA_PIPS;
-import static de.uzk.hki.da.core.C.WA_PUBLIC;
-import static de.uzk.hki.da.test.TC.TEST_ROOT_CB;
+import static de.uzk.hki.da.core.C.*;
+import static de.uzk.hki.da.test.TC.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -31,6 +29,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,11 +37,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.Path;
@@ -78,22 +77,25 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 		action.setTestContractors(testContractors);
 		
 		FileUtils.copyDirectory(Path.makeFile(WORKAREAROOTPATH,WA_PIPS+UNDERSCORE), Path.makeFile(WORKAREAROOTPATH,WA_PIPS));
+		
+		o.setPackage_type(CB_PACKAGETYPE_EAD);
 	}
 	
 	private File makeMetadataFile(String fileName,String pipType) {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier(),fileName+C.FILE_EXTENSION_XML);
+		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier(),fileName+FILE_EXTENSION_XML);
 	}
 	
 	
 	@After
 	public void tearDown() throws IOException {
-		makeMetadataFile("epicur",WA_PUBLIC).delete();
+		makeMetadataFile(METADATA_STREAM_ID_EPICUR,WA_PUBLIC).delete();
 		FileUtils.deleteDirectory(Path.makeFile(WORKAREAROOTPATH,WA_PIPS));
 	}
 	
 	
 	@Test
 	public void endWorkflowWhenNothingToIndex() throws IOException {
+		o.setPackage_type(null);
 		action.implementation();
 		assertTrue(action.isKILLATEXIT());
 	}
@@ -101,7 +103,6 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	// if no public DIP is created EDM creation and ES indexing is skipped
 	@Test
 	public void endWorkflowWhenPublicPIPWasNotSuccessfullyIngested() throws IOException {
-		o.setPackage_type(CB_PACKAGETYPE_EAD);
 		FileUtils.deleteDirectory(Path.makeFile(WORKAREAROOTPATH,WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),o.getIdentifier()));
 		action.implementation();
 		assertTrue(action.isKILLATEXIT());
@@ -109,7 +110,7 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	
 	@Test
 	public void continueWhenNothingToIndex() throws IOException {
-		o.setPackage_type(CB_PACKAGETYPE_EAD);
+		
 		action.implementation();
 		assertFalse(action.isKILLATEXIT());
 	}
@@ -127,7 +128,7 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	@Test
 	public void createXepicur() throws IOException {
 		action.implementation();
-		assertTrue(makeMetadataFile("epicur",WA_PUBLIC).exists());
+		assertTrue(makeMetadataFile(METADATA_STREAM_ID_EPICUR,WA_PUBLIC).exists());
 	}
 	
 	
@@ -178,6 +179,15 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 		action.implementation(); 
 		// xepicur proven to be created by Test createXepicur()
 		action.rollback();
-		assertFalse(makeMetadataFile("epicur",WA_PUBLIC).exists());
+		assertFalse(makeMetadataFile(METADATA_STREAM_ID_EPICUR,WA_PUBLIC).exists());
 	}
+	
+	@Test
+	public void addURNToDC() throws IOException {
+		action.implementation(); 
+		FileInputStream in = new FileInputStream(makeMetadataFile(METADATA_STREAM_ID_DC, WA_PUBLIC));
+		String dcContent = IOUtils.toString(in, ENCODING_UTF_8);
+		assertTrue(dcContent.contains("<DC:identifier xmlns:DC=\"http://purl.org/dc/elements/1.1/\">urn</DC:identifier>"));
+	}
+	
 }
