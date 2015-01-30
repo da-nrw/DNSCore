@@ -45,7 +45,10 @@ import com.yourmediashelf.fedora.client.request.GetObjectProfile;
 import com.yourmediashelf.fedora.client.request.Ingest;
 import com.yourmediashelf.fedora.client.request.ModifyDatastream;
 import com.yourmediashelf.fedora.client.request.PurgeObject;
+import com.yourmediashelf.fedora.client.response.AddDatastreamResponse;
 import com.yourmediashelf.fedora.client.response.FedoraResponse;
+import com.yourmediashelf.fedora.client.response.GetDatastreamResponse;
+import com.yourmediashelf.fedora.client.response.ModifyDatastreamResponse;
 
 import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
 
@@ -76,11 +79,15 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			throws RepositoryException {
 		String pid = generatePid(objectId, collection);
 		if (!objectExists(objectId, collection)) return false;
+		
+		FedoraResponse r=null;
 		try {
-			new PurgeObject(pid).execute(fedora);
+			r = new PurgeObject(pid).execute(fedora);
 			logger.info("Successfully purged object in Fedora. pid: {}", pid);
 		} catch (FedoraClientException e) {
 			throw new RepositoryException("Unable to purge package " + pid, e);
+		} finally {
+			if (r!=null) r.close();
 		}
 		return true;
 	}
@@ -90,61 +97,66 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	@Override 
 	public void createObject(String objectId, String collection, String ownerId) throws RepositoryException {
 		String pid = generatePid(objectId, collection);
+		
+		FedoraResponse r =null;
 		try {
-			new Ingest(pid).ownerId(ownerId).execute(fedora);
+			r=new Ingest(pid).ownerId(ownerId).execute(fedora);
 			logger.info("Successfully created object in Fedora. pid: {}", pid);
 		} catch (FedoraClientException e) {
 			throw new RepositoryException("Unable to create package " + pid, e);
+		} finally {
+			if (r!=null) r.close();
 		}
 	}
 	
 	@Override
 	public void ingestFile(String objectId, String collection, String dsId, File file, String label, String mimeType) throws RepositoryException, IOException {
 		String pid = generatePid(objectId, collection);
+		AddDatastreamResponse r = null;
 		try {
 			String dsLocation = "file://" + file.getAbsolutePath();
-			new AddDatastream(pid, dsId).mimeType(mimeType)
+			r=new AddDatastream(pid, dsId).mimeType(mimeType)
 				.controlGroup("E").dsLabel(label)
 				.dsLocation(dsLocation).execute(fedora);
 			logger.info("Successfully created datastream with dsID {} for file {}.", dsId, file.getName());
 		} catch (FedoraClientException e) {
 			throw new RepositoryException("Error while trying to add datastream for file " + file.getName(),e);
-		}		
+		} finally {
+			if (r!=null) r.close();
+		}
 	}
 	
 	@Override
 	public void createMetadataFile(String objectId, String collection, String dsId, String content, String label, String mimeType) throws RepositoryException {
 		String pid = generatePid(objectId, collection);
+		
+		AddDatastreamResponse r = null;
 		try {
-			new AddDatastream(pid, dsId).mimeType(mimeType)
+			r=new AddDatastream(pid, dsId).mimeType(mimeType)
 				.controlGroup("X").dsLabel(label)
 				.content(content).execute(fedora);
 			logger.info("Successfully created metadata datastream with dsID {}.", dsId);
 		} catch(FedoraClientException e) {
 			throw new RepositoryException("Unable to create metadata file: " + dsId, e);
+		} finally {
+			if (r!=null) r.close();
 		}
 	}
-	
-	public void printDissemination(String objectId,String collection,String dsId) throws FedoraClientException, IOException {
-		String pid = generatePid(objectId, collection);
-		FedoraResponse resp=new GetDatastreamDissemination(pid, dsId).execute(fedora);
-		
-		String content = IOUtils.toString(resp.getEntityInputStream(), "UTF-8");
-		System.out.println("fedora says: "+content);
-	}
-	
 	
 	
 	
 	@Override
 	public void updateMetadataFile(String objectId, String collection, String dsId, String content, String label, String mimeType) throws RepositoryException {
 		String pid = generatePid(objectId, collection);
+		ModifyDatastreamResponse r = null;
 		try {
-			new ModifyDatastream(pid, dsId).mimeType(mimeType)
+			r=new ModifyDatastream(pid, dsId).mimeType(mimeType)
 				.dsLabel(label).content(content).execute(fedora);
 			logger.info("Successfully updated metadata datastream with dsID {}.", dsId);
 		} catch(FedoraClientException e) {
 			throw new RepositoryException("Unable to update metadata file: " + dsId, e);
+		} finally {
+			if (r!=null) r.close();
 		}
 	}
 	
@@ -171,9 +183,13 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	public InputStream retrieveFile(String objectId, String collection, String fileId)
 			throws RepositoryException {
 		String pid = generatePid(objectId, collection);
+		FedoraResponse r = null;
+		InputStream is = null;
 		try {
-			return new GetDatastreamDissemination(pid, fileId)
-				.execute(fedora).getEntityInputStream();
+			r=new GetDatastreamDissemination(pid, fileId)
+				.execute(fedora);
+			is = r.getEntityInputStream();
+			return is;
 		} catch (FedoraClientException e) {
 			if (e.getStatus() == 404) { 
 				logger.error("Failed to recieve Datastream, due to not found reason: " + objectId + " " + fileId);
@@ -181,14 +197,23 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			} else {
 				throw new RepositoryException("Failed to retrieve datastream: " + fileId, e);
 			}
+		} finally {
+			if (r!=null) r.close();
+			if (is!=null)
+				try {
+					is.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 		}
 	}
 	
 	@Override
 	public boolean objectExists(String objectId, String collection) throws RepositoryException {
 		String pid = generatePid(objectId, collection);
+		FedoraResponse r=null;
 		try {
-			new GetObjectProfile(pid).execute(fedora);
+			r=new GetObjectProfile(pid).execute(fedora);
 		} catch (FedoraClientException e) {
 			if (e.getStatus() == 404) {
 				// object does not exist and does not need to be purged
@@ -196,6 +221,8 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			} else {
 				throw new RepositoryException("Failed to check if package exists", e);
 			}
+		}finally{
+			if (r!=null) r.close();
 		}
 		return true;
 	}
@@ -203,13 +230,16 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	@Override
 	public void addRelationship(String objectId, String collection, String predicate, String object) throws RepositoryException {
 		String pid = generatePid(objectId, collection);
+		FedoraResponse r = null;
 		try {
-			new AddRelationship("info:fedora/" + pid)
+			r=new AddRelationship("info:fedora/" + pid)
 				.predicate(predicate)
 				.object(object).execute(fedora);
 		} catch (FedoraClientException e) {
 			throw new RepositoryException("Unable to add relationship: info:fedora/"
 					+ pid + "-" + predicate + "-" + object,  e);
+		} finally {
+			if (r!=null) r.close();
 		}
 	}
 
