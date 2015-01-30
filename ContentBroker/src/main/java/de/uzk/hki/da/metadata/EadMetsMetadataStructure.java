@@ -22,6 +22,8 @@ import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
 import org.xml.sax.SAXException;
 
+import de.uzk.hki.da.core.C;
+
 /**
  * @author Polina Gubaidullina
  */
@@ -103,17 +105,17 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 				ArrayList<String> partOf = new ArrayList<String>();
 				partOf.add(isPartOf);
 
-				nodeInfo.put("isPartOf", partOf);
+				nodeInfo.put(C.EDM_IS_PART_OF, partOf);
 				
 				List<Element> children = element.getChildren();
 				for(Element child : children) {
 					
 					if(child.getName().equals("did")) {
-						nodeInfo.put("title", getTitle(child));
-						nodeInfo.put("date", getDate(child));
-						nodeInfo.put("identifier", getUnitIDs(child));
+						nodeInfo.put(C.EDM_TITLE, getTitle(child));
+						nodeInfo.put(C.EDM_DATE, getDate(child));
+						nodeInfo.put(C.EDM_IDENTIFIER, getUnitIDs(child));
 					} else if(child.getName().equals("daogrp")) {
-						nodeInfo.put("hasView", getHref(child));
+						nodeInfo.put(C.EDM_HAS_VIEW, getHref(child));
 					} else if(child.getName().equals(nextLevel)) {
 						childElements.put(child, uniqueID);
 					}
@@ -146,7 +148,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 				d = element.getChild("unitdate").getValue();
 			}
 		} catch (Exception e) {
-			logger.error("No unitdate element found");
+//			logger.error("No unitdate element found");
 		}
 		date.add(d);
 		return date;
@@ -178,7 +180,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		try {
 			href = daogrp.getChild("daoloc").getAttributeValue("href");
 		} catch (Exception e) {
-			logger.error("No unitdate element found");
+//			logger.error("No unitdate element found");
 		}
 		hrefs.add(href);
 		return hrefs;

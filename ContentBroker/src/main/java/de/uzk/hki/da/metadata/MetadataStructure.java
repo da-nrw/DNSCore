@@ -26,13 +26,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.apache.commons.io.FilenameUtils;
 import org.jdom.JDOMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.util.Path;
 
 /**
@@ -45,7 +59,7 @@ public abstract class MetadataStructure {
 	public Logger logger = LoggerFactory
 			.getLogger(MetadataStructure.class);
 	
-	public MetadataStructure(File metadataFile, List<Document> documents) 
+	public MetadataStructure(File metadataFile, List<de.uzk.hki.da.model.Document> documents) 
 			throws FileNotFoundException, JDOMException, IOException {
 	}
 	
@@ -72,7 +86,111 @@ public abstract class MetadataStructure {
 		}
 	}
 	
-	protected List<File> getReferencedFiles(File metadataFile, List<String> references, List<Document> documents) {
+	protected void toEDM(HashMap<String, HashMap<String, List<String>>> indexInfo, File file) {
+		try {
+			
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            
+			Document edmDoc = docBuilder.newDocument();
+			Element rootElement = edmDoc.createElement("rdf:RDF");
+			edmDoc.appendChild(rootElement);
+			
+			addXmlNsToEDM(edmDoc, rootElement);
+			
+			for(String id : indexInfo.keySet()) {
+				Element providedCHO = addEdmProvidedCHOtoEdm(id, edmDoc, rootElement);
+				Element aggregation = addOreAggregationToEdm(id, edmDoc, rootElement);
+				for(String elementName : indexInfo.get(id).keySet()) {
+					Element parentNode = null;
+					if(elementName.startsWith("dc:") || elementName.startsWith("dcterms:")) {
+						parentNode = providedCHO;
+					} else if(elementName.startsWith("edm:")) {
+						parentNode = aggregation;
+					}
+					if(parentNode!=null) {
+						List<String> values = indexInfo.get(id).get(elementName);
+						for(String currentValue : values) {
+							if(!currentValue.equals("")) {
+								addNewElementToParent(elementName, currentValue, parentNode, edmDoc);
+							}
+						}
+					}
+				}
+			}
+			
+			javax.xml.transform.Source source = new javax.xml.transform.dom.DOMSource(edmDoc) ;
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            Result result = new javax.xml.transform.stream.StreamResult(file);
+            transformer.transform(source, result);
+                    
+            System.out.println("File saved!");
+            
+		} catch (Exception e) {
+			logger.error("Unable to create the edm file!");
+		}
+	}
+	
+	private void addNewElementToParent(String elementName, String elementValue, Element parent, Document edmDoc) {
+		
+		Element eName = edmDoc.createElement(elementName);
+		eName.appendChild(edmDoc.createTextNode(elementValue));
+		parent.appendChild(eName);
+	}
+	
+	private Element addEdmProvidedCHOtoEdm(String id, Document edmDoc, Element rootElement) {
+		String cho_identifier = "cho/identifier";
+		if(!id.equals("")) {
+			cho_identifier = cho_identifier+"-"+id;
+		}
+		Element providedCHO = edmDoc.createElement("edm:ProvidedCHO");
+		Attr rdfAbout = edmDoc.createAttribute("rdf:about");
+		rdfAbout.setValue(cho_identifier);
+		providedCHO.setAttributeNode(rdfAbout);
+		rootElement.appendChild(providedCHO);
+		
+		return providedCHO;
+	}
+	
+	private Element addOreAggregationToEdm(String id, Document edmDoc, Element rootElement) {
+		String aggr_identifier = "aggr/identifier";
+		if(!id.equals("")) {
+			aggr_identifier = aggr_identifier+"-"+id;
+		}
+		Element aggregation = edmDoc.createElement("ore:Aggregation");
+		Attr rdfAbout = edmDoc.createAttribute("rdf:about");
+		rdfAbout.setValue(aggr_identifier);
+		aggregation.setAttributeNode(rdfAbout);
+		rootElement.appendChild(aggregation);
+		
+		return aggregation;
+	}
+	
+	private void addXmlNsToEDM(Document edmDoc, Element rootElement) {
+		Attr xmlns_dc = edmDoc.createAttribute("xmlns:dc");
+		xmlns_dc.setValue(C.DC_NS.getURI());
+		rootElement.setAttributeNode(xmlns_dc);
+		
+		Attr xmlns_edm = edmDoc.createAttribute("xmlns:edm");
+		xmlns_edm.setValue(C.EDM_NS.getURI());
+		rootElement.setAttributeNode(xmlns_edm);
+		
+		Attr xmlns_dcterms = edmDoc.createAttribute("xmlns:dcterms");
+		xmlns_dcterms.setValue(C.DCTERMS_NS.getURI());
+		rootElement.setAttributeNode(xmlns_dcterms);
+		
+		Attr xmlns_rdf = edmDoc.createAttribute("xmlns:rdf");
+		xmlns_rdf.setValue(C.RDF_NS.getURI());
+		rootElement.setAttributeNode(xmlns_rdf);
+		
+		Attr xmlns_ore = edmDoc.createAttribute("xmlns:ore");
+		xmlns_ore.setValue(C.ORE_NS.getURI());
+		rootElement.setAttributeNode(xmlns_ore);
+	}
+	
+	protected List<File> getReferencedFiles(File metadataFile, List<String> references, List<de.uzk.hki.da.model.Document> documents) {
 		List<File> existingFiles = new ArrayList<File>();
 		List<String> missingFiles = new ArrayList<String>();
 		for(String ref : references) {
@@ -82,7 +200,7 @@ public abstract class MetadataStructure {
 				String fileName = FilenameUtils.getBaseName(refFile.getName());
 				logger.debug("Check referenced file "+fileName+" (reference: "+ref+")");
 				Boolean docExists = false;
-				for(Document doc : documents) {
+				for(de.uzk.hki.da.model.Document doc : documents) {
 					if(doc.getName().equals(fileName)) {
 						docExists = true;
 						

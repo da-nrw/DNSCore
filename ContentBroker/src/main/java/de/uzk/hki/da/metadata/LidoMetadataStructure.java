@@ -59,9 +59,9 @@ public class LidoMetadataStructure extends MetadataStructure{
 			lidoElementInfo = new HashMap<String, List<String>>();
 			String uniqueID = UUID.randomUUID().toString();
 			uniqueID = uniqueID.replace("-", "");
-			lidoElementInfo.put("title", getTitle(lidoElement));
-			lidoElementInfo.put("publisher", getPlaces(lidoElement));
-			lidoElementInfo.put("date", getDate(lidoElement));
+			lidoElementInfo.put(C.EDM_TITLE, getTitle(lidoElement));
+			lidoElementInfo.put(C.EDM_PUBLISHER, getPlaces(lidoElement));
+			lidoElementInfo.put(C.EDM_DATE, getDate(lidoElement));
 			indexInfo.put(uniqueID, lidoElementInfo);
 		}
 		return indexInfo;

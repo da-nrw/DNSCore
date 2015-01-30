@@ -114,7 +114,21 @@ public class C {
 	public static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	public static final Namespace MODS_NS = Namespace.getNamespace("http://www.loc.gov/mods/v3");
 	public static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
+	public static final Namespace ORE_NS = Namespace.getNamespace("http://www.openarchives.org/ore/terms/");
+	public static final Namespace RDF_NS = Namespace.getNamespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+	public static final Namespace EDM_NS = Namespace.getNamespace("http://www.europeana.eu/schemas/edm/");
+	public static final Namespace DC_NS = Namespace.getNamespace("http://purl.org/dc/elements/1.1/");
+	public static final Namespace DCTERMS_NS = Namespace.getNamespace("http://purl.org/dc/terms/");
 	public static final Namespace DV = Namespace.getNamespace("http://dfg-viewer.de/");
+	public static final String EDM_CONTRIBUTOR = "dc:contributor";
+	public static final String EDM_CREATOR = "dc:creator";
+	public static final String EDM_DATE = "dc:date";
+	public static final String EDM_PUBLISHER = "dc:publisher";
+	public static final String EDM_IS_PART_OF = "isPartOf";
+	public static final String EDM_TITLE = "dc:title";
+	public static final String EDM_IDENTIFIER = "dc:identifier";
+	public static final String EDM_HAS_VIEW = "edm:hasView";
+	public static final String EDM_DATA_PROVIDER = "edm:dataProvider";
 	
 	// Other
 	public static final String LOCAL_NODE_BEAN_NAME = "localNode";
