@@ -82,8 +82,15 @@ public class IndexMetadataAction extends AbstractAction {
 	public boolean implementation() throws RepositoryException, IOException {
 		setKILLATEXIT(true);
 		
-		InputStream metadataStream  = new FileInputStream(edmFile);
-		String edmContent = IOUtils.toString(metadataStream, ENCODING_UTF_8);
+		String edmContent;
+		InputStream metadataStream  = null;
+		try {
+			metadataStream = new FileInputStream(edmFile);
+			edmContent = IOUtils.toString(metadataStream, ENCODING_UTF_8);
+		} finally {
+			metadataStream.close();
+		}
+		
 		getRepositoryFacade().indexMetadata(adjustIndexName(indexName), o.getIdentifier(), edmContent);
 		return true;
 	}
