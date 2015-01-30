@@ -19,25 +19,31 @@
 
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.core.C.EVENT_TYPE_CONVERT;
+import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
+import static de.uzk.hki.da.core.C.OAI_DANRW_DE;
+import static de.uzk.hki.da.core.C.OWL_SAMEAS;
+import static de.uzk.hki.da.core.C.WA_DIP;
+import static de.uzk.hki.da.core.C.WA_INSTITUTION;
+import static de.uzk.hki.da.core.C.WA_PIPS;
+import static de.uzk.hki.da.core.C.WA_PUBLIC;
+
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.tika.Tika;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 
 import de.uzk.hki.da.action.AbstractAction;
-import static de.uzk.hki.da.core.C.*;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.metadata.XepicurWriter;
 import de.uzk.hki.da.model.DAFile;
@@ -126,11 +132,11 @@ public class SendToPresenterAction extends AbstractAction {
 		boolean institutionPIPSuccessfullyIngested = false;
 		try {
 			
-			if (makePIPFolder(WA_PUBLIC).exists()) 
+			if (makePIPFolder(WA_PUBLIC).toFile().exists()) 
 				publicPIPSuccessfullyIngested = publishPackage(
 					WA_PUBLIC,true,preservationSystem.getOpenCollectionName());
 			
-			if (makePIPFolder(WA_INSTITUTION).exists()) 
+			if (makePIPFolder(WA_INSTITUTION).toFile().exists()) 
 				institutionPIPSuccessfullyIngested = publishPackage(
 					WA_INSTITUTION,false,preservationSystem.getClosedCollectionName());	
 			
@@ -167,8 +173,8 @@ public class SendToPresenterAction extends AbstractAction {
 				pipType,o.getContractor().getShort_name(),o.getIdentifier(),fileName+FILE_EXTENSION_XML);
 	}
 	
-	private File makePIPFolder(String pipType) {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,
+	private Path makePIPFolder(String pipType) {
+		return Path.make(n.getWorkAreaRootPath(),WA_PIPS,
 			pipType,o.getContractor().getShort_name(),o.getIdentifier());
 	}
 	
@@ -318,11 +324,11 @@ public class SendToPresenterAction extends AbstractAction {
 	 * @throws IOException
 	 */
 	private boolean ingestPackage(String urn, String objectId, String collection,
-			File packagePath, String contractorShortName, String packageType,
+			Path packagePath, String contractorShortName, String packageType,
 			String[] sets) throws RepositoryException, IOException {
 		
 		// check if pip exists
-		File pack = packagePath;
+		File pack = Path.makeFile(packagePath);
 		if (!pack.exists()) {
 			throw new IOException("Directory " + packagePath +" does not exist");
 		}
@@ -333,41 +339,33 @@ public class SendToPresenterAction extends AbstractAction {
 		}			
 		
 		// walk package and add files as datastreams recursively
-		ingestDir(objectId, collection, pack, packagePath.toString(), packageType);
+		ingestDir(objectId, collection, pack, packagePath, packageType);
 		
-		// add identifiers to DC datastream
+		// add identifiers to DC datastream if there is one
+		if (! Path.makeFile(packagePath,"DC.xml").exists()) return false;
+		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document doc;
-		InputStream in=null;
+		Document doc = null;
+		FileInputStream in = new FileInputStream(Path.makeFile(packagePath,"DC.xml"));
 		try {
-			in = repositoryFacade.retrieveFile(objectId, collection, DC);
-			try{
-				in.reset();
-			}catch(IOException io){}
-			
-			doc = builder.build(in);
-		} catch (JDOMException e) {
-			throw new RuntimeException(e);
-		} finally {
-			in.close();
-		}
-		
-		try {
+			doc=builder.build(in);
 			doc.getRootElement().addContent(
 					new Element(IDENTIFIER,DC,PURL_ORG_DC)
 					.setText(urn));
 		} catch (Exception e) {
-			throw new RepositoryException("Failed to add identifiers to object in repository",e);
 		}
 		String content = new XMLOutputter().outputString(doc);
-		repositoryFacade.updateMetadataFile(objectId, collection, DC, content, DC+".xml", "text/xml");
+		in.close();
+		Path.makeFile(packagePath,"DC.xml").delete();
+		FileWriter fw= new FileWriter(Path.makeFile(packagePath,"DC.xml"));
+		fw.write(content);
+		fw.close();
 		logger.info("Successfully added identifiers to DC datastream");
-	
 
 		return true;
 	}
 
-	private void ingestDir(String objectId, String collection, File dir, String packagePath, String packageType) throws RepositoryException, IOException {
+	private void ingestDir(String objectId, String collection, File dir, Path packagePath, String packageType) throws RepositoryException, IOException {
 			
 		File files[] = dir.listFiles(new FilenameFilter() {
 			@Override
@@ -403,7 +401,7 @@ public class SendToPresenterAction extends AbstractAction {
 	 * @throws RepositoryException
 	 * @throws IOException
 	 */
-	private boolean ingestFile(String objectId, String collection, File file, String packagePath, String packageType) throws RepositoryException, IOException {
+	private boolean ingestFile(String objectId, String collection, File file, Path packagePath, String packageType) throws RepositoryException, IOException {
 
 		// Detect MIME-Type
 		String mimeType = detectMimeType(file);
@@ -417,15 +415,7 @@ public class SendToPresenterAction extends AbstractAction {
 			label = labelMap.get(fileId);
 		}
 		
-		if (file.getName().equalsIgnoreCase(DC+".xml")) {
-			FileInputStream fileInputStream = new FileInputStream(file);
-			String content = IOUtils.toString(fileInputStream, ENCODING_UTF_8);
-			fileInputStream.close();
-			repositoryFacade.createMetadataFile(objectId, collection, DC, content, label, mimeType = MIMETYPE_TEXT_XML);
-		} else {
-			repositoryFacade.ingestFile(objectId, collection, fileId, file, label, mimeType);
-		}
-
+		repositoryFacade.ingestFile(objectId, collection, fileId, file, label, mimeType);
 		logger.info("Successfully created datastream with fileId {} for file {}.",fileId,file.getName());
 		return true;
 		

@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,12 +42,9 @@ import com.yourmediashelf.fedora.client.request.AddRelationship;
 import com.yourmediashelf.fedora.client.request.GetDatastreamDissemination;
 import com.yourmediashelf.fedora.client.request.GetObjectProfile;
 import com.yourmediashelf.fedora.client.request.Ingest;
-import com.yourmediashelf.fedora.client.request.ModifyDatastream;
 import com.yourmediashelf.fedora.client.request.PurgeObject;
 import com.yourmediashelf.fedora.client.response.AddDatastreamResponse;
 import com.yourmediashelf.fedora.client.response.FedoraResponse;
-import com.yourmediashelf.fedora.client.response.GetDatastreamResponse;
-import com.yourmediashelf.fedora.client.response.ModifyDatastreamResponse;
 
 import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
 
@@ -121,40 +117,6 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			logger.info("Successfully created datastream with dsID {} for file {}.", dsId, file.getName());
 		} catch (FedoraClientException e) {
 			throw new RepositoryException("Error while trying to add datastream for file " + file.getName(),e);
-		} finally {
-			if (r!=null) r.close();
-		}
-	}
-	
-	@Override
-	public void createMetadataFile(String objectId, String collection, String dsId, String content, String label, String mimeType) throws RepositoryException {
-		String pid = generatePid(objectId, collection);
-		
-		AddDatastreamResponse r = null;
-		try {
-			r=new AddDatastream(pid, dsId).mimeType(mimeType)
-				.controlGroup("X").dsLabel(label)
-				.content(content).execute(fedora);
-			logger.info("Successfully created metadata datastream with dsID {}.", dsId);
-		} catch(FedoraClientException e) {
-			throw new RepositoryException("Unable to create metadata file: " + dsId, e);
-		} finally {
-			if (r!=null) r.close();
-		}
-	}
-	
-	
-	
-	@Override
-	public void updateMetadataFile(String objectId, String collection, String dsId, String content, String label, String mimeType) throws RepositoryException {
-		String pid = generatePid(objectId, collection);
-		ModifyDatastreamResponse r = null;
-		try {
-			r=new ModifyDatastream(pid, dsId).mimeType(mimeType)
-				.dsLabel(label).content(content).execute(fedora);
-			logger.info("Successfully updated metadata datastream with dsID {}.", dsId);
-		} catch(FedoraClientException e) {
-			throw new RepositoryException("Unable to update metadata file: " + dsId, e);
 		} finally {
 			if (r!=null) r.close();
 		}

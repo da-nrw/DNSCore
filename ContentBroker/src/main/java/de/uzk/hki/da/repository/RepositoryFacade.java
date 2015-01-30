@@ -70,32 +70,6 @@ public interface RepositoryFacade {
 			File file, String label, String mimeType) throws RepositoryException, IOException;
 	
 	/**
-	 * Create a metadata file for a package in the repository.
-	 * @param objectId the object id of object the file is attached to
-	 * @param collection a named collection
-	 * @param fileId the name of the file to be created
-	 * @param content the file content
-	 * @param label the label of the file
-	 * @param mimeType the MIME type
-	 * @throws RepositoryEcxeption
-	 */
-	void createMetadataFile(String objectId, String collection, String fileId,
-			String content, String label, String mimeType) throws RepositoryException;
-	
-	/**
-	 * Update a metadata file for a package in the repository.
-	 * @param objectId the object id of object the file is attached to
-	 * @param collection a named collection
-	 * @param fileId the name of the file to be created
-	 * @param content the file content
-	 * @param label the label of the file
-	 * @param mimeType the MIME type
-	 * @throws RepositoryEcxeption
-	 */
-	void updateMetadataFile(String objectId, String collection, String fileId, 
-			String content, String label, String mimeType) throws RepositoryException;
-	
-	/**
 	 * Get the file contents from the repository.
 	 * @param objectId the object id of object the file is attached to
 	 * @param collection a named collection

@@ -66,8 +66,8 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 			throw new RepositoryException("Unable to create folder for object "
 					+ collection + "/" + objectId);
 		}
-		String dcContent = "<?xml version=\"1.0\" encoding=\"utf-8\"?><oai_dc:dc xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:oai_dc=\"http://www.openarchives.org/OAI/2.0/oai_dc/\"><dc:title>Testpaket in Fake Repository</dc:title></oai_dc:dc>";
-		createMetadataFile(objectId, collection, "DC", dcContent, "DC.xml", "text/xml");
+//		String dcContent = "<?xml version=\"1.0\" encoding=\"utf-8\"?><oai_dc:dc xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:oai_dc=\"http://www.openarchives.org/OAI/2.0/oai_dc/\"><dc:title>Testpaket in Fake Repository</dc:title></oai_dc:dc>";
+//		createMetadataFile(objectId, collection, "DC", dcContent, "DC.xml", "text/xml");
 	}
 
 	@Override
@@ -83,29 +83,29 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 		}
 	}
 
-	@Override
-	public void createMetadataFile(String objectId, String collection,
-			String fileId, String content, String label, String mimeType)
-			throws RepositoryException {
-		PrintWriter pw = null;
-		try {
-			pw = new PrintWriter(getFile(objectId, collection, fileId), "UTF-8");
-			pw.write(content);
-		} catch (Exception e) {
-			throw new RepositoryException("Unable to write to file "
-					+ collection + "/" + objectId + "/" + fileId , e);
-		} finally {
-			if (pw != null)	pw.close();
-		}
-	}
+//	@Override
+//	public void createMetadataFile(String objectId, String collection,
+//			String fileId, String content, String label, String mimeType)
+//			throws RepositoryException {
+//		PrintWriter pw = null;
+//		try {
+//			pw = new PrintWriter(getFile(objectId, collection, fileId), "UTF-8");
+//			pw.write(content);
+//		} catch (Exception e) {
+//			throw new RepositoryException("Unable to write to file "
+//					+ collection + "/" + objectId + "/" + fileId , e);
+//		} finally {
+//			if (pw != null)	pw.close();
+//		}
+//	}
 
-	@Override
-	public void updateMetadataFile(String objectId, String collection,
-			String fileId, String content, String label, String mimeType)
-			throws RepositoryException {
-		logger.debug("updateMetadataFile");
-		createMetadataFile(objectId, collection, fileId, content, label, mimeType);
-	}
+//	@Override
+//	public void updateMetadataFile(String objectId, String collection,
+//			String fileId, String content, String label, String mimeType)
+//			throws RepositoryException {
+//		logger.debug("updateMetadataFile");
+//		createMetadataFile(objectId, collection, fileId, content, label, mimeType);
+//	}
 
 	@Override
 	public InputStream retrieveFile(String objectId, String collection,

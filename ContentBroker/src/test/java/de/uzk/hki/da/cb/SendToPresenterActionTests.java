@@ -27,21 +27,17 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -77,18 +73,6 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 		
 		Set<String> fileFilter = new HashSet<String>();
 		action.setFileFilter(fileFilter);
-		
-		try {
-			String fakeDCFile = "<root xmlns:dc=\"http://www.w3schools.com/furniture\">\n"+
-				"<dc:title>VDA - Forschungsstelle Rheinlländer in aller Welt: Bezirksstelle West des Vereins für das Deutschtum im Ausland</dc:title>\n"+
-				"</root>";
-			InputStream in = IOUtils.toInputStream(fakeDCFile, "UTF-8");
-			when(repositoryFacade.retrieveFile((String) anyObject(), (String) anyObject(), (String)anyObject())).thenReturn(in);
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		
 		Set<String> testContractors = new HashSet<String>();
 		action.setTestContractors(testContractors);
