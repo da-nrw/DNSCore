@@ -18,19 +18,20 @@
 */
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.core.C.*;
+import static de.uzk.hki.da.test.TC.*;
+
 import java.lang.reflect.Field;
 
 import org.junit.Before;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
-import de.uzk.hki.da.test.TC;
 
 /**
  * Provides the basic framework for effective tests of the business code
@@ -81,7 +82,7 @@ public class ConcreteActionUnitTest {
 		ps.getNodes().add(n);
 		
 		c = new User();
-		c.setShort_name(C.TEST_USER_SHORT_NAME);
+		c.setShort_name(TEST_USER_SHORT_NAME);
 		c.setEmailAddress("noreply");
 		
 		Package pkg = new Package();
@@ -92,10 +93,10 @@ public class ConcreteActionUnitTest {
 		o = new Object();
 		o.setContractor(c);
 		o.setTransientNodeRef(n);
-		o.setIdentifier(TC.IDENTIFIER);
+		o.setIdentifier(IDENTIFIER);
 		o.getPackages().add(pkg);
 		o.reattach();
-		o.setUrn("urn");
+		o.setUrn(URN);
 		
 		j = new Job();
 		

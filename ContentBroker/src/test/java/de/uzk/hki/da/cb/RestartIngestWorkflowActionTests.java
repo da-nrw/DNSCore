@@ -19,10 +19,20 @@
 
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.core.C.TEST_USER_SHORT_NAME;
+import static de.uzk.hki.da.core.C.WA_DATA;
+import static de.uzk.hki.da.core.C.WA_INSTITUTION;
+import static de.uzk.hki.da.core.C.WA_PIPS;
+import static de.uzk.hki.da.core.C.WA_PUBLIC;
+import static de.uzk.hki.da.core.C.WA_WORK;
+import static de.uzk.hki.da.test.TC.TEST_ROOT_CB;
+import static de.uzk.hki.da.test.TC.URN;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
@@ -30,13 +40,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
-import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
 
 /**
  * Tests RestartIngestWorkflowAction
@@ -45,12 +52,14 @@ import de.uzk.hki.da.util.RelativePath;
  */
 public class RestartIngestWorkflowActionTests extends ConcreteActionUnitTest{
 	
-	private final Path workAreaRootPath = new RelativePath(
-			TC.TEST_ROOT_CB,"RestartIngestWorkflowActionTests");
+	private static final String REP_NAME = "2012_12_01+12_01_12+";
+	private static final String UNDERSCORE = "_";
+	private final Path WORK_AREA_ROOT_PATH = Path.make(
+			TEST_ROOT_CB,"RestartIngestWorkflowAction");
 	private final Path contractorFolder = Path.make(
-			workAreaRootPath,C.WA_WORK,C.TEST_USER_SHORT_NAME);
+			WORK_AREA_ROOT_PATH,WA_WORK,TEST_USER_SHORT_NAME);
 	private final Path pipsFolder = Path.make(
-			workAreaRootPath,C.WA_PIPS);
+			WORK_AREA_ROOT_PATH,WA_PIPS);
 
 	@ActionUnderTest
 	RestartIngestWorkflowAction action = new RestartIngestWorkflowAction();
@@ -58,44 +67,90 @@ public class RestartIngestWorkflowActionTests extends ConcreteActionUnitTest{
 	@Before
 	public void setUp() throws IOException{
 		FileUtils.copyDirectory(
-				Path.makeFile(contractorFolder,"_"+TC.IDENTIFIER), 
-				Path.makeFile(contractorFolder,TC.IDENTIFIER));
+				Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK+UNDERSCORE), 
+				Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK));
 		
-		FileUtils.copyDirectory(Path.makeFile(workAreaRootPath,"_"+C.WA_PIPS), 
+		FileUtils.copyDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,UNDERSCORE+WA_PIPS), 
 				pipsFolder.toFile());
 		
-		n.setWorkAreaRootPath(workAreaRootPath);
-
+		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
+		j.setRep_name(REP_NAME);
 	}
 
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteDirectory(Path.makeFile(contractorFolder,TC.IDENTIFIER));
+		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK));
 		FileUtils.deleteDirectory(pipsFolder.toFile());
 	}
 	
 	@Test
 	public void leaveOnlySIPContents() throws IOException{
 		action.implementation();
-		assertTrue(Path.makeFile(contractorFolder,TC.IDENTIFIER,"data","contentLatest.txt").exists());
+		assertTrue(Path.makeFile(contractorFolder,o.getIdentifier(),WA_DATA,"contentLatest.txt").exists());
 	}
+	
+	
+	
 	
 	@Test
 	public void emptyPIPFolders() throws IOException{
 		action.implementation();
-		assertFalse(Path.makeFile(pipsFolder,C.WA_INSTITUTION,o.getContractor().getShort_name(),TC.IDENTIFIER+"_1").exists());
-		assertFalse(Path.makeFile(pipsFolder,C.WA_PUBLIC,o.getContractor().getShort_name(),TC.IDENTIFIER+"_1").exists());
+		assertFalse(makePIPSourceFolder(WA_INSTITUTION).exists());
+		assertFalse(makePIPSourceFolder(WA_PUBLIC).exists());
 	}
 	
+	
+	private File makePIPSourceFolder(String pipType) {
+		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId());
+	}
 	
 	@Test
 	public void resetURNIfNotDelta() throws IOException{
 		// just to prevent changes in ActionTest will influence the test result
-		assertEquals("urn", o.getUrn()); 
+		assertEquals(URN, o.getUrn()); 
 		
 		action.implementation();
 		assertEquals(null, o.getUrn());
 	}
+	
+	
+	@Test
+	public void rollback() throws Exception {
+		action.implementation();
+		action.rollback();
+	}
+	
+	@Test
+	public void rollbackNotPossibleTempLeftOver() throws IOException {
+		action.implementation();
+		Path.makeFile(o.getPath(),"_temp").mkdirs();
+		try {
+			action.rollback();
+			fail();
+		} catch (Exception expected) {}
+	}
+	
+	@Test
+	public void rollbackNotPossibleARepExists() throws IOException {
+		
+		try {
+			action.rollback();
+			fail();
+		} catch (Exception expected) {}
+	}
+	
+	@Test
+	public void rollbackNotPossibleNoRepName() throws IOException {
+		
+		j.setRep_name(null);
+		try {
+			action.rollback();
+			fail();
+		} catch (Exception expected) {}
+	}
+	
+	
+	
 	
 	
 	@Test

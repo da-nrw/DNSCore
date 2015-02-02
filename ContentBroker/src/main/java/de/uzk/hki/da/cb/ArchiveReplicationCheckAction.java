@@ -140,12 +140,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	 */
 	private void prepareObjectForObjectDBStorage(Object obj) {
 		
-		obj.getDocuments().clear();
-		
-		for (Package pkg : obj.getPackages()){
-			pkg.getEvents().clear();
-			pkg.getFiles().clear();
-		}
+		clearNonpersistentObjectProperties(obj);
 		
 		obj.setObject_state(100);
 		obj.setDate_modified(String.valueOf(new Date().getTime()));
@@ -153,6 +148,15 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		obj.setDynamic_nondisclosure_limit(j.getDynamic_nondisclosure_limit());
 	}
 	
+	
+	static void clearNonpersistentObjectProperties(Object o) {
+		
+		o.getDocuments().clear();
+		for (Package pkg : o.getPackages()){
+			pkg.getEvents().clear();
+			pkg.getFiles().clear();
+		}
+	}
 	
 	
 	public GridFacade getGridRoot() {
