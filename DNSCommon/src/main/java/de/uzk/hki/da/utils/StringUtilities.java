@@ -46,6 +46,9 @@ public class StringUtilities {
 	/** The logger. */
 	public static Logger logger = LoggerFactory.getLogger(StringUtilities.class);
 
+	
+	public static final String EMPTY = "";
+	
 	/**
 	 * Slashize.
 	 *

@@ -41,4 +41,5 @@ public class TC {
 	public static final String CONFIG_PROPS_CI = "src/main/conf/config.properties.ci";
 	public static final String FIDO_SH_SRC = "src/main/bash/fido.sh";
 	public static final String IDENTIFIER = "identifier";
+	public static final String URN = "urn";
 }
