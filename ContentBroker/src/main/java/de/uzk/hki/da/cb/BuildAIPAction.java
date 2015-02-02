@@ -61,20 +61,21 @@ public class BuildAIPAction extends AbstractAction {
 
 	@Override
 	public void rollback() throws Exception {
-		
-		logger.debug("Deleting bagit files from source");
-		try{
-		
-			Path.make(o.getPath(),"bag-info.txt").toFile().delete();
-			Path.make(o.getPath(),"bagit.txt").toFile().delete();
-			Path.make(o.getPath(),"manifest-md5.txt").toFile().delete();
-			Path.make(o.getPath(),"tagmanifest-md5.txt").toFile().delete();
-		}catch(Exception e){
-			logger.error("Couldn't delete bagit files");
-		}
+		deleteBagitFiles(o.getPath());
 	}
 	
-	
+	static void deleteBagitFiles(Path objectPath) {
+		final String TAGMANIFEST = "tagmanifest-md5.txt";
+		final String MANIFEST = "manifest-md5.txt";
+		final String BAGIT = "bagit.txt";
+		final String BAGINFO = "bag-info.txt";
+		if ((objectPath==null)||(objectPath.toString().equals(""))) 
+			throw new IllegalArgumentException("object path null or empty");
+		if (Path.makeFile(objectPath,BAGINFO).exists()) Path.makeFile(objectPath,BAGINFO).delete();
+		if (Path.makeFile(objectPath,BAGIT).exists()) Path.makeFile(objectPath,BAGIT).delete();
+		if (Path.makeFile(objectPath,MANIFEST).exists()) Path.makeFile(objectPath,MANIFEST).delete();
+		if (Path.makeFile(objectPath,TAGMANIFEST).exists()) Path.makeFile(objectPath,TAGMANIFEST).delete();
+	}
 	
 	
 	

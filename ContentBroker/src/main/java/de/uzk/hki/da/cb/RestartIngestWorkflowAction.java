@@ -22,6 +22,7 @@ package de.uzk.hki.da.cb;
 import static de.uzk.hki.da.cb.ArchiveReplicationCheckAction.clearNonpersistentObjectProperties;
 import static de.uzk.hki.da.cb.RestructureAction.makeRepOfSIPContent;
 import static de.uzk.hki.da.cb.RestructureAction.revertToSIPContent;
+import static de.uzk.hki.da.cb.BuildAIPAction.deleteBagitFiles;
 import static de.uzk.hki.da.core.C.*;
 import static de.uzk.hki.da.utils.StringUtilities.*;
 
@@ -62,9 +63,10 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	
 	@Override
 	public boolean implementation() throws IOException {
-		
+
 		if (!o.isDelta())
 			o.setUrn(null);
+		deleteBagitFiles(o.getPath());
 		
 		revertToSIPContent(o.getPath(), o.getDataPath(), j.getRep_name());
 		deleteTemporaryPIPs();
