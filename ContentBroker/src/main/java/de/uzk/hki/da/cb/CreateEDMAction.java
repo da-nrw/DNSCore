@@ -19,7 +19,8 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.EDM_METADATA_STREAM_ID;
+import static de.uzk.hki.da.core.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
+import static de.uzk.hki.da.core.C.EDM_XSLT_METADATA_STREAM_ID;
 import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
 import static de.uzk.hki.da.core.C.WA_PIPS;
 import static de.uzk.hki.da.core.C.WA_PUBLIC;
@@ -31,13 +32,24 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import org.jdom.JDOMException;
+import org.xml.sax.SAXException;
+
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
+import de.uzk.hki.da.metadata.LidoMetadataStructure;
+import de.uzk.hki.da.metadata.MetadataStructure;
+import de.uzk.hki.da.metadata.MetsMetadataStructure;
+import de.uzk.hki.da.metadata.XMPMetadataStructure;
 import de.uzk.hki.da.metadata.XsltEDMGenerator;
+import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
@@ -58,7 +70,8 @@ public class CreateEDMAction extends AbstractAction {
 	
 	private RepositoryFacade repositoryFacade;
 	private Map<String,String> edmMappings;
-	private File edmDestinationFile = null;
+	private File edmXSLTDestinationFile = null;
+	private File edmIndexDestinationFile = null;
 
 	/**
 	 * @
@@ -91,7 +104,7 @@ public class CreateEDMAction extends AbstractAction {
 
 
 	@Override
-	public boolean implementation() throws IOException, RepositoryException {
+	public boolean implementation() throws IOException, RepositoryException, JDOMException, ParserConfigurationException, SAXException {
 		
 		String xsltTransformationFile = getEdmMappings().get(o.getPackage_type());
 		if (xsltTransformationFile == null)
@@ -103,10 +116,12 @@ public class CreateEDMAction extends AbstractAction {
 		File metadataSourceFile = makeMetadataFile(o.getPackage_type(),WA_PUBLIC);
 		if (!metadataSourceFile.exists())
 			throw new RuntimeException("Missing file in public PIP: "+o.getPackage_type()+FILE_EXTENSION_XML);
-		
 
-		edmDestinationFile = generateEDM(xsltTransformationFile, metadataSourceFile);
-		putToRepository(edmDestinationFile);
+		edmXSLTDestinationFile = generateEdmUsingXslt(xsltTransformationFile, metadataSourceFile);
+		putToRepository(edmXSLTDestinationFile);
+		
+		edmIndexDestinationFile = generateEDM(metadataSourceFile);
+		putToRepository(edmIndexDestinationFile);
 		
 		return true;
 	}
@@ -118,9 +133,9 @@ public class CreateEDMAction extends AbstractAction {
 	}
 	
 	
-	private File generateEDM(String xsltTransformationFile,File metadataSourceFile) throws FileNotFoundException {
+	private File generateEdmUsingXslt(String xsltTransformationFile,File metadataSourceFile) throws FileNotFoundException {
 		
-		File edm = makeMetadataFile(EDM_METADATA_STREAM_ID,WA_PUBLIC); 
+		File edm = makeMetadataFile(EDM_XSLT_METADATA_STREAM_ID,WA_PUBLIC); 
 		
 		String edmResult = generateEDM(o.getIdentifier(), xsltTransformationFile, new FileInputStream(metadataSourceFile));
 		PrintWriter out = null;
@@ -130,16 +145,37 @@ public class CreateEDMAction extends AbstractAction {
 		finally {
 			out.close();
 		}
-		
 		return edm;
-
+	}
+	
+	private File generateEDM(File metadataSourceFile) throws JDOMException, IOException, ParserConfigurationException, SAXException {
+		
+		File edm = makeMetadataFile(EDM_FOR_ES_INDEX_METADATA_STREAM_ID,WA_PUBLIC); 
+		
+		String packageType = o.getPackage_type();
+		List<Document> documents = o.getDocuments();
+		
+		MetadataStructure ms = null;
+		
+		if(packageType.equals("EAD")) {
+			ms = new EadMetsMetadataStructure(metadataSourceFile, documents);
+		} else if(packageType.equals("METS")) {
+			ms = new MetsMetadataStructure(metadataSourceFile, documents);
+		} else if(packageType.equals("LIDO")) {
+			ms = new LidoMetadataStructure(metadataSourceFile, documents);
+		} else if(packageType.equals("XMP")) {
+			ms = new XMPMetadataStructure(metadataSourceFile, documents);
+		}
+		
+		ms.toEDM(ms.getIndexInfo(), edm);
+		return edm;
 	}
 	
 
 	
 	private void putToRepository(File file) throws RepositoryException, IOException {
 		repositoryFacade.ingestFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
-				EDM_METADATA_STREAM_ID+FILE_EXTENSION_XML, file, 
+				EDM_FOR_ES_INDEX_METADATA_STREAM_ID+FILE_EXTENSION_XML, file, 
 				"Object representation in Europeana Data Model", "application/rdf+xml");
 	}
 
@@ -147,8 +183,10 @@ public class CreateEDMAction extends AbstractAction {
 	
 	@Override
 	public void rollback() throws Exception {
-		if ((edmDestinationFile!=null)&&(edmDestinationFile.exists())) 
-			edmDestinationFile.delete();
+		if ((edmXSLTDestinationFile!=null)&&(edmXSLTDestinationFile.exists())) 
+			edmXSLTDestinationFile.delete();
+		if ((edmIndexDestinationFile!=null)&&(edmIndexDestinationFile.exists())) 
+			edmIndexDestinationFile.delete();
 	}
 
 

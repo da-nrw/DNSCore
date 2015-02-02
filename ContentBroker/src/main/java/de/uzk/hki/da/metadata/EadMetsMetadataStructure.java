@@ -66,7 +66,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected HashMap<String, HashMap<String, List<String>>> getIndexInfo() {
+	public HashMap<String, HashMap<String, List<String>>> getIndexInfo() {
 		
 //		<ID<Attribut, Value>>
 		HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();

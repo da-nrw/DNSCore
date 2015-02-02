@@ -55,7 +55,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
 	@Override
-	protected HashMap<String, HashMap<String, List<String>>> getIndexInfo() {
+	public HashMap<String, HashMap<String, List<String>>> getIndexInfo() {
 		HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();
 		HashMap<String, Element> dmdSections = getSections();
 		
@@ -399,6 +399,8 @@ public class MetsMetadataStructure extends MetadataStructure {
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.setFormat(Format.getPrettyFormat());
 		outputter.output(metsDoc, new FileWriter(targetMetsFile));
+
+		fileInputStream.close();
 	}
 
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::   VALIDATION   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::

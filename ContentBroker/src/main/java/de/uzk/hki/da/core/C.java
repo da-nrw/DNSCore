@@ -53,7 +53,8 @@ public class C {
 		/** common metadata file for all XMP type packages */
 	public static final String XMP_METADATA_FILE = "XMP.xml";
 		/** Fedora datastream id for EDM. */
-	public static final String EDM_METADATA_STREAM_ID = "EDM"; 
+	public static final String EDM_XSLT_METADATA_STREAM_ID = "EDM_xslt"; 
+	public static final String EDM_FOR_ES_INDEX_METADATA_STREAM_ID = "EDM"; 
 	
 
 	// Systems communication

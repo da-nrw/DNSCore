@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
@@ -44,6 +45,7 @@ import org.w3c.dom.DocumentType;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.DAFile;
@@ -72,7 +74,7 @@ public abstract class MetadataStructure {
 	
 	public abstract File getMetadataFile();
 	
-	protected abstract HashMap<String, HashMap<String, List<String>>> getIndexInfo();
+	public abstract HashMap<String, HashMap<String, List<String>>> getIndexInfo();
 	
 	protected void printIndexInfo() {
 		HashMap<String, HashMap<String, List<String>>> indexInfo = getIndexInfo();
@@ -86,7 +88,7 @@ public abstract class MetadataStructure {
 		}
 	}
 	
-	protected void toEDM(HashMap<String, HashMap<String, List<String>>> indexInfo, File file) {
+	public void toEDM(HashMap<String, HashMap<String, List<String>>> indexInfo, File file) {
 		try {
 			
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -134,7 +136,6 @@ public abstract class MetadataStructure {
 	}
 	
 	private void addNewElementToParent(String elementName, String elementValue, Element parent, Document edmDoc) {
-		
 		Element eName = edmDoc.createElement(elementName);
 		eName.appendChild(edmDoc.createTextNode(elementValue));
 		parent.appendChild(eName);
