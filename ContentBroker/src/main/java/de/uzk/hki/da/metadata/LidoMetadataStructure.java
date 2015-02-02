@@ -44,6 +44,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 		
 		doc = builder.build(bomInputStream);
 		lidoLinkResources = parseLinkResourceElements();
+		fileInputStream.close();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

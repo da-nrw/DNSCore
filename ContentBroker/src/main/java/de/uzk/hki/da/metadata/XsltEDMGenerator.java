@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -92,8 +93,9 @@ public class XsltEDMGenerator {
 	/**
 	 * @return
 	 * @throws TransformerException
+	 * @throws IOException 
 	 */
-	public String generate() throws TransformerException {
+	public String generate() throws TransformerException, IOException {
 		
 		Source xmlSource = new StreamSource(
 				new InputStreamReader(inputStream));
@@ -108,6 +110,9 @@ public class XsltEDMGenerator {
 			return outputStream.toString("UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
+		} finally {
+		inputStream.close();
+		outputStream.close();
 		}
 	}
 	

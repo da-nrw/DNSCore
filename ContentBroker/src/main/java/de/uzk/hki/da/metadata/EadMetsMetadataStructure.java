@@ -60,6 +60,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			MetsMetadataStructure mms = new MetsMetadataStructure(metsFile, documents);
 			mmsList.add(mms);
 		}
+		fileInputStream.close();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -243,6 +244,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.setFormat(Format.getPrettyFormat());
 		outputter.output(currentEadDoc, new FileWriter(targetEadFile));
+		fileInputStream.close();
 	}
 	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::   VALIDATION   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::

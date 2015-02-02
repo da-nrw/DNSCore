@@ -21,6 +21,7 @@ package de.uzk.hki.da.metadata;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class XMPCollectorTests {
 	}
 	
 	@Test
-	public void test(){
+	public void test() throws IOException{
 		Object object = TESTHelper.setUpObject("identifier", WORK_AREA_ROOT_PATH);
 		
 		DAFile xmp = new DAFile(object.getLatestPackage(),"1+a","abc.xmp");
