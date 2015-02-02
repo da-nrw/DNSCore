@@ -19,6 +19,8 @@
 
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.core.C.*;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -28,7 +30,6 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.pkg.BagitUtils;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
 
 /**
  * <ol>
@@ -46,15 +47,17 @@ public class BuildAIPAction extends AbstractAction {
 	}
 
 	@Override
+	public void checkSystemStatePreconditions() throws IllegalStateException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public boolean implementation() {
 
-		Path relativePathOfSource = new RelativePath(o.getContractor().getShort_name(),o.getIdentifier());
-		Path physicalPackagePathOfSource = Path.make(n.getWorkAreaRootPath(),"work",relativePathOfSource);
-		
-		logger.info ( "Preparing AIP at \"" + physicalPackagePathOfSource +"\" for archival." );
 		deleteOldPremisFile();
-		deleteUnnecessaryReps(physicalPackagePathOfSource,j.getRep_name());		
-		BagitUtils.buildBagit ( physicalPackagePathOfSource.toString() );
+		deleteUnnecessaryReps( o.getPath(),j.getRep_name());		
+		BagitUtils.buildBagit ( o.getPath().toString() );
 		
 		return true;
 	}
@@ -87,18 +90,17 @@ public class BuildAIPAction extends AbstractAction {
 	 * Logs on info level an entry for each representation destroyed.
 	 * @author Daniel M. de Oliveira
 	 */
-	void deleteUnnecessaryReps(Path physicalPackagePathOfSource,String repName){
+	static void deleteUnnecessaryReps(Path objectPath,String repName){
 		
-		String children[] = Path.make(physicalPackagePathOfSource,"data").toFile().list();
+		String children[] = Path.make(objectPath,WA_DATA).toFile().list();
 		for (int i=0;i<children.length;i++){
 			if (!children[i].contains(repName) &&
-					Path.make(physicalPackagePathOfSource,"data",children[i]).toFile().isDirectory()) {
+					Path.make(objectPath,WA_DATA,children[i]).toFile().isDirectory()) {
 				try {
-					FileUtils.deleteDirectory(Path.make(physicalPackagePathOfSource,"data",children[i]).toFile());
+					FileUtils.deleteDirectory(Path.make(objectPath,WA_DATA,children[i]).toFile());
 				} catch (IOException e) {
 					throw new RuntimeException("Couldn't delete folder: "+children[i]);
 				}
-				logger.info("Deleting previosly loaded representation: {}",children[i]);
 			}
 		}
 	}
@@ -116,11 +118,5 @@ public class BuildAIPAction extends AbstractAction {
 		logger.debug("Deleting " + oldPremis.getAbsolutePath());
 				
 		oldPremis.delete();
-	}
-
-	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// TODO Auto-generated method stub
-		
 	}
 }
