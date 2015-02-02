@@ -23,7 +23,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.UserException;
@@ -38,16 +37,20 @@ import de.uzk.hki.da.util.Path;
  */
 public class DeleteObjectAction extends AbstractAction {
 
-	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
-	}
-
-	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
+	
+	public DeleteObjectAction() {
 		setKILLATEXIT(true);
 	}
+	
+	
+	@Override
+	public void checkActionSpecificConfiguration() throws ConfigurationException {}
 
+	
+	@Override
+	public void checkSystemStatePreconditions() throws IllegalStateException {}
+
+	
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException {
@@ -60,33 +63,37 @@ public class DeleteObjectAction extends AbstractAction {
 		if (o.getPackages().size()>1){
 			o.getPackages().remove(o.getLatestPackage());
 		}
-		
 		logger.info("Deleting object from WorkArea: "+o.getPath());
 		FileUtils.deleteDirectory(o.getPath().toFile());
 		
-		File fileInWorkArea = Path.makeFile(
-				o.getTransientNodeRef().getWorkAreaRootPath(),"work",
-				o.getContractor().getShort_name(),o.getLatestPackage().getContainerName());
-		if (fileInWorkArea.exists()) {
-			logger.info("Delete latest package from WorkArea: " + fileInWorkArea );
-			fileInWorkArea.delete();
+		if (fileInWorkArea().exists()) {
+			logger.info("Delete container from WorkArea: " + fileInWorkArea() );
+			fileInWorkArea().delete();
 		}
-		
-		File fileInIngestArea = Path.makeFile(
-				o.getTransientNodeRef().getIngestAreaRootPath(),
-				o.getContractor().getShort_name(),o.getLatestPackage().getContainerName());
-		if (fileInIngestArea.exists()) {
-			logger.info("Delete latest package from WorkArea: " + fileInIngestArea );
-			fileInIngestArea.delete();
+		if (fileInIngestArea().exists()) {
+			logger.info("Delete container from WorkArea: " + fileInIngestArea() );
+			fileInIngestArea().delete();
 		}
-		
-		
 		return true;
 	}
 
+	
 	@Override
 	public void rollback() throws Exception {
-		throw new NotImplementedException("No rollback implemented for this action");
+		// Nothing to do.
+	}
+
+
+	private File fileInIngestArea() {
+		return Path.makeFile(
+				o.getTransientNodeRef().getIngestAreaRootPath(),
+				o.getContractor().getShort_name(),o.getLatestPackage().getContainerName());
+	}
+
+	private File fileInWorkArea() {
+		return Path.makeFile(
+				o.getTransientNodeRef().getWorkAreaRootPath(),"work",
+				o.getContractor().getShort_name(),o.getLatestPackage().getContainerName());
 	}
 
 }
