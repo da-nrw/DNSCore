@@ -49,7 +49,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		metsDoc = builder.build(bomInputStream);
 		fileElements = getFileElementsFromMetsDoc(metsDoc);
-
+		fileInputStream.close();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -399,6 +399,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.setFormat(Format.getPrettyFormat());
 		outputter.output(metsDoc, new FileWriter(targetMetsFile));
+		fileInputStream.close();
 	}
 
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::   VALIDATION   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::

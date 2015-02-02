@@ -171,6 +171,8 @@ public class CreateEDMAction extends AbstractAction {
 			edmResult = edmGenerator.generate();
 		} catch (TransformerException e1) {
 			throw new RuntimeException(e1);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 		return edmResult;
 	}
