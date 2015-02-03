@@ -12,7 +12,7 @@
 			</ul>
 		</div>
 <div id="show-object" class="content scaffold-show" role="main">
-			<h1>Hinweise zum automatischen Retrievalanforderung an die DNS </h1>
+			<h1>Hinweise zur automatischen Retrievalanforderung an die DNS </h1>
 	<ul class="property-list object">
 			
 						<li><span class="property-value">
