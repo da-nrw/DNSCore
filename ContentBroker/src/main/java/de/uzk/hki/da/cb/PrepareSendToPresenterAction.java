@@ -116,10 +116,8 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	}
 
 
-	/**
-	 * @author Daniel M. de Oliveira
-	 */
 	static Object readRightsFromPREMIS(File premisXML) throws IOException {
+
 		if (premisXML==null) throw new IllegalArgumentException("premisXML is null");
 		if (! premisXML.exists()) throw new FileNotFoundException("Missing file or directory: "+premisXML);
 		
