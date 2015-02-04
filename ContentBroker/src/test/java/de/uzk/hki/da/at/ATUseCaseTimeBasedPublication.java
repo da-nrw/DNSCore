@@ -20,7 +20,6 @@
 package de.uzk.hki.da.at;
 
 import static de.uzk.hki.da.core.C.*;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -50,6 +49,8 @@ public class ATUseCaseTimeBasedPublication extends AcceptanceTest{
 	private static final String METS_NAMESPACE = "http://www.loc.gov/METS/";
 
 	private static final String ORIG_NAME_PREFIX =  "ATUCTimeBasedPubl";
+	private Namespace mETS_NS;
+	private Namespace xLINK_NS;
 	
 	/**
 	 * @author ???
@@ -74,45 +75,35 @@ public class ATUseCaseTimeBasedPublication extends AcceptanceTest{
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg"));
 		
 		
-		File publicFile = Path.makeFile(localNode.getWorkAreaRootPath(),
+		File publFile = Path.makeFile(localNode.getWorkAreaRootPath(),
 				WA_PIPS,WA_PUBLIC,object.getContractor().getShort_name(),
 				object.getIdentifier(),CB_PACKAGETYPE_METS+FILE_EXTENSION_XML);
-		assertTrue(publicFile.exists());
+		assertTrue(publFile.exists());
 				
-		File institutionFile = Path.makeFile(localNode.getWorkAreaRootPath(),
+		File instFile = Path.makeFile(localNode.getWorkAreaRootPath(),
 				WA_PIPS,WA_INSTITUTION,object.getContractor().getShort_name(),
 				object.getIdentifier(),CB_PACKAGETYPE_METS+FILE_EXTENSION_XML);
-		assertTrue(institutionFile.exists());
+		assertTrue(instFile.exists());
 		assertEquals(PUBLISHEDFLAG_PUBLIC+
 				PUBLISHEDFLAG_INSTITUTION, object.getPublished_flag());
 		
-		Namespace METS_NS = Namespace.getNamespace(METS_NAMESPACE);
-		Namespace XLINK_NS = Namespace.getNamespace(XLINK_NAMESPACE);
+		mETS_NS = Namespace.getNamespace(METS_NAMESPACE);
+		xLINK_NS = Namespace.getNamespace(XLINK_NAMESPACE);
 		
 		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(new FileInputStream(publicFile));
+		Document publDoc = builder.build(new FileInputStream(publFile));
+		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", getUrl(publDoc));
+		Document instDoc = builder.build(new FileInputStream(instFile));
+		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", getUrl(instDoc));
+	}
 
-		System.out.println("doc: " + doc);
-		
-		String url = doc.getRootElement()
-				.getChild("fileSec", METS_NS)
-				.getChild("fileGrp", METS_NS)
-				.getChild("file", METS_NS)
-				.getChild("FLocat", METS_NS)
-				.getAttributeValue("href", XLINK_NS);
-		
-		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", url);
-		
-		doc = builder.build(new FileInputStream(institutionFile));
-
-		url = doc.getRootElement()
-				.getChild("fileSec", METS_NS)
-				.getChild("fileGrp", METS_NS)
-				.getChild("file", METS_NS)
-				.getChild("FLocat", METS_NS)
-				.getAttributeValue("href", XLINK_NS);
-		
-		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", url);
+	private String getUrl(Document doc) {
+		return doc.getRootElement()
+				.getChild("fileSec", mETS_NS)
+				.getChild("fileGrp", mETS_NS)
+				.getChild("file", mETS_NS)
+				.getChild("FLocat", mETS_NS)
+				.getAttributeValue("href", xLINK_NS);
 	}
 	
 	@Test
