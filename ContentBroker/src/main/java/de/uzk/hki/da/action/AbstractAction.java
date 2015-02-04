@@ -48,7 +48,6 @@ import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.TimeStampLogging;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
-import de.uzk.hki.da.utils.Utilities;
 
 
 /**
@@ -229,7 +228,7 @@ public abstract class AbstractAction implements Runnable {
 			ParserConfigurationException, SAXException, UserException, SubsystemNotAvailableException {
 		
 		baseLogger.info("Stubbing implementation of "+this.getClass().getName());
-		baseLogger.debug(Utilities.getHeapSpaceInformation());
+		baseLogger.debug(LinuxEnvironmentUtils.logHeapSpaceInformation());
 		
 		if (!implementation()){				
 			baseLogger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  

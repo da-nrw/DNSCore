@@ -49,15 +49,15 @@ public class MetsMetadataStructure extends MetadataStructure {
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		metsDoc = builder.build(bomInputStream);
 		fileElements = getFileElementsFromMetsDoc(metsDoc);
-
+		fileInputStream.close();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
 	@Override
-	public HashMap<String, HashMap<String, List<String>>> getIndexInfo() {
+	public HashMap<String, HashMap<String, List<String>>> getIndexInfo(String ObjectId) {
 		HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();
-		HashMap<String, Element> dmdSections = getSections();
+		HashMap<String, Element> dmdSections = getSections(ObjectId);
 		
 		for(String id : dmdSections.keySet()) {
 			Element e = dmdSections.get(id);
@@ -299,15 +299,16 @@ public class MetsMetadataStructure extends MetadataStructure {
 		return title;
 	}
 	
-	private HashMap<String, Element> getSections() {
+	private HashMap<String, Element> getSections(String objectId) {
 		HashMap<String, Element> IDtoSecElement = new HashMap<String, Element>();
 		@SuppressWarnings("unchecked")
 		List<Element> dmdSections = metsDoc.getRootElement().getChildren("dmdSec", C.METS_NS);
 		if(dmdSections.size()==1 && dmdSections.get(0).getAttribute("ID", C.METS_NS)==null) {
-			IDtoSecElement.put("", dmdSections.get(0));
+			IDtoSecElement.put(objectId, dmdSections.get(0));
 		} else {
 			for(Element e : dmdSections) {
-				IDtoSecElement.put(e.getAttribute("ID", C.METS_NS).getValue(), e);
+				String id = e.getAttribute("ID", C.METS_NS).getValue();
+				IDtoSecElement.put(id, e);
 			}
 		}
 		return IDtoSecElement;

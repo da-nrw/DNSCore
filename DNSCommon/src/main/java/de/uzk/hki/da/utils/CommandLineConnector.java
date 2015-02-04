@@ -101,9 +101,9 @@ public class CommandLineConnector {
 
 	private void logCmd(String[] cmd, File workingDir) {
 		if ((workingDir==null)||(workingDir.equals("")))
-			Utilities.logger.debug("Running cmd \"{}\"", Arrays.toString(cmd));
+			StringUtilities.logger.debug("Running cmd \"{}\"", Arrays.toString(cmd));
 		else
-			Utilities.logger.debug("Running cmd \"{}\" in working dir \"{}\"", Arrays.toString(cmd), workingDir);
+			StringUtilities.logger.debug("Running cmd \"{}\" in working dir \"{}\"", Arrays.toString(cmd), workingDir);
 	}
 	
 	

@@ -84,9 +84,6 @@ public class CTFedora3RepositoryFacadeTest {
 		fileInputStream.close();
 		
 		fedora.createObject(IDENTIFIER, COLL_NAME, TEST);
-		
-		fedora.createMetadataFile(IDENTIFIER, COLL_NAME, "ead123.xml", content, "label", MIMETYPE_TEXT_XML);
-	
 	}
 
 	

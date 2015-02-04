@@ -40,7 +40,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.PropertiesUtils;
 
 /**
  * Component testing for the irods Datagrid
@@ -256,7 +256,7 @@ public class CTIrodsFacade {
 		Properties properties = null;
 		File propertiesFile = new File (PROPERTIES_FILE_PATH);
 		try {
-			properties = Utilities.read(propertiesFile);
+			properties = PropertiesUtils.read(propertiesFile);
 		} catch (IOException e) {
 			System.out.println("error while reading " + propertiesFile);
 			return null;

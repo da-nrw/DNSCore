@@ -11,9 +11,8 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.compress.utils.IOUtils;
 import org.jdom.JDOMException;
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -25,13 +24,15 @@ import de.uzk.hki.da.util.RelativePath;
 
 public class MetadataStructureGetIndexInfoTests {
 	
+	private static final String DATA_DANRW_DE = "http://data.danrw.de";
 	private static final Path workAreaRootPathPath = new RelativePath("src/test/resources/metadata/MetadataStructureGetIndexInfoTests/");
 	private static HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();
 	private static HashMap<String, List<String>> content = new HashMap<String, List<String>>();
+	private String objectID = "objectID";
 	
 	@BeforeClass
 	public static void createTargetDir() {
-		Path.makeFile(workAreaRootPathPath, "target");
+		Path.makeFile(workAreaRootPathPath, "target").mkdirs();
 	}
 	
 	@Test
@@ -41,7 +42,7 @@ public class MetadataStructureGetIndexInfoTests {
 		
 		List<Document> docs = new ArrayList<Document>();
 		MetadataStructure lms = new LidoMetadataStructure(lidoFile, docs);
-		indexInfo = lms.getIndexInfo();
+		indexInfo = lms.getIndexInfo(objectID);
 		
 		for(String id : indexInfo.keySet()) {
 			HashMap<String, List<String>> content = indexInfo.get(id);
@@ -64,8 +65,7 @@ public class MetadataStructureGetIndexInfoTests {
 			}
 			
 		}
-		
-		lms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "lidoToEdm.xml"));
+		lms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "lidoToEdm.xml"),  DATA_DANRW_DE);
 	}
 	
 	@Test
@@ -75,9 +75,9 @@ public class MetadataStructureGetIndexInfoTests {
 		
 		List<Document> docs = new ArrayList<Document>();
 		MetadataStructure mms = new MetsMetadataStructure(metsFile, docs);
-		indexInfo = mms.getIndexInfo();
+		indexInfo = mms.getIndexInfo(objectID);
 		
-		content = indexInfo.get("");
+		content = indexInfo.get(objectID);
 		
 		assertTrue(content.get(C.EDM_TITLE).contains("Chronik der Stadt Hoerde")
 				&&content.get(C.EDM_TITLE).contains("und der größeren evangelischen Gemeinde in derselben"));
@@ -89,7 +89,7 @@ public class MetadataStructureGetIndexInfoTests {
 		assertTrue(content.get(C.EDM_PUBLISHER).contains("Hoerde")
 				&&content.get(C.EDM_PUBLISHER).contains("Münster"));
 		
-		mms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "metsToEdm.xml"));
+		mms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "metsToEdm.xml"),  DATA_DANRW_DE);
 	}
 	
 	@Test
@@ -100,11 +100,10 @@ public class MetadataStructureGetIndexInfoTests {
 		List<Document> docs = new ArrayList<Document>();
 		MetadataStructure ems = new EadMetsMetadataStructure(eadFile, docs);
 		
-		indexInfo = ems.getIndexInfo();
+		indexInfo = ems.getIndexInfo(objectID);
 		
 		String parent = "";
 		for(String id : indexInfo.keySet()) {
-			
 			HashMap<String, List<String>> content = indexInfo.get(id);
 			if(content.get(C.EDM_TITLE).contains("Pressemitteilungen, Amerikadienst")) {
 				
@@ -130,15 +129,14 @@ public class MetadataStructureGetIndexInfoTests {
 		}
 		assertTrue(indexInfo.get(parent).get(C.EDM_TITLE).contains("14. Verschiedenes"));
 		
-		ems.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "edmToEdm.xml"));
+		ems.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "eadToEdm.xml"), DATA_DANRW_DE);
 	}
 	
-	@After 
-	public void tearDown(){
+	@AfterClass 
+	public static void tearDown(){
 		Path.makeFile(workAreaRootPathPath, "target", "edmToEdm.xml").delete();
 		Path.makeFile(workAreaRootPathPath, "target","lidoToEdm.xml").delete();
 		Path.makeFile(workAreaRootPathPath, "target", "metsToEdm.xml").delete();
 		Path.makeFile(workAreaRootPathPath, "target").delete();
 	}
-	
 }

@@ -64,6 +64,7 @@ public class XMPMetadataStructure extends MetadataStructure{
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		rdfDoc = builder.build(bomInputStream);
 		descriptionElements = getXMPDescriptionElements();
+		fileInputStream.close();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -137,7 +138,7 @@ public class XMPMetadataStructure extends MetadataStructure{
 	}
 
 	@Override
-	public HashMap<String, HashMap<String, List<String>>> getIndexInfo() {
+	public HashMap<String, HashMap<String, List<String>>> getIndexInfo(String ObjectId) {
 		return null;
 	}
 }

@@ -34,7 +34,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.HibernateUtil;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -151,7 +151,7 @@ public class RegisterObjectServiceTests {
 	
 	
 	private String createIdentifier(Integer urnIndex) {
-		String urnWithoutCheckDigit=pSystem.getUrnNameSpace()+"-"+node.getId()+"-"+ Utilities.todayAsSimpleIsoDate(new Date())+urnIndex;
+		String urnWithoutCheckDigit=pSystem.getUrnNameSpace()+"-"+node.getId()+"-"+ StringUtilities.todayAsSimpleIsoDate(new Date())+urnIndex;
 		String urn=urnWithoutCheckDigit+new URNCheckDigitGenerator().checkDigit(urnWithoutCheckDigit);
 		String identifier=urn.replace(pSystem.getUrnNameSpace()+"-", "");
 		return identifier;

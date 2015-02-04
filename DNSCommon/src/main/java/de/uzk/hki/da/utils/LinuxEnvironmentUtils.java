@@ -72,7 +72,7 @@ public class LinuxEnvironmentUtils {
 			if (pid == null)
 				return -1;
 	
-			Utilities.logger.debug("Running cmd: /bin/sh -c ls /proc/" + pid + "/fd | wc -w");
+			StringUtilities.logger.debug("Running cmd: /bin/sh -c ls /proc/" + pid + "/fd | wc -w");
 			ProcessBuilder builder = new ProcessBuilder("/bin/sh", "-c", "ls /proc/" + pid + "/fd | wc -w");
 			process = builder.start();
 		

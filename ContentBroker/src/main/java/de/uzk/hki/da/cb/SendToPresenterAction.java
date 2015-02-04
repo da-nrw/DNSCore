@@ -19,25 +19,25 @@
 
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.core.C.*;
+
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.tika.Tika;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 
 import de.uzk.hki.da.action.AbstractAction;
-import static de.uzk.hki.da.core.C.*;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.metadata.XepicurWriter;
 import de.uzk.hki.da.model.DAFile;
@@ -46,7 +46,7 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /** 
  * This action implements the ingest into the presentation repository.
@@ -69,7 +69,6 @@ public class SendToPresenterAction extends AbstractAction {
 	private static final String CLOSED_COLLECTION_URI = "info:fedora/collection:closed";
 	private static final String IDENTIFIER = "identifier";
 	private static final String ddb = "ddb";
-	private static final String DC = "DC";
 	private static final String PURL_ORG_DC = "http://purl.org/dc/elements/1.1/";
 	private static final String OPENARCHIVES_OAI_IDENTIFIER = "http://www.openarchives.org/OAI/2.0/identifier";
 	private static final String MEMBER = "info:fedora/fedora-system:def/relations-external#isMemberOf";
@@ -100,9 +99,9 @@ public class SendToPresenterAction extends AbstractAction {
 			throw new IllegalStateException("testContractors is not set");
 		if (o.getUrn()==null||o.getUrn().isEmpty())
 			throw new IllegalStateException("urn not set");
-		if (Utilities.isNotSet(preservationSystem.getOpenCollectionName()))
+		if (StringUtilities.isNotSet(preservationSystem.getOpenCollectionName()))
 			throw new IllegalStateException("open collection name must be set");
-		if (Utilities.isNotSet(preservationSystem.getClosedCollectionName()))
+		if (StringUtilities.isNotSet(preservationSystem.getClosedCollectionName()))
 			throw new IllegalStateException("closed collection name must be set");
 	}
 
@@ -126,11 +125,11 @@ public class SendToPresenterAction extends AbstractAction {
 		boolean institutionPIPSuccessfullyIngested = false;
 		try {
 			
-			if (makePIPFolder(WA_PUBLIC).exists()) 
+			if (makePIPFolder(WA_PUBLIC).toFile().exists()) 
 				publicPIPSuccessfullyIngested = publishPackage(
 					WA_PUBLIC,true,preservationSystem.getOpenCollectionName());
 			
-			if (makePIPFolder(WA_INSTITUTION).exists()) 
+			if (makePIPFolder(WA_INSTITUTION).toFile().exists()) 
 				institutionPIPSuccessfullyIngested = publishPackage(
 					WA_INSTITUTION,false,preservationSystem.getClosedCollectionName());	
 			
@@ -140,7 +139,7 @@ public class SendToPresenterAction extends AbstractAction {
 		
 		setPublishedFlag(publicPIPSuccessfullyIngested,
 				institutionPIPSuccessfullyIngested);
-		if (Utilities.isNotSet(o.getPackage_type())) {
+		if (StringUtilities.isNotSet(o.getPackage_type())||(!publicPIPSuccessfullyIngested)) {
 			setKILLATEXIT(true); // indexing and creating edm not possible
 		}
 		return true;
@@ -156,8 +155,8 @@ public class SendToPresenterAction extends AbstractAction {
 
 	private void deleteXepicur() {
 		
-		makeMetadataFile("epicur",WA_INSTITUTION).delete();
-		makeMetadataFile("epicur",WA_PUBLIC).delete();
+		makeMetadataFile(METADATA_STREAM_ID_EPICUR,WA_INSTITUTION).delete();
+		makeMetadataFile(METADATA_STREAM_ID_EPICUR,WA_PUBLIC).delete();
 	}
 	
 	
@@ -167,8 +166,8 @@ public class SendToPresenterAction extends AbstractAction {
 				pipType,o.getContractor().getShort_name(),o.getIdentifier(),fileName+FILE_EXTENSION_XML);
 	}
 	
-	private File makePIPFolder(String pipType) {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,
+	private Path makePIPFolder(String pipType) {
+		return Path.make(n.getWorkAreaRootPath(),WA_PIPS,
 			pipType,o.getContractor().getShort_name(),o.getIdentifier());
 	}
 	
@@ -301,13 +300,7 @@ public class SendToPresenterAction extends AbstractAction {
 		if (institutionPIPSuccessfullyIngested) publishedFlag += 2;
 
 		o.setPublished_flag(publishedFlag);
-		
 		logger.debug("Set published flag of object to '{}'", o.getPublished_flag());
-		
-		// if no public DIP is created EDM creation and ES indexing is skipped
-		if (publishedFlag % 2 == 0) {
-			setKILLATEXIT(true);
-		}
 	}
 
 	
@@ -324,53 +317,70 @@ public class SendToPresenterAction extends AbstractAction {
 	 * @throws IOException
 	 */
 	private boolean ingestPackage(String urn, String objectId, String collection,
-			File packagePath, String contractorShortName, String packageType,
+			Path packagePath, String contractorShortName, String packageType,
 			String[] sets) throws RepositoryException, IOException {
 		
-		// check if pip exists
-		File pack = packagePath;
-		if (!pack.exists()) {
-			throw new IOException("Directory " + packagePath +" does not exist");
+		File pip = Path.makeFile(packagePath);
+		if (!pip.exists()) {
+			throw new FileNotFoundException("Missing file or directory: " + pip);
 		}
 
-		// create object for package in fedora if it does not already exist
 		if (!repositoryFacade.objectExists(objectId, collection)) {
 			repositoryFacade.createObject(objectId, collection, contractorShortName);
 		}			
+		ingestDirectoryContentAsDatastreamsIntoRepository(objectId, collection, pip, packagePath, packageType);
 		
-		// walk package and add files as datastreams recursively
-		ingestDir(objectId, collection, pack, packagePath.toString(), packageType);
 		
-		// add identifiers to DC datastream
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document doc;
-		try {
-			InputStream in = repositoryFacade.retrieveFile(objectId, collection, DC);
-			
-			try{
-				in.reset();
-			}catch(IOException io){}
-			doc = builder.build(in);
-		} catch (JDOMException e) {
-			throw new RuntimeException(e);
+		
+		if (! Path.makeFile(packagePath,METADATA_STREAM_ID_DC+FILE_EXTENSION_XML).exists()) {
+			return false;
+		} else {
+			String updatedDcContent = readDCAndReplaceURN(urn, packagePath);
+			writeDCBackToPIP(packagePath, updatedDcContent);
+			logger.info("Successfully added identifiers to DC datastream");
 		}
-		
-		try {
-			doc.getRootElement().addContent(
-					new Element(IDENTIFIER,DC,PURL_ORG_DC)
-					.setText(urn));
-		} catch (Exception e) {
-			throw new RepositoryException("Failed to add identifiers to object in repository",e);
-		}
-		String content = new XMLOutputter().outputString(doc);
-		repositoryFacade.updateMetadataFile(objectId, collection, DC, content, DC+".xml", "text/xml");
-		logger.info("Successfully added identifiers to DC datastream");
-	
-
 		return true;
 	}
 
-	private void ingestDir(String objectId, String collection, File dir, String packagePath, String packageType) throws RepositoryException, IOException {
+
+	private void writeDCBackToPIP(Path packagePath, String updatedDcContent)
+			throws IOException {
+		Path.makeFile(packagePath,METADATA_STREAM_ID_DC+FILE_EXTENSION_XML).delete();
+		FileWriter fw = null;
+		try {
+			fw = new FileWriter(Path.makeFile(packagePath,METADATA_STREAM_ID_DC+FILE_EXTENSION_XML));
+			fw.write(updatedDcContent);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (fw!=null) fw.close();
+		}
+	}
+
+
+	private String readDCAndReplaceURN(String urn, Path packagePath)
+			throws IOException {
+		FileInputStream in = null;
+		String content="";
+		
+		try {
+			in=new FileInputStream(Path.makeFile(packagePath,METADATA_STREAM_ID_DC+FILE_EXTENSION_XML));
+			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+			Document doc = null;
+			doc=builder.build(in);
+			doc.getRootElement().addContent(
+					new Element(IDENTIFIER,METADATA_STREAM_ID_DC,PURL_ORG_DC)
+					.setText(urn));
+			content = new XMLOutputter().outputString(doc);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (in!=null) in.close();
+		}
+		return content;
+	}
+
+	private void ingestDirectoryContentAsDatastreamsIntoRepository(String objectId, String collection, File dir, Path packagePath, String packageType) throws RepositoryException, IOException {
 			
 		File files[] = dir.listFiles(new FilenameFilter() {
 			@Override
@@ -383,7 +393,7 @@ public class SendToPresenterAction extends AbstractAction {
 		if(files != null) {
 			for(int i=0; i<files.length; i++) {
 				if(files[i].isDirectory()) {
-					ingestDir(objectId, collection, files[i], packagePath, packageType);
+					ingestDirectoryContentAsDatastreamsIntoRepository(objectId, collection, files[i], packagePath, packageType);
 				} else {
 					ingestFile(objectId, collection, files[i], packagePath, packageType);
 				}
@@ -406,7 +416,7 @@ public class SendToPresenterAction extends AbstractAction {
 	 * @throws RepositoryException
 	 * @throws IOException
 	 */
-	private boolean ingestFile(String objectId, String collection, File file, String packagePath, String packageType) throws RepositoryException, IOException {
+	private boolean ingestFile(String objectId, String collection, File file, Path packagePath, String packageType) throws RepositoryException, IOException {
 
 		// Detect MIME-Type
 		String mimeType = detectMimeType(file);
@@ -420,15 +430,7 @@ public class SendToPresenterAction extends AbstractAction {
 			label = labelMap.get(fileId);
 		}
 		
-		if (file.getName().equalsIgnoreCase(DC+".xml")) {
-			FileInputStream fileInputStream = new FileInputStream(file);
-			String content = IOUtils.toString(fileInputStream, ENCODING_UTF_8);
-			fileInputStream.close();
-			repositoryFacade.createMetadataFile(objectId, collection, DC, content, label, mimeType = MIMETYPE_TEXT_XML);
-		} else {
-			repositoryFacade.ingestFile(objectId, collection, fileId, file, label, mimeType);
-		}
-
+		repositoryFacade.ingestFile(objectId, collection, fileId, file, label, mimeType);
 		logger.info("Successfully created datastream with fileId {} for file {}.",fileId,file.getName());
 		return true;
 		

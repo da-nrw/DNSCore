@@ -39,7 +39,7 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -89,7 +89,7 @@ public class CLIConversionStrategy implements ConversionStrategy{
 		
 		Event e = new Event();
 		e.setType("CONVERT");
-		e.setDetail(Utilities.createString(commandAsArray));
+		e.setDetail(StringUtilities.createString(commandAsArray));
 		e.setSource_file(ci.getSource_file());
 		e.setTarget_file(result);
 		e.setDate(new Date());
@@ -135,8 +135,8 @@ public class CLIConversionStrategy implements ConversionStrategy{
 		
 		String targetSuffix= ci.getConversion_routine().getTarget_suffix();
 		if (targetSuffix.equals("*")) targetSuffix= FilenameUtils.getExtension(ci.getSource_file().toRegularFile().getAbsolutePath());
-		Utilities.replace(tokenizedCmd, "input", ci.getSource_file().toRegularFile().getAbsolutePath());
-		Utilities.replace(tokenizedCmd, "output", object.getDataPath()+"/"+repName+"/"+Utilities.slashize(ci.getTarget_folder())+
+		StringUtilities.replace(tokenizedCmd, "input", ci.getSource_file().toRegularFile().getAbsolutePath());
+		StringUtilities.replace(tokenizedCmd, "output", object.getDataPath()+"/"+repName+"/"+StringUtilities.slashize(ci.getTarget_folder())+
 				FilenameUtils.removeExtension(Matcher.quoteReplacement(
 				FilenameUtils.getName(ci.getSource_file().toRegularFile().getAbsolutePath()))) + "." + targetSuffix);
 		

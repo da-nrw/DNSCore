@@ -72,7 +72,8 @@ public class IndexMetadataAction extends AbstractAction {
 		
 		
 		edmFile = Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),
-				o.getIdentifier(),EDM_FOR_ES_INDEX_METADATA_STREAM_ID+FILE_EXTENSION_XML);
+				o.getIdentifier(), EDM_FOR_ES_INDEX_METADATA_STREAM_ID+FILE_EXTENSION_XML);
+
 		if (! edmFile.exists())
 			throw new IllegalStateException("Missing file: "+edmFile);
 
@@ -82,8 +83,16 @@ public class IndexMetadataAction extends AbstractAction {
 	public boolean implementation() throws RepositoryException, IOException {
 		setKILLATEXIT(true);
 		
-		InputStream metadataStream  = new FileInputStream(edmFile);
-		String edmContent = IOUtils.toString(metadataStream, ENCODING_UTF_8);
+		String edmContent;
+		InputStream metadataStream  = null;
+		try {
+			metadataStream = new FileInputStream(edmFile);
+			edmContent = IOUtils.toString(metadataStream, ENCODING_UTF_8);
+			logger.info("huhu "+metadataStream);
+		} finally {
+			metadataStream.close();
+		}
+		
 		getRepositoryFacade().indexMetadata(adjustIndexName(indexName), o.getIdentifier(), edmContent);
 		return true;
 	}

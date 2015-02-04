@@ -44,7 +44,7 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -98,7 +98,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			commandAsList = assembleWatermarkCommand(commandAsList,audience);
 			commandAsList = assembleFooterTextCommand(commandAsList, audience, ci.getSource_file().toRegularFile().getAbsolutePath());
 			
-			DAFile target = new DAFile(pkg,pips+"/"+audience.toLowerCase(),Utilities.slashize(ci.getTarget_folder())+
+			DAFile target = new DAFile(pkg,pips+"/"+audience.toLowerCase(),StringUtilities.slashize(ci.getTarget_folder())+
 					FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix());
 			commandAsList.add(target.toRegularFile().getAbsolutePath());
 			
@@ -121,10 +121,10 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 					Pattern.quote(FilenameUtils.getBaseName(target.getRelative_path()))+"-\\d+\\."+extension);
 			if (!target.toRegularFile().exists() && !wild.isEmpty()){
 				for (File f : wild){
-					DAFile multipageTarget = new DAFile(pkg,pips+"/"+audience.toLowerCase(),Utilities.slashize(ci.getTarget_folder())+f.getName());
+					DAFile multipageTarget = new DAFile(pkg,pips+"/"+audience.toLowerCase(),StringUtilities.slashize(ci.getTarget_folder())+f.getName());
 					
 					Event e = new Event();
-					e.setDetail(Utilities.createString(commandAsList));
+					e.setDetail(StringUtilities.createString(commandAsList));
 					e.setSource_file(ci.getSource_file());
 					e.setTarget_file(multipageTarget);
 					e.setType("CONVERT");
@@ -134,7 +134,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			}
 			else{
 				Event e = new Event();
-				e.setDetail(Utilities.createString(commandAsList));
+				e.setDetail(StringUtilities.createString(commandAsList));
 				e.setSource_file(ci.getSource_file());
 				e.setTarget_file(target);
 				e.setType("CONVERT");

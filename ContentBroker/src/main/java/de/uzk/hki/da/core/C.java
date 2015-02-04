@@ -51,10 +51,13 @@ public class C {
 	public static final String CB_PACKAGETYPE_METS = FFConstants.SUBFORMAT_IDENTIFIER_METS;
 	public static final String CB_PACKAGETYPE_EAD  = FFConstants.SUBFORMAT_IDENTIFIER_EAD;     
 		/** common metadata file for all XMP type packages */
-	public static final String XMP_METADATA_FILE = "XMP.xml";
+	public static final String METADATA_FILE_XMP = "XMP.xml";
 		/** Fedora datastream id for EDM. */
+
 	public static final String EDM_XSLT_METADATA_STREAM_ID = "EDM_xslt"; 
 	public static final String EDM_FOR_ES_INDEX_METADATA_STREAM_ID = "EDM"; 
+	public static final String METADATA_STREAM_ID_DC = "DC";
+	public static final String METADATA_STREAM_ID_EPICUR = "epicur";
 	
 
 	// Systems communication
@@ -125,7 +128,7 @@ public class C {
 	public static final String EDM_CREATOR = "dc:creator";
 	public static final String EDM_DATE = "dc:date";
 	public static final String EDM_PUBLISHER = "dc:publisher";
-	public static final String EDM_IS_PART_OF = "isPartOf";
+	public static final String EDM_IS_PART_OF = "dcterms:isPartOf";
 	public static final String EDM_TITLE = "dc:title";
 	public static final String EDM_IDENTIFIER = "dc:identifier";
 	public static final String EDM_HAS_VIEW = "edm:hasView";
@@ -150,7 +153,5 @@ public class C {
 	public static final String WORKFLOW_STATUS_START___INGEST_UNPACK_ACTION = "110";
 	public static final String WORKFLOW_STATUS_START___FETCH_PIPS_ACTION = "540";
 	public static final String WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION = "645";
-	
-	
-	
+
 }

@@ -56,7 +56,7 @@ public class XsltEDMGeneratorTests {
 	}
 	
 	@Test
-	public void test() throws FileNotFoundException, TransformerException{
+	public void test() throws TransformerException, IOException{
 		
 		XsltEDMGenerator xsltEDMGenerator = new XsltEDMGenerator(
 				XSLT_EDM_EAD_TO_EDM_XSL, 

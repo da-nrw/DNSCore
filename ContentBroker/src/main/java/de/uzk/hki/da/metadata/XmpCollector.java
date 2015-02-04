@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.List;
@@ -54,8 +55,9 @@ public class XmpCollector {
 	 *
 	 * @param xmpFiles list of xmp files to collect
 	 * @param targetFile the target file
+	 * @throws IOException 
 	 */
-	public static void collect(List<DAFile> xmpFiles, File targetFile) {
+	public static void collect(List<DAFile> xmpFiles, File targetFile) throws IOException {
 		
 		Model model = ModelFactory.createDefaultModel();
 				
@@ -109,13 +111,17 @@ public class XmpCollector {
             // use "http://www.danrw.de/temp/" as a pseudo base URI in order to allow relative resource URIs
             model.read(new StringReader(xmpWriter.toString().trim().replaceFirst("^([\\W]+)<","<")),"http://www.danrw.de/temp/" + list[0]);
 		}
-		
+		FileOutputStream targetStream = null;
 		try {
-			FileOutputStream targetStream = new FileOutputStream(targetFile);
+			targetStream = new FileOutputStream(targetFile);
 			model.write(targetStream, "RDF/XML-ABBREV", "http://www.danrw.de/temp/");
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException("Could not write XMP collection file: " 
 					+ targetFile.getAbsolutePath());
+		} finally {
+			if (targetStream!=null) {
+				targetStream.close();
+			}
 		}
 		
 	}

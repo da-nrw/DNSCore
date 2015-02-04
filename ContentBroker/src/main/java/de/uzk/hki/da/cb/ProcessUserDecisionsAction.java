@@ -35,7 +35,7 @@ import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.ConfigurationException;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /**
  * Tests if a user has made a choice for a decision request issued automatically by the system.
@@ -61,7 +61,7 @@ public class ProcessUserDecisionsAction extends AbstractAction{
 			UserException, RepositoryException, JDOMException,
 			ParserConfigurationException, SAXException {
 		
-		if (Utilities.isNotSet(j.getAnswer())){
+		if (StringUtilities.isNotSet(j.getAnswer())){
 			throw new IllegalStateException("job.getAnswer() must not be null or empty.");
 		}
 		

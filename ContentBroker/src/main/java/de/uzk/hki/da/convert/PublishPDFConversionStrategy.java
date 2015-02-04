@@ -34,7 +34,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.CommandLineConnector;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -66,7 +66,7 @@ public class PublishPDFConversionStrategy extends PublishConversionStrategyBase 
 			
 			String audience_lc = audience.toLowerCase();
 			
-			DAFile target = new DAFile(object.getLatestPackage(),pips+"/"+audience_lc,Utilities.slashize(ci.getTarget_folder())+
+			DAFile target = new DAFile(object.getLatestPackage(),pips+"/"+audience_lc,StringUtilities.slashize(ci.getTarget_folder())+
 					FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix());
 			target.toRegularFile().getParentFile().mkdirs();
 			

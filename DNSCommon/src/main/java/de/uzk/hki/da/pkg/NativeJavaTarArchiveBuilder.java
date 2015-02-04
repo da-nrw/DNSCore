@@ -33,7 +33,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 
@@ -179,6 +179,6 @@ public class NativeJavaTarArchiveBuilder implements ArchiveBuilder {
 
 	public void setFirstLevelEntryName(String firstLevelEntryName) {
 		if (firstLevelEntryName==null) this.firstLevelEntryName = "";
-		this.firstLevelEntryName = Utilities.slashize(firstLevelEntryName);
+		this.firstLevelEntryName = StringUtilities.slashize(firstLevelEntryName);
 	}
 }

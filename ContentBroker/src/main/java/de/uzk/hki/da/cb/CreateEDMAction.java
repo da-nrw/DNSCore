@@ -19,16 +19,19 @@
 
 package de.uzk.hki.da.cb;
 
+
 import static de.uzk.hki.da.core.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
 import static de.uzk.hki.da.core.C.EDM_XSLT_METADATA_STREAM_ID;
 import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
 import static de.uzk.hki.da.core.C.WA_PIPS;
 import static de.uzk.hki.da.core.C.WA_PUBLIC;
-import static de.uzk.hki.da.utils.Utilities.isNotSet;
+import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -167,10 +170,19 @@ public class CreateEDMAction extends AbstractAction {
 			ms = new XMPMetadataStructure(metadataSourceFile, documents);
 		}
 		
-		ms.toEDM(ms.getIndexInfo(), edm);
+		ms.toEDM(ms.getIndexInfo(o.getIdentifier()), edm, preservationSystem.getUrisFile());
+		
 		return edm;
 	}
 	
+	private void printFile(File edm) throws IOException {
+		@SuppressWarnings("resource")
+		BufferedReader br = new BufferedReader(new FileReader(edm.getAbsoluteFile()));
+		String line = null;
+		while ((line = br.readLine()) != null) {
+			System.out.println(line);
+		}
+	}
 
 	
 	private void putToRepository(File file) throws RepositoryException, IOException {
@@ -209,6 +221,8 @@ public class CreateEDMAction extends AbstractAction {
 			edmResult = edmGenerator.generate();
 		} catch (TransformerException e1) {
 			throw new RuntimeException(e1);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 		return edmResult;
 	}

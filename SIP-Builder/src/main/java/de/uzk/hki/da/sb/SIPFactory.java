@@ -39,6 +39,7 @@ import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.metadata.PremisXmlWriter;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.CopyUtility;
+import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.Utilities;
 
 /**

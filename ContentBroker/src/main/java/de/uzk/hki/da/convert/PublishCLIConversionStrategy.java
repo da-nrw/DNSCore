@@ -34,7 +34,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -77,7 +77,7 @@ public class PublishCLIConversionStrategy extends CLIConversionStrategy {
 			
 			Event e = new Event();
 			e.setType("CONVERT");
-			e.setDetail(Utilities.createString(commandAsArray));
+			e.setDetail(StringUtilities.createString(commandAsArray));
 			e.setSource_file(ci.getSource_file());
 			e.setTarget_file(result);
 			e.setDate(new Date());

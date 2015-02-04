@@ -47,7 +47,10 @@ public class CTIndexMetadataFromEdm {
 	private static final String INDEX_NAME = "portal_ci_test";
 	
 	File edmFile = new RelativePath("src", "test", "resources", "repository", "CTIndexMetadataFromEdmTests", "edmContent").toFile();
-	File edmFromMetsFile = new RelativePath("src", "test", "resources", "repository", "CTIndexMetadataFromEdmTests", "edmContentFromMets").toFile();
+	File metsEdm = new RelativePath("src", "test", "resources", "repository", "CTIndexMetadataFromEdmTests", "metsEdm").toFile();
+	File lidoEdm = new RelativePath("src", "test", "resources", "repository", "CTIndexMetadataFromEdmTests", "lidoEdm").toFile();
+	File eadEdm = new RelativePath("src", "test", "resources", "repository", "CTIndexMetadataFromEdmTests", "eadEdm").toFile();
+	File metsContentEdm = new RelativePath("src", "test", "resources", "repository", "CTIndexMetadataFromEdmTests", "edmContentFromMets").toFile();
 	private Fedora3RepositoryFacade repo;
 	
 	
@@ -67,10 +70,10 @@ public class CTIndexMetadataFromEdm {
 	@Test
 	public void testMetsEdm() throws FileNotFoundException, IOException {
 		
-		String edmContent = IOUtils.toString(new FileInputStream(edmFromMetsFile), C.ENCODING_UTF_8);
+		String metsEdmContent = IOUtils.toString(new FileInputStream(metsEdm), C.ENCODING_UTF_8);
 	
 		try {
-			repo.indexMetadata(INDEX_NAME, "1", edmContent);
+			repo.indexMetadata(INDEX_NAME, "1", metsEdmContent);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -79,19 +82,45 @@ public class CTIndexMetadataFromEdm {
 		try {
 			Thread.sleep(4711);
 		} catch (InterruptedException e) {}
+
+		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"edm:dataProvider\":\"Universitäts- und Landesbibliothek Münster\""));
+		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"dc:title\":[\"und der größeren evangelischen Gemeinde in derselben\",\"Chronik der Stadt Hoerde\"]"));	
+		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"dc:date\":[\"2011\",\"1836\"]"));
+		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"dc:publisher\":[\"Münster\",\"Hoerde\"]"));
+	}	
+	
+	
+	@Test
+	public void testLidoEdm() throws FileNotFoundException, IOException {
 		
-		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "Inventarnummer").contains("\"edm:provider\":\"DA-NRW - Digitales Archiv Nordrhein-Westfalen\""));
+		String lidoEdmContent = IOUtils.toString(new FileInputStream(lidoEdm), C.ENCODING_UTF_8);
+	
+		try {
+			repo.indexMetadata(INDEX_NAME, "1", lidoEdmContent);
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+		
+		try {
+			Thread.sleep(4711);
+		} catch (InterruptedException e) {}
+
+		System.out.println(repo.getIndexedMetadata(INDEX_NAME, "objectID-f838082dc50949e8b57346d904efdd3d"));
+		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID-f838082dc50949e8b57346d904efdd3d")
+				.contains("\"dc:title\":[\"Vier Mädchen auf einer Altane\",\"Mädchen auf Altane, Stadt im Hintergrund\"]"));
+		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID-f838082dc50949e8b57346d904efdd3d").contains("\"dc:date\":[\"1913\"]"));
 	}	
 	
 	
 	
 	@Test
-	public void test() throws FileNotFoundException, IOException {
+	public void eadEdmTest() throws FileNotFoundException, IOException {
 		
-		String edmContent = IOUtils.toString(new FileInputStream(edmFile), C.ENCODING_UTF_8);
+		String eadEdmContent = IOUtils.toString(new FileInputStream(eadEdm), C.ENCODING_UTF_8);
 	
 		try {
-			repo.indexMetadata(INDEX_NAME, "1", edmContent);
+			repo.indexMetadata(INDEX_NAME, "1", eadEdmContent);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -101,7 +130,11 @@ public class CTIndexMetadataFromEdm {
 			Thread.sleep(4711);
 		} catch (InterruptedException e) {}
 		
-		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "Inventarnummer").contains("\"edm:provider\":\"DA-NRW - Digitales Archiv Nordrhein-Westfalen\""));
+
+		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID-569c0c3d21aa45b8bb230d4b3bdec00e").contains("\"dc:title\":[\"Jugendherbergsverband, Schriftwechsel\"]"));
+		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID-457009589ee34cdcaa71ed56a2dad8a6").contains("\"dc:date\":[\"1937-01-01/1938-12-31\"]"));
+		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID-457009589ee34cdcaa71ed56a2dad8a6").contains("\"dc:title\":[\"Volksdeutsches Rundfunkreferat\"]"));	
+		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID-457009589ee34cdcaa71ed56a2dad8a6").contains("\"dcterms:isPartOf\""));
 	}	
 
 }

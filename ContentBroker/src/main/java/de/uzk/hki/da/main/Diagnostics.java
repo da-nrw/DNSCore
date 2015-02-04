@@ -53,7 +53,8 @@ import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
 import de.uzk.hki.da.utils.CommandLineConnector;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.PropertiesUtils;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /**
  * Checks basic connectivity of the application. 
@@ -113,7 +114,7 @@ public class Diagnostics {
 		
 		Properties properties = null;
 		try {
-			properties = Utilities.read(new File(C.CONFIG_PROPS));
+			properties = PropertiesUtils.read(new File(C.CONFIG_PROPS));
 		} catch (IOException e) {
 			System.out.println(WARN+"error while reading "+C.CONFIG_PROPS);
 			return 1;
@@ -183,7 +184,7 @@ public class Diagnostics {
 	private static int checkFormatFacade(Properties properties) {
 		
 		
-		if (!Utilities.isNotSet(((String)properties.get("cb.implementation.fileFormatFacade")))){
+		if (!StringUtilities.isNotSet(((String)properties.get("cb.implementation.fileFormatFacade")))){
 			System.out.println(INFO+"WILL NOT CHECK FILEFORMATFACADE ! ! ! fileFormatFacade is set to \"fakeFileFormatFacade\"");
 			return 0;
 		}
@@ -195,7 +196,11 @@ public class Diagnostics {
 		meta.setCli(new CommandLineConnector());
 		sfff.setMetadataExtractor(meta);
 		
-		System.out.print(INFO+"CHECKING - StandardFileFormatFacade.identify() ... ");
+		System.out.println(INFO+"CHECKING - ConfigurableFileFormatFacade.connectivityCheck() ... ");
+		if (!standardFileFormatFacadeHealthSubformatsPassedCheckPassed(sfff))
+			errorCount+=1;
+		
+		System.out.print(INFO+"CHECKING - ConfigurableFileFormatFacade.identify() ... ");
 		if (!standardFileFormatFacadeFidoWorkingProperly(sfff)) {
 			errorCount+=1;
 			System.out.println(FAIL);
@@ -203,7 +208,7 @@ public class Diagnostics {
 		else
 			System.out.println(OK);
 		
-		System.out.print(INFO+"CHECKING - StandardFileFormatFacade.extract() ... ");
+		System.out.print(INFO+"CHECKING - ConfigurableFileFormatFacade.extract() ... ");
 		if (!standardFileFormatFacadeJhoveWorkingProperly(sfff)) {
 			errorCount+=1;
 			System.out.println(FAIL);
@@ -211,10 +216,6 @@ public class Diagnostics {
 		else
 			System.out.println(OK);
 
-		System.out.println(INFO+"CHECKING - StandardFileFormatFacade.connectivityCheck() ... ");
-		if (!standardFileFormatFacadeHealthSubformatsPassedCheckPassed(sfff))
-			errorCount+=1;
-		
 		return errorCount;
 	}
 	

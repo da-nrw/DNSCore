@@ -44,12 +44,13 @@ public class LidoMetadataStructure extends MetadataStructure{
 		
 		doc = builder.build(bomInputStream);
 		lidoLinkResources = parseLinkResourceElements();
+		fileInputStream.close();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
 	@Override
-	public HashMap<String, HashMap<String, List<String>>> getIndexInfo() {
+	public HashMap<String, HashMap<String, List<String>>> getIndexInfo(String objectId) {
 		
 		HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String, List<String>>>();
 		HashMap<String, List<String>> lidoElementInfo;
@@ -59,10 +60,11 @@ public class LidoMetadataStructure extends MetadataStructure{
 			lidoElementInfo = new HashMap<String, List<String>>();
 			String uniqueID = UUID.randomUUID().toString();
 			uniqueID = uniqueID.replace("-", "");
+			String id = objectId+"-"+uniqueID;
 			lidoElementInfo.put(C.EDM_TITLE, getTitle(lidoElement));
 			lidoElementInfo.put(C.EDM_PUBLISHER, getPlaces(lidoElement));
 			lidoElementInfo.put(C.EDM_DATE, getDate(lidoElement));
-			indexInfo.put(uniqueID, lidoElementInfo);
+			indexInfo.put(id, lidoElementInfo);
 		}
 		return indexInfo;
 	}

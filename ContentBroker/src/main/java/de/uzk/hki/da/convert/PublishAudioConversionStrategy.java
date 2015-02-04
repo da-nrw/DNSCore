@@ -38,7 +38,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -94,14 +94,14 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 				throw new RuntimeException("command not succeeded");
 			
 			
-			DAFile f1 = new DAFile(object.getLatestPackage(), pips+"/"+audience.toLowerCase(), Utilities.slashize(ci.getTarget_folder()) + 
+			DAFile f1 = new DAFile(object.getLatestPackage(), pips+"/"+audience.toLowerCase(), StringUtilities.slashize(ci.getTarget_folder()) + 
 					FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp3");
 					
 			Event e = new Event();
 			e.setType("CONVERT");
 			e.setSource_file(ci.getSource_file());
 			e.setTarget_file(f1);
-			e.setDetail(Utilities.createString(cmdPUBLIC));
+			e.setDetail(StringUtilities.createString(cmdPUBLIC));
 			e.setDate(new Date());
 			results.add(e);
 		}

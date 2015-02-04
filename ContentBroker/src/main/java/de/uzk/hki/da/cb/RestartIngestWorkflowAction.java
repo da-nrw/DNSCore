@@ -19,21 +19,22 @@
 
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.cb.ArchiveReplicationCheckAction.clearNonpersistentObjectProperties;
+import static de.uzk.hki.da.cb.RestructureAction.makeRepOfSIPContent;
+import static de.uzk.hki.da.cb.RestructureAction.revertToSIPContent;
+import static de.uzk.hki.da.cb.BuildAIPAction.deleteBagitFiles;
+import static de.uzk.hki.da.core.C.*;
+import static de.uzk.hki.da.utils.StringUtilities.*;
+
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
+
 
 /**
  * Resets job in ingest workflow back to the start status of the ingest workflow.
@@ -46,83 +47,78 @@ import de.uzk.hki.da.util.Path;
  */
 public class RestartIngestWorkflowAction extends AbstractAction {
 
+	private static final String A = "a";
+	private static final String UNDERSCORE = "_";
+
 	public RestartIngestWorkflowAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;}
+
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
-	}
+	public void checkActionSpecificConfiguration() throws ConfigurationException {}
 
+	
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-	}
+	public void checkSystemStatePreconditions() throws IllegalStateException {}
 
+	
 	@Override
 	public boolean implementation() throws IOException {
-		
+
 		if (!o.isDelta())
 			o.setUrn(null);
+		deleteBagitFiles(o.getPath());
 		
-		String newestRepName = determineNameOfNewestARepresentation();
-		convertNewestARepToDataFolder(newestRepName);		
-		deletePIPS();
+		revertToSIPContent(o.getPath(), o.getDataPath(), j.getRep_name());
+		deleteTemporaryPIPs();
 		
-		o.getDocuments().clear();
-		for (Package pkg : o.getPackages()){
-			pkg.getEvents().clear();
-			pkg.getFiles().clear();
-		}
+		clearNonpersistentObjectProperties(o);
 		j.getConversion_instructions().clear();
-
 		return true;
 	}
 	
+	
 	@Override
 	public void rollback() throws Exception {
-		throw new NotImplementedException("No rollback implemented for this action");
-	}
-
-	private String determineNameOfNewestARepresentation() {
-		List<File> filesC = Arrays.asList(o.getDataPath().toFile().listFiles(new RepresentationFilter()));
-		Collections.sort(filesC,Collections.reverseOrder());
-		String newestRepname = FilenameUtils.getBaseName(filesC.iterator().next().toString());
-		if (newestRepname.endsWith("+b")) newestRepname=newestRepname.replace("+b", "+a");
-		return newestRepname;
-	}
-	
-	/**
-	 * Leaves only the representation with the SIP content. 
-	 *
-	 * @author Daniel M. de Oliveira
-	 * @throws IOException 
-	 */
-	private void convertNewestARepToDataFolder(String newestARepresentationName) throws IOException {
-
-		File sipContent = Path.makeFile(o.getDataPath(),newestARepresentationName);
-		File sipTemp = Path.makeFile(o.getPath(),"___sipContent");
+		if (isNotSet(j.getRep_name())) throw new IllegalStateException("Rep name not set.");
 		
-		FileUtils.moveDirectory(sipContent, sipTemp);
-		FileUtils.deleteDirectory(o.getDataPath().toFile());
-		FileUtils.moveDirectory(sipTemp, o.getDataPath().toFile());
+		if (	thereIsNoARepresentation()
+				&&(o.getDataPath().toFile().exists())
+				&&dataIsOnlySubfolderOfObject()) {
+			
+			makeRepOfSIPContent(o.getPath(), o.getDataPath(), j.getRep_name());
+		} 
+		else {
+			throw new RuntimeException("Rollback not possible.");
+		}
 	}
+
 	
+	
+	private boolean dataIsOnlySubfolderOfObject() {
+		String subfolders[] = o.getPath().toFile().list();
+		if (subfolders.length!=1) return false;
+		if (!subfolders[0].equals(WA_DATA)) return false;
+		return true;
+	}
+
+
+	private boolean thereIsNoARepresentation() {
+		return (!Path.makeFile(o.getDataPath(),j.getRep_name()+A).exists());
+	}
+
+
 	/**
-	 * 
-	 * Deletes previously created pips
-	 * 
 	 * @author Thomas Kleinke
-	 * @throws IOException 
 	 */
-	private void deletePIPS() throws IOException {
-		File publicDipFolder = Path.makeFile(n.getWorkAreaRootPath(),C.WA_PIPS,C.WA_PUBLIC,
-			o.getContractor().getShort_name(),o.getIdentifier() + "_" + o.getLatestPackage().getId());
-		File institutionDipFolder = Path.makeFile(n.getWorkAreaRootPath(),C.WA_PIPS,C.WA_INSTITUTION,
-				o.getContractor().getShort_name(),o.getIdentifier() + "_" + o.getLatestPackage().getId());
+	private void deleteTemporaryPIPs() throws IOException {
 		
-		if (publicDipFolder.exists())
-			FileUtils.deleteDirectory(publicDipFolder);
-		if (institutionDipFolder.exists())
-			FileUtils.deleteDirectory(institutionDipFolder);
+		if (makePIPSourceFolder(WA_PUBLIC).exists())
+			FileUtils.deleteDirectory(makePIPSourceFolder(WA_PUBLIC));
+		if (makePIPSourceFolder(WA_INSTITUTION).exists())
+			FileUtils.deleteDirectory(makePIPSourceFolder(WA_INSTITUTION));
+	}
+	
+	private File makePIPSourceFolder(String pipType) {
+		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId());
 	}
 }

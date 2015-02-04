@@ -49,6 +49,7 @@ import de.uzk.hki.da.sb.UserInputValidator;
 import de.uzk.hki.da.sb.MessageWriter.UserInput;
 import de.uzk.hki.da.sb.SIPFactory.Feedback;
 import de.uzk.hki.da.sb.SIPFactory.KindOfSIPBuilding;
+import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.Utilities;
 
 /**
@@ -483,7 +484,7 @@ public class Cli {
     	
     	String fileList = "";
     	try {
-    		fileList = Utilities.readFile(fileListFile);
+    		fileList = StringUtilities.readFile(fileListFile);
     	} catch (Exception e) {
     		logger.log("ERROR: Failed to read file " + fileListFile.getAbsolutePath(), e);
     		System.out.println("Die Datei " + fileListFile.getAbsolutePath() + " konnte nicht gelesen werden.");

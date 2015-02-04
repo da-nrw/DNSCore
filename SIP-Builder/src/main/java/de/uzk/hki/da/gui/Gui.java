@@ -64,6 +64,7 @@ import de.uzk.hki.da.sb.SIPFactory;
 import de.uzk.hki.da.sb.UserInputValidator;
 import de.uzk.hki.da.sb.SIPFactory.Feedback;
 import de.uzk.hki.da.sb.SIPFactory.KindOfSIPBuilding;
+import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.Utilities;
 
 /**
@@ -2714,7 +2715,7 @@ public class Gui extends JFrame{
 
 		if (sourceFolderFile.exists()) {
 			try {
-				String sourceFolderPath = Utilities.readFile(sourceFolderFile);
+				String sourceFolderPath = StringUtilities.readFile(sourceFolderFile);
 				sourcePathChooser.setCurrentDirectory(new File(sourceFolderPath));				
 			} catch (Exception e) {
 				logger.log("WARNING: Failed to read file " + sourceFolderFile.getAbsolutePath(), e);
@@ -2723,7 +2724,7 @@ public class Gui extends JFrame{
 
 		if (destinationFolderFile.exists()) {
 			try {
-				String destinationFolderPath = Utilities.readFile(destinationFolderFile);
+				String destinationFolderPath = StringUtilities.readFile(destinationFolderFile);
 				destinationPathChooser.setCurrentDirectory(new File(destinationFolderPath));				
 			} catch (Exception e) {
 				logger.log("WARNING: Failed to read file " + destinationFolderFile.getAbsolutePath(), e);
@@ -2732,7 +2733,7 @@ public class Gui extends JFrame{
 
 		if (contractRightsLoadFolderFile.exists()) {
 			try {
-				String contractFileLoadPath = Utilities.readFile(contractRightsLoadFolderFile);
+				String contractFileLoadPath = StringUtilities.readFile(contractRightsLoadFolderFile);
 				contractFileLoadPathChooser.setSelectedFile(new File(contractFileLoadPath));				
 			} catch (Exception e) {
 				logger.log("WARNING: Failed to read file " + contractRightsLoadFolderFile.getAbsolutePath(), e);
@@ -2741,7 +2742,7 @@ public class Gui extends JFrame{
 
 		if (contractRightsSaveFolderFile.exists()) {
 			try {
-				String contractFileSavePath = Utilities.readFile(contractRightsSaveFolderFile);
+				String contractFileSavePath = StringUtilities.readFile(contractRightsSaveFolderFile);
 				contractFileSavePathChooser.setSelectedFile(new File(contractFileSavePath));				
 			} catch (Exception e) {
 				logger.log("WARNING: Failed to read file " + contractRightsSaveFolderFile.getAbsolutePath(), e);
@@ -2750,7 +2751,7 @@ public class Gui extends JFrame{
 		
 		if (compressionSettingFile.exists()) {
 			try {
-				String compressionSetting = Utilities.readFile(compressionSettingFile);
+				String compressionSetting = StringUtilities.readFile(compressionSettingFile);
 				compressionCheckBox.setSelected(Boolean.valueOf(compressionSetting));
 			} catch (Exception e) {
 				logger.log("WARNING: Failed to read file " + compressionSettingFile.getAbsolutePath(), e);

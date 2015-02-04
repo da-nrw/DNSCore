@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /**
  * For acceptance testing on developer machines
@@ -101,7 +101,7 @@ public class FakeGridFacade implements GridFacade {
 	}
 
 	public void setGridCacheAreaRootPath(String gridCacheAreaRootPath) {
-		this.gridCacheAreaRootPath = Utilities.slashize(gridCacheAreaRootPath);
+		this.gridCacheAreaRootPath = StringUtilities.slashize(gridCacheAreaRootPath);
 	}
 
 	

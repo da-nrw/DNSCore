@@ -18,7 +18,12 @@
 */
 package de.uzk.hki.da.cb;
 
-import java.io.File;
+import static de.uzk.hki.da.core.C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION;
+import static de.uzk.hki.da.core.C.QUEUE_TO_CLIENT;
+import static de.uzk.hki.da.core.C.QUEUE_TO_SERVER;
+import static de.uzk.hki.da.core.C.WA_DATA;
+import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -28,7 +33,6 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
@@ -42,7 +46,6 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.utils.Utilities;
 
 /**
  * <li>Creates a new Representation and copies the contents of the submission into it.
@@ -53,6 +56,8 @@ import de.uzk.hki.da.utils.Utilities;
  * @author Daniel M. de Oliveira
  */
 public class RestructureAction extends AbstractAction{
+	
+	private static final String UNDERSCORE = "_";
 	
 	private FileFormatFacade fileFormatFacade;
 	private IngestGate ingestGate;
@@ -83,17 +88,12 @@ public class RestructureAction extends AbstractAction{
 				&&(! checkIfOnWorkAreaIsSpaceAvailabeForDeltaPackages(retrievePackagesHelper)))
 			return false;
 		
-		
-		
-		FileUtils.moveDirectory(o.getDataPath().toFile(), 
-				new File(o.getPath()+"/sipData"));
-		o.getDataPath().toFile().mkdirs();
 
-		try {
-			j.setRep_name(transduceDateFolderContentsToNewRep(o.getPath().toString()));
-		} catch (IOException e) {		
-			throw new RuntimeException("problems during creating new representation",e);
-		}
+		
+
+		
+		j.setRep_name(getNewRepName());
+		makeRepOfSIPContent(o.getPath(), o.getDataPath(), j.getRep_name());
 		
 		
 		if (o.isDelta())
@@ -117,7 +117,7 @@ public class RestructureAction extends AbstractAction{
 	private boolean checkIfOnWorkAreaIsSpaceAvailabeForDeltaPackages(RetrievePackagesHelper retrievePackagesHelper) {
 		try {
 			if (!getIngestGate().canHandle(retrievePackagesHelper.getObjectSize(o, j ))){
-				JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,o.getIdentifier() 
+				JmsMessage jms = new JmsMessage(QUEUE_TO_CLIENT,QUEUE_TO_SERVER,o.getIdentifier() 
 						+ " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
 				super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
 				logger.info("no disk space available at working resource. will not fetch new data.");
@@ -152,7 +152,7 @@ public class RestructureAction extends AbstractAction{
 			List<DAFile> dafiles = o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
 			scannedFiles = fileFormatFacade.identify(dafiles);
 		} catch (FileFormatException e) {
-			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
+			throw new RuntimeException(ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
 		} catch (IOException e) {
 			throw new SubsystemNotAvailableException(e);
 		}
@@ -163,43 +163,61 @@ public class RestructureAction extends AbstractAction{
 	
 	@Override
 	public void rollback() throws Exception {
-		if (! Utilities.isNotSet(j.getRep_name())) { // since we know that the SIP content has been moved successfully when rep_name is set.
-			FileUtils.moveDirectory(
-				Path.makeFile( o.getDataPath(), j.getRep_name()+"a" ), 
-				Path.makeFile( o.getPath(), "data_" ));
-			
-			FileUtils.deleteDirectory( o.getDataPath().toFile() );
-			
-			FileUtils.moveDirectory(
-				Path.makeFile( o.getPath(), "data_" ), 
-				Path.makeFile( o.getDataPath() ));
+		if (! isNotSet(j.getRep_name())) { // since we know that the SIP content has been moved successfully when rep_name is set.
+			revertToSIPContent(o.getPath(),o.getDataPath(),j.getRep_name());
 		} else 
 			throw new RuntimeException("REP NAME WAS NOT SET YET. ROLLBACK IS NOT POSSIBLE. MANUAL CLEANUP REQUIRED.");
 	}
 
 	
+	static void revertToSIPContent(Path objectPath, Path dataPath, String repName) throws IOException {
+		final String A = "a";
+		final String DATA_TMP = WA_DATA+UNDERSCORE;
+		if (isNotSet(repName)) throw new IllegalArgumentException("rep name not set");
+		if (isNotSet(dataPath)) throw new IllegalArgumentException("data path not set");
+		if (isNotSet(objectPath)) throw new IllegalArgumentException("object path not set");
+		
+		FileUtils.moveDirectory(
+			Path.makeFile( dataPath, repName + A ), 
+			Path.makeFile( objectPath, DATA_TMP ));
+			
+		FileUtils.deleteDirectory( dataPath.toFile() );
+			
+		FileUtils.moveDirectory(
+			Path.makeFile( objectPath, DATA_TMP ), 
+			Path.makeFile( dataPath ));
+	}
+	
+	static void makeRepOfSIPContent(Path objectPath, Path dataPath, String repName) throws IOException {
+		final String A = "a";
+		final String DATA_TMP = WA_DATA+UNDERSCORE;
+		if (isNotSet(repName)) throw new IllegalArgumentException("rep name not set");
+		if (isNotSet(dataPath)) throw new IllegalArgumentException("data path not set");
+		if (isNotSet(objectPath)) throw new IllegalArgumentException("object path not set");
+		
+		FileUtils.moveDirectory(dataPath.toFile(), 
+				Path.makeFile(objectPath,DATA_TMP));
+		
+		dataPath.toFile().mkdirs();
+		
+		FileUtils.moveDirectory(Path.makeFile(objectPath,DATA_TMP), 
+	    		Path.makeFile(dataPath, repName + A));
+	}
+	
+	
+	
 	
 	/**
-	 * Takes a SIP style package that contains its files directly under data and moves this files
-	 * to a newly created subfolder of data which is named like yyyy_MM_dd+HH_mm+a (java simple date format notation).
-	 * 
-	 * @author Daniel M. de Oliveira
 	 * @param j
 	 * @param physicalPathToAIP
 	 * @return the representations
 	 * @throws IOException 
 	 */
-	public String transduceDateFolderContentsToNewRep(String physicalPathToAIP) throws IOException{
-		logger.trace("createFirstRepresentation(job,"+physicalPathToAIP+")");
+	public String getNewRepName() throws IOException{
 		
 		Date dNow = new Date( );
 	    SimpleDateFormat ft = new SimpleDateFormat ("yyyy'_'MM'_'dd'+'HH'_'mm'_'ss'+'");
 	    String repName = ft.format(dNow);
-	    
-		
-	
-	    FileUtils.moveDirectory(new File(physicalPathToAIP+"/sipData"), 
-	    		new File(physicalPathToAIP+"/data/"+repName+"a"));
 	    
 	    return repName;
 	}

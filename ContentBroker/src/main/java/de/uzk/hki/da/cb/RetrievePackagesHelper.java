@@ -139,7 +139,6 @@ public class RetrievePackagesHelper {
 		File targetDir=new File(object.getPath() + "/loadedAIPs");
 		if (!targetDir.exists()) targetDir.mkdirs(); 
 		File targetFile = new File(targetDir.getAbsolutePath() +"/"+object.getIdentifier() + ".pack_" + pkg.getName() + ".tar");
-		if (targetFile.exists()) targetFile.delete(); 
 
 		logger.debug("Retrieving from lza to temp resource: "+data_name);
 		grid.get(targetFile,

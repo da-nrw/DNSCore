@@ -69,7 +69,6 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
 		o.setPackage_type(CB_PACKAGETYPE_EAD);
 		
-		
 		Map<String,String> edmMappings = new HashMap<String,String>();
 		edmMappings.put(CB_PACKAGETYPE_EAD, EAD_TO_EDM_XSL);
 		edmMappings.put(CB_PACKAGETYPE_METS,METS_MODS_TO_EDM_XSL);

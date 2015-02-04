@@ -39,7 +39,7 @@ import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.PropertiesUtils;
 
 /**
  * @author Daniel M. de Oliveira
@@ -114,7 +114,7 @@ public class AcceptanceTest {
 	
 		System.out.println("localnode: "+localNode.getName());
 		
-		Properties properties = Utilities.read(new File("conf/config.properties"));
+		Properties properties = PropertiesUtils.read(new File("conf/config.properties"));
 		instantiateGrid(properties);
 		if (gridFacade==null) throw new IllegalStateException("gridFacade could not be instantiated");
 		

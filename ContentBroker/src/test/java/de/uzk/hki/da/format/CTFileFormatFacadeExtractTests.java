@@ -25,8 +25,7 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -45,21 +44,18 @@ public class CTFileFormatFacadeExtractTests {
 	private static final JhoveMetadataExtractor metadataExtractor = new JhoveMetadataExtractor();
 	
 	@BeforeClass
-	public static void setUpBeforeClass() {
+	public static void setUpBeforeClass() throws IOException {
+		CTTestHelper.prepareWhiteBoxTest();
 		metadataExtractor.setCli(new CommandLineConnector());
+		if (!metadataExtractor.isConnectable()) fail();
 		fff.setMetadataExtractor(metadataExtractor);
 		fff.setFormatScanService(new FakeFormatScanService());
 	}
 	
 	
-	@Before
-	public void setUp() throws IOException {
-		
-		CTTestHelper.prepareWhiteBoxTest();
-	}
 	
-	@After
-	public void tearDown() throws IOException {
+	@AfterClass
+	public static void tearDownAfterClass() throws IOException {
 		CTTestHelper.cleanUpWhiteBoxTest();
 	}
 	

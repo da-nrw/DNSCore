@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
-import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /**
  * 
@@ -49,6 +49,8 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 	
 	private CommandLineConnector cli;
 	
+	private boolean connectabilityProved=false;
+	
 	
 	
 	/**
@@ -59,6 +61,9 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 	 * @throws FileNotFoundException 
 	 */
 	public void extract(File file, File extractedMetadata) throws ConnectionException, FileNotFoundException {
+		
+		if (!connectabilityProved) throw new IllegalStateException("Make sure you run isExecutable first.");
+		
 		if (cli==null) throw new IllegalStateException("cli not set");
 		if (!file.exists()) 
 			throw new FileNotFoundException("Missing file or directory: "+file);
@@ -70,7 +75,7 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		int retval=0;
 		try {
 			retval=execCMD(jhoveCmd(extractedMetadata, filePath));
-		}catch(RuntimeException possibleTimeOut) {
+		}catch(IOException possibleTimeOut) {
 			retval=1;
 		} 
 		if (retval==0) return;
@@ -80,7 +85,7 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		retval=0;
 		try {
 			retval=execCMD(jhoveCmdSkipWholeFileParsing(extractedMetadata, filePath));
-		}catch(RuntimeException posssibleTimeOut) {
+		}catch(IOException posssibleTimeOut) {
 			throw new ConnectionException("Call to JHOVE ended with possible timeout (the 2nd time already).");
 		}
 
@@ -94,7 +99,7 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 	private String makeFilePath(File file) {
 		String filePath;
 		filePath=file.getAbsolutePath();
-		if (Utilities.checkForWhitespace(filePath))
+		if (StringUtilities.checkForWhitespace(filePath))
 			filePath = "\"" + filePath + "\"";
 		return filePath;
 	}
@@ -115,14 +120,10 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 	}
 	
 	
-	private int execCMD(String cmd[]) throws ConnectionException {
+	private int execCMD(String cmd[]) throws ConnectionException, IOException {
 		ProcessInformation pi=null;
-		try {
-			pi = cli.runCmdSynchronously(cmd,
-	                new File(jhoveFolder),JHOVE_TIMEOUT);
-		}catch(IOException e) {
-			throw new RuntimeException("Call to JHOVE ended with possible timeout.");
-		}
+		pi = cli.runCmdSynchronously(cmd,
+                new File(jhoveFolder),JHOVE_TIMEOUT);
 		if (pi==null) {
 			throw new ConnectionException("Call to JHOVE terminated with empty ProcessInformation");
 		}
@@ -133,7 +134,7 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 	@Override
 	public boolean isConnectable() {
 		
-		System.out.print("CONNECTIVITY CHECK - StandardFileFormatFacade - JHOVE");
+		System.out.print("INFO: CHECKING - "+this.getClass().getName()+".isConnectable() ....");
 		ProcessInformation pi=null;
 		try {
 			pi = cli.runCmdSynchronously(new String[] {
@@ -144,6 +145,7 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		}
 		if (pi.getStdOut().split("\\(Rel")[0].equals("Jhove ")){
 			System.out.println(" .... OK");
+			connectabilityProved=true;
 			return true;
 		}else {
 			System.out.println(" .... FAIL");
