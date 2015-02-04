@@ -143,6 +143,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		clearNonpersistentObjectProperties(obj);
 		
 		obj.setObject_state(100);
+		obj.setLast_checked(new Date());
 		obj.setDate_modified(String.valueOf(new Date().getTime()));
 		obj.setStatic_nondisclosure_limit(j.getStatic_nondisclosure_limit());
 		obj.setDynamic_nondisclosure_limit(j.getDynamic_nondisclosure_limit());
