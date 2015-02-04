@@ -41,7 +41,7 @@ class QueueUtils {
 	 * @author Daniel M. de Oliveira
 	 *
 	 */
-	String createJob( daweb3.Object object, status, responsibleNodeName, additionalQuestion) {
+	String createJob( daweb3.Object object, String status, responsibleNodeName, additionalQuestion) {
 		if (object == null) throw new IllegalArgumentException ( "Object is not valid" )
 		if (responsibleNodeName == null) throw new IllegalArgumentException("responsibleNodeName must not be null")
 		object.setObject_state(50)
@@ -87,14 +87,13 @@ class QueueUtils {
 	 * @param status
 	 * @author Jens Peters
 	 */
-	String modifyJob (String id, newStatus, String additionalAnswer) {
+	String modifyJob (String id, String newStatus, String additionalAnswer) {
 		def queueEntryInstance = QueueEntry.get(Integer.parseInt(id))
 		if (queueEntryInstance) {
 			def status = queueEntryInstance.getStatus()
-			int state = newStatus.toInteger();
 			if (additionalAnswer!=null && additionalAnswer!="")
 			queueEntryInstance.answer = additionalAnswer
-			queueEntryInstance.status = newStatus
+			queueEntryInstance.setStatus(newStatus)
 			queueEntryInstance.modified = Math.round(new Date().getTime()/1000L)
 			def errorMsg = ""
 			if( !queueEntryInstance.save()  ) {

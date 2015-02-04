@@ -50,7 +50,10 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	
 	private GridFacade gridRoot;
 
-	public ArchiveReplicationCheckAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
+	public ArchiveReplicationCheckAction(){
+		SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
+		setKILLATEXIT(true);
+	}
 	
 	@Override
 	public void checkActionSpecificConfiguration() throws ConfigurationException {
@@ -58,9 +61,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	}
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-	}
+	public void checkSystemStatePreconditions() throws IllegalStateException {}
 
 	/**
 	 * @throws IOException 
@@ -68,7 +69,6 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	@Override
 	public
 	boolean implementation() throws IOException {
-		setKILLATEXIT(true);
 
 		StoragePolicy sp = new StoragePolicy(n);
 		sp.setMinNodes(preservationSystem.getMinRepls());
@@ -77,7 +77,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		}
 		while (!gridRoot.storagePolicyAchieved(
 				o.getContractor().getShort_name() + 
-				"/" + o.getIdentifier() + "/"+ o.getIdentifier() + ".pack_" + o.getLatestPackage().getName() + ".tar", 
+				"/" + o.getIdentifier() + "/"+ o.getIdentifier() + ".pack_" + o.getLatestPackage().getName() + C.FILE_EXTENSION_TAR, 
 				sp));
 		
 		prepareObjectForObjectDBStorage(o);

@@ -21,6 +21,8 @@ package de.uzk.hki.da.cb;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static de.uzk.hki.da.test.TC.*;
+import static de.uzk.hki.da.core.C.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,49 +32,45 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.test.TESTHelper;
-import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.util.Path;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class DeleteObjectActionTests {
+public class DeleteObjectActionTests extends ConcreteActionUnitTest{
 
-	private String workAreaRootPath = "src/test/resources/cb/DeleteObjectActionTests/";
-	private String ingestAreaRootPath = "src/test/resources/cb/DeleteObjectActionTests/ingest/";
-	private DeleteObjectAction action;
+	@ActionUnderTest
+	DeleteObjectAction action = new DeleteObjectAction();
+	
+	private Path WORK_AREA_ROOT_PATH = Path.make(TEST_ROOT_CB,"DeleteObjectAction");
+	private Path INGEST_AREA_ROOT_PATH = Path.make(TEST_ROOT_CB,"DeleteObjectAction/ingest");
 	
 	@Before
 	public void setUp() throws IOException{
-		new File(workAreaRootPath+"work/TEST/123/data").mkdirs();
-		new File(workAreaRootPath+"work/TEST/abc.txt").createNewFile();
-		new File(ingestAreaRootPath+"TEST/abc.txt").createNewFile();
+		Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/123/data").mkdirs();
+		Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/abc.txt").createNewFile();
+		Path.makeFile(INGEST_AREA_ROOT_PATH,"TEST/abc.txt").createNewFile();
+		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
+		n.setIngestAreaRootPath(INGEST_AREA_ROOT_PATH);
 	}
 	
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteDirectory(new File(workAreaRootPath+"work/TEST/123/data"));
-		new File(workAreaRootPath+"work/TEST/abc.txt").delete();
-		new File(ingestAreaRootPath+"TEST/abc.txt").delete();
+		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,"TEST/identifier/data"));
+		Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,"TEST/abc.txt").delete();
+		Path.makeFile(INGEST_AREA_ROOT_PATH,"TEST/abc.txt").delete();
 	}
 	
 	@Test
 	public void cleanWorkArea() throws FileNotFoundException, UserException, IOException{
-		Object o = TESTHelper.setUpObject("123", new RelativePath(workAreaRootPath));
-		o.getTransientNodeRef().setIngestAreaRootPath(new RelativePath(ingestAreaRootPath));
 		o.getLatestPackage().setContainerName("abc.txt");
-		
-		action = new DeleteObjectAction();
-		action.setObject(o);
 		action.implementation();
 		
-		assertFalse(new File(workAreaRootPath+"work/TEST/123/").exists());
-		assertFalse(new File(workAreaRootPath+"work/TEST/abc.txt").exists());
-		assertFalse(new File(ingestAreaRootPath+"TEST/abc.txt").exists());
+		assertFalse(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,"TEST/identifier/").exists());
+		assertFalse(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,"TEST/abc.txt").exists());
+		assertFalse(new File(INGEST_AREA_ROOT_PATH+"TEST/abc.txt").exists());
 	}
 	
 	
@@ -85,20 +83,14 @@ public class DeleteObjectActionTests {
 	 */
 	@Test
 	public void testSetDeleteObjectFlag() throws FileNotFoundException, UserException, IOException{
-		action = new DeleteObjectAction();
-		action.setObject(TESTHelper.setUpObject("123", new RelativePath(workAreaRootPath), new RelativePath(ingestAreaRootPath),new RelativePath(ingestAreaRootPath)));
 		action.implementation();
-
 		assertTrue(action.isDELETEOBJECT());
 	}
 	
 	@Test
 	public void testSetDeletePackage() throws FileNotFoundException, UserException, IOException{
-		action = new DeleteObjectAction();
-		Object o = TESTHelper.setUpObject("123", new RelativePath(workAreaRootPath), new RelativePath(ingestAreaRootPath), new RelativePath(ingestAreaRootPath));
 		Package p2 = new Package(); p2.setName("2"); p2.setContainerName("testcontainer.tgz");
 		o.getPackages().add(p2);
-		action.setObject(o);
 		action.implementation();
 
 		assertFalse(action.isDELETEOBJECT());

@@ -29,6 +29,7 @@ import de.uzk.hki.da.action.ActionRegistryTests;
 import de.uzk.hki.da.cb.ArchiveReplicationActionTests;
 import de.uzk.hki.da.cb.BuildAIPActionTests;
 import de.uzk.hki.da.cb.CheckFormatsActionTest;
+import de.uzk.hki.da.cb.CleanWorkAreaActionTests;
 import de.uzk.hki.da.cb.ConversionInstructionsBuilderTests;
 import de.uzk.hki.da.cb.ConvertActionTests;
 import de.uzk.hki.da.cb.ConvertCheckActionTests;
@@ -37,7 +38,6 @@ import de.uzk.hki.da.cb.CreatePremisActionTests;
 import de.uzk.hki.da.cb.DeleteObjectActionTests;
 import de.uzk.hki.da.cb.FetchPIPsActionTest;
 import de.uzk.hki.da.cb.IndexMetadataActionTests;
-import de.uzk.hki.da.cb.ObjectToWorkAreaAction;
 import de.uzk.hki.da.cb.ObjectToWorkAreaActionTests;
 import de.uzk.hki.da.cb.PostRetrievalActionTest;
 import de.uzk.hki.da.cb.PrepareSendToPresenterActionTests;
@@ -170,7 +170,8 @@ import de.uzk.hki.da.util.PathTest;
 	JhoveMetadataExtractorTests.class,
 	FederationExecutorTest.class,
 	IndexMetadataActionTests.class,
-	ObjectToWorkAreaActionTests.class
+	ObjectToWorkAreaActionTests.class,
+	CleanWorkAreaActionTests.class
 })
 public class SimpleSuite {
 

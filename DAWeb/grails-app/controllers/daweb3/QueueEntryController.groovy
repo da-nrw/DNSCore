@@ -232,7 +232,7 @@ class QueueEntryController {
 	@Secured(['ROLE_NODEADMIN'])
 	def queueRecover() {
 		try {
-			def res = que.modifyJob(params.id, 600)
+			def res = que.modifyJob(params.id, "600")
 			flash.message = "Paket zurückgesetzt! " + res 
 		} catch (Exception e) {
 				log.error("Recovery failed for " + params.id + " " + e.printStackTrace())
@@ -250,7 +250,7 @@ class QueueEntryController {
 			def modifyIds = params.list("modifyIds");
 					def msg = ""
 					modifyIds.each {
-						que.modifyJob(it, 600)
+						que.modifyJob(it, "600")
 					}
 					flash.message = " (" +modifyIds.size() + ") Pakete für die Rücksetzung des gesamten Workflows vorgesehen! "
 			
@@ -268,7 +268,7 @@ class QueueEntryController {
 	@Secured(['ROLE_NODEADMIN'])
 	def queueDelete() {
 		try {
-			def res = que.modifyJob(params.id, 800)
+			def res = que.modifyJob(params.id, "800")
 			flash.message = "Paket zur Löschung vorgesehen! " + res
 		} catch (Exception e) {
 			log.error("Löschung aus Workflow fehlgeschlagen für " + params.id + " " + e.printStackTrace())
@@ -288,7 +288,7 @@ class QueueEntryController {
 			
 					def msg = ""
 					modifyIds.each {
-						que.modifyJob(it, 800)
+						que.modifyJob(it, "800")
 					}
 					flash.message = " (" +modifyIds.size() + ") Pakete zur Löschung vorgesehen! "
 			
@@ -331,7 +331,7 @@ class QueueEntryController {
 	def performMigrationRequestYes() {
 		
 		try {
-			def res = que.modifyJob(params.id, 640, "YES")
+			def res = que.modifyJob(params.id, "640", "YES")
 			flash.message = "Antwort Ja! " + res
 		} catch (Exception e) {
 			log.error(params.id + " " + e.printStackTrace())
@@ -346,7 +346,7 @@ class QueueEntryController {
 	 */
 	def performMigrationRequestNo() {
 		try {
-			def res = que.modifyJob(params.id, 640, "NO")
+			def res = que.modifyJob(params.id, "640", "NO")
 			flash.message = "Antwort Nein! " + res
 		} catch (Exception e) {
 			log.error(params.id + " " + e.printStackTrace())

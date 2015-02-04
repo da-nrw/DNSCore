@@ -19,58 +19,50 @@
 
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.cb.ArchiveReplicationCheckAction.*;
+
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.util.ConfigurationException;
 
+/**
+ * @author ???
+ */
 public class CleanWorkAreaAction extends AbstractAction{
 
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
+	public CleanWorkAreaAction() {setKILLATEXIT(true);}
 	
 	@Override
 	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
-		
 	}
 
+	
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-		
-	}
+	public void checkSystemStatePreconditions() throws IllegalStateException {}
 
+	
 	@Override
-	public boolean implementation() {
-		setKILLATEXIT(true);
+	public boolean implementation() throws IOException {
 		
 		// to prevent leftover files from irods collection removal we delete the dirs on the filesystem first.
-		try {
-			FileUtils.deleteDirectory(o.getPath().toFile());
-		} catch (IOException e) {
-			throw new RuntimeException("Exception while deleting \""+
-					o.getPath()+"\"",e);
-		}
+		FileUtils.deleteDirectory(o.getPath().toFile());
 		
-		o.getDocuments().clear();
-		o.getLatestPackage().getFiles().clear();
-		o.getLatestPackage().getEvents().clear();
-		
-		toCreate = ArchiveReplicationCheckAction.createPublicationJob(j,o,preservationSystem.getPresServer());
+		clearNonpersistentObjectProperties(o);
+		toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());
 		return true;
 	}
 	
 	@Override
 	public void rollback() throws Exception {
-		throw new NotImplementedException("No rollback implemented for this action");
+		toCreate=null;
 	}
-
 
 	
 	public DistributedConversionAdapter getDistributedConversionAdapter() {

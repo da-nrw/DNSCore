@@ -158,7 +158,7 @@ public abstract class AbstractAction implements Runnable {
 		// The object logging must be unset in order to prevent another appender to start
 		// its lifecycle before the current one has stop its lifecycle.
 		unsetObjectLogging(); 
-		upateObjectAndJob(o, j, DELETEOBJECT, KILLATEXIT, toCreate);
+		upateObjectAndJob(o, j, DELETEOBJECT, KILLATEXIT, getToCreate());
 
 		actionMap.deregisterAction(this); 
 	}
@@ -527,8 +527,8 @@ public abstract class AbstractAction implements Runnable {
 	public void setActionFactory(ActionFactory actionFactory) {
 		this.actionFactory = actionFactory;
 	}
-	
-	
-	
-	
+
+	public Job getToCreate() {
+		return toCreate;
+	}
 }
