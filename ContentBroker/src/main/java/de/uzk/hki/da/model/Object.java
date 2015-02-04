@@ -702,10 +702,21 @@ public class Object {
 	public boolean grantsPublicationRight(Audience audience) {
 			
 		for (PublicationRight publRight : rights.getPublicationRights()) {
-			if (publRight.getAudience().equals(audience)
-					&& publRight.getLawID() == null
-					&& (publRight.getStartDate() == null ||
-						publRight.getStartDate().before(new Date()))) {
+			if (! publRight.getAudience().equals(audience)) continue;
+
+			logger.debug("comparing rights for audience "+audience);
+			logger.debug("date now: "+new Date());
+			if (publRight.getStartDate()!=null) 
+			{ 
+				logger.debug("date from rights: "+publRight.getStartDate());
+				logger.debug("publright date before now "+publRight.getStartDate().before(new Date()));
+			}
+			
+			if (publRight.getLawID() == null
+				&& (publRight.getStartDate() == null ||
+				publRight.getStartDate().before(new Date()))
+				) {
+				
 				return true;
 			}
 		}

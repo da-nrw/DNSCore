@@ -151,6 +151,9 @@ public class C {
 	public static final String WORKFLOW_STATUS_START___INGEST_UNPACK_ACTION = "110";
 	public static final String WORKFLOW_STATUS_START___FETCH_PIPS_ACTION = "540";
 	public static final String WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION = "645";
+	public static final int PUBLISHEDFLAG_NO_PUBLICATION = 0;
+	public static final int PUBLISHEDFLAG_INSTITUTION = 2;
+	public static final int PUBLISHEDFLAG_PUBLIC = 1;
 	
 	
 	

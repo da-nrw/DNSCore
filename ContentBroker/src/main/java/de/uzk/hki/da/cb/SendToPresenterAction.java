@@ -73,7 +73,7 @@ public class SendToPresenterAction extends AbstractAction {
 	private static final String OPENARCHIVES_OAI_IDENTIFIER = "http://www.openarchives.org/OAI/2.0/identifier";
 	private static final String MEMBER = "info:fedora/fedora-system:def/relations-external#isMemberOf";
 	private static final String MEMBER_COLLECTION = "info:fedora/fedora-system:def/relations-external#isMemberOfCollection";
-
+	
 	private RepositoryFacade repositoryFacade;
 	private Map<String,String> viewerUrls;
 	private Set<String> fileFilter;
@@ -121,17 +121,25 @@ public class SendToPresenterAction extends AbstractAction {
 		purgeObjectsIfExist();
 		buildMapWithOriginalFilenamesForLabeling();
 		
+		
+		
 		boolean publicPIPSuccessfullyIngested = false;
 		boolean institutionPIPSuccessfullyIngested = false;
 		try {
 			
-			if (makePIPFolder(WA_PUBLIC).toFile().exists()) 
-				publicPIPSuccessfullyIngested = publishPackage(
+			if (pipFolder(WA_PUBLIC).exists()) {
+				publishPackage(
 					WA_PUBLIC,true,preservationSystem.getOpenCollectionName());
+				publicPIPSuccessfullyIngested=true;
+				logger.debug("publ pip ingested");
+			}
 			
-			if (makePIPFolder(WA_INSTITUTION).toFile().exists()) 
-				institutionPIPSuccessfullyIngested = publishPackage(
-					WA_INSTITUTION,false,preservationSystem.getClosedCollectionName());	
+			if (pipFolder(WA_INSTITUTION).exists()) { 
+				publishPackage(
+					WA_INSTITUTION,false,preservationSystem.getClosedCollectionName());
+				institutionPIPSuccessfullyIngested = true;
+				logger.debug("inst pip ingested");
+			}
 			
 		} catch (RepositoryException e) {
 			throw new RuntimeException(e);
@@ -166,12 +174,14 @@ public class SendToPresenterAction extends AbstractAction {
 				pipType,o.getContractor().getShort_name(),o.getIdentifier(),fileName+FILE_EXTENSION_XML);
 	}
 	
-	private Path makePIPFolder(String pipType) {
+	private Path pipFolderPath(String pipType) {
 		return Path.make(n.getWorkAreaRootPath(),WA_PIPS,
 			pipType,o.getContractor().getShort_name(),o.getIdentifier());
 	}
 	
-	
+	private File pipFolder(String pipType) {
+		return pipFolderPath(pipType).toFile();
+	}
 	
 	
 
@@ -182,7 +192,7 @@ public class SendToPresenterAction extends AbstractAction {
 	 * @throws IOException 
 	 * @throws RepositoryException 
 	 */
-	private boolean publishPackage(String pipType,boolean checkSets, String collectionName) throws IOException, RepositoryException {
+	private void publishPackage(String pipType,boolean checkSets, String collectionName) throws IOException, RepositoryException {
 		
 		String pkgType = o.getPackage_type(); 
 		if (!viewerUrls.containsKey(pkgType))
@@ -193,10 +203,9 @@ public class SendToPresenterAction extends AbstractAction {
 				viewerUrls.get(pkgType), 
 				makeMetadataFile("epicur",pipType),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
 		
-		boolean packageIngested=ingestPackage(o.getUrn(), o.getIdentifier(), collectionName, makePIPFolder(pipType), 
+		ingestPackage(o.getUrn(), o.getIdentifier(), collectionName, pipFolderPath(pipType), 
 				o.getContractor().getShort_name(), pkgType, makeSets(checkSets));
 		addRelsExtRelationships(collectionName,makeSets(checkSets));
-		return packageIngested;
 	}
 	
 	
@@ -296,8 +305,8 @@ public class SendToPresenterAction extends AbstractAction {
 		
 		int publishedFlag = 0;
 
-		if (publicPIPSuccesfullyIngested) publishedFlag += 1;
-		if (institutionPIPSuccessfullyIngested) publishedFlag += 2;
+		if (publicPIPSuccesfullyIngested) publishedFlag += PUBLISHEDFLAG_PUBLIC;
+		if (institutionPIPSuccessfullyIngested) publishedFlag += PUBLISHEDFLAG_INSTITUTION;
 
 		o.setPublished_flag(publishedFlag);
 		logger.debug("Set published flag of object to '{}'", o.getPublished_flag());
@@ -316,7 +325,7 @@ public class SendToPresenterAction extends AbstractAction {
 	 * @throws RepositoryException
 	 * @throws IOException
 	 */
-	private boolean ingestPackage(String urn, String objectId, String collection,
+	private void ingestPackage(String urn, String objectId, String collection,
 			Path packagePath, String contractorShortName, String packageType,
 			String[] sets) throws RepositoryException, IOException {
 		
@@ -329,17 +338,17 @@ public class SendToPresenterAction extends AbstractAction {
 			repositoryFacade.createObject(objectId, collection, contractorShortName);
 		}			
 		ingestDirectoryContentAsDatastreamsIntoRepository(objectId, collection, pip, packagePath, packageType);
-		
-		
-		
-		if (! Path.makeFile(packagePath,METADATA_STREAM_ID_DC+FILE_EXTENSION_XML).exists()) {
-			return false;
-		} else {
+		rewriteDCIfExists(urn, packagePath);
+	}
+
+
+	private void rewriteDCIfExists(String urn, Path packagePath)
+			throws IOException {
+		if (Path.makeFile(packagePath,METADATA_STREAM_ID_DC+FILE_EXTENSION_XML).exists()) {
 			String updatedDcContent = readDCAndReplaceURN(urn, packagePath);
 			writeDCBackToPIP(packagePath, updatedDcContent);
 			logger.info("Successfully added identifiers to DC datastream");
 		}
-		return true;
 	}
 
 
