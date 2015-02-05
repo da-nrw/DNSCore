@@ -19,6 +19,10 @@
 
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.core.C.ENCODING_UTF_8;
+import static de.uzk.hki.da.core.C.METADATA_STREAM_ID_EDM;
+import static de.uzk.hki.da.core.C.WA_PUBLIC;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,11 +32,9 @@ import java.util.Set;
 import org.apache.commons.io.IOUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
-import static de.uzk.hki.da.core.C.*;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
-import de.uzk.hki.da.util.Path;
 
 /**
  * This action fetches EDM/RDF-Metadata from the public PIP,  
@@ -71,8 +73,7 @@ public class IndexMetadataAction extends AbstractAction {
 			throw new IllegalStateException("testContractors not set");
 		
 		
-		edmFile = Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),
-				o.getIdentifier(),METADATA_STREAM_ID_EDM+FILE_EXTENSION_XML);
+		edmFile = wa.metadataStream(WA_PUBLIC, METADATA_STREAM_ID_EDM);
 		if (! edmFile.exists())
 			throw new IllegalStateException("Missing file: "+edmFile);
 

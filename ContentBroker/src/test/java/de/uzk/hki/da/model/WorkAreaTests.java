@@ -2,7 +2,7 @@
  DA-NRW Software Suite | ContentBroker
  Copyright (C) 2014 Historisch-Kulturwissenschaftliche Informationsverarbeitung
  Universität zu Köln
- Copyright (C) 2015 LVR-Infokom
+ Copyright (C) 2015 LVR-InfoKom
  Landschaftsverband Rheinland
 
 
@@ -39,13 +39,14 @@ import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.util.RelativePath;
 
 /**
  * @author Daniel M. de Oliveira
  */
 public class WorkAreaTests {
-
 	
+	private static final String UNDERSCORE = "_";
 	private static final Path WORK_AREA_ROOT_PATH = Path.make(TC.TEST_ROOT_MODEL,"WorkArea");
 	private static final Path WORK_AREA_ROOT_PATH_TMP = Path.make(TC.TEST_ROOT_MODEL,"WorkArea_");
 	Object o = new Object();
@@ -58,11 +59,13 @@ public class WorkAreaTests {
 		
 		o.setIdentifier(TC.IDENTIFIER);
 		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
-		
 		User c = new User();
 		c.setShort_name(TEST_USER_SHORT_NAME);
 		o.setContractor(c);
-
+		Package pkg = new Package();
+		pkg.setName("1");
+		pkg.setId(1);
+		o.getPackages().add(pkg);
 		wa = new WorkArea(n,o);
 	}
 	
@@ -71,51 +74,42 @@ public class WorkAreaTests {
 		FileUtils.deleteDirectory(WORK_AREA_ROOT_PATH.toFile());
 	}
 	
-	
-
-	@Test
-	public void waDoesNotExist() throws IOException {
-		FileUtils.deleteDirectory(WORK_AREA_ROOT_PATH.toFile());
-		try {
-			new WorkArea(n,o);
-			fail();
-		}catch(Exception expected) {}
-	}
-	
-	@Test
-	public void missingContractorDirPublicPIPs() throws IOException {
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name()));
-		try {
-			new WorkArea(n,o);
-			fail();
-		}catch(Exception expected) {}
-	}
-	
-	@Test
-	public void missingContractorDirInstitutionPIPs() throws IOException {
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WA_PIPS,WA_INSTITUTION,o.getContractor().getShort_name()));
-		try {
-			new WorkArea(n,o);
-			fail();
-		}catch(Exception expected) {}	
-	}
-	
-	@Test
-	public void missingWorkingDirContractorObjects() throws IOException {
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,o.getContractor().getShort_name()));
-		try {
-			new WorkArea(n,o);
-			fail();
-		}catch(Exception expected) {}
-	}
-	
-	
 	@Test
 	public void pipFolder() {
 		Path rp = wa.pipFolder(WA_PUBLIC);
 		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),o.getIdentifier()),rp);
 		Path ri = wa.pipFolder(WA_INSTITUTION);
 		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WA_PIPS,WA_INSTITUTION,o.getContractor().getShort_name(),o.getIdentifier()),ri);
+	}
+	
+	@Test
+	public void pipSourceFolderPath() {
+		Path rp = wa.pipSourceFolderPath(WA_PUBLIC);
+		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WA_PIPS,WA_PUBLIC,
+				o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId()),rp);
+		Path ri = wa.pipSourceFolderPath(WA_INSTITUTION);
+		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WA_PIPS,WA_INSTITUTION,
+				o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId()),ri);
+	}
+	
+	@Test
+	public void pipSourceFolder() {
+		File rp = wa.pipSourceFolder(WA_PUBLIC);
+		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WA_PIPS,WA_PUBLIC,
+				o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId()).toFile(),rp);
+		File ri = wa.pipSourceFolder(WA_INSTITUTION);
+		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WA_PIPS,WA_INSTITUTION,
+				o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId()).toFile(),ri);
+	}
+	
+	@Test
+	public void pipSourceFolderRelativePath() {
+		Path rp = wa.pipSourceFolderRelativePath(WA_PUBLIC);
+		assertEquals(new RelativePath(WA_PIPS,WA_PUBLIC,
+				o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId()),rp);
+		Path ri = wa.pipSourceFolderRelativePath(WA_INSTITUTION);
+		assertEquals(new RelativePath(WA_PIPS,WA_INSTITUTION,
+				o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId()),ri);
 	}
 	
 	@Test

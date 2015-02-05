@@ -41,6 +41,7 @@ import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.util.Path;
 
 
 
@@ -100,12 +101,14 @@ public class ActionFactoryTests {
 		Package p = new Package(); p.setName("1"); p.setContainerName("cname");
 		o.getPackages().add(p);
 		j.setObject(o);
+		Node n= new Node();
+		n.setWorkAreaRootPath(Path.make("/tmp"));
+		factory.setLocalNode(n);
 		
 		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
 			thenReturn(j);
 		
 		factory.setQueueConnector(queueConnector);	
-		factory.setLocalNode(new Node());
 		
 		AbstractAction a = factory.buildNextAction();
 		assertNotNull(a);

@@ -41,6 +41,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.service.JmsMessage;
@@ -100,6 +101,7 @@ public abstract class AbstractAction implements Runnable {
 	
 	protected Logger logger = LoggerFactory.getLogger( this.getClass().getName() );
 	private Logger baseLogger = LoggerFactory.getLogger("de.uzk.hki.da.action.AbstractAction"); // contentbrokerlog
+	protected WorkArea wa;
 	
 	
 	/**
@@ -143,6 +145,7 @@ public abstract class AbstractAction implements Runnable {
 	public void run() {
 		
 		if (!performCommonPreparationsForActionExecution()) return;
+		
 		setupObjectLogging(o.getIdentifier());
 		
 		synchronizeObjectDatabaseAndFileSystemState();
@@ -527,5 +530,13 @@ public abstract class AbstractAction implements Runnable {
 
 	public Job getToCreate() {
 		return toCreate;
+	}
+
+	public WorkArea getWa() {
+		return wa;
+	}
+
+	public void setWorkArea(WorkArea wa) {
+		this.wa = wa;
 	}
 }

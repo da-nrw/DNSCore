@@ -37,6 +37,7 @@ import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.SubformatIdentificationStrategyPuidMapping;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.util.ConfigurationException;
@@ -105,6 +106,7 @@ public class ActionFactory implements ApplicationContextAware {
 		action.setActionFactory(this);
 		action.setJob(job);
 		action.setPSystem(getPreservationSystem());
+		action.setWorkArea(new WorkArea(localNode,job.getObject()));
 	}
 	
 	private void checkSystemState(AbstractAction action) {

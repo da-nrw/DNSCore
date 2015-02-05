@@ -19,10 +19,7 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.METADATA_STREAM_ID_EDM;
-import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
-import static de.uzk.hki.da.core.C.WA_PIPS;
-import static de.uzk.hki.da.core.C.WA_PUBLIC;
+import static de.uzk.hki.da.core.C.*;
 import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 
 import java.io.File;
@@ -41,7 +38,6 @@ import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
-import de.uzk.hki.da.util.Path;
 
 /**
  * This action transforms the primary metadata of an
@@ -100,7 +96,7 @@ public class CreateEDMAction extends AbstractAction {
 			throw new FileNotFoundException("Missing file: "+xsltTransformationFile);
 
 		
-		File metadataSourceFile = makeMetadataFile(o.getPackage_type(),WA_PUBLIC);
+		File metadataSourceFile = getWa().metadataStream(WA_PUBLIC,o.getPackage_type());
 		if (!metadataSourceFile.exists())
 			throw new RuntimeException("Missing file in public PIP: "+o.getPackage_type()+FILE_EXTENSION_XML);
 		
@@ -113,14 +109,10 @@ public class CreateEDMAction extends AbstractAction {
 	
 	
 	
-	private File makeMetadataFile(String packageType,String pipType) {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier(),packageType+FILE_EXTENSION_XML);
-	}
-	
 	
 	private File generateEDM(String xsltTransformationFile,File metadataSourceFile) throws FileNotFoundException {
 		
-		File edm = makeMetadataFile(METADATA_STREAM_ID_EDM,WA_PUBLIC); 
+		File edm = getWa().metadataStream(WA_PUBLIC,METADATA_STREAM_ID_EDM); 
 		
 		String edmResult = generateEDM(o.getIdentifier(), xsltTransformationFile, new FileInputStream(metadataSourceFile));
 		PrintWriter out = null;

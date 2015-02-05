@@ -127,14 +127,14 @@ public class SendToPresenterAction extends AbstractAction {
 		boolean institutionPIPSuccessfullyIngested = false;
 		try {
 			
-			if (pipFolder(WA_PUBLIC).exists()) {
+			if (wa.pipFolder(WA_PUBLIC).toFile().exists()) {
 				publishPackage(
 					WA_PUBLIC,true,preservationSystem.getOpenCollectionName());
 				publicPIPSuccessfullyIngested=true;
 				logger.debug("publ pip ingested");
 			}
 			
-			if (pipFolder(WA_INSTITUTION).exists()) { 
+			if (wa.pipFolder(WA_INSTITUTION).toFile().exists()) { 
 				publishPackage(
 					WA_INSTITUTION,false,preservationSystem.getClosedCollectionName());
 				institutionPIPSuccessfullyIngested = true;
@@ -163,25 +163,12 @@ public class SendToPresenterAction extends AbstractAction {
 
 	private void deleteXepicur() {
 		
-		makeMetadataFile(METADATA_STREAM_ID_EPICUR,WA_INSTITUTION).delete();
-		makeMetadataFile(METADATA_STREAM_ID_EPICUR,WA_PUBLIC).delete();
+		wa.metadataStream(WA_INSTITUTION,METADATA_STREAM_ID_EPICUR).delete();
+		wa.metadataStream(WA_PUBLIC,METADATA_STREAM_ID_EPICUR).delete();
 	}
 	
 	
 	
-	private File makeMetadataFile(String fileName,String pipType) {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,
-				pipType,o.getContractor().getShort_name(),o.getIdentifier(),fileName+FILE_EXTENSION_XML);
-	}
-	
-	private Path pipFolderPath(String pipType) {
-		return Path.make(n.getWorkAreaRootPath(),WA_PIPS,
-			pipType,o.getContractor().getShort_name(),o.getIdentifier());
-	}
-	
-	private File pipFolder(String pipType) {
-		return pipFolderPath(pipType).toFile();
-	}
 	
 	
 
@@ -201,9 +188,9 @@ public class SendToPresenterAction extends AbstractAction {
 		XepicurWriter.createXepicur(
 				o.getIdentifier(), pkgType, 
 				viewerUrls.get(pkgType), 
-				makeMetadataFile("epicur",pipType),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
+				wa.metadataStream(pipType,"epicur"),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
 		
-		ingestPackage(o.getUrn(), o.getIdentifier(), collectionName, pipFolderPath(pipType), 
+		ingestPackage(o.getUrn(), o.getIdentifier(), collectionName, wa.pipFolder(pipType), 
 				o.getContractor().getShort_name(), pkgType, makeSets(checkSets));
 		addRelsExtRelationships(collectionName,makeSets(checkSets));
 	}
