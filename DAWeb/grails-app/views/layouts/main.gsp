@@ -36,7 +36,7 @@
 		</div>
 		<div align="center">
 		<div class="footer" id="page-footer" role="contentinfo"><g:meta name="app.name"/> 
-		Build: <g:meta name="app.version.buildNumber"/>, @Historisch-Kulturwissenschaftliche Informationsverarbeitung 2011-2014. 2014 LVR-InfoKom
+		Build: <g:meta name="app.version.buildNumber"/>, LVR-InfoKom. HKI (Universität zu Köln) 2011-2014. 
 			<g:if test="${grailsApplication.config.provider.logo}">
 			<img src="${resource(dir: 'images', file: grailsApplication.config.provider.logo)}" alt="Provider-Logo"/>
 			</g:if>
