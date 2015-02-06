@@ -75,11 +75,6 @@ public class RestructureAction extends AbstractAction{
 	}
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-	}
-
-	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException, SubsystemNotAvailableException {
 		

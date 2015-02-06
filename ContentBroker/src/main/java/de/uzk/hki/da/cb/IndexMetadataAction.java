@@ -59,13 +59,14 @@ public class IndexMetadataAction extends AbstractAction {
 	private String indexName;
 	private File edmFile;
 	
+	public IndexMetadataAction() {setKILLATEXIT(true);}
+	
 	@Override
 	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (getRepositoryFacade() == null) 
 			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
 	}
 
-	@Override
 	public void checkSystemStatePreconditions() throws IllegalStateException {
 		if (indexName == null) 
 			throw new IllegalStateException("Index name not set. Make sure the action is configured properly");
@@ -81,7 +82,7 @@ public class IndexMetadataAction extends AbstractAction {
 
 	@Override
 	public boolean implementation() throws RepositoryException, IOException {
-		setKILLATEXIT(true);
+		checkSystemStatePreconditions();
 		
 		String edmContent;
 		InputStream metadataStream  = null;

@@ -48,6 +48,11 @@ Jeder Status, der mit einer Eins endet, kennzeichnet einen Fehler in der Verarbe
 
 Die Zwei am Ende bedeutet, dass das Objekt gerade von der aktuell aktiven Action bearbeitet wird. Je nach Größe und Komplexität des Pakets kann dieser Prozess einige Zeit dauern. 
 
+#### xx3
+
+Die drei am Ende bedeutet, dass ein Rollback nicht durchgeführt werden konnte. Dies kann der Fall sein, wenn er nicht implementiert ist, oder aber wenn Fehler während der Rollbackprozedur auftreten.
+Zwischen 123 und 323 kann der Administrator das Objekt per Button "Gesamten workflow zurücksetzen". Oder er kann das Objekt löschen. 
+
 #### xx4
 
 Die Vier am Ende des Staus bedeutet einen Userfehler. Der User bekommt in diesem Fall eine Email mit der entsprechenden Exception aus dem Object-Logfile. Darüber hinaus erscheint in der DAWeb neben dem Fehlerstatus ein neuer Button. 
@@ -57,6 +62,10 @@ Die Vier am Ende des Staus bedeutet einen Userfehler. Der User bekommt in diesem
 Das Betätigen des Buttons vom Admin führt zur Löschung des Objekts sowohl aus der Datenbank als auch vom Speicher. Der Orig_name kann somit wieder verwendet werden.
 
 Sollte es sich beim eingelieferten Paket um ein Delta handeln, wird nur das neuste Paket gelöscht. Das Originalobjekt bleibt erhalten.
+
+#### xx5 
+
+Eine fünf am Ende bedeutet, dass ein kritischer Fehler aufgetreten ist, der nicht behoben werden kann. Im Falle solcher Fehler bitten wir Nutzer der Software, sich direkt an die Entwickler zu wenden.
 
 ### Rollback
 

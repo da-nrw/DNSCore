@@ -120,11 +120,6 @@ public class RegisterURNAction extends AbstractAction {
 	}
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		if (preservationSystem.getUrnNameSpace()==null) throw new IllegalStateException("URN NameSpace parameter not set!");
-	}
-
-	@Override
 	public boolean implementation() {
 		
 		if (o.isDelta())

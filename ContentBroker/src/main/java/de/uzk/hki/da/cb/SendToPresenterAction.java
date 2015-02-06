@@ -89,7 +89,6 @@ public class SendToPresenterAction extends AbstractAction {
 	}
 
 
-	@Override
 	public void checkSystemStatePreconditions() throws IllegalStateException {
 		if (viewerUrls == null)
 			throw new IllegalStateException("viewerUrls is not set.");
@@ -117,7 +116,9 @@ public class SendToPresenterAction extends AbstractAction {
 	 */
 	@Override
 	public boolean implementation() throws IOException {
-
+		checkSystemStatePreconditions();
+		
+		
 		purgeObjectsIfExist();
 		buildMapWithOriginalFilenamesForLabeling();
 		

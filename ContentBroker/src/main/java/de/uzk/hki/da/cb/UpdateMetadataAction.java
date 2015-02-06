@@ -103,11 +103,6 @@ public class UpdateMetadataAction extends AbstractAction {
 	}
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-	}
-
-	@Override
 	public boolean implementation() throws IOException, JDOMException, ParserConfigurationException, SAXException {
 		
 		logger.debug("UpdateMetadataAction ...");

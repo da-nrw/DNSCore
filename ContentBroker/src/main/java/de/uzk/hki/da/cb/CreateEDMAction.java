@@ -67,14 +67,8 @@ public class CreateEDMAction extends AbstractAction {
 
 
 
-	@Override
 	public void checkSystemStatePreconditions() throws IllegalStateException {
-		if (isNotSet(preservationSystem.getUrisCho())) 
-			throw new IllegalStateException("missing choBaseUri");
-		if (isNotSet(preservationSystem.getUrisAggr())) 
-			throw new IllegalStateException("missing aggrBaseUri");
-		if (isNotSet(preservationSystem.getUrisLocal())) 
-			throw new IllegalStateException("localBaseUri not set");
+		
 		if (edmMappings == null)
 			throw new IllegalStateException("edmMappings not set.");
 		for (String filePath:edmMappings.values())
@@ -88,6 +82,8 @@ public class CreateEDMAction extends AbstractAction {
 
 	@Override
 	public boolean implementation() throws IOException, RepositoryException {
+		checkSystemStatePreconditions();
+		
 		
 		String xsltTransformationFile = getEdmMappings().get(o.getPackage_type());
 		if (xsltTransformationFile == null)

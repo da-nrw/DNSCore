@@ -45,10 +45,6 @@ public class CleanWorkAreaAction extends AbstractAction{
 
 	
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {}
-
-	
-	@Override
 	public boolean implementation() throws IOException {
 		
 		// to prevent leftover files from irods collection removal we delete the dirs on the filesystem first.

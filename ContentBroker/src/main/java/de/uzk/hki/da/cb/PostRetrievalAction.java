@@ -45,11 +45,6 @@ public class PostRetrievalAction extends AbstractAction {
 	}
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-	}
-
-	@Override
 	public boolean implementation() {
 		setKILLATEXIT(true);
 		

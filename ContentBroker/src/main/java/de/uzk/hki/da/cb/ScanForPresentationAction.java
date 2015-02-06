@@ -58,11 +58,6 @@ public class ScanForPresentationAction extends AbstractAction{
 	}
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-	}
-
-	@Override
 	public boolean implementation() throws SubsystemNotAvailableException{
 		
 		List<? extends FileWithFileFormat> fffl=null;

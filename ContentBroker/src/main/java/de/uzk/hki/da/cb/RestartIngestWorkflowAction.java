@@ -58,10 +58,6 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 
 	
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {}
-
-	
-	@Override
 	public boolean implementation() throws IOException {
 
 		if (!o.isDelta())

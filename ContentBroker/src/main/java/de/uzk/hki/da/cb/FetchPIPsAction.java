@@ -58,13 +58,6 @@ public class FetchPIPsAction extends AbstractAction {
 		if (distributedConversionAdapter==null) throw new ConfigurationException(ERR_MSG_DISTRIBUTED_CONVERSION_ADAPTER_NOT_SET);
 	}
 
-
-
-	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {/*none*/}
-
-
-
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException {
 

@@ -73,10 +73,4 @@ public class NullAction extends AbstractAction{
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// TODO Auto-generated method stub
-		
-	}
 }

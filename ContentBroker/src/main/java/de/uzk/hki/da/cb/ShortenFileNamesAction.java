@@ -51,11 +51,6 @@ public class ShortenFileNamesAction extends AbstractAction {
 	}
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-	}
-
-	@Override
 	public boolean implementation() throws FileNotFoundException, IOException {
 
 		String metadataFile = o.getMetadata_file();

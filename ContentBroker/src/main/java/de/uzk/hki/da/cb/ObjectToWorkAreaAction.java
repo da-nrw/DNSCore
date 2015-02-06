@@ -51,11 +51,6 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 	}
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-	}
-
-	@Override
 	public boolean implementation() {
 		
 		o.getDataPath().toFile().mkdirs();

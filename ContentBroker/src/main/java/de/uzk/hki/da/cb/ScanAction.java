@@ -57,10 +57,6 @@ public class ScanAction extends AbstractAction{
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 	}
 
-	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-	}
 
 	@Override
 	public boolean implementation() throws IOException {

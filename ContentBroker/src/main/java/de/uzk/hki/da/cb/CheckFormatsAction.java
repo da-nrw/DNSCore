@@ -65,14 +65,8 @@ public class CheckFormatsAction extends AbstractAction {
 
 	@Override
 	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
 	}
 
-	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-		
-	}
 
 	@Override
 	public boolean implementation() throws IOException, SubsystemNotAvailableException {

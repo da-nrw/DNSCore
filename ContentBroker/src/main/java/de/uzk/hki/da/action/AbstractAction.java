@@ -34,6 +34,7 @@ import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.MailContents;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserExceptionManager;
@@ -133,12 +134,6 @@ public abstract class AbstractAction implements Runnable {
 	 */
 	public abstract void checkActionSpecificConfiguration() throws ConfigurationException;
 	
-	/**
-	 * Checks the system state wise preconditions which have to be met that the action can operate properly.
-	 * @throws IllegalStateException
-	 */
-	public abstract void checkSystemStatePreconditions() throws IllegalStateException;
-	
 	
 	
 	@Override
@@ -177,6 +172,11 @@ public abstract class AbstractAction implements Runnable {
 			execAndPostProcessRollback(o,j,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
 			reportUserError(e);
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
+		} catch (PreconditionsNotMetException e) {
+			resetModifiers();
+			execAndPostProcessRollback(o,j,"6");
+			reportTechnicalError(e);
+			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		} catch (SubsystemNotAvailableException e) {
 			resetModifiers();
 			execAndPostProcessRollback(o,j,C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED);
@@ -209,7 +209,6 @@ public abstract class AbstractAction implements Runnable {
 		
 		try {
 			checkActionSpecificConfiguration();
-			checkSystemStatePreconditions();
 		} catch (Exception e) {
 			baseLogger.error(e.getMessage()); return false;
 		}
