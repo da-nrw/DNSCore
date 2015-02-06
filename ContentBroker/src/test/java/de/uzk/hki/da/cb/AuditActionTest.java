@@ -19,14 +19,23 @@
 
 package de.uzk.hki.da.cb;
 
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uzk.hki.da.grid.IrodsFederatedGridFacade;
 import de.uzk.hki.da.grid.IrodsGridFacade;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -39,10 +48,11 @@ import de.uzk.hki.da.model.Package;
  *
  * @author Jens Peters
  */
-public class AuditActionTest {
+public class AuditActionTest extends ConcreteActionUnitTest {
 
-	/** The action. */
-	public static AuditAction action = new AuditAction();
+
+	@ActionUnderTest
+	AuditAction action = new AuditAction();
 	
 	/**
 	 * Sets the up before class.
@@ -56,38 +66,16 @@ public class AuditActionTest {
 	 * Test implementation.
 	 */
 	@Test
-	public void testImplementation(){
-		
-
-		Node node = new Node("vm3","01-vm3");
-//		node.setLza_resource("lzares");
-		
-		action.setLocalNode(node);
-		
-		
-		
-		Job job = new Job ("csn","vm3");
-		
-		
-		job.setStatus("6000");
+	public void implementation(){
+		IrodsFederatedGridFacade ifg = mock (IrodsFederatedGridFacade.class);
+		action.setGridRoot(ifg);
 		Package pkg = new Package();
-		User cont = new User("csn","sam-fs,elsewhere","test@test.de");
-		pkg.setName ( "1" );
-		pkg.setName ( "2" );
-		
-		Object obj = new Object();
-		obj.setContractor(cont);
-		
-		IrodsGridFacade grid = mock (IrodsGridFacade.class);
-		
-		
-		
-		when ( grid.isValid( anyString()) )
-			.thenReturn( true ).thenReturn(false);
-			
-		action.setJob (job);
-		
+		pkg.setName("2");
+		o.getPackages().add(pkg);
+		o.setObject_state(100);
+		when ( ifg.isValid( anyString()) )
+		.thenReturn( true ).thenReturn(false);
 		action.implementation();
-		
+		assertTrue(o.getObject_state()!=100);
 	}
 }

@@ -42,7 +42,6 @@ import de.uzk.hki.da.util.RelativePath;
 public class AuditAction extends AbstractAction {
 
 	
-	private String nodeAdminEmail;
 	private GridFacade gridRoot;
 
 	
@@ -53,7 +52,6 @@ public class AuditAction extends AbstractAction {
 
 	@Override
 	public void checkSystemStatePreconditions() throws IllegalStateException {
-		if (nodeAdminEmail == null) throw new ConfigurationException("nodeAdminEmail is null!");
 		if (preservationSystem.getMinRepls()==0) throw new ConfigurationException("minNodes, 0 is not allowed!");
 		if (preservationSystem.getAdmin().getEmailAddress()==null)  throw new ConfigurationException("systemFromEmailAdress is not set!");
 	}
@@ -106,9 +104,6 @@ public class AuditAction extends AbstractAction {
 	}
 	
 	
-	
-	
-	
 	void unloadAndRepair( Object obj) {
 		// TODO TBD unload and Deep Check & repair Package on node
 	}
@@ -119,21 +114,6 @@ public class AuditAction extends AbstractAction {
 		}
 		
 	}
-
-	/**
-	 * @param nodeAdminEmail the nodeAdminEmail to set
-	 */
-	public void setNodeAdminEmail(String nodeAdminEmail) {
-		this.nodeAdminEmail = nodeAdminEmail;
-	}
-
-	/**
-	 * @return the nodeAdminEmail
-	 */
-	public String getNodeAdminEmail() {
-		return nodeAdminEmail;
-	}
-	
 
 	public GridFacade getGridRoot() {
 		return gridRoot;
