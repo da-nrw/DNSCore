@@ -19,6 +19,10 @@
 
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.core.C.ENCODING_UTF_8;
+import static de.uzk.hki.da.core.C.METADATA_STREAM_ID_EDM;
+import static de.uzk.hki.da.core.C.WA_PUBLIC;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,11 +32,9 @@ import java.util.Set;
 import org.apache.commons.io.IOUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
-import static de.uzk.hki.da.core.C.*;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
-import de.uzk.hki.da.util.Path;
 
 /**
  * This action fetches EDM/RDF-Metadata from the public PIP,  
@@ -57,13 +59,14 @@ public class IndexMetadataAction extends AbstractAction {
 	private String indexName;
 	private File edmFile;
 	
+	public IndexMetadataAction() {setKILLATEXIT(true);}
+	
 	@Override
 	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		if (getRepositoryFacade() == null) 
 			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
 	}
 
-	@Override
 	public void checkSystemStatePreconditions() throws IllegalStateException {
 		if (indexName == null) 
 			throw new IllegalStateException("Index name not set. Make sure the action is configured properly");
@@ -71,8 +74,7 @@ public class IndexMetadataAction extends AbstractAction {
 			throw new IllegalStateException("testContractors not set");
 		
 		
-		edmFile = Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),
-				o.getIdentifier(),METADATA_STREAM_ID_EDM+FILE_EXTENSION_XML);
+		edmFile = wa.metadataStream(WA_PUBLIC, METADATA_STREAM_ID_EDM);
 		if (! edmFile.exists())
 			throw new IllegalStateException("Missing file: "+edmFile);
 
@@ -80,7 +82,7 @@ public class IndexMetadataAction extends AbstractAction {
 
 	@Override
 	public boolean implementation() throws RepositoryException, IOException {
-		setKILLATEXIT(true);
+		checkSystemStatePreconditions();
 		
 		String edmContent;
 		InputStream metadataStream  = null;

@@ -48,10 +48,6 @@ public class DeleteObjectAction extends AbstractAction {
 
 	
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {}
-
-	
-	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException {
 

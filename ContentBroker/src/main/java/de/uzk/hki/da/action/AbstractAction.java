@@ -34,6 +34,7 @@ import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.MailContents;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserExceptionManager;
@@ -41,6 +42,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.service.JmsMessage;
@@ -100,6 +102,7 @@ public abstract class AbstractAction implements Runnable {
 	
 	protected Logger logger = LoggerFactory.getLogger( this.getClass().getName() );
 	private Logger baseLogger = LoggerFactory.getLogger("de.uzk.hki.da.action.AbstractAction"); // contentbrokerlog
+	protected WorkArea wa;
 	
 	
 	/**
@@ -131,18 +134,13 @@ public abstract class AbstractAction implements Runnable {
 	 */
 	public abstract void checkActionSpecificConfiguration() throws ConfigurationException;
 	
-	/**
-	 * Checks the system state wise preconditions which have to be met that the action can operate properly.
-	 * @throws IllegalStateException
-	 */
-	public abstract void checkSystemStatePreconditions() throws IllegalStateException;
-	
 	
 	
 	@Override
 	public void run() {
 		
 		if (!performCommonPreparationsForActionExecution()) return;
+		
 		setupObjectLogging(o.getIdentifier());
 		
 		synchronizeObjectDatabaseAndFileSystemState();
@@ -173,6 +171,11 @@ public abstract class AbstractAction implements Runnable {
 			resetModifiers();
 			execAndPostProcessRollback(o,j,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
 			reportUserError(e);
+			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
+		} catch (PreconditionsNotMetException e) {
+			resetModifiers();
+			execAndPostProcessRollback(o,j,"6");
+			reportTechnicalError(e);
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		} catch (SubsystemNotAvailableException e) {
 			resetModifiers();
@@ -206,7 +209,6 @@ public abstract class AbstractAction implements Runnable {
 		
 		try {
 			checkActionSpecificConfiguration();
-			checkSystemStatePreconditions();
 		} catch (Exception e) {
 			baseLogger.error(e.getMessage()); return false;
 		}
@@ -527,5 +529,13 @@ public abstract class AbstractAction implements Runnable {
 
 	public Job getToCreate() {
 		return toCreate;
+	}
+
+	public WorkArea getWa() {
+		return wa;
+	}
+
+	public void setWorkArea(WorkArea wa) {
+		this.wa = wa;
 	}
 }

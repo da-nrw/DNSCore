@@ -51,10 +51,6 @@ public class ArchiveReplicationAction extends AbstractAction {
 		if (gridRoot==null) throw new ConfigurationException("gridRoot not set");
 	}
 
-	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-	}
 
 	@Override
 	public

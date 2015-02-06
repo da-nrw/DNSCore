@@ -68,20 +68,11 @@ public class RetrievalAction extends AbstractAction {
 	public void checkActionSpecificConfiguration() throws ConfigurationException {
 		// Auto-generated method stub
 	}
-
-	
-	
-	
-	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		if (!o.getDataPath().toFile().exists()) throw new IllegalStateException("object data path on fs doesn't exist on fs");
-	}
-
-	
 	
 	
 	@Override
 	public boolean implementation() throws IOException {
+		if (!o.getDataPath().toFile().exists()) throw new IllegalStateException("object data path on fs doesn't exist on fs");
 
 		newTar = Path.make(n.getUserAreaRootPath(),o.getContractor().getShort_name(),"outgoing",o.getIdentifier() + ".tar");
 		Path tempFolder = createTmpFolder();

@@ -20,6 +20,8 @@
 package de.uzk.hki.da.action;
 
 
+import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
+
 import java.util.List;
 
 import org.hibernate.Hibernate;
@@ -30,6 +32,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.UserExceptionManager;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.model.Job;
@@ -37,6 +40,7 @@ import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.SubformatIdentificationStrategyPuidMapping;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.util.ConfigurationException;
@@ -77,6 +81,8 @@ public class ActionFactory implements ApplicationContextAware {
 
 	private PreservationSystem preservationSystem;
 
+	private List<String> availableJobTypes;
+
 	
 	public void init(){
 		setPreservationSystem(new PreservationSystem()); getPreservationSystem().setId(1);
@@ -91,8 +97,10 @@ public class ActionFactory implements ApplicationContextAware {
 		for (SubformatIdentificationStrategyPuidMapping sfiP:getSecondStageScanPolicies(session)) {
 			fileFormatFacade.registerSubformatIdentificationStrategyPuidMapping(sfiP.getSubformatIdentificationStrategyName(),sfiP.getFormatPuid());
 		}
-		
 		session.close();
+		
+		
+	
 	}
 	
 	private void injectProperties(AbstractAction action, Job job){
@@ -105,25 +113,44 @@ public class ActionFactory implements ApplicationContextAware {
 		action.setActionFactory(this);
 		action.setJob(job);
 		action.setPSystem(getPreservationSystem());
+		
 	}
 	
-	private void checkSystemState(AbstractAction action) {
-		if (action.getActionFactory() == null) throw new IllegalStateException("Unable to build action. ActionFactory has not been set.");
-		if (action.getActionMap() == null) throw new IllegalStateException("Unable to build action. Action map has not been set.");
-		if (action.getLocalNode()==null) throw new IllegalStateException("Unable to build action. Node not set.");
-		if (action.getPreservationSystem()==null) throw new IllegalStateException("preservationSystem not set");
-		if (action.getPreservationSystem().getMinRepls()==null) throw new IllegalStateException("min repls not set");
-		if (action.getPreservationSystem().getMinRepls()<3) logger.warn("min_repls lower than 3 not recommended for lta");
-		if (action.getPreservationSystem().getAdmin()==null) throw new IllegalStateException("node admin not set");
+	
+	
+	private void checkSystemState() {
+		if (getActionRegistry() == null) throw new IllegalStateException("Unable to build action. Action map has not been set.");
+		if (getLocalNode()==null) throw new IllegalStateException("Unable to build action. Node not set.");
+		if (getPreservationSystem()==null) throw new IllegalStateException("preservationSystem not set");
+		if (getPreservationSystem().getMinRepls()==null) throw new IllegalStateException("min repls not set");
+		if (preservationSystem.getMinRepls()==0) throw new IllegalStateException("minNodes, 0 is not allowed!");
+		if (getPreservationSystem().getMinRepls()<3) logger.warn("min_repls lower than 3 not recommended for lta");
+		if (getPreservationSystem().getAdmin()==null) throw new IllegalStateException("node admin not set");
+		if (getUserExceptionManager()==null) throw new IllegalStateException("user exception manager not set");
+		if (isNotSet(preservationSystem.getAdmin().getEmailAddress()))  
+			throw new IllegalStateException("systemFromEmailAdress is not set!");
+		if (isNotSet(preservationSystem.getUrnNameSpace())) 
+			throw new IllegalStateException("URN NameSpace parameter not set!");
+		if (isNotSet(preservationSystem.getUrisCho())) 
+			throw new IllegalStateException("missing choBaseUri");
+		if (isNotSet(preservationSystem.getUrisAggr())) 
+			throw new IllegalStateException("missing aggrBaseUri");
+		if (isNotSet(preservationSystem.getUrisLocal())) 
+			throw new IllegalStateException("localBaseUri not set");
+	}
+	
+	
+	
+	private void checkSystemPreconditionsToExecuteAction(AbstractAction action) {
+		
+		if (action.getJob()==null) throw new IllegalStateException("job not set");
 		if (action.getObject()==null) throw new IllegalStateException("object not set");
 		if (action.getObject().getContractor()==null) throw new IllegalStateException("contractor not set");
 		if (action.getObject().getContractor().getShort_name()==null) throw new IllegalStateException("contractor short name not set.");
 		if (action.getObject().getContractor().getEmailAddress()==null||action.getObject().getContractor().getEmailAddress().isEmpty()) throw new IllegalStateException("user email not set");
 		if (action.getObject().getIdentifier()==null) throw new IllegalStateException("object identifier not set");
-		if (action.getUserExceptionManager()==null) throw new IllegalStateException("user exception manager not set");
 		action.getObject().getLatestPackage();
 		if (action.getObject().getLatestPackage().getContainerName()==null) throw new IllegalStateException("containerName of latest package not set");
-		if (action.getJob()==null) throw new IllegalStateException("job not set");
 	}
 	
 	
@@ -139,25 +166,34 @@ public class ActionFactory implements ApplicationContextAware {
 	 */
 	public AbstractAction buildNextAction() {		
 		if (context == null) throw new ConfigurationException("Unable to build action. Application context has not been set.");
-		
-		logger.trace("building action");
+		try{
+			checkSystemState();
+		} catch (IllegalStateException e) {
+			logger.error(e.getMessage());
+			onHalt=true;
+			return null;
+		}
 		
 		if (onHalt){
 			logger.info("ActionFactory is on halt. Waiting to resume work ...");
 			return null;
 		}
-
-		// iterate over available job types in order of priority,
-		// start action if a corresponding job exists in the database 
-		List<String> availableJobTypes = actionRegistry.getAvailableJobTypes();
+		
+		return selectActionToExecute();
+		
+		
+	}
+	
+	private AbstractAction selectActionToExecute() {
+		availableJobTypes = actionRegistry.getAvailableJobTypes();
 		logger.trace("available job types: " + availableJobTypes);
+		
 		for (String jobType : availableJobTypes) {
 
 			AbstractAction action = (AbstractAction) context.getBean(jobType);
 			
-			String workingStatus = action.getStartStatus().substring(0,action.getStartStatus().length()-1) + "2";
 			
-			Job jobCandidate = qc.fetchJobFromQueue(action.getStartStatus(), workingStatus
+			Job jobCandidate = qc.fetchJobFromQueue(action.getStartStatus(), workingStatus(action)
 					, localNode);
 			if (jobCandidate == null) {
 				logger.trace("No job for type {}, checking for types with lower priority", jobType);
@@ -165,22 +201,36 @@ public class ActionFactory implements ApplicationContextAware {
 			}
 			logger.info("fetched job: {}", jobCandidate);
 
-			actionRegistry.registerAction(action);
 			
 			injectProperties(action,jobCandidate);
-			checkSystemState(action);
+			try {
+				checkSystemPreconditionsToExecuteAction(action);
+			}catch(IllegalStateException e) {
+				logger.error(e.getMessage());
+				qc.updateJobStatus(jobCandidate, criticalStatus(action));
+				continue;
+			}
 			
-			
-			
+			action.setWorkArea(new WorkArea(localNode,jobCandidate.getObject()));
+			actionRegistry.registerAction(action);
 			return action;
 		}
-		
 		logger.info("(for local node) No jobs in queue, nothing to do, shoobidoowoo, ...");
 		return null;
-		
 	}
 	
+	
+	
 
+	private String workingStatus(AbstractAction action) {
+		return action.getStartStatus().substring(0,action.getStartStatus().length()-1) + C.WORKFLOW_STATE_DIGIT_WORKING;
+	}
+	
+	private String criticalStatus(AbstractAction action) {
+		return action.getStartStatus().substring(0,action.getStartStatus().length()-1) + "5";
+	}
+
+	
 	public JmsMessageServiceHandler getJmsMessageService() {
 		return jmsMessageServiceHandler;
 	}
@@ -255,6 +305,10 @@ public class ActionFactory implements ApplicationContextAware {
 	 */
 	public void pause(boolean b) {
 		onHalt  = b;
+	}
+	
+	public boolean paused() {
+		return onHalt;
 	}
 
 

@@ -94,4 +94,14 @@ public class JobNamedQueryDAO {
 		}
 		return joblist.get(0);
 	}
+	
+	public void updateJobStatus(Job j,String status) {
+		j.setStatus(status);
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.update(j);
+		session.getTransaction().commit();
+		session.close();
+	}
+	
 }

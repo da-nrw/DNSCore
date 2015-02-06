@@ -47,12 +47,6 @@ public class BuildAIPAction extends AbstractAction {
 	}
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public boolean implementation() {
 
 		deleteOldPremisFile();

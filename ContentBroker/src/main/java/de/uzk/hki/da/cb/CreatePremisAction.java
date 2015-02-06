@@ -84,12 +84,6 @@ public class CreatePremisAction extends AbstractAction {
 		// Auto-generated method stub
 	}
 
-	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-		
-	}
-
 	/**
 	 * @throws FileNotFoundException if one or more of the jhove output files are not present.
 	 */

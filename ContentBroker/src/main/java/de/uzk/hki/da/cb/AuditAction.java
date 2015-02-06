@@ -50,12 +50,6 @@ public class AuditAction extends AbstractAction {
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 	}
 
-	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		if (preservationSystem.getMinRepls()==0) throw new ConfigurationException("minNodes, 0 is not allowed!");
-		if (preservationSystem.getAdmin().getEmailAddress()==null)  throw new ConfigurationException("systemFromEmailAdress is not set!");
-	}
-
 	/*
 	 * 
 	 * (non-Javadoc)
@@ -114,7 +108,6 @@ public class AuditAction extends AbstractAction {
 		}
 		
 	}
-
 	public GridFacade getGridRoot() {
 		return gridRoot;
 	}

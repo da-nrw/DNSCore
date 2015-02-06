@@ -3,12 +3,11 @@ package de.uzk.hki.da.cb;
 import java.io.IOException;
 import java.util.HashSet;
 
-
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.mockito.Mockito.mock;
-
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.test.TC;
@@ -29,6 +28,7 @@ public class IndexMetadataActionTests extends ConcreteActionUnitTest{
 		
 		Fedora3RepositoryFacade fed = mock(Fedora3RepositoryFacade.class);
 		action.setRepositoryFacade(fed);
+		action.setWorkArea(new WorkArea(n,o));
 	}
 	
 	@Test

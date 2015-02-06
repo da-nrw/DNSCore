@@ -32,6 +32,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
+import de.uzk.hki.da.model.WorkArea;
 
 /**
  * Provides the basic framework for effective tests of the business code

@@ -60,11 +60,6 @@ public class TarAction extends AbstractAction {
 	}
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-	}
-
-	@Override
 	public boolean implementation() throws IOException {
 		
 		tar = n.getWorkAreaRootPath() + "/work/" +
