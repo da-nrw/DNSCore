@@ -75,7 +75,7 @@ public class ConcreteActionUnitTest {
 		ps.setUrisCho("cho");
 		ps.setUrisAggr("aggr");
 		ps.setUrisLocal("local");
-		
+		ps.setMinRepls(3);
 		n = new Node();
 		n.setName("testnode");
 		n.setAdmin(psadmin);
