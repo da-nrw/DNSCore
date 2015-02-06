@@ -32,6 +32,7 @@ import java.util.Set;
 import org.apache.commons.io.IOUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
@@ -59,31 +60,26 @@ public class IndexMetadataAction extends AbstractAction {
 	private String indexName;
 	private File edmFile;
 	
-	public IndexMetadataAction() {setKILLATEXIT(true);}
+	public IndexMetadataAction() {
+		setKILLATEXIT(true);
+		}
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkConfiguration() {
 		if (getRepositoryFacade() == null) 
-			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
+			throw new ConfigurationException("Must not be null: repositoryFacade");
 	}
-
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		if (indexName == null) 
-			throw new IllegalStateException("Index name not set. Make sure the action is configured properly");
-		if (getTestContractors()==null)
-			throw new IllegalStateException("testContractors not set");
-		
-		
-		edmFile = wa.metadataStream(WA_PUBLIC, METADATA_STREAM_ID_EDM);
-		if (! edmFile.exists())
-			throw new IllegalStateException("Missing file: "+edmFile);
-
-	}
-
+	
 	@Override
 	public boolean implementation() throws RepositoryException, IOException {
-		checkSystemStatePreconditions();
-		
+		if (indexName == null) 
+			throw new PreconditionsNotMetException("Index name not set. Make sure the action is configured properly");
+		if (getTestContractors()==null)
+			throw new PreconditionsNotMetException("testContractors not set");
+		edmFile = wa.metadataStream(WA_PUBLIC, METADATA_STREAM_ID_EDM);
+		if (! edmFile.exists())
+			throw new PreconditionsNotMetException("Missing file: "+edmFile);
+
 		String edmContent;
 		InputStream metadataStream  = null;
 		try {

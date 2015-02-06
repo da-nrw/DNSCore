@@ -27,14 +27,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.FFConstants;
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.RightsSectionURNMetsXmlReader;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
-import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.model.RightsSectionURNMetsXmlReader;
 
 
 /**
@@ -47,13 +47,19 @@ public class RegisterURNAction extends AbstractAction {
 	
 	static final Logger logger = LoggerFactory.getLogger(RegisterURNAction.class);
 	
+	
+	@Override
+	public void checkConfiguration() {
+	}
+	
 	/**
 	 * @author Thomas Kleinke
 	 * @return URN if the SIP premis file contains an URN; otherwise null
 	 */
 	private String extractURNFromPremisFile() {
 		
-//		File premisFile = new File(object.getDataPath() + "/"+ object.getNameOfNewestRep() + "/" + "premis.xml");
+		if (o.getLatest("premis.xml")==null) throw new PreconditionsNotMetException("premis.xml must exist");
+		if (! o.getLatest("premis.xml").toRegularFile().exists()) throw new PreconditionsNotMetException("premis.xml must exist"); 
 		File premisFile = o.getLatest("premis.xml").toRegularFile();
 		
 		
@@ -113,11 +119,6 @@ public class RegisterURNAction extends AbstractAction {
 		return null;
 	}
 	
-
-	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
-	}
 
 	@Override
 	public boolean implementation() {

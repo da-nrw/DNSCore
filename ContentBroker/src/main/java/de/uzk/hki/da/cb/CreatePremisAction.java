@@ -49,7 +49,6 @@ import de.uzk.hki.da.model.ObjectPremisXmlWriter;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PremisXmlValidator;
 import de.uzk.hki.da.model.PublicationRight;
-import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
 
 /**
@@ -80,10 +79,10 @@ public class CreatePremisAction extends AbstractAction {
 	private FileOutputStream outputStream;
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
+	public void checkConfiguration() {
 	}
-
+	
+	
 	/**
 	 * @throws FileNotFoundException if one or more of the jhove output files are not present.
 	 */
@@ -510,6 +509,8 @@ public class CreatePremisAction extends AbstractAction {
 		for (int i = 0; i < tab; i++)
 			writer.writeDTD("    ");
 	}
+
+	
 
 	
 	

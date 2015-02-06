@@ -34,6 +34,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
@@ -56,33 +57,21 @@ public class CreateEDMAction extends AbstractAction {
 	private Map<String,String> edmMappings;
 	private File edmDestinationFile = null;
 
-	/**
-	 * @
-	 */
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		if (repositoryFacade == null) 
-			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
+	public void checkConfiguration() {
+		if (repositoryFacade == null) throw new ConfigurationException("Must not be null: repositoryFacade");
 	}
-
-
-
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		
-		if (edmMappings == null)
-			throw new IllegalStateException("edmMappings not set.");
-		for (String filePath:edmMappings.values())
-			if (!new File(filePath).exists())
-				throw new IllegalStateException("mapping file "+filePath+" does not exist");
-		if (isNotSet(o.getPackage_type()))
-			throw new IllegalStateException("missing package type");
-	}
-
 
 
 	@Override
 	public boolean implementation() throws IOException, RepositoryException {
-		checkSystemStatePreconditions();
+		if (edmMappings == null)
+			throw new PreconditionsNotMetException("edmMappings not set.");
+		for (String filePath:edmMappings.values())
+			if (!new File(filePath).exists())
+				throw new PreconditionsNotMetException("mapping file "+filePath+" does not exist");
+		if (isNotSet(o.getPackage_type()))
+			throw new PreconditionsNotMetException("missing package type");
 		
 		
 		String xsltTransformationFile = getEdmMappings().get(o.getPackage_type());

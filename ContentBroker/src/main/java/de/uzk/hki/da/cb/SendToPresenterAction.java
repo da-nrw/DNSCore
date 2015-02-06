@@ -38,6 +38,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.metadata.XepicurWriter;
 import de.uzk.hki.da.model.DAFile;
@@ -82,29 +83,17 @@ public class SendToPresenterAction extends AbstractAction {
 	
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkConfiguration() {
 		if (repositoryFacade == null) 
-			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
-		
-	}
-
-
-	public void checkSystemStatePreconditions() throws IllegalStateException {
+			throw new ConfigurationException("Must not be null: repositoryFacadeRepository");
 		if (viewerUrls == null)
-			throw new IllegalStateException("viewerUrls is not set.");
+			throw new ConfigurationException("Must not be null: viewerUrls");
 		if (fileFilter == null)
-			throw new IllegalStateException("fileFilter is not set");
+			throw new ConfigurationException("Must no be null: fileFilter");
 		if (testContractors == null)
-			throw new IllegalStateException("testContractors is not set");
-		if (o.getUrn()==null||o.getUrn().isEmpty())
-			throw new IllegalStateException("urn not set");
-		if (StringUtilities.isNotSet(preservationSystem.getOpenCollectionName()))
-			throw new IllegalStateException("open collection name must be set");
-		if (StringUtilities.isNotSet(preservationSystem.getClosedCollectionName()))
-			throw new IllegalStateException("closed collection name must be set");
+			throw new ConfigurationException("Must not be null: testContractors");
 	}
-
-
+	
 	/**
 	 * Preconditions:
 	 * There can be two pips at
@@ -116,7 +105,13 @@ public class SendToPresenterAction extends AbstractAction {
 	 */
 	@Override
 	public boolean implementation() throws IOException {
-		checkSystemStatePreconditions();
+		if (o.getUrn()==null||o.getUrn().isEmpty())
+			throw new PreconditionsNotMetException("urn not set");
+		
+		if (StringUtilities.isNotSet(preservationSystem.getOpenCollectionName()))
+			throw new IllegalStateException("open collection name must be set");
+		if (StringUtilities.isNotSet(preservationSystem.getClosedCollectionName()))
+			throw new IllegalStateException("closed collection name must be set");
 		
 		
 		purgeObjectsIfExist();

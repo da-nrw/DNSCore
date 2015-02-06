@@ -53,10 +53,11 @@ public class ScanAction extends AbstractAction{
 	private final ConversionInstructionBuilder ciB = new ConversionInstructionBuilder();
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
-	}
 
+	@Override
+	public void checkConfiguration() {
+		if (distributedConversionAdapter==null) throw new ConfigurationException("Must not be null: distributedConversionAdapter");
+	}
 
 	@Override
 	public boolean implementation() throws IOException {

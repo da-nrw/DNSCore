@@ -35,6 +35,7 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.IngestGate;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.PremisXmlValidator;
@@ -77,26 +78,25 @@ public class UnpackAction extends AbstractAction {
 	private IngestGate ingestGate;
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
+	public void checkConfiguration() {
+		if (ingestGate==null) throw new ConfigurationException("Must not be null: ingestGate");
 	}
 
 	@Override
 	public boolean implementation() throws IOException{
+		if (!sipContainer().exists()) throw new PreconditionsNotMetException("Missing file: "+sipContainer());
 		
-		Path absoluteSIPPath = Path.make(
-				n.getIngestAreaRootPath(),
-				o.getContractor().getShort_name(), 
-				o.getLatestPackage().getContainerName());
-	
-		if (!ingestGate.canHandle(absoluteSIPPath.toFile().length())){
+		
+		if (!ingestGate.canHandle(sipContainer().length())){
 			JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,o.getIdentifier() + " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
 			super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
 			logger.warn("ResourceMonitor prevents further processing of package due to space limitations. Setting job back to start state.");
 			return false;
 		}
 		
-		String sipInForkPath = copySIPToWorkArea(absoluteSIPPath);
+		
+		
+		String sipInForkPath = copySIPToWorkArea(sipContainerPath());
 		unpack(new File(sipInForkPath),o.getPath().toString());
 		
 		throwUserExceptionIfDuplicatesExist();
@@ -107,10 +107,21 @@ public class UnpackAction extends AbstractAction {
 		new File(sipInForkPath).delete();
 		
 		// Must be the last step in this action
-		absoluteSIPPath.toFile().delete();
+		sipContainer().delete();
 		return true;
 	}	
 	
+	
+	private File sipContainer() {
+		return sipContainerPath().toFile();
+	}
+	
+	private Path sipContainerPath() {
+		return Path.make(
+				n.getIngestAreaRootPath(),
+				o.getContractor().getShort_name(), 
+				o.getLatestPackage().getContainerName());
+	}
 
 
 	

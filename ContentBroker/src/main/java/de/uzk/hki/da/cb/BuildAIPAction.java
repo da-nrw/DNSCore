@@ -19,7 +19,7 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.*;
+import static de.uzk.hki.da.core.C.WA_DATA;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +28,6 @@ import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.pkg.BagitUtils;
-import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
 
 /**
@@ -42,10 +41,9 @@ import de.uzk.hki.da.util.Path;
 public class BuildAIPAction extends AbstractAction {
 
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
+	public void checkConfiguration() {
 	}
-
+	
 	@Override
 	public boolean implementation() {
 

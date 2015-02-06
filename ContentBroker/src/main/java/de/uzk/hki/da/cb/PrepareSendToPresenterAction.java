@@ -49,16 +49,11 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 
 	private static final String PREMIS_XML = "premis.xml";
 	private DistributedConversionAdapter distributedConversionAdapter;
-	
-	/**
-	 * @
-	 */
+
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
+	public void checkConfiguration() {
+		if (distributedConversionAdapter==null) throw new ConfigurationException("Must not be null: distributedConversionAdapter");
 	}
-
-
 
 	@Override
 	public boolean implementation() throws IOException {

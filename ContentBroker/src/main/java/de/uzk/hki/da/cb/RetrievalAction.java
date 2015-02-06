@@ -39,7 +39,6 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.pkg.BagitUtils;
-import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
 
 
@@ -63,12 +62,9 @@ public class RetrievalAction extends AbstractAction {
 	
 	private Path newTar;
 
-
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
+	public void checkConfiguration() {
 	}
-	
 	
 	@Override
 	public boolean implementation() throws IOException {

@@ -43,6 +43,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
@@ -93,9 +94,9 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 	public void missingPackageType() throws IOException, RepositoryException {
 		o.setPackage_type(null);
 		try {
-			action.checkSystemStatePreconditions();
+			action.implementation();
 			fail();
-		} catch (IllegalStateException e) {
+		} catch (PreconditionsNotMetException e) {
 			assertTrue(e.getMessage().contains("package type"));
 		}
 	}

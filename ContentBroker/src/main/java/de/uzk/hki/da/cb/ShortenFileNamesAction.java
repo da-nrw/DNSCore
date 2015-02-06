@@ -34,7 +34,6 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
-import de.uzk.hki.da.util.ConfigurationException;
 
 /**
  * 
@@ -46,10 +45,9 @@ public class ShortenFileNamesAction extends AbstractAction {
 	Map<String,String> map = new HashMap<String,String>();
 
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
+	public void checkConfiguration() {
 	}
-
+	
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException {
 

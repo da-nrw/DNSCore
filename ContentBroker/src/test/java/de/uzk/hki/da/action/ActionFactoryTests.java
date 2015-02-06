@@ -32,6 +32,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import de.uzk.hki.da.cb.NullAction;
+import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserExceptionManager;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -41,6 +43,7 @@ import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
 
 
@@ -64,6 +67,8 @@ public class ActionFactoryTests {
 	private static final JobNamedQueryDAO queueConnector = mock(JobNamedQueryDAO.class);
 
 	private PreservationSystem ps;
+
+	private FileSystemXmlApplicationContext context;
 	
 	@BeforeClass
 	public static void beforeClass() {
@@ -78,10 +83,13 @@ public class ActionFactoryTests {
 		c.setShort_name("csn");
 		c.setEmailAddress("noreply");
 		
-		FileSystemXmlApplicationContext context = new FileSystemXmlApplicationContext(baseDirPath+"action-definitions.xml");
+		context = mock(FileSystemXmlApplicationContext.class);
+		AbstractAction action = new NullAction(); action.setStartStatus("450"); action.setName("tarAction"); action.setEndStatus("460");
+		when(context.getBean(anyString())).thenReturn(action);
+		
 		factory = new ActionFactory();
 		factory.setApplicationContext(context);
-		factory.setActionRegistry((ActionRegistry)context.getBean("actionRegistry"));
+		factory.setActionRegistry((ActionRegistry)new FileSystemXmlApplicationContext(baseDirPath+"action-definitions.xml").getBean("actionRegistry"));
 		ps = new PreservationSystem(); ps.setId(1); ps.setMinRepls(1); 
 		ps.setUrnNameSpace("urn"); ps.setUrisCho("abc"); ps.setUrisFile("abc"); ps.setUrisLocal("abc");
 		ps.setUrisAggr("abc");
@@ -125,7 +133,7 @@ public class ActionFactoryTests {
 	}
 	
 	@Test
-	public void systemStateRegardingActionNotAppropriate() {
+	public void badSystemState() {
 
 		Job j=makeGoodJob();
 		j.getObject().setContractor(null);
@@ -134,6 +142,19 @@ public class ActionFactoryTests {
 		factory.buildNextAction();
 		verify(queueConnector,times(1)).updateJobStatus(j, "455");
 	}
+	
+	@Test
+	public void badConfiguration() {
+		AbstractAction action = new ConfigurationExceptionAction(); action.setStartStatus("450"); action.setName("tarAction"); action.setEndStatus("460");
+		when(context.getBean(anyString())).thenReturn(action);
+		
+		Job j=makeGoodJob();
+		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
+			thenReturn(j);
+		assertTrue(factory.buildNextAction()==null);
+		verify(queueConnector,times(1)).updateJobStatus(j, "450");
+	}
+	
 	
 	
 	@Test
@@ -166,6 +187,10 @@ public class ActionFactoryTests {
 	}
 	
 	
-	
-	
+	class ConfigurationExceptionAction extends NullAction{
+		@Override
+		public void checkConfiguration() {
+			throw new ConfigurationException("Bad configuration");
+		}
+	}
 }

@@ -42,6 +42,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
@@ -136,28 +137,28 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	
 	
 	@Test 
-	public void preconditionsThrowErrorUrnNotSet(){
+	public void preconditionsThrowErrorUrnNotSet() throws IOException{
 		o.setUrn(null);
 		try {
-			action.checkSystemStatePreconditions();
+			action.implementation();
 			fail();
-		} catch (IllegalStateException e) {}
+		} catch (PreconditionsNotMetException e) {}
 	}
 	
 	@Test 
-	public void preconditionsThrowErrorClosedCollectionNotSet(){
+	public void preconditionsThrowErrorClosedCollectionNotSet() throws IOException{
 		ps.setOpenCollectionName(null);
 		try {
-			action.checkSystemStatePreconditions();
+			action.implementation();
 			fail();
 		} catch (IllegalStateException e) {}
 	}
 	
 	@Test 
-	public void preconditionsThrowErrorOpenCollectionSet(){
+	public void preconditionsThrowErrorOpenCollectionSet() throws IOException{
 		ps.setClosedCollectionName(null);
 		try {
-			action.checkSystemStatePreconditions();
+			action.implementation();
 			fail();
 		} catch (IllegalStateException e) {}
 	}

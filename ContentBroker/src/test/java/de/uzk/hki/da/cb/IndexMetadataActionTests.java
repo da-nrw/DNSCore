@@ -34,7 +34,6 @@ public class IndexMetadataActionTests extends ConcreteActionUnitTest{
 	@Test
 	public void test() throws RepositoryException, IOException {
 		
-		action.checkSystemStatePreconditions();
 		action.implementation();
 	}
 	

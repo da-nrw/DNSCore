@@ -104,6 +104,8 @@ public abstract class AbstractAction implements Runnable {
 	private Logger baseLogger = LoggerFactory.getLogger("de.uzk.hki.da.action.AbstractAction"); // contentbrokerlog
 	protected WorkArea wa;
 	
+	public abstract void checkConfiguration();
+	
 	
 	/**
 	 * 
@@ -128,18 +130,9 @@ public abstract class AbstractAction implements Runnable {
 	 */
 	public abstract void rollback() throws Exception;
 	
-	/**
-	 * Implementations should check if an action is wired up correctly in terms of spring configuration. 
-	 * @throws ConfigurationException
-	 */
-	public abstract void checkActionSpecificConfiguration() throws ConfigurationException;
-	
-	
 	
 	@Override
 	public void run() {
-		
-		if (!performCommonPreparationsForActionExecution()) return;
 		
 		setupObjectLogging(o.getIdentifier());
 		
@@ -173,8 +166,9 @@ public abstract class AbstractAction implements Runnable {
 			reportUserError(e);
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		} catch (PreconditionsNotMetException e) {
-			resetModifiers();
-			execAndPostProcessRollback(o,j,"6");
+			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "6";
+			j.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+			j.setStatus(errorStatus);
 			reportTechnicalError(e);
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		} catch (SubsystemNotAvailableException e) {
@@ -204,18 +198,6 @@ public abstract class AbstractAction implements Runnable {
 	
 	
 
-	private boolean performCommonPreparationsForActionExecution() {
-		baseLogger.info("Running \""+this.getClass().getName()+"\"");
-		
-		try {
-			checkActionSpecificConfiguration();
-		} catch (Exception e) {
-			baseLogger.error(e.getMessage()); return false;
-		}
-		return true;
-	}
-
-	
 	/**
 	 * Execute the business code implementation.
 	 * Adjust job properties depending of implementation outcome.

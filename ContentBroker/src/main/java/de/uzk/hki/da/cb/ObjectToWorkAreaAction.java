@@ -45,9 +45,9 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 	public ObjectToWorkAreaAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;}
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
-		
+	public void checkConfiguration() {
+		if (ingestGate==null) throw new ConfigurationException("Must not be null: ingestGate");
+		if (gridFacade==null) throw new ConfigurationException("Must not be null: gridFacade");
 	}
 
 	@Override

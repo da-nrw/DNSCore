@@ -47,10 +47,9 @@ public class ArchiveReplicationAction extends AbstractAction {
 	private GridFacade gridRoot;
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkConfiguration() {
 		if (gridRoot==null) throw new ConfigurationException("gridRoot not set");
 	}
-
 
 	@Override
 	public
@@ -112,4 +111,6 @@ public class ArchiveReplicationAction extends AbstractAction {
 	public void setGridRoot(GridFacade gridRoot) {
 		this.gridRoot = gridRoot;
 	}
+
+	
 }

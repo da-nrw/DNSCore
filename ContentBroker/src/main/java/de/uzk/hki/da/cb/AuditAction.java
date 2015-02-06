@@ -41,15 +41,17 @@ import de.uzk.hki.da.util.RelativePath;
 
 public class AuditAction extends AbstractAction {
 
-	
 	private GridFacade gridRoot;
 
+	public AuditAction() {
+		setKILLATEXIT(true);
+	}
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkConfiguration() {
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 	}
-
+	
 	/*
 	 * 
 	 * (non-Javadoc)
@@ -57,7 +59,6 @@ public class AuditAction extends AbstractAction {
 	 */
 	@Override
 	public boolean implementation() {
-		setKILLATEXIT(true);
 		setObjectState(j,Object.ObjectStatus.UnderAudit);
 		StoragePolicy sp = new StoragePolicy(n);
 		sp.setMinNodes(preservationSystem.getMinRepls());

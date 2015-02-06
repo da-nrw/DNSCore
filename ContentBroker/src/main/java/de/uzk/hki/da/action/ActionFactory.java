@@ -141,7 +141,7 @@ public class ActionFactory implements ApplicationContextAware {
 	
 	
 	
-	private void checkSystemPreconditionsToExecuteAction(AbstractAction action) {
+	private void checkSystemState(AbstractAction action) {
 		
 		if (action.getJob()==null) throw new IllegalStateException("job not set");
 		if (action.getObject()==null) throw new IllegalStateException("object not set");
@@ -151,6 +151,8 @@ public class ActionFactory implements ApplicationContextAware {
 		if (action.getObject().getIdentifier()==null) throw new IllegalStateException("object identifier not set");
 		action.getObject().getLatestPackage();
 		if (action.getObject().getLatestPackage().getContainerName()==null) throw new IllegalStateException("containerName of latest package not set");
+		
+		// TODO check if folders exist
 	}
 	
 	
@@ -204,10 +206,18 @@ public class ActionFactory implements ApplicationContextAware {
 			
 			injectProperties(action,jobCandidate);
 			try {
-				checkSystemPreconditionsToExecuteAction(action);
+				checkSystemState(action);
 			}catch(IllegalStateException e) {
 				logger.error(e.getMessage());
 				qc.updateJobStatus(jobCandidate, criticalStatus(action));
+				continue;
+			}
+			try {
+				action.checkConfiguration();
+			}catch(ConfigurationException e) {
+				logger.error("Regarding job for object ["+jobCandidate.getObject().getIdentifier()+"]. Bad configuration of action. "+e.getMessage());
+				logger.info("Will set back job to its start state.");
+				qc.updateJobStatus(jobCandidate, action.getStartStatus());
 				continue;
 			}
 			

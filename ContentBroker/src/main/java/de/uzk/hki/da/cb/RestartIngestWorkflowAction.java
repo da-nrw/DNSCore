@@ -20,11 +20,14 @@
 package de.uzk.hki.da.cb;
 
 import static de.uzk.hki.da.cb.ArchiveReplicationCheckAction.clearNonpersistentObjectProperties;
+import static de.uzk.hki.da.cb.BuildAIPAction.deleteBagitFiles;
 import static de.uzk.hki.da.cb.RestructureAction.makeRepOfSIPContent;
 import static de.uzk.hki.da.cb.RestructureAction.revertToSIPContent;
-import static de.uzk.hki.da.cb.BuildAIPAction.deleteBagitFiles;
-import static de.uzk.hki.da.core.C.*;
-import static de.uzk.hki.da.utils.StringUtilities.*;
+import static de.uzk.hki.da.core.C.WA_DATA;
+import static de.uzk.hki.da.core.C.WA_INSTITUTION;
+import static de.uzk.hki.da.core.C.WA_PIPS;
+import static de.uzk.hki.da.core.C.WA_PUBLIC;
+import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +35,6 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
 
 
@@ -52,10 +54,9 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 
 	public RestartIngestWorkflowAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;}
 
-	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {}
-
+	public void checkConfiguration() {
+	}
 	
 	@Override
 	public boolean implementation() throws IOException {

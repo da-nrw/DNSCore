@@ -69,11 +69,11 @@ public class RestructureAction extends AbstractAction{
 	}
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
-		if (getFileFormatFacade()==null) throw new ConfigurationException("fileFormatFacade not set");
+	public void checkConfiguration() {
+		if (getGridRoot()==null) throw new ConfigurationException("Must not be null: gridRoot");
+		if (getFileFormatFacade()==null) throw new ConfigurationException("Must not be null: fileFormatFacade");
 	}
-
+	
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException, SubsystemNotAvailableException {
@@ -83,9 +83,6 @@ public class RestructureAction extends AbstractAction{
 				&&(! checkIfOnWorkAreaIsSpaceAvailabeForDeltaPackages(retrievePackagesHelper)))
 			return false;
 		
-
-		
-
 		
 		j.setRep_name(getNewRepName());
 		makeRepOfSIPContent(o.getPath(), o.getDataPath(), j.getRep_name());

@@ -96,10 +96,8 @@ public class UpdateMetadataAction extends AbstractAction {
 	private HashMap<String, Integer> fileName_convertRewritingCount;
 	private Map<DAFile,DAFile> unreferencedConvertedFiles;
 	
-
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
+	public void checkConfiguration() {
 	}
 
 	@Override
