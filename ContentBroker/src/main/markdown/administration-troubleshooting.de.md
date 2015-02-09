@@ -92,6 +92,23 @@ Konfigurationsfehler. Sollte nur während der Entwicklung oder Einrichtungsphase
 auf einem Knoten während der Einrichtungsphase wird alle potentiellen 7er Status aufdecken. Nach Behebung des Zurücksetzen Buttons kann der Administrator
 das Paket wie gewohnt per "Zurücksetzen"-Button zurücksetzen.
 
+### Der "Objekt Löschen"-Button. Automatisiertes Löschen von Paketen.
+
+![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/Delete_button.PNG)
+
+Das Betätigen des Buttons vom Admin führt zur Löschung des Objekts sowohl aus der Datenbank als auch vom Speicher. 
+Der Orig_name kann somit wieder verwendet werden.
+Sollte es sich beim eingelieferten Paket um ein Delta handeln, wird nur das neuste Paket gelöscht. Das Originalobjekt bleibt erhalten.
+
+### Der "Gesamte Workflow zurücksetzen"-Button - Rollback
+
+TODO screenshot
+
+### Der "Zurücksetzen Button - Retry
+
+TODO screenshot
+
+
 ### Automatischen Anhalten der ActionFactory.
 
 Unter bestimmten Umständen ist dem ContentBroker nicht möglich, wie vorgesehen zu operieren. 
@@ -113,21 +130,6 @@ Maske "Adminfunktionen" der DA-Web. Das Problem sollte behoben
 werden. Je nach Fehlerquelle sollte der ContentBroker dafür heruntergefahren werden. Danach kann der ContentBroker, oder auch einfach die ActionFactory,
 wieder gestartet werden.
 
-### Der "Objekt Löschen"-Button. Automatisiertes Löschen von Paketen.
-
-![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/Delete_button.PNG)
-
-Das Betätigen des Buttons vom Admin führt zur Löschung des Objekts sowohl aus der Datenbank als auch vom Speicher. 
-Der Orig_name kann somit wieder verwendet werden.
-Sollte es sich beim eingelieferten Paket um ein Delta handeln, wird nur das neuste Paket gelöscht. Das Originalobjekt bleibt erhalten.
-
-### Der "Gesamte Workflow zurücksetzen"-Button - Rollback
-
-TODO screenshot
-
-### Der "Zurücksetzen Button - Retry
-
-TODO screenshot
 
 ## Manuelles Löschen von bereits archiveirten Objekten unter speziellen Voraussetzungen
 
