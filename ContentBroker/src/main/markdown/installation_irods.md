@@ -124,5 +124,6 @@ The upgrade process differs slightly if your are acting as Master Server ad is m
 19. ils
 20. Restart ContentBroker
 
-We're using iRODS since Version 2.5. Up to iRODS 3.3.1 we encountered not any problems yet. Due to a breaking change in the way iRODS organizes its resources beginning in the 4.X releases (from flat resource groups to a resource tree), this might imply some significant changes to the code and the rule set being used. Even upgrade process might be more difficult.  
+We're using iRODS since Version 2.5. Up to iRODS 3.3.1. 
+Due to a breaking change in the way iRODS organizes its resources beginning in the 4.X releases (from flat resource groups to a resource tree), this might imply some significant changes to the code and the rule set being used. Even upgrade process might be more difficult.  
 
