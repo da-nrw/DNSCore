@@ -101,7 +101,14 @@ public class FederationExecutor extends Thread {
 	@Override
 	public void run() {
 		logger.trace("run....");
-		if (destResc==null) throw new IrodsRuntimeException("federation destResc is null");
+		if (destResc==null) {
+			logger.error("dest Resc is null!");
+			throw new RuntimeException("federation destResc is null");
+		}
+		if (node.getAdmin()==null) {
+			logger.error("node Admin is null!");
+			throw new RuntimeException("node Admin is null!");
+		}
 		int i = 0;
 		while (i<retries && !federate(data_name)){
 				try {
