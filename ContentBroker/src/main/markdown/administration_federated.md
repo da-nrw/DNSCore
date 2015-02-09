@@ -284,19 +284,19 @@ You might be able to trigger re-federation if desired, just by setting this to 0
 
      imeta mod -d 1-20141007788.pack_1.tar FEDERATE 0
 
-attribute: chksum
+**attribute: chksum**
 stores originally computed checksum
 
 This value has never to changed!
 
-attribute: SYNCHRONIZED_TO
+**attribute: SYNCHRONIZED_TO**
 zones with secondary copies
 
-attribute: replicate_to
+**attribute: replicate_to**
 Resc group names the item was replicated to after registry in local zone
 
-attribute: MIN_COPIES
+**attribute: MIN_COPIES**
 Minimal copies to reach (otherwise federation service's default, 3 is being taken)
  
-attribute: SYNCHRONIZE_EVENT
+**attribute: SYNCHRONIZE_EVENT**
 timestamp of last synchronizing event
