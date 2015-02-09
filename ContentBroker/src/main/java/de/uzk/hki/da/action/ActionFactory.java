@@ -124,8 +124,8 @@ public class ActionFactory implements ApplicationContextAware {
 		
 		if (getActionRegistry() == null) msg.append("Unable to build action. Action map has not been set.\n");
 		if (getLocalNode()==null) msg.append("Unable to build action. Node not set.\n");
-		if (getPreservationSystem()==null) msg.append("PreservationSystem not set.\n");
 		if (getUserExceptionManager()==null) msg.append("User exception manager not set.\n");
+		if (getPreservationSystem()==null) msg.append("PreservationSystem not set.\n");
 		else {
 			if (getPreservationSystem().getMinRepls()==null) msg.append("Min repls not set.\n");
 			if (preservationSystem.getMinRepls()==0) msg.append("MinNodes, 0 is not allowed!\n");
