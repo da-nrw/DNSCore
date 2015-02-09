@@ -289,14 +289,14 @@ stores originally computed checksum
 
 This value has never to changed!
 
-attribute: SYNCHRONIZED_TO
+**attribute: SYNCHRONIZED_TO**
 zones with secondary copies
 
-attribute: replicate_to
+**attribute: replicate_to**
 Resc group names the item was replicated to after registry in local zone
 
-attribute: MIN_COPIES
+**attribute: MIN_COPIES**
 Minimal copies to reach (otherwise federation service's default, 3 is being taken)
  
-attribute: SYNCHRONIZE_EVENT
+**attribute: SYNCHRONIZE_EVENT**
 timestamp of last synchronizing event
