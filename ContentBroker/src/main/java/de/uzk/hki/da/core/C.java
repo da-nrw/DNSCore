@@ -145,7 +145,7 @@ public class C {
 	public static final String WORKFLOW_STATUS_DIGIT_IDLE="0";
 	public static final String WORKFLOW_STATUS_DIGIT_WORKING="2";
 	public static final String WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED = "1";
-	public static final String WORKFLOW_STATUS_DIGIT_ERROR_NOT_PROPERLY_HANDLED = "3";
+	public static final String WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK = "3";
 	public static final String WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT = "5";
 	public static final String WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET = "6";
 	public static final String WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION = "7";

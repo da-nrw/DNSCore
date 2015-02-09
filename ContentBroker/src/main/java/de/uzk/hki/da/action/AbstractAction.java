@@ -232,7 +232,7 @@ public abstract class AbstractAction implements Runnable {
 		} catch (Exception e) {
 			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO ROLLBACK ACTION. DATABASE OR WORKAREA MIGHT BE INCONSISTENT NOW.");
 			logger.error(this.getClass().getName()+": couldn't get rollbacked to previous state. Exception in action.rollback(): ",e);
-			errorStatus = errorStatus.substring(0, errorStatus.length() - 1) + C.WORKFLOW_STATUS_DIGIT_ERROR_NOT_PROPERLY_HANDLED;
+			errorStatus = errorStatus.substring(0, errorStatus.length() - 1) + C.WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK;
 		}
 	
 		job.setDate_modified(String.valueOf(new Date().getTime()/1000L));

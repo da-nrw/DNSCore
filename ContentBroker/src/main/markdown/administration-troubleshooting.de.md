@@ -36,30 +36,30 @@ Der Status ist definiert als eine dreistellige dezimale Zahl. Dabei kodieren die
 
 Die Zuordnung der Status zu den Actions kann jederzeit anhand der ersten beiden Ziffern sowie der oben angeführten beans nachvollzogen werden. Die Interpretation der letzten Ziffer des Status wird im folgenden erläutert.
 
-#### xx0
+#### xx0 - WAITING
 
 Die Null am Ende des Status bedeutet, dass das Objekt sich in einem konsistenten, gemäß der DNS-Spezifikation wohlgeformten Zustand befindet und aktuell von keiner Action verarbeitet wird. Das Objekt wartet darauf, von einer passenden Action (Status = Anfangsstatus der Action) abgeholt zu werden. 
 
-#### xx1
+#### xx1 - ERROR_PROPERLY_HANDLED
 
 Jeder Status, der mit einer Eins endet, kennzeichnet einen Fehler in der Verarbeitung. 
 Desweiteren bedeutet die Eins, dass das Objekt in einen konsistenten Zustand (xx1-1) zurückgeführt werden konnte. 
 Demnach korrspondieren beispielsweise die Status 120 und 121 zu ein und demselben physischen File auf dem Dateisystem sowie in der Datenbank.  
 Der Administrator kann das Objekt zurücksetzen mittels Klick auf den Button "Zurücksetzen"
 
-#### xx2
+#### xx2 - WORKING
 
 Die Zwei am Ende bedeutet, dass das Objekt gerade von der aktuell aktiven Action bearbeitet wird. 
 Je nach Größe und Komplexität des Pakets kann dieser Prozess einige Zeit dauern. Ob die Action tatsächlich arbeitet,
 kann anhand fortlaufender Logmeldungen im Objekt-Log-File nachgesehen werden.
 
-#### xx3
+#### xx3 - ERROR_BAD_ROLLBACK
 
 Die drei am Ende bedeutet, dass ein Rollback nicht durchgeführt werden konnte, entweder, weil er nicht implementiert ist, oder
 weil ein Fehler während der Durchführung des Rollbacks aufgetreten ist. 
 Zwischen 123 und 323 kann der Administrator das Objekt per Button "Gesamten Workflow zurücksetzen". 
 
-#### xx4
+#### xx4 - USER_ERROR
 
 Die Vier am Ende des Staus bedeutet einen Userfehler. Der User bekommt in diesem Fall eine Email mit der entsprechenden Exception aus dem Object-Logfile. 
 Darüber hinaus erscheint in der DAWeb neben dem Fehlerstatus ein neuer Button. 
@@ -73,7 +73,7 @@ Das Betätigen des Buttons vom Admin führt zur Löschung des Objekts sowohl aus
 Der Orig_name kann somit wieder verwendet werden.
 Sollte es sich beim eingelieferten Paket um ein Delta handeln, wird nur das neuste Paket gelöscht. Das Originalobjekt bleibt erhalten.
 
-#### xx5 
+#### xx5 - ERROR_MODEL_INCONSISTENT
 
 Eine fünf am Ende bedeutet, dass ein kritischer Fehler bezüglich des Datenmodells aufgetreten ist. Dies kann mit der Verknüpfung zwischen Actions, 
 Jobs, Usern und Objekten bzw. deren Eigenschaften zusammenhängen. Im Falle solcher Fehler bitten wir Nutzer der Software, 
@@ -81,14 +81,16 @@ sich direkt an die Entwickler zu wenden, da diese Kategorie von Fehlern vergleic
 Im Normalfall kann die Inkonsistenz datenbankseitig bereinigt werden und per "Zurücksetzen"- bzw. "Gesamten Workflow zurücksetzen"- 
 Button zurückgesetzt werden.
 
-#### xx6
+#### xx6 - ERROR_PRECONDITIONS_NOT_MET
 
 Eine sechs am Ende bedeutet, dass die Eingangsbedingungen für die Bearbeitung eines Paketes in einem bestimmten Status nicht gegeben sind. 
 Dass heisst, dass die dem Status entsprechende Action das Paket nicht so vorfindet, wie sie es benötigt, um es ordnungsgemäß verarbeiten zu können. 
-Das Paket kann in  solch einem Fall lediglich gelöscht werden durch Klick auf den "Objekt Löschen"-Button. Solcherlei Fehler können z.B. durch fehlerhaft implementierte Rollbacks entstehen.
+Das Paket kann in  solch einem Fall lediglich gelöscht werden durch Klick auf den "Objekt Löschen"-Button bzw. zurückgerollt durch den 
+Button "Gesamten Workflow zurücksetzen." 
+Solcherlei Fehler können z.B. durch fehlerhaft implementierte Rollbacks entstehen.
 Im Falle eines solchen Fehlers sollten die Entwickler kontaktiert werden.
 
-#### xx7
+#### xx7 - ERROR_BAD_CONFIGURATION
 
 Konfigurationsfehler. Sollte nur während der Entwicklung oder Einrichtungsphase eines Systems auftreten. Ein End-To-End Test eines Paketes
 auf einem Knoten während der Einrichtungsphase wird alle potentiellen 7er Status aufdecken. Nach Behebung des Zurücksetzen Buttons kann der Administrator
