@@ -277,7 +277,7 @@ Attribute Value Unit (AVU) Metadata are stored in each ICAT. They could be liste
 	value: 01412675041
 	units: 
 
-attribute: FEDERATED
+**attribute: FEDERATED**
 AVU indicates if AIP was synchronized successfully 
 
 You might be able to trigger re-federation if desired, just by setting this to 0
@@ -285,9 +285,8 @@ You might be able to trigger re-federation if desired, just by setting this to 0
      imeta mod -d 1-20141007788.pack_1.tar FEDERATE 0
 
 **attribute: chksum**
-stores originally computed checksum
-
-This value has never to changed!
+stores originally computed checksum, backup for security purposes
+This value has never to be changed!
 
 **attribute: SYNCHRONIZED_TO**
 zones with secondary copies
