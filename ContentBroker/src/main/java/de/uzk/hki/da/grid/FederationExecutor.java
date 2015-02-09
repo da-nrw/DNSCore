@@ -102,28 +102,28 @@ public class FederationExecutor extends Thread {
 	public void run() {
 		logger.trace("run....");
 		if (destResc==null) throw new IrodsRuntimeException("federation destResc is null");
-			int i = 1;
-			while (!federate(data_name) && i<retries){
-					try {
-						logger.debug("Going to sleep for " + timeout + " millis");
-						Thread.sleep(timeout);
-					} catch (InterruptedException e) {
-						logger.error("failed wakeup federation thread " + e.getCause());
-					}
-					i++;
-			}
-			// We have passed the retries, we try to send Email to node admin
-			if (i>=retries) {
-				String err = "Failed to federate :" + data_name + " giving up on node, cooperateing servers offline?"; 
-				if (node.getAdmin().getEmailAddress()!=null && !node.getAdmin().getEmailAddress().equals("")) {
-					try {
-						Mail.sendAMail(node.getAdmin().getEmailAddress(), node.getAdmin().getEmailAddress(), err , err);
-					} catch (MessagingException ex) {
-						logger.error("Sending Email failed " + ex.toString());
-					}
-				logger.error("Failed to federate :" + data_name + " giving up on node " );
+		int i = 0;
+		while (i<retries && !federate(data_name)){
+				try {
+					logger.debug("Going to sleep for " + timeout + " millis");
+					Thread.sleep(timeout);
+				} catch (InterruptedException e) {
+					logger.error("failed wakeup federation thread " + e.getCause());
 				}
-			} 
+				i++;
+		}
+		// We have passed the retries, we try to send Email to node admin
+		if (i==retries) {
+			String err = "Failed to federate :" + data_name + " giving up on node, cooperateing servers offline?"; 
+			if (node.getAdmin().getEmailAddress()!=null && !node.getAdmin().getEmailAddress().equals("")) {
+				try {
+					Mail.sendAMail(node.getAdmin().getEmailAddress(), node.getAdmin().getEmailAddress(), err , err);
+				} catch (MessagingException ex) {
+					logger.error("Sending Email failed " + ex.toString());
+				}
+			logger.error("Failed to federate :" + data_name + " giving up on node " );
+			}
+		} 
 }	
 	/**
 	 * Trying to federate
