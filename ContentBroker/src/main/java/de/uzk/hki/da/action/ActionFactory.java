@@ -21,6 +21,7 @@ package de.uzk.hki.da.action;
 
 
 import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
+import static de.uzk.hki.da.core.C.*;
 
 import java.util.List;
 
@@ -32,7 +33,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.UserExceptionManager;
 import de.uzk.hki.da.format.FileFormatFacade;
@@ -119,41 +119,61 @@ public class ActionFactory implements ApplicationContextAware {
 	
 	
 	
-	private void checkSystemState() {
-		if (getActionRegistry() == null) throw new IllegalStateException("Unable to build action. Action map has not been set.");
-		if (getLocalNode()==null) throw new IllegalStateException("Unable to build action. Node not set.");
-		if (getPreservationSystem()==null) throw new IllegalStateException("preservationSystem not set");
-		if (getPreservationSystem().getMinRepls()==null) throw new IllegalStateException("min repls not set");
-		if (preservationSystem.getMinRepls()==0) throw new IllegalStateException("minNodes, 0 is not allowed!");
-		if (getPreservationSystem().getMinRepls()<3) logger.warn("min_repls lower than 3 not recommended for lta");
-		if (getPreservationSystem().getAdmin()==null) throw new IllegalStateException("node admin not set");
-		if (getUserExceptionManager()==null) throw new IllegalStateException("user exception manager not set");
-		if (isNotSet(preservationSystem.getAdmin().getEmailAddress()))  
-			throw new IllegalStateException("systemFromEmailAdress is not set!");
-		if (isNotSet(preservationSystem.getUrnNameSpace())) 
-			throw new IllegalStateException("URN NameSpace parameter not set!");
-		if (isNotSet(preservationSystem.getUrisCho())) 
-			throw new IllegalStateException("missing choBaseUri");
-		if (isNotSet(preservationSystem.getUrisAggr())) 
-			throw new IllegalStateException("missing aggrBaseUri");
-		if (isNotSet(preservationSystem.getUrisLocal())) 
-			throw new IllegalStateException("localBaseUri not set");
+	private void checkPreservationSystemNode() throws IllegalStateException {
+		StringBuilder msg = new StringBuilder();
+		
+		if (getActionRegistry() == null) msg.append("Unable to build action. Action map has not been set.\n");
+		if (getLocalNode()==null) msg.append("Unable to build action. Node not set.\n");
+		if (getPreservationSystem()==null) msg.append("PreservationSystem not set.\n");
+		if (getUserExceptionManager()==null) msg.append("User exception manager not set.\n");
+		else {
+			if (getPreservationSystem().getMinRepls()==null) msg.append("Min repls not set.\n");
+			if (preservationSystem.getMinRepls()==0) msg.append("MinNodes, 0 is not allowed!\n");
+			if (getPreservationSystem().getAdmin()==null) msg.append("Node admin not set.\n");
+			if (isNotSet(preservationSystem.getAdmin().getEmailAddress()))  
+				msg.append("Not set: systemFromEmailAdress.\n");
+			if (isNotSet(preservationSystem.getUrnNameSpace())) 
+				msg.append("Not set: URN NameSpace parameter.\n");
+			if (isNotSet(preservationSystem.getUrisCho())) 
+				msg.append("Not set: choBaseUri.\n");
+			if (isNotSet(preservationSystem.getUrisAggr())) 
+				msg.append("Not set: aggrBaseUri.\n");
+			if (isNotSet(preservationSystem.getUrisLocal())) 
+				msg.append("Not set: localBaseUri.\n");
+			if (getPreservationSystem().getMinRepls()<3) logger.warn("min_repls lower than 3 not recommended for lta");
+		}
+		
+		if (! msg.toString().isEmpty())
+			throw new IllegalStateException(msg.toString());
 	}
 	
 	
 	
-	private void checkSystemState(AbstractAction action) {
+	private void checkJobActionContractorObject(AbstractAction action) {
+		StringBuilder msg = new StringBuilder();
 		
-		if (action.getJob()==null) throw new IllegalStateException("job not set");
-		if (action.getObject()==null) throw new IllegalStateException("object not set");
-		if (action.getObject().getContractor()==null) throw new IllegalStateException("contractor not set");
-		if (action.getObject().getContractor().getShort_name()==null) throw new IllegalStateException("contractor short name not set.");
-		if (action.getObject().getContractor().getEmailAddress()==null||action.getObject().getContractor().getEmailAddress().isEmpty()) throw new IllegalStateException("user email not set");
-		if (action.getObject().getIdentifier()==null) throw new IllegalStateException("object identifier not set");
-		action.getObject().getLatestPackage();
-		if (action.getObject().getLatestPackage().getContainerName()==null) throw new IllegalStateException("containerName of latest package not set");
+		if (action.getJob()==null) msg.append("Not set: job.\n");
+		if (action.getObject()==null) {
+			msg.append("Not set: object\n");
+		}else {
+			if (action.getObject().getLatestPackage().getContainerName()==null) msg.append("Not set: containerName of latest package.\n");
+			if (action.getObject().getIdentifier()==null) 
+				msg.append("Not set: object identifier not set.\n");
+			if (action.getObject().getContractor()==null) {
+				msg.append("Not set: contractor\n");
+			}else {
+				if (action.getObject().getContractor().getShort_name()==null) 
+					msg.append("Not set: contractor short name.\n");
+				if (action.getObject().getContractor().getEmailAddress()==null||action.getObject().getContractor().getEmailAddress().isEmpty()) 
+					msg.append("Not set: user email.\n");
+			}
+			action.getObject().getLatestPackage();
+		}
 		
 		// TODO check if folders exist
+		
+		if (! msg.toString().isEmpty())
+			throw new IllegalStateException(msg.toString());
 	}
 	
 	
@@ -170,7 +190,7 @@ public class ActionFactory implements ApplicationContextAware {
 	public AbstractAction buildNextAction() {		
 		if (context == null) throw new ConfigurationException("Unable to build action. Application context has not been set.");
 		try{
-			checkSystemState();
+			checkPreservationSystemNode();
 		} catch (IllegalStateException e) {
 			logger.error(e.getMessage());
 			onHalt=true;
@@ -196,7 +216,7 @@ public class ActionFactory implements ApplicationContextAware {
 			AbstractAction action = (AbstractAction) context.getBean(jobType);
 			
 			
-			Job jobCandidate = qc.fetchJobFromQueue(action.getStartStatus(), workingStatus(action)
+			Job jobCandidate = qc.fetchJobFromQueue(action.getStartStatus(), status(action,WORKFLOW_STATUS_DIGIT_WORKING)
 					, localNode);
 			if (jobCandidate == null) {
 				logger.trace("No job for type {}, checking for types with lower priority", jobType);
@@ -207,18 +227,17 @@ public class ActionFactory implements ApplicationContextAware {
 			
 			injectProperties(action,jobCandidate);
 			try {
-				checkSystemState(action);
+				checkJobActionContractorObject(action);
 			}catch(IllegalStateException e) {
 				logger.error(e.getMessage());
-				qc.updateJobStatus(jobCandidate, criticalStatus(action));
+				qc.updateJobStatus(jobCandidate, status(action,WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT));
 				continue;
 			}
 			try {
 				action.checkConfiguration();
 			}catch(ConfigurationException e) {
 				logger.error("Regarding job for object ["+jobCandidate.getObject().getIdentifier()+"]. Bad configuration of action. "+e.getMessage());
-				logger.info("Will set back job to its start state.");
-				qc.updateJobStatus(jobCandidate, action.getStartStatus());
+				qc.updateJobStatus(jobCandidate, status(action,WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION));
 				continue;
 			}
 			try {
@@ -227,7 +246,7 @@ public class ActionFactory implements ApplicationContextAware {
 				action.checkPreconditions();
 			}catch(PreconditionsNotMetException e) {
 				logger.error("Regarding job for object ["+jobCandidate.getObject().getIdentifier()+"]. Preconfigurations not met for action. "+e.getMessage());
-				qc.updateJobStatus(jobCandidate, badPreconditionsStatus(action));
+				qc.updateJobStatus(jobCandidate, status(action,WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET));
 				continue;
 			}
 			
@@ -239,20 +258,10 @@ public class ActionFactory implements ApplicationContextAware {
 	}
 	
 	
-	
-
-	private String workingStatus(AbstractAction action) {
-		return action.getStartStatus().substring(0,action.getStartStatus().length()-1) + C.WORKFLOW_STATE_DIGIT_WORKING;
+	private String status(AbstractAction action,String digit) {
+		return action.getStartStatus().substring(0,action.getStartStatus().length()-1) + digit;
 	}
 	
-	private String criticalStatus(AbstractAction action) {
-		return action.getStartStatus().substring(0,action.getStartStatus().length()-1) + "5";
-	}
-	
-	private String badPreconditionsStatus(AbstractAction action) {
-		return action.getStartStatus().substring(0,action.getStartStatus().length()-1) + "6";
-	}
-
 	
 	public JmsMessageServiceHandler getJmsMessageService() {
 		return jmsMessageServiceHandler;

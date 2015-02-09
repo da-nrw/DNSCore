@@ -88,7 +88,7 @@ Die hier untergebrachten Dokumentationen setzen den Einsatz von DNSCore unter be
 
 #### Fehlerbehebung<br>[Systemadministratoren / Knotenadministratoren]
 Die aufgeführten Dokumente geben Hinweise zur Fehlerbehebung bei der Knotenadministration.
-* Spezifikation der Fehlerstatus & Hinweise zur Fehlerbehebung ([english](administration-troubleshooting.md) | [deutsch](administration-troubleshooting.de.md) )
+* Spezifikation der Fehlerstatus & Hinweise zur Fehlerbehebung ([deutsch](administration-troubleshooting.de.md) )
 
 #### Funktionalitäten der DNSCore erweitern<br>[Entwickler]
 

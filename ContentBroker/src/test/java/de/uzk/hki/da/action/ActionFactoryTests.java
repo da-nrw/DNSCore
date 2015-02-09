@@ -19,17 +19,13 @@
 
 package de.uzk.hki.da.action;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+
+import static de.uzk.hki.da.core.C.*;
+
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -93,7 +89,9 @@ public class ActionFactoryTests {
 		
 		factory = new ActionFactory();
 		factory.setApplicationContext(context);
-		factory.setActionRegistry((ActionRegistry)new FileSystemXmlApplicationContext(baseDirPath+"action-definitions.xml").getBean("actionRegistry"));
+		FileSystemXmlApplicationContext context= new FileSystemXmlApplicationContext(baseDirPath+"action-definitions.xml");
+		factory.setActionRegistry((ActionRegistry)context.getBean("actionRegistry"));
+		context.close();
 		ps = new PreservationSystem(); ps.setId(1); ps.setMinRepls(1); 
 		ps.setUrnNameSpace("urn"); ps.setUrisCho("abc"); ps.setUrisFile("abc"); ps.setUrisLocal("abc");
 		ps.setUrisAggr("abc");
@@ -137,14 +135,14 @@ public class ActionFactoryTests {
 	}
 	
 	@Test
-	public void badSystemState() {
+	public void modelInconsistent() {
 
 		Job j=makeGoodJob();
 		j.getObject().setContractor(null);
 		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
 			thenReturn(j);
 		factory.buildNextAction();
-		verify(queueConnector,times(1)).updateJobStatus(j, "455");
+		verify(queueConnector,times(1)).updateJobStatus(j, "45"+WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT);
 	}
 	
 	@Test
@@ -156,7 +154,7 @@ public class ActionFactoryTests {
 		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
 			thenReturn(j);
 		assertTrue(factory.buildNextAction()==null);
-		verify(queueConnector,times(1)).updateJobStatus(j, "450");
+		verify(queueConnector,times(1)).updateJobStatus(j, "45"+WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION);
 	}
 	
 	
@@ -169,7 +167,7 @@ public class ActionFactoryTests {
 		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
 			thenReturn(j);
 		assertTrue(factory.buildNextAction()==null);
-		verify(queueConnector,times(1)).updateJobStatus(j, "456");
+		verify(queueConnector,times(1)).updateJobStatus(j, "45"+WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET);
 	}
 	
 	

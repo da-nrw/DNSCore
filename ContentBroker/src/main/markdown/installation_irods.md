@@ -71,7 +71,9 @@ This depends on your selected topology
 ### Setting up a node topology
 
 Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zones" as well as the concept of 
-having one Zone with several resource servers. Please refer to the iRODS Documentation about this. For working with DNSCore in Federations plese read [here](administration_federated.md) DNS encourages usage of federation.
+having one Zone with several resource servers. Please refer to the iRODS Documentation about this. For working with DNSCore in Federations plese read [here](administration_federated.md).
+
+DNS encourages usage of [federation at all nodes](administration_federated.md).
 
 Each Zone needs at least one database (so called ICAT Server). The use of Postgres is encouraged here. 
 
@@ -99,7 +101,7 @@ In case of having an isolated presentation node, you might only have to define t
 
 ## Upgrade iRODS
 
-iRODS installation could be upgraded, if necessary. The following list describes an upgrade from 3.2 to 3.3.1. The 4.X releases are not tested with the code yet. 
+iRODS installation could be upgraded, if necessary. The following list describes an upgrade from 3.2 to 3.3.1. The upcoming 4.X releases of iRODS are not deeply tested with the code yet.
 The upgrade process differs slightly if your are acting as Master Server ad is more complex, due to have the ICAT Databse as well. Described below you'll find describtion applicable to a Master. 
 
 1. stop ContentBroker
@@ -122,5 +124,6 @@ The upgrade process differs slightly if your are acting as Master Server ad is m
 19. ils
 20. Restart ContentBroker
 
-We're using iRODS since Version 2.5. Up to iRODS 3.3.1 we encountered not any problems yet. 
+We're using iRODS since Version 2.5. Up to iRODS 3.3.1. 
+Due to a breaking change in the way iRODS organizes its resources beginning in the 4.X releases (from flat resource groups to a resource tree), this might imply some significant changes to the code and the rule set being used. Even upgrade process might be more difficult.  
 

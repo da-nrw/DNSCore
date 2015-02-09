@@ -27,6 +27,15 @@ import org.hibernate.criterion.CriteriaSpecification
 
 class QueueEntry {
 	
+	private static final String WORKFLOW_STATUS_DIGIT_USER_ERROR="4";
+	private static final String WORKFLOW_STATUS_DIGIT_IDLE="0";
+	private static final String WORKFLOW_STATUS_DIGIT_WORKING="2";
+	private static final String WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED = "1";
+	private static final String WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK = "3";
+	private static final String WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT = "5";
+	private static final String WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET = "6";
+	private static final String WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION = "7";
+	
 	int id
 	String status
 	String initialNode
@@ -99,9 +108,12 @@ class QueueEntry {
 	 * @return
 	 */
 	boolean showDeletionButton() {
-		def checkfor = ["1","3","4"]
+		def checkfor = [
+			WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK ,
+			WORKFLOW_STATUS_DIGIT_USER_ERROR,
+			WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET]
 		def ch = status[-1]
-		if (checkfor.contains(ch) && getStatusAsInteger()<401) return true;
+		if (checkfor.contains(ch) && getStatusAsInteger()<407) return true;
 		return false;
 	}
 	
@@ -112,10 +124,13 @@ class QueueEntry {
 	 */
 	
 	boolean showRecoverButton() {
-		def checkfor = ["1","3"]
+		def checkfor = [
+			WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK,
+			WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT,
+			WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET]
 		def ch = status[-1]
 		if (checkfor.contains(ch)) {
-			if (getStatusAsInteger()>=123 & getStatusAsInteger()<=353) return true;
+			if (getStatusAsInteger()>=123 & getStatusAsInteger()<=357) return true;
 		}
 		return false;
 	}
@@ -126,7 +141,10 @@ class QueueEntry {
 	 */
 	
 	boolean showRetryButton() {
-		def checkfor = ["1"]
+		def checkfor = [
+			WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED,
+			WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION,
+			WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT]
 		def ch = status[-1]
 		if (checkfor.contains(ch)) {
 			return true;
@@ -144,7 +162,7 @@ class QueueEntry {
 	 */
 	
 	boolean showRetryButtonAfterSomeTime(){
-		def checkfor = ["2"]
+		def checkfor = [WORKFLOW_STATUS_DIGIT_WORKING]
 		def ch = status[-1]
 		if (checkfor.contains(ch)) {
 			if (modified!=null && modified!="" && modified!="NULL" && modified.length()>5) {
@@ -159,14 +177,14 @@ class QueueEntry {
 	
 	String getInformation() {
 			if (getStatusAsInteger()<440) {
-					def checkfor = ["2","0"]
+					def checkfor = [WORKFLOW_STATUS_DIGIT_WORKING,WORKFLOW_STATUS_DIGIT_IDLE]
 					def ch = status[-1]
 					if (checkfor.contains(ch)) {
 						return "arbeitend (" + status +")"
 					} else return "fehlerhaft (" + status +")"
 			} 
 			if (getStatusAsInteger()>=440 && getStatusAsInteger()<500 ) {
-				def checkfor = ["2","0"]
+				def checkfor = [WORKFLOW_STATUS_DIGIT_WORKING,WORKFLOW_STATUS_DIGIT_IDLE]
 				def ch = status[-1]
 				if (checkfor.contains(ch)) {
 					return "repliziere (" + status +")"
@@ -174,7 +192,7 @@ class QueueEntry {
 		}
 		
 			if (getStatusAsInteger()>500 && getStatusAsInteger()<600) {
-					def checkfor = ["2","0"]
+					def checkfor = [WORKFLOW_STATUS_DIGIT_WORKING,WORKFLOW_STATUS_DIGIT_IDLE]
 					def ch = status[-1]
 					if (checkfor.contains(ch)) {
 						return "archiviert. Verarbeite PIP (" + status +")"
