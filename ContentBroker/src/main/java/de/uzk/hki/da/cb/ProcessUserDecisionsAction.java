@@ -50,16 +50,21 @@ public class ProcessUserDecisionsAction extends AbstractAction{
 	public void checkConfiguration() {
 	}
 	
+
+	@Override
+	public void checkPreconditions() {
+		if (StringUtilities.isNotSet(j.getAnswer())){
+			throw new PreconditionsNotMetException("job.getAnswer() must not be null or empty.");
+		}
+	}
+	
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException, JDOMException,
 			ParserConfigurationException, SAXException {
 		
-		if (StringUtilities.isNotSet(j.getAnswer())){
-			throw new PreconditionsNotMetException("job.getAnswer() must not be null or empty.");
-		}
 		
-		else if (j.getAnswer().equals(C.ANSWER_YO)){
+		if (j.getAnswer().equals(C.ANSWER_YO)){
 			logger.info("System Question: "+C.QUESTION_MIGRATION_ALLOWED+" User response: "+C.ANSWER_YO);
 		} 
 		else {

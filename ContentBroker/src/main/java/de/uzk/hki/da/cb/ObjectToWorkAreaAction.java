@@ -42,7 +42,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 	private GridFacade gridFacade;
 	private DocumentsGenService dgs = new DocumentsGenService();
 	
-	public ObjectToWorkAreaAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;}
+	public ObjectToWorkAreaAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
 	
 	@Override
 	public void checkConfiguration() {
@@ -50,6 +50,11 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 		if (gridFacade==null) throw new ConfigurationException("Must not be null: gridFacade");
 	}
 
+
+	@Override
+	public void checkPreconditions() {
+	}
+	
 	@Override
 	public boolean implementation() {
 		

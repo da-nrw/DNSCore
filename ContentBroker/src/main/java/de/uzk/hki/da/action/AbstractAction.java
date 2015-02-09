@@ -34,7 +34,6 @@ import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.MailContents;
-import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserExceptionManager;
@@ -47,7 +46,6 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
-import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.TimeStampLogging;
 
 
@@ -106,6 +104,7 @@ public abstract class AbstractAction implements Runnable {
 	
 	public abstract void checkConfiguration();
 	
+	public abstract void checkPreconditions();
 	
 	/**
 	 * 
@@ -164,12 +163,6 @@ public abstract class AbstractAction implements Runnable {
 			resetModifiers();
 			execAndPostProcessRollback(o,j,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
 			reportUserError(e);
-			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
-		} catch (PreconditionsNotMetException e) {
-			String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + "6";
-			j.setDate_modified(String.valueOf(new Date().getTime()/1000L));
-			j.setStatus(errorStatus);
-			reportTechnicalError(e);
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		} catch (SubsystemNotAvailableException e) {
 			resetModifiers();
@@ -346,7 +339,7 @@ public abstract class AbstractAction implements Runnable {
 		jmsMessageServiceHandler.sendJMSMessage(jms);
 	}
 
-	private void synchronizeObjectDatabaseAndFileSystemState() {
+	public void synchronizeObjectDatabaseAndFileSystemState() {
 		o.reattach();
 		if (!SUPPRESS_OBJECT_CONSISTENCY_CHECK){
 			if ((!o.isDBtoFSconsistent())||(!o.isFStoDBconsistent())){

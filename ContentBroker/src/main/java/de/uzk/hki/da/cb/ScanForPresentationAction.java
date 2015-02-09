@@ -57,6 +57,11 @@ public class ScanForPresentationAction extends AbstractAction{
 		if (fileFormatFacade==null) throw new ConfigurationException("Must not be null: fileFormatFacade");
 	}
 	
+
+	@Override
+	public void checkPreconditions() {
+	}
+	
 	@Override
 	public boolean implementation() throws SubsystemNotAvailableException{
 		

@@ -65,13 +65,18 @@ public class RestructureAction extends AbstractAction{
 	private DocumentsGenService dgs = new DocumentsGenService();
 	
 	public RestructureAction(){
-		SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;
+		SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
 	}
 	
 	@Override
 	public void checkConfiguration() {
 		if (getGridRoot()==null) throw new ConfigurationException("Must not be null: gridRoot");
 		if (getFileFormatFacade()==null) throw new ConfigurationException("Must not be null: fileFormatFacade");
+	}
+	
+
+	@Override
+	public void checkPreconditions() {
 	}
 	
 	@Override

@@ -58,6 +58,11 @@ public class ScanAction extends AbstractAction{
 	public void checkConfiguration() {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("Must not be null: distributedConversionAdapter");
 	}
+	
+
+	@Override
+	public void checkPreconditions() {
+	}
 
 	@Override
 	public boolean implementation() throws IOException {

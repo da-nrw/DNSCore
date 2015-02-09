@@ -37,12 +37,17 @@ import de.uzk.hki.da.action.AbstractAction;
 public class PostRetrievalAction extends AbstractAction {
 
 	public PostRetrievalAction(){
-		SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;
+		SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
 		setKILLATEXIT(true);
 	}
 	
 	@Override
 	public void checkConfiguration() {
+	}
+	
+
+	@Override
+	public void checkPreconditions() {
 	}
 	
 	@Override

@@ -45,6 +45,10 @@ public class BuildAIPAction extends AbstractAction {
 	}
 	
 	@Override
+	public void checkPreconditions() {
+	}
+
+	@Override
 	public boolean implementation() {
 
 		deleteOldPremisFile();
@@ -53,6 +57,8 @@ public class BuildAIPAction extends AbstractAction {
 		
 		return true;
 	}
+	
+
 
 	@Override
 	public void rollback() throws Exception {

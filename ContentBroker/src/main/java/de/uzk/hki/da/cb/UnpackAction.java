@@ -73,7 +73,7 @@ public class UnpackAction extends AbstractAction {
 	
 	private enum PackageType{ BAGIT, METS }
 	
-	public UnpackAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;}
+	public UnpackAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
 	
 	private IngestGate ingestGate;
 	
@@ -81,10 +81,15 @@ public class UnpackAction extends AbstractAction {
 	public void checkConfiguration() {
 		if (ingestGate==null) throw new ConfigurationException("Must not be null: ingestGate");
 	}
+	
+
+	@Override
+	public void checkPreconditions() {
+		if (!sipContainer().exists()) throw new PreconditionsNotMetException("Missing file: "+sipContainer());
+	}
 
 	@Override
 	public boolean implementation() throws IOException{
-		if (!sipContainer().exists()) throw new PreconditionsNotMetException("Missing file: "+sipContainer());
 		
 		
 		if (!ingestGate.canHandle(sipContainer().length())){

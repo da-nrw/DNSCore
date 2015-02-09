@@ -52,14 +52,19 @@ public class RegisterURNAction extends AbstractAction {
 	public void checkConfiguration() {
 	}
 	
+
+	@Override
+	public void checkPreconditions() {
+		if (o.getLatest("premis.xml")==null) throw new PreconditionsNotMetException("premis.xml must exist");
+		if (! o.getLatest("premis.xml").toRegularFile().exists()) throw new PreconditionsNotMetException("premis.xml must exist"); 
+	}
+	
 	/**
 	 * @author Thomas Kleinke
 	 * @return URN if the SIP premis file contains an URN; otherwise null
 	 */
 	private String extractURNFromPremisFile() {
 		
-		if (o.getLatest("premis.xml")==null) throw new PreconditionsNotMetException("premis.xml must exist");
-		if (! o.getLatest("premis.xml").toRegularFile().exists()) throw new PreconditionsNotMetException("premis.xml must exist"); 
 		File premisFile = o.getLatest("premis.xml").toRegularFile();
 		
 		

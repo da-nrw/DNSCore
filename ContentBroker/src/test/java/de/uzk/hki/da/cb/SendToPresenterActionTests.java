@@ -140,7 +140,7 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	public void preconditionsThrowErrorUrnNotSet() throws IOException{
 		o.setUrn(null);
 		try {
-			action.implementation();
+			action.checkPreconditions();
 			fail();
 		} catch (PreconditionsNotMetException e) {}
 	}

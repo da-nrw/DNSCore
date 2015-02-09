@@ -33,6 +33,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.UserExceptionManager;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.model.Job;
@@ -220,8 +221,16 @@ public class ActionFactory implements ApplicationContextAware {
 				qc.updateJobStatus(jobCandidate, action.getStartStatus());
 				continue;
 			}
+			try {
+				action.setWorkArea(new WorkArea(localNode,jobCandidate.getObject()));
+				action.synchronizeObjectDatabaseAndFileSystemState();
+				action.checkPreconditions();
+			}catch(PreconditionsNotMetException e) {
+				logger.error("Regarding job for object ["+jobCandidate.getObject().getIdentifier()+"]. Preconfigurations not met for action. "+e.getMessage());
+				qc.updateJobStatus(jobCandidate, badPreconditionsStatus(action));
+				continue;
+			}
 			
-			action.setWorkArea(new WorkArea(localNode,jobCandidate.getObject()));
 			actionRegistry.registerAction(action);
 			return action;
 		}
@@ -238,6 +247,10 @@ public class ActionFactory implements ApplicationContextAware {
 	
 	private String criticalStatus(AbstractAction action) {
 		return action.getStartStatus().substring(0,action.getStartStatus().length()-1) + "5";
+	}
+	
+	private String badPreconditionsStatus(AbstractAction action) {
+		return action.getStartStatus().substring(0,action.getStartStatus().length()-1) + "6";
 	}
 
 	

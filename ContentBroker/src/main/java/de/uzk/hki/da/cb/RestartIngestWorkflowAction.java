@@ -52,10 +52,15 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	private static final String A = "a";
 	private static final String UNDERSCORE = "_";
 
-	public RestartIngestWorkflowAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;}
+	public RestartIngestWorkflowAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
 
 	@Override
 	public void checkConfiguration() {
+	}
+	
+
+	@Override
+	public void checkPreconditions() {
 	}
 	
 	@Override

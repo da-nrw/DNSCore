@@ -32,6 +32,10 @@ public class NullAction extends AbstractAction{
 
 	protected Session session;
 	
+	public NullAction() {
+		SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
+	}
+	
 	/**
 	 * Implementation.
 	 *
@@ -69,5 +73,10 @@ public class NullAction extends AbstractAction{
 	
 	@Override
 	public void checkConfiguration() {
+	}
+	
+
+	@Override
+	public void checkPreconditions() {
 	}
 }

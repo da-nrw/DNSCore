@@ -68,6 +68,11 @@ public class ValidateMetadataAction extends AbstractAction {
 	public void checkConfiguration() {
 	}
 	
+
+	@Override
+	public void checkPreconditions() {
+	}
+	
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException {

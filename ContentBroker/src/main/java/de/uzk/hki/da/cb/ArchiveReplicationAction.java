@@ -52,6 +52,10 @@ public class ArchiveReplicationAction extends AbstractAction {
 	}
 
 	@Override
+	public void checkPreconditions() {
+	}
+	
+	@Override
 	public
 	boolean implementation() {
 		
@@ -111,6 +115,8 @@ public class ArchiveReplicationAction extends AbstractAction {
 	public void setGridRoot(GridFacade gridRoot) {
 		this.gridRoot = gridRoot;
 	}
+
+	
 
 	
 }

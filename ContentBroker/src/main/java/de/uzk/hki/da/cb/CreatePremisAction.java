@@ -82,6 +82,10 @@ public class CreatePremisAction extends AbstractAction {
 	public void checkConfiguration() {
 	}
 	
+
+	@Override
+	public void checkPreconditions() {
+	}
 	
 	/**
 	 * @throws FileNotFoundException if one or more of the jhove output files are not present.

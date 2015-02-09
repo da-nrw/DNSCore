@@ -19,13 +19,17 @@
 
 package de.uzk.hki.da.action;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -33,14 +37,14 @@ import org.junit.Test;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import de.uzk.hki.da.cb.NullAction;
-import de.uzk.hki.da.core.SubsystemNotAvailableException;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.UserExceptionManager;
 import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.util.ConfigurationException;
@@ -156,6 +160,18 @@ public class ActionFactoryTests {
 	}
 	
 	
+	@Test
+	public void badPreconditions() {
+		AbstractAction action = new PreconditionsNotMetExceptionAction(); action.setStartStatus("450"); action.setName("tarAction"); action.setEndStatus("460");
+		when(context.getBean(anyString())).thenReturn(action);
+		
+		Job j=makeGoodJob();
+		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
+			thenReturn(j);
+		assertTrue(factory.buildNextAction()==null);
+		verify(queueConnector,times(1)).updateJobStatus(j, "456");
+	}
+	
 	
 	@Test
 	public void systemStateBad() {
@@ -191,6 +207,13 @@ public class ActionFactoryTests {
 		@Override
 		public void checkConfiguration() {
 			throw new ConfigurationException("Bad configuration");
+		}
+	}
+	
+	class PreconditionsNotMetExceptionAction extends NullAction{
+		@Override
+		public void checkPreconditions() {
+			throw new PreconditionsNotMetException("Preconditions not met.");
 		}
 	}
 }

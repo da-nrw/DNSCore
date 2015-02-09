@@ -99,6 +99,11 @@ public class UpdateMetadataAction extends AbstractAction {
 	@Override
 	public void checkConfiguration() {
 	}
+	
+
+	@Override
+	public void checkPreconditions() {
+	}
 
 	@Override
 	public boolean implementation() throws IOException, JDOMException, ParserConfigurationException, SAXException {

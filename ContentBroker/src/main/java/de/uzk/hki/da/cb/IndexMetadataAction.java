@@ -23,7 +23,6 @@ import static de.uzk.hki.da.core.C.ENCODING_UTF_8;
 import static de.uzk.hki.da.core.C.METADATA_STREAM_ID_EDM;
 import static de.uzk.hki.da.core.C.WA_PUBLIC;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,7 +57,6 @@ public class IndexMetadataAction extends AbstractAction {
 	private RepositoryFacade repositoryFacade;
 	private Set<String> testContractors;
 	private String indexName;
-	private File edmFile;
 	
 	public IndexMetadataAction() {
 		setKILLATEXIT(true);
@@ -70,20 +68,24 @@ public class IndexMetadataAction extends AbstractAction {
 			throw new ConfigurationException("Must not be null: repositoryFacade");
 	}
 	
+
 	@Override
-	public boolean implementation() throws RepositoryException, IOException {
+	public void checkPreconditions() {
 		if (indexName == null) 
 			throw new PreconditionsNotMetException("Index name not set. Make sure the action is configured properly");
 		if (getTestContractors()==null)
 			throw new PreconditionsNotMetException("testContractors not set");
-		edmFile = wa.metadataStream(WA_PUBLIC, METADATA_STREAM_ID_EDM);
-		if (! edmFile.exists())
-			throw new PreconditionsNotMetException("Missing file: "+edmFile);
+		if (! wa.metadataStream(WA_PUBLIC, METADATA_STREAM_ID_EDM).exists())
+			throw new PreconditionsNotMetException("Missing file: "+wa.metadataStream(WA_PUBLIC, METADATA_STREAM_ID_EDM));
+	}
+	
+	@Override
+	public boolean implementation() throws RepositoryException, IOException {
 
 		String edmContent;
 		InputStream metadataStream  = null;
 		try {
-			metadataStream = new FileInputStream(edmFile);
+			metadataStream = new FileInputStream(wa.metadataStream(WA_PUBLIC, METADATA_STREAM_ID_EDM));
 			edmContent = IOUtils.toString(metadataStream, ENCODING_UTF_8);
 		} finally {
 			metadataStream.close();

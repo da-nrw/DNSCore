@@ -94,6 +94,13 @@ public class SendToPresenterAction extends AbstractAction {
 			throw new ConfigurationException("Must not be null: testContractors");
 	}
 	
+
+	@Override
+	public void checkPreconditions() {
+		if (o.getUrn()==null||o.getUrn().isEmpty())
+			throw new PreconditionsNotMetException("urn not set");
+	}
+	
 	/**
 	 * Preconditions:
 	 * There can be two pips at
@@ -105,8 +112,6 @@ public class SendToPresenterAction extends AbstractAction {
 	 */
 	@Override
 	public boolean implementation() throws IOException {
-		if (o.getUrn()==null||o.getUrn().isEmpty())
-			throw new PreconditionsNotMetException("urn not set");
 		
 		if (StringUtilities.isNotSet(preservationSystem.getOpenCollectionName()))
 			throw new IllegalStateException("open collection name must be set");

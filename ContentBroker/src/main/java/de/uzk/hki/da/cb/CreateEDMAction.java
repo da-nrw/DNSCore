@@ -61,10 +61,10 @@ public class CreateEDMAction extends AbstractAction {
 	public void checkConfiguration() {
 		if (repositoryFacade == null) throw new ConfigurationException("Must not be null: repositoryFacade");
 	}
-
+	
 
 	@Override
-	public boolean implementation() throws IOException, RepositoryException {
+	public void checkPreconditions() {
 		if (edmMappings == null)
 			throw new PreconditionsNotMetException("edmMappings not set.");
 		for (String filePath:edmMappings.values())
@@ -72,7 +72,11 @@ public class CreateEDMAction extends AbstractAction {
 				throw new PreconditionsNotMetException("mapping file "+filePath+" does not exist");
 		if (isNotSet(o.getPackage_type()))
 			throw new PreconditionsNotMetException("missing package type");
-		
+	}
+
+
+	@Override
+	public boolean implementation() throws IOException, RepositoryException {
 		
 		String xsltTransformationFile = getEdmMappings().get(o.getPackage_type());
 		if (xsltTransformationFile == null)

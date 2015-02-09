@@ -66,6 +66,11 @@ public class RetrievalAction extends AbstractAction {
 	public void checkConfiguration() {
 	}
 	
+
+	@Override
+	public void checkPreconditions() {
+	}
+	
 	@Override
 	public boolean implementation() throws IOException {
 		if (!o.getDataPath().toFile().exists()) throw new IllegalStateException("object data path on fs doesn't exist on fs");

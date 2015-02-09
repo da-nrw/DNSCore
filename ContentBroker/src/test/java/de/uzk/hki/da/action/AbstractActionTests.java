@@ -99,7 +99,6 @@ public class AbstractActionTests {
 		action.setJmsMessageServiceHandler(ams);
 		action.setStartStatus(startStatus);
 		action.setEndStatus(endStatus);
-		action.SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
 		PreservationSystem ps = new PreservationSystem(); ps.setAdmin(c);
 		action.setPSystem(ps);
 		Node node = new Node(); node.setAdmin(c);

@@ -94,7 +94,7 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 	public void missingPackageType() throws IOException, RepositoryException {
 		o.setPackage_type(null);
 		try {
-			action.implementation();
+			action.checkPreconditions();
 			fail();
 		} catch (PreconditionsNotMetException e) {
 			assertTrue(e.getMessage().contains("package type"));

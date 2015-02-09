@@ -57,6 +57,11 @@ public class ConvertAction extends AbstractAction {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 	}
 	
+
+	@Override
+	public void checkPreconditions() {
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public boolean implementation() throws IOException {

@@ -47,6 +47,11 @@ public class CleanWorkAreaAction extends AbstractAction{
 	}
 	
 	
+
+	@Override
+	public void checkPreconditions() {
+	}
+	
 	@Override
 	public boolean implementation() throws IOException {
 		

@@ -60,6 +60,11 @@ public class FetchPIPsAction extends AbstractAction {
 	
 
 	@Override
+	public void checkPreconditions() {
+	}
+	
+
+	@Override
 	public boolean implementation() throws FileNotFoundException, IOException {
 
 		deletePreviousPIPs(); // Must be done at the beginning to make sure rollback() can act properly
