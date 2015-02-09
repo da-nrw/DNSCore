@@ -141,11 +141,14 @@ public class C {
 	public static final String ENCODING_UTF_8 = "UTF-8";
 	
 	// Action organization
-	public static final String WORKFLOW_STATE_DIGIT_USER_ERROR="4";
-	public static final String WORKFLOW_STATE_DIGIT_IDLE="0";
-	public static final String WORKFLOW_STATE_DIGIT_WORKING="2";
-	public static final String WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED = "1";
-	public static final String WORKFLOW_STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED = "3";
+	public static final String WORKFLOW_STATUS_DIGIT_USER_ERROR="4";
+	public static final String WORKFLOW_STATUS_DIGIT_IDLE="0";
+	public static final String WORKFLOW_STATUS_DIGIT_WORKING="2";
+	public static final String WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED = "1";
+	public static final String WORKFLOW_STATUS_DIGIT_ERROR_NOT_PROPERLY_HANDLED = "3";
+	public static final String WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT = "5";
+	public static final String WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET = "6";
+	public static final String WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION = "7";
 	public static final String WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION = "150";
 	public static final String WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION = "700";
 	public static final String WORKFLOW_STATUS_START___INGEST_UNPACK_ACTION = "110";

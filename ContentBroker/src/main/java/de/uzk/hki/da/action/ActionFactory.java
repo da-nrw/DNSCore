@@ -21,6 +21,7 @@ package de.uzk.hki.da.action;
 
 
 import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
+import static de.uzk.hki.da.core.C.*;
 
 import java.util.List;
 
@@ -32,7 +33,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.UserExceptionManager;
 import de.uzk.hki.da.format.FileFormatFacade;
@@ -216,7 +216,7 @@ public class ActionFactory implements ApplicationContextAware {
 			AbstractAction action = (AbstractAction) context.getBean(jobType);
 			
 			
-			Job jobCandidate = qc.fetchJobFromQueue(action.getStartStatus(), workingStatus(action)
+			Job jobCandidate = qc.fetchJobFromQueue(action.getStartStatus(), status(action,WORKFLOW_STATUS_DIGIT_WORKING)
 					, localNode);
 			if (jobCandidate == null) {
 				logger.trace("No job for type {}, checking for types with lower priority", jobType);
@@ -230,15 +230,14 @@ public class ActionFactory implements ApplicationContextAware {
 				checkJobActionContractorObject(action);
 			}catch(IllegalStateException e) {
 				logger.error(e.getMessage());
-				qc.updateJobStatus(jobCandidate, criticalStatus(action));
+				qc.updateJobStatus(jobCandidate, status(action,WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT));
 				continue;
 			}
 			try {
 				action.checkConfiguration();
 			}catch(ConfigurationException e) {
 				logger.error("Regarding job for object ["+jobCandidate.getObject().getIdentifier()+"]. Bad configuration of action. "+e.getMessage());
-				logger.info("Will set back job to its start state.");
-				qc.updateJobStatus(jobCandidate, action.getStartStatus());
+				qc.updateJobStatus(jobCandidate, status(action,WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION));
 				continue;
 			}
 			try {
@@ -247,7 +246,7 @@ public class ActionFactory implements ApplicationContextAware {
 				action.checkPreconditions();
 			}catch(PreconditionsNotMetException e) {
 				logger.error("Regarding job for object ["+jobCandidate.getObject().getIdentifier()+"]. Preconfigurations not met for action. "+e.getMessage());
-				qc.updateJobStatus(jobCandidate, badPreconditionsStatus(action));
+				qc.updateJobStatus(jobCandidate, status(action,WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET));
 				continue;
 			}
 			
@@ -259,20 +258,10 @@ public class ActionFactory implements ApplicationContextAware {
 	}
 	
 	
-	
-
-	private String workingStatus(AbstractAction action) {
-		return action.getStartStatus().substring(0,action.getStartStatus().length()-1) + C.WORKFLOW_STATE_DIGIT_WORKING;
+	private String status(AbstractAction action,String digit) {
+		return action.getStartStatus().substring(0,action.getStartStatus().length()-1) + digit;
 	}
 	
-	private String criticalStatus(AbstractAction action) {
-		return action.getStartStatus().substring(0,action.getStartStatus().length()-1) + "5";
-	}
-	
-	private String badPreconditionsStatus(AbstractAction action) {
-		return action.getStartStatus().substring(0,action.getStartStatus().length()-1) + "6";
-	}
-
 	
 	public JmsMessageServiceHandler getJmsMessageService() {
 		return jmsMessageServiceHandler;

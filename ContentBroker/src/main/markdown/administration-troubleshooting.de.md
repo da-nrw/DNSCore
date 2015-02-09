@@ -42,35 +42,56 @@ Die Null am Ende des Status bedeutet, dass das Objekt sich in einem konsistenten
 
 #### xx1
 
-Jeder Status, der mit einer Eins endet, kennzeichnet einen Fehler in der Verarbeitung. Desweiteren bedeutet die Eins, dass das Objekt in einen konsistenten Zustand (xx1-1) zurückgeführt werden konnte. Demnach korrspondieren beispielsweise die Status 120 und 121 zu ein und demselben physischen File auf dem Dateisystem sowie in der Datenbank.  
+Jeder Status, der mit einer Eins endet, kennzeichnet einen Fehler in der Verarbeitung. 
+Desweiteren bedeutet die Eins, dass das Objekt in einen konsistenten Zustand (xx1-1) zurückgeführt werden konnte. 
+Demnach korrspondieren beispielsweise die Status 120 und 121 zu ein und demselben physischen File auf dem Dateisystem sowie in der Datenbank.  
 
 #### xx2
 
-Die Zwei am Ende bedeutet, dass das Objekt gerade von der aktuell aktiven Action bearbeitet wird. Je nach Größe und Komplexität des Pakets kann dieser Prozess einige Zeit dauern. 
+Die Zwei am Ende bedeutet, dass das Objekt gerade von der aktuell aktiven Action bearbeitet wird. 
+Je nach Größe und Komplexität des Pakets kann dieser Prozess einige Zeit dauern. Ob die Action tatsächlich arbeitet,
+kann anhand fortlaufender Logmeldungen im Objekt-Log-File nachgesehen werden.
 
 #### xx3
 
-Die drei am Ende bedeutet, dass ein Rollback nicht durchgeführt werden konnte. Dies kann der Fall sein, wenn er nicht implementiert ist, oder aber wenn Fehler während der Rollbackprozedur auftreten.
+Die drei am Ende bedeutet, dass ein Rollback nicht durchgeführt werden konnte, entweder, weil er nicht implementiert ist, oder
+weil ein Fehler während der Durchführung des Rollbacks aufgetreten ist. 
 Zwischen 123 und 323 kann der Administrator das Objekt per Button "Gesamten workflow zurücksetzen". Oder er kann das Objekt löschen. 
 
 #### xx4
 
-Die Vier am Ende des Staus bedeutet einen Userfehler. Der User bekommt in diesem Fall eine Email mit der entsprechenden Exception aus dem Object-Logfile. Darüber hinaus erscheint in der DAWeb neben dem Fehlerstatus ein neuer Button. 
+Die Vier am Ende des Staus bedeutet einen Userfehler. Der User bekommt in diesem Fall eine Email mit der entsprechenden Exception aus dem Object-Logfile. 
+Darüber hinaus erscheint in der DAWeb neben dem Fehlerstatus ein neuer Button. 
+
+Da dies bedeutet, dass die Eingangsdaten fehlerhaft sind. und berichtigt und neu eingespielt werden müssen. Daher muss der Administrator
+anschließen das Objekt löschen.
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/Delete_button.PNG)
 
 Das Betätigen des Buttons vom Admin führt zur Löschung des Objekts sowohl aus der Datenbank als auch vom Speicher. Der Orig_name kann somit wieder verwendet werden.
-
 Sollte es sich beim eingelieferten Paket um ein Delta handeln, wird nur das neuste Paket gelöscht. Das Originalobjekt bleibt erhalten.
 
 #### xx5 
 
-Eine fünf am Ende bedeutet, dass ein kritischer Fehler aufgetreten ist, der nicht behoben werden kann. Im Falle solcher Fehler bitten wir Nutzer der Software, sich direkt an die Entwickler zu wenden.
+Eine fünf am Ende bedeutet, dass ein kritischer Fehler bezüglich des Datenmodells aufgetreten ist. Dies kann mit der Verknüpfung zwischen Actions, 
+Jobs, Usern und Objekten bzw. deren Eigenschaften zusammenhängen. Im Falle solcher Fehler bitten wir Nutzer der Software, 
+sich direkt an die Entwickler zu wenden, da diese Kategorie von Fehlern vergleichsweise selten auftritt und genauster Analyse bedarf.
 
+#### xx6
+
+Eine sechs am Ende bedeutet, dass die Eingangsbedingungen für die Bearbeitung eines Paketes in einem bestimmten Status nicht gegeben sind. 
+Dass heisst, dass die dem Status entsprechende Action das Paket nicht so vorfindet, wie sie es benötigt, um es ordnungsgemäß verarbeiten zu können. 
+
+#### xx7
+
+Konfigurationsfehler. Sollte nur während der Entwicklung oder Einrichtungsphase eines Systems auftreten. Ein End-To-End Test eines Paketes
+auf einem Knoten während der Einrichtungsphase wird alle potentiellen 7er Status aufdecken.
 
 ### Automatischen Anhalten der ActionFactory.
 
-Unter bestimmten Umständen ist dem ContentBroker nicht möglich, wie vorgesehen zu operieren. Dies ist meistenst der Fall, wenn zu Durchführung der
+Unter bestimmten Umständen ist dem ContentBroker nicht möglich, wie vorgesehen zu operieren. 
+
+Dies ist meistenst der Fall, wenn zu Durchführung der
 Paketverarbeitung notwendige externe Systeme nicht erreichbar sind. Zu den externen Systemen zählen vor allem iRODS, Fedora und ElasticSearch, aber
 auch FIDO und JHOVE. Wenn der ContentBroker während der Verarbeitung eines Paketes feststellt, dass eines dieser Subsysteme nicht erreicht werden kann,
 bricht er nicht nur die Verarbeitung des aktuellen Paketes ab, sondern hält auch automatisch die ActionFactory an. Die ActionFactory ist diejenige 
@@ -78,8 +99,17 @@ Komponente, welche die Datenbank nach Jobs für den lokalen Knoten fragt und fü
 Sicherheitsmaßnahme verhindert, dass weitere Jobs bearbeitet werden, denn es ist davon auszugehen, dass wenn die genannten Konnektoren nicht funktionieren,
 dass alle nachfolgenden Jobs ebenfalls in Fehlerstatus enden.
 
+Der zweite Fall, in dem der ContentBroker automatisch die ActionFactory anhält, ist, wenn unzureichende Informationen im Grundlegenden Datenmodell betreffend
+der Konfiguration des Knotens oder des Gesamtsystemes (Node,PreservationSystem) festgestellt werden. Auch hier kann davon ausgegangen werden, dass
+die notwendigen Voraussetzungen für die Durchführung jeglicher Action nicht gegeben sind. Dementsprechend greift dann die beschriebene Sicherheitsmaßnahme.
+
+Wenn die ActionFactory angehalten wird, sieht man das als wiederkehrenden Statusmeldung in der Logdatei contentbroker.log und zusätzlich in der 
+Maske "Adminfunktionen" der DA-Web. Das Problem sollte behoben
+werden. Je nach Fehlerquelle sollte der ContentBroker dafür heruntergefahren werden. Danach kann der ContentBroker, oder auch einfach die ActionFactory,
+wieder gestartet werden.
 
 ### Rollback
+
 
 
 ## 3. Löschen von Objekten

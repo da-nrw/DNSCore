@@ -599,9 +599,9 @@ public class AcceptanceTestHelper {
 
 
 	private boolean isInErrorState(Job job){
-		if (job.getStatus().endsWith(C.WORKFLOW_STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED) || 
-				job.getStatus().endsWith(C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED)
-				|| job.getStatus().endsWith(C.WORKFLOW_STATE_DIGIT_USER_ERROR)) return true;
+		if (job.getStatus().endsWith(C.WORKFLOW_STATUS_DIGIT_ERROR_NOT_PROPERLY_HANDLED) || 
+				job.getStatus().endsWith(C.WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED)
+				|| job.getStatus().endsWith(C.WORKFLOW_STATUS_DIGIT_USER_ERROR)) return true;
 		return false;
 	}
 }

@@ -22,31 +22,31 @@ public class ATUseCaseIngestUncompletedReferences extends AcceptanceTest {
 	
 	@Test
 	public void testMETS() throws IOException, InterruptedException {
-		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_METS, C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_METS, C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 		System.out.println(YEAH);
 	}
 	
 	@Test
 	public void testEAD() throws IOException, InterruptedException {
-		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_EAD, C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_EAD, C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 		System.out.println(YEAH);
 	}
 	
 	@Test
 	public void testMetsInEAD() throws IOException, InterruptedException {
-		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_METS_in_EAD, C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_METS_in_EAD, C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 		System.out.println(YEAH);
 	}
 	
 	@Test
 	public void testLIDO() throws IOException, InterruptedException {
-		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_LIDO, C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_LIDO, C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 		System.out.println(YEAH);
 	}
 	
 	@Test
 	public void testXMP() throws IOException, InterruptedException {
-		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_XMP, C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+		ath.ingestAndWaitForErrorState(AT_UncompletedReferences_XMP, C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 		System.out.println(YEAH);
 	}
 }

@@ -161,18 +161,18 @@ public abstract class AbstractAction implements Runnable {
 			
 		} catch (UserException e) {
 			resetModifiers();
-			execAndPostProcessRollback(o,j,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+			execAndPostProcessRollback(o,j,C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 			reportUserError(e);
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		} catch (SubsystemNotAvailableException e) {
 			resetModifiers();
-			execAndPostProcessRollback(o,j,C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED);
+			execAndPostProcessRollback(o,j,C.WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED);
 			reportTechnicalError(e);
 			actionFactory.pause(true);
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		} catch (Exception e) {
 			resetModifiers();
-			execAndPostProcessRollback(o,j,C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED);
+			execAndPostProcessRollback(o,j,C.WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED);
 			reportTechnicalError(e);
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		}
@@ -232,7 +232,7 @@ public abstract class AbstractAction implements Runnable {
 		} catch (Exception e) {
 			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO ROLLBACK ACTION. DATABASE OR WORKAREA MIGHT BE INCONSISTENT NOW.");
 			logger.error(this.getClass().getName()+": couldn't get rollbacked to previous state. Exception in action.rollback(): ",e);
-			errorStatus = errorStatus.substring(0, errorStatus.length() - 1) + C.WORKFLOW_STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED;
+			errorStatus = errorStatus.substring(0, errorStatus.length() - 1) + C.WORKFLOW_STATUS_DIGIT_ERROR_NOT_PROPERLY_HANDLED;
 		}
 	
 		job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
