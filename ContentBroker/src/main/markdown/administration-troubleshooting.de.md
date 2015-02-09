@@ -45,6 +45,7 @@ Die Null am Ende des Status bedeutet, dass das Objekt sich in einem konsistenten
 Jeder Status, der mit einer Eins endet, kennzeichnet einen Fehler in der Verarbeitung. 
 Desweiteren bedeutet die Eins, dass das Objekt in einen konsistenten Zustand (xx1-1) zurückgeführt werden konnte. 
 Demnach korrspondieren beispielsweise die Status 120 und 121 zu ein und demselben physischen File auf dem Dateisystem sowie in der Datenbank.  
+Der Administrator kann das Objekt zurücksetzen mittels Klick auf den Button "Zurücksetzen"
 
 #### xx2
 
@@ -56,7 +57,7 @@ kann anhand fortlaufender Logmeldungen im Objekt-Log-File nachgesehen werden.
 
 Die drei am Ende bedeutet, dass ein Rollback nicht durchgeführt werden konnte, entweder, weil er nicht implementiert ist, oder
 weil ein Fehler während der Durchführung des Rollbacks aufgetreten ist. 
-Zwischen 123 und 323 kann der Administrator das Objekt per Button "Gesamten workflow zurücksetzen". Oder er kann das Objekt löschen. 
+Zwischen 123 und 323 kann der Administrator das Objekt per Button "Gesamten Workflow zurücksetzen". 
 
 #### xx4
 
@@ -64,11 +65,12 @@ Die Vier am Ende des Staus bedeutet einen Userfehler. Der User bekommt in diesem
 Darüber hinaus erscheint in der DAWeb neben dem Fehlerstatus ein neuer Button. 
 
 Da dies bedeutet, dass die Eingangsdaten fehlerhaft sind. und berichtigt und neu eingespielt werden müssen. Daher muss der Administrator
-anschließen das Objekt löschen.
+anschließen das Objekt löschen. Dazu gibt es den "Objekt löschen"-Button.
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/Delete_button.PNG)
 
-Das Betätigen des Buttons vom Admin führt zur Löschung des Objekts sowohl aus der Datenbank als auch vom Speicher. Der Orig_name kann somit wieder verwendet werden.
+Das Betätigen des Buttons vom Admin führt zur Löschung des Objekts sowohl aus der Datenbank als auch vom Speicher. 
+Der Orig_name kann somit wieder verwendet werden.
 Sollte es sich beim eingelieferten Paket um ein Delta handeln, wird nur das neuste Paket gelöscht. Das Originalobjekt bleibt erhalten.
 
 #### xx5 
@@ -76,16 +78,21 @@ Sollte es sich beim eingelieferten Paket um ein Delta handeln, wird nur das neus
 Eine fünf am Ende bedeutet, dass ein kritischer Fehler bezüglich des Datenmodells aufgetreten ist. Dies kann mit der Verknüpfung zwischen Actions, 
 Jobs, Usern und Objekten bzw. deren Eigenschaften zusammenhängen. Im Falle solcher Fehler bitten wir Nutzer der Software, 
 sich direkt an die Entwickler zu wenden, da diese Kategorie von Fehlern vergleichsweise selten auftritt und genauster Analyse bedarf.
+Im Normalfall kann die Inkonsistenz datenbankseitig bereinigt werden und per "Zurücksetzen"- bzw. "Gesamten Workflow zurücksetzen"- 
+Button zurückgesetzt werden.
 
 #### xx6
 
 Eine sechs am Ende bedeutet, dass die Eingangsbedingungen für die Bearbeitung eines Paketes in einem bestimmten Status nicht gegeben sind. 
 Dass heisst, dass die dem Status entsprechende Action das Paket nicht so vorfindet, wie sie es benötigt, um es ordnungsgemäß verarbeiten zu können. 
+Das Paket kann in  solch einem Fall lediglich gelöscht werden durch Klick auf den "Objekt Löschen"-Button. Solcherlei Fehler können z.B. durch fehlerhaft implementierte Rollbacks entstehen.
+Im Falle eines solchen Fehlers sollten die Entwickler kontaktiert werden.
 
 #### xx7
 
 Konfigurationsfehler. Sollte nur während der Entwicklung oder Einrichtungsphase eines Systems auftreten. Ein End-To-End Test eines Paketes
-auf einem Knoten während der Einrichtungsphase wird alle potentiellen 7er Status aufdecken.
+auf einem Knoten während der Einrichtungsphase wird alle potentiellen 7er Status aufdecken. Nach Behebung des Zurücksetzen Buttons kann der Administrator
+das Paket wie gewohnt per "Zurücksetzen"-Button zurücksetzen.
 
 ### Automatischen Anhalten der ActionFactory.
 
