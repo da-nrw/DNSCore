@@ -73,7 +73,7 @@ This depends on your selected topology
 Please note: iRODS can be setup to use a "federation" of iRODS Servers forming a mostly independent "zones" as well as the concept of 
 having one Zone with several resource servers. Please refer to the iRODS Documentation about this. For working with DNSCore in Federations plese read [here](administration_federated.md).
 
-DNS encourages usage of federation at all nodes.
+DNS encourages usage of [federation at all nodes](administration_federated.md).
 
 Each Zone needs at least one database (so called ICAT Server). The use of Postgres is encouraged here. 
 
