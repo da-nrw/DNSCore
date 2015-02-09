@@ -67,6 +67,18 @@ Sollte es sich beim eingelieferten Paket um ein Delta handeln, wird nur das neus
 
 Eine fünf am Ende bedeutet, dass ein kritischer Fehler aufgetreten ist, der nicht behoben werden kann. Im Falle solcher Fehler bitten wir Nutzer der Software, sich direkt an die Entwickler zu wenden.
 
+
+### Automatischen Anhalten der ActionFactory.
+
+Unter bestimmten Umständen ist dem ContentBroker nicht möglich, wie vorgesehen zu operieren. Dies ist meistenst der Fall, wenn zu Durchführung der
+Paketverarbeitung notwendige externe Systeme nicht erreichbar sind. Zu den externen Systemen zählen vor allem iRODS, Fedora und ElasticSearch, aber
+auch FIDO und JHOVE. Wenn der ContentBroker während der Verarbeitung eines Paketes feststellt, dass eines dieser Subsysteme nicht erreicht werden kann,
+bricht er nicht nur die Verarbeitung des aktuellen Paketes ab, sondern hält auch automatisch die ActionFactory an. Die ActionFactory ist diejenige 
+Komponente, welche die Datenbank nach Jobs für den lokalen Knoten fragt und für diese Jobs dann die entsprechenden Actions anstößt. Diese 
+Sicherheitsmaßnahme verhindert, dass weitere Jobs bearbeitet werden, denn es ist davon auszugehen, dass wenn die genannten Konnektoren nicht funktionieren,
+dass alle nachfolgenden Jobs ebenfalls in Fehlerstatus enden.
+
+
 ### Rollback
 
 
