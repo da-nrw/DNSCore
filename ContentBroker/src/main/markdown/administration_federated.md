@@ -284,7 +284,7 @@ You might be able to trigger re-federation if desired, just by setting this to 0
 
      imeta mod -d 1-20141007788.pack_1.tar FEDERATE 0
 
-attribute: chksum
+'''attribute: chksum'''
 stores originally computed checksum
 
 This value has never to changed!
