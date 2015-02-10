@@ -305,10 +305,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 		List<Element> dmdSections = metsDoc.getRootElement().getChildren("dmdSec", C.METS_NS);
 		for(Element e : dmdSections) {
 			String id = "";
-			id = e.getAttribute("ID").getValue();
-			if(id.equals("")) {
-				
-			}
+			id = objectId+"-"+e.getAttribute("ID").getValue();
 			IDtoSecElement.put(id, e);
 		}
 		return IDtoSecElement;

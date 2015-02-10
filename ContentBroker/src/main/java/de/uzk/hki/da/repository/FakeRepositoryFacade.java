@@ -175,7 +175,7 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 		if (objectId.contains("Inventarnummer-1")) // lido
 			return "Nudelmaschine in Originalverpackung";
 		else if(objectId.endsWith("-md801613"))  // mets
-			return "ULB";
+			return "Text Text// mahels///Titel";
 		else if(objectId.endsWith("-1"))       // xmp
 			return "Dieser Brauch zum Sankt Martinstag";
 		else                                   // ead

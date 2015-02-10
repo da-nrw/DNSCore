@@ -145,6 +145,6 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 		assertTrue(testProvidetChoExists);
 		
 //		testIndex
-		assertTrue(repositoryFacade.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613").contains("ULB"));
+		assertTrue(repositoryFacade.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613").contains("Text Text// mahels///Titel"));
 	}
 }

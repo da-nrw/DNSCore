@@ -88,7 +88,6 @@ public class CTIndexMetadataFromEdm {
 		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"dc:date\":[\"2011\",\"1836\"]"));
 		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"dc:publisher\":[\"Münster\",\"Hoerde\"]"));
 		
-		System.out.println("huhu: "+repo.getIndexedMetadata(INDEX_NAME, "objectID*"));
 	}	
 	
 	
