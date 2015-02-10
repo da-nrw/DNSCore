@@ -64,10 +64,24 @@ des Systemes darstellt.
 
 ### PREMIS
 
+Innerhalb des "data"-Verzeichnisses muss sich eine Datei mit genau dem Dateinamen **premis.xml**
+berfinden. Diese Datei muss zunächst dem Premis-Standard selbst gehorchen, wie er [hier](http://www.loc.gov/standards/premis/v2/premis-2-2.pdf) beschrieben ist.
+
+Die PREMIS-Datei eines SIPs dient der Übemittlung von festgelegten Vertragseinstellungen zwischen dem 
+einem Vertragspartner (contractor) und einem Knoten eines DNSCore-Systems. Die enthaltenen Einstellungen
+beschreiben z.B. das Verhalten des Systemes bezüglich der Migration oder der Veröffentlichung.
+
+Die PREMIS-Datei wird vom System entgegengenommen, ausgewertet und die Einstellungen in entsprechende Handlungen
+übernommen. Anschließend wird die PREMIS-Datei mit Informationen über die Paketverarbeitung angereichert und als
+Teil des AIP gespeichert. Sie dient damit der Nachvollziehbarkeit der Pakethistorie und ist ein integraler Bestandteil
+der Langzeitarchivierung mit DNSCore. Eine detaillierte Spezifikation des dazu von DNSCore festgelegten 
+Elemente-Vokabulars findet sich [hier](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/premis_specification.md).
+
 ### Nutzergesteurte URN-Vergabe
 
-
 ### Encoding
+
+Dateinamen innerhalb von SIPs müssen UTF-8 enkodiert sein. Der Pfadseparator ist ein Unix style Slash.
 
 ## Richtlinien für die Strukturierung von DIPs
 
@@ -100,16 +114,3 @@ Hier liegen vier eindeutige Dokumentnamen vor, nämlich
     jpgs/cde
     tifs/abc
     tifs/cde
-    
-    
-    
-
-
-
-
-
-
-
-
-
-
