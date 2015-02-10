@@ -174,18 +174,19 @@ acVerifyChecksumFed(*masterCs,*objPath,*errors){
 #  you'll trust a stored checksum, given in trustYears)
 # Author: Jens Peters
 #
-acNeedCheck(*objPath,*needed,*trustYears) {
-	*needed=0
+acNeedCheck(*objPath,*need,*trustYears) {
 	*years=0
-	msiGetSystemTime(*now,"null")
+	*idiff=0
+	*need=0
+	msiGetSystemTime(*now,nop)
         acGetAVUField(*objPath,"last_checked",*lc)
-        *ilc=int(*lc)
-        *inow=int(*now)
-        *diff=*inow-*ilc
-        acLog("last check is (*diff) seconds in the past")
-	*years=(31536000 * *trustYears)
-	if (*diff > *years) {
-		*needed=1
+        msiGetDiffTime(*lc,*now,"",*diff)
+	acLog("last check is (*diff) seconds in the past")
+	*idiff=int(*diff)
+	acLog("trust checksums for *trustYears Years")
+	*years=(int(31536000) * *trustYears)
+	if (*idiff > *years) {
+		*need=1
 	} 
 }
 # Get the Dataobject AVU Value of given field
@@ -574,44 +575,55 @@ acGetStoredItemsOnResc(*resc,*byte,*coll) {
 }
 
 # Checks the federated copies we've recieved from others
-# depends on running checkFederated.r service
+# is called by running checkFederatedAip.r service
 # Author: Jens Peters 
 acCheckRecievedFederatedCopies(*admin, *numbersPerRun,*trustYears) {
 	*i=1
-	msiExecStrCondQuery("SELECT DATA_NAME, COLL_NAME, META_DATA_ATTR_NAME, META_DATA_ATTR_VALUE where COLL_NAME like '%/federated/%' and META_DATA_ATTR_NAME = 'last_checked' ORDER BY META_DATA_ATTR_VALUE ASC",*checkDaos)
+	*toSend=0
+	msiExecStrCondQuery("SELECT order(META_DATA_ATTR_VALUE), DATA_NAME, COLL_NAME, META_DATA_ATTR_NAME  where COLL_NAME like '%/federated/%' and META_DATA_ATTR_NAME = 'last_checked'",*checkDaos)
         foreach(*checkDaos) {
                 acLog("No. *i")
                 *status=0
+		*need=0
                 msiGetValByKey(*checkDaos,"DATA_NAME",*checkDao);
                 msiGetValByKey(*checkDaos,"COLL_NAME",*checkColl);
                 msiGetValByKey(*checkDaos,"META_DATA_ATTR_VALUE",*lc);
                 *dao="*checkColl/*checkDao"
                 acLog("checking ... *dao")
-                acNeedCheck(*dao,*need,*trustYears)
-                if (*need==1) {
-                        msiDataObjChksum(*dao,"forceChksum=",*localCs)
-                        acGetOrigChecksum(*dao,*origCs)
-                        acVerifyChecksum(*dao,*status)
+		#acNeedCheck(*dao,*need,*trustYears)
+                *need=1
+		if (*need==1) {
+			acVerifyChecksum(*dao,*status)
+                        *origCs="T"
+			*localCs="P"
+			errorcode(acGetOrigChecksum(*dao,*origCs))
                         if (*status==1) {
+				#recompute Checksum in ICAT to invalidate this copy for the CB checking the primary copies
+				errorcode(msiDataObjChksum(*dao,"forceChksum=",*localCs))
                                 if (*localCs != *origCs) {
                                         acLog("Federated COPY in E R R O R: *dao")
-                                } else {
+                                	if (*admin!="test@test.de"){
+                                        	*toSend=1
+                                	}
+				} else {
                                         acLog("Copy seem to be OK")
                                 }
                         } else {
                                 acLog("Federated COPY in E R R O R: *dao")
                                 if (*admin!="test@test.de"){
-                                        msiSendEmail(*admin,"DNS-ERROR of federated copy",*dao)
-                                }
+					*toSend=1
+				}
                         }
-
-
                 } else {
                         acLog("No check needed on foreign copies yet!")
                 }
                 *i=*i+1
-                if (*i>=5) { break }
+                if (*i>*numbersPerRun) { break }
         }
+	if (*toSend==1) {
+		acLog("Send Email to *admin")
+                msiSendStdoutAsEmail(*admin,"DNS ERROR of federated copy")
+	}
 }
 
 #old fashioned rules, partly used for backward compatibility

@@ -30,31 +30,40 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.util.Path;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class ATUseCaseIngestMigrationAllowed extends AcceptanceTest {
+public class ATUseCaseIngestMigrationRight extends AcceptanceTest {
 
 	private static final File UNPACKED_DIP = new File("/tmp/MigrationUnpacked");
 	private static final String ORIG_NAME = "ATMigrationAllowed";
-	private Object o;
-	
+	private static final String ORIG_NAME_NOTALLOWED = "ATMigrationNotAllowed";
+
 	@Before
 	public void setUp() throws IOException{
-		o = ath.ingest(ORIG_NAME);
+		ath.putPackageToIngestArea(ORIG_NAME, C.FILE_EXTENSION_TGZ, ORIG_NAME);		
+		ath.putPackageToIngestArea(ORIG_NAME_NOTALLOWED, C.FILE_EXTENSION_TGZ, ORIG_NAME_NOTALLOWED);
 	}
 	
 	@After
 	public void tearDown(){
-
 		FileUtils.deleteQuietly(UNPACKED_DIP);
 	}
 	
 	@Test
+	public void testMigrationNotAllowed() throws IOException, InterruptedException {
+		ath.waitForJobToBeInStatus(ORIG_NAME_NOTALLOWED, C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
+	}
+	
+	
+	@Test
 	public void test() throws IOException{
+		ath.waitForObjectToBeInFinishState(ORIG_NAME);
+		Object o = new Object(); o.setOrig_name(ORIG_NAME);
 		ath.retrievePackage(o, UNPACKED_DIP, "1");
 		
 		String brep="";
