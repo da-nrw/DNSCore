@@ -25,15 +25,43 @@
 
 ## SIP - Generelle Struktur
 
-### Containerformate
+Die generelle Struktur eines von DNSCore verarbeitbaren **SIP**s sieht wie folgt aus.
 
-### Containername
+    meinSIP.(tgz|zip|tar)
+        meinSIP/
+        	bag-info.txt
+        	bagit.txt
+        	manifest-md5.txt
+        	tagmanifest-md5.txt
+        	data/
+        		premis.xml
+        		someFile1.x
+        		einUnterOrdner/eineDatei.x
 
-### Bagit
+Ein SIP ist immer verpackt in einem der zulässigen Containerformate.
+Erlaubte Dateiendungen sind
+
+* .tgz
+* .zip
+* .tar
+
+Der Dateiname des Containers inklusive der Dateiendung wird technisch
+als **Containername** bezeichnet.
+
+Das entpackte SIP enthält auf der ersten Hierarchieebene einen Ordner, 
+der denselben Namen trägt wie der Name des SIP ohne die Dateiendung.
+Dieser Ordner wiederum enthält Checksummen zum Paket im bagIt-Format.
+Die vier bagIt-Dateien dienen dem Zweck der Integritätsprüfung, d.h. zur 
+Sicherstellung dessen, dass die Daten auf dem Weg vom Endnutzer hinein
+in das System nicht verändert wurden.
+
+### Original Name
+
+Der **Original-Name** eines SIP-
 
 ### PREMIS
 
-### Original Name
+
 
 ### Encoding
 
