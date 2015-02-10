@@ -27,6 +27,7 @@ import de.uzk.hki.da.action.AbstractActionTests;
 import de.uzk.hki.da.action.ActionFactoryTests;
 import de.uzk.hki.da.action.ActionRegistryTests;
 import de.uzk.hki.da.cb.ArchiveReplicationActionTests;
+import de.uzk.hki.da.cb.AuditActionTest;
 import de.uzk.hki.da.cb.BuildAIPActionTests;
 import de.uzk.hki.da.cb.CheckFormatsActionTest;
 import de.uzk.hki.da.cb.CleanWorkAreaActionTests;
@@ -86,6 +87,7 @@ import de.uzk.hki.da.model.ObjectFSTests;
 import de.uzk.hki.da.model.PackageTests;
 import de.uzk.hki.da.model.PreservationSystemTests;
 import de.uzk.hki.da.model.SaveConversionInstructionsByJob;
+import de.uzk.hki.da.model.WorkAreaTests;
 import de.uzk.hki.da.pkg.ArchiveBuilderTests;
 import de.uzk.hki.da.service.RetrievePackagesHelperTest;
 import de.uzk.hki.da.service.URNCheckDigitGeneratorTests;
@@ -171,7 +173,9 @@ import de.uzk.hki.da.util.PathTest;
 	FederationExecutorTest.class,
 	IndexMetadataActionTests.class,
 	ObjectToWorkAreaActionTests.class,
-	CleanWorkAreaActionTests.class
+	CleanWorkAreaActionTests.class,
+	WorkAreaTests.class,
+	AuditActionTest.class
 })
 public class SimpleSuite {
 

@@ -26,7 +26,6 @@ import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
 
 /**
@@ -42,14 +41,14 @@ public class DeleteObjectAction extends AbstractAction {
 		setKILLATEXIT(true);
 	}
 	
-	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {}
-
+	public void checkConfiguration() {
+	}
 	
-	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {}
 
+	@Override
+	public void checkPreconditions() {
+	}
 	
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,

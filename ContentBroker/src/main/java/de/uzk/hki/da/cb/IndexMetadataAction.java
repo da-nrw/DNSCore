@@ -19,7 +19,11 @@
 
 package de.uzk.hki.da.cb;
 
-import java.io.File;
+import static de.uzk.hki.da.core.C.ENCODING_UTF_8;
+import static de.uzk.hki.da.core.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
+import static de.uzk.hki.da.core.C.EDM_XSLT_METADATA_STREAM_ID;
+import static de.uzk.hki.da.core.C.WA_PUBLIC;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,11 +32,10 @@ import java.util.Set;
 import org.apache.commons.io.IOUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
-import static de.uzk.hki.da.core.C.*;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
-import de.uzk.hki.da.util.Path;
 
 /**
  * This action fetches EDM/RDF-Metadata from the public PIP,  
@@ -55,38 +58,37 @@ public class IndexMetadataAction extends AbstractAction {
 	private RepositoryFacade repositoryFacade;
 	private Set<String> testContractors;
 	private String indexName;
-	private File edmFile;
+	
+	public IndexMetadataAction() {
+		setKILLATEXIT(true);
+		}
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkConfiguration() {
 		if (getRepositoryFacade() == null) 
-			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
+			throw new ConfigurationException("Must not be null: repositoryFacade");
 	}
+	
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
+	public void checkPreconditions() {
 		if (indexName == null) 
-			throw new IllegalStateException("Index name not set. Make sure the action is configured properly");
+			throw new PreconditionsNotMetException("Index name not set. Make sure the action is configured properly");
 		if (getTestContractors()==null)
-			throw new IllegalStateException("testContractors not set");
-		
-		
-		edmFile = Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),
-				o.getIdentifier(), EDM_FOR_ES_INDEX_METADATA_STREAM_ID+FILE_EXTENSION_XML);
-
-		if (! edmFile.exists())
-			throw new IllegalStateException("Missing file: "+edmFile);
-
+			throw new PreconditionsNotMetException("testContractors not set");
+		if (! wa.metadataStream(WA_PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID).exists())
+			throw new PreconditionsNotMetException("Missing file: "+wa.metadataStream(WA_PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID));
+		if (! wa.metadataStream(WA_PUBLIC, EDM_XSLT_METADATA_STREAM_ID).exists())
+			throw new PreconditionsNotMetException("Missing file: "+wa.metadataStream(WA_PUBLIC, EDM_XSLT_METADATA_STREAM_ID));
 	}
-
+	
 	@Override
 	public boolean implementation() throws RepositoryException, IOException {
-		setKILLATEXIT(true);
-		
+
 		String edmContent;
 		InputStream metadataStream  = null;
 		try {
-			metadataStream = new FileInputStream(edmFile);
+			metadataStream = new FileInputStream(wa.metadataStream(WA_PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID));
 			edmContent = IOUtils.toString(metadataStream, ENCODING_UTF_8);
 			logger.info("huhu "+metadataStream);
 		} finally {

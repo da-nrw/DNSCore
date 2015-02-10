@@ -32,38 +32,24 @@ import org.junit.Test;
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.User;
-import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.RelativePath;
 
 
 /**
  * The Class PrepareSendToPresenterActionTests.
  */
-public class PrepareSendToPresenterActionTests {
+public class PrepareSendToPresenterActionTests extends ConcreteActionUnitTest{
 
-	/** The base path. */
-	private String workingAreaRoot = "src/test/resources/cb/PrepareSendToPresenterActionTests";
-	
-	/** The action. */
+	@ActionUnderTest
 	PrepareSendToPresenterAction action = new PrepareSendToPresenterAction();
-	
-	Job job;
-	Object o;
-	Node node;
-	
-	/** The public file. */
-	private File publicFile = new File(workingAreaRoot+"/pips/public/TEST/identifier_1_1/a.txt");
-	
-	/** The institution file. */
-	private File institutionFile = new File(workingAreaRoot+"/pips/institution/TEST/identifier_1_1/a.txt");
 
-	/** The contractor. */
-	private User contractor;
+	private static final String WORK_AREA_ROOT_PATH = "src/test/resources/cb/PrepareSendToPresenterActionTests";
 	
+	private File publicFile = new File(WORK_AREA_ROOT_PATH+"/pips/public/TEST/identifier_1_1/a.txt");
+	private File institutionFile = new File(WORK_AREA_ROOT_PATH+"/pips/institution/TEST/identifier_1_1/a.txt");
+
 	/**
 	 * Sets the up.
 	 *
@@ -71,32 +57,22 @@ public class PrepareSendToPresenterActionTests {
 	 */
 	@Before
 	public void setUp() throws IOException {
+		n.setWorkAreaRootPath(new RelativePath(WORK_AREA_ROOT_PATH));
+		action.setWorkArea(new WorkArea(n, o));
 		action.setDistributedConversionAdapter(mock (DistributedConversionAdapter.class));
 
-		node = new Node(); 
-		node.setWorkAreaRootPath(new RelativePath(workingAreaRoot));
+		o.setIdentifier("identifier_1");
 		Node dipNode = new Node(); dipNode.setName("dipNode");
-		action.setLocalNode(node);
 
-		o = TESTHelper.setUpObject("identifier_1", new RelativePath(workingAreaRoot));
 		DAFile premis = new DAFile(o.getLatestPackage(),"rep_b","premis.xml");
 		o.getLatestPackage().getFiles().add(premis);
-		action.setObject(o);
 		
-		contractor = new User();
-		contractor.setShort_name("TEST");
 		
-		job = new Job();
-		action.setJob(job);
-		job.setObject(o);
+		new File(WORK_AREA_ROOT_PATH+"/pips/institution").mkdirs();
+		new File(WORK_AREA_ROOT_PATH+"/pips/public").mkdirs();
 		
-		o.setTransientNodeRef(node);
-
-		new File(workingAreaRoot+"/pips/institution").mkdirs();
-		new File(workingAreaRoot+"/pips/public").mkdirs();
-		
-		FileUtils.copyDirectory(new File(workingAreaRoot+"/sources/1"), new File(workingAreaRoot+"/work/TEST/identifier_1"));
-		FileUtils.copyDirectory(new File(workingAreaRoot+"/sources/2"), new File(workingAreaRoot+"/work/TEST/identifier_2"));
+		FileUtils.copyDirectory(new File(WORK_AREA_ROOT_PATH+"/sources/1"), new File(WORK_AREA_ROOT_PATH+"/work/TEST/identifier_1"));
+		FileUtils.copyDirectory(new File(WORK_AREA_ROOT_PATH+"/sources/2"), new File(WORK_AREA_ROOT_PATH+"/work/TEST/identifier_2"));
 	}
 	
 	/**
@@ -137,10 +113,10 @@ public class PrepareSendToPresenterActionTests {
 	@After
 	public void tearDown() throws IOException {
 		
-		FileUtils.deleteDirectory(new File(workingAreaRoot+"/work/TEST/identifier_1"));
-		FileUtils.deleteDirectory(new File(workingAreaRoot+"/work/TEST/identifier_2"));
-		FileUtils.deleteDirectory(new File(workingAreaRoot+"/pips/institution"));
-		FileUtils.deleteDirectory(new File(workingAreaRoot+"/pips/public"));
+		FileUtils.deleteDirectory(new File(WORK_AREA_ROOT_PATH+"/work/TEST/identifier_1"));
+		FileUtils.deleteDirectory(new File(WORK_AREA_ROOT_PATH+"/work/TEST/identifier_2"));
+		FileUtils.deleteDirectory(new File(WORK_AREA_ROOT_PATH+"/pips/institution"));
+		FileUtils.deleteDirectory(new File(WORK_AREA_ROOT_PATH+"/pips/public"));
 	}
 	
 	

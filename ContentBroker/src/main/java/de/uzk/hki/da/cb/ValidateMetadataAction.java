@@ -64,19 +64,15 @@ public class ValidateMetadataAction extends AbstractAction {
 	private boolean packageTypeInObjectWasSetBeforeRunningAction=false;
 	MetadataStructureFactory msf = new MetadataStructureFactory();
 	
+	@Override
+	public void checkConfiguration() {
+	}
 	
-	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
-		
-	}
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-		
+	public void checkPreconditions() {
 	}
-
+	
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException {

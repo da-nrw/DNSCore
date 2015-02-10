@@ -99,7 +99,6 @@ public class AbstractActionTests {
 		action.setJmsMessageServiceHandler(ams);
 		action.setStartStatus(startStatus);
 		action.setEndStatus(endStatus);
-		action.SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
 		PreservationSystem ps = new PreservationSystem(); ps.setAdmin(c);
 		action.setPSystem(ps);
 		Node node = new Node(); node.setAdmin(c);
@@ -225,7 +224,7 @@ public class AbstractActionTests {
 		verify(mockSession,times(0)).delete(action.getObject());
 		verify(mockSession,times(0)).save((Job)anyObject());
 		verify(ams, times(1)).sendJMSMessage((JmsMessage)anyObject());
-		assertEquals("19"+C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED,action.getJob().getStatus());
+		assertEquals("19"+C.WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED,action.getJob().getStatus());
 	}
 	
 	
@@ -253,7 +252,7 @@ public class AbstractActionTests {
 		verify(mockSession,times(0)).delete(action.getObject());
 		verify(mockSession,times(0)).save((Job)anyObject());
 		verify(ams, times(1)).sendJMSMessage((JmsMessage)anyObject());
-		assertEquals("19"+C.WORKFLOW_STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED,action.getJob().getStatus());
+		assertEquals("19"+C.WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK,action.getJob().getStatus());
 	}
 	
 

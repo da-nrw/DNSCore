@@ -19,28 +19,32 @@
 
 package de.uzk.hki.da.action;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+
+import static de.uzk.hki.da.core.C.*;
+
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import de.uzk.hki.da.cb.NullAction;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.UserExceptionManager;
 import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.util.Path;
 
 
 
@@ -60,6 +64,12 @@ public class ActionFactoryTests {
 	
 	private static int nodeId;
 	
+	private static final JobNamedQueryDAO queueConnector = mock(JobNamedQueryDAO.class);
+
+	private PreservationSystem ps;
+
+	private FileSystemXmlApplicationContext context;
+	
 	@BeforeClass
 	public static void beforeClass() {
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
@@ -73,17 +83,40 @@ public class ActionFactoryTests {
 		c.setShort_name("csn");
 		c.setEmailAddress("noreply");
 		
-		FileSystemXmlApplicationContext context = new FileSystemXmlApplicationContext(baseDirPath+"action-definitions.xml");
+		context = mock(FileSystemXmlApplicationContext.class);
+		AbstractAction action = new NullAction(); action.setStartStatus("450"); action.setName("tarAction"); action.setEndStatus("460");
+		when(context.getBean(anyString())).thenReturn(action);
+		
 		factory = new ActionFactory();
 		factory.setApplicationContext(context);
+		FileSystemXmlApplicationContext context= new FileSystemXmlApplicationContext(baseDirPath+"action-definitions.xml");
 		factory.setActionRegistry((ActionRegistry)context.getBean("actionRegistry"));
-		PreservationSystem ps = new PreservationSystem(); ps.setId(1); ps.setMinRepls(1);
-		User psadmin = new User(); psadmin.setUsername("psadmin");
+		context.close();
+		ps = new PreservationSystem(); ps.setId(1); ps.setMinRepls(1); 
+		ps.setUrnNameSpace("urn"); ps.setUrisCho("abc"); ps.setUrisFile("abc"); ps.setUrisLocal("abc");
+		ps.setUrisAggr("abc");
+		User psadmin = new User(); psadmin.setUsername("psadmin"); psadmin.setEmailAddress("abc");
 		ps.setAdmin(psadmin);
 		factory.setPreservationSystem(ps);
 		factory.setUserExceptionManager(new UserExceptionManager());
+		factory.setQueueConnector(queueConnector);	
 		
 	}
+	
+	private Job makeGoodJob() { 
+		Job j=new Job("localnode", "450"); 
+		Object o = new Object();
+		o.setIdentifier("identifier");
+		o.setContractor(c);
+		Package p = new Package(); p.setName("1"); p.setContainerName("cname");
+		o.getPackages().add(p);
+		j.setObject(o);
+		Node n= new Node();
+		n.setWorkAreaRootPath(Path.make("/tmp"));
+		factory.setLocalNode(n);
+		return j;
+	}
+	
 	
 	/**
 	 * Test build next action.
@@ -91,30 +124,63 @@ public class ActionFactoryTests {
 	@Test
 	public void testBuildNextAction() {
 		
-		JobNamedQueryDAO queueConnector = mock(JobNamedQueryDAO.class);
-
-		Job j = new Job("localnode", "450"); 
-		Object o = new Object();
-		o.setIdentifier("identifier");
-		o.setContractor(c);
-		Package p = new Package(); p.setName("1"); p.setContainerName("cname");
-		o.getPackages().add(p);
-		j.setObject(o);
-		
 		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
-			thenReturn(j);
-		
-		factory.setQueueConnector(queueConnector);	
-		factory.setLocalNode(new Node());
+			thenReturn(makeGoodJob());
 		
 		AbstractAction a = factory.buildNextAction();
 		assertNotNull(a);
 		assertEquals("450", a.getStartStatus());
 		assertEquals("460", a.getEndStatus());
-		
-//		assertEquals("csn", a.getJob().getObject().getContractor().getShort_name()); XXX used?
 		assertNotNull(a.getActionMap());
 	}
+	
+	@Test
+	public void modelInconsistent() {
+
+		Job j=makeGoodJob();
+		j.getObject().setContractor(null);
+		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
+			thenReturn(j);
+		factory.buildNextAction();
+		verify(queueConnector,times(1)).updateJobStatus(j, "45"+WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT);
+	}
+	
+	@Test
+	public void badConfiguration() {
+		AbstractAction action = new ConfigurationExceptionAction(); action.setStartStatus("450"); action.setName("tarAction"); action.setEndStatus("460");
+		when(context.getBean(anyString())).thenReturn(action);
+		
+		Job j=makeGoodJob();
+		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
+			thenReturn(j);
+		assertTrue(factory.buildNextAction()==null);
+		verify(queueConnector,times(1)).updateJobStatus(j, "45"+WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION);
+	}
+	
+	
+	@Test
+	public void badPreconditions() {
+		AbstractAction action = new PreconditionsNotMetExceptionAction(); action.setStartStatus("450"); action.setName("tarAction"); action.setEndStatus("460");
+		when(context.getBean(anyString())).thenReturn(action);
+		
+		Job j=makeGoodJob();
+		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
+			thenReturn(j);
+		assertTrue(factory.buildNextAction()==null);
+		verify(queueConnector,times(1)).updateJobStatus(j, "45"+WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET);
+	}
+	
+	
+	@Test
+	public void systemStateBad() {
+		assertFalse(factory.paused());
+		AbstractAction action=factory.buildNextAction();
+		assertTrue(action==null);
+		assertTrue(factory.paused());
+	}
+	
+	
+	
 	
 	/**
 	 * Test no job found.
@@ -122,8 +188,6 @@ public class ActionFactoryTests {
 	@Test
 	public void testNoJobFound(){
 		
-		JobNamedQueryDAO queueConnector = mock(JobNamedQueryDAO.class);
-
 		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
 			thenReturn(null);
 		
@@ -137,6 +201,17 @@ public class ActionFactoryTests {
 	}
 	
 	
+	class ConfigurationExceptionAction extends NullAction{
+		@Override
+		public void checkConfiguration() {
+			throw new ConfigurationException("Bad configuration");
+		}
+	}
 	
-	
+	class PreconditionsNotMetExceptionAction extends NullAction{
+		@Override
+		public void checkPreconditions() {
+			throw new PreconditionsNotMetException("Preconditions not met.");
+		}
+	}
 }

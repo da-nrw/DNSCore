@@ -25,7 +25,6 @@ import java.util.Date;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.util.ConfigurationException;
 
 /**
  * 
@@ -37,21 +36,22 @@ import de.uzk.hki.da.util.ConfigurationException;
 
 public class PostRetrievalAction extends AbstractAction {
 
-	public PostRetrievalAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;}
+	public PostRetrievalAction(){
+		SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
+		setKILLATEXIT(true);
+	}
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
+	public void checkConfiguration() {
 	}
+	
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
+	public void checkPreconditions() {
 	}
-
+	
 	@Override
 	public boolean implementation() {
-		setKILLATEXIT(true);
 		
 		String csn=o.getContractor().getShort_name();
 		String mergeTarName = o.getIdentifier() + ".tar";

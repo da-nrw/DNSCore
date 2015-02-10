@@ -19,6 +19,10 @@
 
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.core.C.WA_DIP;
+import static de.uzk.hki.da.core.C.WA_INSTITUTION;
+import static de.uzk.hki.da.core.C.WA_PUBLIC;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,14 +31,12 @@ import java.text.ParseException;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
 
 
 /**
@@ -47,76 +49,69 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 
 	private static final String PREMIS_XML = "premis.xml";
 	private DistributedConversionAdapter distributedConversionAdapter;
-	private File publicDir;
-	private File instDir;
+
+	@Override
+	public void checkConfiguration() {
+		if (distributedConversionAdapter==null) throw new ConfigurationException("Must not be null: distributedConversionAdapter");
+	}
 	
-	/**
-	 * @
-	 */
-	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
-	}
-
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
+	public void checkPreconditions() {
 	}
-
 
 	@Override
 	public boolean implementation() throws IOException {
 		
-		String dipName = o.getContractor().getShort_name() + "/" + o.getIdentifier()+"_"+o.getLatestPackage().getId();
-		publicDir = Path.makeFile(n.getWorkAreaRootPath(),"pips","public",dipName);
-		instDir = Path.makeFile(n.getWorkAreaRootPath(),"pips","institution",dipName);
-		
 		logger.trace("Moving the dip content for presentation purposes out of the archival package.");
 		copyPIPSforReplication();
 		
-		Object premisObject = readRightsFromPREMIS();
+		Object premisObject = readRightsFromPREMIS(o.getLatest(PREMIS_XML).toRegularFile());
+		deleteNotAllowedDataStreams(premisObject);
+		
+		registerPIPSforReplication();
+		return true;
+	}
+
+
+	private void deleteNotAllowedDataStreams(Object premisObject)
+			throws IOException {
+		if (premisObject==null) throw new IllegalArgumentException("Must not be null: premisObject");
 		
 		if (!premisObject.grantsRight("PUBLICATION")) {
-			logger.info("PUBLICATION Right not granted. Will delete datastreams.");
-			if (publicDir.exists()) FileUtils.deleteDirectory(publicDir);
-			if (instDir.exists()) FileUtils.deleteDirectory(instDir);
+			logger.info("Publication Right not granted. Will delete datastreams");
+			if (wa.pipSourceFolderPath(WA_PUBLIC).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WA_PUBLIC).toFile());
+			if (wa.pipSourceFolderPath(WA_INSTITUTION).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WA_INSTITUTION).toFile());
 		} else
 		if (!premisObject.grantsPublicationRight(Audience.PUBLIC)) {
-			logger.info("Rights for PUBLIC not granted. Will delete datastreams.");
-			if (publicDir.exists()) FileUtils.deleteDirectory(publicDir);
+			logger.info("Publication Right for audience public not granted. Will delete public datastreams.");
+			if (wa.pipSourceFolderPath(WA_PUBLIC).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WA_PUBLIC).toFile());
 		} else
 		if (!premisObject.grantsPublicationRight(Audience.INSTITUTION)) {
-			logger.info("Rights for INSTITUTION not granted. Will delete datastreams.");
-			if (instDir.exists()) FileUtils.deleteDirectory(instDir);
+			logger.info("Publication Right for audience institution not granted. Will delete institution datastreams.");
+			if (wa.pipSourceFolderPath(WA_INSTITUTION).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WA_INSTITUTION).toFile());
 		}
-		
-		registerPIPSforReplication(dipName);
-		return true;
 	}
 
 
 	@Override
 	public void rollback() throws Exception {
-		if (publicDir.exists()) FileUtils.deleteDirectory(publicDir);
-		if (instDir.exists()) FileUtils.deleteDirectory(instDir);
+		if (wa.pipSourceFolderPath(WA_PUBLIC).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WA_PUBLIC).toFile());
+		if (wa.pipSourceFolderPath(WA_INSTITUTION).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WA_INSTITUTION).toFile());
 		logger.info("@Admin: You can safely roll back this job to status "+this.getStartStatus()+" now.");
 	}
 
 
-	/**
-	 * @author Daniel M. de Oliveira
-	 */
-	private Object readRightsFromPREMIS() throws IOException {
-		if (o.getLatest(PREMIS_XML)==null) throw new FileNotFoundException("premis.xml not present in obect");
+	static Object readRightsFromPREMIS(File premisXML) throws IOException {
+
+		if (premisXML==null) throw new IllegalArgumentException("premisXML is null");
+		if (! premisXML.exists()) throw new FileNotFoundException("Missing file or directory: "+premisXML);
 		
 		Object premisObject = null;
 		try {
 
 			premisObject = new ObjectPremisXmlReader().deserialize(
-					o.
-					getLatest(PREMIS_XML).
-					toRegularFile());
+					premisXML);
 			
 		} catch (ParseException pe){
 			throw new RuntimeException("error while parsing PREMIS-file",pe);
@@ -128,22 +123,20 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	/**
 	 * @param dipName has the form [csn]/[oid]_[pkgid]
 	 */
-	private void registerPIPSforReplication(String dipName) {
+	private void registerPIPSforReplication() {
 		
-		if (!publicDir.exists())
-			distributedConversionAdapter.create(new RelativePath("pips","public",dipName).toString());
+		if (!wa.pipSourceFolderPath(WA_PUBLIC).toFile().exists())
+			distributedConversionAdapter.create(wa.pipSourceFolderRelativePath(WA_PUBLIC).toString());
 		else
-			distributedConversionAdapter.register(new RelativePath
-				("pips","public",dipName).toString(),
-				publicDir.getAbsolutePath()
+			distributedConversionAdapter.register(wa.pipSourceFolderRelativePath(WA_PUBLIC).toString(),
+				wa.pipSourceFolderPath(WA_PUBLIC).toFile().getAbsolutePath()
 				);
 		
-		if (!instDir.exists())
-			distributedConversionAdapter.create(new RelativePath("pips","institution",dipName).toString());
+		if (!wa.pipSourceFolderPath(WA_INSTITUTION).toFile().exists())
+			distributedConversionAdapter.create(wa.pipSourceFolderRelativePath(WA_INSTITUTION).toString());
 		else
-			distributedConversionAdapter.register(new RelativePath(
-				"pips","institution",dipName).toString(),
-				instDir.getAbsolutePath()
+			distributedConversionAdapter.register(wa.pipSourceFolderRelativePath(WA_INSTITUTION).toString(),
+				wa.pipSourceFolderPath(WA_INSTITUTION).toFile().getAbsolutePath()
 				);
 	}
 
@@ -162,19 +155,19 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	 */
 	private void copyPIPSforReplication() throws IOException {
 
-		if (Path.makeFile(o.getDataPath(),C.WA_DIP,"public").exists()){
-			logger.info("Copying public datastreams to " + publicDir.getAbsolutePath());
-			if (publicDir.exists()) FileUtils.deleteDirectory(publicDir);
+		if (Path.makeFile(o.getDataPath(),WA_DIP,WA_PUBLIC).exists()){
+			logger.info("Copying public datastreams to " + wa.pipSourceFolderPath(WA_PUBLIC).toFile().getAbsolutePath());
+			if (wa.pipSourceFolderPath(WA_PUBLIC).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WA_PUBLIC).toFile());
 			FileUtils.copyDirectory(
-					Path.make(o.getDataPath(),C.WA_DIP,"public").toFile(), 
-					publicDir);
+					Path.make(o.getDataPath(),WA_DIP,WA_PUBLIC).toFile(), 
+					wa.pipSourceFolderPath(WA_PUBLIC).toFile());
 		}
-		if (Path.makeFile(o.getDataPath(),C.WA_DIP,"institution").exists()){
-			logger.info("Copying institution datastreams to " + instDir);
-			if (instDir.exists()) FileUtils.deleteDirectory(instDir);
+		if (Path.makeFile(o.getDataPath(),WA_DIP,WA_INSTITUTION).exists()){
+			logger.info("Copying institution datastreams to " + wa.pipSourceFolderPath(WA_INSTITUTION));
+			if (wa.pipSourceFolderPath(WA_INSTITUTION).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WA_INSTITUTION).toFile());
 			FileUtils.copyDirectory(
-					Path.make(o.getDataPath(),C.WA_DIP,"institution").toFile(), 
-					instDir);
+					Path.make(o.getDataPath(),WA_DIP,WA_PUBLIC).toFile(), 
+					wa.pipSourceFolderPath(WA_INSTITUTION).toFile());
 		}
 	}
 	

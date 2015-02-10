@@ -56,16 +56,15 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	}
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkConfiguration() {
 		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
 	}
+	
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {}
-
-	/**
-	 * @throws IOException 
-	 */
+	public void checkPreconditions() {
+	}
+	
 	@Override
 	public
 	boolean implementation() throws IOException {
@@ -143,6 +142,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		clearNonpersistentObjectProperties(obj);
 		
 		obj.setObject_state(100);
+		obj.setLast_checked(new Date());
 		obj.setDate_modified(String.valueOf(new Date().getTime()));
 		obj.setStatic_nondisclosure_limit(j.getStatic_nondisclosure_limit());
 		obj.setDynamic_nondisclosure_limit(j.getDynamic_nondisclosure_limit());

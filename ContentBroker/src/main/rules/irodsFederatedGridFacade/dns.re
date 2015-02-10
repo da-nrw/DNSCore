@@ -134,7 +134,7 @@ acVerifyChecksum(*objPath,*status){
 }
 
 # Author Jens Peters
-# Verifies federated copies of DAO
+# Verifies our federated copies of DAO
 # Returns amount of errors on registered federated copies
 # 
 # Depends on service refreshing remotely kept copies from time to time
@@ -572,6 +572,48 @@ acGetStoredItemsOnResc(*resc,*byte,*coll) {
 	writeLine("stdout","RESC *resc *out items")
         *byte=*out
 }
+
+# Checks the federated copies we've recieved from others
+# depends on running checkFederated.r service
+# Author: Jens Peters 
+acCheckRecievedFederatedCopies(*admin, *numbersPerRun,*trustYears) {
+	*i=1
+	msiExecStrCondQuery("SELECT DATA_NAME, COLL_NAME, META_DATA_ATTR_NAME, META_DATA_ATTR_VALUE where COLL_NAME like '%/federated/%' and META_DATA_ATTR_NAME = 'last_checked' ORDER BY META_DATA_ATTR_VALUE ASC",*checkDaos)
+        foreach(*checkDaos) {
+                acLog("No. *i")
+                *status=0
+                msiGetValByKey(*checkDaos,"DATA_NAME",*checkDao);
+                msiGetValByKey(*checkDaos,"COLL_NAME",*checkColl);
+                msiGetValByKey(*checkDaos,"META_DATA_ATTR_VALUE",*lc);
+                *dao="*checkColl/*checkDao"
+                acLog("checking ... *dao")
+                acNeedCheck(*dao,*need,*trustYears)
+                if (*need==1) {
+                        msiDataObjChksum(*dao,"forceChksum=",*localCs)
+                        acGetOrigChecksum(*dao,*origCs)
+                        acVerifyChecksum(*dao,*status)
+                        if (*status==1) {
+                                if (*localCs != *origCs) {
+                                        acLog("Federated COPY in E R R O R: *dao")
+                                } else {
+                                        acLog("Copy seem to be OK")
+                                }
+                        } else {
+                                acLog("Federated COPY in E R R O R: *dao")
+                                if (*admin!="test@test.de"){
+                                        msiSendEmail(*admin,"DNS-ERROR of federated copy",*dao)
+                                }
+                        }
+
+
+                } else {
+                        acLog("No check needed on foreign copies yet!")
+                }
+                *i=*i+1
+                if (*i>=5) { break }
+        }
+}
+
 #old fashioned rules, partly used for backward compatibility
 @backwardCompatible "true"
 

@@ -53,19 +53,19 @@ public class ConvertAction extends AbstractAction {
 	public ConvertAction(){}
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkConfiguration() {
 		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
 	}
+	
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-		
+	public void checkPreconditions() {
 	}
-
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public boolean implementation() throws IOException {
+		
 		
 		if (j.getConversion_instructions().size()==0)
 			logger.warn("No Conversion Instruction could be found for job with id: "+j.getId());

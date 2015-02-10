@@ -111,7 +111,10 @@ public class LinuxEnvironmentUtils {
 		}
 	}
 
-	public static String logHeapSpaceInformation() {
+	/**
+	 * @deprecated same can be accomplished when using jvm flags. at least for hotspot jvm. 
+	 */
+	public static String logHeapSpaceInformation() { 
 		
 		String output;
 		Runtime runtime = Runtime.getRuntime();

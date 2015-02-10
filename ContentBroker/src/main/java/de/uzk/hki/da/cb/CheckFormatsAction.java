@@ -64,14 +64,13 @@ public class CheckFormatsAction extends AbstractAction {
 
 
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
+	public void checkConfiguration() {
+		if (fileFormatFacade==null) throw new ConfigurationException("Must not be null: fileFormatFacade");
 	}
+	
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
-		
+	public void checkPreconditions() {
 	}
 
 	@Override

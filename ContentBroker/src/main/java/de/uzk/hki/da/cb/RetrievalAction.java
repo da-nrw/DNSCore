@@ -39,7 +39,6 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.pkg.BagitUtils;
-import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
 
 
@@ -63,25 +62,18 @@ public class RetrievalAction extends AbstractAction {
 	
 	private Path newTar;
 
+	@Override
+	public void checkConfiguration() {
+	}
+	
 
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
+	public void checkPreconditions() {
 	}
-
-	
-	
-	
-	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		if (!o.getDataPath().toFile().exists()) throw new IllegalStateException("object data path on fs doesn't exist on fs");
-	}
-
-	
-	
 	
 	@Override
 	public boolean implementation() throws IOException {
+		if (!o.getDataPath().toFile().exists()) throw new IllegalStateException("object data path on fs doesn't exist on fs");
 
 		newTar = Path.make(n.getUserAreaRootPath(),o.getContractor().getShort_name(),"outgoing",o.getIdentifier() + ".tar");
 		Path tempFolder = createTmpFolder();

@@ -52,16 +52,19 @@ public class TarAction extends AbstractAction {
 	private DistributedConversionAdapter distributedConversionAdapter;
 	private String tar = null;
 	
-	public TarAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
+	public TarAction(){
+		SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
+	}
+	
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
+	public void checkConfiguration() {
+		if (distributedConversionAdapter==null) throw new ConfigurationException("Must not be null: distributedConversionAdapter");
 	}
+	
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
+	public void checkPreconditions() {
 	}
 
 	@Override

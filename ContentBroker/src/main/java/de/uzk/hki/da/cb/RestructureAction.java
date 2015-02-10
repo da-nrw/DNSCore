@@ -65,20 +65,20 @@ public class RestructureAction extends AbstractAction{
 	private DocumentsGenService dgs = new DocumentsGenService();
 	
 	public RestructureAction(){
-		SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;
+		SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
 	}
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		if (getGridRoot()==null) throw new ConfigurationException("gridRoot not set");
-		if (getFileFormatFacade()==null) throw new ConfigurationException("fileFormatFacade not set");
+	public void checkConfiguration() {
+		if (getGridRoot()==null) throw new ConfigurationException("Must not be null: gridRoot");
+		if (getFileFormatFacade()==null) throw new ConfigurationException("Must not be null: fileFormatFacade");
 	}
+	
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
+	public void checkPreconditions() {
 	}
-
+	
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException, SubsystemNotAvailableException {
@@ -88,9 +88,6 @@ public class RestructureAction extends AbstractAction{
 				&&(! checkIfOnWorkAreaIsSpaceAvailabeForDeltaPackages(retrievePackagesHelper)))
 			return false;
 		
-
-		
-
 		
 		j.setRep_name(getNewRepName());
 		makeRepOfSIPContent(o.getPath(), o.getDataPath(), j.getRep_name());

@@ -47,6 +47,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import de.uzk.hki.da.core.PreconditionsNotMetException;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.Path;
@@ -68,7 +70,7 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 	public void setUp() throws FileNotFoundException, RepositoryException, IOException {
 		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
 		o.setPackage_type(CB_PACKAGETYPE_EAD);
-		
+		action.setWorkArea(new WorkArea(n,o));
 		Map<String,String> edmMappings = new HashMap<String,String>();
 		edmMappings.put(CB_PACKAGETYPE_EAD, EAD_TO_EDM_XSL);
 		edmMappings.put(CB_PACKAGETYPE_METS,METS_MODS_TO_EDM_XSL);
@@ -95,9 +97,9 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 	public void missingPackageType() throws IOException, RepositoryException {
 		o.setPackage_type(null);
 		try {
-			action.checkSystemStatePreconditions();
+			action.checkPreconditions();
 			fail();
-		} catch (IllegalStateException e) {
+		} catch (PreconditionsNotMetException e) {
 			assertTrue(e.getMessage().contains("package type"));
 		}
 	}

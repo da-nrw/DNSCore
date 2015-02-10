@@ -36,26 +36,24 @@ import org.junit.Test;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
 
 
 /**
  * The Class UnpackActionBagitAndDeltaTests.
  * @author Daniel M. de Oliveira
  */
-public class UnpackActionTests {
+public class UnpackActionTests extends ConcreteActionUnitTest {
 
+	@ActionUnderTest
+	UnpackAction action = new UnpackAction();
+	
 	private static final String NUM_EXPECTED_ERRORS = "2";
 	private static final String SIDECAR_EXTENSIONS = "xmp";
 	private static final String SIDECAR_EXTENSIONS_COMMA_SPLIT = "xmp,xml";
 	private static final String SIDECAR_EXTENSIONS_SEMIKOLON_SPLIT = "xmp;xml";
-	private static final String INGEST = "ingest";
-	private static final String IDENTIFIER = "identifier";
 	private static final String CONF = "conf";
 	private static final String BAGIT_PACKAGE = "bagitPackage.tgz";
 	private static final String DUPLICATE_DOCUMENTS_PACKAGE = "duplicateDocuments.tgz";
@@ -64,14 +62,13 @@ public class UnpackActionTests {
 	private static final String SIDECAR_FILES_PACKAGE = "sidecarFiles.tgz";
 	private static final String SIDECAR_FILES_PACKAGE_WHICH_BROKE = "LVR_ILR_4_PDF_TF18.tar";
 
-	private Path workAreaRootPath = new RelativePath("src/test/resources/cb/UnpackActionTests/");
+	private Path workAreaRootPath = Path.make(TC.TEST_ROOT_CB,"UnpackAction");
+	private Path ingestAreaRootPath = Path.make(TC.TEST_ROOT_CB,"UnpackAction","ingest");
 	private Path ingestPath = Path.make(workAreaRootPath,"/ingest/TEST/");
 	private Path csnPath = Path.make(workAreaRootPath,"/work/TEST/");
 
 	private IngestGate gate = new IngestGate();
 
-	private UnpackAction action = new UnpackAction();
-	private Object o;
 	private static final PreservationSystem pSystem = new PreservationSystem();
 	
 	
@@ -81,22 +78,19 @@ public class UnpackActionTests {
 	 */
 	@Before
 	public void setUp() throws IOException{
-
+		n.setIngestAreaRootPath(ingestAreaRootPath);
+		n.setWorkAreaRootPath(workAreaRootPath);
+		
 		new File(CONF).mkdir();
 		FileUtils.copyFileToDirectory(C.PREMIS_XSD, new File(CONF));
 		FileUtils.copyFileToDirectory(C.XLINK_XSD, new File(CONF));
 		
-		o = TESTHelper.setUpObject(IDENTIFIER, new RelativePath(workAreaRootPath), new RelativePath(workAreaRootPath,INGEST), new RelativePath(workAreaRootPath,INGEST));
-		action.setLocalNode(o.getTransientNodeRef());
-		
 		gate.setWorkAreaRootPath(workAreaRootPath.toString());
 		gate.setFreeDiskSpacePercent(5);
 		gate.setFileSizeFactor(3);
-
-		action.setJob(new Job());
-		action.setObject(o);
 		action.setIngestGate(gate);
-		action.setPSystem(pSystem);
+		
+		ps.setSidecarExtensions(SIDECAR_EXTENSIONS);
 	}
 
 	/**
@@ -108,7 +102,7 @@ public class UnpackActionTests {
 	public void tearDown() throws IOException{
 		FileUtils.deleteQuietly(new File(CONF));
 		
-		FileUtils.deleteDirectory(Path.makeFile(csnPath,IDENTIFIER));
+		FileUtils.deleteDirectory(Path.makeFile(csnPath,o.getIdentifier()));
 		Path.makeFile(ingestPath,BAGIT_PACKAGE).delete();
 		Path.makeFile(csnPath,BAGIT_PACKAGE).delete();
 		Path.makeFile(ingestPath,DUPLICATE_DOCUMENTS_PACKAGE).delete();

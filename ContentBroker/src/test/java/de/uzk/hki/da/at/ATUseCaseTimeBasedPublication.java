@@ -19,6 +19,7 @@
 
 package de.uzk.hki.da.at;
 
+import static de.uzk.hki.da.core.C.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -35,7 +36,6 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.Path;
@@ -49,6 +49,8 @@ public class ATUseCaseTimeBasedPublication extends AcceptanceTest{
 	private static final String METS_NAMESPACE = "http://www.loc.gov/METS/";
 
 	private static final String ORIG_NAME_PREFIX =  "ATUCTimeBasedPubl";
+	private Namespace mETS_NS;
+	private Namespace xLINK_NS;
 	
 	/**
 	 * @author ???
@@ -63,7 +65,7 @@ public class ATUseCaseTimeBasedPublication extends AcceptanceTest{
 	public void testUpdateUrls() throws InterruptedException, IOException, JDOMException, RepositoryException{
 		
 		String name = "UpdateUrls";
-		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,C.WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION,"METS","mets.xml");
+		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION,"METS","mets.xml");
 
 		ath.waitForJobsToFinish(ORIG_NAME_PREFIX+name);
 		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
@@ -73,83 +75,73 @@ public class ATUseCaseTimeBasedPublication extends AcceptanceTest{
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg"));
 		
 		
-		File publicFile = Path.makeFile(localNode.getWorkAreaRootPath(),
-				C.WA_PIPS,C.WA_PUBLIC,object.getContractor().getShort_name(),
-				object.getIdentifier(),"METS"+C.FILE_EXTENSION_XML);
-		assertTrue(publicFile.exists());
+		File publFile = Path.makeFile(localNode.getWorkAreaRootPath(),
+				WA_PIPS,WA_PUBLIC,object.getContractor().getShort_name(),
+				object.getIdentifier(),CB_PACKAGETYPE_METS+FILE_EXTENSION_XML);
+		assertTrue(publFile.exists());
 				
-		File institutionFile = Path.makeFile(localNode.getWorkAreaRootPath(),
-				C.WA_PIPS,C.WA_INSTITUTION,object.getContractor().getShort_name(),
-				object.getIdentifier(),"METS"+C.FILE_EXTENSION_XML);
-		assertTrue(institutionFile.exists());
+		File instFile = Path.makeFile(localNode.getWorkAreaRootPath(),
+				WA_PIPS,WA_INSTITUTION,object.getContractor().getShort_name(),
+				object.getIdentifier(),CB_PACKAGETYPE_METS+FILE_EXTENSION_XML);
+		assertTrue(instFile.exists());
+		assertEquals(PUBLISHEDFLAG_PUBLIC+
+				PUBLISHEDFLAG_INSTITUTION, object.getPublished_flag());
 		
-		
-		
-		
-		Namespace METS_NS = Namespace.getNamespace(METS_NAMESPACE);
-		Namespace XLINK_NS = Namespace.getNamespace(XLINK_NAMESPACE);
+		mETS_NS = Namespace.getNamespace(METS_NAMESPACE);
+		xLINK_NS = Namespace.getNamespace(XLINK_NAMESPACE);
 		
 		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(new FileInputStream(publicFile));
+		Document publDoc = builder.build(new FileInputStream(publFile));
+		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", getUrl(publDoc));
+		Document instDoc = builder.build(new FileInputStream(instFile));
+		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", getUrl(instDoc));
+	}
 
-		System.out.println("doc: " + doc);
-		
-		String url = doc.getRootElement()
-				.getChild("fileSec", METS_NS)
-				.getChild("fileGrp", METS_NS)
-				.getChild("file", METS_NS)
-				.getChild("FLocat", METS_NS)
-				.getAttributeValue("href", XLINK_NS);
-		
-		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", url);
-		
-		doc = builder.build(new FileInputStream(institutionFile));
-
-		url = doc.getRootElement()
-				.getChild("fileSec", METS_NS)
-				.getChild("fileGrp", METS_NS)
-				.getChild("file", METS_NS)
-				.getChild("FLocat", METS_NS)
-				.getAttributeValue("href", XLINK_NS);
-		
-		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", url);
-		
+	private String getUrl(Document doc) {
+		return doc.getRootElement()
+				.getChild("fileSec", mETS_NS)
+				.getChild("fileGrp", mETS_NS)
+				.getChild("file", mETS_NS)
+				.getChild("FLocat", mETS_NS)
+				.getAttributeValue("href", xLINK_NS);
 	}
 	
 	@Test
 	public void testPublishInstOnly() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "InstOnly";
-		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,C.WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
 		ath.waitForJobsToFinish(ORIG_NAME_PREFIX+name);
 		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
 		assertNotNull(object);
 		assertNull(repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg"));
 		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg"));
-		
+		assertEquals(PUBLISHEDFLAG_INSTITUTION,object.getPublished_flag());
 	}
 	
 	@Test
-	public void testNoPubWithLawSet() throws InterruptedException, IOException, RepositoryException{
+	public void testNoPubWithLawSetForAudiencePublic() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "NoPubWithLawSet";
-		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,C.WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
 		ath.waitForJobsToFinish(ORIG_NAME_PREFIX+name);
 		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
 		assertNotNull(object);
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
+		assertEquals(PUBLISHEDFLAG_INSTITUTION, object.getPublished_flag());
 		
 	}
 	
 	@Test
-	public void testNoPubWithStartDateSet() throws InterruptedException, IOException, RepositoryException{
+	public void testNoPubWithStartDateSetForAudiencePublic() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "NoPubWithStartDateSet";
-		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,C.WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
 		ath.waitForJobsToFinish(ORIG_NAME_PREFIX+name);
 		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
 		assertNotNull(object);
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
+		assertEquals(PUBLISHEDFLAG_INSTITUTION, object.getPublished_flag());
 		
 	}
 	
@@ -158,13 +150,14 @@ public class ATUseCaseTimeBasedPublication extends AcceptanceTest{
 	public void testPublishNothing() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "PublishNothing";
-		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,C.WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
 		ath.waitForJobsToFinish(ORIG_NAME_PREFIX+name);
 		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
 		assertNotNull(object);
 		
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getClosedCollectionName()));
+		assertEquals(PUBLISHEDFLAG_NO_PUBLICATION, object.getPublished_flag());
 		
 	}
 	
@@ -172,13 +165,14 @@ public class ATUseCaseTimeBasedPublication extends AcceptanceTest{
 	public void testPublishAll() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "AllPublic";
-		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,C.WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
 		ath.waitForJobsToFinish(ORIG_NAME_PREFIX+name);
 		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
 		assertNotNull(object);
 		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
 		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getClosedCollectionName()));
-		
+		assertEquals(PUBLISHEDFLAG_PUBLIC+
+				PUBLISHEDFLAG_INSTITUTION, object.getPublished_flag());
 	}
 	
 }

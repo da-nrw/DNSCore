@@ -32,9 +32,9 @@ import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.StringUtilities;
 
 /**
@@ -47,25 +47,24 @@ public class ProcessUserDecisionsAction extends AbstractAction{
 	static final Logger logger = LoggerFactory.getLogger(ProcessUserDecisionsAction.class);
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
+	public void checkConfiguration() {
 	}
+	
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
+	public void checkPreconditions() {
+		if (StringUtilities.isNotSet(j.getAnswer())){
+			throw new PreconditionsNotMetException("job.getAnswer() must not be null or empty.");
+		}
 	}
-
+	
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException, JDOMException,
 			ParserConfigurationException, SAXException {
 		
-		if (StringUtilities.isNotSet(j.getAnswer())){
-			throw new IllegalStateException("job.getAnswer() must not be null or empty.");
-		}
 		
-		else if (j.getAnswer().equals(C.ANSWER_YO)){
+		if (j.getAnswer().equals(C.ANSWER_YO)){
 			logger.info("System Question: "+C.QUESTION_MIGRATION_ALLOWED+" User response: "+C.ANSWER_YO);
 		} 
 		else {

@@ -41,13 +41,12 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
-import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.TimeStampLogging;
-import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
 
 
 /**
@@ -101,7 +100,11 @@ public abstract class AbstractAction implements Runnable {
 	
 	protected Logger logger = LoggerFactory.getLogger( this.getClass().getName() );
 	private Logger baseLogger = LoggerFactory.getLogger("de.uzk.hki.da.action.AbstractAction"); // contentbrokerlog
+	protected WorkArea wa;
 	
+	public abstract void checkConfiguration();
+	
+	public abstract void checkPreconditions();
 	
 	/**
 	 * 
@@ -126,24 +129,10 @@ public abstract class AbstractAction implements Runnable {
 	 */
 	public abstract void rollback() throws Exception;
 	
-	/**
-	 * Implementations should check if an action is wired up correctly in terms of spring configuration. 
-	 * @throws ConfigurationException
-	 */
-	public abstract void checkActionSpecificConfiguration() throws ConfigurationException;
-	
-	/**
-	 * Checks the system state wise preconditions which have to be met that the action can operate properly.
-	 * @throws IllegalStateException
-	 */
-	public abstract void checkSystemStatePreconditions() throws IllegalStateException;
-	
-	
 	
 	@Override
 	public void run() {
 		
-		if (!performCommonPreparationsForActionExecution()) return;
 		setupObjectLogging(o.getIdentifier());
 		
 		synchronizeObjectDatabaseAndFileSystemState();
@@ -172,18 +161,18 @@ public abstract class AbstractAction implements Runnable {
 			
 		} catch (UserException e) {
 			resetModifiers();
-			execAndPostProcessRollback(o,j,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+			execAndPostProcessRollback(o,j,C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 			reportUserError(e);
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		} catch (SubsystemNotAvailableException e) {
 			resetModifiers();
-			execAndPostProcessRollback(o,j,C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED);
+			execAndPostProcessRollback(o,j,C.WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED);
 			reportTechnicalError(e);
 			actionFactory.pause(true);
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		} catch (Exception e) {
 			resetModifiers();
-			execAndPostProcessRollback(o,j,C.WORKFLOW_STATE_DIGIT_ERROR_PROPERLY_HANDLED);
+			execAndPostProcessRollback(o,j,C.WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED);
 			reportTechnicalError(e);
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		}
@@ -202,20 +191,6 @@ public abstract class AbstractAction implements Runnable {
 	
 	
 
-	private boolean performCommonPreparationsForActionExecution() {
-		baseLogger.info("Running \""+this.getClass().getName()+"\"");
-		baseLogger.debug(LinuxEnvironmentUtils.logHeapSpaceInformation());
-		
-		try {
-			checkActionSpecificConfiguration();
-			checkSystemStatePreconditions();
-		} catch (Exception e) {
-			baseLogger.error(e.getMessage()); return false;
-		}
-		return true;
-	}
-
-	
 	/**
 	 * Execute the business code implementation.
 	 * Adjust job properties depending of implementation outcome.
@@ -228,7 +203,6 @@ public abstract class AbstractAction implements Runnable {
 			ParserConfigurationException, SAXException, UserException, SubsystemNotAvailableException {
 		
 		baseLogger.info("Stubbing implementation of "+this.getClass().getName());
-		baseLogger.debug(LinuxEnvironmentUtils.logHeapSpaceInformation());
 		
 		if (!implementation()){				
 			baseLogger.info(this.getClass().getName()+": implementation returned false. Setting job back to start state ("+startStatus+").");  
@@ -258,7 +232,7 @@ public abstract class AbstractAction implements Runnable {
 		} catch (Exception e) {
 			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO ROLLBACK ACTION. DATABASE OR WORKAREA MIGHT BE INCONSISTENT NOW.");
 			logger.error(this.getClass().getName()+": couldn't get rollbacked to previous state. Exception in action.rollback(): ",e);
-			errorStatus = errorStatus.substring(0, errorStatus.length() - 1) + C.WORKFLOW_STATE_DIGIT_ERROR_NOT_PROPERLY_HANDLED;
+			errorStatus = errorStatus.substring(0, errorStatus.length() - 1) + C.WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK;
 		}
 	
 		job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
@@ -365,7 +339,7 @@ public abstract class AbstractAction implements Runnable {
 		jmsMessageServiceHandler.sendJMSMessage(jms);
 	}
 
-	private void synchronizeObjectDatabaseAndFileSystemState() {
+	public void synchronizeObjectDatabaseAndFileSystemState() {
 		o.reattach();
 		if (!SUPPRESS_OBJECT_CONSISTENCY_CHECK){
 			if ((!o.isDBtoFSconsistent())||(!o.isFStoDBconsistent())){
@@ -530,5 +504,13 @@ public abstract class AbstractAction implements Runnable {
 
 	public Job getToCreate() {
 		return toCreate;
+	}
+
+	public WorkArea getWa() {
+		return wa;
+	}
+
+	public void setWorkArea(WorkArea wa) {
+		this.wa = wa;
 	}
 }

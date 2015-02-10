@@ -79,38 +79,38 @@ public class ATUseCaseIngestValidationNotPassed extends AcceptanceTest{
 	
 	@Test
 	public void testFirst_tagmanifest1ZeichenChanged() throws Exception{
-		ath.waitForJobToBeInErrorStatus(AT_ERSTE_ZEILE_TAGMANIFEST1_ZEICHENGEAENDERT,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+		ath.waitForJobToBeInErrorStatus(AT_ERSTE_ZEILE_TAGMANIFEST1_ZEICHENGEAENDERT,C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 	}
 	
 	@Test
 	public void testManifestMd5_2filesChanged() throws Exception{
-		ath.waitForJobToBeInErrorStatus(AT_MANIFEST_MD5_2FILESGEAENDERT,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+		ath.waitForJobToBeInErrorStatus(AT_MANIFEST_MD5_2FILESGEAENDERT,C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 	}
 	
 	@Test
 	public void testOneFileDeleted() throws Exception{
-		ath.waitForJobToBeInErrorStatus(AT_EINE_DATEI_GELOESCHT,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+		ath.waitForJobToBeInErrorStatus(AT_EINE_DATEI_GELOESCHT,C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 	}
 	
 	@Test
 	public void testInvalidPremis() throws Exception{
-		ath.waitForJobToBeInErrorStatus(AT_INVALID_PREMIS,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+		ath.waitForJobToBeInErrorStatus(AT_INVALID_PREMIS,C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 	}
 	
 	@Test
 	public void testDuplicateMetadataFiles() throws IOException, InterruptedException{
-		Job job = ath.waitForJobToBeInErrorStatus(AT_DUPLICATE_METADATA_FILES,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+		Job job = ath.waitForJobToBeInErrorStatus(AT_DUPLICATE_METADATA_FILES,C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 		assertEquals(null,job.getObject().getPackage_type());
 		assertEquals(null,job.getObject().getMetadata_file());
 	}
 	
 	@Test
 	public void testDuplicateDocumentName() throws IOException, InterruptedException{
-		ath.waitForJobToBeInErrorStatus(AT_DUPLICATE_DOCUMENT_NAME,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+		ath.waitForJobToBeInErrorStatus(AT_DUPLICATE_DOCUMENT_NAME,C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 	}
 	
 	@Test
 	public void testDeltaRejectDuplicateEADFiles() throws IOException, InterruptedException{
-		ath.waitForJobToBeInErrorStatus(ORIG_NAME,C.WORKFLOW_STATE_DIGIT_USER_ERROR);
+		ath.waitForJobToBeInErrorStatus(ORIG_NAME,C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 	}
 }

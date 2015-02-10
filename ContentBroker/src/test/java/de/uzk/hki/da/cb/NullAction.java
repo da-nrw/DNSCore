@@ -23,7 +23,6 @@ import org.hibernate.Session;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
-import de.uzk.hki.da.util.ConfigurationException;
 
 /**
  * The Class NullAction.
@@ -32,6 +31,10 @@ import de.uzk.hki.da.util.ConfigurationException;
 public class NullAction extends AbstractAction{
 
 	protected Session session;
+	
+	public NullAction() {
+		SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
+	}
 	
 	/**
 	 * Implementation.
@@ -67,16 +70,13 @@ public class NullAction extends AbstractAction{
 	public void setSession(Session session) {
 		this.session = session;
 	}
-
+	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// TODO Auto-generated method stub
-		
+	public void checkConfiguration() {
 	}
+	
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// TODO Auto-generated method stub
-		
+	public void checkPreconditions() {
 	}
 }

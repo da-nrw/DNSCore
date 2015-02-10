@@ -38,6 +38,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.metadata.XepicurWriter;
 import de.uzk.hki.da.model.DAFile;
@@ -73,7 +74,7 @@ public class SendToPresenterAction extends AbstractAction {
 	private static final String OPENARCHIVES_OAI_IDENTIFIER = "http://www.openarchives.org/OAI/2.0/identifier";
 	private static final String MEMBER = "info:fedora/fedora-system:def/relations-external#isMemberOf";
 	private static final String MEMBER_COLLECTION = "info:fedora/fedora-system:def/relations-external#isMemberOfCollection";
-
+	
 	private RepositoryFacade repositoryFacade;
 	private Map<String,String> viewerUrls;
 	private Set<String> fileFilter;
@@ -82,30 +83,24 @@ public class SendToPresenterAction extends AbstractAction {
 	
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
+	public void checkConfiguration() {
 		if (repositoryFacade == null) 
-			throw new ConfigurationException("Repository facade object not set. Make sure the action is configured properly");
-		
+			throw new ConfigurationException("Must not be null: repositoryFacadeRepository");
+		if (viewerUrls == null)
+			throw new ConfigurationException("Must not be null: viewerUrls");
+		if (fileFilter == null)
+			throw new ConfigurationException("Must no be null: fileFilter");
+		if (testContractors == null)
+			throw new ConfigurationException("Must not be null: testContractors");
 	}
-
+	
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		if (viewerUrls == null)
-			throw new IllegalStateException("viewerUrls is not set.");
-		if (fileFilter == null)
-			throw new IllegalStateException("fileFilter is not set");
-		if (testContractors == null)
-			throw new IllegalStateException("testContractors is not set");
+	public void checkPreconditions() {
 		if (o.getUrn()==null||o.getUrn().isEmpty())
-			throw new IllegalStateException("urn not set");
-		if (StringUtilities.isNotSet(preservationSystem.getOpenCollectionName()))
-			throw new IllegalStateException("open collection name must be set");
-		if (StringUtilities.isNotSet(preservationSystem.getClosedCollectionName()))
-			throw new IllegalStateException("closed collection name must be set");
+			throw new PreconditionsNotMetException("urn not set");
 	}
-
-
+	
 	/**
 	 * Preconditions:
 	 * There can be two pips at
@@ -117,21 +112,35 @@ public class SendToPresenterAction extends AbstractAction {
 	 */
 	@Override
 	public boolean implementation() throws IOException {
-
+		
+		if (StringUtilities.isNotSet(preservationSystem.getOpenCollectionName()))
+			throw new IllegalStateException("open collection name must be set");
+		if (StringUtilities.isNotSet(preservationSystem.getClosedCollectionName()))
+			throw new IllegalStateException("closed collection name must be set");
+		
+		
 		purgeObjectsIfExist();
 		buildMapWithOriginalFilenamesForLabeling();
+		
+		
 		
 		boolean publicPIPSuccessfullyIngested = false;
 		boolean institutionPIPSuccessfullyIngested = false;
 		try {
 			
-			if (makePIPFolder(WA_PUBLIC).toFile().exists()) 
-				publicPIPSuccessfullyIngested = publishPackage(
+			if (wa.pipFolder(WA_PUBLIC).toFile().exists()) {
+				publishPackage(
 					WA_PUBLIC,true,preservationSystem.getOpenCollectionName());
+				publicPIPSuccessfullyIngested=true;
+				logger.debug("publ pip ingested");
+			}
 			
-			if (makePIPFolder(WA_INSTITUTION).toFile().exists()) 
-				institutionPIPSuccessfullyIngested = publishPackage(
-					WA_INSTITUTION,false,preservationSystem.getClosedCollectionName());	
+			if (wa.pipFolder(WA_INSTITUTION).toFile().exists()) { 
+				publishPackage(
+					WA_INSTITUTION,false,preservationSystem.getClosedCollectionName());
+				institutionPIPSuccessfullyIngested = true;
+				logger.debug("inst pip ingested");
+			}
 			
 		} catch (RepositoryException e) {
 			throw new RuntimeException(e);
@@ -155,21 +164,10 @@ public class SendToPresenterAction extends AbstractAction {
 
 	private void deleteXepicur() {
 		
-		makeMetadataFile(METADATA_STREAM_ID_EPICUR,WA_INSTITUTION).delete();
-		makeMetadataFile(METADATA_STREAM_ID_EPICUR,WA_PUBLIC).delete();
+		wa.metadataStream(WA_INSTITUTION,METADATA_STREAM_ID_EPICUR).delete();
+		wa.metadataStream(WA_PUBLIC,METADATA_STREAM_ID_EPICUR).delete();
 	}
 	
-	
-	
-	private File makeMetadataFile(String fileName,String pipType) {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,
-				pipType,o.getContractor().getShort_name(),o.getIdentifier(),fileName+FILE_EXTENSION_XML);
-	}
-	
-	private Path makePIPFolder(String pipType) {
-		return Path.make(n.getWorkAreaRootPath(),WA_PIPS,
-			pipType,o.getContractor().getShort_name(),o.getIdentifier());
-	}
 	
 	
 	
@@ -182,7 +180,7 @@ public class SendToPresenterAction extends AbstractAction {
 	 * @throws IOException 
 	 * @throws RepositoryException 
 	 */
-	private boolean publishPackage(String pipType,boolean checkSets, String collectionName) throws IOException, RepositoryException {
+	private void publishPackage(String pipType,boolean checkSets, String collectionName) throws IOException, RepositoryException {
 		
 		String pkgType = o.getPackage_type(); 
 		if (!viewerUrls.containsKey(pkgType))
@@ -191,12 +189,11 @@ public class SendToPresenterAction extends AbstractAction {
 		XepicurWriter.createXepicur(
 				o.getIdentifier(), pkgType, 
 				viewerUrls.get(pkgType), 
-				makeMetadataFile("epicur",pipType),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
+				wa.metadataStream(pipType,"epicur"),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
 		
-		boolean packageIngested=ingestPackage(o.getUrn(), o.getIdentifier(), collectionName, makePIPFolder(pipType), 
+		ingestPackage(o.getUrn(), o.getIdentifier(), collectionName, wa.pipFolder(pipType), 
 				o.getContractor().getShort_name(), pkgType, makeSets(checkSets));
 		addRelsExtRelationships(collectionName,makeSets(checkSets));
-		return packageIngested;
 	}
 	
 	
@@ -296,8 +293,8 @@ public class SendToPresenterAction extends AbstractAction {
 		
 		int publishedFlag = 0;
 
-		if (publicPIPSuccesfullyIngested) publishedFlag += 1;
-		if (institutionPIPSuccessfullyIngested) publishedFlag += 2;
+		if (publicPIPSuccesfullyIngested) publishedFlag += PUBLISHEDFLAG_PUBLIC;
+		if (institutionPIPSuccessfullyIngested) publishedFlag += PUBLISHEDFLAG_INSTITUTION;
 
 		o.setPublished_flag(publishedFlag);
 		logger.debug("Set published flag of object to '{}'", o.getPublished_flag());
@@ -316,7 +313,7 @@ public class SendToPresenterAction extends AbstractAction {
 	 * @throws RepositoryException
 	 * @throws IOException
 	 */
-	private boolean ingestPackage(String urn, String objectId, String collection,
+	private void ingestPackage(String urn, String objectId, String collection,
 			Path packagePath, String contractorShortName, String packageType,
 			String[] sets) throws RepositoryException, IOException {
 		
@@ -329,17 +326,17 @@ public class SendToPresenterAction extends AbstractAction {
 			repositoryFacade.createObject(objectId, collection, contractorShortName);
 		}			
 		ingestDirectoryContentAsDatastreamsIntoRepository(objectId, collection, pip, packagePath, packageType);
-		
-		
-		
-		if (! Path.makeFile(packagePath,METADATA_STREAM_ID_DC+FILE_EXTENSION_XML).exists()) {
-			return false;
-		} else {
+		rewriteDCIfExists(urn, packagePath);
+	}
+
+
+	private void rewriteDCIfExists(String urn, Path packagePath)
+			throws IOException {
+		if (Path.makeFile(packagePath,METADATA_STREAM_ID_DC+FILE_EXTENSION_XML).exists()) {
 			String updatedDcContent = readDCAndReplaceURN(urn, packagePath);
 			writeDCBackToPIP(packagePath, updatedDcContent);
 			logger.info("Successfully added identifiers to DC datastream");
 		}
-		return true;
 	}
 
 

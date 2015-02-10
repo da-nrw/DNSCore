@@ -31,15 +31,21 @@ In der zentralen Konfigurationsdatei (unter CentOS /etc/elasticsearch/elasticsea
 
 Anschließend muss der in der ContentBroker-Konfiguration angegebene Index erstellt werden:
 
-    curl -XPUT 'http://localhost:9200/portal_test'
-    oder
-    curl -XPUT 'http://localhost:9200/portal_ci'
+```bash
+curl -XPUT 'http://localhost:9200/portal_test'
+oder
+curl -XPUT 'http://localhost:9200/portal_ci'
+```
 
-und das Mapping für diesen Index festgelegt werden:
+und das Mapping für diesen Index festgelegt werden.
 
-cd []/DNSCore/ContentBroker/src/main/conf/
+Die Mapping-Datei kann hier heruntergeladen werden [es_mapping.json](../conf/es_mapping.json).
 
-    curl -XPUT 'http://localhost:9200/portal_test/ore:Aggregation/_mapping' -d @es_mapping.json
+Auf der Kommandozeile des entsprechenden Systems sollte dann für den Index ausgeführt werden:
+
+```bash
+curl -XPUT 'http://localhost:9200/portal_test/ore:Aggregation/_mapping' -d @es_mapping.json
+```
     
 Achten Sie auf die Angabe des richtigen Indexes!
 

@@ -20,12 +20,14 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.grid.IrodsDistributedConversionAdapter;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
 
@@ -41,6 +43,7 @@ public class CleanWorkAreaActionTests extends ConcreteActionUnitTest {
 	
 	@Before
 	public void setUp() {
+		action.setDistributedConversionAdapter(mock(IrodsDistributedConversionAdapter.class));
 		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
 	}
 	

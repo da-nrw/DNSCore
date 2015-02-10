@@ -52,16 +52,16 @@ public class ScanForPresentationAction extends AbstractAction{
 	public ScanForPresentationAction(){}
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
-		if (fileFormatFacade==null) throw new ConfigurationException("formatScanService not set");
+	public void checkConfiguration() {
+		if (distributedConversionAdapter==null) throw new ConfigurationException("Must not be null: distributedConversionAdapter");
+		if (fileFormatFacade==null) throw new ConfigurationException("Must not be null: fileFormatFacade");
 	}
+	
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
+	public void checkPreconditions() {
 	}
-
+	
 	@Override
 	public boolean implementation() throws SubsystemNotAvailableException{
 		

@@ -42,19 +42,19 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 	private GridFacade gridFacade;
 	private DocumentsGenService dgs = new DocumentsGenService();
 	
-	public ObjectToWorkAreaAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;}
+	public ObjectToWorkAreaAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
 	
 	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		// Auto-generated method stub
-		
+	public void checkConfiguration() {
+		if (ingestGate==null) throw new ConfigurationException("Must not be null: ingestGate");
+		if (gridFacade==null) throw new ConfigurationException("Must not be null: gridFacade");
 	}
+
 
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {
-		// Auto-generated method stub
+	public void checkPreconditions() {
 	}
-
+	
 	@Override
 	public boolean implementation() {
 		

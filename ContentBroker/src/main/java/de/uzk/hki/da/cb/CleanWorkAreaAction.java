@@ -19,7 +19,8 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.cb.ArchiveReplicationCheckAction.*;
+import static de.uzk.hki.da.cb.ArchiveReplicationCheckAction.clearNonpersistentObjectProperties;
+import static de.uzk.hki.da.cb.ArchiveReplicationCheckAction.createPublicationJob;
 
 import java.io.IOException;
 
@@ -36,17 +37,20 @@ public class CleanWorkAreaAction extends AbstractAction{
 
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
-	public CleanWorkAreaAction() {setKILLATEXIT(true);}
-	
-	@Override
-	public void checkActionSpecificConfiguration() throws ConfigurationException {
-		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
+	public CleanWorkAreaAction() {
+		setKILLATEXIT(true);
 	}
-
 	
 	@Override
-	public void checkSystemStatePreconditions() throws IllegalStateException {}
+	public void checkConfiguration() {
+		if (distributedConversionAdapter==null) throw new ConfigurationException("Must not be null: distributedConversionAdapter");
+	}
+	
+	
 
+	@Override
+	public void checkPreconditions() {
+	}
 	
 	@Override
 	public boolean implementation() throws IOException {
