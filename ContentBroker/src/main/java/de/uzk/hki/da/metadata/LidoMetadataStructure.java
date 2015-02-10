@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import org.apache.commons.io.input.BOMInputStream;
 import org.jdom.Document;
@@ -58,15 +57,19 @@ public class LidoMetadataStructure extends MetadataStructure{
 		
 		for(Element lidoElement : lidoElements) {
 			lidoElementInfo = new HashMap<String, List<String>>();
-			String uniqueID = UUID.randomUUID().toString();
-			uniqueID = uniqueID.replace("-", "");
-			String id = objectId+"-"+uniqueID;
+			String id = objectId+"-"+getLidoRecID(lidoElement);
+			System.out.println("ID: "+id);
 			lidoElementInfo.put(C.EDM_TITLE, getTitle(lidoElement));
 			lidoElementInfo.put(C.EDM_PUBLISHER, getPlaces(lidoElement));
 			lidoElementInfo.put(C.EDM_DATE, getDate(lidoElement));
 			indexInfo.put(id, lidoElementInfo);
 		}
 		return indexInfo;
+	}
+	
+	private String getLidoRecID(Element lidoElement) {
+		String recID = lidoElement.getChild("lidoRecID", C.LIDO_NS).getValue();
+		return recID;
 	}
 	
 	private List<Element> getLidoElements() {

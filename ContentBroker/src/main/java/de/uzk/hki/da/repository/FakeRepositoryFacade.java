@@ -172,20 +172,19 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 
 	@Override
 	public String getIndexedMetadata(String indexName, String objectId) {
-		if (objectId.equals("Inventarnummer")) // lido
-			return "\"edm:provider\":\"DA-NRW - Digitales Archiv Nordrhein-Westfalen\"";
-		else if(objectId.endsWith("d1e8282"))  // ead
-			return "VDA - Forschungsstelle Rheinlländer in aller Welt";
+		if (objectId.contains("Inventarnummer-1")) // lido
+			return "Nudelmaschine in Originalverpackung";
+		else if(objectId.endsWith("-md801613"))  // mets
+			return "ULB";
 		else if(objectId.endsWith("-1"))       // xmp
 			return "Dieser Brauch zum Sankt Martinstag";
-		else                                   // mets
-			return "ULB (Stadt) [Electronic ed.]";
+		else                                   // ead
+			return "\"dc:date\":[\"1938-01-01/1939-12-31\"]";
 	}
 
 	@Override
 	public String getAllIndexedMetadataFromIdSubstring(String indexName,
 			String objectId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

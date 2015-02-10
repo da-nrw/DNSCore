@@ -303,8 +303,12 @@ public class MetsMetadataStructure extends MetadataStructure {
 		HashMap<String, Element> IDtoSecElement = new HashMap<String, Element>();
 		@SuppressWarnings("unchecked")
 		List<Element> dmdSections = metsDoc.getRootElement().getChildren("dmdSec", C.METS_NS);
-		for(Element e : dmdSections) {;
-			String id = e.getAttribute("ID").getValue();
+		for(Element e : dmdSections) {
+			String id = "";
+			id = e.getAttribute("ID").getValue();
+			if(id.equals("")) {
+				
+			}
 			IDtoSecElement.put(id, e);
 		}
 		return IDtoSecElement;

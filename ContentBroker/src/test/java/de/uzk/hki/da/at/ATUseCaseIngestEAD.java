@@ -145,15 +145,6 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 	}
 	
 	@Test
-	public void testIndex(){
-//		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-d1e8282").
-//			contains("VDA - Forschungsstelle Rheinlländer in aller Welt"));
-		
-//		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-f838082dc50949e8b57346d904efdd3d").contains("\"dc:date\":[\"1913\"]"));
-		
-	}
-	
-	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build
@@ -174,7 +165,6 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 //			testIndex
 		String cho = "/cho/";
 		String ID = testId.substring(testId.lastIndexOf(cho)+cho.length());
-		System.out.println("ID: "+ID);
 		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", ID).contains("\"dc:date\":[\"1938-01-01/1939-12-31\"]"));
 	}
 }

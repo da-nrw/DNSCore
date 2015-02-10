@@ -29,6 +29,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.junit.AfterClass;
@@ -117,7 +118,6 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 		List<String> lidoUrls =  mh.getLIDOURL(doc);
 		int danrwRewritings = 0;
 		for(String url : lidoUrls) {
-			System.out.println("URL: "+url);
 			if(url.contains(DATA_DANRW_DE)) {
 				danrwRewritings++;
 			}
@@ -126,8 +126,29 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 	}
 	
 	@Test
-	public void testIndex() {
-		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", "Inventarnummer").contains("\"edm:provider\":\"DA-NRW - Digitales Archiv Nordrhein-Westfalen\""));
+	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
+		SAXBuilder builder = new SAXBuilder();
+		Document doc = builder.build
+				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));
+		@SuppressWarnings("unchecked")
+		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
+		Boolean testProvidetCho1Exists = false;
+		Boolean testProvidetCho2Exists = false;
+		for(Element pcho : providetCho) {
+			if(pcho.getAttributeValue("about", C.RDF_NS).contains(object.getIdentifier()+"-ISIL/lido/Inventarnummer-1")) {
+				testProvidetCho1Exists = true;
+				assertTrue(pcho.getChild("title", C.DC_NS).getValue().equals("Nudelmaschine in Originalverpackung"));
+				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("01.01.1970-31.12.1989"));
+			} else if(pcho.getAttributeValue("about", C.RDF_NS).contains(object.getIdentifier()+"-ISIL/lido/Inventarnummer-2")){
+				testProvidetCho2Exists = true;
+				assertTrue(pcho.getChild("title", C.DC_NS).getValue().equals("Küchenmaschine"));
+				assertTrue(pcho.getChild("date", C.DC_NS).getValue().contains("01.01.1950-31.12.1959"));
+			}
+		}
+		assertTrue(testProvidetCho1Exists&&testProvidetCho2Exists);
+		
+//		testIndex
+		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-ISIL/lido/Inventarnummer-1").contains("Nudelmaschine in Originalverpackung"));
 	}
 }
 	

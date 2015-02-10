@@ -109,15 +109,6 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 		checkReferencesAndMimetype(metsDoc, "http://data.danrw.de/", C.MIMETYPE_IMAGE_JPEG, "URL");
 	}
 	
-	@Test
-	public void checkIndex(){
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {}
-		String abc = repositoryFacade.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613");
-		assertTrue(abc.contains("ULB (Stadt) [Electronic ed.]"));
-	}
-	
 	public void checkReferencesAndMimetype(Document doc, String href, String mimetype, String loctype) throws JDOMException, FileNotFoundException, IOException {
 		XPath xPath = XPath.newInstance(METS_XPATH_EXPRESSION);
 		
@@ -145,22 +136,15 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 		@SuppressWarnings("unchecked")
 		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
 		Boolean testProvidetChoExists = false;
-		String testId = "";
 		for(Element pcho : providetCho) {
-			System.out.println("ID: "+pcho.getAttributeValue("about", C.RDF_NS));
-			System.out.println("TITLE: "+pcho.getChild("title", C.DC_NS).getValue());
-			if(pcho.getChild("title", C.DC_NS).getValue().equals("Schriftwechsel Holländisch Limburg")) {
+			if(pcho.getChild("title", C.DC_NS).getValue().equals("Text Text// mahels///Titel")) {
 				testProvidetChoExists = true;
-				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("1938-01-01/1939-12-31"));
-				testId = pcho.getAttributeValue("about", C.RDF_NS);
+				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("1523"));
 			}
 		}
-//		assertTrue(testProvidetChoExists);
-//		
-////			testIndex
-//		String cho = "/cho/";
-//		String ID = testId.substring(testId.lastIndexOf(cho)+cho.length());
-//		System.out.println("ID: "+ID);
-//		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", ID).contains("\"dc:date\":[\"1938-01-01/1939-12-31\"]"));
+		assertTrue(testProvidetChoExists);
+		
+//		testIndex
+		assertTrue(repositoryFacade.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613").contains("ULB"));
 	}
 }
