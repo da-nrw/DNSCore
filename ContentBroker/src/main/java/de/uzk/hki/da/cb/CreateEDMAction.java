@@ -170,7 +170,7 @@ public class CreateEDMAction extends AbstractAction {
 			ms = new XMPMetadataStructure(metadataSourceFile, documents);
 		}
 		
-		ms.toEDM(ms.getIndexInfo(o.getIdentifier()), edm, preservationSystem.getUrisFile());
+		ms.toEDM(ms.getIndexInfo(o.getIdentifier()), edm, preservationSystem);
 		
 		return edm;
 	}

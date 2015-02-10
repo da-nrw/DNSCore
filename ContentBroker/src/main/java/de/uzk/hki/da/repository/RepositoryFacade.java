@@ -127,4 +127,6 @@ public interface RepositoryFacade {
 	 */
 	String generateFileId(String path);
 
+	String getAllIndexedMetadataFromIdSubstring(String indexName, String objectId);
+
 }

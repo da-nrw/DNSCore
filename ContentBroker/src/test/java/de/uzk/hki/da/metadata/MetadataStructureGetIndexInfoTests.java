@@ -19,20 +19,26 @@ import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Document;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
 
 public class MetadataStructureGetIndexInfoTests {
 	
-	private static final String DATA_DANRW_DE = "http://data.danrw.de";
 	private static final Path workAreaRootPathPath = new RelativePath("src/test/resources/metadata/MetadataStructureGetIndexInfoTests/");
 	private static HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();
 	private static HashMap<String, List<String>> content = new HashMap<String, List<String>>();
 	private String objectID = "objectID";
+	private static PreservationSystem pSystem;
 	
 	@BeforeClass
 	public static void createTargetDir() {
 		Path.makeFile(workAreaRootPathPath, "target").mkdirs();
+		
+		pSystem = new PreservationSystem();
+		pSystem.setUrisFile("http://data.danrw.de/file");
+		pSystem.setUrisCho("http://data.danrw.de/cho");
+		pSystem.setUrisAggr("http://data.danrw.de/aggregation");
 	}
 	
 	@Test
@@ -65,7 +71,7 @@ public class MetadataStructureGetIndexInfoTests {
 			}
 			
 		}
-		lms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "lidoToEdm.xml"),  DATA_DANRW_DE);
+		lms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "lidoToEdm.xml"),  pSystem);
 	}
 	
 	@Test
@@ -77,7 +83,7 @@ public class MetadataStructureGetIndexInfoTests {
 		MetadataStructure mms = new MetsMetadataStructure(metsFile, docs);
 		indexInfo = mms.getIndexInfo(objectID);
 		
-		content = indexInfo.get(objectID);
+		content = indexInfo.get("md258094");
 		
 		assertTrue(content.get(C.EDM_TITLE).contains("Chronik der Stadt Hoerde")
 				&&content.get(C.EDM_TITLE).contains("und der größeren evangelischen Gemeinde in derselben"));
@@ -89,7 +95,7 @@ public class MetadataStructureGetIndexInfoTests {
 		assertTrue(content.get(C.EDM_PUBLISHER).contains("Hoerde")
 				&&content.get(C.EDM_PUBLISHER).contains("Münster"));
 		
-		mms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "metsToEdm.xml"),  DATA_DANRW_DE);
+		mms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "metsToEdm.xml"),  pSystem);
 	}
 	
 	@Test
@@ -129,7 +135,7 @@ public class MetadataStructureGetIndexInfoTests {
 		}
 		assertTrue(indexInfo.get(parent).get(C.EDM_TITLE).contains("14. Verschiedenes"));
 		
-		ems.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "eadToEdm.xml"), DATA_DANRW_DE);
+		ems.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "eadToEdm.xml"), pSystem);
 	}
 	
 	@AfterClass 

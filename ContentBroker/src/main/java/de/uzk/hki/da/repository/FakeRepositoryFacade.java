@@ -181,4 +181,11 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 		else                                   // mets
 			return "ULB (Stadt) [Electronic ed.]";
 	}
+
+	@Override
+	public String getAllIndexedMetadataFromIdSubstring(String indexName,
+			String objectId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

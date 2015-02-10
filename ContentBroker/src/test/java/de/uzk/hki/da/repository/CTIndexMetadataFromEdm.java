@@ -87,6 +87,8 @@ public class CTIndexMetadataFromEdm {
 		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"dc:title\":[\"und der größeren evangelischen Gemeinde in derselben\",\"Chronik der Stadt Hoerde\"]"));	
 		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"dc:date\":[\"2011\",\"1836\"]"));
 		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"dc:publisher\":[\"Münster\",\"Hoerde\"]"));
+		
+		System.out.println("huhu: "+repo.getIndexedMetadata(INDEX_NAME, "objectID*"));
 	}	
 	
 	
@@ -120,7 +122,7 @@ public class CTIndexMetadataFromEdm {
 		String eadEdmContent = IOUtils.toString(new FileInputStream(eadEdm), C.ENCODING_UTF_8);
 	
 		try {
-			repo.indexMetadata(INDEX_NAME, "1", eadEdmContent);
+			repo.indexMetadata(INDEX_NAME, "objectID", eadEdmContent);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -135,6 +137,7 @@ public class CTIndexMetadataFromEdm {
 		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID-457009589ee34cdcaa71ed56a2dad8a6").contains("\"dc:date\":[\"1937-01-01/1938-12-31\"]"));
 		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID-457009589ee34cdcaa71ed56a2dad8a6").contains("\"dc:title\":[\"Volksdeutsches Rundfunkreferat\"]"));	
 		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID-457009589ee34cdcaa71ed56a2dad8a6").contains("\"dcterms:isPartOf\""));
+
 	}	
 
 }

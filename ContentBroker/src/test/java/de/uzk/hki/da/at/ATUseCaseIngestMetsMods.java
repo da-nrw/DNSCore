@@ -136,4 +136,31 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 			}
 		}
 	}
+	
+	@Test
+	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
+		SAXBuilder builder = new SAXBuilder();
+		Document doc = builder.build
+				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));
+		@SuppressWarnings("unchecked")
+		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
+		Boolean testProvidetChoExists = false;
+		String testId = "";
+		for(Element pcho : providetCho) {
+			System.out.println("ID: "+pcho.getAttributeValue("about", C.RDF_NS));
+			System.out.println("TITLE: "+pcho.getChild("title", C.DC_NS).getValue());
+			if(pcho.getChild("title", C.DC_NS).getValue().equals("Schriftwechsel Holländisch Limburg")) {
+				testProvidetChoExists = true;
+				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("1938-01-01/1939-12-31"));
+				testId = pcho.getAttributeValue("about", C.RDF_NS);
+			}
+		}
+//		assertTrue(testProvidetChoExists);
+//		
+////			testIndex
+//		String cho = "/cho/";
+//		String ID = testId.substring(testId.lastIndexOf(cho)+cho.length());
+//		System.out.println("ID: "+ID);
+//		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", ID).contains("\"dc:date\":[\"1938-01-01/1939-12-31\"]"));
+	}
 }

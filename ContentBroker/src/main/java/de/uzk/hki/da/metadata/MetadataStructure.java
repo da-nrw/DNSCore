@@ -43,6 +43,7 @@ import org.w3c.dom.Element;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.util.Path;
 
 /**
@@ -82,7 +83,7 @@ public abstract class MetadataStructure {
 		}
 	}
 	
-	public void toEDM(HashMap<String, HashMap<String, List<String>>> indexInfo, File file, String url) {
+	public void toEDM(HashMap<String, HashMap<String, List<String>>> indexInfo, File file, PreservationSystem preservationSystem) {
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -94,8 +95,8 @@ public abstract class MetadataStructure {
 			addXmlNsToEDM(edmDoc, rootElement);
 			
 			for(String id : indexInfo.keySet()) {
-				Element providedCHO = addEdmProvidedCHOtoEdm(url, id, edmDoc, rootElement);
-				Element aggregation = addOreAggregationToEdm(url, id, edmDoc, rootElement);
+				Element providedCHO = addEdmProvidedCHOtoEdm(preservationSystem, id, edmDoc, rootElement);
+				Element aggregation = addOreAggregationToEdm(preservationSystem, id, edmDoc, rootElement);
 				for(String elementName : indexInfo.get(id).keySet()) {
 					
 					Element parentNode = null;
@@ -108,7 +109,7 @@ public abstract class MetadataStructure {
 						List<String> values = indexInfo.get(id).get(elementName);
 						for(String currentValue : values) {
 							if(!currentValue.equals("")) {
-								addNewElementToParent(url, id, elementName, currentValue, parentNode, edmDoc);
+								addNewElementToParent(preservationSystem, id, elementName, currentValue, parentNode, edmDoc);
 							}
 						}
 					}
@@ -128,11 +129,11 @@ public abstract class MetadataStructure {
 		}
 	}
 	
-	private void addNewElementToParent(String url, String id, String elementName, String elementValue, Element parent, Document edmDoc) {
+	private void addNewElementToParent(PreservationSystem preservationSystem, String id, String elementName, String elementValue, Element parent, Document edmDoc) {
 		Element eName = edmDoc.createElement(elementName);
 		if(elementName.equals(C.EDM_HAS_VIEW) || elementName.equals(C.EDM_IS_PART_OF)) {
 			if(elementName.equals(C.EDM_IS_PART_OF)) {
-				elementValue = url+"/cho/"+id;
+				elementValue = preservationSystem.getUrisFile()+"/"+id;
 			}
 			
 			Attr rdfResource = edmDoc.createAttribute("rdf:resource");
@@ -144,8 +145,8 @@ public abstract class MetadataStructure {
 		parent.appendChild(eName);
 	}
 	
-	private Element addEdmProvidedCHOtoEdm(String url, String id, Document edmDoc, Element rootElement) {
-		String cho_identifier = url+"/cho/"+id;
+	private Element addEdmProvidedCHOtoEdm(PreservationSystem preservationSystem, String id, Document edmDoc, Element rootElement) {
+		String cho_identifier = preservationSystem.getUrisCho()+"/"+id;
 		Element providedCHO = edmDoc.createElement("edm:ProvidedCHO");
 		Attr rdfAbout = edmDoc.createAttribute("rdf:about");
 		rdfAbout.setValue(cho_identifier);
@@ -155,8 +156,8 @@ public abstract class MetadataStructure {
 		return providedCHO;
 	}
 	
-	private Element addOreAggregationToEdm(String url, String id, Document edmDoc, Element rootElement) {
-		String aggr_identifier = url+"/aggregation/"+id;
+	private Element addOreAggregationToEdm(PreservationSystem preservationSystem, String id, Document edmDoc, Element rootElement) {
+		String aggr_identifier = preservationSystem.getUrisAggr()+"/"+id;
 		Element aggregation = edmDoc.createElement("ore:Aggregation");
 		Attr rdfAbout = edmDoc.createAttribute("rdf:about");
 		rdfAbout.setValue(aggr_identifier);
@@ -165,7 +166,7 @@ public abstract class MetadataStructure {
 		
 		Element aggregatedCHO = edmDoc.createElement("edm:aggregatedCHO");
 		Attr rdfAboutACho = edmDoc.createAttribute("rdf:resource");
-		rdfAboutACho.setValue(url+"/cho/"+id);
+		rdfAboutACho.setValue(preservationSystem.getUrisCho()+"/"+id);
 		aggregatedCHO.setAttributeNode(rdfAboutACho);
 		aggregation.appendChild(aggregatedCHO);
 		
