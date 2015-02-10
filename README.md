@@ -72,18 +72,20 @@ Prerequisites:
 
 The following five commands will get you started:
 
-    git clone https://github.com/da-nrw/DNSCore [...]/DNSCore
-    cd [...]/DNSCore/DNSCommon
-    mvn install
-    cd [...]/DNSCore/ContentBroker
-    mvn clean && mvn verify
-    
+```bash
+git clone https://github.com/da-nrw/DNSCore DNSCore
+cd DNSCore/DNSCommon
+mvn install
+cd ../ContentBroker
+mvn clean && mvn verify
+```
+
 These commands will download the sourcecode, deploy the DNSCommon Library to your local Maven Repository,
 build the ContentBroker using the library, and execute an automated acceptance test suite against a 
 running ContentBroker which will get installed from an automatically generated installer. You'll find these at:
 
-    [...]/DNSCore/ContentBroker/target/installation
-    [...]/DNSCore/ContentBroker/target/ContentBroker
+    DNSCore/ContentBroker/target/installation
+    DNSCore/ContentBroker/target/ContentBroker
 
 For more information on building and testing DNSCore look [here](ContentBroker/src/main/markdown/development_deploy.md)
     

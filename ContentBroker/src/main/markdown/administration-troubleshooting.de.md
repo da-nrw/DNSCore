@@ -7,20 +7,22 @@ Landet ein eingeliefertes Paket in einem Fehlerstatus, ist eine Reaktion seitens
 
 Dabei ist die Reihenfolge der genannten Schritte entscheidend. Es macht keinen Sinn, einen Fehler zu debuggen, wenn das System als Ganzes möglicherweise falsch konfiguriert ist. Die einzelnen Schritte werden im Folgenden näher erläutert.
 
-## 1. Sicherstellen der Funktion des Systems
+## Sicherstellen der Funktion des Systems
 
 ### Diagnostics Modus in ContentBroker - Smoke test
 
 Bei Auftreten von Fehlern in der Paketverarbeitung sollte immer zuerst der sogenannte Smoke Test durchgeführt werden.
 
-    cd DSNCore/Contentbroker
-    java -jar ContentBroker.jar diagnostics
+```bash
+cd DSNCore/Contentbroker
+java -jar ContentBroker.jar diagnostics
+```
 
 Der Test Überprüft eine Reihe von Verbindungen, z.b. Datenbank-Verbindung, iRODS, Fedora usw.
 
 Erst wenn der Test positiv ausfällt und der Fehlerstatus in der Paketverarbeitung immer noch bestehen bleibt , macht es Sinn, die Fehlersuche fortzusetzen. 
 
-## 2. Fehleranalyse
+## Paketverarbeitung Fehleranalyse && Fehlerbehebung
 
 Die Datenverarbeitung in DNSCore ist in kleine logische in sich abgeschlossene Einheiten – Actions – unterteilt. Jeder Workflow, ob Einlieferung ([ingest] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.ingest.xml)), das Wiederabrufen ([retrieval] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.retrieval.xml)) oder Präsentation ([presentation] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.presentation.xml)) besteht aus einer festgelegten Abfolge verschiedener Actions.
 
@@ -67,12 +69,6 @@ Darüber hinaus erscheint in der DAWeb neben dem Fehlerstatus ein neuer Button.
 Da dies bedeutet, dass die Eingangsdaten fehlerhaft sind. und berichtigt und neu eingespielt werden müssen. Daher muss der Administrator
 anschließen das Objekt löschen. Dazu gibt es den "Objekt löschen"-Button.
 
-![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/Delete_button.PNG)
-
-Das Betätigen des Buttons vom Admin führt zur Löschung des Objekts sowohl aus der Datenbank als auch vom Speicher. 
-Der Orig_name kann somit wieder verwendet werden.
-Sollte es sich beim eingelieferten Paket um ein Delta handeln, wird nur das neuste Paket gelöscht. Das Originalobjekt bleibt erhalten.
-
 #### xx5 - ERROR_MODEL_INCONSISTENT
 
 Eine fünf am Ende bedeutet, dass ein kritischer Fehler bezüglich des Datenmodells aufgetreten ist. Dies kann mit der Verknüpfung zwischen Actions, 
@@ -96,10 +92,27 @@ Konfigurationsfehler. Sollte nur während der Entwicklung oder Einrichtungsphase
 auf einem Knoten während der Einrichtungsphase wird alle potentiellen 7er Status aufdecken. Nach Behebung des Zurücksetzen Buttons kann der Administrator
 das Paket wie gewohnt per "Zurücksetzen"-Button zurücksetzen.
 
+
 #### xx8 - UP_TO_ROLLBACK
 
 Actions, welche sich durch einen jähen Abruch des ContentBroker in undefinierten Zuständen befinden, können vom Gesamtsystem-Administrator
 manuell mit einer abschließenden 8 versehen werden, um dem System zu signalisieren, dass der Rollback nachgeholt werden muss.  
+
+### Der "Objekt Löschen"-Button. Automatisiertes Löschen von Paketen.
+
+![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/Delete_button.PNG)
+
+Das Betätigen des Buttons vom Admin führt zur Löschung des Objekts sowohl aus der Datenbank als auch vom Speicher. 
+Der Orig_name kann somit wieder verwendet werden.
+Sollte es sich beim eingelieferten Paket um ein Delta handeln, wird nur das neuste Paket gelöscht. Das Originalobjekt bleibt erhalten.
+
+### Der "Gesamte Workflow zurücksetzen"-Button - Rollback
+
+TODO screenshot
+
+### Der "Zurücksetzen Button - Retry
+
+TODO screenshot
 
 ### Automatischen Anhalten der ActionFactory.
 
@@ -122,11 +135,8 @@ Maske "Adminfunktionen" der DA-Web. Das Problem sollte behoben
 werden. Je nach Fehlerquelle sollte der ContentBroker dafür heruntergefahren werden. Danach kann der ContentBroker, oder auch einfach die ActionFactory,
 wieder gestartet werden.
 
-### Rollback
 
-
-
-## 3. Löschen von Objekten
+## Manuelles Löschen von bereits archiveirten Objekten unter speziellen Voraussetzungen
 
 Das Löschen eines bereits archivierten Objektes ist, so wie LZA aus DNSCore-Sicht konzeptioniert ist, nicht vorgesehen. Sollte es dennoch (Stichwort "Deletion under exceptional circumstances"), z.B. in Testsystemen erforderlich sein, muss dies manuell erfolgen. Im folgenden sind die notwendigen Schritte zusammengefasst.
 
