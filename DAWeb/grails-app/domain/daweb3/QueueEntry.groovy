@@ -28,13 +28,14 @@ import org.hibernate.criterion.CriteriaSpecification
 class QueueEntry {
 	
 	private static final String WORKFLOW_STATUS_DIGIT_USER_ERROR="4";
-	private static final String WORKFLOW_STATUS_DIGIT_IDLE="0";
+	private static final String WORKFLOW_STATUS_DIGIT_WAITING="0";
 	private static final String WORKFLOW_STATUS_DIGIT_WORKING="2";
 	private static final String WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED = "1";
 	private static final String WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK = "3";
 	private static final String WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT = "5";
 	private static final String WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET = "6";
 	private static final String WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION = "7";
+	private static final String WORKFLOW_STATUS_DIGIT_UP_TO_ROLLBACK = "8";
 	
 	int id
 	String status
@@ -177,14 +178,14 @@ class QueueEntry {
 	
 	String getInformation() {
 			if (getStatusAsInteger()<440) {
-					def checkfor = [WORKFLOW_STATUS_DIGIT_WORKING,WORKFLOW_STATUS_DIGIT_IDLE]
+					def checkfor = [WORKFLOW_STATUS_DIGIT_WORKING,WORKFLOW_STATUS_DIGIT_WAITING]
 					def ch = status[-1]
 					if (checkfor.contains(ch)) {
 						return "arbeitend (" + status +")"
 					} else return "fehlerhaft (" + status +")"
 			} 
 			if (getStatusAsInteger()>=440 && getStatusAsInteger()<500 ) {
-				def checkfor = [WORKFLOW_STATUS_DIGIT_WORKING,WORKFLOW_STATUS_DIGIT_IDLE]
+				def checkfor = [WORKFLOW_STATUS_DIGIT_WORKING,WORKFLOW_STATUS_DIGIT_WAITING]
 				def ch = status[-1]
 				if (checkfor.contains(ch)) {
 					return "repliziere (" + status +")"
@@ -192,7 +193,7 @@ class QueueEntry {
 		}
 		
 			if (getStatusAsInteger()>500 && getStatusAsInteger()<600) {
-					def checkfor = [WORKFLOW_STATUS_DIGIT_WORKING,WORKFLOW_STATUS_DIGIT_IDLE]
+					def checkfor = [WORKFLOW_STATUS_DIGIT_WORKING,WORKFLOW_STATUS_DIGIT_WAITING]
 					def ch = status[-1]
 					if (checkfor.contains(ch)) {
 						return "archiviert. Verarbeite PIP (" + status +")"

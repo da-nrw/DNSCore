@@ -96,11 +96,16 @@ Konfigurationsfehler. Sollte nur während der Entwicklung oder Einrichtungsphase
 auf einem Knoten während der Einrichtungsphase wird alle potentiellen 7er Status aufdecken. Nach Behebung des Zurücksetzen Buttons kann der Administrator
 das Paket wie gewohnt per "Zurücksetzen"-Button zurücksetzen.
 
+#### xx8 - UP_TO_ROLLBACK
+
+Actions, welche sich durch einen jähen Abruch des ContentBroker in undefinierten Zuständen befinden, können vom Gesamtsystem-Administrator
+manuell mit einer abschließenden 8 versehen werden, um dem System zu signalisieren, dass der Rollback nachgeholt werden muss.  
+
 ### Automatischen Anhalten der ActionFactory.
 
 Unter bestimmten Umständen ist dem ContentBroker nicht möglich, wie vorgesehen zu operieren. 
 
-Dies ist meistenst der Fall, wenn zu Durchführung der
+Dies ist meistens der Fall, wenn zu Durchführung der
 Paketverarbeitung notwendige externe Systeme nicht erreichbar sind. Zu den externen Systemen zählen vor allem iRODS, Fedora und ElasticSearch, aber
 auch FIDO und JHOVE. Wenn der ContentBroker während der Verarbeitung eines Paketes feststellt, dass eines dieser Subsysteme nicht erreicht werden kann,
 bricht er nicht nur die Verarbeitung des aktuellen Paketes ab, sondern hält auch automatisch die ActionFactory an. Die ActionFactory ist diejenige 
