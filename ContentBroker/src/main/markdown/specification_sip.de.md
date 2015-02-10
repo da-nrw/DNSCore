@@ -68,7 +68,7 @@ des Systemes darstellt.
 
 ### PREMIS
 
-Innerhalb des "data"-Verzeichnisses muss sich eine Datei mit genau dem Dateinamen **premis.xml**
+Innerhalb des **data**-Verzeichnisses muss sich eine Datei mit genau dem Dateinamen **premis.xml**
 berfinden. Diese Datei muss zunächst dem Premis-Standard selbst gehorchen, wie er [hier](http://www.loc.gov/standards/premis/v2/premis-2-2.pdf) beschrieben ist.
 
 Die PREMIS-Datei eines SIPs dient der Übemittlung von festgelegten Vertragseinstellungen zwischen dem 
@@ -109,7 +109,7 @@ Dateinamen innerhalb von SIPs müssen UTF-8 enkodiert sein. Der Pfadseparator is
 ## Richtlinien für die Strukturierung von SIPs
 
 Wie bereits erwähnt, herrscht systemseitig neben des Vorhandenseins 
-der premis.xml keine grundsätzliche Anforderung an den Inhalt des **data*-Verzeichnisses.
+der premis.xml keine grundsätzliche Anforderung an den Inhalt des **data**-Verzeichnisses.
 
 Weitere Anforderungen bestehen, sofern der Nutzer von erweiterten 
 Leistungsmerkmalen bezüglich der Metadatenverarbeitung und Publikation profitieren möchte.
