@@ -17,11 +17,11 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 checkFederatedItemsOnLocalZone {
-#	delay("<EF>60m</EF>") {
+	delay("<EF>3m</EF>") {
 	acLog("---Audit Service Started---")
         acCheckRecievedFederatedCopies(*admin, *numbersPerRun,*trustYears)	
 	acLog("---Audit Service ended---")
-#}
 }
-INPUT *admin=$"test@test.de", *numbersPerRun=$5,*trustYears=$0
+}
+INPUT *admin=$"test@test.de", *numbersPerRun=$1,*trustYears=$0
 OUTPUT ruleExecOut
