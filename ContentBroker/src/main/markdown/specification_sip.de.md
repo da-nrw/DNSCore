@@ -53,7 +53,11 @@ der denselben Namen trägt wie der Name des SIP ohne die Dateiendung.
 Dieser Ordner wiederum enthält Checksummen zum Paket im bagIt-Format.
 Die vier bagIt-Dateien dienen dem Zweck der Integritätsprüfung, d.h. zur 
 Sicherstellung dessen, dass die Daten auf dem Weg vom Endnutzer hinein
-in das System nicht verändert wurden.
+in das System nicht verändert wurden. Auf derselben Hierarchieebene befindet sich
+das **data**-Verzeichnis welche die Nutzerdaten behinhaltet. Für den Inhalt des
+**data**-Verzeichnisses gilt die Minimalvorgabe, dass es mindestens eine Datei
+mit dem Namen premis.xml beinhalten muss 
+(siehe Abschnitt [unten](specification_sip.de.md#premis)).
 
 ### Original Name
 
