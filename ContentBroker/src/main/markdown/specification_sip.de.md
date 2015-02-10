@@ -1,8 +1,8 @@
 	/*
 	  DA-NRW Software Suite | ContentBroker
-	  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
+	  Copyright (C) 2014 Historisch-Kulturwissenschaftliche Informationsverarbeitung
 	  Universität zu Köln
-	  Copyright (C) 2014 LVRInfoKom
+	  Copyright (C) 2015 LVRInfoKom
 	  Landschaftsverband Rheinland
 	
 	  This program is free software: you can redistribute it and/or modify
@@ -57,7 +57,10 @@ in das System nicht verändert wurden.
 
 ### Original Name
 
-Der **Original-Name** eines SIP-
+Der Original-Name eines SIP, technisch **OriginalName** genannt, besteht
+aus dem Containernamen ohne die Dateiendung. Dieser Name trägt eine spezielle
+Bedeutung, da eine pro Nutzer eindeutige Kennung eines Objektes innerhalb 
+des Systemes darstellt. 
 
 ### PREMIS
 
