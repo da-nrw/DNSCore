@@ -122,7 +122,7 @@ werden, quittiert mit einer Email an den Nutzer.
 
 #### Dateinamen
 
-Wenn man den relativen Pfad einer Datei (d.h. beim SIP ausgehend vom data - Ordner) nimmt und die Extension abtrennt, erhält man den Dokumentnamen einer Datei. Das Konzept des Dokumentes wurde entwickelt, um einen zeitlichen Verlauf von Dateien über die Lebensdauer eines Objektes zu modellieren. So ist es möglich, Nachfolger von Dateien, die z.b. durch Konversionen oder Deltas entstehen, abzubilden. Mehr zm Konzept des Dokumentes finden man [hier](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.de.md#document---das-dokument).
+Wenn man den relativen Pfad einer Datei (d.h. beim SIP ausgehend vom data - Ordner) nimmt und die Extension abtrennt, erhält man den Dokumentnamen (technisch **DocumentName**) einer Datei. Das Konzept des Dokumentes wurde entwickelt, um einen zeitlichen Verlauf von Dateien über die Lebensdauer eines Objektes zu modellieren. So ist es möglich, Nachfolger von Dateien, die z.b. durch Konversionen oder Deltas entstehen, abzubilden. Mehr zm Konzept des Dokumentes finden man [hier](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.de.md#document---das-dokument).
 
 Das Konzept des Dokumentes erfordert dann jedoch, dass innerhalb einer Einlieferung eines SIPs eine Datei eindeutig einem Dokument entspricht, dass heisst, dass jeder Dokumentname nur einmal in einem SIP vorkommen darf. Verboten innerhalb eines SIP sind dann somit Kombinationen wie
 
