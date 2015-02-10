@@ -79,6 +79,25 @@ Elemente-Vokabulars findet sich [hier](https://github.com/da-nrw/DNSCore/blob/ma
 
 ### Nutzergesteurte URN-Vergabe
 
+Im Normalfall wird einem Objekt innerhalb eines DNSCore-Gesamtsystems während der Paketverarbeitung der **Ersteinlieferung**
+ein eindeutiger technischer **Identifier** zugewiesen. Von diesem abgeleitet, 
+wird dem Objekt ebenfalls eine eindeutige **URN** zugewiesen.
+
+Es ist dem Vertragspartner jedoch auch möglich, Einfluss auf die Zuordnung einer URN zu einem Objekt zu nehmen. 
+Hierzu muss die mitgelierferte **premis.xml** folgende Eintrage aufweisen:
+
+```xml
+<object xsi:type="representation">
+    <objectIdentifier>
+        <objectIdentifierType>URN</objectIdentifierType>
+	<objectIdentifierValue>urn:nbn:de:xyz-1-20131008367735</objectIdentifierValue>
+    </objectIdentifier>
+</object>
+```
+
+Die URN urn:nbn:de:xyz-1-20131008367735 würde anschließend vom System ausgelesen und verwendet, anstatt eine neue URN
+aus dem generierten Identifier abzuleiten.
+
 ### Encoding
 
 Dateinamen innerhalb von SIPs müssen UTF-8 enkodiert sein. Der Pfadseparator ist ein Unix style Slash.
