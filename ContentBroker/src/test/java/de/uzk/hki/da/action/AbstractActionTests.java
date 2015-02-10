@@ -23,7 +23,7 @@
 
 package de.uzk.hki.da.action;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -88,7 +88,7 @@ public class AbstractActionTests {
 		action.setActionMap(mock(ActionRegistry.class));
 		action.setActionFactory(mock(ActionFactory.class));
 		
-		job = new Job();
+		job = new Job(); job.setStatus(startStatus);
 		action.setJob(job);
 		User c = new User(); c.setShort_name("TEST"); c.setEmailAddress("noreply");
 		object = new Object();
@@ -192,6 +192,8 @@ public class AbstractActionTests {
 		
 		action.run();
 		
+		assertEquals(action.getEndStatus(),"IMPLEMENTATION");
+		assertFalse(action.getEndStatus().equals("ROLLBACK"));
 		verify(mockSession,times(1)).update(action.getJob());
 		verify(mockSession,times(0)).delete(action.getJob());
 		verify(mockSession,times(0)).delete(action.getObject());
@@ -276,6 +278,17 @@ public class AbstractActionTests {
 		assertEquals("200",action.getJob().getStatus());
 	}
 	
+	@Test
+	public void execRollbackOnly() {
+		RollbackOnlyAction action = new RollbackOnlyAction();
+		action.setSession(mockSession);
+		setCommonProperties(action, "190", "200");
+		action.setROLLBACKONLY(true);
+		action.run();
+		assertEquals("190",action.getJob().getStatus());
+		assertFalse(action.getJob().equals("IMPLEMENTATION"));
+	}
+	
 	
 	
 	class CreateJobAction extends NullAction{
@@ -325,7 +338,13 @@ public class AbstractActionTests {
 			DELETEOBJECT=true;
 			setKILLATEXIT(true);
 			toCreate=new Job();
+			endStatus="IMPLEMENTATION";
 			throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,"ERROR","ERROR");
+		}
+		
+		@Override
+		public void rollback() {
+			endStatus="ROLLBACK";
 		}
 	}
 	
@@ -359,6 +378,20 @@ public class AbstractActionTests {
 		public void rollback() {
 			throw new RuntimeException("rollback RUNTIME ERROR");
 		}
+	}
+
+	
+	
+	class RollbackOnlyAction extends NullAction{
+		
+		@Override
+		public boolean implementation() {
+			j.setStatus("IMPLEMENTATION");
+			return true;
+		}
+		
+		@Override 
+		public void rollback() {}
 	}
 	
 }

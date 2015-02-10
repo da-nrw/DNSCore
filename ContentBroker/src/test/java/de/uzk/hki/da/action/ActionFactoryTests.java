@@ -103,8 +103,8 @@ public class ActionFactoryTests {
 		
 	}
 	
-	private Job makeGoodJob() { 
-		Job j=new Job("localnode", "450"); 
+	private Job makeGoodJob(String status) { 
+		Job j=new Job("localnode", status); 
 		Object o = new Object();
 		o.setIdentifier("identifier");
 		o.setContractor(c);
@@ -122,10 +122,28 @@ public class ActionFactoryTests {
 	 * Test build next action.
 	 */
 	@Test
+	public void testBuildNextActionWithRollbackState() {
+		
+		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
+			thenReturn(null).thenReturn(makeGoodJob("458"));
+		
+		AbstractAction a = factory.buildNextAction();
+		assertNotNull(a);
+		assertTrue(a.isROLLBACKONLY());
+		assertEquals("450", a.getStartStatus());
+		assertEquals("460", a.getEndStatus());
+		assertNotNull(a.getActionMap());
+	}
+	
+	
+	/**
+	 * Test build next action.
+	 */
+	@Test
 	public void testBuildNextAction() {
 		
 		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
-			thenReturn(makeGoodJob());
+			thenReturn(makeGoodJob("450"));
 		
 		AbstractAction a = factory.buildNextAction();
 		assertNotNull(a);
@@ -137,7 +155,7 @@ public class ActionFactoryTests {
 	@Test
 	public void modelInconsistent() {
 
-		Job j=makeGoodJob();
+		Job j=makeGoodJob("450");
 		j.getObject().setContractor(null);
 		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
 			thenReturn(j);
@@ -150,7 +168,7 @@ public class ActionFactoryTests {
 		AbstractAction action = new ConfigurationExceptionAction(); action.setStartStatus("450"); action.setName("tarAction"); action.setEndStatus("460");
 		when(context.getBean(anyString())).thenReturn(action);
 		
-		Job j=makeGoodJob();
+		Job j=makeGoodJob("450");
 		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
 			thenReturn(j);
 		assertTrue(factory.buildNextAction()==null);
@@ -163,7 +181,7 @@ public class ActionFactoryTests {
 		AbstractAction action = new PreconditionsNotMetExceptionAction(); action.setStartStatus("450"); action.setName("tarAction"); action.setEndStatus("460");
 		when(context.getBean(anyString())).thenReturn(action);
 		
-		Job j=makeGoodJob();
+		Job j=makeGoodJob("450");
 		when(queueConnector.fetchJobFromQueue(anyString(),anyString(),(Node)anyObject())).
 			thenReturn(j);
 		assertTrue(factory.buildNextAction()==null);

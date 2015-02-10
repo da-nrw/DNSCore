@@ -216,11 +216,17 @@ public class ActionFactory implements ApplicationContextAware {
 			AbstractAction action = (AbstractAction) context.getBean(jobType);
 			
 			
-			Job jobCandidate = qc.fetchJobFromQueue(action.getStartStatus(), status(action,WORKFLOW_STATUS_DIGIT_WORKING)
+			Job jobCandidate = qc.fetchJobFromQueue(action.getStartStatus(), status(action,
+					WORKFLOW_STATUS_DIGIT_WORKING)
 					, localNode);
 			if (jobCandidate == null) {
-				logger.trace("No job for type {}, checking for types with lower priority", jobType);
-				continue;
+				jobCandidate = qc.fetchJobFromQueue(status(action,
+						WORKFLOW_STATUS_DIGIT_UP_TO_ROLLBACK), WORKFLOW_STATUS_DIGIT_WORKING, localNode);
+				if (jobCandidate == null) {
+					logger.trace("No job for type {}, checking for types with lower priority", jobType);
+					continue;
+				}
+				action.setROLLBACKONLY(true);
 			}
 			logger.info("fetched job: {}", jobCandidate);
 

@@ -66,7 +66,8 @@ import de.uzk.hki.da.util.TimeStampLogging;
 public abstract class AbstractAction implements Runnable {	
 	
 	// behaviour modifier
-	private boolean KILLATEXIT = false;
+	private boolean rOLLBACKONLY = false;
+	private boolean kILLATEXIT = false;
 	protected boolean SUPPRESS_OBJECT_CONSISTENCY_CHECK = false;
 	protected boolean DELETEOBJECT = false;
 	protected Job toCreate = null;
@@ -144,47 +145,59 @@ public abstract class AbstractAction implements Runnable {
 		new TimeStampLogging().log(o.getIdentifier(), this.getClass().getName(), duration);
 		
 		// The order of the next two statements must not be changed.
-		// The object logging must be unset in order to prevent another appender to start
+		// The object logging must be> unset in order to prevent another appender to start
 		// its lifecycle before the current one has stop its lifecycle.
 		unsetObjectLogging(); 
-		upateObjectAndJob(o, j, DELETEOBJECT, KILLATEXIT, getToCreate());
+		upateObjectAndJob(o, j, DELETEOBJECT, kILLATEXIT, getToCreate());
 
 		actionMap.deregisterAction(this); 
 	}
 
 	
-	
 	private void executeConcreteAction() {
-		
+
 		try {
-			execAndPostProcessImplementation();
+			
+			if (!rOLLBACKONLY) {
+				execAndPostProcessImplementation();
+				return;
+			}
 			
 		} catch (UserException e) {
-			resetModifiers();
-			execAndPostProcessRollback(o,j,C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
+			
 			reportUserError(e);
-			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
+			updateStatus(C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
+			resetModifiers();
+			return;
+			
 		} catch (SubsystemNotAvailableException e) {
-			resetModifiers();
-			execAndPostProcessRollback(o,j,C.WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED);
-			reportTechnicalError(e);
+			
 			actionFactory.pause(true);
-			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
-		} catch (Exception e) {
-			resetModifiers();
-			execAndPostProcessRollback(o,j,C.WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED);
 			reportTechnicalError(e);
+		
+		} catch (Exception e) {
+			reportTechnicalError(e);
+
+		} finally {
+			
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		}
+		
+		resetModifiers();
+		execAndPostProcessRollback(o,j);
 	}
 	
 	
+	private void updateStatus(String endDigit) {
+		j.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+		j.setStatus(getStartStatus().substring(0, getStartStatus().length() - 1) + endDigit);
+	}
 	
 	
 	
 	private void resetModifiers(){
 		DELETEOBJECT=false;
-		KILLATEXIT=false;
+		kILLATEXIT=false;
 		toCreate=null;
 	}
 	
@@ -211,7 +224,7 @@ public abstract class AbstractAction implements Runnable {
 		} else {
 			j.setDate_modified(String.valueOf(new Date().getTime()/1000L));
 			baseLogger.info(this.getClass().getName()+" finished working on job: "+j.getId()+". Now commiting changes to database.");
-			if (KILLATEXIT)	{
+			if (kILLATEXIT)	{
 				baseLogger.info("Set the job status to the end status "+endStatus+" .");
 				logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 			} else {
@@ -222,21 +235,24 @@ public abstract class AbstractAction implements Runnable {
 	
 	
 	
-	private void execAndPostProcessRollback(Object object,Job job,String errorStatusEndDigit) {
+	private void execAndPostProcessRollback(Object object,Job job) {
 		
-		String errorStatus = getStartStatus().substring(0, getStartStatus().length() - 1) + errorStatusEndDigit;
+		String errorStatusEndDigit=C.WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED;
+		if (rOLLBACKONLY) 
+			errorStatusEndDigit=C.WORKFLOW_STATUS_DIGIT_WAITING; // override
 		
 		baseLogger.info("Stubbing rollback of "+this.getClass().getName());
 		try {
+			logger.info("Stubbing rollback.");
 			rollback();
+			logger.info("Finishing rollback.");
 		} catch (Exception e) {
 			logger.error("@Admin: SEVERE ERROR WHILE TRYING TO ROLLBACK ACTION. DATABASE OR WORKAREA MIGHT BE INCONSISTENT NOW.");
 			logger.error(this.getClass().getName()+": couldn't get rollbacked to previous state. Exception in action.rollback(): ",e);
-			errorStatus = errorStatus.substring(0, errorStatus.length() - 1) + C.WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK;
+			errorStatusEndDigit = C.WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK;
 		}
 	
-		job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
-		job.setStatus(errorStatus);
+		updateStatus(errorStatusEndDigit);
 	}
 
 	
@@ -487,13 +503,21 @@ public abstract class AbstractAction implements Runnable {
 	}
 
 	public boolean isKILLATEXIT() {
-		return KILLATEXIT;
+		return kILLATEXIT;
 	}
 	
 	protected void setKILLATEXIT(boolean kILLATEXIT) {
-		KILLATEXIT = kILLATEXIT;
+		this.kILLATEXIT = kILLATEXIT;
 	}
-
+	
+	public void setROLLBACKONLY(boolean rollbackOnly) {
+		rOLLBACKONLY=rollbackOnly;
+	}
+	
+	public boolean isROLLBACKONLY() {
+		return rOLLBACKONLY;
+	}
+	
 	public ActionFactory getActionFactory() {
 		return actionFactory;
 	}

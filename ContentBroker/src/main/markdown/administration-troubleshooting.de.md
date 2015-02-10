@@ -66,7 +66,9 @@ Zwischen 123 und 323 kann der Administrator das Objekt per Button "Gesamten Work
 Die Vier am Ende des Staus bedeutet einen Userfehler. Der User bekommt in diesem Fall eine Email mit der entsprechenden Exception aus dem Object-Logfile. 
 Darüber hinaus erscheint in der DAWeb neben dem Fehlerstatus ein neuer Button. 
 
-Da dies bedeutet, dass die Eingangsdaten fehlerhaft sind. und berichtigt und neu eingespielt werden müssen. Daher muss der Administrator
+Da dies bedeutet, dass die Eingangsdaten fehlerhaft sind. und berichtigt und neu eingespielt werden müssen. 
+Es wird kein Rollback durchgeführt.
+Daher muss der Administrator
 anschließen das Objekt löschen. Dazu gibt es den "Objekt löschen"-Button.
 
 #### xx5 - ERROR_MODEL_INCONSISTENT
@@ -96,7 +98,9 @@ das Paket wie gewohnt per "Zurücksetzen"-Button zurücksetzen.
 #### xx8 - UP_TO_ROLLBACK
 
 Actions, welche sich durch einen jähen Abruch des ContentBroker in undefinierten Zuständen befinden, können vom Gesamtsystem-Administrator
-manuell mit einer abschließenden 8 versehen werden, um dem System zu signalisieren, dass der Rollback nachgeholt werden muss.  
+manuell mit einer abschließenden 8 versehen werden, um dem System zu signalisieren, dass der Rollback nachgeholt werden muss. Nach dem Rollback wird, 
+falls dieser erfolgreich ist, die Action automatisch zurück in der 0er Status gesetzt. D.h. dass sie sich in der Warteschlange zur Bearbeitung 
+befindet.
 
 ### Der "Objekt Löschen"-Button. Automatisiertes Löschen von Paketen.
 
