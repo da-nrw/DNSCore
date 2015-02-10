@@ -79,7 +79,7 @@ Die PREMIS-Datei wird vom System entgegengenommen, ausgewertet und die Einstellu
 übernommen. Anschließend wird die PREMIS-Datei mit Informationen über die Paketverarbeitung angereichert und als
 Teil des AIP gespeichert. Sie dient damit der Nachvollziehbarkeit der Pakethistorie und ist ein integraler Bestandteil
 der Langzeitarchivierung mit DNSCore. Eine detaillierte Spezifikation des dazu von DNSCore festgelegten 
-Elemente-Vokabulars findet sich [hier](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/premis_specification.md).
+Elemente-Vokabulars findet sich [hier](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_premis.md).
 
 ### Nutzergesteurte URN-Vergabe
 
