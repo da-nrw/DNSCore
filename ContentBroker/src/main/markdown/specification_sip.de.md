@@ -95,7 +95,7 @@ Hierzu muss die mitgelierferte **premis.xml** folgende Eintrage aufweisen:
 </object>
 ```
 
-Die URN urn:nbn:de:xyz-1-20131008367735 würde anschließend vom System ausgelesen und verwendet, anstatt eine neue URN
+Die URN <code>urn:nbn:de:xyz-1-20131008367735</code> würde anschließend vom System ausgelesen und verwendet, anstatt eine neue URN
 aus dem generierten Identifier abzuleiten.
 
 ### Encoding
