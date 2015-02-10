@@ -46,7 +46,7 @@ Erlaubte Dateiendungen sind
 * .tar
 
 Der Dateiname des Containers inklusive der Dateiendung wird technisch
-als **Containername** bezeichnet.
+als **ContainerName** bezeichnet.
 
 Das entpackte SIP enthält auf der ersten Hierarchieebene einen Ordner, 
 der denselben Namen trägt wie der Name des SIP ohne die Dateiendung.
@@ -106,7 +106,19 @@ aus dem generierten Identifier abzuleiten.
 
 Dateinamen innerhalb von SIPs müssen UTF-8 enkodiert sein. Der Pfadseparator ist ein Unix style Slash.
 
-## Richtlinien für die Strukturierung von DIPs
+## Richtlinien für die Strukturierung von SIPs
+
+Wie bereits erwähnt, herrscht systemseitig neben des Vorhandenseins 
+der premis.xml keine grundsätzliche Anforderung an den Inhalt des **data*-Verzeichnisses.
+
+Weitere Anforderungen bestehen, sofern der Nutzer von erweiterten 
+Leistungsmerkmalen bezüglich der Metadatenverarbeitung und Publikation profitieren möchte.
+Dann müssen die in [diesem](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/2015-01-14_Metadaten_in_DA-NRW.pdf?raw=true) Dokument beschriebenen Regeln befolgt werden.
+
+Ansonsten kann der Nutzer den Inhalt des **data**-Verzeichnisses selbst gestalten. Er kann dabei auch die Ordnerhierarchie
+innerhalb des **data**-Verzeichnisses selbst gestaltet. Einige wenige Regeln müssen jedoch genau beachtet werden. Diese
+werden im folgenden beschrieben. Missachtung dieser Regeln führt unweigerlich dazu, dass SIPs vom System zurückgewiesen 
+werden, quittiert mit einer Email an den Nutzer.
 
 #### Dateinamen
 
