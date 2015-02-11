@@ -201,8 +201,8 @@ acGetAVUField(*objPath,*fieldName,*fieldValue) {
 	msiExecStrCondQuery("SELECT DATA_NAME, COLL_NAME, META_DATA_ATTR_NAME, META_DATA_ATTR_VALUE where COLL_NAME = '*coll' and DATA_NAME = '*dname' and META_DATA_ATTR_NAME = '*fieldName'",*avus)
         foreach(*avus) {
                 msiGetValByKey(*avus,"META_DATA_ATTR_VALUE",*fieldValue);
-                acLog("read *fieldValue *coll/*dname")
         }
+    acLog("read *fieldValue *coll/*dname")
 }
 # CB Client method: 
 # depends on running Service checkAIP per foreign node, which checks federated items
