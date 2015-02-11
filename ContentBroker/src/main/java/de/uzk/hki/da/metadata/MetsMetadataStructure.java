@@ -55,9 +55,9 @@ public class MetsMetadataStructure extends MetadataStructure {
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
 	@Override
-	protected HashMap<String, HashMap<String, List<String>>> getIndexInfo() {
+	public HashMap<String, HashMap<String, List<String>>> getIndexInfo(String ObjectId) {
 		HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();
-		HashMap<String, Element> dmdSections = getSections();
+		HashMap<String, Element> dmdSections = getSections(ObjectId);
 		
 		for(String id : dmdSections.keySet()) {
 			Element e = dmdSections.get(id);
@@ -299,16 +299,14 @@ public class MetsMetadataStructure extends MetadataStructure {
 		return title;
 	}
 	
-	private HashMap<String, Element> getSections() {
+	private HashMap<String, Element> getSections(String objectId) {
 		HashMap<String, Element> IDtoSecElement = new HashMap<String, Element>();
 		@SuppressWarnings("unchecked")
 		List<Element> dmdSections = metsDoc.getRootElement().getChildren("dmdSec", C.METS_NS);
-		if(dmdSections.size()==1 && dmdSections.get(0).getAttribute("ID", C.METS_NS)==null) {
-			IDtoSecElement.put("", dmdSections.get(0));
-		} else {
-			for(Element e : dmdSections) {
-				IDtoSecElement.put(e.getAttribute("ID", C.METS_NS).getValue(), e);
-			}
+		for(Element e : dmdSections) {
+			String id = "";
+			id = objectId+"-"+e.getAttribute("ID").getValue();
+			IDtoSecElement.put(id, e);
 		}
 		return IDtoSecElement;
 	}
@@ -399,6 +397,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.setFormat(Format.getPrettyFormat());
 		outputter.output(metsDoc, new FileWriter(targetMetsFile));
+
 		fileInputStream.close();
 	}
 

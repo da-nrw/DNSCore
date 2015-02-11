@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:edm="http://www.europeana.eu/schemas/edm/" xmlns:ore="http://www.openarchives.org/ore/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-5ae19a3c50ee4c4baea4de32569e67ea">
+<dc:publisher>Düsseldorf</dc:publisher>
+<dc:date>um 1848/1850</dc:date>
+<dc:date>1846-1852</dc:date>
+<dc:title>Arbeiter vor dem Magistrat</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-5ae19a3c50ee4c4baea4de32569e67ea">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-5ae19a3c50ee4c4baea4de32569e67ea"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-4c5e48dd520448b2b90fef92082ae2e7">
+<dc:publisher>Achmim-Panopolis (Mittelägypten)</dc:publisher>
+<dc:title>Fragment einer Tabula (quadratisches Besatzstück einer Tunika)</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-4c5e48dd520448b2b90fef92082ae2e7">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-4c5e48dd520448b2b90fef92082ae2e7"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-531f763873a049aba47761a7ed85d374">
+<dc:date>zwischen 1777 und 1793</dc:date>
+<dc:date>1777-1793</dc:date>
+<dc:title>"Plan Qui Réüni Les Duchés De Julier, Et De Berg, Le Palatinat Du Rhin, Les Duchés De Baviere Et De Neubourg. Sans y comprendre le Marquisat de Berg op Zoom"</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-531f763873a049aba47761a7ed85d374">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-531f763873a049aba47761a7ed85d374"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-9fa97e482b104ca5ada0ec51a8d93892">
+<dc:date>1938</dc:date>
+<dc:title>Radiodialog: Lehrer Strack und Frau Battenberg</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-9fa97e482b104ca5ada0ec51a8d93892">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-9fa97e482b104ca5ada0ec51a8d93892"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-e5983211db864b08b3c17799e6ae3ce7">
+<dc:publisher>Volkstedt</dc:publisher>
+<dc:date>nicht datiert</dc:date>
+<dc:date>1901-1966</dc:date>
+<dc:title>Gute Zeiten</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-e5983211db864b08b3c17799e6ae3ce7">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-e5983211db864b08b3c17799e6ae3ce7"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-d21f2e980a33463d869aa7a07d021bb8">
+<dc:publisher>Dresden</dc:publisher>
+<dc:date>ca. 1924</dc:date>
+<dc:date>1920-1928</dc:date>
+<dc:title>Aufnahme Kino Modell A</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-d21f2e980a33463d869aa7a07d021bb8">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-d21f2e980a33463d869aa7a07d021bb8"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-dbc077099c724f739a68eb498a8a9ba9">
+<dc:date>1599</dc:date>
+<dc:title>Zunfttruhe</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-dbc077099c724f739a68eb498a8a9ba9">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-dbc077099c724f739a68eb498a8a9ba9"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-2eb929feeea248c38bfac63977f0564e">
+<dc:title>HEXE VON NORDEROOG, DIE</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-2eb929feeea248c38bfac63977f0564e">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-2eb929feeea248c38bfac63977f0564e"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-9bbfdd87445e487bbb5228569db51a45">
+<dc:title>Der kleine Henker</dc:title>
+<dc:title>Der Kopf des Henkers </dc:title>
+<dc:title>The Little Executioner</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-9bbfdd87445e487bbb5228569db51a45">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-9bbfdd87445e487bbb5228569db51a45"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-14651bf7f83b4f5a9766e247458212cd">
+<dc:date>um 1920</dc:date>
+<dc:date>1918-1922</dc:date>
+<dc:title>Alte Frau mit Begleitung</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-14651bf7f83b4f5a9766e247458212cd">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-14651bf7f83b4f5a9766e247458212cd"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-644211558b7643d0bd82e645687bc3ac">
+<dc:title>Wirklichkeit des Theaters</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-644211558b7643d0bd82e645687bc3ac">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-644211558b7643d0bd82e645687bc3ac"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-cad4deffeed64a4dacb3f252e02441e9">
+<dc:date>1950-2002</dc:date>
+<dc:date>1950-2002</dc:date>
+<dc:title>Sammlung Rolf Burgmer - Filmbilder</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-cad4deffeed64a4dacb3f252e02441e9">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-cad4deffeed64a4dacb3f252e02441e9"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-46c5795d399a4fa9a546308ee1a2f1af">
+<dc:date>nach/ after 1705</dc:date>
+<dc:date>1705-1720</dc:date>
+<dc:title>Kaiserin Eleonora Magdalena Theresia (1655-1720) als Witwe</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-46c5795d399a4fa9a546308ee1a2f1af">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-46c5795d399a4fa9a546308ee1a2f1af"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-6415c368839d42ea8fa30a5ea1da27cf">
+<dc:publisher>Floßenbürg, Deutschland</dc:publisher>
+<dc:date>o. D.</dc:date>
+<dc:date>1943-1945</dc:date>
+<dc:title>Prämienschein Konzentrationslager Floßenbürg 009739</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-6415c368839d42ea8fa30a5ea1da27cf">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-6415c368839d42ea8fa30a5ea1da27cf"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-510b45cfbd834ca097f6e5f7db602c3b">
+<dc:date>1971</dc:date>
+<dc:title>Wohnungsobjekte</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-510b45cfbd834ca097f6e5f7db602c3b">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-510b45cfbd834ca097f6e5f7db602c3b"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-3208bc4277c5423892a252cdaa1a008e">
+<dc:date>1914 - 1918</dc:date>
+<dc:date>1914-1918</dc:date>
+<dc:title>Karl Liebknecht und andere Soldaten als Schipper im Felde</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-3208bc4277c5423892a252cdaa1a008e">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-3208bc4277c5423892a252cdaa1a008e"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-75b57913d66c4e13afc34d3c177f3881">
+<dc:publisher>Schauspielhaus Düsseldorf Dumont-Lindemann</dc:publisher>
+<dc:title>Louise Dumont als Macbeth</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-75b57913d66c4e13afc34d3c177f3881">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-75b57913d66c4e13afc34d3c177f3881"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-b8e758e20a3c44508f1e747a9296cf82">
+<dc:publisher>Rheinland</dc:publisher>
+<dc:date>1450-1475</dc:date>
+<dc:date>1450-1475</dc:date>
+<dc:title>Trachtenfigur</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-b8e758e20a3c44508f1e747a9296cf82">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-b8e758e20a3c44508f1e747a9296cf82"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-302707c59ca042a9a270e11a5e07958b">
+<dc:title>016 Heines Weberlied</dc:title>
+<dc:title>Revolutionäre Schriften: Bücher, Zeitschriften und Gedichte</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-302707c59ca042a9a270e11a5e07958b">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-302707c59ca042a9a270e11a5e07958b"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-0a7fdaff0e114e7990b554a1bd9002b0">
+<dc:title>Schreiben von Jan Frans Douven an Kurfürst Johann Wilhelm</dc:title>
+<dc:title>Letter from Jan Frans Douven to Elector Johann Wilhelm
+</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-0a7fdaff0e114e7990b554a1bd9002b0">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-0a7fdaff0e114e7990b554a1bd9002b0"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-6e62b00d43b642918dd2826e1f5c53cb">
+<dc:date>1930-1939</dc:date>
+<dc:date>1930-1939</dc:date>
+<dc:title>Wagen</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-6e62b00d43b642918dd2826e1f5c53cb">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-6e62b00d43b642918dd2826e1f5c53cb"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-bcd3f5e7502c4242849145f6d88727a5">
+<dc:title>Macbeth</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-bcd3f5e7502c4242849145f6d88727a5">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-bcd3f5e7502c4242849145f6d88727a5"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-5c5427fa5fc94f05a4001de2b936721c">
+<dc:publisher>Düsseldorf</dc:publisher>
+<dc:date>1905</dc:date>
+<dc:title>Ibsen: Gespenster</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-5c5427fa5fc94f05a4001de2b936721c">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-5c5427fa5fc94f05a4001de2b936721c"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-9943f7e251cd4493a7d589a3bb4d9e9b">
+<dc:publisher>Sèvres</dc:publisher>
+<dc:date>1774</dc:date>
+<dc:title>Marie-Antoinette</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-9943f7e251cd4493a7d589a3bb4d9e9b">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-9943f7e251cd4493a7d589a3bb4d9e9b"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-1e2c45fd98044f0e994339804a918550">
+<dc:date>um 1610</dc:date>
+<dc:date>1609-1611</dc:date>
+<dc:title>Venus und Adonis</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-1e2c45fd98044f0e994339804a918550">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-1e2c45fd98044f0e994339804a918550"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-2ab92777311043178f7170ca223b6448">
+<dc:date>1994</dc:date>
+<dc:title>Furkapaß</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-2ab92777311043178f7170ca223b6448">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-2ab92777311043178f7170ca223b6448"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-3653a78052f243e795f595ed0b8e114e">
+<dc:publisher>Schauspielhaus Düsseldorf Dumont-Lindemann</dc:publisher>
+<dc:title>Macbeth</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-3653a78052f243e795f595ed0b8e114e">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-3653a78052f243e795f595ed0b8e114e"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-59c15715cd2e44c780c63c8df90277e6">
+<dc:title>Mephisto (für Gustaf Gründgens) in Faust I.</dc:title>
+<dc:title>Goethe: Faust I</dc:title>
+<dc:title>Mephisto</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-59c15715cd2e44c780c63c8df90277e6">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-59c15715cd2e44c780c63c8df90277e6"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-876a7051e52d4e16b8aea684041b272f">
+<dc:date>1514</dc:date>
+<dc:title>Melencolia I</dc:title>
+<dc:title>Die Melancholie</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-876a7051e52d4e16b8aea684041b272f">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-876a7051e52d4e16b8aea684041b272f"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-7feb84f2b3b542768a49383c48544808">
+<dc:publisher>Schauspielhaus Düsseldorf Dumont-Lindemann</dc:publisher>
+<dc:title>Paul Henckels als Engstrand in "Gespenster" von Henrik Ibsen</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-7feb84f2b3b542768a49383c48544808">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-7feb84f2b3b542768a49383c48544808"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-5ee0a365f84649bca2e1a36efdd55370">
+<dc:date>Mitte 19. Jh.</dc:date>
+<dc:date>1846-1855</dc:date>
+<dc:title>Ashinaga</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-5ee0a365f84649bca2e1a36efdd55370">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-5ee0a365f84649bca2e1a36efdd55370"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-8520ca8caabd4e1785bf8ff74aa91ec8">
+<dc:date>1850</dc:date>
+<dc:title>Andreas Achenbach in Mailand</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-8520ca8caabd4e1785bf8ff74aa91ec8">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-8520ca8caabd4e1785bf8ff74aa91ec8"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-ea488c69c52c4d7685686581556225b5">
+<dc:title>Gustaf Gründgens - Ein Porträt</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-ea488c69c52c4d7685686581556225b5">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-ea488c69c52c4d7685686581556225b5"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-3e4c351462c24c46a032ac6c11941490">
+<dc:title>"Paste Head"</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-3e4c351462c24c46a032ac6c11941490">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-3e4c351462c24c46a032ac6c11941490"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-0f60031000864ee0a4edf503bea9177f">
+<dc:date>um 1970</dc:date>
+<dc:date>1965-1975</dc:date>
+<dc:title>Gerhard Richter (Stadtpanorama)</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-0f60031000864ee0a4edf503bea9177f">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-0f60031000864ee0a4edf503bea9177f"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-05faa11a9ab048c793553da7c67f45c3">
+<dc:title>Jan-Wellem-Reiterstandbild</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-05faa11a9ab048c793553da7c67f45c3">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-05faa11a9ab048c793553da7c67f45c3"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-b31bc0ec50f8439ea0fbf3817862750f">
+<dc:publisher>Schauspielhaus Düsseldorf Dumont-Lindemann</dc:publisher>
+<dc:title>Paul Henckels als Engstrand in "Gespenster" von Henrik Ibsen</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-b31bc0ec50f8439ea0fbf3817862750f">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-b31bc0ec50f8439ea0fbf3817862750f"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-7ea190591d0741f7b750eb2762240900">
+<dc:publisher>Italien</dc:publisher>
+<dc:date>um 1647</dc:date>
+<dc:date>1645-1649</dc:date>
+<dc:title>Studie zu Gottvater</dc:title>
+<dc:title>Study of God Father</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-7ea190591d0741f7b750eb2762240900">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-7ea190591d0741f7b750eb2762240900"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-de70e2db928c430aaa026792fa3e3a3d">
+<dc:date>um 1750</dc:date>
+<dc:date>1745-1755</dc:date>
+<dc:title>Carl Theodor (1724-1799), Kurfürst von der Pfalz, Herzog von Jülich-Berg</dc:title>
+<dc:title>Carl Theodor, Elector of the Palatinate, Duke of Jülich-Berg (1724-1799)
+</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-de70e2db928c430aaa026792fa3e3a3d">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-de70e2db928c430aaa026792fa3e3a3d"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-35bedce1a6c84acca7b32ba3e1cc146c">
+<dc:date>1868</dc:date>
+<dc:title>Die Entführung Heinrichs IV. aus Kaiserswerth</dc:title>
+<dc:title>The abduction of Henry IV from Kaiserswerth</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-35bedce1a6c84acca7b32ba3e1cc146c">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-35bedce1a6c84acca7b32ba3e1cc146c"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-9e767627a841489e8c94aadc213d5a69">
+<dc:date>um 1543</dc:date>
+<dc:date>1542-1544</dc:date>
+<dc:title>Pyramide aus sechs Männern</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-9e767627a841489e8c94aadc213d5a69">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-9e767627a841489e8c94aadc213d5a69"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-a21570a5e4924ede97485b1903539c02">
+<dc:publisher>Mailand, Italien</dc:publisher>
+<dc:date>1978 (Herstellungsjahr: 1980/1990)</dc:date>
+<dc:date>1978-1990</dc:date>
+<dc:title>Poltrona di Proust</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-a21570a5e4924ede97485b1903539c02">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-a21570a5e4924ede97485b1903539c02"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-d60f9014fab746fbb2cf83d2604d06db">
+<dc:title>Korrespondenz von Voltaire an Francois Claude Marquis de Chauvelin</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-d60f9014fab746fbb2cf83d2604d06db">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-d60f9014fab746fbb2cf83d2604d06db"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-9ed2e4a214164c0a812cb0a1771e10eb">
+<dc:title>Dr. Mabuse: The Gambler</dc:title>
+<dc:title>Dr. Mabuse, Inferno des Verbrechens</dc:title>
+<dc:title>DR. MABUSE, DER SPIELER - EIN BILD DER ZEIT</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-9ed2e4a214164c0a812cb0a1771e10eb">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-9ed2e4a214164c0a812cb0a1771e10eb"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-9609fde980a94398af079d87f2369176">
+<dc:title>Die Schneekönigin oder das Märchen vom Teufelsspiegel</dc:title>
+<dc:title>für Kinder ab 5 Jahren</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-9609fde980a94398af079d87f2369176">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-9609fde980a94398af079d87f2369176"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-50a3f0e54f09426a80ad2805783daa4a">
+<dc:publisher>Düsseldorf</dc:publisher>
+<dc:date>2005</dc:date>
+<dc:title>Hana Zanin im Satz "Cabaletta" Arie der Produktion "HOEReographien"</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-50a3f0e54f09426a80ad2805783daa4a">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-50a3f0e54f09426a80ad2805783daa4a"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-394f523ff8fe490ca585182e68d95be9">
+<dc:date>2008</dc:date>
+<dc:title>Du willst alles</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-394f523ff8fe490ca585182e68d95be9">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-394f523ff8fe490ca585182e68d95be9"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-2ff80c0409ca435f9f0c8fe6bd0f73ef">
+<dc:publisher>Düsseldorf</dc:publisher>
+<dc:date>1949</dc:date>
+<dc:title>Gustaf Gründgens als Mephistopheles, Elisabeth Flickenschildt als Marthe Schwertlein</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-2ff80c0409ca435f9f0c8fe6bd0f73ef">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-2ff80c0409ca435f9f0c8fe6bd0f73ef"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-2f852ff921334d27bd0080634bc3618d">
+<dc:publisher>Naher Osten</dc:publisher>
+<dc:date>8.-10. Jahrhundert n. Chr.</dc:date>
+<dc:date>700-999</dc:date>
+<dc:title>Schale</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-2f852ff921334d27bd0080634bc3618d">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-2f852ff921334d27bd0080634bc3618d"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-a6af3369117f4fc6b48bbbd4e2f0ec7f">
+<dc:date>18.6.1971</dc:date>
+<dc:title>Goldener-Dotz-Brunnen</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-a6af3369117f4fc6b48bbbd4e2f0ec7f">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-a6af3369117f4fc6b48bbbd4e2f0ec7f"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-6fe17ca6705a45c6a0b576711829cd24">
+<dc:publisher>Düsseldorf</dc:publisher>
+<dc:date>1897</dc:date>
+<dc:title>Urne aus Derendorf, Golzheimer Heide, heutiger Nordfriedhof</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-6fe17ca6705a45c6a0b576711829cd24">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-6fe17ca6705a45c6a0b576711829cd24"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-dcb0720730cb4e618ed5a0d96224a8af">
+<dc:publisher>unbekannt</dc:publisher>
+<dc:date>unbekannt</dc:date>
+<dc:title>Beil mit unbekannter Herkunft</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-dcb0720730cb4e618ed5a0d96224a8af">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-dcb0720730cb4e618ed5a0d96224a8af"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-e548af40b7d3440caa92ddae67349b15">
+<dc:title>Die Schneekönigin</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-e548af40b7d3440caa92ddae67349b15">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-e548af40b7d3440caa92ddae67349b15"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-4111956da5e14308ba58ecbfe6ccf1d3">
+<dc:publisher>Cechy</dc:publisher>
+<dc:date>1915-1930</dc:date>
+<dc:date>1915-1930</dc:date>
+<dc:title>Zwerge</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-4111956da5e14308ba58ecbfe6ccf1d3">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-4111956da5e14308ba58ecbfe6ccf1d3"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-1ee5ab400a5c4048abadd45ebc76307a">
+<dc:title>Die schöpferische Kraft des Feuers</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-1ee5ab400a5c4048abadd45ebc76307a">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-1ee5ab400a5c4048abadd45ebc76307a"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-90d53f2d159b429f855fc08aa8c2015a">
+<dc:date>1984</dc:date>
+<dc:title>Vor dem Gesetz sind alle Menschen gleich</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-90d53f2d159b429f855fc08aa8c2015a">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-90d53f2d159b429f855fc08aa8c2015a"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-81b93f53e8ab4cb790545255e28cec4c">
+<dc:title>Gespenster</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-81b93f53e8ab4cb790545255e28cec4c">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-81b93f53e8ab4cb790545255e28cec4c"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-c77361e6ed5a4cffa0908e69b88a21d9">
+<dc:date>1949</dc:date>
+<dc:title>Gründgens als Lustige Person</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-c77361e6ed5a4cffa0908e69b88a21d9">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-c77361e6ed5a4cffa0908e69b88a21d9"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-fce8990275f44c9ab6e8974965cb549f">
+<dc:publisher>Düsseldorf</dc:publisher>
+<dc:date>2005</dc:date>
+<dc:title>Das Kleid</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-fce8990275f44c9ab6e8974965cb549f">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-fce8990275f44c9ab6e8974965cb549f"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-f838082dc50949e8b57346d904efdd3d">
+<dc:date>1913</dc:date>
+<dc:title>Mädchen auf Altane, Stadt im Hintergrund</dc:title>
+<dc:title>Vier Mädchen auf einer Altane</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-f838082dc50949e8b57346d904efdd3d">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-f838082dc50949e8b57346d904efdd3d"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-6d98792784d64094ba455e79a26be9fb">
+<dc:title>Brief von Louise Dumont an Gustav Lindemann</dc:title>
+<dc:title>Brief 2</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-6d98792784d64094ba455e79a26be9fb">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-6d98792784d64094ba455e79a26be9fb"/>
+</ore:Aggregation>
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID-c6bf76e1c2594e1892837c69a1aed04b">
+<dc:publisher>Berlin</dc:publisher>
+<dc:date>1963</dc:date>
+<dc:title>Petroleumlampe (Solarisation) Berlin 1963</dc:title>
+</edm:ProvidedCHO>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID-c6bf76e1c2594e1892837c69a1aed04b">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID-c6bf76e1c2594e1892837c69a1aed04b"/>
+</ore:Aggregation>
+</rdf:RDF>

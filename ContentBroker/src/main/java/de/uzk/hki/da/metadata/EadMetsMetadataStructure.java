@@ -67,7 +67,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected HashMap<String, HashMap<String, List<String>>> getIndexInfo() {
+	public HashMap<String, HashMap<String, List<String>>> getIndexInfo(String objectId) {
 		
 //		<ID<Attribut, Value>>
 		HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();
@@ -75,15 +75,19 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 //		Root
 		Element archdesc = eadDoc.getRootElement().getChild("archdesc");
 		
-//		First Level
+		Element archdescDid = archdesc.getChild("did");
+		HashMap<String, List<String>> rootInfo = new HashMap<String, List<String>>();
+		setNodeInfoAndChildeElements(archdescDid, rootInfo, null, null, null);
+		indexInfo.put(objectId, rootInfo);
+
 		Element dsc = archdesc.getChild("dsc");
 		List<Element> c01 = dsc.getChildren("c01");
-		
+
 //		Element: childElement
 //		String: isPartOf parentID
 		HashMap<Element, String> childElements = new HashMap<Element, String>();
 		for(Element e : c01) {
-			childElements.put(e, "root");
+			childElements.put(e, objectId);
 		}
 		
 		for(int i=1; i<13; i++) {
@@ -101,6 +105,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 				HashMap<String, List<String>> nodeInfo = new HashMap<String, List<String>>();
 				String uniqueID = UUID.randomUUID().toString();
 				uniqueID = uniqueID.replace("-", "");
+				String id = objectId+"-"+uniqueID;
 				String isPartOf = currentElements.get(element);
 				
 				ArrayList<String> partOf = new ArrayList<String>();
@@ -110,21 +115,25 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 				
 				List<Element> children = element.getChildren();
 				for(Element child : children) {
-					
-					if(child.getName().equals("did")) {
-						nodeInfo.put(C.EDM_TITLE, getTitle(child));
-						nodeInfo.put(C.EDM_DATE, getDate(child));
-						nodeInfo.put(C.EDM_IDENTIFIER, getUnitIDs(child));
-					} else if(child.getName().equals("daogrp")) {
-						nodeInfo.put(C.EDM_HAS_VIEW, getHref(child));
-					} else if(child.getName().equals(nextLevel)) {
-						childElements.put(child, uniqueID);
-					}
+					setNodeInfoAndChildeElements(child, nodeInfo, nextLevel, childElements, id);
 				}
-				indexInfo.put(uniqueID, nodeInfo);
+				
+				indexInfo.put(id, nodeInfo);
 			}	
 		}
 		return indexInfo;
+	}
+	
+	private void setNodeInfoAndChildeElements(Element child, HashMap<String, List<String>> nodeInfo, String nextLevel, HashMap<Element, String> childElements, String uniqueID) {
+		if(child.getName().equals("did")) {
+			nodeInfo.put(C.EDM_TITLE, getTitle(child));
+			nodeInfo.put(C.EDM_DATE, getDate(child));
+			nodeInfo.put(C.EDM_IDENTIFIER, getUnitIDs(child));
+		} else if(child.getName().equals("daogrp")) {
+			nodeInfo.put(C.EDM_HAS_VIEW, getHref(child));
+		} else if(uniqueID!=null && child.getName().equals(nextLevel)) {
+			childElements.put(child, uniqueID);
+		}
 	}
 	
 	private List<String> getTitle(Element element) {

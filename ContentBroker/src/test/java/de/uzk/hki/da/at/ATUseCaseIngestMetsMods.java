@@ -109,15 +109,6 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 		checkReferencesAndMimetype(metsDoc, "http://data.danrw.de/", C.MIMETYPE_IMAGE_JPEG, "URL");
 	}
 	
-	@Test
-	public void checkIndex(){
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {}
-		String abc = repositoryFacade.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613");
-		assertTrue(abc.contains("ULB (Stadt) [Electronic ed.]"));
-	}
-	
 	public void checkReferencesAndMimetype(Document doc, String href, String mimetype, String loctype) throws JDOMException, FileNotFoundException, IOException {
 		XPath xPath = XPath.newInstance(METS_XPATH_EXPRESSION);
 		
@@ -135,5 +126,25 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 				assertTrue(attrLoctype.getValue().equals(loctype));
 			}
 		}
+	}
+	
+	@Test
+	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
+		SAXBuilder builder = new SAXBuilder();
+		Document doc = builder.build
+				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));
+		@SuppressWarnings("unchecked")
+		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
+		Boolean testProvidetChoExists = false;
+		for(Element pcho : providetCho) {
+			if(pcho.getChild("title", C.DC_NS).getValue().equals("Text Text// mahels///Titel")) {
+				testProvidetChoExists = true;
+				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("1523"));
+			}
+		}
+		assertTrue(testProvidetChoExists);
+		
+//		testIndex
+		assertTrue(repositoryFacade.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613").contains("Text Text// mahels///Titel"));
 	}
 }

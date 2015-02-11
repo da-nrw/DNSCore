@@ -311,6 +311,34 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		try {
 			String requestURL = 
 					"http://localhost:9200/"+indexName+"/"+ORE_AGGREGATION+"/_search?q=_id:"+objectId;
+			System.out.println("requestURL:"+requestURL);
+			logger.debug("requestURL:"+requestURL);
+			URL wikiRequest;
+			wikiRequest = new URL(requestURL);
+			URLConnection connection;
+			connection = wikiRequest.openConnection();
+			connection.setDoOutput(true);  
+			
+			Scanner scanner;
+			scanner = new Scanner(wikiRequest.openStream());
+			String response = scanner.useDelimiter("\\Z").next();
+			System.out.println("R:"+response);
+			
+			scanner.close();
+			return response;
+    	}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "";
+	}
+	
+	@Override
+	public String getAllIndexedMetadataFromIdSubstring(String indexName, String objectId) {
+		
+		try {
+			String requestURL = 
+					"http://localhost:9200/"+indexName+"/"+ORE_AGGREGATION+"/_search?q="+objectId+"*";
+			System.out.println("requestURL:"+requestURL);
 			logger.debug("requestURL:"+requestURL);
 			URL wikiRequest;
 			wikiRequest = new URL(requestURL);

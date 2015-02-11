@@ -32,21 +32,18 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.FilenameUtils;
 import org.jdom.JDOMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.DocumentType;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.util.Path;
 
 /**
@@ -72,10 +69,10 @@ public abstract class MetadataStructure {
 	
 	public abstract File getMetadataFile();
 	
-	protected abstract HashMap<String, HashMap<String, List<String>>> getIndexInfo();
+	public abstract HashMap<String, HashMap<String, List<String>>> getIndexInfo(String objectId);
 	
-	protected void printIndexInfo() {
-		HashMap<String, HashMap<String, List<String>>> indexInfo = getIndexInfo();
+	protected void printIndexInfo(String objectId) {
+		HashMap<String, HashMap<String, List<String>>> indexInfo = getIndexInfo(objectId);
 		for(String id : indexInfo.keySet()) {
 			logger.info("-----------------------------------------------------");
 			logger.info("ID: "+id);
@@ -86,9 +83,8 @@ public abstract class MetadataStructure {
 		}
 	}
 	
-	protected void toEDM(HashMap<String, HashMap<String, List<String>>> indexInfo, File file) {
+	public void toEDM(HashMap<String, HashMap<String, List<String>>> indexInfo, File file, PreservationSystem preservationSystem) {
 		try {
-			
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             
@@ -99,9 +95,10 @@ public abstract class MetadataStructure {
 			addXmlNsToEDM(edmDoc, rootElement);
 			
 			for(String id : indexInfo.keySet()) {
-				Element providedCHO = addEdmProvidedCHOtoEdm(id, edmDoc, rootElement);
-				Element aggregation = addOreAggregationToEdm(id, edmDoc, rootElement);
+				Element providedCHO = addEdmProvidedCHOtoEdm(preservationSystem, id, edmDoc, rootElement);
+				Element aggregation = addOreAggregationToEdm(preservationSystem, id, edmDoc, rootElement);
 				for(String elementName : indexInfo.get(id).keySet()) {
+					
 					Element parentNode = null;
 					if(elementName.startsWith("dc:") || elementName.startsWith("dcterms:")) {
 						parentNode = providedCHO;
@@ -112,7 +109,7 @@ public abstract class MetadataStructure {
 						List<String> values = indexInfo.get(id).get(elementName);
 						for(String currentValue : values) {
 							if(!currentValue.equals("")) {
-								addNewElementToParent(elementName, currentValue, parentNode, edmDoc);
+								addNewElementToParent(preservationSystem, id, elementName, currentValue, parentNode, edmDoc);
 							}
 						}
 					}
@@ -125,26 +122,31 @@ public abstract class MetadataStructure {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             Result result = new javax.xml.transform.stream.StreamResult(file);
             transformer.transform(source, result);
-                    
-            System.out.println("File saved!");
             
 		} catch (Exception e) {
 			logger.error("Unable to create the edm file!");
+			throw new RuntimeException(e);
 		}
 	}
 	
-	private void addNewElementToParent(String elementName, String elementValue, Element parent, Document edmDoc) {
-		
+	private void addNewElementToParent(PreservationSystem preservationSystem, String id, String elementName, String elementValue, Element parent, Document edmDoc) {
 		Element eName = edmDoc.createElement(elementName);
-		eName.appendChild(edmDoc.createTextNode(elementValue));
+		if(elementName.equals(C.EDM_HAS_VIEW) || elementName.equals(C.EDM_IS_PART_OF)) {
+			if(elementName.equals(C.EDM_IS_PART_OF)) {
+				elementValue = preservationSystem.getUrisFile()+"/"+id;
+			}
+			
+			Attr rdfResource = edmDoc.createAttribute("rdf:resource");
+			rdfResource.setValue(elementValue);
+			eName.setAttributeNode(rdfResource);
+		} else {
+			eName.appendChild(edmDoc.createTextNode(elementValue));
+		}
 		parent.appendChild(eName);
 	}
 	
-	private Element addEdmProvidedCHOtoEdm(String id, Document edmDoc, Element rootElement) {
-		String cho_identifier = "cho/identifier";
-		if(!id.equals("")) {
-			cho_identifier = cho_identifier+"-"+id;
-		}
+	private Element addEdmProvidedCHOtoEdm(PreservationSystem preservationSystem, String id, Document edmDoc, Element rootElement) {
+		String cho_identifier = preservationSystem.getUrisCho()+"/"+id;
 		Element providedCHO = edmDoc.createElement("edm:ProvidedCHO");
 		Attr rdfAbout = edmDoc.createAttribute("rdf:about");
 		rdfAbout.setValue(cho_identifier);
@@ -154,16 +156,19 @@ public abstract class MetadataStructure {
 		return providedCHO;
 	}
 	
-	private Element addOreAggregationToEdm(String id, Document edmDoc, Element rootElement) {
-		String aggr_identifier = "aggr/identifier";
-		if(!id.equals("")) {
-			aggr_identifier = aggr_identifier+"-"+id;
-		}
+	private Element addOreAggregationToEdm(PreservationSystem preservationSystem, String id, Document edmDoc, Element rootElement) {
+		String aggr_identifier = preservationSystem.getUrisAggr()+"/"+id;
 		Element aggregation = edmDoc.createElement("ore:Aggregation");
 		Attr rdfAbout = edmDoc.createAttribute("rdf:about");
 		rdfAbout.setValue(aggr_identifier);
 		aggregation.setAttributeNode(rdfAbout);
 		rootElement.appendChild(aggregation);
+		
+		Element aggregatedCHO = edmDoc.createElement("edm:aggregatedCHO");
+		Attr rdfAboutACho = edmDoc.createAttribute("rdf:resource");
+		rdfAboutACho.setValue(preservationSystem.getUrisCho()+"/"+id);
+		aggregatedCHO.setAttributeNode(rdfAboutACho);
+		aggregation.appendChild(aggregatedCHO);
 		
 		return aggregation;
 	}

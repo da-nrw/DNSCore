@@ -53,7 +53,9 @@ public class C {
 		/** common metadata file for all XMP type packages */
 	public static final String METADATA_FILE_XMP = "XMP.xml";
 		/** Fedora datastream id for EDM. */
-	public static final String METADATA_STREAM_ID_EDM = "EDM";
+
+	public static final String EDM_XSLT_METADATA_STREAM_ID = "EDM_xslt"; 
+	public static final String EDM_FOR_ES_INDEX_METADATA_STREAM_ID = "EDM"; 
 	public static final String METADATA_STREAM_ID_DC = "DC";
 	public static final String METADATA_STREAM_ID_EPICUR = "epicur";
 	
@@ -126,7 +128,7 @@ public class C {
 	public static final String EDM_CREATOR = "dc:creator";
 	public static final String EDM_DATE = "dc:date";
 	public static final String EDM_PUBLISHER = "dc:publisher";
-	public static final String EDM_IS_PART_OF = "isPartOf";
+	public static final String EDM_IS_PART_OF = "dcterms:isPartOf";
 	public static final String EDM_TITLE = "dc:title";
 	public static final String EDM_IDENTIFIER = "dc:identifier";
 	public static final String EDM_HAS_VIEW = "edm:hasView";
@@ -158,7 +160,5 @@ public class C {
 	public static final int PUBLISHEDFLAG_NO_PUBLICATION = 0;
 	public static final int PUBLISHEDFLAG_INSTITUTION = 2;
 	public static final int PUBLISHEDFLAG_PUBLIC = 1;
-	
-	
-	
+
 }

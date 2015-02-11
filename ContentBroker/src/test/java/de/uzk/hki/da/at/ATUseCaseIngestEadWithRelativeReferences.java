@@ -139,12 +139,6 @@ public class ATUseCaseIngestEadWithRelativeReferences extends AcceptanceTest {
 		}
 	}
 	
-	@Test
-	public void testIndex(){
-		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-d1e8282").
-			contains("VDA - Forschungsstelle Rheinlländer in aller Welt"));
-	}
-	
 	private String getMetsURL(Document doc){
 		
 		return doc.getRootElement()

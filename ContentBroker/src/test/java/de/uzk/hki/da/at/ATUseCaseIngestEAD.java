@@ -108,20 +108,15 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 	
 	@Test
 	public void testPresPublic() throws FileNotFoundException, JDOMException, IOException {
-		testPres(contractorsPipsPublic);
+		testPres();
 	}
 	
 	@Test
-	public void testIndex(){
-		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-d1e8282").
-			contains("VDA - Forschungsstelle Rheinlländer in aller Welt"));
-	}
-	
-	public void testPres(Path presDirPath) throws FileNotFoundException, JDOMException, IOException {
+	public void testPres() throws FileNotFoundException, JDOMException, IOException {
 		
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build
-				(new FileReader(Path.make(presDirPath, object.getIdentifier(), "mets_2_32044.xml").toFile()));
+				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "mets_2_32044.xml").toFile()));
 		List<Element> metsFileElements = mh.getMetsFileElements(doc);
 		Element fileElement = metsFileElements.get(0);
 		String metsURL = mh.getMetsHref(fileElement);
@@ -130,7 +125,7 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMetsMimetype(fileElement));
 		
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(presDirPath, object.getIdentifier(), EAD_XML).toFile()));
+		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), EAD_XML).toFile()));
 
 		List<String> metsReferences = mh.getMetsRefsInEad(eadDoc);
 		assertTrue(metsReferences.size()==5);
@@ -147,5 +142,29 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/mets_2_32048.xml"));
 			}
 		}
+	}
+	
+	@Test
+	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
+		SAXBuilder builder = new SAXBuilder();
+		Document doc = builder.build
+				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));
+		@SuppressWarnings("unchecked")
+		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
+		Boolean testProvidetChoExists = false;
+		String testId = "";
+		for(Element pcho : providetCho) {
+			if(pcho.getChild("title", C.DC_NS).getValue().equals("Schriftwechsel Holländisch Limburg")) {
+				testProvidetChoExists = true;
+				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("1938-01-01/1939-12-31"));
+				testId = pcho.getAttributeValue("about", C.RDF_NS);
+			}
+		}
+		assertTrue(testProvidetChoExists);
+		
+//			testIndex
+		String cho = "/cho/";
+		String ID = testId.substring(testId.lastIndexOf(cho)+cho.length());
+		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", ID).contains("\"dc:date\":[\"1938-01-01/1939-12-31\"]"));
 	}
 }

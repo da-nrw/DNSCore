@@ -107,4 +107,22 @@ public class ATUseCaseIngestXMP extends AcceptanceTest{
 				.getChild("Description", RDF_NS)
 				.getAttributeValue("about", RDF_NS);
 	}
+	
+	@Test
+	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
+		SAXBuilder builder = new SAXBuilder();
+		Document doc = builder.build
+				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));
+		System.out.println("DOC: "+doc);
+		String fullId = doc.getRootElement()
+					.getChild("ProvidedCHO", C.EDM_NS)
+					.getAttributeValue("about", C.RDF_NS);
+		assertTrue(fullId.equals("http://data.danrw.de/cho/"+object.getIdentifier()+"-1"));
+		String title = doc.getRootElement().getChild("ProvidedCHO", C.EDM_NS).getChild("title", C.DC_NS).getValue();
+		assertTrue(title.equals("Martinsfeuer"));
+
+//		testIndex
+		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-1").
+				contains("Dieser Brauch zum Sankt Martinstag"));
+	}
 }

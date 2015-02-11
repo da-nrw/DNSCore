@@ -22,7 +22,7 @@ package de.uzk.hki.da.cb;
 
 import static de.uzk.hki.da.core.C.CB_PACKAGETYPE_EAD;
 import static de.uzk.hki.da.core.C.CB_PACKAGETYPE_METS;
-import static de.uzk.hki.da.core.C.METADATA_STREAM_ID_EDM;
+import static de.uzk.hki.da.core.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
 import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
 import static de.uzk.hki.da.core.C.WA_PIPS;
 import static de.uzk.hki.da.core.C.WA_PUBLIC;
@@ -38,10 +38,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.io.FileUtils;
+import org.jdom.JDOMException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.model.WorkArea;
@@ -67,7 +71,6 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
 		o.setPackage_type(CB_PACKAGETYPE_EAD);
 		action.setWorkArea(new WorkArea(n,o));
-		
 		Map<String,String> edmMappings = new HashMap<String,String>();
 		edmMappings.put(CB_PACKAGETYPE_EAD, EAD_TO_EDM_XSL);
 		edmMappings.put(CB_PACKAGETYPE_METS,METS_MODS_TO_EDM_XSL);
@@ -103,7 +106,7 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 	
 
 	@Test
-	public void missingMetadataFileInPublicPIP() throws IOException, RepositoryException {
+	public void missingMetadataFileInPublicPIP() throws IOException, RepositoryException, JDOMException, ParserConfigurationException, SAXException {
 		FileUtils.deleteQuietly(makeMetadataFile(CB_PACKAGETYPE_EAD));
 		try {
 			action.implementation();
@@ -114,19 +117,19 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 	}
 	
 	@Test
-	public void fileCreation() throws IOException, RepositoryException{
+	public void fileCreation() throws IOException, RepositoryException, JDOMException, ParserConfigurationException, SAXException{
 		
 		action.implementation();
-		assertTrue(makeMetadataFile(METADATA_STREAM_ID_EDM).exists());
+		assertTrue(makeMetadataFile(EDM_FOR_ES_INDEX_METADATA_STREAM_ID).exists());
 	}
 	
 	@Test
 	public void fileDeletion() throws Exception {
 		
 		action.implementation();
-		assertTrue(makeMetadataFile(METADATA_STREAM_ID_EDM).exists());
+		assertTrue(makeMetadataFile(EDM_FOR_ES_INDEX_METADATA_STREAM_ID).exists());
 		action.rollback();
-		assertFalse(makeMetadataFile(METADATA_STREAM_ID_EDM).exists());
+		assertFalse(makeMetadataFile(EDM_FOR_ES_INDEX_METADATA_STREAM_ID).exists());
 	}
 
 	

@@ -20,7 +20,8 @@
 package de.uzk.hki.da.cb;
 
 import static de.uzk.hki.da.core.C.ENCODING_UTF_8;
-import static de.uzk.hki.da.core.C.METADATA_STREAM_ID_EDM;
+import static de.uzk.hki.da.core.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
+import static de.uzk.hki.da.core.C.EDM_XSLT_METADATA_STREAM_ID;
 import static de.uzk.hki.da.core.C.WA_PUBLIC;
 
 import java.io.FileInputStream;
@@ -75,8 +76,10 @@ public class IndexMetadataAction extends AbstractAction {
 			throw new PreconditionsNotMetException("Index name not set. Make sure the action is configured properly");
 		if (getTestContractors()==null)
 			throw new PreconditionsNotMetException("testContractors not set");
-		if (! wa.metadataStream(WA_PUBLIC, METADATA_STREAM_ID_EDM).exists())
-			throw new PreconditionsNotMetException("Missing file: "+wa.metadataStream(WA_PUBLIC, METADATA_STREAM_ID_EDM));
+		if (! wa.metadataStream(WA_PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID).exists())
+			throw new PreconditionsNotMetException("Missing file: "+wa.metadataStream(WA_PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID));
+		if (! wa.metadataStream(WA_PUBLIC, EDM_XSLT_METADATA_STREAM_ID).exists())
+			throw new PreconditionsNotMetException("Missing file: "+wa.metadataStream(WA_PUBLIC, EDM_XSLT_METADATA_STREAM_ID));
 	}
 	
 	@Override
@@ -85,8 +88,9 @@ public class IndexMetadataAction extends AbstractAction {
 		String edmContent;
 		InputStream metadataStream  = null;
 		try {
-			metadataStream = new FileInputStream(wa.metadataStream(WA_PUBLIC, METADATA_STREAM_ID_EDM));
+			metadataStream = new FileInputStream(wa.metadataStream(WA_PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID));
 			edmContent = IOUtils.toString(metadataStream, ENCODING_UTF_8);
+			logger.info("huhu "+metadataStream);
 		} finally {
 			metadataStream.close();
 		}

@@ -52,6 +52,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		if (client==null) throw new IllegalStateException("transport client not initialized");
 		
 		try {
+			logger.debug("prepare index, set "+data+" to object with id "+objectId);
 			client.prepareIndex(indexName, type)
 				.setId(objectId).setSource(data).execute().actionGet();
 		} catch(ElasticSearchException e) {
