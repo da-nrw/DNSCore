@@ -1,23 +1,29 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
+import org.jdom.xpath.XPath;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -25,6 +31,7 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.format.MimeTypeDetectionService;
+import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
@@ -43,6 +50,7 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	private static final Path workAreaRootPathPath = new RelativePath("src/test/resources/cb/UpdateMetadataActionEADMultilevelPackagesTest/");
 	private static final UpdateMetadataAction action = new UpdateMetadataAction();
+	private String EAD_XPATH_EXPRESSION = "//daoloc/@href";
 	private Event event2;
 	private Event event3;
 	private Event event4;
@@ -58,7 +66,7 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 	}
 	
 	@Before
-	public void setUp() throws IOException{
+	public void setUp() throws IOException, JDOMException, ParserConfigurationException, SAXException{
 		
 		PreservationSystem pSystem = new PreservationSystem();
 		pSystem.setUrisFile("http://data.danrw.de/file");
@@ -144,6 +152,9 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 		action.setObject(object);
 		action.setJob(job);
 		action.setPSystem(pSystem);
+		
+		action.setPresMode(true);
+		action.implementation();
 	}
 
 	@After 
@@ -170,10 +181,7 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 	}
 
 	@Test
-	public void test() throws IOException, JDOMException, ParserConfigurationException, SAXException {
-		
-		action.setPresMode(true);
-		action.implementation();
+	public void testMetsFiles() throws IOException, JDOMException, ParserConfigurationException, SAXException {
 		
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/43/data",_1_B_REP,"mets_361/mets_2_32044.xml").toFile()));
@@ -196,6 +204,17 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 		assertEquals("http://data.danrw.de/file/43/renamed006.tif", getURL(doc6));
 		assertEquals("URL", getLoctype(doc6));
 	}
+
+	@Test
+	public void testEadFile() throws FileNotFoundException, JDOMException, IOException {
+		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/43/data",_1_B_REP,"EAD_Export.XML").toFile()));
+
+		List<String> eadRefs = getMetsRefsInEad(eadDoc);
+		for(String ref : eadRefs) {
+			assertTrue(ref.contains("http://data.danrw.de/file/43/mets_361-mets_2_320"));
+		}
+	}
 	
 	private String getURL(Document doc){
 		
@@ -215,5 +234,22 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 				.getChild("file", METS_NS)
 				.getChild("FLocat", METS_NS)
 				.getAttributeValue("LOCTYPE");
-		}
 	}
+
+	private List<String> getMetsRefsInEad(Document eadDoc) throws JDOMException, IOException {
+		
+		List<String> metsReferences = new ArrayList<String>();
+	
+		XPath xPath = XPath.newInstance(EAD_XPATH_EXPRESSION);
+		
+		@SuppressWarnings("rawtypes")
+		List allNodes = xPath.selectNodes(eadDoc);
+		
+		for (java.lang.Object node : allNodes) {
+			Attribute attr = (Attribute) node;
+			String href = attr.getValue();
+			metsReferences.add(href);
+		}
+		return metsReferences;
+	}
+}

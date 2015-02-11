@@ -126,15 +126,15 @@ public class ATUseCaseIngestEadWithRelativeReferences extends AcceptanceTest {
 		assertTrue(metsReferences.size()==5);
 		for(String metsRef : metsReferences) {
 			if(metsRef.contains("mets_2_32044.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/mets_361"+"/mets_2_32044.xml"));
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/mets_361-mets_2_32044.xml"));
 			} else if(metsRef.contains("mets_2_32045.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/mets_361"+"/mets_2_32045.xml"));
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/mets_361-mets_2_32045.xml"));
 			} else if(metsRef.contains("mets_2_32046.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/mets_361"+"/mets_2_32046.xml"));
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/mets_361-mets_2_32046.xml"));
 			} else if(metsRef.contains("mets_2_32047.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/mets_361"+"/mets_2_32047.xml"));
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/mets_361-mets_2_32047.xml"));
 			} else {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/mets_361"+"/mets_2_32048.xml"));
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/mets_361-mets_2_32048.xml"));
 			}
 		}
 	}
