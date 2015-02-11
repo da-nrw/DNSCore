@@ -18,7 +18,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 synchronizeService {
-	delay("<PLUSET>1m</PLUSET><EF>6h</EF>") {
+	#delay("<PLUSET>1m</PLUSET><EF>6h</EF>") {
 	acLog("---started Synchronize Service---");
 	msiGetSystemTime(*timeNow,"")
 	*ts=(*retryOlderThanHours*3600)
@@ -40,7 +40,7 @@ synchronizeService {
 
 	}
 	acLog("---Ended Synchronize Service---");
-}
+#}
 }
 INPUT *destResc=$"lza", *homezone=$"lvr", *min_copies=$3, *retryOlderThanHours=$24
 OUTPUT ruleExecOut
