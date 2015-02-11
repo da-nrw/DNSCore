@@ -62,6 +62,7 @@
 		<entry key="IngestTarAction" value="3" />
 		<entry key="RetrievalObjectToWorkAreaAction" value="3" />
 		<entry key="RetrievalAction" value="3" />
+		<entry key="PostRetrievalAction" value="3" />
 		<entry key="AuditAction" value="3" />
 		<entry key="IngestBuildAIPAction" value="3" />
 		<entry key="PIPGenPrepareSendToPresenterAction" value="3" />
@@ -95,7 +96,6 @@
 		<value>IngestValidateMetadataAction</value>
 		<value>IngestRestructureAction</value>
 		<value>IngestUnpackAction</value>
-		<value>PostRetrievalAction</value>
 		<value>RetrievalObjectToWorkAreaAction</value>
 		<value>RetrievalAction</value>
 		<value>AuditAction</value>

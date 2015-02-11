@@ -27,6 +27,8 @@ import java.util.Calendar;
 import org.junit.After;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
 
@@ -62,11 +64,13 @@ public class PostRetrievalActionTest  extends ConcreteActionUnitTest {
 	@Test 
 	public void testPostRetrievalDeletionAfterSomeTime() {
 		n.setUserAreaRootPath(userAreaRootPath);
+		o.setObject_state(Object.ObjectStatus.InWorkflow);
 		j.setStatus("950");
 		Calendar now = Calendar.getInstance();
 		now.add(Calendar.HOUR_OF_DAY, -25);
 		j.setDate_created(String.valueOf(now.getTimeInMillis()/1000L));
 		assertTrue(action.implementation());
+		assertTrue(o.getObject_state()==Object.ObjectStatus.ArchivedAndValid);
 	}
 	/**
 	 * Post retrieval.
@@ -74,11 +78,13 @@ public class PostRetrievalActionTest  extends ConcreteActionUnitTest {
 	@Test 
 	public void testPostRetrievalNoDeletionAfterSomeTime() {
 		n.setUserAreaRootPath(userAreaRootPath);
+		o.setObject_state(Object.ObjectStatus.InWorkflow);
 		j.setStatus("950");
 		Calendar now = Calendar.getInstance();
 		now.add(Calendar.HOUR_OF_DAY, -9);
 		j.setDate_created(String.valueOf(now.getTimeInMillis()/1000L));
 		assertFalse(action.implementation());
+		assertTrue(o.getObject_state()==Object.ObjectStatus.InWorkflow);
 	}
 
 }

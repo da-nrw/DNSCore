@@ -60,14 +60,15 @@ public class PostRetrievalAction extends AbstractAction {
 		if ((new Date().getTime())/1000L > (Long.parseLong(j.getDate_created())+(86400L*1))){
 			
 			if (transferAreaRootPath!= null && !transferAreaRootPath.equals("")) {
-			String webDavOutgoingPath = transferAreaRootPath +"/"+ csn +"/outgoing/";
-			
-			File toDel =  new File(webDavOutgoingPath + mergeTarName);
-			if (toDel.exists()) {
-				logger.debug("Deleting  " +webDavOutgoingPath + mergeTarName);
-				toDel.delete(); 
-			} else logger.info("Called to Delete  " +webDavOutgoingPath + mergeTarName + " but file doesn't exist!");
-		} else logger.info("Deletion on webdav folder not possible. Path is not configured. ");
+				String webDavOutgoingPath = transferAreaRootPath +"/"+ csn +"/outgoing/";
+				
+				File toDel =  new File(webDavOutgoingPath + mergeTarName);
+				if (toDel.exists()) {
+					logger.debug("Deleting  " +webDavOutgoingPath + mergeTarName);
+					toDel.delete(); 
+				} else logger.info("Called to Delete  " +webDavOutgoingPath + mergeTarName + " but file doesn't exist!");
+			} else logger.info("Deletion on webdav folder not possible. Path is not configured. ");
+		modifyObject(o);
 		} else {
 			logger.info("Deletion skipped  " + mergeTarName + " is still to young"); 
 			return false;
@@ -76,6 +77,10 @@ public class PostRetrievalAction extends AbstractAction {
 		
 		
 		return true;
+	}
+	private void modifyObject(Object obj) {
+		o.setObject_state(100);
+		o.setDate_modified(String.valueOf(new Date().getTime()));
 	}
 
 	@Override
