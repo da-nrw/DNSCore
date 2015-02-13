@@ -65,7 +65,7 @@ class QueueEntry {
 	}
 	
 	
-	static QueueEntry getAllQueueEntriesForShortNameAndUrn(String shortName, String urn) {
+	static List getAllQueueEntriesForShortNameAndUrn(String shortName, String urn) {
 		return createCriteria().list  {
 			createAlias('obj', 'o', CriteriaSpecification.INNER_JOIN)
 			createAlias('o.user', 'user', CriteriaSpecification.INNER_JOIN)

@@ -67,8 +67,8 @@ class StatusController {
 		}
 				
 		if (params.urn ) {
-				QueueEntry.getAllQueueEntriesForShortNameAndUrn(springSecurityService.currentUser.toString(), params.urn)
-			} else if (params.origName) {
+			rList = QueueEntry.getAllQueueEntriesForShortNameAndUrn(springSecurityService.currentUser.toString(), params.urn)
+		} else if (params.origName) {
 			rList = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.obj.origName=:on",
              [on: params.origName,
 				 csn: springSecurityService.currentUser.toString()]);
