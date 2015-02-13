@@ -50,7 +50,7 @@ public class ATUseCaseRetrieval extends AcceptanceTest{
 		String originalName = "ATUseCaseRetrieval";
 		
 		ath.createObjectAndJob(originalName,"900");
-		ath.waitForJobToBeInStatus(originalName, "950");
+		ath.waitForJobToBeInStatus(originalName, "952");
 		
 		System.out.println(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/ID-ATUseCaseRetrieval.tar").getAbsolutePath());
 		assertTrue(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/ID-ATUseCaseRetrieval.tar").exists());
