@@ -52,12 +52,12 @@ public class ATUseCaseIngestDeltaDuringRetrivalOrigPkg extends AcceptanceTest{
 	public void test() throws IOException, InterruptedException {
 		
 		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+ORIG_NAME+"_delta/"+ORIG_NAME+".tgz"), new File("src/test/resources/at"));
-		object = ath.ingestAndWaitForJobInState(ORIG_NAME, "950");
+		object = ath.ingestAndWaitForJobInState(ORIG_NAME, "952");
 		
 //		Delete Job & Set object state
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		session.createSQLQuery("DELETE FROM queue WHERE status='950'").executeUpdate(); 
+		session.createSQLQuery("DELETE FROM queue WHERE status='952'").executeUpdate(); 
 		session.createSQLQuery("UPDATE objects SET object_state='100' WHERE object_state='50'").executeUpdate();
 		session.getTransaction().commit();
 		session.close();
