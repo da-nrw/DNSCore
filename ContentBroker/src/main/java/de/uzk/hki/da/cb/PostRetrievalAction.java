@@ -36,6 +36,9 @@ import de.uzk.hki.da.action.AbstractAction;
 
 public class PostRetrievalAction extends AbstractAction {
 
+	private int timeOut = 4000;
+	private long days = 2;
+	
 	public PostRetrievalAction(){
 		SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
 		setKILLATEXIT(true);
@@ -57,7 +60,10 @@ public class PostRetrievalAction extends AbstractAction {
 		String mergeTarName = o.getIdentifier() + ".tar";
 		
 		String transferAreaRootPath = n.getUserAreaRootPath().toString();
-		if ((new Date().getTime())/1000L > (Long.parseLong(j.getDate_created())+(86400L*1))){
+		while (new Date().getTime()/1000L < (Long.parseLong(j.getDate_created())+(86400L*days))){
+			delay();
+		} 
+		if ((new Date().getTime())/1000L > (Long.parseLong(j.getDate_created())+(86400L*days))){
 			
 			if (transferAreaRootPath!= null && !transferAreaRootPath.equals("")) {
 				String webDavOutgoingPath = transferAreaRootPath +"/"+ csn +"/outgoing/";
@@ -78,6 +84,14 @@ public class PostRetrievalAction extends AbstractAction {
 		
 		return true;
 	}
+	
+	private void delay(){
+		try {
+			Thread.sleep(timeOut); // to prevent unnecessary small intervals when checking
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 	private void modifyObject(Object obj) {
 		o.setObject_state(100);
 		o.setDate_modified(String.valueOf(new Date().getTime()));
@@ -85,6 +99,5 @@ public class PostRetrievalAction extends AbstractAction {
 
 	@Override
 	public void rollback() throws Exception {
-		throw new NotImplementedException("No rollback implemented for this action");
 	}
 }
