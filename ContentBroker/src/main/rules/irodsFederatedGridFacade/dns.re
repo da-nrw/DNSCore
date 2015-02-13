@@ -487,7 +487,7 @@ acGetHostsOrderedByDataStoredAsc(*servers, *rg,*forbiddenNodes) {
                 for(*i=0; *i < *n; *i=*i+1) {
                         *t1=int(elem(elem(*servers,*i),1))
                         *t2=int(elem(elem(*servers,*i+1),1))
-                        if (*t1 < *t2) {
+                        if (*t1 > *t2) {
                                 *tempL1=elem(*servers,*i)
                                 *tempL2=elem(*servers,*i+1)
                                 *servers=setelem(*servers,*i,*tempL2)
