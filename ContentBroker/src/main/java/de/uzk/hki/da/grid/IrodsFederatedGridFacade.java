@@ -61,9 +61,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(gridPath, "MIN_COPIES", String.valueOf(sp.getMinNodes()));
 		irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(gridPath, "FEDERATED", "0");
 		irodsSystemConnector.logoff();
-		// We're using the localNode.replDestinations as federated commonly shared group name here (!)
-		Thread  fe = new FederationExecutor(irodsSystemConnector, localNode, gridPath,localNode.getReplDestinations());
-		fe.start();
+		startFederateItem(gridPath);
 		return ret;
 	}
 	
@@ -101,6 +99,11 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		}
 		irodsSystemConnector.logoff();
 		return false;
+	}
+	
+	public void startFederateItem(String gridPath) {
+		Thread  fe = new FederationExecutor(irodsSystemConnector, localNode, gridPath,localNode.getReplDestinations());
+		fe.start();
 	}
 	
 	public boolean isValid(String gridPath, StoragePolicy sp, String md5Checksum) {

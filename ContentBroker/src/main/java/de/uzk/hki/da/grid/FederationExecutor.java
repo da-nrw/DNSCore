@@ -142,13 +142,17 @@ public class FederationExecutor extends Thread {
 	 */
 	
 private boolean federate (String data_name) {
+	boolean ret = false;
 	try {
 		if (!isc.isConnected()) isc.connect();
-		return isc.federateDataObjectToConnectedZones(data_name, destResc, 3);
+		ret = isc.federateDataObjectToConnectedZones(data_name, destResc, 3);
+		isc.logoff();
 	} catch (Exception e) {
 		logger.error("Something went wrong calling federation rule " + e.getMessage() );
-		return false;
+	} finally {
+		isc.logoff();
 	}
-	}
+	return ret;
+}
 }
 
