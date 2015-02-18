@@ -22,19 +22,23 @@ Der localNode.*-Block beinhaltet den Knoten selbst betreffende Konfigurationen u
     localNode.replDestinations=ciArchiveResourceGroup
     localNode.id=
 
-Der localNode entspricht dabei dem [Knoten](object_model.de.md#node---der-knoten)-Konzept der Applikation. Die einzurichtenden Pfade
+Der localNode entspricht dabei dem [Knoten](object_model.de.md#node---der-knoten)-Konzept der Applikation. Die einzurichtenden Pfade entsprechen dabei den [Areas](processing_stages.md), also den unterschiedlichen Speicher-Bereichen, auf denen der ContentBroker seine Arbeit verrichtet. Es sollten immer absolute Pfade eingetragen sein. Es spielt keine Rolle, ob ein abschließendes Slash gesetzt ist oder nicht. 
 
 #### localNode.userAreaRootPath
 
+Nicht notwendig auf Knoten, auf denen lediglich die Präsentationskomponente läuft.
+
 #### localNode.ingestAreaRootPath
+
+Nicht notwendig auf Knoten, auf denen lediglich die Präsentationskomponente läuft.
 
 #### localNode.workAreaRootPath
 
+Notwendig in jedem Fall
+
 #### localNode.gridCacheAreaRootPath
 
-entsprechen dabei den [Areas](processing_stages.md), also den unterschiedlichen Speicher-Bereichen, auf denen der ContentBroker seine Arbeit verrichtet. Es sollten immer absolute Pfade eingetragen sein. Es spielt keine Rolle, ob ein abschließendes Slash gesetzt ist oder nicht. 
-
-Auf Knoten, auf denen nur die Präsenationskomponenten laufen, ist lediglich der Eintrag für **localNode.workAreaRootPath=** vonnöten, da die Komponenten für die Annahme und Herausgabe von Paketen und Speicherung von Paketen auf LZA-Medien hier keine Rolle spielen.
+Nicht notwendig auf Knoten, auf denen lediglich die Präsentationskomponente läuft.
 
 #### localNode.replDestinations
    
