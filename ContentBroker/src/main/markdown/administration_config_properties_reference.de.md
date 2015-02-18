@@ -6,9 +6,9 @@ config.properties ist der Dateiname der Hauptkonfigurationsdatei des ContentBrok
     
 abzulegen bzw. zu finden. Sie ist notwendiger Bestandteil jeder DNSCore Installation.
 
-Die Datei ist in verschiedene Blöcke unterteilt, die je nach gewünschter Gesamtkonfiguration (zusammen mit der beans.xml) vorhanden sein müssen.
+Die Datei ist in verschiedene Blöcke unterteilt, die je nach gewünschter Gesamtkonfiguration (zusammen mit der beans.xml) vorhanden sein müssen. Insbesondere die mit **cb.implementation** startenden Konfigurationsparameter bestimmten, ob evenutell weitere Blöcke, wie z.B. der irods Block, ausgefüllt werden müssen oder auch nicht. Im folgenden werden alle Blöcke im Einzelnen behandelt.
 
-Anmerkung: DEFAULT bedeutet, dass, wenn der Parameter weggelassen wird, dass er automatisch mit dem Default Wert besetzt wird.
+Anmerkung: Wenn ein den folgenden Beschreibungen ein Parameter mit DEFAULT gekennzeichnet ist, bedeutet dass, dass, wenn der Parameter weggelassen wird, er automatisch mit dem dem gekennzeichneten Wert besetzt wird.
 
 ## localNode
 
