@@ -157,6 +157,8 @@ Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
 When the application has been installed in one of wither pres or full mode, the presentation module is activated via its respective import in the import section of the beans.xml (see down below). Es muss sichergestellt werden, dass die eingetragenen Werte denen ensprechen, die bei der Installation von Fedora angegeben wurden. Mehr zur Installatioin von Fedora findet sich [hier](install_fedora.de.md).
 
+**BEANS** der fedora-Block hier korrespondiert mit dem Eintrag ```<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>``` aus der conf/beans.xml. Es muss sichergestellt werden, dass bei Nutzung von Fedora/Elasticsearch der entsprechende Eintrag in der Beans vorhanden ist.
+
 #### fedora.url
 
 Die URL des Fedora Server
@@ -178,6 +180,8 @@ Beispiel [config.properties.ci](../conf/config.properties.ci)
     elasticsearch.cluster=cluster_ci
 
 Wenn [cb.implementation.repository](#cbimplementationrepository) auf *fedoraRepositoryFacade* gesetzt ist, ist es notwendig, die Parameter aus diesem Block einzutragen. Es muss sichergestellt werden, dass die eingetragenen Werte der Elasticsearch-Installation entsprechen. Mehr zur Installation von Elasticsearch findet sich [hier](install_elasticsearch.de.md).
+
+**BEANS** der elasticsearch-Block hier korrespondiert mit dem Eintrag ```<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>``` aus der conf/beans.xml. Es muss sichergestellt werden, dass bei Nutzung von Fedora/Elasticsearch der entsprechende Eintrag in der Beans vorhanden ist.
 
 #### elasticsearch.index
 
