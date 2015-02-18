@@ -86,9 +86,16 @@ Um Workflows gestalten so zu können, dass Jobs von mehreren Knoten des Systemes
 
 Ist entweder *irodsDistributedConversionAdapter* sowie *irodsFederatedDistributedConversionAdapter* gewählt, so muss auch der Eintrag [localNode.workingResource](#localNode.workingResource) (siehe oben) gesetzt sein.
 
-#### cb.bin.python
+#### cb.implementation.repository
 
-Hier muss, wenn *cb.implementation.fileFormatFacade* nicht explizit auf *fakeFileFormatFacade* gesetzt ist, der Pfad zu einer Python Binary (Version >= 2.7) angegeben sein. Wenn sichergestellt werden kann, dass die Binary im Pfad der Laufzeitumgebung des ContentBroker ist, kann hier einfach *python* angegeben werden, ansonsten empiehlt sich hier die Angabe eine absoluten Pfades.
+Die jeweils ausgewählte Implementation kapselt die Technologie, mit der das PresentationRepository umgesetzt ist.
+
+Mögliche Werte sind
+
+* **fedoraRepositoryFacade**
+* **fakeRepositoryFacade** DEFAULT
+
+Ist *fedoraRepositoryFacade* gewählt, so müssen sämtliche Parameter aus dem [fedora](#fedora)-Block (siehe unten) ebenfalls ausgefüllt sein.
 
 #### cb.implementation.fileFormatFacade
 
@@ -96,7 +103,11 @@ Mögliche Werte sind
 
 * **cb.implementation.fileFormatFacader=configurableFileFormatFacade** DEFAULT
 * **cb.implementation.fileFormatFacade=fakeFileFormatFacade** 
-	
+
+#### cb.bin.python
+
+Hier muss, wenn *cb.implementation.fileFormatFacade* nicht explizit auf *fakeFileFormatFacade* gesetzt ist, der Pfad zu einer Python Binary (Version >= 2.7) angegeben sein. Wenn sichergestellt werden kann, dass die Binary im Pfad der Laufzeitumgebung des ContentBroker ist, kann hier einfach *python* angegeben werden, ansonsten empiehlt sich hier die Angabe eine absoluten Pfades.
+
 ## irods
 
 Ein vollständiges Beispiel für den Block ist [config.properties.ci](../conf/config.properties.ci)
