@@ -31,18 +31,18 @@ entsprechen dabei den [Areas](processing_stages.md), also den unterschiedlichen 
 
 Auf Knoten, auf denen nur die Präsenationskomponenten laufen, ist lediglich der Eintrag für **localNode.workAreaRootPath=** vonnöten, da die Komponenten für die Annahme und Herausgabe von Paketen und Speicherung von Paketen auf LZA-Medien hier keine Rolle spielen.
 
-    localNode.replDestinations=ciArchiveResourceGroup
+##### localNode.replDestinations
    
 Unter ***replDestinations*** sind diejenigen Knoten angegeben, zu denen die Applikation Sekundärkopien der AIPs zur Sicherung der Langzeiterhaltung repliziert. Sind mehrere Knoten als Ziel angegeben, sind diese durch Kommata zu trennen.
 
 Prinzipiell hängt es von der konkret eingesetzten ***GridFacade*** ab, worauf die Namen verweisen, im Falle von iRODS basierten ***GridFacade***s ("irodsGridFacade", "irodsFederatedGridFacade") entsprechen die Werte Namen entsprechender iRODS-Resourcen-(!)Gruppen. 
 
-    localNode.workingResource=
+##### localNode.workingResource
 
 Dieser Eintrag muss mit der Verwendung von iRODS basierten Speicheradaptern als Implementation des ***DistributedConversionAdapter*** ausgefüllt werden und bezeichnen eine dedizierte Resource, 
 die als Pendant zur WorkingArea dient. Dass heisst, dass diese Resource immer (!) den VaultPath haben muss, der auch bei localNode.workingAreaRootPath angegeben ist.
 
-    localNode.id= 
+##### localNode.id
     
 Die hier einzutragende Zahl muss genau der id des Eintrages des jeweiligen Knoten (Node) in der Objektdatenbank entsprechen. Die hier eingetragene id ist dabei eindeutig innerhalb eines Gesamtsystems, d.h. es dürfen nicht zwei Maschinen mit derselben id konfiguriert sein.
 
@@ -59,7 +59,7 @@ Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
 Die hierunter zusammengefassten Einträge hängen, genau wie die localNode Einträge, mit den Knoten (Node) Konzept zusammen, sind jedoch im Gegensatz zu diesen nicht fachlicher, sondern technischer Natur.
 
-    cb.serverSocketNumber=
+##### cb.serverSocketNumber
 
 Hier ist eine freie Portnummer angegeben, die zur serverinternen Kommunikation zwischen ContentBroker und DAWeb bzw. ContentBroker und cbTalk.sh via einer MessageQueue reserviert wird.
 
