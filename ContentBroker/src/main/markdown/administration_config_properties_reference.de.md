@@ -83,16 +83,19 @@ Um Workflows gestalten so zu können, dass Jobs von mehreren Knoten des Systemes
 * ***irodsFederatedDistributedConversionAdapter*** - Aufbauend auf einer Lösung basierend auf iRODS im Federated-Betrieb
 * ***fakeDistributedConversionAdapter*** - Minimalimplementation zu Testzwecken. DEFAULT 
 
-Ist entweder **irodsDistributedConversionAdapter** sowie **irodsFederatedDistributedConversionAdapter** gewählt, so muss auch der Eintrag localNode.workingResource gesetzt sein.
+Ist entweder *irodsDistributedConversionAdapter* sowie *irodsFederatedDistributedConversionAdapter* gewählt, so muss auch der Eintrag localNode.workingResource (siehe [oben](#localNode.workingResource) gesetzt sein.
 
 ##### cb.bin.python
 
 Here you have to insert the command to run an instance of python (at the moment >= 2.7 is required). If you are sure the required command is globally visible in the environment (the shell or process) in which the ContentBroker.jar is intended to run, you simple can insert something as simple as "python" as a value. If this is not the case, for example if the packaging system of your distro has only python in a version < 2.7 and you have a self compiled version at another path
 on your file system, you should insert the full path to the python binary as a value.
 
-	cb.implementation.metadataExtractor=
-	cb.implementation.metadataExtractor=jhoveMetadataExtractor (defaul)
-	cb.implementation.metadataExtractor=fakeMetadataExtractor
+##### cb.implementation.metadataExtractor
+
+Mögliche Werte sind
+
+* **cb.implementation.metadataExtractor=jhoveMetadataExtractor** DEFAULT
+* **cb.implementation.metadataExtractor=fakeMetadataExtractor** 
 	
 	
 ### irods
