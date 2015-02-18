@@ -1,6 +1,6 @@
-## Die Konfigurationsdatei "config.properties" - Referenzdokumentation
+## Referenzdokumentation: config.properties
 
-Die Datei ist in einer ContentBroker immer unter 
+config.properties ist der Dateiname der Hauptkonfigurationsdatei des ContentBroker. Diese Datei befindet sich immer unter
 
     ${CB_HOME}/conf/config.properties
     
@@ -42,11 +42,11 @@ Prinzipiell hängt es von der konkret eingesetzten ***GridFacade*** ab, worauf d
 Dieser Eintrag muss mit der Verwendung von iRODS basierten Speicheradaptern als Implementation des *DistributedConversionAdapter* (siehe [unten](#cbimplementationdistributedconversionadapter)) ausgefüllt werden und bezeichnt eine dedizierte Resource, 
 die als Pendant zur WorkingArea dient. Dass heisst, dass diese Resource immer (!) den VaultPath haben muss, der auch bei localNode.workingAreaRootPath angegeben ist.
 
-##### localNode.id
+#### localNode.id
     
 Die hier einzutragende Zahl muss genau der id des Eintrages des jeweiligen Knoten (Node) in der Objektdatenbank entsprechen. Die hier eingetragene id ist dabei eindeutig innerhalb eines Gesamtsystems, d.h. es dürfen nicht zwei Maschinen mit derselben id konfiguriert sein.
 
-### cb
+## cb
 
 Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
