@@ -92,7 +92,7 @@ Derzeit verfügbare Implementationen sind
 * **federatedGridFacade** - iRODS im Federatedbetrieb
 * **fakeGridFacade** - Minimalimplementation zu Testzwecken. DEFAULT
 
-Ist entweder *irodsGridFacade* sowie *federatedGridFacad* gewählt, so muss auch der [irods](#irods)-Block (siehe unten) ausgefüllt sein.
+Ist entweder *irodsGridFacade* sowie *federatedGridFacade* gewählt, so muss auch der [irods](#irods)-Block (siehe unten) ausgefüllt sein.
 
 #### cb.implementation.distributedConversionAdapter
 
