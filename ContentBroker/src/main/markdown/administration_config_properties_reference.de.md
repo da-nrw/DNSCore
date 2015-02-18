@@ -92,6 +92,8 @@ Derzeit verfügbare Implementationen sind
 * **irodsFederatedGridFacade** - iRODS im Federatedbetrieb
 * **fakeGridFacade** - Minimalimplementation zu Testzwecken. DEFAULT
 
+Ist entweder *irodsGridFacade* sowie *irodsFederatedGridFacad* gewählt, so muss auch der [irods](#irods)-Block (siehe unten) ausgefüllt sein.
+
 #### cb.implementation.distributedConversionAdapter
 
 Um Workflows gestalten so zu können, dass Jobs von mehreren Knoten des Systemes kooperativ bearbeitet werden können, ist eine Technologie vonnöten, um die Synchronisierung der Daten auf der WorkArea zu erreichen. Hierfür stehen derzeit drei Implementationen zur Verfügung:
@@ -101,6 +103,8 @@ Um Workflows gestalten so zu können, dass Jobs von mehreren Knoten des Systemes
 * **fakeDistributedConversionAdapter** - Minimalimplementation zu Testzwecken. DEFAULT 
 
 Ist entweder *irodsDistributedConversionAdapter* sowie *irodsFederatedDistributedConversionAdapter* gewählt, so muss auch der Eintrag [localNode.workingResource](#localnodeworkingresource) (siehe oben) gesetzt sein.
+
+Ist entweder *irodsDistributedConversionAdapter* sowie *irodsFederatedDistributedConversionAdapter* gewählt, so muss auch der [irods](#irods)-Block (siehe unten) ausgefüllt sein.
 
 #### cb.implementation.repository
 
