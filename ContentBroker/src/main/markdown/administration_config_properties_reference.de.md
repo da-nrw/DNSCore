@@ -95,7 +95,7 @@ Mögliche Werte sind
 * **fedoraRepositoryFacade**
 * **fakeRepositoryFacade** DEFAULT
 
-Ist *fedoraRepositoryFacade* gewählt, so müssen sämtliche Parameter aus dem [fedora](#fedora)-Block (siehe unten) ebenfalls ausgefüllt sein.
+Ist *fedoraRepositoryFacade* gewählt, so müssen sämtliche Parameter aus den [fedora](#fedora)- UND [elasticsearch](#elasticsearch)-Blöcken ausgefüllt sein.
 
 #### cb.implementation.fileFormatFacade
 
@@ -150,7 +150,7 @@ Beispiel aus [config.properties.ci](../conf/config.properties.ci)
     fedora.user=fedoraAdmin
     fedora.password=BYi/MFjKDFd5Dpe52PSUoA==
 
-When the application has been installed in one of wither pres or full mode, the presentation module is activated via its respective import in the import section of the beans.xml (see down below).
+When the application has been installed in one of wither pres or full mode, the presentation module is activated via its respective import in the import section of the beans.xml (see down below). Es muss sichergestellt werden, dass die eingetragenen Werte denen ensprechen, die bei der Installation von Fedora angegeben wurden. Mehr zur Installatioin von Fedora findet sich [hier](install_fedora.de.md).
 
 #### fedora.url
 
@@ -172,10 +172,18 @@ Beispiel [config.properties.ci](../conf/config.properties.ci)
     elasticsearch.hosts=localhost
     elasticsearch.cluster=cluster_ci
 
-The elasticsearch settings only are necessary on nodes which provide presentation repository functionality, which is enabled by choosing either the full or pres setting during installation.
+Wenn [cb.implementation.repository](#cbimplementationrepository) auf *fedoraRepositoryFacade* gesetzt ist, ist es notwendig, die Parameter aus diesem Block einzutragen. Es muss sichergestellt werden, dass die eingetragenen Werte der Elasticsearch-Installation entsprechen. Mehr zur Installation von Elasticsearch findet sich [hier](install_elasticsearch.de.md).
 
-    elasticsearch.index=
-    elasticsearch.hosts=
-    elasticsearch.cluster=
+#### elasticsearch.index
+
+Der Elasticsearch Indexname
+
+#### elasticsearch.hosts
+
+Der Elasticsearch hostname
+
+#### elasticsearch.cluster
     
-Make sure you insert the same settings you have used during your elasticsearch installation.
+Der Elasticsearch clustername
+
+
