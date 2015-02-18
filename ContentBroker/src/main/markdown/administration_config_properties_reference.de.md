@@ -87,7 +87,7 @@ Um Workflows gestalten so zu können, dass Jobs von mehreren Knoten des Systemes
 * **irodsFederatedDistributedConversionAdapter** - Aufbauend auf einer Lösung basierend auf iRODS im Federated-Betrieb
 * **fakeDistributedConversionAdapter** - Minimalimplementation zu Testzwecken. DEFAULT 
 
-Ist entweder *irodsDistributedConversionAdapter* sowie *irodsFederatedDistributedConversionAdapter* gewählt, so muss auch der Eintrag [localNode.workingResource](#localNode.workingResource) (siehe oben) gesetzt sein.
+Ist entweder *irodsDistributedConversionAdapter* sowie *irodsFederatedDistributedConversionAdapter* gewählt, so muss auch der Eintrag [localNode.workingResource](#localnodeworkingresource) (siehe oben) gesetzt sein.
 
 #### cb.implementation.repository
 
