@@ -138,15 +138,16 @@ Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
 When the application has been installed in one of wither pres or full mode, the presentation module is activated via its respective import in the import section of the beans.xml (see down below).
 
-    fedora.url=
-    fedora.user=
+#### fedora.url
+
+#### fedora.user
 
 In pres or full mode the ContentBroker and the presentation repository are hosted on one and the same machine. Fedora runs on a tomcat and fedora.url points to the http://... adress of Fedora while fedora.user is a fedora user prepared
 for usage by the ContentBroker.
 
-    fedora.password=
+#### fedora.password
     
-The passwort has to be encrypted/decrypted with the PasswordEncryptor of DNSCore.
+Das hier einzutragende Passwort muss vorab verschlüsselt sein mit Hilfe des DNSCore-eigenen [PasswordEncryptor](../../../../../../tree/master/PasswordEncryptor).
 
 ## elasticsearch
 
