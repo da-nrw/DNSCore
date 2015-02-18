@@ -126,7 +126,7 @@ TODO Beschreibung
 
     irods.password= 
 
-Das hier einzutragende Passwort muss vorab verschlüsselt sein mit Hilfe des DNSCore-eigenen [PasswordEncryptor](../../../../tree/master/PasswordEncryptor).
+Das hier einzutragende Passwort muss vorab verschlüsselt sein mit Hilfe des DNSCore-eigenen [PasswordEncryptor](../../../../../tree/master/PasswordEncryptor).
 
 ## fedora
 
