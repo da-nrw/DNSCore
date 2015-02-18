@@ -44,7 +44,7 @@ Nicht notwendig auf Knoten, auf denen lediglich die Präsentationskomponente lä
    
 Unter ***replDestinations*** sind diejenigen Knoten angegeben, zu denen die Applikation Sekundärkopien der AIPs zur Sicherung der Langzeiterhaltung repliziert. Sind mehrere Knoten als Ziel angegeben, sind diese durch Kommata zu trennen.
 
-Prinzipiell hängt es von der konkret eingesetzten ***GridFacade*** ab, worauf die Namen verweisen, im Falle von iRODS basierten ***GridFacade***s ("irodsGridFacade", "irodsFederatedGridFacade") entsprechen die Werte Namen entsprechender iRODS-Resourcen-(!)Gruppen. 
+Prinzipiell hängt es von der konkret eingesetzten [GridFacade](#cbimplementationgrid) (siehe unten) ab, worauf die Namen verweisen, im Falle von iRODS basierten Implementationen ("irodsGridFacade", "irodsFederatedGridFacade") entsprechen die Werte Namen entsprechender iRODS-Resourcen-(!)Gruppen. 
 
 #### localNode.workingResource
 
