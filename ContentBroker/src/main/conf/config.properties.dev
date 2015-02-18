@@ -10,7 +10,7 @@ localNode.logFolder=CONTENTBROKER_ROOT/log
 localNode.auditSleepFor=6000
 
 cb.serverSocketNumber=4455
-cb.implementation.metadataExtractor=fakeMetadataExtractor
+// cb.implementation.metadataExtractor=fakeMetadataExtractor
 cb.implementation.fileFormatFacade=fakeFileFormatFacade
 cb.bin.python=python
 
