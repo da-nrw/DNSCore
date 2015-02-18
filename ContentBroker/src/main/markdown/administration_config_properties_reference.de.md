@@ -121,7 +121,7 @@ Ist *fedoraRepositoryFacade* gewählt, so müssen sämtliche Parameter aus den [
 
 Mögliche Werte sind
 
-* **cb.implementation.fileFormatFacader=configurableFileFormatFacade** DEFAULT
+* **cb.implementation.fileFormatFacade=configurableFileFormatFacade** DEFAULT
 * **cb.implementation.fileFormatFacade=fakeFileFormatFacade** 
 
 #### cb.bin.python
