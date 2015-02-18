@@ -28,7 +28,7 @@ Der localNode entspricht dabei dem [Knoten](object_model.de.md#node---der-knoten
     localNode.workAreaRootPath=
     localNode.gridCacheAreaRootPath=
 
-entsprechen dabei dem [Areas](processing_stages.md). Es sollten immer absolute Pfade eingetragen sein. Es spielt keine Rolle, ob ein abschließendes Slash gesetzt ist oder nicht. 
+entsprechen dabei den [Areas](processing_stages.md), also den unterschiedlichen Speicher-Bereichen, auf denen der ContentBroker seine Arbeit verrichtet. Es sollten immer absolute Pfade eingetragen sein. Es spielt keine Rolle, ob ein abschließendes Slash gesetzt ist oder nicht. 
 
 **Hinweis** Auf Knoten, auf denen nur die Präsenationskomponenten laufen, ist lediglich ein Eintrag für
 
