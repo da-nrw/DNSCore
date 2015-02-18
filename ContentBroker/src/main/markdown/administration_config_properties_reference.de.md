@@ -24,10 +24,13 @@ Der localNode.*-Block beinhaltet den Knoten selbst betreffende Konfigurationen u
 
 Der localNode entspricht dabei dem [Knoten](object_model.de.md#node---der-knoten)-Konzept der Applikation. Die einzurichtenden Pfade
 
-    localNode.userAreaRootPath=
-    localNode.ingestAreaRootPath=
-    localNode.workAreaRootPath=
-    localNode.gridCacheAreaRootPath=
+#### localNode.userAreaRootPath
+
+#### localNode.ingestAreaRootPath
+
+#### localNode.workAreaRootPath
+
+#### localNode.gridCacheAreaRootPath
 
 entsprechen dabei den [Areas](processing_stages.md), also den unterschiedlichen Speicher-Bereichen, auf denen der ContentBroker seine Arbeit verrichtet. Es sollten immer absolute Pfade eingetragen sein. Es spielt keine Rolle, ob ein abschließendes Slash gesetzt ist oder nicht. 
 
@@ -41,8 +44,8 @@ Prinzipiell hängt es von der konkret eingesetzten ***GridFacade*** ab, worauf d
 
 #### localNode.workingResource
 
-Dieser Eintrag muss mit der Verwendung von iRODS basierten Speicheradaptern als Implementation des *DistributedConversionAdapter* (siehe [unten](#cbimplementationdistributedconversionadapter)) ausgefüllt werden und bezeichnt eine dedizierte Resource, 
-die als Pendant zur WorkingArea dient. Dass heisst, dass diese Resource immer (!) den VaultPath haben muss, der auch bei localNode.workingAreaRootPath angegeben ist.
+Dieser Eintrag muss mit der Verwendung von iRODS basierten Speicheradaptern als Implementation des [DistributedConversionAdapter](#cbimplementationdistributedconversionadapter) (siehe  unten) ausgefüllt werden und bezeichnet eine dedizierte Resource, 
+die als Pendant zur WorkingArea dient. Dass heisst, dass diese Resource immer (!) den VaultPath haben muss, der auch bei [localNode.workAreaRootPath](#localnodeworkarearootpath) angegeben ist.
 
 #### localNode.id
     
