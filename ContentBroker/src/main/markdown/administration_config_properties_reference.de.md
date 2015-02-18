@@ -58,11 +58,11 @@ Die hier einzutragende Zahl muss genau der id des Eintrages des jeweiligen Knote
 
 #### localNode.auditSleepFor
 
-Nur auf Testinstallationen benutzen. Ansonsten weglassen.
+**Achtung** Nur auf Testinstallationen benutzen. Ansonsten weglassen.
 
 #### localNode.logFolder
 
-Nur auf Testinstallation benutzen. Ansonsten weglassen.
+**Achtung** Nur auf Testinstallation benutzen. Ansonsten weglassen.
 
 ## cb
 
