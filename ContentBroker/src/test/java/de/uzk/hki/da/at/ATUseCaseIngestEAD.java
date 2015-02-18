@@ -146,6 +146,7 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 	
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
+//		FileUtils.copyFileToDirectory(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile(), Path.makeFile("tmp"));
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));

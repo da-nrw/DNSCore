@@ -134,24 +134,28 @@ public class CreateEDMAction extends AbstractAction {
 		MetadataStructure ms = null;
 		File edm = null;
 		
-		if(packageType.equals("EAD") || packageType.equals("METS") || packageType.equals("LIDO")) {
-			edm = getWa().metadataStream(WA_PUBLIC,EDM_FOR_ES_INDEX_METADATA_STREAM_ID);
-			List<Document> documents = o.getDocuments();
-			
-			if(packageType.equals("EAD")) {
-				ms = new EadMetsMetadataStructure(metadataSourceFile, documents);
-			} else if(packageType.equals("METS")) {
-				ms = new MetsMetadataStructure(metadataSourceFile, documents);
-			} else if(packageType.equals("LIDO")) {
-				ms = new LidoMetadataStructure(metadataSourceFile, documents);
+		try {
+			if(packageType.equals("EAD") || packageType.equals("METS") || packageType.equals("LIDO")) {
+				edm = getWa().metadataStream(WA_PUBLIC,EDM_FOR_ES_INDEX_METADATA_STREAM_ID);
+				List<Document> documents = o.getDocuments();
+				
+				if(packageType.equals("EAD")) {
+					ms = new EadMetsMetadataStructure(metadataSourceFile, documents);
+				} else if(packageType.equals("METS")) {
+					ms = new MetsMetadataStructure(metadataSourceFile, documents);
+				} else if(packageType.equals("LIDO")) {
+					ms = new LidoMetadataStructure(metadataSourceFile, documents);
+				}
+				ms.toEDM(ms.getIndexInfo(o.getIdentifier()), edm, preservationSystem);
+			} else if(packageType.equals("XMP")) {
+				edm = generateEdmUsingXslt(xsltTransformationFile, metadataSourceFile, EDM_FOR_ES_INDEX_METADATA_STREAM_ID);
+			} else {
+				throw new UserException(null, "Unknown metadata format");
 			}
-			ms.toEDM(ms.getIndexInfo(o.getIdentifier()), edm, preservationSystem);
-		} else if(packageType.equals("XMP")) {
-			edm = generateEdmUsingXslt(xsltTransformationFile, metadataSourceFile, EDM_FOR_ES_INDEX_METADATA_STREAM_ID);
-		} else {
-			throw new UserException(null, "Unknown metadata format");
+			return edm;
+		} catch (Exception e) {
+			throw new RuntimeException("Unable to serialize EDM!");
 		}
-		return edm;
 	}
 	
 	private void printFile(File edm) throws IOException {

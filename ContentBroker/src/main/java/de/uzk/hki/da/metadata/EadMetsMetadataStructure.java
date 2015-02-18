@@ -121,6 +121,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 				indexInfo.put(id, nodeInfo);
 			}	
 		}
+		
 		return indexInfo;
 	}
 	
@@ -145,7 +146,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		} catch (Exception e) {
 			logger.error("No unittitle element found");
 		}
-		title.add(element.getChild("unittitle").getValue());
+		title.add(t);
 		return title;
 	}
 	

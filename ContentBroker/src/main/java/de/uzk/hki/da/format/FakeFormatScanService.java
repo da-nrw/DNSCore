@@ -100,7 +100,7 @@ public class FakeFormatScanService implements FormatScanService{
 				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}
-				    if (patternFound(line,"<ead .*>")){
+				    if (patternFound(line,"<ead .*>") || patternFound(line,"<ead.*>")){
 				    	f.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
 				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;

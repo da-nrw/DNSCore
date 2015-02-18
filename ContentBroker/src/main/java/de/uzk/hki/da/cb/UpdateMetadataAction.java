@@ -543,18 +543,16 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		Iterator<File> xmlFiles = FileUtils.iterateFiles(
 				srcFile.getParentFile(), new WildcardFileFilter("*.xml"), null);
-		
-		File destDir = null;
-		
+
 //		Implementierung für beliebige Baumtiefe steht noch aus!
 		
 		File[] subDirs = srcFile.getParentFile().listFiles();
 		
 		for(int file=-1; file<subDirs.length; file++) {
 			
-			if(file==-1) {
-				destDir = new File(o.getDataPath() +"/"+ repName);
-			} else {
+			File destDir = new File(o.getDataPath() +"/"+ repName);
+			
+			if(file>-1) {
 				File currentFile = subDirs[file];
 				if(currentFile.isDirectory()) {
 					destDir = new File(Path.make(o.getDataPath(), repName, currentFile.getName()).toString());
