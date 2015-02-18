@@ -8,7 +8,7 @@ abzulegen bzw. zu finden. Sie ist notwendiger Bestandteil jeder DNSCore Installa
 
 Die Datei ist in verschiedene Blöcke unterteilt, die je nach gewünschter Gesamtkonfiguration (zusammen mit der beans.xml) vorhanden sein müssen.
 
-### localNode
+## localNode
 
 Der localNode.*-Block beinhaltet den Knoten selbst betreffende Konfigurationen und ist obligatorisch in jeder config.properties. Hier sehen wir ein Beispiel:  [config.properties.ci](../conf/config.properties.ci)
 
@@ -31,13 +31,13 @@ entsprechen dabei den [Areas](processing_stages.md), also den unterschiedlichen 
 
 Auf Knoten, auf denen nur die Präsenationskomponenten laufen, ist lediglich der Eintrag für **localNode.workAreaRootPath=** vonnöten, da die Komponenten für die Annahme und Herausgabe von Paketen und Speicherung von Paketen auf LZA-Medien hier keine Rolle spielen.
 
-##### localNode.replDestinations
+#### localNode.replDestinations
    
 Unter ***replDestinations*** sind diejenigen Knoten angegeben, zu denen die Applikation Sekundärkopien der AIPs zur Sicherung der Langzeiterhaltung repliziert. Sind mehrere Knoten als Ziel angegeben, sind diese durch Kommata zu trennen.
 
 Prinzipiell hängt es von der konkret eingesetzten ***GridFacade*** ab, worauf die Namen verweisen, im Falle von iRODS basierten ***GridFacade***s ("irodsGridFacade", "irodsFederatedGridFacade") entsprechen die Werte Namen entsprechender iRODS-Resourcen-(!)Gruppen. 
 
-##### localNode.workingResource
+#### localNode.workingResource
 
 Dieser Eintrag muss mit der Verwendung von iRODS basierten Speicheradaptern als Implementation des *DistributedConversionAdapter* (siehe [unten](#cbimplementationdistributedconversionadapter)) ausgefüllt werden und bezeichnt eine dedizierte Resource, 
 die als Pendant zur WorkingArea dient. Dass heisst, dass diese Resource immer (!) den VaultPath haben muss, der auch bei localNode.workingAreaRootPath angegeben ist.
@@ -59,38 +59,38 @@ Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
 Die hierunter zusammengefassten Einträge hängen, genau wie die localNode Einträge, mit den Knoten (Node) Konzept zusammen, sind jedoch im Gegensatz zu diesen nicht fachlicher, sondern technischer Natur.
 
-##### cb.serverSocketNumber
+#### cb.serverSocketNumber
 
 Hier ist eine freie Portnummer angegeben, die zur serverinternen Kommunikation zwischen ContentBroker und DAWeb bzw. ContentBroker und cbTalk.sh via einer MessageQueue reserviert wird.
 
-##### cb.implementation.grid=
+#### cb.implementation.grid=
 
 Wenn ein Knoten nicht allein zur Verwaltung von PIPs genutzt wird, sondern in vollem Umfang als Knoten im Sinne der Langzeiterhaltung dient, muss dieser unter diesem Knoten der Name der Implementation angegeben werden, die die Anbindung
 an die jeweils genutzte Speichertechnologie ermöglicht.
 
 Derzeit verfügbare Implementationen sind 
 
-* ***irodsGridFacade*** - iRODS im Zonenbetrieb
-* ***irodsFederatedGridFacade*** - iRODS im Federatedbetrieb
-* ***fakeGridFacade*** - Minimalimplementation zu Testzwecken. DEFAULT
+* **irodsGridFacade** - iRODS im Zonenbetrieb
+* **irodsFederatedGridFacade** - iRODS im Federatedbetrieb
+* **fakeGridFacade** - Minimalimplementation zu Testzwecken. DEFAULT
 
 
-##### cb.implementation.distributedConversionAdapter
+#### cb.implementation.distributedConversionAdapter
 
 Um Workflows gestalten so zu können, dass Jobs von mehreren Knoten des Systemes kooperativ bearbeitet werden können, ist eine Technologie vonnöten, um die Synchronisierung der Daten auf der WorkArea zu erreichen. Hierfür stehen derzeit drei Implementationen zur Verfügung:
 
-* ***irodsDistributedConversionAdapter*** - Aufbauend auf einer Lösung basierend auf iRODS im Zonenbetrieb
-* ***irodsFederatedDistributedConversionAdapter*** - Aufbauend auf einer Lösung basierend auf iRODS im Federated-Betrieb
-* ***fakeDistributedConversionAdapter*** - Minimalimplementation zu Testzwecken. DEFAULT 
+* **irodsDistributedConversionAdapter** - Aufbauend auf einer Lösung basierend auf iRODS im Zonenbetrieb
+* **irodsFederatedDistributedConversionAdapter** - Aufbauend auf einer Lösung basierend auf iRODS im Federated-Betrieb
+* **fakeDistributedConversionAdapter** - Minimalimplementation zu Testzwecken. DEFAULT 
 
 Ist entweder *irodsDistributedConversionAdapter* sowie *irodsFederatedDistributedConversionAdapter* gewählt, so muss auch der Eintrag localNode.workingResource (siehe [oben](#localNode.workingResource) gesetzt sein.
 
-##### cb.bin.python
+#### cb.bin.python
 
 Here you have to insert the command to run an instance of python (at the moment >= 2.7 is required). If you are sure the required command is globally visible in the environment (the shell or process) in which the ContentBroker.jar is intended to run, you simple can insert something as simple as "python" as a value. If this is not the case, for example if the packaging system of your distro has only python in a version < 2.7 and you have a self compiled version at another path
 on your file system, you should insert the full path to the python binary as a value.
 
-##### cb.implementation.metadataExtractor
+#### cb.implementation.metadataExtractor
 
 Mögliche Werte sind
 
@@ -98,7 +98,7 @@ Mögliche Werte sind
 * **cb.implementation.metadataExtractor=fakeMetadataExtractor** 
 	
 	
-### irods
+## irods
 
 Wenn mindestens eines der Subsysteme "gridFacade" bzw. "distributedConversionAdapter", konfigurierbar per
 
@@ -145,7 +145,7 @@ asdf
 
 The password has to be encrypted with the password encryptor/decryptor which is part of the DNSCore project itself (if you haven't already, you can see the sub project [here](https://github.com/da-nrw/DNSCore/tree/master/PasswordEncryptor).
 
-### fedora
+## fedora
 
 Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
@@ -165,7 +165,7 @@ for usage by the ContentBroker.
     
 The passwort has to be encrypted/decrypted with the PasswordEncryptor of DNSCore.
 
-###elasticsearch
+## elasticsearch
 
 Beispiel [config.properties.ci](../conf/config.properties.ci)
 
