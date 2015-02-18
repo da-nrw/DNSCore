@@ -38,16 +38,14 @@ vonnöten, da die Komponenten für die Annahme und Herausgabe von Paketen und Sp
 
     localNode.replDestinations=ciArchiveResourceGroup
    
-For this setting you can insert either a single destination or a comma seperated list of several destinations which are considered endpoints for the node. These are the nodes holding the secondary copies of objects for long term archival.
-It depends on the implementations of the underlying grid what these node names TODO(why not node names?, here is a discrepancy between the business model side and the technical implementation details) refer to. In a typical iRODS (zone) installation these are the names of resource groups to which the objects can be replicated to.
+Unter ***replDestinations*** sind diejenigen Knoten angegeben, zu denen die Applikation Sekundärkopien der AIPs zur Sicherung der Langzeiterhaltung repliziert. Sind mehrere Knoten als Ziel angegeben, sind diese durch Kommata zu trennen.
+
+Prinzipiell hängt es von der konkret eingesetzten ***GridFacade*** ab, worauf die Namen verweisen, im Falle von iRODS basierten ***GridFacade***s ("irodsGridFacade", "irodsFederatedGridFacade") entsprechen die Werte Namen entsprechender iRODS-Resourcen-(!)Gruppen. 
 
     localNode.workingResource=
 
-TODO does it belong on the node section?
-    
-    localNode.name=localnode
-
-This property lets you specify the name which identifies the node in the system. It is used for example for synchronizing jobs between nodes (by using the DistributedConversionAdapter). While the name is theoretically arbitrary, it is recommended to use the fully qualified domain name of the node, which typically should equal the irods.server setting on iRODS based node installations (see description of irods settings below).
+Dieser Eintrag muss mit der Verwendung von iRODS basierten Speicheradaptern ("irodsDistributedConversionAdapter","irodsDistributedConversionAdapter" als Implementation des ***DistributedConversionAdapter*** ausgefüllt werden und bezeichnen eine dedizierte Resource, 
+die als Pendant zur WorkingArea dient. Dass heisst, dass diese Resource immer (!) den VaultPath haben muss, der auch bei localNode.workingAreaRootPath angegeben ist.
 
     localNode.id= 
     
