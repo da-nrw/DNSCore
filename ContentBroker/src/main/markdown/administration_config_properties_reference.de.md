@@ -18,7 +18,6 @@ Der localNode.*-Block beinhaltet den Knoten selbst betreffende Konfigurationen u
     localNode.gridCacheAreaRootPath=/ci/storage/GridCacheArea
     localNode.workingResource=ciWorkingResource 
     localNode.replDestinations=ciArchiveResourceGroup
-    localNode.name=localnode
     localNode.id=
 
 Der localNode entspricht dabei dem [Knoten](object_model.de.md#node---der-knoten)-Konzept der Applikation. Die einzurichtenden Pfade
