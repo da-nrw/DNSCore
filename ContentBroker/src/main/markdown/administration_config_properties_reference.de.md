@@ -125,10 +125,10 @@ Bestimmt, welche im Dienste die Formatidentifikation, Subformatidentifikation, (
 
 Mögliche Werte sind
 
-* **configurableFileFormatFacade** DEFAULT
+* **standardFileFormatFacade** DEFAULT
 * **fakeFileFormatFacade** 
 
-Ist *configurableFileFormatFacade* gewählt, so wird die Metadatenextraktion von JHOVE, die Formatidentifikation von FIDO erledigt. In diesem Falle ist die Angabe des Parameters [cb.bin.python](#cbbinpython) ebenfalls notwendig.
+Ist *standardFileFormatFacade* gewählt, so wird die Metadatenextraktion von JHOVE, die Formatidentifikation von FIDO erledigt. In diesem Falle ist die Angabe des Parameters [cb.bin.python](#cbbinpython) ebenfalls notwendig.
 
 #### cb.bin.python
 
