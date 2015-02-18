@@ -39,7 +39,7 @@ Prinzipiell hängt es von der konkret eingesetzten ***GridFacade*** ab, worauf d
 
 ##### localNode.workingResource
 
-Dieser Eintrag muss mit der Verwendung von iRODS basierten Speicheradaptern als Implementation des *DistributedConversionAdapter* (siehe [unten](#cbimplementationdistributedconversion)) ausgefüllt werden und bezeichnt eine dedizierte Resource, 
+Dieser Eintrag muss mit der Verwendung von iRODS basierten Speicheradaptern als Implementation des *DistributedConversionAdapter* (siehe [unten](#cbimplementationdistributedconversionadapter)) ausgefüllt werden und bezeichnt eine dedizierte Resource, 
 die als Pendant zur WorkingArea dient. Dass heisst, dass diese Resource immer (!) den VaultPath haben muss, der auch bei localNode.workingAreaRootPath angegeben ist.
 
 ##### localNode.id
@@ -75,7 +75,7 @@ Derzeit verfügbare Implementationen sind
 * ***fakeGridFacade*** - Minimalimplementation zu Testzwecken. DEFAULT
 
 
-##### cb.implementation.distributedConversion
+##### cb.implementation.distributedConversionAdapter
 
 Um Workflows gestalten so zu können, dass Jobs von mehreren Knoten des Systemes kooperativ bearbeitet werden können, ist eine Technologie vonnöten, um die Synchronisierung der Daten auf der WorkArea zu erreichen. Hierfür stehen derzeit drei Implementationen zur Verfügung:
 
