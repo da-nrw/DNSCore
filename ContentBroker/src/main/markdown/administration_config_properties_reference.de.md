@@ -39,7 +39,7 @@ Prinzipiell hängt es von der konkret eingesetzten ***GridFacade*** ab, worauf d
 
 ##### localNode.workingResource
 
-Dieser Eintrag muss mit der Verwendung von iRODS basierten Speicheradaptern als Implementation des ***DistributedConversionAdapter*** (siehe [unten](#cbimplementationdistributedconversion)) ausgefüllt werden und bezeichnen eine dedizierte Resource, 
+Dieser Eintrag muss mit der Verwendung von iRODS basierten Speicheradaptern als Implementation des *DistributedConversionAdapter* (siehe [unten](#cbimplementationdistributedconversion)) ausgefüllt werden und bezeichnt eine dedizierte Resource, 
 die als Pendant zur WorkingArea dient. Dass heisst, dass diese Resource immer (!) den VaultPath haben muss, der auch bei localNode.workingAreaRootPath angegeben ist.
 
 ##### localNode.id
