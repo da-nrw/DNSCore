@@ -72,41 +72,20 @@ Derzeit verfügbare Implementationen sind
 
 * ***irodsGridFacade*** - iRODS im Zonenbetrieb
 * ***irodsFederatedGridFacade*** - iRODS im Federatedbetrieb
-* ***fakeGridFacade*** - Minimalimplementation zu Testzwecken
+* ***fakeGridFacade*** - Minimalimplementation zu Testzwecken. DEFAULT
 
 
-##### cb.implementation.distributedConversion=
+##### cb.implementation.distributedConversion
 
 Um Workflows gestalten so zu können, dass Jobs von mehreren Knoten des Systemes kooperativ bearbeitet werden können, ist eine Technologie vonnöten, um die Synchronisierung der Daten auf der WorkArea zu erreichen. Hierfür stehen derzeit drei Implementationen zur Verfügung:
 
 * ***irodsDistributedConversionAdapter*** - Aufbauend auf einer Lösung basierend auf iRODS im Zonenbetrieb
 * ***irodsFederatedDistributedConversionAdapter*** - Aufbauend auf einer Lösung basierend auf iRODS im Federated-Betrieb
-* ***fakeDistributedConversionAdapter*** - Minimalimplementation zu Testzwecken.
+* ***fakeDistributedConversionAdapter*** - Minimalimplementation zu Testzwecken. DEFAULT 
 
 Ist entweder **irodsDistributedConversionAdapter** sowie **irodsFederatedDistributedConversionAdapter** gewählt, so muss auch der Eintrag localNode.workingResource gesetzt sein.
 
-
-
-The ContentBroker is able to synchronize jobs between nodes in the system. To accomplish this, the unpacked objects in the WorkArea can be transfered to another node and an action can then create a job for the other node to execute which will then work with the replicated data. So two or more nodes can modify the objects state sequentially. The setting lets you choose an implementation which provides the necessary replicaton facilities.
-
-
-
-When selecting the irodsDistributedConversionAdapter, an installation of iRODS (in zone mode) is used. The irods settings in config.properties have to be present (also see irods section below).
-    
-
-
-This implementation is useful for testing or evaluation purposes.
-    
-This setting determines the connection to the presentation repository subsystem.
-    
-    cb.implementation.repository=
-    cb.implementation.repository=fedoraRepositoryFacade
-    cb.implementation.repository=fakeRepositoryFacade (default)
-    
-When choosing fedoraRepositoryFacade, Fedora is used as the presentation layer subsystem.
-This fakeRepositoryFacade implementation is useful for testing or evaluation purposes.
-
-    cb.bin.python=
+##### cb.bin.python
 
 Here you have to insert the command to run an instance of python (at the moment >= 2.7 is required). If you are sure the required command is globally visible in the environment (the shell or process) in which the ContentBroker.jar is intended to run, you simple can insert something as simple as "python" as a value. If this is not the case, for example if the packaging system of your distro has only python in a version < 2.7 and you have a self compiled version at another path
 on your file system, you should insert the full path to the python binary as a value.
@@ -116,7 +95,7 @@ on your file system, you should insert the full path to the python binary as a v
 	cb.implementation.metadataExtractor=fakeMetadataExtractor
 	
 	
-### Der "irods.*"-Block der config.properties
+### irods
 
 Wenn mindestens eines der Subsysteme "gridFacade" bzw. "distributedConversionAdapter", konfigurierbar per
 
@@ -163,7 +142,7 @@ asdf
 
 The password has to be encrypted with the password encryptor/decryptor which is part of the DNSCore project itself (if you haven't already, you can see the sub project [here](https://github.com/da-nrw/DNSCore/tree/master/PasswordEncryptor).
 
-### Der "fedora.*"-Block der config.properties.
+### fedora
 
 Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
@@ -183,7 +162,7 @@ for usage by the ContentBroker.
     
 The passwort has to be encrypted/decrypted with the PasswordEncryptor of DNSCore.
 
-### Der "elasticsearch.*"-Block der config.properties.
+###elasticsearch
 
 Beispiel [config.properties.ci](../conf/config.properties.ci)
 
