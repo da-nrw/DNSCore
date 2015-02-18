@@ -60,6 +60,10 @@ Die hier einzutragende Zahl muss genau der id des Eintrages des jeweiligen Knote
 
 Nur auf Testinstallationen benutzen. Ansonsten weglassen.
 
+#### localNode.logFolder
+
+Nur auf Testinstallation benutzen. Ansonsten weglassen.
+
 ## cb
 
 Beispiel aus [config.properties.ci](../conf/config.properties.ci)
