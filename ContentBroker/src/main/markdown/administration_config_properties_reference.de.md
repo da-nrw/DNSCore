@@ -10,6 +10,8 @@ Die Datei ist in verschiedene Blöcke unterteilt, die je nach gewünschter Gesam
 
 Anmerkung: Wenn ein den folgenden Beschreibungen ein Parameter mit DEFAULT gekennzeichnet ist, bedeutet dass, dass, wenn der Parameter weggelassen wird, er automatisch vom ContentBroker mit dem dem gekennzeichneten Wert initialisiert.
 
+Eine jederzeit aktuelle und getestete Version der Datei ist jederzeit unter dem Link [config.properties.ci](../conf/config.properties.ci) zu finden. Diese Datei beschreibt eine volle Knoteninstallation inklusive Presentation Repository und LZA auf Basis von iRODS, Fedora, ElasticSearch, FIDO und JHOVE. Diese config.properties ist diejenige, die im Rahmen des Jenkins Build verwendet wird. Im Kontrast dazu findet man eine abgespeckte Version unter [config.properties.dev](../conf/config.properties.dev). Diese Installation besschreibt eine volle Knoteninstallation, die jedoch ohne iRODS, Fedora, ElasticSearch, FIDO und JHOVE arbeitet.
+
 ## localNode
 
 Der localNode.*-Block beinhaltet den Knoten selbst betreffende Konfigurationen und ist obligatorisch in jeder config.properties. Hier sehen wir ein Beispiel:  [config.properties.ci](../conf/config.properties.ci)
