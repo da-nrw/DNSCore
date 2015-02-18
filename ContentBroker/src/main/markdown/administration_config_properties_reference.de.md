@@ -127,7 +127,7 @@ Ein vollständiges Beispiel für den Block ist [config.properties.ci](../conf/co
 
 Wenn mindestens eines der Subsysteme *gridFacade* bzw. *distributedConversionAdapter* auf die Nutzung einer iRODS-basierten Implementation (irodsGridFacade,irodsFederatedGridFacade,irodsDistributedConversionAdapter,irodsFederatedDistributedConversionAdapter) konfiguriert ist, dann muss der ensprechende **irods**-Block in der config.properties ebenfalls ausgefüllt sein. Bei der Auswahl anderer Implementationen ist der Block überflüssig.
 
-**BEANS** Der irods-Block an dieser Stelle korrespondiert mit dem Import-Eintrag ```<import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>``` aus der conf/beans.xml. Es muss sichergestellt werden, dass bei Nutzung von iRODS der entsprechende Eintrag in der Beans vorhanden ist.
+**BEANS** Der irods-Block an dieser Stelle korrespondiert mit dem Import-Eintrag ```<import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>``` aus der conf/beans.xml. Es muss sichergestellt werden, dass bei Nutzung von iRODS der entsprechende Eintrag in der Beans gesetzt wird.
 
 #### iRODS-Basisdaten
 
@@ -157,7 +157,7 @@ Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
 When the application has been installed in one of wither pres or full mode, the presentation module is activated via its respective import in the import section of the beans.xml (see down below). Es muss sichergestellt werden, dass die eingetragenen Werte denen ensprechen, die bei der Installation von Fedora angegeben wurden. Mehr zur Installatioin von Fedora findet sich [hier](install_fedora.de.md).
 
-**BEANS** der fedora-Block hier korrespondiert mit dem Eintrag ```<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>``` aus der conf/beans.xml. Es muss sichergestellt werden, dass bei Nutzung von Fedora/Elasticsearch der entsprechende Eintrag in der Beans vorhanden ist.
+**BEANS** der fedora-Block hier korrespondiert mit dem Eintrag ```<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>``` aus der conf/beans.xml. Es muss sichergestellt werden, dass bei Nutzung von Fedora/Elasticsearch der entsprechende Eintrag in der Beans gesetzt wird.
 
 #### fedora.url
 
@@ -181,7 +181,7 @@ Beispiel [config.properties.ci](../conf/config.properties.ci)
 
 Wenn [cb.implementation.repository](#cbimplementationrepository) auf *fedoraRepositoryFacade* gesetzt ist, ist es notwendig, die Parameter aus diesem Block einzutragen. Es muss sichergestellt werden, dass die eingetragenen Werte der Elasticsearch-Installation entsprechen. Mehr zur Installation von Elasticsearch findet sich [hier](install_elasticsearch.de.md).
 
-**BEANS** der elasticsearch-Block hier korrespondiert mit dem Eintrag ```<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>``` aus der conf/beans.xml. Es muss sichergestellt werden, dass bei Nutzung von Fedora/Elasticsearch der entsprechende Eintrag in der Beans vorhanden ist.
+**BEANS** der elasticsearch-Block hier korrespondiert mit dem Eintrag ```<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>``` aus der conf/beans.xml. Es muss sichergestellt werden, dass bei Nutzung von Fedora/Elasticsearch der entsprechende Eintrag in der Beans gesetzt wird.
 
 #### elasticsearch.index
 
