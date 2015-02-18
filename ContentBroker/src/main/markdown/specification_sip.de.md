@@ -64,7 +64,8 @@ mit dem Namen premis.xml beinhalten muss
 Der Original-Name eines SIP, technisch **OriginalName** genannt, besteht
 aus dem Containernamen ohne die Dateiendung. Dieser Name trägt eine spezielle
 Bedeutung, da eine pro Nutzer eindeutige Kennung eines Objektes innerhalb 
-des Systemes darstellt. 
+des Systemes darstellt. Wird zu einem späteren Zeitpunkt ein weiteres Paket mit dem einem bereits vergebenen 
+Originalnamen eingeliefert, so behandelt das System dieses Paket als ein **Delta** zu einem bereits vorhandenen Objekt.
 
 ### PREMIS
 
