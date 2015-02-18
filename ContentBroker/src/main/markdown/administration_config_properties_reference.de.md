@@ -21,6 +21,7 @@ Der localNode.*-Block beinhaltet den Knoten selbst betreffende Konfigurationen u
     localNode.workingResource=ciWorkingResource 
     localNode.replDestinations=ciArchiveResourceGroup
     localNode.id=
+    localNode.auditSleepFor=10000
 
 Der localNode entspricht dabei dem [Knoten](object_model.de.md#node---der-knoten)-Konzept der Applikation. Die einzurichtenden Pfade entsprechen dabei den [Areas](processing_stages.md), also den unterschiedlichen Speicher-Bereichen, auf denen der ContentBroker seine Arbeit verrichtet. Es sollten immer absolute Pfade eingetragen sein. Es spielt keine Rolle, ob ein abschließendes Slash gesetzt ist oder nicht. 
 
@@ -54,6 +55,10 @@ die als Pendant zur WorkingArea dient. Dass heisst, dass diese Resource immer (!
 #### localNode.id
     
 Die hier einzutragende Zahl muss genau der id des Eintrages des jeweiligen Knoten (Node) in der Objektdatenbank entsprechen. Die hier eingetragene id ist dabei eindeutig innerhalb eines Gesamtsystems, d.h. es dürfen nicht zwei Maschinen mit derselben id konfiguriert sein.
+
+#### localNode.auditSleepFor
+
+Nur auf Testinstallationen benutzen. Ansonsten weglassen.
 
 ## cb
 
