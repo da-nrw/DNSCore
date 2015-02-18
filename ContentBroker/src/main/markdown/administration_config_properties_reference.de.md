@@ -44,7 +44,7 @@ die als Pendant zur WorkingArea dient. Dass heisst, dass diese Resource immer (!
 
     localNode.id= 
     
-This setting must contain the integer value primary key of the nodes correspoding entry in the nodes table of the object db.
+Die hier einzutragende Zahl muss genau der id des Eintrages des jeweiligen Knoten (Node) in der Objektdatenbank entsprechen. Die hier eingetragene id ist dabei eindeutig innerhalb eines Gesamtsystems, d.h. es dürfen nicht zwei Maschinen mit derselben id konfiguriert sein.
 
 ### Der "cb.*-Block" der config.properties
 
