@@ -8,7 +8,7 @@ abzulegen bzw. zu finden. Sie ist notwendiger Bestandteil jeder DNSCore Installa
 
 Die Datei ist in verschiedene Blöcke unterteilt, die je nach gewünschter Gesamtkonfiguration (zusammen mit der beans.xml) vorhanden sein müssen. Insbesondere die mit **cb.implementation** startenden Konfigurationsparameter bestimmten, ob evenutell weitere Blöcke, wie z.B. der irods Block, ausgefüllt werden müssen oder auch nicht. Im folgenden werden alle Blöcke im Einzelnen behandelt.
 
-Anmerkung: Wenn ein den folgenden Beschreibungen ein Parameter mit DEFAULT gekennzeichnet ist, bedeutet dass, dass, wenn der Parameter weggelassen wird, er automatisch vom ContentBroker mit dem dem gekennzeichneten Wert initialisiert wird.
+Anmerkung: Wenn ein den folgenden Beschreibungen ein Parameter mit DEFAULT gekennzeichnet ist, bedeutet dass, dass, wenn der Parameter weggelassen wird, er automatisch vom ContentBroker mit dem dem gekennzeichneten Wert initialisiert.
 
 ## localNode
 
@@ -119,14 +119,18 @@ Ist *fedoraRepositoryFacade* gewählt, so müssen sämtliche Parameter aus den [
 
 #### cb.implementation.fileFormatFacade
 
+Bestimmt, welche im Dienste die Formatidentifikation, Subformatidentifikation, (technische) Metadatenextraktion übernehmen.
+
 Mögliche Werte sind
 
-* **cb.implementation.fileFormatFacade=configurableFileFormatFacade** DEFAULT
-* **cb.implementation.fileFormatFacade=fakeFileFormatFacade** 
+* **configurableFileFormatFacade** DEFAULT
+* **fakeFileFormatFacade** 
+
+Ist *configurableFileFormatFacade* gewählt, so wird die Metadatenextraktion von JHOVE, die Formatidentifikation von FIDO erledigt. In diesem Falle ist die Angabe des Parameters [cb.bin.python](#cbbinpython) ebenfalls notwendig.
 
 #### cb.bin.python
 
-Hier muss, wenn *cb.implementation.fileFormatFacade* nicht explizit auf *fakeFileFormatFacade* gesetzt ist, der Pfad zu einer Python Binary (Version >= 2.7) angegeben sein. Wenn sichergestellt werden kann, dass die Binary im Pfad der Laufzeitumgebung des ContentBroker ist, kann hier einfach *python* angegeben werden, ansonsten empiehlt sich hier die Angabe eine absoluten Pfades.
+Hier muss, wenn [cb.implementation.fileFormatFacade](#cbimplementationfileformatfacade) nicht explizit auf *fakeFileFormatFacade* gesetzt ist, der Pfad zu einer Python Binary (Version >= 2.7) angegeben sein. Wenn sichergestellt werden kann, dass die Binary im Pfad der Laufzeitumgebung des ContentBroker ist, kann hier einfach *python* angegeben werden, ansonsten empiehlt sich hier die Angabe eine absoluten Pfades.
 
 ## irods
 
