@@ -172,7 +172,7 @@ Beispiel aus [config.properties.ci](../conf/config.properties.ci)
     fedora.user=fedoraAdmin
     fedora.password=BYi/MFjKDFd5Dpe52PSUoA==
 
-When the application has been installed in one of wither pres or full mode, the presentation module is activated via its respective import in the import section of the beans.xml (see down below). Es muss sichergestellt werden, dass die eingetragenen Werte denen ensprechen, die bei der Installation von Fedora angegeben wurden. Mehr zur Installatioin von Fedora findet sich [hier](install_fedora.de.md).
+When the application has been installed in one of wither pres or full mode, the presentation module is activated via its respective import in the import section of the beans.xml (see down below). Es muss sichergestellt werden, dass die eingetragenen Werte denen ensprechen, die bei der Installation von Fedora angegeben wurden. Mehr zur Installation von Fedora findet sich [hier](install_fedora.de.md).
 
 **BEANS** der fedora-Block hier korrespondiert mit dem Eintrag ```<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>``` aus der conf/beans.xml. Es muss sichergestellt werden, dass bei Nutzung von Fedora/Elasticsearch der entsprechende Eintrag in der Beans gesetzt wird.
 
