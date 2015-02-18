@@ -46,7 +46,7 @@ die als Pendant zur WorkingArea dient. Dass heisst, dass diese Resource immer (!
     
 Die hier einzutragende Zahl muss genau der id des Eintrages des jeweiligen Knoten (Node) in der Objektdatenbank entsprechen. Die hier eingetragene id ist dabei eindeutig innerhalb eines Gesamtsystems, d.h. es dürfen nicht zwei Maschinen mit derselben id konfiguriert sein.
 
-### Der "cb.*-Block" der config.properties
+### cb
 
 Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
@@ -57,30 +57,22 @@ Beispiel aus [config.properties.ci](../conf/config.properties.ci)
     cb.implementation.metadataExtractor=jhoveMetadataExtractor
     cb.bin.python=/ci/python/python
 
-There are a couple of settings that relate strongly to the node concept, but are not related to business concepts in any way. Instead they relate to technical concepts only. Hence they merit their own category which is called "cb" which stands for ContentBroker settings.
+Die hierunter zusammengefassten Einträge hängen, genau wie die localNode Einträge, mit den Knoten (Node) Konzept zusammen, sind jedoch im Gegensatz zu diesen nicht fachlicher, sondern technischer Natur.
 
     cb.serverSocketNumber=
 
-In order to let peripheral components of DNSCore (primary use of course is DA-Web) talk to and have introspection into the application state of the ContentBroker, a server process is beeing established by the ContentBroker at startup. Any free port will do. As under normal circumstances DA-Web runs on the same node (i.r. localnode will suffice) as the ContentBroker, firewall issues could possibly be neglected.
+Hier ist eine freie Portnummer angegeben, die zur serverinternen Kommunikation zwischen ContentBroker und DAWeb bzw. ContentBroker und cbTalk.sh via einer MessageQueue reserviert wird.
 
     cb.implementation.grid=
 
-The full and node mode installations of the ContentBroker require a grid component onto which they put and from which they retrieve the long term archive contents, which correspond to the AIP in OAIS terms, and always relate to containered files (.tar) on the technical level. At the moment there exist three implementations of grid subsystems, of which two relate to iRODS configurations in different modes.
+Wenn ein Knoten nicht allein zur Verwaltung von PIPs genutzt wird, sondern in vollem Umfang als Knoten im Sinne der Langzeiterhaltung dient, muss dieser unter diesem Knoten der Name der Implementation angegeben werden, die die Anbindung
+an die jeweils genutzte Speichertechnologie ermöglicht.
 
-    cb.implementation.grid=irodsGridFacade
-    
-If set to irodsGridFacade, the iRODS installation is assumed to be configured properly to run a one zone based grid.
+Derzeit verfügbare Implementationen sind 
 
-block described below must be inserted to a working config.properties. 
-    
-    cb.implementation.grid=irodsFederatedGridFacade
-
-As opposed to the irodsGridFacade, the irodsFederatedGridFacade assumes to have an iRODS system running which is configured in a federated (TODO link to documents) manner. Note: At the moment this feature is considered experimental until it is fully tested in a load test environment.
-
-    cb.implementation.grid=fakeGridFacade
-    
-The fakeGridFacade is a simple implementation which resigns any third party subsystems but only the local file system.
-It has been written primarily for purposes of testing or easy experimentation for evaluation or showcasing purposes.
+* ***irodsGridFacade*** - iRODS im Zonenbetrieb
+* ***irodsFederatedGridFacade*** - iRODS im Federatedbetrieb
+* ***fakeGridFacade*** - Minimalimplementation zu Test- und Showcasing-Zwecken
 
     cb.implementation.distributedConversion=
 
