@@ -30,11 +30,7 @@ Der localNode entspricht dabei dem [Knoten](object_model.de.md#node---der-knoten
 
 entsprechen dabei den [Areas](processing_stages.md), also den unterschiedlichen Speicher-Bereichen, auf denen der ContentBroker seine Arbeit verrichtet. Es sollten immer absolute Pfade eingetragen sein. Es spielt keine Rolle, ob ein abschließendes Slash gesetzt ist oder nicht. 
 
-**Hinweis** Auf Knoten, auf denen nur die Präsenationskomponenten laufen, ist lediglich ein Eintrag für
-
-    localNode.workAreaRootPath=
-    
-vonnöten, da die Komponenten für die Annahme und Herausgabe von Paketen und Speicherung von Paketen auf LZA-Medien hier keine Rolle spielen.
+Auf Knoten, auf denen nur die Präsenationskomponenten laufen, ist lediglich ein Eintrag für *localNode.workAreaRootPath=* vonnöten, da die Komponenten für die Annahme und Herausgabe von Paketen und Speicherung von Paketen auf LZA-Medien hier keine Rolle spielen.
 
     localNode.replDestinations=ciArchiveResourceGroup
    
