@@ -39,7 +39,7 @@ Prinzipiell hängt es von der konkret eingesetzten ***GridFacade*** ab, worauf d
 
     localNode.workingResource=
 
-Dieser Eintrag muss mit der Verwendung von iRODS basierten Speicheradaptern ("irodsDistributedConversionAdapter","irodsDistributedConversionAdapter" als Implementation des ***DistributedConversionAdapter*** ausgefüllt werden und bezeichnen eine dedizierte Resource, 
+Dieser Eintrag muss mit der Verwendung von iRODS basierten Speicheradaptern als Implementation des ***DistributedConversionAdapter*** ausgefüllt werden und bezeichnen eine dedizierte Resource, 
 die als Pendant zur WorkingArea dient. Dass heisst, dass diese Resource immer (!) den VaultPath haben muss, der auch bei localNode.workingAreaRootPath angegeben ist.
 
     localNode.id= 
@@ -72,17 +72,28 @@ Derzeit verfügbare Implementationen sind
 
 * ***irodsGridFacade*** - iRODS im Zonenbetrieb
 * ***irodsFederatedGridFacade*** - iRODS im Federatedbetrieb
-* ***fakeGridFacade*** - Minimalimplementation zu Test- und Showcasing-Zwecken
+* ***fakeGridFacade*** - Minimalimplementation zu Testzwecken
+
 
     cb.implementation.distributedConversion=
 
+Um Workflows gestalten so zu können, dass Jobs von mehreren Knoten des Systemes kooperativ bearbeitet werden können, ist eine Technologie vonnöten, um die Synchronisierung der Daten auf der WorkArea zu erreichen. Hierfür stehen derzeit drei Implementationen zur Verfügung:
+
+* ***irodsDistributedConversionAdapter*** - Aufbauend auf einer Lösung basierend auf iRODS im Zonenbetrieb
+* ***irodsFederatedDistributedConversionAdapter*** - Aufbauend auf einer Lösung basierend auf iRODS im Federated-Betrieb
+* ***fakeDistributedConversionAdapter*** - Minimalimplementation zu Testzwecken.
+
+Ist entweder **irodsDistributedConversionAdapter** sowie **irodsFederatedDistributedConversionAdapter** gewählt, so muss auch der Eintrag localNode.workingResource gesetzt sein.
+
+
+
 The ContentBroker is able to synchronize jobs between nodes in the system. To accomplish this, the unpacked objects in the WorkArea can be transfered to another node and an action can then create a job for the other node to execute which will then work with the replicated data. So two or more nodes can modify the objects state sequentially. The setting lets you choose an implementation which provides the necessary replicaton facilities.
 
-    cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+
 
 When selecting the irodsDistributedConversionAdapter, an installation of iRODS (in zone mode) is used. The irods settings in config.properties have to be present (also see irods section below).
     
-    cb.implementation.distributedConversion=fakeDistributedConversionAdapter
+
 
 This implementation is useful for testing or evaluation purposes.
     
