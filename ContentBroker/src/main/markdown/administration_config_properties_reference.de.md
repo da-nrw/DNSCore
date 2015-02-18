@@ -63,7 +63,7 @@ Die hierunter zusammengefassten Einträge hängen, genau wie die localNode Eintr
 
 Hier ist eine freie Portnummer angegeben, die zur serverinternen Kommunikation zwischen ContentBroker und DAWeb bzw. ContentBroker und cbTalk.sh via einer MessageQueue reserviert wird.
 
-#### cb.implementation.grid=
+#### cb.implementation.grid
 
 Wenn ein Knoten nicht allein zur Verwaltung von PIPs genutzt wird, sondern in vollem Umfang als Knoten im Sinne der Langzeiterhaltung dient, muss dieser unter diesem Knoten der Name der Implementation angegeben werden, die die Anbindung
 an die jeweils genutzte Speichertechnologie ermöglicht.
