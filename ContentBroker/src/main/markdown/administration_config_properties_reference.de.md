@@ -8,6 +8,8 @@ abzulegen bzw. zu finden. Sie ist notwendiger Bestandteil jeder DNSCore Installa
 
 Die Datei ist in verschiedene Blöcke unterteilt, die je nach gewünschter Gesamtkonfiguration (zusammen mit der beans.xml) vorhanden sein müssen.
 
+Anmerkung: DEFAULT bedeutet, dass, wenn der Parameter weggelassen wird, dass er automatisch mit dem Default Wert besetzt wird.
+
 ## localNode
 
 Der localNode.*-Block beinhaltet den Knoten selbst betreffende Konfigurationen und ist obligatorisch in jeder config.properties. Hier sehen wir ein Beispiel:  [config.properties.ci](../conf/config.properties.ci)
@@ -74,7 +76,6 @@ Derzeit verfügbare Implementationen sind
 * **irodsFederatedGridFacade** - iRODS im Federatedbetrieb
 * **fakeGridFacade** - Minimalimplementation zu Testzwecken. DEFAULT
 
-
 #### cb.implementation.distributedConversionAdapter
 
 Um Workflows gestalten so zu können, dass Jobs von mehreren Knoten des Systemes kooperativ bearbeitet werden können, ist eine Technologie vonnöten, um die Synchronisierung der Daten auf der WorkArea zu erreichen. Hierfür stehen derzeit drei Implementationen zur Verfügung:
@@ -83,34 +84,20 @@ Um Workflows gestalten so zu können, dass Jobs von mehreren Knoten des Systemes
 * **irodsFederatedDistributedConversionAdapter** - Aufbauend auf einer Lösung basierend auf iRODS im Federated-Betrieb
 * **fakeDistributedConversionAdapter** - Minimalimplementation zu Testzwecken. DEFAULT 
 
-Ist entweder *irodsDistributedConversionAdapter* sowie *irodsFederatedDistributedConversionAdapter* gewählt, so muss auch der Eintrag localNode.workingResource (siehe [oben](#localNode.workingResource) gesetzt sein.
+Ist entweder *irodsDistributedConversionAdapter* sowie *irodsFederatedDistributedConversionAdapter* gewählt, so muss auch der Eintrag [localNode.workingResource](#localNode.workingResource) (siehe oben) gesetzt sein.
 
 #### cb.bin.python
 
-Here you have to insert the command to run an instance of python (at the moment >= 2.7 is required). If you are sure the required command is globally visible in the environment (the shell or process) in which the ContentBroker.jar is intended to run, you simple can insert something as simple as "python" as a value. If this is not the case, for example if the packaging system of your distro has only python in a version < 2.7 and you have a self compiled version at another path
-on your file system, you should insert the full path to the python binary as a value.
+Hier muss, wenn *cb.implementation.fileFormatFacade* nicht explizit auf *fakeFileFormatFacade* gesetzt ist, der Pfad zu einer Python Binary (Version >= 2.7) angegeben sein. Wenn sichergestellt werden kann, dass die Binary im Pfad der Laufzeitumgebung des ContentBroker ist, kann hier einfach *python* angegeben werden, ansonsten empiehlt sich hier die Angabe eine absoluten Pfades.
 
-#### cb.implementation.metadataExtractor
+#### cb.implementation.fileFormatFacade
 
 Mögliche Werte sind
 
-* **cb.implementation.metadataExtractor=jhoveMetadataExtractor** DEFAULT
-* **cb.implementation.metadataExtractor=fakeMetadataExtractor** 
-	
+* **cb.implementation.fileFormatFacader=configurableFileFormatFacade** DEFAULT
+* **cb.implementation.fileFormatFacade=fakeFileFormatFacade** 
 	
 ## irods
-
-Wenn mindestens eines der Subsysteme "gridFacade" bzw. "distributedConversionAdapter", konfigurierbar per
-
-    cb.implementation.grid=
-    cb.implementation.distributedConversionAdapter=
-    
-auf die Verwendung von iRODS hin konfiguriert sind, siehe
-
-    cb.implementation.grid=irodsGridFacade
-    cb.implementation.distributedConversionAdapter=irodsDistributedConversionAdapter
-    
-so ist es erforderlich, dass der optionale "irods.*"-Block auch innerhalb der config.properties vorhanden ist.
 
 Ein vollständiges Beispiel für den Block ist [config.properties.ci](../conf/config.properties.ci)
 
@@ -124,11 +111,7 @@ Ein vollständiges Beispiel für den Block ist [config.properties.ci](../conf/co
     irods.keyStorePath=
     irods.trustStorePath=
 
-
- 
-
-These settings are optional and must be set only if cb.implementation.grid or cb.implementaion.districutedConversion
-are set to use the corresponding irods specific implementations. Nodes not using irods dont need these parameters.
+Wenn mindestens eines der Subsysteme *gridFacade* bzw. *distributedConversionAdapter* auf die Nutzung einer iRODS-basierten Implementation (irodsGridFacade,irodsFederatedGridFacade,irodsDistributedConversionAdapter,irodsFederatedDistributedConversionAdapter) konfiguriert ist, dann muss der ensprechende **irods**-Block in der config.properties ebenfalls ausgefüllt sein. Bei der Auswahl anderer Implementationen ist der Block überflüssig.
 
     irods.user=
     irods.server=
@@ -139,11 +122,11 @@ are set to use the corresponding irods specific implementations. Nodes not using
     irods.keyStorePath=
     irods.trustStorePath=
 
-asdf
+TODO Beschreibung
 
     irods.password= 
 
-The password has to be encrypted with the password encryptor/decryptor which is part of the DNSCore project itself (if you haven't already, you can see the sub project [here](https://github.com/da-nrw/DNSCore/tree/master/PasswordEncryptor).
+Das hier einzutragende Passwort muss vorab verschlüsselt sein mit Hilfe des DNSCore-eigenen [PasswordEncryptor](../../../../tree/master/PasswordEncryptor).
 
 ## fedora
 
