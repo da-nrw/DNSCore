@@ -142,7 +142,7 @@ Ein vollständiges Beispiel für den Block ist [config.properties.ci](../conf/co
     irods.keyStorePath=
     irods.trustStorePath=
 
-Wenn mindestens eines der Subsysteme *gridFacade* bzw. *distributedConversionAdapter* auf die Nutzung einer iRODS-basierten Implementation (irodsGridFacade,irodsFederatedGridFacade,irodsDistributedConversionAdapter,irodsFederatedDistributedConversionAdapter) konfiguriert ist, dann muss der ensprechende **irods**-Block in der config.properties ebenfalls ausgefüllt sein. Bei der Auswahl anderer Implementationen ist der Block überflüssig.
+Wenn eines der Subsysteme [gridFacade](#cbimplementationgrid) oder [distributedConversionAdapter](#cbimplementationdistributedconversionadapter) auf die Nutzung einer iRODS-basierten Implementation (irodsGridFacade,federatedGridFacade,irodsDistributedConversionAdapter,irodsFederatedDistributedConversionAdapter) konfiguriert ist, dann muss der ensprechende **irods**-Block in der config.properties ebenfalls ausgefüllt sein. Bei der Auswahl anderer Implementationen ist der Block überflüssig.
 
 **BEANS** Der irods-Block an dieser Stelle korrespondiert mit dem Import-Eintrag ```<import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>``` aus der conf/beans.xml. Es muss sichergestellt werden, dass bei Nutzung von iRODS der entsprechende Eintrag in der Beans gesetzt wird.
 
