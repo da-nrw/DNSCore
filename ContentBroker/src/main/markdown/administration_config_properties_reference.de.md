@@ -113,18 +113,21 @@ Ein vollständiges Beispiel für den Block ist [config.properties.ci](../conf/co
 
 Wenn mindestens eines der Subsysteme *gridFacade* bzw. *distributedConversionAdapter* auf die Nutzung einer iRODS-basierten Implementation (irodsGridFacade,irodsFederatedGridFacade,irodsDistributedConversionAdapter,irodsFederatedDistributedConversionAdapter) konfiguriert ist, dann muss der ensprechende **irods**-Block in der config.properties ebenfalls ausgefüllt sein. Bei der Auswahl anderer Implementationen ist der Block überflüssig.
 
+#### iRODS-Basisdaten
+
     irods.user=
     irods.server=
     irods.zone=
     irods.default_resc=
+    
+#### Verschlüsselung der Authentifizierung
+   
     irods.pam=
     irods.keyStorePassword=
     irods.keyStorePath=
     irods.trustStorePath=
 
-TODO Beschreibung
-
-    irods.password= 
+#### irods.password
 
 Das hier einzutragende Passwort muss vorab verschlüsselt sein mit Hilfe des DNSCore-eigenen [PasswordEncryptor](../../../../../../tree/master/PasswordEncryptor).
 
@@ -140,10 +143,11 @@ When the application has been installed in one of wither pres or full mode, the 
 
 #### fedora.url
 
+Die URL des Fedora Server
+
 #### fedora.user
 
-In pres or full mode the ContentBroker and the presentation repository are hosted on one and the same machine. Fedora runs on a tomcat and fedora.url points to the http://... adress of Fedora while fedora.user is a fedora user prepared
-for usage by the ContentBroker.
+Der Fedora User, mit dem der ContentBroker auf dem Fedora arbeitet.
 
 #### fedora.password
     
