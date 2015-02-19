@@ -71,8 +71,6 @@ public class UnpackAction extends AbstractAction {
 	private static final String HELP_SUMMARY = "Make sure there exists always only one file with the same document name (which is the file path relative from the SIPs data path, excluding the file extension). "
 			+ "For help refer to the SIP-Specification page at "+ SIP_SPEC_URL + ".";
 	
-	private enum PackageType{ BAGIT, METS }
-	
 	public UnpackAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
 	
 	private IngestGate ingestGate;
@@ -104,8 +102,8 @@ public class UnpackAction extends AbstractAction {
 		String sipInForkPath = copySIPToWorkArea(sipContainerPath());
 		unpack(new File(sipInForkPath),o.getPath().toString());
 		
-		throwUserExceptionIfDuplicatesExist();
 		throwUserExceptionIfNotBagitConsistent();
+		throwUserExceptionIfDuplicatesExist();
 		throwUserExceptionIfNotPremisConsistent();
 		
 		logger.info("deleting: "+sipInForkPath);
@@ -359,13 +357,10 @@ public class UnpackAction extends AbstractAction {
 	 * @return
 	 * @throws RuntimeException
 	 */
-	private PackageType throwUserExceptionIfNotBagitConsistent(){
+	private void throwUserExceptionIfNotBagitConsistent(){
 		
-		PackageType pType = null;
-		pType = determinePackageType(o.getPath().toFile());
-
-		if (pType == null)
-			throw new UserException(UserExceptionId.UNKNOWN_PACKAGE_TYPE, "Package type couldn't be determined");
+		if (! isBagItPackage(o.getPath().toFile()))
+			throw new UserException(UserExceptionId.NOT_A_BAGIT_PACKAGE, "Not a BagIt package.");
 
 		ConsistencyChecker checker = new BagitConsistencyChecker(o.getPath().toString());
 		
@@ -379,20 +374,19 @@ public class UnpackAction extends AbstractAction {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		
-		return pType;
 	}	
 	
 	
 
 	/**
-	 * Determines whether the package is of type BAGIT or PREMIS
+	 * Check if package is premis.
+	 * 
 	 * @author Daniel M. de Oliveira
 	 * @param package PATH
 	 * @return Either PackageType.METS or PackageType.BAGIT or null if package type can't be determined.
 	 * @throws RuntimeException if cannot determine package type.
 	 */
-	PackageType determinePackageType(File pkg_path){
+	private boolean isBagItPackage(File pkg_path){
 		logger.debug("determine package type for "+pkg_path);
 		String files[] = pkg_path.list();
 		for (String f:files){
@@ -402,9 +396,9 @@ public class UnpackAction extends AbstractAction {
 		if (isStandardPackage(pkg_path)) {
 			logger.debug("Package is BagIt style, baby!");
 		} else {
-			return null;
+			return false;
 		}
-		return PackageType.BAGIT;
+		return true;
 	}
 	
 	
