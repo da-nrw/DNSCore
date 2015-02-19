@@ -52,7 +52,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		if (client==null) throw new IllegalStateException("transport client not initialized");
 		
 		try {
-			logger.debug("prepare index, set "+data+" to object with id "+objectId);
+			logger.trace("prepare index, set "+data+" to object with id "+objectId);
 			client.prepareIndex(indexName, type)
 				.setId(objectId).setSource(data).execute().actionGet();
 		} catch(ElasticSearchException e) {
@@ -70,7 +70,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 				
 		Settings settings = ImmutableSettings.settingsBuilder()
 		        .put("cluster.name", cluster).build();
-		logger.debug("set cluster.name: {}", cluster);
+		logger.trace("set cluster.name: {}", cluster);
 		TransportClient client = new TransportClient(settings);
 		for (String esHost : hosts) {
 			client.addTransportAddress(new InetSocketTransportAddress(esHost, 9300));
