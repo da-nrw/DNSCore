@@ -113,3 +113,6 @@ Default Bootstrap-Policies löschen (sonst werden diese bei jedem Neustart gelad
     sudo rm -f /opt/fedora/pdp/policies/*
 
 Tomcat neustarten.
+
+
+

@@ -21,6 +21,8 @@
 
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.core.C.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
@@ -32,8 +34,6 @@ import org.apache.commons.io.FilenameUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.MailContents;
-import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
@@ -60,6 +60,8 @@ import de.uzk.hki.da.util.Path;
 
 public class RetrievalAction extends AbstractAction {
 	
+
+	private static final String PREMIS_XML = "premis.xml";
 	private Path newTar;
 
 	@Override
@@ -69,13 +71,14 @@ public class RetrievalAction extends AbstractAction {
 
 	@Override
 	public void checkPreconditions() {
+		if (!wa.objectPath().toFile().exists()) throw new IllegalStateException("object data path on fs doesn't exist on fs");
+		if (!o.getLatest(PREMIS_XML).toRegularFile().exists()) throw new RuntimeException("CRITICAL ERROR: premis file could has not been found");
 	}
 	
 	@Override
 	public boolean implementation() throws IOException {
-		if (!o.getDataPath().toFile().exists()) throw new IllegalStateException("object data path on fs doesn't exist on fs");
-
-		newTar = Path.make(n.getUserAreaRootPath(),o.getContractor().getShort_name(),"outgoing",o.getIdentifier() + ".tar");
+		
+		newTar = Path.make(n.getUserAreaRootPath(),o.getContractor().getShort_name(),"outgoing",o.getIdentifier() + FILE_EXTENSION_TAR);
 		Path tempFolder = createTmpFolder();
 		
 
@@ -121,7 +124,7 @@ public class RetrievalAction extends AbstractAction {
 
 			for (DAFile f:p.getFiles()){
 			
-				File destDir = Path.makeFile(tempFolder,"data",f.getRep_name(),FilenameUtils.getPath(f.getRelative_path()));
+				File destDir = Path.makeFile(tempFolder,WA_DATA,f.getRep_name(),FilenameUtils.getPath(f.getRelative_path()));
 				destDir.mkdirs();
 				FileUtils.copyFileToDirectory(f.toRegularFile(), destDir);
 			}
@@ -152,17 +155,15 @@ public class RetrievalAction extends AbstractAction {
 
 
 	private void moveNewestPremisToDIP(Path tempFolder) throws IOException {
-		File premisFile = o.getLatest("premis.xml").toRegularFile();
-		if (!premisFile.exists()) throw new RuntimeException("CRITICAL ERROR: premis file could has not been found");
-		File dest = Path.makeFile(tempFolder,"data","premis.xml");
-		FileUtils.copyFile(premisFile, dest);
+		File dest = Path.makeFile(tempFolder,WA_DATA,PREMIS_XML);
+		FileUtils.copyFile(o.getLatest(PREMIS_XML).toRegularFile(), dest);
 	}
 
 
 
 
 	private Path createTmpFolder(){
-		Path tmpFolder = Path.make(n.getWorkAreaRootPath(),"work",
+		Path tmpFolder = Path.make(n.getWorkAreaRootPath(),WA_WORK,
 				o.getContractor().getShort_name(), o.getIdentifier(), o.getIdentifier()); 
 		tmpFolder.toFile().mkdir();
 		return tmpFolder;
@@ -177,7 +178,7 @@ public class RetrievalAction extends AbstractAction {
 		
 		logger.debug("Building tar at " + newTar);
 		try {
-			ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(new File(".tar"));
+			ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(new File(FILE_EXTENSION_TAR));
 			builder.archiveFolder(tempFolder.toFile(),
 							  newTar.toFile(), true);
 		} catch (Exception e) {
@@ -189,10 +190,8 @@ public class RetrievalAction extends AbstractAction {
 	private void cleanupFS() throws IOException{
 		
 		// cleanup
-		String relativePackagePath = o.getContractor().getShort_name() + "/" + o.getIdentifier() + "/";
-		File packageFolder = Path.makeFile(n.getWorkAreaRootPath(),"work",relativePackagePath);
 		
-		FileUtils.deleteDirectory(packageFolder);
+		FileUtils.deleteDirectory(wa.objectPath().toFile());
 	}
 	
 	
@@ -200,9 +199,10 @@ public class RetrievalAction extends AbstractAction {
 	/**
 	 * @param tempFolder
 	 * @throws RuntimeException
+	 * @throws IOException 
 	 */
 	private void copySurfaceRepresentation(Path tempFolder)
-			throws RuntimeException {
+			throws RuntimeException, IOException {
 		
 		String sce = "";
 		if (preservationSystem.getSidecarExtensions()!=null) 
@@ -211,20 +211,14 @@ public class RetrievalAction extends AbstractAction {
 		List<DAFile> files = o.getNewestFilesFromAllRepresentations(sce);
 		for (DAFile f : files)
 		{
-			if (f.toRegularFile().getName().equals("premis.xml")) continue;
+			if (f.toRegularFile().getName().equals(PREMIS_XML)) continue;
 				
-			File dest = Path.makeFile(tempFolder,"data",f.getRelative_path());
+			File dest = Path.makeFile(tempFolder,WA_DATA,f.getRelative_path());
 			logger.info("file will be part of pip: "+dest.getAbsolutePath());
 			String destFolder = dest.getAbsolutePath().substring(0, dest.getAbsolutePath().lastIndexOf("/"));
 
 			new File(destFolder).mkdirs();
-
-			try {
-				FileUtils.copyFile(f.toRegularFile(), dest);
-			} catch (IOException e) {
-				throw new UserException(UserExceptionId.RETRIEVAL_ERROR, 
-						"Konnte Datei nicht kopieren " + f.toRegularFile().getAbsolutePath() + " in das Verzeichnis " + destFolder, e);
-			}
+			FileUtils.copyFile(f.toRegularFile(), dest);
 		}
 	}
 }

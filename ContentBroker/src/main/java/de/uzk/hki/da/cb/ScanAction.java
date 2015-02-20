@@ -19,17 +19,17 @@
 
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.core.C.QUESTION_MIGRATION_ALLOWED;
+import static de.uzk.hki.da.core.C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION;
+
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.MailContents;
-import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionInstructionBuilder;
@@ -49,6 +49,8 @@ import de.uzk.hki.da.util.ConfigurationException;
  */
 public class ScanAction extends AbstractAction{
 	
+	private static final String PREMIS_XML = "premis.xml";
+	private static final String XMP_RDF = "XMP.rdf";
 	private static final String MIGRATION = "MIGRATION";
 	private final ConversionInstructionBuilder ciB = new ConversionInstructionBuilder();
 	private DistributedConversionAdapter distributedConversionAdapter;
@@ -62,6 +64,8 @@ public class ScanAction extends AbstractAction{
 
 	@Override
 	public void checkPreconditions() {
+		if (o.getLatest(PREMIS_XML)==null) throw new PreconditionsNotMetException("Must exist: "+PREMIS_XML);
+	    if (!o.getLatest(PREMIS_XML).toRegularFile().exists()) throw new PreconditionsNotMetException("Must exist: "+PREMIS_XML);
 	}
 
 	@Override
@@ -70,15 +74,17 @@ public class ScanAction extends AbstractAction{
 		j.getConversion_instructions().addAll(
 				generateConversionInstructions(o.getLatestPackage().getFiles()));
 		
-		Object premisObject = parsePremisToMetadata(o.getDataPath() +"/"+ j.getRep_name()+"a");
+		Object premisObject = parsePremisToMetadata(o.
+				getLatest(PREMIS_XML).
+				toRegularFile());
 		if (!premisObject.grantsRight(MIGRATION))
 		{
 			logger.info("PREMIS says migration is not granted. Will ask the user what to do next.");
 			new MailContents(preservationSystem,n).informUserAboutPendingDecision(o); 
 			
 			// "Manipulate" the end status to point to ProcessUserDecisionsAction
-			j.setQuestion(C.QUESTION_MIGRATION_ALLOWED);
-			this.setEndStatus(C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
+			j.setQuestion(QUESTION_MIGRATION_ALLOWED);
+			this.setEndStatus(WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
 		}
 		
 		return true;
@@ -108,7 +114,7 @@ public class ScanAction extends AbstractAction{
 		
 		for (DAFile file : filesArchival){
 			logger.debug("File: "+file.getRelative_path());
-			if(file.getRelative_path().equals("XMP.rdf")) {
+			if(file.getRelative_path().equals(XMP_RDF)) {
 				logger.debug("Skipping rdf file");
 			} else {
 				for	(ConversionPolicy p:
@@ -133,19 +139,17 @@ public class ScanAction extends AbstractAction{
 	
 	
 	
-	private Object parsePremisToMetadata(String pathToRepresentation) throws IOException {
-		logger.debug("reading rights from " + pathToRepresentation + "/premis.xml");
+	private Object parsePremisToMetadata(File premis) throws IOException {
+		logger.debug("reading rights from " + premis);
 		Object o = null;
 				
 		try {
 			o = new ObjectPremisXmlReader()
-			.deserialize(new File(pathToRepresentation + "/premis.xml"));
-		} catch (ParseException e1) {
-			throw new UserException(UserExceptionId.READ_SIP_PREMIS_ERROR, "Konnte PREMIS Datei nicht einlesen", e1);
-		} catch (NullPointerException e2) {
-			throw new UserException(UserExceptionId.READ_SIP_PREMIS_ERROR, "Konnte PREMIS Datei nicht einlesen", e2);
-		}
-		
+			.deserialize(premis);
+		} catch (Exception e) {
+			// do not throw userexception here since ability to deserialize should already have been checked in UnpackAction.
+			throw new RuntimeException("Error while deserializing PREMIS", e);
+		}		
 		return o;
 	}
 	
