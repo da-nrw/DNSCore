@@ -49,3 +49,9 @@ curl -XPUT 'http://localhost:9200/portal_test/ore:Aggregation/_mapping' -d @es_m
     
 Achten Sie auf die Angabe des richtigen Indexes!
 
+### Security Patch
+
+In der elasticsearch 0.90 sollte in der /etc/elasticsearch/elasticsearch.yml die folgende Zeile hinzugefügt werden
+script.groovy.sandbox.enabled: false
+
+http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-scripting.html
