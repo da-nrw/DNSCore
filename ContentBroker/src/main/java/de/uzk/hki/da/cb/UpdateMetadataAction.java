@@ -62,6 +62,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.util.FileIdGenerator;
 import de.uzk.hki.da.util.Path;
 
 /**
@@ -241,14 +242,7 @@ public class UpdateMetadataAction extends AbstractAction {
 						if(!isPresMode()) {
 							targetValue = targetPath;
 						} else {
-							String newRelPath = targetDAFile.getRelative_path();
-							if(targetDAFile.getRelative_path().contains(File.separator)) {
-								newRelPath = newRelPath.replace(File.separator, "-");
-								if(targetFile.getName().startsWith("_")) {
-									newRelPath = newRelPath.replace(targetFile.getName(), targetFile.getName().substring(1));
-									newRelPath = "_"+newRelPath;
-								}
-							}
+							String newRelPath = FileIdGenerator.getFileId(targetDAFile.getRelative_path());
 							targetValue = preservationSystem.getUrisFile() + File.separator + o.getIdentifier() + File.separator + newRelPath;
 						}
 						eadReplacements.put(href, targetValue);

@@ -47,6 +47,7 @@ import com.yourmediashelf.fedora.client.response.AddDatastreamResponse;
 import com.yourmediashelf.fedora.client.response.FedoraResponse;
 
 import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
+import de.uzk.hki.da.util.FileIdGenerator;
 
 public class Fedora3RepositoryFacade implements RepositoryFacade {
 	
@@ -111,6 +112,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		AddDatastreamResponse r = null;
 		try {
 			String dsLocation = "file://" + file.getAbsolutePath();
+			
 			r=new AddDatastream(pid, dsId).mimeType(mimeType)
 				.controlGroup("E").dsLabel(label)
 				.dsLocation(dsLocation).execute(fedora);
@@ -124,21 +126,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	
 	@Override
 	public String generateFileId(String path) {
-		
-		// replace slashes
-		String dsID = path.replace("/", "-");
-		
-		// eliminate disallowed beginnings
-		if (Character.isDigit(dsID.charAt(0))
-				|| dsID.startsWith("xml")
-				|| dsID.startsWith("XML")) {
-			dsID = "_" + dsID;
-		}
-		
-		// replace disallowed characters
-		dsID = dsID.replaceAll("[^\\p{L}\\p{Digit}\\._-]","_");
-		
-		return dsID;
+		return FileIdGenerator.getFileId(path);
 	}
 
 	@Override
