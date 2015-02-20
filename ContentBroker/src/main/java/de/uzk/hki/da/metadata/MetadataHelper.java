@@ -41,13 +41,18 @@ public class MetadataHelper {
 	
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
+	private String METS_XPATH_EXPRESSION = "//mets:file";
 	
 	@SuppressWarnings("unchecked")
-	public List<Element> getMetsFileElements (Document doc) {
-		return (List<Element>) doc.getRootElement()
-				.getChild("fileSec", METS_NS)
-				.getChild("fileGrp", METS_NS)
-				.getChildren("file", METS_NS);	
+	public List<Element> getMetsFileElements (Document doc) throws JDOMException {
+		XPath metsXPath = XPath.newInstance(METS_XPATH_EXPRESSION);
+		@SuppressWarnings("rawtypes")
+		List currentFileElements = new ArrayList<Element>();
+		for (java.lang.Object node : metsXPath.selectNodes(doc)) {
+			Element fileElement = (Element) node;
+			currentFileElements.add(fileElement);
+		}
+		return currentFileElements;
 	} 
 
 	public String getMetsHref(Element fileElement){

@@ -1,5 +1,6 @@
 package de.uzk.hki.da.at;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -19,6 +20,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.metadata.MetadataHelper;
+import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.util.Path;
 
@@ -28,7 +30,6 @@ public class ATUseCaseIngestArchivDuisburg extends AcceptanceTest{
 	private static String origName = "Archiv_Duisburg_mini";
 	private static Object object;
 	private static final String EAD_XML = "EAD.xml";
-	private static final File retrievalFolder = new File("/tmp/unpackedDIP");
 	private MetadataHelper mh = new MetadataHelper();
 	
 	@BeforeClass
@@ -37,26 +38,34 @@ public class ATUseCaseIngestArchivDuisburg extends AcceptanceTest{
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
-	@AfterClass
-	public static void tearDown() throws IOException{
-		FileUtils.deleteDirectory(retrievalFolder);
-	}
 	
 	@Test
-	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
-//		FileUtils.copyFileToDirectory(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile(), Path.makeFile("tmp"));
+	public void testFileIdGenInPres() throws FileNotFoundException, JDOMException, IOException {
+		
+		FileUtils.copyDirectory(Path.makeFile(contractorsPipsPublic, object.getIdentifier()), Path.makeFile("home", "polina", "Desktop"));
+		
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build
-				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));
-		@SuppressWarnings("unchecked")
-		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
-		Boolean testProvidetChoExists = false;
-		String testId = "";
-		for(Element pcho : providetCho) {
-//			System.out.println("ID: "+pcho.getAttributeValue("about", C.RDF_NS));
-			List<Element> elements = pcho.getChildren();
-			for(Element e : elements) {
-//				System.out.println(e.getName()+": "+e.getValue());
+				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "1175", "mets_1175.xml").toFile()));
+		List<Element> metsFileElements = mh.getMetsFileElements(doc);
+		
+		Element fileElement = metsFileElements.get(0);
+		
+		String metsURL = mh.getMetsHref(fileElement);
+		assertTrue(metsURL.startsWith("http://data.danrw.de/file/"+object.getIdentifier()) && metsURL.endsWith(".jpg"));
+		assertEquals(URL, mh.getMetsLoctype(fileElement));
+		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMetsMimetype(fileElement));
+		
+		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), EAD_XML).toFile()));
+
+		List<String> metsReferences = mh.getMetsRefsInEad(eadDoc);
+		assertTrue(metsReferences.size()==2);
+		for(String metsRef : metsReferences) {
+			if(metsRef.contains("mets_1175.xml")) {
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/_1175-mets_1175.xml"));
+			} else {
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/_1176-mets_1176.xml"));
 			}
 		}
 	}
