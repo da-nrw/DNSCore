@@ -114,10 +114,5 @@ Default Bootstrap-Policies löschen (sonst werden diese bei jedem Neustart gelad
 
 Tomcat neustarten.
 
-### Security Patch
 
-In der elasticsearch 0.90 sollte in der /etc/elasticsearch/elasticsearch.yml die folgende Zeile hinzugefügt werden
-script.groovy.sandbox.enabled: false
-
-http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-scripting.html
 
