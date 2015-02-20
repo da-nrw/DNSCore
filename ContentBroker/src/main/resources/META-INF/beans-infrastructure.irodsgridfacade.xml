@@ -13,10 +13,8 @@
 	
 	<bean id="irodsGridFacade" class="de.uzk.hki.da.grid.IrodsGridFacade">
 		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
-		<property name="localNode" ref="localNode"/>
 	</bean>	
 	<bean id="federatedGridFacade" class="de.uzk.hki.da.grid.IrodsFederatedGridFacade">
 		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
-		<property name="localNode" ref="localNode"/>
 	</bean>	
 </beans>

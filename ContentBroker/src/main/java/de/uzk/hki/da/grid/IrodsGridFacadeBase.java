@@ -45,10 +45,6 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	/** The irods system connector. */
 	protected IrodsSystemConnector irodsSystemConnector;
 	
-	/** The local node. */
-	protected Node localNode;
-	
-	
 	
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.grid.GridFacade#put(java.io.File, java.lang.String)
@@ -65,45 +61,32 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	 * @return true, if successful
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	protected boolean PrepareReplication(File file, String relative_address_dest)
+	protected boolean PrepareReplication(File file, String relative_address_dest, StoragePolicy sp)
 			throws IOException {
 		
-		if (localNode==null) throw new IOException("localNode is null!");
-		if (localNode.getGridCacheAreaRootPath()==null) throw new IOException("gridCacheAreaRootPath is not set");
-		logger.debug("LocalNode:" + localNode.getGridCacheAreaRootPath() + "/" + localNode.getWorkAreaRootPath());
+		if (sp.getGridCacheAreaRootPath()==null) throw new IOException("gridCacheAreaRootPath is not set");
 		
-		if (irodsSystemConnector.getDefaultStorage()==null) logger.error("Default Storage for node named " + localNode.getName()+ " must be set!");
+		if (irodsSystemConnector.getDefaultStorage()==null) logger.error("Default Storage for node named " + sp.getNodeName()+ " must be set!");
 		if (irodsSystemConnector.getZone()==null) throw new IOException("MyZone is not set");
 		if (!file.exists()) throw new IOException ("Not an existing File to put");
 		
 		String address_dest = relative_address_dest;
 		if (!relative_address_dest.startsWith("/")) 
 			address_dest = "/" + relative_address_dest;
-		String targetPhysically = localNode.getGridCacheAreaRootPath() + "/" + C.WA_AIP + address_dest;
+		String targetPhysically = sp.getGridCacheAreaRootPath() + "/" + C.WA_AIP + address_dest;
 		String targetAbsoluteLogicalPath  = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + address_dest;	
 		
 		File gridfile = new File (targetPhysically); 	
-		System.out.println("gridfile "+gridfile+"exits: "+gridfile.exists());
 		
 		if (gridfile.exists()) {
 			
 			if (!replicatedOnlyToCache(targetAbsoluteLogicalPath))
-				throw new java.io.IOException("Grid File " +gridfile+" "+targetAbsoluteLogicalPath+" has already LTA Repls, do not try to put it again!");
+				throw new java.io.IOException("Grid File " +gridfile+" "+targetAbsoluteLogicalPath+" not exclusively or not only available on cache group devices!");
 			
-			if (MD5Checksum.getMD5checksumForLocalFile(file).equals(MD5Checksum.getMD5checksumForLocalFile(gridfile))){
-				// then the only thing left to do is to replicate again
-				
-				logger.debug("GridFile already moved to the irods grid");
-				logger.debug("GridFile is only available on cache device");
-				irodsSystemConnector.executeRule("post { \n " +
-						"acPostIngestOperations(*obj,\"" + irodsSystemConnector.getHost() + "\");\n"
-				+"}\n"
-				+"INPUT *obj=\""+targetAbsoluteLogicalPath+"\"\n"
-				+"OUTPUT ruleExecOut","");
+			if (MD5Checksum.getMD5checksumForLocalFile(file).equals(MD5Checksum.getMD5checksumForLocalFile(gridfile))){	
+				logger.info("GridFile is valid and only available on cache devices");
 				return true;
-
 			} else {
-				
 				logger.error("Leftovers or invalid file on the grid!");
 				irodsSystemConnector.removeFile(targetAbsoluteLogicalPath);
 				if (gridfile.exists()) gridfile.delete();
@@ -144,9 +127,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	public IrodsSystemConnector getirodsSystemConnector() {
 		return irodsSystemConnector; 
 	}
-	
-	
-	
+		
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.grid.GridFacade#storagePolicyAchieved(java.lang.String, int)
 	 */
@@ -276,22 +257,4 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 		return filesize;
 	}
 	
-	/**
-	 * Sets the local node.
-	 *
-	 * @param localNode the new local node
-	 */
-	public void setLocalNode(Node localNode) {
-		this.localNode = localNode;
-	}
-
-	/**
-	 * Gets the local node.
-	 *
-	 * @return the node
-	 */
-	public Node getLocalNode() {
-		return localNode;
-	}
-
 }

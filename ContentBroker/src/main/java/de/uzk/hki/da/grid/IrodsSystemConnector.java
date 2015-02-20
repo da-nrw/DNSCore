@@ -1080,7 +1080,7 @@ public class IrodsSystemConnector {
 	public void saveOrUpdateAVUMetadataDataObject(String data_name, String name, String value) {
 		
 		if (getAVUMetadataDataObjectValue(data_name, name).equals("")) {
-			logger.debug("adding for the first time " + name +" " + value +" to" + data_name );
+			logger.debug("adding for the first time " + name +" " + value +" to " + data_name );
 			addAVUMetadataDataObject(data_name, name, value);
 		} else {
 		

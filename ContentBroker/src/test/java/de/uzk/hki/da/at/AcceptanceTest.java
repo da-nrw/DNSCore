@@ -35,9 +35,11 @@ import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.PropertiesUtils;
 
@@ -52,9 +54,8 @@ public class AcceptanceTest {
 	protected static DistributedConversionAdapter distributedConversionAdapter;
 	protected static User testContractor;
 	protected static PreservationSystem preservationSystem;
-	
 	protected static AcceptanceTestHelper ath = null;
-	
+	protected static StoragePolicy sp;
 	
 	/**
 	 * @param gridImplBeanName bean name 
@@ -103,6 +104,21 @@ public class AcceptanceTest {
 		context.close();
 	}
 	
+	/**
+	 * The StoragePolicy is normally configured in the app,
+	 * but for Packages regarding UC such as retrieval and audit
+	 * a valid StoragePolicy has to be configured.
+	 * @author Jens Peters
+	 */
+	private static void instantiateStoragePolicy() {
+		sp = new StoragePolicy();
+		sp.setMinNodes(1);
+		sp.setWorkingResource("ciWorkingResource");
+		sp.setReplDestinations("ciArchiveResource");
+		sp.setAdminEmail("noreply");
+		sp.setGridCacheAreaRootPath(localNode.getGridCacheAreaRootPath().toString());
+	}
+	
 	
 	@BeforeClass
 	public static void setUpAcceptanceTest() throws IOException{
@@ -127,8 +143,8 @@ public class AcceptanceTest {
 	
 		preservationSystem = (PreservationSystem) session.get(PreservationSystem.class, 1);
 		session.close();
-		
-		ath = new AcceptanceTestHelper(gridFacade,localNode,testContractor);
+		instantiateStoragePolicy();
+		ath = new AcceptanceTestHelper(gridFacade,localNode,testContractor,sp);
 	}
 
 	/**

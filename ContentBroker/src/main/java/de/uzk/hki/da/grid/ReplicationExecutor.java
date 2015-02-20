@@ -19,6 +19,7 @@
 
 package de.uzk.hki.da.grid;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -27,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.service.Mail;
 
 /**
@@ -43,14 +45,10 @@ public class ReplicationExecutor extends Thread {
 	/** The src resc. */
 	private String srcResc; 
 	
-	/** The target resgroups. */
-	private List<String> targetResgroups;
-	
 	/** The data_name. */
 	private String data_name;
 	
-	/** The node */
-	private Node node;
+	private StoragePolicy sp;
 	
 	private long timeout = 20000l;
 	
@@ -87,11 +85,10 @@ public class ReplicationExecutor extends Thread {
 	 * @author Daniel M. de Oliveira
 	 * @author Jens Peters
 	 */
-	public ReplicationExecutor(IrodsSystemConnector isc, Node localnode, List<String> targetResgroups, String data_name){
-		this.node = localnode;
+	public ReplicationExecutor(IrodsSystemConnector isc, String data_name, StoragePolicy sp, String srcResc){
 		this.isc = isc;
-		this.srcResc = localnode.getWorkingResource();
-		this.targetResgroups = targetResgroups;
+		this.sp = sp;
+		this.srcResc = srcResc;
 		this.data_name = data_name;
 	}
 	
@@ -104,6 +101,8 @@ public class ReplicationExecutor extends Thread {
 	@Override
 	public void run() {
 		logger.trace("run....");
+		
+		List<String> targetResgroups = Arrays.asList(sp.getReplDestinations().split(","));
 		
 		for (String targetResgroup: targetResgroups) {
 			logger.info("replicate to " + targetResgroup);
@@ -125,9 +124,9 @@ public class ReplicationExecutor extends Thread {
 			if (i>=retries) {
 				
 				String err = "Failed to replicate :" + data_name + " giving up on node "+ targetResgroup; 
-				if (node.getAdmin().getEmailAddress()!=null && !node.getAdmin().getEmailAddress().equals("")) {
+				if (sp.getAdminEmail()!=null && !sp.getAdminEmail().equals("")) {
 					try {
-						Mail.sendAMail(node.getAdmin().getEmailAddress(), node.getAdmin().getEmailAddress(), err , err);
+						Mail.sendAMail(sp.getAdminEmail(), sp.getAdminEmail(), err , err);
 					} catch (MessagingException ex) {
 						logger.error("Sending Email failed " + ex.toString());
 					}

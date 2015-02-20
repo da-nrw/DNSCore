@@ -23,8 +23,7 @@ import javax.mail.MessagingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.service.Mail;
 
 /**
@@ -40,14 +39,13 @@ public class FederationExecutor extends Thread {
 	/** The data_name. */
 	private String data_name;
 	
-	/** The node */
-	private Node node;
-	
 	private String destResc;
 	
 	private long timeout = 1200000l;
 	
 	private int retries=3;
+	
+	private StoragePolicy sp;
 	
 	public int getRetries() {
 		return retries;
@@ -86,11 +84,11 @@ public class FederationExecutor extends Thread {
 	 * @param data_name the data_name
 	 * @author Jens Peters
 	 */
-	public FederationExecutor(IrodsSystemConnector isc, Node localnode, String data_name, String destResc){
-		this.node = localnode;
+	public FederationExecutor(IrodsSystemConnector isc, StoragePolicy sp, String data_name){
 		this.isc = isc;
+		this.sp = sp;
 		this.data_name = data_name;
-		this.destResc = destResc;
+		this.destResc = sp.getReplDestinations();
 	}
 	
 	/**
@@ -105,7 +103,7 @@ public class FederationExecutor extends Thread {
 			logger.error("dest Resc is null!");
 			throw new RuntimeException("federation destResc is null");
 		}
-		if (node.getAdmin()==null) {
+		if (sp.getAdminEmail()==null) {
 			logger.error("node Admin is null!");
 			throw new RuntimeException("node Admin is null!");
 		}
@@ -122,9 +120,9 @@ public class FederationExecutor extends Thread {
 		// We have passed the retries, we try to send Email to node admin
 		if (i==retries) {
 			String err = "Failed to federate :" + data_name + " giving up on node, cooperateing servers offline?"; 
-			if (node.getAdmin().getEmailAddress()!=null && !node.getAdmin().getEmailAddress().equals("")) {
+			if (sp.getAdminEmail()!=null && !sp.getAdminEmail().equals("")) {
 				try {
-					Mail.sendAMail(node.getAdmin().getEmailAddress(), node.getAdmin().getEmailAddress(), err , err);
+					Mail.sendAMail(sp.getAdminEmail(), sp.getAdminEmail(), err , err);
 				} catch (MessagingException ex) {
 					logger.error("Sending Email failed " + ex.toString());
 				}

@@ -320,12 +320,11 @@ public class Diagnostics {
 		
 		
 		Node node = (Node) context.getBean(C.LOCAL_NODE_BEAN_NAME);
-		StoragePolicy sp = new StoragePolicy(node);
+		StoragePolicy sp = new StoragePolicy();
 		sp.setMinNodes(1);
-		List<String> replDestinations = new ArrayList<String>();
-		replDestinations.add((String)properties.get(PROP_REPL_DESTINATIONS));
-		
-		sp.setDestinations(replDestinations);
+		sp.setGridCacheAreaRootPath((String)properties.get(PROP_GRID_CACHE_AREA_ROOT_PATH));
+	
+		sp.setReplDestinations((String)properties.get(PROP_REPL_DESTINATIONS));
 		context.close();
 		
 		

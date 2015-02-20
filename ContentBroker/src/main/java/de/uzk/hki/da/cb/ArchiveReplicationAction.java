@@ -61,16 +61,12 @@ public class ArchiveReplicationAction extends AbstractAction {
 		
 		String filename = o.getIdentifier() + ".pack_" + o.getLatestPackage().getName() + ".tar";
 		Path target = Path.make(o.getContractor().getShort_name(), o.getIdentifier(), filename);
-		StoragePolicy sp = new StoragePolicy(n);
+		StoragePolicy sp = new StoragePolicy();
+		sp.setGridCacheAreaRootPath(n.getGridCacheAreaRootPath().toString());
 		sp.setMinNodes(preservationSystem.getMinRepls());
-		sp.setDestinations(new ArrayList<String>(getDestinations()));
 		sp.setForbiddenNodes(o.getContractor().getForbidden_nodes());
-		// TODO: this is a user/system exception!! commented out due to federation
-		if (!sp.isPolicyAchievable()) {
-			logger.warn("STORAGE POLICY not achievable!!");
-			//throw new RuntimeException ("POLICY is not achievable!!");
-		}
-		
+		sp.setReplDestinations(n.getReplDestinations());
+		sp.setAdminEmail(n.getAdmin().getEmailAddress());
 		try {
 			Path newFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), filename);
 			if (gridRoot.put(new File(newFilePath.toString()), 
@@ -87,24 +83,6 @@ public class ArchiveReplicationAction extends AbstractAction {
 	@Override
 	public void rollback() {
 		throw new NotImplementedException("No rollback implemented for this action");
-	}
-
-	/**
-	 * @author Jens Peters
-	 * @author Daniel M. de Oliveira
-	 * @return
-	 */
-	private Collection<String> getDestinations() {
-		String replDestinations = "";
-		String forbiddenNodes = "";
-		if (n.getReplDestinations()!=null) replDestinations = n.getReplDestinations();
-		if (o.getContractor().getForbidden_nodes()!=null) forbiddenNodes = o.getContractor().getForbidden_nodes();
-		
-		List<String> targetDest = Arrays.asList(replDestinations.split(","));
-		List<String> forbidden = Arrays.asList(forbiddenNodes.split(","));
-		@SuppressWarnings("unchecked")
-		Collection <String>destinations = CollectionUtils.subtract(targetDest, forbidden);
-		return destinations; 
 	}
 	
 	

@@ -95,18 +95,18 @@ public class IrodsGridFacadeTest {
 		isc = mock(IrodsSystemConnector.class);	
 		ig = new IrodsGridFacade();
 		ig.setIrodsSystemConnector(isc);
+		
 		when (isc.computeChecksum(anyString())).thenReturn("abc");
 		when (isc.connect()).thenReturn(true);
 		
-		
-		Node node = new Node();
-		node.setWorkingResource("cacheresc");
-		node.setGridCacheAreaRootPath(Path.make(irodsDir));
-		node.setWorkAreaRootPath(Path.make(forkDir));
-		node.setReplDestinations("lvr");
-		ig.setLocalNode(node);
-		when(isc.getZone()).thenReturn("da-nrw");
-		sp = new StoragePolicy(node);
+
+		sp = new StoragePolicy();
+		sp.setWorkingResource("cacheresc");
+		sp.setGridCacheAreaRootPath(Path.make(irodsDir).toString());
+		sp.setWorkAreaRootPath(Path.make(forkDir).toString());
+		sp.setReplDestinations("lvr");
+
+		when(isc.getZone()).thenReturn("zone");
 		new File(irodsDir).mkdir();
 		new File(forkDir).mkdir();
 		temp = new File(forkDir + "urn.tar");

@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.User;
 
 /**
@@ -32,21 +33,19 @@ public class ReplicationExecutorTest {
 	 */
 	ReplicationExecutor re;
 	IrodsSystemConnector isc;
+	StoragePolicy sp;
 	
 	@Before
 	public void setUp() throws Exception {
 		
 		isc = mock(IrodsSystemConnector.class);	
-		Node node = new Node();
-		User nodeadmin = new User(); nodeadmin.setEmailAddress("noreply");
-		node.setAdmin(nodeadmin);
 		
-		node.setWorkingResource("cacheresc");
-		node.setReplDestinations("zoneA,zoneB");
-
-		List<String> targetResgroups = Arrays.asList(node.getReplDestinations().split(","));
+		StoragePolicy sp = new StoragePolicy();
+		
+		sp.setWorkingResource("cacheresc");
+		sp.setReplDestinations("rescA,rescB");
 		String data_name = "/zone/aip/Cont/aip.tar";
-		re = new ReplicationExecutor(isc, node, targetResgroups, data_name);
+		re = new ReplicationExecutor(isc, data_name, sp, sp.getWorkingResource());
 	}
 
 	/**
