@@ -223,7 +223,7 @@ public class RetrievalAction extends AbstractAction {
 				FileUtils.copyFile(f.toRegularFile(), dest);
 			} catch (IOException e) {
 				throw new UserException(UserExceptionId.RETRIEVAL_ERROR, 
-						"Couldn't copy file " + f.toRegularFile().getAbsolutePath() + " to folder " + destFolder, e);
+						"Konnte Datei nicht kopieren " + f.toRegularFile().getAbsolutePath() + " in das Verzeichnis " + destFolder, e);
 			}
 		}
 	}

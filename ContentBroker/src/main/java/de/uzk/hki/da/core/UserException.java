@@ -34,7 +34,10 @@ public class UserException extends RuntimeException {
 	private UserExceptionId id;
 	private String errorInfo = "";
 
-	public UserException() { }
+	@SuppressWarnings("unused")
+	private UserException() { }
+	
+	
 	
 	public UserException(UserExceptionId id, String exceptionMessage) {
 		super(exceptionMessage);

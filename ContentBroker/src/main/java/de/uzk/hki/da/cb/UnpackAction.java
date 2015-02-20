@@ -150,15 +150,15 @@ public class UnpackAction extends AbstractAction {
 		
 		try {
 			if (!PremisXmlValidator.validatePremisFile(Path.make(o.getDataPath(),PREMIS_XML).toFile()))
-				throw new UserException(UserExceptionId.INVALID_SIP_PREMIS, "PREMIS file is not valid");
+				throw new UserException(UserExceptionId.INVALID_SIP_PREMIS, "PREMIS Datei nicht valide.");
 		} catch (FileNotFoundException e1) {
-			throw new UserException(UserExceptionId.SIP_PREMIS_NOT_FOUND, "Couldn't find PREMIS file", e1);
+			throw new UserException(UserExceptionId.SIP_PREMIS_NOT_FOUND, "PREMIS Datei nicht gefunden.", e1);
 		}
 		try {
 			new ObjectPremisXmlReader().deserialize(Path.makeFile(o.getDataPath(),PREMIS_XML));
 		} catch (Exception e) {
 			throw new UserException(UserExceptionId.READ_SIP_PREMIS_ERROR,
-					"Couldn't deserialize premis file", e);
+					"Konnte PREMIS Datei nicht erfolgreich einlesen.", e);
 		}
 	}
 
@@ -190,7 +190,7 @@ public class UnpackAction extends AbstractAction {
 				}
 			}
 			if (!isOKWhenSidecarFilesAreSubtracted){
-				errorMsg+="More than one file found for the document named \"";
+				errorMsg+="Mehr als ein Dokument gefunden mit dem Namen \"";
 				errorMsg+= duplicate;
 				errorMsg+="\".\n";
 				errs++;
@@ -198,7 +198,7 @@ public class UnpackAction extends AbstractAction {
 		}
 
 		if (errs!=0){
-			errorMsg+= HELP_SUMMARY+" Found errors: "+errs;
+			errorMsg+= HELP_SUMMARY+" Gefundene Fehler: "+errs;
 			throw new UserException(UserException.UserExceptionId.DUPLICATE_DOCUMENT_NAMES, errorMsg);
 		}
 	}
@@ -328,14 +328,14 @@ public class UnpackAction extends AbstractAction {
 	private void throwUserExceptionIfNotBagitConsistent(){
 		
 		if (! isBagItPackage(o.getPath().toFile()))
-			throw new UserException(UserExceptionId.NOT_A_BAGIT_PACKAGE, "Not a BagIt package.");
+			throw new UserException(UserExceptionId.NOT_A_BAGIT_PACKAGE, "Paket entspricht nicht der BagIt Struktur.");
 
 		ConsistencyChecker checker = new BagitConsistencyChecker(o.getPath().toString());
 		
 		try{
 			if (!checker.checkPackage())
 				throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE,
-						"Consistency checker detected inconsistent package!\n" + checker.getMessages(),
+						"Inkonsistentes Paket!\n" + checker.getMessages(),
 						checker.getMessages());			
 		} catch (UserException e) { 
 			throw e;

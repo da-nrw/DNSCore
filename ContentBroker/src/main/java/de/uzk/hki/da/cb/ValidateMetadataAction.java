@@ -95,7 +95,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		MetadataStructure ms = createMetadataStructure();
 		if (!ms.isValid()){
 			throw new UserException(UserExceptionId.INCONSISTENT_PACKAGE, 
-					"Package of type "+detectedPackageType+" is not consistent");
+					"Metadaten nicht konsistent. Metadatentyp: "+detectedPackageType);
 		}
 		
 		o.setMetadata_file(detectedMetadataFile.getRelative_path());
@@ -146,10 +146,10 @@ public class ValidateMetadataAction extends AbstractAction {
 	private void detect(){
 		
 		if (getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_EAD).size()>=2){
-			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate EAD");
+			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"Mehr als eine Metadatendatei vorhanden vom Typ: EAD");
 		}
 		if (getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_LIDO).size()>1){
-			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate LIDO");
+			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"Mehr als eine Metadatendatei vorhanden vom Typ: LIDO");
 		}
 
 		int ptypeCount=0;
@@ -162,7 +162,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		
 		if ((getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_EAD).size()!=1)&&
 				getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_METS).size()>1){
-			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate METS");
+			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"Mehr als eine Metadatendatei vorhanden vom Typ: METS");
 		}  
 				
 		if (getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_METS).size()==1){
@@ -185,7 +185,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		}
 		
 		if (ptypeCount>1)
-			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"duplicate METADATA");
+			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"Mehr als eine Metadatendatei vorhanden vom Typ: METADATA");
 	}
 	
 	

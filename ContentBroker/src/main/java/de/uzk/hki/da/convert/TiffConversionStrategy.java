@@ -186,7 +186,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 
 	private void parseStdErrAndThrowAdaquateEx(String stdErr) {
 		if (stdErr.indexOf("RichTIFFIPTC")>=0) {
-			throw new UserException(UserExceptionId.WRONG_DATA_TYPE_IPTC, "Stderr: "+ stdErr);
+			throw new UserException(UserExceptionId.WRONG_DATA_TYPE_IPTC, "Probleme mit RichTIFFIPTC. Ausgabe des StdErr: "+ stdErr);
 		} else throw new RuntimeException("Stderr: "+ stdErr);
 	}
 	

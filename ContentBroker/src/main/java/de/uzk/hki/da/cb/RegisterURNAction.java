@@ -117,7 +117,7 @@ public class RegisterURNAction extends AbstractAction {
 				while (causeEx.getCause() != null) {
 					causeEx = (Exception) causeEx.getCause();					
 				};
-				throw new UserException(UserExceptionId.READ_METS_ERROR, "Failed to read URN from mets file " +
+				throw new UserException(UserExceptionId.READ_METS_ERROR, "Konnte URN nicht aus der PREMIS Datei auslesen. " +
 					metsFile.toRegularFile().getAbsolutePath(), causeEx.getMessage(), e);
 			}
 			

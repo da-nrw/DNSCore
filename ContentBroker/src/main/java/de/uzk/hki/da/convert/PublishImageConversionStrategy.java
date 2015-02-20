@@ -264,17 +264,17 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 		String psize = getPublicationRightForAudience(audience).getImageRestriction().getWatermarkPointSize();
 		if (psize == null) {
 			logger.debug("Adding watermark: point size not found for audience " + audience);
-			throw new UserException(UserExceptionId.WATERMARK_NO_POINTSIZE, "No setting for pointsize given while adding watermark");
+			throw new UserException(UserExceptionId.WATERMARK_NO_POINTSIZE, "Beim Wasserzeichen muss ein Parameter \"pointsize\" vorhanden sein.");
 		}
 		String position = getPublicationRightForAudience(audience).getImageRestriction().getWatermarkPosition();
 		if (position == null) {
 			logger.debug("Adding watermark: gravity not found for audience " + audience);
-			throw new UserException(UserExceptionId.WATERMARK_NO_GRAVITY, "No setting for gravity given while adding watermark");
+			throw new UserException(UserExceptionId.WATERMARK_NO_GRAVITY, "Beim Wasserzeichen muss ein Parameter \"gravity\" vorhanden sein.");
 		}
 		String opacity = getPublicationRightForAudience(audience).getImageRestriction().getWatermarkOpacity();
 		if (opacity == null) {
 			logger.debug("Adding watermark: opacity not found for audience " + audience);
-			throw new UserException(UserExceptionId.WATERMARK_NO_OPACITY, "No setting for opacity given while adding watermark");
+			throw new UserException(UserExceptionId.WATERMARK_NO_OPACITY, "Beim Wasserzeichen muss eine Parameter \"opacity\" vorhanden sein.");
 		}
 		
 		String opacityHex = Long.toHexString(Math.round(Integer.parseInt(opacity) * 2.55));
