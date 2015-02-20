@@ -18,6 +18,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ch.qos.logback.classic.Logger;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.metadata.MetadataHelper;
 import de.uzk.hki.da.metadata.XMLUtils;
@@ -146,13 +147,13 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 	
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
-//		FileUtils.copyFileToDirectory(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile(), Path.makeFile("tmp"));
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));
 		@SuppressWarnings("unchecked")
 		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
 		Boolean testProvidetChoExists = false;
+		Boolean bundesleitungUndBezirksverbaendeExists = false;
 		String testId = "";
 		for(Element pcho : providetCho) {
 			if(pcho.getChild("title", C.DC_NS).getValue().equals("Schriftwechsel Holländisch Limburg")) {
@@ -160,8 +161,13 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("1938-01-01/1939-12-31"));
 				testId = pcho.getAttributeValue("about", C.RDF_NS);
 			}
+			if(pcho.getChild("title", C.DC_NS).getValue().equals("01. Bundesleitung und Bezirksverbände")) {
+				bundesleitungUndBezirksverbaendeExists = true;
+				assertTrue(pcho.getChild("isPartOf", C.DCTERMS_NS).getAttributeValue("resource", C.RDF_NS).equals("http://data.danrw.de/file/"+object.getIdentifier()));
+			}
 		}
 		assertTrue(testProvidetChoExists);
+		assertTrue(bundesleitungUndBezirksverbaendeExists);
 		
 //			testIndex
 		String cho = "/cho/";
