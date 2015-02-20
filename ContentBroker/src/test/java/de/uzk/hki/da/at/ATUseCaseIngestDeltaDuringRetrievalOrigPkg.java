@@ -14,7 +14,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.HibernateUtil;
 
-public class ATUseCaseIngestDeltaDuringRetrivalOrigPkg extends AcceptanceTest{
+public class ATUseCaseIngestDeltaDuringRetrievalOrigPkg extends AcceptanceTest{
 
 	private static String ORIG_NAME = "ATUseCaseIngestDeltaDuringRetrivalOrigPkg";
 	private static Object object;
@@ -55,6 +55,8 @@ public class ATUseCaseIngestDeltaDuringRetrivalOrigPkg extends AcceptanceTest{
 		object = ath.ingestAndWaitForJobInState(ORIG_NAME, "952");
 		
 //		Delete Job & Set object state
+// 		normally this is being done by PostRetrievalAction checking for the createddate of Retrieval job
+// 		The Job is in operation by PostRetrieval action, therefore we have to delete the job by hand!
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		session.createSQLQuery("DELETE FROM queue WHERE status='952'").executeUpdate(); 

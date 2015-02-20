@@ -69,7 +69,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	public
 	boolean implementation() throws IOException {
 
-		StoragePolicy sp = new StoragePolicy(n);
+		StoragePolicy sp = new StoragePolicy();
 		sp.setMinNodes(preservationSystem.getMinRepls());
 		do{
 			delay();

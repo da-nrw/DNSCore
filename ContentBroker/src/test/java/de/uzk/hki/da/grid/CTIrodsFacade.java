@@ -89,8 +89,11 @@ public class CTIrodsFacade {
 		testCollPhysicalPathOnLTA = "/ci/archiveStorage/"+aipFolder+"/"+testColl;
 		
 		
-		sp = new StoragePolicy(node);
+		sp = new StoragePolicy();
 		sp.setMinNodes(1);
+		sp.setReplDestinations("ciArchiveResource");
+		sp.setWorkingResource("ciWorkingResource");
+		sp.setGridCacheAreaRootPath(properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH));
 	}
 	
 	
@@ -241,12 +244,11 @@ public class CTIrodsFacade {
 		
 		ig.setIrodsSystemConnector(isc);
 		
-		node = new Node();
-		node.setWorkingResource("ciWorkingResource");
-		node.setGridCacheAreaRootPath(Path.make(properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH)));
-		node.setWorkAreaRootPath(Path.make(properties.getProperty(PROP_WORK_AREA_ROOT_PATH)));
-		node.setReplDestinations("ciArchiveResourceGroup");
-		ig.setLocalNode(node);
+		sp = new StoragePolicy();
+		sp.setWorkingResource("ciWorkingResource");
+		sp.setGridCacheAreaRootPath(Path.make(properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH)).toString());
+		sp.setWorkAreaRootPath(Path.make(properties.getProperty(PROP_WORK_AREA_ROOT_PATH)).toString());
+		sp.setReplDestinations("ciArchiveResourceGroup");
 		
 		context.close();
 	}

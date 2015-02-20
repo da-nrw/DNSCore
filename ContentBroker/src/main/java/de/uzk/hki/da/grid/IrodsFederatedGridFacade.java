@@ -43,8 +43,6 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	/** The logger. */
 	private static Logger logger = LoggerFactory
 			.getLogger(IrodsFederatedGridFacade.class);
-	
-	
 
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.grid.IrodsGridFacadeBase#put(java.io.File, java.lang.String)
@@ -61,7 +59,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(gridPath, "MIN_COPIES", String.valueOf(sp.getMinNodes()));
 		irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(gridPath, "FEDERATED", "0");
 		irodsSystemConnector.logoff();
-		startFederateItem(gridPath);
+		startFederateItem(gridPath,sp);
 		return ret;
 	}
 	
@@ -101,8 +99,8 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		return false;
 	}
 	
-	public void startFederateItem(String gridPath) {
-		Thread  fe = new FederationExecutor(irodsSystemConnector, localNode, gridPath,localNode.getReplDestinations());
+	public void startFederateItem(String gridPath, StoragePolicy sp) {
+		Thread  fe = new FederationExecutor(irodsSystemConnector,sp, gridPath);
 		fe.start();
 	}
 	

@@ -37,6 +37,7 @@ import org.junit.Test;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectNamedQueryDAO;
+import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
 
 
@@ -59,7 +60,6 @@ public class ATUseCaseAudit extends AcceptanceTest{
 		// set object to older creationdate than one day
 		Calendar now = Calendar.getInstance();
 		now.add(Calendar.HOUR_OF_DAY, -25);
-		
 		object = ath.putPackageToStorage(IDENTIFIER,ORIGINAL_NAME,CONTAINER_NAME,now.getTime(),100 );
 	}
 	
@@ -69,6 +69,7 @@ public class ATUseCaseAudit extends AcceptanceTest{
 			Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME,CONTAINER_NAME).delete();
 			Path.makeFile("tmp",object.getIdentifier()+".pack_1.tar").delete();
 			FileUtils.deleteDirectory(Path.makeFile("tmp",object.getIdentifier()+".pack_1"));
+			
 		}catch(Exception e){
 			System.out.println(e.getMessage());
 		}
@@ -79,15 +80,18 @@ public class ATUseCaseAudit extends AcceptanceTest{
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 		
-		// We'll destroy it now, if we 're on CI
+		// We'll destroy it physically now, if we 're on CI
 		// on dev machines FakeGridFacade will find special file in ATUseCaseAudit
-		if (System.getProperty("env").equals("ci"))
+		// On other systems (DEV) the fake adapter will do that for us!
+		if (System.getProperty("env") != null && System.getProperty("env").equals("ci")) {
 			destroyFileInCIEnvironment(object.getIdentifier());
+		} else System.out.println(".. not detected CI Environment!");
 		assertTrue(waitForObjectInStatus(51));
 	}
 		
 	private void destroyFileInCIEnvironment(String identifier) {
-		
+
+		System.out.println("Trying to destroy file on the archive storage path now!");
 		File file = Path.makeFile(archiveStoragePath,identifier,identifier+".pack_1.tar");
 		if (!file.exists()) {	
 			fail(file  + " does not exist!" );
@@ -98,7 +102,7 @@ public class ATUseCaseAudit extends AcceptanceTest{
 		          new FileOutputStream(file), "utf-8"));
 		    writer.write("Something");
 		} catch (IOException ex) {
-		  fail("writing to file");
+		  fail("writing to file " + file + " failed");
 		} finally {
 		   try {writer.close();} catch (Exception ex) { fail();}
 		}

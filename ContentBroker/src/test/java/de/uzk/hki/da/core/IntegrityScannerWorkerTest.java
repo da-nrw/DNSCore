@@ -26,7 +26,9 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
+import org.hibernate.Session;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -40,6 +42,7 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.User;
+import de.uzk.hki.da.service.HibernateUtil;
 
 
 /**
@@ -53,76 +56,65 @@ public class IntegrityScannerWorkerTest {
 	/** The base path. */
 	String basePath = "src/test/resources/integrity/IntegrityScanner/";
 	
-	/** The worker. */
-	IntegrityScannerWorker worker = new IntegrityScannerWorker();
-	
 	/** The urn. */
-	String urn = "123456";
+	 static String urn = "123456";
 	
 	/** The package1 path. */
 	String package1Path = "TEST/"+urn+"/"+urn+".pack_1.tar";
 	
 	/** The package2 path. */
 	String package2Path = "TEST/"+urn+"/"+urn+".pack_2.tar";
-	
-	/** The obj. */
-	Object obj;
+
 	
 	StoragePolicy sp ;
+	IrodsGridFacade gc;
+	static Node node;
 	
+	User user;
 	
-	/**
-	 * Sets the up.
-	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	@Before
-	public void setUp() throws IOException{
-		
-		PreservationSystem pSystem = new PreservationSystem();
-		pSystem.setMinRepls(3);
-		
-		obj = new Object();
-		
-		Package pack1 = new Package();
-		pack1.setName("1");
-		Package pack2 = new Package();
-		pack2.setName("2");
-		
-		obj.getPackages().add(pack1);
-		obj.getPackages().add(pack2);
-		obj.setObject_state(66);
-		obj.setIdentifier(urn);
-		obj.setContractor(new User("TEST","",""));
-		Node node = new Node("test");
-		sp = new StoragePolicy(node);
-		
-		worker.setpSystem(pSystem);;
-	}
+	PreservationSystem pSystem;	
 	
+	Object obj;
+	
+	IntegrityScannerWorker worker;
 	
 	
 	
 	/**
 	 * Sets the up before class.
 	 */
-	@BeforeClass
-	public static void setUpBeforeClass() {
-//		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
-	}
-	
-	/**
-	 * Tear down.
-	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	@After 
-	public void tearDown() throws IOException {
-			// TODO clear the inmem object db
-	}
-	
-	
-	
+	@Before
+	public  void setUp() {	
+			user = new User();
+			user.setEmailAddress("noreply");
+			user.setId(1);
+			node = new Node(); 
+			node.setId(1);
+			node.setAdmin(user);
+
+			pSystem = new PreservationSystem();
+			pSystem.setMinRepls(3);
+			pSystem.setId(1);
+			pSystem.setAdmin(user);
+
+			worker = new IntegrityScannerWorker();
+			obj = new Object();
+			
+			Package pack1 = new Package();
+			pack1.setName("1");
+			Package pack2 = new Package();
+			pack2.setName("2");
+			
+			obj.getPackages().add(pack1);
+			obj.getPackages().add(pack2);
+			obj.setObject_state(66);
+			obj.setIdentifier(urn);
+			obj.setContractor(new User("TEST","",""));
+			worker.setLocalNodeId("1");
+			worker.setpSystem(pSystem);;
+			worker.setSleepFor(100L);
+			worker.setNode(node);
+	}	
 	
 	/**
 	 * Test object integrity not achieved cause package2 is broken.
@@ -130,19 +122,17 @@ public class IntegrityScannerWorkerTest {
 	@Test
 	public void testObjectIntegrityNotAchievedCausePackage2IsBroken() {
 
-		IrodsGridFacade gc = mock(IrodsGridFacade.class);
+		
+		 gc = mock(IrodsGridFacade.class);
 		IrodsSystemConnector irods = mock (IrodsSystemConnector.class);
-		
 		when (irods.getZone()).thenReturn("c-i");
-		
 		when (gc.getirodsSystemConnector()).thenReturn(irods);
 		
 		when (gc.isValid(package1Path)).thenReturn(true);
 		when (gc.storagePolicyAchieved(anyString(),(StoragePolicy) anyObject())).thenReturn(true);
 		when (gc.isValid(package2Path)).thenReturn(false);
-		worker.setSleepFor(1000L);
+	
 		worker.setGridFacade(gc);
-		
 		assertEquals(51,worker.checkObjectValidity(obj));
 	}
 
@@ -154,9 +144,10 @@ public class IntegrityScannerWorkerTest {
 	 */
 	@Test
 	public void testObjectIntegrityAchieved() {
-	
-		IrodsGridFacade gc = mock(IrodsGridFacade.class);
+		obj.setObject_state(100);
+		gc = mock(IrodsGridFacade.class);
 		IrodsSystemConnector irods = mock (IrodsSystemConnector.class);
+
 		when (irods.getZone()).thenReturn("c-i");
 		
 
@@ -165,7 +156,6 @@ public class IntegrityScannerWorkerTest {
 		when (gc.isValid(package1Path)).thenReturn(true);
 		when (gc.storagePolicyAchieved(anyString(),(StoragePolicy)anyObject())).thenReturn(true);
 		when (gc.isValid(package2Path)).thenReturn(true);
-		
 		worker.setGridFacade(gc);
 		
 		assertEquals(100,worker.checkObjectValidity(obj));
