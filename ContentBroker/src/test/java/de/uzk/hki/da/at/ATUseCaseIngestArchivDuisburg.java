@@ -42,8 +42,6 @@ public class ATUseCaseIngestArchivDuisburg extends AcceptanceTest{
 	@Test
 	public void testFileIdGenInPres() throws FileNotFoundException, JDOMException, IOException {
 		
-		FileUtils.copyDirectory(Path.makeFile(contractorsPipsPublic, object.getIdentifier()), Path.makeFile("home", "polina", "Desktop"));
-		
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "1175", "mets_1175.xml").toFile()));
