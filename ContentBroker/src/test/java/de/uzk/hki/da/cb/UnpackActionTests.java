@@ -268,7 +268,7 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 	
 	
 	@Test
-	public void testMissingBagitPackage() throws IOException {
+	public void testIsNotABagitPackage() throws IOException {
 		o.getPackages().get(0).setContainerName("abc.zip");
 		try {
 			action.implementation();

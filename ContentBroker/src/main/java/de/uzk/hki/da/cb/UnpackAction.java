@@ -38,6 +38,7 @@ import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.PremisXmlValidator;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
@@ -51,12 +52,14 @@ import de.uzk.hki.da.utils.SidecarUtils;
 /**
  * If there is sufficient space on the WorkArea, fetches the container (named object.package.containername)
  * from the user's (object.contractor) IngestArea space and puts it to work. There the action unpacks the
- * contents and checks the SIP for consistency. Deletes the container after unpacking so that only the unpacked SIP remains. 
+ * contents and checks the SIP for consistency. Deletes the container after proving that it is valid so that
+ * the original SIP remains. If the package has proven valid, then the original SIP on the IngestArea gets 
+ * removed. 
  * 
  * Accepted container formats [.tar,.tar.gz,.tgz,.zip].
  * 
  * The package is expected to conform to our SIP-Specification.
- * @see abc <a href="https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md">
+ * @see abc <a href="https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_sip.de.md">
  * SIP-Spezifikation
  * </a>
  * 
@@ -70,6 +73,7 @@ public class UnpackAction extends AbstractAction {
 	private static final String SIP_SPEC_URL = "https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md";
 	private static final String HELP_SUMMARY = "Make sure there exists always only one file with the same document name (which is the file path relative from the SIPs data path, excluding the file extension). "
 			+ "For help refer to the SIP-Specification page at "+ SIP_SPEC_URL + ".";
+	private static final String PREMIS_XML = "premis.xml";
 	
 	public UnpackAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
 	
@@ -145,10 +149,16 @@ public class UnpackAction extends AbstractAction {
 	private void throwUserExceptionIfNotPremisConsistent() throws IOException {
 		
 		try {
-			if (!PremisXmlValidator.validatePremisFile(Path.make(o.getDataPath(),"premis.xml").toFile()))
+			if (!PremisXmlValidator.validatePremisFile(Path.make(o.getDataPath(),PREMIS_XML).toFile()))
 				throw new UserException(UserExceptionId.INVALID_SIP_PREMIS, "PREMIS file is not valid");
 		} catch (FileNotFoundException e1) {
 			throw new UserException(UserExceptionId.SIP_PREMIS_NOT_FOUND, "Couldn't find PREMIS file", e1);
+		}
+		try {
+			new ObjectPremisXmlReader().deserialize(Path.makeFile(o.getDataPath(),PREMIS_XML));
+		} catch (Exception e) {
+			throw new UserException(UserExceptionId.READ_SIP_PREMIS_ERROR,
+					"Couldn't deserialize premis file", e);
 		}
 	}
 
