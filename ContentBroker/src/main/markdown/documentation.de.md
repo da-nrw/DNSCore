@@ -82,7 +82,7 @@ Die hier untergebrachten Dokumentationen gelten generell für den Einsatz von DN
 Die hier untergebrachten Dokumentationen setzen den Einsatz von DNSCore unter bestimmten Bedingungen voraus. Etwa die Anbindung an bestimmte externe Systeme, deren Bedingungen der Anbindung hier genauer beschrieben sind.
 
 * Installation von ElasticSearch für DNSCore ([deutsch](install_elasticsearch.de.md))
-* Installation von Fedora für DNSCore ([englisch](install_fedora.md))
+* Installation von Fedora für DNSCore ([deutsch](install_fedora.de.md))
 * Installation von PrOAI für DNSCore ([deutsch](install_proai.md))
 * Installing iRODS for DNSCore ([englisch](installation_irods.md))
 

@@ -38,7 +38,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /**
  * Detects the package type of an object and validates the metadata structure.
@@ -58,8 +58,11 @@ import de.uzk.hki.da.util.ConfigurationException;
  */
 public class ValidateMetadataAction extends AbstractAction {
 	
+	
+	private static final String XMP_SIDECAR = "xmp";
+	private static final String CB_PACKAGETYPE_NONE = "NONE";
 	private static final String PACKAGE_TYPE_FOR_OBJECT_DETERMINDED = "Package type for object determinded: ";
-	private String detectedPackageType = "NONE";
+	private String detectedPackageType = CB_PACKAGETYPE_NONE;
 	private DAFile detectedMetadataFile;
 	private boolean packageTypeInObjectWasSetBeforeRunningAction=false;
 	MetadataStructureFactory msf = new MetadataStructureFactory();
@@ -81,7 +84,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		throwExceptionIfPackageTypeCollision();
 		
 		logger.info(PACKAGE_TYPE_FOR_OBJECT_DETERMINDED+detectedPackageType);
-		if (detectedPackageType.equals("NONE")){
+		if (detectedPackageType.equals(CB_PACKAGETYPE_NONE)){
 			return true;
 		}
 		
@@ -96,7 +99,6 @@ public class ValidateMetadataAction extends AbstractAction {
 		}
 		
 		o.setMetadata_file(detectedMetadataFile.getRelative_path());
-
 		return true;
 	}
 	
@@ -107,9 +109,8 @@ public class ValidateMetadataAction extends AbstractAction {
 			if(o.getPackage_type().equals(C.CB_PACKAGETYPE_XMP)) {
 				collectXMP();
 			}
-			File d = detectedMetadataFile.toRegularFile();
 			List<Document> documents = o.getDocuments();
-			ms = msf.create(detectedPackageType, d, documents);
+			ms = msf.create(detectedPackageType, wa.toFile(detectedMetadataFile), documents);
 		} catch (Exception e){
 			throw new RuntimeException("problem occured during creation of metadata structure",e);
 		}
@@ -120,7 +121,7 @@ public class ValidateMetadataAction extends AbstractAction {
 	 * if something else has been detected in a previous SIP.
 	 */
 	private void throwExceptionIfPackageTypeCollision() {
-		if (!(o.getPackage_type()==null||o.getPackage_type().isEmpty())){
+		if (StringUtilities.isSet(o.getPackage_type())){
 			packageTypeInObjectWasSetBeforeRunningAction=true;
 			if ((!detectedPackageType.equals(o.getPackage_type()))
 					||(!detectedMetadataFile.getRelative_path().equals(o.getMetadata_file()))){
@@ -188,14 +189,19 @@ public class ValidateMetadataAction extends AbstractAction {
 	}
 	
 	
+	/**
+	 * Considers only files which are not located in subfolders.
+	 * 
+	 * @param metadataFormatIdentifier
+	 * @return
+	 */
 	private List<DAFile> getFilesOfMetadataType(String metadataFormatIdentifier){
 		List<DAFile> result = new ArrayList<DAFile>();
-
-		for (DAFile f:o.getNewestFilesFromAllRepresentations("xmp")){
+		for (DAFile f:o.getNewestFilesFromAllRepresentations(XMP_SIDECAR)){
+			if (f.getRelative_path().contains(C.FS_SEPARATOR)) continue;
 			
-			if (metadataFormatIdentifier.equals(f.getSubformatIdentifier())) {
+			if (metadataFormatIdentifier.equals(f.getSubformatIdentifier()))
 				result.add(f);
-			}
 		}
 		return result;
 	}
@@ -214,23 +220,23 @@ public class ValidateMetadataAction extends AbstractAction {
 	 */
 	private void collectXMP() throws IOException {
 		
-		logger.debug("collectXMP");
+		logger.trace("collectXMP");
 		
 		String repPath = o.getPath("newest").toString();
 			
-		List<DAFile> newestFiles = o.getNewestFilesFromAllRepresentations("xmp");
+		List<DAFile> newestFiles = o.getNewestFilesFromAllRepresentations(XMP_SIDECAR);
 		List<DAFile> newestXmpFiles = new ArrayList<DAFile>();
 		for (DAFile dafile : newestFiles) {
-			if (dafile.getRelative_path().toLowerCase().endsWith(".xmp"))
+			if (dafile.getRelative_path().toLowerCase().endsWith(C.FILE_EXTENSION_XMP))
 				newestXmpFiles.add(dafile);
 		}
 			
 		logger.debug("found {} xmp files", newestXmpFiles.size());
-		File rdfFile = new File(repPath + "/XMP.xml");
+		File rdfFile = new File(repPath + "/"+C.METADATA_FILE_XMP);
 		XmpCollector.collect(newestXmpFiles, rdfFile);	
 		logger.debug("collecting files in path: {}", rdfFile.getAbsolutePath());
-		DAFile xmpFile = new DAFile(o.getLatestPackage(),o.getPath("newest").getLastElement(),"XMP.xml");
-		xmpFile.setFormatPUID("fmt/101");
+		DAFile xmpFile = new DAFile(o.getLatestPackage(),o.getPath("newest").getLastElement(),C.METADATA_FILE_XMP);
+		xmpFile.setFormatPUID(FFConstants.FMT_101);
 		o.getLatestPackage().getFiles().add(xmpFile);
 		o.getLatestPackage().getEvents().add(createCreateEvent(xmpFile));		
 	}
@@ -239,9 +245,9 @@ public class ValidateMetadataAction extends AbstractAction {
 		
 		Event e = new Event();
 		e.setTarget_file(targetFile);
-		e.setType("CREATE");
+		e.setType(C.EVENT_TYPE_CREATE);
 		e.setDate(new Date());
-		e.setAgent_type("NODE");
+		e.setAgent_type(C.AGENT_TYPE_NODE);
 		e.setAgent_name(o.getTransientNodeRef().getName());
 		return e;
 	}

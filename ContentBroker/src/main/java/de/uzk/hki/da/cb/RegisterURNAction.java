@@ -45,7 +45,8 @@ import de.uzk.hki.da.model.RightsSectionURNMetsXmlReader;
  */
 public class RegisterURNAction extends AbstractAction {
 	
-	static final Logger logger = LoggerFactory.getLogger(RegisterURNAction.class);
+	private static final Logger logger = LoggerFactory.getLogger(RegisterURNAction.class);
+	private static final String PREMIS_XML = "premis.xml";
 	
 	
 	@Override
@@ -55,8 +56,8 @@ public class RegisterURNAction extends AbstractAction {
 
 	@Override
 	public void checkPreconditions() {
-		if (o.getLatest("premis.xml")==null) throw new PreconditionsNotMetException("premis.xml must exist");
-		if (! o.getLatest("premis.xml").toRegularFile().exists()) throw new PreconditionsNotMetException("premis.xml must exist"); 
+		if (o.getLatest(PREMIS_XML)==null) throw new PreconditionsNotMetException("premis.xml must exist");
+		if (! o.getLatest(PREMIS_XML).toRegularFile().exists()) throw new PreconditionsNotMetException("premis.xml must exist"); 
 	}
 	
 	/**
@@ -65,7 +66,7 @@ public class RegisterURNAction extends AbstractAction {
 	 */
 	private String extractURNFromPremisFile() {
 		
-		File premisFile = o.getLatest("premis.xml").toRegularFile();
+		File premisFile = o.getLatest(PREMIS_XML).toRegularFile();
 		
 		
 		Object premisObject = null;
@@ -73,8 +74,10 @@ public class RegisterURNAction extends AbstractAction {
 		try {
 			premisObject = reader.deserialize(premisFile);
 		} catch (Exception e) {
-			throw new UserException(UserExceptionId.READ_SIP_PREMIS_ERROR,
-					"Couldn't deserialize premis file " + premisFile.getAbsolutePath(), e);
+			// This is already checked in unpack-action, where a 
+			// user error gets thrown. So we consider this here a 
+			// merely technical error.
+			throw new RuntimeException("Couldn't deserialize premis file " + premisFile, e);
 		}
 		
 		String urn = null;

@@ -33,6 +33,7 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.util.Path;
 
 /**
  * Provides the basic framework for effective tests of the business code
@@ -56,6 +57,7 @@ public class ConcreteActionUnitTest {
 	Node n = null;
 	Object o;
 	Job j;
+	private WorkArea wa;
 	private User c;
 	
 	protected static AbstractAction a;
@@ -109,5 +111,9 @@ public class ConcreteActionUnitTest {
 		a.setLocalNode(n);
 		a.setJob(j);
 		a.setPSystem(ps);
+
+		n.setWorkAreaRootPath(Path.make("mock"));
+		wa=new WorkArea(n,o);
+		a.setWorkArea(wa);
 	}
 }

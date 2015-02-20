@@ -59,7 +59,7 @@ public class WorkArea {
 	}
 
 	public File toFile(DAFile daf) {
-		return Path.make(contractorWorkDirPath(),o.getIdentifier(),daf.getRep_name(),daf.getRelative_path()).toFile();
+		return Path.make(contractorWorkDirPath(),o.getIdentifier(),WA_DATA,daf.getRep_name(),daf.getRelative_path()).toFile();
 	}
 
 	public Path pipFolder(String audience) {

@@ -90,7 +90,6 @@ public class IndexMetadataAction extends AbstractAction {
 		try {
 			metadataStream = new FileInputStream(wa.metadataStream(WA_PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID));
 			edmContent = IOUtils.toString(metadataStream, ENCODING_UTF_8);
-			logger.info("huhu "+metadataStream);
 		} finally {
 			metadataStream.close();
 		}

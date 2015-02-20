@@ -55,17 +55,17 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 	private static final String SIDECAR_EXTENSIONS_COMMA_SPLIT = "xmp,xml";
 	private static final String SIDECAR_EXTENSIONS_SEMIKOLON_SPLIT = "xmp;xml";
 	private static final String CONF = "conf";
-	private static final String BAGIT_PACKAGE = "bagitPackage.tgz";
-	private static final String DUPLICATE_DOCUMENTS_PACKAGE = "duplicateDocuments.tgz";
-	private static final String WHEN_DUPLICATES_PACKAGE = "whenDuplicatesAreNotDuplicates.tgz";
-	private static final String SIDECAR_UPPERCASE_PACKAGE = "SidecarFileWithUppercaseExtension.tgz";
-	private static final String SIDECAR_FILES_PACKAGE = "sidecarFiles.tgz";
-	private static final String SIDECAR_FILES_PACKAGE_WHICH_BROKE = "LVR_ILR_4_PDF_TF18.tar";
-
+	
 	private Path workAreaRootPath = Path.make(TC.TEST_ROOT_CB,"UnpackAction");
 	private Path ingestAreaRootPath = Path.make(TC.TEST_ROOT_CB,"UnpackAction","ingest");
-	private Path ingestPath = Path.make(workAreaRootPath,"/ingest/TEST/");
 	private Path csnPath = Path.make(workAreaRootPath,"/work/TEST/");
+	
+	private static final String BAGIT_PACKAGE = "bagitPackage.tgz";
+	private static final String SIDECAR_FILES_PACKAGE = "sidecarFiles.tgz";
+	
+	
+	
+
 
 	private IngestGate gate = new IngestGate();
 
@@ -82,6 +82,7 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 		n.setWorkAreaRootPath(workAreaRootPath);
 		
 		new File(CONF).mkdir();
+		FileUtils.copyDirectory(Path.makeFile(workAreaRootPath,"ingest_"), Path.makeFile(workAreaRootPath,"ingest"));
 		FileUtils.copyFileToDirectory(C.PREMIS_XSD, new File(CONF));
 		FileUtils.copyFileToDirectory(C.XLINK_XSD, new File(CONF));
 		
@@ -101,20 +102,8 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 	@After
 	public void tearDown() throws IOException{
 		FileUtils.deleteQuietly(new File(CONF));
-		
+		FileUtils.deleteDirectory(Path.makeFile(workAreaRootPath,"ingest"));
 		FileUtils.deleteDirectory(Path.makeFile(csnPath,o.getIdentifier()));
-		Path.makeFile(ingestPath,BAGIT_PACKAGE).delete();
-		Path.makeFile(csnPath,BAGIT_PACKAGE).delete();
-		Path.makeFile(ingestPath,DUPLICATE_DOCUMENTS_PACKAGE).delete();
-		Path.makeFile(csnPath,DUPLICATE_DOCUMENTS_PACKAGE).delete();
-		Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE).delete();
-		Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE_WHICH_BROKE).delete();
-		Path.makeFile(csnPath,SIDECAR_FILES_PACKAGE).delete();
-		Path.makeFile(ingestPath,WHEN_DUPLICATES_PACKAGE).delete();
-		Path.makeFile(csnPath,WHEN_DUPLICATES_PACKAGE).delete();
-		Path.makeFile(csnPath,SIDECAR_UPPERCASE_PACKAGE).delete();
-		Path.makeFile(ingestPath,SIDECAR_UPPERCASE_PACKAGE).delete();
-
 	}
 
 	/**
@@ -123,7 +112,7 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 	 */
 	@Test
 	public void testUnpackStdPackage() throws IOException{
-		FileUtils.copyFile(Path.makeFile(ingestPath,BAGIT_PACKAGE+"_"),Path.makeFile(ingestPath,BAGIT_PACKAGE));
+		
 		o.getPackages().get(0).setContainerName(BAGIT_PACKAGE);
 		
 		action.implementation();
@@ -139,7 +128,7 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 	
 	@Test
 	public void testRejectPackageWithDuplicateDocumentNames() throws IOException{
-		FileUtils.copyFile(Path.makeFile(ingestPath,DUPLICATE_DOCUMENTS_PACKAGE+"_"),Path.makeFile(ingestPath,DUPLICATE_DOCUMENTS_PACKAGE));
+		final String DUPLICATE_DOCUMENTS_PACKAGE = "duplicateDocuments.tgz";
 		o.getPackages().get(0).setContainerName(DUPLICATE_DOCUMENTS_PACKAGE);
 		
 		try{
@@ -154,7 +143,7 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 	
 	@Test
 	public void testWhenDuplicatesAreNotDuplicates() throws IOException{
-		FileUtils.copyFile(Path.makeFile(ingestPath,WHEN_DUPLICATES_PACKAGE+"_"),Path.makeFile(ingestPath,WHEN_DUPLICATES_PACKAGE));
+		final String WHEN_DUPLICATES_PACKAGE = "whenDuplicatesAreNotDuplicates.tgz";
 		o.getPackages().get(0).setContainerName(WHEN_DUPLICATES_PACKAGE);
 		
 		try{
@@ -169,7 +158,6 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 	@Test
 	public void acceptSidecarFiles() throws IOException{
 		
-		FileUtils.copyFile(Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE+"_"),Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE));
 		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE);
 	
 		pSystem.setSidecarExtensions(SIDECAR_EXTENSIONS);
@@ -189,7 +177,8 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 	@Test
 	public void acceptSidecarFilesWithAnotherPackage() throws IOException{
 		
-		FileUtils.copyFile(Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE_WHICH_BROKE+"_"),Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE_WHICH_BROKE));
+
+		final String SIDECAR_FILES_PACKAGE_WHICH_BROKE = "LVR_ILR_4_PDF_TF18.tar";
 		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE_WHICH_BROKE);
 	
 		pSystem.setSidecarExtensions(SIDECAR_EXTENSIONS);
@@ -203,8 +192,8 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 	
 	@Test
 	public void acceptSidecarFile_withUppercaseExtension() throws IOException{
+		final String SIDECAR_UPPERCASE_PACKAGE = "SidecarFileWithUppercaseExtension.tgz";
 		
-		FileUtils.copyFile(Path.makeFile(ingestPath,SIDECAR_UPPERCASE_PACKAGE+"_"),Path.makeFile(ingestPath,SIDECAR_UPPERCASE_PACKAGE));
 		o.getPackages().get(0).setContainerName(SIDECAR_UPPERCASE_PACKAGE);
 		
 		pSystem.setSidecarExtensions(SIDECAR_EXTENSIONS);
@@ -219,7 +208,7 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 	@Test
 	public void acceptSidecar_SideCarExtensionsSplitByComma() throws IOException{
 		
-		FileUtils.copyFile(Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE+"_"),Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE));
+		
 		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE);
 	
 		pSystem.setSidecarExtensions(SIDECAR_EXTENSIONS_COMMA_SPLIT);
@@ -234,7 +223,7 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 	@Test
 	public void acceptSidecar_SideCarExtensionsSplitBySemikolon() throws IOException{
 		
-		FileUtils.copyFile(Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE+"_"),Path.makeFile(ingestPath,SIDECAR_FILES_PACKAGE));
+		
 		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE);
 	
 		pSystem.setSidecarExtensions(SIDECAR_EXTENSIONS_SEMIKOLON_SPLIT);
@@ -254,7 +243,6 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 	 */
 	@Test
 	public void testDeleteSourcePackage() throws IOException{
-		FileUtils.copyFile(Path.makeFile(ingestPath,BAGIT_PACKAGE+"_"),Path.makeFile(ingestPath,BAGIT_PACKAGE));
 		o.getPackages().get(0).setContainerName(BAGIT_PACKAGE);
 		
 		action.implementation();
@@ -266,9 +254,7 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 
 	@Test
 	public void throwExceptionWhenPackageDoesntExist() throws IOException{
-
 		o.getPackages().get(0).setContainerName("notExistent.tgz");
-		
 		try{		
 			action.implementation();
 			fail();
@@ -277,5 +263,18 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 			action.rollback();
 			System.out.println("Exception caught as expected: "+e);	
 		}		
+	}
+	
+	
+	
+	@Test
+	public void testIsNotABagitPackage() throws IOException {
+		o.getPackages().get(0).setContainerName("abc.zip");
+		try {
+			action.implementation();
+			fail();
+		} catch (UserException e) {
+			assertTrue(e.getMessage().contains("BagIt"));
+		}
 	}
 }

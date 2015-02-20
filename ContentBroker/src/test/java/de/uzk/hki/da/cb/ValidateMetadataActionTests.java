@@ -46,17 +46,18 @@ import de.uzk.hki.da.metadata.FakeMetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Document;
-import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public class ValidateMetadataActionTests {
+public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
+
+	@ActionUnderTest
+	ValidateMetadataAction action = new ValidateMetadataAction();
 
 	private static final String METADATA = "METADATA";
 	private static final String REP_B = "rep+b";
@@ -65,17 +66,13 @@ public class ValidateMetadataActionTests {
 	private static final String METS_2_998_XML = "mets_2_998.xml";
 	private static final String VDA03_XML = "vda03.xml";
 	private static final String METS_2_99_XML = "mets_2_99.xml";
-	private static final String IDENTIFIER = "identifier";
-	private static final Path WORK_AREA_ROOT = Path.make(TC.TEST_ROOT_CB,"ValidateMetadataActionTests","work");
+	private static final Path WORK_AREA_ROOT = Path.make(TC.TEST_ROOT_CB,"ValidateMetadataAction");
 	private static final String XMP1_XML = "xmp1.xmp";
 	private static final String LIDO_XML = "lido1.xml";
 	private static final String LIDO2_XML = "lido2.xml";
 	
 	private static MetadataStructureFactory msf;
 	
-	private Object object;
-	
-	ValidateMetadataAction action = new ValidateMetadataAction();
 	
 	DAFile f_ead1 = new DAFile(null,REP_A,VDA03_XML);
 	DAFile f_ead2 = new DAFile(null,REP_B,EAD_XML);
@@ -84,6 +81,8 @@ public class ValidateMetadataActionTests {
 	DAFile f_xmp1 = new DAFile(null,"1+a",XMP1_XML);
 	DAFile f_lido1 = new DAFile(null,"",LIDO_XML);
 	DAFile f_lido2 = new DAFile(null,"",LIDO2_XML);
+	
+	DAFile f_subfolder_ead1 = new DAFile(null,REP_A,"subfolder/"+VDA03_XML);
 
 	
 //	@SuppressWarnings("static-access")
@@ -99,18 +98,19 @@ public class ValidateMetadataActionTests {
 	@Before
 	public void setUp(){
 		
-		object = TESTHelper.setUpObject(IDENTIFIER,WORK_AREA_ROOT);
+		n.setWorkAreaRootPath(WORK_AREA_ROOT);
 		
-		f_ead1.setPackage(object.getLatestPackage());
-		f_ead2.setPackage(object.getLatestPackage());
-		f_mets1.setPackage(object.getLatestPackage());
-		f_mets2.setPackage(object.getLatestPackage());
-		f_xmp1.setPackage(object.getLatestPackage());
-		f_lido1.setPackage(object.getLatestPackage());
-		f_lido2.setPackage(object.getLatestPackage());
+		f_ead1.setPackage(o.getLatestPackage());
+		f_ead2.setPackage(o.getLatestPackage());
+		f_mets1.setPackage(o.getLatestPackage());
+		f_mets2.setPackage(o.getLatestPackage());
+		f_xmp1.setPackage(o.getLatestPackage());
+		f_lido1.setPackage(o.getLatestPackage());
+		f_lido2.setPackage(o.getLatestPackage());
+		
+		f_subfolder_ead1.setPackage(o.getLatestPackage());
 		
 		action.setMsf(msf);
-		action.setObject(object);
 
 		f_ead1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
 		f_ead2.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
@@ -119,16 +119,30 @@ public class ValidateMetadataActionTests {
 		f_xmp1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
 		f_lido1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
 		f_lido2.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
+		
+		f_subfolder_ead1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
 	}
+	
+	
+	@Test
+	public void ignoreMetadataFilesInSubfolders() throws FileNotFoundException, UserException, IOException, RepositoryException {
+		
+		o.getLatestPackage().getFiles().add(f_subfolder_ead1);
+		action.implementation();
+		
+		assertEquals(null,o.getPackage_type());
+		assertEquals(null,o.getMetadata_file());
+	}
+	
 	
 	
 	@Test
 	public void testRejectPackageWithDuplicateEADFile() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
-		object.getLatestPackage().getFiles().add(f_ead1);
-		object.getLatestPackage().getFiles().add(f_ead2);
-		object.getLatestPackage().getFiles().add(f_mets1);
-		object.getLatestPackage().getFiles().add(f_mets2);
+		o.getLatestPackage().getFiles().add(f_ead1);
+		o.getLatestPackage().getFiles().add(f_ead2);
+		o.getLatestPackage().getFiles().add(f_mets1);
+		o.getLatestPackage().getFiles().add(f_mets2);
 		
 		try{
 			action.implementation();
@@ -142,21 +156,21 @@ public class ValidateMetadataActionTests {
 	@Test
 	public void testDetectEAD() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
-		object.getLatestPackage().getFiles().add(f_ead1);
-		object.getLatestPackage().getFiles().add(f_mets1);
-		object.getLatestPackage().getFiles().add(f_mets2);
+		o.getLatestPackage().getFiles().add(f_ead1);
+		o.getLatestPackage().getFiles().add(f_mets1);
+		o.getLatestPackage().getFiles().add(f_mets2);
 		
 		action.implementation();
 		
-		assertEquals(C.CB_PACKAGETYPE_EAD,object.getPackage_type());
-		assertEquals(VDA03_XML,object.getMetadata_file());
+		assertEquals(C.CB_PACKAGETYPE_EAD,o.getPackage_type());
+		assertEquals(VDA03_XML,o.getMetadata_file());
 	}
 
 	@Test
 	public void testMoreThanOneMETSAndNoEAD() throws FileNotFoundException, UserException, IOException, RepositoryException{
 
-		object.getLatestPackage().getFiles().add(f_mets1);
-		object.getLatestPackage().getFiles().add(f_mets2);
+		o.getLatestPackage().getFiles().add(f_mets1);
+		o.getLatestPackage().getFiles().add(f_mets2);
 		
 		try{
 			action.implementation();
@@ -169,30 +183,30 @@ public class ValidateMetadataActionTests {
 	@Test 
 	public void testDetectMETS() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
-		object.getLatestPackage().getFiles().add(f_mets1);
+		o.getLatestPackage().getFiles().add(f_mets1);
 		
 		action.implementation();
 		
-		assertEquals(C.CB_PACKAGETYPE_METS,object.getPackage_type());
-		assertEquals(METS_2_99_XML,object.getMetadata_file());
+		assertEquals(C.CB_PACKAGETYPE_METS,o.getPackage_type());
+		assertEquals(METS_2_99_XML,o.getMetadata_file());
 	}
 
 	@Test
 	public void testLido() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
-		object.getLatestPackage().getFiles().add(f_lido1);
+		o.getLatestPackage().getFiles().add(f_lido1);
 		
 		action.implementation();
 		
-		assertEquals(C.CB_PACKAGETYPE_LIDO,object.getPackage_type());
-		assertEquals(LIDO_XML,object.getMetadata_file());
+		assertEquals(C.CB_PACKAGETYPE_LIDO,o.getPackage_type());
+		assertEquals(LIDO_XML,o.getMetadata_file());
 	}
 	
 	@Test
 	public void testRejectPackageWithDuplicateLIDOFile() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
-		object.getLatestPackage().getFiles().add(f_lido1);
-		object.getLatestPackage().getFiles().add(f_lido2);
+		o.getLatestPackage().getFiles().add(f_lido1);
+		o.getLatestPackage().getFiles().add(f_lido2);
 		
 		try{
 			action.implementation();
@@ -207,34 +221,34 @@ public class ValidateMetadataActionTests {
 	@Test
 	public void testXMPWithoutRDF() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
-		object.getLatestPackage().getFiles().add(f_xmp1);
+		o.getLatestPackage().getFiles().add(f_xmp1);
 		
 		action.implementation();
 		
-		assertEquals(C.CB_PACKAGETYPE_XMP,object.getPackage_type());
-		assertEquals(C.METADATA_FILE_XMP,object.getMetadata_file());
+		assertEquals(C.CB_PACKAGETYPE_XMP,o.getPackage_type());
+		assertEquals(C.METADATA_FILE_XMP,o.getMetadata_file());
 	}
 	
 
 	@Test
 	public void testRollback() throws Exception{
 		
-		object.setMetadata_file(VDA03_XML);
-		object.setPackage_type(C.CB_PACKAGETYPE_XMP);
+		o.setMetadata_file(VDA03_XML);
+		o.setPackage_type(C.CB_PACKAGETYPE_XMP);
 		
 		action.rollback();
 		
-		assertEquals(null, object.getMetadata_file());
-		assertEquals(null, object.getPackage_type());
+		assertEquals(null, o.getMetadata_file());
+		assertEquals(null, o.getPackage_type());
 	}
 	
 	@Test
 	public void testDetectedPackageTypeCollidesWithPackageTypeOfObject() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
-		object.getLatestPackage().getFiles().add(f_mets1);
+		o.getLatestPackage().getFiles().add(f_mets1);
 		
-		object.setMetadata_file(VDA03_XML);
-		object.setPackage_type(C.CB_PACKAGETYPE_EAD);
+		o.setMetadata_file(VDA03_XML);
+		o.setPackage_type(C.CB_PACKAGETYPE_EAD);
 		
 		try { 
 			action.implementation();
@@ -249,10 +263,10 @@ public class ValidateMetadataActionTests {
 	@Test 
 	public void testRollbackMustNotDeletePreviouslyExistentPackageType() throws Exception{
 		
-		object.setMetadata_file(VDA03_XML);
-		object.setPackage_type(C.CB_PACKAGETYPE_EAD);
+		o.setMetadata_file(VDA03_XML);
+		o.setPackage_type(C.CB_PACKAGETYPE_EAD);
 		
-		object.getLatestPackage().getFiles().add(f_mets1);
+		o.getLatestPackage().getFiles().add(f_mets1);
 		
 		try{
 			action.implementation();
@@ -260,15 +274,15 @@ public class ValidateMetadataActionTests {
 		
 		action.rollback();
 		
-		assertEquals(VDA03_XML,object.getMetadata_file());
-		assertEquals(C.CB_PACKAGETYPE_EAD,object.getPackage_type());
+		assertEquals(VDA03_XML,o.getMetadata_file());
+		assertEquals(C.CB_PACKAGETYPE_EAD,o.getPackage_type());
 	}
 	
 	
 	@Test
 	public void testRejectLIDOAndXMP() throws FileNotFoundException, IOException, RepositoryException{
-		object.getLatestPackage().getFiles().add(f_xmp1);
-		object.getLatestPackage().getFiles().add(f_lido1);
+		o.getLatestPackage().getFiles().add(f_xmp1);
+		o.getLatestPackage().getFiles().add(f_lido1);
 		
 		try{
 			action.implementation();
@@ -281,8 +295,8 @@ public class ValidateMetadataActionTests {
 	
 	@Test
 	public void testRejectMETSAndXMP() throws FileNotFoundException, IOException, RepositoryException{
-		object.getLatestPackage().getFiles().add(f_mets1);
-		object.getLatestPackage().getFiles().add(f_lido1);
+		o.getLatestPackage().getFiles().add(f_mets1);
+		o.getLatestPackage().getFiles().add(f_lido1);
 		
 		try{
 			action.implementation();
@@ -295,8 +309,8 @@ public class ValidateMetadataActionTests {
 	
 	@Test
 	public void testRejectEADAndXMP() throws FileNotFoundException, IOException, RepositoryException{
-		object.getLatestPackage().getFiles().add(f_ead1);
-		object.getLatestPackage().getFiles().add(f_xmp1);
+		o.getLatestPackage().getFiles().add(f_ead1);
+		o.getLatestPackage().getFiles().add(f_xmp1);
 		
 		try{
 			action.implementation();
@@ -309,8 +323,8 @@ public class ValidateMetadataActionTests {
 	
 	@Test
 	public void testRejectEADAndLIDO() throws FileNotFoundException, IOException, RepositoryException{
-		object.getLatestPackage().getFiles().add(f_ead1);
-		object.getLatestPackage().getFiles().add(f_lido1);
+		o.getLatestPackage().getFiles().add(f_ead1);
+		o.getLatestPackage().getFiles().add(f_lido1);
 		
 		try{
 			action.implementation();
@@ -323,8 +337,8 @@ public class ValidateMetadataActionTests {
 	
 	@Test
 	public void testRejectMETSAndLIDO() throws FileNotFoundException, IOException, RepositoryException{
-		object.getLatestPackage().getFiles().add(f_mets1);
-		object.getLatestPackage().getFiles().add(f_lido1);
+		o.getLatestPackage().getFiles().add(f_mets1);
+		o.getLatestPackage().getFiles().add(f_lido1);
 		
 		try{
 			action.implementation();
@@ -337,9 +351,9 @@ public class ValidateMetadataActionTests {
 	
 	@Test
 	public void testRejectEADwithMETSAndLIDO() throws FileNotFoundException, IOException, RepositoryException{
-		object.getLatestPackage().getFiles().add(f_ead1);
-		object.getLatestPackage().getFiles().add(f_mets1);
-		object.getLatestPackage().getFiles().add(f_lido1);
+		o.getLatestPackage().getFiles().add(f_ead1);
+		o.getLatestPackage().getFiles().add(f_mets1);
+		o.getLatestPackage().getFiles().add(f_lido1);
 		
 		try{
 			action.implementation();
@@ -352,9 +366,9 @@ public class ValidateMetadataActionTests {
 
 	@Test
 	public void testRejectEADwithMETSAndXMP() throws FileNotFoundException, IOException, RepositoryException{
-		object.getLatestPackage().getFiles().add(f_ead1);
-		object.getLatestPackage().getFiles().add(f_mets1);
-		object.getLatestPackage().getFiles().add(f_xmp1);
+		o.getLatestPackage().getFiles().add(f_ead1);
+		o.getLatestPackage().getFiles().add(f_mets1);
+		o.getLatestPackage().getFiles().add(f_xmp1);
 		
 		try{
 			action.implementation();
@@ -369,11 +383,11 @@ public class ValidateMetadataActionTests {
 	@Test
 	public void testRejectDuplicateEADWhichComesWithDelta() throws FileNotFoundException, IOException, RepositoryException{
 		
-		object.getLatestPackage().getFiles().add(f_ead1);
+		o.getLatestPackage().getFiles().add(f_ead1);
 		Package pkg2 = new Package();
 		pkg2.setName("2");
 		pkg2.getFiles().add(f_ead2);
-		object.getPackages().add(pkg2);
+		o.getPackages().add(pkg2);
 		
 		try{
 			action.implementation();

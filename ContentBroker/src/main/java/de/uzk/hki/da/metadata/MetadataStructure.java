@@ -133,7 +133,7 @@ public abstract class MetadataStructure {
 		Element eName = edmDoc.createElement(elementName);
 		if(elementName.equals(C.EDM_HAS_VIEW) || elementName.equals(C.EDM_IS_PART_OF)) {
 			if(elementName.equals(C.EDM_IS_PART_OF)) {
-				elementValue = preservationSystem.getUrisFile()+"/"+id;
+				elementValue = preservationSystem.getUrisFile()+"/"+elementValue;
 			}
 			
 			Attr rdfResource = edmDoc.createAttribute("rdf:resource");

@@ -1,14 +1,18 @@
-## Die Konfigurationsdatei "config.properties" - Referenzdokumentation
+## Referenzdokumentation: config.properties
 
-Die Datei ist in einer ContentBroker immer unter 
+config.properties ist der Dateiname der Hauptkonfigurationsdatei des ContentBroker. Diese Datei befindet sich immer unter
 
     ${CB_HOME}/conf/config.properties
     
 abzulegen bzw. zu finden. Sie ist notwendiger Bestandteil jeder DNSCore Installation.
 
-Die Datei ist in verschiedene Blöcke unterteilt, die je nach gewünschter Gesamtkonfiguration (zusammen mit der beans.xml) vorhanden sein müssen.
+Die Datei ist in verschiedene Blöcke unterteilt, die je nach gewünschter Gesamtkonfiguration (zusammen mit der beans.xml) vorhanden sein müssen. Insbesondere die mit **cb.implementation** startenden Konfigurationsparameter bestimmten, ob evenutell weitere Blöcke, wie z.B. der irods Block, ausgefüllt werden müssen oder auch nicht. Im folgenden werden alle Blöcke im Einzelnen behandelt.
 
-### localNode
+Anmerkung: Wenn ein den folgenden Beschreibungen ein Parameter mit DEFAULT gekennzeichnet ist, bedeutet dass, dass, wenn der Parameter weggelassen wird, er automatisch vom ContentBroker mit dem dem gekennzeichneten Wert initialisiert.
+
+Eine jederzeit aktuelle und getestete Version der Datei ist jederzeit unter dem Link [config.properties.ci](../conf/config.properties.ci) zu finden. Diese Datei beschreibt eine volle Knoteninstallation inklusive Presentation Repository und LZA auf Basis von iRODS, Fedora, ElasticSearch, FIDO und JHOVE. Diese config.properties ist diejenige, die im Rahmen des Jenkins Build verwendet wird. Im Kontrast dazu findet man eine abgespeckte Version unter [config.properties.dev](../conf/config.properties.dev). Diese Installation besschreibt eine volle Knoteninstallation, die jedoch ohne iRODS, Fedora, ElasticSearch, FIDO und JHOVE arbeitet.
+
+## localNode
 
 Der localNode.*-Block beinhaltet den Knoten selbst betreffende Konfigurationen und ist obligatorisch in jeder config.properties. Hier sehen wir ein Beispiel:  [config.properties.ci](../conf/config.properties.ci)
 
@@ -18,42 +22,51 @@ Der localNode.*-Block beinhaltet den Knoten selbst betreffende Konfigurationen u
     localNode.gridCacheAreaRootPath=/ci/storage/GridCacheArea
     localNode.workingResource=ciWorkingResource 
     localNode.replDestinations=ciArchiveResourceGroup
-    localNode.name=localnode
     localNode.id=
+    localNode.auditSleepFor=10000
 
-Der localNode entspricht dabei dem [Knoten](object_model.de.md#node---der-knoten)-Konzept der Applikation. Die einzurichtenden Pfade
+Der localNode entspricht dabei dem [Knoten](object_model.de.md#node---der-knoten)-Konzept der Applikation. Die einzurichtenden Pfade entsprechen dabei den [Areas](processing_stages.md), also den unterschiedlichen Speicher-Bereichen, auf denen der ContentBroker seine Arbeit verrichtet. Es sollten immer absolute Pfade eingetragen sein. Es spielt keine Rolle, ob ein abschließendes Slash gesetzt ist oder nicht. 
 
-    localNode.userAreaRootPath=
-    localNode.ingestAreaRootPath=
-    localNode.workAreaRootPath=
-    localNode.gridCacheAreaRootPath=
+#### localNode.userAreaRootPath
 
-entsprechen dabei dem [Areas](processing_stages.md). Es sollten immer absolute Pfade eingetragen sein. Es spielt keine Rolle, ob ein abschließendes Slash gesetzt ist oder nicht. 
+Nicht notwendig auf Knoten, auf denen lediglich die Präsentationskomponente läuft.
 
-**Hinweis** Auf Knoten, auf denen nur die Präsenationskomponenten laufen, ist lediglich ein Eintrag für
+#### localNode.ingestAreaRootPath
 
-    localNode.workAreaRootPath=
-    
-vonnöten, da die Komponenten für die Annahme und Herausgabe von Paketen und Speicherung von Paketen auf LZA-Medien hier keine Rolle spielen.
+Nicht notwendig auf Knoten, auf denen lediglich die Präsentationskomponente läuft.
 
-    localNode.replDestinations=ciArchiveResourceGroup
+#### localNode.workAreaRootPath
+
+Notwendig in jedem Fall
+
+#### localNode.gridCacheAreaRootPath
+
+Nicht notwendig auf Knoten, auf denen lediglich die Präsentationskomponente läuft.
+
+#### localNode.replDestinations
    
-For this setting you can insert either a single destination or a comma seperated list of several destinations which are considered endpoints for the node. These are the nodes holding the secondary copies of objects for long term archival.
-It depends on the implementations of the underlying grid what these node names TODO(why not node names?, here is a discrepancy between the business model side and the technical implementation details) refer to. In a typical iRODS (zone) installation these are the names of resource groups to which the objects can be replicated to.
+Unter ***replDestinations*** sind diejenigen Knoten angegeben, zu denen die Applikation Sekundärkopien der AIPs zur Sicherung der Langzeiterhaltung repliziert. Sind mehrere Knoten als Ziel angegeben, sind diese durch Kommata zu trennen.
 
-    localNode.workingResource=
+Prinzipiell hängt es von der konkret eingesetzten [GridFacade](#cbimplementationgrid) (siehe unten) ab, worauf die Namen verweisen, im Falle von iRODS basierten Implementationen ("irodsGridFacade", "irodsFederatedGridFacade") entsprechen die Werte Namen entsprechender iRODS-Resourcen-(!)Gruppen. 
 
-TODO does it belong on the node section?
+#### localNode.workingResource
+
+Dieser Eintrag muss mit der Verwendung von iRODS basierten Speicheradaptern als Implementation des [DistributedConversionAdapter](#cbimplementationdistributedconversionadapter) (siehe  unten) ausgefüllt werden und bezeichnet eine dedizierte Resource, 
+die als Pendant zur WorkingArea dient. Dass heisst, dass diese Resource immer (!) den VaultPath haben muss, der auch bei [localNode.workAreaRootPath](#localnodeworkarearootpath) angegeben ist.
+
+#### localNode.id
     
-    localNode.name=localnode
+Die hier einzutragende Zahl muss genau der id des Eintrages des jeweiligen Knoten (Node) in der Objektdatenbank entsprechen. Die hier eingetragene id ist dabei eindeutig innerhalb eines Gesamtsystems, d.h. es dürfen nicht zwei Maschinen mit derselben id konfiguriert sein.
 
-This property lets you specify the name which identifies the node in the system. It is used for example for synchronizing jobs between nodes (by using the DistributedConversionAdapter). While the name is theoretically arbitrary, it is recommended to use the fully qualified domain name of the node, which typically should equal the irods.server setting on iRODS based node installations (see description of irods settings below).
+#### localNode.auditSleepFor
 
-    localNode.id= 
-    
-This setting must contain the integer value primary key of the nodes correspoding entry in the nodes table of the object db.
+**Achtung** Nur auf Testinstallationen benutzen. Ansonsten weglassen.
 
-### Der "cb.*-Block" der config.properties
+#### localNode.logFolder
+
+**Achtung** Nur auf Testinstallation benutzen. Ansonsten weglassen.
+
+## cb
 
 Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
@@ -64,75 +77,64 @@ Beispiel aus [config.properties.ci](../conf/config.properties.ci)
     cb.implementation.metadataExtractor=jhoveMetadataExtractor
     cb.bin.python=/ci/python/python
 
-There are a couple of settings that relate strongly to the node concept, but are not related to business concepts in any way. Instead they relate to technical concepts only. Hence they merit their own category which is called "cb" which stands for ContentBroker settings.
+Die hierunter zusammengefassten Einträge hängen, genau wie die localNode Einträge, mit den Knoten (Node) Konzept zusammen, sind jedoch im Gegensatz zu diesen nicht fachlicher, sondern technischer Natur.
 
-    cb.serverSocketNumber=
+#### cb.serverSocketNumber
 
-In order to let peripheral components of DNSCore (primary use of course is DA-Web) talk to and have introspection into the application state of the ContentBroker, a server process is beeing established by the ContentBroker at startup. Any free port will do. As under normal circumstances DA-Web runs on the same node (i.r. localnode will suffice) as the ContentBroker, firewall issues could possibly be neglected.
+Hier ist eine freie Portnummer angegeben, die zur serverinternen Kommunikation zwischen ContentBroker und DAWeb bzw. ContentBroker und cbTalk.sh via einer MessageQueue reserviert wird.
 
-    cb.implementation.grid=
+#### cb.implementation.grid
 
-The full and node mode installations of the ContentBroker require a grid component onto which they put and from which they retrieve the long term archive contents, which correspond to the AIP in OAIS terms, and always relate to containered files (.tar) on the technical level. At the moment there exist three implementations of grid subsystems, of which two relate to iRODS configurations in different modes.
+Wenn ein Knoten nicht allein zur Verwaltung von PIPs genutzt wird, sondern in vollem Umfang als Knoten im Sinne der Langzeiterhaltung dient, muss dieser unter diesem Knoten der Name der Implementation angegeben werden, die die Anbindung
+an die jeweils genutzte Speichertechnologie ermöglicht.
 
-    cb.implementation.grid=irodsGridFacade
-    
-If set to irodsGridFacade, the iRODS installation is assumed to be configured properly to run a one zone based grid.
+Derzeit verfügbare Implementationen sind 
 
-block described below must be inserted to a working config.properties. 
-    
-    cb.implementation.grid=irodsFederatedGridFacade
+* **irodsGridFacade** - iRODS im Zonenbetrieb
+* **federatedGridFacade** - iRODS im Federatedbetrieb
+* **fakeGridFacade** - Minimalimplementation zu Testzwecken. DEFAULT
 
-As opposed to the irodsGridFacade, the irodsFederatedGridFacade assumes to have an iRODS system running which is configured in a federated (TODO link to documents) manner. Note: At the moment this feature is considered experimental until it is fully tested in a load test environment.
+Ist entweder *irodsGridFacade* sowie *federatedGridFacade* gewählt, so muss auch der [irods](#irods)-Block (siehe unten) ausgefüllt sein.
 
-    cb.implementation.grid=fakeGridFacade
-    
-The fakeGridFacade is a simple implementation which resigns any third party subsystems but only the local file system.
-It has been written primarily for purposes of testing or easy experimentation for evaluation or showcasing purposes.
+#### cb.implementation.distributedConversionAdapter
 
-    cb.implementation.distributedConversion=
+Um Workflows gestalten so zu können, dass Jobs von mehreren Knoten des Systemes kooperativ bearbeitet werden können, ist eine Technologie vonnöten, um die Synchronisierung der Daten auf der WorkArea zu erreichen. Hierfür stehen derzeit drei Implementationen zur Verfügung:
 
-The ContentBroker is able to synchronize jobs between nodes in the system. To accomplish this, the unpacked objects in the WorkArea can be transfered to another node and an action can then create a job for the other node to execute which will then work with the replicated data. So two or more nodes can modify the objects state sequentially. The setting lets you choose an implementation which provides the necessary replicaton facilities.
+* **irodsDistributedConversionAdapter** - Aufbauend auf einer Lösung basierend auf iRODS im Zonenbetrieb
+* **irodsFederatedDistributedConversionAdapter** - Aufbauend auf einer Lösung basierend auf iRODS im Federated-Betrieb
+* **fakeDistributedConversionAdapter** - Minimalimplementation zu Testzwecken. DEFAULT 
 
-    cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+Ist entweder *irodsDistributedConversionAdapter* sowie *irodsFederatedDistributedConversionAdapter* gewählt, so muss auch der Eintrag [localNode.workingResource](#localnodeworkingresource) (siehe oben) gesetzt sein.
 
-When selecting the irodsDistributedConversionAdapter, an installation of iRODS (in zone mode) is used. The irods settings in config.properties have to be present (also see irods section below).
-    
-    cb.implementation.distributedConversion=fakeDistributedConversionAdapter
+Ist entweder *irodsDistributedConversionAdapter* sowie *irodsFederatedDistributedConversionAdapter* gewählt, so muss auch der [irods](#irods)-Block (siehe unten) ausgefüllt sein.
 
-This implementation is useful for testing or evaluation purposes.
-    
-This setting determines the connection to the presentation repository subsystem.
-    
-    cb.implementation.repository=
-    cb.implementation.repository=fedoraRepositoryFacade
-    cb.implementation.repository=fakeRepositoryFacade (default)
-    
-When choosing fedoraRepositoryFacade, Fedora is used as the presentation layer subsystem.
-This fakeRepositoryFacade implementation is useful for testing or evaluation purposes.
+#### cb.implementation.repository
 
-    cb.bin.python=
+Die jeweils ausgewählte Implementation kapselt die Technologie, mit der das PresentationRepository umgesetzt ist.
 
-Here you have to insert the command to run an instance of python (at the moment >= 2.7 is required). If you are sure the required command is globally visible in the environment (the shell or process) in which the ContentBroker.jar is intended to run, you simple can insert something as simple as "python" as a value. If this is not the case, for example if the packaging system of your distro has only python in a version < 2.7 and you have a self compiled version at another path
-on your file system, you should insert the full path to the python binary as a value.
+Mögliche Werte sind
 
-	cb.implementation.metadataExtractor=
-	cb.implementation.metadataExtractor=jhoveMetadataExtractor (defaul)
-	cb.implementation.metadataExtractor=fakeMetadataExtractor
-	
-	
-### Der "irods.*"-Block der config.properties
+* **fedoraRepositoryFacade**
+* **fakeRepositoryFacade** DEFAULT
 
-Wenn mindestens eines der Subsysteme "gridFacade" bzw. "distributedConversionAdapter", konfigurierbar per
+Ist *fedoraRepositoryFacade* gewählt, so müssen sämtliche Parameter aus den [fedora](#fedora)- UND [elasticsearch](#elasticsearch)-Blöcken ausgefüllt sein.
 
-    cb.implementation.grid=
-    cb.implementation.distributedConversionAdapter=
-    
-auf die Verwendung von iRODS hin konfiguriert sind, siehe
+#### cb.implementation.fileFormatFacade
 
-    cb.implementation.grid=irodsGridFacade
-    cb.implementation.distributedConversionAdapter=irodsDistributedConversionAdapter
-    
-so ist es erforderlich, dass der optionale "irods.*"-Block auch innerhalb der config.properties vorhanden ist.
+Bestimmt, welche im Dienste die Formatidentifikation, Subformatidentifikation, (technische) Metadatenextraktion übernehmen.
+
+Mögliche Werte sind
+
+* **standardFileFormatFacade** DEFAULT
+* **fakeFileFormatFacade** 
+
+Ist *standardFileFormatFacade* gewählt, so wird die Metadatenextraktion von JHOVE, die Formatidentifikation von FIDO erledigt. In diesem Falle ist die Angabe des Parameters [cb.bin.python](#cbbinpython) ebenfalls notwendig.
+
+#### cb.bin.python
+
+Hier muss, wenn [cb.implementation.fileFormatFacade](#cbimplementationfileformatfacade) nicht explizit auf *fakeFileFormatFacade* gesetzt ist, der Pfad zu einer Python Binary (Version >= 2.7) angegeben sein. Wenn sichergestellt werden kann, dass die Binary im Pfad der Laufzeitumgebung des ContentBroker ist, kann hier einfach *python* angegeben werden, ansonsten empiehlt sich hier die Angabe eine absoluten Pfades.
+
+## irods
 
 Ein vollständiges Beispiel für den Block ist [config.properties.ci](../conf/config.properties.ci)
 
@@ -146,28 +148,29 @@ Ein vollständiges Beispiel für den Block ist [config.properties.ci](../conf/co
     irods.keyStorePath=
     irods.trustStorePath=
 
+Wenn eines der Subsysteme [gridFacade](#cbimplementationgrid) oder [distributedConversionAdapter](#cbimplementationdistributedconversionadapter) auf die Nutzung einer iRODS-basierten Implementation (irodsGridFacade,federatedGridFacade,irodsDistributedConversionAdapter,irodsFederatedDistributedConversionAdapter) konfiguriert ist, dann muss der ensprechende **irods**-Block in der config.properties ebenfalls ausgefüllt sein. Bei der Auswahl anderer Implementationen ist der Block überflüssig.
 
- 
+**BEANS** Der irods-Block an dieser Stelle korrespondiert mit dem Import-Eintrag ```<import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>``` aus der conf/beans.xml. Es muss sichergestellt werden, dass bei Nutzung von iRODS der entsprechende Eintrag in der Beans gesetzt wird.
 
-These settings are optional and must be set only if cb.implementation.grid or cb.implementaion.districutedConversion
-are set to use the corresponding irods specific implementations. Nodes not using irods dont need these parameters.
+#### iRODS-Basisdaten
 
     irods.user=
     irods.server=
     irods.zone=
     irods.default_resc=
+    
+#### Verschlüsselung der Authentifizierung
+   
     irods.pam=
     irods.keyStorePassword=
     irods.keyStorePath=
     irods.trustStorePath=
 
-asdf
+#### irods.password
 
-    irods.password= 
+Das hier einzutragende Passwort muss vorab verschlüsselt sein mit Hilfe des DNSCore-eigenen [PasswordEncryptor](../../../../../../tree/master/PasswordEncryptor).
 
-The password has to be encrypted with the password encryptor/decryptor which is part of the DNSCore project itself (if you haven't already, you can see the sub project [here](https://github.com/da-nrw/DNSCore/tree/master/PasswordEncryptor).
-
-### Der "fedora.*"-Block der config.properties.
+## fedora
 
 Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
@@ -175,19 +178,23 @@ Beispiel aus [config.properties.ci](../conf/config.properties.ci)
     fedora.user=fedoraAdmin
     fedora.password=BYi/MFjKDFd5Dpe52PSUoA==
 
-When the application has been installed in one of wither pres or full mode, the presentation module is activated via its respective import in the import section of the beans.xml (see down below).
+When the application has been installed in one of wither pres or full mode, the presentation module is activated via its respective import in the import section of the beans.xml (see down below). Es muss sichergestellt werden, dass die eingetragenen Werte denen ensprechen, die bei der Installation von Fedora angegeben wurden. Mehr zur Installation von Fedora findet sich [hier](install_fedora.de.md).
 
-    fedora.url=
-    fedora.user=
+**BEANS** der fedora-Block hier korrespondiert mit dem Eintrag ```<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>``` aus der conf/beans.xml. Es muss sichergestellt werden, dass bei Nutzung von Fedora/Elasticsearch der entsprechende Eintrag in der Beans gesetzt wird.
 
-In pres or full mode the ContentBroker and the presentation repository are hosted on one and the same machine. Fedora runs on a tomcat and fedora.url points to the http://... adress of Fedora while fedora.user is a fedora user prepared
-for usage by the ContentBroker.
+#### fedora.url
 
-    fedora.password=
+Die URL des Fedora Server
+
+#### fedora.user
+
+Der Fedora User, mit dem der ContentBroker auf dem Fedora arbeitet.
+
+#### fedora.password
     
-The passwort has to be encrypted/decrypted with the PasswordEncryptor of DNSCore.
+Das hier einzutragende Passwort muss vorab verschlüsselt sein mit Hilfe des DNSCore-eigenen [PasswordEncryptor](../../../../../../tree/master/PasswordEncryptor).
 
-### Der "elasticsearch.*"-Block der config.properties.
+## elasticsearch
 
 Beispiel [config.properties.ci](../conf/config.properties.ci)
 
@@ -195,10 +202,20 @@ Beispiel [config.properties.ci](../conf/config.properties.ci)
     elasticsearch.hosts=localhost
     elasticsearch.cluster=cluster_ci
 
-The elasticsearch settings only are necessary on nodes which provide presentation repository functionality, which is enabled by choosing either the full or pres setting during installation.
+Wenn [cb.implementation.repository](#cbimplementationrepository) auf *fedoraRepositoryFacade* gesetzt ist, ist es notwendig, die Parameter aus diesem Block einzutragen. Es muss sichergestellt werden, dass die eingetragenen Werte der Elasticsearch-Installation entsprechen. Mehr zur Installation von Elasticsearch findet sich [hier](install_elasticsearch.de.md).
 
-    elasticsearch.index=
-    elasticsearch.hosts=
-    elasticsearch.cluster=
+**BEANS** der elasticsearch-Block hier korrespondiert mit dem Eintrag ```<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>``` aus der conf/beans.xml. Es muss sichergestellt werden, dass bei Nutzung von Fedora/Elasticsearch der entsprechende Eintrag in der Beans gesetzt wird.
+
+#### elasticsearch.index
+
+Der Elasticsearch Indexname
+
+#### elasticsearch.hosts
+
+Der Elasticsearch hostname
+
+#### elasticsearch.cluster
     
-Make sure you insert the same settings you have used during your elasticsearch installation.
+Der Elasticsearch clustername
+
+

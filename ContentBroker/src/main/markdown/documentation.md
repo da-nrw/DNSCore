@@ -85,7 +85,7 @@ the releases page, follow the source code link for the corresponding version and
 ###### Extended configuration
 
 * Installing ElasticSearch for DNSCore ([german](install_elasticsearch.de.md))
-* Installing Fedora for DNSCore ([english](install_fedora.md))
+* Installing Fedora for DNSCore ([german](install_fedora.de.md))
 * Installing PrOAI for DNSCore ([german](install_proai.md))
 * Installing iRODS for DNSCore ([english](installation_irods.md))
 * [Create user](create_user.md)
