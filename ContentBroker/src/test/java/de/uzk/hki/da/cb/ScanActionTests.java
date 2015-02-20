@@ -55,7 +55,7 @@ import de.uzk.hki.da.util.RelativePath;
  */
 public class ScanActionTests extends ConcreteActionUnitTest{
 
-	private static final Path workAreaRootPath = new RelativePath("src/test/resources/cb/ScanActionTests/");
+	private static final Path workAreaRootPath = new RelativePath("src/test/resources/cb/ScanAction/");
 	
 	private static final String TIFF_TESTFILE = "140849.tif";
 	private static final String TIF_PUID = "fmt/353";
@@ -74,12 +74,12 @@ public class ScanActionTests extends ConcreteActionUnitTest{
 	@Before
 	public void setUp() throws IOException{
 		
-		
 		j.setRep_name(REPNAME);
 		
+		DAFile premis = new DAFile(o.getLatestPackage(),REPNAME+"a","premis.xml");
 		DAFile file = new DAFile(o.getLatestPackage(),REPNAME+"a",TIFF_TESTFILE);
 		file.setFormatPUID(TIF_PUID);
-		List<DAFile> files = new ArrayList<DAFile>(); files.add(file);
+		List<DAFile> files = new ArrayList<DAFile>(); files.add(file); files.add(premis);
 		o.getLatestPackage().getFiles().addAll(files);
 
 		
@@ -111,7 +111,7 @@ public class ScanActionTests extends ConcreteActionUnitTest{
 	
 	@After
 	public void tearDown() {
-		premisFile.delete();
+//		premisFile.delete();
 	}
 	
 	

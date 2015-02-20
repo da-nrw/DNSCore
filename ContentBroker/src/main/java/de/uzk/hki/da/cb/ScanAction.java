@@ -19,18 +19,17 @@
 
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.core.C.QUESTION_MIGRATION_ALLOWED;
+import static de.uzk.hki.da.core.C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION;
+
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.uzk.hki.da.core.C.*;
-
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.MailContents;
-import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionInstructionBuilder;
@@ -50,7 +49,6 @@ import de.uzk.hki.da.util.ConfigurationException;
  */
 public class ScanAction extends AbstractAction{
 	
-	private static final String A_REP_IDENTIFIER = "a";
 	private static final String PREMIS_XML = "premis.xml";
 	private static final String XMP_RDF = "XMP.rdf";
 	private static final String MIGRATION = "MIGRATION";
@@ -66,6 +64,8 @@ public class ScanAction extends AbstractAction{
 
 	@Override
 	public void checkPreconditions() {
+		if (o.getLatest(PREMIS_XML)==null) throw new PreconditionsNotMetException("Must exist: "+PREMIS_XML);
+	    if (!o.getLatest(PREMIS_XML).toRegularFile().exists()) throw new PreconditionsNotMetException("Must exist: "+PREMIS_XML);
 	}
 
 	@Override
@@ -74,7 +74,9 @@ public class ScanAction extends AbstractAction{
 		j.getConversion_instructions().addAll(
 				generateConversionInstructions(o.getLatestPackage().getFiles()));
 		
-		Object premisObject = parsePremisToMetadata(o.getDataPath() +FS_SEPARATOR+ j.getRep_name()+A_REP_IDENTIFIER);
+		Object premisObject = parsePremisToMetadata(o.
+				getLatest(PREMIS_XML).
+				toRegularFile());
 		if (!premisObject.grantsRight(MIGRATION))
 		{
 			logger.info("PREMIS says migration is not granted. Will ask the user what to do next.");
@@ -137,13 +139,13 @@ public class ScanAction extends AbstractAction{
 	
 	
 	
-	private Object parsePremisToMetadata(String pathToRepresentation) throws IOException {
-		logger.debug("reading rights from " + pathToRepresentation + FS_SEPARATOR+PREMIS_XML);
+	private Object parsePremisToMetadata(File premis) throws IOException {
+		logger.debug("reading rights from " + premis);
 		Object o = null;
 				
 		try {
 			o = new ObjectPremisXmlReader()
-			.deserialize(new File(pathToRepresentation + FS_SEPARATOR+PREMIS_XML));
+			.deserialize(premis);
 		} catch (Exception e) {
 			// do not throw userexception here since ability to deserialize should already have been checked in UnpackAction.
 			throw new RuntimeException("Error while deserializing PREMIS", e);

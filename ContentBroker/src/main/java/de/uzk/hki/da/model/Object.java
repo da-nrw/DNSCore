@@ -809,10 +809,12 @@ public class Object {
 		
 		DAFile result = null;
 		for (String rep : getReps()) {
-
+			
 			Collection<DAFile> filesFromRep = getFilesOfRepresentation(rep);
-			for (DAFile f:filesFromRep)
+			for (DAFile f:filesFromRep) {
 				if (f.getRelative_path().endsWith(filename)) result = f;
+				
+			}
 		}
 		
 		return result;
