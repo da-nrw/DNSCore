@@ -32,10 +32,13 @@ import de.uzk.hki.da.util.RelativePath;
  */
 public class C {
 
+	public static final String FS_SEPARATOR = "/";
+	
 	// file extensions
 	public static final String FILE_EXTENSION_ZIP = "zip";
 	public static final String FILE_EXTENSION_TGZ = "tgz";
 	public static final String FILE_EXTENSION_XML = ".xml";
+	public static final String FILE_EXTENSION_XMP = ".xmp";
 	public static final String FILE_EXTENSION_JPG = ".jpg";
 	public static final String FILE_EXTENSION_TAR = ".tar";
 
@@ -49,7 +52,8 @@ public class C {
 	public static final String CB_PACKAGETYPE_XMP  = FFConstants.SUBFORMAT_IDENTIFIER_XMP;
 	public static final String CB_PACKAGETYPE_LIDO = FFConstants.SUBFORMAT_IDENTIFIER_LIDO;
 	public static final String CB_PACKAGETYPE_METS = FFConstants.SUBFORMAT_IDENTIFIER_METS;
-	public static final String CB_PACKAGETYPE_EAD  = FFConstants.SUBFORMAT_IDENTIFIER_EAD;     
+	public static final String CB_PACKAGETYPE_EAD  = FFConstants.SUBFORMAT_IDENTIFIER_EAD;  
+
 		/** common metadata file for all XMP type packages */
 	public static final String METADATA_FILE_XMP = "XMP.xml";
 		/** Fedora datastream id for EDM. */
@@ -76,6 +80,7 @@ public class C {
 	public static final String EVENT_TYPE_CREATE = "CREATE";
 	public static final String EVENT_TYPE_COPY = "COPY";
 	public static final String EVENT_TYPE_CONVERT = "CONVERT";
+	public static final String AGENT_TYPE_NODE = "NODE";
 	
 	// Error messages
 	public static final String ERROR_MSG_ROLLBACK_NOT_IMPLEMENTED = "rollback not implemented yet.";

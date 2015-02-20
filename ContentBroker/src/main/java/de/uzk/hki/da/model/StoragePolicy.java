@@ -1,33 +1,63 @@
 package de.uzk.hki.da.model;
 
-import java.util.List;
-
 
 /**
  * The Class StoragePolicy.
  * @author Jens Peters
  */
 public class StoragePolicy {
-
-	@SuppressWarnings("unused")
-	private Node node = null;
 	
 	private int min_nodes;
 	
 	private String forbiddenNodes;
 	
-	public StoragePolicy(Node localnode) {
-		this.node = localnode;
+	private String adminEmail;
+	
+	private String gridCacheAreaRootPath;
+	
+	private String workAreaRootPath;
+	
+	private String nodeName;
+	
+	private String replDestinations;
+	
+	private String workingResource;
+	
+	public StoragePolicy() {
+		
 	}
 	
-	private  List<String>destinations;
-	
-	public boolean isPolicyAchievable() {
-		if (destinations==null) return false;
-		if (destinations.size()>=min_nodes) return true;
-		else return false;
+	public String getAdminEmail() {
+		return adminEmail;
 	}
 
+	public void setAdminEmail(String adminEmail) {
+		this.adminEmail = adminEmail;
+	}
+
+	public String getGridCacheAreaRootPath() {
+		return gridCacheAreaRootPath;
+	}
+
+	public void setGridCacheAreaRootPath(String gridCacheAreaRootPath) {
+		this.gridCacheAreaRootPath = gridCacheAreaRootPath;
+	}
+
+	public String getWorkAreaRootPath() {
+		return workAreaRootPath;
+	}
+
+	public void setWorkAreaRootPath(String workAreaRootPath) {
+		this.workAreaRootPath = workAreaRootPath;
+	}
+
+	public String getNodeName() {
+		return nodeName;
+	}
+
+	public void setNodeName(String nodeName) {
+		this.nodeName = nodeName;
+	}
 
 	public int getMinNodes() {
 		return min_nodes;
@@ -38,21 +68,13 @@ public class StoragePolicy {
 		this.min_nodes = min_nodes;
 	}
 
-
-	/**
-	 * @param destinations the destinations to set
-	 */
-	public void setDestinations(List<String> destinations) {
-		this.destinations = destinations;
+	public String getReplDestinations() {
+		return replDestinations;
 	}
 
-	/**
-	 * @return the destinations
-	 */
-	public List<String> getDestinations() {
-		return destinations;
+	public void setReplDestinations(String replDestinations) {
+		this.replDestinations = replDestinations;
 	}
-
 
 	public String getForbiddenNodes() {
 		return forbiddenNodes;
@@ -63,7 +85,13 @@ public class StoragePolicy {
 		this.forbiddenNodes = forbiddenNodes;
 	}
 
-	
+	public String getWorkingResource() {
+		return workingResource;
+	}
+
+	public void setWorkingResource(String workingResource) {
+		this.workingResource = workingResource;
+	}
 	
 
 		

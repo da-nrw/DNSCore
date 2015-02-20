@@ -62,15 +62,17 @@ public class AcceptanceTestHelper {
 	private GridFacade gridFacade;
 	private Node localNode;
 	private User testContractor;
-
-
+	private StoragePolicy sp;
+	
 	public AcceptanceTestHelper(
 			GridFacade gridFacade,
 			Node localNode,
-			User testContractor){
+			User testContractor,
+			StoragePolicy sp){
 		this.gridFacade=gridFacade;
 		this.localNode=localNode;
 		this.testContractor=testContractor;
+		this.sp = sp;
 	}
 			
 			
@@ -477,16 +479,9 @@ public class AcceptanceTestHelper {
 		
 		String PACKAGE_NAME = "1";
 		int timeout = 2000;
-		int minNodes = 1;
 		
 		if (createddate==null) createddate = new Date();
 		String urn =   URN_NBN_DE_DANRW+identifier;
-		StoragePolicy sp = new StoragePolicy(localNode);
-		ArrayList<String> destinations = new ArrayList<String>();
-		destinations.add("ciArchiveResourceGroup");
-		sp.setDestinations(destinations);
-		sp.setMinNodes(minNodes);
-		
 		gridFacade.put(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR), 
 				new RelativePath(C.TEST_USER_SHORT_NAME,identifier,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR).toString(), sp);
 		int i = 0;
@@ -546,9 +541,11 @@ public class AcceptanceTestHelper {
 			String status,
 			String packageType,
 			String metadataFile) throws IOException{
+		sp.setReplDestinations("ciArchiveResource");
+		sp.setWorkingResource("ciWorkingResource");
 		gridFacade.put(
 				Path.makeFile(TEST_DATA_ROOT_PATH,name+".pack_1.tar"),
-				testContractor.getShort_name()+"/ID-"+name+"/ID-"+name+".pack_1.tar",new StoragePolicy(new Node()));
+				testContractor.getShort_name()+"/ID-"+name+"/ID-"+name+".pack_1.tar",sp);
 		
 		
 		Session session = HibernateUtil.openSession();

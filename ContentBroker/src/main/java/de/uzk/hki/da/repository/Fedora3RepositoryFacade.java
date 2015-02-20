@@ -210,7 +210,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		List<Object> graph = (List<Object>) json.get("@graph");
 		for (Object object : graph) {
 			
-			logger.debug("Preparing json graph for indexing in elasticsearch: \n{}", JSONUtils.toPrettyString(object));
+			logger.trace("Preparing json graph for indexing in elasticsearch: \n{}", JSONUtils.toPrettyString(object));
 			createIndexEntryForGraphObject(indexName, edmJsonFrame, object);
 		}		
 	}
@@ -235,7 +235,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		
 		
 		eraseUnmappableContent(subject);
-		logger.debug("Will index adjusted json graph in elasticsearch: \n{}", JSONUtils.toPrettyString(object));	
+		logger.trace("Will index adjusted json graph in elasticsearch: \n{}", JSONUtils.toPrettyString(object));	
 		
 		// Add @context attribute
 //		String contextUri = contextUriPrefix + FilenameUtils.getName(framePath);
@@ -246,7 +246,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		String[] splitType = ((String) subject.get("@type")).split("/");
 		String type = splitType[splitType.length-1];
 
-		logger.debug("indexName: "+indexName+", type: "+type+", id: "+id);
+		logger.trace("indexName: "+indexName+", type: "+type+", id: "+id);
 		type=ORE_AGGREGATION; // override on purpose, so that everything is mapped against es_mapping.json
 		
 		try {

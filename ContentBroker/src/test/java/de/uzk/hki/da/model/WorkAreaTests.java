@@ -33,6 +33,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.User;
@@ -46,6 +47,7 @@ import de.uzk.hki.da.util.RelativePath;
  */
 public class WorkAreaTests {
 	
+	private static final String CONTAINER_NAME = "sip.txt";
 	private static final String UNDERSCORE = "_";
 	private static final Path WORK_AREA_ROOT_PATH = Path.make(TC.TEST_ROOT_MODEL,"WorkArea");
 	private static final Path WORK_AREA_ROOT_PATH_TMP = Path.make(TC.TEST_ROOT_MODEL,"WorkArea_");
@@ -64,6 +66,7 @@ public class WorkAreaTests {
 		o.setContractor(c);
 		Package pkg = new Package();
 		pkg.setName("1");
+		pkg.setContainerName(CONTAINER_NAME);
 		pkg.setId(1);
 		o.getPackages().add(pkg);
 		wa = new WorkArea(n,o);
@@ -125,7 +128,26 @@ public class WorkAreaTests {
 		final String relativePath="sub/file.txt"; 
 		DAFile daf = new DAFile(null,repName,relativePath);
 		File r = wa.toFile(daf);
-		assertEquals(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,o.getContractor().getShort_name(),o.getIdentifier(),repName,relativePath),r);
+		assertEquals(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,o.getContractor().getShort_name(),o.getIdentifier(),C.WA_DATA,repName,relativePath),r);
 	}
+	
+	@Test
+	public void ingestSIP() throws IOException {
+		wa.ingestSIP(Path.makeFile(WORK_AREA_ROOT_PATH,CONTAINER_NAME));
+		assertTrue(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,o.getContractor().getShort_name(),CONTAINER_NAME).exists());
+	}
+	
+	@Test
+	public void sipFile() {
+		assertEquals(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,o.getContractor().getShort_name(),o.getLatestPackage().getContainerName()),wa.sipFile());
+	}
+	
+	@Test
+	public void objectPath() {
+		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WA_WORK,o.getContractor().getShort_name(),o.getIdentifier()),wa.objectPath());
+	}
+	
+	
+	
 	
 }

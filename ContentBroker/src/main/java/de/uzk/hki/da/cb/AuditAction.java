@@ -65,7 +65,7 @@ public class AuditAction extends AbstractAction {
 	@Override
 	public boolean implementation() {
 		setObjectState(j,Object.ObjectStatus.UnderAudit);
-		StoragePolicy sp = new StoragePolicy(n);
+		StoragePolicy sp = new StoragePolicy();
 		sp.setMinNodes(preservationSystem.getMinRepls());
 		
 		String msg= "";

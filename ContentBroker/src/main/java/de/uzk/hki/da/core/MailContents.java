@@ -43,7 +43,7 @@ import de.uzk.hki.da.service.Mail;
  */
 public class MailContents {
 
-	private static final String DA_NRW = "da-nrw";
+	private static final String PRESERVATION_SYSTEM_NAME = "DA-NRW";
 
 	private static final Logger logger = LoggerFactory.getLogger(MailContents.class);
 	
@@ -77,8 +77,8 @@ public class MailContents {
 	public void informUserAboutPendingDecision(Object obj){
 		checkObject(obj);
 		
-		String subject = "[" + DA_NRW.toUpperCase() + "] Decision required.";
-		String msg = "Please look at daweb and make your decision for object " + obj.getIdentifier();
+		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Entscheidung erforderlich für "+obj.getIdentifier();
+		String msg = "Bitte treffen Sie eine Entscheidung in der DAWeb-Maske \"Entscheidungsübersicht\"" + obj.getIdentifier();
 		
 		try {
 			Mail.sendAMail(preservationSystem.getAdmin().getEmailAddress(), obj.getContractor().getEmailAddress(), subject, msg);
@@ -99,7 +99,7 @@ public class MailContents {
 		// send Mail to Admin with Package in Error
 		checkObject(obj);
 
-		String subject = "[" + DA_NRW.toUpperCase() + "] Problem Report für " + obj.getIdentifier();
+		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Problem Report für " + obj.getIdentifier();
 		try {
 			Mail.sendAMail(preservationSystem.getAdmin().getEmailAddress(), localNode.getAdmin().getEmailAddress(), subject, msg);
 		} catch (MessagingException e) {
@@ -117,7 +117,7 @@ public class MailContents {
 	public void retrievalReport(Object object){
 		checkObject(object);
 		
-		String subject = "Retrieval Report für " + object.getIdentifier();
+		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Retrieval Report für " + object.getIdentifier();
 		String msg = "Ihr angefordertes Objekt mit dem Namen \""+ object.getIdentifier() + "\" wurde unter Ihrem Outgoing Ordner unter " 
 				+ object.getContractor().getShort_name() + "/outgoing/ abgelegt und steht jetzt"
 				+ " zum Retrieval bereit!\n\n";
@@ -139,13 +139,13 @@ public class MailContents {
 		String msg;
 		if (obj.isDelta())
 		{
-			subject = "[DA-NRW] Einlieferungsbeleg für Ihr Delta zum Objekt " + obj.getIdentifier();
+			subject = "[" + PRESERVATION_SYSTEM_NAME + "] Einlieferungsbeleg für Ihr Delta zum Objekt " + obj.getIdentifier();
 			msg = "Ihrem archivierten Objekt mit dem Identifier " + obj.getIdentifier() + " und der URN " + obj.getUrn() +
 					" wurde erfolgreich ein Delta mit dem Paketnamen \"" + obj.getOrig_name() + "\" hinzugefügt.";
 		}
 		else
 		{
-			subject = "[DA-NRW] Einlieferungsbeleg für " + obj.getIdentifier();
+			subject = "[" + PRESERVATION_SYSTEM_NAME + "] Einlieferungsbeleg für " + obj.getIdentifier();
 			msg = "Ihr eingeliefertes Paket mit dem Namen \""+ obj.getOrig_name() + "\" wurde erfolgreich im DA-NRW archiviert.\n\n" +
 			"Identifier: " + obj.getIdentifier() + "\n" +
 			"URN: " + obj.getUrn();
@@ -172,7 +172,7 @@ public class MailContents {
 	public boolean missingReferences(Object obj, List<String> missingReferences){
 		checkObject(obj);
 		
-		String subject = "[DA-NRW] Fehlende Referenzen in den Metadaten des Objekts " + obj.getIdentifier();
+		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Fehlende Referenzen in den Metadaten des Objekts " + obj.getIdentifier();
 		String msg = "Ihr archiviertes Objekt mit dem Identifier " + obj.getIdentifier() + " und der URN " + obj.getUrn() +
 					" ist nicht konsistent. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
 					+ missingReferences+". Die Verarbeitung findet dennoch statt.";
@@ -200,7 +200,7 @@ public class MailContents {
 
 		String errorStatus = action.getStartStatus().substring(0,action.getStartStatus().length()-1) + "1";
 		String email = localNode.getAdmin().getEmailAddress();
-		String subject = "Fehlerreport für " + object.getIdentifier() + " : Status (" + errorStatus + ")" ;
+		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Fehlerreport für " + object.getIdentifier() + " : Status (" + errorStatus + ")" ;
 		String msg = e.getMessage();
 		msg +="\n\n";
 		StringWriter s = new StringWriter();
@@ -227,7 +227,7 @@ public class MailContents {
 		if (object==null) throw new IllegalArgumentException("object must not be null");
 		
 		String email = object.getContractor().getEmailAddress();
-		String subject = "Fehlerreport für " + object.getIdentifier();
+		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Fehlerreport für " + object.getIdentifier();
 		String message = uem.getMessage(e.getUserExceptionId());
 		
 		message = message.replace("%OBJECT_IDENTIFIER", object.getIdentifier())

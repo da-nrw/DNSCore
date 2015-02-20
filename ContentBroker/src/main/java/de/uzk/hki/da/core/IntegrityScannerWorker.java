@@ -56,7 +56,7 @@ public class IntegrityScannerWorker extends Worker{
 	/** The irods grid connector. */
 	private GridFacade gridFacade;
 	
-	/** The local node name. */
+	/** The local node id. */
 	private String localNodeId;
 	
 	private PreservationSystem pSystem;
@@ -67,7 +67,8 @@ public class IntegrityScannerWorker extends Worker{
 	private long sleepFor = 60*60*1000*2L;
 
 	public void init(){
-		node = new Node(); node.setId(Integer.parseInt(localNodeId));
+		node = new Node(); 
+		node.setId(Integer.parseInt(localNodeId));
 		setpSystem(new PreservationSystem()); getPSystem().setId(1);
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
@@ -203,27 +204,6 @@ public class IntegrityScannerWorker extends Worker{
 	}
 	
 	
-	
-	
-	
-	
-	/**
-	 * Gets the local node name.
-	 *
-	 * @return the local node name
-	 */
-	public String getLocalNodeName() {
-		return localNodeId;
-	}
-
-	/**
-	 * Sets the local node name.
-	 *
-	 * @param localNodeName the new local node name
-	 */
-	public void setLocalNodeName(String localNodeName) {
-		this.localNodeId = localNodeName;
-	}
 
 	/**
 	 * @author Jens Peters
@@ -233,8 +213,11 @@ public class IntegrityScannerWorker extends Worker{
 	 */
 	int checkObjectValidity(Object obj) {
 		if (getPSystem().getMinRepls() == null || getPSystem().getMinRepls() ==0) throw new IllegalStateException("minNodes not set correctly!");
-		Node node = new Node("tobefactoredout");
-		StoragePolicy sp = new StoragePolicy(node);
+		
+		
+		StoragePolicy sp = new StoragePolicy();
+		sp.setAdminEmail(node.getAdmin().getEmailAddress());
+		sp.setNodeName(node.getName());
 		sp.setMinNodes(getPSystem().getMinRepls());
 		logger.debug("Check Object "+ obj.getIdentifier());
 		boolean completelyValid = true;		
@@ -329,6 +312,13 @@ public class IntegrityScannerWorker extends Worker{
 
 	public void setSleepFor(long sleepFor) {
 		this.sleepFor = sleepFor;
+	}
+	/**
+	 * For testing purposes only
+	 * @param node
+	 */
+	public void setNode(Node node){
+		this.node = node;
 	}
 
 }

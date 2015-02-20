@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.User;
 
 public class FederationExecutorTest {
@@ -26,7 +27,10 @@ public class FederationExecutorTest {
 		Node node = new Node();
 		User nodeadmin = new User(); nodeadmin.setEmailAddress("noreply@zone.de");
 		node.setAdmin(nodeadmin);
-		fe = new FederationExecutor(isc, node, data_name,"lza");
+		StoragePolicy sp = new StoragePolicy();
+		sp.setReplDestinations("lza");
+		sp.setAdminEmail(nodeadmin.getEmailAddress());
+		fe = new FederationExecutor(isc,sp,data_name);
 	}
 
 	@Test

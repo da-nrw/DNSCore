@@ -150,7 +150,7 @@ public class CreateEDMAction extends AbstractAction {
 			} else if(packageType.equals("XMP")) {
 				edm = generateEdmUsingXslt(xsltTransformationFile, metadataSourceFile, EDM_FOR_ES_INDEX_METADATA_STREAM_ID);
 			} else {
-				throw new UserException(null, "Unknown metadata format");
+				throw new UserException(null, "Unbekanntes Metadatenformat.");
 			}
 			return edm;
 		} catch (Exception e) {
@@ -158,15 +158,6 @@ public class CreateEDMAction extends AbstractAction {
 		}
 	}
 	
-	private void printFile(File edm) throws IOException {
-		@SuppressWarnings("resource")
-		BufferedReader br = new BufferedReader(new FileReader(edm.getAbsoluteFile()));
-		String line = null;
-		while ((line = br.readLine()) != null) {
-			System.out.println(line);
-		}
-	}
-
 	
 	private void putToRepository(File file) throws RepositoryException, IOException {
 		repositoryFacade.ingestFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 

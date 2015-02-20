@@ -58,13 +58,13 @@ public class ArchiveReplicationActionTests {
 	
 	@Test
 	public void testHappyPath() throws FileNotFoundException, IOException{
-		node.setReplDestinations("");
-		
+		node.setReplDestinations("a");
+		node.setGridCacheAreaRootPath(Path.make(workAreaRootPath));
 		User c = new User();
 		c.setShort_name("TEST");
-		c.setForbidden_nodes("");
+		c.setEmailAddress("noreply");
 		object.setContractor(c);
-		
+		node.setAdmin(c);
 		ArchiveReplicationAction action = setUpAction(node);
 		action.implementation();
 	}
@@ -72,9 +72,13 @@ public class ArchiveReplicationActionTests {
 	@Test
 	public void testReplDestsNotSet() throws FileNotFoundException, IOException{
 		node.setReplDestinations(null);
+		node.setGridCacheAreaRootPath(Path.make(workAreaRootPath));
+		
 		User c = new User();
 		c.setShort_name("TEST");
-		c.setForbidden_nodes("");
+		c.setForbidden_nodes("b");
+		c.setEmailAddress("noreply");
+		node.setAdmin(c);
 		object.setContractor(c);
 		ArchiveReplicationAction action = setUpAction(node);
 		action.implementation();
@@ -82,8 +86,10 @@ public class ArchiveReplicationActionTests {
 	
 	@Test
 	public void testForbiddenNodesNotSet() throws FileNotFoundException, IOException{
-		node.setReplDestinations("");
+		node.setReplDestinations("a");
+		node.setGridCacheAreaRootPath(Path.make(workAreaRootPath));
 		User c = new User();
+		c.setEmailAddress("noreply");
 		c.setShort_name("TEST");
 		c.setForbidden_nodes(null);
 		object.setContractor(c);

@@ -13,7 +13,7 @@ public class UserException extends RuntimeException {
 		SIP_PREMIS_NOT_FOUND,
 		INVALID_SIP_PREMIS,
 		INVALID_OBJECT_DELTA,
-		UNKNOWN_PACKAGE_TYPE,
+		NOT_A_BAGIT_PACKAGE,
 		INCONSISTENT_PACKAGE,
 		READ_SIP_PREMIS_ERROR,
 		READ_METS_ERROR,
@@ -34,17 +34,17 @@ public class UserException extends RuntimeException {
 	private UserExceptionId id;
 	private String errorInfo = "";
 
-	public UserException() { }
+	@SuppressWarnings("unused")
+	private UserException() { }
+	
+	
 	
 	public UserException(UserExceptionId id, String exceptionMessage) {
 		super(exceptionMessage);
 		this.id = id;			
 	}
 	
-	public UserException(UserExceptionId id, Exception exception) {
-		super(exception);
-		this.id = id;
-	}
+	
 	
 	public UserException(UserExceptionId id, String exceptionMessage, Exception exception) {
 		super(exceptionMessage, exception);

@@ -55,20 +55,20 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		
 		if (!irodsSystemConnector.connect()) throw new RuntimeException("could not connect irodsSystemConnector");
 		
-		if (!PrepareReplication(file, gridPath)) return false;
+		if (!PrepareReplication(file, gridPath, sp)) return false;
 		
 		String address_dest = gridPath;
 		if (!gridPath.startsWith("/")) 
 			address_dest = "/" + gridPath;
-		String targetPhysically = localNode.getGridCacheAreaRootPath() + "/" + C.WA_AIP + address_dest;
+		String targetPhysically = sp.getGridCacheAreaRootPath() + "/" + C.WA_AIP + address_dest;
 		String targetLogically  = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP  + address_dest;	
 		File gridfile = new File (targetPhysically); 
 		
-		if (registerOnWorkingResourceAndComputeChecksum(file,targetLogically,gridfile))
+		if (registerOnWorkingResourceAndComputeChecksum(file,targetLogically,gridfile, sp))
 
 		irodsSystemConnector.logoff();
 			
-		return startReplications(file, targetLogically, gridfile);
+		return startReplications(file, targetLogically, gridfile, sp);
 	}
 	
 	/**
@@ -81,11 +81,11 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private boolean registerOnWorkingResourceAndComputeChecksum(File file,
-			String targetLogically, File gridfile) throws IOException {
+			String targetLogically, File gridfile, StoragePolicy sp) throws IOException {
 		logger.debug("register " + gridfile + " as " + targetLogically);
 		if (!irodsSystemConnector.collectionExists(FilenameUtils.getFullPath(targetLogically)))
 		irodsSystemConnector.createCollection(FilenameUtils.getFullPath(targetLogically));
-		irodsSystemConnector.registerFile(targetLogically, gridfile, localNode.getWorkingResource());
+		irodsSystemConnector.registerFile(targetLogically, gridfile,irodsSystemConnector.getDefaultStorage() );
 		if (irodsSystemConnector.fileExists(targetLogically)) {
 			logger.debug("compute checksum on " + targetLogically);
 			String MD5CheckSum = MD5Checksum.getMD5checksumForLocalFile(file);
@@ -110,12 +110,16 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 	
 
 	private boolean startReplications(File file, String targetLogically,
-			File gridfile) {
+			File gridfile, StoragePolicy sp) {
 		logger.debug("starting replications for " + targetLogically); 
-		List<String> targetResgroups = Arrays.asList(localNode.getReplDestinations().split(","));
-		irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(targetLogically, "replicate_to", localNode.getReplDestinations().replace("cp_",""));
-		logger.debug("Starting threads for Replication to " + StringUtils.collectionToDelimitedString(targetResgroups, "|"));
-		Thread  re = new ReplicationExecutor(irodsSystemConnector, localNode, targetResgroups, targetLogically);
+		List<String> targetResgroups = Arrays.asList(sp.getReplDestinations().split(","));
+		irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(targetLogically, "replicate_to", sp.getReplDestinations().replace("cp_",""));
+		String srcResc=sp.getWorkingResource();
+		if (sp.getWorkingResource()==null) 
+			srcResc=irodsSystemConnector.getDefaultStorage();
+		logger.debug("Starting threads for Replication to " + StringUtils.collectionToDelimitedString(targetResgroups, "|") + " from "+srcResc );
+		
+		Thread  re = new ReplicationExecutor(irodsSystemConnector, targetLogically, sp, srcResc);
 		re.start();
 		return true;
 	}
@@ -140,7 +144,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		}
 		try {
 			logger.debug("checking StoragePolicy achieved for " + gridPath); 
-			List<String> targetResgroups = Arrays.asList(localNode.getReplDestinations().split(","));
+			List<String> targetResgroups = Arrays.asList(sp.getReplDestinations().split(","));
 			int replicasTotal = 0;
 			for (String targetResgroup : targetResgroups) {
 				int replicas = 0;
