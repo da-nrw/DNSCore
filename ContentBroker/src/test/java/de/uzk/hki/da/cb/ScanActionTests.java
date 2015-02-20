@@ -111,7 +111,7 @@ public class ScanActionTests extends ConcreteActionUnitTest{
 	
 	@After
 	public void tearDown() {
-//		premisFile.delete();
+		premisFile.delete();
 	}
 	
 	
