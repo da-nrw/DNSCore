@@ -67,4 +67,10 @@ public class ATUseCaseIngestArchivDuisburg extends AcceptanceTest{
 			}
 		}
 	}
+	
+	@Test
+	public void testPipFileList() {
+		assertTrue(Path.makeFile(contractorsPipsPublic, object.getIdentifier(), EAD_XML).exists());
+		assertTrue(!Path.makeFile(contractorsPipsPublic, object.getIdentifier(), "EAD_FB_Standesamt.xml").exists());
+	}
 }

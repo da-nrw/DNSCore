@@ -37,6 +37,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang.NotImplementedException;
@@ -64,6 +65,7 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.FileIdGenerator;
 import de.uzk.hki.da.util.Path;
+import org.apache.commons.io.IOCase;
 
 /**
  * Performs updates to metadata files that are necessary
@@ -536,14 +538,13 @@ public class UpdateMetadataAction extends AbstractAction {
 		File srcFile = srcDAFile.toRegularFile();
 		
 		Iterator<File> xmlFiles = FileUtils.iterateFiles(
-				srcFile.getParentFile(), new WildcardFileFilter("*.xml"), null);
+				srcFile.getParentFile(), new WildcardFileFilter("*.xml", IOCase.INSENSITIVE), null);
 
 //		Implementierung für beliebige Baumtiefe steht noch aus!
 		
 		File[] subDirs = srcFile.getParentFile().listFiles();
 		
 		for(int file=-1; file<subDirs.length; file++) {
-			
 			File destDir = new File(o.getDataPath() +"/"+ repName);
 			
 			if(file>-1) {
@@ -551,7 +552,7 @@ public class UpdateMetadataAction extends AbstractAction {
 				if(currentFile.isDirectory()) {
 					destDir = new File(Path.make(o.getDataPath(), repName, currentFile.getName()).toString());
 					xmlFiles = FileUtils.iterateFiles(
-							currentFile, new WildcardFileFilter("*.xml"), null);
+							currentFile, new WildcardFileFilter("*.xml", IOCase.INSENSITIVE), null);
 				}
 			}
 			
@@ -560,30 +561,33 @@ public class UpdateMetadataAction extends AbstractAction {
 				count++;
 				
 				File xmlFile = xmlFiles.next();
-				FileUtils.copyFileToDirectory(xmlFile, destDir);
-				logger.debug("Copy "+xmlFile.getAbsolutePath()+" to "+destDir.getAbsolutePath());
-			
-				DAFile daFile = null;
-				Event e = new Event();							
-				for (Package p : o.getPackages()) {
-					for (DAFile f : p.getFiles()) {
-						if (xmlFile.getAbsolutePath()
-								.equals(f.toRegularFile().getAbsolutePath())) {
-							e.setSource_file(f);
-							daFile = new DAFile(o.getLatestPackage(), repName, f.getRelative_path());
-							daFile.setFormatPUID(f.getFormatPUID());
+				
+				if(!xmlFile.getName().equals(o.getMetadata_file())) {
+					FileUtils.copyFileToDirectory(xmlFile, destDir);
+					logger.debug("Copy "+xmlFile.getAbsolutePath()+" to "+destDir.getAbsolutePath());
+					
+					DAFile daFile = null;
+					Event e = new Event();							
+					for (Package p : o.getPackages()) {
+						for (DAFile f : p.getFiles()) {
+							if (xmlFile.getAbsolutePath()
+									.equals(f.toRegularFile().getAbsolutePath())) {
+								e.setSource_file(f);
+								daFile = new DAFile(o.getLatestPackage(), repName, f.getRelative_path());
+								daFile.setFormatPUID(f.getFormatPUID());
+							}
 						}
-					}
-				}	
-				
-				o.getLatestPackage().getFiles().add(daFile);
-				
-				e.setTarget_file(daFile);
-				e.setType("COPY");
-				e.setDate(new Date());
-				e.setAgent_type("NODE");
-				e.setAgent_name(o.getTransientNodeRef().getName());							
-				o.getLatestPackage().getEvents().add(e);
+					}	
+					
+					o.getLatestPackage().getFiles().add(daFile);
+					
+					e.setTarget_file(daFile);
+					e.setType("COPY");
+					e.setDate(new Date());
+					e.setAgent_type("NODE");
+					e.setAgent_name(o.getTransientNodeRef().getName());							
+					o.getLatestPackage().getEvents().add(e);
+				}
 			}
 			logger.debug("Copied "+count+ " *.xml files to new representation (package is of type EAD)");	
 		}
