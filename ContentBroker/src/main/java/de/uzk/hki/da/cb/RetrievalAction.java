@@ -222,7 +222,8 @@ public class RetrievalAction extends AbstractAction {
 			try {
 				FileUtils.copyFile(f.toRegularFile(), dest);
 			} catch (IOException e) {
-				throw new UserException(UserExceptionId.RETRIEVAL_ERROR, "Couldn't copy file " + f.toRegularFile().getAbsolutePath() + " to folder " + destFolder, e);
+				throw new UserException(UserExceptionId.RETRIEVAL_ERROR, 
+						"Couldn't copy file " + f.toRegularFile().getAbsolutePath() + " to folder " + destFolder, e);
 			}
 		}
 	}

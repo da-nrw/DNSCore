@@ -41,10 +41,7 @@ public class UserException extends RuntimeException {
 		this.id = id;			
 	}
 	
-	public UserException(UserExceptionId id, Exception exception) {
-		super(exception);
-		this.id = id;
-	}
+	
 	
 	public UserException(UserExceptionId id, String exceptionMessage, Exception exception) {
 		super(exceptionMessage, exception);
