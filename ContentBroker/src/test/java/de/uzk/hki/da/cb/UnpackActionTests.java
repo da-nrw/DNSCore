@@ -265,7 +265,12 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 		}		
 	}
 	
-	
+	@Test
+	public void rollback() throws IOException {
+		o.getPackages().get(0).setContainerName(BAGIT_PACKAGE);
+		action.rollback();
+		action.implementation();
+	}
 	
 	@Test
 	public void testIsNotABagitPackage() throws IOException {

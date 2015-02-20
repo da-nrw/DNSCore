@@ -26,6 +26,9 @@ import static de.uzk.hki.da.core.C.*;
 import static de.uzk.hki.da.utils.StringUtilities.*;
 
 import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
@@ -90,5 +93,22 @@ public class WorkArea {
 		return Path.make(n.getWorkAreaRootPath(),WA_WORK,o.getContractor().getShort_name());
 	}
 
+	/**
+	 * Copies a SIP to the ingest area
+	 * @param makeFile
+	 * @throws IOException 
+	 */
+	public void ingestSIP(File sip) throws IOException {
+		if (!sip.exists()) throw new IllegalArgumentException("Missing file: "+sip);
+		FileUtils.copyFile(sip, sipFile());
+	}
+	
+	public File sipFile() {
+		return Path.makeFile(n.getWorkAreaRootPath(),WA_WORK,o.getContractor().getShort_name(),o.getLatestPackage().getContainerName());
+	}
+	
+	public Path objectPath() {
+		return Path.make(n.getWorkAreaRootPath(),WA_WORK,o.getContractor().getShort_name(),o.getIdentifier());
+	}
 	
 }

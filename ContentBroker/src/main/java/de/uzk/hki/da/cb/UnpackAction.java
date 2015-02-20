@@ -87,14 +87,14 @@ public class UnpackAction extends AbstractAction {
 
 	@Override
 	public void checkPreconditions() {
-		if (!sipContainer().exists()) throw new PreconditionsNotMetException("Missing file: "+sipContainer());
+		if (!sipContainerOnIngestArea().exists()) throw new PreconditionsNotMetException("Missing file: "+sipContainerOnIngestArea());
+		if (wa.objectPath().toFile().exists()) throw new PreconditionsNotMetException("Should not exist: "+wa.objectPath());
 	}
 
 	@Override
 	public boolean implementation() throws IOException{
 		
-		
-		if (!ingestGate.canHandle(sipContainer().length())){
+		if (!ingestGate.canHandle(sipContainerOnIngestArea().length())){
 			JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,o.getIdentifier() + " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
 			super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
 			logger.warn("ResourceMonitor prevents further processing of package due to space limitations. Setting job back to start state.");
@@ -102,28 +102,29 @@ public class UnpackAction extends AbstractAction {
 		}
 		
 		
+		wa.ingestSIP(sipContainerOnIngestArea());
+		unpack(wa.sipFile());
+		wa.sipFile().delete();
+
 		
-		String sipInForkPath = copySIPToWorkArea(sipContainerPath());
-		unpack(new File(sipInForkPath),o.getPath().toString());
+
 		
 		throwUserExceptionIfNotBagitConsistent();
 		throwUserExceptionIfDuplicatesExist();
 		throwUserExceptionIfNotPremisConsistent();
 		
-		logger.info("deleting: "+sipInForkPath);
-		new File(sipInForkPath).delete();
-		
-		// Must be the last step in this action
-		sipContainer().delete();
+		// Is the last step of action because it should only happen after validity has been proven. 
+		logger.info("Removing SIP from IngestArea");
+		sipContainerOnIngestArea().delete();
 		return true;
 	}	
 	
 	
-	private File sipContainer() {
-		return sipContainerPath().toFile();
+	private File sipContainerOnIngestArea() {
+		return sipContainerInIngestAreaPath().toFile();
 	}
 	
-	private Path sipContainerPath() {
+	private Path sipContainerInIngestAreaPath() {
 		return Path.make(
 				n.getIngestAreaRootPath(),
 				o.getContractor().getShort_name(), 
@@ -134,10 +135,9 @@ public class UnpackAction extends AbstractAction {
 	
 	@Override
 	public void rollback() throws IOException {
-		FileUtils.deleteDirectory(Path.make(o.getPath()).toFile());
 		
-		new File(n.getWorkAreaRootPath() + o.getContractor().getShort_name() + "/" + 
-				o.getLatestPackage().getContainerName()).delete();
+		FileUtils.deleteDirectory(wa.objectPath().toFile());
+		wa.sipFile().delete();
 		
 		o.getLatestPackage().getFiles().clear();
 		j.setRep_name("");
@@ -171,7 +171,6 @@ public class UnpackAction extends AbstractAction {
 	 * However, duplicates can be ok, if there are only two files sharing a document name and
 	 * one of them is a sidecar file (which can be identified if it has one of the allowed sidecarExtensions).
 	 * 
-	 * @author Daniel M. de Oliveira
 	 * @throws UserException if more there are files which share a document name.
 	 */
 	private void throwUserExceptionIfDuplicatesExist() {
@@ -210,7 +209,6 @@ public class UnpackAction extends AbstractAction {
 	 * purges documentsToFiles and returns the reference
 	 * @param
 	 * @return the reference to the param  
-	 * @author Daniel M. de Oliveira
 	 */
 	private Map<String, List<File>> purgeUnicates(Map<String,List<File>> documentsToFiles){
 
@@ -228,7 +226,6 @@ public class UnpackAction extends AbstractAction {
 	
 	/**
 	 * @return
-	 * @author Daniel M. de Oliveira
 	 */
 	private Map<String,List<File>> generateDocumentsToFilesMap(){
 		
@@ -268,84 +265,46 @@ public class UnpackAction extends AbstractAction {
 	
 	
 	/**
-	 * Moves the SIP from ingest area to work area.
-	 * 
-	 * @author Thomas Kleinke
-	 * @return path to SIP in work area
-	 */
-	private String copySIPToWorkArea(Path ingestFilePath) {
-		
-		File ingestFile = ingestFilePath.toFile();
-		File destFile = Path.make(n.getWorkAreaRootPath(),"work",o.getContractor().getShort_name(), 
-				  FilenameUtils.getName(ingestFilePath.toString())).toFile();
-		
-		if (!ingestFile.exists())
-			throw new RuntimeException("Package file " + ingestFile.getAbsolutePath() + " does not exist");
-		
-		try {
-			FileUtils.copyFile(ingestFile, destFile);
-		} catch (IOException e) {
-			throw new RuntimeException("File " + ingestFile.getAbsolutePath() + " could not be moved to " +
-					destFile.getAbsolutePath(), e);
-		}
-		
-		if (!destFile.exists())
-			throw new RuntimeException("File " + destFile.getAbsolutePath() + " does not exist");
-					
-		return destFile.getAbsolutePath();
-	}	
-	
-	
-	
-	
-	
-	
-	/**
 	 * Creates a folder at targetFolderPath and expands the contents of sourceFilePath into it.
 	 * @param sourceFilePath
 	 * @param targetFolderPath
 	 * @throws RuntimeException if the folder at targetFolderPath already exists or the file at 
 	 * sourceFilePath doesn't exist or the archive couldn't be unpacked.
 	 */
-	private void unpack(File sourceFile, String targetFolderPath){
+	private void unpack(File sourceFile){
 		
-		File targetFolder = new File(targetFolderPath);
+		wa.objectPath().toFile().mkdir();
 		
-		if (targetFolder.exists()) throw new RuntimeException("Path the SIP should be " +
-				"extracted to ("+targetFolderPath+") already exists. Please clean up the fork directory and rerun the package.");
-		else {
-			targetFolder.mkdir();
-		}
 		
 		if (!sourceFile.exists())
 			throw new RuntimeException("container at "+ sourceFile + " doesn't exist");
 		
 		ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(sourceFile);
 		try {
-			builder.unarchiveFolder(sourceFile, targetFolder);
+			builder.unarchiveFolder(sourceFile, wa.objectPath().toFile());
 		} catch (Exception e) {
 			throw new RuntimeException("couldn't unpack archive", e);
 		}
 
-		File[] files = targetFolder.listFiles();
+		File[] files = wa.objectPath().toFile().listFiles();
 		if (files.length == 1) {
 			File[] folderFiles = files[0].listFiles();
 
 			for (File f : folderFiles) {
 				if (f.isFile()) {
 					try {
-						FileUtils.moveFileToDirectory(f, targetFolder, false);
+						FileUtils.moveFileToDirectory(f, wa.objectPath().toFile(), false);
 					} catch (IOException e) {
 						throw new RuntimeException("couldn't move file " + f.getAbsolutePath() +
-								" to folder " + targetFolderPath, e);
+								" to folder " + wa.objectPath().toFile(), e);
 					}
 				}
 				if (f.isDirectory()) {
 					try {
-						FileUtils.moveDirectoryToDirectory(f, targetFolder, false);
+						FileUtils.moveDirectoryToDirectory(f, wa.objectPath().toFile(), false);
 					} catch (IOException e) {
 						throw new RuntimeException("couldn't move folder " + f.getAbsolutePath() +
-								" to folder " + targetFolderPath, e);
+								" to folder " + wa.objectPath().toFile(), e);
 					}
 				}
 			}
@@ -362,7 +321,6 @@ public class UnpackAction extends AbstractAction {
 	
 	/**
 	 * 
-	 * @author Daniel M. de Oliveira
 	 * @param packageInForkAbsolutePath
 	 * @return
 	 * @throws RuntimeException
@@ -391,7 +349,6 @@ public class UnpackAction extends AbstractAction {
 	/**
 	 * Check if package is premis.
 	 * 
-	 * @author Daniel M. de Oliveira
 	 * @param package PATH
 	 * @return Either PackageType.METS or PackageType.BAGIT or null if package type can't be determined.
 	 * @throws RuntimeException if cannot determine package type.
@@ -423,26 +380,12 @@ public class UnpackAction extends AbstractAction {
 	}
 
 	
-	
-
-
-	
 
 	public IngestGate getIngestGate() {
 		return ingestGate;
 	}
 
 	public void setIngestGate(IngestGate ingestGate) {
-
-		
-		
 		this.ingestGate = ingestGate;
-	}
-	
-	
-	
-	
-	public void cleanUp() {
-		System.out.println("clean up "+this.getClass().getName());
 	}
 }
