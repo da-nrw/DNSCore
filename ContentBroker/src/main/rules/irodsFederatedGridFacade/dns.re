@@ -110,7 +110,6 @@ acVerifyChecksum(*objPath,*status){
 	*status=0;
 	*checksumchk=0;
 	*replchk=0;
-	msiGetSystemTime(*systime,nop)
 	*error=errorcode( msiDataObjChksum("*objPath","ChksumAll=++++verifyChksum=",*localCs))
         if (*error < 0 ) {
                     *csf=""
@@ -126,10 +125,7 @@ acVerifyChecksum(*objPath,*status){
 	} else { 
         	 *checksumchk=1
 	}
-	msiString2KeyValPair("checked=*checksumchk",*kvpaircs)
-        msiSetKeyValuePairsToObj(*kvpaircs,"*objPath","-d")
-        msiString2KeyValPair("last_checked=*systime",*kvpairts)
-        msiSetKeyValuePairsToObj(*kvpairts,"*objPath","-d")
+	acStoreChecksumResults(*objPath, "*checksumchk")
 	*status=*checksumchk;
 }
 
@@ -561,7 +557,7 @@ acPrintSyncResults(*dao,*syncs,*min_copies) {
 
 # Determines the used space in items per collection and resc_name 
 # INPUT resc_name the resource name
-# OUTPUT bytes used
+# OUTPUT items used
 # INPUT Collection name
 acGetStoredItemsOnResc(*resc,*byte,*coll) {
 	*out=0
@@ -572,6 +568,17 @@ acGetStoredItemsOnResc(*resc,*byte,*coll) {
 	if (*out=="") { *out=0 }
 	writeLine("stdout","RESC *resc *out items")
         *byte=*out
+}
+
+# Stores checksum Results to DAO
+# Author: Jens Peters
+acStoreChecksumResults(*dao, *status) {
+	acLog("Store *status to *dao")
+	msiGetSystemTime(*systime,nop)
+	msiString2KeyValPair("checked=*status",*kvpaircs)
+        msiSetKeyValuePairsToObj(*kvpaircs,"*dao","-d")
+        msiString2KeyValPair("last_checked=*systime",*kvpairts)
+        msiSetKeyValuePairsToObj(*kvpairts,"*dao","-d")
 }
 
 # Checks the federated copies we've recieved from others
@@ -590,7 +597,6 @@ acCheckRecievedFederatedCopies(*admin, *numbersPerRun,*trustYears) {
                 msiGetValByKey(*checkDaos,"META_DATA_ATTR_VALUE",*lc);
                 *dao="*checkColl/*checkDao"
                 acLog("checking ... *dao")
-		#acNeedCheck(*dao,*need,*trustYears)
                 *need=1
 		if (*need==1) {
 			acVerifyChecksum(*dao,*status)
@@ -598,18 +604,24 @@ acCheckRecievedFederatedCopies(*admin, *numbersPerRun,*trustYears) {
 			*localCs="P"
 			errorcode(acGetOrigChecksum(*dao,*origCs))
                         if (*status==1) {
-				#recompute Checksum in ICAT to invalidate this copy for the CB checking the primary copies
+				# first Check ok
+				# recompute Checksum in ICAT
 				errorcode(msiDataObjChksum(*dao,"forceChksum=",*localCs))
                                 if (*localCs != *origCs) {
+					acStoreChecksumResults(*dao,"0") 
                                         acLog("Federated COPY in E R R O R: *dao")
                                 	if (*admin!="test@test.de"){
                                         	*toSend=1
                                 	}
 				} else {
+					acStoreChecksumResults(*dao,"1")
                                         acLog("Copy seem to be OK")
                                 }
                         } else {
-                                acLog("Federated COPY in E R R O R: *dao")
+				#recompute Checksum in ICAT to invalidate this copy
+				acStoreChecksumResults(*dao, "0")
+                                errorcode(msiDataObjChksum(*dao,"forceChksum=",*localCs))
+				acLog("Federated COPY in E R R O R: *dao")
                                 if (*admin!="test@test.de"){
 					*toSend=1
 				}
