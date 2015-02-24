@@ -158,33 +158,57 @@ acVerifyChecksumFed(*masterCs,*objPath,*errors){
 				acLog("Master CS: *masterCs != *remoteCs for *destColl")
 				*errors=*errors+1
 			}
+			acGetHostOnGrid(*zones,*host)
+			*err=errorcode(remote(*host,"null") {
+				acCheckIsOutdated(*objPath,*valid)
+				if (*valid==0) {
+					acLog("Federated copy check was delayed too much!")
+					*errors=*errors+1
+				} 	
+			})
+			if (*err < 0) {
+				acLog("Recieved *err on checking copy time check status")
+				*errors=*errors+1
+			}
+			
 		}
 		# it doesn't mean necessarily an error if we don't find the object in each zone 
 	}
 	msiCloseGenQuery(*GenQ2,*status)
 	acLog("*objPath has (*errors) Errors on existing federated copies");
 }
-# Gives back flag if dao needs to be checked
-# 1: true, needs to be checked
-# 0. false: not needed to be checked yet (usually you define a "trust" how long
-#  you'll trust a stored checksum, given in trustYears)
+
+# Gives back flag if dao check date is still valid
+# 1: true,
+# 0. false: last check is older than one year
 # Author: Jens Peters
 #
-acNeedCheck(*objPath,*need,*trustYears) {
-	*years=0
+acCheckIsOutdated(*objPath,*valid) {
 	*idiff=0
-	*need=0
+	*valid=1
 	msiGetSystemTime(*now,nop)
         acGetAVUField(*objPath,"last_checked",*lc)
-        msiGetDiffTime(*lc,*now,"",*diff)
-	acLog("last check is (*diff) seconds in the past")
+	acGetModifyTime(*objPath,*modify)
+	msiGetDiffTime(*modify,*now,"",*diff)
+	acLog("last check was *lc, last modified was *modify which is (*diff) seconds in the past")
 	*idiff=int(*diff)
-	acLog("trust checksums for *trustYears Years")
-	*years=(int(31536000) * *trustYears)
-	if (*idiff > *years) {
-		*need=1
+	*year=31536000
+	if (*idiff > *year) {
+		*valid=0
 	} 
 }
+
+#get Last Modified time for DAO
+#Author Jens Peters
+acGetModifyTime(*dao,*modify) {
+	msiSplitPath(*dao, *coll, *dname)
+        msiExecStrCondQuery("SELECT DATA_MODIFY_TIME where COLL_NAME = '*coll' and DATA_NAME = '*dname'",*mts)
+        foreach(*mts) {
+	   msiGetValByKey(*mts,"DATA_MODIFY_TIME",*fieldValue);
+	}
+	*modify=*fieldValue
+}
+
 # Get the Dataobject AVU Value of given field
 # INPUT objPath 
 # INPUT fieldName 
@@ -260,6 +284,22 @@ acGetHostsOnGrid(*hosts,*forbiddenNodes) {
         msiCloseGenQuery(*GenQ2,*out)
         *hosts=split(*hst,";")
 }
+# Helper get Host per Zone
+# Author Jens Peters
+#
+acGetHostOnGrid(*zone,*host) {
+        msiAddSelectFieldToGenQuery("ZONE_NAME","null", *GenQ2)
+        msiAddSelectFieldToGenQuery("ZONE_TYPE","null", *GenQ2)
+        msiAddSelectFieldToGenQuery("ZONE_CONNECTION","null", *GenQ2)
+        msiAddConditionToGenQuery("ZONE_TYPE"," = ","remote",*GenQ2)
+        msiAddConditionToGenQuery("ZONE_NAME"," = ",*zone,*GenQ2)
+	msiExecGenQuery(*GenQ2, *zones)
+        foreach(*zones){
+                 msiGetValByKey(*zones,"ZONE_CONNECTION",*host);
+        }
+        msiCloseGenQuery(*GenQ2,*out)
+}
+
 
 # Gets a List of zone names connectect to this node
 # OUTPUT zone names
@@ -584,7 +624,7 @@ acStoreChecksumResults(*dao, *status) {
 # Checks the federated copies we've recieved from others
 # is called by running checkFederatedAip.r service
 # Author: Jens Peters 
-acCheckRecievedFederatedCopies(*admin, *numbersPerRun,*trustYears) {
+acCheckRecievedFederatedCopies(*admin, *numbersPerRun) {
 	*i=1
 	*toSend=0
 	msiExecStrCondQuery("SELECT order(META_DATA_ATTR_VALUE), DATA_NAME, COLL_NAME, META_DATA_ATTR_NAME  where COLL_NAME like '%/federated/%' and META_DATA_ATTR_NAME = 'last_checked'",*checkDaos)
