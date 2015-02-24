@@ -135,28 +135,17 @@ the needed copies. The Synchronizing service works permanently on time based sch
 
 Start the Synchronizing service, which could be found ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/synchronize.r))
 
+Execution "by hand":
   
     irule -F synchronize.r
     
-Take a look at the reLog (Rule engine log file) which could be found at 
-	
-	iRODs/server/logs/
-	
-The Federation service should claim: 
-
-	--started Synchronize service---
-	--ended Synchronize service---
-
-Also you can control working rules by typing
-
-    iqstat
-
+    
 Please be sure having only one synchronizing job! 
 
 What it does is (same as being fired by the gridFacade as client action): 
 
 1. Takes into account given forbidden nodes settings stored by CB after registry of AIP.
-1. Asks all Servers on your Grid for their already stored items. Measured by counting items sizes beneath "aip" folders and on longterm storage resources (which have are be member of resgroup lza).
+1. Asks all Servers on your Grid for their already stored items. Measured by counting items sizes beneath "aip" folders and on longterm storage resources (which have are be member of resgroup named by config.properties of CB).
 2. If server isn't available, next server is being taken. 
 It takes into account all "own" and already federated items. This should do a load basic balancing between federated zones.
 2. Order them ascending, the lowest filled resource first.
@@ -189,19 +178,16 @@ min_copies : The minimal copies need if not overruled by Clients (CB client does
 retryOlderThanHours: Retry all not fulfilled copies older than given hours.
 
 For easier mantaintng these actions you might pass your settings directly to the job!
-	
-check if Synchronzing Service is running
 
-	iqstat 
 
-Command should list at least the Federation service
+The synchronize service is not started by the rule engine anymore. Therefore all messages will go to the rodsLog file of iRODS. 
 
-Delete Synchronzing service 
+Instead you should start it via cron on some time basis. The synchronize service selects the items not federated yet and which are older than 24 hours. 
 
-	iqstat
-	iqdel <ruleId>
-	
-Check Logfile for errors : reLog. 
+e.g. for CRON Job (check for the correct input params at your site !):
+
+    */240 * * * * /iRODS/clients/icommands/irule -F /ContentBroker/systemRules/irodsFederatedGridFacade/synchronize.r \"lta\" \"zoneA\" 3 24 >>/logs/synchronizer.log
+    
 If Synchronzing service prints out any error numbers, you might evaluate the error codes to their corresponding textual textual representation with 
 
 e.g.
@@ -225,28 +211,30 @@ on time basis.
 This is defined to be a "trust" between all servers of the zone.
 
      irule -F checkFederatedAip.r
-     Default *zone="zone"
-     New *zone=
 	Default *admin="test@test.de"
 	New *admin=
 	Default *numbersPerRun=5
 	New *numbersPerRun=
-	Default *trustYears=0
-	New *trustYears=
 
-zone: The zone which this service should run-
-admin: The Admin which should be infrmed on errors
+admin: (optional) The Admin which should be informed on errors
 numbersPerRun: Amount of Items being checked each time the service runs
-trustYears: Value in years we trust a checksum before recomputation. 0 means each time recalculate, 0.5 means half a year etc. 
 
 If the responsible node (which means the "primary copy node") is being asked for the integrity of AIP e.g. acIsValid() in dns.re, it does the following:
 
 1. Get The MD5 checksum for local primary copy from the ICAT.
 2. Compare stored ICAT value with checksum computed at creation
-3. Verify federated Checksums (relies on running service) 
+3. Verify federated Checksums (relies on running service, at the other nodes! )
+4. Verify re-computation of foreign Cecksums is not older than one year. 
 4. Deep Verify (recompute) local Checksum
 5. Returns 0 is case of failure
 6. Returns 1 if AIP is valid. 
+
+You have to ensure that on your node a running instance of this service is working, which checks the others stored items at your node. Please set up CRON job (as the service is not fired from delayed execution anymore) 
+
+e.g. (Please check for the given input params at your site!)
+
+     /30 * * * * /iRODS/clients/icommands/bin/irule -F /ContentBroker/systemRules/irodsFederatedGridFacade/checkFederatedAip.r \"nodeadmin@zone.tld\" 1 0 >>/log/audit.log
+
 
 ### AVU Metadata of iRODS Objects in DNS (AIP/DataObjects) 
 
