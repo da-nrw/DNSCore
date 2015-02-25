@@ -131,7 +131,7 @@ As you might already noticed: The path beneath folder federated is (logically) s
 ### Synchronizing Service
 
 For all objects, which aren't successfully copied by the gridFacade an independent synchronzing service tries to fulfill 
-the needed copies. The Synchronizing service works permanently on time based schedule in IRODs, bt it needs to be started once. It tries to copy ("federate") your stored AIP like a "cron" daemon, which 
+the needed copies. The Synchronizing service works permanently on time based schedule, started by system's CRON. It tries to copy ("federate") your stored AIP, which 
 
 Start the Synchronizing service, which could be found ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/synchronize.r))
 
@@ -155,15 +155,13 @@ It takes into account all "own" and already federated items. This should do a lo
 
 ### Administer Synchronizing
 
-Once activated federation service runs, even iRODS Server is restarted.
-
-Start 
+You can start the synchronizing process in interactive mode by typing:
 
 	irule -F synchronize.r
 
 The Service asks for some settings after start:
 
-	Default *destResc="lza"  
+	Default *destResc="lta"  
     New *destResc=
 	Default *homezone="zone"
     New *homezone=
@@ -174,11 +172,10 @@ The Service asks for some settings after start:
 
 destResc : The resource group name, the syncing should go to,
 homezone : The own zone name 
-min_copies : The minimal copies need if not overruled by Clients (CB client does this in its preservation system)
-retryOlderThanHours: Retry all not fulfilled copies older than given hours.
+min_copies : The minimal copies need if not overruled by Clients (CB client does this in its "preservation system" settings)
+retryOlderThanHours: Retry all not fulfilled copies older than given amount of "hours".
 
 For easier mantaintng these actions you might pass your settings directly to the job!
-
 
 The synchronize service is not started by the rule engine anymore. Therefore all messages will go to the rodsLog file of iRODS. 
 
@@ -194,7 +191,7 @@ e.g.
 
 	ierror -333000
 
-As stated in the AVU section (see belaow) of this document, re-synchronizing is possible manually by doing the equivalent irsync command or (the better way) let the synchronizing service do that for you:
+As stated in the AVU section (see below) of this document, re-synchronizing is possible a) manually by doing the equivalent irsync command or b) (the preferred way) let the synchronizing service do that for you:
 
     imeta set -d 1-20141007788.pack_1.tar FEDERATED 0
 	
@@ -203,7 +200,7 @@ This changes the AVU to "federation not yet performed"
 ### Audit Infrastructure
 
 To perform Audit (integrity checking) of AIP iRODS each node must at least provide the time based check 
-service of federated copies. 
+service of recieved federated copies (aka "Secondary Copies"). This is some kind of "trust". 
 
 In this Service checkFederatedAip.r ([code of service here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/checkFederatedAip.r))all federated copies MD5 checksums stored for others at "my zone" are recalculated 
 on time basis. 
@@ -219,15 +216,17 @@ This is defined to be a "trust" between all servers of the zone.
 admin: (optional) The Admin which should be informed on errors
 numbersPerRun: Amount of Items being checked each time the service runs
 
-If the responsible node (which means the "primary copy node") is being asked for the integrity of AIP e.g. acIsValid() in dns.re, it does the following:
+If the responsible node (which means the the server having the "primary copy") is being asked for the integrity of AIP e.g. acIsValid() in dns.re, it does the following:
 
 1. Get The MD5 checksum for local primary copy from the ICAT.
 2. Compare stored ICAT value with checksum computed at creation
 3. Verify federated Checksums (relies on running service, at the other nodes! )
-4. Verify re-computation of foreign Cecksums is not older than one year. 
+4. Verifying re-computation of foreign Checksums took place in less then a year. 
 4. Deep Verify (recompute) local Checksum
 5. Returns 0 is case of failure
 6. Returns 1 if AIP is valid. 
+
+If nodes are down, isValid() would answer not valid (0).
 
 You have to ensure that on your node a running instance of this service is working, which checks the others stored items at your node. Please set up CRON job (as the service is not fired from delayed execution anymore) 
 
