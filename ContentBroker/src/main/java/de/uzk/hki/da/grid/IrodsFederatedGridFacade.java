@@ -118,7 +118,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	      + "OUTPUT *state", "*state");
 		if (check!=null && !check.isEmpty() ) {
 			if (check.equals("1")) {
-				logger.debug("claimed state by iRODS datagrid is: true");
+				logger.debug("claimed state by iRODS Datagrid is: true");
 				return true;
 			}
 		}	
@@ -127,6 +127,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 			logger.error("Catched Exception " + e.getMessage());
 			
 		}
+		logger.debug("claimed state by iRODS Datagrid is: false");
 		return false;
 	}
 }
