@@ -351,7 +351,7 @@ public abstract class AbstractAction implements Runnable {
 	
 		String txt =  e.getMessage(); 	
 		if  (e.getMessage().equals("null")) txt = "-keine weiteren Details- (NPE)"; 	
-		JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,txt);
+		JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,o.getIdentifier() +" : "+ txt);
 		jmsMessageServiceHandler.sendJMSMessage(jms);
 	}
 

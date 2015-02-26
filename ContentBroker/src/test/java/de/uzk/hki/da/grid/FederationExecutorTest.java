@@ -29,6 +29,8 @@ public class FederationExecutorTest {
 		node.setAdmin(nodeadmin);
 		StoragePolicy sp = new StoragePolicy();
 		sp.setReplDestinations("lza");
+		sp.setCommonStorageRescName("lza");
+		sp.setNodeName("testnode");
 		sp.setAdminEmail(nodeadmin.getEmailAddress());
 		fe = new FederationExecutor(isc,sp,data_name);
 	}

@@ -88,7 +88,7 @@ public class FederationExecutor extends Thread {
 		this.isc = isc;
 		this.sp = sp;
 		this.data_name = data_name;
-		this.destResc = sp.getReplDestinations();
+		this.destResc = sp.getCommonStorageRescName();
 	}
 	
 	/**
@@ -119,14 +119,14 @@ public class FederationExecutor extends Thread {
 		}
 		// We have passed the retries, we try to send Email to node admin
 		if (i==retries) {
-			String err = "Failed to federate :" + data_name + " giving up on node, cooperateing servers offline?"; 
+			String err = "Failed to federate :" + data_name + " giving up on node " + sp.getNodeName() + " , cooperateing servers offline?"; 
 			if (sp.getAdminEmail()!=null && !sp.getAdminEmail().equals("")) {
 				try {
 					Mail.sendAMail(sp.getAdminEmail(), sp.getAdminEmail(), err , err);
 				} catch (MessagingException ex) {
 					logger.error("Sending Email failed " + ex.toString());
 				}
-			logger.error("Failed to federate :" + data_name + " giving up on node " );
+			logger.error(err);
 			}
 		} 
 }	
