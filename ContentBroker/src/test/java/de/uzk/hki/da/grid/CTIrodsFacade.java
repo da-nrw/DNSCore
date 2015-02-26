@@ -134,7 +134,7 @@ public class CTIrodsFacade {
 	 */
 	@Test 
 	public void putFileDoesNotExist() throws Exception {
-		assertTrue(ig.put(temp, testColl + "/urn.tar", sp));
+		putFileAndWaitUntilReplicatedAccordingToStoragePolicy();
 		assertTrue(new File(testCollPhysicalPathOnGridCache + "/urn.tar").exists());
 	}
 	
@@ -166,7 +166,7 @@ public class CTIrodsFacade {
 	@Test 
 	public void putFileAndTestReplications() throws Exception {
 		putFileAndWaitUntilReplicatedAccordingToStoragePolicy();
-		
+	
 		assertTrue(ig.isValid(testColl + "/urn.tar"));
 	}
 	
@@ -179,7 +179,7 @@ public class CTIrodsFacade {
 	 */
 	@Test 
 	public void testChecksumAVUMetadata() throws Exception {
-		assertTrue(ig.put(temp, testColl + "/urn.tar", sp));
+		putFileAndWaitUntilReplicatedAccordingToStoragePolicy();
 		String cs1 = isc.getAVUMetadataDataObjectValue(testCollLogicalPath+"/urn.tar", "chksum");
 		String cs2 = isc.getChecksum(testCollLogicalPath + "/urn.tar");
 		assertTrue(cs1.length()>10);

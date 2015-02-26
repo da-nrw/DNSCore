@@ -19,9 +19,9 @@
 checkFederatedItemsOnLocalZone {
 	#delay("<EF>3m</EF>") {
 	acLog("---Audit Service Started---")
-        acCheckRecievedFederatedCopies(*admin, *numbersPerRun,*trustYears)	
+        acCheckRecievedFederatedCopies(*admin, *numbersPerRun)	
 	acLog("---Audit Service ended---")
 	#}
 }
-INPUT *admin=$"test@test.de", *numbersPerRun=$1,*trustYears=$0
+INPUT *admin=$"test@test.de", *numbersPerRun=$1
 OUTPUT ruleExecOut

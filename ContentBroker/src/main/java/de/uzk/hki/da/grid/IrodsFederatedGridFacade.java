@@ -103,19 +103,31 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		Thread  fe = new FederationExecutor(irodsSystemConnector,sp, gridPath);
 		fe.start();
 	}
-	
-	public boolean isValid(String gridPath, StoragePolicy sp, String md5Checksum) {
+
+	@Override
+	public boolean isValid(String gridPath) {
+		String address_dest = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + "/" + gridPath;
+		logger.debug("checking validity of " + address_dest);
+		try {
 		irodsSystemConnector.connect();	
-		String check = "checkItemsQuick {\n"
-	      + "*status=0\n"
-	      + "acIsValid(*dao,*status)\n"
+		String check = irodsSystemConnector.executeRule("checkItemsQuick {\n"
+	      + "*state=0\n"
+	      + "acIsValid(*dao,*state)\n"
 	      + "}\n"
-	      + "INPUT *dao=\"" + gridPath +"\"\n"
-	      + "OUTPUT *status";
+	      + "INPUT *dao=\"" + address_dest +"\"\n"
+	      + "OUTPUT *state", "*state");
 		if (check!=null && !check.isEmpty() ) {
-			if (check.equals("1")) return true;
+			if (check.equals("1")) {
+				logger.debug("claimed state by iRODS Datagrid is: true");
+				return true;
+			}
 		}	
 		irodsSystemConnector.logoff();
+		} catch (Exception e) {
+			logger.error("Catched Exception " + e.getMessage());
+			
+		}
+		logger.debug("claimed state by iRODS Datagrid is: false");
 		return false;
 	}
 }
