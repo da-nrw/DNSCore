@@ -19,6 +19,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.metadata.MetadataHelper;
+import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.Path;
@@ -70,7 +71,7 @@ public class ATUseCaseIngestDeltaMETS extends AcceptanceTest{
 			}
 		}
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		String metsFileName = "export_mets.xml";
 		Document doc = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, metsFileName).toFile()));

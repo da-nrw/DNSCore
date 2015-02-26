@@ -76,7 +76,7 @@ public class Document {
 	 * @param first the first dafile
 	 */
 	public Document(DAFile dafile) {
-		this.docname = FilenameUtils.getBaseName(dafile.toRegularFile().getName());
+		this.docname = FilenameUtils.removeExtension(dafile.getRelative_path());
 		this.lastDAFile = dafile;
 		this.getLasttDAFile().setPreviousDAFile(null);
 		logger.debug("Create new document "+getLasttDAFile());

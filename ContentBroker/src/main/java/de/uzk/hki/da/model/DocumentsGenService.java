@@ -28,9 +28,9 @@ public class DocumentsGenService {
 	
 	private Document createDocument(Object object, DAFile dafile) {
 		Document doc = null;
-		String fileName = FilenameUtils.getBaseName(dafile.toRegularFile().getName());
-		if(object.getDocument(fileName)!=null) {
-			doc = object.getDocument(fileName);
+		String filePath = FilenameUtils.removeExtension(dafile.getRelative_path());
+		if(object.getDocument(filePath)!=null) {
+			doc = object.getDocument(filePath);
 			doc.addDAFile(dafile);
 		} else {
 			doc = new Document(dafile);

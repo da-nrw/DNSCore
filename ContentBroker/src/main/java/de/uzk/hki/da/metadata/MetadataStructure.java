@@ -64,7 +64,9 @@ public abstract class MetadataStructure {
 	
 	public File getCanonicalFileFromReference(String ref, File metadataFile) throws IOException {
 		String tmpFilePath = Path.make(metadataFile.getParentFile().getAbsolutePath(), ref).toString();
-		return new File(tmpFilePath).getCanonicalFile();
+		File file = new File(tmpFilePath).getCanonicalFile();
+		logger.debug("Calculated canonical file from reference "+ref+": "+file);
+		return file;
 	}
 	
 	public abstract File getMetadataFile();
@@ -195,82 +197,59 @@ public abstract class MetadataStructure {
 		rootElement.setAttributeNode(xmlns_ore);
 	}
 	
+	private DAFile getReferencedDAFileFromDocument(de.uzk.hki.da.model.Document doc, File refFile) {
+		DAFile lastDAFile = doc.getLasttDAFile();
+		DAFile referencedFile = null;
+		if(refFile.getAbsolutePath().endsWith(lastDAFile.getRelative_path())) {
+			referencedFile = lastDAFile;
+		} else {
+			while(lastDAFile.getPreviousDAFile() != null){
+				DAFile previousDAFile = lastDAFile.getPreviousDAFile();
+				logger.debug("Check dafile "+previousDAFile);
+				if(refFile.getAbsolutePath().endsWith(previousDAFile.getRelative_path())) {
+					referencedFile = previousDAFile;
+					break;
+				}
+	        	lastDAFile = lastDAFile.getPreviousDAFile(); 
+	        }
+		}
+		return referencedFile;
+	}
+	
+	public DAFile getReferencedDafile(File metadataFile, String ref, List<de.uzk.hki.da.model.Document> documents) {
+		DAFile dafile = null;
+		try {
+			File refFile = getCanonicalFileFromReference(ref, metadataFile);
+			for(de.uzk.hki.da.model.Document doc : documents) {
+				logger.debug("Check document "+doc.getName());
+				if(FilenameUtils.removeExtension(refFile.getAbsolutePath()).endsWith(doc.getName())) {
+					dafile = getReferencedDAFileFromDocument(doc, refFile);
+					break;
+				}
+			}
+		} catch (IOException e) {
+			logger.error("File "+ref+" does not exist.");
+			e.printStackTrace();
+		}
+		return dafile;
+	}
+	
 	protected List<File> getReferencedFiles(File metadataFile, List<String> references, List<de.uzk.hki.da.model.Document> documents) {
 		List<File> existingFiles = new ArrayList<File>();
 		List<String> missingFiles = new ArrayList<String>();
 		for(String ref : references) {
-			File refFile;
-			try {
-				refFile = getCanonicalFileFromReference(ref, metadataFile);
-				String fileName = FilenameUtils.getBaseName(refFile.getName());
-				logger.debug("Check referenced file "+fileName+" (reference: "+ref+")");
-				Boolean docExists = false;
-				for(de.uzk.hki.da.model.Document doc : documents) {
-					if(doc.getName().equals(fileName)) {
-						docExists = true;
-						
-						Boolean fileExists = false;
-						
-						DAFile lastDAFile = doc.getLasttDAFile();
-						
-						File f = getExistingFile(metadataFile, refFile, lastDAFile);
-						if(f!=null) {
-							fileExists = true;
-						} else {
-							while(lastDAFile.getPreviousDAFile() != null){
-					        	f = getExistingFile(metadataFile, refFile, lastDAFile.getPreviousDAFile());
-					        	if(f!=null) {
-					        		fileExists = true;
-					        		break;
-								}
-					        	lastDAFile = lastDAFile.getPreviousDAFile(); 
-					        }
-						}
-						if(fileExists) {
-							existingFiles.add(f);
-						} else {
-							logger.error("File "+ref+" does not exist.");
-							missingFiles.add(ref);
-						}
-					}
-				}
-				if(!docExists) {
-					logger.debug("There is no document "+fileName+"!");
-					logger.error("File "+ref+" does not exist.");
-					missingFiles.add(ref);
-				}
-			} catch (IOException e) {
-				logger.error("File "+ref+" does not exist.");
-				e.printStackTrace();
+			DAFile dafile = getReferencedDafile(metadataFile, ref, documents);
+			if(dafile==null){
+				missingFiles.add(ref);
+			} else {
+				existingFiles.add(dafile.toRegularFile());
 			}
 		}
 		if(!missingFiles.isEmpty()) {
-			logger.error("Missing files: ");
 			for(String missingFile : missingFiles) {
-				logger.error(missingFile);
+				logger.error("Missing file: "+missingFile);
 			}
 		}
 		return existingFiles;
 	}
-	
-	private File getExistingFile(File metadataFile, File refFile, DAFile dafile) {
-		File existingFile = null;
-		
-		String nameOfMetadataParentFile = metadataFile.getParentFile().getName();
-		String relPathFromMetadataFile = Path.extractRelPathFromDir(refFile, nameOfMetadataParentFile);
-		
-		String dafileRelPath = "";	
-		File file = dafile.toRegularFile();
-		if(nameOfMetadataParentFile.endsWith("+a") || nameOfMetadataParentFile.endsWith("+b") || nameOfMetadataParentFile.equals("public") || nameOfMetadataParentFile.equals("institution")) {
-			dafileRelPath = dafile.getRelative_path();
-		} else {
-			dafileRelPath = Path.extractRelPathFromDir(file, nameOfMetadataParentFile);
-		}
-		if(dafileRelPath.equals(relPathFromMetadataFile)) {
-			existingFile = file;
-			logger.debug("File "+existingFile+" exists!");
-		} 
-		return existingFile;
-	}
-
 }

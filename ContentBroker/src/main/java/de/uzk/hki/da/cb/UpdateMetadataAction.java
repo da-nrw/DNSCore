@@ -55,6 +55,7 @@ import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.format.MimeTypeDetectionService;
 import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.metadata.LidoMetadataStructure;
+import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;
 import de.uzk.hki.da.metadata.XMPMetadataStructure;
 import de.uzk.hki.da.metadata.XmpCollector;
@@ -65,7 +66,6 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.FileIdGenerator;
 import de.uzk.hki.da.util.Path;
-import org.apache.commons.io.IOCase;
 
 /**
  * Performs updates to metadata files that are necessary
@@ -297,9 +297,8 @@ public class UpdateMetadataAction extends AbstractAction {
 				} 
 			}
 			if(!fileExists && o.isDelta() && !isPresMode()) {
-				logger.debug("File not found! Search in previouos packages ...");
-				List<String> referenceWithMimetype = getCorrReferencesAndMimetypeInDelta(href, "");
-				if(!referenceWithMimetype.isEmpty()) {
+				List<String> referenceWithMimetype = getCorrReferencesAndMimetypeInDelta(mms, href, "");
+				if(!referenceWithMimetype.isEmpty()&&referenceWithMimetype!=null) {
 					targetPath = referenceWithMimetype.get(0);
 					mimetype = referenceWithMimetype.get(1);
 					fileExists = true;
@@ -314,7 +313,10 @@ public class UpdateMetadataAction extends AbstractAction {
 					targetValue = preservationSystem.getUrisFile() + File.separator + o.getIdentifier() + File.separator + targetDAFile.getRelative_path();
 					loctype = "URL";
 				}
+				logger.debug("New mets replacement: "+href+" by "+targetValue);
 				mms.makeReplacementsInMetsFile(metsFile, href, targetValue, mimetype, loctype);
+			} else {
+				logger.error("No dafile found for href "+href);
 			}
 		}
 	}
@@ -347,7 +349,7 @@ public class UpdateMetadataAction extends AbstractAction {
 				}
 			}
 			if(!fileExists && o.isDelta() && !isPresMode()) {
-				List<String> references = getCorrReferencesAndMimetypeInDelta(href, "");
+				List<String> references = getCorrReferencesAndMimetypeInDelta(lms, href, "");
 				if(!references.isEmpty() && references.get(0)!=null) {
 					targetPath = references.get(0);
 					fileExists = true;
@@ -360,8 +362,9 @@ public class UpdateMetadataAction extends AbstractAction {
 				} else {
 					targetValue = preservationSystem.getUrisFile() + File.separator + o.getIdentifier() + File.separator + targetDAFile.getRelative_path();
 				}
+				logger.debug("New lido replacement: "+href+" by "+targetValue);
 				lidoReplacements.put(href, targetValue);
-			} 
+			}
 		}
 		lms.replaceRefResources(lidoReplacements);
 	}
@@ -374,16 +377,15 @@ public class UpdateMetadataAction extends AbstractAction {
 		fileName_convertRewritingCount.put(href, count+1);
 	}
 	
-	private List<String> getCorrReferencesAndMimetypeInDelta(String href, String sidecarExts) {
-		logger.debug("File not found. Completing references in delta ...");
+	private List<String> getCorrReferencesAndMimetypeInDelta(MetadataStructure ms, String href, String sidecarExts) {
+		logger.debug("File not found. Completing reference "+href+" in delta ...");
 		List<String> reference = new ArrayList<String>();
-		DAFile sourceFile = getSourceDAFile(href);
-		String sourceFileName = sourceFile.toRegularFile().getName();
+		DAFile sourceFile = ms.getReferencedDafile(metadataFile, href, o.getDocuments());
 		List<DAFile> newestFiles = o.getNewestFilesFromAllRepresentations(sidecarExts);
 		for(DAFile dafile : newestFiles) {
-			String dafileName = dafile.toRegularFile().getName();
-			if(FilenameUtils.getBaseName(sourceFileName).equals(FilenameUtils.getBaseName(dafileName))&&(
+			if(FilenameUtils.getBaseName(dafile.toRegularFile().getName()).equals(FilenameUtils.getBaseName(sourceFile.toRegularFile().getName()))&&(
 					!(dafile.toRegularFile().getName().equals(sourceFile.toRegularFile().getName())))) {
+				logger.debug("calculated reference "+dafile.getRelative_path());
 				reference.add(dafile.getRelative_path());
 				String mimetype = "";
 				try {
@@ -398,29 +400,6 @@ public class UpdateMetadataAction extends AbstractAction {
 		return reference;
 	}
 	
-	private DAFile getSourceDAFile(String href) {
-		logger.debug("Scan for dafile matching href "+href+" ... ");
-		DAFile sourceDAFile = null;
-		String fileName = Path.makeFile(href).getName();
-		de.uzk.hki.da.model.Document doc = o.getDocument(FilenameUtils.getBaseName(fileName));
-		
-		DAFile lastDAFile = doc.getLasttDAFile();
-		if(lastDAFile.toRegularFile().getName().equals(fileName)) {
-			sourceDAFile = lastDAFile;
-		} else {
-			while(lastDAFile.getPreviousDAFile() != null){
-	        	DAFile previousDAFile = lastDAFile.getPreviousDAFile();
-	        	if(previousDAFile.toRegularFile().getName().equals(fileName)) {
-	        		sourceDAFile = previousDAFile; 
-	        		break;
-	        	}
-	        	lastDAFile = lastDAFile.getPreviousDAFile(); 
-			}
-		}
-		logger.debug("Return dafile "+sourceDAFile);
-		return sourceDAFile;
-	}
-
 	private Map<DAFile,DAFile> generateReplacementsMap(Package pkg,String repName,String absUrlPrefix) throws IOException{
 		
 		logger.debug("Generate replacements");
