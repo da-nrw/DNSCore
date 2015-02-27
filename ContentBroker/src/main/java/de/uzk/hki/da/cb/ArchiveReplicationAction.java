@@ -67,6 +67,8 @@ public class ArchiveReplicationAction extends AbstractAction {
 		sp.setForbiddenNodes(o.getContractor().getForbidden_nodes());
 		sp.setReplDestinations(n.getReplDestinations());
 		sp.setAdminEmail(n.getAdmin().getEmailAddress());
+		sp.setNodeName(n.getName());
+		sp.setCommonStorageRescName(n.getReplDestinations());
 		try {
 			Path newFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), filename);
 			if (gridRoot.put(new File(newFilePath.toString()), 

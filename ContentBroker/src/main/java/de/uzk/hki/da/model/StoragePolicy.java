@@ -23,6 +23,8 @@ public class StoragePolicy {
 	
 	private String workingResource;
 	
+	private String commonStorageRescName;
+	
 	public StoragePolicy() {
 		
 	}
@@ -91,6 +93,14 @@ public class StoragePolicy {
 
 	public void setWorkingResource(String workingResource) {
 		this.workingResource = workingResource;
+	}
+
+	public String getCommonStorageRescName() {
+		return commonStorageRescName;
+	}
+
+	public void setCommonStorageRescName(String commonStorageName) {
+		this.commonStorageRescName = commonStorageName;
 	}
 	
 

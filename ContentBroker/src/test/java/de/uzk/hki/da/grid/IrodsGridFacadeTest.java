@@ -122,6 +122,8 @@ public class IrodsGridFacadeTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
+		 FileUtils.deleteDirectory(new File(irodsDir));
+		 FileUtils.deleteDirectory(new File(forkDir));
 	}
 	
 	/**

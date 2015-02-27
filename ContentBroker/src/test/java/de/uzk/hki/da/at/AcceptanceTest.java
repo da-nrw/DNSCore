@@ -117,6 +117,7 @@ public class AcceptanceTest {
 		sp.setReplDestinations("ciArchiveResource");
 		sp.setAdminEmail("noreply");
 		sp.setGridCacheAreaRootPath(localNode.getGridCacheAreaRootPath().toString());
+		sp.setCommonStorageRescName("ciArchiveResource");
 	}
 	
 	

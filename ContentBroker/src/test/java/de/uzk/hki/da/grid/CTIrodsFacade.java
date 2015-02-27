@@ -94,6 +94,7 @@ public class CTIrodsFacade {
 		sp.setReplDestinations("ciArchiveResource");
 		sp.setWorkingResource("ciWorkingResource");
 		sp.setGridCacheAreaRootPath(properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH));
+		sp.setCommonStorageRescName("ciArchiveResource");
 	}
 	
 	
