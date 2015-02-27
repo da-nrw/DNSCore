@@ -147,6 +147,7 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 	
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
+		
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));
@@ -161,9 +162,25 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("1938-01-01/1939-12-31"));
 				testId = pcho.getAttributeValue("about", C.RDF_NS);
 			}
+		}
+		
+		for(Element pcho : providetCho) {
 			if(pcho.getChild("title", C.DC_NS).getValue().equals("01. Bundesleitung und Bezirksverbände")) {
 				bundesleitungUndBezirksverbaendeExists = true;
 				assertTrue(pcho.getChild("isPartOf", C.DCTERMS_NS).getAttributeValue("resource", C.RDF_NS).equals("http://data.danrw.de/file/"+object.getIdentifier()));
+				assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==39);
+			} else if(pcho.getChild("title", C.DC_NS).getValue().equals("02. Finanzsachen")) {
+				assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==13);
+			} else if(pcho.getChild("title", C.DC_NS).getValue().equals("03. Personelles")) {
+				assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==5);
+			} else if(pcho.getChild("title", C.DC_NS).getValue().equals("04. Rheinländer in aller Welt, Adressen")) {
+				assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==19);
+			} else if(pcho.getChild("title", C.DC_NS).getValue().equals("05. VDA Berlin, Volksdeutsche Mittelstelle")) {
+				assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==19);
+			} else if(pcho.getChild("title", C.DC_NS).getValue().equals("VDA - Forschungsstelle Rheinlländer in aller Welt: Bezirksstelle West des Vereins für das Deutschtum im Ausland")) {
+				assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==30);
+			} else if(pcho.getChild("title", C.DC_NS).getValue().equals("Anschriften A-B")) {
+				assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==5);
 			}
 		}
 		assertTrue(testProvidetChoExists);

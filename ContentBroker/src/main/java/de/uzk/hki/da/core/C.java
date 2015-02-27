@@ -134,6 +134,7 @@ public class C {
 	public static final String EDM_DATE = "dc:date";
 	public static final String EDM_PUBLISHER = "dc:publisher";
 	public static final String EDM_IS_PART_OF = "dcterms:isPartOf";
+	public static final String EDM_HAS_PART = "dcterms:hasPart";
 	public static final String EDM_TITLE = "dc:title";
 	public static final String EDM_IDENTIFIER = "dc:identifier";
 	public static final String EDM_HAS_VIEW = "edm:hasView";

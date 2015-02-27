@@ -90,6 +90,10 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			childElements.put(e, objectId);
 		}
 		
+//		String ID 
+//		ArrayList<String> partIDs
+		HashMap<String, ArrayList<String>> parentHasParts = new HashMap<String, ArrayList<String>>();
+		
 		for(int i=1; i<13; i++) {
 			
 			String nextLevel = (Integer.toString(i+1));
@@ -101,27 +105,36 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			currentElements = childElements;
 			childElements = new HashMap<Element, String>();
 			
+			String isPartOf = "";
 			for(Element element : currentElements.keySet()) {
 				HashMap<String, List<String>> nodeInfo = new HashMap<String, List<String>>();
 				String uniqueID = UUID.randomUUID().toString();
 				uniqueID = uniqueID.replace("-", "");
 				String id = objectId+"-"+uniqueID;
-				String isPartOf = currentElements.get(element);
+				
+				String parentId = currentElements.get(element);
+				isPartOf = parentId;
+				
+				if(parentHasParts.get(parentId)==null) {
+					ArrayList<String> hasPart = new ArrayList<String>();
+					parentHasParts.put(parentId, hasPart);
+				}
+				parentHasParts.get(parentId).add(id);
 				
 				ArrayList<String> partOf = new ArrayList<String>();
 				partOf.add(isPartOf);
-
 				nodeInfo.put(C.EDM_IS_PART_OF, partOf);
 				
 				List<Element> children = element.getChildren();
 				for(Element child : children) {
 					setNodeInfoAndChildeElements(child, nodeInfo, nextLevel, childElements, id);
 				}
-				
 				indexInfo.put(id, nodeInfo);
-			}	
+			}
+			for(String parentId : parentHasParts.keySet()) {
+				indexInfo.get(parentId).put(C.EDM_HAS_PART, parentHasParts.get(parentId));
+			}
 		}
-		
 		return indexInfo;
 	}
 	
