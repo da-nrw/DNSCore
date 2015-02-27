@@ -41,6 +41,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.util.Path;
 
@@ -90,7 +91,7 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 			}
 		}
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		String metsFileName = "export_mets.xml";
 		Document doc = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, metsFileName).toFile()));
@@ -101,7 +102,8 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 	public void testPres() throws JDOMException, FileNotFoundException, IOException {
 		assertEquals(C.CB_PACKAGETYPE_METS,object.getPackage_type());
 		
-		metsDoc = new SAXBuilder().build
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		metsDoc = builder.build
 			(new FileReader(
 				Path.make(contractorsPipsPublic, 
 					object.getIdentifier(), C.CB_PACKAGETYPE_METS+C.FILE_EXTENSION_XML).toFile()));
@@ -130,7 +132,7 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 	
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));
 		@SuppressWarnings("unchecked")
@@ -143,8 +145,12 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 			}
 		}
 		assertTrue(testProvidetChoExists);
+		assertTrue(doc.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("isShownAt", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
+				.contains("http://data.danrw.de/file/1-2015022710/_bee84f142bba34a1036ecc4667b54615.jpg"));
 		
 //		testIndex
 		assertTrue(repositoryFacade.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613").contains("Text Text// mahels///Titel"));
+//		assertTrue(repositoryFacade.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613")
+//				.contains("http://data.danrw.de/file/1-2015022710/_bee84f142bba34a1036ecc4667b54615.jpg"));
 	}
 }

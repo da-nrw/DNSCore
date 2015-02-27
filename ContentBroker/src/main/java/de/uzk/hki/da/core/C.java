@@ -139,6 +139,8 @@ public class C {
 	public static final String EDM_IDENTIFIER = "dc:identifier";
 	public static final String EDM_HAS_VIEW = "edm:hasView";
 	public static final String EDM_DATA_PROVIDER = "edm:dataProvider";
+	public static final String METS_DIV_EXPRESSION = "//mets:div";
+	public static final String EDM_IS_SHOWN_AT = "edm:isShownAt";
 	
 	// Other
 	public static final String LOCAL_NODE_BEAN_NAME = "localNode";

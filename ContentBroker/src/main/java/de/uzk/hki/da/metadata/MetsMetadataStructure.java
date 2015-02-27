@@ -98,13 +98,119 @@ public class MetsMetadataStructure extends MetadataStructure {
 			dmdSecInfo.put(C.EDM_DATE, dates);
 			dmdSecInfo.put(C.EDM_PUBLISHER, places);
 			
-//			Place
-			indexInfo.put(id, dmdSecInfo);
+//			TitlePage
+			String titlePageId = getTitlePageReferenceFromDmdId(id, ObjectId);
+			if(!titlePageId.equals("")) {
+				List<String> references = new ArrayList<String>();
+				references.add(titlePageId);
+				dmdSecInfo.put(C.EDM_IS_SHOWN_AT, references);
+			}
 			
 //			dataProvider
 			dmdSecInfo.put(C.EDM_DATA_PROVIDER, getDataProvider());
+			
+			indexInfo.put(id, dmdSecInfo);
 		}
 		return indexInfo;
+	}
+	
+	private String getTitlePageReferenceFromDmdId(String dmdID, String objectId) {
+		String titlePageLogicalId = getTitlePageLogicalId(dmdID.replace(objectId+"-", ""));
+		String titlePagePhysicalId = getTitlePagePhysicalId(metsDoc, titlePageLogicalId);
+		String fileId = getFileIdFromPhysicalId(metsDoc, titlePagePhysicalId);
+		String ref = getReferenceFromFileId(fileId);
+		return ref;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private String getFileIdFromPhysicalId(Document doc, String physicalId) {
+		String fileId = "";
+		try {
+			List<Element> structMaps = getStructMaps(doc);
+			for(Element s : structMaps) {
+				if(s.getAttributeValue("TYPE").equals("PHYSICAL")) {
+					List<Element> divList =  s.getChildren("div", C.METS_NS);
+					for(Element div : divList) {
+						if(div.getAttributeValue("TYPE").equals("physSequence") && div.getAttributeValue("ID").equals("physroot")) {
+							List<Element> divs =  div.getChildren("div", C.METS_NS);
+							for(Element d : divs) {
+								if(d.getAttributeValue("ID").equals(physicalId)) {
+									fileId = d.getChild("fptr", C.METS_NS).getAttributeValue("FILEID");
+								}
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.debug("Unable to file the file id.");
+		}
+		return fileId;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private String getTitlePagePhysicalId(Document doc, String titlePageLogicalId) {
+		String titlePagePhysicalId = "";
+		List<Element> structLink = new ArrayList<Element>();
+		try {
+			structLink = doc.getRootElement().getChild("structLink", C.METS_NS).getChildren("smLink", C.METS_NS);
+			for(Element link : structLink) {
+				if(link.getAttributeValue("from", XLINK_NS).equals(titlePageLogicalId)) {
+					titlePagePhysicalId = link.getAttributeValue("to", XLINK_NS);
+				}
+			}
+		} catch (Exception e) {
+			logger.debug("Unable to find the title page physical id from logical id "+titlePageLogicalId);
+		}
+		return titlePagePhysicalId;
+	}
+	
+	private String getTitlePageLogicalId(String dmdID) {
+		String titlePageLogicalId = "";
+		try {
+			titlePageLogicalId = getTitlePageLogicalIdFromDmdId(dmdID);
+		} catch (Exception e) {
+		}
+		return titlePageLogicalId;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<Element> getStructMaps(Document doc) {
+		List<Element> structMap = new ArrayList<Element>();
+		try {
+			structMap = doc.getRootElement().getChildren("structMap", C.METS_NS);
+		} catch (Exception e) {
+			logger.debug("Unable to find the structMap elements.");
+		}
+		return structMap;
+	} 
+	
+	@SuppressWarnings({ "unchecked", "unused" })
+	private String getTitlePageLogicalIdFromDmdId(String dmdID) {
+		String titlePageLogicalId = "";
+		try {
+			List<Element> structMap = getStructMaps(metsDoc);
+			for(Element s : structMap) {
+				if(s.getAttributeValue("TYPE").equals("LOGICAL")) {
+					List<Element> metsDivElements = s.getChildren("div", C.METS_NS);
+					for (Element d : metsDivElements){
+						if(d.getAttributeValue("DMDID").equals(dmdID)) {
+							List<Element> divChildren = d.getChildren();
+							Boolean titlePageExists = false;
+							for(Element divChild : divChildren) {
+								if(divChild.getAttributeValue("TYPE").equals("title_page")) {
+									titlePageExists = true;
+									titlePageLogicalId = divChild.getAttributeValue("ID");
+								}
+							}
+						} 
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.debug("Unable to find the logical id from dmdID "+dmdID);
+		}
+		return titlePageLogicalId;
 	}
 		
 	private List<String> getDataProvider() {
@@ -347,6 +453,20 @@ public class MetsMetadataStructure extends MetadataStructure {
 			references.add(getHref(fileElement));
 		}
 		return references;
+	}
+	
+	private String getReferenceFromFileId(String fileId) {
+		String ref = "";
+		try {
+			for(Element fileElement : fileElements) {
+				if(fileElement.getAttributeValue("ID").equals(fileId)) {
+					ref = getHref(fileElement);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Unable to find the reference from file "+fileId);
+		}
+		return ref;
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  SETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
