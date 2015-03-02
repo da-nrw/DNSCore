@@ -147,7 +147,9 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 			}
 		}
 		assertTrue(testProvidetChoExists);
-		assertTrue(doc.getRootElement().getChild("Aggregation", C.ORE_NS).getChild(C.EDM_IS_SHOWN_BY, C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
+		assertTrue(doc.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
+				.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
+		assertTrue(doc.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("object", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
 				.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
 		
 //		testIndex
