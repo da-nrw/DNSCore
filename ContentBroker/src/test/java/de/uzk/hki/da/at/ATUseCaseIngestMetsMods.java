@@ -100,6 +100,7 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 	
 	@Test
 	public void testPres() throws JDOMException, FileNotFoundException, IOException {
+		
 		assertEquals(C.CB_PACKAGETYPE_METS,object.getPackage_type());
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
@@ -132,6 +133,7 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 	
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
+		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));
@@ -145,12 +147,12 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 			}
 		}
 		assertTrue(testProvidetChoExists);
-		assertTrue(doc.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("isShownAt", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
-				.contains(".jpg"));
+		assertTrue(doc.getRootElement().getChild("Aggregation", C.ORE_NS).getChild(C.EDM_IS_SHOWN_BY, C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
+				.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
 		
 //		testIndex
 		assertTrue(repositoryFacade.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613").contains("Text Text// mahels///Titel"));
-//		assertTrue(repositoryFacade.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613")
-//				.contains("http://data.danrw.de/file/1-2015022710/_bee84f142bba34a1036ecc4667b54615.jpg"));
+		assertTrue(repositoryFacade.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613")
+				.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
 	}
 }

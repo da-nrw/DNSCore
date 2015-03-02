@@ -109,9 +109,6 @@ public class CreateEDMAction extends AbstractAction {
 		return true;
 	}
 	
-	
-	
-	
 	private File generateEdmUsingXslt(String xsltTransformationFile,File metadataSourceFile, String edmId) throws FileNotFoundException {
 		
 		File edm = getWa().metadataStream(WA_PUBLIC, edmId); 
@@ -174,8 +171,6 @@ public class CreateEDMAction extends AbstractAction {
 		if ((edmIndexDestinationFile!=null)&&(edmIndexDestinationFile.exists())) 
 			edmIndexDestinationFile.delete();
 	}
-
-
 
 	private String generateEDM(String objectId, String xsltFile,
 			InputStream metadataStream) throws FileNotFoundException {

@@ -103,7 +103,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 			if(!titlePageId.equals("")) {
 				List<String> references = new ArrayList<String>();
 				references.add(titlePageId);
-				dmdSecInfo.put(C.EDM_IS_SHOWN_AT, references);
+				dmdSecInfo.put(C.EDM_IS_SHOWN_BY, references);
 			}
 			
 //			dataProvider
