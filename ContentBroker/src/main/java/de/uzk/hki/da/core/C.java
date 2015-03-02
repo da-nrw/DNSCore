@@ -142,6 +142,7 @@ public class C {
 	public static final String METS_DIV_EXPRESSION = "//mets:div";
 	public static final String EDM_IS_SHOWN_BY = "edm:isShownBy";
 	public static final String EDM_OBJECT = "edm:object";
+	public static final String EDM_PROVIDER = "edm:provider";
 	
 	// Other
 	public static final String LOCAL_NODE_BEAN_NAME = "localNode";

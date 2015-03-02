@@ -84,19 +84,19 @@ public class MetsMetadataStructure extends MetadataStructure {
 			
 //			Date && Place
 			List<String> dates = new ArrayList<String>();
-			List<String> places = new ArrayList<String>();
+			List<String> publishers = new ArrayList<String>();
 			for(Element origInfo : getOrigInfoElements(e)) {
 				String date = getDate(origInfo);
-				String place = getPublisherPlace(origInfo);
+				String publisher = getPublisher(origInfo);
 				if(!date.equals("")) {
 					dates.add(date);
 				}
-				if(!place.equals("")) {
-					places.add(place);
+				if(!publisher.equals("")) {
+					publishers.add(publisher);
 				}
 			}
 			dmdSecInfo.put(C.EDM_DATE, dates);
-			dmdSecInfo.put(C.EDM_PUBLISHER, places);
+			dmdSecInfo.put(C.EDM_PUBLISHER, publishers);
 			
 //			TitlePage
 			String titlePageId = getTitlePageReferenceFromDmdId(id, ObjectId);
@@ -236,17 +236,20 @@ public class MetsMetadataStructure extends MetadataStructure {
 		return dataProvider;
 	}
 	
-	private String getPublisherPlace(Element origInfo) {
-		String place = "";
+	private String getPublisher(Element origInfo) {
+		String publisher = "";
 		try {
 			String type = origInfo.getChild("place", C.MODS_NS).getChild("placeTerm", C.MODS_NS).getAttributeValue("type");
 			if(type.equals("text")) {
-				place = origInfo.getChild("place", C.MODS_NS).getChild("placeTerm", C.MODS_NS).getValue();
+				publisher = origInfo.getChild("place", C.MODS_NS).getChild("placeTerm", C.MODS_NS).getValue();
+			}
+			if(origInfo.getChild("publisher", C.MODS_NS)!=null) {
+				publisher = origInfo.getChild("publisher", C.MODS_NS).getValue()+" ("+publisher+")";
 			}
 		} catch (Exception e) {
 			logger.debug("Element placeTerm does not exist!");
 		}
-		return place;
+		return publisher;
 	}
 	
 	@SuppressWarnings("unchecked")
