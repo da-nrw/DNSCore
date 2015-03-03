@@ -53,11 +53,11 @@ import org.w3c.dom.Document;
  * 
  * The Class XsltGenerator.
  */
-public class XsltEDMGenerator {
+public class XsltGenerator {
 
 	/** The logger. */
 	private static Logger logger = LoggerFactory
-			.getLogger(XsltEDMGenerator.class);
+			.getLogger(XsltGenerator.class);
 	
 	/** The Constant TRANSFORMER_FACTORY_CLASS. */
 	private static final String TRANSFORMER_FACTORY_CLASS = "net.sf.saxon.TransformerFactoryImpl";
@@ -80,7 +80,7 @@ public class XsltEDMGenerator {
 	 * @throws FileNotFoundException 
 	 * @throws TransformerConfigurationException 
 	 */
-	public XsltEDMGenerator(String xsltPath, InputStream inputStream) throws FileNotFoundException, TransformerConfigurationException {
+	public XsltGenerator(String xsltPath, InputStream inputStream) throws FileNotFoundException, TransformerConfigurationException {
 		if (!new File(xsltPath).exists())
 			throw new FileNotFoundException();
 		

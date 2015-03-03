@@ -49,7 +49,7 @@ import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.metadata.XMLUtils;
-import de.uzk.hki.da.metadata.XsltEDMGenerator;
+import de.uzk.hki.da.metadata.XsltGenerator;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.ConfigurationException;
 
@@ -196,7 +196,7 @@ public class CreateDCAction extends AbstractAction {
 				wa.metadataStream(audience, o.getPackage_type()));
 
 			bomInputStream = new BOMInputStream(inputStream);
-			XsltEDMGenerator xsltGenerator = new XsltEDMGenerator(xsltFile,
+			XsltGenerator xsltGenerator = new XsltGenerator(xsltFile,
 					bomInputStream);
 
 			String result = xsltGenerator.generate();
