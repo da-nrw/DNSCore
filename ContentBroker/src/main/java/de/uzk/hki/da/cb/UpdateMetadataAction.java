@@ -20,10 +20,7 @@
 package de.uzk.hki.da.cb;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,14 +36,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
-import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang.NotImplementedException;
-import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
@@ -59,7 +51,6 @@ import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;
 import de.uzk.hki.da.metadata.XMPMetadataStructure;
 import de.uzk.hki.da.metadata.XmpCollector;
-import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
@@ -89,10 +80,9 @@ public class UpdateMetadataAction extends AbstractAction {
 	private Map<String,String> namespaces;
 	/** The xpaths to urls. */
 	private Map<String,String> xpathsToUrls = new HashMap<String,String>();
-	private boolean writePackageTypeToDC = false;	
+		
 	private String[] repNames;	
 	private boolean presMode=false;
-	private Map<String,String> dcMappings = new HashMap<String,String>();
 	private MimeTypeDetectionService mtds = new MimeTypeDetectionService();
 	private String absUrlPrefix = "";
 	private File metadataFile;
@@ -203,10 +193,6 @@ public class UpdateMetadataAction extends AbstractAction {
 				}
 			}
 		}
-		
-		copyDCdatastreamFromMetadata(packageType, metadataFileName);
-		if (isWritePackageTypeToDC())
-			writePackageTypeToDC(packageType);
 		
 		return true;
 	}
@@ -474,37 +460,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	}
 
 	
-	/**
-	 * @param packageType
-	 * @param metadataFile
-	 */
-	private void copyDCdatastreamFromMetadata(String packageType,
-			String metadataFile) {
-		if (packageType != null && metadataFile != null) {
-			String xsltFile = getDcMappings().get(packageType);
-			if (xsltFile == null) {
-				throw new RuntimeException("No conversion available for package type '" + packageType + "'. DC can not be created.");
-			}
-			try {
-				for (String repName : getRepNames()) {
-					if (!repName.startsWith(C.WA_DIP) 	|| !representationExists(repName)) continue;
-					FileInputStream inputStream = new FileInputStream(Path.make(o.getDataPath(),repName,metadataFile).toString());
-					BOMInputStream bomInputStream = new BOMInputStream(inputStream);
-					XsltEDMGenerator xsltGenerator = new XsltEDMGenerator(xsltFile, bomInputStream);
-					String result = xsltGenerator.generate();
-					File file = new File(o.getDataPath() + "/"+repName + "/DC.xml");
-					if (!file.exists()) file.createNewFile();
-					FileOutputStream outputStream = new FileOutputStream(file);
-					outputStream.write(result.getBytes("utf-8"));
-					outputStream.flush();
-					outputStream.close();
-				}
-			} catch (Exception e) {
-				throw new RuntimeException("Unable to create DC file.", e);
-			}
-		}
-	}
-
+	
 	/**
 	 * @param srcFile
 	 * @param repName
@@ -691,49 +647,9 @@ public class UpdateMetadataAction extends AbstractAction {
 		}
 	}
 
-	void writePackageTypeToDC(String packageType) {
-		
-		if (packageType != null) {
-			for (String repName : getRepNames()) {
-				if(representationExists(repName)) {
-					File file = Path.make(o.getDataPath(),repName,"DC.xml").toFile();
-					if (file.exists()) {
-						try {
-							FileInputStream inputStream = new FileInputStream(file);
-							BOMInputStream bomInputStream = new BOMInputStream(inputStream);
-						
-							SAXBuilder builder = new SAXBuilder();
-							Document doc;
-						
-							doc = builder.build(bomInputStream);
-							writeDCForDIP(doc, packageType, file.getAbsolutePath());
-						} catch (Exception e) {
-							throw new RuntimeException("Unable to write package type to DC!", e);
-						} 
-					} else {
-						logger.warn("Unable to locate DC file, creating one ...");
-						Document doc = new Document();
-						doc.setRootElement(new Element("dc", "oai_dc", "http://www.openarchives.org/OAI/2.0/oai_dc/"));
-						String dcPath = o.getDataPath() +"/"+ repName + "/DC.xml";
-						writeDCForDIP(doc, packageType, dcPath);
-					}
-				}
-			}
-		}	
-	}
 	
-	private void writeDCForDIP(Document doc, String packageType, String dcPath) {
-		try {
-			doc.getRootElement().addContent(
-				new Element("format","dc","http://purl.org/dc/elements/1.1/")
-				.setText(packageType));
-			XMLOutputter outputter = new XMLOutputter();
-			outputter.setFormat(Format.getPrettyFormat());
-			outputter.output(doc, new FileWriter(dcPath));
-		} catch (Exception e) {
-			throw new RuntimeException("Unable to write package type to DC!", e);
-		} 
-	}
+	
+	
 	
 	private boolean representationExists(String repName) {
 		boolean repExists = false;
@@ -752,23 +668,7 @@ public class UpdateMetadataAction extends AbstractAction {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
 
-	/**
-	 * Check if the package type is written to the
-	 * Dublin Core metadata file.
-	 * @return
-	 */
-	public boolean isWritePackageTypeToDC() {
-		return writePackageTypeToDC;
-	}
-
-	/**
-	 * Set wether the package type should be written to the
-	 * Dublin Core metadata 
-	 * @param writePackageTypeToDC
-	 */
-	public void setWritePackageTypeToDC(boolean writePackageTypeToDC) {
-		this.writePackageTypeToDC = writePackageTypeToDC;
-	}
+	
 
 	/**
 	 * Get the names of the representations the action
@@ -788,25 +688,7 @@ public class UpdateMetadataAction extends AbstractAction {
 		this.repNames = repNames;
 	}
 
-	/**
-	 * Gets the map that describes which XSLTs should be
-	 * used to convert Metadata to Dublin Core.
-	 * @return a map, keys represent metadata formats,
-	 * 	values the path to the XSLT file
-	 */
-	public Map<String,String> getDcMappings() {
-		return dcMappings;
-	}
-
-	/**
-	 * Sets the map that describes which XSLTs should be
-	 * used to convert Metadata to Dublin Core.
-	 * @param a map, keys represent metadata formats,
-	 * 	values the path to the XSLT file
-	 */
-	public void setDcMappings(Map<String,String> dcMappings) {
-		this.dcMappings = dcMappings;
-	}
+	
 	
 	/**
 	 * Gets the xpaths to urls.

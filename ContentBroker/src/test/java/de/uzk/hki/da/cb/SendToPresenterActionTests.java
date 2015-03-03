@@ -19,8 +19,12 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.*;
-import static de.uzk.hki.da.test.TC.*;
+import static de.uzk.hki.da.core.C.CB_PACKAGETYPE_EAD;
+import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
+import static de.uzk.hki.da.core.C.METADATA_STREAM_ID_EPICUR;
+import static de.uzk.hki.da.core.C.WA_PIPS;
+import static de.uzk.hki.da.core.C.WA_PUBLIC;
+import static de.uzk.hki.da.test.TC.TEST_ROOT_CB;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -29,7 +33,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,7 +40,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -185,13 +187,4 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 		action.rollback();
 		assertFalse(makeMetadataFile(METADATA_STREAM_ID_EPICUR,WA_PUBLIC).exists());
 	}
-	
-	@Test
-	public void addURNToDC() throws IOException {
-		action.implementation(); 
-		FileInputStream in = new FileInputStream(makeMetadataFile(METADATA_STREAM_ID_DC, WA_PUBLIC));
-		String dcContent = IOUtils.toString(in, ENCODING_UTF_8);
-		assertTrue(dcContent.contains("<DC:identifier xmlns:DC=\"http://purl.org/dc/elements/1.1/\">urn</DC:identifier>"));
-	}
-	
 }

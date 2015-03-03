@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -128,10 +127,6 @@ public class UpdateMetadataActionLIDOTests {
 		nsMap.put("lido", LIDO_NS.getURI());
 		action.setNamespaces(nsMap);
 		
-		
-		Map<String, String> dcMappings = new HashMap<String,String>();
-		dcMappings.put("LIDO", "conf/xslt/dc/lido_to_dc.xsl");
-		action.setDcMappings(dcMappings);
 		
 		action.setMtds(mtds);
 		action.setObject(object);

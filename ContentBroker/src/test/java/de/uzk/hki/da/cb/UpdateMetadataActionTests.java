@@ -30,7 +30,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -123,59 +122,6 @@ public class UpdateMetadataActionTests {
 	
 	
 	/**
-	 * Test write package type to dc.
-	 *
-	 * @throws FileNotFoundException the file not found exception
-	 * @throws JDOMException the jDOM exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	@Test
-	public void testWritePackageTypeToDC() throws FileNotFoundException, JDOMException, IOException {
-		
-		Object o = TESTHelper.setUpObject("42",workAreaPath);
-		
-		o.getLatestPackage().getFiles().add(new DAFile(o.getLatestPackage(), "pips/public", "DC.xml"));
-		o.getLatestPackage().getFiles().add(new DAFile(o.getLatestPackage(), "pips/institution", "DC.xml"));
-		
-		Job job = new Job();
-		job.setRep_name("rep42");
-		job.setObject(o);
-		
-		action.setMtds(mtds);
-		action.setObject(o);
-		action.setJob(job);
-		
-		action.setRepNames(new String[]{"pips/public", "pips/institution"});
-
-		String dcPath = o.getDataPath() +"/"+ "test_dc.xml";
-		File dcFile = new File(dcPath);
-		File publicDcFile = new File(o.getDataPath() + "/pips/public/DC.xml");
-		File instDcFile = new File(o.getDataPath() + "/pips/institution/DC.xml");
-		FileUtils.copyFile(dcFile, publicDcFile);
-		FileUtils.copyFile(dcFile, instDcFile);
-		
-		action.writePackageTypeToDC("TEST");
-		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document doc = builder.build(new FileReader(publicDcFile));
-		Element child = doc.getRootElement()
-				.getChild("format", Namespace.getNamespace("http://purl.org/dc/elements/1.1/"));
-		
-		assertNotNull(child);
-		assertEquals("TEST", child.getText());
-		
-		doc = builder.build(new FileReader(instDcFile));
-		child = doc.getRootElement().getChild("format", Namespace.getNamespace("http://purl.org/dc/elements/1.1/"));
-		
-		assertNotNull(child);
-		assertEquals("TEST", child.getText());
-		
-		publicDcFile.delete();
-		instDcFile.delete();
-		
-	}
-	
-	/**
 	 * Test update paths in metadata.
 	 *
 	 * @throws FileNotFoundException the file not found exception
@@ -242,9 +188,6 @@ public class UpdateMetadataActionTests {
 		action.setNamespaces(nsMap);
 		
 		action.setRepNames(new String[]{"pips/public", "pips/institution"});
-		Map<String, String> dcMappings = new HashMap<String,String>();
-		dcMappings.put("METS", "conf/xslt/dc/mets-mods_to_dc.xsl");
-		action.setDcMappings(dcMappings);
 		
 		action.implementation();
 		
