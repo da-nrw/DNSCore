@@ -30,12 +30,6 @@
 				<entry key="LIDO" value="conf/xslt/dc/lido_to_dc.xsl" />
 			</map>
 		</property>
-		<property name="repNames">
-			<util:list>
-				<value>temp_pips/public</value>
-				<value>temp_pips/institution</value>
-			</util:list>
-		</property>
 	</bean>
 	<bean id="SendToPresenterAction" class="de.uzk.hki.da.cb.SendToPresenterAction"
 		scope="prototype">

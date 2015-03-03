@@ -25,22 +25,26 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
 
 
 /**
@@ -82,8 +86,10 @@ public class XsltEDMGenerator {
 		
 		this.inputStream = inputStream;
 		xsltSource = new StreamSource(new FileInputStream(xsltPath));
+	
 
 		TransformerFactory transFact = TransformerFactory.newInstance(TRANSFORMER_FACTORY_CLASS, null);
+		
 		transFact.setErrorListener(new CutomErrorListener());
 		transformer = null;
 		transformer = transFact.newTransformer(xsltSource);
@@ -97,8 +103,27 @@ public class XsltEDMGenerator {
 	 */
 	public String generate() throws TransformerException, IOException {
 		
-		Source xmlSource = new StreamSource(
-				new InputStreamReader(inputStream));
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		dbf.setValidating(false);
+		dbf.setNamespaceAware(true);
+		try {
+			dbf.setFeature("http://xml.org/sax/features/namespaces", false);
+			dbf.setFeature("http://xml.org/sax/features/validation", false);
+			dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+			dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+		} catch (ParserConfigurationException e2) {
+			throw new RuntimeException(e2);
+		}
+	    
+	    DocumentBuilder parser;
+	    Document doc=null;
+		try {
+			parser = dbf.newDocumentBuilder();
+			doc = parser.parse(inputStream);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		Source xmlSource = new DOMSource(doc);
 		
 		for (String key : params.keySet()) {
 			transformer.setParameter(key, params.get(key));

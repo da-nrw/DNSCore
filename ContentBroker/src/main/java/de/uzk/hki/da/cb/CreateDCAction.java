@@ -19,8 +19,11 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
 import static de.uzk.hki.da.core.C.METADATA_STREAM_ID_DC;
+import static de.uzk.hki.da.core.C.WA_INSTITUTION;
+import static de.uzk.hki.da.core.C.WA_PUBLIC;
+import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
+import static de.uzk.hki.da.utils.StringUtilities.isSet;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,7 +31,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -38,42 +40,54 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.utils.StringUtilities;
+import de.uzk.hki.da.util.ConfigurationException;
 
 /**
  * @author Daniel M. de Oliveira
  */
 public class CreateDCAction extends AbstractAction {
 
+	private static final String FORMAT = "format";
 	private static final String IDENTIFIER = "identifier";
 	private static final String PURL_ORG_DC = "http://purl.org/dc/elements/1.1/";
 	
-	private String[] repNames;
-	private Map<String,String> dcMappings = new HashMap<String,String>();
+	private Map<String,String> dcMappings = null;
 	private boolean writePackageTypeToDC = false;
 	
 	@Override
 	public void checkConfiguration() {
-		// TODO Auto-generated method stub
+		if (dcMappings==null) throw new ConfigurationException("dcMappings not set");
 	}
 
 	
 	@Override
 	public void checkPreconditions() {
-		//if (StringUtilities.isNotSet(o.getPackage_type())) throw new PreconditionsNotMetException("o.getPackage_type()");
-		//if (StringUtilities.isNotSet(o.getMetadata_file())) throw new PreconditionsNotMetException("o.getMetadata_file()");
+		
+		if (isSet(o.getPackage_type())){
+		
+			if (dcMappings.get(o.getPackage_type())==null) 
+				throw new PreconditionsNotMetException("No xslt mapping for package type available");
+			if (! new File(dcMappings.get(o.getPackage_type())).exists()) 
+				throw new PreconditionsNotMetException("Missing xslt file for package type");
+			
+			if (wa.pipFolder(WA_PUBLIC).toFile().exists()&&(! wa.metadataStream(WA_PUBLIC, o.getPackage_type()).exists()))
+				throw new PreconditionsNotMetException("Missing metadata file for package type in public pip");
+			if (wa.pipFolder(WA_INSTITUTION).toFile().exists()&&(! wa.metadataStream(WA_INSTITUTION, o.getPackage_type()).exists()))
+					throw new PreconditionsNotMetException("Missing metadata file for package type in insitution pip");
+		}
+		
+		if (isNotSet(o.getUrn())) throw new PreconditionsNotMetException("urn not set");
 	}
 
 	
@@ -82,42 +96,47 @@ public class CreateDCAction extends AbstractAction {
 			UserException, RepositoryException, JDOMException,
 			ParserConfigurationException, SAXException,
 			SubsystemNotAvailableException {
-//		
-//		copyDCdatastreamFromMetadata(o.getPackage_type(), o.getMetadata_file());
-//		
-//		if (isWritePackageTypeToDC())
-//			writePackageTypeToDC(o.getPackage_type());
-//		rewriteDCIfExists(urn, packagePath);
+
+		if (isNotSet(o.getPackage_type())) return true;
 		
-		// TODO Auto-generated method stub
+		
+		if (wa.pipFolder(WA_PUBLIC).toFile().exists()){
+			createDCForAudience(WA_PUBLIC);
+		}
+		if (wa.pipFolder(WA_INSTITUTION).toFile().exists()){
+			createDCForAudience(WA_INSTITUTION);
+		}
+		
 		return true;
 	}
 
 	
+	private void createDCForAudience(String audience) throws IOException {
+		File publicDCFile = wa.metadataStream(audience, METADATA_STREAM_ID_DC);
+		publicDCFile.createNewFile();
+		
+		copyDCdatastreamFromMetadata(audience);
+		String updatedDcContent = readDCAndReplaceURN(audience,o.getUrn());
+		writeDCBackToPIP(audience, updatedDcContent);
+	}
+
+
 	@Override
 	public void rollback() throws Exception {
-		// TODO Auto-generated method stub
+		if (wa.metadataStream(WA_PUBLIC, METADATA_STREAM_ID_DC).exists()) 
+			wa.metadataStream(WA_PUBLIC, METADATA_STREAM_ID_DC).delete();
+		if (wa.metadataStream(WA_INSTITUTION, METADATA_STREAM_ID_DC).exists()) 
+			wa.metadataStream(WA_INSTITUTION, METADATA_STREAM_ID_DC).delete();
 	}
 	
 	
-	
-	
-	private void rewriteDCIfExists(String urn, Path packagePath)
+	private void writeDCBackToPIP(String audience, String updatedDcContent)
 			throws IOException {
-		if (Path.makeFile(packagePath,METADATA_STREAM_ID_DC+FILE_EXTENSION_XML).exists()) {
-			String updatedDcContent = readDCAndReplaceURN(urn, packagePath);
-			writeDCBackToPIP(packagePath, updatedDcContent);
-			logger.info("Successfully added identifiers to DC datastream");
-		}
-	}
-
-
-	private void writeDCBackToPIP(Path packagePath, String updatedDcContent)
-			throws IOException {
-		Path.makeFile(packagePath,METADATA_STREAM_ID_DC+FILE_EXTENSION_XML).delete();
+		
+		wa.metadataStream(audience, METADATA_STREAM_ID_DC).delete();
 		FileWriter fw = null;
 		try {
-			fw = new FileWriter(Path.makeFile(packagePath,METADATA_STREAM_ID_DC+FILE_EXTENSION_XML));
+			fw = new FileWriter(wa.metadataStream(audience, METADATA_STREAM_ID_DC));
 			fw.write(updatedDcContent);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -127,19 +146,24 @@ public class CreateDCAction extends AbstractAction {
 	}
 
 
-	private String readDCAndReplaceURN(String urn, Path packagePath)
+	private String readDCAndReplaceURN(String audience,String urn)
 			throws IOException {
 		FileInputStream in = null;
 		String content="";
 		
 		try {
-			in=new FileInputStream(Path.makeFile(packagePath,METADATA_STREAM_ID_DC+FILE_EXTENSION_XML));
+			in=new FileInputStream(
+				wa.metadataStream(audience,METADATA_STREAM_ID_DC));
+			
 			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 			Document doc = null;
 			doc=builder.build(in);
 			doc.getRootElement().addContent(
-					new Element(IDENTIFIER,METADATA_STREAM_ID_DC,PURL_ORG_DC)
+					new Element(IDENTIFIER,METADATA_STREAM_ID_DC.toLowerCase(),PURL_ORG_DC)
 					.setText(urn));
+			doc.getRootElement().addContent(
+					new Element(FORMAT,METADATA_STREAM_ID_DC.toLowerCase(),PURL_ORG_DC)
+					.setText(o.getPackage_type()));
 			content = new XMLOutputter().outputString(doc);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -155,100 +179,50 @@ public class CreateDCAction extends AbstractAction {
 	 * @param packageType
 	 * @param metadataFile
 	 */
-	private void copyDCdatastreamFromMetadata(String packageType,
-			String metadataFile) {
-		if (packageType != null && metadataFile != null) {
-			String xsltFile = getDcMappings().get(packageType);
-			if (xsltFile == null) {
-				throw new RuntimeException("No conversion available for package type '" + packageType + "'. DC can not be created.");
-			}
+	private void copyDCdatastreamFromMetadata(String audience) {
+		
+		FileInputStream inputStream = null;
+		BOMInputStream bomInputStream = null;
+		FileOutputStream outputStream = null;
+		
+		String xsltFile = getDcMappings().get(o.getPackage_type());
+		if (xsltFile == null) {
+			throw new RuntimeException(
+					"No conversion available for package type '"
+							+ o.getPackage_type() + "'. DC can not be created.");
+		}
+		try {
+			inputStream = new FileInputStream(
+				wa.metadataStream(audience, o.getPackage_type()));
+
+			bomInputStream = new BOMInputStream(inputStream);
+			XsltEDMGenerator xsltGenerator = new XsltEDMGenerator(xsltFile,
+					bomInputStream);
+
+			String result = xsltGenerator.generate();
+
+			File file = wa.metadataStream(audience, METADATA_STREAM_ID_DC);
+			outputStream = new FileOutputStream(file);
+			
+			outputStream.write(result.getBytes(C.ENCODING_UTF_8.toLowerCase()));
+			outputStream.flush();
+
+		} catch (Exception e) {
+			throw new RuntimeException("Unable to create DC file.", e);
+		} finally {
 			try {
-				for (String repName : getRepNames()) {
-					// 
-//					if (!repName.startsWith(C.WA_DIP) 	|| !representationExists(repName)) continue;
-					
-					FileInputStream inputStream = new FileInputStream(Path.make(o.getDataPath(),repName,metadataFile).toString());
-					BOMInputStream bomInputStream = new BOMInputStream(inputStream);
-					XsltEDMGenerator xsltGenerator = new XsltEDMGenerator(xsltFile, bomInputStream);
-					String result = xsltGenerator.generate();
-					File file = new File(o.getDataPath() + "/"+repName + "/DC.xml");
-					if (!file.exists()) file.createNewFile();
-					FileOutputStream outputStream = new FileOutputStream(file);
-					outputStream.write(result.getBytes("utf-8"));
-					outputStream.flush();
-					outputStream.close();
-				}
-			} catch (Exception e) {
-				throw new RuntimeException("Unable to create DC file.", e);
+				if (inputStream!=null) inputStream.close();
+				if (bomInputStream!=null) bomInputStream.close();
+				if (outputStream!=null)   outputStream.close();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
 			}
 		}
-	}
-	
-	
-	
-	void writePackageTypeToDC(String packageType) {
 		
-//		if (packageType != null) {
-//			for (String repName : getRepNames()) {
-//				if(representationExists(repName)) {
-//					File file = Path.make(o.getDataPath(),repName,"DC.xml").toFile();
-//					if (file.exists()) {
-//						try {
-//							FileInputStream inputStream = new FileInputStream(file);
-//							BOMInputStream bomInputStream = new BOMInputStream(inputStream);
-//						
-//							SAXBuilder builder = new SAXBuilder();
-//							Document doc;
-//						
-//							doc = builder.build(bomInputStream);
-//							writeDCForDIP(doc, packageType, file.getAbsolutePath());
-//						} catch (Exception e) {
-//							throw new RuntimeException("Unable to write package type to DC!", e);
-//						} 
-//					} else {
-//						logger.warn("Unable to locate DC file, creating one ...");
-//						Document doc = new Document();
-//						doc.setRootElement(new Element("dc", "oai_dc", "http://www.openarchives.org/OAI/2.0/oai_dc/"));
-//						String dcPath = o.getDataPath() +"/"+ repName + "/DC.xml";
-//						writeDCForDIP(doc, packageType, dcPath);
-//					}
-//				}
-//			}
-//		}	
+		
 	}
 	
 	
-	private void writeDCForDIP(Document doc, String packageType, String dcPath) {
-		try {
-			doc.getRootElement().addContent(
-				new Element("format","dc","http://purl.org/dc/elements/1.1/")
-				.setText(packageType));
-			XMLOutputter outputter = new XMLOutputter();
-			outputter.setFormat(Format.getPrettyFormat());
-			outputter.output(doc, new FileWriter(dcPath));
-		} catch (Exception e) {
-			throw new RuntimeException("Unable to write package type to DC!", e);
-		} 
-	}
-	
-	/**
-	 * Get the names of the representations the action
-	 * should work on.
-	 * @return an array of representation names
-	 */
-	public String[] getRepNames() {
-		return repNames;
-	}
-
-	/**
-	 * Set the names of the representations the action
-	 * should work on.
-	 * @param an array of representation names
-	 */
-	public void setRepNames(String[] repNames) {
-		this.repNames = repNames;
-	}
-
 	
 	
 	/**
