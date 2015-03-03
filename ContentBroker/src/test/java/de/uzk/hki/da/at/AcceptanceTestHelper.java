@@ -120,7 +120,7 @@ public class AcceptanceTestHelper {
 		try {
 			object = new ObjectNamedQueryDAO().getUniqueObject(originalName, testContractor.getShort_name());
 		} catch (Exception e) {
-			fail("more than 1 Object found!"); 
+			fail("Exception loading Object called " + originalName + " " + e.getStackTrace()); 
 		}
 		
 		return object;
