@@ -49,6 +49,7 @@ import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.format.MimeTypeDetectionService;
+import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
@@ -192,7 +193,7 @@ public class UpdateMetadataActionXMPTests {
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/public/DC.xml").exists());
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/institution/DC.xml").exists());
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build(new FileReader(Path.make(workAreaRootPath, "work/TEST/123/data/"+C.WA_DIP+"/public/XMP.xml").toFile()));
 		assertTrue(checkRefs(doc));
 	}

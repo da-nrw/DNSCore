@@ -177,7 +177,7 @@ public class UpdateMetadataActionEADTests {
 		action.setObject(object);
 		action.implementation();
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_B_REP,"mets_2_99.xml").toFile()));
 
 		assertEquals("http://data.danrw.de/file/42/renamed067.tif", getURL(doc));

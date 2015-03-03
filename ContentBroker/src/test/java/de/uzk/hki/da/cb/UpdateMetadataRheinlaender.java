@@ -25,6 +25,7 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.format.MimeTypeDetectionService;
+import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
@@ -171,7 +172,7 @@ public class UpdateMetadataRheinlaender {
 		action.setPresMode(true);
 		action.implementation();
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build(new FileReader(Path.make(workAreaRootPathPath, "work/TEST/43/data", _1_B_REP, "mets_2_32044.xml").toFile()));
 		assertEquals("http://data.danrw.de/file/43/renamed002.tif", getURL(doc));
 		

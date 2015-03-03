@@ -42,7 +42,7 @@ public class ATUseCaseIngestArchivDuisburg extends AcceptanceTest{
 	@Test
 	public void testFileIdGenInPres() throws FileNotFoundException, JDOMException, IOException {
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "1175", "mets_1175.xml").toFile()));
 		List<Element> metsFileElements = mh.getMetsFileElements(doc);

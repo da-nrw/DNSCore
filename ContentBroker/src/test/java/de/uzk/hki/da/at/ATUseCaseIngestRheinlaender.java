@@ -74,7 +74,7 @@ public class ATUseCaseIngestRheinlaender extends AcceptanceTest{
 	@Test
 	public void testReferencesInPip() throws FileNotFoundException, JDOMException, IOException, RepositoryException{
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "mets_2_32044.xml").toFile()));
 		assertTrue(getURL(doc).contains("http://data.danrw.de"));

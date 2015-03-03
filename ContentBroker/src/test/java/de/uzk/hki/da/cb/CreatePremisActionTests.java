@@ -46,6 +46,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
@@ -269,7 +270,7 @@ public class CreatePremisActionTests {
 	@SuppressWarnings({ "unchecked" })
 	private void checkPremisFile(File premisFile) {
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc;
 		try {
 			doc = builder.build(premisFile);
@@ -478,7 +479,7 @@ public class CreatePremisActionTests {
 		Element objectCharTifBRoot;
 		Element objectCharPremisARoot;
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc;
 		try {
 			doc = builder.build(workAreaRootPath + "/work/TEST/identifier_deltas/data/2013_07_31+11_54+b/premis.xml");

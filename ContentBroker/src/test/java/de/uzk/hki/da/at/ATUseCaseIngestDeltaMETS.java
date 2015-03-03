@@ -217,7 +217,8 @@ public class ATUseCaseIngestDeltaMETS extends AcceptanceTest{
 		
 		testContractorPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, "TEST");
 		
-		Document doc = new SAXBuilder().build
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		Document doc = builder.build
 				(new FileReader(
 					Path.make(testContractorPipsPublic, 
 						object.getIdentifier(), C.CB_PACKAGETYPE_METS+C.FILE_EXTENSION_XML).toFile()));
