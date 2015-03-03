@@ -42,7 +42,6 @@ public class SidecarUtils {
 		
 		for (int i=0;i<sidecarExtensions.length;i++){
 			if (FilenameUtils.getExtension(filename).toLowerCase().equals(sidecarExtensions[i].toLowerCase())){
-				System.out.println(filename+" has sidecar ext "+sidecarExtensions[i]);
 				return true;
 			}
 		}

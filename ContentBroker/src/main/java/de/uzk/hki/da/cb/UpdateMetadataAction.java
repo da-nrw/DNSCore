@@ -57,6 +57,7 @@ import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.metadata.LidoMetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;
+import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.metadata.XMPMetadataStructure;
 import de.uzk.hki.da.metadata.XmpCollector;
 import de.uzk.hki.da.metadata.XsltEDMGenerator;
@@ -702,7 +703,7 @@ public class UpdateMetadataAction extends AbstractAction {
 							FileInputStream inputStream = new FileInputStream(file);
 							BOMInputStream bomInputStream = new BOMInputStream(inputStream);
 						
-							SAXBuilder builder = new SAXBuilder();
+							SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 							Document doc;
 						
 							doc = builder.build(bomInputStream);

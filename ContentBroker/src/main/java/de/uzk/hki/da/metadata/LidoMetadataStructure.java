@@ -58,7 +58,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 		for(Element lidoElement : lidoElements) {
 			lidoElementInfo = new HashMap<String, List<String>>();
 			String id = objectId+"-"+getLidoRecID(lidoElement);
-			System.out.println("ID: "+id);
+			logger.debug("ID: "+id);
 			lidoElementInfo.put(C.EDM_TITLE, getTitle(lidoElement));
 			lidoElementInfo.put(C.EDM_PUBLISHER, getPlaces(lidoElement));
 			lidoElementInfo.put(C.EDM_DATE, getDate(lidoElement));

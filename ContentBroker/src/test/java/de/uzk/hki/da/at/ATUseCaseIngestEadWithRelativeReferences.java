@@ -80,7 +80,7 @@ public class ATUseCaseIngestEadWithRelativeReferences extends AcceptanceTest {
 			assertTrue(metsRef.contains("./mets_361/mets_2_3204"));
 		}
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		
 		Document doc1 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_361", "mets_2_32044.xml").toFile()));
@@ -112,7 +112,7 @@ public class ATUseCaseIngestEadWithRelativeReferences extends AcceptanceTest {
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException {
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "mets_361", "mets_2_32044.xml").toFile()));
 		assertTrue(getMetsURL(doc).contains("http://data.danrw.de"));

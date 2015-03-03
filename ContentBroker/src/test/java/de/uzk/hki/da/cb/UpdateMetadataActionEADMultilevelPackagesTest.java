@@ -183,7 +183,7 @@ public class UpdateMetadataActionEADMultilevelPackagesTest {
 	@Test
 	public void testMetsFiles() throws IOException, JDOMException, ParserConfigurationException, SAXException {
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/43/data",_1_B_REP,"mets_361/mets_2_32044.xml").toFile()));
 		assertEquals("http://data.danrw.de/file/43/renamed002.tif", getURL(doc));
 		assertEquals("URL", getLoctype(doc));
