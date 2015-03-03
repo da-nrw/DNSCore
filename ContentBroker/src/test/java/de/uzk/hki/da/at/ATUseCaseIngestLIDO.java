@@ -129,6 +129,8 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
 		
+//		FileUtils.copyFileToDirectory(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile(), Path.makeFile("home", "polina", "Desktop"));
+		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));

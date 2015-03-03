@@ -42,27 +42,58 @@ public class LidoMetadataStructure extends MetadataStructure{
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		
 		doc = builder.build(bomInputStream);
-		lidoLinkResources = parseLinkResourceElements();
+		List<Element> lidoElements = getLidoElements();
+		lidoLinkResources = parseLinkResourceElements(lidoElements);
 		fileInputStream.close();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
+	public List<Element> getLinkResourceElemensFromLidoElement(Element lidoElement) {
+		List<Element> currentLinkResources = new ArrayList<Element>();
+		if(lidoElement.getName().equalsIgnoreCase("lido")) {
+			Element currentLinkResource = lidoElement
+			.getChild("administrativeMetadata", C.LIDO_NS)
+			.getChild("resourceWrap", C.LIDO_NS)
+			.getChild("resourceSet", C.LIDO_NS)
+			.getChild("resourceRepresentation", C.LIDO_NS)
+			.getChild("linkResource", C.LIDO_NS);
+			currentLinkResources.add(currentLinkResource);
+		}
+		return currentLinkResources;
+	}
+	
+	public List<String> getReferencesFromLidoElement(Element lidoElement) {
+		List<String> references = new ArrayList<String>();
+		try {
+			List<Element> currentLinkResources = getLinkResourceElemensFromLidoElement(lidoElement);
+			for(Element resourceElement : currentLinkResources) {
+				references.add(resourceElement.getValue());
+			}
+		} catch (Exception e) {
+			logger.error("Unable to find references in lido element "+lidoElement.getName());
+		}
+		return references;
+	}
+	
 	@Override
 	public HashMap<String, HashMap<String, List<String>>> getIndexInfo(String objectId) {
-		
 		HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String, List<String>>>();
-		HashMap<String, List<String>> lidoElementInfo;
-		List<Element> lidoElements = getLidoElements();
-		
-		for(Element lidoElement : lidoElements) {
-			lidoElementInfo = new HashMap<String, List<String>>();
-			String id = objectId+"-"+getLidoRecID(lidoElement);
-			logger.debug("ID: "+id);
-			lidoElementInfo.put(C.EDM_TITLE, getTitle(lidoElement));
-			lidoElementInfo.put(C.EDM_PUBLISHER, getPlaces(lidoElement));
-			lidoElementInfo.put(C.EDM_DATE, getDate(lidoElement));
-			indexInfo.put(id, lidoElementInfo);
+		try {
+			HashMap<String, List<String>> lidoElementInfo;
+			List<Element> lidoElements = getLidoElements();
+			for(Element lidoElement : lidoElements) {
+				lidoElementInfo = new HashMap<String, List<String>>();
+				String id = objectId+"-"+getLidoRecID(lidoElement);
+				logger.debug("ID: "+id);
+				lidoElementInfo.put(C.EDM_TITLE, getTitle(lidoElement));
+				lidoElementInfo.put(C.EDM_PUBLISHER, getPlaces(lidoElement));
+				lidoElementInfo.put(C.EDM_DATE, getDate(lidoElement));
+				lidoElementInfo.put(C.EDM_HAS_VIEW, getReferencesFromLidoElement(lidoElement));
+				indexInfo.put(id, lidoElementInfo);
+			}
+		} catch (Exception e) {
+			new RuntimeException("Unable to parse the lido file for edm serialization.");
 		}
 		return indexInfo;
 	}
@@ -109,7 +140,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 				}
 			}
 		} catch (Exception e) {
-//			logger.error("No title Element found!");
+			logger.error("No title Element found!");
 		}
 		return titles;
 	}
@@ -202,23 +233,15 @@ public class LidoMetadataStructure extends MetadataStructure{
 	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::  REPLACEMENTS  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
-	private List<Element> parseLinkResourceElements() {
-		
-		List<Element> currentLinkResources = new ArrayList<Element>();
-		
-		List<Element> lidoElements = getLidoElements();
+	private List<Element> parseLinkResourceElements(List<Element> lidoElements) {
+		List<Element> linkResourceElements = new ArrayList<Element>();
 		for(Element element : lidoElements) {
-			if(element.getName().equalsIgnoreCase("lido")) {
-				Element currentLinkResource = element
-				.getChild("administrativeMetadata", C.LIDO_NS)
-				.getChild("resourceWrap", C.LIDO_NS)
-				.getChild("resourceSet", C.LIDO_NS)
-				.getChild("resourceRepresentation", C.LIDO_NS)
-				.getChild("linkResource", C.LIDO_NS);
-				currentLinkResources.add(currentLinkResource);
+			List<Element> elements = getLinkResourceElemensFromLidoElement(element);
+			for(Element resourceElement : elements) {
+				linkResourceElements.add(resourceElement);
 			}
 		}
-		return currentLinkResources;
+		return linkResourceElements;
 	}
 	
 	public void replaceRefResources(HashMap<String, String> linkResourceReplacements) throws IOException {
