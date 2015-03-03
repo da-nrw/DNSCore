@@ -172,7 +172,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 				d = element.getChild("unitdate").getValue();
 			}
 		} catch (Exception e) {
-//			logger.error("No unitdate element found");
+			logger.debug("No unitdate element found");
 		}
 		date.add(d);
 		return date;
