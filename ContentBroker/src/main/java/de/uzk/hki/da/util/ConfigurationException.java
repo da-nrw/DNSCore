@@ -28,12 +28,10 @@ package de.uzk.hki.da.util;
 public class ConfigurationException extends RuntimeException{
 
 	/**
-	 * Instantiates a new configuration exception.
-	 *
-	 * @param string the string
+	 * @param string the name of the field which is not set
 	 */
 	public ConfigurationException(String string) {
-		super(string);
+		super("Property is not configured: "+string);
 	}
 
 	/** The Constant serialVersionUID. */

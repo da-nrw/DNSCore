@@ -52,7 +52,7 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 
 	@Override
 	public void checkConfiguration() {
-		if (distributedConversionAdapter==null) throw new ConfigurationException("Must not be null: distributedConversionAdapter");
+		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter");
 	}
 	
 

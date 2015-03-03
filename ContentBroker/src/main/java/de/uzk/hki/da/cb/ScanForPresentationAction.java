@@ -53,8 +53,8 @@ public class ScanForPresentationAction extends AbstractAction{
 	
 	@Override
 	public void checkConfiguration() {
-		if (distributedConversionAdapter==null) throw new ConfigurationException("Must not be null: distributedConversionAdapter");
-		if (fileFormatFacade==null) throw new ConfigurationException("Must not be null: fileFormatFacade");
+		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter");
+		if (fileFormatFacade==null) throw new ConfigurationException("fileFormatFacade");
 	}
 	
 

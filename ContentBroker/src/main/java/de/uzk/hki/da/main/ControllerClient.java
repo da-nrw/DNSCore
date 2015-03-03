@@ -47,7 +47,7 @@ public class ControllerClient {
 	
 	
 	public static void main(String[] args) throws JMSException {
-		if (args==null) throw new ConfigurationException("Needed parameters not set! Specify at least <host> <command>");		
+		if (args==null) throw new IllegalArgumentException("Needed parameters not set! Specify at least <host> <command>");		
 		if (args.length<2){
 			System.out.print("Specify Active MQ host and specify your command!");
 			throw new ConfigurationException("Needed parameters not set! Specify <host> <command>");

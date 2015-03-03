@@ -46,8 +46,8 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 	
 	@Override
 	public void checkConfiguration() {
-		if (ingestGate==null) throw new ConfigurationException("Must not be null: ingestGate");
-		if (gridFacade==null) throw new ConfigurationException("Must not be null: gridFacade");
+		if (ingestGate==null) throw new ConfigurationException("ingestGate");
+		if (gridFacade==null) throw new ConfigurationException("gridFacade");
 	}
 
 

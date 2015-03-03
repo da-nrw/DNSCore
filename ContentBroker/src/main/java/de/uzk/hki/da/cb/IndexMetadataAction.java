@@ -66,7 +66,7 @@ public class IndexMetadataAction extends AbstractAction {
 	@Override
 	public void checkConfiguration() {
 		if (getRepositoryFacade() == null) 
-			throw new ConfigurationException("Must not be null: repositoryFacade");
+			throw new ConfigurationException("repositoryFacade");
 	}
 	
 

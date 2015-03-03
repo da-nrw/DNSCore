@@ -81,7 +81,7 @@ public class UnpackAction extends AbstractAction {
 	
 	@Override
 	public void checkConfiguration() {
-		if (ingestGate==null) throw new ConfigurationException("Must not be null: ingestGate");
+		if (ingestGate==null) throw new ConfigurationException("ingestGate");
 	}
 	
 

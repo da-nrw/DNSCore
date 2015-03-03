@@ -48,7 +48,7 @@ import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.metadata.LidoMetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;
-import de.uzk.hki.da.metadata.XsltEDMGenerator;
+import de.uzk.hki.da.metadata.XsltGenerator;
 import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
@@ -74,7 +74,7 @@ public class CreateEDMAction extends AbstractAction {
 
 	@Override
 	public void checkConfiguration() {
-		if (repositoryFacade == null) throw new ConfigurationException("Must not be null: repositoryFacade");
+		if (repositoryFacade == null) throw new ConfigurationException("repositoryFacade");
 	}
 	
 
@@ -179,9 +179,9 @@ public class CreateEDMAction extends AbstractAction {
 	private String generateEDM(String objectId, String xsltFile,
 			InputStream metadataStream) throws FileNotFoundException {
 		
-		XsltEDMGenerator edmGenerator=null;
+		XsltGenerator edmGenerator=null;
 		try {
-			edmGenerator = new XsltEDMGenerator(xsltFile, metadataStream);
+			edmGenerator = new XsltGenerator(xsltFile, metadataStream);
 		} catch (TransformerConfigurationException e1) {
 			throw new RuntimeException(e1);
 		}	
