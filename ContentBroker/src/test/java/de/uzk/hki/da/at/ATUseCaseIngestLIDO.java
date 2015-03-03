@@ -38,6 +38,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.metadata.MetadataHelper;
+import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.util.Path;
 
@@ -83,7 +84,7 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 			}
 		}
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		String LidoFileName = "LIDO-Testexport2014-07-04-FML-Auswahl.xml";
 		Document doc = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, LidoFileName).toFile()));
@@ -110,7 +111,7 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException{
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "LIDO.xml").toFile()));
@@ -127,7 +128,10 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 	
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
-		SAXBuilder builder = new SAXBuilder();
+		
+//		FileUtils.copyFileToDirectory(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile(), Path.makeFile("home", "polina", "Desktop"));
+		
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));
 		@SuppressWarnings("unchecked")

@@ -36,6 +36,7 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.junit.Test;
 
+import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.Path;
@@ -90,7 +91,7 @@ public class ATUseCaseTimeBasedPublication extends AcceptanceTest{
 		mETS_NS = Namespace.getNamespace(METS_NAMESPACE);
 		xLINK_NS = Namespace.getNamespace(XLINK_NAMESPACE);
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document publDoc = builder.build(new FileInputStream(publFile));
 		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", getUrl(publDoc));
 		Document instDoc = builder.build(new FileInputStream(instFile));

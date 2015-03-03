@@ -25,6 +25,7 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.format.MimeTypeDetectionService;
+import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
@@ -146,7 +147,7 @@ public class UpdateMetadataActionLIDOTests {
 		action.setPresMode(true);
 		action.implementation();
 		
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_B_REP,"LIDO-Testexport2014-07-04-FML-Auswahl.xml").toFile()));
 		assertEquals("http://data.danrw.de/file/42/renamed0000050177.tif", getLIDOURL(doc));
 		

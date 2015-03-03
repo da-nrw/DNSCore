@@ -650,7 +650,6 @@ public class UpdateMetadataAction extends AbstractAction {
 	
 	
 	
-	
 	private boolean representationExists(String repName) {
 		boolean repExists = false;
 		String repPath = Path.make(o.getDataPath(),repName).toString();

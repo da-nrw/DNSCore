@@ -19,14 +19,15 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.*;
+import static de.uzk.hki.da.core.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
+import static de.uzk.hki.da.core.C.EDM_XSLT_METADATA_STREAM_ID;
+import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
+import static de.uzk.hki.da.core.C.WA_PUBLIC;
 import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -41,9 +42,12 @@ import org.jdom.JDOMException;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.metadata.*;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
+import de.uzk.hki.da.metadata.LidoMetadataStructure;
+import de.uzk.hki.da.metadata.MetadataStructure;
+import de.uzk.hki.da.metadata.MetsMetadataStructure;
 import de.uzk.hki.da.metadata.XsltEDMGenerator;
 import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.repository.RepositoryException;
@@ -109,9 +113,6 @@ public class CreateEDMAction extends AbstractAction {
 		return true;
 	}
 	
-	
-	
-	
 	private File generateEdmUsingXslt(String xsltTransformationFile,File metadataSourceFile, String edmId) throws FileNotFoundException {
 		
 		File edm = getWa().metadataStream(WA_PUBLIC, edmId); 
@@ -174,8 +175,6 @@ public class CreateEDMAction extends AbstractAction {
 		if ((edmIndexDestinationFile!=null)&&(edmIndexDestinationFile.exists())) 
 			edmIndexDestinationFile.delete();
 	}
-
-
 
 	private String generateEDM(String objectId, String xsltFile,
 			InputStream metadataStream) throws FileNotFoundException {
