@@ -44,21 +44,12 @@
 		<property name="name" value="PIPGenUpdateMetadataAction" />
 		<property name="namespaces" ref="updateMetadataNamespaces" />
 		<property name="xpathsToUrls" ref="updateMetadataXpathsForUrls" />
-		<property name="writePackageTypeToDC" value="true" />
 		<property name="repNames">
 			<util:list>
 				<value>temp_pips/public</value>
 				<value>temp_pips/institution</value>
 			</util:list>
 		</property>		
-		<property name="dcMappings">
-			<map>
-				<entry key="METS" value="conf/xslt/dc/mets-mods_to_dc.xsl" />
-				<entry key="EAD" value="conf/xslt/dc/ead_to_dc.xsl" />
-				<entry key="XMP" value="conf/xslt/dc/xmp_to_dc.xsl" />
-				<entry key="LIDO" value="conf/xslt/dc/lido_to_dc.xsl" />
-			</map>
-		</property>
 	</bean>
 	<bean id="PIPGenPrepareSendToPresenterAction" class="de.uzk.hki.da.cb.PrepareSendToPresenterAction" scope="prototype">
 		<property name="startStatus" value="760" />

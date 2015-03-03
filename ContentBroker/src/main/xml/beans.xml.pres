@@ -35,12 +35,14 @@
 		<entry key="IndexMetadataAction" value="1" />  <!-- Workaround für DANRW-960 -->
 		<entry key="CreateEDMAction" value="3" />
 		<entry key="FetchPIPsAction" value="3" />
+		<entry key="CreateDCAction" value="3" />
 		<entry key="SendToPresenterAction" value="3" />
 	</util:map>
 	<util:list id="actionOrdering">
 		<value>IndexMetadataAction</value>
 		<value>CreateEDMAction</value>
 		<value>SendToPresenterAction</value>
+		<value>CreateDCAction</value>
 		<value>FetchPIPsAction</value>
 	</util:list>
 </beans>
