@@ -74,7 +74,7 @@ public class CreateEDMAction extends AbstractAction {
 
 	@Override
 	public void checkConfiguration() {
-		if (repositoryFacade == null) throw new ConfigurationException("Must not be null: repositoryFacade");
+		if (repositoryFacade == null) throw new ConfigurationException("repositoryFacade");
 	}
 	
 

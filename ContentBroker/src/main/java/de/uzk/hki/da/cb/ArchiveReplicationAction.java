@@ -43,7 +43,7 @@ public class ArchiveReplicationAction extends AbstractAction {
 	
 	@Override
 	public void checkConfiguration() {
-		if (gridRoot==null) throw new ConfigurationException("gridRoot not set");
+		if (gridRoot==null) throw new ConfigurationException("gridRoot");
 	}
 
 	@Override

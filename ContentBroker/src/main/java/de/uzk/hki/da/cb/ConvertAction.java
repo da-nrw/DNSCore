@@ -54,7 +54,7 @@ public class ConvertAction extends AbstractAction {
 	
 	@Override
 	public void checkConfiguration() {
-		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter not set");
+		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter");
 	}
 	
 

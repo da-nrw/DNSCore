@@ -67,7 +67,7 @@ public class CreateDCAction extends AbstractAction {
 	
 	@Override
 	public void checkConfiguration() {
-		if (dcMappings==null) throw new ConfigurationException("dcMappings not set");
+		if (dcMappings==null) throw new ConfigurationException("dcMappings");
 	}
 
 	

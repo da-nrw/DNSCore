@@ -115,7 +115,7 @@ public class UpdateMetadataAction extends AbstractAction {
 		String metadataFileName = o.getMetadata_file();
 		
 //		check object & job settings
-		if (j==null) throw new ConfigurationException("job not set");
+		if (j==null) throw new ConfigurationException("job");
 		if (packageType == null || metadataFileName == null) {
 			logger.warn("Could not determine package type. No metadata to update.");
 			return true;

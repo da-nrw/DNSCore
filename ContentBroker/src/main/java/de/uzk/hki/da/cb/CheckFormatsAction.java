@@ -65,7 +65,7 @@ public class CheckFormatsAction extends AbstractAction {
 
 	@Override
 	public void checkConfiguration() {
-		if (fileFormatFacade==null) throw new ConfigurationException("Must not be null: fileFormatFacade");
+		if (fileFormatFacade==null) throw new ConfigurationException("fileFormatFacade");
 	}
 	
 

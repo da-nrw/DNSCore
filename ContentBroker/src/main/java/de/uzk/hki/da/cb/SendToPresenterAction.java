@@ -85,13 +85,13 @@ public class SendToPresenterAction extends AbstractAction {
 	@Override
 	public void checkConfiguration() {
 		if (repositoryFacade == null) 
-			throw new ConfigurationException("Must not be null: repositoryFacadeRepository");
+			throw new ConfigurationException("repositoryFacadeRepository");
 		if (viewerUrls == null)
-			throw new ConfigurationException("Must not be null: viewerUrls");
+			throw new ConfigurationException("viewerUrls");
 		if (fileFilter == null)
-			throw new ConfigurationException("Must no be null: fileFilter");
+			throw new ConfigurationException("fileFilter");
 		if (testContractors == null)
-			throw new ConfigurationException("Must not be null: testContractors");
+			throw new ConfigurationException("testContractors");
 	}
 	
 
