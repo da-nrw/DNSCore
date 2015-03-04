@@ -25,6 +25,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.util.Path;
 
@@ -73,6 +74,7 @@ public class DeleteObjectAction extends AbstractAction {
 			logger.info("Delete container from WorkArea: " + fileInIngestArea() );
 			fileInIngestArea().delete();
 		}
+		new MailContents(preservationSystem,n).deleteObjectFromWorklfow(o);
 		return true;
 	}
 

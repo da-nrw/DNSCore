@@ -130,6 +130,29 @@ public class MailContents {
 	
 	/**
 	 * @author Jens Peters
+	 * @param email
+	 * @param objectIdentifier
+	 * @param csn
+	 */
+	public void deleteObjectFromWorklfow(Object object){
+		checkObject(object);
+		String delta = "";
+		if (object.isDelta()) delta = "Delta-"; 
+		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Entfernung von SIP aus Workflow für " + object.getIdentifier();
+		String msg = "Ihr abgegebenes SIP " + delta + "Paket dem Namen \""+ object.getOrig_name() + "\" wurde aus der Verabreitungswarteschlange "+
+				"entfernt. Die Datei kann so nicht vom DNS verarbeitet werden. Korrigieren Sie ggfs. das Paket und bitte versuchen "
+						+ "Sie eine erneute Ablieferung. Das Paket wurde nicht archiviert. ";
+		try {
+			Mail.sendAMail(preservationSystem.getAdmin().getEmailAddress(),object.getContractor().getEmailAddress(), subject, msg);
+		} catch (MessagingException e) {
+			logger.error("Sending email retrieval reciept for " + object.getIdentifier() + "failed", e);
+		}
+	}
+	
+	
+	
+	/**
+	 * @author Jens Peters
 	 * Sends an Reciept to the deliverer of package
 	 */
 	public boolean sendReciept(Job job, Object obj){
