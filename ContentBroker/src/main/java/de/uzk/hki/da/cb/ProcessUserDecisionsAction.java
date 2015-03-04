@@ -24,7 +24,6 @@ import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.jdom.JDOMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,22 +46,27 @@ public class ProcessUserDecisionsAction extends AbstractAction{
 	static final Logger logger = LoggerFactory.getLogger(ProcessUserDecisionsAction.class);
 	
 	@Override
-	public void checkConfiguration() {
-	}
+	public void checkConfiguration() {}
 	
 
 	@Override
 	public void checkPreconditions() {
 		if (StringUtilities.isNotSet(j.getAnswer())){
-			throw new PreconditionsNotMetException("job.getAnswer() must not be null or empty.");
+			throw new PreconditionsNotMetException("Must not be null or empty: j.getAnswer()");
 		}
+		if (!(j.getAnswer().equals(C.ANSWER_NO)||j.getAnswer().equals(C.ANSWER_YO)))
+			throw new PreconditionsNotMetException("Must be either YES or NO: job.getAnser().");
+		
+		if (j.getConversion_instructions()==null) 
+			throw new PreconditionsNotMetException("Must not be null: j.getConversion_instructions()");
 	}
+	
+	
 	
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException, JDOMException,
 			ParserConfigurationException, SAXException {
-		
 		
 		if (j.getAnswer().equals(C.ANSWER_YO)){
 			logger.info("System Question: "+C.QUESTION_MIGRATION_ALLOWED+" User response: "+C.ANSWER_YO);
@@ -72,16 +76,15 @@ public class ProcessUserDecisionsAction extends AbstractAction{
 			logger.trace("will delete conversion instructions for long term preservation now");
 			j.getConversion_instructions().clear();
 		}
-		this.setEndStatus(C.WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION);
+		
 		return true;
 	}
 
 	
 	
 	
-	
 	@Override
 	public void rollback() throws Exception {
-		throw new NotImplementedException("rollback not yet implemented");
+		// Nothing to do.
 	}
 }
