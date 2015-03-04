@@ -64,6 +64,10 @@ public class WorkArea {
 	public File toFile(DAFile daf) {
 		return Path.make(contractorWorkDirPath(),o.getIdentifier(),WA_DATA,daf.getRep_name(),daf.getRelative_path()).toFile();
 	}
+	
+	public File toFile(String repName, String relPath) {
+		return Path.make(contractorWorkDirPath(),o.getIdentifier(),WA_DATA,repName,relPath).toFile();
+	}
 
 	public Path pipFolder(String audience) {
 		return Path.make(contractorPipsDirPath(audience),o.getIdentifier());
