@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
 
@@ -51,6 +52,48 @@ public class RegisterURNActionTest extends ConcreteActionUnitTest {
 	public void newIdentifier() {
 		o.setUrn(null);
 		action.implementation();
-		assertEquals(o.getUrn(),ps.getUrnNameSpace()+"-"+o.getIdentifier());
+		assertEquals(ps.getUrnNameSpace()+"-"+o.getIdentifier(),o.getUrn());
 	}
+	
+	@Test
+	public void dontOverrideURNWhenDelta() {
+		Package pkg = new Package();
+		pkg.setName("2");
+		o.getPackages().add(pkg);
+		
+		
+		String prv_urn = "previous_urn";
+		o.setUrn(prv_urn);
+		action.implementation();
+		assertEquals(prv_urn,o.getUrn());
+	}
+	
+	
+	@Test
+	public void rollbackWhenNotDelta() {
+		o.setUrn(null);
+		action.implementation();
+		
+		action.rollback();
+		assertTrue(o.getUrn()==null);
+	}
+	
+	
+	@Test
+	public void rollbackWhenDelta() {
+		
+		Package pkg = new Package();
+		pkg.setName("2");
+		o.getPackages().add(pkg);
+		
+		String prv_urn = "previous_urn";
+		o.setUrn(prv_urn);
+		action.implementation();
+		
+		action.rollback();
+		assertEquals(prv_urn,o.getUrn());
+	}
+	
+	
+	
 }

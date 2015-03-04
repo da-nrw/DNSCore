@@ -1,7 +1,9 @@
 /*
   DA-NRW Software Suite | ContentBroker
-  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
+  Copyright (C) 2014 Historisch-Kulturwissenschaftliche Informationsverarbeitung
   Universität zu Köln
+  Copyright (C) 2015 LVR-Infokom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -21,7 +23,6 @@ package de.uzk.hki.da.cb;
 
 import java.io.File;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +30,7 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -60,29 +62,31 @@ public class RegisterURNAction extends AbstractAction {
 	@Override
 	public boolean implementation() {
 		
-		if (o.isDelta())
-			logger.info("Object URN: " + o.getUrn());
-		else {
-			String urn;
-	
-			String premisUrn = extractURNFromPremisFile();
-			if (premisUrn != null)
-				urn = premisUrn;
-			else {				
-				urn = preservationSystem.getUrnNameSpace() + "-" + o.getIdentifier();
-			}
-			
-			logger.info("Object URN: " + urn);
-			o.setUrn(urn);
-		}	
+		if (o.isDelta()) {
+			logger.info("Retaining previous object URN: " + o.getUrn());
+			return true;
+		}
+
+
+		String premisUrn = extractURNFromPremisFile(premisFile());
+		if (StringUtilities.isSet(premisUrn)) {
+			o.setUrn(premisUrn);
+			logger.info("New user-supplied object URN");
+			return true;
+		}
 		
+		
+		String urn = preservationSystem.getUrnNameSpace() + "-" + o.getIdentifier();
+		logger.info("New system-generated object URN: " + urn);
+		o.setUrn(urn);
 		return true;
 	}
 
 
 	@Override
 	public void rollback() {
-		throw new NotImplementedException("No rollback implemented for this action");
+		if (!o.isDelta())
+			o.setUrn(null);
 	}
 
 
@@ -90,27 +94,19 @@ public class RegisterURNAction extends AbstractAction {
 	 * @author Thomas Kleinke
 	 * @return URN if the SIP premis file contains an URN; otherwise null
 	 */
-	private String extractURNFromPremisFile() {
+	private static final String extractURNFromPremisFile(File premisFile) {
 		
 		Object premisObject = null;
-		ObjectPremisXmlReader reader = new ObjectPremisXmlReader();
 		try {
-			premisObject = reader.deserialize(premisFile());
+			premisObject = new ObjectPremisXmlReader().deserialize(premisFile);
+			if (premisObject == null) throw new Exception("Premis object must not be null after deserialization.");
 		} catch (Exception e) {
 			// Deserializing the PREMIS file is already checked in unpack-action, where a 
 			// user error gets thrown. So we consider this here a 
 			// merely technical error.
-			throw new RuntimeException("Couldn't deserialize premis file " + premisFile(), e);
+			throw new RuntimeException("Couldn't deserialize premis file " + premisFile, e);
 		}
-		
-		String urn = null;
-		if (premisObject != null)
-			urn = premisObject.getUrn();
-		
-		if (urn != null && urn.equals(""))
-			urn = null;
-		
-		return urn;
+		return premisObject.getUrn();
 	}
 	
 	
