@@ -36,6 +36,10 @@ public class SubsystemNotAvailableException extends Exception{
 		super(msg);
 	}
 	
+	public SubsystemNotAvailableException(String msg,Throwable cause) {
+		super(msg,cause);
+	}
+	
 	/**
 	 * 
 	 */
