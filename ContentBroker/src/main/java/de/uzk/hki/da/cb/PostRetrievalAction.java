@@ -23,6 +23,10 @@ import java.io.File;
 import java.util.Date;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
+import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /**
  * 
@@ -34,6 +38,7 @@ import de.uzk.hki.da.action.AbstractAction;
 
 public class PostRetrievalAction extends AbstractAction {
 
+	private static final String OUTGOING = "outgoing";
 	private int timeOut = 4000;
 	private long days = 2;
 	
@@ -49,32 +54,40 @@ public class PostRetrievalAction extends AbstractAction {
 
 	@Override
 	public void checkPreconditions() {
+		
+		if (StringUtilities.isNotSet(n.getUserAreaRootPath()))
+			throw new PreconditionsNotMetException("Must be set: n.getUserAreaRootPath");
+		if (! Path.makeFile(n.getUserAreaRootPath(),o.getContractor().getShort_name(),OUTGOING).exists())
+			throw new PreconditionsNotMetException("Must exist: "+Path.makeFile(n.getUserAreaRootPath(),o.getContractor().getShort_name(),OUTGOING));
+		
 	}
 	
 	@Override
 	public boolean implementation() {
 		
-		String csn=o.getContractor().getShort_name();
-		String mergeTarName = o.getIdentifier() + ".tar";
 		
-		String transferAreaRootPath = n.getUserAreaRootPath().toString();
 		while (new Date().getTime()/1000L < (Long.parseLong(j.getDate_created())+(86400L*days))){
 			delay();
 		} 
 		if ((new Date().getTime())/1000L > (Long.parseLong(j.getDate_created())+(86400L*days))){
 			
-			if (transferAreaRootPath!= null && !transferAreaRootPath.equals("")) {
-				String webDavOutgoingPath = transferAreaRootPath +"/"+ csn +"/outgoing/";
-				
-				File toDel =  new File(webDavOutgoingPath + mergeTarName);
-				if (toDel.exists()) {
-					logger.debug("Deleting  " +webDavOutgoingPath + mergeTarName);
-					toDel.delete(); 
-				} else logger.info("Called to Delete  " +webDavOutgoingPath + mergeTarName + " but file doesn't exist!");
-			} else logger.info("Deletion on webdav folder not possible. Path is not configured. ");
+			
+			
+		
+			
+		Path outgoingFolder = Path.make(n.getUserAreaRootPath(),o.getContractor().getShort_name(),OUTGOING);
+		File toDel =  Path.makeFile(outgoingFolder,o.getIdentifier() + C.FILE_EXTENSION_TAR);
+		if (toDel.exists()) {
+			logger.debug("Deleting  " +toDel);
+			toDel.delete(); 
+		} else logger.warn("Called delete but cannot execute. File does not exist: "+toDel);
+			
+			
+
+		
 		modifyObject(o);
 		} else {
-			logger.info("Deletion skipped  " + mergeTarName + " is still to young"); 
+			logger.info("Deletion skipped  " + o.getIdentifier() + C.FILE_EXTENSION_TAR + " is still to young"); 
 			return false;
 		}
 		
@@ -82,6 +95,9 @@ public class PostRetrievalAction extends AbstractAction {
 		
 		return true;
 	}
+	
+	
+	
 	
 	private void delay(){
 		try {
@@ -97,5 +113,6 @@ public class PostRetrievalAction extends AbstractAction {
 
 	@Override
 	public void rollback() throws Exception {
+		// Do nothing.
 	}
 }

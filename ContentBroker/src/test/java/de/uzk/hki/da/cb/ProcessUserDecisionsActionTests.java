@@ -19,7 +19,6 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -61,7 +60,6 @@ public class ProcessUserDecisionsActionTests extends ConcreteActionUnitTest {
 		j.setAnswer(C.ANSWER_NO);
 		assertTrue(action.implementation());
 		assertTrue(j.getConversion_instructions().isEmpty());
-		assertEquals(C.WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION,action.getEndStatus());
 	}
 	
 	@Test
@@ -72,6 +70,5 @@ public class ProcessUserDecisionsActionTests extends ConcreteActionUnitTest {
 		j.setAnswer(C.ANSWER_YO);
 		assertTrue(action.implementation());
 		assertFalse(j.getConversion_instructions().isEmpty());
-		assertEquals(C.WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION,action.getEndStatus());
 	}
 }

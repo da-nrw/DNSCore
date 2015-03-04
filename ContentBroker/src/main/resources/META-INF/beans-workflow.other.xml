@@ -12,7 +12,7 @@
     <bean id="ProcessUserDecisionsAction" class="de.uzk.hki.da.cb.ProcessUserDecisionsAction"
 		scope="prototype">
 		<property name="startStatus" value="640" />
-		<property name="endStatus" value="640" />
+		<property name="endStatus" value="150" /> <!-- WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION -->
 		<property name="name" value="ProcessUserDecisionsAction" />
 	</bean>      
 	<bean id="RestartIngestWorkflowAction" class="de.uzk.hki.da.cb.RestartIngestWorkflowAction"
