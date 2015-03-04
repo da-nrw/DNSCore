@@ -89,7 +89,17 @@ public class LidoMetadataStructure extends MetadataStructure{
 				lidoElementInfo.put(C.EDM_TITLE, getTitle(lidoElement));
 				lidoElementInfo.put(C.EDM_PUBLISHER, getPlaces(lidoElement));
 				lidoElementInfo.put(C.EDM_DATE, getDate(lidoElement));
-				lidoElementInfo.put(C.EDM_HAS_VIEW, getReferencesFromLidoElement(lidoElement));
+				List<String> references = getReferencesFromLidoElement(lidoElement);
+				if(references!=null && !references.isEmpty()) {
+					List<String> shownBy = new ArrayList<String>();
+					shownBy.add(references.get(0));
+					lidoElementInfo.put(C.EDM_IS_SHOWN_BY, shownBy);
+					if(references.size()==1) {
+						lidoElementInfo.put(C.EDM_OBJECT, references);
+					} else {
+						lidoElementInfo.put(C.EDM_HAS_VIEW, references);
+					}
+				}
 				indexInfo.put(id, lidoElementInfo);
 			}
 		} catch (Exception e) {

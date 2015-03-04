@@ -172,7 +172,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 				d = element.getChild("unitdate").getValue();
 			}
 		} catch (Exception e) {
-//			logger.error("No unitdate element found");
+			logger.debug("No unitdate element found");
 		}
 		date.add(d);
 		return date;
@@ -204,7 +204,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		try {
 			href = daogrp.getChild("daoloc").getAttributeValue("href");
 		} catch (Exception e) {
-//			logger.error("No unitdate element found");
+			logger.error("No unitdate element found");
 		}
 		hrefs.add(href);
 		return hrefs;
