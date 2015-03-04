@@ -20,7 +20,6 @@
 package de.uzk.hki.da.cb;
 
 import java.io.File;
-import java.util.List;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
@@ -28,13 +27,8 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
-import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.core.UserException.UserExceptionId;
-import de.uzk.hki.da.format.FFConstants;
-import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
-import de.uzk.hki.da.model.RightsSectionURNMetsXmlReader;
 
 
 /**
@@ -56,78 +50,13 @@ public class RegisterURNAction extends AbstractAction {
 
 	@Override
 	public void checkPreconditions() {
-		if (o.getLatest(PREMIS_XML)==null) throw new PreconditionsNotMetException("premis.xml must exist");
-		if (! o.getLatest(PREMIS_XML).toRegularFile().exists()) throw new PreconditionsNotMetException("premis.xml must exist"); 
+		if (o.getLatest(PREMIS_XML)==null) throw new PreconditionsNotMetException("Must be set: premis.xml");
+		if (! premisFile().exists()) throw new PreconditionsNotMetException("Must exist: premis.xml"); 
 	}
 	
-	/**
-	 * @author Thomas Kleinke
-	 * @return URN if the SIP premis file contains an URN; otherwise null
-	 */
-	private String extractURNFromPremisFile() {
-		
-		File premisFile = o.getLatest(PREMIS_XML).toRegularFile();
-		
-		
-		Object premisObject = null;
-		ObjectPremisXmlReader reader = new ObjectPremisXmlReader();
-		try {
-			premisObject = reader.deserialize(premisFile);
-		} catch (Exception e) {
-			// This is already checked in unpack-action, where a 
-			// user error gets thrown. So we consider this here a 
-			// merely technical error.
-			throw new RuntimeException("Couldn't deserialize premis file " + premisFile, e);
-		}
-		
-		String urn = null;
-		if (premisObject != null)
-			urn = premisObject.getUrn();
-		
-		if (urn != null && urn.equals(""))
-			urn = null;
-		
-		return urn;
-	}
 	
-	/**
-	 * @author Thomas Kleinke
-	 * @return URN if the mets file contains an URN; otherwise null
-	 */
-	private String extractURNFromMetsFile() {
-		
-		DAFile metsFile = null;		
-		
-		List<DAFile> files = o.getLatestPackage().getFiles();
-		for (DAFile file : files) {
-			if(!file.getRelative_path().contains("XMP.rdf")) {
-				if (file.getFormatPUID().equals(FFConstants.METS_PUID))
-				metsFile = file;
-			}
-			
-		}
-
-		if (metsFile != null) {
-			String urn = null;
-			RightsSectionURNMetsXmlReader metsUrnReader = new RightsSectionURNMetsXmlReader();
-			try {
-				urn = metsUrnReader.readURN(metsFile.toRegularFile());
-			} catch (Exception e) {
-				Exception causeEx = (Exception) e.getCause();
-				while (causeEx.getCause() != null) {
-					causeEx = (Exception) causeEx.getCause();					
-				};
-				throw new UserException(UserExceptionId.READ_METS_ERROR, "Konnte URN nicht aus der PREMIS Datei auslesen. " +
-					metsFile.toRegularFile().getAbsolutePath(), causeEx.getMessage(), e);
-			}
-			
-			return urn;
-		}
-
-		return null;
-	}
+	// TODO When implementing METS Urn Extraction, use METSRightSectionXMLReader.java as a starting point
 	
-
 	@Override
 	public boolean implementation() {
 		
@@ -140,12 +69,7 @@ public class RegisterURNAction extends AbstractAction {
 			if (premisUrn != null)
 				urn = premisUrn;
 			else {				
-				String metsUrn = extractURNFromMetsFile();
-				
-				if (metsUrn != null)
-					urn = metsUrn;
-				else				
-					urn = preservationSystem.getUrnNameSpace() + "-" + o.getIdentifier();
+				urn = preservationSystem.getUrnNameSpace() + "-" + o.getIdentifier();
 			}
 			
 			logger.info("Object URN: " + urn);
@@ -155,8 +79,45 @@ public class RegisterURNAction extends AbstractAction {
 		return true;
 	}
 
+
 	@Override
 	public void rollback() {
 		throw new NotImplementedException("No rollback implemented for this action");
 	}
+
+
+	/**
+	 * @author Thomas Kleinke
+	 * @return URN if the SIP premis file contains an URN; otherwise null
+	 */
+	private String extractURNFromPremisFile() {
+		
+		Object premisObject = null;
+		ObjectPremisXmlReader reader = new ObjectPremisXmlReader();
+		try {
+			premisObject = reader.deserialize(premisFile());
+		} catch (Exception e) {
+			// Deserializing the PREMIS file is already checked in unpack-action, where a 
+			// user error gets thrown. So we consider this here a 
+			// merely technical error.
+			throw new RuntimeException("Couldn't deserialize premis file " + premisFile(), e);
+		}
+		
+		String urn = null;
+		if (premisObject != null)
+			urn = premisObject.getUrn();
+		
+		if (urn != null && urn.equals(""))
+			urn = null;
+		
+		return urn;
+	}
+	
+	
+
+	private File premisFile() {  
+		return o.getLatest(PREMIS_XML).toRegularFile();
+	}
+	
+
 }

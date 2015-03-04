@@ -44,6 +44,7 @@ import de.uzk.hki.da.cb.ObjectToWorkAreaActionTests;
 import de.uzk.hki.da.cb.PostRetrievalActionTest;
 import de.uzk.hki.da.cb.PrepareSendToPresenterActionTests;
 import de.uzk.hki.da.cb.ProcessUserDecisionsActionTests;
+import de.uzk.hki.da.cb.RegisterURNActionTest;
 import de.uzk.hki.da.cb.RestartIngestWorkflowActionTests;
 import de.uzk.hki.da.cb.RestructureActionTests;
 import de.uzk.hki.da.cb.RetrievalActionTests;
@@ -177,7 +178,8 @@ import de.uzk.hki.da.util.PathTest;
 	CleanWorkAreaActionTests.class,
 	WorkAreaTests.class,
 	AuditActionTest.class,
-	CreateDCActionTests.class
+	CreateDCActionTests.class,
+	RegisterURNActionTest.class
 })
 public class SimpleSuite {
 
