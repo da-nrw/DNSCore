@@ -70,12 +70,12 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		if (!extractedMetadata.getParentFile().exists())
 			throw new IllegalArgumentException("ParentFolder "+extractedMetadata.getParentFile()+" must exist in order to create "+extractedMetadata);
 		
-		String filePath = makeFilePath(file);
 
 		int retval=0;
 		try {
-			retval=execCMD(jhoveCmd(extractedMetadata, filePath));
+			retval=execCMD(jhoveCmd(extractedMetadata, makeFilePath(file)));
 		}catch(IOException possibleTimeOut) {
+			logger.warn(possibleTimeOut.getMessage());
 			retval=1;
 		} 
 		if (retval==0) return;
@@ -84,13 +84,13 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		
 		retval=0;
 		try {
-			retval=execCMD(jhoveCmdSkipWholeFileParsing(extractedMetadata, filePath));
-		}catch(IOException posssibleTimeOut) {
-			throw new ConnectionException("Call to JHOVE ended with possible timeout (the 2nd time already).");
+			retval=execCMD(jhoveCmdSkipWholeFileParsing(extractedMetadata, makeFilePath(file)));
+		}catch(IOException possibleTimeout) {
+			throw new ConnectionException("Call to JHOVE ended with possible timeout (the 2nd time already).",possibleTimeout);
 		}
 
 		if (retval==0) return;
-		throw new ConnectionException("Call to jhove was not successful.");
+		throw new ConnectionException("Recieved return not null return value from jhove.");
 	}
 	
 	
