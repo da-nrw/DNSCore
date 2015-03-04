@@ -70,8 +70,8 @@ public class RestructureAction extends AbstractAction{
 	
 	@Override
 	public void checkConfiguration() {
-		if (getGridRoot()==null) throw new ConfigurationException("Must not be null: gridRoot");
-		if (getFileFormatFacade()==null) throw new ConfigurationException("Must not be null: fileFormatFacade");
+		if (getGridRoot()==null) throw new ConfigurationException("gridRoot");
+		if (getFileFormatFacade()==null) throw new ConfigurationException("fileFormatFacade");
 	}
 	
 

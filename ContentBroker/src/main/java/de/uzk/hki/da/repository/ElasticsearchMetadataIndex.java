@@ -66,7 +66,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 	private TransportClient initialize() {
 		
 		if (cluster == null || hosts == null || hosts.length == 0) 
-			throw new ConfigurationException("Elasticsearch cluster not set. Make sure the action is configured properly");
+			throw new ConfigurationException("cluster||hosts");
 				
 		Settings settings = ImmutableSettings.settingsBuilder()
 		        .put("cluster.name", cluster).build();

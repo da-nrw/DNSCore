@@ -133,7 +133,7 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 	
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
-		
+
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));

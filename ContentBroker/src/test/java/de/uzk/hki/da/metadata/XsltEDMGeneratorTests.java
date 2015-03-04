@@ -58,7 +58,7 @@ public class XsltEDMGeneratorTests {
 	@Test
 	public void test() throws TransformerException, IOException{
 		
-		XsltEDMGenerator xsltEDMGenerator = new XsltEDMGenerator(
+		XsltGenerator xsltEDMGenerator = new XsltGenerator(
 				XSLT_EDM_EAD_TO_EDM_XSL, 
 				edmInputStream);
 		
@@ -77,7 +77,7 @@ public class XsltEDMGeneratorTests {
 	@Test
 	public void testConstructorWithNotExistentXSL(){
 		try {
-			new XsltEDMGenerator(
+			new XsltGenerator(
 					"filenotexistent", 
 					null);
 			fail();

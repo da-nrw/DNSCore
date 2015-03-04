@@ -42,6 +42,7 @@
 		<entry key="IngestTarAction" value="3" />
 		<entry key="IndexMetadataAction" value="3" />
 		<entry key="CreateEDMAction" value="3" />
+		<entry key="CreateDCAction" value="3" />
 		<entry key="FetchPIPsAction" value="3" />
 		<entry key="SendToPresenterAction" value="3" />
 		<entry key="IngestPrepareSendToPresenterAction" value="3" />
@@ -96,6 +97,7 @@
 		<value>IndexMetadataAction</value>
 		<value>CreateEDMAction</value>
 		<value>SendToPresenterAction</value>
+		<value>CreateDCAction</value>
 		<value>FetchPIPsAction</value>
 		<value>IngestValidateMetadataAction</value>
 		<value>IngestRestructureAction</value>

@@ -37,7 +37,7 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 	
 	@Override
 	public void register(String relativePath, String physicalPath) {
-		if (irodsSystemConnector==null) throw new ConfigurationException("irodsSystemConnector not set");
+		if (irodsSystemConnector==null) throw new ConfigurationException("irodsSystemConnector");
 		if (zone==null||zone.toString().isEmpty()) throw new ConfigurationException("zonePath not set");
 		if (getWorkingResource()==null||getWorkingResource().isEmpty()) throw new ConfigurationException("working resource not set");
 		
@@ -82,7 +82,7 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 	
 	@Override
 	public void remove(String relativePath) {
-		if (irodsSystemConnector==null) throw new ConfigurationException("irodsSystemConnector not set");
+		if (irodsSystemConnector==null) throw new ConfigurationException("irodsSystemConnector");
 		if (zone==null||zone.toString().isEmpty()) throw new ConfigurationException("zonePath not set");
 		if (getWorkingResource()==null||getWorkingResource().isEmpty()) throw new ConfigurationException("working resource not set");
 		

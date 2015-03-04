@@ -34,6 +34,7 @@ import de.uzk.hki.da.cb.CleanWorkAreaActionTests;
 import de.uzk.hki.da.cb.ConversionInstructionsBuilderTests;
 import de.uzk.hki.da.cb.ConvertActionTests;
 import de.uzk.hki.da.cb.ConvertCheckActionTests;
+import de.uzk.hki.da.cb.CreateDCActionTests;
 import de.uzk.hki.da.cb.CreateEDMActionTests;
 import de.uzk.hki.da.cb.CreatePremisActionTests;
 import de.uzk.hki.da.cb.DeleteObjectActionTests;
@@ -175,7 +176,8 @@ import de.uzk.hki.da.util.PathTest;
 	ObjectToWorkAreaActionTests.class,
 	CleanWorkAreaActionTests.class,
 	WorkAreaTests.class,
-	AuditActionTest.class
+	AuditActionTest.class,
+	CreateDCActionTests.class
 })
 public class SimpleSuite {
 

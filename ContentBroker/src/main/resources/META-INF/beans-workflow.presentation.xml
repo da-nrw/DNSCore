@@ -18,10 +18,23 @@
 		<property name="ingestGate" ref="ingestGate" />
 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
 	</bean>
-	<bean id="SendToPresenterAction" class="de.uzk.hki.da.cb.SendToPresenterAction"
-		scope="prototype">
+	<bean id="CreateDCAction" class="de.uzk.hki.da.cb.CreateDCAction" scope="prototype">
 		<property name="startStatus" value="550" />
 		<property name="endStatus" value="560" />
+		<property name="name" value="CreateDCAction" />
+		<property name="dcMappings">
+			<map>
+				<entry key="METS" value="conf/xslt/dc/mets-mods_to_dc.xsl" />
+				<entry key="EAD" value="conf/xslt/dc/ead_to_dc.xsl" />
+				<entry key="XMP" value="conf/xslt/dc/xmp_to_dc.xsl" />
+				<entry key="LIDO" value="conf/xslt/dc/lido_to_dc.xsl" />
+			</map>
+		</property>
+	</bean>
+	<bean id="SendToPresenterAction" class="de.uzk.hki.da.cb.SendToPresenterAction"
+		scope="prototype">
+		<property name="startStatus" value="560" />
+		<property name="endStatus" value="570" />
 		<property name="repositoryFacade" ref="${cb.implementation.repository:fakeRepositoryFacade}" />
 		<property name="name" value="SendToPresenterAction" />
 		<property name="viewerUrls" ref="viewerUrls" />
@@ -35,8 +48,8 @@
 	</bean>
 	<bean id="CreateEDMAction" class="de.uzk.hki.da.cb.CreateEDMAction"
 		scope="prototype">
-		<property name="startStatus" value="560" />
-		<property name="endStatus" value="570" />
+		<property name="startStatus" value="570" />
+		<property name="endStatus" value="580" />
 		<property name="repositoryFacade" ref="${cb.implementation.repository:fakeRepositoryFacade}" />
 		<property name="name" value="CreateEDMAction" />
 		<property name="edmMappings">
@@ -50,8 +63,8 @@
 	</bean>
 	<bean id="IndexMetadataAction" class="de.uzk.hki.da.cb.IndexMetadataAction"
 		scope="prototype">
-		<property name="startStatus" value="570" />
-		<property name="endStatus" value="579" />
+		<property name="startStatus" value="580" />
+		<property name="endStatus" value="589" />
 		<property name="repositoryFacade" ref="${cb.implementation.repository:fakeRepositoryFacade}" />
 		<property name="name" value="IndexMetadataAction" />
 		<property name="indexName" value="${elasticsearch.index}" />

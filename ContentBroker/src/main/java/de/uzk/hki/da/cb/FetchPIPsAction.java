@@ -48,14 +48,13 @@ public class FetchPIPsAction extends AbstractAction {
 
 	private static final String INFO_MSG_MOVED_BACK_PIP = "Moved back PIP: ";
 	private static final String INFO_MSG_REPLICATED_SUCESSFULLY = "Replicated sucessfully: ";
-	private static final String ERR_MSG_DISTRIBUTED_CONVERSION_ADAPTER_NOT_SET = "Must not be null: distributedConversionAdapter";
 	private static final String UNDERSCORE = "_";
 	private IngestGate ingestGate; /*unused*/
 	private DistributedConversionAdapter distributedConversionAdapter;
 	
 	@Override
 	public void checkConfiguration() {
-		if (distributedConversionAdapter==null) throw new ConfigurationException(ERR_MSG_DISTRIBUTED_CONVERSION_ADAPTER_NOT_SET);
+		if (distributedConversionAdapter==null) throw new ConfigurationException("distributedConversionAdapter");
 	}
 	
 

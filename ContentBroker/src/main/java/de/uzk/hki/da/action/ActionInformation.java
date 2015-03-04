@@ -41,7 +41,7 @@ public class ActionInformation implements ApplicationContextAware {
 	
 	@SuppressWarnings("unused")
 	private void init(){
-		if (context == null) throw new ConfigurationException("Unable to build action. Application context has not been set.");
+		if (context == null) throw new ConfigurationException("context");
 		if (actionRegistry == null) throw new ConfigurationException("actionRegistry not set!");
 		availableJobTypes = actionRegistry.getAvailableJobTypes();
 		logger.trace("available job types: " + availableJobTypes);

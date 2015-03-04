@@ -19,12 +19,18 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.*;
+import static de.uzk.hki.da.core.C.EVENT_TYPE_CONVERT;
+import static de.uzk.hki.da.core.C.METADATA_STREAM_ID_EPICUR;
+import static de.uzk.hki.da.core.C.OAI_DANRW_DE;
+import static de.uzk.hki.da.core.C.OWL_SAMEAS;
+import static de.uzk.hki.da.core.C.PUBLISHEDFLAG_INSTITUTION;
+import static de.uzk.hki.da.core.C.PUBLISHEDFLAG_PUBLIC;
+import static de.uzk.hki.da.core.C.WA_DIP;
+import static de.uzk.hki.da.core.C.WA_INSTITUTION;
+import static de.uzk.hki.da.core.C.WA_PUBLIC;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -32,14 +38,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.tika.Tika;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.XMLOutputter;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
-import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.metadata.XepicurWriter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -68,9 +69,8 @@ public class SendToPresenterAction extends AbstractAction {
 
 	private static final String OPEN_COLLECTION_URI = "info:fedora/collection:open";
 	private static final String CLOSED_COLLECTION_URI = "info:fedora/collection:closed";
-	private static final String IDENTIFIER = "identifier";
+	
 	private static final String ddb = "ddb";
-	private static final String PURL_ORG_DC = "http://purl.org/dc/elements/1.1/";
 	private static final String OPENARCHIVES_OAI_IDENTIFIER = "http://www.openarchives.org/OAI/2.0/identifier";
 	private static final String MEMBER = "info:fedora/fedora-system:def/relations-external#isMemberOf";
 	private static final String MEMBER_COLLECTION = "info:fedora/fedora-system:def/relations-external#isMemberOfCollection";
@@ -85,13 +85,13 @@ public class SendToPresenterAction extends AbstractAction {
 	@Override
 	public void checkConfiguration() {
 		if (repositoryFacade == null) 
-			throw new ConfigurationException("Must not be null: repositoryFacadeRepository");
+			throw new ConfigurationException("repositoryFacadeRepository");
 		if (viewerUrls == null)
-			throw new ConfigurationException("Must not be null: viewerUrls");
+			throw new ConfigurationException("viewerUrls");
 		if (fileFilter == null)
-			throw new ConfigurationException("Must no be null: fileFilter");
+			throw new ConfigurationException("fileFilter");
 		if (testContractors == null)
-			throw new ConfigurationException("Must not be null: testContractors");
+			throw new ConfigurationException("testContractors");
 	}
 	
 
@@ -326,56 +326,10 @@ public class SendToPresenterAction extends AbstractAction {
 			repositoryFacade.createObject(objectId, collection, contractorShortName);
 		}			
 		ingestDirectoryContentAsDatastreamsIntoRepository(objectId, collection, pip, packagePath, packageType);
-		rewriteDCIfExists(urn, packagePath);
 	}
 
 
-	private void rewriteDCIfExists(String urn, Path packagePath)
-			throws IOException {
-		if (Path.makeFile(packagePath,METADATA_STREAM_ID_DC+FILE_EXTENSION_XML).exists()) {
-			String updatedDcContent = readDCAndReplaceURN(urn, packagePath);
-			writeDCBackToPIP(packagePath, updatedDcContent);
-			logger.info("Successfully added identifiers to DC datastream");
-		}
-	}
-
-
-	private void writeDCBackToPIP(Path packagePath, String updatedDcContent)
-			throws IOException {
-		Path.makeFile(packagePath,METADATA_STREAM_ID_DC+FILE_EXTENSION_XML).delete();
-		FileWriter fw = null;
-		try {
-			fw = new FileWriter(Path.makeFile(packagePath,METADATA_STREAM_ID_DC+FILE_EXTENSION_XML));
-			fw.write(updatedDcContent);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (fw!=null) fw.close();
-		}
-	}
-
-
-	private String readDCAndReplaceURN(String urn, Path packagePath)
-			throws IOException {
-		FileInputStream in = null;
-		String content="";
-		
-		try {
-			in=new FileInputStream(Path.makeFile(packagePath,METADATA_STREAM_ID_DC+FILE_EXTENSION_XML));
-			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-			Document doc = null;
-			doc=builder.build(in);
-			doc.getRootElement().addContent(
-					new Element(IDENTIFIER,METADATA_STREAM_ID_DC,PURL_ORG_DC)
-					.setText(urn));
-			content = new XMLOutputter().outputString(doc);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (in!=null) in.close();
-		}
-		return content;
-	}
+	
 
 	private void ingestDirectoryContentAsDatastreamsIntoRepository(String objectId, String collection, File dir, Path packagePath, String packageType) throws RepositoryException, IOException {
 			

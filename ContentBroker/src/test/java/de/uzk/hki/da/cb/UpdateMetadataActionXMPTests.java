@@ -31,7 +31,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -158,10 +157,6 @@ public class UpdateMetadataActionXMPTests {
 		obj.setMetadata_file("XMP.xml");
 		obj.setPackage_type("XMP");
 		
-		Map<String, String> dcMappings = new HashMap<String,String>();
-		dcMappings.put("XMP", "conf/xslt/dc/xmp_to_dc.xsl");
-		action.setDcMappings(dcMappings);
-		
 		action.implementation();
 	}
 
@@ -190,8 +185,8 @@ public class UpdateMetadataActionXMPTests {
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/institution/hashb.xmp").exists());
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/public/XMP.xml").exists());
 		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/institution/XMP.xml").exists());
-		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/public/DC.xml").exists());
-		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/institution/DC.xml").exists());
+//		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/public/DC.xml").exists());
+//		assertTrue(new File(workAreaRootPath+"/work/TEST/123/data/"+C.WA_DIP+"/institution/DC.xml").exists());
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build(new FileReader(Path.make(workAreaRootPath, "work/TEST/123/data/"+C.WA_DIP+"/public/XMP.xml").toFile()));

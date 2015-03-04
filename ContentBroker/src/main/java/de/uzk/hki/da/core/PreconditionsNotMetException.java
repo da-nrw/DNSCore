@@ -27,7 +27,7 @@ package de.uzk.hki.da.core;
 public class PreconditionsNotMetException extends RuntimeException{
 
 	public PreconditionsNotMetException(String msg) {
-		super(msg);
+		super("The conditions to execute the actual action are not given. Problem description: "+msg);
 	}
 	
 	private static final long serialVersionUID = 2L;

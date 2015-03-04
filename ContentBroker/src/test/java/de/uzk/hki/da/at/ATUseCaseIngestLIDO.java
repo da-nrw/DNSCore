@@ -126,13 +126,13 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 		assertTrue(danrwRewritings==2);		
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));
-		@SuppressWarnings("unchecked")
 		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
 		Boolean testProvidetCho1Exists = false;
 		Boolean testProvidetCho2Exists = false;
@@ -147,7 +147,28 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 				assertTrue(pcho.getChild("date", C.DC_NS).getValue().contains("01.01.1950-31.12.1959"));
 			}
 		}
+		
+		List<Element> aggregation = doc.getRootElement().getChildren("Aggregation", C.ORE_NS);
+		Boolean testAggr1Exists = false;
+		Boolean testAggr2Exists = false;
+		for(Element a : aggregation) {
+			if(a.getAttributeValue("about", C.RDF_NS).contains(object.getIdentifier()+"-ISIL/lido/Inventarnummer-1")) {
+				testAggr1Exists = true;
+				assertTrue(a.getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
+						.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_c8079103e5eecf45d2978a396e1839a9.jpg"));
+				assertTrue(a.getChild("object", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
+						.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_c8079103e5eecf45d2978a396e1839a9.jpg"));
+			} else if(a.getAttributeValue("about", C.RDF_NS).contains(object.getIdentifier()+"-ISIL/lido/Inventarnummer-2")){
+				testAggr2Exists = true;
+				assertTrue(a.getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
+						.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_c3836acf068a9b227834e0adda226ac2.jpg"));
+				assertTrue(a.getChild("object", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
+						.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_c3836acf068a9b227834e0adda226ac2.jpg"));
+			}
+		}
+		
 		assertTrue(testProvidetCho1Exists&&testProvidetCho2Exists);
+		assertTrue(testAggr1Exists&&testAggr2Exists);
 		
 //		testIndex
 		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-ISIL/lido/Inventarnummer-1").contains("Nudelmaschine in Originalverpackung"));

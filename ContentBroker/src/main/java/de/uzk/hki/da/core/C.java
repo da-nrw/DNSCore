@@ -141,6 +141,7 @@ public class C {
 	public static final String EDM_DATA_PROVIDER = "edm:dataProvider";
 	public static final String METS_DIV_EXPRESSION = "//mets:div";
 	public static final String EDM_IS_SHOWN_BY = "edm:isShownBy";
+	public static final String EDM_IS_SHOWN_AT = "edm:isShownAt";
 	public static final String EDM_OBJECT = "edm:object";
 	public static final String EDM_PROVIDER = "edm:provider";
 	
