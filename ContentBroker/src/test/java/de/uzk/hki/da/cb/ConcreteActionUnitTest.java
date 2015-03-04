@@ -103,6 +103,7 @@ public class ConcreteActionUnitTest {
 		o.setUrn(URN);
 		
 		j = new Job();
+		j.setObject(o);
 		
 		ActionUnderTestAnnotationParser parser = new ActionUnderTestAnnotationParser();
 		Field f = parser.parse(this.getClass());

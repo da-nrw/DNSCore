@@ -36,7 +36,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
-import org.apache.commons.lang.NotImplementedException;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.xml.sax.SAXException;
@@ -664,9 +663,30 @@ public class UpdateMetadataAction extends AbstractAction {
 
 	@Override
 	public void rollback() throws Exception {
-		throw new NotImplementedException("No rollback implemented for this action");
+		String metadataFileName = o.getMetadata_file();
+		File mf = o.getLatest(metadataFileName).toRegularFile();
+		String packageType = o.getPackage_type();
+		List<de.uzk.hki.da.model.Document> documents = o.getDocuments();
+		for(String repName : getRepNames()) {
+			if(packageType.equals(C.CB_PACKAGETYPE_EAD)) {
+				EadMetsMetadataStructure ead = new EadMetsMetadataStructure(mf, documents);
+				for(String ref : ead.getMetsRefsInEad()) {
+					String metsRelPath = ead.getReferencedDafile(mf, ref, documents).getRelative_path();
+					FileUtils.deleteQuietly(wa.toFile(repName, metsRelPath));
+				}
+			}
+			if (repName.startsWith(C.WA_DIP)) {
+				metadataFileName = packageType + ".xml";
+			}
+			FileUtils.deleteQuietly(Path.makeFile(o.getDataPath(), repName, metadataFileName));
+			
+			for(File file : Path.makeFile(o.getDataPath(), repName).listFiles()) {
+				if(file.isDirectory() && file.listFiles().length==0) {
+					FileUtils.deleteDirectory(file);
+				}
+			}
+		}
 	}
-
 	
 
 	/**
@@ -744,7 +764,8 @@ public class UpdateMetadataAction extends AbstractAction {
 	public void updateAbsUrlPrefix() {
 		if (presMode){
 			if (preservationSystem.getUrisFile() != null && !preservationSystem.getUrisFile().isEmpty()) {
-				absUrlPrefix = preservationSystem.getUrisFile() + "/" + j.getObject().getIdentifier() + "/";
+				absUrlPrefix = preservationSystem.getUrisFile() 
+						+ "/" + j.getObject().getIdentifier() + "/";
 				logger.debug(":::::::::::::::::::::::::::::: Presentation ::::::::::::::::::::::::::::::");
 			} else {
 				logger.debug(":::::::::::::::::::::::::::::: LZA ::::::::::::::::::::::::::::::");
