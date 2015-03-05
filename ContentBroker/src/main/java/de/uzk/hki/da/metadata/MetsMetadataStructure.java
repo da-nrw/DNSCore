@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +21,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
+import org.xml.sax.InputSource;
 
 import de.uzk.hki.da.core.C;
 
@@ -44,12 +48,18 @@ public class MetsMetadataStructure extends MetadataStructure {
 		metsFile = metadataFile;
 		currentDocuments = documents;
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(metsFile);
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
-		metsDoc = builder.build(bomInputStream);
+		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
+		InputSource is = new InputSource(reader);
+		is.setEncoding("UTF-8");
+		metsDoc = builder.build(is);
+		
 		fileElements = getFileElementsFromMetsDoc(metsDoc);
 		fileInputStream.close();
+		bomInputStream.close();
+		reader.close();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -502,10 +512,14 @@ public class MetsMetadataStructure extends MetadataStructure {
 	public void makeReplacementsInMetsFile(File metsFile, String currentHref, String targetHref, String mimetype, String loctype) throws IOException, JDOMException {
 
 		File targetMetsFile = metsFile;
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(targetMetsFile);
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
-		Document metsDoc = builder.build(bomInputStream);
+		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
+		InputSource is = new InputSource(reader);
+		is.setEncoding("UTF-8");
+		Document metsDoc = builder.build(is);
 		
 		List<Element> metsFileElements = getFileElementsFromMetsDoc(metsDoc);
 		
@@ -523,6 +537,8 @@ public class MetsMetadataStructure extends MetadataStructure {
 		outputter.output(metsDoc, new FileWriter(targetMetsFile));
 
 		fileInputStream.close();
+		bomInputStream.close();
+		reader.close();
 	}
 
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::   VALIDATION   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::

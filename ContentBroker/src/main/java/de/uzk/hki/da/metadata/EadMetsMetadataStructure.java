@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.core.C;
@@ -46,12 +49,15 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		super(metadataFile, documents);
 	
 		eadFile = metadataFile;
-		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(eadFile);
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
-		eadDoc = builder.build(bomInputStream);
-		
+		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
+		InputSource is = new InputSource(reader);
+		is.setEncoding("UTF-8");
+		eadDoc = builder.build(is);
+
 		metsReferencesInEAD = extractMetsRefsInEad();
 		metsFiles = getReferencedFiles(eadFile, metsReferencesInEAD, documents);
 				
@@ -61,6 +67,8 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			mmsList.add(mms);
 		}
 		fileInputStream.close();
+		bomInputStream.close();
+		reader.close();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -244,10 +252,13 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		
 		File targetEadFile = eadFile;
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(eadFile);
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
-		Document currentEadDoc = builder.build(bomInputStream);
+		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
+		InputSource is = new InputSource(reader);
+		is.setEncoding("UTF-8");
+		Document currentEadDoc = builder.build(is);
 				
 		XPath xPath = XPath.newInstance(EAD_XPATH_EXPRESSION);
 		
@@ -267,6 +278,8 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		outputter.setFormat(Format.getPrettyFormat());
 		outputter.output(currentEadDoc, new FileWriter(targetEadFile));
 		fileInputStream.close();
+		bomInputStream.close();
+		reader.close();
 	}
 	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::   VALIDATION   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
