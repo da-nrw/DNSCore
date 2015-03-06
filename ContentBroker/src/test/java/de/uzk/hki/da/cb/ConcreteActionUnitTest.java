@@ -57,7 +57,7 @@ public class ConcreteActionUnitTest {
 	Node n = null;
 	Object o;
 	Job j;
-	private WorkArea wa;
+	WorkArea wa;
 	private User c;
 	
 	protected static AbstractAction a;
@@ -70,6 +70,7 @@ public class ConcreteActionUnitTest {
 		ps.setId(1);
 		ps.setOpenCollectionName("open-collection");
 		ps.setClosedCollectionName("closed-collection");
+		ps.setUrnNameSpace("urn:nbn:de");
 		User psadmin = new User();
 		psadmin.setShort_name("TEST_PSADMIN");
 		psadmin.setEmailAddress("noreply");

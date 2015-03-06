@@ -100,6 +100,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	}
 	
 	public void startFederateItem(String gridPath, StoragePolicy sp) {
+		logger.debug("Trying to start Federation Executor");
 		Thread  fe = new FederationExecutor(irodsSystemConnector,sp, gridPath);
 		fe.start();
 	}
@@ -111,13 +112,14 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		try {
 		irodsSystemConnector.connect();	
 		String check = irodsSystemConnector.executeRule("checkItemsQuick {\n"
-	      + "*state=0\n"
-	      + "acIsValid(*dao,*state)\n"
+	      + "*status=0\n"
+	      + "*dataObj=\"" + address_dest +"\"\n"
+	      + "acIsValid(*dataObj,*status)\n"
 	      + "}\n"
-	      + "INPUT *dao=\"" + address_dest +"\"\n"
-	      + "OUTPUT *state", "*state");
+	      + "INPUT null\n"
+	      + "OUTPUT ruleExecOut", "ruleExecOut");
 		if (check!=null && !check.isEmpty() ) {
-			if (check.equals("1")) {
+			if (check.indexOf("state 1")>0) {
 				logger.debug("claimed state by iRODS Datagrid is: true");
 				return true;
 			}

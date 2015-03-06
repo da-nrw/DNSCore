@@ -70,7 +70,7 @@ public class ConvertAction extends AbstractAction {
 		if (j.getConversion_instructions().size()==0)
 			logger.warn("No Conversion Instruction could be found for job with id: "+j.getId());
 		
-		Object premisObject = parsePremisToMetadata(o.getLatest("premis.xml").toRegularFile().getAbsolutePath());
+		Object premisObject = parsePremisToMetadata(wa.toFile(o.getLatest("premis.xml")).getAbsolutePath());
 		o.setRights(premisObject.getRights());
 		
 		localConversionEvents = new ConverterService().convertBatch(
@@ -110,7 +110,7 @@ public class ConvertAction extends AbstractAction {
 		
 		if (localConversionEvents != null) {
 			for (Event e : localConversionEvents) {
-				e.getTarget_file().toRegularFile().delete();
+				wa.toFile(e.getTarget_file()).delete();
 				
 				o.getLatestPackage().getEvents().remove(e);
 				o.getLatestPackage().getFiles().remove(e.getTarget_file());

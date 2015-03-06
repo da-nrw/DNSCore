@@ -1,7 +1,9 @@
 /*
   DA-NRW Software Suite | ContentBroker
-  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
+  Copyright (C) 2014 Historisch-Kulturwissenschaftliche Informationsverarbeitung
   Universität zu Köln
+  Copyright (C) 2015 LVR-Infokom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -20,28 +22,23 @@
 package de.uzk.hki.da.cb;
 
 import java.io.File;
-import java.util.List;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
-import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.core.UserException.UserExceptionId;
-import de.uzk.hki.da.format.FFConstants;
-import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
-import de.uzk.hki.da.model.RightsSectionURNMetsXmlReader;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
- * Checks if the premis file or mets file delivered with the SIP contains URN information.
+ * Checks if the PREMIS file or mets file delivered with the SIP contains URN information.
  * Otherwise the previously created URN (which can be derived from the object identifier) is used.
  *  
  * @author Thomas Kleinke
+ * @author Daniel M. de Oliveira
  */
 public class RegisterURNAction extends AbstractAction {
 	
@@ -56,107 +53,68 @@ public class RegisterURNAction extends AbstractAction {
 
 	@Override
 	public void checkPreconditions() {
-		if (o.getLatest(PREMIS_XML)==null) throw new PreconditionsNotMetException("premis.xml must exist");
-		if (! o.getLatest(PREMIS_XML).toRegularFile().exists()) throw new PreconditionsNotMetException("premis.xml must exist"); 
+		if (o.getLatest(PREMIS_XML)==null) throw new PreconditionsNotMetException("Must be set: "+PREMIS_XML);
+		if (! premisFile().exists()) throw new PreconditionsNotMetException("Must exist: "+PREMIS_XML); 
 	}
 	
+	
+	// TODO When implementing METS based URN Extraction, use METSRightSectionXMLReader.java as a starting point
+	
+	@Override
+	public boolean implementation() {
+		
+		if (o.isDelta()) {
+			logger.info("Retaining previous object URN: " + o.getUrn());
+			return true;
+		}
+
+
+		String premisUrn = extractURNFromPremisFile(premisFile());
+		if (StringUtilities.isSet(premisUrn)) {
+			o.setUrn(premisUrn);
+			logger.info("New user-supplied object URN");
+			return true;
+		}
+		
+		
+		String urn = preservationSystem.getUrnNameSpace() + "-" + o.getIdentifier();
+		logger.info("New system-generated object URN: " + urn);
+		o.setUrn(urn);
+		return true;
+	}
+
+
+	@Override
+	public void rollback() {
+		if (!o.isDelta())
+			o.setUrn(null);
+	}
+
+
 	/**
 	 * @author Thomas Kleinke
 	 * @return URN if the SIP premis file contains an URN; otherwise null
 	 */
-	private String extractURNFromPremisFile() {
-		
-		File premisFile = o.getLatest(PREMIS_XML).toRegularFile();
-		
+	private static final String extractURNFromPremisFile(File premisFile) {
 		
 		Object premisObject = null;
-		ObjectPremisXmlReader reader = new ObjectPremisXmlReader();
 		try {
-			premisObject = reader.deserialize(premisFile);
+			premisObject = new ObjectPremisXmlReader().deserialize(premisFile);
+			if (premisObject == null) throw new Exception("Premis object must not be null after deserialization.");
 		} catch (Exception e) {
-			// This is already checked in unpack-action, where a 
+			// Deserializing the PREMIS file is already checked in unpack-action, where a 
 			// user error gets thrown. So we consider this here a 
 			// merely technical error.
-			throw new RuntimeException("Couldn't deserialize premis file " + premisFile, e);
+			throw new RuntimeException("Couldn't deserialize: " + premisFile, e);
 		}
-		
-		String urn = null;
-		if (premisObject != null)
-			urn = premisObject.getUrn();
-		
-		if (urn != null && urn.equals(""))
-			urn = null;
-		
-		return urn;
+		return premisObject.getUrn();
 	}
 	
-	/**
-	 * @author Thomas Kleinke
-	 * @return URN if the mets file contains an URN; otherwise null
-	 */
-	private String extractURNFromMetsFile() {
-		
-		DAFile metsFile = null;		
-		
-		List<DAFile> files = o.getLatestPackage().getFiles();
-		for (DAFile file : files) {
-			if(!file.getRelative_path().contains("XMP.rdf")) {
-				if (file.getFormatPUID().equals(FFConstants.METS_PUID))
-				metsFile = file;
-			}
-			
-		}
+	
 
-		if (metsFile != null) {
-			String urn = null;
-			RightsSectionURNMetsXmlReader metsUrnReader = new RightsSectionURNMetsXmlReader();
-			try {
-				urn = metsUrnReader.readURN(metsFile.toRegularFile());
-			} catch (Exception e) {
-				Exception causeEx = (Exception) e.getCause();
-				while (causeEx.getCause() != null) {
-					causeEx = (Exception) causeEx.getCause();					
-				};
-				throw new UserException(UserExceptionId.READ_METS_ERROR, "Konnte URN nicht aus der PREMIS Datei auslesen. " +
-					metsFile.toRegularFile().getAbsolutePath(), causeEx.getMessage(), e);
-			}
-			
-			return urn;
-		}
-
-		return null;
+	private File premisFile() {  
+		return wa.toFile(o.getLatest(PREMIS_XML));
 	}
 	
 
-	@Override
-	public boolean implementation() {
-		
-		if (o.isDelta())
-			logger.info("Object URN: " + o.getUrn());
-		else {
-			String urn;
-	
-			String premisUrn = extractURNFromPremisFile();
-			if (premisUrn != null)
-				urn = premisUrn;
-			else {				
-				String metsUrn = extractURNFromMetsFile();
-				
-				if (metsUrn != null)
-					urn = metsUrn;
-				else				
-					urn = preservationSystem.getUrnNameSpace() + "-" + o.getIdentifier();
-			}
-			
-			logger.info("Object URN: " + urn);
-			o.setUrn(urn);
-		}	
-		
-		return true;
-	}
-
-	@Override
-	public void rollback() {
-		throw new NotImplementedException("No rollback implemented for this action");
-	}
 }

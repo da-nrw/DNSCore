@@ -161,7 +161,7 @@ public class DAFile implements FileWithFileFormat{
 	
 	/**
 	 * To regular file.
-	 *
+	 * @deprecated Use wa.toFile(dafile) instead 
 	 * @return the file
 	 * @author Daniel M. de Oliveira
 	 */
