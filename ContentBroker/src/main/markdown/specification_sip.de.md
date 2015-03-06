@@ -82,11 +82,13 @@ Teil des AIP gespeichert. Sie dient damit der Nachvollziehbarkeit der Pakethisto
 der Langzeitarchivierung mit DNSCore. Eine detaillierte Spezifikation des dazu von DNSCore festgelegten 
 Elemente-Vokabulars findet sich [hier](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_premis.md).
 
-### Nutzergesteurte URN-Vergabe
+### URN-Vergabe
 
 Im Normalfall wird einem Objekt innerhalb eines DNSCore-Gesamtsystems während der Paketverarbeitung der **Ersteinlieferung**
 ein eindeutiger technischer **Identifier** zugewiesen. Von diesem abgeleitet, 
 wird dem Objekt ebenfalls eine eindeutige **URN** zugewiesen.
+
+#### Nutzergesteuerte URN-Vergabe
 
 Es ist dem Vertragspartner jedoch auch möglich, Einfluss auf die Zuordnung einer URN zu einem Objekt zu nehmen. 
 Hierzu muss die mitgelierferte **premis.xml** folgende Eintrage aufweisen:
@@ -100,8 +102,12 @@ Hierzu muss die mitgelierferte **premis.xml** folgende Eintrage aufweisen:
 </object>
 ```
 
-Die URN <code>urn:nbn:de:xyz-1-20131008367735</code> würde anschließend vom System ausgelesen und verwendet, anstatt eine neue URN
-aus dem generierten Identifier abzuleiten.
+Die URN <code>urn:nbn:de:xyz-1-20131008367735</code> würde anschließend vom System ausgelesen und verwendet, anstatt eine neue URN aus dem generierten Identifier abzuleiten.
+
+#### URNs und Deltas
+
+URNs werden nur ein einziges Mal vergeben. Wird ein Delta eingeliefert, so wird die bisher vergebene URN weiter verwendet,
+unabhängig davon, ob die ursprünglich vergebene URN automatisch generiert und nutzergesteuert vergeben wurde und unabhängig davon, ob eine neue URN im Delta nutzergesteuert mitgeliefert wird.
 
 ### Encoding
 
