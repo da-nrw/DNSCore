@@ -24,6 +24,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +40,7 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.xml.sax.InputSource;
 
 /**
  * @author Polina Gubaidullina
@@ -59,12 +62,18 @@ public class XMPMetadataStructure extends MetadataStructure{
 		xmpFile = metadataFile;
 		currentDocuments = documents;
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(xmpFile);
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
-		rdfDoc = builder.build(bomInputStream);
+		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
+		InputSource is = new InputSource(reader);
+		is.setEncoding("UTF-8");
+		rdfDoc = builder.build(is);
+		
 		descriptionElements = getXMPDescriptionElements();
 		fileInputStream.close();
+		bomInputStream.close();
+		reader.close();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

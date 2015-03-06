@@ -65,7 +65,6 @@ public abstract class MetadataStructure {
 	public File getCanonicalFileFromReference(String ref, File metadataFile) throws IOException {
 		String tmpFilePath = Path.make(metadataFile.getParentFile().getAbsolutePath(), ref).toString();
 		File file = new File(tmpFilePath).getCanonicalFile();
-		logger.debug("Calculated canonical file from reference "+ref+": "+file);
 		return file;
 	}
 	

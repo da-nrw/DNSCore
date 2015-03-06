@@ -20,6 +20,8 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -43,20 +45,14 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.format.MimeTypeDetectionService;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
-import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.model.User;
-import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
 
@@ -65,81 +61,68 @@ import de.uzk.hki.da.util.RelativePath;
  * @author jpeters
  * @author Polina Gubaidullina
  */
-public class UpdateMetadataActionEADTests {
+public class UpdateMetadataActionEADTests extends ConcreteActionUnitTest{
 	
+	@ActionUnderTest
+	UpdateMetadataAction action = new UpdateMetadataAction();
+	
+	private static final String _TEMP_PIP_REP_PUBLIC = C.WA_DIP+"/public";
+	private static final String _TEMP_PIP_REP_INSTITUTION = C.WA_DIP+"/institution";
 	private static final String _1_B_REP = "1+b";
-	private static final String _1_A_REP = "1+a";
 	private static MimeTypeDetectionService mtds;
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	private String EAD_XPATH_EXPRESSION = "//daoloc/@href";
-	private static final Path workAreaRootPathPath = new RelativePath("src/test/resources/cb/UpdateMetadataActionEADTests/");
-	private static final UpdateMetadataAction action = new UpdateMetadataAction();
-	private Event event;
-	private Object object;
-	private PreservationSystem pSystem;
-	private Node n;
+	private static final Path WORK_AREA_ROOT_PATH = new RelativePath("src/test/resources/cb/UpdateMetadataActionEADTests/");
+	private Event event1;
+	private Event event2;
 	DAFile f4;
-	
-	@BeforeClass
-	public static void mockDca() throws IOException {
-		mtds = mock(MimeTypeDetectionService.class);
-		when(mtds.identify((File)anyObject())).thenReturn("image/tiff");
-	}
 	
 	@Before
 	public void setUp() throws IOException, JDOMException, ParserConfigurationException, SAXException{
+		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
+		mtds = mock(MimeTypeDetectionService.class);
+		when(mtds.identify((File)anyObject())).thenReturn("image/tiff");
 		
-		pSystem = new PreservationSystem();
-		pSystem.setId(1);
-		pSystem.setMinRepls(0);
-		User psadmin = new User();
-		psadmin.setShort_name("TEST_PSADMIN");
-		psadmin.setEmailAddress("noreply");
-		pSystem.setAdmin(psadmin);
-		pSystem.setUrisFile("http://data.danrw.de/file");
-		
-		n = new Node();
-		n.setName("testnode");
-		n.setAdmin(psadmin);
-		pSystem.getNodes().add(n);
-		
-		action.setLocalNode(n);
-		action.setPSystem(pSystem);
-		
-		object = TESTHelper.setUpObject("42",workAreaRootPathPath);
+		String[] repNames = {"temp_pips/public", "temp_pips/institution"};
+		action.setRepNames(repNames);
 
-		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/mets_2_99.xml").toFile(), Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_A_REP).toFile());
-		FileUtils.copyFileToDirectory(Path.make(workAreaRootPathPath,"work/src/vda3.XML").toFile(), Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_A_REP).toFile());
-		DAFile f1 = new DAFile(object.getLatestPackage(),_1_A_REP,"mets_2_99.xml");
+		FileUtils.copyFileToDirectory(Path.make(WORK_AREA_ROOT_PATH,"work/src/mets_2_99.xml").toFile(), Path.make(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_1_B_REP).toFile());
+		FileUtils.copyFileToDirectory(Path.make(WORK_AREA_ROOT_PATH,"work/src/vda3.XML").toFile(), Path.make(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_1_B_REP).toFile());
+		DAFile f1 = new DAFile(o.getLatestPackage(),_1_B_REP,"mets_2_99.xml");
 		de.uzk.hki.da.model.Document doc1 = new de.uzk.hki.da.model.Document(f1);
-		object.addDocument(doc1);
-		object.getLatestPackage().getFiles().add(f1);
+		o.addDocument(doc1);
+		o.getLatestPackage().getFiles().add(f1);
 		
-		DAFile f2 = new DAFile(object.getLatestPackage(),_1_A_REP,"ALVR_Nr_4547_Aufn_067.tif");
+		DAFile f2 = new DAFile(o.getLatestPackage(),_1_B_REP,"ALVR_Nr_4547_Aufn_067.tif");
 		de.uzk.hki.da.model.Document doc2 = new de.uzk.hki.da.model.Document(f2);
-		object.addDocument(doc2);
-		object.getLatestPackage().getFiles().add(f2);
+		o.addDocument(doc2);
+		o.getLatestPackage().getFiles().add(f2);
 		
-		DAFile f3 = new DAFile(object.getLatestPackage(),_1_A_REP,"vda3.XML");
+		DAFile f3 = new DAFile(o.getLatestPackage(),_1_B_REP,"vda3.XML");
 		de.uzk.hki.da.model.Document doc3 = new de.uzk.hki.da.model.Document(f3);
-		object.addDocument(doc3);
-		object.getLatestPackage().getFiles().add(f3);
+		o.addDocument(doc3);
+		o.getLatestPackage().getFiles().add(f3);
 		
-		f4 = new DAFile(object.getLatestPackage(),_1_A_REP,"alvr_Nr_4547_Aufn_067.tif");
+		f4 = new DAFile(o.getLatestPackage(),_1_B_REP,"alvr_Nr_4547_Aufn_067.tif");
 		de.uzk.hki.da.model.Document doc4 = new de.uzk.hki.da.model.Document(f4);
-		object.addDocument(doc4);
-		object.getLatestPackage().getFiles().add(f4);
+		o.addDocument(doc4);
+		o.getLatestPackage().getFiles().add(f4);
 		
-		event = new Event();
-		event.setSource_file(f2);
-		event.setTarget_file(new DAFile(object.getLatestPackage(),_1_B_REP,"renamed067.tif"));
-		event.setType("CONVERT");
-		object.getLatestPackage().getEvents().add(event);
+		event1 = new Event();
+		event1.setSource_file(f2);
+		event1.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_PUBLIC,"renamed067.tif"));
+		event1.setType("CONVERT");
+		o.getLatestPackage().getEvents().add(event1);
 		
-		Job job = new Job(); job.setObject(object); job.setId(1);
-		object.setPackage_type("EAD");
-		object.setMetadata_file("vda3.XML");
+		event2 = new Event();
+		event2.setSource_file(f2);
+		event2.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_INSTITUTION,"renamed067.tif"));
+		event2.setType("CONVERT");
+		o.getLatestPackage().getEvents().add(event2);
+		
+		o.setPackage_type("EAD");
+		o.setMetadata_file("vda3.XML");
 		
 		HashMap<String,String> xpaths = new HashMap<String,String>();
 		xpaths.put("METS", "//mets:file");
@@ -151,69 +134,69 @@ public class UpdateMetadataActionEADTests {
 		action.setNamespaces(nsMap);
 		
 		action.setMtds(mtds);
-		action.setJob(job);
-		action.setPSystem(pSystem);
 		action.setPresMode(true);
-	
+		ps.setUrisFile("http://data.danrw.de/file");
 	}
 	
 	@After 
 	public void tearDown(){
-		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data",_1_A_REP,"mets_2_99.xml").delete();
-		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data",_1_A_REP,"vda3.XML").delete();
-		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data",_1_B_REP,"mets_2_99.xml").delete();
-		Path.makeFile(workAreaRootPathPath,"work/TEST/42/data",_1_B_REP,"vda3.XML").delete();
+		Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_1_B_REP,"mets_2_99.xml").delete();
+		Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_1_B_REP,"vda3.XML").delete();
+		Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data", _TEMP_PIP_REP_PUBLIC,"mets_2_99.xml").delete();
+		Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_PUBLIC,"EAD.xml").delete();
+		Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_INSTITUTION,"mets_2_99.xml").delete();
+		Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_INSTITUTION,"EAD.xml").delete();
 	}
-	
 	
 	@Test
 	public void test() throws IOException, JDOMException, ParserConfigurationException, SAXException {
 		
-		action.setObject(object);
 		action.implementation();
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document doc = builder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_B_REP,"mets_2_99.xml").toFile()));
+		Document doc = builder.build(new FileReader(Path.make(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_PUBLIC,"mets_2_99.xml").toFile()));
 
-		assertEquals("http://data.danrw.de/file/42/renamed067.tif", getURL(doc));
+		assertEquals("http://data.danrw.de/file/identifier/renamed067.tif", getURL(doc));
 		assertEquals("image/tiff", getMimetypeInMets(doc));
 		assertEquals("URL", getLoctypeInMets(doc));
 	}
 	
 	@Test
 	public void checkReplacementsInEad() throws FileNotFoundException, JDOMException, IOException, ParserConfigurationException, SAXException {
-		
-		action.setObject(object);
 		action.implementation();
-		
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(workAreaRootPathPath,"work/TEST/42/data",_1_B_REP,"vda3.XML").toFile()));
+		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_PUBLIC,"EAD.xml").toFile()));
 
 		List<String> eadRefs = getMetsRefsInEad(eadDoc);
 		for(String ref : eadRefs) {
-			assertEquals("http://data.danrw.de/file/42/mets_2_99.xml", ref);
+			assertEquals("http://data.danrw.de/file/identifier/mets_2_99.xml", ref);
 		}
 	}
 	
-//	@Test
-//	public void upperLowerCaseMismatch() throws IOException, JDOMException, ParserConfigurationException, SAXException {
-//		
-//		event.setSource_file(f4);
-//		
-//		try{
-//			action.setObject(object);
-//			action.implementation();
-//			fail();
-//		} catch(Error e){
-//			System.out.println(e.getMessage());
-//			assertTrue(e.getMessage().equals(
-//					"1 unreferenced file(s) have been converted! Missing reference(s) to [alvr_Nr_4547_Aufn_067.tif]. "
-//					+ "Executed conversions: {[1+a]/[alvr_Nr_4547_Aufn_067.tif]=[1+b]/[renamed067.tif]}"));
-//		}
-//	}
+	@Test
+	public void testRollback() throws Exception {
+		action.implementation();
+		assertTrue(Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_PUBLIC,"mets_2_99.xml").exists());
+		assertTrue(Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_INSTITUTION,"mets_2_99.xml").exists());
+		assertTrue(Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_PUBLIC,"EAD.xml").exists());
+		assertTrue(Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_INSTITUTION,"EAD.xml").exists());
+		
+		action.rollback();
+		assertFalse(Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_PUBLIC,"mets_2_99.xml").exists());
+		assertFalse(Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_INSTITUTION,"mets_2_99.xml").exists());
+		assertFalse(Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_PUBLIC,"EAD.xml").exists());
+		assertFalse(Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_INSTITUTION,"EAD.xml").exists());
+		
+		action.implementation();
+		assertTrue(Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_PUBLIC,"mets_2_99.xml").exists());
+		assertTrue(Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_INSTITUTION,"mets_2_99.xml").exists());
+		assertTrue(Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_PUBLIC,"EAD.xml").exists());
+		assertTrue(Path.makeFile(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_INSTITUTION,"EAD.xml").exists());
+	}
+	
+	
 	
 	private String getURL(Document doc){
-		
 		return doc.getRootElement()
 				.getChild("fileSec", METS_NS)
 				.getChild("fileGrp", METS_NS)
@@ -241,11 +224,8 @@ public class UpdateMetadataActionEADTests {
 	}
 	
 	private List<String> getMetsRefsInEad(Document eadDoc) throws JDOMException, IOException {
-		
 		List<String> metsReferences = new ArrayList<String>();
-	
-		XPath xPath = XPath.newInstance(EAD_XPATH_EXPRESSION);
-		
+		XPath xPath = XPath.newInstance(EAD_XPATH_EXPRESSION);	
 		@SuppressWarnings("rawtypes")
 		List allNodes = xPath.selectNodes(eadDoc);
 		

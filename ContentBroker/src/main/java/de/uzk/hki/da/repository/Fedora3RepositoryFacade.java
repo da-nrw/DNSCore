@@ -209,7 +209,6 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		@SuppressWarnings("unchecked")
 		List<Object> graph = (List<Object>) json.get("@graph");
 		for (Object object : graph) {
-			
 			logger.trace("Preparing json graph for indexing in elasticsearch: \n{}", JSONUtils.toPrettyString(object));
 			createIndexEntryForGraphObject(indexName, edmJsonFrame, object);
 		}		
@@ -257,19 +256,14 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	}
 
 	private void eraseUnmappableContent(Map<String, Object> subject) {
-		
 		Object temp = subject.get("edm:object");
-		if (temp==null) {
-			logger.warn("removing edm:object from graph since it is null");
-			subject.remove("edm:object");
-		}else
-		if ((temp instanceof String)&&(((String)temp==null)||((String)temp).isEmpty())){
+		if (temp!=null && (temp instanceof String)&&(((String)temp==null)||((String)temp).isEmpty())){
 			logger.warn("removing edm:object from graph since it is an empty string");
 			subject.remove("edm:object");
 		}
 		Object isShownBy = subject.get("edm:isShownBy");
 		if (isShownBy!=null) {
-			logger.warn("removing edm:isShownBy from graph since it is null");
+			logger.warn("removing edm:isShownBy from graph ...");
 			subject.remove("edm:isShownBy");
 		}
 	}

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.core.C;
@@ -46,12 +49,15 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		super(metadataFile, documents);
 	
 		eadFile = metadataFile;
-		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(eadFile);
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
-		eadDoc = builder.build(bomInputStream);
-		
+		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
+		InputSource is = new InputSource(reader);
+		is.setEncoding("UTF-8");
+		eadDoc = builder.build(is);
+
 		metsReferencesInEAD = extractMetsRefsInEad();
 		metsFiles = getReferencedFiles(eadFile, metsReferencesInEAD, documents);
 				
@@ -61,6 +67,8 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			mmsList.add(mms);
 		}
 		fileInputStream.close();
+		bomInputStream.close();
+		reader.close();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -144,7 +152,14 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			nodeInfo.put(C.EDM_DATE, getDate(child));
 			nodeInfo.put(C.EDM_IDENTIFIER, getUnitIDs(child));
 		} else if(child.getName().equals("daogrp")) {
-			nodeInfo.put(C.EDM_HAS_VIEW, getHref(child));
+			if(getHref(child)!=null & getHref(child).size()!=0) {
+				List<String> shownBy = new ArrayList<String>();
+				shownBy.add(getHref(child).get(0));
+				nodeInfo.put(C.EDM_IS_SHOWN_BY, shownBy);
+				nodeInfo.put(C.EDM_OBJECT, shownBy);
+			} else if(getHref(child).size()>1) {
+				nodeInfo.put(C.EDM_HAS_VIEW, getHref(child));
+			}
 		} else if(uniqueID!=null && child.getName().equals(nextLevel)) {
 			childElements.put(child, uniqueID);
 		}
@@ -152,7 +167,6 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	
 	private List<String> getTitle(Element element) {
 		List<String> title = new ArrayList<String>();
-		@SuppressWarnings("unused")
 		String t = "";
 		try {
 			t = element.getChild("unittitle").getValue();
@@ -204,7 +218,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		try {
 			href = daogrp.getChild("daoloc").getAttributeValue("href");
 		} catch (Exception e) {
-			logger.error("No unitdate element found");
+			logger.debug("No unitdate element found");
 		}
 		hrefs.add(href);
 		return hrefs;
@@ -245,10 +259,13 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		
 		File targetEadFile = eadFile;
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(eadFile);
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
-		Document currentEadDoc = builder.build(bomInputStream);
+		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
+		InputSource is = new InputSource(reader);
+		is.setEncoding("UTF-8");
+		Document currentEadDoc = builder.build(is);
 				
 		XPath xPath = XPath.newInstance(EAD_XPATH_EXPRESSION);
 		
@@ -268,6 +285,8 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		outputter.setFormat(Format.getPrettyFormat());
 		outputter.output(currentEadDoc, new FileWriter(targetEadFile));
 		fileInputStream.close();
+		bomInputStream.close();
+		reader.close();
 	}
 	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::   VALIDATION   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::

@@ -70,6 +70,7 @@ public class ConcreteActionUnitTest {
 		ps.setId(1);
 		ps.setOpenCollectionName("open-collection");
 		ps.setClosedCollectionName("closed-collection");
+		ps.setUrnNameSpace("urn:nbn:de");
 		User psadmin = new User();
 		psadmin.setShort_name("TEST_PSADMIN");
 		psadmin.setEmailAddress("noreply");
@@ -102,6 +103,7 @@ public class ConcreteActionUnitTest {
 		o.setUrn(URN);
 		
 		j = new Job();
+		j.setObject(o);
 		
 		ActionUnderTestAnnotationParser parser = new ActionUnderTestAnnotationParser();
 		Field f = parser.parse(this.getClass());
