@@ -112,10 +112,11 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		try {
 		irodsSystemConnector.connect();	
 		String check = irodsSystemConnector.executeRule("checkItemsQuick {\n"
-	      + "*state=0\n"
-	      + "acIsValid(*dao,*state)\n"
+	      + "*status=0\n"
+	      + "*dataObj=\"" + address_dest +"\"\n"
+	      + "acIsValid(*dataObj,*status)\n"
 	      + "}\n"
-	      + "INPUT *dao=\"" + address_dest +"\"\n"
+	      + "INPUT null\n"
 	      + "OUTPUT ruleExecOut", "ruleExecOut");
 		if (check!=null && !check.isEmpty() ) {
 			if (check.indexOf("state 1")>0) {
@@ -125,7 +126,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		}	
 		irodsSystemConnector.logoff();
 		} catch (Exception e) {
-			logger.error("Catched Exception " + e.getMessage(),e);
+			logger.error("Catched Exception " + e.getMessage());
 			
 		}
 		logger.debug("claimed state by iRODS Datagrid is: false");
