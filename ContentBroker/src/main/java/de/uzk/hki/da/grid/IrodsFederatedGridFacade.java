@@ -26,12 +26,15 @@ package de.uzk.hki.da.grid;
  */
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.ProcessInformation;
 
 
 
@@ -107,24 +110,28 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 
 	@Override
 	public boolean isValid(String gridPath) {
-		String address_dest = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + "/" + gridPath;
+	String address_dest = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + "/" + gridPath;
 		logger.debug("checking validity of " + address_dest);
 		try {
-		irodsSystemConnector.connect();	
-		String check = irodsSystemConnector.executeRule("checkItemsQuick {\n"
-	      + "*status=0\n"
-	      + "*dataObj=\"" + address_dest +"\"\n"
-	      + "acIsValid(*dataObj,*status)\n"
-	      + "}\n"
-	      + "INPUT null\n"
-	      + "OUTPUT ruleExecOut", "ruleExecOut");
+//		irodsSystemConnector.connect();	
+//		String check = irodsSystemConnector.executeRule("checkItemsQuick {\n"
+//	      + "*status=0\n"
+//	      + "*dataObj=\"" + address_dest +"\"\n"
+//	      + "acIsValid(*dataObj,*status)\n"
+//	      + "}\n"
+//	      + "INPUT null\n"
+//	      + "OUTPUT ruleExecOut", "ruleExecOut");
+	String check = executeIrule("*status=0\n"
+		      + "*dataObj=\"" + address_dest +"\"\n"
+		      + "acIsValid(*dataObj,*status)\n");
+	
 		if (check!=null && !check.isEmpty() ) {
 			if (check.indexOf("state 1")>0) {
 				logger.debug("claimed state by iRODS Datagrid is: true");
 				return true;
 			}
 		}	
-		irodsSystemConnector.logoff();
+//		irodsSystemConnector.logoff();
 		} catch (Exception e) {
 			logger.error("Catched Exception " + e.getMessage());
 			
@@ -132,4 +139,27 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		logger.debug("claimed state by iRODS Datagrid is: false");
 		return false;
 	}
-}
+	
+	public String executeIrule(String rule) {
+		String commandAsArray[] = new String[]{
+				"irule",rule,"null","ruleExecOut"
+		};	
+		return executeIcommand(commandAsArray);
+	}
+	
+	private String executeIcommand(String[] commandAsArray) {
+		CommandLineConnector clc = new CommandLineConnector();
+		ProcessInformation pi = null;
+		try {
+			pi = clc.runCmdSynchronously(commandAsArray);
+		} catch (IOException e1) {
+			throw new RuntimeException("Icommand did not succeed, not found: " + Arrays.toString(commandAsArray));
+		}
+		if (pi.getExitValue()!=0) {
+			logger.error("Icommand did not succeed: " + Arrays.toString(commandAsArray) + " returned " +pi.getStdErr() );
+			logger.debug (pi.getStdOut());
+			return "ERROR";
+		}	
+		logger.debug (pi.getStdOut());
+		return pi.getStdOut();
+	}	}
