@@ -70,6 +70,8 @@ public class MetsMetadataStructure extends MetadataStructure {
 		HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();
 		HashMap<String, Element> dmdSections = getSections(ObjectId);
 		
+		HashMap<String, ArrayList<String>> parentChildDmdIdRel = getParentChildInfoOfDmdIds(ObjectId);
+		
 		for(String id : dmdSections.keySet()) {
 			Element e = dmdSections.get(id);
 			HashMap<String, List<String>> dmdSecInfo = new HashMap<String, List<String>>();
@@ -110,40 +112,77 @@ public class MetsMetadataStructure extends MetadataStructure {
 			dmdSecInfo.put(C.EDM_PUBLISHER, publishers);
 			
 //			TitlePage
-			String titlePageId = getTitlePageReferenceFromDmdId(id, ObjectId);
-			if(!titlePageId.equals("")) {
+			List<String> titlePageRefs = getTitlePageReferencesFromDmdId(id, ObjectId);
+			List<String> allReferences = getReferencesFromDmdId(id, ObjectId);
+			if(titlePageRefs!=null & !titlePageRefs.isEmpty()) {
 				List<String> references = new ArrayList<String>();
-				references.add(titlePageId);
+				references.add(titlePageRefs.get(0));
 				dmdSecInfo.put(C.EDM_IS_SHOWN_BY, references);
 				dmdSecInfo.put(C.EDM_OBJECT, references);
+				if(titlePageRefs.size()>1) {
+					dmdSecInfo.put(C.EDM_HAS_VIEW, titlePageRefs);
+				}
+			} else if(allReferences!=null && !allReferences.isEmpty()){
+				List<String> firstReference = new ArrayList<String>();
+				firstReference.add(allReferences.get(0));
+				dmdSecInfo.put(C.EDM_IS_SHOWN_BY, firstReference);
+				dmdSecInfo.put(C.EDM_OBJECT, firstReference);
+			}
+			
+//			hasView
+			if(allReferences.size()>1) {
+				dmdSecInfo.put(C.EDM_HAS_VIEW, allReferences);
 			}
 			
 //			dataProvider
 			dmdSecInfo.put(C.EDM_DATA_PROVIDER, getDataProvider());
 			
-			getReferencesFromDmdId(id, ObjectId);
+//			hasPart
+			ArrayList<String> childrenDmdIds = getChildrenDmdIds(id, ObjectId);
+			if(childrenDmdIds!=null && !childrenDmdIds.isEmpty()) {
+				dmdSecInfo.put(C.EDM_HAS_PART, childrenDmdIds);
+			}
+			
+//			isPartOf
+			ArrayList<String> parentsDmdIds = getParentDmdIds(id, ObjectId);
+			if(parentsDmdIds!=null && !parentsDmdIds.isEmpty()) {
+				dmdSecInfo.put(C.EDM_IS_PART_OF, parentsDmdIds);
+			}
 			
 			indexInfo.put(id, dmdSecInfo);
 		}
 		return indexInfo;
 	}
 	
-	private String getTitlePageReferenceFromDmdId(String dmdID, String objectId) {
-		String titlePageLogicalId = getIdAndParentDmdIdFromLogicalStructMap(dmdID.replace(objectId+"-", ""), TITLE_PAGE, "ID")[0];
-		String titlePagePhysicalId = getPhysicalIdFromStructLink(metsDoc, titlePageLogicalId);
-		String titlePageFileId = getFileIdFromPhysicalId(titlePagePhysicalId);
-		String ref = getReferenceFromFileId(titlePageFileId);
-		return ref;
+	private List<String> getTitlePageReferencesFromDmdId(String dmdID, String objectId) {
+		List<String> titlePageRefs = new ArrayList<String>();
+		String titlePageLogicalId = getIdFromLogicalStructMap(dmdID.replace(objectId+"-", ""), TITLE_PAGE, "ID");
+		List<String> physIds = getPhysicalIdsFromStructLink(metsDoc, titlePageLogicalId);
+		for(String physId : physIds) {
+			String titlePageFileId = getFileIdFromPhysicalId(physId);
+			if(!titlePageFileId.equals("")) {
+				String titlePageRef = getReferenceFromFileId(titlePageFileId);
+				if(!titlePageRef.equals("")) {
+					titlePageRefs.add(titlePageRef);
+				}
+			}
+		}
+		return titlePageRefs;
 	}
 	
-	private List<String> getReferencesFromDmdId(String dmdID, String objectId) {
+	private List<String> getReferencesFromDmdId(String dmdID, String objectId) {	
 		List<String> references = new ArrayList<String>();
-		String logicalId = getIdAndParentDmdIdFromLogicalStructMap(dmdID.replace(objectId+"-", ""), "", "ID")[0];
-		System.out.println("LOGICAL_ID: "+logicalId+" from DMDID "+dmdID);
-		
-		System.out.println("YAY "+getIdAndParentDmdIdFromLogicalStructMap(dmdID.replace(objectId+"-", ""), "", "ID")[0]);
-		System.out.println("YAY "+getIdAndParentDmdIdFromLogicalStructMap(dmdID.replace(objectId+"-", ""), "", "ID")[1]);
-		
+		String logicalId = getIdFromLogicalStructMap(dmdID.replace(objectId+"-", ""), "", "ID");
+		List<String> physicalIds = getPhysicalIdsFromStructLink(metsDoc, logicalId);
+		for(String physicalId : physicalIds) {
+			if(!getFileIdFromPhysicalId(physicalId).equals("")) {
+				String fileId = getFileIdFromPhysicalId(physicalId);
+				String ref = getReferenceFromFileId(fileId);
+				if(!ref.equals("")) {
+					references.add(ref);
+				}
+			}
+		}
 		return references;
 	}
 	
@@ -184,10 +223,64 @@ public class MetsMetadataStructure extends MetadataStructure {
 		return structMap;
 	} 
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private HashMap<String, ArrayList<String>> getParentChildInfoOfDmdIds(String objectId) {
+		HashMap parentChildDmdId = new HashMap<String, ArrayList<String>>();
+		String parentDmdId = "";
+		try {
+			List<Element> structMap = getStructMaps(metsDoc);
+			for(Element s : structMap) {
+				if(s.getAttributeValue("TYPE").equals(STRUCTMAP_TYPE_LOGICAL)) {
+					List<Element> metsDivElements = s.getChildren("div", C.METS_NS);
+					for (Element d : metsDivElements){
+						ArrayList<String> children = new ArrayList<String>();
+						List<Element> divChildren =  d.getChildren("div", C.METS_NS);
+						if(divChildren!=null && !divChildren.isEmpty()) {
+							for(Element divChild : divChildren) {
+								if(divChild.getAttribute("DMDID")!=null && !divChild.getAttributeValue("DMDID").equals(parentDmdId)) {
+									children.add(objectId+"-"+divChild.getAttributeValue("DMDID"));
+								}
+							}	
+						}
+						if(children!=null && !children.isEmpty()) {
+							parentChildDmdId.put(d.getAttributeValue("DMDID"), children);
+						}	
+					}
+				}
+			} 
+		}catch (Exception e) {
+			logger.debug("No parent child relationship found.");
+		}
+		return parentChildDmdId;
+	}
+	
+	private ArrayList<String> getParentDmdIds(String childDmdId, String ObjectId) {
+		ArrayList<String> parentDmdIds = new ArrayList<String>();
+		HashMap<String, ArrayList<String>> parentChildDmdIdRel = getParentChildInfoOfDmdIds(ObjectId);
+		for(String parentId : parentChildDmdIdRel.keySet()) {
+			for(String child : parentChildDmdIdRel.get(parentId)) {
+				if(child.equals(childDmdId)) {
+					parentDmdIds.add(ObjectId+"-"+parentId);
+				}
+			}
+		}
+		return parentDmdIds;
+	}
+	
+	private ArrayList<String> getChildrenDmdIds(String parentDmdId, String ObjectId) {
+		ArrayList<String> childrenDmdIds = new ArrayList<String>();
+		HashMap<String, ArrayList<String>> parentChildDmdIdRel = getParentChildInfoOfDmdIds(ObjectId);
+		for(String parentId : parentChildDmdIdRel.keySet()) {
+			if(parentId.equals(parentDmdId.replace(ObjectId+"-", ""))) {
+				childrenDmdIds = parentChildDmdIdRel.get(parentId);
+			}
+		}
+		return childrenDmdIds;
+	}
+	
 	@SuppressWarnings({ "unchecked" })
-	private String[] getIdAndParentDmdIdFromLogicalStructMap(String dmdID, String type, String idType) {
+	private String getIdFromLogicalStructMap(String dmdID, String type, String idType) {
 		String id = "";
-		String parentId = "";
 		try {
 			List<Element> structMap = getStructMaps(metsDoc);
 			for(Element s : structMap) {
@@ -210,7 +303,6 @@ public class MetsMetadataStructure extends MetadataStructure {
 							for(Element divChild : divChildren) {
 								if(divChild.getAttributeValue("DMDID").equals(dmdID)) {
 									id = divChild.getAttributeValue(idType);
-									parentId = d.getAttributeValue("DMDID");
 								}
 							}	
 						}
@@ -220,25 +312,24 @@ public class MetsMetadataStructure extends MetadataStructure {
 		} catch (Exception e) {
 			logger.debug("Unable to find the "+idType+" id from dmdID "+dmdID);
 		}
-		String[] idAndParentDmdId = {id, parentId};
-		return idAndParentDmdId;
+		return id;
 	}
 	
 	@SuppressWarnings("unchecked")
-	private String getPhysicalIdFromStructLink(Document doc, String logicalId) {
-		String physId = "";
+	private List<String> getPhysicalIdsFromStructLink(Document doc, String logicalId) {
+		List<String> physIds = new ArrayList<String>();
 		List<Element> structLink = new ArrayList<Element>();
 		try {
 			structLink = doc.getRootElement().getChild("structLink", C.METS_NS).getChildren("smLink", C.METS_NS);
 			for(Element link : structLink) {
 				if(link.getAttributeValue("from", XLINK_NS).equals(logicalId)) {
-					physId = link.getAttributeValue("to", XLINK_NS);
+					physIds.add(link.getAttributeValue("to", XLINK_NS));
 				}
 			}
 		} catch (Exception e) {
 			logger.debug("Unable to find the physical id from logical id "+logicalId);
 		}
-		return physId;
+		return physIds;
 	}
 		
 	private List<String> getDataProvider() {

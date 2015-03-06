@@ -167,7 +167,7 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 		for(Element pcho : providetCho) {
 			if(pcho.getChild("title", C.DC_NS).getValue().equals("01. Bundesleitung und Bezirksverbände")) {
 				bundesleitungUndBezirksverbaendeExists = true;
-				assertTrue(pcho.getChild("isPartOf", C.DCTERMS_NS).getAttributeValue("resource", C.RDF_NS).equals("http://data.danrw.de/file/"+object.getIdentifier()));
+				assertTrue(pcho.getChild("isPartOf", C.DCTERMS_NS).getAttributeValue("resource", C.RDF_NS).equals("http://data.danrw.de/cho/"+object.getIdentifier()));
 				assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==39);
 			} else if(pcho.getChild("title", C.DC_NS).getValue().equals("02. Finanzsachen")) {
 				assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==13);
