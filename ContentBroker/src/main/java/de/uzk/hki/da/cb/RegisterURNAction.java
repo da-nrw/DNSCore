@@ -34,10 +34,11 @@ import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
- * Checks if the premis file or mets file delivered with the SIP contains URN information.
+ * Checks if the PREMIS file or mets file delivered with the SIP contains URN information.
  * Otherwise the previously created URN (which can be derived from the object identifier) is used.
  *  
  * @author Thomas Kleinke
+ * @author Daniel M. de Oliveira
  */
 public class RegisterURNAction extends AbstractAction {
 	
@@ -52,12 +53,12 @@ public class RegisterURNAction extends AbstractAction {
 
 	@Override
 	public void checkPreconditions() {
-		if (o.getLatest(PREMIS_XML)==null) throw new PreconditionsNotMetException("Must be set: premis.xml");
-		if (! premisFile().exists()) throw new PreconditionsNotMetException("Must exist: premis.xml"); 
+		if (o.getLatest(PREMIS_XML)==null) throw new PreconditionsNotMetException("Must be set: "+PREMIS_XML);
+		if (! premisFile().exists()) throw new PreconditionsNotMetException("Must exist: "+PREMIS_XML); 
 	}
 	
 	
-	// TODO When implementing METS Urn Extraction, use METSRightSectionXMLReader.java as a starting point
+	// TODO When implementing METS based URN Extraction, use METSRightSectionXMLReader.java as a starting point
 	
 	@Override
 	public boolean implementation() {
@@ -104,7 +105,7 @@ public class RegisterURNAction extends AbstractAction {
 			// Deserializing the PREMIS file is already checked in unpack-action, where a 
 			// user error gets thrown. So we consider this here a 
 			// merely technical error.
-			throw new RuntimeException("Couldn't deserialize premis file " + premisFile, e);
+			throw new RuntimeException("Couldn't deserialize: " + premisFile, e);
 		}
 		return premisObject.getUrn();
 	}
