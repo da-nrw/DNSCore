@@ -86,7 +86,10 @@ Elemente-Vokabulars findet sich [hier](https://github.com/da-nrw/DNSCore/blob/ma
 
 Im Normalfall wird einem Objekt innerhalb eines DNSCore-Gesamtsystems während der Paketverarbeitung der **Ersteinlieferung**
 ein eindeutiger technischer **Identifier** zugewiesen. Von diesem abgeleitet, 
-wird dem Objekt ebenfalls eine eindeutige **URN** zugewiesen.
+wird dem Objekt ebenfalls eine eindeutige **URN** zugewiesen. Ein so gebildeter Satz aus Identifier könnte beispielsweise so aussehen:
+
+* URN: urn:namesraum-2-20150305406885
+* Techn. Identifier: 2-20150305406885
 
 #### Nutzergesteuerte URN-Vergabe
 
