@@ -41,11 +41,8 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Document;
-import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.HibernateUtil;
-import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
 
@@ -56,19 +53,16 @@ import de.uzk.hki.da.util.RelativePath;
  *
  * @author Daniel M. de Oliveira
  */
-public class ConvertActionTests {
+public class ConvertActionTests extends ConcreteActionUnitTest{
 
-	/** The Constant action. */
-	private static final ConvertAction action= new ConvertAction();
+	@ActionUnderTest
+	ConvertAction action= new ConvertAction();
 	
 	/** The Constant vaultPath. */
-	private static final Path workAreaRootPath = new RelativePath("src/test/resources/cb/ConvertActionTests");
+	private static final Path workAreaRootPath = new RelativePath("src/test/resources/cb/ConvertAction");
 	
 	/** The Constant dataPath. */
-	private static final String dataPath= workAreaRootPath + "/work/TEST/123/";
-	
-	/** The job. */
-	private static Job job = null;
+	private static final String dataPath= workAreaRootPath + "/work/TEST/identifier/";
 	
 	/**
 	 * Sets the up.
@@ -76,16 +70,11 @@ public class ConvertActionTests {
 	@Before
 	public void setUp(){
 		
+		n.setWorkAreaRootPath(workAreaRootPath);
+		j.setStatus("240");
+		j.setRep_name("2011+11+01+");		
+
 		
-		Object object = TESTHelper.setUpObject("123", workAreaRootPath);
-		action.setObject(object);
-		
-		job = new Job();
-		job.setObject(object);
-		job.setId(123);
-		
-		job.setStatus("240");
-		job.setRep_name("2011+11+01+");		
 		
 		final Node vm2 = new Node("vm2","01-vm2");
 		final Node vm3 = new Node("vm3","01-vm3");
@@ -110,12 +99,12 @@ public class ConvertActionTests {
 		
 		List<Document> documents = new ArrayList<Document>();
 		
-		DAFile f = new DAFile(object.getLatestPackage(),"2011+11+01+a","premis.xml");
-		object.getLatestPackage().getFiles().add(f);
+		DAFile f = new DAFile(o.getLatestPackage(),"2011+11+01+a","premis.xml");
+		o.getLatestPackage().getFiles().add(f);
 		Document document = new Document(f);
 		documents.add(document);
 		
-		DAFile f1 = new DAFile(object.getLatestPackage(),"2011+11+01+a","abc.xml");
+		DAFile f1 = new DAFile(o.getLatestPackage(),"2011+11+01+a","abc.xml");
 		Document document1 = new Document(f1);
 		documents.add(document1);
 		ci1.setSource_file(f1);
@@ -127,20 +116,20 @@ public class ConvertActionTests {
 		ConversionInstruction ci2 = new ConversionInstruction();
 		ci2.setTarget_folder("");
 		
-		DAFile f2 = new DAFile(object.getLatestPackage(),"2011+11+01+a","140864.tif");
+		DAFile f2 = new DAFile(o.getLatestPackage(),"2011+11+01+a","140864.tif");
 		ci2.setSource_file(f2);
 		Document document2 = new Document(f2);
 		documents.add(document2);
 		
-		object.setDocuments(documents);
+		o.setDocuments(documents);
 		
 		
 		ci2.setNode("vm2");
 		ci2.setConversion_routine(im);
 		// im 
 		
-		job.getConversion_instructions().add(ci1);
-		job.getConversion_instructions().add(ci2);
+		j.getConversion_instructions().add(ci1);
+		j.getConversion_instructions().add(ci2);
 		
 		
 		action.setDistributedConversionAdapter(mock(DistributedConversionAdapter.class));
@@ -176,7 +165,6 @@ public class ConvertActionTests {
 	@Test
 	public void testConversion() throws IOException{
 
-		action.setJob(job);
 		Node localNode = new Node("vm2","01-vm2");
 		localNode.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
 		action.setLocalNode(localNode);
@@ -195,7 +183,6 @@ public class ConvertActionTests {
 	@Test
 	public void testRollback() throws IOException {
 
-		action.setJob(job);
 		Node localNode = new Node("vm2","01-vm2");
 		localNode.setWorkAreaRootPath(Path.make(workAreaRootPath));
 		action.setLocalNode(localNode);

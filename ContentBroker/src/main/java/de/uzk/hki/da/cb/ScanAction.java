@@ -65,7 +65,7 @@ public class ScanAction extends AbstractAction{
 	@Override
 	public void checkPreconditions() {
 		if (o.getLatest(PREMIS_XML)==null) throw new PreconditionsNotMetException("Must exist: "+PREMIS_XML);
-	    if (!o.getLatest(PREMIS_XML).toRegularFile().exists()) throw new PreconditionsNotMetException("Must exist: "+PREMIS_XML);
+	    if (!wa.toFile(o.getLatest(PREMIS_XML)).exists()) throw new PreconditionsNotMetException("Must exist: "+PREMIS_XML);
 	}
 
 	@Override
@@ -74,9 +74,8 @@ public class ScanAction extends AbstractAction{
 		j.getConversion_instructions().addAll(
 				generateConversionInstructions(o.getLatestPackage().getFiles()));
 		
-		Object premisObject = parsePremisToMetadata(o.
-				getLatest(PREMIS_XML).
-				toRegularFile());
+		Object premisObject = parsePremisToMetadata(wa.toFile(o.
+				getLatest(PREMIS_XML)));
 		if (!premisObject.grantsRight(MIGRATION))
 		{
 			logger.info("PREMIS says migration is not granted. Will ask the user what to do next.");

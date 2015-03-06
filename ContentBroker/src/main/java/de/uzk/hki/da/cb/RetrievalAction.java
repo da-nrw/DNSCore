@@ -21,7 +21,9 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.*;
+import static de.uzk.hki.da.core.C.FILE_EXTENSION_TAR;
+import static de.uzk.hki.da.core.C.WA_DATA;
+import static de.uzk.hki.da.core.C.WA_WORK;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,7 +74,7 @@ public class RetrievalAction extends AbstractAction {
 	@Override
 	public void checkPreconditions() {
 		if (!wa.objectPath().toFile().exists()) throw new IllegalStateException("object data path on fs doesn't exist on fs");
-		if (!o.getLatest(PREMIS_XML).toRegularFile().exists()) throw new RuntimeException("CRITICAL ERROR: premis file could has not been found");
+		if (!wa.toFile(o.getLatest(PREMIS_XML)).exists()) throw new RuntimeException("CRITICAL ERROR: premis file could has not been found");
 	}
 	
 	@Override
@@ -126,7 +128,7 @@ public class RetrievalAction extends AbstractAction {
 			
 				File destDir = Path.makeFile(tempFolder,WA_DATA,f.getRep_name(),FilenameUtils.getPath(f.getRelative_path()));
 				destDir.mkdirs();
-				FileUtils.copyFileToDirectory(f.toRegularFile(), destDir);
+				FileUtils.copyFileToDirectory(wa.toFile(f), destDir);
 			}
 		}
 	}
@@ -156,7 +158,7 @@ public class RetrievalAction extends AbstractAction {
 
 	private void moveNewestPremisToDIP(Path tempFolder) throws IOException {
 		File dest = Path.makeFile(tempFolder,WA_DATA,PREMIS_XML);
-		FileUtils.copyFile(o.getLatest(PREMIS_XML).toRegularFile(), dest);
+		FileUtils.copyFile(wa.toFile(o.getLatest(PREMIS_XML)), dest);
 	}
 
 
@@ -211,14 +213,14 @@ public class RetrievalAction extends AbstractAction {
 		List<DAFile> files = o.getNewestFilesFromAllRepresentations(sce);
 		for (DAFile f : files)
 		{
-			if (f.toRegularFile().getName().equals(PREMIS_XML)) continue;
+			if (wa.toFile(f).getName().equals(PREMIS_XML)) continue;
 				
 			File dest = Path.makeFile(tempFolder,WA_DATA,f.getRelative_path());
 			logger.info("file will be part of pip: "+dest.getAbsolutePath());
 			String destFolder = dest.getAbsolutePath().substring(0, dest.getAbsolutePath().lastIndexOf("/"));
 
 			new File(destFolder).mkdirs();
-			FileUtils.copyFile(f.toRegularFile(), dest);
+			FileUtils.copyFile(wa.toFile(f), dest);
 		}
 	}
 }

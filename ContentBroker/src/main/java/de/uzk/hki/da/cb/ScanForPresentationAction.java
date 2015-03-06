@@ -120,11 +120,11 @@ public class ScanForPresentationAction extends AbstractAction{
 			logger.trace("Generating ConversionInstructions for PRESENTER");
 			List<ConversionPolicy> policies = preservationSystem.getApplicablePolicies(file, true);
 			if ( o.grantsRight("PUBLICATION")
-					&& !file.toRegularFile().getName().toLowerCase().endsWith(".xml")
-					&& !file.toRegularFile().getName().toLowerCase().endsWith(".rdf")
-					&& !file.toRegularFile().getName().toLowerCase().endsWith(".xmp")
+					&& !wa.toFile(file).getName().toLowerCase().endsWith(".xml")
+					&& !wa.toFile(file).getName().toLowerCase().endsWith(".rdf")
+					&& !wa.toFile(file).getName().toLowerCase().endsWith(".xmp")
 					&& (policies == null || policies.isEmpty()) ) {
-				throw new RuntimeException("No policy found for file "+file.toRegularFile().getAbsolutePath()
+				throw new RuntimeException("No policy found for file "+wa.toFile(file).getAbsolutePath()
 						+"("+file.getFormatPUID()+")! Package can not be published because it would be incomplete.");
 			} else for (ConversionPolicy p : policies)	{
 				logger.info("Found applicable Policy for FileFormat "+p.getSource_format()+" -> "+p.getConversion_routine().getName() + "("+ file.getRelative_path()+ ")");

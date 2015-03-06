@@ -113,7 +113,7 @@ public class RegisterURNAction extends AbstractAction {
 	
 
 	private File premisFile() {  
-		return o.getLatest(PREMIS_XML).toRegularFile();
+		return wa.toFile(o.getLatest(PREMIS_XML));
 	}
 	
 
