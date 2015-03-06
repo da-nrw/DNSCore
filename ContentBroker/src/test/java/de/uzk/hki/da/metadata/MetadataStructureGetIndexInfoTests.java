@@ -28,6 +28,7 @@ public class MetadataStructureGetIndexInfoTests {
 	private static final Path workAreaRootPathPath = new RelativePath("src/test/resources/metadata/MetadataStructureGetIndexInfoTests/");
 	private static HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();
 	private static HashMap<String, List<String>> content = new HashMap<String, List<String>>();
+	private static HashMap<String, List<String>> content1 = new HashMap<String, List<String>>();
 	private String objectID = "objectID";
 	private static PreservationSystem pSystem;
 	
@@ -83,7 +84,7 @@ public class MetadataStructureGetIndexInfoTests {
 		MetadataStructure mms = new MetsMetadataStructure(metsFile, docs);
 		indexInfo = mms.getIndexInfo(objectID);
 		
-		content = indexInfo.get("md258094");
+		content = indexInfo.get(objectID+"-md258094");
 		
 		assertTrue(content.get(C.EDM_TITLE).contains("Chronik der Stadt Hoerde")
 				&&content.get(C.EDM_TITLE).contains("und der größeren evangelischen Gemeinde in derselben"));
@@ -93,9 +94,31 @@ public class MetadataStructureGetIndexInfoTests {
 				&&content.get(C.EDM_DATE).contains("2011"));
 		
 		assertTrue(content.get(C.EDM_PUBLISHER).contains("Hoerde")
-				&&content.get(C.EDM_PUBLISHER).contains("Münster"));
+				&&content.get(C.EDM_PUBLISHER).contains("Universitäts- und Landesbibliothek (Münster)"));
+		
+		content1 = indexInfo.get(objectID+"-md1616184");
 		
 		mms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "metsToEdm.xml"),  pSystem);
+	}
+	
+	@Test
+	public void testMultilevelMETS() throws FileNotFoundException, JDOMException, IOException {
+		
+		File metsFile = Path.make(workAreaRootPathPath,"export_mets.xml").toFile();
+		
+		List<Document> docs = new ArrayList<Document>();
+		MetadataStructure mms = new MetsMetadataStructure(metsFile, docs);
+		indexInfo = mms.getIndexInfo(objectID);
+		
+		content = indexInfo.get(objectID+"-md1617166");
+		
+		assertTrue(content.get(C.EDM_TITLE).contains("[Atlas von Europa]"));	
+		assertTrue(content.get(C.EDM_DATE).contains("1794")
+				&&content.get(C.EDM_DATE).contains("2012"));
+		assertTrue(content.get(C.EDM_PUBLISHER).contains("Otto (Wien)")
+				&&content.get(C.EDM_PUBLISHER).contains("Univ.- und Landesbibliothek (Münster)"));
+		
+		mms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "multilevelMetsToEdm.xml"),  pSystem);
 	}
 	
 	@Test
@@ -130,7 +153,7 @@ public class MetadataStructureGetIndexInfoTests {
 						content.get(C.EDM_IDENTIFIER).contains("v.num: 2")&&
 						content.get(C.EDM_IDENTIFIER).contains("Bestellnummer: 4547_Blatt_002"));
 				assertTrue(
-						content.get(C.EDM_HAS_VIEW).contains("mets_2_32045.xml"));
+						content.get(C.EDM_IS_SHOWN_BY).contains("mets_2_32045.xml"));
 			}
 		}
 		assertTrue(indexInfo.get(parent).get(C.EDM_TITLE).contains("14. Verschiedenes"));
@@ -140,9 +163,10 @@ public class MetadataStructureGetIndexInfoTests {
 	
 	@AfterClass 
 	public static void tearDown(){
-		Path.makeFile(workAreaRootPathPath, "target", "edmToEdm.xml").delete();
+		Path.makeFile(workAreaRootPathPath, "target", "eadToEdm.xml").delete();
 		Path.makeFile(workAreaRootPathPath, "target","lidoToEdm.xml").delete();
 		Path.makeFile(workAreaRootPathPath, "target", "metsToEdm.xml").delete();
+		Path.makeFile(workAreaRootPathPath, "target", "multilevelMetsToEdm.xml").delete();
 		Path.makeFile(workAreaRootPathPath, "target").delete();
 	}
 }

@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +20,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
+import org.xml.sax.InputSource;
 
 import de.uzk.hki.da.core.C;
 
@@ -33,6 +36,8 @@ public class MetsMetadataStructure extends MetadataStructure {
 	private static final Namespace XLINK_NS = 	Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	private List<de.uzk.hki.da.model.Document> currentDocuments;
 	private Document metsDoc;
+	private final String STRUCTMAP_TYPE_LOGICAL = "LOGICAL";
+	private final String TITLE_PAGE = "title_page";
 
 	List<Element> fileElements;
 	Element modsXmlData;
@@ -44,12 +49,18 @@ public class MetsMetadataStructure extends MetadataStructure {
 		metsFile = metadataFile;
 		currentDocuments = documents;
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(metsFile);
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
-		metsDoc = builder.build(bomInputStream);
+		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
+		InputSource is = new InputSource(reader);
+		is.setEncoding("UTF-8");
+		metsDoc = builder.build(is);
+		
 		fileElements = getFileElementsFromMetsDoc(metsDoc);
 		fileInputStream.close();
+		bomInputStream.close();
+		reader.close();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -110,24 +121,37 @@ public class MetsMetadataStructure extends MetadataStructure {
 //			dataProvider
 			dmdSecInfo.put(C.EDM_DATA_PROVIDER, getDataProvider());
 			
+			getReferencesFromDmdId(id, ObjectId);
+			
 			indexInfo.put(id, dmdSecInfo);
 		}
 		return indexInfo;
 	}
 	
 	private String getTitlePageReferenceFromDmdId(String dmdID, String objectId) {
-		String titlePageLogicalId = getTitlePageLogicalId(dmdID.replace(objectId+"-", ""));
-		String titlePagePhysicalId = getTitlePagePhysicalId(metsDoc, titlePageLogicalId);
-		String fileId = getFileIdFromPhysicalId(metsDoc, titlePagePhysicalId);
-		String ref = getReferenceFromFileId(fileId);
+		String titlePageLogicalId = getIdAndParentDmdIdFromLogicalStructMap(dmdID.replace(objectId+"-", ""), TITLE_PAGE, "ID")[0];
+		String titlePagePhysicalId = getPhysicalIdFromStructLink(metsDoc, titlePageLogicalId);
+		String titlePageFileId = getFileIdFromPhysicalId(titlePagePhysicalId);
+		String ref = getReferenceFromFileId(titlePageFileId);
 		return ref;
 	}
 	
+	private List<String> getReferencesFromDmdId(String dmdID, String objectId) {
+		List<String> references = new ArrayList<String>();
+		String logicalId = getIdAndParentDmdIdFromLogicalStructMap(dmdID.replace(objectId+"-", ""), "", "ID")[0];
+		System.out.println("LOGICAL_ID: "+logicalId+" from DMDID "+dmdID);
+		
+		System.out.println("YAY "+getIdAndParentDmdIdFromLogicalStructMap(dmdID.replace(objectId+"-", ""), "", "ID")[0]);
+		System.out.println("YAY "+getIdAndParentDmdIdFromLogicalStructMap(dmdID.replace(objectId+"-", ""), "", "ID")[1]);
+		
+		return references;
+	}
+	
 	@SuppressWarnings("unchecked")
-	private String getFileIdFromPhysicalId(Document doc, String physicalId) {
+	private String getFileIdFromPhysicalId(String physicalId) {
 		String fileId = "";
 		try {
-			List<Element> structMaps = getStructMaps(doc);
+			List<Element> structMaps = getStructMaps(metsDoc);
 			for(Element s : structMaps) {
 				if(s.getAttributeValue("TYPE").equals("PHYSICAL")) {
 					List<Element> divList =  s.getChildren("div", C.METS_NS);
@@ -150,32 +174,6 @@ public class MetsMetadataStructure extends MetadataStructure {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private String getTitlePagePhysicalId(Document doc, String titlePageLogicalId) {
-		String titlePagePhysicalId = "";
-		List<Element> structLink = new ArrayList<Element>();
-		try {
-			structLink = doc.getRootElement().getChild("structLink", C.METS_NS).getChildren("smLink", C.METS_NS);
-			for(Element link : structLink) {
-				if(link.getAttributeValue("from", XLINK_NS).equals(titlePageLogicalId)) {
-					titlePagePhysicalId = link.getAttributeValue("to", XLINK_NS);
-				}
-			}
-		} catch (Exception e) {
-			logger.debug("Unable to find the title page physical id from logical id "+titlePageLogicalId);
-		}
-		return titlePagePhysicalId;
-	}
-	
-	private String getTitlePageLogicalId(String dmdID) {
-		String titlePageLogicalId = "";
-		try {
-			titlePageLogicalId = getTitlePageLogicalIdFromDmdId(dmdID);
-		} catch (Exception e) {
-		}
-		return titlePageLogicalId;
-	}
-	
-	@SuppressWarnings("unchecked")
 	private List<Element> getStructMaps(Document doc) {
 		List<Element> structMap = new ArrayList<Element>();
 		try {
@@ -186,32 +184,61 @@ public class MetsMetadataStructure extends MetadataStructure {
 		return structMap;
 	} 
 	
-	@SuppressWarnings({ "unchecked", "unused" })
-	private String getTitlePageLogicalIdFromDmdId(String dmdID) {
-		String titlePageLogicalId = "";
+	@SuppressWarnings({ "unchecked" })
+	private String[] getIdAndParentDmdIdFromLogicalStructMap(String dmdID, String type, String idType) {
+		String id = "";
+		String parentId = "";
 		try {
 			List<Element> structMap = getStructMaps(metsDoc);
 			for(Element s : structMap) {
-				if(s.getAttributeValue("TYPE").equals("LOGICAL")) {
+				if(s.getAttributeValue("TYPE").equals(STRUCTMAP_TYPE_LOGICAL)) {
 					List<Element> metsDivElements = s.getChildren("div", C.METS_NS);
 					for (Element d : metsDivElements){
 						if(d.getAttributeValue("DMDID").equals(dmdID)) {
-							List<Element> divChildren = d.getChildren();
-							Boolean titlePageExists = false;
-							for(Element divChild : divChildren) {
-								if(divChild.getAttributeValue("TYPE").equals("title_page")) {
-									titlePageExists = true;
-									titlePageLogicalId = divChild.getAttributeValue("ID");
+							if(type.equals(TITLE_PAGE)) {
+								List<Element> divs =  d.getChildren("div", C.METS_NS);
+								for(Element div : divs) {
+									if(div.getAttributeValue("TYPE").equals(type)) {
+										id = div.getAttributeValue(idType);
+									}
 								}
+							} else {
+								id = d.getAttributeValue(idType);
 							}
-						} 
+						} else if(d.getChildren("div", C.METS_NS)!=null) {
+							List<Element> divChildren =  d.getChildren("div", C.METS_NS);
+							for(Element divChild : divChildren) {
+								if(divChild.getAttributeValue("DMDID").equals(dmdID)) {
+									id = divChild.getAttributeValue(idType);
+									parentId = d.getAttributeValue("DMDID");
+								}
+							}	
+						}
 					}
 				}
 			}
 		} catch (Exception e) {
-			logger.debug("Unable to find the logical id from dmdID "+dmdID);
+			logger.debug("Unable to find the "+idType+" id from dmdID "+dmdID);
 		}
-		return titlePageLogicalId;
+		String[] idAndParentDmdId = {id, parentId};
+		return idAndParentDmdId;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private String getPhysicalIdFromStructLink(Document doc, String logicalId) {
+		String physId = "";
+		List<Element> structLink = new ArrayList<Element>();
+		try {
+			structLink = doc.getRootElement().getChild("structLink", C.METS_NS).getChildren("smLink", C.METS_NS);
+			for(Element link : structLink) {
+				if(link.getAttributeValue("from", XLINK_NS).equals(logicalId)) {
+					physId = link.getAttributeValue("to", XLINK_NS);
+				}
+			}
+		} catch (Exception e) {
+			logger.debug("Unable to find the physical id from logical id "+logicalId);
+		}
+		return physId;
 	}
 		
 	private List<String> getDataProvider() {
@@ -500,12 +527,14 @@ public class MetsMetadataStructure extends MetadataStructure {
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::  REPLACEMENTS  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 	public void makeReplacementsInMetsFile(File metsFile, String currentHref, String targetHref, String mimetype, String loctype) throws IOException, JDOMException {
-
 		File targetMetsFile = metsFile;
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(targetMetsFile);
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
-		Document metsDoc = builder.build(bomInputStream);
+		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
+		InputSource is = new InputSource(reader);
+		is.setEncoding("UTF-8");
+		Document metsDoc = builder.build(is);
 		
 		List<Element> metsFileElements = getFileElementsFromMetsDoc(metsDoc);
 		
@@ -517,12 +546,13 @@ public class MetsMetadataStructure extends MetadataStructure {
 				setLoctype(fileElement, loctype);
 			}
 		}
-		
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.setFormat(Format.getPrettyFormat());
 		outputter.output(metsDoc, new FileWriter(targetMetsFile));
 
 		fileInputStream.close();
+		bomInputStream.close();
+		reader.close();
 	}
 
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::   VALIDATION   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::

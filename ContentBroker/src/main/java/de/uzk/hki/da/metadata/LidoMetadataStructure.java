@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +18,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.xml.sax.InputSource;
 
 import de.uzk.hki.da.core.C;
 
@@ -37,14 +40,18 @@ public class LidoMetadataStructure extends MetadataStructure{
 		lidoFile = metadataFile;
 		currentDocuments = documents;
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(metadataFile);
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
+		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
+		InputSource is = new InputSource(reader);
+		is.setEncoding("UTF-8");
+		doc = builder.build(is);
 		
-		doc = builder.build(bomInputStream);
 		List<Element> lidoElements = getLidoElements();
 		lidoLinkResources = parseLinkResourceElements(lidoElements);
 		fileInputStream.close();
+		bomInputStream.close();
 	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -97,6 +104,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 					if(references.size()==1) {
 						lidoElementInfo.put(C.EDM_OBJECT, references);
 					} else {
+						lidoElementInfo.put(C.EDM_OBJECT, shownBy);
 						lidoElementInfo.put(C.EDM_HAS_VIEW, references);
 					}
 				}
