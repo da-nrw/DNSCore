@@ -103,7 +103,7 @@ Hierzu muss die mitgelierferte **premis.xml** folgende Eintrage aufweisen:
 ```
 Die URN <code>urn:nbn:de:xyz-1-20131008367735</code> würde anschließend vom System ausgelesen und verwendet, anstatt eine neue URN aus dem generierten Identifier abzuleiten.
 
-Bitte beachten Sie, dass keinerlei Validierung oder Prüfung des angegebenen Wertes stattfindet. Der Wert des vorgesehenen Feldes wird "as is" ausgelesen und verwendet. Dementsprechend findet auch keine Prüfung hinsichtlich der Eindeutigkeit
+**Bitte beachten** Sie, dass keinerlei Validierung oder Prüfung des angegebenen Wertes stattfindet. Der Wert des vorgesehenen Feldes wird "as is" ausgelesen und verwendet. Dementsprechend findet auch keine Prüfung hinsichtlich der Eindeutigkeit
 der vergebenen URN oder ähnliches statt.
 
 #### URNs und Deltas
