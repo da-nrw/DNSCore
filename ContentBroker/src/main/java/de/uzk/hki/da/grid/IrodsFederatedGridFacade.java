@@ -100,6 +100,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	}
 	
 	public void startFederateItem(String gridPath, StoragePolicy sp) {
+		logger.debug("Trying to start Federation Executor");
 		Thread  fe = new FederationExecutor(irodsSystemConnector,sp, gridPath);
 		fe.start();
 	}
@@ -115,16 +116,16 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	      + "acIsValid(*dao,*state)\n"
 	      + "}\n"
 	      + "INPUT *dao=\"" + address_dest +"\"\n"
-	      + "OUTPUT *state", "*state");
+	      + "OUTPUT ruleExecOut", "ruleExecOut");
 		if (check!=null && !check.isEmpty() ) {
-			if (check.equals("1")) {
+			if (check.indexOf("state 1")>0) {
 				logger.debug("claimed state by iRODS Datagrid is: true");
 				return true;
 			}
 		}	
 		irodsSystemConnector.logoff();
 		} catch (Exception e) {
-			logger.error("Catched Exception " + e.getMessage());
+			logger.error("Catched Exception " + e.getMessage(),e);
 			
 		}
 		logger.debug("claimed state by iRODS Datagrid is: false");
