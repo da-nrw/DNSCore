@@ -152,7 +152,14 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			nodeInfo.put(C.EDM_DATE, getDate(child));
 			nodeInfo.put(C.EDM_IDENTIFIER, getUnitIDs(child));
 		} else if(child.getName().equals("daogrp")) {
-			nodeInfo.put(C.EDM_HAS_VIEW, getHref(child));
+			if(getHref(child)!=null & getHref(child).size()!=0) {
+				List<String> shownBy = new ArrayList<String>();
+				shownBy.add(getHref(child).get(0));
+				nodeInfo.put(C.EDM_IS_SHOWN_BY, shownBy);
+				nodeInfo.put(C.EDM_OBJECT, shownBy);
+			} else if(getHref(child).size()>1) {
+				nodeInfo.put(C.EDM_HAS_VIEW, getHref(child));
+			}
 		} else if(uniqueID!=null && child.getName().equals(nextLevel)) {
 			childElements.put(child, uniqueID);
 		}

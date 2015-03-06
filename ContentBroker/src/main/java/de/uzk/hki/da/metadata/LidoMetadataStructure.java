@@ -104,6 +104,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 					if(references.size()==1) {
 						lidoElementInfo.put(C.EDM_OBJECT, references);
 					} else {
+						lidoElementInfo.put(C.EDM_OBJECT, shownBy);
 						lidoElementInfo.put(C.EDM_HAS_VIEW, references);
 					}
 				}
