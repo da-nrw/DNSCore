@@ -126,7 +126,7 @@ public class CheckFormatsAction extends AbstractAction {
 			File target = Path.makeFile(dir,fileName);
 			logger.debug("will write jhove output to: "+target);
 			try {
-				if (!fileFormatFacade.extract(f.toRegularFile(), target)) 
+				if (!fileFormatFacade.extract(wa.toFile(f), target)) 
 					throw new RuntimeException("Unknown error during metadata file extraction.");
 			} catch (ConnectionException e) {
 				throw new SubsystemNotAvailableException("fileFormatFacade.extract() could not connect.",e);

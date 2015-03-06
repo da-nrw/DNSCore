@@ -19,8 +19,13 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,32 +43,63 @@ public class RegisterURNActionTest extends ConcreteActionUnitTest {
 	RegisterURNAction action = new RegisterURNAction();
 	
 	private static final Path WORK_AREA_ROOT_PATH = Path.make(TC.TEST_ROOT_CB,"RegisterURNAction"); 
-	
+	private DAFile premis = null;
 	
 	@Before
-	public void setUp() {
+	public void setUp() throws IOException {
 		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
 		
-		DAFile premis = new DAFile(o.getLatestPackage(),"2012_12_12+12_12_12+a","premis.xml");
+		premis = new DAFile(o.getLatestPackage(),"2012_12_12+12_12_12+a","premis.xml");
 		o.getLatestPackage().getFiles().add(premis);
+		
+		FileUtils.copyFile(Path.makeFile(WORK_AREA_ROOT_PATH,"premis.xml.1"), wa.toFile(premis));
+		o.setUrn(null);
 	}
+
+	@After
+	public void tearDown() {
+		wa.toFile(premis).delete();
+	}
+	
 	
 	@Test
 	public void newIdentifier() {
-		o.setUrn(null);
 		action.implementation();
 		assertEquals(ps.getUrnNameSpace()+"-"+o.getIdentifier(),o.getUrn());
 	}
+	
+	
+	@Test
+	public void identifierFromPREMIS() throws IOException {
+		FileUtils.copyFile(Path.makeFile(WORK_AREA_ROOT_PATH,"premis.xml.urn"), wa.toFile(premis));
+	
+		action.implementation();
+		assertEquals("urn:nbn:de:xyz-1-20131008367735",o.getUrn());
+	}
+	
+	@Test
+	public void dontOverrideURNWhenDeltaAndURNInPremis() throws IOException {
+		FileUtils.copyFile(Path.makeFile(WORK_AREA_ROOT_PATH,"premis.xml.urn"), wa.toFile(premis));
+		
+		Package pkg = new Package();
+		pkg.setName("2");
+		o.getPackages().add(pkg);
+		String prv_urn = "previous_urn";
+		o.setUrn(prv_urn);
+		
+		action.implementation();
+		assertEquals("previous_urn",o.getUrn());
+	}
+	
 	
 	@Test
 	public void dontOverrideURNWhenDelta() {
 		Package pkg = new Package();
 		pkg.setName("2");
 		o.getPackages().add(pkg);
-		
-		
 		String prv_urn = "previous_urn";
 		o.setUrn(prv_urn);
+		
 		action.implementation();
 		assertEquals(prv_urn,o.getUrn());
 	}
@@ -71,7 +107,6 @@ public class RegisterURNActionTest extends ConcreteActionUnitTest {
 	
 	@Test
 	public void rollbackWhenNotDelta() {
-		o.setUrn(null);
 		action.implementation();
 		
 		action.rollback();

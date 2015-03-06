@@ -66,7 +66,7 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 		logger.trace("Moving the dip content for presentation purposes out of the archival package.");
 		copyPIPSforReplication();
 		
-		Object premisObject = readRightsFromPREMIS(o.getLatest(PREMIS_XML).toRegularFile());
+		Object premisObject = readRightsFromPREMIS(wa.toFile(o.getLatest(PREMIS_XML)));
 		deleteNotAllowedDataStreams(premisObject);
 		
 		registerPIPSforReplication();

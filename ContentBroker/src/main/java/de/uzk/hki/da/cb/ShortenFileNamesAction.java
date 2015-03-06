@@ -70,7 +70,7 @@ public class ShortenFileNamesAction extends AbstractAction {
 			DAFile daFile = e.getTarget_file();
 			if (!daFile.getRep_name().startsWith(C.WA_DIP)) continue;
 			
-			final File file = daFile.toRegularFile();
+			final File file = wa.toFile(daFile);
 			final String filePath = daFile.getRelative_path();
 			logger.debug("filePath: " + filePath);
 			String extension = FilenameUtils.getExtension(filePath);
@@ -109,7 +109,7 @@ public class ShortenFileNamesAction extends AbstractAction {
 			if (!"CONVERT".equals(e.getType())) continue;
 			
 			DAFile daFile = e.getTarget_file();
-			File file = daFile.toRegularFile();
+			File file = wa.toFile(daFile);
 			String filePath = daFile.getRelative_path();
 			if (!map.containsKey(filePath)) continue;
 			String oldFilePath = map.get(filePath);

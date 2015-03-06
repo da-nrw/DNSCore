@@ -271,7 +271,7 @@ public class CreatePremisAction extends AbstractAction {
 						}
 					}
 					if (!eventExists)
-						throw new RuntimeException("No event found for file " + f.toRegularFile().getAbsolutePath());
+						throw new RuntimeException("No event found for file " + wa.toFile(f).getAbsolutePath());
 				}
 			}
 		}		

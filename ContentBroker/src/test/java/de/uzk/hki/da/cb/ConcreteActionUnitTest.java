@@ -57,7 +57,7 @@ public class ConcreteActionUnitTest {
 	Node n = null;
 	Object o;
 	Job j;
-	private WorkArea wa;
+	WorkArea wa;
 	private User c;
 	
 	protected static AbstractAction a;
