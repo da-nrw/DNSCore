@@ -229,18 +229,15 @@ acGetAVUField(*objPath,*fieldName,*fieldValue) {
 # Author Jens Peters
 # INPUT objPath the object to check
 # OUTPUT status 0:false== failure 1: true == ok
-#
-acIsValid(*objPath,*status) {
-        *status=0
+
+# TEMPORARILY Doesn't check federated items until we're doing own implemetation
+# of it due to weired 
+
+acIsValid(*objPath,*stat) {
+    *stat=0
  	msiDataObjChksum(*objPath,"",*localCs)	
-	acGetOrigChecksum(*objPath,*origCs)
-	if (*localCs == *origCs) {
-		acVerifyChecksumFed(*origCs,*objPath,*errors)
-		if (*errors == 0) { 
-			acVerifyChecksum(*objPath, *status)	
-		}
-	}
-	acLog("*objPath has state *status in IsValid()")
+	acVerifyChecksum(*objPath, *stat)	
+	acLog("*objPath has state *stat in IsValid()")
 }
 
 # Gets the resource for a given Resource Group name

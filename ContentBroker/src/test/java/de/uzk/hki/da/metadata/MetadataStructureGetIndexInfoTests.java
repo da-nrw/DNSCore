@@ -117,6 +117,14 @@ public class MetadataStructureGetIndexInfoTests {
 				&&content.get(C.EDM_DATE).contains("2012"));
 		assertTrue(content.get(C.EDM_PUBLISHER).contains("Otto (Wien)")
 				&&content.get(C.EDM_PUBLISHER).contains("Univ.- und Landesbibliothek (Münster)"));
+
+		assertTrue(content.get(C.EDM_HAS_PART).size()==1 && content.get(C.EDM_HAS_PART).contains("objectID-md1616184"));
+		
+		content1 = indexInfo.get(objectID+"-md1616184");
+		assertTrue(content1.get(C.EDM_IS_PART_OF).size()==1 && content1.get(C.EDM_IS_PART_OF).contains("objectID-md1617166"));
+		assertTrue(content1.get(C.EDM_IS_SHOWN_BY).contains("image/1616186.tif"));
+		assertTrue(content1.get(C.EDM_OBJECT).contains("image/1616186.tif"));
+		assertTrue(content1.get(C.EDM_HAS_VIEW).contains("image/1616186.tif") && content1.get(C.EDM_HAS_VIEW).contains("image/1616187.tif"));
 		
 		mms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "multilevelMetsToEdm.xml"),  pSystem);
 	}

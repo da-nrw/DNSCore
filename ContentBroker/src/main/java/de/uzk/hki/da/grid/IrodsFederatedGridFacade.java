@@ -26,12 +26,15 @@ package de.uzk.hki.da.grid;
  */
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.ProcessInformation;
 
 
 
@@ -107,15 +110,15 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 
 	@Override
 	public boolean isValid(String gridPath) {
-		String address_dest = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + "/" + gridPath;
+	String address_dest = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + "/" + gridPath;
 		logger.debug("checking validity of " + address_dest);
 		try {
-		irodsSystemConnector.connect();	
-		String check = irodsSystemConnector.executeRule("checkItemsQuick {\n"
+	irodsSystemConnector.connect();	
+	String check = irodsSystemConnector.executeRule("checkItemsQuick {\n"
 	      + "*state=0\n"
-	      + "acIsValid(*dao,*state)\n"
+	      + "acIsValid(*dataObj,*state)\n"
 	      + "}\n"
-	      + "INPUT *dao=\"" + address_dest +"\"\n"
+	      + "INPUT *dataObj=\"" + address_dest +"\"\n"
 	      + "OUTPUT ruleExecOut", "ruleExecOut");
 		if (check!=null && !check.isEmpty() ) {
 			if (check.indexOf("state 1")>0) {
@@ -125,10 +128,11 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		}	
 		irodsSystemConnector.logoff();
 		} catch (Exception e) {
-			logger.error("Catched Exception " + e.getMessage(),e);
+			logger.error("Catched Exception " + e.getMessage());
 			
 		}
 		logger.debug("claimed state by iRODS Datagrid is: false");
 		return false;
 	}
+	
 }

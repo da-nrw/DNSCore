@@ -19,8 +19,6 @@
 
 package de.uzk.hki.da.cb;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.grid.GridFacade;
@@ -100,7 +98,7 @@ public class AuditAction extends AbstractAction {
 
 	@Override
 	public void rollback() throws Exception {
-		throw new NotImplementedException("No rollback implemented for this action");
+		// nothing to do
 	}
 	
 	

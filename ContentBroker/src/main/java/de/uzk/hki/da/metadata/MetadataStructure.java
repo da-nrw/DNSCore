@@ -135,7 +135,7 @@ public abstract class MetadataStructure {
 		if(elementName.equals(C.EDM_HAS_VIEW) || elementName.equals(C.EDM_IS_PART_OF) || elementName.equals(C.EDM_HAS_PART) 
 				|| elementName.equals(C.EDM_IS_SHOWN_BY) || elementName.equals(C.EDM_OBJECT)) {
 			if(elementName.equals(C.EDM_IS_PART_OF) || elementName.equals(C.EDM_HAS_PART)) {
-				elementValue = preservationSystem.getUrisFile()+"/"+elementValue;
+				elementValue = preservationSystem.getUrisCho()+"/"+elementValue;
 			}
 			Attr rdfResource = edmDoc.createAttribute("rdf:resource");
 			rdfResource.setValue(elementValue);
