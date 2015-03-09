@@ -121,9 +121,9 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 //	      + "}\n"
 //	      + "INPUT null\n"
 //	      + "OUTPUT ruleExecOut", "ruleExecOut");
-	String check = executeIrule("*status=0\n"
+	String check = executeIrule("*state=0\n"
 		      + "*dataObj=\"" + address_dest +"\"\n"
-		      + "acIsValid(*dataObj,*status)\n");
+		      + "acIsValid(*dataObj,*state)\n");
 	
 		if (check!=null && !check.isEmpty() ) {
 			if (check.indexOf("state 1")>0) {
