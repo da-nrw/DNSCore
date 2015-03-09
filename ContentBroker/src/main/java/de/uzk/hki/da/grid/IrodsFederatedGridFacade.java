@@ -151,7 +151,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		CommandLineConnector clc = new CommandLineConnector();
 		ProcessInformation pi = null;
 		try {
-			pi = clc.runCmdSynchronously(commandAsArray);
+			pi = clc.runCmdSynchronously(commandAsArray, 86400000L);
 		} catch (IOException e1) {
 			throw new RuntimeException("Icommand did not succeed, not found: " + Arrays.toString(commandAsArray));
 		}
