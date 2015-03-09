@@ -77,9 +77,9 @@ public class ObjectToWorkAreaActionTests extends ConcreteActionUnitTest{
 	@Test
 	public void implementation() {
 		action.implementation();
-		assertTrue(Path.makeFile(o.getDataPath()).exists());
-		assertTrue(Path.makeFile(o.getDataPath(),"2014_07_18+11_38+a").exists());
-		assertTrue(Path.makeFile(o.getDataPath(),"2014_07_18+11_38+b").exists());
+		assertTrue(Path.makeFile(wa.dataPath()).exists());
+		assertTrue(Path.makeFile(wa.dataPath(),"2014_07_18+11_38+a").exists());
+		assertTrue(Path.makeFile(wa.dataPath(),"2014_07_18+11_38+b").exists());
 	}
 	
 	@Test
@@ -101,6 +101,6 @@ public class ObjectToWorkAreaActionTests extends ConcreteActionUnitTest{
 	public void rollback() throws Exception {
 		action.implementation();
 		action.rollback();
-		assertFalse(Path.makeFile(o.getDataPath()).exists());
+		assertFalse(Path.makeFile(wa.dataPath()).exists());
 	}
 }

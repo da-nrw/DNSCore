@@ -52,7 +52,9 @@ import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
@@ -68,6 +70,7 @@ public class UpdateMetadataActionXMPTests {
 	private final Path workAreaRootPath = new RelativePath("src/test/resources/cb/UpdateMetadataActionXMPTests/");
 	private static final Namespace RDF_NS = Namespace.getNamespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 	
+	
 	@BeforeClass
 	public static void mockDca() throws IOException {
 		mtds = mock(MimeTypeDetectionService.class);
@@ -79,6 +82,11 @@ public class UpdateMetadataActionXMPTests {
 		FileUtils.copyDirectoryToDirectory(new File("src/main/xslt"), new File("conf/"));
 		
 		Object obj = TESTHelper.setUpObject("123", workAreaRootPath);
+		
+		Node n = new Node();
+		n.setWorkAreaRootPath(workAreaRootPath);
+		WorkArea wa = new WorkArea(n,obj);
+		
 		
 		DAFile daf1 = new DAFile(obj.getLatestPackage(),_1_A_REP,"a.txt");
 		DAFile daf2 = new DAFile(obj.getLatestPackage(),_1_B_REP,"a.txt");
@@ -157,7 +165,9 @@ public class UpdateMetadataActionXMPTests {
 		obj.setMetadata_file("XMP.xml");
 		obj.setPackage_type("XMP");
 		
+		action.setWorkArea(wa);
 		action.implementation();
+		
 	}
 
 	@After

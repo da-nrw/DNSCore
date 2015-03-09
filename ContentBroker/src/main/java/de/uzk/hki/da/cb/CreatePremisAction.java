@@ -125,7 +125,7 @@ public class CreatePremisAction extends AbstractAction {
 		if (o.isDelta()){
 		
 			Object mainPREMISObject = parseOldPremisFile(
-					Path.makeFile(o.getDataPath(),"premis_old.xml"));
+					Path.makeFile(wa.dataPath(),"premis_old.xml"));
 
 			if (mainPREMISObject==null) throw new RuntimeException("mainPREMISObject is null");
 			if (mainPREMISObject.getPackages()==null) throw new RuntimeException("mainPREMISObject.getPackages is null");

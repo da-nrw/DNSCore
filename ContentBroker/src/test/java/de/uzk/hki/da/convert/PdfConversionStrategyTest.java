@@ -33,7 +33,9 @@ import org.junit.Test;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
@@ -56,6 +58,8 @@ public class PdfConversionStrategyTest {
 	
 	/** The o. */
 	Object o;
+
+	private Node n;
 	
 	/**
 	 * Sets the up.
@@ -66,6 +70,8 @@ public class PdfConversionStrategyTest {
 		o = TESTHelper.setUpObject("1", new RelativePath(workAreaRootPath));
 		o.getLatestPackage().getFiles().add(new DAFile(o.getLatestPackage(),"rep+a","Pdf.pdf"));
 		cs.setObject(o);
+		n = new Node();
+		n.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
 	}
 	
 	/**
@@ -106,7 +112,7 @@ public class PdfConversionStrategyTest {
 		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","Pdf.pdf"));
 		ci.setTarget_folder("");
 	
-		cs.convertFile(ci);
+		cs.convertFile(new WorkArea(n,o),ci);
 		
 	}
 	

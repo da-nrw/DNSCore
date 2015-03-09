@@ -41,6 +41,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
@@ -70,7 +71,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 	/**
 	 */
 	@Override
-	public List<Event> convertFile(ConversionInstruction ci)
+	public List<Event> convertFile(WorkArea wa, ConversionInstruction ci)
 			throws FileNotFoundException {
 		if (cliConnector==null) throw new IllegalStateException("cliConnector not set");
 		if (ci.getConversion_routine()==null) throw new IllegalStateException("conversionRoutine not set");
@@ -82,25 +83,25 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 		
 		// connect dafile to package
 
-		String input  = ci.getSource_file().toRegularFile().getAbsolutePath();
+		String input  = wa.toFile(ci.getSource_file()).getAbsolutePath();
 		
 		// Convert 
 		ArrayList<String> commandAsList  = null;
 		for (String audience: audiences ) {
 			
-			Path.makeFile(object.getDataPath(),pips,audience.toLowerCase(),ci.getTarget_folder()).mkdirs();
+			Path.makeFile(wa.dataPath(),pips,audience.toLowerCase(),ci.getTarget_folder()).mkdirs();
 
 			commandAsList = new ArrayList<String>();
 			commandAsList.add("convert");
-			commandAsList.add(ci.getSource_file().toRegularFile().getAbsolutePath());
+			commandAsList.add(wa.toFile(ci.getSource_file()).getAbsolutePath());
 			logger.debug(commandAsList.toString());
 			commandAsList = assembleResizeDimensionsCommand(commandAsList,audience);
 			commandAsList = assembleWatermarkCommand(commandAsList,audience);
-			commandAsList = assembleFooterTextCommand(commandAsList, audience, ci.getSource_file().toRegularFile().getAbsolutePath());
+			commandAsList = assembleFooterTextCommand(commandAsList, audience, wa.toFile(ci.getSource_file()).getAbsolutePath());
 			
 			DAFile target = new DAFile(pkg,pips+"/"+audience.toLowerCase(),StringUtilities.slashize(ci.getTarget_folder())+
 					FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix());
-			commandAsList.add(target.toRegularFile().getAbsolutePath());
+			commandAsList.add(wa.toFile(target).getAbsolutePath());
 			
 			logger.debug(commandAsList.toString());
 			String[] commandAsArray = new String[commandAsList.size()];
@@ -115,11 +116,11 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 				throw new RuntimeException("convert did not succeed: " + Arrays.toString(commandAsArray));
 			}		
 			// In order to support multipage tiffs, we check for files by wildcard expression
-			String extension = FilenameUtils.getExtension(target.toRegularFile().getAbsolutePath());
+			String extension = FilenameUtils.getExtension(wa.toFile(target).getAbsolutePath());
 			List<File> wild = findFilesWithRegex(
-					new File(FilenameUtils.getFullPath(target.toRegularFile().getAbsolutePath())), 
+					new File(FilenameUtils.getFullPath(wa.toFile(target).getAbsolutePath())), 
 					Pattern.quote(FilenameUtils.getBaseName(target.getRelative_path()))+"-\\d+\\."+extension);
-			if (!target.toRegularFile().exists() && !wild.isEmpty()){
+			if (!wa.toFile(target).exists() && !wild.isEmpty()){
 				for (File f : wild){
 					DAFile multipageTarget = new DAFile(pkg,pips+"/"+audience.toLowerCase(),StringUtilities.slashize(ci.getTarget_folder())+f.getName());
 					

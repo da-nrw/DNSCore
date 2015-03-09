@@ -34,6 +34,7 @@ import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 
@@ -62,19 +63,20 @@ public class ConverterService {
 	 * @throws IOException 
 	 */
 	public List<Event> convertBatch(
+			WorkArea wa,
 			Object object,
 			List<ConversionInstruction> conversionInstructions) throws IOException {
 		
 		List<Event> results = new ArrayList<Event>();
 		
 		// to register the pip subfolder into irods, it must exist (even if it is empty).
-		Path.make(object.getDataPath(),C.WA_DIP).toFile().mkdir();
+		Path.make(wa.dataPath(),C.WA_DIP).toFile().mkdir();
 		Path.makeFile(object.getPath("newest")).mkdir();
 		
 		for (ConversionInstruction ci:conversionInstructions){
-			waitUntilThereIsSufficientSpaceOnCacheResource(object.getDataPath().toString(),2097152,10000);
+			waitUntilThereIsSufficientSpaceOnCacheResource(wa.dataPath().toString(),2097152,10000);
 			
-			List<Event> partialResults = executeConversionInstruction(ci,object);
+			List<Event> partialResults = executeConversionInstruction(wa,ci,object);
 			
 			results.addAll(partialResults);
 		}
@@ -86,8 +88,8 @@ public class ConverterService {
 			
 			logger.info(e.getTarget_file().getRep_name()+"/"+e.getTarget_file().getRelative_path());
 			// Double check if the file really exists
-			if (!e.getTarget_file().toRegularFile().exists()) 
-				throw new RuntimeException("Target file " + e.getTarget_file().toRegularFile().getAbsolutePath() +
+			if (!wa.toFile(e.getTarget_file()).exists()) 
+				throw new RuntimeException("Target file " + wa.toFile(e.getTarget_file()).getAbsolutePath() +
 						" does not exist");
 		}
 		
@@ -126,7 +128,7 @@ public class ConverterService {
 	 * 
 	 * @throws RuntimeException if resulting file doesn't exit or is null byte file.
 	 */
-	private List<Event> executeConversionInstruction(ConversionInstruction ci,Object object) throws IOException  {
+	private List<Event> executeConversionInstruction(WorkArea wa,ConversionInstruction ci,Object object) throws IOException  {
 		if (ci.getConversion_routine()==null) throw new InvalidParameterException("ConversionRoutine not set in ConversionInstruction");
 		
 		final ConversionStrategy strategy;
@@ -151,7 +153,7 @@ public class ConverterService {
 		List<Event> results;
 		// TODO remove try catch. evaluate in convertbatch and not in convertfile
 		try {
-			results = strategy.convertFile(ci);
+			results = strategy.convertFile(wa,ci);
 		}	
 		catch (FileNotFoundException e) {
 			throw new RuntimeException("Resulting file of conversion strategy does not exist",e );

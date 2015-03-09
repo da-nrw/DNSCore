@@ -149,13 +149,13 @@ public class UnpackAction extends AbstractAction {
 	private void throwUserExceptionIfNotPremisConsistent() throws IOException {
 		
 		try {
-			if (!PremisXmlValidator.validatePremisFile(Path.make(o.getDataPath(),PREMIS_XML).toFile()))
+			if (!PremisXmlValidator.validatePremisFile(Path.make(wa.dataPath(),PREMIS_XML).toFile()))
 				throw new UserException(UserExceptionId.INVALID_SIP_PREMIS, "PREMIS Datei nicht valide.");
 		} catch (FileNotFoundException e1) {
 			throw new UserException(UserExceptionId.SIP_PREMIS_NOT_FOUND, "PREMIS Datei nicht gefunden.", e1);
 		}
 		try {
-			new ObjectPremisXmlReader().deserialize(Path.makeFile(o.getDataPath(),PREMIS_XML));
+			new ObjectPremisXmlReader().deserialize(Path.makeFile(wa.dataPath(),PREMIS_XML));
 		} catch (Exception e) {
 			throw new UserException(UserExceptionId.READ_SIP_PREMIS_ERROR,
 					"Konnte PREMIS Datei nicht erfolgreich einlesen.", e);
@@ -231,10 +231,10 @@ public class UnpackAction extends AbstractAction {
 		
 		Map<String,List<File>> documentsToFiles = new HashMap<String,List<File>>();
 		
-		Collection<File> files = FileUtils.listFiles(o.getDataPath().toFile(), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+		Collection<File> files = FileUtils.listFiles(wa.dataPath().toFile(), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
 		for (File file : files) {
 			String document = 
-					file.getAbsolutePath().replace(o.getDataPath().toFile().getAbsolutePath(),"");
+					file.getAbsolutePath().replace(wa.dataPath().toFile().getAbsolutePath(),"");
 			document = document.substring(1);
 			document = FilenameUtils.removeExtension(document);
 			

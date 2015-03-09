@@ -29,6 +29,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -39,9 +40,11 @@ import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.ImageRestriction;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
@@ -63,6 +66,16 @@ public class PublishImageConversionStrategyTest {
 	
 	/** The cr. */
 	ConversionRoutine cr;
+	private Node n;
+	
+	
+	@Before
+	public void setUp() {
+		
+		n = new Node();
+		n.setWorkAreaRootPath(workAreaRootPath);
+		
+	}
 	
 	/**
 	 * Tear down.
@@ -134,7 +147,7 @@ public class PublishImageConversionStrategyTest {
 		
 		
 		s.setObject(o);
-		List<Event> events = s.convertFile(ci);
+		List<Event> events = s.convertFile(new WorkArea(n,o),ci);
 		
 		assertEquals(sourceFile,events.get(0).getSource_file());
 		assertEquals(sourceFile,events.get(1).getSource_file());
@@ -201,7 +214,7 @@ public class PublishImageConversionStrategyTest {
 		
 		
 		s.setObject(o);
-		List<Event> events = s.convertFile(ci);
+		List<Event> events = s.convertFile(new WorkArea(n,o),ci);
 		
 		assertEquals(sourceFile,events.get(0).getSource_file());
 		assertEquals(sourceFile,events.get(1).getSource_file());
@@ -272,7 +285,7 @@ public class PublishImageConversionStrategyTest {
 		
 		
 		s.setObject(o);
-		List<Event> events = s.convertFile(ci);
+		List<Event> events = s.convertFile(new WorkArea(n,o),ci);
 		
 		assertEquals(sourceFile,events.get(0).getSource_file());
 		assertEquals(sourceFile,events.get(1).getSource_file());
@@ -310,7 +323,7 @@ public class PublishImageConversionStrategyTest {
 		ci.setConversion_routine(cr);
 		
 		s.setObject(o);
-		List<Event> events = s.convertFile(ci);
+		List<Event> events = s.convertFile(new WorkArea(n,o),ci);
 		
 		System.out.println(events.toString());
 		

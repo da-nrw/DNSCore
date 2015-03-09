@@ -36,6 +36,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
@@ -66,6 +67,10 @@ public class CLIConversionStrategy implements ConversionStrategy{
 	protected SimplifiedCommandLineConnector cliConnector;
 	
 	
+	private String toAbsolutePath(Path dataPath,DAFile f) {
+		return dataPath.toString()+"/"+f.getRep_name()+"/"+f.getRelative_path();
+	}
+	
 	/**
 	 * Convert file.
 	 *
@@ -74,18 +79,22 @@ public class CLIConversionStrategy implements ConversionStrategy{
 	 * @throws FileNotFoundException the file not found exception
 	 */
 	@Override
-	public List<Event> convertFile(ConversionInstruction ci) throws FileNotFoundException {
+	public List<Event> convertFile(
+			WorkArea wa,
+			ConversionInstruction ci
+			) 
+					throws FileNotFoundException {
 		if (pkg==null) throw new IllegalStateException("Package not set");
-		Path.make(object.getDataPath(),object.getPath("newest").getLastElement(),ci.getTarget_folder()).toFile().mkdirs();
+		Path.make(wa.dataPath(),object.getPath("newest").getLastElement(),ci.getTarget_folder()).toFile().mkdirs();
 		
-		String[] commandAsArray = assemble(ci, object.getPath("newest").getLastElement());
+		String[] commandAsArray = assemble(wa,ci, object.getPath("newest").getLastElement());
 		if (!cliConnector.execute(commandAsArray)) throw new RuntimeException("convert did not succeed");
 		
 		String targetSuffix= ci.getConversion_routine().getTarget_suffix();
-		if (targetSuffix.equals("*")) targetSuffix= FilenameUtils.getExtension(ci.getSource_file().toRegularFile().getAbsolutePath());
+		if (targetSuffix.equals("*")) targetSuffix= FilenameUtils.getExtension(toAbsolutePath(wa.dataPath(),ci.getSource_file()));
 		DAFile result = new DAFile(pkg,object.getPath("newest").getLastElement(),
 				ci.getTarget_folder()+"/"+FilenameUtils.removeExtension(Matcher.quoteReplacement(
-				FilenameUtils.getName(ci.getSource_file().toRegularFile().getAbsolutePath()))) + "." + targetSuffix);
+				FilenameUtils.getName(toAbsolutePath(wa.dataPath(),ci.getSource_file())))) + "." + targetSuffix);
 		
 		Event e = new Event();
 		e.setType("CONVERT");
@@ -115,6 +124,7 @@ public class CLIConversionStrategy implements ConversionStrategy{
 	 * whitespaces. "file 2.jpg" is represented as one token only.
 	 */
 	protected String[] assemble( 
+			WorkArea wa,
 			ConversionInstruction ci, String repName){
 				
 		String commandLine_=commandLine;
@@ -134,11 +144,11 @@ public class CLIConversionStrategy implements ConversionStrategy{
 		String[] tokenizedCmd = tokenize(commandLine_);
 		
 		String targetSuffix= ci.getConversion_routine().getTarget_suffix();
-		if (targetSuffix.equals("*")) targetSuffix= FilenameUtils.getExtension(ci.getSource_file().toRegularFile().getAbsolutePath());
-		StringUtilities.replace(tokenizedCmd, "input", ci.getSource_file().toRegularFile().getAbsolutePath());
-		StringUtilities.replace(tokenizedCmd, "output", object.getDataPath()+"/"+repName+"/"+StringUtilities.slashize(ci.getTarget_folder())+
+		if (targetSuffix.equals("*")) targetSuffix= FilenameUtils.getExtension(wa.toFile(ci.getSource_file()).getAbsolutePath());
+		StringUtilities.replace(tokenizedCmd, "input", wa.toFile(ci.getSource_file()).getAbsolutePath());
+		StringUtilities.replace(tokenizedCmd, "output", wa.dataPath()+"/"+repName+"/"+StringUtilities.slashize(ci.getTarget_folder())+
 				FilenameUtils.removeExtension(Matcher.quoteReplacement(
-				FilenameUtils.getName(ci.getSource_file().toRegularFile().getAbsolutePath()))) + "." + targetSuffix);
+				FilenameUtils.getName(wa.toFile(ci.getSource_file()).getAbsolutePath()))) + "." + targetSuffix);
 		
 		return tokenizedCmd;
 	}

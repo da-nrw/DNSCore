@@ -31,9 +31,11 @@ import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.AudioRestriction;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
@@ -60,6 +62,10 @@ public class PublishAudioConversionStrategyTests {
 	 */
 	@Test
 	public void test() throws IOException{
+		
+		Node n = new Node();
+		n.setWorkAreaRootPath(workAreaRootPathPath);
+		
 		
 		CommandLineConnector cli = mock ( CommandLineConnector.class );
 		String cmdPUBLIC[] = new String[]{
@@ -96,6 +102,6 @@ public class PublishAudioConversionStrategyTests {
 		ConversionInstruction ci = new ConversionInstruction();
 		ci.setSource_file(new DAFile(o.getLatestPackage(),"a","audiofile.wav"));
 		ci.setTarget_folder("target/");
-		strategy.convertFile(ci);
+		strategy.convertFile(new WorkArea(n,o),ci);
 	}
 }

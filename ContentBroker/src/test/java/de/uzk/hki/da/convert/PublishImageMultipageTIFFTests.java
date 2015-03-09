@@ -17,7 +17,9 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
@@ -28,9 +30,13 @@ import de.uzk.hki.da.utils.ProcessInformation;
 public class PublishImageMultipageTIFFTests {
 
 	Path workAreaRootPathPath= Path.make(TC.TEST_ROOT_CONVERT,"PublishImageMultipageTiffTests");
+	private Node n;
 	
 	@Before
 	public void setUp() throws Exception {
+		
+		n = new Node();
+		n.setWorkAreaRootPath(workAreaRootPathPath);
 		
 	}
 
@@ -73,7 +79,7 @@ public class PublishImageMultipageTIFFTests {
 		ci.setConversion_routine(cr);
 		
 		cs.setObject(o);
-		List<Event> events = cs.convertFile(ci);
+		List<Event> events = cs.convertFile(new WorkArea(n,o),ci);
 		assertEquals(4, events.size());
 	}
 	

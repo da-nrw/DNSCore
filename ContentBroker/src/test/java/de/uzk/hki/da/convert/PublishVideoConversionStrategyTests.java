@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -31,10 +32,12 @@ import de.uzk.hki.da.convert.PublishVideoConversionStrategy;
 import de.uzk.hki.da.metadata.XPathUtils;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
@@ -49,6 +52,15 @@ import de.uzk.hki.da.util.RelativePath;
 public class PublishVideoConversionStrategyTests {
 
 	Path basePath = Path.make(TC.TEST_ROOT_CONVERT,"PublishVideoConversionStrategyTests");
+	private Node n;
+	
+	
+	@Before
+	public void setUp() {
+		
+		n = new Node();
+		n.setWorkAreaRootPath(basePath);
+	}
 	
 	/**
 	 * Tear down.
@@ -102,6 +114,6 @@ public class PublishVideoConversionStrategyTests {
 		FileUtils.copyFile(testFile, pubFile);
 		FileUtils.copyFile(testFile, instFile);
 						
-		s.convertFile(ci);
+		s.convertFile(new WorkArea(n,o),ci);
 	}
 }

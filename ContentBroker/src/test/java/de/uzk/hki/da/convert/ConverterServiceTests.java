@@ -34,7 +34,9 @@ import de.uzk.hki.da.convert.ConverterService;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
@@ -48,14 +50,13 @@ public class ConverterServiceTests {
 
 	private final Path workAreaRootPath = Path.make(TC.TEST_ROOT_CONVERT,"ConverterServiceTests");
 	
-	/** The data path. */
-	private final Path dataPath= Path.make(workAreaRootPath,"work/TEST/123/data/");
-	
 	/** The conversion instructions. */
 	private final List<ConversionInstruction> conversionInstructions = new ArrayList<ConversionInstruction>();
 	
 	/** The o. */
 	private Object  o   = null;
+
+	private WorkArea wa;
 	
 	
 	/**
@@ -95,6 +96,9 @@ public class ConverterServiceTests {
 		
 		conversionInstructions.add(ci1);
 		conversionInstructions.add(ci2);
+		
+		Node n = new Node(); n.setWorkAreaRootPath(workAreaRootPath);
+		wa = new WorkArea(n,o);
 	}
 	
 	/**
@@ -104,9 +108,9 @@ public class ConverterServiceTests {
 	 */
 	@After
 	public void tearDown() throws IOException{
-		Path.makeFile(dataPath,"2011+11+01+b/abc.xml").delete();
-		Path.makeFile(dataPath,"2011+11+01+b/140864.png").delete();
-		FileUtils.deleteDirectory(Path.makeFile(dataPath,"2011+11+01+b"));
+		Path.makeFile(wa.dataPath(),"2011+11+01+b/abc.xml").delete();
+		Path.makeFile(wa.dataPath(),"2011+11+01+b/140864.png").delete();
+		FileUtils.deleteDirectory(Path.makeFile(wa.dataPath(),"2011+11+01+b"));
 		
 	}
 	
@@ -119,9 +123,9 @@ public class ConverterServiceTests {
 	public void test() throws IOException{
 		
 		ConverterService converter = new ConverterService();
-		converter.convertBatch(o,conversionInstructions);
+		converter.convertBatch(wa,o,conversionInstructions);
 		
-		assertTrue(Path.makeFile(dataPath,"2011+11+01+b/abc.xml").exists());
-		assertTrue(Path.makeFile(dataPath,"2011+11+01+b/140864.png").exists());
+		assertTrue(Path.makeFile(wa.dataPath(),"2011+11+01+b/abc.xml").exists());
+		assertTrue(Path.makeFile(wa.dataPath(),"2011+11+01+b/140864.png").exists());
 	}
 }

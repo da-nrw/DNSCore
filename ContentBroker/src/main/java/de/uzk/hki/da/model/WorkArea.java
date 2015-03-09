@@ -26,16 +26,23 @@ import static de.uzk.hki.da.core.C.*;
 import static de.uzk.hki.da.utils.StringUtilities.*;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
 
 /**
  * Knows how the WorkArea is structured and how files and objects are organized on it.
- * Knows about the dnscore data model.
+ * Knows about the DNSCore data model.
  * 
  * @author Daniel M. de Oliveira
  *
@@ -45,6 +52,9 @@ public class WorkArea {
 	private static final String UNDERSCORE = "_";
 
 	private static final String ERR_MSG_NULL_OR_EMPTY = "Must not be null or empty: ";
+	
+	public static final String REPRESENTATION_FILTER = "^.*[+][ab]";
+	
 	
 	private Object o;
 	private Node n;
@@ -62,6 +72,7 @@ public class WorkArea {
 	}
 
 	public File toFile(DAFile daf) {
+		
 		return Path.make(contractorWorkDirPath(),o.getIdentifier(),WA_DATA,daf.getRep_name(),daf.getRelative_path()).toFile();
 	}
 	
@@ -115,4 +126,103 @@ public class WorkArea {
 		return Path.make(n.getWorkAreaRootPath(),WA_WORK,o.getContractor().getShort_name(),o.getIdentifier());
 	}
 	
+	public Path dataPath() {
+		return Path.make(objectPath(),"data");
+	}
+	
+	/**
+	 * Checks if for every DAFile attached to the db there is a physical file inside the object folder on the file system.
+	 * @author Daniel M. de Oliveira
+	 * @return false if there is at least one DAFile which lacks a correspondent physical file. true otherwise.
+	 */
+	public boolean isDBtoFSconsistent() {
+
+		boolean consistent = true;
+		
+		for (Package pkg: o.getPackages())
+			for (DAFile f: pkg.getFiles()){
+				if (!f.getRep_name().matches(REPRESENTATION_FILTER)) continue;
+//				System.out.println("compare file "+toFile(f));
+				if (!toFile(f).exists()) consistent = false;
+//				System.out.println(consistent);
+			}
+		
+		return consistent;
+	}
+
+
+	/**
+	 * Checks if for every physical file inside the object on the file system there is a DAFile attached to one of the packages belonging to the object.
+	 * @author Daniel M. de Oliveira
+	 * @return false if there is at least one existent file the DAfile is missing. true otherwise.
+	 */
+	public boolean isFStoDBconsistent() {
+		
+		boolean consistent = true;
+		
+		for (File rep : getRepsFromFS()) {
+			
+			for (File fileSystemFile:getFilesOfRepresentationFS(rep.getName())){
+				
+				if (!existsAsAttachedDAFile(
+						new DAFile(null,rep.getName(),getRelativePath(fileSystemFile, rep.getName()))))
+					consistent = false;
+			}
+		}
+		return consistent;
+	}
+	
+	
+	
+	/**
+	 * Gets the files of a representation. Operates on the basis of the FS.
+	 * 
+	 * @author Daniel M. de Oliveira
+	 * @param repName
+	 * @return
+	 */
+	private Collection<File> getFilesOfRepresentationFS(String repName){
+		
+		return FileUtils.listFiles(Path.makeFile(Path.make(objectPath(),"data"),repName),
+				TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+	}
+	
+	
+	private List<File> getRepsFromFS() {
+
+		FileFilter fileFilter = new RegexFileFilter(REPRESENTATION_FILTER);
+		
+		File[] representations = Path.make(objectPath(),"data").toFile().listFiles(fileFilter);
+		if (representations==null)
+			return new ArrayList<File>();
+		
+		Arrays.sort(representations);
+		return Arrays.asList(representations);
+	}
+	
+	
+	
+	/**
+	 * @param f
+	 * @param repName
+	 * @return
+	 */
+	private String getRelativePath(File f,String repName){
+		
+		return f.getPath().replace(objectPath().toString()+"/data/"+repName,"");
+	}
+	
+	
+	/**
+	 * @return
+	 */
+	private boolean existsAsAttachedDAFile(DAFile toCompare){
+		
+		for (Package p: o.getPackages()){
+			for (DAFile f:p.getFiles()){
+				if (f.equals(toCompare)) return true;
+			}
+		}
+		return false;
+	}
 }

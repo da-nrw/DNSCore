@@ -246,7 +246,7 @@ public class ObjectPremisXmlWriter {
 				createAttribute("OTHERMDTYPE", "JHOVE");
 					createOpenElement("xmlData", 6);
 						System.out.println(DigestUtils.md5Hex(f.getRelative_path()));
-						integrateJhoveData(Path.make(object.getDataPath(),"jhove_temp",f.getRep_name(),
+						integrateJhoveData(Path.make(object.getPath(),"data","jhove_temp",f.getRep_name(),
 								DigestUtils.md5Hex(f.getRelative_path())).toString(), 7);
 					createCloseElement(6);
 				createCloseElement(5);

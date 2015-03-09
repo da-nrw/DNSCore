@@ -30,6 +30,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
 
@@ -46,7 +47,7 @@ public abstract class PublishConversionStrategyBase implements ConversionStrateg
 	protected Object object;
 	
 	@Override
-	public abstract List<Event> convertFile(ConversionInstruction ci) 
+	public abstract List<Event> convertFile(WorkArea wa,ConversionInstruction ci) 
 			throws IOException, FileNotFoundException;
 	
 	

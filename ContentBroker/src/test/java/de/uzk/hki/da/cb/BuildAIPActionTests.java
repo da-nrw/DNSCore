@@ -38,6 +38,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
 
@@ -47,7 +48,7 @@ import de.uzk.hki.da.util.RelativePath;
  */
 public class BuildAIPActionTests {
 
-	static Path workAreaRootPath = new RelativePath("src/test/resources/cb/BuildAIPActionTests/");
+	static Path workAreaRootPath = new RelativePath("src/test/resources/cb/BuildAIPAction/");
 	
 	/** The backup package path. */
 	static Path backupPackagePath = Path.make(workAreaRootPath,"work/csn/95949_/");
@@ -98,6 +99,9 @@ public class BuildAIPActionTests {
 		action.setObject(obj);
 		action.setLocalNode(node);
 		action.setJob(job);
+		
+		WorkArea wa = new WorkArea(node,obj);
+		action.setWorkArea(wa);
 		
 	}
 	

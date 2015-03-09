@@ -128,7 +128,7 @@ public class ScanForPresentationAction extends AbstractAction{
 						+"("+file.getFormatPUID()+")! Package can not be published because it would be incomplete.");
 			} else for (ConversionPolicy p : policies)	{
 				logger.info("Found applicable Policy for FileFormat "+p.getSource_format()+" -> "+p.getConversion_routine().getName() + "("+ file.getRelative_path()+ ")");
-				ConversionInstruction ci = ciB.assembleConversionInstruction(file, p);
+				ConversionInstruction ci = ciB.assembleConversionInstruction(wa,file, p);
 				ci.setTarget_folder(ci.getTarget_folder());
 				ci.setSource_file(file);
 				

@@ -35,6 +35,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
@@ -59,23 +60,23 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#convertFile(de.uzk.hki.da.model.ConversionInstruction)
 	 */
 	@Override
-	public List<Event> convertFile(ConversionInstruction ci)
+	public List<Event> convertFile(WorkArea wa,ConversionInstruction ci)
 			throws FileNotFoundException {
 		if (object==null) throw new IllegalStateException("object not set");
 		
 		if (cliConnector==null) throw new IllegalStateException("cliConnector not set");
 
-		Path.makeFile(object.getDataPath(),pips,"public",ci.getTarget_folder()).mkdirs();
-		Path.makeFile(object.getDataPath(),pips,"institution",ci.getTarget_folder()).mkdirs();
+		Path.makeFile(wa.dataPath(),pips,"public",ci.getTarget_folder()).mkdirs();
+		Path.makeFile(wa.dataPath(),pips,"institution",ci.getTarget_folder()).mkdirs();
 		
 		List<Event> results = new ArrayList<Event>();
 		
 		for (String audience:audiences){
 		
-			Path source = Path.make(ci.getSource_file().toRegularFile().getAbsolutePath());
-			Path target = Path.make(object.getDataPath(),pips,audience.toLowerCase(),
-					ci.getTarget_folder(),FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp3");
-			logger.debug("source:"+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()));
+			Path source = Path.make(wa.toFile(ci.getSource_file()).getAbsolutePath());
+			Path target = Path.make(wa.dataPath(),pips,audience.toLowerCase(),
+					ci.getTarget_folder(),FilenameUtils.getBaseName(wa.toFile(ci.getSource_file()).getAbsolutePath())+".mp3");
+			logger.debug("source:"+FilenameUtils.getBaseName(wa.toFile(ci.getSource_file()).getAbsolutePath()));
 			
 			String cmdPUBLIC[] = new String[] {
 					"sox",
@@ -95,7 +96,7 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 			
 			
 			DAFile f1 = new DAFile(object.getLatestPackage(), pips+"/"+audience.toLowerCase(), StringUtilities.slashize(ci.getTarget_folder()) + 
-					FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp3");
+					FilenameUtils.getBaseName(wa.toFile(ci.getSource_file()).getAbsolutePath()) + ".mp3");
 					
 			Event e = new Event();
 			e.setType("CONVERT");

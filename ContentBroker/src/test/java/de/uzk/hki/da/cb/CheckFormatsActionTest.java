@@ -161,7 +161,7 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 
 	@After
 	public void tearDown() throws IOException {
-		FileUtils.deleteDirectory(Path.makeFile(o.getDataPath(),"jhove_temp"));
+		FileUtils.deleteDirectory(Path.makeFile(wa.dataPath(),"jhove_temp"));
 	}
 	
 	@Test
@@ -177,10 +177,10 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 	public void technicalMetadataFoldersForTechnicalMetadataArePresent() throws IOException, SubsystemNotAvailableException {
 		action.implementation();
 		
-		assertTrue(Path.makeFile(o.getDataPath(),REP1A).exists());
-		assertTrue(Path.makeFile(o.getDataPath(),REP1B).exists());
-		assertTrue(Path.makeFile(o.getDataPath(),REP2A).exists());
-		assertTrue(Path.makeFile(o.getDataPath(),REP2B).exists());
+		assertTrue(Path.makeFile(wa.dataPath(),REP1A).exists());
+		assertTrue(Path.makeFile(wa.dataPath(),REP1B).exists());
+		assertTrue(Path.makeFile(wa.dataPath(),REP2A).exists());
+		assertTrue(Path.makeFile(wa.dataPath(),REP2B).exists());
 	}
 	
 	@Test
@@ -188,7 +188,7 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 		action.implementation();
 		action.rollback();
 		
-		assertFalse(Path.makeFile(o.getDataPath(),"jhove_temp").exists());
+		assertFalse(Path.makeFile(wa.dataPath(),"jhove_temp").exists());
 		
 	}
 	

@@ -51,6 +51,7 @@ public class RetrievalActionTests extends ConcreteActionUnitTest{
 	
 	private static final Path userAreaRootPath = Path.make(TC.TEST_ROOT_CB,"RetrievalActionTests","user");
 	private static final Path workAreaRootPath = Path.make(TC.TEST_ROOT_CB,"RetrievalActionTests","work");
+	private static final Path dataPath = Path.make(workAreaRootPath,"work","TEST","identifier","data");
 	private static final Path outgoingFolder = Path.make(userAreaRootPath,C.TEST_USER_SHORT_NAME,"outgoing");
 	private static final Path container = Path.make(outgoingFolder,TC.IDENTIFIER+C.FILE_EXTENSION_TAR);
 	
@@ -84,12 +85,12 @@ public class RetrievalActionTests extends ConcreteActionUnitTest{
 		Path.makeFile(outgoingFolder).mkdirs();
 		
 		
-		pkg1.scanRepRecursively("1+a");
-		pkg1.scanRepRecursively("1+b");
-		pkg2.scanRepRecursively("2+a");
-		pkg2.scanRepRecursively("2+b");
-		pkg3.scanRepRecursively("3+a");
-		pkg3.scanRepRecursively("3+b");
+		pkg1.scanRepRecursively(dataPath,"1+a");
+		pkg1.scanRepRecursively(dataPath,"1+b");
+		pkg2.scanRepRecursively(dataPath,"2+a");
+		pkg2.scanRepRecursively(dataPath,"2+b");
+		pkg3.scanRepRecursively(dataPath,"3+a");
+		pkg3.scanRepRecursively(dataPath,"3+b");
 	}
 
 	

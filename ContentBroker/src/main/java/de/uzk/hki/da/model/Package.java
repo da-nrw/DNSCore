@@ -178,9 +178,10 @@ public class Package {
 	 * @return the list
 	 */
 	public List<DAFile> scanRepRecursively(
+			Path dataPath,
 			String repName) {
 		
-		String repFolderPath = Path.make( getTransientBackRefToObject().getDataPath(), repName).toString();
+		String repFolderPath = Path.make( dataPath, repName).toString();
 		if (!new File(repFolderPath).exists()) throw new IllegalArgumentException(repFolderPath+" does not exist");
 
 		

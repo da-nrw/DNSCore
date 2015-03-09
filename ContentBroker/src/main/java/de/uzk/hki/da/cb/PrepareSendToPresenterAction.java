@@ -155,18 +155,18 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	 */
 	private void copyPIPSforReplication() throws IOException {
 
-		if (Path.makeFile(o.getDataPath(),WA_DIP,WA_PUBLIC).exists()){
+		if (Path.makeFile(wa.dataPath(),WA_DIP,WA_PUBLIC).exists()){
 			logger.info("Copying public datastreams to " + wa.pipSourceFolderPath(WA_PUBLIC).toFile().getAbsolutePath());
 			if (wa.pipSourceFolderPath(WA_PUBLIC).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WA_PUBLIC).toFile());
 			FileUtils.copyDirectory(
-					Path.make(o.getDataPath(),WA_DIP,WA_PUBLIC).toFile(), 
+					Path.make(wa.dataPath(),WA_DIP,WA_PUBLIC).toFile(), 
 					wa.pipSourceFolderPath(WA_PUBLIC).toFile());
 		}
-		if (Path.makeFile(o.getDataPath(),WA_DIP,WA_INSTITUTION).exists()){
+		if (Path.makeFile(wa.dataPath(),WA_DIP,WA_INSTITUTION).exists()){
 			logger.info("Copying institution datastreams to " + wa.pipSourceFolderPath(WA_INSTITUTION));
 			if (wa.pipSourceFolderPath(WA_INSTITUTION).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WA_INSTITUTION).toFile());
 			FileUtils.copyDirectory(
-					Path.make(o.getDataPath(),WA_DIP,WA_PUBLIC).toFile(), 
+					Path.make(wa.dataPath(),WA_DIP,WA_PUBLIC).toFile(), 
 					wa.pipSourceFolderPath(WA_INSTITUTION).toFile());
 		}
 	}

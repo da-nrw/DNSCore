@@ -1,7 +1,9 @@
 /*
   DA-NRW Software Suite | ContentBroker
-  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
+  Copyright (C) 2014 Historisch-Kulturwissenschaftliche Informationsverarbeitung
   Universität zu Köln
+  Copyright (C) 2015 LVR-InfoKom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -20,15 +22,14 @@
 package de.uzk.hki.da.model;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
@@ -36,15 +37,17 @@ import de.uzk.hki.da.util.Path;
 /**
  * @author Daniel M. de Oliveira
  */
-public class ObjectFSTests {
+public class WorkAreaFSTest {
 	
-	private static final String identifier = "123";
+	private static final String identifier = "identifier";
 	private static final String _1_B_REP = "2000_00_00+00_00+b";
 	private static final String _1_A_REP = "2000_00_00+00_00+a";
-	private static final Path workAreaRootPath = Path.make(TC.TEST_ROOT_MODEL,"ObjectTests");
+	private static final Path workAreaRootPath = Path.make(TC.TEST_ROOT_MODEL,"WorkAreaFS");
 	private static DAFile f1;
 	private static DAFile f2;
 	private static Object o;
+	private static WorkArea wa;
+	private Node n;
 	
 	/**
 	 * Sets the up before class.
@@ -53,7 +56,7 @@ public class ObjectFSTests {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		Node n = new Node();
+		n = new Node();
 		n.setWorkAreaRootPath(Path.make(workAreaRootPath));
 		
 		o = TESTHelper.setUpObject(identifier, workAreaRootPath);
@@ -63,22 +66,20 @@ public class ObjectFSTests {
 		
 		o.getLatestPackage().getFiles().add(f1);
 		o.getLatestPackage().getFiles().add(f2);
+		
+		wa = new WorkArea(n,o);
 	}
 
 	
 	
 	
-	@Test
-	public void testGetLatestReturnsAttachedInstance(){
-		
-		assertEquals(f2,o.getLatest("a.txt"));
-	}
+	
 	
 	
 	@Test
 	public void testCheckDBtoFSConsistent(){
 		
-		assertTrue(o.isDBtoFSconsistent());
+		assertTrue(wa.isDBtoFSconsistent());
 	}
 	
 	@Test
@@ -89,14 +90,15 @@ public class ObjectFSTests {
 		f2 = new DAFile(o.getLatestPackage(),_1_B_REP,"a.txt");
 		o.getLatestPackage().getFiles().add(f1);
 		o.getLatestPackage().getFiles().add(f2);
-		assertFalse(o.isDBtoFSconsistent());
+		wa=new WorkArea(n,o);
+		assertFalse(wa.isDBtoFSconsistent());
 	}
 	
 	
 	@Test
 	public void testCheckFSToDBConsistent(){
 		
-		assertTrue(o.isFStoDBconsistent());
+		assertTrue(wa.isFStoDBconsistent());
 	}
 	
 	/**
@@ -108,8 +110,10 @@ public class ObjectFSTests {
 		o.getLatestPackage().getFiles().clear();
 		f1 = new DAFile(o.getLatestPackage(),_1_A_REP,"a.txt");
 		o.getLatestPackage().getFiles().add(f1);
-		assertFalse(o.isFStoDBconsistent());
+		assertFalse(wa.isFStoDBconsistent());
 	}
+	
+	
 	
 	/**
 	 * Ignore it if more than the entries under data are present on the FS, but some of them are not named with the 
@@ -124,7 +128,7 @@ public class ObjectFSTests {
 		o.getLatestPackage().getFiles().add(f1);
 		o.getLatestPackage().getFiles().add(f2);
 		
-		assertTrue(o.isFStoDBconsistent());
+		assertTrue(wa.isFStoDBconsistent());
 	}
 	
 	
@@ -138,20 +142,11 @@ public class ObjectFSTests {
 		DAFile f3 = new DAFile(o.getLatestPackage(),"dip","a.txt");
 		o.getLatestPackage().getFiles().add(f3);
 		
-		assertTrue(o.isDBtoFSconsistent());
+		assertTrue(wa.isDBtoFSconsistent());
 	}
 	
 	
 	
-	
-	
-	@Test
-	public void testGetPath(){
-		
-		assertEquals(
-				Path.make(workAreaRootPath,C.WA_WORK,C.TEST_USER_SHORT_NAME,identifier),
-				o.getPath());
-	}
 	
 	
 	
@@ -162,49 +157,6 @@ public class ObjectFSTests {
 				Path.make(workAreaRootPath,C.WA_WORK,C.TEST_USER_SHORT_NAME,identifier,C.WA_DATA,_1_B_REP),
 				o.getPath("newest")
 				);
-				
 	}
-	
-	@Test
-	public void testGetPathNewestRepNoRepsPresent(){
-		o.getLatestPackage().getFiles().clear();
-
-		try{
-			o.getPath("newest");
-			fail();
-		}catch(IllegalStateException e){
-		}
-	}
-	
-	
-	
-	
-	@Test 
-	public void testGetLatest(){
-
-		DAFile premis = new DAFile(null,_1_A_REP,"premis.xml");
-		o.getLatestPackage().getFiles().add(premis);
-		
-		assertEquals(
-				premis,
-				o.getLatest("premis.xml")
-				);
-	}
-	
-	@Test 
-	public void testGetLatestNotPresent(){
-
-		assertEquals(
-				null,
-				o.getLatest("premis.xml")
-				);
-	}
-	
-	
-	
-	
-	
-	
-	
 	
 }

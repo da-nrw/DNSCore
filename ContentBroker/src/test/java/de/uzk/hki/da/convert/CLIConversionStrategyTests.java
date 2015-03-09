@@ -24,12 +24,15 @@ import static org.junit.Assert.assertTrue;
 import java.io.FileNotFoundException;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
@@ -44,6 +47,13 @@ import de.uzk.hki.da.utils.CommandLineConnector;
 public class CLIConversionStrategyTests {
 	
 	private Path workAreaRootPath = Path.make(TC.TEST_ROOT_CONVERT,"CLIConversionStrategyTests");
+	private Node n;
+	
+	@Before
+	public void setUp() {
+		n = new Node();
+		n.setWorkAreaRootPath(workAreaRootPath);
+	}
 	
 	/**
 	 * Tear down.
@@ -87,7 +97,7 @@ public class CLIConversionStrategyTests {
 		ci.setConversion_routine(conversionRoutineCopy);
 		ci.setAdditional_params("");
 		
-		strat.convertFile(ci);
+		strat.convertFile(new WorkArea(n,o),ci);
 		
 		assertTrue(Path.makeFile(workAreaRootPath,"work/TEST/1233/data/2012_12_12+12_12+b/Bild 4-1.jpg").exists());
 	}
@@ -121,7 +131,7 @@ public class CLIConversionStrategyTests {
 		ci.setConversion_routine(conversionRoutineResize);
 		ci.setAdditional_params("640,480");
 		
-		strat.convertFile(ci);
+		strat.convertFile(new WorkArea(n,o),ci);
 		
 		assertTrue(Path.makeFile(workAreaRootPath,"work/TEST/1244/data/2011+11+01+b/140849.png").exists());
 		
@@ -164,7 +174,7 @@ public class CLIConversionStrategyTests {
 		
 		strat.setCLIConnector(new CommandLineConnector());
 		strat.setParam("gs -dPDFA -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sProcessColorModel=DeviceGray -sOutputFile=output input");
-		strat.convertFile(ci);
+		strat.convertFile(new WorkArea(n,o),ci);
 		
 		assertTrue(Path.makeFile(workAreaRootPath,"work/TEST/1255/data/2012_12_12+12_12+b/3512.pdf").exists());
 	}

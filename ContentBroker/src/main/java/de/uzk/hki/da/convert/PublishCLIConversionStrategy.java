@@ -33,6 +33,7 @@ import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.StringUtilities;
 
@@ -54,7 +55,11 @@ public class PublishCLIConversionStrategy extends CLIConversionStrategy {
 	 * @see de.uzk.hki.da.convert.CLIConversionStrategy#convertFile(de.uzk.hki.da.model.ConversionInstruction)
 	 */
 	@Override
-	public List<Event> convertFile(ConversionInstruction ci) throws FileNotFoundException {
+	public List<Event> convertFile(
+			WorkArea wa,
+			ConversionInstruction ci
+			
+			) throws FileNotFoundException {
 		if (pkg==null) throw new IllegalStateException("Package not set");
 		
 		List<Event> results = new ArrayList<Event>();
@@ -64,16 +69,16 @@ public class PublishCLIConversionStrategy extends CLIConversionStrategy {
 			String audience_lc = audience.toLowerCase();
 			String repName = C.WA_DIP+"/"+audience_lc;
 		
-			Path.make(object.getDataPath(),repName,ci.getTarget_folder()).toFile().mkdirs();
+			Path.make(wa.dataPath(),repName,ci.getTarget_folder()).toFile().mkdirs();
 			
-			String[] commandAsArray = assemble(ci, repName);
+			String[] commandAsArray = assemble(wa,ci, repName);
 			if (!cliConnector.execute(commandAsArray)) throw new RuntimeException("convert did not succeed");
 			
 			String targetSuffix= ci.getConversion_routine().getTarget_suffix();
-			if (targetSuffix.equals("*")) targetSuffix= FilenameUtils.getExtension(ci.getSource_file().toRegularFile().getAbsolutePath());
+			if (targetSuffix.equals("*")) targetSuffix= FilenameUtils.getExtension(wa.toFile(ci.getSource_file()).getAbsolutePath());
 			DAFile result = new DAFile(pkg, repName,
 					ci.getTarget_folder()+"/"+FilenameUtils.removeExtension(Matcher.quoteReplacement(
-					FilenameUtils.getName(ci.getSource_file().toRegularFile().getAbsolutePath()))) + "." + targetSuffix);
+					FilenameUtils.getName(wa.toFile(ci.getSource_file()).getAbsolutePath()))) + "." + targetSuffix);
 			
 			Event e = new Event();
 			e.setType("CONVERT");

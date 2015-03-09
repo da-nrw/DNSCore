@@ -38,6 +38,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
@@ -76,17 +77,17 @@ public class TiffConversionStrategy implements ConversionStrategy {
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#convertFile(de.uzk.hki.da.model.ConversionInstruction)
 	 */
 	@Override
-	public List<Event> convertFile(ConversionInstruction ci) {
+	public List<Event> convertFile(WorkArea wa,ConversionInstruction ci) {
 		
 		List<Event> resultEvents = new ArrayList<Event>();
 		
-		String input  = ci.getSource_file().toRegularFile().getAbsolutePath();
+		String input  = wa.toFile(ci.getSource_file()).getAbsolutePath();
 		if (getEncoding(input).equals("None")) return resultEvents;
 		
 		// create subfolder if necessary
 		Path.make(object.getPath("newest"),ci.getTarget_folder()).toFile().mkdirs();
 		
-		String[] commandAsArray = new String [] {"convert","+compress",input,generateTargetFilePath(ci)};
+		String[] commandAsArray = new String [] {"convert","+compress",input,generateTargetFilePath(wa,ci)};
 		logger.info("Executing conversion command: {}", commandAsArray);
 		ProcessInformation pi;
 		try {
@@ -102,7 +103,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 					pi.getStdErr()+"\n\n ----- end of stdErr");
 		}
 				
-		File result = new File(generateTargetFilePath(ci));
+		File result = new File(generateTargetFilePath(wa,ci));
 		
 		String baseName = FilenameUtils.getBaseName(result.getAbsolutePath());
 		String extension = FilenameUtils.getExtension(result.getAbsolutePath());
@@ -203,8 +204,8 @@ public class TiffConversionStrategy implements ConversionStrategy {
 	 * @param ci the ci
 	 * @return the string
 	 */
-	public String generateTargetFilePath(ConversionInstruction ci) {
-		String input  = ci.getSource_file().toRegularFile().getAbsolutePath();
+	public String generateTargetFilePath(WorkArea wa,ConversionInstruction ci) {
+		String input  = wa.toFile(ci.getSource_file()).getAbsolutePath();
 		return object.getPath("newest")+"/"+StringUtilities.slashize(ci.getTarget_folder())
 				+ FilenameUtils.getName(input);
 	}

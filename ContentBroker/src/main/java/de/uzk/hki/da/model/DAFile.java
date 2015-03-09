@@ -173,7 +173,7 @@ public class DAFile implements FileWithFileFormat{
 		String repName = "";
 		if ((getRep_name() != null)&&(getRep_name() != ""))
 			repName = getRep_name() + "/";
-		return Path.make(pkg.getTransientBackRefToObject().getDataPath(),repName,relative_path).toFile();
+		return Path.make(pkg.getTransientBackRefToObject().getPath(),"data",repName,relative_path).toFile();
 	}
 		
 	/* (non-Javadoc)

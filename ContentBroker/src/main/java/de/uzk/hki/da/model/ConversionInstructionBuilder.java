@@ -53,10 +53,11 @@ public class ConversionInstructionBuilder {
 	
 	
 	public ConversionInstruction assembleConversionInstruction(
+			WorkArea wa,
 			DAFile f,
 			ConversionPolicy cp){
 		
-		logger.trace("Building conversion instruction for file: \""+f.toRegularFile().getAbsolutePath()+"\"");
+		logger.trace("Building conversion instruction for file: \""+wa.toFile(f).getAbsolutePath()+"\"");
 			
 		ConversionRoutine cr = cp.getConversion_routine();
 		if ( cr == null ){
@@ -65,7 +66,7 @@ public class ConversionInstructionBuilder {
 		}
 		
 		String targetFolderRelativePath = f.getRelative_path()
-				.substring(0, f.getRelative_path().length()-f.toRegularFile().getName().length());
+				.substring(0, f.getRelative_path().length()-wa.toFile(f).getName().length());
 		
 		if (targetFolderRelativePath.startsWith("/"))
 			targetFolderRelativePath = targetFolderRelativePath.substring(1);

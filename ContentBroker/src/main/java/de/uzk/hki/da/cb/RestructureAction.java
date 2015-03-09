@@ -90,22 +90,22 @@ public class RestructureAction extends AbstractAction{
 		
 		
 		j.setRep_name(getNewRepName());
-		makeRepOfSIPContent(o.getPath(), o.getDataPath(), j.getRep_name());
+		makeRepOfSIPContent(o.getPath(), wa.dataPath(), j.getRep_name());
 		
 		
 		if (o.isDelta())
 			retrieveDeltaPackages(retrievePackagesHelper);
 		
 		
-		o.getLatestPackage().scanRepRecursively(j.getRep_name()+"a");
+		o.getLatestPackage().scanRepRecursively(wa.dataPath(),j.getRep_name()+"a");
 		o.reattach();
 		
 		determineFileFormats();
 		dgs.addDocumentsToObject(o);
 		
 		logger.debug("Create new b representation "+j.getRep_name()+"b");
-		Path.makeFile(o.getDataPath(), j.getRep_name()+"b").mkdir();
-		Path.makeFile(o.getDataPath(),"jhove_temp").mkdirs();
+		Path.makeFile(wa.dataPath(), j.getRep_name()+"b").mkdir();
+		Path.makeFile(wa.dataPath(),"jhove_temp").mkdirs();
 		return true;
 	}
 
@@ -130,11 +130,11 @@ public class RestructureAction extends AbstractAction{
 		
 		logger.info("object already exists. Moving existing packages to work area.");
 		try {
-			retrievePackagesHelper.loadPackages(o, false);
+			retrievePackagesHelper.loadPackages(wa.dataPath(),o, false);
 			logger.info("Packages of object \""+o.getIdentifier()+
 					"\" are now available on cache resource at: " + Path.make(o.getPath(),"existingAIPs"));
 			FileUtils.copyFile(Path.makeFile(o.getPath("newest"),"premis.xml"),
-					Path.makeFile(o.getDataPath(),"premis_old.xml"));
+					Path.makeFile(wa.dataPath(),"premis_old.xml"));
 		} catch (IOException e) {
 			throw new RuntimeException("error while trying to get existing packages from lza area",e);
 		}
@@ -161,7 +161,7 @@ public class RestructureAction extends AbstractAction{
 	@Override
 	public void rollback() throws Exception {
 		if (! isNotSet(j.getRep_name())) { // since we know that the SIP content has been moved successfully when rep_name is set.
-			revertToSIPContent(o.getPath(),o.getDataPath(),j.getRep_name());
+			revertToSIPContent(o.getPath(),wa.dataPath(),j.getRep_name());
 		} else 
 			throw new RuntimeException("REP NAME WAS NOT SET YET. ROLLBACK IS NOT POSSIBLE. MANUAL CLEANUP REQUIRED.");
 	}

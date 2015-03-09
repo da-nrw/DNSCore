@@ -122,7 +122,7 @@ public class ScanAction extends AbstractAction{
 					logger.info("Found applicable Policy for FileFormat "+
 							p.getSource_format()+" -> "+p.getConversion_routine().getName() + "("+ file.getRelative_path()+ ")");
 					
-					ConversionInstruction ci = ciB.assembleConversionInstruction(file, p);
+					ConversionInstruction ci = ciB.assembleConversionInstruction(wa,file, p);
 					logger.debug("Set source file "+file.getRelative_path());
 					ci.setSource_file(file);
 					cis.add(ci);

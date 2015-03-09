@@ -38,10 +38,12 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.TextRestriction;
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
@@ -65,11 +67,15 @@ public class PublishPDFConversionStrategyTests {
 	
 	/** The o. */
 	Object o;
+	private Node n;
 
 	
 	@Before
 	public void setUp(){
 		dipPath.toFile().mkdirs();
+		
+		n = new Node();
+		n.setWorkAreaRootPath(workAreaRootPath);
 	}
 	
 	@After
@@ -86,6 +92,7 @@ public class PublishPDFConversionStrategyTests {
 	public void test() throws IOException {
 		
 		o = TESTHelper.setUpObject("1", new RelativePath(workAreaRootPath));
+		WorkArea wa = new WorkArea(n,o);
 		PublicationRight right = new PublicationRight();
 		right.setAudience(Audience.PUBLIC);
 		right.setTextRestriction(new TextRestriction());
@@ -104,9 +111,9 @@ public class PublishPDFConversionStrategyTests {
 		ci.setConversion_routine(cr);
 		
 		cs.setObject(o);
-		List<Event> events = cs.convertFile(ci);
+		List<Event> events = cs.convertFile(new WorkArea(n,o),ci);
 	
-		File targetFile = events.get(0).getTarget_file().toRegularFile();
+		File targetFile = wa.toFile(events.get(0).getTarget_file());
 		assertTrue(targetFile.exists());
 		assertEquals("filename.pdf", targetFile.getName());
 		
@@ -114,7 +121,7 @@ public class PublishPDFConversionStrategyTests {
 		PDDocument targetDoc = PDDocument.load(targetFile);
 		assertEquals(7, targetDoc.getDocumentCatalog().getAllPages().size());
 		
-		targetFile = events.get(1).getTarget_file().toRegularFile();
+		targetFile = wa.toFile(events.get(1).getTarget_file());
 		assertTrue(targetFile.exists());
 		assertEquals("filename.pdf", targetFile.getName());
 		

@@ -111,7 +111,7 @@ public class BuildAIPAction extends AbstractAction {
 	 */
 	void deleteOldPremisFile() {
 
-		File oldPremis = Path.make(o.getDataPath(),"premis_old.xml").toFile();
+		File oldPremis = Path.make(wa.dataPath(),"premis_old.xml").toFile();
 		
 		logger.debug("Deleting " + oldPremis.getAbsolutePath());
 				

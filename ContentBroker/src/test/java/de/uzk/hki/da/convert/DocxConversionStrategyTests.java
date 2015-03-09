@@ -36,7 +36,9 @@ import org.mockito.stubbing.Answer;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
@@ -66,6 +68,8 @@ public class DocxConversionStrategyTests {
 	
 	/** The o. */
 	private Object o;
+
+	private Node n;
 	
 	/**
 	 * Sets the up.
@@ -76,7 +80,10 @@ public class DocxConversionStrategyTests {
 		
 		o = TESTHelper.setUpObject("1", new RelativePath(basePath));
 		cs.setObject(o);
+		n = new Node();
+		n.setWorkAreaRootPath(new RelativePath(basePath));
 		Path.make(o.getPath("newest")+"/_Docx.pdf").toFile().createNewFile();
+		
 	}
 	
 	
@@ -141,7 +148,7 @@ public class DocxConversionStrategyTests {
 		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","Docx.docx"));
 		ci.setTarget_folder("");
 		
-		cs.convertFile(ci);
+		cs.convertFile(new WorkArea(n,o),ci);
 		
 		assertTrue(new File(basePath + "TEST/1/data/rep+b/Docx.pdf").exists());
 	}

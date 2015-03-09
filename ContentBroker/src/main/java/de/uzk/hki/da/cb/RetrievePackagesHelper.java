@@ -35,6 +35,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
+import de.uzk.hki.da.util.Path;
 
 
 /**
@@ -64,7 +65,7 @@ public class RetrievePackagesHelper {
 	 * @throws IOException if at least one of the packages could not be retrieved from the grid.
 	 * @author Daniel M. de Oliveira
 	 */
-	public void loadPackages(Object object,boolean includeLastPackage) throws IOException{
+	public void loadPackages(Path dPath,Object object,boolean includeLastPackage) throws IOException{
 		
 		if (grid==null) throw new IllegalStateException("grid not set");
 		if (object==null) throw new IllegalArgumentException("corresponding Object is null");
@@ -76,8 +77,8 @@ public class RetrievePackagesHelper {
 			if (!includeLastPackage)
 				if (pkg==object.getLatestPackage()) continue;
 			
-			File retrievedPackage = retrieveSinglePackageFromGrid(object,pkg);
-			List<DAFile> results = unpackExistingPackage(object,retrievedPackage);
+			File retrievedPackage = retrieveSinglePackageFromGrid(dPath,object,pkg);
+			List<DAFile> results = unpackExistingPackage(dPath,object,retrievedPackage);
 			pkg.getFiles().addAll(results);
 		}
 	}
@@ -129,12 +130,12 @@ public class RetrievePackagesHelper {
 	 * @param pkg
 	 * @throws IOException
 	 */
-	private File retrieveSinglePackageFromGrid(Object object,Package pkg) throws IOException{
+	private File retrieveSinglePackageFromGrid(Path dataPath,Object object,Package pkg) throws IOException{
 		String data_name =
 				object.getContractor().getShort_name() + "/" + object.getIdentifier()
 				+ "/" + object.getIdentifier() + ".pack_" + pkg.getName() + ".tar";
 		
-		if (!object.getDataPath().toFile().exists()) object.getDataPath().toFile().mkdirs();
+		if (!dataPath.toFile().exists()) dataPath.toFile().mkdirs();
 
 		File targetDir=new File(object.getPath() + "/loadedAIPs");
 		if (!targetDir.exists()) targetDir.mkdirs(); 
@@ -162,7 +163,7 @@ public class RetrievePackagesHelper {
 	 * @author Thomas Kleinke
 	 * @author Daniel M. de Oliveira
 	 */
-	private List<DAFile> unpackExistingPackage(Object object,File container) throws IOException {
+	private List<DAFile> unpackExistingPackage(Path dataPath,Object object,File container) throws IOException {
 		
 		List<DAFile> results = new ArrayList<DAFile>();
 		
@@ -175,8 +176,8 @@ public class RetrievePackagesHelper {
 		
 		removeBagitFilesAndPremis(loadedAIPsPath);	
 			
-		object.getDataPath().toFile().mkdir();
-		normalizeObject(object); // TODO really? for every package?
+		dataPath.toFile().mkdir();
+		normalizeObject(dataPath,object); // TODO really? for every package?
 		FileUtils.deleteDirectory(new File(loadedAIPsPath));
 		
 		return results;
@@ -244,7 +245,7 @@ public class RetrievePackagesHelper {
 	 * @param object
 	 * @throws IOException
 	 */
-	private void normalizeObject(Object object) throws IOException {
+	private void normalizeObject(Path dPath,Object object) throws IOException {
 	
 		logger.trace("normalizeObject: Moving unpacked representation folders from " + object.getPath() + "loadedAIPs to " + object.getPath());
 		String dataPath = object.getPath() + "/loadedAIPs/data/";
@@ -258,11 +259,11 @@ public class RetrievePackagesHelper {
 			if (new File(dataPath + dataPathContents[i]).isDirectory())
 				FileUtils.moveDirectoryToDirectory(
 						new File(dataPath + dataPathContents[i]), 
-						object.getDataPath().toFile(), false);
+						dPath.toFile(), false);
 			else
 				FileUtils.moveFileToDirectory(
 						new File(dataPath + dataPathContents[i]), 
-						object.getDataPath().toFile(), false );
+						dPath.toFile(), false );
 		}
 	}
 

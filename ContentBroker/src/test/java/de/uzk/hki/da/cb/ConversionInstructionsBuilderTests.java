@@ -35,8 +35,10 @@ import de.uzk.hki.da.model.ConversionInstructionBuilder;
 import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
@@ -60,6 +62,10 @@ public class ConversionInstructionsBuilderTests {
 	
 	/** The pkg. */
 	private Package pkg;
+
+	private Node n;
+
+	private WorkArea wa;
 	
 	/**
 	 * Sets the up.
@@ -70,6 +76,9 @@ public class ConversionInstructionsBuilderTests {
 		pkg = mock (Package.class);
 		when(pkg.getTransientBackRefToObject()).thenReturn(o);
 		
+		
+		n = new Node();
+		n.setWorkAreaRootPath(basePath);
 	}
 	
 	
@@ -83,6 +92,7 @@ public class ConversionInstructionsBuilderTests {
 	public void generateConversionInstructionsRecursively() {
 		
 		Object o = TESTHelper.setUpObject("1177",basePath);
+		wa = new WorkArea(n,o);
 		
 		ConversionPolicy policy = new ConversionPolicy();
 		policy.setId(0);
@@ -92,17 +102,17 @@ public class ConversionInstructionsBuilderTests {
 		routine.setParams("convert input output");
 		policy.setConversion_routine(routine);
 		
-		ConversionInstruction ci1 = ciB.assembleConversionInstruction(
+		ConversionInstruction ci1 = ciB.assembleConversionInstruction(wa,
 				new DAFile(o.getLatestPackage(),"2011_01_01+00_01+a","a.tif"),
 				policy);
 		assertEquals("",ci1.getTarget_folder());
 		
-		ConversionInstruction ci2 = ciB.assembleConversionInstruction(
+		ConversionInstruction ci2 = ciB.assembleConversionInstruction(wa,
 				new DAFile(o.getLatestPackage(),"2011_01_01+00_01+a","subfolder/b.tif"),
 				policy);
 		assertEquals("subfolder",ci2.getTarget_folder());
 		
-		ConversionInstruction ci3 = ciB.assembleConversionInstruction(
+		ConversionInstruction ci3 = ciB.assembleConversionInstruction(wa,
 				new DAFile(o.getLatestPackage(),"2011_01_01+00_01+a","subfolder/subsubfolder/c.tif"),
 				policy);
 		assertEquals("subfolder/subsubfolder",ci3.getTarget_folder());

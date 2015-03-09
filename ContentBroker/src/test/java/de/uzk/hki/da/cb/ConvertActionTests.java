@@ -62,7 +62,7 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 	private static final Path workAreaRootPath = new RelativePath("src/test/resources/cb/ConvertAction");
 	
 	/** The Constant dataPath. */
-	private static final String dataPath= workAreaRootPath + "/work/TEST/identifier/";
+	private static final Path dataPath= Path.make(workAreaRootPath,"/work/TEST/identifier/data");
 	
 	/**
 	 * Sets the up.
@@ -147,7 +147,7 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 //		if (new File(dataPath+"data/2011+11+01+b/").exists())
 //			FileUtils.deleteDirectory(new File(dataPath+"data/2011+11+01+b/"));
 		
-		if (new File(dataPath+"data/dip/").exists())
+		if (new File(dataPath+"/dip/").exists())
 			FileUtils.deleteDirectory(new File(dataPath+"data/dip/"));
 	}
 	
@@ -171,8 +171,8 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 		
 		action.implementation();
 		
-		assertTrue(new File(dataPath+"data/2011+11+01+b/140864.png").exists());
-		assertTrue(new File(dataPath+"data/2011+11+01+b/abc.xml").exists());
+		assertTrue(new File(dataPath+"/2011+11+01+b/140864.png").exists());
+		assertTrue(new File(dataPath+"/2011+11+01+b/abc.xml").exists());
 	}
 	
 	
@@ -190,8 +190,8 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 		action.implementation();
 		action.rollback();
 		
-		assertFalse(new File(dataPath+"data/2011+11+01+b/140864.png").exists());
-		assertFalse(new File(dataPath+"data/2011+11+01+b/abc.xml").exists());
+		assertFalse(new File(dataPath+"/2011+11+01+b/140864.png").exists());
+		assertFalse(new File(dataPath+"/2011+11+01+b/abc.xml").exists());
 		assertEquals(0, action.getObject().getLatestPackage().getEvents().size());
 	}
 }

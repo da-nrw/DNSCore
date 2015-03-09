@@ -26,10 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
@@ -42,25 +45,36 @@ public class XMPCollectorTests {
 	private static final Path WORK_AREA_ROOT_PATH = Path.make(TC.TEST_ROOT_METADATA,"XmpCollectorTests","WorkArea");
 	
 	DAFile target = null;
+
+	private Object o;
+
+	private WorkArea wa;
+	
+	@Before
+	public void setUp() {
+		o = TESTHelper.setUpObject("identifier", WORK_AREA_ROOT_PATH);
+		Node n = new Node();
+		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
+		wa = new WorkArea(n,o);
+	}
 	
 	
 	@After
 	public void tearDown(){
-		if (target!=null&&target.toRegularFile().exists()) target.toRegularFile().delete();
+		if (target!=null&&wa.toFile(target).exists()) wa.toFile(target).delete();
 	}
 	
 	@Test
 	public void test() throws IOException{
-		Object object = TESTHelper.setUpObject("identifier", WORK_AREA_ROOT_PATH);
 		
-		DAFile xmp = new DAFile(object.getLatestPackage(),"1+a","abc.xmp");
-		target = new DAFile(object.getLatestPackage(),"1+a","target.rdf");
+		DAFile xmp = new DAFile(o.getLatestPackage(),"1+a","abc.xmp");
+		target = new DAFile(o.getLatestPackage(),"1+a","target.rdf");
 		
 		List<DAFile> xmps = new ArrayList<DAFile>();
 		xmps.add(xmp);
 		
-		XmpCollector.collect(xmps, target.toRegularFile());
-		assertTrue(target.toRegularFile().exists());
+		XmpCollector.collect(wa,xmps,wa.toFile(target));
+		assertTrue(wa.toFile(target).exists());
 		
 	}
 }

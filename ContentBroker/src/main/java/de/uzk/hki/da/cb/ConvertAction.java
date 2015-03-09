@@ -74,6 +74,7 @@ public class ConvertAction extends AbstractAction {
 		o.setRights(premisObject.getRights());
 		
 		localConversionEvents = new ConverterService().convertBatch(
+					wa,
 					o, 
 					new ArrayList(j.getConversion_instructions()));
 		

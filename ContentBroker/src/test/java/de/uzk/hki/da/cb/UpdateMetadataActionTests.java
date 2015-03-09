@@ -20,7 +20,6 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -35,7 +34,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
-import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
@@ -53,6 +51,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
@@ -68,6 +67,8 @@ public class UpdateMetadataActionTests {
 	private static MimeTypeDetectionService mtds;
 	
 	private static final Path workAreaPath = Path.make(TC.TEST_ROOT_CB,"UpdateMetadataActionTests/");
+	private static final Path dataPath = Path.make(workAreaPath,"work","TEST","23","data");
+	
 	
 	/** The Constant METS_NS. */
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
@@ -80,6 +81,8 @@ public class UpdateMetadataActionTests {
 	
 	/** The node. */
 	private Node node;
+
+	private Object obj;
 	
 	/**
 	 * Sets the up.
@@ -104,6 +107,11 @@ public class UpdateMetadataActionTests {
 		action.setLocalNode(node);
 		action.setPSystem(pSystem);
 		action.setPresMode(true);
+		
+		
+		obj = TESTHelper.setUpObject("23",workAreaPath);
+		WorkArea wa = new WorkArea(node,obj);
+		action.setWorkArea(wa);
 		
 		FileUtils.copyDirectoryToDirectory(new File("src/main/xslt"), new File("conf/"));
 	}
@@ -133,7 +141,7 @@ public class UpdateMetadataActionTests {
 	@Test
 	public void testUpdatePathsInMetadata() throws FileNotFoundException, JDOMException, IOException, ParserConfigurationException, SAXException {
 		
-		Object obj = TESTHelper.setUpObject("23",workAreaPath);
+		
 
 		DAFile t1 = new DAFile(obj.getLatestPackage(), "pips/public", "Ye_old_duckroll.jpg");
 		DAFile t2 = new DAFile(obj.getLatestPackage(), "pips/institution", "Ye_old_duckroll.jpg");
@@ -164,10 +172,10 @@ public class UpdateMetadataActionTests {
 		job.setObject(obj);
 		job.setRep_name("rep42");
 
-		String metsPath = Path.make( obj.getDataPath(), REP_NAME,"mets.xml").toString();
+		String metsPath = Path.make( dataPath, REP_NAME,"mets.xml").toString();
 		File metsFile = new File(metsPath);
-		File publicMetsFile = new File(obj.getDataPath() + "/pips/public/mets.xml");
-		File instMetsFile = new File(obj.getDataPath() + "/pips/institution/mets.xml");
+		File publicMetsFile = new File(dataPath + "/pips/public/mets.xml");
+		File instMetsFile = new File(dataPath + "/pips/institution/mets.xml");
 		FileUtils.copyFile(metsFile, publicMetsFile);
 		FileUtils.copyFile(metsFile, instMetsFile);
 		

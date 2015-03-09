@@ -26,6 +26,7 @@ import java.util.List;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.CommandLineConnector;
 
 
@@ -45,7 +46,10 @@ public interface ConversionStrategy {
 	 * @param ci
 	 * @return an event for every conversion that actually happened.
 	 */
-	public List<Event> convertFile(ConversionInstruction ci) throws IOException, FileNotFoundException;
+	public List<Event> convertFile(
+			WorkArea wa,
+			ConversionInstruction ci
+			) throws IOException, FileNotFoundException;
 
 	public void setParam(String param);
 	

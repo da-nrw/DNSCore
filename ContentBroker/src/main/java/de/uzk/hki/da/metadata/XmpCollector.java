@@ -39,6 +39,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.WorkArea;
 
 
 /**
@@ -57,13 +58,13 @@ public class XmpCollector {
 	 * @param targetFile the target file
 	 * @throws IOException 
 	 */
-	public static void collect(List<DAFile> xmpFiles, File targetFile) throws IOException {
+	public static void collect(WorkArea wa,List<DAFile> xmpFiles, File targetFile) throws IOException {
 		
 		Model model = ModelFactory.createDefaultModel();
 				
 		for (DAFile dafile : xmpFiles) {
 			
-			File file = dafile.toRegularFile();
+			File file = wa.toFile(dafile);
 			
 			logger.debug("collecting XMP file {}", file.getAbsolutePath());
 			

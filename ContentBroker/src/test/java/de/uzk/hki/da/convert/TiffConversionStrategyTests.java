@@ -36,7 +36,9 @@ import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
@@ -56,6 +58,8 @@ public class TiffConversionStrategyTests {
 	
 	private Object o;
 
+	private Node n;
+
 	@Before
 	public void setUp(){
 		
@@ -67,6 +71,9 @@ public class TiffConversionStrategyTests {
 		o.getLatestPackage().getFiles().add(f);
 		o.getLatestPackage().getFiles().add(f2);
 		Path.makeFile(contractorFolder,"1/data","rep+b").mkdirs();
+		
+		n = new Node();
+		n.setWorkAreaRootPath(workAreaRootPath);
 	}
 
 	@After
@@ -93,7 +100,7 @@ public class TiffConversionStrategyTests {
 		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","CCITT_1.TIF"));
 		ci.setTarget_folder("subfolder");
 		
-		cs.convertFile(ci);
+		cs.convertFile(new WorkArea(n,o),ci);
 		
 		assertTrue(Path.makeFile(workAreaRootPath,"work/TEST/1/data/rep+b/subfolder/CCITT_1.TIF").exists());
 	}
@@ -113,7 +120,7 @@ public class TiffConversionStrategyTests {
 		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","CCITT_1.TIF"));
 		ci.setTarget_folder("");
 		
-		cs.convertFile(ci);
+		cs.convertFile(new WorkArea(n,o),ci);
 		
 		assertTrue(Path.makeFile(workAreaRootPath,"work/TEST/1/data/rep+b/CCITT_1.TIF").exists());
 	}
@@ -134,7 +141,7 @@ public class TiffConversionStrategyTests {
 		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","CCITT_1_UNCOMPRESSED.TIF"));
 		ci.setTarget_folder("");
 		
-		cs.convertFile(ci);
+		cs.convertFile(new WorkArea(n,o),ci);
 		
 		assertFalse(Path.makeFile(workAreaRootPath,"work/TEST/1/data/rep+b/CCITT_1_UNCOMPRESSED.TIF").exists());
 	}
@@ -154,7 +161,7 @@ public class TiffConversionStrategyTests {
 		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","0001_L.TIF"));
 		ci.setTarget_folder("");
 		
-		cs.convertFile(ci);
+		cs.convertFile(new WorkArea(n,o),ci);
 		
 		assertFalse(new File(workAreaRootPath + "work/TEST/1/data/rep+b/0001_L.TIF").exists());
 	}
@@ -176,7 +183,7 @@ public class TiffConversionStrategyTests {
 		ci.setTarget_folder("");
 		
 		try {
-		cs.convertFile(ci);
+		cs.convertFile(new WorkArea(n,o),ci);
 		assertFalse(true);
 		} catch (Exception e) {
 			
@@ -217,7 +224,7 @@ public class TiffConversionStrategyTests {
 		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","0001_L.TIF"));
 		ci.setTarget_folder("");
 		try {
-		cs.convertFile(ci);
+		cs.convertFile(new WorkArea(n,o),ci);
 		assertTrue(false);
 		} catch (UserException e) {
 			;

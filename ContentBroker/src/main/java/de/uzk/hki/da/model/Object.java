@@ -21,10 +21,7 @@
 
 package de.uzk.hki.da.model;
 
-import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -46,10 +43,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.filefilter.RegexFileFilter;
-import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
@@ -387,17 +381,6 @@ public class Object {
 	public String getDate_modified() {
 		return date_modified;
 	}
-	
-	/**
-	 * @return physical path to package's data path on local node's working resource
-	 * @throws IllegalStateException if reference to particular node is not set.
-	 * @throws IllegalStateException if workAreaRoot path of the referenced node is null or empty.
-	 * @author Daniel M. de Oliveira
-	 */
-	public Path getDataPath(){
-		return Path.make(getPath(),"data");
-	}
-	
 	
 	/**
 	 * @return physical path to package on local node's working resource
@@ -908,87 +891,15 @@ public class Object {
 
 	
 	
-	/**
-	 * Checks if for every DAFile attached to the db there is a physical file inside the object folder on the file system.
-	 * @author Daniel M. de Oliveira
-	 * @return false if there is at least one DAFile which lacks a correspondent physical file. true otherwise.
-	 */
-	public boolean isDBtoFSconsistent() {
-
-		boolean consistent = true;
-		
-		for (Package pkg: getPackages())
-			for (DAFile f: pkg.getFiles()){
-				if (!f.getRep_name().matches(REPRESENTATION_FILTER)) continue;
-				if (!f.toRegularFile().exists()) consistent = false;
-			}
-		
-		return consistent;
-	}
-
-
-	/**
-	 * Checks if for every physical file inside the object on the file system there is a DAFile attached to one of the packages belonging to the object.
-	 * @author Daniel M. de Oliveira
-	 * @return false if there is at least one existent file the DAfile is missing. true otherwise.
-	 */
-	public boolean isFStoDBconsistent() {
-		
-		boolean consistent = true;
-		
-		for (File rep : getRepsFromFS()) {
-			
-			for (File fileSystemFile:getFilesOfRepresentationFS(rep.getName())){
-				
-				if (!existsAsAttachedDAFile(
-						new DAFile(null,rep.getName(),getRelativePath(fileSystemFile, rep.getName()))))
-					consistent = false;
-			}
-		}
-		return consistent;
-	}
+	
 
 	
-	private List<File> getRepsFromFS() {
+	
+	
+	
+	
+	
 
-		FileFilter fileFilter = new RegexFileFilter(REPRESENTATION_FILTER);
-		
-		File[] representations = getDataPath().toFile().listFiles(fileFilter);
-		if (representations==null)
-			return new ArrayList<File>();
-		
-		Arrays.sort(representations);
-		return Arrays.asList(representations);
-	}
-	
-	
-	
-	
-	/**
-	 * @author Daniel M. de Oliveira
-	 * @return
-	 */
-	private boolean existsAsAttachedDAFile(DAFile toCompare){
-		
-		for (Package p: getPackages()){
-			for (DAFile f:p.getFiles()){
-				if (f.equals(toCompare)) return true;
-			}
-		}
-		return false;
-	}
-	
-	
-	/**
-	 * @author Daniel M. de Oliveira
-	 * @param f
-	 * @param repName
-	 * @return
-	 */
-	private String getRelativePath(File f,String repName){
-		
-		return f.getPath().replace(getPath().toString()+"/data/"+repName,"");
-	}
 	
 	
 	/**
@@ -1016,16 +927,5 @@ public class Object {
 	
 	
 	
-	/**
-	 * Gets the files of a representation. Operates on the basis of the FS.
-	 * 
-	 * @author Daniel M. de Oliveira
-	 * @param repName
-	 * @return
-	 */
-	private Collection<File> getFilesOfRepresentationFS(String repName){
-		
-		return FileUtils.listFiles(Path.makeFile(this.getDataPath(),repName),
-				TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
-	}
+	
 }

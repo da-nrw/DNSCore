@@ -71,7 +71,7 @@ public class RetrievePackagesHelperTest {
 		FakeGridFacade grid = new FakeGridFacade();
 		grid.setGridCacheAreaRootPath(workAreaRootPathPath+"/grid/");
 		
-		new RetrievePackagesHelper(grid).loadPackages(object, true);
+		new RetrievePackagesHelper(grid).loadPackages(Path.make(workAreaRootPathPath,"work/TEST/id/data"),object, true);
 		
 		String outputPath = workAreaRootPathPath + "/work/TEST/id/";
 		

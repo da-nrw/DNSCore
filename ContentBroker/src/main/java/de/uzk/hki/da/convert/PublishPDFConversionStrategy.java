@@ -33,6 +33,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.StringUtilities;
 
@@ -52,7 +53,7 @@ public class PublishPDFConversionStrategy extends PublishConversionStrategyBase 
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#convertFile(de.uzk.hki.da.model.ConversionInstruction)
 	 */
 	@Override
-	public List<Event> convertFile(ConversionInstruction ci)
+	public List<Event> convertFile(WorkArea wa, ConversionInstruction ci)
 			throws IOException {
 		
 		if (ci.getConversion_routine()==null) throw new IllegalStateException("conversionRoutine not set");
@@ -60,7 +61,7 @@ public class PublishPDFConversionStrategy extends PublishConversionStrategyBase 
 		
 		List<Event> results = new ArrayList<Event>();
 
-		String input  = ci.getSource_file().toRegularFile().getAbsolutePath();
+		String input  = wa.toFile(ci.getSource_file()).getAbsolutePath();
 		
 		for (String audience: audiences ) {
 			
@@ -68,7 +69,7 @@ public class PublishPDFConversionStrategy extends PublishConversionStrategyBase 
 			
 			DAFile target = new DAFile(object.getLatestPackage(),pips+"/"+audience_lc,StringUtilities.slashize(ci.getTarget_folder())+
 					FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix());
-			target.toRegularFile().getParentFile().mkdirs();
+			wa.toFile(target).getParentFile().mkdirs();
 			
 			String numberOfPagesText=null;
 			if (getPublicationRightForAudience(audience)!=null) 
@@ -94,7 +95,7 @@ public class PublishPDFConversionStrategy extends PublishConversionStrategyBase 
 			if (numberOfPagesText == null && certainPagesText == null) {
 				try {
 					FileUtils.copyFileToDirectory(new File(input),
-							target.toRegularFile().getParentFile());
+							wa.toFile(target).getParentFile());
 					Event e = new Event();
 					e.setDetail("Copied PDF");
 					e.setSource_file(ci.getSource_file());
@@ -107,7 +108,7 @@ public class PublishPDFConversionStrategy extends PublishConversionStrategyBase 
 				}
 				continue;
 			}
-			PdfService pdf = new PdfService(new File(input),target.toRegularFile());
+			PdfService pdf = new PdfService(new File(input),wa.toFile(target));
 		    pdf.reduceToCertainPages(numberOfPagesText, certainPagesText);
 			Event e = new Event();
 			e.setDetail("converted with PDFBox");

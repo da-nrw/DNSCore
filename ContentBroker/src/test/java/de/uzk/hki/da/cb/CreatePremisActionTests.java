@@ -54,6 +54,7 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.User;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
 
@@ -85,6 +86,8 @@ public class CreatePremisActionTests {
 	
 	private Package pkg;  // normal test: unused ,  delta test: the aip 
 	private Package pkg2; // normal test: the sip,  delta test: the delta-sip
+
+	private WorkArea wa;
 	
 	/**
 	 * Sets the up.
@@ -159,6 +162,10 @@ public class CreatePremisActionTests {
 		action.setLocalNode(node);
 		action.setObject(object);
 		object.reattach();
+		
+		wa = new WorkArea(node,object);
+		action.setWorkArea(wa);
+		
 	}
 	
 	/**
@@ -252,7 +259,7 @@ public class CreatePremisActionTests {
 		action.implementation();
 		action.rollback();
 		
-		assertFalse(object.getLatest("premis.xml").toRegularFile().exists());
+		assertFalse(wa.toFile(object.getLatest("premis.xml")).exists());
 		assertFalse(Path.makeFile(workAreaRootPath,"JhoveFolder","temp",new Integer(job.getId()).toString(),"premis_output").exists());
 		
 		assertEquals(1, object.getLatestPackage().getEvents().size());

@@ -137,7 +137,8 @@ public class UpdateMetadataAction extends AbstractAction {
 				unreferencedConvertedFiles = replacements;
 				
 				if(representationExists(repName)) {
-					metadataFile = Path.makeFile(o.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName);
+					metadataFile = Path.makeFile(wa.dataPath(),repName,metadataFileName);
+					
 	                if (!metadataFile.exists()) throw new FileNotFoundException();
 	                logger.debug("Metadata file: "+metadataFile.getAbsolutePath());
 	                fileName_convertRewritingCount = new HashMap<String, Integer>();
@@ -184,8 +185,8 @@ public class UpdateMetadataAction extends AbstractAction {
 				if(representationExists(repName)) {
 					logger.debug("representation: "+repName);
 					Map<DAFile,DAFile> replacements = generateReplacementsMap(o.getLatestPackage(), repName, absUrlPrefix);
-					logger.debug("Search for metadata file "+Path.make(o.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName));
-					metadataFile = Path.makeFile(o.getLatestPackage().getTransientBackRefToObject().getDataPath(),repName,metadataFileName);
+					logger.debug("Search for metadata file "+Path.make(wa.dataPath(),repName,metadataFileName));
+					metadataFile = Path.makeFile(wa.dataPath(),repName,metadataFileName);
 					if (!metadataFile.exists()) throw new FileNotFoundException();
 		            XMPMetadataStructure xms = new XMPMetadataStructure(metadataFile, documents);
 					updatePathsInRDF(xms, replacements);
@@ -223,7 +224,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					File file = emms.getCanonicalFileFromReference(href, emms.getMetadataFile());					
 					if(file.getAbsolutePath().contains(sourceFile.getRelative_path())) {
 						DAFile targetDAFile = e.getTarget_file();
-						File targetFile = targetDAFile.toRegularFile();
+						File targetFile = wa.toFile(targetDAFile);
 						String targetPath = href.replace(file.getName(), targetFile.getName());
 						String targetValue;
 						if(!isPresMode()) {
@@ -273,7 +274,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					targetDAFile = (DAFile)entry.getValue();
 					logger.info("DAFile "+sourceFile+" has been converted to "+targetDAFile+"! Rewrite the reference ...");
 					mimetype = targetDAFile.getMimeType();
-					targetPath = href.replace(file.getName(), targetDAFile.toRegularFile().getName());
+					targetPath = href.replace(file.getName(), wa.toFile(targetDAFile).getName());
 					addRefToFileNameConvertRewritingCountMap(href);
 					if(unreferencedConvertedFiles.get(sourceFile)!=null) {
 						unreferencedConvertedFiles.remove(sourceFile);
@@ -325,7 +326,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					fileExists = true;
 					targetDAFile = (DAFile)entry.getValue();
 					logger.info("DAFile "+sourceFile+" has been converted to "+targetDAFile+"! Rewrite the reference ...");
-					targetPath = href.replace(file.getName(), targetDAFile.toRegularFile().getName());
+					targetPath = href.replace(file.getName(), wa.toFile(targetDAFile).getName());
 					addRefToFileNameConvertRewritingCountMap(href);
 					if(unreferencedConvertedFiles.get(sourceFile)!=null) {
 						unreferencedConvertedFiles.remove(sourceFile);
@@ -368,13 +369,13 @@ public class UpdateMetadataAction extends AbstractAction {
 		DAFile sourceFile = ms.getReferencedDafile(metadataFile, href, o.getDocuments());
 		List<DAFile> newestFiles = o.getNewestFilesFromAllRepresentations(sidecarExts);
 		for(DAFile dafile : newestFiles) {
-			if(FilenameUtils.getBaseName(dafile.toRegularFile().getName()).equals(FilenameUtils.getBaseName(sourceFile.toRegularFile().getName()))&&(
-					!(dafile.toRegularFile().getName().equals(sourceFile.toRegularFile().getName())))) {
+			if(FilenameUtils.getBaseName(wa.toFile(dafile).getName()).equals(FilenameUtils.getBaseName(wa.toFile(sourceFile).getName()))&&(
+					!(wa.toFile(dafile).getName().equals(wa.toFile(sourceFile).getName())))) {
 				logger.debug("calculated reference "+dafile.getRelative_path());
 				reference.add(dafile.getRelative_path());
 				String mimetype = "";
 				try {
-					mimetype = mtds.identify(dafile.toRegularFile());
+					mimetype = mtds.identify(wa.toFile(dafile));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -402,7 +403,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			if (!targetFile.getRep_name().equals(repName)) {
 				continue;
 			}
-			targetFile.setMimeType(getMtds().identify(targetFile.toRegularFile()));
+			targetFile.setMimeType(getMtds().identify(wa.toFile(targetFile)));
 			replacements.put(sourceFile, targetFile);
 		}
 		logger.info("Planned replacements: {}", replacements);
@@ -431,8 +432,8 @@ public class UpdateMetadataAction extends AbstractAction {
 				//+ extension;
 			}
 			
-			File destFile = new File(o.getDataPath() + "/" + repName + "/" + metadataFileName);
-			FileUtils.copyFile(srcMetadataFile.toRegularFile(), destFile);
+			File destFile = new File(wa.dataPath() + "/" + repName + "/" + metadataFileName);
+			FileUtils.copyFile(wa.toFile(srcMetadataFile), destFile);
 			DAFile destMetadataFile = new DAFile(o.getLatestPackage(), repName, metadataFileName);
 			destMetadataFile.setFormatPUID(srcMetadataFile.getFormatPUID());
 			o.getLatestPackage().getFiles().add(destMetadataFile);
@@ -469,7 +470,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	private void copyXMLsToNewRepresentation(DAFile srcDAFile, String repName) 
 			throws IOException {
 		
-		File srcFile = srcDAFile.toRegularFile();
+		File srcFile = wa.toFile(srcDAFile);
 		
 		Iterator<File> xmlFiles = FileUtils.iterateFiles(
 				srcFile.getParentFile(), new WildcardFileFilter("*.xml", IOCase.INSENSITIVE), null);
@@ -479,12 +480,12 @@ public class UpdateMetadataAction extends AbstractAction {
 		File[] subDirs = srcFile.getParentFile().listFiles();
 		
 		for(int file=-1; file<subDirs.length; file++) {
-			File destDir = new File(o.getDataPath() +"/"+ repName);
+			File destDir = new File(wa.dataPath() +"/"+ repName);
 			
 			if(file>-1) {
 				File currentFile = subDirs[file];
 				if(currentFile.isDirectory()) {
-					destDir = new File(Path.make(o.getDataPath(), repName, currentFile.getName()).toString());
+					destDir = new File(Path.make(wa.dataPath(), repName, currentFile.getName()).toString());
 					xmlFiles = FileUtils.iterateFiles(
 							currentFile, new WildcardFileFilter("*.xml", IOCase.INSENSITIVE), null);
 				}
@@ -505,7 +506,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					for (Package p : o.getPackages()) {
 						for (DAFile f : p.getFiles()) {
 							if (xmlFile.getAbsolutePath()
-									.equals(f.toRegularFile().getAbsolutePath())) {
+									.equals(wa.toFile(f).getAbsolutePath())) {
 								e.setSource_file(f);
 								daFile = new DAFile(o.getLatestPackage(), repName, f.getRelative_path());
 								daFile.setFormatPUID(f.getFormatPUID());
@@ -539,7 +540,7 @@ public class UpdateMetadataAction extends AbstractAction {
 		Map<DAFile,DAFile> copyCommands = new HashMap<DAFile,DAFile>();
 		for (String repName : getRepNames()) {
 			logger.debug("looking for xmp files in rep {}", repName);
-			String repPath = Path.make(o.getDataPath(),repName).toString();
+			String repPath = Path.make(wa.dataPath(),repName).toString();
 			File repDir = new File(repPath);
 			if (!repDir.exists()) {
 				logger.info("representation directory {} does not exist. Skipping ...", repPath);
@@ -572,7 +573,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			}
 			logger.debug("collecting files in path: {}", repPath);
 			
-			XmpCollector.collect(newestXmpFiles, new File(repPath + "/XMP.xml"));
+			XmpCollector.collect(wa,newestXmpFiles, new File(repPath + "/XMP.xml"));
 			DAFile xmpFile = new DAFile(o.getLatestPackage(),repName,"XMP.xml");
 			o.getLatestPackage().getFiles().add(xmpFile);
 			o.getLatestPackage().getEvents().add(createCreateEvent(xmpFile));
@@ -584,7 +585,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			DAFile sidecarSourceFile = copyCommands.get(sidecarTargetFile);
 			
 			logger.debug("Copying {} to {}", sidecarSourceFile, sidecarTargetFile);
-			FileUtils.copyFile(sidecarSourceFile.toRegularFile(), sidecarTargetFile.toRegularFile());
+			FileUtils.copyFile(wa.toFile(sidecarSourceFile), wa.toFile(sidecarTargetFile));
 			sidecarTargetFile.setFormatPUID(sidecarSourceFile.getFormatPUID());
 			
 			o.getLatestPackage().getFiles().add(sidecarTargetFile);
@@ -598,15 +599,15 @@ public class UpdateMetadataAction extends AbstractAction {
 		String relativePath = "";
 		for (Event evt:o.getLatestPackage().getEvents()){
 			if (evt.getType().equals("CONVERT")&&
-					FilenameUtils.removeExtension(evt.getSource_file().toRegularFile().getAbsolutePath()).
-						equals(FilenameUtils.removeExtension(sidecarSourceFile.toRegularFile().getAbsolutePath()))){
+					FilenameUtils.removeExtension(wa.toFile(evt.getSource_file()).getAbsolutePath()).
+						equals(FilenameUtils.removeExtension(wa.toFile(sidecarSourceFile).getAbsolutePath()))){
 				relativePath = FilenameUtils.removeExtension(evt.getTarget_file().getRelative_path());
 				break;
 			}
 		}
 		
 		if (relativePath.equals(""))
-			logger.debug("No CONVERT event found for " + FilenameUtils.removeExtension(sidecarSourceFile.toRegularFile().getName()));
+			logger.debug("No CONVERT event found for " + FilenameUtils.removeExtension(wa.toFile(sidecarSourceFile).getName()));
 		
 		return relativePath;
 	}
@@ -651,7 +652,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	
 	private boolean representationExists(String repName) {
 		boolean repExists = false;
-		String repPath = Path.make(o.getDataPath(),repName).toString();
+		String repPath = Path.make(wa.dataPath(),repName).toString();
 		File repDir = new File(repPath);
 		if(repDir.exists()) {
 			repExists = true;
@@ -664,7 +665,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	@Override
 	public void rollback() throws Exception {
 		String metadataFileName = o.getMetadata_file();
-		File mf = o.getLatest(metadataFileName).toRegularFile();
+		File mf = wa.toFile(o.getLatest(metadataFileName));
 		String packageType = o.getPackage_type();
 		List<de.uzk.hki.da.model.Document> documents = o.getDocuments();
 		for(String repName : getRepNames()) {
@@ -678,9 +679,9 @@ public class UpdateMetadataAction extends AbstractAction {
 			if (repName.startsWith(C.WA_DIP)) {
 				metadataFileName = packageType + ".xml";
 			}
-			FileUtils.deleteQuietly(Path.makeFile(o.getDataPath(), repName, metadataFileName));
+			FileUtils.deleteQuietly(Path.makeFile(wa.dataPath(), repName, metadataFileName));
 			
-			for(File file : Path.makeFile(o.getDataPath(), repName).listFiles()) {
+			for(File file : Path.makeFile(wa.dataPath(), repName).listFiles()) {
 				if(file.isDirectory() && file.listFiles().length==0) {
 					FileUtils.deleteDirectory(file);
 				}

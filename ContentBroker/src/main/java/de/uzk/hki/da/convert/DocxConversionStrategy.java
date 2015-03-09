@@ -47,6 +47,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.StringUtilities;
@@ -97,7 +98,7 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#convertFile(de.uzk.hki.da.model.ConversionInstruction)
 	 */
 	@Override
-	public List<Event> convertFile(ConversionInstruction ci)
+	public List<Event> convertFile(WorkArea wa,ConversionInstruction ci)
 			throws FileNotFoundException {
 
 		if (ci.getConversion_routine()==null) throw new IllegalStateException("conversionRoutine not set");
@@ -105,13 +106,13 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 		if (ci.getConversion_routine().getParams()==null) throw new IllegalStateException("add params not set");
 		if (cliConnector==null) throw new IllegalStateException("Cli Connector is not set");
 				
-		File result = new File(generateTargetFilePath(ci));
+		File result = new File(generateTargetFilePath(wa,ci));
 		
 		List<Event> results = new ArrayList<Event>();
 		
 		getHttpclient().setUrl(ci.getConversion_routine().getParams());
 		getHttpclient().setSourceMimeType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-		getHttpclient().postFileAndReadResponse(ci.getSource_file().toRegularFile(), result);
+		getHttpclient().postFileAndReadResponse(wa.toFile(ci.getSource_file()), result);
 		
 		if (result.exists()) {
 		DAFile daf = new DAFile(pkg,object.getPath("newest").getLastElement(),StringUtilities.slashize(ci.getTarget_folder())+result.getName());
@@ -120,13 +121,13 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 		// TODO Doing PDF/A Conversion with a temp file, due to recieve PDF 1.5 from MS instead of PDF/A . 
 		// This should be the same command for "normal" PDFs
 		// read it from Database? 
-		File tempFile = new File("/"+ FilenameUtils.getPath(daf.toRegularFile().getAbsolutePath()) + "_" + daf.toRegularFile().getName()); 
+		File tempFile = new File("/"+ FilenameUtils.getPath(wa.toFile(daf).getAbsolutePath()) + "_" + wa.toFile(daf).getName()); 
 		
 		String commandAsArray[] = new String[]{
 				"gs","-q", "-dPDFA", "-dPDFACompatibilityPolicy=1", "-dBATCH" ,"-dNOPAUSE" ,"-dNOOUTERSAVE",
 				"-dUseCIEColor","-sProcessColorModel=DeviceCMYK","-sDEVICE=pdfwrite", 
 				"-sOutputFile=" + tempFile.getAbsolutePath() 
-				,"conf/PDFA_def.ps",daf.toRegularFile().getAbsolutePath()};
+				,"conf/PDFA_def.ps",wa.toFile(daf).getAbsolutePath()};
 		if (!cliConnector.execute(commandAsArray)){
 			throw new RuntimeException("GS command not succeeded");
 		}
@@ -134,13 +135,13 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 		try {
 			if (tempFile.exists()) {
 				result.delete();
-				FileUtils.moveFile(tempFile, daf.toRegularFile());
+				FileUtils.moveFile(tempFile, wa.toFile(daf));
 			} else throw new RuntimeException("temp file "  + tempFile.getAbsolutePath() + " was not created!");
 			} catch (IOException e1) {
 			throw new RuntimeException("MV command not succeeded on temp file " +tempFile.getAbsolutePath(), e1);
 		}
 		
-		PdfService.validatePdfA(daf.toRegularFile());
+		PdfService.validatePdfA(wa.toFile(daf));
 		
 		Event e = new Event();
 		e.setType("CONVERT");
@@ -160,8 +161,8 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 	 * @param ci the ci
 	 * @return the string
 	 */
-	public String generateTargetFilePath(ConversionInstruction ci) {
-		String input  = ci.getSource_file().toRegularFile().getAbsolutePath();
+	public String generateTargetFilePath(WorkArea wa,ConversionInstruction ci) {
+		String input  = wa.toFile(ci.getSource_file()).getAbsolutePath();
 		return object.getPath("newest")+"/"+StringUtilities.slashize(ci.getTarget_folder())
 				+ FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix();
 	}

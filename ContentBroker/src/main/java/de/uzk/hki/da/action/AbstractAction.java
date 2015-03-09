@@ -358,7 +358,7 @@ public abstract class AbstractAction implements Runnable {
 	public void synchronizeObjectDatabaseAndFileSystemState() {
 		o.reattach();
 		if (!SUPPRESS_OBJECT_CONSISTENCY_CHECK){
-			if ((!o.isDBtoFSconsistent())||(!o.isFStoDBconsistent())){
+			if ((!wa.isDBtoFSconsistent())||(!wa.isFStoDBconsistent())){
 				reportTechnicalError(new RuntimeException("Object DB is not consistent with data on FS."));
 			}
 		}

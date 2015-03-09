@@ -85,7 +85,8 @@ import de.uzk.hki.da.metadata.XsltEDMGeneratorTests;
 import de.uzk.hki.da.model.GetNewestFilesFromAllRepresentationsTests;
 import de.uzk.hki.da.model.JobCascadingTest;
 import de.uzk.hki.da.model.ModelTest;
-import de.uzk.hki.da.model.ObjectFSTests;
+import de.uzk.hki.da.model.ObjectTests;
+import de.uzk.hki.da.model.WorkAreaFSTest;
 import de.uzk.hki.da.model.PackageTests;
 import de.uzk.hki.da.model.PreservationSystemTests;
 import de.uzk.hki.da.model.SaveConversionInstructionsByJob;
@@ -110,7 +111,6 @@ import de.uzk.hki.da.util.PathTest;
 	CreatePremisActionTests.class,
 	UnpackActionTests.class,
 	CLIConversionStrategyTests.class,
-	ObjectFSTests.class,
 	ConversionInstructionsBuilderTests.class,
 	ActionFactoryTests.class,
 	RetrievePackagesHelperTest.class,
@@ -177,6 +177,8 @@ import de.uzk.hki.da.util.PathTest;
 	ObjectToWorkAreaActionTests.class,
 	CleanWorkAreaActionTests.class,
 	WorkAreaTests.class,
+	WorkAreaFSTest.class,
+	ObjectTests.class,
 	AuditActionTest.class,
 	CreateDCActionTests.class,
 	RegisterURNActionTest.class

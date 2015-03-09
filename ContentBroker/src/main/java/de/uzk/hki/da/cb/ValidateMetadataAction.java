@@ -233,7 +233,7 @@ public class ValidateMetadataAction extends AbstractAction {
 			
 		logger.debug("found {} xmp files", newestXmpFiles.size());
 		File rdfFile = new File(repPath + "/"+C.METADATA_FILE_XMP);
-		XmpCollector.collect(newestXmpFiles, rdfFile);	
+		XmpCollector.collect(wa,newestXmpFiles, rdfFile);	
 		logger.debug("collecting files in path: {}", rdfFile.getAbsolutePath());
 		DAFile xmpFile = new DAFile(o.getLatestPackage(),o.getPath("newest").getLastElement(),C.METADATA_FILE_XMP);
 		xmpFile.setFormatPUID(FFConstants.FMT_101);

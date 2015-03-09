@@ -39,6 +39,7 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.VideoRestriction;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
@@ -68,30 +69,30 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#convertFile(de.uzk.hki.da.model.ConversionInstruction)
 	 */
 	@Override
-	public List<Event> convertFile(ConversionInstruction ci)
+	public List<Event> convertFile(WorkArea wa,ConversionInstruction ci)
 			throws FileNotFoundException {
 		if (pkg==null) throw new IllegalStateException("pkg not set");
 		
 		List<Event> results = new ArrayList<Event>();
 		
-		Path.makeFile(object.getDataPath(),pips,"public",ci.getTarget_folder()).mkdirs();
-		Path.makeFile(object.getDataPath(),pips,"institution",ci.getTarget_folder()).mkdirs();
+		Path.makeFile(wa.dataPath(),pips,"public",ci.getTarget_folder()).mkdirs();
+		Path.makeFile(wa.dataPath(),pips,"institution",ci.getTarget_folder()).mkdirs();
 		
 		String cmdPUBLIC[] = new String[]{
 				"HandBrakeCLI",
 				"-i",
-				ci.getSource_file().toRegularFile().getAbsolutePath(),
+				wa.toFile(ci.getSource_file()).getAbsolutePath(),
 				"-o",
-				object.getDataPath()+"/"+pips.toString()+"/public/"+StringUtilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4",
+				wa.dataPath()+"/"+pips.toString()+"/public/"+StringUtilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(wa.toFile(ci.getSource_file()).getAbsolutePath())+".mp4",
 				"-e","x264","-f","mp4","-E","faac"
 		};
 		
 		cmdPUBLIC = (String[]) ArrayUtils.addAll(cmdPUBLIC, getRestrictionParametersForAudience("PUBLIC"));
 		
 		DAFile pubFile = new DAFile(pkg, pips+"/public", StringUtilities.slashize(ci.getTarget_folder()) + 
-				FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp4");
+				FilenameUtils.getBaseName(wa.toFile(ci.getSource_file()).getAbsolutePath()) + ".mp4");
 		
-		if (!executeConversionTool(cmdPUBLIC, pubFile.toRegularFile()))
+		if (!executeConversionTool(cmdPUBLIC, wa.toFile(pubFile)))
 			throw new RuntimeException("command not succeeded: " + Arrays.toString(cmdPUBLIC));
 		
 		Event e = new Event();
@@ -104,18 +105,18 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 		String cmdINSTITUTION[] = new String[]{
 				"HandBrakeCLI",
 				"-i",
-				ci.getSource_file().toRegularFile().getAbsolutePath(),
+				wa.toFile(ci.getSource_file()).getAbsolutePath(),
 				"-o",
-				object.getDataPath()+"/"+pips+"/institution/"+StringUtilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath())+".mp4",
+				wa.dataPath()+"/"+pips+"/institution/"+StringUtilities.slashize(ci.getTarget_folder())+FilenameUtils.getBaseName(wa.toFile(ci.getSource_file()).getAbsolutePath())+".mp4",
 				"-e","x264","-f","mp4","-E","faac"
 		};
 
 		cmdINSTITUTION = (String[]) ArrayUtils.addAll(cmdINSTITUTION, getRestrictionParametersForAudience("INSTITUTION"));
 		
 		DAFile instFile = new DAFile(pkg, C.WA_DIP+"/institution", StringUtilities.slashize(ci.getTarget_folder()) + 
-				FilenameUtils.getBaseName(ci.getSource_file().toRegularFile().getAbsolutePath()) + ".mp4");
+				FilenameUtils.getBaseName(wa.toFile(ci.getSource_file()).getAbsolutePath()) + ".mp4");
 		
-		if (!executeConversionTool(cmdINSTITUTION, instFile.toRegularFile()))
+		if (!executeConversionTool(cmdINSTITUTION, wa.toFile(instFile)))
 			throw new RuntimeException("command not succeeded: " + Arrays.toString(cmdINSTITUTION));
 				
 		Event e2 = new Event();

@@ -34,6 +34,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
@@ -71,20 +72,20 @@ public class PdfConversionStrategy implements ConversionStrategy {
 	 * @Author : jens Peters
 	 */
 	@Override
-	public List<Event> convertFile(ConversionInstruction ci)
+	public List<Event> convertFile(WorkArea wa,ConversionInstruction ci)
 			throws FileNotFoundException {
 		if (object.getLatestPackage() == null)
 			throw new IllegalStateException("Package not set");
 		Path.make(object.getPath("newest"),
 				ci.getTarget_folder()).toFile().mkdirs();
 		List<Event> results = new ArrayList<Event>();
-		File result = new File(generateTargetFilePath(ci));
+		File result = new File(generateTargetFilePath(wa,ci));
 		String commandAsArray[] = new String[] { "gs", "-q", "-dPDFA",
 				"-dPDFACompatibilityPolicy=1", "-dBATCH", "-dNOPAUSE",
 				"-dNOOUTERSAVE", "-dUseCIEColor",
 				"-sProcessColorModel=DeviceCMYK", "-sDEVICE=pdfwrite",
 				"-sOutputFile=" + result.getAbsolutePath(), "conf/PDFA_def.ps",
-				ci.getSource_file().toRegularFile().getAbsolutePath() };
+				wa.toFile(ci.getSource_file()).getAbsolutePath() };
 		ProcessInformation pi = null;
 		try {
 			pi = cliConnector.runCmdSynchronously(commandAsArray);
@@ -99,7 +100,7 @@ public class PdfConversionStrategy implements ConversionStrategy {
 							+ result.getName());
 			logger.debug("new dafile:" + daf);
 			// TODO: we don't do anything if validation fails!
-			boolean pdfa = PdfService.validatePdfA(daf.toRegularFile());
+			boolean pdfa = PdfService.validatePdfA(wa.toFile(daf));
 			Event e = new Event();
 			e.setType("CONVERT");
 			e.setDetail(StringUtilities.createString(commandAsArray)
@@ -123,8 +124,8 @@ public class PdfConversionStrategy implements ConversionStrategy {
 	 * @param ci the ci
 	 * @return the string
 	 */
-	public String generateTargetFilePath(ConversionInstruction ci) {
-		String input  = ci.getSource_file().toRegularFile().getAbsolutePath();
+	public String generateTargetFilePath(WorkArea wa,ConversionInstruction ci) {
+		String input  = wa.toFile(ci.getSource_file()).getAbsolutePath();
 		return object.getPath("newest")+"/"+StringUtilities.slashize(ci.getTarget_folder())
 				+ FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix();
 	}

@@ -48,6 +48,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.CommandLineConnector;
 
 
@@ -83,7 +84,7 @@ public class PublishXSLTConversionStrategy implements ConversionStrategy {
 	 * @author Sebastian Cuy
 	 */
 	@Override
-	public List<Event> convertFile(ConversionInstruction ci) 
+	public List<Event> convertFile(WorkArea wa,ConversionInstruction ci) 
 			throws FileNotFoundException,
 			IllegalStateException{
 		if (object==null) throw new IllegalStateException("Object not set");
@@ -92,10 +93,10 @@ public class PublishXSLTConversionStrategy implements ConversionStrategy {
 		String objectId = object.getIdentifier().substring(object.getIdentifier().indexOf("-")+1);
 		logger.debug("objectId: " + objectId);
 		
-		Source xmlSource = createXMLSource(ci.getSource_file().toRegularFile());
+		Source xmlSource = createXMLSource(wa.toFile(ci.getSource_file()));
 		
 		String targetFileName = FilenameUtils.removeExtension( 
-				FilenameUtils.getName(ci.getSource_file().toRegularFile().getAbsolutePath()));
+				FilenameUtils.getName(wa.toFile(ci.getSource_file()).getAbsolutePath()));
 		if (!ci.getConversion_routine().getName().endsWith("_paths-for-presenter")) 
 			targetFileName += "_" + ci.getConversion_routine().getName();
 		
@@ -103,16 +104,16 @@ public class PublishXSLTConversionStrategy implements ConversionStrategy {
 		DAFile publFile = new DAFile(object.getLatestPackage(),C.WA_DIP+"/public",ci.getTarget_folder() + "/" + targetFileName + ".xml");
 		DAFile instFile = new DAFile(object.getLatestPackage(),C.WA_DIP+"/institution",ci.getTarget_folder() + "/" + targetFileName + ".xml");
 
-		new File(object.getDataPath()+"/"+C.WA_DIP+"/public/"+ci.getTarget_folder()).mkdirs();
-		new File(object.getDataPath()+"/"+C.WA_DIP+"/institution/"+ci.getTarget_folder()).mkdirs();
+		new File(wa.dataPath()+"/"+C.WA_DIP+"/public/"+ci.getTarget_folder()).mkdirs();
+		new File(wa.dataPath()+"/"+C.WA_DIP+"/institution/"+ci.getTarget_folder()).mkdirs();
 
 		logger.debug("Will transform {} to {}", ci.getSource_file(), publFile);
 		logger.debug("Will transform {} to {}", ci.getSource_file(), instFile);
 		try {
 			if (objectId != null) transformer.setParameter("object-id", objectId);
 			
-			transformer.transform(xmlSource, new StreamResult(publFile.toRegularFile().getAbsolutePath()));
-			transformer.transform(xmlSource, new StreamResult(instFile.toRegularFile().getAbsolutePath()));
+			transformer.transform(xmlSource, new StreamResult(wa.toFile(publFile).getAbsolutePath()));
+			transformer.transform(xmlSource, new StreamResult(wa.toFile(instFile).getAbsolutePath()));
 			
 		} catch (TransformerException e) {
 			throw new RuntimeException("Error while transforming xml.", e);

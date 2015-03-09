@@ -38,7 +38,9 @@ import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
@@ -62,6 +64,8 @@ public class PublishXsltConversionStrategyTests {
 	
 	/** The obj. */
 	Object  obj = null;
+
+	private Node n;
 	
 	
 	/**
@@ -71,6 +75,9 @@ public class PublishXsltConversionStrategyTests {
 	 */
 	@Before
 	public void setUp() throws IOException {
+		
+		n = new Node();
+		n.setWorkAreaRootPath(workAreaRootPath);
 		
 		obj = TESTHelper.setUpObject("1",new RelativePath(workAreaRootPath));
 		obj.setIdentifier("1");
@@ -109,7 +116,7 @@ public class PublishXsltConversionStrategyTests {
 		
 		ci.setSource_file(new DAFile(obj.getLatestPackage(),"","ead_correct.xml"));
 		strategy.setStylesheet(workAreaRootPath + "/ead_to_dc.xsl");
-		strategy.convertFile(ci);
+		strategy.convertFile(new WorkArea(n,obj),ci);
 		
 		File targetFile = Path.makeFile(workAreaRootPath, 
 				"work/TEST/1/data/"+C.WA_DIP+"/public/ead_correct_XSLT_ead_to_dc.xml");
@@ -135,7 +142,7 @@ public class PublishXsltConversionStrategyTests {
 			
 			ci.setSource_file(new DAFile(obj.getLatestPackage(),"","ead_not-well-formed.xml"));
 			strategy.setStylesheet(workAreaRootPath + "/ead_to_dc.xsl");
-			strategy.convertFile(ci);
+			strategy.convertFile(new WorkArea(n,obj),ci);
 			
 			// should not be reached since exception should be thrown in convertFile
 			fail();
@@ -162,7 +169,7 @@ public class PublishXsltConversionStrategyTests {
 		
 		ci.setSource_file(new DAFile(obj.getLatestPackage(),"","ead_not-valid.xml"));
 		strategy.setStylesheet(workAreaRootPath + "/ead_to_dc.xsl");
-		strategy.convertFile(ci);
+		strategy.convertFile(new WorkArea(n,obj),ci);
 		
 		File targetFile = Path.makeFile(workAreaRootPath, 
 				"work/TEST/1/data/"+C.WA_DIP+"/public/ead_not-valid_XSLT_ead_to_dc.xml");
@@ -189,7 +196,7 @@ public class PublishXsltConversionStrategyTests {
 			
 			ci.setSource_file(new DAFile(obj.getLatestPackage(),"","ead_charset-errors.xml"));
 			strategy.setStylesheet(workAreaRootPath + "/ead_to_dc.xsl");
-			strategy.convertFile(ci);
+			strategy.convertFile(new WorkArea(n,obj),ci);
 			
 			// should not be reached since exception should be thrown in convertFile
 			fail();

@@ -58,7 +58,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 	@Override
 	public boolean implementation() {
 		
-		o.getDataPath().toFile().mkdirs();
+		Path.makeFile(wa.dataPath()).mkdirs();
 		
 		RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridFacade());
 		
@@ -74,7 +74,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 		}
 		
 		try {
-			retrievePackagesHelper.loadPackages(o, true);
+			retrievePackagesHelper.loadPackages(wa.dataPath(),o, true);
 		} catch (IOException e) {
 			throw new RuntimeException("error while trying to get existing packages from lza area",e);
 		}
@@ -90,7 +90,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 	
 	@Override
 	public void rollback() throws Exception {
-		FileUtils.deleteQuietly(Path.makeFile(o.getDataPath()));
+		FileUtils.deleteQuietly(Path.makeFile(wa.dataPath()));
 	}
 
 

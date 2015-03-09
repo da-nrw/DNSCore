@@ -26,6 +26,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
 
 
@@ -82,6 +83,8 @@ public class PackageTests {
 		object.reattach();
 		
 		List<DAFile> files = pkg.scanRepRecursively(
+				
+				Path.make(new RelativePath(workAreaRootPath),"work","TEST","1","data"),
 				repName);
 
 		int checksPerformed = 0;

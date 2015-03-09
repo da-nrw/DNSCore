@@ -70,7 +70,7 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 			o.setUrn(null);
 		deleteBagitFiles(o.getPath());
 		
-		revertToSIPContent(o.getPath(), o.getDataPath(), j.getRep_name());
+		revertToSIPContent(o.getPath(), wa.dataPath(), j.getRep_name());
 		deleteTemporaryPIPs();
 		
 		clearNonpersistentObjectProperties(o);
@@ -84,10 +84,10 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 		if (isNotSet(j.getRep_name())) throw new IllegalStateException("Rep name not set.");
 		
 		if (	thereIsNoARepresentation()
-				&&(o.getDataPath().toFile().exists())
+				&&(wa.dataPath().toFile().exists())
 				&&dataIsOnlySubfolderOfObject()) {
 			
-			makeRepOfSIPContent(o.getPath(), o.getDataPath(), j.getRep_name());
+			makeRepOfSIPContent(o.getPath(), wa.dataPath(), j.getRep_name());
 		} 
 		else {
 			throw new RuntimeException("Rollback not possible.");
@@ -105,7 +105,7 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 
 
 	private boolean thereIsNoARepresentation() {
-		return (!Path.makeFile(o.getDataPath(),j.getRep_name()+A).exists());
+		return (!Path.makeFile(wa.dataPath(),j.getRep_name()+A).exists());
 	}
 
 
