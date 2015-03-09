@@ -113,16 +113,20 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	String address_dest = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + "/" + gridPath;
 		logger.debug("checking validity of " + address_dest);
 		try {
-			String check = executeIrule("*state=0\n"
-		      + "*dataObj=\"" + address_dest +"\"\n"
-		      + "acIsValid(*dataObj,*state)\n");
-	
-			if (check!=null && !check.isEmpty() ) {
+	irodsSystemConnector.connect();	
+	String check = irodsSystemConnector.executeRule("checkItemsQuick {\n"
+	      + "*state=0\n"
+	      + "acIsValid(*dataObj,*state)\n"
+	      + "}\n"
+	      + "INPUT *dataObj=\"" + address_dest +"\"\n"
+	      + "OUTPUT ruleExecOut", "ruleExecOut");
+		if (check!=null && !check.isEmpty() ) {
 			if (check.indexOf("state 1")>0) {
 				logger.debug("claimed state by iRODS Datagrid is: true");
 				return true;
 			}
 		}	
+		irodsSystemConnector.logoff();
 		} catch (Exception e) {
 			logger.error("Catched Exception " + e.getMessage());
 			
@@ -131,26 +135,4 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		return false;
 	}
 	
-	public String executeIrule(String rule) {
-		String commandAsArray[] = new String[]{
-				"irule",rule,"null","ruleExecOut"
-		};	
-		return executeIcommand(commandAsArray);
-	}
-	
-	private String executeIcommand(String[] commandAsArray) {
-		CommandLineConnector clc = new CommandLineConnector();
-		ProcessInformation pi = null;
-		try {
-			pi = clc.runCmdSynchronously(commandAsArray, 86400000L);
-		} catch (IOException e1) {
-			throw new RuntimeException("Icommand did not succeed, not found: " + Arrays.toString(commandAsArray));
-		}
-		if (pi.getExitValue()!=0) {
-			logger.error("Icommand did not succeed: " + Arrays.toString(commandAsArray) + " returned " +pi.getStdErr() );
-			logger.debug (pi.getStdOut());
-			return "ERROR";
-		}	
-		logger.debug (pi.getStdOut());
-		return pi.getStdOut();
-	}	}
+}
