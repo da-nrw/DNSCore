@@ -231,7 +231,7 @@ acGetAVUField(*objPath,*fieldName,*fieldValue) {
 # OUTPUT status 0:false== failure 1: true == ok
 
 # TEMPORARILY Doesn't check federated items until we're doing own implemetation
-# of it due to weired 
+# of it due to weired bug of RE
 
 acIsValid(*objPath,*stat) {
     *stat=0
