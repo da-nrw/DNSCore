@@ -67,7 +67,7 @@ public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
 	@Before
 	public void setUp() throws IOException{
 
-		object = ath.putPackageToStorage(IDENTIFIER,ORIG_NAME,containerName,new Date(),100);
+		object = ath.putPackageToStorage(IDENTIFIER,ORIG_NAME,new Date(),100);
 		FileUtils.copyFile(Path.makeFile(TC.TEST_ROOT_AT,ORIG_NAME+"2.tgz"), 
 				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME,containerName));
 	}

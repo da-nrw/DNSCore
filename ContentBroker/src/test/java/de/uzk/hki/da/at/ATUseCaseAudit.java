@@ -37,7 +37,6 @@ import org.junit.Test;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectNamedQueryDAO;
-import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
 
 
@@ -60,7 +59,7 @@ public class ATUseCaseAudit extends AcceptanceTest{
 		// set object to older creationdate than one day
 		Calendar now = Calendar.getInstance();
 		now.add(Calendar.HOUR_OF_DAY, -25);
-		object = ath.putPackageToStorage(IDENTIFIER,ORIGINAL_NAME,CONTAINER_NAME,now.getTime(),100 );
+		object = ath.putPackageToStorage(IDENTIFIER,ORIGINAL_NAME,now.getTime(),100 );
 	}
 	
 	@After

@@ -46,7 +46,7 @@ public class ATIdentifierAssignment extends AcceptanceTest {
 
 	@BeforeClass
 	public static void setUp() throws IOException {
-		ath.putPackageToStorage("ATIdentifierAssignmentURNDelta",ORIG_NAME_DELTA_ORIGINAL_URN,"containerName",new Date(),100);
+		ath.putPackageToStorage("ATIdentifierAssignmentURNDelta",ORIG_NAME_DELTA_ORIGINAL_URN,new Date(),100);
 
 		ath.putPackageToIngestArea("ATUseCaseIngest1","tgz",
 				ORIG_NAME_URN_BASED_ON_TECHNICAL_IDENTIFIER);
