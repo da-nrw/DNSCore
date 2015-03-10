@@ -50,9 +50,7 @@ import de.uzk.hki.da.util.RelativePath;
 public class WorkArea {
 
 	private static final String UNDERSCORE = "_";
-
 	private static final String ERR_MSG_NULL_OR_EMPTY = "Must not be null or empty: ";
-	
 	public static final String REPRESENTATION_FILTER = "^.*[+][ab]";
 	
 	
@@ -96,8 +94,8 @@ public class WorkArea {
 		return pipSourceFolderPath(audience).toFile();
 	}
 	
-	public File metadataStream(String audience,String metadataFileName) {
-		return Path.makeFile(contractorPipsDirPath(audience),o.getIdentifier(),metadataFileName+FILE_EXTENSION_XML);
+	public File pipMetadataFile(String audience,String fileName) {
+		return Path.makeFile(contractorPipsDirPath(audience),o.getIdentifier(),fileName+FILE_EXTENSION_XML);
 	}
 
 	private Path contractorPipsDirPath(String audience) {
@@ -132,7 +130,6 @@ public class WorkArea {
 	
 	/**
 	 * Checks if for every DAFile attached to the db there is a physical file inside the object folder on the file system.
-	 * @author Daniel M. de Oliveira
 	 * @return false if there is at least one DAFile which lacks a correspondent physical file. true otherwise.
 	 */
 	public boolean isDBtoFSconsistent() {
@@ -142,9 +139,7 @@ public class WorkArea {
 		for (Package pkg: o.getPackages())
 			for (DAFile f: pkg.getFiles()){
 				if (!f.getRep_name().matches(REPRESENTATION_FILTER)) continue;
-//				System.out.println("compare file "+toFile(f));
 				if (!toFile(f).exists()) consistent = false;
-//				System.out.println(consistent);
 			}
 		
 		return consistent;
@@ -153,7 +148,6 @@ public class WorkArea {
 
 	/**
 	 * Checks if for every physical file inside the object on the file system there is a DAFile attached to one of the packages belonging to the object.
-	 * @author Daniel M. de Oliveira
 	 * @return false if there is at least one existent file the DAfile is missing. true otherwise.
 	 */
 	public boolean isFStoDBconsistent() {
@@ -176,8 +170,6 @@ public class WorkArea {
 	
 	/**
 	 * Gets the files of a representation. Operates on the basis of the FS.
-	 * 
-	 * @author Daniel M. de Oliveira
 	 * @param repName
 	 * @return
 	 */

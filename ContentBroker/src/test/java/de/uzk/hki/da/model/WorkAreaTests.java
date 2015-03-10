@@ -118,7 +118,7 @@ public class WorkAreaTests {
 	@Test
 	public void metadataFile() {
 		final String metadataFileName = "metadata";
-		File r = wa.metadataStream(WA_PUBLIC,metadataFileName);
+		File r = wa.pipMetadataFile(WA_PUBLIC,metadataFileName);
 		assertEquals(Path.makeFile(WORK_AREA_ROOT_PATH,WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),o.getIdentifier(),metadataFileName+FILE_EXTENSION_XML),r);
 	}
 	

@@ -76,10 +76,10 @@ public class IndexMetadataAction extends AbstractAction {
 			throw new PreconditionsNotMetException("Index name not set. Make sure the action is configured properly");
 		if (getTestContractors()==null)
 			throw new PreconditionsNotMetException("testContractors not set");
-		if (! wa.metadataStream(WA_PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID).exists())
-			throw new PreconditionsNotMetException("Missing file: "+wa.metadataStream(WA_PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID));
-		if (! wa.metadataStream(WA_PUBLIC, EDM_XSLT_METADATA_STREAM_ID).exists())
-			throw new PreconditionsNotMetException("Missing file: "+wa.metadataStream(WA_PUBLIC, EDM_XSLT_METADATA_STREAM_ID));
+		if (! wa.pipMetadataFile(WA_PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID).exists())
+			throw new PreconditionsNotMetException("Missing file: "+wa.pipMetadataFile(WA_PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID));
+		if (! wa.pipMetadataFile(WA_PUBLIC, EDM_XSLT_METADATA_STREAM_ID).exists())
+			throw new PreconditionsNotMetException("Missing file: "+wa.pipMetadataFile(WA_PUBLIC, EDM_XSLT_METADATA_STREAM_ID));
 	}
 	
 	@Override
@@ -88,7 +88,7 @@ public class IndexMetadataAction extends AbstractAction {
 		String edmContent;
 		InputStream metadataStream  = null;
 		try {
-			metadataStream = new FileInputStream(wa.metadataStream(WA_PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID));
+			metadataStream = new FileInputStream(wa.pipMetadataFile(WA_PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID));
 			edmContent = IOUtils.toString(metadataStream, ENCODING_UTF_8);
 		} finally {
 			metadataStream.close();

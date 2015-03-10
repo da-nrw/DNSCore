@@ -100,7 +100,7 @@ public class CreateEDMAction extends AbstractAction {
 			throw new FileNotFoundException("Missing file: "+xsltTransformationFile);
 
 		
-		File metadataSourceFile = getWa().metadataStream(WA_PUBLIC,o.getPackage_type());
+		File metadataSourceFile = getWa().pipMetadataFile(WA_PUBLIC,o.getPackage_type());
 		if (!metadataSourceFile.exists())
 			throw new RuntimeException("Missing file in public PIP: "+o.getPackage_type()+FILE_EXTENSION_XML);
 
@@ -115,7 +115,7 @@ public class CreateEDMAction extends AbstractAction {
 	
 	private File generateEdmUsingXslt(String xsltTransformationFile,File metadataSourceFile, String edmId) throws FileNotFoundException {
 		
-		File edm = getWa().metadataStream(WA_PUBLIC, edmId); 
+		File edm = getWa().pipMetadataFile(WA_PUBLIC, edmId); 
 
 		String edmResult = generateEDM(o.getIdentifier(), xsltTransformationFile, new FileInputStream(metadataSourceFile));
 		PrintWriter out = null;
@@ -137,7 +137,7 @@ public class CreateEDMAction extends AbstractAction {
 		
 		try {
 			if(packageType.equals("EAD") || packageType.equals("METS") || packageType.equals("LIDO")) {
-				edm = getWa().metadataStream(WA_PUBLIC,EDM_FOR_ES_INDEX_METADATA_STREAM_ID);
+				edm = getWa().pipMetadataFile(WA_PUBLIC,EDM_FOR_ES_INDEX_METADATA_STREAM_ID);
 				List<Document> documents = o.getDocuments();
 				
 				if(packageType.equals("EAD")) {

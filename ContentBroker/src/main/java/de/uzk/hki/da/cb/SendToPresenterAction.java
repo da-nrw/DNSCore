@@ -164,8 +164,8 @@ public class SendToPresenterAction extends AbstractAction {
 
 	private void deleteXepicur() {
 		
-		wa.metadataStream(WA_INSTITUTION,METADATA_STREAM_ID_EPICUR).delete();
-		wa.metadataStream(WA_PUBLIC,METADATA_STREAM_ID_EPICUR).delete();
+		wa.pipMetadataFile(WA_INSTITUTION,METADATA_STREAM_ID_EPICUR).delete();
+		wa.pipMetadataFile(WA_PUBLIC,METADATA_STREAM_ID_EPICUR).delete();
 	}
 	
 	
@@ -189,7 +189,7 @@ public class SendToPresenterAction extends AbstractAction {
 		XepicurWriter.createXepicur(
 				o.getIdentifier(), pkgType, 
 				viewerUrls.get(pkgType), 
-				wa.metadataStream(pipType,"epicur"),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
+				wa.pipMetadataFile(pipType,"epicur"),preservationSystem.getUrnNameSpace(),preservationSystem.getUrisFile());
 		
 		ingestPackage(o.getUrn(), o.getIdentifier(), collectionName, wa.pipFolder(pipType), 
 				o.getContractor().getShort_name(), pkgType, makeSets(checkSets));

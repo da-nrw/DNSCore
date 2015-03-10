@@ -81,9 +81,9 @@ public class CreateDCAction extends AbstractAction {
 			if (! new File(dcMappings.get(o.getPackage_type())).exists()) 
 				throw new PreconditionsNotMetException("Missing xslt file for package type");
 			
-			if (wa.pipFolder(WA_PUBLIC).toFile().exists()&&(! wa.metadataStream(WA_PUBLIC, o.getPackage_type()).exists()))
+			if (wa.pipFolder(WA_PUBLIC).toFile().exists()&&(! wa.pipMetadataFile(WA_PUBLIC, o.getPackage_type()).exists()))
 				throw new PreconditionsNotMetException("Missing metadata file for package type in public pip");
-			if (wa.pipFolder(WA_INSTITUTION).toFile().exists()&&(! wa.metadataStream(WA_INSTITUTION, o.getPackage_type()).exists()))
+			if (wa.pipFolder(WA_INSTITUTION).toFile().exists()&&(! wa.pipMetadataFile(WA_INSTITUTION, o.getPackage_type()).exists()))
 					throw new PreconditionsNotMetException("Missing metadata file for package type in insitution pip");
 		}
 		
@@ -112,7 +112,7 @@ public class CreateDCAction extends AbstractAction {
 
 	
 	private void createDCForAudience(String audience) throws IOException {
-		File publicDCFile = wa.metadataStream(audience, METADATA_STREAM_ID_DC);
+		File publicDCFile = wa.pipMetadataFile(audience, METADATA_STREAM_ID_DC);
 		publicDCFile.createNewFile();
 		
 		copyDCdatastreamFromMetadata(audience);
@@ -123,20 +123,20 @@ public class CreateDCAction extends AbstractAction {
 
 	@Override
 	public void rollback() throws Exception {
-		if (wa.metadataStream(WA_PUBLIC, METADATA_STREAM_ID_DC).exists()) 
-			wa.metadataStream(WA_PUBLIC, METADATA_STREAM_ID_DC).delete();
-		if (wa.metadataStream(WA_INSTITUTION, METADATA_STREAM_ID_DC).exists()) 
-			wa.metadataStream(WA_INSTITUTION, METADATA_STREAM_ID_DC).delete();
+		if (wa.pipMetadataFile(WA_PUBLIC, METADATA_STREAM_ID_DC).exists()) 
+			wa.pipMetadataFile(WA_PUBLIC, METADATA_STREAM_ID_DC).delete();
+		if (wa.pipMetadataFile(WA_INSTITUTION, METADATA_STREAM_ID_DC).exists()) 
+			wa.pipMetadataFile(WA_INSTITUTION, METADATA_STREAM_ID_DC).delete();
 	}
 	
 	
 	private void writeDCBackToPIP(String audience, String updatedDcContent)
 			throws IOException {
 		
-		wa.metadataStream(audience, METADATA_STREAM_ID_DC).delete();
+		wa.pipMetadataFile(audience, METADATA_STREAM_ID_DC).delete();
 		FileWriter fw = null;
 		try {
-			fw = new FileWriter(wa.metadataStream(audience, METADATA_STREAM_ID_DC));
+			fw = new FileWriter(wa.pipMetadataFile(audience, METADATA_STREAM_ID_DC));
 			fw.write(updatedDcContent);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -153,7 +153,7 @@ public class CreateDCAction extends AbstractAction {
 		
 		try {
 			in=new FileInputStream(
-				wa.metadataStream(audience,METADATA_STREAM_ID_DC));
+				wa.pipMetadataFile(audience,METADATA_STREAM_ID_DC));
 			
 			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 			Document doc = null;
@@ -193,7 +193,7 @@ public class CreateDCAction extends AbstractAction {
 		}
 		try {
 			inputStream = new FileInputStream(
-				wa.metadataStream(audience, o.getPackage_type()));
+				wa.pipMetadataFile(audience, o.getPackage_type()));
 
 			bomInputStream = new BOMInputStream(inputStream);
 			XsltGenerator xsltGenerator = new XsltGenerator(xsltFile,
@@ -201,7 +201,7 @@ public class CreateDCAction extends AbstractAction {
 
 			String result = xsltGenerator.generate();
 
-			File file = wa.metadataStream(audience, METADATA_STREAM_ID_DC);
+			File file = wa.pipMetadataFile(audience, METADATA_STREAM_ID_DC);
 			outputStream = new FileOutputStream(file);
 			
 			outputStream.write(result.getBytes(C.ENCODING_UTF_8.toLowerCase()));
