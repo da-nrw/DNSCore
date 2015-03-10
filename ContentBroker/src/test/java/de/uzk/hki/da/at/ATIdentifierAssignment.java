@@ -46,13 +46,14 @@ public class ATIdentifierAssignment extends AcceptanceTest {
 
 	@BeforeClass
 	public static void setUp() throws IOException {
+		ath.putPackageToStorage("ATIdentifierAssignmentURNDelta",ORIG_NAME_DELTA_ORIGINAL_URN,"containerName",new Date(),100);
+
 		ath.putPackageToIngestArea("ATUseCaseIngest1","tgz",
 				ORIG_NAME_URN_BASED_ON_TECHNICAL_IDENTIFIER);
 		
-		ath.putPackageToIngestArea(ORIG_NAME_READ_URN_FROM_SIP,C.F,
+		ath.putPackageToIngestArea(ORIG_NAME_READ_URN_FROM_SIP,"tgz",
 				ORIG_NAME_READ_URN_FROM_SIP);
 		
-		ath.putPackageToStorage("ATUCTimeBasedPublAllPublic",ORIG_NAME_DELTA_ORIGINAL_URN,"containerName",new Date(),100);
 		ath.putPackageToIngestArea(ORIG_NAME_READ_URN_FROM_SIP,"tgz",
 				ORIG_NAME_DELTA_ORIGINAL_URN);
 		
@@ -83,6 +84,6 @@ public class ATIdentifierAssignment extends AcceptanceTest {
 		
 		ath.waitForObjectToBeInFinishState(ORIG_NAME_DELTA_ORIGINAL_URN);
 		Object object = ath.fetchObjectFromDB(ORIG_NAME_DELTA_ORIGINAL_URN);
-		assertEquals(AcceptanceTestHelper.URN_NBN_DE_DANRW+"ATUCTimeBasedPublAllPublic",object.getUrn());
+		assertEquals(AcceptanceTestHelper.URN_NBN_DE_DANRW+"ATIdentifierAssignmentURNDelta",object.getUrn());
 	}
 }
