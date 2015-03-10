@@ -47,10 +47,11 @@
 	</bean>
     <bean id="fakeRepositoryFacade" class="de.uzk.hki.da.repository.FakeRepositoryFacade">
         <property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
-	</bean>  
-	
-	<amq:broker id="mqBroker" useShutdownHook="true" useJmx="false" persistent="true" deleteAllMessagesOnStartup="true" start="false">
-	<amq:persistenceAdapter>
+	</bean>
+    <bean id="fakeEsMetadataIndex" class="de.uzk.hki.da.repository.FakeElasticsearchMetadataIndex" />
+        
+   <amq:broker id="mqBroker" useShutdownHook="true" useJmx="false" persistent="true" deleteAllMessagesOnStartup="true" start="false">
+   <amq:persistenceAdapter>
    <amq:kahaDB directory="activemq-data" journalMaxFileLength="32mb"/>
    </amq:persistenceAdapter>
     <amq:systemUsage>

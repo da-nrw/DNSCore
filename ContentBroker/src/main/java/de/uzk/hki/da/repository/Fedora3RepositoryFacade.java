@@ -20,20 +20,13 @@
 package de.uzk.hki.da.repository;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.jsonldjava.utils.JSONUtils;
 import com.yourmediashelf.fedora.client.FedoraClient;
 import com.yourmediashelf.fedora.client.FedoraClientException;
 import com.yourmediashelf.fedora.client.FedoraCredentials;
@@ -46,17 +39,13 @@ import com.yourmediashelf.fedora.client.request.PurgeObject;
 import com.yourmediashelf.fedora.client.response.AddDatastreamResponse;
 import com.yourmediashelf.fedora.client.response.FedoraResponse;
 
-import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
 import de.uzk.hki.da.util.FileIdGenerator;
 
 public class Fedora3RepositoryFacade implements RepositoryFacade {
 	
-	private static final String ORE_AGGREGATION = "ore:Aggregation";
 	private static Logger logger = LoggerFactory.getLogger(Fedora3RepositoryFacade.class);
-	private MetadataIndex metadataIndex;
 	private String contextUriPrefix;
 	private FedoraClient fedora;
-	private String edmJsonFrame;
 	
 	/**
 	 * Instantiates a new fedora 3 repository facade.
@@ -65,10 +54,9 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	 * @param fedoraPass the corresponding password
 	 * @throws MalformedURLException 
 	 */
-	public Fedora3RepositoryFacade(String fedoraUrl, String fedoraUser, String fedoraPass, String edmJsonFrame) throws MalformedURLException {
+	public Fedora3RepositoryFacade(String fedoraUrl, String fedoraUser, String fedoraPass) throws MalformedURLException {
 		FedoraCredentials fedoraCredentials = new FedoraCredentials(fedoraUrl, fedoraUser, fedoraPass);
 		this.fedora = new FedoraClient(fedoraCredentials);
-		this.edmJsonFrame = edmJsonFrame;
 	}
 
 	@Override
@@ -184,89 +172,11 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			if (r!=null) r.close();
 		}
 	}
-
-	
-	@Override
-	public void indexMetadata(String indexName, String id, String edmContent
-			) throws RepositoryException, FileNotFoundException {
-		if(edmJsonFrame==null) 
-			throw new IllegalStateException("Frames must not be null");
-		if(metadataIndex==null)
-			throw new IllegalStateException("Metadata index not set");
-		if (!new File(edmJsonFrame).exists())
-			throw new FileNotFoundException(edmJsonFrame+" does not exist.");
-
-		
-		RdfToJsonLdConverter converter = new RdfToJsonLdConverter(edmJsonFrame);
-		Map<String, Object> json = null;
-		try {
-			json = converter.convert(edmContent);
-		} catch (Exception e) {
-			throw new RuntimeException("An error occured during metadata conversion",e);
-		}
-		
-		
-		@SuppressWarnings("unchecked")
-		List<Object> graph = (List<Object>) json.get("@graph");
-		for (Object object : graph) {
-			logger.trace("Preparing json graph for indexing in elasticsearch: \n{}", JSONUtils.toPrettyString(object));
-			createIndexEntryForGraphObject(indexName, edmJsonFrame, object);
-		}		
-	}
-
-	public MetadataIndex getMetadataIndex() {
-		return metadataIndex;
-	}
-
-	public void setMetadataIndex(MetadataIndex metadataIndex) {
-		this.metadataIndex = metadataIndex;
-	}
 	
 	private String generatePid(String objectId, String collection) {
 		return (collection + ":" + objectId);
 	}
 	
-	private void createIndexEntryForGraphObject(String indexName, String framePath, Object object)
-			throws RepositoryException {
-		
-		@SuppressWarnings("unchecked")
-		Map<String,Object> subject = (Map<String,Object>) object;
-		
-		
-		eraseUnmappableContent(subject);
-		logger.trace("Will index adjusted json graph in elasticsearch: \n{}", JSONUtils.toPrettyString(object));	
-		
-		// Add @context attribute
-//		String contextUri = contextUriPrefix + FilenameUtils.getName(framePath);
-//		subject.put("@context", contextUri);
-		String[] splitId = ((String) subject.get("@id")).split("/");
-		String id = splitId[splitId.length-1];
-		// extract index name from type
-		String[] splitType = ((String) subject.get("@type")).split("/");
-		String type = splitType[splitType.length-1];
-
-		logger.trace("indexName: "+indexName+", type: "+type+", id: "+id);
-		type=ORE_AGGREGATION; // override on purpose, so that everything is mapped against es_mapping.json
-		
-		try {
-			metadataIndex.indexMetadata(indexName, type, id, subject);
-		} catch (MetadataIndexException e) {
-			throw new RepositoryException("Unable to index metadata", e);			
-		}	
-	}
-
-	private void eraseUnmappableContent(Map<String, Object> subject) {
-		Object temp = subject.get("edm:object");
-		if (temp!=null && (temp instanceof String)&&(((String)temp==null)||((String)temp).isEmpty())){
-			logger.warn("removing edm:object from graph since it is an empty string");
-			subject.remove("edm:object");
-		}
-		Object isShownBy = subject.get("edm:isShownBy");
-		if (isShownBy!=null) {
-			logger.warn("removing edm:isShownBy from graph ...");
-			subject.remove("edm:isShownBy");
-		}
-	}
 	
 	/**
 	 * Get the name of the index
@@ -284,60 +194,5 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	 */
 	public void setContextUriPrefix(String contextUriPrefix) {
 		this.contextUriPrefix = contextUriPrefix;
-	}
-
-	
-	@Override
-	public String getIndexedMetadata(String indexName, String objectId) {
-		
-		try {
-			String requestURL = 
-					"http://localhost:9200/"+indexName+"/"+ORE_AGGREGATION+"/_search?q=_id:"+objectId;
-			System.out.println("requestURL:"+requestURL);
-			logger.debug("requestURL:"+requestURL);
-			URL wikiRequest;
-			wikiRequest = new URL(requestURL);
-			URLConnection connection;
-			connection = wikiRequest.openConnection();
-			connection.setDoOutput(true);  
-			
-			Scanner scanner;
-			scanner = new Scanner(wikiRequest.openStream());
-			String response = scanner.useDelimiter("\\Z").next();
-			System.out.println("R:"+response);
-			
-			scanner.close();
-			return response;
-    	}catch(Exception e){
-			e.printStackTrace();
-		}
-		return "";
-	}
-	
-	@Override
-	public String getAllIndexedMetadataFromIdSubstring(String indexName, String objectId) {
-		
-		try {
-			String requestURL = 
-					"http://localhost:9200/"+indexName+"/"+ORE_AGGREGATION+"/_search?q="+objectId+"*";
-			System.out.println("requestURL:"+requestURL);
-			logger.debug("requestURL:"+requestURL);
-			URL wikiRequest;
-			wikiRequest = new URL(requestURL);
-			URLConnection connection;
-			connection = wikiRequest.openConnection();
-			connection.setDoOutput(true);  
-			
-			Scanner scanner;
-			scanner = new Scanner(wikiRequest.openStream());
-			String response = scanner.useDelimiter("\\Z").next();
-			System.out.println("R:"+response);
-			
-			scanner.close();
-			return response;
-    	}catch(Exception e){
-			e.printStackTrace();
-		}
-		return "";
 	}
 }

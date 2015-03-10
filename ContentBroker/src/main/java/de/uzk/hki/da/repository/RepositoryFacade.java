@@ -20,7 +20,6 @@
 package de.uzk.hki.da.repository;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -100,33 +99,11 @@ public interface RepositoryFacade {
 	void addRelationship(String objectId, String collection, String predicate, String object)
 			throws RepositoryException;
 	
-	
-	/**
-	 * Uses the metadata from edmContent to index an object with objectId at 
-	 * the index with the name indexName.
-	 * 
-	 * @param indexName the name of the index
-	 * @param objectId the unique object id
-	 * @param edmContent
-	 * 
-	 * @throws RepositoryException
-	 * @throws FileNotFoundException 
-	 */
-	void indexMetadata(String indexName, String objectId, String edmContent)
-			throws RepositoryException, FileNotFoundException;
-
-	/**
-	 * Return the indexed metadata for the object with objectId from index indexName.
-	 */
-	String getIndexedMetadata(String indexName, String objectId);
-	
 	/**
 	 * Generate a file id from a file path.
 	 * @param path the path to the file
 	 * @return the generated file id
 	 */
 	String generateFileId(String path);
-
-	String getAllIndexedMetadataFromIdSubstring(String indexName, String objectId);
 
 }

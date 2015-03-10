@@ -11,6 +11,7 @@
            
 	<import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>
 	<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>
+	<import resource="classpath*:META-INF/beans-infrastructure.elasticsearch.xml"/>
 	<import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>
 	<import resource="classpath*:META-INF/beans-infrastructure.irodsdistributedconversionadapter.xml"/>
 

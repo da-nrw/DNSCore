@@ -37,6 +37,7 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.User;
+import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.test.TC;
@@ -51,6 +52,7 @@ public class AcceptanceTest {
 	protected static Node localNode;
 	protected static GridFacade gridFacade;
 	protected static RepositoryFacade repositoryFacade;
+	protected static MetadataIndex metadataIndex;
 	protected static DistributedConversionAdapter distributedConversionAdapter;
 	protected static User testContractor;
 	protected static PreservationSystem preservationSystem;
@@ -104,6 +106,15 @@ public class AcceptanceTest {
 		context.close();
 	}
 	
+	private static void instantiateMetadataIndex(Properties properties) {
+		String indexImplBeanName=properties.getProperty("cb.implementation.index");
+		if (indexImplBeanName==null) indexImplBeanName="fakeElasticsearchMetadataIndex";
+		AbstractApplicationContext context =
+				new FileSystemXmlApplicationContext("conf/beans.xml");
+		metadataIndex = (MetadataIndex) context.getBean(indexImplBeanName);
+		context.close();
+	}
+	
 	/**
 	 * The StoragePolicy is normally configured in the app,
 	 * but for Packages regarding UC such as retrieval and audit
@@ -137,6 +148,9 @@ public class AcceptanceTest {
 		
 		instantiateRepository(properties);
 		if (repositoryFacade==null) throw new IllegalStateException("repositoryFacade could not be instantiated");
+		
+		instantiateMetadataIndex(properties);
+		if (metadataIndex==null) throw new IllegalStateException("metadataIndex could not be instantiated");
 	
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();

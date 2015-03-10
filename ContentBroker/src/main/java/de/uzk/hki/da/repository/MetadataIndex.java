@@ -19,6 +19,7 @@
 
 package de.uzk.hki.da.repository;
 
+import java.io.FileNotFoundException;
 import java.util.Map;
 
 /**
@@ -41,4 +42,27 @@ public interface MetadataIndex {
 	 */
 	void indexMetadata(String indexName, String collection, String id, Map<String, Object> data)
 			throws MetadataIndexException;
+	
+	/**
+	 * Uses the metadata from edmContent to index an object with objectId at 
+	 * the index with the name indexName.
+	 * 
+	 * @param indexName the name of the index
+	 * @param objectId the unique object id
+	 * @param edmContent
+	 * 
+	 * @throws RepositoryException
+	 * @throws FileNotFoundException 
+	 */
+	void prepareAndIndexMetadata(String indexName, String objectId, String edmContent)
+			throws RepositoryException, FileNotFoundException;
+	
+	/**
+	 * Return the indexed metadata for the object with objectId from index indexName.
+	 */
+	String getIndexedMetadata(String indexName, String objectId);
+	
+	String getAllIndexedMetadataFromIdSubstring(String indexName, String objectId);
+	
+	
 }

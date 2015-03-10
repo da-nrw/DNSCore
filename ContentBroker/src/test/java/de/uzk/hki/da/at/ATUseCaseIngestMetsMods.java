@@ -153,6 +153,6 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 				.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
 		
 //		testIndex
-		assertTrue(repositoryFacade.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613").contains("Text Text// mahels///Titel"));
+		assertTrue(metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613").contains("Text Text// mahels///Titel"));
 	}
 }

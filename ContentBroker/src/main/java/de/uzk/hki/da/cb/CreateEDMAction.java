@@ -236,5 +236,4 @@ public class CreateEDMAction extends AbstractAction {
 	public void setRepositoryFacade(RepositoryFacade repositoryFacade) {
 		this.repositoryFacade = repositoryFacade;
 	}
-
 }

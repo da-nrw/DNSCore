@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import static org.mockito.Mockito.mock;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.repository.ElasticsearchMetadataIndex;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.test.TC;
@@ -25,15 +26,13 @@ public class IndexMetadataActionTests extends ConcreteActionUnitTest{
 		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
 		action.setIndexName("collection-open");
 		action.setTestContractors(new HashSet<String>());
-		
-		Fedora3RepositoryFacade fed = mock(Fedora3RepositoryFacade.class);
-		action.setRepositoryFacade(fed);
+		ElasticsearchMetadataIndex mi = mock(ElasticsearchMetadataIndex.class);
+		action.setMetadataIndex(mi);
 		action.setWorkArea(new WorkArea(n,o));
 	}
 	
 	@Test
 	public void test() throws RepositoryException, IOException {
-		
 		action.implementation();
 	}
 	

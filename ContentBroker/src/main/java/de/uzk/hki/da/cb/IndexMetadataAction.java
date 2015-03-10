@@ -19,9 +19,9 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.ENCODING_UTF_8;
 import static de.uzk.hki.da.core.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
 import static de.uzk.hki.da.core.C.EDM_XSLT_METADATA_STREAM_ID;
+import static de.uzk.hki.da.core.C.ENCODING_UTF_8;
 import static de.uzk.hki.da.core.C.WA_PUBLIC;
 
 import java.io.FileInputStream;
@@ -33,6 +33,7 @@ import org.apache.commons.io.IOUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
+import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
@@ -55,7 +56,7 @@ import de.uzk.hki.da.util.ConfigurationException;
  */
 public class IndexMetadataAction extends AbstractAction {
 	
-	private RepositoryFacade repositoryFacade;
+	private MetadataIndex metadataIndex;
 	private Set<String> testContractors;
 	private String indexName;
 	
@@ -65,8 +66,8 @@ public class IndexMetadataAction extends AbstractAction {
 	
 	@Override
 	public void checkConfiguration() {
-		if (getRepositoryFacade() == null) 
-			throw new ConfigurationException("repositoryFacade");
+		if (getMetadataIndex() == null) 
+			throw new ConfigurationException("metadataIndex");
 	}
 	
 
@@ -93,8 +94,8 @@ public class IndexMetadataAction extends AbstractAction {
 		} finally {
 			metadataStream.close();
 		}
-		
-		getRepositoryFacade().indexMetadata(adjustIndexName(indexName), o.getIdentifier(), edmContent);
+
+		getMetadataIndex().prepareAndIndexMetadata(adjustIndexName(indexName), o.getIdentifier(), edmContent);
 		return true;
 	}
 
@@ -164,22 +165,13 @@ public class IndexMetadataAction extends AbstractAction {
 	public void setTestContractors(Set<String> testContractors) {
 		this.testContractors = testContractors;
 	}
-
-
-	/**
-	 * Get the repository implementation
-	 * @return the repository implementation
-	 */
-	public RepositoryFacade getRepositoryFacade() {
-		return repositoryFacade;
+	
+	public MetadataIndex getMetadataIndex() {
+		return metadataIndex;
 	}
 	
-	/**
-	 * Set the repository implementation
-	 * @param repositoryFacade the repository implementation
-	 */
-	public void setRepositoryFacade(RepositoryFacade repositoryFacade) {
-		this.repositoryFacade = repositoryFacade;
+	public void setMetadataIndex(MetadataIndex mi) {
+		this.metadataIndex = mi;
 	}
 
 }
