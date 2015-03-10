@@ -53,7 +53,7 @@ public class AcceptanceTestHelper {
 	private static final String MSG_READY = "ready";
 	private static final String MSG_ERROR_WHEN_TIMEOUT_REACHED = "waited to long. test considered failed";
 	private static final String TEMP_FOLDER = "/tmp/";
-	private static final String URN_NBN_DE_DANRW = "urn:nbn:de:danrw:";
+	static final String URN_NBN_DE_DANRW = "urn:nbn:de:danrw-";
 	protected static Path TEST_DATA_ROOT_PATH = new RelativePath("src/test/resources/at/");
 	
 	private static final int INTERVAL=2000; // in ms
