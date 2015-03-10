@@ -1,7 +1,9 @@
 /*
   DA-NRW Software Suite | ContentBroker
-  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
+  Copyright (C) 2014 Historisch-Kulturwissenschaftliche Informationsverarbeitung
   Universität zu Köln
+  Copyright (C) 2015 LVR-Infokom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -45,72 +47,51 @@ import de.uzk.hki.da.util.RelativePath;
  *
  * @author Daniel M. de Oliveira
  */
-public class TarActionTests {
+public class TarActionTests extends ConcreteActionUnitTest {
 
+	
+	@ActionUnderTest
+	TarAction action = new TarAction();
+	
 	static String workAreaRootPath = "src/test/resources/cb/TarActionTests/Implementation/";
 	
 	/** The backup package path. */
-	static String backupPackagePath = workAreaRootPath+"work/csn/95949_/";
+	static String backupPackagePath = workAreaRootPath+"work/TEST/identifier_/";
 	
 	/** The package fork path. */
-	static String packageForkPath = workAreaRootPath+"work/csn/95949/";
+	static String packageForkPath = workAreaRootPath+"work/TEST/identifier/";
 	
 	/** The unpacked package path. */
-	static String unpackedPackagePath = workAreaRootPath+"work/csn/95949_unpacked/";
+	static String unpackedPackagePath = workAreaRootPath+"work/csn/identifier_unpacked/";
 	
 	/** The target tar file. */
-	static File targetTarFile = new File(workAreaRootPath+"work/csn/95949.pack_2.tar");
+	static File targetTarFile = new File(workAreaRootPath+"work/TEST/identifier.pack_2.tar");
 	
 	/** The job. */
 	static Job job = new Job("csn","vm3");
 	
-	
-	/** The action. */
-	static TarAction action = new TarAction();
-	
-	/** The node. */
-	static Node node = new Node(); 
-	
 	/** The rep name. */
 	static String repName = "2012_01_01+12_12+";
 	
-	/**
-	 * Sets the up before class.
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass(){
-		node.setWorkingResource("vm3");
-		node.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
+	@Before
+	public void setUp() throws IOException{
 		
-		User contractor = new User();
-		contractor.setShort_name("csn");
-		Object o = new Object();
-		o.setContractor(contractor);
+		n.setWorkingResource("vm3");
+		n.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
+		
 		Package pkg = new Package();
 		pkg.setName("2");
 		o.getPackages().add(pkg);
-		o.setIdentifier("95949");
-		o.setTransientNodeRef(node);
 		
 		job.setRep_name(repName);
-		job.setObject(o);
 
-		action.setObject(o);
 		action.setDistributedConversionAdapter(mock(DistributedConversionAdapter.class));
-		action.setLocalNode(node);
-		action.setJob(job);
 		
-	}
-	
-	/**
-	 * Sets the up.
-	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	@Before
-	public void setUp() throws IOException{
 		FileUtils.copyDirectory(new File(backupPackagePath), new File(packageForkPath));
 	}
+	
+	
+	
 	
 	/**
 	 * Tear down.
@@ -135,23 +116,6 @@ public class TarActionTests {
 		action.implementation();
 		assertTrue(targetTarFile.exists());
 	}
-	
-	/**
-	 * Proper bag creation.
-	 */
-	@Test 
-	public void properBagCreation(){
-		
-	}
-	
-	/**
-	 * Irods collection removal.
-	 */
-	@Test
-	public void irodsCollectionRemoval(){
-		
-	}
-	
 	
 	
 	/**

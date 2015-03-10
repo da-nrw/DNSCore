@@ -56,7 +56,7 @@ public class CleanWorkAreaAction extends AbstractAction{
 	public boolean implementation() throws IOException {
 		
 		// to prevent leftover files from irods collection removal we delete the dirs on the filesystem first.
-		FileUtils.deleteDirectory(o.getPath().toFile());
+		FileUtils.deleteDirectory(wa.objectPath().toFile());
 		
 		clearNonpersistentObjectProperties(o);
 		toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());

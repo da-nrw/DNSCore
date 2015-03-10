@@ -52,8 +52,8 @@ public class BuildAIPAction extends AbstractAction {
 	public boolean implementation() {
 
 		deleteOldPremisFile();
-		deleteUnnecessaryReps( o.getPath(),j.getRep_name());		
-		BagitUtils.buildBagit ( o.getPath().toString() );
+		deleteUnnecessaryReps( wa.objectPath(),j.getRep_name());		
+		BagitUtils.buildBagit ( wa.objectPath().toString() );
 		
 		return true;
 	}
@@ -62,7 +62,7 @@ public class BuildAIPAction extends AbstractAction {
 
 	@Override
 	public void rollback() throws Exception {
-		deleteBagitFiles(o.getPath());
+		deleteBagitFiles(wa.objectPath());
 	}
 	
 	static void deleteBagitFiles(Path objectPath) {

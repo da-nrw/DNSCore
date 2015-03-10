@@ -327,10 +327,10 @@ public class UnpackAction extends AbstractAction {
 	 */
 	private void throwUserExceptionIfNotBagitConsistent(){
 		
-		if (! isBagItPackage(o.getPath().toFile()))
+		if (! isBagItPackage(wa.objectPath().toFile()))
 			throw new UserException(UserExceptionId.NOT_A_BAGIT_PACKAGE, "Paket entspricht nicht der BagIt Struktur.");
 
-		ConsistencyChecker checker = new BagitConsistencyChecker(o.getPath().toString());
+		ConsistencyChecker checker = new BagitConsistencyChecker(wa.objectPath().toString());
 		
 		try{
 			if (!checker.checkPackage())
