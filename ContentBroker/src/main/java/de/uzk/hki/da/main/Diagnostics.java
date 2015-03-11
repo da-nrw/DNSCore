@@ -212,7 +212,7 @@ public class Diagnostics {
 			System.out.println(OK);
 		} catch (MetadataIndexException e) {
 			errorCount++;
-			System.out.println(WARN+"connection to fedora cannot be established");
+			System.out.println(WARN+"connection to elasticsearch cannot be established");
 		}
 		
 		return errorCount;
