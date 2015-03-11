@@ -25,9 +25,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.Session;
@@ -51,7 +49,6 @@ import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.SubformatIdentificationStrategyPuidMapping;
 import de.uzk.hki.da.repository.ElasticsearchMetadataIndex;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
-import de.uzk.hki.da.repository.MetadataIndexException;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.util.Path;
@@ -200,20 +197,23 @@ public class Diagnostics {
 		ElasticsearchMetadataIndex es = (ElasticsearchMetadataIndex) context.getBean(BEAN_NAME_METADATA_INDEX_FACADE);		
 		context.close();
 		
-		System.out.print(INFO+"CHECKING - ELASTICSEARCH CONNECTIVITY .... ");
-		try {
-			Map<String,Object> data;
-			data = new HashMap<String,Object>();
-			data.put("@title","The Godfather");
-			data.put("@director","Francis Ford Coppola");
-			data.put("@year","1972");
-			
-			es.indexMetadata(properties.get("elasticsearch.index").toString(), "test_object_1", "test_collection", data);
-			System.out.println(OK);
-		} catch (MetadataIndexException e) {
-			errorCount++;
-			System.out.println(WARN+"connection to elasticsearch cannot be established: "+e);
-		}
+//		System.out.print(INFO+"CHECKING - ELASTICSEARCH CONNECTIVITY .... ");
+//		try {
+//			
+//			String portal = properties.getProperty("elasticsearch.index");
+//			
+//			Map<String,Object> data;
+//			data = new HashMap<String,Object>();
+//			data.put("@title","The Godfather");
+//			data.put("@director","Francis Ford Coppola");
+//			data.put("@year","1972");
+//			
+//			es.indexMetadata(portal, "test_object_1", "test_collection", data);
+//			System.out.println(OK);
+//		} catch (MetadataIndexException e) {
+//			errorCount++;
+//			System.out.println(WARN+"connection to elasticsearch cannot be established: "+e);
+//		}
 		
 		return errorCount;
 	}
