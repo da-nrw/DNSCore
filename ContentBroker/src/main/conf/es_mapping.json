@@ -185,6 +185,13 @@
                     }
                 }
             },
+            "edm:isShownBy": {
+                "properties": {
+                    "@id": {
+                        "type": "string"
+                    }
+                }
+            },
             "edm:object": {
                 "dynamic": "true",
                 "path": "just_name",

@@ -145,11 +145,6 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 			logger.warn("removing edm:object from graph since it is an empty string");
 			subject.remove("edm:object");
 		}
-		Object isShownBy = subject.get("edm:isShownBy");
-		if (isShownBy!=null) {
-			logger.warn("removing edm:isShownBy from graph ...");
-			subject.remove("edm:isShownBy");
-		}
 	}
 
 	private TransportClient initialize() {

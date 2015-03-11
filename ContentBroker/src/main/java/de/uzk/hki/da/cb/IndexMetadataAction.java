@@ -35,7 +35,6 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
 
 /**
@@ -94,8 +93,11 @@ public class IndexMetadataAction extends AbstractAction {
 		} finally {
 			metadataStream.close();
 		}
-
-		getMetadataIndex().prepareAndIndexMetadata(adjustIndexName(indexName), o.getIdentifier(), edmContent);
+		try {
+			getMetadataIndex().prepareAndIndexMetadata(adjustIndexName(indexName), o.getIdentifier(), edmContent);
+		} catch (Exception e) {
+			throw new RepositoryException("Unable to prepare and index metadata!", e);
+		}
 		return true;
 	}
 
