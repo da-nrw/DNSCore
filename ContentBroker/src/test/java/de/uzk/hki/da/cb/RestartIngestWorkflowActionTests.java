@@ -123,7 +123,7 @@ public class RestartIngestWorkflowActionTests extends ConcreteActionUnitTest{
 	@Test
 	public void rollbackNotPossibleTempLeftOver() throws IOException {
 		action.implementation();
-		Path.makeFile(o.getPath(),"_temp").mkdirs();
+		Path.makeFile(wa.objectPath(),"_temp").mkdirs();
 		try {
 			action.rollback();
 			fail();

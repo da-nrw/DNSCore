@@ -63,8 +63,8 @@ public class DeleteObjectAction extends AbstractAction {
 		if (o.getPackages().size()>1){
 			o.getPackages().remove(o.getLatestPackage());
 		}
-		logger.info("Deleting object from WorkArea: "+o.getPath());
-		FileUtils.deleteDirectory(o.getPath().toFile());
+		logger.info("Deleting object from WorkArea: "+wa.objectPath());
+		FileUtils.deleteDirectory(wa.objectPath().toFile());
 		
 		if (fileInWorkArea().exists()) {
 			logger.info("Delete container from WorkArea: " + fileInWorkArea() );

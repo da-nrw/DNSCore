@@ -90,7 +90,7 @@ public class RestructureAction extends AbstractAction{
 		
 		
 		j.setRep_name(getNewRepName());
-		makeRepOfSIPContent(o.getPath(), wa.dataPath(), j.getRep_name());
+		makeRepOfSIPContent(wa.objectPath(), wa.dataPath(), j.getRep_name());
 		
 		
 		if (o.isDelta())
@@ -132,7 +132,7 @@ public class RestructureAction extends AbstractAction{
 		try {
 			retrievePackagesHelper.loadPackages(wa.dataPath(),o, false);
 			logger.info("Packages of object \""+o.getIdentifier()+
-					"\" are now available on cache resource at: " + Path.make(o.getPath(),"existingAIPs"));
+					"\" are now available on cache resource at: " + Path.make(wa.objectPath(),"existingAIPs"));
 			FileUtils.copyFile(Path.makeFile(o.getPath("newest"),"premis.xml"),
 					Path.makeFile(wa.dataPath(),"premis_old.xml"));
 		} catch (IOException e) {
@@ -161,7 +161,7 @@ public class RestructureAction extends AbstractAction{
 	@Override
 	public void rollback() throws Exception {
 		if (! isNotSet(j.getRep_name())) { // since we know that the SIP content has been moved successfully when rep_name is set.
-			revertToSIPContent(o.getPath(),wa.dataPath(),j.getRep_name());
+			revertToSIPContent(wa.objectPath(),wa.dataPath(),j.getRep_name());
 		} else 
 			throw new RuntimeException("REP NAME WAS NOT SET YET. ROLLBACK IS NOT POSSIBLE. MANUAL CLEANUP REQUIRED.");
 	}

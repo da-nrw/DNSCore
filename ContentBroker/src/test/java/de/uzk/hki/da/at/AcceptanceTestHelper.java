@@ -53,7 +53,7 @@ public class AcceptanceTestHelper {
 	private static final String MSG_READY = "ready";
 	private static final String MSG_ERROR_WHEN_TIMEOUT_REACHED = "waited to long. test considered failed";
 	private static final String TEMP_FOLDER = "/tmp/";
-	private static final String URN_NBN_DE_DANRW = "urn:nbn:de:danrw:";
+	static final String URN_NBN_DE_DANRW = "urn:nbn:de:danrw-";
 	protected static Path TEST_DATA_ROOT_PATH = new RelativePath("src/test/resources/at/");
 	
 	private static final int INTERVAL=2000; // in ms
@@ -475,7 +475,7 @@ public class AcceptanceTestHelper {
 	 * @author Daniel M. de Oliveira
 	 * @throws IOException 
 	 */
-	Object putPackageToStorage(String identifier,String originalName,String containerName, Date createddate, int object_state) throws IOException{
+	Object putPackageToStorage(String identifier,String originalName, Date createddate, int object_state) throws IOException{
 		
 		String PACKAGE_NAME = "1";
 		int timeout = 2000;
@@ -503,7 +503,7 @@ public class AcceptanceTestHelper {
 		object.setOrig_name(originalName);
 		Package pkg = new Package();
 		pkg.setName(PACKAGE_NAME);
-		pkg.setContainerName(containerName);
+		pkg.setContainerName(originalName+"."+C.FILE_EXTENSION_TGZ);
 		object.getPackages().add(pkg);
 		
 		Session session = HibernateUtil.openSession();
@@ -517,16 +517,6 @@ public class AcceptanceTestHelper {
 
 
 	
-
-	/**
-	 * @author jpeters
-	 * @throws IOException 
-	 */
-	Object putPackageToStorage(String identifier,String originalName,String containerName) throws IOException{
-		 return putPackageToStorage(identifier,originalName,containerName ,null,0);
-	}
-
-
 
 	void createObjectAndJob(String name,String status) throws IOException{
 		createObjectAndJob(name,status,null,null);

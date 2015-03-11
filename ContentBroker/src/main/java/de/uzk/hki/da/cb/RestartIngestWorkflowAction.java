@@ -68,9 +68,9 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 
 		if (!o.isDelta())
 			o.setUrn(null);
-		deleteBagitFiles(o.getPath());
+		deleteBagitFiles(wa.objectPath());
 		
-		revertToSIPContent(o.getPath(), wa.dataPath(), j.getRep_name());
+		revertToSIPContent(wa.objectPath(), wa.dataPath(), j.getRep_name());
 		deleteTemporaryPIPs();
 		
 		clearNonpersistentObjectProperties(o);
@@ -87,7 +87,7 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 				&&(wa.dataPath().toFile().exists())
 				&&dataIsOnlySubfolderOfObject()) {
 			
-			makeRepOfSIPContent(o.getPath(), wa.dataPath(), j.getRep_name());
+			makeRepOfSIPContent(wa.objectPath(), wa.dataPath(), j.getRep_name());
 		} 
 		else {
 			throw new RuntimeException("Rollback not possible.");
@@ -97,7 +97,7 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	
 	
 	private boolean dataIsOnlySubfolderOfObject() {
-		String subfolders[] = o.getPath().toFile().list();
+		String subfolders[] = wa.objectPath().toFile().list();
 		if (subfolders.length!=1) return false;
 		if (!subfolders[0].equals(WA_DATA)) return false;
 		return true;

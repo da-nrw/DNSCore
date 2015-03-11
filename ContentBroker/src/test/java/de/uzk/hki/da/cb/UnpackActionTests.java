@@ -117,13 +117,13 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 		
 		action.implementation();
 
-		assertTrue(new File(o.getPath()+"/data").exists());
-		assertTrue(new File(o.getPath()+"/bagit.txt").exists());
-		assertTrue(new File(o.getPath()+"/manifest-md5.txt").exists());
-		assertTrue(new File(o.getPath()+"/bag-info.txt").exists());
-		assertTrue(new File(o.getPath()+"/tagmanifest-md5.txt").exists());
-		assertTrue(new File(o.getPath()+"/data/140849.tif").exists());
-		assertTrue(new File(o.getPath()+"/data/premis.xml").exists());
+		assertTrue(new File(wa.objectPath()+"/data").exists());
+		assertTrue(new File(wa.objectPath()+"/bagit.txt").exists());
+		assertTrue(new File(wa.objectPath()+"/manifest-md5.txt").exists());
+		assertTrue(new File(wa.objectPath()+"/bag-info.txt").exists());
+		assertTrue(new File(wa.objectPath()+"/tagmanifest-md5.txt").exists());
+		assertTrue(new File(wa.objectPath()+"/data/140849.tif").exists());
+		assertTrue(new File(wa.objectPath()+"/data/premis.xml").exists());
 	}
 	
 	@Test
