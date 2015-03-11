@@ -58,6 +58,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 	@Override
 	public void prepareAndIndexMetadata(String indexName, String id, String edmContent
 			) throws RepositoryException, FileNotFoundException {
+		
 		if(edmJsonFrame==null) 
 			throw new IllegalStateException("Frames must not be null");
 		if (!new File(edmJsonFrame).exists())
