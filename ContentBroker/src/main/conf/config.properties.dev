@@ -11,6 +11,7 @@ localNode.auditSleepFor=6000
 
 cb.serverSocketNumber=4455
 cb.implementation.fileFormatFacade=fakeFileFormatFacade
+cb.implementation.index=fakeEsMetadataIndex
 cb.bin.python=python
 
 elasticsearch.index=portal_test

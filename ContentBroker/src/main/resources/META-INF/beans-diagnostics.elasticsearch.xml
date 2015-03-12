@@ -9,19 +9,6 @@
            http://www.springframework.org/schema/task
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-	<!-- beans.xml.ci
-	
-	    author: Daniel M. de Oliveira
-	
-		This gets renamed to conf/beans.xml during the acceptance test phase (on the continuous integration machine)
-		and provides the basic infrastructure to communicate the running
-		ContentBroker process via the file system, the GridFacade and the RepositoryFacade.
-	
-	 -->
 	<import resource="classpath*:META-INF/beans-infrastructure.core.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.fedora.xml"/>
 	<import resource="classpath*:META-INF/beans-infrastructure.elasticsearch.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.irods.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.irodsgridfacade.xml"/>
-	<import resource="classpath*:META-INF/beans-infrastructure.irodsdistributedconversionadapter.xml"/>
 </beans>

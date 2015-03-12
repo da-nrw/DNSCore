@@ -189,6 +189,6 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 //			testIndex
 		String cho = "/cho/";
 		String ID = testId.substring(testId.lastIndexOf(cho)+cho.length());
-		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", ID).contains("\"dc:date\":[\"1938-01-01/1939-12-31\"]"));
+		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", ID).contains("\"dc:date\":[\"1938-01-01/1939-12-31\"]"));
 	}
 }

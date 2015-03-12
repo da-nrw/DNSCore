@@ -99,7 +99,7 @@ public class ATUseCaseIngestXMP extends AcceptanceTest{
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {}
-		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-1").
+		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-1").
 				contains("Dieser Brauch zum Sankt Martinstag"));
 	}
 	
@@ -122,7 +122,7 @@ public class ATUseCaseIngestXMP extends AcceptanceTest{
 		assertTrue(title.equals("Martinsfeuer"));
 
 //		testIndex
-		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-1").
+		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-1").
 				contains("Dieser Brauch zum Sankt Martinstag"));
 	}
 }

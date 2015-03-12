@@ -51,19 +51,15 @@ public class CTIndexMetadataFromEdm {
 	File lidoEdm = new RelativePath("src", "test", "resources", "repository", "CTIndexMetadataFromEdmTests", "lidoEdm").toFile();
 	File eadEdm = new RelativePath("src", "test", "resources", "repository", "CTIndexMetadataFromEdmTests", "eadEdm").toFile();
 	File metsContentEdm = new RelativePath("src", "test", "resources", "repository", "CTIndexMetadataFromEdmTests", "edmContentFromMets").toFile();
-	private Fedora3RepositoryFacade repo;
-	
+	ElasticsearchMetadataIndex esmi;
 	
 	@Before 
 	public void setUp() throws MalformedURLException {
-		repo = new Fedora3RepositoryFacade("http://localhost:8080/fedora", "fedoraAdmin", "BYi/MFjKDFd5Dpe52PSUoA==", 
-				new RelativePath("src", "main", "resources", "frame.jsonld").toString());
-		ElasticsearchMetadataIndex esmi = new ElasticsearchMetadataIndex(); 
+		esmi = new ElasticsearchMetadataIndex(); 
 		esmi.setCluster("cluster_ci");
 		String[] hosts={"localhost"};
 		esmi.setHosts(hosts);
-		repo.setMetadataIndex(esmi);
-		
+		esmi.setEdmJsonFrame(new RelativePath("src", "main", "resources", "frame.jsonld").toString());		
 	}
 	
 	
@@ -73,7 +69,7 @@ public class CTIndexMetadataFromEdm {
 		String metsEdmContent = IOUtils.toString(new FileInputStream(metsEdm), C.ENCODING_UTF_8);
 	
 		try {
-			repo.indexMetadata(INDEX_NAME, "1", metsEdmContent);
+			esmi.prepareAndIndexMetadata(INDEX_NAME, "1", metsEdmContent);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -83,10 +79,10 @@ public class CTIndexMetadataFromEdm {
 			Thread.sleep(4711);
 		} catch (InterruptedException e) {}
 
-		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"edm:dataProvider\":\"Universitäts- und Landesbibliothek Münster\""));
-		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"dc:title\":[\"und der größeren evangelischen Gemeinde in derselben\",\"Chronik der Stadt Hoerde\"]"));	
-		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"dc:date\":[\"2011\",\"1836\"]"));
-		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"dc:publisher\":[\"Münster\",\"Hoerde\"]"));
+		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"edm:dataProvider\":\"Universitäts- und Landesbibliothek Münster\""));
+		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"dc:title\":[\"und der größeren evangelischen Gemeinde in derselben\",\"Chronik der Stadt Hoerde\"]"));	
+		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"dc:date\":[\"2011\",\"1836\"]"));
+		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "objectID").contains("\"dc:publisher\":[\"Münster\",\"Hoerde\"]"));
 		
 	}	
 	
@@ -97,7 +93,7 @@ public class CTIndexMetadataFromEdm {
 		String lidoEdmContent = IOUtils.toString(new FileInputStream(lidoEdm), C.ENCODING_UTF_8);
 	
 		try {
-			repo.indexMetadata(INDEX_NAME, "1", lidoEdmContent);
+			esmi.prepareAndIndexMetadata(INDEX_NAME, "1", lidoEdmContent);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -107,10 +103,10 @@ public class CTIndexMetadataFromEdm {
 			Thread.sleep(4711);
 		} catch (InterruptedException e) {}
 
-		System.out.println(repo.getIndexedMetadata(INDEX_NAME, "objectID-f838082dc50949e8b57346d904efdd3d"));
-		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID-f838082dc50949e8b57346d904efdd3d")
+		System.out.println(esmi.getIndexedMetadata(INDEX_NAME, "objectID-f838082dc50949e8b57346d904efdd3d"));
+		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "objectID-f838082dc50949e8b57346d904efdd3d")
 				.contains("\"dc:title\":[\"Vier Mädchen auf einer Altane\",\"Mädchen auf Altane, Stadt im Hintergrund\"]"));
-		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID-f838082dc50949e8b57346d904efdd3d").contains("\"dc:date\":[\"1913\"]"));
+		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "objectID-f838082dc50949e8b57346d904efdd3d").contains("\"dc:date\":[\"1913\"]"));
 	}	
 	
 	
@@ -121,7 +117,7 @@ public class CTIndexMetadataFromEdm {
 		String eadEdmContent = IOUtils.toString(new FileInputStream(eadEdm), C.ENCODING_UTF_8);
 	
 		try {
-			repo.indexMetadata(INDEX_NAME, "objectID", eadEdmContent);
+			esmi.prepareAndIndexMetadata(INDEX_NAME, "objectID", eadEdmContent);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -132,10 +128,10 @@ public class CTIndexMetadataFromEdm {
 		} catch (InterruptedException e) {}
 		
 
-		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID-569c0c3d21aa45b8bb230d4b3bdec00e").contains("\"dc:title\":[\"Jugendherbergsverband, Schriftwechsel\"]"));
-		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID-457009589ee34cdcaa71ed56a2dad8a6").contains("\"dc:date\":[\"1937-01-01/1938-12-31\"]"));
-		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID-457009589ee34cdcaa71ed56a2dad8a6").contains("\"dc:title\":[\"Volksdeutsches Rundfunkreferat\"]"));	
-		assertTrue(repo.getIndexedMetadata(INDEX_NAME, "objectID-457009589ee34cdcaa71ed56a2dad8a6").contains("\"dcterms:isPartOf\""));
+		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "objectID-569c0c3d21aa45b8bb230d4b3bdec00e").contains("\"dc:title\":[\"Jugendherbergsverband, Schriftwechsel\"]"));
+		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "objectID-457009589ee34cdcaa71ed56a2dad8a6").contains("\"dc:date\":[\"1937-01-01/1938-12-31\"]"));
+		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "objectID-457009589ee34cdcaa71ed56a2dad8a6").contains("\"dc:title\":[\"Volksdeutsches Rundfunkreferat\"]"));	
+		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "objectID-457009589ee34cdcaa71ed56a2dad8a6").contains("\"dcterms:isPartOf\""));
 
 	}	
 

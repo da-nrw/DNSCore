@@ -171,7 +171,7 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 		assertTrue(testAggr1Exists&&testAggr2Exists);
 		
 //		testIndex
-		assertTrue(repositoryFacade.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-ISIL/lido/Inventarnummer-1").contains("Nudelmaschine in Originalverpackung"));
+		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-ISIL/lido/Inventarnummer-1").contains("Nudelmaschine in Originalverpackung"));
 	}
 }
 	

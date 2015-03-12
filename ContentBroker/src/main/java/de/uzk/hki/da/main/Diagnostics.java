@@ -47,6 +47,7 @@ import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.SubformatIdentificationStrategyPuidMapping;
+import de.uzk.hki.da.repository.ElasticsearchMetadataIndex;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.HibernateUtil;
@@ -85,10 +86,12 @@ public class Diagnostics {
 	
 	private static final String BEANS_DIAGNOSTICS_IRODS = "classpath*:META-INF/beans-diagnostics.irods.xml";
 	private static final String BEANS_DIAGNOSTICS_FEDORA = "classpath*:META-INF/beans-diagnostics.fedora.xml";
+	private static final String BEANS_DIAGNOSTICS_ELASTICSEARCH = "classpath*:META-INF/beans-diagnostics.elasticsearch.xml";
 	
 	private static final String BEAN_NAME_IRODS_GRID_FACADE = "irodsGridFacade";
 	private static final String BEAN_NAME_IRODS_SYSTEM_CONNECTOR = "irodsSystemConnector";
 	private static final String BEAN_NAME_FEDORA_REPOSITORY_FACADE = "fedoraRepositoryFacade";
+	private static final String BEAN_NAME_METADATA_INDEX_FACADE = "esMetadataIndex";
 	
 	private static final String PROP_GRID_CACHE_AREA_ROOT_PATH = "localNode.gridCacheAreaRootPath";
 	private static final String PROP_USER_AREA_ROOT_PATH = "localNode.userAreaRootPath";
@@ -138,6 +141,7 @@ public class Diagnostics {
 		errorCount+=checkIrods(properties);
 		errorCount+=checkFormatFacade(properties);
 		errorCount+=checkFedora(properties);
+		errorCount+=checkElasticsearch(properties);
 		
 		
 		if (errorCount==0) System.out.println("There were no errors.");
@@ -179,6 +183,40 @@ public class Diagnostics {
 	}
 	
 	
+	private static int checkElasticsearch(Properties properties) {
+		
+		if (((String)properties.get("elasticsearch.index"))==null){
+			System.out.println(INFO+"WILL NOT CHECK ELASTICSEARCH ! ! ! elasticsearch.index is empty.");
+			return 0;
+		}
+		
+		
+		int errorCount=0;
+		AbstractApplicationContext context =
+				new ClassPathXmlApplicationContext(BEANS_DIAGNOSTICS_ELASTICSEARCH);
+		ElasticsearchMetadataIndex es = (ElasticsearchMetadataIndex) context.getBean(BEAN_NAME_METADATA_INDEX_FACADE);		
+		context.close();
+		
+//		System.out.print(INFO+"CHECKING - ELASTICSEARCH CONNECTIVITY .... ");
+//		try {
+//			
+//			String portal = properties.getProperty("elasticsearch.index");
+//			
+//			Map<String,Object> data;
+//			data = new HashMap<String,Object>();
+//			data.put("@title","The Godfather");
+//			data.put("@director","Francis Ford Coppola");
+//			data.put("@year","1972");
+//			
+//			es.indexMetadata(portal, "test_object_1", "test_collection", data);
+//			System.out.println(OK);
+//		} catch (MetadataIndexException e) {
+//			errorCount++;
+//			System.out.println(WARN+"connection to elasticsearch cannot be established: "+e);
+//		}
+		
+		return errorCount;
+	}
 	
 	
 	private static int checkFormatFacade(Properties properties) {

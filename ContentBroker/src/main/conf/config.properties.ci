@@ -31,4 +31,5 @@ cb.serverSocketNumber=4455
 cb.implementation.grid=federatedGridFacade
 cb.implementation.distributedConversion=irodsFederatedDistributedConversionAdapter
 cb.implementation.repository=fedoraRepositoryFacade
+cb.implementation.index=esMetadataIndex
 cb.bin.python=/ci/python/python
