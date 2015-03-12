@@ -68,8 +68,8 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	
 	@Override
 	public boolean storagePolicyAchieved(String gridPath2, StoragePolicy sp) {
+		try {
 		int minNodes = sp.getMinNodes();
-		
 		if (minNodes == 0 ) {
 			logger.error("Given minnodes setting 0 violates long term preservation");
 			return false;
@@ -99,6 +99,9 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 			} 
 		}
 		irodsSystemConnector.logoff();
+		} catch (IrodsRuntimeException irex) {
+			logger.error("recieved Exception from iRODS interpreting as false");
+		}
 		return false;
 	}
 	

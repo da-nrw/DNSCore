@@ -556,7 +556,7 @@ public class IrodsSystemConnector {
 						+ pairs.getValue());
 			}
 		} catch (JargonException e) {
-			logger.error("Error while executing Rule: " + rule);
+			logger.error("Error while executing Rule: " + rule + " " + e.getUnderlyingIRODSExceptionCode());
 			throw new IrodsRuntimeException("Error in Excecute Rule: " + rule
 					+ " " + e.getUnderlyingIRODSExceptionCode(), e);
 
