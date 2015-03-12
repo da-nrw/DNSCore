@@ -23,7 +23,9 @@ package de.uzk.hki.da.action;
 import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 import static de.uzk.hki.da.core.C.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
@@ -82,8 +84,11 @@ public class ActionFactory implements ApplicationContextAware {
 
 	private PreservationSystem preservationSystem;
 
-	private List<String> availableJobTypes;
-
+	/** ActionName, StartStatus */
+	private Map<String,String> actionStartStates = new HashMap<String,String>();
+	
+	
+	
 	
 	public void init(){
 		setPreservationSystem(new PreservationSystem()); getPreservationSystem().setId(1);
@@ -100,9 +105,14 @@ public class ActionFactory implements ApplicationContextAware {
 		}
 		session.close();
 		
-		
-	
+		List<String> availableJobTypes = actionRegistry.getAvailableJobTypes();
+		for (String actionName:availableJobTypes) {
+			AbstractAction action = (AbstractAction) context.getBean(actionName);
+			getActionStartStates().put(actionName, action.getStartStatus());
+		}
 	}
+	
+	
 	
 	private void injectProperties(AbstractAction action, Job job){
 		action.setUserExceptionManager(userExceptionManager);
@@ -114,7 +124,6 @@ public class ActionFactory implements ApplicationContextAware {
 		action.setActionFactory(this);
 		action.setJob(job);
 		action.setPSystem(getPreservationSystem());
-		
 	}
 	
 	
@@ -208,26 +217,31 @@ public class ActionFactory implements ApplicationContextAware {
 	}
 	
 	private AbstractAction selectActionToExecute() {
-		availableJobTypes = actionRegistry.getAvailableJobTypes();
-		logger.trace("available job types: " + availableJobTypes);
 		
-		for (String jobType : availableJobTypes) {
-
-			AbstractAction action = (AbstractAction) context.getBean(jobType);
+		for (String jobType : actionStartStates.keySet()) {
+			if (!actionRegistry.getAvailableJobTypes().contains(jobType)) continue;
 			
-			
-			Job jobCandidate = qc.fetchJobFromQueue(action.getStartStatus(), status(action,
-					WORKFLOW_STATUS_DIGIT_WORKING)
+			Job jobCandidate = qc.fetchJobFromQueue(getActionStartStates().get(jobType)
+					, status(getActionStartStates().get(jobType),
+							WORKFLOW_STATUS_DIGIT_WORKING)
 					, localNode);
+			
+			AbstractAction action = null;
 			if (jobCandidate == null) {
-				jobCandidate = qc.fetchJobFromQueue(status(action,
+				jobCandidate = qc.fetchJobFromQueue(status(getActionStartStates().get(jobType),
 						WORKFLOW_STATUS_DIGIT_UP_TO_ROLLBACK), WORKFLOW_STATUS_DIGIT_WORKING, localNode);
 				if (jobCandidate == null) {
 					logger.trace("No job for type {}, checking for types with lower priority", jobType);
 					continue;
 				}
+				action = (AbstractAction) context.getBean(jobType);
 				action.setROLLBACKONLY(true);
+			}else {
+				action = (AbstractAction) context.getBean(jobType);
 			}
+			
+			
+			
 			logger.info("fetched job: {}", jobCandidate);
 
 			
@@ -236,14 +250,16 @@ public class ActionFactory implements ApplicationContextAware {
 				checkJobActionContractorObject(action);
 			}catch(IllegalStateException e) {
 				logger.error(e.getMessage());
-				qc.updateJobStatus(jobCandidate, status(action,WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT));
+				qc.updateJobStatus(jobCandidate, 
+						status(getActionStartStates().get(jobType),WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT));
 				continue;
 			}
 			try {
 				action.checkConfiguration();
 			}catch(ConfigurationException e) {
 				logger.error("Regarding job for object ["+jobCandidate.getObject().getIdentifier()+"]. Bad configuration of action. "+e.getMessage());
-				qc.updateJobStatus(jobCandidate, status(action,WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION));
+				qc.updateJobStatus(jobCandidate, 
+						status(getActionStartStates().get(jobType),WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION));
 				continue;
 			}
 			try {
@@ -252,7 +268,9 @@ public class ActionFactory implements ApplicationContextAware {
 				action.checkPreconditions();
 			}catch(PreconditionsNotMetException e) {
 				logger.error("Regarding job for object ["+jobCandidate.getObject().getIdentifier()+"]. Preconfigurations not met for action. "+e.getMessage());
-				qc.updateJobStatus(jobCandidate, status(action,WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET));
+				qc.updateJobStatus(jobCandidate, 
+						status(getActionStartStates().get(jobType),WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET));
+				
 				continue;
 			}
 			
@@ -264,8 +282,8 @@ public class ActionFactory implements ApplicationContextAware {
 	}
 	
 	
-	private String status(AbstractAction action,String digit) {
-		return action.getStartStatus().substring(0,action.getStartStatus().length()-1) + digit;
+	private String status(String startStatus,String digit) {
+		return startStatus.substring(0,startStatus.length()-1) + digit;
 	}
 	
 	
@@ -390,5 +408,17 @@ public class ActionFactory implements ApplicationContextAware {
 
 	public void setFileFormatFacade(FileFormatFacade fileFormatFacade) {
 		this.fileFormatFacade = fileFormatFacade;
+	}
+
+
+
+	public Map<String,String> getActionStartStates() {
+		return actionStartStates;
+	}
+
+
+
+	public void setActionStartStates(Map<String,String> actionStartStates) {
+		this.actionStartStates = actionStartStates;
 	}
 }

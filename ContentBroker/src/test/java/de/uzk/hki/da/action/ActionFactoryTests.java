@@ -19,13 +19,22 @@
 
 package de.uzk.hki.da.action;
 
-import static org.junit.Assert.*;
+import static de.uzk.hki.da.core.C.WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION;
+import static de.uzk.hki.da.core.C.WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT;
+import static de.uzk.hki.da.core.C.WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import static de.uzk.hki.da.core.C.*;
-
+import java.util.HashMap;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -99,8 +108,11 @@ public class ActionFactoryTests {
 		ps.setAdmin(psadmin);
 		factory.setPreservationSystem(ps);
 		factory.setUserExceptionManager(new UserExceptionManager());
-		factory.setQueueConnector(queueConnector);	
+		factory.setQueueConnector(queueConnector);
 		
+		HashMap<String,String> actionStartStates = new HashMap<String,String>();
+		actionStartStates.put("tarAction","450");
+		factory.setActionStartStates(actionStartStates);
 	}
 	
 	private Job makeGoodJob(String status) { 
