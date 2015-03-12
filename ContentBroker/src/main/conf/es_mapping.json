@@ -111,7 +111,7 @@
                                 "include_in_all": false
                             }
                         }
-                    },
+                    },  
                     "dcterms:issued": {
                         "type": "string"
                     },
@@ -178,6 +178,24 @@
                     }
                 }
             },
+            
+            "dcterms:hasPart": {
+               "dynamic": "true",
+                "path": "just_name",
+                "properties": {
+                    "@id": {
+                        "type": "string"
+                    },
+                    "dc:format": {
+                        "type": "string",
+                        "index_name": "danrw_part",
+                        "index": "not_analyzed",
+                        "omit_norms": true,
+                        "index_options": "docs"
+                    }
+                }
+            },
+            
             "edm:isShownAt": {
                 "properties": {
                     "@id": {
