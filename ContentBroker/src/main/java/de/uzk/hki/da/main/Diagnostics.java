@@ -197,9 +197,11 @@ public class Diagnostics {
 		ElasticsearchMetadataIndex es = (ElasticsearchMetadataIndex) context.getBean(BEAN_NAME_METADATA_INDEX_FACADE);		
 		context.close();
 		
-//		System.out.print(INFO+"CHECKING - ELASTICSEARCH CONNECTIVITY .... ");
+		System.out.print(INFO+"CHECKING - ELASTICSEARCH CONNECTIVITY .... ");
 //		try {
-//			
+//		
+//		String getIndexedMetadata(String indexName, String objectId);
+		
 //			String portal = properties.getProperty("elasticsearch.index");
 //			
 //			Map<String,Object> data;
