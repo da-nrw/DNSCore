@@ -24,18 +24,21 @@ import de.uzk.hki.da.utils.MD5Checksum;
 public class CTIrodsCommandLineConnector {
 	
 	IrodsCommandLineConnector iclc;
-	String dao =  "/c-i/aip/TEST/urn.tar";
-	String dao2 = "/c-i/aip/TEST2/urn.tar";
+	String dao =  "/c-i/aip/connector/urn.tar";
+	String dao2 = "/c-i/aip/connector/urn.tar";
 	private static String tmpDir = "/tmp/forkDir/";
 	File file;
 	String md5sum;
-	String testCollPhysicalPathOnLTA = "/ci/archiveStorage/aip/TEST";
+	String testCollPhysicalPathOnLTA = "/ci/archiveStorage/aip/connector";
 	String archiveStorage = "ciArchiveResource";
 	
 	@Before
 	public void before() throws IOException {
 		iclc = new IrodsCommandLineConnector();
 		file = createTestFile();
+		String destColl = 
+				FilenameUtils.getFullPathNoEndSeparator(dao);
+		iclc.mkCollection(destColl);
 		md5sum = MD5Checksum.getMD5checksumForLocalFile(file);
 		assertTrue(iclc.put(file, dao, archiveStorage ));
 	}
