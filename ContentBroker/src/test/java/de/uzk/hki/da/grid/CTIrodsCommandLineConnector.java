@@ -14,11 +14,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-/**
+/** ComponentTest of IrodsCommandLineConnector
  * @author Jens Peters
  * 
  */
-
 
 import de.uzk.hki.da.utils.MD5Checksum;
 
