@@ -25,7 +25,7 @@ public class CTIrodsCommandLineConnector {
 	
 	IrodsCommandLineConnector iclc;
 	String dao =  "/c-i/aip/connector/urn.tar";
-	String dao2 = "/c-i/aip/connector/urn.tar";
+	String dao2 = "/c-i/aip/connector2/urn.tar";
 	private static String tmpDir = "/tmp/forkDir/";
 	File file;
 	String md5sum;
