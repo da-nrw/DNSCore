@@ -21,7 +21,6 @@ package de.uzk.hki.da.format;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -166,14 +165,4 @@ public class CTFileFormatFacadeTests {
 		assertTrue(files.get(0).getSubformatIdentifier().equals("Group4"));
 
 	}
-	
-//	
-//	@Test
-//	public void registrationNotPossibleUnkownStrategy(){
-//		try {
-//			sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.UnkownStrategy","");
-//			fail();
-//		} catch (IllegalArgumentException expected) {}
-//	}
-	
 }

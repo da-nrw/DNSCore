@@ -19,19 +19,31 @@
 
 package de.uzk.hki.da.format;
 
-import java.io.File;
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 
+import org.junit.Test;
+
+import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.util.Path;
 
 /**
  * @author Daniel M. de Oliveira
  */
-public interface FormatIdentifier {
+public class CTSoxSubformatIdentifierTests {
 
-	/**
-	 * @param f
-	 * @return a format identifier if a format has been detected. Empty string if nothing has been detected.
-	 * @throws IOException signals errors that happen during the process of reading the file.
-	 */
-	public String identify(File f) throws IOException;
+	private SoxSubformatIdentifier sox = new SoxSubformatIdentifier();
+	
+	@Test
+	public void testConnectivity() {
+		assertTrue(sox.isConnectable());
+	}
+	
+	@Test
+	public void testIdentify() throws IOException {
+		assertEquals("PCM",sox.identify(Path.makeFile(TC.TEST_ROOT_FORMAT,"SoxSubformatIdentifier","Applause.wav")));
+	}
+	
+	
 }
