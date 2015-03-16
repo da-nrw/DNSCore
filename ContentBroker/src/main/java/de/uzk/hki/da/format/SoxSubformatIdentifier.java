@@ -40,7 +40,7 @@ import de.uzk.hki.da.utils.ProcessInformation;
  */
 public class SoxSubformatIdentifier implements FormatIdentifier, Connector {
 
-	protected Logger logger = LoggerFactory.getLogger( SoxSubformatIdentifier.class );
+	private Logger logger = LoggerFactory.getLogger( SoxSubformatIdentifier.class );
 	
 	private String[] supportedVersions = new String[] {"14.2.0"};
 	
