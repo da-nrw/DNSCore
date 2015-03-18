@@ -64,5 +64,8 @@ public interface MetadataIndex {
 	
 	String getAllIndexedMetadataFromIdSubstring(String indexName, String objectId);
 	
+	void deleteFromIndex(String indexName, String type, String objectID) 
+			throws MetadataIndexException;
+	
 	
 }

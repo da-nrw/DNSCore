@@ -232,4 +232,19 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		this.cluster = cluster;
 	}
 
+	@Override
+	public void deleteFromIndex(String indexName, String type, String objectID) throws MetadataIndexException {
+		client = initialize();
+		if (client==null) throw new IllegalStateException("transport client not initialized");
+		
+		try {
+			logger.trace("delete "+objectID+" from index.");
+			client.prepareDelete(indexName, type, objectID);
+		} catch(ElasticSearchException e) {
+			throw new MetadataIndexException("Unable to index metadata.", e);
+		} finally {
+			client.close();
+		}
+	}
+
 }
