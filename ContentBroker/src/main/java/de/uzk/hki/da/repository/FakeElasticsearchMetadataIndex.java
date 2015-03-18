@@ -68,4 +68,11 @@ public class FakeElasticsearchMetadataIndex implements MetadataIndex{
 		return null;
 	}
 
+	@Override
+	public void deleteFromIndex(String indexName, String type, String objectID)
+			throws MetadataIndexException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
