@@ -95,8 +95,8 @@
                         "format": "dateOptionalTime"
                     },
                     "dcterms:date": {
-                        "type": "string"
-                        "index": "not_analyzed",
+                        "type": "string",
+                        "index": "not_analyzed"
                     },
                     "dcterms:extent": {
                         "type": "string"
