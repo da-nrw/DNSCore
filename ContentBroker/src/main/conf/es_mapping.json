@@ -3,8 +3,8 @@
     	"dynamic" : "strict",
         "properties": {
             "@id": {
-                "type": "string"
-                "index": "not_analyzed",
+                "type": "string",
+                "index": "not_analyzed"
             },
             "@type": {
                 "type": "string"
@@ -14,8 +14,8 @@
                 "path": "just_name",
                 "properties": {
                     "@id": {
-                        "type": "string"
-                        "index": "not_analyzed",
+                        "type": "string",
+                        "index": "not_analyzed"
                     },
                     "@type": {
                         "type": "string"
@@ -46,8 +46,8 @@
                         "fields": {
                             "dc:identifier": {
                                 "type": "string",
-                                "index_name": "danrw_institution"
-                                "index": "not_analyzed",
+                                "index_name": "danrw_institution",
+                                "index": "not_analyzed"
                             },
                             "identifier_facet": {
                                 "type": "string",
@@ -106,8 +106,8 @@
                         "fields": {
                             "dcterms:isPartOf": {
                                 "type": "string",
-                                "index_name": "danrw_collection"
-                                "index": "not_analyzed",
+                                "index_name": "danrw_collection",
+                                "index": "not_analyzed"
                             },
                             "isPartOf_facet": {
                                 "type": "string",
@@ -140,8 +140,8 @@
                         "path": "just_name",
                         "properties": {
                             "@id": {
-                                "type": "string"
-                                "index": "not_analyzed",
+                                "type": "string",
+                                "index": "not_analyzed"
                             }
                         }
                     },
@@ -174,8 +174,8 @@
                 "path": "just_name",
                 "properties": {
                     "@id": {
-                        "type": "string"
-                        "index": "not_analyzed",
+                        "type": "string",
+                        "index": "not_analyzed"
                     },
                     "dc:format": {
                         "type": "string",
@@ -192,8 +192,8 @@
                 "path": "just_name",
                 "properties": {
                     "@id": {
-                        "type": "string"
-                        "index": "not_analyzed",
+                        "type": "string",
+                        "index": "not_analyzed"
                     },
                     "dc:format": {
                         "type": "string",
@@ -208,16 +208,16 @@
             "edm:isShownAt": {
                 "properties": {
                     "@id": {
-                        "type": "string"
-                        "index": "not_analyzed",
+                        "type": "string",
+                        "index": "not_analyzed"
                     }
                 }
             },
             "edm:isShownBy": {
                 "properties": {
                     "@id": {
-                        "type": "string"
-                        "index": "not_analyzed",
+                        "type": "string",
+                        "index": "not_analyzed"
                     }
                 }
             },
@@ -226,8 +226,8 @@
                 "path": "just_name",
                 "properties": {
                     "@id": {
-                        "type": "string"
-                        "index": "not_analyzed",
+                        "type": "string",
+                        "index": "not_analyzed"
                     },
                     "dc:format": {
                         "type": "string"
@@ -240,8 +240,8 @@
             "edm:rights": {
                 "properties": {
                     "@id": {
-                        "type": "string"
-                        "index": "not_analyzed",
+                        "type": "string",
+                        "index": "not_analyzed"
                     }
                 }
             },
