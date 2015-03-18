@@ -7,6 +7,7 @@ Die URN. Diese wird entweder vom System automatisch generiert oder wird vom Vert
 Die URN wird in jedem Fall nur einmal vergeben. Im Falle von Deltas wird die URN nicht abgeändert.
 
 ## Kontext: 
+
 Dokumentation: SIPSpezifikation / URN-Vergabe
 
 # Hintergrund: 
