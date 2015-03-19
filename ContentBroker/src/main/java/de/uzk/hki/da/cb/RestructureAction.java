@@ -147,7 +147,7 @@ public class RestructureAction extends AbstractAction{
 		List<FileWithFileFormat> scannedFiles = null;
 		try {
 			List<DAFile> dafiles = o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
-			scannedFiles = fileFormatFacade.identify(dafiles);
+			scannedFiles = fileFormatFacade.identify(wa.dataPath(),dafiles);
 		} catch (FileFormatException e) {
 			throw new RuntimeException(ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
 		} catch (IOException e) {

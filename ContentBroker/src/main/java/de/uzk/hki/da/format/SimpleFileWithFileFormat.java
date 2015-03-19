@@ -20,6 +20,9 @@ package de.uzk.hki.da.format;
 
 import java.io.File;
 
+import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.util.RelativePath;
+
 /**
  * The simplest possible implementation of FileWithFileFormat.
  * 
@@ -58,6 +61,11 @@ public class SimpleFileWithFileFormat implements FileWithFileFormat {
 	@Override
 	public File toRegularFile() {
 		return file;
+	}
+	
+	@Override 
+	public Path getPath() {
+		return new RelativePath(file.getPath().toString());
 	}
 
 }

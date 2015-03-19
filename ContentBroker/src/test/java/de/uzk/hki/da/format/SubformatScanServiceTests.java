@@ -36,19 +36,34 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.util.RelativePath;
 
 /**
  * @author Daniel M. de Oliveira
  */
 public class SubformatScanServiceTests {
 
-	SubformatScanService sfs = new SubformatScanService();
+	private SubformatScanService sfs = new SubformatScanService();
+	private WorkArea wa;
+	private Path workAreaRootPath=new RelativePath("src/test/resources");
+	private Object o;
+	
 	
 	@Before
 	public void setUp(){
+		
+		o = TESTHelper.setUpObject("identifier", workAreaRootPath);
+		
+		Node n=new Node();
+		n.setWorkAreaRootPath(workAreaRootPath);
+		wa=new WorkArea(n, o);
+		
+		
 		
 		// This is what is configured in the database.
 		Map<String,Set<String>> subformatIdentificationPolicies = new HashMap<String,Set<String>>();
@@ -63,14 +78,14 @@ public class SubformatScanServiceTests {
 	@Test
 	public void testIdentify() throws InvalidArgumentException, IOException{
 		
-		Object o = TESTHelper.setUpObject("identifier", Path.make("src/test/resources"));
 		
-		DAFile f = new DAFile(o.getLatestPackage() ,null,FFConstants.TIF);
+		
+		DAFile f = new DAFile(o.getLatestPackage() ,"",FFConstants.TIF);
 		f.setFormatPUID(FFConstants.FMT_353);
 		
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(f);
-		sfs.identify(files);
+		sfs.identify(wa.dataPath(),files);
 		
 		assertEquals(FFConstants.LZW,f.getSubformatIdentifier());
 	}
@@ -83,7 +98,7 @@ public class SubformatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(f);
 		try {
-			sfs.identify(files);
+			sfs.identify(wa.dataPath(),files);
 			fail();
 		} catch (IllegalArgumentException e){}
 	}

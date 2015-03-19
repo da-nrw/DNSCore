@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.util.Path;
 
 
 
@@ -61,9 +62,9 @@ public class FidoFormatScanService implements FormatScanService, Connector {
 	 */
 	@Override
 	public
-	List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws IOException {
+	List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files) throws IOException {
 		for (FileWithFileFormat f:files){
-			f.setFormatPUID(pronom.identify(f.toRegularFile()));
+			f.setFormatPUID(pronom.identify(Path.makeFile(workPath,f.getPath())));
 		}
 		return files;
 	}

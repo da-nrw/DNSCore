@@ -46,6 +46,7 @@ import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.format.ConfigurableFileFormatFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
@@ -86,12 +87,12 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 		ConfigurableFileFormatFacade fff = mock(ConfigurableFileFormatFacade.class);
 		when(fff.extract((File)anyObject(), (File)anyObject())).thenReturn(true);
 		
-		when(fff.identify((List<FileWithFileFormat>)anyObject())).thenAnswer(new Answer< List<DAFile> >(){
+		when(fff.identify((Path)anyObject(),(List<FileWithFileFormat>)anyObject())).thenAnswer(new Answer< List<DAFile> >(){
 			@Override
 			public List<DAFile> answer(InvocationOnMock invocation)
 					throws Throwable {
 				java.lang.Object[] args = invocation.getArguments();
-				List<DAFile> list = (List<DAFile>) args[0];
+				List<DAFile> list = (List<DAFile>) args[1];
 				
 				for (DAFile f:list){
 					if (f.equals(new DAFile(null,REP2A,"_2.jpg"))){

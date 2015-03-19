@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.uzk.hki.da.util.Path;
+
 /**
  * @author Daniel M. de Oliveira
  */
@@ -42,13 +44,13 @@ public class SubformatScanService implements FormatScanService, Connector {
 	 * @return files the return value is for convenient mock testing only, since files gets modified as side effect.
 	 * @throws 
 	 */
-	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws IOException{
+	public List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files) throws IOException{
 		
 		for (FileWithFileFormat f:files){
 			if (f.getFormatPUID()==null||f.getFormatPUID().isEmpty())
 				throw new IllegalArgumentException(f+" has no puid");
 			
-			f.setSubformatIdentifier(identifySubformat(f.toRegularFile(),f.getFormatPUID()));
+			f.setSubformatIdentifier(identifySubformat(Path.makeFile(workPath,f.getPath()),f.getFormatPUID()));
 		}
 		return files;
 	}

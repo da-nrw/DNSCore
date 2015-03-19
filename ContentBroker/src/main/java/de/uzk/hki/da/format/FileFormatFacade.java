@@ -24,6 +24,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import de.uzk.hki.da.util.Path;
+
 /**
  * Provides access to the file format subsystem, which is responsible for 
  * <ol>
@@ -50,7 +52,7 @@ public interface FileFormatFacade {
 	 * could not get determined as a result of IO problems. This can has something to do with 
 	 * the files to identify, but also with the helper programs used to identify the files. 
 	 */
-	public List<FileWithFileFormat> identify(List<? extends FileWithFileFormat> files) 
+	public List<FileWithFileFormat> identify(Path workPath,List<? extends FileWithFileFormat> files) 
 			throws FileNotFoundException, FileFormatException, IOException;
 
 	

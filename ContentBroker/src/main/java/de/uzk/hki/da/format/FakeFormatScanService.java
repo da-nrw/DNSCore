@@ -27,71 +27,73 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.uzk.hki.da.util.Path;
+
 /**
  * @author Daniel M. de Oliveira
  */
 public class FakeFormatScanService implements FormatScanService{
 
 	@Override
-	public List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws FileNotFoundException{
+	public List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files) throws FileNotFoundException{
 		
 		for (FileWithFileFormat f:files){
 			
-			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".avi")){
+			if (f.getPath().toString().toLowerCase().endsWith(".avi")){
 				f.setFormatPUID("fmt/5");
 				f.setSubformatIdentifier("cinepak");
 				continue;
 			}
 			
-			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".mxf")){
+			if (f.getPath().toString().toLowerCase().toString().toLowerCase().endsWith(".mxf")){
 				f.setFormatPUID("fmt/200");
 				f.setSubformatIdentifier("dvvideo");
 				continue;
 			}
 			
-			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".mov")){
+			if (f.getPath().toString().toLowerCase().toString().toLowerCase().endsWith(".mov")){
 				f.setFormatPUID("x-fmt/384");
 				f.setSubformatIdentifier("svq1");
 				continue;
 			}
 			
-			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".tif")){
+			if (f.getPath().toString().toLowerCase().toLowerCase().endsWith(".tif")){
 				f.setFormatPUID("fmt/353");
 				continue;
 			}
 			
-			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".bmp")){
+			if (f.getPath().toString().toLowerCase().toLowerCase().endsWith(".bmp")){
 				f.setFormatPUID("fmt/116");
 				continue;
 			}
 			
-			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".jp2")){
+			if (f.getPath().toString().toLowerCase().toLowerCase().endsWith(".jp2")){
 				f.setFormatPUID("x-fmt/392");
 				continue;
 			}
 			
-			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".gif")){
+			if (f.getPath().toString().toLowerCase().toLowerCase().endsWith(".gif")){
 				f.setFormatPUID("fmt/4");
 				continue;
 			}
 			
-			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".pdf")){
+			if (f.getPath().toString().toLowerCase().toLowerCase().endsWith(".pdf")){
 				f.setFormatPUID("fmt/16");
 				continue;
 			}
 
-			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".xml")){
+			if (f.getPath().toString().toLowerCase().toLowerCase().endsWith(".xml")){
 				f.setFormatPUID("fmt/101");
 			}
 			
-			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".rdf")){
+			if (f.getPath().toString().toLowerCase().toLowerCase().endsWith(".rdf")){
 				f.setFormatPUID("fmt/101");
 			}
-			if (f.toRegularFile().getAbsolutePath().toLowerCase().endsWith(".jpg")){
+			if (f.getPath().toString().toLowerCase().toLowerCase().endsWith(".jpg")){
 				f.setFormatPUID("fmt/43");
 			}
 			
-			BufferedReader br=new BufferedReader(new FileReader(f.toRegularFile()));
+			BufferedReader br=new BufferedReader(new FileReader(Path.makeFile(workPath,f.getPath())));
 	        String line;
 	        try {
 				while((line=br.readLine())!=null){

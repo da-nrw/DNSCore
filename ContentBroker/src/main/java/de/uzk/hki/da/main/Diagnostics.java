@@ -67,6 +67,7 @@ import de.uzk.hki.da.utils.StringUtilities;
  */
 public class Diagnostics {
 
+	private static final String TIFF_TESTFILE = "healthCheck.tif";
 	private static final String TIFF_TESTFILE_PATH = "conf/healthCheck.tif";
 	
 	private static final String BEAN_NAME_IRODS_ZONE = "irods.zone";
@@ -289,11 +290,11 @@ public class Diagnostics {
 	private static boolean standardFileFormatFacadeFidoWorkingProperly(ConfigurableFileFormatFacade sfff) {
 		
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
-		FileWithFileFormat ffff = new SimpleFileWithFileFormat(new File(TIFF_TESTFILE_PATH));
+		FileWithFileFormat ffff = new SimpleFileWithFileFormat(new File(TIFF_TESTFILE));
 		files.add(ffff);
 		
 		try {
-			sfff.identify(files);
+			sfff.identify(new RelativePath("conf"),files);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

@@ -99,7 +99,7 @@ public class RestructureActionTests extends ConcreteActionUnitTest{
 		DAFile file = new DAFile(o.getLatestPackage(),"rep+a","140849.tif");
 		file.setFormatPUID("fmt/353");
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>(); files.add(file);
-		when( ffs.identify((List<FileWithFileFormat>)anyObject()) ).thenReturn(files);
+		when( ffs.identify((Path)anyObject(),(List<FileWithFileFormat>)anyObject()) ).thenReturn(files);
 		action.setFileFormatFacade(ffs);
 	}
 	

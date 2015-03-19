@@ -21,6 +21,8 @@ package de.uzk.hki.da.format;
 
 import java.io.File;
 
+import de.uzk.hki.da.util.Path;
+
 /**
  * @author Daniel M. de Oliveira
  */
@@ -34,5 +36,11 @@ public interface FileWithFileFormat {
 
 	public void setSubformatIdentifier(String formatSecondaryAttribute);
 	
+	/**
+	 * @deprecated
+	 * @return
+	 */
 	public File toRegularFile();
+
+	Path getPath();
 }

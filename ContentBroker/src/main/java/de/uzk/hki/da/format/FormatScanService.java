@@ -24,6 +24,8 @@ import java.util.List;
 
 import org.irods.jargon.core.exception.InvalidArgumentException;
 
+import de.uzk.hki.da.util.Path;
+
 /**
  * @author Daniel M. de Oliveira
  */
@@ -39,7 +41,7 @@ interface FormatScanService {
 	 * 
 	 * @throws InvalidArgumentException 
 	 */
-	List<FileWithFileFormat> identify(List<FileWithFileFormat> files) throws IOException;
+	List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files) throws IOException;
 	
 	public boolean isConnectable();
 }

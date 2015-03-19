@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.util.RelativePath;
 
 
 /**
@@ -193,6 +194,16 @@ public class DAFile implements FileWithFileFormat{
 	public String getRelative_path() {
 		return relative_path;
 	}
+	
+	
+	
+	@Transient
+	@Override
+	public Path getPath() {
+		return new RelativePath(rep_name,relative_path);
+	}
+	
+	
 
 	/**
 	 * Sets the relative_path.

@@ -25,10 +25,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
@@ -42,8 +45,15 @@ public class FakeFormatScanServiceTests {
 	private static final Path workAreaRootPath = Path.make(TC.TEST_ROOT_FORMAT,"FakeFormatScanServiceTests","work");
 	private static final Object object = TESTHelper.setUpObject("identifier", workAreaRootPath);
 	private static final FakeFormatScanService fss = new FakeFormatScanService();
+	private static WorkArea wa;
 	
-	
+	@Before
+	public void setUp() {
+		Node n=new Node();
+		n.setWorkAreaRootPath(workAreaRootPath);
+		
+		wa=new WorkArea(n,object);
+	}
 	
 	@Test
 	public void testMets() throws IOException{
@@ -52,7 +62,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(mets);
 		
-		fss.identify(files);
+		fss.identify(wa.dataPath(),files);
 		
 		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_METS,files.get(0).getSubformatIdentifier());
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
@@ -64,7 +74,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(ead);
 		
-		fss.identify(files);
+		fss.identify(wa.dataPath(),files);
 		
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
 		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_EAD,files.get(0).getSubformatIdentifier());	
@@ -76,7 +86,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(ead2);
 		
-		fss.identify(files);
+		fss.identify(wa.dataPath(),files);
 		
 		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_EAD,files.get(0).getSubformatIdentifier());	
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
@@ -90,7 +100,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(ead);
 		
-		fss.identify(files);
+		fss.identify(wa.dataPath(),files);
 		
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
 		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_LIDO,files.get(0).getSubformatIdentifier());	
@@ -102,7 +112,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(xmp);
 		
-		fss.identify(files);
+		fss.identify(wa.dataPath(),files);
 		
 		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_XMP,files.get(0).getSubformatIdentifier());	
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
@@ -114,7 +124,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(tif);
 		
-		fss.identify(files);
+		fss.identify(wa.dataPath(),files);
 		
 		assertEquals("fmt/353",files.get(0).getFormatPUID());	
 	}
@@ -126,7 +136,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(bmp);
 		
-		fss.identify(files);
+		fss.identify(wa.dataPath(),files);
 		
 		assertEquals("fmt/116",files.get(0).getFormatPUID());	
 	}
@@ -138,7 +148,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(jp2);
 		
-		fss.identify(files);
+		fss.identify(wa.dataPath(),files);
 		
 		assertEquals("x-fmt/392",files.get(0).getFormatPUID());	
 	}
@@ -149,7 +159,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(gif);
 		
-		fss.identify(files);
+		fss.identify(wa.dataPath(),files);
 		
 		assertEquals("fmt/4",files.get(0).getFormatPUID());	
 	}
@@ -160,7 +170,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(pdf);
 		
-		fss.identify(files);
+		fss.identify(wa.dataPath(),files);
 		
 		assertEquals("fmt/16",files.get(0).getFormatPUID());	
 	}
@@ -171,7 +181,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(xml);
 		
-		fss.identify(files);
+		fss.identify(wa.dataPath(),files);
 		
 		assertEquals("fmt/101",files.get(0).getFormatPUID());	
 	}
@@ -188,7 +198,7 @@ public class FakeFormatScanServiceTests {
 		files.add(ead2);
 		files.add(mets);
 		
-		fss.identify(files);
+		fss.identify(wa.dataPath(),files);
 		
 		assertEquals("fmt/16",files.get(0).getFormatPUID());
 		assertEquals("fmt/4",files.get(1).getFormatPUID());

@@ -63,17 +63,18 @@ public class CTFileFormatFacadeTests {
 	
 	@Test
 	public void pronomFormatIdentification() throws IOException{
-		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"healthCheck.tif")));
 		
-		sfff.identify(files);
+		files.add(new SimpleFileWithFileFormat(Path.makeFile("healthCheck.tif")));
+		
+		sfff.identify(testPath,files);
 		assertEquals(FFConstants.FMT_353,files.get(0).getFormatPUID());
 	}
 	
 	@Test
 	public void pronomFormatIdentificationBlanksInFilename() throws IOException{
-		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"health check.tif")));
+		files.add(new SimpleFileWithFileFormat(Path.makeFile("health check.tif")));
 		
-		sfff.identify(files);
+		sfff.identify(testPath,files);
 		assertEquals(FFConstants.FMT_353,files.get(0).getFormatPUID());
 	}
 
@@ -82,9 +83,9 @@ public class CTFileFormatFacadeTests {
 	public void metsFormatIdentification() throws IOException{
 		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.XMLSubformatIdentifier", 
 				FFConstants.FMT_101);
-		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"mets_2_99.xml")));
+		files.add(new SimpleFileWithFileFormat(Path.makeFile("mets_2_99.xml")));
 		
-		sfff.identify(files);
+		sfff.identify(testPath,files);
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
 		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_METS,files.get(0).getSubformatIdentifier());
 	}
@@ -94,9 +95,9 @@ public class CTFileFormatFacadeTests {
 	public void lidoFormatIdentification() throws IOException{
 		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.XMLSubformatIdentifier", 
 				FFConstants.FMT_101);
-		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"LIDO-Testexport2014-07-04-FML-Auswahl.xml")));
+		files.add(new SimpleFileWithFileFormat(Path.makeFile("LIDO-Testexport2014-07-04-FML-Auswahl.xml")));
 		
-		sfff.identify(files);
+		sfff.identify(testPath,files);
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
 		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_LIDO,files.get(0).getSubformatIdentifier());
 	}
@@ -106,9 +107,9 @@ public class CTFileFormatFacadeTests {
 	public void xmpFormatIdentification() throws IOException{
 		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.XMLSubformatIdentifier", 
 				FFConstants.FMT_101);
-		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"a.xmp")));
+		files.add(new SimpleFileWithFileFormat(Path.makeFile("a.xmp")));
 		
-		sfff.identify(files);
+		sfff.identify(testPath,files);
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
 		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_XMP,files.get(0).getSubformatIdentifier());
 	}
@@ -118,9 +119,9 @@ public class CTFileFormatFacadeTests {
 	public void ffmpegStrategySubformatIdentification() throws IOException {
 		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentifier", 
 				FFConstants.FMT_5);
-		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"a.avi")));
+		files.add(new SimpleFileWithFileFormat(Path.makeFile("a.avi")));
 		
-		sfff.identify(files);
+		sfff.identify(testPath,files);
 		assertTrue(files.get(0).getSubformatIdentifier().equals("cinepak"));
 	}
 
@@ -128,9 +129,9 @@ public class CTFileFormatFacadeTests {
 	public void ffmpegStrategySubformatIdentificationCodecContainsDigit() throws IOException {
 		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentifier", 
 				FFConstants.X_FMT_384);
-		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"a.mov")));
+		files.add(new SimpleFileWithFileFormat(Path.makeFile("a.mov")));
 		
-		sfff.identify(files);
+		sfff.identify(testPath,files);
 		assertTrue(files.get(0).getSubformatIdentifier().equals("svq1"));
 	}
 
@@ -141,9 +142,9 @@ public class CTFileFormatFacadeTests {
 	public void ffmpegStrategySubformatIdentificationFileWithBlanksInFilename() throws IOException {
 		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentifier", 
 				FFConstants.FMT_5);
-		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"a b.avi")));
+		files.add(new SimpleFileWithFileFormat(Path.makeFile("a b.avi")));
 		
-		sfff.identify(files);
+		sfff.identify(testPath,files);
 		assertTrue(files.get(0).getSubformatIdentifier().equals("cinepak"));
 	}
 	@Test
@@ -159,9 +160,9 @@ public class CTFileFormatFacadeTests {
 	public void imageMagickIdentifySubformatIdentification() throws IOException {
 		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.ImageMagickSubformatIdentifier", 
 				FFConstants.FMT_353);
-		files.add(new SimpleFileWithFileFormat(Path.makeFile(testPath,"CCITT_1_LZW.TIF")));
+		files.add(new SimpleFileWithFileFormat(Path.makeFile("CCITT_1_LZW.TIF")));
 		
-		sfff.identify(files);
+		sfff.identify(testPath,files);
 		assertTrue(files.get(0).getSubformatIdentifier().equals("Group4"));
 
 	}

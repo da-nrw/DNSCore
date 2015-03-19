@@ -31,6 +31,8 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.util.Path;
+
 /**
  * Implementation for file identification: FIDO.
  * Implementation for basic metadata extraction: JHOVE.
@@ -61,18 +63,18 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<FileWithFileFormat> identify(List<? extends FileWithFileFormat> files)
+	public List<FileWithFileFormat> identify(Path workPath,List<? extends FileWithFileFormat> files)
 			throws IOException {
 
-		getFormatScanService().identify((List<FileWithFileFormat>) files);
+		getFormatScanService().identify(workPath,(List<FileWithFileFormat>) files);
 		
 		for (String s:subformatIdentificationStrategyTriggerMap.keySet())
 			logger.debug("strategy available: "+s);
 		
 		if (getSubformatScanService()!=null)
-			getSubformatScanService().identify((List<FileWithFileFormat>) files);
+			getSubformatScanService().identify(workPath,(List<FileWithFileFormat>) files);
 		
-		doCorrections(files);
+		doCorrections(workPath,files);
 		return (List<FileWithFileFormat>) files;
 	}
 
@@ -83,14 +85,14 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 	 * @param files
 	 * @throws IOException
 	 */
-	private void doCorrections(List<? extends FileWithFileFormat> files) throws IOException{
+	private void doCorrections(Path workPath,List<? extends FileWithFileFormat> files) throws IOException{
 		for (FileWithFileFormat f:files){
 			
 			// This is to compensate for a behavior of FIDO where it detects a too specific xml format. 
 			if (f.getFormatPUID().equals(FFConstants.DROID_XML_PUID)) {
 				f.setFormatPUID(FFConstants.XML_PUID);
 				f.setSubformatIdentifier(
-						new XMLSubformatIdentifier().identify(f.toRegularFile()));
+						new XMLSubformatIdentifier().identify(Path.makeFile(workPath,f.getPath())));
 			}else
 			if (f.getFormatPUID().equals(FFConstants.XMP_PUID)) {
 				f.setFormatPUID(FFConstants.XML_PUID);
