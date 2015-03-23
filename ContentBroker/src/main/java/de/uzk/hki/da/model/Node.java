@@ -20,10 +20,15 @@
 package de.uzk.hki.da.model;
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import de.uzk.hki.da.util.Path;
 
 import java.lang.Object;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -85,6 +90,12 @@ public class Node{
                 joinColumns={@JoinColumn(name="node_id")}, 
                 inverseJoinColumns={@JoinColumn(name="cooperating_node_id")})
     private Set<Node> cooperatingNodes = new HashSet<Node>();
+	
+	/** The copies. */
+	@OneToMany(orphanRemoval=false)
+	@JoinColumn(name="node_id")
+	@Cascade({CascadeType.SAVE_UPDATE})
+	private List<Copy> copies = new ArrayList<Copy>();
 	
 	/**
 	 * Instantiates a new node.
@@ -403,6 +414,14 @@ public class Node{
 
 	public void setCooperatingNodes(Set<Node> cooperatingNodes) {
 		this.cooperatingNodes = cooperatingNodes;
+	}
+
+	public List<Copy> getCopies() {
+		return copies;
+	}
+
+	public void setCopies(List<Copy> copies) {
+		this.copies = copies;
 	}
 	
 }

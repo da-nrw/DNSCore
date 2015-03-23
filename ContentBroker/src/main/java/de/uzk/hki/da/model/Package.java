@@ -91,6 +91,14 @@ public class Package {
 	@Cascade({CascadeType.SAVE_UPDATE,CascadeType.DELETE})
 	private List<Event> events = new ArrayList<Event>();
 	
+	/** The copies. */
+	@OneToMany(orphanRemoval=false)
+	@JoinColumn(name="pkg_id")
+	@Cascade({CascadeType.SAVE_UPDATE})
+	private List<Copy> copies = new ArrayList<Copy>();
+	
+	
+	
 	private String container_name; 
 
 	/**
@@ -352,6 +360,20 @@ public class Package {
 
 	public void setChecksum(String checksum) {
 		this.checksum = checksum;
+	}
+
+
+
+
+	public List<Copy> getCopies() {
+		return copies;
+	}
+
+
+
+
+	public void setCopies(List<Copy> copies) {
+		this.copies = copies;
 	}
 
 

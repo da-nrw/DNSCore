@@ -41,6 +41,7 @@
  <mapping class="de.uzk.hki.da.model.Event"/>
  <mapping class="de.uzk.hki.da.model.PreservationSystem"/>
  <mapping class="de.uzk.hki.da.model.SubformatIdentificationStrategyPuidMapping"/>
+ <mapping class="de.uzk.hki.da.model.Copy"/>
  
 </session-factory>
 </hibernate-configuration>
