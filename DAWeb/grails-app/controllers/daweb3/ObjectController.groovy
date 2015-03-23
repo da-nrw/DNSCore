@@ -253,7 +253,7 @@ class ObjectController {
 		if ( object == null ) result.msg += "Das Objekt ${object.urn} konnte nicht gefunden werden!"
 		else {
 			try {
-				qu.createJob( object, "560" ,grailsApplication.config.cb.presServer)
+				qu.createJob( object, "570" ,grailsApplication.config.cb.presServer)
 				result.msg = "Auftrag zur Indizierung erstellt ${object.urn}."
 				result.success = true
 			} catch ( Exception e ) {
