@@ -26,11 +26,15 @@ public class CTIrodsCommandLineConnector {
 	IrodsCommandLineConnector iclc;
 	String dao =  "/c-i/aip/connector/urn.tar";
 	String dao2 = "/c-i/aip/connector2/urn.tar";
+	String dao3 = "/c-i/aip/connector/urn3.tar";
 	private static String tmpDir = "/tmp/forkDir/";
 	File file;
 	String md5sum;
 	String testCollPhysicalPathOnLTA = "/ci/archiveStorage/aip/connector";
 	String archiveStorage = "ciArchiveResource";
+	
+	String workingResc = "ciWorkingResource";
+	static String workingRescPhysicalPath = "/ci/storage/WorkArea";
 	
 	@Before
 	public void before() throws IOException {
@@ -79,11 +83,13 @@ public class CTIrodsCommandLineConnector {
 	public void remove() {
 		iclc.remove(dao);
 		iclc.remove(dao2);
+		iclc.remove(dao3);
 	}
 	
 	@AfterClass
 	public static void cleanup () {
 		FileUtils.deleteQuietly(new File(tmpDir));
+		FileUtils.deleteQuietly(new File(workingRescPhysicalPath + "/aip/connector/urn3.tar"));
 	}
 
 	@Test
@@ -140,6 +146,21 @@ public class CTIrodsCommandLineConnector {
 		iclc.rsync(dao, destColl, archiveStorage);
 		assertTrue(iclc.exists(dao2));
 		assertEquals(iclc.getChecksum(dao2),iclc.getChecksum(dao));
+	}
+	
+	@Test
+	public void testIRepl() {
+		assertFalse(new File(workingRescPhysicalPath + "/aip/connector/urn.tar").exists());
+		iclc.repl(dao, workingResc);
+		assertTrue(new File(workingRescPhysicalPath + "/aip/connector/urn.tar").exists());	
+	}
+	
+	@Test
+	public void testIReg() throws IOException {
+		new File(workingRescPhysicalPath + "/aip/connector/urn3.tar").createNewFile();
+		iclc.ireg(new File(workingRescPhysicalPath + "/aip/connector/urn3.tar"), workingResc, dao3, true);
+		assertTrue(iclc.exists(dao3));
+		assertTrue(new File(workingRescPhysicalPath + "/aip/connector/urn3.tar").exists());
 	}
 	
 	//-----------------------------------------------

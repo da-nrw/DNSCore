@@ -262,7 +262,10 @@ public class IrodsCommandLineConnector {
 	 * irsyncs Dataobject to destination on given resource
 	 * @author Jens Peters
 	 * @param dao
-	 * @param destDao
+	 * @param destDaoif (!resourceName.equals("")) {
+			commandAsList.add("-R");
+			commandAsList.add(resourceName);
+		}
 	 * @param destRescName
 	 * @return
 	 */
@@ -383,6 +386,44 @@ public class IrodsCommandLineConnector {
 		String commandAsArray[] = new String[]{
 				"irule","-F",rule.getAbsoluteFile().toString()
 		};	
+		return executeIcommand(commandAsArray);
+	}
+	
+	/**
+	 * repl to resource name 
+	 * @author Jens Peters
+	 * @param rule
+	 * @return
+	 */
+	public String repl(String dao, String resourceName) {
+		String commandAsArray[] = new String[]{
+				"irepl","-aBR",resourceName,dao
+		};	
+		return executeIcommand(commandAsArray);
+	}	
+	
+	/**
+	 * ireg on rescName 
+	 * @author Jens Peters
+	 * @param rule
+	 * @return
+	 */
+	public String ireg(File source, String targetRescName, String dao, boolean isDirectory) {
+		ArrayList<String>  commandAsList = new ArrayList<String>();
+		commandAsList.add("ireg");
+		commandAsList.add("-f");
+		commandAsList.add("-K");
+		if (!targetRescName.equals("")) {
+			commandAsList.add("-R");
+			commandAsList.add(targetRescName);
+		}
+		if (isDirectory) {
+			commandAsList.add("-C");
+		}
+		commandAsList.add(source.getAbsoluteFile().toString());
+		commandAsList.add(dao);
+		String[] commandAsArray = new String[commandAsList.size()];
+		commandAsArray = commandAsList.toArray(commandAsArray);
 		return executeIcommand(commandAsArray);
 	}
 }
