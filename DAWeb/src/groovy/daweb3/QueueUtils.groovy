@@ -48,8 +48,8 @@ class QueueUtils {
 
 		log.debug "Create job object.user.shortName: " + object.user.shortName
 	
-		def list = QueueEntry.findByObjAndStatus(object, status)
-		if (list != null) throw new RuntimeException ("Bereits angefordert.");
+		def list = QueueEntry.findByObj(object)
+		if (list != null) throw new RuntimeException ("Es gibt bereits einen laufenden Arbeitsauftrag für dieses Objekt");
 		
 		def job = new QueueEntry()
 		job.setStatus(status)
