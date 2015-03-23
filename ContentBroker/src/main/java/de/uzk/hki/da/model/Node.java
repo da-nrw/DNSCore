@@ -80,6 +80,12 @@ public class Node{
 	/** The log area. */
 	@Transient private String logFolder;
 
+	@ManyToMany
+    @JoinTable(name="cooperating_nodes", 
+                joinColumns={@JoinColumn(name="node_id")}, 
+                inverseJoinColumns={@JoinColumn(name="cooperating_node_id")})
+    private Set<Node> cooperatingNodes = new HashSet<Node>();
+	
 	/**
 	 * Instantiates a new node.
 	 */
@@ -389,6 +395,14 @@ public class Node{
 
 	public void setContractors(Set<User> contractors) {
 		this.contractors = contractors;
+	}
+
+	public Set<Node> getCooperatingNodes() {
+		return cooperatingNodes;
+	}
+
+	public void setCooperatingNodes(Set<Node> cooperatingNodes) {
+		this.cooperatingNodes = cooperatingNodes;
 	}
 	
 }
