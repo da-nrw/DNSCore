@@ -13,7 +13,15 @@ import org.junit.Test;
 
 import de.uzk.hki.da.service.HibernateUtil;
 
-public class CTCooperatingNodes {
+
+/**
+ * This test is only used for aiding development. 
+ * It is n	ot part of Unit or Component test suite.
+ * 
+ * The test depends on previous creation of database scheme
+ * and execution of populatetestdb.sh script.
+ */
+public class CooperatingNodesTest {
 
 	private static Node n; 
 	@BeforeClass
