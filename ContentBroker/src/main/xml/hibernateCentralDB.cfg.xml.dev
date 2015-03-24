@@ -40,6 +40,7 @@
  <mapping class="de.uzk.hki.da.model.SubformatIdentificationStrategyPuidMapping"/>
  <mapping class="de.uzk.hki.da.model.Role"/>
  <mapping class="de.uzk.hki.da.model.Copy"/>
+ <mapping class="de.uzk.hki.da.model.Message"/>
 
  
 </session-factory>

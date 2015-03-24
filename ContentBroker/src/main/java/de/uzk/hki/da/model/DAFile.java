@@ -235,12 +235,10 @@ public class DAFile implements FileWithFileFormat{
 		this.rep_name = repName;
 	}
 	
-	@Transient
 	public void setMimeType(String mimeType) {
 		this.mimeType = mimeType;
 	}
 	
-	@Transient
 	public String getMimeType() {
 		return mimeType;
 	}
@@ -296,10 +294,8 @@ public class DAFile implements FileWithFileFormat{
 
 	/**
 	 * Gets the chksum.
-	 *
 	 * @return the chksum
 	 */
-	@Transient
 	public String getChksum() {
 		return chksum;
 	}

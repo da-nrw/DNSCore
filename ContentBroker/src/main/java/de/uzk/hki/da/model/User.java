@@ -19,9 +19,14 @@
 
 package de.uzk.hki.da.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,7 +35,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+
 
 
 /**
@@ -65,7 +73,7 @@ public class User{
 	private String password;
 	private String description;
 	   
-    @ManyToMany(cascade=CascadeType.ALL)  
+    @ManyToMany(cascade=javax.persistence.CascadeType.ALL)  
     @JoinTable(name="user_role",  
     joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},  
     inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id")})
@@ -75,6 +83,15 @@ public class User{
 	private Boolean accountexpired;
 	private Boolean accountlocked;
 	private Boolean passwordexpired;
+	
+	
+	/** The events. */
+	@OneToMany(orphanRemoval=true)
+	@JoinColumn(name="user_id")
+	@Cascade({CascadeType.SAVE_UPDATE,CascadeType.DELETE})
+	private List<Message> messages = new ArrayList<Message>();
+	
+	
 	
 	/**
 	 * Gets the Roles.
@@ -260,5 +277,13 @@ public class User{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public List<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<Message> messages) {
+		this.messages = messages;
 	}
 }
