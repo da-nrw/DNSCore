@@ -79,6 +79,8 @@ public class Job {
 	/** The rep_name. */
 	private String rep_name;
 	
+	private String actionName;
+	
 	private Date static_nondisclosure_limit;
 	
 	private String dynamic_nondisclosure_limit;
@@ -409,5 +411,13 @@ public class Job {
 	public void setQuestion(String question) {
 		if (question==null) question="";
 		this.question = question;
+	}
+
+	public String getActionName() {
+		return actionName;
+	}
+
+	public void setActionName(String actionName) {
+		this.actionName = actionName;
 	}
 }
