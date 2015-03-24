@@ -42,9 +42,9 @@ public class Message {
 	
 	private String msg_short;
 	
-	private String identifier_type;
+	private String ref_identifier_type;
 	
-	private String identifier;
+	private String ref_identifier;
 	
 	private String q;
 
@@ -82,19 +82,19 @@ public class Message {
 	}
 
 	public String getIdentifier() {
-		return identifier;
+		return ref_identifier;
 	}
 
 	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
+		this.ref_identifier = identifier;
 	}
 
-	public String getIdentifier_type() {
-		return identifier_type;
+	public String getRef_Identifier_type() {
+		return ref_identifier_type;
 	}
 
-	public void setIdentifier_type(String identifier_type) {
-		this.identifier_type = identifier_type;
+	public void setRef_Identifier_type(String ref_identifier_type) {
+		this.ref_identifier_type = ref_identifier_type;
 	}
 
 	public Date getAcknowledgedDate() {
