@@ -1,15 +1,15 @@
 package de.uzk.hki.da.cb;
 
+import static org.mockito.Mockito.mock;
+
 import java.io.IOException;
 import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.Mockito.mock;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.ElasticsearchMetadataIndex;
-import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;

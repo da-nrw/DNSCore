@@ -45,6 +45,8 @@ import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.metadata.XepicurWriter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.repository.MetadataIndex;
+import de.uzk.hki.da.repository.MetadataIndexException;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
@@ -81,6 +83,9 @@ public class SendToPresenterAction extends AbstractAction {
 	private Set<String> fileFilter;
 	private Map<String,String> labelMap;
 	private Set<String> testContractors;
+	
+	private MetadataIndex metadataIndex;
+	private String indexName;
 	
 	
 	@Override
@@ -122,8 +127,11 @@ public class SendToPresenterAction extends AbstractAction {
 		
 		purgeObjectsIfExist();
 		buildMapWithOriginalFilenamesForLabeling();
-		
-		
+		try {
+			getMetadataIndex().deleteFromIndex(adjustIndexName(indexName), o.getIdentifier());
+		} catch (MetadataIndexException e1) {
+			new MetadataIndexException("Unable to delete data from index!"+e1);
+		}
 		
 		boolean publicPIPSuccessfullyIngested = false;
 		boolean institutionPIPSuccessfullyIngested = false;
@@ -403,6 +411,21 @@ public class SendToPresenterAction extends AbstractAction {
 		logger.debug("Detected MIME type {} for file {}",mimeType,file.getName());		
 		return mimeType;
 		
+	}	
+	
+	/**
+	 * use test index for test packages
+	 * @param originalIndexName
+	 * @return
+	 */
+	private String adjustIndexName(String originalIndexName){
+		
+		String contractorShortName = o.getContractor().getShort_name();
+		String adjustedIndexName = indexName;
+		if(testContractors != null && testContractors.contains(contractorShortName)) {
+			adjustedIndexName += "_test";
+		}
+		return adjustedIndexName;
 	}
 
 	/**
@@ -468,5 +491,31 @@ public class SendToPresenterAction extends AbstractAction {
 	 */
 	public void setFileFilter(Set<String> fileFilter) {
 		this.fileFilter = fileFilter;
+	}
+	
+	public MetadataIndex getMetadataIndex() {
+		return metadataIndex;
+	}
+	
+	public void setMetadataIndex(MetadataIndex mi) {
+		this.metadataIndex = mi;
+	}
+	
+	/**
+	 * Get the name of the index
+	 * the data will be indexed in.
+//	 * @return the index name
+	 */
+	public String getIndexName() {
+		return indexName;
+	}
+
+	/**
+	 * Set the name of the index
+	 * the data will be indexed in.
+	 * @param the index name
+	 */
+	public void setIndexName(String indexName) {
+		this.indexName = indexName;
 	}
 }

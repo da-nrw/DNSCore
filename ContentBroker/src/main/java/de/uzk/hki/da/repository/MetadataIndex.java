@@ -54,8 +54,8 @@ public interface MetadataIndex {
 	 * @throws RepositoryException
 	 * @throws FileNotFoundException 
 	 */
-	void prepareAndIndexMetadata(String indexName, String objectId, String edmContent)
-			throws RepositoryException, FileNotFoundException;
+	void prepareAndIndexMetadata(String indexName, String id, String edmContent)
+			throws RepositoryException, FileNotFoundException;	
 	
 	/**
 	 * Return the indexed metadata for the object with objectId from index indexName.
@@ -64,8 +64,7 @@ public interface MetadataIndex {
 	
 	String getAllIndexedMetadataFromIdSubstring(String indexName, String objectId);
 	
-	void deleteFromIndex(String indexName, String type, String objectID) 
+	void deleteFromIndex(String indexName, String objectID) 
 			throws MetadataIndexException;
-	
 	
 }

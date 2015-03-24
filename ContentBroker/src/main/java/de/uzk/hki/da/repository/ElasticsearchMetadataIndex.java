@@ -19,14 +19,19 @@
 
 package de.uzk.hki.da.repository;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.elasticsearch.ElasticSearchException;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -37,6 +42,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.jsonldjava.utils.JSONUtils;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
 import de.uzk.hki.da.util.ConfigurationException;
 
@@ -53,7 +59,6 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 	private String cluster;
 	private TransportClient client;
 	private String edmJsonFrame;
-	private static final String ORE_AGGREGATION = "ore:Aggregation";
 	
 	@Override
 	public void prepareAndIndexMetadata(String indexName, String id, String edmContent
@@ -78,7 +83,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		List<Object> graph = (List<Object>) json.get("@graph");
 		for (Object object : graph) {
 			logger.trace("Preparing json graph for indexing in elasticsearch: \n{}", JSONUtils.toPrettyString(object));
-			createIndexEntryForGraphObject(indexName, edmJsonFrame, object);
+			createIndexEntryForGraphObject(indexName, edmJsonFrame, object, id);
 		}		
 	}
 	
@@ -109,7 +114,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		
 	}
 	
-	private void createIndexEntryForGraphObject(String indexName, String framePath, Object object)
+	private void createIndexEntryForGraphObject(String indexName, String framePath, Object object, String objectID)
 			throws RepositoryException {
 		
 		@SuppressWarnings("unchecked")
@@ -122,14 +127,16 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		// Add @context attribute
 //		String contextUri = contextUriPrefix + FilenameUtils.getName(framePath);
 //		subject.put("@context", contextUri);
-		String[] splitId = ((String) subject.get("@id")).split("/");
-		String id = splitId[splitId.length-1];
+		
+		String idAsString = subject.get("@id").toString();
+		String id = idAsString.substring(idAsString.indexOf(objectID));
+		
 		// extract index name from type
 		String[] splitType = ((String) subject.get("@type")).split("/");
 		String type = splitType[splitType.length-1];
 
 		logger.trace("indexName: "+indexName+", type: "+type+", id: "+id);
-		type=ORE_AGGREGATION; // override on purpose, so that everything is mapped against es_mapping.json
+		type=C.ORE_AGGREGATION; // override on purpose, so that everything is mapped against es_mapping.json
 		
 		try {
 			indexMetadata(indexName, type, id, subject);
@@ -167,7 +174,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		
 		try {
 			String requestURL = 
-					"http://localhost:9200/"+indexName+"/"+ORE_AGGREGATION+"/_search?q=_id:"+objectId;
+					"http://localhost:9200/"+indexName+"/"+C.ORE_AGGREGATION+"/_search?q=_id:"+objectId+"*";
 			System.out.println("requestURL:"+requestURL);
 			logger.debug("requestURL:"+requestURL);
 			URL wikiRequest;
@@ -194,7 +201,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		
 		try {
 			String requestURL = 
-					"http://localhost:9200/"+indexName+"/"+ORE_AGGREGATION+"/_search?q="+objectId+"*";
+					"http://localhost:9200/"+indexName+"/"+C.ORE_AGGREGATION+"/_search?q=_id:"+objectId+""+"*";
 			System.out.println("requestURL:"+requestURL);
 			logger.debug("requestURL:"+requestURL);
 			URL wikiRequest;
@@ -216,6 +223,32 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		return "";
 	}
 
+	@Override
+	public void deleteFromIndex(String indexName, String objectID) throws MetadataIndexException {
+		logger.debug("Delete object "+objectID+" from index "+indexName+"...");
+		try{
+			DefaultHttpClient httpClient = new DefaultHttpClient();
+			HttpDelete deleteRequest = 
+					new HttpDelete("http://localhost:9200/"+indexName+"/"+C.ORE_AGGREGATION+"/_query?q=_id:"+objectID+""+"*");
+			HttpResponse response = httpClient.execute(deleteRequest);
+	
+	        if (response.getStatusLine().getStatusCode() != 201) {
+	            throw new RuntimeException("Failed : HTTP error code : "
+	                + response.getStatusLine().getStatusCode());
+	        }
+	        
+	        String output;
+	        logger.debug("Output from Server .... \n");
+	        while ((output = new BufferedReader(
+                    new InputStreamReader((response.getEntity().getContent()))).readLine()) != null) {
+	            logger.debug(output);
+	        }
+	        httpClient.getConnectionManager().shutdown();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+	}
+	
 	public String[] getHosts() {
 		return hosts;
 	}
@@ -231,20 +264,4 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 	public void setCluster(String cluster) {
 		this.cluster = cluster;
 	}
-
-	@Override
-	public void deleteFromIndex(String indexName, String type, String objectID) throws MetadataIndexException {
-		client = initialize();
-		if (client==null) throw new IllegalStateException("transport client not initialized");
-		
-		try {
-			logger.trace("delete "+objectID+" from index.");
-			client.prepareDelete(indexName, type, objectID);
-		} catch(ElasticSearchException e) {
-			throw new MetadataIndexException("Unable to index metadata.", e);
-		} finally {
-			client.close();
-		}
-	}
-
 }

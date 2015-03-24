@@ -46,6 +46,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.repository.ElasticsearchMetadataIndex;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.Path;
@@ -83,6 +84,9 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 		FileUtils.copyDirectory(Path.makeFile(WORKAREAROOTPATH,WA_PIPS+UNDERSCORE), Path.makeFile(WORKAREAROOTPATH,WA_PIPS));
 		
 		o.setPackage_type(CB_PACKAGETYPE_EAD);
+		
+		ElasticsearchMetadataIndex mi = mock(ElasticsearchMetadataIndex.class);
+		action.setMetadataIndex(mi);
 		
 		action.setWorkArea(new WorkArea(n,o));
 	}

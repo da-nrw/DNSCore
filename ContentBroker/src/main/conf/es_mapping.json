@@ -4,7 +4,8 @@
         "properties": {
             "@id": {
                 "type": "string",
-                "index": "not_analyzed"
+                "search_analyzer" : "str_search_analyzer",
+          		"index_analyzer" : "str_index_analyzer"
             },
             "@type": {
                 "type": "string"
@@ -14,8 +15,7 @@
                 "path": "just_name",
                 "properties": {
                     "@id": {
-                        "type": "string",
-                        "index": "not_analyzed"
+                        "type": "string"
                     },
                     "@type": {
                         "type": "string"

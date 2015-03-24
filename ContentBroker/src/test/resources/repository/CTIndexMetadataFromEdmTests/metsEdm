@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:edm="http://www.europeana.eu/schemas/edm/" xmlns:ore="http://www.openarchives.org/ore/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/objectID">
+<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/1-123456789">
 <dc:publisher>Hoerde</dc:publisher>
 <dc:publisher>Münster</dc:publisher>
 <dc:date>1836</dc:date>
@@ -8,8 +8,8 @@
 <dc:title>Chronik der Stadt Hoerde</dc:title>
 <dc:title>und der größeren evangelischen Gemeinde in derselben</dc:title>
 </edm:ProvidedCHO>
-<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/objectID">
-<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/objectID"/>
+<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/1-123456789">
+<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/1-123456789"/>
 <edm:dataProvider>Universitäts- und Landesbibliothek Münster</edm:dataProvider>
 </ore:Aggregation>
 </rdf:RDF>

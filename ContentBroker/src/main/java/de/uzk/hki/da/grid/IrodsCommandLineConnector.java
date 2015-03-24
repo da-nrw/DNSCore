@@ -1,14 +1,10 @@
 package de.uzk.hki.da.grid;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
