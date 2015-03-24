@@ -96,6 +96,9 @@ public class Node{
 	@JoinColumn(name="node_id")
 	@Cascade({CascadeType.SAVE_UPDATE})
 	private List<Copy> copies = new ArrayList<Copy>();
+
+	@Transient private List<Copy> copiesToSave = new ArrayList<Copy>();
+	
 	
 	/**
 	 * Instantiates a new node.
@@ -422,6 +425,15 @@ public class Node{
 
 	public void setCopies(List<Copy> copies) {
 		this.copies = copies;
+	}
+
+	
+	public List<Copy> getCopiesToSave() {
+		return copiesToSave;
+	}
+
+	public void setCopiesToSave(List<Copy> copiesToSave) {
+		this.copiesToSave = copiesToSave;
 	}
 	
 }

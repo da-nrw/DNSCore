@@ -37,6 +37,7 @@ import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserExceptionManager;
+import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -148,7 +149,7 @@ public abstract class AbstractAction implements Runnable {
 		// The object logging must be> unset in order to prevent another appender to start
 		// its lifecycle before the current one has stop its lifecycle.
 		unsetObjectLogging(); 
-		upateObjectAndJob(o, j, DELETEOBJECT, kILLATEXIT, getToCreate());
+		upateObjectAndJob(n, o, j, DELETEOBJECT, kILLATEXIT, getToCreate());
 
 		actionMap.deregisterAction(this); 
 	}
@@ -264,6 +265,7 @@ public abstract class AbstractAction implements Runnable {
 	 * In case of connection related failures retries it until it succeeds.
 	 */
 	private void upateObjectAndJob(
+			Node node,
 			Object object,Job job, 
 			boolean deleteObject,boolean deleteJob,
 			Job createJob){
@@ -275,7 +277,7 @@ public abstract class AbstractAction implements Runnable {
 				baseLogger.info("perform transaction with object="+object.getOrig_name()+", job="+job.getStatus());
 				session = openSession();
 				session.beginTransaction();
-				performTransaction(object, job, deleteObject, deleteJob, createJob, session);
+				performTransaction(node, object, job, deleteObject, deleteJob, createJob, session);
 				transactionSuccessful=true;
 			}
 			catch (Exception sqlException) {
@@ -292,9 +294,25 @@ public abstract class AbstractAction implements Runnable {
 	
 	
 	private void performTransaction(
+			Node node,
 			Object object,Job job, 
 			boolean deleteObject,boolean deleteJob,
 			Job createJob, Session session){
+		
+		for (Node cn:node.getCooperatingNodes()) {
+			
+			if (cn.getCopiesToSave().size()==0) continue;
+			
+			// we know that these are only the temporary copies of the current action.
+			Copy copy = cn.getCopiesToSave().get(0);
+			session.save(copy);
+			session.flush();
+			
+			session.createSQLQuery("UPDATE copies SET node_id="+cn.getId()+" WHERE id = "+copy.getId()).executeUpdate();
+			session.createSQLQuery("UPDATE copies SET pkg_id="+object.getLatestPackage().getId()+" WHERE id = "+copy.getId()).executeUpdate();
+		}
+		
+		
 		
 		if (createJob!=null)
 			session.save(createJob);

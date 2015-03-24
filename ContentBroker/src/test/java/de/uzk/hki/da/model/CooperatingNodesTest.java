@@ -103,32 +103,32 @@ public class CooperatingNodesTest {
 	}
 	
 	
-	@Test
-	public void addCopyToNodeUsingDAO() {
-
-		Node n1 = new Node();
-		n1.setId(1);
-		
-		Copy copy = new Copy();
-		copy.setChecksum("abcde");
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		session.save(copy);
-		session.refresh(n1);
-		session.getTransaction().commit();
-		session.close();
-		
-		NodeNamedQueryDAO nDAO = new NodeNamedQueryDAO(n1);
-		nDAO.addCopy(copy);
-		
-		Session session2 = HibernateUtil.openSession();
-		session2.beginTransaction();
-		session2.refresh(n1);
-		assertFalse(n1.getCopies().isEmpty());
-		assertEquals("abcde",((Copy)n1.getCopies().get(0)).getChecksum());
-		session2.getTransaction().commit();
-		session2.close();
-	}
+//	@Test
+//	public void addCopyToNodeUsingDAO() {
+//
+//		Node n1 = new Node();
+//		n1.setId(1);
+//		
+//		Copy copy = new Copy();
+//		copy.setChecksum("abcde");
+//		Session session = HibernateUtil.openSession();
+//		session.beginTransaction();
+//		session.save(copy);
+//		session.refresh(n1);
+//		session.getTransaction().commit();
+//		session.close();
+//		
+//		NodeNamedQueryDAO nDAO = new NodeNamedQueryDAO(n1);
+//		nDAO.addCopy(copy);
+//		
+//		Session session2 = HibernateUtil.openSession();
+//		session2.beginTransaction();
+//		session2.refresh(n1);
+//		assertFalse(n1.getCopies().isEmpty());
+//		assertEquals("abcde",((Copy)n1.getCopies().get(0)).getChecksum());
+//		session2.getTransaction().commit();
+//		session2.close();
+//	}
 	
 	
 	
