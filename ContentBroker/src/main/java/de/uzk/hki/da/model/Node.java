@@ -54,6 +54,7 @@ public class Node{
                 inverseJoinColumns={@JoinColumn(name="contractor_user_id")})
     private Set<User> contractors = new HashSet<User>();
 	
+	private String identifier;
 	
 	/** The name. */
 	private String name;
@@ -434,6 +435,14 @@ public class Node{
 
 	public void setCopiesToSave(List<Copy> copiesToSave) {
 		this.copiesToSave = copiesToSave;
+	}
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
 	}
 	
 }

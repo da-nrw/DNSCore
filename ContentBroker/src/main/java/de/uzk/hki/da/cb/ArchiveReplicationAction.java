@@ -80,7 +80,7 @@ public class ArchiveReplicationAction extends AbstractAction {
 		
 		for (Node cn:n.getCooperatingNodes()) {
 			Copy copy = new Copy();
-			copy.setPath(target.toString());
+			copy.setPath(n.getIdentifier()+"/aip"+target.toString());
 			cn.getCopiesToSave().add(copy);
 		}
 
