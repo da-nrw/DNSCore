@@ -53,7 +53,13 @@ public class JobNamedQueryDAO {
 		logger.trace("Fetch job for node name " + node.getName());
 		List<Job> joblist=null;
 		try{
+			
+			// circumvent lazy initialization issues
 			session.refresh(node);
+			for (Node cn:node.getCooperatingNodes()) cn.getName();
+			for (Copy c:node.getCopies());
+			
+			
 			
 			joblist = session
 					.createQuery("SELECT j FROM Job j LEFT JOIN j.obj as o where j.status=?1 and "
@@ -74,6 +80,7 @@ public class JobNamedQueryDAO {
 			for (Package p:job.getObject().getPackages()){
 				for (DAFile f:p.getFiles()){}
 				for (Event e:p.getEvents()){}
+				for (Copy copy:p.getCopies()) {}
 			}
 			// -
 			logger.debug("fetched job with id {} and status {}", job.getId(), job.getStatus());

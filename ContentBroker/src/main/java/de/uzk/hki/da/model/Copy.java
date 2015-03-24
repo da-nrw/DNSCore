@@ -46,6 +46,7 @@ public class Copy {
 
 	private Date checksumDate;
 	
+	// INST/CONT/aip/ID/ID.pack_pn.tar
 	private String path;
 	
 	

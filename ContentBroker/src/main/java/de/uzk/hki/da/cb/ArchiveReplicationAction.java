@@ -24,10 +24,15 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.hibernate.Session;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.model.Copy;
+import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.model.NodeNamedQueryDAO;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
 
@@ -73,7 +78,29 @@ public class ArchiveReplicationAction extends AbstractAction {
 		} catch (IOException e) {
 			throw new RuntimeException("Error while putting file into grid or work deletion! ",e);
 		}
-				
+			
+
+		// TODO factor out to abstract action
+		for (Node cn:n.getCooperatingNodes()) {
+			
+			Copy copy = new Copy();
+			// TODO add inst name
+			copy.setPath(target.toString());
+			
+			Session session = HibernateUtil.openSession();
+			session.beginTransaction();
+			session.save(copy);
+			session.getTransaction().commit();
+			session.close();
+			
+			NodeNamedQueryDAO nDAO = new NodeNamedQueryDAO(cn);
+			nDAO.addCopy(copy);
+			
+			o.getLatestPackage().getCopies().add(copy);
+		}
+		 
+		
+		
 		return true;
 	}
 	
