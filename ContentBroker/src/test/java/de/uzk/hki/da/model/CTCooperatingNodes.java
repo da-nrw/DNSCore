@@ -1,10 +1,11 @@
 package de.uzk.hki.da.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -29,7 +30,7 @@ public class CTCooperatingNodes {
 	}
 	
 	@Test
-	public void testModel() {
+	public void nodeNodeRelationship() {
 		assertFalse(n.getCooperatingNodes().isEmpty());
 		Node cn =
 				n.getCooperatingNodes().iterator().next();
@@ -37,7 +38,7 @@ public class CTCooperatingNodes {
 	}
 	
 	@Test 
-	public void testCopy() {
+	public void addCopyToPackage() {
 		Package p = new Package();
 		Copy copy1 = new Copy();
 		copy1.setChecksum("abcdef");
@@ -92,6 +93,39 @@ public class CTCooperatingNodes {
 		assertFalse(reNode.getCopies().isEmpty());
 		session2.close();
 	}
+	
+	
+	@Test
+	public void addCopyToNodeUsingDAO() {
+
+		Node n1 = new Node();
+		n1.setId(1);
+		
+		Copy copy = new Copy();
+		copy.setChecksum("abcde");
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.save(copy);
+		session.refresh(n1);
+		session.getTransaction().commit();
+		session.close();
+		
+		NodeNamedQueryDAO nDAO = new NodeNamedQueryDAO(n1);
+		nDAO.addCopy(copy);
+		
+		Session session2 = HibernateUtil.openSession();
+		session2.beginTransaction();
+		session2.refresh(n1);
+		assertFalse(n1.getCopies().isEmpty());
+		assertEquals("abcde",((Copy)n1.getCopies().get(0)).getChecksum());
+		session2.getTransaction().commit();
+		session2.close();
+	}
+	
+	
+	
+	
+	
 	
 	@After 
 	public void after() {
