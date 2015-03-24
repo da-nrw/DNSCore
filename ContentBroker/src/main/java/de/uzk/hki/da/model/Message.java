@@ -19,6 +19,8 @@
 
 package de.uzk.hki.da.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -47,6 +49,13 @@ public class Message {
 	private String q;
 
 	private String a;
+	
+	private Date date;
+	
+	private Date expirationDate;
+	
+	private Date acknowledgedDate;
+	
 	
 	public String getQ() {
 		return q;
@@ -86,6 +95,30 @@ public class Message {
 
 	public void setIdentifier_type(String identifier_type) {
 		this.identifier_type = identifier_type;
+	}
+
+	public Date getAcknowledgedDate() {
+		return acknowledgedDate;
+	}
+
+	public void setAcknowledgedDate(Date acknowledgedDate) {
+		this.acknowledgedDate = acknowledgedDate;
+	}
+
+	public Date getExpirationDate() {
+		return expirationDate;
+	}
+
+	public void setExpirationDate(Date expirationDate) {
+		this.expirationDate = expirationDate;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 	
 	
