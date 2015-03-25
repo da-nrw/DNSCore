@@ -79,7 +79,7 @@ public class Job {
 	/** The rep_name. */
 	private String rep_name;
 	
-	private String actionName;
+	private String action_name;
 	
 	private Date static_nondisclosure_limit;
 	
@@ -413,11 +413,11 @@ public class Job {
 		this.question = question;
 	}
 
-	public String getActionName() {
-		return actionName;
+	public String getAction_name() {
+		return action_name;
 	}
 
-	public void setActionName(String actionName) {
-		this.actionName = actionName;
+	public void setAction_name(String actionName) {
+		this.action_name = actionName;
 	}
 }
