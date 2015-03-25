@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
+import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.StringUtilities;
 
 /**
@@ -102,6 +103,29 @@ public class FakeGridFacade implements GridFacade {
 
 	public void setGridCacheAreaRootPath(String gridCacheAreaRootPath) {
 		this.gridCacheAreaRootPath = StringUtilities.slashize(gridCacheAreaRootPath);
+	}
+
+	@Override
+	public String getChecksumInCustody(String address_dest) {
+		 try {
+			return MD5Checksum.getMD5checksumForLocalFile(new File (getGridCacheAreaRootPath()+address_dest));
+		} catch (IOException e) {
+			logger.error("Error retrieving MD5 for " + address_dest);
+		} return "";
+	}
+
+	@Override
+	public String reComputeAndGetChecksumInCustody(String address_dest) {
+		 try {
+				return MD5Checksum.getMD5checksumForLocalFile(new File (getGridCacheAreaRootPath()+address_dest));
+			} catch (IOException e) {
+				logger.error("Error retrieving MD5 for " + address_dest);
+			} return "";
+	}
+
+	@Override
+	public boolean exists(String address_dest) {
+		return (new File (getGridCacheAreaRootPath()+address_dest)).exists();
 	}
 
 	

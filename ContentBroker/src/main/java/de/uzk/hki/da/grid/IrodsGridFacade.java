@@ -180,4 +180,28 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		return false;
 	}
 
+	@Override
+	public String getChecksumInCustody(String address_dest) {
+		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
+		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + address_dest;
+		return iclc.getChecksum(gridPath);
+	}
+
+	@Override
+	public String reComputeAndGetChecksumInCustody(String address_dest) {
+		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
+		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + address_dest;
+		return iclc.computeChecksumForce(gridPath);
+		
+	}
+
+	@Override
+	public boolean exists(String address_dest) {
+		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
+		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + address_dest;
+		return iclc.exists(gridPath);
+	}
+	
+	
+
 }

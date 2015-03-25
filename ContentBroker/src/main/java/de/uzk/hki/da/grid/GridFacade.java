@@ -102,4 +102,11 @@ public interface GridFacade {
 	 */
 	
 	abstract long getFileSize(String address_dest) throws java.io.IOException ; 
+	
+	
+	abstract String getChecksumInCustody(String address_dest);
+
+	abstract String reComputeAndGetChecksumInCustody(String address_dest);
+	
+	abstract boolean exists(String address_dest);
 }
