@@ -16,5 +16,5 @@
 	</bean>	
 	<bean id="federatedGridFacade" class="de.uzk.hki.da.grid.IrodsFederatedGridFacade">
 		<property name="irodsSystemConnector" ref="irodsSystemConnector" />
-	</bean>	
+	</bean> 
 </beans>

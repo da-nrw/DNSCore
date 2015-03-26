@@ -77,6 +77,16 @@
         <property name="sleepFor" value="${localNode.auditSleepFor:7200000}" />
     </bean>
     
+    <bean id="integrityWorker" class="de.uzk.hki.da.core.IntegrityWorker" init-method="init">
+        <property name="localNodeId" value="${localNode.id}" />
+        <property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}" />
+     </bean>
+    <bean id="checksumWorker" class="de.uzk.hki.da.core.ChecksumWorker" init-method="init">
+        <property name="localNodeId" value="${localNode.id}" />
+        <property name="secondaryCopyPrefix" value="federated" />
+        <property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}" />
+    </bean>
+    
    	<bean id="actionFactory" class="de.uzk.hki.da.action.ActionFactory" init-method="init">
         <property name="actionRegistry" ref="actionRegistry" />
         <property name="localNode" ref="localNode" />

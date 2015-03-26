@@ -184,15 +184,24 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 	public String getChecksumInCustody(String address_dest) {
 		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + address_dest;
-		return iclc.getChecksum(gridPath);
+		try {
+			return iclc.getChecksum(gridPath);
+		} catch (Exception irex) {
+			logger.error("Failure getting Checksum for " + gridPath);
+		}
+		return "";
 	}
 
 	@Override
 	public String reComputeAndGetChecksumInCustody(String address_dest) {
 		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + address_dest;
+		try {
 		return iclc.computeChecksumForce(gridPath);
-		
+		} catch (Exception irex) {
+			logger.error("Failure getting Checksum for " + gridPath);
+		}
+		return "";
 	}
 
 	@Override

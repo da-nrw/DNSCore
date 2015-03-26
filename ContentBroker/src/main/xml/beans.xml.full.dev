@@ -30,7 +30,8 @@
 		<task:scheduled-tasks scheduler="taskScheduler">
 		<task:scheduled ref="contentBrokerWorker" method="scheduleTask" fixed-delay="200" />
 		<task:scheduled ref="ingestAreaScannerWorker" method="scheduleTask" fixed-delay="100" />
-		<task:scheduled ref="integrityScannerWorker" method="scheduleTask" fixed-delay="100" />
+		<task:scheduled ref="integrityWorker" method="scheduleTask" fixed-delay="20000" />
+		<task:scheduled ref="checksumWorker" method="scheduleTask" fixed-delay="20000" />
 	</task:scheduled-tasks> 
 	<task:scheduler id="taskScheduler" pool-size="20" /> 
 

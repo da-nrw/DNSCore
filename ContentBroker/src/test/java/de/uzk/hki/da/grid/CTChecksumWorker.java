@@ -1,6 +1,8 @@
 package de.uzk.hki.da.grid;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -12,11 +14,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.at.AcceptanceTest;
 import de.uzk.hki.da.core.ChecksumWorker;
 import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.MD5Checksum;
 
@@ -81,7 +81,9 @@ public class CTChecksumWorker {
 		session.beginTransaction();
 		
 		Copy recopy = (Copy) session.get(Copy.class,copy.getId());
+
 		assertEquals(md5sum,recopy.getChecksum());
+		assertNotNull(recopy.getChecksumDate());
 		assertTrue(recopy.getChecksumDate().after(initialcopy));
 		session.close();
 		

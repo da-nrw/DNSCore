@@ -72,7 +72,7 @@ public class ChecksumWorker extends Worker{
 	
 	@Override
 	public void setMDC() {
-		MDC.put(WORKER_ID, "checksum");
+		MDC.put(WORKER_ID, "integrity");
 	} 
 	
 	
@@ -87,7 +87,7 @@ public class ChecksumWorker extends Worker{
 			
 			Copy copy = null;
 			if ((copy=fetchCopy(node.getId()))==null) { 
-				logger.warn("Found no secondary copy to compute Checksum for.") ;
+				logger.warn("Found no copy in custody compute Checksum for.") ;
 				return;
 			}
 			if (secondaryCopyPrefix==null) {
@@ -123,7 +123,6 @@ public class ChecksumWorker extends Worker{
 					.setParameter("1", localNodeId)
 							.setReadOnly(true).list();
 	         
-			System.out.println("Hallo " + l.get(0));
 			@SuppressWarnings("rawtypes")
 			List k = null;
 			k = session.createQuery("from Copy c where c.id = ?1 ").setParameter("1",l.get(0))
