@@ -125,15 +125,17 @@ public class IntegrityWorker extends Worker{
 		try {
 			session = HibernateUtil.openSession();
 			session.beginTransaction();
-	
+
+			Calendar now = Calendar.getInstance();
+			now.add(Calendar.HOUR_OF_DAY, -24);
 		
 			@SuppressWarnings("rawtypes")
 			List l = null;
-			l = session.createQuery("from Object o where o.initial_node = ?1 and "
+			l = session.createQuery("from Object o where o.initial_node = ?1 and o.last_checked < ?2 and "
 					+ "o.object_state != ?3 and o.object_state != ?4 and o.object_state >= 50"
 					+ "order by o.last_checked asc")
 					.setParameter("1", node.getName())
-					
+					.setTimestamp("2",now.getTime())
 					.setParameter("3", Object.ObjectStatus.InWorkflow) // don't consider objects under work
 					.setParameter("4", Object.ObjectStatus.UnderAudit) //           ||
 							.setReadOnly(true).list();

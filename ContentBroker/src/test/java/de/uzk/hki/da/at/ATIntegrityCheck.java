@@ -18,7 +18,6 @@
  */
 package de.uzk.hki.da.at;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -29,11 +28,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.Date;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Date;
 
-import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;
@@ -68,13 +65,30 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	
 	@After
 	public void cleanUp() {
-		//TESTHelper.clearDB();
+		TESTHelper.clearDB();
 	}
+	
+	
+	
+	private void ingestObject(String origName) throws IOException{
+		object = ath.ingest(origName);
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		Calendar now = Calendar.getInstance();
+		now.add(Calendar.HOUR_OF_DAY, -25);
+		object.setLast_checked(now.getTime());
+		session.update(object);
+		session.getTransaction().commit();
+		session.close();
+	}
+	
 	
 	@Test
 	public void localCopyModifiedTest() throws Exception {
 	    String ORIGINAL_NAME = "ATIntegrityCheck1";
-		object = ath.ingest(ORIGINAL_NAME);
+		ingestObject(ORIGINAL_NAME);
+		
+		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 
 		setChecksum(object.getLatestPackage().getChecksum());
@@ -91,8 +105,8 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	@Test
 	public void remoteCopyDestroyed() throws IOException, InterruptedException {
 		String ORIGINAL_NAME = "ATIntegrityCheck3";
-
-		object = ath.ingest(ORIGINAL_NAME);
+		ingestObject(ORIGINAL_NAME);
+		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 		setChecksum("abcedde5");
 		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,51));
@@ -101,7 +115,8 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	@Test
 	public void allCopiesOKTest() throws Exception {
 		String ORIGINAL_NAME = "ATIntegrityCheck2";
-		object = ath.ingest(ORIGINAL_NAME);
+		ingestObject(ORIGINAL_NAME);
+		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 		assertSame(100,object.getObject_state());
 		Date old = object.getLast_checked();
@@ -118,7 +133,9 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	@Test 
 	public void allCopiesDestroyed() throws IOException, InterruptedException {
 		String ORIGINAL_NAME = "ATIntegrityCheck4";
-		object = ath.ingest(ORIGINAL_NAME);
+		ingestObject(ORIGINAL_NAME);
+		
+		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 		// We'll destroy it physically now, if we 're on CI
 		// on dev machines FakeGridFacade will find special file in ATUseCaseAudit

@@ -32,6 +32,7 @@ import org.hibernate.Session;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
@@ -44,6 +45,7 @@ import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.MD5Checksum;
 
 /**
  * @author Daniel M. de Oliveira
@@ -265,6 +267,7 @@ public class AcceptanceTestHelper {
 			if (o.getObject_state()==100) {
 				return;
 			}
+			
 		}
 	}
 	
@@ -408,6 +411,9 @@ public class AcceptanceTestHelper {
 
 	
 	
+
+	
+	
 	
 	/**
 	 * @param originalName
@@ -504,6 +510,14 @@ public class AcceptanceTestHelper {
 		Package pkg = new Package();
 		pkg.setName(PACKAGE_NAME);
 		pkg.setContainerName(originalName+"."+C.FILE_EXTENSION_TGZ);
+		
+		Copy copy = new Copy();
+		String md5=MD5Checksum.getMD5checksumForLocalFile(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR));
+		pkg.setChecksum(md5);
+		copy.setChecksum(md5);
+		copy.setChecksumDate(new Date());
+		for (Copy c:pkg.getCopies());
+		pkg.getCopies().add(copy);
 		object.getPackages().add(pkg);
 		
 		Session session = HibernateUtil.openSession();
