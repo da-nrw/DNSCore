@@ -87,7 +87,7 @@ public class ChecksumWorker extends Worker{
 			
 			Copy copy = null;
 			if ((copy=fetchCopy(node.getId()))==null) { 
-				logger.warn("Found no copy in custody compute Checksum for.") ;
+				logger.warn("Found no copy in custody to compute Checksum for.") ;
 				return;
 			}
 			if (secondaryCopyPrefix==null) {
