@@ -136,7 +136,7 @@ public class IrodsCommandLineConnector {
 	 */
 	public boolean remove(String dest) {
 		String commandAsArray[] = new String[]{
-				"irm", "-r" , dest 
+				"irm", "-rf" , dest 
 		}; 
 		String out = executeIcommand(commandAsArray);
 		if (out.indexOf("ERROR")>=0) return false;

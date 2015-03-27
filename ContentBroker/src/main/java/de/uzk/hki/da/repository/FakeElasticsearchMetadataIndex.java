@@ -50,15 +50,14 @@ public class FakeElasticsearchMetadataIndex implements MetadataIndex{
 		}
 	}
 
+//	MAP
+	
 	@Override
 	public String getIndexedMetadata(String indexName, String objectId) {
-		if (objectId.contains("Inventarnummer-1")) // lido
-			return "Nudelmaschine in Originalverpackung";
-		else if(objectId.endsWith("-md801613"))  // mets
-			return "Text Text// mahels///Titel";
-		else if(objectId.endsWith("-1"))       // xmp
-			return "Dieser Brauch zum Sankt Martinstag";
-		else                                   // ead
+		if (objectId.contains("Inventarnummer-1") || objectId.endsWith("-md801613") || objectId.endsWith("-1")) // lido, mets, xmp
+			return "Nudelmaschine in Originalverpackung" + " Text Text// mahels///Titel" + " Dieser Brauch zum Sankt Martinstag";
+		else 
+//			ead
 			return "\"dc:date\":[\"1938-01-01/1939-12-31\"]";
 	}
 
