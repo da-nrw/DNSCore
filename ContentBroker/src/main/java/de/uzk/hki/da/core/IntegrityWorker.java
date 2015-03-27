@@ -234,7 +234,7 @@ public class IntegrityWorker extends Worker{
 			} 
 			copies = 1;
 			for (Copy copy : pack.getCopies() ) {
-				if (copy.getChecksum()!=pack.getChecksum()) {
+				if (!copy.getChecksum().equals(pack.getChecksum())) {
 					String err= "SECONDARY COPY in ERROR "+ obj.getIdentifier();
 					logger.error(err);
 					completelyValid = false;

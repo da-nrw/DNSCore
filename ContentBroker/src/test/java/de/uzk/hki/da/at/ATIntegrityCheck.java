@@ -70,8 +70,8 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	
 	
 	
-	private void ingestObject(String origName) throws IOException{
-		object = ath.ingest(origName);
+	private void changeLastCheckedDate() throws IOException{
+		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		Calendar now = Calendar.getInstance();
@@ -86,7 +86,9 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	@Test
 	public void localCopyModifiedTest() throws Exception {
 	    String ORIGINAL_NAME = "ATIntegrityCheck1";
-		ingestObject(ORIGINAL_NAME);
+	    
+	    object = ath.ingest(ORIGINAL_NAME);
+	    changeLastCheckedDate();
 		
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
@@ -99,13 +101,17 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		if (System.getProperty("env") != null && System.getProperty("env").equals("ci")) {
 			destroyFileInCIEnvironment(object.getIdentifier());
 		} else System.out.println(".. not detected CI Environment!");
+		
+		changeLastCheckedDate();
 		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,51));
 	}
 	
 	@Test
 	public void remoteCopyDestroyed() throws IOException, InterruptedException {
 		String ORIGINAL_NAME = "ATIntegrityCheck3";
-		ingestObject(ORIGINAL_NAME);
+		
+		object = ath.ingest(ORIGINAL_NAME);
+		changeLastCheckedDate();
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 		setChecksum("abcedde5");
@@ -115,7 +121,9 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	@Test
 	public void allCopiesOKTest() throws Exception {
 		String ORIGINAL_NAME = "ATIntegrityCheck2";
-		ingestObject(ORIGINAL_NAME);
+		
+		object = ath.ingest(ORIGINAL_NAME);
+		changeLastCheckedDate();
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 		assertSame(100,object.getObject_state());
@@ -133,7 +141,9 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	@Test 
 	public void allCopiesDestroyed() throws IOException, InterruptedException {
 		String ORIGINAL_NAME = "ATIntegrityCheck4";
-		ingestObject(ORIGINAL_NAME);
+		
+		object = ath.ingest(ORIGINAL_NAME);
+		changeLastCheckedDate();
 		
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
@@ -143,7 +153,9 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		if (System.getProperty("env") != null && System.getProperty("env").equals("ci")) {
 			destroyFileInCIEnvironment(object.getIdentifier());
 		} else System.out.println(".. not detected CI Environment!");
+		
 		setChecksum("abcd77");
+		changeLastCheckedDate();
 		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,51));
 	}
 	

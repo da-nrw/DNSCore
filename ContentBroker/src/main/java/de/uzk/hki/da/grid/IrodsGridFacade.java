@@ -197,7 +197,9 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + address_dest;
 		try {
-		return iclc.computeChecksumForce(gridPath);
+			// Trim down to LZA Copy
+			iclc.itrim(gridPath, "", 1, 0);
+			return iclc.computeChecksumForce(gridPath);
 		} catch (Exception irex) {
 			logger.error("Failure getting Checksum for " + gridPath);
 		}

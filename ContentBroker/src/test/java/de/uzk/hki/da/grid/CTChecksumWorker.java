@@ -33,7 +33,7 @@ public class CTChecksumWorker {
 	String fedcoll = fedprefix + "/" + coll;
 	String feddao =  fedcoll + "/" + data_name;
 	String md5sum = "";
-	Date initialcopy = new Date();
+	Date initchecksumdate;
 	
 	Node node;
 	private static String tmpDir = "/tmp/forkDir/";
@@ -45,12 +45,14 @@ public class CTChecksumWorker {
 		
 		copy = new Copy();
 		copy.setPath(dao);
-		copy.setChecksumDate(initialcopy);
+		initchecksumdate=new Date();
+		copy.setChecksumDate(initchecksumdate);
 		node.setName("localnode");
 		
 		node.getCopies().add(copy);
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
+		session.save(copy);
 		session.save(node);
 		session.getTransaction().commit();
 		session.close();
@@ -84,7 +86,7 @@ public class CTChecksumWorker {
 
 		assertEquals(md5sum,recopy.getChecksum());
 		assertNotNull(recopy.getChecksumDate());
-		assertTrue(recopy.getChecksumDate().after(initialcopy));
+		assertTrue(recopy.getChecksumDate().after(initchecksumdate));
 		session.close();
 		
 	}

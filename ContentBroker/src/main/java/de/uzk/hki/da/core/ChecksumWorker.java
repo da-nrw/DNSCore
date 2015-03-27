@@ -82,9 +82,7 @@ public class ChecksumWorker extends Worker{
 	 */
 	@Override
 	public void scheduleTaskImplementation(){
-		logger.trace("Computing Checksum for Node-ID : " + node.getId()  );
 		try {
-			
 			Copy copy = null;
 			if ((copy=fetchCopy(node.getId()))==null) { 
 				logger.warn("Found no copy in custody to compute Checksum for.") ;
@@ -95,13 +93,16 @@ public class ChecksumWorker extends Worker{
 				return;
 			}
 			String dest = secondaryCopyPrefix + "/"+ copy.getPath();
-			
+			logger.info("Checking existence in custody " + dest );
 			if (gridFacade.exists(dest)){
-				updateCopy(copy, gridFacade.reComputeAndGetChecksumInCustody(dest));
-			} else logger.info(dest + " does not yet exist.");
+				String cs = gridFacade.reComputeAndGetChecksumInCustody(dest);
+				logger.debug("checksum in custody " + cs + " for " + dest);
+				updateCopy(copy, cs);
+				
+			} else logger.info(dest + " does not exist.");
 			
 		} catch (Exception e) {
-			logger.error("Error in integrityCheck schedule Task " + e.getMessage(),e);
+			logger.error("Error in ChecksumWorker " + e.getMessage(),e);
 		}
 	}
 	
@@ -119,19 +120,17 @@ public class ChecksumWorker extends Worker{
 			@SuppressWarnings("rawtypes")
 			List l = null;
 			l = session.createSQLQuery("select id from copies c where c.node_id = ?1 "
-			+ "order by c.checksumDate asc")
+			+ "order by c.checksumdate asc NULLS FIRST")
 					.setParameter("1", localNodeId)
 							.setReadOnly(true).list();
 	         
 			@SuppressWarnings("rawtypes")
 			List k = null;
 			k = session.createQuery("from Copy c where c.id = ?1 ").setParameter("1",l.get(0))
-					.setReadOnly(true).list();;
-
+					.setReadOnly(true).list();
 			
 			Copy copy = (Copy)k.get(0);
-			session.close();
-			
+			session.close();	
 			return copy;
 		
 		} catch (IndexOutOfBoundsException e){
@@ -156,11 +155,10 @@ public class ChecksumWorker extends Worker{
 	 * 	
 	 *  */
 	private synchronized void updateCopy(Copy copy, String checksum ){
-		
-		copy.setChecksumDate(new Date());
-		copy.setChecksum(checksum);
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
+		copy.setChecksumDate(new Date());
+		copy.setChecksum(checksum);
 		session.update(copy);
 		session.getTransaction().commit();
 		session.close();

@@ -187,14 +187,14 @@ public class IrodsCommandLineConnector {
 	 */
 	public String computeChecksumForce(String destDao) {
 		String commandAsArray[] = new String[]{
-				"ichksum","-f",destDao
+				"ichksum","-fa",destDao
 		};	
 		executeIcommand(commandAsArray);
 		return getChecksum(destDao);
 	}
 	
 	/**
-	 * Gets checksum from ICAT for destDao
+	 * Gets checksum from ICAT for the newest instance destDao
 	 * @author Jens Peters
 	 * @param destDao
 	 * @return
@@ -212,7 +212,30 @@ public class IrodsCommandLineConnector {
 		  String line = scanner.nextLine();
 		  if (line.contains(data_name)) {
 			  ret = line.substring(38,line.length());
-			  break;
+		  }
+		}
+		scanner.close();
+		return ret;
+	}
+	/**
+	 * Gets checksum from ICAT for the newest instance destDao
+	 * @author Jens Peters
+	 * @param destDao
+	 * @return
+	 */
+	public String getChecksumOfLatestReplica(String destDao) {
+		String ret = "";
+		String commandAsArray[] = new String[]{
+				"ils -L",destDao
+		};	
+		String out = executeIcommand(commandAsArray);
+		if (out.indexOf("ERROR")>=0) throw new RuntimeException(" Get Checksum of " + destDao + " failed !" );
+		Scanner scanner = new Scanner(out);
+		String data_name = FilenameUtils.getName(destDao);
+		while (scanner.hasNextLine()) {
+		  String line = scanner.nextLine();
+		  if (line.contains(data_name)) {
+			  ret = line.substring(38,line.length());
 		  }
 		}
 		scanner.close();
@@ -398,6 +421,27 @@ public class IrodsCommandLineConnector {
 		return executeIcommand(commandAsArray);
 	}	
 	
+	/**
+	 * itrim  resource name 
+	 * @author Jens Peters
+	 * @return
+	 */
+	public String itrim(String dao, String resourceName, int numberToKeep, int replNumber) {
+		ArrayList<String>  commandAsList = new ArrayList<String>();
+		commandAsList.add("itrim");
+		if (!resourceName.equals("")) {
+			commandAsList.add("-S");
+			commandAsList.add(resourceName);
+		}
+		commandAsList.add("-N");
+		commandAsList.add(String.valueOf(numberToKeep));
+		commandAsList.add("-n");
+		commandAsList.add(String.valueOf(replNumber));
+		commandAsList.add(dao);
+		String[] commandAsArray = new String[commandAsList.size()];
+		commandAsArray = commandAsList.toArray(commandAsArray);
+		return executeIcommand(commandAsArray);
+	}	
 	/**
 	 * ireg on rescName 
 	 * @author Jens Peters
