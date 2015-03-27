@@ -85,7 +85,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	
 	@Test
 	public void localCopyModifiedTest() throws Exception {
-	    String ORIGINAL_NAME = "ATIntegrityCheck1";
+	    String ORIGINAL_NAME = "ATIntegrityCheckLocalCopyModified";
 	    
 	    object = ath.ingest(ORIGINAL_NAME);
 	    changeLastCheckedDate();
@@ -108,7 +108,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	
 	@Test
 	public void remoteCopyDestroyed() throws IOException, InterruptedException {
-		String ORIGINAL_NAME = "ATIntegrityCheck3";
+		String ORIGINAL_NAME = "ATIntegrityRemoteCopyDestroyed";
 		
 		object = ath.ingest(ORIGINAL_NAME);
 		changeLastCheckedDate();
@@ -120,7 +120,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	
 	@Test
 	public void allCopiesOKTest() throws Exception {
-		String ORIGINAL_NAME = "ATIntegrityCheck2";
+		String ORIGINAL_NAME = "ATIntegrityCheckAllCopiesOK";
 		
 		object = ath.ingest(ORIGINAL_NAME);
 		changeLastCheckedDate();
@@ -140,7 +140,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	
 	@Test 
 	public void allCopiesDestroyed() throws IOException, InterruptedException {
-		String ORIGINAL_NAME = "ATIntegrityCheck4";
+		String ORIGINAL_NAME = "ATIntegrityCheckAllCopiesDestroyed";
 		
 		object = ath.ingest(ORIGINAL_NAME);
 		changeLastCheckedDate();
