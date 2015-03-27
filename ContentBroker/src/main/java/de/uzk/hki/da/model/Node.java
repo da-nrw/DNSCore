@@ -86,7 +86,7 @@ public class Node{
 	/** The log area. */
 	@Transient private String logFolder;
 
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name="cooperating_nodes", 
                 joinColumns={@JoinColumn(name="node_id")}, 
                 inverseJoinColumns={@JoinColumn(name="cooperating_node_id")})
