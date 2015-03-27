@@ -64,6 +64,7 @@ public class ATContractIngestDelta extends AcceptanceTest{
 		assertNotNull(is);
 		IOUtils.copy(is,new FileOutputStream(OUTPUT_JPG_1));
 		
+		Thread.sleep(2000);
 		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));
 		
 		o = ath.ingest(ORIG_NAME+"2",DEFAULT_CONTAINER_EXTENSION,ORIG_NAME);
@@ -73,6 +74,7 @@ public class ATContractIngestDelta extends AcceptanceTest{
 		assertNotNull(is2);
 		IOUtils.copy(is2,new FileOutputStream(OUTPUT_JPG_2));
 		
+		Thread.sleep(2000);
 		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));
 
 		o = ath.ingest(ORIG_NAME+"3",DEFAULT_CONTAINER_EXTENSION,ORIG_NAME);
