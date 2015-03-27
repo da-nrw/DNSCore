@@ -49,7 +49,6 @@ public class ATContractIngestDelta extends AcceptanceTest{
 	
 	@After
 	public void tearDown(){
-
 		new File(OUTPUT_JPG_1).delete();
 		new File(OUTPUT_JPG_2).delete();
 	}

@@ -41,6 +41,7 @@ import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.PropertiesUtils;
 
@@ -187,6 +188,7 @@ public class AcceptanceTest {
 	@AfterClass
 	public static void tearDownAcceptanceTest(){
 		cleanStorage();
+		clearDB();
 	}
 	
 
@@ -216,7 +218,8 @@ public class AcceptanceTest {
 		Path.make(localNode.getWorkAreaRootPath(),"/pips/institution/TEST").toFile().mkdirs();
 	}
 	
-	
-
+	private static void clearDB() {
+		TESTHelper.clearDB();
+	}
 	
 }

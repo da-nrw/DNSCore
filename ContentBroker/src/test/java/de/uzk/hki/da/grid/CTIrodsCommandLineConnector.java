@@ -102,6 +102,8 @@ public class CTIrodsCommandLineConnector {
 		iclc.remove(dao);
 		iclc.remove(dao2);
 		iclc.remove(dao3);
+		iclc.remove("/c-i/aip/connector");
+		iclc.remove("/c-i/aip/connector2");
 	}
 	
 	@AfterClass
