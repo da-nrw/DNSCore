@@ -59,7 +59,7 @@ public class CTChecksumWorker {
 	}
 	
 	@Test
-	public void testScheduleTask() throws IOException {
+	public void testScheduleTask() throws IOException, InterruptedException {
 		
 		iclc = new IrodsCommandLineConnector();
 		
@@ -68,7 +68,7 @@ public class CTChecksumWorker {
 	
 		iclc.mkCollection(fedcoll);
 		iclc.put(tempTest, feddao);
-		
+		Thread.sleep(6000);
 		ChecksumWorker cw = new ChecksumWorker();
 		cw.setSecondaryCopyPrefix(fedprefix);
 		IrodsSystemConnector isc = new IrodsSystemConnector("","");
