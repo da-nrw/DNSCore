@@ -26,7 +26,7 @@ public class CTChecksumWorker {
 	Copy copy;
 	String origName = "ATUseCaseChecksumWorker"; 
 	String data_name = "123456.pack_1.tar";
-	String coll = "cn/aip/TEST/123456";
+	String coll = "zoneA/cn/aip/TEST/123456";
 	String dao = coll + "/" + data_name;
 	IrodsCommandLineConnector iclc;
 	String fedprefix = "federated";
@@ -34,6 +34,7 @@ public class CTChecksumWorker {
 	String feddao =  fedcoll + "/" + data_name;
 	String md5sum = "";
 	Date initchecksumdate;
+	String zone = "c-i";
 	
 	Node node;
 	private static String tmpDir = "/tmp/forkDir/";
@@ -66,9 +67,10 @@ public class CTChecksumWorker {
 		File tempTest = createTestFile();
 		md5sum = MD5Checksum.getMD5checksumForLocalFile(tempTest);
 	
-		iclc.mkCollection(fedcoll);
-		iclc.put(tempTest, feddao);
-		Thread.sleep(6000);
+		iclc.mkCollection("/"+zone+"/"+fedcoll);
+		iclc.put(tempTest,"/"+zone+"/"+feddao);
+		Thread.sleep(3000);
+		assertTrue(iclc.exists("/"+zone+"/"+feddao));
 		ChecksumWorker cw = new ChecksumWorker();
 		cw.setSecondaryCopyPrefix(fedprefix);
 		IrodsSystemConnector isc = new IrodsSystemConnector("","");
@@ -93,7 +95,7 @@ public class CTChecksumWorker {
 	
 	@After
 	public void cleanup() {
-		iclc.remove(feddao);
+		iclc.remove("/"+zone+"/"+feddao);
 	}
 	
 	private File createTestFile() throws IOException {
