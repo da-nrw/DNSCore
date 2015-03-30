@@ -52,9 +52,9 @@ function toggle(source) {
 				<span class="property-value" ><input type="checkbox"  onClick="toggle(this)"/>Alle an-/abwählen</span><br>
 				<g:if test="${objectInstance?.packages}">
 							<g:each in="${objectInstance.packages}" var="p">
-							<span class="property-value" ><g:checkBox name="currentPackages" value="${p.getId()}" checked="false" />${p?.encodeAsHTML()}</span>
+							<span class="property-value" ><g:if test="${!objectInstance.isInWorkflowButton()}"><g:checkBox name="currentPackages" value="${p.getId()}" checked="false" /></g:if>${p?.encodeAsHTML()}</span>
 						</g:each>	
-				<span class="property-value" ><g:actionSubmit value="Versioniertes Retrieval starten" controller="package" action="retrievePackages"/></span>
+				<span class="property-value" ><g:if test="${!objectInstance.isInWorkflowButton()}"><g:actionSubmit value="Versioniertes Retrieval starten" controller="package" action="retrievePackages"/></span></g:if>
 				</g:if>
 				</g:form>
 				</li>
