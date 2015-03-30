@@ -249,7 +249,7 @@ public class IngestAreaScannerWorker extends Worker{
 		
 		String children[] = Path.makeFile(ingestAreaRootPath,contractorShortName).list(new AcceptedContainerFormatsFilter());
 		List<String> childrenWhichAreReady = new ArrayList<String>();
-		
+		if (children!=null) {
 		for (int i=0;i<children.length;i++){
 			
 			if (!files.containsKey(children[i])){
@@ -276,7 +276,7 @@ public class IngestAreaScannerWorker extends Worker{
 				}
 			}
 		} 
-		
+		} else logger.error("Error scaning contractor folder " + Path.makeFile(ingestAreaRootPath,contractorShortName));
 		return childrenWhichAreReady;
 	} 
 	
