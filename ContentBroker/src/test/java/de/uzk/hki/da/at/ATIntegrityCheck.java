@@ -169,6 +169,9 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		// replace proxies by real objects
 		session.refresh(object);
 		for (Copy rec : object.getLatestPackage().getCopies()) {}
+		
+		assertTrue(object.getLatestPackage().getCopies().size()>0);
+		
 		// Simulate checksumming done by foreign nodes
 		Copy copy = object.getLatestPackage().getCopies().iterator().next();
 		
