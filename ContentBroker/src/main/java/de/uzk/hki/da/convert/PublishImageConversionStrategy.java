@@ -202,7 +202,9 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			logger.debug("Adding Footertext: Footertext not found for audience " + audience );
 			return commandAsList;
 		} 	
-		
+
+		commandAsList.add("-background");
+		commandAsList.add("black");
 		commandAsList.add("-fill");
 		commandAsList.add("white");
 		commandAsList.add("-gravity");
