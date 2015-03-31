@@ -110,7 +110,7 @@ public class FakeGridFacade implements GridFacade {
 		 try {
 			return MD5Checksum.getMD5checksumForLocalFile(new File (getGridCacheAreaRootPath()+address_dest));
 		} catch (IOException e) {
-			logger.error("Error retrieving MD5 for " + address_dest);
+			logger.error("Error retrieving MD5 for " + new File (getGridCacheAreaRootPath()+ address_dest));
 		} return "";
 	}
 
@@ -119,7 +119,7 @@ public class FakeGridFacade implements GridFacade {
 		 try {
 				return MD5Checksum.getMD5checksumForLocalFile(new File (getGridCacheAreaRootPath()+address_dest));
 			} catch (IOException e) {
-				logger.error("Error retrieving MD5 for " + address_dest);
+				logger.error("Error retrieving MD5 for " + new File (getGridCacheAreaRootPath()+address_dest));
 			} return "";
 	}
 

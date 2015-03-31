@@ -212,11 +212,18 @@ public class IntegrityWorker extends Worker{
 	 */
 	int checkObjectValidity(Object obj) {
 		if (getPSystem().getMinRepls() == null || getPSystem().getMinRepls() ==0) throw new IllegalStateException("minNodes not set correctly!");
+		Calendar olderThan = Calendar.getInstance();
+		olderThan.add(Calendar.DAY_OF_YEAR, -365);
 		
 		logger.debug("Check Object "+ obj.getIdentifier());
 		boolean completelyValid = true;		
 		if (obj.getContractor()==null) {
 			String err= "Could not determine valid Contractor for object " + obj.getIdentifier();
+			logger.error(err);
+			return Object.ObjectStatus.Error;
+		}
+		if (obj.getLast_checked().before(olderThan.getTime())) {
+			String err= obj.getIdentifier() + " is assumed to invalid because last check is too old, was " +obj.getLast_checked();
 			logger.error(err);
 			return Object.ObjectStatus.Error;
 		}
@@ -238,7 +245,14 @@ public class IntegrityWorker extends Worker{
 					String err= "SECONDARY COPY in ERROR "+ obj.getIdentifier();
 					logger.error(err);
 					completelyValid = false;
-				} else copies ++;
+				} else {
+			
+					if (copy.getChecksumDate().before(olderThan.getTime())) {
+						logger.error("SECONDARY COPY was last checked on " + copy.getChecksumDate() + " which is assumed to be not valid!");
+						completelyValid = false;
+					}
+					else copies ++;
+				}
 			}
 			if (copies<getPSystem().getMinRepls()) completelyValid = false; 
 				

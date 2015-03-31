@@ -65,35 +65,23 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	
 	@After
 	public void cleanUp() {
-		TESTHelper.clearDB();
+		//TESTHelper.clearDB();
 	}
 	
 	
-	
-	private void changeLastCheckedDate() throws IOException{
-		
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		Calendar now = Calendar.getInstance();
-		now.add(Calendar.HOUR_OF_DAY, -25);
-		object.setLast_checked(now.getTime());
-		session.update(object);
-		session.getTransaction().commit();
-		session.close();
-	}
-	
+
 	
 	@Test
 	public void localCopyModifiedTest() throws Exception {
 	    String ORIGINAL_NAME = "ATIntegrityCheckLocalCopyModified";
 	    
 	    object = ath.ingest(ORIGINAL_NAME);
-	    changeLastCheckedDate();
+	    changeLastCheckedObjectDate(-25);
 		
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 
-		setChecksum(object.getLatestPackage().getChecksum());
+		setChecksum(object.getLatestPackage().getChecksum(),-1);
 
 		// We'll destroy it physically now, if we 're on CI
 		// on dev machines FakeGridFacade will find special file in ATUseCaseAudit
@@ -102,7 +90,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 			destroyFileInCIEnvironment(object.getIdentifier());
 		} else System.out.println(".. not detected CI Environment!");
 		
-		changeLastCheckedDate();
+		changeLastCheckedObjectDate(-25);
 		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,51));
 	}
 	
@@ -111,10 +99,10 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		String ORIGINAL_NAME = "ATIntegrityRemoteCopyDestroyed";
 		
 		object = ath.ingest(ORIGINAL_NAME);
-		changeLastCheckedDate();
+		changeLastCheckedObjectDate(-25);
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
-		setChecksum("abcedde5");
+		setChecksum("abcedde5",-25);
 		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,51));
 	}
 	
@@ -123,7 +111,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		String ORIGINAL_NAME = "ATIntegrityCheckAllCopiesOK";
 		
 		object = ath.ingest(ORIGINAL_NAME);
-		changeLastCheckedDate();
+		changeLastCheckedObjectDate(-25);
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 		assertSame(100,object.getObject_state());
@@ -143,7 +131,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		String ORIGINAL_NAME = "ATIntegrityCheckAllCopiesDestroyed";
 		
 		object = ath.ingest(ORIGINAL_NAME);
-		changeLastCheckedDate();
+		changeLastCheckedObjectDate(-25);
 		
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
@@ -154,8 +142,30 @@ public class ATIntegrityCheck extends AcceptanceTest{
 			destroyFileInCIEnvironment(object.getIdentifier());
 		} else System.out.println(".. not detected CI Environment!");
 		
-		setChecksum("abcd77");
-		changeLastCheckedDate();
+		setChecksum("abcd77",-25);
+		changeLastCheckedObjectDate(-25);
+		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,51));
+	}
+	
+	@Test 
+	public void secondaryCopiesTooOld() throws IOException, InterruptedException {
+		String ORIGINAL_NAME = "ATIntegritySecondaryCopiesCheckTooOld";
+		
+		object = ath.ingest(ORIGINAL_NAME);
+		setChecksum(object.getLatestPackage().getChecksum(),-8761);
+		assertSame(100,object.getObject_state());
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");;
+		changeLastCheckedObjectDate(-25);
+		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,51));
+	}
+	@Test 
+	public void primaryCopyTooOld() throws IOException, InterruptedException {
+		String ORIGINAL_NAME = "ATIntegrityCheckPrimaryCopyTooOld";
+		
+		object = ath.ingest(ORIGINAL_NAME);
+		assertSame(100,object.getObject_state());
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");;
+		changeLastCheckedObjectDate(-8761);
 		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,51));
 	}
 	
@@ -163,7 +173,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	
 	//----------------------------------------------------
 	
-	private void setChecksum(String checksum) {
+	private void setChecksum(String checksum,int minusHoursInPast) {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		// replace proxies by real objects
@@ -179,7 +189,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		
 		// set object to older creationdate than one day
 		Calendar now = Calendar.getInstance();
-		now.add(Calendar.HOUR_OF_DAY, -25);
+		now.add(Calendar.HOUR_OF_DAY, minusHoursInPast);
 		copy.setChecksumDate(now.getTime());
 		
 		
@@ -209,6 +219,18 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		
 	}
 	
+	
+	private void changeLastCheckedObjectDate(int minusHoursInPast) throws IOException{
+		
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		Calendar now = Calendar.getInstance();
+		now.add(Calendar.HOUR_OF_DAY, minusHoursInPast);
+		object.setLast_checked(now.getTime());
+		session.update(object);
+		session.getTransaction().commit();
+		session.close();
+	}
 	
 
 	private boolean waitForObjectInStatus( String orgName , int status) throws InterruptedException {	
