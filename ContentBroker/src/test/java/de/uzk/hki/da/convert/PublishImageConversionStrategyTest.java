@@ -182,6 +182,7 @@ public class PublishImageConversionStrategyTest {
 				"convert",
 				Path.makeFile(dataPath,"a/filename.tif").getAbsolutePath(),
 					"-resize","480x360", // ! ImageMagick expects this to be 2 params 
+					"-background","black",
 					"-fill", "white",
 					"-gravity", "center",
 					"-size","480x30",
@@ -247,6 +248,7 @@ public class PublishImageConversionStrategyTest {
 		String cmdPUBLIC[] = new String[]{
 				"convert",
 				Path.makeFile(dataPath,"a/filename.tif").getAbsolutePath(),
+					"-background","black",
 					"-fill", "white",
 					"-gravity", "center",
 					"-size","520x30",
