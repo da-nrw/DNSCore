@@ -283,8 +283,6 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 		String opacityHex = Long.toHexString(Math.round(Integer.parseInt(opacity) * 2.55));
 		if (opacityHex.length() == 1) opacityHex = "0" + opacityHex;
 		
-		commandAsList.add("-font");
-		commandAsList.add("Arial");
 		commandAsList.add("-pointsize");
 		commandAsList.add(psize);
 		commandAsList.add("-draw");

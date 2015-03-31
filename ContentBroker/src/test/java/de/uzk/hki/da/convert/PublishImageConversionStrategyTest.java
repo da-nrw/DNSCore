@@ -119,7 +119,7 @@ public class PublishImageConversionStrategyTest {
 				"convert",
 				Path.makeFile(dataPath,"a/filename.tif").getAbsolutePath(),
 				 "-resize","480x360", // ! ImageMagick expects this to be 2 params 
-				 "-font", "Arial", "-pointsize", "10", "-draw",
+				 "-pointsize", "10", "-draw",
 				 "gravity north fill #0000007f text 0,15 'Hallo' fill #ffffff7f text 0,14 'Hallo'",
 				Path.makeFile(dataPath,C.WA_DIP+"/public/target/filename.jpg").getAbsolutePath(),
 		};		
