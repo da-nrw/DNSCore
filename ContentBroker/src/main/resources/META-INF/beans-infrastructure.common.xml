@@ -70,13 +70,6 @@
         <property name="registerObjectService" ref="registerObjectService" />
     </bean>
     
-    <bean id="integrityScannerWorker" class="de.uzk.hki.da.core.IntegrityScannerWorker" init-method="init">
-        <property name="localNodeId" value="${localNode.id}" />
-        <property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}" />
-        <property name="retries" value="3" />
-        <property name="sleepFor" value="${localNode.auditSleepFor:7200000}" />
-    </bean>
-    
     <bean id="integrityWorker" class="de.uzk.hki.da.core.IntegrityWorker" init-method="init">
         <property name="localNodeId" value="${localNode.id}" />
         <property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}" />

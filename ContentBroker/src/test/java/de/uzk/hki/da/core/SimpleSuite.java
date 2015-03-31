@@ -137,7 +137,6 @@ import de.uzk.hki.da.util.PathTest;
 	PremisXmlReaderTests.class,
 	MetsRightsSectionXmlReaderTest.class,
 	MetsURNXmlReaderTest.class,
-	IntegrityScannerWorkerTest.class,
 	ShortenFileNamesActionTests.class,
 	XPathUtilsTests.class,
 	CheckFormatsActionTest.class,
