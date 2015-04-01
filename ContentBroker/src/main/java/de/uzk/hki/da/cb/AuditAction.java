@@ -20,6 +20,7 @@
 package de.uzk.hki.da.cb;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.IntegrityService;
 import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Job;
@@ -62,37 +63,9 @@ public class AuditAction extends AbstractAction {
 	 */
 	@Override
 	public boolean implementation() {
-		setObjectState(j,Object.ObjectStatus.UnderAudit);
-		StoragePolicy sp = new StoragePolicy();
-		sp.setMinNodes(preservationSystem.getMinRepls());
-		
-		String msg= "";
-		// TODO: refactor to same implementation IntegrityScanner uses
-		boolean completelyValid = true; 
-		for (Package pack : o.getPackages()) {
-			String pname = pack.getName();
-			if (pname.equals("")) pname = "1";
-			String logicalPath = new RelativePath(o.getContractor().getShort_name(), o.getIdentifier(), o.getIdentifier()).toString() + ".pack_"+pname+".tar";
-			if (!gridRoot.isValid(logicalPath)) {
-				msg+="SEVERE FAULT " + logicalPath + " is not valid, Checksum could not be verified on all systems! Please refer to the Storage Layer logs for further information! \n";
-				 completelyValid = false;
-				continue;
-			}
-			if (!gridRoot.storagePolicyAchieved(logicalPath, sp)) {
-				msg+="FAULT " + logicalPath + " has not achieved its replication policy!\n";
-				completelyValid = false;
-				continue;
-			} 
-		}
-		if (completelyValid) {
-			logger.debug("Object checked OK, setting object state to 100");
-			o.setObject_state(Object.ObjectStatus.ArchivedAndValid);
-		} else {
-			o.setObject_state(Object.ObjectStatus.Error);
-			logger.error("Object " + o.getIdentifier()  + " has following errors :" +  msg);
-			unloadAndRepair(o);
-			new MailContents(preservationSystem,n).auditInformNodeAdmin(o, msg);
-		}		
+		IntegrityService is = new IntegrityService();
+		is.setGridFacade(gridRoot);
+		is.checkObject(o, preservationSystem.getMinRepls());
 		return true;
 	}
 
@@ -101,10 +74,6 @@ public class AuditAction extends AbstractAction {
 		// nothing to do
 	}
 	
-	
-	void unloadAndRepair( Object obj) {
-		// TODO TBD unload and Deep Check & repair Package on node
-	}
 	
 	public void setObjectState(Job job, int state) {	
 		if (o!=null) { 

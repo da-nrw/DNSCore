@@ -81,7 +81,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 
-		setChecksum(object.getLatestPackage().getChecksum(),-1);
+		setChecksumSecondaryCopy(object.getLatestPackage().getChecksum(),-1);
 
 		// We'll destroy it physically now, if we 're on CI
 		// on dev machines FakeGridFacade will find special file in ATUseCaseAudit
@@ -102,7 +102,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		changeLastCheckedObjectDate(-25);
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
-		setChecksum("abcedde5",-25);
+		setChecksumSecondaryCopy("abcedde5",-25);
 		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,51));
 	}
 	
@@ -112,15 +112,21 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		
 		object = ath.ingest(ORIGINAL_NAME);
 		changeLastCheckedObjectDate(-25);
+		setChecksumSecondaryCopy(object.getLatestPackage().getChecksum(),-25);
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 		assertSame(100,object.getObject_state());
+		
+		
 		Date old = object.getLast_checked();
+		System.out.println("last check was : " + old);
 		Date neu = old;
-		while (! neu.equals(old)) {
+		while (neu.compareTo(old)<=0) {
 			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 			neu = object.getLast_checked();	
 		}
+		System.out.println("new check was on : " + neu);
+		
 		assertSame(100,object.getObject_state());
 		
 	}
@@ -142,7 +148,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 			destroyFileInCIEnvironment(object.getIdentifier());
 		} else System.out.println(".. not detected CI Environment!");
 		
-		setChecksum("abcd77",-25);
+		setChecksumSecondaryCopy("abcd77",-25);
 		changeLastCheckedObjectDate(-25);
 		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,51));
 	}
@@ -152,7 +158,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		String ORIGINAL_NAME = "ATIntegritySecondaryCopiesCheckTooOld";
 		
 		object = ath.ingest(ORIGINAL_NAME);
-		setChecksum(object.getLatestPackage().getChecksum(),-8761);
+		setChecksumSecondaryCopy(object.getLatestPackage().getChecksum(),-8761);
 		assertSame(100,object.getObject_state());
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");;
 		changeLastCheckedObjectDate(-25);
@@ -173,7 +179,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	
 	//----------------------------------------------------
 	
-	private void setChecksum(String checksum,int minusHoursInPast) {
+	private void setChecksumSecondaryCopy(String checksum,int minusHoursInPast) {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		// replace proxies by real objects
@@ -220,7 +226,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	}
 	
 	
-	private void changeLastCheckedObjectDate(int minusHoursInPast) throws IOException{
+	private Date changeLastCheckedObjectDate(int minusHoursInPast) throws IOException{
 		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
@@ -230,6 +236,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		session.update(object);
 		session.getTransaction().commit();
 		session.close();
+		return now.getTime();
 	}
 	
 
