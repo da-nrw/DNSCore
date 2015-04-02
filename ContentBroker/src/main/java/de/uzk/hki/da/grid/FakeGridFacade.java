@@ -15,12 +15,11 @@
 
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package de.uzk.hki.da.grid;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -47,10 +46,10 @@ import de.uzk.hki.da.utils.StringUtilities;
 public class FakeGridFacade implements GridFacade {
 
 	static final Logger logger = LoggerFactory.getLogger(FakeGridFacade.class);
-	
+
 	private String gridCacheAreaRootPath;
 	private String tmpFolder = "/tmp/";
-	
+
 	@Override
 	public boolean put(File file, String address_dest, StoragePolicy sp) throws IOException {
 		if (!address_dest.startsWith("/")) address_dest = "/"+address_dest;
@@ -58,7 +57,7 @@ public class FakeGridFacade implements GridFacade {
 		logger.debug("putting: "+file+" to "+dest);
 		FileUtils.copyFile(file, new File(dest));
 		return true;
-		
+
 	}
 
 	@Override
@@ -99,9 +98,9 @@ public class FakeGridFacade implements GridFacade {
 	@Override
 	public String getChecksumInCustody(String address_dest) {
 		return getChecksum(address_dest);
-		}
-	
-	
+	}
+
+
 	@Override
 	public String reComputeAndGetChecksumInCustody(String address_dest) {
 		return getChecksum(address_dest);
@@ -113,7 +112,7 @@ public class FakeGridFacade implements GridFacade {
 	}
 
 	//------------------------------------------------------------------------
-	
+
 	/**
 	 * Scans AIP for marker file to mark this file as corrupted for sing in 
 	 * acceptance testing on DEV machines
@@ -123,39 +122,39 @@ public class FakeGridFacade implements GridFacade {
 	 */
 	private boolean checkForCorruptedMarker(File custodyFile) {	
 		try {
-			
+
 			FileUtils.copyFileToDirectory(
 					custodyFile, 
 					new File(tmpFolder), false);
 			String packname = custodyFile.getName();
 			String dirname = FilenameUtils.getBaseName(custodyFile.getName());
-					
+
 			ArchiveBuilderFactory.getArchiveBuilderForFile(new File("/tmp/"+packname))
 			.unarchiveFolder(new File(tmpFolder + packname), new File ("/tmp/"));
-		logger.debug("Extracting " + packname + " to + " + tmpFolder + dirname);
-		
-		IOFileFilter filter = new WildcardFileFilter("DESTROYED*");
-		Collection<File> files = FileUtils.listFiles(new File(tmpFolder + dirname), filter, DirectoryFileFilter.DIRECTORY);
-		
-		if (files.size()>0) {
-			logger.debug("found destroy marker");
-			FileUtils.deleteDirectory(new File(tmpFolder + dirname));
-			return true;
-		} else FileUtils.deleteDirectory(new File(tmpFolder + dirname));
+			logger.debug("Extracting " + packname + " to + " + tmpFolder + dirname);
+
+			IOFileFilter filter = new WildcardFileFilter("DESTROYED*");
+			Collection<File> files = FileUtils.listFiles(new File(tmpFolder + dirname), filter, DirectoryFileFilter.DIRECTORY);
+
+			if (files.size()>0) {
+				logger.debug("found destroy marker");
+				FileUtils.deleteDirectory(new File(tmpFolder + dirname));
+				return true;
+			} else FileUtils.deleteDirectory(new File(tmpFolder + dirname));
 		} catch (Exception e) {
 			logger.error("Error while checking validity on fakedGridfacade on " + custodyFile.getAbsolutePath() + ": "+ e.getMessage());
 		} 
 		logger.debug("found no destroy marker!");
 		return false;
 	}
-	
+
 	private String getChecksum(String address_dest) {
 		File custodyFile =  new File (getGridCacheAreaRootPath()+address_dest);
 		try {	 
-			 if (!checkForCorruptedMarker(custodyFile)) {
-				 logger.debug("Returning checksum for File " + custodyFile.getAbsolutePath());
-				 return MD5Checksum.getMD5checksumForLocalFile(custodyFile);
-			 } return "";
+			if (!checkForCorruptedMarker(custodyFile)) {
+				logger.debug("Returning checksum for File " + custodyFile.getAbsolutePath());
+				return MD5Checksum.getMD5checksumForLocalFile(custodyFile);
+			} return "";
 		} catch (IOException e) {
 			logger.error("Error retrieving MD5 for " + custodyFile.getAbsolutePath());
 		} return "";
