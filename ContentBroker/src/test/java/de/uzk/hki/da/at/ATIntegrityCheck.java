@@ -115,7 +115,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		setChecksumSecondaryCopy(object.getLatestPackage().getChecksum(),-25);
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
-		assertSame(100,object.getObject_state());
+		assertSame(object.getObject_state(),100);
 		
 		
 		Date old = object.getLast_checked();
@@ -127,7 +127,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		}
 		System.out.println("new check was on : " + neu);
 		
-		assertSame(100,object.getObject_state());
+		assertSame(object.getObject_state(),100);
 		
 	}
 	

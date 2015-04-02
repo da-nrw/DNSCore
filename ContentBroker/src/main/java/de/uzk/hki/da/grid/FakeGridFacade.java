@@ -22,13 +22,17 @@ package de.uzk.hki.da.grid;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.util.Collection;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.utils.MD5Checksum;
@@ -45,12 +49,14 @@ public class FakeGridFacade implements GridFacade {
 	static final Logger logger = LoggerFactory.getLogger(FakeGridFacade.class);
 	
 	private String gridCacheAreaRootPath;
-	
+	private String tmpFolder = "/tmp/";
 	
 	@Override
 	public boolean put(File file, String address_dest, StoragePolicy sp) throws IOException {
-		logger.debug("putting: "+file+" to "+getGridCacheAreaRootPath()+address_dest);
-		FileUtils.copyFile(file, new File(getGridCacheAreaRootPath()+address_dest));
+		if (!address_dest.startsWith("/")) address_dest = "/"+address_dest;
+		String dest = getGridCacheAreaRootPath()+ C.WA_AIP + address_dest;
+		logger.debug("putting: "+file+" to "+dest);
+		FileUtils.copyFile(file, new File(dest));
 		return true;
 		
 	}
@@ -58,33 +64,18 @@ public class FakeGridFacade implements GridFacade {
 	@Override
 	public void get(File destination, String sourceFileAdress)
 			throws IOException {
-		logger.debug("retrieving: " + getGridCacheAreaRootPath() + sourceFileAdress + " to " + destination);
-		FileUtils.copyFile(new File(getGridCacheAreaRootPath() + sourceFileAdress),destination);
+		if (!sourceFileAdress.startsWith("/")) sourceFileAdress = "/"+sourceFileAdress;
+		String source =  getGridCacheAreaRootPath() + sourceFileAdress;
+		logger.debug("retrieving: " + source + " to " + destination);
+		FileUtils.copyFile(new File(source),destination);
 	}
 
 	@Override
 	public boolean isValid(String address_dest) {
-		File file = new File (getGridCacheAreaRootPath()+address_dest);
-		try {
-			FileUtils.copyFileToDirectory(
-					file, 
-					new File("/tmp/"), false);
-			;
-		ArchiveBuilderFactory.getArchiveBuilderForFile(new File("/tmp/"+file.getName()))
-			.unarchiveFolder(new File("/tmp/" + file.getName()), new File ("/tmp/"));
-		
-		logger.debug("Extracting " + file.getName() + " to /tmp  , Dir name " +  FilenameUtils.getBaseName(file.getName()));
-		FileFilter filter = new WildcardFileFilter("DESTROYED*");
-		File []found = new File("/tmp/" + FilenameUtils.getBaseName(file.getName())).listFiles(filter);
-		if (found.length==0) {
-			logger.debug("found destroy marker");
-			FileUtils.deleteDirectory(new File("/tmp/" + FilenameUtils.getBaseName(file.getName())));
+		File custodyFile =  new File (getGridCacheAreaRootPath()+address_dest);
+		if (checkForCorruptedMarker(custodyFile)) {
 			return false;
-		} else FileUtils.deleteDirectory(new File("/tmp/" + FilenameUtils.getBaseName(file.getName())));
-		} catch (Exception e) {
-			logger.error("Error while checking validity on fakedGridfacade on " + address_dest + ": "+ e.getMessage());
-			new RuntimeException("Error while checking validity on fakedGridFacade on " + address_dest + ": "+ e.getMessage(), e);
-	} return true;
+		} else return true;
 	} 
 
 	@Override
@@ -107,20 +98,13 @@ public class FakeGridFacade implements GridFacade {
 
 	@Override
 	public String getChecksumInCustody(String address_dest) {
-		 try {
-			return MD5Checksum.getMD5checksumForLocalFile(new File (getGridCacheAreaRootPath()+address_dest));
-		} catch (IOException e) {
-			logger.error("Error retrieving MD5 for " + new File (getGridCacheAreaRootPath()+ address_dest));
-		} return "";
-	}
-
+		return getChecksum(address_dest);
+		}
+	
+	
 	@Override
 	public String reComputeAndGetChecksumInCustody(String address_dest) {
-		 try {
-				return MD5Checksum.getMD5checksumForLocalFile(new File (getGridCacheAreaRootPath()+address_dest));
-			} catch (IOException e) {
-				logger.error("Error retrieving MD5 for " + new File (getGridCacheAreaRootPath()+address_dest));
-			} return "";
+		return getChecksum(address_dest);
 	}
 
 	@Override
@@ -128,5 +112,53 @@ public class FakeGridFacade implements GridFacade {
 		return (new File (getGridCacheAreaRootPath()+address_dest)).exists();
 	}
 
+	//------------------------------------------------------------------------
 	
+	/**
+	 * Scans AIP for marker file to mark this file as corrupted for sing in 
+	 * acceptance testing on DEV machines
+	 * @author Jens Peters
+	 * @param custodyFile
+	 * @return
+	 */
+	private boolean checkForCorruptedMarker(File custodyFile) {	
+		try {
+			
+			FileUtils.copyFileToDirectory(
+					custodyFile, 
+					new File(tmpFolder), false);
+			String packname = custodyFile.getName();
+			String dirname = FilenameUtils.getBaseName(custodyFile.getName());
+					
+			ArchiveBuilderFactory.getArchiveBuilderForFile(new File("/tmp/"+packname))
+			.unarchiveFolder(new File(tmpFolder + packname), new File ("/tmp/"));
+		logger.debug("Extracting " + packname + " to + " + tmpFolder + dirname);
+		
+		IOFileFilter filter = new WildcardFileFilter("DESTROYED*");
+		Collection<File> files = FileUtils.listFiles(new File(tmpFolder + dirname), filter, DirectoryFileFilter.DIRECTORY);
+		
+		if (files.size()>0) {
+			logger.debug("found destroy marker");
+			FileUtils.deleteDirectory(new File(tmpFolder + dirname));
+			return true;
+		} else FileUtils.deleteDirectory(new File(tmpFolder + dirname));
+		} catch (Exception e) {
+			logger.error("Error while checking validity on fakedGridfacade on " + custodyFile.getAbsolutePath() + ": "+ e.getMessage());
+		} 
+		logger.debug("found no destroy marker!");
+		return false;
+	}
+	
+	private String getChecksum(String address_dest) {
+		File custodyFile =  new File (getGridCacheAreaRootPath()+address_dest);
+		try {	 
+			 if (!checkForCorruptedMarker(custodyFile)) {
+				 logger.debug("Returning checksum for File " + custodyFile.getAbsolutePath());
+				 return MD5Checksum.getMD5checksumForLocalFile(custodyFile);
+			 } return "";
+		} catch (IOException e) {
+			logger.error("Error retrieving MD5 for " + custodyFile.getAbsolutePath());
+		} return "";
+	}
+
 }
