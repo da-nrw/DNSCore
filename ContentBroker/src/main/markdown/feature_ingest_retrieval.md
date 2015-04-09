@@ -1,11 +1,11 @@
+# Leistungsmerkmal: Ingest und Retrieval
+
 Ingest und Retrieval sind die basalen Workflows der DNSCore aus der Sicht der Endnutzer (Rolle Vertragspartner).
 Beim Ingest übergibt der Nutzer dem System ein SIP zur Übernahme. Beim Retrieval wird ein DIP angefordert und entnommen.
 
 * [SIP-Spezifikation](specification_sip.de.md)
-* [DIP-Spezifikation](specification_dip.de.md)
+* [DIP-Spezifikation](specification_dip.md)
 * Endnutzer-Dokumentation [Einlieferung und Entnahme](https://github.com/da-nrw/DNSCore/blob/master/DAWeb/doc/manual_ingest_and_retrieval.md)
-
-## Leistungsmerkmal: Ingest
 
 Gilt für alle Szenarien:
 
@@ -59,8 +59,8 @@ Gilt für alle Szenarien:
 
 #### Durchführung:
 
-h4. Akkzeptanzkriterien:
+#### Akkzeptanzkriterien:
 
-h4. Status und offene Punkte:
+#### Status und offene Punkte:
 
-h2.
+####
