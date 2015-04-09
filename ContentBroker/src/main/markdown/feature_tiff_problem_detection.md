@@ -37,8 +37,8 @@ h4. Testpaket(e):
 
 #### Durchführung:
 
-# Das Testpaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "[Verarbeitung für abgelieferte SIP starten|https://da-nrw-q.lvr.de/daweb3/incoming/index]")
-# Warten auf Email-Report.
+1. Das Testpaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "[Verarbeitung für abgelieferte SIP starten|https://da-nrw-q.lvr.de/daweb3/incoming/index]")
+1. Warten auf Email-Report.
 
 ## Szenario AT-TIFFT-1 Problematische Pakete zurückweisen
 
@@ -69,9 +69,9 @@ Das System weist Pakete, die Dateien mit problematischen Tags enthalten, zurück
 
 
 
-## Vorschlag: Szenario&nbsp;{color:#ff0000}AT-TIFFT-2{color}&nbsp;Archivierung nach Rückfrage durchführen {color:#ff0000}(nicht impl.){color}
+## Vorschlag: Szenario AT-TIFFT-2 Archivierung nach Rückfrage durchführen (nicht impl.)
 
-Der Contractor &nbsp;will die Archivierung trotz des Hinweises in der Email auf die Probleme der zuk. Bestandserhaltung durchführen.
+Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Probleme der zuk. Bestandserhaltung durchführen.
 
 #### Kontext:
 
@@ -101,7 +101,7 @@ Der Contractor &nbsp;will die Archivierung trotz des Hinweises in der Email auf 
 * Das Objekt taucht unter eingelieferte Objekte auf als "archiviert" auf.&nbsp;
 * &nbsp;
 
-h2. Vorschlag: Szenario&nbsp;{color:#ff0000}AT-TIFFT-3{color}&nbsp;Archivierung nach Rückfrage nicht durchführen&nbsp;{color:#ff0000}(nicht impl.){color}
+h2. Vorschlag: Szenario AT-TIFFT-3 Archivierung nach Rückfrage nicht durchführen (nicht impl.)
 
 * Der Contractor &nbsp;will die Archivierung auf Grund des Hinweises nicht durchführen.
 
