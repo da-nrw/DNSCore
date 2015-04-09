@@ -1,8 +1,8 @@
+# Leistungsmerkmal: Statusabfrage
+
+Drittsysteme sollen die Möglichkeit haben, Informationen zu Objekten abzufragen. Es handelt sich primär um eine technische Schnittstelle. Die Antworten des Systems erfolgen als maschinenlesbarer JSON Code.
+
 # Szenario AT-ST-1: Statusabfrage eines fehlerfrei archivierten Pakets mit Originalname
-
-#### Kontext:
-
-* Drittsysteme sollen die Möglichkeit haben, Informationen zu Objekten abzufragen. Es handelt sich primär um eine technische Schnittstelle. Die Antworten des Systems erfolgen als maschinenlesbarer JSON Code.
 
 ##### Vorbedingungen:
 
@@ -31,11 +31,6 @@ https://da-nrw-q.lvr.de/daweb3/status/index?origName=EAD_Testdatensatz_2015-03-1
 
 ## Szenario AT-ST-2: Statusabfrage eines fehlerfrei archivierten Pakets mit URN
 
-
-#### Kontext:
-
-wie vor
-
 #### Vorbedingungen:
 
 wie vor
@@ -52,15 +47,11 @@ wie vor
 
 ## Szenario AT-ST-3: Statusabfrage eines fehlerfrei archivierten Pakets mit Identifier
 
-#### Kontext:
-
-wie vor
-
 #### Vorbedingungen:
 
 wie vor
 
-h4. Durchführung:
+#### Durchführung:
 
 wie vor, nun aber mit der URL
 
@@ -71,10 +62,6 @@ wie vor, nun aber mit der URL
 wie vor
 
 ## Szenario AT-ST-4: Abfrage der URN eines fehlerfrei archivierten Pakets mittels OriginalNamen
-
-#### Kontext:
-
-wie vor
 
 #### Vorbedingungen:
 
