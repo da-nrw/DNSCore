@@ -4,9 +4,7 @@ Beschreibung
 
 #### Kontext:
 
-* [https://jira.lvrintern.lvr.de/browse/DANRW-73|https://jira.lvrintern.lvr.de/browse/DANRW-73?jql=text%20~%20%22migration%22]
-
-## Hintergrund&nbsp;
+## Hintergrund
 
 gilt für alle Szenarien\!
 
@@ -20,11 +18,9 @@ gilt für alle Szenarien\!
 1. Das Tespaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "[Verarbeitung für abgelieferte SIP starten|https://da-nrw-q.lvr.de/daweb3/incoming/index]")
 1. Warten auf Email, die besagt, dass eine Entscheidung hinsichtlich eines Paketes mit einem bestimmten Identifier getroffen werden muss.
 
-
-
 ## Szenario AT-MB-1 Keine Bedingung
 
-Im Contract eines SIP ist eine mögliche Migrationsbedinung zu hinterlegen. Diese ist faktisch ein XML-Eintrag in der premis.xml, welche auch vom SIP-Builder generiert wird, je nach der Auswahl des Users. Lautet die hinterlegte Auswahl "*keine Migrationsbedinung"*, so migriert das System, wenn möglich, aus den Dateiformaten des SIP in Dateiformate für die Langzeitarchivierung. &nbsp;&nbsp;
+Im Contract eines SIP ist eine mögliche Migrationsbedinung zu hinterlegen. Diese ist faktisch ein XML-Eintrag in der premis.xml, welche auch vom SIP-Builder generiert wird, je nach der Auswahl des Users. Lautet die hinterlegte Auswahl "keine Migrationsbedinung", so migriert das System, wenn möglich, aus den Dateiformaten des SIP in Dateiformate für die Langzeitarchivierung. 
 
 #### Kontext:
 
@@ -172,7 +168,7 @@ Die Tests AT-MD-2 und AT-MD3 gehen davon aus, dass der User die Rückfrage ableh
   Inhalt:
   data/image42.jpg
   data/premis.xml (&nbsp;(MigrationRight: Migrationsbedingung: Zustimmung für Migration einholen).
-
+``` 
 
 
 #### Vorbedingungen
@@ -181,8 +177,8 @@ Die Tests AT-MD-2 und AT-MD3 gehen davon aus, dass der User die Rückfrage ableh
 
 #### Durchführung:
 
-1. {color:#000000}Siehe Hintergrund{color}
-1. {color:#ff0000}48 Stunden warten.{color}
+1. Siehe Hintergrund
+1. 48 Stunden warten.
 1. Warten auf Email, die die Einlieferung in die LZA bestätigt.&nbsp;
 1. Identifier notieren.
 1. In der Ansicht "Eingelieferte Objekte" das Objekt mit dem entsprechenden Identifier recherieren.
