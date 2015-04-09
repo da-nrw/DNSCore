@@ -8,7 +8,7 @@ Dieser Basistest zeigt, ob über den gesamten Workflow hinweg, die korrekten Met
 
 ## Hintergrund:
 
-gilt für alle Szenarien\!
+gilt für alle Szenarien!
 
 #### Vorbedingungen:
 
@@ -25,8 +25,8 @@ gilt für alle Szenarien\!
 
 #### Kontext:
 
-* [ATUseCaseIngestMetsMods](../../src/test/java/de/uzk/hki/da/at/ATUseCaseIngestMetsMods.java).testLZA()
-* [ATUseCaseIngestMetsMods](../../src/test/java/de/uzk/hki/da/at/ATUseCaseIngestMetsMods.java).testPres()
+* [ATUseCaseIngestMetsMods](../../test/java/de/uzk/hki/da/at/ATUseCaseIngestMetsMods.java).testLZA()
+* [ATUseCaseIngestMetsMods](../../test/java/de/uzk/hki/da/at/ATUseCaseIngestMetsMods.java).testPres()
 
 #### Testpaket(e):
 
