@@ -17,12 +17,12 @@ gilt für alle Szenarien\!
 
 #### Durchführung:
 
-# Das Tespaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "[Verarbeitung für abgelieferte SIP starten|https://da-nrw-q.lvr.de/daweb3/incoming/index]")
-# Warten auf Email, die besagt, dass eine Entscheidung hinsichtlich eines Paketes mit einem bestimmten Identifier getroffen werden muss.
+1. Das Tespaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "[Verarbeitung für abgelieferte SIP starten|https://da-nrw-q.lvr.de/daweb3/incoming/index]")
+1. Warten auf Email, die besagt, dass eine Entscheidung hinsichtlich eines Paketes mit einem bestimmten Identifier getroffen werden muss.
 
 
 
-## {color:#000000}Szenario{color}&nbsp;{color:#00ff00}AT-MB{color}{color:#00ff00}\-1{color}&nbsp;{color:#000000}Keine Bedingung{color}
+## Szenario AT-MB-1 Keine Bedingung
 
 Im Contract eines SIP ist eine mögliche Migrationsbedinung zu hinterlegen. Diese ist faktisch ein XML-Eintrag in der premis.xml, welche auch vom SIP-Builder generiert wird, je nach der Auswahl des Users. Lautet die hinterlegte Auswahl "*keine Migrationsbedinung"*, so migriert das System, wenn möglich, aus den Dateiformaten des SIP in Dateiformate für die Langzeitarchivierung. &nbsp;&nbsp;
 
@@ -54,12 +54,12 @@ Im Contract eines SIP ist eine mögliche Migrationsbedinung zu hinterlegen. Dies
 
 #### Akkzeptanzkriterien:
 
-1. Das DIP&nbsp;*enthält*&nbsp;die Bilddatei vom migrierten Typ TIFF:&nbsp;*image42.jp2*
+1. Das DIP enthält die Bilddatei vom migrierten Typ TIFF: image42.jp2
 1. Es enhält nicht die originale Bilddatei: image42.jpg.
 
 ## Szenario AT-MD-2 Migrationsrückfrage ablehnen
 
-Siehe auch Test AT-R1a. Hier wird vom einem Hinterlegten Recht&nbsp;*"Migrationsbedinung - Nach Rückfrage"*&nbsp;ausgegangen, so wie es auch vom SIP-Builder nach entsprechender Wahl in der premis.xml hinterlegt wird. In diesem Fall migriert das System Daten des entsprechenden Objektes niemals ungefragt, sondern fordert vom User eine Entscheidung ein, ob das Objekt migriert werden soll oder nicht.
+Siehe auch Test AT-R1a. Hier wird vom einem Hinterlegten Recht "Migrationsbedinung - Nach Rückfrage" ausgegangen, so wie es auch vom SIP-Builder nach entsprechender Wahl in der premis.xml hinterlegt wird. In diesem Fall migriert das System Daten des entsprechenden Objektes niemals ungefragt, sondern fordert vom User eine Entscheidung ein, ob das Objekt migriert werden soll oder nicht.
 
 #### Kontext:
 
@@ -72,7 +72,7 @@ Siehe auch Test AT-R1a. Hier wird vom einem Hinterlegten Recht&nbsp;*"Migrations
   Inhalt:
   data/image42.jpg
   data/premis.xml (MigrationRight: Migrationsbedingung: Zustimmung für Migration einholen).
-
+```
 
 
 ####
