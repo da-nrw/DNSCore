@@ -6,7 +6,7 @@ Dieser Test kann nicht nur durch eine Person mit vollen Administrationsrechten a
 
 ## Hintergrund:
 
-Gilt für alle nachfolgenden Szenarien\!
+Gilt für alle nachfolgenden Szenarien!
 
 #### Testpakete:
 
@@ -46,11 +46,11 @@ Gilt für alle nachfolgenden Szenarien\!
 * Als "Administrator": Beschädigung der lokalen Kopie: Die auf einem der lokealen Knoten liegende Kopie wird ausgetauscht durch verändertes_tar.pack_1.tar
 * Als "Contractor": Ca. 30 Sekunden warten. Dann Einsichtnahme in die DA-Web "eingelieferte Objekte".
 
-h4. Akzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 * Das Objekt wird als invalide gemeldet (konkret : button Achtung in der Spalte X)
 
-h2. Szenario AT-IP-3 Alle Kopien werden beschädigt
+## Szenario AT-IP-3 Alle Kopien werden beschädigt
 
 * Siehe Hintergrund.
 * Als "Administrator": Beschädigung der lokalen Kopie: Die auf einem der lokealen Knoten liegende Kopie wird ausgetauscht durch verändertes_tar.pack_1.tar
@@ -59,7 +59,7 @@ h2. Szenario AT-IP-3 Alle Kopien werden beschädigt
 
 #### Akzeptanzkriterien:
 
-* Das Objekt wird als&nbsp;*invalide&nbsp;*gemeldet (konkret : button Achtung in der Spalte X)
+* Das Objekt wird als invalide gemeldet (konkret : button Achtung in der Spalte X)
 
 ## Szenario AT-IP-4 Alle Kopien bleiben intakt
 
@@ -68,6 +68,6 @@ h2. Szenario AT-IP-3 Alle Kopien werden beschädigt
 
 #### Akzeptanzkriterien:
 
-* Das Objekt wird als&nbsp;*valide&nbsp;*gemeldet (konkret : kein button Achtung in der Spalte X)
+* Das Objekt wird als valide gemeldet (konkret : kein button Achtung in der Spalte X)
 
 ## Szenario AT-IP-5 Die Checksummen der fremden Knoten sind veraltet
