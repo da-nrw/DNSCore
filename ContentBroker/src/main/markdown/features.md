@@ -20,7 +20,7 @@ a command line interface.
 * Leistungsmerkmal [Anpassungen der Metadatenformate](feature_metadata_updates.md)
 * Leistungsmerkmal [Migrationsbedingungen](feature_migration_right.md)
 * Leistungsmerkmal [Umgang mit fehlerhaften Tags bei TIFF](feature_tiff_problem_detection.md)
-* Leistungsmerkmal [Publikation](feature_publication.md)
+* Leistungsmerkmal [Publikation](feature_publication.md) 
 * Leistungsmerkmal [Publikation Delta](feature_publication_delta.md)
 * Leistungsmerkmal [Validierung der Einlieferung](feature_validity_check.md)
 * Leistungsmerkmal [Vergabe von Identifiern](feature_identifier_assignment.md)
