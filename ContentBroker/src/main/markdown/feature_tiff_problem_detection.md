@@ -101,7 +101,7 @@ Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Pr
 * Das Objekt taucht unter eingelieferte Objekte auf als "archiviert" auf.&nbsp;
 * &nbsp;
 
-h2. Vorschlag: Szenario AT-TIFFT-3 Archivierung nach Rückfrage nicht durchführen (nicht impl.)
+## Vorschlag: Szenario AT-TIFFT-3 Archivierung nach Rückfrage nicht durchführen (nicht impl.)
 
 * Der Contractor &nbsp;will die Archivierung auf Grund des Hinweises nicht durchführen.
 
