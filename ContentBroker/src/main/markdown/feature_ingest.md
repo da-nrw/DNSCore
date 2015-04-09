@@ -1,9 +1,7 @@
 Die manuellen Akzeptanztests können auf der Q-Umgebung durchgeführt werden. Sie alle sind Kandidaten für mögliche Automation.
 
-
 * [DIP-Spezifikation](dip_specification.md)
-* User-Dokumentation Einlieferung und Entnahme.&nbsp;[https://github.com/da-nrw/DNSCore/blob/master/DAWeb/doc/manual_ingest_and_retrieval.md]
-
+* User-Dokumentation Einlieferung und Entnahme. [https://github.com/da-nrw/DNSCore/blob/master/DAWeb/doc/manual_ingest_and_retrieval.md]
 
 ## Leistungsmerkmal: Ingest
 
@@ -13,10 +11,7 @@ Gilt für alle Szenarien:
 
 #### Testpaket(e):
 
-[ATUseCaseIngest1.tgz](../src/test/resources/at/ATUseCaseIngest1.tgz)
-```
-[https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/test/resources/at/ATUseCaseIngest1.tgz?raw=true]
-```
+* ../src/test/resources/at/ATUseCaseIngest1.tgz
 
 #### Vorbedingungen:
 
