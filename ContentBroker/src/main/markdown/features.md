@@ -26,4 +26,4 @@ a command line interface.
 * Leistungsmerkmal [Publikation Delta](feature_publication_delta.md)
 * Leistungsmerkmal [Validierung der Einlieferung](feature_validity_check.md)
 * Leistungsmerkmal [Vergabe von Identifiern](feature_identifier_assignment.md)
-* Leistungsmerkmal [Statusabfrage](feature_object_state_request.md)
+* Leistungsmerkmal [Statusabfrage](feature_object_state_request.md) 
