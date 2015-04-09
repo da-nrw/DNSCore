@@ -1,7 +1,9 @@
-Die manuellen Akzeptanztests können auf der Q-Umgebung durchgeführt werden. Sie alle sind Kandidaten für mögliche Automation.
+Ingest und Retrieval sind die basalen Workflows der DNSCore aus der Sicht der Endnutzer (Rolle Vertragspartner).
+Beim Ingest übergibt der Nutzer dem System ein SIP zur Übernahme. Beim Retrieval wird ein DIP angefordert und entnommen.
 
-* [DIP-Spezifikation](specification_dip.md)
-* User-Dokumentation Einlieferung und Entnahme. [https://github.com/da-nrw/DNSCore/blob/master/DAWeb/doc/manual_ingest_and_retrieval.md]
+* [SIP-Spezifikation](specification_sip.de.md)
+* [DIP-Spezifikation](specification_dip.de.md)
+* Endnutzer-Dokumentation [Einlieferung und Entnahme](https://github.com/da-nrw/DNSCore/blob/master/DAWeb/doc/manual_ingest_and_retrieval.md)
 
 ## Leistungsmerkmal: Ingest
 
