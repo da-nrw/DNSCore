@@ -14,6 +14,8 @@ To build streamlined SIP based based on the used SIP specifications, take a look
 SIP submitted to the DNS. The software could be easily integrated in subsystems, due to having 
 a command line interface.
 
+
+
 * Leistungsmerkmal [Migrationsbedingungen](feature_migration_right.md)
 * Leistungsmerkmal [Integritätsprüfung](feature_integrity_check.md)
 * Leistungsmerkmal [Ingest und Retrieval](feature_ingest_retrieval.md)
