@@ -11,7 +11,7 @@ Gilt für alle Szenarien:
 
 #### Testpaket(e):
 
-* ../src/test/resources/at/ATUseCaseIngest1.tgz
+* ../../src/test/resources/at/ATUseCaseIngest1.tgz
 
 #### Vorbedingungen:
 
