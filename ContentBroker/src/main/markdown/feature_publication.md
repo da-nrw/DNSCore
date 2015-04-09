@@ -25,9 +25,9 @@
 
 #### Ablauf
 
-# Alle Tespakete werden im Incoming Order unter *jeweils eindeutigen* Namen abgelegt und die Verarbeitung gestartet (Maske "[Verarbeitung für abgelieferte SIP starten|https://da-nrw-q.lvr.de/daweb3/incoming/index]")
-# Warten auf die Bestätigungsmail für alle Objekte.
-# Einsichtnahme in die DA-WEB
+1. Alle Tespakete werden im Incoming Order unter *jeweils eindeutigen* Namen abgelegt und die Verarbeitung gestartet (Maske "[Verarbeitung für abgelieferte SIP starten|https://da-nrw-q.lvr.de/daweb3/incoming/index]")
+1. Warten auf die Bestätigungsmail für alle Objekte.
+1. Einsichtnahme in die DA-WEB
 
 #### Akzeptanzkriterien
 
