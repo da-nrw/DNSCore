@@ -13,9 +13,9 @@
 
 #### Durchführung:
 
-# Das Paket ATUseCaseIngest1.tgz wird eingeliefert
-# *Die URL&nbsp;**[https://|https://**]**<QSERVERNAME>**/daweb3/status/index?origName=<DER ORIGNAME> wird mit dem für* *ATUseCaseIngest1.tgz vergebenen&nbsp;*{*}Originalnamen abgefragt*
-# Es kommt einmalig eine neue Abfrage des Benutzernamens, Passwort des Contractors.
+1. Das Paket ATUseCaseIngest1.tgz wird eingeliefert
+1. *Die URL&nbsp;**[https://|https://**]**<QSERVERNAME>**/daweb3/status/index?origName=<DER ORIGNAME> wird mit dem für* *ATUseCaseIngest1.tgz vergebenen&nbsp;*{*}Originalnamen abgefragt*
+1. Es kommt einmalig eine neue Abfrage des Benutzernamens, Passwort des Contractors.
 
 #### Akzeptanzkriterien:
 
@@ -44,7 +44,7 @@ wie vor
 
 wie vor, nun aber mit der URL&nbsp;
 
-*[https://|https://**]**<QSERVERNAME>**/daweb3/status/index?urn=<URN> wird mit dem für*&nbsp;*ATUseCaseIngest1.tgz vergebenen&nbsp;*{*}URN abgefragt*
+* [https://|https://**]**<QSERVERNAME>**/daweb3/status/index?urn=<URN> wird mit dem für*&nbsp;*ATUseCaseIngest1.tgz vergebenen&nbsp;*{*}URN abgefragt*
 
 #### *Akzeptanzkriterien:*
 
@@ -64,7 +64,7 @@ h4. Durchführung:
 
 wie vor, nun aber mit der URL
 
-*[https://|https://**]**<QSERVERNAME>**/daweb3/status/index?identifier=<IDENTIFIER> wird mit dem für*&nbsp;*ATUseCaseIngest1.tgz vergebenen&nbsp;*{*}Identifier abgefragt*
+* [https://|https://**]**<QSERVERNAME>**/daweb3/status/index?identifier=<IDENTIFIER> wird mit dem für*&nbsp;*ATUseCaseIngest1.tgz vergebenen&nbsp;*{*}Identifier abgefragt*
 
 #### Akzeptanzkriterien:
 
