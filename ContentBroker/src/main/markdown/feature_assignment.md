@@ -32,9 +32,11 @@ Die URN wird in jedem Fall nur einmal vergeben. Im Falle von Deltas wird die URN
 
 #### Testpaket(e):
 
-* (GitHub) ATUseCaseIngest1.tgz
-** data/premis.xml
-** data/(Primärdaten)
+```
+(GitHub) ATUseCaseIngest1.tgz
+  data/premis.xml
+  data/(Primärdaten)
+```
 
 #### Vorbedingungen:
 
@@ -57,9 +59,12 @@ Die URN wird in jedem Fall nur einmal vergeben. Im Falle von Deltas wird die URN
 
 #### Testpaket(e):
 
-*  (GitHub) ATReadURNFromSIP.tgz
-**    data/premis.xml
-**    data/(Weitere Primärdaten)
+```
+(GitHub) ATReadURNFromSIP.tgz
+  data/premis.xml
+  data/(Weitere Primärdaten)
+```
+
 
 Inhalt premis.xml
 
@@ -93,20 +98,23 @@ Das Szenario beschreibt den Fall, in dem eine Delta abgeliefert wird, in dem der
 * Derzeitige Implementation: Die neue URN wird ignoriert.
 * Alternativer Vorschlag: Ablehnung des Paketes (kann über Änderungsantrag beantragt werden).
 
-
 #### Kontext:
 
 * [ATIdentifierAssignment](../../test/java/de/uzk/hki/da/at/ATIdentifierAssignment.java).keepURNOnDeltaIngest()
 
 #### Testpaket(e):
 
-*  (GitHub) Testpaket 1: ATUseCaseIngest1.tgz
-**    data/premis.xml
-**    data/   (Primärdaten)
+```
+(GitHub) Testpaket 1: ATUseCaseIngest1.tgz
+  data/premis.xml
+  data/   (Primärdaten)
+```
 
-* (GitHub) Testpaket 2: ATReadURNFromSIP.tgz
-**    data/premis.xml
-**    data/(Weitere Primärdaten)
+```
+(GitHub) Testpaket 2: ATReadURNFromSIP.tgz
+  data/premis.xml
+  data/(Weitere Primärdaten)
+```
 
 Inhalt premis.xml des 2. Paketes
 
@@ -147,12 +155,12 @@ Wir haben derzeit zwei Beispiele von Metadaten vorliegen bzw. ausgewählt, die s
 
 #### Testpaket(e):
 
-{noformat:nopanel=true}
-  (GitHub) Testpaket enhält
-    data/export_mets.xml
-    data/premis.xml
-    data/(Weitere Primärdaten)
-{noformat}
+``` 
+(GitHub) Testpaket enhält
+  data/export_mets.xml
+  data/premis.xml
+  data/(Weitere Primärdaten)
+```
 
 Inhalt export_mets.xml
 
@@ -195,11 +203,11 @@ Beispieldatensatz 2: Älterer Datensatz aus Zeiten vor der Projektübernahme LVR
 #### Akzeptanzkriterien:
 
 * In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN urn:nbn:de:hbz:xyz gelistet.
-* Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN {color:#ff0000}&nbsp;{color}{color:#000000}{*}urn:nbn:de:hbz:xyz{*}{color}{color:#ff0000}&nbsp;{color}zugewiesen wurde.
+* Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN urn:nbn:de:hbz:xyz zugewiesen wurde.
 
-#### {color:#ff0000}offene Punkte{color}:
+#### offene Punkte:
 
-* {color:#ff0000}Zu beschließen: Ist die URN-Unterbringung im METS-XML-Baum von allen Beteiligten des AK-F so akzeptiert?{color}
+* Zu beschließen: Ist die URN-Unterbringung im METS-XML-Baum von allen Beteiligten des AK-F so akzeptiert?
 
 
 
@@ -217,20 +225,24 @@ METS lässt unterschiedliche Arten der Strukturierung von Objekten zu. Die Struc
 
 #### Testpaket(e):
 
-  (GitHub) Testpaket enhält
-    data/export_mets.xml
-    data/premis.xml
-    data/(Weitere Primärdaten)
+```
+(GitHub) Testpaket enhält
+  data/export_mets.xml
+  data/premis.xml
+  data/(Weitere Primärdaten)
+```
 
 
 Inhalt export_mets.xml
 
 
+```xml
 <mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <mets:dmdSec ID="dmd35716">
         <mods:identifier type="urn">urn:nbn:de:hbz:xyz</mods:identifier>
     <mets:dmdSec ID="dmd35717">
        <mods:identifier type="urn">urn:nbn:de:hbz:abcde</mods:identifier>
+``` 
 
 Aus der StructMap geht dabei hervor, dass beide Teilobjekte (dmd35717,dmd35716) auf oberster Ebene gleichwertig im METS-Baum aufgehangen sind.
 
@@ -240,18 +252,18 @@ Aus der StructMap geht dabei hervor, dass beide Teilobjekte (dmd35717,dmd35716) 
 
 #### Durchführung:
 
-# Siehe Hintergrund.
+1. Siehe Hintergrund.
 
 #### Akzeptanzkriterien: (Vorschlag 1)
 
 * In der Maske "Eingelieferte Objekte" wird das Objekt nicht mit dem URN urn:nbn:de:hbz:xyz gelistet.
-* In der Maske "Eingelieferte Objekte" wird das Objekt mit einer vom DNSCore vergebenen URN startend mit{color} {color:#ff0000}{*}urn:nbn:danrw{*}{color} {color:#ff0000}gelistet.{color}
-* Die Objektlogdatei enthält eine Warning mit dem Verweis darauf, dass eventuell mitgelieferte URN vergeben wurden.{color}
+* In der Maske "Eingelieferte Objekte" wird das Objekt mit einer vom DNSCore vergebenen URN startend mit urn:nbn:danrw gelistet.
+* Die Objektlogdatei enthält eine Warning mit dem Verweis darauf, dass eventuell mitgelieferte URN vergeben wurden.
 
 #### Akzeptanzkriterien: (Vorschlag 2)
 
-* Der User wird per Mail informiert, dass die mitgelieferte METS-URN nicht eindeutig einem Objekt auf höchster Ebene zugewiesen werden kann.{color}
-* Der Ingest wird abgelehnt.{color}
+* Der User wird per Mail informiert, dass die mitgelieferte METS-URN nicht eindeutig einem Objekt auf höchster Ebene zugewiesen werden kann.
+* Der Ingest wird abgelehnt.
 
 
 
@@ -264,10 +276,12 @@ Dieses Szenario ist nicht implementiert. Es befindet sich derzeit in der Konzept
 
 #### Testpaket(e):
 
-*  (GitHub) Testpaket enhält
-**  data/export_mets.xml
-**  data/premis.xml
-**  data/(Weitere Primärdaten)
+```
+(GitHub) Testpaket enhält
+  data/export_mets.xml
+  data/premis.xml
+  data/(Weitere Primärdaten)
+```
 
 Inhalt export_mets.xml
 
@@ -290,8 +304,7 @@ Inhalt export_mets.xml
 
 Inhalt premis.xml
 
-``` 
-{noformat:nopanel=true}
+```xml
     <object xsi:type="representation">
     <objectIdentifier>
         <objectIdentifierType>URN</objectIdentifierType>
@@ -306,7 +319,7 @@ Inhalt premis.xml
 
 #### Durchführung:
 
-* Siehe Hintergrund.
+1. Siehe Hintergrund.
 
 #### Akzeptanzkriterien: (Vorschlag 1)
 
