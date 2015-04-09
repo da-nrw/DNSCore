@@ -2,21 +2,17 @@
 
 In DNSCore gibt es verschiedene Objektbezogene Identifier.
 
-# Der technische Identifier, der systemweit eindeutig ist und automatisch vom System vergeben wird.{color}
-# Der Originalname des Paketes, der vom Vertragspartner vergeben wird. Dieser ist für den jeweiligen Vertragspartner eindeutig und macht ermöglicht eine Zuordnung von Deltas zu einem Objekt.{color}
-# Die URN. Diese wird entweder vom System automatisch generiert oder wird vom Vertragspartner vergeben.
+* Der technische Identifier, der systemweit eindeutig ist und automatisch vom System vergeben wird.{color}
+* Der Originalname des Paketes, der vom Vertragspartner vergeben wird. Dieser ist für den jeweiligen Vertragspartner eindeutig und macht ermöglicht eine Zuordnung von Deltas zu einem Objekt.{color}
+* Die URN. Diese wird entweder vom System automatisch generiert oder wird vom Vertragspartner vergeben.
 
+Die URN wird in jedem Fall nur einmal vergeben. Im Falle von Deltas wird die URN nicht abgeändert.
 
-{color:#000000}Die URN wird in jedem Fall nur einmal vergeben. Im Falle von Deltas wird die URN nicht abgeändert.{color}
+#### Kontext:
 
+* Dokumentation: SIPSpezifikation [URN-Vergabe](specification_sip.de.md#urn-vergabe)
 
-#### {color:#000000}﻿Kontext:&nbsp;{color}
-
-* Dokumentation: SIPSpezifikation /&nbsp;[URN-Vergabe|https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_sip.de.md#urn-vergabe]
-
-
-## Hintergrund:&nbsp;
-
+## Hintergrund:
 
 #### Vorbedingungen:
 
@@ -24,24 +20,21 @@ In DNSCore gibt es verschiedene Objektbezogene Identifier.
 
 #### Durchführung:
 
-# Das Paket wird in den Vertragspartner-Eingangsordner abgelegt.
-# Die Paketverarbeitung wird gestartet über die Maske "Verarbeitung für abgelieferte SIP starten".
-# Warten auf die Email mit dem Einlieferungsbeleg.
-
-
+1. Das Paket wird in den Vertragspartner-Eingangsordner abgelegt.
+1. Die Paketverarbeitung wird gestartet über die Maske "Verarbeitung für abgelieferte SIP starten".
+1. Warten auf die Email mit dem Einlieferungsbeleg.
 
 ## Szenario AT-IV-1 Automatische Vergabe der URN
 
-
 #### Kontext
 
-* [ATIdentifierAssignment|https://github.com/da-nrw/DNSCore/blob/b92d795dca2100d42eddcd5a5b58f084fb133040/ContentBroker/src/test/java/de/uzk/hki/da/at/ATIdentifierAssignment.java].urnBasedOnTechnicalIdentifier()
+* [ATIdentifierAssignment](../../test/java/de/uzk/hki/da/at/ATIdentifierAssignment.java).urnBasedOnTechnicalIdentifier()
 
 #### Testpaket(e):
 
 * (GitHub) ATUseCaseIngest1.tgz
 ** data/premis.xml
-** data/ &nbsp; (Primärdaten)
+** data/(Primärdaten)
 
 #### Vorbedingungen:
 
@@ -49,26 +42,24 @@ In DNSCore gibt es verschiedene Objektbezogene Identifier.
 
 #### Durchführung:
 
-# siehe Hintergrund.
-# In der Maske "Eingelieferte Objekte" das Objekt per technischem Identifier recherchieren.
+1. siehe Hintergrund.
+1. In der Maske "Eingelieferte Objekte" das Objekt per technischem Identifier recherchieren.
 
 #### Akkzeptanzkriterien:
 
-* Die Ziffernfolge des technischen Identifier ist vollständig in der URN enthalten. D.h. die URN *urn:nbn:de:xyz-1-2013100836773* muss für den Identfier&nbsp;*1-2013100836773* gebildet worden sein.
+* Die Ziffernfolge des technischen Identifier ist vollständig in der URN enthalten. D.h. die URN urn:nbn:de:xyz-1-2013100836773 muss für den Identfier 1-2013100836773 gebildet worden sein.
 
 ## Szenario AT-IV-2 Nutzergesteuerte URN-Vergabe
 
 #### Kontext:
 
-* [ATIdentifierAssignment|https://github.com/da-nrw/DNSCore/blob/b92d795dca2100d42eddcd5a5b58f084fb133040/ContentBroker/src/test/java/de/uzk/hki/da/at/ATIdentifierAssignment.java].{color:#795da3}urnByUserAssignment{color}()
+* [ATIdentifierAssignment](../../test/java/de/uzk/hki/da/at/ATIdentifierAssignment.java).urnByUserAssignment()
 
 #### Testpaket(e):
-
 
 *  (GitHub) ATReadURNFromSIP.tgz
 **    data/premis.xml
 **    data/(Weitere Primärdaten)
-
 
 Inhalt premis.xml
 
@@ -105,7 +96,7 @@ Das Szenario beschreibt den Fall, in dem eine Delta abgeliefert wird, in dem der
 
 #### Kontext:
 
-* [ATIdentifierAssignment|https://github.com/da-nrw/DNSCore/blob/b92d795dca2100d42eddcd5a5b58f084fb133040/ContentBroker/src/test/java/de/uzk/hki/da/at/ATIdentifierAssignment.java].{color:#795da3}keepURNOnDeltaIngest{color}()
+* [ATIdentifierAssignment](../../test/java/de/uzk/hki/da/at/ATIdentifierAssignment.java).keepURNOnDeltaIngest()
 
 #### Testpaket(e):
 
@@ -134,10 +125,10 @@ Inhalt premis.xml des 2. Paketes
 
 #### Durchführung:
 
-# Das erste Paket wird eingeliefert unter einem frei zu wählenden Originalnamen abgelegt. Warten auf Bestätigungsmail (Die Bestätigungsmail enthält eine URN die, auf dem technische Identifier basiert und nicht die urn:nbn:de:xyz-1-20131008367735).
-# Das zweite Paket wird eingeliefert, unter demselben Originalnamen wie das erste Paket.&nbsp;
-# Warten auf Mail.
-# Mailinhalt prüfen.
+1. Das erste Paket wird eingeliefert unter einem frei zu wählenden Originalnamen abgelegt. Warten auf Bestätigungsmail (Die Bestätigungsmail enthält eine URN die, auf dem technische Identifier basiert und nicht die urn:nbn:de:xyz-1-20131008367735).
+1. Das zweite Paket wird eingeliefert, unter demselben Originalnamen wie das erste Paket.&nbsp;
+1. Warten auf Mail.
+1. Mailinhalt prüfen.
 
 #### Akzeptanzkriterien:
 
@@ -148,11 +139,11 @@ Inhalt premis.xml des 2. Paketes
 
 
 
-## {color:#ff0000}Szenario&nbsp;AT-IV-3{color} {color:#000000}Nutzergesteuerte URN-Vergabe per METS - Datei{color}
+## Szenario AT-IV-3 Nutzergesteuerte URN-Vergabe per METS - Datei
 
-{color:#ff0000}Dieses Szenario ist nicht implementiert.&nbsp;{color}
+Dieses Szenario ist nicht implementiert.
 
-{color:#000000}Wir haben derzeit zwei Beispiele von Metadaten vorliegen bzw. ausgewählt, die sich lediglich minimal unterscheiden. In beiden Fällen ist innerhalb des Mets das oberste Objekt im METS-Baum durch eine dmdSec mit der entsprechenden ID beschreiben. Innerhalb dieser dmdSec findet man über mets:mdWrap\-{color}{color:#000000}{-}mets:xmlData{-}{color}{color:#000000}\-mods:identifier type=urn die entsprechende URN. Es wird diejenige dmdSec berücksichtitgt, welche dem obersten hierarchischen Element (siehe structMap) der METS-Datei entspricht.{color}
+Wir haben derzeit zwei Beispiele von Metadaten vorliegen bzw. ausgewählt, die sich lediglich minimal unterscheiden. In beiden Fällen ist innerhalb des Mets das oberste Objekt im METS-Baum durch eine dmdSec mit der entsprechenden ID beschreiben. Innerhalb dieser dmdSec findet man über mets:mdWrap\-{-}mets:xmlData{-}\-mods:identifier type=urn die entsprechende URN. Es wird diejenige dmdSec berücksichtitgt, welche dem obersten hierarchischen Element (siehe structMap) der METS-Datei entspricht.
 
 #### Testpaket(e):
 
@@ -163,11 +154,11 @@ Inhalt premis.xml des 2. Paketes
     data/(Weitere Primärdaten)
 {noformat}
 
-{color:#000000}{*}Inhalt export_mets.xml{*}{color}
+Inhalt export_mets.xml
 
-{color:#000000}Beispieldatensatz 1: Die im Februar 2015 (Mail&nbsp;WG: DA NRW / hier: Testszenario für Digitalisate aus dem LAV) vorgeschlagene Unterbringung der METS lautet wie folgt:{color}
+Beispieldatensatz 1: Die im Februar 2015 (Mail&nbsp;WG: DA NRW / hier: Testszenario für Digitalisate aus dem LAV) vorgeschlagene Unterbringung der METS lautet wie folgt:
 
-{noformat:nopanel=true}
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <mets:dmdSec ID="dmd35716">
@@ -179,21 +170,18 @@ Inhalt premis.xml des 2. Paketes
         </mets:xmlData>
         </mets:mdWrap>
     </mets:dmdSec>
-{noformat}
+```
 
-{color:#000000}Beispieldatensatz 2: Älterer Datensatz aus Zeiten vor der Projektübernahme LVR-Infokom{color}
+Beispieldatensatz 2: Älterer Datensatz aus Zeiten vor der Projektübernahme LVR-Infokom
 
-
-{noformat:nopanel=true}
+```xml
     <mets:dmdSec ID="md775911">
         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
             <mets:xmlData>
                 <mods xmlns="http://www.loc.gov/mods/v3" version="3.4"
                 xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd">
                     <identifier type="urn">urn:nbn:de:hbz:xyz</identifier>
-{noformat}
-
-
+```
 
 #### Vorbedingungen:
 
@@ -201,13 +189,13 @@ Inhalt premis.xml des 2. Paketes
 
 #### Durchführung:
 
-# Siehe Hintergrund.
-# In der Maske "Eingelieferte Objekte" das Objekt per technischem Identifier recherchieren.
+1. Siehe Hintergrund.
+1. In der Maske "Eingelieferte Objekte" das Objekt per technischem Identifier recherchieren.
 
 #### Akzeptanzkriterien:
 
-* In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN {color:#000000}{*}urn:nbn:de:hbz:xyz{*}{color}&nbsp;gelistet.
-* Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN{color:#ff0000}&nbsp;{color}{color:#000000}{*}urn:nbn:de:hbz:xyz{*}{color}{color:#ff0000}&nbsp;{color}zugewiesen wurde.
+* In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN urn:nbn:de:hbz:xyz gelistet.
+* Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN {color:#ff0000}&nbsp;{color}{color:#000000}{*}urn:nbn:de:hbz:xyz{*}{color}{color:#ff0000}&nbsp;{color}zugewiesen wurde.
 
 #### {color:#ff0000}offene Punkte{color}:
 
