@@ -89,17 +89,17 @@ h4. Akkzeptanzkriterien:
 
 
 
-| erstes Paket |  zweites Paket | alle Pakete |
-|---------------------|-----------------|--------------|
-| repname1+a/CCITT_1.TIF | vorhanden |  vorhanden |
-| repname1+a/CCITT_1_UNCOMPRESSED.TIF | vorhanden |  vorhanden |
-| repname1+a/CCITT_2.TIF | vorhanden |  vorhanden |
-| repname1+b/CCITT_1.TIF | vorhanden |  vorhanden |
-| repname1+b/CCITT_2.TIF | vorhanden |  vorhanden |
-| repname2+a/CCITT_2.TIF |  vorhanden  vorhanden |
-| repname2+a/CCITT_3.TIF |  vorhanden  vorhanden |
-| repname2+b/CCITT_2.TIF |  vorhanden  vorhanden |
-| repname2+b/CCITT_3.TIF |  vorhanden  vorhanden |
+|  | erstes Paket |  zweites Paket | alle Pakete |
+|-----------|---------------------|-----------------|--------------|
+| repname1+a/CCITT_1.TIF | vorhanden ||  vorhanden |
+| repname1+a/CCITT_1_UNCOMPRESSED.TIF | vorhanden ||  vorhanden |
+| repname1+a/CCITT_2.TIF | vorhanden |  vorhanden ||
+| repname1+b/CCITT_1.TIF | vorhanden |  vorhanden ||
+| repname1+b/CCITT_2.TIF | vorhanden |  vorhanden ||
+| repname2+a/CCITT_2.TIF || vorhanden |  vorhanden |
+| repname2+a/CCITT_3.TIF || vorhanden | vorhanden |
+| repname2+b/CCITT_2.TIF || vorhanden | vorhanden |
+| repname2+b/CCITT_3.TIF || vorhanden | vorhanden |
 
 
 
