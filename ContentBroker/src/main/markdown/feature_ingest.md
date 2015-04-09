@@ -15,7 +15,7 @@ Gilt für alle Szenarien:
 
 #### Vorbedingungen:
 
-* User ist unter der Rolle "Contractor" angemeldet/eingeloggt in der "DAWeb"
+* Der Nutzer ist unter der Rolle "Vertragspartner" angemeldet in der "DAWeb"
 
 #### Durchführung:
 
@@ -26,7 +26,6 @@ Gilt für alle Szenarien:
 1. Das Retrieval des Paketes per Button "Anfordern" für das entsprechende Paket anstoßen.
 1. Der User entnimmt das Paket dem User-Entnahmeordner.
 1. Der User entpackt das Paket und überprüft die Inhalten
-
 
 #### Akkzeptanzkriterien:
 
