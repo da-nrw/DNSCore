@@ -2,7 +2,6 @@
 
 Es gilt die Regel, das bei mehreren aufeinander folgenden Delta-Einlieferungen die Rechte des Contracts des zuletzt eingelieferten SIPs immer für das gesamte Objekt gelten. Streng genommen kann der Delta-Mechanismus so auch genutzt werden, um nur eine Contract-Datei nachzuliefern (leeres SIP, abgesehen von der premis.xml).&nbsp;
 
-
 ## Szenario AT-PD-1
 
 #### Kontext:
@@ -45,7 +44,7 @@ data/premis.xml (Publikationsbeschränkungen: Publikation für Öffentlichkeit n
 1. Warten auf die Bestätigungsmail.
 1. Im Fedora. Erneutes Prüfen der Ergebnisse.
 
-h4. Akzeptanzkriterien
+#### Akzeptanzkriterien
 
 * Nach der ersten Einlieferung: Im Presentation Repository: JPEG mit voller Auflösung (ca. 640x853px) vorhanden.
 * In der Objektansicht muss das Publikationsflag gesetzt sein.
@@ -55,7 +54,6 @@ h4. Akzeptanzkriterien
 * In der Objektansicht darf das Publikationsfloag nicht gesetzt sein.
 
 ## Status und offene Punkte:
-
 
 ####
 
