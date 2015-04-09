@@ -1,4 +1,4 @@
-h2. Leistungsmerkmal: Ingest Delta
+# Leistungsmerkmal: Ingest Delta
 
 Dieser Test fokussiert die für den User offensichtlichsten Aspekte des Delta-Mechanismus. Zum einen bezieht sich das auf die Erkennung eines Paketes als zu einem Objekt zugehörig (durch die Nameswahl per&nbsp;*OriginalName*). Zum anderen bezieht sich das auf die Regeln der Erstellung des DIP (Stichwort{*}Oberflächenansicht*).&nbsp;
 
