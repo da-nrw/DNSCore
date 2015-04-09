@@ -13,8 +13,8 @@ Gilt für alle Szenarien:
 
 #### Testpaket(e):
 
+[ATUseCaseIngest1.tgz](../src/test/resources/at/ATUseCaseIngest1.tgz)
 ```
-ATUseCaseIngest1.tgz
 [https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/test/resources/at/ATUseCaseIngest1.tgz?raw=true]
 ```
 
@@ -46,7 +46,7 @@ ATUseCaseIngest1.tgz
   Identifier/data/CCITT_2.TIF
 ``` 
 
-#### {color:#ff0000}Status und offene Punkte:{color}
+#### Status und offene Punkte:
 
 * Ist die Email für den Einlieferungsbeleg aussagekräftig?
 * Ist die Email für die Fertigstellung des SIP aussagekräftig? Weiss der User, was zu tun ist? Evtl. Dokumentation?
@@ -63,12 +63,8 @@ ATUseCaseIngest1.tgz
 
 #### Durchführung:
 
-
 h4. Akkzeptanzkriterien:
 
-
-h4. {color:#ff0000}Status und offene Punkte:{color}
-
-
+h4. Status und offene Punkte:
 
 h2.
