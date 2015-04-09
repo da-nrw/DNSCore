@@ -83,8 +83,8 @@ Inhalt premis.xml
 
 #### Durchführung:
 
-# Siehe Hintergrund.
-# In der Maske "Eingelieferte Objekte" das Objekt per technischem Identifier recherchieren.
+1. Siehe Hintergrund.
+1. In der Maske "Eingelieferte Objekte" das Objekt per technischem Identifier recherchieren.
 
 #### Akzeptanzkriterien:
 
