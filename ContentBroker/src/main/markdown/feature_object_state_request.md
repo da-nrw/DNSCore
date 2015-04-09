@@ -2,7 +2,7 @@
 
 Drittsysteme sollen die Möglichkeit haben, Informationen zu Objekten abzufragen. Es handelt sich primär um eine technische Schnittstelle. Die Antworten des Systems erfolgen als maschinenlesbarer JSON Code.
 
-# Szenario AT-ST-1: Statusabfrage eines fehlerfrei archivierten Pakets mit Originalname
+## Szenario AT-ST-1: Statusabfrage eines fehlerfrei archivierten Pakets mit Originalname
 
 ##### Vorbedingungen:
 
