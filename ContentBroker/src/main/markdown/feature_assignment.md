@@ -2,8 +2,8 @@
 
 In DNSCore gibt es verschiedene Objektbezogene Identifier.
 
-* Der technische Identifier, der systemweit eindeutig ist und automatisch vom System vergeben wird.{color}
-* Der Originalname des Paketes, der vom Vertragspartner vergeben wird. Dieser ist für den jeweiligen Vertragspartner eindeutig und macht ermöglicht eine Zuordnung von Deltas zu einem Objekt.{color}
+* Der technische Identifier, der systemweit eindeutig ist und automatisch vom System vergeben wird.
+* Der Originalname des Paketes, der vom Vertragspartner vergeben wird. Dieser ist für den jeweiligen Vertragspartner eindeutig und macht ermöglicht eine Zuordnung von Deltas zu einem Objekt.
 * Die URN. Diese wird entweder vom System automatisch generiert oder wird vom Vertragspartner vergeben.
 
 Die URN wird in jedem Fall nur einmal vergeben. Im Falle von Deltas wird die URN nicht abgeändert.
@@ -255,26 +255,23 @@ Aus der StructMap geht dabei hervor, dass beide Teilobjekte (dmd35717,dmd35716) 
 
 
 
-## {color:#ff0000}Szenario&nbsp;AT-IV-4{color} {color:#000000}Präzedenzregelung bei mitgelieferter URN in METS und PREMIS{color}
+## Szenario AT-IV-4 Präzedenzregelung bei mitgelieferter URN in METS und PREMIS
 
-{color:#ff0000}Dieses Szenario ist nicht implementiert.{color} {color:#000000}Es befindet sich derzeit in der Konzeptionsphase.&nbsp;{color}
+Dieses Szenario ist nicht implementiert. Es befindet sich derzeit in der Konzeptionsphase.
 
-{color:#ff0000}{*}Vorschlag 1 :*{color} {color:#ff0000}Eine URN wird der anderen vorgezogen (z.B. die PREMIS hat Vorrang):{color}
-
-{color:#ff0000}{*}Vorschlag 2{*}{color}{color:#ff0000}: Eine{color} {color:#ff0000}Benutzerfehlermeldung{color} {color:#ff0000}wird vom System ausgegeben. Das Paket wird abgelehnt.{color}
+* Vorschlag 1 : Eine URN wird der anderen vorgezogen (z.B. die PREMIS hat Vorrang):
+* Vorschlag 2 : Eine Benutzerfehlermeldung wird vom System ausgegeben. Das Paket wird abgelehnt.
 
 #### Testpaket(e):
 
-{noformat:nopanel=true}
-  (GitHub) Testpaket enhält
-    data/export_mets.xml
-    data/premis.xml
-    data/(Weitere Primärdaten)
-{noformat}
+*  (GitHub) Testpaket enhält
+**  data/export_mets.xml
+**  data/premis.xml
+**  data/(Weitere Primärdaten)
 
-{color:#000000}{*}Inhalt export_mets.xml{*}{color}
+Inhalt export_mets.xml
 
-{noformat:nopanel=true}
+```xml
     <?xml version="1.0" encoding="UTF-8"?>
     <mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <mets:dmdSec ID="dmd35716">
@@ -284,20 +281,16 @@ Aus der StructMap geht dabei hervor, dass beide Teilobjekte (dmd35717,dmd35716) 
         <mods:titleInfo>
             <mods:title>Nr. 1</mods:title>
         </mods:titleInfo>
-        <mods:identifier type="VERA dockey">Vz f30cfb5b-f914-4973-a5cf-04e110ad55c9</mods:identifier>
         <mods:identifier type="urn">urn:nbn:de:danrw:de2190-f30cfb5b-f914-4973-a5cf-04e110ad55c9[Prüfziffer]</mods:identifier>
-        <mods:relatedItem>
-            <mods:identifier>Best 1b70eccc-bb1c-43a2-b402-14df11310578</mods:identifier>
-        </mods:relatedItem>
         </mods:mods>
         </mets:xmlData>
         </mets:mdWrap>
     </mets:dmdSec>
-{noformat}
+```
 
+Inhalt premis.xml
 
-*Inhalt premis.xml*
-
+``` 
 {noformat:nopanel=true}
     <object xsi:type="representation">
     <objectIdentifier>
@@ -305,8 +298,7 @@ Aus der StructMap geht dabei hervor, dass beide Teilobjekte (dmd35717,dmd35716) 
         <objectIdentifierValue>urn:nbn:de:xyz-1-20131008367735</objectIdentifierValue>
     </objectIdentifier>
     </object>
-
-{noformat}
+```
 
 #### Vorbedingungen:
 
@@ -314,7 +306,7 @@ Aus der StructMap geht dabei hervor, dass beide Teilobjekte (dmd35717,dmd35716) 
 
 #### Durchführung:
 
-# Siehe Hintergrund.
+* Siehe Hintergrund.
 
 #### Akzeptanzkriterien: (Vorschlag 1)
 
