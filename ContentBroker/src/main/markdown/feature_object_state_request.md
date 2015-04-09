@@ -1,12 +1,12 @@
-# Szenario&nbsp;{color:#00ff00}AT-ST-1{color}*: Statusabfrage eines fehlerfrei archivierten Pakets mit Originalname*
-
+# Szenario AT-ST-1: Statusabfrage eines fehlerfrei archivierten Pakets mit Originalname
 
 #### Kontext:
 
 * Drittsysteme sollen die Möglichkeit haben, Informationen zu Objekten abzufragen. Es handelt sich primär um eine technische Schnittstelle. Die Antworten des Systems erfolgen als maschinenlesbarer JSON Code.
 
-Vorbedingungen:
-* Der User hat einen Account und ist unter der Rolle "Contractor" eingeloggt in der DA-WEB.
+##### Vorbedingungen:
+
+* Der Nutzer hat einen Account und ist unter der Rolle "Vertragspartner" eingeloggt in der DA-WEB.
 * Der User hat mindestens ein beliebiges Paket eingespielt, welches fertig archiviert ist.
 * Dem User liegen URN, Identifier und originalName vor.
 * Der User hat die Möglichkeit die Links vorher in richtiger Art und Weise zu konstruieren.
