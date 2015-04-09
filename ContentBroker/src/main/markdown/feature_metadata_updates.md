@@ -2,7 +2,6 @@
 
 Dieser Basistest zeigt, ob über den gesamten Workflow hinweg, die korrekten Metadatananpassungen für die&nbsp;*Präsentation*&nbsp;vorgenommen wurden. Dies ist wichtig, um abschätzen zu können, ob die Metadaten den Anforderungen genügen, um von externen Viewern, im Falle von METS/MODS DFGViewer, angezeigt werden zu können.
 
-
 #### Kontext
 
 * [https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/2015-01-14_Metadaten_in_DA-NRW.pdf?raw=true]
@@ -18,9 +17,9 @@ gilt für alle Szenarien\!
 
 #### Durchführung:
 
-# Das jeweilige Tespaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "[Verarbeitung für abgelieferte SIP starten|https://da-nrw-q.lvr.de/daweb3/incoming/index]")
-# Warten auf die Bestätigungsemail für die erfolgreiche Einlieferung.
-# Einsichtnahme in die DAWeb Ansicht "eingelieferte Objekte"
+1. Das jeweilige Tespaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "[Verarbeitung für abgelieferte SIP starten|https://da-nrw-q.lvr.de/daweb3/incoming/index]")
+1. Warten auf die Bestätigungsemail für die erfolgreiche Einlieferung.
+1. Einsichtnahme in die DAWeb Ansicht "eingelieferte Objekte"
 
 ## Szenario AT-ADM-1 METS/MODS
 
@@ -90,10 +89,10 @@ Auszug aus der export_mets.xml:
 
 #### Durchführung:
 
-# s.o
-# Das Objekt zum Retrieval anfordern, die Bestätigungsmail dafür abwarten.
-# Das DIP aus dem Outgoing-Ordner entnehmen und lokal enpacken.
-# Einsichtnahme in die TODO Datei nehmen
+1. s.o
+1. Das Objekt zum Retrieval anfordern, die Bestätigungsmail dafür abwarten.
+1. Das DIP aus dem Outgoing-Ordner entnehmen und lokal enpacken.
+1. Einsichtnahme in die TODO Datei nehmen
 
 #### Akzeptanzkriterien:
 
