@@ -62,10 +62,13 @@ Gilt für alle Szenarien!
 * Der Einlieferungsbeleg enthält einen klaren Hinweis darauf, dass es sich um eine Delta-Lieferung zu einem bekannten Objekt handelt.
 * Der in der Mail erwähnte technische Identifier entspricht dem in Test AT-1a erhaltenen.
 * Das über die Ansicht "eingelieferte Objekte" zurückgeholte Paket muss nach dem Entpacken&nbsp;*exakt*&nbsp;die folgende Inhalte aufweisen:
-** Identifier/data/CCITT_1.TIF
-** Identifier/data/CCITT_1_UNCOMPRESSED.TIF
-** Identifier/data/CCITT_2.TIF
-** Identifier/data/CCITT_3.TIF
+
+``` 
+  Identifier/data/CCITT_1.TIF
+  Identifier/data/CCITT_1_UNCOMPRESSED.TIF
+  Identifier/data/CCITT_2.TIF
+  Identifier/data/CCITT_3.TIF
+```
 
 ## Szenario: AT-UCID-2 Versioniertes Retrieval. Alle Packages
 
