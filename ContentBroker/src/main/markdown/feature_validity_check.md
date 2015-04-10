@@ -26,8 +26,8 @@ Dokumentennamen bezeichnen Datein innerhalb eines Objektes eindeutig. Eine Datei
 
 #### Testpaket(e):
 
-* ATDuplicateDocumentName.tgz
 ```
+ATDuplicateDocumentName.tgz
 ATDuplicateDocumentName/data/a.tif // Dokumentenname "a"
 ATDuplicateDocumentName/data/a.jpg // Dokumentenname "a"
 ATDuplicateDocumentName/data/premis.xml
