@@ -25,7 +25,7 @@ Ingest beschreibt den Prozess der Übergabe eines SIP an das System bzw. die Üb
 
 #### Erfolgreiche Einlieferung
 
-Der Einlieferungsbeleg für ein erfolgreich eingeliefertes Paket sieht aus wie in folgendem Beispiel.
+Der Einlieferungsbeleg für ein erfolgreich eingeliefertes Paket sieht aus wie in folgendem Beispiel:
 
 ```
 Betreff: [DA-NRW] Einlieferungsbeleg für 2-20150409419938
@@ -38,6 +38,15 @@ wurde erfolgreich im [DA-NRW] archiviert.
 Identifier: 2-20150409419938
 URN: urn:nbn:de:danrw-2-20150409419938
 ```
+
+Ein Einlieferungsbeleg in dieser Form signalisiert die Erfolgreiche Übernahme des SIP durch das System und die Umformung
+des Paketes zu einem AIP und dessen geographische Verteilung. Das Paket kann untersteht nun der Kontrolle des Systemes hinsichtlich aller notwendiger Maßnahmen seines langfristigen Erhaltes.
+
+Der Einlieferungsbeleg enthält folgende Informationen:
+
+* Technischer Identifier
+* URN
+* Originalname
 
 #### Fehler bei der Verarbeitung
 
