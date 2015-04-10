@@ -62,7 +62,7 @@ Vielfältige Regeln definieren, in welcher Form Metadatendateien innerhalb eines
 ATDuplicateMetadataFiles.tgz
 ->
 ATDuplicateMetadataFiles/data/vda3_copy.XML // EAD Datei 1
-ATDuplicateMetadataFiles/data/vda3.XML &nbsp; &nbsp; &nbsp; &nbsp; // EAD Datei 2
+ATDuplicateMetadataFiles/data/vda3.XML // EAD Datei 2
 ATDuplicateMetadataFiles/data/abc.tif
 ATDuplicateMetadataFiles/data/premis.xml
 ```
