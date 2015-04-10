@@ -4,10 +4,10 @@ Beschreibung:
 
 #### Kontext
 
-* Beschreibung von Documents im Objekt-Modell:&nbsp;[https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md]
-* Beschreibung von Documents und Oberflächenansicht:&nbsp;[https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/the_delta_feature.md]
-* Beschreibung von Documents in SIP-Spezifikation:&nbsp;[https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_sip.md]
-* Beschreibung von Documents in SIP-Spezifikation:&nbsp;[https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_sip.de.md]
+* [Objekt-Modell](object_model.md) (Documents im Objekt-Modell)
+* Beschreibung von Documents und Oberflächenansicht: [https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/the_delta_feature.md]
+* Beschreibung von Documents in SIP-Spezifikation: [https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_sip.md]
+* Beschreibung von Documents in SIP-Spezifikation: [https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_sip.de.md]
 
 ## Hintergrund:
 
