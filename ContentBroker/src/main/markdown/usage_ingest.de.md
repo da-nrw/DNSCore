@@ -1,13 +1,25 @@
-## Ingest 
+# Ingest 
 
-The following chapter describes manual ingestion of SIP. Automatic ingestion is possible via the 
-internal interface of CB. Please refer to CB's documentation. 
+Ingest beschreibt den Prozess der Übergabe eines SIP an das System bzw. die Übernahme des SIP durch das System.
 
-### Manual ingestion of SIP 
+## Manueller Ingest
 
-The ingest of SIPs into the system by users is done in two steps. First users upload their
-package onto a file share to their node. This step relies on technical configurations
-(transport protocol: for example WEBDav, SFTP)
+### Voraussetzungen
+
+* Der Vertragspartner ist mit seinen Zugangsdaten an der DAWeb Oberfläche eingeloggt. 
+* Der Vertragspartner ist per FileShare Client (z.B. FileZilla) mit dem ihm zugeteilten Nutzungsbereich auf dem Server verbunden, der für die Datenübernahme an seinem Knoten vorgesehen ist. 
+* Der Vertragspartner besitzt auf seinem lokalen Rechner ein fertiges SIP. 
+
+### Probleme
+
+* Keine Zugangsdaten für die DAWeb Oberfläche. Der Vertragspartner sollte sich an den jeweils zuständigen Betreiber wenden. Die Zugangsdaten werden dem Vertragspartner durch den zuständigen Administrator übermittelt.
+* Keine Zugangsdaten für den Nutzungsbereich. Der Vertragspartner sollte sich an den jeweils zuständigen Betreiber wenden. Die Zugangsdaten werden dem Vertragspartnern durch den zuständigen Administrator übermittelt.
+
+### Weiterführende Links
+
+* Erstellung von SIPs mit Hilfe des SIP-Builder
+* SIP-Spezifikation
+
  of the node which the administrator provides and which are based on an agreement 
 between the node owner and the contractors which deliver content to this node. 
 Because of this the specific transport protocol cannot be part of the documentation of
