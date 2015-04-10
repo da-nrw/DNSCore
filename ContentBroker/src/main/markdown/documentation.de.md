@@ -74,6 +74,7 @@ Die aufgeführten Dokumente geben Hinweise zur Fehlerbehebung bei der Knotenadmi
 
 Um DNSCore effektiv bauen, testen und ausliefern zu können, sollten die folgenden Dokus gelesen werden:
 
+* Auflistung der Features ([deutsch](features.de.md))
 * Bauen und Testen der DNSCore ([englisch](development_deploy.md))
 * Bauen und Ausliefern DAWeb ([english](../../../../DAWeb/doc/setup.md))
 * Aufsetzen von Continuous Integration für DNSCore builds ([englisch](development_setting_up_ci.md))
