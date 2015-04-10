@@ -34,11 +34,11 @@ import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
 
 /**
- * Relates to AK-T/02 Ingest - Alternative Szenarien.
+ * <a href="../../../../src/main/markdown/feature_ingest_validation.md">Feature Description</a>
+ * 
  * @author Daniel M. de Oliveira
- *
  */
-public class ATUseCaseIngestValidationNotPassed extends AcceptanceTest{
+public class ATIngestValidation extends AcceptanceTest{
 
 	private static final String AT_DUPLICATE_DOCUMENT_NAME = "ATDuplicateDocumentName";
 	private static final String AT_EINE_DATEI_GELOESCHT = "ATEineDatei_geloescht";
