@@ -32,7 +32,8 @@ Betreff: [DA-NRW] Einlieferungsbeleg für 2-20150409419938
 
 Inhalt:
 
-Ihr eingeliefertes Paket mit dem Namen "FT-EAD-001_Diesdas_1Ebene_2015-04-08" wurde erfolgreich im DA-NRW archiviert.
+Ihr eingeliefertes Paket mit dem Namen "FT-EAD-001_Diesdas_1Ebene_2015-04-08" 
+wurde erfolgreich im [DA-NRW] archiviert.
 
 Identifier: 2-20150409419938
 URN: urn:nbn:de:danrw-2-20150409419938
