@@ -3,9 +3,9 @@
 Ingest und Retrieval sind die basalen Workflows der DNSCore aus der Sicht der Endnutzer (Rolle Vertragspartner).
 Beim Ingest übergibt der Nutzer dem System ein SIP zur Übernahme. Beim Retrieval wird ein DIP angefordert und entnommen.
 
-* [SIP-Spezifikation](specification_sip.de.md)
 * [DIP-Spezifikation](specification_dip.md)
-* Endnutzer-Dokumentation [Einlieferung und Entnahme](https://github.com/da-nrw/DNSCore/blob/master/DAWeb/doc/manual_ingest_and_retrieval.md)
+* Endnutzer-Dokumentation [Einlieferung](usage_ingest.de.md)
+* Endnutzer-Dokumentation [Retrieval](usage_retrieval.de.md)
 
 Gilt für alle Szenarien:
 
