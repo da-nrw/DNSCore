@@ -60,20 +60,8 @@ URN: urn:nbn:de:danrw-2-20150409419938
 
 
 
-The packages are then transported via the transport protocol of choice to the 
-[UserArea](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md#userarea). While UserArea is the technical term for the incoming
-storage space, contractors only have to think of it as their web share to the system.
-The contents of their respective webshare can be seen by contractors directly when
-they upload their content with a tool of choice (for example FileZilla for SFTP),
-but also is presented by DAWeb, where the second step of manual ingest takes place.
-Here users can mark packages as ready for ingest, which DAWeb then signals to the 
-other components of the node, which then extract the package from the share for 
-further processing.
-
-##### Steps
-
 ![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/ingest_1.png)
-<br><sub>Start the ingest after uploading</sub>
+
 
 **Note** that users are able to monitor the package while beeing processed.
 This is an advanced feature which is only optional and primarily targeted at 
