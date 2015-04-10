@@ -9,7 +9,7 @@ Beim Ingest übergibt der Nutzer dem System ein SIP zur Übernahme. Beim Retriev
 
 Gilt für alle Szenarien:
 
-## Szenario AT-UCI-1 Basistest - Ingest und Retrieval
+## Szenario AT-IR-1 Basistest - Ingest und Retrieval
 
 #### Testpaket(e):
 
@@ -51,7 +51,7 @@ Gilt für alle Szenarien:
 * Automatisierte Aspekte:
 ** Die PREMIS-Datei wird automatisch geprüft in&nbsp;ATUseCaseIngestPREMISCheck#testProperPREMISCreation
 
-## Szenario: AT-UCI-2: Generierung der PREMIS-Datei
+## Szenario: AT-IR-2: Generierung der PREMIS-Datei
 
 #### Testpaket(e):
 
