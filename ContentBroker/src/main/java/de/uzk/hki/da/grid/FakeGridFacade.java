@@ -52,23 +52,27 @@ public class FakeGridFacade implements GridFacade {
 
 	@Override
 	public boolean put(File file, String address_dest, StoragePolicy sp) throws IOException {
-		if (!address_dest.startsWith("/")) address_dest = "/"+address_dest;
+		
+		if (!address_dest.startsWith(C.FS_SEPARATOR)) address_dest = C.FS_SEPARATOR + address_dest;
+		
 		String dest = getGridCacheAreaRootPath()+ C.WA_AIP + address_dest;
-		logger.debug("putting: "+file+" to "+dest);
+		logger.debug("Putting: "+file+" to "+dest);
 		FileUtils.copyFile(file, new File(dest));
-		return true;
+		return true;	
 
 	}
 
 	@Override
 	public void get(File destination, String sourceFileAdress)
 			throws IOException {
-		if (!sourceFileAdress.startsWith("/")) sourceFileAdress = "/"+sourceFileAdress;
-		String source =  getGridCacheAreaRootPath() + sourceFileAdress;
-		logger.debug("retrieving: " + source + " to " + destination);
+		
+		if (!sourceFileAdress.startsWith(C.FS_SEPARATOR)) sourceFileAdress = C.FS_SEPARATOR + sourceFileAdress;
+		
+		String source =  getGridCacheAreaRootPath() + C.WA_AIP + sourceFileAdress;
+		logger.debug("Retrieving: " + source + " to " + destination);
 		FileUtils.copyFile(new File(source),destination);
 	}
-
+	
 	@Override
 	public boolean isValid(String address_dest) {
 		File custodyFile =  new File (getGridCacheAreaRootPath()+address_dest);
