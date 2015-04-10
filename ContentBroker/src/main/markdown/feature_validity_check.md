@@ -1,24 +1,35 @@
 # Leistungsmerkmal: Validierung der Einlieferung
 
-Beschreibung:
+Die vom Vertragspartner eingelieferten, zur Übernahme durch das System vorgesehenen, SIPs
+werden zu Beginn ihrer Umwandlung in für die Langzeitarchivierung geeignete AIPs, in mehrerer Hinsicht
+geprüft. 
+
+Dazu gehört vor allem eine Prüfung hinsichtlich der Verwendung von eindeutigen Dokumentennamen. Die Eindeutigkeit von
+Dokumentennamen ist eine wichtige Voraussetzung für die Tauglichkeit von SIPs für die Aufbereitung zur Langzeitarchivierung
+ihrer Inhalte.
 
 #### Kontext
 
 * [Objekt-Modell](object_model.md) (Documents im Objekt-Modell)
+* Informationen zu Dokumenten in der [SIP-Spezifikation](specification_sip.de.md)
 * Beschreibung von Documents und Oberflächenansicht: [https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/the_delta_feature.md]
-* Beschreibung von Documents in SIP-Spezifikation: [https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_sip.md]
-* Beschreibung von Documents in SIP-Spezifikation: [https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_sip.de.md]
 
 ## Hintergrund:
 
+Die hier aufgeführten Unterpunkte gelten für alle Szenarien gleichermaßen.
+
 #### Vorbedingungen:
 
-* User ist unter der Rolle "Contractor" angemeldet/eingeloggt in der "DAWeb"
-* Das Testpaket wird eingespielt.
+* Der Nutzer ist in der DAWeb in der Rolle "Vertragspartner" eingeloggt.
+* Der Nutzer ist mit einem FileShare Client mit dem entsprechenden für ihn reservierten Nutzungsbereich auf dem Verarbeitungsknoten verbunden.
+
+#### Durchführung:
+
+1. Das Testpaket wird eingespielt.
 
 ## Szenario: AT-V-1 Doppelter Dokumentenname
 
-Dokumentennamen bezeichnen Datein innerhalb eines Objektes eindeutig. Eine Datei a.jpg und ihr durch Konversion erzeugter Nachfolger a.tif teilen den Dokumentennamen "a". Aber auch eine durch Delta hinzugefügte Datei a.pdf würde den Dokumentennamen teilen. Dokumentennamen müssen eindeutig innerhalb von Objekten sein. Das System weist daher doppelte Dokumentennnamen zurück und informiert den User per Email.
+Dokumentennamen bezeichnen Dateien innerhalb eines Objektes eindeutig. Eine Datei a.jpg und ihr durch Konversion erzeugter Nachfolger a.tif teilen den Dokumentennamen "a". Aber auch eine durch Delta hinzugefügte Datei a.pdf würde den Dokumentennamen teilen. Dokumentennamen müssen eindeutig innerhalb von Objekten sein. Das System weist daher doppelte Dokumentennnamen zurück und informiert den User per Email.
 
 #### Kontext:
 
