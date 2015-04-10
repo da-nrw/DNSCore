@@ -43,7 +43,7 @@ Gilt für alle Szenarien!
 1. Sobald der Einlieferungsbeleg eingetroffen ist, wird das zweite Paket eingeliefert, und zwar mit dem selben OriginalName (für das entsprechende Szenario) wie das erste Paket eingeliefert wurde.
 1. Erneut warten auf den Einlieferungsbeleg.
 
-## Szenario: AT-UCID-1 Ingest und Retrieval
+## Szenario: AT-DIR-1 Ingest und Retrieval
 
 #### Testpaket(e):
 
