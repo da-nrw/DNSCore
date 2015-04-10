@@ -14,8 +14,7 @@ Beschreibung:
 #### Vorbedingungen:
 
 * User ist unter der Rolle "Contractor" angemeldet/eingeloggt in der "DAWeb"
-
-# Das Testpaket wird eingespielt.
+* Das Testpaket wird eingespielt.
 
 ## Szenario: AT-V-1 Doppelter Dokumentenname
 
