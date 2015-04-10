@@ -19,9 +19,29 @@ Ingest beschreibt den Prozess der Übergabe eines SIP an das System bzw. die Üb
 3. In dieser Maske sollte nun das im "incoming" Ordner abgelegte SIP namentlich aufgeführt sein.
 4. Der Vertragspartner markiert dieses Paket mit einem Häkchen für die Verarbeitung und betätigt den "Starten" Button am unteren Ende der Seite.
 5. Der Eintrag für das Paket verschwindet jetzt, was die gestartete Verarbeitung signalisiert.
-6. Der Vertragspartner wartet auf den Email-Report, welcher über den Status der Einlieferung informiert.
+6. Der Vertragspartner wartet auf den Einlieferungsbeleg (Eingang per Email), welcher über den Status der Einlieferung informiert.
 
 ### Der Email-Report
+
+#### Erfolgreiche Einlieferung
+
+Der Einlieferungsbeleg für ein erfolgreich eingeliefertes Paket sieht aus wie in folgendem Beispiel.
+
+```
+Betreff: [DA-NRW] Einlieferungsbeleg für 2-20150409419938
+
+Inhalt:
+
+Ihr eingeliefertes Paket mit dem Namen "FT-EAD-001_Diesdas_1Ebene_2015-04-08" wurde erfolgreich im DA-NRW archiviert.
+
+Identifier: 2-20150409419938
+URN: urn:nbn:de:danrw-2-20150409419938
+```
+
+#### Fehler bei der Verarbeitung
+
+#### Entscheidung notwendig
+
 
 
 ### Probleme bei der Einlieferung.
