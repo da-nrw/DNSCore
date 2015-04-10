@@ -39,7 +39,14 @@ gilt für alle Szenarien!
 ````
 
 Auszug aus der export_mets.xml:
-<mets:file MIMETYPE="image/x-ms-bmp" CHECKSUM="03f9e40fb0594c903a2cd22465697624cdedc1d3" CREATED="2011-11-08T17:37:37Z" CHECKSUMTYPE="SHA-1" SIZE="15619556" ID="IMG801636"><mets:FLocat xlink:href="image/801636.bmp" LOCTYPE="URL"/></mets:file>
+
+```xml
+<mets:file MIMETYPE="image/x-ms-bmp" 
+  CHECKSUM="03f9e40fb0594c903a2cd22465697624cdedc1d3" CREATED="2011-11-08T17:37:37Z" 
+  CHECKSUMTYPE="SHA-1" SIZE="15619556" ID="IMG801636">
+  <mets:FLocat xlink:href="image/801636.bmp" LOCTYPE="URL"/>
+</mets:file>
+```
 
 #### Vorbedingungen:
 
@@ -60,16 +67,21 @@ Auszug aus der export_mets.xml:
 * Das DIP enthält&nbsp;*NICHT*&nbsp;die Datei image/801636.bmp
 * In der export_mets.xml wurde die entsprechende Referenz angepasst (Achten auf image/801636.*tif*&nbsp;und*&nbsp;*image/*tiff*):
 
-```
-* <mets:file MIMETYPE="image/tiff" ....... ><mets:FLocat xlink:href="image/801636.tif" LOCTYPE="URL"/></mets:file>
+```xml
+<mets:file MIMETYPE="image/tiff" ....... >
+  <mets:FLocat xlink:href="image/801636.tif" LOCTYPE="URL"/>
+</mets:file>
 ``` 
 
 * Das Publikations Icon in der Ansicht "eingelieferte Objekte" ist gesetzt. Über den Link kann das öffentliche PIP angesehen werden.
 * Das PIP enthält einen Metadatenstream&nbsp;_bee84f142bba34a1036ecc4667b54615.jpg
 * Das PIP enthält den Metadatenstream METS.xml
 * Der Metadatenstream METS.xml enthält die angepasste Referenz:
-``` 
-* <mets:file MIMETYPE="image/jpeg" ...... ><mets:FLocat xlink:href="http://danrw-q-repo.hbz-nrw.de/file/[identifier]/_bee84f142bba34a1036ecc4667b54615.jpg" LOCTYPE="URL"/></mets:file>
+
+```xml 
+<mets:file MIMETYPE="image/jpeg" ...... >
+  <mets:FLocat xlink:href="http://servername/file/[identifier]/_bee84f142bba34a1036ecc4667b54615.jpg" ... />
+</mets:file>
 ``` 
 * Das //identifier// ist der technische Identifier des Objektes.
 

@@ -1,50 +1,76 @@
-## Ingest 
+# Ingest 
 
-The following chapter describes manual ingestion of SIP. Automatic ingestion is possible via the 
-internal interface of CB. Please refer to CB's documentation. 
+Ingest beschreibt den Prozess der Übergabe eines SIP an das System bzw. die Übernahme des SIP durch das System.
 
-### Manual ingestion of SIP 
+## Manueller Ingest
 
-The ingest of SIPs into the system by users is done in two steps. First users upload their
-package onto a file share to their node. This step relies on technical configurations
-(transport protocol: for example WEBDav, SFTP)
- of the node which the administrator provides and which are based on an agreement 
-between the node owner and the contractors which deliver content to this node. 
-Because of this the specific transport protocol cannot be part of the documentation of
-DNSCore.
-The packages are then transported via the transport protocol of choice to the 
-[UserArea](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/processing_stages.md#userarea). While UserArea is the technical term for the incoming
-storage space, contractors only have to think of it as their web share to the system.
-The contents of their respective webshare can be seen by contractors directly when
-they upload their content with a tool of choice (for example FileZilla for SFTP),
-but also is presented by DAWeb, where the second step of manual ingest takes place.
-Here users can mark packages as ready for ingest, which DAWeb then signals to the 
-other components of the node, which then extract the package from the share for 
-further processing.
+### Voraussetzungen
 
-#### Ingest Step by Step
+* Der Vertragspartner hat einen Rechner mit Internetverbindung.
+* Der Vertragspartner ist mit seinen Zugangsdaten an der DAWeb Oberfläche eingeloggt. 
+* Der Vertragspartner ist per FileShare Client (z.B. FileZilla) mit dem ihm zugeteilten Nutzungsbereich auf dem Server verbunden, der für die Datenübernahme an seinem Knoten vorgesehen ist. 
+* Der Vertragspartner besitzt auf seinem lokalen Rechner ein fertiges SIP. 
 
-##### Prerequisites
+### Schritte
 
-1. You have recieved log in data for the system by an administrator.
-2. You have recieved log in data for the web share for your node by an administrator.
-3. You have mounted the webshare on your local box or installed a file transfer program.
+1. Der Vertragspartner legt das SIP mit Hilfe des FileShare Client im Ordner "incoming" auf seinem Nutzungsbereich ab.
+2. Der Vertragspartner wartet, bis die Übertragung abgeschlossen ist.
+2. Der Vertragspartner öffnet die DAWeb-Maske "Startseite"->"Verarbeitung für abgelieferte SIP starten".
+3. In dieser Maske sollte nun das im "incoming" Ordner abgelegte SIP namentlich aufgeführt sein.
+4. Der Vertragspartner markiert dieses Paket mit einem Häkchen für die Verarbeitung und betätigt den "Starten" Button am unteren Ende der Seite.
+5. Der Eintrag für das Paket verschwindet jetzt, was die gestartete Verarbeitung signalisiert.
+6. Der Vertragspartner wartet auf den Einlieferungsbeleg (Eingang per Email), welcher über den Status der Einlieferung informiert.
 
-##### Steps
+### Der Email-Report
 
-1. Choose a package for upload.
-1. Mount your webshare on your box or open and log in into your file transfer program.
-1. Upload the package to the incoming directory of your webshare.
-1. Wait until the tranfer of the package has been completed.
-1. Log into DAWeb on your node.
-1. Click "Verarbeitung für abgelieferte SIP starten" on your starting screen.
-1. Mark the package your uploaded and hit "Start" (see graphic below)
-1. Verify that the entry for the file disappears.
-1. Wait for an email which informs you about success or failure of the ingest process.
+#### Erfolgreiche Einlieferung
+
+Der Einlieferungsbeleg für ein erfolgreich eingeliefertes Paket sieht aus wie in folgendem Beispiel:
+
+```
+Betreff: [DA-NRW] Einlieferungsbeleg für 2-20150409419938
+
+Inhalt:
+
+Ihr eingeliefertes Paket mit dem Namen "FT-EAD-001_Diesdas_1Ebene_2015-04-08" 
+wurde erfolgreich im [DA-NRW] archiviert.
+
+Identifier: 2-20150409419938
+URN: urn:nbn:de:danrw-2-20150409419938
+```
+
+Ein Einlieferungsbeleg in dieser Form signalisiert die Erfolgreiche Übernahme des SIP durch das System und die Umformung
+des Paketes zu einem AIP und dessen geographische Verteilung. Das Paket kann untersteht nun der Kontrolle des Systemes hinsichtlich aller notwendiger Maßnahmen seines langfristigen Erhaltes.
+
+Der Einlieferungsbeleg enthält folgende Informationen:
+
+* Technischer Identifier
+* URN
+* Originalname
+
+#### Fehler bei der Verarbeitung
+
+#### Entscheidung notwendig
+
+
+
+### Probleme bei der Einlieferung.
+
+* Keine Zugangsdaten für die DAWeb Oberfläche. Der Vertragspartner sollte sich an den jeweils zuständigen Betreiber wenden. Die Zugangsdaten werden dem Vertragspartner durch den zuständigen Administrator übermittelt.
+* Keine Zugangsdaten für den Nutzungsbereich. Der Vertragspartner sollte sich an den jeweils zuständigen Betreiber wenden. Die Zugangsdaten werden dem Vertragspartnern durch den zuständigen Administrator übermittelt.
+* Ausbleiben des Email-Report. Sollte nach einem oder zwei Tagen der Email-Report ausbleiben, sollte sich der Vertragspartner an den jeweils zuständigen Betreiber wenden. Die Ursachen hierfür sind vom Betreiber zu klären.
+
+### Weiterführende Links
+
+* Erstellung von SIPs mit Hilfe des SIP-Builder
+* [SIP-Spezifikation](specification_sip.de.md)
+
+
+
 
 
 ![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/ingest_1.png)
-<br><sub>Start the ingest after uploading</sub>
+
 
 **Note** that users are able to monitor the package while beeing processed.
 This is an advanced feature which is only optional and primarily targeted at 

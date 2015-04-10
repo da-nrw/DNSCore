@@ -30,7 +30,8 @@ Hier befinden sich alle Dokus, die Grundkonzepte der Langzeitarchivierung im Kon
 
 Dieser Bereich wendet sich an die Anwender der DNSCore Lösung für Langzeitarchivierung.
 
-* Ingest und Retrieval ([englisch](../../../../DAWeb/doc/manual_ingest_and_retrieval.md))
+* Ingest ([deutsch](usage_ingest.de.md))
+* Retrieval ([deutsch](usage_retrieval.de.md))
 
 #### Bereitstellungen von Dienstleistungen an Endnutzer<br>[Systemadministratoren / Knotenadministratoren / Betreiber]
 
@@ -73,6 +74,7 @@ Die aufgeführten Dokumente geben Hinweise zur Fehlerbehebung bei der Knotenadmi
 
 Um DNSCore effektiv bauen, testen und ausliefern zu können, sollten die folgenden Dokus gelesen werden:
 
+* Auflistung der Features ([deutsch](features.de.md))
 * Bauen und Testen der DNSCore ([englisch](development_deploy.md))
 * Bauen und Ausliefern DAWeb ([english](../../../../DAWeb/doc/setup.md))
 * Aufsetzen von Continuous Integration für DNSCore builds ([englisch](development_setting_up_ci.md))
