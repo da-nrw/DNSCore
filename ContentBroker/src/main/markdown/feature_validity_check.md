@@ -28,6 +28,7 @@ Dokumentennamen bezeichnen Datein innerhalb eines Objektes eindeutig. Eine Datei
 
 ```
 ATDuplicateDocumentName.tgz
+->
 ATDuplicateDocumentName/data/a.tif // Dokumentenname "a"
 ATDuplicateDocumentName/data/a.jpg // Dokumentenname "a"
 ATDuplicateDocumentName/data/premis.xml
@@ -59,11 +60,11 @@ Vielfältige Regeln definieren, in welcher Form Metadatendateien innerhalb eines
 
 ```
 ATDuplicateMetadataFiles.tgz
-  [https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/test/resources/at/ATDuplicateMetadataFiles.tgz?raw=true]
-  ATDuplicateMetadataFiles/data/vda3_copy.XML // EAD Datei 1
-  ATDuplicateMetadataFiles/data/vda3.XML &nbsp; &nbsp; &nbsp; &nbsp; // EAD Datei 2
-  ATDuplicateMetadataFiles/data/abc.tif
-  ATDuplicateMetadataFiles/data/premis.xml
+->
+ATDuplicateMetadataFiles/data/vda3_copy.XML // EAD Datei 1
+ATDuplicateMetadataFiles/data/vda3.XML &nbsp; &nbsp; &nbsp; &nbsp; // EAD Datei 2
+ATDuplicateMetadataFiles/data/abc.tif
+ATDuplicateMetadataFiles/data/premis.xml
 ```
 
 
