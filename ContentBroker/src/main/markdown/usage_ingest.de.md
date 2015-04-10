@@ -63,7 +63,7 @@ Der Einlieferungsbeleg enthält folgende Informationen:
 ### Weiterführende Links
 
 * Erstellung von SIPs mit Hilfe des SIP-Builder
-* SIP-Spezifikation
+* [SIP-Spezifikation](specification_sip.de.md)
 
 
 
