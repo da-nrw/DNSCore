@@ -41,7 +41,9 @@ gilt für alle Szenarien!
 Auszug aus der export_mets.xml:
 
 ```xml
-<mets:file MIMETYPE="image/x-ms-bmp" CHECKSUM="03f9e40fb0594c903a2cd22465697624cdedc1d3" CREATED="2011-11-08T17:37:37Z" CHECKSUMTYPE="SHA-1" SIZE="15619556" ID="IMG801636">
+<mets:file MIMETYPE="image/x-ms-bmp" 
+  CHECKSUM="03f9e40fb0594c903a2cd22465697624cdedc1d3" CREATED="2011-11-08T17:37:37Z" 
+  CHECKSUMTYPE="SHA-1" SIZE="15619556" ID="IMG801636">
   <mets:FLocat xlink:href="image/801636.bmp" LOCTYPE="URL"/>
 </mets:file>
 ```
