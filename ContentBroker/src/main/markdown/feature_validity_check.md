@@ -26,12 +26,11 @@ Dokumentennamen bezeichnen Datein innerhalb eines Objektes eindeutig. Eine Datei
 
 #### Testpaket(e):
 
-```
 * ATDuplicateDocumentName.tgz
-** [https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/test/resources/at/ATDuplicateDocumentName.tgz?raw=true]
-** ATDuplicateDocumentName/data/a.tif &nbsp; // Dokumentenname "a"
-** ATDuplicateDocumentName/data/a.jpg &nbsp; &nbsp;// Dokumentenname "a"
-** ATDuplicateDocumentName/data/premis.xml
+```
+ATDuplicateDocumentName/data/a.tif // Dokumentenname "a"
+ATDuplicateDocumentName/data/a.jpg // Dokumentenname "a"
+ATDuplicateDocumentName/data/premis.xml
 ```
 
 #### Durchführung:
