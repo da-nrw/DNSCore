@@ -30,7 +30,8 @@ Hier befinden sich alle Dokus, die Grundkonzepte der Langzeitarchivierung im Kon
 
 Dieser Bereich wendet sich an die Anwender der DNSCore Lösung für Langzeitarchivierung.
 
-* Ingest und Retrieval ([englisch](../../../../DAWeb/doc/manual_ingest_and_retrieval.md))
+* Ingest ([deutsch](usage_ingest.de.md))
+* Retrieval ([deutsch](usage_retrieval.de.md))
 
 #### Bereitstellungen von Dienstleistungen an Endnutzer<br>[Systemadministratoren / Knotenadministratoren / Betreiber]
 
