@@ -28,11 +28,15 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.util.RelativePath;
 
 /**
  * Checks if the minimum number of replications of an AIP, as specified by minNodes, is available on any
@@ -75,31 +79,27 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 			delay();
 		}
 		while (!gridRoot.storagePolicyAchieved(
-				o.getContractor().getShort_name() + 
-				"/" + o.getIdentifier() + "/"+ o.getIdentifier() + ".pack_" + o.getLatestPackage().getName() + C.FILE_EXTENSION_TAR, 
+				aipPath().toString(), 
 				sp));
 		
-		prepareObjectForObjectDBStorage(o);
-		new MailContents(preservationSystem,n).sendReciept(j, o);
-		
 		toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());
+		setObjectArchived();
+		
 		FileUtils.deleteDirectory(wa.objectPath().toFile());
+		
+		new MailContents(preservationSystem,n).sendReciept(j, o);
 		return true;
 	}
+	
 	
 	
 	@Override
 	public void rollback() {
 		
+		toCreate=null;
+		unsetObjectArchived();
 	}
-
-	private void delay(){
-		try {
-			Thread.sleep(timeOut); // to prevent unnecessary small intervals when checking
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+	
 	
 
 	/**
@@ -117,36 +117,8 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		
 		return result;
 	}
-	
 
-	/**
-	 * Defines the length of the interval at which the function checks the state
-	 * of the replication.
-	 * 
-	 * @param timeOut
-	 */
-	public void setTimeOut(int timeOut) {
-		this.timeOut = timeOut;
-	}
 	
-	/** 
-	 * Cleans object db entry from data which should not get persisted and
-	 * adds data which should get persisted. 
-	 * Sets archive state of object to 100 (archived according to storage policy).
-	 * 
-	 * @author Jens Peters
-	 * @author Daniel M. de Oliveira
-	 */
-	private void prepareObjectForObjectDBStorage(Object obj) {
-		
-		clearNonpersistentObjectProperties(obj);
-		
-		obj.setObject_state(100);
-		obj.setLast_checked(new Date());
-		obj.setDate_modified(String.valueOf(new Date().getTime()));
-		obj.setStatic_nondisclosure_limit(j.getStatic_nondisclosure_limit());
-		obj.setDynamic_nondisclosure_limit(j.getDynamic_nondisclosure_limit());
-	}
 	
 	
 	static void clearNonpersistentObjectProperties(Object o) {
@@ -157,8 +129,77 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 			pkg.getFiles().clear();
 		}
 	}
+
 	
 	
+	
+	/** 
+	 * Cleans object db entry from data which should not get persisted and
+	 * adds data which should get persisted. 
+	 * Sets archive state of object to 100 (archived according to storage policy).
+	 * 
+	 * @author Jens Peters
+	 * @author Daniel M. de Oliveira
+	 */
+	private void setObjectArchived() {
+		
+		clearNonpersistentObjectProperties(o);
+		
+		for (Node cn:n.getCooperatingNodes()) {
+			Copy copy = new Copy();
+			copy.setPath(n.getIdentifier()+"/aip/"+aipPath().toString());
+			cn.getCopiesToSave().add(copy);
+		}
+		
+		o.setObject_state(100);
+		o.setLast_checked(new Date());
+		o.setDate_modified(String.valueOf(new Date().getTime()));
+		o.setStatic_nondisclosure_limit(j.getStatic_nondisclosure_limit());
+		o.setDynamic_nondisclosure_limit(j.getDynamic_nondisclosure_limit());
+	}
+
+	
+	
+	
+	private void unsetObjectArchived() {
+		
+		for (Node cn:n.getCooperatingNodes()) {
+			cn.getCopiesToSave().clear();
+		}
+	
+		o.setObject_state(Object.ObjectStatus.InWorkflow);
+		o.setLast_checked(null);
+		o.setDate_modified(null);
+		o.setStatic_nondisclosure_limit(null);
+		o.setDynamic_nondisclosure_limit(null);
+	}
+	
+	
+	
+	
+	private void delay(){
+		try {
+			Thread.sleep(timeOut); // to prevent unnecessary small intervals when checking
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private Path aipPath() {
+		return new RelativePath(o.getContractor().getShort_name(), o.getIdentifier(), 
+				o.getIdentifier() + ".pack_" + o.getLatestPackage().getName() + C.FILE_EXTENSION_TAR);
+	}
+
+	/**
+	 * Defines the length of the interval at which the function checks the state
+	 * of the replication.
+	 * 
+	 * @param timeOut
+	 */
+	public void setTimeOut(int timeOut) {
+		this.timeOut = timeOut;
+	}
+
 	public GridFacade getGridRoot() {
 		return gridRoot;
 	}

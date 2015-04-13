@@ -27,8 +27,6 @@ import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.grid.GridFacade;
-import de.uzk.hki.da.model.Copy;
-import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
@@ -75,20 +73,6 @@ public class ArchiveReplicationAction extends AbstractAction {
 		} catch (IOException e) {
 			throw new RuntimeException("Error while putting file into grid or work deletion! ",e);
 		}
-			
-
-		
-		for (Node cn:n.getCooperatingNodes()) {
-			Copy copy = new Copy();
-			copy.setPath(n.getIdentifier()+"/aip"+target.toString());
-			cn.getCopiesToSave().add(copy);
-		}
-
-		
-		
-		
-		
-		
 		
 		return true;
 	}
