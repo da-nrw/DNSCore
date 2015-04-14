@@ -6,20 +6,20 @@ Ingest beschreibt den Prozess der Übergabe eines SIP an das System bzw. die Üb
 
 ### Voraussetzungen
 
-* Der Vertragspartner hat einen Rechner mit Internetverbindung.
-* Der Vertragspartner ist mit seinen Zugangsdaten an der DAWeb Oberfläche eingeloggt. 
-* Der Vertragspartner ist per FileShare Client (z.B. FileZilla) mit dem ihm zugeteilten Nutzungsbereich auf dem Server verbunden, der für die Datenübernahme an seinem Knoten vorgesehen ist. 
-* Der Vertragspartner besitzt auf seinem lokalen Rechner ein fertiges SIP. 
+* Der Contractor hat einen Rechner mit Internetverbindung.
+* Der Contractor ist mit seinen Zugangsdaten an der DAWeb Oberfläche eingeloggt. 
+* Der Contractor ist per FileShare Client (z.B. FileZilla) mit dem ihm zugeteilten Nutzungsbereich auf dem Server verbunden, der für die Datenübernahme an seinem Knoten vorgesehen ist. 
+* Der Contractor besitzt auf seinem lokalen Rechner ein fertiges SIP. 
 
 ### Schritte
 
-1. Der Vertragspartner legt das SIP mit Hilfe des FileShare Client im Ordner "incoming" auf seinem Nutzungsbereich ab.
-2. Der Vertragspartner wartet, bis die Übertragung abgeschlossen ist.
-2. Der Vertragspartner öffnet die DAWeb-Maske "Startseite"->"Verarbeitung für abgelieferte SIP starten".
+1. Der Contractor legt das SIP mit Hilfe des FileShare Client im Ordner "incoming" auf seinem Nutzungsbereich ab.
+2. Der Contractor wartet, bis die Übertragung abgeschlossen ist.
+2. Der Contractor öffnet die DAWeb-Maske "Startseite"->"Verarbeitung für abgelieferte SIP starten".
 3. In dieser Maske sollte nun das im "incoming" Ordner abgelegte SIP namentlich aufgeführt sein.
-4. Der Vertragspartner markiert dieses Paket mit einem Häkchen für die Verarbeitung und betätigt den "Starten" Button am unteren Ende der Seite.
+4. Der Contractor markiert dieses Paket mit einem Häkchen für die Verarbeitung und betätigt den "Starten" Button am unteren Ende der Seite.
 5. Der Eintrag für das Paket verschwindet jetzt, was die gestartete Verarbeitung signalisiert.
-6. Der Vertragspartner wartet auf den Einlieferungsbeleg (Eingang per Email), welcher über den Status der Einlieferung informiert.
+6. Der Contractor wartet auf den Einlieferungsbeleg (Eingang per Email), welcher über den Status der Einlieferung informiert.
 
 ### Der Email-Report
 
@@ -49,6 +49,15 @@ Der Einlieferungsbeleg enthält folgende Informationen:
 * **Originalname** Der Originalname (im Beispiel FT-EAD-001_Diesdas_1Ebene_2015-04-08) ergibt sich aus dem Dateinamen des jeweils ersten SIP zu einem Objekt, abzüglich der Dateiendung. Er dient als Schlüssel, um Delta-Einlieferungen zu einem Objekt vornehmen zu können (siehe [Delta-Ingest](usage_ingest_delta.de.md)). 
 
 #### Fehler bei der Verarbeitung
+
+Beim Ingest eines SIP wird eine Validierung der Nutzerdaten vorgenommen. Entsprechen die Daten nicht der gültigen
+[SIP-Spezifikation](specification_sip.de.md), wird der Ingest abgebrochen und der Contractor per Email informiert.
+
+
+Validierung 
+
+
+Beim Ingest des Objektes mit dem Identifier 2-20150409419813 ist ein Fehler aufgetreten. Mehr als eine Metadatendatei wurde gefunden.
 
 #### Entscheidung notwendig
 
