@@ -44,9 +44,9 @@ des Paketes zu einem AIP und dessen geographische Verteilung. Das Paket kann unt
 
 Der Einlieferungsbeleg enthält folgende Informationen:
 
-* **Technischer Identifier.** abc
-* URN
-* Originalname
+* **Technischer Identifier.** Der technische Identifier wird während des Ingest automatisch vom System vergeben. Er gilt für die Lebenszeit des Objektes als eindeutiger und dauerhafter Identifier. 
+* **URN** Die URN wird entweder vom System vergeben oder vom Benutzer mitgeliefert (Siehe [URN-Vergabe](specification_sip.de.md#urn-vergabe)).
+* **Originalname** Der Originalname (im Beispiel FT-EAD-001_Diesdas_1Ebene_2015-04-08) ergibt sich aus dem Dateinamen des jeweils ersten SIP zu einem Objekt, abzüglich der Dateiendung. Er dient als Schlüssel, um Delta-Einlieferungen zu einem Objekt vornehmen zu können (siehe [Delta-Ingest](usage_ingest_delta.de.md)). 
 
 #### Fehler bei der Verarbeitung
 
