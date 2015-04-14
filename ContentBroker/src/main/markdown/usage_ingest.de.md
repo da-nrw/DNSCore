@@ -54,19 +54,30 @@ Beim Ingest eines SIP wird eine Validierung der Nutzerdaten vorgenommen. Entspre
 [SIP-Spezifikation](specification_sip.de.md), wird der Ingest abgebrochen und der Contractor per Email informiert.
 
 ```
-[System] Fehlerreport für 2-20150409419813
+Betreff: [System] Fehlerreport für 2-20150409419813
 
-Beim Ingest des Objektes mit dem Identifier 2-20150409419813 ist ein Fehler aufgetreten. Mehr als eine Metadatendatei wurde gefunden.
+Inhalt:
+
+Beim Ingest des Objektes mit dem Identifier 2-20150409419813 ist ein Fehler aufgetreten. 
+Mehr als eine Metadatendatei wurde gefunden.
 ```
 
-Die Email enthält neben dem eindeutigen Objektidentifier immer auch den Grund der Ablehnung. In dem Beispiel lautet der Grund "Mehr als eine Metadatendatei wurde gefunden." Solche, mit einem 
+Die Email enthält neben dem eindeutigen Objektidentifier immer auch den Grund der Ablehnung. In dem Beispiel lautet der Grund "Mehr als eine Metadatendatei wurde gefunden." Solche, mit einer Mail quittierten, abgebrochenen Ingestvorgänge können nicht gerettet werden. Der Fehler muss in den Eingangsdaten behoben werden. 
+
+Das Paket kann dann zu einem späteren Zeitpunkt unter dem gleichen Originalnamen wieder eingeliefert werden.**Wichtig** dabei ist, dass in jedem Fall abgewartet wird, bis das Objekt (oder das jeweils letzte Paket im Falle von Deltas) vom Administrator
+gelöscht wird. Die Löschung wird quittiert durch eine Meldung an den Contractor:
+
+```
+Betreff: [System] Entfernung von SIP aus Workflow für 2-20150316407205
+
+Inhalt:
+
+Ihr abgegebenes SIP Paket dem Namen "AT-V-002_ATDuplicateMetadataFiles_2015-03-16" wurde aus der Verabreitungswarteschlange entfernt. Die Datei kann so nicht vom DNS verarbeitet werden. Korrigieren Sie ggfs. das Paket und bitte versuchen Sie eine erneute Ablieferung. Das Paket wurde nicht archiviert. 
+```
 
 
 
-Validierung 
 
-
-Beim Ingest des Objektes mit dem Identifier 2-20150409419813 ist ein Fehler aufgetreten. Mehr als eine Metadatendatei wurde gefunden.
 
 #### Entscheidung notwendig
 
