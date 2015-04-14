@@ -28,12 +28,12 @@ Ingest beschreibt den Prozess der Übergabe eines SIP an das System bzw. die Üb
 Der Einlieferungsbeleg für ein erfolgreich eingeliefertes Paket sieht aus wie in folgendem Beispiel:
 
 ```
-Betreff: [DA-NRW] Einlieferungsbeleg für 2-20150409419938
+Betreff: [System] Einlieferungsbeleg für 2-20150409419938
 
 Inhalt:
 
 Ihr eingeliefertes Paket mit dem Namen "FT-EAD-001_Diesdas_1Ebene_2015-04-08" 
-wurde erfolgreich im [DA-NRW] archiviert.
+wurde erfolgreich im [System] archiviert.
 
 Identifier: 2-20150409419938
 URN: urn:nbn:de:danrw-2-20150409419938
@@ -52,6 +52,15 @@ Der Einlieferungsbeleg enthält folgende Informationen:
 
 Beim Ingest eines SIP wird eine Validierung der Nutzerdaten vorgenommen. Entsprechen die Daten nicht der gültigen
 [SIP-Spezifikation](specification_sip.de.md), wird der Ingest abgebrochen und der Contractor per Email informiert.
+
+```
+[System] Fehlerreport für 2-20150409419813
+
+Beim Ingest des Objektes mit dem Identifier 2-20150409419813 ist ein Fehler aufgetreten. Mehr als eine Metadatendatei wurde gefunden.
+```
+
+Die Email enthält neben dem eindeutigen Objektidentifier immer auch den Grund der Ablehnung. In dem Beispiel lautet der Grund "Mehr als eine Metadatendatei wurde gefunden." Solche, mit einem 
+
 
 
 Validierung 
