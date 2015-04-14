@@ -72,7 +72,9 @@ Betreff: [System] Entfernung von SIP aus Workflow für 2-20150316407205
 
 Inhalt:
 
-Ihr abgegebenes SIP Paket dem Namen "AT-V-002_ATDuplicateMetadataFiles_2015-03-16" wurde aus der Verabreitungswarteschlange entfernt. Die Datei kann so nicht vom DNS verarbeitet werden. Korrigieren Sie ggfs. das Paket und bitte versuchen Sie eine erneute Ablieferung. Das Paket wurde nicht archiviert. 
+Ihr abgegebenes SIP Paket dem Namen "AT-V-002_ATDuplicateMetadataFiles_2015-03-16" wurde aus der 
+Verabreitungswarteschlange entfernt. Die Datei kann so nicht vom DNS verarbeitet werden. 
+Korrigieren Sie ggfs. das Paket und bitte versuchen Sie eine erneute Ablieferung. Das Paket wurde nicht archiviert. 
 ```
 
 
