@@ -27,7 +27,8 @@ Betreff: [System] Einlieferungsbeleg für Ihr Delta zum Objekt 2-20150409419765
 
 Inhalt:
 
-Ihrem archivierten Objekt mit dem Identifier 2-20150409419765 und der URN urn:nbn:de:system-2-20150409419765 wurde erfolgreich ein Delta mit dem Paketnamen "ATUseCaseIngestDelta_2_2015-04-08" hinzugefügt.
+Ihrem archivierten Objekt mit dem Identifier 2-20150409419765 und der URN urn:nbn:de:system-2-20150409419765 
+wurde erfolgreich ein Delta mit dem Paketnamen "ATUseCaseIngestDelta_2_2015-04-08" hinzugefügt.
 ```
 
 Wie auch im Einlieferungsbeleg zur erfolgreichen Einlieferung finden sich die Informationen zu URN, technischem Identifier
