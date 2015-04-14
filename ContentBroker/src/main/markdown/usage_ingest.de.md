@@ -78,13 +78,19 @@ Korrigieren Sie ggfs. das Paket und bitte versuchen Sie eine erneute Ablieferung
 Das Paket wurde nicht archiviert. 
 ```
 
-
-
-
-
 #### Entscheidung notwendig
 
+In bestimmten Fällen, abhängig von den im Contract des SIP festgelegten Einstellungen, wird der Ingest an festgelegter Stelle unterbrochen. Diese Unterbrechung wird durch eine Email signalisiert:
 
+```
+Betreff: [System] Entscheidung erforderlich für 2-20150409419837
+
+Inhalt:
+
+Bitte treffen Sie eine Entscheidung in der DAWeb-Maske "Entscheidungsübersicht"2-20150409419837
+```
+
+In der Entscheidungsansicht kann der Contractor dann zwischen verschiedenen Optionen wählen, woraufhin die Verarbeitung unter Berücksichtigung der gewählten Option fortgesetzt wird.
 
 ### Probleme bei der Einlieferung.
 
