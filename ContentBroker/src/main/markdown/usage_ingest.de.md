@@ -44,7 +44,7 @@ des Paketes zu einem AIP und dessen geographische Verteilung. Das Paket kann unt
 
 Der Einlieferungsbeleg enthält folgende Informationen:
 
-* Technischer Identifier
+* **Technischer Identifier.** abc
 * URN
 * Originalname
 
