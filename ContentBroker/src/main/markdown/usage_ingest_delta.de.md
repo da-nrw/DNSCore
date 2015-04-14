@@ -7,7 +7,7 @@ hinzuzufügen.
 
 ### Vorraussetzungen 
 
-* Es gelten die im [Ingest](usage_ingest.de.md) beschriebenen Vorraussetzungen.
+* Es gelten die im [Ingest](usage_ingest.de.md#vorraussetzungen) beschriebenen Vorraussetzungen.
 * Der Contractor hat bereits ein Objekt durch Ersteinlieferung eines SIP angelegt, welches nun ergänzt werden soll.
 * Der Contractor hat den Originalnamen des infragekommenden Objektes notiert.
 
