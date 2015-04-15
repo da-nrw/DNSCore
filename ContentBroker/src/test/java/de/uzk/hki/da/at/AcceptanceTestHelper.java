@@ -304,7 +304,14 @@ public class AcceptanceTestHelper {
 			job = getJob(originalName);
 			
 			if (job==null) {
-				System.out.println("finished! " + originalName);
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+				}
+				job = getJob(originalName);
+				if (job==null) {
+				System.out.println("really finished! " + originalName);
+			}
 				return resultO;
 				
 			} else if (isInErrorState(job)) {
@@ -317,7 +324,7 @@ public class AcceptanceTestHelper {
 						System.out.println("SHOWING OBJECT LOG:");
 						String localNodeWorkArea = localNode.getWorkAreaRootPath().toString();
 						String localNode = localNodeWorkArea.replace("/storage/WorkArea", "");
-						System.out.println(FileUtils.readFileToString(new File(Path.make(localNode, "log", "object-logs")+"/"+job.getObject().getIdentifier()+".log")));
+						System.out.println(FileUtils.readFileToString(new File(Path.make(localNode, "ContentBroker","log", "object-logs")+"/"+job.getObject().getIdentifier()+".log")));
 						System.out.println("END OF OBJECT LOG: "+job.getObject().getIdentifier());
 					} catch (IOException e) {
 						e.printStackTrace();
