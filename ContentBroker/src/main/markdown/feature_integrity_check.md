@@ -71,3 +71,11 @@ Gilt für alle nachfolgenden Szenarien!
 * Das Objekt wird als valide gemeldet (konkret : kein button Achtung in der Spalte X)
 
 ## Szenario AT-IP-5 Die Checksummen der fremden Knoten sind veraltet
+
+* Siehe Hintergrund.
+* Die Checksummenneuerstellung ist älter als ein Jahr (der DB Eintrag in der Tabelle Copies für checksumDate wird verändert). 
+
+#### Akzeptanzkriterien:
+
+* Das Objekt wird als invalide gemeldet (konkret : button Achtung in der Spalte X)
+
