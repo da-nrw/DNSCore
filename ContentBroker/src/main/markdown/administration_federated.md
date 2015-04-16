@@ -200,7 +200,9 @@ This changes the AVU to "federation not yet performed"
 ### Audit Infrastructure
 
 To perform Audit (integrity checking) of AIP iRODS each node must at least provide the time based check 
-service of recieved federated copies (aka "Secondary Copies"). This is some kind of "trust". 
+service of recieved federated copies (aka "Secondary Copies"). This is some kind of "trust".
+
+The Intgegrity check is now performed by contentbroker ([feature](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/feature_integrity_check.md)
 
 In this Service checkFederatedAip.r ([code of service here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/checkFederatedAip.r))all federated copies MD5 checksums stored for others at "my zone" are recalculated 
 on time basis. 
