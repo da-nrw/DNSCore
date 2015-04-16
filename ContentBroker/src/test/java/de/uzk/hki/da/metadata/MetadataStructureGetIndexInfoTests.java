@@ -31,6 +31,7 @@ public class MetadataStructureGetIndexInfoTests {
 	private static HashMap<String, List<String>> content1 = new HashMap<String, List<String>>();
 	private String objectID = "objectID";
 	private static PreservationSystem pSystem;
+	private final String urn = "urn:nbn:de:danrw-2-20150415425545";
 	
 	@BeforeClass
 	public static void createTargetDir() {
@@ -72,7 +73,7 @@ public class MetadataStructureGetIndexInfoTests {
 			}
 			
 		}
-		lms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "lidoToEdm.xml"),  pSystem);
+		lms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "lidoToEdm.xml"), pSystem, objectID, urn);
 	}
 	
 	@Test
@@ -98,7 +99,7 @@ public class MetadataStructureGetIndexInfoTests {
 		
 		content1 = indexInfo.get(objectID+"-md1616184");
 		
-		mms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "metsToEdm.xml"),  pSystem);
+		mms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "metsToEdm.xml"), pSystem, objectID, urn);
 	}
 	
 	@Test
@@ -126,7 +127,7 @@ public class MetadataStructureGetIndexInfoTests {
 		assertTrue(content1.get(C.EDM_OBJECT).contains("image/1616186.tif"));
 		assertTrue(content1.get(C.EDM_HAS_VIEW).contains("image/1616186.tif") && content1.get(C.EDM_HAS_VIEW).contains("image/1616187.tif"));
 		
-		mms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "multilevelMetsToEdm.xml"),  pSystem);
+		mms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "multilevelMetsToEdm.xml"), pSystem, objectID, urn);
 	}
 	
 	@Test
@@ -166,7 +167,7 @@ public class MetadataStructureGetIndexInfoTests {
 		}
 		assertTrue(indexInfo.get(parent).get(C.EDM_TITLE).contains("14. Verschiedenes"));
 		
-		ems.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "eadToEdm.xml"), pSystem);
+		ems.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "eadToEdm.xml"), pSystem, objectID, urn);
 	}
 	
 	@AfterClass 

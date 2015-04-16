@@ -146,6 +146,18 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 				assertTrue(pcho.getChild("title", C.DC_NS).getValue().equals("Küchenmaschine"));
 				assertTrue(pcho.getChild("date", C.DC_NS).getValue().contains("01.01.1950-31.12.1959"));
 			}
+			
+			List<Element> identifier = pcho.getChildren("identifier", C.DC_NS);
+			Boolean objIdExists = false;
+			Boolean urnExists = false;
+			for(Element id : identifier) {
+				if(id.getValue().equals(object.getUrn())) {
+					urnExists = true;
+				} else if(id.getValue().equals(object.getIdentifier())) {
+					objIdExists = true;
+				}
+			}
+			assertTrue(objIdExists && urnExists);
 		}
 		
 		List<Element> aggregation = doc.getRootElement().getChildren("Aggregation", C.ORE_NS);

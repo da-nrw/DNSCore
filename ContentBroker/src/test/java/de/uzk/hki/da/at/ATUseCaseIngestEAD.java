@@ -180,7 +180,18 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 				assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==30);
 			} else if(pcho.getChild("title", C.DC_NS).getValue().equals("Anschriften A-B")) {
 				assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==5);
+			} 
+			List<Element> identifier = pcho.getChildren("identifier", C.DC_NS);
+			Boolean objIdExists = false;
+			Boolean urnExists = false;
+			for(Element id : identifier) {
+				if(id.getValue().equals(object.getUrn())) {
+					urnExists = true;
+				} else if(id.getValue().equals(object.getIdentifier())) {
+					objIdExists = true;
+				}
 			}
+			assertTrue(objIdExists && urnExists);
 		}
 		assertTrue(testProvidetChoExists);
 		assertTrue(bundesleitungUndBezirksverbaendeExists);

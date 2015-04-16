@@ -147,7 +147,7 @@ public class CreateEDMAction extends AbstractAction {
 				} else if(packageType.equals("LIDO")) {
 					ms = new LidoMetadataStructure(metadataSourceFile, documents);
 				}
-				ms.toEDM(ms.getIndexInfo(o.getIdentifier()), edm, preservationSystem);
+				ms.toEDM(ms.getIndexInfo(o.getIdentifier()), edm, preservationSystem, o.getIdentifier(), o.getUrn());
 			} else if(packageType.equals("XMP")) {
 				edm = generateEdmUsingXslt(xsltTransformationFile, metadataSourceFile, EDM_FOR_ES_INDEX_METADATA_STREAM_ID);
 			} else {

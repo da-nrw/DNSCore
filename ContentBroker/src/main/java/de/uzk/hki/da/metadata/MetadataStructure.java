@@ -84,7 +84,7 @@ public abstract class MetadataStructure {
 		}
 	}
 	
-	public void toEDM(HashMap<String, HashMap<String, List<String>>> indexInfo, File file, PreservationSystem preservationSystem) {
+	public void toEDM(HashMap<String, HashMap<String, List<String>>> indexInfo, File file, PreservationSystem preservationSystem, String objectID, String urn) {
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -98,8 +98,18 @@ public abstract class MetadataStructure {
 			for(String id : indexInfo.keySet()) {
 				Element providedCHO = addEdmProvidedCHOtoEdm(preservationSystem, id, edmDoc, rootElement);
 				Element aggregation = addOreAggregationToEdm(preservationSystem, id, edmDoc, rootElement);
+				
+				if(indexInfo.get(id).get(C.EDM_IDENTIFIER)==null) {
+					List<String> IDs = new ArrayList<String>();
+					IDs.add(objectID);
+					IDs.add(urn);
+					indexInfo.get(id).put(C.EDM_IDENTIFIER, IDs);
+				} else {
+					indexInfo.get(id).get(C.EDM_IDENTIFIER).add(objectID);
+					indexInfo.get(id).get(C.EDM_IDENTIFIER).add(urn);
+				}
+				
 				for(String elementName : indexInfo.get(id).keySet()) {
-					
 					Element parentNode = null;
 					if(elementName.startsWith("dc:") || elementName.startsWith("dcterms:")) {
 						parentNode = providedCHO;

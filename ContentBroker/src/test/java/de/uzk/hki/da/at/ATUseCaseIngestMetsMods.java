@@ -145,7 +145,20 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 				testProvidetChoExists = true;
 				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("1523"));
 			}
+			@SuppressWarnings("unchecked")
+			List<Element> identifier = pcho.getChildren("identifier", C.DC_NS);
+			Boolean objIdExists = false;
+			Boolean urnExists = false;
+			for(Element id : identifier) {
+				if(id.getValue().equals(object.getUrn())) {
+					urnExists = true;
+				} else if(id.getValue().equals(object.getIdentifier())) {
+					objIdExists = true;
+				}
+			}
+			assertTrue(objIdExists && urnExists);
 		}
+		
 		assertTrue(testProvidetChoExists);
 		assertTrue(doc.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
 				.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
