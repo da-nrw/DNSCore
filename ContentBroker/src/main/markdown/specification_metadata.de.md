@@ -31,11 +31,14 @@ Für die Präsentation im Portal werden die Primärdaten aus dem langzeitsichere
 
 ## Anforderungen an die Metadaten im DNSCore
 Im Kontext des DA-NRW sowie der Langzeitarchivierung im Allgemeinen gibt es eine zentrale Regel, die stets eingehalten werden muss:    
-SIP-Pakete müssen in sich konsistent sein.
+
+**SIP-Pakete müssen in sich konsistent sein.**
+
 Für die Struktur der Metadaten hat diese Regel wenige einfache Konsequenzen: 
+
 1.	Metadaten dürfen ausschließlich die im SIP mitgelieferten Primärdaten referenzieren.
 Diese Forderung ist in keinster Weise DNSCore-spezifisch, sondern ist Bestandteil der oben angeführten allgemeinen Definition des Begriffs Metadaten. Mit anderen Worten bedeutet der Terminus Metadaten, auch Daten über Daten genannt, nichts anderes, als dass die Metadaten die referenzierten Primärdaten lediglich begleiten und beschreiben. Liefert man nun nur die Beschreibung ohne das beschriebene Digitalisat, enthält das Paket Informationen, die nicht zugeordnet werden können. Damit ist ein solches Paket nicht konsistent und wird aus diesem Grund von DNSCore abgelehnt.
-2.	Alle in der Metadatendatei enthaltenen Referenzen auf die Primärdaten müssen relativ ab der Metadatendatei angegeben werden.
+2. Alle in der Metadatendatei enthaltenen Referenzen auf die Primärdaten müssen relativ ab der Metadatendatei angegeben werden.
 Die Forderung der Konsistenz der Metadaten beinhaltet die genaue und vor allem eindeutige Referenzierung der Primärdaten. Dies kann leicht erreicht werden, indem der Speicherort der Primärdaten im SIP stets relativ von der Metadatendatei angegeben wird. 
 3.	Die Metadatendatei muss auf der obersten Dateiebene  des SIP liegen.
 Auf diese Weise kann sichergestellt werden, dass die Metadatendatei von DNS als solche erkannt wird. Darüber hinaus wird so die Angabe relativer Pfade in der Metadatendatei sehr übersichtlich. 
