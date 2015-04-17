@@ -137,4 +137,73 @@ Der aktualisierte fileSec-Knoten der METS-Datei:
 </mets:fileSec>
 
 
+### EAD / METS
+
+#### Allgemeine Informationen 
+
+Encoded Archival Description (EAD) ist ein XML-Dateiformat zur Beschreibung von Findbüchern. Nähere Informationen zum Dateiformat EAD finden Sie unter  http://www.loc.gov/ead/. 
+Die EAD stellt die übergeordnete Metadatendatei dar, die weitere Metadatendateien beschreibt und referenziert. Diese liegen im oben beschriebenen Dateiformat METS vor, daher auch die Bezeichnung der entsprechenden Pakete als EAD/METS-Pakete. Die in der EAD referenzierten METS-Dateien beschreiben und referenzieren wiederum die eigentlichen Primärdaten. 
+
+
+#### Verarbeitung in DNSCore
+
+Bei der Verarbeitung eines EAD/METS-Pakets werden bei jeder Migration der Primärdaten die in der EAD referenzierten METS-Dateien entsprechend der oben angeführten Beschreibung aktualisiert.
+Außerdem muss für die Präsentation des Pakets auch die EAD-Datei aktualisiert werden. Sowohl im SIP als auch im AIP müssen die METS-Dateien in der übergeordneten EAD-Datei relativ referenziert werden. Für die Publikation müssen alle relativen Referenzen durch absolute URLs ersetzt werden. Dies gilt nicht nur für die in den METS-Dateien enthaltenen Referenzen auf die Primärdateien, sondern auch auf die in der EAD-Datei enthaltenen Referenzen auf die METS-Files.
+Im Folgenden wird anhand eines Beispiels gezeigt, welche Ersetzungen in EAD-Files vorgenommen werden. 
+Beispiel:
+
+Ursprüngliche Gestalt: Die SIP-Struktur sieht wie folgt aus:
+```
+data/ead.xml
+data/mets/mets.xml
+data/mets/bild.bmp
+```
+
+Die Referenz auf die METS-Dateien werden im EAD im Knoten <daogrp> angegeben. Dieser sieht in der EAD-Datei aus dem Beispiel-Paket sowohl im SIP als auch im AIP wie folgt aus:
+
+```xml
+<daogrp>
+   <daoloc title="mets.xml" role="mets" href="mets/mets.xml">
+</daogrp>
+```
+
+Für die Präsentation muss der Knoten aktualisiert werden:
+
+```xml
+<daogrp>
+   <daoloc title="mets.xml" role="mets" href=" http://data.da-nrw.de/[...] /mets.xml">
+</daogrp>
+´´´
+
+
+### LIDO
+
+#### Allgemeine Informationen
+
+Lightweight Information Describing Objects (LIDO) ist ein XML-Dateiformat zur Beschreibung von digitalen Sammlungen von Primärobjekten. 
+Die Eignung von LIDO als Metadatenstandard für Museumsdaten ist nicht unumstritten, da LIDO im Gegensatz zu allen anderen unterstützten Metadatenstandards absolute URLs zu Inhaltsdaten mitführt. Die Verwendung von URLs zur Referenzierung von Primärdaten ist in der LIDO-Spezifikation  ( http://www.lido-schema.org/schema/v1.0/lido-v1.0-specification.pdf ) fest vorgegeben. Das für die Referenzierung vorgesehene Element <linkResource> wird in der Spezifikation als „A url reference in the worldwide web environment“ bezeichnet.
+Aus den im vorliegenden Dokument bereits genannten Gründen kann eine solche Art der Referenzierung von Primärdaten nicht für die Langzeitarchivierung verwendet werden. Aus diesem Grund werden alle Einlieferer, die ihre Daten im DA-NRW langzeitarchivieren möchten, gebeten, alle Elemente <linkResource> jeweils mit einem relativen Pfad auf die mitgelieferte Primärdatei zu befüllen. Anderenfalls wird das gebildete SIP als inkonsistentes Paket von DNSCore abgelehnt.
+
+##### Verarbeitung in DNSCore
+
+Bei der Migration von Primärdaten für die Langzeitarchivierung und die Präsentation wird in der eingelieferten LIDO.xml pro Primärdatei ein <linkResource>-Element aktualisiert. 
+Im Folgenden wird anhand eines Beispiels die im LIDO vorgenommenen Ersetzungen aufgezeigt:
+
+Beispiel:
+Ursprüngliche Gestalt: Die SIP-Struktur sieht wie folgt aus:
+
+```
+data/lido.xml
+data/Bilder/bild.bmp
+```
+
+Die Referenz auf die Primärdatei wird im Element < linkResource > angegeben:
+
+```xml
+<lido:linkResource>Bilder/bild.bmp</lido:linkResource>
+´´´
+
+
+
+
 
