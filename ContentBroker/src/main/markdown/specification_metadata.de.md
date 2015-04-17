@@ -169,11 +169,12 @@ Die Referenz auf die METS-Dateien werden im EAD im Knoten <daogrp> angegeben. Di
 
 Für die Präsentation muss der Knoten aktualisiert werden:
 
-```xml
+```
 <daogrp>
    <daoloc title="mets.xml" role="mets" href=" http://data.da-nrw.de/[...] /mets.xml">
 </daogrp>
-´´´
+´´´ 
+
 
 
 ### LIDO
