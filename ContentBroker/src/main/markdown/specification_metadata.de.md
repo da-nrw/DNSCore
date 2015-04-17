@@ -104,3 +104,37 @@ Der fileSec-Knoten der eingelieferten METS-Datei:
    </mets:fileGrp>
 </mets:fileSec>
 ```
+
+**Langzeitarchivierung:** Da BMP kein langzeitsicheres Dateiformat ist, wird die Primärdatei Bild.bmp nach TIFF migriert. Folglich muss die beschreibende METS-Datei angepasst werden. Das AIP sieht nun so aus:
+```
+data/mets.xml
+data/Bilder/Bild.tif
+```
+
+Der aktualisierte fileSec-Knoten der METS-Datei:
+
+```xml
+<mets:fileSec>
+   <mets:fileGrp>
+     <mets:file MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="OTHER" xlink:href="Bilder/Bild.tif"/>
+     </mets:file>
+   </mets:fileGrp>
+</mets:fileSec>
+```
+
+Präsentation: Für die Präsentation wird aus dem TIFF eine JPG-Datei erzeugt. Da die beiden Dateien im WWW abrufbar sein sollen, muss die relative Referenz durch die Angabe einer absoluten URL ersetzt werden. Das PIP sieht wie folgt aus:
+data/mets.xml
+data/Bilder/Bild.jpg
+
+Der aktualisierte fileSec-Knoten der METS-Datei:
+<mets:fileSec>
+   <mets:fileGrp>
+     <mets:file MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href=" http://data.da-nrw.de/[...] /[new Filename].jpg"/>
+     </mets:file>
+   </mets:fileGrp>
+</mets:fileSec>
+
+
+
