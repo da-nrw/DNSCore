@@ -78,5 +78,29 @@ Der METS-Standard legt nicht fest, welche Form die einzelnen Abschnitte aufweise
 Die in das DNSCore eingelieferten METS-Pakete werden auch als METS/MODS-Pakete bezeichnet, weil das  Element <dmdSec> dem Metadata Object Description Schema (MODS) gehorcht. Nähere Informationen zum Dateiformat MODS finden Sie unter http://www.loc.gov/standards/mods/. 
 
 
+#### Verarbeitung in DNSCore
 
+Bei der Verarbeitung eines METS/MODS-Pakets wird bei jeder Migration der Primärdaten die METS-Datei aktualisiert. Dabei wird lediglich der  <fileSec>-Knoten angepasst. Dieser Knoten besitzt den Kindknoten <fileGrp>, der die Auflistung aller Referenzen auf Primärfiles enthält. Jedes dieser Files wird mit jeweils einem <file>-Knoten beschrieben. Der <file>-Knoten enthält eine Reihe verschiedener Informationen. Aktuell werden in DNSCore insgesamt drei Felder aktualisiert: MIMETYPE, LOCTYPE und href.
+Der Mimetype gibt den Typ der referenzierten Datei an. Hier erfährt man, ob es sich um ein Bild-, Audio- oder Videoformat handelt und welches genau das ist.
+Der Loctype gibt den Typ der Referenz an: der Attributwert „OTHER“ steht für eine Referenz auf dem Dateisystem, der Wert „URL“ verrät, dass es sich bei der Referenz um eine URL handelt.
+Schließlich enthält das Attribut „href“ die Referenz auf die Primärdatei. 
+Im Folgenden wird anhand eines Beispiels gezeigt, welche Ersetzungen in METS-Files vorgenommen werden. 
+Beispiel:
+Ursprüngliche Gestalt: Angenommen, die Beispiel-METS referenziert ein Bild im BMP-Format. Die SIP-Struktur sieht wie folgt aus:
 
+```
+data/mets.xml
+data/Bilder/Bild.bmp
+```
+
+Der fileSec-Knoten der eingelieferten METS-Datei:
+
+```xml
+<mets:fileSec>
+   <mets:fileGrp>
+     <mets:file MIMETYPE="image/x-ms-bmp">
+        <mets:FLocat LOCTYPE="OTHER" xlink:href="Bilder/Bild.bmp"/>
+     </mets:file>
+   </mets:fileGrp>
+</mets:fileSec>
+```
