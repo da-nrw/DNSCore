@@ -331,3 +331,18 @@ Welche URN soll hier genommen werden?
 #### Akzeptanzkriterien: (Vorschlag 2)
 
 * Das System informiert den User mit per Fehlermeldung, dass die URN nicht eindeutig ermittelt werden kann und der Ingest abgebrochen wird.
+
+## Szenario AT-IV-6 Fehlerhafte Prüfziffer bei nutzergestuerter URN-Übermittlung
+
+Das Paket wird zurückgewiesen
+
+#### Kontext
+
+#### Testpaket(e):
+
+#### Vorbedingungen
+
+#### Durchführung
+
+#### Akzeptanzkriterien
+
