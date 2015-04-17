@@ -161,7 +161,7 @@ data/mets/bild.bmp
 
 Die Referenz auf die METS-Dateien werden im EAD im Knoten <daogrp> angegeben. Dieser sieht in der EAD-Datei aus dem Beispiel-Paket sowohl im SIP als auch im AIP wie folgt aus:
 
-```xml
+```
 <daogrp>
    <daoloc title="mets.xml" role="mets" href="mets/mets.xml">
 </daogrp>
@@ -171,10 +171,9 @@ Für die Präsentation muss der Knoten aktualisiert werden:
 
 ```
 <daogrp>
-   <daoloc title="mets.xml" role="mets" href=" http://data.da-nrw.de/[...] /mets.xml">
+   <daoloc title="mets.xml" role="mets" href="http://data.da-nrw.de/.../mets.xml">
 </daogrp>
-´´´ 
-
+```
 
 
 ### LIDO
@@ -203,6 +202,7 @@ Die Referenz auf die Primärdatei wird im Element < linkResource > angegeben:
 ```xml
 <lido:linkResource>Bilder/bild.bmp</lido:linkResource>
 ´´´
+
 
 
 
