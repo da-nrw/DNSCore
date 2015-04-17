@@ -220,8 +220,10 @@ Dieses Szenario ist nicht implementiert.
 
 METS lässt unterschiedliche Arten der Strukturierung von Objekten zu. Die StructMap bildet diese Strukturierung ab. Für die URN-Generierung sind alle Fälle problematisch, in denen es kein einzelnes Objekt auf oberster Hierarchieebene gibt. Ein Objekt mit Kindern ist kein Problem, mehrere Objekte auf der obersten Ebene sind ein Problem.
 
-* Vorschlag 1 : Eventuell mitgelieferte URN werden in jedem Fall, sobald kein eindeutiges Elternobjekt auszumachen ist, ignoriert.
-* Vorschlag 2 : In dem Fall, dass es mehrere Objekte auf der höchsten Ebene gibt, und mindestens eines davon eine URN trägt, informiert das System der User per Fehlerreport und bricht den Ingestvorgang ab.
+In dem Fall, dass 
+1. die PREMIS keine (!) URN enthält, und
+2. es in der METS mehrere Objekte auf der höchsten Ebene gibt, und mehrere davon eine URN tragen, 
+informiert das System den User per Fehlerreport und bricht den Ingestvorgang ab.
 
 #### Testpaket(e):
 
@@ -254,13 +256,7 @@ Aus der StructMap geht dabei hervor, dass beide Teilobjekte (dmd35717,dmd35716) 
 
 1. Siehe Hintergrund.
 
-#### Akzeptanzkriterien: (Vorschlag 1)
-
-* In der Maske "Eingelieferte Objekte" wird das Objekt nicht mit dem URN urn:nbn:de:hbz:xyz gelistet.
-* In der Maske "Eingelieferte Objekte" wird das Objekt mit einer vom DNSCore vergebenen URN startend mit urn:nbn:danrw gelistet.
-* Die Objektlogdatei enthält eine Warning mit dem Verweis darauf, dass eventuell mitgelieferte URN vergeben wurden.
-
-#### Akzeptanzkriterien: (Vorschlag 2)
+#### Akzeptanzkriterien:
 
 * Der User wird per Mail informiert, dass die mitgelieferte METS-URN nicht eindeutig einem Objekt auf höchster Ebene zugewiesen werden kann.
 * Der Ingest wird abgelehnt.
