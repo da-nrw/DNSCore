@@ -85,8 +85,10 @@ Der Mimetype gibt den Typ der referenzierten Datei an. Hier erfährt man, ob es 
 Der Loctype gibt den Typ der Referenz an: der Attributwert „OTHER“ steht für eine Referenz auf dem Dateisystem, der Wert „URL“ verrät, dass es sich bei der Referenz um eine URL handelt.
 Schließlich enthält das Attribut „href“ die Referenz auf die Primärdatei. 
 Im Folgenden wird anhand eines Beispiels gezeigt, welche Ersetzungen in METS-Files vorgenommen werden. 
-Beispiel:
-Ursprüngliche Gestalt: Angenommen, die Beispiel-METS referenziert ein Bild im BMP-Format. Die SIP-Struktur sieht wie folgt aus:
+
+**Beispiel:**
+
+**Ursprüngliche Gestalt:** Angenommen, die Beispiel-METS referenziert ein Bild im BMP-Format. Die SIP-Struktur sieht wie folgt aus:
 
 ```
 data/mets.xml
@@ -123,11 +125,16 @@ Der aktualisierte fileSec-Knoten der METS-Datei:
 </mets:fileSec>
 ```
 
-Präsentation: Für die Präsentation wird aus dem TIFF eine JPG-Datei erzeugt. Da die beiden Dateien im WWW abrufbar sein sollen, muss die relative Referenz durch die Angabe einer absoluten URL ersetzt werden. Das PIP sieht wie folgt aus:
+**Präsentation:** Für die Präsentation wird aus dem TIFF eine JPG-Datei erzeugt. Da die beiden Dateien im WWW abrufbar sein sollen, muss die relative Referenz durch die Angabe einer absoluten URL ersetzt werden. Das PIP sieht wie folgt aus:
+
+```
 data/mets.xml
 data/Bilder/Bild.jpg
+```
 
 Der aktualisierte fileSec-Knoten der METS-Datei:
+
+```xml
 <mets:fileSec>
    <mets:fileGrp>
      <mets:file MIMETYPE="image/jpeg">
@@ -135,7 +142,7 @@ Der aktualisierte fileSec-Knoten der METS-Datei:
      </mets:file>
    </mets:fileGrp>
 </mets:fileSec>
-
+```
 
 ### EAD / METS
 
@@ -144,15 +151,18 @@ Der aktualisierte fileSec-Knoten der METS-Datei:
 Encoded Archival Description (EAD) ist ein XML-Dateiformat zur Beschreibung von Findbüchern. Nähere Informationen zum Dateiformat EAD finden Sie unter  http://www.loc.gov/ead/. 
 Die EAD stellt die übergeordnete Metadatendatei dar, die weitere Metadatendateien beschreibt und referenziert. Diese liegen im oben beschriebenen Dateiformat METS vor, daher auch die Bezeichnung der entsprechenden Pakete als EAD/METS-Pakete. Die in der EAD referenzierten METS-Dateien beschreiben und referenzieren wiederum die eigentlichen Primärdaten. 
 
-
 #### Verarbeitung in DNSCore
 
 Bei der Verarbeitung eines EAD/METS-Pakets werden bei jeder Migration der Primärdaten die in der EAD referenzierten METS-Dateien entsprechend der oben angeführten Beschreibung aktualisiert.
 Außerdem muss für die Präsentation des Pakets auch die EAD-Datei aktualisiert werden. Sowohl im SIP als auch im AIP müssen die METS-Dateien in der übergeordneten EAD-Datei relativ referenziert werden. Für die Publikation müssen alle relativen Referenzen durch absolute URLs ersetzt werden. Dies gilt nicht nur für die in den METS-Dateien enthaltenen Referenzen auf die Primärdateien, sondern auch auf die in der EAD-Datei enthaltenen Referenzen auf die METS-Files.
 Im Folgenden wird anhand eines Beispiels gezeigt, welche Ersetzungen in EAD-Files vorgenommen werden. 
-Beispiel:
 
-Ursprüngliche Gestalt: Die SIP-Struktur sieht wie folgt aus:
+**Beispiel:**
+
+**Ursprüngliche Gestalt:** 
+
+Die SIP-Struktur sieht wie folgt aus:
+
 ```
 data/ead.xml
 data/mets/mets.xml
@@ -189,8 +199,11 @@ Aus den im vorliegenden Dokument bereits genannten Gründen kann eine solche Art
 Bei der Migration von Primärdaten für die Langzeitarchivierung und die Präsentation wird in der eingelieferten LIDO.xml pro Primärdatei ein <linkResource>-Element aktualisiert. 
 Im Folgenden wird anhand eines Beispiels die im LIDO vorgenommenen Ersetzungen aufgezeigt:
 
-Beispiel:
-Ursprüngliche Gestalt: Die SIP-Struktur sieht wie folgt aus:
+**Beispiel:**
+
+**Ursprüngliche Gestalt:**
+
+Die SIP-Struktur sieht wie folgt aus:
 
 ```
 data/lido.xml
@@ -201,8 +214,30 @@ Die Referenz auf die Primärdatei wird im Element < linkResource > angegeben:
 
 ```xml
 <lido:linkResource>Bilder/bild.bmp</lido:linkResource>
-´´´
+```
 
+**Langzeitarchivierung:** Da BMP kein langzeitsicheres Dateiformat ist, wird die Primärdatei Bild.bmp nach TIFF migriert. Folglich muss die beschreibende LIDO-Datei angepasst werden. Das AIP sieht nun so aus:
+
+```
+data/lido.xml
+data/Bilder/bild.tif
+```
+
+```
+<lido:linkResource>Bilder/bild.tif</lido:linkResource>
+```
+
+**Präsentation:** Für die Präsentation wird aus dem TIFF eine JPG-Datei erzeugt. Da die beiden Dateien im WWW abrufbar sein sollen, muss die relative Referenz durch die Angabe einer absoluten URL ersetzt werden. Das Element <linkResource> sieht in der LIDO-Datei im PIP sieht wie folgt aus:
+
+```
+<lido:linkResource> http://data.da-nrw.de/[...] /[new Filename].jpg </lido:linkResource>
+```
+
+
+### XMP
+
+#### Allgemeine Informationen 
+#### Verarbeitung in DNSCore
 
 
 
