@@ -254,7 +254,7 @@ Aus der StructMap geht dabei hervor, dass beide Teilobjekte (dmd35717,dmd35716) 
 
 #### Durchführung:
 
-1. Siehe Hintergrund.
+Siehe Hintergrund.
 
 #### Akzeptanzkriterien:
 
