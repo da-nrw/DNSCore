@@ -320,16 +320,10 @@ Inhalt premis.xml
 
 1. Siehe Hintergrund.
 
-#### Akzeptanzkriterien: (Vorschlag 1)
+#### Akzeptanzkriterien:
 
-* In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN gelistet.
-** Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN zugewiesen wurde.
-
-Welche URN soll hier genommen werden?
-
-#### Akzeptanzkriterien: (Vorschlag 2)
-
-* Das System informiert den User mit per Fehlermeldung, dass die URN nicht eindeutig ermittelt werden kann und der Ingest abgebrochen wird.
+* In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN urn:nbn:de:xyz-1-20131008367735 gelistet.
+* Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN urn:nbn:de:xyz-1-20131008367735 zugewiesen wurde.
 
 ## Szenario AT-IV-6 Fehlerhafte Prüfziffer bei nutzergestuerter URN-Übermittlung
 
