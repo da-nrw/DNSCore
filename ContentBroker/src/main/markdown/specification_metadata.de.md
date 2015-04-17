@@ -11,10 +11,11 @@ Unabhängig vom jeweiligen Metadatenformat werden inhaltlich gesehen folgende Ar
 
 ## Akzeptierte Metadatenformate
 Im Rahmen des DA-NRW werden derzeit vier Metadatenformate akzeptiert:
-•	EAD
-•	METS
-•	LIDO
-•	XMP
+
+* EAD
+* METS
+* LIDO
+* XMP
 Die genannten Formate enthalten jeweils alle vier Arten von Metadaten. 
 Lebensweg der Metadaten im DNSCore
 Abhängig von der Verarbeitung der Primärdaten ändern sich mit diesen auch die entsprechenden Metadaten. Dabei werden in DNS der strukturelle sowie der technische Teil der jeweiligen Metadaten aktualisiert. Der von den Archivaren, Bibliothekaren etc. erfasste deskriptive Teil der Metadaten bleibt unverändert. Die Administrativen Metadaten werden für das gesamte Paket in der PREMIS.xml zusammengetragen.
