@@ -30,6 +30,7 @@ Für die Metadaten gilt im DNSCore dasselbe Prinzip wie für die Primärobjekte:
 Für die Präsentation im Portal werden die Primärdaten aus dem langzeitsicheren Dateiformat in das dafür jeweils festgelegte Präsentationsformat konvertiert. Sowohl die Primärdateien als auch die entsprechenden Metadaten erhalten eine DA-NRW interne URL. Daher ist eine erneute Anpassung der Metadaten unerlässlich. Im strukturellen Teil der Metadatendateien wird also der relative Pfad auf dem Dateisystem durch die generierte URL ersetzt. Dabei enthält die URL selbstverständlich die aktualisierte – dem Zielformat für die Repräsentation entsprechende – Dateiendung. 
 
 ## Anforderungen an die Metadaten im DNSCore
+
 Im Kontext des DA-NRW sowie der Langzeitarchivierung im Allgemeinen gibt es eine zentrale Regel, die stets eingehalten werden muss:    
 
 **SIP-Pakete müssen in sich konsistent sein.**
@@ -51,6 +52,30 @@ Oft werden Metadaten eingeliefert, in denen die Primärdaten mittels URLs (http:
 ### Validierung der Metadaten in DNS 
 
 Jedes SIP, das in das DNS eingeliefert wird, durchläuft eine Validierung seiner Metadaten. Dabei wird in der Metadatendatei  jede einzelne Referenz auf eine Primärdatei  auf die tatsächliche Existenz der jeweils referenzierten Primärdatei geprüft. Sollte auch nur eine einzige Datei unter dem angegebenen Pfad nicht zu finden sein, wird das gesamte SIP als inkonsistent abgelehnt.
+
+## Detaillierte Beschreibung der akzeptierten Metadatenformate
+
+### METS / MODS
+
+#### Allgemeine Informationen 
+
+Metadata Encoding & Transmission Standard (METS) ist ein XML- Dateiformat zur Beschreibung von digitalen Sammlungen von Primärobjekten. Nähere Informationen zum Dateiformat METS finden Sie unter http://www.loc.gov/standards/mets/.
+Jedes METS-File hat folgende Struktur:
+
+```xml
+<mets>
+  <metsHdr>		(Beschreibung des METS-Dokuments)
+  <dmdSec>			(Deskriptive Metadaten)
+  <amdSec>			(Administrative Metadaten)
+  <fileSec>		(Auflistung aller referenzierten Primärobjekte)
+  <structMap>		(Strukturelle Metadaten)
+  <structLink>		(Verknüpfung von Elementen)
+  <behaviorSec>		(Verbindung zu ausführbaren Elementen)
+</mets>
+```
+
+Der METS-Standard legt nicht fest, welche Form die einzelnen Abschnitte aufweisen müssen. Es kann durchaus sein, dass die Abschnitte unterschiedliche XML-Formate haben. 
+Die in das DNSCore eingelieferten METS-Pakete werden auch als METS/MODS-Pakete bezeichnet, weil das  Element <dmdSec> dem Metadata Object Description Schema (MODS) gehorcht. Nähere Informationen zum Dateiformat MODS finden Sie unter http://www.loc.gov/standards/mods/. 
 
 
 
