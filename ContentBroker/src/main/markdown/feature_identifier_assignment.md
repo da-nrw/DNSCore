@@ -271,8 +271,7 @@ Aus der StructMap geht dabei hervor, dass beide Teilobjekte (dmd35717,dmd35716) 
 
 Dieses Szenario ist nicht implementiert. Es befindet sich derzeit in der Konzeptionsphase.
 
-* Vorschlag 1 : Eine URN wird der anderen vorgezogen (z.B. die PREMIS hat Vorrang):
-* Vorschlag 2 : Eine Benutzerfehlermeldung wird vom System ausgegeben. Das Paket wird abgelehnt.
+Eine PREMIS-URN wird der METS-URN vorgezogen. 
 
 #### Testpaket(e):
 
