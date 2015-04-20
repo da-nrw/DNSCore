@@ -37,7 +37,7 @@ Inhalt:
 Ihr angefordertes Objekt mit dem Namen "2-20150415425545" wurde unter Ihrem Outgoing Ordner unter TEST/outgoing/ abgelegt und steht jetzt zum Retrieval bereit!
 ``` 
 
-\5. Es taucht ein weiterer Button auf. Per Klick auf den Button kann das Paket gedownloadet werden.
+5\. Es taucht ein weiterer Button auf. Per Klick auf den Button kann das Paket gedownloadet werden.
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval4.png)
 
