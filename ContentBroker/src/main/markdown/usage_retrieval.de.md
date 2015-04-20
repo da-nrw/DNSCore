@@ -1,14 +1,27 @@
 # Retrieval
 
+Als Retrieval wird der Prozess des Zurückladens von Objekten auf die lokalen Arbeitsstation eines Nutzers bezeichnet.
+
+Am Ende des Retrieval Vorganges erhält der Nutzer einen Einlieferunsbelegt mit dem technischen Identifier des Objektes.
+Objekte können über diesen Identifier recherchiert und deren Retrieval über die DAWeb angestoßen werden. 
+
+## Manuelles Retrieval
+
+### Voraussetzungen
+
+* Der Contractor hat einen Rechner mit Internetverbindung.
+* Der Contractor ist mit seinen Zugangsdaten in der DAWeb Oberfläche eingeloggt.
+* Der Contractor hat zu einem früheren Zeitpunkt ein SIP eingespielt. Er hat den Identifier notiert.
+
+### Schritte
+
+1. In der DAWeb Maske "Eingelieferte Objekte (AIP)" 
+2. 
 
 
-## Retrieval 
 
-Once you have ingested a package into the system successfully, which you know by
-recieving an email report for the object, you can search the system for it and retrieve
-it. How this is done is described by the following steps
 
-#### Retrieval step by step
+
 
 1. Log in to DAWeb on your node.
 2. Go to the "Eingelieferte Objekte (AIP)" section.
