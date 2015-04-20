@@ -29,6 +29,16 @@ Objekte können über diesen Identifier recherchiert und deren Retrieval über d
 
 4\. Die Verarbeitung wird dann vom System vorgenommen. Das System informiert anschließend den Nutzer per Email, sobald das DIP zur Retrieval bereitsteht 
 
+```
+Betreff: [System] Retrieval Report für 2-20150415425545
+
+Inhalt: 
+
+Ihr angefordertes Objekt mit dem Namen "2-20150415425545" wurde unter Ihrem Outgoing Ordner unter TEST/outgoing/ abgelegt und steht jetzt zum Retrieval bereit!
+``` 
+
+
+![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval4.png)
 
 
 
