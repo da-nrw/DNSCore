@@ -27,7 +27,7 @@ Objekte können über diesen Identifier recherchiert und deren Retrieval über d
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval2.png)
 
-4\. Die Verarbeitung wird dann vom System vorgenommen. Das System informiert anschließend den Nutzer per Email, sobald das DIP zur Retrieval bereitsteht 
+4\. Die Verarbeitung wird dann vom System vorgenommen. Das System informiert anschließend den Nutzer per Email, sobald das DIP zur Retrieval bereitsteht.
 
 ```
 Betreff: [System] Retrieval Report für 2-20150415425545
@@ -37,16 +37,14 @@ Inhalt:
 Ihr angefordertes Objekt mit dem Namen "2-20150415425545" wurde unter Ihrem Outgoing Ordner unter TEST/outgoing/ abgelegt und steht jetzt zum Retrieval bereit!
 ``` 
 
+\5. Es taucht ein weiterer Button auf. Per Klick auf den Button kann das Paket gedownloadet werden.
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval4.png)
 
 
 
-2. Log in to DAWeb on your node.
-2. Go to the "Eingelieferte Objekte (AIP)" section.
-3. Search your object by filtering for it by object identifier (which you take from the email).
 
-1. Click the "Anfordern" button of your object.
+
 1. Wait for another email which confirms your object has successfully been retrieved and is ready for download
 1. Go to the starting page of DAWeb again and then select "Objekt entnehmen (DIP)".
 1. Click the link for your object and your browser should start do download the 
