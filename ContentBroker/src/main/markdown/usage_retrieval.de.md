@@ -27,7 +27,7 @@ Objekte können über diesen Identifier recherchiert und deren Retrieval über d
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval2.png)
 
- 
+4\. Die Verarbeitung wird dann vom System vorgenommen. Das System informiert anschließend den Nutzer per Email, sobald das DIP zur Retrieval bereitsteht 
 
 
 
