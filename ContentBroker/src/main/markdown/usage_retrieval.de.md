@@ -34,7 +34,8 @@ Betreff: [System] Retrieval Report für 2-20150415425545
 
 Inhalt: 
 
-Ihr angefordertes Objekt mit dem Namen "2-20150415425545" wurde unter Ihrem Outgoing Ordner unter TEST/outgoing/ abgelegt und steht jetzt zum Retrieval bereit!
+Ihr angefordertes Objekt mit dem Namen "2-20150415425545" wurde unter 
+Ihrem Outgoing Ordner unter TEST/outgoing/ abgelegt und steht jetzt zum Retrieval bereit!
 ``` 
 
 5\. Es taucht ein weiterer Button auf. Per Klick auf den Button kann das Paket gedownloadet werden.
