@@ -19,7 +19,7 @@ Objekte können über diesen Identifier recherchiert und deren Retrieval über d
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval1.png)
 
-1. Das so ausgewählte Objekt wird dann gelistet. Per Klick auf den Entnahme Button des Objektes kann dann das Retrieval angestoßen werden.
+1. Das so ausgewählte Objekt wird dann gelistet. Per Klick auf den "Anfordern" Button des Objektes kann dann das Retrieval angestoßen werden.
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval3.png)
  
