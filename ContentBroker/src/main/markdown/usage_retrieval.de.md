@@ -15,15 +15,15 @@ Objekte können über diesen Identifier recherchiert und deren Retrieval über d
 
 ### Schritte
 
-1. In der DAWeb Maske "Eingelieferte Objekte (AIP)" gibt es die Möglichkeit, die aufgelisteten Objekte per Filter einzugrenzen.
+1\. In der DAWeb Maske "Eingelieferte Objekte (AIP)" gibt es die Möglichkeit, die aufgelisteten Objekte per Filter einzugrenzen.
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval1.png)
 
-1\. Das so ausgewählte Objekt wird dann gelistet. Per Klick auf den "Anfordern" Button des Objektes kann dann das Retrieval angestoßen werden.
+2\. Das so ausgewählte Objekt wird dann gelistet. Per Klick auf den "Anfordern" Button des Objektes kann dann das Retrieval angestoßen werden.
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval3.png)
 
-1. Das System signalisiert mit folgender Meldung, dass das Retrieval erfolgreich angestoßen wurde:
+3\. Das System signalisiert mit folgender Meldung, dass das Retrieval erfolgreich angestoßen wurde:
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval2.png)
 
