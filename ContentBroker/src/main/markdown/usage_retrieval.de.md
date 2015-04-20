@@ -15,18 +15,14 @@ Objekte können über diesen Identifier recherchiert und deren Retrieval über d
 
 ### Schritte
 
-1. In der DAWeb Maske "Eingelieferte Objekte (AIP)" 
-2. 
+1. In der DAWeb Maske "Eingelieferte Objekte (AIP)" gibt es die Möglichkeit, die aufgelisteten Objekte per Filter einzugrenzen.
 
-
-
-
-
+![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval1.png)
 
 1. Log in to DAWeb on your node.
 2. Go to the "Eingelieferte Objekte (AIP)" section.
 3. Search your object by filtering for it by object identifier (which you take from the email).
-![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval1.png)
+
 1. Click the "Anfordern" button of your object.
 1. Wait for another email which confirms your object has successfully been retrieved and is ready for download
 1. Go to the starting page of DAWeb again and then select "Objekt entnehmen (DIP)".
