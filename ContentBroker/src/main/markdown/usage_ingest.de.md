@@ -13,9 +13,9 @@ Ingest beschreibt den Prozess der Übergabe eines SIP an das System bzw. die Üb
 
 ### Schritte
 
-1\. Der Contractor legt das SIP mit Hilfe des FileShare Client im Ordner "incoming" auf seinem Nutzungsbereich ab.
-2\. Der Contractor wartet, bis die Übertragung abgeschlossen ist.
-3\. Der Contractor öffnet die DAWeb-Maske "Startseite"->"Verarbeitung für abgelieferte SIP starten".
+1\. Der Contractor legt das SIP mit Hilfe des FileShare Client im Ordner "incoming" auf seinem Nutzungsbereich ab.<br>
+2\. Der Contractor wartet, bis die Übertragung abgeschlossen ist.<br>
+3\. Der Contractor öffnet die DAWeb-Maske "Startseite"->"Verarbeitung für abgelieferte SIP starten".<br>
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/ingest1.png)
 
