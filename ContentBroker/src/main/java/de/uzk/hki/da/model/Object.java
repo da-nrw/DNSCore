@@ -187,7 +187,7 @@ public class Object {
 	@OneToMany(orphanRemoval=true, targetEntity=Document.class, fetch=FetchType.EAGER)
 	@JoinColumn(name="object_id")
 	@Cascade(CascadeType.ALL)
-	@Fetch(value = FetchMode.SUBSELECT)
+//	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Document> documents = new ArrayList<Document>();
 	
 	/**

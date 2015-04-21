@@ -219,7 +219,7 @@ public class AcceptanceTest {
 	}
 	
 	private static void clearDB() {
-		TESTHelper.clearDB();
+//		TESTHelper.clearDB();
 	}
 	
 }
