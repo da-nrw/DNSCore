@@ -67,11 +67,11 @@ Beim Ingest eines SIP wird eine Validierung der Nutzerdaten vorgenommen. Entspre
 [SIP-Spezifikation](specification_sip.de.md), wird der Ingest abgebrochen und der Contractor per Email informiert.
 
 ```
-Betreff: [System] Fehlerreport für 2-20150409419813
+Betreff: [System] Fehlerreport für [Technischer Identifier]
 
 Inhalt:
 
-Beim Ingest des Objektes mit dem Identifier 2-20150409419813 ist ein Fehler aufgetreten. 
+Beim Ingest des Objektes mit dem Identifier [Technischer Identifier] ist ein Fehler aufgetreten. 
 Mehr als eine Metadatendatei wurde gefunden.
 ```
 
@@ -81,11 +81,11 @@ Das Paket kann dann zu einem späteren Zeitpunkt unter dem gleichen Originalname
 gelöscht wird. Die Löschung wird quittiert durch eine Meldung an den Contractor:
 
 ```
-Betreff: [System] Entfernung von SIP aus Workflow für 2-20150316407205
+Betreff: [System] Entfernung von SIP aus Workflow für [Technischer Identifier]
 
 Inhalt:
 
-Ihr abgegebenes SIP Paket dem Namen "AT-V-002_ATDuplicateMetadataFiles_2015-03-16" wurde aus der 
+Ihr abgegebenes SIP Paket dem Namen "[Original Name]" wurde aus der 
 Verabreitungswarteschlange entfernt. Die Datei kann so nicht vom DNS verarbeitet werden. 
 Korrigieren Sie ggfs. das Paket und bitte versuchen Sie eine erneute Ablieferung. 
 Das Paket wurde nicht archiviert. 
@@ -96,11 +96,11 @@ Das Paket wurde nicht archiviert.
 In bestimmten Fällen, abhängig von den im Contract des SIP festgelegten Einstellungen, wird der Ingest an festgelegter Stelle unterbrochen. Diese Unterbrechung wird durch eine Email signalisiert:
 
 ```
-Betreff: [System] Entscheidung erforderlich für 2-20150409419837
+Betreff: [System] Entscheidung erforderlich für [Technischer Identifier]
 
 Inhalt:
 
-Bitte treffen Sie eine Entscheidung in der DAWeb-Maske "Entscheidungsübersicht"2-20150409419837
+Bitte treffen Sie eine Entscheidung in der DAWeb-Maske "Entscheidungsübersicht" [Technischer Identifier]
 ```
 
 In der Entscheidungsansicht kann der Contractor dann zwischen verschiedenen Optionen wählen, woraufhin die Verarbeitung unter Berücksichtigung der gewählten Option fortgesetzt wird.
@@ -111,7 +111,8 @@ In der Entscheidungsansicht kann der Contractor dann zwischen verschiedenen Opti
 * Keine Zugangsdaten für den Nutzungsbereich. Der Vertragspartner sollte sich an den jeweils zuständigen Betreiber wenden. Die Zugangsdaten werden dem Vertragspartnern durch den zuständigen Administrator übermittelt.
 * Ausbleiben des Email-Report. Sollte nach einem oder zwei Tagen der Email-Report ausbleiben, sollte sich der Vertragspartner an den jeweils zuständigen Betreiber wenden. Die Ursachen hierfür sind vom Betreiber zu klären.
 
-### Weiterführende Links
+### Links
 
 * Erstellung von SIPs mit Hilfe des SIP-Builder
 * [SIP-Spezifikation](specification_sip.de.md)
+* Ergänzung von Objekten. Ingest von [Delta](usage_ingest_delta.de.md)-SIPs.
