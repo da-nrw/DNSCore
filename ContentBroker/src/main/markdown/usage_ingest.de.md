@@ -20,8 +20,11 @@ Ingest beschreibt den Prozess der Übergabe eines SIP an das System bzw. die Üb
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/ingest1.png)
 
 4\. In dieser Maske sollte nun das im "incoming" Ordner abgelegte SIP namentlich aufgeführt sein.
+
 5\. Der Contractor markiert dieses Paket mit einem Häkchen für die Verarbeitung und betätigt den "Starten" Button am unteren Ende der Seite.
+
 6\. Der Eintrag für das Paket verschwindet jetzt, was die gestartete Verarbeitung signalisiert.
+
 7\. Der Contractor wartet auf den Einlieferungsbeleg (Eingang per Email), welcher über den Status der Einlieferung informiert.
 
 ### Verarbeitungsübersicht
