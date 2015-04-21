@@ -115,14 +115,3 @@ In der Entscheidungsansicht kann der Contractor dann zwischen verschiedenen Opti
 
 * Erstellung von SIPs mit Hilfe des SIP-Builder
 * [SIP-Spezifikation](specification_sip.de.md)
-
-
-
-
-
-![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/ingest_1.png)
-
-
-**Note** that users are able to monitor the package while beeing processed.
-This is an advanced feature which is only optional and primarily targeted at 
-administrators. It is described in this (TODO link) document.
