@@ -113,6 +113,6 @@ In der Entscheidungsansicht kann der Contractor dann zwischen verschiedenen Opti
 
 ### Links
 
-* Erstellung von SIPs mit Hilfe des SIP-Builder
+* Erstellung von SIPs mit Hilfe des [SIP-Builder](DNSCore/blob/master/SIP-Builder/src/manual/SIP-Builder%20Anleitung.pdf).
 * [SIP-Spezifikation](specification_sip.de.md)
 * Ergänzung von Objekten. Ingest von [Delta](usage_ingest_delta.de.md)-SIPs.
