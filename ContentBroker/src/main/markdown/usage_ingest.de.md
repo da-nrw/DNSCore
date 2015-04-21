@@ -21,6 +21,10 @@ Ingest beschreibt den Prozess der Übergabe eines SIP an das System bzw. die Üb
 5. Der Eintrag für das Paket verschwindet jetzt, was die gestartete Verarbeitung signalisiert.
 6. Der Contractor wartet auf den Einlieferungsbeleg (Eingang per Email), welcher über den Status der Einlieferung informiert.
 
+### Verarbeitungsübersicht
+
+![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/queue.png)
+
 ### Der Email-Report
 
 #### Erfolgreiche Einlieferung
