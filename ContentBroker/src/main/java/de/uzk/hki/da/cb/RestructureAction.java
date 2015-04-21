@@ -34,6 +34,7 @@ import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.IngestGate;
+import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.format.FileFormatException;
@@ -75,9 +76,19 @@ public class RestructureAction extends AbstractAction{
 	}
 	
 
+	
+	
 	@Override
 	public void checkPreconditions() {
+		
+		if (!wa.objectPath().toFile().exists()) 
+			throw new PreconditionsNotMetException("object path for object on WorkArea does not exist: "+wa.objectPath());
+		if (!wa.dataPath().toFile().exists()) 
+			throw new PreconditionsNotMetException("data path for object on WorkArea does not exist: "+wa.dataPath());
 	}
+	
+	
+	
 	
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,
