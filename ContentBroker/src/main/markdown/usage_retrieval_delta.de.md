@@ -32,5 +32,11 @@ Ein oder mehrere AIPs können per Häkchen für das Retrieval markiert werden. P
 Wie auch beim "normalen" Retrieval informiert das System anschließend den Contractor per Mail, dass das DIP / die DIPs 
 erstellt wurden und nun zum Download bereit sind.
 
-* per Entnahme
-* per FTP
+* TODO per Entnahme
+* TODO per FTP
+* 
+
+## Links
+
+* AIP Spezifikation
+
