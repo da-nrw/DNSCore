@@ -14,12 +14,15 @@ Ingest beschreibt den Prozess der Übergabe eines SIP an das System bzw. die Üb
 ### Schritte
 
 1. Der Contractor legt das SIP mit Hilfe des FileShare Client im Ordner "incoming" auf seinem Nutzungsbereich ab.
-2. Der Contractor wartet, bis die Übertragung abgeschlossen ist.
-2. Der Contractor öffnet die DAWeb-Maske "Startseite"->"Verarbeitung für abgelieferte SIP starten".
-3. In dieser Maske sollte nun das im "incoming" Ordner abgelegte SIP namentlich aufgeführt sein.
-4. Der Contractor markiert dieses Paket mit einem Häkchen für die Verarbeitung und betätigt den "Starten" Button am unteren Ende der Seite.
-5. Der Eintrag für das Paket verschwindet jetzt, was die gestartete Verarbeitung signalisiert.
-6. Der Contractor wartet auf den Einlieferungsbeleg (Eingang per Email), welcher über den Status der Einlieferung informiert.
+2\. Der Contractor wartet, bis die Übertragung abgeschlossen ist.
+3\. Der Contractor öffnet die DAWeb-Maske "Startseite"->"Verarbeitung für abgelieferte SIP starten".
+
+![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/queue.png)
+
+4\. In dieser Maske sollte nun das im "incoming" Ordner abgelegte SIP namentlich aufgeführt sein.
+5\. Der Contractor markiert dieses Paket mit einem Häkchen für die Verarbeitung und betätigt den "Starten" Button am unteren Ende der Seite.
+6\. Der Eintrag für das Paket verschwindet jetzt, was die gestartete Verarbeitung signalisiert.
+7\. Der Contractor wartet auf den Einlieferungsbeleg (Eingang per Email), welcher über den Status der Einlieferung informiert.
 
 ### Verarbeitungsübersicht
 
