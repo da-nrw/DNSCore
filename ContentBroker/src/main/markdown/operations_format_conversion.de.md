@@ -101,7 +101,7 @@ TODO beschreibung
 
 ## Typen von Konversionsroutinen
 
-**[de.uzk.hki.da.format.CLIConversionStrategy.java](../java/de/uzk/hki/da/format/CLIConversionStrategy.java)**
+**[de.uzk.hki.da.convert.CLIConversionStrategy.java](../java/de/uzk/hki/da/convert/CLIConversionStrategy.java)**
 
 Setzt einen beliebigen Befehl auf der Kommandozeile ab und kann somit jegliche von dort aufrufbare Converter einbinden. Benötigt entsprechende Werte für "params" und "target_suffix".
 
