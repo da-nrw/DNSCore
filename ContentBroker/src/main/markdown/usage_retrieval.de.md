@@ -49,11 +49,7 @@ Das Objekt kann ebenfalls über die DAWeb Maske "Objekt entnehmen (DIP)" gedownl
 **Alternativ** ist es möglich, das Paket per FileShare Client (z.B. FileZilla) aus dem ihm zugeteilten Nutzungsbereich
 auf dem Knoten, dort im "outgoing"-Verzeichnis, herunterzuladen.
 
-6\. 
-
-![](https://raw2.github.com/da-nrw/DNSCore/master/DAWeb/doc/retrieval_3.png)
-1. To save resources, the system will remove the DIP automatically from the web share/UserArea 24h after you have downloaded it.
-
+Um Ressourcen auf dem Nutzungsbereich zu schonen, wird das Paket **24 Stunden**, nachdem es gedownloadet wurde, automatisch vom System entfernt.
 
 ## Weiterführende Links
 
