@@ -138,7 +138,7 @@ TODO
 #### Akzeptanzkriterien:
 
 * Das Paket enthält die Datei&nbsp;XMP.xml
-* Das Paket enthält die konvertierte Datei&nbsp;LVR_ILR_0000008126.bmp.
+* Das Paket enthält die konvertierte Datei&nbsp;LVR_ILR_0000008126.tif.
 * Das Paket enthält NICHT die ursprüngliche Datei LVR_ILR_0000008126.bmp
 * Die Datei XMP.xml enthält einen Verweis auf&nbsp;*"LVR_ILR_0000008126.tif"*
 

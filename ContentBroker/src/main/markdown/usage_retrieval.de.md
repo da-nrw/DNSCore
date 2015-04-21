@@ -51,9 +51,9 @@ auf dem Knoten, dort im "outgoing"-Verzeichnis, herunterzuladen.
 
 Um Ressourcen auf dem Nutzungsbereich zu schonen, wird das Paket **24 Stunden**, nachdem es gedownloadet wurde, automatisch vom System entfernt.
 
-## Weiterführende Links
+## Links
 
-* [DIP-Spezifikation|specification_dip.md]
+* [DIP-Spezifikation](specification_dip.md)
 
 
 ## User Reporting via DA-Web

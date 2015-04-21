@@ -101,29 +101,29 @@ TODO beschreibung
 
 ## Typen von Konversionsroutinen
 
-**[de.uzk.hki.da.format.CLIConversionStrategy.java](../java/de/uzk/hki/da/format/CLIConversionStrategy.java)**
+**[de.uzk.hki.da.convert.CLIConversionStrategy.java](../java/de/uzk/hki/da/convert/CLIConversionStrategy.java)**
 
 Setzt einen beliebigen Befehl auf der Kommandozeile ab und kann somit jegliche von dort aufrufbare Converter einbinden. Benötigt entsprechende Werte für "params" und "target_suffix".
 
-**[de.uzk.hki.da.format.PublishImageConversionStrategy.java](../java/de/uzk/hki/da/format/PublishImageConversionStrategy.java)**
+**[de.uzk.hki.da.convert.PublishImageConversionStrategy.java](../java/de/uzk/hki/da/convert/PublishImageConversionStrategy.java)**
 
 Das Zielformat ist jpg. Erstellt jeweils Zielformate für die "public" und "institution" PIPs für die Publikation (Policies -> presentation=true).
 
 Benötigt wird das Programm **ImageMagick**. Die **Version** ist unspezifiziert. Der Kommandozeilenaufruf auf "convert" muss für den ContentBroker global sichtbar sein (evtl. Umgebungsvariablen setzen).
  
-**[de.uzk.hki.da.format.PublishAudioConversionStrategy.java](../java/de/uzk/hki/da/format/PublishAudioConversionStrategy.java)**
+**[de.uzk.hki.da.convert.PublishAudioConversionStrategy.java](../java/de/uzk/hki/da/convert/PublishAudioConversionStrategy.java)**
 
 Das Zielformat ist mp3. Erstellt jeweils Zielformate für die "public" und "institution" PIPs für die Publikation (Policies -> presentation=true). 
 
 Benötigt wird das Programm **sox**. Die **Version** ist unspezifiziert. Der Kommandozeilenaufruf auf "sox" muss für den ContentBroker global sichtbar sein (evtl. Umgebungsvariablen setzen).
 
-**[de.uzk.hki.da.format.PublishVideoConversionStrategy.java](../java/de/uzk/hki/da/format/PublishVideoConversionStrategy.java)**
+**[de.uzk.hki.da.convert.PublishVideoConversionStrategy.java](../java/de/uzk/hki/da/convert/PublishVideoConversionStrategy.java)**
 
 Das Zielformat ist mpeg4 im avi-Container. Erstellt jeweils Zielformate für die "public" und "institution" PIPs für die Publikation (Policies -> presentation=true). 
 
 Benötigt wird das Programm **HandBrakeCLI**. Die **Version** ist unspezifiziert. Der Kommandozeilenaufruf auf "HandBrakeCLI" muss für den ContentBroker global sichtbar sein (evtl. Umgebungsvariablen setzen).
 
-**[de.uzk.hki.da.format.PublishPDFConversionStrategy.java](../java/de/uzk/hki/da/format/PublishPDFConversionStrategy.java)**
+**[de.uzk.hki.da.convert.PublishPDFConversionStrategy.java](../java/de/uzk/hki/da/convert/PublishPDFConversionStrategy.java)**
 
 Das Zielformat ist mpeg4 im avi-Container. Erstellt jeweils Zielformate für die "public" und "institution" PIPs für die Publikation (Policies -> presentation=true). 
 
