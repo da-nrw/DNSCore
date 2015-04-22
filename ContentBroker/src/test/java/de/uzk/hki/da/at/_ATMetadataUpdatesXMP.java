@@ -89,7 +89,7 @@ public class _ATMetadataUpdatesXMP extends AcceptanceTest{
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, xmpFileName).toFile()));
-		assertTrue(getURL(doc).equals("LVR_ILR_0000008126.tif"));
+		assertTrue(getURL(doc).equals("LVR ILR_0000008126.tif"));
 	}
 	
 	@Test
