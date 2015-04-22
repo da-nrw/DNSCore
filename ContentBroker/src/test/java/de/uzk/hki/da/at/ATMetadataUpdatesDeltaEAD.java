@@ -31,9 +31,9 @@ import de.uzk.hki.da.util.Path;
  *
  */
 
-public class ATUseCaseIngestDeltaEAD extends AcceptanceTest{
+public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 
-	private static final String ORIG_NAME_ORIG = "ATUseCaseIngestDeltaEAD";
+	private static final String ORIG_NAME_ORIG = "ATMetadataUpdatesDeltaEAD";
 	private static Path contractorsPipsPublic;
 	private static Object object;
 	private static final File retrievalFolder = new File("/tmp/unpackedDIP");
@@ -46,18 +46,20 @@ public class ATUseCaseIngestDeltaEAD extends AcceptanceTest{
 		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 		
-		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+ORIG_NAME_ORIG+"_orig/"+ORIG_NAME_ORIG+".tgz"), new File("src/test/resources/at"));
-		ath.ingest(ORIG_NAME_ORIG);
-		FileUtils.deleteQuietly(new File("src/test/resources/at/"+ORIG_NAME_ORIG+".tgz"));
+		ath.putPackageToIngestArea(ORIG_NAME_ORIG+"_orig","tgz", ORIG_NAME_ORIG);
+		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
+		Thread.sleep(2000);
+		ath.putPackageToIngestArea(ORIG_NAME_ORIG+"_delta", "tgz", ORIG_NAME_ORIG);
+		Thread.sleep(2000);
+		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
 		
-		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+ORIG_NAME_ORIG+"_delta/"+ORIG_NAME_ORIG+".tgz"), new File("src/test/resources/at"));
-		object = ath.ingest(ORIG_NAME_ORIG);
-		FileUtils.deleteQuietly(new File("src/test/resources/at/"+ORIG_NAME_ORIG+".tgz"));
+		object=ath.fetchObjectFromDB(ORIG_NAME_ORIG);
 	}
 	
 	@AfterClass
 	public static void tearDownAfterClass() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
+		Path.makeFile("tmp",object.getIdentifier()+".pack_2.tar").delete(); // retrieved dip
 	}
 	
 	@Test

@@ -56,29 +56,39 @@ public class ATContractIngestDelta extends AcceptanceTest{
 	@Test
 	public void test() throws IOException, InterruptedException, RepositoryException{
 		
-		Object 
-		o = ath.ingest(ORIG_NAME+"1",DEFAULT_CONTAINER_EXTENSION,ORIG_NAME);
-
+		ath.putPackageToIngestArea(ORIG_NAME+"1", DEFAULT_CONTAINER_EXTENSION, ORIG_NAME);
+		Thread.sleep(2000);
+		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValid);
+		ath.waitForObjectToBePublished(ORIG_NAME);
+		Object o=ath.fetchObjectFromDB(ORIG_NAME);
+		Thread.sleep(3000);
+		
 		InputStream is = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
 				JPG_STREAM_ID);
 		assertNotNull(is);
 		IOUtils.copy(is,new FileOutputStream(OUTPUT_JPG_1));
 		
-		Thread.sleep(2000);
 		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));
 		
-		o = ath.ingest(ORIG_NAME+"2",DEFAULT_CONTAINER_EXTENSION,ORIG_NAME);
+		ath.putPackageToIngestArea(ORIG_NAME+"2", DEFAULT_CONTAINER_EXTENSION, ORIG_NAME);
+		Thread.sleep(2000);
+		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValid);
+		ath.waitForObjectToBePublished(ORIG_NAME);
+		o=ath.fetchObjectFromDB(ORIG_NAME);
+		Thread.sleep(3000);
 
 		InputStream is2 = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
 				JPG_STREAM_ID);
 		assertNotNull(is2);
 		IOUtils.copy(is2,new FileOutputStream(OUTPUT_JPG_2));
 		
-		Thread.sleep(2000);
 		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));
 
-		o = ath.ingest(ORIG_NAME+"3",DEFAULT_CONTAINER_EXTENSION,ORIG_NAME);
-		
+		ath.putPackageToIngestArea(ORIG_NAME+"3", DEFAULT_CONTAINER_EXTENSION, ORIG_NAME);
+		Thread.sleep(2000);
+		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValid);
+		o=ath.fetchObjectFromDB(ORIG_NAME);
+		Thread.sleep(3000);
 
 		InputStream is3 = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
 				JPG_STREAM_ID);

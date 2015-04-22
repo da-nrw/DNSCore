@@ -25,6 +25,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.util.Path;
 
 /**
@@ -59,41 +60,41 @@ public class ATUseCaseIngestSpecialCases extends AcceptanceTest{
 	
 	@Test
 	public void testUmlautsInPackageName() throws Exception{
-		ath.waitForObjectToBeInFinishState("ATÜÄÖ");
+		ath.awaitObjectState("ATÜÄÖ",Object.ObjectStatus.ArchivedAndValid);
 	}
 	
 	@Test
 	public void testSpecialCharactersInFileNames() throws Exception{
-		ath.waitForObjectToBeInFinishState("ATSonderzeichen_in_Dateinamen");
+		ath.awaitObjectState("ATSonderzeichen_in_Dateinamen",Object.ObjectStatus.ArchivedAndValid);
 	}
 	
 	@Test
 	public void testUmlautsInFileNames() throws Exception{
-		ath.waitForObjectToBeInFinishState("ATUmlaute_in_Dateinamen");
+		ath.awaitObjectState("ATUmlaute_in_Dateinamen",Object.ObjectStatus.ArchivedAndValid);
 	}
 	
 	@Test
 	public void testTARContainer() throws Exception{
-		ath.waitForObjectToBeInFinishState("AT_CON1");
+		ath.awaitObjectState("AT_CON1",Object.ObjectStatus.ArchivedAndValid);
 	}
 	
 	@Test
 	public void testTGZContainer() throws Exception{
-		ath.waitForObjectToBeInFinishState("AT_CON2");
+		ath.awaitObjectState("AT_CON2",Object.ObjectStatus.ArchivedAndValid);
 	}
 	
 	@Test
 	public void testZIPContainer() throws Exception{
-		ath.waitForObjectToBeInFinishState("AT_CON3");
+		ath.awaitObjectState("AT_CON3",Object.ObjectStatus.ArchivedAndValid);
 	}
 	
 	@Test
 	public void testSpecialCharsInPackageName() throws Exception{
-		ath.waitForObjectToBeInFinishState("AT&Sonderzeichen%in#Paketnamen");
+		ath.awaitObjectState("AT&Sonderzeichen%in#Paketnamen",Object.ObjectStatus.ArchivedAndValid);
 	}
 	
 	@Test
 	public void testWhiteSpacesInFileNames() throws Exception{
-		ath.waitForObjectToBeInFinishState("ATLeerzeichen_in_Dateinamen");
+		ath.awaitObjectState("ATLeerzeichen_in_Dateinamen",Object.ObjectStatus.ArchivedAndValid);
 	}
 }

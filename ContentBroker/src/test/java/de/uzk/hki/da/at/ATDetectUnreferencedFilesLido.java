@@ -12,8 +12,8 @@ import org.junit.Test;
 
 import de.uzk.hki.da.util.Path;
 
-public class ATUseCaseIngestLIDOWithUnreferencedFiles extends AcceptanceTest{
-	private static String origName = "ATUseCaseIngestLIDOWithUnreferencedFiles";
+public class ATDetectUnreferencedFilesLido extends AcceptanceTest{
+	private static String origName = "ATDetectUnreferencedFilesLido";
 	private static File contentbrokerLogfile;
 	private static String targetFileStr = "";
 	

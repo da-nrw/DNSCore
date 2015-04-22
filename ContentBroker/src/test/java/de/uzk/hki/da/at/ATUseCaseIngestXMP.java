@@ -52,14 +52,21 @@ public class ATUseCaseIngestXMP extends AcceptanceTest{
 	private static final File retrievalFolder = new File("/tmp/XMPunpacked");
 	
 	@BeforeClass
-	public static void setUp() throws IOException{
-		object = ath.ingest(origName);
+	public static void setUp() throws IOException, InterruptedException{
+		
+		ath.putPackageToIngestArea(origName, "tgz", origName);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
+		ath.waitForObjectToBePublished(origName);
+		object=ath.fetchObjectFromDB(origName);
+		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
 	}
 	
 	
 	@AfterClass
 	public static void tearDown() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
+		Path.makeFile("tmp",object.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
+		
 	}
 	
 	@Test

@@ -30,9 +30,9 @@ import de.uzk.hki.da.util.Path;
  *
  */
 
-public class ATUseCaseIngestDeltaMETS extends AcceptanceTest{
+public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 
-	private static final String ORIG_NAME_ORIG = "ATUseCaseIngestDeltaMETS";
+	private static final String ORIG_NAME_ORIG = "ATMetadataUpdatesDeltaMETS";
 	private static final String DATA_DANRW_DE = "http://data.danrw.de";
 	private static final File retrievalFolder = new File("/tmp/unpackedMetsMods");
 	private static Path testContractorPipsPublic;
@@ -41,24 +41,27 @@ public class ATUseCaseIngestDeltaMETS extends AcceptanceTest{
 	
 	@BeforeClass
 	public static void setUp() throws IOException, InterruptedException {
-		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+ORIG_NAME_ORIG+"_orig/"+ORIG_NAME_ORIG+".tgz"), new File("src/test/resources/at"));
-		ath.ingest(ORIG_NAME_ORIG);
-		FileUtils.deleteQuietly(new File("src/test/resources/at/"+ORIG_NAME_ORIG+".tgz"));
+		ath.putPackageToIngestArea(ORIG_NAME_ORIG, "tgz", ORIG_NAME_ORIG);
+		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
+		Thread.sleep(2000);
+		ath.putPackageToIngestArea(ORIG_NAME_ORIG+"_delta_one_file", "tgz", ORIG_NAME_ORIG);
+		Thread.sleep(2000);
+		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
 		
-		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+ORIG_NAME_ORIG+"_delta_oneFile/"+ORIG_NAME_ORIG+".tgz"), new File("src/test/resources/at"));
-		object = ath.ingest(ORIG_NAME_ORIG);
-		FileUtils.deleteQuietly(new File("src/test/resources/at/"+ORIG_NAME_ORIG+".tgz"));
+		object = ath.fetchObjectFromDB(ORIG_NAME_ORIG);
+
 	}
 	
 	@AfterClass
 	public static void tearDownAfterClass() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
+		Path.makeFile("tmp",object.getIdentifier()+".pack_2.tar").delete(); // retrieved dip
 	}
 	
 	@Test
 	public void testLZA() throws IOException, InterruptedException, RepositoryException, JDOMException{
-		
 		ath.retrievePackage(object,retrievalFolder,"2");
+		
 		System.out.println("object identifier: "+object.getIdentifier());
 		
 		Path tmpObjectDirPath = Path.make(retrievalFolder.getAbsolutePath(), "data");	
@@ -214,6 +217,8 @@ public class ATUseCaseIngestDeltaMETS extends AcceptanceTest{
 	
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException{
+		
+		object = ath.fetchObjectFromDB(ORIG_NAME_ORIG);
 		
 		testContractorPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, "TEST");
 		

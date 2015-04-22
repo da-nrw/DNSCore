@@ -30,8 +30,12 @@ public class ATUseCaseIngestArchivDuisburg extends AcceptanceTest{
 	private MetadataHelper mh = new MetadataHelper();
 	
 	@BeforeClass
-	public static void setUp() throws IOException {
-		object = ath.ingest(origName);
+	public static void setUp() throws IOException, InterruptedException {
+		ath.putPackageToIngestArea(origName, "tgz", origName);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
+		ath.waitForObjectToBePublished(origName);
+		object=ath.fetchObjectFromDB(origName);
+		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	

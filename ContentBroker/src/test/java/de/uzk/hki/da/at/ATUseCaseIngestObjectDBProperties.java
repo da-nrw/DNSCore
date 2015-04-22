@@ -47,7 +47,11 @@ public class ATUseCaseIngestObjectDBProperties extends AcceptanceTest{
 	 */
 	@Test
 	public void testStartDateAndFormatsGetSaved() throws IOException, InterruptedException, ParseException{
-		Object object = ath.ingest("ATUseCaseIngestStartDateFormats");
+		String origName="ATUseCaseIngestStartDateFormats";
+		ath.putPackageToIngestArea(origName, "tgz", origName);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
+		Object object = ath.fetchObjectFromDB(origName); 
+		
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));		
@@ -76,7 +80,11 @@ public class ATUseCaseIngestObjectDBProperties extends AcceptanceTest{
 	 */
 	@Test
 	public void testLawGetsSaved() throws IOException, InterruptedException, ParseException{
-		Object object = ath.ingest("ATUseCaseIngestLaw");
+		String origName= "ATUseCaseIngestLaw";
+		
+		ath.putPackageToIngestArea(origName, "tgz", origName);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
+		Object object = ath.fetchObjectFromDB(origName);
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
@@ -104,7 +112,11 @@ public class ATUseCaseIngestObjectDBProperties extends AcceptanceTest{
 	 */
 	@Test
 	public void testCodecsGetSaved() throws IOException, InterruptedException{
-		Object object = ath.ingest("ATUseCaseIngestCodecs");
+		String origName="ATUseCaseIngestCodecs";
+		
+		ath.putPackageToIngestArea(origName, "tgz", origName);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
+		Object object = ath.fetchObjectFromDB(origName);
 		
 		assertThat(object.getOriginal_formats()).contains("x-fmt/384");
 		assertThat(StringUtils.countOccurrencesOf(object.getOriginal_formats(), "x-fmt/384")).isEqualTo(1);

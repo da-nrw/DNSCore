@@ -155,7 +155,7 @@ public class CreateEDMAction extends AbstractAction {
 			}
 			return edm;
 		} catch (Exception e) {
-			throw new RuntimeException("Unable to serialize EDM!");
+			throw new RuntimeException("Unable to serialize EDM!",e);
 		}
 	}
 	

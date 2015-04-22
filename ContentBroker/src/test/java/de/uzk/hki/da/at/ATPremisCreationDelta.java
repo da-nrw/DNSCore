@@ -46,7 +46,6 @@ import org.junit.Test;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
 
 /**
@@ -55,26 +54,29 @@ import de.uzk.hki.da.util.Path;
  * @author Daniel M. de Oliveira
  * @author Thomas Kleinke
  */
-public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
+public class ATPremisCreationDelta extends PREMISBase {
 	
 	Object object = null;
 	private static final String ORIG_NAME = "ATUseCaseIngestDelta";
 	private static final String IDENTIFIER =   "ATUseCaseIngestDeltaIdentifier";
-	private static final String containerName = ORIG_NAME+"."+C.FILE_EXTENSION_TGZ;
 	private static final File unpackedDIP = new File("/tmp/ATUseCaseIngestDeltaPREMISCheck");
 	
 
 	@Before
-	public void setUp() throws IOException{
+	public void setUp() throws IOException, InterruptedException{
 
-		object = ath.putPackageToStorage(IDENTIFIER,ORIG_NAME,new Date(),100);
-		FileUtils.copyFile(Path.makeFile(TC.TEST_ROOT_AT,ORIG_NAME+"2.tgz"), 
-				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME,containerName));
+		ath.putPackageToStorage(IDENTIFIER,ORIG_NAME,new Date(),100);
+		Thread.sleep(2000);
+		ath.putPackageToIngestArea(ORIG_NAME+"2", "tgz", ORIG_NAME);
+		Thread.sleep(2000);
+		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValid);
+		object=ath.fetchObjectFromDB(ORIG_NAME);
 	}
 	
 	@After
 	public void tearDown() throws IOException{
 		FileUtils.deleteDirectory(unpackedDIP);
+		Path.makeFile("tmp",object.getIdentifier()+".pack_2.tar").delete(); // retrieved dip
 	}
 	
 
@@ -83,7 +85,6 @@ public class ATUseCaseIngestDeltaPREMISCheck extends PREMISBase {
 	@Test
 	public void testProperPREMISCreation() throws Exception{
 		
-		object = ath.waitForJobsToFinish(ORIG_NAME);
 		object = ath.retrievePackage(object,unpackedDIP,"2");
 		
 		assertEquals(ORIG_NAME,object.getOrig_name());

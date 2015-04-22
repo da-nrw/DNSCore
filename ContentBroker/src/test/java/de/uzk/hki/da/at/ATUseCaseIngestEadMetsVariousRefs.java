@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.util.Path;
 
 /**
@@ -19,7 +20,8 @@ public class ATUseCaseIngestEadMetsVariousRefs extends AcceptanceTest{
 	
 	@Before
 	public void setUp() throws IOException{
-		ath.ingest(origName);
+		ath.putPackageToIngestArea(origName, "tgz", origName);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
 	}
 	
 	@Test

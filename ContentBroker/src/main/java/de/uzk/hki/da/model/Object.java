@@ -129,7 +129,7 @@ public class Object {
 	private String zone;
 	
 	/** The published_flag. */
-	private int published_flag;
+	private int published_flag=0;
 	
 	
 	/** The last_checked. */

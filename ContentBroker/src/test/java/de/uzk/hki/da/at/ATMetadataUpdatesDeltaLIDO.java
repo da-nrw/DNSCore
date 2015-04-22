@@ -29,9 +29,9 @@ import de.uzk.hki.da.util.Path;
  *
  */
 
-public class ATUseCaseIngestDeltaLIDO extends AcceptanceTest{
+public class ATMetadataUpdatesDeltaLIDO extends AcceptanceTest{
 	
-	private static final String ORIG_NAME_ORIG = "ATUseCaseIngestDeltaLIDO";
+	private static final String ORIG_NAME_ORIG = "ATMetadataUpdatesDeltaLIDO";
 	private static final String DATA_DANRW_DE = "http://data.danrw.de";
 	private static Object object;
 	private static final File retrievalFolder = new File("/tmp/LIDOunpacked");
@@ -40,13 +40,19 @@ public class ATUseCaseIngestDeltaLIDO extends AcceptanceTest{
 	
 	@BeforeClass
 	public static void setUp() throws IOException, InterruptedException {
-		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+ORIG_NAME_ORIG+"_orig/"+ORIG_NAME_ORIG+".tgz"), new File("src/test/resources/at"));
-		ath.ingest(ORIG_NAME_ORIG);
-		FileUtils.deleteQuietly(new File("src/test/resources/at/"+ORIG_NAME_ORIG+".tgz"));
 		
-		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+ORIG_NAME_ORIG+"_delta/"+ORIG_NAME_ORIG+".tgz"), new File("src/test/resources/at"));
-		object = ath.ingest(ORIG_NAME_ORIG);
-		FileUtils.deleteQuietly(new File("src/test/resources/at/"+ORIG_NAME_ORIG+".tgz"));
+		ath.putPackageToIngestArea(ORIG_NAME_ORIG+"_orig", "tgz", ORIG_NAME_ORIG);
+		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
+		
+		Thread.sleep(2000);
+		
+		ath.putPackageToIngestArea(ORIG_NAME_ORIG+"_delta", "tgz", ORIG_NAME_ORIG);
+		Thread.sleep(2000);
+		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
+		
+		ath.waitForObjectToBePublished(ORIG_NAME_ORIG);
+		
+		object = ath.fetchObjectFromDB(ORIG_NAME_ORIG);
 		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
@@ -54,6 +60,7 @@ public class ATUseCaseIngestDeltaLIDO extends AcceptanceTest{
 	@AfterClass
 	public static void tearDown() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
+		Path.makeFile("tmp",object.getIdentifier()+".pack_2.tar").delete(); // retrieved dip
 	}
 
 	@Test

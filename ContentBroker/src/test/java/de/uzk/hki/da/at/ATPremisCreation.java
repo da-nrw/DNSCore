@@ -41,13 +41,14 @@ import org.junit.Test;
 
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.util.Path;
 
 
 /**
  * Relates to AK-T/02 Ingest - Sunny Day Scenario.
  * @author Daniel M. de Oliveira
  */
-public class ATUseCaseIngestPREMISCheck extends PREMISBase{
+public class ATPremisCreation extends PREMISBase{
 	
 	private static final String originalName = "ATUseCaseIngest1";
 	private static final File unpackedDIP = new File("/tmp/ATUseCaseIngestPREMISCheck");
@@ -56,12 +57,15 @@ public class ATUseCaseIngestPREMISCheck extends PREMISBase{
 	@After
 	public void tearDown() throws IOException{
 		FileUtils.deleteDirectory(unpackedDIP);
+		Path.makeFile("tmp",object.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
 	}
 	
 	@Test
 	public void testProperPREMISCreation() throws Exception {
 		
-		object = ath.ingest(originalName);
+		ath.putPackageToIngestArea(originalName, "tgz", originalName);
+		ath.awaitObjectState(originalName,Object.ObjectStatus.ArchivedAndValid);
+		object=ath.fetchObjectFromDB(originalName);
 		
 		ath.retrievePackage(object,unpackedDIP,"1");
 		assertThat(object.getObject_state()).isEqualTo(100);

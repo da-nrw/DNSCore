@@ -133,6 +133,28 @@ public class AcceptanceTest {
 	}
 	
 	
+	/**
+	 * Gets the contractor.
+	 *
+	 * @param contractorShortName the contractor short name
+	 * @return null if no contractor for short name could be found
+	 */
+	private static User getContractor(Session session, String contractorShortName) {
+	
+		@SuppressWarnings("rawtypes")
+		List list;	
+		list = session.createQuery("from User where short_name=?1")
+	
+				.setParameter("1",contractorShortName).setReadOnly(true).list();
+		
+		if (list.isEmpty())
+			return null;
+	
+		return (User) list.get(0);
+	}
+	
+	
+	
 	@BeforeClass
 	public static void setUpAcceptanceTest() throws IOException{
 		
@@ -161,30 +183,11 @@ public class AcceptanceTest {
 		session.close();
 		instantiateStoragePolicy();
 		ath = new AcceptanceTestHelper(gridFacade,localNode,testContractor,sp);
+		
+		cleanStorage();
+		clearDB();
 	}
 
-	/**
-	 * Gets the contractor.
-	 *
-	 * @param contractorShortName the contractor short name
-	 * @return null if no contractor for short name could be found
-	 */
-	private static User getContractor(Session session, String contractorShortName) {
-	
-		@SuppressWarnings("rawtypes")
-		List list;	
-		list = session.createQuery("from User where short_name=?1")
-	
-				.setParameter("1",contractorShortName).setReadOnly(true).list();
-		
-		if (list.isEmpty())
-			return null;
-	
-		return (User) list.get(0);
-	}
-	
-	
-	
 	@AfterClass
 	public static void tearDownAcceptanceTest(){
 		cleanStorage();

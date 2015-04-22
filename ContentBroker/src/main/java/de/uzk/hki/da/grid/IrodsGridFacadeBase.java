@@ -225,7 +225,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 		
 		try {
 			
-			if (!isValid(gridFileAdress))  throw new java.io.IOException("File has corrupt replicas, please check first! File: " + gridFileAdress);
+//			if (!isValid(gridFileAdress))  throw new java.io.IOException("File has corrupt replicas, please check first! File: " + gridFileAdress);
 			irodsSystemConnector.get(prefixedGridFileAdress, destination);
 		} catch (Exception e) {
 			// TODO should throw gridexception
@@ -237,7 +237,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 					+MD5Checksum.getMD5checksumForLocalFile(destination)+" vs Remote:"+irodsSystemConnector.getChecksum(prefixedGridFileAdress));
 		}
 		
-		if (!destination.exists()) throw new java.io.IOException("The local file " + destination + " does not exist!");
+		if (!destination.exists()) throw new java.io.IOException("The destination file has " + destination + " not been created!");
 		
 		irodsSystemConnector.logoff();
 	}

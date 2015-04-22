@@ -304,7 +304,11 @@ public abstract class AbstractAction implements Runnable {
 			if (cn.getCopiesToSave().size()==0) continue;
 			
 			// we know that these are only the temporary copies of the current action.
+			
 			Copy copy = cn.getCopiesToSave().get(0);
+			
+			baseLogger.info("Adding copy to objects ("+object.getIdentifier()+") last package. Copy path: "+copy.getPath()+". Node name: "+cn.getName()+".");
+			
 			session.save(copy);
 			session.flush();
 			

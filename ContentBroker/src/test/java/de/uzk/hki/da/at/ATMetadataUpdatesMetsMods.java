@@ -52,14 +52,14 @@ import de.uzk.hki.da.util.Path;
  * @author Daniel M. de Oliveira
  */
 
-public class ATUseCaseIngestMetsMods extends AcceptanceTest{
+public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 	
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	private static final String PORTAL_CI_TEST = "portal_ci_test";
 	private static final File retrievalFolder = new File("/tmp/unpackedMetsMods");
 	private static Path contractorsPipsPublic;
-	private static final String origName = "ATUseCaseUpdateMetadataLZA_METS";
+	private static final String origName = "ATMetadataUpdates_METS";
 	private static Object object;
 	private String METS_XPATH_EXPRESSION = 		"//mets:file";
 	private static Document metsDoc;
@@ -67,13 +67,18 @@ public class ATUseCaseIngestMetsMods extends AcceptanceTest{
 	
 	@BeforeClass
 	public static void setUp() throws IOException{
-		object = ath.ingest(origName);
+		ath.putPackageToIngestArea(origName, "tgz", origName);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
+		ath.waitForObjectToBePublished(origName);
+		object=ath.fetchObjectFromDB(origName);
+		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
 	@AfterClass
 	public static void tearDown() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
+		Path.makeFile("tmp",object.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
 	}
 	
 	@Test

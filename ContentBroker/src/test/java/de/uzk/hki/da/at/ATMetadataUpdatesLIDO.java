@@ -48,24 +48,31 @@ import de.uzk.hki.da.util.Path;
  *
  */
 
-public class ATUseCaseIngestLIDO extends AcceptanceTest{
+public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 
 	private static final String DATA_DANRW_DE = "http://data.danrw.de";
-	private static final String origName = "ATUseCaseUpdateMetadataLZA_LIDO";
+	private static final String origName = "ATMetadataUpdates_LIDO";
 	private static final File retrievalFolder = new File("/tmp/LIDOunpacked");
 	private static Object object;
 	private static Path contractorsPipsPublic;
 	private static MetadataHelper mh = new MetadataHelper();
 	
 	@BeforeClass
-	public static void setUp() throws IOException{
-		object = ath.ingest(origName);
+	public static void setUp() throws IOException, InterruptedException{
+		
+		ath.putPackageToIngestArea(origName, "tgz", origName);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
+		ath.waitForObjectToBePublished(origName);
+		object=ath.fetchObjectFromDB(origName);
+		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
+		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
 	@AfterClass
 	public static void tearDown() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
+		Path.makeFile("tmp",object.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
 	}
 	
 	@Test
@@ -186,4 +193,5 @@ public class ATUseCaseIngestLIDO extends AcceptanceTest{
 		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-ISIL/lido/Inventarnummer-1").contains("Nudelmaschine in Originalverpackung"));
 	}
 }
+	
 	

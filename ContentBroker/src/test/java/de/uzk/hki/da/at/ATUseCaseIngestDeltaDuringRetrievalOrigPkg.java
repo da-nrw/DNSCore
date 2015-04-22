@@ -16,16 +16,16 @@ import de.uzk.hki.da.service.HibernateUtil;
 
 public class ATUseCaseIngestDeltaDuringRetrievalOrigPkg extends AcceptanceTest{
 
-	private static String ORIG_NAME = "ATUseCaseIngestDeltaDuringRetrivalOrigPkg";
+	private static String ORIG_NAME = "ATDeltaDuringRetrivalOrigPkg";
 	private static Object object;
 	private static final File retrievalFolder = new File("/tmp/unpackedDIP");
 	
 	@BeforeClass
 	public static void setUp() throws IOException {
 		
-		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+ORIG_NAME+"_orig/"+ORIG_NAME+".tgz"), new File("src/test/resources/at"));
-		object = ath.ingest(ORIG_NAME);
-		FileUtils.deleteQuietly(new File("src/test/resources/at/"+ORIG_NAME+".tgz"));
+		ath.putPackageToIngestArea(ORIG_NAME+"_orig", "tgz", ORIG_NAME);
+		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.ArchivedAndValid);
+		object=ath.fetchObjectFromDB(ORIG_NAME);
 		
 		object.setObject_state(50);
 		Job job = new Job();
@@ -51,8 +51,9 @@ public class ATUseCaseIngestDeltaDuringRetrievalOrigPkg extends AcceptanceTest{
 	@Test
 	public void test() throws IOException, InterruptedException {
 		
-		FileUtils.copyFileToDirectory(new File("src/test/resources/at/"+ORIG_NAME+"_delta/"+ORIG_NAME+".tgz"), new File("src/test/resources/at"));
-		object = ath.ingestAndWaitForJobInState(ORIG_NAME, "952");
+		ath.putPackageToIngestArea(ORIG_NAME+"_delta", "tgz", ORIG_NAME);
+		ath.waitForJobToBeInStatus(ORIG_NAME, "952");
+		object=ath.fetchObjectFromDB(ORIG_NAME);
 		
 //		Delete Job & Set object state
 // 		normally this is being done by PostRetrievalAction checking for the createddate of Retrieval job
@@ -64,8 +65,11 @@ public class ATUseCaseIngestDeltaDuringRetrievalOrigPkg extends AcceptanceTest{
 		session.getTransaction().commit();
 		session.close();
 		
-		object = ath.ingest(ORIG_NAME);
+		ath.putPackageToIngestArea(ORIG_NAME+"_orig", "tgz", ORIG_NAME);
+		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.ArchivedAndValid);
+		
+//		object = ath.ingest(ORIG_NAME);
 	
-		FileUtils.deleteQuietly(new File("src/test/resources/at/"+ORIG_NAME+".tgz"));
+//		FileUtils.deleteQuietly(new File("src/test/resources/at/"+ORIG_NAME+".tgz"));
 	}
 }

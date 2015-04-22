@@ -42,7 +42,8 @@ public class ATUseCaseIngestMigrationRight extends AcceptanceTest {
 	private static final File UNPACKED_DIP = new File("/tmp/MigrationUnpacked");
 	private static final String ORIG_NAME = "ATMigrationAllowed";
 	private static final String ORIG_NAME_NOTALLOWED = "ATMigrationNotAllowed";
-
+	private static Object o;
+	
 	@Before
 	public void setUp() throws IOException{
 		ath.putPackageToIngestArea(ORIG_NAME, C.FILE_EXTENSION_TGZ, ORIG_NAME);		
@@ -52,18 +53,21 @@ public class ATUseCaseIngestMigrationRight extends AcceptanceTest {
 	@After
 	public void tearDown(){
 		FileUtils.deleteQuietly(UNPACKED_DIP);
+		Path.makeFile("tmp",o.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
 	}
 	
 	@Test
 	public void testMigrationNotAllowed() throws IOException, InterruptedException {
 		ath.waitForJobToBeInStatus(ORIG_NAME_NOTALLOWED, C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
+		o=ath.fetchObjectFromDB(ORIG_NAME_NOTALLOWED);
+		
 	}
 	
 	
 	@Test
 	public void test() throws IOException{
-		ath.waitForObjectToBeInFinishState(ORIG_NAME);
-		Object o = new Object(); o.setOrig_name(ORIG_NAME);
+		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValid);
+		o=ath.fetchObjectFromDB(ORIG_NAME);
 		ath.retrievePackage(o, UNPACKED_DIP, "1");
 		
 		String brep="";

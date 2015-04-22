@@ -8,6 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.model.Object;
+
 /**
  * @author Polina Gubaidullina
  */
@@ -19,7 +21,9 @@ public class ATUseCaseUnableToPublishXMPPackage extends AcceptanceTest{
 	
 	@Before
 	public void setUp() throws IOException{
-		ath.ingest(origName);
+		
+		ath.putPackageToIngestArea(origName, "tgz", origName);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
 	}
 	
 	@After

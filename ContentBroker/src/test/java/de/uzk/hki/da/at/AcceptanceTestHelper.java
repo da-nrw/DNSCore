@@ -41,6 +41,7 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
+import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
@@ -161,7 +162,7 @@ public class AcceptanceTestHelper {
 				continue;
 			}
 	
-			System.out.println("waiting for job to be ready ... "+job.getStatus());
+			System.out.println("w/aiting for job to be ready ... "+job.getStatus());
 			if (job.getStatus().endsWith(errorStatusLastDigit)){
 				System.out.println(MSG_READY);
 				return job;
@@ -256,15 +257,64 @@ public class AcceptanceTestHelper {
 	}
 	
 	
-	void waitForObjectToBeInFinishState(String originalName){
+	void waitForObjectToBePublished(String origName) {
+		int waited_ms_total=0;
+		while (true) {
+			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
+			
+			Object object=fetchObjectFromDB(origName);
+			if (object.getPublished_flag()>0) break;
+		}
+	}
+	
+	
+	void waitForObjectToBeIndexed(MetadataIndex mi,String identifier) {
+		int waited_ms_total=0;
+		while (true) {
+			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
+			
+			if (mi.getIndexedMetadata("portal_ci_test", identifier).contains(identifier)) break;
+		}
+	}
+	
+	
+	
+	
+	
+	void awaitObjectState(String originalName,int awaitedState){
 		int waited_ms_total=0;
 		while (true){
-			System.out.println("waiting for object to be in finished state ... " + originalName);
 			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
 			
 			Object o = fetchObjectFromDB(originalName);
-			if (o==null)continue;
-			if (o.getObject_state()==100) {
+			if (o==null) continue;
+			
+			Job job = getJob(originalName);
+			if (job!=null) {
+				if (isInErrorState(job)) {
+					String oid=job.getObject().getIdentifier();
+					String msg = "ERROR: Job in error state: " + job.getStatus() + " in Object-Id "+ oid;
+					System.out.println(msg);
+					
+					if (job.getObject().getIdentifier()!=null){
+						try {
+							System.out.println("SHOWING OBJECT LOG:");
+							String localNodeWorkArea = localNode.getWorkAreaRootPath().toString();
+							String localNode = localNodeWorkArea.replace("/storage/WorkArea", "");
+							System.out.println(FileUtils.readFileToString(new File(Path.make(localNode, "ContentBroker","log", "object-logs")+"/"+job.getObject().getIdentifier()+".log")));
+							System.out.println("END OF OBJECT LOG: "+job.getObject().getIdentifier());
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					throw new RuntimeException(msg);
+				}
+				System.out.println("Awaiting object state "+awaitedState+". Identifier: "+o.getIdentifier()+". Orig name: "+o.getOrig_name()+". Job state: "+job.getStatus());
+			}
+			
+			
+			System.out.println("Awaiting object state "+awaitedState+". Identifier: "+o.getIdentifier()+". Orig name: "+o.getOrig_name()+". Object state: "+o.getObject_state());
+			if (o.getObject_state()==awaitedState) {
 				return;
 			}
 			
@@ -273,71 +323,6 @@ public class AcceptanceTestHelper {
 	
 	
 	
-	
-	/**
-	 * Waits that a job appears and disappears again.
-	 * 
-	 * @param originalName
-	 * @param timeout
-	 * @return
-	 * @throws RuntimeException if errorState occured.
-	 */
-	Object waitForJobsToFinish(String originalName){
-	
-		// wait for job to appear
-		// very short running actions could be finished before job is noticed!
-		Job job = null;
-		int waited_ms_total=0;
-		while(job == null) {
-			job = getJob(originalName);
-			if (job==null) {
-				System.out.println("waiting for job to appear ... " + originalName);
-				waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,500);
-			} 
-		}
-		
-		Object resultO = job.getObject();
-	
-		// wait for jobs to disappear
-		while (true){
-			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
-			job = getJob(originalName);
-			
-			if (job==null) {
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-				}
-				job = getJob(originalName);
-				if (job==null) {
-				System.out.println("really finished! " + originalName);
-			}
-				return resultO;
-				
-			} else if (isInErrorState(job)) {
-				String oid=job.getObject().getIdentifier();
-				String msg = "ERROR: Job in error state: " + job.getStatus() + " in Object-Id "+ oid;
-				System.out.println(msg);
-				
-				if (job.getObject().getIdentifier()!=null){
-					try {
-						System.out.println("SHOWING OBJECT LOG:");
-						String localNodeWorkArea = localNode.getWorkAreaRootPath().toString();
-						String localNode = localNodeWorkArea.replace("/storage/WorkArea", "");
-						System.out.println(FileUtils.readFileToString(new File(Path.make(localNode, "ContentBroker","log", "object-logs")+"/"+job.getObject().getIdentifier()+".log")));
-						System.out.println("END OF OBJECT LOG: "+job.getObject().getIdentifier());
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-				
-				throw new RuntimeException(msg);
-			}
-			
-			System.out.println("waiting for jobs to finish ... "+job.getStatus());
-			
-		}
-	}
 
 	/**
 	 * Copies src/test/resources/at/[originalName].tgz to
@@ -399,16 +384,14 @@ public class AcceptanceTestHelper {
 		try {
 			putPackageToIngestArea(sourcePackageName, ext, originalName);
 		} catch (Exception e) {
-			new Exception("Cannot put");
+			throw new RuntimeException("Cannot put");
 		}
 
 		try {
-			System.out.println("Wait for jobs to finish ...");
-			waitForJobsToFinish(originalName);
+			awaitObjectState(originalName,Object.ObjectStatus.ArchivedAndValid);
 		} catch (Exception e) {
-			new Exception("=(");
+			throw new RuntimeException("=(");
 		}
-		
 		
 		Object object = fetchObjectFromDB(originalName);
 		if (object==null) throw new RuntimeException("cannot find object");
@@ -422,17 +405,6 @@ public class AcceptanceTestHelper {
 	
 	
 	
-	/**
-	 * @param originalName
-	 * @param errorState
-	 * @return
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-	Object ingestAndWaitForErrorState(String originalName,String errorState) throws IOException, InterruptedException{
-		
-		return ingestAndWaitForErrorState(originalName, errorState, C.FILE_EXTENSION_TGZ);
-	}
 
 	
 	/**
@@ -462,25 +434,6 @@ public class AcceptanceTestHelper {
 	
 	
 	
-	/**
-	 * @param originalName
-	 * @param errorStateLastDigit
-	 * @param containerSuffix
-	 * @return
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-	Object ingestAndWaitForErrorState(String originalName,String errorStateLastDigit,String containerSuffix) throws IOException, InterruptedException{
-		
-		if (!containerSuffix.isEmpty()) containerSuffix="."+containerSuffix;
-		
-		FileUtils.copyFileToDirectory(Path.makeFile(TC.TEST_ROOT_AT,originalName+containerSuffix), 
-				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME));
-		waitForJobToBeInErrorStatus(originalName,errorStateLastDigit,TIMEOUT);
-		Object o = fetchObjectFromDB(originalName);
-		if (o==null) throw new RuntimeException("cannot find object");
-		return o;
-	}
 
 
 
