@@ -1,6 +1,5 @@
 package de.uzk.hki.da.util;
 
-
 public class FileIdGenerator {
 	
 	protected FileIdGenerator() {
@@ -19,6 +18,7 @@ public class FileIdGenerator {
 		
 		// replace disallowed characters
 		dsID = dsID.replaceAll("[^\\p{L}\\p{Digit}\\._-]","_");
+		dsID = dsID.replaceAll("\\s+","_");
 		
 		return dsID;
 	}

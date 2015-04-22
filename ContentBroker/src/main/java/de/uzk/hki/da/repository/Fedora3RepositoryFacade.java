@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +41,7 @@ import com.yourmediashelf.fedora.client.response.AddDatastreamResponse;
 import com.yourmediashelf.fedora.client.response.FedoraResponse;
 
 import de.uzk.hki.da.util.FileIdGenerator;
+import de.uzk.hki.da.util.Path;
 
 public class Fedora3RepositoryFacade implements RepositoryFacade {
 	
@@ -99,7 +101,17 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 		String pid = generatePid(objectId, collection);
 		AddDatastreamResponse r = null;
 		try {
+			String fileName = file.getAbsolutePath();
+			String fileNameWithoutWhitespace = fileName.replaceAll("\\s+","_");
+			if(!fileName.equals(fileNameWithoutWhitespace)) {
+				logger.debug("Whitespace(s) in file name! Rename file "+fileName +" in "+fileNameWithoutWhitespace);
+				File newFile = Path.makeFile(fileNameWithoutWhitespace);
+				FileUtils.moveFile(file, newFile);
+				file = newFile;
+			}
+
 			String dsLocation = "file://" + file.getAbsolutePath();
+			logger.debug("dsLocation: "+dsLocation);
 			
 			r=new AddDatastream(pid, dsId).mimeType(mimeType)
 				.controlGroup("E").dsLabel(label)

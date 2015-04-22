@@ -69,7 +69,7 @@ public class ATUseCaseIngestEAD extends AcceptanceTest{
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc1 = builder.build
-				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32044.xml").toFile()));
+				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets 2_32044.xml").toFile()));
 		List<Element> metsFileElements1 = mh.getMetsFileElements(doc1);
 		Element fileElement1 = metsFileElements1.get(0);
 		assertTrue(mh.getMetsHref(fileElement1).equals("Picture1.tif"));

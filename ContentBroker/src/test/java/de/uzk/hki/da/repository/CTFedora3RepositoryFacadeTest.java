@@ -108,16 +108,16 @@ public class CTFedora3RepositoryFacadeTest {
 	}
 	
 	
-	// to show that duplicate ingest in createEDMAction is possible
-	@Test
-	public void overwritingFileDatastreamPossible() throws IOException {
-		
-		try{
-			fedora.createObject(IDENTIFIER, COLL_NAME, TEST);
-			fedora.ingestFile(IDENTIFIER, COLL_NAME, "abc", abc, "a label", "text/xml");
-			fedora.ingestFile(IDENTIFIER, COLL_NAME, "abc", abd, "a label", "text/xml");
-		}catch(RepositoryException e){}
-	}
+//	// to show that duplicate ingest in createEDMAction is possible
+//	@Test
+//	public void overwritingFileDatastreamPossible() throws IOException {
+//		
+//		try{
+//			fedora.createObject(IDENTIFIER, COLL_NAME, TEST);
+//			fedora.ingestFile(IDENTIFIER, COLL_NAME, "abc", abc, "a label", "text/xml");
+//			fedora.ingestFile(IDENTIFIER, COLL_NAME, "abc", abd, "a label", "text/xml");
+//		}catch(RepositoryException e){}
+//	}
 	
 	
 }
