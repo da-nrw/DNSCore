@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 
 /**
- * The Class RepresentationFilter.
+ * @author Daniel M. de Oliveira
  */
 public class RepresentationFilter implements FilenameFilter {
 	  
