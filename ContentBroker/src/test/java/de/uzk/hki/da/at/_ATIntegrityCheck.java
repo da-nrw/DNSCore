@@ -50,7 +50,7 @@ import de.uzk.hki.da.util.Path;
  * @author Jens Peters
  * 
  */
-public class ATIntegrityCheck extends AcceptanceTest{
+public class _ATIntegrityCheck extends AcceptanceTest{
 	
 
 	private static final Path archiveStoragePath = Path.make("/ci/archiveStorage/aip/TEST/");
@@ -75,7 +75,10 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	public void localCopyModifiedTest() throws Exception {
 	    String ORIGINAL_NAME = "ATIntegrityCheckLocalCopyModified";
 	    
-	    object = ath.ingest(ORIGINAL_NAME);
+		ath.putPackageToIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValid);
+		object=ath.fetchObjectFromDB(ORIGINAL_NAME);
+		
 	    changeLastCheckedObjectDate(-25);
 		
 		
@@ -98,7 +101,10 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	public void remoteCopyDestroyed() throws IOException, InterruptedException {
 		String ORIGINAL_NAME = "ATIntegrityRemoteCopyDestroyed";
 		
-		object = ath.ingest(ORIGINAL_NAME);
+		ath.putPackageToIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValid);
+		object=ath.fetchObjectFromDB(ORIGINAL_NAME);
+
 		changeLastCheckedObjectDate(-25);
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
@@ -110,7 +116,10 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	public void allCopiesOKTest() throws Exception {
 		String ORIGINAL_NAME = "ATIntegrityCheckAllCopiesOK";
 		
-		object = ath.ingest(ORIGINAL_NAME);
+		ath.putPackageToIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValid);
+		object=ath.fetchObjectFromDB(ORIGINAL_NAME);
+		
 		changeLastCheckedObjectDate(-25);
 		setChecksumSecondaryCopy(object.getLatestPackage().getChecksum(),-25);
 		
@@ -136,7 +145,10 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	public void allCopiesDestroyed() throws IOException, InterruptedException {
 		String ORIGINAL_NAME = "ATIntegrityCheckAllCopiesDestroyed";
 		
-		object = ath.ingest(ORIGINAL_NAME);
+		ath.putPackageToIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValid);
+		object=ath.fetchObjectFromDB(ORIGINAL_NAME);
+
 		changeLastCheckedObjectDate(-25);
 		
 		
@@ -157,7 +169,10 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	public void secondaryCopiesTooOld() throws IOException, InterruptedException {
 		String ORIGINAL_NAME = "ATIntegritySecondaryCopiesCheckTooOld";
 		
-		object = ath.ingest(ORIGINAL_NAME);
+		ath.putPackageToIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValid);
+		object=ath.fetchObjectFromDB(ORIGINAL_NAME);
+
 		setChecksumSecondaryCopy(object.getLatestPackage().getChecksum(),-8761);
 		assertSame(100,object.getObject_state());
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");;
@@ -168,7 +183,10 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	public void primaryCopyTooOld() throws IOException, InterruptedException {
 		String ORIGINAL_NAME = "ATIntegrityCheckPrimaryCopyTooOld";
 		
-		object = ath.ingest(ORIGINAL_NAME);
+		ath.putPackageToIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValid);
+		object=ath.fetchObjectFromDB(ORIGINAL_NAME);
+
 		assertSame(100,object.getObject_state());
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");;
 		changeLastCheckedObjectDate(-8761);

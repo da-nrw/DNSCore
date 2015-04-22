@@ -30,7 +30,7 @@ import de.uzk.hki.da.util.Path;
  *
  */
 
-public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
+public class _ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 
 	private static final String ORIG_NAME_ORIG = "ATMetadataUpdatesDeltaMETS";
 	private static final String DATA_DANRW_DE = "http://data.danrw.de";

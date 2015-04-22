@@ -324,22 +324,7 @@ public class AcceptanceTestHelper {
 	
 	
 
-	/**
-	 * Copies src/test/resources/at/[originalName].tgz to
-	 * IngestAreaRootPath/TEST/[originalName].tgz.
-	 * Waits until the package has been ingsted.
-	 * 
-	 * @return the database entry for the object.
-	 * @throws IOException 
-	 * 
-	 * @see {@link AcceptanceTest#ingest(String, String, String)}
-	 * 
-	 * @author Daniel M. de Oliveira
-	 */
-	Object ingest(String originalName) throws IOException{
-		
-		return ingest(originalName,C.FILE_EXTENSION_TGZ,originalName);
-	}
+	
 	
 	
 	
@@ -362,75 +347,11 @@ public class AcceptanceTestHelper {
 		FileUtils.copyFile( sourceFile, targetFile );
 	}
 	
-	/**
-	 * Copies src/test/resources/at/[sourcePackageName].[ext] 
-	 * to ingestAreaRootPath/TEST/[originalName].[ext]. 
-	 * Waits until the package has been ingested.
-	 * 
-	 * @param sourcePackageName
-	 * @param originalName
-	 * @param ext
-	 * @return the database entry for the object.
-	 * @throws IOException 
-	 * 
-	 * @author Daniel M. de Oliveira
-	 */
-	Object ingest(
-			String sourcePackageName,
-			String ext,
-			String originalName) throws IOException{
-		
-		System.out.println("ingest "+originalName);
-		try {
-			putPackageToIngestArea(sourcePackageName, ext, originalName);
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot put");
-		}
-
-		try {
-			awaitObjectState(originalName,Object.ObjectStatus.ArchivedAndValid);
-		} catch (Exception e) {
-			throw new RuntimeException("=(");
-		}
-		
-		Object object = fetchObjectFromDB(originalName);
-		if (object==null) throw new RuntimeException("cannot find object");
-		System.out.println("successfully ingested object with id "+object.getIdentifier());
-		return object;
-	}
-
-	
 	
 
-	
-	
-	
+		
 
 	
-	/**
-	 * Puts src/test/resources/at/[originalName].tgz to 
-	 * IngestAreaRootPath/TEST/.
-	 * Waits that the test finds a job with status in the queue. 
-	 * 
-	 * @param originalName
-	 * @param status
-	 * @return the object entry. created by the running system for the ingested package.
-	 * @throws IOException
-	 * @throws RuntimeException if a no job found in specified state within the timeframe specified by TIMEOUT.
-	 */
-	Object ingestAndWaitForJobInState(String originalName,String status) throws IOException, InterruptedException{
-		
-		if (localNode==null) throw new IllegalStateException();
-		if (localNode.getIngestAreaRootPath()==null) throw new IllegalStateException();
-		
-		FileUtils.copyFileToDirectory(Path.makeFile(TC.TEST_ROOT_AT,originalName+"."+C.FILE_EXTENSION_TGZ), 
-				Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getShort_name()));
-		
-		waitForJobToBeInStatus(originalName,status);
-		Object o=fetchObjectFromDB(originalName);
-		if (o==null) throw new RuntimeException("cannot find object");
-		return o;
-	}
 	
 	
 	

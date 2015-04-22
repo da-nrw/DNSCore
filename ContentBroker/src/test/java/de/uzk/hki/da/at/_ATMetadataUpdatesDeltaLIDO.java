@@ -29,7 +29,7 @@ import de.uzk.hki.da.util.Path;
  *
  */
 
-public class ATMetadataUpdatesDeltaLIDO extends AcceptanceTest{
+public class _ATMetadataUpdatesDeltaLIDO extends AcceptanceTest{
 	
 	private static final String ORIG_NAME_ORIG = "ATMetadataUpdatesDeltaLIDO";
 	private static final String DATA_DANRW_DE = "http://data.danrw.de";

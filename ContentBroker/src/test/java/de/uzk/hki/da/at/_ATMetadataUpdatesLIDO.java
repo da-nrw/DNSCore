@@ -48,10 +48,10 @@ import de.uzk.hki.da.util.Path;
  *
  */
 
-public class ATMetadataUpdatesLIDO extends AcceptanceTest{
+public class _ATMetadataUpdatesLIDO extends AcceptanceTest{
 
 	private static final String DATA_DANRW_DE = "http://data.danrw.de";
-	private static final String origName = "ATMetadataUpdates_LIDO";
+	private static final String origName = "ATMetadataUpdatesLIDO";
 	private static final File retrievalFolder = new File("/tmp/LIDOunpacked");
 	private static Object object;
 	private static Path contractorsPipsPublic;

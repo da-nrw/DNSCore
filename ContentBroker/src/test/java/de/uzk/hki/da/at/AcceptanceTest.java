@@ -43,7 +43,9 @@ import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.PropertiesUtils;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /**
  * @author Daniel M. de Oliveira
@@ -184,12 +186,14 @@ public class AcceptanceTest {
 		instantiateStoragePolicy();
 		ath = new AcceptanceTestHelper(gridFacade,localNode,testContractor,sp);
 		
+		new CommandLineConnector().runCmdSynchronously(new String[] {"src/main/bash/rebuildIndex.sh"});
 		cleanStorage();
 		clearDB();
 	}
 
 	@AfterClass
-	public static void tearDownAcceptanceTest(){
+	public static void tearDownAcceptanceTest() throws IOException{
+		new CommandLineConnector().runCmdSynchronously(new String[] {"src/main/bash/rebuildIndex.sh"});
 		cleanStorage();
 		clearDB();
 	}

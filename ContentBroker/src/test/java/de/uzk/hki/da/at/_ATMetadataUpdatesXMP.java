@@ -43,10 +43,10 @@ import de.uzk.hki.da.util.Path;
 /**
  * @author Polina Gubaidullina
  */
-public class ATUseCaseIngestXMP extends AcceptanceTest{
+public class _ATMetadataUpdatesXMP extends AcceptanceTest{
 
 	private static final Namespace RDF_NS = Namespace.getNamespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-	private static final String origName = "ATUseCaseUpdateMetadataLZA_XMP";
+	private static final String origName = "ATMetadataUpdatesXMP";
 	private static Object object;
 	private static Path contractorsPipsPublic;
 	private static final File retrievalFolder = new File("/tmp/XMPunpacked");

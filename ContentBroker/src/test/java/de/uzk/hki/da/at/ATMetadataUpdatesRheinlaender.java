@@ -51,7 +51,7 @@ import de.uzk.hki.da.util.Path;
  * @author Daniel M. de Oliveira
  * @author Polina Gubaidullina
  */
-public class ATUseCaseIngestRheinlaender extends AcceptanceTest{
+public class ATMetadataUpdatesRheinlaender extends AcceptanceTest{
 
 	private static final String METS_ELEMENT_F_LOCAT = "FLocat";
 	private static final String METS_ELEMENT_FILE = "file";
@@ -60,14 +60,16 @@ public class ATUseCaseIngestRheinlaender extends AcceptanceTest{
 	private static final String URL = "URL";
 	private static final String EAD_XML = "EAD.xml";
 	private static Path contractorsPipsPublic;
-	private static final String origName = 		"ATUseCaseIngestRheinlaender";
+	private static final String origName = 		"ATMetadataUpdatesRheinlaender";
 	private static Object object;
 	private String EAD_XPATH_EXPRESSION = 		"//daoloc/@href";
 
 	
 	@BeforeClass
 	public static void setUp() throws IOException{
-		object = ath.ingest(origName);
+		ath.putPackageToIngestArea(origName,"tgz",origName);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
+		object=ath.fetchObjectFromDB(origName);
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	

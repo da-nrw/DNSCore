@@ -44,7 +44,7 @@ import de.uzk.hki.da.util.Path;
 /**
  * @author Daniel M. de Oliveira
  */
-public class ATUseCaseTimeBasedPublication extends AcceptanceTest{
+public class _ATTimeBasedPublication extends AcceptanceTest{
 
 	private static final String XLINK_NAMESPACE = "http://www.w3.org/1999/xlink";
 	private static final String METS_NAMESPACE = "http://www.loc.gov/METS/";

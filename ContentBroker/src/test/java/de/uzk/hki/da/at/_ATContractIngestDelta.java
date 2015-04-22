@@ -39,7 +39,7 @@ import de.uzk.hki.da.repository.RepositoryException;
 /**
  * @author Daniel M. de Oliveira
  */
-public class ATContractIngestDelta extends AcceptanceTest{
+public class _ATContractIngestDelta extends AcceptanceTest{
 
 	private static final String OUTPUT_JPG_2 = "/tmp/abc2.jpg";
 	private static final String OUTPUT_JPG_1 = "/tmp/abc.jpg";

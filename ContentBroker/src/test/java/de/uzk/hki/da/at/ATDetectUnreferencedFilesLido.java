@@ -10,6 +10,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.util.Path;
 
 public class ATDetectUnreferencedFilesLido extends AcceptanceTest{
@@ -19,7 +20,9 @@ public class ATDetectUnreferencedFilesLido extends AcceptanceTest{
 	
 	@BeforeClass
 	public static void setUp() throws IOException {
-		ath.ingest(origName);
+		ath.putPackageToIngestArea(origName,"tgz",origName);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
+		
 		contentbrokerLogfile = Path.makeFile(localNode.getLogFolder(), "contentbroker.log");
 		FileInputStream fisTargetFile = new FileInputStream(contentbrokerLogfile);
 		targetFileStr = IOUtils.toString(fisTargetFile, "UTF-8");

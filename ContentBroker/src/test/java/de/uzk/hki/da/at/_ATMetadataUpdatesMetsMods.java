@@ -52,7 +52,7 @@ import de.uzk.hki.da.util.Path;
  * @author Daniel M. de Oliveira
  */
 
-public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
+public class _ATMetadataUpdatesMetsMods extends AcceptanceTest{
 	
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");

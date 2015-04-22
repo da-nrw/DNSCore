@@ -37,11 +37,11 @@ import de.uzk.hki.da.util.Path;
 /**
  * @author Daniel M. de Oliveira
  */
-public class ATUseCaseIngestMigrationRight extends AcceptanceTest {
+public class ATMigrationRight extends AcceptanceTest {
 
 	private static final File UNPACKED_DIP = new File("/tmp/MigrationUnpacked");
-	private static final String ORIG_NAME = "ATMigrationAllowed";
-	private static final String ORIG_NAME_NOTALLOWED = "ATMigrationNotAllowed";
+	private static final String ORIG_NAME = "ATMigrationRightAllowed";
+	private static final String ORIG_NAME_NOTALLOWED = "ATMigrationRightNotAllowed";
 	private static Object o;
 	
 	@Before
