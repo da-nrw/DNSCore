@@ -31,7 +31,7 @@ import de.uzk.hki.da.util.Path;
  *
  */
 
-public class _ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
+public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 
 	private static final String ORIG_NAME_ORIG = "ATMetadataUpdatesDeltaEAD";
 	private static Path contractorsPipsPublic;
@@ -48,9 +48,8 @@ public class _ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 		
 		ath.putPackageToIngestArea(ORIG_NAME_ORIG+"_orig","tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
-		Thread.sleep(2000);
 		ath.putPackageToIngestArea(ORIG_NAME_ORIG+"_delta", "tgz", ORIG_NAME_ORIG);
-		Thread.sleep(2000);
+		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.InWorkflow);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
 		
 		object=ath.fetchObjectFromDB(ORIG_NAME_ORIG);

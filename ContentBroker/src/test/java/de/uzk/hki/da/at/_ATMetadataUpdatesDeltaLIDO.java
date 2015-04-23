@@ -43,7 +43,6 @@ public class _ATMetadataUpdatesDeltaLIDO extends AcceptanceTest{
 		
 		ath.putPackageToIngestArea(ORIG_NAME_ORIG+"_orig", "tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
-		
 		ath.putPackageToIngestArea(ORIG_NAME_ORIG+"_delta", "tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.InWorkflow);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);

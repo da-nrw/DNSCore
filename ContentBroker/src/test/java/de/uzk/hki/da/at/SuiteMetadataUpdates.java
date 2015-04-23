@@ -9,10 +9,10 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	
 	ATMetadataUpdatesEAD.class,
-	_ATMetadataUpdatesLIDO.class,
+	ATMetadataUpdatesLIDO.class,
 	ATMetadataUpdatesMetsMods.class,
 	ATMetadataUpdatesRheinlaender.class,
-	_ATMetadataUpdatesDeltaEAD.class,
+	ATMetadataUpdatesDeltaEAD.class,
 	_ATMetadataUpdatesDeltaLIDO.class,
 	ATMetadataUpdatesDeltaMETS.class
 })
