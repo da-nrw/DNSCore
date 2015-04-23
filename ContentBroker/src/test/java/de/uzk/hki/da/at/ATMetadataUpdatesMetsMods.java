@@ -71,7 +71,7 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
 		ath.waitForObjectToBePublished(origName);
 		object=ath.getObject(origName);
-//		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
+		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
@@ -171,6 +171,6 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 				.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
 		
 //		testIndex
-//		assertTrue(metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613").contains("Text Text// mahels///Titel"));
+		assertTrue(metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613").contains("Text Text// mahels///Titel"));
 	}
 }
