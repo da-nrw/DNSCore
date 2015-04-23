@@ -35,7 +35,7 @@ import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
  * Relates to AK-T/05 RetrieveObject - Happy Path Scenario.
  * @author Daniel M. de Oliveira
  */
-public class ATUseCaseRetrieval extends AcceptanceTest{
+public class ATRetrieval extends AcceptanceTest{
 	
 	@After
 	public void tearDown(){
@@ -47,7 +47,7 @@ public class ATUseCaseRetrieval extends AcceptanceTest{
 	@Test
 	public void testHappyPath() throws Exception{
 		
-		String originalName = "ATUseCaseRetrieval";
+		String originalName = "ATRetrieval";
 		
 		ath.createObjectAndJob(originalName,"900");
 		ath.waitForJobToBeInStatus(originalName, "952");

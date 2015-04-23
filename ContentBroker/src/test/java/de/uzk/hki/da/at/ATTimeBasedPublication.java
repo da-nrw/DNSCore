@@ -44,7 +44,7 @@ import de.uzk.hki.da.util.Path;
 /**
  * @author Daniel M. de Oliveira
  */
-public class _ATTimeBasedPublication extends AcceptanceTest{
+public class ATTimeBasedPublication extends AcceptanceTest{
 
 	private static final String XLINK_NAMESPACE = "http://www.w3.org/1999/xlink";
 	private static final String METS_NAMESPACE = "http://www.loc.gov/METS/";
@@ -166,20 +166,20 @@ public class _ATTimeBasedPublication extends AcceptanceTest{
 				PUBLISHEDFLAG_INSTITUTION, object.getPublished_flag());
 	}
 	
-	
-	@Test
-	public void testPublishNothing() throws InterruptedException, IOException, RepositoryException{
-		
-		String name = "PublishNothing";
-		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
-		ath.waitForObjectToBePublished(ORIG_NAME_PREFIX+name);
-		
-		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
-		assertNotNull(object);
-		
-		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
-		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getClosedCollectionName()));
-		assertEquals(PUBLISHEDFLAG_NO_PUBLICATION, object.getPublished_flag());
-		
-	}
+//	
+//	@Test
+//	public void testPublishNothing() throws InterruptedException, IOException, RepositoryException{
+//		
+//		String name = "PublishNothing";
+//		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+//		ath.waitForObjectToBePublished(ORIG_NAME_PREFIX+name);
+//		
+//		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
+//		assertNotNull(object);
+//		
+//		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
+//		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getClosedCollectionName()));
+//		assertEquals(PUBLISHEDFLAG_NO_PUBLICATION, object.getPublished_flag());
+//		
+//	}
 }
