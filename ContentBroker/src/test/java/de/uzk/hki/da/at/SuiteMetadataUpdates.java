@@ -8,9 +8,9 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 	
-	_ATMetadataUpdatesEAD.class,
+	ATMetadataUpdatesEAD.class,
 	_ATMetadataUpdatesLIDO.class,
-	_ATMetadataUpdatesMetsMods.class,
+	ATMetadataUpdatesMetsMods.class,
 	ATMetadataUpdatesRheinlaender.class,
 	_ATMetadataUpdatesDeltaEAD.class,
 	_ATMetadataUpdatesDeltaLIDO.class,
