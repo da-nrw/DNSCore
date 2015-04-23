@@ -186,14 +186,14 @@ public class AcceptanceTest {
 		instantiateStoragePolicy();
 		ath = new AcceptanceTestHelper(gridFacade,localNode,testContractor,sp);
 		
-		new CommandLineConnector().runCmdSynchronously(new String[] {"src/main/bash/rebuildIndex.sh"});
+//		new CommandLineConnector().runCmdSynchronously(new String[] {"src/main/bash/rebuildIndex.sh"});
 		cleanStorage();
 		clearDB();
 	}
 
 	@AfterClass
 	public static void tearDownAcceptanceTest() throws IOException{
-		new CommandLineConnector().runCmdSynchronously(new String[] {"src/main/bash/rebuildIndex.sh"});
+//		new CommandLineConnector().runCmdSynchronously(new String[] {"src/main/bash/rebuildIndex.sh"});
 		cleanStorage();
 		clearDB();
 	}

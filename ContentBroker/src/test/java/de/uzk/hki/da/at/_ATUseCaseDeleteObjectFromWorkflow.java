@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 
-public class ATUseCaseDeleteObjectFromWorkflow extends AcceptanceTest{
+public class _ATUseCaseDeleteObjectFromWorkflow extends AcceptanceTest{
 	
 	@Test
 	public void test() throws InterruptedException, IOException {
