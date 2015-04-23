@@ -13,8 +13,9 @@ import org.junit.Test;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.util.Path;
 
-public class ATDetectUnreferencedFilesMets extends AcceptanceTest{
-	private static String origName = "ATDetectUnreferencedFilesMets";
+public class ATDetectUnreferencedFilesEAD extends AcceptanceTest{
+	
+	private static String origName = "ATDetectUnreferencedFilesEad";
 	private static File contentbrokerLogfile;
 	private static String targetFileStr = "";
 	
@@ -33,8 +34,8 @@ public class ATDetectUnreferencedFilesMets extends AcceptanceTest{
 	public void test() throws IOException {
 		assertTrue(contentbrokerLogfile.exists());
 		assertTrue(targetFileStr.contains("ist nicht konsistent. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
-				+ "[image/2.bmp, image/1.bmp]. Die Verarbeitung findet dennoch statt.") || 
+				+ "[Picture6.bmp, Picture7.bmp]. Die Verarbeitung findet dennoch statt.") || 
 				targetFileStr.contains("ist nicht konsistent. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
-						+ "[image/1.bmp, image/2.bmp]. Die Verarbeitung findet dennoch statt."));
+						+ "[Picture7.bmp, Picture6.bmp]. Die Verarbeitung findet dennoch statt."));
 	}
 }

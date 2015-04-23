@@ -11,10 +11,19 @@ import org.junit.runners.Suite.SuiteClasses;
 	ATMetadataUpdatesEAD.class,
 	ATMetadataUpdatesLIDO.class,
 	ATMetadataUpdatesMetsMods.class,
+	ATMetadataUpdatesXMP.class,
+	
 	ATMetadataUpdatesRheinlaender.class,
+	
 	ATMetadataUpdatesDeltaEAD.class,
 	ATMetadataUpdatesDeltaLIDO.class,
-	ATMetadataUpdatesDeltaMETS.class
+	ATMetadataUpdatesDeltaMETS.class,
+	
+	ATDetectUnreferencedFilesEAD.class,
+	ATDetectUnreferencedFilesMETS.class,
+	ATDetectUnreferencedFilesLIDO.class,
+	
+	ATDetectUncompletedReferences.class
 })
 
 /**

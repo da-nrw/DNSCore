@@ -13,14 +13,15 @@ import org.junit.Test;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.util.Path;
 
-public class ATDetectUnreferencedFilesLido extends AcceptanceTest{
-	private static String origName = "ATDetectUnreferencedFilesLido";
+public class ATDetectUnreferencedFilesMETS extends AcceptanceTest{
+	private static String origName = "ATDetectUnreferencedFilesMets";
 	private static File contentbrokerLogfile;
 	private static String targetFileStr = "";
 	
 	@BeforeClass
 	public static void setUp() throws IOException {
-		ath.putSIPtoIngestArea(origName,"tgz",origName);
+		
+		ath.putSIPtoIngestArea(origName, "tgz", origName);
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
 		
 		contentbrokerLogfile = Path.makeFile(localNode.getLogFolder(), "contentbroker.log");
@@ -32,8 +33,8 @@ public class ATDetectUnreferencedFilesLido extends AcceptanceTest{
 	public void test() throws IOException {
 		assertTrue(contentbrokerLogfile.exists());
 		assertTrue(targetFileStr.contains("ist nicht konsistent. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
-				+ "[3.bmp, 4.bmp]. Die Verarbeitung findet dennoch statt.") || 
+				+ "[image/2.bmp, image/1.bmp]. Die Verarbeitung findet dennoch statt.") || 
 				targetFileStr.contains("ist nicht konsistent. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
-						+ "[4.bmp, 3.bmp]. Die Verarbeitung findet dennoch statt."));
+						+ "[image/1.bmp, image/2.bmp]. Die Verarbeitung findet dennoch statt."));
 	}
 }
