@@ -63,11 +63,11 @@ public class ATPremisCreation extends PREMISBase{
 	@Test
 	public void testProperPREMISCreation() throws Exception {
 		
-		ath.putPackageToIngestArea(originalName, "tgz", originalName);
+		ath.putSIPtoIngestArea(originalName, "tgz", originalName);
 		ath.awaitObjectState(originalName,Object.ObjectStatus.ArchivedAndValid);
-		object=ath.fetchObjectFromDB(originalName);
+		object=ath.getObject(originalName);
 		
-		ath.retrievePackage(object,unpackedDIP,"1");
+		ath.retrieveAIP(object,unpackedDIP,"1");
 		assertThat(object.getObject_state()).isEqualTo(100);
 		String unpackedObjectPath = unpackedDIP.getAbsolutePath()+"/";
 		

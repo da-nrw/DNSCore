@@ -20,7 +20,7 @@ public class ATDetectUnreferencedFilesLido extends AcceptanceTest{
 	
 	@BeforeClass
 	public static void setUp() throws IOException {
-		ath.putPackageToIngestArea(origName,"tgz",origName);
+		ath.putSIPtoIngestArea(origName,"tgz",origName);
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
 		
 		contentbrokerLogfile = Path.makeFile(localNode.getLogFolder(), "contentbroker.log");

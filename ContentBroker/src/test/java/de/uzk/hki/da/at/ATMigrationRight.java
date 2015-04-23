@@ -46,20 +46,19 @@ public class ATMigrationRight extends AcceptanceTest {
 	
 	@Before
 	public void setUp() throws IOException{
-		ath.putPackageToIngestArea(ORIG_NAME, C.FILE_EXTENSION_TGZ, ORIG_NAME);		
-		ath.putPackageToIngestArea(ORIG_NAME_NOTALLOWED, C.FILE_EXTENSION_TGZ, ORIG_NAME_NOTALLOWED);
+		ath.putSIPtoIngestArea(ORIG_NAME, C.FILE_EXTENSION_TGZ, ORIG_NAME);		
+		ath.putSIPtoIngestArea(ORIG_NAME_NOTALLOWED, C.FILE_EXTENSION_TGZ, ORIG_NAME_NOTALLOWED);
 	}
 	
 	@After
 	public void tearDown(){
 		FileUtils.deleteQuietly(UNPACKED_DIP);
-		Path.makeFile("tmp",o.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
 	}
 	
 	@Test
 	public void testMigrationNotAllowed() throws IOException, InterruptedException {
 		ath.waitForJobToBeInStatus(ORIG_NAME_NOTALLOWED, C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
-		o=ath.fetchObjectFromDB(ORIG_NAME_NOTALLOWED);
+		o=ath.getObject(ORIG_NAME_NOTALLOWED);
 		
 	}
 	
@@ -67,8 +66,8 @@ public class ATMigrationRight extends AcceptanceTest {
 	@Test
 	public void test() throws IOException{
 		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValid);
-		o=ath.fetchObjectFromDB(ORIG_NAME);
-		ath.retrievePackage(o, UNPACKED_DIP, "1");
+		o=ath.getObject(ORIG_NAME);
+		ath.retrieveAIP(o, UNPACKED_DIP, "1");
 		
 		String brep="";
 		File[] fList = Path.makeFile(UNPACKED_DIP.toString(),"data").listFiles();

@@ -59,21 +59,21 @@ public class ATIngestValidation extends AcceptanceTest{
 				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME,CONTAINER_NAME));
 		
 		
-		ath.putPackageToIngestArea(ORIG_NAME,"tgz",
+		ath.putSIPtoIngestArea(ORIG_NAME,"tgz",
 				ORIG_NAME);
 		
 		
-		ath.putPackageToIngestArea(AT_ERSTE_ZEILE_TAGMANIFEST1_ZEICHENGEAENDERT,"tgz",
+		ath.putSIPtoIngestArea(AT_ERSTE_ZEILE_TAGMANIFEST1_ZEICHENGEAENDERT,"tgz",
 				AT_ERSTE_ZEILE_TAGMANIFEST1_ZEICHENGEAENDERT);
-		ath.putPackageToIngestArea(AT_MANIFEST_MD5_2FILESGEAENDERT,"tgz",
+		ath.putSIPtoIngestArea(AT_MANIFEST_MD5_2FILESGEAENDERT,"tgz",
 				AT_MANIFEST_MD5_2FILESGEAENDERT);
-		ath.putPackageToIngestArea(AT_EINE_DATEI_GELOESCHT,"tgz",
+		ath.putSIPtoIngestArea(AT_EINE_DATEI_GELOESCHT,"tgz",
 				AT_EINE_DATEI_GELOESCHT);
-		ath.putPackageToIngestArea(AT_INVALID_PREMIS,"zip",
+		ath.putSIPtoIngestArea(AT_INVALID_PREMIS,"zip",
 				AT_INVALID_PREMIS);
-		ath.putPackageToIngestArea(AT_DUPLICATE_METADATA_FILES,"tgz",
+		ath.putSIPtoIngestArea(AT_DUPLICATE_METADATA_FILES,"tgz",
 				AT_DUPLICATE_METADATA_FILES);
-		ath.putPackageToIngestArea(AT_DUPLICATE_DOCUMENT_NAME,"tgz",
+		ath.putSIPtoIngestArea(AT_DUPLICATE_DOCUMENT_NAME,"tgz",
 				AT_DUPLICATE_DOCUMENT_NAME);
 	}
 	

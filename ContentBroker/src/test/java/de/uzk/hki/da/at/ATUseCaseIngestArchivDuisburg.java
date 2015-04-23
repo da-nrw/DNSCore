@@ -31,10 +31,10 @@ public class ATUseCaseIngestArchivDuisburg extends AcceptanceTest{
 	
 	@BeforeClass
 	public static void setUp() throws IOException, InterruptedException {
-		ath.putPackageToIngestArea(origName, "tgz", origName);
+		ath.putSIPtoIngestArea(origName, "tgz", origName);
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
 		ath.waitForObjectToBePublished(origName);
-		object=ath.fetchObjectFromDB(origName);
+		object=ath.getObject(origName);
 		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}

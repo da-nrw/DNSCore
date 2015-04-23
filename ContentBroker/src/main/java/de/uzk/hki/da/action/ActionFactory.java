@@ -38,6 +38,7 @@ import org.springframework.context.ApplicationContextAware;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.UserExceptionManager;
 import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.Node;
@@ -97,9 +98,13 @@ public class ActionFactory implements ApplicationContextAware {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		session.refresh(preservationSystem);
+		session.refresh(localNode);
 		// replace proxies by real objects if loading lazily.
 		Hibernate.initialize(getPreservationSystem().getConversion_policies());
-
+		Hibernate.initialize(localNode.getCooperatingNodes());
+		for (Node cn:localNode.getCooperatingNodes());
+		for (Copy cp:localNode.getCopies());
+		
 		for (SubformatIdentificationStrategyPuidMapping sfiP:getSecondStageScanPolicies(session)) {
 			fileFormatFacade.registerSubformatIdentificationStrategyPuidMapping(sfiP.getSubformatIdentificationStrategyName(),sfiP.getFormatPuid());
 		}

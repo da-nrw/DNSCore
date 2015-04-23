@@ -55,9 +55,9 @@ public class JobNamedQueryDAO {
 		try{
 			
 			// circumvent lazy initialization issues
-			session.refresh(node);
-			for (Node cn:node.getCooperatingNodes()) cn.getName();
-			for (Copy c:node.getCopies());
+//			session.refresh(node);
+//			for (Node cn:node.getCooperatingNodes()) cn.getName();
+//			for (Copy c:node.getCopies());
 			
 			
 			

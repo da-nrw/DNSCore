@@ -41,13 +41,13 @@ public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 	
 	@BeforeClass
 	public static void setUp() throws IOException, InterruptedException {
-		ath.putPackageToIngestArea(ORIG_NAME_ORIG, "tgz", ORIG_NAME_ORIG);
+		ath.putSIPtoIngestArea(ORIG_NAME_ORIG, "tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
-		ath.putPackageToIngestArea(ORIG_NAME_ORIG+"_delta_one_file", "tgz", ORIG_NAME_ORIG);
+		ath.putSIPtoIngestArea(ORIG_NAME_ORIG+"_delta_one_file", "tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.InWorkflow);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
 		
-		object = ath.fetchObjectFromDB(ORIG_NAME_ORIG);
+		object = ath.getObject(ORIG_NAME_ORIG);
 
 	}
 	
@@ -59,7 +59,7 @@ public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 	
 	@Test
 	public void testLZA() throws IOException, InterruptedException, RepositoryException, JDOMException{
-		ath.retrievePackage(object,retrievalFolder,"2");
+		ath.retrieveAIP(object,retrievalFolder,"2");
 		
 		System.out.println("object identifier: "+object.getIdentifier());
 		
@@ -217,7 +217,7 @@ public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException{
 		
-		object = ath.fetchObjectFromDB(ORIG_NAME_ORIG);
+		object = ath.getObject(ORIG_NAME_ORIG);
 		
 		testContractorPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, "TEST");
 		

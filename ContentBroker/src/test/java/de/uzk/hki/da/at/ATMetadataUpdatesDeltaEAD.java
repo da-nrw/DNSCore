@@ -46,13 +46,13 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 		
-		ath.putPackageToIngestArea(ORIG_NAME_ORIG+"_orig","tgz", ORIG_NAME_ORIG);
+		ath.putSIPtoIngestArea(ORIG_NAME_ORIG+"_orig","tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
-		ath.putPackageToIngestArea(ORIG_NAME_ORIG+"_delta", "tgz", ORIG_NAME_ORIG);
+		ath.putSIPtoIngestArea(ORIG_NAME_ORIG+"_delta", "tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.InWorkflow);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
 		
-		object=ath.fetchObjectFromDB(ORIG_NAME_ORIG);
+		object=ath.getObject(ORIG_NAME_ORIG);
 	}
 	
 	@AfterClass
@@ -64,7 +64,7 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 	@Test
 	public void testLZA() throws IOException, InterruptedException, RepositoryException, JDOMException{
 
-		Object lzaObject = ath.retrievePackage(object, retrievalFolder, "2");
+		Object lzaObject = ath.retrieveAIP(object, retrievalFolder, "2");
 		System.out.println("object identifier: "+lzaObject.getIdentifier());
 		
 		Path tmpObjectDirPath = Path.make(retrievalFolder.getAbsolutePath(), "data");	

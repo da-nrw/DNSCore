@@ -48,13 +48,13 @@ public class ATIdentifierAssignment extends AcceptanceTest {
 	public static void setUp() throws IOException {
 		ath.putPackageToStorage("ATIdentifierAssignmentURNDelta",ORIG_NAME_DELTA_ORIGINAL_URN,new Date(),100);
 
-		ath.putPackageToIngestArea("ATUseCaseIngest1","tgz",
+		ath.putSIPtoIngestArea("ATUseCaseIngest1","tgz",
 				ORIG_NAME_URN_BASED_ON_TECHNICAL_IDENTIFIER);
 		
-		ath.putPackageToIngestArea(ORIG_NAME_READ_URN_FROM_SIP,"tgz",
+		ath.putSIPtoIngestArea(ORIG_NAME_READ_URN_FROM_SIP,"tgz",
 				ORIG_NAME_READ_URN_FROM_SIP);
 		
-		ath.putPackageToIngestArea(ORIG_NAME_READ_URN_FROM_SIP,"tgz",
+		ath.putSIPtoIngestArea(ORIG_NAME_READ_URN_FROM_SIP,"tgz",
 				ORIG_NAME_DELTA_ORIGINAL_URN);
 		
 	}
@@ -63,7 +63,7 @@ public class ATIdentifierAssignment extends AcceptanceTest {
 	@Test
 	public void urnBasedOnTechnicalIdentifier() {
 		ath.awaitObjectState(ORIG_NAME_URN_BASED_ON_TECHNICAL_IDENTIFIER,Object.ObjectStatus.ArchivedAndValid);
-		Object object = ath.fetchObjectFromDB(ORIG_NAME_URN_BASED_ON_TECHNICAL_IDENTIFIER);
+		Object object = ath.getObject(ORIG_NAME_URN_BASED_ON_TECHNICAL_IDENTIFIER);
 	
 		assertTrue(object.getUrn().startsWith(AcceptanceTestHelper.URN_NBN_DE_DANRW+"1"));
 	}
@@ -72,7 +72,7 @@ public class ATIdentifierAssignment extends AcceptanceTest {
 	@Test
 	public void urnByUserAssignment() throws IOException, InterruptedException {
 		ath.awaitObjectState(ORIG_NAME_READ_URN_FROM_SIP,Object.ObjectStatus.ArchivedAndValid);
-		Object object = ath.fetchObjectFromDB(ORIG_NAME_READ_URN_FROM_SIP);
+		Object object = ath.getObject(ORIG_NAME_READ_URN_FROM_SIP);
 		
 		assertEquals("urn:nbn:de:xyz-1-20131008367735", object.getUrn());
 	}
@@ -83,7 +83,7 @@ public class ATIdentifierAssignment extends AcceptanceTest {
 		// user assigned urn gets provided on delta. however the original urn was based on technical identifier.
 		
 		ath.awaitObjectState(ORIG_NAME_DELTA_ORIGINAL_URN,Object.ObjectStatus.ArchivedAndValid);
-		Object object = ath.fetchObjectFromDB(ORIG_NAME_DELTA_ORIGINAL_URN);
+		Object object = ath.getObject(ORIG_NAME_DELTA_ORIGINAL_URN);
 		assertEquals(AcceptanceTestHelper.URN_NBN_DE_DANRW+"ATIdentifierAssignmentURNDelta",object.getUrn());
 	}
 }

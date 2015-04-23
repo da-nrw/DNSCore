@@ -42,10 +42,10 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 	
 	@BeforeClass
 	public static void setUp() throws IOException {
-		ath.putPackageToIngestArea(origName, "tgz", origName);
+		ath.putSIPtoIngestArea(origName, "tgz", origName);
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
 		ath.waitForObjectToBePublished(origName);
-		object=ath.fetchObjectFromDB(origName);
+		object=ath.getObject(origName);
 		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
 		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
@@ -60,7 +60,7 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 	@Test
 	public void testLZA() throws FileNotFoundException, JDOMException, IOException {
 		
-		Object lzaObject = ath.retrievePackage(object, retrievalFolder, "1");
+		Object lzaObject = ath.retrieveAIP(object, retrievalFolder, "1");
 		System.out.println("object identifier: "+lzaObject.getIdentifier());
 		
 		Path tmpObjectDirPath = Path.make(retrievalFolder.getAbsolutePath(), "data");	

@@ -54,10 +54,10 @@ public class ATMetadataUpdatesXMP extends AcceptanceTest{
 	@BeforeClass
 	public static void setUp() throws IOException, InterruptedException{
 		
-		ath.putPackageToIngestArea(origName, "tgz", origName);
+		ath.putSIPtoIngestArea(origName, "tgz", origName);
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
 		ath.waitForObjectToBePublished(origName);
-		object=ath.fetchObjectFromDB(origName);
+		object=ath.getObject(origName);
 //		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
 	}
 	
@@ -71,7 +71,7 @@ public class ATMetadataUpdatesXMP extends AcceptanceTest{
 	
 	@Test
 	public void testLZA() throws FileNotFoundException, JDOMException, IOException {
-		ath.retrievePackage(object,retrievalFolder,"1");
+		ath.retrieveAIP(object,retrievalFolder,"1");
 		System.out.println("object identifier: "+object.getIdentifier());
 		
 		Path tmpObjectDirPath = Path.make(retrievalFolder.getAbsolutePath(), "data");	

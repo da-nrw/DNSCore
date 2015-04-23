@@ -93,7 +93,7 @@ public class Node{
     private Set<Node> cooperatingNodes = new HashSet<Node>();
 	
 	/** The copies. */
-	@OneToMany(orphanRemoval=false)
+	@OneToMany(orphanRemoval=false,fetch=FetchType.EAGER)
 	@JoinColumn(name="node_id")
 	@Cascade({CascadeType.SAVE_UPDATE})
 	private List<Copy> copies = new ArrayList<Copy>();

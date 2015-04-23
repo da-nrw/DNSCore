@@ -68,7 +68,7 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		String name = "UpdateUrls";
 		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION,"METS","mets.xml");
 		ath.waitForObjectToBePublished(ORIG_NAME_PREFIX+name);
-		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
+		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
 		
 		assertNotNull(object);
 		
@@ -114,7 +114,7 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		
 		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
 		ath.waitForObjectToBePublished(ORIG_NAME_PREFIX+name);
-		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
+		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
 		
 		assertNotNull(object);
 		assertNull(repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg"));
@@ -129,7 +129,7 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
 		ath.waitForObjectToBePublished(ORIG_NAME_PREFIX+name);
 		
-		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
+		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
 		assertNotNull(object);
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
 		assertEquals(PUBLISHEDFLAG_INSTITUTION, object.getPublished_flag());
@@ -143,7 +143,7 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
 		ath.waitForObjectToBePublished(ORIG_NAME_PREFIX+name);
 		
-		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
+		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
 		assertNotNull(object);
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
 		assertEquals(PUBLISHEDFLAG_INSTITUTION, object.getPublished_flag());
@@ -158,7 +158,7 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		ath.waitForObjectToBePublished(ORIG_NAME_PREFIX+name);
 		Thread.sleep(2000);
 		
-		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
+		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
 		assertNotNull(object);
 		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
 		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getClosedCollectionName()));

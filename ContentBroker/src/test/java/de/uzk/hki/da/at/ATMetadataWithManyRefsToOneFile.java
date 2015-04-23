@@ -15,9 +15,9 @@ public class ATMetadataWithManyRefsToOneFile extends AcceptanceTest {
 	
 	@BeforeClass
 	public static void setUp() throws IOException {
-		ath.putPackageToIngestArea(eadOrigName, "tgz", eadOrigName);
-		ath.putPackageToIngestArea(metsOrigName, "tgz", metsOrigName);
-		ath.putPackageToIngestArea(lidoOrigName, "tgz", lidoOrigName);
+		ath.putSIPtoIngestArea(eadOrigName, "tgz", eadOrigName);
+		ath.putSIPtoIngestArea(metsOrigName, "tgz", metsOrigName);
+		ath.putSIPtoIngestArea(lidoOrigName, "tgz", lidoOrigName);
 	}
 	
 	@Test

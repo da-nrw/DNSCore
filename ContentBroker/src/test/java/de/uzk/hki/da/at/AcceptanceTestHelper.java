@@ -93,14 +93,15 @@ public class AcceptanceTestHelper {
 	 * 
 	 * @author Daniel M. de Oliveira
 	 */
-	Object retrievePackage(Object o,File targetFolder,String packageName) throws IOException{
+	Object retrieveAIP(Object o,File targetFolder,String packageName) throws IOException{
 
 		final String packSuffix = ".pack_";
 		
-		Object object=fetchObjectFromDB(o.getOrig_name());
+		Object object=getObject(o.getOrig_name());
 		if (object==null) throw new RuntimeException("cannot find object");
 		System.out.println("object: "+object.getIdentifier());
 		
+		Path.makeFile(TEMP_FOLDER,object.getIdentifier()+packSuffix+packageName+C.FILE_EXTENSION_TAR).delete(); // if exists
 		gridFacade.get(Path.makeFile(TEMP_FOLDER,object.getIdentifier()+packSuffix+packageName+C.FILE_EXTENSION_TAR), 
 			testContractor.getShort_name()+
 			    "/"+object.getIdentifier()+"/"+object.getIdentifier()+packSuffix+packageName+C.FILE_EXTENSION_TAR);
@@ -118,7 +119,7 @@ public class AcceptanceTestHelper {
 		return object;
 	}
 	
-	Object fetchObjectFromDB(String originalName){
+	Object getObject(String originalName){
 		Object object = null;
 		try {
 			object = new ObjectNamedQueryDAO().getUniqueObject(originalName, testContractor.getShort_name());
@@ -262,8 +263,14 @@ public class AcceptanceTestHelper {
 		while (true) {
 			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
 			
-			Object object=fetchObjectFromDB(origName);
-			if (object.getPublished_flag()>0) break;
+			Object o=getObject(origName);
+			if (o==null) {
+				System.out.println("Object not found (yet).");
+				continue;
+			}
+			System.out.println("Awaiting object to be published. Identifier: "+o.getIdentifier()+
+					". Orig name: "+o.getOrig_name()+". Published flag: "+o.getPublished_flag()+".");
+			if (o.getPublished_flag()>0) break;
 		}
 	}
 	
@@ -280,14 +287,29 @@ public class AcceptanceTestHelper {
 	
 	
 	
-	
-	void awaitObjectState(String originalName,int awaitedState){
+	/**
+	 * Checks in regular intervals if the object with the originalName
+	 * is in a desired object state. 
+	 * 
+	 * @param originalName
+	 * @param awaitedObjectState
+	 * @return when the object is in the desired state
+	 * @throws RuntimeException if a job associated with the object is found in an job error state.
+	 * @throws RuntimeException after a globally defined amount of time. 
+	 * This is to prevent an infinite loop in case the desired state gets not reached.
+	 */
+	void awaitObjectState(String originalName,int awaitedObjectState){
 		int waited_ms_total=0;
 		while (true){
 			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
 			
-			Object o = fetchObjectFromDB(originalName);
-			if (o==null) continue;
+			Object o = getObject(originalName);
+			if (o==null) {
+				System.out.println("Object not found (yet).");
+				continue;
+			}
+			System.out.println("Awaiting object state "+awaitedObjectState+". Identifier: "+o.getIdentifier()+
+					". Orig name: "+o.getOrig_name()+". Object state: "+o.getObject_state()+".");
 			
 			Job job = getJob(originalName);
 			if (job!=null) {
@@ -309,12 +331,11 @@ public class AcceptanceTestHelper {
 					}
 					throw new RuntimeException(msg);
 				}
-				System.out.println("Awaiting object state "+awaitedState+". Identifier: "+o.getIdentifier()+". Orig name: "+o.getOrig_name()+". Job state: "+job.getStatus());
+				System.out.println("Awaiting object state "+awaitedObjectState+". Identifier: "+o.getIdentifier()+". Orig name: "+o.getOrig_name()+". Job state: "+job.getStatus());
 			}
 			
 			
-			System.out.println("Awaiting object state "+awaitedState+". Identifier: "+o.getIdentifier()+". Orig name: "+o.getOrig_name()+". Object state: "+o.getObject_state());
-			if (o.getObject_state()==awaitedState) {
+			if (o.getObject_state()==awaitedObjectState) {
 				return;
 			}
 			
@@ -336,7 +357,7 @@ public class AcceptanceTestHelper {
 	 * @param originalName
 	 * @throws IOException 
 	 */
-	void putPackageToIngestArea(String sourcePackageName,String ext,String originalName) throws IOException {
+	void putSIPtoIngestArea(String sourcePackageName,String ext,String originalName) throws IOException {
 		
 		if (localNode==null) throw new IllegalStateException();
 		if (localNode.getIngestAreaRootPath()==null) throw new IllegalStateException();

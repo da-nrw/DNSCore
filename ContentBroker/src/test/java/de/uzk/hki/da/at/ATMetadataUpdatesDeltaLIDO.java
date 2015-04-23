@@ -29,7 +29,7 @@ import de.uzk.hki.da.util.Path;
  *
  */
 
-public class _ATMetadataUpdatesDeltaLIDO extends AcceptanceTest{
+public class ATMetadataUpdatesDeltaLIDO extends AcceptanceTest{
 	
 	private static final String ORIG_NAME_ORIG = "ATMetadataUpdatesDeltaLIDO";
 	private static final String DATA_DANRW_DE = "http://data.danrw.de";
@@ -41,14 +41,14 @@ public class _ATMetadataUpdatesDeltaLIDO extends AcceptanceTest{
 	@BeforeClass
 	public static void setUp() throws IOException, InterruptedException {
 		
-		ath.putPackageToIngestArea(ORIG_NAME_ORIG+"_orig", "tgz", ORIG_NAME_ORIG);
+		ath.putSIPtoIngestArea(ORIG_NAME_ORIG+"_orig", "tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
-		ath.putPackageToIngestArea(ORIG_NAME_ORIG+"_delta", "tgz", ORIG_NAME_ORIG);
+		ath.putSIPtoIngestArea(ORIG_NAME_ORIG+"_delta", "tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.InWorkflow);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
 		
 		ath.waitForObjectToBePublished(ORIG_NAME_ORIG);
-		object = ath.fetchObjectFromDB(ORIG_NAME_ORIG);
+		object = ath.getObject(ORIG_NAME_ORIG);
 		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
@@ -56,14 +56,12 @@ public class _ATMetadataUpdatesDeltaLIDO extends AcceptanceTest{
 	@AfterClass
 	public static void tearDown() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
-		Path.makeFile("tmp",object.getIdentifier()+".pack_2.tar").delete(); // retrieved dip
 	}
 
 	@Test
 	public void testLZA() throws IOException, InterruptedException, RepositoryException, JDOMException{
 
-		ath.retrievePackage(object,retrievalFolder,"2");
-		System.out.println("object identifier: "+object.getIdentifier());
+		ath.retrieveAIP(object,retrievalFolder,"2");
 		
 		Path tmpObjectDirPath = Path.make(retrievalFolder.getAbsolutePath(), "data");	
 		File[] tmpObjectSubDirs = new File (tmpObjectDirPath.toString()).listFiles();

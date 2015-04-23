@@ -56,11 +56,11 @@ public class _ATContractIngestDelta extends AcceptanceTest{
 	@Test
 	public void test() throws IOException, InterruptedException, RepositoryException{
 		
-		ath.putPackageToIngestArea(ORIG_NAME+"1", DEFAULT_CONTAINER_EXTENSION, ORIG_NAME);
+		ath.putSIPtoIngestArea(ORIG_NAME+"1", DEFAULT_CONTAINER_EXTENSION, ORIG_NAME);
 		Thread.sleep(2000);
 		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValid);
 		ath.waitForObjectToBePublished(ORIG_NAME);
-		Object o=ath.fetchObjectFromDB(ORIG_NAME);
+		Object o=ath.getObject(ORIG_NAME);
 		Thread.sleep(3000);
 		
 		InputStream is = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
@@ -70,11 +70,11 @@ public class _ATContractIngestDelta extends AcceptanceTest{
 		
 		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));
 		
-		ath.putPackageToIngestArea(ORIG_NAME+"2", DEFAULT_CONTAINER_EXTENSION, ORIG_NAME);
+		ath.putSIPtoIngestArea(ORIG_NAME+"2", DEFAULT_CONTAINER_EXTENSION, ORIG_NAME);
 		Thread.sleep(2000);
 		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValid);
 		ath.waitForObjectToBePublished(ORIG_NAME);
-		o=ath.fetchObjectFromDB(ORIG_NAME);
+		o=ath.getObject(ORIG_NAME);
 		Thread.sleep(3000);
 
 		InputStream is2 = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
@@ -84,10 +84,10 @@ public class _ATContractIngestDelta extends AcceptanceTest{
 		
 		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));
 
-		ath.putPackageToIngestArea(ORIG_NAME+"3", DEFAULT_CONTAINER_EXTENSION, ORIG_NAME);
+		ath.putSIPtoIngestArea(ORIG_NAME+"3", DEFAULT_CONTAINER_EXTENSION, ORIG_NAME);
 		Thread.sleep(2000);
 		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValid);
-		o=ath.fetchObjectFromDB(ORIG_NAME);
+		o=ath.getObject(ORIG_NAME);
 		Thread.sleep(3000);
 
 		InputStream is3 = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 

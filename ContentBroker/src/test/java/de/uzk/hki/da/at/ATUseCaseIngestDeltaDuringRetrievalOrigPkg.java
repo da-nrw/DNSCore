@@ -23,9 +23,9 @@ public class ATUseCaseIngestDeltaDuringRetrievalOrigPkg extends AcceptanceTest{
 	@BeforeClass
 	public static void setUp() throws IOException {
 		
-		ath.putPackageToIngestArea(ORIG_NAME+"_orig", "tgz", ORIG_NAME);
+		ath.putSIPtoIngestArea(ORIG_NAME+"_orig", "tgz", ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.ArchivedAndValid);
-		object=ath.fetchObjectFromDB(ORIG_NAME);
+		object=ath.getObject(ORIG_NAME);
 		
 		object.setObject_state(50);
 		Job job = new Job();
@@ -51,9 +51,9 @@ public class ATUseCaseIngestDeltaDuringRetrievalOrigPkg extends AcceptanceTest{
 	@Test
 	public void test() throws IOException, InterruptedException {
 		
-		ath.putPackageToIngestArea(ORIG_NAME+"_delta", "tgz", ORIG_NAME);
+		ath.putSIPtoIngestArea(ORIG_NAME+"_delta", "tgz", ORIG_NAME);
 		ath.waitForJobToBeInStatus(ORIG_NAME, "952");
-		object=ath.fetchObjectFromDB(ORIG_NAME);
+		object=ath.getObject(ORIG_NAME);
 		
 //		Delete Job & Set object state
 // 		normally this is being done by PostRetrievalAction checking for the createddate of Retrieval job
@@ -65,7 +65,7 @@ public class ATUseCaseIngestDeltaDuringRetrievalOrigPkg extends AcceptanceTest{
 		session.getTransaction().commit();
 		session.close();
 		
-		ath.putPackageToIngestArea(ORIG_NAME+"_orig", "tgz", ORIG_NAME);
+		ath.putSIPtoIngestArea(ORIG_NAME+"_orig", "tgz", ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.ArchivedAndValid);
 		
 //		object = ath.ingest(ORIG_NAME);

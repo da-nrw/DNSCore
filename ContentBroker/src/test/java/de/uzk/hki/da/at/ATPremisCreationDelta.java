@@ -67,10 +67,10 @@ public class ATPremisCreationDelta extends PREMISBase {
 
 		ath.putPackageToStorage(IDENTIFIER,ORIG_NAME,new Date(),100);
 		Thread.sleep(2000);
-		ath.putPackageToIngestArea(ORIG_NAME+"2", "tgz", ORIG_NAME);
+		ath.putSIPtoIngestArea(ORIG_NAME+"2", "tgz", ORIG_NAME);
 		Thread.sleep(2000);
 		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValid);
-		object=ath.fetchObjectFromDB(ORIG_NAME);
+		object=ath.getObject(ORIG_NAME);
 	}
 	
 	@After
@@ -85,7 +85,7 @@ public class ATPremisCreationDelta extends PREMISBase {
 	@Test
 	public void testProperPREMISCreation() throws Exception{
 		
-		object = ath.retrievePackage(object,unpackedDIP,"2");
+		object = ath.retrieveAIP(object,unpackedDIP,"2");
 		
 		assertEquals(ORIG_NAME,object.getOrig_name());
 		assertEquals(100,object.getObject_state());

@@ -36,14 +36,14 @@ public class ATUseCaseIngestSpecialCases extends AcceptanceTest{
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws IOException {
-		ath.putPackageToIngestArea("ATÜÄÖ","tgz","ATÜÄÖ");
-		ath.putPackageToIngestArea("ATSonderzeichen_in_Dateinamen","tgz","ATSonderzeichen_in_Dateinamen");
-		ath.putPackageToIngestArea("ATUmlaute_in_Dateinamen","tgz","ATUmlaute_in_Dateinamen");
-		ath.putPackageToIngestArea("AT_CON1","tar","AT_CON1");
-		ath.putPackageToIngestArea("AT_CON2","tgz","AT_CON2");
-		ath.putPackageToIngestArea("AT_CON3","zip","AT_CON3");
-		ath.putPackageToIngestArea("AT&Sonderzeichen%in#Paketnamen","tgz","AT&Sonderzeichen%in#Paketnamen");
-		ath.putPackageToIngestArea("ATLeerzeichen_in_Dateinamen","tgz","ATLeerzeichen_in_Dateinamen");
+		ath.putSIPtoIngestArea("ATÜÄÖ","tgz","ATÜÄÖ");
+		ath.putSIPtoIngestArea("ATSonderzeichen_in_Dateinamen","tgz","ATSonderzeichen_in_Dateinamen");
+		ath.putSIPtoIngestArea("ATUmlaute_in_Dateinamen","tgz","ATUmlaute_in_Dateinamen");
+		ath.putSIPtoIngestArea("AT_CON1","tar","AT_CON1");
+		ath.putSIPtoIngestArea("AT_CON2","tgz","AT_CON2");
+		ath.putSIPtoIngestArea("AT_CON3","zip","AT_CON3");
+		ath.putSIPtoIngestArea("AT&Sonderzeichen%in#Paketnamen","tgz","AT&Sonderzeichen%in#Paketnamen");
+		ath.putSIPtoIngestArea("ATLeerzeichen_in_Dateinamen","tgz","ATLeerzeichen_in_Dateinamen");
 	}
 	
 	@AfterClass

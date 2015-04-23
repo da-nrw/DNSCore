@@ -23,11 +23,11 @@ public class ATDetectUncompletedReferences extends AcceptanceTest {
 
 	@BeforeClass
 	public static void setUp() throws IOException {
-		ath.putPackageToIngestArea(AT_UncompletedReferences_METS, "tgz", AT_UncompletedReferences_METS);
-		ath.putPackageToIngestArea(AT_UncompletedReferences_EAD, "tgz", AT_UncompletedReferences_EAD);
-		ath.putPackageToIngestArea(AT_UncompletedReferences_METS_in_EAD, "tgz", AT_UncompletedReferences_METS_in_EAD);
-		ath.putPackageToIngestArea(AT_UncompletedReferences_LIDO, "tgz", AT_UncompletedReferences_LIDO);
-		ath.putPackageToIngestArea(AT_UncompletedReferences_XMP, "tgz", AT_UncompletedReferences_XMP);
+		ath.putSIPtoIngestArea(AT_UncompletedReferences_METS, "tgz", AT_UncompletedReferences_METS);
+		ath.putSIPtoIngestArea(AT_UncompletedReferences_EAD, "tgz", AT_UncompletedReferences_EAD);
+		ath.putSIPtoIngestArea(AT_UncompletedReferences_METS_in_EAD, "tgz", AT_UncompletedReferences_METS_in_EAD);
+		ath.putSIPtoIngestArea(AT_UncompletedReferences_LIDO, "tgz", AT_UncompletedReferences_LIDO);
+		ath.putSIPtoIngestArea(AT_UncompletedReferences_XMP, "tgz", AT_UncompletedReferences_XMP);
 		
 	}
 	
