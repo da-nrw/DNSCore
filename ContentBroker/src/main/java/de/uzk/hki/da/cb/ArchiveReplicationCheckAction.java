@@ -86,6 +86,8 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		
 		toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());
 		setObjectArchived();
+		if (toCreate!=null) o.setObject_state(Object.ObjectStatus.InWorkflow); // object stays in workflow.
+		
 		
 		FileUtils.deleteDirectory(wa.objectPath().toFile());
 		

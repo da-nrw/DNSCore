@@ -37,6 +37,8 @@ import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.ConfigurationException;
 
+import de.uzk.hki.da.model.Object;
+
 /**
  * This action fetches EDM/RDF-Metadata from the public PIP,  
  * transforms it to hierarchical object structure
@@ -98,6 +100,8 @@ public class IndexMetadataAction extends AbstractAction {
 		} catch (Exception e) {
 			throw new RepositoryException("Unable to prepare and index metadata!", e);
 		}
+		
+		o.setObject_state(Object.ObjectStatus.ArchivedAndValid);
 		return true;
 	}
 

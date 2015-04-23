@@ -44,14 +44,11 @@ public class _ATMetadataUpdatesDeltaLIDO extends AcceptanceTest{
 		ath.putPackageToIngestArea(ORIG_NAME_ORIG+"_orig", "tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
 		
-		Thread.sleep(2000);
-		
 		ath.putPackageToIngestArea(ORIG_NAME_ORIG+"_delta", "tgz", ORIG_NAME_ORIG);
-		Thread.sleep(2000);
+		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.InWorkflow);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
 		
 		ath.waitForObjectToBePublished(ORIG_NAME_ORIG);
-		
 		object = ath.fetchObjectFromDB(ORIG_NAME_ORIG);
 		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);

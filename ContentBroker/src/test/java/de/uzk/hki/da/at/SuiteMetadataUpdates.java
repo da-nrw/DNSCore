@@ -14,7 +14,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ATMetadataUpdatesRheinlaender.class,
 	_ATMetadataUpdatesDeltaEAD.class,
 	_ATMetadataUpdatesDeltaLIDO.class,
-	_ATMetadataUpdatesDeltaMETS.class
+	ATMetadataUpdatesDeltaMETS.class
 })
 
 /**

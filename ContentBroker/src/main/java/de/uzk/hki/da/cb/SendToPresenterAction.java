@@ -43,6 +43,7 @@ import org.apache.tika.Tika;
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.metadata.XepicurWriter;
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.repository.MetadataIndex;
@@ -159,6 +160,7 @@ public class SendToPresenterAction extends AbstractAction {
 				institutionPIPSuccessfullyIngested);
 		if (StringUtilities.isNotSet(o.getPackage_type())||(!publicPIPSuccessfullyIngested)) {
 			setKILLATEXIT(true); // indexing and creating edm not possible
+			o.setObject_state(Object.ObjectStatus.ArchivedAndValid);
 		}
 		return true;
 	}

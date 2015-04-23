@@ -41,14 +41,13 @@ import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectNamedQueryDAO;
 import de.uzk.hki.da.service.HibernateUtil;
-import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 
 
 /**
  * Relates to AK-T Audit 
  * @author Jens Peters
- * 
+ * @author Daniel M. de Oliveira
  */
 public class _ATIntegrityCheck extends AcceptanceTest{
 	
