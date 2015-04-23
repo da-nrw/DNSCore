@@ -132,6 +132,67 @@ public class AcceptanceTestHelper {
 
 	
 	
+	/**
+	 * Checks in regular intervals if the object with the originalName
+	 * is in a desired object state. 
+	 * 
+	 * @param originalName
+	 * @param awaitedObjectState
+	 * @return when the object is in the desired state
+	 * @throws RuntimeException if a job associated with the object is found in an job error state.
+	 * @throws RuntimeException after a globally defined amount of time. 
+	 * This is to prevent an infinite loop in case the desired state gets not reached.
+	 */
+	void awaitObjectState(String originalName,int awaitedObjectState){
+		int waited_ms_total=0;
+		while (true){
+			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
+			
+			Object o = getObject(originalName);
+			if (o==null) {
+				System.out.println("Object not found (yet).");
+				continue;
+			}
+			System.out.print("Awaiting object state "+awaitedObjectState+". Identifier: "+o.getIdentifier()+
+					". Orig name: "+o.getOrig_name()+". Object state: "+o.getObject_state()+".");
+			
+			Job job = getJob(originalName);
+			if (job!=null) {
+				if (isInErrorState(job)) 
+					evaluateErrorDetails(job);
+				else
+					System.out.println(" Job state: "+job.getStatus()+".");
+			}
+			else
+				System.out.println("");
+			
+			if (o.getObject_state()==awaitedObjectState) {
+				return;
+			}
+			
+		}
+	}
+
+
+
+	void waitForObjectToBePublished(String origName) {
+		int waited_ms_total=0;
+		while (true) {
+			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
+			
+			Object o=getObject(origName);
+			if (o==null) {
+				System.out.println("Object not found (yet).");
+				continue;
+			}
+			System.out.println("Awaiting object to be published. Identifier: "+o.getIdentifier()+
+					". Orig name: "+o.getOrig_name()+". Published flag: "+o.getPublished_flag()+".");
+			if (o.getPublished_flag()>0) break;
+		}
+	}
+
+
+
 	Job waitForJobToBeInErrorStatus(String originalName,String errorStatusLastDigit) throws InterruptedException{
 		
 		return waitForJobToBeInErrorStatus(originalName,errorStatusLastDigit,TIMEOUT);
@@ -211,6 +272,28 @@ public class AcceptanceTestHelper {
 		}
 	}
 
+	public Job getJob(String originalName) {
+		Job job;
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		job = getJob(session, originalName, testContractor.getShort_name());
+		session.close();
+		return job;
+	}
+
+
+
+	void waitForObjectToBeIndexed(MetadataIndex mi,String identifier) {
+		int waited_ms_total=0;
+		while (true) {
+			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
+			
+			if (mi.getIndexedMetadata("portal_ci_test", identifier).contains(identifier)) break;
+		}
+	}
+
+
+
 	/**
 	 * Gets the job.
 	 *
@@ -248,98 +331,23 @@ public class AcceptanceTestHelper {
 		return waited_ms_total+=interval;
 	}
 	
-	public Job getJob(String originalName) {
-		Job job;
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		job = getJob(session, originalName, testContractor.getShort_name());
-		session.close();
-		return job;
-	}
-	
-	
-	void waitForObjectToBePublished(String origName) {
-		int waited_ms_total=0;
-		while (true) {
-			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
-			
-			Object o=getObject(origName);
-			if (o==null) {
-				System.out.println("Object not found (yet).");
-				continue;
+	private void evaluateErrorDetails(Job job) {
+		String oid=job.getObject().getIdentifier();
+		String msg = "ERROR: Job in error state: " + job.getStatus() + " in Object-Id "+ oid;
+		System.out.println(msg);
+		
+		if (job.getObject().getIdentifier()!=null){
+			try {
+				System.out.println("SHOWING OBJECT LOG:");
+				String localNodeWorkArea = localNode.getWorkAreaRootPath().toString();
+				String localNode = localNodeWorkArea.replace("/storage/WorkArea", "");
+				System.out.println(FileUtils.readFileToString(new File(Path.make(localNode, "ContentBroker","log", "object-logs")+"/"+job.getObject().getIdentifier()+".log")));
+				System.out.println("END OF OBJECT LOG: "+job.getObject().getIdentifier());
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			System.out.println("Awaiting object to be published. Identifier: "+o.getIdentifier()+
-					". Orig name: "+o.getOrig_name()+". Published flag: "+o.getPublished_flag()+".");
-			if (o.getPublished_flag()>0) break;
 		}
-	}
-	
-	
-	void waitForObjectToBeIndexed(MetadataIndex mi,String identifier) {
-		int waited_ms_total=0;
-		while (true) {
-			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
-			
-			if (mi.getIndexedMetadata("portal_ci_test", identifier).contains(identifier)) break;
-		}
-	}
-	
-	
-	
-	
-	/**
-	 * Checks in regular intervals if the object with the originalName
-	 * is in a desired object state. 
-	 * 
-	 * @param originalName
-	 * @param awaitedObjectState
-	 * @return when the object is in the desired state
-	 * @throws RuntimeException if a job associated with the object is found in an job error state.
-	 * @throws RuntimeException after a globally defined amount of time. 
-	 * This is to prevent an infinite loop in case the desired state gets not reached.
-	 */
-	void awaitObjectState(String originalName,int awaitedObjectState){
-		int waited_ms_total=0;
-		while (true){
-			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
-			
-			Object o = getObject(originalName);
-			if (o==null) {
-				System.out.println("Object not found (yet).");
-				continue;
-			}
-			System.out.println("Awaiting object state "+awaitedObjectState+". Identifier: "+o.getIdentifier()+
-					". Orig name: "+o.getOrig_name()+". Object state: "+o.getObject_state()+".");
-			
-			Job job = getJob(originalName);
-			if (job!=null) {
-				if (isInErrorState(job)) {
-					String oid=job.getObject().getIdentifier();
-					String msg = "ERROR: Job in error state: " + job.getStatus() + " in Object-Id "+ oid;
-					System.out.println(msg);
-					
-					if (job.getObject().getIdentifier()!=null){
-						try {
-							System.out.println("SHOWING OBJECT LOG:");
-							String localNodeWorkArea = localNode.getWorkAreaRootPath().toString();
-							String localNode = localNodeWorkArea.replace("/storage/WorkArea", "");
-							System.out.println(FileUtils.readFileToString(new File(Path.make(localNode, "ContentBroker","log", "object-logs")+"/"+job.getObject().getIdentifier()+".log")));
-							System.out.println("END OF OBJECT LOG: "+job.getObject().getIdentifier());
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
-					throw new RuntimeException(msg);
-				}
-				System.out.println("Awaiting object state "+awaitedObjectState+". Identifier: "+o.getIdentifier()+". Orig name: "+o.getOrig_name()+". Job state: "+job.getStatus());
-			}
-			
-			
-			if (o.getObject_state()==awaitedObjectState) {
-				return;
-			}
-			
-		}
+		throw new RuntimeException(msg);
 	}
 	
 	
