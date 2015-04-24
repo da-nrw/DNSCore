@@ -1,8 +1,8 @@
 # Retrieval
 
-Als Retrieval wird der Prozess des Zurückladens von Objekten auf die lokalen Arbeitsstation eines Nutzers bezeichnet.
+Als Retrieval wird der Prozess des Zurückladens von Objekten auf die lokale Arbeitsstation eines Nutzers bezeichnet.
 
-Am Ende des Retrieval Vorganges erhält der Nutzer einen Einlieferunsbelegt mit dem technischen Identifier des Objektes.
+Am Ende des Retrieval Vorganges erhält der Nutzer einen Einlieferunsbeleg mit dem technischen Identifier des Objektes.
 Objekte können über diesen Identifier recherchiert und deren Retrieval über die DAWeb angestoßen werden. 
 
 ## Manuelles Retrieval
