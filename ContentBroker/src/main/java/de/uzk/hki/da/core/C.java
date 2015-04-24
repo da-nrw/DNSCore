@@ -171,6 +171,7 @@ public class C {
 	public static final int PUBLISHEDFLAG_NO_PUBLICATION = 0;
 	public static final int PUBLISHEDFLAG_INSTITUTION = 2;
 	public static final int PUBLISHEDFLAG_PUBLIC = 1;
+	public static final int PUBLISHEDFLAG_UNDEFINED = -1;
 
 	
 	public static final String ORE_AGGREGATION = "ore:Aggregation";

@@ -74,6 +74,7 @@ public class Object {
 		public static final Integer Error = 51;
 		public static final Integer ArchivedAndValid = 100;
 	}
+	
 
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(Package.class);
@@ -129,7 +130,7 @@ public class Object {
 	private String zone;
 	
 	/** The published_flag. */
-	private int published_flag=0;
+	private int published_flag=C.PUBLISHEDFLAG_UNDEFINED;
 	
 	
 	/** The last_checked. */

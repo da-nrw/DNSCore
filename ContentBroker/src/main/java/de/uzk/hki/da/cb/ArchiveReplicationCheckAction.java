@@ -86,9 +86,9 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		
 		toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());
 		setObjectArchived();
-		if (toCreate!=null) o.setObject_state(Object.ObjectStatus.InWorkflow); // object stays in workflow.
+
 		
-		
+
 		FileUtils.deleteDirectory(wa.objectPath().toFile());
 		
 		new MailContents(preservationSystem,n).sendReciept(j, o);
@@ -155,11 +155,14 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 			cn.getCopiesToSave().add(copy);
 		}
 		
-		o.setObject_state(100);
+		
 		o.setLast_checked(new Date());
 		o.setDate_modified(String.valueOf(new Date().getTime()));
 		o.setStatic_nondisclosure_limit(j.getStatic_nondisclosure_limit());
 		o.setDynamic_nondisclosure_limit(j.getDynamic_nondisclosure_limit());
+		
+		o.setObject_state(Object.ObjectStatus.InWorkflow); // object stays in workflow for publication
+		o.setPublished_flag(C.PUBLISHEDFLAG_UNDEFINED);
 	}
 
 	

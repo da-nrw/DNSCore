@@ -56,7 +56,7 @@ public class ATMetadataUpdatesXMP extends AcceptanceTest{
 		
 		ath.putSIPtoIngestArea(origName, "tgz", origName);
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
-		ath.waitForObjectToBePublished(origName);
+		ath.waitForDefinedPublishedState(origName);
 		object=ath.getObject(origName);
 //		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
 	}

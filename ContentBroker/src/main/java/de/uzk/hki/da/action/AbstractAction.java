@@ -312,8 +312,13 @@ public abstract class AbstractAction implements Runnable {
 			session.save(copy);
 			session.flush();
 			
-			session.createSQLQuery("UPDATE copies SET node_id="+cn.getId()+" WHERE id = "+copy.getId()).executeUpdate();
-			session.createSQLQuery("UPDATE copies SET pkg_id="+object.getLatestPackage().getId()+" WHERE id = "+copy.getId()).executeUpdate();
+			int updatesNodeId=session.createSQLQuery(
+					"UPDATE copies SET node_id="+cn.getId()+" WHERE id = "+copy.getId()).executeUpdate();
+			if (updatesNodeId==0) throw new RuntimeException("could not execute update of node_id");
+			
+			int updatesPackageId=session.createSQLQuery(
+					"UPDATE copies SET pkg_id="+object.getLatestPackage().getId()+" WHERE id = "+copy.getId()).executeUpdate();
+			if (updatesPackageId==0) throw new RuntimeException("could not execute update of package_id");
 		}
 		
 		

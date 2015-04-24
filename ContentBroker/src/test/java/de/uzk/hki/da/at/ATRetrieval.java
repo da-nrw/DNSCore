@@ -59,7 +59,7 @@ public class ATRetrieval extends AcceptanceTest{
 		
 		String originalName = "ATRetrieval";
 		
-		ath.putPackageToStorage(identifier, originalName, new Date(), 100);
+		ath.putAIPToLongTermStorage(identifier, originalName, new Date(), 100);
 		ath.createJob(originalName, "900");
 		ath.waitForJobToBeInStatus(originalName, "950");
 		

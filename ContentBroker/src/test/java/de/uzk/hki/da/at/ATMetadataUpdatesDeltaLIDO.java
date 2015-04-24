@@ -47,7 +47,7 @@ public class ATMetadataUpdatesDeltaLIDO extends AcceptanceTest{
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.InWorkflow);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
 		
-		ath.waitForObjectToBePublished(ORIG_NAME_ORIG);
+		ath.waitForDefinedPublishedState(ORIG_NAME_ORIG);
 		object = ath.getObject(ORIG_NAME_ORIG);
 		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);

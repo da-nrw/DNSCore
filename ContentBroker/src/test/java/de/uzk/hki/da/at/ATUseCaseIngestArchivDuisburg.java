@@ -33,7 +33,7 @@ public class ATUseCaseIngestArchivDuisburg extends AcceptanceTest{
 	public static void setUp() throws IOException, InterruptedException {
 		ath.putSIPtoIngestArea(origName, "tgz", origName);
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
-		ath.waitForObjectToBePublished(origName);
+		ath.waitForDefinedPublishedState(origName);
 		object=ath.getObject(origName);
 		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);

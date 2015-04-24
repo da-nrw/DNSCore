@@ -29,6 +29,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Date;
 
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -49,7 +50,7 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 	private static final String XLINK_NAMESPACE = "http://www.w3.org/1999/xlink";
 	private static final String METS_NAMESPACE = "http://www.loc.gov/METS/";
 
-	private static final String ORIG_NAME_PREFIX =  "ATUCTimeBasedPubl";
+	private static final String ORIG_NAME_PREFIX =  "ATTimeBasedPubl";
 	private Namespace mETS_NS;
 	private Namespace xLINK_NS;
 	
@@ -65,10 +66,14 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 	@Test
 	public void testUpdateUrls() throws InterruptedException, IOException, JDOMException, RepositoryException{
 		
-		String name = "UpdateUrls";
-		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION,"METS","mets.xml");
-		ath.waitForObjectToBePublished(ORIG_NAME_PREFIX+name);
-		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
+		String origName = "UpdateUrls";
+		String identifier = "UpdateUrls_id";
+		
+		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+origName, 
+				new Date(), Object.ObjectStatus.ArchivedAndValid,"METS","mets.xml");
+		ath.createJob(ORIG_NAME_PREFIX+origName, WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.waitForDefinedPublishedState(ORIG_NAME_PREFIX+origName);
+		Object object = ath.getObject(ORIG_NAME_PREFIX+origName);
 		
 		assertNotNull(object);
 		
@@ -79,6 +84,7 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		File publFile = Path.makeFile(localNode.getWorkAreaRootPath(),
 				WA_PIPS,WA_PUBLIC,object.getContractor().getShort_name(),
 				object.getIdentifier(),CB_PACKAGETYPE_METS+FILE_EXTENSION_XML);
+		System.out.println("publFile:"+publFile.toString());
 		assertTrue(publFile.exists());
 				
 		File instFile = Path.makeFile(localNode.getWorkAreaRootPath(),
@@ -111,9 +117,11 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 	public void testPublishInstOnly() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "InstOnly";
+		String identifier = "InstOnly_id";
 		
-		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
-		ath.waitForObjectToBePublished(ORIG_NAME_PREFIX+name);
+		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValid);
+		ath.createJob(ORIG_NAME_PREFIX+name, WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.waitForDefinedPublishedState(ORIG_NAME_PREFIX+name);
 		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
 		
 		assertNotNull(object);
@@ -126,10 +134,13 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 	public void testNoPubWithLawSetForAudiencePublic() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "NoPubWithLawSet";
-		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
-		ath.waitForObjectToBePublished(ORIG_NAME_PREFIX+name);
+		String identifier = "NoPubWithLawSet_id";
 		
+		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValid);
+		ath.createJob(ORIG_NAME_PREFIX+name, WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.waitForDefinedPublishedState(ORIG_NAME_PREFIX+name);
 		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
+		
 		assertNotNull(object);
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
 		assertEquals(PUBLISHEDFLAG_INSTITUTION, object.getPublished_flag());
@@ -140,10 +151,13 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 	public void testNoPubWithStartDateSetForAudiencePublic() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "NoPubWithStartDateSet";
-		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
-		ath.waitForObjectToBePublished(ORIG_NAME_PREFIX+name);
+		String identifier = "NoPubWithStartDateSet_id";
 		
+		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValid);
+		ath.createJob(ORIG_NAME_PREFIX+name, WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.waitForDefinedPublishedState(ORIG_NAME_PREFIX+name);
 		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
+		
 		assertNotNull(object);
 		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
 		assertEquals(PUBLISHEDFLAG_INSTITUTION, object.getPublished_flag());
@@ -154,11 +168,15 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 	public void testPublishAll() throws InterruptedException, IOException, RepositoryException{
 		
 		String name = "AllPublic";
-		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
-		ath.waitForObjectToBePublished(ORIG_NAME_PREFIX+name);
+		String identifier = "AllPublic_id";
+		
+		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValid);
+		ath.createJob(ORIG_NAME_PREFIX+name, WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.waitForDefinedPublishedState(ORIG_NAME_PREFIX+name);
+		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
+		
 		Thread.sleep(2000);
 		
-		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
 		assertNotNull(object);
 		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
 		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getClosedCollectionName()));
@@ -166,20 +184,23 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 				PUBLISHEDFLAG_INSTITUTION, object.getPublished_flag());
 	}
 	
-//	
-//	@Test
-//	public void testPublishNothing() throws InterruptedException, IOException, RepositoryException{
-//		
-//		String name = "PublishNothing";
-//		ath.createObjectAndJob(ORIG_NAME_PREFIX+name,WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
-//		ath.waitForObjectToBePublished(ORIG_NAME_PREFIX+name);
-//		
-//		Object object = ath.fetchObjectFromDB(ORIG_NAME_PREFIX+name);
-//		assertNotNull(object);
-//		
-//		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
-//		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getClosedCollectionName()));
-//		assertEquals(PUBLISHEDFLAG_NO_PUBLICATION, object.getPublished_flag());
-//		
-//	}
+	
+	@Test
+	public void testPublishNothing() throws InterruptedException, IOException, RepositoryException{
+		
+		String name = "PublishNothing";
+		String identifier = "PublishNothing_id";
+		
+		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValid);
+		ath.createJob(ORIG_NAME_PREFIX+name, WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.waitForObjectPublishedState(ORIG_NAME_PREFIX+name,0);
+		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
+		
+		assertNotNull(object);
+		
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getClosedCollectionName()));
+		assertEquals(PUBLISHEDFLAG_NO_PUBLICATION, object.getPublished_flag());
+		
+	}
 }

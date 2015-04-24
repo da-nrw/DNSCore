@@ -65,7 +65,7 @@ public class ATPremisCreationDelta extends PREMISBase {
 	@Before
 	public void setUp() throws IOException, InterruptedException{
 
-		ath.putPackageToStorage(IDENTIFIER,ORIG_NAME,new Date(),100);
+		ath.putAIPToLongTermStorage(IDENTIFIER,ORIG_NAME,new Date(),100);
 		Thread.sleep(2000);
 		ath.putSIPtoIngestArea(ORIG_NAME+"2", "tgz", ORIG_NAME);
 		Thread.sleep(2000);

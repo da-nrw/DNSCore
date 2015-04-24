@@ -54,7 +54,7 @@ public class ATIngestValidation extends AcceptanceTest{
 	@BeforeClass
 	public static void putPackages() throws IOException{
 		
-		ath.putPackageToStorage(IDENTIFIER,ORIG_NAME,null,100);
+		ath.putAIPToLongTermStorage(IDENTIFIER,ORIG_NAME,null,100);
 		FileUtils.copyFile(Path.makeFile(TC.TEST_ROOT_AT,CONTAINER_NAME), 
 				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME,CONTAINER_NAME));
 		

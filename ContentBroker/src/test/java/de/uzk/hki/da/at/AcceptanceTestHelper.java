@@ -119,6 +119,11 @@ public class AcceptanceTestHelper {
 		return object;
 	}
 	
+	/**
+	 * 
+	 * @param originalName
+	 * @return null if no object found.
+	 */
 	Object getObject(String originalName){
 		Object object = null;
 		try {
@@ -173,9 +178,12 @@ public class AcceptanceTestHelper {
 		}
 	}
 
+	
+	void waitForDefinedPublishedState(String origName) {
+		waitForObjectPublishedState(origName, -1);
+	}
 
-
-	void waitForObjectToBePublished(String origName) {
+	void waitForObjectPublishedState(String origName,int publishedFlag) {
 		int waited_ms_total=0;
 		while (true) {
 			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
@@ -187,7 +195,10 @@ public class AcceptanceTestHelper {
 			}
 			System.out.println("Awaiting object to be published. Identifier: "+o.getIdentifier()+
 					". Orig name: "+o.getOrig_name()+". Published flag: "+o.getPublished_flag()+".");
-			if (o.getPublished_flag()>0) break;
+			
+			if (publishedFlag==0 && o.getPublished_flag()==0) break;
+			else
+				if (o.getPublished_flag()>0) break;
 		}
 	}
 
@@ -382,7 +393,9 @@ public class AcceptanceTestHelper {
 
 	
 	
-	
+	Object putAIPToLongTermStorage(String identifier,String originalName, Date createddate, int object_state) throws IOException{
+		return putAIPToLongTermStorage(identifier, originalName, createddate, object_state, null, null);
+	}
 	
 
 
@@ -391,7 +404,10 @@ public class AcceptanceTestHelper {
 	 * @author Daniel M. de Oliveira
 	 * @throws IOException 
 	 */
-	Object putPackageToStorage(String identifier,String originalName, Date createddate, int object_state) throws IOException{
+	Object putAIPToLongTermStorage(String identifier,String originalName, 
+			Date createddate, int object_state, 
+			String packageType,
+			String metadataFile) throws IOException{
 		
 		String PACKAGE_NAME = "1";
 		int timeout = 2000;
@@ -407,7 +423,11 @@ public class AcceptanceTestHelper {
 			} catch (InterruptedException e) {} // no problem
 			if (i>200) fail("Package was not replicated to archive resc");
 		}
+		
 		Object object = new Object();
+		
+		object.setPackage_type(packageType);
+		object.setMetadata_file(metadataFile);
 		object.setContractor(testContractor);
 		object.setInitial_node("localnode");
 		object.setIdentifier(identifier);
@@ -463,72 +483,6 @@ public class AcceptanceTestHelper {
 	}
 
 	
-
-	void createObjectAndJob(String name,String status) throws IOException{
-		createObjectAndJob(name,status,null,null);
-	}
-
-
-
-	/**
-		 * @throws IOException 
-		 */
-	void createObjectAndJob(String name, 
-			String status,
-			String packageType,
-			String metadataFile) throws IOException{
-		sp.setReplDestinations("ciArchiveResource");
-		sp.setWorkingResource("ciWorkingResource");
-		gridFacade.put(
-				Path.makeFile(TEST_DATA_ROOT_PATH,name+".pack_1.tar"),
-				testContractor.getShort_name()+"/ID-"+name+"/ID-"+name+".pack_1.tar",sp);
-		
-		
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		
-		Object object = new Object();
-		object.setUrn("");
-		object.setIdentifier("ID-"+name);
-		object.setOrig_name(name);
-		
-		object.setContractor(testContractor);
-		object.setMetadata_file(metadataFile);
-		object.setPackage_type(packageType);
-		object.setObject_state(100);
-		object.setPublished_flag(0);
-		object.setDdbExclusion(false);
-		session.save(object);
-
-		int data_pk = object.getData_pk();
-		System.out.println("CREATED Object with id " + data_pk);
-		String data_pk_string = String.valueOf(data_pk);
-		object.setUrn("urn:nbn:de:danrw-test-"+data_pk_string);
-		session.saveOrUpdate(object);
-		
-		
-		Package currentPackage = new Package();
-		currentPackage.setName("1");
-		currentPackage.setContainerName(name);
-		List<Package> packages = new ArrayList<Package>();
-		packages.add(currentPackage);
-		object.setPackages(packages);		
-		session.saveOrUpdate(object);
-		
-		Job job = new Job();
-		Node node = (Node)session.load(Node.class, localNode .getId());
-		job.setResponsibleNodeName(node.getName());
-		job.setObject(object);
-		job.setDate_created(String.valueOf(new Date().getTime()/1000L));
-		job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
-		job.setStatus(status);
-	
-		session.save(job);
-		
-		session.getTransaction().commit();
-		session.close();
-	}
-
 
 
 	private boolean isInErrorState(Job job){
