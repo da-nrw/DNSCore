@@ -24,9 +24,12 @@ import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFactory;
 
 import java.io.File;
+import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
@@ -37,11 +40,18 @@ import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
  */
 public class ATRetrieval extends AcceptanceTest{
 	
-	@After
-	public void tearDown(){
-		distributedConversionAdapter.remove("aip/TEST/ID-ATUseCaseRetrieval"); // TODO does it work?
-		new File("/tmp/ID-ATUseCaseRetrieval.tar").delete();
-		FileUtils.deleteQuietly(new File("/tmp/ID-ATUseCaseRetrieval"));
+	private static final String identifier = "ATRetrieval_identifier";
+	
+	@BeforeClass
+	public static void setUp() {
+	}
+	
+	
+	@AfterClass
+	public static void tearDown(){
+		distributedConversionAdapter.remove("aip/TEST/"+identifier); // TODO does it work?
+		new File("/tmp/"+identifier+".tar").delete();
+		FileUtils.deleteQuietly(new File("/tmp/"+identifier));
 	}
 	
 	@Test
@@ -49,23 +59,24 @@ public class ATRetrieval extends AcceptanceTest{
 		
 		String originalName = "ATRetrieval";
 		
-		ath.createObjectAndJob(originalName,"900");
-		ath.waitForJobToBeInStatus(originalName, "952");
+		ath.putPackageToStorage(identifier, originalName, new Date(), 100);
+		ath.createJob(originalName, "900");
+		ath.waitForJobToBeInStatus(originalName, "950");
 		
-		System.out.println(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/ID-ATUseCaseRetrieval.tar").getAbsolutePath());
-		assertTrue(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/ID-ATUseCaseRetrieval.tar").exists());
+		System.out.println(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar").getAbsolutePath());
+		assertTrue(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar").exists());
 		
 		FileUtils.moveFileToDirectory(
-				new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/ID-ATUseCaseRetrieval.tar"), 
+				new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar"), 
 				new File("/tmp"), false);
 		
-		ArchiveBuilderFactory.getArchiveBuilderForFile(new File("/tmp/ID-ATUseCaseRetrieval.tar"))
-			.unarchiveFolder(new File("/tmp/ID-ATUseCaseRetrieval.tar"), new File ("/tmp/"));
+		ArchiveBuilderFactory.getArchiveBuilderForFile(new File("/tmp/"+identifier+".tar"))
+			.unarchiveFolder(new File("/tmp/"+identifier+".tar"), new File ("/tmp/"));
 		
-		if (!new File("/tmp/ID-ATUseCaseRetrieval/data/"+"image/713091.tif").exists()) fail();
-		if (!new File("/tmp/ID-ATUseCaseRetrieval/data/"+"premis.xml").exists()) fail();
+		if (!new File("/tmp/"+identifier+"/data/"+"image/713091.tif").exists()) fail();
+		if (!new File("/tmp/"+identifier+"/data/"+"premis.xml").exists()) fail();
 		
-		if (!bagIsValid(new File("/tmp/ID-ATUseCaseRetrieval"))) fail();
+		if (!bagIsValid(new File("/tmp/"+identifier))) fail();
 	}
 
 	private boolean bagIsValid(File file){

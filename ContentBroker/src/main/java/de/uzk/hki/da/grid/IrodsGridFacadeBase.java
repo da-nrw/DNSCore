@@ -67,7 +67,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 		
 		if (irodsSystemConnector.getDefaultStorage()==null) logger.error("Default Storage for node named " + sp.getNodeName()+ " must be set!");
 		if (irodsSystemConnector.getZone()==null) throw new IOException("MyZone is not set");
-		if (!file.exists()) throw new IOException ("Not an existing File to put");
+		if (!file.exists()) throw new IOException ("Not an existing File to put: "+file);
 		
 		String address_dest = relative_address_dest;
 		if (!relative_address_dest.startsWith("/")) 

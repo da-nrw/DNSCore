@@ -439,6 +439,28 @@ public class AcceptanceTestHelper {
 		return object;
 	}
 
+	
+	
+	void createJob(String origName,String jobStatus) {
+		Object o = getObject(origName);
+		
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		
+		Node node = (Node) session.load(Node.class, localNode .getId());
+		
+		Job j = new Job();
+		j.setResponsibleNodeName(node.getName());
+		j.setObject(o);
+		j.setDate_created(String.valueOf(new Date().getTime()/1000L));
+		j.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+		j.setStatus(jobStatus);
+	
+		session.save(j);
+		
+		session.getTransaction().commit();
+		session.close();
+	}
 
 	
 
