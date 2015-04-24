@@ -279,6 +279,7 @@ public abstract class AbstractAction implements Runnable {
 				session.beginTransaction();
 				performTransaction(node, object, job, deleteObject, deleteJob, createJob, session);
 				transactionSuccessful=true;
+				baseLogger.info("Transaction successful for object "+object.getIdentifier());
 			}
 			catch (Exception sqlException) {
 				baseLogger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sqlException);
@@ -289,6 +290,10 @@ public abstract class AbstractAction implements Runnable {
 			}
 			session.close();
 		} while(!transactionSuccessful);
+		
+		for (Node cn:node.getCooperatingNodes()) {
+			cn.setCopyToSave(null);
+		}
 	}
 
 	
@@ -299,26 +304,23 @@ public abstract class AbstractAction implements Runnable {
 			boolean deleteObject,boolean deleteJob,
 			Job createJob, Session session){
 		
-		for (Node cn:node.getCooperatingNodes()) {
-			
-			if (cn.getCopiesToSave().size()==0) continue;
+		// This should only happen only once per cooperating node in an ingest workflow. 
+		for (Node cn:node.getCooperatingNodes()) { 
+
+			if (cn.getCopyToSave()==null) continue;
 			
 			// we know that these are only the temporary copies of the current action.
 			
-			Copy copy = cn.getCopiesToSave().get(0);
-			
-			baseLogger.info("Adding copy to objects ("+object.getIdentifier()+") last package. Copy path: "+copy.getPath()+". Node name: "+cn.getName()+".");
-			
+			Copy copy = cn.getCopyToSave();
+
 			session.save(copy);
 			session.flush();
 			
-			int updatesNodeId=session.createSQLQuery(
-					"UPDATE copies SET node_id="+cn.getId()+" WHERE id = "+copy.getId()).executeUpdate();
-			if (updatesNodeId==0) throw new RuntimeException("could not execute update of node_id");
+			baseLogger.info("Added copy for objects ("+object.getIdentifier()+") last package. Copy path: "+copy.getPath()+". Copy is on node with name: "+cn.getName()+" and has id "+copy.getId()+".");
 			
-			int updatesPackageId=session.createSQLQuery(
-					"UPDATE copies SET pkg_id="+object.getLatestPackage().getId()+" WHERE id = "+copy.getId()).executeUpdate();
-			if (updatesPackageId==0) throw new RuntimeException("could not execute update of package_id");
+			int updatesNodeId=session.createSQLQuery(
+					"UPDATE copies SET node_id="+cn.getId()+", pkg_id="+object.getLatestPackage().getId()+" WHERE id = "+copy.getId()).executeUpdate();
+			if (updatesNodeId!=1) throw new RuntimeException("could not execute update of node_id");
 		}
 		
 		

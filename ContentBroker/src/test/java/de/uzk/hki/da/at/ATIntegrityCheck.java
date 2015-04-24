@@ -49,26 +49,11 @@ import de.uzk.hki.da.util.Path;
  * @author Jens Peters
  * @author Daniel M. de Oliveira
  */
-public class _ATIntegrityCheck extends AcceptanceTest{
+public class ATIntegrityCheck extends AcceptanceTest{
 	
 
 	private static final Path archiveStoragePath = Path.make("/ci/archiveStorage/aip/TEST/");
 	private Object object = null;
-	
-	@Before
-	public void setUp() throws IOException{
-		
-
-	
-	}
-	
-	@After
-	public void cleanUp() {
-		//TESTHelper.clearDB();
-	}
-	
-	
-
 	
 	@Test
 	public void localCopyModifiedTest() throws Exception {
@@ -93,7 +78,7 @@ public class _ATIntegrityCheck extends AcceptanceTest{
 		} else System.out.println(".. not detected CI Environment!");
 		
 		changeLastCheckedObjectDate(-25);
-		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,51));
+		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
 	}
 	
 	@Test
@@ -108,7 +93,7 @@ public class _ATIntegrityCheck extends AcceptanceTest{
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 		setChecksumSecondaryCopy("abcedde5",-25);
-		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,51));
+		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
 	}
 	
 	@Test
@@ -122,10 +107,15 @@ public class _ATIntegrityCheck extends AcceptanceTest{
 		changeLastCheckedObjectDate(-25);
 		setChecksumSecondaryCopy(object.getLatestPackage().getChecksum(),-25);
 		
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
-		assertSame(object.getObject_state(),100);
+		assertSame(object.getObject_state(),Object.ObjectStatus.ArchivedAndValid);
 		
-		
+		waitForObjectChecked(ORIGINAL_NAME);
+		assertSame(object.getObject_state(),Object.ObjectStatus.ArchivedAndValid);
+	}
+
+	
+	
+	private void waitForObjectChecked(String ORIGINAL_NAME) {
 		Date old = object.getLast_checked();
 		System.out.println("last check was : " + old);
 		Date neu = old;
@@ -134,10 +124,11 @@ public class _ATIntegrityCheck extends AcceptanceTest{
 			neu = object.getLast_checked();	
 		}
 		System.out.println("new check was on : " + neu);
-		
-		assertSame(object.getObject_state(),100);
-		
 	}
+	
+	@Test
+	public void ok()
+	{}
 	
 	
 	@Test 
@@ -161,7 +152,7 @@ public class _ATIntegrityCheck extends AcceptanceTest{
 		
 		setChecksumSecondaryCopy("abcd77",-25);
 		changeLastCheckedObjectDate(-25);
-		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,51));
+		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
 	}
 	
 	@Test 
@@ -176,7 +167,7 @@ public class _ATIntegrityCheck extends AcceptanceTest{
 		assertSame(100,object.getObject_state());
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");;
 		changeLastCheckedObjectDate(-25);
-		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,51));
+		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
 	}
 	@Test 
 	public void primaryCopyTooOld() throws IOException, InterruptedException {
@@ -189,7 +180,7 @@ public class _ATIntegrityCheck extends AcceptanceTest{
 		assertSame(100,object.getObject_state());
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");;
 		changeLastCheckedObjectDate(-8761);
-		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,51));
+		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
 	}
 	
 	

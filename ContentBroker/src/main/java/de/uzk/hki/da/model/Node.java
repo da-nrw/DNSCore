@@ -98,7 +98,7 @@ public class Node{
 	@Cascade({CascadeType.SAVE_UPDATE})
 	private List<Copy> copies = new ArrayList<Copy>();
 
-	@Transient private List<Copy> copiesToSave = new ArrayList<Copy>();
+	@Transient private Copy copyToSave;
 	
 	
 	/**
@@ -429,12 +429,12 @@ public class Node{
 	}
 
 	
-	public List<Copy> getCopiesToSave() {
-		return copiesToSave;
+	public Copy getCopyToSave() {
+		return copyToSave;
 	}
-
-	public void setCopiesToSave(List<Copy> copiesToSave) {
-		this.copiesToSave = copiesToSave;
+	
+	public void setCopyToSave(Copy copyToSave) {
+		this.copyToSave = copyToSave;
 	}
 
 	public String getIdentifier() {

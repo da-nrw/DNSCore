@@ -152,7 +152,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		for (Node cn:n.getCooperatingNodes()) {
 			Copy copy = new Copy();
 			copy.setPath(n.getIdentifier()+"/aip/"+aipPath().toString());
-			cn.getCopiesToSave().add(copy);
+			cn.setCopyToSave(copy);
 		}
 		
 		
@@ -171,7 +171,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	private void unsetObjectArchived() {
 		
 		for (Node cn:n.getCooperatingNodes()) {
-			cn.getCopiesToSave().clear();
+			cn.setCopyToSave(null);
 		}
 	
 		o.setObject_state(Object.ObjectStatus.InWorkflow);
