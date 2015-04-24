@@ -61,7 +61,7 @@ public class ATRetrieval extends AcceptanceTest{
 		
 		ath.putPackageToStorage(identifier, originalName, new Date(), 100);
 		ath.createJob(originalName, "900");
-		ath.waitForJobToBeInStatus(originalName, "950");
+		ath.waitForJobToBeInStatus(originalName, "952");
 		
 		System.out.println(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar").getAbsolutePath());
 		assertTrue(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar").exists());
