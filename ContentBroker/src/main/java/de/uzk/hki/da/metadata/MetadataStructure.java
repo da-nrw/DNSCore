@@ -71,7 +71,6 @@ public abstract class MetadataStructure {
 	
 	public File getCanonicalFileFromReference(String ref, File metadataFile) throws IOException {
 		
-		logger.debug(":"+ref+":"+metadataFile);
 		
 		String parentFilePath = "";
 		if (metadataFile.getParentFile() != null)
@@ -79,10 +78,10 @@ public abstract class MetadataStructure {
 		
 		
 		String tmpFilePath = new RelativePath(parentFilePath, ref).toString();
-		logger.debug(":"+tmpFilePath);
 		
-		File file = new File(tmpFilePath);
-		logger.debug(":"+file);
+		File file = new File(new File(tmpFilePath).getCanonicalFile().toString().replace(new File("").getCanonicalFile().toString(), ""));
+		
+		logger.debug("::::::"+file);
 		return file;
 	}
 	
