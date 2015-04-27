@@ -131,21 +131,21 @@ Mögliche Werte sind
 * **esMetadataIndex** 
 * **fakeMetadataIndex** Minimalimplementation zu Testzwecken. DEFAULT
 
-#### cb.implementation.metadataExtractor=
+#### cb.implementation.metadataExtractor
 
 Mögliche Werte sind
 
 * **jhoveMetadataExtractor** JHOVE wird mit DNSCore ausgeliefert und muss nicht gesondert installiert werden.
 * **fakeMetadataExtractor** Minimalimplementation zu Testzwecken. DEFAULT
 
-#### cb.implementation.formatScanService=
+#### cb.implementation.formatScanService
 
 Mögliche Werte sind
 
 * **fidoFormatScanService** FIDO wird mit DNSCore ausgeliefert und muss nicht gesondert installiert werden.
 * **fakeFormatScanService** Minimalimplementation zu Testzwecken. DEFAULT
 
-#### cb.implementation.subformatScanService=
+#### cb.implementation.subformatScanService
 
 Mögliche Werte sind
 
