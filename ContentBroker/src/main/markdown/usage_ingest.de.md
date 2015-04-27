@@ -86,7 +86,7 @@ Betreff: [System] Entfernung von SIP aus Workflow für [Technischer Identifier]
 Inhalt:
 
 Ihr abgegebenes SIP Paket dem Namen "[Original Name]" wurde aus der 
-Verabreitungswarteschlange entfernt. Die Datei kann so nicht vom DNS verarbeitet werden. 
+Verarbeitungswarteschlange entfernt. Die Datei kann so nicht vom DNS verarbeitet werden. 
 Korrigieren Sie ggfs. das Paket und bitte versuchen Sie eine erneute Ablieferung. 
 Das Paket wurde nicht archiviert. 
 ```

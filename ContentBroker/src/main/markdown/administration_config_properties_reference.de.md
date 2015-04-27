@@ -1,4 +1,4 @@
-## Referenzdokumentation: config.properties
+## Referenzdokumentation: config.properties  
 
 config.properties ist der Dateiname der Hauptkonfigurationsdatei des ContentBroker. Diese Datei befindet sich immer unter
 
@@ -70,12 +70,17 @@ Die hier einzutragende Zahl muss genau der id des Eintrages des jeweiligen Knote
 
 Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
-    cb.serverSocketNumber=4455
-    cb.implementation.grid=irodsGridFacade
-    cb.implementation.distributedConversion=irodsDistributedConversionAdapter
-    cb.implementation.repository=fedoraRepositoryFacade
-    cb.implementation.metadataExtractor=jhoveMetadataExtractor
-    cb.bin.python=/ci/python/python
+```
+cb.serverSocketNumber=4455
+cb.implementation.grid=irodsGridFacade
+cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+cb.implementation.repository=fedoraRepositoryFacade
+cb.implementation.index=esMetadataIndex
+cb.implementation.metadataExtractor=jhoveMetadataExtractor
+cb.implementation.formatScanService=fidoFormatScanService
+cb.implementation.subformatScanService=subformatScanService
+cb.bin.python=/ci/python/python
+```
 
 Die hierunter zusammengefassten Einträge hängen, genau wie die localNode Einträge, mit den Knoten (Node) Konzept zusammen, sind jedoch im Gegensatz zu diesen nicht fachlicher, sondern technischer Natur.
 
@@ -115,20 +120,37 @@ Die jeweils ausgewählte Implementation kapselt die Technologie, mit der das Pre
 Mögliche Werte sind
 
 * **fedoraRepositoryFacade**
-* **fakeRepositoryFacade** DEFAULT
+* **fakeRepositoryFacade** Minimalimplementation zu Testzwecken. DEFAULT
 
 Ist *fedoraRepositoryFacade* gewählt, so müssen sämtliche Parameter aus den [fedora](#fedora)- UND [elasticsearch](#elasticsearch)-Blöcken ausgefüllt sein.
 
-#### cb.implementation.fileFormatFacade
-
-Bestimmt, welche im Dienste die Formatidentifikation, Subformatidentifikation, (technische) Metadatenextraktion übernehmen.
+#### cb.implementation.index
 
 Mögliche Werte sind
 
-* **standardFileFormatFacade** DEFAULT
-* **fakeFileFormatFacade** 
+* **esMetadataIndex** 
+* **fakeMetadataIndex** Minimalimplementation zu Testzwecken. DEFAULT
 
-Ist *standardFileFormatFacade* gewählt, so wird die Metadatenextraktion von JHOVE, die Formatidentifikation von FIDO erledigt. In diesem Falle ist die Angabe des Parameters [cb.bin.python](#cbbinpython) ebenfalls notwendig.
+#### cb.implementation.metadataExtractor
+
+Mögliche Werte sind
+
+* **jhoveMetadataExtractor** JHOVE wird mit DNSCore ausgeliefert und muss nicht gesondert installiert werden.
+* **fakeMetadataExtractor** Minimalimplementation zu Testzwecken. DEFAULT
+
+#### cb.implementation.formatScanService
+
+Mögliche Werte sind
+
+* **fidoFormatScanService** FIDO wird mit DNSCore ausgeliefert und muss nicht gesondert installiert werden.
+* **fakeFormatScanService** Minimalimplementation zu Testzwecken. DEFAULT
+
+#### cb.implementation.subformatScanService
+
+Mögliche Werte sind
+
+* **subformatScanService**
+* **fakeSubformatScanService** Minimalimplementation zu Testzwecken. DEFAULT
 
 #### cb.bin.python
 

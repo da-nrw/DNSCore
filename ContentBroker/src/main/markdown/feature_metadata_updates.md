@@ -6,7 +6,7 @@ Dieser Basistest zeigt, ob über den gesamten Workflow hinweg, die korrekten Met
 
 * [https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/2015-01-14_Metadaten_in_DA-NRW.pdf?raw=true]
 
-## Hintergrund:
+## Hintergrund: 
 
 gilt für alle Szenarien!
 
