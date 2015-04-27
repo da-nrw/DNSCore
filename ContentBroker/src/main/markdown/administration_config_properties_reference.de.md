@@ -70,12 +70,17 @@ Die hier einzutragende Zahl muss genau der id des Eintrages des jeweiligen Knote
 
 Beispiel aus [config.properties.ci](../conf/config.properties.ci)
 
-    cb.serverSocketNumber=4455
-    cb.implementation.grid=irodsGridFacade
-    cb.implementation.distributedConversion=irodsDistributedConversionAdapter
-    cb.implementation.repository=fedoraRepositoryFacade
-    cb.implementation.metadataExtractor=jhoveMetadataExtractor
-    cb.bin.python=/ci/python/python
+```
+cb.serverSocketNumber=4455
+cb.implementation.grid=irodsGridFacade
+cb.implementation.distributedConversion=irodsDistributedConversionAdapter
+cb.implementation.repository=fedoraRepositoryFacade
+cb.implementation.index=esMetadataIndex
+cb.implementation.metadataExtractor=jhoveMetadataExtractor
+cb.implementation.formatScanService=fidoFormatScanService
+cb.implementation.subformatScanService=subformatScanService
+cb.bin.python=/ci/python/python
+```
 
 Die hierunter zusammengefassten Einträge hängen, genau wie die localNode Einträge, mit den Knoten (Node) Konzept zusammen, sind jedoch im Gegensatz zu diesen nicht fachlicher, sondern technischer Natur.
 
@@ -119,16 +124,25 @@ Mögliche Werte sind
 
 Ist *fedoraRepositoryFacade* gewählt, so müssen sämtliche Parameter aus den [fedora](#fedora)- UND [elasticsearch](#elasticsearch)-Blöcken ausgefüllt sein.
 
-#### cb.implementation.fileFormatFacade
+#### cb.implementation.index=
 
-Bestimmt, welche im Dienste die Formatidentifikation, Subformatidentifikation, (technische) Metadatenextraktion übernehmen.
+* **esMetadataIndex**
+* **fakeMetadataIndex**
 
-Mögliche Werte sind
+#### cb.implementation.metadataExtractor=
 
-* **standardFileFormatFacade** DEFAULT
-* **fakeFileFormatFacade** 
+* **jhoveMetadataExtractor**
+* **fakeMetadataExtractor**
 
-Ist *standardFileFormatFacade* gewählt, so wird die Metadatenextraktion von JHOVE, die Formatidentifikation von FIDO erledigt. In diesem Falle ist die Angabe des Parameters [cb.bin.python](#cbbinpython) ebenfalls notwendig.
+#### cb.implementation.formatScanService=
+
+* **fidoFormatScanService**
+* **fakeFormatScanService**
+
+#### cb.implementation.subformatScanService=
+
+* **subformatScanService**
+* **fakeSubformatScanService**
 
 #### cb.bin.python
 
