@@ -215,15 +215,9 @@ public class ObjectPremisXmlWriter {
 		createOpenElement("objectCharacteristics", 2);
 		createTextElement("compositionLevel", "0", 3);
 		
-		String chksum = null;
-		try {
-			chksum = MD5Checksum.getMD5checksumForLocalFile(f.toRegularFile());
-		} catch (IOException e1) {
-			throw new RuntimeException(e1);
-		}
 		createOpenElement("fixity", 3);
 			createTextElement("messageDigestAlgorithm", "MD5", 4);
-			createTextElement("messageDigest", chksum, 4);
+			createTextElement("messageDigest", f.getChksum(), 4);
 			createTextElement("messageDigestOriginator", "ContentBroker", 4);
 		
 		createCloseElement(3);

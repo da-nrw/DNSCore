@@ -42,6 +42,8 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.xml.sax.InputSource;
 
+import de.uzk.hki.da.util.Path;
+
 /**
  * @author Polina Gubaidullina
  */
@@ -54,8 +56,8 @@ public class XMPMetadataStructure extends MetadataStructure{
 	private Document rdfDoc;
 	private List<de.uzk.hki.da.model.Document> currentDocuments;
 	
-	public XMPMetadataStructure(File metadataFile, List<de.uzk.hki.da.model.Document> documents) throws FileNotFoundException, JDOMException, IOException {
-		super(metadataFile, documents);
+	public XMPMetadataStructure(Path workPath,File metadataFile, List<de.uzk.hki.da.model.Document> documents) throws FileNotFoundException, JDOMException, IOException {
+		super(workPath,metadataFile, documents);
 		
 		logger.debug("Instantiate new xmp metadata structure with metadata file "+metadataFile.getAbsolutePath()+" ... ");
 		
@@ -63,7 +65,7 @@ public class XMPMetadataStructure extends MetadataStructure{
 		currentDocuments = documents;
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
-		FileInputStream fileInputStream = new FileInputStream(xmpFile);
+		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,xmpFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
 		InputSource is = new InputSource(reader);
@@ -122,7 +124,7 @@ public class XMPMetadataStructure extends MetadataStructure{
 		}
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.setFormat(Format.getPrettyFormat());
-		outputter.output(rdfDoc, new FileWriter(xmpFile));
+		outputter.output(rdfDoc, new FileWriter(Path.makeFile(workPath,xmpFile.getPath())));
 	}
 	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::   VALIDATION   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::

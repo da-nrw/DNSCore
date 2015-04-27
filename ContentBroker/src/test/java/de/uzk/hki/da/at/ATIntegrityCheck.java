@@ -60,7 +60,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	    String ORIGINAL_NAME = "ATIntegrityCheckLocalCopyModified";
 	    
 		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
-		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(ORIGINAL_NAME);
 		
 	    changeLastCheckedObjectDate(-25);
@@ -86,7 +86,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		String ORIGINAL_NAME = "ATIntegrityRemoteCopyDestroyed";
 		
 		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
-		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(ORIGINAL_NAME);
 
 		changeLastCheckedObjectDate(-25);
@@ -101,16 +101,16 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		String ORIGINAL_NAME = "ATIntegrityCheckAllCopiesOK";
 		
 		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
-		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(ORIGINAL_NAME);
 		
 		changeLastCheckedObjectDate(-25);
 		setChecksumSecondaryCopy(object.getLatestPackage().getChecksum(),-25);
 		
-		assertSame(object.getObject_state(),Object.ObjectStatus.ArchivedAndValid);
+		assertSame(object.getObject_state(),Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		
 		waitForObjectChecked(ORIGINAL_NAME);
-		assertSame(object.getObject_state(),Object.ObjectStatus.ArchivedAndValid);
+		assertSame(object.getObject_state(),Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 	}
 
 	
@@ -136,7 +136,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		String ORIGINAL_NAME = "ATIntegrityCheckAllCopiesDestroyed";
 		
 		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
-		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(ORIGINAL_NAME);
 
 		changeLastCheckedObjectDate(-25);
@@ -160,7 +160,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		String ORIGINAL_NAME = "ATIntegritySecondaryCopiesCheckTooOld";
 		
 		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
-		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(ORIGINAL_NAME);
 
 		setChecksumSecondaryCopy(object.getLatestPackage().getChecksum(),-8761);
@@ -174,7 +174,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		String ORIGINAL_NAME = "ATIntegrityCheckPrimaryCopyTooOld";
 		
 		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
-		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(ORIGINAL_NAME);
 
 		assertSame(100,object.getObject_state());

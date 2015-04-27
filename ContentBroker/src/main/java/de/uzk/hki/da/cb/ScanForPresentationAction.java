@@ -157,12 +157,12 @@ public class ScanForPresentationAction extends AbstractAction{
 		
 		return is;
 	}
-		
-	public FileFormatFacade getFormatScanService() {
+			
+	public FileFormatFacade getFileFormatFacade() {
 		return fileFormatFacade;
 	}
 
-	public void setFormatScanService(FileFormatFacade fileFormatFacade) {
+	public void setFileFormatFacade(FileFormatFacade fileFormatFacade) {
 		this.fileFormatFacade = fileFormatFacade;
 	}
 	

@@ -72,7 +72,7 @@ public class Object {
 		public static final Integer UnderAudit = 60;
 		public static final Integer InWorkflow = 50;
 		public static final Integer Error = 51;
-		public static final Integer ArchivedAndValid = 100;
+		public static final Integer ArchivedAndValidAndNotInWorkflow = 100; 
 	}
 	
 

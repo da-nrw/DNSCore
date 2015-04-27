@@ -60,41 +60,41 @@ public class ATUseCaseIngestSpecialCases extends AcceptanceTest{
 	
 	@Test
 	public void testUmlautsInPackageName() throws Exception{
-		ath.awaitObjectState("ATÜÄÖ",Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState("ATÜÄÖ",Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 	}
 	
 	@Test
 	public void testSpecialCharactersInFileNames() throws Exception{
-		ath.awaitObjectState("ATSonderzeichen_in_Dateinamen",Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState("ATSonderzeichen_in_Dateinamen",Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 	}
 	
 	@Test
 	public void testUmlautsInFileNames() throws Exception{
-		ath.awaitObjectState("ATUmlaute_in_Dateinamen",Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState("ATUmlaute_in_Dateinamen",Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 	}
 	
 	@Test
 	public void testTARContainer() throws Exception{
-		ath.awaitObjectState("AT_CON1",Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState("AT_CON1",Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 	}
 	
 	@Test
 	public void testTGZContainer() throws Exception{
-		ath.awaitObjectState("AT_CON2",Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState("AT_CON2",Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 	}
 	
 	@Test
 	public void testZIPContainer() throws Exception{
-		ath.awaitObjectState("AT_CON3",Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState("AT_CON3",Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 	}
 	
 	@Test
 	public void testSpecialCharsInPackageName() throws Exception{
-		ath.awaitObjectState("AT&Sonderzeichen%in#Paketnamen",Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState("AT&Sonderzeichen%in#Paketnamen",Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 	}
 	
 	@Test
 	public void testWhiteSpacesInFileNames() throws Exception{
-		ath.awaitObjectState("ATLeerzeichen_in_Dateinamen",Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState("ATLeerzeichen_in_Dateinamen",Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 	}
 }

@@ -61,7 +61,7 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 	public static void setUp() throws IOException, InterruptedException{
 		
 		ath.putSIPtoIngestArea(origName, "tgz", origName);
-		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origName);
 		object=ath.getObject(origName);
 		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());

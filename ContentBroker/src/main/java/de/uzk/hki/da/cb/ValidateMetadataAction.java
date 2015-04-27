@@ -110,7 +110,7 @@ public class ValidateMetadataAction extends AbstractAction {
 				collectXMP();
 			}
 			List<Document> documents = o.getDocuments();
-			ms = msf.create(detectedPackageType, wa.toFile(detectedMetadataFile), documents);
+			ms = msf.create(wa.dataPath(),detectedPackageType, detectedMetadataFile.getPath().toFile(), documents);
 		} catch (Exception e){
 			throw new RuntimeException("problem occured during creation of metadata structure",e);
 		}

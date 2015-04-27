@@ -86,7 +86,7 @@
         <property name="queueConnector" ref="queueConnector" />
         <property name="userExceptionManager" ref="userExceptionManager" />
         <property name="jmsMessageServiceHandler" ref="jmsMessageServiceHandler"/>
-        <property name="fileFormatFacade" ref="${cb.implementation.fileFormatFacade:standardFileFormatFacade}" />
+        <property name="fileFormatFacade" ref="fileFormatFacade" />
     </bean>
     
    <bean id="registerObjectService" class="de.uzk.hki.da.core.RegisterObjectService" init-method="init" >
@@ -101,19 +101,22 @@
   	<bean class="de.uzk.hki.da.format.JhoveMetadataExtractor" id="jhoveMetadataExtractor">
   		<property name="cli" ref="formatPackageCommandLineConnector"/>
   	</bean>
+  	
+  	
+  	
+  	
+  	
   	<bean class="de.uzk.hki.da.format.SubformatScanService" id="subformatScanService"/>
-	<bean class="de.uzk.hki.da.format.ConfigurableFileFormatFacade" id="standardFileFormatFacade">
-		<property name="formatScanService" ref="fidoFormatScanService"/>
-		<property name="metadataExtractor" ref="jhoveMetadataExtractor"/>
-		<property name="subformatScanService" ref="subformatScanService"/>
-	</bean>
 	<bean class="de.uzk.hki.da.format.FakeFormatScanService" id="fakeFormatScanService"/>
 	<bean class="de.uzk.hki.da.format.FakeMetadataExtractor" id="fakeMetadataExtractor"/>
 	<bean class="de.uzk.hki.da.format.FakeSubformatScanService" id="fakeSubformatScanService"/>
-	<bean class="de.uzk.hki.da.format.ConfigurableFileFormatFacade" id="fakeFileFormatFacade">
-		<property name="formatScanService" ref="fakeFormatScanService"/>
-		<property name="metadataExtractor" ref="fakeMetadataExtractor"/>
-		<property name="subformatScanService" ref="fakeSubformatScanService"/>
+	
+	
+	
+	<bean class="de.uzk.hki.da.format.ConfigurableFileFormatFacade" id="fileFormatFacade">
+		<property name="formatScanService" ref="${cb.implementation.formatScanService:fakeFormatScanService}"/>
+		<property name="metadataExtractor" ref="${cb.implementation.metadataExtractor:fakeMetadataExtractor}"/>
+		<property name="subformatScanService" ref="${cb.implementation.subformatScanService:subformatScanService}"/>
 	</bean>
 	
 	

@@ -41,6 +41,7 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommaSeparatedList;
+import de.uzk.hki.da.utils.MD5Checksum;
 
 /**
  * Executes a file format identification and technical metadata extraction 
@@ -77,6 +78,7 @@ public class CheckFormatsAction extends AbstractAction {
 	public boolean implementation() throws IOException, SubsystemNotAvailableException {
 		
 		identifyFileFormatsOfAllFilesOfObject();
+		createChecksumsForAllFiles();
 		
 		// TODO remove. send via communicator. this should not be saved to object this early. 
 		o.setMost_recent_formats(getFormatsAsCommaSeparatedString(getNewestFilesOfObject()));
@@ -86,6 +88,22 @@ public class CheckFormatsAction extends AbstractAction {
 		attachJhoveInfoToAllFiles(getAllFilesOfObject());
 		return true;
 	}
+	
+	
+	private void createChecksumsForAllFiles() throws IOException {
+		
+		for (Package p:o.getPackages()){
+			
+			for (DAFile daf:p.getFiles()){
+				
+				String md5 = MD5Checksum.getMD5checksumForLocalFile(wa.toFile(daf));
+				daf.setChksum(md5);
+			}
+		}
+		
+		
+	}
+	
 	
 	private void identifyFileFormatsOfAllFilesOfObject() throws SubsystemNotAvailableException{
 		List<FileWithFileFormat> allFiles = new ArrayList<FileWithFileFormat>();

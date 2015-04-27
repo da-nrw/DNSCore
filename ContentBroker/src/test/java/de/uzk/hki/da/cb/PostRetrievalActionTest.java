@@ -81,7 +81,7 @@ public class PostRetrievalActionTest  extends ConcreteActionUnitTest {
 		assertTrue(Path.makeFile(userAreaRootPath,TEST_USER_SHORT_NAME,OUTGOING,o.getIdentifier()+FILE_EXTENSION_TAR).exists());
 		assertTrue(action.implementation());
 		assertFalse(Path.makeFile(userAreaRootPath,TEST_USER_SHORT_NAME,OUTGOING,o.getIdentifier()+FILE_EXTENSION_TAR).exists());
-		assertTrue(o.getObject_state()==Object.ObjectStatus.ArchivedAndValid);
+		assertTrue(o.getObject_state()==Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		
 	}
 //	/**

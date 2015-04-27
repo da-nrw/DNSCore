@@ -21,6 +21,7 @@ import org.jdom.output.XMLOutputter;
 import org.xml.sax.InputSource;
 
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.util.Path;
 
 /**
  * @author Polina Gubaidullina
@@ -33,15 +34,15 @@ public class LidoMetadataStructure extends MetadataStructure{
 	private File lidoFile;
 	private List<de.uzk.hki.da.model.Document> currentDocuments;
 	
-	public LidoMetadataStructure(File metadataFile, List<de.uzk.hki.da.model.Document> documents) throws FileNotFoundException, JDOMException,
+	public LidoMetadataStructure(Path workPath,File metadataFile, List<de.uzk.hki.da.model.Document> documents) throws FileNotFoundException, JDOMException,
 			IOException {
-		super(metadataFile, documents);
+		super(workPath,metadataFile, documents);
 		
 		lidoFile = metadataFile;
 		currentDocuments = documents;
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
-		FileInputStream fileInputStream = new FileInputStream(metadataFile);
+		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,metadataFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
 		InputSource is = new InputSource(reader);
@@ -273,7 +274,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 		
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.setFormat(Format.getPrettyFormat());
-		outputter.output(doc, new FileWriter(lidoFile));
+		outputter.output(doc, new FileWriter(Path.makeFile(workPath,lidoFile.getPath())));
 	}
 	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::   VALIDATION   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::

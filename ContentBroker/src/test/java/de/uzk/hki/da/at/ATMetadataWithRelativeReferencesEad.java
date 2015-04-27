@@ -48,7 +48,7 @@ public class ATMetadataWithRelativeReferencesEad extends AcceptanceTest {
 	public static void setUp() throws IOException {
 		
 		ath.putSIPtoIngestArea(origName, "tgz", origName);
-		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origName);
 		object=ath.getObject(origName);
 		

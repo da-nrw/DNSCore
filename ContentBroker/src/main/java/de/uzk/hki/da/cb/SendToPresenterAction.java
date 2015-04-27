@@ -160,7 +160,7 @@ public class SendToPresenterAction extends AbstractAction {
 				institutionPIPSuccessfullyIngested);
 		if (StringUtilities.isNotSet(o.getPackage_type())||(!publicPIPSuccessfullyIngested)) {
 			setKILLATEXIT(true); // indexing and creating edm not possible
-			o.setObject_state(Object.ObjectStatus.ArchivedAndValid);
+			o.setObject_state(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		}
 		return true;
 	}

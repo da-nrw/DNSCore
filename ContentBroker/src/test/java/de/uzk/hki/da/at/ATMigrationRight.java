@@ -65,7 +65,7 @@ public class ATMigrationRight extends AcceptanceTest {
 	
 	@Test
 	public void test() throws IOException{
-		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		o=ath.getObject(ORIG_NAME);
 		ath.retrieveAIP(o, UNPACKED_DIP, "1");
 		

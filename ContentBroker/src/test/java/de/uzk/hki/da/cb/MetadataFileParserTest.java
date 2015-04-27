@@ -68,10 +68,10 @@ public class MetadataFileParserTest {
 		
 		
 		eadFile2 = Path.make(workAreaRootPathPath, "replacementsTest", EAD2_FILENAME).toFile();
-		eadStructure = new EadMetsMetadataStructure(eadFile2, documents);
+		eadStructure = new EadMetsMetadataStructure(Path.make(workAreaRootPathPath, "data"), eadFile2, documents);
 		
 		lidoFile = Path.make(workAreaRootPathPath, "replacementsTest", LIDO_FILENAME).toFile();
-		lidoStructure = new LidoMetadataStructure(lidoFile, documents);
+		lidoStructure = new LidoMetadataStructure(Path.make(workAreaRootPathPath, "data"), lidoFile, documents);
 		
 		builder = XMLUtils.createNonvalidatingSaxBuilder();
 	}

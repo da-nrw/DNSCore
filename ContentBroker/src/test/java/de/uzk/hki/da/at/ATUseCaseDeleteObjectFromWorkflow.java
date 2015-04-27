@@ -18,7 +18,7 @@ public class ATUseCaseDeleteObjectFromWorkflow extends AcceptanceTest{
 	@Test
 	public void test() throws InterruptedException, IOException {
 //		ath.createObjectAndJob(origName,"800","METS","mets.xml");
-		ath.putAIPToLongTermStorage(identifier, origName, new Date(), Object.ObjectStatus.ArchivedAndValid);
+		ath.putAIPToLongTermStorage(identifier, origName, new Date(), Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		assertNotNull(ath.getObject(origName));
 		ath.createJob(origName, "800");
 		

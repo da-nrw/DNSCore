@@ -24,7 +24,7 @@ public class ATUseCaseIngestDeltaDuringRetrievalOrigPkg extends AcceptanceTest{
 	public static void setUp() throws IOException {
 		
 		ath.putSIPtoIngestArea(ORIG_NAME+"_orig", "tgz", ORIG_NAME);
-		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(ORIG_NAME);
 		
 		object.setObject_state(50);
@@ -66,7 +66,7 @@ public class ATUseCaseIngestDeltaDuringRetrievalOrigPkg extends AcceptanceTest{
 		session.close();
 		
 		ath.putSIPtoIngestArea(ORIG_NAME+"_orig", "tgz", ORIG_NAME);
-		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		
 //		object = ath.ingest(ORIG_NAME);
 	

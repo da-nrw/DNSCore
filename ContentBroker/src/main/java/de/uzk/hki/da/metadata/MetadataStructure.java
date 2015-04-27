@@ -1,6 +1,6 @@
 /*
   DA-NRW Software Suite | ContentBroker
-  Copyright (C) 2014 LVRInfoKom
+  Copyright (C) 2015 LVRInfoKom
   Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
@@ -45,6 +45,7 @@ import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.util.RelativePath;
 
 /**
  * @author Polina Gubaidullina
@@ -56,15 +57,32 @@ public abstract class MetadataStructure {
 	public Logger logger = LoggerFactory
 			.getLogger(MetadataStructure.class);
 	
-	public MetadataStructure(File metadataFile, List<de.uzk.hki.da.model.Document> documents) 
+	protected Path workPath=null;
+	
+	public MetadataStructure(Path workPath,File metadataFile, List<de.uzk.hki.da.model.Document> documents) 
 			throws FileNotFoundException, JDOMException, IOException {
+		
+		this.workPath=workPath;
 	}
 	
 	public abstract boolean isValid();
 	
+	
+	
 	public File getCanonicalFileFromReference(String ref, File metadataFile) throws IOException {
-		String tmpFilePath = Path.make(metadataFile.getParentFile().getAbsolutePath(), ref).toString();
-		File file = new File(tmpFilePath).getCanonicalFile();
+		
+		logger.debug(":"+ref+":"+metadataFile);
+		
+		String parentFilePath = "";
+		if (metadataFile.getParentFile() != null)
+			parentFilePath=metadataFile.getParentFile().getPath();
+		
+		
+		String tmpFilePath = new RelativePath(parentFilePath, ref).toString();
+		logger.debug(":"+tmpFilePath);
+		
+		File file = new File(tmpFilePath);
+		logger.debug(":"+file);
 		return file;
 	}
 	
@@ -228,7 +246,7 @@ public abstract class MetadataStructure {
 	public DAFile getReferencedDafile(File metadataFile, String ref, List<de.uzk.hki.da.model.Document> documents) {
 		DAFile dafile = null;
 		try {
-			File refFile = getCanonicalFileFromReference(ref, metadataFile);
+			File refFile = getCanonicalFileFromReference(ref, Path.makeFile(workPath,metadataFile.getPath()));
 			for(de.uzk.hki.da.model.Document doc : documents) {
 				logger.debug("Check document "+doc.getName());
 				if(FilenameUtils.removeExtension(refFile.getAbsolutePath()).endsWith(doc.getName())) {
@@ -248,10 +266,14 @@ public abstract class MetadataStructure {
 		List<String> missingFiles = new ArrayList<String>();
 		for(String ref : references) {
 			DAFile dafile = getReferencedDafile(metadataFile, ref, documents);
+			
+			/// 
+			
+			
 			if(dafile==null){
 				missingFiles.add(ref);
 			} else {
-				existingFiles.add(dafile.toRegularFile());
+				existingFiles.add(       dafile.getPath().toFile()        );
 			}
 		}
 		if(!missingFiles.isEmpty()) {

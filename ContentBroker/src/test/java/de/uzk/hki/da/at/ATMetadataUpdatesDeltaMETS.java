@@ -42,10 +42,10 @@ public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 	@BeforeClass
 	public static void setUp() throws IOException, InterruptedException {
 		ath.putSIPtoIngestArea(ORIG_NAME_ORIG, "tgz", ORIG_NAME_ORIG);
-		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.putSIPtoIngestArea(ORIG_NAME_ORIG+"_delta_one_file", "tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.InWorkflow);
-		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		
 		object = ath.getObject(ORIG_NAME_ORIG);
 

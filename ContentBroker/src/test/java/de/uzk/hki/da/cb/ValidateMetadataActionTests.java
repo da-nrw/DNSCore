@@ -90,9 +90,8 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	@BeforeClass
 	public static void mockDca() throws IOException, JDOMException, ParserConfigurationException, SAXException {
 		msf = mock(MetadataStructureFactory.class);
-		File file = null;
-		List<Document> documents = null;
-		when(msf.create((String)anyObject(),(File)anyObject(), (List<Document>)anyObject())).thenReturn(new FakeMetadataStructure(file, documents));	
+		when(msf.create((Path)anyObject(),(String)anyObject(),(File)anyObject(), 
+				(List<Document>)anyObject())).thenReturn(new FakeMetadataStructure(null,null, null));	
 	}
 	
 	@Before

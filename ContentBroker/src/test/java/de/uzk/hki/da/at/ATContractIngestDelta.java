@@ -58,7 +58,7 @@ public class ATContractIngestDelta extends AcceptanceTest{
 		
 		ath.putSIPtoIngestArea(ORIG_NAME+"1", DEFAULT_CONTAINER_EXTENSION, ORIG_NAME);
 		Thread.sleep(2000);
-		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(ORIG_NAME);
 		Object o=ath.getObject(ORIG_NAME);
 		
@@ -74,7 +74,7 @@ public class ATContractIngestDelta extends AcceptanceTest{
 		
 		ath.putSIPtoIngestArea(ORIG_NAME+"2", DEFAULT_CONTAINER_EXTENSION, ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.InWorkflow);
-		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(ORIG_NAME);
 		o=ath.getObject(ORIG_NAME);
 		InputStream is2 = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
@@ -92,7 +92,7 @@ public class ATContractIngestDelta extends AcceptanceTest{
 		
 		ath.putSIPtoIngestArea(ORIG_NAME+"3", DEFAULT_CONTAINER_EXTENSION, ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.InWorkflow);
-		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForObjectPublishedState(ORIG_NAME,0);
 		o=ath.getObject(ORIG_NAME);
 

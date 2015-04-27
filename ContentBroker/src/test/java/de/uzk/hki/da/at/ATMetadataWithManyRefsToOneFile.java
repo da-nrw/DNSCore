@@ -22,8 +22,8 @@ public class ATMetadataWithManyRefsToOneFile extends AcceptanceTest {
 	
 	@Test
 	public void test() {
-		ath.awaitObjectState(eadOrigName,Object.ObjectStatus.ArchivedAndValid);
-		ath.awaitObjectState(metsOrigName,Object.ObjectStatus.ArchivedAndValid);
-		ath.awaitObjectState(lidoOrigName,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(eadOrigName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		ath.awaitObjectState(metsOrigName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		ath.awaitObjectState(lidoOrigName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 	}
 }

@@ -32,4 +32,9 @@ cb.implementation.grid=federatedGridFacade
 cb.implementation.distributedConversion=irodsFederatedDistributedConversionAdapter
 cb.implementation.repository=fedoraRepositoryFacade
 cb.implementation.index=esMetadataIndex
+cb.implementation.metadataExtractor=jhoveMetadataExtractor
+cb.implementation.formatScanService=fidoFormatScanService
+cb.implementation.subformatScanService=subformatScanService
+
+
 cb.bin.python=/ci/python/python

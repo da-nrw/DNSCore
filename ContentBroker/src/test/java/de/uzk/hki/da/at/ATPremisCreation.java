@@ -64,7 +64,7 @@ public class ATPremisCreation extends PREMISBase{
 	public void testProperPREMISCreation() throws Exception {
 		
 		ath.putSIPtoIngestArea(originalName, "tgz", originalName);
-		ath.awaitObjectState(originalName,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(originalName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(originalName);
 		
 		ath.retrieveAIP(object,unpackedDIP,"1");

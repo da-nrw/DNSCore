@@ -142,7 +142,7 @@ public class IntegrityService {
 	public boolean checkObject(Object obj, int minRepls) {
 		Integer auditResult = checkObjectValidity(obj, minRepls);
 		updateObject(obj,auditResult);
-		if (auditResult==Object.ObjectStatus.ArchivedAndValid) return true;
+		if (auditResult==Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow) return true;
 		else return false;
 	}
 
@@ -203,7 +203,7 @@ public class IntegrityService {
 			}
 				
 		}
-		if (completelyValid) return Object.ObjectStatus.ArchivedAndValid;
+		if (completelyValid) return Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow;
 		else return Object.ObjectStatus.Error;
 	}
 	public GridFacade getGridFacade() {

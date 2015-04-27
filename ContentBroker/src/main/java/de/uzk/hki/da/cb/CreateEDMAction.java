@@ -53,6 +53,8 @@ import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.util.RelativePath;
 
 /**
  * This action transforms the primary metadata of an
@@ -104,10 +106,12 @@ public class CreateEDMAction extends AbstractAction {
 		if (!metadataSourceFile.exists())
 			throw new RuntimeException("Missing file in public PIP: "+o.getPackage_type()+FILE_EXTENSION_XML);
 
-		edmXSLTDestinationFile = generateEdmUsingXslt(xsltTransformationFile, metadataSourceFile, EDM_XSLT_METADATA_STREAM_ID);
+		edmXSLTDestinationFile = generateEdmUsingXslt(xsltTransformationFile, new File(o.getPackage_type()+FILE_EXTENSION_XML), EDM_XSLT_METADATA_STREAM_ID);
 		putToRepository(edmXSLTDestinationFile);
 		
-		edmIndexDestinationFile = serializeEDM(xsltTransformationFile, metadataSourceFile);
+		
+		File metadataFile= new RelativePath(o.getPackage_type()+FILE_EXTENSION_XML).toFile();
+		edmIndexDestinationFile = serializeEDM(xsltTransformationFile, metadataFile);
 		putToRepository(edmIndexDestinationFile);
 		
 		return true;
@@ -117,7 +121,8 @@ public class CreateEDMAction extends AbstractAction {
 		
 		File edm = getWa().pipMetadataFile(WA_PUBLIC, edmId); 
 
-		String edmResult = generateEDM(o.getIdentifier(), xsltTransformationFile, new FileInputStream(metadataSourceFile));
+		String edmResult = generateEDM(o.getIdentifier(), xsltTransformationFile, 
+				new FileInputStream(  Path.makeFile(wa.pipFolder(WA_PUBLIC),metadataSourceFile.getPath())  ));
 		PrintWriter out = null;
 		try {
 			out = new PrintWriter(edm);
@@ -129,7 +134,7 @@ public class CreateEDMAction extends AbstractAction {
 		return edm;
 	}
 	
-	private File serializeEDM(String xsltTransformationFile, File metadataSourceFile) throws JDOMException, IOException, ParserConfigurationException, SAXException {
+	private File serializeEDM(String xsltTransformationFile, File metadataFile) throws JDOMException, IOException, ParserConfigurationException, SAXException {
 		
 		String packageType = o.getPackage_type();
 		MetadataStructure ms = null;
@@ -141,15 +146,15 @@ public class CreateEDMAction extends AbstractAction {
 				List<Document> documents = o.getDocuments();
 				
 				if(packageType.equals("EAD")) {
-					ms = new EadMetsMetadataStructure(metadataSourceFile, documents);
+					ms = new EadMetsMetadataStructure(wa.pipFolder(WA_PUBLIC),metadataFile, documents);
 				} else if(packageType.equals("METS")) {
-					ms = new MetsMetadataStructure(metadataSourceFile, documents);
+					ms = new MetsMetadataStructure(wa.pipFolder(WA_PUBLIC),metadataFile, documents);
 				} else if(packageType.equals("LIDO")) {
-					ms = new LidoMetadataStructure(metadataSourceFile, documents);
+					ms = new LidoMetadataStructure(wa.pipFolder(WA_PUBLIC),metadataFile, documents);
 				}
 				ms.toEDM(ms.getIndexInfo(o.getIdentifier()), edm, preservationSystem, o.getIdentifier(), o.getUrn());
 			} else if(packageType.equals("XMP")) {
-				edm = generateEdmUsingXslt(xsltTransformationFile, metadataSourceFile, EDM_FOR_ES_INDEX_METADATA_STREAM_ID);
+				edm = generateEdmUsingXslt(xsltTransformationFile, metadataFile, EDM_FOR_ES_INDEX_METADATA_STREAM_ID);
 			} else {
 				throw new UserException(null, "Unbekanntes Metadatenformat.");
 			}

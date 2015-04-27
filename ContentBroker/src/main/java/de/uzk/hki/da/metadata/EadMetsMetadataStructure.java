@@ -1,3 +1,22 @@
+/*
+  DA-NRW Software Suite | ContentBroker
+  Copyright (C) 2015 LVRInfoKom
+  Landschaftsverband Rheinland
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package de.uzk.hki.da.metadata;
 
 import java.io.File;
@@ -26,6 +45,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.util.Path;
 
 /**
  * @author Polina Gubaidullina
@@ -44,14 +64,14 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	
 	HashMap<String, Document> metsPathToDocument = new HashMap<String, Document>();
 	
-	public EadMetsMetadataStructure(File metadataFile, List<de.uzk.hki.da.model.Document> documents) throws JDOMException, 
+	public EadMetsMetadataStructure(Path workPath,File metadataFile, List<de.uzk.hki.da.model.Document> documents) throws JDOMException, 
 		IOException, ParserConfigurationException, SAXException {
-		super(metadataFile, documents);
+		super(workPath,metadataFile, documents);
 	
 		eadFile = metadataFile;
 
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
-		FileInputStream fileInputStream = new FileInputStream(eadFile);
+		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,eadFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
 		InputSource is = new InputSource(reader);
@@ -63,7 +83,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 				
 		mmsList = new ArrayList<MetsMetadataStructure>();
 		for(File metsFile : metsFiles) {
-			MetsMetadataStructure mms = new MetsMetadataStructure(metsFile, documents);
+			MetsMetadataStructure mms = new MetsMetadataStructure(workPath,metsFile, documents);
 			mmsList.add(mms);
 		}
 		fileInputStream.close();
@@ -260,7 +280,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		File targetEadFile = eadFile;
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
-		FileInputStream fileInputStream = new FileInputStream(eadFile);
+		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,eadFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
 		InputSource is = new InputSource(reader);
@@ -283,7 +303,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.setFormat(Format.getPrettyFormat());
-		outputter.output(currentEadDoc, new FileWriter(targetEadFile));
+		outputter.output(currentEadDoc, new FileWriter(Path.makeFile(workPath,targetEadFile.getPath())));
 		fileInputStream.close();
 		bomInputStream.close();
 		reader.close();
@@ -332,8 +352,13 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			Boolean fileExists = false;
 			try {
 				refFile = getCanonicalFileFromReference(ref, metadataFile);
-				logger.debug("Check referenced file: "+refFile.getAbsolutePath());
-				if(refFile.exists()) {
+				
+				
+				// relpath reffile.getPath
+				
+				logger.debug("Check referenced file: "+Path.makeFile(workPath,refFile.getPath()).getCanonicalFile());
+				
+				if(Path.makeFile(workPath,refFile.getPath()).exists()) {
 					fileExists = true; 
 				} else {
 					fileExists = false;

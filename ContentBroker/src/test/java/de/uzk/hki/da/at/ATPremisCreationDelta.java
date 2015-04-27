@@ -69,7 +69,7 @@ public class ATPremisCreationDelta extends PREMISBase {
 		Thread.sleep(2000);
 		ath.putSIPtoIngestArea(ORIG_NAME+"2", "tgz", ORIG_NAME);
 		Thread.sleep(2000);
-		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(ORIG_NAME);
 	}
 	

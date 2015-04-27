@@ -70,7 +70,7 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		String identifier = "UpdateUrls_id";
 		
 		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+origName, 
-				new Date(), Object.ObjectStatus.ArchivedAndValid,"METS","mets.xml");
+				new Date(), Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow,"METS","mets.xml");
 		ath.createJob(ORIG_NAME_PREFIX+origName, WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
 		ath.waitForDefinedPublishedState(ORIG_NAME_PREFIX+origName);
 		Object object = ath.getObject(ORIG_NAME_PREFIX+origName);
@@ -119,7 +119,7 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		String name = "InstOnly";
 		String identifier = "InstOnly_id";
 		
-		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValid);
+		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.createJob(ORIG_NAME_PREFIX+name, WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
 		ath.waitForDefinedPublishedState(ORIG_NAME_PREFIX+name);
 		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
@@ -136,7 +136,7 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		String name = "NoPubWithLawSet";
 		String identifier = "NoPubWithLawSet_id";
 		
-		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValid);
+		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.createJob(ORIG_NAME_PREFIX+name, WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
 		ath.waitForDefinedPublishedState(ORIG_NAME_PREFIX+name);
 		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
@@ -153,7 +153,7 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		String name = "NoPubWithStartDateSet";
 		String identifier = "NoPubWithStartDateSet_id";
 		
-		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValid);
+		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.createJob(ORIG_NAME_PREFIX+name, WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
 		ath.waitForDefinedPublishedState(ORIG_NAME_PREFIX+name);
 		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
@@ -170,7 +170,7 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		String name = "AllPublic";
 		String identifier = "AllPublic_id";
 		
-		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValid);
+		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.createJob(ORIG_NAME_PREFIX+name, WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
 		ath.waitForDefinedPublishedState(ORIG_NAME_PREFIX+name);
 		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
@@ -191,7 +191,7 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		String name = "PublishNothing";
 		String identifier = "PublishNothing_id";
 		
-		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValid);
+		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.createJob(ORIG_NAME_PREFIX+name, WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
 		ath.waitForObjectPublishedState(ORIG_NAME_PREFIX+name,0);
 		Object object = ath.getObject(ORIG_NAME_PREFIX+name);

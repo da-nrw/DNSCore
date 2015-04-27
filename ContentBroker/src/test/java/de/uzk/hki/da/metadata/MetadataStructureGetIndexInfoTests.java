@@ -25,7 +25,7 @@ import de.uzk.hki.da.util.RelativePath;
 
 public class MetadataStructureGetIndexInfoTests {
 	
-	private static final Path workAreaRootPathPath = new RelativePath("src/test/resources/metadata/MetadataStructureGetIndexInfoTests/");
+	private static final Path basePath = new RelativePath("src/test/resources/metadata/MetadataStructureGetIndexInfoTests/");
 	private static HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();
 	private static HashMap<String, List<String>> content = new HashMap<String, List<String>>();
 	private static HashMap<String, List<String>> content1 = new HashMap<String, List<String>>();
@@ -35,7 +35,7 @@ public class MetadataStructureGetIndexInfoTests {
 	
 	@BeforeClass
 	public static void createTargetDir() {
-		Path.makeFile(workAreaRootPathPath, "target").mkdirs();
+		Path.makeFile(basePath, "target").mkdirs();
 		
 		pSystem = new PreservationSystem();
 		pSystem.setUrisFile("http://data.danrw.de/file");
@@ -46,10 +46,10 @@ public class MetadataStructureGetIndexInfoTests {
 	@Test
 	public void testLIDO() throws FileNotFoundException, JDOMException, IOException {
 		
-		File lidoFile = Path.make(workAreaRootPathPath,"MetadataStructureGetIndexInfoTestsLIDO.xml").toFile();
+		File lidoFile = Path.make(basePath,"MetadataStructureGetIndexInfoTestsLIDO.xml").toFile();
 		
 		List<Document> docs = new ArrayList<Document>();
-		MetadataStructure lms = new LidoMetadataStructure(lidoFile, docs);
+		MetadataStructure lms = new LidoMetadataStructure(Path.make(basePath),lidoFile, docs);
 		indexInfo = lms.getIndexInfo(objectID);
 		
 		for(String id : indexInfo.keySet()) {
@@ -73,16 +73,16 @@ public class MetadataStructureGetIndexInfoTests {
 			}
 			
 		}
-		lms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "lidoToEdm.xml"), pSystem, objectID, urn);
+		lms.toEDM(indexInfo, Path.makeFile(basePath, "target", "lidoToEdm.xml"), pSystem, objectID, urn);
 	}
 	
 	@Test
 	public void testMETS() throws FileNotFoundException, JDOMException, IOException {
 		
-		File metsFile = Path.make(workAreaRootPathPath,"MetadataStructureGetIndexInfoTestsMETS.xml").toFile();
+		File metsFile = Path.make(basePath,"MetadataStructureGetIndexInfoTestsMETS.xml").toFile();
 		
 		List<Document> docs = new ArrayList<Document>();
-		MetadataStructure mms = new MetsMetadataStructure(metsFile, docs);
+		MetadataStructure mms = new MetsMetadataStructure(Path.make(basePath),metsFile, docs);
 		indexInfo = mms.getIndexInfo(objectID);
 		
 		content = indexInfo.get(objectID+"-md258094");
@@ -99,16 +99,16 @@ public class MetadataStructureGetIndexInfoTests {
 		
 		content1 = indexInfo.get(objectID+"-md1616184");
 		
-		mms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "metsToEdm.xml"), pSystem, objectID, urn);
+		mms.toEDM(indexInfo, Path.makeFile(basePath, "target", "metsToEdm.xml"), pSystem, objectID, urn);
 	}
 	
 	@Test
 	public void testMultilevelMETS() throws FileNotFoundException, JDOMException, IOException {
 		
-		File metsFile = Path.make(workAreaRootPathPath,"export_mets.xml").toFile();
+		File metsFile = Path.make(basePath,"export_mets.xml").toFile();
 		
 		List<Document> docs = new ArrayList<Document>();
-		MetadataStructure mms = new MetsMetadataStructure(metsFile, docs);
+		MetadataStructure mms = new MetsMetadataStructure(Path.make(basePath),metsFile, docs);
 		indexInfo = mms.getIndexInfo(objectID);
 		
 		content = indexInfo.get(objectID+"-md1617166");
@@ -127,16 +127,16 @@ public class MetadataStructureGetIndexInfoTests {
 		assertTrue(content1.get(C.EDM_OBJECT).contains("image/1616186.tif"));
 		assertTrue(content1.get(C.EDM_HAS_VIEW).contains("image/1616186.tif") && content1.get(C.EDM_HAS_VIEW).contains("image/1616187.tif"));
 		
-		mms.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "multilevelMetsToEdm.xml"), pSystem, objectID, urn);
+		mms.toEDM(indexInfo, Path.makeFile(basePath, "target", "multilevelMetsToEdm.xml"), pSystem, objectID, urn);
 	}
 	
 	@Test
 	public void testEAD() throws FileNotFoundException, JDOMException, IOException, ParserConfigurationException, SAXException {
 		
-		File eadFile = Path.make(workAreaRootPathPath,"MetadataStructureGetIndexInfoTestsEAD.xml").toFile();
+		File eadFile = Path.make(basePath,"MetadataStructureGetIndexInfoTestsEAD.xml").toFile();
 		
 		List<Document> docs = new ArrayList<Document>();
-		MetadataStructure ems = new EadMetsMetadataStructure(eadFile, docs);
+		MetadataStructure ems = new EadMetsMetadataStructure(Path.make(basePath),eadFile, docs);
 		
 		indexInfo = ems.getIndexInfo(objectID);
 		
@@ -167,15 +167,15 @@ public class MetadataStructureGetIndexInfoTests {
 		}
 		assertTrue(indexInfo.get(parent).get(C.EDM_TITLE).contains("14. Verschiedenes"));
 		
-		ems.toEDM(indexInfo, Path.makeFile(workAreaRootPathPath, "target", "eadToEdm.xml"), pSystem, objectID, urn);
+		ems.toEDM(indexInfo, Path.makeFile(basePath, "target", "eadToEdm.xml"), pSystem, objectID, urn);
 	}
 	
 	@AfterClass 
 	public static void tearDown(){
-		Path.makeFile(workAreaRootPathPath, "target", "eadToEdm.xml").delete();
-		Path.makeFile(workAreaRootPathPath, "target","lidoToEdm.xml").delete();
-		Path.makeFile(workAreaRootPathPath, "target", "metsToEdm.xml").delete();
-		Path.makeFile(workAreaRootPathPath, "target", "multilevelMetsToEdm.xml").delete();
-		Path.makeFile(workAreaRootPathPath, "target").delete();
+		Path.makeFile(basePath, "target", "eadToEdm.xml").delete();
+		Path.makeFile(basePath, "target","lidoToEdm.xml").delete();
+		Path.makeFile(basePath, "target", "metsToEdm.xml").delete();
+		Path.makeFile(basePath, "target", "multilevelMetsToEdm.xml").delete();
+		Path.makeFile(basePath, "target").delete();
 	}
 }

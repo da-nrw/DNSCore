@@ -101,7 +101,7 @@ public class IndexMetadataAction extends AbstractAction {
 			throw new RepositoryException("Unable to prepare and index metadata!", e);
 		}
 		
-		o.setObject_state(Object.ObjectStatus.ArchivedAndValid);
+		o.setObject_state(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		return true;
 	}
 

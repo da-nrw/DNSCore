@@ -1,3 +1,22 @@
+/*
+  DA-NRW Software Suite | ContentBroker
+  Copyright (C) 2015 LVRInfoKom
+  Landschaftsverband Rheinland
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package de.uzk.hki.da.metadata;
 
 import java.io.File;
@@ -23,6 +42,7 @@ import org.jdom.xpath.XPath;
 import org.xml.sax.InputSource;
 
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.util.Path;
 
 /**
  * @author Polina Gubaidullina
@@ -42,15 +62,15 @@ public class MetsMetadataStructure extends MetadataStructure {
 	List<Element> fileElements;
 	Element modsXmlData;
 	
-	public MetsMetadataStructure(File metadataFile, List<de.uzk.hki.da.model.Document> documents)
+	public MetsMetadataStructure(Path workPath,File metadataFile, List<de.uzk.hki.da.model.Document> documents)
 			throws FileNotFoundException, JDOMException, IOException {
-		super(metadataFile, documents);
+		super(workPath,metadataFile, documents);
 		
 		metsFile = metadataFile;
 		currentDocuments = documents;
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
-		FileInputStream fileInputStream = new FileInputStream(metsFile);
+		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,metsFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
 		InputSource is = new InputSource(reader);
@@ -619,8 +639,9 @@ public class MetsMetadataStructure extends MetadataStructure {
 
 	public void makeReplacementsInMetsFile(File metsFile, String currentHref, String targetHref, String mimetype, String loctype) throws IOException, JDOMException {
 		File targetMetsFile = metsFile;
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
-		FileInputStream fileInputStream = new FileInputStream(targetMetsFile);
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();	
+		logger.debug(":::"+workPath+":::"+targetMetsFile.getPath());
+		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,targetMetsFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
 		InputSource is = new InputSource(reader);
@@ -639,7 +660,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 		}
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.setFormat(Format.getPrettyFormat());
-		outputter.output(metsDoc, new FileWriter(targetMetsFile));
+		outputter.output(metsDoc, new FileWriter(Path.makeFile(workPath,targetMetsFile.getPath())));
 
 		fileInputStream.close();
 		bomInputStream.close();

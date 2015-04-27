@@ -43,6 +43,7 @@ import de.uzk.hki.da.util.RelativePath;
 /**
  * Knows how the WorkArea is structured and how files and objects are organized on it.
  * Knows about the DNSCore data model.
+ * An instance of WorkArea is used to identify one object on the WorkArea of a specific node.
  * 
  * @author Daniel M. de Oliveira
  *

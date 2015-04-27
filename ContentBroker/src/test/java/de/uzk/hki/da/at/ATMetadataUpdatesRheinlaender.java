@@ -68,7 +68,7 @@ public class ATMetadataUpdatesRheinlaender extends AcceptanceTest{
 	@BeforeClass
 	public static void setUp() throws IOException{
 		ath.putSIPtoIngestArea(origName,"tgz",origName);
-		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(origName);
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}

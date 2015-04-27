@@ -23,7 +23,7 @@ public class ATUseCaseUnableToPublishXMPPackage extends AcceptanceTest{
 	public void setUp() throws IOException{
 		
 		ath.putSIPtoIngestArea(origName, "tgz", origName);
-		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 	}
 	
 	@After

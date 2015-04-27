@@ -23,7 +23,7 @@
 		<property name="name" value="IngestRestructureAction" />
 		<property name="ingestGate" ref="ingestGate" />
 		<property name="gridRoot" ref="${cb.implementation.grid:fakeGridFacade}"/>
-		<property name="fileFormatFacade" ref="${cb.implementation.fileFormatFacade:standardFileFormatFacade}" />
+		<property name="fileFormatFacade" ref="fileFormatFacade" />
 	</bean>
 	<bean id="IngestValidateMetadataAction" class="de.uzk.hki.da.cb.ValidateMetadataAction"
 		scope="prototype">
@@ -62,20 +62,20 @@
 		<property name="startStatus" value="260" />
 		<property name="endStatus" value="270" />
 		<property name="name" value="IngestCheckFormatsAction" />
-		<property name="fileFormatFacade" ref="${cb.implementation.fileFormatFacade:standardFileFormatFacade}" />
+		<property name="fileFormatFacade" ref="fileFormatFacade" />
 	</bean>
 	<bean id="IngestCreatePremisAction" class="de.uzk.hki.da.cb.CreatePremisAction" scope="prototype">
 		<property name="startStatus" value="270" />
 		<property name="endStatus" value="310" />
 		<property name="name" value="IngestCreatePremisAction" />
-		<property name="fileFormatFacade" ref="${cb.implementation.fileFormatFacade:standardFileFormatFacade}" />
+		<property name="fileFormatFacade" ref="fileFormatFacade" />
 	</bean>
 	<bean id="IngestScanForPresentationAction" class="de.uzk.hki.da.cb.ScanForPresentationAction" scope="prototype">
 		<property name="startStatus" value="310" />
 		<property name="endStatus" value="320" />
 		<property name="name" value="IngestScanForPresentationAction" />
 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
-		<property name="formatScanService" ref="${cb.implementation.fileFormatFacade:standardFileFormatFacade}" />
+		<property name="fileFormatFacade" ref="fileFormatFacade" />
 	</bean>
 	<bean id="IngestConvertForPresentationAction" class="de.uzk.hki.da.cb.ConvertAction"
 		scope="prototype">

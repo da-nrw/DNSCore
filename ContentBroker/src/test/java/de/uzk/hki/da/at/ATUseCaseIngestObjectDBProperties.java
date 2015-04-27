@@ -49,7 +49,7 @@ public class ATUseCaseIngestObjectDBProperties extends AcceptanceTest{
 	public void testStartDateAndFormatsGetSaved() throws IOException, InterruptedException, ParseException{
 		String origName="ATUseCaseIngestStartDateFormats";
 		ath.putSIPtoIngestArea(origName, "tgz", origName);
-		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		Object object = ath.getObject(origName); 
 		
 		
@@ -83,7 +83,7 @@ public class ATUseCaseIngestObjectDBProperties extends AcceptanceTest{
 		String origName= "ATUseCaseIngestLaw";
 		
 		ath.putSIPtoIngestArea(origName, "tgz", origName);
-		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		Object object = ath.getObject(origName);
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -115,7 +115,7 @@ public class ATUseCaseIngestObjectDBProperties extends AcceptanceTest{
 		String origName="ATUseCaseIngestCodecs";
 		
 		ath.putSIPtoIngestArea(origName, "tgz", origName);
-		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValid);
+		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		Object object = ath.getObject(origName);
 		
 		assertThat(object.getOriginal_formats()).contains("x-fmt/384");
