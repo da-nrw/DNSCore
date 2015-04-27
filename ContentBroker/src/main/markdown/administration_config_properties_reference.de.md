@@ -127,22 +127,22 @@ Ist *fedoraRepositoryFacade* gewählt, so müssen sämtliche Parameter aus den [
 #### cb.implementation.index=
 
 * **esMetadataIndex**
-* **fakeMetadataIndex**
+* **fakeMetadataIndex** DEFAULT
 
 #### cb.implementation.metadataExtractor=
 
 * **jhoveMetadataExtractor**
-* **fakeMetadataExtractor**
+* **fakeMetadataExtractor** DEFAULT
 
 #### cb.implementation.formatScanService=
 
 * **fidoFormatScanService**
-* **fakeFormatScanService**
+* **fakeFormatScanService** DEFAULT
 
 #### cb.implementation.subformatScanService=
 
 * **subformatScanService**
-* **fakeSubformatScanService**
+* **fakeSubformatScanService** DEFAULT
 
 #### cb.bin.python
 
