@@ -120,29 +120,37 @@ Die jeweils ausgewählte Implementation kapselt die Technologie, mit der das Pre
 Mögliche Werte sind
 
 * **fedoraRepositoryFacade**
-* **fakeRepositoryFacade** DEFAULT
+* **fakeRepositoryFacade** Minimalimplementation zu Testzwecken. DEFAULT
 
 Ist *fedoraRepositoryFacade* gewählt, so müssen sämtliche Parameter aus den [fedora](#fedora)- UND [elasticsearch](#elasticsearch)-Blöcken ausgefüllt sein.
 
-#### cb.implementation.index=
+#### cb.implementation.index
 
-* **esMetadataIndex**
-* **fakeMetadataIndex** DEFAULT
+Mögliche Werte sind
+
+* **esMetadataIndex** 
+* **fakeMetadataIndex** Minimalimplementation zu Testzwecken. DEFAULT
 
 #### cb.implementation.metadataExtractor=
 
-* **jhoveMetadataExtractor**
-* **fakeMetadataExtractor** DEFAULT
+Mögliche Werte sind
+
+* **jhoveMetadataExtractor** JHOVE wird mit DNSCore ausgeliefert und muss nicht gesondert installiert werden.
+* **fakeMetadataExtractor** Minimalimplementation zu Testzwecken. DEFAULT
 
 #### cb.implementation.formatScanService=
 
-* **fidoFormatScanService**
-* **fakeFormatScanService** DEFAULT
+Mögliche Werte sind
+
+* **fidoFormatScanService** FIDO wird mit DNSCore ausgeliefert und muss nicht gesondert installiert werden.
+* **fakeFormatScanService** Minimalimplementation zu Testzwecken. DEFAULT
 
 #### cb.implementation.subformatScanService=
 
+Mögliche Werte sind
+
 * **subformatScanService**
-* **fakeSubformatScanService** DEFAULT
+* **fakeSubformatScanService** Minimalimplementation zu Testzwecken. DEFAULT
 
 #### cb.bin.python
 
