@@ -1,4 +1,4 @@
-## Referenzdokumentation: config.properties 
+## Referenzdokumentation: config.properties  
 
 config.properties ist der Dateiname der Hauptkonfigurationsdatei des ContentBroker. Diese Datei befindet sich immer unter
 
