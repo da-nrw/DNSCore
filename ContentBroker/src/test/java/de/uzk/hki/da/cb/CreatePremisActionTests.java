@@ -512,7 +512,7 @@ public class CreatePremisActionTests {
 				assertTrue(tifAFixityElement.getChild("messageDigestAlgorithm", ns).getValue() != null);
 				assertTrue(tifAFixityElement.getChild("messageDigest", ns).getValue() != null);
 				assertTrue(tifAFixityElement.getChild("messageDigestOriginator", ns).getValue() != null);
-				assertEquals("201671", tifAObjCharElement.getChild("size", ns).getValue());
+				assertEquals("201670", tifAObjCharElement.getChild("size", ns).getValue());
 				Element format = tifAObjCharElement.getChild("format", ns);
 				assertTrue(format != null);
 				Element formatRegistry = format.getChild("formatRegistry", ns);
@@ -536,7 +536,7 @@ public class CreatePremisActionTests {
 				assertTrue(tifAFixityElement.getChild("messageDigestAlgorithm", ns).getValue() != null);
 				assertTrue(tifAFixityElement.getChild("messageDigest", ns).getValue() != null);
 				assertTrue(tifAFixityElement.getChild("messageDigestOriginator", ns).getValue() != null);
-				assertEquals("201671", tifAObjCharElement.getChild("size", ns).getValue());
+				assertEquals("201670", tifAObjCharElement.getChild("size", ns).getValue());
 				Element format = tifAObjCharElement.getChild("format", ns);
 				assertTrue(format != null);
 				Element formatRegistry = format.getChild("formatRegistry", ns);
@@ -560,7 +560,7 @@ public class CreatePremisActionTests {
 				assertTrue(tifAFixityElement.getChild("messageDigestAlgorithm", ns).getValue() != null);
 				assertTrue(tifAFixityElement.getChild("messageDigest", ns).getValue() != null);
 				assertTrue(tifAFixityElement.getChild("messageDigestOriginator", ns).getValue() != null);
-				assertEquals("3843", tifAObjCharElement.getChild("size", ns).getValue());
+				assertEquals("3842", tifAObjCharElement.getChild("size", ns).getValue());
 				Element format = tifAObjCharElement.getChild("format", ns);
 				assertTrue(format != null);
 				Element formatRegistry = format.getChild("formatRegistry", ns);

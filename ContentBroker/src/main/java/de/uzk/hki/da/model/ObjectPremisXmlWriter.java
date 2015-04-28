@@ -39,14 +39,12 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.utils.MD5Checksum;
 
 
 /**

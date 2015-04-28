@@ -19,8 +19,6 @@
 
 package de.uzk.hki.da.model;
 
-import java.io.File;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;

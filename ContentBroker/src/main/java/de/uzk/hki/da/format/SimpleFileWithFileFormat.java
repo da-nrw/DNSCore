@@ -62,5 +62,4 @@ public class SimpleFileWithFileFormat implements FileWithFileFormat {
 	public Path getPath() {
 		return new RelativePath(file.getPath().toString());
 	}
-
 }
