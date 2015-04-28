@@ -226,7 +226,7 @@ public class RetrievePackagesHelper {
 				
 		    for (File f : FileUtils.listFiles(rep,
 			        TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)){
-		    	results.add(new DAFile(null,repPartialPath,f.getPath().replace((tempDataFolder.getPath()+"/"+repPartialPath+"/"),"")));    
+		    	results.add(new DAFile(repPartialPath,f.getPath().replace((tempDataFolder.getPath()+"/"+repPartialPath+"/"),"")));    
 		    }
 			    
 			FileUtils.moveDirectoryToDirectory(rep, new File(targetPath), true);

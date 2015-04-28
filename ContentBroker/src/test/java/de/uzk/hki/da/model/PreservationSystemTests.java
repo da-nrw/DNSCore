@@ -133,7 +133,7 @@ public class PreservationSystemTests {
 		session.close();
 
 		// creating a valid file
-		file = new DAFile(null,"","");
+		file = new DAFile("","");
 		file.setFormatPUID("fmt/10");
 		
 	}
@@ -158,7 +158,7 @@ public class PreservationSystemTests {
 	@Test
 	public void testFileHasNoFileFormat(){
 		
-		DAFile fileundef = new DAFile(null,"","");
+		DAFile fileundef = new DAFile("","");
 		fileundef.setFormatPUID("");
 		try {
 			preservationSystem.getApplicablePolicies(fileundef, false);

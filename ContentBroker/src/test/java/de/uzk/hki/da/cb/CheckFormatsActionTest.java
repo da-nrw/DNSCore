@@ -94,25 +94,25 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 				List<DAFile> list = (List<DAFile>) args[1];
 				
 				for (DAFile f:list){
-					if (f.equals(new DAFile(null,REP2A,"_2.jpg"))){
+					if (f.equals(new DAFile(REP2A,"_2.jpg"))){
 						f.setFormatPUID("fmt/43");
 					}
-					if (f.equals(new DAFile(null,REP2B,"_2.tif"))){
+					if (f.equals(new DAFile(REP2B,"_2.tif"))){
 						f.setFormatPUID("fmt/353");
 					}
-					if (f.equals(new DAFile(null,REP2A,"_3.avi"))){
+					if (f.equals(new DAFile(REP2A,"_3.avi"))){
 						f.setFormatPUID("fmt/5");
 						f.setSubformatIdentifier("cinepak");
 					}
 					
-					if (f.equals(new DAFile(null,REP1A,"_1.jpg"))){
+					if (f.equals(new DAFile(REP1A,"_1.jpg"))){
 						f.setFormatPUID("fmt/43");
 					}
-					if (f.equals(new DAFile(null,REP1B,"_1.tif"))){
+					if (f.equals(new DAFile(REP1B,"_1.tif"))){
 						f.setFormatPUID("fmt/353");
 					}
 					
-					if (f.equals(new DAFile(null,REP1A,"_3.mov"))){
+					if (f.equals(new DAFile(REP1A,"_3.mov"))){
 						f.setFormatPUID("x-fmt/384");
 						f.setSubformatIdentifier("svq1");
 					}
@@ -136,16 +136,16 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 		final Package sipPackage = new Package(); sipPackage.setName("2"); // the SIP / Delta
 		sipPackage.setTransientBackRefToObject(o);
 		
-		DAFile a  = new DAFile(sipPackage,REP1A,"_1.jpg");
-		DAFile b  = new DAFile(sipPackage,REP1A,"_3.mov");
-		DAFile c = new DAFile(sipPackage,REP1B,"_1.tif");
+		DAFile a  = new DAFile(REP1A,"_1.jpg");
+		DAFile b  = new DAFile(REP1A,"_3.mov");
+		DAFile c = new DAFile(REP1B,"_1.tif");
 		o.getPackages().get(0).getFiles().add(a);
 		o.getPackages().get(0).getFiles().add(b);
 		o.getPackages().get(0).getFiles().add(c);
 		
-		DAFile sipPackageOriginalFile  = new DAFile(sipPackage,REP2A,"_2.jpg");
-		DAFile sipPackageOriginalFile2  = new DAFile(sipPackage,REP2A,"_3.avi");
-		DAFile sipPackageConvertedFile = new DAFile(sipPackage,REP2B,"_2.tif"); 
+		DAFile sipPackageOriginalFile  = new DAFile(REP2A,"_2.jpg");
+		DAFile sipPackageOriginalFile2  = new DAFile(REP2A,"_3.avi");
+		DAFile sipPackageConvertedFile = new DAFile(REP2B,"_2.tif"); 
 		sipPackage.getFiles().add(sipPackageOriginalFile);
 		sipPackage.getFiles().add(sipPackageOriginalFile2);
 		sipPackage.getFiles().add(sipPackageConvertedFile);
@@ -217,8 +217,8 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 		
 		Package oldPackage = new Package(); // the AIP
 		oldPackage.setName("1"); oldPackage.setTransientBackRefToObject(o);
-		DAFile newPackageOriginalFile  = new DAFile(oldPackage,REP1A,"_1.jpg");
-		DAFile newPackageConvertedFile = new DAFile(oldPackage,REP1B,"_1.tif"); 
+		DAFile newPackageOriginalFile  = new DAFile( REP1A,"_1.jpg");
+		DAFile newPackageConvertedFile = new DAFile( REP1B,"_1.tif"); 
 		List<DAFile> allFiles = new ArrayList<DAFile>(); allFiles.add(newPackageConvertedFile); allFiles.add(newPackageOriginalFile);
 		oldPackage.getFiles().addAll(allFiles);
 		o.getPackages().add(oldPackage);

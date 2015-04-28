@@ -61,8 +61,8 @@ public class WorkAreaFSTest {
 		
 		o = TESTHelper.setUpObject(identifier, workAreaRootPath);
 
-		f1 = new DAFile(o.getLatestPackage(),_1_A_REP,"a.txt");
-		f2 = new DAFile(o.getLatestPackage(),_1_B_REP,"a.txt");
+		f1 = new DAFile(_1_A_REP,"a.txt");
+		f2 = new DAFile(_1_B_REP,"a.txt");
 		
 		o.getLatestPackage().getFiles().add(f1);
 		o.getLatestPackage().getFiles().add(f2);
@@ -86,8 +86,8 @@ public class WorkAreaFSTest {
 	public void testCheckDBtoFSNotConsistent(){
 		
 		o = TESTHelper.setUpObject("234", workAreaRootPath);
-		f1 = new DAFile(o.getLatestPackage(),_1_A_REP,"a.txt");
-		f2 = new DAFile(o.getLatestPackage(),_1_B_REP,"a.txt");
+		f1 = new DAFile(_1_A_REP,"a.txt");
+		f2 = new DAFile(_1_B_REP,"a.txt");
 		o.getLatestPackage().getFiles().add(f1);
 		o.getLatestPackage().getFiles().add(f2);
 		wa=new WorkArea(n,o);
@@ -108,7 +108,7 @@ public class WorkAreaFSTest {
 	public void testCheckFSToDBNotConsistent(){
 		
 		o.getLatestPackage().getFiles().clear();
-		f1 = new DAFile(o.getLatestPackage(),_1_A_REP,"a.txt");
+		f1 = new DAFile(_1_A_REP,"a.txt");
 		o.getLatestPackage().getFiles().add(f1);
 		assertFalse(wa.isFStoDBconsistent());
 	}
@@ -123,8 +123,8 @@ public class WorkAreaFSTest {
 	public void testDontConsiderNonRepEntriesOnFS(){
 		
 		o = TESTHelper.setUpObject("123dip", workAreaRootPath);
-		f1 = new DAFile(o.getLatestPackage(),_1_A_REP,"a.txt");
-		f2 = new DAFile(o.getLatestPackage(),_1_B_REP,"a.txt");
+		f1 = new DAFile(_1_A_REP,"a.txt");
+		f2 = new DAFile(_1_B_REP,"a.txt");
 		o.getLatestPackage().getFiles().add(f1);
 		o.getLatestPackage().getFiles().add(f2);
 		
@@ -139,7 +139,7 @@ public class WorkAreaFSTest {
 	@Test
 	public void testDontConsiderNonRepEntriesInDB(){
 		
-		DAFile f3 = new DAFile(o.getLatestPackage(),"dip","a.txt");
+		DAFile f3 = new DAFile("dip","a.txt");
 		o.getLatestPackage().getFiles().add(f3);
 		
 		assertTrue(wa.isDBtoFSconsistent());

@@ -84,16 +84,16 @@ public class UpdateMetadataActionXMPTests extends ConcreteActionUnitTest {
 		n.setWorkAreaRootPath(workAreaRootPath);
 		
 		
-		DAFile daf1 = new DAFile(o.getLatestPackage(),_1_A_REP,"a.txt");
-		DAFile daf2 = new DAFile(o.getLatestPackage(),_1_B_REP,"a.txt");
-		DAFile daf3 = new DAFile(o.getLatestPackage(),_1_B_REP,"a.xmp");
-		DAFile daf4 = new DAFile(o.getLatestPackage(),C.WA_DIP+"/institution","hasha.txt");
-		DAFile daf5 = new DAFile(o.getLatestPackage(),C.WA_DIP+"/public","hasha.txt");
-		DAFile daf6 = new DAFile(o.getLatestPackage(),C.WA_DIP+"/public","hashb.txt");
-		DAFile daf7 = new DAFile(o.getLatestPackage(),C.WA_DIP+"/institution","hashb.txt");
-		DAFile daf8 = new DAFile(o.getLatestPackage(),_1_A_REP,"b.txt");
-		DAFile daf9 = new DAFile(o.getLatestPackage(),_1_B_REP,"b.txt");
-		DAFile daf10 = new DAFile(o.getLatestPackage(),_1_B_REP,"b.xmp");
+		DAFile daf1 = new DAFile(_1_A_REP,"a.txt");
+		DAFile daf2 = new DAFile(_1_B_REP,"a.txt");
+		DAFile daf3 = new DAFile(_1_B_REP,"a.xmp");
+		DAFile daf4 = new DAFile(C.WA_DIP+"/institution","hasha.txt");
+		DAFile daf5 = new DAFile(C.WA_DIP+"/public","hasha.txt");
+		DAFile daf6 = new DAFile(C.WA_DIP+"/public","hashb.txt");
+		DAFile daf7 = new DAFile(C.WA_DIP+"/institution","hashb.txt");
+		DAFile daf8 = new DAFile(_1_A_REP,"b.txt");
+		DAFile daf9 = new DAFile(_1_B_REP,"b.txt");
+		DAFile daf10 = new DAFile(_1_B_REP,"b.xmp");
 	
 		Event evt1  = new Event();
 		evt1.setSource_file(daf2);

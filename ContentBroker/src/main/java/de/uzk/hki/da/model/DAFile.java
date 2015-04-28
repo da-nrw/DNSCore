@@ -74,9 +74,6 @@ public class DAFile implements FileWithFileFormat{
 	/** The rep_name. */
 	private String rep_name = "";
 	
-	/** The pkg. */
-	private Package pkg;
-
 	/** The format puid. */
 	private String formatPUID; // encoded as PRONOM-PUID
 	
@@ -111,10 +108,9 @@ public class DAFile implements FileWithFileFormat{
 	 * @param repName the rep name
 	 * @param relPath rel path beneath representation folder.
 	 */
-	public DAFile(Package pkg, String repName,String relPath) {
+	public DAFile(String repName,String relPath) {
 		setRelative_path(relPath);
 		this.setRep_name(repName);
-		this.pkg=pkg;
 		this.previousDAFile = null;
 	}
 		
@@ -129,24 +125,6 @@ public class DAFile implements FileWithFileFormat{
 		return id;
 	}
 	
-	/**
-	 * Gets the package.
-	 *
-	 * @return the package
-	 */
-	@Transient
-	public Package getPackage() {
-		return pkg;
-	}
-	
-	/**
-	 * Sets the package.
-	 *
-	 * @param pkg the new package
-	 */
-	public void setPackage (Package pkg) {
-		this.pkg = pkg;
-	}
 	
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "previousDAFile_ID")

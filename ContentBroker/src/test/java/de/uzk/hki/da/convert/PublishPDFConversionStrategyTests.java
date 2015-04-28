@@ -100,7 +100,7 @@ public class PublishPDFConversionStrategyTests {
 		o.getRights().getPublicationRights().add(right);
 		
 		
-		DAFile sourceFile = new DAFile(o.getLatestPackage(),"a","filename.pdf");
+		DAFile sourceFile = new DAFile("a","filename.pdf");
 		
 		ConversionInstruction ci = new ConversionInstruction();
 		ci.setSource_file(sourceFile);

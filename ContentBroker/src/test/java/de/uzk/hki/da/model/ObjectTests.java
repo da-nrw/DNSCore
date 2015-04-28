@@ -58,8 +58,8 @@ public class ObjectTests {
 		
 		o = TESTHelper.setUpObject(identifier, workAreaRootPath);
 
-		f1 = new DAFile(o.getLatestPackage(),_1_A_REP,"a.txt");
-		f2 = new DAFile(o.getLatestPackage(),_1_B_REP,"a.txt");
+		f1 = new DAFile(_1_A_REP,"a.txt");
+		f2 = new DAFile(_1_B_REP,"a.txt");
 		
 		o.getLatestPackage().getFiles().add(f1);
 		o.getLatestPackage().getFiles().add(f2);
@@ -90,7 +90,7 @@ public class ObjectTests {
 	@Test 
 	public void testGetLatest(){
 
-		DAFile premis = new DAFile(null,_1_A_REP,"premis.xml");
+		DAFile premis = new DAFile(_1_A_REP,"premis.xml");
 		o.getLatestPackage().getFiles().add(premis);
 		
 		assertEquals(

@@ -65,8 +65,8 @@ public class GetNewestFilesFromAllRepresentationsTests {
 	 @Test
 	 public void testOneOverwritesTheOther(){
 		 
-		 DAFile f1 = new DAFile(p1,"1+a","abc.tif");
-		 DAFile f2 = new DAFile(p2,"1+b","abc.jpg");
+		 DAFile f1 = new DAFile("1+a","abc.tif");
+		 DAFile f2 = new DAFile("1+b","abc.jpg");
 		 p1.getFiles().add(f1);
 		 p2.getFiles().add(f2);
 		 
@@ -82,9 +82,9 @@ public class GetNewestFilesFromAllRepresentationsTests {
 	 @Test
 	 public void testOnlyOneGetsOverwritten(){
 		 
-		 DAFile f1 = new DAFile(p1,"1+a","abc.tif");
-		 DAFile f2 = new DAFile(p2,"1+b","abc.jpg");
-		 DAFile f3 = new DAFile(p2,"1+a","bcd.jpg");
+		 DAFile f1 = new DAFile("1+a","abc.tif");
+		 DAFile f2 = new DAFile("1+b","abc.jpg");
+		 DAFile f3 = new DAFile("1+a","bcd.jpg");
 		 p1.getFiles().add(f1);
 		 p2.getFiles().add(f2);
 		 p2.getFiles().add(f3);
@@ -102,9 +102,9 @@ public class GetNewestFilesFromAllRepresentationsTests {
 	 @Test
 	 public void testSidecar(){
 		 
-		 DAFile f1 = new DAFile(p1,"1+a","abc.tif");
-		 DAFile f2 = new DAFile(p2,"1+b","abc.jpg");
-		 DAFile f3 = new DAFile(p2,"1+a","abc.xmp");
+		 DAFile f1 = new DAFile("1+a","abc.tif");
+		 DAFile f2 = new DAFile("1+b","abc.jpg");
+		 DAFile f3 = new DAFile("1+a","abc.xmp");
 		 p1.getFiles().add(f1);
 		 p2.getFiles().add(f2);
 		 p2.getFiles().add(f3);

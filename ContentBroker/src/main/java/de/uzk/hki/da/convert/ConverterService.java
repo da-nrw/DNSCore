@@ -144,8 +144,6 @@ public class ConverterService {
 				strategy.getClass().toString()+").");
 		
 
-		ci.getSource_file().setPackage(object.getLatestPackage());
-		
 		strategy.setCLIConnector(new CommandLineConnector());
 		strategy.setObject(object);
 		strategy.setParam(ci.getConversion_routine().getParams());

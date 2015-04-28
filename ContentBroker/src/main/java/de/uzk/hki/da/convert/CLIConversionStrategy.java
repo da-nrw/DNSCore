@@ -92,7 +92,7 @@ public class CLIConversionStrategy implements ConversionStrategy{
 		
 		String targetSuffix= ci.getConversion_routine().getTarget_suffix();
 		if (targetSuffix.equals("*")) targetSuffix= FilenameUtils.getExtension(toAbsolutePath(wa.dataPath(),ci.getSource_file()));
-		DAFile result = new DAFile(pkg,object.getPath("newest").getLastElement(),
+		DAFile result = new DAFile(object.getPath("newest").getLastElement(),
 				ci.getTarget_folder()+"/"+FilenameUtils.removeExtension(Matcher.quoteReplacement(
 				FilenameUtils.getName(toAbsolutePath(wa.dataPath(),ci.getSource_file())))) + "." + targetSuffix);
 		

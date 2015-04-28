@@ -624,7 +624,7 @@ public class ObjectPremisXmlReader{
 		
 		
 		
-		DAFile f = new DAFile(pkg, "", "");
+		DAFile f = new DAFile("", "");
 		String fullPath = objectEl.getFirstChildElement("objectIdentifier", PREMIS_NS)
 				.getFirstChildElement("objectIdentifierValue", PREMIS_NS).getValue();
 		

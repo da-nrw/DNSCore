@@ -143,10 +143,10 @@ public class UpdateMetadataActionTests {
 		
 		
 
-		DAFile t1 = new DAFile(obj.getLatestPackage(), "pips/public", "Ye_old_duckroll.jpg");
-		DAFile t2 = new DAFile(obj.getLatestPackage(), "pips/institution", "Ye_old_duckroll.jpg");
-		DAFile s = new DAFile(obj.getLatestPackage(), REP_NAME, "tif/enne09=v0001.tif");
-		DAFile m = new DAFile(obj.getLatestPackage(), REP_NAME, "mets.xml");
+		DAFile t1 = new DAFile( "pips/public", "Ye_old_duckroll.jpg");
+		DAFile t2 = new DAFile( "pips/institution", "Ye_old_duckroll.jpg");
+		DAFile s = new DAFile( REP_NAME, "tif/enne09=v0001.tif");
+		DAFile m = new DAFile( REP_NAME, "mets.xml");
 		
 		Event event = new Event();
 		event.setType("CONVERT");

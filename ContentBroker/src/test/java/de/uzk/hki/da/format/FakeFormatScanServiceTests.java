@@ -58,7 +58,7 @@ public class FakeFormatScanServiceTests {
 	@Test
 	public void testMets() throws IOException{
 
-		DAFile mets = new DAFile(object.getLatestPackage(),"1+a","mets_mods_example.xml");
+		DAFile mets = new DAFile("1+a","mets_mods_example.xml");
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(mets);
 		
@@ -70,7 +70,7 @@ public class FakeFormatScanServiceTests {
 	
 	@Test
 	public void testEAD() throws IOException{
-		DAFile ead = new DAFile(object.getLatestPackage(),"1+a","vda3.XML");
+		DAFile ead = new DAFile("1+a","vda3.XML");
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(ead);
 		
@@ -82,7 +82,7 @@ public class FakeFormatScanServiceTests {
 
 	@Test
 	public void testEAD2() throws IOException{
-		DAFile ead2 = new DAFile(object.getLatestPackage(),"1+a","EAD_Export.XML");
+		DAFile ead2 = new DAFile("1+a","EAD_Export.XML");
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(ead2);
 		
@@ -96,7 +96,7 @@ public class FakeFormatScanServiceTests {
 	
 	@Test
 	public void testLIDO() throws IOException{
-		DAFile ead = new DAFile(object.getLatestPackage(),"1+a","LIDO-Testexport2014-07-04-FML-Auswahl.xml");
+		DAFile ead = new DAFile("1+a","LIDO-Testexport2014-07-04-FML-Auswahl.xml");
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(ead);
 		
@@ -108,7 +108,7 @@ public class FakeFormatScanServiceTests {
 	
 	@Test
 	public void testXMP() throws IOException{
-		DAFile xmp = new DAFile(object.getLatestPackage(),"1+a","b.xmp");
+		DAFile xmp = new DAFile("1+a","b.xmp");
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(xmp);
 		
@@ -120,7 +120,7 @@ public class FakeFormatScanServiceTests {
 
 	@Test
 	public void testTiff() throws IOException{
-		DAFile tif = new DAFile(object.getLatestPackage(),"1+a","tif.tif");
+		DAFile tif = new DAFile("1+a","tif.tif");
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(tif);
 		
@@ -132,7 +132,7 @@ public class FakeFormatScanServiceTests {
 	
 	@Test
 	public void testBmp() throws IOException{
-		DAFile bmp = new DAFile(object.getLatestPackage(),"1+a","bmp.bmp");
+		DAFile bmp = new DAFile("1+a","bmp.bmp");
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(bmp);
 		
@@ -144,7 +144,7 @@ public class FakeFormatScanServiceTests {
 	
 	@Test
 	public void testJp2() throws IOException{
-		DAFile jp2 = new DAFile(object.getLatestPackage(),"1+a","jp2.jp2");
+		DAFile jp2 = new DAFile("1+a","jp2.jp2");
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(jp2);
 		
@@ -155,7 +155,7 @@ public class FakeFormatScanServiceTests {
 	
 	@Test
 	public void testGif() throws IOException{
-		DAFile gif = new DAFile(object.getLatestPackage(),"1+a","gif.gif");
+		DAFile gif = new DAFile("1+a","gif.gif");
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(gif);
 		
@@ -166,7 +166,7 @@ public class FakeFormatScanServiceTests {
 	
 	@Test
 	public void testPdf() throws IOException{
-		DAFile pdf = new DAFile(object.getLatestPackage(),"1+a","pdf.pdf");
+		DAFile pdf = new DAFile("1+a","pdf.pdf");
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(pdf);
 		
@@ -177,7 +177,7 @@ public class FakeFormatScanServiceTests {
 
 	@Test
 	public void testXml() throws IOException{
-		DAFile xml = new DAFile(object.getLatestPackage(),"1+a","b.xml");
+		DAFile xml = new DAFile("1+a","b.xml");
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(xml);
 		
@@ -188,10 +188,10 @@ public class FakeFormatScanServiceTests {
 	
 	@Test
 	public void testMoreFiles() throws IOException{
-		DAFile gif = new DAFile(object.getLatestPackage(),"1+a","gif.gif");
-		DAFile pdf = new DAFile(object.getLatestPackage(),"1+a","pdf.pdf");
-		DAFile ead2 = new DAFile(object.getLatestPackage(),"1+a","EAD_Export.XML");
-		DAFile mets = new DAFile(object.getLatestPackage(),"1+a","mets_mods_example.xml");
+		DAFile gif = new DAFile("1+a","gif.gif");
+		DAFile pdf = new DAFile("1+a","pdf.pdf");
+		DAFile ead2 = new DAFile("1+a","EAD_Export.XML");
+		DAFile mets = new DAFile("1+a","mets_mods_example.xml");
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(pdf);
 		files.add(gif);

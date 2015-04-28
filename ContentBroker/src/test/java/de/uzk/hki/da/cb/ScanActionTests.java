@@ -76,8 +76,8 @@ public class ScanActionTests extends ConcreteActionUnitTest{
 		
 		j.setRep_name(REPNAME);
 		
-		DAFile premis = new DAFile(o.getLatestPackage(),REPNAME+"a","premis.xml");
-		DAFile file = new DAFile(o.getLatestPackage(),REPNAME+"a",TIFF_TESTFILE);
+		DAFile premis = new DAFile(REPNAME+"a","premis.xml");
+		DAFile file = new DAFile(REPNAME+"a",TIFF_TESTFILE);
 		file.setFormatPUID(TIF_PUID);
 		List<DAFile> files = new ArrayList<DAFile>(); files.add(file); files.add(premis);
 		o.getLatestPackage().getFiles().addAll(files);

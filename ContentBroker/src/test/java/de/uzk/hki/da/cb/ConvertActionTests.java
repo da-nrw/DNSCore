@@ -99,12 +99,12 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 		
 		List<Document> documents = new ArrayList<Document>();
 		
-		DAFile f = new DAFile(o.getLatestPackage(),"2011+11+01+a","premis.xml");
+		DAFile f = new DAFile("2011+11+01+a","premis.xml");
 		o.getLatestPackage().getFiles().add(f);
 		Document document = new Document(f);
 		documents.add(document);
 		
-		DAFile f1 = new DAFile(o.getLatestPackage(),"2011+11+01+a","abc.xml");
+		DAFile f1 = new DAFile("2011+11+01+a","abc.xml");
 		Document document1 = new Document(f1);
 		documents.add(document1);
 		ci1.setSource_file(f1);
@@ -116,7 +116,7 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 		ConversionInstruction ci2 = new ConversionInstruction();
 		ci2.setTarget_folder("");
 		
-		DAFile f2 = new DAFile(o.getLatestPackage(),"2011+11+01+a","140864.tif");
+		DAFile f2 = new DAFile("2011+11+01+a","140864.tif");
 		ci2.setSource_file(f2);
 		Document document2 = new Document(f2);
 		documents.add(document2);

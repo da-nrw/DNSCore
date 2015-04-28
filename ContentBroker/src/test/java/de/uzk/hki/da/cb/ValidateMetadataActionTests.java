@@ -74,15 +74,15 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	private static MetadataStructureFactory msf;
 	
 	
-	DAFile f_ead1 = new DAFile(null,REP_A,VDA03_XML);
-	DAFile f_ead2 = new DAFile(null,REP_B,EAD_XML);
-	DAFile f_mets1 = new DAFile(null,"",METS_2_99_XML); 
-	DAFile f_mets2 = new DAFile(null,"",METS_2_998_XML);
-	DAFile f_xmp1 = new DAFile(null,"1+a",XMP1_XML);
-	DAFile f_lido1 = new DAFile(null,"",LIDO_XML);
-	DAFile f_lido2 = new DAFile(null,"",LIDO2_XML);
+	DAFile f_ead1 = new DAFile(REP_A,VDA03_XML);
+	DAFile f_ead2 = new DAFile(REP_B,EAD_XML);
+	DAFile f_mets1 = new DAFile("",METS_2_99_XML); 
+	DAFile f_mets2 = new DAFile("",METS_2_998_XML);
+	DAFile f_xmp1 = new DAFile("1+a",XMP1_XML);
+	DAFile f_lido1 = new DAFile("",LIDO_XML);
+	DAFile f_lido2 = new DAFile("",LIDO2_XML);
 	
-	DAFile f_subfolder_ead1 = new DAFile(null,REP_A,"subfolder/"+VDA03_XML);
+	DAFile f_subfolder_ead1 = new DAFile(REP_A,"subfolder/"+VDA03_XML);
 
 	
 //	@SuppressWarnings("static-access")
@@ -98,16 +98,6 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	public void setUp(){
 		
 		n.setWorkAreaRootPath(WORK_AREA_ROOT);
-		
-		f_ead1.setPackage(o.getLatestPackage());
-		f_ead2.setPackage(o.getLatestPackage());
-		f_mets1.setPackage(o.getLatestPackage());
-		f_mets2.setPackage(o.getLatestPackage());
-		f_xmp1.setPackage(o.getLatestPackage());
-		f_lido1.setPackage(o.getLatestPackage());
-		f_lido2.setPackage(o.getLatestPackage());
-		
-		f_subfolder_ead1.setPackage(o.getLatestPackage());
 		
 		action.setMsf(msf);
 

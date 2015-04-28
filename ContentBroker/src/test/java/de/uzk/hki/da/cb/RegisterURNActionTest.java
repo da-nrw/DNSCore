@@ -49,7 +49,7 @@ public class RegisterURNActionTest extends ConcreteActionUnitTest {
 	public void setUp() throws IOException {
 		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
 		
-		premis = new DAFile(o.getLatestPackage(),"2012_12_12+12_12_12+a","premis.xml");
+		premis = new DAFile("2012_12_12+12_12_12+a","premis.xml");
 		o.getLatestPackage().getFiles().add(premis);
 		
 		FileUtils.copyFile(Path.makeFile(WORK_AREA_ROOT_PATH,"premis.xml.1"), wa.toFile(premis));

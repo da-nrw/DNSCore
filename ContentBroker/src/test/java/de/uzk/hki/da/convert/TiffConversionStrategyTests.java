@@ -66,8 +66,8 @@ public class TiffConversionStrategyTests {
 		o = TESTHelper.setUpObject("1", new RelativePath(workAreaRootPath));
 		
 		o.reattach();
-		DAFile f = new DAFile(o.getLatestPackage(),"rep+b","CCITT_1.TIF");
-		DAFile f2 = new DAFile(o.getLatestPackage(),"rep+b","CCITT_1.UNCOMPRESSED.TIF");
+		DAFile f = new DAFile("rep+b","CCITT_1.TIF");
+		DAFile f2 = new DAFile("rep+b","CCITT_1.UNCOMPRESSED.TIF");
 		o.getLatestPackage().getFiles().add(f);
 		o.getLatestPackage().getFiles().add(f2);
 		Path.makeFile(contractorFolder,"1/data","rep+b").mkdirs();
@@ -97,7 +97,7 @@ public class TiffConversionStrategyTests {
 		ConversionInstruction ci = new ConversionInstruction();
 		ConversionRoutine cr = new ConversionRoutine();
 		ci.setConversion_routine(cr);
-		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","CCITT_1.TIF"));
+		ci.setSource_file(new DAFile("rep+a","CCITT_1.TIF"));
 		ci.setTarget_folder("subfolder");
 		
 		cs.convertFile(new WorkArea(n,o),ci);
@@ -117,7 +117,7 @@ public class TiffConversionStrategyTests {
 		ConversionInstruction ci = new ConversionInstruction();
 		ConversionRoutine cr = new ConversionRoutine();
 		ci.setConversion_routine(cr);
-		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","CCITT_1.TIF"));
+		ci.setSource_file(new DAFile("rep+a","CCITT_1.TIF"));
 		ci.setTarget_folder("");
 		
 		cs.convertFile(new WorkArea(n,o),ci);
@@ -138,7 +138,7 @@ public class TiffConversionStrategyTests {
 		ConversionInstruction ci = new ConversionInstruction();
 		ConversionRoutine cr = new ConversionRoutine();
 		ci.setConversion_routine(cr);
-		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","CCITT_1_UNCOMPRESSED.TIF"));
+		ci.setSource_file(new DAFile("rep+a","CCITT_1_UNCOMPRESSED.TIF"));
 		ci.setTarget_folder("");
 		
 		cs.convertFile(new WorkArea(n,o),ci);
@@ -158,7 +158,7 @@ public class TiffConversionStrategyTests {
 		ConversionInstruction ci = new ConversionInstruction();
 		ConversionRoutine cr = new ConversionRoutine();
 		ci.setConversion_routine(cr);
-		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","0001_L.TIF"));
+		ci.setSource_file(new DAFile("rep+a","0001_L.TIF"));
 		ci.setTarget_folder("");
 		
 		cs.convertFile(new WorkArea(n,o),ci);
@@ -179,7 +179,7 @@ public class TiffConversionStrategyTests {
 		ConversionInstruction ci = new ConversionInstruction();
 		ConversionRoutine cr = new ConversionRoutine();
 		ci.setConversion_routine(cr);
-		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","notanytiff.tif"));
+		ci.setSource_file(new DAFile("rep+a","notanytiff.tif"));
 		ci.setTarget_folder("");
 		
 		try {
@@ -221,7 +221,7 @@ public class TiffConversionStrategyTests {
 		ConversionInstruction ci = new ConversionInstruction();
 		ConversionRoutine cr = new ConversionRoutine();
 		ci.setConversion_routine(cr);
-		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","0001_L.TIF"));
+		ci.setSource_file(new DAFile("rep+a","0001_L.TIF"));
 		ci.setTarget_folder("");
 		try {
 		cs.convertFile(new WorkArea(n,o),ci);

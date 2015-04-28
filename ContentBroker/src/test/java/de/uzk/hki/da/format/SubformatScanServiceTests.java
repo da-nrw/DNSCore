@@ -80,7 +80,7 @@ public class SubformatScanServiceTests {
 		
 		
 		
-		DAFile f = new DAFile(o.getLatestPackage() ,"",FFConstants.TIF);
+		DAFile f = new DAFile("",FFConstants.TIF);
 		f.setFormatPUID(FFConstants.FMT_353);
 		
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
@@ -93,7 +93,7 @@ public class SubformatScanServiceTests {
 	
 	@Test
 	public void testPUIDNotSet() throws IOException{
-		DAFile f = new DAFile(null,null,FFConstants.TIF);
+		DAFile f = new DAFile(null,FFConstants.TIF);
 		
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(f);

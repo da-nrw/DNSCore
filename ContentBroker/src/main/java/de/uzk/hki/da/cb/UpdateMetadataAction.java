@@ -436,7 +436,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			
 			File destFile = new File(wa.dataPath() + "/" + repName + "/" + metadataFileName);
 			FileUtils.copyFile(wa.toFile(srcMetadataFile), destFile);
-			DAFile destMetadataFile = new DAFile(o.getLatestPackage(), repName, metadataFileName);
+			DAFile destMetadataFile = new DAFile(repName, metadataFileName);
 			destMetadataFile.setFormatPUID(srcMetadataFile.getFormatPUID());
 			o.getLatestPackage().getFiles().add(destMetadataFile);
 			
@@ -510,7 +510,7 @@ public class UpdateMetadataAction extends AbstractAction {
 							if (xmlFile.getAbsolutePath()
 									.equals(wa.toFile(f).getAbsolutePath())) {
 								e.setSource_file(f);
-								daFile = new DAFile(o.getLatestPackage(), repName, f.getRelative_path());
+								daFile = new DAFile(repName, f.getRelative_path());
 								daFile.setFormatPUID(f.getFormatPUID());
 							}
 						}
@@ -569,14 +569,14 @@ public class UpdateMetadataAction extends AbstractAction {
 				
 				xmpTargetPath += ".xmp";
 				
-				DAFile sidecarTargetFile = new DAFile(o.getLatestPackage(), repName, xmpTargetPath);
+				DAFile sidecarTargetFile = new DAFile(repName, xmpTargetPath);
 				
 				copyCommands.put(sidecarTargetFile, sidecarSourceFile);
 			}
 			logger.debug("collecting files in path: {}", repPath);
 			
 			XmpCollector.collect(wa,newestXmpFiles, new File(repPath + "/XMP.xml"));
-			DAFile xmpFile = new DAFile(o.getLatestPackage(),repName,"XMP.xml");
+			DAFile xmpFile = new DAFile(repName,"XMP.xml");
 			o.getLatestPackage().getFiles().add(xmpFile);
 			o.getLatestPackage().getEvents().add(createCreateEvent(xmpFile));
 			

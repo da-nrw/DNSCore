@@ -135,7 +135,7 @@ public class PublishImageConversionStrategyTest {
 		PublishImageConversionStrategy s = new PublishImageConversionStrategy();
 		s.setCLIConnector( cli );
 		
-		DAFile sourceFile = new DAFile(o.getLatestPackage(),"a","filename.tif");
+		DAFile sourceFile = new DAFile("a","filename.tif");
 		
 		ConversionInstruction ci = new ConversionInstruction();
 		ci.setSource_file(sourceFile);
@@ -152,8 +152,8 @@ public class PublishImageConversionStrategyTest {
 		assertEquals(sourceFile,events.get(0).getSource_file());
 		assertEquals(sourceFile,events.get(1).getSource_file());
 		
-		assertEquals(new DAFile(null,C.WA_DIP+"/public","target/filename.jpg"),events.get(0).getTarget_file());
-		assertEquals(new DAFile(null,C.WA_DIP+"/institution","target/filename.jpg"),events.get(1).getTarget_file());
+		assertEquals(new DAFile(C.WA_DIP+"/public","target/filename.jpg"),events.get(0).getTarget_file());
+		assertEquals(new DAFile(C.WA_DIP+"/institution","target/filename.jpg"),events.get(1).getTarget_file());
 	}
 	
 	/**
@@ -203,7 +203,7 @@ public class PublishImageConversionStrategyTest {
 		PublishImageConversionStrategy s = new PublishImageConversionStrategy();
 		s.setCLIConnector( cli );
 		
-		DAFile sourceFile = new DAFile(o.getLatestPackage(),"a","filename.tif");
+		DAFile sourceFile = new DAFile("a","filename.tif");
 		
 		ConversionInstruction ci = new ConversionInstruction();
 		ci.setSource_file(sourceFile);
@@ -220,8 +220,8 @@ public class PublishImageConversionStrategyTest {
 		assertEquals(sourceFile,events.get(0).getSource_file());
 		assertEquals(sourceFile,events.get(1).getSource_file());
 		
-		assertEquals(new DAFile(null,C.WA_DIP+"/public","target/filename.jpg"),events.get(0).getTarget_file());
-		assertEquals(new DAFile(null,C.WA_DIP+"/institution","target/filename.jpg"),events.get(1).getTarget_file());
+		assertEquals(new DAFile(C.WA_DIP+"/public","target/filename.jpg"),events.get(0).getTarget_file());
+		assertEquals(new DAFile(C.WA_DIP+"/institution","target/filename.jpg"),events.get(1).getTarget_file());
 	}
 	
 	
@@ -275,7 +275,7 @@ public class PublishImageConversionStrategyTest {
 		PublishImageConversionStrategy s = new PublishImageConversionStrategy();
 		s.setCLIConnector( cli );
 		
-		DAFile sourceFile = new DAFile(o.getLatestPackage(),"a","filename.tif");
+		DAFile sourceFile = new DAFile("a","filename.tif");
 		
 		ConversionInstruction ci = new ConversionInstruction();
 		ci.setSource_file(sourceFile);
@@ -292,8 +292,8 @@ public class PublishImageConversionStrategyTest {
 		assertEquals(sourceFile,events.get(0).getSource_file());
 		assertEquals(sourceFile,events.get(1).getSource_file());
 		
-		assertEquals(new DAFile(null,C.WA_DIP+"/public","target/filename.jpg"),events.get(0).getTarget_file());
-		assertEquals(new DAFile(null,C.WA_DIP+"/institution","target/filename.jpg"),events.get(1).getTarget_file());
+		assertEquals(new DAFile(C.WA_DIP+"/public","target/filename.jpg"),events.get(0).getTarget_file());
+		assertEquals(new DAFile(C.WA_DIP+"/institution","target/filename.jpg"),events.get(1).getTarget_file());
 	}
 	
 	//@Test
@@ -314,7 +314,7 @@ public class PublishImageConversionStrategyTest {
 		PublishImageConversionStrategy s = new PublishImageConversionStrategy();
 		s.setCLIConnector( new CommandLineConnector() );
 		
-		DAFile sourceFile = new DAFile(o.getLatestPackage(),"a","filename.tif");
+		DAFile sourceFile = new DAFile("a","filename.tif");
 		
 		ConversionInstruction ci = new ConversionInstruction();
 		ci.setSource_file(sourceFile);

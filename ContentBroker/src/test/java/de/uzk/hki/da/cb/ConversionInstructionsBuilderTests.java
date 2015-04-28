@@ -103,17 +103,17 @@ public class ConversionInstructionsBuilderTests {
 		policy.setConversion_routine(routine);
 		
 		ConversionInstruction ci1 = ciB.assembleConversionInstruction(wa,
-				new DAFile(o.getLatestPackage(),"2011_01_01+00_01+a","a.tif"),
+				new DAFile("2011_01_01+00_01+a","a.tif"),
 				policy);
 		assertEquals("",ci1.getTarget_folder());
 		
 		ConversionInstruction ci2 = ciB.assembleConversionInstruction(wa,
-				new DAFile(o.getLatestPackage(),"2011_01_01+00_01+a","subfolder/b.tif"),
+				new DAFile("2011_01_01+00_01+a","subfolder/b.tif"),
 				policy);
 		assertEquals("subfolder",ci2.getTarget_folder());
 		
 		ConversionInstruction ci3 = ciB.assembleConversionInstruction(wa,
-				new DAFile(o.getLatestPackage(),"2011_01_01+00_01+a","subfolder/subsubfolder/c.tif"),
+				new DAFile("2011_01_01+00_01+a","subfolder/subsubfolder/c.tif"),
 				policy);
 		assertEquals("subfolder/subsubfolder",ci3.getTarget_folder());
 	}

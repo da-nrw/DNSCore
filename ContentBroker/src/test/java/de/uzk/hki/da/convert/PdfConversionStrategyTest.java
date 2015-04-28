@@ -68,7 +68,7 @@ public class PdfConversionStrategyTest {
 	public void setUp(){
 		
 		o = TESTHelper.setUpObject("1", new RelativePath(workAreaRootPath));
-		o.getLatestPackage().getFiles().add(new DAFile(o.getLatestPackage(),"rep+a","Pdf.pdf"));
+		o.getLatestPackage().getFiles().add(new DAFile("rep+a","Pdf.pdf"));
 		cs.setObject(o);
 		n = new Node();
 		n.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
@@ -109,7 +109,7 @@ public class PdfConversionStrategyTest {
 		
 		cr.setTarget_suffix("pdf");
 		ci.setConversion_routine(cr);
-		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","Pdf.pdf"));
+		ci.setSource_file(new DAFile("rep+a","Pdf.pdf"));
 		ci.setTarget_folder("");
 	
 		cs.convertFile(new WorkArea(n,o),ci);

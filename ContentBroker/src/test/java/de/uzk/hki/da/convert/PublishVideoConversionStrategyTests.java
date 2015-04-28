@@ -101,7 +101,7 @@ public class PublishVideoConversionStrategyTests {
 		s.setDom(dom);
 		
 		ConversionInstruction ci = new ConversionInstruction();
-		ci.setSource_file(new DAFile(o.getLatestPackage(),"a","filename.avi"));
+		ci.setSource_file(new DAFile("a","filename.avi"));
 		ci.setTarget_folder("target/");
 
 		s.setObject(o);

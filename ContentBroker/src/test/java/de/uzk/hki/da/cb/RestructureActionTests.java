@@ -96,7 +96,7 @@ public class RestructureActionTests extends ConcreteActionUnitTest{
 		
 		FileFormatFacade ffs = mock(ConfigurableFileFormatFacade.class);
 	
-		DAFile file = new DAFile(o.getLatestPackage(),"rep+a","140849.tif");
+		DAFile file = new DAFile("rep+a","140849.tif");
 		file.setFormatPUID("fmt/353");
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>(); files.add(file);
 		when( ffs.identify((Path)anyObject(),(List<FileWithFileFormat>)anyObject()) ).thenReturn(files);
@@ -123,7 +123,7 @@ public class RestructureActionTests extends ConcreteActionUnitTest{
 		assertTrue(Path.makeFile(DATA_FOLDER,j.getRep_name()+"a","vda3.XML").exists());
 		assertTrue(Path.makeFile(DATA_FOLDER,"jhove_temp").exists());
 		
-		assertTrue(o.getLatestPackage().getFiles().contains(new DAFile(o.getLatestPackage(),j.getRep_name()+"a","vda3.XML")));
+		assertTrue(o.getLatestPackage().getFiles().contains(new DAFile(j.getRep_name()+"a","vda3.XML")));
 	}
 	
 	
@@ -173,10 +173,10 @@ public class RestructureActionTests extends ConcreteActionUnitTest{
 			for (DAFile f:p.getFiles())
 				System.out.println(":"+f);
 		}
-		assertTrue(pkg2.getFiles().contains(new DAFile(null,j.getRep_name()+"a","vda3.XML")));
-		assertTrue(pkg1.getFiles().contains(new DAFile(null,"2014_09_12+11_32+a","premis.xml")));
-		assertTrue(pkg1.getFiles().contains(new DAFile(null,"2014_09_12+11_32+b","premis.xml")));
-		assertTrue(pkg1.getFiles().contains(new DAFile(null,"2014_09_12+11_32+a","SIP-Builder Anleitung.pdf")));
+		assertTrue(pkg2.getFiles().contains(new DAFile(j.getRep_name()+"a","vda3.XML")));
+		assertTrue(pkg1.getFiles().contains(new DAFile("2014_09_12+11_32+a","premis.xml")));
+		assertTrue(pkg1.getFiles().contains(new DAFile("2014_09_12+11_32+b","premis.xml")));
+		assertTrue(pkg1.getFiles().contains(new DAFile("2014_09_12+11_32+a","SIP-Builder Anleitung.pdf")));
 		
 	}
 	

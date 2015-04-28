@@ -200,7 +200,7 @@ public class Package {
 		List<DAFile> result = new ArrayList<DAFile>();
 		int offset = repFolderPath.length();
 		for (File f:found){
-			DAFile newFile = new DAFile(this,repName,f.getPath().
+			DAFile newFile = new DAFile(repName,f.getPath().
 					substring(offset+1, f.getPath().length()));
 			logger.debug("found: "+newFile.toString());
 			result.add(newFile);
@@ -292,23 +292,6 @@ public class Package {
 	 */
 	public void setFiles(List<DAFile> files) {
 		this.files = files;
-		for (DAFile f:this.files){
-			logger.debug("Setting package for: "+f);
-			f.setPackage(this);
-		}
-	}
-	
-	/**
-	 * Connects dafiles to the package so that you can call
-	 * toRegularFile on the files. The connection is lost when
-	 * the package is stored in db cause it depends on the local nodes environment
-	 * which can only be determined at runtime on a certain node.
-	 * @author Daniel M. de Oliveira
-	 */
-	public void reattachPaths(){
-		for (DAFile f:this.files){
-			f.setPackage(this);
-		}
 	}
 	
 

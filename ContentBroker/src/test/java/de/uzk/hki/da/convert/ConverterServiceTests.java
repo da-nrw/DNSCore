@@ -66,7 +66,7 @@ public class ConverterServiceTests {
 	public void setUp(){
 		
 		o = TESTHelper.setUpObject("123",new RelativePath(workAreaRootPath));
-		DAFile f1 = new DAFile(o.getLatestPackage(),"2011+11+01+b","abc.xml");
+		DAFile f1 = new DAFile("2011+11+01+b","abc.xml");
 		o.getLatestPackage().getFiles().add(f1);
 		
 		
@@ -84,13 +84,13 @@ public class ConverterServiceTests {
 		
 		ConversionInstruction ci1 = new ConversionInstruction();
 		ci1.setTarget_folder("");
-		ci1.setSource_file(new DAFile(o.getLatestPackage(),"2011+11+01+a","abc.xml"));
+		ci1.setSource_file(new DAFile("2011+11+01+a","abc.xml"));
 		ci1.setNode("vm3");
 		ci1.setConversion_routine(copy);
 		
 		ConversionInstruction ci2 = new ConversionInstruction();
 		ci2.setTarget_folder("");
-		ci2.setSource_file(new DAFile(o.getLatestPackage(),"2011+11+01+a","140864.tif"));
+		ci2.setSource_file(new DAFile("2011+11+01+a","140864.tif"));
 		ci2.setNode("vm3");
 		ci2.setConversion_routine(im);
 		
