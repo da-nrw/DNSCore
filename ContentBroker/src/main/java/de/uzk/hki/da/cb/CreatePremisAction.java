@@ -50,7 +50,6 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PremisXmlValidator;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.utils.MD5Checksum;
 
 /**
  * 

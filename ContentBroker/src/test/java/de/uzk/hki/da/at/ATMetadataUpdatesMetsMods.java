@@ -29,18 +29,16 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
-import org.jdom.xpath.XPath;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.metadata.MetadataHelper;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.util.Path;
@@ -54,15 +52,13 @@ import de.uzk.hki.da.util.Path;
 
 public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 	
-	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
-	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	private static final String PORTAL_CI_TEST = "portal_ci_test";
 	private static final File retrievalFolder = new File("/tmp/unpackedMetsMods");
 	private static Path contractorsPipsPublic;
 	private static final String origName = "ATMetadataUpdates_METS";
 	private static Object object;
-	private String METS_XPATH_EXPRESSION = 		"//mets:file";
 	private static Document metsDoc;
+	MetadataHelper mh = new MetadataHelper();
 	
 	
 	@BeforeClass
@@ -100,7 +96,11 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 		String metsFileName = "export_mets.xml";
 		Document doc = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, metsFileName).toFile()));
-		checkReferencesAndMimetype(doc, ".tif", "image/tiff", null);
+		List<Element> elements = mh.getMetsFileElements(doc);
+		for(Element e : elements) {
+			assertTrue(mh.getMetsHref(e).contains(".tif"));
+			assertTrue(mh.getMimetypeInMets(e).equals("image/tiff"));
+		}
 	}
 	
 	@Test
@@ -113,26 +113,11 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 			(new FileReader(
 				Path.make(contractorsPipsPublic, 
 					object.getIdentifier(), C.CB_PACKAGETYPE_METS+C.FILE_EXTENSION_XML).toFile()));
-		
-		checkReferencesAndMimetype(metsDoc, "http://data.danrw.de/", C.MIMETYPE_IMAGE_JPEG, "URL");
-	}
-	
-	public void checkReferencesAndMimetype(Document doc, String href, String mimetype, String loctype) throws JDOMException, FileNotFoundException, IOException {
-		XPath xPath = XPath.newInstance(METS_XPATH_EXPRESSION);
-		
-		@SuppressWarnings("rawtypes")
-		List allNodes = xPath.selectNodes(doc);
-		
-		for (java.lang.Object node : allNodes) {
-			Element fileElement = (Element) node;
-			Attribute attr = fileElement.getChild("FLocat", METS_NS).getAttribute("href", XLINK_NS);
-			Attribute attrLoctype = fileElement.getChild("FLocat", METS_NS).getAttribute("LOCTYPE");
-			Attribute attrMT = fileElement.getAttribute("MIMETYPE");
-			assertTrue(attr.getValue().contains(href));
-			assertTrue(attrMT.getValue().equals(mimetype));
-			if(loctype!=null) {
-				assertTrue(attrLoctype.getValue().equals(loctype));
-			}
+		List<Element> elements = mh.getMetsFileElements(metsDoc);
+		for(Element e : elements) {
+			assertTrue(mh.getMetsHref(e).contains("http://data.danrw.de/"));
+			assertTrue(mh.getMimetypeInMets(e).equals(C.MIMETYPE_IMAGE_JPEG));
+			assertTrue(mh.getMetsLoctype(e).equals("URL"));
 		}
 	}
 	

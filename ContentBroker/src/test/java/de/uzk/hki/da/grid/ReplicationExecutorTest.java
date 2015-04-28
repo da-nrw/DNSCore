@@ -9,16 +9,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
-import de.uzk.hki.da.model.User;
 
 /**
  * @author Jens Peters

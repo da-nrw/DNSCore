@@ -46,9 +46,8 @@ public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 		ath.putSIPtoIngestArea(ORIG_NAME_ORIG+"_delta_one_file", "tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.InWorkflow);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
-		
-		object = ath.getObject(ORIG_NAME_ORIG);
 
+		object = ath.getObject(ORIG_NAME_ORIG);
 	}
 	
 	@AfterClass
@@ -178,7 +177,7 @@ public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 				tif801616Exists = true;
 			} 
 			
-			assertTrue(mh.getMetsMimetype(e).equals("image/tiff"));
+			assertTrue(mh.getMimetypeInMets(e).equals("image/tiff"));
 			assertTrue(mh.getMetsLoctype(e).equals("URL"));
 		}
 		

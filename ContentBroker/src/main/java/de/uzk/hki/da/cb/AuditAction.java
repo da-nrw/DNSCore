@@ -21,14 +21,9 @@ package de.uzk.hki.da.cb;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.IntegrityService;
-import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.util.ConfigurationException;
-import de.uzk.hki.da.util.RelativePath;
 
 /**
  * Audit Action.

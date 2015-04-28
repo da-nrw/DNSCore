@@ -96,8 +96,6 @@ public class MetsMetadataStructure extends MetadataStructure {
 		HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();
 		HashMap<String, Element> dmdSections = getSections(ObjectId);
 		
-		HashMap<String, ArrayList<String>> parentChildDmdIdRel = getParentChildInfoOfDmdIds(ObjectId);
-		
 		for(String id : dmdSections.keySet()) {
 			Element e = dmdSections.get(id);
 			HashMap<String, List<String>> dmdSecInfo = new HashMap<String, List<String>>();
