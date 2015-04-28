@@ -36,11 +36,5 @@ public interface FileWithFileFormat {
 
 	public void setSubformatIdentifier(String formatSecondaryAttribute);
 	
-	/**
-	 * @deprecated
-	 * @return
-	 */
-	public File toRegularFile();
-
 	Path getPath();
 }

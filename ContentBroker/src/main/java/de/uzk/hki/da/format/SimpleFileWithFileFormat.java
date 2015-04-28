@@ -58,11 +58,6 @@ public class SimpleFileWithFileFormat implements FileWithFileFormat {
 		this.secondary = subformatIdentifier;
 	}
 
-	@Override
-	public File toRegularFile() {
-		return file;
-	}
-	
 	@Override 
 	public Path getPath() {
 		return new RelativePath(file.getPath().toString());
