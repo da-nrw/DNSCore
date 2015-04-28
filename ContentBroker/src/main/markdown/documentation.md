@@ -55,7 +55,8 @@ the releases page, follow the source code link for the corresponding version and
 
 #### Using DNSCore<br>[End Users]
 
-* [Ingest and Retrieval](../../../../DAWeb/doc/manual_ingest_and_retrieval.md). A German version will follow soon.
+* Ingest ([deutsch](usage_ingest.de.md))
+* Retrieval ([deutsch](usage_retrieval.de.md))
 
 #### Providing services to end users<br>[System administrators / Node administrators / Operators]
 
