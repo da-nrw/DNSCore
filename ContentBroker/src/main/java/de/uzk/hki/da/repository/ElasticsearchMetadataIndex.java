@@ -232,7 +232,8 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 					new HttpDelete("http://localhost:9200/"+indexName+"/"+C.ORE_AGGREGATION+"/_query?q=_id:"+objectID+""+"*");
 			HttpResponse response = httpClient.execute(deleteRequest);
 	
-	        if (response.getStatusLine().getStatusCode() != 201 || response.getStatusLine().getStatusCode() != 200) {
+			int statusCode = response.getStatusLine().getStatusCode();
+	        if (statusCode <200 && statusCode >300)   {
 	            throw new RuntimeException("Failed : HTTP error code : "
 	                + response.getStatusLine().getStatusCode());
 	        }
