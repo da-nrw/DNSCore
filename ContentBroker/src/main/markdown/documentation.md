@@ -55,8 +55,8 @@ the releases page, follow the source code link for the corresponding version and
 
 #### Using DNSCore<br>[End Users]
 
-* Ingest ([deutsch](usage_ingest.de.md))
-* Retrieval ([deutsch](usage_retrieval.de.md))
+* Ingest ([german](usage_ingest.de.md))
+* Retrieval ([german](usage_retrieval.de.md))
 
 #### Providing services to end users<br>[System administrators / Node administrators / Operators]
 
