@@ -83,35 +83,35 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 		List<Element> metsFileElements1 = mh.getMetsFileElements(doc1);
 		Element fileElement1 = metsFileElements1.get(0);
 		assertTrue(mh.getMetsHref(fileElement1).equals("Picture1.tif"));
-		assertTrue(mh.getMetsMimetype(fileElement1).equals("image/tiff"));
+		assertTrue(mh.getMimetypeInMets(fileElement1).equals("image/tiff"));
 
 		Document doc2 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32045.xml").toFile()));
 		List<Element> metsFileElements2 = mh.getMetsFileElements(doc2);
 		Element fileElement2 = metsFileElements2.get(0);
 		assertTrue(mh.getMetsHref(fileElement2).equals("Picture2.tif"));
-		assertTrue(mh.getMetsMimetype(fileElement2).equals("image/tiff"));
+		assertTrue(mh.getMimetypeInMets(fileElement2).equals("image/tiff"));
 		
 		Document doc3 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32046.xml").toFile()));
 		List<Element> metsFileElements3 = mh.getMetsFileElements(doc3);
 		Element fileElement3 = metsFileElements3.get(0);
 		assertTrue(mh.getMetsHref(fileElement3).equals("Picture3.tif"));
-		assertTrue(mh.getMetsMimetype(fileElement3).equals("image/tiff"));
+		assertTrue(mh.getMimetypeInMets(fileElement3).equals("image/tiff"));
 		
 		Document doc4 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32047.xml").toFile()));
 		List<Element> metsFileElements4 = mh.getMetsFileElements(doc4);
 		Element fileElement4 = metsFileElements4.get(0);
 		assertTrue(mh.getMetsHref(fileElement4).equals("Picture4.tif"));
-		assertTrue(mh.getMetsMimetype(fileElement4).equals("image/tiff"));
+		assertTrue(mh.getMimetypeInMets(fileElement4).equals("image/tiff"));
 		
 		Document doc5 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32048.xml").toFile()));
 		List<Element> metsFileElements5 = mh.getMetsFileElements(doc5);
 		Element fileElement5 = metsFileElements5.get(0);
 		assertTrue(mh.getMetsHref(fileElement5).equals("Picture5.tif"));
-		assertTrue(mh.getMetsMimetype(fileElement5).equals("image/tiff"));
+		assertTrue(mh.getMimetypeInMets(fileElement5).equals("image/tiff"));
 	}
 	
 	@Test
@@ -125,7 +125,7 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 		String metsURL1 = mh.getMetsHref(fileElement1);
 		assertTrue(metsURL1.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/_c3836acf068a9b227834e0adda226ac2.jpg"));
 		assertEquals("URL", mh.getMetsLoctype(fileElement1));
-		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMetsMimetype(fileElement1));
+		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMimetypeInMets(fileElement1));
 		
 		Document doc2 = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "mets_2_32045.xml").toFile()));
@@ -134,7 +134,7 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 		String metsURL2 = mh.getMetsHref(fileElement2);
 		assertTrue(metsURL2.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/_c8079103e5eecf45d2978a396e1839a9.jpg"));
 		assertEquals("URL", mh.getMetsLoctype(fileElement2));
-		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMetsMimetype(fileElement2));
+		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMimetypeInMets(fileElement2));
 		
 		Document doc3 = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "mets_2_32046.xml").toFile()));
@@ -143,7 +143,7 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 		String metsURL3 = mh.getMetsHref(fileElement3);
 		assertTrue(metsURL3.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/_fa55eb875c9ad7ceedb0f61868daf0e4.jpg"));
 		assertEquals("URL", mh.getMetsLoctype(fileElement3));
-		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMetsMimetype(fileElement3));
+		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMimetypeInMets(fileElement3));
 		
 		Document doc4 = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "mets_2_32047.xml").toFile()));
@@ -152,7 +152,7 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 		String metsURL4 = mh.getMetsHref(fileElement4);
 		assertTrue(metsURL4.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/_a66c85bf5ddf7683f7999cb4a20bfd61.jpg"));
 		assertEquals("URL", mh.getMetsLoctype(fileElement4));
-		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMetsMimetype(fileElement4));
+		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMimetypeInMets(fileElement4));
 		
 		Document doc5 = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "mets_2_32048.xml").toFile()));
@@ -161,7 +161,7 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 		String metsURL5 = mh.getMetsHref(fileElement5);
 		assertTrue(metsURL5.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/_12b1c1ce98f2726c6d9c91d0e589979d.jpg"));
 		assertEquals("URL", mh.getMetsLoctype(fileElement5));
-		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMetsMimetype(fileElement5));
+		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMimetypeInMets(fileElement5));
 		
 		
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();

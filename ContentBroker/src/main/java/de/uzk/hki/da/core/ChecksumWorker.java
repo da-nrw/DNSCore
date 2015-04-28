@@ -24,14 +24,11 @@ package de.uzk.hki.da.core;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.hibernate.Session;
 import org.slf4j.MDC;
 
 import de.uzk.hki.da.grid.GridFacade;
-import de.uzk.hki.da.grid.IrodsCommandLineConnector;
-import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;

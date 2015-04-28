@@ -61,7 +61,7 @@ public class MetadataHelper {
 				.getAttributeValue("href", XLINK_NS);
 	}
 	
-	public String getMetsMimetype(Element fileElement){
+	public String getMimetypeInMets(Element fileElement){
 		return fileElement.getAttributeValue("MIMETYPE");
 	}
 	
