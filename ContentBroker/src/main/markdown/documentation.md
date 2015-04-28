@@ -51,7 +51,6 @@ the releases page, follow the source code link for the corresponding version and
 * SIP specification ([english](specification_sip.md)|[german](specification_sip.de.md))
 * DIP specification ([english](specification_dip.md))
 * Publicaton metadata - specification ([english](specification_publication_metadata.md))
-* DNSCore feature list ([english](features.md))
 * Description of the delta feature ([english](the_delta_feature.md))
 
 #### Using DNSCore<br>[End Users]
