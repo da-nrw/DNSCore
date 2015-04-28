@@ -25,6 +25,7 @@ package de.uzk.hki.da.grid;
 import java.io.File;
 import java.io.IOException;
 
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 
 
@@ -81,6 +82,7 @@ public interface GridFacade {
 	 * @param gridFileAddress address of source file in grid (excluding zone prefix)
 	 * @return true, if is valid
 	 * @author: Jens Peters
+	 * @deprecated
 	 */
 	abstract boolean isValid(String gridFileAddress);
 	
@@ -103,10 +105,29 @@ public interface GridFacade {
 	
 	abstract long getFileSize(String address_dest) throws java.io.IOException ; 
 	
-	
+	/**
+	 * Gets checksum in custody 
+	 * @author Jens Peters
+	 * @param address_dest
+	 * @return
+	 */
 	abstract String getChecksumInCustody(String address_dest);
 
+	/**
+	 * recompute and get Chekcsum in custody
+	 * @author Jens Peters
+	 * @param address_dest
+	 * @return
+	 */
 	abstract String reComputeAndGetChecksumInCustody(String address_dest);
 	
+	abstract boolean distribute(Node node, File fileToDistribute, String address_dest, StoragePolicy sp);
+	
+	/**
+	 * tests, if file exists
+	 * @author Jens Peters
+	 * @param address_dest
+	 * @return
+	 */
 	abstract boolean exists(String address_dest);
 }

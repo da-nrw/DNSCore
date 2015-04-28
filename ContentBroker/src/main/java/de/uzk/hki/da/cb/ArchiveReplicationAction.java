@@ -64,16 +64,12 @@ public class ArchiveReplicationAction extends AbstractAction {
 		sp.setAdminEmail(n.getAdmin().getEmailAddress());
 		sp.setNodeName(n.getName());
 		sp.setCommonStorageRescName(n.getReplDestinations());
-		try {
-			Path newFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), filename);
-			if (gridRoot.put(new File(newFilePath.toString()), 
+		
+		Path newFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), filename);
+		if (gridRoot.distribute(n,new File(newFilePath.toString()), 
 					target.toString(), sp )) {
 					new File(newFilePath.toString()).delete();
-			}
-		} catch (IOException e) {
-			throw new RuntimeException("Error while putting file into grid or work deletion! ",e);
-		}
-		
+		} else return false;
 		return true;
 	}
 	

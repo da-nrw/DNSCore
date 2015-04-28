@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.utils.MD5Checksum;
 
@@ -44,8 +45,6 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 	/** The logger. */
 	private static Logger logger = LoggerFactory
 			.getLogger(IrodsGridFacade.class);
-	
-	
 	
 	/* (non-Javadoc)
 	 * @see de.uzk.hki.da.grid.IrodsGridFacadeBase#put(java.io.File, java.lang.String)
@@ -213,6 +212,26 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		return iclc.exists(gridPath);
 	}
 	
+	@Override
+	public boolean distribute(Node node, File fileToDistribute, String address_dest, StoragePolicy sp) {
+		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
+		if (!address_dest.startsWith("/")) address_dest = "/" + address_dest;
+		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + address_dest;
+		
+		String destCollection = FilenameUtils.getFullPath(gridPath);
+		
+		if (!iclc.exists(destCollection)) {
+			logger.debug("creating Coll " + destCollection);
+			iclc.mkCollection(destCollection);
+		}
+		if (iclc.put(fileToDistribute, gridPath, sp.getCommonStorageRescName())) {
+			for (Node cn: node.getCooperatingNodes()) {
+				CreateCopyJob cj = new CreateCopyJob();
+				cj.createCopyJob(gridPath, cn.getIdentifier(), node.getIdentifier());
+			}
+			return true;
+		} else return false;
+	}
 	
 
 }

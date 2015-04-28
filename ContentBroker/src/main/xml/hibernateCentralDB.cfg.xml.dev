@@ -41,7 +41,7 @@
  <mapping class="de.uzk.hki.da.model.Role"/>
  <mapping class="de.uzk.hki.da.model.Copy"/>
  <mapping class="de.uzk.hki.da.model.Message"/>
-
+ <mapping class="de.uzk.hki.da.model.CopyJob"/>
  
 </session-factory>
 </hibernate-configuration>
