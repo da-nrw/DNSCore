@@ -67,8 +67,8 @@ public class XMPCollectorTests {
 	@Test
 	public void test() throws IOException{
 		
-		DAFile xmp = new DAFile(o.getLatestPackage(),"1+a","abc.xmp");
-		target = new DAFile(o.getLatestPackage(),"1+a","target.rdf");
+		DAFile xmp = new DAFile("1+a","abc.xmp");
+		target = new DAFile("1+a","target.rdf");
 		
 		List<DAFile> xmps = new ArrayList<DAFile>();
 		xmps.add(xmp);

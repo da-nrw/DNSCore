@@ -870,7 +870,6 @@ public class Object {
 	public void reattach(){
 		for (Package p:packages){
 			p.setTransientBackRefToObject(this);
-			p.reattachPaths();
 		}
 	}
 

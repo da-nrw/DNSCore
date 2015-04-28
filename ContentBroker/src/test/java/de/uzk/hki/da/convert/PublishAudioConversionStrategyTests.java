@@ -100,7 +100,7 @@ public class PublishAudioConversionStrategyTests {
 		strategy.setObject(o);
 		
 		ConversionInstruction ci = new ConversionInstruction();
-		ci.setSource_file(new DAFile(o.getLatestPackage(),"a","audiofile.wav"));
+		ci.setSource_file(new DAFile("a","audiofile.wav"));
 		ci.setTarget_folder("target/");
 		strategy.convertFile(new WorkArea(n,o),ci);
 	}

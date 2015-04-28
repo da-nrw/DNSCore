@@ -95,7 +95,7 @@ public class PdfConversionStrategy implements ConversionStrategy {
 		if (pi.getExitValue()!=0) throw new RuntimeException("GS command not succeeded");
 
 		if (result.exists()) {
-			DAFile daf = new DAFile(object.getLatestPackage(), object.getPath("newest").getLastElement(),
+			DAFile daf = new DAFile( object.getPath("newest").getLastElement(),
 					StringUtilities.slashize(ci.getTarget_folder())
 							+ result.getName());
 			logger.debug("new dafile:" + daf);

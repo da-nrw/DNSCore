@@ -51,7 +51,7 @@ public class PublishImageMultipageTIFFTests {
 		ProcessInformation pi = new ProcessInformation();
 		pi.setExitValue(0);
 		CommandLineConnector cli = mock ( CommandLineConnector.class );
-		DAFile sourceFile = new DAFile(o.getLatestPackage(),"source","ALVR{}_Nr_4557_Aufn_249.tif");
+		DAFile sourceFile = new DAFile("source","ALVR{}_Nr_4557_Aufn_249.tif");
 		
 		String cmdPublic[] = new String[]{
 				"convert",

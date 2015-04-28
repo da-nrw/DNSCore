@@ -101,8 +101,8 @@ public class PublishXSLTConversionStrategy implements ConversionStrategy {
 			targetFileName += "_" + ci.getConversion_routine().getName();
 		
 		List<Event> results = new ArrayList<Event>();
-		DAFile publFile = new DAFile(object.getLatestPackage(),C.WA_DIP+"/public",ci.getTarget_folder() + "/" + targetFileName + ".xml");
-		DAFile instFile = new DAFile(object.getLatestPackage(),C.WA_DIP+"/institution",ci.getTarget_folder() + "/" + targetFileName + ".xml");
+		DAFile publFile = new DAFile(C.WA_DIP+"/public",ci.getTarget_folder() + "/" + targetFileName + ".xml");
+		DAFile instFile = new DAFile(C.WA_DIP+"/institution",ci.getTarget_folder() + "/" + targetFileName + ".xml");
 
 		new File(wa.dataPath()+"/"+C.WA_DIP+"/public/"+ci.getTarget_folder()).mkdirs();
 		new File(wa.dataPath()+"/"+C.WA_DIP+"/institution/"+ci.getTarget_folder()).mkdirs();

@@ -155,8 +155,8 @@ public class RestartIngestWorkflowActionTests extends ConcreteActionUnitTest{
 	
 	@Test
 	public void clearEventsAndFiles() throws IOException{
-		DAFile src = new DAFile(null,"","");
-		DAFile trg = new DAFile(null,"","");
+		DAFile src = new DAFile("","");
+		DAFile trg = new DAFile("","");
 		o.getLatestPackage().getFiles().add(src);
 		o.getLatestPackage().getFiles().add(trg);
 		Event e = new Event();

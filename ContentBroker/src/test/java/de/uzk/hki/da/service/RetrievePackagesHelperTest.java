@@ -92,37 +92,37 @@ public class RetrievePackagesHelperTest {
 			System.out.println("Object has Package "+p.getName());
 			
 			if (p.getName().equals("1")){
-				assertTrue(p.getFiles().contains(new DAFile(null,"a","pic1.txt")));
-				assertTrue(p.getFiles().contains(new DAFile(null,"b","pic2.txt")));
-				assertFalse(p.getFiles().contains(new DAFile(null,"c","pic3.txt")));
-				assertFalse(p.getFiles().contains(new DAFile(null,"d","pic4.txt")));
-				assertFalse(p.getFiles().contains(new DAFile(null,"e","pic1.txt")));
-				assertFalse(p.getFiles().contains(new DAFile(null,"f","folder1/pic5.txt")));
-				assertFalse(p.getFiles().contains(new DAFile(null,"f","folder2/pic5.txt")));
-				assertFalse(p.getFiles().contains(new DAFile(null,"f","pic3.txt")));
+				assertTrue(p.getFiles().contains(new DAFile("a","pic1.txt")));
+				assertTrue(p.getFiles().contains(new DAFile("b","pic2.txt")));
+				assertFalse(p.getFiles().contains(new DAFile("c","pic3.txt")));
+				assertFalse(p.getFiles().contains(new DAFile("d","pic4.txt")));
+				assertFalse(p.getFiles().contains(new DAFile("e","pic1.txt")));
+				assertFalse(p.getFiles().contains(new DAFile("f","folder1/pic5.txt")));
+				assertFalse(p.getFiles().contains(new DAFile("f","folder2/pic5.txt")));
+				assertFalse(p.getFiles().contains(new DAFile("f","pic3.txt")));
 				checked1=true;
 			}
 			if (p.getName().equals("2")){
-				assertFalse(p.getFiles().contains(new DAFile(null,"a","pic1.txt")));
-				assertFalse(p.getFiles().contains(new DAFile(null,"b","pic2.txt")));
-				assertTrue(p.getFiles().contains(new DAFile(null,"c","pic3.txt")));
-				assertTrue(p.getFiles().contains(new DAFile(null,"d","pic4.txt")));
-				assertFalse(p.getFiles().contains(new DAFile(null,"e","pic1.txt")));
-				assertFalse(p.getFiles().contains(new DAFile(null,"f","folder1/pic5.txt")));
-				assertFalse(p.getFiles().contains(new DAFile(null,"f","folder2/pic5.txt")));
-				assertFalse(p.getFiles().contains(new DAFile(null,"f","pic3.txt")));
+				assertFalse(p.getFiles().contains(new DAFile("a","pic1.txt")));
+				assertFalse(p.getFiles().contains(new DAFile("b","pic2.txt")));
+				assertTrue(p.getFiles().contains(new DAFile("c","pic3.txt")));
+				assertTrue(p.getFiles().contains(new DAFile("d","pic4.txt")));
+				assertFalse(p.getFiles().contains(new DAFile("e","pic1.txt")));
+				assertFalse(p.getFiles().contains(new DAFile("f","folder1/pic5.txt")));
+				assertFalse(p.getFiles().contains(new DAFile("f","folder2/pic5.txt")));
+				assertFalse(p.getFiles().contains(new DAFile("f","pic3.txt")));
 				checked2=true;
 				
 			}
 			if (p.getName().equals("3")){
-				assertFalse(p.getFiles().contains(new DAFile(null,"a","pic1.txt")));
-				assertFalse(p.getFiles().contains(new DAFile(null,"b","pic2.txt")));
-				assertFalse(p.getFiles().contains(new DAFile(null,"c","pic3.txt")));
-				assertFalse(p.getFiles().contains(new DAFile(null,"d","pic4.txt")));
-				assertTrue(p.getFiles().contains(new DAFile(null,"e","pic1.txt")));
-				assertTrue(p.getFiles().contains(new DAFile(null,"f","folder1/pic5.txt")));
-				assertTrue(p.getFiles().contains(new DAFile(null,"f","folder2/pic5.txt")));
-				assertTrue(p.getFiles().contains(new DAFile(null,"f","pic3.txt")));
+				assertFalse(p.getFiles().contains(new DAFile("a","pic1.txt")));
+				assertFalse(p.getFiles().contains(new DAFile("b","pic2.txt")));
+				assertFalse(p.getFiles().contains(new DAFile("c","pic3.txt")));
+				assertFalse(p.getFiles().contains(new DAFile("d","pic4.txt")));
+				assertTrue(p.getFiles().contains(new DAFile("e","pic1.txt")));
+				assertTrue(p.getFiles().contains(new DAFile("f","folder1/pic5.txt")));
+				assertTrue(p.getFiles().contains(new DAFile("f","folder2/pic5.txt")));
+				assertTrue(p.getFiles().contains(new DAFile("f","pic3.txt")));
 				checked3=true;
 			}
 		}

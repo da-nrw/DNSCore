@@ -95,7 +95,7 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 				throw new RuntimeException("command not succeeded");
 			
 			
-			DAFile f1 = new DAFile(object.getLatestPackage(), pips+"/"+audience.toLowerCase(), StringUtilities.slashize(ci.getTarget_folder()) + 
+			DAFile f1 = new DAFile( pips+"/"+audience.toLowerCase(), StringUtilities.slashize(ci.getTarget_folder()) + 
 					FilenameUtils.getBaseName(wa.toFile(ci.getSource_file()).getAbsolutePath()) + ".mp3");
 					
 			Event e = new Event();

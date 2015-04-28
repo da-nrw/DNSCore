@@ -64,7 +64,7 @@ public class PrepareSendToPresenterActionTests extends ConcreteActionUnitTest{
 		o.setIdentifier("identifier_1");
 		Node dipNode = new Node(); dipNode.setName("dipNode");
 
-		DAFile premis = new DAFile(o.getLatestPackage(),"rep_b","premis.xml");
+		DAFile premis = new DAFile("rep_b","premis.xml");
 		o.getLatestPackage().getFiles().add(premis);
 		
 		

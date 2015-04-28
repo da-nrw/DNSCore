@@ -114,7 +114,7 @@ public class PublishXsltConversionStrategyTests {
 				0,
 				"", routine, null);
 		
-		ci.setSource_file(new DAFile(obj.getLatestPackage(),"","ead_correct.xml"));
+		ci.setSource_file(new DAFile("","ead_correct.xml"));
 		strategy.setStylesheet(workAreaRootPath + "/ead_to_dc.xsl");
 		strategy.convertFile(new WorkArea(n,obj),ci);
 		
@@ -140,7 +140,7 @@ public class PublishXsltConversionStrategyTests {
 			ConversionInstruction ci = new ConversionInstruction(
 					0, "", routine, null);
 			
-			ci.setSource_file(new DAFile(obj.getLatestPackage(),"","ead_not-well-formed.xml"));
+			ci.setSource_file(new DAFile("","ead_not-well-formed.xml"));
 			strategy.setStylesheet(workAreaRootPath + "/ead_to_dc.xsl");
 			strategy.convertFile(new WorkArea(n,obj),ci);
 			
@@ -167,7 +167,7 @@ public class PublishXsltConversionStrategyTests {
 				0,
 				"", routine, null);
 		
-		ci.setSource_file(new DAFile(obj.getLatestPackage(),"","ead_not-valid.xml"));
+		ci.setSource_file(new DAFile("","ead_not-valid.xml"));
 		strategy.setStylesheet(workAreaRootPath + "/ead_to_dc.xsl");
 		strategy.convertFile(new WorkArea(n,obj),ci);
 		
@@ -194,7 +194,7 @@ public class PublishXsltConversionStrategyTests {
 					0, 
 					"", routine, null);
 			
-			ci.setSource_file(new DAFile(obj.getLatestPackage(),"","ead_charset-errors.xml"));
+			ci.setSource_file(new DAFile("","ead_charset-errors.xml"));
 			strategy.setStylesheet(workAreaRootPath + "/ead_to_dc.xsl");
 			strategy.convertFile(new WorkArea(n,obj),ci);
 			

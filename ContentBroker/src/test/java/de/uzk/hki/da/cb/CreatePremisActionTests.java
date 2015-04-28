@@ -130,11 +130,11 @@ public class CreatePremisActionTests {
 		
 		
 		
-		DAFile a = new DAFile(pkg2,"2013_07_31+11_54+a","140864.tif");
+		DAFile a = new DAFile("2013_07_31+11_54+a","140864.tif");
 		a.setFormatPUID("fmt/10");
-		DAFile b = new DAFile(pkg2,"2013_07_31+11_54+b","140864.tif");
+		DAFile b = new DAFile("2013_07_31+11_54+b","140864.tif");
 		b.setFormatPUID("fmt/10");
-		DAFile c = new DAFile(pkg2,"2013_07_31+11_54+a","premis.xml");
+		DAFile c = new DAFile("2013_07_31+11_54+a","premis.xml");
 		c.setFormatPUID("da-fmt/1");
 		
 		pkg2.getFiles().add(a);

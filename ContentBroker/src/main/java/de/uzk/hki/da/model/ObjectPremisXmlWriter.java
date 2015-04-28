@@ -115,7 +115,7 @@ public class ObjectPremisXmlWriter {
 		   	// generate files
 			for (Package pkg : object.getPackages()) 
 				for (DAFile fi : pkg.getFiles())
-					createFileElement(fi, object);
+					createFileElement(fi, object, pkg);
 		   	
 			generateEvents(object);
 						
@@ -199,7 +199,7 @@ public class ObjectPremisXmlWriter {
 	 * @author Thomas Kleinke
 	 * @throws FileNotFoundException 
 	 */
-	private void createFileElement(DAFile f, Object object) throws XMLStreamException, FileNotFoundException{
+	private void createFileElement(DAFile f, Object object, Package pkg) throws XMLStreamException, FileNotFoundException{
 		
 		logger.debug("Start serializing file \"" + f.toString() + "\" as object element to PREMIS");
 		
@@ -248,7 +248,7 @@ public class ObjectPremisXmlWriter {
 		createCloseElement(2);// close objectCharacteristics
 		
 		String originalName = null;
-		for (Event e : f.getPackage().getEvents()) {
+		for (Event e : pkg.getEvents()) {
 			if (e.getType().toUpperCase().equals(C.EVENT_TYPE_CONVERT)
 					&& e.getTarget_file().getRelative_path().equals(f.getRelative_path()))
 				originalName = FilenameUtils.getName(e.getSource_file().getRelative_path());
@@ -272,7 +272,7 @@ public class ObjectPremisXmlWriter {
 			createOpenElement("relatedObjectIdentification", 3);
 				createTextElement("relatedObjectIdentifierType", "PACKAGE_NAME", 4);
 				createTextElement("relatedObjectIdentifierValue",
-						object.getIdentifier() + ".pack_" + f.getPackage().getName() + ".tar", 4);
+						object.getIdentifier() + ".pack_" + pkg.getName() + ".tar", 4);
 			createCloseElement(3);
 		createCloseElement(2);
 		

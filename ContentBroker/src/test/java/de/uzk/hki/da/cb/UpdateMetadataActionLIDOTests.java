@@ -60,36 +60,36 @@ public class UpdateMetadataActionLIDOTests extends ConcreteActionUnitTest{
 		action.setRepNames(repNames);
 
 		FileUtils.copyFileToDirectory(Path.make(WORK_AREA_ROOT_PATH,"work/src/LIDO-Testexport2014-07-04-FML-Auswahl.xml").toFile(), Path.make(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_1_B_REP).toFile());
-		DAFile f1 = new DAFile(o.getLatestPackage(),_1_B_REP,"LIDO-Testexport2014-07-04-FML-Auswahl.xml");
+		DAFile f1 = new DAFile(_1_B_REP,"LIDO-Testexport2014-07-04-FML-Auswahl.xml");
 		de.uzk.hki.da.model.Document doc1 = new de.uzk.hki.da.model.Document(f1);
 		o.addDocument(doc1);
 		o.getLatestPackage().getFiles().add(f1);
 		
-		DAFile f2 = new DAFile(o.getLatestPackage(),_1_B_REP,"LVR_DFG-Alltagskultur_0000050177.tif");
+		DAFile f2 = new DAFile(_1_B_REP,"LVR_DFG-Alltagskultur_0000050177.tif");
 		de.uzk.hki.da.model.Document doc2 = new de.uzk.hki.da.model.Document(f2);
 		o.addDocument(doc2);
 		
 		event1 = new Event();
 		event1.setSource_file(f2);
-		event1.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_PUBLIC,"renamed0000050177.tif"));
+		event1.setTarget_file(new DAFile(_TEMP_PIP_REP_PUBLIC,"renamed0000050177.tif"));
 		event1.setType("CONVERT");
 		
-		DAFile f4 = new DAFile(o.getLatestPackage(),_1_B_REP,"LVR_DFG-Alltagskultur_0000050178.tif");
+		DAFile f4 = new DAFile(_1_B_REP,"LVR_DFG-Alltagskultur_0000050178.tif");
 		de.uzk.hki.da.model.Document doc4 = new de.uzk.hki.da.model.Document(f4);
 		o.addDocument(doc4);
 		
 		event2 = new Event();
-		event2.setSource_file(new DAFile(o.getLatestPackage(),_1_B_REP,"LVR_DFG-Alltagskultur_0000050178.tif"));
-		event2.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_PUBLIC,"renamed0000050178.tif"));
+		event2.setSource_file(new DAFile(_1_B_REP,"LVR_DFG-Alltagskultur_0000050178.tif"));
+		event2.setTarget_file(new DAFile(_TEMP_PIP_REP_PUBLIC,"renamed0000050178.tif"));
 		event2.setType("CONVERT");
 		
-		DAFile f5 = new DAFile(o.getLatestPackage(),_1_B_REP,"Test.tif");
+		DAFile f5 = new DAFile(_1_B_REP,"Test.tif");
 		de.uzk.hki.da.model.Document doc5 = new de.uzk.hki.da.model.Document(f5);
 		o.addDocument(doc5);
 		
 		event3 = new Event();
-		event3.setSource_file(new DAFile(o.getLatestPackage(),_1_B_REP,"lvr_dfg-alltagskultur_0000050178"));
-		event3.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_PUBLIC,"renamed0000050178_1.tif"));
+		event3.setSource_file(new DAFile(_1_B_REP,"lvr_dfg-alltagskultur_0000050178"));
+		event3.setTarget_file(new DAFile(_TEMP_PIP_REP_PUBLIC,"renamed0000050178_1.tif"));
 		event3.setType("CONVERT");
 		
 		o.getLatestPackage().getEvents().add(event1);

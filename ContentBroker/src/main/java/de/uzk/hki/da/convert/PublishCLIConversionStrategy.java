@@ -76,7 +76,7 @@ public class PublishCLIConversionStrategy extends CLIConversionStrategy {
 			
 			String targetSuffix= ci.getConversion_routine().getTarget_suffix();
 			if (targetSuffix.equals("*")) targetSuffix= FilenameUtils.getExtension(wa.toFile(ci.getSource_file()).getAbsolutePath());
-			DAFile result = new DAFile(pkg, repName,
+			DAFile result = new DAFile( repName,
 					ci.getTarget_folder()+"/"+FilenameUtils.removeExtension(Matcher.quoteReplacement(
 					FilenameUtils.getName(wa.toFile(ci.getSource_file()).getAbsolutePath()))) + "." + targetSuffix);
 			

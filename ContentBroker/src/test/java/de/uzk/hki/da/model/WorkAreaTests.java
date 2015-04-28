@@ -126,7 +126,7 @@ public class WorkAreaTests {
 	public void toFile() {
 		final String repName="rep+a";
 		final String relativePath="sub/file.txt"; 
-		DAFile daf = new DAFile(null,repName,relativePath);
+		DAFile daf = new DAFile(repName,relativePath);
 		File r = wa.toFile(daf);
 		assertEquals(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,o.getContractor().getShort_name(),o.getIdentifier(),C.WA_DATA,repName,relativePath),r);
 	}

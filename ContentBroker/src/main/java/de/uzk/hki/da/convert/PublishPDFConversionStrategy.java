@@ -67,7 +67,7 @@ public class PublishPDFConversionStrategy extends PublishConversionStrategyBase 
 			
 			String audience_lc = audience.toLowerCase();
 			
-			DAFile target = new DAFile(object.getLatestPackage(),pips+"/"+audience_lc,StringUtilities.slashize(ci.getTarget_folder())+
+			DAFile target = new DAFile( pips+"/"+audience_lc,StringUtilities.slashize(ci.getTarget_folder())+
 					FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix());
 			wa.toFile(target).getParentFile().mkdirs();
 			

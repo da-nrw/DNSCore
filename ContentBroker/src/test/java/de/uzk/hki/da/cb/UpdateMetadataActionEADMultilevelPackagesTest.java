@@ -86,93 +86,93 @@ public class UpdateMetadataActionEADMultilevelPackagesTest extends ConcreteActio
 		FileUtils.copyFileToDirectory(Path.make(WORK_AREA_ROOT_PATH,"work/src/mets_361/ALVR_Nr_4547_Aufn_006.tif").toFile(), Path.make(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_1_B_REP,"mets_361/").toFile());
 		FileUtils.copyFileToDirectory(Path.make(WORK_AREA_ROOT_PATH,"work/src/EAD_Export.XML").toFile(), Path.make(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_1_B_REP,"").toFile());
 		
-		DAFile f2 = new DAFile(o.getLatestPackage(),_1_B_REP,"mets_361/mets_2_32044.xml");
+		DAFile f2 = new DAFile(_1_B_REP,"mets_361/mets_2_32044.xml");
 		o.getLatestPackage().getFiles().add(f2);
 		de.uzk.hki.da.model.Document doc2 = new de.uzk.hki.da.model.Document(f2);
 		o.addDocument(doc2);
 		
-		DAFile f3 = new DAFile(o.getLatestPackage(),_1_B_REP,"mets_361/mets_2_32045.xml");
+		DAFile f3 = new DAFile(_1_B_REP,"mets_361/mets_2_32045.xml");
 		o.getLatestPackage().getFiles().add(f3);
 		de.uzk.hki.da.model.Document doc3 = new de.uzk.hki.da.model.Document(f3);
 		o.addDocument(doc3);
 		
-		DAFile f4 = new DAFile(o.getLatestPackage(),_1_B_REP,"mets_361/mets_2_32046.xml");
+		DAFile f4 = new DAFile(_1_B_REP,"mets_361/mets_2_32046.xml");
 		o.getLatestPackage().getFiles().add(f4);
 		de.uzk.hki.da.model.Document doc4 = new de.uzk.hki.da.model.Document(f4);
 		o.addDocument(doc4);
 		
-		DAFile f5 = new DAFile(o.getLatestPackage(),_1_B_REP,"mets_361/mets_2_32047.xml");
+		DAFile f5 = new DAFile(_1_B_REP,"mets_361/mets_2_32047.xml");
 		o.getLatestPackage().getFiles().add(f5);
 		de.uzk.hki.da.model.Document doc5 = new de.uzk.hki.da.model.Document(f5);
 		o.addDocument(doc5);
 		
-		DAFile f6 = new DAFile(o.getLatestPackage(),_1_B_REP,"mets_361/mets_2_32048.xml");
+		DAFile f6 = new DAFile(_1_B_REP,"mets_361/mets_2_32048.xml");
 		o.getLatestPackage().getFiles().add(f6);
 		de.uzk.hki.da.model.Document doc6 = new de.uzk.hki.da.model.Document(f6);
 		o.addDocument(doc6);
 		
-		DAFile f7 = new DAFile(o.getLatestPackage(),_1_B_REP,"EAD_Export.XML");
+		DAFile f7 = new DAFile(_1_B_REP,"EAD_Export.XML");
 		o.getLatestPackage().getFiles().add(f7);
 		de.uzk.hki.da.model.Document doc7 = new de.uzk.hki.da.model.Document(f7);
 		o.addDocument(doc7);
 		
 		event2 = new Event();
-		event2.setSource_file(new DAFile(o.getLatestPackage(),_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_002.tif"));
-		event2.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_PUBLIC,"renamed002.tif"));
+		event2.setSource_file(new DAFile(_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_002.tif"));
+		event2.setTarget_file(new DAFile(_TEMP_PIP_REP_PUBLIC,"renamed002.tif"));
 		event2.setType("CONVERT");
 		o.getLatestPackage().getEvents().add(event2);
 		
 		event21 = new Event();
-		event21.setSource_file(new DAFile(o.getLatestPackage(),_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_002.tif"));
-		event21.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_INSTITUTION,"renamed002.tif"));
+		event21.setSource_file(new DAFile(_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_002.tif"));
+		event21.setTarget_file(new DAFile(_TEMP_PIP_REP_INSTITUTION,"renamed002.tif"));
 		event21.setType("CONVERT");
 		o.getLatestPackage().getEvents().add(event21);
 		
 		event3 = new Event();
-		event3.setSource_file(new DAFile(o.getLatestPackage(),_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_003.tif"));
-		event3.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_PUBLIC,"renamed003.tif"));
+		event3.setSource_file(new DAFile(_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_003.tif"));
+		event3.setTarget_file(new DAFile(_TEMP_PIP_REP_PUBLIC,"renamed003.tif"));
 		event3.setType("CONVERT");
 		o.getLatestPackage().getEvents().add(event3);
 		
 		event31 = new Event();
-		event31.setSource_file(new DAFile(o.getLatestPackage(),_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_003.tif"));
-		event31.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_INSTITUTION,"renamed003.tif"));
+		event31.setSource_file(new DAFile(_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_003.tif"));
+		event31.setTarget_file(new DAFile(_TEMP_PIP_REP_INSTITUTION,"renamed003.tif"));
 		event31.setType("CONVERT");
 		o.getLatestPackage().getEvents().add(event31);
 		
 		event4 = new Event();
-		event4.setSource_file(new DAFile(o.getLatestPackage(),_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_004.tif"));
-		event4.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_PUBLIC,"renamed004.tif"));
+		event4.setSource_file(new DAFile(_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_004.tif"));
+		event4.setTarget_file(new DAFile(_TEMP_PIP_REP_PUBLIC,"renamed004.tif"));
 		event4.setType("CONVERT");
 		o.getLatestPackage().getEvents().add(event4);
 		
 		event41 = new Event();
-		event41.setSource_file(new DAFile(o.getLatestPackage(),_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_004.tif"));
-		event41.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_INSTITUTION,"renamed004.tif"));
+		event41.setSource_file(new DAFile(_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_004.tif"));
+		event41.setTarget_file(new DAFile(_TEMP_PIP_REP_INSTITUTION,"renamed004.tif"));
 		event41.setType("CONVERT");
 		o.getLatestPackage().getEvents().add(event41);
 		
 		event5 = new Event();
-		event5.setSource_file(new DAFile(o.getLatestPackage(),_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_005.tif"));
-		event5.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_PUBLIC,"renamed005.tif"));
+		event5.setSource_file(new DAFile(_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_005.tif"));
+		event5.setTarget_file(new DAFile(_TEMP_PIP_REP_PUBLIC,"renamed005.tif"));
 		event5.setType("CONVERT");
 		o.getLatestPackage().getEvents().add(event5);
 		
 		event51 = new Event();
-		event51.setSource_file(new DAFile(o.getLatestPackage(),_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_005.tif"));
-		event51.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_INSTITUTION,"renamed005.tif"));
+		event51.setSource_file(new DAFile(_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_005.tif"));
+		event51.setTarget_file(new DAFile(_TEMP_PIP_REP_INSTITUTION,"renamed005.tif"));
 		event51.setType("CONVERT");
 		o.getLatestPackage().getEvents().add(event51);
 		
 		event6 = new Event();
-		event6.setSource_file(new DAFile(o.getLatestPackage(),_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_006.tif"));
-		event6.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_PUBLIC,"renamed006.tif"));
+		event6.setSource_file(new DAFile( _1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_006.tif"));
+		event6.setTarget_file(new DAFile( _TEMP_PIP_REP_PUBLIC,"renamed006.tif"));
 		event6.setType("CONVERT");
 		o.getLatestPackage().getEvents().add(event6);
 		
 		event61 = new Event();
-		event61.setSource_file(new DAFile(o.getLatestPackage(),_1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_006.tif"));
-		event61.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_INSTITUTION,"renamed006.tif"));
+		event61.setSource_file(new DAFile( _1_B_REP,"mets_361/ALVR_Nr_4547_Aufn_006.tif"));
+		event61.setTarget_file(new DAFile( _TEMP_PIP_REP_INSTITUTION,"renamed006.tif"));
 		event61.setType("CONVERT");
 		o.getLatestPackage().getEvents().add(event61);
 		

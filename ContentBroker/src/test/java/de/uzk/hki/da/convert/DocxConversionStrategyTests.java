@@ -145,7 +145,7 @@ public class DocxConversionStrategyTests {
 			
 		cr.setTarget_suffix("pdf");
 		ci.setConversion_routine(cr);
-		ci.setSource_file(new DAFile(o.getLatestPackage(),"rep+a","Docx.docx"));
+		ci.setSource_file(new DAFile("rep+a","Docx.docx"));
 		ci.setTarget_folder("");
 		
 		cs.convertFile(new WorkArea(n,o),ci);

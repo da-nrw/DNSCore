@@ -112,7 +112,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 				new File(FilenameUtils.getFullPath(result.getAbsolutePath())), baseName+"*."+extension);
 		
 		for (File f : results){
-			DAFile daf = new DAFile(pkg,object.getPath("newest").getLastElement(),StringUtilities.slashize(ci.getTarget_folder())+f.getName());
+			DAFile daf = new DAFile(object.getPath("newest").getLastElement(),StringUtilities.slashize(ci.getTarget_folder())+f.getName());
 			logger.debug("new dafile:"+daf);
 								
 			Event e = new Event();

@@ -89,7 +89,7 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 		
 		cmdPUBLIC = (String[]) ArrayUtils.addAll(cmdPUBLIC, getRestrictionParametersForAudience("PUBLIC"));
 		
-		DAFile pubFile = new DAFile(pkg, pips+"/public", StringUtilities.slashize(ci.getTarget_folder()) + 
+		DAFile pubFile = new DAFile( pips+"/public", StringUtilities.slashize(ci.getTarget_folder()) + 
 				FilenameUtils.getBaseName(wa.toFile(ci.getSource_file()).getAbsolutePath()) + ".mp4");
 		
 		if (!executeConversionTool(cmdPUBLIC, wa.toFile(pubFile)))
@@ -113,7 +113,7 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 
 		cmdINSTITUTION = (String[]) ArrayUtils.addAll(cmdINSTITUTION, getRestrictionParametersForAudience("INSTITUTION"));
 		
-		DAFile instFile = new DAFile(pkg, C.WA_DIP+"/institution", StringUtilities.slashize(ci.getTarget_folder()) + 
+		DAFile instFile = new DAFile( C.WA_DIP+"/institution", StringUtilities.slashize(ci.getTarget_folder()) + 
 				FilenameUtils.getBaseName(wa.toFile(ci.getSource_file()).getAbsolutePath()) + ".mp4");
 		
 		if (!executeConversionTool(cmdINSTITUTION, wa.toFile(instFile)))

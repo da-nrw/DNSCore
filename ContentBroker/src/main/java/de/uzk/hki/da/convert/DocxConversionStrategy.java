@@ -115,7 +115,7 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 		getHttpclient().postFileAndReadResponse(wa.toFile(ci.getSource_file()), result);
 		
 		if (result.exists()) {
-		DAFile daf = new DAFile(pkg,object.getPath("newest").getLastElement(),StringUtilities.slashize(ci.getTarget_folder())+result.getName());
+		DAFile daf = new DAFile(object.getPath("newest").getLastElement(),StringUtilities.slashize(ci.getTarget_folder())+result.getName());
 		logger.debug("new dafile:"+daf);
 							
 		// TODO Doing PDF/A Conversion with a temp file, due to recieve PDF 1.5 from MS instead of PDF/A . 

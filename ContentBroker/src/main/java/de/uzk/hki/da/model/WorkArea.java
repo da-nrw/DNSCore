@@ -160,7 +160,7 @@ public class WorkArea {
 			for (File fileSystemFile:getFilesOfRepresentationFS(rep.getName())){
 				
 				if (!existsAsAttachedDAFile(
-						new DAFile(null,rep.getName(),getRelativePath(fileSystemFile, rep.getName()))))
+						new DAFile(rep.getName(),getRelativePath(fileSystemFile, rep.getName()))))
 					consistent = false;
 			}
 		}

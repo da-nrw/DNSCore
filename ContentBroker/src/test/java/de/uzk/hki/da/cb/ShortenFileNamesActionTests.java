@@ -71,23 +71,23 @@ public class ShortenFileNamesActionTests extends ConcreteActionUnitTest{
 		
 		Event event1 = new Event();
 		event1.setType("CONVERT");
-		event1.setSource_file(new DAFile(o.getLatestPackage(), "rep", "a.txt"));
-		event1.setTarget_file(new DAFile(o.getLatestPackage(), C.WA_DIP+"/public", "a.txt"));
+		event1.setSource_file(new DAFile("rep", "a.txt"));
+		event1.setTarget_file(new DAFile(C.WA_DIP+"/public", "a.txt"));
 		o.getLatestPackage().getEvents().add(event1);
 		Event event2 = new Event();
 		event2.setType("CONVERT");
-		event2.setSource_file(new DAFile(o.getLatestPackage(), "rep", "b.txt"));
-		event2.setTarget_file(new DAFile(o.getLatestPackage(), C.WA_DIP+"/public", "b.txt"));
+		event2.setSource_file(new DAFile("rep", "b.txt"));
+		event2.setTarget_file(new DAFile(C.WA_DIP+"/public", "b.txt"));
 		Event event3 = new Event();
 		o.getLatestPackage().getEvents().add(event2);
 		event3.setType("CONVERT");
-		event3.setSource_file(new DAFile(o.getLatestPackage(), "rep", "a.txt"));
-		event3.setTarget_file(new DAFile(o.getLatestPackage(), C.WA_DIP+"/institution", "a.txt"));
+		event3.setSource_file(new DAFile("rep", "a.txt"));
+		event3.setTarget_file(new DAFile(C.WA_DIP+"/institution", "a.txt"));
 		Event event4 = new Event();
 		o.getLatestPackage().getEvents().add(event3);
 		event4.setType("CONVERT");
-		event4.setSource_file(new DAFile(o.getLatestPackage(), "rep", "b.txt"));
-		event4.setTarget_file(new DAFile(o.getLatestPackage(), C.WA_DIP+"/institution", "b.txt"));
+		event4.setSource_file(new DAFile("rep", "b.txt"));
+		event4.setTarget_file(new DAFile(C.WA_DIP+"/institution", "b.txt"));
 		o.getLatestPackage().getEvents().add(event4);
 		
 		action.implementation();

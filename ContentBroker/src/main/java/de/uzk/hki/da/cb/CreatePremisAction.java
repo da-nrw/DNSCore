@@ -162,7 +162,7 @@ public class CreatePremisAction extends AbstractAction {
 		if (!PremisXmlValidator.validatePremisFile(newPREMISXml))
 			throw new RuntimeException("PREMIS that has recently been created is not valid");
 		logger.trace("Successfully created premis file");
-		o.getLatestPackage().getFiles().add(new DAFile(o.getLatestPackage(),j.getRep_name()+"b","premis.xml"));
+		o.getLatestPackage().getFiles().add(new DAFile(j.getRep_name()+"b","premis.xml"));
 		
 		for (Package p : newPREMISObject.getPackages()){
 			logger.debug("pname:" + p.getName());

@@ -89,35 +89,35 @@ public class UpdateMetadataActionEADTests extends ConcreteActionUnitTest{
 
 		FileUtils.copyFileToDirectory(Path.make(WORK_AREA_ROOT_PATH,"work/src/mets_2_99.xml").toFile(), Path.make(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_1_B_REP).toFile());
 		FileUtils.copyFileToDirectory(Path.make(WORK_AREA_ROOT_PATH,"work/src/vda3.XML").toFile(), Path.make(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_1_B_REP).toFile());
-		DAFile f1 = new DAFile(o.getLatestPackage(),_1_B_REP,"mets_2_99.xml");
+		DAFile f1 = new DAFile(_1_B_REP,"mets_2_99.xml");
 		de.uzk.hki.da.model.Document doc1 = new de.uzk.hki.da.model.Document(f1);
 		o.addDocument(doc1);
 		o.getLatestPackage().getFiles().add(f1);
 		
-		DAFile f2 = new DAFile(o.getLatestPackage(),_1_B_REP,"ALVR_Nr_4547_Aufn_067.tif");
+		DAFile f2 = new DAFile(_1_B_REP,"ALVR_Nr_4547_Aufn_067.tif");
 		de.uzk.hki.da.model.Document doc2 = new de.uzk.hki.da.model.Document(f2);
 		o.addDocument(doc2);
 		o.getLatestPackage().getFiles().add(f2);
 		
-		DAFile f3 = new DAFile(o.getLatestPackage(),_1_B_REP,"vda3.XML");
+		DAFile f3 = new DAFile(_1_B_REP,"vda3.XML");
 		de.uzk.hki.da.model.Document doc3 = new de.uzk.hki.da.model.Document(f3);
 		o.addDocument(doc3);
 		o.getLatestPackage().getFiles().add(f3);
 		
-		f4 = new DAFile(o.getLatestPackage(),_1_B_REP,"alvr_Nr_4547_Aufn_067.tif");
+		f4 = new DAFile(_1_B_REP,"alvr_Nr_4547_Aufn_067.tif");
 		de.uzk.hki.da.model.Document doc4 = new de.uzk.hki.da.model.Document(f4);
 		o.addDocument(doc4);
 		o.getLatestPackage().getFiles().add(f4);
 		
 		event1 = new Event();
 		event1.setSource_file(f2);
-		event1.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_PUBLIC,"renamed067.tif"));
+		event1.setTarget_file(new DAFile(_TEMP_PIP_REP_PUBLIC,"renamed067.tif"));
 		event1.setType("CONVERT");
 		o.getLatestPackage().getEvents().add(event1);
 		
 		event2 = new Event();
 		event2.setSource_file(f2);
-		event2.setTarget_file(new DAFile(o.getLatestPackage(),_TEMP_PIP_REP_INSTITUTION,"renamed067.tif"));
+		event2.setTarget_file(new DAFile(_TEMP_PIP_REP_INSTITUTION,"renamed067.tif"));
 		event2.setType("CONVERT");
 		o.getLatestPackage().getEvents().add(event2);
 		
