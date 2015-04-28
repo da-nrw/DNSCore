@@ -233,7 +233,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 			HttpResponse response = httpClient.execute(deleteRequest);
 	
 			int statusCode = response.getStatusLine().getStatusCode();
-	        if (statusCode <200 && statusCode >300)   {
+	        if (statusCode < 200 && statusCode > 300)   {
 	            throw new RuntimeException("Failed : HTTP error code : "
 	                + response.getStatusLine().getStatusCode());
 	        }

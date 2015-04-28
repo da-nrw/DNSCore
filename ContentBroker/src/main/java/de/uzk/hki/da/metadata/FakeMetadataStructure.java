@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.jdom.JDOMException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.util.Path;
@@ -36,6 +38,10 @@ import de.uzk.hki.da.util.Path;
 
 public class FakeMetadataStructure extends MetadataStructure{
 
+	/** The logger. */
+	public Logger logger = LoggerFactory
+			.getLogger(FakeMetadataStructure.class);
+	
 	public FakeMetadataStructure(Path workPath,File metadataFile, List<Document> documents)
 			throws FileNotFoundException, JDOMException, IOException {
 		super(workPath, metadataFile, documents);

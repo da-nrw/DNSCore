@@ -41,6 +41,8 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -52,6 +54,10 @@ import de.uzk.hki.da.util.Path;
  */
 
 public class EadMetsMetadataStructure extends MetadataStructure{
+	
+	/** The logger. */
+	public Logger logger = LoggerFactory
+			.getLogger(EadMetsMetadataStructure.class);
 	
 	private String EAD_XPATH_EXPRESSION = 		"//daoloc/@href";
 	

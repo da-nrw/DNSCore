@@ -40,6 +40,8 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
 import de.uzk.hki.da.util.Path;
@@ -49,6 +51,10 @@ import de.uzk.hki.da.util.Path;
  */
 
 public class XMPMetadataStructure extends MetadataStructure{
+	
+	/** The logger. */
+	public Logger logger = LoggerFactory
+			.getLogger(XMPMetadataStructure.class);
 	
 	private static final Namespace RDF_NS = Namespace.getNamespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 	private File xmpFile;
