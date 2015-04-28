@@ -19,8 +19,6 @@
 
 package de.uzk.hki.da.format;
 
-import java.io.File;
-
 import de.uzk.hki.da.util.Path;
 
 /**
@@ -36,11 +34,5 @@ public interface FileWithFileFormat {
 
 	public void setSubformatIdentifier(String formatSecondaryAttribute);
 	
-	/**
-	 * @deprecated
-	 * @return
-	 */
-	public File toRegularFile();
-
 	Path getPath();
 }

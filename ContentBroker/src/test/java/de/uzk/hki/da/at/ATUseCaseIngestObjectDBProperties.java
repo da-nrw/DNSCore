@@ -34,7 +34,6 @@ import de.uzk.hki.da.model.Object;
 /**
  * @author Thomas KLeinke
  * @author Daniel M. de Oliveira
- *
  */
 public class ATUseCaseIngestObjectDBProperties extends AcceptanceTest{
 

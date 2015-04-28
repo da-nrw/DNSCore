@@ -19,8 +19,6 @@
 
 package de.uzk.hki.da.model;
 
-import java.io.File;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -160,22 +158,6 @@ public class DAFile implements FileWithFileFormat{
 		this.previousDAFile = previousDAFile;
 	}
 	
-	/**
-	 * To regular file.
-	 * @deprecated Use wa.toFile(dafile) instead 
-	 * @return the file
-	 * @author Daniel M. de Oliveira
-	 */
-	public File toRegularFile(){
-		assert (pkg != null); // TODO why did this did not work?
-		if (pkg==null) throw new IllegalStateException("Package not set");
-		if (pkg.getTransientBackRefToObject()==null) throw new IllegalStateException("back ref to obj in pkg not set");
-		
-		String repName = "";
-		if ((getRep_name() != null)&&(getRep_name() != ""))
-			repName = getRep_name() + "/";
-		return Path.make(pkg.getTransientBackRefToObject().getPath(),"data",repName,relative_path).toFile();
-	}
 		
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()

@@ -39,14 +39,12 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.utils.MD5Checksum;
 
 
 /**
@@ -221,7 +219,7 @@ public class ObjectPremisXmlWriter {
 			createTextElement("messageDigestOriginator", "ContentBroker", 4);
 		
 		createCloseElement(3);
-		createTextElement("size", Integer.toString((int) FileUtils.sizeOf(f.toRegularFile())), 3);
+		createTextElement("size", f.getSize(), 3);
 		
 		createOpenElement("format", 3);			
 			createOpenElement("formatRegistry", 4);

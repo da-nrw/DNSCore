@@ -32,8 +32,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.hibernate.Session;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.C;

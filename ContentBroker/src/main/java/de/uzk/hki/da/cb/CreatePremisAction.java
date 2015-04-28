@@ -50,6 +50,7 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PremisXmlValidator;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.MD5Checksum;
 
 /**
  * 
@@ -96,6 +97,9 @@ public class CreatePremisAction extends AbstractAction {
 		 for (Package pkg : o.getPackages()) 
 		   		for (DAFile fi : pkg.getFiles())
 			   		logger.debug(fi.toString());
+		 
+		determineSizeForAllFiles();
+		 
 		
 		Object newPREMISObject = new Object();
 		newPREMISObject.setTransientNodeRef(o.getTransientNodeRef());;
@@ -169,6 +173,17 @@ public class CreatePremisAction extends AbstractAction {
 		
 		return true;
 	}
+	
+	
+	
+	private void determineSizeForAllFiles() throws IOException {
+		for (Package p:o.getPackages()){
+			for (DAFile daf:p.getFiles()){
+				daf.setSize(Integer.toString((int) FileUtils.sizeOf(wa.toFile(daf))));
+			}
+		}
+	}
+	
 	
 	/**
 	 * Saves file format information in ActionCommunicatorService for later storage in object db

@@ -127,6 +127,10 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		if (pi==null) {
 			throw new ConnectionException("Call to JHOVE terminated with empty ProcessInformation");
 		}
+		if (pi.getExitValue()!=0) {
+			logger.debug("StdOut from jhove cmd: "+pi.getStdOut());
+			logger.debug("StdErr from jhove cmd: "+pi.getStdErr());
+		}
 		return pi.getExitValue();
 	}
 
