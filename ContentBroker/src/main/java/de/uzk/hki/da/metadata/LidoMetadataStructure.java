@@ -18,6 +18,8 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
 import de.uzk.hki.da.core.C;
@@ -28,6 +30,10 @@ import de.uzk.hki.da.util.Path;
  */
 
 public class LidoMetadataStructure extends MetadataStructure{
+	
+	/** The logger. */
+	public Logger logger = LoggerFactory
+			.getLogger(LidoMetadataStructure.class);
 	
 	private Document doc;
 	private List<Element> lidoLinkResources;

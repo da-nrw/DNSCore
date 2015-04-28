@@ -265,14 +265,10 @@ public abstract class MetadataStructure {
 		List<String> missingFiles = new ArrayList<String>();
 		for(String ref : references) {
 			DAFile dafile = getReferencedDafile(metadataFile, ref, documents);
-			
-			/// 
-			
-			
 			if(dafile==null){
 				missingFiles.add(ref);
 			} else {
-				existingFiles.add(       dafile.getPath().toFile()        );
+				existingFiles.add(dafile.getPath().toFile()        );
 			}
 		}
 		if(!missingFiles.isEmpty()) {

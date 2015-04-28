@@ -39,6 +39,8 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
 import de.uzk.hki.da.core.C;
@@ -50,6 +52,10 @@ import de.uzk.hki.da.util.Path;
 
 public class MetsMetadataStructure extends MetadataStructure {
 
+	/** The logger. */
+	public Logger logger = LoggerFactory
+			.getLogger(MetsMetadataStructure.class);
+	
 	private File metsFile;
 	private String METS_XPATH_EXPRESSION= 		"//mets:file";
 	private XPath metsXPath = 					XPath.newInstance(METS_XPATH_EXPRESSION);
