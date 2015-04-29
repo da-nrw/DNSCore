@@ -43,8 +43,14 @@ public class DistributionWorker extends Worker {
 		try {
 			CopyJob cj= fetchSynchronizeJob(node.getIdentifier());
 			if (cj!= null) {
-			if (jobExecutor.execute(cj)) deleteCopyJob(cj);
-			else updateCopyJob(cj);
+			if (jobExecutor.execute(cj)) {
+				logger.info("successfully executed syncing of " + cj.getSource() + " to " + cj.getDest_name() );
+				deleteCopyJob(cj);
+			}
+			else {
+				logger.error("error executing syncing of " + cj.getSource() + " to " + cj.getDest_name() );
+				updateCopyJob(cj);
+			}
 			} else logger.info("There were no CopyJobs created!");
 		} catch (Exception e) {			
 			logger.error("execute CopyJob Worker caused exception " + e.getCause(), e);
@@ -65,9 +71,8 @@ public class DistributionWorker extends Worker {
 			@SuppressWarnings("rawtypes")
 			List l = null;
 			l = session.createSQLQuery("select id from CopyJob c where c.source_node_identifier = ?1 "
-			+ "and locked = ?2 order by c.last_tried asc NULLS FIRST")
+			+ "order by c.last_tried asc NULLS FIRST")
 							.setParameter("1",source_name)
-							.setParameter("2",0)
 							.setReadOnly(true).list();
 	         
 			@SuppressWarnings("rawtypes")
@@ -77,9 +82,6 @@ public class DistributionWorker extends Worker {
 					.setReadOnly(true).list();
 			
 			CopyJob cj = (CopyJob)k.get(0);
-			cj.setLocked(1);
-			session.update(cj);
-			session.getTransaction().commit();
 			session.close();	
 			return cj;
 		
@@ -128,10 +130,10 @@ public class DistributionWorker extends Worker {
 	public void setLocalNodeId(int localNodeId) {
 		this.localNodeId = localNodeId;
 	}
-	public JobExecutor getJobExcecutor() {
+	public JobExecutor getJobExecutor() {
 		return jobExecutor;
 	}
-	public void setJobExcecutor(JobExecutor jobExecutor) {
+	public void setJobExecutor(JobExecutor jobExecutor) {
 		this.jobExecutor = jobExecutor;
 	}
 

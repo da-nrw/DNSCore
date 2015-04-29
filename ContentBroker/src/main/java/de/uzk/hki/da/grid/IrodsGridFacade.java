@@ -227,7 +227,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		if (iclc.put(fileToDistribute, gridPath, sp.getCommonStorageRescName())) {
 			for (Node cn: node.getCooperatingNodes()) {
 				CreateCopyJob cj = new CreateCopyJob();
-				cj.createCopyJob(gridPath, cn.getIdentifier(), node.getIdentifier());
+				cj.createCopyJob(gridPath, cn.getIdentifier(), node.getIdentifier(),sp.getCommonStorageRescName());
 			}
 			return true;
 		} else return false;

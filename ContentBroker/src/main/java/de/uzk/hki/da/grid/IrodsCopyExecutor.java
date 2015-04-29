@@ -18,11 +18,10 @@ public class IrodsCopyExecutor implements JobExecutor {
 		iclc = new IrodsCommandLineConnector();
 	}
 	
-	private String targetRescName;
-	
 	private String dirPrefix;
 			
 	public boolean execute(CopyJob cj ) {
+			logger.debug("starting Syncing ... ");
 			if (cj==null) {
 				logger.error("CopyJob is null");
 				return false;
@@ -32,29 +31,18 @@ public class IrodsCopyExecutor implements JobExecutor {
 				logger.error("dirPrefix is null");
 				return false;
 			}
-			if (targetRescName== null) {
-				logger.error("targetRescName is null");
-				return false;
-			}
 			
 			String targetDir =  FilenameUtils.getFullPath("/" +cj.getDest_name() + "/"+dirPrefix + cj.getSource());
 			if (!iclc.exists(targetDir)){
+				logger.debug("Creating " + targetDir + " now");
 				iclc.mkCollection(targetDir);
 			}
-			String out = iclc.rsync(cj.getSource(), targetDir, targetRescName);
+			String out = iclc.rsync(cj.getSource(), targetDir, cj.getParams());
 			logger.debug(out);
 			if (out.contains("ERROR")) {
 				return false;
 			}
 			return true;
-	}
-
-	public String getTargetRescName() {
-		return targetRescName;
-	}
-
-	public void setTargetRescName(String targetRescName) {
-		this.targetRescName = targetRescName;
 	}
 
 	public String getDirPrefix() {

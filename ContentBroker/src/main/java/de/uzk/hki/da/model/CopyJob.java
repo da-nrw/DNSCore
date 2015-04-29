@@ -18,9 +18,9 @@ public class CopyJob {
 	private int id;
 	private String source;
 	private Date last_tried;
-	private int locked;
 	private String source_node_identifier;
 	private String dest_node_identifier;
+	private String params;
 	
 	public String getSource() {
 		return source;
@@ -41,12 +41,6 @@ public class CopyJob {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getLocked() {
-		return locked;
-	}
-	public void setLocked(int locked) {
-		this.locked = locked;
-	}
 	public String getSource_name() {
 		return source_node_identifier;
 	}
@@ -58,5 +52,11 @@ public class CopyJob {
 	}
 	public void setDest_name(String dest_node_identifier) {
 		this.dest_node_identifier = dest_node_identifier;
+	}
+	public String getParams() {
+		return params;
+	}
+	public void setParams(String params) {
+		this.params = params;
 	}
 }
