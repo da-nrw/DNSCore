@@ -28,6 +28,7 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -127,6 +128,13 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		// Add @context attribute
 //		String contextUri = contextUriPrefix + FilenameUtils.getName(framePath);
 //		subject.put("@context", contextUri);
+		
+		// Add @root attribute
+		if(subject.get(C.EDM_AGGREGATED_CHO).toString().contains("is root element")) {
+			subject.put("@root", "true");
+		} else {
+			subject.put("@root", "false");
+		}
 		
 		String idAsString = subject.get("@id").toString();
 		String id = idAsString.substring(idAsString.indexOf(objectID));

@@ -30,7 +30,6 @@ cp src/main/xsd/premis.xsd $1/conf
 cp src/main/xsd/xlink.xsd $1/conf
 cp src/main/resources/frame.jsonld $1/conf
 cp src/main/conf/PDFA_def.ps $1/conf
-cp src/main/resources/frame.jsonld $1/conf
 mkdir $1/activemq-data
 mkdir $1/systemRules
 cp -r src/main/rules/* $1/systemRules
