@@ -211,27 +211,14 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + address_dest;
 		return iclc.exists(gridPath);
 	}
-	
+
 	@Override
-	public boolean distribute(Node node, File fileToDistribute, String address_dest, StoragePolicy sp) {
-		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
-		if (!address_dest.startsWith("/")) address_dest = "/" + address_dest;
-		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + address_dest;
+	public void distribute(Node node, File fileToDistribute,
+			String address_dest, StoragePolicy sp) {
 		
-		String destCollection = FilenameUtils.getFullPath(gridPath);
 		
-		if (!iclc.exists(destCollection)) {
-			logger.debug("creating Coll " + destCollection);
-			iclc.mkCollection(destCollection);
-		}
-		if (iclc.put(fileToDistribute, gridPath, sp.getCommonStorageRescName())) {
-			for (Node cn: node.getCooperatingNodes()) {
-				CreateCopyJob cj = new CreateCopyJob();
-				cj.createCopyJob(gridPath, cn.getIdentifier(), node.getIdentifier(),sp.getCommonStorageRescName());
-			}
-			return true;
-		} else return false;
 	}
 	
+
 
 }

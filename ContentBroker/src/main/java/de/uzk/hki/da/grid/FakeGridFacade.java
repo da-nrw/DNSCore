@@ -116,17 +116,8 @@ public class FakeGridFacade implements GridFacade {
 		return (new File (getGridCacheAreaRootPath()+address_dest)).exists();
 	}
 	
-	public  boolean distribute(Node localNode, File fileToDistribute, String address_dest, StoragePolicy sp) {
-		if (!address_dest.startsWith(C.FS_SEPARATOR)) address_dest = C.FS_SEPARATOR + address_dest;
+	public void distribute(Node localNode, File fileToDistribute, String address_dest, StoragePolicy sp) {
 		
-		String dest = getGridCacheAreaRootPath()+ C.WA_AIP + address_dest;
-		logger.debug("Putting: "+fileToDistribute+" to "+dest);
-		try {
-			FileUtils.copyFile(fileToDistribute, new File(dest));
-		} catch (IOException e) {
-			logger.error("ERROR " + e.getMessage());
-		}
-		return true;	
 	}
 	//------------------------------------------------------------------------
 
