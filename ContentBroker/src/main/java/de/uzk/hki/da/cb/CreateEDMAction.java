@@ -30,7 +30,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +41,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import org.apache.commons.io.input.BOMInputStream;
 import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
@@ -48,6 +54,7 @@ import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.metadata.LidoMetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;
+import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.metadata.XsltGenerator;
 import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.repository.RepositoryException;
@@ -117,12 +124,13 @@ public class CreateEDMAction extends AbstractAction {
 		return true;
 	}
 	
-	private File generateEdmUsingXslt(String xsltTransformationFile,File metadataSourceFile, String edmId) throws FileNotFoundException {
+	private File generateEdmUsingXslt(String xsltTransformationFile,File metadataSourceFile, String edmId) throws FileNotFoundException, UnsupportedEncodingException {
 		
-		File edm = getWa().pipMetadataFile(WA_PUBLIC, edmId); 
-
+		File edm = getWa().pipMetadataFile(WA_PUBLIC, edmId);
+		
+		
 		String edmResult = generateEDM(o.getIdentifier(), xsltTransformationFile, 
-				new FileInputStream(  Path.makeFile(wa.pipFolder(WA_PUBLIC),metadataSourceFile.getPath())  ));
+				new FileInputStream(  Path.makeFile(wa.pipFolder(WA_PUBLIC),metadataSourceFile.getPath()) ));
 		PrintWriter out = null;
 		try {
 			out = new PrintWriter(edm);
@@ -182,7 +190,7 @@ public class CreateEDMAction extends AbstractAction {
 	}
 
 	private String generateEDM(String objectId, String xsltFile,
-			InputStream metadataStream) throws FileNotFoundException {
+			InputStream metadataStream) throws FileNotFoundException, UnsupportedEncodingException {		
 		
 		XsltGenerator edmGenerator=null;
 		try {

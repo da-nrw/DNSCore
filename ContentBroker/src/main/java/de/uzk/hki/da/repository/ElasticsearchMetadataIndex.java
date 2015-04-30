@@ -22,6 +22,8 @@ package de.uzk.hki.da.repository;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -232,7 +234,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 	}
 
 	@Override
-	public void deleteFromIndex(String indexName, String objectID) throws MetadataIndexException {
+	public void deleteFromIndex(String indexName, String objectID) throws MetadataIndexException, RepositoryException {
 		logger.debug("Delete object "+objectID+" from index "+indexName+"...");
 		try{
 			DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -241,20 +243,13 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 			HttpResponse response = httpClient.execute(deleteRequest);
 	
 			int statusCode = response.getStatusLine().getStatusCode();
-	        if (statusCode < 200 && statusCode > 300)   {
+	        if (statusCode > 300)   {
 	            throw new RuntimeException("Failed : HTTP error code : "
 	                + response.getStatusLine().getStatusCode());
 	        }
-	        
-	        String output;
-	        logger.debug("Output from Server .... \n");
-	        while ((output = new BufferedReader(
-                    new InputStreamReader((response.getEntity().getContent()))).readLine()) != null) {
-	            logger.debug(output);
-	        }
 	        httpClient.getConnectionManager().shutdown();
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RepositoryException("Unable to delete the object with id "+objectID+"from elasticsearch index", e);
 		}	
 	}
 	

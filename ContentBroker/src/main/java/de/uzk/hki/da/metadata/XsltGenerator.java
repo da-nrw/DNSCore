@@ -33,6 +33,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.ErrorListener;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -86,13 +88,13 @@ public class XsltGenerator {
 		
 		this.inputStream = inputStream;
 		xsltSource = new StreamSource(new FileInputStream(xsltPath));
-	
 
 		TransformerFactory transFact = TransformerFactory.newInstance(TRANSFORMER_FACTORY_CLASS, null);
-		
 		transFact.setErrorListener(new CutomErrorListener());
+		
 		transformer = null;
 		transformer = transFact.newTransformer(xsltSource);
+		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 		transformer.setErrorListener(new CutomErrorListener());
 	}
 
