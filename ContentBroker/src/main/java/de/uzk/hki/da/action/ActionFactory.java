@@ -102,8 +102,13 @@ public class ActionFactory implements ApplicationContextAware {
 		// replace proxies by real objects if loading lazily.
 		Hibernate.initialize(getPreservationSystem().getConversion_policies());
 		Hibernate.initialize(localNode.getCooperatingNodes());
-		for (Node cn:localNode.getCooperatingNodes());
-		for (Copy cp:localNode.getCopies());
+		
+		try {
+			for (Node cn:localNode.getCooperatingNodes());
+//			for (Copy cp:localNode.getCopies());
+		} catch (Exception e) {
+			throw new RuntimeException("Unable to load cooperating nodes");
+		}
 		
 		for (SubformatIdentificationStrategyPuidMapping sfiP:getSecondStageScanPolicies(session)) {
 			fileFormatFacade.registerSubformatIdentificationStrategyPuidMapping(sfiP.getSubformatIdentificationStrategyName(),sfiP.getFormatPuid());
@@ -218,8 +223,6 @@ public class ActionFactory implements ApplicationContextAware {
 		}
 		
 		return selectActionToExecute();
-		
-		
 	}
 	
 	private AbstractAction selectActionToExecute() {

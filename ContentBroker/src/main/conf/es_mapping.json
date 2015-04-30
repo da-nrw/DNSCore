@@ -97,8 +97,7 @@
                         "index_name": "danrw_title"
                     },
                     "dcterms:created": {
-                        "type": "date",
-                        "format": "dateOptionalTime"
+                        "type": "string"
                     },
                     "dcterms:date": {
                         "type": "string",
