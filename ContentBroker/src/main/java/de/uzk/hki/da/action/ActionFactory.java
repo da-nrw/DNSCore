@@ -206,6 +206,7 @@ public class ActionFactory implements ApplicationContextAware {
 		try{
 			checkPreservationSystemNode();
 		} catch (IllegalStateException e) {
+			logger.info("ActionFactory is on halt! Caused by ");
 			logger.error(e.getMessage());
 			onHalt=true;
 			return null;
