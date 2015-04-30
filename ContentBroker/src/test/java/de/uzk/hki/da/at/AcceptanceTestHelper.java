@@ -27,8 +27,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 
+import ch.qos.logback.classic.Logger;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Copy;
@@ -159,16 +161,29 @@ public class AcceptanceTestHelper {
 			}
 			System.out.print("Awaiting object state "+awaitedObjectState+". Identifier: "+o.getIdentifier()+
 					". Orig name: "+o.getOrig_name()+". Object state: "+o.getObject_state()+".");
+	
+			Job job = null;
 			
-			Job job = getJob(originalName);
+//			hotfix
+			try {
+				job = getJob(originalName);
+			} catch (ObjectNotFoundException e) {
+				System.out.println("Catched hibernate exception. Try again.");
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				job = getJob(originalName);
+			}		
+//			
 			if (job!=null) {
 				if (isInErrorState(job)) 
 					evaluateErrorDetails(job);
 				else
-					System.out.println(" Job state: "+job.getStatus()+".");
-			}
-			else
-				System.out.println("");
+					System.out.println("Job state: "+job.getStatus()+".");
+			} else
+				System.out.println("Job is null");
 			
 			if (o.getObject_state()==awaitedObjectState) {
 				return;

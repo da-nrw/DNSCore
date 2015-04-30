@@ -28,6 +28,7 @@
         <xsl:variable name="cho-id">
             <xsl:value-of select="$cho-base-uri"/>-<xsl:value-of select="count(preceding-sibling::*) + 1"/>
         </xsl:variable>
+       	<xsl:variable name="isRoot" select="'is root element'" />
         <edm:ProvidedCHO rdf:about="{$cho-id}">
             <xsl:call-template name="mapDC">
                 <xsl:with-param name="from">dc:title</xsl:with-param>
@@ -69,6 +70,7 @@
                 <xsl:with-param name="from">dc:subject</xsl:with-param>
                 <xsl:with-param name="to">dc:subject</xsl:with-param>
             </xsl:call-template>
+            <edm:hasType>is root element</edm:hasType>
         </edm:ProvidedCHO>
         
         <!-- Aggregation -->
