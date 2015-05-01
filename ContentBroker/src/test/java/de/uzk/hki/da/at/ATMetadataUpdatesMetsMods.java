@@ -134,7 +134,6 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 			if(pcho.getChild("title", C.DC_NS).getValue().equals("Text Text// mahels///Titel")) {
 				testProvidetChoExists = true;
 				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("1523"));
-				assertTrue(pcho.getChild("hasType", C.EDM_NS).getValue().equals("is root element"));
 			}
 			@SuppressWarnings("unchecked")
 			List<Element> identifier = pcho.getChildren("identifier", C.DC_NS);

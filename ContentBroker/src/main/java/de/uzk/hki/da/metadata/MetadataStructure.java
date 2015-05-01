@@ -116,12 +116,6 @@ public abstract class MetadataStructure {
 				Element providedCHO = addEdmProvidedCHOtoEdm(preservationSystem, id, edmDoc, rootElement);
 				Element aggregation = addOreAggregationToEdm(preservationSystem, id, edmDoc, rootElement);
 				
-				if(indexInfo.get(id).get(C.EDM_IS_PART_OF)==null) {
-					List<String> root = new ArrayList<String>();
-					root.add("is root element");
-					indexInfo.get(id).put(C.EDM_HAS_TYPE, root);
-				}
-				
 				if(indexInfo.get(id).get(C.EDM_IDENTIFIER)==null) {
 					List<String> IDs = new ArrayList<String>();
 					IDs.add(objectID);
@@ -134,7 +128,7 @@ public abstract class MetadataStructure {
 				
 				for(String elementName : indexInfo.get(id).keySet()) {
 					Element parentNode = null;
-					if(elementName.startsWith("dc:") || elementName.startsWith("dcterms:") || elementName.equals(C.EDM_HAS_TYPE)) {
+					if(elementName.startsWith("dc:") || elementName.startsWith("dcterms:")) {
 						parentNode = providedCHO;
 					} else if(elementName.startsWith("edm:")) {
 						parentNode = aggregation;
@@ -181,7 +175,7 @@ public abstract class MetadataStructure {
 	
 	private Element addEdmProvidedCHOtoEdm(PreservationSystem preservationSystem, String id, Document edmDoc, Element rootElement) {
 		String cho_identifier = preservationSystem.getUrisCho()+"/"+id;
-		Element providedCHO = edmDoc.createElement(C.EDM_PROVIDED_CHO);
+		Element providedCHO = edmDoc.createElement("edm:ProvidedCHO");
 		Attr rdfAbout = edmDoc.createAttribute("rdf:about");
 		rdfAbout.setValue(cho_identifier);
 		providedCHO.setAttributeNode(rdfAbout);
@@ -192,13 +186,13 @@ public abstract class MetadataStructure {
 	
 	private Element addOreAggregationToEdm(PreservationSystem preservationSystem, String id, Document edmDoc, Element rootElement) {
 		String aggr_identifier = preservationSystem.getUrisAggr()+"/"+id;
-		Element aggregation = edmDoc.createElement(C.EDM_ORE_AGGREGATION);
+		Element aggregation = edmDoc.createElement("ore:Aggregation");
 		Attr rdfAbout = edmDoc.createAttribute("rdf:about");
 		rdfAbout.setValue(aggr_identifier);
 		aggregation.setAttributeNode(rdfAbout);
 		rootElement.appendChild(aggregation);
 		
-		Element aggregatedCHO = edmDoc.createElement(C.EDM_AGGREGATED_CHO);
+		Element aggregatedCHO = edmDoc.createElement("edm:aggregatedCHO");
 		Attr rdfAboutACho = edmDoc.createAttribute("rdf:resource");
 		rdfAboutACho.setValue(preservationSystem.getUrisCho()+"/"+id);
 		aggregatedCHO.setAttributeNode(rdfAboutACho);

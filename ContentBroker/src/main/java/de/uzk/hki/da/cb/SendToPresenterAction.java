@@ -115,11 +115,10 @@ public class SendToPresenterAction extends AbstractAction {
 	 * workAreaRoot/pips/insitution/shortname/oid
 	 * Each of them must contain a DC.xml with a format tag set to one of the supported formats.
 	 * For every format tag which can exist there must be a viewer url configured
-	 * @throws RepositoryException 
 	 * 
 	 */
 	@Override
-	public boolean implementation() throws IOException, RepositoryException {
+	public boolean implementation() throws IOException {
 		
 		if (StringUtilities.isNotSet(preservationSystem.getOpenCollectionName()))
 			throw new IllegalStateException("open collection name must be set");

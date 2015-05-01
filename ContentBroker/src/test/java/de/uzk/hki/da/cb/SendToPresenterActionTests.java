@@ -104,7 +104,7 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	
 	
 	@Test
-	public void endWorkflowWhenNothingToIndex() throws IOException, RepositoryException {
+	public void endWorkflowWhenNothingToIndex() throws IOException {
 		o.setPackage_type(null);
 		action.implementation();
 		assertTrue(action.isKILLATEXIT());
@@ -112,21 +112,21 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	
 	// if no public DIP is created EDM creation and ES indexing is skipped
 	@Test
-	public void endWorkflowWhenPublicPIPWasNotSuccessfullyIngested() throws IOException, RepositoryException {
+	public void endWorkflowWhenPublicPIPWasNotSuccessfullyIngested() throws IOException {
 		FileUtils.deleteDirectory(Path.makeFile(WORKAREAROOTPATH,WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),o.getIdentifier()));
 		action.implementation();
 		assertTrue(action.isKILLATEXIT());
 	}
 	
 	@Test
-	public void continueWhenNothingToIndex() throws IOException, RepositoryException {
+	public void continueWhenNothingToIndex() throws IOException {
 		
 		action.implementation();
 		assertFalse(action.isKILLATEXIT());
 	}
 	
 	@Test
-	public void implementationEADPackage() throws RepositoryException{
+	public void implementationEADPackage(){
 		try {
 			action.implementation();
 			assertSame(1,o.getPublished_flag());
@@ -136,7 +136,7 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	}
 	
 	@Test
-	public void createXepicur() throws IOException, RepositoryException {
+	public void createXepicur() throws IOException {
 		action.implementation();
 		assertTrue(makeMetadataFile(METADATA_STREAM_ID_EPICUR,WA_PUBLIC).exists());
 	}
@@ -152,7 +152,7 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	}
 	
 	@Test 
-	public void preconditionsThrowErrorClosedCollectionNotSet() throws IOException, RepositoryException{
+	public void preconditionsThrowErrorClosedCollectionNotSet() throws IOException{
 		ps.setOpenCollectionName(null);
 		try {
 			action.implementation();
@@ -161,7 +161,7 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	}
 	
 	@Test 
-	public void preconditionsThrowErrorOpenCollectionSet() throws IOException, RepositoryException{
+	public void preconditionsThrowErrorOpenCollectionSet() throws IOException{
 		ps.setClosedCollectionName(null);
 		try {
 			action.implementation();
@@ -185,7 +185,7 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	}
 	
 	@Test
-	public void rollbackDeleteXepicur() throws IOException, RepositoryException { 
+	public void rollbackDeleteXepicur() throws IOException { 
 		action.implementation(); 
 		// xepicur proven to be created by Test createXepicur()
 		action.rollback();

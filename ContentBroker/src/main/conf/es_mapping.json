@@ -10,9 +10,6 @@
             "@type": {
                 "type": "string"
             },
-          	"@root": {
-                "type": "string"
-            },
             "edm:aggregatedCHO": {
                 "dynamic": "true",
                 "path": "just_name",
@@ -21,9 +18,6 @@
                         "type": "string"
                     },
                     "@type": {
-                        "type": "string"
-                    },
-                    "edm:hasType": {
                         "type": "string"
                     },
                     "dc:contributor": {
@@ -97,7 +91,8 @@
                         "index_name": "danrw_title"
                     },
                     "dcterms:created": {
-                        "type": "string"
+                        "type": "date",
+                        "format": "dateOptionalTime"
                     },
                     "dcterms:date": {
                         "type": "string",
@@ -149,6 +144,9 @@
                                 "index": "not_analyzed"
                             }
                         }
+                    },
+                    "edm:type": {
+                        "type": "string"
                     },
                     "owl:sameAs": {
                         "type": "string"
