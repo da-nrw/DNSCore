@@ -40,7 +40,7 @@ function startContentBroker(){
 	
 	if [ "$2" = "dev" ]
 	then
-		./ContentBroker_start.sh.template suppress_diagnostics
+		./ContentBroker_start.sh.template supress_diagnostics
 	else
 		./ContentBroker_start.sh.template 	
 	fi
