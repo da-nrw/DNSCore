@@ -94,16 +94,18 @@ public class ActionFactory implements ApplicationContextAware {
 	public void init(){
 		setPreservationSystem(new PreservationSystem()); getPreservationSystem().setId(1);
 		
-		// attach policies to preservation system
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		session.refresh(preservationSystem);
 		session.refresh(localNode);
-		// replace proxies by real objects if loading lazily.
+		
+		// Prevent lazy initialization issues. "Simulate" eager fetching in cast 
+		// it does not work with hibernate or jpa annotations
 		Hibernate.initialize(getPreservationSystem().getConversion_policies());
 		Hibernate.initialize(localNode.getCooperatingNodes());
-		for (Node cn:localNode.getCooperatingNodes());
-		for (Copy cp:localNode.getCopies());
+		for (@SuppressWarnings("unused") Node cn:localNode.getCooperatingNodes());
+		for (@SuppressWarnings("unused") Copy cp:localNode.getCopies());
+		//-
 		
 		for (SubformatIdentificationStrategyPuidMapping sfiP:getSecondStageScanPolicies(session)) {
 			fileFormatFacade.registerSubformatIdentificationStrategyPuidMapping(sfiP.getSubformatIdentificationStrategyName(),sfiP.getFormatPuid());
@@ -184,7 +186,7 @@ public class ActionFactory implements ApplicationContextAware {
 			action.getObject().getLatestPackage();
 		}
 		
-		// TODO check if folders exist
+	
 		
 		if (! msg.toString().isEmpty())
 			throw new IllegalStateException(msg.toString());
@@ -247,7 +249,7 @@ public class ActionFactory implements ApplicationContextAware {
 			
 			
 			
-			logger.info("fetched job: {}", jobCandidate);
+			logger.info("(for local node) Fetched job candidate of job status "+jobCandidate.getStatus()+" for object with identifier "+jobCandidate.getObject().getIdentifier()+".");
 
 			
 			injectProperties(action,jobCandidate);

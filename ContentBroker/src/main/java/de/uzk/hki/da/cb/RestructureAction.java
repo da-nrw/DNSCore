@@ -24,6 +24,7 @@ import static de.uzk.hki.da.core.C.QUEUE_TO_SERVER;
 import static de.uzk.hki.da.core.C.WA_DATA;
 import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -31,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.IngestGate;
@@ -58,7 +60,11 @@ import de.uzk.hki.da.util.Path;
  */
 public class RestructureAction extends AbstractAction{
 	
+	private static final String PREMIS = "premis.xml";
+
 	private static final String UNDERSCORE = "_";
+	
+	private static final String PENULTIMATE_PREMIS = "premis_old.xml";
 	
 	private FileFormatFacade fileFormatFacade;
 	private IngestGate ingestGate;
@@ -94,25 +100,32 @@ public class RestructureAction extends AbstractAction{
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException, SubsystemNotAvailableException {
 		
+		listAllFiles();
+		
 		RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot());
 		if (o.isDelta()
 				&&(! checkIfOnWorkAreaIsSpaceAvailabeForDeltaPackages(retrievePackagesHelper)))
 			return false;
 		
+		listAllFiles();
 		
 		j.setRep_name(getNewRepName());
 		makeRepOfSIPContent(wa.objectPath(), wa.dataPath(), j.getRep_name());
 		
+		listAllFiles();
 		
-		if (o.isDelta())
+		if (o.isDelta()) {
 			retrieveDeltaPackages(retrievePackagesHelper);
+			makeCopyOfDeltaPremis();
+		}
 		
+		listAllFiles();
 		
 		o.getLatestPackage().scanRepRecursively(wa.dataPath(),j.getRep_name()+"a");
-		o.reattach();
-		
-		determineFileFormats();
 		dgs.addDocumentsToObject(o);
+
+		listAllDAFiles();
+		determineFileFormats();
 		
 		logger.debug("Create new b representation "+j.getRep_name()+"b");
 		Path.makeFile(wa.dataPath(), j.getRep_name()+"b").mkdir();
@@ -121,6 +134,29 @@ public class RestructureAction extends AbstractAction{
 	}
 
 	
+	private void makeCopyOfDeltaPremis() throws IOException {
+		FileUtils.copyFile(Path.makeFile(o.getPath("newest"),PREMIS),
+				Path.makeFile(wa.dataPath(),PENULTIMATE_PREMIS));
+		
+	}
+
+	private void listAllFiles() {
+		logger.debug("Listing all files on WorkArea:");
+		List<File> files = (List<File>) FileUtils.listFiles(new File(wa.objectPath().toString()), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+		for (File f:files) {
+			logger.debug(""+f);
+		}
+	}
+	
+	private void listAllDAFiles() {
+		logger.debug("Listing all DAFiles:");
+		for (de.uzk.hki.da.model.Package p:o.getPackages())
+			for (DAFile daf:p.getFiles())
+				logger.debug(""+daf);
+	}
+	
+	
+	
 	
 	private boolean checkIfOnWorkAreaIsSpaceAvailabeForDeltaPackages(RetrievePackagesHelper retrievePackagesHelper) {
 		try {
@@ -128,7 +164,7 @@ public class RestructureAction extends AbstractAction{
 				JmsMessage jms = new JmsMessage(QUEUE_TO_CLIENT,QUEUE_TO_SERVER,o.getIdentifier() 
 						+ " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
 				super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
-				logger.info("no disk space available at working resource. will not fetch new data.");
+				logger.info("No disk space available at working resource. will not fetch new data.");
 				return false;
 			}
 		} catch (IOException e) {
@@ -139,17 +175,23 @@ public class RestructureAction extends AbstractAction{
 	
 	private void retrieveDeltaPackages(RetrievePackagesHelper retrievePackagesHelper) {
 		
-		logger.info("object already exists. Moving existing packages to work area.");
+		logger.info("Moving delta packages to WorkArea.");
 		try {
 			retrievePackagesHelper.loadPackages(wa.dataPath(),o, false);
 			logger.info("Packages of object \""+o.getIdentifier()+
 					"\" are now available on cache resource at: " + Path.make(wa.objectPath(),"existingAIPs"));
-			FileUtils.copyFile(Path.makeFile(o.getPath("newest"),"premis.xml"),
-					Path.makeFile(wa.dataPath(),"premis_old.xml"));
+			
+			
+			
 		} catch (IOException e) {
 			throw new RuntimeException("error while trying to get existing packages from lza area",e);
 		}
 	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -164,6 +206,7 @@ public class RestructureAction extends AbstractAction{
 		} catch (IOException e) {
 			throw new SubsystemNotAvailableException(e);
 		}
+		logger.info("Listing all identified file formats:");
 		for (FileWithFileFormat f:scannedFiles){
 			logger.info(f+":"+f.getFormatPUID()+":"+f.getSubformatIdentifier());
 		}
