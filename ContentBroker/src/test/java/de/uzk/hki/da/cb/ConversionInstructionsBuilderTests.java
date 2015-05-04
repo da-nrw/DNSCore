@@ -74,7 +74,6 @@ public class ConversionInstructionsBuilderTests {
 	public void setUp(){
 		Object o = new Object();
 		pkg = mock (Package.class);
-		when(pkg.getTransientBackRefToObject()).thenReturn(o);
 		
 		
 		n = new Node();

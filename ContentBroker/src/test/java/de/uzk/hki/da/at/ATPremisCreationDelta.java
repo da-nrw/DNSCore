@@ -84,7 +84,8 @@ public class ATPremisCreationDelta extends PREMISBase {
 	@Test
 	public void testProperPREMISCreation() throws Exception{
 		
-		object = ath.retrieveAIP(object,unpackedDIP,"2");
+		ath.retrieveAIP(object,unpackedDIP,"2");
+		object = ath.getObject(object.getOrig_name());
 		
 		assertEquals(ORIG_NAME,object.getOrig_name());
 		assertEquals(100,object.getObject_state());

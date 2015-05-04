@@ -111,7 +111,6 @@ public class TESTHelper {
 		o.setTransientNodeRef(node);
 		o.setIdentifier(identifier);
 		o.getPackages().add(pkg);
-		o.reattach();
 		
 		return o;
 	}

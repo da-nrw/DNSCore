@@ -161,7 +161,6 @@ public class CreatePremisActionTests {
 		action.setJob(job);
 		action.setLocalNode(node);
 		action.setObject(object);
-		object.reattach();
 		
 		wa = new WorkArea(node,object);
 		action.setWorkArea(wa);

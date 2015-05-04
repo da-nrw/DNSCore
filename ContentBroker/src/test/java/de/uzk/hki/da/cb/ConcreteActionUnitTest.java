@@ -99,7 +99,6 @@ public class ConcreteActionUnitTest {
 		o.setTransientNodeRef(n);
 		o.setIdentifier(IDENTIFIER);
 		o.getPackages().add(pkg);
-		o.reattach();
 		o.setUrn(URN);
 		
 		j = new Job();
