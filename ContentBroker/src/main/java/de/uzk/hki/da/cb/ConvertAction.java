@@ -89,7 +89,7 @@ public class ConvertAction extends AbstractAction {
 			try {
 				o.getDocument(FilenameUtils.removeExtension(e.getTarget_file().getRelative_path())).addDAFile(e.getTarget_file());
 			} catch (Exception e2) {
-				throw new IllegalStateException("Document "+FilenameUtils.removeExtension(e.getTarget_file().getRelative_path())+" does not exists."); 
+				throw new IllegalStateException("Document "+FilenameUtils.removeExtension(e.getTarget_file().getRelative_path())+" does not exist."); 
 			}
 		}
 		

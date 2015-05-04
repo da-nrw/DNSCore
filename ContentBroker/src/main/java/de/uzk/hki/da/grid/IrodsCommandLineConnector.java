@@ -42,7 +42,7 @@ public class IrodsCommandLineConnector {
 	public String executeIcommand(String[] commandAsArray) {
 		ProcessInformation pi = null;
 		try {
-			pi = clc.runCmdSynchronously(commandAsArray);
+			pi = clc.runCmdSynchronously(commandAsArray,0);
 		} catch (IOException e1) {
 			throw new RuntimeException("Icommand did not succeed, not found: " + Arrays.toString(commandAsArray));
 		}
@@ -150,13 +150,12 @@ public class IrodsCommandLineConnector {
 	 * @return
 	 */
 	public boolean exists(String dest) {
-		String data_name = FilenameUtils.getName(dest);
 		String commandAsArray[] = new String[]{
 				"ils", dest 
 		}; 
 		String out = executeIcommand(commandAsArray);
-		if (out.indexOf(data_name)>=0) return true;
-		return false;
+		if (out.indexOf("ERROR")>=0) return false;
+		return true;
 	}
 	
 	/**

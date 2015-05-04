@@ -41,6 +41,8 @@ public class ArchiveReplicationAction extends AbstractAction {
 	
 	private GridFacade gridRoot;
 	
+	private int timeOut = 4000;
+	
 	@Override
 	public void checkConfiguration() {
 		if (gridRoot==null) throw new ConfigurationException("gridRoot");
@@ -64,19 +66,28 @@ public class ArchiveReplicationAction extends AbstractAction {
 		sp.setAdminEmail(n.getAdmin().getEmailAddress());
 		sp.setNodeName(n.getName());
 		sp.setCommonStorageRescName(n.getReplDestinations());
+		Path newFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), filename);
 		try {
-			Path newFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), filename);
-			if (gridRoot.put(new File(newFilePath.toString()), 
-					target.toString(), sp )) {
-					new File(newFilePath.toString()).delete();
+			if (!gridRoot.put(new File(newFilePath.toString()), 
+						target.toString(), sp )) {
+			delay(); 
+			return false;
 			}
 		} catch (IOException e) {
-			throw new RuntimeException("Error while putting file into grid or work deletion! ",e);
+			throw new RuntimeException("Put to IRODS Datagrid failed!");
 		}
-		
+		gridRoot.distribute(n, new File(newFilePath.toString()), target.toString(), sp);
+		new File(newFilePath.toString()).delete();
 		return true;
 	}
 	
+	private void delay(){
+		try {
+			Thread.sleep(timeOut); // to prevent unnecessary small intervals when checking
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 	@Override
 	public void rollback() {
 		throw new NotImplementedException("No rollback implemented for this action");

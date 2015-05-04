@@ -25,6 +25,7 @@ package de.uzk.hki.da.grid;
 import java.io.File;
 import java.io.IOException;
 
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 
 
@@ -47,11 +48,8 @@ public interface GridFacade {
 	 * 
 	 * If @param gridPath parent Folder does not exist, it will be created.
 	 * 
-	 * @return <strong>true</strong> if file has been successfully copied to the grid cache area,
-	 * the file has been successfully registered at the working resource and the replication command has been fired.<br>
+	 * @return <strong>true</strong> if file has been successfully copied to the defined resource group area.
 	 * <strong>false</strong> if one of the abovementioned conditions has not been met. put can be called again after returning false.
-	 * @throws IOException in case grid file already exists and has already lza repls. In this case we interpret the
-	 * call of put as beeing malicious. This is the case when calling put after put has been already called and returned true.
 	 * 
 	 * Store file on the DataGrid, replicate  to repl_dests
 	 * Returns true, if the store and delegation of replication process succeeds.
@@ -81,6 +79,7 @@ public interface GridFacade {
 	 * @param gridFileAddress address of source file in grid (excluding zone prefix)
 	 * @return true, if is valid
 	 * @author: Jens Peters
+	 * @deprecated
 	 */
 	abstract boolean isValid(String gridFileAddress);
 	
@@ -103,10 +102,38 @@ public interface GridFacade {
 	
 	abstract long getFileSize(String address_dest) throws java.io.IOException ; 
 	
-	
+	/**
+	 * Gets checksum in custody 
+	 * @author Jens Peters
+	 * @param address_dest
+	 * @return
+	 */
 	abstract String getChecksumInCustody(String address_dest);
 
+	/**
+	 * recompute and get Checksum in custody
+	 * @author Jens Peters
+	 * @param address_dest
+	 * @return
+	 */
 	abstract String reComputeAndGetChecksumInCustody(String address_dest);
 	
+	/**
+	 * starts distribution across grid servers if necessary
+	 * @author Jens Peters
+	 * @param node
+	 * @param fileToDistribute
+	 * @param address_dest
+	 * @param sp
+	 * @return
+	 */
+	abstract void distribute(Node node, File fileToDistribute, String address_dest, StoragePolicy sp);
+	
+	/**
+	 * tests, if file exists
+	 * @author Jens Peters
+	 * @param address_dest
+	 * @return
+	 */
 	abstract boolean exists(String address_dest);
 }

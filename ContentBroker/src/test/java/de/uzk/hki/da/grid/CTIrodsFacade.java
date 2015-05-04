@@ -125,6 +125,7 @@ public class CTIrodsFacade {
 	@After
 	public void tearDown() throws Exception {
 		FileUtils.deleteQuietly(new File(testCollPhysicalPathOnGridCache));
+		FileUtils.deleteQuietly(new File(testCollPhysicalPathOnLTA));
 		isc.removeCollectionAndEatException(testCollLogicalPath);
 	}
 	
@@ -136,7 +137,7 @@ public class CTIrodsFacade {
 	@Test 
 	public void putFileDoesNotExist() throws Exception {
 		putFileAndWaitUntilReplicatedAccordingToStoragePolicy();
-		assertTrue(new File(testCollPhysicalPathOnGridCache + "/urn.tar").exists());
+		assertTrue(new File(testCollPhysicalPathOnLTA + "/urn.tar").exists());
 	}
 	
 	/**
@@ -145,15 +146,9 @@ public class CTIrodsFacade {
 	 */
 	@Test 
 	public void mustNotPutFileAgainWhenAlreadyHasReplsOnLongTermStorage() throws Exception {
-		putFileAndWaitUntilReplicatedAccordingToStoragePolicy();
-		
-		try {
-			ig.put(temp, testColl + "/urn.tar", sp);
-			fail();
-		} catch (IOException ex) {
-			System.out.println("Caught expected exception");
-		} 
-	}
+			putFileAndWaitUntilReplicatedAccordingToStoragePolicy();
+			assertFalse(ig.put(temp, testColl + "/urn.tar", sp));
+		}
 	
 	
 	

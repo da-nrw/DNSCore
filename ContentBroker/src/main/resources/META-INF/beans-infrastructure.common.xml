@@ -79,7 +79,13 @@
         <property name="secondaryCopyPrefix" value="federated" />
         <property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}" />
     </bean>
-    
+    	<bean id="distributionWorker" class="de.uzk.hki.da.grid.DistributionWorker" init-method="init">
+        <property name="localNodeId" value="${localNode.id}" />
+        <property name="jobExecutor" ref="jobExecutor" />
+    </bean>
+    <bean id="jobExecutor" class="de.uzk.hki.da.grid.IrodsCopyExecutor">
+        <property name="dirPrefix" value="federated" />
+    </bean>
    	<bean id="actionFactory" class="de.uzk.hki.da.action.ActionFactory" init-method="init">
         <property name="actionRegistry" ref="actionRegistry" />
         <property name="localNode" ref="localNode" />

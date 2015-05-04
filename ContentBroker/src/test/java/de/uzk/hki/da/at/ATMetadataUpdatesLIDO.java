@@ -148,12 +148,10 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 				testProvidetCho1Exists = true;
 				assertTrue(pcho.getChild("title", C.DC_NS).getValue().equals("Nudelmaschine in Originalverpackung"));
 				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("01.01.1970-31.12.1989"));
-				assertTrue(pcho.getChild("hasType", C.EDM_NS).getValue().equals("is root element"));
 			} else if(pcho.getAttributeValue("about", C.RDF_NS).contains(object.getIdentifier()+"-ISIL/lido/Inventarnummer-2")){
 				testProvidetCho2Exists = true;
 				assertTrue(pcho.getChild("title", C.DC_NS).getValue().equals("Küchenmaschine"));
 				assertTrue(pcho.getChild("date", C.DC_NS).getValue().contains("01.01.1950-31.12.1959"));
-				assertTrue(pcho.getChild("hasType", C.EDM_NS).getValue().equals("is root element"));
 			}
 			
 			List<Element> identifier = pcho.getChildren("identifier", C.DC_NS);

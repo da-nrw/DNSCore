@@ -27,10 +27,12 @@ package de.uzk.hki.da.grid;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 
 
@@ -48,19 +50,24 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	 * @see de.uzk.hki.da.grid.IrodsGridFacadeBase#put(java.io.File, java.lang.String)
 	 */
 	@Override
-	public boolean put(File file, String gridPath , StoragePolicy sp) throws IOException {
-		boolean ret = false;
-		ret = super.put(file, gridPath, sp);
-		if (!gridPath.startsWith("/")) 
-			gridPath = "/" + gridPath;
-		gridPath = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + gridPath;
-		irodsSystemConnector.connect();
-		if (sp.getForbiddenNodes()!=null && !sp.getForbiddenNodes().isEmpty()) irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(gridPath, "FORBIDDEN_NODES", String.valueOf(sp));
-		irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(gridPath, "MIN_COPIES", String.valueOf(sp.getMinNodes()));
-		irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(gridPath, "FEDERATED", "0");
-		irodsSystemConnector.logoff();
-		startFederateItem(gridPath,sp);
-		return ret;
+	public boolean put(File file, String address_dest , StoragePolicy sp) throws IOException {
+		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
+		if (!address_dest.startsWith("/")) address_dest = "/" + address_dest;
+		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + address_dest;
+		String destCollection = FilenameUtils.getFullPath(gridPath);
+		
+		if (!iclc.exists(destCollection)) {
+			logger.debug("creating Coll " + destCollection);
+			iclc.mkCollection(destCollection);
+		}
+		if (iclc.put(file, gridPath, sp.getCommonStorageRescName())) {
+			if (sp.getForbiddenNodes()!=null && !sp.getForbiddenNodes().isEmpty()) iclc.setIMeta(gridPath, "FORBIDDEN_NODES", String.valueOf(sp));
+			iclc.setIMeta(gridPath, "MIN_COPIES", String.valueOf(sp.getMinNodes()));
+			String checksum = iclc.getChecksum(gridPath);
+			iclc.setIMeta(gridPath, "chksum", checksum);
+			iclc.setIMeta(gridPath, "FEDERATED", "0");
+			return true;
+		} else return false;	
 	}
 	
 	@Override
@@ -101,13 +108,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		}
 		return false;
 	}
-	
-	public void startFederateItem(String gridPath, StoragePolicy sp) {
-		logger.debug("Trying to start Federation Executor");
-		Thread  fe = new FederationExecutor(irodsSystemConnector,sp, gridPath);
-		fe.start();
-	}
-
+	// deprecated !!!
 	@Override
 	public boolean isValid(String gridPath) {
 	String address_dest = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + "/" + gridPath;
@@ -133,6 +134,18 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		}
 		logger.debug("claimed state by iRODS Datagrid is: false");
 		return false;
+	}
+	
+	@Override
+	public void distribute(Node node, File fileToDistribute, String address_dest, StoragePolicy sp) {
+		if (!address_dest.startsWith("/")) address_dest = "/" + address_dest;
+		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + address_dest;	
+		
+		for (Node cn: node.getCooperatingNodes()) {
+				CreateCopyJob cj = new CreateCopyJob();
+				cj.createCopyJob(gridPath, cn.getIdentifier(), node.getIdentifier(),sp.getCommonStorageRescName());
+			}
+	
 	}
 	
 }
