@@ -54,13 +54,6 @@ public class JobNamedQueryDAO {
 		List<Job> joblist=null;
 		try{
 			
-			// circumvent lazy initialization issues
-//			session.refresh(node);
-//			for (Node cn:node.getCooperatingNodes()) cn.getName();
-//			for (Copy c:node.getCopies());
-			
-			
-			
 			joblist = session
 					.createQuery("SELECT j FROM Job j LEFT JOIN j.obj as o where j.status=?1 and "
 							+ "j.responsibleNodeName=?2 and o.object_state IN (100, 50, 40) and o.orig_name!=?3 order by j.date_modified asc ")
@@ -82,16 +75,15 @@ public class JobNamedQueryDAO {
 				for (Event e:p.getEvents()){}
 				for (Copy copy:p.getCopies()) {}
 			}
-			// -
-			logger.debug("fetched job with id {} and status {}", job.getId(), job.getStatus());
-
+			//-
+			
 			job.setStatus(workingStatus);
 			job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
 			session.merge(job);
 			session.getTransaction().commit();
 			session.close();
 			
-			logger.debug("fetched job with id {} and set status to {}", job.getId(), job.getStatus());
+			logger.debug("Fetched job of object "+job.getObject().getIdentifier()+" +. Set job status to "+job.getStatus()+".");
 		
 		}catch(Exception e){
 			session.close();

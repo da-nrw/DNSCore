@@ -59,13 +59,20 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 	/**
 	 * The output of fido typically is a comma separated list of puids for each file. Only the last entry of the list
 	 * will be taken.
-	 * @throws IOException 
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<FileWithFileFormat> identify(Path workPath,List<? extends FileWithFileFormat> files)
-			throws IOException {
+			throws IOException, FileNotFoundException {
 
+		for (FileWithFileFormat f:files) {
+			if (!(Path.makeFile(workPath,f.getPath()).exists()))
+				throw new FileNotFoundException("Missing file: "+Path.makeFile(workPath,f.getPath()));
+		}
+		
+		
+		
+		
 		getFormatScanService().identify(workPath,(List<FileWithFileFormat>) files);
 		
 		for (String s:subformatIdentificationStrategyTriggerMap.keySet())

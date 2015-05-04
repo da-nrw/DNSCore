@@ -867,6 +867,9 @@ public class Object {
 		this.transientNodeRef = node;
 	}
 	
+	/**
+	 * @deprecated
+	 */
 	public void reattach(){
 		for (Package p:packages){
 			p.setTransientBackRefToObject(this);
