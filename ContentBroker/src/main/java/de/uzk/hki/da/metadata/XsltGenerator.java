@@ -19,12 +19,15 @@
 
 package de.uzk.hki.da.metadata;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +37,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -44,6 +46,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -86,16 +89,23 @@ public class XsltGenerator {
 		if (!new File(xsltPath).exists())
 			throw new FileNotFoundException();
 		
-		this.inputStream = inputStream;
-		xsltSource = new StreamSource(new FileInputStream(xsltPath));
+		try {
+			String theString = IOUtils.toString(inputStream, "UTF-8");
+			this.inputStream = new ByteArrayInputStream(theString.getBytes());
+			
+			xsltSource = new StreamSource(new FileInputStream(xsltPath));
 
-		TransformerFactory transFact = TransformerFactory.newInstance(TRANSFORMER_FACTORY_CLASS, null);
-		transFact.setErrorListener(new CutomErrorListener());
-		
-		transformer = null;
-		transformer = transFact.newTransformer(xsltSource);
-		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-		transformer.setErrorListener(new CutomErrorListener());
+			TransformerFactory transFact = TransformerFactory.newInstance(TRANSFORMER_FACTORY_CLASS, null);
+			transFact.setErrorListener(new CutomErrorListener());
+			
+			transformer = null;
+			transformer = transFact.newTransformer(xsltSource);
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			transformer.setErrorListener(new CutomErrorListener());
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
 	}
 
 	/**
