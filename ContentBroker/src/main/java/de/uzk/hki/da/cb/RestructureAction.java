@@ -204,6 +204,8 @@ public class RestructureAction extends AbstractAction{
 			scannedFiles = fileFormatFacade.identify(wa.dataPath(),filesToScan);
 		} catch (FileFormatException e) {
 			throw new RuntimeException(ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
+		} catch (FileNotFoundException e) {
+			throw new FileNotFoundException("Raised file not found exception "+e.getMessage());
 		} catch (IOException e) {
 			throw new SubsystemNotAvailableException(e);
 		}
