@@ -46,7 +46,7 @@ public interface FileFormatFacade {
 	 * 
 	 * @param files
 	 * @return return files. Used for easier testing.
-	 * @throws FileNotFoundException if one or more files cannot be found.
+	 * @throws FileNotFoundException if one or more of the files cannot be found.
 	 * @throws FileFormatException if format could not get determined.
 	 * @throws IOException if one or more of the files formats 
 	 * could not get determined as a result of IO problems. This can has something to do with 

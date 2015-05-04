@@ -125,7 +125,8 @@ public class RestructureAction extends AbstractAction{
 		dgs.addDocumentsToObject(o);
 
 		listAllDAFiles();
-		determineFileFormats();
+		List<DAFile> newestFiles = o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
+		determineFileFormats(newestFiles);
 		
 		logger.debug("Create new b representation "+j.getRep_name()+"b");
 		Path.makeFile(wa.dataPath(), j.getRep_name()+"b").mkdir();
@@ -196,11 +197,11 @@ public class RestructureAction extends AbstractAction{
 	
 	
 	
-	private void determineFileFormats() throws FileNotFoundException, SubsystemNotAvailableException {
+	private void determineFileFormats(List<DAFile> filesToScan) throws FileNotFoundException, SubsystemNotAvailableException {
+		
 		List<FileWithFileFormat> scannedFiles = null;
 		try {
-			List<DAFile> dafiles = o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
-			scannedFiles = fileFormatFacade.identify(wa.dataPath(),dafiles);
+			scannedFiles = fileFormatFacade.identify(wa.dataPath(),filesToScan);
 		} catch (FileFormatException e) {
 			throw new RuntimeException(ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
 		} catch (IOException e) {
