@@ -92,7 +92,7 @@ public class AcceptanceTestHelper {
 	 * 
 	 * @author Daniel M. de Oliveira
 	 */
-	Object retrieveAIP(Object o,File targetFolder,String packageName) throws IOException{
+	void retrieveAIP(Object o,File targetFolder,String packageName) throws IOException{
 
 		final String packSuffix = ".pack_";
 		
@@ -114,8 +114,6 @@ public class AcceptanceTestHelper {
 		if (targetFolder.exists()) FileUtils.deleteDirectory(targetFolder);
 		FileUtils.moveDirectory(Path.makeFile(TEMP_FOLDER,object.getIdentifier()+packSuffix+packageName),targetFolder);
 		Path.makeFile(TEMP_FOLDER,object.getIdentifier()+packSuffix+packageName+C.FILE_EXTENSION_TAR).delete();
-		
-		return object;
 	}
 	
 	/**
@@ -203,9 +201,9 @@ public class AcceptanceTestHelper {
 
 
 
-	Job waitForJobToBeInErrorStatus(String originalName,String errorStatusLastDigit) throws InterruptedException{
+	void waitForJobToBeInErrorStatus(String originalName,String errorStatusLastDigit) throws InterruptedException{
 		
-		return waitForJobToBeInErrorStatus(originalName,errorStatusLastDigit,TIMEOUT);
+		waitForJobToBeInErrorStatus(originalName,errorStatusLastDigit,TIMEOUT);
 	}
 	
 	
@@ -220,7 +218,7 @@ public class AcceptanceTestHelper {
 	 * 
 	 * @author Daniel M. de Oliveira
 	 */
-	Job waitForJobToBeInErrorStatus(String originalName,String errorStatusLastDigit,int timeout) throws InterruptedException{
+	void waitForJobToBeInErrorStatus(String originalName,String errorStatusLastDigit,int timeout) throws InterruptedException{
 		System.out.println("waiting for job of object with original name "+originalName+" to be in error status with digit "+errorStatusLastDigit);
 		
 		int waited_ms_total=0;
@@ -237,7 +235,6 @@ public class AcceptanceTestHelper {
 			System.out.println("w/aiting for job to be ready ... "+job.getStatus());
 			if (job.getStatus().endsWith(errorStatusLastDigit)){
 				System.out.println(MSG_READY);
-				return job;
 			}
 		}
 	}
@@ -256,7 +253,7 @@ public class AcceptanceTestHelper {
 	 * @return
 	 * @throws InterruptedException
 	 */
-	Job waitForJobToBeInStatus(String originalName,String status) 
+	void waitForJobToBeInStatus(String originalName,String status) 
 			throws InterruptedException{
 		System.out.println("waiting for job of object with original name "+originalName+" to be in status "+status);
 		
@@ -271,7 +268,6 @@ public class AcceptanceTestHelper {
 				
 				if (job.getStatus().equals(status)){
 					System.out.println(MSG_READY);
-					return job;
 				} else if (isInErrorState(job)) {
 					String msg = "ERROR: Job in error state: " + job.getStatus();
 					System.out.println(msg);
