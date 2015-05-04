@@ -73,10 +73,6 @@ public class RetrievalActionTests extends ConcreteActionUnitTest{
 		o.getPackages().add(pkg2);
 		o.getPackages().add(pkg3);
 		
-		pkg2.setTransientBackRefToObject(o);
-		pkg3.setTransientBackRefToObject(o);
-		o.reattach();
-
 		n.setWorkAreaRootPath(workAreaRootPath);
 		n.setUserAreaRootPath(userAreaRootPath);
 	

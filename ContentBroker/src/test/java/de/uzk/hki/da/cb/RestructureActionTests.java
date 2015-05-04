@@ -205,7 +205,6 @@ public class RestructureActionTests extends ConcreteActionUnitTest{
 		pkg2 = new Package();
 		pkg2.setName("2");
 		o.getPackages().add(pkg2);
-		pkg2.setTransientBackRefToObject(o);
 	}
 
 

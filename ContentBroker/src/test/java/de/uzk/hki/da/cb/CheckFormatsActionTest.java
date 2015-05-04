@@ -134,7 +134,6 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 
 		final Package sipPackage = new Package(); sipPackage.setName("2"); // the SIP / Delta
-		sipPackage.setTransientBackRefToObject(o);
 		
 		DAFile a  = new DAFile(REP1A,"_1.jpg");
 		DAFile b  = new DAFile(REP1A,"_3.mov");
@@ -216,7 +215,9 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 	public void testThatNewConvertedFileHasCorrectFormatInfoWithDeltas() throws IOException, SubsystemNotAvailableException{
 		
 		Package oldPackage = new Package(); // the AIP
-		oldPackage.setName("1"); oldPackage.setTransientBackRefToObject(o);
+		
+		oldPackage.setName("1");
+		
 		DAFile newPackageOriginalFile  = new DAFile( REP1A,"_1.jpg");
 		DAFile newPackageConvertedFile = new DAFile( REP1B,"_1.tif"); 
 		List<DAFile> allFiles = new ArrayList<DAFile>(); allFiles.add(newPackageConvertedFile); allFiles.add(newPackageOriginalFile);

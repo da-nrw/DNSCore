@@ -866,15 +866,6 @@ public class Object {
 	public void setTransientNodeRef(Node node) {
 		this.transientNodeRef = node;
 	}
-	
-	/**
-	 * @deprecated
-	 */
-	public void reattach(){
-		for (Package p:packages){
-			p.setTransientBackRefToObject(this);
-		}
-	}
 
 	public String getPackage_type() {
 		return package_type;

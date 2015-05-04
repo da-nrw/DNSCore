@@ -54,7 +54,6 @@ public class GetNewestFilesFromAllRepresentationsTests {
 		o = TESTHelper.setUpObject("1",workAreaRootPath);
 		p1 = o.getLatestPackage();
 		p2 = new Package();
-		p2.setTransientBackRefToObject(o);
 		o.getPackages().add(p2);
 	}
 	

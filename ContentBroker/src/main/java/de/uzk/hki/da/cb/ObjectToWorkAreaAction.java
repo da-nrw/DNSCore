@@ -79,7 +79,6 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 			throw new RuntimeException("error while trying to get existing packages from lza area",e);
 		}
 		
-		o.reattach();
 		dgs.addDocumentsToObject(o);
 		return true;
 	}

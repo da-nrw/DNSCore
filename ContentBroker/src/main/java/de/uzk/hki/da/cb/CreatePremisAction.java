@@ -146,7 +146,6 @@ public class CreatePremisAction extends AbstractAction {
 				newPREMISPackage.setEvents(mainPREMISPackage.getEvents());
 				newPREMISObject.getPackages().add(newPREMISPackage);
 				newPREMISObject.setTransientNodeRef(n);
-				newPREMISObject.reattach();
 			}
 			newPREMISObject.getAgents().addAll(mainPREMISObject.getAgents());
 		}
