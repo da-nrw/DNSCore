@@ -95,6 +95,7 @@ public class AbstractActionTests {
 		object.setIdentifier("ID");
 		object.setContractor(c);
 		object.getPackages().add(pkg);
+		job.setObject(object);
 		action.setObject(object);
 		action.setJmsMessageServiceHandler(ams);
 		action.setStartStatus(startStatus);
