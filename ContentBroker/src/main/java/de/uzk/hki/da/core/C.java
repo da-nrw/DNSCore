@@ -129,6 +129,10 @@ public class C {
 	public static final Namespace DC_NS = Namespace.getNamespace("http://purl.org/dc/elements/1.1/");
 	public static final Namespace DCTERMS_NS = Namespace.getNamespace("http://purl.org/dc/terms/");
 	public static final Namespace DV = Namespace.getNamespace("http://dfg-viewer.de/");
+	
+	public static final String EDM_PROVIDED_CHO = "edm:ProvidedCHO";
+	public static final String EDM_ORE_AGGREGATION = "ore:Aggregation";
+	public static final String EDM_AGGREGATED_CHO= "edm:aggregatedCHO";
 	public static final String EDM_CONTRIBUTOR = "dc:contributor";
 	public static final String EDM_CREATOR = "dc:creator";
 	public static final String EDM_DATE = "dc:date";
@@ -144,6 +148,7 @@ public class C {
 	public static final String EDM_IS_SHOWN_AT = "edm:isShownAt";
 	public static final String EDM_OBJECT = "edm:object";
 	public static final String EDM_PROVIDER = "edm:provider";
+	public static final String EDM_HAS_TYPE = "edm:hasType";
 	
 	// Other
 	public static final String LOCAL_NODE_BEAN_NAME = "localNode";

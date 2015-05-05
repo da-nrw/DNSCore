@@ -9,6 +9,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
+import javax.validation.constraints.AssertFalse;
+
 import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -165,7 +167,18 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 			}
 		}
 		
+		Boolean rootElementExists = false;
 		for(Element pcho : providetCho) {
+			
+			if(pcho.getAttributeValue("about", C.RDF_NS).equals("http://data.danrw.de/cho/"+object.getIdentifier())) {
+				assertTrue(pcho.getChild("title", C.DC_NS).getValue()
+						.equals("VDA - Forschungsstelle Rheinlländer in aller Welt: Bezirksstelle West des Vereins für das Deutschtum im Ausland"));
+				assertTrue(pcho.getChild("hasType", C.EDM_NS).getValue().equals("is root element"));
+				rootElementExists = true;
+			} else {
+				assertTrue(pcho.getChild("hasType", C.EDM_NS)==null);
+			}
+			
 			if(pcho.getChild("title", C.DC_NS).getValue().equals("01. Bundesleitung und Bezirksverbände")) {
 				bundesleitungUndBezirksverbaendeExists = true;
 				assertTrue(pcho.getChild("isPartOf", C.DCTERMS_NS).getAttributeValue("resource", C.RDF_NS).equals("http://data.danrw.de/cho/"+object.getIdentifier()));
@@ -195,6 +208,7 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 			}
 			assertTrue(objIdExists && urnExists);
 		}
+		assertTrue(rootElementExists);
 		assertTrue(testProvidetChoExists);
 		assertTrue(bundesleitungUndBezirksverbaendeExists);
 		

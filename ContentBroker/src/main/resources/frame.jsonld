@@ -19,6 +19,7 @@
         "dc:subject": { "@container": "@set" },
         "dc:title": { "@container": "@set" },
         "dc:type": { "@container": "@set" },
+        "edm:hasType": { "@container": "@set" },
         "dcterms:alternative": { "@container": "@set" },
         "dcterms:extent": { "@container": "@set" },
         "dcterms:provenance": { "@container": "@set" },
