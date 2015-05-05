@@ -171,7 +171,7 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 		Boolean rootElementExists = false;
 		for(Element pcho : providetCho) {
 			
-			if(pcho.getAttributeValue("about", C.RDF_NS).equals("http://data.danrw.de/cho/"+object.getIdentifier())) {
+			if(pcho.getAttributeValue("about", C.RDF_NS).equals("http://data.danrw.de/cho/"+o.getIdentifier())) {
 				assertTrue(pcho.getChild("title", C.DC_NS).getValue()
 						.equals("VDA - Forschungsstelle Rheinlländer in aller Welt: Bezirksstelle West des Vereins für das Deutschtum im Ausland"));
 				assertTrue(pcho.getChild("hasType", C.EDM_NS).getValue().equals("is root element"));
