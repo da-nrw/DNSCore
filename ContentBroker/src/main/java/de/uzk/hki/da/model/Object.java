@@ -125,9 +125,6 @@ public class Object {
 	@Transient
 	private String DIP_INSTITUTION_REPNAME = C.WA_DIP+"/institution";
 	
-	/** The zone. */
-	private String zone;
-	
 	/** The published_flag. */
 	private int published_flag=C.PUBLISHEDFLAG_UNDEFINED;
 	
@@ -414,26 +411,6 @@ public class Object {
 	
 	
 	
-	
-	
-	
-	/**
-	 * Sets the zone.
-	 *
-	 * @param zone the new zone
-	 */
-	public void setZone(String zone) {
-		this.zone = zone;
-	}
-	
-	/**
-	 * Gets the zone.
-	 *
-	 * @return the zone
-	 */
-	public String getZone() {
-		return zone;
-	}
 	
 	/**
 	 * Sets the published_flag.
