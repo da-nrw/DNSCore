@@ -60,7 +60,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 		
 		Path.makeFile(wa.dataPath()).mkdirs();
 		
-		RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridFacade());
+		RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridFacade(),wa);
 		
 		try {
 			if (!ingestGate.canHandle(retrievePackagesHelper.getObjectSize(o, j))) {
@@ -74,7 +74,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 		}
 		
 		try {
-			retrievePackagesHelper.loadPackages(wa.dataPath(),o, true);
+			retrievePackagesHelper.loadPackages(o, true);
 		} catch (IOException e) {
 			throw new RuntimeException("error while trying to get existing packages from lza area",e);
 		}

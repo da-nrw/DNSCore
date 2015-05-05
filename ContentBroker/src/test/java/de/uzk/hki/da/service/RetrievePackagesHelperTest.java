@@ -32,8 +32,10 @@ import org.junit.Test;
 import de.uzk.hki.da.cb.RetrievePackagesHelper;
 import de.uzk.hki.da.grid.FakeGridFacade;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
@@ -44,10 +46,14 @@ import de.uzk.hki.da.util.RelativePath;
 public class RetrievePackagesHelperTest {
 
 	private Path workAreaRootPath = new RelativePath("src/test/resources/service/RetrievePackagesHelperTest/");
-	private Object object;	
+	private Object object;
+	private WorkArea wa;
 	
 	@Before
 	public void setUp(){
+		Node n = new Node();
+		n.setWorkAreaRootPath(workAreaRootPath);
+		
 		Path.make(workAreaRootPath,"work/TEST/id/data").toFile().mkdir();
 		
 		object = TESTHelper.setUpObject("id", workAreaRootPath);
@@ -56,6 +62,10 @@ public class RetrievePackagesHelperTest {
 		Package p3 = new Package(); p3.setName("3");
 		object.getPackages().add(p2);
 		object.getPackages().add(p3);
+		
+		wa = new WorkArea(n,object);
+		
+		
 	}
 	
 	@After 
@@ -71,7 +81,7 @@ public class RetrievePackagesHelperTest {
 		FakeGridFacade grid = new FakeGridFacade();
 		grid.setGridCacheAreaRootPath(workAreaRootPath+"/grid/");
 		
-		new RetrievePackagesHelper(grid).loadPackages(Path.make(workAreaRootPath,"work/TEST/id/data"),object, true);
+		new RetrievePackagesHelper(grid,wa).loadPackages(object, true);
 		
 		String outputPath = workAreaRootPath + "/work/TEST/id/";
 		
