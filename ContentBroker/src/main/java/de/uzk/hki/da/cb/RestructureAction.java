@@ -136,7 +136,7 @@ public class RestructureAction extends AbstractAction{
 
 	
 	private void makeCopyOfDeltaPremis() throws IOException {
-		FileUtils.copyFile(Path.makeFile(o.getPath("newest"),PREMIS),
+		FileUtils.copyFile(Path.makeFile(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS),
 				Path.makeFile(wa.dataPath(),PENULTIMATE_PREMIS));
 		
 	}

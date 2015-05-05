@@ -71,7 +71,7 @@ public class ConverterService {
 		
 		// to register the pip subfolder into irods, it must exist (even if it is empty).
 		Path.make(wa.dataPath(),C.WA_DIP).toFile().mkdir();
-		Path.makeFile(object.getPath("newest")).mkdir();
+		Path.makeFile(wa.dataPath(),object.getNameOfLatestBRep()).mkdir();
 		
 		for (ConversionInstruction ci:conversionInstructions){
 			waitUntilThereIsSufficientSpaceOnCacheResource(wa.dataPath().toString(),2097152,10000);

@@ -72,7 +72,7 @@ public class ObjectTests {
 		o.getLatestPackage().getFiles().clear();
 
 		try{
-			o.getPath("newest");
+			o.getNameOfLatestBRep();
 			fail();
 		}catch(IllegalStateException e){
 		}

@@ -784,7 +784,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	
 	public void updateRepNames() {
 		if (repNames == null || repNames.length == 0) {
-			repNames = new String[]{ o.getPath("newest").getLastElement() };
+			repNames = new String[]{ o.getNameOfLatestBRep() };
 		}
 	}
 }

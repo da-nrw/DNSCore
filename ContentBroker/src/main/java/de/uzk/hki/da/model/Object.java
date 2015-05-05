@@ -398,17 +398,14 @@ public class Object {
 	}
 
 	/**
-	 * 
-	 * @param t
 	 * @return the path to the newest b representation.
 	 * @throws IllegalStateException if no dafiles present in object.
 	 */
-	public Path getPath(String t){
+	public String getNameOfLatestBRep(){
 		if (getReps().isEmpty()) throw new IllegalStateException("no files present. reps could not get determined from dafiles.");
 		
 		String newestRep = getReps().get(getReps().size()-1);
-		
-		return Path.make(getPath(),"data", newestRep.replace("+a", "+b"));
+		return newestRep.replace("+a", "+b");
 	}
 	
 	

@@ -76,7 +76,7 @@ public class PdfConversionStrategy implements ConversionStrategy {
 			throws FileNotFoundException {
 		if (object.getLatestPackage() == null)
 			throw new IllegalStateException("Package not set");
-		Path.make(object.getPath("newest"),
+		Path.make(wa.dataPath(),object.getNameOfLatestBRep(),
 				ci.getTarget_folder()).toFile().mkdirs();
 		List<Event> results = new ArrayList<Event>();
 		File result = new File(generateTargetFilePath(wa,ci));
@@ -95,7 +95,7 @@ public class PdfConversionStrategy implements ConversionStrategy {
 		if (pi.getExitValue()!=0) throw new RuntimeException("GS command not succeeded");
 
 		if (result.exists()) {
-			DAFile daf = new DAFile( object.getPath("newest").getLastElement(),
+			DAFile daf = new DAFile( object.getNameOfLatestBRep(),
 					StringUtilities.slashize(ci.getTarget_folder())
 							+ result.getName());
 			logger.debug("new dafile:" + daf);
@@ -126,7 +126,7 @@ public class PdfConversionStrategy implements ConversionStrategy {
 	 */
 	public String generateTargetFilePath(WorkArea wa,ConversionInstruction ci) {
 		String input  = wa.toFile(ci.getSource_file()).getAbsolutePath();
-		return object.getPath("newest")+"/"+StringUtilities.slashize(ci.getTarget_folder())
+		return wa.dataPath()+"/"+object.getNameOfLatestBRep()+"/"+StringUtilities.slashize(ci.getTarget_folder())
 				+ FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix();
 	}
 	
