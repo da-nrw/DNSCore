@@ -37,8 +37,7 @@
                     "dc:date": {
                         "type": "string",
                         "index_name": "danrw_date",
-                        "index": "not_analyzed",
-                        "format": "dateOptionalTime"
+                        "index": "not_analyzed"
                     },
                     "dc:description": {
                         "type": "string",
