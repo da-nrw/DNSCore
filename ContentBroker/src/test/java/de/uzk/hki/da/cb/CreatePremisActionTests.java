@@ -120,7 +120,6 @@ public class CreatePremisActionTests {
 		object.setIdentifier("identifier");
 		object.setUrn("urn");
 		object.setContractor(contractor);
-		object.setTransientNodeRef(node);
 		
 		FileFormatFacade jhoveScanService = mock(FileFormatFacade.class);
 		action.setFileFormatFacade(jhoveScanService);		

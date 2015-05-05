@@ -218,4 +218,9 @@ public class WorkArea {
 		}
 		return false;
 	}
+	
+	public Node getNode() {
+		return n;
+	}
+	
 }

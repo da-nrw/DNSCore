@@ -102,7 +102,7 @@ public class RestructureAction extends AbstractAction{
 		
 		listAllFiles();
 		
-		RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot());
+		RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot(),wa);
 		if (o.isDelta()
 				&&(! checkIfOnWorkAreaIsSpaceAvailabeForDeltaPackages(retrievePackagesHelper)))
 			return false;
@@ -136,7 +136,7 @@ public class RestructureAction extends AbstractAction{
 
 	
 	private void makeCopyOfDeltaPremis() throws IOException {
-		FileUtils.copyFile(Path.makeFile(o.getPath("newest"),PREMIS),
+		FileUtils.copyFile(Path.makeFile(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS),
 				Path.makeFile(wa.dataPath(),PENULTIMATE_PREMIS));
 		
 	}
@@ -178,7 +178,7 @@ public class RestructureAction extends AbstractAction{
 		
 		logger.info("Moving delta packages to WorkArea.");
 		try {
-			retrievePackagesHelper.loadPackages(wa.dataPath(),o, false);
+			retrievePackagesHelper.loadPackages(o, false);
 			logger.info("Packages of object \""+o.getIdentifier()+
 					"\" are now available on cache resource at: " + Path.make(wa.objectPath(),"existingAIPs"));
 			

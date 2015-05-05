@@ -105,14 +105,13 @@ public class CreatePremisAction extends AbstractAction {
 		 
 		
 		Object newPREMISObject = new Object();
-		newPREMISObject.setTransientNodeRef(o.getTransientNodeRef());;
 		newPREMISObject.setOrig_name(o.getOrig_name());
 		newPREMISObject.setIdentifier(o.getIdentifier());
 		newPREMISObject.setUrn(o.getUrn());
 		newPREMISObject.setContractor(o.getContractor());
 		
 		Object sipPREMISObject = parsePremisFile(
-				new File(Path.make(o.getPath("newest"),PREMIS).toString().replace("+b", "+a")));
+				new File(Path.make(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS).toString().replace("+b", "+a")));
 		
 		if (sipPREMISObject.getPackages().size() > 0) {
 			o.getLatestPackage().getEvents().addAll(sipPREMISObject.getPackages().get(0).getEvents());
@@ -135,10 +134,10 @@ public class CreatePremisAction extends AbstractAction {
 				
 		checkConvertEvents(newPREMISObject);
 	
-		File newPREMISXml = Path.make( 
-				o.getPath("newest"),PREMIS).toFile();
+		File newPREMISXml = Path.make(wa.dataPath(), 
+				o.getNameOfLatestBRep(),PREMIS).toFile();
 		logger.trace("trying to write new Premis file at " + newPREMISXml.getAbsolutePath());
-		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml);
+		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml,Path.make(wa.dataPath(),"jhove_temp"));
 		
 		if (!PremisXmlValidator.validatePremisFile(newPREMISXml))
 			throw new RuntimeException("PREMIS that has recently been created is not valid");
@@ -176,7 +175,6 @@ public class CreatePremisAction extends AbstractAction {
 			newPREMISPackage.setFiles(mainPREMISPackage.getFiles());
 			newPREMISPackage.setEvents(mainPREMISPackage.getEvents());
 			newPREMISObject.getPackages().add(newPREMISPackage);
-			newPREMISObject.setTransientNodeRef(n);
 		}
 		newPREMISObject.getAgents().addAll(mainPREMISObject.getAgents());
 	}
@@ -301,7 +299,7 @@ public class CreatePremisAction extends AbstractAction {
 	@Override
 	public void rollback() throws Exception {
 		
-		Path.make(o.getPath("newest"),PREMIS).toFile().delete();
+		Path.make(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS).toFile().delete();
 		
 		File tempFolder = new File("jhove/temp/" + j.getId() + "/premis_output/");
 		if (tempFolder.exists())

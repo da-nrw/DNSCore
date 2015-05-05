@@ -82,7 +82,7 @@ public class DocxConversionStrategyTests {
 		cs.setObject(o);
 		n = new Node();
 		n.setWorkAreaRootPath(new RelativePath(basePath));
-		Path.make(o.getPath("newest")+"/_Docx.pdf").toFile().createNewFile();
+		Path.make( basePath+"/TEST/1/data/"+o.getNameOfLatestBRep()+"/_Docx.pdf").toFile().createNewFile();
 		
 	}
 	

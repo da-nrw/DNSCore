@@ -125,7 +125,6 @@ public class ActionFactory implements ApplicationContextAware {
 		action.setUserExceptionManager(userExceptionManager);
 		action.setJmsMessageServiceHandler(jmsMessageServiceHandler);
 		action.setLocalNode(localNode);
-		job.getObject().setTransientNodeRef(localNode);
 		action.setObject(job.getObject());
 		action.setActionMap(getActionRegistry());
 		action.setActionFactory(this);

@@ -162,6 +162,7 @@ public class UpdateMetadataActionXMPTests extends ConcreteActionUnitTest {
 		o.setPackage_type("XMP");
 		
 		action.setWorkArea(wa);
+		action.setLocalNode(n);
 		action.implementation();
 		
 	}

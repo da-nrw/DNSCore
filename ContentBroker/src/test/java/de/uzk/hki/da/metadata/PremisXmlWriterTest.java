@@ -47,6 +47,7 @@ import de.uzk.hki.da.model.TextRestriction;
 import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.model.MigrationRight.Condition;
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.util.Path;
 
 
 /**
@@ -132,7 +133,7 @@ public class PremisXmlWriterTest {
 		
 		ObjectPremisXmlWriter writer = new ObjectPremisXmlWriter();
 
-		writer.serialize(object, new File("src/test/resources/metadata/premis_test_xml_metadata_stream_writer_out.xml"));
+		writer.serialize(object, new File("src/test/resources/metadata/premis_test_xml_metadata_stream_writer_out.xml"),Path.make("tmp"));
 		
 		PremisXmlValidator.validatePremisFile(new File("src/test/resources/metadata/premis_test_xml_metadata_stream_writer_out.xml"));		
 	}

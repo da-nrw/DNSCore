@@ -154,8 +154,8 @@ public class WorkAreaFSTest {
 	public void testGetPathNewestRep(){
 		
 		assertEquals(
-				Path.make(workAreaRootPath,C.WA_WORK,C.TEST_USER_SHORT_NAME,identifier,C.WA_DATA,_1_B_REP),
-				o.getPath("newest")
+				_1_B_REP,
+				o.getNameOfLatestBRep()
 				);
 	}
 	

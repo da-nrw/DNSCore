@@ -71,7 +71,7 @@ public class ConverterService {
 		
 		// to register the pip subfolder into irods, it must exist (even if it is empty).
 		Path.make(wa.dataPath(),C.WA_DIP).toFile().mkdir();
-		Path.makeFile(object.getPath("newest")).mkdir();
+		Path.makeFile(wa.dataPath(),object.getNameOfLatestBRep()).mkdir();
 		
 		for (ConversionInstruction ci:conversionInstructions){
 			waitUntilThereIsSufficientSpaceOnCacheResource(wa.dataPath().toString(),2097152,10000);
@@ -84,7 +84,7 @@ public class ConverterService {
 		logger.info("Resulting Events");
 		for (Event e: results){
 			e.setAgent_type("NODE");
-			e.setAgent_name(object.getTransientNodeRef().getName());
+			e.setAgent_name(wa.getNode().getName());
 			
 			logger.info(e.getTarget_file().getRep_name()+"/"+e.getTarget_file().getRelative_path());
 			// Double check if the file really exists

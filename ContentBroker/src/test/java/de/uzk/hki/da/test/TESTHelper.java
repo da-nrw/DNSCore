@@ -108,7 +108,6 @@ public class TESTHelper {
 		
 		Object o = new Object();
 		o.setContractor(contractor);
-		o.setTransientNodeRef(node);
 		o.setIdentifier(identifier);
 		o.getPackages().add(pkg);
 		

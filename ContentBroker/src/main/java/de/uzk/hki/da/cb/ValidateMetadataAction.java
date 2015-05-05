@@ -38,6 +38,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.StringUtilities;
 
 /**
@@ -173,7 +174,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		
 		if ((getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_XMP)).size()>=1){
 			detectedMetadataFile=new DAFile(
-					o.getPath("newest").getLastElement(),C.METADATA_FILE_XMP);
+					o.getNameOfLatestBRep(),C.METADATA_FILE_XMP);
 			detectedPackageType=C.CB_PACKAGETYPE_XMP;
 			ptypeCount++;
 		}
@@ -222,7 +223,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		
 		logger.trace("collectXMP");
 		
-		String repPath = o.getPath("newest").toString();
+		String repPath = Path.make(wa.dataPath(),o.getNameOfLatestBRep()).toString();
 			
 		List<DAFile> newestFiles = o.getNewestFilesFromAllRepresentations(XMP_SIDECAR);
 		List<DAFile> newestXmpFiles = new ArrayList<DAFile>();
@@ -235,7 +236,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		File rdfFile = new File(repPath + "/"+C.METADATA_FILE_XMP);
 		XmpCollector.collect(wa,newestXmpFiles, rdfFile);	
 		logger.debug("collecting files in path: {}", rdfFile.getAbsolutePath());
-		DAFile xmpFile = new DAFile(o.getPath("newest").getLastElement(),C.METADATA_FILE_XMP);
+		DAFile xmpFile = new DAFile(o.getNameOfLatestBRep(),C.METADATA_FILE_XMP);
 		xmpFile.setFormatPUID(FFConstants.FMT_101);
 		o.getLatestPackage().getFiles().add(xmpFile);
 		o.getLatestPackage().getEvents().add(createCreateEvent(xmpFile));		
@@ -248,7 +249,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		e.setType(C.EVENT_TYPE_CREATE);
 		e.setDate(new Date());
 		e.setAgent_type(C.AGENT_TYPE_NODE);
-		e.setAgent_name(o.getTransientNodeRef().getName());
+		e.setAgent_name(n.getName());
 		return e;
 	}
 	
