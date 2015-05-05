@@ -103,7 +103,7 @@ public class ContentBroker {
 				System.exit(0);
 		}
 		
-		if (!((args.length>0)&&(args[0].equals("supress_diagnostics")))){
+		if (!((args.length>0)&&(args[0].equals("suppress_diagnostics")))){
 			if (Diagnostics.run()!=0)
 			{
 				logger.error("Diagnostics has detected one or more pre-conditions for running the ContentBroker have not been met.");
