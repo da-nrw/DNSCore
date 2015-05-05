@@ -128,9 +128,18 @@ public class AcceptanceTestHelper {
 		try {
 			object = new ObjectNamedQueryDAO().getUniqueObject(originalName, testContractor.getShort_name());
 		} catch (Exception e) {
-			fail("Exception loading Object called " + originalName + " " + e.getStackTrace()); 
+			System.out.println("Catched exception " + e.getMessage() +". Try again.");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			try {
+			object = new ObjectNamedQueryDAO().getUniqueObject(originalName, testContractor.getShort_name());
+			} catch (Exception e2) {
+			fail("Exception loading Object called " + originalName + " " + e2.getStackTrace()); 
+			}
 		}
-		
 		return object;
 	}
 
