@@ -99,7 +99,7 @@ public class ActionFactory implements ApplicationContextAware {
 		session.refresh(preservationSystem);
 		session.refresh(localNode);
 		
-		// Prevent lazy initialization issues. "Simulate" eager fetching in cast 
+		// Prevent lazy initialization issues. "Simulate" eager fetching in case 
 		// it does not work with hibernate or jpa annotations
 		Hibernate.initialize(getPreservationSystem().getConversion_policies());
 		Hibernate.initialize(localNode.getCooperatingNodes());
@@ -129,7 +129,6 @@ public class ActionFactory implements ApplicationContextAware {
 		action.setUserExceptionManager(userExceptionManager);
 		action.setJmsMessageServiceHandler(jmsMessageServiceHandler);
 		action.setLocalNode(localNode);
-		job.getObject().setTransientNodeRef(localNode);
 		action.setObject(job.getObject());
 		action.setActionMap(getActionRegistry());
 		action.setActionFactory(this);

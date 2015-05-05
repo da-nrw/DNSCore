@@ -332,13 +332,13 @@ public abstract class AbstractAction implements Runnable {
 		
 		if (deleteJob) {
 			session.delete(job);
-			baseLogger.info(this.getClass().getName()+" finished working on job: "+
-					job.getId()+". Job deleted. Database transaction successful.");
+			baseLogger.info(this.getClass().getName()+" finished working on job for object with identifier "+job.getObject().getIdentifier()+
+					". Job deleted. Database transaction successful.");
 		}
 		else {
 			session.update(job);
-			baseLogger.info(this.getClass().getName()+" finished working on job: "+
-					job.getId()+". Set job to end state ("+endStatus+"). Database transaction successful.");			
+			baseLogger.info(this.getClass().getName()+" finished working on job for object with identifier "+job.getObject().getIdentifier()+
+					". Set job to end state ("+endStatus+"). Database transaction successful.");			
 		}
 
 		session.flush();
@@ -385,7 +385,7 @@ public abstract class AbstractAction implements Runnable {
 	}
 
 	public void synchronizeObjectDatabaseAndFileSystemState() {
-		o.reattach();
+		
 		if (!SUPPRESS_OBJECT_CONSISTENCY_CHECK){
 			if ((!wa.isDBtoFSconsistent())||(!wa.isFStoDBconsistent())){
 				reportTechnicalError(new RuntimeException("Object DB is not consistent with data on FS."));

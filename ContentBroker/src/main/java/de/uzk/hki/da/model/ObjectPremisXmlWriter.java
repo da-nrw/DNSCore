@@ -65,6 +65,8 @@ public class ObjectPremisXmlWriter {
 	// Each PREMIS-Object describing a file has an mdSec element for the jhove output which needs an id. Simple Counter.
 	/** The jhove md sec id counter. */
 	private int jhoveMDSecIdCounter = 0; 
+
+	private Path jhoveDataPath;
 	
 	/** The writer. */
 	private XMLStreamWriter writer = null;
@@ -80,12 +82,13 @@ public class ObjectPremisXmlWriter {
 	 * @param f the f
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	public void serialize(Object object, File f) throws IOException {
+	public void serialize(Object object, File f,Path jhoveDataPath) throws IOException {
 		if ((object.getPackages()==null)||(object.getPackages().isEmpty())) throw new IllegalStateException("No Packages set");
 		if (object.getIdentifier()==null) throw new IllegalStateException("object identifier is null");
 		if (object.getContractor()==null) throw new IllegalStateException("object has no contractor");
 		if (object.getOrig_name()==null) throw new IllegalStateException("object has no orig name");
 		
+		this.jhoveDataPath=jhoveDataPath;
 		agents = new HashSet<Agent>();
 		
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
@@ -238,7 +241,7 @@ public class ObjectPremisXmlWriter {
 				createAttribute("OTHERMDTYPE", "JHOVE");
 					createOpenElement("xmlData", 6);
 						System.out.println(DigestUtils.md5Hex(f.getRelative_path()));
-						integrateJhoveData(Path.make(object.getPath(),"data","jhove_temp",f.getRep_name(),
+						integrateJhoveData(Path.make(jhoveDataPath,f.getRep_name(),
 								DigestUtils.md5Hex(f.getRelative_path())).toString(), 7);
 					createCloseElement(6);
 				createCloseElement(5);

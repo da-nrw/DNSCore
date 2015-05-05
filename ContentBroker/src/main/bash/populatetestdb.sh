@@ -13,6 +13,7 @@ then
 		"DELETE FROM documents;"
 		"DELETE FROM dafiles;"
 		"DELETE FROM objects_packages;"
+		"DELETE FROM copies;"
 		"DELETE FROM packages;"
 		"DELETE FROM objects;"
 		"DELETE FROM nodes_contractors;"

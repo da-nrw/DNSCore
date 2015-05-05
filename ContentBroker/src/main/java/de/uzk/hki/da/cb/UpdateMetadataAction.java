@@ -446,7 +446,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			e.setType("COPY");
 			e.setDate(new Date());
 			e.setAgent_type("NODE");
-			e.setAgent_name(o.getTransientNodeRef().getName());							
+			e.setAgent_name(n.getName());							
 			o.getLatestPackage().getEvents().add(e);
 			
 			logger.debug("Copied metadata file \"{}\" to \"{}\"", srcMetadataFile.toString(), destMetadataFile);
@@ -522,7 +522,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					e.setType("COPY");
 					e.setDate(new Date());
 					e.setAgent_type("NODE");
-					e.setAgent_name(o.getTransientNodeRef().getName());							
+					e.setAgent_name(n.getName());							
 					o.getLatestPackage().getEvents().add(e);
 				}
 			}
@@ -622,7 +622,7 @@ public class UpdateMetadataAction extends AbstractAction {
 		e.setType("COPY");
 		e.setDate(new Date());
 		e.setAgent_type("NODE");
-		e.setAgent_name(o.getTransientNodeRef().getName());
+		e.setAgent_name(n.getName());
 		return e;
 	}
 	
@@ -633,7 +633,7 @@ public class UpdateMetadataAction extends AbstractAction {
 		e.setType("CREATE");
 		e.setDate(new Date());
 		e.setAgent_type("NODE");
-		e.setAgent_name(o.getTransientNodeRef().getName());
+		e.setAgent_name(n.getName());
 		return e;
 	}
 
@@ -784,7 +784,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	
 	public void updateRepNames() {
 		if (repNames == null || repNames.length == 0) {
-			repNames = new String[]{ o.getPath("newest").getLastElement() };
+			repNames = new String[]{ o.getNameOfLatestBRep() };
 		}
 	}
 }

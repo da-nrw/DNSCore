@@ -44,6 +44,7 @@ import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.format.ConfigurableFileFormatFacade;
 import de.uzk.hki.da.grid.FakeGridFacade;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.HibernateUtil;
@@ -80,11 +81,13 @@ public class RestructureActionTests extends ConcreteActionUnitTest{
 		FileUtils.copyDirectory(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER+"_"), 
 				Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER));
 		
-		o.getTransientNodeRef().setWorkAreaRootPath(WORK_AREA_ROOT);
+		n.setWorkAreaRootPath(WORK_AREA_ROOT);
 		
+		action.setLocalNode(n);
 		grid = new FakeGridFacade();
 		grid.setGridCacheAreaRootPath("/tmp/");
 		action.setGridRoot(grid);
+	
 		
 
 		gate = mock(IngestGate.class);
@@ -205,7 +208,6 @@ public class RestructureActionTests extends ConcreteActionUnitTest{
 		pkg2 = new Package();
 		pkg2.setName("2");
 		o.getPackages().add(pkg2);
-		pkg2.setTransientBackRefToObject(o);
 	}
 
 

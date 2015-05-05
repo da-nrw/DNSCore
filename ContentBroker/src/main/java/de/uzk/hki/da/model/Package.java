@@ -313,24 +313,6 @@ public class Package {
 		this.events = events;
 	}
 
-	/**
-	 * Gets the transient back ref to object.
-	 *
-	 * @return the transient back ref to object
-	 */
-	public Object getTransientBackRefToObject() {
-		return object;
-	}
-
-	/**
-	 * Sets the transient back ref to object.
-	 *
-	 * @param object the new transient back ref to object
-	 */
-	public void setTransientBackRefToObject(Object object) {
-		this.object = object;
-	}
-
 
 
 

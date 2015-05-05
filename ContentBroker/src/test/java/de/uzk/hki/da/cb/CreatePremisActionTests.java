@@ -120,7 +120,6 @@ public class CreatePremisActionTests {
 		object.setIdentifier("identifier");
 		object.setUrn("urn");
 		object.setContractor(contractor);
-		object.setTransientNodeRef(node);
 		
 		FileFormatFacade jhoveScanService = mock(FileFormatFacade.class);
 		action.setFileFormatFacade(jhoveScanService);		
@@ -161,7 +160,6 @@ public class CreatePremisActionTests {
 		action.setJob(job);
 		action.setLocalNode(node);
 		action.setObject(object);
-		object.reattach();
 		
 		wa = new WorkArea(node,object);
 		action.setWorkArea(wa);

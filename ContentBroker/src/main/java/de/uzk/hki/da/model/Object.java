@@ -53,7 +53,6 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.PublicationRight.Audience;
-import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.SidecarUtils;
 
 
@@ -161,9 +160,6 @@ public class Object {
 	/** The most_recent_secondary_attributes. */
 	@Column(name="most_recent_secondary_attributes")
 	private String mostRecentSecondaryAttributes = "";
-	
-	@Transient
-	private Node transientNodeRef;
 	
 	/** The rights. */
 	@Transient
@@ -383,32 +379,16 @@ public class Object {
 		return date_modified;
 	}
 	
-	/**
-	 * @return physical path to package on local node's working resource
-	 * @throws IllegalStateException if reference to particular node is not set.
-	 * @throws IllegalStateException if workAreaRoot path of the referenced node is null or empty.
-	 * @author Daniel M. de Oliveira
-	 */
-	public Path getPath(){
-		if (transientNodeRef==null) throw new IllegalStateException("Object is not related to any particular node. So the physical path cannot be calculated.");
-		if (transientNodeRef.getWorkAreaRootPath()==null||transientNodeRef.getWorkAreaRootPath().toString().isEmpty()) 
-			throw new IllegalStateException("WorkAreaRootPath of related object is null or empty. Physical path cannot be calculated");
-		
-		return Path.make(transientNodeRef.getWorkAreaRootPath(),"work",user.getShort_name(),identifier);
-	}
 
 	/**
-	 * 
-	 * @param t
 	 * @return the path to the newest b representation.
 	 * @throws IllegalStateException if no dafiles present in object.
 	 */
-	public Path getPath(String t){
+	public String getNameOfLatestBRep(){
 		if (getReps().isEmpty()) throw new IllegalStateException("no files present. reps could not get determined from dafiles.");
 		
 		String newestRep = getReps().get(getReps().size()-1);
-		
-		return Path.make(getPath(),"data", newestRep.replace("+a", "+b"));
+		return newestRep.replace("+a", "+b");
 	}
 	
 	
@@ -859,23 +839,6 @@ public class Object {
 		this.ddbExclusion = ddbExclusion;
 	}
 
-	public Node getTransientNodeRef() {
-		return transientNodeRef;
-	}
-
-	public void setTransientNodeRef(Node node) {
-		this.transientNodeRef = node;
-	}
-	
-	/**
-	 * @deprecated
-	 */
-	public void reattach(){
-		for (Package p:packages){
-			p.setTransientBackRefToObject(this);
-		}
-	}
-
 	public String getPackage_type() {
 		return package_type;
 	}
@@ -891,19 +854,6 @@ public class Object {
 	public void setMetadata_file(String metadata_file) {
 		this.metadata_file = metadata_file;
 	}
-
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-
-	
 	
 	/**
 	 * Gets the files of a representation based on the information stored

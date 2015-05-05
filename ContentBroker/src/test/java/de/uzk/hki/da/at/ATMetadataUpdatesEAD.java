@@ -37,7 +37,7 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 	private static final String URL = "URL";
 	private static Path contractorsPipsPublic;
 	private static String origName = "ATMetadataUpdatesEAD";
-	private static Object object;
+	private static Object o;
 	private static final String EAD_XML = "EAD.xml";
 	private static final File retrievalFolder = new File("/tmp/unpackedDIP");
 	private MetadataHelper mh = new MetadataHelper();
@@ -47,8 +47,8 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 		ath.putSIPtoIngestArea(origName, "tgz", origName);
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origName);
-		object=ath.getObject(origName);
-		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
+		o=ath.getObject(origName);
+		ath.waitForObjectToBeIndexed(metadataIndex,o.getIdentifier());
 		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
@@ -56,13 +56,14 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 	@AfterClass
 	public static  void tearDown() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
-		Path.makeFile("tmp",object.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
+		Path.makeFile("tmp",o.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
 	}
 	
 	@Test
 	public void testLZA() throws FileNotFoundException, JDOMException, IOException {
 		
-		Object lzaObject = ath.retrieveAIP(object, retrievalFolder, "1");
+		ath.retrieveAIP(o, retrievalFolder, "1");
+		Object lzaObject = ath.getObject(o.getOrig_name());
 		System.out.println("object identifier: "+lzaObject.getIdentifier());
 		
 		Path tmpObjectDirPath = Path.make(retrievalFolder.getAbsolutePath(), "data");	
@@ -120,30 +121,30 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build
-				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "mets_2_32044.xml").toFile()));
+				(new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "mets_2_32044.xml").toFile()));
 		List<Element> metsFileElements = mh.getMetsFileElements(doc);
 		Element fileElement = metsFileElements.get(0);
 		String metsURL = mh.getMetsHref(fileElement);
-		assertTrue(metsURL.startsWith("http://data.danrw.de/file/"+object.getIdentifier()) && metsURL.endsWith(".jpg"));
+		assertTrue(metsURL.startsWith("http://data.danrw.de/file/"+o.getIdentifier()) && metsURL.endsWith(".jpg"));
 		assertEquals(URL, mh.getMetsLoctype(fileElement));
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMimetypeInMets(fileElement));
 		
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), EAD_XML).toFile()));
+		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), EAD_XML).toFile()));
 
 		List<String> metsReferences = mh.getMetsRefsInEad(eadDoc);
 		assertTrue(metsReferences.size()==5);
 		for(String metsRef : metsReferences) {
 			if(metsRef.contains("mets_2_32044.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/mets_2_32044.xml"));
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32044.xml"));
 			} else if(metsRef.contains("mets_2_32045.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/mets_2_32045.xml"));
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32045.xml"));
 			} else if(metsRef.contains("mets_2_32046.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/mets_2_32046.xml"));
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32046.xml"));
 			} else if(metsRef.contains("mets_2_32047.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/mets_2_32047.xml"));
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32047.xml"));
 			} else {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/mets_2_32048.xml"));
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32048.xml"));
 			}
 		}
 	}
@@ -153,7 +154,7 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build
-				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));
+				(new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "EDM.xml").toFile()));
 		@SuppressWarnings("unchecked")
 		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
 		Boolean testProvidetChoExists = false;
@@ -181,7 +182,7 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 			
 			if(pcho.getChild("title", C.DC_NS).getValue().equals("01. Bundesleitung und Bezirksverbände")) {
 				bundesleitungUndBezirksverbaendeExists = true;
-				assertTrue(pcho.getChild("isPartOf", C.DCTERMS_NS).getAttributeValue("resource", C.RDF_NS).equals("http://data.danrw.de/cho/"+object.getIdentifier()));
+				assertTrue(pcho.getChild("isPartOf", C.DCTERMS_NS).getAttributeValue("resource", C.RDF_NS).equals("http://data.danrw.de/cho/"+o.getIdentifier()));
 				assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==39);
 			} else if(pcho.getChild("title", C.DC_NS).getValue().equals("02. Finanzsachen")) {
 				assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==13);
@@ -200,9 +201,9 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 			Boolean objIdExists = false;
 			Boolean urnExists = false;
 			for(Element id : identifier) {
-				if(id.getValue().equals(object.getUrn())) {
+				if(id.getValue().equals(o.getUrn())) {
 					urnExists = true;
-				} else if(id.getValue().equals(object.getIdentifier())) {
+				} else if(id.getValue().equals(o.getIdentifier())) {
 					objIdExists = true;
 				}
 			}

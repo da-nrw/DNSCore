@@ -102,7 +102,6 @@ public class ArchiveReplicationActionTests {
 		Package pkg = new Package();
 		pkg.setName("1");
 		object.getPackages().add(pkg);
-		pkg.setTransientBackRefToObject(object);
 	}
 	
 	private ArchiveReplicationAction setUpAction(Node node){

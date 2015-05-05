@@ -40,7 +40,7 @@ public class ATMetadataWithRelativeReferencesEad extends AcceptanceTest {
 	private static final String URL = "URL";
 	private static Path contractorsPipsPublic;
 	private static String origName = "ATMetadataWithRelativeReferencesEad";
-	private static Object object;
+	private static Object o;
 	private static final String EAD_XML = "EAD.xml";
 	private static final File retrievalFolder = new File("/tmp/unpackedDIP");
 	
@@ -50,7 +50,7 @@ public class ATMetadataWithRelativeReferencesEad extends AcceptanceTest {
 		ath.putSIPtoIngestArea(origName, "tgz", origName);
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origName);
-		object=ath.getObject(origName);
+		o=ath.getObject(origName);
 		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
@@ -58,13 +58,14 @@ public class ATMetadataWithRelativeReferencesEad extends AcceptanceTest {
 	@AfterClass
 	public static void tearDown() throws IOException{
 		FileUtils.deleteDirectory(retrievalFolder);
-		Path.makeFile("tmp",object.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
+		Path.makeFile("tmp",o.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
 	}	
 	
 	@Test
 	public void testLZA() throws FileNotFoundException, JDOMException, IOException {
 		
-		Object lzaObject = ath.retrieveAIP(object, retrievalFolder, "1");
+		ath.retrieveAIP(o, retrievalFolder, "1");
+		Object lzaObject = ath.getObject(o.getOrig_name());
 		System.out.println("object identifier: "+lzaObject.getIdentifier());
 		
 		Path tmpObjectDirPath = Path.make(retrievalFolder.getAbsolutePath(), "data");	
@@ -120,27 +121,27 @@ public class ATMetadataWithRelativeReferencesEad extends AcceptanceTest {
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build
-				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "mets_361", "mets_2_32044.xml").toFile()));
+				(new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "mets_361", "mets_2_32044.xml").toFile()));
 		assertTrue(getMetsURL(doc).contains("http://data.danrw.de"));
 		assertEquals(URL, getLoctype(doc));
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, getMetsMimetype(doc));
 		
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), EAD_XML).toFile()));
+		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), EAD_XML).toFile()));
 		
 		List<String> metsReferences = getMetsRefsInEad(eadDoc);
 		assertTrue(metsReferences.size()==5);
 		for(String metsRef : metsReferences) {
 			if(metsRef.contains("mets_2_32044.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/mets_361-mets_2_32044.xml"));
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+o.getIdentifier()+"/mets_361-mets_2_32044.xml"));
 			} else if(metsRef.contains("mets_2_32045.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/mets_361-mets_2_32045.xml"));
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+o.getIdentifier()+"/mets_361-mets_2_32045.xml"));
 			} else if(metsRef.contains("mets_2_32046.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/mets_361-mets_2_32046.xml"));
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+o.getIdentifier()+"/mets_361-mets_2_32046.xml"));
 			} else if(metsRef.contains("mets_2_32047.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/mets_361-mets_2_32047.xml"));
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+o.getIdentifier()+"/mets_361-mets_2_32047.xml"));
 			} else {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/mets_361-mets_2_32048.xml"));
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+o.getIdentifier()+"/mets_361-mets_2_32048.xml"));
 			}
 		}
 	}

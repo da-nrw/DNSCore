@@ -65,7 +65,6 @@ public class TiffConversionStrategyTests {
 		
 		o = TESTHelper.setUpObject("1", new RelativePath(workAreaRootPath));
 		
-		o.reattach();
 		DAFile f = new DAFile("rep+b","CCITT_1.TIF");
 		DAFile f2 = new DAFile("rep+b","CCITT_1.UNCOMPRESSED.TIF");
 		o.getLatestPackage().getFiles().add(f);

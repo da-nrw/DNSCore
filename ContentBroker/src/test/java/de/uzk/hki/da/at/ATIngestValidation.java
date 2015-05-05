@@ -99,7 +99,8 @@ public class ATIngestValidation extends AcceptanceTest{
 	
 	@Test
 	public void testDuplicateMetadataFiles() throws IOException, InterruptedException{
-		Job job = ath.waitForJobToBeInErrorStatus(AT_DUPLICATE_METADATA_FILES,C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
+		ath.waitForJobToBeInErrorStatus(AT_DUPLICATE_METADATA_FILES,C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
+		Job job = ath.getJob(AT_DUPLICATE_METADATA_FILES);
 		assertEquals(null,job.getObject().getPackage_type());
 		assertEquals(null,job.getObject().getMetadata_file());
 	}

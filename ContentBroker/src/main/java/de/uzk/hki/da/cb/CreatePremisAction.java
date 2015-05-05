@@ -65,6 +65,10 @@ import de.uzk.hki.da.util.Path;
  */
 public class CreatePremisAction extends AbstractAction {
 
+	private static final String PREMIS = "premis.xml";
+
+	private static final String PENULTIMATE_PREMIS = "premis_old.xml";
+
 	private static final String XSI_NS = "http://www.w3.org/2001/XMLSchema-instance";
 
 	private FileFormatFacade fileFormatFacade;
@@ -101,14 +105,13 @@ public class CreatePremisAction extends AbstractAction {
 		 
 		
 		Object newPREMISObject = new Object();
-		newPREMISObject.setTransientNodeRef(o.getTransientNodeRef());;
 		newPREMISObject.setOrig_name(o.getOrig_name());
 		newPREMISObject.setIdentifier(o.getIdentifier());
 		newPREMISObject.setUrn(o.getUrn());
 		newPREMISObject.setContractor(o.getContractor());
 		
-		Object sipPREMISObject = parseSipPremisFile(
-				new File(Path.make(o.getPath("newest"),"premis.xml").toString().replace("+b", "+a")));
+		Object sipPREMISObject = parsePremisFile(
+				new File(Path.make(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS).toString().replace("+b", "+a")));
 		
 		if (sipPREMISObject.getPackages().size() > 0) {
 			o.getLatestPackage().getEvents().addAll(sipPREMISObject.getPackages().get(0).getEvents());
@@ -126,42 +129,20 @@ public class CreatePremisAction extends AbstractAction {
 		newPREMISObject.getPackages().add(o.getLatestPackage());
 		
 		if (o.isDelta()){
-		
-			Object mainPREMISObject = parseOldPremisFile(
-					Path.makeFile(wa.dataPath(),"premis_old.xml"));
-
-			if (mainPREMISObject==null) throw new RuntimeException("mainPREMISObject is null");
-			if (mainPREMISObject.getPackages()==null) throw new RuntimeException("mainPREMISObject.getPackages is null");
-			if (mainPREMISObject.getPackages().size()==0) throw new RuntimeException("number of packages from old PREMIS expected to be not 0");
-			
-			// TODO refactor
-			for (Package mainPREMISPackage : mainPREMISObject.getPackages()) {
-				logger.debug("attaching "+mainPREMISPackage+" to temp object which waits for serialization into PREMIS");
-				
-				Package newPREMISPackage = new Package();
-				newPREMISPackage.setId(o.getLatestPackage().getId());
-				newPREMISPackage.setName(mainPREMISPackage.getName());
-				newPREMISPackage.setContainerName(mainPREMISPackage.getContainerName());
-				newPREMISPackage.setFiles(mainPREMISPackage.getFiles());
-				newPREMISPackage.setEvents(mainPREMISPackage.getEvents());
-				newPREMISObject.getPackages().add(newPREMISPackage);
-				newPREMISObject.setTransientNodeRef(n);
-				newPREMISObject.reattach();
-			}
-			newPREMISObject.getAgents().addAll(mainPREMISObject.getAgents());
+			deserializeOldPremisFile(newPREMISObject);
 		}
 				
 		checkConvertEvents(newPREMISObject);
 	
-		File newPREMISXml = Path.make( 
-				o.getPath("newest"),"premis.xml").toFile();
+		File newPREMISXml = Path.make(wa.dataPath(), 
+				o.getNameOfLatestBRep(),PREMIS).toFile();
 		logger.trace("trying to write new Premis file at " + newPREMISXml.getAbsolutePath());
-		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml);
+		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml,Path.make(wa.dataPath(),"jhove_temp"));
 		
 		if (!PremisXmlValidator.validatePremisFile(newPREMISXml))
 			throw new RuntimeException("PREMIS that has recently been created is not valid");
 		logger.trace("Successfully created premis file");
-		o.getLatestPackage().getFiles().add(new DAFile(j.getRep_name()+"b","premis.xml"));
+		o.getLatestPackage().getFiles().add(new DAFile(j.getRep_name()+"b",PREMIS));
 		
 		for (Package p : newPREMISObject.getPackages()){
 			logger.debug("pname:" + p.getName());
@@ -173,6 +154,30 @@ public class CreatePremisAction extends AbstractAction {
 		return true;
 	}
 	
+	
+	private void deserializeOldPremisFile(Object newPREMISObject) {
+		
+		Object mainPREMISObject = extractJhoveDataAndParsePremisFile(
+				Path.makeFile(wa.dataPath(),PENULTIMATE_PREMIS));
+
+		if (mainPREMISObject==null) throw new RuntimeException("mainPREMISObject is null");
+		if (mainPREMISObject.getPackages()==null) throw new RuntimeException("mainPREMISObject.getPackages is null");
+		if (mainPREMISObject.getPackages().size()==0) throw new RuntimeException("number of packages from old PREMIS expected to be not 0");
+		
+		// TODO refactor
+		for (Package mainPREMISPackage : mainPREMISObject.getPackages()) {
+			logger.debug("attaching "+mainPREMISPackage+" to temp object which waits for serialization into PREMIS");
+			
+			Package newPREMISPackage = new Package();
+			newPREMISPackage.setId(o.getLatestPackage().getId());
+			newPREMISPackage.setName(mainPREMISPackage.getName());
+			newPREMISPackage.setContainerName(mainPREMISPackage.getContainerName());
+			newPREMISPackage.setFiles(mainPREMISPackage.getFiles());
+			newPREMISPackage.setEvents(mainPREMISPackage.getEvents());
+			newPREMISObject.getPackages().add(newPREMISPackage);
+		}
+		newPREMISObject.getAgents().addAll(mainPREMISObject.getAgents());
+	}
 	
 	
 	private void determineSizeForAllFiles() throws IOException {
@@ -223,7 +228,7 @@ public class CreatePremisAction extends AbstractAction {
 		return ingestEventElement;		
 	}
 	
-	private Object parseSipPremisFile(File premisFile) {
+	private Object parsePremisFile(File premisFile) {
 		
 		Object premisData;
 		
@@ -240,9 +245,7 @@ public class CreatePremisAction extends AbstractAction {
 	
 	
 	
-	private Object parseOldPremisFile(File premisFile) {
-
-		Object premisData;
+	private Object extractJhoveDataAndParsePremisFile(File premisFile) {
 
 		try {
 			extractJhoveData(premisFile.getAbsolutePath(),
@@ -252,18 +255,7 @@ public class CreatePremisAction extends AbstractAction {
 			throw new RuntimeException("Couldn't extract jhove sections of file " + premisFile.getAbsolutePath(), e);
 		}
 
-		ObjectPremisXmlReader reader = new ObjectPremisXmlReader();
-		
-		
-		try {
-			premisData = reader.deserialize(premisFile);
-		} catch (IOException e) {
-			throw new RuntimeException("Couldn't read file " + premisFile.getAbsolutePath(), e);
-		} catch (ParseException pe){
-			throw new RuntimeException("error while parsing premis file",pe);
-		}
-
-		return premisData;
+		return parsePremisFile(premisFile);
 	}
 
 	/**
@@ -307,7 +299,7 @@ public class CreatePremisAction extends AbstractAction {
 	@Override
 	public void rollback() throws Exception {
 		
-		Path.make(o.getPath("newest"),"premis.xml").toFile().delete();
+		Path.make(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS).toFile().delete();
 		
 		File tempFolder = new File("jhove/temp/" + j.getId() + "/premis_output/");
 		if (tempFolder.exists())
