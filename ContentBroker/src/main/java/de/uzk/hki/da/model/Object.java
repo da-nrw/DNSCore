@@ -53,7 +53,6 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.PublicationRight.Audience;
-import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.SidecarUtils;
 
 
@@ -161,8 +160,6 @@ public class Object {
 	/** The most_recent_secondary_attributes. */
 	@Column(name="most_recent_secondary_attributes")
 	private String mostRecentSecondaryAttributes = "";
-	
-	private Node transientNodeRef;
 	
 	/** The rights. */
 	@Transient
@@ -842,14 +839,6 @@ public class Object {
 		this.ddbExclusion = ddbExclusion;
 	}
 
-	public Node getTransientNodeRef() {
-		return transientNodeRef;
-	}
-
-	public void setTransientNodeRef(Node node) {
-		this.transientNodeRef = node;
-	}
-
 	public String getPackage_type() {
 		return package_type;
 	}
@@ -865,19 +854,6 @@ public class Object {
 	public void setMetadata_file(String metadata_file) {
 		this.metadata_file = metadata_file;
 	}
-
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-
-	
 	
 	/**
 	 * Gets the files of a representation based on the information stored

@@ -91,7 +91,6 @@ public class BuildAIPActionTests {
 		obj.getPackages().add(pkg);
 		obj.setContractor(contractor);
 		obj.setIdentifier("95949");
-		obj.setTransientNodeRef(node);
 		
 		job.setObject(obj);
 		job.setRep_name(repName);

@@ -79,7 +79,6 @@ public class PackageTests {
 		object.getPackages().add(pkg);
 		object.setContractor(contractor);
 		object.setIdentifier("1");
-		object.setTransientNodeRef(node);
 		
 		List<DAFile> files = pkg.scanRepRecursively(
 				

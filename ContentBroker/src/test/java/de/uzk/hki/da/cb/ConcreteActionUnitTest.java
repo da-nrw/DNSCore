@@ -96,7 +96,6 @@ public class ConcreteActionUnitTest {
 		
 		o = new Object();
 		o.setContractor(c);
-		o.setTransientNodeRef(n);
 		o.setIdentifier(IDENTIFIER);
 		o.getPackages().add(pkg);
 		o.setUrn(URN);

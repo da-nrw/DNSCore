@@ -249,7 +249,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		e.setType(C.EVENT_TYPE_CREATE);
 		e.setDate(new Date());
 		e.setAgent_type(C.AGENT_TYPE_NODE);
-		e.setAgent_name(o.getTransientNodeRef().getName());
+		e.setAgent_name(n.getName());
 		return e;
 	}
 	

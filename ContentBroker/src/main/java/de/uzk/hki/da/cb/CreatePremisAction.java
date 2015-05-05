@@ -105,7 +105,6 @@ public class CreatePremisAction extends AbstractAction {
 		 
 		
 		Object newPREMISObject = new Object();
-		newPREMISObject.setTransientNodeRef(o.getTransientNodeRef());;
 		newPREMISObject.setOrig_name(o.getOrig_name());
 		newPREMISObject.setIdentifier(o.getIdentifier());
 		newPREMISObject.setUrn(o.getUrn());
@@ -176,7 +175,6 @@ public class CreatePremisAction extends AbstractAction {
 			newPREMISPackage.setFiles(mainPREMISPackage.getFiles());
 			newPREMISPackage.setEvents(mainPREMISPackage.getEvents());
 			newPREMISObject.getPackages().add(newPREMISPackage);
-			newPREMISObject.setTransientNodeRef(n);
 		}
 		newPREMISObject.getAgents().addAll(mainPREMISObject.getAgents());
 	}

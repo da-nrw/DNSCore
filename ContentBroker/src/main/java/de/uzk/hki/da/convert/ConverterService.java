@@ -84,7 +84,7 @@ public class ConverterService {
 		logger.info("Resulting Events");
 		for (Event e: results){
 			e.setAgent_type("NODE");
-			e.setAgent_name(object.getTransientNodeRef().getName());
+			e.setAgent_name(wa.getNode().getName());
 			
 			logger.info(e.getTarget_file().getRep_name()+"/"+e.getTarget_file().getRelative_path());
 			// Double check if the file really exists

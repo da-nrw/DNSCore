@@ -87,13 +87,13 @@ public class DeleteObjectAction extends AbstractAction {
 
 	private File fileInIngestArea() {
 		return Path.makeFile(
-				o.getTransientNodeRef().getIngestAreaRootPath(),
+				n.getIngestAreaRootPath(),
 				o.getContractor().getShort_name(),o.getLatestPackage().getContainerName());
 	}
 
 	private File fileInWorkArea() {
 		return Path.makeFile(
-				o.getTransientNodeRef().getWorkAreaRootPath(),"work",
+				n.getWorkAreaRootPath(),"work",
 				o.getContractor().getShort_name(),o.getLatestPackage().getContainerName());
 	}
 
