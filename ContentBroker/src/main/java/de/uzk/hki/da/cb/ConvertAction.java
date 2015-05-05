@@ -31,6 +31,7 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.convert.ConverterService;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
@@ -87,9 +88,17 @@ public class ConvertAction extends AbstractAction {
 			o.getLatestPackage().getEvents().add(e);
 			o.getLatestPackage().getFiles().add(e.getTarget_file());
 			try {
-				o.getDocument(FilenameUtils.removeExtension(e.getTarget_file().getRelative_path())).addDAFile(e.getTarget_file());
+				DAFile targetFile = e.getTarget_file();
+				if(targetFile==null) {
+					logger.debug("e.getTarget_file() is null.");
+				}
+				Document document = o.getDocument(FilenameUtils.removeExtension(e.getTarget_file().getRelative_path()));
+				if(document==null) {
+					logger.debug("Document "+FilenameUtils.removeExtension(e.getTarget_file().getRelative_path())+" does not exist.");
+				}
+				document.addDAFile(targetFile);
 			} catch (Exception e2) {
-				throw new IllegalStateException("Document "+FilenameUtils.removeExtension(e.getTarget_file().getRelative_path())+" does not exist."); 
+				throw new IllegalStateException("Cannot add new dafile to document "+FilenameUtils.removeExtension(e.getTarget_file().getRelative_path())+"."); 
 			}
 		}
 		

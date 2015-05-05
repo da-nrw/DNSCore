@@ -58,7 +58,7 @@ public class ATMetadataUpdatesXMP extends AcceptanceTest{
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origName);
 		object=ath.getObject(origName);
-//		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
+		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
 	}
 	
 	
@@ -127,6 +127,8 @@ public class ATMetadataUpdatesXMP extends AcceptanceTest{
 		assertTrue(fullId.equals("http://data.danrw.de/cho/"+object.getIdentifier()+"-1"));
 		String title = doc.getRootElement().getChild("ProvidedCHO", C.EDM_NS).getChild("title", C.DC_NS).getValue();
 		assertTrue(title.equals("Martinsfeuer"));
+		String hasType = doc.getRootElement().getChild("ProvidedCHO", C.EDM_NS).getChild("hasType", C.EDM_NS).getValue();
+		assertTrue(hasType.equals("is root element"));
 
 //		testIndex
 //		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-1").

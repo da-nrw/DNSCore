@@ -103,9 +103,13 @@ public class ActionFactory implements ApplicationContextAware {
 		// it does not work with hibernate or jpa annotations
 		Hibernate.initialize(getPreservationSystem().getConversion_policies());
 		Hibernate.initialize(localNode.getCooperatingNodes());
-		for (@SuppressWarnings("unused") Node cn:localNode.getCooperatingNodes());
-		for (@SuppressWarnings("unused") Copy cp:localNode.getCopies());
-		//-
+
+		try {
+			for (Node cn:localNode.getCooperatingNodes());
+//			for (Copy cp:localNode.getCopies());
+		} catch (Exception e) {
+			throw new RuntimeException("Unable to load cooperating nodes");
+		}
 		
 		for (SubformatIdentificationStrategyPuidMapping sfiP:getSecondStageScanPolicies(session)) {
 			fileFormatFacade.registerSubformatIdentificationStrategyPuidMapping(sfiP.getSubformatIdentificationStrategyName(),sfiP.getFormatPuid());
@@ -207,6 +211,7 @@ public class ActionFactory implements ApplicationContextAware {
 		try{
 			checkPreservationSystemNode();
 		} catch (IllegalStateException e) {
+			logger.info("ActionFactory is on halt! Caused by ");
 			logger.error(e.getMessage());
 			onHalt=true;
 			return null;
@@ -218,8 +223,6 @@ public class ActionFactory implements ApplicationContextAware {
 		}
 		
 		return selectActionToExecute();
-		
-		
 	}
 	
 	private AbstractAction selectActionToExecute() {

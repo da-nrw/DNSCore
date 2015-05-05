@@ -139,6 +139,16 @@ public class IntegrityService {
 		}
 	}
 	
+	/**
+	 * Checks Object validity.
+	 * True: object is valid on all nodes
+	 * False: object is invalid at least on one node 
+	 * @author Jens Peters
+	 * @param obj
+	 * @param minRepls
+	 * @return
+	 */
+	
 	public boolean checkObject(Object obj, int minRepls) {
 		Integer auditResult = checkObjectValidity(obj, minRepls);
 		updateObject(obj,auditResult);

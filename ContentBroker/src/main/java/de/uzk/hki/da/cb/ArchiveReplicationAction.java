@@ -73,11 +73,11 @@ public class ArchiveReplicationAction extends AbstractAction {
 			delay(); 
 			return false;
 			}
+			gridRoot.distribute(n, new File(newFilePath.toString()), target.toString(), sp);
+			new File(newFilePath.toString()).delete();
 		} catch (IOException e) {
 			throw new RuntimeException("Put to IRODS Datagrid failed!");
 		}
-		gridRoot.distribute(n, new File(newFilePath.toString()), target.toString(), sp);
-		new File(newFilePath.toString()).delete();
 		return true;
 	}
 	
