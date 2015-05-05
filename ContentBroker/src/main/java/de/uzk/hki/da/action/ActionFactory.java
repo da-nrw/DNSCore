@@ -255,33 +255,7 @@ public class ActionFactory implements ApplicationContextAware {
 
 			
 			injectProperties(action,jobCandidate);
-			try {
-				checkJobActionContractorObject(action);
-			}catch(IllegalStateException e) {
-				logger.error(e.getMessage());
-				qc.updateJobStatus(jobCandidate, 
-						status(getActionStartStates().get(jobType),WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT));
-				continue;
-			}
-			try {
-				action.checkConfiguration();
-			}catch(ConfigurationException e) {
-				logger.error("Regarding job for object ["+jobCandidate.getObject().getIdentifier()+"]. Bad configuration of action. "+e.getMessage());
-				qc.updateJobStatus(jobCandidate, 
-						status(getActionStartStates().get(jobType),WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION));
-				continue;
-			}
-			try {
-				action.setWorkArea(new WorkArea(localNode,jobCandidate.getObject()));
-				action.synchronizeObjectDatabaseAndFileSystemState();
-				action.checkPreconditions();
-			}catch(PreconditionsNotMetException e) {
-				logger.error("Regarding job for object ["+jobCandidate.getObject().getIdentifier()+"]. Preconfigurations not met for action. "+e.getMessage());
-				qc.updateJobStatus(jobCandidate, 
-						status(getActionStartStates().get(jobType),WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET));
-				
-				continue;
-			}
+			if (!performPreparativeChecks(action, jobCandidate, jobType)) continue;
 			
 			actionRegistry.registerAction(action);
 			return action;
@@ -289,6 +263,42 @@ public class ActionFactory implements ApplicationContextAware {
 		logger.info("(for local node) No jobs in queue, nothing to do, shoobidoowoo, ...");
 		return null;
 	}
+	
+	
+	
+	
+	private boolean performPreparativeChecks(AbstractAction action,Job jobCandidate,String jobType) {
+		try {
+			checkJobActionContractorObject(action);
+		}catch(IllegalStateException e) {
+			logger.error(e.getMessage());
+			qc.updateJobStatus(jobCandidate, 
+					status(getActionStartStates().get(jobType),WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT));
+			return false;
+		}
+		try {
+			action.checkConfiguration();
+		}catch(ConfigurationException e) {
+			logger.error("Regarding job for object ["+jobCandidate.getObject().getIdentifier()+"]. Bad configuration of action. "+e.getMessage());
+			qc.updateJobStatus(jobCandidate, 
+					status(getActionStartStates().get(jobType),WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION));
+			return false;
+		}
+		try {
+			action.setWorkArea(new WorkArea(localNode,jobCandidate.getObject()));
+			action.synchronizeObjectDatabaseAndFileSystemState();
+			action.checkPreconditions();
+		}catch(PreconditionsNotMetException e) {
+			logger.error("Regarding job for object ["+jobCandidate.getObject().getIdentifier()+"]. Preconfigurations not met for action. "+e.getMessage());
+			qc.updateJobStatus(jobCandidate, 
+					status(getActionStartStates().get(jobType),WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET));
+			
+			return false;
+		}
+		return true;
+	}
+	
+	
 	
 	
 	private String status(String startStatus,String digit) {
