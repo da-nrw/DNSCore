@@ -139,7 +139,7 @@ public class RetrievePackagesHelper {
 		
 		if (!wa.dataPath().toFile().exists()) wa.dataPath().toFile().mkdirs();
 
-		File targetDir=new File(object.getPath() + "/loadedAIPs");
+		File targetDir=new File(wa.objectPath() + "/loadedAIPs");
 		if (!targetDir.exists()) targetDir.mkdirs(); 
 		File targetFile = new File(targetDir.getAbsolutePath() +"/"+object.getIdentifier() + ".pack_" + pkg.getName() + ".tar");
 
@@ -249,8 +249,7 @@ public class RetrievePackagesHelper {
 	 */
 	private void normalizeObject(Object object) throws IOException {
 	
-		logger.trace("normalizeObject: Moving unpacked representation folders from " + wa.objectPath() + "loadedAIPs to " + object.getPath());
-		String dataPath = object.getPath() + "/loadedAIPs/data/";
+		String dataPath = wa.objectPath() + "/loadedAIPs/data/";
 		String dataPathContents[] = new File(dataPath).list();
 		
 		if (dataPathContents == null)

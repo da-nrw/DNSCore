@@ -162,7 +162,6 @@ public class Object {
 	@Column(name="most_recent_secondary_attributes")
 	private String mostRecentSecondaryAttributes = "";
 	
-	@Transient
 	private Node transientNodeRef;
 	
 	/** The rights. */
@@ -383,19 +382,6 @@ public class Object {
 		return date_modified;
 	}
 	
-	/**
-	 * @return physical path to package on local node's working resource
-	 * @throws IllegalStateException if reference to particular node is not set.
-	 * @throws IllegalStateException if workAreaRoot path of the referenced node is null or empty.
-	 * @author Daniel M. de Oliveira
-	 */
-	public Path getPath(){
-		if (transientNodeRef==null) throw new IllegalStateException("Object is not related to any particular node. So the physical path cannot be calculated.");
-		if (transientNodeRef.getWorkAreaRootPath()==null||transientNodeRef.getWorkAreaRootPath().toString().isEmpty()) 
-			throw new IllegalStateException("WorkAreaRootPath of related object is null or empty. Physical path cannot be calculated");
-		
-		return Path.make(transientNodeRef.getWorkAreaRootPath(),"work",user.getShort_name(),identifier);
-	}
 
 	/**
 	 * @return the path to the newest b representation.
