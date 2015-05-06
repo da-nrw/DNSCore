@@ -24,30 +24,23 @@ package de.uzk.hki.da.cb;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Event;
-import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
 
 
 
@@ -57,16 +50,17 @@ import de.uzk.hki.da.util.RelativePath;
  */
 public class ConvertActionTests extends ConcreteActionUnitTest{
 
+	private static final String PREMIS = "premis.xml";
+
+	private static final String REPNAME = "2011+11+01+";
+
 	@ActionUnderTest
 	ConvertAction action= new ConvertAction();
 	
-	/** The Constant vaultPath. */
-	private static final Path workAreaRootPath = new RelativePath("src/test/resources/cb/ConvertAction");
+	private static final Path workAreaRootPath = Path.make(TC.TEST_ROOT_CB,"ConvertAction");
 	
-	/** The Constant dataPath. */
-	private static final Path dataPath= Path.make(workAreaRootPath,"/work/TEST/identifier/data");
 
-	private DAFile tiffile = new DAFile("2011+11+01+a","140864.tif");;
+	private DAFile tiffile = new DAFile(REPNAME+"a","140864.tif");;
 	
 	/**
 	 * Sets the up.
@@ -76,16 +70,8 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 		
 		n.setWorkAreaRootPath(workAreaRootPath);
 		j.setStatus("240");
-		j.setRep_name("2011+11+01+");		
+		j.setRep_name(REPNAME);		
 
-		
-		
-		final Node vm2 = new Node("vm2","01-vm2");
-		final Node vm3 = new Node("vm3","01-vm3");
-		final Set<Node> allNodes = new HashSet<Node>();
-		allNodes.add(vm2);
-		allNodes.add(vm3);
-		
 		ConversionRoutine im = new ConversionRoutine(
 				"IM",
 				"de.uzk.hki.da.convert.CLIConversionStrategy",
@@ -99,46 +85,35 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 				"*");
 		
 		ConversionInstruction ci1 = new ConversionInstruction();
-		ci1.setTarget_folder("");
 		
 		List<Document> documents = new ArrayList<Document>();
 		
-		DAFile f = new DAFile("2011+11+01+a","premis.xml");
+		DAFile f = new DAFile(REPNAME+"a",PREMIS);
 		o.getLatestPackage().getFiles().add(f);
-		Document document = new Document(f);
-		documents.add(document);
 		
-		DAFile f1 = new DAFile("2011+11+01+a","abc.xml");
-		Document document1 = new Document(f1);
-		documents.add(document1);
+		DAFile f1 = new DAFile(REPNAME+"a","abc.xml");
+		
+		
 		ci1.setSource_file(f1);
-		ci1.setNode("vm3");
 		ci1.setConversion_routine(copy);
-		
-		// copy
+		ci1.setTarget_folder("");
 		
 		ConversionInstruction ci2 = new ConversionInstruction();
 		ci2.setTarget_folder("");
-		
 		ci2.setSource_file(tiffile);
 		Document document2 = new Document(tiffile);
 		documents.add(document2);
-		
-		o.setDocuments(documents);
-		
-		
-		ci2.setNode("vm2");
 		ci2.setConversion_routine(im);
-		// im 
+		
+
+		Document document1 = new Document(f1);
+		Document document = new Document(f);
+		documents.add(document);
+		documents.add(document1);
+		o.setDocuments(documents);
 		
 		j.getConversion_instructions().add(ci1);
 		j.getConversion_instructions().add(ci2);
-		
-		
-		action.setDistributedConversionAdapter(mock(DistributedConversionAdapter.class));
-		
-		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
-		
 	}
 	
 	/**
@@ -147,11 +122,9 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 	 */
 	@After
 	public void tearDown() throws IOException{
-//		if (new File(dataPath+"data/2011+11+01+b/").exists())
-//			FileUtils.deleteDirectory(new File(dataPath+"data/2011+11+01+b/"));
 		
-		if (new File(dataPath+"/dip/").exists())
-			FileUtils.deleteDirectory(new File(dataPath+"data/dip/"));
+		if (Path.makeFile(wa.dataPath(),"dip").exists())
+			FileUtils.deleteDirectory(Path.makeFile(wa.dataPath(),"dip"));
 	}
 	
 	
@@ -168,14 +141,10 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 	@Test
 	public void testConversion() throws IOException{
 
-		Node localNode = new Node("vm2","01-vm2");
-		localNode.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
-		action.setLocalNode(localNode);
-		
 		action.implementation();
 		
-		assertTrue(new File(dataPath+"/2011+11+01+b/140864.png").exists());
-		assertTrue(new File(dataPath+"/2011+11+01+b/abc.xml").exists());
+		assertTrue(Path.makeFile(wa.dataPath(),REPNAME+"b","140864.png").exists());
+		assertTrue(Path.makeFile(wa.dataPath(),REPNAME+"b","abc.xml").exists());
 	}
 	
 	
@@ -185,15 +154,12 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 	@Test
 	public void testRollback() throws IOException {
 
-		Node localNode = new Node("vm2","01-vm2");
-		localNode.setWorkAreaRootPath(Path.make(workAreaRootPath));
-		action.setLocalNode(localNode);
 		
 		action.implementation();
 		action.rollback();
 		
-		assertFalse(new File(dataPath+"/2011+11+01+b/140864.png").exists());
-		assertFalse(new File(dataPath+"/2011+11+01+b/abc.xml").exists());
+		assertFalse(Path.makeFile(wa.dataPath()+REPNAME+"b","140864.png").exists());
+		assertFalse(Path.makeFile(wa.dataPath()+REPNAME+"b","abc.xml").exists());
 		assertEquals(0, action.getObject().getLatestPackage().getEvents().size());
 	}
 	
@@ -202,7 +168,7 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 	public void removeNewDAFilesFromDocuments() throws IOException {
 		
 		Document d = o.getDocument("140864");
-		DAFile daf = new DAFile("2011+11+01+b","140864.jpg");
+		DAFile daf = new DAFile(REPNAME+"b","140864.jpg");
 		d.addDAFile(daf);
 		assertEquals(daf,d.getLasttDAFile());
 		
