@@ -1,7 +1,9 @@
 /*
   DA-NRW Software Suite | ContentBroker
-  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
+  Copyright (C) 2014 Historisch-Kulturwissenschaftliche Informationsverarbeitung
   Universität zu Köln
+  Copyright (C) 2015 LVRInfoKom
+  Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -35,23 +37,30 @@ import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
+import de.uzk.hki.da.model.RightsStatement;
 import de.uzk.hki.da.util.ConfigurationException;
 
 
 
 /**
- * Executes local ConversionInstructions and waits for ConversionInstructions which
- * were to be done on other Nodes.
+ * 
+ * Performs format conversions based on the 
+ * ConversionInstructions generated in a previous action. 
+ * 
  * @author Daniel M. de Oliveira
- *
+ * @author Thomas Kleinke
+ * @author Polina Gubaidullina
+ * 
  */
 public class ConvertAction extends AbstractAction {
 	
+	private static final String PREMIS = "premis.xml";
 	private DistributedConversionAdapter distributedConversionAdapter;
-	
 	private List<Event> localConversionEvents;
+
 	
 	public ConvertAction(){}
+	
 	
 	@Override
 	public void checkConfiguration() {
@@ -67,54 +76,27 @@ public class ConvertAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException {
 		
-		
-		if (j.getConversion_instructions().size()==0)
-			logger.warn("No Conversion Instruction could be found for job with id: "+j.getId());
-		
-		Object premisObject = parsePremisToMetadata(wa.toFile(o.getLatest("premis.xml")).getAbsolutePath());
-		o.setRights(premisObject.getRights());
-		
-		localConversionEvents = new ConverterService().convertBatch(
-					wa,
-					o, 
-					new ArrayList(j.getConversion_instructions()));
-		
-		logger.debug("listing file instances attached to latest package");
-		for (DAFile f:o.getLatestPackage().getFiles()){
-			logger.debug(f.toString());
+		if (j.getConversion_instructions().size()==0) {
+			logger.warn("No Conversion Instruction has be found for job.");
+			return true;
 		}
 		
-		for (Event e:localConversionEvents){
-			o.getLatestPackage().getEvents().add(e);
-			o.getLatestPackage().getFiles().add(e.getTarget_file());
-			try {
-				DAFile targetFile = e.getTarget_file();
-				if(targetFile==null) {
-					logger.debug("e.getTarget_file() is null.");
-				}
-				Document document = o.getDocument(FilenameUtils.removeExtension(e.getTarget_file().getRelative_path()));
-				if(document==null) {
-					logger.debug("Document "+FilenameUtils.removeExtension(e.getTarget_file().getRelative_path())+" does not exist.");
-				}
-				document.addDAFile(targetFile);
-			} catch (Exception e2) {
-				throw new IllegalStateException("Cannot add new dafile to document "+FilenameUtils.removeExtension(e.getTarget_file().getRelative_path())+"."); 
-			}
-		}
+		// The publication related ConversionStrategies rely on the information from the contract.
+		o.setRights(getObjectRights()); 
+		
+		localConversionEvents = 
+			new ConverterService().convertBatch(
+				wa,	o, 
+				new ArrayList(j.getConversion_instructions()));
+		
+		listFiles(o);
+		extendObject(o,localConversionEvents);
 		
 		j.getConversion_instructions().clear();
-		j.getChildren().clear();
-		
-		// This is a hack because redmine #309 caused problems due to long replication times
-		j.setRepl_destinations( n.getWorkingResource() );
-		
-		
 		return true;
 	}
 
-	/**
-	 * @author Thomas Kleinke
-	 */
+
 	@Override
 	public void rollback() throws IOException {
 		
@@ -124,28 +106,10 @@ public class ConvertAction extends AbstractAction {
 				
 				o.getLatestPackage().getEvents().remove(e);
 				o.getLatestPackage().getFiles().remove(e.getTarget_file());
+				
 			}
 		}
-		
-		logger.info("@Admin: You can safely roll back this job to status "+this.getStartStatus()+" now.");
 	}
-
-	// TODO remove code duplication with scan action
-	private Object parsePremisToMetadata(String pathToPremis) throws IOException {
-		logger.debug("reading rights from " + pathToPremis);
-		Object o = null;
-				
-		try {
-			o = new ObjectPremisXmlReader()
-			.deserialize(new File(pathToPremis));
-		} catch (ParseException e) {
-			throw new RuntimeException("error while parsing premis file",e);
-		}
-		
-		return o;
-	}
-	
-	
 
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
 		return distributedConversionAdapter;
@@ -154,5 +118,67 @@ public class ConvertAction extends AbstractAction {
 	public void setDistributedConversionAdapter(
 			DistributedConversionAdapter distributedConversionAdapter) {
 		this.distributedConversionAdapter = distributedConversionAdapter;
+	}
+
+	private void addDAFileToDocument(Object o,DAFile file) {
+		try {
+			Document document = o.getDocument(FilenameUtils.removeExtension(file.getRelative_path()));
+			if(document==null) {
+				logger.debug("Document "+FilenameUtils.removeExtension(file.getRelative_path())+" does not exist.");
+			}else {
+				document.addDAFile(file);
+			}
+		} catch (Exception e2) {
+			throw new IllegalStateException("Cannot add new dafile to document "+FilenameUtils.removeExtension(file.getRelative_path())+"."); 
+		}
+	}
+
+
+	/**
+	 * Extracts the information from the events generated during the conversion batch
+	 * and translates it into a proper object model structure. 
+	 */
+	private void extendObject(Object o,List<Event> conversionEvents) {
+		
+		for (Event e:conversionEvents){
+
+			o.getLatestPackage().getEvents().add(e);
+			o.getLatestPackage().getFiles().add(e.getTarget_file());
+			
+			if (e.getTarget_file()==null) {
+				logger.debug("target file is null");
+				continue;
+			}
+			addDAFileToDocument(o,e.getTarget_file());
+		}
+	}
+
+
+	private Object parsePremisToMetadata(String pathToPremis) throws IOException {
+		Object o = null;
+		try {
+			o = new ObjectPremisXmlReader()
+				.deserialize(new File(pathToPremis));
+		} catch (ParseException e) {
+			throw new RuntimeException("error while parsing premis file",e);
+		}
+		return o;
+	}
+
+
+	/**
+	 * @throws IOException
+	 */
+	private RightsStatement getObjectRights() throws IOException {
+		Object premisObject = parsePremisToMetadata(wa.toFile(o.getLatest(PREMIS)).getAbsolutePath());
+		return premisObject.getRights();
+	}
+
+
+	private void listFiles(Object o) {
+		logger.debug("listing file instances attached to latest package");
+		for (DAFile f:o.getLatestPackage().getFiles()){
+			logger.debug(f.toString());
+		}
 	}
 }

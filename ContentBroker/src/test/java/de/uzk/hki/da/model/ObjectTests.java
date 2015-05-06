@@ -37,6 +37,8 @@ import de.uzk.hki.da.util.Path;
  */
 public class ObjectTests {
 	
+	private static final String A_TXT = "a.txt";
+	private static final String PREMIS = "premis.xml";
 	private static final String identifier = "123";
 	private static final String _1_B_REP = "2000_00_00+00_00+b";
 	private static final String _1_A_REP = "2000_00_00+00_00+a";
@@ -58,8 +60,8 @@ public class ObjectTests {
 		
 		o = TESTHelper.setUpObject(identifier, workAreaRootPath);
 
-		f1 = new DAFile(_1_A_REP,"a.txt");
-		f2 = new DAFile(_1_B_REP,"a.txt");
+		f1 = new DAFile(_1_A_REP,A_TXT);
+		f2 = new DAFile(_1_B_REP,A_TXT);
 		
 		o.getLatestPackage().getFiles().add(f1);
 		o.getLatestPackage().getFiles().add(f2);
@@ -81,7 +83,7 @@ public class ObjectTests {
 	@Test
 	public void testGetLatestReturnsAttachedInstance(){
 		
-		assertEquals(f2,o.getLatest("a.txt"));
+		assertEquals(f2,o.getLatest(A_TXT));
 	}
 	
 	
@@ -90,12 +92,12 @@ public class ObjectTests {
 	@Test 
 	public void testGetLatest(){
 
-		DAFile premis = new DAFile(_1_A_REP,"premis.xml");
+		DAFile premis = new DAFile(_1_A_REP,PREMIS);
 		o.getLatestPackage().getFiles().add(premis);
 		
 		assertEquals(
 				premis,
-				o.getLatest("premis.xml")
+				o.getLatest(PREMIS)
 				);
 	}
 	
@@ -107,7 +109,7 @@ public class ObjectTests {
 
 		assertEquals(
 				null,
-				o.getLatest("premis.xml")
+				o.getLatest(PREMIS)
 				);
 	}
 }
