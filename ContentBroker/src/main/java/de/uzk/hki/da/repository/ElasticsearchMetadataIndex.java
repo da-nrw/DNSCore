@@ -19,18 +19,14 @@
 
 package de.uzk.hki.da.repository;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -87,7 +83,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		for (Object object : graph) {
 			logger.trace("Preparing json graph for indexing in elasticsearch: \n{}", JSONUtils.toPrettyString(object));
 			createIndexEntryForGraphObject(indexName, edmJsonFrame, object, id);
-		}		
+		}
 	}
 	
 	public String getEdmJsonFrame() {
@@ -114,7 +110,6 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		} finally {
 			client.close();
 		}
-		
 	}
 	
 	private void createIndexEntryForGraphObject(String indexName, String framePath, Object object, String objectID)
@@ -194,10 +189,10 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 			connection.setDoOutput(true);  
 			
 			Scanner scanner;
-			scanner = new Scanner(wikiRequest.openStream());
+			InputStream is = wikiRequest.openStream();
+			scanner = new Scanner(is);
 			String response = scanner.useDelimiter("\\Z").next();
-			System.out.println("R:"+response);
-			
+			is.close();
 			scanner.close();
 			return response;
     	}catch(Exception e){
@@ -221,10 +216,12 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 			connection.setDoOutput(true);  
 			
 			Scanner scanner;
-			scanner = new Scanner(wikiRequest.openStream());
+			InputStream is = wikiRequest.openStream();
+			scanner = new Scanner(is);
 			String response = scanner.useDelimiter("\\Z").next();
 			System.out.println("R:"+response);
-			
+
+			is.close();
 			scanner.close();
 			return response;
     	}catch(Exception e){

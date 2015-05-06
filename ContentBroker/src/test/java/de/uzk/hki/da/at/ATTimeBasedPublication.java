@@ -29,6 +29,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 
 import org.jdom.Document;
@@ -77,9 +78,14 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		
 		assertNotNull(object);
 		
-		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg"));
-		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		InputStream is1 = repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
+		InputStream is2 = repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
 		
+		assertNotNull(is1);
+		assertNotNull(is2);
+		
+		is1.close();
+		is2.close();
 		
 		File publFile = Path.makeFile(localNode.getWorkAreaRootPath(),
 				WA_PIPS,WA_PUBLIC,object.getContractor().getShort_name(),
@@ -125,8 +131,11 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
 		
 		assertNotNull(object);
-		assertNull(repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg"));
-		assertNotNull(repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg"));
+		InputStream is1 = repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
+		InputStream is2 = repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");	
+		assertNull(is1);
+		assertNotNull(is2);
+		is2.close();
 		assertEquals(PUBLISHEDFLAG_INSTITUTION,object.getPublished_flag());
 	}
 	

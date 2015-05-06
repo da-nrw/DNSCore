@@ -51,6 +51,7 @@ public class RdfToJsonLdConverter {
 		try {
 			InputStream inputStream = new FileInputStream(frameFilePath);
 			frame = (Map<String, Object>) JSONUtils.fromInputStream(inputStream, "UTF-8");
+			inputStream.close();
 		} catch (IOException e) {
 			throw new RuntimeException("Could not initialize RdfToJsonLdConverter", e);
 		} catch (ClassCastException e) {
@@ -68,12 +69,14 @@ public class RdfToJsonLdConverter {
 	@SuppressWarnings("unchecked")
 	public Map<String,Object> convert(String content) throws JSONLDProcessingError,Exception {
 		Object json=null;
-		final Model modelResult = ModelFactory.createDefaultModel().read(
-				new ByteArrayInputStream(content.getBytes()), "", "RDF/XML");
+		ByteArrayInputStream bais = new ByteArrayInputStream(content.getBytes());
+		final Model modelResult = ModelFactory.createDefaultModel().read(bais, "", "RDF/XML");
 		final JenaRDFParser parser = new JenaRDFParser();
 		json = JSONLD.fromRDF(modelResult, parser);
 		json = JSONLD.frame(json, frame);
 			
+		modelResult.close();
+		bais.close();
 		return (Map<String,Object>) json;
 	}
 

@@ -66,6 +66,7 @@ public class ATContractIngestDelta extends AcceptanceTest{
 				JPG_STREAM_ID);
 		assertNotNull(is);
 		IOUtils.copy(is,new FileOutputStream(OUTPUT_JPG_1));
+		is.close();
 		
 		ath.waitForObjectToBeIndexed(metadataIndex, o.getIdentifier());
 		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));
@@ -81,6 +82,7 @@ public class ATContractIngestDelta extends AcceptanceTest{
 				JPG_STREAM_ID);
 		assertNotNull(is2);
 		IOUtils.copy(is2,new FileOutputStream(OUTPUT_JPG_2));
+		is2.close();
 		
 		Thread.sleep(3000);
 		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));
@@ -99,7 +101,6 @@ public class ATContractIngestDelta extends AcceptanceTest{
 		InputStream is3 = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
 				JPG_STREAM_ID);
 		assertNull(is3);
-		
 		
 		Thread.sleep(3000);
 		assertFalse(metadataIndex.getIndexedMetadata("portal_ci_test", o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));

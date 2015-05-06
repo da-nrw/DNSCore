@@ -30,9 +30,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
@@ -41,10 +39,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import org.apache.commons.io.input.BOMInputStream;
 import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
@@ -54,7 +49,6 @@ import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.metadata.LidoMetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;
-import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.metadata.XsltGenerator;
 import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.repository.RepositoryException;
@@ -114,8 +108,7 @@ public class CreateEDMAction extends AbstractAction {
 			throw new RuntimeException("Missing file in public PIP: "+o.getPackage_type()+FILE_EXTENSION_XML);
 
 		edmXSLTDestinationFile = generateEdmUsingXslt(xsltTransformationFile, new File(o.getPackage_type()+FILE_EXTENSION_XML), EDM_XSLT_METADATA_STREAM_ID);
-		putToRepository(edmXSLTDestinationFile);
-		
+		putToRepository(edmXSLTDestinationFile);		
 		
 		File metadataFile= new RelativePath(o.getPackage_type()+FILE_EXTENSION_XML).toFile();
 		edmIndexDestinationFile = serializeEDM(xsltTransformationFile, metadataFile);
@@ -124,20 +117,23 @@ public class CreateEDMAction extends AbstractAction {
 		return true;
 	}
 	
-	private File generateEdmUsingXslt(String xsltTransformationFile,File metadataSourceFile, String edmId) throws FileNotFoundException, UnsupportedEncodingException {
+	private File generateEdmUsingXslt(String xsltTransformationFile,File metadataSourceFile, String edmId) throws IOException {
 		
 		File edm = getWa().pipMetadataFile(WA_PUBLIC, edmId);
-		
-		
-		String edmResult = generateEDM(o.getIdentifier(), xsltTransformationFile, 
-				new FileInputStream(  Path.makeFile(wa.pipFolder(WA_PUBLIC),metadataSourceFile.getPath()) ));
 		PrintWriter out = null;
+		FileInputStream fis = null;
 		try {
+			fis = new FileInputStream(Path.makeFile(wa.pipFolder(WA_PUBLIC),metadataSourceFile.getPath()));
+			generateEDM(o.getIdentifier(), xsltTransformationFile, fis);
 			out = new PrintWriter(edm);
-			out.println(edmResult);
 		}
 		finally {
-			out.close();
+			if(out!=null) {
+				out.close();
+			} 
+			if(fis!=null) {
+				fis.close();
+			}
 		}
 		return edm;
 	}
@@ -161,6 +157,7 @@ public class CreateEDMAction extends AbstractAction {
 					ms = new LidoMetadataStructure(wa.pipFolder(WA_PUBLIC),metadataFile, documents);
 				}
 				ms.toEDM(ms.getIndexInfo(o.getIdentifier()), edm, preservationSystem, o.getIdentifier(), o.getUrn());
+				ms = null;
 			} else if(packageType.equals("XMP")) {
 				edm = generateEdmUsingXslt(xsltTransformationFile, metadataFile, EDM_FOR_ES_INDEX_METADATA_STREAM_ID);
 			} else {
@@ -195,13 +192,13 @@ public class CreateEDMAction extends AbstractAction {
 		XsltGenerator edmGenerator=null;
 		try {
 			edmGenerator = new XsltGenerator(xsltFile, metadataStream);
+			edmGenerator.setParameter("urn", o.getUrn());
+			edmGenerator.setParameter("cho-base-uri", preservationSystem.getUrisCho() + "/" + objectId);
+			edmGenerator.setParameter("aggr-base-uri", preservationSystem.getUrisAggr() + "/" + objectId);
+			edmGenerator.setParameter("local-base-uri", preservationSystem.getUrisLocal());
 		} catch (TransformerConfigurationException e1) {
 			throw new RuntimeException(e1);
 		}	
-		edmGenerator.setParameter("urn", o.getUrn());
-		edmGenerator.setParameter("cho-base-uri", preservationSystem.getUrisCho() + "/" + objectId);
-		edmGenerator.setParameter("aggr-base-uri", preservationSystem.getUrisAggr() + "/" + objectId);
-		edmGenerator.setParameter("local-base-uri", preservationSystem.getUrisLocal());
 		String edmResult=null;
 		try {
 			edmResult = edmGenerator.generate();

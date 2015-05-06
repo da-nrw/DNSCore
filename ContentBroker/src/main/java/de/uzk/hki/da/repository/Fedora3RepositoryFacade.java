@@ -139,6 +139,7 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 			r=new GetDatastreamDissemination(pid, fileId)
 				.execute(fedora);
 			is = r.getEntityInputStream();
+			r.close();
 			return is;
 		} catch (FedoraClientException e) {
 			if (e.getStatus() == 404) { 

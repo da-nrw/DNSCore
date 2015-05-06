@@ -155,11 +155,11 @@ public class ContentBroker {
 	 * to be called after setters.
 	 */
 	public void init(){
-
 		controller = new Controller("localhost",
 				getServerSocketNumber(),
 				actionFactory, actionInformation, mqBroker, jmsMessageServiceHandler );
 		(new Thread(controller)).start();
+		
 	}
 	
 	

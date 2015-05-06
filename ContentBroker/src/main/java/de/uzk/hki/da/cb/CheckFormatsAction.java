@@ -76,36 +76,33 @@ public class CheckFormatsAction extends AbstractAction {
 
 	@Override
 	public boolean implementation() throws IOException, SubsystemNotAvailableException {
+	
+		List<DAFile> newestFiles = getNewestFilesOfObject();
+		List<DAFile> allFiles = getAllFilesOfObject();
 		
 		identifyFileFormatsOfAllFilesOfObject();
-		createChecksumsForAllFiles();
+		createChecksumsFor(allFiles);
 		
 		// TODO remove. send via communicator. this should not be saved to object this early. 
-		o.setMost_recent_formats(getFormatsAsCommaSeparatedString(getNewestFilesOfObject()));
-		o.setMostRecentSecondaryAttributes(getSubformatsAsCommaSeparatedString(getNewestFilesOfObject()).toString());
-		o.setOriginal_formats(getFormatsOfAllOriginalFilesAsCommaSeparatedString(getAllFilesOfObject()));
+		o.setMost_recent_formats(getFormatsAsCommaSeparatedString(newestFiles));
+		o.setMostRecentSecondaryAttributes(getSubformatsAsCommaSeparatedString(newestFiles).toString());
+		o.setOriginal_formats(getFormatsOfAllOriginalFilesAsCommaSeparatedString(allFiles));
 		
-		attachJhoveInfoToAllFiles(getAllFilesOfObject());
+		attachJhoveInfoToAllFiles(allFiles);
 		return true;
 	}
 	
 	
-	private void createChecksumsForAllFiles() throws IOException {
-		
-		for (Package p:o.getPackages()){
-			
-			for (DAFile daf:p.getFiles()){
-				
-				String md5 = MD5Checksum.getMD5checksumForLocalFile(wa.toFile(daf));
-				daf.setChksum(md5);
-			}
+	private void createChecksumsFor(List<DAFile> allFiles) throws IOException {
+		for (DAFile daf:allFiles){
+			String md5 = MD5Checksum.getMD5checksumForLocalFile(wa.toFile(daf));
+			daf.setChksum(md5);
 		}
-		
-		
 	}
 	
 	
 	private void identifyFileFormatsOfAllFilesOfObject() throws SubsystemNotAvailableException{
+		
 		List<FileWithFileFormat> allFiles = new ArrayList<FileWithFileFormat>();
 		
 		for (Package p:o.getPackages()){
