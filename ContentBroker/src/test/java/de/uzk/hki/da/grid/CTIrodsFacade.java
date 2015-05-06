@@ -21,7 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -37,7 +36,6 @@ import org.junit.Test;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.PropertiesUtils;
@@ -69,8 +67,6 @@ public class CTIrodsFacade {
 	private static String testCollPhysicalPathOnLTA = null;
 	
 	File temp;
-	
-	private static Node node;
 	
 	private static StoragePolicy sp ;
 	

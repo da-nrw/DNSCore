@@ -78,9 +78,8 @@ public class CTFedora3RepositoryFacadeTest {
 	@Test
 	public void test() throws RepositoryException, IOException{
 		
-		String content=null;
 		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(TEST_DIR,"ead.xml"));
-		content = IOUtils.toString(fileInputStream, ENCODING_UTF_8);
+		IOUtils.toString(fileInputStream, ENCODING_UTF_8);
 		fileInputStream.close();
 		
 		fedora.createObject(IDENTIFIER, COLL_NAME, TEST);

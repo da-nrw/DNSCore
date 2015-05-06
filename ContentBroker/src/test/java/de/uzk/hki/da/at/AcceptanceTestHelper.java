@@ -470,7 +470,7 @@ public class AcceptanceTestHelper {
 		pkg.setChecksum(md5);
 		copy.setChecksum(md5);
 		copy.setChecksumDate(new Date());
-		for (Copy c:pkg.getCopies());
+		for (Copy c:pkg.getCopies()) c.getId();
 		pkg.getCopies().add(copy);
 		object.getPackages().add(pkg);
 		

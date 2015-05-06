@@ -20,8 +20,12 @@
 package de.uzk.hki.da.action;
 
 
+import static de.uzk.hki.da.core.C.WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION;
+import static de.uzk.hki.da.core.C.WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT;
+import static de.uzk.hki.da.core.C.WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET;
+import static de.uzk.hki.da.core.C.WORKFLOW_STATUS_DIGIT_UP_TO_ROLLBACK;
+import static de.uzk.hki.da.core.C.WORKFLOW_STATUS_DIGIT_WORKING;
 import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
-import static de.uzk.hki.da.core.C.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +42,6 @@ import org.springframework.context.ApplicationContextAware;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.UserExceptionManager;
 import de.uzk.hki.da.format.FileFormatFacade;
-import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.Node;
@@ -105,7 +108,7 @@ public class ActionFactory implements ApplicationContextAware {
 		Hibernate.initialize(localNode.getCooperatingNodes());
 
 		try {
-			for (Node cn:localNode.getCooperatingNodes());
+			for (Node cn:localNode.getCooperatingNodes()) cn.getId();
 //			for (Copy cp:localNode.getCopies());
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to load cooperating nodes");

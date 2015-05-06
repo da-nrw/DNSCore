@@ -190,7 +190,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		session.beginTransaction();
 		// replace proxies by real objects
 		session.refresh(object);
-		for (Copy rec : object.getLatestPackage().getCopies()) {}
+		for (Copy rec : object.getLatestPackage().getCopies()) rec.getId();
 		
 		assertTrue(object.getLatestPackage().getCopies().size()>0);
 		
