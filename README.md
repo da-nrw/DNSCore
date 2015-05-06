@@ -1,5 +1,6 @@
-DNSCore     
+DNSCore        
 ========    
+
 
 The Core System of the DA-NRW Software Suite.  
 
@@ -7,7 +8,7 @@ The DNS software relies
 exclusively on existing open source software components to implement a
 distributed, self- validating repository, allowing depositors a high degree of control over
 the methods applied to individual objects submitted for preservation and
-distribution. 
+distribution.  
 
 As a result of various research programs in the recent years there are some 
 software solutions available which handle preservation tasks. Since each of

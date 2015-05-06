@@ -49,7 +49,7 @@
 		<entry key="IngestValidateMetadataAction" value="3" />
 		<entry key="IngestConvertAction" value="3" />
 		<entry key="IngestCreatePremisAction" value="3" />
-		<entry key="IngestCheckFormatsAction" value="3" />
+		<entry key="IngestCheckFormatsAction" value="1" /> <!-- Workaround DANRW-1164 -->
 		<entry key="IngestScanAction" value="3" />
 		<entry key="IngestRegisterURNAction" value="3" />
 		<entry key="IngestPrepareSendToPresenterAction" value="3" />
