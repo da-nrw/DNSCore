@@ -62,9 +62,6 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 
 	private DAFile tiffile = new DAFile(REPNAME+"a","140864.tif");;
 	
-	/**
-	 * Sets the up.
-	 */
 	@Before
 	public void setUp(){
 		
@@ -116,10 +113,7 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 		j.getConversion_instructions().add(ci2);
 	}
 	
-	/**
-	 * Tear down.
-	 * @throws IOException 
-	 */
+
 	@After
 	public void tearDown() throws IOException{
 		
@@ -148,9 +142,6 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 	}
 	
 	
-	/**
-	 * @throws IOException
-	 */
 	@Test
 	public void testRollback() throws IOException {
 
