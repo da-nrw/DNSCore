@@ -40,7 +40,6 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
@@ -55,9 +54,6 @@ import de.uzk.hki.da.utils.StringUtilities;
  */
 public class PublishImageConversionStrategy extends PublishConversionStrategyBase {
 
-	/** The pkg. */
-	private Package pkg;
-	
 	/** The logger. */
 	private static Logger logger = 
 			LoggerFactory.getLogger(PublishImageConversionStrategy.class);
@@ -335,7 +331,6 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 	@Override
 	public void setObject(Object obj) {
 		this.object = obj;
-		this.pkg = obj.getLatestPackage();
 	}
 
 }

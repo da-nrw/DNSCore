@@ -21,8 +21,6 @@ package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +35,6 @@ import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.util.Path;
@@ -60,9 +57,6 @@ public class ConversionInstructionsBuilderTests {
 	/** The data path. */
 	Path dataPath=Path.make(basePath,"/RecursiveStructured_SIP/data/2011+11+01+a");
 	
-	/** The pkg. */
-	private Package pkg;
-
 	private Node n;
 
 	private WorkArea wa;
@@ -72,10 +66,6 @@ public class ConversionInstructionsBuilderTests {
 	 */
 	@Before
 	public void setUp(){
-		Object o = new Object();
-		pkg = mock (Package.class);
-		
-		
 		n = new Node();
 		n.setWorkAreaRootPath(basePath);
 	}

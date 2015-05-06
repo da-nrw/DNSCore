@@ -44,10 +44,9 @@ import de.uzk.hki.da.format.JhoveMetadataExtractor;
 import de.uzk.hki.da.format.SimpleFileWithFileFormat;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
-import de.uzk.hki.da.model.Node;
+//import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.SubformatIdentificationStrategyPuidMapping;
-import de.uzk.hki.da.repository.ElasticsearchMetadataIndex;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.HibernateUtil;
@@ -92,7 +91,7 @@ public class Diagnostics {
 	private static final String BEAN_NAME_IRODS_GRID_FACADE = "irodsGridFacade";
 	private static final String BEAN_NAME_IRODS_SYSTEM_CONNECTOR = "irodsSystemConnector";
 	private static final String BEAN_NAME_FEDORA_REPOSITORY_FACADE = "fedoraRepositoryFacade";
-	private static final String BEAN_NAME_METADATA_INDEX_FACADE = "esMetadataIndex";
+//	private static final String BEAN_NAME_METADATA_INDEX_FACADE = "esMetadataIndex";
 	
 	private static final String PROP_GRID_CACHE_AREA_ROOT_PATH = "localNode.gridCacheAreaRootPath";
 	private static final String PROP_USER_AREA_ROOT_PATH = "localNode.userAreaRootPath";
@@ -195,7 +194,7 @@ public class Diagnostics {
 		int errorCount=0;
 		AbstractApplicationContext context =
 				new ClassPathXmlApplicationContext(BEANS_DIAGNOSTICS_ELASTICSEARCH);
-		ElasticsearchMetadataIndex es = (ElasticsearchMetadataIndex) context.getBean(BEAN_NAME_METADATA_INDEX_FACADE);		
+//		ElasticsearchMetadataIndex es = (ElasticsearchMetadataIndex) context.getBean(BEAN_NAME_METADATA_INDEX_FACADE);		
 		context.close();
 		
 		System.out.print(INFO+"CHECKING - ELASTICSEARCH CONNECTIVITY .... ");
@@ -360,7 +359,7 @@ public class Diagnostics {
 		IrodsGridFacade irodsGridFacade = (IrodsGridFacade) context.getBean(BEAN_NAME_IRODS_GRID_FACADE);
 		
 		
-		Node node = (Node) context.getBean(C.LOCAL_NODE_BEAN_NAME);
+//		Node node = (Node) context.getBean(C.LOCAL_NODE_BEAN_NAME);
 		StoragePolicy sp = new StoragePolicy();
 		sp.setMinNodes(1);
 		sp.setGridCacheAreaRootPath((String)properties.get(PROP_GRID_CACHE_AREA_ROOT_PATH));

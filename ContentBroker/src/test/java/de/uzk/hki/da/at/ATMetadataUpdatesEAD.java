@@ -9,8 +9,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-import javax.validation.constraints.AssertFalse;
-
 import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
 import org.jdom.Element;

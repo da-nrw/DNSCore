@@ -30,7 +30,6 @@ import org.apache.commons.io.FileUtils;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 
-import ch.qos.logback.classic.Logger;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Copy;
@@ -471,7 +470,7 @@ public class AcceptanceTestHelper {
 		pkg.setChecksum(md5);
 		copy.setChecksum(md5);
 		copy.setChecksumDate(new Date());
-		for (Copy c:pkg.getCopies());
+		for (Copy c:pkg.getCopies()) c.getId();
 		pkg.getCopies().add(copy);
 		object.getPackages().add(pkg);
 		
