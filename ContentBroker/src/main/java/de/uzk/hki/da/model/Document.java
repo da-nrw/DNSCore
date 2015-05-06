@@ -35,8 +35,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  * The Class Document.
+ * 
+ * Implemented as a linked list where the top element 
+ * DAFile represents the actual state of the file.
+ * Previous versions of the file can be retrieved
+ * by getting the last file and from there 
+ * by calling {@link DAFile#getPreviousDAFile()} repeatedly.
  *
  * @author Polina Gubaidullina
+ * @author Daniel M. de Oliveira
  * 
  */
 
@@ -73,7 +80,7 @@ public class Document {
 	 * Instantiates a new document.
 	 *
 	 * @param name the name
-	 * @param first the first dafile
+	 * @param first the first DAFile
 	 */
 	public Document(DAFile dafile) {
 		this.docname = FilenameUtils.removeExtension(dafile.getRelative_path());
@@ -83,35 +90,61 @@ public class Document {
 	}
 	
 	/**
-	 * Gets the first dafile.
+	 * Gets the last dafile.
 	 *
-	 * @return the first dafile
+	 * @return the last dafile
 	 */
 	public DAFile getLasttDAFile() {
 		return lastDAFile;
 	}
 	
 	/**
-	 * Sets the first dafile.
+	 * Sets the last DAFile.
 	 *
-	 * @param dafile the first dafile
+	 * @param daf the last DAFile
 	 */
-	public void setLastDAFile(DAFile dafile) {
-		this.lastDAFile = dafile;
+	public void setLastDAFile(DAFile daf) {
+		this.lastDAFile = daf;
 	}
 	
 	
 	/**
 	 * Adds dafile.
 	 *
-	 * @param dafile the dafile
+	 * @param daf the DAFile
 	 */
-	public void addDAFile(DAFile dafile) {
-		logger.debug("Add dafile "+dafile+" to document "+this.getName());
+	public void addDAFile(DAFile daf) {
+		logger.debug("Add dafile "+daf+" to document "+this.getName());
 		DAFile previousDAFile = this.lastDAFile;
-		dafile.setPreviousDAFile(previousDAFile);
-		this.setLastDAFile(dafile);
+		daf.setPreviousDAFile(previousDAFile);
+		this.setLastDAFile(daf);
 	}
+	
+	
+	/**
+	 * Remove daf from the top of the DAFile 
+	 * stack which the document represents.
+	 * 
+	 * Removes it only if daf is really 
+	 * the last file.  
+	 * 
+	 * @param daf
+	 * @return true if removed successfully. 
+	 * false if the file has not been removed. 
+	 */
+	public boolean removeDAFile(DAFile daf) {
+		
+		if (daf==null) return false;
+		if (!daf.equals(getLasttDAFile())) return false;
+		
+		DAFile previous = getLasttDAFile().getPreviousDAFile();
+		setLastDAFile(previous);
+
+		return true;
+	}
+	
+	
+	
 	
 	/**
 	 * Sets the id.
