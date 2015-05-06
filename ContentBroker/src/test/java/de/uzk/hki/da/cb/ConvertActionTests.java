@@ -41,6 +41,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Document;
+import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.util.Path;
@@ -49,9 +50,8 @@ import de.uzk.hki.da.util.RelativePath;
 
 
 /**
- * UNDER TEST IS: ConvertAction.
- *
  * @author Daniel M. de Oliveira
+ * @author Thomas Kleinke
  */
 public class ConvertActionTests extends ConcreteActionUnitTest{
 
@@ -63,6 +63,8 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 	
 	/** The Constant dataPath. */
 	private static final Path dataPath= Path.make(workAreaRootPath,"/work/TEST/identifier/data");
+
+	private DAFile tiffile = new DAFile("2011+11+01+a","140864.tif");;
 	
 	/**
 	 * Sets the up.
@@ -116,9 +118,8 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 		ConversionInstruction ci2 = new ConversionInstruction();
 		ci2.setTarget_folder("");
 		
-		DAFile f2 = new DAFile("2011+11+01+a","140864.tif");
-		ci2.setSource_file(f2);
-		Document document2 = new Document(f2);
+		ci2.setSource_file(tiffile);
+		Document document2 = new Document(tiffile);
 		documents.add(document2);
 		
 		o.setDocuments(documents);
@@ -177,7 +178,6 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 	
 	
 	/**
-	 * @author Thomas Kleinke
 	 * @throws IOException
 	 */
 	@Test
@@ -193,5 +193,27 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 		assertFalse(new File(dataPath+"/2011+11+01+b/140864.png").exists());
 		assertFalse(new File(dataPath+"/2011+11+01+b/abc.xml").exists());
 		assertEquals(0, action.getObject().getLatestPackage().getEvents().size());
+	}
+	
+	
+	@Test
+	public void removeNewDAFilesFromDocuments() throws IOException {
+		
+		Document d = o.getDocument("140864");
+		DAFile daf = new DAFile("2011+11+01+b","140864.jpg");
+		d.addDAFile(daf);
+		assertEquals(daf,d.getLasttDAFile());
+		
+		List<Event> events = new ArrayList<Event>();
+		Event e = new Event();
+		e.setSource_file(tiffile);
+		e.setTarget_file(daf);
+		e.setType("CONVERT");
+		events.add(e);
+		action.setEvents(events);
+		
+		action.rollback();
+		
+		assertEquals(tiffile,d.getLasttDAFile());
 	}
 }

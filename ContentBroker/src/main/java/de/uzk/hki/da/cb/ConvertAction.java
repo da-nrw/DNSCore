@@ -56,7 +56,7 @@ public class ConvertAction extends AbstractAction {
 	
 	private static final String PREMIS = "premis.xml";
 	private DistributedConversionAdapter distributedConversionAdapter;
-	private List<Event> localConversionEvents;
+	private List<Event> events;
 
 	
 	public ConvertAction(){}
@@ -84,13 +84,13 @@ public class ConvertAction extends AbstractAction {
 		// The publication related ConversionStrategies rely on the information from the contract.
 		o.setRights(getObjectRights()); 
 		
-		localConversionEvents = 
+		events = 
 			new ConverterService().convertBatch(
 				wa,	o, 
 				new ArrayList(j.getConversion_instructions()));
 		
 		listFiles(o);
-		extendObject(o,localConversionEvents);
+		extendObject(o,events);
 		
 		j.getConversion_instructions().clear();
 		return true;
@@ -100,16 +100,17 @@ public class ConvertAction extends AbstractAction {
 	@Override
 	public void rollback() throws IOException {
 		
-		if (localConversionEvents != null) {
-			for (Event e : localConversionEvents) {
-				wa.toFile(e.getTarget_file()).delete();
-				
-				o.getLatestPackage().getEvents().remove(e);
-				o.getLatestPackage().getFiles().remove(e.getTarget_file());
-				
-			}
+		if (events == null || events.isEmpty()) return; 
+		
+		for (Event e : events) {
+			wa.toFile(e.getTarget_file()).delete();
 		}
+		
+		revertObject(o, events);
 	}
+
+	
+
 
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
 		return distributedConversionAdapter;
@@ -120,36 +121,64 @@ public class ConvertAction extends AbstractAction {
 		this.distributedConversionAdapter = distributedConversionAdapter;
 	}
 
-	private void addDAFileToDocument(Object o,DAFile file) {
-		try {
-			Document document = o.getDocument(FilenameUtils.removeExtension(file.getRelative_path()));
-			if(document==null) {
-				logger.debug("Document "+FilenameUtils.removeExtension(file.getRelative_path())+" does not exist.");
-			}else {
-				document.addDAFile(file);
-			}
-		} catch (Exception e2) {
-			throw new IllegalStateException("Cannot add new dafile to document "+FilenameUtils.removeExtension(file.getRelative_path())+"."); 
-		}
-	}
-
-
 	/**
 	 * Extracts the information from the events generated during the conversion batch
 	 * and translates it into a proper object model structure. 
 	 */
-	private void extendObject(Object o,List<Event> conversionEvents) {
+	private void extendObject(Object o,List<Event> events) {
 		
-		for (Event e:conversionEvents){
-
-			o.getLatestPackage().getEvents().add(e);
+		for (Event e:events){
+	
 			o.getLatestPackage().getFiles().add(e.getTarget_file());
-			
 			if (e.getTarget_file()==null) {
 				logger.debug("target file is null");
 				continue;
 			}
 			addDAFileToDocument(o,e.getTarget_file());
+			
+			o.getLatestPackage().getEvents().add(e);
+		}
+	}
+	
+	/**
+	 * Reverts the effects of extendObject.
+	 */
+	private void revertObject(Object o,List<Event> events) {
+
+		for (Event e : events) {
+
+			o.getLatestPackage().getFiles().remove(e.getTarget_file());
+			if (e.getTarget_file()==null) {
+				logger.debug("target file is null");
+				continue;
+			}
+			removeDAFileFromDocument(o,e.getTarget_file());
+			
+			o.getLatestPackage().getEvents().remove(e);
+		}
+	}
+	
+	
+	
+	
+	private void removeDAFileFromDocument(Object o,DAFile file) {
+		Document doc = o.getDocument(FilenameUtils.removeExtension(file.getRelative_path()));
+		if(doc==null) {
+			throw new IllegalStateException("Cannot add new dafile to document "+FilenameUtils.removeExtension(file.getRelative_path())+".");
+		}else {
+			logger.debug("Remove from document "+file);
+			boolean removed=doc.removeDAFile(file);
+			if (!removed) logger.warn("Remove from document not succesful for dafile "+file);
+		}
+	}
+
+
+	private void addDAFileToDocument(Object o,DAFile file) {
+		Document doc = o.getDocument(FilenameUtils.removeExtension(file.getRelative_path()));
+		if(doc==null) {
+			throw new IllegalStateException("Cannot add new dafile to document "+FilenameUtils.removeExtension(file.getRelative_path())+"."); 
+		}else {
+			doc.addDAFile(file);
 		}
 	}
 
@@ -181,4 +210,16 @@ public class ConvertAction extends AbstractAction {
 			logger.debug(f.toString());
 		}
 	}
+	
+	
+	/**
+	 * Used for unit testing only. 
+	 * @param events
+	 */
+	void setEvents(List<Event> events) {
+		this.events=events;
+	}
+	
+	
+	
 }
