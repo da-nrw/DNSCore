@@ -139,7 +139,6 @@ public class ScanAction extends AbstractAction{
 	
 	
 	private Object parsePremisToMetadata(File premis) throws IOException {
-		logger.debug("reading rights from " + premis);
 		Object o = null;
 				
 		try {
