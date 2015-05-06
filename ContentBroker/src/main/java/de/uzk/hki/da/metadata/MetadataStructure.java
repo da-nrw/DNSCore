@@ -158,6 +158,7 @@ public abstract class MetadataStructure {
 			logger.error("Unable to create the edm file!");
 			throw new RuntimeException(e);
 		}
+		
 	}
 	
 	private void addNewElementToParent(PreservationSystem preservationSystem, String id, String elementName, String elementValue, Element parent, Document edmDoc) {

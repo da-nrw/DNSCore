@@ -396,7 +396,7 @@ public class SendToPresenterAction extends AbstractAction {
 		repositoryFacade.ingestFile(objectId, collection, fileId, file, label, mimeType);
 		logger.info("Successfully created datastream with fileId {} for file {}.",fileId,file.getName());
 		return true;
-		
+	
 	}
 	
 	private String detectMimeType(File file) throws IOException {
@@ -410,7 +410,6 @@ public class SendToPresenterAction extends AbstractAction {
 	    }  catch (IOException e) {
 	        throw new IOException("Unable to open file for mime type detection: " + file.getAbsolutePath(), e);
 	    }
-	    
 		logger.debug("Detected MIME type {} for file {}",mimeType,file.getName());		
 		return mimeType;
 		

@@ -153,7 +153,6 @@ public class CreateEDMAction extends AbstractAction {
 					ms = new LidoMetadataStructure(wa.pipFolder(WA_PUBLIC),metadataFile, documents);
 				}
 				ms.toEDM(ms.getIndexInfo(o.getIdentifier()), edm, preservationSystem, o.getIdentifier(), o.getUrn());
-				ms = null;
 			} else if(packageType.equals("XMP")) {
 				edm = generateEdmUsingXslt(xsltTransformationFile, metadataFile, EDM_FOR_ES_INDEX_METADATA_STREAM_ID);
 			} else {

@@ -91,16 +91,13 @@ public class IndexMetadataAction extends AbstractAction {
 		InputStream metadataStream  = null;
 		try {
 			metadataStream = new FileInputStream(wa.pipMetadataFile(WA_PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID));
-			if(metadataStream==null) {
-				logger.debug("=(");
-			}
 			edmContent = IOUtils.toString(metadataStream, ENCODING_UTF_8);
 			getMetadataIndex().prepareAndIndexMetadata(adjustIndexName(indexName), o.getIdentifier(), edmContent);
 		} catch (Exception e) {
 			throw new RepositoryException("Unable to prepare and index metadata!", e);
 		}
 		finally {
-//			metadataStream.close();
+			metadataStream.close();
 		}
 		o.setObject_state(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		return true;

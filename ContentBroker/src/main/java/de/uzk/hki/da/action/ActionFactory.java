@@ -42,6 +42,7 @@ import org.springframework.context.ApplicationContextAware;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.UserExceptionManager;
 import de.uzk.hki.da.format.FileFormatFacade;
+import de.uzk.hki.da.main.Diagnostics;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.JobNamedQueryDAO;
 import de.uzk.hki.da.model.Node;
@@ -214,10 +215,12 @@ public class ActionFactory implements ApplicationContextAware {
 		try{
 			checkPreservationSystemNode();
 		} catch (IllegalStateException e) {
-			logger.info("ActionFactory is on halt! Caused by ");
-			logger.error(e.getMessage());
-			onHalt=true;
-			return null;
+			if (Diagnostics.run()!=0) {
+				logger.info("ActionFactory is on halt! Caused by ");
+				logger.error(e.getMessage());
+				onHalt=true;
+				return null;
+			}
 		}
 		
 		if (onHalt){

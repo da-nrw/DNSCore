@@ -88,6 +88,7 @@ public class XepicurWriter {
 		try {
 			FileWriter fw = new FileWriter(outputFile);
 			out.output(doc, fw);
+			fw.close();
 		} catch (IOException e) {
 			throw new RuntimeException("Unable to write epicur XML!", e);
 		}
