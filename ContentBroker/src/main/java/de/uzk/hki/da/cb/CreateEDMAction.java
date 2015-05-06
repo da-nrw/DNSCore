@@ -121,19 +121,15 @@ public class CreateEDMAction extends AbstractAction {
 		
 		File edm = getWa().pipMetadataFile(WA_PUBLIC, edmId);
 		PrintWriter out = null;
-		FileInputStream fis = null;
+		FileInputStream fis = new FileInputStream(Path.makeFile(wa.pipFolder(WA_PUBLIC),metadataSourceFile.getPath()));
+		String edmResult = generateEDM(o.getIdentifier(), xsltTransformationFile, fis);
 		try {
-			fis = new FileInputStream(Path.makeFile(wa.pipFolder(WA_PUBLIC),metadataSourceFile.getPath()));
-			generateEDM(o.getIdentifier(), xsltTransformationFile, fis);
 			out = new PrintWriter(edm);
+			out.println(edmResult);
 		}
 		finally {
-			if(out!=null) {
-				out.close();
-			} 
-			if(fis!=null) {
-				fis.close();
-			}
+			out.close();
+			fis.close();
 		}
 		return edm;
 	}

@@ -159,7 +159,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 		String[] cmd = new String []{
 					"identify","-format","'%C'",input};
 		ProcessInformation pi;
-		System.out.println(input);
+//		System.out.println(input);
 		try {
 			pi = cliConnector.runCmdSynchronously(cmd);
 		} catch (IOException e) {

@@ -45,17 +45,21 @@ public class RdfToJsonLdConverter {
 	 * Instantiates a new rdf to json ld converter.
 	 *
 	 * @param frameFilePath the frame file path
+	 * @throws IOException 
 	 */
 	@SuppressWarnings("unchecked")
-	public RdfToJsonLdConverter(String frameFilePath) {
+	public RdfToJsonLdConverter(String frameFilePath) throws IOException {
+		InputStream inputStream = null;
 		try {
-			InputStream inputStream = new FileInputStream(frameFilePath);
+			inputStream = new FileInputStream(frameFilePath);
 			frame = (Map<String, Object>) JSONUtils.fromInputStream(inputStream, "UTF-8");
-			inputStream.close();
 		} catch (IOException e) {
 			throw new RuntimeException("Could not initialize RdfToJsonLdConverter", e);
 		} catch (ClassCastException e) {
 			throw new RuntimeException("Could not initialize RdfToJsonLdConverter: Invalid frame file", e);
+		}
+		finally {
+			inputStream.close();
 		}
 	}
 

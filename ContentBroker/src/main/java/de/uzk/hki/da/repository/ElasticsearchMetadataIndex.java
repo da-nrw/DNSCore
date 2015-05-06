@@ -21,6 +21,7 @@ package de.uzk.hki.da.repository;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -61,13 +62,12 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 	
 	@Override
 	public void prepareAndIndexMetadata(String indexName, String id, String edmContent
-			) throws RepositoryException, FileNotFoundException {
+			) throws RepositoryException, IOException {
 		
 		if(edmJsonFrame==null) 
 			throw new IllegalStateException("Frames must not be null");
 		if (!new File(edmJsonFrame).exists())
 			throw new FileNotFoundException(edmJsonFrame+" does not exist.");
-
 		
 		RdfToJsonLdConverter converter = new RdfToJsonLdConverter(edmJsonFrame);
 		Map<String, Object> json = null;
