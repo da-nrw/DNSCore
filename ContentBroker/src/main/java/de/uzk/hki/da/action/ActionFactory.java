@@ -222,10 +222,10 @@ public class ActionFactory implements ApplicationContextAware {
 		}
 		
 		if (onHalt){
-			if(Diagnostics.run()!=0) {
+//			if(Diagnostics.run()!=0) {
 				logger.info("ActionFactory is on halt. Waiting to resume work ...");
 				return null;
-			}
+//			}
 			
 		}
 		
