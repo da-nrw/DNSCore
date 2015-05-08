@@ -215,17 +215,18 @@ public class ActionFactory implements ApplicationContextAware {
 		try{
 			checkPreservationSystemNode();
 		} catch (IllegalStateException e) {
-			if (Diagnostics.run()!=0) {
-				logger.info("ActionFactory is on halt! Caused by ");
-				logger.error(e.getMessage());
-				onHalt=true;
-				return null;
-			}
+			logger.info("ActionFactory is on halt! Caused by ");
+			logger.error(e.getMessage());
+			onHalt=true;
+			return null;
 		}
 		
 		if (onHalt){
-			logger.info("ActionFactory is on halt. Waiting to resume work ...");
-			return null;
+			if(Diagnostics.run()!=0) {
+				logger.info("ActionFactory is on halt. Waiting to resume work ...");
+				return null;
+			}
+			
 		}
 		
 		return selectActionToExecute();
