@@ -173,7 +173,7 @@ public abstract class AbstractAction implements Runnable {
 			
 		} catch (SubsystemNotAvailableException e) {
 			
-			actionFactory.pause(true);
+			actionFactory.setOnHalt(true,e.getMessage());
 			reportTechnicalError(e);
 		
 		} catch (Exception e) {

@@ -203,10 +203,10 @@ public class ActionFactoryTests {
 	
 	@Test
 	public void systemStateBad() {
-		assertFalse(factory.paused());
+		assertFalse(factory.isOnHalt());
 		AbstractAction action=factory.buildNextAction();
 		assertTrue(action==null);
-		assertTrue(factory.paused());
+		assertTrue(factory.isOnHalt());
 	}
 	
 	

@@ -81,8 +81,12 @@ public class ActionFactory implements ApplicationContextAware {
 	/** The context. */
 	private ApplicationContext context;
 	
-	/** The on halt. */
 	private boolean onHalt = false;
+	
+	private boolean paused = false;
+	
+	private String lastErrorMsg = "";
+	
 	
 	/** *The JmsMessageService */
 	private JmsMessageServiceHandler jmsMessageServiceHandler;
@@ -210,22 +214,34 @@ public class ActionFactory implements ApplicationContextAware {
 	 * null if Factory is on halt or no job of any type found
 	 * that can be started.
 	 */
-	public AbstractAction buildNextAction() {		
+	public AbstractAction buildNextAction() {	
 		if (context == null) throw new ConfigurationException("Unable to build action. Application context has not been set.");
 		try{
 			checkPreservationSystemNode();
 		} catch (IllegalStateException e) {
 			logger.info("ActionFactory is on halt! Caused by ");
-			logger.error(e.getMessage());
+			lastErrorMsg = e.getMessage();
+			logger.error(lastErrorMsg);
 			onHalt=true;
 			return null;
 		}
 		
-		if (onHalt){
-//			if(Diagnostics.run()!=0) {
-				logger.info("ActionFactory is on halt. Waiting to resume work ...");
+		
+		if(isPaused()) {
+			logger.info("ActionFactory has been stopped by an administrator. Waiting to resume work ...");
+			return null;
+		}
+		
+		
+		if (isOnHalt()){
+			logger.info("ActionFactory is on halt due to an exception.");
+			logger.info("Caused by "+lastErrorMsg);
+			logger.info("System tries to resume work ...");
+			if(Diagnostics.run()!=0) {
 				return null;
-//			}
+			} else {
+				onHalt = true;
+			}
 			
 		}
 		
@@ -380,19 +396,36 @@ public class ActionFactory implements ApplicationContextAware {
 		this.userExceptionManager = userExceptionManager;
 	}
 
+	public void setOnHalt(boolean b,String msg) {
+		onHalt  = b;
+		this.lastErrorMsg=msg;
+	}
+	
 	/**
-	 * Pause.
+	 * Is used to signal that the action factory has been stopped due to an exception.
 	 *
 	 * @param b the b
 	 */
-	public void pause(boolean b) {
-		onHalt  = b;
-	}
 	
-	public boolean paused() {
+	public boolean isOnHalt() {
 		return onHalt;
 	}
 
+	/**
+	 * Is used to signal that the action factory has been stopped and purpose.
+	 *
+	 * @param b the b
+	 */
+	
+	public boolean isPaused() {
+		return paused;
+	}
+	
+	public void setPaused(boolean paused) {
+		this.paused = paused;
+		
+	}
+	
 
 	/**
 	 * Gets the local node.
@@ -447,4 +480,5 @@ public class ActionFactory implements ApplicationContextAware {
 	public void setActionStartStates(Map<String,String> actionStartStates) {
 		this.actionStartStates = actionStartStates;
 	}
+
 }

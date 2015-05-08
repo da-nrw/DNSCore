@@ -214,7 +214,7 @@ public class AbstractActionTests {
 		
 		verifyTechnicalExceptionProperlyHandled(action, mockSession);
 		
-		verify(action.getActionFactory(),times(1)).pause(true);
+		verify(action.getActionFactory(),times(1)).setOnHalt(true,"SUBSYSTEM NOT AVAILABLE");
 	}
 	
 	

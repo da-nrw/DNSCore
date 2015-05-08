@@ -95,11 +95,11 @@ public class Controller implements Runnable {
 
 						logger.debug(AConstants.COMMAND_STOP_FACTORY);
 						messageSend = "...STOPPING FACTORY done";
-						actionFactory.pause(true);	
+						actionFactory.setPaused(true);	
 					} else if (command.indexOf(AConstants.COMMAND_START_FACTORY)>=0) {
 						logger.debug(AConstants.COMMAND_START_FACTORY);
 						messageSend = "...STARTING FACTORY done";
-						actionFactory.pause(false);
+						actionFactory.setPaused(false);
 					} else if (command.equals(AConstants.COMMAND_SHOW_ACTION)) {
 						String []arr = command.split("=");
 						if (arr.length==2) {
@@ -133,7 +133,7 @@ public class Controller implements Runnable {
 						jms.sendJMSMessage(outgoing);
 					} else if (command.indexOf(AConstants.COMMAND_GRACEFUL_SHUTDOWN)>=0){ 
 						list = actionRegistry.getCurrentActionDescriptions();
-						actionFactory.pause(true);
+						actionFactory.setPaused(true);
 						while (list.size()>0) {
 							String text = "waiting for actions to complete before shut down (" + list.size() +")";
 							outgoing.setBody(text);
