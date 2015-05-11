@@ -19,6 +19,7 @@ a command line interface.
 * Leistungsmerkmal [Migrationsbedingungen](feature_migration_right.md)
 * Leistungsmerkmal [Integritätsprüfung](feature_integrity_check.md)
 * Leistungsmerkmal [Ingest und Retrieval](feature_ingest_retrieval.md)
+* Leistungsmerkmal [Delta Ingest und Retrieval](feature_delta_ingest_retrieval.md)
 * Leistungsmerkmal [Anpassungen der Metadatenformate](feature_metadata_updates.md)
 * Leistungsmerkmal [Migrationsbedingungen](feature_migration_right.md)
 * Leistungsmerkmal [Umgang mit fehlerhaften Tags bei TIFF](feature_tiff_problem_detection.md)
