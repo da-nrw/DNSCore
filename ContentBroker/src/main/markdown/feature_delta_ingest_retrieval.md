@@ -70,7 +70,7 @@ Gilt für alle Szenarien!
   Identifier/data/CCITT_3.TIF
 ```
 
-## Szenario: AT-UCID-2 Versioniertes Retrieval. Alle Packages
+## Szenario: AT-DIR-2 Versioniertes Retrieval. Alle Packages
 
 
 #### Testpaket(e):
