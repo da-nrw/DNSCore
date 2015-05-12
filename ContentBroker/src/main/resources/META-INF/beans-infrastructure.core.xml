@@ -48,7 +48,7 @@
     <bean id="fakeRepositoryFacade" class="de.uzk.hki.da.repository.FakeRepositoryFacade">
         <property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
 	</bean>
-    <bean id="fakeEsMetadataIndex" class="de.uzk.hki.da.repository.FakeElasticsearchMetadataIndex" />
+    <bean id="fakeMetadataIndex" class="de.uzk.hki.da.repository.FakeMetadataIndex" />
         
    <amq:broker id="mqBroker" useShutdownHook="true" useJmx="false" persistent="true" deleteAllMessagesOnStartup="true" start="false">
    <amq:persistenceAdapter>

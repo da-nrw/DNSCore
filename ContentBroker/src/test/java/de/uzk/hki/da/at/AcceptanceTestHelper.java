@@ -91,7 +91,6 @@ public class AcceptanceTestHelper {
 	 * @return a new instance that represents the object. fetched from the from the database. 
 	 * @throws IOException if cannot fetch file from grid.
 	 * 
-	 * @author Daniel M. de Oliveira
 	 */
 	void retrieveAIP(Object o,File targetFolder,String packageName) throws IOException{
 
@@ -162,11 +161,11 @@ public class AcceptanceTestHelper {
 			
 			Object o = getObject(originalName);
 			if (o==null) {
-				System.out.println("Object not found (yet).");
+				System.out.println("Object not found (yet). ");
 				continue;
 			}
 			System.out.print("Awaiting object state "+awaitedObjectState+". Identifier: "+o.getIdentifier()+
-					". Orig name: "+o.getOrig_name()+". Object state: "+o.getObject_state()+".");
+					". Orig name: "+o.getOrig_name()+". Object state: "+o.getObject_state()+". ");
 	
 			Job job = null;
 			
@@ -187,9 +186,9 @@ public class AcceptanceTestHelper {
 				if (isInErrorState(job)) 
 					evaluateErrorDetails(job);
 				else
-					System.out.println("Job state: "+job.getStatus()+".");
+					System.out.println(" Job state: "+job.getStatus()+".");
 			} else
-				System.out.println("Job is null");
+				System.out.println(" Job is null");
 			
 			if (o.getObject_state()==awaitedObjectState) {
 				return;
@@ -210,11 +209,11 @@ public class AcceptanceTestHelper {
 			
 			Object o=getObject(origName);
 			if (o==null) {
-				System.out.println("Object not found (yet).");
+				System.out.println("Object not found (yet). ");
 				continue;
 			}
 			System.out.println("Awaiting object to be published. Identifier: "+o.getIdentifier()+
-					". Orig name: "+o.getOrig_name()+". Published flag: "+o.getPublished_flag()+".");
+					". Orig name: "+o.getOrig_name()+". Published flag: "+o.getPublished_flag()+". ");
 			
 			if (publishedFlag==0 && o.getPublished_flag()==0) break;
 			else
@@ -238,8 +237,6 @@ public class AcceptanceTestHelper {
 	 * @param timeout wait timeout ms until you consider the test failed.
 	 * @return job if found job in error state
 	 * @throws RuntimeException to signal the test considered failed. For example if it takes longer than timeout to reach the status.
-	 * 
-	 * @author Daniel M. de Oliveira
 	 */
 	void waitForJobToBeInErrorStatus(String originalName,String errorStatusLastDigit,int timeout) throws InterruptedException{
 		
@@ -425,7 +422,6 @@ public class AcceptanceTestHelper {
 
 
 	/**
-	 * @author Daniel M. de Oliveira
 	 * @throws IOException 
 	 */
 	Object putAIPToLongTermStorage(String identifier,String originalName, 

@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map;
 
-public class FakeElasticsearchMetadataIndex implements MetadataIndex{
+public class FakeMetadataIndex implements MetadataIndex{
 
 	@Override
 	public void indexMetadata(String indexName, String collection, String id,

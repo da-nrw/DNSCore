@@ -36,7 +36,7 @@
 		<property name="startStatus" value="560" />
 		<property name="endStatus" value="570" />
 		<property name="repositoryFacade" ref="${cb.implementation.repository:fakeRepositoryFacade}" />
-		<property name="metadataIndex" ref="${cb.implementation.index:fakeEsMetadataIndex}" />
+		<property name="metadataIndex" ref="${cb.implementation.index:fakeMetadataIndex}" />
 		<property name="indexName" value="${elasticsearch.index}" />
 		<property name="name" value="SendToPresenterAction" />
 		<property name="viewerUrls" ref="viewerUrls" />
@@ -67,7 +67,7 @@
 		scope="prototype">
 		<property name="startStatus" value="580" />
 		<property name="endStatus" value="589" />
-        <property name="metadataIndex" ref="${cb.implementation.index:fakeEsMetadataIndex}" />
+        <property name="metadataIndex" ref="${cb.implementation.index:fakeMetadataIndex}" />
 		<property name="name" value="IndexMetadataAction" />
 		<property name="indexName" value="${elasticsearch.index}" />
 		<property name="testContractors" ref="testContractors" />

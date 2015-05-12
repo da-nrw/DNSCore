@@ -49,6 +49,11 @@ import de.uzk.hki.da.utils.PropertiesUtils;
  */
 public class AcceptanceTest {
 	
+	private static final String CONF_BEANS_XML = "conf/beans.xml";
+	private static final String CI_WORKING_RESOURCE = "ciWorkingResource";
+	private static final String CI_ARCHIVE_RESOURCE = "ciArchiveResource";
+	private static final String BEAN_NAME_FAKE_REPOSITORY_FACADE = "fakeRepositoryFacade";
+	private static final String BEAN_NAME_FAKE_METADATA_INDEX = "fakeMetadataIndex";
 	protected static Node localNode;
 	protected static GridFacade gridFacade;
 	protected static RepositoryFacade repositoryFacade;
@@ -74,7 +79,7 @@ public class AcceptanceTest {
 		if (dcaImplBeanName==null) dcaImplBeanName="fakeDistributedConversionAdapter";
 		
 		AbstractApplicationContext context =
-				new FileSystemXmlApplicationContext("conf/beans.xml");
+				new FileSystemXmlApplicationContext(CONF_BEANS_XML);
 		
 		gridFacade = (GridFacade) context.getBean(gridImplBeanName);
 		distributedConversionAdapter = (DistributedConversionAdapter) context.getBean(dcaImplBeanName);
@@ -84,7 +89,7 @@ public class AcceptanceTest {
 	private static void instantiateNode() {
 		
 		AbstractApplicationContext context = 
-				new FileSystemXmlApplicationContext("conf/beans.xml");
+				new FileSystemXmlApplicationContext(CONF_BEANS_XML);
 		localNode = (Node) context.getBean("localNode");
 		
 		Session session = HibernateUtil.openSession();
@@ -98,19 +103,19 @@ public class AcceptanceTest {
 	private static void instantiateRepository(Properties properties) {
 		
 		String repImplBeanName=properties.getProperty("cb.implementation.repository");
-		if (repImplBeanName==null) repImplBeanName="fakeRepositoryFacade";
+		if (repImplBeanName==null) repImplBeanName=BEAN_NAME_FAKE_REPOSITORY_FACADE;
 		
 		AbstractApplicationContext context =
-				new FileSystemXmlApplicationContext("conf/beans.xml");
+				new FileSystemXmlApplicationContext(CONF_BEANS_XML);
 		repositoryFacade = (RepositoryFacade) context.getBean(repImplBeanName);
 		context.close();
 	}
 	
 	private static void instantiateMetadataIndex(Properties properties) {
 		String indexImplBeanName=properties.getProperty("cb.implementation.index");
-		if (indexImplBeanName==null) indexImplBeanName="fakeElasticsearchMetadataIndex";
+		if (indexImplBeanName==null) indexImplBeanName=BEAN_NAME_FAKE_METADATA_INDEX;
 		AbstractApplicationContext context =
-				new FileSystemXmlApplicationContext("conf/beans.xml");
+				new FileSystemXmlApplicationContext(CONF_BEANS_XML);
 		metadataIndex = (MetadataIndex) context.getBean(indexImplBeanName);
 		context.close();
 	}
@@ -124,11 +129,11 @@ public class AcceptanceTest {
 	private static void instantiateStoragePolicy() {
 		sp = new StoragePolicy();
 		sp.setMinNodes(1);
-		sp.setWorkingResource("ciWorkingResource");
-		sp.setReplDestinations("ciArchiveResource");
+		sp.setWorkingResource(CI_WORKING_RESOURCE);
+		sp.setReplDestinations(CI_ARCHIVE_RESOURCE);
 		sp.setAdminEmail("noreply");
 		sp.setGridCacheAreaRootPath(localNode.getGridCacheAreaRootPath().toString());
-		sp.setCommonStorageRescName("ciArchiveResource");
+		sp.setCommonStorageRescName(CI_ARCHIVE_RESOURCE);
 	}
 	
 	
@@ -197,12 +202,12 @@ public class AcceptanceTest {
 	
 
 	private static void cleanStorage(){
-		FileUtils.deleteQuietly(Path.makeFile(localNode.getWorkAreaRootPath(),"work","TEST"));
-		FileUtils.deleteQuietly(Path.make(localNode.getIngestAreaRootPath(),"TEST").toFile());
+		FileUtils.deleteQuietly(Path.makeFile(localNode.getWorkAreaRootPath(),"work",C.TEST_USER_SHORT_NAME));
+		FileUtils.deleteQuietly(Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME));
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getGridCacheAreaRootPath(),C.WA_AIP,C.TEST_USER_SHORT_NAME));
-		FileUtils.deleteQuietly(Path.make(localNode.getWorkAreaRootPath(),"pips","institution","TEST").toFile());
-		FileUtils.deleteQuietly(Path.make(localNode.getWorkAreaRootPath(),"pips","public","TEST").toFile());
-		FileUtils.deleteQuietly(Path.make(localNode.getUserAreaRootPath(),"/TEST/outgoing").toFile());
+		FileUtils.deleteQuietly(Path.makeFile(localNode.getWorkAreaRootPath(),"pips","institution",C.TEST_USER_SHORT_NAME));
+		FileUtils.deleteQuietly(Path.makeFile(localNode.getWorkAreaRootPath(),"pips","public",C.TEST_USER_SHORT_NAME));
+		FileUtils.deleteQuietly(Path.makeFile(localNode.getUserAreaRootPath(),C.TEST_USER_SHORT_NAME,"outgoing"));
 		
 		distributedConversionAdapter.remove("work/TEST");
 		distributedConversionAdapter.remove("aip/TEST");
@@ -214,12 +219,12 @@ public class AcceptanceTest {
 		distributedConversionAdapter.create("pips/institution/TEST");
 		distributedConversionAdapter.create("pips/public/TEST");
 		
-		Path.make(localNode.getUserAreaRootPath(),"/TEST/outgoing").toFile().mkdirs();
+		Path.makeFile(localNode.getUserAreaRootPath(),C.TEST_USER_SHORT_NAME,"outgoing").mkdirs();
 		Path.makeFile(localNode.getGridCacheAreaRootPath(),"aip",C.TEST_USER_SHORT_NAME).mkdirs();
-		Path.make(localNode.getIngestAreaRootPath(),"/TEST").toFile().mkdirs();
-		Path.make(localNode.getWorkAreaRootPath(),"/work/TEST").toFile().mkdirs();
-		Path.make(localNode.getWorkAreaRootPath(),"/pips/public/TEST").toFile().mkdirs();
-		Path.make(localNode.getWorkAreaRootPath(),"/pips/institution/TEST").toFile().mkdirs();
+		Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME).mkdirs();
+		Path.make(localNode.getWorkAreaRootPath(),"work",C.TEST_USER_SHORT_NAME).toFile().mkdirs();
+		Path.makeFile(localNode.getWorkAreaRootPath(),"pips","public",C.TEST_USER_SHORT_NAME).mkdirs();
+		Path.makeFile(localNode.getWorkAreaRootPath(),"pips","institution",C.TEST_USER_SHORT_NAME).mkdirs();
 	}
 	
 	private static void clearDB() {
