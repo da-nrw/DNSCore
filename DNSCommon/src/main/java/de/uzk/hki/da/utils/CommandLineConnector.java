@@ -130,7 +130,7 @@ public class CommandLineConnector {
 				
 				if (timeElapsed>timeout) {
 					p.destroy();
-					throw new IOTimeoutException("Process did not finished. Timeout at "+timeout+".");
+					throw new IOTimeoutException("Process did not finish. Timeout at "+timeout+".");
 				}
 			}
 		}
