@@ -108,7 +108,9 @@ public class Diagnostics {
 
 	
 	
-	
+	/**
+	 * @return errorCount
+	 */
 	public static Integer run() {
 	
 		System.out.println("::::::::::::::::::::::::::::::::::");

@@ -240,7 +240,8 @@ public class ActionFactory implements ApplicationContextAware {
 			if(Diagnostics.run()!=0) {
 				return null;
 			} else {
-				onHalt = true;
+				onHalt = false;
+				logger.info("Resuming work.");
 			}
 			
 		}
