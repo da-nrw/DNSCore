@@ -47,6 +47,7 @@ import de.uzk.hki.da.grid.IrodsSystemConnector;
 //import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.SubformatIdentificationStrategyPuidMapping;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.HibernateUtil;
@@ -342,7 +343,7 @@ public class Diagnostics {
 			return errorCount;
 		}
 		
-		irods.removeFileAndEatException(Path.make(properties.getProperty(PROP_IRODS_ZONE),C.WA_AIP,C.TEST_USER_SHORT_NAME,TEST_TGZ).toString());
+		irods.removeFileAndEatException(Path.make(properties.getProperty(PROP_IRODS_ZONE),WorkArea.AIP,C.TEST_USER_SHORT_NAME,TEST_TGZ).toString());
 		irods.logoff();
 		
 		

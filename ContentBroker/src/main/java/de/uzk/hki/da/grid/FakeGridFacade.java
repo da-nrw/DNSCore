@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.StringUtilities;
@@ -56,7 +57,7 @@ public class FakeGridFacade implements GridFacade {
 		
 		if (!address_dest.startsWith(C.FS_SEPARATOR)) address_dest = C.FS_SEPARATOR + address_dest;
 		
-		String dest = getGridCacheAreaRootPath()+ C.WA_AIP + address_dest;
+		String dest = getGridCacheAreaRootPath()+ WorkArea.AIP + address_dest;
 		logger.debug("Putting: "+file+" to "+dest);
 		FileUtils.copyFile(file, new File(dest));
 		return true;	
@@ -69,7 +70,7 @@ public class FakeGridFacade implements GridFacade {
 		
 		if (!sourceFileAdress.startsWith(C.FS_SEPARATOR)) sourceFileAdress = C.FS_SEPARATOR + sourceFileAdress;
 		
-		String source =  getGridCacheAreaRootPath() + C.WA_AIP + sourceFileAdress;
+		String source =  getGridCacheAreaRootPath() + WorkArea.AIP + sourceFileAdress;
 		logger.debug("Retrieving: " + source + " to " + destination);
 		FileUtils.copyFile(new File(source),destination);
 	}

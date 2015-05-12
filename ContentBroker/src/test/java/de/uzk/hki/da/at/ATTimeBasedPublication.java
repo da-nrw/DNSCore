@@ -40,6 +40,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.Path;
 
@@ -88,13 +89,13 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		is2.close();
 		
 		File publFile = Path.makeFile(localNode.getWorkAreaRootPath(),
-				WA_PIPS,WA_PUBLIC,object.getContractor().getShort_name(),
+				WorkArea.PIPS,WorkArea.PUBLIC,object.getContractor().getShort_name(),
 				object.getIdentifier(),CB_PACKAGETYPE_METS+FILE_EXTENSION_XML);
 		System.out.println("publFile:"+publFile.toString());
 		assertTrue(publFile.exists());
 				
 		File instFile = Path.makeFile(localNode.getWorkAreaRootPath(),
-				WA_PIPS,WA_INSTITUTION,object.getContractor().getShort_name(),
+				WorkArea.PIPS,WorkArea.WA_INSTITUTION,object.getContractor().getShort_name(),
 				object.getIdentifier(),CB_PACKAGETYPE_METS+FILE_EXTENSION_XML);
 		assertTrue(instFile.exists());
 		assertEquals(PUBLISHEDFLAG_PUBLIC+

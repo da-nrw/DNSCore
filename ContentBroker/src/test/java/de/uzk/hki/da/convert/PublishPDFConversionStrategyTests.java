@@ -33,7 +33,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.convert.PublishPDFConversionStrategy;
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
@@ -56,8 +55,8 @@ import de.uzk.hki.da.util.RelativePath;
 public class PublishPDFConversionStrategyTests {
 	
 	Path workAreaRootPath= Path.make(TC.TEST_ROOT_CONVERT,"PublishPDFConversionStrategyTests");
-	Path dataPath = Path.make(workAreaRootPath,"work/TEST/1",C.WA_DATA);
-	Path dipPath = Path.make(dataPath,C.WA_DIP);
+	Path dataPath = Path.make(workAreaRootPath,"work/TEST/1",WorkArea.DATA);
+	Path dipPath = Path.make(dataPath,WorkArea.TMP_PIPS);
 	
 	/** The cs. */
 	PublishPDFConversionStrategy cs = new PublishPDFConversionStrategy();

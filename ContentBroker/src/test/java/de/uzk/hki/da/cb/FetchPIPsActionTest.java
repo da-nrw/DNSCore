@@ -20,9 +20,6 @@
 package de.uzk.hki.da.cb;
 
 import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
-import static de.uzk.hki.da.core.C.WA_INSTITUTION;
-import static de.uzk.hki.da.core.C.WA_PIPS;
-import static de.uzk.hki.da.core.C.WA_PUBLIC;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -38,6 +35,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.FakeDistributedConversionAdapter;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
@@ -65,7 +63,7 @@ public class FetchPIPsActionTest extends ConcreteActionUnitTest {
 		n.setWorkAreaRootPath(TESTDIR);
 		
 		distributedConversionAdapter = mock(FakeDistributedConversionAdapter.class);
-		FileUtils.copyDirectory(Path.makeFile( TESTDIR, WA_PIPS+UNDERSCORE ), Path.makeFile( TESTDIR, WA_PIPS ));
+		FileUtils.copyDirectory(Path.makeFile( TESTDIR, WorkArea.PIPS+UNDERSCORE ), Path.makeFile( TESTDIR, WorkArea.PIPS ));
 		
 		action.setDistributedConversionAdapter(distributedConversionAdapter);
 	}
@@ -74,73 +72,73 @@ public class FetchPIPsActionTest extends ConcreteActionUnitTest {
 	
 	@After
 	public void cleanUp() {
-		FileUtils.deleteQuietly(Path.makeFile( TESTDIR, WA_PIPS ));
+		FileUtils.deleteQuietly(Path.makeFile( TESTDIR, WorkArea.PIPS ));
 	}
 	
 	
 	
 	@Test
 	public void overwriteExistingPIPs() throws FileNotFoundException, IOException{
-		assertFalse(makeMetadataFile(PREMIS,WA_PUBLIC).exists());
-		assertFalse(makeMetadataFile(PREMIS,WA_INSTITUTION ).exists());
+		assertFalse(makeMetadataFile(PREMIS,WorkArea.PUBLIC).exists());
+		assertFalse(makeMetadataFile(PREMIS,WorkArea.WA_INSTITUTION ).exists());
 		action.implementation();
-		assertTrue(makeMetadataFile(PREMIS,WA_PUBLIC).exists());
-		assertTrue(makeMetadataFile(PREMIS,WA_INSTITUTION ).exists());
+		assertTrue(makeMetadataFile(PREMIS,WorkArea.PUBLIC).exists());
+		assertTrue(makeMetadataFile(PREMIS,WorkArea.WA_INSTITUTION ).exists());
 	}
 	
 	@Test
 	public void movePIPs() throws FileNotFoundException, IOException {
 		action.implementation();
-		assertFalse(makePIPSourceFolder(WA_PUBLIC).exists());
-		assertFalse(makePIPSourceFolder(WA_INSTITUTION).exists());
-		assertTrue(makePIPFolder(WA_PUBLIC).exists());
-		assertTrue(makePIPFolder(WA_INSTITUTION).exists());
+		assertFalse(makePIPSourceFolder(WorkArea.PUBLIC).exists());
+		assertFalse(makePIPSourceFolder(WorkArea.WA_INSTITUTION).exists());
+		assertTrue(makePIPFolder(WorkArea.PUBLIC).exists());
+		assertTrue(makePIPFolder(WorkArea.WA_INSTITUTION).exists());
 	}
 	
 	@Test
 	public void rollback() throws Exception {
 		simulateImpl();
 		action.rollback();
-		assertTrue(makeFileInSrcFolder(_140849_TIF, WA_PUBLIC).exists());
-		assertTrue(makeFileInSrcFolder(_140849_TIF, WA_INSTITUTION).exists());
-		assertTrue(makeFileInSrcFolder(PREMIS+FILE_EXTENSION_XML, WA_PUBLIC).exists());
-		assertTrue(makeFileInSrcFolder(PREMIS+FILE_EXTENSION_XML, WA_INSTITUTION).exists());
-		assertFalse(makePIPFolder(WA_PUBLIC).exists());
-		assertFalse(makePIPFolder(WA_INSTITUTION).exists());
+		assertTrue(makeFileInSrcFolder(_140849_TIF, WorkArea.PUBLIC).exists());
+		assertTrue(makeFileInSrcFolder(_140849_TIF, WorkArea.WA_INSTITUTION).exists());
+		assertTrue(makeFileInSrcFolder(PREMIS+FILE_EXTENSION_XML, WorkArea.PUBLIC).exists());
+		assertTrue(makeFileInSrcFolder(PREMIS+FILE_EXTENSION_XML, WorkArea.WA_INSTITUTION).exists());
+		assertFalse(makePIPFolder(WorkArea.PUBLIC).exists());
+		assertFalse(makePIPFolder(WorkArea.WA_INSTITUTION).exists());
 	}
 
 
 	private void simulateImpl() throws IOException {
-		FileUtils.deleteDirectory(makePIPFolder(WA_PUBLIC));
-		FileUtils.deleteDirectory(makePIPFolder(WA_INSTITUTION));
+		FileUtils.deleteDirectory(makePIPFolder(WorkArea.PUBLIC));
+		FileUtils.deleteDirectory(makePIPFolder(WorkArea.WA_INSTITUTION));
 		FileUtils.moveDirectory(
-				makePIPSourceFolder(WA_PUBLIC), 
-				makePIPFolder(WA_PUBLIC));
+				makePIPSourceFolder(WorkArea.PUBLIC), 
+				makePIPFolder(WorkArea.PUBLIC));
 		FileUtils.moveDirectory(
-				makePIPSourceFolder(WA_INSTITUTION), 
-				makePIPFolder(WA_INSTITUTION));
-		FileUtils.deleteDirectory(makePIPSourceFolder(WA_PUBLIC));
-		FileUtils.deleteDirectory(makePIPSourceFolder(WA_INSTITUTION));
+				makePIPSourceFolder(WorkArea.WA_INSTITUTION), 
+				makePIPFolder(WorkArea.WA_INSTITUTION));
+		FileUtils.deleteDirectory(makePIPSourceFolder(WorkArea.PUBLIC));
+		FileUtils.deleteDirectory(makePIPSourceFolder(WorkArea.WA_INSTITUTION));
 	}
 	
 	
 	
 	
 	public File makeMetadataFile(String fileName,String pipType) {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),
+		return Path.makeFile(n.getWorkAreaRootPath(),WorkArea.PIPS,pipType,o.getContractor().getShort_name(),
 				o.getIdentifier(),fileName+FILE_EXTENSION_XML);
 	}
 	
 	public File makeFileInSrcFolder(String fileName,String pipType) {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),
+		return Path.makeFile(n.getWorkAreaRootPath(),WorkArea.PIPS,pipType,o.getContractor().getShort_name(),
 				o.getIdentifier()+UNDERSCORE+o.getPackages().get(0).getName(),fileName);
 	}
 	
 	private File makePIPFolder(String pipType) {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier());
+		return Path.makeFile(n.getWorkAreaRootPath(),WorkArea.PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier());
 	}
 	
 	private File makePIPSourceFolder(String pipType) {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId());
+		return Path.makeFile(n.getWorkAreaRootPath(),WorkArea.PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId());
 	}
 }

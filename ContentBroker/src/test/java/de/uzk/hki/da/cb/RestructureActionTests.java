@@ -60,8 +60,8 @@ public class RestructureActionTests extends ConcreteActionUnitTest{
 	RestructureAction action = new RestructureAction();
 
 	private static final String IDENTIFIER = "identifier";
-	private static final Path WORK_AREA_ROOT = Path.make(TC.TEST_ROOT_CB,"RestructureActionTests");
-	private static final Path TEST_CONTRACTOR_WORK_FOLDER = Path.make(WORK_AREA_ROOT,"work","TEST");
+	private static final Path WORK_AREA_ROOT_PATH = Path.make(TC.TEST_ROOT_CB,"RestructureActionTests");
+	private static final Path TEST_CONTRACTOR_WORK_FOLDER = Path.make(WORK_AREA_ROOT_PATH,"work","TEST");
 	private static final Path DATA_FOLDER = Path.make(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER,"data");
 	
 	private FakeGridFacade grid;
@@ -80,7 +80,7 @@ public class RestructureActionTests extends ConcreteActionUnitTest{
 		FileUtils.copyDirectory(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER+"_"), 
 				Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER));
 		
-		n.setWorkAreaRootPath(WORK_AREA_ROOT);
+		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
 		
 		action.setLocalNode(n);
 		grid = new FakeGridFacade();

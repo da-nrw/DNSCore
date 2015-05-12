@@ -38,6 +38,7 @@ import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommaSeparatedList;
@@ -133,7 +134,7 @@ public class CheckFormatsAction extends AbstractAction {
 	private void attachJhoveInfoToAllFiles(List<DAFile> files) throws IOException, SubsystemNotAvailableException {
 		for (DAFile f : files) {
 			// dir
-			String dir = Path.make(wa.dataPath(),C.JHOVE_TEMP,f.getRep_name()).toString();
+			String dir = Path.make(wa.dataPath(),WorkArea.TMP_JHOVE,f.getRep_name()).toString();
 			String fileName = DigestUtils.md5Hex(f.getRelative_path());
 			
 			if (!new File(dir).exists()) new File(dir).mkdirs();
@@ -206,7 +207,7 @@ public class CheckFormatsAction extends AbstractAction {
 	
 	@Override
 	public void rollback() throws Exception {
-		FileUtils.deleteQuietly(Path.makeFile(wa.dataPath(),C.JHOVE_TEMP));
+		FileUtils.deleteQuietly(Path.makeFile(wa.dataPath(),WorkArea.TMP_JHOVE));
 	}
 
 

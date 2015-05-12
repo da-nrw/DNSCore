@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 
 /**
@@ -26,6 +27,6 @@ public class ATUseCaseIngestEadMetsVariousRefs extends AcceptanceTest{
 	
 	@Test
 	public void test() {
-		Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
+		Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 }

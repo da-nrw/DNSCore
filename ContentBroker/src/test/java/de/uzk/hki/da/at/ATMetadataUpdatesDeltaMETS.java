@@ -21,6 +21,7 @@ import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.metadata.MetadataHelper;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.Path;
 
@@ -218,7 +219,7 @@ public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 		
 		object = ath.getObject(ORIG_NAME_ORIG);
 		
-		testContractorPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, "TEST");
+		testContractorPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, "TEST");
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build

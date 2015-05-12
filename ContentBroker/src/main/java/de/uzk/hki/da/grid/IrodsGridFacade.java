@@ -29,9 +29,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.MD5Checksum;
 
 /**
@@ -59,8 +59,8 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		String address_dest = gridPath;
 		if (!gridPath.startsWith("/")) 
 			address_dest = "/" + gridPath;
-		String targetPhysically = sp.getGridCacheAreaRootPath() + "/" + C.WA_AIP + address_dest;
-		String targetLogically  = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP  + address_dest;	
+		String targetPhysically = sp.getGridCacheAreaRootPath() + "/" + WorkArea.AIP + address_dest;
+		String targetLogically  = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP  + address_dest;	
 		File gridfile = new File (targetPhysically); 
 		
 		if (registerOnWorkingResourceAndComputeChecksum(file,targetLogically,gridfile, sp))
@@ -134,7 +134,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 	public boolean storagePolicyAchieved(String gridPath2, StoragePolicy sp) {
 		irodsSystemConnector.connect();
 		
-		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + "/" + gridPath2;
+		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + "/" + gridPath2;
 		
 		int minNodes = sp.getMinNodes();
 		if (minNodes == 0 ) {

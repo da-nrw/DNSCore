@@ -20,8 +20,6 @@
 package de.uzk.hki.da.cb;
 
 import static de.uzk.hki.da.core.C.METADATA_STREAM_ID_DC;
-import static de.uzk.hki.da.core.C.WA_INSTITUTION;
-import static de.uzk.hki.da.core.C.WA_PUBLIC;
 import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 import static de.uzk.hki.da.utils.StringUtilities.isSet;
 
@@ -50,6 +48,7 @@ import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.metadata.XsltGenerator;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.ConfigurationException;
 
@@ -81,9 +80,9 @@ public class CreateDCAction extends AbstractAction {
 			if (! new File(dcMappings.get(o.getPackage_type())).exists()) 
 				throw new PreconditionsNotMetException("Missing xslt file for package type");
 			
-			if (wa.pipFolder(WA_PUBLIC).toFile().exists()&&(! wa.pipMetadataFile(WA_PUBLIC, o.getPackage_type()).exists()))
+			if (wa.pipFolder(WorkArea.PUBLIC).toFile().exists()&&(! wa.pipMetadataFile(WorkArea.PUBLIC, o.getPackage_type()).exists()))
 				throw new PreconditionsNotMetException("Missing metadata file for package type in public pip");
-			if (wa.pipFolder(WA_INSTITUTION).toFile().exists()&&(! wa.pipMetadataFile(WA_INSTITUTION, o.getPackage_type()).exists()))
+			if (wa.pipFolder(WorkArea.WA_INSTITUTION).toFile().exists()&&(! wa.pipMetadataFile(WorkArea.WA_INSTITUTION, o.getPackage_type()).exists()))
 					throw new PreconditionsNotMetException("Missing metadata file for package type in insitution pip");
 		}
 		
@@ -100,11 +99,11 @@ public class CreateDCAction extends AbstractAction {
 		if (isNotSet(o.getPackage_type())) return true;
 		
 		
-		if (wa.pipFolder(WA_PUBLIC).toFile().exists()){
-			createDCForAudience(WA_PUBLIC);
+		if (wa.pipFolder(WorkArea.PUBLIC).toFile().exists()){
+			createDCForAudience(WorkArea.PUBLIC);
 		}
-		if (wa.pipFolder(WA_INSTITUTION).toFile().exists()){
-			createDCForAudience(WA_INSTITUTION);
+		if (wa.pipFolder(WorkArea.WA_INSTITUTION).toFile().exists()){
+			createDCForAudience(WorkArea.WA_INSTITUTION);
 		}
 		
 		return true;
@@ -123,10 +122,10 @@ public class CreateDCAction extends AbstractAction {
 
 	@Override
 	public void rollback() throws Exception {
-		if (wa.pipMetadataFile(WA_PUBLIC, METADATA_STREAM_ID_DC).exists()) 
-			wa.pipMetadataFile(WA_PUBLIC, METADATA_STREAM_ID_DC).delete();
-		if (wa.pipMetadataFile(WA_INSTITUTION, METADATA_STREAM_ID_DC).exists()) 
-			wa.pipMetadataFile(WA_INSTITUTION, METADATA_STREAM_ID_DC).delete();
+		if (wa.pipMetadataFile(WorkArea.PUBLIC, METADATA_STREAM_ID_DC).exists()) 
+			wa.pipMetadataFile(WorkArea.PUBLIC, METADATA_STREAM_ID_DC).delete();
+		if (wa.pipMetadataFile(WorkArea.WA_INSTITUTION, METADATA_STREAM_ID_DC).exists()) 
+			wa.pipMetadataFile(WorkArea.WA_INSTITUTION, METADATA_STREAM_ID_DC).delete();
 	}
 	
 	

@@ -57,6 +57,15 @@ public class WorkArea {
 	
 	private Object o;
 	private Node n;
+	public static final String TMP_JHOVE = "jhove_temp";
+	public static final String WA_INSTITUTION = "institution";
+	public static final String PUBLIC = "public";
+	public static final String WORK = "work";
+	public static final String PIPS = "pips";
+	public static final String DATA = "data";
+	public static final String AIP = "aip";
+	// WorkArea organization
+	public static final String TMP_PIPS = "temp_pips";
 	
 	public WorkArea(Node n,Object o){
 		this.o = o;
@@ -72,11 +81,11 @@ public class WorkArea {
 
 	public File toFile(DAFile daf) {
 		
-		return Path.make(contractorWorkDirPath(),o.getIdentifier(),WA_DATA,daf.getRep_name(),daf.getRelative_path()).toFile();
+		return Path.make(contractorWorkDirPath(),o.getIdentifier(),WorkArea.DATA,daf.getRep_name(),daf.getRelative_path()).toFile();
 	}
 	
 	public File toFile(String repName, String relPath) {
-		return Path.make(contractorWorkDirPath(),o.getIdentifier(),WA_DATA,repName,relPath).toFile();
+		return Path.make(contractorWorkDirPath(),o.getIdentifier(),WorkArea.DATA,repName,relPath).toFile();
 	}
 
 	public Path pipFolder(String audience) {
@@ -88,7 +97,7 @@ public class WorkArea {
 	}
 	
 	public Path pipSourceFolderRelativePath(String audience) {
-		return new RelativePath(WA_PIPS,audience,o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId());
+		return new RelativePath(WorkArea.PIPS,audience,o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId());
 	}
 	
 	public File pipSourceFolder(String audience) {
@@ -100,11 +109,11 @@ public class WorkArea {
 	}
 
 	private Path contractorPipsDirPath(String audience) {
-		return Path.make(n.getWorkAreaRootPath(),WA_PIPS,audience,o.getContractor().getShort_name());
+		return Path.make(n.getWorkAreaRootPath(),WorkArea.PIPS,audience,o.getContractor().getShort_name());
 	}
 
 	private Path contractorWorkDirPath() {
-		return Path.make(n.getWorkAreaRootPath(),WA_WORK,o.getContractor().getShort_name());
+		return Path.make(n.getWorkAreaRootPath(),WorkArea.WORK,o.getContractor().getShort_name());
 	}
 
 	/**
@@ -118,11 +127,11 @@ public class WorkArea {
 	}
 	
 	public File sipFile() {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_WORK,o.getContractor().getShort_name(),o.getLatestPackage().getContainerName());
+		return Path.makeFile(n.getWorkAreaRootPath(),WorkArea.WORK,o.getContractor().getShort_name(),o.getLatestPackage().getContainerName());
 	}
 	
 	public Path objectPath() {
-		return Path.make(n.getWorkAreaRootPath(),WA_WORK,o.getContractor().getShort_name(),o.getIdentifier());
+		return Path.make(n.getWorkAreaRootPath(),WorkArea.WORK,o.getContractor().getShort_name(),o.getIdentifier());
 	}
 	
 	public Path dataPath() {

@@ -31,6 +31,7 @@ import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.service.Mail;
 import de.uzk.hki.da.utils.StringUtilities;
@@ -180,7 +181,7 @@ public class IntegrityService {
 			logger.error(err);
 			return Object.ObjectStatus.Error;
 		}
-		String dao_base = C.WA_AIP + "/"+obj.getContractor().getShort_name()+"/"+obj.getIdentifier()+"/"+obj.getIdentifier()+".pack_";
+		String dao_base = WorkArea.AIP + "/"+obj.getContractor().getShort_name()+"/"+obj.getIdentifier()+"/"+obj.getIdentifier()+".pack_";
 		for (Package pack : obj.getPackages()) {
 			String dao = dao_base + pack.getName()+".tar"; 
 			logger.debug("Checking: " + dao );

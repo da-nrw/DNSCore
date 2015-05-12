@@ -48,11 +48,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.format.MimeTypeDetectionService;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
 
@@ -66,8 +66,8 @@ public class UpdateMetadataActionEADTests extends ConcreteActionUnitTest{
 	@ActionUnderTest
 	UpdateMetadataAction action = new UpdateMetadataAction();
 	
-	private static final String _TEMP_PIP_REP_PUBLIC = C.WA_DIP+"/public";
-	private static final String _TEMP_PIP_REP_INSTITUTION = C.WA_DIP+"/institution";
+	private static final String _TEMP_PIP_REP_PUBLIC = WorkArea.TMP_PIPS+"/public";
+	private static final String _TEMP_PIP_REP_INSTITUTION = WorkArea.TMP_PIPS+"/institution";
 	private static final String _1_B_REP = "1+b";
 	private static MimeTypeDetectionService mtds;
 	private static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");

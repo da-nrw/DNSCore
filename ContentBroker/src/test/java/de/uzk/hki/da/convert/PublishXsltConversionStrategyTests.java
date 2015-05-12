@@ -34,7 +34,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.convert.PublishXSLTConversionStrategy;
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
@@ -96,8 +95,8 @@ public class PublishXsltConversionStrategyTests {
 	 */
 	@After
 	public void tearDown() throws IOException {
-		FileUtils.deleteDirectory(Path.makeFile(workAreaRootPath,"work/TEST/1/data/"+C.WA_DIP+"/public"));
-		FileUtils.deleteDirectory(Path.makeFile(workAreaRootPath,"work/TEST/1/data/"+C.WA_DIP+"/institution"));
+		FileUtils.deleteDirectory(Path.makeFile(workAreaRootPath,"work/TEST/1/data/"+WorkArea.TMP_PIPS+"/public"));
+		FileUtils.deleteDirectory(Path.makeFile(workAreaRootPath,"work/TEST/1/data/"+WorkArea.TMP_PIPS+"/institution"));
 	}
 	
 	/**
@@ -119,7 +118,7 @@ public class PublishXsltConversionStrategyTests {
 		strategy.convertFile(new WorkArea(n,obj),ci);
 		
 		File targetFile = Path.makeFile(workAreaRootPath, 
-				"work/TEST/1/data/"+C.WA_DIP+"/public/ead_correct_XSLT_ead_to_dc.xml");
+				"work/TEST/1/data/"+WorkArea.TMP_PIPS+"/public/ead_correct_XSLT_ead_to_dc.xml");
 		assertTrue(targetFile.exists());
 		assertTrue(FileUtils.sizeOf(targetFile) > 0);
 		
@@ -172,7 +171,7 @@ public class PublishXsltConversionStrategyTests {
 		strategy.convertFile(new WorkArea(n,obj),ci);
 		
 		File targetFile = Path.makeFile(workAreaRootPath, 
-				"work/TEST/1/data/"+C.WA_DIP+"/public/ead_not-valid_XSLT_ead_to_dc.xml");
+				"work/TEST/1/data/"+WorkArea.TMP_PIPS+"/public/ead_not-valid_XSLT_ead_to_dc.xml");
 		assertTrue(targetFile.exists());
 		assertTrue(FileUtils.sizeOf(targetFile) > 0);
 		

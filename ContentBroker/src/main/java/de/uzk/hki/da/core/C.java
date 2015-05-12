@@ -87,16 +87,6 @@ public class C {
 	public static final String ERROR_MSG_NOTCONFIGURED = " not configured properly.";
 	public static final String ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION = "Error during file format identification";
 
-	// WorkArea organization
-	public static final String WA_DIP = "temp_pips";
-	public static final String WA_AIP = "aip";
-	public static final String WA_DATA = "data";
-	public static final String WA_WORK = "work";
-	public static final String WA_PIPS = "pips";
-	public static final String WA_PUBLIC = "public";
-	public static final String WA_INSTITUTION = "institution";
-	public static final String JHOVE_TEMP = "jhove_temp";
-
 	//
 	public static final String TEST_USER_SHORT_NAME = "TEST";
 

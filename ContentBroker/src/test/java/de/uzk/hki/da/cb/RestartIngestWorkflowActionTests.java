@@ -20,11 +20,6 @@
 package de.uzk.hki.da.cb;
 
 import static de.uzk.hki.da.core.C.TEST_USER_SHORT_NAME;
-import static de.uzk.hki.da.core.C.WA_DATA;
-import static de.uzk.hki.da.core.C.WA_INSTITUTION;
-import static de.uzk.hki.da.core.C.WA_PIPS;
-import static de.uzk.hki.da.core.C.WA_PUBLIC;
-import static de.uzk.hki.da.core.C.WA_WORK;
 import static de.uzk.hki.da.test.TC.TEST_ROOT_CB;
 import static de.uzk.hki.da.test.TC.URN;
 import static org.junit.Assert.assertEquals;
@@ -43,6 +38,7 @@ import org.junit.Test;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 
 /**
@@ -57,9 +53,9 @@ public class RestartIngestWorkflowActionTests extends ConcreteActionUnitTest{
 	private final Path WORK_AREA_ROOT_PATH = Path.make(
 			TEST_ROOT_CB,"RestartIngestWorkflowAction");
 	private final Path contractorFolder = Path.make(
-			WORK_AREA_ROOT_PATH,WA_WORK,TEST_USER_SHORT_NAME);
+			WORK_AREA_ROOT_PATH,WorkArea.WORK,TEST_USER_SHORT_NAME);
 	private final Path pipsFolder = Path.make(
-			WORK_AREA_ROOT_PATH,WA_PIPS);
+			WORK_AREA_ROOT_PATH,WorkArea.PIPS);
 
 	@ActionUnderTest
 	RestartIngestWorkflowAction action = new RestartIngestWorkflowAction();
@@ -67,10 +63,10 @@ public class RestartIngestWorkflowActionTests extends ConcreteActionUnitTest{
 	@Before
 	public void setUp() throws IOException{
 		FileUtils.copyDirectory(
-				Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK+UNDERSCORE), 
-				Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK));
+				Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK+UNDERSCORE), 
+				Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK));
 		
-		FileUtils.copyDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,UNDERSCORE+WA_PIPS), 
+		FileUtils.copyDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,UNDERSCORE+WorkArea.PIPS), 
 				pipsFolder.toFile());
 		
 		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
@@ -79,14 +75,14 @@ public class RestartIngestWorkflowActionTests extends ConcreteActionUnitTest{
 
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK));
+		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK));
 		FileUtils.deleteDirectory(pipsFolder.toFile());
 	}
 	
 	@Test
 	public void leaveOnlySIPContents() throws IOException{
 		action.implementation();
-		assertTrue(Path.makeFile(contractorFolder,o.getIdentifier(),WA_DATA,"contentLatest.txt").exists());
+		assertTrue(Path.makeFile(contractorFolder,o.getIdentifier(),WorkArea.DATA,"contentLatest.txt").exists());
 	}
 	
 	
@@ -95,13 +91,13 @@ public class RestartIngestWorkflowActionTests extends ConcreteActionUnitTest{
 	@Test
 	public void emptyPIPFolders() throws IOException{
 		action.implementation();
-		assertFalse(makePIPSourceFolder(WA_INSTITUTION).exists());
-		assertFalse(makePIPSourceFolder(WA_PUBLIC).exists());
+		assertFalse(makePIPSourceFolder(WorkArea.WA_INSTITUTION).exists());
+		assertFalse(makePIPSourceFolder(WorkArea.PUBLIC).exists());
 	}
 	
 	
 	private File makePIPSourceFolder(String pipType) {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId());
+		return Path.makeFile(n.getWorkAreaRootPath(),WorkArea.PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId());
 	}
 	
 	@Test

@@ -37,6 +37,7 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.User;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.service.HibernateUtil;
@@ -204,7 +205,7 @@ public class AcceptanceTest {
 	private static void cleanStorage(){
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getWorkAreaRootPath(),"work",C.TEST_USER_SHORT_NAME));
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME));
-		FileUtils.deleteQuietly(Path.makeFile(localNode.getGridCacheAreaRootPath(),C.WA_AIP,C.TEST_USER_SHORT_NAME));
+		FileUtils.deleteQuietly(Path.makeFile(localNode.getGridCacheAreaRootPath(),WorkArea.AIP,C.TEST_USER_SHORT_NAME));
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getWorkAreaRootPath(),"pips","institution",C.TEST_USER_SHORT_NAME));
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getWorkAreaRootPath(),"pips","public",C.TEST_USER_SHORT_NAME));
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getUserAreaRootPath(),C.TEST_USER_SHORT_NAME,"outgoing"));

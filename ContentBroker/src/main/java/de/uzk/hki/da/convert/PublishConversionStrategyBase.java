@@ -25,7 +25,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
@@ -42,7 +41,7 @@ public abstract class PublishConversionStrategyBase implements ConversionStrateg
 	/** The audiences. */
 	protected String[] audiences = new String [] {"PUBLIC", "INSTITUTION" };
 	
-	protected Path pips = new RelativePath(C.WA_DIP);
+	protected Path pips = new RelativePath(WorkArea.TMP_PIPS);
 	
 	protected Object object;
 	

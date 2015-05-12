@@ -21,7 +21,6 @@ package de.uzk.hki.da.cb;
 import static de.uzk.hki.da.core.C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION;
 import static de.uzk.hki.da.core.C.QUEUE_TO_CLIENT;
 import static de.uzk.hki.da.core.C.QUEUE_TO_SERVER;
-import static de.uzk.hki.da.core.C.WA_DATA;
 import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 
 import java.io.File;
@@ -45,6 +44,7 @@ import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.DocumentsGenService;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.util.ConfigurationException;
@@ -226,7 +226,7 @@ public class RestructureAction extends AbstractAction{
 	
 	static void revertToSIPContent(Path objectPath, Path dataPath, String repName) throws IOException {
 		final String A = "a";
-		final String DATA_TMP = WA_DATA+UNDERSCORE;
+		final String DATA_TMP = WorkArea.DATA+UNDERSCORE;
 		if (isNotSet(repName)) throw new IllegalArgumentException("rep name not set");
 		if (isNotSet(dataPath)) throw new IllegalArgumentException("data path not set");
 		if (isNotSet(objectPath)) throw new IllegalArgumentException("object path not set");
@@ -244,7 +244,7 @@ public class RestructureAction extends AbstractAction{
 	
 	static void makeRepOfSIPContent(Path objectPath, Path dataPath, String repName) throws IOException {
 		final String A = "a";
-		final String DATA_TMP = WA_DATA+UNDERSCORE;
+		final String DATA_TMP = WorkArea.DATA+UNDERSCORE;
 		if (isNotSet(repName)) throw new IllegalArgumentException("rep name not set");
 		if (isNotSet(dataPath)) throw new IllegalArgumentException("data path not set");
 		if (isNotSet(objectPath)) throw new IllegalArgumentException("object path not set");

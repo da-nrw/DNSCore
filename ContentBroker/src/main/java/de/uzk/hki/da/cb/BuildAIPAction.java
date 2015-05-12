@@ -19,14 +19,13 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.WA_DATA;
-
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.BagitUtils;
 import de.uzk.hki.da.util.Path;
 
@@ -90,12 +89,12 @@ public class BuildAIPAction extends AbstractAction {
 	 */
 	static void deleteUnnecessaryReps(Path objectPath,String repName){
 		
-		String children[] = Path.make(objectPath,WA_DATA).toFile().list();
+		String children[] = Path.make(objectPath,WorkArea.DATA).toFile().list();
 		for (int i=0;i<children.length;i++){
 			if (!children[i].contains(repName) &&
-					Path.make(objectPath,WA_DATA,children[i]).toFile().isDirectory()) {
+					Path.make(objectPath,WorkArea.DATA,children[i]).toFile().isDirectory()) {
 				try {
-					FileUtils.deleteDirectory(Path.make(objectPath,WA_DATA,children[i]).toFile());
+					FileUtils.deleteDirectory(Path.make(objectPath,WorkArea.DATA,children[i]).toFile());
 				} catch (IOException e) {
 					throw new RuntimeException("Couldn't delete folder: "+children[i]);
 				}

@@ -33,7 +33,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.User;
@@ -79,47 +78,47 @@ public class WorkAreaTests {
 	
 	@Test
 	public void pipFolder() {
-		Path rp = wa.pipFolder(WA_PUBLIC);
-		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),o.getIdentifier()),rp);
-		Path ri = wa.pipFolder(WA_INSTITUTION);
-		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WA_PIPS,WA_INSTITUTION,o.getContractor().getShort_name(),o.getIdentifier()),ri);
+		Path rp = wa.pipFolder(WorkArea.PUBLIC);
+		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WorkArea.PIPS,WorkArea.PUBLIC,o.getContractor().getShort_name(),o.getIdentifier()),rp);
+		Path ri = wa.pipFolder(WorkArea.WA_INSTITUTION);
+		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WorkArea.PIPS,WorkArea.WA_INSTITUTION,o.getContractor().getShort_name(),o.getIdentifier()),ri);
 	}
 	
 	@Test
 	public void pipSourceFolderPath() {
-		Path rp = wa.pipSourceFolderPath(WA_PUBLIC);
-		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WA_PIPS,WA_PUBLIC,
+		Path rp = wa.pipSourceFolderPath(WorkArea.PUBLIC);
+		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WorkArea.PIPS,WorkArea.PUBLIC,
 				o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId()),rp);
-		Path ri = wa.pipSourceFolderPath(WA_INSTITUTION);
-		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WA_PIPS,WA_INSTITUTION,
+		Path ri = wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION);
+		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WorkArea.PIPS,WorkArea.WA_INSTITUTION,
 				o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId()),ri);
 	}
 	
 	@Test
 	public void pipSourceFolder() {
-		File rp = wa.pipSourceFolder(WA_PUBLIC);
-		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WA_PIPS,WA_PUBLIC,
+		File rp = wa.pipSourceFolder(WorkArea.PUBLIC);
+		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WorkArea.PIPS,WorkArea.PUBLIC,
 				o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId()).toFile(),rp);
-		File ri = wa.pipSourceFolder(WA_INSTITUTION);
-		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WA_PIPS,WA_INSTITUTION,
+		File ri = wa.pipSourceFolder(WorkArea.WA_INSTITUTION);
+		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WorkArea.PIPS,WorkArea.WA_INSTITUTION,
 				o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId()).toFile(),ri);
 	}
 	
 	@Test
 	public void pipSourceFolderRelativePath() {
-		Path rp = wa.pipSourceFolderRelativePath(WA_PUBLIC);
-		assertEquals(new RelativePath(WA_PIPS,WA_PUBLIC,
+		Path rp = wa.pipSourceFolderRelativePath(WorkArea.PUBLIC);
+		assertEquals(new RelativePath(WorkArea.PIPS,WorkArea.PUBLIC,
 				o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId()),rp);
-		Path ri = wa.pipSourceFolderRelativePath(WA_INSTITUTION);
-		assertEquals(new RelativePath(WA_PIPS,WA_INSTITUTION,
+		Path ri = wa.pipSourceFolderRelativePath(WorkArea.WA_INSTITUTION);
+		assertEquals(new RelativePath(WorkArea.PIPS,WorkArea.WA_INSTITUTION,
 				o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId()),ri);
 	}
 	
 	@Test
 	public void metadataFile() {
 		final String metadataFileName = "metadata";
-		File r = wa.pipMetadataFile(WA_PUBLIC,metadataFileName);
-		assertEquals(Path.makeFile(WORK_AREA_ROOT_PATH,WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),o.getIdentifier(),metadataFileName+FILE_EXTENSION_XML),r);
+		File r = wa.pipMetadataFile(WorkArea.PUBLIC,metadataFileName);
+		assertEquals(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.PIPS,WorkArea.PUBLIC,o.getContractor().getShort_name(),o.getIdentifier(),metadataFileName+FILE_EXTENSION_XML),r);
 	}
 	
 	@Test
@@ -128,23 +127,23 @@ public class WorkAreaTests {
 		final String relativePath="sub/file.txt"; 
 		DAFile daf = new DAFile(repName,relativePath);
 		File r = wa.toFile(daf);
-		assertEquals(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,o.getContractor().getShort_name(),o.getIdentifier(),C.WA_DATA,repName,relativePath),r);
+		assertEquals(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK,o.getContractor().getShort_name(),o.getIdentifier(),WorkArea.DATA,repName,relativePath),r);
 	}
 	
 	@Test
 	public void ingestSIP() throws IOException {
 		wa.ingestSIP(Path.makeFile(WORK_AREA_ROOT_PATH,CONTAINER_NAME));
-		assertTrue(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,o.getContractor().getShort_name(),CONTAINER_NAME).exists());
+		assertTrue(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK,o.getContractor().getShort_name(),CONTAINER_NAME).exists());
 	}
 	
 	@Test
 	public void sipFile() {
-		assertEquals(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,o.getContractor().getShort_name(),o.getLatestPackage().getContainerName()),wa.sipFile());
+		assertEquals(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK,o.getContractor().getShort_name(),o.getLatestPackage().getContainerName()),wa.sipFile());
 	}
 	
 	@Test
 	public void objectPath() {
-		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WA_WORK,o.getContractor().getShort_name(),o.getIdentifier()),wa.objectPath());
+		assertEquals(Path.make(WORK_AREA_ROOT_PATH,WorkArea.WORK,o.getContractor().getShort_name(),o.getIdentifier()),wa.objectPath());
 	}
 	
 	

@@ -23,10 +23,6 @@ import static de.uzk.hki.da.cb.ArchiveReplicationCheckAction.clearNonpersistentO
 import static de.uzk.hki.da.cb.BuildAIPAction.deleteBagitFiles;
 import static de.uzk.hki.da.cb.RestructureAction.makeRepOfSIPContent;
 import static de.uzk.hki.da.cb.RestructureAction.revertToSIPContent;
-import static de.uzk.hki.da.core.C.WA_DATA;
-import static de.uzk.hki.da.core.C.WA_INSTITUTION;
-import static de.uzk.hki.da.core.C.WA_PIPS;
-import static de.uzk.hki.da.core.C.WA_PUBLIC;
 import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 
 import java.io.File;
@@ -35,6 +31,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 
 
@@ -99,7 +96,7 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	private boolean dataIsOnlySubfolderOfObject() {
 		String subfolders[] = wa.objectPath().toFile().list();
 		if (subfolders.length!=1) return false;
-		if (!subfolders[0].equals(WA_DATA)) return false;
+		if (!subfolders[0].equals(WorkArea.DATA)) return false;
 		return true;
 	}
 
@@ -114,13 +111,13 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	 */
 	private void deleteTemporaryPIPs() throws IOException {
 		
-		if (makePIPSourceFolder(WA_PUBLIC).exists())
-			FileUtils.deleteDirectory(makePIPSourceFolder(WA_PUBLIC));
-		if (makePIPSourceFolder(WA_INSTITUTION).exists())
-			FileUtils.deleteDirectory(makePIPSourceFolder(WA_INSTITUTION));
+		if (makePIPSourceFolder(WorkArea.PUBLIC).exists())
+			FileUtils.deleteDirectory(makePIPSourceFolder(WorkArea.PUBLIC));
+		if (makePIPSourceFolder(WorkArea.WA_INSTITUTION).exists())
+			FileUtils.deleteDirectory(makePIPSourceFolder(WorkArea.WA_INSTITUTION));
 	}
 	
 	private File makePIPSourceFolder(String pipType) {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId());
+		return Path.makeFile(n.getWorkAreaRootPath(),WorkArea.PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId());
 	}
 }

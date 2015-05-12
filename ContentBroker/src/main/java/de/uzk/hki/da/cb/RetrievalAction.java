@@ -22,8 +22,6 @@
 package de.uzk.hki.da.cb;
 
 import static de.uzk.hki.da.core.C.FILE_EXTENSION_TAR;
-import static de.uzk.hki.da.core.C.WA_DATA;
-import static de.uzk.hki.da.core.C.WA_WORK;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +36,7 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.pkg.BagitUtils;
@@ -126,7 +125,7 @@ public class RetrievalAction extends AbstractAction {
 
 			for (DAFile f:p.getFiles()){
 			
-				File destDir = Path.makeFile(tempFolder,WA_DATA,f.getRep_name(),FilenameUtils.getPath(f.getRelative_path()));
+				File destDir = Path.makeFile(tempFolder,WorkArea.DATA,f.getRep_name(),FilenameUtils.getPath(f.getRelative_path()));
 				destDir.mkdirs();
 				FileUtils.copyFileToDirectory(wa.toFile(f), destDir);
 			}
@@ -157,7 +156,7 @@ public class RetrievalAction extends AbstractAction {
 
 
 	private void moveNewestPremisToDIP(Path tempFolder) throws IOException {
-		File dest = Path.makeFile(tempFolder,WA_DATA,PREMIS_XML);
+		File dest = Path.makeFile(tempFolder,WorkArea.DATA,PREMIS_XML);
 		FileUtils.copyFile(wa.toFile(o.getLatest(PREMIS_XML)), dest);
 	}
 
@@ -165,7 +164,7 @@ public class RetrievalAction extends AbstractAction {
 
 
 	private Path createTmpFolder(){
-		Path tmpFolder = Path.make(n.getWorkAreaRootPath(),WA_WORK,
+		Path tmpFolder = Path.make(n.getWorkAreaRootPath(),WorkArea.WORK,
 				o.getContractor().getShort_name(), o.getIdentifier(), o.getIdentifier()); 
 		tmpFolder.toFile().mkdir();
 		return tmpFolder;
@@ -215,7 +214,7 @@ public class RetrievalAction extends AbstractAction {
 		{
 			if (wa.toFile(f).getName().equals(PREMIS_XML)) continue;
 				
-			File dest = Path.makeFile(tempFolder,WA_DATA,f.getRelative_path());
+			File dest = Path.makeFile(tempFolder,WorkArea.DATA,f.getRelative_path());
 			logger.info("file will be part of pip: "+dest.getAbsolutePath());
 			String destFolder = dest.getAbsolutePath().substring(0, dest.getAbsolutePath().lastIndexOf("/"));
 

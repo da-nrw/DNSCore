@@ -21,10 +21,6 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.WA_INSTITUTION;
-import static de.uzk.hki.da.core.C.WA_PIPS;
-import static de.uzk.hki.da.core.C.WA_PUBLIC;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,6 +30,7 @@ import org.apache.commons.io.FileUtils;
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
 
@@ -70,30 +67,30 @@ public class FetchPIPsAction extends AbstractAction {
 		
 //		TODO check if source exists
 		distributedConversionAdapter.replicateToLocalNode(
-				makeRelativePIPSourceFolder(WA_PUBLIC).toString());
+				makeRelativePIPSourceFolder(WorkArea.PUBLIC).toString());
 		distributedConversionAdapter.replicateToLocalNode(
-				makeRelativePIPSourceFolder(WA_INSTITUTION).toString());
+				makeRelativePIPSourceFolder(WorkArea.WA_INSTITUTION).toString());
 		
 		
-		if (makePIPSourceFolder(WA_PUBLIC).exists()) {
-			logger.info(INFO_MSG_REPLICATED_SUCESSFULLY+makePIPSourceFolder(WA_PUBLIC));
+		if (makePIPSourceFolder(WorkArea.PUBLIC).exists()) {
+			logger.info(INFO_MSG_REPLICATED_SUCESSFULLY+makePIPSourceFolder(WorkArea.PUBLIC));
 
 //          The rename is necessary because at the moment we donl't have another possibility to delete or trim the irods
 //          collections on specific resources.
 			FileUtils.moveDirectory(
-					makePIPSourceFolder(WA_PUBLIC), 
-					makePIPFolder(WA_PUBLIC));
+					makePIPSourceFolder(WorkArea.PUBLIC), 
+					makePIPFolder(WorkArea.PUBLIC));
 		}
-		if (makePIPSourceFolder(WA_INSTITUTION).exists()) {
-			logger.info(INFO_MSG_REPLICATED_SUCESSFULLY+makePIPSourceFolder(WA_INSTITUTION));
+		if (makePIPSourceFolder(WorkArea.WA_INSTITUTION).exists()) {
+			logger.info(INFO_MSG_REPLICATED_SUCESSFULLY+makePIPSourceFolder(WorkArea.WA_INSTITUTION));
 			
 			FileUtils.moveDirectory(
-					makePIPSourceFolder(WA_INSTITUTION), 
-					makePIPFolder(WA_INSTITUTION));
+					makePIPSourceFolder(WorkArea.WA_INSTITUTION), 
+					makePIPFolder(WorkArea.WA_INSTITUTION));
 		}
 		
-		distributedConversionAdapter.remove(makeRelativePIPSourceFolder(WA_PUBLIC).toString());
-		distributedConversionAdapter.remove(makeRelativePIPSourceFolder(WA_INSTITUTION).toString());
+		distributedConversionAdapter.remove(makeRelativePIPSourceFolder(WorkArea.PUBLIC).toString());
+		distributedConversionAdapter.remove(makeRelativePIPSourceFolder(WorkArea.WA_INSTITUTION).toString());
 
 		return true;
 	}
@@ -101,43 +98,43 @@ public class FetchPIPsAction extends AbstractAction {
 	@Override
 	public void rollback() throws Exception {
 		
-		if (makePIPFolder(WA_PUBLIC).exists()) {
-			logger.info(INFO_MSG_MOVED_BACK_PIP+makePIPSourceFolder(WA_PUBLIC));
+		if (makePIPFolder(WorkArea.PUBLIC).exists()) {
+			logger.info(INFO_MSG_MOVED_BACK_PIP+makePIPSourceFolder(WorkArea.PUBLIC));
 
 			FileUtils.moveDirectory(
-					makePIPFolder(WA_PUBLIC), 
-					makePIPSourceFolder(WA_PUBLIC)); // we know that this is possible to write to this location since we cleared it at beginning of implementation() 
+					makePIPFolder(WorkArea.PUBLIC), 
+					makePIPSourceFolder(WorkArea.PUBLIC)); // we know that this is possible to write to this location since we cleared it at beginning of implementation() 
 		}
-		if (makePIPFolder(WA_INSTITUTION).exists()) {
-			logger.info(INFO_MSG_MOVED_BACK_PIP+makePIPSourceFolder(WA_INSTITUTION));
+		if (makePIPFolder(WorkArea.WA_INSTITUTION).exists()) {
+			logger.info(INFO_MSG_MOVED_BACK_PIP+makePIPSourceFolder(WorkArea.WA_INSTITUTION));
 			
 			FileUtils.moveDirectory(
-					makePIPFolder(WA_INSTITUTION), 
-					makePIPSourceFolder(WA_INSTITUTION));
+					makePIPFolder(WorkArea.WA_INSTITUTION), 
+					makePIPSourceFolder(WorkArea.WA_INSTITUTION));
 		}
 	}
 
 	private File makePIPFolder(String pipType) {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier());
+		return Path.makeFile(n.getWorkAreaRootPath(),WorkArea.PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier());
 	}
 	
 	private File makePIPSourceFolder(String pipType) {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId());
+		return Path.makeFile(n.getWorkAreaRootPath(),WorkArea.PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId());
 	}
 	
 	private File makeRelativePIPSourceFolder(String pipType) {
-		return Path.makeFile(WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId());
+		return Path.makeFile(WorkArea.PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier()+UNDERSCORE+o.getLatestPackage().getId());
 	}
 	
 
 
 	private void deletePreviousPIPs() throws IOException{	
 		
-		if (makePIPFolder(WA_PUBLIC).exists());
-			FileUtils.deleteDirectory(makePIPFolder(WA_PUBLIC));
+		if (makePIPFolder(WorkArea.PUBLIC).exists());
+			FileUtils.deleteDirectory(makePIPFolder(WorkArea.PUBLIC));
 		
-		if (makePIPFolder(WA_INSTITUTION).exists())
-			FileUtils.deleteDirectory(makePIPFolder(WA_INSTITUTION));
+		if (makePIPFolder(WorkArea.WA_INSTITUTION).exists())
+			FileUtils.deleteDirectory(makePIPFolder(WorkArea.WA_INSTITUTION));
 	}
 
 

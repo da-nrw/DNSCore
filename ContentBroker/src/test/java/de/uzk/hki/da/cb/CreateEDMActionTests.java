@@ -24,8 +24,6 @@ import static de.uzk.hki.da.core.C.CB_PACKAGETYPE_EAD;
 import static de.uzk.hki.da.core.C.CB_PACKAGETYPE_METS;
 import static de.uzk.hki.da.core.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
 import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
-import static de.uzk.hki.da.core.C.WA_PIPS;
-import static de.uzk.hki.da.core.C.WA_PUBLIC;
 import static de.uzk.hki.da.test.TC.TEST_ROOT_CB;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -77,12 +75,12 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 		action.setEdmMappings(edmMappings);
 		action.setRepositoryFacade(mock(Fedora3RepositoryFacade.class));
 		
-		FileUtils.copyDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,"_"+WA_PIPS),Path.makeFile(WORK_AREA_ROOT_PATH,WA_PIPS));
+		FileUtils.copyDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,"_"+WorkArea.PIPS),Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.PIPS));
 		
 	}
 	
 	public File makeMetadataFile(String fileName) {
-		return Path.makeFile(WORK_AREA_ROOT_PATH,WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),
+		return Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.PIPS,WorkArea.PUBLIC,o.getContractor().getShort_name(),
 				o.getIdentifier(),fileName+FILE_EXTENSION_XML);
 	}
 	
@@ -90,7 +88,7 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 	
 	@After
 	public void tearDown() {
-		FileUtils.deleteQuietly(Path.makeFile(WORK_AREA_ROOT_PATH,WA_PIPS));
+		FileUtils.deleteQuietly(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.PIPS));
 	}
 	
 	@Test

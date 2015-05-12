@@ -32,8 +32,10 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 
 /**
@@ -58,8 +60,8 @@ public class DeleteObjectActionTests extends ConcreteActionUnitTest{
 	
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,"TEST/identifier/data"));
-		Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,"TEST/abc.txt").delete();
+		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK,"TEST/identifier/data"));
+		Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK,"TEST/abc.txt").delete();
 		Path.makeFile(INGEST_AREA_ROOT_PATH,"TEST/abc.txt").delete();
 	}
 	
@@ -68,8 +70,8 @@ public class DeleteObjectActionTests extends ConcreteActionUnitTest{
 		o.getLatestPackage().setContainerName("abc.txt");
 		action.implementation();
 		
-		assertFalse(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,"TEST/identifier/").exists());
-		assertFalse(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK,"TEST/abc.txt").exists());
+		assertFalse(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK,"TEST/identifier/").exists());
+		assertFalse(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK,"TEST/abc.txt").exists());
 		assertFalse(new File(INGEST_AREA_ROOT_PATH+"TEST/abc.txt").exists());
 	}
 	

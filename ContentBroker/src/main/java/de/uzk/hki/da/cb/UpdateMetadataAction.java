@@ -53,6 +53,7 @@ import de.uzk.hki.da.metadata.XmpCollector;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.FileIdGenerator;
 import de.uzk.hki.da.util.Path;
@@ -428,7 +429,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			// rename metadatafile for presentation
 			
 			logger.debug("metadataFileName="+metadataFileName);
-			if (repName.startsWith(C.WA_DIP)) {
+			if (repName.startsWith(WorkArea.TMP_PIPS)) {
 				metadataFileName = packageType + ".xml";
 				logger.debug("metadataFileName="+metadataFileName);
 				//+ extension;
@@ -684,7 +685,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					FileUtils.deleteQuietly(wa.toFile(repName, metsRelPath));
 				}
 			}
-			if (repName.startsWith(C.WA_DIP)) {
+			if (repName.startsWith(WorkArea.TMP_PIPS)) {
 				metadataFileName = packageType + ".xml";
 			}
 			FileUtils.deleteQuietly(Path.makeFile(wa.dataPath(), repName, metadataFileName));

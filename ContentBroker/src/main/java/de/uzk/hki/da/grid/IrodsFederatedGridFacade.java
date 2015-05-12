@@ -31,9 +31,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.model.WorkArea;
 
 
 
@@ -53,7 +53,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	public boolean put(File file, String address_dest , StoragePolicy sp) throws IOException {
 		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
 		if (!address_dest.startsWith("/")) address_dest = "/" + address_dest;
-		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + address_dest;
+		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + address_dest;
 		String destCollection = FilenameUtils.getFullPath(gridPath);
 		
 		if (!iclc.exists(destCollection)) {
@@ -80,7 +80,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		}
 		irodsSystemConnector.connect();
 		
-		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + "/" + gridPath2;
+		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + "/" + gridPath2;
 		
 		String number = irodsSystemConnector.executeRule("checkNumber { \n " +
 				"*numberOfCopies=0;\n" +
@@ -111,7 +111,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	// deprecated !!!
 	@Override
 	public boolean isValid(String gridPath) {
-	String address_dest = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + "/" + gridPath;
+	String address_dest = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + "/" + gridPath;
 		logger.debug("checking validity of " + address_dest);
 		try {
 	irodsSystemConnector.connect();	
@@ -139,7 +139,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	@Override
 	public void distribute(Node node, File fileToDistribute, String address_dest, StoragePolicy sp) {
 		if (!address_dest.startsWith("/")) address_dest = "/" + address_dest;
-		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + address_dest;	
+		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + address_dest;	
 		
 		for (Node cn: node.getCooperatingNodes()) {
 				CreateCopyJob cj = new CreateCopyJob();

@@ -43,6 +43,7 @@ import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
@@ -63,7 +64,7 @@ public class CreateDCActionTests extends ConcreteActionUnitTest{
 	@Before
 	public void setUp() throws IOException {
 		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
-		FileUtils.copyDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,UNDERSCORE+WA_PIPS), Path.makeFile(WORK_AREA_ROOT_PATH,WA_PIPS));
+		FileUtils.copyDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,UNDERSCORE+WorkArea.PIPS), Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.PIPS));
 		
 		o.setPackage_type(CB_PACKAGETYPE_EAD);
 		Map<String, String> dcMappings = new HashMap<String,String>();
@@ -73,7 +74,7 @@ public class CreateDCActionTests extends ConcreteActionUnitTest{
 	
 	@After 
 	public void tearDown() throws IOException {
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WA_PIPS));
+		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.PIPS));
 	}
 	
 	
@@ -83,40 +84,40 @@ public class CreateDCActionTests extends ConcreteActionUnitTest{
 		
 		action.implementation();
 		
-		assertTrue(makeMetadataFile(WA_PUBLIC,C.METADATA_STREAM_ID_DC).exists());
-		assertTrue(makeMetadataFile(WA_INSTITUTION,C.METADATA_STREAM_ID_DC).exists());
+		assertTrue(makeMetadataFile(WorkArea.PUBLIC,C.METADATA_STREAM_ID_DC).exists());
+		assertTrue(makeMetadataFile(WorkArea.WA_INSTITUTION,C.METADATA_STREAM_ID_DC).exists());
 	}
 	
 	@Test
 	public void createPublicDC() throws IOException, UserException, RepositoryException, JDOMException, ParserConfigurationException, SAXException, SubsystemNotAvailableException {
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WA_PIPS,WA_INSTITUTION));
+		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.PIPS,WorkArea.WA_INSTITUTION));
 	
 		action.implementation();
 		
-		assertTrue(makeMetadataFile(WA_PUBLIC,C.METADATA_STREAM_ID_DC).exists());
-		assertFalse(makeMetadataFile(WA_INSTITUTION,C.METADATA_STREAM_ID_DC).exists());
+		assertTrue(makeMetadataFile(WorkArea.PUBLIC,C.METADATA_STREAM_ID_DC).exists());
+		assertFalse(makeMetadataFile(WorkArea.WA_INSTITUTION,C.METADATA_STREAM_ID_DC).exists());
 		
 	}
 	
 	@Test
 	public void createInsitutionDC() throws FileNotFoundException, UserException, IOException, RepositoryException, JDOMException, ParserConfigurationException, SAXException, SubsystemNotAvailableException {
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WA_PIPS,WA_PUBLIC));
+		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.PIPS,WorkArea.PUBLIC));
 		
 		action.implementation();
 		
-		assertFalse(makeMetadataFile(WA_PUBLIC,C.METADATA_STREAM_ID_DC).exists());
-		assertTrue(makeMetadataFile(WA_INSTITUTION,C.METADATA_STREAM_ID_DC).exists());
+		assertFalse(makeMetadataFile(WorkArea.PUBLIC,C.METADATA_STREAM_ID_DC).exists());
+		assertTrue(makeMetadataFile(WorkArea.WA_INSTITUTION,C.METADATA_STREAM_ID_DC).exists());
 	}
 	
 	@Test
 	public void createNoDC() throws IOException, UserException, RepositoryException, JDOMException, ParserConfigurationException, SAXException, SubsystemNotAvailableException {
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH, WA_PIPS,WA_PUBLIC));
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH, WA_PIPS,WA_INSTITUTION));
+		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH, WorkArea.PIPS,WorkArea.PUBLIC));
+		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH, WorkArea.PIPS,WorkArea.WA_INSTITUTION));
 
 		action.implementation();
 
-		assertFalse(makeMetadataFile(WA_PUBLIC,C.METADATA_STREAM_ID_DC).exists());
-		assertFalse(makeMetadataFile(WA_INSTITUTION,C.METADATA_STREAM_ID_DC).exists());
+		assertFalse(makeMetadataFile(WorkArea.PUBLIC,C.METADATA_STREAM_ID_DC).exists());
+		assertFalse(makeMetadataFile(WorkArea.WA_INSTITUTION,C.METADATA_STREAM_ID_DC).exists());
 	}
 	
 	
@@ -124,8 +125,8 @@ public class CreateDCActionTests extends ConcreteActionUnitTest{
 	public void noPackageType() throws FileNotFoundException, UserException, IOException, RepositoryException, JDOMException, ParserConfigurationException, SAXException, SubsystemNotAvailableException {
 		o.setPackage_type(null);
 		action.implementation();
-		assertFalse(makeMetadataFile(WA_PUBLIC,C.METADATA_STREAM_ID_DC).exists());
-		assertFalse(makeMetadataFile(WA_INSTITUTION,C.METADATA_STREAM_ID_DC).exists());
+		assertFalse(makeMetadataFile(WorkArea.PUBLIC,C.METADATA_STREAM_ID_DC).exists());
+		assertFalse(makeMetadataFile(WorkArea.WA_INSTITUTION,C.METADATA_STREAM_ID_DC).exists());
 	}
 	
 	@Test
@@ -154,7 +155,7 @@ public class CreateDCActionTests extends ConcreteActionUnitTest{
 
 	@Test
 	public void packageTypeSetButPublicMetadataFileNotExistent() {
-		makeMetadataFile(WA_PUBLIC, CB_PACKAGETYPE_EAD).delete();
+		makeMetadataFile(WorkArea.PUBLIC, CB_PACKAGETYPE_EAD).delete();
 		try {
 			action.checkPreconditions();
 			fail();
@@ -163,7 +164,7 @@ public class CreateDCActionTests extends ConcreteActionUnitTest{
 	
 	@Test
 	public void packageTypeSetButInstitutionMetadataFileNotExistent() {
-		makeMetadataFile(WA_INSTITUTION, CB_PACKAGETYPE_EAD).delete();
+		makeMetadataFile(WorkArea.WA_INSTITUTION, CB_PACKAGETYPE_EAD).delete();
 		try {
 			action.checkPreconditions();
 			fail();
@@ -175,7 +176,7 @@ public class CreateDCActionTests extends ConcreteActionUnitTest{
 	public void writeEAD() throws FileNotFoundException, UserException, IOException, RepositoryException, JDOMException, ParserConfigurationException, SAXException, SubsystemNotAvailableException {
 		action.implementation(); 
 		
-		FileInputStream in = new FileInputStream(makeMetadataFile(WA_PUBLIC, METADATA_STREAM_ID_DC ));
+		FileInputStream in = new FileInputStream(makeMetadataFile(WorkArea.PUBLIC, METADATA_STREAM_ID_DC ));
 		String dcContent = IOUtils.toString(in, ENCODING_UTF_8);
 		
 		assertTrue(dcContent.contains(
@@ -198,15 +199,15 @@ public class CreateDCActionTests extends ConcreteActionUnitTest{
 		action.implementation();
 		action.rollback();
 		
-		assertFalse(makeMetadataFile(WA_PUBLIC,C.METADATA_STREAM_ID_DC).exists());
-		assertFalse(makeMetadataFile(WA_INSTITUTION,C.METADATA_STREAM_ID_DC).exists());
+		assertFalse(makeMetadataFile(WorkArea.PUBLIC,C.METADATA_STREAM_ID_DC).exists());
+		assertFalse(makeMetadataFile(WorkArea.WA_INSTITUTION,C.METADATA_STREAM_ID_DC).exists());
 	}
 	
 	
 	
 	private File makeMetadataFile(String pipType,String fileName) {
 		return Path.makeFile(
-				n.getWorkAreaRootPath(),WA_PIPS,pipType,
+				n.getWorkAreaRootPath(),WorkArea.PIPS,pipType,
 				o.getContractor().getShort_name(),o.getIdentifier(),fileName+FILE_EXTENSION_XML);
 	}
 }

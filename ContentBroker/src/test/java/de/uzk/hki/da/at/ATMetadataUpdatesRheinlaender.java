@@ -39,6 +39,7 @@ import org.junit.Test;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.Path;
 
@@ -70,7 +71,7 @@ public class ATMetadataUpdatesRheinlaender extends AcceptanceTest{
 		ath.putSIPtoIngestArea(origName,"tgz",origName);
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(origName);
-		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
+		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
 	@Test

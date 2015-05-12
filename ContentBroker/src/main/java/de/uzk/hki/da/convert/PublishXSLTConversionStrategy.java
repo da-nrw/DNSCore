@@ -43,7 +43,6 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -101,11 +100,11 @@ public class PublishXSLTConversionStrategy implements ConversionStrategy {
 			targetFileName += "_" + ci.getConversion_routine().getName();
 		
 		List<Event> results = new ArrayList<Event>();
-		DAFile publFile = new DAFile(C.WA_DIP+"/public",ci.getTarget_folder() + "/" + targetFileName + ".xml");
-		DAFile instFile = new DAFile(C.WA_DIP+"/institution",ci.getTarget_folder() + "/" + targetFileName + ".xml");
+		DAFile publFile = new DAFile(WorkArea.TMP_PIPS+"/public",ci.getTarget_folder() + "/" + targetFileName + ".xml");
+		DAFile instFile = new DAFile(WorkArea.TMP_PIPS+"/institution",ci.getTarget_folder() + "/" + targetFileName + ".xml");
 
-		new File(wa.dataPath()+"/"+C.WA_DIP+"/public/"+ci.getTarget_folder()).mkdirs();
-		new File(wa.dataPath()+"/"+C.WA_DIP+"/institution/"+ci.getTarget_folder()).mkdirs();
+		new File(wa.dataPath()+"/"+WorkArea.TMP_PIPS+"/public/"+ci.getTarget_folder()).mkdirs();
+		new File(wa.dataPath()+"/"+WorkArea.TMP_PIPS+"/institution/"+ci.getTarget_folder()).mkdirs();
 
 		logger.debug("Will transform {} to {}", ci.getSource_file(), publFile);
 		logger.debug("Will transform {} to {}", ci.getSource_file(), instFile);

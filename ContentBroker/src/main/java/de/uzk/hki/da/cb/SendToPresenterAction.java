@@ -26,9 +26,6 @@ import static de.uzk.hki.da.core.C.OAI_DANRW_DE;
 import static de.uzk.hki.da.core.C.OWL_SAMEAS;
 import static de.uzk.hki.da.core.C.PUBLISHEDFLAG_INSTITUTION;
 import static de.uzk.hki.da.core.C.PUBLISHEDFLAG_PUBLIC;
-import static de.uzk.hki.da.core.C.WA_DIP;
-import static de.uzk.hki.da.core.C.WA_INSTITUTION;
-import static de.uzk.hki.da.core.C.WA_PUBLIC;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -46,6 +43,7 @@ import de.uzk.hki.da.metadata.XepicurWriter;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.repository.MetadataIndexException;
 import de.uzk.hki.da.repository.RepositoryException;
@@ -139,16 +137,16 @@ public class SendToPresenterAction extends AbstractAction {
 		boolean institutionPIPSuccessfullyIngested = false;
 		try {
 			
-			if (wa.pipFolder(WA_PUBLIC).toFile().exists()) {
+			if (wa.pipFolder(WorkArea.PUBLIC).toFile().exists()) {
 				publishPackage(
-					WA_PUBLIC,true,preservationSystem.getOpenCollectionName());
+					WorkArea.PUBLIC,true,preservationSystem.getOpenCollectionName());
 				publicPIPSuccessfullyIngested=true;
 				logger.debug("publ pip ingested");
 			}
 			
-			if (wa.pipFolder(WA_INSTITUTION).toFile().exists()) { 
+			if (wa.pipFolder(WorkArea.WA_INSTITUTION).toFile().exists()) { 
 				publishPackage(
-					WA_INSTITUTION,false,preservationSystem.getClosedCollectionName());
+					WorkArea.WA_INSTITUTION,false,preservationSystem.getClosedCollectionName());
 				institutionPIPSuccessfullyIngested = true;
 				logger.debug("inst pip ingested");
 			}
@@ -176,8 +174,8 @@ public class SendToPresenterAction extends AbstractAction {
 
 	private void deleteXepicur() {
 		
-		wa.pipMetadataFile(WA_INSTITUTION,METADATA_STREAM_ID_EPICUR).delete();
-		wa.pipMetadataFile(WA_PUBLIC,METADATA_STREAM_ID_EPICUR).delete();
+		wa.pipMetadataFile(WorkArea.WA_INSTITUTION,METADATA_STREAM_ID_EPICUR).delete();
+		wa.pipMetadataFile(WorkArea.PUBLIC,METADATA_STREAM_ID_EPICUR).delete();
 	}
 	
 	
@@ -271,7 +269,7 @@ public class SendToPresenterAction extends AbstractAction {
 		for (Event e:o.getLatestPackage().getEvents()) {			
 			if (!EVENT_TYPE_CONVERT.equals(e.getType())) continue;
 			DAFile targetFile = e.getTarget_file();
-			if (!targetFile.getRep_name().startsWith(WA_DIP)) continue;			
+			if (!targetFile.getRep_name().startsWith(WorkArea.TMP_PIPS)) continue;			
 			DAFile sourceFile = e.getSource_file();
 			labelMap.put(targetFile.getRelative_path(), sourceFile.getRelative_path());			
 		}

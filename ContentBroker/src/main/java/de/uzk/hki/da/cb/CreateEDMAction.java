@@ -22,7 +22,6 @@ package de.uzk.hki.da.cb;
 import static de.uzk.hki.da.core.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
 import static de.uzk.hki.da.core.C.EDM_XSLT_METADATA_STREAM_ID;
 import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
-import static de.uzk.hki.da.core.C.WA_PUBLIC;
 import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 
 import java.io.File;
@@ -51,6 +50,7 @@ import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;
 import de.uzk.hki.da.metadata.XsltGenerator;
 import de.uzk.hki.da.model.Document;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
@@ -103,7 +103,7 @@ public class CreateEDMAction extends AbstractAction {
 			throw new FileNotFoundException("Missing file: "+xsltTransformationFile);
 
 		
-		File metadataSourceFile = getWa().pipMetadataFile(WA_PUBLIC,o.getPackage_type());
+		File metadataSourceFile = getWa().pipMetadataFile(WorkArea.PUBLIC,o.getPackage_type());
 		if (!metadataSourceFile.exists())
 			throw new RuntimeException("Missing file in public PIP: "+o.getPackage_type()+FILE_EXTENSION_XML);
 
@@ -119,9 +119,9 @@ public class CreateEDMAction extends AbstractAction {
 	
 	private File generateEdmUsingXslt(String xsltTransformationFile,File metadataSourceFile, String edmId) throws IOException {
 		
-		File edm = getWa().pipMetadataFile(WA_PUBLIC, edmId);
+		File edm = getWa().pipMetadataFile(WorkArea.PUBLIC, edmId);
 		PrintWriter out = null;
-		FileInputStream fis = new FileInputStream(Path.makeFile(wa.pipFolder(WA_PUBLIC),metadataSourceFile.getPath()));
+		FileInputStream fis = new FileInputStream(Path.makeFile(wa.pipFolder(WorkArea.PUBLIC),metadataSourceFile.getPath()));
 		String edmResult = generateEDM(o.getIdentifier(), xsltTransformationFile, fis);
 		try {
 			out = new PrintWriter(edm);
@@ -142,15 +142,15 @@ public class CreateEDMAction extends AbstractAction {
 		
 		try {
 			if(packageType.equals("EAD") || packageType.equals("METS") || packageType.equals("LIDO")) {
-				edm = getWa().pipMetadataFile(WA_PUBLIC,EDM_FOR_ES_INDEX_METADATA_STREAM_ID);
+				edm = getWa().pipMetadataFile(WorkArea.PUBLIC,EDM_FOR_ES_INDEX_METADATA_STREAM_ID);
 				List<Document> documents = o.getDocuments();
 				
 				if(packageType.equals("EAD")) {
-					ms = new EadMetsMetadataStructure(wa.pipFolder(WA_PUBLIC),metadataFile, documents);
+					ms = new EadMetsMetadataStructure(wa.pipFolder(WorkArea.PUBLIC),metadataFile, documents);
 				} else if(packageType.equals("METS")) {
-					ms = new MetsMetadataStructure(wa.pipFolder(WA_PUBLIC),metadataFile, documents);
+					ms = new MetsMetadataStructure(wa.pipFolder(WorkArea.PUBLIC),metadataFile, documents);
 				} else if(packageType.equals("LIDO")) {
-					ms = new LidoMetadataStructure(wa.pipFolder(WA_PUBLIC),metadataFile, documents);
+					ms = new LidoMetadataStructure(wa.pipFolder(WorkArea.PUBLIC),metadataFile, documents);
 				}
 				ms.toEDM(ms.getIndexInfo(o.getIdentifier()), edm, preservationSystem, o.getIdentifier(), o.getUrn());
 			} else if(packageType.equals("XMP")) {

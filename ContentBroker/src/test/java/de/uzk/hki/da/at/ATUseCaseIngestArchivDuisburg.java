@@ -19,6 +19,7 @@ import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.metadata.MetadataHelper;
 import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.Path;
 
 public class ATUseCaseIngestArchivDuisburg extends AcceptanceTest{
@@ -36,7 +37,7 @@ public class ATUseCaseIngestArchivDuisburg extends AcceptanceTest{
 		ath.waitForDefinedPublishedState(origName);
 		object=ath.getObject(origName);
 		
-		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),C.WA_PIPS, C.WA_PUBLIC, C.TEST_USER_SHORT_NAME);
+		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
 	

@@ -121,9 +121,9 @@ public class Object {
 	private String metadata_file;
 
 	@Transient
-	private String DIP_PUBLIC_REPNAME = C.WA_DIP+"/public";
+	private String DIP_PUBLIC_REPNAME = WorkArea.TMP_PIPS+"/public";
 	@Transient
-	private String DIP_INSTITUTION_REPNAME = C.WA_DIP+"/institution";
+	private String DIP_INSTITUTION_REPNAME = WorkArea.TMP_PIPS+"/institution";
 	
 	/** The published_flag. */
 	private int published_flag=C.PUBLISHEDFLAG_UNDEFINED;

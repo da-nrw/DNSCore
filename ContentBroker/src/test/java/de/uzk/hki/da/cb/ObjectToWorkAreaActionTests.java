@@ -33,6 +33,7 @@ import static de.uzk.hki.da.core.C.*;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.FakeGridFacade;
 import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
@@ -65,12 +66,12 @@ public class ObjectToWorkAreaActionTests extends ConcreteActionUnitTest{
 		ig = mock(IngestGate.class);
 		action.setIngestGate(ig);
 		when(ig.canHandle((Long)anyObject())).thenReturn(true);
-		FileUtils.copyDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK+UNDERSCORE), Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK));
+		FileUtils.copyDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK+UNDERSCORE), Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK));
 	}
 	
 	@After
 	public void tearDown() throws IOException {
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WA_WORK));
+		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK));
 	}
 	
 	

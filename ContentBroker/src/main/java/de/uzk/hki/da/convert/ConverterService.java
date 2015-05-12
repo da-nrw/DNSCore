@@ -30,7 +30,6 @@ import org.apache.commons.io.FileSystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
@@ -70,7 +69,7 @@ public class ConverterService {
 		List<Event> results = new ArrayList<Event>();
 		
 		// to register the pip subfolder into irods, it must exist (even if it is empty).
-		Path.make(wa.dataPath(),C.WA_DIP).toFile().mkdir();
+		Path.make(wa.dataPath(),WorkArea.TMP_PIPS).toFile().mkdir();
 		Path.makeFile(wa.dataPath(),object.getNameOfLatestBRep()).mkdir();
 		
 		for (ConversionInstruction ci:conversionInstructions){

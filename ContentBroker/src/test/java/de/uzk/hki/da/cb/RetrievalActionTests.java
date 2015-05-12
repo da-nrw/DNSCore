@@ -37,6 +37,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
@@ -96,7 +97,7 @@ public class RetrievalActionTests extends ConcreteActionUnitTest{
 	 */
 	@After
 	public void tearDown () throws IOException {
-		FileUtils.deleteDirectory(Path.makeFile(workAreaRootPath,C.WA_WORK,o.getContractor().getShort_name(),TC.IDENTIFIER));
+		FileUtils.deleteDirectory(Path.makeFile(workAreaRootPath,WorkArea.WORK,o.getContractor().getShort_name(),TC.IDENTIFIER));
 		FileUtils.deleteDirectory(Path.makeFile(outgoingFolder,TC.IDENTIFIER));
 		Path.makeFile(outgoingFolder,TC.IDENTIFIER+C.FILE_EXTENSION_TAR).delete();
 		FileUtils.deleteDirectory(userAreaRootPath.toFile());
@@ -170,7 +171,7 @@ public class RetrievalActionTests extends ConcreteActionUnitTest{
 	public void testCleanup() throws IOException{
 		action.implementation();
 		
-		assertFalse(Path.makeFile(workAreaRootPath,C.WA_WORK,o.getContractor().getShort_name(),TC.IDENTIFIER).exists());
+		assertFalse(Path.makeFile(workAreaRootPath,WorkArea.WORK,o.getContractor().getShort_name(),TC.IDENTIFIER).exists());
 	}
 	
 

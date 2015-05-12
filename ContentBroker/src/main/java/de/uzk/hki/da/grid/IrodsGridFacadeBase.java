@@ -27,8 +27,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.MD5Checksum;
 
 
@@ -72,8 +72,8 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 		String address_dest = relative_address_dest;
 		if (!relative_address_dest.startsWith("/")) 
 			address_dest = "/" + relative_address_dest;
-		String targetPhysically = sp.getGridCacheAreaRootPath() + "/" + C.WA_AIP + address_dest;
-		String targetAbsoluteLogicalPath  = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + address_dest;	
+		String targetPhysically = sp.getGridCacheAreaRootPath() + "/" + WorkArea.AIP + address_dest;
+		String targetAbsoluteLogicalPath  = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + address_dest;	
 		
 		File gridfile = new File (targetPhysically); 	
 		
@@ -173,7 +173,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	@Override
 	public boolean isValid(String address_dest) {
 
-		address_dest = "/" + irodsSystemConnector.getZone() + "/" + C.WA_AIP + "/" + address_dest;
+		address_dest = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + "/" + address_dest;
 		
 		irodsSystemConnector.connect();
 		
@@ -219,7 +219,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	@Override
 	public void get(File destination, String gridFileAdress) throws IOException  { 
 		
-		String prefixedGridFileAdress = "/" + irodsSystemConnector.getZone()+ "/" + C.WA_AIP + "/" + gridFileAdress;
+		String prefixedGridFileAdress = "/" + irodsSystemConnector.getZone()+ "/" + WorkArea.AIP + "/" + gridFileAdress;
 		
 		irodsSystemConnector.connect();
 		
@@ -250,7 +250,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	public long getFileSize(String address_dest) throws IOException {
 		irodsSystemConnector.connect();
 		
-		long filesize = irodsSystemConnector.getFileSize("/" + irodsSystemConnector.getZone()+ "/" + C.WA_AIP + "/" + address_dest);
+		long filesize = irodsSystemConnector.getFileSize("/" + irodsSystemConnector.getZone()+ "/" + WorkArea.AIP + "/" + address_dest);
 		
 		irodsSystemConnector.logoff();
 		return filesize;

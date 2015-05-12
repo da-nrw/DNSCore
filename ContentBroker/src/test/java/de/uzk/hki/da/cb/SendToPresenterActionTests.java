@@ -22,8 +22,6 @@ package de.uzk.hki.da.cb;
 import static de.uzk.hki.da.core.C.CB_PACKAGETYPE_EAD;
 import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
 import static de.uzk.hki.da.core.C.METADATA_STREAM_ID_EPICUR;
-import static de.uzk.hki.da.core.C.WA_PIPS;
-import static de.uzk.hki.da.core.C.WA_PUBLIC;
 import static de.uzk.hki.da.test.TC.TEST_ROOT_CB;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
@@ -37,7 +35,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -56,6 +53,9 @@ import de.uzk.hki.da.util.Path;
  */
 public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 
+	private static final String VIEWER_URL_EAD = "http://data.danrw.de/ead-viewer/#/browse?src=";
+
+
 	@ActionUnderTest
 	SendToPresenterAction action = new SendToPresenterAction();
 
@@ -69,40 +69,19 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	public void setUp() throws IOException{
 		
 		n.setWorkAreaRootPath(WORKAREAROOTPATH);
-		action.setRepositoryFacade(repositoryFacade);
-		
-		Map<String,String> viewerUrls = new HashMap<String,String>();
-		viewerUrls.put(CB_PACKAGETYPE_EAD, "http://data.danrw.de/ead-viewer/#/browse?src=");
-		action.setViewerUrls(viewerUrls);
-		
-		Set<String> fileFilter = new HashSet<String>();
-		action.setFileFilter(fileFilter);
-		
-		Set<String> testContractors = new HashSet<String>();
-		action.setTestContractors(testContractors);
-		
-		FileUtils.copyDirectory(Path.makeFile(WORKAREAROOTPATH,WA_PIPS+UNDERSCORE), Path.makeFile(WORKAREAROOTPATH,WA_PIPS));
-		
 		o.setPackage_type(CB_PACKAGETYPE_EAD);
 		
-		ElasticsearchMetadataIndex mi = mock(ElasticsearchMetadataIndex.class);
-		action.setMetadataIndex(mi);
-		
-		action.setWorkArea(new WorkArea(n,o));
+		wireAction();
+		prepareWorkArea();
 	}
-	
-	private File makeMetadataFile(String fileName,String pipType) {
-		return Path.makeFile(n.getWorkAreaRootPath(),WA_PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier(),fileName+FILE_EXTENSION_XML);
-	}
-	
-	
+
 	@After
 	public void tearDown() throws IOException {
-		makeMetadataFile(METADATA_STREAM_ID_EPICUR,WA_PUBLIC).delete();
-		FileUtils.deleteDirectory(Path.makeFile(WORKAREAROOTPATH,WA_PIPS));
+		makeMetadataFile(METADATA_STREAM_ID_EPICUR,WorkArea.PUBLIC).delete();
+		
+		cleanUpWorkArea();
 	}
-	
-	
+
 	@Test
 	public void endWorkflowWhenNothingToIndex() throws IOException, RepositoryException {
 		o.setPackage_type(null);
@@ -113,7 +92,7 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	// if no public DIP is created EDM creation and ES indexing is skipped
 	@Test
 	public void endWorkflowWhenPublicPIPWasNotSuccessfullyIngested() throws IOException, RepositoryException {
-		FileUtils.deleteDirectory(Path.makeFile(WORKAREAROOTPATH,WA_PIPS,WA_PUBLIC,o.getContractor().getShort_name(),o.getIdentifier()));
+		FileUtils.deleteDirectory(Path.makeFile(WORKAREAROOTPATH,WorkArea.PIPS,WorkArea.PUBLIC,o.getContractor().getShort_name(),o.getIdentifier()));
 		action.implementation();
 		assertTrue(action.isKILLATEXIT());
 	}
@@ -138,7 +117,7 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	@Test
 	public void createXepicur() throws IOException, RepositoryException {
 		action.implementation();
-		assertTrue(makeMetadataFile(METADATA_STREAM_ID_EPICUR,WA_PUBLIC).exists());
+		assertTrue(makeMetadataFile(METADATA_STREAM_ID_EPICUR,WorkArea.PUBLIC).exists());
 	}
 	
 	
@@ -189,6 +168,29 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 		action.implementation(); 
 		// xepicur proven to be created by Test createXepicur()
 		action.rollback();
-		assertFalse(makeMetadataFile(METADATA_STREAM_ID_EPICUR,WA_PUBLIC).exists());
+		assertFalse(makeMetadataFile(METADATA_STREAM_ID_EPICUR,WorkArea.PUBLIC).exists());
+	}
+
+	private void wireAction() {
+		Map<String,String> viewerUrls = new HashMap<String,String>();
+		viewerUrls.put(CB_PACKAGETYPE_EAD, VIEWER_URL_EAD);
+		
+		action.setFileFilter(new HashSet<String>());
+		action.setViewerUrls(viewerUrls);
+		action.setRepositoryFacade(repositoryFacade);
+		action.setTestContractors(new HashSet<String>());
+		action.setMetadataIndex(mock(ElasticsearchMetadataIndex.class));
+	}
+
+	private File makeMetadataFile(String fileName,String pipType) {
+		return Path.makeFile(n.getWorkAreaRootPath(),WorkArea.PIPS,pipType,o.getContractor().getShort_name(),o.getIdentifier(),fileName+FILE_EXTENSION_XML);
+	}
+
+	private void prepareWorkArea() throws IOException {
+		FileUtils.copyDirectory(Path.makeFile(WORKAREAROOTPATH,WorkArea.PIPS+UNDERSCORE), Path.makeFile(WORKAREAROOTPATH,WorkArea.PIPS));
+	}
+
+	private void cleanUpWorkArea() throws IOException {
+		FileUtils.deleteDirectory(Path.makeFile(WORKAREAROOTPATH,WorkArea.PIPS));
 	}
 }
