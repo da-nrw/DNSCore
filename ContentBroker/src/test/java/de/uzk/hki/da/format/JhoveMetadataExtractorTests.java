@@ -35,6 +35,7 @@ import org.junit.Test;
 import static de.uzk.hki.da.test.TC.*;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.IOTimeoutException;
 import de.uzk.hki.da.utils.ProcessInformation;
 
 
@@ -111,9 +112,7 @@ public class JhoveMetadataExtractorTests {
 		catch (ConnectionException e) {fail();}
 		catch (Exception e) {fail();} 
 	}
-	
-	
-	
+
 	@Test
 	public void extractSuccessful() throws IOException {
 		
@@ -161,8 +160,8 @@ public class JhoveMetadataExtractorTests {
 	public void timeout() throws IOException {
 		
 		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyLong()))
-			.thenThrow(new IOException(TIMEOUT))
-			.thenThrow(new IOException(TIMEOUT));
+			.thenThrow(new IOTimeoutException(TIMEOUT))
+			.thenThrow(new IOTimeoutException(TIMEOUT));
 		try {
 			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
 			fail();
@@ -173,7 +172,7 @@ public class JhoveMetadataExtractorTests {
 	public void timeoutNotHappeningWithRetry() throws IOException {
 		
 		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyLong()))
-			.thenThrow(new IOException(TIMEOUT))
+			.thenThrow(new IOTimeoutException(TIMEOUT))
 			.thenReturn(piRetval0); // let it work with the simple version
 		try {
 			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
@@ -189,7 +188,7 @@ public class JhoveMetadataExtractorTests {
 	public void firstTimeoutThenError() throws IOException {
 		
 		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyLong()))
-			.thenThrow(new IOException(TIMEOUT))
+			.thenThrow(new IOTimeoutException(TIMEOUT))
 			.thenReturn(piRetval1);
 		try {
 			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));

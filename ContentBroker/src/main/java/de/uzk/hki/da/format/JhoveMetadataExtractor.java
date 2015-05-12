@@ -1,6 +1,6 @@
 /*
   DA-NRW Software Suite | ContentBroker
-  Copyright (C) 2014 LVRInfoKom
+  Copyright (C) 2015 LVRInfoKom
   Landschaftsverband Rheinland
 
   This program is free software: you can redistribute it and/or modify
@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.IOTimeoutException;
 import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.StringUtilities;
 
@@ -40,7 +41,7 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 
 	private static final Logger logger = LoggerFactory.getLogger(JhoveMetadataExtractor.class);
 	
-	private static final int _6_MINUTES = 3600000; // ms
+	private static final int _6_MINUTES = 360000; // ms
 	private static final String JHOVE_CONF = "conf/jhove.conf";
 	private static final long JHOVE_TIMEOUT = _6_MINUTES;
 	private static final String jhoveFolder = "jhove";
@@ -58,9 +59,9 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 	 * Tries it a second time if the first time fails.
 	 * 
 	 * @throws ConnectionException when timeout limit reached two times. 
-	 * @throws FileNotFoundException 
+	 * @throws IOException 
 	 */
-	public void extract(File file, File extractedMetadata) throws ConnectionException, FileNotFoundException {
+	public void extract(File file, File extractedMetadata) throws ConnectionException, IOException {
 		
 		if (!connectabilityProved) throw new IllegalStateException("Make sure you run isExecutable first.");
 		
@@ -74,8 +75,11 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		int retval=0;
 		try {
 			retval=execCMD(jhoveCmd(extractedMetadata, makeFilePath(file)));
-		}catch(IOException possibleTimeOut) {
-			logger.warn(possibleTimeOut.getMessage());
+		}catch(IOTimeoutException timeout){
+			logger.warn(timeout.getMessage());
+			retval=1;
+		}catch(IOException e) {
+			logger.warn(e.getMessage());
 			retval=1;
 		} 
 		if (retval==0) return;
@@ -85,12 +89,14 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		retval=0;
 		try {
 			retval=execCMD(jhoveCmdSkipWholeFileParsing(extractedMetadata, makeFilePath(file)));
-		}catch(IOException possibleTimeout) {
-			throw new ConnectionException("Call to JHOVE ended with possible timeout (the 2nd time already).",possibleTimeout);
+		}catch(IOTimeoutException timeout) {
+			throw new ConnectionException("Second call to JHOVE ended with possible timeout (the 2nd time already).",timeout);
+		}catch(IOException e) {
+			throw new IOException("Second call to JHOVE ended with IOError (the 2nd time already).",e);
 		}
 
 		if (retval==0) return;
-		throw new ConnectionException("Recieved return not null return value from jhove.");
+		throw new ConnectionException("Recieved not null return value from jhove.");
 	}
 	
 	

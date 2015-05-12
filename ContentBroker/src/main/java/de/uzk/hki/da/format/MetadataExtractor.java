@@ -21,6 +21,7 @@ package de.uzk.hki.da.format;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 
 /**
@@ -29,7 +30,7 @@ import java.io.FileNotFoundException;
 public interface MetadataExtractor{
 
 	public void extract(File file, File extractedMetadata) 
-			throws ConnectionException, FileNotFoundException;
+			throws ConnectionException, FileNotFoundException, IOException;
 
 	public boolean isConnectable();
 

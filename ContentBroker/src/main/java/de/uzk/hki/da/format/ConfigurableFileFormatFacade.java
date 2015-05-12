@@ -111,6 +111,7 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 	
 	/**
 	 * @throws ConnectionException 
+	 * @throws IOException 
 	 * 
 	 */
 	@Override
@@ -119,6 +120,12 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 			getMetadataExtractor().extract(file, extractedMetadata);
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
+		} catch (IOException e) {
+			// This is to resemble the exact same behavior 
+			// of how it was before the distinction of IOTimeoutException and IOException 
+			// in CommandLineConnector and JhoveMetadataExtractor and adresses cases 
+			// in which binaries are missing. For an example see de.uzk.hki.da.format.CTFileFormatFacadeExtractTests#binaryNotPresent().
+			throw new ConnectionException(e.getMessage());
 		}
 		return true;
 	}

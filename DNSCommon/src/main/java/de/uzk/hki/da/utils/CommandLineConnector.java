@@ -43,12 +43,13 @@ public class CommandLineConnector {
 	 * @param timeout in ms. if set to 0, timeout is automatically set to Long.MAX_VALUE.
 	 * @return the process information
 	 * 
-	 * @throws IOException if the program cannot run for some reason or does not finish in time.
-	 * 
+	 * @throws IOException in case an error occurs.
+	 * @throws IOTimeoutException if the process does not terminate after timeout.
+	 *  
 	 * @author Daniel M. de Oliveira
 	 */
 	public ProcessInformation runCmdSynchronously(String cmd[],File workingDir,long timeout) 
-			throws IOException{
+			throws IOTimeoutException,IOException{
 
 		if (timeout==0) timeout=Long.MAX_VALUE;
 		
@@ -70,31 +71,27 @@ public class CommandLineConnector {
 
 
 	/**
-	 * Convenience method for {@link #runCmdSynchronously(String[], File)}
-	 * @author Daniel M. de Oliveira
-	 * @throws IOException 
+	 * Convenience method for {@link #runCmdSynchronously(String[], File, long)}
 	 */
-	public ProcessInformation runCmdSynchronously(String cmd[]) throws IOException{
+	public ProcessInformation runCmdSynchronously(String cmd[]) throws IOTimeoutException,IOException{
 		return runCmdSynchronously(cmd, null, 0);
 	}
 
 
 	/**
-	 * Convenience method for {@link #runCmdSynchronously(String[], File)}
-	 * @author Daniel M. de Oliveira
+	 * Convenience method for {@link #runCmdSynchronously(String[], File, long)}
 	 * @throws IOException 
 	 */
-	public ProcessInformation runCmdSynchronously(String cmd[],long timeout) throws IOException{
+	public ProcessInformation runCmdSynchronously(String cmd[],long timeout) throws IOTimeoutException,IOException{
 		return runCmdSynchronously(cmd, null, timeout);
 	}
 
 
 	/**
-	 * Convenience method for {@link #runCmdSynchronously(String[], File)}
+	 * Convenience method for {@link #runCmdSynchronously(String[], File, long)}
 	 * @author Daniel M. de Oliveira
-	 * @throws IOException 
 	 */
-	public ProcessInformation runCmdSynchronously(String cmd[],File workingDir) throws IOException{
+	public ProcessInformation runCmdSynchronously(String cmd[],File workingDir) throws IOTimeoutException,IOException{
 		return runCmdSynchronously(cmd, workingDir, 0);
 	}
 
@@ -116,7 +113,7 @@ public class CommandLineConnector {
 	}
 	
 
-	private void waitForProcessToTerminate(Process p,long timeout) throws IOException {
+	private void waitForProcessToTerminate(Process p,long timeout) throws IOTimeoutException {
 		
 		int timeElapsed=0;
 		while(true) {
@@ -133,7 +130,7 @@ public class CommandLineConnector {
 				
 				if (timeElapsed>timeout) {
 					p.destroy();
-					throw new IOException("Process did not finished. Timeout at "+timeout+".");
+					throw new IOTimeoutException("Process did not finished. Timeout at "+timeout+".");
 				}
 			}
 		}

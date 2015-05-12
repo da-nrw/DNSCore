@@ -60,7 +60,7 @@ public class AcceptanceTestHelper {
 	protected static Path TEST_DATA_ROOT_PATH = new RelativePath("src/test/resources/at/");
 	
 	private static final int INTERVAL=2000; // in ms
-	private static final int TIMEOUT=1800000; // ins ms
+	private static final int TIMEOUT=1200000; // ins ms
 	
 	private GridFacade gridFacade;
 	private Node localNode;

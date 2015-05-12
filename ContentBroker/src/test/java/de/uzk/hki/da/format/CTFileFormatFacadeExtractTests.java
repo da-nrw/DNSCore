@@ -73,7 +73,7 @@ public class CTFileFormatFacadeExtractTests {
 	}
 	
 	@Test
-	public void extractorNotConnected() {
+	public void binaryNotPresent() {
 		CTTestHelper.cleanUpWhiteBoxTest();
 
 		try {
