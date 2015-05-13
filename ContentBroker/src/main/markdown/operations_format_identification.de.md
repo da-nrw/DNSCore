@@ -37,7 +37,7 @@ Beispiel:
 
     Datei: abc.tif 
     -> Erkanntes Format: fmt/353
-    Subformaterkennungsprozedur: ImageMagickSubformatIdentificationStrategy
+    Subformaterkennungsprozedur: ImageMagickSubformatIdentifier
     -> Erkanntes Subformat: lzw (lzw-codec)
 
 Das Beispiel geht davon aus, dass die Prozedur "ImageMagickSubformatIdentificationStrategy" mit dem Format Identifier [fmt/353](http://apps.nationalarchives.gov.uk/PRONOM/Format/proFormatSearch.aspx?status=detailReport&id=1099) verknüft ist. Die als fmt/353 erkannte Beispieldatei durchläuft daraufhin die festgelegte Subformaterkennungsprozedur. Diese liefert "lzw" als Bezeichner für ein Kompressionsverfahren des im Tiff enthalteten Datenstrom zurück.
