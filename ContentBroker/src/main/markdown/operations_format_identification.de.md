@@ -44,9 +44,9 @@ Das Beispiel geht davon aus, dass die Prozedur "ImageMagickSubformatIdentificati
 
 Für die Subformaterkennung stehen sowohl DNS-eigene Prozesse als auch  Wrapper-Klassen zur Verfügung, die die Dienste externer Programme wie z.B. ffmpeg für DNSCore nutzbar machen. Derzeit verfügbare Prozesse sind:
 
-* [ImageMagickIdentificationStrategy](../java/de/uzk/hki/da/format/ImageMagickIdentifySubformatIdentifier.java)
-* [XMLSubformatIdentificationStrategy](../java/de/uzk/hki/da/format/XMLSubformatIdentifier.java)
-* [FFmpegSubformatIdentificationStrategy](../java/de/uzk/hki/da/format/FFmpegSubformatIdentifier.java)
+* [ImageMagickSubformatIdentifier](../java/de/uzk/hki/da/format/ImageMagickSubformatIdentifier.java)
+* [XMLSubformatSubformatIdentifier](../java/de/uzk/hki/da/format/XMLSubformatIdentifier.java)
+* [FFmpegSubformatIdentifier](../java/de/uzk/hki/da/format/FFmpegSubformatIdentifier.java)
 
 ## Einrichten der Subformaterkennung
 
