@@ -150,8 +150,8 @@ public class ReplicationExecutor extends Thread {
 	
 private boolean replicate (String data_name, String targetResgroup, String srcResc) {
 	try {
-		if (!isc.isConnected()) isc.connect();
-	isc.replicateDaoToResGroupSynchronously(data_name, targetResgroup, srcResc);	
+		isc.establishConnect();
+		isc.replicateDaoToResGroupSynchronously(data_name, targetResgroup, srcResc);	
 	} catch (Exception e) {
 		logger.error("Something went wrong in replicating to " +targetResgroup + " : " + e.getMessage() );
 		return false;
