@@ -16,7 +16,7 @@ these solutions was designed under a different focus and to solve different sets
 problems within the field of longterm preservation, it is worth mentioning
 the two most distinctive features of DNSCore at first, before diving in into
 a richer feature list. 
-
+ 
 The first big feature is the possibility for users to let the system automatically
 generate derivates of your material destined for long term preservation which are
 suited for online web presentation. The decision to integrate a presentation component
