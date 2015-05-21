@@ -48,6 +48,8 @@ import org.irods.jargon.core.pub.EnvironmentalInfoAO;
 import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
 import org.irods.jargon.core.pub.IRODSAccessObjectFactoryImpl;
 import org.irods.jargon.core.pub.IRODSFileSystem;
+//TODO change to newer jargon version
+//import org.irods.jargon.core.pub.IRODSFileSystemSingletonWrapper;
 import org.irods.jargon.core.pub.IRODSFileSystemAO;
 import org.irods.jargon.core.pub.IRODSGenQueryExecutor;
 import org.irods.jargon.core.pub.ResourceAO;
@@ -261,12 +263,12 @@ public class IrodsSystemConnector {
 	 * @author Jens Peters
 	 */
 	public boolean isConnected() {
+	//FIXME method seems to return always false
 		if (irodsCommands==null) return false;
 		return irodsCommands.isConnected();
 	
 	}
 	
-
 	
 	/**
 	 * Connect to the the iRODS DataGrid.
@@ -277,6 +279,8 @@ public class IrodsSystemConnector {
 	public boolean connect() {
 			logger.debug("Establishing connection to the iRODS DataGrid now!");
 			try {
+				//TODO change to appropriate jargon version
+				//irodsFileSystem = IRODSFileSystemSingletonWrapper.instance();
 				irodsFileSystem = IRODSFileSystem.instance();
 				
 				if (setPamMode) {
