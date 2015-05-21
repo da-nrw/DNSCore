@@ -150,6 +150,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		clearNonpersistentObjectProperties(o);
 		
 		for (Node cn:n.getCooperatingNodes()) {
+			logger.debug("Cooperating node "+cn);
 			Copy copy = new Copy();
 			copy.setPath(n.getIdentifier()+"/aip/"+aipPath().toString());
 			cn.setCopyToSave(copy);

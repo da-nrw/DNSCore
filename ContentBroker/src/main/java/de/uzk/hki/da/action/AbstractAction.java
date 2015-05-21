@@ -271,6 +271,7 @@ public abstract class AbstractAction implements Runnable {
 			Job createJob){
 		
 		boolean transactionSuccessful=false;
+		int count = 0;
 		do {
 			Session session = null;
 			try {
@@ -282,13 +283,18 @@ public abstract class AbstractAction implements Runnable {
 				baseLogger.info("Transaction successful for object "+object.getIdentifier());
 			}
 			catch (Exception sqlException) {
-				baseLogger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sqlException);
-				sendJMSException(sqlException);
-				
+				count++;
+				if(count==1) {
+					baseLogger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sqlException);
+					sendJMSException(sqlException);
+				} else {
+					logger.error("Repeated last exception "+count+" times");
+				}
 				try {    Thread.sleep(2000);
 				} catch (InterruptedException e) {}
 			}
 			session.close();
+
 		} while(!transactionSuccessful);
 		
 		for (Node cn:node.getCooperatingNodes()) {
@@ -313,6 +319,7 @@ public abstract class AbstractAction implements Runnable {
 			
 			Copy copy = cn.getCopyToSave();
 
+			logger.debug("Save copy "+copy.getPath());
 			session.save(copy);
 			session.flush();
 			

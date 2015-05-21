@@ -130,7 +130,7 @@ public class ChecksumWorker extends Worker{
 			session.close();	
 			return copy;
 		
-		} catch (IndexOutOfBoundsException e){
+		} catch (Exception e){
 			if (session!=null) session.close();
 			return null;
 		}
