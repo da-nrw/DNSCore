@@ -28,7 +28,6 @@ public class IrodsDataGridConnector {
 	private volatile static IRODSFileSystem iFS;
 	
 	public IrodsDataGridConnector() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	/**
@@ -39,13 +38,15 @@ public class IrodsDataGridConnector {
 	public static IRODSFileSystem getInstance(){
 		if(iFS == null){
 			synchronized(IRODSFileSystem.class) {
-				try {
-					iFS = new IRODSFileSystem();
-				} catch (JargonException e) {
-					// TODO Auto-generated catch block
-					logger.error("Can't create IRODSFileSystem-Instance");
-					logger.debug(e.toString());
-				}				
+				if (iFS == null){
+					try {
+						iFS = new IRODSFileSystem();
+					} catch (JargonException e) {
+						logger.error("Can't create IRODSFileSystem-Instance");
+						logger.debug(e.toString());
+					}				
+					
+				}
 			}
 		}
 		return iFS;
