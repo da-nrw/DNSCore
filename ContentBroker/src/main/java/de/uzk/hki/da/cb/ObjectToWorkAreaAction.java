@@ -64,8 +64,8 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 		
 		try {
 			if (!ingestGate.canHandle(retrievePackagesHelper.getObjectSize(o, j))) {
-				JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,o.getIdentifier() + " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
-				super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
+//				JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,o.getIdentifier() + " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
+//				super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
 				logger.warn("ResourceMonitor prevents further processing of package due to space limitations - Setting job back to start state.");
 				return false;
 			}

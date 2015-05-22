@@ -95,8 +95,8 @@ public class UnpackAction extends AbstractAction {
 	public boolean implementation() throws IOException{
 		
 		if (!ingestGate.canHandle(sipContainerOnIngestArea().length())){
-			JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,o.getIdentifier() + " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
-			super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
+//			JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,o.getIdentifier() + " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
+//			super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
 			logger.warn("ResourceMonitor prevents further processing of package due to space limitations. Setting job back to start state.");
 			return false;
 		}
