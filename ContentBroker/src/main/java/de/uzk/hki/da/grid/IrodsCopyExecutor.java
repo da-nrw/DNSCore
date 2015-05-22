@@ -34,7 +34,7 @@ public class IrodsCopyExecutor implements JobExecutor {
 			
 			String targetDir =  FilenameUtils.getFullPath("/" +cj.getDest_name() + "/"+dirPrefix + cj.getSource());
 			if (!iclc.exists(targetDir)){
-				logger.debug("Creating " + targetDir + " now");
+				logger.info("Creating " + targetDir + " now");
 				iclc.mkCollection(targetDir);
 			}
 			String out = iclc.rsync(cj.getSource(), targetDir, cj.getParams());

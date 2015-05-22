@@ -196,7 +196,7 @@ public class IntegrityService {
 			copies = 1;
 			for (Copy copy : pack.getCopies() ) {
 				if (StringUtilities.isNotSet(copy.getChecksum()) || !copy.getChecksum().equals(pack.getChecksum())) {
-					String err= "SECONDARY COPY in ERROR "+ obj.getIdentifier();
+					String err= "SECONDARY COPY in ERROR "+ obj.getIdentifier() + " PACK: " + pack.getChecksum() + " COPY:" + copy.getChecksum() ;
 					logger.error(err);
 					completelyValid = false;
 				} else {
