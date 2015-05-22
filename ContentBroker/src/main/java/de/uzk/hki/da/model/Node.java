@@ -93,9 +93,9 @@ public class Node{
     private Set<Node> cooperatingNodes = new HashSet<Node>();
 	
 	/** The copies. */
-	@OneToMany(orphanRemoval=false,fetch=FetchType.LAZY)
+	@OneToMany(orphanRemoval=true,fetch=FetchType.LAZY)
 	@JoinColumn(name="node_id")
-	@Cascade({CascadeType.SAVE_UPDATE})
+	@Cascade({CascadeType.SAVE_UPDATE,CascadeType.DELETE})
 	private List<Copy> copies = new ArrayList<Copy>();
 
 	@Transient private Copy copyToSave;
