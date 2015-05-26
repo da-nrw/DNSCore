@@ -379,7 +379,7 @@ public class Diagnostics {
 		try {
 			
 			boolean returnValue = irodsGridFacade.put( C.BASIC_TEST_PACKAGE, 
-					new RelativePath(C.TEST_USER_SHORT_NAME,testPkgName).toString(), sp);
+					new RelativePath(C.TEST_USER_SHORT_NAME,testPkgName).toString(), sp, null);
 			if (returnValue==false){
 				errorCount++;
 				System.out.println(WARN+"put returned false.");

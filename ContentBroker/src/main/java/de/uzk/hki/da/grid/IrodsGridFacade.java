@@ -50,7 +50,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 	 * @see de.uzk.hki.da.grid.IrodsGridFacadeBase#put(java.io.File, java.lang.String)
 	 */
 	@Override
-	public boolean put(File file, String gridPath , StoragePolicy sp) throws IOException {
+	public boolean put(File file, String gridPath , StoragePolicy sp, String checksum) throws IOException {
 		
 		if (!irodsSystemConnector.connect()) throw new RuntimeException("could not connect irodsSystemConnector");
 		

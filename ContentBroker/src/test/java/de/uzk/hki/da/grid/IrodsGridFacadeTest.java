@@ -133,7 +133,7 @@ public class IrodsGridFacadeTest {
 	@Test 
 	public void putFileDoesNotExist() throws Exception {
 		
-		ig.put(temp, "123456/urn.tar", sp);
+		ig.put(temp, "123456/urn.tar", sp, null);
 		assertTrue(new File(irodsDir+ "/aip/123456/urn.tar").exists());
 	}
 	
@@ -150,7 +150,7 @@ public class IrodsGridFacadeTest {
 		
 		when ( isc.fileExists(anyString())). thenReturn(true);
 		
-		assertEquals(true,ig.put(temp, "123456/urn.tar", sp));
+		assertEquals(true,ig.put(temp, "123456/urn.tar", sp, null));
 		assertEquals(true, new File(irodsDir+ "/aip/123456/urn.tar").exists());
 	}
 	
@@ -177,7 +177,7 @@ public class IrodsGridFacadeTest {
 		
 		// assertEquals(false,ig.put(temp, "aip/123456/urn.tar"));
 		assertEquals(true, temp.exists());
-		assertEquals(true, ig.put(temp, "123456/urn.tar", sp));
+		assertEquals(true, ig.put(temp, "123456/urn.tar", sp, null));
 		assertEquals(true, new File(irodsDir+ "/aip/123456/urn.tar").exists());
 	}
 	
@@ -192,7 +192,7 @@ public class IrodsGridFacadeTest {
 		when ( isc.executeRule( anyString(), anyString()) )
 		.thenReturn( "2" );
 		try {
-			ig.put(temp, "123456/urn.tar",sp);
+			ig.put(temp, "123456/urn.tar",sp, null);
 			assertTrue(false);
 		} catch (Exception e) {
 			

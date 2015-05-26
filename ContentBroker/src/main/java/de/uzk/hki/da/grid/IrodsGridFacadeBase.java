@@ -49,7 +49,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	 * @see de.uzk.hki.da.grid.GridFacade#put(java.io.File, java.lang.String)
 	 */
 	@Override
-	public abstract boolean put(File file, String gridPath, StoragePolicy sp) throws IOException;
+	public abstract boolean put(File file, String gridPath, StoragePolicy sp, String checksum) throws IOException;
 
 
 	/**

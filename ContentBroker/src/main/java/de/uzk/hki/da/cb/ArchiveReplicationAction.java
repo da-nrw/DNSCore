@@ -69,14 +69,14 @@ public class ArchiveReplicationAction extends AbstractAction {
 		Path newFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), filename);
 		try {
 			if (!gridRoot.put(new File(newFilePath.toString()), 
-						target.toString(), sp )) {
+						target.toString(), sp, o.getLatestPackage().getChecksum())) {
 			delay(); 
 			return false;
 			}
 			gridRoot.distribute(n, new File(newFilePath.toString()), target.toString(), sp);
 			new File(newFilePath.toString()).delete();
 		} catch (IOException e) {
-			throw new RuntimeException("Put to IRODS Datagrid failed!");
+			throw new RuntimeException("Put to IRODS Datagrid failed! " + e.getMessage());
 		}
 		return true;
 	}

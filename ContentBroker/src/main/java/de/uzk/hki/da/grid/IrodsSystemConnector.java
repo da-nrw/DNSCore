@@ -100,7 +100,7 @@ public class IrodsSystemConnector {
 	private IRODSAccount irodsAccount;
 	
 	/** The irods file system. */
-	private IRODSFileSystem irodsFileSystem;
+	private static IRODSFileSystem irodsFileSystem;
 	
 	/** The irods commands. */
 	private IRODSCommands irodsCommands;

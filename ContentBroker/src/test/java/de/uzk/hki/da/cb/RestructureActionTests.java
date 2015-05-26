@@ -201,7 +201,7 @@ public class RestructureActionTests extends ConcreteActionUnitTest{
 
 	private void putAIPAndPrepareForDeltaIngest() throws IOException {
 		
-		grid.put(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,"identifier.pack_1.tar"), "TEST/identifier/identifier.pack_1.tar", null);
+		grid.put(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,"identifier.pack_1.tar"), "TEST/identifier/identifier.pack_1.tar", null, null);
 		
 		pkg1 = o.getLatestPackage();
 		pkg2 = new Package();

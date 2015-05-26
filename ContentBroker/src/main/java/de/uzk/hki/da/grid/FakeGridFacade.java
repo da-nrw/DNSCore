@@ -53,7 +53,7 @@ public class FakeGridFacade implements GridFacade {
 	private String tmpFolder = "/tmp/";
 
 	@Override
-	public boolean put(File file, String address_dest, StoragePolicy sp) throws IOException {
+	public boolean put(File file, String address_dest, StoragePolicy sp, String checksum) throws IOException {
 		
 		if (!address_dest.startsWith(C.FS_SEPARATOR)) address_dest = C.FS_SEPARATOR + address_dest;
 		

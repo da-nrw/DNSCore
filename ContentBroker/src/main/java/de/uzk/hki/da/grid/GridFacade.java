@@ -47,7 +47,7 @@ public interface GridFacade {
 	 * @param gridPath address of the target file name in grid (excluding zone prefix). 
 	 * 
 	 * If @param gridPath parent Folder does not exist, it will be created.
-	 * 
+	 * @param checksum TODO
 	 * @return <strong>true</strong> if file has been successfully copied to the defined resource group area.
 	 * <strong>false</strong> if one of the abovementioned conditions has not been met. put can be called again after returning false.
 	 * 
@@ -56,7 +56,7 @@ public interface GridFacade {
 	 * @author: Jens Peters
 	 * @author: Daniel M. de Oliveira
 	 */
-	abstract boolean put( File file, String gridPath, StoragePolicy sp) throws java.io.IOException;
+	abstract boolean put(File file, String gridPath, StoragePolicy sp, String checksum) throws java.io.IOException;
 	
 	/**
 	 * Retrieve file from the DataGrid.

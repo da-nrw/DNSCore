@@ -18,9 +18,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -38,6 +36,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.PropertiesUtils;
 
 /**
@@ -67,7 +66,7 @@ public class CTIrodsFacade {
 	private static String testCollPhysicalPathOnLTA = null;
 	
 	File temp;
-	
+	public String md5sum = "";
 	private static StoragePolicy sp ;
 	
 	/**
@@ -91,6 +90,7 @@ public class CTIrodsFacade {
 		sp.setWorkingResource("ciWorkingResource");
 		sp.setGridCacheAreaRootPath(properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH));
 		sp.setCommonStorageRescName("ciArchiveResource");
+
 	}
 	
 	
@@ -111,6 +111,7 @@ public class CTIrodsFacade {
 	@Before
 	public void setUp() throws Exception {
 		temp = createTestFile();
+		md5sum = MD5Checksum.getMD5checksumForLocalFile(temp);
 	}
 	
 	/**
@@ -143,7 +144,7 @@ public class CTIrodsFacade {
 	@Test 
 	public void mustNotPutFileAgainWhenAlreadyHasReplsOnLongTermStorage() throws Exception {
 			putFileAndWaitUntilReplicatedAccordingToStoragePolicy();
-			assertFalse(ig.put(temp, testColl + "/urn.tar", sp));
+			assertFalse(ig.put(temp, testColl + "/urn.tar", sp, null));
 		}
 	
 	
@@ -179,6 +180,39 @@ public class CTIrodsFacade {
 	} 
 	
 	
+	/**
+	 * Test that a given wrong Checksum is evaluated correctly.
+	 * @author Jens Peters
+	 */
+	@Test
+	public void testFilePutWithWrongChecksumCausesIOException() {
+		
+		try {
+			ig.put(temp, testColl + "/urn.tar", sp, "abababsbsbsbw2");
+			fail();
+		} catch (IOException e) {
+			System.out.println("catched exception as intended!");
+		}
+		
+	}
+	
+	/**
+	 * Test that a given Checksum is evaluated correctly.
+	 * @author Jens Peters
+	 */
+	@Test
+	public void testFilePutWithChecksum() {
+		
+		try {
+			assertTrue(ig.put(temp, testColl + "/urn.tar", sp, md5sum));
+	
+		} catch (IOException e) {
+			fail();
+		}
+		
+	}
+	
+	//-----------------------------------------------------------------
 	
 	
 	/**
@@ -209,14 +243,13 @@ public class CTIrodsFacade {
 	
 	
 	private void putFileAndWaitUntilReplicatedAccordingToStoragePolicy() throws InterruptedException, IOException {
-		assertTrue(ig.put(temp, testColl + "/urn.tar", sp));
+		assertTrue(ig.put(temp, testColl + "/urn.tar", sp, null));
 		
 		while (true) {
 			if (ig.storagePolicyAchieved(testColl + "/urn.tar", sp)) break;
 			Thread.sleep(1000);
 		}
 	}
-	
 	
 	
 	
@@ -274,6 +307,7 @@ public class CTIrodsFacade {
 		FileWriter writer = new FileWriter(temp ,false);
 		writer.write("Hallo Wie gehts?");
 		writer.close();
+	
 		return temp;
 	}
 }

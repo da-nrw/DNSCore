@@ -45,6 +45,7 @@ public class CTIrodsCommandLineConnector {
 	String dao =  "/c-i/aip/connector/urn.tar";
 	String dao2 = "/c-i/aip/connector2/urn.tar";
 	String dao3 = "/c-i/aip/connector/urn3.tar";
+	String daolong = "/c-i/aip/connector/urnwithextraordinaryLongNameInsteadOfShortName.tar";
 	private static String tmpDir = "/tmp/forkDir/";
 	File file;
 	String md5sum;
@@ -102,6 +103,7 @@ public class CTIrodsCommandLineConnector {
 		iclc.remove(dao);
 		iclc.remove(dao2);
 		iclc.remove(dao3);
+		iclc.remove(daolong);
 		iclc.remove("/c-i/aip/connector");
 		iclc.remove("/c-i/aip/connector2");
 	}
@@ -147,6 +149,12 @@ public class CTIrodsCommandLineConnector {
 	public void testIrule() throws IOException {
 		String out = iclc.executeIrule(testiRule());
 		assertTrue(out.contains("numberOfCopies = 1"));
+	}
+	
+	@Test
+	public void testIputAndChecksumOfExtraOrdinaryLongName() throws IOException {
+		assertTrue(iclc.put(file, daolong, archiveStorage ));
+		assertEquals(md5sum, iclc.getChecksum(daolong));
 	}
 	
 	@Test

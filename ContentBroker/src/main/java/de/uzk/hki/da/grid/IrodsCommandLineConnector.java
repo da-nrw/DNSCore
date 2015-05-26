@@ -207,6 +207,7 @@ public class IrodsCommandLineConnector {
 		if (out.indexOf("ERROR")>=0) throw new RuntimeException(" Get Checksum of " + destDao + " failed !" );
 		Scanner scanner = new Scanner(out);
 		String data_name = FilenameUtils.getName(destDao);
+		if (data_name.length()>30) data_name = data_name.substring(0, 30);
 		while (scanner.hasNextLine()) {
 		  String line = scanner.nextLine();
 		  if (line.contains(data_name)) {

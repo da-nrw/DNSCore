@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 
@@ -50,7 +51,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	 * @see de.uzk.hki.da.grid.IrodsGridFacadeBase#put(java.io.File, java.lang.String)
 	 */
 	@Override
-	public boolean put(File file, String address_dest , StoragePolicy sp) throws IOException {
+	public boolean put(File file, String address_dest , StoragePolicy sp, String checksum) throws IOException {
 		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
 		if (!address_dest.startsWith("/")) address_dest = "/" + address_dest;
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + address_dest;
@@ -63,8 +64,20 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		if (iclc.put(file, gridPath, sp.getCommonStorageRescName())) {
 			if (sp.getForbiddenNodes()!=null && !sp.getForbiddenNodes().isEmpty()) iclc.setIMeta(gridPath, "FORBIDDEN_NODES", String.valueOf(sp));
 			iclc.setIMeta(gridPath, "MIN_COPIES", String.valueOf(sp.getMinNodes()));
-			String checksum = iclc.getChecksum(gridPath);
-			iclc.setIMeta(gridPath, "chksum", checksum);
+			String checksumAfterPut = iclc.getChecksum(gridPath);
+
+			if (StringUtilities.isNotSet(checksumAfterPut)) {
+				throw new IOException("iRODS found no checksum for " + gridPath);
+			}
+			
+			if (!StringUtilities.isNotSet(checksum)) {
+				if (!checksumAfterPut.equals(checksum)) {
+					logger.error("Given Checksum of Package has to be " + checksum);
+					logger.error("Checksum is " + checksumAfterPut);
+					throw new IOException("Checksum not correct on put!");
+				}
+			}
+			iclc.setIMeta(gridPath, "chksum", checksumAfterPut);
 			iclc.setIMeta(gridPath, "FEDERATED", "0");
 			return true;
 		} else return false;	
