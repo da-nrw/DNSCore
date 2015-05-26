@@ -92,9 +92,9 @@ public class Package {
 	private List<Event> events = new ArrayList<Event>();
 	
 	/** The copies. */
-	@OneToMany(orphanRemoval=false)
+	@OneToMany(orphanRemoval=true)
 	@JoinColumn(name="pkg_id")
-	@Cascade({CascadeType.SAVE_UPDATE})
+	@Cascade({CascadeType.SAVE_UPDATE,CascadeType.DELETE})
 	private List<Copy> copies = new ArrayList<Copy>();
 	
 	

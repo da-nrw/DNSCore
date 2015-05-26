@@ -162,9 +162,9 @@ public class RestructureAction extends AbstractAction{
 	private boolean checkIfOnWorkAreaIsSpaceAvailabeForDeltaPackages(RetrievePackagesHelper retrievePackagesHelper) {
 		try {
 			if (!getIngestGate().canHandle(retrievePackagesHelper.getObjectSize(o, j ))){
-				JmsMessage jms = new JmsMessage(QUEUE_TO_CLIENT,QUEUE_TO_SERVER,o.getIdentifier() 
-						+ " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
-				super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
+//				JmsMessage jms = new JmsMessage(QUEUE_TO_CLIENT,QUEUE_TO_SERVER,o.getIdentifier() 
+//						+ " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
+//				super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
 				logger.info("No disk space available at working resource. will not fetch new data.");
 				return false;
 			}
