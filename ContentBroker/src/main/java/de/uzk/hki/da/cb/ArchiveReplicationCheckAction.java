@@ -74,12 +74,6 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	@Override
 	public
 	boolean implementation() throws IOException {
-		
-		try {
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
 
 		StoragePolicy sp = new StoragePolicy();
 		sp.setMinNodes(preservationSystem.getMinRepls());
