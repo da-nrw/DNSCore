@@ -138,6 +138,10 @@ public class CheckFormatsAction extends AbstractAction {
 			String fileName = DigestUtils.md5Hex(f.getRelative_path());
 			
 			if (!new File(dir).exists()) new File(dir).mkdirs();
+//			if (f.getRelative_path().toLowerCase().endsWith(".xml")) {
+//				logger.debug("Skip jhove validation for xml file "+f.getRelative_path());
+//				continue;
+//			}
 			
 			File target = Path.makeFile(dir,fileName);
 			logger.debug("will write jhove output to: "+target);

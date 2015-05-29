@@ -233,7 +233,8 @@ public class ObjectPremisXmlWriter {
 		createCloseElement(3);
 
 		
-		createOpenElement("objectCharacteristicsExtension", 3);
+//		if(!f.getRelative_path().toLowerCase().endsWith(".xml")) {
+			createOpenElement("objectCharacteristicsExtension", 3);
 			createOpenElement("mdSec", 4);
 			createAttribute("ID", "_" + jhoveMDSecIdCounter); jhoveMDSecIdCounter++;
 				createOpenElement("mdWrap", 5);
@@ -243,10 +244,11 @@ public class ObjectPremisXmlWriter {
 						System.out.println(DigestUtils.md5Hex(f.getRelative_path()));
 						integrateJhoveData(Path.make(jhoveDataPath,f.getRep_name(),
 								DigestUtils.md5Hex(f.getRelative_path())).toString(), 7);
-					createCloseElement(6);
-				createCloseElement(5);
-			createCloseElement(4);
-		createCloseElement(3);
+						createCloseElement(6);
+					createCloseElement(5);
+				createCloseElement(4);
+			createCloseElement(3);
+//		} 
 		
 		createCloseElement(2);// close objectCharacteristics
 		

@@ -74,6 +74,12 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	@Override
 	public
 	boolean implementation() throws IOException {
+		
+		try {
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 
 		StoragePolicy sp = new StoragePolicy();
 		sp.setMinNodes(preservationSystem.getMinRepls());
@@ -87,11 +93,10 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());
 		setObjectArchived();
 
-		
-
 		FileUtils.deleteDirectory(wa.objectPath().toFile());
 		
 		new MailContents(preservationSystem,n).sendReciept(j, o);
+		logger.debug("Successfully sent email.");
 		return true;
 	}
 	

@@ -180,7 +180,6 @@ public abstract class AbstractAction implements Runnable {
 			reportTechnicalError(e);
 
 		} finally {
-			
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		}
 		
@@ -252,7 +251,6 @@ public abstract class AbstractAction implements Runnable {
 			logger.error(this.getClass().getName()+": couldn't get rollbacked to previous state. Exception in action.rollback(): ",e);
 			errorStatusEndDigit = C.WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK;
 		}
-	
 		updateStatus(errorStatusEndDigit);
 	}
 
@@ -275,7 +273,9 @@ public abstract class AbstractAction implements Runnable {
 		do {
 			Session session = null;
 			try {
+					
 				baseLogger.info("perform transaction with object="+object.getOrig_name()+", job="+job.getStatus());
+			
 				session = openSession();
 				session.beginTransaction();
 				performTransaction(node, object, job, deleteObject, deleteJob, createJob, session);
@@ -301,8 +301,6 @@ public abstract class AbstractAction implements Runnable {
 
 		} while(!transactionSuccessful);
 	}
-
-	
 	
 	private void performTransaction(
 			Node node,
@@ -314,6 +312,10 @@ public abstract class AbstractAction implements Runnable {
 		for (Node cn:node.getCooperatingNodes()) { 
 
 			if (cn.getCopyToSave()==null) continue;
+			if(!cn.getCopyToSave().getPath().contains(object.getIdentifier())) {
+				logger.debug("Avoided copy saving for object with identifier "+object.getIdentifier());
+				continue;
+			}
 
 			try {
 				// we know that these are only the temporary copies of the current action.
