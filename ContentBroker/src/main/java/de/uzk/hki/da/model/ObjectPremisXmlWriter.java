@@ -233,7 +233,7 @@ public class ObjectPremisXmlWriter {
 		createCloseElement(3);
 
 		
-//		if(!f.getRelative_path().toLowerCase().endsWith(".xml")) {
+		if(f.getRelative_path().toLowerCase().equals("premis.xml") || !f.getRelative_path().toLowerCase().endsWith(".xml")) {
 			createOpenElement("objectCharacteristicsExtension", 3);
 			createOpenElement("mdSec", 4);
 			createAttribute("ID", "_" + jhoveMDSecIdCounter); jhoveMDSecIdCounter++;
@@ -248,7 +248,7 @@ public class ObjectPremisXmlWriter {
 					createCloseElement(5);
 				createCloseElement(4);
 			createCloseElement(3);
-//		} 
+		} 
 		
 		createCloseElement(2);// close objectCharacteristics
 		

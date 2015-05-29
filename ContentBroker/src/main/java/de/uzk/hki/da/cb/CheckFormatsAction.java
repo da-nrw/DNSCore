@@ -138,19 +138,16 @@ public class CheckFormatsAction extends AbstractAction {
 			String fileName = DigestUtils.md5Hex(f.getRelative_path());
 			
 			if (!new File(dir).exists()) new File(dir).mkdirs();
-//			if (f.getRelative_path().toLowerCase().endsWith(".xml")) {
-//				logger.debug("Skip jhove validation for xml file "+f.getRelative_path());
-//				continue;
-//			}
-			
-			File target = Path.makeFile(dir,fileName);
-			logger.debug("will write jhove output to: "+target);
-			try {
-				if (!fileFormatFacade.extract(wa.toFile(f), target)) 
-					throw new RuntimeException("Unknown error during metadata file extraction.");
-			} catch (ConnectionException e) {
-				throw new SubsystemNotAvailableException("fileFormatFacade.extract() could not connect.",e);
-			}
+			if (f.getRelative_path().toLowerCase().equals("premis.xml") || !f.getRelative_path().toLowerCase().endsWith(".xml")) {
+				File target = Path.makeFile(dir,fileName);
+				logger.debug("will write jhove output to: "+target);
+				try {
+					if (!fileFormatFacade.extract(wa.toFile(f), target)) 
+						throw new RuntimeException("Unknown error during metadata file extraction.");
+				} catch (ConnectionException e) {
+					throw new SubsystemNotAvailableException("fileFormatFacade.extract() could not connect.",e);
+				}
+			} else logger.debug("Skip jhove validation for xml file "+f.getRelative_path());
 		}
 	}
 
