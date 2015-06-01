@@ -130,31 +130,6 @@ As you might already noticed: The path beneath folder federated is (logically) s
 
 ### Synchronizing Service
 
-For all objects, which aren't successfully copied by the gridFacade an independent synchronzing service tries to fulfill 
-the needed copies. The Synchronizing service works permanently on time based schedule, started by system's CRON. It tries to copy ("federate") your stored AIP, which 
-
-Start the Synchronizing service, which could be found ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/synchronize.r))
-
-Execution "by hand":
-  
-    irule -F synchronize.r
-    
-    
-Please be sure having only one synchronizing job! 
-
-What it does is (same as being fired by the gridFacade as client action): 
-
-1. Takes into account given forbidden nodes settings stored by CB after registry of AIP.
-1. Asks all Servers on your Grid for their already stored items. Measured by counting items sizes beneath "aip" folders and on longterm storage resources (which have are be member of resgroup named by config.properties of CB).
-2. If server isn't available, next server is being taken. 
-It takes into account all "own" and already federated items. This should do a load basic balancing between federated zones.
-2. Order them ascending, the lowest filled resource first.
-3. Trying to copy the items to all reachable nodes (zones) until reached numCopy setting stored by contentbroker - Or if not available, until the given minimal number by the federation service itself is being reached. 
-1. Store the original computed checksum to the copied AIP for reference at each zone. 
-5. Retry until reached and copied with equality of checksums. (synchronize)
-
-### Administer Synchronizing
-
 Synchronizing is now performed by extra tables named "copy", "CopyJob" and "cooperating_node" of CB. Any rules and cronjobs aren't used anymore. Foreach cooperating node entry, there is an entry in "copyjob" for that AIP and node. When synching has successfully executed with the storage layer (iRODS), and the number of minimum copies has been reached. A "Copy" of 
 that AIP is being created. Please refer to the grid.log and rodsLog for debugging. Stored "CopyJobs" are executed ad infinitum per node.  
 
@@ -163,7 +138,7 @@ that AIP is being created. Please refer to the grid.log and rodsLog for debuggin
 To perform Audit (integrity checking) of AIP iRODS each node must at least provide the time based check 
 service of recieved federated copies (aka "Secondary Copies"). This is some kind of "trust".
 
-The Intgegrity check is now performed by contentbroker ([feature](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/feature_integrity_check.md)
+The Intgegrity check is now performed by contentbroker ([feature]https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/feature_integrity_check.md)
 
 ### AVU Metadata of iRODS Objects in DNS (AIP/DataObjects) 
 
