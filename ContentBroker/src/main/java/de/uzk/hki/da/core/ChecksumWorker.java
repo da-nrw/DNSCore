@@ -22,6 +22,7 @@
  */
 package de.uzk.hki.da.core;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -55,6 +56,8 @@ public class ChecksumWorker extends Worker{
 	
 	private Node node;
 	
+	private int minusTrustChecksumForDays = -30;
+	
 	public void init(){
 		node = new Node(); 
 		node.setId(localNodeId);
@@ -74,7 +77,7 @@ public class ChecksumWorker extends Worker{
 	
 	
 	/**
-	 * Computing Checksum for Copies
+	 * Re-Computing Checksum for Copies
 	 * @author Jens Peters
 	 */
 	@Override
@@ -82,7 +85,7 @@ public class ChecksumWorker extends Worker{
 		try {
 			Copy copy = null;
 			if ((copy=fetchCopy(node.getId()))==null) { 
-				logger.warn("Found no copy in custody to compute Checksum for.") ;
+				logger.warn("Found no copy in custody to compute Checksum for ...") ;
 				return;
 			}
 			if (secondaryCopyPrefix==null) {
@@ -92,11 +95,23 @@ public class ChecksumWorker extends Worker{
 			String dest = secondaryCopyPrefix + "/"+ copy.getPath();
 			logger.info("Checking existence in custody " + dest );
 			if (gridFacade.exists(dest)){
-				String cs = gridFacade.reComputeAndGetChecksumInCustody(dest);
-				logger.debug("checksum in custody " + cs + " for " + dest);
+				Calendar oneMonthAgo = Calendar.getInstance();
+				oneMonthAgo.add(Calendar.DAY_OF_YEAR, minusTrustChecksumForDays);
+				logger.debug("will look for Checksums older than " + oneMonthAgo.getTime() );
+				String cs = "";
+				if (copy.getChecksumDate()==null) {
+					cs = gridFacade.reComputeAndGetChecksumInCustody(dest);
+					logger.info("checksum in custody is " + cs + " for " + dest);
+				} else if (copy.getChecksumDate().before(oneMonthAgo.getTime())) {
+					cs = gridFacade.reComputeAndGetChecksumInCustody(dest);
+					logger.info("recompute old checksum in custody, now is " + cs + " for " + dest);
+				} else {
+					cs = copy.getChecksum();
+					logger.info("Checksum does not yet need recomputation. Checksum is " + cs);
+				}
 				updateCopy(copy, cs);
 				
-			} else logger.info(dest + " does not exist.");
+			} else logger.error(dest + " does not exist.");
 			
 		} catch (Exception e) {
 			logger.error("Error in ChecksumWorker " + e.getMessage(),e);
@@ -194,6 +209,14 @@ public class ChecksumWorker extends Worker{
 
 	public void setGridFacade(GridFacade gridFacade) {
 		this.gridFacade = gridFacade;
+	}
+
+	public int getTrustChecksumForDays() {
+		return minusTrustChecksumForDays;
+	}
+
+	public void setTrustChecksumForDays(int trustChecksumForDays) {
+		this.minusTrustChecksumForDays = trustChecksumForDays;
 	}
 
 }

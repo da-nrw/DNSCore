@@ -39,7 +39,9 @@ import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectNamedQueryDAO;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.util.RelativePath;
 
 
 /**
@@ -90,7 +92,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		changeLastCheckedObjectDate(-25);
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
-		setChecksumSecondaryCopy("abcedde5",-25);
+		setChecksumSecondaryCopy("abcedde5",-31);
 		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
 	}
 	
@@ -103,31 +105,13 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		object=ath.getObject(ORIGINAL_NAME);
 		
 		changeLastCheckedObjectDate(-25);
-		setChecksumSecondaryCopy(object.getLatestPackage().getChecksum(),-25);
+		setChecksumSecondaryCopy(object.getLatestPackage().getChecksum(),-31);
 		
 		assertSame(object.getObject_state(),Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		
 		waitForObjectChecked(ORIGINAL_NAME);
 		assertSame(object.getObject_state(),Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 	}
-
-	
-	
-	private void waitForObjectChecked(String ORIGINAL_NAME) {
-		Date old = object.getLast_checked();
-		System.out.println("last check was : " + old);
-		Date neu = old;
-		while (neu.compareTo(old)<=0) {
-			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
-			neu = object.getLast_checked();	
-		}
-		System.out.println("new check was on : " + neu);
-	}
-	
-	@Test
-	public void ok()
-	{}
-	
 	
 	@Test 
 	public void allCopiesDestroyed() throws IOException, InterruptedException {
@@ -148,7 +132,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 			destroyFileInCIEnvironment(object.getIdentifier());
 		} else System.out.println(".. not detected CI Environment!");
 		
-		setChecksumSecondaryCopy("abcd77",-25);
+		setChecksumSecondaryCopy("abcd77",-31);
 		changeLastCheckedObjectDate(-25);
 		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
 	}
@@ -182,10 +166,19 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	}
 	
 	
+	private void waitForObjectChecked(String ORIGINAL_NAME) {
+		Date old = object.getLast_checked();
+		System.out.println("last check was : " + old);
+		Date neu = old;
+		while (neu.compareTo(old)<=0) {
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+			neu = object.getLast_checked();	
+		}
+		System.out.println("new check was on : " + neu + " object state " + object.getObject_state());
 	
-	//----------------------------------------------------
+	}
 	
-	private void setChecksumSecondaryCopy(String checksum,int minusHoursInPast) {
+	private void setChecksumSecondaryCopy(String checksum,int minusDaysInPast) {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		// replace proxies by real objects
@@ -201,7 +194,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		
 		// set object to older creationdate than one day
 		Calendar now = Calendar.getInstance();
-		now.add(Calendar.HOUR_OF_DAY, minusHoursInPast);
+		now.add(Calendar.DAY_OF_YEAR, minusDaysInPast);
 		copy.setChecksumDate(now.getTime());
 		
 		
