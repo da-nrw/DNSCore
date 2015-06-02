@@ -164,7 +164,7 @@ Das oberste Objekt im METS-Baum wird durch eine dmdSec mit der entsprechenden ID
 
 Inhalt export_mets.xml
 
-Beispieldatensatz 1: Die im Februar 2015 (Mail&nbsp;WG: DA NRW / hier: Testszenario für Digitalisate aus dem LAV) vorgeschlagene Unterbringung der METS lautet wie folgt:
+Die im Februar 2015 (Mail&nbsp;WG: DA NRW / hier: Testszenario für Digitalisate aus dem LAV) vorgeschlagene Unterbringung der METS lautet wie folgt:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
