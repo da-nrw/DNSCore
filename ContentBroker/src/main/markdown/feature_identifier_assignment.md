@@ -151,7 +151,7 @@ Inhalt premis.xml des 2. Paketes
 
 Dieses Szenario ist nicht implementiert.
 
-Wir haben derzeit zwei Beispiele von Metadaten vorliegen bzw. ausgewählt, die sich lediglich minimal unterscheiden. In beiden Fällen ist innerhalb des Mets das oberste Objekt im METS-Baum durch eine dmdSec mit der entsprechenden ID beschreiben. Innerhalb dieser dmdSec findet man über mets:mdWrap\-{-}mets:xmlData{-}\-mods:identifier type=urn die entsprechende URN. Es wird diejenige dmdSec berücksichtitgt, welche dem obersten hierarchischen Element (siehe structMap) der METS-Datei entspricht.
+Das oberste Objekt im METS-Baum wird durch eine dmdSec mit der entsprechenden ID beschreiben. Innerhalb dieser dmdSec findet man über mets:mdWrap\-{-}mets:xmlData{-}\-mods:identifier type=urn die entsprechende URN. Es wird diejenige dmdSec berücksichtitgt, welche dem obersten hierarchischen Element (siehe structMap) der METS-Datei entspricht.
 
 #### Testpaket(e):
 
@@ -178,17 +178,6 @@ Beispieldatensatz 1: Die im Februar 2015 (Mail&nbsp;WG: DA NRW / hier: Testszena
         </mets:xmlData>
         </mets:mdWrap>
     </mets:dmdSec>
-```
-
-Beispieldatensatz 2: Älterer Datensatz aus Zeiten vor der Projektübernahme LVR-Infokom
-
-```xml
-    <mets:dmdSec ID="md775911">
-        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
-            <mets:xmlData>
-                <mods xmlns="http://www.loc.gov/mods/v3" version="3.4"
-                xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd">
-                    <identifier type="urn">urn:nbn:de:hbz:xyz</identifier>
 ```
 
 #### Vorbedingungen:
