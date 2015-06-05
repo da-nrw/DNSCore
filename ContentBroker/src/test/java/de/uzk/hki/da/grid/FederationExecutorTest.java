@@ -38,14 +38,14 @@ public class FederationExecutorTest {
 	@Test
 	public void testOk() {
 		when (isc.federateDataObjectToConnectedZones(data_name, "lza", 3)).thenReturn(true);
-		when (isc.connect()).thenReturn(true);
+		when (isc.isConnected()).thenReturn(true);
 		fe.run(); 
 		Mockito.verify(isc).federateDataObjectToConnectedZones(data_name, "lza", 3);	
 	}
 	@Test
 	public void NOk() {
 		fe.setTimeout(100l);
-		when (isc.connect()).thenReturn(true);
+		when (isc.isConnected()).thenReturn(true);
 		Mockito.doThrow(new IrodsRuntimeException("")).when(isc).federateDataObjectToConnectedZones(eq(data_name), eq("lza"),eq(3));
 		 
 		fe.run();

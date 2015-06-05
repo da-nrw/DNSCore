@@ -41,9 +41,7 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 		if (zone==null||zone.toString().isEmpty()) throw new ConfigurationException("zonePath not set");
 		if (getWorkingResource()==null||getWorkingResource().isEmpty()) throw new ConfigurationException("working resource not set");
 		
-		if (!irodsSystemConnector.connect()){
-			throw new RuntimeException("Couldn't establish iRODS-Connection");
-		}
+		irodsSystemConnector.establishConnect();
 		
 		try {
 			
@@ -62,9 +60,7 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 	@Override
 	public void replicateToLocalNode(String relativePath) {
 		
-		if (!irodsSystemConnector.connect()){
-			throw new RuntimeException("Couldn't establish iRODS-Connection");
-		}
+		irodsSystemConnector.establishConnect();
 		
 		try {
 			
@@ -87,9 +83,7 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 		if (getWorkingResource()==null||getWorkingResource().isEmpty()) throw new ConfigurationException("working resource not set");
 		
 		
-		if (!irodsSystemConnector.connect()){
-			throw new RuntimeException("Couldn't establish iRODS-Connection");
-		}
+		irodsSystemConnector.establishConnect();
 		
 		try	{
 			irodsSystemConnector.removeCollectionAndEatException(Path.make(zone,relativePath).toString());
@@ -106,9 +100,7 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 	@Override
 	public void create(String relativePath) {
 		
-		if (!irodsSystemConnector.connect()){
-			throw new RuntimeException("Couldn't establish iRODS-Connection");
-		}
+		irodsSystemConnector.establishConnect();
 		
 		try	{
 			getIrodsSystemConnector().createCollection(

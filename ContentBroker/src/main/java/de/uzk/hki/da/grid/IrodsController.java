@@ -79,14 +79,14 @@ public class IrodsController  {
 		        if (!command.equals("")) logger.debug("Received: " + command);
 		        if (command.indexOf(C.IRODS_STOP_DELAYED) >= 0) {
 		        	logger.debug(C.IRODS_STOP_DELAYED);
-		        	irodsSystemConnector.connect();
+		        	irodsSystemConnector.establishConnect();
 		        	irodsSystemConnector.stopAllDelayedRules();
 		        	irodsSystemConnector.logoff();
 					messageSend = "...STOPPING DELAYED done";
 					
 				} else if (command.indexOf(C.IRODS_START_DELAYED)>=0) {
 					logger.debug(C.IRODS_START_DELAYED);
-					irodsSystemConnector.connect();
+					irodsSystemConnector.establishConnect();
 					boolean ret = irodsSystemConnector.startAllDelayedRules(systemRuleFolder);
 					irodsSystemConnector.logoff();
 					messageSend = "...START DELAYED done, "+ret;

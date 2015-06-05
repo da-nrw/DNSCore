@@ -15,9 +15,7 @@ public class IrodsFederatedDistributedConversionAdapter extends
 	public void replicateToLocalNode(String relativePath) {
 		
 		
-		if (!irodsSystemConnector.connect()){
-			throw new RuntimeException("Couldn't establish iRODS-Connection");
-		}
+		irodsSystemConnector.establishConnect();
 		String rule = "syncToLocalNode {\n"
         + "*zones=\"\"\n"
         + "*forbiddenNodes=\"\"\n"

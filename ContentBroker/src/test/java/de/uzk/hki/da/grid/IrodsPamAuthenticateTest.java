@@ -59,7 +59,7 @@ public class IrodsPamAuthenticateTest {
 		irodsSystemConnector.setKeyStorePassword("LWiX/y4piEKvQQV6zHwUzA==");
 		irodsSystemConnector.setKeyStore("/data/danrw/ContentBroker/.keystore");
 		irodsSystemConnector.setTrustStore("/data/danrw/ContentBroker/.keystore");
-		assertEquals(true, irodsSystemConnector.connect());
+		assertEquals(true, irodsSystemConnector.isConnected());
 	
 	}
 

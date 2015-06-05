@@ -91,8 +91,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 			logger.error("Given minnodes setting 0 violates long term preservation");
 			return false;
 		}
-		irodsSystemConnector.connect();
-		
+		irodsSystemConnector.establishConnect();
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + "/" + gridPath2;
 		
 		String number = irodsSystemConnector.executeRule("checkNumber { \n " +
@@ -127,7 +126,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	String address_dest = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + "/" + gridPath;
 		logger.debug("checking validity of " + address_dest);
 		try {
-	irodsSystemConnector.connect();	
+			irodsSystemConnector.establishConnect();;	
 	String check = irodsSystemConnector.executeRule("checkItemsQuick {\n"
 	      + "*state=0\n"
 	      + "acIsValid(*dataObj,*state)\n"

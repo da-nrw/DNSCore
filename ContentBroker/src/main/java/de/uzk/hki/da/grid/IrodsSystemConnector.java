@@ -266,6 +266,16 @@ public class IrodsSystemConnector {
 	
 	}
 	
+ /**
+ * @author Andres Quast
+ * quast@hbz-nrw.de
+ * @author Jens Peters
+ */
+	public void establishConnect(){
+	if (irodsCommands==null || !irodsCommands.isConnected()){
+				connect();
+	}
+	} 
 
 	
 	/**
@@ -274,11 +284,15 @@ public class IrodsSystemConnector {
 	 * @return true, if successful
 	 * @author Jens Peters
 	 */
-	public boolean connect() {
+	private boolean connect() {
 			logger.debug("Establishing connection to the iRODS DataGrid now!");
 			try {
-				irodsFileSystem = IRODSFileSystem.instance();
-				
+				//TODO change to appropriate jargon version to implement Singleton
+				//irodsFileSystem = IRODSFileSystemSingletonWrapper.instance();
+				// until this we use our own Wrapper 
+				//irodsFileSystem = IRODSFileSystem.instance();
+				irodsFileSystem = IrodsFileSystemConnector.getInstance(); 
+
 				if (setPamMode) {
 					System.setProperty("javax.net.ssl.keyStore", keyStore);
 					System.setProperty("javax.net.ssl.keyStorePassword",  PasswordUtils.decryptPassword(keyStorePassword));
@@ -378,9 +392,7 @@ public class IrodsSystemConnector {
 			throw new IrodsRuntimeException(
 					"No IRODSFileSystem set, cannot obtain the DataObjectAO");
 		}
-		if (!isConnected()) {
-			connect();
-		}
+		establishConnect();
 		
 		try {
 			IRODSAccessObjectFactory accessObjectFactory = getIRODSAccessObjectFactory();
@@ -411,9 +423,7 @@ public class IrodsSystemConnector {
 			throw new IrodsRuntimeException(
 					"No IRODSFileSystem set, cannot obtain the DataObjectAO");
 		}
-		if (!isConnected()) {
-			connect();
-		}
+		establishConnect();
 		
 		try {
 			IRODSAccessObjectFactory accessObjectFactory = getIRODSAccessObjectFactory();
@@ -497,9 +507,7 @@ public class IrodsSystemConnector {
 			throw new IrodsRuntimeException(
 					"No IRODSFileSystem set, cannot obtain the DataObjectAO - not connected anymore?");
 		}
-		if (!isConnected()) {
-			connect();
-		}
+		establishConnect();
 		try {
 			IRODSAccessObjectFactory accessObjectFactory = getIRODSAccessObjectFactory();
 			return accessObjectFactory.getResourceAO(irodsAccount);
@@ -527,9 +535,7 @@ public class IrodsSystemConnector {
 	 */
 	public String executeRule(String rule, String getParamName) {
 		try {
-			if (!isConnected()) {
-				connect();
-			}
+			establishConnect();
 			IRODSAccessObjectFactory accessObjectFactory = getIRODSAccessObjectFactory();
 			RuleProcessingAO ruleProcessingAO;
 			ruleProcessingAO = accessObjectFactory
@@ -572,9 +578,7 @@ public class IrodsSystemConnector {
 		RuleProcessingAO ruleProcessingAO = null;
 		
 		try {
-			if (!isConnected()) {
-				connect();
-			}
+			establishConnect();
 			IRODSAccessObjectFactory accessObjectFactory = getIRODSAccessObjectFactory();
 			ruleProcessingAO = accessObjectFactory
 					.getRuleProcessingAO(irodsAccount);
@@ -657,9 +661,7 @@ public class IrodsSystemConnector {
 			throw new IrodsRuntimeException(
 					"No IRODSFileSystem set, cannot obtain the IRODSAccessObjectFactory");
 		}
-		if (!isConnected()) {
-			connect();
-		}
+		establishConnect();
 		if (irodsAccount == null) {
 			throw new IrodsRuntimeException(
 					"No IRODSAccount set, cannot obtain the IRODSAccessObjectFactory");

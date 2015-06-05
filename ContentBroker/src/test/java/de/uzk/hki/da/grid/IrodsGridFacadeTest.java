@@ -96,7 +96,7 @@ public class IrodsGridFacadeTest {
 		ig.setIrodsSystemConnector(isc);
 		
 		when (isc.computeChecksum(anyString())).thenReturn("abc");
-		when (isc.connect()).thenReturn(true);
+		when (isc.isConnected()).thenReturn(true);
 		
 
 		sp = new StoragePolicy();

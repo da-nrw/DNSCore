@@ -52,8 +52,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 	@Override
 	public boolean put(File file, String gridPath , StoragePolicy sp, String checksum) throws IOException {
 		
-		if (!irodsSystemConnector.connect()) throw new RuntimeException("could not connect irodsSystemConnector");
-		
+		irodsSystemConnector.establishConnect();
 		if (!PrepareReplication(file, gridPath, sp)) return false;
 		
 		String address_dest = gridPath;
@@ -132,7 +131,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 	 */
 	@Override
 	public boolean storagePolicyAchieved(String gridPath2, StoragePolicy sp) {
-		irodsSystemConnector.connect();
+		irodsSystemConnector.establishConnect();
 		
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + "/" + gridPath2;
 		

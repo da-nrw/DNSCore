@@ -174,9 +174,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	public boolean isValid(String address_dest) {
 
 		address_dest = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + "/" + address_dest;
-		
-		irodsSystemConnector.connect();
-		
+		irodsSystemConnector.establishConnect();
 		try{
 			irodsSystemConnector.getChecksum(address_dest);
 		}catch(IrodsRuntimeException e){
@@ -220,9 +218,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	public void get(File destination, String gridFileAdress) throws IOException  { 
 		
 		String prefixedGridFileAdress = "/" + irodsSystemConnector.getZone()+ "/" + WorkArea.AIP + "/" + gridFileAdress;
-		
-		irodsSystemConnector.connect();
-		
+		irodsSystemConnector.establishConnect();
 		try {
 			
 //			if (!isValid(gridFileAdress))  throw new java.io.IOException("File has corrupt replicas, please check first! File: " + gridFileAdress);
@@ -248,7 +244,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	 */
 	@Override
 	public long getFileSize(String address_dest) throws IOException {
-		irodsSystemConnector.connect();
+		irodsSystemConnector.establishConnect();
 		
 		long filesize = irodsSystemConnector.getFileSize("/" + irodsSystemConnector.getZone()+ "/" + WorkArea.AIP + "/" + address_dest);
 		

@@ -338,7 +338,8 @@ public class Diagnostics {
 		IrodsSystemConnector irods = (IrodsSystemConnector) context.getBean(BEAN_NAME_IRODS_SYSTEM_CONNECTOR);
 		
 		int errorCount = 0;
-		if (!irods.connect()){
+		irods.establishConnect();
+		if (!irods.isConnected()){
 			System.out.println(ERROR+"COULD NOT CONNECT TO IRODS");
 			errorCount++;
 			context.close();
