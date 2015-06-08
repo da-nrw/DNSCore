@@ -51,7 +51,7 @@ public class DistributionWorker extends Worker {
 				logger.error("error executing syncing of " + cj.getSource() + " to " + cj.getDest_name() );
 				updateCopyJob(cj);
 			}
-			} else logger.info("There were no CopyJobs created!");
+			} else logger.debug("fetchSynchronizeJob() returns null for CopyJob request for "+ node.getIdentifier() +"!");
 		} catch (Exception e) {			
 			logger.error("execute CopyJob Worker caused exception " + e.getCause(), e);
 		}

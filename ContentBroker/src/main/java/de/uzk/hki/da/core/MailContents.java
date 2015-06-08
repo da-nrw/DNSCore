@@ -118,8 +118,8 @@ public class MailContents {
 		checkObject(object);
 		
 		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Retrieval Report für " + object.getIdentifier();
-		String msg = "Ihr angefordertes Objekt mit dem Namen \""+ object.getIdentifier() + "\" wurde unter Ihrem Outgoing Ordner unter " 
-				+ object.getContractor().getShort_name() + "/outgoing/ abgelegt und steht jetzt"
+		String msg = "Ihr angefordertes Objekt mit dem Identifier \""+ object.getIdentifier() + "\" (Originalname " + object.getOrig_name() + ") wurde unter Ihrem Outgoing Ordner unter " 
+				+ object.getContractor().getShort_name() + "/outgoing/"+ object.getIdentifier() +".tar abgelegt und steht jetzt"
 				+ " zum Retrieval bereit!\n\n";
 		try {
 			Mail.sendAMail(preservationSystem.getAdmin().getEmailAddress(),object.getContractor().getEmailAddress(), subject, msg);
