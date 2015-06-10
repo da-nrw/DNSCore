@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -130,7 +131,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 	 * @author Jens Peters
 	 */
 	@Override
-	public boolean storagePolicyAchieved(String gridPath2, StoragePolicy sp) {
+	public boolean storagePolicyAchieved(String gridPath2, StoragePolicy sp, String checksum, Set<Node> cnodes) {
 		irodsSystemConnector.establishConnect();
 		
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + "/" + gridPath2;

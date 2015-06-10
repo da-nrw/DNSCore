@@ -26,6 +26,7 @@ package de.uzk.hki.da.grid;
  */
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -84,41 +85,48 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	}
 	
 	@Override
-	public boolean storagePolicyAchieved(String gridPath2, StoragePolicy sp) {
+	public boolean storagePolicyAchieved(String gridPath2, StoragePolicy sp, String checksum, Set<Node> cnodes) {
 		try {
-		int minNodes = sp.getMinNodes();
-		if (minNodes == 0 ) {
-			logger.error("Given minnodes setting 0 violates long term preservation");
-			return false;
-		}
-		irodsSystemConnector.establishConnect();
-		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + "/" + gridPath2;
-		
-		String number = irodsSystemConnector.executeRule("checkNumber { \n " +
-				"*numberOfCopies=0;\n" +
-				"acGetNumberOfCopies(*dao,*numberOfCopies);\n"
-				+"}\n"
-				+"INPUT *dao=\""+gridPath+"\"\n"
-				+"OUTPUT *numberOfCopies","*numberOfCopies");
-				logger.debug("iRODS tells us, file " +gridPath+ " has already >" + number +"< Copies");
-		if (number!=null && !number.isEmpty()) {
-			int nr = 0;
-			try {
-				nr = Integer.parseInt(number);
-			} catch (NumberFormatException e) {
-				logger.warn("Could not determine Integer out of Value " + number);
+			String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + "/" + gridPath2;
+			IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
+			logger.info("StoragePolicy checking called!");
+			int minNodes = sp.getMinNodes();
+			if (minNodes == 0 ) {
+				logger.error("Given minnodes setting 0 violates long term preservation");
+				return false;
 			}
-			if (nr>= minNodes) {
-				logger.debug ("Reached number of Copies :" + nr);
-				irodsSystemConnector.logoff();
+			
+			logger.info("Checking " + gridPath );
+			int numberOfCopies = 0;
+			if (checksum!=null && !checksum.equals("")) {
+				if (iclc.existsWithChecksum(gridPath, checksum)) {
+					numberOfCopies++;
+				}
+			} else {
+				if (iclc.exists(gridPath))  numberOfCopies++;
+			}
+			if (cnodes!=null) {
+			for (Node node: cnodes) {
+				String remoteGridPath = "/"+ node.getIdentifier() +"/federated" + gridPath;
+				logger.info("Checking existence of remote Copy at " + remoteGridPath);
+				if (iclc.existsWithChecksum(remoteGridPath, checksum)) {
+					numberOfCopies++;
+				}else {
+					if (iclc.exists(remoteGridPath))  numberOfCopies++;
+				} 
+			}
+			} else logger.info("Cooperating nodes was NULL, checking only local copy");
+			if (numberOfCopies>= minNodes) {
+				logger.debug ("Reached number of Copies :" + numberOfCopies);
 				return true;
-			} 
-		}
-		irodsSystemConnector.logoff();
-		} catch (IrodsRuntimeException irex) {
-			logger.error("recieved Exception from iRODS interpreting as false");
+			} else {
+				logger.debug("Reached only " +numberOfCopies + " yet, return later. ");
+			}
+		} catch (Exception irex) {
+			logger.error("recieved Exception from SystemConnector interpreting as false: ",irex);
 		}
 		return false;
+
 	}
 	// deprecated !!!
 	@Override

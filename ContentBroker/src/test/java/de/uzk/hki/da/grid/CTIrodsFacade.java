@@ -197,6 +197,37 @@ public class CTIrodsFacade {
 	}
 	
 	/**
+	 * Test that a given correct and wrong Checksum is evaluated correctly on storagePolicyAchieved.
+	 * @author Jens Peters
+	 */
+	@Test
+	public void testFilePutAndStoragePolicyAchieved() throws IOException {
+		String aip = testColl + "/urn.tar";
+		assertTrue(ig.put(temp, aip, sp, md5sum));
+		assertTrue(ig.storagePolicyAchieved(aip, sp, md5sum, null));
+		assertFalse(ig.storagePolicyAchieved(aip, sp, "ddlldld", null));
+	}
+	
+	/**
+	 * Test that minNodes is evaluated correctly
+	 *   @author Jens Peters
+	 * @throws IOException 
+	 */
+	@Test
+	public void storagePolicyIsNotAchievedDueToCopiesNotReached() throws IOException {
+		StoragePolicy sp2 = new StoragePolicy();
+		sp2.setMinNodes(10);
+		sp2.setReplDestinations("ciArchiveResource");
+		sp2.setWorkingResource("ciWorkingResource");
+		sp2.setGridCacheAreaRootPath(sp.getGridCacheAreaRootPath());
+		sp2.setCommonStorageRescName("ciArchiveResource");
+		String aip = testColl + "/urn.tar";
+		sp2.setMinNodes(10);
+		assertTrue(ig.put(temp, aip, sp2, md5sum));
+		assertFalse(ig.storagePolicyAchieved(aip, sp2, md5sum, null));
+	}
+	
+	/**
 	 * Test that a given Checksum is evaluated correctly.
 	 * @author Jens Peters
 	 */
@@ -211,8 +242,6 @@ public class CTIrodsFacade {
 		}
 		
 	}
-	
-	//-----------------------------------------------------------------
 	
 	
 	/**
@@ -231,6 +260,8 @@ public class CTIrodsFacade {
 		assertFalse(ig.isValid(testColl + "/urn.tar"));
 	}
 
+	//-----------------------------------------------------------------
+	
 	
 	
 	private void destroyTestFileOnLongTermStorage() throws IOException {
@@ -246,7 +277,7 @@ public class CTIrodsFacade {
 		assertTrue(ig.put(temp, testColl + "/urn.tar", sp, null));
 		
 		while (true) {
-			if (ig.storagePolicyAchieved(testColl + "/urn.tar", sp)) break;
+			if (ig.storagePolicyAchieved(testColl + "/urn.tar", sp, null, null)) break;
 			Thread.sleep(1000);
 		}
 	}

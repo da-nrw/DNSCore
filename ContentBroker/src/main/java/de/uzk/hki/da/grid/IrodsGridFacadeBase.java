@@ -21,12 +21,14 @@ package de.uzk.hki.da.grid;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.MD5Checksum;
@@ -131,7 +133,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	 * @see de.uzk.hki.da.grid.GridFacade#storagePolicyAchieved(java.lang.String, int)
 	 */
 	@Override
-	public abstract boolean storagePolicyAchieved(String gridPath, StoragePolicy sp);
+	public abstract boolean storagePolicyAchieved(String gridPath, StoragePolicy sp, String checksum, Set<Node> cnodes);
 	
 	/**
 	 * Replication is solely on cache.

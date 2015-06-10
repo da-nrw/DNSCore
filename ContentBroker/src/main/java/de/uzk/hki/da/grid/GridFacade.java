@@ -24,6 +24,7 @@ package de.uzk.hki.da.grid;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
@@ -85,12 +86,13 @@ public interface GridFacade {
 	
 	/**
 	 * Determines if the given storage Policy is being achieved.
-	 *
+	 * @param checksum TODO
+	 * @param cnodes TODO
 	 * @param address_dest the address_dest
 	 * @param minNodes the min nodes
 	 * @return true, if successful
 	 */
-	abstract boolean storagePolicyAchieved(String gridPath, StoragePolicy sp);
+	abstract boolean storagePolicyAchieved(String gridPath, StoragePolicy sp, String checksum, Set<Node> cnodes);
 
 	/**
 	 * Returnes fileSize of given file.
