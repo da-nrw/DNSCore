@@ -115,15 +115,15 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 					if (iclc.exists(remoteGridPath))  numberOfCopies++;
 				} 
 			}
-			} else logger.info("Cooperating nodes was NULL, checking only local copy");
+			} else logger.debug("Cooperating nodes was NULL, checking only local copy");
 			if (numberOfCopies>= minNodes) {
-				logger.debug ("Reached number of Copies :" + numberOfCopies);
+				logger.info ("Reached number of Copies :" + numberOfCopies);
 				return true;
 			} else {
-				logger.debug("Reached only " +numberOfCopies + " yet, return later. ");
+				logger.debug("Found only " +numberOfCopies + " yet, return later. ");
 			}
 		} catch (Exception irex) {
-			logger.error("recieved Exception from SystemConnector interpreting as false: ",irex);
+			logger.error("recieved Exception while checking storagePolicy - interpreting as false: " + irex.getMessage());
 		}
 		return false;
 
