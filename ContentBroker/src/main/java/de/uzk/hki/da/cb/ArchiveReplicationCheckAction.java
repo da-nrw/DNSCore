@@ -82,7 +82,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		}
 		while (!gridRoot.storagePolicyAchieved(
 				aipPath().toString(), 
-				sp));
+				sp, o.getLatestPackage().getChecksum(), n.getCooperatingNodes()));
 		
 		toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());
 		setObjectArchived();

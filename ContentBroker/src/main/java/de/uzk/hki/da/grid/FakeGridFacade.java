@@ -22,6 +22,7 @@ package de.uzk.hki.da.grid;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -84,7 +85,7 @@ public class FakeGridFacade implements GridFacade {
 	} 
 
 	@Override
-	public boolean storagePolicyAchieved(String address_dest, StoragePolicy sp) {
+	public boolean storagePolicyAchieved(String address_dest, StoragePolicy sp, String checksum, Set<Node> cnodes) {
 		return true;
 	}
 

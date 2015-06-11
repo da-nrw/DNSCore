@@ -133,7 +133,7 @@
 		scope="prototype">
 		<property name="startStatus" value="440" />
 		<property name="endStatus" value="500" />
-		<property name="timeOut" value="2000" />
+		<property name="timeOut" value="20000" />
 		<property name="gridRoot" ref="${cb.implementation.grid:fakeGridFacade}"/>
 		<property name="name" value="IngestArchiveReplicationCheckAction" />
 	</bean>
