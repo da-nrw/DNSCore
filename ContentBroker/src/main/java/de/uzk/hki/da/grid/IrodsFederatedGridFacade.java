@@ -89,14 +89,14 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		try {
 			String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + "/" + gridPath2;
 			IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
-			logger.info("StoragePolicy checking called!");
+			logger.debug("StoragePolicy checking called!");
 			int minNodes = sp.getMinNodes();
 			if (minNodes == 0 ) {
 				logger.error("Given minnodes setting 0 violates long term preservation");
 				return false;
 			}
 			
-			logger.info("Checking " + gridPath );
+			logger.info("Checking copies of " + gridPath );
 			int numberOfCopies = 0;
 			if (checksum!=null && !checksum.equals("")) {
 				if (iclc.existsWithChecksum(gridPath, checksum)) {
