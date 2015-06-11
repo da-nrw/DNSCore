@@ -277,7 +277,7 @@ public abstract class MetadataStructure {
 		}
 		if(!missingFiles.isEmpty()) {
 			for(String missingFile : missingFiles) {
-				logger.error("Missing file: "+missingFile);
+				logger.error("Missing reference in metadata file"+metadataFile.getName()+": "+missingFile);
 			}
 		}
 		return existingFiles;
