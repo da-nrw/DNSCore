@@ -45,6 +45,14 @@ public class PDFServiceTests {
 		PDDocument trgt = PDDocument.load(new File(BASE_DIR+"/trgt.pdf"));
 		assertThat(trgt.getDocumentCatalog().getAllPages().size()).isEqualTo(1);
 	}
-	
+	@Test
+	public void testCertainPagesGivenNullValues() throws IOException{
+		PdfService service = new PdfService(new File(BASE_DIR+"/src.pdf"), 
+				new File(BASE_DIR+"/trgt.pdf"));
+		
+		service.reduceToCertainPages(null, null); // src doc only has one page
+		PDDocument trgt = PDDocument.load(new File(BASE_DIR+"/trgt.pdf"));
+		assertThat(trgt.getDocumentCatalog().getAllPages().size()).isEqualTo(1);
+	}
 
 }

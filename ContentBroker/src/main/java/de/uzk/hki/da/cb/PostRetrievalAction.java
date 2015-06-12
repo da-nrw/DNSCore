@@ -39,7 +39,7 @@ import de.uzk.hki.da.utils.StringUtilities;
 public class PostRetrievalAction extends AbstractAction {
 
 	private static final String OUTGOING = "outgoing";
-	private int timeOut = 4000;
+	private int timeOut = 20000;
 	private long days = 2;
 	
 	public PostRetrievalAction(){
@@ -64,17 +64,13 @@ public class PostRetrievalAction extends AbstractAction {
 	
 	@Override
 	public boolean implementation() {
-		
-		
-		while (new Date().getTime()/1000L < (Long.parseLong(j.getDate_created())+(86400L*days))){
+		logger.debug("PostRetrievalAction called! ");
+		if (new Date().getTime()/1000L < (Long.parseLong(j.getDate_created())+(86400L*days))){
 			delay();
+			logger.debug("CB not yet able to delete that item yet!");
+			return false;
 		} 
-		if ((new Date().getTime())/1000L > (Long.parseLong(j.getDate_created())+(86400L*days))){
-			
-			
-			
-		
-			
+		if ((new Date().getTime())/1000L > (Long.parseLong(j.getDate_created())+(86400L*days))){							
 		Path outgoingFolder = Path.make(n.getUserAreaRootPath(),o.getContractor().getShort_name(),OUTGOING);
 		File toDel =  Path.makeFile(outgoingFolder,o.getIdentifier() + C.FILE_EXTENSION_TAR);
 		if (toDel.exists()) {

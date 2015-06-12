@@ -103,12 +103,19 @@ public class PdfService {
 		List srcPages = srcPdf.getDocumentCatalog().getAllPages();
 
 		int numberOfPages = 0;
+		
+		
 		if (numberOfPagesText != null && !numberOfPagesText.isEmpty()) {
 			numberOfPages = Integer.parseInt(numberOfPagesText);
 			for (int i = 0; i < Math.min(numberOfPages,srcPages.size()); i++) 
 				targetPdf.addPage((PDPage) srcPages.get(i));
 		}
-
+		
+		if (numberOfPagesText==null && certainPagesText==null) {
+			for (int i = 0; i < srcPages.size(); i++) 
+				targetPdf.addPage((PDPage) srcPages.get(i));
+		}
+		
 		if (certainPagesText != null && !certainPagesText.isEmpty()) {
 			String[] certainPagesTexts = certainPagesText.split(" ");
 			int[] certainPages = new int[certainPagesTexts.length];
@@ -122,7 +129,7 @@ public class PdfService {
 					targetPdf.addPage((PDPage) srcPages
 							.get(certainPages[i] - 1));
 			}
-		}
+		} 
 
 		try {
 			targetPdf.save(targetPdfFile);
@@ -130,6 +137,7 @@ public class PdfService {
 			throw new RuntimeException("Unable to create PDF!", e);
 		} finally {
 			targetPdf.close();
+			srcPdf.close();
 		}
 
 	}
