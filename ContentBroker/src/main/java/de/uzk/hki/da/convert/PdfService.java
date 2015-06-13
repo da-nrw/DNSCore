@@ -35,6 +35,8 @@ import org.apache.pdfbox.preflight.parser.PreflightParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.utils.StringUtilities;
+
 
 /**
  * Adds PDF Functions of Apache PDFBox to DA-NRW.
@@ -111,7 +113,7 @@ public class PdfService {
 				targetPdf.addPage((PDPage) srcPages.get(i));
 		}
 		
-		if (numberOfPagesText==null && certainPagesText==null) {
+		if (StringUtilities.isNotSet(numberOfPagesText) && StringUtilities.isNotSet(certainPagesText)) {
 			for (int i = 0; i < srcPages.size(); i++) 
 				targetPdf.addPage((PDPage) srcPages.get(i));
 		}
