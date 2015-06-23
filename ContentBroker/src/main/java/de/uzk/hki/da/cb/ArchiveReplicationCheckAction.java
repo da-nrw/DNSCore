@@ -89,6 +89,8 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 
 		logger.debug("Delete object "+wa.objectPath().toFile()+" from WorkArea.");
 		FileUtils.deleteDirectory(wa.objectPath().toFile());
+		logger.debug("Delete object "+wa.replPath().toFile()+" from WorkArea.");
+		FileUtils.deleteDirectory(wa.replPath().toFile());
 		
 		new MailContents(preservationSystem,n).sendReciept(j, o);
 		logger.debug("Successfully sent email.");

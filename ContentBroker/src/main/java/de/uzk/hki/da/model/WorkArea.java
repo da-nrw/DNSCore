@@ -61,6 +61,7 @@ public class WorkArea {
 	public static final String WA_INSTITUTION = "institution";
 	public static final String PUBLIC = "public";
 	public static final String WORK = "work";
+	public static final String REPL = "repl";
 	public static final String PIPS = "pips";
 	public static final String DATA = "data";
 	public static final String AIP = "aip";
@@ -132,6 +133,10 @@ public class WorkArea {
 	
 	public Path objectPath() {
 		return Path.make(n.getWorkAreaRootPath(),WorkArea.WORK,o.getContractor().getShort_name(),o.getIdentifier());
+	}
+	
+	public Path replPath() {
+		return Path.make(n.getWorkAreaRootPath(),WorkArea.REPL,o.getContractor().getShort_name(),o.getIdentifier());
 	}
 	
 	public Path dataPath() {
