@@ -87,6 +87,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());
 		setObjectArchived();
 
+		logger.debug("Delete object "+wa.objectPath().toFile()+" from WorkArea.");
 		FileUtils.deleteDirectory(wa.objectPath().toFile());
 		
 		new MailContents(preservationSystem,n).sendReciept(j, o);

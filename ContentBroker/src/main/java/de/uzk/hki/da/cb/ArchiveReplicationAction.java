@@ -23,6 +23,7 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
@@ -66,15 +67,22 @@ public class ArchiveReplicationAction extends AbstractAction {
 		sp.setAdminEmail(n.getAdmin().getEmailAddress());
 		sp.setNodeName(n.getName());
 		sp.setCommonStorageRescName(n.getReplDestinations());
-		Path newFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), filename);
+		Path aipFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), filename);
+		Path replFilePath = Path.make(n.getWorkAreaRootPath(), "repl", o.getContractor().getShort_name(), filename);
 		try {
-			if (!gridRoot.put(new File(newFilePath.toString()), 
+			File sourceFile = new File(aipFilePath.toString());
+			if (!gridRoot.put(sourceFile, 
 						target.toString(), sp, o.getLatestPackage().getChecksum())) {
 			delay(); 
 			return false;
 			}
-			gridRoot.distribute(n, new File(newFilePath.toString()), target.toString(), sp);
-			new File(newFilePath.toString()).delete();
+			File replFile = new File(replFilePath.toString());
+			FileUtils.copyFile(sourceFile, replFile);
+			
+			gridRoot.distribute(n, replFile, target.toString(), sp);
+			
+			new File(aipFilePath.toString()).delete();
+			new File(replFilePath.toString()).delete();
 		} catch (IOException e) {
 			throw new RuntimeException("Put to IRODS Datagrid failed! " + e.getMessage());
 		}

@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.StringUtilities;
 
 
@@ -56,6 +57,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
 		if (!address_dest.startsWith("/")) address_dest = "/" + address_dest;
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + address_dest;
+		logger.debug("Put file "+file+" to "+gridPath);
 		String destCollection = FilenameUtils.getFullPath(gridPath);
 		
 		if (!iclc.exists(destCollection)) {
@@ -163,7 +165,8 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		
 		for (Node cn: node.getCooperatingNodes()) {
 				CreateCopyJob cj = new CreateCopyJob();
-				cj.createCopyJob(gridPath, cn.getIdentifier(), node.getIdentifier(),sp.getCommonStorageRescName());
+				logger.debug("Create copy job. Source: "+fileToDistribute.getPath());
+				cj.createCopyJob(fileToDistribute.getPath(), cn.getIdentifier(), node.getIdentifier(),sp.getCommonStorageRescName());
 			}
 	
 	}
