@@ -43,14 +43,15 @@ public class DistributionWorker extends Worker {
 		try {
 			CopyJob cj= fetchSynchronizeJob(node.getIdentifier());
 			if (cj!= null) {
-			if (jobExecutor.execute(cj)) {
-				logger.info("successfully executed syncing of " + cj.getSource() + " to " + cj.getDest_name() );
-				deleteCopyJob(cj);
-			}
-			else {
-				logger.error("error executing syncing of " + cj.getSource() + " to " + cj.getDest_name() );
-				updateCopyJob(cj);
-			}
+				logger.debug("Try to sync "+cj.getSource()+" & "+cj.getDest_name());
+				if (jobExecutor.execute(cj)) {
+					logger.info("successfully executed syncing of " + cj.getSource() + " to " + cj.getDest_name() );
+					deleteCopyJob(cj);
+				}
+				else {
+					logger.error("error executing syncing of " + cj.getSource() + " to " + cj.getDest_name() );
+					updateCopyJob(cj);
+				}
 			} else logger.debug("fetchSynchronizeJob() returns null for CopyJob request for "+ node.getIdentifier() +"!");
 		} catch (Exception e) {			
 			logger.error("execute CopyJob Worker caused exception " + e.getCause(), e);

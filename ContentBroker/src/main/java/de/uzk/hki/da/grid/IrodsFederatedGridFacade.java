@@ -57,12 +57,16 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
 		if (!address_dest.startsWith("/")) address_dest = "/" + address_dest;
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + address_dest;
+		logger.debug("GRIDPATH: "+gridPath);
 		logger.debug("Put file "+file+" to "+gridPath);
 		String destCollection = FilenameUtils.getFullPath(gridPath);
 		
 		if (!iclc.exists(destCollection)) {
 			logger.debug("creating Coll " + destCollection);
 			iclc.mkCollection(destCollection);
+		}
+		if(!iclc.put(file, file.toString(), sp.getCommonStorageRescName())) {
+			logger.debug("Unable to put the repl file file to irods");
 		}
 		if (iclc.put(file, gridPath, sp.getCommonStorageRescName())) {
 			if (sp.getForbiddenNodes()!=null && !sp.getForbiddenNodes().isEmpty()) iclc.setIMeta(gridPath, "FORBIDDEN_NODES", String.valueOf(sp));
@@ -83,7 +87,10 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 			iclc.setIMeta(gridPath, "chksum", checksumAfterPut);
 			iclc.setIMeta(gridPath, "FEDERATED", "0");
 			return true;
-		} else return false;	
+		} else {
+			logger.debug("Unable to put the aip file to irods");
+			return false;
+		}	
 	}
 	
 	@Override
@@ -164,11 +171,14 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + address_dest;	
 		
 		for (Node cn: node.getCooperatingNodes()) {
-				CreateCopyJob cj = new CreateCopyJob();
-				logger.debug("Create copy job. Source: "+fileToDistribute.getPath());
-				cj.createCopyJob(fileToDistribute.getPath(), cn.getIdentifier(), node.getIdentifier(),sp.getCommonStorageRescName());
-			}
-	
+			CreateCopyJob cj = new CreateCopyJob();
+			logger.debug("Create copy job. Source: "+fileToDistribute.getPath());
+			try {
+				cj.createCopyJob(fileToDistribute.toString(), gridPath, cn.getIdentifier(), node.getIdentifier(),sp.getCommonStorageRescName());
+			} catch (Exception e) {
+				throw new RuntimeException("Unable to create copy job!");
+			}		
+		}
 	}
 	
 }

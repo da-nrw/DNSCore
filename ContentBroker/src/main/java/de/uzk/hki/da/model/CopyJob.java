@@ -17,10 +17,18 @@ public class CopyJob {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	private String source;
+	private String aipGridPath;
 	private Date last_tried;
 	private String source_node_identifier;
 	private String dest_node_identifier;
 	private String params;
+	
+	public String getAipGridPath() {
+		return aipGridPath;
+	}
+	public void setAipGridPath(String aipGridPath) {
+		this.aipGridPath = aipGridPath;
+	}
 	
 	public String getSource() {
 		return source;

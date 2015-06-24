@@ -32,11 +32,14 @@ public class IrodsCopyExecutor implements JobExecutor {
 				return false;
 			}
 			
-			String targetDir =  FilenameUtils.getFullPath("/" +cj.getDest_name() + "/"+dirPrefix + cj.getSource());
+			logger.debug("source: "+cj.getSource());
+			logger.debug("dest: "+cj.getDest_name());
+			String targetDir =  FilenameUtils.getFullPath("/" +cj.getDest_name() + "/"+dirPrefix + cj.getAipGridPath());
 			if (!iclc.exists(targetDir)){
 				logger.info("Creating " + targetDir + " now");
 				iclc.mkCollection(targetDir);
 			}
+			logger.debug("RSYNC "+cj.getSource()+" & "+targetDir+" with params "+cj.getParams());
 			String out = iclc.rsync(cj.getSource(), targetDir, cj.getParams());
 			logger.debug(out);
 			if (out.contains("ERROR")) {

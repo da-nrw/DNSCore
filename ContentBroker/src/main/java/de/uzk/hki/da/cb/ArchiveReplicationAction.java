@@ -31,6 +31,7 @@ import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.MD5Checksum;
 
 /**
  * Does the decoupled and time based Archive Replication to the given minimum number of required nodes. 
@@ -70,19 +71,30 @@ public class ArchiveReplicationAction extends AbstractAction {
 		Path aipFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), filename);
 		Path replFilePath = Path.make(n.getWorkAreaRootPath(), "repl", o.getContractor().getShort_name(), filename);
 		try {
+			
 			File sourceFile = new File(aipFilePath.toString());
-			if (!gridRoot.put(sourceFile, 
-						target.toString(), sp, o.getLatestPackage().getChecksum())) {
-			delay(); 
-			return false;
-			}
+			
+			String sourceFileMd5Checksum = MD5Checksum.getMD5checksumForLocalFile(new File(aipFilePath.toString()));
+			logger.debug("Source file md5 checksum: "+sourceFileMd5Checksum);
+			
 			File replFile = new File(replFilePath.toString());
 			FileUtils.copyFile(sourceFile, replFile);
+			String replFileMd5Checksum = MD5Checksum.getMD5checksumForLocalFile(replFile);
+			logger.debug("Replication file md5 checksum: "+replFileMd5Checksum);
+			
+			if(!sourceFileMd5Checksum.equals(replFileMd5Checksum)) {
+				throw new RuntimeException("Unable to copy the object file to destination "+replFile.getPath());
+			}
+			
+			if (!gridRoot.put(replFile, 
+						target.toString(), sp, o.getLatestPackage().getChecksum())) {
+				delay(); 
+				return false;
+			}
 			
 			gridRoot.distribute(n, replFile, target.toString(), sp);
 			
 			new File(aipFilePath.toString()).delete();
-			new File(replFilePath.toString()).delete();
 		} catch (IOException e) {
 			throw new RuntimeException("Put to IRODS Datagrid failed! " + e.getMessage());
 		}

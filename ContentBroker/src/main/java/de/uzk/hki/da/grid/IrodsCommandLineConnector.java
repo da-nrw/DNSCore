@@ -44,7 +44,7 @@ public class IrodsCommandLineConnector {
 		try {
 			pi = clc.runCmdSynchronously(commandAsArray,0);
 		} catch (IOException e1) {
-			throw new RuntimeException("Icommand did not succeed, not found: " + Arrays.toString(commandAsArray));
+			throw new RuntimeException("Icommand did not succeed, not found: " + Arrays.toString(commandAsArray) + "because of " +e1);
 		}
 		if (pi.getExitValue()!=0) {
 			logger.error("Icommand did not succeed: " + Arrays.toString(commandAsArray) + " returned " +pi.getStdErr() );
