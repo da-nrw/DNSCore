@@ -28,6 +28,7 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.grid.IrodsRuntimeException;
 import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -82,15 +83,23 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		}
 		while (!gridRoot.storagePolicyAchieved(
 				aipPath().toString(), 
-				sp, o.getLatestPackage().getChecksum(), n.getCooperatingNodes()));
+				sp, o.getLatestPackage().getChecksum(), n.getCooperatingNodes())); {
+					logger.debug("FERTIG!");
+					toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());
+				}
 		
-		toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());
 		setObjectArchived();
 
 		logger.debug("Delete object "+wa.objectPath().toFile()+" from WorkArea.");
 		FileUtils.deleteDirectory(wa.objectPath().toFile());
 		logger.debug("Delete object "+wa.replPath().toFile()+" from WorkArea.");
 		FileUtils.deleteDirectory(wa.replPath().toFile());
+		logger.debug("Delete the WA-copy of object from irods.");
+		String filename = o.getIdentifier() + ".pack_" + o.getLatestPackage().getName() + ".tar";
+		String replFileDest = Path.make(n.getWorkAreaRootPath(), "repl", o.getContractor().getShort_name(), filename).toString();
+		if(!gridRoot.remove(replFileDest)) {
+			throw new IrodsRuntimeException("Unable to remove "+replFileDest);
+		}
 		
 		new MailContents(preservationSystem,n).sendReciept(j, o);
 		logger.debug("Successfully sent email.");

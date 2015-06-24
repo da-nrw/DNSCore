@@ -138,4 +138,6 @@ public interface GridFacade {
 	 * @return
 	 */
 	abstract boolean exists(String address_dest);
+
+	boolean remove(String destination);
 }

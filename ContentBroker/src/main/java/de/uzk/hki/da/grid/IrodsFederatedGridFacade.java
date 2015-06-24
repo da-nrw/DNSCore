@@ -66,7 +66,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 			iclc.mkCollection(destCollection);
 		}
 		if(!iclc.put(file, file.toString(), sp.getCommonStorageRescName())) {
-			logger.debug("Unable to put the repl file file to irods");
+			logger.debug("Unable to put the repl file to irods");
 		}
 		if (iclc.put(file, gridPath, sp.getCommonStorageRescName())) {
 			if (sp.getForbiddenNodes()!=null && !sp.getForbiddenNodes().isEmpty()) iclc.setIMeta(gridPath, "FORBIDDEN_NODES", String.valueOf(sp));
@@ -115,16 +115,18 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 				if (iclc.exists(gridPath))  numberOfCopies++;
 			}
 			if (cnodes!=null) {
-			for (Node node: cnodes) {
-				String remoteGridPath = "/"+ node.getIdentifier() +"/federated" + gridPath;
-				logger.info("Checking existence of remote Copy at " + remoteGridPath);
-				if (iclc.existsWithChecksum(remoteGridPath, checksum)) {
-					numberOfCopies++;
-				}else {
-					if (iclc.exists(remoteGridPath))  numberOfCopies++;
-				} 
-			}
+				for (Node node: cnodes) {
+					String remoteGridPath = "/"+ node.getIdentifier() +"/federated" + gridPath;
+					logger.info("Checking existence of remote Copy at " + remoteGridPath);
+					if (iclc.existsWithChecksum(remoteGridPath, checksum)) {
+						numberOfCopies++;
+					}
+//					else {
+//						if (iclc.exists(remoteGridPath))  numberOfCopies++;
+//					} 
+				}
 			} else logger.debug("Cooperating nodes was NULL, checking only local copy");
+			
 			if (numberOfCopies>= minNodes) {
 				logger.info ("Reached number of Copies :" + numberOfCopies);
 				return true;
@@ -179,6 +181,12 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 				throw new RuntimeException("Unable to create copy job!");
 			}		
 		}
+	}
+	
+	@Override
+	public boolean remove(String destination) {
+		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
+		return iclc.remove(destination);
 	}
 	
 }
