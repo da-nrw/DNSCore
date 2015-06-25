@@ -124,7 +124,6 @@ public class IrodsCommandLineConnector {
 		String[] commandAsArray = new String[commandAsList.size()];
 		commandAsArray = commandAsList.toArray(commandAsArray);
 		String out = executeIcommand(commandAsArray);
-		logger.debug("PUT OUT "+out);
 		if (out.indexOf("ERROR")>=0) return false;
 		return true;
 	}

@@ -218,12 +218,6 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		
 		
 	}
-
-	@Override
-	public boolean remove(String destination) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 
 

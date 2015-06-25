@@ -170,9 +170,4 @@ public class FakeGridFacade implements GridFacade {
 		} return "";
 	}
 
-	@Override
-	public boolean remove(String destination) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }
