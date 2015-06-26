@@ -21,7 +21,7 @@
 
 	<bean class="de.uzk.hki.da.core.IngestGate" id="ingestGate">
 		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}" />
-		<property name="fileSizeFactor" value="6" />
+		<property name="fileSizeFactor" value="3" />
 		<property name="freeDiskSpacePercent" value="5" />
 	</bean>
 

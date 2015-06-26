@@ -32,8 +32,6 @@ public class IrodsCopyExecutor implements JobExecutor {
 				return false;
 			}
 			
-			logger.debug("source: "+cj.getSource());
-			logger.debug("dest: "+cj.getDest_name());
 			String targetDir =  FilenameUtils.getFullPath("/" +cj.getDest_name() + "/"+dirPrefix + cj.getAipGridPath());
 			if (!iclc.exists(targetDir)){
 				logger.info("Creating " + targetDir + " now");
