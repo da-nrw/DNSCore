@@ -166,15 +166,15 @@ public class CTIrodsCommandLineConnector {
 		assertEquals(md5sum, MD5Checksum.getMD5checksumForLocalFile(file));
 	}
 	
-	@Test
-	public void testIRsync() {
-		String destColl = 
-				FilenameUtils.getFullPathNoEndSeparator(dao2);
-		iclc.mkCollection(destColl);
-		iclc.rsync(dao, destColl, archiveStorage);
-		assertTrue(iclc.exists(dao2));
-		assertEquals(iclc.getChecksum(dao2),iclc.getChecksum(dao));
-	}
+//	@Test
+//	public void testIRsync() {
+//		String destColl = 
+//				FilenameUtils.getFullPathNoEndSeparator(dao2);
+//		iclc.mkCollection(destColl);
+//		iclc.rsync(dao, destColl, archiveStorage);
+//		assertTrue(iclc.exists(dao2));
+//		assertEquals(iclc.getChecksum(dao2),iclc.getChecksum(dao));
+//	}
 	
 	@Test
 	public void testIRepl() {

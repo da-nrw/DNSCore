@@ -66,7 +66,6 @@ public class CommandLineConnector {
 		finally {
 			closeStreams(p);
 		}
-		System.out.println("______________________________________________________________-"+pi);
 		return pi;
 	}
 

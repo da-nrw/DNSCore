@@ -57,17 +57,13 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
 		if (!address_dest.startsWith("/")) address_dest = "/" + address_dest;
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + address_dest;
-		logger.debug("GRIDPATH: "+gridPath);
-		logger.debug("Put file "+file+" to "+gridPath);
 		String destCollection = FilenameUtils.getFullPath(gridPath);
 		
 		if (!iclc.exists(destCollection)) {
 			logger.debug("creating Coll " + destCollection);
 			iclc.mkCollection(destCollection);
 		}
-		if(!iclc.put(file, file.toString(), sp.getCommonStorageRescName())) {
-			logger.debug("Unable to put the repl file file to irods");
-		}
+		
 		if (iclc.put(file, gridPath, sp.getCommonStorageRescName())) {
 			if (sp.getForbiddenNodes()!=null && !sp.getForbiddenNodes().isEmpty()) iclc.setIMeta(gridPath, "FORBIDDEN_NODES", String.valueOf(sp));
 			iclc.setIMeta(gridPath, "MIN_COPIES", String.valueOf(sp.getMinNodes()));
@@ -94,6 +90,23 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	}
 	
 	@Override
+	public boolean putToReplDir(File file, String address_dest , StoragePolicy sp, String checksum) {
+		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
+		String destCollection = FilenameUtils.getFullPath(address_dest);
+		if (!iclc.exists(destCollection)) {
+			logger.debug("creating Coll " + destCollection);
+			iclc.mkCollection(destCollection);
+		}
+	
+		if (iclc.put(file, address_dest, sp.getCommonStorageRescName())) {
+			return true;
+		} else {
+			logger.debug("Unable to put the aip file to irods repl directory");
+			return false;
+		}
+	}
+	
+	@Override
 	public boolean storagePolicyAchieved(String gridPath2, StoragePolicy sp, String checksum, Set<Node> cnodes) {
 		try {
 			String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + "/" + gridPath2;
@@ -112,7 +125,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 					numberOfCopies++;
 				}
 			} else {
-				if (iclc.exists(gridPath))  numberOfCopies++;
+				if (iclc.exists(gridPath)) numberOfCopies++;
 			}
 			if (cnodes!=null) {
 			for (Node node: cnodes) {
@@ -120,9 +133,10 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 				logger.info("Checking existence of remote Copy at " + remoteGridPath);
 				if (iclc.existsWithChecksum(remoteGridPath, checksum)) {
 					numberOfCopies++;
-				}else {
-					if (iclc.exists(remoteGridPath))  numberOfCopies++;
-				} 
+				}
+//				else {
+//					if (iclc.exists(remoteGridPath))  numberOfCopies++;
+//				} 
 			}
 			} else logger.debug("Cooperating nodes was NULL, checking only local copy");
 			if (numberOfCopies>= minNodes) {
@@ -174,10 +188,21 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 			CreateCopyJob cj = new CreateCopyJob();
 			logger.debug("Create copy job. Source: "+fileToDistribute.getPath());
 			try {
-				cj.createCopyJob(fileToDistribute.toString(), gridPath, cn.getIdentifier(), node.getIdentifier(),sp.getCommonStorageRescName());
+				cj.createCopyJob(fileToDistribute.getPath(), gridPath, cn.getIdentifier(), node.getIdentifier(),sp.getCommonStorageRescName());
 			} catch (Exception e) {
 				throw new RuntimeException("Unable to create copy job!");
 			}		
+		}
+	}
+	
+	@Override
+	public boolean remove(String dest) {
+		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
+		if (iclc.remove(dest)) {
+			return true;
+		} else {
+			logger.error("Unable to remove the aip file from local repl directory");
+			return false;
 		}
 	}
 	

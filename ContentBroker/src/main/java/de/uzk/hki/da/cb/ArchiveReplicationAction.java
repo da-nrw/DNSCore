@@ -70,29 +70,22 @@ public class ArchiveReplicationAction extends AbstractAction {
 		sp.setCommonStorageRescName(n.getReplDestinations());
 		Path aipFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), filename);
 		Path replFilePath = Path.make(n.getWorkAreaRootPath(), "repl", o.getContractor().getShort_name(), filename);
+
 		try {
 			
-			File sourceFile = new File(aipFilePath.toString());
-			
-			String sourceFileMd5Checksum = MD5Checksum.getMD5checksumForLocalFile(new File(aipFilePath.toString()));
-			logger.debug("Source file md5 checksum: "+sourceFileMd5Checksum);
-			
-			File replFile = new File(replFilePath.toString());
-			FileUtils.copyFile(sourceFile, replFile);
-			String replFileMd5Checksum = MD5Checksum.getMD5checksumForLocalFile(replFile);
-			logger.debug("Replication file md5 checksum: "+replFileMd5Checksum);
-			
-			if(!sourceFileMd5Checksum.equals(replFileMd5Checksum)) {
-				throw new RuntimeException("Unable to copy the object file to destination "+replFile.getPath());
-			}
-			
-			if (!gridRoot.put(replFile, 
-						target.toString(), sp, o.getLatestPackage().getChecksum())) {
+			if (!gridRoot.put(new File(aipFilePath.toString()), 
+					target.toString(), sp, o.getLatestPackage().getChecksum())) {
 				delay(); 
 				return false;
 			}
 			
-			gridRoot.distribute(n, replFile, target.toString(), sp);
+			if (!gridRoot.putToReplDir(new File(aipFilePath.toString()), 
+					replFilePath.toString(), sp, o.getLatestPackage().getChecksum())) {
+				delay(); 
+				return false;
+			}
+			
+			gridRoot.distribute(n, replFilePath.toFile(), target.toString(), sp);
 			
 			new File(aipFilePath.toString()).delete();
 		} catch (IOException e) {

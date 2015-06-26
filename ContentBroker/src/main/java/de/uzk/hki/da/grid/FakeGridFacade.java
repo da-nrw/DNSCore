@@ -170,4 +170,17 @@ public class FakeGridFacade implements GridFacade {
 		} return "";
 	}
 
+	@Override
+	public boolean putToReplDir(File file, String address_dest,
+			StoragePolicy sp, String checksum) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean remove(String dest) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

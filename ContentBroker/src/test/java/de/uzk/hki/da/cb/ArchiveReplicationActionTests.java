@@ -56,50 +56,45 @@ public class ArchiveReplicationActionTests {
 		setUpObject();
 	}
 	
-//	@Test
-//	public void testHappyPath() throws FileNotFoundException, IOException{
-//		node.setReplDestinations("a");
-//		node.setGridCacheAreaRootPath(Path.make(workAreaRootPath));
-//		User c = new User();
-//		c.setShort_name("TEST");
-//		c.setEmailAddress("noreply");
-//		object.setContractor(c);
-//		node.setAdmin(c);
-//		ArchiveReplicationAction action = setUpAction(node);
-//		action.implementation();
-//	}
-//	
-//	@Test
-//	public void testReplDestsNotSet() throws FileNotFoundException, IOException{
-//		node.setReplDestinations(null);
-//		node.setGridCacheAreaRootPath(Path.make(workAreaRootPath));
-//		
-//		User c = new User();
-//		c.setShort_name("TEST");
-//		c.setForbidden_nodes("b");
-//		c.setEmailAddress("noreply");
-//		node.setAdmin(c);
-//		object.setContractor(c);
-//		ArchiveReplicationAction action = setUpAction(node);
-//		action.implementation();
-//	}
-//	
-//	@Test
-//	public void testForbiddenNodesNotSet() throws FileNotFoundException, IOException{
-//		node.setReplDestinations("a");
-//		node.setGridCacheAreaRootPath(Path.make(workAreaRootPath));
-//		User c = new User();
-//		c.setEmailAddress("noreply");
-//		c.setShort_name("TEST");
-//		c.setForbidden_nodes(null);
-//		object.setContractor(c);
-//		ArchiveReplicationAction action = setUpAction(node);
-//		action.implementation();
-//	}
-//	
 	@Test
-	public void test() {
-		System.out.println("huhu");
+	public void testHappyPath() throws FileNotFoundException, IOException{
+		node.setReplDestinations("a");
+		node.setGridCacheAreaRootPath(Path.make(workAreaRootPath));
+		User c = new User();
+		c.setShort_name("TEST");
+		c.setEmailAddress("noreply");
+		object.setContractor(c);
+		node.setAdmin(c);
+		ArchiveReplicationAction action = setUpAction(node);
+		action.implementation();
+	}
+	
+	@Test
+	public void testReplDestsNotSet() throws FileNotFoundException, IOException{
+		node.setReplDestinations(null);
+		node.setGridCacheAreaRootPath(Path.make(workAreaRootPath));
+		
+		User c = new User();
+		c.setShort_name("TEST");
+		c.setForbidden_nodes("b");
+		c.setEmailAddress("noreply");
+		node.setAdmin(c);
+		object.setContractor(c);
+		ArchiveReplicationAction action = setUpAction(node);
+		action.implementation();
+	}
+	
+	@Test
+	public void testForbiddenNodesNotSet() throws FileNotFoundException, IOException{
+		node.setReplDestinations("a");
+		node.setGridCacheAreaRootPath(Path.make(workAreaRootPath));
+		User c = new User();
+		c.setEmailAddress("noreply");
+		c.setShort_name("TEST");
+		c.setForbidden_nodes(null);
+		object.setContractor(c);
+		ArchiveReplicationAction action = setUpAction(node);
+		action.implementation();
 	}
 	
 	private void setUpObject(){

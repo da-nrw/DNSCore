@@ -138,4 +138,9 @@ public interface GridFacade {
 	 * @return
 	 */
 	abstract boolean exists(String address_dest);
+
+	boolean putToReplDir(File file, String address_dest, StoragePolicy sp,
+			String checksum);
+
+	boolean remove(String dest);
 }
