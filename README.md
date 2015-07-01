@@ -28,7 +28,6 @@ this seems contemporary because users nowadays are used to get the information t
 as they are used to it in everyday internet life anyway. We think of it as a really great
 feature.
 
-
 While implementing this feature there was some confusion when speaking of DIPs as stated 
 in the OAIS reference model as DIPs can designate any material accessed by the users of
 such a system and the DIPs accessed from the long term component differ a lot from those
