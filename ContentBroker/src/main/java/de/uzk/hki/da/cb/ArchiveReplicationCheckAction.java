@@ -92,7 +92,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		logger.debug("Delete object "+wa.replPath().toFile()+" from WorkArea.");
 		FileUtils.deleteDirectory(wa.replPath().toFile());
 		String filename = o.getIdentifier() + ".pack_" + o.getLatestPackage().getName() + ".tar";
-		Path replFilePath = Path.make(n.getWorkAreaRootPath(), "repl", o.getContractor().getShort_name(), filename);
+		Path replFilePath = Path.make(n.getName(), "repl", o.getContractor().getShort_name(), filename);
 		logger.debug("Delete object "+replFilePath.toString()+" from WorkArea.");
 		if(!gridRoot.remove(replFilePath.toString())) {
 			logger.error("Unable to remove the aip file from local repl directory");
