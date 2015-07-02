@@ -55,7 +55,11 @@ Im Contract eines SIP ist eine mögliche Migrationsbedinung zu hinterlegen. Dies
 
 ## Szenario AT-MD-2 Migrationsrückfrage ablehnen
 
-Siehe auch Test AT-R1a. Hier wird vom einem Hinterlegten Recht "Migrationsbedinung - Nach Rückfrage" ausgegangen, so wie es auch vom SIP-Builder nach entsprechender Wahl in der premis.xml hinterlegt wird. In diesem Fall migriert das System Daten des entsprechenden Objektes niemals ungefragt, sondern fordert vom User eine Entscheidung ein, ob das Objekt migriert werden soll oder nicht.
+Szenario AT-MD-2 Migrationsrückfrage ablehnen
+Siehe auch Test AT-R1a.
+
+Hier wird vom einem Hinterlegten Recht "Migrationsbedinung - Nach Rückfrage" ausgegangen, so wie es auch vom SIP-Builder nach entsprechender Wahl in der premis.xml hinterlegt wird. In diesem Fall migriert das System Daten des entsprechenden Objektes niemals ungefragt, sondern fordert vom User eine Entscheidung ein, ob das Objekt migriert werden soll oder nicht.
+Dieses Szenario beschreibt den Fall, dass die Migration abgelehnt wird.
 
 #### Kontext:
 
