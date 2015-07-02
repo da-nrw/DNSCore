@@ -23,7 +23,6 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.uzk.hki.da.action.AbstractAction;
@@ -31,7 +30,6 @@ import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.utils.MD5Checksum;
 
 /**
  * Does the decoupled and time based Archive Replication to the given minimum number of required nodes. 
@@ -69,7 +67,7 @@ public class ArchiveReplicationAction extends AbstractAction {
 		sp.setNodeName(n.getName());
 		sp.setCommonStorageRescName(n.getReplDestinations());
 		Path aipFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), filename);
-		Path replFilePath = Path.make(n.getName(), "repl", o.getContractor().getShort_name(), filename);
+		Path replFilePath = Path.make(n.getIdentifier(), "repl", o.getContractor().getShort_name(), filename);
 
 		try {
 			

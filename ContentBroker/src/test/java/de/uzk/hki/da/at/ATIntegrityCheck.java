@@ -39,9 +39,7 @@ import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectNamedQueryDAO;
 import de.uzk.hki.da.service.HibernateUtil;
-import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
 
 
 /**
