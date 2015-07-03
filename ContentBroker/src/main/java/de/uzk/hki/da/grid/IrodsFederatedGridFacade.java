@@ -35,7 +35,6 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.WorkArea;
-import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.StringUtilities;
 
 
@@ -97,8 +96,11 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 			logger.debug("creating Coll " + destCollection);
 			iclc.mkCollection(destCollection);
 		}
+		
+		logger.debug("dest recource "+sp.getWorkingResource());
 	
-		if (iclc.put(file, address_dest, sp.getCommonStorageRescName())) {
+		if (iclc.put(file, address_dest, sp.getWorkingResource())) {
+			logger.debug("set destination resource "+sp.getWorkingResource());
 			return true;
 		} else {
 			logger.debug("Unable to put the aip file to irods repl directory");

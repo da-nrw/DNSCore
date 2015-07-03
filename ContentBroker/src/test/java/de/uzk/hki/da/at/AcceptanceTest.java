@@ -30,7 +30,6 @@ import org.junit.BeforeClass;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import ch.qos.logback.classic.Logger;
 import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
@@ -207,15 +206,6 @@ public class AcceptanceTest {
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getWorkAreaRootPath(),"work",C.TEST_USER_SHORT_NAME));
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME));
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getGridCacheAreaRootPath(),WorkArea.AIP,C.TEST_USER_SHORT_NAME));
-		for(Node cn : localNode.getCooperatingNodes()) {
-//			FileUtils.deleteQuietly(Path.makeFile(cn.getIdentifier(), "federated", "c-i" ,WorkArea.AIP,C.TEST_USER_SHORT_NAME));
-//			/ci/archiveStorage/federated/c-i/aip/TEST/1-2015070291/1-2015070291.pack_1.tar
-			
-			
-		}
-		
-		System.out.println("REPL "+localNode.getReplDestinations());
-		
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getWorkAreaRootPath(),"pips","institution",C.TEST_USER_SHORT_NAME));
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getWorkAreaRootPath(),"pips","public",C.TEST_USER_SHORT_NAME));
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getUserAreaRootPath(),C.TEST_USER_SHORT_NAME,"outgoing"));

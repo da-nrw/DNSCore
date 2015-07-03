@@ -198,6 +198,7 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 			} else if(pcho.getChild("title", C.DC_NS).getValue().equals("Anschriften A-B")) {
 				assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==5);
 			} 
+			@SuppressWarnings("unchecked")
 			List<Element> identifier = pcho.getChildren("identifier", C.DC_NS);
 			Boolean objIdExists = false;
 			Boolean urnExists = false;

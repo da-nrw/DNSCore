@@ -66,6 +66,7 @@ public class ArchiveReplicationAction extends AbstractAction {
 		sp.setAdminEmail(n.getAdmin().getEmailAddress());
 		sp.setNodeName(n.getName());
 		sp.setCommonStorageRescName(n.getReplDestinations());
+		sp.setWorkingResource(n.getWorkingResource());
 		Path aipFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), filename);
 		Path replFilePath = Path.make(n.getIdentifier(), "repl", o.getContractor().getShort_name(), filename);
 
