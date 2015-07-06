@@ -157,7 +157,7 @@ h4. Testpaket:
 
 * TODO Inhalt der Email
 
-## Szenario AT-MB-4 Migration nach Verstreichen der Frist.
+## Szenario AT-MB-4 Migration nach Verstreichen der Entscheidungsfrist.
 
 Die Tests AT-MD-2 und AT-MD3 gehen davon aus, dass der User die Rückfrage ablehnt oder bestätigt. In diesem Szenario handelt der User für eine gegebene Zeitspanne gar nicht und in der Folge findet eine automatische Ablehung durch das System statt.
 
