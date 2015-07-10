@@ -229,7 +229,7 @@ public class ChecksumWorker extends Worker{
 	
 	
 	private boolean allowedTime(int currentHour) {
-		if(currentHour>getStartTime() && currentHour<getEndTime()) {
+		if(currentHour>=getStartTime() && currentHour<=getEndTime()) {
 			return true;
 		} else return false;
 	}
