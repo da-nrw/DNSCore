@@ -78,6 +78,10 @@
         <property name="localNodeId" value="${localNode.id}" />
         <property name="secondaryCopyPrefix" value="federated" />
         <property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}" />
+        <property name="trustChecksumForDays" value="30" />
+        <property name="allowedNumOfCopyjobs" value="4" />
+        <property name="startTime" value="0" />
+        <property name="endTime" value="3" />
     </bean>
     	<bean id="distributionWorker" class="de.uzk.hki.da.grid.DistributionWorker" init-method="init">
         <property name="localNodeId" value="${localNode.id}" />

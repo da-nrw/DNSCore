@@ -24,6 +24,7 @@ package de.uzk.hki.da.core;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -56,8 +57,22 @@ public class ChecksumWorker extends Worker{
 	
 	private Node node;
 	
-	private int minusTrustChecksumForDays = -30;
+	private int trustChecksumForDays;
 	
+	private int startTime;
+
+	private int endTime;
+	
+	private int allowedNumOfCopyjobs;
+
+	public int getAllowedNumOfCopyjobs() {
+		return allowedNumOfCopyjobs;
+	}
+
+	public void setAllowedNumOfCopyjobs(int allowedNumOfCopyjobs) {
+		this.allowedNumOfCopyjobs = allowedNumOfCopyjobs;
+	}
+
 	public void init(){
 		node = new Node(); 
 		node.setId(localNodeId);
@@ -82,40 +97,53 @@ public class ChecksumWorker extends Worker{
 	 */
 	@Override
 	public void scheduleTaskImplementation(){
-		try {
-			Copy copy = null;
-			if ((copy=fetchCopy(node.getId()))==null) { 
-				logger.warn("Found no copy in custody to compute Checksum for ...") ;
-				return;
-			}
-			if (secondaryCopyPrefix==null) {
-				logger.error("SecondaryCopyPrefix is null");
-				return;
-			}
-			String dest = secondaryCopyPrefix + "/"+ copy.getPath();
-			logger.info("Checking existence in custody " + dest );
-			if (gridFacade.exists(dest)){
-				Calendar oneMonthAgo = Calendar.getInstance();
-				oneMonthAgo.add(Calendar.DAY_OF_YEAR, minusTrustChecksumForDays);
-				logger.debug("will look for Checksums older than " + oneMonthAgo.getTime() );
-				String cs = "";
-				if (copy.getChecksumDate()==null) {
-					cs = gridFacade.reComputeAndGetChecksumInCustody(dest);
-					logger.info("checksum in custody is " + cs + " for " + dest);
-				} else if (copy.getChecksumDate().before(oneMonthAgo.getTime())) {
-					cs = gridFacade.reComputeAndGetChecksumInCustody(dest);
-					logger.info("recompute old checksum in custody, now is " + cs + " for " + dest);
-				} else {
-					cs = copy.getChecksum();
-					logger.info("Checksum does not yet need recomputation. Checksum is " + cs);
-				}
-				updateCopy(copy, cs);
-				
-			} else logger.error(dest + " does not exist.");
-			
-		} catch (Exception e) {
-			logger.error("Error in ChecksumWorker " + e.getMessage(),e);
-		}
+		GregorianCalendar cal = new GregorianCalendar();
+        int hour = cal.get(Calendar.HOUR);
+        int numCopyjobs = getNumCopyjobs(hour);
+        
+        logger.debug("allowed number of copyjobs: "+allowedNumOfCopyjobs);
+        logger.debug("current number of copyjobs: "+numCopyjobs);
+        logger.debug("allowed time: "+startTime+" - "+endTime+" hour");
+        logger.debug("current time: "+hour);
+        
+        
+        
+        if(allowedTime(hour) || numCopyjobs<allowedNumOfCopyjobs) {
+        	try {
+    			Copy copy = null;
+    			if ((copy=fetchCopy(node.getId()))==null) { 
+    				logger.warn("Found no copy in custody to compute Checksum for ...") ;
+    				return;
+    			}
+    			if (secondaryCopyPrefix==null) {
+    				logger.error("SecondaryCopyPrefix is null");
+    				return;
+    			}
+    			String dest = secondaryCopyPrefix + "/"+ copy.getPath();
+    			logger.info("Checking existence in custody " + dest );
+    			if (gridFacade.exists(dest)){
+    				Calendar oneMonthAgo = Calendar.getInstance();
+    				oneMonthAgo.add(Calendar.DAY_OF_YEAR, trustChecksumForDays*(-1));
+    				logger.debug("will look for Checksums older than " + oneMonthAgo.getTime() );
+    				String cs = "";
+    				if (copy.getChecksumDate()==null) {
+    					cs = gridFacade.reComputeAndGetChecksumInCustody(dest);
+    					logger.info("checksum in custody is " + cs + " for " + dest);
+    				} else if (copy.getChecksumDate().before(oneMonthAgo.getTime())) {
+    					cs = gridFacade.reComputeAndGetChecksumInCustody(dest);
+    					logger.info("recompute old checksum in custody, now is " + cs + " for " + dest);
+    				} else {
+    					cs = copy.getChecksum();
+    					logger.info("Checksum does not yet need recomputation. Checksum is " + cs);
+    				}
+    				updateCopy(copy, cs);
+    				
+    			} else logger.error(dest + " does not exist.");
+    			
+    		} catch (Exception e) {
+    			logger.error("Error in ChecksumWorker " + e.getMessage(),e);
+    		}
+        }
 	}
 	
 	/** 
@@ -151,6 +179,30 @@ public class ChecksumWorker extends Worker{
 		}
 	}
 	
+	/** 
+	 * 
+	 * @return the number of copyjobs of local node
+	 * @author Polina Gubaidullina
+	 */
+	private int getNumCopyjobs(int localNodeId) {
+		int numCopyJobs = 0;
+		Session session = null;
+		try {
+			session = HibernateUtil.openSession();
+			session.beginTransaction();
+			@SuppressWarnings("rawtypes")
+			List l = null;
+			l = session.createSQLQuery("select count(id) from copyjob ")
+					.setParameter("1", localNodeId)
+							.setReadOnly(true).list();
+			numCopyJobs = (Integer) l.get(0);
+			logger.debug("current number of copyjobs is "+numCopyJobs);
+			session.close();
+		} catch (Exception e){
+			if (session!=null) session.close();
+		}
+		return numCopyJobs;
+	}
 
 	public String getSecondaryCopyPrefix() {
 		return secondaryCopyPrefix;
@@ -176,6 +228,12 @@ public class ChecksumWorker extends Worker{
 		session.close();
 	}
 	
+	
+	private boolean allowedTime(int currentHour) {
+		if(currentHour>getStartTime() && currentHour<getEndTime()) {
+			return true;
+		} else return false;
+	}
 
 	
 	public int getLocalNodeId() {
@@ -212,11 +270,27 @@ public class ChecksumWorker extends Worker{
 	}
 
 	public int getTrustChecksumForDays() {
-		return minusTrustChecksumForDays;
+		return trustChecksumForDays;
 	}
 
 	public void setTrustChecksumForDays(int trustChecksumForDays) {
-		this.minusTrustChecksumForDays = trustChecksumForDays;
+		this.trustChecksumForDays = trustChecksumForDays;
+	}
+	
+	public int getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(int trustStartTime) {
+		this.startTime = trustStartTime;
+	}
+	
+	public int getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(int trustEndTime) {
+		this.endTime = trustEndTime;
 	}
 
 }

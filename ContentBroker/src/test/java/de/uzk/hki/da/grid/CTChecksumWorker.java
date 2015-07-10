@@ -100,6 +100,7 @@ public class CTChecksumWorker {
 		Thread.sleep(3000);
 		assertTrue(iclc.exists("/"+zone+"/"+feddao));
 		ChecksumWorker cw = new ChecksumWorker();
+		setAllowedTimeAndNumOfCopyjobsForChecksumWorker(cw);
 		cw.setSecondaryCopyPrefix(fedprefix);
 		IrodsSystemConnector isc = new IrodsSystemConnector("","");
 		isc.setZone("c-i");
@@ -132,6 +133,7 @@ public class CTChecksumWorker {
 		Thread.sleep(3000);
 		assertTrue(iclc.exists("/"+zone+"/"+feddao));
 		ChecksumWorker cw = new ChecksumWorker();
+		setAllowedTimeAndNumOfCopyjobsForChecksumWorker(cw);
 		cw.setSecondaryCopyPrefix(fedprefix);
 		IrodsSystemConnector isc = new IrodsSystemConnector("","");
 		isc.setZone("c-i");
@@ -161,6 +163,7 @@ public class CTChecksumWorker {
 		Thread.sleep(3000);
 		assertTrue(iclc.exists("/"+zone+"/"+feddao));
 		ChecksumWorker cw = new ChecksumWorker();
+		setAllowedTimeAndNumOfCopyjobsForChecksumWorker(cw);
 		cw.setSecondaryCopyPrefix(fedprefix);
 		IrodsSystemConnector isc = new IrodsSystemConnector("","");
 		isc.setZone("c-i");
@@ -191,6 +194,13 @@ public class CTChecksumWorker {
 		writer.write("Hallo Wie gehts?");
 		writer.close();
 		return temp;
+	}
+	
+	private void setAllowedTimeAndNumOfCopyjobsForChecksumWorker(ChecksumWorker cw) {
+		cw.setTrustChecksumForDays(30);
+		cw.setStartTime(0);
+		cw.setEndTime(24);
+		cw.setAllowedNumOfCopyjobs(100);
 	}
 	
 
