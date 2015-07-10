@@ -28,6 +28,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.type.IntegerType;
+import org.hibernate.type.LongType;
 import org.slf4j.MDC;
 
 import de.uzk.hki.da.grid.GridFacade;
@@ -98,17 +100,13 @@ public class ChecksumWorker extends Worker{
 	@Override
 	public void scheduleTaskImplementation(){
 		GregorianCalendar cal = new GregorianCalendar();
-        int hour = cal.get(Calendar.HOUR);
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
         int numCopyjobs = getNumCopyjobs(hour);
         
-        logger.debug("allowed number of copyjobs: "+allowedNumOfCopyjobs);
-        logger.debug("current number of copyjobs: "+numCopyjobs);
-        logger.debug("allowed time: "+startTime+" - "+endTime+" hour");
-        logger.debug("current time: "+hour);
+        logger.debug("number of copyjobs: current="+numCopyjobs +" & allowed="+allowedNumOfCopyjobs);
+        logger.debug("current time: "+hour+"; allowed time: "+startTime+" - "+endTime+" hour");
         
-        
-        
-        if(allowedTime(hour) || numCopyjobs<allowedNumOfCopyjobs) {
+        if(allowedTime(hour) || numCopyjobs<=allowedNumOfCopyjobs) {
         	try {
     			Copy copy = null;
     			if ((copy=fetchCopy(node.getId()))==null) { 
@@ -143,6 +141,8 @@ public class ChecksumWorker extends Worker{
     		} catch (Exception e) {
     			logger.error("Error in ChecksumWorker " + e.getMessage(),e);
     		}
+        } else {
+        	logger.debug("Skipping copy checking ...");
         }
 	}
 	
@@ -162,7 +162,7 @@ public class ChecksumWorker extends Worker{
 			l = session.createSQLQuery("select id from copies c where c.node_id = ?1 "
 			+ "order by c.checksumdate asc NULLS FIRST")
 					.setParameter("1", localNodeId)
-							.setReadOnly(true).list();
+					.setReadOnly(true).list();
 	         
 			@SuppressWarnings("rawtypes")
 			List k = null;
@@ -181,7 +181,7 @@ public class ChecksumWorker extends Worker{
 	
 	/** 
 	 * 
-	 * @return the number of copyjobs of local node
+	 * @return the number of copyjobs
 	 * @author Polina Gubaidullina
 	 */
 	private int getNumCopyjobs(int localNodeId) {
@@ -192,11 +192,10 @@ public class ChecksumWorker extends Worker{
 			session.beginTransaction();
 			@SuppressWarnings("rawtypes")
 			List l = null;
-			l = session.createSQLQuery("select count(id) from copyjob ")
-					.setParameter("1", localNodeId)
-							.setReadOnly(true).list();
+			l = session.createSQLQuery("select count(id) as count from copyjob;")
+					.addScalar("count", IntegerType.INSTANCE)
+					.list();
 			numCopyJobs = (Integer) l.get(0);
-			logger.debug("current number of copyjobs is "+numCopyJobs);
 			session.close();
 		} catch (Exception e){
 			if (session!=null) session.close();

@@ -79,7 +79,7 @@
         <property name="secondaryCopyPrefix" value="federated" />
         <property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}" />
         <property name="trustChecksumForDays" value="30" />
-        <property name="allowedNumOfCopyjobs" value="4" />
+        <property name="allowedNumOfCopyjobs" value="0" />
         <property name="startTime" value="0" />
         <property name="endTime" value="3" />
     </bean>

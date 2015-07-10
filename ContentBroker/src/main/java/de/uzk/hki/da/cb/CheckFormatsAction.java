@@ -147,7 +147,7 @@ public class CheckFormatsAction extends AbstractAction {
 				} catch (ConnectionException e) {
 					throw new SubsystemNotAvailableException("fileFormatFacade.extract() could not connect.",e);
 				}
-			} else logger.debug("Skip jhove validation for xml file "+f.getRelative_path());
+			} else logger.debug("Skipping jhove validation for xml file "+f.getRelative_path());
 		}
 	}
 
