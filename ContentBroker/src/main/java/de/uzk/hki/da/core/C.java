@@ -69,6 +69,7 @@ public class C {
 	
 	public static final String ANSWER_YO = "YES";
 	public static final String ANSWER_NO = "NO";
+	public static final String ANSWER_TO = "TIMED OUT";
 	public static final String IRODS_START_DELAYED = "START_DELAYED";
 	public static final String IRODS_STOP_DELAYED = "STOP_DELAYED";
 	public static final String QUEUE_TO_SERVER = "CB.SYSTEM";

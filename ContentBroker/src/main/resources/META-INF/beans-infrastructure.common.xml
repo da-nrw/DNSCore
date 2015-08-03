@@ -70,6 +70,9 @@
         <property name="registerObjectService" ref="registerObjectService" />
     </bean>
     
+    <bean id="userDecisionTimeoutWorker" class="de.uzk.hki.da.core.UserDecisionTimeoutWorker" init-method="init">
+        <property name="localNode" ref="localNode" />
+    </bean>
     <bean id="integrityWorker" class="de.uzk.hki.da.core.IntegrityWorker" init-method="init">
         <property name="localNodeId" value="${localNode.id}" />
         <property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}" />

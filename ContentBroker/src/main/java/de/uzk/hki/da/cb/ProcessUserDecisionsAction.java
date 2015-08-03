@@ -15,7 +15,7 @@
 
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package de.uzk.hki.da.cb;
 
@@ -37,52 +37,55 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.StringUtilities;
 
 /**
- * Tests if a user has made a choice for a decision request issued automatically by the system.
+ * Tests if a user has made a choice for a decision request issued automatically
+ * by the system.
  * 
  * @author Daniel M. de Oliveira
  */
-public class ProcessUserDecisionsAction extends AbstractAction{
+public class ProcessUserDecisionsAction extends AbstractAction {
 
-	static final Logger logger = LoggerFactory.getLogger(ProcessUserDecisionsAction.class);
-	
+	static final Logger logger = LoggerFactory
+			.getLogger(ProcessUserDecisionsAction.class);
+
 	@Override
-	public void checkConfiguration() {}
-	
+	public void checkConfiguration() {
+	}
 
 	@Override
 	public void checkPreconditions() {
-		if (StringUtilities.isNotSet(j.getAnswer())){
-			throw new PreconditionsNotMetException("Must not be null or empty: j.getAnswer()");
+		if (StringUtilities.isNotSet(j.getAnswer())) {
+			throw new PreconditionsNotMetException(
+					"Must not be null or empty: j.getAnswer()");
 		}
-		if (!(j.getAnswer().equals(C.ANSWER_NO)||j.getAnswer().equals(C.ANSWER_YO)))
-			throw new PreconditionsNotMetException("Must be either YES or NO: job.getAnser().");
-		
-		if (j.getConversion_instructions()==null) 
-			throw new PreconditionsNotMetException("Must not be null: j.getConversion_instructions()");
+		if (!(j.getAnswer().equals(C.ANSWER_NO)
+				|| j.getAnswer().equals(C.ANSWER_YO) || j.getAnswer().equals(
+				C.ANSWER_TO)))
+			throw new PreconditionsNotMetException(
+					"Must be either YES or NO: job.getAnser().");
+
+		if (j.getConversion_instructions() == null)
+			throw new PreconditionsNotMetException(
+					"Must not be null: j.getConversion_instructions()");
 	}
-	
-	
-	
+
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException, JDOMException,
 			ParserConfigurationException, SAXException {
-		
-		if (j.getAnswer().equals(C.ANSWER_YO)){
-			logger.info("System Question: "+C.QUESTION_MIGRATION_ALLOWED+" User response: "+C.ANSWER_YO);
-		} 
-		else {
-			logger.info("System Question: "+C.QUESTION_MIGRATION_ALLOWED+" User response: "+C.ANSWER_NO);
+
+		if (j.getAnswer().equals(C.ANSWER_YO)) {
+			logger.info("System Question: " + C.QUESTION_MIGRATION_ALLOWED
+					+ " User response: " + C.ANSWER_YO);
+		} else {
+			logger.info("System Question: " + C.QUESTION_MIGRATION_ALLOWED
+					+ " User response: " + j.getAnswer());
 			logger.trace("will delete conversion instructions for long term preservation now");
 			j.getConversion_instructions().clear();
 		}
-		
+
 		return true;
 	}
 
-	
-	
-	
 	@Override
 	public void rollback() throws Exception {
 		// Nothing to do.
