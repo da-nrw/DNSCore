@@ -93,7 +93,7 @@ Dieses Szenario beschreibt den Fall, dass die Migration abgelehnt wird.
 1. Entnahme des DIP-Paketes aus dem Entnahmeordner des einliefernden Users.
 1. Entpacken des DIP und Überprüfen der Inhalte.
 
-#### Akkzeptanzkriterien
+#### Akzeptanzkriterien
 
 * Das DIP enthält die Bilddatei vom originalen Typ JPEG: image42.jpg.
 * Es enhält nicht die migrierte Version der originalen Bilddatei Bilddatei: image42.jp2.
