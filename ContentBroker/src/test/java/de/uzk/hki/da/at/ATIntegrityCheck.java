@@ -64,7 +64,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	    changeLastCheckedObjectDate(-25);
 		
 		
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+		//object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 
 		setChecksumSecondaryCopy(object.getLatestPackage().getChecksum(),-1);
 
@@ -89,7 +89,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 
 		changeLastCheckedObjectDate(-25);
 		
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+		//object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 		setChecksumSecondaryCopy("abcedde5",-31);
 		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
 	}
