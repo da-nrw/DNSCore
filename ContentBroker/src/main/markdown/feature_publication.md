@@ -4,11 +4,11 @@
 
 #### Kontext:
 
-* [ATUseCaseTimeBasedPublication](../../src/test/java/de/uzk/hki/da/at/ATUseCaseTimeBasedPublication.java#testPublishInstOnly)
-* [ATUseCaseTimeBasedPublication](../../src/test/java/de/uzk/hki/da/at/ATUseCaseTimeBasedPublication.java#testNoPubWithLawSetForAudiencePublic)
-* [ATUseCaseTimeBasedPublication](../../src/test/java/de/uzk/hki/da/at/ATUseCaseTimeBasedPublication.java#testNoPubWithStartDateSet)
-* [ATUseCaseTimeBasedPublication](../../src/test/java/de/uzk/hki/da/at/ATUseCaseTimeBasedPublication.java#testPublishNothing)
-* [ATUseCaseTimeBasedPublication](../../src/test/java/de/uzk/hki/da/at/ATUseCaseTimeBasedPublication.java#testPublishAll)
+* [ATUseCaseTimeBasedPublication  testPublishInstOnly](../../src/test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testPublishInstOnly)
+* [ATUseCaseTimeBasedPublication  testNoPubWithLawSetForAudiencePublic](../../src/test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testNoPubWithLawSetForAudiencePublic)
+* [ATUseCaseTimeBasedPublication testNoPubWithStartDateSet](../../src/test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testNoPubWithStartDateSet)
+* [ATUseCaseTimeBasedPublication testPublishNothing](../../src/test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testPublishNothing)
+* [ATUseCaseTimeBasedPublication testPublishAll](../../src/test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testPublishAll)
 
 #### Vorbedingungen:
 
@@ -45,6 +45,6 @@
 
 ####
 
-* &nbsp;
+* Daemon schreiben, welcher die mit Datum versehenen Pakete nachgelagert veröffentlicht. 
 
 ##
