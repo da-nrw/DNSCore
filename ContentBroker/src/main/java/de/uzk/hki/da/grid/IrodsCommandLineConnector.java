@@ -186,7 +186,7 @@ public class IrodsCommandLineConnector {
 	 */
 	public String computeChecksumForce(String destDao) {
 		String commandAsArray[] = new String[]{
-				"ichksum","-fa",destDao
+				"nice","-n","10","ichksum","-fa",destDao
 		};	
 		executeIcommand(commandAsArray);
 		return getChecksum(destDao);
