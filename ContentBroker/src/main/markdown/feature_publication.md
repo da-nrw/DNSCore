@@ -4,7 +4,7 @@
 
 #### Kontext:
 
-* [ATUseCaseTimeBasedPublication  testPublishInstOnly](../../src/test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testPublishInstOnly)
+* [ATUseCaseTimeBasedPublication  testPublishInstOnly](../../test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testPublishInstOnly)
 * [ATUseCaseTimeBasedPublication  testNoPubWithLawSetForAudiencePublic](../../src/test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testNoPubWithLawSetForAudiencePublic)
 * [ATUseCaseTimeBasedPublication testNoPubWithStartDateSet](../../src/test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testNoPubWithStartDateSet)
 * [ATUseCaseTimeBasedPublication testPublishNothing](../../src/test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testPublishNothing)
