@@ -4,11 +4,11 @@
 
 #### Kontext:
 
-* [ATUseCaseTimeBasedPublication  testPublishInstOnly](../../test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testPublishInstOnly)
-* [ATUseCaseTimeBasedPublication  testNoPubWithLawSetForAudiencePublic](../../src/test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testNoPubWithLawSetForAudiencePublic)
-* [ATUseCaseTimeBasedPublication testNoPubWithStartDateSet](../../src/test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testNoPubWithStartDateSet)
-* [ATUseCaseTimeBasedPublication testPublishNothing](../../src/test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testPublishNothing)
-* [ATUseCaseTimeBasedPublication testPublishAll](../../src/test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testPublishAll)
+* [ATUseCaseTimeBasedPublication  testPublishInstOnly](../../test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testPublishInstOnly#testPublishInstOnly)
+* [ATUseCaseTimeBasedPublication  testNoPubWithLawSetForAudiencePublic](../../test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testNoPubWithLawSetForAudiencePublic)
+* [ATUseCaseTimeBasedPublication testNoPubWithStartDateSet](../../test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testNoPubWithStartDateSet)
+* [ATUseCaseTimeBasedPublication testPublishNothing](../../test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testPublishNothing)
+* [ATUseCaseTimeBasedPublication testPublishAll](../../test/java/de/uzk/hki/da/at/ATTimeBasedPublication.java#testPublishAll)
 
 #### Vorbedingungen:
 
