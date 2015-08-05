@@ -182,7 +182,7 @@ Die Tests AT-MD-2 und AT-MD3 gehen davon aus, dass der User die Rückfrage ableh
 #### Durchführung:
 
 1. Siehe Hintergrund
-1. 48 Stunden warten.
+1. 30 Tage warten.
 1. Warten auf Email, die die Einlieferung in die LZA bestätigt.&nbsp;
 1. Identifier notieren.
 1. In der Ansicht "Eingelieferte Objekte" das Objekt mit dem entsprechenden Identifier recherieren.
@@ -197,10 +197,6 @@ Die Tests AT-MD-2 und AT-MD3 gehen davon aus, dass der User die Rückfrage ableh
 
 ## Status und offene Punkte:
 
+implementiert mit Build > #1320
 
-####
 
-* Nicht implementiert.
-* Wie lange soll gewartet werden?
-* Soll das konfigurierbar oder fix sein?
-* Was soll dann geschehen? Ablehnung oder Durchführung der Migration?
