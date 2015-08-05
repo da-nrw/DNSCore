@@ -131,7 +131,7 @@ h4. Durchführung:
 1. Entnahme des DIP-Paketes aus dem Entnahmeordner des einliefernden Users.
 1. Entpacken des DIP und Überprüfen der Inhalte.
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 * Das DIP enthält die Bilddatei vom migrierten Typ TIFF image42.jp2.
 * Es enhält nicht die originale Bilddatei: image42.jpg.
@@ -153,7 +153,7 @@ h4. Testpaket:
 
 1. Warten auf Email, die über die Migration informiert
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 * TODO Inhalt der Email
 
