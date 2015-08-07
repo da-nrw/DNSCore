@@ -36,18 +36,23 @@ public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 	private static final String ORIG_NAME_ORIG = "ATMetadataUpdatesDeltaMETS";
 	private static final String DATA_DANRW_DE = "http://data.danrw.de";
 	private static final File retrievalFolder = new File("/tmp/unpackedMetsMods");
-	private static Path testContractorPipsPublic;
+	private static Path contractorsPipsPublic;
 	private static Object object;
 	private static MetadataHelper mh = new MetadataHelper();
 	
 	@BeforeClass
 	public static void setUp() throws IOException, InterruptedException {
+		
+		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
+		
 		ath.putSIPtoIngestArea(ORIG_NAME_ORIG, "tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		ath.waitForDefinedPublishedState(ORIG_NAME_ORIG);
 		ath.putSIPtoIngestArea(ORIG_NAME_ORIG+"_delta_one_file", "tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.InWorkflow);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
-
+		ath.waitForDefinedPublishedState(ORIG_NAME_ORIG);
+		
 		object = ath.getObject(ORIG_NAME_ORIG);
 	}
 	
@@ -75,8 +80,8 @@ public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		String metsFileName = "export_mets.xml";
-		Document doc = builder.build
-				(new FileReader(Path.make(tmpObjectDirPath, bRep, metsFileName).toFile()));
+		FileReader fr = new FileReader(Path.make(tmpObjectDirPath, bRep, metsFileName).toFile());
+		Document doc = builder.build(fr);
 		
 		List<Element> metsFileElements = mh.getMetsFileElements(doc);
 		
@@ -212,6 +217,8 @@ public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 				&&tif801651Exists
 				&&tif801616Exists);
 		
+		fr.close();
+		
 	}
 	
 	@Test
@@ -219,13 +226,12 @@ public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 		
 		object = ath.getObject(ORIG_NAME_ORIG);
 		
-		testContractorPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, "TEST");
+		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, "TEST");
+		
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document doc = builder.build
-				(new FileReader(
-					Path.make(testContractorPipsPublic, 
-						object.getIdentifier(), C.CB_PACKAGETYPE_METS+C.FILE_EXTENSION_XML).toFile()));
+		FileReader fr = new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), C.CB_PACKAGETYPE_METS+C.FILE_EXTENSION_XML).toFile());
+		Document doc = builder.build(fr);
 		
 		List<Element> metsFileElements = mh.getMetsFileElements(doc);
 		int danrwRewritings = 0;
@@ -235,6 +241,7 @@ public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 				danrwRewritings++;
 			}
 		}
-		assertTrue(danrwRewritings==29);		
+		assertTrue(danrwRewritings==29);	
+		fr.close();
 	}
 }

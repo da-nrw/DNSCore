@@ -23,6 +23,7 @@ public class ATDetectUnreferencedFilesMETS extends AcceptanceTest{
 		
 		ath.putSIPtoIngestArea(origName, "tgz", origName);
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		ath.waitForDefinedPublishedState(origName);
 		
 		contentbrokerLogfile = Path.makeFile(localNode.getLogFolder(), "contentbroker.log");
 		FileInputStream fisTargetFile = new FileInputStream(contentbrokerLogfile);

@@ -49,9 +49,11 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 		
 		ath.putSIPtoIngestArea(ORIG_NAME_ORIG+"_orig","tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		ath.waitForDefinedPublishedState(ORIG_NAME_ORIG);
 		ath.putSIPtoIngestArea(ORIG_NAME_ORIG+"_delta", "tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.InWorkflow);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		ath.waitForDefinedPublishedState(ORIG_NAME_ORIG);
 		
 		o=ath.getObject(ORIG_NAME_ORIG);
 	}

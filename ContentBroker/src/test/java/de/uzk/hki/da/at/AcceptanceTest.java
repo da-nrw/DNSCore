@@ -204,6 +204,7 @@ public class AcceptanceTest {
 
 	private static void cleanStorage(){
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getWorkAreaRootPath(),"work",C.TEST_USER_SHORT_NAME));
+		FileUtils.deleteQuietly(Path.makeFile(localNode.getWorkAreaRootPath(),"repl",C.TEST_USER_SHORT_NAME));
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME));
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getGridCacheAreaRootPath(),WorkArea.AIP,C.TEST_USER_SHORT_NAME));
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getWorkAreaRootPath(),"pips","institution",C.TEST_USER_SHORT_NAME));
@@ -226,6 +227,7 @@ public class AcceptanceTest {
 		Path.makeFile(localNode.getGridCacheAreaRootPath(),"aip",C.TEST_USER_SHORT_NAME).mkdirs();
 		Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME).mkdirs();
 		Path.make(localNode.getWorkAreaRootPath(),"work",C.TEST_USER_SHORT_NAME).toFile().mkdirs();
+		Path.make(localNode.getWorkAreaRootPath(),"repl",C.TEST_USER_SHORT_NAME).toFile().mkdirs();
 		Path.makeFile(localNode.getWorkAreaRootPath(),"pips","public",C.TEST_USER_SHORT_NAME).mkdirs();
 		Path.makeFile(localNode.getWorkAreaRootPath(),"pips","institution",C.TEST_USER_SHORT_NAME).mkdirs();
 	}
