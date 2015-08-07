@@ -34,10 +34,10 @@ The response looks like (JSON):
 
 "Status" could be one of:
 
-archived 
-archived - but check needed
-archived - but in progress
+1. archived  : The object is fully archived and valid
+1. archived - but check needed : The object is archived, but a check performed by node admin has to be carried out (should be none object at all! Please check object and its packages manually)
+1. archived - but in progress : The object recieves deltas or is under retrieval 
 
-in progress waiting ([internal state code])
-in progress failure ([internal state code])
-in progress working ([internal state code])
+1. in progress waiting ([internal state code]) : The package is waiting for being picked up by ContenBroker
+1. in progress failure ([internal state code]) : The package is in failure state
+1. in progress working ([internal state code]) : The package is in working state
