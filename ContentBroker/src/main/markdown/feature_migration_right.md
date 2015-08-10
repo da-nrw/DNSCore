@@ -120,7 +120,7 @@ Während beim letzten Test die Migration letztendlich abgelehnt wurde, wird bei 
 
 * Siehe Hintergrund.
 
-h4. Durchführung:
+#### Durchführung:
 
 1. Siehe Hintergrund.
 1. In der DA-WEB Entscheidungsübersicht für das entsprechende Objekt Migration positiv&nbsp;*bestätigen*.
@@ -139,11 +139,11 @@ h4. Durchführung:
 
 
 
-h2. Szenario AT-MB-5 Informieren über Migration
+## Szenario AT-MB-5 Informieren über Migration
 
 Bei der Wahl der Einstellung "Über Migration informieren wird der Nutzer bei jeder Migration seiner Daten informiert"
 
-h4. Testpaket:
+#### Testpaket:
 
 ``` 
   (GitHub) TODO
