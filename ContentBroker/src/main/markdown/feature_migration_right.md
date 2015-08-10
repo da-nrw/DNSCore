@@ -120,7 +120,7 @@ Während beim letzten Test die Migration letztendlich abgelehnt wurde, wird bei 
 
 * Siehe Hintergrund.
 
-h4. Durchführung:
+#### Durchführung:
 
 1. Siehe Hintergrund.
 1. In der DA-WEB Entscheidungsübersicht für das entsprechende Objekt Migration positiv&nbsp;*bestätigen*.
@@ -131,16 +131,19 @@ h4. Durchführung:
 1. Entnahme des DIP-Paketes aus dem Entnahmeordner des einliefernden Users.
 1. Entpacken des DIP und Überprüfen der Inhalte.
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 * Das DIP enthält die Bilddatei vom migrierten Typ TIFF image42.jp2.
 * Es enhält nicht die originale Bilddatei: image42.jpg.
 
-h2. Szenario AT-MB-5 Informieren über Migration
+
+
+
+## Szenario AT-MB-5 Informieren über Migration
 
 Bei der Wahl der Einstellung "Über Migration informieren wird der Nutzer bei jeder Migration seiner Daten informiert"
 
-h4. Testpaket:
+#### Testpaket:
 
 ``` 
   (GitHub) TODO
@@ -153,7 +156,7 @@ h4. Testpaket:
 
 1. Warten auf Email, die über die Migration informiert
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 * TODO Inhalt der Email
 
@@ -182,7 +185,7 @@ Die Tests AT-MD-2 und AT-MD3 gehen davon aus, dass der User die Rückfrage ableh
 #### Durchführung:
 
 1. Siehe Hintergrund
-1. 48 Stunden warten.
+1. 30 Tage warten.
 1. Warten auf Email, die die Einlieferung in die LZA bestätigt.&nbsp;
 1. Identifier notieren.
 1. In der Ansicht "Eingelieferte Objekte" das Objekt mit dem entsprechenden Identifier recherieren.
@@ -197,10 +200,6 @@ Die Tests AT-MD-2 und AT-MD3 gehen davon aus, dass der User die Rückfrage ableh
 
 ## Status und offene Punkte:
 
+implementiert mit Build > #1320
 
-####
 
-* Nicht implementiert.
-* Wie lange soll gewartet werden?
-* Soll das konfigurierbar oder fix sein?
-* Was soll dann geschehen? Ablehnung oder Durchführung der Migration?
