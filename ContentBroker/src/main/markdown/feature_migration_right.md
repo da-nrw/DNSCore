@@ -136,6 +136,7 @@ h4. Durchführung:
 * Das DIP enthält die Bilddatei vom migrierten Typ TIFF image42.jp2.
 * Es enhält nicht die originale Bilddatei: image42.jpg.
 
+
 h2. Szenario AT-MB-5 Informieren über Migration
 
 Bei der Wahl der Einstellung "Über Migration informieren wird der Nutzer bei jeder Migration seiner Daten informiert"
