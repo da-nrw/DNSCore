@@ -137,6 +137,8 @@ h4. Durchführung:
 * Es enhält nicht die originale Bilddatei: image42.jpg.
 
 
+
+
 h2. Szenario AT-MB-5 Informieren über Migration
 
 Bei der Wahl der Einstellung "Über Migration informieren wird der Nutzer bei jeder Migration seiner Daten informiert"
