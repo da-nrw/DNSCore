@@ -68,6 +68,7 @@ public class ArchiveReplicationAction extends AbstractAction {
 		sp.setCommonStorageRescName(n.getReplDestinations());
 		sp.setWorkingResource(n.getWorkingResource());
 		Path aipFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), filename);
+		// node get identifier is the zone name
 		Path replFilePath = Path.make(n.getIdentifier(), "repl", o.getContractor().getShort_name(), filename);
 
 		try {

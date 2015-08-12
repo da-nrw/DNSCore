@@ -89,7 +89,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	}
 	
 	@Override
-	public boolean putToReplDir(File file, String address_dest , StoragePolicy sp, String checksum) {
+	public boolean putToReplDir(File file, String address_dest , StoragePolicy sp, String checksum) throws IOException {
 		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
 		String destCollection = FilenameUtils.getFullPath(address_dest);
 		if (!iclc.exists(destCollection)) {
@@ -101,6 +101,19 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 	
 		if (iclc.put(file, address_dest, sp.getWorkingResource())) {
 			logger.debug("set destination resource "+sp.getWorkingResource());
+			String checksumAfterPut = iclc.getChecksum(address_dest);
+
+			if (StringUtilities.isNotSet(checksumAfterPut)) {
+				throw new IOException("iRODS found no checksum for " + address_dest);
+			}
+			
+			if (!StringUtilities.isNotSet(checksum)) {
+				if (!checksumAfterPut.equals(checksum)) {
+					logger.error("Given Checksum of Package has to be " + checksum);
+					logger.error("Checksum is " + checksumAfterPut);
+					throw new IOException("Checksum not correct on put!");
+				}
+			}
 			return true;
 		} else {
 			logger.debug("Unable to put the aip file to irods repl directory");

@@ -51,23 +51,26 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	
 
 	private static final Path archiveStoragePath = Path.make("/ci/archiveStorage/aip/TEST/");
-	private Object object = null;
 	
 	@Test
-	public void localCopyModifiedTest() throws Exception {
+	public void localCopyModifiedTest()  {
+		try {
+			
+			Object object = null;
+		
 	    String ORIGINAL_NAME = "ATIntegrityCheckLocalCopyModified";
 	    
 		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
 		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(ORIGINAL_NAME);
 		
-	    changeLastCheckedObjectDate(-25);
+	    changeLastCheckedObjectDate(object, -25);
 		
 		
-		//object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 
-		setChecksumSecondaryCopy(object.getLatestPackage().getChecksum(),-1);
-
+		setChecksumSecondaryCopy(object, object.getLatestPackage().getChecksum(),-1);
+		Thread.sleep(2000L);
 		// We'll destroy it physically now, if we 're on CI
 		// on dev machines FakeGridFacade will find special file in ATUseCaseAudit
 		// On other systems (DEV) the fake adapter will do that for us!
@@ -75,52 +78,72 @@ public class ATIntegrityCheck extends AcceptanceTest{
 			destroyFileInCIEnvironment(object.getIdentifier());
 		} else System.out.println(".. not detected CI Environment!");
 		
-		changeLastCheckedObjectDate(-25);
-		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
+		changeLastCheckedObjectDate(object, -25);
+		Thread.sleep(2000L);
+		
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.Error);
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+		assertSame(object.getObject_state(), Object.ObjectStatus.Error);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
-	public void remoteCopyDestroyed() throws IOException, InterruptedException {
+	public void remoteCopyDestroyed()  {
+try {
 		String ORIGINAL_NAME = "ATIntegrityRemoteCopyDestroyed";
-		
+		Object object = null;
 		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
 		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(ORIGINAL_NAME);
 
-		changeLastCheckedObjectDate(-25);
-		
-		//object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
-		setChecksumSecondaryCopy("abcedde5",-31);
-		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
-	}
+		changeLastCheckedObjectDate(object, -25);
+		Thread.sleep(2000L);
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+		setChecksumSecondaryCopy(object, "abcedde5",-31);
+		//assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.Error);
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+		assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
+} catch (Exception e) {
+	e.printStackTrace();
+}
+}
 	
 	@Test
-	public void allCopiesOKTest() throws Exception {
+	public void allCopiesOKTest()  {
+		try {
 		String ORIGINAL_NAME = "ATIntegrityCheckAllCopiesOK";
-		
+		Object object = null;
 		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
 		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(ORIGINAL_NAME);
 		
-		changeLastCheckedObjectDate(-25);
-		setChecksumSecondaryCopy(object.getLatestPackage().getChecksum(),-31);
+		changeLastCheckedObjectDate(object, -25);
+		setChecksumSecondaryCopy(object, object.getLatestPackage().getChecksum(),-31);
+		Thread.sleep(2000L);
+		assertSame(Integer.valueOf(object.getObject_state()),Integer.valueOf(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow));
 		
-		assertSame(object.getObject_state(),Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
-		
-		waitForObjectChecked(ORIGINAL_NAME);
-		assertSame(object.getObject_state(),Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		waitForObjectChecked(object, ORIGINAL_NAME);
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+		assertSame(Integer.valueOf(object.getObject_state()),Integer.valueOf(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test 
-	public void allCopiesDestroyed() throws IOException, InterruptedException {
+	public void allCopiesDestroyed() {
+		try {
 		String ORIGINAL_NAME = "ATIntegrityCheckAllCopiesDestroyed";
-		
+		Object object = null;
 		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
 		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(ORIGINAL_NAME);
 
-		changeLastCheckedObjectDate(-25);
-		
+		changeLastCheckedObjectDate(object, -25);
+		Thread.sleep(2000L);
 		
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 		// We'll destroy it physically now, if we 're on CI
@@ -130,41 +153,67 @@ public class ATIntegrityCheck extends AcceptanceTest{
 			destroyFileInCIEnvironment(object.getIdentifier());
 		} else System.out.println(".. not detected CI Environment!");
 		
-		setChecksumSecondaryCopy("abcd77",-31);
-		changeLastCheckedObjectDate(-25);
-		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
+		setChecksumSecondaryCopy(object, "abcd77",-31);
+		changeLastCheckedObjectDate(object, -25);
+		//assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.Error);
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+		assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test 
-	public void secondaryCopiesTooOld() throws IOException, InterruptedException {
+	public void secondaryCopiesTooOld() {
+		try {
+		
 		String ORIGINAL_NAME = "ATIntegritySecondaryCopiesCheckTooOld";
-		
+		Object object = null;
 		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
 		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(ORIGINAL_NAME);
 
-		setChecksumSecondaryCopy(object.getLatestPackage().getChecksum(),-8761);
-		assertSame(100,object.getObject_state());
+		setChecksumSecondaryCopy(object, object.getLatestPackage().getChecksum(),-8761);
+		
+		assertSame(Integer.valueOf(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow),Integer.valueOf(object.getObject_state()));
+		Thread.sleep(2000L);
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");;
-		changeLastCheckedObjectDate(-25);
-		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
-	}
+		changeLastCheckedObjectDate(object, -25);
+		
+		//assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.Error);
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+		assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		}
 	@Test 
-	public void primaryCopyTooOld() throws IOException, InterruptedException {
-		String ORIGINAL_NAME = "ATIntegrityCheckPrimaryCopyTooOld";
+	public void primaryCopyTooOld()  {
+		try {
+			String ORIGINAL_NAME = "ATIntegrityCheckPrimaryCopyTooOld";
 		
+		Object object = null;
 		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
 		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(ORIGINAL_NAME);
 
-		assertSame(100,object.getObject_state());
+		assertSame(Integer.valueOf(100),Integer.valueOf(object.getObject_state()));
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");;
-		changeLastCheckedObjectDate(-8761);
-		assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
+		changeLastCheckedObjectDate(object, -8761);
+		Thread.sleep(2000L);
+		//assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.Error);
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+		assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
+		} catch (Exception e) {
+		e.printStackTrace();
+	}
 	}
 	
 	
-	private void waitForObjectChecked(String ORIGINAL_NAME) {
+	private void waitForObjectChecked(Object object,String ORIGINAL_NAME) {
 		Date old = object.getLast_checked();
 		System.out.println("last check was : " + old);
 		Date neu = old;
@@ -176,14 +225,12 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	
 	}
 	
-	private void setChecksumSecondaryCopy(String checksum,int minusDaysInPast) {
+	private void setChecksumSecondaryCopy(Object object, String checksum,int minusDaysInPast) {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		// replace proxies by real objects
 		session.refresh(object);
 		for (Copy rec : object.getLatestPackage().getCopies()) rec.getId();
-		
-		assertTrue(object.getLatestPackage().getCopies().size()>0);
 		
 		// Simulate checksumming done by foreign nodes
 		Copy copy = object.getLatestPackage().getCopies().iterator().next();
@@ -223,7 +270,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	}
 	
 	
-	private Date changeLastCheckedObjectDate(int minusHoursInPast) throws IOException{
+	private Date changeLastCheckedObjectDate(Object object, int minusHoursInPast) throws IOException{
 		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
@@ -234,24 +281,6 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		session.getTransaction().commit();
 		session.close();
 		return now.getTime();
-	}
-	
-
-	private boolean waitForObjectInStatus( String orgName , int status) throws InterruptedException {	
-		while (true){
-			Thread.sleep(6000);
-			Object object = new ObjectNamedQueryDAO().getUniqueObject(orgName, C.TEST_USER_SHORT_NAME);
-			if (object!=null){
-				
-				System.out.println("waiting for Object to be in state " + status + ". Is: "+object.getObject_state() + " last checked " + object.getLast_checked() );
-				if (object.getObject_state()==status){
-					System.out.println("reached state : " + status );
-					return true;
-			}
-		} else return false;
-			
-				
-		}	
 	}
 }
 	

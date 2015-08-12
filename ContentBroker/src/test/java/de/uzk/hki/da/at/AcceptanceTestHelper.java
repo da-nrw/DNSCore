@@ -157,22 +157,22 @@ public class AcceptanceTestHelper {
 	void awaitObjectState(String originalName,int awaitedObjectState){
 		int waited_ms_total=0;
 		while (true){
+
 			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
-			
-			Object o = getObject(originalName);
+			Job job = null;
+			Object o = null;
+			try {
+				o = getObject(originalName);
 			if (o==null) {
 				System.out.println("Object not found (yet). ");
+				Thread.sleep(6000);
+				
 				continue;
 			}
 			System.out.print("Awaiting object state "+awaitedObjectState+". Identifier: "+o.getIdentifier()+
 					". Orig name: "+o.getOrig_name()+". Object state: "+o.getObject_state()+". ");
-	
-			Job job = null;
-			
-//			hotfix
-			try {
 				job = getJob(originalName);
-			} catch (ObjectNotFoundException e) {
+			} catch (Exception e) {
 				System.out.println("Catched hibernate exception. Try again.");
 				try {
 					Thread.sleep(1000);
@@ -180,17 +180,27 @@ public class AcceptanceTestHelper {
 					e1.printStackTrace();
 				}
 				job = getJob(originalName);
-			}		
+				o = getObject(originalName);
+			}
+			if (job==null) {
+				// to avoid false positive for slow starters
+				try {
+					Thread.sleep(1000);
+					job = getJob(originalName);
+				} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			}
 //			
 			if (job!=null) {
 				if (isInErrorState(job)) 
 					evaluateErrorDetails(job);
 				else
 					System.out.println(" Job state: "+job.getStatus()+".");
-			} else
-				System.out.println(" Job is null");
-			
-			if (o.getObject_state()==awaitedObjectState) {
+			} else {
+					System.out.println(" Job is null");
+			}
+			if (o.getObject_state()==awaitedObjectState && waited_ms_total>0) {
 				return;
 			}
 			

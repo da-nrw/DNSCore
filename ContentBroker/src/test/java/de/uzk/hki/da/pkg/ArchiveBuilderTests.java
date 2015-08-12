@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.*;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.pkg.ArchiveBuilder;
@@ -202,5 +203,50 @@ public class ArchiveBuilderTests {
 		
 		assertTrue((destFolder).exists());
 		assertTrue(FolderUtils.compareFolders(srcFolder, destFolder));			
+	}
+	
+	/**
+	 * @throws Exception 
+	 * Test POSIX Compat Archive
+	 */
+	@Test
+	public void testNativeJavaPosixTar() throws Exception {
+		destFolder.mkdir();
+
+		NativeJavaTarArchiveBuilder tb = new NativeJavaTarArchiveBuilder();
+		tb.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
+		tb.setBigNumberMode(TarArchiveOutputStream.BIGNUMBER_POSIX);
+		tb.archiveFolder(srcFolder, tarFile, true);
+		tb.unarchiveFolder(tarFile, new File(tempFolderPath));
+		
+		assertTrue((destFolder).exists());
+		assertTrue(FolderUtils.compareFolders(srcFolder, destFolder));			
+	
+		
+	}
+	
+	/**
+	 * @throws Exception 
+	 * Test POSIX Compat Archive
+	 */
+	@Test
+	public void testPackCriticalTar() throws Exception {
+		//destFolder.mkdir();
+
+		/*NativeJavaTarArchiveBuilder tb = new NativeJavaTarArchiveBuilder();
+		tb.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
+		tb.setBigNumberMode(TarArchiveOutputStream.BIGNUMBER_POSIX);
+		
+		String tmpfolder = "/tmp/3-2015072879184.pack_1";
+		new File(tmpfolder).mkdir();
+		tb.unarchiveFolder(new File("/home/jens/3-2015072879184.pack_1.tar"), new File(tmpfolder));
+		
+		tb.archiveFolder(new File(tmpfolder), new File("/home/jens/3-2015072879184.pack_1-posix.tar"), true);
+		new File(tmpfolder).delete();
+		
+	*/
+		//assertTrue(FolderUtils.compareFolders(srcFolder, destFolder));			
+	
+		
 	}
 }

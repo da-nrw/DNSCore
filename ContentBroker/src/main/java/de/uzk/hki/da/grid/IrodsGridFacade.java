@@ -221,7 +221,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 
 	@Override
 	public boolean putToReplDir(File file, String address_dest,
-			StoragePolicy sp, String checksum) {
+			StoragePolicy sp, String checksum) throws IOException {
 		// TODO Auto-generated method stub
 		return false;
 	}

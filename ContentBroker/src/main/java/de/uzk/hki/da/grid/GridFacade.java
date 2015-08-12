@@ -140,7 +140,7 @@ public interface GridFacade {
 	abstract boolean exists(String address_dest);
 
 	boolean putToReplDir(File file, String address_dest, StoragePolicy sp,
-			String checksum);
+			String checksum) throws java.io.IOException;
 
 	boolean remove(String dest);
 }
