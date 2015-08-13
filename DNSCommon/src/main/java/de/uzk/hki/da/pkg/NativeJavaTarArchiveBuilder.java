@@ -49,8 +49,12 @@ public class NativeJavaTarArchiveBuilder implements ArchiveBuilder {
 	
 	private String firstLevelEntryName = "";
 	
+	private int longFileMode = TarArchiveOutputStream.LONGFILE_GNU;
 	
+	private int bigNumberMode = 2;
 	
+
+
 	public void unarchiveFolder(File srcTar, File destFolder) throws Exception {
 		
 		FileInputStream fin = new FileInputStream(srcTar);
@@ -102,8 +106,8 @@ public class NativeJavaTarArchiveBuilder implements ArchiveBuilder {
 		bOut = new BufferedOutputStream(fOut);
 		tOut = new TarArchiveOutputStream(bOut);
 		
-		tOut.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
-		tOut.setBigNumberMode(2);
+		tOut.setLongFileMode(longFileMode);
+		tOut.setBigNumberMode(bigNumberMode);
 
 		try {
 			
@@ -181,4 +185,20 @@ public class NativeJavaTarArchiveBuilder implements ArchiveBuilder {
 		if (firstLevelEntryName==null) this.firstLevelEntryName = "";
 		this.firstLevelEntryName = StringUtilities.slashize(firstLevelEntryName);
 	}
+
+
+	public int getBigNumberMode() {
+		return bigNumberMode;
+	}
+	public void setBigNumberMode(int bigNumberMode) {
+		this.bigNumberMode = bigNumberMode;
+	}
+	public int getLongFileMode() {
+		return longFileMode;
+	}
+	public void setLongFileMode(int longFileMode) {
+		this.longFileMode = longFileMode;
+	}
+
+
 }
