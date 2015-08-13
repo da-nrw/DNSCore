@@ -32,6 +32,7 @@ import org.apache.commons.io.FileUtils;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
+import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.FolderUtils;
 
 
@@ -232,19 +233,28 @@ public class ArchiveBuilderTests {
 	@Test
 	public void testPackCriticalTar() throws Exception {
 		//destFolder.mkdir();
-
-		/*NativeJavaTarArchiveBuilder tb = new NativeJavaTarArchiveBuilder();
-		tb.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
-		tb.setBigNumberMode(TarArchiveOutputStream.BIGNUMBER_POSIX);
+		/*
+		NativeJavaTarArchiveBuilder tb = new NativeJavaTarArchiveBuilder();
+		//tb.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
+		//tb.setBigNumberMode(TarArchiveOutputStream.BIGNUMBER_POSIX);
 		
 		String tmpfolder = "/tmp/3-2015072879184.pack_1";
 		new File(tmpfolder).mkdir();
 		tb.unarchiveFolder(new File("/home/jens/3-2015072879184.pack_1.tar"), new File(tmpfolder));
+	
+		tb.archiveFolder(new File(tmpfolder), new File("/home/jens/3-2015072879184.pack_1-compress19.tar"), true);
 		
-		tb.archiveFolder(new File(tmpfolder), new File("/home/jens/3-2015072879184.pack_1-posix.tar"), true);
+		CommandLineConnector cliConnector = new CommandLineConnector();
+		ArrayList<String> commandAsList  = new ArrayList<String>();;
+		commandAsList.add("tar");
+		commandAsList.add("-cf");
+		commandAsList.add("/home/jens/3-2015072879184.pack_1-cln.tar");
+		commandAsList.add(tmpfolder);
+		String[] commandAsArray = new String[commandAsList.size()];
+		commandAsArray = commandAsList.toArray(commandAsArray);
+		cliConnector.runCmdSynchronously(commandAsArray);
 		new File(tmpfolder).delete();
-		
-	*/
+		*/
 		//assertTrue(FolderUtils.compareFolders(srcFolder, destFolder));			
 	
 		

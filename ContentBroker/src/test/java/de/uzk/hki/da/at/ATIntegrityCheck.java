@@ -199,7 +199,7 @@ try {
 		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(ORIGINAL_NAME);
 
-		assertSame(Integer.valueOf(100),Integer.valueOf(object.getObject_state()));
+		assertSame(Integer.valueOf(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow),Integer.valueOf(object.getObject_state()));
 		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");;
 		changeLastCheckedObjectDate(object, -8761);
 		Thread.sleep(2000L);
