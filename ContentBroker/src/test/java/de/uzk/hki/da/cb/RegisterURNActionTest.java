@@ -22,9 +22,11 @@ package de.uzk.hki.da.cb;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.jdom.JDOMException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,6 +56,7 @@ public class RegisterURNActionTest extends ConcreteActionUnitTest {
 		
 		FileUtils.copyFile(Path.makeFile(WORK_AREA_ROOT_PATH,"premis.xml.1"), wa.toFile(premis));
 		o.setUrn(null);
+		o.setPackage_type("NONE");
 	}
 
 	@After
@@ -63,14 +66,14 @@ public class RegisterURNActionTest extends ConcreteActionUnitTest {
 	
 	
 	@Test
-	public void newIdentifier() {
+	public void newIdentifier() throws FileNotFoundException, JDOMException, IOException {
 		action.implementation();
 		assertEquals(ps.getUrnNameSpace()+"-"+o.getIdentifier(),o.getUrn());
 	}
 	
 	
 	@Test
-	public void identifierFromPREMIS() throws IOException {
+	public void identifierFromPREMIS() throws IOException, JDOMException {
 		FileUtils.copyFile(Path.makeFile(WORK_AREA_ROOT_PATH,"premis.xml.urn"), wa.toFile(premis));
 	
 		action.implementation();

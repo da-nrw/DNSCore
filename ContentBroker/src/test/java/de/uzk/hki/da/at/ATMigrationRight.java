@@ -59,7 +59,6 @@ public class ATMigrationRight extends AcceptanceTest {
 	public void testMigrationNotAllowed() throws IOException, InterruptedException {
 		ath.waitForJobToBeInStatus(ORIG_NAME_NOTALLOWED, C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
 		o=ath.getObject(ORIG_NAME_NOTALLOWED);
-		
 	}
 	
 	

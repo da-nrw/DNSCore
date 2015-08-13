@@ -46,7 +46,7 @@ public class MetadataStructureGetIndexInfoTests {
 	@Test
 	public void testLIDO() throws FileNotFoundException, JDOMException, IOException {
 		
-		File lidoFile = Path.make(basePath,"MetadataStructureGetIndexInfoTestsLIDO.xml").toFile();
+		File lidoFile = Path.make("MetadataStructureGetIndexInfoTestsLIDO.xml").toFile();
 		
 		List<Document> docs = new ArrayList<Document>();
 		MetadataStructure lms = new LidoMetadataStructure(Path.make(basePath),lidoFile, docs);
@@ -79,10 +79,13 @@ public class MetadataStructureGetIndexInfoTests {
 	@Test
 	public void testMETS() throws FileNotFoundException, JDOMException, IOException {
 		
-		File metsFile = Path.make(basePath,"MetadataStructureGetIndexInfoTestsMETS.xml").toFile();
+		File metsFile = Path.make("MetadataStructureGetIndexInfoTestsMETS.xml").toFile();
 		
 		List<Document> docs = new ArrayList<Document>();
-		MetadataStructure mms = new MetsMetadataStructure(Path.make(basePath),metsFile, docs);
+		MetsMetadataStructure mms = new MetsMetadataStructure(Path.make(basePath),metsFile, docs);
+		
+		assertTrue(mms.getMetsUrn().equals("urn:nbn:de:hbz:6:1-3602"));
+		
 		indexInfo = mms.getIndexInfo(objectID);
 		
 		content = indexInfo.get(objectID+"-md258094");
@@ -105,11 +108,13 @@ public class MetadataStructureGetIndexInfoTests {
 	@Test
 	public void testMultilevelMETS() throws FileNotFoundException, JDOMException, IOException {
 		
-		File metsFile = Path.make(basePath,"export_mets.xml").toFile();
+		File metsFile = Path.make("export_mets.xml").toFile();
 		
 		List<Document> docs = new ArrayList<Document>();
-		MetadataStructure mms = new MetsMetadataStructure(Path.make(basePath),metsFile, docs);
+		MetsMetadataStructure mms = new MetsMetadataStructure(Path.make(basePath),metsFile, docs);
 		indexInfo = mms.getIndexInfo(objectID);
+		
+		assertTrue(mms.getMetsUrn().equals("urn:nbn:de:hbz:6:1-65526"));
 		
 		content = indexInfo.get(objectID+"-md1617166");
 		
@@ -133,7 +138,7 @@ public class MetadataStructureGetIndexInfoTests {
 	@Test
 	public void testEAD() throws FileNotFoundException, JDOMException, IOException, ParserConfigurationException, SAXException {
 		
-		File eadFile = Path.make(basePath,"MetadataStructureGetIndexInfoTestsEAD.xml").toFile();
+		File eadFile = Path.make("MetadataStructureGetIndexInfoTestsEAD.xml").toFile();
 		
 		List<Document> docs = new ArrayList<Document>();
 		MetadataStructure ems = new EadMetsMetadataStructure(Path.make(basePath),eadFile, docs);

@@ -35,7 +35,7 @@ import de.uzk.hki.da.util.Path;
 public class ATUseCaseIngestSpecialCases extends AcceptanceTest{
 
 	@BeforeClass
-	public static void setUpBeforeClass() throws IOException {
+	public static void setUp() throws IOException {
 		ath.putSIPtoIngestArea("ATÜÄÖ","tgz","ATÜÄÖ");
 		ath.putSIPtoIngestArea("ATSonderzeichen_in_Dateinamen","tgz","ATSonderzeichen_in_Dateinamen");
 		ath.putSIPtoIngestArea("ATUmlaute_in_Dateinamen","tgz","ATUmlaute_in_Dateinamen");

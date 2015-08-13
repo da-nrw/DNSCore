@@ -77,7 +77,7 @@ import de.uzk.hki.da.grid.FederationExecutorTest;
 import de.uzk.hki.da.grid.IrodsGridFacadeTest;
 import de.uzk.hki.da.grid.ReplicationExecutorTest;
 import de.uzk.hki.da.metadata.MetsRightsSectionXmlReaderTest;
-import de.uzk.hki.da.metadata.MetsURNXmlReaderTest;
+import de.uzk.hki.da.metadata.ReadUrnFromMetsTests;
 import de.uzk.hki.da.metadata.PremisXmlReaderTests;
 import de.uzk.hki.da.metadata.PremisXmlWriterTest;
 import de.uzk.hki.da.metadata.XsltEDMGeneratorTests;
@@ -136,7 +136,7 @@ import de.uzk.hki.da.util.PathTest;
 	UpdateMetadataActionTests.class,
 	PremisXmlReaderTests.class,
 	MetsRightsSectionXmlReaderTest.class,
-	MetsURNXmlReaderTest.class,
+	ReadUrnFromMetsTests.class,
 	ShortenFileNamesActionTests.class,
 	XPathUtilsTests.class,
 	CheckFormatsActionTest.class,

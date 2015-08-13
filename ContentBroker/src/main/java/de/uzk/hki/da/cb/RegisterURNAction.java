@@ -22,14 +22,23 @@
 package de.uzk.hki.da.cb;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 
+import org.jdom.JDOMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
+import de.uzk.hki.da.metadata.MetsMetadataStructure;
+import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
+import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.util.RelativePath;
 import de.uzk.hki.da.utils.StringUtilities;
 
 
@@ -67,15 +76,25 @@ public class RegisterURNAction extends AbstractAction {
 			logger.info("Retaining previous object URN: " + o.getUrn());
 			return true;
 		}
-
-
+		
 		String premisUrn = extractURNFromPremisFile(premisFile());
 		if (StringUtilities.isSet(premisUrn)) {
 			o.setUrn(premisUrn);
-			logger.info("New user-supplied object URN");
+			logger.info("New user-supplied object URN in premis");
 			return true;
 		}
 		
+		String metsUrn = null;
+		if(o.getPackage_type()!=null && o.getPackage_type().equals(C.CB_PACKAGETYPE_METS)) {
+			logger.debug("Package type: METS. Try to read urn ...");
+			File metsFile = Path.makeFile(o.getLatest(o.getMetadata_file()).getRelative_path());
+			metsUrn = extractURNFromMetsFile(metsFile);
+			if(StringUtilities.isSet(metsUrn)) {
+				o.setUrn(metsUrn);
+				logger.info("New user-supplied object URN in mets");
+				return true;
+			}
+		}
 		
 		String urn = preservationSystem.getUrnNameSpace() + "-" + o.getIdentifier();
 		logger.info("New system-generated object URN: " + urn);
@@ -108,6 +127,29 @@ public class RegisterURNAction extends AbstractAction {
 			throw new RuntimeException("Couldn't deserialize: " + premisFile, e);
 		}
 		return premisObject.getUrn();
+	}
+	
+	/**
+	 * @author Polina Gubaidullina
+	 * @return URN if the SIP mets file contains an URN; otherwise null
+	 */
+	
+	private final String extractURNFromMetsFile(File metsFile) {
+		String urn = null;
+		List<Document> documents = o.getDocuments();
+		try {
+			Path path = Path.make(wa.dataPath(), o.getLatest(o.getMetadata_file()).getRep_name());
+			MetsMetadataStructure mms = new MetsMetadataStructure(path, metsFile, documents);
+			urn = mms.getMetsUrn();
+			logger.debug("Found urn in mets: "+urn);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (JDOMException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return urn;
 	}
 	
 	

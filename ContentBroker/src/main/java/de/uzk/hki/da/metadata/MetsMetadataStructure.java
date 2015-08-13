@@ -91,6 +91,32 @@ public class MetsMetadataStructure extends MetadataStructure {
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
+	
+	public String getMetsUrn() {
+		String urn = null;
+		try {
+			String rootDmdSecId = getUniqueRootElementInLogicalStructMap().getAttributeValue("DMDID");
+			@SuppressWarnings("unchecked")
+			List<Element> dmdSecs = metsDoc.getRootElement().getChildren("dmdSec", C.METS_NS);
+			for(Element dmdSec : dmdSecs) {
+				if(dmdSec.getAttributeValue("ID").equals(rootDmdSecId)) {
+					Element rootDmdSec = dmdSec;
+					@SuppressWarnings("unchecked")
+					List<Element> elements = getModsXmlData(rootDmdSec).getChildren();
+					for (Element e : elements) {
+						if(e.getName().equals("identifier") && e.getAttributeValue("type").equals("urn")) {
+							urn = e.getValue();
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Unable to find urn.");
+		}
+		return urn;
+	}
+	
+	
 	@Override
 	public HashMap<String, HashMap<String, List<String>>> getIndexInfo(String ObjectId) {
 		HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();
@@ -172,7 +198,6 @@ public class MetsMetadataStructure extends MetadataStructure {
 			if(parentsDmdIds!=null && !parentsDmdIds.isEmpty()) {
 				dmdSecInfo.put(C.EDM_IS_PART_OF, parentsDmdIds);
 			}
-			
 			indexInfo.put(id, dmdSecInfo);
 		}
 		return indexInfo;
@@ -247,32 +272,48 @@ public class MetsMetadataStructure extends MetadataStructure {
 		return structMap;
 	} 
 	
+	private Element getUniqueRootElementInLogicalStructMap() {
+		Element logicalRootElement = null;
+		try {
+			List<Element> structMap = getStructMaps(metsDoc);
+			for(Element s : structMap) {
+				if(s.getAttributeValue("TYPE").equals(STRUCTMAP_TYPE_LOGICAL)) {
+					@SuppressWarnings("unchecked")
+					List<Element> metsDivElements = s.getChildren("div", C.METS_NS);
+					if(metsDivElements.size()==1) {
+						logicalRootElement = metsDivElements.get(0);
+					} else if(metsDivElements.size()==0) {
+						logger.error("No unique root element found in the logical structMap!");
+					} else {
+						logger.error("Found multiple root elements in the logical structMap!");
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Unable to find the unique root element in the logical structMap!");
+		}
+		return logicalRootElement;
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private HashMap<String, ArrayList<String>> getParentChildInfoOfDmdIds(String objectId) {
 		HashMap parentChildDmdId = new HashMap<String, ArrayList<String>>();
 		String parentDmdId = "";
 		try {
-			List<Element> structMap = getStructMaps(metsDoc);
-			for(Element s : structMap) {
-				if(s.getAttributeValue("TYPE").equals(STRUCTMAP_TYPE_LOGICAL)) {
-					List<Element> metsDivElements = s.getChildren("div", C.METS_NS);
-					for (Element d : metsDivElements){
-						ArrayList<String> children = new ArrayList<String>();
-						List<Element> divChildren =  d.getChildren("div", C.METS_NS);
-						if(divChildren!=null && !divChildren.isEmpty()) {
-							for(Element divChild : divChildren) {
-								if(divChild.getAttribute("DMDID")!=null && !divChild.getAttributeValue("DMDID").equals(parentDmdId)) {
-									children.add(objectId+"-"+divChild.getAttributeValue("DMDID"));
-								}
-							}	
-						}
-						if(children!=null && !children.isEmpty()) {
-							parentChildDmdId.put(d.getAttributeValue("DMDID"), children);
-						}	
+			Element rootDivElement = getUniqueRootElementInLogicalStructMap();
+			ArrayList<String> children = new ArrayList<String>();
+			List<Element> divChildren =  rootDivElement.getChildren("div", C.METS_NS);
+			if(divChildren!=null && !divChildren.isEmpty()) {
+				for(Element divChild : divChildren) {
+					if(divChild.getAttribute("DMDID")!=null && !divChild.getAttributeValue("DMDID").equals(parentDmdId)) {
+						children.add(objectId+"-"+divChild.getAttributeValue("DMDID"));
 					}
-				}
-			} 
-		}catch (Exception e) {
+				}	
+			}
+			if(children!=null && !children.isEmpty()) {
+				parentChildDmdId.put(rootDivElement.getAttributeValue("DMDID"), children);
+			}	 
+		} catch (Exception e) {
 			logger.debug("No parent child relationship found.");
 		}
 		return parentChildDmdId;
@@ -679,6 +720,14 @@ public class MetsMetadataStructure extends MetadataStructure {
 			valid = false;
 		}
 		return valid;
+	}
+	
+	public boolean uniqueRootDivElementExists() {
+		if(getUniqueRootElementInLogicalStructMap()!=null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	@Override

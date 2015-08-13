@@ -160,4 +160,9 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 //		testIndex
 		assertTrue(metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613").contains("Text Text// mahels///Titel"));
 	}
+	
+	@Test
+	public void testUserSuppliedUrn() {
+		assertTrue(object.getUrn().equals("urn:nbn:de:hbz:42"));
+	}
 }
