@@ -53,7 +53,7 @@ Im Contract eines SIP ist eine mögliche Migrationsbedinung zu hinterlegen. Dies
 1. Das DIP enthält die Bilddatei vom migrierten Typ TIFF: image42.jp2
 1. Es enhält nicht die originale Bilddatei: image42.jpg.
 
-## Szenario AT-MD-2 Migrationsrückfrage ablehnen
+## Szenario AT-MB-2 Migrationsrückfrage ablehnen
 
 Szenario AT-MD-2 Migrationsrückfrage ablehnen
 Siehe auch Test AT-R1a.
@@ -162,7 +162,7 @@ Bei der Wahl der Einstellung "Über Migration informieren wird der Nutzer bei je
 
 ## Szenario AT-MB-4 Migration nach Verstreichen der Entscheidungsfrist.
 
-Die Tests AT-MD-2 und AT-MD3 gehen davon aus, dass der User die Rückfrage ablehnt oder bestätigt. In diesem Szenario handelt der User für eine gegebene Zeitspanne gar nicht und in der Folge findet eine automatische Ablehung durch das System statt.
+Die Tests AT-MBD-2 und AT-MB3 gehen davon aus, dass der User die Rückfrage ablehnt oder bestätigt. In diesem Szenario handelt der User für eine gegebene Zeitspanne gar nicht und in der Folge findet eine automatische Ablehung durch das System statt.
 
 #### Kontext:
 
