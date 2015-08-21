@@ -155,6 +155,20 @@ grails.plugin.springsecurity.interceptUrlMap = [
 	'/preservationSystem/**':         ['ROLE_PSADMIN'],
 	'/cbNode/**':         ['ROLE_PSADMIN']
  ]
+
+jqueryDateTimePicker {
+	format {
+		java {
+			datetime = "dd.MM.yyyy HH:mm:ss"
+			date = "dd.MM.yyyy"
+		}
+		picker {
+			date = "'dd.mm.yy'"
+			time = "'HH:mm:ss'"
+		}
+	}
+}
+
 // Uncomment and edit the following lines to start using Grails encoding & escaping improvements
 
 /* remove this line 

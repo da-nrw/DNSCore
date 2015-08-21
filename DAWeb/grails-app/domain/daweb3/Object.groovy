@@ -1,5 +1,7 @@
 package daweb3
 import java.text.SimpleDateFormat;
+
+
 /*
  DA-NRW Software Suite | ContentBroker
  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
@@ -50,8 +52,12 @@ class Object {
 	String origName
 	int object_state
 	int published_flag
+	
+	// due to now unused iRODS functions these fields are still strings, should be 
+	// refactored to normal Dates
 	String created
 	String modified
+	
 	Date static_nondisclosure_limit
 	String dynamic_nondisclosure_limit
 	Date last_checked
@@ -145,7 +151,7 @@ class Object {
 	def getFormattedCreatedDate() {
 		
 	if (created!=null && created!="" && created!="NULL" && created.length()>5) {
-		String sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(Long.valueOf(created).longValue() ))
+		String sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date(Long.valueOf(created).longValue() ))
 		return sdf
 	}
 	return "";
@@ -154,11 +160,24 @@ class Object {
 	def getFormattedModifiedDate() {
 	
 	if (modified!=null && modified!="" && modified!="NULL" && modified.length()>5) {
-		String sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(Long.valueOf(modified).longValue()) )
+		String sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date(Long.valueOf(modified).longValue()) )
 		return sdf
 	}
 	return ""
 	
 	}
 	
+	static String convertDateIntoStringDate(String sDate) {
+
+		if (sDate!=null && sDate!="") {
+		try {
+				SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
+				Date dt = df.parse(sDate)
+				return String.valueOf(Math.round(dt.getTime()/1000L))
+			} catch (Exception ex) { 
+				return null;
+			}
+		}
+		return null;
+	}
 }

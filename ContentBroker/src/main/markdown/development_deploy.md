@@ -11,7 +11,7 @@ In general, DNSCore gets build in one of two modes,
     ci  ( fully installed, node-like, machine with irods, fedora, elasticsearch )
     dev ( local development workstation with less prerequisites )
 
-The **"ci" mode** is there for doing continuous integration. For continuous integration, the environment has to be production-similar. This means that like on a real "node", iRODS and a some other subssystems have to be installed prior to beeing able to executing the tests and creating builds.
+The **"ci" mode** is there for doing continuous integration. For continuous integration, the environment has to be production-similar. This means that like on a real "node", iRODS and a some other subsystems have to be installed prior to beeing able to executing the tests and creating builds.
 
 The **"dev" mode** somewhat lightweight compared to the "ci" mode. The internal connectors to the subsystem are configured in a way that fake version of the connectors are used while doing tests and creating builds. This is useful for development purposes, where one wants to check out the sources, modify them, and see if they run on a local laptop, for example.
 
@@ -51,7 +51,7 @@ is a place somewhere on your file system, where your local clone of the DNSCore 
 
 In order to run the tests on a development workstation and to reduce the dependencies to the workstation, one can
 execute the acceptance tests against a version of the ContentBroker which runs with fake connectors which replace the
-real external systems. So a developer is able to run the tests quickly but is not forced to install the whole bunch of external software DNSCore would need to speak to on a real node. 
+real external systems. So a developer is able to run the tests quickly but is not forced to install the whole bunch of external software DNSCore would need. 
 
 To build the software from source and run the unit and acceptance tests follow these steps:
 

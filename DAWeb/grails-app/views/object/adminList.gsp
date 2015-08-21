@@ -44,6 +44,31 @@
             			<td>Identifier:</td>
             			<td><g:textField name="search.identifier" value="${params.search?.identifier}" size="50"/></td>
             		</tr>
+            		
+            		<tr>
+            		<td>
+            		Datumsbereich:
+            		</td><td>
+            		<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['created','modified']}" value="${params.searchDateType}" />
+            			</td>
+						</tr>
+            			<tr>
+            			<td>Von Datum: </td>
+            			<td><jqueryPicker:time name="searchDateStart" value=""/>(TT.MM.JJJJ HH:mm:ss)
+            			</td>
+            		</tr>
+            			<tr>
+            			<td>Bis Datum: </td>
+            			<td><jqueryPicker:time name="searchDateEnd" value=""/>(TT.MM.JJJJ HH:mm:ss)
+            				<% // fix for https://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %>
+            			<script type="text/javascript">
+            			 $(document).ready(function(){
+            			$("#searchDateStart").val("${params.searchDateStart}")
+            			$("#searchDateEnd").val("${params.searchDateEnd}")
+            			 })
+            			</script>
+            			</td>
+            		</tr>
             		<g:if test="${admin}">
             			<tr>
             			<td>Contractor:</td>

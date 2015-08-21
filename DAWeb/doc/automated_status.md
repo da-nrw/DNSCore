@@ -23,6 +23,8 @@ The software is able to send back some information on the process being executed
 SIP is ingested to the DNS. As well as the "final state" residing as AIP on the storage layer 
 is being fed back, you are able to determine the URN being assigned to your SIP. 
 
+As far you're are using special, reserved characters (https://tools.ietf.org/html/rfc3986#section-2.2) in parameters of URIs (e.g. such as the plus sign in origNames), they have to be URL endoded as being decoded by default. 
+
 https://Servername/daweb3/status/index?urn=[TheURN]
 https://Servername/daweb3/status/index?origName=[Original name the SIP was ingested]
 https://Servername/daweb3/status/index?identifier=[DNS identifier] 
@@ -35,7 +37,7 @@ The response looks like (JSON):
 "Status" could be one of:
 
 1. archived  : The object is fully archived and valid
-1. archived - but check needed : The object is archived, but a check performed by node admin has to be carried out (should be none object at all! Please check object and its packages manually)
+1. archived - but check needed : The object is archived, but a check performed by node admin has to be carried out (should be none object at all! Please check object and its packages manually, while one of the packages might be corrupted)
 1. archived - but in progress : The object recieves deltas or is under retrieval 
 
 1. in progress waiting ([internal state code]) : The package is waiting for being picked up by ContenBroker

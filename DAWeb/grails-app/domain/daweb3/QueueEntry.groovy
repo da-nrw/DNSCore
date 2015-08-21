@@ -78,7 +78,7 @@ class QueueEntry {
 	def getFormattedCreatedDate() {
 			
 		if (created!=null && created!="" && created!="NULL" && created.length()>5) {
-			String sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(Long.valueOf(created).longValue()*1000L) ) 
+			String sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date(Long.valueOf(created).longValue()*1000L) ) 
 			return sdf
 		}
 		return "";
@@ -88,7 +88,7 @@ class QueueEntry {
 	def getFormattedModifiedDate() {
 		
 		if (modified!=null && modified!="" && modified!="NULL" && modified.length()>5) {
-			String sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(Long.valueOf(modified).longValue()*1000L) )
+			String sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date(Long.valueOf(modified).longValue()*1000L) )
 			return sdf
 		}
 		return ""
