@@ -119,10 +119,9 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException{
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		
-		Document doc = builder.build
-				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "LIDO.xml").toFile()));
+		FileReader frLido = new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "LIDO.xml").toFile());
+		SAXBuilder lidoSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		Document doc = lidoSaxBuilder.build(frLido);
 		
 		List<String> lidoUrls =  mh.getLIDOURL(doc);
 		int danrwRewritings = 0;
@@ -131,16 +130,18 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 				danrwRewritings++;
 			}
 		}
-		assertTrue(danrwRewritings==2);		
+		assertTrue(danrwRewritings==2);	
+		frLido.close();
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document doc = builder.build
-				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));
+		FileReader frLido = new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(),"EDM.xml").toFile());
+		SAXBuilder lidoSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		Document doc = lidoSaxBuilder.build(frLido);
+	
 		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
 		Boolean testProvidetCho1Exists = false;
 		Boolean testProvidetCho2Exists = false;
@@ -194,6 +195,8 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 		
 //		testIndex
 		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-ISIL/lido/Inventarnummer-1").contains("Nudelmaschine in Originalverpackung"));
+		
+		frLido.close();
 	}
 }
 	

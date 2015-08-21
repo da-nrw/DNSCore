@@ -135,10 +135,10 @@ public class MetsMetadataStructure extends MetadataStructure {
 			for(Element name : getNameElements(e)) {
 				String creator = getCreator(name);
 				String contributor = getContributor(name);
-				if(creator.equals("")) {
+				if(!creator.equals("")) {
 					creators.add(creator);
 				}
-				if(contributor.equals("")) {
+				if(!contributor.equals("")) {
 					contributors.add(contributor);
 				}
 			}
@@ -485,7 +485,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 		String namePartValue = "";
 		try {
 			String role = name.getChild("role", C.MODS_NS).getValue();
-			if(!(role.equals("aut")||role.equals("creator"))) {
+			if(!(role.equals("aut") && !role.equals("creator"))) {
 				namePartValue = role+": "+getName(name);
 			}
 		} catch (Exception e) {
@@ -531,7 +531,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 					namePartValue = name.getChild("displayForm", C.MODS_NS).getValue();
 				} catch (Exception e) {
 					logger.error("No name found");
-				}
+				} 
 			}
 		}
 		return namePartValue;

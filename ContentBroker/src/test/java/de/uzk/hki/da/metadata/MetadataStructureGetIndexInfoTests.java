@@ -100,6 +100,8 @@ public class MetadataStructureGetIndexInfoTests {
 		assertTrue(content.get(C.EDM_PUBLISHER).contains("Hoerde")
 				&&content.get(C.EDM_PUBLISHER).contains("Universitäts- und Landesbibliothek (Münster)"));
 		
+		assertTrue(content.get(C.EDM_CREATOR).contains("Schulte, Friedrich W."));
+		
 		content1 = indexInfo.get(objectID+"-md1616184");
 		
 		mms.toEDM(indexInfo, Path.makeFile(basePath, "target", "metsToEdm.xml"), pSystem, objectID, urn);

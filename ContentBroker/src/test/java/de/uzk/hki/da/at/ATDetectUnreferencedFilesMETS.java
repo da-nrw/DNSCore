@@ -28,6 +28,7 @@ public class ATDetectUnreferencedFilesMETS extends AcceptanceTest{
 		contentbrokerLogfile = Path.makeFile(localNode.getLogFolder(), "contentbroker.log");
 		FileInputStream fisTargetFile = new FileInputStream(contentbrokerLogfile);
 		targetFileStr = IOUtils.toString(fisTargetFile, "UTF-8");
+		fisTargetFile.close();
 	}
 	
 	@Test

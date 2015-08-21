@@ -76,6 +76,7 @@ import de.uzk.hki.da.format.XMLSubformatIdentifierTests;
 import de.uzk.hki.da.grid.FederationExecutorTest;
 import de.uzk.hki.da.grid.IrodsGridFacadeTest;
 import de.uzk.hki.da.grid.ReplicationExecutorTest;
+import de.uzk.hki.da.metadata.MetadataStructureGetIndexInfoTests;
 import de.uzk.hki.da.metadata.MetsRightsSectionXmlReaderTest;
 import de.uzk.hki.da.metadata.ReadUrnFromMetsTests;
 import de.uzk.hki.da.metadata.PremisXmlReaderTests;
@@ -180,7 +181,8 @@ import de.uzk.hki.da.util.PathTest;
 	ObjectTests.class,
 	CreateDCActionTests.class,
 	RegisterURNActionTest.class,
-	DocumentTests.class
+	DocumentTests.class,
+	MetadataStructureGetIndexInfoTests.class
 })
 public class SimpleSuite {
 
