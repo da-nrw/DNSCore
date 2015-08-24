@@ -152,10 +152,10 @@ Dieses Szenario ist implementiert.
 
 Das oberste Objekt im METS-Baum wird durch eine dmdSec mit der entsprechenden ID beschreiben. Innerhalb dieser dmdSec findet man über mets:mdWrap\-{-}mets:xmlData{-}\-mods:identifier type=urn die entsprechende URN. Es wird diejenige dmdSec berücksichtitgt, welche dem obersten hierarchischen Element (siehe structMap) der METS-Datei entspricht.
 
-#### Testpaket(e): ATReadUrnFromMets.tgz
+#### Testpaket(e): 
 
 ``` 
-(GitHub) Testpaket enhält
+(GitHub) ATReadUrnFromMets.tgz enthält
   data/mets.xml
   data/premis.xml
   data/(Weitere Primärdaten)
@@ -195,7 +195,8 @@ Die im Februar 2015 (Mail&nbsp;WG: DA NRW / hier: Testszenario für Digitalisate
 
 ## Szenario AT-IV-5 Nutzergesteuerte URN-Vergabe in der METS-Datei: Mehrere Objekte auf oberster Ebene
 
-Dieses Szenario ist nicht implementiert.
+Dieses Szenario ist nicht implementiert. Keine Testdaten mit vorhanden. 
+
 
 METS lässt unterschiedliche Arten der Strukturierung von Objekten zu. Die StructMap bildet diese Strukturierung ab. Für die URN-Generierung sind alle Fälle problematisch, in denen es kein einzelnes Objekt auf oberster Hierarchieebene gibt. Ein Objekt mit Kindern ist kein Problem, mehrere Objekte auf der obersten Ebene sind ein Problem.
 
@@ -249,7 +250,7 @@ Eine PREMIS-URN wird der METS-URN vorgezogen.
 #### Testpaket(e):
 
 ```
-(GitHub) Testpaket enhält
+(GitHub) ATReadUrnFromMets.tgz enhält
   data/mets.xml
   data/premis.xml
   data/(Weitere Primärdaten)
