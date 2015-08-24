@@ -96,7 +96,6 @@ Inhalt premis.xml
 Das Szenario beschreibt den Fall, in dem eine Delta abgeliefert wird, in dem der Nutzer eine URN vergibt. Diese vergebene URN stimmt jedoch nicht mit der URN des Objektes überein, welche in der Erstanlieferung auf Basis des technischen Identifier vergeben wurde. Die URN kann nur einmal vergeben werden.
 
 * Derzeitige Implementation: Die neue URN wird ignoriert.
-* Alternativer Vorschlag: Ablehnung des Paketes (kann über Änderungsantrag beantragt werden).
 
 #### Kontext:
 
@@ -205,7 +204,7 @@ In dem Fall, dass
 2. es in der METS mehrere Objekte auf der höchsten Ebene gibt, und mehrere davon eine URN tragen, 
 informiert das System den User per Fehlerreport und bricht den Ingestvorgang ab.
 
-#### Testpaket(e):
+#### Testpaket(e): 
 
 ```
 (GitHub) Testpaket enhält
@@ -245,15 +244,13 @@ Siehe Hintergrund.
 
 ## Szenario AT-IV-4 Präzedenzregelung bei mitgelieferter URN in METS und PREMIS
 
-Dieses Szenario ist nicht implementiert. Es befindet sich derzeit in der Konzeptionsphase.
-
 Eine PREMIS-URN wird der METS-URN vorgezogen. 
 
 #### Testpaket(e):
 
 ```
 (GitHub) Testpaket enhält
-  data/export_mets.xml
+  data/mets.xml
   data/premis.xml
   data/(Weitere Primärdaten)
 ```
@@ -270,7 +267,7 @@ Inhalt export_mets.xml
         <mods:titleInfo>
             <mods:title>Nr. 1</mods:title>
         </mods:titleInfo>
-        <mods:identifier type="urn">urn:nbn:de:danrw:de2190-f30cfb5b-f914-4973-a5cf-04e110ad55c9[Prüfziffer]</mods:identifier>
+        <mods:identifier type="urn">urn:nbn:de:danrw:de2190-f30cfb5b-f914-4973-a5cf-04e110ad55c9</mods:identifier>
         </mods:mods>
         </mets:xmlData>
         </mets:mdWrap>
@@ -298,8 +295,8 @@ Inhalt premis.xml
 
 #### Akzeptanzkriterien:
 
-* In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN urn:nbn:de:xyz-1-20131008367735 gelistet.
-* Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN urn:nbn:de:xyz-1-20131008367735 zugewiesen wurde.
+* In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN urn:nbn:de:danrw:de2190-f30cfb5b-f914-4973-a5cf-04e110ad55c9 gelistet.
+* Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN urn:nbn:de:danrw:de2190-f30cfb5b-f914-4973-a5cf-04e110ad55c9 zugewiesen wurde.
 
 ## Szenario AT-IV-6 Fehlerhafte Prüfziffer bei nutzergestuerter URN-Übermittlung
 
@@ -307,11 +304,17 @@ Das Paket wird zurückgewiesen
 
 #### Kontext
 
-#### Testpaket(e):
+#### Testpaket(e): 
 
 #### Vorbedingungen
 
+* siehe Hintergrund.
+
 #### Durchführung
 
+* siehe Hintergrund.
+
 #### Akzeptanzkriterien
+
+
 
