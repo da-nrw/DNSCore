@@ -149,20 +149,20 @@ Inhalt premis.xml des 2. Paketes
 
 ## Szenario AT-IV-3 Nutzergesteuerte URN-Vergabe per METS - Datei
 
-Dieses Szenario ist nicht implementiert.
+Dieses Szenario ist implementiert.
 
 Das oberste Objekt im METS-Baum wird durch eine dmdSec mit der entsprechenden ID beschreiben. Innerhalb dieser dmdSec findet man über mets:mdWrap\-{-}mets:xmlData{-}\-mods:identifier type=urn die entsprechende URN. Es wird diejenige dmdSec berücksichtitgt, welche dem obersten hierarchischen Element (siehe structMap) der METS-Datei entspricht.
 
-#### Testpaket(e):
+#### Testpaket(e): ATReadUrnFromMets.tgz
 
 ``` 
 (GitHub) Testpaket enhält
-  data/export_mets.xml
+  data/mets.xml
   data/premis.xml
   data/(Weitere Primärdaten)
 ```
 
-Inhalt export_mets.xml
+Inhalt mets.xml
 
 Die im Februar 2015 (Mail&nbsp;WG: DA NRW / hier: Testszenario für Digitalisate aus dem LAV) vorgeschlagene Unterbringung der METS lautet wie folgt:
 
@@ -173,7 +173,7 @@ Die im Februar 2015 (Mail&nbsp;WG: DA NRW / hier: Testszenario für Digitalisate
         <mets:mdWrap MDTYPE="MODS">
         <mets:xmlData>
           <mods:mods>
-            <mods:identifier type="urn">urn:nbn:de:hbz:xy</mods:identifier>
+            <mods:identifier type="urn">urn:nbn:de:danrw:de2190-2ddee995-9878-4a76-8a7a-3d135dbded198</mods:identifier>
           </mods:mods>
         </mets:xmlData>
         </mets:mdWrap>
@@ -191,17 +191,8 @@ Die im Februar 2015 (Mail&nbsp;WG: DA NRW / hier: Testszenario für Digitalisate
 
 #### Akzeptanzkriterien:
 
-* In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN urn:nbn:de:hbz:xyz gelistet.
-* Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN urn:nbn:de:hbz:xyz zugewiesen wurde.
-
-#### offene Punkte:
-
-* Zu beschließen: Ist die URN-Unterbringung im METS-XML-Baum von allen Beteiligten des AK-F so akzeptiert?
-
-
-
-
-
+* In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN urn:nbn:de:danrw:de2190-2ddee995-9878-4a76-8a7a-3d135dbded198 gelistet.
+* Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN urn:nbn:de:danrw:de2190-2ddee995-9878-4a76-8a7a-3d135dbded198 zugewiesen wurde.
 
 ## Szenario AT-IV-5 Nutzergesteuerte URN-Vergabe in der METS-Datei: Mehrere Objekte auf oberster Ebene
 
