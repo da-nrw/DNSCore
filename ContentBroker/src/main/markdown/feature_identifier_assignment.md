@@ -152,6 +152,10 @@ Dieses Szenario ist implementiert.
 
 Das oberste Objekt im METS-Baum wird durch eine dmdSec mit der entsprechenden ID beschreiben. Innerhalb dieser dmdSec findet man über mets:mdWrap\-{-}mets:xmlData{-}\-mods:identifier type=urn die entsprechende URN. Es wird diejenige dmdSec berücksichtitgt, welche dem obersten hierarchischen Element (siehe structMap) der METS-Datei entspricht.
 
+### Kontext:
+
+ [ATReadUrnFromMets](../../test/java/de/uzk/hki/da/at/ATReadUrnFromMets.java).readUrnFromMets()
+
 #### Testpaket(e): 
 
 ``` 
@@ -208,7 +212,7 @@ informiert das System den User per Fehlerreport und bricht den Ingestvorgang ab.
 #### Testpaket(e): 
 
 ```
-(GitHub) Testpaket enhält
+(GitHub) Testpaket: ATReadUrnFromMets.tgz
   data/export_mets.xml
   data/premis.xml
   data/(Weitere Primärdaten)
@@ -247,10 +251,14 @@ Siehe Hintergrund.
 
 Eine PREMIS-URN wird der METS-URN vorgezogen. 
 
+### Kontext:
+
+ [ATReadUrnFromMets](../../test/java/de/uzk/hki/da/at/ATReadUrnFromMets.java).ignoreUrnInMetsReadPremisUrn()
+
 #### Testpaket(e):
 
 ```
-(GitHub) ATReadUrnFromMets.tgz enhält
+(GitHub) ATReadUrnFromPremisIgnoreMets.tgz enhält
   data/mets.xml
   data/premis.xml
   data/(Weitere Primärdaten)
@@ -296,8 +304,8 @@ Inhalt premis.xml
 
 #### Akzeptanzkriterien:
 
-* In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN urn:nbn:de:danrw:de2190-f30cfb5b-f914-4973-a5cf-04e110ad55c9 gelistet.
-* Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN urn:nbn:de:danrw:de2190-f30cfb5b-f914-4973-a5cf-04e110ad55c9 zugewiesen wurde.
+* In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN urn:nbn:de:xyz-1-20131008367735 gelistet.
+* Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN urn:nbn:de:xyz-1-20131008367735 zugewiesen wurde.
 
 ## Szenario AT-IV-6 Fehlerhafte Prüfziffer bei nutzergestuerter URN-Übermittlung
 
