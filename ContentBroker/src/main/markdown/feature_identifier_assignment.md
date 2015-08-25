@@ -206,7 +206,7 @@ Inhalt premis.xml
 
 ## Szenario AT-IV-5 Fehlerhafte Prüfziffer bei nutzergesteuerter URN-Übermittlung
 
-Das Paket wird zurückgewiesen
+Anforderung unklar.
 
 #### Kontext
 
