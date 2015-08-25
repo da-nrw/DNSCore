@@ -219,7 +219,7 @@ informiert das System den User per Fehlerreport und bricht den Ingestvorgang ab.
 #### Testpaket(e): 
 
 ```
-(GitHub) Testpaket: ATReadUrnFromMets.tgz
+(GitHub) Testpaket: 
   data/export_mets.xml
   data/premis.xml
   data/(Weitere Primärdaten)
