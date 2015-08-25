@@ -1,0 +1,3 @@
+BEGIN;
+ALTER TABLE objects ALTER COLUMN urn TYPE varchar(255);
+ROLLBACK;
