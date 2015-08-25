@@ -204,7 +204,7 @@ Inhalt premis.xml
 * Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN urn:nbn:de:xyz-1-20131008367735 zugewiesen wurde.
 
 
-## Szenario AT-IV-5 Fehlerhafte Prüfziffer bei nutzergestuerter URN-Übermittlung
+## Szenario AT-IV-5 Fehlerhafte Prüfziffer bei nutzergesteuerter URN-Übermittlung
 
 Das Paket wird zurückgewiesen
 
