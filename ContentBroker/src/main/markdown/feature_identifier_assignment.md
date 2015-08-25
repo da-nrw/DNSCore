@@ -91,60 +91,6 @@ Inhalt premis.xml
 * In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN&nbsp;*urn:nbn:de:xyz-1-20131008367735* gelistet.
 * Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN&nbsp;*urn:nbn:de:xyz-1-20131008367735* zugewiesen wurde.
 
-## Szenario AT-IV-6 URN-Vergabe bei Deltas
-
-Das Szenario beschreibt den Fall, in dem eine Delta abgeliefert wird, in dem der Nutzer eine URN vergibt. Diese vergebene URN stimmt jedoch nicht mit der URN des Objektes überein, welche in der Erstanlieferung auf Basis des technischen Identifier vergeben wurde. Die URN kann nur einmal vergeben werden.
-
-* Derzeitige Implementation: Die neue URN wird ignoriert.
-
-#### Kontext:
-
-* [ATIdentifierAssignment](../../test/java/de/uzk/hki/da/at/ATIdentifierAssignment.java).keepURNOnDeltaIngest()
-
-#### Testpaket(e):
-
-```
-(GitHub) Testpaket 1: ATUseCaseIngest1.tgz
-  data/premis.xml
-  data/   (Primärdaten)
-```
-
-```
-(GitHub) Testpaket 2: ATReadURNFromSIP.tgz
-  data/premis.xml
-  data/(Weitere Primärdaten)
-```
-
-Inhalt premis.xml des 2. Paketes
-
-```
-    <object xsi:type="representation">
-    <objectIdentifier>
-        <objectIdentifierType>URN</objectIdentifierType>
-        <objectIdentifierValue>urn:nbn:de:xyz-1-20131008367735</objectIdentifierValue>
-    </objectIdentifier>
-    </object>
-```
-
-#### Vorbedingungen:
-
-* siehe Hintergrund.
-
-#### Durchführung:
-
-1. Das erste Paket wird eingeliefert unter einem frei zu wählenden Originalnamen abgelegt. Warten auf Bestätigungsmail (Die Bestätigungsmail enthält eine URN die, auf dem technische Identifier basiert und nicht die urn:nbn:de:xyz-1-20131008367735).
-1. Das zweite Paket wird eingeliefert, unter demselben Originalnamen wie das erste Paket.&nbsp;
-1. Warten auf Mail.
-1. Mailinhalt prüfen.
-
-#### Akzeptanzkriterien:
-
-* Die URN in der zweiten Mail ist mit der URN aus der ersten Mail identisch. Sie ist nicht urn:nbn:de:xyz-1-20131008367735.
-* Alternativer Vorschlag: Der Nutzer wird in einer Fehlermeldung darauf hingewiesen, dass die im Paket übergebene URN nicht mit der ursprünglichen Paket URN übereinstimmt. Der weitere Ingest des Delta wird abgelehnt.
-
-
-
-
 
 ## Szenario AT-IV-3 Nutzergesteuerte URN-Vergabe per METS - Datei
 
@@ -326,6 +272,59 @@ Das Paket wird zurückgewiesen
 * siehe Hintergrund.
 
 #### Akzeptanzkriterien
+
+
+## Szenario AT-IV-6 URN-Vergabe bei Deltas
+
+Das Szenario beschreibt den Fall, in dem eine Delta abgeliefert wird, in dem der Nutzer eine URN vergibt. Diese vergebene URN stimmt jedoch nicht mit der URN des Objektes überein, welche in der Erstanlieferung auf Basis des technischen Identifier vergeben wurde. Die URN kann nur einmal vergeben werden.
+
+* Derzeitige Implementation: Die neue URN wird ignoriert.
+
+#### Kontext:
+
+* [ATIdentifierAssignment](../../test/java/de/uzk/hki/da/at/ATIdentifierAssignment.java).keepURNOnDeltaIngest()
+
+#### Testpaket(e):
+
+```
+(GitHub) Testpaket 1: ATUseCaseIngest1.tgz
+  data/premis.xml
+  data/   (Primärdaten)
+```
+
+```
+(GitHub) Testpaket 2: ATReadURNFromSIP.tgz
+  data/premis.xml
+  data/(Weitere Primärdaten)
+```
+
+Inhalt premis.xml des 2. Paketes
+
+```
+    <object xsi:type="representation">
+    <objectIdentifier>
+        <objectIdentifierType>URN</objectIdentifierType>
+        <objectIdentifierValue>urn:nbn:de:xyz-1-20131008367735</objectIdentifierValue>
+    </objectIdentifier>
+    </object>
+```
+
+#### Vorbedingungen:
+
+* siehe Hintergrund.
+
+#### Durchführung:
+
+1. Das erste Paket wird eingeliefert unter einem frei zu wählenden Originalnamen abgelegt. Warten auf Bestätigungsmail (Die Bestätigungsmail enthält eine URN die, auf dem technische Identifier basiert und nicht die urn:nbn:de:xyz-1-20131008367735).
+1. Das zweite Paket wird eingeliefert, unter demselben Originalnamen wie das erste Paket.&nbsp;
+1. Warten auf Mail.
+1. Mailinhalt prüfen.
+
+#### Akzeptanzkriterien:
+
+* Die URN in der zweiten Mail ist mit der URN aus der ersten Mail identisch. Sie ist nicht urn:nbn:de:xyz-1-20131008367735.
+* Alternativer Vorschlag: Der Nutzer wird in einer Fehlermeldung darauf hingewiesen, dass die im Paket übergebene URN nicht mit der ursprünglichen Paket URN übereinstimmt. Der weitere Ingest des Delta wird abgelehnt.
+
 
 
 
