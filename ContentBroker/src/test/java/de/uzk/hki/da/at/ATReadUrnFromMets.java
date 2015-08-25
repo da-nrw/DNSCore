@@ -13,7 +13,7 @@ import de.uzk.hki.da.model.Object;
 
 public class ATReadUrnFromMets extends AcceptanceTest{
 	
-	private static String origNamePremisMets = "ATReadUrnFromMetsIgnorePremis";
+	private static String origNamePremisMets = "ATReadUrnFromPremisIgnoreMets";
 	private static String origNameMets = "ATReadUrnFromMets";
 	private static Object objectPremisAndMetsUrn;
 	private static Object objectMetsUrn;
