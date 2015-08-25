@@ -197,56 +197,6 @@ Die im Februar 2015 (Mail&nbsp;WG: DA NRW / hier: Testszenario für Digitalisate
 * In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN urn:nbn:de:danrw:de2190-2ddee995-9878-4a76-8a7a-3d135dbded198 gelistet.
 * Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN urn:nbn:de:danrw:de2190-2ddee995-9878-4a76-8a7a-3d135dbded198 zugewiesen wurde.
 
-## Szenario AT-IV-5 Nutzergesteuerte URN-Vergabe in der METS-Datei: Mehrere Objekte auf oberster Ebene
-
-Dieses Szenario ist nicht implementiert. Keine Testdaten vorhanden. 
-
-
-METS lässt unterschiedliche Arten der Strukturierung von Objekten zu. Die StructMap bildet diese Strukturierung ab. Für die URN-Generierung sind alle Fälle problematisch, in denen es kein einzelnes Objekt auf oberster Hierarchieebene gibt. Ein Objekt mit Kindern ist kein Problem, mehrere Objekte auf der obersten Ebene sind ein Problem.
-
-In dem Fall, dass 
-1. die PREMIS keine (!) URN enthält, und
-2. es in der METS mehrere Objekte auf der höchsten Ebene gibt, und mehrere davon eine URN tragen, 
-informiert das System den User per Fehlerreport und bricht den Ingestvorgang ab.
-
-#### Testpaket(e): 
-
-```
-(GitHub) Testpaket: ATReadUrnFromMets.tgz
-  data/export_mets.xml
-  data/premis.xml
-  data/(Weitere Primärdaten)
-```
-
-
-Inhalt export_mets.xml
-
-
-```xml
-<mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <mets:dmdSec ID="dmd35716">
-        <mods:identifier type="urn">urn:nbn:de:hbz:xyz</mods:identifier>
-    <mets:dmdSec ID="dmd35717">
-       <mods:identifier type="urn">urn:nbn:de:hbz:abcde</mods:identifier>
-``` 
-
-Aus der StructMap geht dabei hervor, dass beide Teilobjekte (dmd35717,dmd35716) auf oberster Ebene gleichwertig im METS-Baum aufgehangen sind.
-
-#### Vorbedingungen:
-
-* siehe Hintergrund.
-
-#### Durchführung:
-
-Siehe Hintergrund.
-
-#### Akzeptanzkriterien:
-
-* Der User wird per Mail informiert, dass die mitgelieferte METS-URN nicht eindeutig einem Objekt auf höchster Ebene zugewiesen werden kann.
-* Der Ingest wird abgelehnt.
-
-
-
 ## Szenario AT-IV-4 Präzedenzregelung bei mitgelieferter URN in METS und PREMIS
 
 Eine PREMIS-URN wird der METS-URN vorgezogen. 
@@ -306,6 +256,58 @@ Inhalt premis.xml
 
 * In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN urn:nbn:de:xyz-1-20131008367735 gelistet.
 * Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN urn:nbn:de:xyz-1-20131008367735 zugewiesen wurde.
+
+
+## Szenario AT-IV-5 Nutzergesteuerte URN-Vergabe in der METS-Datei: Mehrere Objekte auf oberster Ebene
+
+Dieses Szenario ist nicht implementiert. Keine Testdaten vorhanden. 
+
+
+METS lässt unterschiedliche Arten der Strukturierung von Objekten zu. Die StructMap bildet diese Strukturierung ab. Für die URN-Generierung sind alle Fälle problematisch, in denen es kein einzelnes Objekt auf oberster Hierarchieebene gibt. Ein Objekt mit Kindern ist kein Problem, mehrere Objekte auf der obersten Ebene sind ein Problem.
+
+In dem Fall, dass 
+1. die PREMIS keine (!) URN enthält, und
+2. es in der METS mehrere Objekte auf der höchsten Ebene gibt, und mehrere davon eine URN tragen, 
+informiert das System den User per Fehlerreport und bricht den Ingestvorgang ab.
+
+#### Testpaket(e): 
+
+```
+(GitHub) Testpaket: ATReadUrnFromMets.tgz
+  data/export_mets.xml
+  data/premis.xml
+  data/(Weitere Primärdaten)
+```
+
+
+Inhalt export_mets.xml
+
+
+```xml
+<mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <mets:dmdSec ID="dmd35716">
+        <mods:identifier type="urn">urn:nbn:de:hbz:xyz</mods:identifier>
+    <mets:dmdSec ID="dmd35717">
+       <mods:identifier type="urn">urn:nbn:de:hbz:abcde</mods:identifier>
+``` 
+
+Aus der StructMap geht dabei hervor, dass beide Teilobjekte (dmd35717,dmd35716) auf oberster Ebene gleichwertig im METS-Baum aufgehangen sind.
+
+#### Vorbedingungen:
+
+* siehe Hintergrund.
+
+#### Durchführung:
+
+Siehe Hintergrund.
+
+#### Akzeptanzkriterien:
+
+* Der User wird per Mail informiert, dass die mitgelieferte METS-URN nicht eindeutig einem Objekt auf höchster Ebene zugewiesen werden kann.
+* Der Ingest wird abgelehnt.
+
+
+
 
 ## Szenario AT-IV-6 Fehlerhafte Prüfziffer bei nutzergestuerter URN-Übermittlung
 
