@@ -91,6 +91,138 @@ Inhalt premis.xml
 * In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN&nbsp;*urn:nbn:de:xyz-1-20131008367735* gelistet.
 * Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN&nbsp;*urn:nbn:de:xyz-1-20131008367735* zugewiesen wurde.
 
+
+## Szenario AT-IV-3 Nutzergesteuerte URN-Vergabe per METS - Datei
+
+Dieses Szenario ist implementiert.
+
+Das oberste Objekt im METS-Baum wird durch eine dmdSec mit der entsprechenden ID beschreiben. Innerhalb dieser dmdSec findet man über mets:mdWrap\-{-}mets:xmlData{-}\-mods:identifier type=urn die entsprechende URN. Es wird diejenige dmdSec berücksichtitgt, welche dem obersten hierarchischen Element (siehe structMap) der METS-Datei entspricht.
+
+### Kontext:
+
+ [ATReadUrnFromMets](../../test/java/de/uzk/hki/da/at/ATReadUrnFromMets.java).readUrnFromMets()
+
+#### Testpaket(e): 
+
+``` 
+(GitHub) ATReadUrnFromMets.tgz enthält
+  data/mets.xml
+  data/premis.xml
+  data/(Weitere Primärdaten)
+```
+
+Inhalt mets.xml
+
+Die im Februar 2015 (Mail&nbsp;WG: DA NRW / hier: Testszenario für Digitalisate aus dem LAV) vorgeschlagene Unterbringung der METS lautet wie folgt:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <mets:dmdSec ID="dmd35716">
+        <mets:mdWrap MDTYPE="MODS">
+        <mets:xmlData>
+          <mods:mods>
+            <mods:identifier type="urn">urn:nbn:de:danrw:de2190-2ddee995-9878-4a76-8a7a-3d135dbded198</mods:identifier>
+          </mods:mods>
+        </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+```
+
+#### Vorbedingungen:
+
+* siehe Hintergrund.
+
+#### Durchführung:
+
+1. Siehe Hintergrund.
+1. In der Maske "Eingelieferte Objekte" das Objekt per technischem Identifier recherchieren.
+
+#### Akzeptanzkriterien:
+
+* In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN urn:nbn:de:danrw:de2190-2ddee995-9878-4a76-8a7a-3d135dbded198 gelistet.
+* Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN urn:nbn:de:danrw:de2190-2ddee995-9878-4a76-8a7a-3d135dbded198 zugewiesen wurde.
+
+## Szenario AT-IV-4 Präzedenzregelung bei mitgelieferter URN in METS und PREMIS
+
+Eine PREMIS-URN wird der METS-URN vorgezogen. 
+
+### Kontext:
+
+ [ATReadUrnFromMets](../../test/java/de/uzk/hki/da/at/ATReadUrnFromMets.java).ignoreUrnInMetsReadPremisUrn()
+
+#### Testpaket(e):
+
+```
+(GitHub) ATReadUrnFromPremisIgnoreMets.tgz enhält
+  data/mets.xml
+  data/premis.xml
+  data/(Weitere Primärdaten)
+```
+
+Inhalt export_mets.xml
+
+```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <mets:dmdSec ID="dmd35716">
+        <mets:mdWrap MDTYPE="MODS">
+        <mets:xmlData>
+        <mods:mods>
+        <mods:titleInfo>
+            <mods:title>Nr. 1</mods:title>
+        </mods:titleInfo>
+        <mods:identifier type="urn">urn:nbn:de:danrw:de2190-f30cfb5b-f914-4973-a5cf-04e110ad55c9</mods:identifier>
+        </mods:mods>
+        </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+```
+
+Inhalt premis.xml
+
+```xml
+    <object xsi:type="representation">
+    <objectIdentifier>
+        <objectIdentifierType>URN</objectIdentifierType>
+        <objectIdentifierValue>urn:nbn:de:xyz-1-20131008367735</objectIdentifierValue>
+    </objectIdentifier>
+    </object>
+```
+
+#### Vorbedingungen:
+
+* siehe Hintergrund.
+
+#### Durchführung:
+
+1. Siehe Hintergrund.
+
+#### Akzeptanzkriterien:
+
+* In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN urn:nbn:de:xyz-1-20131008367735 gelistet.
+* Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN urn:nbn:de:xyz-1-20131008367735 zugewiesen wurde.
+
+
+## Szenario AT-IV-5 Fehlerhafte Prüfziffer bei nutzergesteuerter URN-Übermittlung
+
+Anforderung unklar.
+
+#### Kontext
+
+#### Testpaket(e): 
+
+#### Vorbedingungen
+
+* siehe Hintergrund.
+
+#### Durchführung
+
+* siehe Hintergrund.
+
+#### Akzeptanzkriterien
+
+
 ## Szenario AT-IV-6 URN-Vergabe bei Deltas
 
 Das Szenario beschreibt den Fall, in dem eine Delta abgeliefert wird, in dem der Nutzer eine URN vergibt. Diese vergebene URN stimmt jedoch nicht mit der URN des Objektes überein, welche in der Erstanlieferung auf Basis des technischen Identifier vergeben wurde. Die URN kann nur einmal vergeben werden.
@@ -142,180 +274,6 @@ Inhalt premis.xml des 2. Paketes
 * Die URN in der zweiten Mail ist mit der URN aus der ersten Mail identisch. Sie ist nicht urn:nbn:de:xyz-1-20131008367735.
 * Alternativer Vorschlag: Der Nutzer wird in einer Fehlermeldung darauf hingewiesen, dass die im Paket übergebene URN nicht mit der ursprünglichen Paket URN übereinstimmt. Der weitere Ingest des Delta wird abgelehnt.
 
-
-
-
-
-## Szenario AT-IV-3 Nutzergesteuerte URN-Vergabe per METS - Datei
-
-Dieses Szenario ist implementiert.
-
-Das oberste Objekt im METS-Baum wird durch eine dmdSec mit der entsprechenden ID beschreiben. Innerhalb dieser dmdSec findet man über mets:mdWrap\-{-}mets:xmlData{-}\-mods:identifier type=urn die entsprechende URN. Es wird diejenige dmdSec berücksichtitgt, welche dem obersten hierarchischen Element (siehe structMap) der METS-Datei entspricht.
-
-#### Testpaket(e): 
-
-``` 
-(GitHub) ATReadUrnFromMets.tgz enthält
-  data/mets.xml
-  data/premis.xml
-  data/(Weitere Primärdaten)
-```
-
-Inhalt mets.xml
-
-Die im Februar 2015 (Mail&nbsp;WG: DA NRW / hier: Testszenario für Digitalisate aus dem LAV) vorgeschlagene Unterbringung der METS lautet wie folgt:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <mets:dmdSec ID="dmd35716">
-        <mets:mdWrap MDTYPE="MODS">
-        <mets:xmlData>
-          <mods:mods>
-            <mods:identifier type="urn">urn:nbn:de:danrw:de2190-2ddee995-9878-4a76-8a7a-3d135dbded198</mods:identifier>
-          </mods:mods>
-        </mets:xmlData>
-        </mets:mdWrap>
-    </mets:dmdSec>
-```
-
-#### Vorbedingungen:
-
-* siehe Hintergrund.
-
-#### Durchführung:
-
-1. Siehe Hintergrund.
-1. In der Maske "Eingelieferte Objekte" das Objekt per technischem Identifier recherchieren.
-
-#### Akzeptanzkriterien:
-
-* In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN urn:nbn:de:danrw:de2190-2ddee995-9878-4a76-8a7a-3d135dbded198 gelistet.
-* Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN urn:nbn:de:danrw:de2190-2ddee995-9878-4a76-8a7a-3d135dbded198 zugewiesen wurde.
-
-## Szenario AT-IV-5 Nutzergesteuerte URN-Vergabe in der METS-Datei: Mehrere Objekte auf oberster Ebene
-
-Dieses Szenario ist nicht implementiert. Keine Testdaten mit vorhanden. 
-
-
-METS lässt unterschiedliche Arten der Strukturierung von Objekten zu. Die StructMap bildet diese Strukturierung ab. Für die URN-Generierung sind alle Fälle problematisch, in denen es kein einzelnes Objekt auf oberster Hierarchieebene gibt. Ein Objekt mit Kindern ist kein Problem, mehrere Objekte auf der obersten Ebene sind ein Problem.
-
-In dem Fall, dass 
-1. die PREMIS keine (!) URN enthält, und
-2. es in der METS mehrere Objekte auf der höchsten Ebene gibt, und mehrere davon eine URN tragen, 
-informiert das System den User per Fehlerreport und bricht den Ingestvorgang ab.
-
-#### Testpaket(e): 
-
-```
-(GitHub) Testpaket enhält
-  data/export_mets.xml
-  data/premis.xml
-  data/(Weitere Primärdaten)
-```
-
-
-Inhalt export_mets.xml
-
-
-```xml
-<mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <mets:dmdSec ID="dmd35716">
-        <mods:identifier type="urn">urn:nbn:de:hbz:xyz</mods:identifier>
-    <mets:dmdSec ID="dmd35717">
-       <mods:identifier type="urn">urn:nbn:de:hbz:abcde</mods:identifier>
-``` 
-
-Aus der StructMap geht dabei hervor, dass beide Teilobjekte (dmd35717,dmd35716) auf oberster Ebene gleichwertig im METS-Baum aufgehangen sind.
-
-#### Vorbedingungen:
-
-* siehe Hintergrund.
-
-#### Durchführung:
-
-Siehe Hintergrund.
-
-#### Akzeptanzkriterien:
-
-* Der User wird per Mail informiert, dass die mitgelieferte METS-URN nicht eindeutig einem Objekt auf höchster Ebene zugewiesen werden kann.
-* Der Ingest wird abgelehnt.
-
-
-
-## Szenario AT-IV-4 Präzedenzregelung bei mitgelieferter URN in METS und PREMIS
-
-Eine PREMIS-URN wird der METS-URN vorgezogen. 
-
-#### Testpaket(e):
-
-```
-(GitHub) ATReadUrnFromMets.tgz enhält
-  data/mets.xml
-  data/premis.xml
-  data/(Weitere Primärdaten)
-```
-
-Inhalt export_mets.xml
-
-```xml
-    <?xml version="1.0" encoding="UTF-8"?>
-    <mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <mets:dmdSec ID="dmd35716">
-        <mets:mdWrap MDTYPE="MODS">
-        <mets:xmlData>
-        <mods:mods>
-        <mods:titleInfo>
-            <mods:title>Nr. 1</mods:title>
-        </mods:titleInfo>
-        <mods:identifier type="urn">urn:nbn:de:danrw:de2190-f30cfb5b-f914-4973-a5cf-04e110ad55c9</mods:identifier>
-        </mods:mods>
-        </mets:xmlData>
-        </mets:mdWrap>
-    </mets:dmdSec>
-```
-
-Inhalt premis.xml
-
-```xml
-    <object xsi:type="representation">
-    <objectIdentifier>
-        <objectIdentifierType>URN</objectIdentifierType>
-        <objectIdentifierValue>urn:nbn:de:xyz-1-20131008367735</objectIdentifierValue>
-    </objectIdentifier>
-    </object>
-```
-
-#### Vorbedingungen:
-
-* siehe Hintergrund.
-
-#### Durchführung:
-
-1. Siehe Hintergrund.
-
-#### Akzeptanzkriterien:
-
-* In der Maske "Eingelieferte Objekte" wird das Objekt mit der URN urn:nbn:de:danrw:de2190-f30cfb5b-f914-4973-a5cf-04e110ad55c9 gelistet.
-* Der Einlieferungsbeleg enthält den Hinweis, dass dem Paket die URN urn:nbn:de:danrw:de2190-f30cfb5b-f914-4973-a5cf-04e110ad55c9 zugewiesen wurde.
-
-## Szenario AT-IV-6 Fehlerhafte Prüfziffer bei nutzergestuerter URN-Übermittlung
-
-Das Paket wird zurückgewiesen
-
-#### Kontext
-
-#### Testpaket(e): 
-
-#### Vorbedingungen
-
-* siehe Hintergrund.
-
-#### Durchführung
-
-* siehe Hintergrund.
-
-#### Akzeptanzkriterien
 
 
 
