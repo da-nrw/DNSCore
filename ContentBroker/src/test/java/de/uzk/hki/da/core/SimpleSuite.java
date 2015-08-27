@@ -86,6 +86,7 @@ import de.uzk.hki.da.model.DocumentTests;
 import de.uzk.hki.da.model.GetNewestFilesFromAllRepresentationsTests;
 import de.uzk.hki.da.model.JobCascadingTest;
 import de.uzk.hki.da.model.ModelTest;
+import de.uzk.hki.da.model.ObjectPremisXmlReaderTests;
 import de.uzk.hki.da.model.ObjectTests;
 import de.uzk.hki.da.model.WorkAreaFSTest;
 import de.uzk.hki.da.model.PackageTests;
@@ -182,7 +183,8 @@ import de.uzk.hki.da.util.PathTest;
 	CreateDCActionTests.class,
 	RegisterURNActionTest.class,
 	DocumentTests.class,
-	MetadataStructureGetIndexInfoTests.class
+	MetadataStructureGetIndexInfoTests.class,
+	ObjectPremisXmlReaderTests.class
 })
 public class SimpleSuite {
 
