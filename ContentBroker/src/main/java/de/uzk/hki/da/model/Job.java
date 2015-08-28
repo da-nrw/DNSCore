@@ -85,6 +85,10 @@ public class Job {
 	
 	private String dynamic_nondisclosure_limit;
 	
+	private Date static_nondisclosure_limit_institution;
+	
+	private String dynamic_nondisclosure_limit_institution;
+	
 	private String container_extension;
 	
 	
@@ -385,6 +389,24 @@ public class Job {
 
 	public void setStatic_nondisclosure_limit(Date static_nondisclosure_limit) {
 		this.static_nondisclosure_limit = static_nondisclosure_limit;
+	}
+
+	public Date getStatic_nondisclosure_limit_institution() {
+		return static_nondisclosure_limit_institution;
+	}
+
+	public void setStatic_nondisclosure_limit_institution(
+			Date static_nondisclosure_limit_institution) {
+		this.static_nondisclosure_limit_institution = static_nondisclosure_limit_institution;
+	}
+
+	public String getDynamic_nondisclosure_limit_institution() {
+		return dynamic_nondisclosure_limit_institution;
+	}
+
+	public void setDynamic_nondisclosure_limit_institution(
+			String dynamic_nondisclosure_limit_institution) {
+		this.dynamic_nondisclosure_limit_institution = dynamic_nondisclosure_limit_institution;
 	}
 
 	public String getContainer_extension() {
