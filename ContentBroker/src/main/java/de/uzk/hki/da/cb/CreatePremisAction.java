@@ -214,6 +214,26 @@ public class CreatePremisAction extends AbstractAction {
 		
 		j.setDynamic_nondisclosure_limit(dynamic_nondisclosure_limit);
 		j.setStatic_nondisclosure_limit(static_nondisclosure_limit);
+
+// same for institution
+		Date static_nondisclosure_limit_institution = null;
+		String dynamic_nondisclosure_limit_institution = null;
+		if (object.getRights() != null && object.getRights().getPublicationRights() != null)
+		{
+			for (PublicationRight p : object.getRights().getPublicationRights())
+			{
+				if (p.getAudience().equals(PublicationRight.Audience.INSTITUTION))
+				{
+					static_nondisclosure_limit_institution = p.getStartDate();
+					if (p.getLawID() != null)
+						dynamic_nondisclosure_limit_institution = p.getLawID().toString();
+					break;
+				}
+			}
+		}
+		
+		j.setDynamic_nondisclosure_limit_institution(dynamic_nondisclosure_limit_institution);
+		j.setStatic_nondisclosure_limit_institution(static_nondisclosure_limit_institution);
 	}
 	
 	private Event generateIngestEventElement() {
