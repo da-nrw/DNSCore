@@ -79,14 +79,15 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 			logger.info("Publication Right not granted. Will delete datastreams");
 			if (wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile());
 			if (wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile());
-		} else
-		if (!premisObject.grantsPublicationRight(Audience.PUBLIC)) {
-			logger.info("Publication Right for audience public not granted. Will delete public datastreams.");
-			if (wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile());
-		} else
-		if (!premisObject.grantsPublicationRight(Audience.INSTITUTION)) {
-			logger.info("Publication Right for audience institution not granted. Will delete institution datastreams.");
-			if (wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile());
+		} else {
+			if (!premisObject.grantsPublicationRight(Audience.PUBLIC)) {
+				logger.info("Publication Right for audience public not granted. Will delete public datastreams.");
+				if (wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile());
+			}
+			if (!premisObject.grantsPublicationRight(Audience.INSTITUTION)) {
+				logger.info("Publication Right for audience institution not granted. Will delete institution datastreams.");
+				if (wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile());
+			}
 		}
 	}
 
