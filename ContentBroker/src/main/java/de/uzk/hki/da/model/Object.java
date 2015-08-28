@@ -138,6 +138,10 @@ public class Object {
 	/** The dynamic_nondisclosure_limit. */
 	private String dynamic_nondisclosure_limit;
 	
+	private Date static_nondisclosure_limit_institution;
+	
+	private String dynamic_nondisclosure_limit_institution;
+	
 	/**
 	 * Should be a member of rightsstatement. Also in PREMIS we serialize it that way.
 	 * But here we wanted to transport the right through the db without adding tables for rightsstatement.
@@ -521,6 +525,24 @@ public class Object {
 		return dynamic_nondisclosure_limit;
 	}
 	
+	public Date getStatic_nondisclosure_limit_institution() {
+		return static_nondisclosure_limit_institution;
+	}
+
+	public void setStatic_nondisclosure_limit_institution(
+			Date static_nondisclosure_limit_institution) {
+		this.static_nondisclosure_limit_institution = static_nondisclosure_limit_institution;
+	}
+
+	public String getDynamic_nondisclosure_limit_institution() {
+		return dynamic_nondisclosure_limit_institution;
+	}
+
+	public void setDynamic_nondisclosure_limit_institution(
+			String dynamic_nondisclosure_limit_institution) {
+		this.dynamic_nondisclosure_limit_institution = dynamic_nondisclosure_limit_institution;
+	}
+
 	/**
 	 * Sets the original_formats.
 	 *
