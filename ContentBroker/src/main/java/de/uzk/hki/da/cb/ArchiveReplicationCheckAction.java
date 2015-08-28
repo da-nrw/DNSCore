@@ -165,9 +165,13 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		
 		o.setLast_checked(new Date());
 		o.setDate_modified(String.valueOf(new Date().getTime()));
+
 		o.setStatic_nondisclosure_limit(j.getStatic_nondisclosure_limit());
 		o.setDynamic_nondisclosure_limit(j.getDynamic_nondisclosure_limit());
 		
+		o.setStatic_nondisclosure_limit_institution(j.getStatic_nondisclosure_limit_institution());
+		o.setDynamic_nondisclosure_limit_institution(j.getDynamic_nondisclosure_limit_institution());
+
 		o.setObject_state(Object.ObjectStatus.InWorkflow); // object stays in workflow for publication
 		o.setPublished_flag(C.PUBLISHEDFLAG_UNDEFINED);
 	}
