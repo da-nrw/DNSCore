@@ -11,8 +11,10 @@ Tabelle
 Für die Präsentation ist zu beachten, ob bei dem ersten Schritt der Langzeitarchivierung eine Konversion in ein anderes Format stattfindet. Ist dies der Fall, so ist das LZA-Format ausschlaggebend für die Umwandlung in das Präsentationsformat.
 
 Beispiel
+
 PNG (fmt/11) wird für die LZA ins TIFF-Format fmt/353 migriert. Da für fmt/353 das PIP-Format JPG definiert ist, wird für fmt/11 ebenfalls das  PIP-Format JPG erstellt – obwohl für das Einlieferungsformat fmt/11 kein Präsentationsformat definiert ist. 
 
 Testdaten
+
 In der Tabellenspalte Testdaten sind die Formate gekennzeichnet, zu denen bereits Testdaten vorliegen und somit das Verhalten des Systems qualitätsgesichert werden konnte. 
 Für alle anderen Konfigurationsroutinen (vorhandene und zukünftig gewünschte) sind Testdaten von den einliefernden Institutionen erforderlich. Nur so kann eine geprüfte Aussage über das aktuelle Systemverhalten getroffen werden.
