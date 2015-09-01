@@ -19,7 +19,7 @@
 
 # Formatkonversion mit DNSCore
 
-Formatkonversionen in DNSCore basieren auf einem Modell von [Konversionsrichtlinien](#datenmodell---konversionsrichtlinie) (technisch: [ConversionPolicy](../java/de/uzk/hki/da/model/ConversionPolicy.java)) und [Konversionsroutinen](#datenmodell---konversionroutine) (technisch: [ConversionRoutine](../java/de/uzk/hki/da/model/ConversionRoutine.java)). **Konversionsroutinen** beschreiben ein Verfahren, mit dessen Hilfe eine Datei eines bestimmten Formates in ein anderes Zielformat konvertiert werden kann. Im Verlaufe des Ingest-(möglicherweise auch weiterer) Workflow des ContentBroker wird dazu für jede Datei eine SIPs die [Formaterkennung](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/administration_format_identification.de.md) durchgeführt. Als Ergebnis dieser Formaterkennung wird der Datei ein Identifier nach dem [PRONOM](http://apps.nationalarchives.gov.uk/PRONOM/Default.aspx)-Schema zugeordnet. Auf die Erkennung eben genau dieser PUIDs hin können *Konversionsroutinen* ausgeführt werden. Eine *Konversionsroutine* kann mit beliebig vielen Eingangsformaten verknüpft werden. Die Verknüpfung von Eingangsformat zur *Konversionsroutine* geschieht mithilfe der **Konversionsrichtlinien**.
+Formatkonversionen in DNSCore basieren auf einem Modell von [Konversionsrichtlinien](#datenmodell---konversionsrichtlinie) (technisch: [ConversionPolicy](../java/de/uzk/hki/da/model/ConversionPolicy.java)) und [Konversionsroutinen](#datenmodell---konversionroutine) (technisch: [ConversionRoutine](../java/de/uzk/hki/da/model/ConversionRoutine.java)). **Konversionsroutinen** beschreiben ein Verfahren, mit dessen Hilfe eine Datei eines bestimmten Formates in ein anderes Zielformat konvertiert werden kann. Im Verlaufe des Ingest-(möglicherweise auch weiterer) Workflow des ContentBroker wird dazu für jede Datei eines SIPs die [Formaterkennung](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/administration_format_identification.de.md) durchgeführt. Als Ergebnis dieser Formaterkennung wird der Datei ein Identifier nach dem [PRONOM](http://apps.nationalarchives.gov.uk/PRONOM/Default.aspx)-Schema zugeordnet. Auf die Erkennung eben genau dieser PUIDs hin können *Konversionsroutinen* ausgeführt werden. Eine *Konversionsroutine* kann mit beliebig vielen Eingangsformaten verknüpft werden. Die Verknüpfung von Eingangsformat zur *Konversionsroutine* geschieht mithilfe der **Konversionsrichtlinien**.
 
 ![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/object_model_object_users.jpg)
 
@@ -56,11 +56,11 @@ Für die Policies ist die Tabelle "conversion_policies" eingerichtet. Sie besitz
     conversion_routines_id: int
     presentation: boolean
     
-**source_format** Der Pronom Unique Identifier (PUID). Wird das Format einer Datei mit einem entsprechenden Identifier erkannt, so wird greifen alle Policies, die mit dem entsprechenden source_format übereinstimmen.
+**source_format** Der Pronom Unique Identifier (PUID). Wird das Format einer Datei mit einem entsprechenden Identifier erkannt, so greifen alle Policies, die mit dem entsprechenden source_format übereinstimmen.
 
 **conversion_routines_id** Der Primärschlüssel der Datenbanktabelle "conversion_routines". Der ContentBroker wird für die Datei später im Workflow die mit der conversion_routines_id markierte Routine ausführen, um die Datei zu konvertieren.
 
-**presentation** Für LZA-Konversionen ist hier false, für Präsentationskonversionen ist hier true einzutragen.
+**presentation** Für LZA-Konversionen ist hier "false", für Präsentationskonversionen ist hier "true" einzutragen.
 
 ### Datenmodell - Konversionroutine
 
