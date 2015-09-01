@@ -29,9 +29,9 @@ Die *Konversionsroutinen* werden sowohl für die **Langzeitarchivierung** als au
 
 Aus dieser Unterscheidung ergeben sich folgende Fälle:
 
-**1. Das Format der Eingangsdatei gilt als "nicht unterstützt", für diese PUID sind keine Konverionsroutinen eingetragen. Die DAtei wird im gesamten Workflow des DNSCore nicht konvertiert, die PUID bleibt immer gleich.
+1. Das Format der Eingangsdatei gilt als "nicht unterstützt", für diese PUID sind keine Konverionsroutinen eingetragen. Die DAtei wird im gesamten Workflow des DNSCore nicht konvertiert, die PUID bleibt immer gleich.
 
-**2. Das Format gilt als "langzeitarchivierungssicher", die Datei wird nicht für die Langzeitarchivierung konvertiert. Für die Präsentation wird für die PUID eine entsprechende Konversionsroutine verwendet. Die PUID im PIP stimmt nicht mit der PUID im SIP überein.
+2. Das Format gilt als "langzeitarchivierungssicher", die Datei wird nicht für die Langzeitarchivierung konvertiert. Für die Präsentation wird für die PUID eine entsprechende Konversionsroutine verwendet. Die PUID im PIP stimmt nicht mit der PUID im SIP überein.
 
 
 
