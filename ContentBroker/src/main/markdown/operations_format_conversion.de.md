@@ -25,11 +25,11 @@ Formatkonversionen in DNSCore basieren auf einem Modell von [Konversionsrichtlin
 
 Sowohl *Konversionsrichtlinien* als auch *Konversionsroutinen* sind Eigenschaften des **Gesamtsystems**. Wenn eine Konversionsroutine im System angemeldet wird, so bedeutet dies, dass alle **Knoten** des Systems diese unterstützen. Das erfordert in den meisten Fällen Synchronisation der Knotenadministratoren untereinander, die entsprechende Konverter in gleicher Version auf den von ihnen betreuten Knoten bereitstellen.
 
+## Konfiguration des **Gesamtsystems**
+
 Die *Konversionsroutinen* werden sowohl für die Langzeitarchivierung als auch für die Präsentstion benötigt. Die Funktionsweise ist beiden Fällen identisch. Die Durchführung von Konversionen ist stets abhängig von der PUID der jeweiligen Datei. Im Falle der Langzeitarchivierung wird in DNSCore zwischen "unterstützten" und "verstandenen" Formaten unterschieden. Als "unterstütze" Formate werden diejenigen Formate verstanden, die als "langzeitarchivierungssicher" gelten. Diese bedürfen keine weitere Konvertierung für die Langzeitarchivierung, jedoch für die Präsentation. Handelt es sich bei einem Eingansformat des SIP um ein "verstandenes" Format, so bedeutet es, dass es konvertiert werden muss und dass bereits eine Konverionsroutine dafür eingetragen ist. 
 
-## Aktuelle Konfiguration des **Gesamtsystems**
-
-(https://github.com/da-nrw/DNSCore/edit/master/ContentBroker/src/main/markdown/operations_format_conversion_current_configuration.de)
+[Aktuelle Konfiguration](https://github.com/da-nrw/DNSCore/edit/master/ContentBroker/src/main/markdown/operations_format_conversion_current_configuration.de)
 
 ## Anlegen und Testen von neuen Konversionsrichtlinien und Routinen
 
