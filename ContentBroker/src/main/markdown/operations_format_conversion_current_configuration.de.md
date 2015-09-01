@@ -6,7 +6,7 @@ In der folgenden Tabelle ist das Ergebnis der aktuellen Konfiguration für die L
 
 Für die Präsentation (PIP) sind aktuell folgende Einstellungen gültig:
 
-Tabelle
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/current-conversation-presentation.jpg)
 
 Für die Präsentation ist zu beachten, ob bei dem ersten Schritt der Langzeitarchivierung eine Konversion in ein anderes Format stattfindet. Ist dies der Fall, so ist das LZA-Format ausschlaggebend für die Umwandlung in das Präsentationsformat.
 
