@@ -29,13 +29,9 @@ Die *Konversionsroutinen* werden sowohl für die Langzeitarchivierung als auch f
 
 ## Aktuelle Konfiguration des **Gesamtsystems**
 
-
-
-Nicht alle Eingangsformate müssen 
+(https://github.com/da-nrw/DNSCore/edit/master/ContentBroker/src/main/markdown/operations_format_conversion_current_configuration.de)
 
 ## Anlegen und Testen von neuen Konversionsrichtlinien und Routinen
-
-(https://github.com/da-nrw/DNSCore/edit/master/ContentBroker/src/main/markdown/operations_format_conversion_current_configuration.de)
 
 **1 - Evaluationsphase** Um eine neue Konversionsroutine systemweit bereitstellen zu können, muss diese zunächst im Vorgeld evaluiert werden. 
 
