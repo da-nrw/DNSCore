@@ -42,7 +42,7 @@ Aus der genannten Unterscheidung der Formate ergeben sich für die im SIP eingel
 
 ## Anlegen und Testen von neuen Konversionsrichtlinien und Routinen
 
-**1 - Evaluationsphase** Um eine neue Konversionsroutine systemweit bereitstellen zu können, muss diese zunächst im Vorgeld evaluiert werden. 
+**1 - Evaluationsphase** Um eine neue Konversionsroutine systemweit bereitstellen zu können, muss diese zunächst im Vorfeld evaluiert werden. 
 
 Hier sind zwei Fälle zu unterscheiden. 
 
