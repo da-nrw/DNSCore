@@ -2,7 +2,7 @@
 Zum Produktivstart wird eine Basiskonfiguration bereitgestellt. Diese kann in Abhängigkeit von dem Material und den Anforderungen der einliefernden Institutionen durch neue Konversionsrichtlinien und Routinen angepasst und erweitert werden.
 In der folgenden Tabelle ist das Ergebnis der aktuellen Konfiguration für die Langzeitarchivierung (AIP) ablesbar:
 
-Tabelle
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/current-conversation-LZA.jpg)
 
 Für die Präsentation (PIP) sind aktuell folgende Einstellungen gültig:
 
