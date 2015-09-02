@@ -16,5 +16,5 @@ PNG (fmt/11) wird für die LZA ins TIFF-Format fmt/353 migriert. Da für fmt/353
 
 Testdaten
 
-In der Tabellenspalte Testdaten sind die Formate gekennzeichnet, zu denen bereits Testdaten vorliegen und somit das Verhalten des Systems qualitätsgesichert werden konnte. 
+In der Tabellenspalte Testdaten sind die Formate gekennzeichnet, zu denen bereits Testdaten vorliegen und somit das Verhalten des Systems qualitätsgesichert werden kann. 
 Für alle anderen Konfigurationsroutinen (vorhandene und zukünftig gewünschte) sind Testdaten von den einliefernden Institutionen erforderlich. Nur so kann eine verbindliche Aussage über das aktuelle Systemverhalten getroffen werden.
