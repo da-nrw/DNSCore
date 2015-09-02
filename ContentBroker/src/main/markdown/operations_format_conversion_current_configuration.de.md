@@ -12,7 +12,7 @@ Für die Präsentation ist zu beachten, ob bei dem ersten Schritt der Langzeitar
 
 Beispiel
 
-PNG (fmt/11) wird für die LZA ins TIFF-Format fmt/353 migriert. Da für fmt/353 das PIP-Format JPG definiert ist, wird für fmt/11 ebenfalls das  PIP-Format JPG erstellt – obwohl für das Einlieferungsformat fmt/11 kein Präsentationsformat definiert ist. 
+PNG (fmt/11) wird für die LZA ins TIFF-Format fmt/353 migriert. Da für fmt/353 das PIP-Format JPG definiert ist, wird für das Ausgangsformat fmt/11 ebenfalls das PIP-Format JPG erstellt – obwohl für fmt/11 kein Präsentationsformat definiert ist. 
 
 Testdaten
 
