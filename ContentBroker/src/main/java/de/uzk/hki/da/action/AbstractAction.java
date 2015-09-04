@@ -21,10 +21,12 @@ package de.uzk.hki.da.action;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Date;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.activemq.transport.tcp.ExceededMaximumConnectionsException;
 import org.hibernate.Session;
 import org.jdom.JDOMException;
 import org.slf4j.Logger;
@@ -136,7 +138,6 @@ public abstract class AbstractAction implements Runnable {
 	public void run() {
 		
 		setupObjectLogging(o.getIdentifier());
-		
 		synchronizeObjectDatabaseAndFileSystemState();
 		
 		Date start = new Date();
@@ -148,9 +149,19 @@ public abstract class AbstractAction implements Runnable {
 		// The order of the next two statements must not be changed.
 		// The object logging must be> unset in order to prevent another appender to start
 		// its lifecycle before the current one has stop its lifecycle.
+		
 		unsetObjectLogging(); 
-		upateObjectAndJob(n, o, j, DELETEOBJECT, kILLATEXIT, getToCreate());
-
+		try {
+			upateObjectAndJob(n, o, j, DELETEOBJECT, kILLATEXIT, getToCreate());
+		} catch (Exception e) {
+			resetModifiers();
+			execAndPostProcessRollback(o, j);
+			try {
+				upateObjectAndJob(n, o, j, DELETEOBJECT, kILLATEXIT, getToCreate());
+			} catch (Exception e1) {
+				baseLogger.error("Exception while committing changes to database after rollback "+e1);
+			}
+		}
 		actionMap.deregisterAction(this); 
 	}
 
@@ -266,40 +277,35 @@ public abstract class AbstractAction implements Runnable {
 			Node node,
 			Object object,Job job, 
 			boolean deleteObject,boolean deleteJob,
-			Job createJob){
+			Job createJob) throws Exception{
 		
 		boolean transactionSuccessful=false;
 		int count = 0;
+		int maxPermittedTryCount = 3;
 		do {
 			Session session = null;
 			try {
-					
-				baseLogger.info("perform transaction with object="+object.getOrig_name()+", job="+job.getStatus());
-			
+				baseLogger.info("perform transaction with object="+object.getOrig_name()+", "
+						+ "job="+job.getStatus()+", node="+node+"deleteObject="+deleteObject+", deleteJob="+deleteJob+", "+"CreateJob="+createJob);
 				session = openSession();
 				session.beginTransaction();
 				performTransaction(node, object, job, deleteObject, deleteJob, createJob, session);
 				transactionSuccessful=true;
 				baseLogger.info("Transaction successful for object "+object.getIdentifier());
+				session.close();
 			}
 			catch (Exception sqlException) {
 				count++;
-				if(count==1) {
-					baseLogger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sqlException);
-					sendJMSException(sqlException);
-				} else {
-					logger.error("Repeated last exception "+count+" times");
-				}
-				try {    Thread.sleep(2000);
-				} catch (InterruptedException e) {}
-				
-				for (Node cn:node.getCooperatingNodes()) {
-					cn.setCopyToSave(null);
+				baseLogger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sqlException);
+				baseLogger.error(count+". try");
+				session.getTransaction().rollback();
+				session.close();
+				if(count==maxPermittedTryCount) {
+					reportTechnicalError(sqlException);
+					throw new Exception(sqlException);
 				}
 			}
-			session.close();
-
-		} while(!transactionSuccessful);
+		} while(! (transactionSuccessful || count>=maxPermittedTryCount ));
 	}
 	
 	private void performTransaction(
@@ -354,8 +360,14 @@ public abstract class AbstractAction implements Runnable {
 		}
 		else {
 			session.update(job);
-			baseLogger.info(this.getClass().getName()+" finished working on job for object with identifier "+job.getObject().getIdentifier()+
-					". Set job to end state ("+endStatus+"). Database transaction successful.");			
+			if(job.getStatus().endsWith(C.WORKFLOW_STATUS_DIGIT_WAITING)) {
+				baseLogger.info(this.getClass().getName()+" finished working on job for object with identifier "+job.getObject().getIdentifier()+
+					". Set job to end state ("+endStatus+"). Database transaction successful.");	
+			} else {
+				baseLogger.info(this.getClass().getName()+" finished working on job for object with identifier "+job.getObject().getIdentifier()+
+						". Set job to error state ("+job.getStatus()+").");	
+			}
+					
 		}
 
 		session.flush();

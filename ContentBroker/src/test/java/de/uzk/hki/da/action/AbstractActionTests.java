@@ -276,7 +276,7 @@ public class AbstractActionTests {
 		
 		verify(mockSession,times(3)).update(object);
 		verify(mockSession,times(3)).update(object);
-		assertEquals("200",action.getJob().getStatus());
+		assertEquals("191",action.getJob().getStatus());
 	}
 	
 	@Test
