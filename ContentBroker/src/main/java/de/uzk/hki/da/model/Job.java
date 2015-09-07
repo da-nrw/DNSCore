@@ -55,6 +55,7 @@ public class Job {
 	private Integer parent_id;
 	
 	/** The status. */
+	@Column(columnDefinition="varchar(10)")
 	private String status;
 
 	private String question = "";
@@ -64,16 +65,19 @@ public class Job {
 	/** 
 	 * The name of the node of the system which is instructed to do the job.
 	 */
-	@Column(name="initial_node")
+	@Column(name="initial_node", columnDefinition="varchar(150)")
 	private String responsibleNodeName;
 	
 	/** The repl_destinations. */
+	@Column(columnDefinition="varchar(1000)")
 	private String repl_destinations;
 	
 	/** The date_created. */
+	@Column(columnDefinition="varchar(32)")
 	private String date_created;
 	
 	/** The date_modified. */
+	@Column(columnDefinition="varchar(32)")
 	private String date_modified;
 	
 	/** The rep_name. */
@@ -89,6 +93,7 @@ public class Job {
 	
 	private String dynamic_nondisclosure_limit_institution;
 	
+	@Column(columnDefinition="varchar(50)")
 	private String container_extension;
 	
 	

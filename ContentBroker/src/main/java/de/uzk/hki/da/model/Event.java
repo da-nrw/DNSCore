@@ -59,9 +59,11 @@ public class Event {
 	private String identifier;
 	
 	/** The agent_type. */
+	@Column(columnDefinition="varchar(50)")
 	private String agent_type;
 	
 	/** The agent_name. */
+	@Column(columnDefinition="varchar(50)")
 	private String agent_name;
 	
 	/** The agent_long_name. */
@@ -69,6 +71,7 @@ public class Event {
 	private String agent_long_name;
 	
 	/** The type. */
+	@Column(columnDefinition="varchar(30)")
 	private String type;
 	
 	/** The source_file. */

@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -67,9 +68,11 @@ public class Package {
 	private int id;
 
 	/** The name. */
+	@Column(columnDefinition="varchar(200)")
 	private String name;
 	
 	/** The status. */
+	@Column(columnDefinition="varchar(100)")
 	private String status;
 	
 	/** The last_checked. */

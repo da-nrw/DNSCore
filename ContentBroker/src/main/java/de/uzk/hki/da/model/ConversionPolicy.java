@@ -45,6 +45,7 @@ public class ConversionPolicy {
 	private boolean presentation = false; 
 	
 	/** The source_format. */
+	@Column(columnDefinition="varchar(20)")
 	private String source_format;
 
 	

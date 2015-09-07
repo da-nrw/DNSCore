@@ -20,6 +20,7 @@
 package de.uzk.hki.da.model;
 import java.security.InvalidParameterException;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -45,6 +46,7 @@ public class ConversionInstruction {
 	private int id;
 	
 	/** The additional_params. */
+	@Column(columnDefinition="varchar(200)")
 	private String additional_params;
 	
 	/** The conversion_routine. */
@@ -52,9 +54,12 @@ public class ConversionInstruction {
 	private ConversionRoutine conversion_routine;
 	
 	/** The target_folder. */
+	@Column(columnDefinition="varchar(500)")
 	private String target_folder;
 	
 	/** The node. */
+	/** The target_folder. */
+	@Column(columnDefinition="varchar(50)")
 	private String node;
 	
 	/** The source_file. */

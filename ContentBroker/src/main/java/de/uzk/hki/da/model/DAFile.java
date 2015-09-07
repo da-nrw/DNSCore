@@ -69,15 +69,19 @@ public class DAFile implements FileWithFileFormat{
 	private int id;
 	
 	/** The relative_path. */
+	@Column(columnDefinition="varchar(600)")
 	private String relative_path;
 	
 	/** The rep_name. */
+	@Column(columnDefinition="varchar(100)")
 	private String rep_name = "";
 	
 	/** The format puid. */
+	@Column(columnDefinition="varchar(14)")
 	private String formatPUID; // encoded as PRONOM-PUID
 	
 	/** The format secondary attribute. */
+	@Column(columnDefinition="varchar(50)")
 	private String subformatIdentifier = ""; // used to store compression or codec information
 	
 	/** The chksum. */

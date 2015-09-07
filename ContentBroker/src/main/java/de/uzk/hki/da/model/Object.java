@@ -98,26 +98,31 @@ public class Object {
 	/** 
 	 * The identifier. In javadoc comments throughout the source code base often refered to as oid.
 	 * */
-	@Column(unique=true)
+	@Column(unique=true, columnDefinition="varchar(60)")
 	private String identifier;
 	
 	/** The urn. */
 	private String urn;
 	
 	/** The initial_node. */
+	@Column(columnDefinition="varchar(150)")
 	private String initial_node;
 	
 	/** The orig_name. */
 	private String orig_name;
 	
 	/** The date_created. */
+	@Column(columnDefinition="varchar(100)")
 	private String date_created;
 	
 	/** The date_modified. */
+	@Column(columnDefinition="varchar(100)")
 	private String date_modified;
 	
+	@Column(columnDefinition="varchar(50)")
 	private String package_type;
 	
+	@Column(columnDefinition="varchar(120)")
 	private String metadata_file;
 
 	@Transient
@@ -159,7 +164,7 @@ public class Object {
 	private String mostRecentFormats;
 	
 	/** The most_recent_secondary_attributes. */
-	@Column(name="most_recent_secondary_attributes")
+	@Column(name="most_recent_secondary_attributes", columnDefinition="varchar(2048)")
 	private String mostRecentSecondaryAttributes = "";
 	
 	/** The rights. */

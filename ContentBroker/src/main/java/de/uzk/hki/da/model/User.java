@@ -60,13 +60,15 @@ public class User{
 	 * The short_name. A unique idenfier for an institutional agent.
 	 * In Javadoc comments troughout the source code base often refered to as csn (contractor short name).
 	 **/
+	@Column(columnDefinition="varchar(100)")
 	private String short_name;
 	
 	/** The forbidden_nodes. */
+	@Column(columnDefinition="varchar(1000)")
 	private String forbidden_nodes;
 	
 	/** The email_contact. */
-	@Column(name="email_contact")
+	@Column(name="email_contact", columnDefinition="varchar(200)")
 	private String emailAddress;
 	
 	private String username;

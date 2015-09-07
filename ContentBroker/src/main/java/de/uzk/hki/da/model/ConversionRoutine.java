@@ -20,6 +20,7 @@
 package de.uzk.hki.da.model;
 import java.lang.Object;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -41,16 +42,20 @@ public class ConversionRoutine {
 	private int id;
 	
 	/** The name. */
+	@Column(columnDefinition="varchar(80)")
 	private String name;
 	
 	/** The target_suffix. */
+	@Column(columnDefinition="varchar(5)")
 	private String target_suffix;
 	
 	/** The type. */
+	@Column(columnDefinition="varchar(60)")
 	private String type;
 	
 	// commmand to be executed on the command line
 	/** The params. */
+	@Column(columnDefinition="varchar(512)")
 	private String params;
 	
 

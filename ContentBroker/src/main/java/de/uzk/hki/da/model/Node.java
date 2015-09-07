@@ -57,6 +57,7 @@ public class Node{
 	private String identifier;
 	
 	/** The name. */
+	@Column(columnDefinition="varchar(50)")
 	private String name;
 
 	/** The urn_index. */
