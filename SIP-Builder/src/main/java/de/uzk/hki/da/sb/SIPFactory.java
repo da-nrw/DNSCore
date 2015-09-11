@@ -39,6 +39,7 @@ import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.metadata.PremisXmlWriter;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.CopyUtility;
+import de.uzk.hki.da.pkg.NestedContentStructure;
 import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -75,7 +76,7 @@ public class SIPFactory {
 
 	private Feedback returnCode;
 
-	public enum KindOfSIPBuilding { MULTIPLE_FOLDERS, SINGLE_FOLDER };
+	public enum KindOfSIPBuilding { MULTIPLE_FOLDERS, SINGLE_FOLDER, NESTED_FOLDERS};
 
 	public enum Feedback {
 		EXIT_AFTER_HELP(-1),
@@ -152,6 +153,12 @@ public class SIPFactory {
 			break;
 
 		case SINGLE_FOLDER:
+			folderList.add(sourceFolder);
+			break;
+			
+		case NESTED_FOLDERS:
+//			NestedContentStructure ncs = new NestedContentStructure(sourceFolder);
+//			folderList = ncs.getSipCandidates();
 			folderList.add(sourceFolder);
 			break;
 

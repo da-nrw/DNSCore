@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<settings>
+	<duration>
+		<firstOption>5</firstOption>
+		<secondOption>15</secondOption>
+		<thirdOption>60</thirdOption>
+		<fourthOption>120</fourthOption>
+	</duration>
+	<image>
+		<width>
+			<firstOption>480</firstOption>
+			<secondOption>800</secondOption>
+			<thirdOption>1280</thirdOption>
+		</width>
+		<height>
+			<firstOption>360</firstOption>
+			<secondOption>600</secondOption>
+			<thirdOption>960</thirdOption>
+		</height>
+		<percent>
+			<firstOption>12.5%</firstOption>
+			<secondOption>25%</secondOption>
+			<thirdOption>50%</thirdOption>
+		</percent>
+		<opacity>
+			<firstOption>5</firstOption>
+			<secondOption>10</secondOption>
+			<thirdOption>25</thirdOption>
+			<fourthOption>50</fourthOption>
+			<fifthOption>100</fifthOption>
+		</opacity>
+		<textSize>
+			<firstOption>10</firstOption>
+			<secondOption>20</secondOption>
+			<thirdOption>40</thirdOption>
+			<fourthOption>60</fourthOption>
+		</textSize>
+	</image>
+	<video>
+		<height>
+			<firstOption>360</firstOption>
+			<secondOption>720</secondOption>
+			<thirdOption>1080</thirdOption>
+		</height>
+	</video>
+</settings>

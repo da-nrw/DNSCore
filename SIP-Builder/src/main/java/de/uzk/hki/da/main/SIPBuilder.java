@@ -41,7 +41,6 @@ import org.apache.log4j.Logger;
 import de.uzk.hki.da.cli.Cli;
 import de.uzk.hki.da.gui.Gui;
 import de.uzk.hki.da.sb.SIPFactory;
-import de.uzk.hki.da.sb.SIPFactory.Feedback;
 
 /**
  * Main class; starts GUI or CLI mode

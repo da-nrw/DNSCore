@@ -58,6 +58,8 @@ public class Utilities {
 			return KindOfSIPBuilding.MULTIPLE_FOLDERS;
 		else if (kindofSIPBuildingName.equals("Einzelnes SIP aus dem Quellverzeichnis erstellen"))
 			return KindOfSIPBuilding.SINGLE_FOLDER;
+		else if (kindofSIPBuildingName.equals("Mehrere SIPs aus einer verschachtelten Ordnerstruktur erstellen"))
+			return KindOfSIPBuilding.NESTED_FOLDERS;
 		
 		return null;
 	}

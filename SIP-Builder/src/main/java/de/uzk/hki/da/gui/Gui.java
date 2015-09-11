@@ -1244,6 +1244,7 @@ public class Gui extends JFrame{
 		kindOfSIPBuildingDropDown.setFont(standardFont.deriveFont(11.0f));
 		kindOfSIPBuildingDropDown.addItem("Einzelnes SIP aus dem Quellverzeichnis erstellen");
 		kindOfSIPBuildingDropDown.addItem("Mehrere SIPs aus Unterordnern des Quellverzeichnisses erstellen");
+//		kindOfSIPBuildingDropDown.addItem("Mehrere SIPs aus einer verschachtelten Ordnerstruktur erstellen");
 
 		institutionLawIdDropDown = new JComboBox();
 		institutionLawIdDropDown.setFont(standardFont.deriveFont(11.0f));
