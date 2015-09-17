@@ -56,8 +56,7 @@
 				<version>2.13</version>
 				<configuration>
 					<includes>
-						<include>%regex[.*Simple.*Suite.*]</include>
-						<include>${include.tests}</include>
+						<include>%regex[.*Test.java*]</include>
 					</includes>
 	    			<argLine>-Dfile.encoding=UTF-8</argLine> 
 				</configuration>
