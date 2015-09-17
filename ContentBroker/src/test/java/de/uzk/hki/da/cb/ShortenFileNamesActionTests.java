@@ -32,7 +32,7 @@ import org.junit.Test;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.WorkArea;
-import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.RelativePath;
 
 
 /**

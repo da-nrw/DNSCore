@@ -18,9 +18,7 @@
 */
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION;
-import static de.uzk.hki.da.core.C.QUEUE_TO_CLIENT;
-import static de.uzk.hki.da.core.C.QUEUE_TO_SERVER;
+import static de.uzk.hki.da.utils.C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION;
 import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 
 import java.io.File;
@@ -46,9 +44,8 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.DocumentsGenService;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.util.ConfigurationException;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * <li>Creates a new Representation and copies the contents of the submission into it.

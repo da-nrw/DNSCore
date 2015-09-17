@@ -97,7 +97,6 @@ import de.uzk.hki.da.pkg.ArchiveBuilderTests;
 import de.uzk.hki.da.service.RetrievePackagesHelperTest;
 import de.uzk.hki.da.service.URNCheckDigitGeneratorTests;
 import de.uzk.hki.da.service.XPathUtilsTests;
-import de.uzk.hki.da.util.PathTest;
 
 /**
  * The collection of all our unit tests which should run pre and post commit.
@@ -153,7 +152,6 @@ import de.uzk.hki.da.util.PathTest;
 	UpdateMetadataActionEADTests.class,
 	DeleteObjectActionTests.class,
 	UpdateMetadataActionXMPTests.class,
-	PathTest.class,
 	AbstractActionTests.class,
 	ReplicationExecutorTest.class,
 	PathTypeEditorSupportTests.class,

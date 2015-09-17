@@ -31,10 +31,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static de.uzk.hki.da.core.C.*;
 import static de.uzk.hki.da.test.TC.*;
-import de.uzk.hki.da.util.Path;
+import static de.uzk.hki.da.utils.C.*;
 import de.uzk.hki.da.utils.PasswordUtils;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author Daniel M. de Oliveira

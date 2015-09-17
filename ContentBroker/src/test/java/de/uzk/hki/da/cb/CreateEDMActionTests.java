@@ -20,11 +20,11 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.CB_PACKAGETYPE_EAD;
-import static de.uzk.hki.da.core.C.CB_PACKAGETYPE_METS;
-import static de.uzk.hki.da.core.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
-import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
 import static de.uzk.hki.da.test.TC.TEST_ROOT_CB;
+import static de.uzk.hki.da.utils.C.CB_PACKAGETYPE_EAD;
+import static de.uzk.hki.da.utils.C.CB_PACKAGETYPE_METS;
+import static de.uzk.hki.da.utils.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
+import static de.uzk.hki.da.utils.C.FILE_EXTENSION_XML;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -49,7 +49,7 @@ import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 
 /**

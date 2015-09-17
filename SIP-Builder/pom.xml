@@ -140,8 +140,11 @@
 			<artifactId>DNSCommon</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
-	
-		
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-core</artifactId>
+			<version>1.0</version>
+		</dependency>
 		<dependency>
 			<groupId>gov.loc</groupId>
 			<artifactId>bagit</artifactId>

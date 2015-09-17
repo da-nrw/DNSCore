@@ -40,7 +40,6 @@ import de.uzk.hki.da.metadata.PremisXmlWriter;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.CopyUtility;
 import de.uzk.hki.da.pkg.NestedContentStructure;
-import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.Utilities;
 
 /**
@@ -157,11 +156,15 @@ public class SIPFactory {
 			break;
 			
 		case NESTED_FOLDERS:
-//			NestedContentStructure ncs = new NestedContentStructure(sourceFolder);
-//			folderList = ncs.getSipCandidates();
-			folderList.add(sourceFolder);
-			break;
-
+			NestedContentStructure ncs;
+			try {
+				ncs = new NestedContentStructure(sourceFolder);
+				folderList = ncs.getSipCandidates();
+				folderList.add(sourceFolder);
+				break;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		default:
 			break;
 		}

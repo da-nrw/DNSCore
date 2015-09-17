@@ -3,7 +3,7 @@ package de.uzk.hki.da.format;
 import java.io.IOException;
 import java.util.List;
 
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 public class FakeSubformatScanService implements FormatScanService, Connector{
 

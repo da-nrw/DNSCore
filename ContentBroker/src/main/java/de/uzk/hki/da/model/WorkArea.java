@@ -22,7 +22,7 @@
 
 package de.uzk.hki.da.model;
 
-import static de.uzk.hki.da.core.C.*;
+import static de.uzk.hki.da.utils.C.*;
 import static de.uzk.hki.da.utils.StringUtilities.*;
 
 import java.io.File;
@@ -37,8 +37,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 
-import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 /**
  * Knows how the WorkArea is structured and how files and objects are organized on it.

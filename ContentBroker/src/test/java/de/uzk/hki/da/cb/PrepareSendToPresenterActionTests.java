@@ -34,7 +34,7 @@ import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.WorkArea;
-import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.RelativePath;
 
 
 /**

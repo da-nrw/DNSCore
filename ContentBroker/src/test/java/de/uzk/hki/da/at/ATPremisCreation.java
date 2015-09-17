@@ -39,9 +39,9 @@ import org.jdom.input.SAXBuilder;
 import org.junit.After;
 import org.junit.Test;
 
-import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.XMLUtils;
 
 
 /**

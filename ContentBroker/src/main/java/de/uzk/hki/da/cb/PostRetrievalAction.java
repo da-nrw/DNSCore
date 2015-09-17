@@ -23,9 +23,9 @@ import java.io.File;
 import java.util.Date;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.StringUtilities;
 
 /**

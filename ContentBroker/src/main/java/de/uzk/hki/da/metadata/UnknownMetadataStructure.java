@@ -9,7 +9,7 @@ import java.util.List;
 import org.jdom.JDOMException;
 
 import de.uzk.hki.da.model.Document;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author Polina Gubaidullina

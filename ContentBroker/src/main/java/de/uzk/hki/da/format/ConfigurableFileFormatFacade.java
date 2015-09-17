@@ -31,7 +31,8 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * Implementation for file identification: FIDO.
@@ -103,7 +104,7 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 			}else
 			if (f.getFormatPUID().equals(FFConstants.XMP_PUID)) {
 				f.setFormatPUID(FFConstants.XML_PUID);
-				f.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
+				f.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_XMP);
 			}
 		}
 	}

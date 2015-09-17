@@ -19,9 +19,9 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.TEST_USER_SHORT_NAME;
 import static de.uzk.hki.da.test.TC.TEST_ROOT_CB;
 import static de.uzk.hki.da.test.TC.URN;
+import static de.uzk.hki.da.utils.C.TEST_USER_SHORT_NAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -39,7 +39,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.WorkArea;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * Tests RestartIngestWorkflowAction

@@ -41,7 +41,7 @@ import com.yourmediashelf.fedora.client.response.AddDatastreamResponse;
 import com.yourmediashelf.fedora.client.response.FedoraResponse;
 
 import de.uzk.hki.da.util.FileIdGenerator;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 public class Fedora3RepositoryFacade implements RepositoryFacade {
 	

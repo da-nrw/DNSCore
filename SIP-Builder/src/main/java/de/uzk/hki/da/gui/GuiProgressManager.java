@@ -25,7 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
 import de.uzk.hki.da.sb.ProgressManager;
-import de.uzk.hki.da.sb.ProgressManager.SIPCreationJob;
 
 /**
  * A specialized progress manager responsible for updating the progress bar in GUI mode

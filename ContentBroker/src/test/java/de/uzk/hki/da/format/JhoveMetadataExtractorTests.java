@@ -33,9 +33,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static de.uzk.hki.da.test.TC.*;
-import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.IOTimeoutException;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.ProcessInformation;
 
 

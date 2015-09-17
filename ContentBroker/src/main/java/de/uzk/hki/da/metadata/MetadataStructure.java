@@ -41,11 +41,11 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 /**
  * @author Polina Gubaidullina

@@ -19,9 +19,9 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
-import static de.uzk.hki.da.core.C.EDM_XSLT_METADATA_STREAM_ID;
-import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
+import static de.uzk.hki.da.utils.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
+import static de.uzk.hki.da.utils.C.EDM_XSLT_METADATA_STREAM_ID;
+import static de.uzk.hki.da.utils.C.FILE_EXTENSION_XML;
 import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 
 import java.io.File;
@@ -54,8 +54,8 @@ import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
-import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 /**
  * This action transforms the primary metadata of an

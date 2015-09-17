@@ -57,13 +57,11 @@ import javax.swing.filechooser.FileFilter;
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.metadata.ContractSettings;
-import de.uzk.hki.da.metadata.PublicationRights;
 import de.uzk.hki.da.metadata.PremisXmlWriter;
+import de.uzk.hki.da.metadata.PublicationRights;
 import de.uzk.hki.da.sb.Logger;
 import de.uzk.hki.da.sb.SIPFactory;
 import de.uzk.hki.da.sb.UserInputValidator;
-import de.uzk.hki.da.sb.SIPFactory.Feedback;
-import de.uzk.hki.da.sb.SIPFactory.KindOfSIPBuilding;
 import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -1244,7 +1242,7 @@ public class Gui extends JFrame{
 		kindOfSIPBuildingDropDown.setFont(standardFont.deriveFont(11.0f));
 		kindOfSIPBuildingDropDown.addItem("Einzelnes SIP aus dem Quellverzeichnis erstellen");
 		kindOfSIPBuildingDropDown.addItem("Mehrere SIPs aus Unterordnern des Quellverzeichnisses erstellen");
-//		kindOfSIPBuildingDropDown.addItem("Mehrere SIPs aus einer verschachtelten Ordnerstruktur erstellen");
+		kindOfSIPBuildingDropDown.addItem("Mehrere SIPs aus einer verschachtelten Ordnerstruktur erstellen");
 
 		institutionLawIdDropDown = new JComboBox();
 		institutionLawIdDropDown.setFont(standardFont.deriveFont(11.0f));

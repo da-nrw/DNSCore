@@ -12,7 +12,7 @@ import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.ElasticsearchMetadataIndex;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 public class IndexMetadataActionTests extends ConcreteActionUnitTest{
 

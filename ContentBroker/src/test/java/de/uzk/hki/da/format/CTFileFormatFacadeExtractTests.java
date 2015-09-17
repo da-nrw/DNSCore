@@ -31,8 +31,8 @@ import org.junit.Test;
 
 import de.uzk.hki.da.test.CTTestHelper;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author Daniel M. de Oliveira

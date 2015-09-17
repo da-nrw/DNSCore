@@ -35,7 +35,6 @@ import org.apache.commons.io.IOUtils;
 
 import de.uzk.hki.da.sb.ProgressManager;
 import de.uzk.hki.da.sb.SIPFactory;
-import de.uzk.hki.da.sb.SIPFactory.SipBuildingProcess;
 
 /**
  * Creates archive files (tar and tgz)

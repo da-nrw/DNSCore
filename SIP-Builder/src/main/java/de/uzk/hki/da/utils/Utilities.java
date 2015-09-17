@@ -34,7 +34,6 @@ import de.uzk.hki.da.metadata.ContractRights.ConversionCondition;
 import de.uzk.hki.da.metadata.PublicationRights.Law;
 import de.uzk.hki.da.metadata.PublicationRights.TextType;
 import de.uzk.hki.da.sb.MessageWriter;
-import de.uzk.hki.da.sb.SIPFactory;
 import de.uzk.hki.da.sb.SIPFactory.KindOfSIPBuilding;
 
 /**

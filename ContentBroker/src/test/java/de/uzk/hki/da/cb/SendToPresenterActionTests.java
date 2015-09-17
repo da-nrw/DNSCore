@@ -19,10 +19,10 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.CB_PACKAGETYPE_EAD;
-import static de.uzk.hki.da.core.C.FILE_EXTENSION_XML;
-import static de.uzk.hki.da.core.C.METADATA_STREAM_ID_EPICUR;
 import static de.uzk.hki.da.test.TC.TEST_ROOT_CB;
+import static de.uzk.hki.da.utils.C.CB_PACKAGETYPE_EAD;
+import static de.uzk.hki.da.utils.C.FILE_EXTENSION_XML;
+import static de.uzk.hki.da.utils.C.METADATA_STREAM_ID_EPICUR;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -46,7 +46,7 @@ import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.ElasticsearchMetadataIndex;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author Daniel M. de Oliveira

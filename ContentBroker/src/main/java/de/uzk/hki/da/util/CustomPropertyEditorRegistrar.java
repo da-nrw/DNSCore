@@ -21,6 +21,9 @@ package de.uzk.hki.da.util;
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.PropertyEditorRegistry;
 
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.PathTypeEditorSupport;
+
 /**
  * @author Daniel M. de Oliveira
  */

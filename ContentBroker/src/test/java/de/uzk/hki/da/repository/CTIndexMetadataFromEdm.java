@@ -32,8 +32,8 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.RelativePath;
 
 
 /**

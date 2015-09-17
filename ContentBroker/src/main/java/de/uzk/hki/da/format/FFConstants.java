@@ -23,11 +23,6 @@ package de.uzk.hki.da.format;
  * @author Daniel M. de Oliveira
  */
 public class FFConstants {
-
-	public static final String SUBFORMAT_IDENTIFIER_XMP="XMP";
-	public static final String SUBFORMAT_IDENTIFIER_EAD="EAD";
-	public static final String SUBFORMAT_IDENTIFIER_LIDO="LIDO";
-	public static final String SUBFORMAT_IDENTIFIER_METS="METS";
 	
 	static final String XMP_PUID="fmt/570";
 	public static final String XML_PUID = "fmt/101";

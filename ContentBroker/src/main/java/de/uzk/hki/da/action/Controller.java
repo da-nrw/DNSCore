@@ -27,9 +27,9 @@ import org.apache.activemq.xbean.XBeanBrokerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
+import de.uzk.hki.da.utils.C;
 
 /**
  * Controls and coordinates the work of the action factory and its associate

@@ -41,7 +41,6 @@ import org.jdom.JDOMException;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.format.MimeTypeDetectionService;
 import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
@@ -56,8 +55,9 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.FileIdGenerator;
-import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 /**
  * Performs updates to metadata files that are necessary
@@ -260,7 +260,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	@SuppressWarnings("rawtypes")
 	private void updatePathsInMets(MetsMetadataStructure mms, File metsFile, Map<DAFile,DAFile> replacements) throws IOException, JDOMException {
 		String targetPath = "";
-		List<Element> metsFileElemens = mms.getMetsFileElements();
+		List<Element> metsFileElemens = mms.getFileElements();
 		for(Element metsFileElement : metsFileElemens) {
 			String href = mms.getHref(metsFileElement);
 			logger.info("Reference: "+href);

@@ -27,10 +27,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Job;
@@ -44,9 +42,10 @@ import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.MD5Checksum;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 /**
  * @author Daniel M. de Oliveira

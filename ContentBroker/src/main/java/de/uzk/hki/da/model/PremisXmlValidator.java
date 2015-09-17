@@ -38,7 +38,7 @@ import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.SAXException;
 
-import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.utils.C;
 
 
 /**

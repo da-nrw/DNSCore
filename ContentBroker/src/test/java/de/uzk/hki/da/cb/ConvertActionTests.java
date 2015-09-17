@@ -40,7 +40,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 
 

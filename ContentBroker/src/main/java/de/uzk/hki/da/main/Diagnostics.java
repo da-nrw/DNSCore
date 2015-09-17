@@ -34,7 +34,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.format.ConfigurableFileFormatFacade;
 import de.uzk.hki.da.format.ConnectionException;
 import de.uzk.hki.da.format.FFConstants;
@@ -51,10 +50,11 @@ import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.HibernateUtil;
-import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.PropertiesUtils;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.StringUtilities;
 
 /**

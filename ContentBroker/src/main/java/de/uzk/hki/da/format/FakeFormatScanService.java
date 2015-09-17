@@ -27,7 +27,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author Daniel M. de Oliveira
@@ -98,23 +99,23 @@ public class FakeFormatScanService implements FormatScanService{
 	        try {
 				while((line=br.readLine())!=null){
 				    if (patternFound(line,"<mets.*>")){
-				    	f.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_METS);
+				    	f.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_METS);
 				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}
 				    if (patternFound(line,"<ead .*>") || patternFound(line,"<ead.*>")){
-				    	f.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
+				    	f.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_EAD);
 				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}
 				    if (patternFound(line,"<lido:lido>")){
 				    	
-				    	f.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
+				    	f.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_LIDO);
 				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}
 				    if (patternFound(line,"<x:xmpmeta.*")){
-				    	f.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
+				    	f.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_XMP);
 				    	f.setFormatPUID(FFConstants.XML_PUID);
 				    	break;
 				    	}

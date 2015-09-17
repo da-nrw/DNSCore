@@ -20,7 +20,6 @@
 package de.uzk.hki.da.cli;
 
 import de.uzk.hki.da.sb.MessageWriter;
-import de.uzk.hki.da.sb.MessageWriter.UserInput;
 
 /**
  * A specialized message writer responsible for displaying info messages in CLI mode

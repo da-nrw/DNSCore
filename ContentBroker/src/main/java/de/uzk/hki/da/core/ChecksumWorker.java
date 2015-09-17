@@ -29,7 +29,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.type.IntegerType;
-import org.hibernate.type.LongType;
 import org.slf4j.MDC;
 
 import de.uzk.hki.da.grid.GridFacade;

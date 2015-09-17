@@ -27,7 +27,6 @@ import java.util.Date;
 import java.util.List;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.FFConstants;
@@ -38,7 +37,8 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.repository.RepositoryException;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.StringUtilities;
 
 /**
@@ -146,41 +146,41 @@ public class ValidateMetadataAction extends AbstractAction {
 	 */
 	private void detect(){
 		
-		if (getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_EAD).size()>=2){
+		if (getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_EAD).size()>=2){
 			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"Mehr als eine Metadatendatei vorhanden vom Typ: EAD");
 		}
-		if (getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_LIDO).size()>1){
+		if (getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_LIDO).size()>1){
 			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"Mehr als eine Metadatendatei vorhanden vom Typ: LIDO");
 		}
 
 		int ptypeCount=0;
 		
-		if (getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_EAD).size()==1){
-			detectedMetadataFile=getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_EAD).get(0);
+		if (getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_EAD).size()==1){
+			detectedMetadataFile=getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_EAD).get(0);
 			detectedPackageType=C.CB_PACKAGETYPE_EAD;
 			ptypeCount++;
 		}
 		
-		if ((getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_EAD).size()!=1)&&
-				getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_METS).size()>1){
+		if ((getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_EAD).size()!=1)&&
+				getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_METS).size()>1){
 			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"Mehr als eine Metadatendatei vorhanden vom Typ: METS");
 		}  
 				
-		if (getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_METS).size()==1){
-			detectedMetadataFile=getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_METS).get(0);
+		if (getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_METS).size()==1){
+			detectedMetadataFile=getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_METS).get(0);
 			detectedPackageType=C.CB_PACKAGETYPE_METS;
 			ptypeCount++;
 		}
 		
-		if ((getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_XMP)).size()>=1){
+		if ((getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_XMP)).size()>=1){
 			detectedMetadataFile=new DAFile(
 					o.getNameOfLatestBRep(),C.METADATA_FILE_XMP);
 			detectedPackageType=C.CB_PACKAGETYPE_XMP;
 			ptypeCount++;
 		}
 		
-		if ((getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_LIDO)).size()==1){
-			detectedMetadataFile=getFilesOfMetadataType(FFConstants.SUBFORMAT_IDENTIFIER_LIDO).get(0);
+		if ((getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_LIDO)).size()==1){
+			detectedMetadataFile=getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_LIDO).get(0);
 			detectedPackageType=C.CB_PACKAGETYPE_LIDO;
 			ptypeCount++;
 		}

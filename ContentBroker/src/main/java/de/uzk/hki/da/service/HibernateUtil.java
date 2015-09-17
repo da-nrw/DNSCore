@@ -34,6 +34,7 @@ import de.uzk.hki.da.utils.PasswordUtils;
  * Provides access to hibernate sessions.
  * @author Daniel M. de Oliveira
  */
+@SuppressWarnings("deprecation")
 public class HibernateUtil {
 
 	/**

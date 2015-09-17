@@ -26,9 +26,9 @@ import org.xml.sax.SAXException;
 import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.metadata.LidoMetadataStructure;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;
-import de.uzk.hki.da.metadata.XMLUtils;
-import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.utils.XMLUtils;
 
 public class MetadataFileParserTest {
 	

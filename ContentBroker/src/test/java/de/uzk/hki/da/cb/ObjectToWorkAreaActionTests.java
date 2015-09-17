@@ -19,6 +19,15 @@
 
 package de.uzk.hki.da.cb;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -27,16 +36,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-import static de.uzk.hki.da.core.C.*;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.FakeGridFacade;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author Daniel M. de Oliveira

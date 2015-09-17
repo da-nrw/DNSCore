@@ -18,8 +18,8 @@
 */
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.*;
 import static de.uzk.hki.da.test.TC.*;
+import static de.uzk.hki.da.utils.C.*;
 
 import java.lang.reflect.Field;
 
@@ -33,7 +33,7 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.WorkArea;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * Provides the basic framework for effective tests of the business code

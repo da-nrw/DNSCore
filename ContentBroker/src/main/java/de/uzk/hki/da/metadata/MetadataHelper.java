@@ -11,7 +11,7 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.xpath.XPath;
 
-import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.utils.C;
 
 public class MetadataHelper {
 	

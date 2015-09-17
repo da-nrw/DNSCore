@@ -31,7 +31,6 @@ import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.sb.ProgressManager;
 import de.uzk.hki.da.sb.SIPFactory;
-import de.uzk.hki.da.sb.SIPFactory.SipBuildingProcess;
 
 /**
  * Copies directories to another directory
