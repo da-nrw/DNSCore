@@ -14,9 +14,9 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.xml.sax.InputSource;
 
+import de.uzk.hki.da.metadata.MetsParser;
 import de.uzk.hki.da.utils.XMLUtils;
 import de.uzk.hki.da.utils.formatDetectionService;
-import de.uzk.hki.metadata.MetsParser;
 
 /**
  * @author Polina Gubaidullina
