@@ -41,7 +41,7 @@ import static org.mockito.Mockito.when;
  * 
  * @author Thomas Kleinke
  */
-public class CopyUtilityTests {
+public class CopyUtilityTest {
 
 	File sourceFolder = new File("src/test/resources/CopyUtilityTests/source");
 	File destinationFolder = new File("src/test/resources/CopyUtilityTests/destination");

@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
  * 
  * @author Thomas Kleinke
  */
-public class ArchiveBuilderTests {
+public class ArchiveBuilderTest {
 
 	File sourceFolder = new File("src/test/resources/ArchiveBuilderTests/source");
 	File destinationFolder = new File("src/test/resources/ArchiveBuilderTests/destination");

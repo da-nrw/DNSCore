@@ -14,6 +14,10 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.utils.C;
 
+/**
+ * @author Polina Gubaidullina
+ */
+
 public class MetsParser{
 	
 	/** The logger. */
@@ -21,8 +25,8 @@ public class MetsParser{
 			.getLogger(MetsParser.class);
 	
 	private Document metsDoc = new Document();
-	private String METS_XPATH_EXPRESSION = 		"//mets:file";
-	private XPath metsXPath;
+	private String METS_XPATH_EXPRESSION = "//mets:file";
+	XPath metsXPath = XPath.newInstance(METS_XPATH_EXPRESSION);
 	private final String TITLE_PAGE = "title_page";
 	private final String STRUCTMAP_TYPE_LOGICAL = "LOGICAL";
 	private final Namespace XLINK_NS = 	Namespace.getNamespace("http://www.w3.org/1999/xlink");
@@ -30,7 +34,6 @@ public class MetsParser{
 	private final List<Element> fileElements;
 
 	public MetsParser(Document doc) throws JDOMException {
-		metsXPath = XPath.newInstance(METS_XPATH_EXPRESSION);
 		this.metsDoc = doc;
 		fileElements = getFileElementsFromMetsDoc(metsDoc);
 	}

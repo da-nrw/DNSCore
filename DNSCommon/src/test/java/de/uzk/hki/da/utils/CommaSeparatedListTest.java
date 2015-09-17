@@ -35,7 +35,7 @@ import de.uzk.hki.da.utils.CommaSeparatedList;
  *
  * @author Daniel M. de Oliveira
  */
-public class CommaSeparatedListTests {
+public class CommaSeparatedListTest {
 
 	/**
 	 * To list.

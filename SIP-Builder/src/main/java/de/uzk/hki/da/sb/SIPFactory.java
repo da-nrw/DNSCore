@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -46,6 +47,7 @@ import de.uzk.hki.da.utils.Utilities;
  * The central SIP production class
  * 
  * @author Thomas Kleinke
+ * @author Polina Gubaidullina
  */
 public class SIPFactory {
 
@@ -137,9 +139,9 @@ public class SIPFactory {
 	 * 
 	 * @param folderPath The main source folder path
 	 */
-	private List<File> createFolderList(String folderPath) {
+	private HashMap<File, String> createFolderList(String folderPath) {
 
-		List<File> folderList = new ArrayList<File>();
+		HashMap<File, String> folderListWithFolderNames = new HashMap<File, String>();
 		File sourceFolder = new File(folderPath);
 
 		switch (kindofSIPBuilding) {
@@ -147,20 +149,19 @@ public class SIPFactory {
 			List<File> folderContent = Arrays.asList(sourceFolder.listFiles());
 			for (File file : folderContent) {
 				if (!file.isHidden() && file.isDirectory())
-					folderList.add(file);
+					folderListWithFolderNames.put(file, null);
 			}
 			break;
 
 		case SINGLE_FOLDER:
-			folderList.add(sourceFolder);
+			folderListWithFolderNames.put(sourceFolder, null);
 			break;
 			
 		case NESTED_FOLDERS:
 			NestedContentStructure ncs;
 			try {
 				ncs = new NestedContentStructure(sourceFolder);
-				folderList = ncs.getSipCandidates();
-				folderList.add(sourceFolder);
+				folderListWithFolderNames = ncs.getSipCandidates();
 				break;
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -169,7 +170,7 @@ public class SIPFactory {
 			break;
 		}
 
-		return folderList;		
+		return folderListWithFolderNames;		
 	}
 
 	/**
@@ -209,12 +210,15 @@ public class SIPFactory {
 	 * @param sourceFolder The source folder
 	 * @return The method result as a Feedback enum
 	 */
-	private Feedback buildSIP(int jobId, File sourceFolder) {
+	private Feedback buildSIP(int jobId, File sourceFolder, String newPackageName) {
 
 		progressManager.startJob(jobId);
 		Feedback feedback;
-
+		
 		String packageName = getPackageName(sourceFolder);
+		if(newPackageName!=null) {
+			packageName = newPackageName;
+		} 
 		
 		String archiveFileName = packageName;
 		if (compress)
@@ -713,7 +717,11 @@ public class SIPFactory {
 				new File(collectionFolder, "data").mkdirs();
 			}
 
-			List<File> folderList = createFolderList(sourcePath);
+			HashMap<File, String> folderListWithNames = createFolderList(sourcePath);
+			List<File> folderList = new ArrayList<File>();
+			for(File f : folderListWithNames.keySet()) {
+				folderList.add(f);
+			}
 			if (initializeProgressManager(folderList) != Feedback.SUCCESS) {
 				messageWriter.showMessage("Das SIP konnte nicht erstellt werden.\n\n" +
 						"Der angegebene Ordner existiert nicht mehr. ", JOptionPane.ERROR_MESSAGE);
@@ -722,8 +730,8 @@ public class SIPFactory {
 			}
 
 			int id = 0;
-			for (File folder : folderList) {
-				returnCode = buildSIP(id, folder);
+			for (File folder : folderListWithNames.keySet()) {
+				returnCode = buildSIP(id, folder, folderListWithNames.get(folder));
 
 				if (returnCode != Feedback.SUCCESS && returnCode != Feedback.DELETE_TEMP_FOLDER_WARNING)
 					abortSipBuilding();

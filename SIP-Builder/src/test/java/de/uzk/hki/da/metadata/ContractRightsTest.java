@@ -36,7 +36,7 @@ import static org.junit.Assert.assertEquals;
  * 
  * @author Thomas Kleinke
  */
-public class ContractRightsTests {
+public class ContractRightsTest {
 
 	String pathToResourcesFolder = "src/test/resources/ContractRightsTests/";
 	

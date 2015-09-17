@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.input.BOMInputStream;
@@ -15,6 +16,7 @@ import org.jdom.input.SAXBuilder;
 import org.xml.sax.InputSource;
 
 import de.uzk.hki.da.metadata.MetsParser;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 import de.uzk.hki.da.utils.formatDetectionService;
 
@@ -25,7 +27,7 @@ import de.uzk.hki.da.utils.formatDetectionService;
 public class NestedContentStructure {
 	
 	public File rootFile;
-	public List<File> sipCandidates = new ArrayList<File>();
+	public HashMap<File, String> sipCandidatesWithUrls = new HashMap<File, String>();
 	
 	public NestedContentStructure(File sourceRootFile) throws IOException {
 		setRootFile(sourceRootFile);
@@ -44,8 +46,8 @@ public class NestedContentStructure {
 		this.rootFile = rootFile;
 	}	
 	
-	public List<File> getSipCandidates() {
-		return sipCandidates;
+	public HashMap<File, String> getSipCandidates() {
+		return sipCandidatesWithUrls;
 	}
 	
 	/**
@@ -61,13 +63,7 @@ public class NestedContentStructure {
 				if(metsFiles.size()==1) {
 					File metsFile = metsFiles.get(0);
 					String urn = getUrn(metsFile);
-					System.out.println("ADD folder to sip candidates "+f.getAbsolutePath()+" with mets file "+metsFile);
-					System.out.println("URN: "+urn);
-					sipCandidates.add(f);
-				} else if(getMetsFileFromDir(f).size()==0) {
-//					System.out.println("Der Ordner "+f+" enthält keine METS-Datei!");
-				} else if(getMetsFileFromDir(f).size()>1) {
-//					System.out.println("Der Ordner "+f+" enthält mehr als eine METS-Datei!");
+					sipCandidatesWithUrls.put(f, urn);
 				}
 			} else {
 				searchForSipCandidates(f);
@@ -111,7 +107,6 @@ public class NestedContentStructure {
 		fileInputStream.close();
 		bomInputStream.close();
 		reader.close();
-		
 		return metsDoc;
 	}
 }

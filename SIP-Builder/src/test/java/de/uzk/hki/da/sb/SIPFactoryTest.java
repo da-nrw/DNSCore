@@ -48,7 +48,7 @@ import static org.mockito.Mockito.mock;
  * 
  * @author Thomas Kleinke
  */
-public class SIPFactoryTests {
+public class SIPFactoryTest {
 
 	String pathToResourcesFolder = "src/test/resources/SIPFactoryTests/";
 	
