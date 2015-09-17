@@ -16,7 +16,6 @@ import org.jdom.input.SAXBuilder;
 import org.xml.sax.InputSource;
 
 import de.uzk.hki.da.metadata.MetsParser;
-import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 import de.uzk.hki.da.utils.formatDetectionService;
 
@@ -27,7 +26,7 @@ import de.uzk.hki.da.utils.formatDetectionService;
 public class NestedContentStructure {
 	
 	public File rootFile;
-	public HashMap<File, String> sipCandidatesWithUrls = new HashMap<File, String>();
+	public HashMap<File, String> sipCandidatesWithUrns = new HashMap<File, String>();
 	
 	public NestedContentStructure(File sourceRootFile) throws IOException {
 		setRootFile(sourceRootFile);
@@ -47,7 +46,7 @@ public class NestedContentStructure {
 	}	
 	
 	public HashMap<File, String> getSipCandidates() {
-		return sipCandidatesWithUrls;
+		return sipCandidatesWithUrns;
 	}
 	
 	/**
@@ -63,7 +62,7 @@ public class NestedContentStructure {
 				if(metsFiles.size()==1) {
 					File metsFile = metsFiles.get(0);
 					String urn = getUrn(metsFile);
-					sipCandidatesWithUrls.put(f, urn);
+					sipCandidatesWithUrns.put(f, urn);
 				}
 			} else {
 				searchForSipCandidates(f);

@@ -19,6 +19,10 @@
 
 package de.uzk.hki.da.sb;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.mock;
 import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFactory;
 import gov.loc.repository.bagit.utilities.SimpleResult;
@@ -39,9 +43,6 @@ import org.junit.Test;
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 /**
  * Class under test: SIPFactory
@@ -240,6 +241,51 @@ public class SIPFactoryTest {
 		assertTrue(new File(unpackedFolder3, "data/text.txt").exists());
 		
 		assertTrue(validateBagIt(unpackedFolder3));
+	}
+	
+	@Test
+	public void testBuildNestedSIPs() throws Exception {
+		
+		String urn1 = "urn:nbn:de:hbz:6:1-3602";
+		
+		ContractRights rights = new ContractRights();
+		rights.setConversionCondition("Keine");
+		
+		sipFactory.setSourcePath(pathToResourcesFolder + "nestedFolders");
+		sipFactory.setDestinationPath(pathToResourcesFolder + "destination");
+		sipFactory.setKindofSIPBuilding(SIPFactory.KindOfSIPBuilding.NESTED_FOLDERS);
+		sipFactory.setCompress(true);
+		sipFactory.setContractRights(rights);
+		
+		sipFactory.startSIPBuilding();
+		do {
+			Thread.sleep(100);
+		} while (sipFactory.isWorking());
+		
+		assertEquals(SIPFactory.Feedback.SUCCESS, sipFactory.getReturnCode());
+		
+		ArchiveBuilder builder = new ArchiveBuilder();
+		
+		String pathToSIP1 = pathToResourcesFolder + "destination/"+urn1+".tgz";
+		builder.unarchiveFolder(new File(pathToSIP1), new File(pathToResourcesFolder + "destination"), true);
+		File unpackedFolder1 = new File(pathToResourcesFolder+"destination/"+urn1);
+		
+		assertTrue(new File(unpackedFolder1, "bag-info.txt").exists());
+		assertTrue(new File(unpackedFolder1, "bagit.txt").exists());
+		assertTrue(new File(unpackedFolder1, "manifest-md5.txt").exists());
+		assertTrue(new File(unpackedFolder1, "tagmanifest-md5.txt").exists());
+		assertTrue(new File(unpackedFolder1, "data/export_mets.xml").exists());
+		assertTrue(new File(unpackedFolder1, "data/premis.xml").exists());
+		
+		assertTrue(validateBagIt(unpackedFolder1));
+		
+		assertFalse(new File(pathToResourcesFolder+"destination/testSubfolder1").exists());
+		assertFalse(new File(pathToResourcesFolder+"destination/testSubfolder12").exists());
+		assertFalse(new File(pathToResourcesFolder+"destination/testSubfolder13").exists());
+		assertFalse(new File(pathToResourcesFolder+"destination/testSubfolder2").exists());
+		assertFalse(new File(pathToResourcesFolder+"destination/testSubfolder3").exists());
+		assertFalse(new File(pathToResourcesFolder+"destination/testSubfolder4").exists());
+		assertFalse(new File(pathToResourcesFolder+"destination/testSubfolder5").exists());
 	}
 	
 	/**
