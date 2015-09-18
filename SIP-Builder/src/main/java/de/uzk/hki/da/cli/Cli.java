@@ -205,7 +205,9 @@ public class Cli {
     			if (name != null)
     				sipFactory.setName(name);
     			continue;
-    		}    			
+    		}   else if(arg.equals("-nested")) {
+    			sipFactory.setKindofSIPBuilding(SIPFactory.KindOfSIPBuilding.NESTED_FOLDERS);
+    		}
     		
     		if (arg.startsWith("-collection")) {
     			sipFactory.setCreateCollection(true);
@@ -229,7 +231,7 @@ public class Cli {
     			continue;
     		}
     		
-    		if (arg.equals("-default") || arg.equals("-multiple") || arg.equals("-neverOverwrite") || arg.equals("-compression"))
+    		if (arg.equals("-default") || arg.equals("-multiple") || arg.equals("-neverOverwrite") || arg.equals("-compression") || arg.equals("-nested"))
     			continue;
     		
     		System.out.println(arg + " ist kein gültiger Parameter. Starten Sie den SipBuilder mit dem Parameter " +
@@ -696,11 +698,13 @@ public class Cli {
 		System.out.println("   -premis=\"[Pfad]\"          Angabe der Contract Rights durch eine Premis-Datei");
 		System.out.println("   -rights=\"[Pfad]\"          Angabe der Contract Rights durch eine vormals per SIP-Builder erstellte Rechte-Datei");
 		System.out.println("");
+		System.out.println("");
 		System.out.println("   -multiple                 Mehrere SIPs aus Unterordnern des Quellordners erstellen (Standard)");
+		System.out.println("   -nested                   Mehrere SIPs aus einer verschachtelten Ordnerstruktur erstellen");
 		System.out.println("   -single                   Einzelnes SIP aus dem Quellordner erstellen");
 		System.out.println("   -single=\"[Name]\"          Einzelnes SIP mit dem angegebenen Namen aus dem Quellordner erstellen");
 		System.out.println("");
-		System.out.println("   -collection=\"[Name]\"      SIPs zu einer Lieferung bündeln");
+//		System.out.println("   -collection=\"[Name]\"      SIPs zu einer Lieferung bündeln");
 		System.out.println("");
 		System.out.println("   -compression              SIPs als komprimierte tgz-Files erstellen (Standard)");
 		System.out.println("   -noCompression            SIPs als unkomprimierte tar-Files erstellen");
