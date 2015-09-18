@@ -68,10 +68,22 @@ public class Object {
 	
 	public static class ObjectStatus {
 		public static final Integer InitState = 0;
+		public static final String  InitStateText = "Im Workflow (Bearbeitung noch nicht gestartet)";
+		
 		public static final Integer UnderAudit = 60;
+		public static final String UnderAuditText = "In Überprüfung";
+		
 		public static final Integer InWorkflow = 50;
+		public static final String InWorkflowText = "Im Workflow (Bearbeitung)";
+		
 		public static final Integer Error = 51;
-		public static final Integer ArchivedAndValidAndNotInWorkflow = 100; 
+		public static final String ErrorText = "AIP im fehlerhaften Zustand";
+		
+		public static final Integer ArchivedAndValidAndNotInWorkflow = 100;
+		public static final String ArchivedAndValidAndNotInWorkflowText = "Objekt archiviert und in keiner Verarbeitung";
+		
+		public static final String NotKnownText = "Objekt unbekannt";
+		
 	}
 	
 

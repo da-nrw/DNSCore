@@ -80,7 +80,7 @@
 		<entry key="PIPGenConvertAction" value="3" />
 		<entry key="PIPGenScanForPresentationAction" value="3" />
 		<entry key="PIPGenObjectToWorkAreaAction" value="3" />
-		<entry key="PIPGenCleanWorkAreaAction" value="3" />
+		<entry key="PIPGenCleanWorkAreaAction" value="3" />	
 	</util:map>
 	<util:list id="actionOrdering">
    		<value>ProcessUserDecisionsAction</value>
