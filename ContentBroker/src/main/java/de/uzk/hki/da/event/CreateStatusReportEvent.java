@@ -21,7 +21,7 @@
  * Creates user defined status report based on given CSV File stored in incoming folder
  * @author jens Peters
  */
-package de.uzk.hki.da.events;
+package de.uzk.hki.da.event;
 
 import java.io.File;
 import java.io.FileNotFoundException;

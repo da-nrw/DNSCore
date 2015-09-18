@@ -20,7 +20,7 @@
 /**
  * The package integrity.
  */
-package de.uzk.hki.da.events;
+package de.uzk.hki.da.event;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -48,27 +48,19 @@ import de.uzk.hki.da.service.HibernateUtil;
  */
 public class SystemEventWorker extends Worker{
 
-	/** The local node id. */
-	private int localNodeId;
-	
+
 	private Node node;
 	
-	public Node getNode() {
+	public Node getLocalNode() {
 		return node;
 	}
 
-	public void setNode(Node node) {
+	public void setLocalNode(Node node) {
 		this.node = node;
 	}
 
 	public void init(){
-		node = new Node(); 
-		node.setId(localNodeId);
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
-		session.refresh(node);
-		session.getTransaction().commit();
-		session.close();
+		
 	}
 	
 	@Override

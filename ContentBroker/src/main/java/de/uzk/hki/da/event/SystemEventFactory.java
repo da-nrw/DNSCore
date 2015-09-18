@@ -1,4 +1,4 @@
-package de.uzk.hki.da.events;
+package de.uzk.hki.da.event;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class SystemEventFactory  {
 	
 	private Node localNode;
 	
-	private String eventsPackage = "de.uzk.hki.da.events.";
+	private String eventsPackage = "de.uzk.hki.da.event.";
 	
 	public void buildStoredEvents() {
 			List<SystemEvent> ses =  getEventsPerNode();

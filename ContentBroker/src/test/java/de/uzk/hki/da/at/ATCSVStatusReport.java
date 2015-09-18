@@ -26,16 +26,26 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
+import org.hibernate.Session;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uzk.hki.da.model.Copy;
+import de.uzk.hki.da.model.Node;
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectNamedQueryDAO;
+import de.uzk.hki.da.model.SystemEvent;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.CSVFileHandler;
+import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.util.Path;
 
 public class ATCSVStatusReport extends AcceptanceTest {
 	static String ORIGINAL_NAME = "ATCSVStatusReport";
@@ -44,6 +54,8 @@ public class ATCSVStatusReport extends AcceptanceTest {
 	public static void setUp() throws IOException {
 		// is needed as virtual object to work on.
 		ath.putAIPToLongTermStorage(ORIGINAL_NAME, ORIGINAL_NAME, new Date(), 100);
+
+		
 	}
 	@Test
 	public void testCSVStatusReport () throws IOException, InterruptedException {
@@ -51,18 +63,43 @@ public class ATCSVStatusReport extends AcceptanceTest {
 		Object object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 		createCSVFileForStatusReporting(ORIGINAL_NAME);
 		assertTrue(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME+".csv").exists());
-		ath.createJob(ORIGINAL_NAME, "1000");
+		createSystemEvent();
 	
 		Thread.sleep(30000l);
 		assertTrue(readCSVFileStatusReporting(ORIGINAL_NAME));
+		
 		
 	}
 	@AfterClass
 	public static void tearDown(){
 		distributedConversionAdapter.remove("aip/TEST/"+ORIGINAL_NAME); // TODO does it work?
-		//FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME+".csv"));
+		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME+".csv"));
 	}
 
+	
+	//---------------------------------------------------------------------------------
+	
+	private void createSystemEvent() {
+		
+		try {
+		SystemEvent se = new SystemEvent();
+		se.setNode(localNode);
+		se.setType("CreateStatusReportEvent");
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		User user = new User();
+		user.setId(1);
+		user.setShort_name("TEST");
+		se.setOwner(user);
+		session.update(user);
+		session.save(se);
+		session.getTransaction().commit();
+		session.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private boolean readCSVFileStatusReporting(String identifier) throws IOException {
 		CSVFileHandler csf = new CSVFileHandler();
 		System.out.println("search CSV Report for " + identifier);
@@ -76,7 +113,7 @@ public class ATCSVStatusReport extends AcceptanceTest {
 	private int createCSVFileForStatusReporting(String identifier) throws IOException {
 		CSVFileHandler csf = new CSVFileHandler();
 		ArrayList<Map> csvEntries = new ArrayList();
-		Map<String, java.lang.Object> csvEntry = new HashMap<String, Object>();
+		Map<String, java.lang.Object> csvEntry = new HashMap<String, java.lang.Object>();
 		csf.setEncoding("CP1252");
 		csvEntry.put("origName", (java.lang.Object) ORIGINAL_NAME);
 		csvEntries.add(csvEntry);

@@ -82,7 +82,7 @@ public class UserDecisionTimeoutWorker extends Worker {
 
 	@Override
 	public void setMDC() {
-		MDC.put(WORKER_ID, "deciciontimeout");
+		MDC.put(WORKER_ID, "decisiontimeout");
 	}
 
 	public Node getLocalNode() {

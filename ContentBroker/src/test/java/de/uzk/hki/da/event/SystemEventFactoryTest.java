@@ -1,4 +1,4 @@
-package de.uzk.hki.da.events;
+package de.uzk.hki.da.event;
 
 import static org.junit.Assert.*;
 
@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uzk.hki.da.event.SystemEventFactory;
 import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.SystemEvent;

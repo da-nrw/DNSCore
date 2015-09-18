@@ -83,13 +83,16 @@
 		<appender-ref ref="WORKER" />
 	</logger>
 	<logger name="de.uzk.hki.da.action" additivity="false" level="INFO">
-		<appender-ref ref="WORKER" />
+		<appender-ref ref="OBJECT" />
 	</logger>
 	<logger name="de.uzk.hki.da.service" additivity="false" level="INFO">
+		<appender-ref ref="OBJECT" />
+	</logger>
+	<logger name="de.uzk.hki.da.event" additivity="false" level="INFO">
 		<appender-ref ref="WORKER" />
 	</logger>
 	<logger name="org.hibernate" level="INFO">
-		<appender-ref ref="WORKER" />
+		<appender-ref ref="OBJECT" />
 	</logger>
 	
 	
