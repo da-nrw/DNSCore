@@ -9,6 +9,3 @@ The [SIP-Builder](https://github.com/da-nrw/DNSCore/SIP-Builder) is a Java tool 
 
 A German manual explaining the steps in GUI mode and all of the possible parameters in CLI mode can be found [here] (https://github.com/da-nrw/DNSCore/raw/master/SIP-Builder/src/manual/SIP-Builder%20Anleitung.pdf).
 
-For more information please refer to
-* the [Java API documentation](https://da-nrw.github.com/DNSCore/SIP-Builder/apidocs)
-* the [Java test documentation](https://da-nrw.github.com/DNSCore/SIP-Builder/testapidocs)
