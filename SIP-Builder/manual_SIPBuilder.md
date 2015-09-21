@@ -17,6 +17,7 @@ Der SIP-Builder ist ein Tool, mit dem sich zur Einlieferung in die DNS vorgesehe
 
 
 2. GUI-Modus
+
 2.1 Ausführen des SIP-Builders im GUI-Modus
 
 Starten Sie den SIP-Builder, indem Sie je nach Betriebssystem eine der folgenden Dateien ausführen:
