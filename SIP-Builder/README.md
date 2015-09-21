@@ -7,7 +7,7 @@ The [SIP-Builder](https://github.com/da-nrw/DNSCore/SIP-Builder) is a Java tool 
 * In GUI mode, the user is led through a number of consecutive steps in order to determine the data and rights settings. This mode is meant primarily for unexperienced users and users who want to process a rather small amount of data. It can also be used to create the contract rights in a comfortable way.
 * In CLI mode, the necessary settings are handed over to the application as command line parameters. This mode is useful for integrating the SIP-Builder into automated processes.
 
-A German manual explaining the steps in GUI mode and all of the possible parameters in CLI mode can be found [here] (https://github.com/da-nrw/DNSCore/SIP-Builder/blob/master/src/manual/SIP-Builder%20Anleitung.pdf?raw=true).
+A German manual explaining the steps in GUI mode and all of the possible parameters in CLI mode can be found [here] (https://github.com/da-nrw/DNSCore/raw/master/SIP-Builder/src/manual/SIP-Builder%20Anleitung.pdf).
 
 For more information please refer to
 * the [Java API documentation](https://da-nrw.github.com/DNSCore/SIP-Builder/apidocs)
