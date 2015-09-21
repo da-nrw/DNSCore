@@ -176,4 +176,13 @@ public class C {
 	public static final String SUBFORMAT_IDENTIFIER_EAD="EAD";
 	public static final String SUBFORMAT_IDENTIFIER_LIDO="LIDO";
 	public static final String SUBFORMAT_IDENTIFIER_METS="METS";
+	
+//	SIPBuilder 
+	public static final String KIND_OF_SIPBUILDING_SINGLE="Einzelnes SIP aus dem Quellverzeichnis erstellen";
+	public static final String KIND_OF_SIPBUILDING_SINGLE_WITH_TARGET_FOLDER_NAME="Einzelnes SIP mit dem angegebenen Namen aus dem Quellordner erstellen";
+	public static final String KIND_OF_SIPBUILDING_MULTIPLE="Mehrere SIPs aus Unterordnern des Quellordners erstellen (Standard)";
+	public static final String KIND_OF_SIPBUILDING_NESTED="Mehrere SIPs verschachtelter Ordnerstruktur erstellen (nur METS)";
+	
 }
+
+
