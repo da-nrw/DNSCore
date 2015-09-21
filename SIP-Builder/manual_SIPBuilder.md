@@ -12,7 +12,7 @@ Anleitung
 Der SIP-Builder ist ein Tool, mit dem sich zur Einlieferung in die DNS vorgesehene Daten in eine geeignete Paketstruktur überführen lassen. Das Programm kann in zwei Modi ausgeführt werden:  
 * Im GUI-Modus werden Sie in einer grafischen Benutzeroberfläche (GUI) durch mehrere aufeinander folgende Schritte geführt, in deren Verlauf Sie die nötigen Einstellungen vornehmen können. Sie können dabei jederzeit über eine Reihe von Schaltflächen am linken Rand zwischen den einzelnen Schritten hin- und herwechseln. Am Ende des Verfahrens erhalten Sie eine bzw. mehrere Archivdateien (wahlweise im tgz- oder tar-Format), die zur Einlieferung in das DNS geeignet sind. Dieser Modus wird für die meisten Anwender empfohlen.
 
-▪	Fortgeschrittene Benutzer können den SIP-Builder alternativ im CLI-Modus auf der Kommandozeile (CLI) aufrufen und die gewünschten Einstellungen als Parameter angeben. Diese Vorgehensweise bietet sich beispielsweise an, um den SIP-Erstellungsvorgang in automatisierte Prozesse einzubinden.
+* Fortgeschrittene Benutzer können den SIP-Builder alternativ im CLI-Modus auf der Kommandozeile (CLI) aufrufen und die gewünschten Einstellungen als Parameter angeben. Diese Vorgehensweise bietet sich beispielsweise an, um den SIP-Erstellungsvorgang in automatisierte Prozesse einzubinden.
 
 
 2. GUI-Modus
