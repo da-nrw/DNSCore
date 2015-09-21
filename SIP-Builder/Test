@@ -1,1 +1,73 @@
+SIP-Builder
+===========
 
+
+
+Redaktionelle Änderung: 10.08.15
+Anleitung
+
+
+1. Überblick
+
+Der SIP-Builder ist ein Tool, mit dem sich zur Einlieferung in die DNS vorgesehene Daten in eine geeignete Paketstruktur überführen lassen. Das Programm kann in zwei Modi ausgeführt werden:  
+* Im GUI-Modus werden Sie in einer grafischen Benutzeroberfläche (GUI) durch mehrere aufeinander folgende Schritte geführt, in deren Verlauf Sie die nötigen Einstellungen vornehmen können. Sie können dabei jederzeit über eine Reihe von Schaltflächen am linken Rand zwischen den einzelnen Schritten hin- und herwechseln. Am Ende des Verfahrens erhalten Sie eine bzw. mehrere Archivdateien (wahlweise im tgz- oder tar-Format), die zur Einlieferung in das DNS geeignet sind. Dieser Modus wird für die meisten Anwender empfohlen.
+
+* Fortgeschrittene Benutzer können den SIP-Builder alternativ im CLI-Modus auf der Kommandozeile (CLI) aufrufen und die gewünschten Einstellungen als Parameter angeben. Diese Vorgehensweise bietet sich beispielsweise an, um den SIP-Erstellungsvorgang in automatisierte Prozesse einzubinden.
+
+2. GUI-Modus
+
+2.1 Ausführen des SIP-Builders im GUI-Modus
+
+Starten Sie den SIP-Builder, indem Sie je nach Betriebssystem eine der folgenden Dateien ausführen:
+▪	SipBuilder-Windows.exe (Windows)
+▪	SipBuilder-Unix.sh (Unix/Mac OS)
+
+2.2 Start
+
+ 
+
+Quellordner
+Geben Sie hier den Pfad zum Verzeichnis an, das die Quelldaten enthält, aus denen das SIP generiert werden soll.
+
+Zielordner
+Im hier angegebenen Verzeichnis wird das fertige SIP am Ende des Generierungsprozesses in Form einer tgz- oder tar-Archivdatei hinterlegt.
+
+Generierungsmodus
+Sie haben die Wahl zwischen zwei verschiedenen Modi der SIP-Generierung:
+▪	Einzelnes SIP aus dem Quellverzeichnis erstellen:
+	Wählen Sie diese Option, wenn Sie die Daten des Quellordners zu einem einzelnen SIP bündeln möchten. Auch eventuell existierende Unterordner werden dem Paket hinzugefügt.
+▪	Mehrere SIPs aus Unterordnern des Quellverzeichnisses erstellen:
+	Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu generieren. Dazu müssen sich die Daten für jedes Paket in einem eigenen Unterordner des Quellverzeichnisses befinden. Im Generierungsprozess werden die Daten jedes einzelnen Verzeichnisses zu jeweils einem eigenen SIP gebündelt.
+
+2.3 Rechteeinstellungen laden
+
+ 
+
+Laden
+Wenn Sie die Rechteeinstellungen bei einem früheren SIP-Generierungsvorgang schon einmal festgelegt und gespeichert haben, können Sie die dabei erstellte Datei mit dieser Option laden. Die geladenen Einstellungen können in den nachfolgenden Schritten überprüft und gegebenenfalls angepasst werden.
+
+Standard
+Wählen Sie diese Option, um die Standard-Rechteeinstellungen zu wählen:
+▪	Generierung von Publikationsdaten für die Öffentlichkeit, keine Restriktionen
+▪	Keine Generierung von zusätzlichen Publikationsdaten für die eigene Institution
+▪	Keine Migrationsbedingungen
+Bei Betätigung des Buttons werden die zuvor gewählten Einstellungen verworfen und durch die Standardwerte ersetzt.
+
+
+
+
+
+
+
+
+
+2.4 Publikation
+
+ 
+
+Die Publikationseinstellungen können in zwei Kategorien festgelegt werden:
+▪	Erstellung von Publikationsderivaten zur Anzeige in öffentlichen Portalen
+▪	Erstellung von Publikationsderivaten, die nur der eigenen Institution über die Schnittstellen des Presentation Repository zugänglich sind
+
+Sie können jeweils wählen, ob die Erstellung der Publikationsdaten grundsätzlich stattfinden soll und ob in diesem Fall zusätzliche Restriktionen in Kraft treten sollen. Diese Restriktionen können für jede der beide Kategorien separat festgelegt werden.
+Daten, die für die Anzeige in öffe
