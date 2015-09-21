@@ -65,11 +65,16 @@ public class Path{
 	public static List<String> stringToPathArray(String currentString) {
 		List<String> currentPathArray = new ArrayList<String>();
 		String s = currentString;
-		String [] newString = s.split(File.separator);
-		for(int i=0; i<newString.length; i++) {
-			if(!newString[i].isEmpty() || !newString[i].equals("")) {
-				currentPathArray.add(newString[i]);
+		if(s.contains(File.separator)) {
+			String [] newString = s.split(File.separator);
+			
+			for(int i=0; i<newString.length; i++) {
+				if(!newString[i].isEmpty() || !newString[i].equals("")) {
+					currentPathArray.add(newString[i]);
+				}
 			}
+		} else {
+			currentPathArray.add(s);
 		}
 		return currentPathArray;
 	}

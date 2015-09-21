@@ -215,10 +215,13 @@ public class SIPFactory {
 		progressManager.startJob(jobId);
 		Feedback feedback;
 		
-		String packageName = getPackageName(sourceFolder);
+		String packageName = "";
 		if(newPackageName!=null) {
 			packageName = newPackageName;
-		} 
+			System.out.println("Rename the package "+packageName);
+		} else {
+			packageName = getPackageName(sourceFolder);
+		}
 		
 		String archiveFileName = packageName;
 		if (compress)

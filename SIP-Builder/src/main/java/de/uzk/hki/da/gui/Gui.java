@@ -62,6 +62,7 @@ import de.uzk.hki.da.metadata.PublicationRights;
 import de.uzk.hki.da.sb.Logger;
 import de.uzk.hki.da.sb.SIPFactory;
 import de.uzk.hki.da.sb.UserInputValidator;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -1240,9 +1241,9 @@ public class Gui extends JFrame{
 
 		kindOfSIPBuildingDropDown = new JComboBox();
 		kindOfSIPBuildingDropDown.setFont(standardFont.deriveFont(11.0f));
-		kindOfSIPBuildingDropDown.addItem("Einzelnes SIP aus dem Quellverzeichnis erstellen");
-		kindOfSIPBuildingDropDown.addItem("Mehrere SIPs aus Unterordnern des Quellverzeichnisses erstellen");
-		kindOfSIPBuildingDropDown.addItem("Mehrere SIPs aus einer verschachtelten Ordnerstruktur erstellen");
+		kindOfSIPBuildingDropDown.addItem(C.KIND_OF_SIPBUILDING_SINGLE);
+		kindOfSIPBuildingDropDown.addItem(C.KIND_OF_SIPBUILDING_MULTIPLE);
+		kindOfSIPBuildingDropDown.addItem(C.KIND_OF_SIPBUILDING_NESTED);
 
 		institutionLawIdDropDown = new JComboBox();
 		institutionLawIdDropDown.setFont(standardFont.deriveFont(11.0f));
