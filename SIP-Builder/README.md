@@ -9,5 +9,6 @@ The [SIP-Builder](https://github.com/da-nrw/DNSCore/tree/master/SIP-Builder) is 
 
 A German manual explaining the steps in GUI mode and all of the possible parameters in CLI mode can be found here
 
-[pdf] (https://github.com/da-nrw/DNSCore/raw/master/SIP-Builder/src/manual/SIP-Builder%20Anleitung.pdf).
-[text](https://github.com/da-nrw/DNSCore/tree/master/SIP-Builder/manual_SIPBuilder.md)
+[pdf] (https://github.com/da-nrw/DNSCore/raw/master/SIP-Builder/src/manual/SIP-Builder%20Anleitung.pdf),
+
+[text](https://github.com/da-nrw/DNSCore/tree/master/SIP-Builder/manual_SIPBuilder.md).
