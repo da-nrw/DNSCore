@@ -51,6 +51,7 @@ public class CSVStatusReport {
 		csvFileHandler.setEncoding("CP1252");
 	}
 
+	@SuppressWarnings("serial")
 	public void generateReportBasedOnFile(File csvFile) {
 		logger.error("generating Report file " + csvFile);
 		try {
@@ -66,6 +67,7 @@ public class CSVStatusReport {
 			};
 		}
 	}
+	@SuppressWarnings("unchecked")
 	private synchronized Job fetchJob(String origName, String identifier ) {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
@@ -86,12 +88,12 @@ public class CSVStatusReport {
 			Job job = joblist.get(0);
 			
 			// To circumvent lazy initialization issues
-			for (ConversionInstruction ci:job.getConversion_instructions()){}
-			for (Job j:job.getChildren()){}
+			for (@SuppressWarnings("unused") ConversionInstruction ci:job.getConversion_instructions()){}
+			for (@SuppressWarnings("unused") Job j:job.getChildren()){}
 			for (Package p:job.getObject().getPackages()){
-				for (DAFile f:p.getFiles()){}
-				for (Event e:p.getEvents()){}
-				for (Copy copy:p.getCopies()) {}
+				for (@SuppressWarnings("unused") DAFile f:p.getFiles()){}
+				for (@SuppressWarnings("unused") Event e:p.getEvents()){}
+				for (@SuppressWarnings("unused") Copy copy:p.getCopies()) {}
 			}
 			
 			session.close();

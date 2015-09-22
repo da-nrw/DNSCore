@@ -29,12 +29,18 @@ public abstract class AbstractSystemEvent implements Runnable {
 			if (!implementation()) logger.debug("StoredEvent returned false");
 			else {
 				if (kILLATEXIT) {
-					Session session = HibernateUtil.openSession();
+					Session session = null;
+					try {
+					session = HibernateUtil.openSession();
 					session.beginTransaction();
 					session.delete(storedEvent);
 					session.getTransaction().commit();
 					session.close();
 					logger.debug("StoredEvent successfully removed");
+					} catch (Exception e) {
+						logger.error("Error while deleting " + storedEvent.getType());
+						if (session!=null) session.close();	
+					}
 				}
 			}
 		} catch (Exception e) {

@@ -153,7 +153,9 @@ grails.plugin.springsecurity.interceptUrlMap = [
 	'/userRole/**':         ['ROLE_PSADMIN'],
 	'/role/**':         ['ROLE_PSADMIN'],
 	'/preservationSystem/**':         ['ROLE_PSADMIN'],
-	'/cbNode/**':         ['ROLE_PSADMIN']
+	'/cbNode/**':         ['ROLE_PSADMIN'],
+	'/report/**':         ['ROLE_CONTRACTOR']
+	
  ]
 
 jqueryDateTimePicker {

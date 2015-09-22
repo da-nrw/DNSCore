@@ -22,27 +22,14 @@
  */
 package de.uzk.hki.da.event;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
-import org.hibernate.Session;
-import org.hibernate.type.IntegerType;
-import org.hibernate.type.LongType;
 import org.slf4j.MDC;
 
 import de.uzk.hki.da.core.Worker;
-import de.uzk.hki.da.grid.GridFacade;
-import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.service.HibernateUtil;
 
 
 /**
  * starts System events
- * copies
  * @author Jens Peters
  *
  */

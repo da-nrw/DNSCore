@@ -24,20 +24,8 @@
 package de.uzk.hki.da.event;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
-import java.io.IOException;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.jdom.JDOMException;
-import org.xml.sax.SAXException;
-
-import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.SubsystemNotAvailableException;
-import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.model.User;
-import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.CSVStatusReport;
 import de.uzk.hki.da.util.Path;
 

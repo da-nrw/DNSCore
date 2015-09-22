@@ -56,19 +56,6 @@ public class CSVFileHandler {
 	// standard: assume windows charset from excel docs.
 	private String encoding = "CP1252";
 
-	private CellProcessor[] getProcessors() {
-
-		final CellProcessor[] processors = new CellProcessor[] {
-				new Optional(), // identifier
-				new NotNull(), // origName
-				new Optional(), // statuscode
-				new Optional(), // erfolg
-				new Optional(), // bemerkung	
-		};
-
-		return processors;
-	}
-
 	public void parseFile(File csvFile) throws IOException {
 		logger.debug("parsing " + csvFile.getAbsolutePath());
 		Map<String, java.lang.Object> csvEntry;
@@ -80,7 +67,7 @@ public class CSVFileHandler {
 					csvFile.getAbsolutePath()), encoding);
 			mapReader = new CsvMapReader(isr, preference);
 			final String[] header = mapReader.getHeader(true);
-			final CellProcessor[] processors = getProcessors();
+			final CellProcessor[] processors = CSVFormat.getProcessors();
 
 			while ((csvEntry = mapReader.read(header, processors)) != null) {
 				logger.debug(String.format(
@@ -100,16 +87,16 @@ public class CSVFileHandler {
 
 	
 
+	@SuppressWarnings("unchecked")
 	public void persistStates(File csvFile) throws IOException {
 		ICsvMapWriter mapWriter = null;
-		final String[] header = new String[] { "identifier", "origName",
-				"statuscode","erfolg","bemerkung" };
+		String[] header = CSVFormat.header; 
 		try {
 
 			mapWriter = new CsvMapWriter(new FileWriter(csvFile, false),
 					preference);
 
-			final CellProcessor[] processors = getProcessors();
+			final CellProcessor[] processors = CSVFormat.getProcessors();
 			mapWriter.writeHeader(header);
 			for (Map<String, Object> csvEntry : csvEntries) {
 				mapWriter.write(csvEntry, header, processors);
@@ -133,10 +120,12 @@ public class CSVFileHandler {
 		this.encoding = encoding;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public ArrayList<Map> getCsvEntries() {
 		return csvEntries;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setCsvEntries(ArrayList<Map> csvEntries) {
 		this.csvEntries = csvEntries;
 	}

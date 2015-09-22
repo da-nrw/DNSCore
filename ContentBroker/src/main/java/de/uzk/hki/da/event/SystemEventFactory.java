@@ -44,7 +44,6 @@ public class SystemEventFactory  {
 	@SuppressWarnings("unchecked")
 	private List<SystemEvent>getEventsPerNode() {
 		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
 		List<SystemEvent> events=null;
 		try{				
 			events = session

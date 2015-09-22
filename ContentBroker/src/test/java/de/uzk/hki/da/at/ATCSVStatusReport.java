@@ -60,12 +60,14 @@ public class ATCSVStatusReport extends AcceptanceTest {
 	@Test
 	public void testCSVStatusReport () throws IOException, InterruptedException {
 		
-		Object object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 		createCSVFileForStatusReporting(ORIGINAL_NAME);
-		assertTrue(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME+".csv").exists());
+		File csv = new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME+".csv");
+		
+		assertTrue(csv.exists());
+		long lm = csv.lastModified();
 		createSystemEvent();
 	
-		Thread.sleep(30000l);
+		assertTrue(waitUntilFileIsUpdated(csv,lm));
 		assertTrue(readCSVFileStatusReporting(ORIGINAL_NAME));
 		
 		
@@ -78,6 +80,21 @@ public class ATCSVStatusReport extends AcceptanceTest {
 
 	
 	//---------------------------------------------------------------------------------
+	
+	private boolean waitUntilFileIsUpdated( File file, long timeStamp ) throws InterruptedException {
+	
+		long timeStampOld;
+		timeStampOld = timeStamp;
+		int i = 0;
+		while (timeStampOld==timeStamp) {
+			Thread.sleep(1000l);
+			timeStamp = file.lastModified();
+			i++;
+			if (i>30) return false;
+		}
+		System.out.println(file + " was changed!");
+		return true;
+	}
 	
 	private void createSystemEvent() {
 		

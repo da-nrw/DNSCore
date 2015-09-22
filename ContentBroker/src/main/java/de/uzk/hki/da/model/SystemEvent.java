@@ -53,6 +53,8 @@ public class SystemEvent {
 	private Node node;
 	
 	private String type;
+	
+	private String parameter;
 	public User getOwner() {
 		return owner;
 	}
@@ -70,6 +72,12 @@ public class SystemEvent {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String getParameter() {
+		return parameter;
+	}
+	public void setParameter(String parameter) {
+		this.parameter = parameter;
 	}
 	
 }
