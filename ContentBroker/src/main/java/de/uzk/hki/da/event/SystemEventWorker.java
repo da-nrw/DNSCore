@@ -29,7 +29,7 @@ import de.uzk.hki.da.model.Node;
 
 
 /**
- * starts System events
+ * The worker class for System events
  * @author Jens Peters
  *
  */

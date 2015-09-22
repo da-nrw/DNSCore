@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.service.CSVStatusReport;
+import de.uzk.hki.da.service.CSVQueryHandler;
 import de.uzk.hki.da.service.HibernateUtil;
 
 public class CSVFileHandlerTest {
@@ -19,7 +19,7 @@ public class CSVFileHandlerTest {
 	}	
 	@Test
 	public void testParseFile() throws IOException, SubsystemNotAvailableException {
-		CSVStatusReport sr = new CSVStatusReport();
+		CSVQueryHandler sr = new CSVQueryHandler("localNode",1);
 		sr.generateReportBasedOnFile(new File(csvFileName));
 		
 	}

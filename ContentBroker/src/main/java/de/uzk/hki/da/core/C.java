@@ -24,6 +24,7 @@ import java.io.File;
 import org.jdom.Namespace;
 
 import de.uzk.hki.da.format.FFConstants;
+import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.util.RelativePath;
 
@@ -163,6 +164,7 @@ public class C {
 	public static final String WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION = "700";
 	public static final String WORKFLOW_STATUS_START___INGEST_UNPACK_ACTION = "110";
 	public static final String WORKFLOW_STATUS_START___FETCH_PIPS_ACTION = "540";
+	public static final String WORKFLOW_STATUS_START___RETRIEVAL_ACTION = "900";
 	public static final String WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION = "645";
 	public static final int PUBLISHEDFLAG_NO_PUBLICATION = 0;
 	public static final int PUBLISHEDFLAG_INSTITUTION = 2;
@@ -171,4 +173,6 @@ public class C {
 
 	
 	public static final String ORE_AGGREGATION = "ore:Aggregation";
+
+
 }

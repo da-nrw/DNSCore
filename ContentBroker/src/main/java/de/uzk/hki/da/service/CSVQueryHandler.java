@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,7 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Copy;
@@ -41,14 +43,49 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 
-public class CSVStatusReport {
+/**
+ * 
+ * @author Jens Peters
+ * Class for handling operations stored in CSV files
+ *
+ */
+public class CSVQueryHandler {
 	
 	CSVFileHandler csvFileHandler = null;
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	public CSVStatusReport() {
+	private String nodeName;
+	
+	private int userId;
+	
+	public CSVQueryHandler(String nodeName, int userId) {
 		csvFileHandler = new CSVFileHandler();
 		csvFileHandler.setEncoding("CP1252");
+		this.nodeName = nodeName;
+		this.userId = userId;
+	}
+	
+	@SuppressWarnings("serial")
+	public void generateRetrievalRequests(File csvFile){
+		try {
+			csvFileHandler.parseFile(csvFile);
+			Object o = null;
+			for (Map<String, java.lang.Object> csvEntry : csvFileHandler.getCsvEntries()) {
+				logger.debug("Evaluating " + csvEntry.get("origName"));
+				String origName = String.valueOf(csvEntry.get("origName"));
+				o = fetchObject(origName);
+				if (o != null) {
+					createRetievalJob(o);
+				}
+			}
+		}catch (IOException e) {
+			logger.error("catched " + e.toString() + " while working with "
+					+ csvFile.getAbsolutePath());
+			throw new RuntimeException(
+					"CSV File operations not possible "
+							+ csvFile.getAbsolutePath(), e) {
+			};
+		}
 	}
 
 	@SuppressWarnings("serial")
@@ -67,6 +104,24 @@ public class CSVStatusReport {
 			};
 		}
 	}
+	
+
+	private void createRetievalJob(Object o){
+		if (fetchJob (o.getOrig_name(),o.getIdentifier())== null) {
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		Job result = new Job();
+		result = new Job (nodeName,C.WORKFLOW_STATUS_START___RETRIEVAL_ACTION);
+		result.setResponsibleNodeName(nodeName);
+		result.setObject(o);
+		result.setDate_created(String.valueOf(new Date().getTime()/1000L));
+		session.save(result);
+		session.getTransaction().commit();
+		session.close();
+		logger.debug("created successfully retieval job!");
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	private synchronized Job fetchJob(String origName, String identifier ) {
 		Session session = HibernateUtil.openSession();
@@ -76,9 +131,9 @@ public class CSVStatusReport {
 		try{				
 			joblist = session
 					.createQuery("SELECT j FROM Job j LEFT JOIN j.obj as o where "
-							+ " o.orig_name=?1 and o.identifier=?2")
-					.setParameter("1", origName).setParameter("2", identifier).setCacheable(false).setMaxResults(1).list();
-
+							+ " o.orig_name=?1 and o.identifier=?2 and o.user.id = ?3 ")
+					.setParameter("1", origName).setParameter("2", identifier).setParameter("3", userId).setCacheable(false).setMaxResults(1).list();
+			
 			if ((joblist == null) || (joblist.isEmpty())){
 				logger.trace("no job found for " + origName + " identifier: " + identifier);
 				session.close();
@@ -86,15 +141,6 @@ public class CSVStatusReport {
 			}
 			
 			Job job = joblist.get(0);
-			
-			// To circumvent lazy initialization issues
-			for (@SuppressWarnings("unused") ConversionInstruction ci:job.getConversion_instructions()){}
-			for (@SuppressWarnings("unused") Job j:job.getChildren()){}
-			for (Package p:job.getObject().getPackages()){
-				for (@SuppressWarnings("unused") DAFile f:p.getFiles()){}
-				for (@SuppressWarnings("unused") Event e:p.getEvents()){}
-				for (@SuppressWarnings("unused") Copy copy:p.getCopies()) {}
-			}
 			
 			session.close();
 			
@@ -119,8 +165,8 @@ private synchronized Object fetchObject(String origName) {
 
 		@SuppressWarnings("rawtypes")
 		List l = null;
-		l = session.createQuery("from Object o where o.orig_name = ?1 ")
-				.setParameter("1", origName).setReadOnly(true).list();
+		l = session.createQuery("from Object o where o.orig_name = ?1 and o.user.id = ?2 ")
+				.setParameter("1", origName).setParameter("2", userId).setReadOnly(true).list();
 	
 		if ((l == null) || (l.isEmpty())){
 			logger.debug("no object found for " + origName );

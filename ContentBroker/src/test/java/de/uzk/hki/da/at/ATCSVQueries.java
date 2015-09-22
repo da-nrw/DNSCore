@@ -26,7 +26,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,26 +36,26 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.uzk.hki.da.model.Copy;
-import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.ObjectNamedQueryDAO;
 import de.uzk.hki.da.model.SystemEvent;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.CSVFileHandler;
 import de.uzk.hki.da.service.HibernateUtil;
-import de.uzk.hki.da.util.Path;
 
-public class ATCSVStatusReport extends AcceptanceTest {
-	static String ORIGINAL_NAME = "ATCSVStatusReport";
+
+/**
+ * 
+ * @author Jens Peters
+ * Acceptance Tests for CSV Queries 
+ *
+ */
+public class ATCSVQueries extends AcceptanceTest {
+	static String ORIGINAL_NAME = "ATCSVQueries";
     
 	@BeforeClass
 	public static void setUp() throws IOException {
-		// is needed as virtual object to work on.
 		ath.putAIPToLongTermStorage(ORIGINAL_NAME, ORIGINAL_NAME, new Date(), 100);
-
-		
 	}
+	
 	@Test
 	public void testCSVStatusReport () throws IOException, InterruptedException {
 		
@@ -65,13 +64,23 @@ public class ATCSVStatusReport extends AcceptanceTest {
 		
 		assertTrue(csv.exists());
 		long lm = csv.lastModified();
-		createSystemEvent();
+		createSystemEvent("CreateStatusReportEvent");
 	
 		assertTrue(waitUntilFileIsUpdated(csv,lm));
-		assertTrue(readCSVFileStatusReporting(ORIGINAL_NAME));
-		
-		
+		assertTrue(readCSVFileStatusReporting(ORIGINAL_NAME));	
 	}
+	
+	@Test
+	public void testCSVRetrievalRequests () throws IOException, InterruptedException {
+		
+		createCSVFileForStatusReporting(ORIGINAL_NAME);
+		File csv = new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME+".csv");
+		assertTrue(csv.exists());
+		createSystemEvent("CreateRetrievalRequestsEvent");
+		ath.waitForJobToBeInStatus(ORIGINAL_NAME, "952");
+	}
+	
+	
 	@AfterClass
 	public static void tearDown(){
 		distributedConversionAdapter.remove("aip/TEST/"+ORIGINAL_NAME); // TODO does it work?
@@ -96,19 +105,18 @@ public class ATCSVStatusReport extends AcceptanceTest {
 		return true;
 	}
 	
-	private void createSystemEvent() {
+	private void createSystemEvent(String eventName) {
 		
 		try {
 		SystemEvent se = new SystemEvent();
 		se.setNode(localNode);
-		se.setType("CreateStatusReportEvent");
-		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
+		se.setType(eventName);
 		User user = new User();
 		user.setId(1);
 		user.setShort_name("TEST");
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
 		se.setOwner(user);
-		session.update(user);
 		session.save(se);
 		session.getTransaction().commit();
 		session.close();

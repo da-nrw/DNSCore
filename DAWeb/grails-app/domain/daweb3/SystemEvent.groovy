@@ -6,6 +6,7 @@ class SystemEvent {
 	String type;
 	User user;
 	CbNode node;
+	String parameter
 	
     static constraints = {
     }

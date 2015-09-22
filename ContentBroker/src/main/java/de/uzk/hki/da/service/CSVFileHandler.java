@@ -42,7 +42,12 @@ import org.supercsv.io.ICsvMapReader;
 import org.supercsv.io.ICsvMapWriter;
 import org.supercsv.prefs.CsvPreference;
 
-
+/**
+ * 
+ * @author Jens Peters
+ * Provides Low level file operations on CSV Files
+ *
+ */
 
 public class CSVFileHandler {
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass()

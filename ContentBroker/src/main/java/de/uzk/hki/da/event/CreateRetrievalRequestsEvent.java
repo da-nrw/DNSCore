@@ -30,12 +30,12 @@ import de.uzk.hki.da.service.CSVQueryHandler;
 import de.uzk.hki.da.util.Path;
 
 /**
- * 
+ * Creates Retrieval requests based on SystemEvent
  * @author Jens Peters
- * Creates status reports based on CSV files found in incoming folder
+ * 
  *
  */
-public class CreateStatusReportEvent extends AbstractSystemEvent {
+public class CreateRetrievalRequestsEvent extends AbstractSystemEvent {
 
 	private Path pathToReportInUserArea() {
 		return Path.make(
@@ -62,7 +62,7 @@ public class CreateStatusReportEvent extends AbstractSystemEvent {
 				continue;
 			CSVQueryHandler sr = new CSVQueryHandler(node.getName(),owner.getId());
 			logger.debug("working on " + Path.makeFile(pathToReportInUserArea(),files[i].getName()));
-			sr.generateReportBasedOnFile(Path.makeFile(pathToReportInUserArea(),files[i].getName()));
+			sr.generateRetrievalRequests(Path.makeFile(pathToReportInUserArea(),files[i].getName()));
 		}
 	
 		return true;
