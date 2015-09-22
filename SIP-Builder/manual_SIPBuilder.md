@@ -1,10 +1,8 @@
-SIP-Builder
-===========
+Anleitung SIP-Builder
+=====================
 
 
-Version 0.7
-
-Anleitung
+__Version 0.7__
 
 
 ## Überblick
@@ -26,31 +24,31 @@ Starten Sie den SIP-Builder, indem Sie je nach Betriebssystem eine der folgenden
 
  
 
-__Quellordner__
+__Quellordner__  
 Geben Sie hier den Pfad zum Verzeichnis an, das die Quelldaten enthält, aus denen das SIP generiert werden soll.
 
-__Zielordner__
+__Zielordner__  
 Im hier angegebenen Verzeichnis wird das fertige SIP am Ende des Generierungsprozesses in Form einer tgz- oder tar-Archivdatei hinterlegt.
 
-Generierungsmodus
+__Generierungsmodus__  
 Sie haben die Wahl zwischen zwei verschiedenen Modi der SIP-Generierung:
-▪	Einzelnes SIP aus dem Quellverzeichnis erstellen:
-	Wählen Sie diese Option, wenn Sie die Daten des Quellordners zu einem einzelnen SIP bündeln möchten. Auch eventuell existierende Unterordner werden dem Paket hinzugefügt.
-▪	Mehrere SIPs aus Unterordnern des Quellverzeichnisses erstellen:
-	Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu generieren. Dazu müssen sich die Daten für jedes Paket in einem eigenen Unterordner des Quellverzeichnisses befinden. Im Generierungsprozess werden die Daten jedes einzelnen Verzeichnisses zu jeweils einem eigenen SIP gebündelt.
+* _Einzelnes SIP aus dem Quellverzeichnis erstellen:_  
+Wählen Sie diese Option, wenn Sie die Daten des Quellordners zu einem einzelnen SIP bündeln möchten. Auch eventuell existierende Unterordner werden dem Paket hinzugefügt.
+* _Mehrere SIPs aus Unterordnern des Quellverzeichnisses erstellen:_  
+Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu generieren. Dazu müssen sich die Daten für jedes Paket in einem eigenen Unterordner des Quellverzeichnisses befinden. Im Generierungsprozess werden die Daten jedes einzelnen Verzeichnisses zu jeweils einem eigenen SIP gebündelt.
 
-2.3 Rechteeinstellungen laden
+### Rechteeinstellungen laden
 
  
 
-Laden
+__Laden__  
 Wenn Sie die Rechteeinstellungen bei einem früheren SIP-Generierungsvorgang schon einmal festgelegt und gespeichert haben, können Sie die dabei erstellte Datei mit dieser Option laden. Die geladenen Einstellungen können in den nachfolgenden Schritten überprüft und gegebenenfalls angepasst werden.
 
-Standard
+__Standard__  
 Wählen Sie diese Option, um die Standard-Rechteeinstellungen zu wählen:
-▪	Generierung von Publikationsdaten für die Öffentlichkeit, keine Restriktionen
-▪	Keine Generierung von zusätzlichen Publikationsdaten für die eigene Institution
-▪	Keine Migrationsbedingungen
+* Generierung von Publikationsdaten für die Öffentlichkeit, keine Restriktionen
+* Keine Generierung von zusätzlichen Publikationsdaten für die eigene Institution
+* Keine Migrationsbedingungen
 Bei Betätigung des Buttons werden die zuvor gewählten Einstellungen verworfen und durch die Standardwerte ersetzt.
 
 
@@ -61,15 +59,15 @@ Bei Betätigung des Buttons werden die zuvor gewählten Einstellungen verworfen 
 
 
 
-2.4 Publikation
+### Publikation
 
  
 
 Die Publikationseinstellungen können in zwei Kategorien festgelegt werden:
-▪	Erstellung von Publikationsderivaten zur Anzeige in öffentlichen Portalen
-▪	Erstellung von Publikationsderivaten, die nur der eigenen Institution über die Schnittstellen des Presentation Repository zugänglich sind
+* Erstellung von Publikationsderivaten zur Anzeige in öffentlichen Portalen
+* Erstellung von Publikationsderivaten, die nur der eigenen Institution über die Schnittstellen des Presentation Repository zugänglich sind
 
-Sie können jeweils wählen, ob die Erstellung der Publikationsdaten grundsätzlich stattfinden soll und ob in diesem Fall zusätzliche Restriktionen in Kraft treten sollen. Diese Restriktionen können für jede der beide Kategorien separat festgelegt werden.
+Sie können jeweils wählen, ob die Erstellung der Publikationsdaten grundsätzlich stattfinden soll und ob in diesem Fall zusätzliche Restriktionen in Kraft treten sollen. Diese Restriktionen können für jede der beiden Kategorien separat festgelegt werden.
 Daten, die für die Anzeige in öffentlichen Portalen erstellt wurden, werden automatisch auch der Deutschen Digitalen Bibliothek zur Verfügung gestellt. Möchten Sie diesen Vorgang vermeiden, können Sie die Checkbox „DDB-Harvesting erlauben“ deaktivieren. In diesem Fall werden der Deutschen Digitalen Bibliothek keine Daten zugänglich gemacht.
 
 
@@ -90,20 +88,20 @@ Daten, die für die Anzeige in öffentlichen Portalen erstellt wurden, werden au
 
 
 
-2.4.1 Startzeitpunkt der Publikation
+#### Startzeitpunkt der Publikation
 
  
 
-Publikation zeitlich begrenzen
+__Publikation zeitlich begrenzen__  
 Wählen Sie diese Option, um ein Datum zu bestimmen, ab dem die Publikation stattfinden soll. Vor diesem Datum findet keine Publikation statt. Das Datum muss dazu in der Form [Tag].[Monat]. [Jahr] angegeben werden.
 
 Beispiel: 14.07.2020
 
-Publikation mit Sperrgesetz begrenzen
+__Publikation mit Sperrgesetz begrenzen__  
 Alternativ zum Startdatum können Sie den Beginn der Publikation auch durch die Wahl eines regulierenden Gesetzes festlegen. Wählen Sie den Namen des gewünschten Gesetzes dazu aus der Drop-Down-Box aus.
 Zur Wahl stehen derzeit:
-▪	ePflicht
-▪	UrhG DE
+* ePflicht
+* UrhG DE
 
 
 
@@ -124,60 +122,62 @@ Zur Wahl stehen derzeit:
 
 
 
-2.4.2 Vorschaurestriktionen
+#### Vorschaurestriktionen
 
  
 
 In diesem Schritt lassen sich Restriktionen wählen, die in den Rechteeinstellungen hinterlegt und während der Erstellung der Publikationsdaten angewendet werden.
 
-Text: Einsehbare Seiten festlegen
+__Text: Einsehbare Seiten festlegen__  
 Wenn Sie möchten, dass nur bestimmte Seiten eines PDF-Dokuments für den Benutzer einsehbar sind, können Sie die entsprechenden Seitenzahlen bei Aktivierung dieser Option in einem Textfeld angeben.
 Reihen Sie die gewünschten Seitenzahlen dazu durch Kommas voneinander getrennt aneinander. Um mehrere aufeinander folgende Seiten festzulegen, genügt es, die erste und letzte Seitenzahl mit einem dazwischen liegenden Bindestrich anzugeben.
 
-Beispiele:
-▪	Eingabe: 5, 10, 27
-	Angezeigt werden die Seiten 5, 10 und 27.
-▪	Eingabe: 1-5
-	Angezeigt werden die Seiten 1, 2, 3, 4 und 5.
-▪	Eingabe: 1, 14-17, 24, 30
-	Angezeigt werden die Seiten 1, 14, 15, 16, 17, 24 und 30.
+_Beispiele:_ 
+* Eingabe: 5, 10, 27  
+Angezeigt werden die Seiten 5, 10 und 27.
+* Eingabe: 1-5  
+Angezeigt werden die Seiten 1, 2, 3, 4 und 5.
+* Eingabe: 1, 14-17, 24, 30  
+Angezeigt werden die Seiten 1, 14, 15, 16, 17, 24 und 30.
 
-Bild: Bildqualität begrenzen
+__Bild: Bildqualität begrenzen__  
 Bei Aktivierung dieser Option haben Sie die Möglichkeit, die Anzeigequalität von Bilddateien zu begrenzen, indem Sie die gewünschte Auflösung der Bilder angeben. Sie können dabei zwischen zwei Möglichkeiten wählen:
-▪	Bestimmung der maximalen Auflösung durch absolute Werte in drei Ab-stufungen (niedrig, mittel, hoch)
-▪	Bestimmung der Auflösung relativ zur Auflösung im Original (angegeben in Prozentwerten)
+* Bestimmung der maximalen Auflösung durch absolute Werte in drei Ab-stufungen (niedrig, mittel, hoch)
+* Bestimmung der Auflösung relativ zur Auflösung im Original (angegeben in Prozentwerten)
 
 
 
 
-Bild: Fußzeile oder Wasserzeichen angeben
-Verwenden Sie diese Option, um Ihren Bildern einen beliebigen Text hinzu-zufügen, der beispielsweise Copyright-Informationen beinhalten kann. Geben Sie den Text dazu in das Textfeld ein und legen Sie die gewünschten Einstellungen fest:
-▪	Texttyp:
-⬩	Fußzeile: Der Text wird im unteren Bereich des Bildes als weiße Schrift auf einem schwarzen Balken eingefügt. Ein kleiner Teil des Bildes wird dabei von der Fußzeile verdeckt.
-⬩	Wasserzeichen (oben): Der Text wird im oberen Bereich des Bildes eingefügt.
-⬩	Wasserzeichen (mittig): Der Text wird im mittleren Bereich des Bildes eingefügt.
-⬩	Wasserzeichen (unten): Der Text wird im unteren Bereich des Bildes eingefügt.
-▪	Sichtbarkeit (nur bei Wasserzeichen): Wasserzeichen können auf Wunsch transparent angezeigt werden. Zur Auswahl stehen Werte zwischen 5% (kaum sichtbar) und 100% (vollständig sichtbar).
-▪	Schriftgröße (nur bei Wasserzeichen): Wählen Sie die gewünschte Schriftgröße, in der der Text angezeigt wird. Bitte beachten Sie, dass um-fangreiche Texte in höheren Schriftgrößen auf kleineren Bildern möglicherweise nicht mehr vollständig angezeigt werden können.
-Bitte beachten Sie, dass die Länge der Texte beschränkt ist: Fußzeilen dürfen höchstens 65 Zeichen lang sein, bei Wasserzeichen beträgt die maximale Länge 20 Zeichen.
+__Bild: Fußzeile oder Wasserzeichen angeben__  
+Verwenden Sie diese Option, um Ihren Bildern einen beliebigen Text hinzuzufügen, der beispielsweise Copyright-Informationen beinhalten kann. Geben Sie den Text dazu in das Textfeld ein und legen Sie die gewünschten Einstellungen fest:  
+**_Texttyp_**  
+* Fußzeile: Der Text wird im unteren Bereich des Bildes als weiße Schrift auf einem schwarzen Balken eingefügt. Ein kleiner Teil des Bildes wird dabei von der Fußzeile verdeckt.
+* Wasserzeichen (oben): Der Text wird im oberen Bereich des Bildes eingefügt.
+* Wasserzeichen (mittig): Der Text wird im mittleren Bereich des Bildes eingefügt. 
+* Wasserzeichen (unten): Der Text wird im unteren Bereich des Bildes eingefügt.  
+**_Sichtbarkeit (nur bei Wasserzeichen)_**  
+Wasserzeichen können auf Wunsch transparent angezeigt werden. Zur Auswahl stehen Werte zwischen 5% (kaum sichtbar) und 100% (vollständig sichtbar).
+**_Schriftgröße (nur bei Wasserzeichen)_**  
+Wählen Sie die gewünschte Schriftgröße, in der der Text angezeigt wird. Bitte beachten Sie, dass um-fangreiche Texte in höheren Schriftgrößen auf kleineren Bildern möglicherweise nicht mehr vollständig angezeigt werden können.
+Bitte beachten Sie, dass die Länge der Texte beschränkt ist: Fußzeilen dürfen höchstens 65 Zeichen lang sein, bei Wasserzeichen beträgt die maximale Länge 20 Zeichen.  
 
-Audio: Länge von Audio-Dateien begrenzen
-Um dem Benutzer lediglich den Beginn einer Audio-Datei zugänglich zu ma-chen, können Sie die maximale Abspieldauer von Audio-Dateien begrenzen; es werden dann etwa nur die ersten fünfzehn Sekunden abgespielt. Die genaue Sekundenanzahl können Sie hier festlegen.
+__Audio: Länge von Audio-Dateien begrenzen__   
+Um dem Benutzer lediglich den Beginn einer Audio-Datei zugänglich zu machen, können Sie die maximale Abspieldauer von Audio-Dateien begrenzen; es werden dann etwa nur die ersten fünfzehn Sekunden abgespielt. Die genaue Sekundenanzahl können Sie hier festlegen.  
 
-Video: Bildqualität von Videos begrenzen
-Bei Aktivierung dieser Option haben Sie die Möglichkeit, die Anzeigequalität von Videodateien zu begrenzen. Die Höhe der Auflösung kann dabei aus drei möglichen Einstellungen (niedrig, mittel, hoch) gewählt werden.
+__Video: Bildqualität von Videos begrenzen__  
+Bei Aktivierung dieser Option haben Sie die Möglichkeit, die Anzeigequalität von Videodateien zu begrenzen. Die Höhe der Auflösung kann dabei aus drei möglichen Einstellungen (niedrig, mittel, hoch) gewählt werden.  
 
-Video: Länge von Videos begrenzen
+__Video: Länge von Videos begrenzen__
 Neben Audio-Dateien lassen sich auch Videos in ihrer Länge begrenzen. Legen Sie hier fest, wieviele Sekunden eines Videos abgespielt werden können.
-2.5 Konversions- und Migrationseinstellungen
+### Konversions- und Migrationseinstellungen
 
  
 
 Bei der Einlieferung Ihrer Daten findet im Regelfall eine Erstkonversion in Dateiformate statt, die für die Langzeitarchivierung geeignet sind. Darüber hinaus können spätere Konversionen folgen, um die dauerhafte Lesbarkeit der Daten zu gewährleisten (Migration). Sie können die Durchführung der Migration dabei auf Wunsch an eine Bedingung knüpfen.
 Mögliche Einstellungen sind:
-▪	Keine Migrationsbedingung: Migrationen werden automatisch ohne Ihre Beteiligung durchgeführt (Standardeinstellung).
-▪	Über Migration informieren: Im Falle einer Migration erhalten Sie eine Benachrichtung per Mail.
-▪	Zustimmung für Migration einholen: Sie werden vor einer anstehenden Migration benachrichtigt und haben die Möglichkeit, der Migration zu widersprechen. Dies gilt für die Erstmigration und alle folgenden Migrationen. Nach einer Zeitfrist verfällt die Rückfrage, in diesem Fall wird Ihr Objekt nicht migriert. 
+* Keine Migrationsbedingung: Migrationen werden automatisch ohne Ihre Beteiligung durchgeführt (Standardeinstellung).
+* Über Migration informieren: Im Falle einer Migration erhalten Sie eine Benachrichtung per Mail.
+* Zustimmung für Migration einholen: Sie werden vor einer anstehenden Migration benachrichtigt und haben die Möglichkeit, der Migration zu widersprechen. Dies gilt für die Erstmigration und alle folgenden Migrationen. Nach einer Zeitfrist verfällt die Rückfrage, in diesem Fall wird Ihr Objekt nicht migriert. 
 
 
 
@@ -199,7 +199,7 @@ Mögliche Einstellungen sind:
 
 
 
-2.6 Einstellungen speichern
+###  Einstellungen speichern
 
  
 
@@ -208,23 +208,23 @@ In diesem Schritt werden die zuvor getroffenen Rechteeinstellungen über-sichtli
 Wenn Sie die Einstellungen bei einer späteren Verwendung des SIP-Builders noch einmal anwenden möchten, können Sie diese darüber hinaus sichern, indem Sie den Button „Speichern“ betätigen. Die dabei erstellte Datei können Sie später jederzeit im Schritt „Rechteeinstellungen laden“ wieder einlesen, sodass Sie die Einstellungen nicht erneut vornehmen müssen.
 
 
-2.7 SIP-Generierungsprozess starten
+### SIP-Generierungsprozess starten
 
  
 
 Starten Sie den Prozess, indem Sie den Button „Erstellen“ betätigen. Je nach Menge der zu verarbeitenden Daten und der Leistungsfähigkeit Ihres Systems kann der Vorgang zwischen wenigen Sekunden und mehreren Stunden in Anspruch nehmen. Um den Prozess zu beschleunigen, können Sie die Option “SIP-Datei komprimieren” deaktivieren. In diesem Fall wird statt einer kompri-mierten tgz-Datei eine entsprechend größere, unkomprimierte tar-Datei erstellt.
-3. CLI-Modus
-3.1 Ausführen des SIP-Builders im CLI-Modus
+## CLI-Modus
+### Ausführen des SIP-Builders im CLI-Modus
 
 Um den SIP-Builder im CLI-Modus zu starten, sind folgende Schritte notwendig:
-▪	Rufen Sie die Kommandozeile auf und wechseln Sie in das Verzeichnis, in dem sich der SIP-Builder befindet.
-▪	Starten Sie den SIP-Builder mit dem Kommando „java -jar SipBuilder.jar“; unter Unix können Sie alternativ auch das Kommando „./SipBuilder.sh“ verwenden.
-▪	Geben Sie beim Aufruf zusätzlich eine Reihe von Parametern an, um den CLI-Modus zu aktivieren.
-▪	Obligatorisch ist die Angabe von jeweils einem Parameter der Kategorien „Quelle“ und „Ziel“ (siehe unten). Darüber hinaus können Sie optional weitere Parameter angeben, um die gewünschten Einstellungen der SIP-Erstellung festzulegen.
+* Rufen Sie die Kommandozeile auf und wechseln Sie in das Verzeichnis, in dem sich der SIP-Builder befindet.
+* Starten Sie den SIP-Builder mit dem Kommando „java -jar SipBuilder.jar“; unter Unix können Sie alternativ auch das Kommando „./SipBuilder.sh“ verwenden.
+* Geben Sie beim Aufruf zusätzlich eine Reihe von Parametern an, um den CLI-Modus zu aktivieren.
+* Obligatorisch ist die Angabe von jeweils einem Parameter der Kategorien „Quelle“ und „Ziel“ (siehe unten). Darüber hinaus können Sie optional weitere Parameter angeben, um die gewünschten Einstellungen der SIP-Erstellung festzulegen.
 
 
-3.2 Übersicht der Parameter
-3.2.1 Quelle
+### Übersicht der Parameter
+#### Quelle
 
 -source="[Pfad]"
 Geben Sie den Pfad zum Verzeichnis an, in dem sich die Quelldaten befinden. Aus diesem Quellordner werden anschließend die SIPs erstellt.
