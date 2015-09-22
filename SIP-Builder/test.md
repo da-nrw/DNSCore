@@ -18,7 +18,10 @@ A German manual explaining the steps in GUI mode and all of the possible paramet
 [text](https://github.com/da-nrw/DNSCore/tree/master/SIP-Builder/manual_SIPBuilder.md).
 
 1. Eins  
-  1.1 eins eins  
+1.1 eins eins  
+1.2 eins zwei  
+3. drei  
+3.1 drei eins  
 2. zwei  
   2.1 zwei eins  
 5. drei  
