@@ -218,7 +218,6 @@ public class SIPFactory {
 		String packageName = "";
 		if(newPackageName!=null) {
 			packageName = newPackageName;
-			System.out.println("Rename the package "+packageName);
 		} else {
 			packageName = getPackageName(sourceFolder);
 		}

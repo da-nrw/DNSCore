@@ -71,6 +71,7 @@ import de.uzk.hki.da.utils.Utilities;
  * 
  * @author Thomas Kleinke
  * @author Martin Fischer
+ * @author Polina Gubaidullina
  */
 public class Gui extends JFrame{
 

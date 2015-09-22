@@ -40,6 +40,7 @@ import de.uzk.hki.da.sb.SIPFactory.KindOfSIPBuilding;
  * Contains several utility methods and the SIP-Builder version
  * 
  * @author Thomas Kleinke
+ * @author Polina Gubaidullina
  */
 public class Utilities {
 	

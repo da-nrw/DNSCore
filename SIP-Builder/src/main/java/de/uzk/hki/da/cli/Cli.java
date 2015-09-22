@@ -47,6 +47,7 @@ import de.uzk.hki.da.sb.MessageWriter;
 import de.uzk.hki.da.sb.SIPFactory;
 import de.uzk.hki.da.sb.SIPFactory.Feedback;
 import de.uzk.hki.da.sb.UserInputValidator;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -54,6 +55,7 @@ import de.uzk.hki.da.utils.Utilities;
  * Runs the SIP-Builder in CLI mode
  * 
  * @author Thomas Kleinke
+ * @author Polina Gubaidullina
  */
 public class Cli {
 	
@@ -698,11 +700,10 @@ public class Cli {
 		System.out.println("   -premis=\"[Pfad]\"          Angabe der Contract Rights durch eine Premis-Datei");
 		System.out.println("   -rights=\"[Pfad]\"          Angabe der Contract Rights durch eine vormals per SIP-Builder erstellte Rechte-Datei");
 		System.out.println("");
-		System.out.println("");
-		System.out.println("   -multiple                 Mehrere SIPs aus Unterordnern des Quellordners erstellen (Standard)");
-		System.out.println("   -nested                   Mehrere SIPs aus einer verschachtelten Ordnerstruktur erstellen");
-		System.out.println("   -single                   Einzelnes SIP aus dem Quellordner erstellen");
-		System.out.println("   -single=\"[Name]\"          Einzelnes SIP mit dem angegebenen Namen aus dem Quellordner erstellen");
+		System.out.println("   -multiple                 "+C.KIND_OF_SIPBUILDING_MULTIPLE);
+		System.out.println("   -nested                   "+C.KIND_OF_SIPBUILDING_NESTED);
+		System.out.println("   -single                   "+C.KIND_OF_SIPBUILDING_SINGLE);
+		System.out.println("   -single=\"[Name]\"        "+C.KIND_OF_SIPBUILDING_SINGLE_WITH_TARGET_FOLDER_NAME);
 		System.out.println("");
 //		System.out.println("   -collection=\"[Name]\"      SIPs zu einer Lieferung bündeln");
 		System.out.println("");

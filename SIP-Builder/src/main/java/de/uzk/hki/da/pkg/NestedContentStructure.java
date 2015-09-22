@@ -62,7 +62,7 @@ public class NestedContentStructure {
 				if(metsFiles.size()==1) {
 					File metsFile = metsFiles.get(0);
 					String urn = getUrn(metsFile);
-					String newPackageName = urn.replace(":", "_");
+					String newPackageName = urn.replace(":", "+");
 					sipCandidatesWithUrns.put(f, newPackageName);
 				}
 			} else {
