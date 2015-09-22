@@ -154,9 +154,11 @@ Verwenden Sie diese Option, um Ihren Bildern einen beliebigen Text hinzuzufügen
 * Fußzeile: Der Text wird im unteren Bereich des Bildes als weiße Schrift auf einem schwarzen Balken eingefügt. Ein kleiner Teil des Bildes wird dabei von der Fußzeile verdeckt.
 * Wasserzeichen (oben): Der Text wird im oberen Bereich des Bildes eingefügt.
 * Wasserzeichen (mittig): Der Text wird im mittleren Bereich des Bildes eingefügt. 
-* Wasserzeichen (unten): Der Text wird im unteren Bereich des Bildes eingefügt.  
+* Wasserzeichen (unten): Der Text wird im unteren Bereich des Bildes eingefügt.   
+
 **_Sichtbarkeit (nur bei Wasserzeichen)_**  
-Wasserzeichen können auf Wunsch transparent angezeigt werden. Zur Auswahl stehen Werte zwischen 5% (kaum sichtbar) und 100% (vollständig sichtbar).
+Wasserzeichen können auf Wunsch transparent angezeigt werden. Zur Auswahl stehen Werte zwischen 5% (kaum sichtbar) und 100% (vollständig sichtbar).  
+
 **_Schriftgröße (nur bei Wasserzeichen)_**  
 Wählen Sie die gewünschte Schriftgröße, in der der Text angezeigt wird. Bitte beachten Sie, dass um-fangreiche Texte in höheren Schriftgrößen auf kleineren Bildern möglicherweise nicht mehr vollständig angezeigt werden können.
 Bitte beachten Sie, dass die Länge der Texte beschränkt ist: Fußzeilen dürfen höchstens 65 Zeichen lang sein, bei Wasserzeichen beträgt die maximale Länge 20 Zeichen.  
@@ -175,9 +177,9 @@ Neben Audio-Dateien lassen sich auch Videos in ihrer Länge begrenzen. Legen Sie
 
 Bei der Einlieferung Ihrer Daten findet im Regelfall eine Erstkonversion in Dateiformate statt, die für die Langzeitarchivierung geeignet sind. Darüber hinaus können spätere Konversionen folgen, um die dauerhafte Lesbarkeit der Daten zu gewährleisten (Migration). Sie können die Durchführung der Migration dabei auf Wunsch an eine Bedingung knüpfen.
 Mögliche Einstellungen sind:
-* Keine Migrationsbedingung: Migrationen werden automatisch ohne Ihre Beteiligung durchgeführt (Standardeinstellung).
-* Über Migration informieren: Im Falle einer Migration erhalten Sie eine Benachrichtung per Mail.
-* Zustimmung für Migration einholen: Sie werden vor einer anstehenden Migration benachrichtigt und haben die Möglichkeit, der Migration zu widersprechen. Dies gilt für die Erstmigration und alle folgenden Migrationen. Nach einer Zeitfrist verfällt die Rückfrage, in diesem Fall wird Ihr Objekt nicht migriert. 
+* _Keine Migrationsbedingung:_ Migrationen werden automatisch ohne Ihre Beteiligung durchgeführt (Standardeinstellung).
+* _Über Migration informieren:_ Im Falle einer Migration erhalten Sie eine Benachrichtung per Mail.
+* _Zustimmung für Migration einholen:_ Sie werden vor einer anstehenden Migration benachrichtigt und haben die Möglichkeit, der Migration zu widersprechen. Dies gilt für die Erstmigration und alle folgenden Migrationen. Nach einer Zeitfrist verfällt die Rückfrage, in diesem Fall wird Ihr Objekt nicht migriert. 
 
 
 
@@ -226,35 +228,36 @@ Um den SIP-Builder im CLI-Modus zu starten, sind folgende Schritte notwendig:
 ### Übersicht der Parameter
 #### Quelle
 
--source="[Pfad]"
+__-source="[Pfad]"__  
 Geben Sie den Pfad zum Verzeichnis an, in dem sich die Quelldaten befinden. Aus diesem Quellordner werden anschließend die SIPs erstellt.
 
-Beispiele:
+Beispiele:  
 -source="C:\Eigene Dateien\SIP-Source"
 -source="/home/user/sipData"
 
--filelist="[Pfad]"
+__-filelist="[Pfad]"__
 Diese Option kann verwendet werden, um ein einzelnes SIP aus Dateien zu erstellen, die sich in unterschiedlichen Verzeichnissen befinden. Erstellen Sie dazu eine Textdatei und listen Sie darin die Pfade zu den Dateien und/oder Verzeichnissen auf, aus denen das SIP erstellt werden soll. In jeder Zeile der Textdatei muss dabei genau eine Pfadangabe stehen. Geben Sie den Pfad eines Verzeichnisses an, wird der gesamte Inhalt des Verzeichnisses inklusive aller Unterordner in das SIP aufgenommen.
 Bei Verwendung dieser Option muss gleichzeitig mit dem Parameter -single= "[Name]" ein Name für das SIP angegeben werden.
 
-Beispiel:
+Beispiel:  
 -filelist="C:\Eigene Dateien\SIP-Source\filelist_sip1.txt"
 
-Beispielinhalt einer Filelist:
-D:\Foto\2010\foto_1.tif
-D:\Foto\2010\foto_2.tif
-D:\Foto\2013\
-D:\Audio\audio_15_03_2012.wav
-C:\Dokumente\dokument.pdf
--siplist="[Pfad]"
+Beispielinhalt einer Filelist:  
+D:\Foto\2010\foto_1.tif  
+D:\Foto\2010\foto_2.tif  
+D:\Foto\2013\  
+D:\Audio\audio_15_03_2012.wav  
+C:\Dokumente\dokument.pdf   
+
+__-siplist="[Pfad]"__
 Diese Option ermöglicht es, die Inhalte eines oder mehrerer SIPs in einer XML-Datei festzulegen. Erstellen Sie dazu eine XML-Datei mit dem Wurzelknoten „sipList“, dem Sie für jedes zu erzeugende SIP ein Element „sip“ hinzufügen. An jedes SIP müssen Sie über das Attribut „name“ einen Namen vergeben. Die einzelnen Dateien und/oder Verzeichnisse, aus denen das SIP erstellt werden soll, geben Sie dabei durch jeweils ein „file“-Element an.
 
-Beispiel:
+Beispiel:  
 -siplist="C:\Eigene Dateien\SIP-Source\siplist.xml"
 
-Beispielinhalt einer SIP-Liste:
-<sipList>
-	<sip name="SIP_Nr1">
+Beispielinhalt einer SIP-Liste:  
+<sipList>  
+        <sip name="SIP_Nr1">
 		<file>D:\Foto\2010\foto_1.tif</file>
 		<file>D:\Audio\audio_12_07_2011.wav</file>
 	</sip>
@@ -270,18 +273,18 @@ Beispielinhalt einer SIP-Liste:
 </sipList>
 
 
-3.2.2 Ziel
+#### Ziel
 
--destination="[Pfad]"
+__-destination="[Pfad]"__  
 Geben Sie den Pfad zum Verzeichnis an, in dem die SIPs erstellt werden sollen. Bitte beachten Sie bei gleichzeitiger Verwendung der Option -source, dass das gewählte Verzeichnis kein Unterverzeichnis des Quellordners sein darf.
 
-Beispiel:
+Beispiel:  
 -destination="D:\SIPs"
 
 
-3.2.3 Rechte
+#### Rechte
 
--default (Standardoption)
+__-default (Standardoption)__  
 Die Standardrechte werden angewendet:
 ▪	Generierung von Publikationsdaten für die Öffentlichkeit, keine Restrik-tionen
 ▪	Keine Generierung von Publikationsdaten für die eigene Institution
@@ -291,71 +294,69 @@ Die Standardrechte werden angewendet:
 
 
 
--premis="[Pfad]"
+__-premis="[Pfad]"__  
 Geben Sie den Pfad einer Premis-Datei an, die eine Rights Section mit den von Ihnen gewünschten Rechten enthält. Die dort angegebenen Rechteeinstellun-gen werden in die Premis-Datei des neu erstellten SIPs übernommen.
 
-Beispiel:
+Beispiel:  
 -premis="C:\Dokumente\SIPs\sip001\data\premis.xml"
 
--rights="[Pfad]"
+__-rights="[Pfad]"__  
 Geben Sie den Pfad einer Rechte-Datei an, die zuvor im GUI-Modus des SIP-Builders erstellt wurde. Diese Option entspricht dem Laden von Rechteeinstel-lungen im GUI-Modus.
 
-Beispiel:
+Beispiel:  
 -rights="C:\Dokumente\SIP-Source\contractRights.xml"
 
 
-3.2.4 Generierungsmodus
+#### Generierungsmodus
 
--multiple (Standardoption)
+__-multiple (Standardoption)__  
 Bei Anwendung dieser Option werden mehrere SIPs auf einmal generiert. Bei gleichzeitiger Angabe eines Quellordners mit dem Parameter -source werden die SIPs aus den Unterordnern dieses Quellordners erstellt, wobei aus jedem Unterordner jeweils ein SIP entsteht.
 Die Option muss bei gleichzeitiger Verwendung von -siplist gewählt werden und kann nicht gleichzeitig mit -filelist benutzt werden.
 
--single
+__-single__  
 Bei Anwendung dieser Option wird ein einzelnes SIP generiert. Bei gleich-zeitiger Angabe eines Quellordners mit -source wird das SIP aus dem gesamten Inhalt dieses Quellordners (inklusive möglicher Unterverzeichnisse) erstellt.
 Die Option kann nicht gleichzeitig mit -siplist benutzt werden.
 
 
--single="[Name]"
+__-single="[Name]"__  
 Bei Anwendung dieser Option wird ebenfalls ein einzelnes SIP generiert. Zusätzlich wird der angegebene Text als Name des erstellten SIPs verwendet.
 Die Option muss bei gleichzeitiger Verwendung von -filelist gewählt werden und kann nicht gleichzeitig mit -siplist benutzt werden.
 
-Beispiel:
--single="Foto_SIP_2013"
+Beispiel: -single="Foto_SIP_2013"
 
-3.2.6 Kompression
+#### Kompression
 
--compression (Standardoption)
+__-compression (Standardoption)__  
 SIPs werden als komprimierte tgz-Container gespeichert. Der SIP-Erstellungs-prozess verlängert sich dadurch; die erstellten Dateien nehmen im Gegenzug weniger Speicherplatz in Anspruch.
 
--noCompression
+__-noCompression__  
 SIPs werden als unkomprimierte tar-Container gespeichert. Der SIP-Erstellungs-prozess verkürzt sich dadurch; die erstellten Dateien nehmen allerdings zusätz-lichen Speicherplatz in Anspruch.
 
 
-3.2.7 Überschreiben von SIPs
+#### Überschreiben von SIPs
 
--neverOverwrite (Standardoption)
+__-neverOverwrite (Standardoption)__  
 SIPs werden nicht erstellt, wenn sich im Zielordner bereits ein SIP gleichen Namens befindet. Sie erhalten in diesem Fall im Anschluss an den SIP-Erstel-lungsprozess eine Mitteilung darüber, dass bereits existierende SIPs nicht neu erstellt wurden. Existiert bereits eine Lieferung gleichen Namens im Zielordner, wird der SIP-Erstellungsprozess nicht durchgeführt.
 
--alwaysOverwrite
+__-alwaysOverwrite__  
 Wenn sich bereits existierende SIPs oder Lieferungen gleichen Namens im Ziel-ordner befinden, werden sie ohne weitere Nachfrage überschrieben, d. h. durch die neu erstellten Pakete bzw. die neu erstellte Lieferung ersetzt.
 
 
-3.2.8 Sonstige Optionen
+#### Sonstige Optionen
 
--ignoreExtensions="ext1;ext2;ext3..."
+__-ignoreExtensions="ext1;ext2;ext3..."__  
 Wählen Sie diese Option, um Dateien mit bestimmten Dateiendungen nicht in die erzeugten SIPs aufnehmen zu lassen. Die entsprechenden Dateien werden bei der SIP-Erstellung ignoriert. Geben Sie die einzelnen Dateiendungen hinter-einander durch Semikolons getrennt an.
 
-Beispiel:
--ignoreExtensions="txt;doc;rtf;odt;pdf"
+Beispiel: -ignoreExtensions="txt;doc;rtf;odt;pdf"
 
--help
+__-help__
 Zeigt eine Übersicht der möglichen Optionen an.
 
 
 
 
 
-3.3 Beispielaufrufe
+### Beispielaufrufe
 
 java -jar SipBuilder.jar -source="D:\sipsource" -destination="D:\sips\" -single
 Erstellt ein einziges SIP aus dem Ordner "D:\sipsource" im Verzeichnis "D:\sips\". Es werden die Standardrechte angewendet.
@@ -371,7 +372,7 @@ java -jar SipBuilder.jar -siplist="C:\Eigene Dateien\SIP-Source\siplist.xml" -de
 Erstellt mehrere SIPs gemäß den Angaben in der Datei "C:\Eigene Dateien\SIP-Source\siplist.xml". Die in der Premis-Datei "C:\Eigene Dateien\SIP-Source\ premis.xml" angegebenen Rechte werden dabei übernommen.
 
 
-3.4 Fehlercodes
+### Fehlercodes
 
 Im CLI-Modus gibt das Programm beim Beenden einen Exit Code zurück, der im Falle einer erfolgreichen SIP-Generierung immer den Wert 0 beträgt. Wurde das Programm aufgrund eines Fehlers abgebrochen, gibt der Code Aufschluss über die Art des Fehlers. Durch Abfrage und Auswertung des Fehlercodes kann bei-spielsweise die Einbindung des SIP-Builders in automatisierte Prozesse erleich-tert werden.
 Die möglichen Codes und ihre Bedeutung können Sie der folgenden Übersicht entnehmen.
