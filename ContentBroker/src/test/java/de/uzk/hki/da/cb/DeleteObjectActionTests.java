@@ -18,11 +18,10 @@
 */
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.test.TC.TEST_ROOT_CB;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static de.uzk.hki.da.test.TC.*;
-import static de.uzk.hki.da.core.C.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,7 +35,7 @@ import org.junit.Test;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.WorkArea;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author Daniel M. de Oliveira

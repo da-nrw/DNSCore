@@ -19,7 +19,7 @@
 
 package de.uzk.hki.da.format;
 
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author Daniel M. de Oliveira

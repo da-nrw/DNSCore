@@ -15,7 +15,7 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.SystemEvent;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.HibernateUtil;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 public class SystemEventFactoryTest {
 

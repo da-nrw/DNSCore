@@ -20,12 +20,12 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.EVENT_TYPE_CONVERT;
-import static de.uzk.hki.da.core.C.METADATA_STREAM_ID_EPICUR;
-import static de.uzk.hki.da.core.C.OAI_DANRW_DE;
-import static de.uzk.hki.da.core.C.OWL_SAMEAS;
-import static de.uzk.hki.da.core.C.PUBLISHEDFLAG_INSTITUTION;
-import static de.uzk.hki.da.core.C.PUBLISHEDFLAG_PUBLIC;
+import static de.uzk.hki.da.utils.C.EVENT_TYPE_CONVERT;
+import static de.uzk.hki.da.utils.C.METADATA_STREAM_ID_EPICUR;
+import static de.uzk.hki.da.utils.C.OAI_DANRW_DE;
+import static de.uzk.hki.da.utils.C.OWL_SAMEAS;
+import static de.uzk.hki.da.utils.C.PUBLISHEDFLAG_INSTITUTION;
+import static de.uzk.hki.da.utils.C.PUBLISHEDFLAG_PUBLIC;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,7 +49,7 @@ import de.uzk.hki.da.repository.MetadataIndexException;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.util.ConfigurationException;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.StringUtilities;
 
 /** 

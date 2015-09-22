@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.irods.jargon.core.exception.InvalidArgumentException;
 
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author Daniel M. de Oliveira

@@ -21,7 +21,7 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.FILE_EXTENSION_TAR;
+import static de.uzk.hki.da.utils.C.FILE_EXTENSION_TAR;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +40,7 @@ import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.pkg.BagitUtils;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 
 

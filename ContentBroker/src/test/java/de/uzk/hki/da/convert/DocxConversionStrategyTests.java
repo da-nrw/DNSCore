@@ -41,10 +41,10 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
-import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
 import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.ProcessInformation;
+import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.webservice.HttpFileTransmissionClient;
 
 

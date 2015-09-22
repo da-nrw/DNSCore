@@ -34,13 +34,13 @@ import de.uzk.hki.da.metadata.ContractRights.ConversionCondition;
 import de.uzk.hki.da.metadata.PublicationRights.Law;
 import de.uzk.hki.da.metadata.PublicationRights.TextType;
 import de.uzk.hki.da.sb.MessageWriter;
-import de.uzk.hki.da.sb.SIPFactory;
 import de.uzk.hki.da.sb.SIPFactory.KindOfSIPBuilding;
 
 /**
  * Contains several utility methods and the SIP-Builder version
  * 
  * @author Thomas Kleinke
+ * @author Polina Gubaidullina
  */
 public class Utilities {
 	
@@ -54,11 +54,11 @@ public class Utilities {
 	 */
 	public static KindOfSIPBuilding translateKindOfSIPBuilding(String kindofSIPBuildingName) {
 
-		if (kindofSIPBuildingName.equals("Mehrere SIPs aus Unterordnern des Quellverzeichnisses erstellen"))
+		if (kindofSIPBuildingName.equals(C.KIND_OF_SIPBUILDING_MULTIPLE))
 			return KindOfSIPBuilding.MULTIPLE_FOLDERS;
-		else if (kindofSIPBuildingName.equals("Einzelnes SIP aus dem Quellverzeichnis erstellen"))
+		else if (kindofSIPBuildingName.equals(C.KIND_OF_SIPBUILDING_SINGLE))
 			return KindOfSIPBuilding.SINGLE_FOLDER;
-		else if (kindofSIPBuildingName.equals("Mehrere SIPs aus einer verschachtelten Ordnerstruktur erstellen"))
+		else if (kindofSIPBuildingName.equals(C.KIND_OF_SIPBUILDING_NESTED))
 			return KindOfSIPBuilding.NESTED_FOLDERS;
 		
 		return null;

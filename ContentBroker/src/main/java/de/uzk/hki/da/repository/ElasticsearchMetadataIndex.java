@@ -42,9 +42,9 @@ import org.slf4j.LoggerFactory;
 
 import com.github.jsonldjava.utils.JSONUtils;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.C;
 
 /**
  * Metadata index implementation for elasticsearch.

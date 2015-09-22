@@ -11,7 +11,7 @@ import org.jdom.JDOMException;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.model.Document;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author Polina Gubaidullina

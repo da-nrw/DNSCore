@@ -221,6 +221,13 @@ img {
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
 }
 
+.items div {  width: 200px;} 
+.items ul {  list-style-type: none;  margin: 0;  padding: 0;} 
+.items li {  font: 200 20px/1.5 Helvetica, Verdana, sans-serif;  border-bottom: 1px solid #ccc;} 
+.items li:last-child {  border: none;} 
+.items li a {  text-decoration: none;  color: #000;  display: block;  width: 200px;   -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;  -moz-transition: font-size 0.3s ease, background-color 0.3s ease;  -o-transition: font-size 0.3s ease, background-color 0.3s ease;  -ms-transition: font-size 0.3s ease, background-color 0.3s ease;  transition: font-size 0.3s ease, background-color 0.3s ease;} 
+.items li a:hover {  font-size: 30px;  background }
+
 .no-borderradius .nav a:focus, .no-borderradius .nav a:hover {
 	background-color: transparent;
 	color: #444444;

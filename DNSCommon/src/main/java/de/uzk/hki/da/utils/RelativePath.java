@@ -1,6 +1,6 @@
 /*
   DA-NRW Software Suite | ContentBroker
-  Copyright (C) 2014 LVRInfoKom, Landschaftsverband Rheinland
+  Copyright (C) 2014 
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -16,22 +16,23 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.util;
+package de.uzk.hki.da.utils;
 
-import java.beans.PropertyEditorSupport;
+
+
 
 /**
+ * Used only for testing purposes.
  * @author Daniel M. de Oliveira
  */
-public class PathTypeEditorSupport extends PropertyEditorSupport {
+public class RelativePath extends Path {
 
-	@Override
-	public void setAsText(String text) throws IllegalArgumentException {
-		setValue(Path.make(text));
+	public RelativePath(Object ... list) {
+		super(list);
 	}
 
 	@Override
-	public String getAsText()  {
-		return ((Path)getValue()).toString();
+	public String toString() {
+		return super.toString().substring(1);
 	}
 }

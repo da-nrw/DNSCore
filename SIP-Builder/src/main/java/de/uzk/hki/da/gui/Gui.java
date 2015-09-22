@@ -57,13 +57,12 @@ import javax.swing.filechooser.FileFilter;
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.metadata.ContractSettings;
-import de.uzk.hki.da.metadata.PublicationRights;
 import de.uzk.hki.da.metadata.PremisXmlWriter;
+import de.uzk.hki.da.metadata.PublicationRights;
 import de.uzk.hki.da.sb.Logger;
 import de.uzk.hki.da.sb.SIPFactory;
 import de.uzk.hki.da.sb.UserInputValidator;
-import de.uzk.hki.da.sb.SIPFactory.Feedback;
-import de.uzk.hki.da.sb.SIPFactory.KindOfSIPBuilding;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -72,6 +71,7 @@ import de.uzk.hki.da.utils.Utilities;
  * 
  * @author Thomas Kleinke
  * @author Martin Fischer
+ * @author Polina Gubaidullina
  */
 public class Gui extends JFrame{
 
@@ -479,9 +479,13 @@ public class Gui extends JFrame{
 	 * Creates the text labels
 	 */
 	private void initializeTextLabels() {
-
-		versionInfoLabel = new JLabel("SIP-Builder v" + Utilities.getSipBuilderShortVersion() + 
-				" ®2011-2014 Historisch-Kulturwissenschaftliche Informationsverarbeitung");
+		
+//		String buildNumber = System.getenv("BUILD_NUMBER");
+		
+		String buildNumber = System.getProperty("build.number", "UNKNOWN");
+		
+		versionInfoLabel = new JLabel("SIP-Builder Build: " + buildNumber + 
+				", LVR-InfoKom (ab 2014). HKI, Universität zu Köln 2011-2014.");
 		versionInfoLabel.setFont(standardFont.deriveFont(10.0f));
 		versionInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		versionInfoLabel.setForeground(Color.WHITE);
@@ -1242,9 +1246,9 @@ public class Gui extends JFrame{
 
 		kindOfSIPBuildingDropDown = new JComboBox();
 		kindOfSIPBuildingDropDown.setFont(standardFont.deriveFont(11.0f));
-		kindOfSIPBuildingDropDown.addItem("Einzelnes SIP aus dem Quellverzeichnis erstellen");
-		kindOfSIPBuildingDropDown.addItem("Mehrere SIPs aus Unterordnern des Quellverzeichnisses erstellen");
-//		kindOfSIPBuildingDropDown.addItem("Mehrere SIPs aus einer verschachtelten Ordnerstruktur erstellen");
+		kindOfSIPBuildingDropDown.addItem(C.KIND_OF_SIPBUILDING_SINGLE);
+		kindOfSIPBuildingDropDown.addItem(C.KIND_OF_SIPBUILDING_MULTIPLE);
+		kindOfSIPBuildingDropDown.addItem(C.KIND_OF_SIPBUILDING_NESTED);
 
 		institutionLawIdDropDown = new JComboBox();
 		institutionLawIdDropDown.setFont(standardFont.deriveFont(11.0f));

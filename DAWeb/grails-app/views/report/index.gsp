@@ -32,11 +32,11 @@ function toggle(source) {
 	
 <form id="form2" action="decider" >
   
-<ul>
+<div id="items"><ul>
 <g:each in="${filelist}" var="currentFile" status="i">
     <li><g:checkBox name="currentFiles" value="${currentFile.getName()}" checked="false" /><a href="${httpurl + "/" + currentFile.getName()}">${currentFile.getName()}</a></li>
 </g:each>
-</ul>
+</ul></div>
 <div><input type="checkbox"  onClick="toggle(this)"/>Alle an-/abwählen</div><br>
 Aktion:<br>
 <g:select name="answer" from="${['start': 'Erneut generieren', 'retrieval': 'Retrieval', 'delete': 'Löschen']}" optionKey="key" optionValue="value"/>

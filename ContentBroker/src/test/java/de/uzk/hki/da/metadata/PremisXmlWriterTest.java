@@ -47,7 +47,7 @@ import de.uzk.hki.da.model.TextRestriction;
 import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.model.MigrationRight.Condition;
 import de.uzk.hki.da.model.PublicationRight.Audience;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 
 /**

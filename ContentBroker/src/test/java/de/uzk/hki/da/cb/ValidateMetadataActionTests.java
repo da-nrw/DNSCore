@@ -39,9 +39,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.format.FFConstants;
 import de.uzk.hki.da.metadata.FakeMetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.model.DAFile;
@@ -49,7 +47,8 @@ import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author Daniel M. de Oliveira
@@ -101,15 +100,15 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 		
 		action.setMsf(msf);
 
-		f_ead1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
-		f_ead2.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
-		f_mets1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_METS);
-		f_mets2.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_METS);
-		f_xmp1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_XMP);
-		f_lido1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
-		f_lido2.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_LIDO);
+		f_ead1.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_EAD);
+		f_ead2.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_EAD);
+		f_mets1.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_METS);
+		f_mets2.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_METS);
+		f_xmp1.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_XMP);
+		f_lido1.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_LIDO);
+		f_lido2.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_LIDO);
 		
-		f_subfolder_ead1.setSubformatIdentifier(FFConstants.SUBFORMAT_IDENTIFIER_EAD);
+		f_subfolder_ead1.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_EAD);
 	}
 	
 	

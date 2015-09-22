@@ -1,4 +1,4 @@
-package de.uzk.hki.da.metadata;
+package de.uzk.hki.da.utils;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;

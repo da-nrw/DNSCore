@@ -46,8 +46,9 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import de.uzk.hki.da.core.C;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * @author Polina Gubaidullina

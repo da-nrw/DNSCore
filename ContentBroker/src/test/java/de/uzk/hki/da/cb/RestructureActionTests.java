@@ -49,7 +49,7 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author Daniel M. de Oliveira

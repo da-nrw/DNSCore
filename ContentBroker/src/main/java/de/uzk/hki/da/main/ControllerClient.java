@@ -17,8 +17,8 @@ import javax.jms.TextMessage;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import de.uzk.hki.da.action.ActionDescription;
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.C;
 
 /**
  * 

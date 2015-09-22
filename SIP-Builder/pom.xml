@@ -21,8 +21,56 @@
     	<include.tests>**/*DDDCDDSD*.java</include.tests>
 	</properties>
 	
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<env>dev</env>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>ci</id>
+			<properties>
+				<env>ci</env>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
+	
 	<build>
 		<plugins>
+		<plugin>
+		      <groupId>org.apache.maven.plugins</groupId>
+		      <artifactId>maven-surefire-plugin</artifactId>
+		      <configuration>
+		        <configuration>
+                    <skip>true</skip>
+                </configuration>
+		      </configuration>
+		      
+		       <executions>
+	                   <execution>
+	                       <id>surefire-it</id>
+	                       <phase>integration-test</phase>
+	                       <goals>
+	                           <goal>test</goal>
+	                       </goals>
+	                       <configuration>
+	                           <excludes>
+					              <exclude>none</exclude>
+					            </excludes>
+					            <includes>
+					              <include>**/**.java</include>
+					            </includes>
+	                       </configuration>
+	                   </execution>
+	               </executions>
+		    </plugin>
 		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -56,8 +104,7 @@
 				<version>2.13</version>
 				<configuration>
 					<includes>
-						<include>%regex[.*Simple.*Suite.*]</include>
-						<include>${include.tests}</include>
+						<include>%regex[.*Test.java*]</include>
 					</includes>
 	    			<argLine>-Dfile.encoding=UTF-8</argLine> 
 				</configuration>
@@ -68,6 +115,7 @@
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
+					<encoding>UTF-8</encoding>
 				</configuration>
 				<version>2.3.2</version>
 			</plugin>
@@ -140,8 +188,11 @@
 			<artifactId>DNSCommon</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
-	
-		
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-core</artifactId>
+			<version>1.0</version>
+		</dependency>
 		<dependency>
 			<groupId>gov.loc</groupId>
 			<artifactId>bagit</artifactId>
@@ -157,6 +208,7 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
+		
 	</dependencies>
 	
 </project>

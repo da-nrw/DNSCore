@@ -15,12 +15,12 @@ import org.jdom.input.SAXBuilder;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.metadata.MetadataHelper;
-import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.XMLUtils;
 
 public class ATUseCaseIngestArchivDuisburg extends AcceptanceTest{
 	private static final String URL = "URL";

@@ -19,9 +19,9 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
-import static de.uzk.hki.da.core.C.EDM_XSLT_METADATA_STREAM_ID;
-import static de.uzk.hki.da.core.C.ENCODING_UTF_8;
+import static de.uzk.hki.da.utils.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
+import static de.uzk.hki.da.utils.C.EDM_XSLT_METADATA_STREAM_ID;
+import static de.uzk.hki.da.utils.C.ENCODING_UTF_8;
 
 import java.io.FileInputStream;
 import java.io.IOException;

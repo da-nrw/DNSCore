@@ -23,7 +23,7 @@
 package de.uzk.hki.da.model;
 
 import static org.junit.Assert.*;
-import static de.uzk.hki.da.core.C.*;
+import static de.uzk.hki.da.utils.C.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,8 +38,8 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 /**
  * @author Daniel M. de Oliveira

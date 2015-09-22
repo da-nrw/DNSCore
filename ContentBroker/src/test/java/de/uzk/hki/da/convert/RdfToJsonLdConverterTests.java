@@ -30,7 +30,7 @@ import com.github.jsonldjava.utils.JSONUtils;
 
 import de.uzk.hki.da.metadata.RdfToJsonLdConverter;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 
 /**

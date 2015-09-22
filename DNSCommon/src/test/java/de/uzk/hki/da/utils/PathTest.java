@@ -18,7 +18,7 @@
 
 
 
-package de.uzk.hki.da.util;
+package de.uzk.hki.da.utils;
 
 import static org.junit.Assert.*;
 
@@ -27,8 +27,8 @@ import java.io.File;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 /**
  * Tests the Path and RelativePath classes.

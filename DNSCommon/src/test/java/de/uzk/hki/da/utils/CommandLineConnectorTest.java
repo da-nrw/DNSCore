@@ -31,7 +31,7 @@ import org.junit.Test;
 /**
  * @author Daniel M. de Oliveira
  */
-public class CommandLineConnectorTests {
+public class CommandLineConnectorTest {
 
 	private static final String testfolder="src/test/resources/utils/CommandLineConnectorTests/";
 	

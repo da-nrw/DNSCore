@@ -37,7 +37,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.cb.NullAction;
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserExceptionManager;
@@ -50,6 +49,7 @@ import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
+import de.uzk.hki.da.utils.C;
 
 /**
  * 

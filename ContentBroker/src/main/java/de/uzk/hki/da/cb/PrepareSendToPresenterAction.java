@@ -33,7 +33,7 @@ import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 
 /**

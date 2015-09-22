@@ -33,7 +33,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.WorkArea;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.StringUtilities;
 
 

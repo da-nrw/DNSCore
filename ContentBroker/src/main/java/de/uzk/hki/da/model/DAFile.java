@@ -36,8 +36,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.format.FileWithFileFormat;
-import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 
 /**

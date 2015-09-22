@@ -19,8 +19,8 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.QUESTION_MIGRATION_ALLOWED;
-import static de.uzk.hki.da.core.C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION;
+import static de.uzk.hki.da.utils.C.QUESTION_MIGRATION_ALLOWED;
+import static de.uzk.hki.da.utils.C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION;
 
 import java.io.File;
 import java.io.IOException;

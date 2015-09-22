@@ -31,7 +31,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 
-import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.utils.C;
 
 public class JmsMessage {
 	

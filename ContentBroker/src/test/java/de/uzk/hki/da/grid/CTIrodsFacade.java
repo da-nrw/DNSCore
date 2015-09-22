@@ -35,8 +35,8 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import de.uzk.hki.da.model.StoragePolicy;
-import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.MD5Checksum;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.PropertiesUtils;
 
 /**

@@ -20,7 +20,7 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.*;
-import static de.uzk.hki.da.core.C.*;
+import static de.uzk.hki.da.utils.C.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,14 +39,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author Daniel M. de Oliveira

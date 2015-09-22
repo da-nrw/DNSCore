@@ -47,13 +47,13 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.format.MimeTypeDetectionService;
-import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * @author Daniel M. de Oliveira

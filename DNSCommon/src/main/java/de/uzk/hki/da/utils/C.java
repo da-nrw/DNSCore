@@ -17,16 +17,15 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package de.uzk.hki.da.core;
+package de.uzk.hki.da.utils;
 
 import java.io.File;
 
 import org.jdom.Namespace;
 
-import de.uzk.hki.da.format.FFConstants;
-import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
+//import de.uzk.hki.da.format.FFConstants;
+//import de.uzk.hki.da.util.Path;
+//import de.uzk.hki.da.util.RelativePath;
 
 /**
  * @author Daniel M. de Oliveira & the DA-NRW team
@@ -49,11 +48,11 @@ public class C {
 	public static final String MIMETYPE_TEXT_XML = "text/xml";
 	
 	
-	// Presentation Metadata related 
-	public static final String CB_PACKAGETYPE_XMP  = FFConstants.SUBFORMAT_IDENTIFIER_XMP;
-	public static final String CB_PACKAGETYPE_LIDO = FFConstants.SUBFORMAT_IDENTIFIER_LIDO;
-	public static final String CB_PACKAGETYPE_METS = FFConstants.SUBFORMAT_IDENTIFIER_METS;
-	public static final String CB_PACKAGETYPE_EAD  = FFConstants.SUBFORMAT_IDENTIFIER_EAD;  
+	// Presentation Metadata related 	
+	public static final String CB_PACKAGETYPE_XMP  = "XMP";
+	public static final String CB_PACKAGETYPE_LIDO = "LIDO";
+	public static final String CB_PACKAGETYPE_METS = "METS";
+	public static final String CB_PACKAGETYPE_EAD  = "EAD"; 
 
 		/** common metadata file for all XMP type packages */
 	public static final String METADATA_FILE_XMP = "XMP.xml";
@@ -173,6 +172,18 @@ public class C {
 
 	
 	public static final String ORE_AGGREGATION = "ore:Aggregation";
-
-
+	
+	public static final String SUBFORMAT_IDENTIFIER_XMP="XMP";
+	public static final String SUBFORMAT_IDENTIFIER_EAD="EAD";
+	public static final String SUBFORMAT_IDENTIFIER_LIDO="LIDO";
+	public static final String SUBFORMAT_IDENTIFIER_METS="METS";
+	
+//	SIPBuilder 
+	public static final String KIND_OF_SIPBUILDING_SINGLE="Einzelnes SIP aus dem Quellverzeichnis erstellen";
+	public static final String KIND_OF_SIPBUILDING_SINGLE_WITH_TARGET_FOLDER_NAME="Einzelnes SIP mit dem angegebenen Namen aus dem Quellordner erstellen";
+	public static final String KIND_OF_SIPBUILDING_MULTIPLE="Mehrere SIPs aus Unterordnern des Quellordners erstellen (Standard)";
+	public static final String KIND_OF_SIPBUILDING_NESTED="Mehrere SIPs verschachtelter Ordnerstruktur erstellen (nur METS)";
+	
 }
+
+

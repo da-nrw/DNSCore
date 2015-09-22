@@ -11,7 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 public class ATDetectUnreferencedFilesMETS extends AcceptanceTest{
 	private static String origName = "ATDetectUnreferencedFilesMets";

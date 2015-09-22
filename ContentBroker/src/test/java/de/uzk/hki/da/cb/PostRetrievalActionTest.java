@@ -20,7 +20,7 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.*;
-import static de.uzk.hki.da.core.C.*;
+import static de.uzk.hki.da.utils.C.*;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -32,7 +32,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author: Jens Peters

@@ -45,8 +45,8 @@ import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
-import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 
 /**

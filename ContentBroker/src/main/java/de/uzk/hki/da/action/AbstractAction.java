@@ -21,12 +21,10 @@ package de.uzk.hki.da.action;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Date;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.activemq.transport.tcp.ExceededMaximumConnectionsException;
 import org.hibernate.Session;
 import org.jdom.JDOMException;
 import org.slf4j.Logger;
@@ -34,7 +32,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.xml.sax.SAXException;
 
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
@@ -50,6 +47,7 @@ import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.util.TimeStampLogging;
+import de.uzk.hki.da.utils.C;
 
 
 /**

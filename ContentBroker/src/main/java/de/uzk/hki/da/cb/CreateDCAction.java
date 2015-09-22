@@ -19,7 +19,7 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.core.C.METADATA_STREAM_ID_DC;
+import static de.uzk.hki.da.utils.C.METADATA_STREAM_ID_DC;
 import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 import static de.uzk.hki.da.utils.StringUtilities.isSet;
 
@@ -42,15 +42,15 @@ import org.jdom.output.XMLOutputter;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.metadata.XMLUtils;
 import de.uzk.hki.da.metadata.XsltGenerator;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * @author Daniel M. de Oliveira

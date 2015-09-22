@@ -28,7 +28,6 @@ import javax.swing.JOptionPane;
 
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.sb.MessageWriter;
-import de.uzk.hki.da.sb.MessageWriter.UserInput;
 
 /**
  * A specialized message writer responsible for displaying info messages and dialogs in GUI mode

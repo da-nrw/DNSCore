@@ -26,7 +26,7 @@ import org.junit.Test;
 /**
  * @author Daniel M. de Oliveira
  */
-public class StringUtilitiesTests {
+public class StringUtilitiesTest {
 	
 	@Test
 	public void isNotSet() {

@@ -30,7 +30,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.core.C;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.format.ConnectionException;
 import de.uzk.hki.da.format.FileFormatException;
@@ -40,9 +39,10 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommaSeparatedList;
 import de.uzk.hki.da.utils.MD5Checksum;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * Executes a file format identification and technical metadata extraction 

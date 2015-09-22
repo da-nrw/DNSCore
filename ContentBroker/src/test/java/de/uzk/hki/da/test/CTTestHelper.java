@@ -24,7 +24,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommandLineConnector;
 
 /**

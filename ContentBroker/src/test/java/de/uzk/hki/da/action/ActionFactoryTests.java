@@ -19,9 +19,9 @@
 
 package de.uzk.hki.da.action;
 
-import static de.uzk.hki.da.core.C.WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION;
-import static de.uzk.hki.da.core.C.WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT;
-import static de.uzk.hki.da.core.C.WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET;
+import static de.uzk.hki.da.utils.C.WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION;
+import static de.uzk.hki.da.utils.C.WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT;
+import static de.uzk.hki.da.utils.C.WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -53,7 +53,7 @@ import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.util.ConfigurationException;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 
 

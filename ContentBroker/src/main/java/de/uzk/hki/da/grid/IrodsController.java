@@ -32,7 +32,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.core.C;
+import de.uzk.hki.da.utils.C;
 
 /**
  * Controller to the iRODS DataGrid

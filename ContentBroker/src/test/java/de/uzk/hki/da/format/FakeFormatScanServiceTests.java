@@ -34,7 +34,8 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
 
 
 /**
@@ -64,7 +65,7 @@ public class FakeFormatScanServiceTests {
 		
 		fss.identify(wa.dataPath(),files);
 		
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_METS,files.get(0).getSubformatIdentifier());
+		assertEquals(C.SUBFORMAT_IDENTIFIER_METS,files.get(0).getSubformatIdentifier());
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
 	}
 	
@@ -77,7 +78,7 @@ public class FakeFormatScanServiceTests {
 		fss.identify(wa.dataPath(),files);
 		
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_EAD,files.get(0).getSubformatIdentifier());	
+		assertEquals(C.SUBFORMAT_IDENTIFIER_EAD,files.get(0).getSubformatIdentifier());	
 	}
 
 	@Test
@@ -88,7 +89,7 @@ public class FakeFormatScanServiceTests {
 		
 		fss.identify(wa.dataPath(),files);
 		
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_EAD,files.get(0).getSubformatIdentifier());	
+		assertEquals(C.SUBFORMAT_IDENTIFIER_EAD,files.get(0).getSubformatIdentifier());	
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
 	}
 	
@@ -103,7 +104,7 @@ public class FakeFormatScanServiceTests {
 		fss.identify(wa.dataPath(),files);
 		
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_LIDO,files.get(0).getSubformatIdentifier());	
+		assertEquals(C.SUBFORMAT_IDENTIFIER_LIDO,files.get(0).getSubformatIdentifier());	
 	}
 	
 	@Test
@@ -114,7 +115,7 @@ public class FakeFormatScanServiceTests {
 		
 		fss.identify(wa.dataPath(),files);
 		
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_XMP,files.get(0).getSubformatIdentifier());	
+		assertEquals(C.SUBFORMAT_IDENTIFIER_XMP,files.get(0).getSubformatIdentifier());	
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
 	}
 
@@ -203,9 +204,9 @@ public class FakeFormatScanServiceTests {
 		assertEquals("fmt/16",files.get(0).getFormatPUID());
 		assertEquals("fmt/4",files.get(1).getFormatPUID());
 		assertEquals(FFConstants.XML_PUID,files.get(2).getFormatPUID());
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_EAD,files.get(2).getSubformatIdentifier());
+		assertEquals(C.SUBFORMAT_IDENTIFIER_EAD,files.get(2).getSubformatIdentifier());
 		assertEquals(FFConstants.XML_PUID,files.get(3).getFormatPUID());
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_METS,files.get(3).getSubformatIdentifier());
+		assertEquals(C.SUBFORMAT_IDENTIFIER_METS,files.get(3).getSubformatIdentifier());
 	}
 	
 	

@@ -23,7 +23,7 @@ import javax.persistence.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 import java.lang.Object;
 import java.util.ArrayList;

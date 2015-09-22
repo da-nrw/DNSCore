@@ -33,7 +33,8 @@ import org.junit.Test;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.test.CTTestHelper;
 import de.uzk.hki.da.test.TC;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * @author Daniel M. de Oliveira
@@ -87,7 +88,7 @@ public class CTFileFormatFacadeTests {
 		
 		sfff.identify(testPath,files);
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_METS,files.get(0).getSubformatIdentifier());
+		assertEquals(C.SUBFORMAT_IDENTIFIER_METS,files.get(0).getSubformatIdentifier());
 	}
 		
 	
@@ -99,7 +100,7 @@ public class CTFileFormatFacadeTests {
 		
 		sfff.identify(testPath,files);
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_LIDO,files.get(0).getSubformatIdentifier());
+		assertEquals(C.SUBFORMAT_IDENTIFIER_LIDO,files.get(0).getSubformatIdentifier());
 	}
 		
 
@@ -111,7 +112,7 @@ public class CTFileFormatFacadeTests {
 		
 		sfff.identify(testPath,files);
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
-		assertEquals(FFConstants.SUBFORMAT_IDENTIFIER_XMP,files.get(0).getSubformatIdentifier());
+		assertEquals(C.SUBFORMAT_IDENTIFIER_XMP,files.get(0).getSubformatIdentifier());
 	}
 	
 	

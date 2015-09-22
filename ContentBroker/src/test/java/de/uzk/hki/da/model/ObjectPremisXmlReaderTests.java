@@ -6,9 +6,8 @@ import java.text.ParseException;
 
 import org.junit.Test;
 
-import ch.qos.logback.classic.Logger;
-import de.uzk.hki.da.util.Path;
-import de.uzk.hki.da.util.RelativePath;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.RelativePath;
 
 
 

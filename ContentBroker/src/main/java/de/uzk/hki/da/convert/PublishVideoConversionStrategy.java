@@ -39,9 +39,9 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.model.WorkArea;
-import de.uzk.hki.da.util.Path;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.LinuxEnvironmentUtils;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.StringUtilities;
 
 

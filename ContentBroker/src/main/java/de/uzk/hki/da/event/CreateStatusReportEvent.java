@@ -27,7 +27,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 import de.uzk.hki.da.service.CSVQueryHandler;
-import de.uzk.hki.da.util.Path;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * 

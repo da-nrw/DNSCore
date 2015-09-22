@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import de.uzk.hki.da.utils.C;
+
 /**
  * DNSCore supports four metadata structures that enable proper publication via the presentation repository. 
  * Each of these structures is based on a specific xml metadata format (EAD,METS,LIDO,XMP). 
@@ -45,9 +47,9 @@ public class XMLSubformatIdentifier implements FormatIdentifier, Connector{
 	@Override
 	public String identify(File f) throws IOException{
 		String beginningOfFile = convertFirst10LinesOfFileToString(f);
-		if (beginningOfFile.matches(eadPattern))  return FFConstants.SUBFORMAT_IDENTIFIER_EAD;
-		if (beginningOfFile.matches(metsPattern)) return FFConstants.SUBFORMAT_IDENTIFIER_METS;
-		if (beginningOfFile.matches(lidoPattern)) return FFConstants.SUBFORMAT_IDENTIFIER_LIDO;
+		if (beginningOfFile.matches(eadPattern))  return C.SUBFORMAT_IDENTIFIER_EAD;
+		if (beginningOfFile.matches(metsPattern)) return C.SUBFORMAT_IDENTIFIER_METS;
+		if (beginningOfFile.matches(lidoPattern)) return C.SUBFORMAT_IDENTIFIER_LIDO;
 		return "";
 	}
 	
