@@ -703,7 +703,7 @@ public class Cli {
 		System.out.println("   -multiple                 "+C.KIND_OF_SIPBUILDING_MULTIPLE);
 		System.out.println("   -nested                   "+C.KIND_OF_SIPBUILDING_NESTED);
 		System.out.println("   -single                   "+C.KIND_OF_SIPBUILDING_SINGLE);
-		System.out.println("   -single=\"[Name]\"        "+C.KIND_OF_SIPBUILDING_SINGLE_WITH_TARGET_FOLDER_NAME);
+		System.out.println("   -single=\"[Name]\"          "+C.KIND_OF_SIPBUILDING_SINGLE_WITH_TARGET_FOLDER_NAME);
 		System.out.println("");
 //		System.out.println("   -collection=\"[Name]\"      SIPs zu einer Lieferung bündeln");
 		System.out.println("");
