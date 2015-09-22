@@ -14,22 +14,22 @@ Der SIP-Builder ist ein Tool, mit dem sich zur Einlieferung in die DNS vorgesehe
 
 * Fortgeschrittene Benutzer können den SIP-Builder alternativ im CLI-Modus auf der Kommandozeile (CLI) aufrufen und die gewünschten Einstellungen als Parameter angeben. Diese Vorgehensweise bietet sich beispielsweise an, um den SIP-Erstellungsvorgang in automatisierte Prozesse einzubinden.
 
-2. GUI-Modus
+## GUI-Modus
 
-2.1 Ausführen des SIP-Builders im GUI-Modus
+#### Ausführen des SIP-Builders im GUI-Modus
 
 Starten Sie den SIP-Builder, indem Sie je nach Betriebssystem eine der folgenden Dateien ausführen:
-▪	SipBuilder-Windows.exe (Windows)
-▪	SipBuilder-Unix.sh (Unix/Mac OS)
+* SipBuilder-Windows.exe (Windows)
+* SipBuilder-Unix.sh (Unix/Mac OS)
 
-2.2 Start
+## Start
 
  
 
-Quellordner
+__Quellordner__
 Geben Sie hier den Pfad zum Verzeichnis an, das die Quelldaten enthält, aus denen das SIP generiert werden soll.
 
-Zielordner
+__Zielordner__
 Im hier angegebenen Verzeichnis wird das fertige SIP am Ende des Generierungsprozesses in Form einer tgz- oder tar-Archivdatei hinterlegt.
 
 Generierungsmodus
