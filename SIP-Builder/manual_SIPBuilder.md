@@ -322,7 +322,8 @@ __-single="[Name]"__
 Bei Anwendung dieser Option wird ebenfalls ein einzelnes SIP generiert. Zusätzlich wird der angegebene Text als Name des erstellten SIPs verwendet.
 Die Option muss bei gleichzeitiger Verwendung von -filelist gewählt werden und kann nicht gleichzeitig mit -siplist benutzt werden.
 
-Beispiel: -single="Foto_SIP_2013"
+Beispiel: 
+-single="Foto_SIP_2013"
 
 #### Kompression
 
@@ -358,17 +359,17 @@ Zeigt eine Übersicht der möglichen Optionen an.
 
 ### Beispielaufrufe
 
-java -jar SipBuilder.jar -source="D:\sipsource" -destination="D:\sips\" -single
+java -jar SipBuilder.jar -source="D:\sipsource" -destination="D:\sips\" -single  
 Erstellt ein einziges SIP aus dem Ordner "D:\sipsource" im Verzeichnis "D:\sips\". Es werden die Standardrechte angewendet.
 
-java -jar SipBuilder.jar -source="/home/user/sipData" -destination="/home/user/sips" -collection="ExampleCollection"
+java -jar SipBuilder.jar -source="/home/user/sipData" -destination="/home/user/sips" -collection="ExampleCollection"  
 Erstellt mehrere SIPs aus den Unterordnern des Ordners "/home/user/sipData". Die SIPs werden anschließend zu einer Lieferung im Verzeichnis "/home/user/ sips/ExampleCollection" gebündelt. Es werden die Standardrechte angewendet.
 
-java -jar SipBuilder.jar -filelist="C:\Eigene Dateien\SIP-Source\filelist.txt"  -destination="D:\sips\" -single="ExampleSIP" -rights="D:\sipRights\contractRights_001.xml"  -alwaysOverwrite
-Erstellt ein SIP gemäß den Angaben in der Datei "C:\Eigene Dateien\SIP-Source\filelist.txt" mit dem Namen "ExampleSIP" im Verzeichnis "D:\sips\". Dabei werden die in der Datei "D:\sipRights\contractRights_001.xml" hinterleg-ten Rechteeinstellungen verwendet.
+java -jar SipBuilder.jar -filelist="C:\Eigene Dateien\SIP-Source\filelist.txt"  -destination="D:\sips\" -single="ExampleSIP" -rights="D:\sipRights\contractRights_001.xml"  -alwaysOverwrite  
+Erstellt ein SIP gemäß den Angaben in der Datei "C:\Eigene Dateien\SIP-Source\filelist.txt" mit dem Namen "ExampleSIP" im Verzeichnis "D:\sips\". Dabei werden die in der Datei "D:\sipRights\contractRights_001.xml" hinterleg-ten Rechteeinstellungen verwendet.  
 Ein eventuell schon vorhandenes gleichnamiges SIP im Verzeichnis "D:\sips\" wird überschrieben.
 
-java -jar SipBuilder.jar -siplist="C:\Eigene Dateien\SIP-Source\siplist.xml" -destination="D:\sips\" -premis="C:\Eigene Dateien\SIP-Source\premis.xml"
+java -jar SipBuilder.jar -siplist="C:\Eigene Dateien\SIP-Source\siplist.xml" -destination="D:\sips\" -premis="C:\Eigene Dateien\SIP-Source\premis.xml"  
 Erstellt mehrere SIPs gemäß den Angaben in der Datei "C:\Eigene Dateien\SIP-Source\siplist.xml". Die in der Premis-Datei "C:\Eigene Dateien\SIP-Source\ premis.xml" angegebenen Rechte werden dabei übernommen.
 
 
@@ -377,31 +378,31 @@ Erstellt mehrere SIPs gemäß den Angaben in der Datei "C:\Eigene Dateien\SIP-So
 Im CLI-Modus gibt das Programm beim Beenden einen Exit Code zurück, der im Falle einer erfolgreichen SIP-Generierung immer den Wert 0 beträgt. Wurde das Programm aufgrund eines Fehlers abgebrochen, gibt der Code Aufschluss über die Art des Fehlers. Durch Abfrage und Auswertung des Fehlercodes kann bei-spielsweise die Einbindung des SIP-Builders in automatisierte Prozesse erleich-tert werden.
 Die möglichen Codes und ihre Bedeutung können Sie der folgenden Übersicht entnehmen.
 
-0	Erfolgreiche SIP-Erstellung
-1	Ungültiger Parameter
-2	Ungültige Kombination von Parametern
-3	Angabe des Quellordners fehlt
-4	Quellordner konnte nicht gefunden werden
-5	Angabe des Zielordners fehlt
-6	Quell- und Zielordner sind identisch
-7	Zielordner ist ein Unterordner des Quellordners
-8	Zielordner enthält Dateien, die keine Verzeichnisse sind (bei gleichzeiti-	ger Erstellung mehrerer SIPs)
-9	Name des SIPs fehlt
-10	Name des SIPs enthält ungültige Zeichen
-11	Name der Lieferung fehlt
-12	Name der Lieferung enthält ungültige Zeichen
-13	Gleichnamige Lieferung existiert bereits
-14	Dateiliste konnte nicht gefunden werden
-15	Fehler beim Einlesen der Dateiliste
-16	SIP-Liste konnte nicht gefunden werden
-17	Fehler beim Einlesen der SIP-Liste
-18	Premis-Datei konnte nicht gefunden werden
-19	Rechte-Datei konnte nicht gefunden werden
-20	Fehler beim Einlesen der Rechte-Datei
-21	Fehler beim Einlesen der Standardrechte-Datei
-22	Fehler beim Kopieren der Daten
-23	Fehler beim Erstellen der Premis-Datei
-24	Fehler beim Erstellen der BagIt-Metadaten
-25	Fehler beim Erstellen der Archivdatei
-26	Fehler beim Erstellen der Lieferung
-27	Temporäre Daten konnten nicht entfernt werden
+0	Erfolgreiche SIP-Erstellung  
+1	Ungültiger Parameter  
+2	Ungültige Kombination von Parametern  
+3	Angabe des Quellordners fehlt  
+4	Quellordner konnte nicht gefunden werden  
+5	Angabe des Zielordners fehlt  
+6	Quell- und Zielordner sind identisch  
+7	Zielordner ist ein Unterordner des Quellordners  
+8	Zielordner enthält Dateien, die keine Verzeichnisse sind (bei gleichzeitiger Erstellung mehrerer SIPs)  
+9	Name des SIPs fehlt  
+10	Name des SIPs enthält ungültige Zeichen  
+11	Name der Lieferung fehlt  
+12	Name der Lieferung enthält ungültige Zeichen  
+13	Gleichnamige Lieferung existiert bereits  
+14	Dateiliste konnte nicht gefunden werden  
+15	Fehler beim Einlesen der Dateiliste  
+16	SIP-Liste konnte nicht gefunden werden  
+17	Fehler beim Einlesen der SIP-Liste  
+18	Premis-Datei konnte nicht gefunden werden  
+19	Rechte-Datei konnte nicht gefunden werden  
+20	Fehler beim Einlesen der Rechte-Datei  
+21	Fehler beim Einlesen der Standardrechte-Datei  
+22	Fehler beim Kopieren der Daten  
+23	Fehler beim Erstellen der Premis-Datei  
+24	Fehler beim Erstellen der BagIt-Metadaten  
+25	Fehler beim Erstellen der Archivdatei  
+26	Fehler beim Erstellen der Lieferung  
+27	Temporäre Daten konnten nicht entfernt werden  
