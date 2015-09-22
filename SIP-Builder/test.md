@@ -20,5 +20,6 @@ A German manual explaining the steps in GUI mode and all of the possible paramet
 1. Eins  
   1.1 eins eins  
 2. zwei  
-  2.2 zwei zwei  
+  2.1 zwei eins  
+5. drei
 
