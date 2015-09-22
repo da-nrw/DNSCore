@@ -479,9 +479,12 @@ public class Gui extends JFrame{
 	 * Creates the text labels
 	 */
 	private void initializeTextLabels() {
+		
+		String buildNumber = System.getenv("BUILD_NUMBER");
+		
 
-		versionInfoLabel = new JLabel("SIP-Builder v" + Utilities.getSipBuilderShortVersion() + 
-				" ®2011-2014 Historisch-Kulturwissenschaftliche Informationsverarbeitung");
+		versionInfoLabel = new JLabel("SIP-Builder Build: " + buildNumber + 
+				", LVR-InfoKom (ab 2014). HKI, Universität zu Köln 2011-2014.");
 		versionInfoLabel.setFont(standardFont.deriveFont(10.0f));
 		versionInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		versionInfoLabel.setForeground(Color.WHITE);
