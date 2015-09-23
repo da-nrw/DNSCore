@@ -35,7 +35,6 @@
 			<id>ci</id>
 			<properties>
 				<env>ci</env>
-				<property name="build_number"  value="${env.BUILD_NUMBER}"/>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -52,11 +51,6 @@
 		        <configuration>
                     <skip>true</skip>
                 </configuration>
-                <systemPropertyVariables>
-		            <propertyName>env</propertyName>
-		            <propertyValue>${env}</propertyValue>
-		            <property name="build_parameter"  value="{env.BUILD_NUMBER}"/>
-		        </systemPropertyVariables>
 		      </configuration>
 		      
 		       <executions>
@@ -149,8 +143,6 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
-				
-				
 				<executions>
 					<execution>
 						<id>packageit</id>
@@ -169,9 +161,6 @@
 						</goals>
 					</execution>
 				</executions>
-				
-				
-				
 				<dependencies>
 					<dependency>
 						<groupId>org.apache.ant</groupId>
