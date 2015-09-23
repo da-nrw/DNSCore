@@ -20,7 +20,7 @@
 
 ## Prerequisites
 
-* Oracle Java 1.6 (1.7 prooved for DA-WEB)
+* Oracle Java > 1.6 (1.7 prooved for DA-WEB)
 * Tomcat6 or Tomcat7 
 * Grails 2.3.8
 	
