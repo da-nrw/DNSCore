@@ -1,4 +1,4 @@
-# Leistungsmerkmal: Statusabfrage
+# Leistungsmerkmal: Statusabfragen eines oder mehrerer Pakete
 
 Für Informationen zu der Verabreitung von Paketen (AIP Erstellung, Verarbeitung von DIP Anfragen u.ä.) steht im Normalfall dem Anwender die Webschnittstelle DA-WEB zur Verfügung.
 
