@@ -120,4 +120,38 @@ das Object als "Object in transient state"
 ```json
 {"result":[{"type":"QueueEntry","urn":null,"contractor":"LVR-Test","origName":"AT-V-001_ATDuplicateDocumentName_2015-03-16","identifier":"2-20150316407197","status":"package in progress error : (114)"},
 {"type":"Object","status":"Object is in transient state","urn":null,"contractor":"LVR-Test","origName":"AT-V-001_ATDuplicateDocumentName_2015-03-16","identifier":"2-20150316407197","packages":["1"]}]}
+
+
+
+## Szenario: AT-R-JSON-1
+
+Automatisierte Drittsysteme haben die Möglichkeit, Retrievalanfragen auch mittels JSON Request zu erstellen. 
+
+#### Testpaket(e):
+
+#### Vorbedingungen:
+
+#### Durchführung:
+
+#### Akzeptanzkriterien:
+
+#### Status und offene Punkte:
+
+## Szenario: AT-R-CSV-1
+
+Der Anwender hat die Möglichkeit, Retrievalanfragen mittels einer vorbereiteten CSV Datei mit den Spaltenköpfen
+
+    identifier;origName;statuscode;erfolg;bemerkung
+
+Im Zeichensatz CP1252 (Windows Standard), semikolongetrennt zu erstellen. 
+
+#### Testpaket(e):
+
+#### Vorbedingungen:
+
+#### Durchführung:
+
+#### Akzeptanzkriterien:
+
+#### Status und offene Punkte:
 ```
