@@ -6,6 +6,8 @@ Da es für massenhafte Abfragen (druch Drittsysteme, durch den Anwender zur Übe
 
 Es gibt eine technische Webschnittstelle, die Anfragen im JSON Format via HTTP verarbeiten kann. Die Antworten des Systems erfolgen als maschinenlesbarer JSON Code. Dieses Teilfeature eignet sich für Drittsysteme und arbeiten durch technische Anmeldung am System. Direkter Internetzugriff auf DNS und dem Drittsystem sind erforderlich.
 
+Sollte bei den HTTP-JSON Abfragen spezielle, reserierte Zeichen verwendet werden (https://tools.ietf.org/html/rfc3986#section-2.2), so sind diese zu enkodieren.
+
 Parallel dazu gibt es die Möglichkeit, Abfragen mittels einer CSV Datei durchzuführen.
 
 Beide technischen Abfragen arbeiten auf der Statusabfrage (ist mein Objekt fertig archiviert? In welchem Arbeitsschritt ist mein SIP jetzt?) UND auf dem Leistungsmerkmal Retrieval. Es ist also möglich, via dieser Abfragen auch Retrievalanfragen zu erstellen. 
