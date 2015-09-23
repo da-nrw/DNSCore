@@ -22,6 +22,8 @@
  */
 package de.uzk.hki.da.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -55,6 +57,23 @@ public class SystemEvent {
 	private String type;
 	
 	private String parameter;
+	
+	private String period;
+	
+	private Date last_executed;
+	
+	public String getPeriod() {
+		return period;
+	}
+	public void setPeriod(String period) {
+		this.period = period;
+	}
+	public Date getLast_executed() {
+		return last_executed;
+	}
+	public void setLast_executed(Date last_executed) {
+		this.last_executed = last_executed;
+	}
 	public User getOwner() {
 		return owner;
 	}
