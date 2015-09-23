@@ -27,7 +27,7 @@ Eine semikolongetrennte Datei mit den Spalten:
     identifier;origName;statuscode;erfolg;bemerkung
 
 Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mittels EXCEL erstellt wurde. 
-[Besipiel](DNSCore/master/ContentBroker/src/test/resources/at/ATCSVQueries.csv)
+[Beispiel](/DNSCore/master/ContentBroker/src/test/resources/at/ATCSVQueries.csv)
 
 #### Testpaket(e):
 
