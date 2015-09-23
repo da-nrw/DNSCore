@@ -63,34 +63,4 @@ Gilt für alle Szenarien:
 
 #### Status und offene Punkte:
 
-## Szenario: AT-R-JSON-1
 
-Automatisierte Drittsysteme haben die Möglichkeit, Retrievalanfragen auch mittels JSON Request zu erstellen. 
-
-#### Testpaket(e):
-
-#### Vorbedingungen:
-
-#### Durchführung:
-
-#### Akzeptanzkriterien:
-
-#### Status und offene Punkte:
-
-## Szenario: AT-R-CSV-1
-
-Der Anwender hat die Möglichkeit, Retrievalanfragen mittels einer vorbereiteten CSV Datei mit den Spaltenköpfen
-
-    identifier;origName;statuscode;erfolg;bemerkung
-
-Im Zeichensatz CP1252 (Windows Standard), semikolongetrennt zu erstellen. 
-
-#### Testpaket(e):
-
-#### Vorbedingungen:
-
-#### Durchführung:
-
-#### Akzeptanzkriterien:
-
-#### Status und offene Punkte:
