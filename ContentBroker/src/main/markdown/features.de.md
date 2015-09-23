@@ -28,4 +28,4 @@ a command line interface.
 * Leistungsmerkmal [Validierung der Einlieferung](feature_ingest_validation.md)
 * Leistungsmerkmal [Vergabe von Identifiern](feature_identifier_assignment.md)
 * Leistungsmerkmal [Statusabfrage](feature_object_state_request.md) 
-*  Leistungsmerkmal [Automatisierte Abfragen](feature_object_automated_requests.md) 
+*  Leistungsmerkmal [Automatisierte Abfragen](feature_object_automated_queries.md) 
