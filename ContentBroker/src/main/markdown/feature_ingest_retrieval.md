@@ -29,7 +29,7 @@ Gilt für alle Szenarien:
 1. Der User entnimmt das Paket dem User-Entnahmeordner.
 1. Der User entpackt das Paket und überprüft die Inhalten
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 * Der User erhält innerhalb einer Minute einen Einlieferungsbeleg in seinem Email-Postfach.
 * Der Einlieferungsbeleg enthält die Information, dass die Archivierung des Objektes erfolgreich war.
@@ -59,8 +59,7 @@ Gilt für alle Szenarien:
 
 #### Durchführung:
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 #### Status und offene Punkte:
 
-####
