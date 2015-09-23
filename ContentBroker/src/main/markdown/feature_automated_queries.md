@@ -117,10 +117,11 @@ wie vor
 Die Response bezeichnet das Objekt als "transient" und den Queue Entry als "package in progress error", 
 das Object als "Object in transient state"
 
-json
+
+```json
 {"result":[{"type":"QueueEntry","urn":null,"contractor":"LVR-Test","origName":"AT-V-001_ATDuplicateDocumentName_2015-03-16","identifier":"2-20150316407197","status":"package in progress error : (114)"},
 {"type":"Object","status":"Object is in transient state","urn":null,"contractor":"LVR-Test","origName":"AT-V-001_ATDuplicateDocumentName_2015-03-16","identifier":"2-20150316407197","packages":["1"]}]}
-
+```
 
 
 ## Szenario: AT-R-JSON-1
