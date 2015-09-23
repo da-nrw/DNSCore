@@ -480,7 +480,8 @@ public class Gui extends JFrame{
 	 */
 	private void initializeTextLabels() {
 		
-		String buildNumber = System.getProperty("BUILD_NUMBER", "UNKNOWN");
+		String buildNumber = System.getenv("build.number");
+
 		
 		versionInfoLabel = new JLabel("SIP-Builder Build: " + buildNumber + 
 				", LVR-InfoKom (ab 2014). HKI, Universität zu Köln 2011-2014.");

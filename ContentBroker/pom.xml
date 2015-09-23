@@ -113,11 +113,11 @@
 				<configuration>
 				<argLine>-Xmx512m -XX:MaxPermSize=256m</argLine>
 				<systemProperties>
-            <property>
-              <name>env</name>
-              <value>${env}</value>
-            </property>
-          </systemProperties>
+            		<property>
+              			<name>env</name>
+              			<value>${env}</value>
+            		</property>
+         		</systemProperties>
 					<includes>
 						<include>**/AT**.java</include>
 					</includes>
