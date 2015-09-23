@@ -11,7 +11,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>SipBuilder</artifactId>
 	<packaging>jar</packaging>
-	<name>SIPBuilder</name>
+	<name>SIPBuilder</name>	
 	
 	<properties>
 		<scp.user>irods</scp.user>
@@ -19,7 +19,6 @@
 		<scp.toDir>/data/danrw/www/ssl/htdocs/sipbuilder/</scp.toDir>
 		<maven.test.search.classdir>true</maven.test.search.classdir>
     	<include.tests>**/*DDDCDDSD*.java</include.tests>
-		<property name="build_number"  value="$BUILD_NUMBER"/>
 	</properties>
 	
 	<profiles>
@@ -52,6 +51,11 @@
 		        <configuration>
                     <skip>true</skip>
                 </configuration>
+                <systemPropertyVariables>
+		            <propertyName>env</propertyName>
+		            <propertyValue>${env}</propertyValue>
+		            <property name="build_parameter"  value="{env.BUILD_NUMBER}"/>
+		        </systemPropertyVariables>
 		      </configuration>
 		      
 		       <executions>
