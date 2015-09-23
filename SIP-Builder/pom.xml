@@ -35,8 +35,7 @@
 			<id>ci</id>
 			<properties>
 				<env>ci</env>
-				<property environment="env" />
-				<property name="build_number"  value="${env.BUILD_NUMBER}"/>
+				<property name="build_number"  value="g${env.BUILD_NUMBER}"/>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
