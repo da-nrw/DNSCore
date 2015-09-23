@@ -45,7 +45,7 @@ software must handle the organization of objects and packages in the background.
 speak of an object in the context of DNSCore as our main entity in the object model, we have
 a unit of data which can consist of data of more than one package/SIP at the same time. 
 
-For a more extensive feature list, see [here](ContentBroker/src/main/markdown/features.md)
+For a more extensive feature list, see [here](ContentBroker/src/main/markdown/features.de.md)
 
 ## Documentation
 
