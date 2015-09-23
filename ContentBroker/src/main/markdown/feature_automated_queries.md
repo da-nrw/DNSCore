@@ -4,11 +4,20 @@ Für Informationen zu der Verabreitung von Paketen steht im Normalfall dem Anwen
 
 Da es für massenhafte Abfragen (druch Drittsysteme, durch den Anwender zur Überwachung einer Charge) auch möglich sein soll generisch Abfragen an die DNS zu stellen, stehen zwei Wege zur Verfügung: 
 
-Es gibt eine technische Webschnittstelle, die Anfragen im JSON Format via HTTP verarbeiten kann. Die Antworten des Systems erfolgen als maschinenlesbarer JSON Code. Dieses Teilfeature eignet sich für Drittsysteme und arbeiten durch technische Anmeldung am System. Direkter Internetzugriff auf DNS und dem Drittsystem sind erforderlich.
+Es gibt eine technische Webschnittstelle, die Anfragen im JSON Format via HTTP verarbeiten kann. Die Antworten des Systems erfolgen als maschinenlesbarer JSON Code. Dieses Teilfeature eignet sich für Drittsysteme und arbeitet mit einer technischen Anmeldung am System. Direkter Internetzugriff zwischen DNS und dem Drittsystem sind erforderlich.
 
-Parallel dazu gibt es die Möglichkeit, Abfragen mittels einer CSV Datei durchzuführen.
+Parallel dazu gibt es die Möglichkeit generell Abfragen mittels einer CSV Datei durchzuführen.
 
-Beide technischen Abfragen arbeiten auf der Statusabfrage (ist mein Objekt fertig archiviert? In welchem Arbeitsschritt ist mein SIP jetzt?) UND auf dem Leistungsmerkmal Retrieval. Es ist also möglich, via dieser Abfragen auch Retrievalanfragen zu erstellen. 
+Beide technischen Abfragen arbeiten im Use case der reinen Statusabfrage:
+Bsp.:
+1. Ist mein Objekt fertig archiviert?
+2. In welchem Arbeitsschritt ist mein SIP jetzt?
+3. Welcher Fehler liegt vor? 
+
+UND auf dem Leistungsmerkmal Retrieval. Es ist also möglich, via dieser Abfragen auch Retrievalanfragen zu erstellen. 
+Bsp.:
+1. Eine Liste an Einlieferungsnamen liegt vor 
+2. Eine größere Menge an AIP soll abgefragt werden (massenhaftes Retrieval)
 
 Im folgenden sind die Statusabfrageszenarien als AT-ST-JSON-1 bis AT-ST-JSON-5 gelistet, bzw. AT-R-JSON-1 für das Retrieval. 
 
@@ -22,7 +31,9 @@ ATCSVQueries
     
 ##### Vorbedingungen:
 
-Eine semikolongetrennte Datei mit den Spalten:
+1. Excel 
+2. Login an der DAWEB
+3. Eine semikolongetrennte Datei mit den Spalten:
 
     identifier;origName;statuscode;erfolg;bemerkung
 
@@ -31,14 +42,44 @@ Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mi
 
 #### Testpaket(e):
 
-#### Vorbedingungen:
+ATUseCaseIngest1.tgz
 
 #### Durchführung:
 
+1. Die Datei ATUseCaseIngest1.tgz wird eingespielt. Es muss die Info über eine positive Archivierung erhalten worden sein.
+2. Die [Datei wird heruntergeladen und in EXCEL geöffnet](../../../src/test/resources/at/ATCSVQueries.csv)
+2. Die EXCEL Testdaei wird mit dem vergebenen Originalnamen des AIP befüllt. 
+3. Die Excel wird gespeichert.
+4. Der Tester meldet sich an der DAWEB an. 
+5. Hochladen der CSV Datei mittels der DA-WEB oder Ablage in den incoming Ordner des Contractors.
+6. Start der Berichtseerstellung mittels "erneut generieren".
+
 #### Akzeptanzkriterien:
+
+1. Die CSV Datei enthält nun in der der Spalte Bemerkung "fertig archiviert" und in der Spalte "erfolg"  true, ferner ist die Spalte identifier vom System befüllt. 
 
 #### Status und offene Punkte
 
+erfolg true fehlt noch
+
+## Szenario AT-ST-CSV-2: Statusabfrage mittels vorbereiteter CSV Datei eines stehenden Arbeitsschritts
+
+#### Vorbedingungen:
+
+wie vor
+
+#### Testpaket(e):
+
+z.B. ATDetectUncompletedReferencesLido.tgz (Paket führt zu keinem gültigen AIP). D.h. die Verabreitung darf bei diesem SIP NICHT erfolgreich verlaufen. 
+
+#### Durchführung:
+
+1. Notierung des OrigNames aus der Jobansicht 
+2. wie vor
+
+#### Akzeptanzkriterien:
+
+Die CSV Datei enthält einen Eintrag in der Spalte erfolg = false und den identischen Statuscode. 
 
 ## Szenario AT-ST-JSON-1: Statusabfrage eines fehlerfrei archivierten Pakets mit Originalname mittels JSON
 
@@ -146,6 +187,15 @@ das Object als "Object in transient state"
 ## Szenario: AT-R-JSON-1
 
 Automatisierte Drittsysteme haben die Möglichkeit, Retrievalanfragen auch mittels JSON Request zu erstellen. 
+Retrieval requests by external systems can be issued by POST requests to an RESTful interface which is available at the URL https://Servername/daweb3/automatedRetrieval/queueForRetrievalJSON
+
+The JSON POST Data must at least contain one of the following fields: URN, IDENTIFIER, ORGINALNAME.
+
+The original name should be the name, the item is listed in your own domain, while the other identifiers (identifier and urn) are build during the ingest process.
+
+Example:
+
+{"urn":"urn:nbn:de:danrw-131614-2013111519609","origName":"testPackage_docx99","identifier":"131614-2013111519609"}
 
 #### Testpaket(e):
 
@@ -159,19 +209,37 @@ Automatisierte Drittsysteme haben die Möglichkeit, Retrievalanfragen auch mitte
 
 ## Szenario: AT-R-CSV-1
 
-Der Anwender hat die Möglichkeit, Retrievalanfragen mittels einer vorbereiteten CSV Datei mit den Spaltenköpfen
+#### Kontext:
+
+ATCSVQueries 
+    
+##### Vorbedingungen:
+
+1. Excel 
+2. Login an der DAWEB
+3. Eine semikolongetrennte Datei mit den Spalten:
 
     identifier;origName;statuscode;erfolg;bemerkung
 
-Im Zeichensatz CP1252 (Windows Standard), semikolongetrennt zu erstellen. 
+Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mittels EXCEL erstellt wurde. 
+[Beispiel](../../../src/test/resources/at/ATCSVQueries.csv)
 
 #### Testpaket(e):
 
-#### Vorbedingungen:
+ATUseCaseIngest1.tgz
 
 #### Durchführung:
 
+1. Die Datei ATUseCaseIngest1.tgz wird eingespielt. Es muss die Info über eine positive Archivierung erhalten worden sein.
+2. Die [Datei wird heruntergeladen und in EXCEL geöffnet](../../../src/test/resources/at/ATCSVQueries.csv)
+2. Die EXCEL Testdaei wird mit dem vergebenen Originalnamen des AIP befüllt. 
+3. Die Excel wird gespeichert.
+4. Der Tester meldet sich an der DAWEB an. 
+5. Hochladen der CSV Datei mittels der DA-WEB oder Ablage in den incoming Ordner des Contractors.
+6. Start des Massentretrievals mittels "Retrieval starten".
+
 #### Akzeptanzkriterien:
 
-#### Status und offene Punkte:
-```
+Die Retrievalanfrage wird korrekt verarbeitet und das DIP steht zur Entnahme bereit.  
+
+#### Status und offene Punkte

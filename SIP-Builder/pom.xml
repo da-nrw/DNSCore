@@ -35,6 +35,7 @@
 			<id>ci</id>
 			<properties>
 				<env>ci</env>
+				<property name="build_number"  value="${env.BUILD_NUMBER}"/>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>

@@ -99,7 +99,10 @@ public class ATCSVQueries extends AcceptanceTest {
 			Thread.sleep(1000l);
 			timeStamp = file.lastModified();
 			i++;
-			if (i>30) return false;
+			if (i>60) {
+				System.out.println(file + " was NOT changed!");
+				return false;
+			}
 		}
 		System.out.println(file + " was changed!");
 		return true;
