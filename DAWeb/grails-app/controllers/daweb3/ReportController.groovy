@@ -16,6 +16,11 @@ class ReportController {
 			redirect(action: 'delete', params: [currentFiles: params.list("currentFiles")]);
 			return
 		}  
+		if (params.get("answer").equals("retrieval")) {
+			log.debug("retrieve")
+			redirect(action: 'retrieval');
+			return
+		}
 		redirect(action: 'index');
 		return
 	}
@@ -27,25 +32,31 @@ class ReportController {
 		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
 		def httpurl = grailsApplication.config.transferNode.downloadLinkPrefix +"/"+   user.getShortName()  + "/incoming"
 		
-		def msg = ""
+		def msgN = ""
 		def baseDir;
 		def filelist = []
 		try {
 			baseDir = new File(baseFolder)
 			if (!baseDir.exists()) {
-				msg = "Benutzerordner nicht gefunden"
-				log.error(msg);
+				msgN = "Benutzerordner nicht gefunden"
+				log.error(msgN);
 			}
 		
 		
 		baseDir.eachFileMatch(~/^(?!\.).*?\.csv/) { file -> filelist.add(file)}
-		if (filelist.empty) msg ="Keine Dateien im Eingangsordner gefunden";
+		if (filelist.empty) msgN ="Keine Dateien im Eingangsordner gefunden";
 	 
 		} catch (e) {
-		msg = "Benutzerordner " + baseFolder+ " existiert nicht!"
-		log.error(msg);
+		msgN = "Benutzerordner " + baseFolder+ " existiert nicht!"
+		log.error(msgN);
 	
 		}
+		def msg = null;
+		msg = params.get("msg");
+		params.remove("msg");
+		if (msg!=null) {
+		msg = msg + " " + msgN
+		} else msg = msgN
 			[filelist:filelist,
 			 msg:msg,httpurl:httpurl]
 	}
@@ -59,22 +70,37 @@ class ReportController {
 		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
 		
 		def uploadedfile = request.getFile("file");
-		uploadedfile.transferTo(new File (baseFolder + "/"+ uploadedfile.getOriginalFilename()))
-			return redirect(action: "start", params: params);
-		} else return redirect(action: "index", params: params)
+		if (!uploadedfile.isEmpty()) {
+			uploadedfile.transferTo(new File (baseFolder + "/"+ uploadedfile.getOriginalFilename()))
+			return redirect(action: "index", params: [msg :uploadedfile.getOriginalFilename() + " wurde hochgeladen" ]);
+			} 
+		} 
+		return redirect(action: "index", params: [msg: "keine Datei hochgeladen!"])
 		
 	}
 	
 	def start(){
+			def user = springSecurityService.currentUser
+			CbNode node = CbNode.findById(grailsApplication.config.localNode.id);
+			SystemEvent se = new SystemEvent();
+			se.setType("CreateStatusReportEvent");
+			se.setUser(user);
+			se.setNode(node);
+			se.save();
+			return redirect(action: "index", params: [msg: "Auftrag zur Erstellung eines Statusreports erfolgreich erstellt!"])
+	}
+	
+	def retrieval(){
 		def user = springSecurityService.currentUser
 		CbNode node = CbNode.findById(grailsApplication.config.localNode.id);
 		SystemEvent se = new SystemEvent();
-		se.setType("CreateStatusReportEvent");
+		se.setType("CreateRetrievalRequestsEvent");
 		se.setUser(user);
 		se.setNode(node);
 		se.save();
-		return redirect(action: "index", params: params)
-	}
+		return redirect(action: "index", params: [msg: "Auftrag zum massenhaften Retrieval erfolgreich erstellt!"])
+		
+	} 
 	
 	def delete = {
 		def user = springSecurityService.currentUser
@@ -92,6 +118,6 @@ class ReportController {
 			 }
 		}
 		[msg:msg]
-		redirect(action:"index")
+		redirect(action:"index",params: [msg: files.size() + " Dateien gelöscht!"])
 	}
 }

@@ -1,6 +1,5 @@
 # Feature List
 
-
 * DAWeb - Graphical user interface for administrators and users
 * Storage Layer - geographical distribution/replication of data
 * Self validating ("audit")
@@ -14,7 +13,7 @@ To build streamlined SIP based based on the used SIP specifications, take a look
 SIP submitted to the DNS. The software could be easily integrated in subsystems, due to having 
 a command line interface.
 
-
+The following list, contains a full description of each feature available in DNS. (German only)
 
 * Leistungsmerkmal [Migrationsbedingungen](feature_migration_right.md)
 * Leistungsmerkmal [Integritätsprüfung](feature_integrity_check.md)
@@ -27,4 +26,4 @@ a command line interface.
 * Leistungsmerkmal [Publikation Delta](feature_publication_delta.md)
 * Leistungsmerkmal [Validierung der Einlieferung](feature_ingest_validation.md)
 * Leistungsmerkmal [Vergabe von Identifiern](feature_identifier_assignment.md)
-* Leistungsmerkmal [Statusabfrage](feature_object_state_request.md) 
+* Leistungsmerkmal [Automatisierte Abfragen (Status und Retrieval)](feature_automated_queries.md) 

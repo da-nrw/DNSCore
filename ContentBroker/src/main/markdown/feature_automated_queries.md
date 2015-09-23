@@ -1,24 +1,43 @@
-# Leistungsmerkmal: Statusabfragen eines oder mehrerer Pakete
+# Leistungsmerkmal: Automatisierte Abfragen (Status & Retrieval)
 
-Für Informationen zu der Verabreitung von Paketen (AIP Erstellung, Verarbeitung von DIP Anfragen u.ä.) steht im Normalfall dem Anwender die Webschnittstelle DA-WEB zur Verfügung.
+Für Informationen zu der Verabreitung von Paketen steht im Normalfall dem Anwender die Webschnittstelle DA-WEB zur Verfügung. 
 
-Da es für die Abfrage durch Drittsysteme erforderlich sein kann, auch generisch Abfragen zu Status von Objekten durchzuführen, sollen im folgenden die Features zu "Statusabfragen" aufgelistet werden. 
+Da es für massenhafte Abfragen (druch Drittsysteme, durch den Anwender zur Überwachung einer Charge) auch möglich sein soll generisch Abfragen an die DNS zu stellen, stehen zwei Wege zur Verfügung: 
 
-Es gibt eine technische Webschnittstelle, die Anfragen im JSON Format via HTTP verarbeiten kann. Die Antworten des Systems erfolgen als maschinenlesbarer JSON Code.
+Es gibt eine technische Webschnittstelle, die Anfragen im JSON Format via HTTP verarbeiten kann. Die Antworten des Systems erfolgen als maschinenlesbarer JSON Code. Dieses Teilfeature eignet sich für Drittsysteme und arbeiten durch technische Anmeldung am System. Direkter Internetzugriff auf DNS und dem Drittsystem sind erforderlich.
 
-Im folgenden sind diese Szenarien als AT-ST-JSON-1 bis AT-ST-JSON-5 gelistet.
+Parallel dazu gibt es die Möglichkeit, Abfragen mittels einer CSV Datei durchzuführen.
 
-Parallel dazu gibt es die Möglichkeit, Abfragen mittels einer CSV Datei durchzuführen. Diese haben die Bezeichnung AT-ST-CSV-1 bis AT-ST-CSV-5. Dadurch können Abfragen mittels einer vorbereiteten Abfragedatei vorgenommen werden. Diese Datei ist semikolongetrennt mit den Spalten:
+Beide technischen Abfragen arbeiten auf der Statusabfrage (ist mein Objekt fertig archiviert? In welchem Arbeitsschritt ist mein SIP jetzt?) UND auf dem Leistungsmerkmal Retrieval. Es ist also möglich, via dieser Abfragen auch Retrievalanfragen zu erstellen. 
 
-identifier;origName;statuscode;erfolg;bemerkung
+Im folgenden sind die Statusabfrageszenarien als AT-ST-JSON-1 bis AT-ST-JSON-5 gelistet, bzw. AT-R-JSON-1 für das Retrieval. 
 
-zu versehen. Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mittels EXCEL erstellt wurde. 
+Die Statusabfrageb mittels CSV Datei haben die Bezeichnung AT-ST-CSV-1 bis AT-ST-CSV-5, bzw. AT-R-CSV-1 für das Retrieval. 
 
 ## Szenario AT-ST-CSV-1: Statusabfrage mittels vorbereiteter CSV Datei eines fehlerfrei archivierten Pakets
 
+#### Kontext:
+
+ATCSVQueries 
+    
 ##### Vorbedingungen:
 
+Eine semikolongetrennte Datei mit den Spalten:
 
+    identifier;origName;statuscode;erfolg;bemerkung
+
+Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mittels EXCEL erstellt wurde. 
+[Besipiel](../blob/master/DNSCore/ContentBroker/src/test/resources/at/ATCSVQueries.csv)
+
+#### Testpaket(e):
+
+#### Vorbedingungen:
+
+#### Durchführung:
+
+#### Akzeptanzkriterien:
+
+#### Status und offene Punkte
 
 
 ## Szenario AT-ST-JSON-1: Statusabfrage eines fehlerfrei archivierten Pakets mit Originalname mittels JSON
@@ -117,7 +136,42 @@ wie vor
 Die Response bezeichnet das Objekt als "transient" und den Queue Entry als "package in progress error", 
 das Object als "Object in transient state"
 
+
 ```json
 {"result":[{"type":"QueueEntry","urn":null,"contractor":"LVR-Test","origName":"AT-V-001_ATDuplicateDocumentName_2015-03-16","identifier":"2-20150316407197","status":"package in progress error : (114)"},
 {"type":"Object","status":"Object is in transient state","urn":null,"contractor":"LVR-Test","origName":"AT-V-001_ATDuplicateDocumentName_2015-03-16","identifier":"2-20150316407197","packages":["1"]}]}
+```
+
+
+## Szenario: AT-R-JSON-1
+
+Automatisierte Drittsysteme haben die Möglichkeit, Retrievalanfragen auch mittels JSON Request zu erstellen. 
+
+#### Testpaket(e):
+
+#### Vorbedingungen:
+
+#### Durchführung:
+
+#### Akzeptanzkriterien:
+
+#### Status und offene Punkte:
+
+## Szenario: AT-R-CSV-1
+
+Der Anwender hat die Möglichkeit, Retrievalanfragen mittels einer vorbereiteten CSV Datei mit den Spaltenköpfen
+
+    identifier;origName;statuscode;erfolg;bemerkung
+
+Im Zeichensatz CP1252 (Windows Standard), semikolongetrennt zu erstellen. 
+
+#### Testpaket(e):
+
+#### Vorbedingungen:
+
+#### Durchführung:
+
+#### Akzeptanzkriterien:
+
+#### Status und offene Punkte:
 ```
