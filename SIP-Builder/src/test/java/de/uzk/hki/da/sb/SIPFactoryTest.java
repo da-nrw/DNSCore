@@ -246,15 +246,15 @@ public class SIPFactoryTest {
 	@Test
 	public void testBuildNestedSIPs() throws Exception {
 		
-		System.out.println("Print system env list");
-		for(String i : System.getenv().keySet()) {
-			System.out.println(i+" = "+System.getenv(i));
-		}
-		
-		System.out.println("Print system properties list");
-		for(Object j : System.getProperties().keySet()) {
-			System.out.println(j+" = "+System.getProperty((String)j));
-		}
+//		System.out.println("Print system env list");
+//		for(String i : System.getenv().keySet()) {
+//			System.out.println(i+" = "+System.getenv(i));
+//		}
+//		
+//		System.out.println("Print system properties list");
+//		for(Object j : System.getProperties().keySet()) {
+//			System.out.println(j+" = "+System.getProperty((String)j));
+//		}
 		
 		String fixedUrn1 = "urn+nbn+de+hbz+6+1-3602";
 		String fixedUrn2 = "urn+nbn+de+hbz+42";

@@ -19,6 +19,7 @@
 		<scp.toDir>/data/danrw/www/ssl/htdocs/sipbuilder/</scp.toDir>
 		<maven.test.search.classdir>true</maven.test.search.classdir>
     	<include.tests>**/*DDDCDDSD*.java</include.tests>
+		<property name="build_number"  value="$BUILD_NUMBER"/>
 	</properties>
 	
 	<profiles>
