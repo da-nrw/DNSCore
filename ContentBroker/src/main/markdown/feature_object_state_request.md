@@ -8,17 +8,20 @@ Es gibt eine technische Webschnittstelle, die Anfragen im JSON Format via HTTP v
 
 Im folgenden sind diese Szenarien als AT-ST-JSON-1 bis AT-ST-JSON-5 gelistet.
 
-Parallel dazu gibt es die Möglichkeit, Abfragen mittels einer CSV Datei durchzuführen. Dadurch können Abfragen mittels einer vorbereiteten Abfragedatei vorgenommen werden. Diese Datei ist semikolongetrennt mit den Spalten 
+Parallel dazu gibt es die Möglichkeit, Abfragen mittels einer CSV Datei durchzuführen. Diese haben die Bezeichnung AT-ST-CSV-1 bis AT-ST-CSV-5. Dadurch können Abfragen mittels einer vorbereiteten Abfragedatei vorgenommen werden. Diese Datei ist semikolongetrennt mit den Spalten:
 
 identifier;origName;statuscode;erfolg;bemerkung
 
 zu versehen. Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mittels EXCEL erstellt wurde. 
 
-## Szenario AT-ST-CSV-1
+## Szenario AT-ST-CSV-1: Statusabfrage mittels vorbereiteter CSV Datei eines fehlerfrei archivierten Pakets
+
+##### Vorbedingungen:
 
 
 
-## Szenario AT-ST-JSON-1: Statusabfrage eines fehlerfrei archivierten Pakets mit Originalname
+
+## Szenario AT-ST-JSON-1: Statusabfrage eines fehlerfrei archivierten Pakets mit Originalname mittels JSON
 
 ##### Vorbedingungen:
 
@@ -45,7 +48,7 @@ https://da-nrw-q.lvr.de/daweb3/status/index?origName=EAD_Testdatensatz_2015-03-1
 ]}
 ```
 
-## Szenario AT-ST-JSON-2: Statusabfrage eines fehlerfrei archivierten Pakets mit URN
+## Szenario AT-ST-JSON-2: Statusabfrage eines fehlerfrei archivierten Pakets mit URN mit JSON
 
 #### Vorbedingungen:
 
@@ -61,7 +64,7 @@ wie vor, nun aber mit der URL&nbsp;
 
 wie vor
 
-## Szenario AT-ST-JSON-3: Statusabfrage eines fehlerfrei archivierten Pakets mit Identifier
+## Szenario AT-ST-JSON-3: Statusabfrage eines fehlerfrei archivierten Pakets mit Identifier mit JSON
 
 #### Vorbedingungen:
 
@@ -77,7 +80,7 @@ wie vor, nun aber mit der URL
 
 wie vor
 
-## Szenario AT-ST-JSON-4: Abfrage der URN eines fehlerfrei archivierten Pakets mittels OriginalNamen
+## Szenario AT-ST-JSON-4: Abfrage der URN eines fehlerfrei archivierten Pakets mittels OriginalNamen mit JSON
 
 #### Vorbedingungen:
 
@@ -94,7 +97,7 @@ wie vor, nun aber mit der URL
 
 Die JSON Response enthält den korrekten Wert für URN
 
-## Szenario AT-ST-JSON-5: Statusabfrage eines Pakets im Fehlerstatus
+## Szenario AT-ST-JSON-5: Statusabfrage eines Pakets im Fehlerstatus mit JSON
 
 #### Kontext:
 
