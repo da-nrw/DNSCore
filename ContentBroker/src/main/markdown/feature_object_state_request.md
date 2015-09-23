@@ -1,8 +1,24 @@
 # Leistungsmerkmal: Statusabfrage
 
-Drittsysteme sollen die Möglichkeit haben, Informationen zu Objekten abzufragen. Es handelt sich primär um eine technische Schnittstelle. Die Antworten des Systems erfolgen als maschinenlesbarer JSON Code.
+Für Informationen zu der Verabreitung von Paketen (AIP Erstellung, Verarbeitung von DIP Anfragen u.ä.) steht im Normalfall dem Anwender die Webschnittstelle DA-WEB zur Verfügung.
 
-## Szenario AT-ST-1: Statusabfrage eines fehlerfrei archivierten Pakets mit Originalname
+Da es für die Abfrage durch Drittsysteme erforderlich sein kann, auch generisch Abfragen zu Status von Objekten durchzuführen, sollen im folgenden die Features zu "Statusabfragen" aufgelistet werden. 
+
+Es gibt eine technische Webschnittstelle, die Anfragen im JSON Format via HTTP verarbeiten kann. Die Antworten des Systems erfolgen als maschinenlesbarer JSON Code.
+
+Im folgenden sind diese Szenarien als AT-ST-JSON-1 bis AT-ST-JSON-5 gelistet.
+
+Parallel dazu gibt es die Möglichkeit, Abfragen mittels einer CSV Datei durchzuführen. Dadurch können Abfragen mittels einer vorbereiteten Abfragedatei vorgenommen werden. Diese Datei ist semikolongetrennt mit den Spalten 
+
+identifier;origName;statuscode;erfolg;bemerkung
+
+zu versehen. Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mittels EXCEL erstellt wurde. 
+
+## Szenario AT-ST-CSV-1
+
+
+
+## Szenario AT-ST-JSON-1: Statusabfrage eines fehlerfrei archivierten Pakets mit Originalname
 
 ##### Vorbedingungen:
 
@@ -29,7 +45,7 @@ https://da-nrw-q.lvr.de/daweb3/status/index?origName=EAD_Testdatensatz_2015-03-1
 ]}
 ```
 
-## Szenario AT-ST-2: Statusabfrage eines fehlerfrei archivierten Pakets mit URN
+## Szenario AT-ST-JSON-2: Statusabfrage eines fehlerfrei archivierten Pakets mit URN
 
 #### Vorbedingungen:
 
@@ -45,7 +61,7 @@ wie vor, nun aber mit der URL&nbsp;
 
 wie vor
 
-## Szenario AT-ST-3: Statusabfrage eines fehlerfrei archivierten Pakets mit Identifier
+## Szenario AT-ST-JSON-3: Statusabfrage eines fehlerfrei archivierten Pakets mit Identifier
 
 #### Vorbedingungen:
 
@@ -61,7 +77,7 @@ wie vor, nun aber mit der URL
 
 wie vor
 
-## Szenario AT-ST-4: Abfrage der URN eines fehlerfrei archivierten Pakets mittels OriginalNamen
+## Szenario AT-ST-JSON-4: Abfrage der URN eines fehlerfrei archivierten Pakets mittels OriginalNamen
 
 #### Vorbedingungen:
 
@@ -78,7 +94,7 @@ wie vor, nun aber mit der URL
 
 Die JSON Response enthält den korrekten Wert für URN
 
-## Szenario AT-ST-5: Statusabfrage eines Pakets im Fehlerstatus
+## Szenario AT-ST-JSON-5: Statusabfrage eines Pakets im Fehlerstatus
 
 #### Kontext:
 
