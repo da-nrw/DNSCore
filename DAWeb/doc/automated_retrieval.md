@@ -19,15 +19,4 @@
 	
 ## Automated Retrieval 
 
-Retrieval requests by external systems can be issued by POST requests to an RESTful interface 
-which is available at the URL  https://Servername/daweb3/automatedRetrieval/queueForRetrievalJSON
-
-The JSON POST Data must at least contain one of the following fields: 
-URN, IDENTIFIER, ORGINALNAME. 
-
-The original name should be the name, the item is listed in your own domain, while 
-the other identifiers (identifier and urn) are build during the ingest process.  
-
-Example: 
-
-{"urn":"urn:nbn:de:danrw-131614-2013111519609","origName":"testPackage_docx99","identifier":"131614-2013111519609"}
+(moved to https://github.com/da-nrw/DNSCore/blob/head/ContentBroker/src/main/markdown/feature_automated_queries.md)
