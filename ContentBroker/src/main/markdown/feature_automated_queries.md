@@ -1,14 +1,14 @@
 # Leistungsmerkmal: Automatisierte Abfragen (Status & Retrieval)
 
-Für Informationen zu der Verabreitung von Paketen steht im Normalfall dem Anwender die Webschnittstelle DA-WEB zur Verfügung. 
+Für Informationen zu der Verarbeitung von Paketen steht im Normalfall dem Anwender die Webschnittstelle DA-WEB zur Verfügung. 
 
-Da es für massenhafte Abfragen (druch Drittsysteme, durch den Anwender zur Überwachung einer Charge) auch möglich sein soll generisch Abfragen an die DNS zu stellen, stehen zwei Wege zur Verfügung: 
+Da es für massenhafte Abfragen (druch Drittsysteme, durch den Anwender zur Überwachung einer eingeliferten Charge) auch möglich sein soll generisch Abfragen an die DNS zu stellen, stehen zwei Wege zur Verfügung: 
 
 Es gibt eine technische Webschnittstelle, die Anfragen im JSON Format via HTTP verarbeiten kann. Die Antworten des Systems erfolgen als maschinenlesbarer JSON Code. Dieses Teilfeature eignet sich für Drittsysteme und arbeitet mit einer technischen Anmeldung am System. Direkter Internetzugriff zwischen DNS und dem Drittsystem sind erforderlich.
 
 Parallel dazu gibt es die Möglichkeit generell Abfragen mittels einer CSV Datei durchzuführen.
 
-Beide technischen Abfragen arbeiten im Use case der reinen Statusabfrage:
+Beide technischen Abfragen arbeiten jeweils im Use Case der reinen Statusabfrage:
 Bsp.:
 1. Ist mein Objekt fertig archiviert?
 2. In welchem Arbeitsschritt ist mein SIP jetzt?
@@ -16,12 +16,12 @@ Bsp.:
 
 UND auf dem Leistungsmerkmal Retrieval. Es ist also möglich, via dieser Abfragen auch Retrievalanfragen zu erstellen. 
 Bsp.:
-1. Eine Liste an Einlieferungsnamen liegt vor 
+1. Eine Liste an Einlieferungsnamen liegt vor, alle diese Objekte sollen abgefragt werden. 
 2. Eine größere Menge an AIP soll abgefragt werden (massenhaftes Retrieval)
 
 Im folgenden sind die Statusabfrageszenarien als AT-ST-JSON-1 bis AT-ST-JSON-5 gelistet, bzw. AT-R-JSON-1 für das Retrieval. 
 
-Die Statusabfrageb mittels CSV Datei haben die Bezeichnung AT-ST-CSV-1 bis AT-ST-CSV-5, bzw. AT-R-CSV-1 für das Retrieval. 
+Die Statusabfrageb mittels CSV Datei haben die Bezeichnung AT-ST-CSV-1 bis AT-ST-CSV-3, bzw. AT-R-CSV-1 für das Retrieval. 
 
 ## Szenario AT-ST-CSV-1: Statusabfrage mittels vorbereiteter CSV Datei eines fehlerfrei archivierten Pakets
 
