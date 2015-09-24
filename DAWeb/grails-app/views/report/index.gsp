@@ -2,6 +2,36 @@
 <head>
 	<title>Bericht verarbeiten</title>
 	<meta name="layout" content="main">
+	 <r:require modules="periodicalupdater, jqueryui"/>
+		<r:script>
+			$(function() {
+				$("#legend").accordion({ collapsible: true, active: false, autoHeight: false });
+			});
+			$(function() {
+				$("#filter").accordion({ collapsible: true, active: false });
+			});
+			
+			$.PeriodicalUpdater("./snippetIncoming",
+				{
+					method: "get",
+					minTimeout: 3000,
+					maxTimeout: 3000,
+					success: function(data) {
+						$("#entry-list1").html(data);
+					}
+				}
+			);
+			$.PeriodicalUpdater("./snippetOutgoing",
+				{
+					method: "get",
+					minTimeout: 1000,
+					maxTimeout: 1000,
+					success: function(data) {
+						$("#entry-list2").html(data);
+					}
+				}
+			);
+		</r:script>
 </head>
 
 <g:if test="${msg}">
@@ -12,14 +42,13 @@
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 			</ul>
 		</div>
-		
-<br>
+	<div id="items">	
+<h2>Bericht hochladen</h2>
 <g:form controller="report" method="POST" action="save" enctype="multipart/form-data">
 				<input type="file" name="file"/>
 <input type="submit" value="Hochladen" />
-</g:form>
-		
-
+</g:form><br>
+(Spaltenkopf: identifier;origName;status;bemerkung; semikolongetrennt, EXCEL)	
 <p>
 <script language="JavaScript">
 function toggle(source) {
@@ -28,22 +57,18 @@ function toggle(source) {
 	    checkboxes[i].checked = source.checked;
 }
 </script>
-	
+<h2>Wartend auf Aktion</h2>	
 <form id="form2" action="decider" >
-  
-<div id="items"><ul>
-<g:each in="${filelist}" var="currentFile" status="i">
-    <li><label><g:checkBox name="currentFiles" value="${currentFile.getName()}" checked="false" /><a href="${httpurl + "/" + currentFile.getName()}">${currentFile.getName()}</a></label></li>
-	<g:if test="${i == filelist.size() - 1}">
-        <div><label><input type="checkbox"  onClick="toggle(this)"/>Alle an-/abwählen</div></label><br>
-    </g:if>
-</g:each>
-</ul></div>
-
-Aktion:<br>
-<g:select name="answer" from="${['start': 'Erneut generieren', 'retrieval': 'Retrieval', 'delete': 'Löschen']}" optionKey="key" optionValue="value"/>
+	<!-- This div is updated through the periodical updater -->
+			<div class="list" id="entry-list1">
+				<g:include action="snippetIncoming" />
+			</div>
+<g:select name="answer" from="${['start': 'Bericht generieren', 'retrieval': 'Retrieval']}" optionKey="key" optionValue="value"/>
 <g:actionSubmit value="Starten" action="decider"/></form>
-<br>
-EXCEL CSV Datei mit Spaltenkopf:<br>
-identifier;origName;statuscode;erfolg;bemerkung
+<h2>Bereits erstellte Berichte:</h2>
+	<!-- This div is updated through the periodical updater -->
+			<div class="list" id="entry-list2">
+				<g:include action="snippetOutgoing" />
+			</div>
+</div>
 </body>

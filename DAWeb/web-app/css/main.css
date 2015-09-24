@@ -4,7 +4,7 @@ input, select, textarea {
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6 {;
 	line-height: 1.1;
 }
 
@@ -227,19 +227,17 @@ img {
 				margin-top: 15px; 
 				margin-bottom: 15px;    
 				width: 200px;} 
-#items input {
-    width: 13px;
-    height: 13px;
-    padding: 0;
-    margin:0;
-    vertical-align: bottom;
-    position: relative;
-    top: -1px;
-    *overflow: hidden;
-}
 #items label {
     display: block;
     padding-left: 15px;
+}
+#items h2 {
+	margin-top: 15px;
+	margin-bottom: 20px;
+ 
+}
+#items p {
+	margin-bottom: 20px; 
 }
 
 .no-borderradius .nav a:focus, .no-borderradius .nav a:hover {

@@ -33,58 +33,92 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.SystemEvent;
 import de.uzk.hki.da.model.User;
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.CSVFileHandler;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.utils.C;
 
 
 /**
  * 
  * @author Jens Peters
- * Acceptance Tests for CSV Queries 
+ * Acceptance Tests for CSV Queries send per file
  *
  */
 public class ATCSVQueries extends AcceptanceTest {
-	static String ORIGINAL_NAME = "ATCSVQueries";
-    
+	static String ORIGINAL_NAME_ARCHIVED = "ATCSVReportObjectArchived";
+	static String ORIGINAL_NAME_ERROR = "ATCSVReportJobInError";
+	static String ORIGINAL_NAME_RETRIEVAL = "ATCSVRetrieval";
+	
 	@BeforeClass
 	public static void setUp() throws IOException {
-		ath.putAIPToLongTermStorage(ORIGINAL_NAME, ORIGINAL_NAME, new Date(), 100);
+		ath.putAIPToLongTermStorage(ORIGINAL_NAME_ARCHIVED, ORIGINAL_NAME_ARCHIVED, new Date(), 100);
+		ath.putSIPtoIngestArea("ATCSVReportJobInError", "tgz", "ATCSVReportJobInError");
+		ath.putAIPToLongTermStorage(ORIGINAL_NAME_RETRIEVAL, ORIGINAL_NAME_RETRIEVAL, new Date(), 100);
+		
 	}
 	
 	@Test
-	public void testCSVStatusReport () throws IOException, InterruptedException {
-		
-		createCSVFileForStatusReporting(ORIGINAL_NAME);
-		File csv = new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME+".csv");
+	public void testCSVReportJobInError ()  throws IOException, InterruptedException {
+		ath.waitForJobToBeInErrorStatus(ORIGINAL_NAME_ERROR, C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
+		Object object=ath.getObject(ORIGINAL_NAME_ERROR);
+		createCSVFile(ORIGINAL_NAME_ERROR);
+		File csv = new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_ERROR+".csv");
 		
 		assertTrue(csv.exists());
 		long lm = csv.lastModified();
 		createSystemEvent("CreateStatusReportEvent");
 	
 		assertTrue(waitUntilFileIsUpdated(csv,lm));
-		assertTrue(readCSVFileStatusReporting(ORIGINAL_NAME));	
+		assertTrue(readCSVFileStatusReporting(ORIGINAL_NAME_ERROR, "identifier",object.getIdentifier()));
+		assertTrue(readCSVFileStatusReporting(ORIGINAL_NAME_ERROR, "erfolg","false"));
+	}
+	
+	@Test
+	public void testCSVStatusReport () throws IOException, InterruptedException {
+		
+		createCSVFile(ORIGINAL_NAME_ARCHIVED);
+		File csv = new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_ARCHIVED+".csv");
+		
+		assertTrue(csv.exists());
+		long lm = csv.lastModified();
+		createSystemEvent("CreateStatusReportEvent");
+	
+		assertTrue(waitUntilFileIsUpdated(csv,lm));
+		assertTrue(readCSVFileStatusReporting(ORIGINAL_NAME_ARCHIVED, "identifier",ORIGINAL_NAME_ARCHIVED));
+		assertTrue(readCSVFileStatusReporting(ORIGINAL_NAME_ARCHIVED, "erfolg","true"));
 	}
 	
 	@Test
 	public void testCSVRetrievalRequests () throws IOException, InterruptedException {
 		
-		createCSVFileForStatusReporting(ORIGINAL_NAME);
-		File csv = new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME+".csv");
+		createCSVFile(ORIGINAL_NAME_RETRIEVAL);
+		File csv = new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_RETRIEVAL+".csv");
 		assertTrue(csv.exists());
 		createSystemEvent("CreateRetrievalRequestsEvent");
-		ath.waitForJobToBeInStatus(ORIGINAL_NAME, "952");
+		ath.waitForJobToBeInStatus(ORIGINAL_NAME_RETRIEVAL, "952");
 	}
 	
 	
 	@AfterClass
 	public static void tearDown(){
-		distributedConversionAdapter.remove("aip/TEST/"+ORIGINAL_NAME); // TODO does it work?
-		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME+".csv"));
+		distributedConversionAdapter.remove("aip/TEST/"+ORIGINAL_NAME_ARCHIVED); 
+		distributedConversionAdapter.remove("aip/TEST/"+ORIGINAL_NAME_RETRIEVAL); 
+		
+		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_ARCHIVED+".csv"));
+		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_ERROR+".csv"));
+		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_RETRIEVAL+".csv"));
+		
+		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+ORIGINAL_NAME_ARCHIVED+".csv"));
+		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+ORIGINAL_NAME_ERROR+".csv"));
+		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+ORIGINAL_NAME_RETRIEVAL+".csv"));
+		
 	}
 
 	
@@ -99,7 +133,7 @@ public class ATCSVQueries extends AcceptanceTest {
 			Thread.sleep(1000l);
 			timeStamp = file.lastModified();
 			i++;
-			if (i>60) {
+			if (i>120) {
 				System.out.println(file + " was NOT changed!");
 				return false;
 			}
@@ -128,25 +162,29 @@ public class ATCSVQueries extends AcceptanceTest {
 		}
 	}
 	
-	private boolean readCSVFileStatusReporting(String identifier) throws IOException {
+	@SuppressWarnings("unchecked")
+	private boolean readCSVFileStatusReporting(String origName, String field, String mustcontain) throws IOException {
 		CSVFileHandler csf = new CSVFileHandler();
-		System.out.println("search CSV Report for " + identifier);
-		csf.parseFile(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+identifier+".csv"));
+		System.out.println("search CSV Report field " + field + " value " + mustcontain);
+		csf.parseFile(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+origName+".csv"));
 		for (Map<String, java.lang.Object> csvEntry :csf.getCsvEntries()) {
-			if (csvEntry.get("identifier").equals(identifier)) return true;
+			if (csvEntry.get("origName").equals(origName))
+			if (csvEntry.get(field).equals(mustcontain)) return true;
  		} 
+		System.out.println("nothing found in csv reports!");
 		return false;
 	}
 	
-	private int createCSVFileForStatusReporting(String identifier) throws IOException {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private int createCSVFile(String origName) throws IOException {
 		CSVFileHandler csf = new CSVFileHandler();
 		ArrayList<Map> csvEntries = new ArrayList();
 		Map<String, java.lang.Object> csvEntry = new HashMap<String, java.lang.Object>();
 		csf.setEncoding("CP1252");
-		csvEntry.put("origName", (java.lang.Object) ORIGINAL_NAME);
+		csvEntry.put("origName", (java.lang.Object) origName);
 		csvEntries.add(csvEntry);
 		csf.setCsvEntries(csvEntries);
-		csf.persistStates(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+identifier+".csv"));
+		csf.persistStates(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+origName+".csv"));
 		return csvEntries.size();
 	}
 		

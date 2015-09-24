@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +63,7 @@ public class CSVQueryHandler {
 	}
 	
 	@SuppressWarnings("serial")
-	public void generateRetrievalRequests(File csvFile){
+	public void generateRetrievalRequests(File csvFile, File outCsvFile){
 		try {
 			csvFileHandler.parseFile(csvFile);
 			Object o = null;
@@ -74,6 +75,8 @@ public class CSVQueryHandler {
 					createRetievalJob(o);
 				}
 			}
+			FileUtils.deleteQuietly(outCsvFile);
+			FileUtils.moveFile(csvFile, outCsvFile);
 		}catch (IOException e) {
 			logger.error("catched " + e.toString() + " while working with "
 					+ csvFile.getAbsolutePath());
@@ -85,12 +88,14 @@ public class CSVQueryHandler {
 	}
 
 	@SuppressWarnings("serial")
-	public void generateReportBasedOnFile(File csvFile) {
+	public void generateReportBasedOnFile(File csvFile, File outCsvFile) {
 		logger.error("generating Report file " + csvFile);
 		try {
 			csvFileHandler.parseFile(csvFile);
 			evalStates();
 			csvFileHandler.persistStates(csvFile);
+			FileUtils.deleteQuietly(outCsvFile);
+			FileUtils.moveFile(csvFile, outCsvFile);
 		} catch (IOException e) {
 			logger.error("catched " + e.toString() + " while working with "
 					+ csvFile.getAbsolutePath());
@@ -194,27 +199,34 @@ private synchronized Object fetchObject(String origName) {
 			String origName = String.valueOf(csvEntry.get("origName"));
 			o = fetchObject(origName);
 			String text = Object.ObjectStatus.NotKnownText;
-			boolean jobState = false; 
+			boolean erfolg = false;
+			 
 			if (o != null) {
 				if (o.getObject_state() == Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow) {
 					text = Object.ObjectStatus.ArchivedAndValidAndNotInWorkflowText;
+					erfolg = true;
 				} else if (o.getObject_state() == Object.ObjectStatus.InitState) {
 					text = Object.ObjectStatus.InitStateText;
-					jobState = true;
 				} else if (o.getObject_state() == Object.ObjectStatus.UnderAudit) {
 					text = Object.ObjectStatus.UnderAuditText;
 				} else if (o.getObject_state() == Object.ObjectStatus.InWorkflow) {
 					text = Object.ObjectStatus.InWorkflowText + "";
-					jobState = true;
 				} else if (o.getObject_state() == Object.ObjectStatus.Error) {
 					text = Object.ObjectStatus.ErrorText;
 				}
 				identifier = o.getIdentifier();
-				// we've got jobs here, we look for the state! 
-				if (jobState && identifier != null) {
+				// we keep looking for any jobs here, we look for the state! 
+				if ( identifier != null) {
 					Job job = fetchJob(origName, identifier);
-					csvEntry.put("statuscode", (java.lang.Object) job.getStatus());
+					if (job!=null) {
+						if (!job.getStatus().endsWith("0") || !job.getStatus().endsWith("2")){
+							erfolg = false;
+						} else erfolg = true;
+						csvEntry.put("statuscode", (java.lang.Object) job.getStatus());
+						;
+					}
 				}
+				csvEntry.put("erfolg", (java.lang.Object) String.valueOf(erfolg));
 			}
 			csvEntry.put("bemerkung", (java.lang.Object) text);
 			

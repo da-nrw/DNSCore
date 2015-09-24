@@ -333,7 +333,10 @@ public abstract class AbstractAction implements Runnable {
 				baseLogger.info("Added copy for objects ("+object.getIdentifier()+") last package. Copy path: "+copy.getPath()+". Copy is on node with name: "+cn.getName()+" and has id "+copy.getId()+".");
 				
 				int updatesNodeId=session.createSQLQuery(
-						"UPDATE copies SET node_id="+cn.getId()+", pkg_id="+object.getLatestPackage().getId()+" WHERE id = "+copy.getId()).executeUpdate();
+						"UPDATE copies SET node_id="+cn.getId()+", "
+								+ "pkg_id="+object.getLatestPackage().getId()+", "
+								+ "checksum='" + object.getLatestPackage().getChecksum()+ "', "
+								+ "checksumDate = now() WHERE id = "+copy.getId()).executeUpdate();
 				if (updatesNodeId!=1) throw new RuntimeException("could not execute update of node_id");
 
 			} catch (Exception e) {

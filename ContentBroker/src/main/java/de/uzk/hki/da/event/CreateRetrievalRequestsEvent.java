@@ -37,11 +37,19 @@ import de.uzk.hki.da.utils.Path;
  */
 public class CreateRetrievalRequestsEvent extends AbstractSystemEvent {
 
-	private Path pathToReportInUserArea() {
+	private Path pathToReportIncoming() {
 		return Path.make(
 				node.getUserAreaRootPath(),
 				owner.getShort_name(),
 				"incoming"
+				);
+	}
+	
+	private Path pathToReportOutgoing() {
+		return Path.make(
+				node.getUserAreaRootPath(),
+				owner.getShort_name(),
+				"outgoing"
 				);
 	}
 	FilenameFilter csvFilter = new FilenameFilter() {
@@ -54,15 +62,15 @@ public class CreateRetrievalRequestsEvent extends AbstractSystemEvent {
 
 	@Override
 	public boolean implementation()  {
-		File[] files = pathToReportInUserArea().toFile().listFiles(csvFilter);
-		logger.debug("looking in " + pathToReportInUserArea().toFile());
+		File[] files = pathToReportIncoming().toFile().listFiles(csvFilter);
+		logger.debug("looking in " + pathToReportIncoming().toFile());
 		if (files!=null)
 		for (int i=0;i<files.length;i++){
-			if (Path.makeFile(pathToReportInUserArea(),files[i].getName()).isDirectory())
+			if (Path.makeFile(pathToReportIncoming(),files[i].getName()).isDirectory())
 				continue;
 			CSVQueryHandler sr = new CSVQueryHandler(node.getName(),owner.getId());
-			logger.debug("working on " + Path.makeFile(pathToReportInUserArea(),files[i].getName()));
-			sr.generateRetrievalRequests(Path.makeFile(pathToReportInUserArea(),files[i].getName()));
+			logger.debug("working on " + Path.makeFile(pathToReportIncoming(),files[i].getName()));
+			sr.generateRetrievalRequests(Path.makeFile(pathToReportIncoming(),files[i].getName()),Path.makeFile(pathToReportOutgoing(),files[i].getName()));
 		}
 	
 		return true;

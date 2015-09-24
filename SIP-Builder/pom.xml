@@ -129,8 +129,12 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
 					<archive>
+					<manifestEntries>
+      						  <buildNumber>${env.BUILD_NUMBER}</buildNumber>
+    						</manifestEntries>	
 						<manifest>
 							<mainClass>de.uzk.hki.da.main.SIPBuilder</mainClass>
+								
 						</manifest>
 					</archive>
 					<descriptorRefs>

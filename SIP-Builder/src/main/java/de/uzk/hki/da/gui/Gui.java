@@ -23,10 +23,19 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Image;
+import java.util.jar.Attributes;
+import java.util.jar.JarInputStream;
+import java.util.jar.Manifest;
+import java.util.jar.JarFile;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 
@@ -479,9 +488,16 @@ public class Gui extends JFrame{
 	 * Creates the text labels
 	 */
 	private void initializeTextLabels() {
+		JarFile file=null;;
+		Manifest mf =null;
+		try {
+			file = new JarFile(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()));
+			mf = file.getManifest();
+		} catch (Exception e) {
+		}
+		Attributes attr = mf.getMainAttributes();
+		String buildNumber = attr.getValue("buildNumber");
 		
-		String buildNumber = System.getProperty("build_parameter", "UNKNOWN =(");
-
 		
 		versionInfoLabel = new JLabel("SIP-Builder Build: " + buildNumber + 
 				", LVR-InfoKom (ab 2014). HKI, Universität zu Köln 2011-2014.");

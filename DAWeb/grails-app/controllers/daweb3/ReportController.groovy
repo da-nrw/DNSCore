@@ -28,37 +28,20 @@ class ReportController {
 	def index = {
 		def user = springSecurityService.currentUser
 		
-		def relativeDir = user.getShortName() + "/incoming"
+		def relativeDir = user.getShortName()
 		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
-		def httpurl = grailsApplication.config.transferNode.downloadLinkPrefix +"/"+   user.getShortName()  + "/incoming"
+		def httpurl = grailsApplication.config.transferNode.downloadLinkPrefix +"/"+   user.getShortName()  + "/outgoing"
 		
 		def msgN = ""
-		def baseDir;
-		def filelist = []
-		try {
-			baseDir = new File(baseFolder)
-			if (!baseDir.exists()) {
-				msgN = "Benutzerordner nicht gefunden"
-				log.error(msgN);
-			}
+		def baseDir;		
 		
-		
-		baseDir.eachFileMatch(~/^(?!\.).*?\.csv/) { file -> filelist.add(file)}
-		if (filelist.empty) msgN ="Keine Dateien im Eingangsordner gefunden";
-	 
-		} catch (e) {
-		msgN = "Benutzerordner " + baseFolder+ " existiert nicht!"
-		log.error(msgN);
-	
-		}
 		def msg = null;
 		msg = params.get("msg");
 		params.remove("msg");
 		if (msg!=null) {
 		msg = msg + " " + msgN
 		} else msg = msgN
-			[filelist:filelist,
-			 msg:msg,httpurl:httpurl]
+			[msg:msg,httpurl:httpurl]
 	}
 	
 	def save() {
@@ -119,5 +102,55 @@ class ReportController {
 		}
 		[msg:msg]
 		redirect(action:"index",params: [msg: files.size() + " Dateien gelöscht!"])
+	}
+	
+	def snippetOutgoing = {
+		def user = springSecurityService.currentUser
+		def baseDir;
+		def msgN;
+		def currentFileOutgoing = []
+		def relativeDir = user.getShortName()
+		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
+		def httpurl = grailsApplication.config.transferNode.downloadLinkPrefix +"/"+   user.getShortName()  + "/outgoing"
+		
+		try {
+			baseDir = new File(baseFolder + "/outgoing")
+			if (!baseDir.exists()) {
+				msgN = "Benutzerordner nicht gefunden"
+				log.error(msgN);
+		}
+		baseDir.eachFileMatch(~/^(?!\.).*?\.csv/) { file -> currentFileOutgoing.add(file)}
+		if (currentFileOutgoing.empty) msgN ="Keine Dateien im Ausgangsordner gefunden";
+		} catch (e) {
+		msgN = "Benutzerordner " + baseDir + " existiert nicht!"
+		log.error(msgN);
+	
+		}
+		[currentFileOutgoing:currentFileOutgoing]
+		
+	}
+	
+	
+	def snippetIncoming = {
+		def user = springSecurityService.currentUser
+		def baseDir;
+		def msgN;
+		def currentFileIncoming = []
+		def relativeDir = user.getShortName()
+		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
+		try {
+			baseDir = new File(baseFolder + "/incoming")
+			if (!baseDir.exists()) {
+				msgN = "Benutzerordner nicht gefunden"
+				log.error(msgN);
+		}
+		baseDir.eachFileMatch(~/^(?!\.).*?\.csv/) { file -> currentFileIncoming.add(file)}
+		if (currentFileIncoming.empty) msgN ="Keine Dateien im Ausgangsordner gefunden";
+		} catch (e) {
+		msgN = "Benutzerordner " + baseDir + " existiert nicht!"
+		log.error(msgN);
+		}
+		[currentFileIncoming:currentFileIncoming]
+		
 	}
 }

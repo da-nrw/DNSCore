@@ -19,6 +19,7 @@
 package de.uzk.hki.da.at;
 
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedWriter;
@@ -49,6 +50,18 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	
 
 	private static final Path archiveStoragePath = Path.make("/ci/archiveStorage/aip/TEST/");
+	
+	@Test 
+	public void testInitialSetOfChecksum() throws IOException {
+		Object object = null;
+		
+		String ORIGINAL_NAME = "ATInitialSetOfChecksum";
+	    
+		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
+		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		object=ath.getObject(ORIGINAL_NAME);
+		assertTrue(checkCopies(object));
+	}
 	
 	@Test
 	public void localCopyModifiedTest()  {
@@ -84,6 +97,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		assertSame(object.getObject_state(), Object.ObjectStatus.Error);
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 	
@@ -106,6 +120,7 @@ try {
 		assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
 } catch (Exception e) {
 	e.printStackTrace();
+	fail();
 }
 }
 	
@@ -128,6 +143,7 @@ try {
 		assertSame(Integer.valueOf(object.getObject_state()),Integer.valueOf(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 	
@@ -159,6 +175,7 @@ try {
 		assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 	
@@ -185,6 +202,7 @@ try {
 		assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 		}
 	@Test 
@@ -279,6 +297,16 @@ try {
 		session.getTransaction().commit();
 		session.close();
 		return now.getTime();
+	}
+	
+	private boolean checkCopies(Object object) {
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.refresh(object);
+		for (Copy rec : object.getLatestPackage().getCopies()) rec.getId();
+		Copy copy = object.getLatestPackage().getCopies().iterator().next();
+		if (copy.getChecksum().equals(object.getLatestPackage().getChecksum())) return true;
+		return false;
 	}
 }
 	
