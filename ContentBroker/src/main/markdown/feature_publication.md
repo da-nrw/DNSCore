@@ -43,8 +43,3 @@
 
 ## Status und offene Punkte:
 
-####
-
-* Daemon schreiben, welcher die mit Datum versehenen Pakete nachgelagert veröffentlicht. 
-
-##
