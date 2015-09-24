@@ -27,8 +27,9 @@ Die Statusabfrageb mittels CSV Datei haben die Bezeichnung AT-ST-CSV-1 bis AT-ST
 
 #### Kontext:
 
-ATCSVQueries 
-    
+* [ATCSVQueries](../../test/java/de/uzk/hki/da/at/ATCSVQueries.java) 
+    gilt für alle Szenarien der CSV Operationen. 
+
 ##### Vorbedingungen:
 
 1. Excel 
@@ -40,6 +41,8 @@ ATCSVQueries
 Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mittels EXCEL erstellt wurde. 
 [Beispiel](../../../src/test/resources/at/ATCSVQueries.csv)
 
+Mindestens die Spalte Originalname (origName) muss befüllt sein. 
+
 #### Testpaket(e):
 
 ATUseCaseIngest1.tgz
@@ -47,8 +50,8 @@ ATUseCaseIngest1.tgz
 #### Durchführung:
 
 1. Die Datei ATUseCaseIngest1.tgz wird eingespielt. Es muss die Info über eine positive Archivierung erhalten worden sein.
-2. Die [Datei wird heruntergeladen und in EXCEL geöffnet](../../../src/test/resources/at/ATCSVQueries.csv)
-2. Die EXCEL Testdaei wird mit dem vergebenen Originalnamen des AIP befüllt. 
+2. Die [Vorlage wird heruntergeladen und in EXCEL geöffnet](../../../src/test/resources/at/ATCSVQueries.csv)
+2. Die EXCEL Testdatei wird mit dem vergebenen Originalnamen des AIP befüllt. 
 3. Die Excel wird gespeichert.
 4. Der Tester meldet sich an der DAWEB an. 
 5. Hochladen der CSV Datei mittels der DA-WEB oder Ablage in den incoming Ordner des Contractors.
@@ -59,8 +62,6 @@ ATUseCaseIngest1.tgz
 1. Die CSV Datei enthält nun in der der Spalte Bemerkung "fertig archiviert" und in der Spalte "erfolg"  true, ferner ist die Spalte identifier vom System befüllt. 
 
 #### Status und offene Punkte
-
-erfolg true fehlt noch
 
 ## Szenario AT-ST-CSV-2: Statusabfrage mittels vorbereiteter CSV Datei eines stehenden Arbeitsschritts
 
@@ -79,7 +80,7 @@ z.B. ATDetectUncompletedReferencesLido.tgz (Paket führt zu keinem gültigen AIP
 
 #### Akzeptanzkriterien:
 
-Die CSV Datei enthält einen Eintrag in der Spalte erfolg = false und den identischen Statuscode. 
+Die CSV Datei enthält einen Eintrag in der Spalte erfolg = false und den korrekten Statuscode. 
 
 ## Szenario AT-ST-JSON-1: Statusabfrage eines fehlerfrei archivierten Pakets mit Originalname mittels JSON
 
@@ -211,7 +212,8 @@ Example:
 
 #### Kontext:
 
-ATCSVQueries 
+* [ATCSVQueries](../../test/java/de/uzk/hki/da/at/ATCSVQueries.java) 
+    gilt für alle Szenarien der CSV Operationen.  
     
 ##### Vorbedingungen:
 
@@ -231,8 +233,8 @@ ATUseCaseIngest1.tgz
 #### Durchführung:
 
 1. Die Datei ATUseCaseIngest1.tgz wird eingespielt. Es muss die Info über eine positive Archivierung erhalten worden sein.
-2. Die [Datei wird heruntergeladen und in EXCEL geöffnet](../../../src/test/resources/at/ATCSVQueries.csv)
-2. Die EXCEL Testdaei wird mit dem vergebenen Originalnamen des AIP befüllt. 
+2. Die [Vorlage wird heruntergeladen und in EXCEL geöffnet](../../../src/test/resources/at/ATCSVQueries.csv)
+2. Die EXCEL Testdatei wird mit dem vergebenen Originalnamen des AIP befüllt. 
 3. Die Excel wird gespeichert.
 4. Der Tester meldet sich an der DAWEB an. 
 5. Hochladen der CSV Datei mittels der DA-WEB oder Ablage in den incoming Ordner des Contractors.
