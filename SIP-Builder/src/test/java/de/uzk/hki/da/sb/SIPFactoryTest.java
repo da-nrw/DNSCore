@@ -246,9 +246,6 @@ public class SIPFactoryTest {
 	@Test
 	public void testBuildNestedSIPs() throws Exception {
 		
-		System.out.println("build_parameter: "+System.getenv("version"));
-		System.out.println("build_number: "+System.getenv("build_number"));
-		
 		String fixedUrn1 = "urn+nbn+de+hbz+6+1-3602";
 		String fixedUrn2 = "urn+nbn+de+hbz+42";
 		
