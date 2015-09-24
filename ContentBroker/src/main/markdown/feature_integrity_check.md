@@ -4,6 +4,8 @@ Dieser Test kann nicht nur durch eine Person mit vollen Administrationsrechten a
 
 #### Kontext:
 
+* [ATIntegrityCheck](../../test/java/de/uzk/hki/da/at/ATIntegrityCheck.java)
+
 ## Hintergrund:
 
 Gilt für alle nachfolgenden Szenarien!

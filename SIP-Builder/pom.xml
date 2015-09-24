@@ -19,6 +19,7 @@
 		<scp.toDir>/data/danrw/www/ssl/htdocs/sipbuilder/</scp.toDir>
 		<maven.test.search.classdir>true</maven.test.search.classdir>
     	<include.tests>**/*DDDCDDSD*.java</include.tests>
+    	<build.number>${env.BUILD_NUMBER}</build.number>
 	</properties>
 	
 	<profiles>
@@ -35,7 +36,6 @@
 			<id>ci</id>
 			<properties>
 				<env>ci</env>
-				<property name="build_number"  value="g${env.BUILD_NUMBER}"/>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -45,18 +45,30 @@
 	
 	<build>
 		<plugins>
-		<plugin>
+			   <plugin>
+			        <groupId>org.codehaus.mojo</groupId>
+			        <artifactId>properties-maven-plugin</artifactId>
+			        <version>1.0-alpha-2</version>
+			        <executions>
+			            <execution>
+			                <phase>clean</phase>
+			                <goals>
+			                    <goal>write-project-properties</goal>
+			                </goals>
+			                <configuration>
+					        	<outputFile>${basedir}/target/installation/build.properties</outputFile>
+			                </configuration>
+			            </execution>
+			        </executions>
+			    </plugin>
+			
+			<plugin>
 		      <groupId>org.apache.maven.plugins</groupId>
 		      <artifactId>maven-surefire-plugin</artifactId>
 		      <configuration>
 		        <configuration>
                     <skip>true</skip>
                 </configuration>
-                <systemPropertyVariables>
-		            <propertyName>env</propertyName>
-		            <propertyValue>${env}</propertyValue>
-		            <property name="build_parameter"  value="{env.BUILD_NUMBER}"/>
-		        </systemPropertyVariables>
 		      </configuration>
 		      
 		       <executions>
@@ -67,7 +79,7 @@
 	                           <goal>test</goal>
 	                       </goals>
 	                       <configuration>
-	                           <excludes>
+	                            <excludes>
 					              <exclude>none</exclude>
 					            </excludes>
 					            <includes>
@@ -153,8 +165,6 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
-				
-				
 				<executions>
 					<execution>
 						<id>packageit</id>
@@ -173,9 +183,6 @@
 						</goals>
 					</execution>
 				</executions>
-				
-				
-				
 				<dependencies>
 					<dependency>
 						<groupId>org.apache.ant</groupId>
