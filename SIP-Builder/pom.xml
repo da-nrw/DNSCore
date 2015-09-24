@@ -56,7 +56,7 @@
 			                    <goal>write-project-properties</goal>
 			                </goals>
 			                <configuration>
-					        	<outputFile>${basedir}/target/build.properties</outputFile>
+					        	<outputFile>${basedir}/target/installation/build.properties</outputFile>
 			                </configuration>
 			            </execution>
 			        </executions>

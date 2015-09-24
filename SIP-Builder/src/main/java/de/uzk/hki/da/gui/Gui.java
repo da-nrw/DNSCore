@@ -27,9 +27,15 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Properties;
 
+import javax.imageio.stream.FileImageInputStream;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -480,9 +486,17 @@ public class Gui extends JFrame{
 	 */
 	private void initializeTextLabels() {
 		
-		String buildNumber = System.getProperty("build_parameter", "UNKNOWN =(");
+		String buildNumber = "";
+		Properties p = new Properties();
+		try {
+			p.load(new FileInputStream("build.properties"));
+			buildNumber = p.getProperty("build.number");
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 
-		
 		versionInfoLabel = new JLabel("SIP-Builder Build: " + buildNumber + 
 				", LVR-InfoKom (ab 2014). HKI, Universität zu Köln 2011-2014.");
 		versionInfoLabel.setFont(standardFont.deriveFont(10.0f));
