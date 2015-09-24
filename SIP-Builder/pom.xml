@@ -19,7 +19,6 @@
 		<scp.toDir>/data/danrw/www/ssl/htdocs/sipbuilder/</scp.toDir>
 		<maven.test.search.classdir>true</maven.test.search.classdir>
     	<include.tests>**/*DDDCDDSD*.java</include.tests>
-    	<build.number>${env.BUILD_NUMBER}</build.number>
 	</properties>
 	
 	<profiles>
@@ -45,23 +44,6 @@
 	
 	<build>
 		<plugins>
-			   <plugin>
-			        <groupId>org.codehaus.mojo</groupId>
-			        <artifactId>properties-maven-plugin</artifactId>
-			        <version>1.0-alpha-2</version>
-			        <executions>
-			            <execution>
-			                <phase>clean</phase>
-			                <goals>
-			                    <goal>write-project-properties</goal>
-			                </goals>
-			                <configuration>
-					        	<outputFile>${basedir}/target/installation/build.properties</outputFile>
-			                </configuration>
-			            </execution>
-			        </executions>
-			    </plugin>
-			
 			<plugin>
 		      <groupId>org.apache.maven.plugins</groupId>
 		      <artifactId>maven-surefire-plugin</artifactId>
@@ -141,12 +123,11 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
 					<archive>
-					<manifestEntries>
+						<manifestEntries>
       						  <buildNumber>${env.BUILD_NUMBER}</buildNumber>
-    						</manifestEntries>	
+   						</manifestEntries>	
 						<manifest>
 							<mainClass>de.uzk.hki.da.main.SIPBuilder</mainClass>
-								
 						</manifest>
 					</archive>
 					<descriptorRefs>
