@@ -1,4 +1,4 @@
-# Leistungsmerkmal: Automatisierte Abfragen (Status & Retrieval)
+# Leistungsmerkmal: Automatisierbare Abfragen (Status & Retrieval)
 
 Für Informationen zu der Verarbeitung von Paketen steht im Normalfall dem Anwender die Webschnittstelle DA-WEB zur Verfügung. 
 
