@@ -38,26 +38,27 @@ import org.junit.Test;
  */
 
 public class ATSipBuilderCliMode {
-	
-	private static String sourceNested= "../../src/test/resources/SIPFactoryTests/nestedFolders";
-	private static String destinationNested = "../atTargetDir";
+
 	private static String nestedSip1 = "urn+nbn+de+hbz+42.tgz";
 	private static String nestedSip2 = "urn+nbn+de+hbz+6+1-3602.tgz";
+	private static File targetDir;
+	private static File sourceDir = new File("src/test/resources/SIPFactoryTests/nestedFolders");
 	
 	@Before
 	public void setUp() throws IOException{	
+		FileUtils.deleteDirectory(new File("target/atTargetDir/"));
+		targetDir = new File("target/atTargetDir/");
 	}
 	
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteQuietly(new File("target/atTargetDir/"+nestedSip1));
-		FileUtils.deleteQuietly(new File("target/atTargetDir/"+nestedSip2));
+		FileUtils.deleteDirectory(new File("target/atTargetDir/"));
 	}
 	
 	@Test
 	public void testNestedStructure() throws IOException {
 		
-		Process p = Runtime.getRuntime().exec("./sipBuilderAtTemplate.sh "+sourceNested+" "+destinationNested+" -nested -alwaysOverwrite");
+		Process p = Runtime.getRuntime().exec("./sipBuilderAtTemplate.sh "+sourceDir.getAbsolutePath()+" "+targetDir.getAbsolutePath()+" -nested -alwaysOverwrite");
 		
 		BufferedReader stdInput = new BufferedReader(new
         InputStreamReader(p.getInputStream()));

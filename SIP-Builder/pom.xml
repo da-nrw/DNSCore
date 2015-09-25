@@ -61,43 +61,16 @@
 	                           <goal>test</goal>
 	                       </goals>
 	                       <configuration>
-	                            <excludes>
-					              <exclude>none</exclude>
-					            </excludes>
 					            <includes>
 					              <include>**/**.java</include>
 					            </includes>
 					            <excludes>
-									<exclude>**/AT**.java</exclude>
-								</excludes>
+					              <exclude>none</exclude>
+					            </excludes>
 	                       </configuration>
 	                   </execution>
 	               </executions>
 		    </plugin>
-		    
-<!-- 		    <plugin> -->
-<!-- 				<artifactId>maven-failsafe-plugin</artifactId> -->
-<!-- 				<version>2.6</version> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<goals> -->
-<!-- 							<goal>integration-test</goal> -->
-<!-- 							<goal>verify</goal> -->
-<!-- 						</goals> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 				<configuration> -->
-<!-- 				<systemProperties> -->
-<!--             		<property> -->
-<!--               			<name>env</name> -->
-<!--               			<value>${env}</value> -->
-<!--             		</property> -->
-<!--          		</systemProperties> -->
-<!-- 					<includes> -->
-<!-- 						<include>**/AT**.java</include> -->
-<!-- 					</includes> -->
-<!-- 				</configuration> -->
-<!-- 			</plugin> -->
 		    
 		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
