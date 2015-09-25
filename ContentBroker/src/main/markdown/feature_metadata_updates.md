@@ -21,8 +21,8 @@ gilt für alle Szenarien!
 
 #### Kontext:
 
-* [ATUseCaseIngestMetsMods](../../test/java/de/uzk/hki/da/at/ATUseCaseIngestMetsMods.java).testLZA()
-* [ATUseCaseIngestMetsMods](../../test/java/de/uzk/hki/da/at/ATUseCaseIngestMetsMods.java).testPres()
+* [ATMetadataUpdatesMetsMods.java](../../test/java/de/uzk/hki/da/at/ATMetadataUpdatesMetsMods.java).testLZA()
+* [ATMetadataUpdatesMetsMods.java](../../test/java/de/uzk/hki/da/at/ATMetadataUpdatesMetsMods.java).testPres()
 
 #### Testpaket(e):
 
@@ -85,6 +85,9 @@ Auszug aus der export_mets.xml:
 
 #### Kontext:
 
+
+* [ATMetadataUpdatesEAD.java](../../test/java/de/uzk/hki/da/at/ATMetadataUpdatesEAD.java).testLZA()
+
 #### Testpaket(e):
 
 * ATUseCaseUpdateMetadataLZA_EAD
@@ -110,7 +113,7 @@ TODO
 
 #### Kontext:
 
-* ATUseCaseIngestXMP.testLZA()
+* [ATMetadataUpdatesXMP.java](../../test/java/de/uzk/hki/da/at/ATMetadataUpdatesXMP.java).testLZA()
 
 #### Testpaket(e):
 
@@ -142,9 +145,7 @@ TODO
 
 #### Kontext:
 
-* ATUseCaseIngestLIDO.testLZA()
-
-####
+* [ATMetadataUpdatesLIDO.java](../../test/java/de/uzk/hki/da/at/ATMetadataUpdatesLIDO.java).testLZA()
 
 #### Testpaket(e):
 
