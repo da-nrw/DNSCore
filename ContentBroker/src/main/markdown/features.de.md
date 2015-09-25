@@ -10,6 +10,8 @@
 * PREMIS Logging - Alle Aktionen werden in der PREMIS hinterlegt.
 * PIP (Presentation Information Package) creation - Anlage eines Präsentationsderivats. 
 
+<b>Genauere Beschreibungen der einzelnen Leistungsmerkmale:</b>
+
 * Leistungsmerkmal [Migrationsbedingungen](feature_migration_right.md)
 * Leistungsmerkmal [Integritätsprüfung](feature_integrity_check.md)
 * Leistungsmerkmal [Ingest und Retrieval](feature_ingest_retrieval.md)
