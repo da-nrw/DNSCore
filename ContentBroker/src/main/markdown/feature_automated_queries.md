@@ -61,6 +61,7 @@ ATUseCaseIngest1.tgz
 4. Der Tester meldet sich an der DAWEB an. 
 5. Hochladen der CSV Datei mittels der DA-WEB oder Ablage in den incoming Ordner des Contractors.
 6. Start der Berichtseerstellung mittels "erneut generieren".
+7. Entnahme der CSV Datei aus dem outgoing Ordner, bzw. Entnahme über die DA-Web. 
 
 #### Akzeptanzkriterien:
 
