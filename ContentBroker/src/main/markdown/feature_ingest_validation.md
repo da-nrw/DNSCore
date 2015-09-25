@@ -105,7 +105,21 @@ ATDuplicateMetadataFiles/data/premis.xml
 
 * [ATIngestValidation.java](../../test/java/de/uzk/hki/da/at/ATIngestValidation.java).testInvalidPremis
 
-## Szenario: AT-V-4 Ungültiges Tagmanifiest der Bagit
+## Szenario: AT-V-4 Ungültiges Tagmanifest der Bagit
+
+(vollständig automatisiert)
+
+### Kontext:
+
+* [ATIngestValidation.java](../../test/java/de/uzk/hki/da/at/ATIngestValidation.java).testFirst_tagmanifest1ZeichenChanged
+ 
+## Szenario: AT-V-5 Ungütiger MD5 der BagIit
+
+(vollständig automatisiert)
+
+### Kontext:
+
+* [ATIngestValidation.java](../../test/java/de/uzk/hki/da/at/ATIngestValidation.java).testManifestMd5_2filesChanged
 
 
 
