@@ -2,10 +2,6 @@
 
 Dieser Basistest zeigt, ob über den gesamten Workflow hinweg, die korrekten Metadatananpassungen für die&nbsp;*Präsentation*&nbsp;vorgenommen wurden. Dies ist wichtig, um abschätzen zu können, ob die Metadaten den Anforderungen genügen, um von externen Viewern, im Falle von METS/MODS DFGViewer, angezeigt werden zu können.
 
-#### Kontext
-
-* [https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/2015-01-14_Metadaten_in_DA-NRW.pdf?raw=true]
-
 ## Hintergrund: 
 
 gilt für alle Szenarien!
@@ -146,7 +142,6 @@ TODO
 
 #### Kontext:
 
-* [https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/2015-01-14_Metadaten_in_DA-NRW.pdf?raw=true]
 * ATUseCaseIngestLIDO.testLZA()
 
 ####
