@@ -1,19 +1,16 @@
-# Feature List
+# Liste der Features und Leistungsmerkmale der Anwendung
 
-* DAWeb - Graphical user interface for administrators and users
-* Storage Layer - geographical distribution/replication of data
-* Self validating ("audit")
-* Format identification
-* Codec identification
-* Automatic format conversion
+* SIPBuilder - Graphical user interface witch (CLI) for End-Users - Grafische Benutzeroberfläche für Endkunden zur Erzeugung von SIP für das DNS. Möglichkeit zur Einbettung in Drittsysteme durch command line interface (CLI). 
+* DAWeb Webinterface - Grafische Benutzeroberfläche zur Steuerung des Archivs durch Benutzer und Administratoren. Abfragemöglichkeit für techn. Drittsysteme.
+* Storage Layer - Geographische Verteilung und Replikation der Daten.
+* Self validating - Selbstprüfung unter Maßstäben der Bitstream-Preservation.
+* Format identification - Formatidentifikation auf Basis der PRONOM Identifier.
+* Codec identification - Erkennung von Codecs auf Basis der installierten Module.
+* Automatic format conversion - Konvertierung erkannter Formate durch hinterlegte Routinen. 
+* PREMIS Logging - Alle Aktionen werden in der PREMIS hinterlegt.
+* PIP (Presentation Information Package) creation - Anlage eines Präsentationsderivats. 
 
-To build streamlined SIP based based on the used SIP specifications, take a look at:
-
-* SIPBuilder - Graphical user interface for End-Users, which allows high degree control over 
-SIP submitted to the DNS. The software could be easily integrated in subsystems, due to having 
-a command line interface.
-
-The following list, contains a full description of each feature available in DNS. (German only)
+<b>Genauere Beschreibungen der einzelnen Leistungsmerkmale:</b>
 
 * Leistungsmerkmal [Migrationsbedingungen](feature_migration_right.md)
 * Leistungsmerkmal [Integritätsprüfung](feature_integrity_check.md)
