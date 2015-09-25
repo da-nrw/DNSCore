@@ -127,8 +127,8 @@ Zur Wahl stehen derzeit:
 
 In diesem Schritt lassen sich Restriktionen wählen, die in den Rechteeinstellungen hinterlegt und während der Erstellung der Publikationsdaten angewendet werden.
 
-__Text__
-_Einsehbare Seiten festlegen_  
+__Text__  
+_Einsehbare Seiten festlegen_:  
 Wenn Sie möchten, dass nur bestimmte Seiten eines PDF-Dokuments für den Benutzer einsehbar sind, können Sie die entsprechenden Seitenzahlen bei Aktivierung dieser Option in einem Textfeld angeben.
 Reihen Sie die gewünschten Seitenzahlen dazu durch Kommas voneinander getrennt aneinander. Um mehrere aufeinander folgende Seiten festzulegen, genügt es, die erste und letzte Seitenzahl mit einem dazwischen liegenden Bindestrich anzugeben.
 
@@ -141,7 +141,7 @@ Angezeigt werden die Seiten 1, 2, 3, 4 und 5.
 Angezeigt werden die Seiten 1, 14, 15, 16, 17, 24 und 30.
 
 __Bild__  
-_Bildqualität begrenzen_  
+_Bildqualität begrenzen_:  
 Bei Aktivierung dieser Option haben Sie die Möglichkeit, die Anzeigequalität von Bilddateien zu begrenzen, indem Sie die gewünschte Auflösung der Bilder angeben. Sie können dabei zwischen zwei Möglichkeiten wählen:
 * Bestimmung der maximalen Auflösung durch absolute Werte in drei Abstufungen (niedrig, mittel, hoch)
 * Bestimmung der Auflösung relativ zur Auflösung im Original (angegeben in Prozentwerten)
@@ -149,31 +149,31 @@ Bei Aktivierung dieser Option haben Sie die Möglichkeit, die Anzeigequalität v
 
 
 
-__Fußzeile oder Wasserzeichen angeben__  
+_Fußzeile oder Wasserzeichen angeben_:  
 Verwenden Sie diese Option, um Ihren Bildern einen beliebigen Text hinzuzufügen, der beispielsweise Copyright-Informationen beinhalten kann. Geben Sie den Text dazu in das Textfeld ein und legen Sie die gewünschten Einstellungen fest:  
 
-**_Texttyp_**  
+_Texttyp_:  
 * Fußzeile: Der Text wird im unteren Bereich des Bildes als weiße Schrift auf einem schwarzen Balken eingefügt. Ein kleiner Teil des Bildes wird dabei von der Fußzeile verdeckt.
 * Wasserzeichen (oben): Der Text wird im oberen Bereich des Bildes eingefügt.
 * Wasserzeichen (mittig): Der Text wird im mittleren Bereich des Bildes eingefügt. 
 * Wasserzeichen (unten): Der Text wird im unteren Bereich des Bildes eingefügt.   
 
-**_Sichtbarkeit (nur bei Wasserzeichen)_**  
+_Sichtbarkeit (nur bei Wasserzeichen)_:  
 Wasserzeichen können auf Wunsch transparent angezeigt werden. Zur Auswahl stehen Werte zwischen 5% (kaum sichtbar) und 100% (vollständig sichtbar).  
 
-**_Schriftgröße (nur bei Wasserzeichen)_**  
+_Schriftgröße (nur bei Wasserzeichen)_:  
 Wählen Sie die gewünschte Schriftgröße, in der der Text angezeigt wird. Bitte beachten Sie, dass um-fangreiche Texte in höheren Schriftgrößen auf kleineren Bildern möglicherweise nicht mehr vollständig angezeigt werden können.
 Bitte beachten Sie, dass die Länge der Texte beschränkt ist: Fußzeilen dürfen höchstens 65 Zeichen lang sein, bei Wasserzeichen beträgt die maximale Länge 20 Zeichen.  
 
-#####Audio  
-__Länge von Audio-Dateien begrenzen__   
+__Audio__  
+_Länge von Audio-Dateien begrenzen_:   
 Um dem Benutzer lediglich den Beginn einer Audio-Datei zugänglich zu machen, können Sie die maximale Abspieldauer von Audio-Dateien begrenzen; es werden dann z.B. nur die ersten fünfzehn Sekunden abgespielt. Die genaue Sekundenanzahl können Sie hier festlegen.  
 
-#####Video  
-__Bildqualität von Videos begrenzen__  
+__Video__  
+_Bildqualität von Videos begrenzen_:  
 Bei Aktivierung dieser Option haben Sie die Möglichkeit, die Anzeigequalität von Videodateien zu begrenzen. Die Höhe der Auflösung kann dabei aus drei möglichen Einstellungen (niedrig, mittel, hoch) gewählt werden.  
 
-__Länge von Videos begrenzen__  
+_Länge von Videos begrenzen_:  
 Neben Audio-Dateien lassen sich auch Videos in ihrer Länge begrenzen. Legen Sie hier fest, wieviele Sekunden eines Videos abgespielt werden können.
 ### Konversions- und Migrationseinstellungen
 
