@@ -10,12 +10,14 @@ Parallel dazu gibt es die Möglichkeit generell Abfragen mittels einer CSV Datei
 
 Beide technischen Abfragen arbeiten jeweils im Use Case der reinen Statusabfrage:
 Bsp.:
+
 1. Ist mein Objekt fertig archiviert?
 2. In welchem Arbeitsschritt ist mein SIP jetzt?
 3. Welcher Fehler liegt vor? 
 
 UND auf dem Leistungsmerkmal Retrieval. Es ist also möglich, via dieser Abfragen auch Retrievalanfragen zu erstellen. 
 Bsp.:
+
 1. Eine Liste an Einlieferungsnamen liegt vor, alle diese Objekte sollen abgefragt werden. 
 2. Eine größere Menge an AIP soll abgefragt werden (massenhaftes Retrieval)
 
@@ -27,8 +29,8 @@ Die Statusabfrageb mittels CSV Datei haben die Bezeichnung AT-ST-CSV-1 bis AT-ST
 
 #### Kontext:
 
-* [ATCSVQueries](../../test/java/de/uzk/hki/da/at/ATCSVQueries.java) 
-    gilt für alle Szenarien der CSV Operationen. 
+* [ATCSVQueries](../../test/java/de/uzk/hki/da/at/ATCSVQueries.java).testCSVStatusReport
+ 
 
 ##### Vorbedingungen:
 
@@ -63,7 +65,11 @@ ATUseCaseIngest1.tgz
 
 #### Status und offene Punkte
 
-## Szenario AT-ST-CSV-2: Statusabfrage mittels vorbereiteter CSV Datei eines stehenden Arbeitsschritts
+## Szenario AT-ST-CSV-2: Statusabfrage mittels vorbereiteter CSV Datei eines fehlerhaften Arbeitsschritts
+
+#### Kontext:
+
+* [ATCSVQueries](../../test/java/de/uzk/hki/da/at/ATCSVQueries.java).testCSVReportJobInError
 
 #### Vorbedingungen:
 
@@ -212,7 +218,7 @@ Example:
 
 #### Kontext:
 
-* [ATCSVQueries](../../test/java/de/uzk/hki/da/at/ATCSVQueries.java) 
+* [ATCSVQueries](../../test/java/de/uzk/hki/da/at/ATCSVQueries.java).testCSVRetrievalRequests
     gilt für alle Szenarien der CSV Operationen.  
     
 ##### Vorbedingungen:
