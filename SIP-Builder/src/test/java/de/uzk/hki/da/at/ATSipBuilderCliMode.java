@@ -56,6 +56,7 @@ public class ATSipBuilderCliMode {
 		FileUtils.deleteQuietly(new File("target/atTargetDir/"+nestedSip1));
 		FileUtils.deleteQuietly(new File("target/atTargetDir/"+nestedSip2));
 		FileUtils.deleteDirectory(new File("target/atTargetDir/"));
+		p.destroy();
 	}
 	
 	@Test

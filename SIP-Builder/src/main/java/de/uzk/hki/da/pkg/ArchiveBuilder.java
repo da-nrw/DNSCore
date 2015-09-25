@@ -46,6 +46,7 @@ public class ArchiveBuilder {
 	private ProgressManager progressManager;
 	private int jobId;
 	private SIPFactory.SipBuildingProcess sipBuildingProcess;
+	
 
 	/**
 	 * Create an archive file out of the given source folder

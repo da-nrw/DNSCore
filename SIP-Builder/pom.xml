@@ -19,6 +19,7 @@
 		<scp.toDir>/data/danrw/www/ssl/htdocs/sipbuilder/</scp.toDir>
 		<maven.test.search.classdir>true</maven.test.search.classdir>
     	<include.tests>**/*DDDCDDSD*.java</include.tests>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	
 	<profiles>
@@ -44,9 +45,11 @@
 	
 	<build>
 		<plugins>
+		
 			<plugin>
 		      <groupId>org.apache.maven.plugins</groupId>
 		      <artifactId>maven-surefire-plugin</artifactId>
+		      <version>2.13</version>
 		      <configuration>
 		        <configuration>
                     <skip>true</skip>
@@ -64,6 +67,7 @@
 					            <includes>
 					              <include>**/**.java</include>
 					            </includes>
+					            <argLine>-Dfile.encoding=UTF-8</argLine> 
 					            <excludes>
 					              <exclude>**/*AT*</exclude>
 					            </excludes>
@@ -78,6 +82,9 @@
 					            <includes>
 					              <include>**/*AT*</include>
 					            </includes>
+					            <excludes>
+					              <exclude>**/**Tests.java</exclude>
+					            </excludes>
 	                       </configuration>
 	                   </execution>
 	               </executions>
@@ -109,18 +116,6 @@
 					<pubScmUrl>scm:git:git@github.com:da-nrw/SIP-Builder.git</pubScmUrl>
 					<scmBranch>gh-pages</scmBranch>
 				</configuration>
-			</plugin>
-		<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.13</version>
-				<configuration>
-					<includes>
-						<include>%regex[.*Test.java*]</include>
-					</includes>
-	    			<argLine>-Dfile.encoding=UTF-8</argLine> 
-				</configuration>
-				
 			</plugin>
 		<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>

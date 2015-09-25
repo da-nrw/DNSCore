@@ -47,8 +47,8 @@ import de.uzk.hki.da.utils.Utilities;
  * The central SIP production class
  * 
  * @author Thomas Kleinke
- * @author Polina Gubaidullina
  */
+
 public class SIPFactory {
 
 	private String sourcePath = null;
@@ -397,10 +397,16 @@ public class SIPFactory {
 		progressManager.setJobFolderSize(jobId, FileUtils.sizeOfDirectory(folder));
 		progressManager.archiveProgress(jobId, 0);
 
-		ArchiveBuilder archiveBuilder = new ArchiveBuilder();
-		archiveBuilder.setProgressManager(progressManager);
-		archiveBuilder.setJobId(jobId);
-		archiveBuilder.setSipBuildingProcess(sipBuildingProcess);
+		ArchiveBuilder archiveBuilder = null;
+		try {
+			archiveBuilder = new ArchiveBuilder();
+			archiveBuilder.setProgressManager(progressManager);
+			archiveBuilder.setJobId(jobId);
+			archiveBuilder.setSipBuildingProcess(sipBuildingProcess);
+		} catch (Exception e) {
+			logger.log("ERROR: Failed to instantiate the ArchiveBuilder ", e);
+			return Feedback.ABORT;
+		}
 
 		try {
 			if (!archiveBuilder.archiveFolder(folder, archiveFile, true, compress))
