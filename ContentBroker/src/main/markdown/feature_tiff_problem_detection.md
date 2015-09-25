@@ -37,7 +37,7 @@ gilt für alle Szenarien!
 
 #### Durchführung:
 
-1. Das Testpaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "[Verarbeitung für abgelieferte SIP starten|https://da-nrw-q.lvr.de/daweb3/incoming/index]")
+1. Das Testpaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "Verarbeitung für abgelieferte SIP starten")
 1. Warten auf Email-Report.
 
 ## Szenario AT-TIFFT-1 Problematische Pakete zurückweisen
