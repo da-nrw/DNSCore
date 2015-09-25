@@ -174,7 +174,7 @@ _Bildqualität von Videos begrenzen_:
 Bei Aktivierung dieser Option haben Sie die Möglichkeit, die Anzeigequalität von Videodateien zu begrenzen. Die Höhe der Auflösung kann dabei aus drei möglichen Einstellungen (niedrig, mittel, hoch) gewählt werden.  
 
 _Länge von Videos begrenzen_:  
-Neben Audio-Dateien lassen sich auch Videos in ihrer Länge begrenzen. Legen Sie hier fest, wieviele Sekunden eines Videos abgespielt werden können.
+Neben Audio-Dateien lassen sich auch Videos in ihrer Länge begrenzen. Legen Sie hier fest, wie viele Sekunden eines Videos abgespielt werden können.
 ### Konversions- und Migrationseinstellungen
 
  
@@ -182,7 +182,7 @@ Neben Audio-Dateien lassen sich auch Videos in ihrer Länge begrenzen. Legen Sie
 Bei der Einlieferung Ihrer Daten findet im Regelfall eine Erstkonversion in Dateiformate statt, die für die Langzeitarchivierung geeignet sind. Darüber hinaus können spätere Konversionen folgen, um die dauerhafte Lesbarkeit der Daten zu gewährleisten (Migration). Sie können die Durchführung der Migration dabei auf Wunsch an eine Bedingung knüpfen.
 Mögliche Einstellungen sind:
 * _Keine Migrationsbedingung:_ Migrationen werden automatisch ohne Ihre Beteiligung durchgeführt (Standardeinstellung).
-* _Über Migration informieren:_ Im Falle einer Migration erhalten Sie eine Benachrichtung per Mail.
+* _Über Migration informieren:_ Im Falle einer Migration erhalten Sie eine Benachrichtigung per Mail.
 * _Zustimmung für Migration einholen:_ Sie werden vor einer anstehenden Migration benachrichtigt und haben die Möglichkeit, der Migration zu widersprechen. Dies gilt für die Erstmigration und alle folgenden Migrationen. Nach einer Zeitfrist verfällt die Rückfrage, in diesem Fall wird Ihr Objekt nicht migriert. 
 
 
@@ -209,16 +209,16 @@ Mögliche Einstellungen sind:
 
  
 
-In diesem Schritt werden die zuvor getroffenen Rechteeinstellungen über-sichtlich zusammengefasst, sodass Sie sie vor der SIP-Erstellung noch einmal überprüfen können.
+In diesem Schritt werden die zuvor getroffenen Rechteeinstellungen übersichtlich zusammengefasst, sodass Sie sie vor der SIP-Erstellung noch einmal überprüfen können.
 
-Wenn Sie die Einstellungen bei einer späteren Verwendung des SIP-Builders noch einmal anwenden möchten, können Sie diese darüber hinaus sichern, indem Sie den Button „Speichern“ betätigen. Die dabei erstellte Datei können Sie später jederzeit im Schritt „Rechteeinstellungen laden“ wieder einlesen, sodass Sie die Einstellungen nicht erneut vornehmen müssen.
+Wenn Sie die Einstellungen bei einer späteren Verwendung des SIP-Builders noch einmal anwenden möchten, können Sie diese sichern, indem Sie den Button „Speichern“ betätigen. Die dabei erstellte Datei können Sie später jederzeit im Schritt „Rechteeinstellungen laden“ wieder einlesen, sodass Sie die Einstellungen nicht erneut vornehmen müssen.
 
 
 ### SIP-Generierungsprozess starten
 
  
 
-Starten Sie den Prozess, indem Sie den Button „Erstellen“ betätigen. Je nach Menge der zu verarbeitenden Daten und der Leistungsfähigkeit Ihres Systems kann der Vorgang zwischen wenigen Sekunden und mehreren Stunden in Anspruch nehmen. Um den Prozess zu beschleunigen, können Sie die Option “SIP-Datei komprimieren” deaktivieren. In diesem Fall wird statt einer kompri-mierten tgz-Datei eine entsprechend größere, unkomprimierte tar-Datei erstellt.
+Starten Sie den Prozess, indem Sie den Button „Erstellen“ betätigen. Je nach Menge der zu verarbeitenden Daten und der Leistungsfähigkeit Ihres Systems kann der Vorgang zwischen wenigen Sekunden und mehreren Stunden in Anspruch nehmen. Um den Prozess zu beschleunigen, können Sie die Option “SIP-Datei komprimieren” deaktivieren. In diesem Fall wird statt einer komprimierten tgz-Datei eine entsprechend größere, unkomprimierte tar-Datei erstellt.
 ## CLI-Modus
 ### Ausführen des SIP-Builders im CLI-Modus
 
@@ -253,7 +253,7 @@ D:\Foto\2013\
 D:\Audio\audio_15_03_2012.wav  
 C:\Dokumente\dokument.pdf   
 
-__-siplist="[Pfad]"__
+__-siplist="[Pfad]"__  
 Diese Option ermöglicht es, die Inhalte eines oder mehrerer SIPs in einer XML-Datei festzulegen. Erstellen Sie dazu eine XML-Datei mit dem Wurzelknoten „sipList“, dem Sie für jedes zu erzeugende SIP ein Element „sip“ hinzufügen. An jedes SIP müssen Sie über das Attribut „name“ einen Namen vergeben. Die einzelnen Dateien und/oder Verzeichnisse, aus denen das SIP erstellt werden soll, geben Sie dabei durch jeweils ein „file“-Element an.
 
 Beispiel:  
@@ -328,7 +328,7 @@ __-single="[Name]"__
 Bei Anwendung dieser Option wird ebenfalls ein einzelnes SIP generiert. Zusätzlich wird der angegebene Text als Name des erstellten SIPs verwendet.
 Die Option muss bei gleichzeitiger Verwendung von -filelist gewählt werden und kann nicht gleichzeitig mit -siplist benutzt werden.
 
-Beispiel: 
+Beispiel:  
 -single="Foto_SIP_2013"
 
 #### Kompression
@@ -356,7 +356,7 @@ Wählen Sie diese Option, um Dateien mit bestimmten Dateiendungen nicht in die e
 
 Beispiel: -ignoreExtensions="txt;doc;rtf;odt;pdf"
 
-__-help__
+__-help__  
 Zeigt eine Übersicht der möglichen Optionen an.
 
 
@@ -365,50 +365,51 @@ Zeigt eine Übersicht der möglichen Optionen an.
 
 ### Beispielaufrufe
 
-java -jar SipBuilder.jar -source="D:\sipsource" -destination="D:\sips\" -single  
+_java -jar SipBuilder.jar -source="D:\sipsource" -destination="D:\sips\" -single_  
 Erstellt ein einziges SIP aus dem Ordner "D:\sipsource" im Verzeichnis "D:\sips\". Es werden die Standardrechte angewendet.
 
-java -jar SipBuilder.jar -source="/home/user/sipData" -destination="/home/user/sips" -collection="ExampleCollection"  
+_java -jar SipBuilder.jar -source="/home/user/sipData" -destination="/home/user/sips" -collection="ExampleCollection"_  
 Erstellt mehrere SIPs aus den Unterordnern des Ordners "/home/user/sipData". Die SIPs werden anschließend zu einer Lieferung im Verzeichnis "/home/user/ sips/ExampleCollection" gebündelt. Es werden die Standardrechte angewendet.
 
-java -jar SipBuilder.jar -filelist="C:\Eigene Dateien\SIP-Source\filelist.txt"  -destination="D:\sips\" -single="ExampleSIP" -rights="D:\sipRights\contractRights_001.xml"  -alwaysOverwrite  
-Erstellt ein SIP gemäß den Angaben in der Datei "C:\Eigene Dateien\SIP-Source\filelist.txt" mit dem Namen "ExampleSIP" im Verzeichnis "D:\sips\". Dabei werden die in der Datei "D:\sipRights\contractRights_001.xml" hinterleg-ten Rechteeinstellungen verwendet.  
+_java -jar SipBuilder.jar -filelist="C:\Eigene Dateien\SIP-Source\filelist.txt"  -destination="D:\sips\" -single="ExampleSIP" -rights="D:\sipRights\contractRights_001.xml"  -alwaysOverwrite_  
+Erstellt ein SIP gemäß den Angaben in der Datei "C:\Eigene Dateien\SIP-Source\filelist.txt" mit dem Namen "ExampleSIP" im Verzeichnis "D:\sips\".  
+Dabei werden die in der Datei "D:\sipRights\contractRights_001.xml" hinterlegten Rechteeinstellungen verwendet.  
 Ein eventuell schon vorhandenes gleichnamiges SIP im Verzeichnis "D:\sips\" wird überschrieben.
 
-java -jar SipBuilder.jar -siplist="C:\Eigene Dateien\SIP-Source\siplist.xml" -destination="D:\sips\" -premis="C:\Eigene Dateien\SIP-Source\premis.xml"  
+_java -jar SipBuilder.jar -siplist="C:\Eigene Dateien\SIP-Source\siplist.xml" -destination="D:\sips\" -premis="C:\Eigene Dateien\SIP-Source\premis.xml"_  
 Erstellt mehrere SIPs gemäß den Angaben in der Datei "C:\Eigene Dateien\SIP-Source\siplist.xml". Die in der Premis-Datei "C:\Eigene Dateien\SIP-Source\ premis.xml" angegebenen Rechte werden dabei übernommen.
 
 
 ### Fehlercodes
 
-Im CLI-Modus gibt das Programm beim Beenden einen Exit Code zurück, der im Falle einer erfolgreichen SIP-Generierung immer den Wert 0 beträgt. Wurde das Programm aufgrund eines Fehlers abgebrochen, gibt der Code Aufschluss über die Art des Fehlers. Durch Abfrage und Auswertung des Fehlercodes kann bei-spielsweise die Einbindung des SIP-Builders in automatisierte Prozesse erleich-tert werden.
-Die möglichen Codes und ihre Bedeutung können Sie der folgenden Übersicht entnehmen.
+Im CLI-Modus gibt das Programm beim Beenden einen Exit Code zurück, der im Falle einer erfolgreichen SIP-Generierung immer den Wert 0 beträgt. Wurde das Programm aufgrund eines Fehlers abgebrochen, gibt der Code Aufschluss über die Art des Fehlers. Durch Abfrage und Auswertung des Fehlercodes kann beispielsweise die Einbindung des SIP-Builders in automatisierte Prozesse erleichtert werden.
+Die möglichen Codes und ihre Bedeutung können Sie der folgenden Übersicht entnehmen:
 
-0	Erfolgreiche SIP-Erstellung  
-1	Ungültiger Parameter  
-2	Ungültige Kombination von Parametern  
-3	Angabe des Quellordners fehlt  
-4	Quellordner konnte nicht gefunden werden  
-5	Angabe des Zielordners fehlt  
-6	Quell- und Zielordner sind identisch  
-7	Zielordner ist ein Unterordner des Quellordners  
-8	Zielordner enthält Dateien, die keine Verzeichnisse sind (bei gleichzeitiger Erstellung mehrerer SIPs)  
-9	Name des SIPs fehlt  
-10	Name des SIPs enthält ungültige Zeichen  
-11	Name der Lieferung fehlt  
-12	Name der Lieferung enthält ungültige Zeichen  
-13	Gleichnamige Lieferung existiert bereits  
-14	Dateiliste konnte nicht gefunden werden  
-15	Fehler beim Einlesen der Dateiliste  
-16	SIP-Liste konnte nicht gefunden werden  
-17	Fehler beim Einlesen der SIP-Liste  
-18	Premis-Datei konnte nicht gefunden werden  
-19	Rechte-Datei konnte nicht gefunden werden  
-20	Fehler beim Einlesen der Rechte-Datei  
-21	Fehler beim Einlesen der Standardrechte-Datei  
-22	Fehler beim Kopieren der Daten  
-23	Fehler beim Erstellen der Premis-Datei  
-24	Fehler beim Erstellen der BagIt-Metadaten  
-25	Fehler beim Erstellen der Archivdatei  
-26	Fehler beim Erstellen der Lieferung  
-27	Temporäre Daten konnten nicht entfernt werden  
+0  Erfolgreiche SIP-Erstellung  
+1  Ungültiger Parameter  
+2  Ungültige Kombination von Parametern  
+3  Angabe des Quellordners fehlt  
+4  Quellordner konnte nicht gefunden werden  
+5  Angabe des Zielordners fehlt  
+6  Quell- und Zielordner sind identisch  
+7  Zielordner ist ein Unterordner des Quellordners  
+8  Zielordner enthält Dateien, die keine Verzeichnisse sind (bei gleichzeitiger Erstellung mehrerer SIPs)  
+9  Name des SIPs fehlt  
+10 Name des SIPs enthält ungültige Zeichen  
+11 Name der Lieferung fehlt  
+12 Name der Lieferung enthält ungültige Zeichen  
+13 Gleichnamige Lieferung existiert bereits  
+14 Dateiliste konnte nicht gefunden werden  
+15 Fehler beim Einlesen der Dateiliste  
+16 SIP-Liste konnte nicht gefunden werden  
+17 Fehler beim Einlesen der SIP-Liste  
+18 Premis-Datei konnte nicht gefunden werden  
+19 Rechte-Datei konnte nicht gefunden werden  
+20 Fehler beim Einlesen der Rechte-Datei  
+21 Fehler beim Einlesen der Standardrechte-Datei  
+22 Fehler beim Kopieren der Daten  
+23 Fehler beim Erstellen der Premis-Datei  
+24 Fehler beim Erstellen der BagIt-Metadaten  
+25 Fehler beim Erstellen der Archivdatei  
+26 Fehler beim Erstellen der Lieferung  
+27 Temporäre Daten konnten nicht entfernt werden  
