@@ -12,7 +12,7 @@ ihrer Inhalte.
 
 * [Objekt-Modell](object_model.md) (Documents im Objekt-Modell)
 * Informationen zu Dokumenten in der [SIP-Spezifikation](specification_sip.de.md)
-* Beschreibung von Documents und Oberflächenansicht: [Delta-Feature|the_delta_feature.md]
+* Beschreibung von Documents und Oberflächenansicht: [Delta-Feature](the_delta_feature.md)
 
 ## Hintergrund:
 
