@@ -488,6 +488,7 @@ public class Gui extends JFrame{
 			file = new JarFile(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()));
 			mf = file.getManifest();
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		Attributes attr = mf.getMainAttributes();
 		String buildNumber = attr.getValue("buildNumber");
