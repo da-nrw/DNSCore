@@ -320,7 +320,7 @@ Bei Anwendung dieser Option werden mehrere SIPs auf einmal generiert. Bei gleich
 Die Option muss bei gleichzeitiger Verwendung von -siplist gewählt werden und kann nicht gleichzeitig mit -filelist benutzt werden.
 
 __-single__  
-Bei Anwendung dieser Option wird ein einzelnes SIP generiert. Bei gleich-zeitiger Angabe eines Quellordners mit -source wird das SIP aus dem gesamten Inhalt dieses Quellordners (inklusive möglicher Unterverzeichnisse) erstellt.
+Bei Anwendung dieser Option wird ein einzelnes SIP generiert. Bei gleichzeitiger Angabe eines Quellordners mit -source wird das SIP aus dem gesamten Inhalt dieses Quellordners (inklusive möglicher Unterverzeichnisse) erstellt.
 Die Option kann nicht gleichzeitig mit -siplist benutzt werden.
 
 
@@ -334,25 +334,25 @@ Beispiel:
 #### Kompression
 
 __-compression (Standardoption)__  
-SIPs werden als komprimierte tgz-Container gespeichert. Der SIP-Erstellungs-prozess verlängert sich dadurch; die erstellten Dateien nehmen im Gegenzug weniger Speicherplatz in Anspruch.
+SIPs werden als komprimierte tgz-Container gespeichert. Der SIP-Erstellungsprozess verlängert sich dadurch; die erstellten Dateien nehmen im Gegenzug weniger Speicherplatz in Anspruch.
 
 __-noCompression__  
-SIPs werden als unkomprimierte tar-Container gespeichert. Der SIP-Erstellungs-prozess verkürzt sich dadurch; die erstellten Dateien nehmen allerdings zusätz-lichen Speicherplatz in Anspruch.
+SIPs werden als unkomprimierte tar-Container gespeichert. Der SIP-Erstellungsprozess verkürzt sich dadurch; die erstellten Dateien nehmen allerdings zusätzlichen Speicherplatz in Anspruch.
 
 
 #### Überschreiben von SIPs
 
 __-neverOverwrite (Standardoption)__  
-SIPs werden nicht erstellt, wenn sich im Zielordner bereits ein SIP gleichen Namens befindet. Sie erhalten in diesem Fall im Anschluss an den SIP-Erstel-lungsprozess eine Mitteilung darüber, dass bereits existierende SIPs nicht neu erstellt wurden. Existiert bereits eine Lieferung gleichen Namens im Zielordner, wird der SIP-Erstellungsprozess nicht durchgeführt.
+SIPs werden nicht erstellt, wenn sich im Zielordner bereits ein SIP gleichen Namens befindet. Sie erhalten in diesem Fall im Anschluss an den SIP-Erstellungsprozess eine Mitteilung darüber, dass bereits existierende SIPs nicht neu erstellt wurden. Existiert bereits eine Lieferung gleichen Namens im Zielordner, wird der SIP-Erstellungsprozess nicht durchgeführt.
 
 __-alwaysOverwrite__  
-Wenn sich bereits existierende SIPs oder Lieferungen gleichen Namens im Ziel-ordner befinden, werden sie ohne weitere Nachfrage überschrieben, d. h. durch die neu erstellten Pakete bzw. die neu erstellte Lieferung ersetzt.
+Wenn sich bereits existierende SIPs oder Lieferungen gleichen Namens im Zielordner befinden, werden sie ohne weitere Nachfrage überschrieben, d. h. durch die neu erstellten Pakete bzw. die neu erstellte Lieferung ersetzt.
 
 
 #### Sonstige Optionen
 
 __-ignoreExtensions="ext1;ext2;ext3..."__  
-Wählen Sie diese Option, um Dateien mit bestimmten Dateiendungen nicht in die erzeugten SIPs aufnehmen zu lassen. Die entsprechenden Dateien werden bei der SIP-Erstellung ignoriert. Geben Sie die einzelnen Dateiendungen hinter-einander durch Semikolons getrennt an.
+Wählen Sie diese Option, um Dateien mit bestimmten Dateiendungen nicht in die erzeugten SIPs aufnehmen zu lassen. Die entsprechenden Dateien werden bei der SIP-Erstellung ignoriert. Geben Sie die einzelnen Dateiendungen hintereinander durch Semikolons getrennt an.
 
 Beispiel: 
 -ignoreExtensions="txt;doc;rtf;odt;pdf"
