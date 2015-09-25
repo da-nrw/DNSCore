@@ -26,7 +26,7 @@ Im folgenden sind die Statusabfrageszenarien als AT-ST-JSON-1 bis AT-ST-JSON-5 g
 Die Statusabfrageb mittels CSV Datei haben die Bezeichnung AT-ST-CSV-1 bis AT-ST-CSV-3, bzw. AT-R-CSV-1 für das Retrieval. 
 
 <b>Hinweis zu Enkodierungen bei JSON Abfragen:</b>
-Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthalten, die gemäß (http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html) enkodiert werden müssen, sind diese zu enkodieren. 
+Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthalten, die gemäß [RFC-2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html) enkodiert werden müssen, sind diese zu enkodieren. 
 
 ## Szenario AT-ST-CSV-1: Statusabfrage mittels vorbereiteter CSV Datei eines fehlerfrei archivierten Pakets
 
