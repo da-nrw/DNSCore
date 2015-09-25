@@ -33,7 +33,7 @@ Dokumentennamen bezeichnen Dateien innerhalb eines Objektes eindeutig. Eine Date
 
 #### Kontext:
 
-* ATUseCaseIngestValidationNotPassed#testDuplicateDocumentName
+* [ATIngestValidation.java](../../test/java/de/uzk/hki/da/at/ATIngestValidation.java).testDuplicateDocumentName
 
 #### Testpaket(e):
 
@@ -65,7 +65,7 @@ Vielfältige Regeln definieren, in welcher Form Metadatendateien innerhalb eines
 
 #### Kontext
 
-* ATUseCaseIngestValidationNotPassed#testDuplicateMetadataFiles
+* [ATIngestValidation.java](../../test/java/de/uzk/hki/da/at/ATIngestValidation.java).testDuplicateMetadataFiles
 
 #### Testpaket:
 
@@ -84,7 +84,7 @@ ATDuplicateMetadataFiles/data/premis.xml
 1. Einsichtnahme in die Bearbeitungsübersicht.
 1. Einsichtnahme in die Email.
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 * In der Bearbeitungsübersicht bleibt das Testpaket in einem auf 4 endenden Fehlerstatus hängen.
 * Man bekommt eine Email.&nbsp;
@@ -98,3 +98,6 @@ ATDuplicateMetadataFiles/data/premis.xml
 
 * Automatisiert mit Ausnahme Email-Versand.
 * die tatsächlichen Regeln in Akzeptanztests unterzubringen, wäre derzeit zu aufwändig, da es sehr viele Kombinationen abzudecken gilt. Diese sind dann in UnitTests untergebracht
+* 
+
+
