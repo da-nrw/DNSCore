@@ -50,7 +50,7 @@ ATDuplicateDocumentName/data/premis.xml
 1. Einsichtnahme in die "Bearbeitungsübersicht.".
 1. Einsichtnahme in die Email.
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 * In der Bearbeitungsübersicht bleibt das Testpaket in einem auf 4 endenden Fehlerstatus hängen.
 * Man bekommt eine Email.
@@ -59,9 +59,6 @@ ATDuplicateDocumentName/data/premis.xml
 ## Szenario: AT-V-2 Mehr als eine Metadatendatei gefunden
 
 Vielfältige Regeln definieren, in welcher Form Metadatendateien innerhalb eines SIPs abgelegt werden müssen, damit das System sie als eine der vier unterstützen Pakettypen für die Präsentation behandeln kann. Davon abweichende Metadatentypen können vom System für die LZA verwendet werden und werden von der Präsentationskomponente ignoriert. Bestimmte Metadatenkombinationen muss das System jedoch zurückweisen, da es aufgrund von Mehrdeutigkeiten nicht selbstständig entscheiden kann. Diese Test hier dient als Beispiel dafür. Ein Paket enthält zwei EAD-Dateien, während die Spezifikation eine einzige Datei von diesem Typ verlangt.&nbsp;
-
-####
-
 
 #### Kontext
 
@@ -99,5 +96,17 @@ ATDuplicateMetadataFiles/data/premis.xml
 * Automatisiert mit Ausnahme Email-Versand.
 * die tatsächlichen Regeln in Akzeptanztests unterzubringen, wäre derzeit zu aufwändig, da es sehr viele Kombinationen abzudecken gilt. Diese sind dann in UnitTests untergebracht
 * 
+
+## Szenario: AT-V-3 Ungültige Premisfile
+
+(vollständig automatisiert)
+
+### Kontext:
+
+* [ATIngestValidation.java](../../test/java/de/uzk/hki/da/at/ATIngestValidation.java).testInvalidPremis
+
+## Szenario: AT-V-4 Ungültiges Tagmanifiest der Bagit
+
+
 
 
