@@ -2,9 +2,6 @@ Anleitung SIP-Builder
 =====================
 
 
-__Version 0.7__
-
-
 ## Überblick
 
 Der SIP-Builder ist ein Tool, mit dem sich zur Einlieferung in die DNS vorgesehene Daten in eine geeignete Paketstruktur überführen lassen. Das Programm kann in zwei Modi ausgeführt werden:  
@@ -256,21 +253,21 @@ Beispiel:
 -siplist="C:\Eigene Dateien\SIP-Source\siplist.xml"
 
 Beispielinhalt einer SIP-Liste:  
-<sipList>  
-        <sip name="SIP_Nr1">
-		<file>D:\Foto\2010\foto_1.tif</file>
-		<file>D:\Audio\audio_12_07_2011.wav</file>
-	</sip>
-	<sip name="SIP_Nr2">
-		<file>D:\Foto\2003\</file>
-		<file>D:\Foto\2004\</file>
-		<file>D:\Foto\2005\</file>
-		<file>D:\Foto\2006\</file>
-		<file>D:\Foto\2007\</file>
-	</sip>
-	<sip name="SIP_Nr3">											<file>C:\Dokumente\Video_Dateiübersicht.pdf</file>					<file>D:\Video\High_Resolution\</file>
-	</sip>
-</sipList>
+;<sipList>  
+;        <sip name="SIP_Nr1">
+;		<file>D:\Foto\2010\foto_1.tif</file>
+;		<file>D:\Audio\audio_12_07_2011.wav</file>
+;	</sip>
+;	<sip name="SIP_Nr2">
+;		<file>D:\Foto\2003\</file>
+;		<file>D:\Foto\2004\</file>
+;		<file>D:\Foto\2005\</file>
+;		<file>D:\Foto\2006\</file>
+;		<file>D:\Foto\2007\</file>
+;	</sip>
+;	<sip name="SIP_Nr3">											;<file>C:\Dokumente\Video_Dateiübersicht.pdf</file>					;<file>D:\Video\High_Resolution\</file>
+;	</sip>
+;</sipList>
 
 
 #### Ziel
