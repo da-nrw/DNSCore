@@ -39,14 +39,14 @@ Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen a
  
 
 __Laden__  
-Wenn Sie die Rechteeinstellungen bei einem früheren SIP-Generierungsvorgang schon einmal festgelegt und gespeichert haben, können Sie die dabei erstellte Datei mit dieser Option laden. Die geladenen Einstellungen können in den nachfolgenden Schritten überprüft und gegebenenfalls angepasst werden.
+Wenn Sie die Rechteeinstellungen bei einem früheren SIP-Generierungsvorgang schon einmal festgelegt und gespeichert haben (siehe __Einstellungen speichern__), können Sie die dabei erstellte Datei mit dieser Option laden. Die geladenen Einstellungen können in den nachfolgenden Schritten überprüft und gegebenenfalls angepasst werden.
 
 __Standard__  
 Wählen Sie diese Option, um die Standard-Rechteeinstellungen zu wählen:
 * Generierung von Publikationsdaten für die Öffentlichkeit, keine Restriktionen
 * Keine Generierung von zusätzlichen Publikationsdaten für die eigene Institution
-* Keine Migrationsbedingungen
-Bei Betätigung des Buttons werden die zuvor gewählten Einstellungen verworfen und durch die Standardwerte ersetzt.
+* Keine Migrationsbedingungen  
+Bei Betätigung des Buttons __Standard__ werden die zuvor gewählten Einstellungen verworfen und durch die Standardwerte ersetzt.
 
 
 
@@ -60,11 +60,13 @@ Bei Betätigung des Buttons werden die zuvor gewählten Einstellungen verworfen 
 
  
 
-Die Publikationseinstellungen können in zwei Kategorien festgelegt werden:
-* Erstellung von Publikationsderivaten zur Anzeige in öffentlichen Portalen
-* Erstellung von Publikationsderivaten, die nur der eigenen Institution über die Schnittstellen des Presentation Repository zugänglich sind
+Die Publikationseinstellungen können für zwei Bereiche festgelegt werden:  
+__Öffentlichkeit__  
+Erstellung von Publikationsderivaten zur Anzeige in öffentlichen Portalen
+__Eigene Institution__
+Erstellung von Publikationsderivaten, die nur der eigenen Institution über die Schnittstellen des Presentation Repository zugänglich sind
 
-Sie können jeweils wählen, ob die Erstellung der Publikationsdaten grundsätzlich stattfinden soll und ob in diesem Fall zusätzliche Restriktionen in Kraft treten sollen. Diese Restriktionen können für jede der beiden Kategorien separat festgelegt werden.
+Sie können  wählen, ob die Erstellung der Publikationsdaten grundsätzlich stattfinden soll und ob in diesem Fall zusätzliche Restriktionen in Kraft treten sollen. Diese Restriktionen können für jeden der beiden Bereiche separat festgelegt werden.
 Daten, die für die Anzeige in öffentlichen Portalen erstellt wurden, werden automatisch auch der Deutschen Digitalen Bibliothek zur Verfügung gestellt. Möchten Sie diesen Vorgang vermeiden, können Sie die Checkbox „DDB-Harvesting erlauben“ deaktivieren. In diesem Fall werden der Deutschen Digitalen Bibliothek keine Daten zugänglich gemacht.
 
 
@@ -125,7 +127,8 @@ Zur Wahl stehen derzeit:
 
 In diesem Schritt lassen sich Restriktionen wählen, die in den Rechteeinstellungen hinterlegt und während der Erstellung der Publikationsdaten angewendet werden.
 
-__Text: Einsehbare Seiten festlegen__  
+#####Text  
+__Einsehbare Seiten festlegen__  
 Wenn Sie möchten, dass nur bestimmte Seiten eines PDF-Dokuments für den Benutzer einsehbar sind, können Sie die entsprechenden Seitenzahlen bei Aktivierung dieser Option in einem Textfeld angeben.
 Reihen Sie die gewünschten Seitenzahlen dazu durch Kommas voneinander getrennt aneinander. Um mehrere aufeinander folgende Seiten festzulegen, genügt es, die erste und letzte Seitenzahl mit einem dazwischen liegenden Bindestrich anzugeben.
 
@@ -137,36 +140,40 @@ Angezeigt werden die Seiten 1, 2, 3, 4 und 5.
 * Eingabe: 1, 14-17, 24, 30  
 Angezeigt werden die Seiten 1, 14, 15, 16, 17, 24 und 30.
 
-__Bild: Bildqualität begrenzen__  
+#####Bild  
+__Bildqualität begrenzen__  
 Bei Aktivierung dieser Option haben Sie die Möglichkeit, die Anzeigequalität von Bilddateien zu begrenzen, indem Sie die gewünschte Auflösung der Bilder angeben. Sie können dabei zwischen zwei Möglichkeiten wählen:
-* Bestimmung der maximalen Auflösung durch absolute Werte in drei Ab-stufungen (niedrig, mittel, hoch)
+* Bestimmung der maximalen Auflösung durch absolute Werte in drei Abstufungen (niedrig, mittel, hoch)
 * Bestimmung der Auflösung relativ zur Auflösung im Original (angegeben in Prozentwerten)
 
 
 
 
-__Bild: Fußzeile oder Wasserzeichen angeben__  
+__Fußzeile oder Wasserzeichen angeben__  
 Verwenden Sie diese Option, um Ihren Bildern einen beliebigen Text hinzuzufügen, der beispielsweise Copyright-Informationen beinhalten kann. Geben Sie den Text dazu in das Textfeld ein und legen Sie die gewünschten Einstellungen fest:  
-**_Texttyp_**  
+
+  **_Texttyp_**  
 * Fußzeile: Der Text wird im unteren Bereich des Bildes als weiße Schrift auf einem schwarzen Balken eingefügt. Ein kleiner Teil des Bildes wird dabei von der Fußzeile verdeckt.
 * Wasserzeichen (oben): Der Text wird im oberen Bereich des Bildes eingefügt.
 * Wasserzeichen (mittig): Der Text wird im mittleren Bereich des Bildes eingefügt. 
 * Wasserzeichen (unten): Der Text wird im unteren Bereich des Bildes eingefügt.   
 
-**_Sichtbarkeit (nur bei Wasserzeichen)_**  
+  **_Sichtbarkeit (nur bei Wasserzeichen)_**  
 Wasserzeichen können auf Wunsch transparent angezeigt werden. Zur Auswahl stehen Werte zwischen 5% (kaum sichtbar) und 100% (vollständig sichtbar).  
 
-**_Schriftgröße (nur bei Wasserzeichen)_**  
+  **_Schriftgröße (nur bei Wasserzeichen)_**  
 Wählen Sie die gewünschte Schriftgröße, in der der Text angezeigt wird. Bitte beachten Sie, dass um-fangreiche Texte in höheren Schriftgrößen auf kleineren Bildern möglicherweise nicht mehr vollständig angezeigt werden können.
 Bitte beachten Sie, dass die Länge der Texte beschränkt ist: Fußzeilen dürfen höchstens 65 Zeichen lang sein, bei Wasserzeichen beträgt die maximale Länge 20 Zeichen.  
 
-__Audio: Länge von Audio-Dateien begrenzen__   
-Um dem Benutzer lediglich den Beginn einer Audio-Datei zugänglich zu machen, können Sie die maximale Abspieldauer von Audio-Dateien begrenzen; es werden dann etwa nur die ersten fünfzehn Sekunden abgespielt. Die genaue Sekundenanzahl können Sie hier festlegen.  
+#####Audio  
+__Länge von Audio-Dateien begrenzen__   
+Um dem Benutzer lediglich den Beginn einer Audio-Datei zugänglich zu machen, können Sie die maximale Abspieldauer von Audio-Dateien begrenzen; es werden dann z.B. nur die ersten fünfzehn Sekunden abgespielt. Die genaue Sekundenanzahl können Sie hier festlegen.  
 
-__Video: Bildqualität von Videos begrenzen__  
+#####Video  
+__Bildqualität von Videos begrenzen__  
 Bei Aktivierung dieser Option haben Sie die Möglichkeit, die Anzeigequalität von Videodateien zu begrenzen. Die Höhe der Auflösung kann dabei aus drei möglichen Einstellungen (niedrig, mittel, hoch) gewählt werden.  
 
-__Video: Länge von Videos begrenzen__
+__Länge von Videos begrenzen__  
 Neben Audio-Dateien lassen sich auch Videos in ihrer Länge begrenzen. Legen Sie hier fest, wieviele Sekunden eines Videos abgespielt werden können.
 ### Konversions- und Migrationseinstellungen
 
@@ -253,21 +260,23 @@ Beispiel:
 -siplist="C:\Eigene Dateien\SIP-Source\siplist.xml"
 
 Beispielinhalt einer SIP-Liste:  
-;<sipList>  
-;        <sip name="SIP_Nr1">
-;		<file>D:\Foto\2010\foto_1.tif</file>
-;		<file>D:\Audio\audio_12_07_2011.wav</file>
-;	</sip>
-;	<sip name="SIP_Nr2">
-;		<file>D:\Foto\2003\</file>
-;		<file>D:\Foto\2004\</file>
-;		<file>D:\Foto\2005\</file>
-;		<file>D:\Foto\2006\</file>
-;		<file>D:\Foto\2007\</file>
-;	</sip>
-;	<sip name="SIP_Nr3">											;<file>C:\Dokumente\Video_Dateiübersicht.pdf</file>					;<file>D:\Video\High_Resolution\</file>
-;	</sip>
-;</sipList>
+<sipList>  
+        <sip name="SIP_Nr1">
+		<file>D:\Foto\2010\foto_1.tif</file>
+		<file>D:\Audio\audio_12_07_2011.wav</file>
+	</sip>
+	<sip name="SIP_Nr2">
+		<file>D:\Foto\2003\</file>
+		<file>D:\Foto\2004\</file>
+		<file>D:\Foto\2005\</file>
+		<file>D:\Foto\2006\</file>
+		<file>D:\Foto\2007\</file>
+	</sip>
+	<sip name="SIP_Nr3">											
+	<file>C:\Dokumente\Video_Dateiübersicht.pdf</file>				
+	<file>D:\Video\High_Resolution\</file>
+	</sip>
+</sipList>
 
 
 #### Ziel
