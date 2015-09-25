@@ -55,6 +55,7 @@ public class ATSipBuilderCliMode {
 	public void tearDown() throws IOException{
 		FileUtils.deleteQuietly(new File("target/atTargetDir/"+nestedSip1));
 		FileUtils.deleteQuietly(new File("target/atTargetDir/"+nestedSip2));
+		FileUtils.deleteDirectory(new File("target/atTargetDir/"));
 	}
 	
 	@Test
