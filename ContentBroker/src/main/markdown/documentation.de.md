@@ -4,7 +4,7 @@ Deutsche Version | [English Version](documentation.md)
 
 Willkommen auf der Startseite der Dokumentation des DNSCore Softwarepakets! Dies hier ist die primäre Quelle zu allen Fragen bezüglich der Handhabung des Softwarepakets. 
 
-Überblick:
+**Überblick:**
 [Leistungsmerkmale (Features) der Software](features.de.md)
 
 Der Großteil der Dokumentation befindet sich unter
