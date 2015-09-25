@@ -11,7 +11,7 @@ Es gilt die Regel, das bei mehreren aufeinander folgenden Delta-Einlieferungen d
 #### Vorbedingungen:
 
 * Der User hat einen Account und ist unter der Rolle "Contractor" eingeloggt in der DA-WEB.
-* Der User hat einen Webshare mit Incoming Order, in den er Pakete legen kann. DA-WEB zeigt den Inhalt dieses Ordners in der Maske&nbsp;"[Verarbeitung für abgelieferte SIP starten|https://da-nrw-q.lvr.de/daweb3/incoming/index]" an.
+* Der User hat einen Webshare mit Incoming Order, in den er Pakete legen kann. DA-WEB zeigt den Inhalt dieses Ordners in der Maske&nbsp;"Verarbeitung für abgelieferte SIP starten" an.
 
 #### Testpaket(e):
 
@@ -33,14 +33,14 @@ data/premis.xml (Publikationsbeschränkungen: Publikation für Öffentlichkeit n
 
 #### Ablauf
 
-1. Das erste Tespaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "[Verarbeitung für abgelieferte SIP starten|https://da-nrw-q.lvr.de/daweb3/incoming/index]")
+1. Das erste Tespaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "Verarbeitung für abgelieferte SIP starten")
 1. Warten auf die Bestätigungsmail.
 1. Recherchieren des Objektes in der Ansicht "eingelieferte Objekte".
 1. Folgen des Links in das Fedora. Prüfen der Ergebnisse.
-1. Das zweite Tespaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "[Verarbeitung für abgelieferte SIP starten|https://da-nrw-q.lvr.de/daweb3/incoming/index]")
+1. Das zweite Tespaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "Verarbeitung für abgelieferte SIP startenincoming/index")
 1. Warten auf die Bestätigungsmail.
 1. Im Fedora. Erneutes Prüfen der Ergebnisse.
-1. Das dritte Tespaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "[Verarbeitung für abgelieferte SIP starten|https://da-nrw-q.lvr.de/daweb3/incoming/index]")
+1. Das dritte Tespaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "Verarbeitung für abgelieferte SIP starten")
 1. Warten auf die Bestätigungsmail.
 1. Im Fedora. Erneutes Prüfen der Ergebnisse.
 
