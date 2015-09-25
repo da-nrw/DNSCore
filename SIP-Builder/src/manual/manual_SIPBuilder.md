@@ -354,9 +354,10 @@ Wenn sich bereits existierende SIPs oder Lieferungen gleichen Namens im Ziel-ord
 __-ignoreExtensions="ext1;ext2;ext3..."__  
 Wählen Sie diese Option, um Dateien mit bestimmten Dateiendungen nicht in die erzeugten SIPs aufnehmen zu lassen. Die entsprechenden Dateien werden bei der SIP-Erstellung ignoriert. Geben Sie die einzelnen Dateiendungen hinter-einander durch Semikolons getrennt an.
 
-Beispiel: -ignoreExtensions="txt;doc;rtf;odt;pdf"
+Beispiel: 
+-ignoreExtensions="txt;doc;rtf;odt;pdf"
 
-__-help__  
+__-help__ 
 Zeigt eine Übersicht der möglichen Optionen an.
 
 
