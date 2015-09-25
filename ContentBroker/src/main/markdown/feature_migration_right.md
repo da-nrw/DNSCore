@@ -11,11 +11,11 @@ gilt für alle Szenarien\!
 #### Vorbedingung:
 
 * Der User hat einen Account und ist unter der Rolle "Contractor" eingeloggt in der DA-WEB.
-* Der User hat einen Webshare mit Incoming Order, in den er Pakete legen kann. DA-WEB zeigt den Inhalt dieses Ordners in der Maske&nbsp;"[Verarbeitung für abgelieferte SIP starten|https://da-nrw-q.lvr.de/daweb3/incoming/index]" an.
+* Der User hat einen Webshare mit Incoming Order, in den er Pakete legen kann. DA-WEB zeigt den Inhalt dieses Ordners in der Maske&nbsp;"Verarbeitung für abgelieferte SIP starten" an.
 
 #### Durchführung:
 
-1. Das Tespaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "[Verarbeitung für abgelieferte SIP starten|https://da-nrw-q.lvr.de/daweb3/incoming/index]")
+1. Das Tespaket wird im Incoming Order abelegt und die Verarbeitung gestartet "Verarbeitung für abgelieferte SIP starten"
 1. Warten auf Email, die besagt, dass eine Entscheidung hinsichtlich eines Paketes mit einem bestimmten Identifier getroffen werden muss.
 
 ## Szenario AT-MB-1 Keine Bedingung
