@@ -34,8 +34,6 @@ import java.io.InputStreamReader;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,24 +51,18 @@ public class SIPFactoryTest {
 
 	String pathToResourcesFolder = "src/test/resources/SIPFactoryTests/";
 	SIPFactory sipFactory = new SIPFactory();
-	private Logger logger;
 
 	@Before
 	public void setUp() {
-		
-		logger = Logger.getRootLogger();	
-	    logger.setLevel(Level.ERROR);
 		
 		new File(pathToResourcesFolder + "destination").mkdir();
 		
 		ProgressManager progressManager = mock(ProgressManager.class);
 		MessageWriter messageWriter = mock(MessageWriter.class);
-		de.uzk.hki.da.sb.Logger sipLogger = mock(de.uzk.hki.da.sb.Logger.class);
 		
 		sipFactory = new SIPFactory();
 		sipFactory.setProgressManager(progressManager);
 		sipFactory.setMessageWriter(messageWriter);
-		sipFactory.setLogger(sipLogger);
 		
 		Properties properties = new Properties();
 		try {

@@ -56,7 +56,7 @@
 		       <executions>
 	                   <execution>
 	                       <id>surefire-it</id>
-	                       <phase>integration-test</phase>
+	                       <phase>test</phase>
 	                       <goals>
 	                           <goal>test</goal>
 	                       </goals>
@@ -65,13 +65,24 @@
 					              <include>**/**.java</include>
 					            </includes>
 					            <excludes>
-					              <exclude>none</exclude>
+					              <exclude>**/*AT*</exclude>
 					            </excludes>
+	                       </configuration>
+	                   </execution>
+	                    <execution>
+	                       <phase>integration-test</phase>
+	                       <goals>
+	                           <goal>test</goal>
+	                       </goals>
+	                       <configuration>
+					            <includes>
+					              <include>**/*AT*</include>
+					            </includes>
 	                       </configuration>
 	                   </execution>
 	               </executions>
 		    </plugin>
-		    
+
 		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
