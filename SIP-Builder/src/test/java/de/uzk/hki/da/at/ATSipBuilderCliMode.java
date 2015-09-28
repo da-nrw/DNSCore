@@ -41,28 +41,30 @@ public class ATSipBuilderCliMode {
 
 	private static String nestedSip1 = "urn+nbn+de+hbz+42.tgz";
 	private static String nestedSip2 = "urn+nbn+de+hbz+6+1-3602.tgz";
-	private static File targetDir;
+	private static File targetDir = new File("target/atTargetDir/");
 	private static File sourceDir = new File("src/test/resources/SIPFactoryTests/nestedFolders");
 	private static Process p;
 	
 	@Before
 	public void setUp() throws IOException{	
 		FileUtils.deleteDirectory(new File("target/atTargetDir/"));
-		targetDir = new File("target/atTargetDir/");
 	}
 	
 	@After
 	public void tearDown() throws IOException{
 		FileUtils.deleteQuietly(new File("target/atTargetDir/"+nestedSip1));
 		FileUtils.deleteQuietly(new File("target/atTargetDir/"+nestedSip2));
-		FileUtils.deleteDirectory(new File("target/atTargetDir/"));
+		FileUtils.deleteDirectory(targetDir);
 		p.destroy();
 	}
 	
 	@Test
 	public void testNestedStructure() throws IOException {
 		
-		p = Runtime.getRuntime().exec("./sipBuilderAtTemplate.sh "+sourceDir.getAbsolutePath()+" "+targetDir.getAbsolutePath()+" -nested -alwaysOverwrite");
+		String cmd = "./SipBuilder-Unix.sh -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -nested -alwaysOverwrite";
+		
+		p=Runtime.getRuntime().exec(cmd,
+		        null, new File("target/installation"));
 		
 		BufferedReader stdInput = new BufferedReader(new
         InputStreamReader(p.getInputStream()));
@@ -85,6 +87,6 @@ public class ATSipBuilderCliMode {
 	    
 	    assertTrue(new File("target/atTargetDir/"+nestedSip1).exists());
 	    assertTrue(new File("target/atTargetDir/"+nestedSip2).exists());
-
 	}
+
 }
