@@ -45,7 +45,7 @@ import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.sb.Logger;
 import de.uzk.hki.da.sb.MessageWriter;
 import de.uzk.hki.da.sb.SIPFactory;
-import de.uzk.hki.da.sb.SIPFactory.Feedback;
+import de.uzk.hki.da.sb.Feedback;
 import de.uzk.hki.da.sb.UserInputValidator;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.StringUtilities;

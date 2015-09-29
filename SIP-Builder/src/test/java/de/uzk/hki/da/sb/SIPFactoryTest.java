@@ -68,9 +68,9 @@ public class SIPFactoryTest {
 		try {
 			properties.load(new InputStreamReader((ClassLoader.getSystemResourceAsStream("configuration/config.properties"))));
 		} catch (FileNotFoundException e1) {
-			System.exit(SIPFactory.Feedback.GUI_ERROR.toInt());
+			System.exit(Feedback.GUI_ERROR.toInt());
 		} catch (IOException e2) {
-			System.exit(SIPFactory.Feedback.GUI_ERROR.toInt());
+			System.exit(Feedback.GUI_ERROR.toInt());
 		}
 		SIPBuilder.setProperties(properties);
 	}
@@ -105,7 +105,7 @@ public class SIPFactoryTest {
 			Thread.sleep(100);
 		} while (sipFactory.isWorking());
 		
-		assertEquals(SIPFactory.Feedback.SUCCESS, sipFactory.getReturnCode());
+		assertEquals(Feedback.SUCCESS, sipFactory.getReturnCode());
 		
 		String pathToSIP = pathToResourcesFolder + "destination/singleFolder.tgz";
 		
@@ -146,7 +146,7 @@ public class SIPFactoryTest {
 			Thread.sleep(100);
 		} while (sipFactory.isWorking());
 		
-		assertEquals(SIPFactory.Feedback.SUCCESS, sipFactory.getReturnCode());
+		assertEquals(Feedback.SUCCESS, sipFactory.getReturnCode());
 		
 		String pathToSIP = pathToResourcesFolder + "destination/singleFolder.tar";
 		
@@ -187,7 +187,7 @@ public class SIPFactoryTest {
 			Thread.sleep(100);
 		} while (sipFactory.isWorking());
 		
-		assertEquals(SIPFactory.Feedback.SUCCESS, sipFactory.getReturnCode());
+		assertEquals(Feedback.SUCCESS, sipFactory.getReturnCode());
 		
 		ArchiveBuilder builder = new ArchiveBuilder();
 		
@@ -255,7 +255,7 @@ public class SIPFactoryTest {
 			Thread.sleep(100);
 		} while (sipFactory.isWorking());
 		
-		assertEquals(SIPFactory.Feedback.SUCCESS, sipFactory.getReturnCode());
+		assertEquals(Feedback.SUCCESS, sipFactory.getReturnCode());
 		
 		ArchiveBuilder builder = new ArchiveBuilder();
 		
@@ -317,7 +317,7 @@ public class SIPFactoryTest {
 			Thread.sleep(100);
 		} while (sipFactory.isWorking());
 		
-		assertEquals(SIPFactory.Feedback.SUCCESS, sipFactory.getReturnCode());
+		assertEquals(Feedback.SUCCESS, sipFactory.getReturnCode());
 		
 		File unpackedFolder = new File(pathToResourcesFolder + "destination/testCollection");
 		
