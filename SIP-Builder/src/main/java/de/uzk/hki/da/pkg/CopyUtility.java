@@ -30,7 +30,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.sb.ProgressManager;
-import de.uzk.hki.da.sb.SIPFactory;
+import de.uzk.hki.da.sb.SipBuildingProcess;
 
 /**
  * Copies directories to another directory
@@ -42,7 +42,7 @@ public class CopyUtility {
 	private ProgressManager progressManager = null;
 	private int jobId;
 	private List<String> forbiddenFileExtensions = null;
-	private SIPFactory.SipBuildingProcess sipBuildingProcess;
+	private SipBuildingProcess sipBuildingProcess;
 	
 	/**
 	 * Copies the contents of a directory to a target directory
@@ -157,7 +157,7 @@ public class CopyUtility {
 		this.jobId = jobId;
 	}
 
-	public void setSipBuildingProcess(SIPFactory.SipBuildingProcess sipBuildingProcess) {
+	public void setSipBuildingProcess(SipBuildingProcess sipBuildingProcess) {
 		this.sipBuildingProcess = sipBuildingProcess;
 	}
 	

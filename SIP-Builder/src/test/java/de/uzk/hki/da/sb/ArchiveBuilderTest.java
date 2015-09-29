@@ -28,7 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.pkg.ArchiveBuilder;
-import de.uzk.hki.da.sb.SIPFactory.SipBuildingProcess;
+import de.uzk.hki.da.sb.SipBuildingProcess;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -55,7 +55,7 @@ public class ArchiveBuilderTest {
 		ProgressManager progressManager = mock(ProgressManager.class);
 		
 		archiveBuilder = new ArchiveBuilder();
-		archiveBuilder.setSipBuildingProcess(process);
+		archiveBuilder.setSipBuildingProcessIsAborted(false);
 		archiveBuilder.setProgressManager(progressManager);
 	}
 	
