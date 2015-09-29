@@ -174,6 +174,7 @@ public class SipBuildingProcess extends Thread{
 				message += "\n";
 				message += s;						 
 			}
+			System.out.println(message);
 			messageWriter.showZeroByteFileMessage();
 		}
 	}
