@@ -35,7 +35,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.metadata.PremisXmlWriter;
-import de.uzk.hki.da.pkg.ArchiveBuilder;
+import de.uzk.hki.da.pkg.SipArchiveBuilder;
 import de.uzk.hki.da.pkg.CopyUtility;
 import de.uzk.hki.da.pkg.NestedContentStructure;
 import de.uzk.hki.da.utils.Utilities;
@@ -380,9 +380,9 @@ public class SIPFactory {
 		progressManager.setJobFolderSize(jobId, FileUtils.sizeOfDirectory(folder));
 		progressManager.archiveProgress(jobId, 0);
 
-		ArchiveBuilder archiveBuilder = null;
+		SipArchiveBuilder archiveBuilder = null;
 		try {
-			archiveBuilder = new ArchiveBuilder();
+			archiveBuilder = new SipArchiveBuilder();
 			archiveBuilder.setProgressManager(progressManager);
 			archiveBuilder.setJobId(jobId);
 			archiveBuilder.setSipBuildingProcessIsAborted(sipBuildingProcess.isAborted());
