@@ -34,15 +34,13 @@ import java.io.InputStreamReader;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
-import de.uzk.hki.da.pkg.ArchiveBuilder;
+import de.uzk.hki.da.pkg.SipArchiveBuilder;
 
 /**
  * Class under test: SIPFactory
@@ -53,32 +51,28 @@ public class SIPFactoryTest {
 
 	String pathToResourcesFolder = "src/test/resources/SIPFactoryTests/";
 	SIPFactory sipFactory = new SIPFactory();
-	private Logger logger;
 
 	@Before
 	public void setUp() {
-		
-		logger = Logger.getRootLogger();	
-	    logger.setLevel(Level.ERROR);
 		
 		new File(pathToResourcesFolder + "destination").mkdir();
 		
 		ProgressManager progressManager = mock(ProgressManager.class);
 		MessageWriter messageWriter = mock(MessageWriter.class);
-		de.uzk.hki.da.sb.Logger sipLogger = mock(de.uzk.hki.da.sb.Logger.class);
+		SipBuildingProcess sbp = mock(SipBuildingProcess.class);
 		
 		sipFactory = new SIPFactory();
 		sipFactory.setProgressManager(progressManager);
 		sipFactory.setMessageWriter(messageWriter);
-		sipFactory.setLogger(sipLogger);
+		sipFactory.setSipBuildingProcess(sbp);
 		
 		Properties properties = new Properties();
 		try {
 			properties.load(new InputStreamReader((ClassLoader.getSystemResourceAsStream("configuration/config.properties"))));
 		} catch (FileNotFoundException e1) {
-			System.exit(SIPFactory.Feedback.GUI_ERROR.toInt());
+			System.exit(Feedback.GUI_ERROR.toInt());
 		} catch (IOException e2) {
-			System.exit(SIPFactory.Feedback.GUI_ERROR.toInt());
+			System.exit(Feedback.GUI_ERROR.toInt());
 		}
 		SIPBuilder.setProperties(properties);
 	}
@@ -113,11 +107,11 @@ public class SIPFactoryTest {
 			Thread.sleep(100);
 		} while (sipFactory.isWorking());
 		
-		assertEquals(SIPFactory.Feedback.SUCCESS, sipFactory.getReturnCode());
+		assertEquals(Feedback.SUCCESS, sipFactory.getReturnCode());
 		
 		String pathToSIP = pathToResourcesFolder + "destination/singleFolder.tgz";
 		
-		ArchiveBuilder builder = new ArchiveBuilder();
+		SipArchiveBuilder builder = new SipArchiveBuilder();
 		builder.unarchiveFolder(new File(pathToSIP), new File(pathToResourcesFolder + "destination"), true);
 		
 		File unpackedFolder = new File(pathToResourcesFolder + "destination/singleFolder");
@@ -154,11 +148,11 @@ public class SIPFactoryTest {
 			Thread.sleep(100);
 		} while (sipFactory.isWorking());
 		
-		assertEquals(SIPFactory.Feedback.SUCCESS, sipFactory.getReturnCode());
+		assertEquals(Feedback.SUCCESS, sipFactory.getReturnCode());
 		
 		String pathToSIP = pathToResourcesFolder + "destination/singleFolder.tar";
 		
-		ArchiveBuilder builder = new ArchiveBuilder();
+		SipArchiveBuilder builder = new SipArchiveBuilder();
 		builder.unarchiveFolder(new File(pathToSIP), new File(pathToResourcesFolder + "destination"), false);
 		
 		File unpackedFolder = new File(pathToResourcesFolder + "destination/singleFolder");
@@ -195,9 +189,9 @@ public class SIPFactoryTest {
 			Thread.sleep(100);
 		} while (sipFactory.isWorking());
 		
-		assertEquals(SIPFactory.Feedback.SUCCESS, sipFactory.getReturnCode());
+		assertEquals(Feedback.SUCCESS, sipFactory.getReturnCode());
 		
-		ArchiveBuilder builder = new ArchiveBuilder();
+		SipArchiveBuilder builder = new SipArchiveBuilder();
 		
 		String pathToSIP1 = pathToResourcesFolder + "destination/SIP_1.tgz";
 				
@@ -263,9 +257,9 @@ public class SIPFactoryTest {
 			Thread.sleep(100);
 		} while (sipFactory.isWorking());
 		
-		assertEquals(SIPFactory.Feedback.SUCCESS, sipFactory.getReturnCode());
+		assertEquals(Feedback.SUCCESS, sipFactory.getReturnCode());
 		
-		ArchiveBuilder builder = new ArchiveBuilder();
+		SipArchiveBuilder builder = new SipArchiveBuilder();
 		
 		String pathToSIP1 = pathToResourcesFolder + "destination/"+fixedUrn1+".tgz";
 		builder.unarchiveFolder(new File(pathToSIP1), new File(pathToResourcesFolder + "destination"), true);
@@ -325,7 +319,7 @@ public class SIPFactoryTest {
 			Thread.sleep(100);
 		} while (sipFactory.isWorking());
 		
-		assertEquals(SIPFactory.Feedback.SUCCESS, sipFactory.getReturnCode());
+		assertEquals(Feedback.SUCCESS, sipFactory.getReturnCode());
 		
 		File unpackedFolder = new File(pathToResourcesFolder + "destination/testCollection");
 		

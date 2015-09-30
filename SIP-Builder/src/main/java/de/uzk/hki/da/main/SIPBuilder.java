@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
 
 import de.uzk.hki.da.cli.Cli;
 import de.uzk.hki.da.gui.Gui;
-import de.uzk.hki.da.sb.SIPFactory;
+import de.uzk.hki.da.sb.Feedback;
 
 /**
  * Main class; starts GUI or CLI mode
@@ -62,9 +62,9 @@ public class SIPBuilder {
 		try {
 			properties.load(new InputStreamReader((ClassLoader.getSystemResourceAsStream("configuration/config.properties"))));
 		} catch (FileNotFoundException e1) {
-			System.exit(SIPFactory.Feedback.GUI_ERROR.toInt());
+			System.exit(Feedback.GUI_ERROR.toInt());
 		} catch (IOException e2) {
-			System.exit(SIPFactory.Feedback.GUI_ERROR.toInt());
+			System.exit(Feedback.GUI_ERROR.toInt());
 		}
         
         try {

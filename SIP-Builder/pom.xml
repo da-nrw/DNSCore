@@ -14,11 +14,9 @@
 	<name>SIPBuilder</name>	
 	
 	<properties>
-		<scp.user>irods</scp.user>
-		<scp.host>da-nrw.hki.uni-koeln.de</scp.host>
-		<scp.toDir>/data/danrw/www/ssl/htdocs/sipbuilder/</scp.toDir>
 		<maven.test.search.classdir>true</maven.test.search.classdir>
     	<include.tests>**/*DDDCDDSD*.java</include.tests>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	
 	<profiles>
@@ -44,108 +42,41 @@
 	
 	<build>
 		<plugins>
+		
 			<plugin>
 		      <groupId>org.apache.maven.plugins</groupId>
 		      <artifactId>maven-surefire-plugin</artifactId>
+		      <version>2.13</version>
 		      <configuration>
 		        <configuration>
                     <skip>true</skip>
                 </configuration>
 		      </configuration>
-		      
-		       <executions>
-	                   <execution>
-	                       <id>surefire-it</id>
-	                       <phase>integration-test</phase>
-	                       <goals>
-	                           <goal>test</goal>
-	                       </goals>
-	                       <configuration>
-	                            <excludes>
-					              <exclude>none</exclude>
-					            </excludes>
-					            <includes>
-					              <include>**/**.java</include>
-					            </includes>
-					            <excludes>
-									<exclude>**/AT**.java</exclude>
-								</excludes>
-	                       </configuration>
-	                   </execution>
-	               </executions>
+	       	<executions>
+                   <execution>
+                      <phase>integration-test</phase>
+                      <goals>
+                          <goal>test</goal>
+                      </goals>
+                      <configuration>
+			            <includes>
+			              <include>**/*AT*</include>
+			            </includes>
+			            <excludes>
+			              <exclude>**/**Tests.java</exclude>
+			            </excludes>
+                      </configuration>
+                  </execution>
+              </executions>
 		    </plugin>
-		    
-<!-- 		    <plugin> -->
-<!-- 				<artifactId>maven-failsafe-plugin</artifactId> -->
-<!-- 				<version>2.6</version> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<goals> -->
-<!-- 							<goal>integration-test</goal> -->
-<!-- 							<goal>verify</goal> -->
-<!-- 						</goals> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 				<configuration> -->
-<!-- 				<systemProperties> -->
-<!--             		<property> -->
-<!--               			<name>env</name> -->
-<!--               			<value>${env}</value> -->
-<!--             		</property> -->
-<!--          		</systemProperties> -->
-<!-- 					<includes> -->
-<!-- 						<include>**/AT**.java</include> -->
-<!-- 					</includes> -->
-<!-- 				</configuration> -->
-<!-- 			</plugin> -->
-		    
-		<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9.1</version>
-				<configuration>
-					<reportOutputDirectory>${project.reporting.outputDirectory}/staging</reportOutputDirectory>
-					<bottom>DA-NRW Software Suite | ContentBroker Copyright (C) 2011-2014
-						Historisch-Kulturwissenschaftliche Informationsverarbeitung Universitaet zu
-						Koeln</bottom>
-					<quiet>true</quiet>
-					<show>private</show>
-				</configuration>
-			</plugin>
-			
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-scm-publish-plugin</artifactId>
-				<version>1.0</version>
-				<configuration>
-					<checkoutDirectory>${project.build.directory}/scmpublish</checkoutDirectory>
-					<checkinComment>Publishing javadoc for ${project.artifactId}:${project.version}</checkinComment>
-					<content>${project.reporting.outputDirectory}/staging</content>
-					<skipDeletedFiles>true</skipDeletedFiles>
-					<pubScmUrl>scm:git:git@github.com:da-nrw/SIP-Builder.git</pubScmUrl>
-					<scmBranch>gh-pages</scmBranch>
-				</configuration>
-			</plugin>
-		<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.13</version>
-				<configuration>
-					<includes>
-						<include>%regex[.*Test.java*]</include>
-					</includes>
-	    			<argLine>-Dfile.encoding=UTF-8</argLine> 
-				</configuration>
-				
-			</plugin>
-		<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
-				<version>2.3.2</version>
 			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>

@@ -62,6 +62,7 @@ import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.metadata.ContractSettings;
 import de.uzk.hki.da.metadata.PremisXmlWriter;
 import de.uzk.hki.da.metadata.PublicationRights;
+import de.uzk.hki.da.sb.Feedback;
 import de.uzk.hki.da.sb.Logger;
 import de.uzk.hki.da.sb.SIPFactory;
 import de.uzk.hki.da.sb.UserInputValidator;
@@ -362,13 +363,13 @@ public class Gui extends JFrame{
 			messageWriter.showMessage("Die Contract Settings konnten nicht geladen werden.\n" +
 					"Die Datei \"settings.xml\" im Verzeichnis \"conf\" wurde möglicherweise\n" +
 					"verändert oder gelöscht.", JOptionPane.ERROR_MESSAGE);
-			System.exit(SIPFactory.Feedback.GUI_ERROR.toInt());
+			System.exit(Feedback.GUI_ERROR.toInt());
 		}
 		
 		initialize();
 		
 		if (!loadStandardRights())
-			System.exit(SIPFactory.Feedback.GUI_ERROR.toInt());
+			System.exit(Feedback.GUI_ERROR.toInt());
 	}		
 
 	/**
@@ -503,7 +504,7 @@ public class Gui extends JFrame{
 		sourceLabel.setFont(standardFont.deriveFont(10.0f));
 		destinationLabel = new JLabel("Zielordner:");
 		destinationLabel.setFont(standardFont.deriveFont(10.0f));
-		rightsLabel = new JLabel("Rechteeinstellungen laden");
+		rightsLabel = new JLabel("Rechteeinstellungen");
 		rightsLabel.setFont(boldFont.deriveFont(12.0f));
 		institutionLabel = new JLabel("Publikation für die eigene Institution");
 		institutionLabel.setFont(boldFont.deriveFont(12.0f));

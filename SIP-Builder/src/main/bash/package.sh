@@ -12,7 +12,6 @@ mkdir $INSTALLATION/data
 cp target/SipBuilder-1.0-SNAPSHOT-jar-with-dependencies.jar $INSTALLATION/SipBuilder.jar
 cp src/main/bash/SipBuilder-Unix.sh $INSTALLATION/
 cp src/main/binary/SipBuilder-Windows.exe $INSTALLATION/
-cp "src/main/binary/SIP-Builder Anleitung.pdf" $INSTALLATION
 cp src/main/xml/standardRights.xml $INSTALLATION/conf
 
 echo -e "SipBuilder Version $VERSION\nWritten by\n Thomas Kleinke\n Martin Fischer" > $INSTALLATION/README.txt

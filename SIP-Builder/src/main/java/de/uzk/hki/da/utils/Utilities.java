@@ -201,7 +201,6 @@ public class Utilities {
 	 * @return true if zero byte files exist inside the folder, false otherwise
 	 */
 	public static boolean checkForZeroByteFiles(File folder, String sipName, MessageWriter messageWriter) {
-		
 		Collection<File> files = FileUtils.listFiles(folder, null, true);
 		
 		for (File file : files) {

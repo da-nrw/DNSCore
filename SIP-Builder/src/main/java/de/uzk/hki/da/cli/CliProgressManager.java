@@ -20,6 +20,7 @@
 package de.uzk.hki.da.cli;
 
 import de.uzk.hki.da.sb.ProgressManager;
+import de.uzk.hki.da.sb.SIPCreationJob;
 
 /**
  * A specialized progress manager responsible for updating the progress bar in CLI mode
