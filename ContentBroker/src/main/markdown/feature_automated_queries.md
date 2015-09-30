@@ -60,8 +60,10 @@ Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthal
 2. Login an der DAWEB
 3. Eine semikolongetrennte Datei mit den Spalten:
 
-    identifier;origName;statuscode;erfolg;bemerkung
 
+```
+identifier;origName;statuscode;erfolg;bemerkung
+```
 Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mittels EXCEL erstellt wurde. 
 [Beispiel](../../../src/test/resources/at/ATCSVQueries.csv)
 
