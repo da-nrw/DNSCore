@@ -1,13 +1,14 @@
 Anleitung SIP-Builder
 =====================
 
+Bitte verwenden Sie eine Version des SIP-Builders, die mindestens die Build-Nr. 1411 hat!
 
 ## Überblick
 
 Der SIP-Builder ist ein Tool, mit dem sich zur Einlieferung in die DNS vorgesehene Daten in eine geeignete Paketstruktur überführen lassen. Das Programm kann in zwei Modi ausgeführt werden:  
 * Im GUI-Modus werden Sie in einer grafischen Benutzeroberfläche (GUI) durch mehrere aufeinander folgende Schritte geführt, in deren Verlauf Sie die nötigen Einstellungen vornehmen können. Sie können dabei jederzeit über eine Reihe von Schaltflächen am linken Rand zwischen den einzelnen Schritten hin- und herwechseln. Am Ende des Verfahrens erhalten Sie eine bzw. mehrere Archivdateien (wahlweise im tgz- oder tar-Format), die zur Einlieferung in das DNS geeignet sind. Dieser Modus wird für die meisten Anwender empfohlen.
 
-* Fortgeschrittene Benutzer können den SIP-Builder alternativ im CLI-Modus auf der Kommandozeile (CLI) aufrufen und die gewünschten Einstellungen als Parameter angeben. Diese Vorgehensweise bietet sich beispielsweise an, um den SIP-Erstellungsvorgang in automatisierte Prozesse einzubinden.
+* Fortgeschrittene Benutzer können den SIP-Builder alternativ im CLI-Modus auf der Kommandozeile (CLI) aufrufen und die gewünschten Einstellungen als Parameter angeben. Diese Vorgehensweise bietet sich beispielsweise an, um den SIP-Erstellungsvorgang in automatisierte Prozesse einzubinden. In diesem Modus gibt es einen erweiterten Funktionsumfang.
 
 ## GUI-Modus
 
@@ -25,18 +26,18 @@ __Quellordner__
 Geben Sie hier den Pfad zum Verzeichnis an, das die Quelldaten enthält, aus denen das SIP generiert werden soll.
 
 __Zielordner__  
-Im hier angegebenen Verzeichnis wird das fertige SIP am Ende des Generierungsprozesses in Form einer tgz- oder tar-Archivdatei hinterlegt.
+Im hier angegebenen Verzeichnis wird das fertige SIP am Ende des Generierungsprozesses in Form einer tgz- oder tar-Archivdatei hinterlegt. Das gewählte Verzeichnis darf kein Unterverzeichnis des Quellordners sein. 
 
 __Generierungsmodus__  
-Sie haben die Wahl zwischen zwei verschiedenen Modi der SIP-Generierung:
+Sie haben die Wahl zwischen verschiedenen Modi der SIP-Generierung:
 * _Einzelnes SIP aus dem Quellverzeichnis erstellen:_  
-Wählen Sie diese Option, wenn Sie die Daten des Quellordners zu einem einzelnen SIP bündeln möchten. Auch eventuell existierende Unterordner werden dem Paket hinzugefügt.
-* _Mehrere SIPs aus Unterordnern des Quellverzeichnisses erstellen:_  
-Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu generieren. Dazu müssen sich die Daten für jedes Paket in einem eigenen Unterordner des Quellverzeichnisses befinden. Im Generierungsprozess werden die Daten jedes einzelnen Verzeichnisses zu jeweils einem eigenen SIP gebündelt.
+Wählen Sie diese Option, wenn Sie die Daten des Quellordners zu einem einzelnen SIP bündeln möchten. Auch eventuell existierende Unterordner werden dem Paket hinzugefügt. Der Name des fertigen SIPs entspricht dem Namen des Quellordners.  
+* _SIPs aus Unterordnern des Quellverzeichnisses erstellen:_  
+Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu generieren. Dazu müssen sich die Daten für jedes Paket in einem eigenen Unterordner des Quellverzeichnisses befinden. Im Generierungsprozess werden die Daten jedes einzelnen Verzeichnisses zu jeweils einem eigenen SIP gebündelt. Die SIP-Namen entsprechen dem Verzeichnisnamen der Unterordner.
+* _SIPs auf unterster Ebene einer Baumstruktur erstellen (nur METS):_  
+Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu bilden. Die Daten für die  Pakete befinden sich auf befinden sich jeweils im untersten Ast einer beliebigen Baumstruktur aus Ordnern. Der SIP-Name wird aus der mitgelieferten URN gebildet, wobei allerdings ein Doppelpunkt in ein Pluszeichen umgewandelt wird.
 
-### Rechteeinstellungen laden
-
- 
+### Laden der Rechteeinstellungen  
 
 __Laden__  
 Wenn Sie die Rechteeinstellungen bei einem früheren SIP-Generierungsvorgang schon einmal festgelegt und gespeichert haben (siehe __Einstellungen speichern__), können Sie die dabei erstellte Datei mit dieser Option laden. Die geladenen Einstellungen können in den nachfolgenden Schritten überprüft und gegebenenfalls angepasst werden.
@@ -46,6 +47,7 @@ Wählen Sie diese Option, um die Standard-Rechteeinstellungen zu wählen:
 * Generierung von Publikationsdaten für die Öffentlichkeit, keine Restriktionen
 * Keine Generierung von zusätzlichen Publikationsdaten für die eigene Institution
 * Keine Migrationsbedingungen  
+
 Bei Betätigung des Buttons __Standard__ werden die zuvor gewählten Einstellungen verworfen und durch die Standardwerte ersetzt.
 
 
@@ -60,14 +62,14 @@ Bei Betätigung des Buttons __Standard__ werden die zuvor gewählten Einstellung
 
  
 
-Die Publikationseinstellungen können für zwei Bereiche festgelegt werden:  
+Die Publikationseinstellungen können festgelegt werden für:  
 __Öffentlichkeit__  
-Erstellung von Publikationsderivaten zur Anzeige in öffentlichen Portalen
-__Eigene Institution__
+Erstellung von Publikationsderivaten zur Anzeige in öffentlichen Portalen  
+__Eigene Institution__  
 Erstellung von Publikationsderivaten, die nur der eigenen Institution über die Schnittstellen des Presentation Repository zugänglich sind
 
-Sie können  wählen, ob die Erstellung der Publikationsdaten grundsätzlich stattfinden soll und ob in diesem Fall zusätzliche Restriktionen in Kraft treten sollen. Diese Restriktionen können für jeden der beiden Bereiche separat festgelegt werden.
-Daten, die für die Anzeige in öffentlichen Portalen erstellt wurden, werden automatisch auch der Deutschen Digitalen Bibliothek zur Verfügung gestellt. Möchten Sie diesen Vorgang vermeiden, können Sie die Checkbox „DDB-Harvesting erlauben“ deaktivieren. In diesem Fall werden der Deutschen Digitalen Bibliothek keine Daten zugänglich gemacht.
+Sie können  wählen, ob die Erstellung der Publikationsdaten grundsätzlich stattfinden soll und ob in diesem Fall zusätzliche Restriktionen in Kraft treten sollen. Diese Restriktionen können für die Öffentlichkeit und die eigene Institution jeweils separat festgelegt werden.  
+Daten, die für die Anzeige in öffentlichen Portalen erstellt wurden, werden automatisch auch der Deutschen Digitalen Bibliothek zur Verfügung gestellt. Möchten Sie diesen Vorgang vermeiden, können Sie die Checkbox __DDB-Harvesting erlauben__ deaktivieren. In diesem Fall werden der Deutschen Digitalen Bibliothek keine Daten zugänglich gemacht.
 
 
 
@@ -100,9 +102,9 @@ __Publikation mit Sperrgesetz begrenzen__
 Alternativ zum Startdatum können Sie den Beginn der Publikation auch durch die Wahl eines regulierenden Gesetzes festlegen. Wählen Sie den Namen des gewünschten Gesetzes dazu aus der Drop-Down-Box aus.
 Zur Wahl stehen derzeit:
 * ePflicht
-* UrhG DE
+* UrhG DE  
 
-
+Zur Zeit ist diese Funktion noch ohne Auswirkungen.  
 
 
 
@@ -205,7 +207,7 @@ Mögliche Einstellungen sind:
 
 
 
-###  Einstellungen speichern
+###  Speichern der Einstellungen
 
  
 
@@ -214,7 +216,7 @@ In diesem Schritt werden die zuvor getroffenen Rechteeinstellungen übersichtlic
 Wenn Sie die Einstellungen bei einer späteren Verwendung des SIP-Builders noch einmal anwenden möchten, können Sie diese sichern, indem Sie den Button „Speichern“ betätigen. Die dabei erstellte Datei können Sie später jederzeit im Schritt „Rechteeinstellungen laden“ wieder einlesen, sodass Sie die Einstellungen nicht erneut vornehmen müssen.
 
 
-### SIP-Generierungsprozess starten
+### SIP erstellen
 
  
 
@@ -229,7 +231,7 @@ Um den SIP-Builder im CLI-Modus zu starten, sind folgende Schritte notwendig:
 * Obligatorisch ist die Angabe von jeweils einem Parameter der Kategorien „Quelle“ und „Ziel“ (siehe unten). Darüber hinaus können Sie optional weitere Parameter angeben, um die gewünschten Einstellungen der SIP-Erstellung festzulegen.
 
 
-### Übersicht der Parameter
+### Start
 #### Quelle
 
 __-source="[Pfad]"__  
@@ -240,7 +242,7 @@ Beispiele:
 -source="/home/user/sipData"
 
 __-filelist="[Pfad]"__
-Diese Option kann verwendet werden, um ein einzelnes SIP aus Dateien zu erstellen, die sich in unterschiedlichen Verzeichnissen befinden. Erstellen Sie dazu eine Textdatei und listen Sie darin die Pfade zu den Dateien und/oder Verzeichnissen auf, aus denen das SIP erstellt werden soll. In jeder Zeile der Textdatei muss dabei genau eine Pfadangabe stehen. Geben Sie den Pfad eines Verzeichnisses an, wird der gesamte Inhalt des Verzeichnisses inklusive aller Unterordner in das SIP aufgenommen.
+Nur im CLI-Modus haben Sie die Möglichkeit, ein einzelnes SIP aus Dateien zu erstellen, die sich in unterschiedlichen Verzeichnissen befinden. Erstellen Sie dazu eine Textdatei und listen Sie darin die Pfade zu den Dateien und/oder Verzeichnissen auf, aus denen das SIP erstellt werden soll. In jeder Zeile der Textdatei muss dabei genau eine Pfadangabe stehen. Geben Sie den Pfad eines Verzeichnisses an, wird der gesamte Inhalt des Verzeichnisses inklusive aller Unterordner in das SIP aufgenommen.
 Bei Verwendung dieser Option muss gleichzeitig mit dem Parameter -single= "[Name]" ein Name für das SIP angegeben werden.
 
 Beispiel:  
@@ -279,39 +281,13 @@ Beispielinhalt einer SIP-Liste:
 </sipList>
 
 
-#### Ziel
+#### Zielordner
 
 __-destination="[Pfad]"__  
-Geben Sie den Pfad zum Verzeichnis an, in dem die SIPs erstellt werden sollen. Bitte beachten Sie bei gleichzeitiger Verwendung der Option -source, dass das gewählte Verzeichnis kein Unterverzeichnis des Quellordners sein darf.
+Im hier angegebenen Verzeichnis wird das fertige SIP am Ende des Generierungsprozesses in Form einer tgz- oder tar-Archivdatei hinterlegt. Bitte beachten Sie bei gleichzeitiger Verwendung der Option -source, dass das gewählte Verzeichnis kein Unterverzeichnis des Quellordners sein darf.
 
 Beispiel:  
 -destination="D:\SIPs"
-
-
-#### Rechte
-
-__-default (Standardoption)__  
-Die Standardrechte werden angewendet:
-▪	Generierung von Publikationsdaten für die Öffentlichkeit, keine Restrik-tionen
-▪	Keine Generierung von Publikationsdaten für die eigene Institution
-▪	Keine Migrationsbedingungen
-
-
-
-
-
-__-premis="[Pfad]"__  
-Geben Sie den Pfad einer Premis-Datei an, die eine Rights Section mit den von Ihnen gewünschten Rechten enthält. Die dort angegebenen Rechteeinstellun-gen werden in die Premis-Datei des neu erstellten SIPs übernommen.
-
-Beispiel:  
--premis="C:\Dokumente\SIPs\sip001\data\premis.xml"
-
-__-rights="[Pfad]"__  
-Geben Sie den Pfad einer Rechte-Datei an, die zuvor im GUI-Modus des SIP-Builders erstellt wurde. Diese Option entspricht dem Laden von Rechteeinstel-lungen im GUI-Modus.
-
-Beispiel:  
--rights="C:\Dokumente\SIP-Source\contractRights.xml"
-
 
 #### Generierungsmodus
 
@@ -331,6 +307,33 @@ Die Option muss bei gleichzeitiger Verwendung von -filelist gewählt werden und 
 Beispiel:  
 -single="Foto_SIP_2013"
 
+### Rechteeinstellungen
+
+__-default (Standardoption)__  
+Die Standardrechte werden angewendet:
+* Generierung von Publikationsdaten für die Öffentlichkeit, keine Restriktionen
+* Keine Generierung von Publikationsdaten für die eigene Institution
+* Keine Migrationsbedingungen
+
+
+
+
+
+__-premis="[Pfad]"__  
+Geben Sie den Pfad einer Premis-Datei an, die eine Rights Section mit den von Ihnen gewünschten Rechten enthält. Die dort angegebenen Rechteeinstellungen werden in die Premis-Datei des neu erstellten SIPs übernommen.
+
+Beispiel:  
+-premis="C:\Dokumente\SIPs\sip001\data\premis.xml"
+
+__-rights="[Pfad]"__  
+Geben Sie den Pfad einer Rechte-Datei an, die zuvor im GUI-Modus des SIP-Builders erstellt wurde. Diese Option entspricht dem Laden von Rechteeinstellungen im GUI-Modus.
+
+Beispiel:  
+-rights="C:\Dokumente\SIP-Source\contractRights.xml"
+
+
+### Sonstige Optionen zur SIP-Erstellung
+
 #### Kompression
 
 __-compression (Standardoption)__  
@@ -349,7 +352,7 @@ __-alwaysOverwrite__
 Wenn sich bereits existierende SIPs oder Lieferungen gleichen Namens im Zielordner befinden, werden sie ohne weitere Nachfrage überschrieben, d. h. durch die neu erstellten Pakete bzw. die neu erstellte Lieferung ersetzt.
 
 
-#### Sonstige Optionen
+#### Ausschluss bestimmter Dateiendungen
 
 __-ignoreExtensions="ext1;ext2;ext3..."__  
 Wählen Sie diese Option, um Dateien mit bestimmten Dateiendungen nicht in die erzeugten SIPs aufnehmen zu lassen. Die entsprechenden Dateien werden bei der SIP-Erstellung ignoriert. Geben Sie die einzelnen Dateiendungen hintereinander durch Semikolons getrennt an.
@@ -357,29 +360,21 @@ Wählen Sie diese Option, um Dateien mit bestimmten Dateiendungen nicht in die e
 Beispiel: 
 -ignoreExtensions="txt;doc;rtf;odt;pdf"
 
-__-help__ 
-Zeigt eine Übersicht der möglichen Optionen an.
-
-
-
-
-
 ### Beispielaufrufe
 
 _java -jar SipBuilder.jar -source="D:\sipsource" -destination="D:\sips\" -single_  
-Erstellt ein einziges SIP aus dem Ordner "D:\sipsource" im Verzeichnis "D:\sips\". Es werden die Standardrechte angewendet.
+Erstellt ein einziges SIP aus dem Ordner __D:\sipsource__ im Verzeichnis __D:\sips\__. Es werden die Standardrechte angewendet.
 
 _java -jar SipBuilder.jar -source="/home/user/sipData" -destination="/home/user/sips" -collection="ExampleCollection"_  
-Erstellt mehrere SIPs aus den Unterordnern des Ordners "/home/user/sipData". Die SIPs werden anschließend zu einer Lieferung im Verzeichnis "/home/user/ sips/ExampleCollection" gebündelt. Es werden die Standardrechte angewendet.
+Erstellt mehrere SIPs aus den Unterordnern des Ordners __/home/user/sipData__. Die SIPs werden anschließend zu einer Lieferung im Verzeichnis __/home/user/ sips/ExampleCollection__ gebündelt. Es werden die Standardrechte angewendet.
 
 _java -jar SipBuilder.jar -filelist="C:\Eigene Dateien\SIP-Source\filelist.txt"  -destination="D:\sips\" -single="ExampleSIP" -rights="D:\sipRights\contractRights_001.xml"  -alwaysOverwrite_  
-Erstellt ein SIP gemäß den Angaben in der Datei "C:\Eigene Dateien\SIP-Source\filelist.txt" mit dem Namen "ExampleSIP" im Verzeichnis "D:\sips\".  
-Dabei werden die in der Datei "D:\sipRights\contractRights_001.xml" hinterlegten Rechteeinstellungen verwendet.  
-Ein eventuell schon vorhandenes gleichnamiges SIP im Verzeichnis "D:\sips\" wird überschrieben.
+Erstellt ein SIP gemäß den Angaben in der Datei __C:\Eigene Dateien\SIP-Source\filelist.txt__ mit dem Namen "ExampleSIP" im Verzeichnis __D:\sips\__.  
+Dabei werden die in der Datei __D:\sipRights\contractRights_001.xml__ hinterlegten Rechteeinstellungen verwendet.  
+Ein eventuell schon vorhandenes gleichnamiges SIP im Verzeichnis __D:\sips\__ wird überschrieben.
 
 _java -jar SipBuilder.jar -siplist="C:\Eigene Dateien\SIP-Source\siplist.xml" -destination="D:\sips\" -premis="C:\Eigene Dateien\SIP-Source\premis.xml"_  
-Erstellt mehrere SIPs gemäß den Angaben in der Datei "C:\Eigene Dateien\SIP-Source\siplist.xml". Die in der Premis-Datei "C:\Eigene Dateien\SIP-Source\ premis.xml" angegebenen Rechte werden dabei übernommen.
-
+Erstellt mehrere SIPs gemäß den Angaben in der Datei __C:\Eigene Dateien\SIP-Source\siplist.xml__. Die in der Premis-Datei __C:\Eigene Dateien\SIP-Source\ premis.xml__ angegebenen Rechte werden dabei übernommen.
 
 ### Fehlercodes
 
@@ -414,3 +409,8 @@ Die möglichen Codes und ihre Bedeutung können Sie der folgenden Übersicht ent
 25 Fehler beim Erstellen der Archivdatei  
 26 Fehler beim Erstellen der Lieferung  
 27 Temporäre Daten konnten nicht entfernt werden  
+
+### Hilfe
+
+__-help__ 
+Zeigt eine Übersicht der möglichen Optionen an.
