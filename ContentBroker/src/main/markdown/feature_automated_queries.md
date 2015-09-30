@@ -28,6 +28,25 @@ Die Statusabfrageb mittels CSV Datei haben die Bezeichnung AT-ST-CSV-1 bis AT-ST
 <b>Hinweis zu Enkodierungen bei JSON Abfragen:</b>
 Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthalten, die gemäß [RFC-2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html) enkodiert werden müssen, sind diese zu enkodieren. 
 
+<b>Hinweis für Admins</b>
+
+1. Auf einem bestehendem Build < #1430 ist zunächst folgendes Migration Script gegen die Object-DB (für den DA-Admin) auszuführen:
+[updatescript](../../../src/main/sql/migration7.sql) (Abschl. Commit setzen)
+
+2. Die HibernateConfig hibernateCentralDB.cfg.xml ist mit einem Mapping für die Table zu versehen:
+ 
+     <mapping class="de.uzk.hki.da.model.SystemEvent"/>
+
+3. Die beans.xml ist zu ändern:
+ 
+```
+<task:scheduled-tasks>
+(...)
+<task:scheduled ref="systemEventWorker" method="scheduleTask" fixed-delay="20000" />
+</task:scheduled-tasks>
+```
+
+
 ## Szenario AT-ST-CSV-1: Statusabfrage mittels vorbereiteter CSV Datei eines fehlerfrei archivierten Pakets
 
 #### Kontext:
@@ -41,8 +60,10 @@ Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthal
 2. Login an der DAWEB
 3. Eine semikolongetrennte Datei mit den Spalten:
 
-    identifier;origName;statuscode;erfolg;bemerkung
 
+```
+identifier;origName;statuscode;erfolg;bemerkung
+```
 Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mittels EXCEL erstellt wurde. 
 [Beispiel](../../../src/test/resources/at/ATCSVQueries.csv)
 
