@@ -45,7 +45,8 @@ Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthal
 <task:scheduled ref="systemEventWorker" method="scheduleTask" fixed-delay="20000" />
 </task:scheduled-tasks>
 ```
-
+4. Für das hier beschriebene Feature AT-CSV-1 bis 3 müssen z.T. Berechtigungen für den Tomcat, bzw. den ApacheServer
+gesetzt, bzw. überprüft werden. (incoming und outgoing Ordner)
 
 ## Szenario AT-ST-CSV-1: Statusabfrage mittels vorbereiteter CSV Datei eines fehlerfrei archivierten Pakets
 
