@@ -504,7 +504,7 @@ public class Gui extends JFrame{
 		sourceLabel.setFont(standardFont.deriveFont(10.0f));
 		destinationLabel = new JLabel("Zielordner:");
 		destinationLabel.setFont(standardFont.deriveFont(10.0f));
-		rightsLabel = new JLabel("Rechteeinstellungen laden");
+		rightsLabel = new JLabel("Rechteeinstellungen");
 		rightsLabel.setFont(boldFont.deriveFont(12.0f));
 		institutionLabel = new JLabel("Publikation für die eigene Institution");
 		institutionLabel.setFont(boldFont.deriveFont(12.0f));
