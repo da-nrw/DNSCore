@@ -39,7 +39,7 @@ Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthal
 
 3. Die beans.xml ist zu ändern:
  
-    <task:scheduled-tasks>
+     <task:scheduled-tasks>
      (...)
      <task:scheduled ref="systemEventWorker" method="scheduleTask" fixed-delay="20000" />
      </task:scheduled-tasks>
