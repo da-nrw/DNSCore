@@ -29,8 +29,10 @@ Die Statusabfrageb mittels CSV Datei haben die Bezeichnung AT-ST-CSV-1 bis AT-ST
 Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthalten, die gemäß [RFC-2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html) enkodiert werden müssen, sind diese zu enkodieren. 
 
 <b>Hinweis für DA-Admins</b>
+
 1. Auf einem bestehendem Build < #1430 ist zunächst folgendes Migration Script gegen die Object-DB auszuführen:
 [updatescript](../../../src/main/sql/migration7.sql) (Abschl. Commit setzen)
+
 2. Die HibernateConfig hibernateCentralDB.cfg.xml ist mit einem Mapping für die Table zu versehen:
  
      <mapping class="de.uzk.hki.da.model.SystemEvent"/>
