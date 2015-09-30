@@ -1,13 +1,14 @@
 Anleitung SIP-Builder
 =====================
 
+Bitte verwenden Sie eine Version des SIP-Builders, die mindestens die Build-Nr. 1411 hat!
 
 ## Überblick
 
 Der SIP-Builder ist ein Tool, mit dem sich zur Einlieferung in die DNS vorgesehene Daten in eine geeignete Paketstruktur überführen lassen. Das Programm kann in zwei Modi ausgeführt werden:  
 * Im GUI-Modus werden Sie in einer grafischen Benutzeroberfläche (GUI) durch mehrere aufeinander folgende Schritte geführt, in deren Verlauf Sie die nötigen Einstellungen vornehmen können. Sie können dabei jederzeit über eine Reihe von Schaltflächen am linken Rand zwischen den einzelnen Schritten hin- und herwechseln. Am Ende des Verfahrens erhalten Sie eine bzw. mehrere Archivdateien (wahlweise im tgz- oder tar-Format), die zur Einlieferung in das DNS geeignet sind. Dieser Modus wird für die meisten Anwender empfohlen.
 
-* Fortgeschrittene Benutzer können den SIP-Builder alternativ im CLI-Modus auf der Kommandozeile (CLI) aufrufen und die gewünschten Einstellungen als Parameter angeben. Diese Vorgehensweise bietet sich beispielsweise an, um den SIP-Erstellungsvorgang in automatisierte Prozesse einzubinden.
+* Fortgeschrittene Benutzer können den SIP-Builder alternativ im CLI-Modus auf der Kommandozeile (CLI) aufrufen und die gewünschten Einstellungen als Parameter angeben. Diese Vorgehensweise bietet sich beispielsweise an, um den SIP-Erstellungsvorgang in automatisierte Prozesse einzubinden. In diesem Modus gibt es einen erweiterten Funktionsumfang
 
 ## GUI-Modus
 
@@ -25,18 +26,18 @@ __Quellordner__
 Geben Sie hier den Pfad zum Verzeichnis an, das die Quelldaten enthält, aus denen das SIP generiert werden soll.
 
 __Zielordner__  
-Im hier angegebenen Verzeichnis wird das fertige SIP am Ende des Generierungsprozesses in Form einer tgz- oder tar-Archivdatei hinterlegt.
+Im hier angegebenen Verzeichnis wird das fertige SIP am Ende des Generierungsprozesses in Form einer tgz- oder tar-Archivdatei hinterlegt. Das gewählte Verzeichnis darf kein Unterverzeichnis des Quellordners sein. 
 
 __Generierungsmodus__  
-Sie haben die Wahl zwischen zwei verschiedenen Modi der SIP-Generierung:
+Sie haben die Wahl zwischen verschiedenen Modi der SIP-Generierung:
 * _Einzelnes SIP aus dem Quellverzeichnis erstellen:_  
-Wählen Sie diese Option, wenn Sie die Daten des Quellordners zu einem einzelnen SIP bündeln möchten. Auch eventuell existierende Unterordner werden dem Paket hinzugefügt.
-* _Mehrere SIPs aus Unterordnern des Quellverzeichnisses erstellen:_  
-Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu generieren. Dazu müssen sich die Daten für jedes Paket in einem eigenen Unterordner des Quellverzeichnisses befinden. Im Generierungsprozess werden die Daten jedes einzelnen Verzeichnisses zu jeweils einem eigenen SIP gebündelt.
+Wählen Sie diese Option, wenn Sie die Daten des Quellordners zu einem einzelnen SIP bündeln möchten. Auch eventuell existierende Unterordner werden dem Paket hinzugefügt. Der Name des fertigen SIPs entspricht dem Namen des Quellordners.  
+* _SIPs aus Unterordnern des Quellverzeichnisses erstellen:_  
+Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu generieren. Dazu müssen sich die Daten für jedes Paket in einem eigenen Unterordner des Quellverzeichnisses befinden. Im Generierungsprozess werden die Daten jedes einzelnen Verzeichnisses zu jeweils einem eigenen SIP gebündelt. Die SIP-Namen entsprechen dem Verzeichnisnamen der Unterordner.
+* _SIPs auf unterster Ebene einer Baumstruktur erstellen (nur METS):_  
+Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu bilden. Die Daten für die  Pakete befinden sich auf befinden sich jeweils im untersten Ast einer beliebigen Baumstruktur aus Ordnern. Der SIP-Name wird aus der mitgelieferten URN gebildet, wobei allerdings ein Doppelpunkt in ein Pluszeichen umgewandelt wird.
 
-### Rechteeinstellungen laden
-
- 
+### Rechteeinstellungen 
 
 __Laden__  
 Wenn Sie die Rechteeinstellungen bei einem früheren SIP-Generierungsvorgang schon einmal festgelegt und gespeichert haben (siehe __Einstellungen speichern__), können Sie die dabei erstellte Datei mit dieser Option laden. Die geladenen Einstellungen können in den nachfolgenden Schritten überprüft und gegebenenfalls angepasst werden.
@@ -46,6 +47,7 @@ Wählen Sie diese Option, um die Standard-Rechteeinstellungen zu wählen:
 * Generierung von Publikationsdaten für die Öffentlichkeit, keine Restriktionen
 * Keine Generierung von zusätzlichen Publikationsdaten für die eigene Institution
 * Keine Migrationsbedingungen  
+
 Bei Betätigung des Buttons __Standard__ werden die zuvor gewählten Einstellungen verworfen und durch die Standardwerte ersetzt.
 
 
@@ -60,13 +62,13 @@ Bei Betätigung des Buttons __Standard__ werden die zuvor gewählten Einstellung
 
  
 
-Die Publikationseinstellungen können für zwei Bereiche festgelegt werden:  
+Die Publikationseinstellungen können festgelegt werden für:  
 __Öffentlichkeit__  
-Erstellung von Publikationsderivaten zur Anzeige in öffentlichen Portalen
-__Eigene Institution__
+Erstellung von Publikationsderivaten zur Anzeige in öffentlichen Portalen  
+__Eigene Institution__  
 Erstellung von Publikationsderivaten, die nur der eigenen Institution über die Schnittstellen des Presentation Repository zugänglich sind
 
-Sie können  wählen, ob die Erstellung der Publikationsdaten grundsätzlich stattfinden soll und ob in diesem Fall zusätzliche Restriktionen in Kraft treten sollen. Diese Restriktionen können für jeden der beiden Bereiche separat festgelegt werden.
+Sie können  wählen, ob die Erstellung der Publikationsdaten grundsätzlich stattfinden soll und ob in diesem Fall zusätzliche Restriktionen in Kraft treten sollen. Diese Restriktionen können für die Öffentlichkeit und die eigene Institution jeweils separat festgelegt werden.  
 Daten, die für die Anzeige in öffentlichen Portalen erstellt wurden, werden automatisch auch der Deutschen Digitalen Bibliothek zur Verfügung gestellt. Möchten Sie diesen Vorgang vermeiden, können Sie die Checkbox „DDB-Harvesting erlauben“ deaktivieren. In diesem Fall werden der Deutschen Digitalen Bibliothek keine Daten zugänglich gemacht.
 
 
