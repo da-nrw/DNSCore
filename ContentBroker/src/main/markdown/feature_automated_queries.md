@@ -30,16 +30,17 @@ Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthal
 
 <b>Hinweis für Admins</b>
 
-1. Auf einem bestehendem Build < #1430 ist zunächst folgendes Migration Script gegen die Object-DB (für den DA-Admin) auszuführen:
+- Auf einem bestehendem Build < #1430 ist zunächst folgendes Migration Script gegen die Object-DB (für den DA-Admin) auszuführen:
 [updatescript](../../../src/main/sql/migration7.sql) (Abschl. Commit setzen)
-2. Die HibernateConfig hibernateCentralDB.cfg.xml ist mit einem Mapping für die Table zu versehen:
+- Die HibernateConfig hibernateCentralDB.cfg.xml ist mit einem Mapping für die Table zu versehen:
 <mapping class="de.uzk.hki.da.model.SystemEvent"/>
-3. Die beans.xml ist zu ändern:
+
+- Die beans.xml ist zu ändern:
 <task:scheduled-tasks>
 (...)
 <task:scheduled ref="systemEventWorker" method="scheduleTask" fixed-delay="20000" />
 </task:scheduled-tasks>
-4. Für das hier beschriebene Feature AT-CSV-1 bis 3 müssen z.T. Berechtigungen für den Tomcat-User, bzw. den ApacheServer
+- Für das hier beschriebene Feature AT-CSV-1 bis 3 müssen z.T. Berechtigungen für den Tomcat-User, bzw. den ApacheServer
 gesetzt, bzw. überprüft werden. (incoming und outgoing Ordner)
 
 ## Szenario AT-ST-CSV-1: Statusabfrage mittels vorbereiteter CSV Datei eines fehlerfrei archivierten Pakets
