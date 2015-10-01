@@ -32,12 +32,10 @@ Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthal
 
 1. Auf einem bestehendem Build < #1430 ist zunächst folgendes Migration Script gegen die Object-DB (für den DA-Admin) auszuführen:
 [updatescript](../../../src/main/sql/migration7.sql) (Abschl. Commit setzen)
-
 2. Die HibernateConfig hibernateCentralDB.cfg.xml ist mit einem Mapping für die Table zu versehen:
 ```
 <mapping class="de.uzk.hki.da.model.SystemEvent"/>
 ```
-
 3. Die beans.xml ist zu ändern:
  
 ```
