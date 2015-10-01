@@ -35,7 +35,7 @@ Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthal
 
 2. Die HibernateConfig hibernateCentralDB.cfg.xml ist mit einem Mapping für die Table zu versehen:
  
-     <mapping class="de.uzk.hki.da.model.SystemEvent"/>
+<mapping class="de.uzk.hki.da.model.SystemEvent"/>
 
 3. Die beans.xml ist zu ändern:
  
