@@ -20,7 +20,7 @@ driver = {
 	d.manage().window().setSize(new Dimension(1028, 768))  
 	d
 	
-	//LIVE running browser firefox 26 !!
+	//LIVE running only with browser firefox 26 !!
 	//System.setProperty('webdriver.firefox.bin', '/home/jens/firefox/firefox')
 	//driver = new FirefoxDriver();
 } 

@@ -38,7 +38,7 @@ class LoginAuthSpec extends GebSpec {
 	   when: 
 	   loginForm.with {
 		   j_username = "TEST"
-		   j_password = "TEST"
+		   j_password = "TESTTEST"
 	   }
 	   
 	   and:
