@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # author: Daniel M. de Oliveira
+# Jens Peters
 
 REVISION_NUMBER=`git rev-parse HEAD`
 TARGET=/ci/BuildRepository/installation.$REVISION_NUMBER
@@ -19,3 +20,7 @@ cp doc/daweb3_properties.groovy.dev $TARGET/DAWeb/daweb3_properties.groovy.templ
 
 cd /ci/DNSCore/SIP-Builder
 cp -r target/installation $TARGET/SipBuilder
+cd /ci/DNScore
+git pull
+git tag $BUILD_NUMBER
+git push
