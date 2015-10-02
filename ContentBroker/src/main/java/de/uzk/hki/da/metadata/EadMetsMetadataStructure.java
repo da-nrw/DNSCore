@@ -358,7 +358,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			File refFile;
 			Boolean fileExists = false;
 			try {
-				refFile = getCanonicalFileFromReference(ref, metadataFile);
+				refFile = XMLUtils.getCanonicalFileFromReference(ref, metadataFile);
 				
 				
 				// relpath reffile.getPath

@@ -4,10 +4,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
+
+import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.utils.Utilities;
 
 
 /**
@@ -101,6 +105,18 @@ public class SipBuildingProcess extends Thread{
 		HashMap<File, String> folderListWithNames = null;
 		try {
 			folderListWithNames = sf.createFolderList(sourcePath);
+			for(File f : folderListWithNames.keySet()) {
+				try {
+					TreeMap<File, String> metadataFileWithType = Utilities.getMetadataFileWithType(f);
+					if(metadataFileWithType!=null) {
+						File file = metadataFileWithType.firstKey();
+							Utilities.getWrongFileReferences(metadataFileWithType.firstKey(), metadataFileWithType.get(file));						
+					}
+				} catch (UserException e) {
+					System.out.println(e.getMessage());
+					messageWriter.showWrongReferencesDialog(e.getMessage()+" Möchten Sie die Verarbeitung fortsetzen?");
+				}
+			}
 		} catch (Exception e) {
 			messageWriter.showMessage("Das SIP konnte nicht erstellt werden.\n\n" +
 					"Ihre Daten sind möglicherweise nicht valide: \n\n"+e.getMessage(), JOptionPane.ERROR_MESSAGE);
@@ -112,6 +128,14 @@ public class SipBuildingProcess extends Thread{
 		for(File f : folderListWithNames.keySet()) {
 			folderList.add(f);
 		}
+		
+		if(folderList.size()==0) {
+			messageWriter.showMessage("Es konnte kein SIP erstellt werden.\n\n" +
+					"Es wurde kein geeignetes Quellverzeichnis gefunden.", JOptionPane.ERROR_MESSAGE);
+			sf.abortSipBuilding();
+			return;
+		}
+		
 		if (sf.initializeProgressManager(folderList, collectionName) != Feedback.SUCCESS) {
 			messageWriter.showMessage("Das SIP konnte nicht erstellt werden.\n\n" +
 					"Der angegebene Ordner existiert nicht mehr. ", JOptionPane.ERROR_MESSAGE);
