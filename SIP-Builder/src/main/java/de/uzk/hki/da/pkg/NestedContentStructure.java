@@ -28,12 +28,12 @@ public class NestedContentStructure {
 	public File rootFile;
 	public HashMap<File, String> sipCandidatesWithUrns = new HashMap<File, String>();
 	
-	public NestedContentStructure(File sourceRootFile) throws IOException {
+	public NestedContentStructure(File sourceRootFile) throws Exception {
 		setRootFile(sourceRootFile);
 		try {
 			searchForSipCandidates(sourceRootFile);
 		} catch (JDOMException e) {
-			e.printStackTrace();
+			throw new Exception(e);
 		}
 	}
 	
@@ -92,8 +92,16 @@ public class NestedContentStructure {
 	}
 	
 	private String getUrn(File metsFile) throws IOException, JDOMException {
-		Document metsDoc = getDocumentFromFile(metsFile);
-		return new MetsParser(metsDoc).getUrn();
+		String urn = "";
+		try {
+			Document metsDoc = getDocumentFromFile(metsFile);
+			urn = new MetsParser(metsDoc).getUrn();
+		} catch (IOException e1) {
+			throw new IOException(e1);
+		} catch (JDOMException e2) {
+			throw new IOException(e2);
+		}
+		return urn;
 	}
 	
 	private Document getDocumentFromFile(File file) throws IOException, JDOMException {

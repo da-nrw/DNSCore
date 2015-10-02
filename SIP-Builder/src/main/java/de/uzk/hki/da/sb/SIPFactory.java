@@ -114,8 +114,9 @@ public class SIPFactory {
 	 * Creates a list of source folders
 	 * 
 	 * @param folderPath The main source folder path
+	 * @throws Exception 
 	 */
-	HashMap<File, String> createFolderList(String folderPath) {
+	HashMap<File, String> createFolderList(String folderPath) throws Exception {
 
 		HashMap<File, String> folderListWithFolderNames = new HashMap<File, String>();
 		File sourceFolder = new File(folderPath);
@@ -140,7 +141,7 @@ public class SIPFactory {
 				folderListWithFolderNames = ncs.getSipCandidates();
 				break;
 			} catch (IOException e) {
-				e.printStackTrace();
+				throw new Exception(e);
 			}
 		default:
 			break;

@@ -98,7 +98,16 @@ public class SipBuildingProcess extends Thread{
 			sf.setCollectionFolder(collectionFolder);
 		}
 
-		HashMap<File, String> folderListWithNames = sf.createFolderList(sourcePath);
+		HashMap<File, String> folderListWithNames = null;
+		try {
+			folderListWithNames = sf.createFolderList(sourcePath);
+		} catch (Exception e) {
+			messageWriter.showMessage("Das SIP konnte nicht erstellt werden.\n\n" +
+					"Ihre Daten sind möglicherweise nicht valide: \n\n"+e.getMessage(), JOptionPane.ERROR_MESSAGE);
+			sf.abortSipBuilding();
+			return;
+		}
+
 		List<File> folderList = new ArrayList<File>();
 		for(File f : folderListWithNames.keySet()) {
 			folderList.add(f);
