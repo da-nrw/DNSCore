@@ -413,7 +413,7 @@
 						<id>default-maven-functional-test</id>
 						<phase>integration-test</phase>
 						<configuration>
-							<skip>true</skip>
+							<skip>false</skip>
 						</configuration>
 					</execution>
 				</executions>
