@@ -23,4 +23,4 @@ cp -r target/installation $TARGET/SipBuilder
 cd /ci/DNScore
 git pull
 git tag $BUILD_NUMBER
-git push
+# git push
