@@ -21,6 +21,5 @@ cp doc/daweb3_properties.groovy.dev $TARGET/DAWeb/daweb3_properties.groovy.templ
 cd /ci/DNSCore/SIP-Builder
 cp -r target/installation $TARGET/SipBuilder
 cd /ci/DNScore
-git pull
 git tag $BUILD_NUMBER
-# git push
+git push --tags
