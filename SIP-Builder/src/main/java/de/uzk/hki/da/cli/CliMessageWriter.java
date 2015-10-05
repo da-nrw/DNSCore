@@ -112,4 +112,10 @@ class CliMessageWriter extends MessageWriter{
 	public void setStandardAnswer(UserInput standardAnswer) {
 		this.standardAnswer = standardAnswer;
 	}
+
+	@Override
+	public UserInput showWrongReferencesDialog(String message) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
