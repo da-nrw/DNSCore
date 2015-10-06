@@ -52,6 +52,7 @@ Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthal
 	</logger>
 ```
 
+- Es gibt fortan ein neues Logfile unter logs/events.log , welches ggfs. Fehlermeldungen zu SystemEvents enthält. 
 
 - Für das hier beschriebene Feature AT-CSV-1 bis 3 müssen z.T. Berechtigungen für den Tomcat-User, bzw. den ApacheServer
 gesetzt, bzw. überprüft werden. (incoming und outgoing Ordner)
