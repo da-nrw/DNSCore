@@ -47,9 +47,6 @@ Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthal
 - Vergleichen Sie Ihre logback.conf mit der logback.conf.template Es gibt mit diesem Feature einen neuen Logger
 
 ```
-<logger name="de.uzk.hki.da.service" additivity="false" level="INFO">
-		<appender-ref ref="OBJECT" />
-	</logger>
 	<logger name="de.uzk.hki.da.event" additivity="false" level="INFO">
 		<appender-ref ref="WORKER" />
 	</logger>
