@@ -44,13 +44,14 @@ Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthal
 </task:scheduled-tasks>
 ```
 
-- Vergleichen Sie Ihre logback.conf mit der logback.conf.template Es gibt mit diesem Feature einen neuen Logger
+- Vergleichen Sie Ihre logback.conf mit der logback.conf.template Es gibt mit diesem Feature einen neuen Logger und passen Sie den Loglevel ggfs. an. 
 
 ```
-	<logger name="de.uzk.hki.da.event" additivity="false" level="INFO">
+	<logger name="de.uzk.hki.da.event" additivity="false" level="DEBUG">
 		<appender-ref ref="WORKER" />
 	</logger>
 ```
+
 
 - Für das hier beschriebene Feature AT-CSV-1 bis 3 müssen z.T. Berechtigungen für den Tomcat-User, bzw. den ApacheServer
 gesetzt, bzw. überprüft werden. (incoming und outgoing Ordner)
