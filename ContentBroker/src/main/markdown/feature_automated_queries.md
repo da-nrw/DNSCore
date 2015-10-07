@@ -54,8 +54,13 @@ Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthal
 
 - Es gibt fortan ein neues Logfile unter logs/events.log , welches ggfs. Fehlermeldungen zu SystemEvents enthält. 
 
-- Für das hier beschriebene Feature AT-CSV-1 bis 3 müssen z.T. Berechtigungen für den Tomcat-User, bzw. den ApacheServer
-gesetzt, bzw. überprüft werden. (incoming und outgoing Ordner)
+- Für das hier beschriebene Feature AT-CSV-1 bis 3 müssen z.T. Berechtigungen für den Tomcat-User (aber auch für den irods-User), bzw. den ApacheServer
+gesetzt, bzw. überprüft werden. 
+
+```
+incoming read für irods, read,write für tomcat user
+outgoing read, write für irods user, read für tomcat user 
+```
 
 ## Szenario AT-ST-CSV-1: Statusabfrage mittels vorbereiteter CSV Datei eines fehlerfrei archivierten Pakets
 
