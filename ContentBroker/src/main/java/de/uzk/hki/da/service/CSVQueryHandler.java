@@ -89,7 +89,7 @@ public class CSVQueryHandler {
 
 	@SuppressWarnings("serial")
 	public void generateReportBasedOnFile(File csvFile, File outCsvFile) {
-		logger.error("generating Report file " + csvFile);
+		logger.info("generating Report file on " + csvFile + " to " + outCsvFile);
 		try {
 			csvFileHandler.parseFile(csvFile);
 			evalStates();
