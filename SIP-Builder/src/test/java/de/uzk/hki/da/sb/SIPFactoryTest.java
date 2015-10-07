@@ -41,6 +41,7 @@ import org.junit.Test;
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
+import de.uzk.hki.da.pkg.SipArchiveBuilder;
 
 /**
  * Class under test: SIPFactory
@@ -111,7 +112,7 @@ public class SIPFactoryTest {
 		
 		String pathToSIP = pathToResourcesFolder + "destination/singleFolder.tgz";
 		
-		ArchiveBuilder builder = new ArchiveBuilder();
+		SipArchiveBuilder builder = new SipArchiveBuilder();
 		builder.unarchiveFolder(new File(pathToSIP), new File(pathToResourcesFolder + "destination"), true);
 		
 		File unpackedFolder = new File(pathToResourcesFolder + "destination/singleFolder");
@@ -152,7 +153,7 @@ public class SIPFactoryTest {
 		
 		String pathToSIP = pathToResourcesFolder + "destination/singleFolder.tar";
 		
-		ArchiveBuilder builder = new ArchiveBuilder();
+		SipArchiveBuilder builder = new SipArchiveBuilder();
 		builder.unarchiveFolder(new File(pathToSIP), new File(pathToResourcesFolder + "destination"), false);
 		
 		File unpackedFolder = new File(pathToResourcesFolder + "destination/singleFolder");
@@ -191,7 +192,7 @@ public class SIPFactoryTest {
 		
 		assertEquals(Feedback.SUCCESS, sipFactory.getReturnCode());
 		
-		ArchiveBuilder builder = new ArchiveBuilder();
+		SipArchiveBuilder builder = new SipArchiveBuilder();
 		
 		String pathToSIP1 = pathToResourcesFolder + "destination/SIP_1.tgz";
 				
@@ -259,7 +260,7 @@ public class SIPFactoryTest {
 		
 		assertEquals(Feedback.SUCCESS, sipFactory.getReturnCode());
 		
-		ArchiveBuilder builder = new ArchiveBuilder();
+		SipArchiveBuilder builder = new SipArchiveBuilder();
 		
 		String pathToSIP1 = pathToResourcesFolder + "destination/"+fixedUrn1+".tgz";
 		builder.unarchiveFolder(new File(pathToSIP1), new File(pathToResourcesFolder + "destination"), true);
