@@ -36,7 +36,7 @@ Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthal
 ```
 <mapping class="de.uzk.hki.da.model.SystemEvent"/>
 ```
-- Die beans.xml ist zu ändern:
+- Die beans.xml ist zu ändern (sofern Sie einen "Node" betreiben):
 ```
 <task:scheduled-tasks>
 (...)
