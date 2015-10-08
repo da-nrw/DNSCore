@@ -26,17 +26,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.TreeMap;
 
 import org.apache.commons.io.FileUtils;
-import org.jdom.JDOMException;
 
-import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.metadata.ContractRights.ConversionCondition;
-import de.uzk.hki.da.metadata.MetsParser;
 import de.uzk.hki.da.metadata.PublicationRights.Law;
 import de.uzk.hki.da.metadata.PublicationRights.TextType;
 import de.uzk.hki.da.sb.MessageWriter;
@@ -288,66 +282,5 @@ public class Utilities {
 			return sipBuilderVersion;
 		
 		return sipBuilderVersion.substring(0, index);		
-	}
-	
-	private static boolean fileReferenceInXmlIsValid(String reference, File metadataFile) throws IOException {
-		boolean isValid = false;
-		File referencedFile = XMLUtils.getCanonicalFileFromReference(reference, metadataFile);
-		if(referencedFile.exists()) {
-			isValid = true;
-		}	
-		return isValid;
-	}
-	
-	public static List<String> getWrongFileReferences(File metadataFile, String metadataType) throws JDOMException, IOException {
-		List<String> wrongRefs = new ArrayList<String>();
-		if(metadataType.equals(C.CB_PACKAGETYPE_METS)) {
-			for (String s : new MetsParser(XMLUtils.getDocumentFromXMLFile(metadataFile)).getReferences()) {
-				if(!Utilities.fileReferenceInXmlIsValid(s, metadataFile)) {
-					wrongRefs.add(s);
-				}
-			}
-			if(!wrongRefs.isEmpty()) {
-				System.out.println("Die Metadatendatei "+metadataFile+" enthält falsche Referenzen.");
-				System.out.println("Folgende Digitalisate konnten nicht gefunden werden: "+wrongRefs);
-				throw new UserException(null, "Die Metadatendatei "+metadataFile.getName()+" enthält falsche Referenzen. \n"+wrongRefs.size()+" Digitalisate konnten nicht gefunden werden.");
-			}
-		}		
-		return wrongRefs;
-	}
-	
-	public static TreeMap<File, String> getMetadataFileWithType(File folder) throws IOException {
-		TreeMap<File, String> fileWithType = null;
-		File metadataFile = null;
-		int countMets = 0;
-		int countEad = 0;
-		int countLido = 0;
-		for(File f: folder.listFiles()) {
-			if(new formatDetectionService(f).isXml()) {
-				String mt = XMLUtils.identifyMetadataType(f);
-				if(mt.equals(C.CB_PACKAGETYPE_METS)) {
-					metadataFile = f;
-					countMets++;
-				} else if(mt.equals(C.CB_PACKAGETYPE_EAD)) {
-					metadataFile = f;
-					countEad++;
-				} else if(mt.equals(C.CB_PACKAGETYPE_LIDO)) {
-					metadataFile = f;
-					countLido++;
-				}
-			}
-		}
-		if(countEad+countMets+countLido==1) {
-			fileWithType = new TreeMap<File, String>();
-			if(countEad==1) fileWithType.put(metadataFile, C.CB_PACKAGETYPE_EAD);
-			if(countMets==1) fileWithType.put(metadataFile, C.CB_PACKAGETYPE_METS);
-			if(countLido==1) fileWithType.put(metadataFile, C.CB_PACKAGETYPE_LIDO);
-			return fileWithType;
-		} else if(countEad+countMets+countLido>1) {
-			throw new UserException(null, "Im Verzeichnis "+folder.getName()+" wurde mehr als eine Metadatendatei gefunden. \nBekannte Formate sind: EAD, METS, LIDO.");
-		} else if(countEad+countMets+countLido==0) {
-			throw new UserException(null, "Im Verzeichnis "+folder.getName()+" wurde keine Metadatendatei gefunden. \nBekannte Formate sind: EAD, METS, LIDO.");
-		}
-		return fileWithType;
 	}
 }

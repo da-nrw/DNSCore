@@ -1,16 +1,21 @@
 package de.uzk.hki.da.pkg;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.io.input.BOMInputStream;
 import org.jdom.Document;
 import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+import org.xml.sax.InputSource;
 
 import de.uzk.hki.da.metadata.MetsParser;
-import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.XMLUtils;
 import de.uzk.hki.da.utils.formatDetectionService;
 
@@ -79,7 +84,7 @@ public class NestedContentStructure {
 	private List<File> getMetsFileFromDir(File dir) throws IOException {
 		List<File> metsFiles = new ArrayList<File>();
 		for(File f : dir.listFiles()) {
-			if(new formatDetectionService(f).isXml() && XMLUtils.identifyMetadataType(f).equals(C.CB_PACKAGETYPE_METS)) {
+			if(new formatDetectionService(f).isMets()) {
 				metsFiles.add(f);
 			}
 		}
@@ -89,7 +94,7 @@ public class NestedContentStructure {
 	private String getUrn(File metsFile) throws IOException, JDOMException {
 		String urn = "";
 		try {
-			Document metsDoc = XMLUtils.getDocumentFromXMLFile(metsFile);
+			Document metsDoc = getDocumentFromFile(metsFile);
 			urn = new MetsParser(metsDoc).getUrn();
 		} catch (IOException e1) {
 			throw new IOException(e1);
@@ -97,5 +102,19 @@ public class NestedContentStructure {
 			throw new IOException(e2);
 		}
 		return urn;
+	}
+	
+	private Document getDocumentFromFile(File file) throws IOException, JDOMException {
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
+		FileInputStream fileInputStream = new FileInputStream(file);
+		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
+		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
+		InputSource is = new InputSource(reader);
+		is.setEncoding("UTF-8");
+		Document metsDoc = builder.build(is);
+		fileInputStream.close();
+		bomInputStream.close();
+		reader.close();
+		return metsDoc;
 	}
 }

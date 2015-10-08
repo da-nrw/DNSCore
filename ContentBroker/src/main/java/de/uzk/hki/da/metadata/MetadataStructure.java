@@ -45,7 +45,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.XMLUtils;
+import de.uzk.hki.da.utils.RelativePath;
 
 /**
  * @author Polina Gubaidullina
@@ -66,6 +66,21 @@ public abstract class MetadataStructure {
 	}
 	
 	public abstract boolean isValid();
+	
+	
+	
+	public File getCanonicalFileFromReference(String ref, File metadataFile) throws IOException {
+		
+		String parentFilePath = "";
+		if (metadataFile.getParentFile() != null)
+			parentFilePath=metadataFile.getParentFile().getPath();
+		
+		String tmpFilePath = new RelativePath(parentFilePath, ref).toString();
+		
+		File file = new File(new File(tmpFilePath).getCanonicalFile().toString().replace(new File("").getCanonicalFile().toString(), ""));
+		
+		return file;
+	}
 	
 	public abstract File getMetadataFile();
 	
@@ -234,7 +249,7 @@ public abstract class MetadataStructure {
 	public DAFile getReferencedDafile(File metadataFile, String ref, List<de.uzk.hki.da.model.Document> documents) {
 		DAFile dafile = null;
 		try {
-			File refFile = XMLUtils.getCanonicalFileFromReference(ref, Path.makeFile(workPath,metadataFile.getPath()));
+			File refFile = getCanonicalFileFromReference(ref, Path.makeFile(workPath,metadataFile.getPath()));
 			for(de.uzk.hki.da.model.Document doc : documents) {
 				logger.debug("Check document "+doc.getName());
 				if(FilenameUtils.removeExtension(refFile.getAbsolutePath()).endsWith(doc.getName())) {
