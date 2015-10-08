@@ -26,9 +26,12 @@ import gov.loc.repository.bagit.utilities.SimpleResult;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -55,14 +58,6 @@ public class SIPFactory {
 	private boolean createCollection;
 	private String collectionName = null;
 	private File collectionFolder = null;
-	public File getCollectionFolder() {
-		return collectionFolder;
-	}
-
-	public void setCollectionFolder(File collectionFolder) {
-		this.collectionFolder = collectionFolder;
-	}
-
 	private ContractRights contractRights = new ContractRights();
 	private File rightsSourcePremisFile = null;
 	private SipBuildingProcess sipBuildingProcess;
@@ -89,25 +84,9 @@ public class SIPFactory {
 	 */
 	public void startSIPBuilding() {
 
-		sipBuildingProcess = new SipBuildingProcess(messageWriter, 
-				alwaysOverwrite, 
-				skippedFiles, 
-				createCollection,
-				ignoreZeroByteFiles,
-				collectionFolder, 
-				this, 
-				progressManager, 
-				sourcePath, 
-				destinationPath, 
-				collectionName, 
-				listCreationTempFolder, 
-				returnCode);
+		sipBuildingProcess = new SipBuildingProcess();
 
 		sipBuildingProcess.start();
-	}
-
-	public void setReturnCode(Feedback returnCode) {
-		this.returnCode = returnCode;
 	}
 
 	/**
@@ -116,7 +95,9 @@ public class SIPFactory {
 	 * @param folderPath The main source folder path
 	 * @throws Exception 
 	 */
+
 	HashMap<File, String> createFolderList(String folderPath) throws Exception {
+
 
 		HashMap<File, String> folderListWithFolderNames = new HashMap<File, String>();
 		File sourceFolder = new File(folderPath);
@@ -156,7 +137,7 @@ public class SIPFactory {
 	 * @param folderList The source folder list
 	 * @return The method result as a Feedback enum
 	 */
-	Feedback initializeProgressManager(List<File> folderList, String collectionName) {
+	private Feedback initializeProgressManager(List<File> folderList) {
 
 		progressManager.reset();
 
@@ -187,7 +168,7 @@ public class SIPFactory {
 	 * @param sourceFolder The source folder
 	 * @return The method result as a Feedback enum
 	 */
-	Feedback buildSIP(int jobId, File sourceFolder, String newPackageName) {
+	private Feedback buildSIP(int jobId, File sourceFolder, String newPackageName) {
 
 		progressManager.startJob(jobId);
 		Feedback feedback;
@@ -255,15 +236,8 @@ public class SIPFactory {
 			if ((feedback = moveSipToCollectionFolder(jobId, archiveFile)) != Feedback.SUCCESS)
 				return feedback;
 		}
+
 		return Feedback.SUCCESS;
-	}
-
-	public SipBuildingProcess getSipBuildingProcess() {
-		return sipBuildingProcess;
-	}
-
-	public void setSipBuildingProcess(SipBuildingProcess sipBuildingProcess) {
-		this.sipBuildingProcess = sipBuildingProcess;
 	}
 
 	/**
@@ -274,7 +248,7 @@ public class SIPFactory {
 	 * @param tempFolder The temp folder
 	 * @return The method result as a Feedback enum
 	 */
-	Feedback copyFolder(int jobId, File sourceFolder, File tempFolder) {
+	private Feedback copyFolder(int jobId, File sourceFolder, File tempFolder) {
 
 		progressManager.copyProgress(jobId, 0);
 
@@ -337,7 +311,7 @@ public class SIPFactory {
 	 * @param folder The temp folder
 	 * @return The method result as a Feedback enum
 	 */
-	Feedback createBag(int jobId, File folder) {
+	private Feedback createBag(int jobId, File folder) {
 
 		progressManager.bagitProgress(jobId, 0.0);
 
@@ -376,7 +350,7 @@ public class SIPFactory {
 	 * @param archiveFile The target archive file
 	 * @return The method result as a Feedback enum
 	 */
-	Feedback buildArchive(int jobId, File folder, File archiveFile) {
+	private Feedback buildArchive(int jobId, File folder, File archiveFile) {
 
 		progressManager.setJobFolderSize(jobId, FileUtils.sizeOfDirectory(folder));
 		progressManager.archiveProgress(jobId, 0);
@@ -386,7 +360,7 @@ public class SIPFactory {
 			archiveBuilder = new SipArchiveBuilder();
 			archiveBuilder.setProgressManager(progressManager);
 			archiveBuilder.setJobId(jobId);
-			archiveBuilder.setSipBuildingProcessIsAborted(sipBuildingProcess.isAborted());
+			archiveBuilder.setSipBuildingProcess(sipBuildingProcess);
 		} catch (Exception e) {
 			logger.log("ERROR: Failed to instantiate the ArchiveBuilder ", e);
 			return Feedback.ABORT;
@@ -421,6 +395,7 @@ public class SIPFactory {
 			logger.log("WARNING: Failed to delete temp folder " + folder.getAbsolutePath(), e);
 			return Feedback.DELETE_TEMP_FOLDER_WARNING;
 		}
+
 		progressManager.deleteTempProgress(jobId, 100.0);
 
 		return Feedback.SUCCESS;
@@ -434,11 +409,12 @@ public class SIPFactory {
 	 * @return The method result as a Feedback enum
 	 */
 	private Feedback moveSipToCollectionFolder(int jobId, File archiveFile) {
-		
+
 		try {
 			FileUtils.moveFileToDirectory(archiveFile, new File(collectionFolder, "data"), false);
 		} catch (IOException e) {
-			logger.log("ERROR: Failed to move file", e);
+			logger.log("ERROR: Failed to move file " + archiveFile.getAbsolutePath() + 
+					" to folder " + collectionFolder.getAbsolutePath(), e);
 			return Feedback.MOVE_TO_COLLECTION_FOLDER_ERROR;
 		}
 
@@ -454,6 +430,7 @@ public class SIPFactory {
 	 * @return false if a SIP for the given folderName already exists and the user decides to abort the SIP creation process
 	 */
 	private boolean checkForExistingSip(File sip){
+
 		if (alwaysOverwrite)
 			return true;
 
@@ -483,9 +460,9 @@ public class SIPFactory {
 
 		if (name != null && !name.equals(""))
 			packageName = name;
-		else {
+		else
 			packageName = folder.getName();
-		}
+
 		return packageName;
 	}
 
@@ -522,7 +499,7 @@ public class SIPFactory {
 	 * This method is called by the SIP building process.
 	 * It deletes partially created collections and aborts the progress manager.
 	 */
-	void abortSipBuilding() {
+	private void abortSipBuilding() {
 
 		if (listCreationTempFolder != null && listCreationTempFolder.exists())
 			FileUtils.deleteQuietly(listCreationTempFolder);
@@ -661,4 +638,145 @@ public class SIPFactory {
 	public void setCompress(boolean compress) {
 		this.compress = compress;
 	}
+
+
+	/**
+	 * The SIP building procedure is run in its own thread to prevent GUI freezing
+	 * 
+	 * @author Thomas Kleinke
+	 */
+	public class SipBuildingProcess extends Thread {
+
+		private boolean abortRequested = false;
+
+		/**
+		 * Creates one ore more SIPs as specified by the user
+		 */
+		public void run() {
+
+			alwaysOverwrite = false;
+			skippedFiles = false;				 
+			messageWriter.resetZeroByteFiles();
+
+			if (createCollection) {
+				collectionFolder = new File(new File(destinationPath), collectionName);
+
+				if (collectionFolder.exists()) {
+					MessageWriter.UserInput answer =
+							messageWriter.showCollectionOverwriteDialog("Eine Lieferung mit dem Namen \"" + collectionName + "\"" + 
+									"existiert bereits.\n" +
+									"Möchten Sie die bestehende Lieferung überschreiben?");
+
+					switch (answer) {
+					case YES:
+						FileUtils.deleteQuietly(collectionFolder);
+						break;
+					case NO:
+						progressManager.abort();
+						return;
+					default:
+						break;
+					}
+
+				}
+
+				new File(collectionFolder, "data").mkdirs();
+			}
+
+			HashMap<File, String> folderListWithNames = null;
+			try {
+				folderListWithNames = createFolderList(sourcePath);
+			} catch (Exception e) {
+				messageWriter.showMessage("Das SIP konnte nicht erstellt werden.\n\n" +
+						"Ihre Daten sind möglicherweise nicht valide: \n\n"+e.getMessage(), JOptionPane.ERROR_MESSAGE);
+				abortSipBuilding();
+				return;
+			}
+			List<File> folderList = new ArrayList<File>();
+			for(File f : folderListWithNames.keySet()) {
+				folderList.add(f);
+			}
+			if (initializeProgressManager(folderList) != Feedback.SUCCESS) {
+				messageWriter.showMessage("Das SIP konnte nicht erstellt werden.\n\n" +
+						"Der angegebene Ordner existiert nicht mehr. ", JOptionPane.ERROR_MESSAGE);
+				abortSipBuilding();
+				return;
+			}
+
+			int id = 0;
+			for (File folder : folderListWithNames.keySet()) {
+				returnCode = buildSIP(id, folder, folderListWithNames.get(folder));
+
+				if (returnCode != Feedback.SUCCESS && returnCode != Feedback.DELETE_TEMP_FOLDER_WARNING)
+					abortSipBuilding();
+
+				switch(returnCode) {
+				case COPY_ERROR:
+					messageWriter.showMessage("Das SIP \"" + folder.getName() + "\" konnte nicht erstellt werden.\n\n" +
+							"Während des Kopiervorgangs ist ein Fehler aufgetreten.", JOptionPane.ERROR_MESSAGE);
+					return;
+				case ZERO_BYTES_ERROR:
+					messageWriter.showZeroByteFileMessage();
+					return;
+				case PREMIS_ERROR:
+					messageWriter.showMessage("Das SIP \"" + folder.getName() + "\" konnte nicht erstellt werden.\n\n" +
+							"Während der Erstellung der Premis-Datei ist ein Fehler aufgetreten.", JOptionPane.ERROR_MESSAGE);
+					return;
+				case BAGIT_ERROR:
+					messageWriter.showMessage("Das SIP \"" + folder.getName() + "\" konnte nicht erstellt werden.\n\n" +
+							"Während der Erzeugung des Bags ist ein Fehler aufgetreten.", JOptionPane.ERROR_MESSAGE);
+					return;
+				case ARCHIVE_ERROR:
+					messageWriter.showMessage("Das SIP \"" + folder.getName() + "\" konnte nicht erstellt werden.\n\n" +
+							"Während der tgz-Archivierung ist ein Fehler aufgetreten.", JOptionPane.ERROR_MESSAGE);
+					return;
+				case DELETE_TEMP_FOLDER_WARNING:
+					messageWriter.showMessage("Während der Bereinigung temporärer Daten ist ein Fehler aufgetreten.\n\n" +
+							"Bitte löschen Sie nicht benötigte verbleibende Verzeichnisse\n" +
+							"im Ordner \"" + destinationPath + "\" manuell.", JOptionPane.ERROR_MESSAGE);
+					break;
+				case MOVE_TO_COLLECTION_FOLDER_ERROR:
+					messageWriter.showMessage("Das SIP \"" + folder.getName() + "\" konnte der Lieferung nicht hinzugefügt werden.", JOptionPane.ERROR_MESSAGE);
+					return;
+				case ABORT:
+					return;
+				default:
+					break;
+				}
+
+				id++;
+			}
+			
+			if (listCreationTempFolder != null && listCreationTempFolder.exists())
+				FileUtils.deleteQuietly(listCreationTempFolder);
+
+			if (createCollection) {
+				progressManager.startJob(-1);
+				if (createBag(-1, collectionFolder) == Feedback.BAGIT_ERROR)
+					messageWriter.showMessage("Die Lieferung \"" + collectionName + "\" konnte nicht erstellt werden.\n\n" +
+							"Während der Erzeugung des Bags ist ein Fehler aufgetreten.", JOptionPane.ERROR_MESSAGE);
+			}
+
+			progressManager.createSuccessMessage(skippedFiles);
+
+			if (ignoreZeroByteFiles && messageWriter.getZeroByteFiles().size() > 0) {
+				String message = "WARNING: Found zero byte files:";
+				for (String s : messageWriter.getZeroByteFiles()) {
+					message += "\n";
+					message += s;						 
+				}
+				logger.log(message);
+				messageWriter.showZeroByteFileMessage();
+			}
+		}
+
+		public void abort() {
+			abortRequested = true;
+		}
+
+		public boolean isAborted() {
+			return abortRequested;
+		}
+
+	};
 }

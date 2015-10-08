@@ -59,12 +59,10 @@ public class SIPFactoryTest {
 		
 		ProgressManager progressManager = mock(ProgressManager.class);
 		MessageWriter messageWriter = mock(MessageWriter.class);
-		SipBuildingProcess sbp = mock(SipBuildingProcess.class);
 		
 		sipFactory = new SIPFactory();
 		sipFactory.setProgressManager(progressManager);
 		sipFactory.setMessageWriter(messageWriter);
-		sipFactory.setSipBuildingProcess(sbp);
 		
 		Properties properties = new Properties();
 		try {
