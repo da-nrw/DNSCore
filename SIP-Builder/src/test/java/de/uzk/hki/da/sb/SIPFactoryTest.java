@@ -40,6 +40,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
+import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.SipArchiveBuilder;
 
 /**

@@ -36,15 +36,31 @@ Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthal
 ```
 <mapping class="de.uzk.hki.da.model.SystemEvent"/>
 ```
-- Die beans.xml ist zu ändern:
+- Die beans.xml ist zu prüfen, ggfs. zu ändern (sofern Sie einen "Node" betreiben, nicht für "Pres"):
 ```
 <task:scheduled-tasks>
 (...)
 <task:scheduled ref="systemEventWorker" method="scheduleTask" fixed-delay="20000" />
 </task:scheduled-tasks>
 ```
-- Für das hier beschriebene Feature AT-CSV-1 bis 3 müssen z.T. Berechtigungen für den Tomcat-User, bzw. den ApacheServer
-gesetzt, bzw. überprüft werden. (incoming und outgoing Ordner)
+
+- Vergleichen Sie Ihre logback.conf mit der logback.conf.template Es gibt mit diesem Feature einen neuen Logger und passen Sie den Loglevel ggfs. an. 
+
+```
+	<logger name="de.uzk.hki.da.event" additivity="false" level="DEBUG">
+		<appender-ref ref="WORKER" />
+	</logger>
+```
+
+- Es gibt fortan ein neues Logfile unter logs/events.log , welches ggfs. Fehlermeldungen zu SystemEvents enthält. 
+
+- Für das hier beschriebene Feature AT-CSV-1 bis 3 müssen z.T. Berechtigungen für den Tomcat-User (aber auch für den irods-User), bzw. den ApacheServer
+gesetzt, bzw. überprüft werden. 
+
+```
+incoming read für irods, read,write für tomcat user
+outgoing read, write für irods user, read für tomcat user 
+```
 
 ## Szenario AT-ST-CSV-1: Statusabfrage mittels vorbereiteter CSV Datei eines fehlerfrei archivierten Pakets
 
@@ -64,7 +80,7 @@ gesetzt, bzw. überprüft werden. (incoming und outgoing Ordner)
 identifier;origName;statuscode;erfolg;bemerkung
 ```
 Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mittels EXCEL erstellt wurde. 
-[Beispiel](../../../src/test/resources/at/ATCSVQueries.csv)
+[Beispiel, bitte die RAW Filedarstellung sichern](../../../src/test/resources/at/ATCSVQueries.csv) 
 
 Mindestens die Spalte Originalname (origName) muss befüllt sein. 
 
@@ -75,12 +91,12 @@ ATUseCaseIngest1.tgz
 #### Durchführung:
 
 1. Die Datei ATUseCaseIngest1.tgz wird eingespielt. Es muss die Info über eine positive Archivierung erhalten worden sein.
-2. Die [Vorlage wird heruntergeladen und in EXCEL geöffnet](../../../src/test/resources/at/ATCSVQueries.csv)
+2. Die [Vorlage wird heruntergeladen, bitte die RAW Filedarstellung sichern und in EXCEL geöffnet](../../../src/test/resources/at/ATCSVQueries.csv)
 2. Die EXCEL Testdatei wird mit dem vergebenen Originalnamen des AIP befüllt. 
 3. Die Excel wird gespeichert.
 4. Der Tester meldet sich an der DAWEB an. 
 5. Hochladen der CSV Datei mittels der DA-WEB oder Ablage in den incoming Ordner des Contractors.
-6. Start der Berichtseerstellung mittels "erneut generieren".
+6. Start der Berichtseerstellung mittels Aktion "Bericht generieren" und Klick auf Start.
 7. Entnahme der CSV Datei aus dem outgoing Ordner, bzw. Entnahme über die DA-Web. 
 
 #### Akzeptanzkriterien:
