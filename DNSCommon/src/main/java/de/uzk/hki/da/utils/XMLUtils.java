@@ -1,10 +1,20 @@
 package de.uzk.hki.da.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.io.input.BOMInputStream;
+import org.jdom.Document;
+import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class XMLUtils {
@@ -37,4 +47,17 @@ public class XMLUtils {
 		return saxParser;
 	}
 
+	public static Document getDocumentFromXMLFile(File file) throws IOException, JDOMException {
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
+		FileInputStream fileInputStream = new FileInputStream(file);
+		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
+		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
+		InputSource is = new InputSource(reader);
+		is.setEncoding("UTF-8");
+		Document metsDoc = builder.build(is);
+		fileInputStream.close();
+		bomInputStream.close();
+		reader.close();
+		return metsDoc;
+	}
 }

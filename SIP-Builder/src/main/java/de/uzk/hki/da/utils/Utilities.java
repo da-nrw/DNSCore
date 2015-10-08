@@ -26,11 +26,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.jdom.JDOMException;
 
 import de.uzk.hki.da.metadata.ContractRights.ConversionCondition;
+import de.uzk.hki.da.metadata.MetsParser;
 import de.uzk.hki.da.metadata.PublicationRights.Law;
 import de.uzk.hki.da.metadata.PublicationRights.TextType;
 import de.uzk.hki.da.sb.MessageWriter;
@@ -283,5 +287,39 @@ public class Utilities {
 			return sipBuilderVersion;
 		
 		return sipBuilderVersion.substring(0, index);		
+	}
+
+	public static List<String> getWrongFileReferences(File metadataFile, String metadataType) throws JDOMException, IOException {
+		List<String> wrongRefs = new ArrayList<String>();
+		if(metadataType.equals(C.CB_PACKAGETYPE_METS)) {
+			for (String s : new MetsParser(XMLUtils.getDocumentFromXMLFile(metadataFile)).getReferences()) {
+				if(!fileReferenceInXmlIsValid(s, metadataFile)) {
+					wrongRefs.add(s);
+				}
+			}
+			if(!wrongRefs.isEmpty()) {
+				String msg = "Die Metadatendatei "+metadataFile+" enthält falsche Referenzen.";
+				if(wrongRefs.size()<5) {
+					msg = msg + " \nFolgende Digitalisate konnten nicht gefunden werden: \n"+wrongRefs
+						+" \nDie Verarbeitung wird dennoch fortgesetzt.";
+				} else {
+					System.out.println("Fehlende Dateien: "+wrongRefs);
+					msg = msg + " \n"+wrongRefs.size()+" Digitalisate konnten nicht gefunden werden.";
+				}
+				msg = msg +" \nDie Verarbeitung wird dennoch fortgesetzt.";
+				System.out.println(msg);
+				throw new Error(msg);
+			}
+		}		
+		return wrongRefs;
+	}
+	
+	private static boolean fileReferenceInXmlIsValid(String reference, File metadataFile) throws IOException {
+		boolean isValid = false;
+		File referencedFile = new File(metadataFile.getParentFile(), reference);
+		if(referencedFile.exists()) {
+			isValid = true;
+		}	
+		return isValid;
 	}
 }

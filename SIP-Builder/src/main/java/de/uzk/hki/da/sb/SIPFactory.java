@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 import javax.swing.JOptionPane;
 
@@ -42,6 +43,7 @@ import de.uzk.hki.da.pkg.SipArchiveBuilder;
 import de.uzk.hki.da.pkg.CopyUtility;
 import de.uzk.hki.da.pkg.NestedContentStructure;
 import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.formatDetectionService;
 
 /**
  * The central SIP production class
@@ -686,6 +688,18 @@ public class SIPFactory {
 			HashMap<File, String> folderListWithNames = null;
 			try {
 				folderListWithNames = createFolderList(sourcePath);
+				for(File f : folderListWithNames.keySet()) {
+					try {
+						TreeMap<File, String> metadataFileWithType = new formatDetectionService(f).getMetadataFileWithType();
+						if(metadataFileWithType!=null) {
+							File file = metadataFileWithType.firstKey();
+							Utilities.getWrongFileReferences(metadataFileWithType.firstKey(), metadataFileWithType.get(file));						
+						}
+					} catch (Error e) {
+						System.out.println(e.getMessage());
+						messageWriter.showMessage(e.getMessage()+" Die Verarbeitung findet dennoch statt.");
+					}
+				}
 			} catch (Exception e) {
 				messageWriter.showMessage("Das SIP konnte nicht erstellt werden.\n\n" +
 						"Ihre Daten sind möglicherweise nicht valide: \n\n"+e.getMessage(), JOptionPane.ERROR_MESSAGE);
