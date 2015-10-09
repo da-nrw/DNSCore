@@ -32,6 +32,7 @@ import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -47,6 +48,8 @@ import de.uzk.hki.da.utils.Utilities;
  * @author Thomas Kleinke
  */
 public class ContractRights {
+	
+	private Logger logger = Logger.getLogger(ContractRights.class);
 	
 	private PublicationRights institutionRights = new PublicationRights();
 	private PublicationRights publicRights = new PublicationRights();
@@ -89,7 +92,7 @@ public class ContractRights {
 
 			@Override
 			public void warning(SAXParseException e) throws SAXException {
-				System.out.println("Warning while parsing contract rights file:\n" + e.getMessage());
+				logger.warn("Warning while parsing contract rights file:\n" + e.getMessage());
 			}
 		});
 

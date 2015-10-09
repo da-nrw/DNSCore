@@ -306,7 +306,6 @@ public class Utilities {
 					logger.error("Fehlende Dateien: "+wrongRefs);
 					msg = msg + " \n"+wrongRefs.size()+" Digitalisate konnten nicht gefunden werden.";
 				}
-				logger.error(msg);
 				throw new Error(msg);
 			}
 		}		
