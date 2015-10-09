@@ -696,7 +696,7 @@ public class SIPFactory {
 							Utilities.getWrongFileReferences(metadataFileWithType.firstKey(), metadataFileWithType.get(file));						
 						}
 					} catch (Error e) {
-						System.out.println(e.getMessage());
+						logger.error(e.getMessage());
 						messageWriter.showMessage(e.getMessage()+" Die Verarbeitung findet dennoch statt.");
 					}
 				}

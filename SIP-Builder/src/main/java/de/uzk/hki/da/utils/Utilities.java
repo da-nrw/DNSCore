@@ -301,10 +301,9 @@ public class Utilities {
 			if(!wrongRefs.isEmpty()) {
 				String msg = "Die Metadatendatei "+metadataFile+" enthält falsche Referenzen.";
 				if(wrongRefs.size()<5) {
-					msg = msg + " \nFolgende Digitalisate konnten nicht gefunden werden: \n"+wrongRefs
-						+" \nDie Verarbeitung wird dennoch fortgesetzt.";
+					msg = msg + " \nFolgende Digitalisate konnten nicht gefunden werden: \n"+wrongRefs;
 				} else {
-					System.out.println("Fehlende Dateien: "+wrongRefs);
+					logger.error("Fehlende Dateien: "+wrongRefs);
 					msg = msg + " \n"+wrongRefs.size()+" Digitalisate konnten nicht gefunden werden.";
 				}
 				logger.error(msg);
