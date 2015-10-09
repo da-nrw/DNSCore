@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
 
 import de.uzk.hki.da.metadata.ContractRights.ConversionCondition;
@@ -49,7 +50,7 @@ import de.uzk.hki.da.sb.SIPFactory.KindOfSIPBuilding;
 public class Utilities {
 	
 	private static final String sipBuilderVersion = "0.6.5-p1";
-	
+	private static Logger logger = Logger.getLogger( Utilities.class );
 	/**
 	 * String to enum translation method
 	 * 
@@ -306,8 +307,7 @@ public class Utilities {
 					System.out.println("Fehlende Dateien: "+wrongRefs);
 					msg = msg + " \n"+wrongRefs.size()+" Digitalisate konnten nicht gefunden werden.";
 				}
-				msg = msg +" \nDie Verarbeitung wird dennoch fortgesetzt.";
-				System.out.println(msg);
+				logger.error(msg);
 				throw new Error(msg);
 			}
 		}		

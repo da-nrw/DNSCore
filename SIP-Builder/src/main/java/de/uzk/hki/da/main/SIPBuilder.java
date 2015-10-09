@@ -59,6 +59,8 @@ public class SIPBuilder {
 	public static void main(String[] args) {
     	
 		TTCCLayout layout = new TTCCLayout();
+		layout.setDateFormat("yyyy'-'MM'-'dd' 'HH':'mm':'ss");
+		layout.setThreadPrinting(false);
 	    ConsoleAppender consoleAppender = new ConsoleAppender(layout);
 	    logger.addAppender( consoleAppender );
         logger.setLevel(Level.INFO);
