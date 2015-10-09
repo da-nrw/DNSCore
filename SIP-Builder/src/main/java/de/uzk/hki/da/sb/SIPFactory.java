@@ -36,6 +36,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
 
 import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.metadata.PremisXmlWriter;
@@ -52,6 +53,8 @@ import de.uzk.hki.da.utils.formatDetectionService;
  */
 
 public class SIPFactory {
+	
+	private Logger logger = Logger.getLogger(SIPFactory.class);
 
 	private String sourcePath = null;
 	private String destinationPath = null;
@@ -75,7 +78,6 @@ public class SIPFactory {
 
 	private MessageWriter messageWriter;
 	private ProgressManager progressManager;
-	private Logger logger;
 
 	private Feedback returnCode;
 
@@ -85,9 +87,7 @@ public class SIPFactory {
 	 * Creates and starts a new SIP building process
 	 */
 	public void startSIPBuilding() {
-
 		sipBuildingProcess = new SipBuildingProcess();
-
 		sipBuildingProcess.start();
 	}
 
@@ -149,7 +149,7 @@ public class SIPFactory {
 		int i = 0;
 		for (File folder : folderList) {
 			if (!folder.exists()) {
-				logger.log("ERROR: Folder " + folder.getAbsolutePath() + " does not exist anymore.");
+				logger.error("Folder " + folder.getAbsolutePath() + " does not exist anymore.");
 				return Feedback.COPY_ERROR;
 			}
 
@@ -203,7 +203,7 @@ public class SIPFactory {
 					message += s;
 					message += "\n";
 				}
-				logger.log(message);
+				logger.info(message);
 				return Feedback.ZERO_BYTES_ERROR;
 			}
 		}
@@ -266,7 +266,7 @@ public class SIPFactory {
 			if (!copyUtility.copyDirectory(sourceFolder, dataFolder, forbiddenFileExtensions))
 				return Feedback.ABORT;
 		} catch (Exception e) {
-			logger.log("ERROR: Failed to copy folder " + sourceFolder.getAbsolutePath() + " to " + tempFolder.getAbsolutePath(), e);
+			logger.error("Failed to copy folder " + sourceFolder.getAbsolutePath() + " to " + tempFolder.getAbsolutePath(), e);
 			return Feedback.COPY_ERROR;
 		}
 
@@ -294,7 +294,7 @@ public class SIPFactory {
 			else
 				premisWriter.createPremisFile(this, premisFile, packageName);
 		} catch (Exception e) {
-			logger.log("ERROR: Failed to create premis file " + premisFile.getAbsolutePath(), e);
+			logger.error("Failed to create premis file " + premisFile.getAbsolutePath(), e);
 			return Feedback.PREMIS_ERROR;
 		}
 
@@ -337,7 +337,7 @@ public class SIPFactory {
 			return Feedback.SUCCESS;
 		}
 		else {
-			logger.log("ERROR: Bag in folder " + folder.getAbsolutePath() + " is not valid.\n" +
+			logger.error("Bag in folder " + folder.getAbsolutePath() + " is not valid.\n" +
 					result.getErrorMessages());				
 			return Feedback.BAGIT_ERROR;
 		}
@@ -364,7 +364,7 @@ public class SIPFactory {
 			archiveBuilder.setJobId(jobId);
 			archiveBuilder.setSipBuildingProcess(sipBuildingProcess);
 		} catch (Exception e) {
-			logger.log("ERROR: Failed to instantiate the ArchiveBuilder ", e);
+			logger.error("Failed to instantiate the ArchiveBuilder ", e);
 			return Feedback.ABORT;
 		}
 
@@ -372,7 +372,7 @@ public class SIPFactory {
 			if (!archiveBuilder.archiveFolder(folder, archiveFile, true, compress))
 				return Feedback.ABORT;
 		} catch (Exception e) {
-			logger.log("ERROR: Failed to archive folder " + folder.getAbsolutePath() + " to archive " +
+			logger.error("Failed to archive folder " + folder.getAbsolutePath() + " to archive " +
 					archiveFile.getAbsolutePath(), e);
 			return Feedback.ARCHIVE_ERROR;
 		}
@@ -394,7 +394,7 @@ public class SIPFactory {
 		try {
 			FileUtils.deleteDirectory(folder);
 		} catch (IOException e) {
-			logger.log("WARNING: Failed to delete temp folder " + folder.getAbsolutePath(), e);
+			logger.warn("Failed to delete temp folder " + folder.getAbsolutePath(), e);
 			return Feedback.DELETE_TEMP_FOLDER_WARNING;
 		}
 
@@ -415,7 +415,7 @@ public class SIPFactory {
 		try {
 			FileUtils.moveFileToDirectory(archiveFile, new File(collectionFolder, "data"), false);
 		} catch (IOException e) {
-			logger.log("ERROR: Failed to move file " + archiveFile.getAbsolutePath() + 
+			logger.error("Failed to move file " + archiveFile.getAbsolutePath() + 
 					" to folder " + collectionFolder.getAbsolutePath(), e);
 			return Feedback.MOVE_TO_COLLECTION_FOLDER_ERROR;
 		}
@@ -648,14 +648,14 @@ public class SIPFactory {
 	 * @author Thomas Kleinke
 	 */
 	public class SipBuildingProcess extends Thread {
-
+		
 		private boolean abortRequested = false;
 
 		/**
 		 * Creates one ore more SIPs as specified by the user
 		 */
 		public void run() {
-
+			
 			alwaysOverwrite = false;
 			skippedFiles = false;				 
 			messageWriter.resetZeroByteFiles();
@@ -779,7 +779,7 @@ public class SIPFactory {
 					message += "\n";
 					message += s;						 
 				}
-				logger.log(message);
+				logger.info(message);
 				messageWriter.showZeroByteFileMessage();
 			}
 		}

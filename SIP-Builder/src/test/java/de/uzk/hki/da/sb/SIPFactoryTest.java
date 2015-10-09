@@ -20,8 +20,8 @@
 package de.uzk.hki.da.sb;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFactory;
@@ -40,7 +40,6 @@ import org.junit.Test;
 
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
-import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.SipArchiveBuilder;
 
 /**

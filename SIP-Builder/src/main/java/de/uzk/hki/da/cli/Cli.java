@@ -36,13 +36,13 @@ import nu.xom.Element;
 import nu.xom.Elements;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 import de.uzk.hki.da.main.SIPBuilder;
-import de.uzk.hki.da.sb.Logger;
 import de.uzk.hki.da.sb.MessageWriter;
 import de.uzk.hki.da.sb.SIPFactory;
 import de.uzk.hki.da.sb.Feedback;
@@ -59,10 +59,11 @@ import de.uzk.hki.da.utils.Utilities;
  */
 public class Cli {
 	
+	private static Logger logger = Logger.getLogger( Cli.class );
+
 	private String confFolderPath;
 	private String[] args;
 	private SIPFactory sipFactory;
-	private Logger logger;
 	
 	private boolean alwaysOverwrite = false;
 	
@@ -73,9 +74,7 @@ public class Cli {
 	public Cli(String confFolderPath, String dataFolderPath, String[] args) {
 		this.confFolderPath = confFolderPath;
 		this.args = args;
-		logger = new Logger(dataFolderPath);
 		sipFactory = new SIPFactory();
-		sipFactory.setLogger(logger);
 	}
 
 	/**
@@ -188,9 +187,9 @@ public class Cli {
     			try {
 					sipFactory.getContractRights().loadContractRightsFromFile(contractRightsFile);
 				} catch (Exception e) {
-					System.out.println("Die Rechteeinstellungen aus der Datei " +
+					logger.error("Die Rechteeinstellungen aus der Datei " +
 									   contractRightsFile.getAbsolutePath() + " konnten nicht gelesen werden.");
-					logger.log("ERROR: Failed to load contract rights from file " + contractRightsFile.getAbsolutePath(), e);
+					logger.error("Failed to load contract rights from file " + contractRightsFile.getAbsolutePath(), e);
 					return Feedback.RIGHTS_FILE_READ_ERROR;
 				}
 				contractRightsLoaded = true;
@@ -488,7 +487,7 @@ public class Cli {
     	try {
     		fileList = StringUtilities.readFile(fileListFile);
     	} catch (Exception e) {
-    		logger.log("ERROR: Failed to read file " + fileListFile.getAbsolutePath(), e);
+    		logger.error("Failed to read file " + fileListFile.getAbsolutePath(), e);
     		System.out.println("Die Datei " + fileListFile.getAbsolutePath() + " konnte nicht gelesen werden.");
     		return "";
     	}
@@ -516,7 +515,7 @@ public class Cli {
 
     			File file = new File(filepath);
     			if (!file.exists()) {
-    				logger.log("ERROR: File " + file.getAbsolutePath() + " is referenced in filelist, " +
+    				logger.error("File " + file.getAbsolutePath() + " is referenced in filelist, " +
 	    						   "but does not exist");
     				System.out.println("\nDie in der Dateiliste angegebene Datei " + file.getAbsolutePath() + " existiert nicht.");
     				FileUtils.deleteQuietly(tempDirectory);
@@ -530,7 +529,7 @@ public class Cli {
     					FileUtils.copyFileToDirectory(file, tempDirectory);
     				progressManager.copyFilesFromListProgress();
     			} catch (IOException e) {
-    				logger.log("ERROR: Failed to copy file " + file.getAbsolutePath() + " to folder " + tempDirectory.getAbsolutePath(), e);
+    				logger.error("Failed to copy file " + file.getAbsolutePath() + " to folder " + tempDirectory.getAbsolutePath(), e);
     				System.out.println("\nDie in der Dateiliste angegebene Datei " + file.getAbsolutePath() + " konnte nicht kopiert werden.");
     				FileUtils.deleteQuietly(tempDirectory);
     				return "";
@@ -560,7 +559,7 @@ public class Cli {
 		try {
 			xmlReader = spf.newSAXParser().getXMLReader();
 		} catch (Exception e) {
-			logger.log("ERROR: Failed to create SAX parser", e);
+			logger.error("Failed to create SAX parser", e);
 			System.out.println("Fehler beim Einlesen der SIP-Liste: SAX-Parser konnte nicht erstellt werden.");
 			return "";
 		}
@@ -578,7 +577,7 @@ public class Cli {
 
 			@Override
 			public void warning(SAXParseException e) throws SAXException {
-				logger.log("WARNING: Warning while parsing siplist", e);
+				logger.warn("Warning while parsing siplist", e);
 				System.out.println("\nWarnung:\n" + e.getMessage());
 			}
 		});
@@ -624,7 +623,7 @@ public class Cli {
 					
 					File file = new File(filepath);    			
 	    			if (!file.exists()) {
-	    				logger.log("ERROR: File " + file.getAbsolutePath() + " is referenced in siplist, " +
+	    				logger.error("File " + file.getAbsolutePath() + " is referenced in siplist, " +
 	    						   "but does not exist");
 	    				System.out.println("\nDie in der SIP-Liste angegebene Datei " + file.getAbsolutePath() +
 	    						" existiert nicht.");
@@ -639,7 +638,7 @@ public class Cli {
 	    					FileUtils.copyFileToDirectory(file, tempDirectory);
 	    				progressManager.copyFilesFromListProgress();
 	    			} catch (IOException e) {
-	    				logger.log("ERROR: Failed to copy file " + file.getAbsolutePath() + " to folder " +
+	    				logger.error("Failed to copy file " + file.getAbsolutePath() + " to folder " +
 	    						   tempDirectory.getAbsolutePath(), e);
 	    				System.out.println("\nDie in der SIP-Liste angegebene Datei " + file.getAbsolutePath() +
 	    						" konnte nicht kopiert werden.");
@@ -649,7 +648,7 @@ public class Cli {
 				}				
 			}			
 		} catch (Exception e) {
-			logger.log("ERROR: Failed to read siplist " + sipListFile.getAbsolutePath(), e);
+			logger.error("Failed to read siplist " + sipListFile.getAbsolutePath(), e);
 			System.out.println("\nBeim Lesen der SIP-Liste ist ein Fehler aufgetreten. ");
 			return "";
 		}
