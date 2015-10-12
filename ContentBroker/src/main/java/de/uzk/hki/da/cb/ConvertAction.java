@@ -50,6 +50,7 @@ import de.uzk.hki.da.util.ConfigurationException;
  * @author Daniel M. de Oliveira
  * @author Thomas Kleinke
  * @author Polina Gubaidullina
+ * @author jens Peters
  * 
  */
 public class ConvertAction extends AbstractAction {
@@ -85,7 +86,7 @@ public class ConvertAction extends AbstractAction {
 		o.setRights(getObjectRights()); 
 		
 		events = 
-			new ConverterService().convertBatch(
+			new ConverterService(o.getLatestPackage().isPruneExceptions()).convertBatch(
 				wa,	o, 
 				new ArrayList(j.getConversion_instructions()));
 		

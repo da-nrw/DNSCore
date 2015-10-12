@@ -20,6 +20,8 @@ package de.uzk.hki.da.format;
 
 import java.io.File;
 
+import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -33,6 +35,7 @@ public class SimpleFileWithFileFormat implements FileWithFileFormat {
 	File file;
 	String formatPUID;
 	String secondary;
+	UserExceptionId userExceptionId;
 
 	public SimpleFileWithFileFormat(File f){
 		this.file=f;
@@ -61,5 +64,16 @@ public class SimpleFileWithFileFormat implements FileWithFileFormat {
 	@Override 
 	public Path getPath() {
 		return new RelativePath(file.getPath().toString());
+	}
+
+	@Override
+	public UserExceptionId getUserExceptionId() {
+		return userExceptionId;
+	}
+
+	@Override
+	public void setUserExceptionId(UserExceptionId e) {
+		userExceptionId =e;
+		
 	}
 }

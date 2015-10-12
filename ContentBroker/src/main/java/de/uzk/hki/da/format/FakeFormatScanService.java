@@ -36,7 +36,7 @@ import de.uzk.hki.da.utils.Path;
 public class FakeFormatScanService implements FormatScanService{
 
 	@Override
-	public List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files) throws FileNotFoundException{
+	public List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files, boolean pruneExceptions) throws FileNotFoundException{
 		
 		for (FileWithFileFormat f:files){
 			
@@ -148,4 +148,5 @@ public class FakeFormatScanService implements FormatScanService{
 	public boolean isConnectable() {
 		return true;
 	}
+
 }

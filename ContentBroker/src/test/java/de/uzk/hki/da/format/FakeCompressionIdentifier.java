@@ -22,18 +22,30 @@ package de.uzk.hki.da.format;
 import java.io.File;
 
 import de.uzk.hki.da.format.FormatIdentifier;
+import de.uzk.hki.da.utils.CommandLineConnector;
 
 /**
  * @author Daniel M. de Oliveira
  */
 public class FakeCompressionIdentifier implements FormatIdentifier, Connector{
 
-	public String identify(File file) {
+	public String identify(File file,boolean pruneExceptions) {
 		return "lzw";
 	}
 
 	@Override
 	public boolean isConnectable() {
 		return true;
+	}
+
+	@Override
+	public void setCliConnector(CommandLineConnector cli) {
+	
+		
+	}
+
+	@Override
+	public CommandLineConnector getCliConnector() {
+		return null;
 	}
 }

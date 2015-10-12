@@ -56,7 +56,7 @@ public class ProcessUserDecisionsActionTests extends ConcreteActionUnitTest {
 	public void testRemoveConversionInstructionsIfAnswerIsNegative() 
 			throws FileNotFoundException, UserException, IOException, 
 				RepositoryException, JDOMException, ParserConfigurationException, SAXException{
-		
+		j.setQuestion(C.QUESTION_MIGRATION_ALLOWED);
 		j.setAnswer(C.ANSWER_NO);
 		assertTrue(action.implementation());
 		assertTrue(j.getConversion_instructions().isEmpty());
@@ -66,7 +66,7 @@ public class ProcessUserDecisionsActionTests extends ConcreteActionUnitTest {
 	public void testContinueConversionIfAnswerIsPositive() 
 			throws FileNotFoundException, UserException, IOException, 
 				RepositoryException, JDOMException, ParserConfigurationException, SAXException{
-		
+		j.setQuestion(C.QUESTION_MIGRATION_ALLOWED);
 		j.setAnswer(C.ANSWER_YO);
 		assertTrue(action.implementation());
 		assertFalse(j.getConversion_instructions().isEmpty());

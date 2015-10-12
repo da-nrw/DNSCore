@@ -76,7 +76,7 @@ public class C {
 	public static final String QUEUE_TO_CLIENT = "CB.CLIENT";
 	public static final String QUEUE_TO_IRODS_SERVER = "IRODS.SYSTEM";
 	public static final String QUESTION_MIGRATION_ALLOWED = "MIGRATION_ALLOWED?";
-	
+	public static final String QUESTION_STORE_ALLOWED_IPTC_ERROR = "IPTC_ERROR_STORE_ALLOWED?";
 	// Premis related
 	public static final String EVENT_TYPE_CREATE = "CREATE";
 	public static final String EVENT_TYPE_COPY = "COPY";
@@ -164,7 +164,9 @@ public class C {
 	public static final String WORKFLOW_STATUS_START___INGEST_UNPACK_ACTION = "110";
 	public static final String WORKFLOW_STATUS_START___FETCH_PIPS_ACTION = "540";
 	public static final String WORKFLOW_STATUS_START___RETRIEVAL_ACTION = "900";
+	public static final String WORKFLOW_STATUS_START___REMOVE_FROM_WORKFLOW_ACTION = "800";
 	public static final String WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION = "645";
+	public static final String WORKFLOW_STATUS_START___RESTART_INGEST_WORKFLOW = "600";
 	public static final int PUBLISHEDFLAG_NO_PUBLICATION = 0;
 	public static final int PUBLISHEDFLAG_INSTITUTION = 2;
 	public static final int PUBLISHEDFLAG_PUBLIC = 1;

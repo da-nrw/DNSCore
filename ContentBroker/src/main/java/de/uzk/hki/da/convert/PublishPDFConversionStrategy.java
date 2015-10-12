@@ -145,4 +145,10 @@ public class PublishPDFConversionStrategy extends PublishConversionStrategyBase 
 		this.object = obj;
 	}
 
+	@Override
+	public void setPruneErrorOrWarnings(boolean prune) {
+		
+		
+	}
+
 }

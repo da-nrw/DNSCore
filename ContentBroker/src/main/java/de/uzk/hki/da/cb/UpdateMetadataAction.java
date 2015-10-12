@@ -379,7 +379,7 @@ public class UpdateMetadataAction extends AbstractAction {
 				reference.add(dafile.getRelative_path());
 				String mimetype = "";
 				try {
-					mimetype = mtds.identify(wa.toFile(dafile));
+					mimetype = mtds.identify(wa.toFile(dafile),false);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -407,7 +407,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			if (!targetFile.getRep_name().equals(repName)) {
 				continue;
 			}
-			targetFile.setMimeType(getMtds().identify(wa.toFile(targetFile)));
+			targetFile.setMimeType(getMtds().identify(wa.toFile(targetFile),false));
 			replacements.put(sourceFile, targetFile);
 		}
 		logger.info("Planned replacements: {}", replacements);

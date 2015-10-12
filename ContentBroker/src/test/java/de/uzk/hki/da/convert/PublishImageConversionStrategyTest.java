@@ -174,7 +174,6 @@ public class PublishImageConversionStrategyTest {
 		
 		ProcessInformation pi = new ProcessInformation();
 		pi.setExitValue(0);
-		
 		CommandLineConnector cli = mock ( CommandLineConnector.class );
 		
 		String cmdPUBLIC[] = new String[]{
@@ -329,5 +328,6 @@ public class PublishImageConversionStrategyTest {
 		System.out.println(events.toString());
 		
 	}
+
 
 }

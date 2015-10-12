@@ -22,6 +22,7 @@ package de.uzk.hki.da.cb;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -101,7 +102,7 @@ public class RestructureActionTests extends ConcreteActionUnitTest{
 		DAFile file = new DAFile("rep+a","140849.tif");
 		file.setFormatPUID("fmt/353");
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>(); files.add(file);
-		when( ffs.identify((Path)anyObject(),(List<FileWithFileFormat>)anyObject()) ).thenReturn(files);
+		when( ffs.identify((Path)anyObject(),(List<FileWithFileFormat>)anyObject(),anyBoolean()) ).thenReturn(files);
 		action.setFileFormatFacade(ffs);
 	}
 	

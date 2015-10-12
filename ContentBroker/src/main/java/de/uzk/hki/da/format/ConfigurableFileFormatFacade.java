@@ -48,7 +48,6 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 	private FormatScanService subformatScanService;
 	private MetadataExtractor metadataExtractor;
 	
-	
 	public ConfigurableFileFormatFacade() {}
 	
 	/**
@@ -63,26 +62,23 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<FileWithFileFormat> identify(Path workPath,List<? extends FileWithFileFormat> files)
+	public List<FileWithFileFormat> identify(Path workPath,List<? extends FileWithFileFormat> files,boolean pruneExceptions)
 			throws IOException, FileNotFoundException {
-
+		
 		for (FileWithFileFormat f:files) {
 			if (!(Path.makeFile(workPath,f.getPath()).exists()))
 				throw new FileNotFoundException("Missing file: "+Path.makeFile(workPath,f.getPath()));
 		}
-		
-		
-		
-		
-		getFormatScanService().identify(workPath,(List<FileWithFileFormat>) files);
+				
+		getFormatScanService().identify(workPath,(List<FileWithFileFormat>) files,pruneExceptions);
 		
 		for (String s:subformatIdentificationStrategyTriggerMap.keySet())
 			logger.debug("strategy available: "+s);
 		
-		if (getSubformatScanService()!=null)
-			getSubformatScanService().identify(workPath,(List<FileWithFileFormat>) files);
-		
-		doCorrections(workPath,files);
+		if (getSubformatScanService()!=null) {
+			getSubformatScanService().identify(workPath,(List<FileWithFileFormat>) files,pruneExceptions);
+		}
+		doCorrections(workPath,files,pruneExceptions);
 		return (List<FileWithFileFormat>) files;
 	}
 
@@ -93,14 +89,14 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 	 * @param files
 	 * @throws IOException
 	 */
-	private void doCorrections(Path workPath,List<? extends FileWithFileFormat> files) throws IOException{
+	private void doCorrections(Path workPath,List<? extends FileWithFileFormat> files,boolean pruneExceptions) throws IOException{
 		for (FileWithFileFormat f:files){
 			
 			// This is to compensate for a behavior of FIDO where it detects a too specific xml format. 
 			if (f.getFormatPUID().equals(FFConstants.DROID_XML_PUID)) {
 				f.setFormatPUID(FFConstants.XML_PUID);
 				f.setSubformatIdentifier(
-						new XMLSubformatIdentifier().identify(Path.makeFile(workPath,f.getPath())));
+						new XMLSubformatIdentifier().identify(Path.makeFile(workPath,f.getPath()),pruneExceptions));
 			}else
 			if (f.getFormatPUID().equals(FFConstants.XMP_PUID)) {
 				f.setFormatPUID(FFConstants.XML_PUID);
@@ -206,7 +202,6 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 	public void setSubformatScanService(FormatScanService subformatScanService) {
 		this.subformatScanService = subformatScanService;
 	}
-
 
 
 }

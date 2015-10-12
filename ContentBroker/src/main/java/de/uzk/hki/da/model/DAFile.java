@@ -35,6 +35,7 @@ import javax.persistence.Transient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
@@ -100,6 +101,7 @@ public class DAFile implements FileWithFileFormat{
 	@OneToMany(cascade=CascadeType.ALL)
 	private Document document;
 	
+	private UserExceptionId userExceptionId; 
 	/**
 	 * Instantiates a new dA file.
 	 */
@@ -319,4 +321,16 @@ public class DAFile implements FileWithFileFormat{
 	public void setSubformatIdentifier(String subformatIdentifier) {
 		this.subformatIdentifier = subformatIdentifier;
 	}
+
+	@Override
+	public void setUserExceptionId(UserExceptionId e) {
+		userExceptionId = e;
+		
+	}
+
+	@Override
+	public UserExceptionId getUserExceptionId() {
+		return userExceptionId;
+	}
+
 }

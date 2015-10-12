@@ -122,7 +122,7 @@ public class ConverterServiceTests {
 	@Test
 	public void test() throws IOException{
 		
-		ConverterService converter = new ConverterService();
+		ConverterService converter = new ConverterService(false);
 		converter.convertBatch(wa,o,conversionInstructions);
 		
 		assertTrue(Path.makeFile(wa.dataPath(),"2011+11+01+b/abc.xml").exists());

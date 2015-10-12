@@ -152,6 +152,13 @@ public class PdfConversionStrategy implements ConversionStrategy {
 		this.object = obj;
 	}
 
+
+	@Override
+	public void setPruneErrorOrWarnings(boolean prune) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 
 	

@@ -21,11 +21,13 @@ package de.uzk.hki.da.format;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -35,7 +37,6 @@ public class SubformatScanService implements FormatScanService, Connector {
 
 	private Map<String,Set<String>> subformatIdentificationPolicies = new HashMap<String,Set<String>>();
 	
-	
 	/**
 	 * @throws IOException 
 	 * @throws IllegalStateException if one of the identifiers cannot get instantiated.
@@ -44,28 +45,33 @@ public class SubformatScanService implements FormatScanService, Connector {
 	 * @return files the return value is for convenient mock testing only, since files gets modified as side effect.
 	 * @throws 
 	 */
-	public List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files) throws IOException{
+	public List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files,boolean pruneExceptions) throws IOException{
 		
 		for (FileWithFileFormat f:files){
 			if (f.getFormatPUID()==null||f.getFormatPUID().isEmpty())
 				throw new IllegalArgumentException(f+" has no puid");
-			
-			f.setSubformatIdentifier(identifySubformat(Path.makeFile(workPath,f.getPath()),f.getFormatPUID()));
+			String sf ="";
+			try {
+				sf = identifySubformat(Path.makeFile(workPath,f.getPath()),f.getFormatPUID(),pruneExceptions);
+			} catch (UserException ex) {
+				f.setUserExceptionId(ex.getUserExceptionId());
+			}
+			f.setSubformatIdentifier(sf);
 		}
 		return files;
 	}
 
 
-	private String identifySubformat(File f,String puid) throws IOException {
+	private String identifySubformat(File f,String puid,boolean pruneExceptions) throws IOException {
 		
 		for (String formatIdentifierClassName:subformatIdentificationPolicies.keySet()){
 			
 			// trigger
 			if (subformatIdentificationPolicies.get(
 					formatIdentifierClassName).contains(puid)){
-
-				return createSFIInstance(formatIdentifierClassName).identify(f);
-			}
+				
+				return createSFIInstance(formatIdentifierClassName).identify(f,pruneExceptions);
+				}
 		}
 		return "";
 	}
@@ -122,4 +128,5 @@ public class SubformatScanService implements FormatScanService, Connector {
 		}
 		return passed;
 	}
+
 }

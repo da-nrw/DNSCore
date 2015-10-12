@@ -22,6 +22,7 @@ package de.uzk.hki.da.format;
 import java.io.File;
 import java.io.IOException;
 
+import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.XMLUtils;
 
 /**
@@ -39,12 +40,23 @@ public class XMLSubformatIdentifier implements FormatIdentifier, Connector{
 	 * @throws IOException 
 	 */
 	@Override
-	public String identify(File f) throws IOException{
+	public String identify(File f,boolean pruneExceptions) throws IOException{
 		return XMLUtils.identifyMetadataType(f);
 	}
 
 	@Override
 	public boolean isConnectable() {
 		return true; // no external connectors used.
+	}
+
+	@Override
+	public void setCliConnector(CommandLineConnector cli) {
+
+		
+	}
+
+	@Override
+	public CommandLineConnector getCliConnector() {
+		return null;
 	}
 }

@@ -7,13 +7,15 @@ import org.apache.tika.Tika;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.utils.CommandLineConnector;
+
 public class MimeTypeDetectionService implements FormatIdentifier{
 
 	protected static Logger logger = LoggerFactory.getLogger(MimeTypeDetectionService.class);
 
 	
 	@Override
-	public String identify(File file) throws IOException {
+	public String identify(File file,boolean pruneExceptions) throws IOException {
 		
 		logger.debug("Detect MIMETYPE ");
 		
@@ -28,5 +30,17 @@ public class MimeTypeDetectionService implements FormatIdentifier{
 	    }	
 	    logger.debug("return "+mimeType);
 		return mimeType;	
+	}
+
+
+	@Override
+	public void setCliConnector(CommandLineConnector cli) {
+	
+	}
+
+
+	@Override
+	public CommandLineConnector getCliConnector() {
+		return null;
 	}
 }

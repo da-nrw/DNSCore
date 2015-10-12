@@ -13,7 +13,7 @@ public class FakeSubformatScanService implements FormatScanService, Connector{
 	}
 
 	@Override
-	public List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files)
+	public List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files, boolean pruneExceptions)
 			throws IOException {
 		return files;
 	}

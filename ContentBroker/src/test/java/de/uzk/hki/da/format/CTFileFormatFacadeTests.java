@@ -67,7 +67,7 @@ public class CTFileFormatFacadeTests {
 		
 		files.add(new SimpleFileWithFileFormat(Path.makeFile("healthCheck.tif")));
 		
-		sfff.identify(testPath,files);
+		sfff.identify(testPath,files,false);
 		assertEquals(FFConstants.FMT_353,files.get(0).getFormatPUID());
 	}
 	
@@ -75,7 +75,7 @@ public class CTFileFormatFacadeTests {
 	public void pronomFormatIdentificationBlanksInFilename() throws IOException{
 		files.add(new SimpleFileWithFileFormat(Path.makeFile("health check.tif")));
 		
-		sfff.identify(testPath,files);
+		sfff.identify(testPath,files,false);
 		assertEquals(FFConstants.FMT_353,files.get(0).getFormatPUID());
 	}
 
@@ -86,7 +86,7 @@ public class CTFileFormatFacadeTests {
 				FFConstants.FMT_101);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile("mets_2_99.xml")));
 		
-		sfff.identify(testPath,files);
+		sfff.identify(testPath,files,false);
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
 		assertEquals(C.SUBFORMAT_IDENTIFIER_METS,files.get(0).getSubformatIdentifier());
 	}
@@ -98,7 +98,7 @@ public class CTFileFormatFacadeTests {
 				FFConstants.FMT_101);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile("LIDO-Testexport2014-07-04-FML-Auswahl.xml")));
 		
-		sfff.identify(testPath,files);
+		sfff.identify(testPath,files,false);
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
 		assertEquals(C.SUBFORMAT_IDENTIFIER_LIDO,files.get(0).getSubformatIdentifier());
 	}
@@ -110,7 +110,7 @@ public class CTFileFormatFacadeTests {
 				FFConstants.FMT_101);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile("a.xmp")));
 		
-		sfff.identify(testPath,files);
+		sfff.identify(testPath,files,false);
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
 		assertEquals(C.SUBFORMAT_IDENTIFIER_XMP,files.get(0).getSubformatIdentifier());
 	}
@@ -122,7 +122,7 @@ public class CTFileFormatFacadeTests {
 				FFConstants.FMT_5);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile("a.avi")));
 		
-		sfff.identify(testPath,files);
+		sfff.identify(testPath,files,false);
 		assertTrue(files.get(0).getSubformatIdentifier().equals("cinepak"));
 	}
 
@@ -132,7 +132,7 @@ public class CTFileFormatFacadeTests {
 				FFConstants.X_FMT_384);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile("a.mov")));
 		
-		sfff.identify(testPath,files);
+		sfff.identify(testPath,files,false);
 		assertTrue(files.get(0).getSubformatIdentifier().equals("svq1"));
 	}
 
@@ -145,7 +145,7 @@ public class CTFileFormatFacadeTests {
 				FFConstants.FMT_5);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile("a b.avi")));
 		
-		sfff.identify(testPath,files);
+		sfff.identify(testPath,files,false);
 		assertTrue(files.get(0).getSubformatIdentifier().equals("cinepak"));
 	}
 	@Test
@@ -163,7 +163,7 @@ public class CTFileFormatFacadeTests {
 				FFConstants.FMT_353);
 		files.add(new SimpleFileWithFileFormat(Path.makeFile("CCITT_1_LZW.TIF")));
 		
-		sfff.identify(testPath,files);
+		sfff.identify(testPath,files,false);
 		assertTrue(files.get(0).getSubformatIdentifier().equals("Group4"));
 
 	}

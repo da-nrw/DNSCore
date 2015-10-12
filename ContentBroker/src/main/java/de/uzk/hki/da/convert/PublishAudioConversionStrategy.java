@@ -162,4 +162,9 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 		this.object = obj;
 	}
 
+	@Override
+	public void setPruneErrorOrWarnings(boolean prune) {
+		
+	}
+
 }

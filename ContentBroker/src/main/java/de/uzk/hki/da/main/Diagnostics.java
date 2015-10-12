@@ -296,7 +296,7 @@ public class Diagnostics {
 		files.add(ffff);
 		
 		try {
-			sfff.identify(new RelativePath("conf"),files);
+			sfff.identify(new RelativePath("conf"),files, false);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

@@ -62,9 +62,9 @@ public class FidoFormatScanService implements FormatScanService, Connector {
 	 */
 	@Override
 	public
-	List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files) throws IOException {
+	List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files,boolean pruneExceptions) throws IOException {
 		for (FileWithFileFormat f:files){
-			f.setFormatPUID(pronom.identify(Path.makeFile(workPath,f.getPath())));
+			f.setFormatPUID(pronom.identify(Path.makeFile(workPath,f.getPath()),pruneExceptions));
 		}
 		return files;
 	}
@@ -75,7 +75,7 @@ public class FidoFormatScanService implements FormatScanService, Connector {
 		System.out.print("CONNECTIVITY CHECK - FidoFormatScanService - fido.sh ");
 		String puid;
 		try {
-			puid = pronom.identify(new File("conf/healthCheck.tif"));
+			puid = pronom.identify(new File("conf/healthCheck.tif"), false);
 		} catch (IOException e) {
 			System.out.println(".... FAIL (check fido installation and fido.sh)");
 			return false;
@@ -89,4 +89,5 @@ public class FidoFormatScanService implements FormatScanService, Connector {
 			return false;
 		}
 	}
+
 }
