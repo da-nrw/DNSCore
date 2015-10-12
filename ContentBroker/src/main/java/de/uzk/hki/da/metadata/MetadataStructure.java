@@ -74,10 +74,7 @@ public abstract class MetadataStructure {
 		String parentFilePath = "";
 		if (metadataFile.getParentFile() != null)
 			parentFilePath=metadataFile.getParentFile().getPath();
-		
-		String tmpFilePath = new RelativePath(parentFilePath, ref).toString();
-		
-		File file = new File(new File(tmpFilePath).getCanonicalFile().toString().replace(new File("").getCanonicalFile().toString(), ""));
+		File file = new File(new File(parentFilePath, ref).getCanonicalFile().toString().replace(new File("").getCanonicalFile().toString(), ""));
 		
 		return file;
 	}
