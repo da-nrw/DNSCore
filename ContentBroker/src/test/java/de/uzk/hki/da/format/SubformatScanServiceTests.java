@@ -85,7 +85,7 @@ public class SubformatScanServiceTests {
 		
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(f);
-		sfs.identify(wa.dataPath(),files);
+		sfs.identify(wa.dataPath(),files,false);
 		
 		assertEquals(FFConstants.LZW,f.getSubformatIdentifier());
 	}
@@ -98,7 +98,7 @@ public class SubformatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(f);
 		try {
-			sfs.identify(wa.dataPath(),files);
+			sfs.identify(wa.dataPath(),files,false);
 			fail();
 		} catch (IllegalArgumentException e){}
 	}

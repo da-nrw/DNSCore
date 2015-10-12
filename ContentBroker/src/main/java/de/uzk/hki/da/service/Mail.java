@@ -29,6 +29,11 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import de.uzk.hki.da.core.MailContents;
+
 
 /**
  * The Class Mail. 
@@ -36,6 +41,10 @@ import javax.mail.internet.MimeMessage;
  */
 public class Mail {
 
+	
+
+	private static final Logger logger = LoggerFactory.getLogger(Mail.class);
+	
 	/**
 	 * Send a mail.
 	 *
@@ -45,8 +54,14 @@ public class Mail {
 	 * @throws MessagingException the messaging exception
 	 */
 	public static void sendAMail(String fromAdress, String toAdress, String subject, String mailText) throws MessagingException{
-		
-		if (toAdress.toLowerCase().startsWith("noreply")) return; 
+		logger.debug("from: " + fromAdress);
+		logger.debug("to: " + toAdress);
+		logger.debug("subject: " + subject);
+		logger.debug("body: " + mailText);
+		if (toAdress.toLowerCase().startsWith("noreply")) {
+			logger.debug("was not sent due to noreply");
+			return; 
+		}
 		
 		Properties props= new Properties();
 		
@@ -62,6 +77,6 @@ public class Mail {
 		message.setRecipient(Message.RecipientType.TO, toAddress);
 		
 		Transport.send(message);
-		
+		logger.info(subject + " was sent!");
 	}
 }

@@ -44,6 +44,8 @@ public class SoxSubformatIdentifier implements FormatIdentifier, Connector {
 	
 	private String[] supportedVersions = new String[] {"14.2.0"};
 	
+	private CommandLineConnector cli;
+	
 	@Override
 	public boolean isConnectable() {
 		String version=soxVersion();
@@ -54,7 +56,7 @@ public class SoxSubformatIdentifier implements FormatIdentifier, Connector {
 	
 	
 	@Override
-	public String identify(File f) throws IOException {
+	public String identify(File f,boolean pruneExceptions) throws IOException {
 		if (! f.exists()) throw new FileNotFoundException(f.toString());
 		
 		String codec = soxCodec(f);
@@ -86,7 +88,7 @@ public class SoxSubformatIdentifier implements FormatIdentifier, Connector {
 	private String soxCMD(String[] cmd) {
 		ProcessInformation pi=null;
 		try {
-			pi =  new CommandLineConnector().runCmdSynchronously(cmd);
+			pi =  getCliConnector().runCmdSynchronously(cmd);
 		} catch (IOException e) {
 			if (pi!=null) 
 				logger.error(pi.getStdErr());
@@ -121,6 +123,19 @@ public class SoxSubformatIdentifier implements FormatIdentifier, Connector {
 			return true;
 		else
 			return false;
+	}
+
+	@Override
+	public void setCliConnector(CommandLineConnector cli) {
+		this.cli = cli;
+		
+	}
+
+
+	@Override
+	public CommandLineConnector getCliConnector() {
+		if (cli==null) this.cli = new CommandLineConnector();
+		return cli;
 	}
 	
 	

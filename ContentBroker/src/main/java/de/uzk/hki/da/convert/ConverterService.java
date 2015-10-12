@@ -47,6 +47,11 @@ public class ConverterService {
 	
 	static final Logger logger = LoggerFactory.getLogger(ConverterService.class);
 
+	boolean prune;
+	
+	public ConverterService(boolean prune) {
+		this.prune = prune;
+	}
 	
 	/**
 	 * Executes a batch of conversion instructions on the local node.
@@ -182,7 +187,7 @@ public class ConverterService {
 		c = (Class<ConversionStrategy>) Class.forName(strategyName);
 		java.lang.reflect.Constructor<ConversionStrategy> co = c.getConstructor();
 		strategy= co.newInstance();
-
+		strategy.setPruneErrorOrWarnings(prune);
 		return strategy;
 	}
 	

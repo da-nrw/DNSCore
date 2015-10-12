@@ -190,4 +190,10 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 		this.httpclient = httpclient;
 	}
 
+	@Override
+	public void setPruneErrorOrWarnings(boolean prune) {
+		
+		
+	}
+
 }

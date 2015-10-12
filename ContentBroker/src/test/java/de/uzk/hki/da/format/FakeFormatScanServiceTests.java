@@ -63,7 +63,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(mets);
 		
-		fss.identify(wa.dataPath(),files);
+		fss.identify(wa.dataPath(),files,false);
 		
 		assertEquals(C.SUBFORMAT_IDENTIFIER_METS,files.get(0).getSubformatIdentifier());
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
@@ -75,7 +75,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(ead);
 		
-		fss.identify(wa.dataPath(),files);
+		fss.identify(wa.dataPath(),files,false);
 		
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
 		assertEquals(C.SUBFORMAT_IDENTIFIER_EAD,files.get(0).getSubformatIdentifier());	
@@ -87,7 +87,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(ead2);
 		
-		fss.identify(wa.dataPath(),files);
+		fss.identify(wa.dataPath(),files,false);
 		
 		assertEquals(C.SUBFORMAT_IDENTIFIER_EAD,files.get(0).getSubformatIdentifier());	
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
@@ -101,7 +101,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(ead);
 		
-		fss.identify(wa.dataPath(),files);
+		fss.identify(wa.dataPath(),files,false);
 		
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
 		assertEquals(C.SUBFORMAT_IDENTIFIER_LIDO,files.get(0).getSubformatIdentifier());	
@@ -113,7 +113,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(xmp);
 		
-		fss.identify(wa.dataPath(),files);
+		fss.identify(wa.dataPath(),files,false);
 		
 		assertEquals(C.SUBFORMAT_IDENTIFIER_XMP,files.get(0).getSubformatIdentifier());	
 		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());	
@@ -125,7 +125,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(tif);
 		
-		fss.identify(wa.dataPath(),files);
+		fss.identify(wa.dataPath(),files,false);
 		
 		assertEquals("fmt/353",files.get(0).getFormatPUID());	
 	}
@@ -137,7 +137,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(bmp);
 		
-		fss.identify(wa.dataPath(),files);
+		fss.identify(wa.dataPath(),files,false);
 		
 		assertEquals("fmt/116",files.get(0).getFormatPUID());	
 	}
@@ -149,7 +149,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(jp2);
 		
-		fss.identify(wa.dataPath(),files);
+		fss.identify(wa.dataPath(),files,false);
 		
 		assertEquals("x-fmt/392",files.get(0).getFormatPUID());	
 	}
@@ -160,7 +160,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(gif);
 		
-		fss.identify(wa.dataPath(),files);
+		fss.identify(wa.dataPath(),files,false);
 		
 		assertEquals("fmt/4",files.get(0).getFormatPUID());	
 	}
@@ -171,7 +171,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(pdf);
 		
-		fss.identify(wa.dataPath(),files);
+		fss.identify(wa.dataPath(),files,false);
 		
 		assertEquals("fmt/16",files.get(0).getFormatPUID());	
 	}
@@ -182,7 +182,7 @@ public class FakeFormatScanServiceTests {
 		List<FileWithFileFormat> files = new ArrayList<FileWithFileFormat>();
 		files.add(xml);
 		
-		fss.identify(wa.dataPath(),files);
+		fss.identify(wa.dataPath(),files,false);
 		
 		assertEquals("fmt/101",files.get(0).getFormatPUID());	
 	}
@@ -199,7 +199,7 @@ public class FakeFormatScanServiceTests {
 		files.add(ead2);
 		files.add(mets);
 		
-		fss.identify(wa.dataPath(),files);
+		fss.identify(wa.dataPath(),files,false);
 		
 		assertEquals("fmt/16",files.get(0).getFormatPUID());
 		assertEquals("fmt/4",files.get(1).getFormatPUID());

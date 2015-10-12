@@ -211,4 +211,9 @@ public class CLIConversionStrategy implements ConversionStrategy{
 		this.object = obj;
 		this.pkg = obj.getLatestPackage();
 	}
+
+	@Override
+	public void setPruneErrorOrWarnings(boolean prune) {
+		
+	}
 }

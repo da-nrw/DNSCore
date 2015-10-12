@@ -305,7 +305,7 @@ class QueueEntryController {
 	 * 
 	 * @return
 	 */
-	def listMigrationRequests () {
+	def listRequests () {
 		User user = springSecurityService.currentUser
 		def queueEntries
 		def admin = 0;
@@ -314,11 +314,11 @@ class QueueEntryController {
 		}
 		if (params.search==null){
 			if (admin != 1) {
-				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.status='645'",
+				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.question is not null and (q.status like '%5' OR q.status like '%4')",
 				 [csn: user.shortName])
 			} else {
 				admin = true;
-				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.status='645'")
+				queueEntries = QueueEntry.findAll("from QueueEntry as q where and q.question is not null and (q.status like '%5' OR q.status like '%4')")
 				
 			}
 			[queueEntryInstanceList: queueEntries,
@@ -328,7 +328,7 @@ class QueueEntryController {
 	/**
 	 * Applies status and functionality to answer with yes on migration requests
 	 */
-	def performMigrationRequestYes() {
+	def performRequestYes() {
 		
 		try {
 			def res = que.modifyJob(params.id, "640", "YES")
@@ -337,14 +337,14 @@ class QueueEntryController {
 			log.error(params.id + " " + e.printStackTrace())
 			flash.message = "Nachfrage konnte nicht beantwortet werden- Fehler"
 		}
-		redirect(action: "listMigrationRequests")
+		redirect(action: "listRequests")
 		return
 	}
 	
 	/**
 	 * Applies status and functionality to answer with yes on migration requests
 	 */
-	def performMigrationRequestNo() {
+	def performRequestNo() {
 		try {
 			def res = que.modifyJob(params.id, "640", "NO")
 			flash.message = "Antwort Nein! " + res
@@ -352,7 +352,7 @@ class QueueEntryController {
 			log.error(params.id + " " + e.printStackTrace())
 			flash.message = "Nachfrage konnte nicht beantwortet werden- Fehler"
 		}
-		redirect(action: "listMigrationRequests")
+		redirect(action: "listRequests")
 		return
 	}
 

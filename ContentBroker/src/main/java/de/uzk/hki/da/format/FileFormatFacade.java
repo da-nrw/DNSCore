@@ -52,7 +52,7 @@ public interface FileFormatFacade {
 	 * could not get determined as a result of IO problems. This can has something to do with 
 	 * the files to identify, but also with the helper programs used to identify the files. 
 	 */
-	public List<FileWithFileFormat> identify(Path workPath,List<? extends FileWithFileFormat> files) 
+	public List<FileWithFileFormat> identify(Path workPath,List<? extends FileWithFileFormat> files, boolean pruneExceptions) 
 			throws FileNotFoundException, FileFormatException, IOException;
 
 	
@@ -118,4 +118,5 @@ public interface FileFormatFacade {
 
 
 	public void setSubformatScanService(FormatScanService subformatScanService);
+
 }

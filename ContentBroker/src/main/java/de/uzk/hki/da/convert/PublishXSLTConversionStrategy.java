@@ -260,4 +260,10 @@ public class PublishXSLTConversionStrategy implements ConversionStrategy {
 	@Override
 	public void setCLIConnector(CommandLineConnector cliConnector) {}
 
+
+	@Override
+	public void setPruneErrorOrWarnings(boolean prune) {
+		
+	}
+
 }

@@ -21,6 +21,7 @@ package de.uzk.hki.da.cb;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -32,6 +33,7 @@ import org.xml.sax.SAXException;
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.StringUtilities;
@@ -61,11 +63,8 @@ public class ProcessUserDecisionsAction extends AbstractAction {
 				|| j.getAnswer().equals(C.ANSWER_YO) || j.getAnswer().equals(
 				C.ANSWER_TO)))
 			throw new PreconditionsNotMetException(
-					"Must be either YES or NO: job.getAnser().");
+					"Must be either YES or NO: job.getAnswer().");
 
-		if (j.getConversion_instructions() == null)
-			throw new PreconditionsNotMetException(
-					"Must not be null: j.getConversion_instructions()");
 	}
 
 	@Override
@@ -73,14 +72,36 @@ public class ProcessUserDecisionsAction extends AbstractAction {
 			UserException, RepositoryException, JDOMException,
 			ParserConfigurationException, SAXException {
 
-		if (j.getAnswer().equals(C.ANSWER_YO)) {
-			logger.info("System Question: " + C.QUESTION_MIGRATION_ALLOWED
-					+ " User response: " + C.ANSWER_YO);
-		} else {
-			logger.info("System Question: " + C.QUESTION_MIGRATION_ALLOWED
-					+ " User response: " + j.getAnswer());
-			logger.trace("will delete conversion instructions for long term preservation now");
-			j.getConversion_instructions().clear();
+		if (j.getQuestion().equals(C.QUESTION_MIGRATION_ALLOWED)) {
+			if (j.getAnswer().equals(C.ANSWER_YO)) {
+				logger.info("System Question: " + C.QUESTION_MIGRATION_ALLOWED
+						+ " User response: " + C.ANSWER_YO);
+				this.setEndStatus(C.WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION);
+			} else {
+				logger.info("System Question: " + C.QUESTION_MIGRATION_ALLOWED
+						+ " User response: " + j.getAnswer());
+				logger.trace("will delete conversion instructions for long term preservation now");
+				j.getConversion_instructions().clear();
+				this.setEndStatus(C.WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION);
+			}
+		} 
+		if (j.getQuestion().equals(C.QUESTION_STORE_ALLOWED_IPTC_ERROR)){
+			if (j.getAnswer().equals(C.ANSWER_YO)) {
+				logger.info("System Question: " + C.QUESTION_STORE_ALLOWED_IPTC_ERROR
+						+ " User response: " + C.ANSWER_YO);
+				o.getLatestPackage().setPruneExceptions(true);
+				Event e = new Event();
+				e.setType("PACKAGE");
+				e.setDate(new Date());
+				e.setAgent_type("NODE");
+				e.setAgent_name(n.getName());							
+				o.getLatestPackage().getEvents().add(e);
+				this.setEndStatus(C.WORKFLOW_STATUS_START___RESTART_INGEST_WORKFLOW);
+			} else {
+				logger.info("System Question: " + C.QUESTION_STORE_ALLOWED_IPTC_ERROR
+						+ " User response: " + j.getAnswer());
+				this.setEndStatus(C.WORKFLOW_STATUS_START___REMOVE_FROM_WORKFLOW_ACTION);
+			}
 		}
 
 		return true;

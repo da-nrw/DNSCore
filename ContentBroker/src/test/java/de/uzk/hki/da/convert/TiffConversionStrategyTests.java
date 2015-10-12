@@ -236,6 +236,48 @@ public class TiffConversionStrategyTests {
 		assertFalse(new File(workAreaRootPath + "work/TEST/1/data/rep+b/0001_L.TIF").exists());
 		
 	}
+	/**
+	 * Test if UserException is not thrown on Tiff containing RichIPTC Images
+	 * depends on specific version of IM, therefore we need to mock the commandLine 
+	 * converter (not each IM behaves the same:-)
+	 * @throws IOException 
+	 */
+	@Test
+	public void testNoExceptionOnIPTCFieldIfPruned() throws IOException {
+		
+		ProcessInformation pi = new ProcessInformation();
+		
+		pi.setExitValue(1);
+		
+		pi.setStdOut("");
+		pi.setStdErr("wrong data type 2 for \"RichTIFFIPTC\"; tag ignored");
+		CommandLineConnector cli = mock ( CommandLineConnector.class );
+		
+		String cmdIdentify[] = new String[] {
+				"identify", "-format", "'%C'", new File(workAreaRootPath + "/work/TEST/1/data/rep+a/0001_L.TIF").getAbsolutePath()
+		};
+
+		when(cli.runCmdSynchronously(cmdIdentify)).thenReturn(pi);
+		
+		TiffConversionStrategy cs = new TiffConversionStrategy();
+		cs.setCLIConnector(cli);
+		cs.setObject(o);
+		cs.setPruneErrorOrWarnings(true);
+		ConversionInstruction ci = new ConversionInstruction();
+		ConversionRoutine cr = new ConversionRoutine();
+		ci.setConversion_routine(cr);
+		
+		ci.setSource_file(new DAFile("rep+a","0001_L.TIF"));
+		ci.setTarget_folder("");
+		try {
+		} catch (UserException e) {
+			assertTrue(false);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assertFalse(true);
+			
+		}
+	}
 	
 	
 

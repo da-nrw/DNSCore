@@ -242,4 +242,9 @@ public class PublishVideoConversionStrategy extends PublishConversionStrategyBas
 	public void setProcessTimeout(long processTimeout) {
 		this.processTimeout = processTimeout;  
 	}
+
+	@Override
+	public void setPruneErrorOrWarnings(boolean prune) {
+		
+	}
 }

@@ -36,6 +36,7 @@ import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserExceptionManager;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -174,7 +175,9 @@ public abstract class AbstractAction implements Runnable {
 			}
 			
 		} catch (UserException e) {
-			
+			if (e.getUserExceptionId().equals(UserExceptionId.WRONG_DATA_TYPE_IPTC)) {
+				j.setQuestion(C.QUESTION_STORE_ALLOWED_IPTC_ERROR);
+			}
 			reportUserError(e);
 			updateStatus(C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 			resetModifiers();

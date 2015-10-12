@@ -25,6 +25,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.CommandLineConnector;
 
 /**
  * DNSCore supports four metadata structures that enable proper publication via the presentation repository. 
@@ -45,12 +46,12 @@ public class XMLSubformatIdentifier implements FormatIdentifier, Connector{
 	 * @throws IOException 
 	 */
 	@Override
-	public String identify(File f) throws IOException{
-		String beginningOfFile = convertFirst10LinesOfFileToString(f);
-		if (beginningOfFile.matches(eadPattern))  return C.SUBFORMAT_IDENTIFIER_EAD;
-		if (beginningOfFile.matches(metsPattern)) return C.SUBFORMAT_IDENTIFIER_METS;
-		if (beginningOfFile.matches(lidoPattern)) return C.SUBFORMAT_IDENTIFIER_LIDO;
-		return "";
+	public String identify(File f,boolean pruneExceptions) throws IOException{
+		String beginningOfFile = convertFirst10LinesOfFileToString(f); 
+		if (beginningOfFile.matches(eadPattern))  return C.SUBFORMAT_IDENTIFIER_EAD; 
+				if (beginningOfFile.matches(metsPattern)) return C.SUBFORMAT_IDENTIFIER_METS; 		 
+				if (beginningOfFile.matches(lidoPattern)) return C.SUBFORMAT_IDENTIFIER_LIDO; 
+				return ""; 
 	}
 	
 	private String convertFirst10LinesOfFileToString(File f) throws IOException {
@@ -70,8 +71,20 @@ public class XMLSubformatIdentifier implements FormatIdentifier, Connector{
 		return result;
 	}
 
+
 	@Override
 	public boolean isConnectable() {
 		return true; // no external connectors used.
+	}
+
+	@Override
+	public void setCliConnector(CommandLineConnector cli) {
+
+		
+	}
+
+	@Override
+	public CommandLineConnector getCliConnector() {
+		return null;
 	}
 }

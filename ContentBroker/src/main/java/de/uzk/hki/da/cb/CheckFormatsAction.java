@@ -111,7 +111,7 @@ public class CheckFormatsAction extends AbstractAction {
 		}
 		
 		try {
-			allFiles = getFileFormatFacade().identify(wa.dataPath(),allFiles);
+			allFiles = getFileFormatFacade().identify(wa.dataPath(),allFiles,false);
 		} catch (FileFormatException e) {
 			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
 		} catch (IOException e) {

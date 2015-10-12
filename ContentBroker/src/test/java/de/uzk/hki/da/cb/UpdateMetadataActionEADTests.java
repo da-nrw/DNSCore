@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -82,7 +83,7 @@ public class UpdateMetadataActionEADTests extends ConcreteActionUnitTest{
 	public void setUp() throws IOException, JDOMException, ParserConfigurationException, SAXException{
 		n.setWorkAreaRootPath(WORK_AREA_ROOT_PATH);
 		mtds = mock(MimeTypeDetectionService.class);
-		when(mtds.identify((File)anyObject())).thenReturn("image/tiff");
+		when(mtds.identify((File)anyObject(),anyBoolean())).thenReturn("image/tiff");
 		
 		String[] repNames = {"temp_pips/public", "temp_pips/institution"};
 		action.setRepNames(repNames);

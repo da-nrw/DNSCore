@@ -41,7 +41,7 @@ public class FFmpegSubformatIdentifier implements FormatIdentifier, Connector{
 	private String[] supportedVersions = new String[] {"2.2.10","0.6.5","0.6.7","0.6.6","0.10.3","2.2.1"};
 	
 	@Override
-	public String identify(File f) throws IOException {
+	public String identify(File f,boolean pruneExceptions) throws IOException {
 
 		ProcessInformation pi = new CommandLineConnector().runCmdSynchronously(new String[] {"ffmpeg","-i",f.toString()});
 		String ffmpegOutput = pi.getStdErr();
@@ -104,6 +104,16 @@ public class FFmpegSubformatIdentifier implements FormatIdentifier, Connector{
 			return true;
 		else
 			return false;
+	}
+
+	@Override
+	public void setCliConnector(CommandLineConnector cli) {
+	
+	}
+
+	@Override
+	public CommandLineConnector getCliConnector() {
+		return null;
 	}
 
 }

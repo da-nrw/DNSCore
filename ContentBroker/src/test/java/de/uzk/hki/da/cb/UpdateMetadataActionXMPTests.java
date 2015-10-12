@@ -22,6 +22,7 @@ package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -74,7 +75,7 @@ public class UpdateMetadataActionXMPTests extends ConcreteActionUnitTest {
 	@BeforeClass
 	public static void mockDca() throws IOException {
 		mtds = mock(MimeTypeDetectionService.class);
-		when(mtds.identify((File)anyObject())).thenReturn("image/tiff");
+		when(mtds.identify((File)anyObject(),anyBoolean())).thenReturn("image/tiff");
 	}
 	
 	@Before
