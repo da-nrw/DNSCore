@@ -20,7 +20,6 @@ package de.uzk.hki.da.format;
 
 import java.io.File;
 
-import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
