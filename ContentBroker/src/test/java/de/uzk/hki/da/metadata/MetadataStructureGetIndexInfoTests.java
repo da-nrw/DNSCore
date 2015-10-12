@@ -84,7 +84,7 @@ public class MetadataStructureGetIndexInfoTests {
 		List<Document> docs = new ArrayList<Document>();
 		MetsMetadataStructure mms = new MetsMetadataStructure(Path.make(basePath),metsFile, docs);
 		
-		assertTrue(mms.getMetsUrn().equals("urn:nbn:de:hbz:6:1-3602"));
+		assertTrue(mms.getUrn().equals("urn:nbn:de:hbz:6:1-3602"));
 		
 		indexInfo = mms.getIndexInfo(objectID);
 		
@@ -116,7 +116,7 @@ public class MetadataStructureGetIndexInfoTests {
 		MetsMetadataStructure mms = new MetsMetadataStructure(Path.make(basePath),metsFile, docs);
 		indexInfo = mms.getIndexInfo(objectID);
 		
-		assertTrue(mms.getMetsUrn().equals("urn:nbn:de:hbz:6:1-65526"));
+		assertTrue(mms.getUrn().equals("urn:nbn:de:hbz:6:1-65526"));
 		
 		content = indexInfo.get(objectID+"-md1617166");
 		

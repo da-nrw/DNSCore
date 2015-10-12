@@ -40,7 +40,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
-import de.uzk.hki.da.metadata.MetsParser;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
@@ -62,6 +61,10 @@ public class MetsMetadataStructure extends MetadataStructure {
 	Element modsXmlData;
 	MetsParser metsParser;
 	
+	public MetsParser getMetsParser() {
+		return metsParser;
+	}
+
 	public MetsMetadataStructure(Path workPath,File metadataFile, List<de.uzk.hki.da.model.Document> documents)
 			throws FileNotFoundException, JDOMException, IOException {
 		super(workPath,metadataFile, documents);
@@ -94,31 +97,19 @@ public class MetsMetadataStructure extends MetadataStructure {
 	public void setFileElements(List<Element> fileElements) {
 		this.fileElements = fileElements;
 	}
-
-	@Override
-	public HashMap<String, HashMap<String, List<String>>> getIndexInfo(String ObjectId) {
-		return metsParser.getIndexInfo(ObjectId);
-	}
-	
-	public String getMetsUrn() {
-		return metsParser.getUrn();
-	}
-	
-	public File getMetadataFile() {
-		return metsFile;
-	}
 	
 	public String getHref(Element fileElement) {
 		return metsParser.getHref(fileElement);
 	}
 	
-	private List<String> getReferences() {
-		return metsParser.getReferences();
+	public String getUrn() {
+		return metsParser.getUrn();
 	}
-	
-	private List<Element> getFileElementsFromMetsDoc(Document doc) throws JDOMException {
-		return metsParser.getFileElementsFromMetsDoc(doc);
-	} 
+
+	@Override
+	public HashMap<String, HashMap<String, List<String>>> getIndexInfo(String ObjectId) {
+		return metsParser.getIndexInfo(ObjectId);
+	}
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  SETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
@@ -134,6 +125,11 @@ public class MetsMetadataStructure extends MetadataStructure {
 		metsParser.setHref(fileElement, newHref);
 	}
 	
+	@Override
+	public File getMetadataFile() {
+		return metsFile;
+	}
+	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::  REPLACEMENTS  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 	public void makeReplacementsInMetsFile(File metsFile, String currentHref, String targetHref, String mimetype, String loctype) throws IOException, JDOMException {
@@ -147,11 +143,11 @@ public class MetsMetadataStructure extends MetadataStructure {
 		is.setEncoding("UTF-8");
 		Document metsDoc = builder.build(is);
 		
-		List<Element> metsFileElements = getFileElementsFromMetsDoc(metsDoc);
+		List<Element> metsFileElements = metsParser.getFileElementsFromMetsDoc(metsDoc);
 		
 		for (int i=0; i<metsFileElements.size(); i++) { 
 			Element fileElement = (Element) metsFileElements.get(i);
-			if(getHref(fileElement).equals(currentHref)) {
+			if(metsParser.getHref(fileElement).equals(currentHref)) {
 				setHref(fileElement, targetHref);
 				setMimetype(fileElement, mimetype);
 				setLoctype(fileElement, loctype);
@@ -170,7 +166,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 
 	private boolean checkReferencedFiles() {
 		Boolean valid = true;
-		if(getReferences().size()!=getReferencedFiles(metsFile, getReferences(), currentDocuments).size()) {
+		if(metsParser.getReferences().size()!=getReferencedFiles(metsFile, metsParser.getReferences(), currentDocuments).size()) {
 			valid = false;
 		}
 		return valid;
