@@ -1,8 +1,9 @@
 ## Leistungsmerkmal: Umgang mit fehlerhaften Tags bei TIFF
 
-Die momentane Version der DNS steuert TIFF mit fehlerhaften Tags im Rich-IPTC Bereich als fehlerhaft aus.
+Die momentane Version der DNS steuert TIFF mit fehlerhaften Tags im Rich-IPTC Bereich zunächst als fehlerhaft aus.
+Je nach Entscheidung des Contractors wird die Archivierung dennoch vorgenommen, falls der Contractor diese Entscheidung per Webmaske vorgenommen hat. 
 
-Bsp:
+Einziger bekannter Tagfehler bisher (anzutreffen bei TIFFs im vorgeschlagenen BigTiff Verfahren von AWARE):
 
 ```
 74134.tif TIFF 3474x2141 3474x2141+0+0 8-bit Grayscale DirectClass 7.094mb 
@@ -15,6 +16,8 @@ identify: 374134.tif: unknown field with tag 37395 (0x9213) encountered. `TIFFRe
 identify: Tag 33434: Rational with zero denominator (num = 0). `374134.tif' @ tiff.c/TIFFErrors/336.
 identify: Tag 33437: Rational with zero denominator (num = 0). `374134.tif' @ tiff.c/TIFFErrors/336.
 ```
+
+Imagemmagick identify Kommando gibt einen Hinweis auf "division by zero" in einem Tagfeld an, welches mit einem (vermeintlich) gültigem Wert befüllt sein sollte. (genutzt z.B. für GPS Daten)
 
 #### Kontext:
 
@@ -42,7 +45,7 @@ gilt für alle Szenarien!
 
 ## Szenario AT-TIFFT-1 Problematische Pakete zurückweisen
 
-Das System weist Pakete, die Dateien mit problematischen Tags enthalten, zurück.
+Das System weist Pakete, die Dateien mit problematischen Tags enthalten, zurück. Das Paket landet in einem 4er Fehlerstatus (UserException)
 
 #### Kontext:
 
@@ -69,7 +72,7 @@ Das System weist Pakete, die Dateien mit problematischen Tags enthalten, zurück
 
 
 
-## Vorschlag: Szenario AT-TIFFT-2 Archivierung nach Rückfrage durchführen (nicht impl.)
+## Vorschlag: Szenario AT-TIFFT-2 Archivierung nach Rückfrage durchführen 
 
 Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Probleme der zuk. Bestandserhaltung durchführen.
 
@@ -101,7 +104,7 @@ Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Pr
 * Das Objekt taucht unter eingelieferte Objekte auf als "archiviert" auf.&nbsp;
 * &nbsp;
 
-## Vorschlag: Szenario AT-TIFFT-3 Archivierung nach Rückfrage nicht durchführen (nicht impl.)
+## Vorschlag: Szenario AT-TIFFT-3 Archivierung nach Rückfrage nicht durchführen 
 
 * Der Contractor &nbsp;will die Archivierung auf Grund des Hinweises nicht durchführen.
 
