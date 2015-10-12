@@ -1,9 +1,7 @@
 package de.uzk.hki.da.utils;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -48,51 +46,7 @@ public class XMLUtils {
 		SAXParser saxParser = factory.newSAXParser();
 		return saxParser;
 	}
-	
-	public static File getCanonicalFileFromReference(String ref, File metadataFile) throws IOException {
-		
-		String parentFilePath = "";
-		if (metadataFile.getParentFile() != null)
-			parentFilePath=metadataFile.getParentFile().getPath();
-		
-		String tmpFilePath = new RelativePath(parentFilePath, ref).toString();
-		
-		File file = new File(new File(tmpFilePath).getCanonicalFile().toString().replace(new File("").getCanonicalFile().toString(), ""));
-		
-		return file;
-	}
-	
-	public static String identifyMetadataType(File f) throws IOException{
-		String beginningOfFile = convertFirst10LinesOfFileToString(f);
-		if (beginningOfFile.matches(C.EAD_PATTERN))  {
-			return C.SUBFORMAT_IDENTIFIER_EAD;
-		}
-		if (beginningOfFile.matches(C.METS_PATTERN)) {
-			return C.SUBFORMAT_IDENTIFIER_METS;
-		}
-		if (beginningOfFile.matches(C.LIDO_PATTARN)) {
-			return C.SUBFORMAT_IDENTIFIER_LIDO;
-		} 
-		return "";
-	}
-	
-	private static String convertFirst10LinesOfFileToString(File f) throws IOException {
-		
-		String result = "";
-		
-		BufferedReader br = new BufferedReader(new FileReader(f));
-		String line;
-		int lineCount=0;
-		while ((line = br.readLine()) != null) {
-		   // process the line.
-			result+=line;
-			lineCount++;
-			if (lineCount==10) break;
-		}
-		br.close();
-		return result;
-	}
-	
+
 	public static Document getDocumentFromXMLFile(File file) throws IOException, JDOMException {
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(file);
@@ -106,5 +60,4 @@ public class XMLUtils {
 		reader.close();
 		return metsDoc;
 	}
-
 }

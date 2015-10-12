@@ -41,8 +41,6 @@ public class C {
 	public static final String FILE_EXTENSION_XMP = ".xmp";
 	public static final String FILE_EXTENSION_JPG = ".jpg";
 	public static final String FILE_EXTENSION_TAR = ".tar";
-
-	
 	
 	public static final String MIMETYPE_IMAGE_JPEG = "image/jpeg";
 	public static final String MIMETYPE_TEXT_XML = "text/xml";
@@ -120,6 +118,7 @@ public class C {
 	public static final Namespace DC_NS = Namespace.getNamespace("http://purl.org/dc/elements/1.1/");
 	public static final Namespace DCTERMS_NS = Namespace.getNamespace("http://purl.org/dc/terms/");
 	public static final Namespace DV = Namespace.getNamespace("http://dfg-viewer.de/");
+	public static final String EAD_XPATH_EXPRESSION = "//daoloc/@href";
 	
 	public static final String EDM_PROVIDED_CHO = "edm:ProvidedCHO";
 	public static final String EDM_ORE_AGGREGATION = "ore:Aggregation";
@@ -185,11 +184,6 @@ public class C {
 	public static final String KIND_OF_SIPBUILDING_SINGLE_WITH_TARGET_FOLDER_NAME="Einzelnes SIP mit dem angegebenen Namen aus dem Quellordner erstellen";
 	public static final String KIND_OF_SIPBUILDING_MULTIPLE="SIPs aus Unterordnern des Quellverzeichnisses erstellen";
 	public static final String KIND_OF_SIPBUILDING_NESTED="SIPs aus verzweigter Ordnerstruktur erstellen (nur METS)";
-	
-//	XML Format Identification
-	public static final String EAD_PATTERN = ".*(?s)\\A.{0,1000}\\x3cead[^\\x3c]{0,1000}\\x3ceadheader.*";
-	public static final String METS_PATTERN = ".*(?s)\\A.{0,1000}\\x3c([^: ]+:)?mets[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.loc.gov/METS.*";
-	public static final String LIDO_PATTARN = ".*(?s)\\A.{0,1000}\\x3c([^: ]+:)?lidoWrap[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.lido-schema.org.*";
 	
 }
 

@@ -58,7 +58,6 @@ import de.uzk.hki.da.util.FileIdGenerator;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
-import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * Performs updates to metadata files that are necessary
@@ -225,7 +224,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			if(e.getType().equals("COPY") || e.getType().equals("CONVERT")) {
 				DAFile sourceFile = e.getSource_file();
 				for(String href : eadRefs) {
-					File file = XMLUtils.getCanonicalFileFromReference(href, emms.getMetadataFile());					
+					File file = emms.getCanonicalFileFromReference(href, emms.getMetadataFile());					
 					if(file.getAbsolutePath().contains(sourceFile.getRelative_path())) {
 						DAFile targetDAFile = e.getTarget_file();
 						File targetFile = wa.toFile(targetDAFile);
@@ -266,7 +265,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			String href = mms.getHref(metsFileElement);
 			logger.info("Reference: "+href);
 			DAFile targetDAFile = null;
-			File file = XMLUtils.getCanonicalFileFromReference(href, metsFile);
+			File file = mms.getCanonicalFileFromReference(href, metsFile);
 			Boolean fileExists = false;
 			String mimetype = "";
 			Iterator it = replacements.entrySet().iterator();
@@ -315,11 +314,11 @@ public class UpdateMetadataAction extends AbstractAction {
 	private void updatePathsInLido(LidoMetadataStructure lms, Map<DAFile,DAFile> replacements) throws IOException {
 		logger.info("Update paths in LIDO file "+lms.getMetadataFile().getAbsolutePath());
 		HashMap<String, String> lidoReplacements = new HashMap<String, String>();
-		List<String> lidoRefs = lms.getLidoLinkResources();
+		List<String> lidoRefs = lms.parseLidoLinkResources();
 		String targetPath = "";
 		for(String href : lidoRefs) {
 			logger.debug("Reference: "+href);
-			File file = XMLUtils.getCanonicalFileFromReference(href, lms.getMetadataFile());
+			File file = lms.getCanonicalFileFromReference(href, lms.getMetadataFile());
 			DAFile targetDAFile = null;
 			Boolean fileExists = false;
 			Iterator it = replacements.entrySet().iterator();

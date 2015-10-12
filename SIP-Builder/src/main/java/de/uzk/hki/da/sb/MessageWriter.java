@@ -64,8 +64,6 @@ public abstract class MessageWriter {
 	 */
 	abstract public UserInput showCollectionOverwriteDialog(String message); 
 	
-	abstract public UserInput showWrongReferencesDialog(String message);
-	
 	/**
 	 * Displays a message that informs the user about which zero byte files were found
 	 */

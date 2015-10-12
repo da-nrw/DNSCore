@@ -111,28 +111,6 @@ class GuiMessageWriter extends MessageWriter {
 	}
 	
 	/**
-	 *  Lets the user decide if an already existing collection will be overwritten or not
-	 * 
-	 * @param message The message to display
-	 * @return The user input as a UserInput enum
-	 */
-	@Override
-	public UserInput showWrongReferencesDialog(String message) {
-
-		String[] options = new String[] {"Ja", "Nein" };
-		int answer = JOptionPane.showOptionDialog(gui, message, SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon(iconImage), options, null);
-
-		switch (answer) {
-		case 0:
-			return UserInput.YES;
-		case 1:
-			return UserInput.NO;
-		default:
-			return UserInput.NO;
-		}
-	}
-	
-	/**
 	 * Displays a message that informs the user about which zero byte files were found
 	 */
 	public void showZeroByteFileMessage() {

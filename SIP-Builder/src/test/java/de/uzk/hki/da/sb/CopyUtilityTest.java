@@ -30,7 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.pkg.CopyUtility;
-import de.uzk.hki.da.sb.SipBuildingProcess;
+import de.uzk.hki.da.sb.SIPFactory.SipBuildingProcess;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;

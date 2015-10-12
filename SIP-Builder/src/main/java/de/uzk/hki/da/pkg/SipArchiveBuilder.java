@@ -34,7 +34,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import de.uzk.hki.da.sb.ProgressManager;
-
+import de.uzk.hki.da.sb.SIPFactory;
 
 /**
  * Creates archive files (tar and tgz)
@@ -45,7 +45,7 @@ public class SipArchiveBuilder{
 	
 	private ProgressManager progressManager;
 	private int jobId;
-	private boolean sipBuildingProcessIsAborted;
+	private SIPFactory.SipBuildingProcess sipBuildingProcess;
 	
 
 	/**
@@ -114,7 +114,7 @@ public class SipArchiveBuilder{
 	 */
 	private boolean addFileToArchive(TarArchiveOutputStream tOut, File file, String base) throws IOException{
 
-		if (sipBuildingProcessIsAborted)
+		if (sipBuildingProcess.isAborted())
 			return false;
 		
 		String entryName = base + file.getName();
@@ -206,7 +206,7 @@ public class SipArchiveBuilder{
 		this.jobId = jobId;
 	}
 
-	public void setSipBuildingProcessIsAborted(boolean sipBuildingProcessIsAborted) {
-		this.sipBuildingProcessIsAborted = sipBuildingProcessIsAborted;
+	public void setSipBuildingProcess(SIPFactory.SipBuildingProcess sipBuildingProcess) {
+		this.sipBuildingProcess = sipBuildingProcess;
 	}
 }

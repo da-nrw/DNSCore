@@ -19,11 +19,14 @@
 
 package de.uzk.hki.da.format;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.XMLUtils;
+
+import de.uzk.hki.da.utils.C;
 
 /**
  * DNSCore supports four metadata structures that enable proper publication via the presentation repository. 
@@ -33,6 +36,10 @@ import de.uzk.hki.da.utils.XMLUtils;
  * @author Daniel M. de Oliveira
  */
 public class XMLSubformatIdentifier implements FormatIdentifier, Connector{
+
+	private final static String eadPattern = ".*(?s)\\A.{0,1000}\\x3cead[^\\x3c]{0,1000}\\x3ceadheader.*";
+	private final static String metsPattern = ".*(?s)\\A.{0,1000}\\x3c([^: ]+:)?mets[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.loc.gov/METS.*";
+	private final static String lidoPattern = ".*(?s)\\A.{0,1000}\\x3c([^: ]+:)?lidoWrap[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.lido-schema.org.*";
 	
 	/**
 	 * @param f
@@ -41,8 +48,30 @@ public class XMLSubformatIdentifier implements FormatIdentifier, Connector{
 	 */
 	@Override
 	public String identify(File f,boolean pruneExceptions) throws IOException{
-		return XMLUtils.identifyMetadataType(f);
+		String beginningOfFile = convertFirst10LinesOfFileToString(f); 
+		if (beginningOfFile.matches(eadPattern))  return C.SUBFORMAT_IDENTIFIER_EAD; 
+				if (beginningOfFile.matches(metsPattern)) return C.SUBFORMAT_IDENTIFIER_METS; 		 
+				if (beginningOfFile.matches(lidoPattern)) return C.SUBFORMAT_IDENTIFIER_LIDO; 
+				return ""; 
 	}
+	
+	private String convertFirst10LinesOfFileToString(File f) throws IOException {
+		
+		String result = "";
+		
+		BufferedReader br = new BufferedReader(new FileReader(f));
+		String line;
+		int lineCount=0;
+		while ((line = br.readLine()) != null) {
+		   // process the line.
+			result+=line;
+			lineCount++;
+			if (lineCount==10) break;
+		}
+		br.close();
+		return result;
+	}
+
 
 	@Override
 	public boolean isConnectable() {

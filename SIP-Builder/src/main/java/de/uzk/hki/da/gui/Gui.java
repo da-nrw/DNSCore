@@ -57,13 +57,14 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.log4j.Logger;
+
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.metadata.ContractSettings;
 import de.uzk.hki.da.metadata.PremisXmlWriter;
 import de.uzk.hki.da.metadata.PublicationRights;
 import de.uzk.hki.da.sb.Feedback;
-import de.uzk.hki.da.sb.Logger;
 import de.uzk.hki.da.sb.SIPFactory;
 import de.uzk.hki.da.sb.UserInputValidator;
 import de.uzk.hki.da.utils.C;
@@ -79,13 +80,14 @@ import de.uzk.hki.da.utils.Utilities;
  */
 public class Gui extends JFrame{
 
+	private static Logger logger = Logger.getLogger( Gui.class );
+	
 	private static final long serialVersionUID = -2783837120567684391L;
 
 	SIPFactory sipFactory = new SIPFactory();
 	ContractSettings contractSettings = null;
 	PremisXmlWriter premisWriter = new PremisXmlWriter();
 	GuiMessageWriter messageWriter = new GuiMessageWriter();
-	Logger logger;
 
 	JFileChooser sourcePathChooser = new JFileChooser(new File("."));
 	JFileChooser destinationPathChooser = new JFileChooser(new File("."));
@@ -335,9 +337,6 @@ public class Gui extends JFrame{
 		if (!new File(dataFolderPath).exists())
 			new File(dataFolderPath).mkdir();
 		
-		logger = new Logger(dataFolderPath);
-		sipFactory.setLogger(logger);
-		
 		URL icon = classloader.getResource("images/sipBuilderIcon.png");
 		URL logo = classloader.getResource(SIPBuilder.getProperties().getProperty("LOGO_FILE"));
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -352,14 +351,14 @@ public class Gui extends JFrame{
 			standardFont = Font.createFont(Font.TRUETYPE_FONT, classloader.getResourceAsStream("fonts/DejaVuSans.ttf"));
 			boldFont = Font.createFont(Font.TRUETYPE_FONT, classloader.getResourceAsStream("fonts/DejaVuSans-Bold.ttf"));
 		} catch (Exception e) {
-			logger.log("ERROR: Couldn't find font file", e);
+			logger.error("Couldn't find font file", e);
 			messageWriter.showMessage("Schriftart konnte nicht gefunden werden!\n" + e.getMessage(), JOptionPane.PLAIN_MESSAGE);
 		}
 		
 		try {
 			contractSettings = new ContractSettings(confFolderPath);
 		} catch (Exception e) {
-			logger.log("ERROR: Failed to load contract settings file", e);
+			logger.error("Failed to load contract settings file", e);
 			messageWriter.showMessage("Die Contract Settings konnten nicht geladen werden.\n" +
 					"Die Datei \"settings.xml\" im Verzeichnis \"conf\" wurde möglicherweise\n" +
 					"verändert oder gelöscht.", JOptionPane.ERROR_MESSAGE);
@@ -489,7 +488,6 @@ public class Gui extends JFrame{
 			file = new JarFile(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()));
 			mf = file.getManifest();
 		} catch (Exception e) {
-			System.out.println("=(");
 			e.printStackTrace();
 		}
 		Attributes attr = mf.getMainAttributes();
@@ -1879,7 +1877,7 @@ public class Gui extends JFrame{
 					try {
 						Utilities.writeFile(new File(dataFolderPath + File.separator + "srcPath.sav"), sourcePath);
 					} catch (Exception ex) {
-						logger.log("WARNING: Failed to create file " + new File(dataFolderPath + File.separator + "srcPath.sav").getAbsolutePath(), ex);
+						logger.warn("Failed to create file " + new File(dataFolderPath + File.separator + "srcPath.sav").getAbsolutePath(), ex);
 					}
 				}
 			}
@@ -1895,7 +1893,7 @@ public class Gui extends JFrame{
 					try {
 						Utilities.writeFile(new File(dataFolderPath + File.separator + "destPath.sav"), destinationPath);
 					} catch (Exception ex) {
-						logger.log("WARNING: Failed to create file " + new File(dataFolderPath + File.separator + "destPath.sav").getAbsolutePath(), ex);
+						logger.warn("Failed to create file " + new File(dataFolderPath + File.separator + "destPath.sav").getAbsolutePath(), ex);
 					}
 				}
 			}
@@ -1925,7 +1923,7 @@ public class Gui extends JFrame{
 					try {
 						Utilities.writeFile(new File(dataFolderPath + File.separator + "crloadPath.sav"), contractRightsFilePath);
 					} catch (Exception ex) {
-						logger.log("WARNING: Failed to create file " + new File(dataFolderPath + File.separator + "crloadPath.sav").getAbsolutePath(), ex);
+						logger.warn("Failed to create file " + new File(dataFolderPath + File.separator + "crloadPath.sav").getAbsolutePath(), ex);
 					}
 
 					contractRightsFile = new File(contractRightsFilePath);
@@ -1933,7 +1931,7 @@ public class Gui extends JFrame{
 					try {
 						sipFactory.getContractRights().loadContractRightsFromFile(contractRightsFile);
 					} catch (Exception ex) {
-						logger.log("ERROR: Failed to load contract rights from file " + contractRightsFile.getAbsolutePath(), ex);
+						logger.error("Failed to load contract rights from file " + contractRightsFile.getAbsolutePath(), ex);
 						messageWriter.showMessage("Beim Einlesen der Datei ist ein Fehler aufgetreten.", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
@@ -2080,7 +2078,7 @@ public class Gui extends JFrame{
 					try {
 						Utilities.writeFile(new File(dataFolderPath + File.separator + "crsavePath.sav"), fileName);
 					} catch (Exception ex) {
-						logger.log("WARNING: Failed to write file " + new File(dataFolderPath + File.separator +
+						logger.warn("Failed to write file " + new File(dataFolderPath + File.separator +
 								   "crsavePath.sav").getAbsolutePath(), ex);
 					}
 
@@ -2088,7 +2086,7 @@ public class Gui extends JFrame{
 						premisWriter.createContractRightsFile(sipFactory.getContractRights(), new File(fileName));
 						messageWriter.showMessage("Ihre Rechte-Einstellungen wurden erfolgreich gespeichert!", JOptionPane.PLAIN_MESSAGE);
 					} catch (Exception ex) {
-						logger.log("ERROR: Failed to create file " + new File(fileName).getAbsolutePath(), ex);
+						logger.error("Failed to create file " + new File(fileName).getAbsolutePath(), ex);
 						messageWriter.showMessage(ex.getMessage() + "\n" + ex.getStackTrace(), JOptionPane.ERROR_MESSAGE);
 						messageWriter.showMessage("Beim Erstellen der Datei ist ein Fehler aufgetreten.", JOptionPane.ERROR_MESSAGE);
 					}
@@ -2614,7 +2612,7 @@ public class Gui extends JFrame{
 				try {
 					Utilities.writeFile(new File(dataFolderPath + File.separator + "compSetting.sav"), compressionSetting);
 				} catch (Exception ex) {
-					logger.log("WARNING: Failed to create file " + new File(dataFolderPath + File.separator + "compSetting.sav").getAbsolutePath(), ex);
+					logger.warn("Failed to create file " + new File(dataFolderPath + File.separator + "compSetting.sav").getAbsolutePath(), ex);
 				}
 			}			
 		});
@@ -2733,7 +2731,7 @@ public class Gui extends JFrame{
 				String sourceFolderPath = StringUtilities.readFile(sourceFolderFile);
 				sourcePathChooser.setCurrentDirectory(new File(sourceFolderPath));				
 			} catch (Exception e) {
-				logger.log("WARNING: Failed to read file " + sourceFolderFile.getAbsolutePath(), e);
+				logger.warn("Failed to read file " + sourceFolderFile.getAbsolutePath(), e);
 			}
 		}
 
@@ -2742,7 +2740,7 @@ public class Gui extends JFrame{
 				String destinationFolderPath = StringUtilities.readFile(destinationFolderFile);
 				destinationPathChooser.setCurrentDirectory(new File(destinationFolderPath));				
 			} catch (Exception e) {
-				logger.log("WARNING: Failed to read file " + destinationFolderFile.getAbsolutePath(), e);
+				logger.warn("Failed to read file " + destinationFolderFile.getAbsolutePath(), e);
 			}
 		}
 
@@ -2751,7 +2749,7 @@ public class Gui extends JFrame{
 				String contractFileLoadPath = StringUtilities.readFile(contractRightsLoadFolderFile);
 				contractFileLoadPathChooser.setSelectedFile(new File(contractFileLoadPath));				
 			} catch (Exception e) {
-				logger.log("WARNING: Failed to read file " + contractRightsLoadFolderFile.getAbsolutePath(), e);
+				logger.warn("Failed to read file " + contractRightsLoadFolderFile.getAbsolutePath(), e);
 			}
 		}
 
@@ -2760,7 +2758,7 @@ public class Gui extends JFrame{
 				String contractFileSavePath = StringUtilities.readFile(contractRightsSaveFolderFile);
 				contractFileSavePathChooser.setSelectedFile(new File(contractFileSavePath));				
 			} catch (Exception e) {
-				logger.log("WARNING: Failed to read file " + contractRightsSaveFolderFile.getAbsolutePath(), e);
+				logger.warn("Failed to read file " + contractRightsSaveFolderFile.getAbsolutePath(), e);
 			}
 		}
 		
@@ -2769,7 +2767,7 @@ public class Gui extends JFrame{
 				String compressionSetting = StringUtilities.readFile(compressionSettingFile);
 				compressionCheckBox.setSelected(Boolean.valueOf(compressionSetting));
 			} catch (Exception e) {
-				logger.log("WARNING: Failed to read file " + compressionSettingFile.getAbsolutePath(), e);
+				logger.warn("Failed to read file " + compressionSettingFile.getAbsolutePath(), e);
 			}
 		}
 	}
@@ -3247,7 +3245,7 @@ public class Gui extends JFrame{
 		try {
 			sipFactory.getContractRights().loadContractRightsFromFile(standardRightsFile);
 		} catch (Exception ex) {
-			logger.log("ERROR: Failed to load standard rights from file " + standardRightsFile.getAbsolutePath(), ex);
+			logger.error("Failed to load standard rights from file " + standardRightsFile.getAbsolutePath(), ex);
 			messageWriter.showMessage("Beim Einlesen der Standardrechte ist ein Fehler aufgetreten.", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}

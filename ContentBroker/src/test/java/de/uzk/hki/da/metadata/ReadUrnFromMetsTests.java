@@ -68,6 +68,6 @@ public class ReadUrnFromMetsTests {
 		File metsFile = Path.make("mets_urn_xml_reader_test.xml").toFile();
 		List<Document> docs = new ArrayList<Document>();
 		MetsMetadataStructure mms = new MetsMetadataStructure(Path.make(basePath),metsFile, docs);
-		assertEquals("urn:nbn:de:hbz:5:1-16152", mms.getMetsUrn());
+		assertEquals("urn:nbn:de:hbz:5:1-16152", mms.getUrn());
 	}
 }
