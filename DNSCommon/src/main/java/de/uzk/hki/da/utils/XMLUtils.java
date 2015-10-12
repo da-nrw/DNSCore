@@ -60,4 +60,12 @@ public class XMLUtils {
 		reader.close();
 		return metsDoc;
 	}
+	
+	public static File getRelativeFileFromReference(String ref, File metadataFile) throws IOException {
+		String parentFilePath = "";
+		if (metadataFile.getParentFile() != null)
+			parentFilePath=metadataFile.getParentFile().getPath();
+		File file = new File(new File(parentFilePath, ref).getCanonicalFile().toString().replace(new File("").getCanonicalFile().toString(), ""));
+		return file;
+	}
 }
