@@ -41,8 +41,6 @@ public class C {
 	public static final String FILE_EXTENSION_XMP = ".xmp";
 	public static final String FILE_EXTENSION_JPG = ".jpg";
 	public static final String FILE_EXTENSION_TAR = ".tar";
-
-	
 	
 	public static final String MIMETYPE_IMAGE_JPEG = "image/jpeg";
 	public static final String MIMETYPE_TEXT_XML = "text/xml";
@@ -120,6 +118,7 @@ public class C {
 	public static final Namespace DC_NS = Namespace.getNamespace("http://purl.org/dc/elements/1.1/");
 	public static final Namespace DCTERMS_NS = Namespace.getNamespace("http://purl.org/dc/terms/");
 	public static final Namespace DV = Namespace.getNamespace("http://dfg-viewer.de/");
+	public static final String EAD_XPATH_EXPRESSION = "//daoloc/@href";
 	
 	public static final String EDM_PROVIDED_CHO = "edm:ProvidedCHO";
 	public static final String EDM_ORE_AGGREGATION = "ore:Aggregation";
