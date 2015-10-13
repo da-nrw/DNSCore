@@ -217,8 +217,13 @@ public class Cli {
     		}
     		
     		if (arg.equals("-alwaysOverwrite")) {
-    			messageWriter.setStandardAnswer(MessageWriter.UserInput.YES);
+    			messageWriter.setStandardAnswerAlwaysOverwrite(MessageWriter.UserInput.YES);
     			alwaysOverwrite = true;
+    			continue;
+    		}
+    		
+    		if (arg.equals("-alwaysIgnoreWrongReferencesInMetadata")) {
+    			messageWriter.setStandardAnswerIgnoreWrongReferencesInMetadata(MessageWriter.UserInput.YES);
     			continue;
     		}
     		
@@ -711,6 +716,7 @@ public class Cli {
 		System.out.println("");
 		System.out.println("   -neverOverwrite           SIPs nicht erstellen, wenn sich im Zielordner bereits ein SIP gleichen Namens befindet (Standard)");
 		System.out.println("   -alwaysOverwrite          Bereits existierende SIPs/Lieferungen gleichen Namens im Zielordner ohne Nachfrage überschreiben");
+		System.out.println("   -alwaysIgnoreWrongReferencesInMetadata          SIPs trotz falscher Referenzen in den mitgelieferten Metadaten erstellen");
 		System.out.println("");
 		System.out.println("   -ignoreExtensions");
 		System.out.println("       =\"ext1;ext2;ext3...\"  Dateien mit den angegebenen Dateiendungen nicht ins SIP aufnehmen");

@@ -25,6 +25,8 @@ import java.util.Collections;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.sb.MessageWriter;
@@ -155,5 +157,28 @@ class GuiMessageWriter extends MessageWriter {
 
 	public void setIconImage(Image iconImage) {
 		this.iconImage = iconImage;
+	}
+
+	@Override
+	public UserInput showWrongReferencesInMetadataDialog(String message) {
+		JTextArea textArea = new JTextArea(6, 25);
+		textArea.setText(message);
+		textArea.setEditable(false);
+		
+		// wrap a scrollpane around it
+		JScrollPane scrollPane = new JScrollPane(textArea);
+	       
+		// display them in a message dialog
+		String[] options = new String[] {"Ja", "Nein" };
+		int answer = JOptionPane.showOptionDialog(gui, scrollPane, SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon(iconImage), options, null);
+
+		switch (answer) {
+		case 0:
+			return UserInput.YES;
+		case 1:
+			return UserInput.NO;
+		default:
+			return UserInput.NO;
+		}
 	}	
 }

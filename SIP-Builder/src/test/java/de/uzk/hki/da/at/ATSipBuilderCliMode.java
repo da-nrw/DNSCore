@@ -19,7 +19,7 @@
 
 package de.uzk.hki.da.at;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -59,9 +59,9 @@ public class ATSipBuilderCliMode {
 	}
 	
 	@Test
-	public void testNestedStructure() throws IOException {
+	public void testNestedStructureIgnoreWrongReferences() throws IOException {
 		
-		String cmd = "./SipBuilder-Unix.sh -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -nested -alwaysOverwrite";
+		String cmd = "./SipBuilder-Unix.sh -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -nested -alwaysOverwrite -alwaysIgnoreWrongReferencesInMetadata";
 		
 		p=Runtime.getRuntime().exec(cmd,
 		        null, new File("target/installation"));
@@ -87,6 +87,37 @@ public class ATSipBuilderCliMode {
 	    
 	    assertTrue(new File("target/atTargetDir/"+nestedSip1).exists());
 	    assertTrue(new File("target/atTargetDir/"+nestedSip2).exists());
+	}
+	
+	@Test
+	public void testNestedStructureErrorWrongReferences() throws IOException {
+		System.out.println("Awaiting error while sip building");
+		String cmd = "./SipBuilder-Unix.sh -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -nested -alwaysOverwrite";
+		
+		p=Runtime.getRuntime().exec(cmd,
+		        null, new File("target/installation"));
+		
+		BufferedReader stdInput = new BufferedReader(new
+        InputStreamReader(p.getInputStream()));
+
+		BufferedReader stdError = new BufferedReader(new
+        InputStreamReader(p.getErrorStream()));
+		 
+		String s = "";
+		// read the output from the command
+	    System.out.println("Here is the standard output of the command:\n");
+	    while ((s = stdInput.readLine()) != null) {
+	         System.out.println(s);
+	    }
+
+	    // read any errors from the attempted command
+	    System.out.println("Here is the standard error of the command (if any):\n");
+	    while ((s = stdError.readLine()) != null) {
+	        System.out.println(s);
+	    }
+	    
+	    assertFalse(new File("target/atTargetDir/"+nestedSip1).exists());
+	    assertFalse(new File("target/atTargetDir/"+nestedSip2).exists());
 	}
 
 }

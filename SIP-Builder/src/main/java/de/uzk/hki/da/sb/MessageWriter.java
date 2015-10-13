@@ -65,6 +65,14 @@ public abstract class MessageWriter {
 	abstract public UserInput showCollectionOverwriteDialog(String message); 
 	
 	/**
+	 * Lets the user decide if an sip with invalid metadata will be created or not
+	 * 	  
+	 * @param message The message to display
+	 * @return The user input as a UserInput enum
+	 */
+	abstract public UserInput showWrongReferencesInMetadataDialog(String message); 
+	
+	/**
 	 * Displays a message that informs the user about which zero byte files were found
 	 */
 	abstract public void showZeroByteFileMessage();

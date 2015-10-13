@@ -19,6 +19,8 @@
 
 package de.uzk.hki.da.cli;
 
+import org.apache.log4j.Logger;
+
 import de.uzk.hki.da.sb.MessageWriter;
 
 /**
@@ -26,9 +28,11 @@ import de.uzk.hki.da.sb.MessageWriter;
  * 
  * @author Thomas Kleinke
  */
-class CliMessageWriter extends MessageWriter{
+public class CliMessageWriter extends MessageWriter{
 
-	UserInput standardAnswer = UserInput.NO;
+	private Logger logger = Logger.getLogger(CliMessageWriter.class);
+	UserInput standardAnswerAlwaysOverwrite = UserInput.NO;
+	UserInput standardAnswerIgnoreWrongReferencesInMetadata = UserInput.NO;
 	
 	/**
 	 * Displays a message
@@ -48,7 +52,7 @@ class CliMessageWriter extends MessageWriter{
 	 */
 	@Override
 	public void showMessage(String message, int type) {
-		System.out.println(message);		
+		logger.info(message);		
 	}
 
 	/**
@@ -60,8 +64,7 @@ class CliMessageWriter extends MessageWriter{
 	 */
 	@Override
 	public UserInput showOverwriteDialog(String message) {
-		
-		return standardAnswer;
+		return standardAnswerAlwaysOverwrite;
 	}
 	
 	/**
@@ -74,12 +77,12 @@ class CliMessageWriter extends MessageWriter{
 	@Override
 	public UserInput showCollectionOverwriteDialog(String message) {
 		
-		if (standardAnswer == UserInput.NO) {
+		if (standardAnswerAlwaysOverwrite == UserInput.NO) {
 			System.out.println("\nIm Zielverzeichnis existiert bereits eine Lieferung des gewählten Namens."); 
 			System.out.println("Bitte löschen Sie die bestehende Lieferung oder wählen Sie einen anderen Namen.");
 		}
 		
-		return standardAnswer;
+		return standardAnswerAlwaysOverwrite;
 	}
 	
 	/**
@@ -104,12 +107,31 @@ class CliMessageWriter extends MessageWriter{
 		System.out.println(message);
 	}
 
-	/**
-	 * Sets the standard answer that is returned in showOverwriteDialog and showCollectionOverwriteDialog
-	 * 
-	 * @param standardAnswer
-	 */
-	public void setStandardAnswer(UserInput standardAnswer) {
-		this.standardAnswer = standardAnswer;
+	public UserInput getStandardAnswerAlwaysOverwrite() {
+		return standardAnswerAlwaysOverwrite;
+	}
+
+	public void setStandardAnswerAlwaysOverwrite(
+			UserInput standardAnswerAlwaysOverwrite) {
+		this.standardAnswerAlwaysOverwrite = standardAnswerAlwaysOverwrite;
+	}
+
+	@Override
+	public UserInput showWrongReferencesInMetadataDialog(String message) {
+		logger.info("ANSWER "+standardAnswerIgnoreWrongReferencesInMetadata);
+		if (standardAnswerIgnoreWrongReferencesInMetadata == UserInput.NO) {
+			logger.error(message);
+			logger.error("Das SIP wird nicht erstellt. Bitte korrigieren Sie Ihre Metadaten.");
+		}
+		return standardAnswerIgnoreWrongReferencesInMetadata;
+	}
+
+	public UserInput getStandardAnswerIgnoreWrongReferencesInMetadata() {
+		return standardAnswerIgnoreWrongReferencesInMetadata;
+	}
+
+	public void setStandardAnswerIgnoreWrongReferencesInMetadata(
+			UserInput standardAnswerIgnoreWrongReferencesInMetadata) {
+		this.standardAnswerIgnoreWrongReferencesInMetadata = standardAnswerIgnoreWrongReferencesInMetadata;
 	}
 }

@@ -688,6 +688,8 @@ public class SIPFactory {
 			HashMap<File, String> folderListWithNames = null;
 			try {
 				folderListWithNames = createFolderList(sourcePath);
+				@SuppressWarnings("unchecked")
+				HashMap<File, String> tmpFolderListWithNames = (HashMap<File, String>) folderListWithNames.clone();
 				for(File f : folderListWithNames.keySet()) {
 					try {
 						TreeMap<File, String> metadataFileWithType = new formatDetectionService(f).getMetadataFileWithType();
@@ -696,13 +698,27 @@ public class SIPFactory {
 							Utilities.getWrongFileReferences(metadataFileWithType.firstKey(), metadataFileWithType.get(file));						
 						}
 					} catch (Error e) {
-						logger.error(e.getMessage());
-						messageWriter.showMessage(e.getMessage()+" Die Verarbeitung findet dennoch statt.");
+						String msg = e.getMessage()+" \nMöchten Sie die SIP-Erstellung dennoch fortsetzen?";
+						logger.error(msg);
+						MessageWriter.UserInput answer = messageWriter.showWrongReferencesInMetadataDialog(msg);
+						returnCode = Feedback.WRONG_REFERENCES_IN_METADATA;
+						switch (answer) {
+						case YES:
+							break;
+						case NO:
+							messageWriter.showMessage("Aus dem Verzeichnis "+f+" wird kein SIP erstellt.");
+							tmpFolderListWithNames.remove(f);
+							break;
+						default:
+							break;
+						}
 					}
 				}
+				folderListWithNames = tmpFolderListWithNames;
 			} catch (Exception e) {
 				messageWriter.showMessage("Das SIP konnte nicht erstellt werden.\n\n" +
 						"Ihre Daten sind möglicherweise nicht valide: \n\n"+e.getMessage(), JOptionPane.ERROR_MESSAGE);
+				returnCode = Feedback.INVALID_METADATA;
 				abortSipBuilding();
 				return;
 			}

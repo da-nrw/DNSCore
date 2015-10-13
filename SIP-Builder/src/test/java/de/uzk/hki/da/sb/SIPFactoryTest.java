@@ -34,13 +34,19 @@ import java.io.InputStreamReader;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.TTCCLayout;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.cli.CliMessageWriter;
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.pkg.SipArchiveBuilder;
+import de.uzk.hki.da.sb.MessageWriter.UserInput;
 
 /**
  * Class under test: SIPFactory
@@ -49,8 +55,10 @@ import de.uzk.hki.da.pkg.SipArchiveBuilder;
  */
 public class SIPFactoryTest {
 
+	private Logger logger = Logger.getLogger(SIPFactory.class);
 	String pathToResourcesFolder = "src/test/resources/SIPFactoryTests/";
 	SIPFactory sipFactory = new SIPFactory();
+	CliMessageWriter cliMessageWriter = new CliMessageWriter();
 
 	@Before
 	public void setUp() {
@@ -58,11 +66,12 @@ public class SIPFactoryTest {
 		new File(pathToResourcesFolder + "destination").mkdir();
 		
 		ProgressManager progressManager = mock(ProgressManager.class);
-		MessageWriter messageWriter = mock(MessageWriter.class);
 		
 		sipFactory = new SIPFactory();
 		sipFactory.setProgressManager(progressManager);
-		sipFactory.setMessageWriter(messageWriter);
+		sipFactory.setMessageWriter(cliMessageWriter);
+		
+		setUpLogger();
 		
 		Properties properties = new Properties();
 		try {
@@ -238,6 +247,9 @@ public class SIPFactoryTest {
 	@Test
 	public void testBuildNestedSIPs() throws Exception {
 		
+		UserInput standardAnswerIgnoreWrongReferencesInMetadata = cliMessageWriter.getStandardAnswerIgnoreWrongReferencesInMetadata();
+		cliMessageWriter.setStandardAnswerIgnoreWrongReferencesInMetadata(UserInput.YES);
+		
 		String fixedUrn1 = "urn+nbn+de+hbz+6+1-3602";
 		String fixedUrn2 = "urn+nbn+de+hbz+42";
 		
@@ -292,6 +304,8 @@ public class SIPFactoryTest {
 		assertFalse(new File(pathToResourcesFolder+"destination/testSubfolder3").exists());
 		assertFalse(new File(pathToResourcesFolder+"destination/testSubfolder4").exists());
 		assertFalse(new File(pathToResourcesFolder+"destination/testSubfolder5").exists());
+		
+		cliMessageWriter.setStandardAnswerIgnoreWrongReferencesInMetadata(standardAnswerIgnoreWrongReferencesInMetadata);
 	}
 	
 	/**
@@ -342,5 +356,15 @@ public class SIPFactoryTest {
 		Bag bag = bagFactory.createBag(folder);
 		SimpleResult result = bag.verifyValid();
 		return result.isSuccess();
+	}
+	
+	private void setUpLogger() {
+		TTCCLayout layout = new TTCCLayout();
+		layout.setDateFormat("yyyy'-'MM'-'dd' 'HH':'mm':'ss");
+		layout.setThreadPrinting(false);
+	    ConsoleAppender consoleAppender = new ConsoleAppender(layout);
+	    logger.addAppender( consoleAppender );
+        logger.setLevel(Level.INFO);
+		sipFactory.setLogger(logger);
 	}
 }

@@ -6,10 +6,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
 import org.apache.tika.Tika;
 
 
 public class formatDetectionService {
+	
+	private Logger logger = Logger.getLogger(formatDetectionService.class);
 	
 	String eadPattern = ".*(?s)\\A.{0,1000}\\x3cead[^\\x3c]{0,1000}\\x3ceadheader.*";
 	String metsPattern = ".*(?s)\\A.{0,1000}\\x3c([^: ]+:)?mets[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.loc.gov/METS.*";
@@ -108,7 +111,7 @@ public class formatDetectionService {
 		} else if(countEad+countMets+countLido>1) {
 			throw new Exception("Im Verzeichnis "+folder.getName()+" wurde mehr als eine Metadatendatei gefunden. \nBekannte Formate sind: EAD, METS, LIDO.");
 		} else if(countEad+countMets+countLido==0) {
-			throw new Error("Im Verzeichnis "+folder.getName()+" wurde keine Metadatendatei gefunden. \nBekannte Formate sind: EAD, METS, LIDO.");
+			logger.error("Im Verzeichnis "+folder.getName()+" wurde keine Metadatendatei gefunden. \nBekannte Formate sind: EAD, METS, LIDO.");
 		}
 		return fileWithType;
 	}

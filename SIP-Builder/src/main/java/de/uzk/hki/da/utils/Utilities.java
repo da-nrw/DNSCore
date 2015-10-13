@@ -50,7 +50,7 @@ import de.uzk.hki.da.sb.SIPFactory.KindOfSIPBuilding;
 public class Utilities {
 	
 	private static final String sipBuilderVersion = "0.6.5-p1";
-	private static Logger logger = Logger.getLogger( Utilities.class );
+	private static Logger logger = Logger.getLogger(Utilities.class );
 	/**
 	 * String to enum translation method
 	 * 
@@ -58,7 +58,6 @@ public class Utilities {
 	 * @return The enum corresponding to the given string
 	 */
 	public static KindOfSIPBuilding translateKindOfSIPBuilding(String kindofSIPBuildingName) {
-
 		if (kindofSIPBuildingName.equals(C.KIND_OF_SIPBUILDING_MULTIPLE))
 			return KindOfSIPBuilding.MULTIPLE_FOLDERS;
 		else if (kindofSIPBuildingName.equals(C.KIND_OF_SIPBUILDING_SINGLE))
@@ -291,6 +290,7 @@ public class Utilities {
 	}
 
 	public static List<String> getWrongFileReferences(File metadataFile, String metadataType) throws JDOMException, IOException {
+		logger.info("Checking references in metadata ...");
 		List<String> wrongRefs = new ArrayList<String>();
 		if(metadataType.equals(C.CB_PACKAGETYPE_METS)) {
 			for (String s : new MetsParser(XMLUtils.getDocumentFromXMLFile(metadataFile)).getReferences()) {
@@ -299,13 +299,8 @@ public class Utilities {
 				}
 			}
 			if(!wrongRefs.isEmpty()) {
-				String msg = "Die Metadatendatei "+metadataFile+" enthält falsche Referenzen.";
-				if(wrongRefs.size()<5) {
-					msg = msg + " \nFolgende Digitalisate konnten nicht gefunden werden: \n"+wrongRefs;
-				} else {
-					logger.error("Fehlende Dateien: "+wrongRefs);
-					msg = msg + " \n"+wrongRefs.size()+" Digitalisate konnten nicht gefunden werden.";
-				}
+				String msg = "Die Metadatendatei "+metadataFile+" enthält falsche Referenzen."
+						+ "\nFolgende Digitalisate konnten nicht gefunden werden: \n"+wrongRefs;
 				throw new Error(msg);
 			}
 		}		

@@ -99,6 +99,9 @@ public class Gui extends JFrame{
 	Font standardFont, boldFont;
 
 	String confFolderPath, dataFolderPath;
+	
+	int startPanelWidth = 750;
+	int startPanelHeight = 526;
 
 
 	// GUI Elements
@@ -1427,7 +1430,7 @@ public class Gui extends JFrame{
 		helpIconButton.setBounds(709, 15, 20, 22);
 
 		// startPanel
-		startPanel.setBounds(0, 0, 750, 526);
+		startPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 		backgroundStartImageLabel.setBounds(0, 0, 750, 526);
 		welcomeLabel.setBounds(255, 70, 300, 20);
 		welcomeArea.setBounds(255, 100, 420, 80);
