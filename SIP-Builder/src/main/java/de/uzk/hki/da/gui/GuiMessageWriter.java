@@ -161,7 +161,7 @@ class GuiMessageWriter extends MessageWriter {
 
 	@Override
 	public UserInput showWrongReferencesInMetadataDialog(String message) {
-		JTextArea textArea = new JTextArea(6, 25);
+		JTextArea textArea = new JTextArea(5, 40);
 		textArea.setText(message);
 		textArea.setEditable(false);
 		
