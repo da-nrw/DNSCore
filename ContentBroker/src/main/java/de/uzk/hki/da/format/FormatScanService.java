@@ -41,7 +41,8 @@ interface FormatScanService {
 	 * 
 	 * @throws InvalidArgumentException 
 	 */
-	List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files) throws IOException;
+	List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files, boolean pruneExceptions) throws IOException;
 	
 	public boolean isConnectable();
+	
 }

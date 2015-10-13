@@ -84,7 +84,7 @@ public class SystemEventFactory  {
 			
 		}catch(Exception e){
 			session.close();
-			logger.error("Caught error in getEventsPerNode");
+			logger.error("Caught error in getEventsPerNode id: " + localNode.getId() + " " + e.getMessage(),e);
 			
 			throw new RuntimeException(e.getMessage(), e);
 		}

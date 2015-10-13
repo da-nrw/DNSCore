@@ -101,11 +101,12 @@ public class Package {
 	private List<Copy> copies = new ArrayList<Copy>();
 	
 	
+	private boolean pruneExceptions;
 	
 	private String container_name; 
 
 	/**
-	 * 
+	 * The checksum of that package
 	 */
 	private String checksum;
 	
@@ -342,6 +343,20 @@ public class Package {
 
 	public void setCopies(List<Copy> copies) {
 		this.copies = copies;
+	}
+
+
+
+
+	public boolean isPruneExceptions() {
+		return pruneExceptions;
+	}
+
+
+
+
+	public void setPruneExceptions(boolean pruneExceptions) {
+		this.pruneExceptions = pruneExceptions;
 	}
 
 

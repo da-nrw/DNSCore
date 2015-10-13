@@ -44,6 +44,8 @@ public class ScriptWrappedPronomFormatIdentifier implements FormatIdentifier, Co
 
 	private File conversionScript = null;
 	
+	private CommandLineConnector cli = null;
+	
 	ScriptWrappedPronomFormatIdentifier(File cs){
 		this.conversionScript=cs;
 	}
@@ -58,7 +60,7 @@ public class ScriptWrappedPronomFormatIdentifier implements FormatIdentifier, Co
 	 */
 	@Override
 	public
-	String identify(File file) throws IOException{
+	String identify(File file,boolean pruneExceptions) throws IOException{
 		if (!conversionScript.exists()) throw new IllegalStateException(
 				"ConversionScript doesn't exist: "+conversionScript.getAbsolutePath());
 		
@@ -92,7 +94,19 @@ public class ScriptWrappedPronomFormatIdentifier implements FormatIdentifier, Co
 
 	@Override
 	public boolean isConnectable() {
-		// TODO Auto-generated method stub
+
 		return false;
+	}
+
+	@Override
+	public void setCliConnector(CommandLineConnector cli) {
+			this.cli = cli;
+		
+	}
+
+	@Override
+	public CommandLineConnector getCliConnector() {
+		if (this.cli==null) this.cli = new CommandLineConnector();
+		return this.cli;
 	}
 }

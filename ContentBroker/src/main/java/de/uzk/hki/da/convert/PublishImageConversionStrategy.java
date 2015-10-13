@@ -22,9 +22,7 @@ package de.uzk.hki.da.convert;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -36,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.format.FormatCmdLineExecutor;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -43,7 +42,6 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.StringUtilities;
 
 
@@ -63,7 +61,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 	
 	private String resizeWidth = null;
 	
-	
+	private boolean prune;
 	/**
 	 */
 	@Override
@@ -102,15 +100,16 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			logger.debug(commandAsList.toString());
 			String[] commandAsArray = new String[commandAsList.size()];
 			commandAsArray = commandAsList.toArray(commandAsArray);
-			ProcessInformation pi = null;
-			try {
-				pi = cliConnector.runCmdSynchronously(commandAsArray);
-			} catch (IOException e1) {
-				throw new RuntimeException("convert did not succeed, not found: " + Arrays.toString(commandAsArray));
+			FormatCmdLineExecutor cle = new FormatCmdLineExecutor(cliConnector);
+			cle.setPruneExceptions(prune);
+			
+			
+			cle.execute(commandAsArray);	
+			
+			String prunedError = "";
+			if (cle.getError()!=null && prune){
+				prunedError = " " + cle.getError().getUserExceptionId().toString()  + " ISSUED WAS PRUNED BY USER!";
 			}
-			if (pi.getExitValue()!=0) {
-				throw new RuntimeException("convert did not succeed: " + Arrays.toString(commandAsArray));
-			}		
 			// In order to support multipage tiffs, we check for files by wildcard expression
 			String extension = FilenameUtils.getExtension(wa.toFile(target).getAbsolutePath());
 			List<File> wild = findFilesWithRegex(
@@ -121,7 +120,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 					DAFile multipageTarget = new DAFile( pips+"/"+audience.toLowerCase(),StringUtilities.slashize(ci.getTarget_folder())+f.getName());
 					
 					Event e = new Event();
-					e.setDetail(StringUtilities.createString(commandAsList));
+					e.setDetail(StringUtilities.createString(commandAsList) + prunedError);
 					e.setSource_file(ci.getSource_file());
 					e.setTarget_file(multipageTarget);
 					e.setType("CONVERT");
@@ -131,7 +130,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			}
 			else{
 				Event e = new Event();
-				e.setDetail(StringUtilities.createString(commandAsList));
+				e.setDetail(StringUtilities.createString(commandAsList) + prunedError);
 				e.setSource_file(ci.getSource_file());
 				e.setTarget_file(target);
 				e.setType("CONVERT");
@@ -167,16 +166,10 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 	private String getImageWidth(String absolutePath) {
 		String[] cmd = new String[]{"identify", "-format", "%w",
 				absolutePath};
-		ProcessInformation pi;
-		try {
-			pi = cliConnector.runCmdSynchronously(cmd);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		if (pi.getExitValue() != 0) {
-			throw new RuntimeException("Unable to get image width. " + pi.getStdErr());
-		}
-		return pi.getStdOut().trim();
+		FormatCmdLineExecutor cle = new FormatCmdLineExecutor(cliConnector);
+		cle.setPruneExceptions(prune);
+		cle.execute(cmd);
+		return cle.getStdOut();
 	}
 
 	/**
@@ -331,6 +324,13 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 	@Override
 	public void setObject(Object obj) {
 		this.object = obj;
+	}
+
+
+	@Override
+	public void setPruneErrorOrWarnings(boolean prune) {
+		this.prune = prune;
+		
 	}
 
 }

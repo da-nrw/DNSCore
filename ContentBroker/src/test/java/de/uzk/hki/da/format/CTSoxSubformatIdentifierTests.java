@@ -42,7 +42,7 @@ public class CTSoxSubformatIdentifierTests {
 	
 	@Test
 	public void testIdentify() throws IOException {
-		assertEquals("PCM",sox.identify(Path.makeFile(TC.TEST_ROOT_FORMAT,"SoxSubformatIdentifier","Applause.wav")));
+		assertEquals("PCM",sox.identify(Path.makeFile(TC.TEST_ROOT_FORMAT,"SoxSubformatIdentifier","Applause.wav"),false));
 	}
 	
 	

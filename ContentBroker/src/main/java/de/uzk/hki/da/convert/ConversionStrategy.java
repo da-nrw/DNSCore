@@ -67,4 +67,6 @@ public interface ConversionStrategy {
 	 */
 	public void setCLIConnector(CommandLineConnector cliConnector);
 
+	public void setPruneErrorOrWarnings(boolean prune);
+
 }

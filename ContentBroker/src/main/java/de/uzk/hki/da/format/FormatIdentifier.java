@@ -22,6 +22,8 @@ package de.uzk.hki.da.format;
 import java.io.File;
 import java.io.IOException;
 
+import de.uzk.hki.da.utils.CommandLineConnector;
+
 
 /**
  * @author Daniel M. de Oliveira
@@ -33,5 +35,20 @@ public interface FormatIdentifier {
 	 * @return a format identifier if a format has been detected. Empty string if nothing has been detected.
 	 * @throws IOException signals errors that happen during the process of reading the file.
 	 */
-	public String identify(File f) throws IOException;
+	public String identify(File f, boolean pruneExceptions) throws IOException;
+	
+	/**
+	 * Mainly for testing purposes to inject mocked cli
+	 * @author Jens Peters
+	 * @param cli
+	 */
+	public void setCliConnector(CommandLineConnector cli);
+	
+
+	/**
+	 * Mainly for testing purposes to inject mocked cli
+	 * @author Jens Peters
+	 * @param cli
+	 */
+	public CommandLineConnector getCliConnector();
 }

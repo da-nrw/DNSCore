@@ -46,7 +46,7 @@ class GuiMessageWriter extends MessageWriter {
 	 */
 	@Override
 	public void showMessage(String message) {
-		showMessage(message, JOptionPane.PLAIN_MESSAGE);
+		showMessage(message, JOptionPane.ERROR_MESSAGE);
 	}
 	
 	/**

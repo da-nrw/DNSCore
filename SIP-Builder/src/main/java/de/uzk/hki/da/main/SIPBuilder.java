@@ -35,8 +35,10 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import org.apache.commons.lang.SystemUtils;
+import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.log4j.TTCCLayout;
 
 import de.uzk.hki.da.cli.Cli;
 import de.uzk.hki.da.gui.Gui;
@@ -56,7 +58,12 @@ public class SIPBuilder {
 
 	public static void main(String[] args) {
     	
-        logger.setLevel(Level.ERROR);
+		TTCCLayout layout = new TTCCLayout();
+		layout.setDateFormat("yyyy'-'MM'-'dd' 'HH':'mm':'ss");
+		layout.setThreadPrinting(false);
+	    ConsoleAppender consoleAppender = new ConsoleAppender(layout);
+	    logger.addAppender( consoleAppender );
+        logger.setLevel(Level.INFO);
         
         properties = new Properties();
 		try {

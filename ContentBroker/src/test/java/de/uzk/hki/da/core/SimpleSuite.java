@@ -70,6 +70,7 @@ import de.uzk.hki.da.convert.PublishPDFConversionStrategyTests;
 import de.uzk.hki.da.convert.PublishXsltConversionStrategyTests;
 import de.uzk.hki.da.convert.TiffConversionStrategyTests;
 import de.uzk.hki.da.format.FakeFormatScanServiceTests;
+import de.uzk.hki.da.format.FormatCmdLineExecutorTest;
 import de.uzk.hki.da.format.JhoveMetadataExtractorTests;
 import de.uzk.hki.da.format.SubformatScanServiceTests;
 import de.uzk.hki.da.format.XMLSubformatIdentifierTests;
@@ -182,7 +183,8 @@ import de.uzk.hki.da.service.XPathUtilsTests;
 	RegisterURNActionTest.class,
 	DocumentTests.class,
 	MetadataStructureGetIndexInfoTests.class,
-	ObjectPremisXmlReaderTests.class
+	ObjectPremisXmlReaderTests.class,
+	FormatCmdLineExecutorTest.class
 })
 public class SimpleSuite {
 

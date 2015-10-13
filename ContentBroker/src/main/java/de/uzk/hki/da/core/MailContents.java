@@ -34,6 +34,7 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.service.Mail;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /**
  * Encapsulates the content of business code related emails.
@@ -73,6 +74,21 @@ public class MailContents {
 		if (object.getContractor().getEmailAddress()==null||object.getContractor().getEmailAddress().isEmpty()) throw new IllegalArgumentException("objs contractor has no email adress");
 	}
 	
+	
+	public void informUserAboutPendingDecision(Object obj,String message){
+		checkObject(obj);
+		
+		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Entscheidung erforderlich für "+obj.getIdentifier();
+		String msg = "Bitte treffen Sie eine Entscheidung in der DAWeb-Maske \"Entscheidungsübersicht\"";
+		if (!StringUtilities.isNotSet(message)) {
+			msg += "\n" + message ;
+		}
+		try {
+			Mail.sendAMail(preservationSystem.getAdmin().getEmailAddress(), obj.getContractor().getEmailAddress(), subject, msg);
+		} catch (MessagingException e) {
+			logger.error("Sending email problem report for " +  obj.getIdentifier() + " failed");
+		}
+	}
 	
 	public void informUserAboutPendingDecision(Object obj){
 		checkObject(obj);

@@ -58,6 +58,7 @@ import de.uzk.hki.da.util.FileIdGenerator;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * Performs updates to metadata files that are necessary
@@ -224,7 +225,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			if(e.getType().equals("COPY") || e.getType().equals("CONVERT")) {
 				DAFile sourceFile = e.getSource_file();
 				for(String href : eadRefs) {
-					File file = emms.getCanonicalFileFromReference(href, emms.getMetadataFile());					
+					File file = XMLUtils.getRelativeFileFromReference(href, emms.getMetadataFile());					
 					if(file.getAbsolutePath().contains(sourceFile.getRelative_path())) {
 						DAFile targetDAFile = e.getTarget_file();
 						File targetFile = wa.toFile(targetDAFile);
@@ -265,7 +266,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			String href = mms.getHref(metsFileElement);
 			logger.info("Reference: "+href);
 			DAFile targetDAFile = null;
-			File file = mms.getCanonicalFileFromReference(href, metsFile);
+			File file = XMLUtils.getRelativeFileFromReference(href, metsFile);
 			Boolean fileExists = false;
 			String mimetype = "";
 			Iterator it = replacements.entrySet().iterator();
@@ -314,11 +315,11 @@ public class UpdateMetadataAction extends AbstractAction {
 	private void updatePathsInLido(LidoMetadataStructure lms, Map<DAFile,DAFile> replacements) throws IOException {
 		logger.info("Update paths in LIDO file "+lms.getMetadataFile().getAbsolutePath());
 		HashMap<String, String> lidoReplacements = new HashMap<String, String>();
-		List<String> lidoRefs = lms.getLidoLinkResources();
+		List<String> lidoRefs = lms.parseLidoLinkResources();
 		String targetPath = "";
 		for(String href : lidoRefs) {
 			logger.debug("Reference: "+href);
-			File file = lms.getCanonicalFileFromReference(href, lms.getMetadataFile());
+			File file = XMLUtils.getRelativeFileFromReference(href, lms.getMetadataFile());
 			DAFile targetDAFile = null;
 			Boolean fileExists = false;
 			Iterator it = replacements.entrySet().iterator();
@@ -378,7 +379,7 @@ public class UpdateMetadataAction extends AbstractAction {
 				reference.add(dafile.getRelative_path());
 				String mimetype = "";
 				try {
-					mimetype = mtds.identify(wa.toFile(dafile));
+					mimetype = mtds.identify(wa.toFile(dafile),false);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -406,7 +407,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			if (!targetFile.getRep_name().equals(repName)) {
 				continue;
 			}
-			targetFile.setMimeType(getMtds().identify(wa.toFile(targetFile)));
+			targetFile.setMimeType(getMtds().identify(wa.toFile(targetFile),false));
 			replacements.put(sourceFile, targetFile);
 		}
 		logger.info("Planned replacements: {}", replacements);

@@ -1,12 +1,12 @@
 # Leistungsmerkmal: Automatisierbare Abfragen (Status & Retrieval)
 
-Für Informationen zu der Verarbeitung von Paketen steht im Normalfall dem Anwender die Webschnittstelle DA-WEB zur Verfügung. 
+Für Informationen zu der Verarbeitung von Paketen steht im Normalfall dem Anwender die Webschnittstelle DA-Web zur Verfügung. 
 
-Da es für massenhafte Abfragen (druch Drittsysteme, durch den Anwender zur Überwachung einer eingelieferten Charge) auch möglich sein soll generisch Abfragen an die DNS zu stellen, stehen zwei Wege zur Verfügung: 
+Da es für massenhafte Abfragen (durch Drittsysteme, durch den Anwender zur Überwachung einer eingelieferten Charge) auch möglich sein soll generisch Abfragen an die DNS zu stellen, stehen zwei Wege zur Verfügung: 
 
 Es gibt eine technische Webschnittstelle, die Anfragen im JSON Format via HTTP verarbeiten kann. Die Antworten des Systems erfolgen als maschinenlesbarer JSON Code. Dieses Teilfeature eignet sich für Drittsysteme und arbeitet mit einer technischen Anmeldung am System. Direkter Internetzugriff zwischen DNS und dem Drittsystem sind erforderlich.
 
-Parallel dazu gibt es die Möglichkeit generell Abfragen mittels einer CSV Datei durchzuführen.
+Oftmals gibt es den Wunsch, den Status einer gesamten (vorgefertigten) Liste an Ablieferungsnamen zu untersuchen. Dazu gibt es gibt es die Möglichkeit Abfragen mittels einer vorbereiteten Datei durchzuführen. Diese Datei kann als CSV (comma separated values) Datei in die DA-Web Schnittstelle geladen werden. Die Auswertung erfolgt dann durch den ContentBroker und die Datei steht danach im outgoing Ordner der Anwendung zur Verfügung. 
 
 Beide technischen Abfragen arbeiten jeweils im Use Case der reinen Statusabfrage:
 Bsp.:
@@ -23,30 +23,44 @@ Bsp.:
 
 Im folgenden sind die Statusabfrageszenarien als AT-ST-JSON-1 bis AT-ST-JSON-5 gelistet, bzw. AT-R-JSON-1 für das Retrieval. 
 
-Die Statusabfrageb mittels CSV Datei haben die Bezeichnung AT-ST-CSV-1 bis AT-ST-CSV-3, bzw. AT-R-CSV-1 für das Retrieval. 
+Die Statusabfragen mittels CSV Datei haben die Bezeichnung AT-ST-CSV-1 bis AT-ST-CSV-3, bzw. AT-R-CSV-1 für das Retrieval. 
 
 <b>Hinweis zu Enkodierungen bei JSON Abfragen:</b>
 Bei der Übergabe von Parametern (z.B. origName urn:nbn: usw.), die Werte enthalten, die gemäß [RFC-2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html) enkodiert werden müssen, sind diese zu enkodieren. 
 
 <b>Hinweis für Admins</b>
 
-1. Auf einem bestehendem Build < #1430 ist zunächst folgendes Migration Script gegen die Object-DB (für den DA-Admin) auszuführen:
+- Auf einem bestehendem Build < #1430 ist zunächst folgendes Migration Script gegen die Object-DB (für den DA-Admin) auszuführen:
 [updatescript](../../../src/main/sql/migration7.sql) (Abschl. Commit setzen)
-
-2. Die HibernateConfig hibernateCentralDB.cfg.xml ist mit einem Mapping für die Table zu versehen:
- 
-     <mapping class="de.uzk.hki.da.model.SystemEvent"/>
-
-3. Die beans.xml ist zu ändern:
- 
+- Die HibernateConfig hibernateCentralDB.cfg.xml ist mit einem Mapping für die Table zu versehen:
+```
+<mapping class="de.uzk.hki.da.model.SystemEvent"/>
+```
+- Die beans.xml ist zu prüfen, ggfs. zu ändern (sofern Sie einen "Node" betreiben, nicht für "Pres"):
 ```
 <task:scheduled-tasks>
 (...)
 <task:scheduled ref="systemEventWorker" method="scheduleTask" fixed-delay="20000" />
 </task:scheduled-tasks>
 ```
-4. Für das hier beschriebene Feature AT-CSV-1 bis 3 müssen z.T. Berechtigungen für den Tomcat, bzw. den ApacheServer
-gesetzt, bzw. überprüft werden. (incoming und outgoing Ordner)
+
+- Vergleichen Sie Ihre logback.conf mit der logback.conf.template Es gibt mit diesem Feature einen neuen Logger und passen Sie den Loglevel ggfs. an. 
+
+```
+	<logger name="de.uzk.hki.da.event" additivity="false" level="DEBUG">
+		<appender-ref ref="WORKER" />
+	</logger>
+```
+
+- Es gibt fortan ein neues Logfile unter logs/events.log , welches ggfs. Fehlermeldungen zu SystemEvents enthält. 
+
+- Für das hier beschriebene Feature AT-CSV-1 bis 3 müssen z.T. Berechtigungen für den Tomcat-User (aber auch für den irods-User), bzw. den ApacheServer
+gesetzt, bzw. überprüft werden. 
+
+```
+incoming read für irods, read,write für tomcat user
+outgoing read, write für irods user, read für tomcat user 
+```
 
 ## Szenario AT-ST-CSV-1: Statusabfrage mittels vorbereiteter CSV Datei eines fehlerfrei archivierten Pakets
 
@@ -66,7 +80,7 @@ gesetzt, bzw. überprüft werden. (incoming und outgoing Ordner)
 identifier;origName;statuscode;erfolg;bemerkung
 ```
 Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mittels EXCEL erstellt wurde. 
-[Beispiel](../../../src/test/resources/at/ATCSVQueries.csv)
+[Beispiel, bitte die RAW Filedarstellung sichern](../../../src/test/resources/at/ATCSVQueries.csv) 
 
 Mindestens die Spalte Originalname (origName) muss befüllt sein. 
 
@@ -77,12 +91,12 @@ ATUseCaseIngest1.tgz
 #### Durchführung:
 
 1. Die Datei ATUseCaseIngest1.tgz wird eingespielt. Es muss die Info über eine positive Archivierung erhalten worden sein.
-2. Die [Vorlage wird heruntergeladen und in EXCEL geöffnet](../../../src/test/resources/at/ATCSVQueries.csv)
+2. Die [Vorlage wird heruntergeladen, bitte die RAW Filedarstellung sichern und in EXCEL geöffnet](../../../src/test/resources/at/ATCSVQueries.csv)
 2. Die EXCEL Testdatei wird mit dem vergebenen Originalnamen des AIP befüllt. 
 3. Die Excel wird gespeichert.
 4. Der Tester meldet sich an der DAWEB an. 
 5. Hochladen der CSV Datei mittels der DA-WEB oder Ablage in den incoming Ordner des Contractors.
-6. Start der Berichtseerstellung mittels "erneut generieren".
+6. Start der Berichtseerstellung mittels Aktion "Bericht generieren" und Klick auf Start.
 7. Entnahme der CSV Datei aus dem outgoing Ordner, bzw. Entnahme über die DA-Web. 
 
 #### Akzeptanzkriterien:

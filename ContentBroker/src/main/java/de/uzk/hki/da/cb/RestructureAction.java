@@ -33,9 +33,11 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.IngestGate;
+import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
@@ -123,6 +125,7 @@ public class RestructureAction extends AbstractAction{
 
 		listAllDAFiles();
 		List<DAFile> newestFiles = o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
+		
 		determineFileFormats(newestFiles);
 		
 		logger.debug("Create new b representation "+j.getRep_name()+"b");
@@ -186,19 +189,11 @@ public class RestructureAction extends AbstractAction{
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	private void determineFileFormats(List<DAFile> filesToScan) throws FileNotFoundException, SubsystemNotAvailableException {
 		
 		List<FileWithFileFormat> scannedFiles = null;
 		try {
-			scannedFiles = fileFormatFacade.identify(wa.dataPath(),filesToScan);
+			scannedFiles = fileFormatFacade.identify(wa.dataPath(),filesToScan,o.getLatestPackage().isPruneExceptions());
 		} catch (FileFormatException e) {
 			throw new RuntimeException(ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
 		} catch (FileNotFoundException e) {
@@ -206,10 +201,22 @@ public class RestructureAction extends AbstractAction{
 		} catch (IOException e) {
 			throw new SubsystemNotAvailableException(e);
 		}
-		logger.info("Listing all identified file formats:");
+		logger.info("Listing all identified file formats (and ErrorCodes, if any):");
+		StringBuffer message = new StringBuffer();
+		UserExceptionId last = null;
 		for (FileWithFileFormat f:scannedFiles){
-			logger.info(f+":"+f.getFormatPUID()+":"+f.getSubformatIdentifier());
+			String line = f+":"+f.getFormatPUID()+":"+f.getSubformatIdentifier();
+			String err = "";
+			if (f.getUserExceptionId()!=null) {
+				err = f.getUserExceptionId().toString();
+				message.append(line + err + "\n");
+				last = f.getUserExceptionId();
+			}
+			logger.info(line + err);
 		}
+		if (message.length()>0)
+		new MailContents(preservationSystem,n).informUserAboutPendingDecision(o,message.toString());
+		if (last!=null) throw new UserException(last,"Entscheidungen erforderlich!");
 	}
 	
 	@Override

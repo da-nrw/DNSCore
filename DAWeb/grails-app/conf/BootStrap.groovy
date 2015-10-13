@@ -6,8 +6,8 @@ class BootStrap {
 
     def init = { servletContext ->
 		
-		if (Environment.current == Environment.DEVELOPMENT) {	
-			println "BOOTSTRAPPED DEV Environment activated"
+		if ((Environment.current ==  Environment.DEVELOPMENT) || (Environment.current == Environment.TEST)) {	
+			println "BOOTSTRAPPED Environment activated"
 			User testuser = User.findByUsername('rods')
 			testuser.setPassword("rods")
 			if (!testuser.save(flush: true)) {

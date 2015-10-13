@@ -192,9 +192,15 @@ public class AcceptanceTestHelper {
 			}
 //			
 			if (job!=null) {
-				if (isInErrorState(job)) 
+				if (isInErrorState(job)) {
+					try {
+						// just sleep for a while if state persists
+						Thread.sleep(3000);
+						job = getJob(originalName);
+					} catch (InterruptedException e1) {}
+					if (isInErrorState(job))
 					evaluateErrorDetails(job);
-				else
+				} else
 					System.out.println(" Job state: "+job.getStatus()+".");
 			} else {
 					System.out.println(" Job is null");
