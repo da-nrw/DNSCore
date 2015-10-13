@@ -37,6 +37,7 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Job;
@@ -66,10 +67,9 @@ public class ATInvalidTiffTagsInBigTiff extends PREMISBase{
 	    ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", destName);
 		ath.waitForJobToBeInErrorStatus(destName, "4");
 	}
-	@After
-	public void tearDown() throws IOException{
-		//FileUtils.deleteDirectory(unpackedDIP);
-		//Path.makeFile("tmp",retrievedObject.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
+	@AfterClass
+	public static void tearDown() throws IOException{
+		FileUtils.deleteDirectory(unpackedDIP);
 	}
 	@Test 
 	public void testInvalidTiffTagsPrunedByUser() throws IOException, InterruptedException {
