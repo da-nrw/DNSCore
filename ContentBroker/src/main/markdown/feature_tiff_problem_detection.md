@@ -17,7 +17,7 @@ identify: Tag 33434: Rational with zero denominator (num = 0). `374134.tif' @ ti
 identify: Tag 33437: Rational with zero denominator (num = 0). `374134.tif' @ tiff.c/TIFFErrors/336.
 ```
 
-Imagemmagick identify Kommando gibt einen Hinweis auf "division by zero" in einem Tagfeld an, welches mit einem (vermeintlich) gültigem Wert befüllt sein sollte. (genutzt z.B. für GPS Daten)
+Imagemagick identify Kommando gibt einen Hinweis auf "division by zero" in einem Tagfeld an, welches mit einem (vermeintlich) gültigem Wert befüllt sein sollte. (genutzt z.B. für GPS Daten)´. Das Kommando resultiert in einem ExitCode != 0 (Fehler) 
 
 #### Kontext:
 

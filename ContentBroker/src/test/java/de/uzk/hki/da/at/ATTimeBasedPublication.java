@@ -213,4 +213,38 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		assertEquals(PUBLISHEDFLAG_NO_PUBLICATION, object.getPublished_flag());
 		
 	}
+
+	@Test
+	public void testNoPubWithStartDateSetForAudienceInstitution() throws InterruptedException, IOException, RepositoryException{
+		
+		String name = "NoPubInstWithStartDateSet";
+		String identifier = "NoPubInstWithStartDateSet_id";
+		
+		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		ath.createJob(ORIG_NAME_PREFIX+name, WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.waitForObjectPublishedState(ORIG_NAME_PREFIX+name, 0);
+		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
+		
+		assertNotNull(object);
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getClosedCollectionName()));
+		assertEquals(PUBLISHEDFLAG_NO_PUBLICATION, object.getPublished_flag());
+	}
+
+	@Test
+	public void testNoPubStartDatePublicNoneInstitution() throws InterruptedException, IOException, RepositoryException{
+		
+		String name = "NoPubStartDatePublicNoInst";
+		String identifier = "NoPubStartDatePublicNoInst_id";
+		
+		ath.putAIPToLongTermStorage(ORIG_NAME_PREFIX+identifier, ORIG_NAME_PREFIX+name, new Date(), Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		ath.createJob(ORIG_NAME_PREFIX+name, WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
+		ath.waitForObjectPublishedState(ORIG_NAME_PREFIX+name, 0);
+		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
+		
+		assertNotNull(object);
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
+		assertFalse(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getClosedCollectionName()));
+		assertEquals(PUBLISHEDFLAG_NO_PUBLICATION, object.getPublished_flag());
+	}
 }

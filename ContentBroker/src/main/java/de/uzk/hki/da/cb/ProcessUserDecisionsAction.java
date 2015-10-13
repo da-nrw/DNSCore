@@ -21,7 +21,6 @@ package de.uzk.hki.da.cb;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Date;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -33,7 +32,6 @@ import org.xml.sax.SAXException;
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.StringUtilities;
@@ -90,12 +88,6 @@ public class ProcessUserDecisionsAction extends AbstractAction {
 				logger.info("System Question: " + C.QUESTION_STORE_ALLOWED_IPTC_ERROR
 						+ " User response: " + C.ANSWER_YO);
 				o.getLatestPackage().setPruneExceptions(true);
-				Event e = new Event();
-				e.setType("PACKAGE");
-				e.setDate(new Date());
-				e.setAgent_type("NODE");
-				e.setAgent_name(n.getName());							
-				o.getLatestPackage().getEvents().add(e);
 				this.setEndStatus(C.WORKFLOW_STATUS_START___RESTART_INGEST_WORKFLOW);
 			} else {
 				logger.info("System Question: " + C.QUESTION_STORE_ALLOWED_IPTC_ERROR
