@@ -18,15 +18,33 @@
  */
 package de.uzk.hki.da.at;
 
-import java.io.IOException;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.Namespace;
+import org.jdom.input.SAXBuilder;
+import org.junit.After;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.XMLUtils;
 
 
 /**
@@ -34,28 +52,118 @@ import de.uzk.hki.da.utils.C;
  * 
  * @author Jens Peters
  */
-public class ATInvalidTiffTagsInBigTiff extends AcceptanceTest{
+public class ATInvalidTiffTagsInBigTiff extends PREMISBase{
 	
 	final String PROCESS_MOCK_USER_DECISION = "640";
-
-	@Test 
-	public void testInvalidTiffTagsDetectUserException() throws IOException, InterruptedException {
-		
-		String ORIGINAL_NAME = "ATInvalidTiffTagsInBigTiff";
-	    ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
-		ath.waitForJobToBeInErrorStatus(ORIGINAL_NAME, "4");
+	String ORIGINAL_NAME = "ATInvalidTiffTagsInBigTiff";
 	
+	private static final File unpackedDIP = new File("/tmp/ATInvalidTiffTagsInBigTiff");
+	Object retrievedObject = null;
+	@Test 
+	public void testInvalidTiffTagsDetectUserException() throws InterruptedException, IOException {
+		String destName = "InvalidTiffTagsDetectUserException";
+		
+	    ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", destName);
+		ath.waitForJobToBeInErrorStatus(destName, "4");
+	}
+	@After
+	public void tearDown() throws IOException{
+		//FileUtils.deleteDirectory(unpackedDIP);
+		//Path.makeFile("tmp",retrievedObject.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
 	}
 	@Test 
 	public void testInvalidTiffTagsPrunedByUser() throws IOException, InterruptedException {
-		
-		String ORIGINAL_NAME = "ATInvalidTiffTagsInBigTiff";
-	    ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
-		ath.waitForJobToBeInErrorStatus(ORIGINAL_NAME, "4");
-		Job job = ath.getJob(ORIGINAL_NAME);
+		String destName = "InvalidTiffTagsPrunedByUser";
+	    ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", destName);
+		ath.waitForJobToBeInErrorStatus(destName, "4");
+		Job job = ath.getJob(destName);
 		modifyPackageDataFromOutside(job);
-		ath.awaitObjectState(ORIGINAL_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		ath.awaitObjectState(destName, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		Object obj = ath.getObject(destName);
+		assertSame(obj.getObject_state(),Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+	}
+	@Test 
+	public void testPremisContainsMarkers() throws IOException, InterruptedException {
+		String destName = "InvalidTiffTagsPremisContainsMarkers";
+	    ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", destName);
+		ath.waitForJobToBeInErrorStatus(destName, "4");
+		Job job = ath.getJob(destName);
+		modifyPackageDataFromOutside(job);
+		ath.awaitObjectState(destName, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		retrievedObject = ath.getObject(destName);
+		ath.retrieveAIP(retrievedObject,unpackedDIP,"1");
+		String unpackedObjectPath = unpackedDIP.getAbsolutePath()+"/";
+		
+		String folders[] = new File(unpackedObjectPath + "data/").list();
+		String repAName="";
+		String repBName="";
+		for (String f:folders){
+			if (f.contains("+a")) repAName = f;
+			if (f.contains("+b")) repBName = f;
+		}
+		verifyPREMISContainsSpecifiedElements(unpackedObjectPath,retrievedObject,repAName,repBName);
+	}
 	
+	@SuppressWarnings("unchecked")
+	private void verifyPREMISContainsSpecifiedElements(
+			String unpackedObjectPath,
+			Object object,
+			String repAName,
+			String repBName
+			) {
+		assertTrue(new File(unpackedObjectPath + "data/" +  repBName + "/premis.xml").exists());
+		String objectIdentifier = object.getIdentifier();
+		
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		Document doc;
+		try {
+			doc = builder.build(new File(unpackedObjectPath +  "data/" + repBName + "/premis.xml"));
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to read premis file", e);
+		}
+		
+		Element rootElement = doc.getRootElement();
+		Namespace ns = rootElement.getNamespace();
+		
+		List<Element> objectElements = rootElement.getChildren("object", ns);
+		
+		int checkedObjects = 0;
+		for (Element e:objectElements){
+			String identifierText = e.getChild("objectIdentifier",ns).getChildText("objectIdentifierValue",ns);
+			
+			if (identifierText.equals(objectIdentifier)) {
+				List<Element> identifierEls = e.getChildren("objectIdentifier", ns);
+				assertEquals(object.getUrn(), identifierEls.get(1).getChildText("objectIdentifierValue", ns)); // TODO shouldn't it be the unique object identifier?
+				String originalName = e.getChildText("originalName", ns);
+				assertEquals(object.getOrig_name(),originalName);
+				checkedObjects++;
+			}
+			
+			if (identifierText.equals(objectIdentifier + ".pack_1.tar")) {
+				assertThat(e.getChildText("originalName",ns)).isEqualTo(retrievedObject.getOrig_name()+ ".tgz");
+				checkedObjects++;
+			}
+						
+			if (identifierText.contains("a/268754.tif")){
+				verifyPREMISFileObjectHasCertainSubElements(ns, e, "268754.tif", "fmt/353");
+				checkedObjects++;
+			}
+		}
+		System.out.println("jjja§ " + checkedObjects);
+		assertThat(checkedObjects).isEqualTo(3);	
+		List<Element> eventElements = rootElement.getChildren("event", ns);
+		int checkedEvents = 0;
+		for (Element e:eventElements){
+			String eventType = e.getChildText("eventType", ns);
+			
+			if (eventType.equals("INGEST")){
+				String eventDetail = e.getChildText("eventDetail",ns);
+				if ( eventDetail.contains("PRUNE")){
+					checkedEvents++;
+				}
+				}
+		}
+		assertThat(checkedEvents).isEqualTo(1);
 	}
 	
 	/**

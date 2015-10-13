@@ -245,6 +245,9 @@ public class CreatePremisAction extends AbstractAction {
 		ingestEventElement.setDate(new Date());
 		ingestEventElement.setAgent_name(o.getContractor().getShort_name());
 		ingestEventElement.setAgent_type("CONTRACTOR");
+		if (o.getLatestPackage().isPruneExceptions()) {
+			ingestEventElement.setDetail("CONTRACTOR WANTS TO PRUNE EXCEPTIONS IF ANY, DO BITSTREAM PRESERVATION ANYWAY");
+		}
 		return ingestEventElement;		
 	}
 	

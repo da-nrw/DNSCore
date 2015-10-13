@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,20 +102,10 @@ public class TiffConversionStrategy implements ConversionStrategy {
 			
 			
 		
-			logger.info("Try to Execute conversion command: {}", commandAsArray);
+			logger.info("Try to Execute conversion command: " +  StringUtils.join(commandAsArray,","));
 			
 			cle.setPruneExceptions(prune);
-			if (!cle.execute(commandAsArray)) {
-				logger.error(this.getClass()
-						+ ": Recieved return code from terminal based command: "
-						+ cle.getExitValue());
-				throw new RuntimeException(
-						"cli conversion failed!\n\nstdOut: ------ \n\n\n"
-								+ cle.getStdOut()
-								+ "\n\n ----- end of stdOut\n\nstdErr: ------ \n\n\n"
-								+ cle.getStdErr() + "\n\n ----- end of stdErr");
-
-			}
+			cle.execute(commandAsArray);
 		} catch (IOException e1) {
 			throw new RuntimeException(e1);
 		}

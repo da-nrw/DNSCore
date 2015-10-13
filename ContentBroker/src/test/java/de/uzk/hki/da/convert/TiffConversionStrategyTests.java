@@ -20,11 +20,13 @@ package de.uzk.hki.da.convert;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -35,6 +37,7 @@ import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
@@ -237,27 +240,36 @@ public class TiffConversionStrategyTests {
 		
 	}
 	/**
-	 * Test if UserException is not thrown on Tiff containing RichIPTC Images
+	 * Test if UserException is not thrown on Tiff containing RichIPTC Images if Exception is to be pruned
 	 * depends on specific version of IM, therefore we need to mock the commandLine 
-	 * converter (not each IM behaves the same:-)
+	 * converter 
 	 * @throws IOException 
 	 */
 	@Test
 	public void testNoExceptionOnIPTCFieldIfPruned() throws IOException {
 		
-		ProcessInformation pi = new ProcessInformation();
+		ProcessInformation identify = new ProcessInformation();
 		
-		pi.setExitValue(1);
+		identify.setExitValue(1);
 		
-		pi.setStdOut("");
-		pi.setStdErr("wrong data type 2 for \"RichTIFFIPTC\"; tag ignored");
+		identify.setStdOut("");
+		identify.setStdErr("wrong data type 2 for \"RichTIFFIPTC\"; tag ignored");
 		CommandLineConnector cli = mock ( CommandLineConnector.class );
+		
+		ProcessInformation convert = new ProcessInformation();
+		convert.setExitValue(1);
+		convert.setStdOut("");
+		convert.setStdErr("wrong data type 2 for \"RichTIFFIPTC\"; tag ignored");
 		
 		String cmdIdentify[] = new String[] {
 				"identify", "-format", "'%C'", new File(workAreaRootPath + "/work/TEST/1/data/rep+a/0001_L.TIF").getAbsolutePath()
 		};
-
-		when(cli.runCmdSynchronously(cmdIdentify)).thenReturn(pi);
+		String cmdConvert[] = new String[] {
+				"convert", "+compress", new File(workAreaRootPath + "/work/TEST/1/data/rep+a/0001_L.TIF").getAbsolutePath(),workAreaRootPath + "/work/TEST/1/data/rep+b/0001_L.TIF"
+		};
+	
+		when(cli.runCmdSynchronously(cmdIdentify)).thenReturn(identify);
+		when(cli.runCmdSynchronously(cmdConvert)).thenReturn(convert);
 		
 		TiffConversionStrategy cs = new TiffConversionStrategy();
 		cs.setCLIConnector(cli);
@@ -270,12 +282,12 @@ public class TiffConversionStrategyTests {
 		ci.setSource_file(new DAFile("rep+a","0001_L.TIF"));
 		ci.setTarget_folder("");
 		try {
+			cs.convertFile(new WorkArea(n,o),ci);
+			
 		} catch (UserException e) {
 			assertTrue(false);
 		} catch (Exception e) {
-			e.printStackTrace();
 			assertFalse(true);
-			
 		}
 	}
 	
