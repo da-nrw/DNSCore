@@ -2,14 +2,13 @@
 
 ### Hintergrund
 
-Bei einigen Bildern, die in der von einem komerziellen Unternehmen vorgeschlagenen Formaterweiterung des TIFF Standards geschickt werden (im Folgenden verkürzend "BigTiff" genannnt), können diese unter bestimmten Voraussetzungen als fehlerhaft erkannt werden. Diese werden mit fehlerhaften Tags im Rich-IPTC Bereich geliefert, die gemäß Spezifikation als fehlerhaft ausgesteuert werden.
+Bei einigen Bildern, die in der von einem komerziellen Unternehmen vorgeschlagenen Formaterweiterung des TIFF Standards geschickt werden (im Folgenden verkürzend "BigTiff" genannnt), können diese unter bestimmten Voraussetzungen als fehlerhaft erkannt werden. Alle problematischen Bilder werden mit fehlerhaften Tags im Rich-IPTC Bereich geliefert, die gemäß Spezifikation DNS (als auch der vorgeschlagenen Erweiterung "BigTIFF") korrekt als fehlerhaft ausgesteuert werden. Die eigentlichen Bilddaten sind hiervon nicht betroffen. 
 
-Je nach Entscheidung des Contractors wird die Archivierung dennoch vorgenommen, falls der Contractor diese Entscheidung per Webmaske vorgenommen hat. Es besteht ausdrücklich der Wunsch, diese Fehler auch übergehen zu können. 
+Je nach Entscheidung des Contractors wird die Archivierung in DNS dennoch vorgenommen, falls der Contractor diese Entscheidung per Webmaske vorgenommen hat. Es bestand ausdrücklich der Wunsch, diese Fehler auch übergehen zu können. 
 
-Dafür wird eine Rückfrage des Systems ausgelöst, da eine Rückbestätigung der Entscheidung des Einliefernden erforderlich ist. Diese wird in der PREMIS vermerkt. Auf mögiche Konsequenzen für die weitere Bestandserhaltung bei der Übergehung diesr Fehler wird ausdrücklich hingewiesen. 
+Dafür wird eine Rückfrage des Systems ausgelöst, da eine Rückbestätigung der Entscheidung durch den Einliefernden erzwingt. Diese wird in der PREMIS vermerkt, ebenso dass es einen Fehler beim Konvertieren gab. Auf mögiche Konsequenzen für die weitere Bestandserhaltung bei der Übergehung dieser Fehler wird ausdrücklich hingewiesen! 
 
-Der einzig bekannte Fehler äußert sich durch die Fehlerausgabe von (Bsp.): 
-
+Der einzig bekannte Fehler in den bisher vorliegenden Testdaten äußert sich durch die Fehlerausgabe von (Bsp.): 
 ```
 74134.tif TIFF 3474x2141 3474x2141+0+0 8-bit Grayscale DirectClass 7.094mb 
 identify: 374134.tif: wrong data type 2 for "RichTIFFIPTC"; tag ignored. `TIFFReadDirectory' @ tiff.c/TIFFWarnings/546.
@@ -22,7 +21,7 @@ identify: Tag 33434: Rational with zero denominator (num = 0). `374134.tif' @ ti
 identify: Tag 33437: Rational with zero denominator (num = 0). `374134.tif' @ tiff.c/TIFFErrors/336.
 ```
 
-Es gibt einen Hinweis auf "division by zero" in einem Tagfeld an, welches mit einem gültigem Wert befüllt sein sollte. 
+Er gibt einen Hinweis auf "division by zero" in einem Tagfeld, welches mit einem gültigen Wert befüllt sein sollte. 
 
 ## Szenario AT-TIFFT-1 Problematische Pakete zunächst zurückweisen
 
