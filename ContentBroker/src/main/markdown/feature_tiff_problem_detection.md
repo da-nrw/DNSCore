@@ -21,7 +21,12 @@ identify: Tag 33434: Rational with zero denominator (num = 0). `374134.tif' @ ti
 identify: Tag 33437: Rational with zero denominator (num = 0). `374134.tif' @ tiff.c/TIFFErrors/336.
 ```
 
-Er gibt einen Hinweis auf "division by zero" in einem Tagfeld, welches mit einem gültigen Wert befüllt sein sollte aber nicht ist. 
+Er gibt einen Hinweis auf "division by zero" in einem Tagfeld, welches mit einem gültigen Wert befüllt sein sollte aber nicht ist:
+```
+Tag 33434: ExposureTime, given in seconds, Exif Private IFD spec p. 38  
+Tag 33437: FNumber Exif Private IFD spec p. 39
+```
+(Vgl. [Digitalpreservation.gov](http://www.digitalpreservation.gov/formats/content/tiff_tags.shtml) )
 
 #### Hinweis für Admins
 - Auf einem bestehendem Build < #1468 ist zunächst folgendes Migration Script gegen die Object-DB (für den DA-Admin) auszuführen:
