@@ -105,7 +105,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 			
 			
 		
-			logger.info("Try to Execute conversion command: " +  StringUtils.join(commandAsArray,","));
+			logger.debug("Try to Execute conversion command: " +  StringUtils.join(commandAsArray,","));
 			
 			cle.setPruneExceptions(prune);
 			cle.execute(commandAsArray);
