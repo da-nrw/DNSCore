@@ -227,7 +227,7 @@ public class LidoParser {
 		return linkResourceElements;
 	}
 	
-	public List<String> parseLidoLinkResources() {
+	public List<String> getReferences() {
 		List<String> linkResources = new ArrayList<String>();
 		for(Element element : lidoLinkResources) {
 			linkResources.add(element.getValue());

@@ -32,9 +32,10 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.jdom.JDOMException;
 
 import de.uzk.hki.da.metadata.ContractRights.ConversionCondition;
+import de.uzk.hki.da.metadata.EadParser;
+import de.uzk.hki.da.metadata.LidoParser;
 import de.uzk.hki.da.metadata.MetsParser;
 import de.uzk.hki.da.metadata.PublicationRights.Law;
 import de.uzk.hki.da.metadata.PublicationRights.TextType;
@@ -289,22 +290,27 @@ public class Utilities {
 		return sipBuilderVersion.substring(0, index);		
 	}
 
-	public static List<String> getWrongFileReferences(File metadataFile, String metadataType) throws JDOMException, IOException {
+	public static void validateFileReferencesInMetadata(File metadataFile, String metadataType) throws Exception {
 		logger.info("Checking references in metadata ...");
+		List<String> references = new ArrayList<String>();
 		List<String> wrongRefs = new ArrayList<String>();
 		if(metadataType.equals(C.CB_PACKAGETYPE_METS)) {
-			for (String s : new MetsParser(XMLUtils.getDocumentFromXMLFile(metadataFile)).getReferences()) {
-				if(!fileReferenceInXmlIsValid(s, metadataFile)) {
-					wrongRefs.add(s);
-				}
+			references = new MetsParser(XMLUtils.getDocumentFromXMLFile(metadataFile)).getReferences();
+		} else if(metadataType.equals(C.CB_PACKAGETYPE_LIDO)) {
+			references = new LidoParser(XMLUtils.getDocumentFromXMLFile(metadataFile)).getReferences();
+		} else if(metadataType.equals(C.CB_PACKAGETYPE_EAD)) {
+			references = new EadParser(XMLUtils.getDocumentFromXMLFile(metadataFile)).getReferences();
+		}
+		for (String s : references) {
+			if(!fileReferenceInXmlIsValid(s, metadataFile)) {
+				wrongRefs.add(s);
 			}
-			if(!wrongRefs.isEmpty()) {
-				String msg = "Die Metadatendatei "+metadataFile+" enthält falsche Referenzen."
-						+ "\nFolgende Digitalisate konnten nicht gefunden werden: \n"+wrongRefs;
-				throw new Error(msg);
-			}
-		}		
-		return wrongRefs;
+		}
+		if(!wrongRefs.isEmpty()) {
+			String msg = "Die Metadatendatei "+metadataFile+" enthält falsche Referenzen."
+					+ "\nFolgende Dateien konnten nicht gefunden werden: \n"+wrongRefs;
+			throw new Error(msg);
+		}
 	}
 	
 	private static boolean fileReferenceInXmlIsValid(String reference, File metadataFile) throws IOException {

@@ -31,7 +31,7 @@ public class EadParser {
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-	List<String> extractMetsRefsInEad() throws JDOMException, IOException {	
+	public List<String> getReferences() throws JDOMException, IOException {	
 		List<String> metsReferences = new ArrayList<String>();
 	
 		XPath xPath = XPath.newInstance(C.EAD_XPATH_EXPRESSION);

@@ -48,6 +48,7 @@ import de.uzk.hki.da.sb.Feedback;
  * Main class; starts GUI or CLI mode
  * 
  * @author Thomas Kleinke
+ * @author Polina Gubaidullina
  */
 public class SIPBuilder {
 	

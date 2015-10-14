@@ -83,7 +83,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		eadDoc = builder.build(is);
 		eadParser = new EadParser(eadDoc);
 
-		metsReferencesInEAD = eadParser.extractMetsRefsInEad();
+		metsReferencesInEAD = eadParser.getReferences();
 		metsFiles = getReferencedFiles(eadFile, metsReferencesInEAD, documents);
 				
 		mmsList = new ArrayList<MetsMetadataStructure>();

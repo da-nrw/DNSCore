@@ -48,6 +48,9 @@ public abstract class MessageWriter {
 	 */
 	abstract public void showMessage(String message, int type);
 	
+	
+	abstract public void showLongErrorMessage(String message);
+	
 	/**
 	 * Lets the user decide if a certain file will be overwritten or not
 	 * 

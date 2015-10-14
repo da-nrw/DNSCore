@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 import org.apache.commons.io.input.BOMInputStream;
 import org.jdom.Document;
@@ -52,19 +53,21 @@ public class NestedContentStructure {
 	
 	/**
 	 * Search directories recursively for sip candidates
-	 * @throws IOException 
-	 * @throws JDOMException 
+	 * @throws Exception 
 	 */
-	public void searchForSipCandidates(File dir) throws IOException, JDOMException {
+	public void searchForSipCandidates(File dir) throws Exception {
 		File currentDir = dir;
 		for(File f : currentDir.listFiles()) {
-			if(getIncludedDirs(f).isEmpty()) {
-				List<File> metsFiles = getMetsFileFromDir(f);
-				if(metsFiles.size()==1) {
-					File metsFile = metsFiles.get(0);
-					String urn = getUrn(metsFile);
-					String newPackageName = urn.replace(":", "+");
-					sipCandidatesWithUrns.put(f, newPackageName);
+			if(getIncludedDirs(f).isEmpty()) { 
+				TreeMap<File, String> metadataFileWithType = new formatDetectionService(f).getMetadataFileWithType();
+				if(!metadataFileWithType.isEmpty() && !metadataFileWithType.get(metadataFileWithType.firstKey()).equals(C.CB_PACKAGETYPE_EAD)) {
+					List<File> metsFiles = getMetsFileFromDir(f);
+					if(metsFiles.size()==1) {
+						File metsFile = metsFiles.get(0);
+						String urn = getUrn(metsFile);
+						String newPackageName = urn.replace(":", "+");
+						sipCandidatesWithUrns.put(f, newPackageName);
+					}
 				}
 			} else {
 				searchForSipCandidates(f);

@@ -35,6 +35,7 @@ import de.uzk.hki.da.sb.MessageWriter;
  * A specialized message writer responsible for displaying info messages and dialogs in GUI mode
  * 
  * @author Thomas Kleinke
+ * @author Polina Gubaidullina
  */
 class GuiMessageWriter extends MessageWriter {
 
@@ -64,6 +65,20 @@ class GuiMessageWriter extends MessageWriter {
 			JOptionPane.showMessageDialog(gui, message, SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder", type, new ImageIcon(iconImage));
 		else
 			JOptionPane.showMessageDialog(gui, message, SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder", type);
+	}
+	
+	/**
+	 * Shows a message box with a scrollable JTextArea
+	 * 
+	 * @param message The long message to display
+	 */
+	@Override
+	public void showLongErrorMessage(String message) {
+		JTextArea textArea = new JTextArea(5, 40);
+		textArea.setText(message);
+		textArea.setEditable(false);
+		JScrollPane scrollPane = new JScrollPane(textArea);
+		JOptionPane.showMessageDialog(gui, scrollPane, SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder", JOptionPane.ERROR_MESSAGE, new ImageIcon(iconImage));
 	}
 
 	/**
@@ -164,11 +179,8 @@ class GuiMessageWriter extends MessageWriter {
 		JTextArea textArea = new JTextArea(5, 40);
 		textArea.setText(message);
 		textArea.setEditable(false);
-		
-		// wrap a scrollpane around it
 		JScrollPane scrollPane = new JScrollPane(textArea);
-	       
-		// display them in a message dialog
+		
 		String[] options = new String[] {"Ja", "Nein" };
 		int answer = JOptionPane.showOptionDialog(gui, scrollPane, SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon(iconImage), options, null);
 

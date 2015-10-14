@@ -134,4 +134,9 @@ public class CliMessageWriter extends MessageWriter{
 			UserInput standardAnswerIgnoreWrongReferencesInMetadata) {
 		this.standardAnswerIgnoreWrongReferencesInMetadata = standardAnswerIgnoreWrongReferencesInMetadata;
 	}
+
+	@Override
+	public void showLongErrorMessage(String message) {
+		logger.error(message);	
+	}
 }

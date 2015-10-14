@@ -315,7 +315,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	private void updatePathsInLido(LidoMetadataStructure lms, Map<DAFile,DAFile> replacements) throws IOException {
 		logger.info("Update paths in LIDO file "+lms.getMetadataFile().getAbsolutePath());
 		HashMap<String, String> lidoReplacements = new HashMap<String, String>();
-		List<String> lidoRefs = lms.parseLidoLinkResources();
+		List<String> lidoRefs = lms.getReferences();
 		String targetPath = "";
 		for(String href : lidoRefs) {
 			logger.debug("Reference: "+href);

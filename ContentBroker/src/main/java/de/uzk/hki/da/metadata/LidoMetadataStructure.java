@@ -78,8 +78,8 @@ public class LidoMetadataStructure extends MetadataStructure{
 		return lidoParser;
 	}
 	
-	public List<String> parseLidoLinkResources() {
-		return lidoParser.parseLidoLinkResources();
+	public List<String> getReferences() {
+		return lidoParser.getReferences();
 	}
 	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::  REPLACEMENTS  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -103,7 +103,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 	
 	private boolean checkReferencedFiles() {
 		Boolean valid = true;
-		List<String> lidoLinkResourceValues = lidoParser.parseLidoLinkResources();
+		List<String> lidoLinkResourceValues = lidoParser.getReferences();
 		if(lidoLinkResourceValues.size()!=getReferencedFiles(lidoFile, lidoLinkResourceValues, currentDocuments).size()) {
 			valid = false;
 		}

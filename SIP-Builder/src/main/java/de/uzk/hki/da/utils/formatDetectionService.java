@@ -82,7 +82,7 @@ public class formatDetectionService {
 	
 	public TreeMap<File, String> getMetadataFileWithType() throws Exception {
 		File folder = this.file;
-		TreeMap<File, String> fileWithType = null;
+		TreeMap<File, String> fileWithType = new TreeMap<File, String>();
 		File metadataFile = null;
 		int countMets = 0;
 		int countEad = 0;
@@ -103,11 +103,12 @@ public class formatDetectionService {
 			}
 		}
 		if(countEad+countMets+countLido==1) {
-			fileWithType = new TreeMap<File, String>();
 			if(countEad==1) fileWithType.put(metadataFile, C.CB_PACKAGETYPE_EAD);
 			if(countMets==1) fileWithType.put(metadataFile, C.CB_PACKAGETYPE_METS);
 			if(countLido==1) fileWithType.put(metadataFile, C.CB_PACKAGETYPE_LIDO);
 			return fileWithType;
+		} else if (countEad==1 && countMets>=0){
+			if(countEad==1) fileWithType.put(metadataFile, C.CB_PACKAGETYPE_EAD);
 		} else if(countEad+countMets+countLido>1) {
 			throw new Exception("Im Verzeichnis "+folder.getName()+" wurde mehr als eine Metadatendatei gefunden. \nBekannte Formate sind: EAD, METS, LIDO.");
 		} else if(countEad+countMets+countLido==0) {
