@@ -18,7 +18,7 @@
 * Leistungsmerkmal [Delta Ingest und Retrieval](feature_delta_ingest_retrieval.md)
 * Leistungsmerkmal [Anpassungen der Metadatenformate](feature_metadata_updates.md)
 * Leistungsmerkmal [Migrationsbedingungen](feature_migration_right.md)
-* Leistungsmerkmal [Umgang mit fehlerhaften Tags bei TIFF](feature_tiff_problem_detection.md)
+* Leistungsmerkmal [Umgang mit fehlerhaften IFD Tags bei TIFF](feature_tiff_problem_detection.md)
 * Leistungsmerkmal [Publikation](feature_publication.md) 
 * Leistungsmerkmal [Publikation Delta](feature_publication_delta.md)
 * Leistungsmerkmal [Validierung der Einlieferung](feature_ingest_validation.md)
