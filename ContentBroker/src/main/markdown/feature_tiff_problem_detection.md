@@ -1,10 +1,14 @@
-## Leistungsmerkmal: Umgang mit fehlerhaften Tags bei TIFF
+## Leistungsmerkmal: Umgang mit fehlerhaften IFD Tags bei TIFF
 
 ### Hintergrund
 
-Bei einigen Bildern, die in der von einem kommerziellen Unternehmen vorgeschlagenen Formaterweiterung des TIFF Standards geschickt werden (im Folgenden verkürzend "BigTiff" genannnt), können diese unter bestimmten Voraussetzungen als fehlerhaft erkannt werden. Alle problematischen Bilder werden mit fehlerhaften Tags im Rich-IPTC Bereich geliefert, die gemäß Spezifikation DNS (als auch der vorgeschlagenen Erweiterung "BigTIFF") korrekt als fehlerhaft ausgesteuert werden. Die eigentlichen Bilddaten sind hiervon nicht betroffen. 
+Einige TIFF Bilder, die im Bereich der "privaten" IFD Tags des TIFF Standards fehlerhafte oder auf Grund einer unterschiedlichen Auslegung (oder Implementation) der verschiedenen Spezifikationen mißverständlich sein können, werden unter Umständen von der Software als fehlerhaft ausgesteuert. Davon sind Softwarekomponenten sowohl der DNS als auch der sendenden Seite betroffen. 
 
-Je nach Entscheidung des Contractors wird die Archivierung in DNS dennoch vorgenommen, falls der Contractor diese Entscheidung per Webmaske vorgenommen hat. Es bestand ausdrücklich der Wunsch, diese Fehler auch übergehen zu können. 
+Die eigentlichen Bilddaten sind hiervon nicht betroffen - Es gibt aber möglicherweise zukünftig auch Probleme bei der Verarbeitung der Bilddaten (z.B. bei bestandserhaltenden Maßnahmen, Migrationen)
+
+Je nach Entscheidung des Contractors wird die Archivierung in DNS dennoch vorgenommen, falls der Contractor diese Entscheidung per Webmaske vorgenommen hat. 
+
+Es bestand ausdrücklich der Wunsch, diese Fehler auch übergehen zu können. 
 
 Dafür wird eine Rückfrage des Systems ausgelöst, die eine Rückbestätigung der Entscheidung durch den Einliefernden erzwingt. Diese wird in der PREMIS vermerkt, ebenso dass es einen Fehler beim Konvertieren gab. Auf mögliche Konsequenzen für die weitere Bestandserhaltung bei der Übergehung dieser Fehler wird ausdrücklich hingewiesen! 
 
