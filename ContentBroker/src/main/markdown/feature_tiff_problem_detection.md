@@ -29,7 +29,7 @@ Er gibt einen Hinweis auf "division by zero" in einem Tagfeld, welches mit einem
 
 * [ATInvalidTiffTagsInBigTiff](../../test/java/de/uzk/hki/da/at/ATInvalidTiffTagsInBigTiff.java)testInvalidTiffTagsDetectUserException
 
-#### Testpaket(e):
+#### Testpaket:
 
 [ATInvalidTiffTagsInBigTiff.tgz](../../../src/test/resources/at/ATInvalidTiffTagsInBigTiff.tgz) 
 
@@ -57,17 +57,17 @@ Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Pr
 
 * [ATInvalidTiffTagsInBigTiff](../../test/java/de/uzk/hki/da/at/ATInvalidTiffTagsInBigTiff.java)testInvalidTiffTagsPrunedByUser
 
-#### Testpaket(e):
+#### Testpaket:
 
-* Siehe Hintergrund
+[ATInvalidTiffTagsInBigTiff.tgz](../../../src/test/resources/at/ATInvalidTiffTagsInBigTiff.tgz) 
 
 #### Vorbedingungen:
 
-* Siehe Hintergrund.
+* wie AT-TIFFT-1
 
 #### Durchführung:
 
-1. Siehe Hintergrund.
+1. wie AT-TIFFT-1.
 1. Nach Erhalt des Email-Report: Einsichtnahme in Maske "Entscheidungsübersicht" der DA-Web.
 1. In der Maske "Entscheidungsübersicht" bestätigt der Vertragspartner die Rückfrage mit *"Ja - Ingest fortführen"*.
 
@@ -89,13 +89,13 @@ Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Pr
 
 * [ATInvalidTiffTagsInBigTiff](../../test/java/de/uzk/hki/da/at/ATInvalidTiffTagsInBigTiff.java)testInvalidTiffTagsPrunedByUser
 
-#### Testpaket(e):
+#### Testpaket:
 
-* Siehe Hintergrund.
+[ATInvalidTiffTagsInBigTiff.tgz](../../../src/test/resources/at/ATInvalidTiffTagsInBigTiff.tgz)
 
 #### Vorbedingungen:
 
-* Siehe Hintergrund.
+wie AT-TIFFT-1
 
 #### Durchführung:
 
