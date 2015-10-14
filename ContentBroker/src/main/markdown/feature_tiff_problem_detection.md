@@ -23,6 +23,10 @@ identify: Tag 33437: Rational with zero denominator (num = 0). `374134.tif' @ ti
 
 Er gibt einen Hinweis auf "division by zero" in einem Tagfeld, welches mit einem gültigen Wert befüllt sein sollte aber nicht ist. 
 
+#### Hinweis für Admins
+- Auf einem bestehendem Build < #1468 ist zunächst folgendes Migration Script gegen die Object-DB (für den DA-Admin) auszuführen:
+[updatescript](../../../src/main/sql/migration8.sql) (Abschl. Commit setzen)
+
 ## Szenario AT-TIFFT-1 Problematische Pakete zunächst zurückweisen
 
 #### Kontext:
