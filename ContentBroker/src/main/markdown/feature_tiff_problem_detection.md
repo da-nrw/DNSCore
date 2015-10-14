@@ -31,6 +31,7 @@ Tag 33437: FNumber Exif Private IFD spec p. 39
 #### Hinweis für Admins
 - Auf einem bestehendem Build < #1468 ist zunächst folgendes Migration Script gegen die Object-DB (für den DA-Admin) auszuführen:
 [updatescript](../../../src/main/sql/migration8.sql) (Abschl. Commit setzen)
+- Dieses Feature reagiert auf eine Gruppe von Fehlern. Ggfs. müssen Sie/ die Entwicklung dieses Feature für weitere Problemszenarien anpassen. Das Feature ist technisch konfigurierbar.   
 
 ## Szenario AT-TIFFT-1 Problematische Pakete zunächst zurückweisen
 
