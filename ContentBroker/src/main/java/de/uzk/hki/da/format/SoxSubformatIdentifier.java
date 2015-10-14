@@ -41,8 +41,8 @@ import de.uzk.hki.da.utils.ProcessInformation;
 public class SoxSubformatIdentifier implements FormatIdentifier, Connector {
 
 	private Logger logger = LoggerFactory.getLogger( SoxSubformatIdentifier.class );
-	
-	private String[] supportedVersions = new String[] {"14.2.0"};
+	// 14.2.0
+	private String[] supportedVersions = new String[] {"14.3.2","14.4.1"};
 	
 	private CommandLineConnector cli;
 	
