@@ -1,9 +1,10 @@
 ## Leistungsmerkmal: Umgang mit fehlerhaften Tags bei TIFF
 
-Die momentane Version der DNS steuert TIFF mit fehlerhaften Tags im Rich-IPTC Bereich korrekt im Sinne der Spezifikation als fehlerhaft aus.
-Je nach Entscheidung des Contractors wird die Archivierung dennoch vorgenommen, falls der Contractor diese Entscheidung per Webmaske vorgenommen hat. 
+Bei einigen Bildern, die in der von einem komerziellen Unternehmen vorgeschlagenen Formaterweiterung des TIFF Standards geschickt werden (im Folgenden verkürzend "BigTiff" genannnt), können diese unter bestimmten Voraussetzungen als fehlerhaft erkannt werden. Diese werden mit fehlerhaften Tags im Rich-IPTC Bereich geliefert, die gemäß Spezifikation als fehlerhaft ausgesteuert werden.
 
-Bei einigen Bildern, die in der von einem komerziellen Unternehmen vorgeschlagenen Formaterweiterung des TIFF Standards geschickt werden (im Folgenden verkürzend "BigTiff" genannnt), können diese als fehlerhaft erkannt werden.
+Je nach Entscheidung des Contractors wird die Archivierung dennoch vorgenommen, falls der Contractor diese Entscheidung per Webmaske vorgenommen hat. Es besteht ausdrücklich der Wunsch, diese Fehler auch übergehen zu können. 
+
+Dafür wird eine Rückfrage des Systems ausgelöst, da eine Rückbestätigung der Entscheidung des Einliefernden erforderlich ist. Diese wird in der PREMIS vermerkt. Auf mögiche Konsequenzen für die weitere Bestandserhaltung bei der Übergehung diesr Fehler wird ausdrücklich hingewiesen. 
 
 Der einzig bekannte Fehler äußert sich durch die Fehlerausgabe von (Bsp.): 
 
@@ -21,13 +22,11 @@ identify: Tag 33437: Rational with zero denominator (num = 0). `374134.tif' @ ti
 
 Es gibt einen Hinweis auf "division by zero" in einem Tagfeld an, welches mit einem gültigem Wert befüllt sein sollte. 
 
-Es besteht der Wunsch, diese Fehler übergehen zu können. 
-
-Dafür wird eine Rückfrage des Systems ausgelöst, da eine Rückbestätigung der Entscheidung des Einliefernden erforderlich ist. Diese wird in der PREMIS vermerkt. Auf mögiche Konsequenzen für die weitere Bestandserhaltung bei der Übergehung diesr Fehler wird ausdrücklich hingewiesen.  
+## Szenario AT-TIFFT-1 Problematische Pakete zunächst zurückweisen
 
 #### Kontext:
 
-* [ATInvalidTiffTagsInBigTiff](../../test/java/de/uzk/hki/da/at/ATInvalidTiffTagsInBigTiff.java)
+* [ATInvalidTiffTagsInBigTiff](../../test/java/de/uzk/hki/da/at/ATInvalidTiffTagsInBigTiff.java)testInvalidTiffTagsDetectUserException
 
 ## Hintergrund
 
@@ -35,7 +34,7 @@ Beschreibung (s.o.), gilt für alle Szenarien!
 
 #### Testpaket(e):
 
-ATInvalidTiffTagsInBigTiff.tgz
+[ATInvalidTiffTagsInBigTiff.tgz](../../../src/test/resources/at/ATInvalidTiffTagsInBigTiff.tgz) 
 
 #### Vorbedingung:
 
@@ -43,45 +42,23 @@ ATInvalidTiffTagsInBigTiff.tgz
 
 #### Durchführung:
 
-1. Das Testpaket wird im Incoming Order abelegt und die Verarbeitung gestartet (Maske "Verarbeitung für abgelieferte SIP starten")
+1. Das Testpaket wird im Incoming Order abgelegt und die Verarbeitung gestartet (Maske "Verarbeitung für abgelieferte SIP starten")
 1. Warten auf Email-Report.
-
-## Szenario AT-TIFFT-1 Problematische Pakete zurückweisen
 
 Das System weist Pakete, die Dateien mit problematischen Tags enthalten, zurück. Das Paket landet in einem 4er Fehlerstatus (UserException)
 
-#### Kontext:
-
-* Name des automatisierten Akzeptanztests
-
-
-#### Testpaket(e):
-
-* Siehe Hintergrund
-
-#### Vorbedingungen:
-
-* Siehe Hintergrund.
-
-#### Durchführung:
-
-* Siehe Hintergrund.
-
 #### Akzeptanzkriterien:
 
-* Der Email Report enthält einen Hinweis, dass die Löschung des Objektes durchgeführt werden wird.
-* Der Email Report enthält einen Hinweis über die Problematische Datei "failure_in_tag.tif".
+* Der Email Report enthält einen Hinweis über die problematische Datei.
 * Das Objekt taucht nicht in der Ansicht "eingelieferte Objekte" als "archiviert" auf.
 
-
-
-## Vorschlag: Szenario AT-TIFFT-2 Archivierung nach Rückfrage durchführen 
+## Szenario AT-TIFFT-2 Archivierung nach Rückfrage durchführen 
 
 Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Probleme der zuk. Bestandserhaltung durchführen.
 
 #### Kontext:
 
-* Name des automatisierten Akzeptanztests
+* [ATInvalidTiffTagsInBigTiff](../../test/java/de/uzk/hki/da/at/ATInvalidTiffTagsInBigTiff.java)testInvalidTiffTagsPrunedByUser
 
 #### Testpaket(e):
 
@@ -100,20 +77,20 @@ Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Pr
 #### Akzeptanzkriterien:
 
 * Der Email Report enthält einen Hinweis, dass für das Objekt mit den&nbsp;﻿"Identifier" eine Entscheidung zu treffen ist.
-* Der Email Report enthält einen Hinweis über die Problematische Datei "failure_in_tag.tif".
+* Der Email Report enthält einen Hinweis über die problematische Datei.
 * Der Email Report enthält den Hinweis, dass der weitere Ingest des Paketes in die Langzeitarchivierung nicht empfohlen wird.
 * Der Email Report enthält den Hinweis, dass der Ingest trotzdem fortgeführt werden kann, und dass diese Entscheidung für spätere Nachvollziehbarkeit gespeichert wird.
 * Der Vertragspartner bekommt einen weiteren Email-Report, der den Ingest bestätigt.
 * Das Objekt taucht unter eingelieferte Objekte auf als "archiviert" auf.&nbsp;
 * &nbsp;
 
-## Vorschlag: Szenario AT-TIFFT-3 Archivierung nach Rückfrage nicht durchführen 
+## Szenario AT-TIFFT-3 Archivierung nach Rückfrage nicht durchführen 
 
-* Der Contractor &nbsp;will die Archivierung auf Grund des Hinweises nicht durchführen.
+* Der Contractor will die Archivierung auf Grund des Hinweises nicht durchführen.
 
 #### Kontext:
 
-* Name des automatisierten Akzeptanztests
+* [ATInvalidTiffTagsInBigTiff](../../test/java/de/uzk/hki/da/at/ATInvalidTiffTagsInBigTiff.java)testInvalidTiffTagsPrunedByUser
 
 #### Testpaket(e):
 
@@ -132,7 +109,7 @@ Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Pr
 #### Akzeptanzkriterien:
 
 * Der Email Report enthält einen Hinweis,&nbsp;dass für das Objekt mit den&nbsp;﻿"Identifier" eine Entscheidung zu treffen ist.
-* Der Email Report enthält einen Hinweis über die Problematische Datei "failure_in_tag.tif".
+* Der Email Report enthält einen Hinweis über die problematische Datei".
 * Der Email Report enthält den Hinweis, dass der weitere Ingest des Paketes in die Langzeitarchivierung nicht empfohlen wird.
 * Der Email Report enthält den Hinweis, dass der Ingest trotzdem fortgeführt werden kann, und dass diese Entscheidung für spätere Nachvollziehbarkeit gespeichert wird.
 * Der Vertragspartner bekommt einen weiteren Email-Report.
