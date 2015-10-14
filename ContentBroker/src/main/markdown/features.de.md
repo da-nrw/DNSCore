@@ -4,7 +4,7 @@
 * DAWeb Webinterface - Grafische Benutzeroberfläche zur Steuerung des Archivs durch Benutzer und Administratoren. Abfragemöglichkeit für techn. Drittsysteme.
 * Storage Layer - Geographische Verteilung und Replikation der Daten.
 * Self validating - Selbstprüfung unter Maßstäben der Bitstream-Preservation.
-* Format identification - Formatidentifikation auf Basis der PRONOM Identifier.
+* Format identification - Formatidentifikation auf Basis der PRONOM Identifier. Nutzung von JHOVE.
 * Codec identification - Erkennung von Codecs auf Basis der installierten Module.
 * Automatic format conversion - Konvertierung erkannter Formate durch hinterlegte Routinen. 
 * PREMIS Logging - Alle Aktionen werden in der PREMIS hinterlegt.
