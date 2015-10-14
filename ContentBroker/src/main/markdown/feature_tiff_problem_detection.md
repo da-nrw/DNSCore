@@ -3,7 +3,9 @@
 Die momentane Version der DNS steuert TIFF mit fehlerhaften Tags im Rich-IPTC Bereich zunächst als fehlerhaft aus.
 Je nach Entscheidung des Contractors wird die Archivierung dennoch vorgenommen, falls der Contractor diese Entscheidung per Webmaske vorgenommen hat. 
 
-Einziger bekannter Tagfehler bisher (anzutreffen bei TIFFs im vorgeschlagenen BigTiff Verfahren von AWARE):
+Bei einigen Bildern, die in der von einem komerziellen Unternehmen vorgeschlagenen Formaterweiterung des TIFF Standards geschickt werden (im Folgenden verkürzend "BigTiff" genannnt), können diese als fehlerhaft erkannt werden.
+
+Der einzig bekannte Fehler äußert sic durch die Fehlerausgabe von: 
 
 ```
 74134.tif TIFF 3474x2141 3474x2141+0+0 8-bit Grayscale DirectClass 7.094mb 
@@ -17,7 +19,11 @@ identify: Tag 33434: Rational with zero denominator (num = 0). `374134.tif' @ ti
 identify: Tag 33437: Rational with zero denominator (num = 0). `374134.tif' @ tiff.c/TIFFErrors/336.
 ```
 
-Imagemagick identify Kommando gibt einen Hinweis auf "division by zero" in einem Tagfeld an, welches mit einem (vermeintlich) gültigem Wert befüllt sein sollte. (genutzt z.B. für GPS Daten)´. Das Kommando resultiert in einem ExitCode != 0 (Fehler) 
+Es gibt einen Hinweis auf "division by zero" in einem Tagfeld an, welches mit einem gültigem Wert befüllt sein sollte. 
+
+Es besteht der Wunsch, diese Fehler übergehen zu können. 
+
+Dafür wird eine Rückfrage des Systems ausgelöst, da eine Rückbestätigung der Entscheidung des Einliefernden erforderlich ist. Diese wird in der PREMIS vermerkt. Auf mögiche Konsequenzen für die weitere Bestandserhaltung bei der Übergehung diesr Fehler wird ausdrücklich hingewiesen.  
 
 #### Kontext:
 
