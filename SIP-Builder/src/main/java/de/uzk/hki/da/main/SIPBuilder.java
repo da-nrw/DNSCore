@@ -64,7 +64,7 @@ public class SIPBuilder {
 		layout.setThreadPrinting(false);
 	    ConsoleAppender consoleAppender = new ConsoleAppender(layout);
 	    logger.addAppender( consoleAppender );
-        logger.setLevel(Level.INFO);
+        logger.setLevel(Level.DEBUG);
         
         properties = new Properties();
 		try {

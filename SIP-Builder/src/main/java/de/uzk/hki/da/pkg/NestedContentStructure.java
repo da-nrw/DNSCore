@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import org.apache.commons.io.input.BOMInputStream;
+import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -26,6 +27,8 @@ import de.uzk.hki.da.utils.formatDetectionService;
  */
 
 public class NestedContentStructure {
+	
+	private Logger logger = Logger.getLogger(NestedContentStructure.class);
 	
 	public File rootFile;
 	public HashMap<File, String> sipCandidatesWithUrns = new HashMap<File, String>();
@@ -60,6 +63,11 @@ public class NestedContentStructure {
 		for(File f : currentDir.listFiles()) {
 			if(getIncludedDirs(f).isEmpty()) { 
 				TreeMap<File, String> metadataFileWithType = new formatDetectionService(f).getMetadataFileWithType();
+				if(!metadataFileWithType.isEmpty()) {
+					File metadataFile = metadataFileWithType.firstKey();
+					String metadataType = metadataFileWithType.get(metadataFile);
+					logger.debug("Metadata  type : "+metadataType);
+				}
 				if(!metadataFileWithType.isEmpty() && !metadataFileWithType.get(metadataFileWithType.firstKey()).equals(C.CB_PACKAGETYPE_EAD)) {
 					List<File> metsFiles = getMetsFileFromDir(f);
 					if(metsFiles.size()==1) {
