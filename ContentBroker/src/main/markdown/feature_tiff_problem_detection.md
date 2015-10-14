@@ -6,7 +6,7 @@ Bei einigen Bildern, die in der von einem komerziellen Unternehmen vorgeschlagen
 
 Je nach Entscheidung des Contractors wird die Archivierung in DNS dennoch vorgenommen, falls der Contractor diese Entscheidung per Webmaske vorgenommen hat. Es bestand ausdrücklich der Wunsch, diese Fehler auch übergehen zu können. 
 
-Dafür wird eine Rückfrage des Systems ausgelöst, da eine Rückbestätigung der Entscheidung durch den Einliefernden erzwingt. Diese wird in der PREMIS vermerkt, ebenso dass es einen Fehler beim Konvertieren gab. Auf mögiche Konsequenzen für die weitere Bestandserhaltung bei der Übergehung dieser Fehler wird ausdrücklich hingewiesen! 
+Dafür wird eine Rückfrage des Systems ausgelöst, die eine Rückbestätigung der Entscheidung durch den Einliefernden erzwingt. Diese wird in der PREMIS vermerkt, ebenso dass es einen Fehler beim Konvertieren gab. Auf mögliche Konsequenzen für die weitere Bestandserhaltung bei der Übergehung dieser Fehler wird ausdrücklich hingewiesen! 
 
 Der einzig bekannte Fehler in den bisher vorliegenden Testdaten äußert sich durch die Fehlerausgabe von (Bsp.): 
 ```
