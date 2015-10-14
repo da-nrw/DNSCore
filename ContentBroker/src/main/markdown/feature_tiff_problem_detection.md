@@ -1,5 +1,7 @@
 ## Leistungsmerkmal: Umgang mit fehlerhaften Tags bei TIFF
 
+### Hintergrund
+
 Bei einigen Bildern, die in der von einem komerziellen Unternehmen vorgeschlagenen Formaterweiterung des TIFF Standards geschickt werden (im Folgenden verkürzend "BigTiff" genannnt), können diese unter bestimmten Voraussetzungen als fehlerhaft erkannt werden. Diese werden mit fehlerhaften Tags im Rich-IPTC Bereich geliefert, die gemäß Spezifikation als fehlerhaft ausgesteuert werden.
 
 Je nach Entscheidung des Contractors wird die Archivierung dennoch vorgenommen, falls der Contractor diese Entscheidung per Webmaske vorgenommen hat. Es besteht ausdrücklich der Wunsch, diese Fehler auch übergehen zu können. 
@@ -27,10 +29,6 @@ Es gibt einen Hinweis auf "division by zero" in einem Tagfeld an, welches mit ei
 #### Kontext:
 
 * [ATInvalidTiffTagsInBigTiff](../../test/java/de/uzk/hki/da/at/ATInvalidTiffTagsInBigTiff.java)testInvalidTiffTagsDetectUserException
-
-## Hintergrund
-
-Beschreibung (s.o.), gilt für alle Szenarien!
 
 #### Testpaket(e):
 
@@ -109,7 +107,7 @@ Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Pr
 #### Akzeptanzkriterien:
 
 * Der Email Report enthält einen Hinweis,&nbsp;dass für das Objekt mit den&nbsp;﻿"Identifier" eine Entscheidung zu treffen ist.
-* Der Email Report enthält einen Hinweis über die problematische Datei".
+* Der Email Report enthält einen Hinweis über die problematische Datei.
 * Der Email Report enthält den Hinweis, dass der weitere Ingest des Paketes in die Langzeitarchivierung nicht empfohlen wird.
 * Der Email Report enthält den Hinweis, dass der Ingest trotzdem fortgeführt werden kann, und dass diese Entscheidung für spätere Nachvollziehbarkeit gespeichert wird.
 * Der Vertragspartner bekommt einen weiteren Email-Report.
