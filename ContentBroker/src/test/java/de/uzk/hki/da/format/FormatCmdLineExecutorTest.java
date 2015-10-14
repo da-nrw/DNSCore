@@ -39,7 +39,7 @@ public class FormatCmdLineExecutorTest {
 
 	String fileIptcError = Path.make(TC.TEST_ROOT_FORMAT,"bigTiff","268754.tif").toString(); 
 
-	private static final String BEANS_ERROR_INFRASTRUCTURE = "classpath*:META-INF/beans-infrastructure.errors.xml";
+	private static final String BEANS_ERROR_INFRASTRUCTURE = "classpath*:META-INF/beans-infrastructure.knownerrors.xml";
 	
 	@Test
 	public void testGetRuntimeExceptionForNotPruned() {
