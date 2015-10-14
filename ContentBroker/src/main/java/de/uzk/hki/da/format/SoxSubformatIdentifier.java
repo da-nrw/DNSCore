@@ -42,7 +42,7 @@ public class SoxSubformatIdentifier implements FormatIdentifier, Connector {
 
 	private Logger logger = LoggerFactory.getLogger( SoxSubformatIdentifier.class );
 	// 14.2.0
-	private String[] supportedVersions = new String[] {"14.3.2","14.4.1"};
+	private String[] supportedVersions = new String[] {"14.2.0","14.3.2","14.4.1"};
 	
 	private CommandLineConnector cli;
 	
