@@ -2,7 +2,7 @@
 
 ### Hintergrund
 
-Einige TIFF Bilder, die im Bereich der "privaten" IFD Tags des TIFF Standards fehlerhafte oder auf Grund einer unterschiedlichen Auslegung (oder Implementation) der verschiedenen Spezifikationen mißverständlich sein können, werden unter Umständen von der Software als fehlerhaft ausgesteuert. Davon sind Softwarekomponenten sowohl der DNS als auch der sendenden Seite betroffen. 
+Einige TIFF Bilder, die im Bereich der "privaten" IFD Tags des TIFF Standards fehlerhafte oder auf Grund einer unterschiedlichen Auslegung (oder Implementation) der verschiedenen Spezifikationen mißverständliche Informationen tragen können, werden unter Umständen von der Software als fehlerhaft ausgesteuert. 
 
 Die eigentlichen Bilddaten sind hiervon nicht betroffen - Es gibt aber möglicherweise zukünftig auch Probleme bei der Verarbeitung der Bilddaten (z.B. bei bestandserhaltenden Maßnahmen, Migrationen)
 
