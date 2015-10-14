@@ -21,17 +21,16 @@ package de.uzk.hki.da.format;
 /**
  * @author jens Peters
  */
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 
-import org.junit.After;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.pkg.ArchiveBuilder;
-import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.Path;
@@ -40,18 +39,24 @@ public class FormatCmdLineExecutorTest {
 
 	String fileIptcError = Path.make(TC.TEST_ROOT_FORMAT,"bigTiff","268754.tif").toString(); 
 
+	private static final String BEANS_ERROR_INFRASTRUCTURE = "classpath*:META-INF/beans-infrastructure.errors.xml";
 	
 	@Test
 	public void testGetRuntimeExceptionForNotPruned() {
 		File iptcerror = new File(fileIptcError);
 		
+		AbstractApplicationContext context = 
+				new FileSystemXmlApplicationContext(BEANS_ERROR_INFRASTRUCTURE);
+		KnownFormatCmdLineErrors kle = (KnownFormatCmdLineErrors) context.getBean("knownErrors");
+		context.close();
+		
 		String[] cmd = new String []{
 				"identify","-format","'%C'",iptcerror.getAbsolutePath()};
-	FormatCmdLineExecutor cle = new FormatCmdLineExecutor(new CommandLineConnector());
+	FormatCmdLineExecutor cle = new FormatCmdLineExecutor(new CommandLineConnector(),kle);
 	try {
 	cle.execute(cmd);
 	} catch (UserException e) {
-		assertEquals("Probleme mit RichTIFFIPTC.",e.getMessage());
+		assertTrue(e.getMessage().indexOf("Probleme")>=0);
 		return;
 	}
 	fail();
@@ -61,10 +66,14 @@ public class FormatCmdLineExecutorTest {
 	@Test
 	public void testGetRuntimeExceptionForPrunedException() {
 		File iptcerror = new File(fileIptcError);
+		AbstractApplicationContext context = 
+				new FileSystemXmlApplicationContext(BEANS_ERROR_INFRASTRUCTURE);
+		KnownFormatCmdLineErrors kle = (KnownFormatCmdLineErrors) context.getBean("knownErrors");
+		context.close();
 		
 		String[] cmd = new String []{
 				"identify","-format","'%C'",iptcerror.getAbsolutePath()};
-	FormatCmdLineExecutor cle = new FormatCmdLineExecutor(new CommandLineConnector());
+	FormatCmdLineExecutor cle = new FormatCmdLineExecutor(new CommandLineConnector(),kle);
 	cle.setPruneExceptions(true);
 	assertTrue(cle.execute(cmd));
 	}

@@ -18,4 +18,9 @@ public class FakeSubformatScanService implements FormatScanService, Connector{
 		return files;
 	}
 
+	@Override
+	public void setKnownFormatCmdLineErrors(KnownFormatCmdLineErrors knownerrors) {
+		
+	}
+
 }

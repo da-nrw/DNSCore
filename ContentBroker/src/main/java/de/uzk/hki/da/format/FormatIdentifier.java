@@ -51,4 +51,8 @@ public interface FormatIdentifier {
 	 * @param cli
 	 */
 	public CommandLineConnector getCliConnector();
+	
+	public void setKnownFormatCommandLineErrors(KnownFormatCmdLineErrors knownErrors);
+	
+	public KnownFormatCmdLineErrors getKnownFormatCommandLineErrors();
 }

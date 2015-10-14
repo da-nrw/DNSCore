@@ -118,5 +118,8 @@ public interface FileFormatFacade {
 
 
 	public void setSubformatScanService(FormatScanService subformatScanService);
+	
+	public void setKnownFormatCommandLineErrors(KnownFormatCmdLineErrors knownErrors);
+		
 
 }

@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
@@ -68,5 +69,7 @@ public interface ConversionStrategy {
 	public void setCLIConnector(CommandLineConnector cliConnector);
 
 	public void setPruneErrorOrWarnings(boolean prune);
+	
+	public void setKnownFormatCommandLineErrors(KnownFormatCmdLineErrors knownErrors);
 
 }

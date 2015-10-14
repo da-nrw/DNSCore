@@ -25,7 +25,6 @@
 package de.uzk.hki.da.format;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -52,11 +51,10 @@ public class FormatCmdLineExecutor {
 	
 	private CommandLineConnector clc;
 	
-	public FormatCmdLineExecutor(CommandLineConnector clc) {
+	public FormatCmdLineExecutor(CommandLineConnector clc, KnownFormatCmdLineErrors knownErrors) {
 		this.clc = clc;
-		// TODO: fill this from the outside 
-		knownErrors = new ArrayList<FormatCmdLineError>();
-		knownErrors.add(new FormatCmdLineIptcError());
+		if (knownErrors!=null)
+		this.knownErrors = knownErrors.getFormatCmdLineErrors();
 	}
 	
 	public boolean execute(String [] cmd) {
@@ -76,8 +74,9 @@ public class FormatCmdLineExecutor {
 		if (stdErr!=null) stdErr = stdErr.trim();
 		exitValue = pi.getExitValue();
 		if (exitValue != 0) {
+			if (knownErrors!=null) 
 			for (FormatCmdLineError ke : knownErrors) {
-				if (stdErr.matches(ke.getSearchErrForRegex())) {
+				if (stdErr.matches(ke.getErrOutContainsRegex())) {
 					if (pruneExceptions) {
 						error = ke;
 						return true;

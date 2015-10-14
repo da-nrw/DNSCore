@@ -47,6 +47,7 @@
 		scope="prototype">
 		<property name="startStatus" value="230" />
 		<property name="endStatus" value="250" />
+		<property name="knownFormatCmdLineErrors" ref="knownErrors" />
 		<property name="name" value="IngestConvertAction" />
 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
 	</bean>
@@ -81,6 +82,7 @@
 		scope="prototype">
 		<property name="startStatus" value="320" />
 		<property name="endStatus" value="340" />
+		<property name="knownFormatCmdLineErrors" ref="knownErrors" />
 		<property name="name" value="IngestConvertForPresentationAction" />
 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
 	</bean>

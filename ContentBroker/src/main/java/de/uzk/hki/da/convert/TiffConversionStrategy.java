@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.format.FormatCmdLineExecutor;
 import de.uzk.hki.da.format.ImageMagickSubformatIdentifier;
+import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -69,6 +70,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 
 	private CommandLineConnector cliConnector;
 
+	private KnownFormatCmdLineErrors knownErrors;
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -83,10 +85,11 @@ public class TiffConversionStrategy implements ConversionStrategy {
 
 		String input = wa.toFile(ci.getSource_file()).getAbsolutePath();
 		String[] commandAsArray;
-		FormatCmdLineExecutor cle = new FormatCmdLineExecutor(cliConnector);
+		FormatCmdLineExecutor cle = new FormatCmdLineExecutor(cliConnector, knownErrors);
 		try {
-			// Codec identification is done by subformatidentification, if no Codec is being found
+			// Codec identification is done by subformatidentification
 			ImageMagickSubformatIdentifier imsf = new ImageMagickSubformatIdentifier();
+			imsf.setKnownFormatCommandLineErrors(knownErrors);
 			imsf.setCliConnector(cliConnector);
 		
 			if (imsf.identify(new File(input),prune)
@@ -220,5 +223,11 @@ public class TiffConversionStrategy implements ConversionStrategy {
 	public void setPruneErrorOrWarnings(boolean prune) {
 		this.prune = prune;
 		
+	}
+
+	@Override
+	public void setKnownFormatCommandLineErrors(
+			KnownFormatCmdLineErrors knownErrors) {
+		this.knownErrors = knownErrors;
 	}
 }

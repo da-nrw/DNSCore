@@ -116,6 +116,17 @@ public class FFmpegSubformatIdentifier implements FormatIdentifier, Connector{
 		return null;
 	}
 
+	@Override
+	public void setKnownFormatCommandLineErrors(
+			KnownFormatCmdLineErrors knownErrors) {
+		
+	}
+
+	@Override
+	public KnownFormatCmdLineErrors getKnownFormatCommandLineErrors() {
+		return null;
+	}
+
 }
 
 

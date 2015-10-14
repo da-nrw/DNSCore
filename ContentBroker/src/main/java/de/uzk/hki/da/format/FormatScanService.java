@@ -45,4 +45,5 @@ interface FormatScanService {
 	
 	public boolean isConnectable();
 	
+	public void setKnownFormatCmdLineErrors(KnownFormatCmdLineErrors knownerrors); 
 }

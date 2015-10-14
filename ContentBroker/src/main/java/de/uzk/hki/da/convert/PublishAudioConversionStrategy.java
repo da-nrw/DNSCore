@@ -30,6 +30,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
 import de.uzk.hki.da.model.AudioRestriction;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
@@ -164,6 +165,12 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 
 	@Override
 	public void setPruneErrorOrWarnings(boolean prune) {
+		
+	}
+
+	@Override
+	public void setKnownFormatCommandLineErrors(
+			KnownFormatCmdLineErrors knownErrors) {
 		
 	}
 

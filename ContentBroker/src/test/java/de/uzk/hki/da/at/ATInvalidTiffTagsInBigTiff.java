@@ -22,12 +22,9 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -36,7 +33,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Test;
 
@@ -44,7 +40,6 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
 
@@ -133,7 +128,7 @@ public class ATInvalidTiffTagsInBigTiff extends PREMISBase{
 			
 			if (identifierText.equals(objectIdentifier)) {
 				List<Element> identifierEls = e.getChildren("objectIdentifier", ns);
-				assertEquals(object.getUrn(), identifierEls.get(1).getChildText("objectIdentifierValue", ns)); // TODO shouldn't it be the unique object identifier?
+				assertEquals(object.getUrn(), identifierEls.get(1).getChildText("objectIdentifierValue", ns)); 
 				String originalName = e.getChildText("originalName", ns);
 				assertEquals(object.getOrig_name(),originalName);
 				checkedObjects++;
@@ -148,8 +143,7 @@ public class ATInvalidTiffTagsInBigTiff extends PREMISBase{
 				verifyPREMISFileObjectHasCertainSubElements(ns, e, "268754.tif", "fmt/353");
 				checkedObjects++;
 			}
-		}
-		System.out.println("jjja§ " + checkedObjects);
+		};
 		assertThat(checkedObjects).isEqualTo(3);	
 		List<Element> eventElements = rootElement.getChildren("event", ns);
 		int checkedEvents = 0;

@@ -137,6 +137,19 @@ public class SoxSubformatIdentifier implements FormatIdentifier, Connector {
 		if (cli==null) this.cli = new CommandLineConnector();
 		return cli;
 	}
+
+
+	@Override
+	public void setKnownFormatCommandLineErrors(
+			KnownFormatCmdLineErrors knownErrors) {
+		
+	}
+
+
+	@Override
+	public KnownFormatCmdLineErrors getKnownFormatCommandLineErrors() {
+		return null;
+	}
 	
 	
 

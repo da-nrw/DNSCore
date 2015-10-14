@@ -18,25 +18,39 @@
 */
 /**
  * @author jens Peters
- * Interface for common known command line errors
+ * Known IPTC Tag Error which is being found in BigTiff Pictures by some customers.
  */
 package de.uzk.hki.da.format;
 
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 
-/**
- * @author Jens Peters
- *
- */
-public interface FormatCmdLineError {
+public class FormatCmdLineError{
 	
-	public String getSearchErrForRegex();
+	private String errorText = "-none-";
 	
-	public void setErrorText(String errorText);
+	private UserExceptionId userExceptionId;
 	
-	public String getErrorText();
-	
-	public UserExceptionId getUserExceptionId();
-	
-	public void setUserExceptionId(UserExceptionId userid);
+	private String errOutContainsRegex;
+
+	public FormatCmdLineError() {
+	}
+
+	public String getErrOutContainsRegex() {
+		return errOutContainsRegex ;
+	}
+	public void setErrOutContainsRegex(String errOutContainsRegex) {
+		this.errOutContainsRegex = errOutContainsRegex ;
+	}
+	public void setErrorText(String errorText) {
+		this.errorText = errorText;	
+	}
+	public String getErrorText() {
+		return errorText;
+	}
+	public UserExceptionId getUserExceptionId() {
+		return userExceptionId;
+	}
+	public void setUserExceptionId(UserExceptionId userid) {
+		userExceptionId = userid;
+	}
 }

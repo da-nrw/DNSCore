@@ -30,6 +30,7 @@ import org.apache.commons.io.FileSystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
@@ -47,10 +48,13 @@ public class ConverterService {
 	
 	static final Logger logger = LoggerFactory.getLogger(ConverterService.class);
 
-	boolean prune;
+	private boolean prune;
 	
-	public ConverterService(boolean prune) {
+	private KnownFormatCmdLineErrors knownFormatCmdLineErrors;
+	
+	public ConverterService(boolean prune, KnownFormatCmdLineErrors knownFormatCmdLineErrors) {
 		this.prune = prune;
+		this.knownFormatCmdLineErrors = knownFormatCmdLineErrors;
 	}
 	
 	/**
@@ -151,7 +155,7 @@ public class ConverterService {
 		strategy.setCLIConnector(new CommandLineConnector());
 		strategy.setObject(object);
 		strategy.setParam(ci.getConversion_routine().getParams());
-		
+		strategy.setKnownFormatCommandLineErrors(knownFormatCmdLineErrors);
 		List<Event> results;
 		// TODO remove try catch. evaluate in convertbatch and not in convertfile
 		try {
