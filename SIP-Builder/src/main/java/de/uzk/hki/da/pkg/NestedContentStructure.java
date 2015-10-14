@@ -62,6 +62,7 @@ public class NestedContentStructure {
 		File currentDir = dir;
 		for(File f : currentDir.listFiles()) {
 			if(getIncludedDirs(f).isEmpty()) { 
+				logger.info("Current folder "+f+" is leaf");
 				TreeMap<File, String> metadataFileWithType = new formatDetectionService(f).getMetadataFileWithType();
 				if(!metadataFileWithType.isEmpty()) {
 					File metadataFile = metadataFileWithType.firstKey();
