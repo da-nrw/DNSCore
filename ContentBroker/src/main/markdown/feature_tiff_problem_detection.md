@@ -2,7 +2,7 @@
 
 ### Hintergrund
 
-Bei einigen Bildern, die in der von einem komerziellen Unternehmen vorgeschlagenen Formaterweiterung des TIFF Standards geschickt werden (im Folgenden verkürzend "BigTiff" genannnt), können diese unter bestimmten Voraussetzungen als fehlerhaft erkannt werden. Alle problematischen Bilder werden mit fehlerhaften Tags im Rich-IPTC Bereich geliefert, die gemäß Spezifikation DNS (als auch der vorgeschlagenen Erweiterung "BigTIFF") korrekt als fehlerhaft ausgesteuert werden. Die eigentlichen Bilddaten sind hiervon nicht betroffen. 
+Bei einigen Bildern, die in der von einem kommerziellen Unternehmen vorgeschlagenen Formaterweiterung des TIFF Standards geschickt werden (im Folgenden verkürzend "BigTiff" genannnt), können diese unter bestimmten Voraussetzungen als fehlerhaft erkannt werden. Alle problematischen Bilder werden mit fehlerhaften Tags im Rich-IPTC Bereich geliefert, die gemäß Spezifikation DNS (als auch der vorgeschlagenen Erweiterung "BigTIFF") korrekt als fehlerhaft ausgesteuert werden. Die eigentlichen Bilddaten sind hiervon nicht betroffen. 
 
 Je nach Entscheidung des Contractors wird die Archivierung in DNS dennoch vorgenommen, falls der Contractor diese Entscheidung per Webmaske vorgenommen hat. Es bestand ausdrücklich der Wunsch, diese Fehler auch übergehen zu können. 
 
@@ -21,7 +21,7 @@ identify: Tag 33434: Rational with zero denominator (num = 0). `374134.tif' @ ti
 identify: Tag 33437: Rational with zero denominator (num = 0). `374134.tif' @ tiff.c/TIFFErrors/336.
 ```
 
-Er gibt einen Hinweis auf "division by zero" in einem Tagfeld, welches mit einem gültigen Wert befüllt sein sollte. 
+Er gibt einen Hinweis auf "division by zero" in einem Tagfeld, welches mit einem gültigen Wert befüllt sein sollte aber nicht ist. 
 
 ## Szenario AT-TIFFT-1 Problematische Pakete zunächst zurückweisen
 
