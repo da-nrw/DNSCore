@@ -10,6 +10,7 @@
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
           
     <import resource="classpath*:META-INF/beans-infrastructure.core.xml"/>      
+    <import resource="classpath*:META-INF/beans-infrastructure.knownerrors.xml"/>
     
     <bean id="actionRegistry" class="de.uzk.hki.da.action.ActionRegistry">
 		<property name="maxThreads" ref="actionThreads" />
@@ -133,6 +134,7 @@
 		<property name="formatScanService" ref="${cb.implementation.formatScanService:fakeFormatScanService}"/>
 		<property name="metadataExtractor" ref="${cb.implementation.metadataExtractor:fakeMetadataExtractor}"/>
 		<property name="subformatScanService" ref="${cb.implementation.subformatScanService:subformatScanService}"/>
+		<property name="knownFormatCommandLineErrors" ref="knownErrors"/>
 	</bean>
 	
 	
@@ -147,6 +149,7 @@
 		<property name="actionRegistry" ref="actionRegistry" />
 	</bean>
 	
+
 	
 	
 	

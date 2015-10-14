@@ -48,6 +48,8 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 	private FormatScanService subformatScanService;
 	private MetadataExtractor metadataExtractor;
 	
+	private KnownFormatCmdLineErrors knownFormatCommandLineErrors;
+	
 	public ConfigurableFileFormatFacade() {}
 	
 	/**
@@ -69,13 +71,14 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 			if (!(Path.makeFile(workPath,f.getPath()).exists()))
 				throw new FileNotFoundException("Missing file: "+Path.makeFile(workPath,f.getPath()));
 		}
-				
+		getFormatScanService().setKnownFormatCmdLineErrors(knownFormatCommandLineErrors);
 		getFormatScanService().identify(workPath,(List<FileWithFileFormat>) files,pruneExceptions);
 		
 		for (String s:subformatIdentificationStrategyTriggerMap.keySet())
 			logger.debug("strategy available: "+s);
 		
 		if (getSubformatScanService()!=null) {
+			getSubformatScanService().setKnownFormatCmdLineErrors(knownFormatCommandLineErrors);
 			getSubformatScanService().identify(workPath,(List<FileWithFileFormat>) files,pruneExceptions);
 		}
 		doCorrections(workPath,files,pruneExceptions);
@@ -169,6 +172,7 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 
 	@Override
 	public FormatScanService getFormatScanService() {
+		if (formatScanService!=null) formatScanService.setKnownFormatCmdLineErrors(knownFormatCommandLineErrors);
 		return formatScanService;
 	}
 
@@ -194,6 +198,7 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 
 	@Override
 	public FormatScanService getSubformatScanService() {
+		if (subformatScanService!=null) subformatScanService.setKnownFormatCmdLineErrors(knownFormatCommandLineErrors);
 		return subformatScanService;
 	}
 
@@ -202,6 +207,20 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 	public void setSubformatScanService(FormatScanService subformatScanService) {
 		this.subformatScanService = subformatScanService;
 	}
+
+
+
+	public KnownFormatCmdLineErrors getKnownFormatCommandLineErrors() {
+		return knownFormatCommandLineErrors;
+	}
+
+
+
+	public void setKnownFormatCommandLineErrors(
+			KnownFormatCmdLineErrors knownFormatCommandLineErrors) {
+		this.knownFormatCommandLineErrors = knownFormatCommandLineErrors;
+	}
+
 
 
 }

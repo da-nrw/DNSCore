@@ -31,6 +31,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -215,5 +216,10 @@ public class CLIConversionStrategy implements ConversionStrategy{
 	@Override
 	public void setPruneErrorOrWarnings(boolean prune) {
 		
+	}
+
+	@Override
+	public void setKnownFormatCommandLineErrors(
+			KnownFormatCmdLineErrors knownErrors) {
 	}
 }

@@ -149,4 +149,10 @@ public class FakeFormatScanService implements FormatScanService{
 		return true;
 	}
 
+
+	@Override
+	public void setKnownFormatCmdLineErrors(KnownFormatCmdLineErrors knownerrors) {
+		
+	}
+
 }

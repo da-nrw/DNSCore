@@ -48,4 +48,15 @@ public class FakeCompressionIdentifier implements FormatIdentifier, Connector{
 	public CommandLineConnector getCliConnector() {
 		return null;
 	}
+
+	@Override
+	public void setKnownFormatCommandLineErrors(
+			KnownFormatCmdLineErrors knownErrors) {
+		
+	}
+
+	@Override
+	public KnownFormatCmdLineErrors getKnownFormatCommandLineErrors() {
+		return null;
+	}
 }

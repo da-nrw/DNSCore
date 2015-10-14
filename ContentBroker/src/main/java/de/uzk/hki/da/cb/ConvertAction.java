@@ -31,6 +31,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.convert.ConverterService;
+import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Document;
@@ -58,7 +59,7 @@ public class ConvertAction extends AbstractAction {
 	private static final String PREMIS = "premis.xml";
 	private DistributedConversionAdapter distributedConversionAdapter;
 	private List<Event> events;
-
+	private KnownFormatCmdLineErrors knownFormatCmdLineErrors;
 	
 	public ConvertAction(){}
 	
@@ -86,7 +87,7 @@ public class ConvertAction extends AbstractAction {
 		o.setRights(getObjectRights()); 
 		
 		events = 
-			new ConverterService(o.getLatestPackage().isPruneExceptions()).convertBatch(
+			new ConverterService(o.getLatestPackage().isPruneExceptions(),knownFormatCmdLineErrors).convertBatch(
 				wa,	o, 
 				new ArrayList(j.getConversion_instructions()));
 		
@@ -219,6 +220,16 @@ public class ConvertAction extends AbstractAction {
 	 */
 	void setEvents(List<Event> events) {
 		this.events=events;
+	}
+
+
+	public KnownFormatCmdLineErrors getKnownFormatCmdLineErrors() {
+		return knownFormatCmdLineErrors;
+	}
+
+
+	public void setKnownFormatCmdLineErrors(KnownFormatCmdLineErrors knownFormatCmdLineErrors) {
+		this.knownFormatCmdLineErrors = knownFormatCmdLineErrors;
 	}
 	
 	

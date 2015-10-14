@@ -90,4 +90,10 @@ public class FidoFormatScanService implements FormatScanService, Connector {
 		}
 	}
 
+
+	@Override
+	public void setKnownFormatCmdLineErrors(KnownFormatCmdLineErrors knownerrors) {
+		
+	}
+
 }

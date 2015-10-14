@@ -109,4 +109,15 @@ public class ScriptWrappedPronomFormatIdentifier implements FormatIdentifier, Co
 		if (this.cli==null) this.cli = new CommandLineConnector();
 		return this.cli;
 	}
+
+	@Override
+	public void setKnownFormatCommandLineErrors(
+			KnownFormatCmdLineErrors knownErrors) {
+	}
+
+	@Override
+	public KnownFormatCmdLineErrors getKnownFormatCommandLineErrors() {
+	
+		return null;
+	}
 }

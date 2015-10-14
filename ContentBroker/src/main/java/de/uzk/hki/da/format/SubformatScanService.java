@@ -35,7 +35,8 @@ import de.uzk.hki.da.utils.Path;
 public class SubformatScanService implements FormatScanService, Connector {
 
 	private Map<String,Set<String>> subformatIdentificationPolicies = new HashMap<String,Set<String>>();
-	
+
+	KnownFormatCmdLineErrors knownFormatCmdLineErrors;
 	/**
 	 * @throws IOException 
 	 * @throws IllegalStateException if one of the identifiers cannot get instantiated.
@@ -104,6 +105,7 @@ public class SubformatScanService implements FormatScanService, Connector {
 			c = (Class<FormatIdentifier>) Class.forName(className);
 			java.lang.reflect.Constructor<FormatIdentifier> co = c.getConstructor();
 			sfi= co.newInstance();
+			sfi.setKnownFormatCommandLineErrors(knownFormatCmdLineErrors);
 			return sfi;
 		}catch(Exception e) {
 			throw new RuntimeException("Error creating instance of subformat identifier",e);
@@ -126,6 +128,12 @@ public class SubformatScanService implements FormatScanService, Connector {
 			}
 		}
 		return passed;
+	}
+
+
+	@Override
+	public void setKnownFormatCmdLineErrors(KnownFormatCmdLineErrors knownFormatCmdLineErrors) {
+		this.knownFormatCmdLineErrors = knownFormatCmdLineErrors;
 	}
 
 }

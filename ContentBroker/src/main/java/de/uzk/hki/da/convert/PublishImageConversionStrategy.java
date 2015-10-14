@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.FormatCmdLineExecutor;
+import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -62,6 +63,8 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 	private String resizeWidth = null;
 	
 	private boolean prune;
+	
+	private KnownFormatCmdLineErrors knownErrors;
 	/**
 	 */
 	@Override
@@ -100,7 +103,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			logger.debug(commandAsList.toString());
 			String[] commandAsArray = new String[commandAsList.size()];
 			commandAsArray = commandAsList.toArray(commandAsArray);
-			FormatCmdLineExecutor cle = new FormatCmdLineExecutor(cliConnector);
+			FormatCmdLineExecutor cle = new FormatCmdLineExecutor(cliConnector,knownErrors);
 			cle.setPruneExceptions(prune);
 			
 			
@@ -166,7 +169,7 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 	private String getImageWidth(String absolutePath) {
 		String[] cmd = new String[]{"identify", "-format", "%w",
 				absolutePath};
-		FormatCmdLineExecutor cle = new FormatCmdLineExecutor(cliConnector);
+		FormatCmdLineExecutor cle = new FormatCmdLineExecutor(cliConnector, knownErrors);
 		cle.setPruneExceptions(prune);
 		cle.execute(cmd);
 		return cle.getStdOut();
@@ -331,6 +334,13 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 	public void setPruneErrorOrWarnings(boolean prune) {
 		this.prune = prune;
 		
+	}
+
+
+	@Override
+	public void setKnownFormatCommandLineErrors(
+			KnownFormatCmdLineErrors knownErrors) {
+		this.knownErrors = knownErrors;
 	}
 
 }

@@ -43,6 +43,7 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -264,6 +265,12 @@ public class PublishXSLTConversionStrategy implements ConversionStrategy {
 	@Override
 	public void setPruneErrorOrWarnings(boolean prune) {
 		
+	}
+
+
+	@Override
+	public void setKnownFormatCommandLineErrors(
+			KnownFormatCmdLineErrors knownErrors) {
 	}
 
 }

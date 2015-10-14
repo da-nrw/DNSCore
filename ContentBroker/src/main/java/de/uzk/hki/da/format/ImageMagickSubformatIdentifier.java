@@ -11,6 +11,8 @@ public class ImageMagickSubformatIdentifier implements FormatIdentifier, Connect
 	
 	CommandLineConnector cli;
 	
+	KnownFormatCmdLineErrors knownErrors;
+	
 	@Override
 	public String identify(File f,boolean pruneExceptions) throws IOException {
 	
@@ -27,7 +29,7 @@ public class ImageMagickSubformatIdentifier implements FormatIdentifier, Connect
 		
 		String[] cmd = new String []{
 					"identify","-format","'%C'",input};
-		FormatCmdLineExecutor cle = new FormatCmdLineExecutor( getCliConnector());
+		FormatCmdLineExecutor cle = new FormatCmdLineExecutor( getCliConnector(), knownErrors);
 		cle.setPruneExceptions(pruneExceptions);
 		cle.execute(cmd);
 		String compression = cle.getStdOut();
@@ -62,6 +64,17 @@ public class ImageMagickSubformatIdentifier implements FormatIdentifier, Connect
 	public CommandLineConnector getCliConnector() {
 		if (cli==null) this.cli = new CommandLineConnector();
 		return cli;
+	}
+
+	@Override
+	public void setKnownFormatCommandLineErrors(
+		KnownFormatCmdLineErrors knownErrors) {
+		this.knownErrors = knownErrors;
+	}
+
+	@Override
+	public KnownFormatCmdLineErrors getKnownFormatCommandLineErrors() {
+		return null;
 	}
 
 }

@@ -32,8 +32,11 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
@@ -55,7 +58,10 @@ import de.uzk.hki.da.utils.RelativePath;
 public class TiffConversionStrategyTests {
 	
 	private static final String TIFF_CONVERSION_STRATEGY_TESTS = "TiffConversionStrategyTests";
-
+	private static final String BEANS_ERROR_INFRASTRUCTURE = "classpath*:META-INF/beans-infrastructure.knownerrors.xml";
+	
+	private static final String TIFF_STD_ERR = "wrong data type 2 for \"RichTIFFIPTC\"; tag ignored ... TIFFErrors....";
+	
 	Path workAreaRootPath=Path.make(TC.TEST_ROOT_CONVERT,TIFF_CONVERSION_STRATEGY_TESTS);
 	Path contractorFolder=Path.make(workAreaRootPath,"work",C.TEST_USER_SHORT_NAME);
 	
@@ -208,7 +214,7 @@ public class TiffConversionStrategyTests {
 		pi.setExitValue(1);
 		
 		pi.setStdOut("");
-		pi.setStdErr("wrong data type 2 for \"RichTIFFIPTC\"; tag ignored");
+		pi.setStdErr(TIFF_STD_ERR);
 		CommandLineConnector cli = mock ( CommandLineConnector.class );
 		
 		String cmdIdentify[] = new String[] {
@@ -216,10 +222,15 @@ public class TiffConversionStrategyTests {
 		};
 
 		when(cli.runCmdSynchronously(cmdIdentify)).thenReturn(pi);
+		AbstractApplicationContext context = 
+				new FileSystemXmlApplicationContext(BEANS_ERROR_INFRASTRUCTURE);
+		KnownFormatCmdLineErrors kle = (KnownFormatCmdLineErrors) context.getBean("knownErrors");
+		context.close();
 		
 		TiffConversionStrategy cs = new TiffConversionStrategy();
 		cs.setCLIConnector(cli);
 		cs.setObject(o);
+		cs.setKnownFormatCommandLineErrors(kle);
 		ConversionInstruction ci = new ConversionInstruction();
 		ConversionRoutine cr = new ConversionRoutine();
 		ci.setConversion_routine(cr);
@@ -253,13 +264,13 @@ public class TiffConversionStrategyTests {
 		identify.setExitValue(1);
 		
 		identify.setStdOut("");
-		identify.setStdErr("wrong data type 2 for \"RichTIFFIPTC\"; tag ignored");
+		identify.setStdErr(TIFF_STD_ERR);
 		CommandLineConnector cli = mock ( CommandLineConnector.class );
 		
 		ProcessInformation convert = new ProcessInformation();
 		convert.setExitValue(1);
 		convert.setStdOut("");
-		convert.setStdErr("wrong data type 2 for \"RichTIFFIPTC\"; tag ignored");
+		convert.setStdErr(TIFF_STD_ERR);
 		
 		String cmdIdentify[] = new String[] {
 				"identify", "-format", "'%C'", new File(workAreaRootPath + "/work/TEST/1/data/rep+a/0001_L.TIF").getAbsolutePath()
@@ -267,7 +278,11 @@ public class TiffConversionStrategyTests {
 		String cmdConvert[] = new String[] {
 				"convert", "+compress", new File(workAreaRootPath + "/work/TEST/1/data/rep+a/0001_L.TIF").getAbsolutePath(),workAreaRootPath + "/work/TEST/1/data/rep+b/0001_L.TIF"
 		};
-	
+		AbstractApplicationContext context = 
+				new FileSystemXmlApplicationContext(BEANS_ERROR_INFRASTRUCTURE);
+		KnownFormatCmdLineErrors kle = (KnownFormatCmdLineErrors) context.getBean("knownErrors");
+		context.close();
+		
 		when(cli.runCmdSynchronously(cmdIdentify)).thenReturn(identify);
 		when(cli.runCmdSynchronously(cmdConvert)).thenReturn(convert);
 		
@@ -275,6 +290,7 @@ public class TiffConversionStrategyTests {
 		cs.setCLIConnector(cli);
 		cs.setObject(o);
 		cs.setPruneErrorOrWarnings(true);
+		cs.setKnownFormatCommandLineErrors(kle);
 		ConversionInstruction ci = new ConversionInstruction();
 		ConversionRoutine cr = new ConversionRoutine();
 		ci.setConversion_routine(cr);
