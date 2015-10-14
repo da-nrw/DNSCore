@@ -1,11 +1,11 @@
 ## Leistungsmerkmal: Umgang mit fehlerhaften Tags bei TIFF
 
-Die momentane Version der DNS steuert TIFF mit fehlerhaften Tags im Rich-IPTC Bereich zunächst als fehlerhaft aus.
+Die momentane Version der DNS steuert TIFF mit fehlerhaften Tags im Rich-IPTC Bereich korrekt im Sinne der Spezifikation als fehlerhaft aus.
 Je nach Entscheidung des Contractors wird die Archivierung dennoch vorgenommen, falls der Contractor diese Entscheidung per Webmaske vorgenommen hat. 
 
 Bei einigen Bildern, die in der von einem komerziellen Unternehmen vorgeschlagenen Formaterweiterung des TIFF Standards geschickt werden (im Folgenden verkürzend "BigTiff" genannnt), können diese als fehlerhaft erkannt werden.
 
-Der einzig bekannte Fehler äußert sic durch die Fehlerausgabe von: 
+Der einzig bekannte Fehler äußert sich durch die Fehlerausgabe von (Bsp.): 
 
 ```
 74134.tif TIFF 3474x2141 3474x2141+0+0 8-bit Grayscale DirectClass 7.094mb 
@@ -27,18 +27,15 @@ Dafür wird eine Rückfrage des Systems ausgelöst, da eine Rückbestätigung de
 
 #### Kontext:
 
+* [ATInvalidTiffTagsInBigTiff](../../test/java/de/uzk/hki/da/at/ATInvalidTiffTagsInBigTiff.java)
+
 ## Hintergrund
 
-gilt für alle Szenarien!
+Beschreibung (s.o.), gilt für alle Szenarien!
 
 #### Testpaket(e):
 
-```
-(GitHub) NameDesTestPakets.tgz
-  data/premis.xml
-  data/ok.tif
-  data/failure_in_tag.tif (enthält nicht standardkonforme Tiff-Tags)
-```
+ATInvalidTiffTagsInBigTiff.tgz
 
 #### Vorbedingung:
 
