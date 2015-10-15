@@ -41,7 +41,7 @@ Tag 33437: FNumber Exif Private IFD spec p. 39
 
 #### Kontext:
 
-* [ATInvalidTiffTagsInBigTiff](../../test/java/de/uzk/hki/da/at/ATInvalidTiffTagsInBigTiff.java)testInvalidTiffTagsDetectUserException
+* [ATInvalidTiffTagsInBigTiff](../../test/java/de/uzk/hki/da/at/ATInvalidTiffTagsInBigTiff.java)#testInvalidTiffTagsDetectUserException
 
 #### Testpaket:
 
@@ -69,7 +69,7 @@ Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Pr
 
 #### Kontext:
 
-* [ATInvalidTiffTagsInBigTiff](../../test/java/de/uzk/hki/da/at/ATInvalidTiffTagsInBigTiff.java)testInvalidTiffTagsPrunedByUser
+* [ATInvalidTiffTagsInBigTiff](../../test/java/de/uzk/hki/da/at/ATInvalidTiffTagsInBigTiff.java)#testInvalidTiffTagsPrunedByUser
 
 #### Testpaket:
 
@@ -81,7 +81,7 @@ Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Pr
 
 #### Durchführung:
 
-1. wie AT-TIFFT-1.
+1. zunächst wie AT-TIFFT-1.
 1. Nach Erhalt des Email-Report: Einsichtnahme in Maske "Entscheidungsübersicht" der DA-Web.
 1. In der Maske "Entscheidungsübersicht" bestätigt der Vertragspartner die Rückfrage mit *"Ja - Ingest fortführen"*.
 
@@ -101,7 +101,7 @@ Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Pr
 
 #### Kontext:
 
-* [ATInvalidTiffTagsInBigTiff](../../test/java/de/uzk/hki/da/at/ATInvalidTiffTagsInBigTiff.java)testInvalidTiffTagsPrunedByUser
+* [ATInvalidTiffTagsInBigTiff](../../test/java/de/uzk/hki/da/at/ATInvalidTiffTagsInBigTiff.java)#testInvalidTiffTagsPrunedByUser
 
 #### Testpaket:
 
@@ -113,7 +113,7 @@ wie AT-TIFFT-1
 
 #### Durchführung:
 
-1. Siehe Hintergrund.
+1. zunächst wie AT-TIFFT-1.
 1. Nach Erhalt des Email-Report: Einsichtnahme in Maske "Entscheidungsübersicht" der DA-Web.
 1. In der Maske "Entscheidungsübersicht" bestätigt der Vertragspartner die Rückfrage mit *"Nein - Ingest abbrechen"*.
 
