@@ -35,7 +35,7 @@ public enum Feedback {
 	ABORT(29),
 	GUI_ERROR(30),
 	INVALID_METADATA(31),
-	WRONG_REFERENCES_IN_METADATA(31);
+	WRONG_REFERENCES_IN_METADATA(32);
 	
 	private int value;
 	

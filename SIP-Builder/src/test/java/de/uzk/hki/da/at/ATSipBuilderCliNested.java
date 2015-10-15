@@ -37,7 +37,7 @@ import org.junit.Test;
  *
  */
 
-public class ATSipBuilderCliMode {
+public class ATSipBuilderCliNested {
 
 	private static String nestedSip1 = "urn+nbn+de+hbz+42.tgz";
 	private static String nestedSip2 = "urn+nbn+de+hbz+6+1-3602.tgz";

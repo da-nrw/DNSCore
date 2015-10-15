@@ -715,6 +715,7 @@ public class SIPFactory {
 							String msg = "Aus dem Verzeichnis "+f+" wird kein SIP erstellt. \n"+e.getMessage();
 							messageWriter.showLongErrorMessage(msg);
 							tmpFolderListWithNames.remove(f);
+							returnCode = Feedback.WRONG_REFERENCES_IN_METADATA;
 						} else {
 							String msg = e.getMessage()+" \nMöchten Sie die SIP-Erstellung dennoch fortsetzen?";
 							logger.error(msg);

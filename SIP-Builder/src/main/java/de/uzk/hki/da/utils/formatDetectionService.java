@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
@@ -82,44 +84,43 @@ public class formatDetectionService {
 	
 	public TreeMap<File, String> getMetadataFileWithType() throws Exception {
 		File folder = this.file;
-		System.out.println("Get metadata type of package "+folder);
+		logger.info("Get metadata type of package "+folder);
 		TreeMap<File, String> fileWithType = new TreeMap<File, String>();
-		File metadataFile = null;
-		int countMets = 0;
-		int countEad = 0;
-		int countLido = 0;
+		List<File> eadFiles = new ArrayList<File>();
+		List<File> metsFiles = new ArrayList<File>();
+		List<File> lidoFiles = new ArrayList<File>();
 		for(File f: folder.listFiles()) {
-			System.out.println("Check file "+f);
+			logger.info("Check file "+f);
 			if(isXml(f)) {
-				System.out.println(f+" is a xml file");
+				logger.info(f+" is a xml file");
 				String mt = getMetadataType(f);
 				if(mt.equals(C.CB_PACKAGETYPE_METS)) {
-					System.out.println("of type METS");
-					metadataFile = f;
-					countMets++;
+					logger.info("of type METS");
+					metsFiles.add(f);
 				} else if(mt.equals(C.CB_PACKAGETYPE_EAD)) {
 					System.out.println("of type EAD");
-					metadataFile = f;
-					countEad++;
+					eadFiles.add(f);
 				} else if(mt.equals(C.CB_PACKAGETYPE_LIDO)) {
-					System.out.println("of type LIDO");
-					metadataFile = f;
-					countLido++;
+					logger.info("of type LIDO");
+					lidoFiles.add(f);
 				}
 			}
 		}
-		if(countEad+countMets+countLido==1) {
-			if(countEad==1) fileWithType.put(metadataFile, C.CB_PACKAGETYPE_EAD);
-			if(countMets==1) fileWithType.put(metadataFile, C.CB_PACKAGETYPE_METS);
-			if(countLido==1) fileWithType.put(metadataFile, C.CB_PACKAGETYPE_LIDO);
-			return fileWithType;
-		} else if (countEad==1 && countMets>=0){
-			if(countEad==1) fileWithType.put(metadataFile, C.CB_PACKAGETYPE_EAD);
-		} else if(countEad+countMets+countLido>1) {
-			throw new Exception("Im Verzeichnis "+folder.getName()+" wurde mehr als eine Metadatendatei gefunden. \nBekannte Formate sind: EAD, METS, LIDO.");
-		} else if(countEad+countMets+countLido==0) {
+		if(eadFiles.size()+metsFiles.size()+lidoFiles.size()==1) {
+			if(eadFiles.size()==1) fileWithType.put(eadFiles.get(0), C.CB_PACKAGETYPE_EAD);
+			if(metsFiles.size()==1) fileWithType.put(metsFiles.get(0), C.CB_PACKAGETYPE_METS);
+			if(lidoFiles.size()==1) fileWithType.put(lidoFiles.get(0), C.CB_PACKAGETYPE_LIDO);
+		} else if (eadFiles.size()==1 && metsFiles.size()>=0){
+			fileWithType.put(eadFiles.get(0), C.CB_PACKAGETYPE_EAD);
+		} else if(eadFiles.size()+metsFiles.size()+lidoFiles.size()>1) {
+			throw new Exception("Im Verzeichnis "+folder.getName()+" wurde mehr als eine Metadatendatei gefunden. " +
+					"\nEAD: " + eadFiles +
+					"\nMETS: " + metsFiles + 
+					"\nLIDO: "+lidoFiles);
+		} else if(eadFiles.size()+metsFiles.size()+lidoFiles.size()==0) {
 			logger.error("Im Verzeichnis "+folder.getName()+" wurde keine Metadatendatei gefunden. \nBekannte Formate sind: EAD, METS, LIDO.");
 		}
+		logger.info("Identified metadata file "+fileWithType);
 		return fileWithType;
 	}
 	

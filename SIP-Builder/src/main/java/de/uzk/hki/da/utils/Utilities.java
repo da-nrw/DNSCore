@@ -291,7 +291,7 @@ public class Utilities {
 	}
 
 	public static void validateFileReferencesInMetadata(File metadataFile, String metadataType) throws Exception {
-		logger.info("Checking references in metadata ...");
+		logger.info("Checking references in metadata file "+metadataFile);
 		List<String> references = new ArrayList<String>();
 		List<String> wrongRefs = new ArrayList<String>();
 		if(metadataType.equals(C.CB_PACKAGETYPE_METS)) {
@@ -316,7 +316,9 @@ public class Utilities {
 	private static boolean fileReferenceInXmlIsValid(String reference, File metadataFile) throws IOException {
 		boolean isValid = false;
 		File referencedFile = new File(metadataFile.getParentFile(), reference).getCanonicalFile();
+		logger.debug("Check reference "+reference+" in metadata file "+metadataFile);
 		if(referencedFile.exists() && referencedFile.getAbsolutePath().startsWith(metadataFile.getParentFile().getAbsolutePath()+"")) {
+			logger.debug("File "+referencedFile+" exists");
 			isValid = true;
 		}	
 		return isValid;
