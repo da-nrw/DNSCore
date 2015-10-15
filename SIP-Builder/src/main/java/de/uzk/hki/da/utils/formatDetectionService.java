@@ -82,21 +82,27 @@ public class formatDetectionService {
 	
 	public TreeMap<File, String> getMetadataFileWithType() throws Exception {
 		File folder = this.file;
+		System.out.println("Get metadata type of package "+folder);
 		TreeMap<File, String> fileWithType = new TreeMap<File, String>();
 		File metadataFile = null;
 		int countMets = 0;
 		int countEad = 0;
 		int countLido = 0;
 		for(File f: folder.listFiles()) {
+			System.out.println("Check file "+f);
 			if(isXml(f)) {
+				System.out.println(f+" is a xml file");
 				String mt = getMetadataType(f);
 				if(mt.equals(C.CB_PACKAGETYPE_METS)) {
+					System.out.println("of type METS");
 					metadataFile = f;
 					countMets++;
 				} else if(mt.equals(C.CB_PACKAGETYPE_EAD)) {
+					System.out.println("of type EAD");
 					metadataFile = f;
 					countEad++;
 				} else if(mt.equals(C.CB_PACKAGETYPE_LIDO)) {
+					System.out.println("of type LIDO");
 					metadataFile = f;
 					countLido++;
 				}
