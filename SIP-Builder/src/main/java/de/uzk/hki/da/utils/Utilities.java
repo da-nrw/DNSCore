@@ -317,9 +317,13 @@ public class Utilities {
 		boolean isValid = false;
 		File referencedFile = new File(metadataFile.getParentFile(), reference).getCanonicalFile();
 		logger.debug("Check reference "+reference+" in metadata file "+metadataFile);
-		if(referencedFile.exists() && referencedFile.getAbsolutePath().startsWith(metadataFile.getParentFile().getAbsolutePath()+"")) {
-			logger.debug("File "+referencedFile+" exists");
-			isValid = true;
+		if(referencedFile.exists()) {
+			logger.debug("File "+referencedFile.getAbsolutePath()+" exists.");
+			logger.debug("Check if file is inside a sip canidate "+metadataFile.getParentFile().getAbsolutePath());
+			if(referencedFile.getAbsolutePath().startsWith(metadataFile.getParentFile().getAbsolutePath())) {
+				logger.debug("File "+referencedFile+" is inside a sip");
+				isValid = true;
+			}
 		}	
 		return isValid;
 	}
