@@ -74,6 +74,11 @@
     <bean id="userDecisionTimeoutWorker" class="de.uzk.hki.da.core.UserDecisionTimeoutWorker" init-method="init">
         <property name="localNode" ref="localNode" />
     </bean>
+    <bean id="timeBasedPublicationWorker" class="de.uzk.hki.da.core.TimeBasedPublicationWorker" init-method="init">
+        <property name="pauseForDays" value="30" />
+        <property name="localNode" ref="localNode" />
+        <property name="pollForCi" value="${timeBasedPublicationWorker.pollForCi:false}" />
+    </bean>
     <bean id="systemEventWorker" class="de.uzk.hki.da.event.SystemEventWorker" init-method="init">
         <property name="localNode" ref="localNode" />
     </bean>
