@@ -315,12 +315,12 @@ public class Utilities {
 	
 	private static boolean fileReferenceInXmlIsValid(String reference, File metadataFile) throws IOException {
 		boolean isValid = false;
-		File referencedFile = new File(metadataFile.getParentFile(), reference).getCanonicalFile();
+		File referencedFile = new File(metadataFile.getParentFile(), reference);
 		logger.debug("Check reference "+reference+" in metadata file "+metadataFile);
 		if(referencedFile.exists()) {
 			logger.debug("File "+referencedFile.getAbsolutePath()+" exists.");
 			logger.debug("Check if file is inside a sip canidate "+metadataFile.getParentFile().getAbsolutePath());
-			if(referencedFile.getAbsolutePath().startsWith(metadataFile.getParentFile().getAbsolutePath())) {
+			if(referencedFile.getCanonicalPath().startsWith(metadataFile.getParentFile().getAbsolutePath())) {
 				logger.debug("File "+referencedFile+" is inside a sip");
 				isValid = true;
 			}
