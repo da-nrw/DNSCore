@@ -315,8 +315,8 @@ public class Utilities {
 	
 	private static boolean fileReferenceInXmlIsValid(String reference, File metadataFile) throws IOException {
 		boolean isValid = false;
-		File referencedFile = new File(metadataFile.getParentFile(), reference);
-		if(referencedFile.exists()) {
+		File referencedFile = new File(metadataFile.getParentFile(), reference).getCanonicalFile();
+		if(referencedFile.exists() && referencedFile.getAbsolutePath().startsWith(metadataFile.getParentFile().getAbsolutePath()+"")) {
 			isValid = true;
 		}	
 		return isValid;

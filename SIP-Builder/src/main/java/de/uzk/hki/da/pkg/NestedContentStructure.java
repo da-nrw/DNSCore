@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import org.apache.commons.io.input.BOMInputStream;
+import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -27,16 +28,14 @@ import de.uzk.hki.da.utils.formatDetectionService;
 
 public class NestedContentStructure {
 	
+	private Logger logger = Logger.getLogger(NestedContentStructure.class);
+	
 	public File rootFile;
 	public HashMap<File, String> sipCandidatesWithUrns = new HashMap<File, String>();
 	
 	public NestedContentStructure(File sourceRootFile) throws Exception {
 		setRootFile(sourceRootFile);
-		try {
-			searchForSipCandidates(sourceRootFile);
-		} catch (JDOMException e) {
-			throw new Exception(e);
-		}
+		searchForSipCandidates(sourceRootFile);
 	}
 	
 	public File getRootFile() {
@@ -56,29 +55,43 @@ public class NestedContentStructure {
 	 * @throws Exception 
 	 */
 	public void searchForSipCandidates(File dir) throws Exception {
+		logger.info("Searching in folder "+dir+" for SIP candidates ...");
 		File currentDir = dir;
 		for(File f : currentDir.listFiles()) {
-			if(getIncludedDirs(f).isEmpty()) { 
-				TreeMap<File, String> metadataFileWithType = new formatDetectionService(f).getMetadataFileWithType();
-				if(!metadataFileWithType.isEmpty() && !metadataFileWithType.get(metadataFileWithType.firstKey()).equals(C.CB_PACKAGETYPE_EAD)) {
-					List<File> metsFiles = getMetsFileFromDir(f);
-					if(metsFiles.size()==1) {
-						File metsFile = metsFiles.get(0);
-						String urn = getUrn(metsFile);
-						String newPackageName = urn.replace(":", "+");
-						sipCandidatesWithUrns.put(f, newPackageName);
+			if(f.isDirectory() && getIncludedDirs(f).isEmpty()) { 
+				logger.info("Current folder "+f+" is leaf");
+				TreeMap<File, String> metadataFileWithType;
+				metadataFileWithType = new formatDetectionService(f).getMetadataFileWithType();
+				if(!metadataFileWithType.isEmpty()) {
+					File metadataFile = metadataFileWithType.firstKey();
+					String metadataType = metadataFileWithType.get(metadataFile);
+					logger.debug("Metadata file found: "+metadataFile+"; type : "+metadataType);
+					if(metadataType.equals(C.CB_PACKAGETYPE_METS)) {
+						List<File> metsFiles = getMetsFileFromDir(f);
+						if(metsFiles.size()==1) {
+							File metsFile = metsFiles.get(0);
+							String urn = getUrn(metsFile);
+							String newPackageName = urn.replace(":", "+");
+							sipCandidatesWithUrns.put(f, newPackageName);
+						}
 					}
 				}
+			} else if(!f.isDirectory()) {
+				logger.info("Current folder "+f+" isn't directory. Skipping ...");
 			} else {
+				logger.info("Current folder "+f+" isn't leaf directory");
 				searchForSipCandidates(f);
 			}
 		}
 	}
 	
 	private List<File> getIncludedDirs(File dir) {
+		logger.info("Check if file "+dir+" contains directories");
 		List<File> dirs = new ArrayList<File>();
 		for(File f : dir.listFiles()) {
+			logger.info("file "+f);
 			if(f.isDirectory()) {
+				logger.debug("is a directory");
 				dirs.add(f);
 			}
 		}
