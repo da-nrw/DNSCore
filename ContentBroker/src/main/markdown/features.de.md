@@ -1,6 +1,6 @@
 # Liste der Features und Leistungsmerkmale der Anwendung DNSCore
 
-* SIPBuilder - Graphical user interface and CLI for End-Users - Grafische Benutzeroberfläche für Endkunden zur Erzeugung von SIP für das DNS. Möglichkeit zur Einbettung in Drittsysteme durch Command Line Interface (CLI). 
+* SIPBuilder - Graphical user interface and CLI for End-Users for building SIP - Grafische Benutzeroberfläche für Endkunden zur Erzeugung von SIP für das DNS. Möglichkeit zur Einbettung in Drittsysteme durch Command Line Interface (CLI). 
 * DAWeb Webinterface - Grafische Benutzeroberfläche zur Steuerung des Archivs durch Benutzer und Administratoren. Abfragemöglichkeit für techn. Drittsysteme.
 * Storage Layer - Geographische Verteilung und Replikation der Daten.
 * Self validating - Selbstprüfung unter Maßstäben der Bitstream-Preservation.
