@@ -22,7 +22,7 @@ public class ATSipBuilderCliEad {
 	
 	@Before
 	public void setUp() throws IOException{	
-		FileUtils.deleteDirectory(new File("target/atTargetDir/"));
+		FileUtils.deleteDirectory(targetDir);
 	}
 	
 	@After
