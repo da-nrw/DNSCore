@@ -18,3 +18,5 @@ checksumWorker.trustChecksumForDays=30
 checksumWorker.allowedNumOfCopyjobs=0
 checksumWorker.startTime=0
 checksumWorker.endTime=3
+
+timeBasedPublicationWorker.pollForCi=true

@@ -29,16 +29,17 @@ public class UserDecisionTimeoutWorker extends Worker {
 	@Override
 	public void scheduleTaskImplementation() {
 		try {
-			this.updateTimedOut();
+			Session session = HibernateUtil.openSession();
+			this.updateTimedOut(session);
+			session.close();
 		} catch (Exception exc) {
 			logger.error("Error executing:", exc);
 		}
 	}
 
-	protected void updateTimedOut() {
+	protected void updateTimedOut(Session session) {
 		logger.debug("updateTimedOut");
 
-		Session session = HibernateUtil.openSession();
 
 		String dateBefore = String.valueOf(new Date().getTime() / 1000L - 864000 * 30);
 
@@ -74,7 +75,6 @@ public class UserDecisionTimeoutWorker extends Worker {
 					+ " newStatus: " + jobbi.getStatus());
 		}
 		transi.commit();
-		session.close();
 	}
 
 	private String switchStatus(String startStatus,String digit) {

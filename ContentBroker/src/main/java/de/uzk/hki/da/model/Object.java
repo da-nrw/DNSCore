@@ -179,6 +179,10 @@ public class Object {
 	@Column(name="most_recent_secondary_attributes", columnDefinition="varchar(2048)")
 	private String mostRecentSecondaryAttributes = "";
 	
+	/** last publication try (time based) */
+	@Column(name="last_publication_try")
+	private Date lastPublicationTry;
+
 	/** The rights. */
 	@Transient
 	private RightsStatement rights = new RightsStatement();
@@ -871,6 +875,14 @@ public class Object {
 		this.metadata_file = metadata_file;
 	}
 	
+	public Date getLastPublicationTry() {
+		return lastPublicationTry;
+	}
+
+	public void setLastPublicationTry(Date lastPublicationTry) {
+		this.lastPublicationTry = lastPublicationTry;
+	}
+
 	/**
 	 * Gets the files of a representation based on the information stored
 	 * in the object tree. 
