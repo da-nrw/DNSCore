@@ -79,12 +79,28 @@ public class ATSipBuilderCliEad {
 		BufferedReader stdError = new BufferedReader(new
 	    InputStreamReader(p.getErrorStream()));
 		 
+		boolean falseReferencesInFileMsg = false;
+		boolean fileListMsg = false;
+		boolean metsFile45Missed = false;
 		String s = "";
 		// read the output from the command
 	    System.out.println("Here is the standard output of the command:\n");
 	    while ((s = stdInput.readLine()) != null) {
 	         System.out.println(s);
+	         if(s.contains("EAD_Export.XML enthält falsche Referenzen")) {
+	        	 falseReferencesInFileMsg = true;
+	         }
+	         if(s.contains("Folgende Dateien konnten nicht gefunden werden")) {
+	        	 fileListMsg = true;
+	         }
+	         if(s.contains("../mets_2_32045.xml")); {
+	        	 metsFile45Missed = true;
+	         }
 	    }
+	    
+	    assertTrue(falseReferencesInFileMsg);
+	    assertTrue(fileListMsg);
+	    assertTrue(metsFile45Missed);
 	
 	    // read any errors from the attempted command
 	    System.out.println("Here is the standard error of the command (if any):\n");
