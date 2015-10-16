@@ -319,8 +319,9 @@ public class Utilities {
 		logger.debug("Check reference "+reference+" in metadata file "+metadataFile);
 		if(referencedFile.exists()) {
 			logger.debug("File "+referencedFile.getAbsolutePath()+" exists.");
-			logger.debug("Check if file is inside a sip canidate "+metadataFile.getParentFile().getAbsolutePath());
-			if(referencedFile.getCanonicalPath().startsWith(metadataFile.getParentFile().getAbsolutePath())) {
+			File sipMain = new File(metadataFile.getParentFile(), "");
+			logger.debug("Check if file is inside a sip canidate "+sipMain);
+			if(referencedFile.getCanonicalPath().startsWith(sipMain.getCanonicalPath())) {
 				logger.debug("File "+referencedFile+" is inside a sip");
 				isValid = true;
 			}
