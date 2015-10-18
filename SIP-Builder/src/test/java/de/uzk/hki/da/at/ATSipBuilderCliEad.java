@@ -83,11 +83,15 @@ public class ATSipBuilderCliEad {
 		boolean fileListMsg = false;
 		boolean metsFile45Missed = false;
 		boolean identifiedMetadataType = false;
+		boolean noSipCreated = false;
 		String s = "";
 		// read the output from the command
 	    System.out.println("Here is the standard output of the command:\n");
 	    while ((s = stdInput.readLine()) != null) {
 	         System.out.println(s);
+	         if(s.contains("Identified metadata file") && s.contains("DNSCore/SIP-Builder/src/test/resources/at/ATBuildSingleEadSipWrongRefErrorCase/ATBuildSingleEadSipWrongRefError/EAD_Export.XML=EAD}")) {
+	        	 identifiedMetadataType = true;
+	         }
 	         if(s.contains("EAD_Export.XML enthält falsche Referenzen")) {
 	        	 falseReferencesInFileMsg = true;
 	         }
@@ -97,8 +101,10 @@ public class ATSipBuilderCliEad {
 	         if(s.contains("[../mets_2_32045.xml]")); {
 	        	 metsFile45Missed = true;
 	         }
-	         if(s.contains("Identified metadata file") && s.contains("DNSCore/SIP-Builder/src/test/resources/at/ATBuildSingleEadSipWrongRefErrorCase/ATBuildSingleEadSipWrongRefError/EAD_Export.XML=EAD}")) {
-	        	 identifiedMetadataType = true;
+	         if(s.contains("Aus dem Verzeichnis") &&
+	        		 s.contains("DNSCore/SIP-Builder/src/test/resources/at/ATBuildSingleEadSipWrongRefErrorCase/ATBuildSingleEadSipWrongRefError "
+	         		+ "wird kein SIP erstellt.")) {
+	        	 noSipCreated = true;
 	         }
 	    }
 	    
@@ -106,6 +112,7 @@ public class ATSipBuilderCliEad {
 	    assertTrue(falseReferencesInFileMsg);
 	    assertTrue(fileListMsg);
 	    assertTrue(metsFile45Missed);
+	    assertTrue(noSipCreated);
 	
 	    // read any errors from the attempted command
 	    System.out.println("Here is the standard error of the command (if any):\n");
