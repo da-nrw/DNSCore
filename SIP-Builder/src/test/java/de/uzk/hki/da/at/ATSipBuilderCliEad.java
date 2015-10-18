@@ -94,7 +94,7 @@ public class ATSipBuilderCliEad {
 	         if(s.contains("Folgende Dateien konnten nicht gefunden werden")) {
 	        	 fileListMsg = true;
 	         }
-	         if(s.contains("../mets_2_32045.xml")); {
+	         if(s.contains("[../mets_2_32045.xml]")); {
 	        	 metsFile45Missed = true;
 	         }
 	         if(s.contains("Identified metadata file") && s.contains("DNSCore/SIP-Builder/src/test/resources/at/ATBuildSingleEadSipWrongRefErrorCase/ATBuildSingleEadSipWrongRefError/EAD_Export.XML=EAD}")) {
