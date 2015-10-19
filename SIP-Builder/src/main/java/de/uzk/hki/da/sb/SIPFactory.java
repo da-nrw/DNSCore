@@ -708,7 +708,9 @@ public class SIPFactory {
 						if(!metadataFileWithType.isEmpty()) {
 							File file = metadataFileWithType.firstKey();
 							metadataType = metadataFileWithType.get(file);
-							Utilities.validateFileReferencesInMetadata(file, metadataType);						
+							if(metadataType!=C.CB_PACKAGETYPE_XMP) {
+								Utilities.validateFileReferencesInMetadata(file, metadataType);	
+							}				
 						}
 					} catch (Error e) {
 						if(metadataType.equals(C.CB_PACKAGETYPE_EAD)) {

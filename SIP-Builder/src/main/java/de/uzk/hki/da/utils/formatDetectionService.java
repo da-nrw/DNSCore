@@ -2,12 +2,15 @@ package de.uzk.hki.da.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.tika.Tika;
 
@@ -19,6 +22,7 @@ public class formatDetectionService {
 	String eadPattern = ".*(?s)\\A.{0,1000}\\x3cead[^\\x3c]{0,1000}\\x3ceadheader.*";
 	String metsPattern = ".*(?s)\\A.{0,1000}\\x3c([^: ]+:)?mets[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.loc.gov/METS.*";
 	String lidoPattern = ".*(?s)\\A.{0,1000}\\x3c([^: ]+:)?lidoWrap[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.lido-schema.org.*";
+	String xmpPattern = "http://www.w3.org/1999/02/22-rdf-syntax-ns";
 	
 	public File file;
 	
@@ -54,7 +58,15 @@ public class formatDetectionService {
 		}
 	}
 	
-	public String getMetadataType(File xmlFile) throws IOException {
+	public boolean isText(File f) throws IOException {
+		if(this.detectMimeType(f).equals("text/plain")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public String getMetadataTypeXml(File xmlFile) throws IOException {
 		String metadataType = "";
 		String beginningOfFile = convertFirst10LinesOfFileToString(xmlFile);
 		if(beginningOfFile.matches(metsPattern)) {
@@ -63,6 +75,30 @@ public class formatDetectionService {
 			metadataType = C.CB_PACKAGETYPE_EAD;
 		} else if(beginningOfFile.matches(lidoPattern)) {
 			metadataType = C.CB_PACKAGETYPE_LIDO;
+		} 
+		return metadataType;
+	}
+	
+	public String getMetadataTypeText(File textFile) throws IOException {
+		String metadataType = "";
+		StringBuilder contents = new StringBuilder();
+		try {
+			BufferedReader input =  new BufferedReader(new FileReader(textFile));
+			try {
+		        String line = null;
+		        while (( line = input.readLine()) != null){
+		          contents.append(line);
+		          contents.append(System.getProperty("line.separator"));
+		        }
+			}
+			finally {
+				input.close();
+			}
+			if(contents.toString().contains(xmpPattern)) {
+				metadataType = C.CB_PACKAGETYPE_XMP;
+			} 
+		} catch (Exception e) {
+			logger.debug("Unable to read the text file "+textFile);
 		}
 		return metadataType;
 	}
@@ -89,24 +125,35 @@ public class formatDetectionService {
 		List<File> eadFiles = new ArrayList<File>();
 		List<File> metsFiles = new ArrayList<File>();
 		List<File> lidoFiles = new ArrayList<File>();
+		List<File> xmpFiles = new ArrayList<File>();
 		for(File f: folder.listFiles()) {
 			logger.info("Check file "+f);
 			if(isXml(f)) {
 				logger.info(f+" is a xml file");
-				String mt = getMetadataType(f);
+				String mt = getMetadataTypeXml(f);
 				if(mt.equals(C.CB_PACKAGETYPE_METS)) {
 					logger.info("of type METS");
 					metsFiles.add(f);
 				} else if(mt.equals(C.CB_PACKAGETYPE_EAD)) {
-					System.out.println("of type EAD");
+					logger.info("of type EAD");
 					eadFiles.add(f);
 				} else if(mt.equals(C.CB_PACKAGETYPE_LIDO)) {
 					logger.info("of type LIDO");
 					lidoFiles.add(f);
 				}
+			} 
+			else if(isText(f)) {
+				logger.info(f+" is a text file");
+				String mt = getMetadataTypeText(f);
+				if(mt.equals(C.CB_PACKAGETYPE_XMP)) {
+					logger.info("of type XMP");
+					xmpFiles.add(f);
+				} 
 			}
 		}
-		if(eadFiles.size()+metsFiles.size()+lidoFiles.size()==1) {
+		if(!xmpFiles.isEmpty() && eadFiles.size()+metsFiles.size()+lidoFiles.size()==0) {
+			fileWithType.put(new File(""), C.CB_PACKAGETYPE_XMP);
+		} else if(eadFiles.size()+metsFiles.size()+lidoFiles.size()==1) {
 			if(eadFiles.size()==1) fileWithType.put(eadFiles.get(0), C.CB_PACKAGETYPE_EAD);
 			if(metsFiles.size()==1) fileWithType.put(metsFiles.get(0), C.CB_PACKAGETYPE_METS);
 			if(lidoFiles.size()==1) fileWithType.put(lidoFiles.get(0), C.CB_PACKAGETYPE_LIDO);

@@ -102,7 +102,7 @@ public class NestedContentStructure {
 		List<File> metsFiles = new ArrayList<File>();
 		for(File f : dir.listFiles()) {
 			formatDetectionService fds = new formatDetectionService(f);
-			if(fds.isXml(f) && fds.getMetadataType(f).equals(C.CB_PACKAGETYPE_METS)) {
+			if(fds.isXml(f) && fds.getMetadataTypeXml(f).equals(C.CB_PACKAGETYPE_METS)) {
 				metsFiles.add(f);
 			}
 		}
