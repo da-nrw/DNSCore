@@ -18,22 +18,13 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 ## Szenario AT-BSS-EAD-1: Bilden eines einzelnen SIPs mit einer Metadatendatei des Typs EAD
 
-#### Testpaket:   
-
-* [ATBuildSingleEadSip](../test/resources/at/ATBuildSingleEadSip)
- 
 #### Kontext:
 
 * [ATSipBuilderCliEad](../test/java/de/uzk/hki/da/at/ATSipBuilderCliEad.java).testBuildSingleSipCorrectReferences()
 
-#### Testpaket:
+#### Testpaket:   
 
-```
-(GitHub) ATMigrationAllowed.tgz
- Inhalt
-   data/image42.jpg
-   data/premis.xml (MigrationRight: Migrationsbedingung: Keine)
-```
+* [ATBuildSingleEadSip](../test/resources/at/ATBuildSingleEadSip)
 
 #### Vorbedingungen
 
@@ -50,8 +41,17 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 #### Akkzeptanzkriterien:
 
-1. Das DIP enthält die Bilddatei vom migrierten Typ TIFF: image42.jp2
-1. Es enhält nicht die originale Bilddatei: image42.jpg.
+1. Der ausgewählte Zielordner enthält die Datei
+ATBuildSingleEadSip.tgz
+  Inhalt:
+  ATBuildSingleEadSip/data/premis.xml
+  ATBuildSingleEadSip/data/Picture5.bmp  
+  ATBuildSingleEadSip/data/Picture4.bmp  
+  ATBuildSingleEadSip/data/Picture3.bmp  
+  ATBuildSingleEadSip/data/Picture2.bmp  
+  ATBuildSingleEadSip/data/Picture1.bmp  
+  ATBuildSingleEadSip/data/mets_2_32048.xml  
+``` 
 
 ## Szenario AT-MB-2 Migrationsrückfrage ablehnen
 
