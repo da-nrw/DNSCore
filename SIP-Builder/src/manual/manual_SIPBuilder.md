@@ -282,7 +282,7 @@ SIPs werden nicht erstellt, wenn sich im Zielordner bereits ein SIP gleichen Nam
 __-alwaysOverwrite__  
 Wenn sich bereits existierende SIPs oder Lieferungen gleichen Namens im Zielordner befinden, werden sie ohne weitere Nachfrage überschrieben, d. h. durch die neu erstellten Pakete bzw. die neu erstellte Lieferung ersetzt.
 
-__-alwaysIgnoreWrongReferencesInMetadata__
+__-alwaysIgnoreWrongReferencesInMetadata__   
 Bei der Valiedierung der Paketstruktur können ggf. Fehler in den Metadaten augedeckt werden. 
 
 Es gibt Fehler, die zwangsläufig zum Abbruch der Verarbeitung im ContentBroker führen werden. Solche Fehler werden im SIP-Builder erkannt und dem User mitgeteilt. Anschließend wird die SIP-Erstellung abgebrochen.
