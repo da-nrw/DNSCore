@@ -1,7 +1,7 @@
 Anleitung SIP-Builder
 =====================
 
-Bitte verwenden Sie eine Version des SIP-Builders, die mindestens die Build-Nr. 1411 hat!
+Bitte verwenden Sie eine Version des SIP-Builders, die mindestens die Build-Nr. 1497 hat!
 
 ## Überblick
 
