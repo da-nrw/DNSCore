@@ -39,7 +39,7 @@ Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen a
 
 __WICHTIG!__
 * Bitte denken Sie daran, die ggf. vorhandenen Metadatendateien auf der obersten Ebene eines jeden Pakets abzulegen. Anderenfalls werden die Metadaten nicht als solche erkannt.
-* Bitte denken Sie daran, dass die Referenzen in den mitgelieferten Metadaten stes korrekt sein und auf die im Quellordner entaltenen Primärdateien zeigen müssen. Sollte es sich um eine [Delta](../../../ContentBroker/src/main/markdown/the_delta_feature.md)-Einlieferung handeln, können die Referenzen auch auf die zuvor mitgelieferten Primärdateien zeigen. Dabei sollte die Struktur des Gesamtpakets nach jeder Delta-Einlieferung korrekt sein.
+* Bitte denken Sie daran, dass die Referenzen in den mitgelieferten Metadaten stets korrekt sein und auf die im Quellordner entaltenen Primärdateien zeigen müssen. Sollte es sich um eine [Delta](../../../ContentBroker/src/main/markdown/the_delta_feature.md)-Einlieferung handeln, können die Referenzen auch auf die zuvor mitgelieferten Primärdateien zeigen. Dabei sollte die Struktur des Gesamtpakets nach jeder Delta-Einlieferung korrekt sein.
 * Bitte denken Sie daran, dass in einem SIP (ausgenommen XMP-Pakete) keine gleichnamigen Dateien vorkommen dürfen, s. [SIP-Spezifikation](../../../ContentBroker/src/main/markdown/specification_sip.de.md).
 
 ### Laden der Rechteeinstellungen  
