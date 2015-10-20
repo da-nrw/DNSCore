@@ -38,7 +38,8 @@ Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen a
 * _SIPs auf unterster Ebene einer Baumstruktur erstellen (nur METS):_  
 Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu bilden. Die Daten für die  Pakete befinden sich auf befinden sich jeweils im untersten Ast einer beliebigen Baumstruktur aus Ordnern. Der SIP-Name wird aus der mitgelieferten URN gebildet, wobei allerdings ein Doppelpunkt in ein Pluszeichen umgewandelt wird.
 
-Zu beachten
+__Zu beachten__
+
 ### Laden der Rechteeinstellungen  
 
 __Laden__  
