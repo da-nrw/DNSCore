@@ -690,9 +690,8 @@ public class SIPFactory {
 					default:
 						break;
 					}
-
 				}
-
+				
 				new File(collectionFolder, "data").mkdirs();
 			}
 
