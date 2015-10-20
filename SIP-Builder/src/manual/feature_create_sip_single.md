@@ -77,7 +77,8 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 #### Akkzeptanzkriterien:
 
-1. Der User sieht in der Benutzeroberfläche folgende Fehlermeldung
+1. Der User sieht in der Benutzeroberfläche folgende Fehlermeldung 
+
 ```
 Aus dem Verzeichnis /home/polina/Desktop/at/ATBuildSingleEadSipWrongRefErrorCase/ATBuildSingleEadSipWrongRefError wird kein SIP erstellt. 
 Die Metadatendatei /home/polina/Desktop/at/ATBuildSingleEadSipWrongRefErrorCase/ATBuildSingleEadSipWrongRefError/EAD_Export.XML enthält falsche Referenzen.
@@ -85,4 +86,4 @@ Folgende Dateien konnten nicht gefunden werden:
 [../mets_2_32045.xml]
 ```
 
-1. Der ausgewählte Zielordner enthält keine Datei ATBuildSingleEadSipWrongRefError.tgz.
+2. Der ausgewählte Zielordner enthält keine Datei ATBuildSingleEadSipWrongRefError.tgz.
