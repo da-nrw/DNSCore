@@ -12,6 +12,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+
+/**
+ * 
+ * @author Polina Gubaidullina
+ *
+ */
+
 public class ATSipBuilderCliMets {
 
 	private static File targetDir = new File("target/atTargetDir/");
