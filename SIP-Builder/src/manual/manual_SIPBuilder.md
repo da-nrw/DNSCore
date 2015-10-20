@@ -32,15 +32,15 @@ __Generierungsmodus__
 Sie haben die Wahl zwischen verschiedenen Modi der SIP-Generierung:
 * _Einzelnes SIP aus dem Quellverzeichnis erstellen:_  
 Wählen Sie diese Option, wenn Sie die Daten des Quellordners zu einem einzelnen SIP bündeln möchten. Auch eventuell existierende Unterordner werden dem Paket hinzugefügt. Der Name des fertigen SIPs entspricht dem Namen des Quellordners.
- Die ggf. in den Metadaten angegebenen Referenzen müssen stets korrekt sein 
 * _SIPs aus Unterordnern des Quellverzeichnisses erstellen:_  
 Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu generieren. Dazu müssen sich die Daten für jedes Paket in einem eigenen Unterordner des Quellverzeichnisses befinden. Im Generierungsprozess werden die Daten jedes einzelnen Verzeichnisses zu jeweils einem eigenen SIP gebündelt. Die SIP-Namen entsprechen dem Verzeichnisnamen der Unterordner.
 * _SIPs auf unterster Ebene einer Baumstruktur erstellen (nur METS):_  
 Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu bilden. Die Daten für die  Pakete befinden sich auf befinden sich jeweils im untersten Ast einer beliebigen Baumstruktur aus Ordnern. Der SIP-Name wird aus der mitgelieferten URN gebildet, wobei allerdings ein Doppelpunkt in ein Pluszeichen umgewandelt wird.
 
-__Zu beachten__
-* Bitte denken Sie daran, die ggf. vorhandenen Metadatendateien auf der obersten Ebene des Quellordners abzulegen. Anderenfalls werden die Metadaten nicht als solche erkannt.
+__WICHTIG!__
+* Bitte denken Sie daran, die ggf. vorhandenen Metadatendateien auf der obersten Ebene eines jeden Pakets abzulegen. Anderenfalls werden die Metadaten nicht als solche erkannt.
 * Bitte denken Sie daran, dass die Referenzen in den mitgelieferten Metadaten stes korrekt sein und auf die im Quellordner entaltenen Primärdateien zeigen müssen. Sollte es sich um eine [Delta](../../../ContentBroker/src/main/markdown/the_delta_feature.md)-Einlieferung handeln, können die Referenzen auch auf die zuvor mitgelieferten Primärdateien zeigen. Dabei sollte die Struktur des Gesamtpakets nach jeder Delta-Einlieferung korrekt sein.
+* Bitte denken Sie daran, dass in einem SIP (ausgenommen XMP-Pakete) keine gleichnamigen Dateien vorkommen dürfen, s. [SIP Spezifikation]((../../../ContentBroker/src/main/markdown/specification_sip.de.md).
 
 ### Laden der Rechteeinstellungen  
 
