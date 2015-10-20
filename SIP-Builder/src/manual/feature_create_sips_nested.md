@@ -66,4 +66,15 @@ und
 urn+nbn+de+hbz+42.tgz
 ```
 
-b. Der User antwortet beide Male mit Nein. Der ausgewählte Zielordner enthält keine Dateien.
+b. Der User antwortet beide Male mit Nein und erhält hintereinander zwei Fehlermeldungen
+
+```
+Aus dem Verzeichnis []/nestedFolders/testFolder2/testFolder22/testFolder221 wird kein SIP erstellt
+```
+und 
+
+```
+Aus dem Verzeichnis []/nestedFolders/test1/testSubfolder12 wird kein SIP erstellt
+```
+
+Der ausgewählte Zielordner enthält keine Dateien.
