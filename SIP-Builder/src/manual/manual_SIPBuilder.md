@@ -35,7 +35,7 @@ Wählen Sie diese Option, wenn Sie die Daten des Quellordners zu einem einzelnen
 * _SIPs aus Unterordnern des Quellverzeichnisses erstellen:_  
 Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu generieren. Dazu müssen sich die Daten für jedes Paket in einem eigenen Unterordner des Quellverzeichnisses befinden. Im Generierungsprozess werden die Daten jedes einzelnen Verzeichnisses zu jeweils einem eigenen SIP gebündelt. Die SIP-Namen entsprechen dem Verzeichnisnamen der Unterordner.
 * _SIPs auf unterster Ebene einer Baumstruktur erstellen (nur METS):_  
-Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu bilden. Die Daten für die Pakete befinden sich auf befinden sich jeweils auf der untersten Ebene einer beliebigen Baumstruktur aus Ordnern. Der SIP-Name wird aus der URN der jeweils mitgelieferten METS-Datei gebildet, wobei jeder Doppelpunkt in ein Pluszeichen umgewandelt wird.
+Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu bilden. Die Daten für die Pakete befinden sich jeweils auf der untersten Ebene einer beliebigen Baumstruktur aus Ordnern. Der SIP-Name wird aus der URN der jeweils mitgelieferten METS-Datei gebildet, wobei jeder Doppelpunkt in ein Pluszeichen umgewandelt wird.
 
 __WICHTIG!__
 * Bitte denken Sie daran, die ggf. vorhandenen Metadatendateien auf der obersten Ebene eines jeden Pakets abzulegen. Anderenfalls werden die Metadaten nicht als solche erkannt.
@@ -55,17 +55,7 @@ Wählen Sie diese Option, um die Standard-Rechteeinstellungen zu wählen:
 
 Bei Betätigung des Buttons __Standard__ werden die zuvor gewählten Einstellungen verworfen und durch die Standardwerte ersetzt.
 
-
-
-
-
-
-
-
-
 ### Publikation
-
- 
 
 Die Publikationseinstellungen können festgelegt werden für:  
 __Öffentlichkeit__  
@@ -76,27 +66,7 @@ Erstellung von Publikationsderivaten, die nur der eigenen Institution über die 
 Sie können  wählen, ob die Erstellung der Publikationsdaten grundsätzlich stattfinden soll und ob in diesem Fall zusätzliche Restriktionen in Kraft treten sollen. Diese Restriktionen können für die Öffentlichkeit und die eigene Institution jeweils separat festgelegt werden.  
 Daten, die für die Anzeige in öffentlichen Portalen erstellt wurden, werden automatisch auch der Deutschen Digitalen Bibliothek zur Verfügung gestellt. Möchten Sie diesen Vorgang vermeiden, können Sie die Checkbox __DDB-Harvesting erlauben__ deaktivieren. In diesem Fall werden der Deutschen Digitalen Bibliothek keine Daten zugänglich gemacht.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #### Startzeitpunkt der Publikation
-
- 
 
 __Publikation zeitlich begrenzen__  
 Wählen Sie diese Option, um ein Datum zu bestimmen, ab dem die Publikation stattfinden soll. Vor diesem Datum findet keine Publikation statt. Das Datum muss dazu in der Form [Tag].[Monat]. [Jahr] angegeben werden.
@@ -111,26 +81,7 @@ Zur Wahl stehen derzeit:
 
 Zur Zeit ist diese Funktion noch ohne Auswirkungen.  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #### Vorschaurestriktionen
-
- 
 
 In diesem Schritt lassen sich Restriktionen wählen, die in den Rechteeinstellungen hinterlegt und während der Erstellung der Publikationsdaten angewendet werden.
 
@@ -192,29 +143,7 @@ Mögliche Einstellungen sind:
 * _Über Migration informieren:_ Im Falle einer Migration erhalten Sie eine Benachrichtigung per Mail.
 * _Zustimmung für Migration einholen:_ Sie werden vor einer anstehenden Migration benachrichtigt und haben die Möglichkeit, der Migration zu widersprechen. Dies gilt für die Erstmigration und alle folgenden Migrationen. Nach einer Zeitfrist verfällt die Rückfrage, in diesem Fall wird Ihr Objekt nicht migriert. 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ###  Speichern der Einstellungen
-
- 
 
 In diesem Schritt werden die zuvor getroffenen Rechteeinstellungen übersichtlich zusammengefasst, sodass Sie sie vor der SIP-Erstellung noch einmal überprüfen können.
 
@@ -223,7 +152,6 @@ Wenn Sie die Einstellungen bei einer späteren Verwendung des SIP-Builders noch 
 
 ### SIP erstellen
 
- 
 
 Starten Sie den Prozess, indem Sie den Button „Erstellen“ betätigen. Je nach Menge der zu verarbeitenden Daten und der Leistungsfähigkeit Ihres Systems kann der Vorgang zwischen wenigen Sekunden und mehreren Stunden in Anspruch nehmen. Um den Prozess zu beschleunigen, können Sie die Option “SIP-Datei komprimieren” deaktivieren. In diesem Fall wird statt einer komprimierten tgz-Datei eine entsprechend größere, unkomprimierte tar-Datei erstellt.
 ## CLI-Modus
@@ -312,6 +240,8 @@ Die Option muss bei gleichzeitiger Verwendung von -filelist gewählt werden und 
 Beispiel:  
 -single="Foto_SIP_2013"
 
+__-nested__
+Diese Option wurde für die Bildung von METS-SIPs aus einer verzweigten Ordnerstruktur implementiert. Die Daten für die Pakete befinden sich jeweils auf der untersten Ebene einer beliebigen Baumstruktur aus Ordnern. Der SIP-Name wird aus der URN der jeweils mitgelieferten METS-Datei gebildet, wobei jeder Doppelpunkt in ein Pluszeichen umgewandelt wird.
 ### Rechteeinstellungen
 
 __-default (Standardoption)__  
@@ -319,10 +249,6 @@ Die Standardrechte werden angewendet:
 * Generierung von Publikationsdaten für die Öffentlichkeit, keine Restriktionen
 * Keine Generierung von Publikationsdaten für die eigene Institution
 * Keine Migrationsbedingungen
-
-
-
-
 
 __-premis="[Pfad]"__  
 Geben Sie den Pfad einer Premis-Datei an, die eine Rights Section mit den von Ihnen gewünschten Rechten enthält. Die dort angegebenen Rechteeinstellungen werden in die Premis-Datei des neu erstellten SIPs übernommen.
@@ -356,6 +282,14 @@ SIPs werden nicht erstellt, wenn sich im Zielordner bereits ein SIP gleichen Nam
 __-alwaysOverwrite__  
 Wenn sich bereits existierende SIPs oder Lieferungen gleichen Namens im Zielordner befinden, werden sie ohne weitere Nachfrage überschrieben, d. h. durch die neu erstellten Pakete bzw. die neu erstellte Lieferung ersetzt.
 
+__-alwaysIgnoreWrongReferencesInMetadata__
+Bei der Valiedierung der Paketstruktur können ggf. Fehler in den Metadaten augedeckt werden. 
+
+Es gibt Fehler, die zwangsläufig zum Abbruch der Verarbeitung im ContentBroker führen werden. Solche Fehler werden im SIP-Builder erkannt und dem User mitgeteilt. Anschließend wird die SIP-Erstellung abgebrochen.
+
+Es gibt aber auch Fehler, die im Fall einer [Delta](../../../ContentBroker/src/main/markdown/the_delta_feature.md)-Einlieferung nicht umbedingt zu einem Verarbeitungsstopp im Contentbroker führen müssen. Diese Fehler werden dem User während der SIP-Erstellung ebenfalls mitgeteilt. Anschließend kann sich der User im GUI-Modus entscheiden, ob er die Verarbeitung abbrechen oder fortsetzen möchte.
+Für den CLI-Modus gibt es den Flag -alwaysIgnoreWrongReferencesInMetadata. Wenn dieser gesetzt ist, werden die ggf. unkritischen Fehlermeldungen zwar angezeigt, führen jedoch nicht zum Abbruch der SIP-Erstellung.
+Dieser Flag sollte nur dann gesetzt werden, wenn der Nutzer Delta-SIPs bilden möchte und die Struktur des Gesamtpakets sehr gut kennt. Standardmäßig ist dieser Flag auf false gesetzt.
 
 #### Ausschluss bestimmter Dateiendungen
 
