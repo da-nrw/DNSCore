@@ -1,3 +1,3 @@
-* [-single]() Ein SIP aus dem Quellverzeichnis erstellen
-* [-multiple]() SIPs aus Unterordnern des Quellverzeichnisses erstellen
-* [-nested]() SIPs aus Unterordnern des Quellverzeichnisses erstellen
+* Ein SIP aus dem Quellverzeichnis erstellen, [-single]()   
+* SIPs aus Unterordnern des Quellverzeichnisses erstellen,  [-multiple]()   
+* SIPs aus Unterordnern des Quellverzeichnisses erstellen, [-nested]()
