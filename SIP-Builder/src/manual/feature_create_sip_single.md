@@ -42,7 +42,8 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 #### Akkzeptanzkriterien:
 
 1. Der ausgewählte Zielordner enthält die Datei
-ATBuildSingleEadSip.tgz
+``` 
+ATBuildSingleEadSip.tgz  
   Inhalt:
   ATBuildSingleEadSip/data/premis.xml
   ATBuildSingleEadSip/data/Picture5.bmp  
