@@ -65,7 +65,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 #### Testpaket:   
 
-* [ATBuildSingleEadSip](../test/resources/at/ATBuildSingleEadSipWrongRefErrorCase/ATBuildSingleEadSipWrongRefError)
+* [ATBuildSingleEadSipWrongRefError](../test/resources/at/ATBuildSingleEadSipWrongRefErrorCase/ATBuildSingleEadSipWrongRefError)
 
 #### Vorbedingungen
 
