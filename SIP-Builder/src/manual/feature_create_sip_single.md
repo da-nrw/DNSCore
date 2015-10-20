@@ -87,3 +87,84 @@ Folgende Dateien konnten nicht gefunden werden:
 ```
 
 2. Der ausgewählte Zielordner enthält keine Datei ATBuildSingleEadSipWrongRefError.tgz.
+
+
+## Szenario AT-BSS-METS-1: Bilden eines einzelnen SIPs mit einer Metadatendatei des Typs METS
+
+#### Kontext:
+
+* [ATSipBuilderCliMets](../test/java/de/uzk/hki/da/at/ATSipBuilderCliMets.java).testBuildSingleSipCorrectReferences()
+
+#### Testpaket:   
+
+* [ATBuildSingleMetsSip](../test/resources/at/ATBuildSingleMetsSip)
+
+#### Vorbedingungen
+
+* Siehe Hintergrund.
+
+#### Durchführung:
+
+1. Download des Testpakets
+1. Starten des SIP-Builders
+1. Auswahl der Option "Ein SIP aus dem Quellverzeichnis erstellen"
+1. Auswahl des Pakets ATBuildSingleEadSip als Quellordner
+1. Festlegung des Zielordners
+1. Erstellung des SIPs mittels GUI
+
+#### Akkzeptanzkriterien:
+
+1. Der ausgewählte Zielordner enthält die Datei ATBuildSingleMetsSip.tgz mit folgendem Inhalt
+```
+  ATBuildSingleMetsSip/data/premis.xml
+  ATBuildSingleMetsSip/data/export_mets.xml
+  ATBuildSingleEadSip/data/image/801616.bmp  
+  ATBuildSingleEadSip/data/image/801618.bmp bis 801620.bmp
+  ATBuildSingleEadSip/data/image/801622.bmp
+  ATBuildSingleEadSip/data/image/801624.bmp bis 801640.bmp
+  ATBuildSingleEadSip/data/image/801642.bmp bis 801645.bmp
+  ATBuildSingleEadSip/data/image/801648.bmp
+  ATBuildSingleEadSip/data/image/801650.bmp und 801651.bmp
+``` 
+
+## Szenario AT-BSS-METS-2: Keine Erstellung des SIPs aus dem Quellverzeichnis mit einer METS-Metadatendatei mit falschen Referenzen
+
+#### Kontext:
+
+* [ATSipBuilderCliMets](../test/java/de/uzk/hki/da/at/ATSipBuilderCliMets.java).testBuildSingleSipErrorWrongReferences()
+
+#### Testpaket:   
+
+* [ATBuildSingleEadSipWrongRefError](../test/resources/at/ATBuildSingleMetsSipWrongRefErrorCase/ATBuildSingleMetsSipWrongReferences)
+
+#### Vorbedingungen
+
+* Siehe Hintergrund.
+
+#### Durchführung:
+
+* Siehe AT-BSS-EAD-1
+
+#### Akkzeptanzkriterien:
+
+1. Der User sieht in der Benutzeroberfläche folgende Fehlermeldung 
+
+```
+Die Metadatendatei /home/polina/Desktop/at/ATBuildSingleMetsSipWrongRefErrorCase/ATBuildSingleMetsSipWrongReferences/export_mets.xml enthält falsche Referenzen.
+Folgende Dateien konnten nicht gefunden werden: 
+[image/801616.bmp, image/801618.bmp] 
+Möchten Sie die SIP-Erstellung dennoch fortsetzen?
+```
+
+a. Der User antwortet mit nein. Der ausgewählte Zielordner enthält keine Datei ATBuildSingleMetsSipWrongReferences.tgz.
+b. Der User antwortet mit ja. Der ausgewählte Zielordner enthält die Datei ATBuildSingleMetsSipWrongReferences.tgz mit folgendem Inhalt
+```
+  ATBuildSingleMetsSip/data/premis.xml
+  ATBuildSingleMetsSip/data/export_mets.xml
+  ATBuildSingleEadSip/data/image/801619.bmp bis 801620.bmp
+  ATBuildSingleEadSip/data/image/801622.bmp
+  ATBuildSingleEadSip/data/image/801624.bmp bis 801640.bmp
+  ATBuildSingleEadSip/data/image/801642.bmp bis 801645.bmp
+  ATBuildSingleEadSip/data/image/801648.bmp
+  ATBuildSingleEadSip/data/image/801650.bmp und 801651.bmp
+``` 
