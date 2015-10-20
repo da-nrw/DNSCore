@@ -135,7 +135,7 @@ Folgende Dateien konnten nicht gefunden werden:
 
 #### Testpaket:   
 
-* [ATBuildSingleEadSipWrongRefError](../test/resources/at/ATBuildSingleMetsSipWrongRefErrorCase/ATBuildSingleMetsSipWrongReferences)
+* [ATBuildSingleMetsSipWrongRefError](../test/resources/at/ATBuildSingleMetsSipWrongRefErrorCase/ATBuildSingleMetsSipWrongReferences)
 
 #### Vorbedingungen
 
