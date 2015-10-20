@@ -108,7 +108,7 @@ Folgende Dateien konnten nicht gefunden werden:
 1. Download des Testpakets
 1. Starten des SIP-Builders
 1. Auswahl der Option "Ein SIP aus dem Quellverzeichnis erstellen"
-1. Auswahl des Pakets ATBuildSingleEadSip als Quellordner
+1. Auswahl des Pakets ATBuildSingleMetsSip als Quellordner
 1. Festlegung des Zielordners
 1. Erstellung des SIPs mittels GUI
 
@@ -168,4 +168,37 @@ b. Der User antwortet mit ja. Der ausgewählte Zielordner enthält die Datei ATB
   ATBuildSingleEadSip/data/image/801642.bmp bis 801645.bmp
   ATBuildSingleEadSip/data/image/801648.bmp
   ATBuildSingleEadSip/data/image/801650.bmp und 801651.bmp
+``` 
+
+## Szenario AT-BSS-LIDO-1: Bilden eines einzelnen SIPs mit einer Metadatendatei des Typs LIDO
+
+#### Kontext:
+
+* [ATSipBuilderCliLido](../test/java/de/uzk/hki/da/at/ATSipBuilderCliLido.java).testBuildSingleSipCorrectReferences()
+
+#### Testpaket:   
+
+* [ATBuildSingleLidoSip](../test/resources/at/ATBuildSingleLidoSip)
+
+#### Vorbedingungen
+
+* Siehe Hintergrund.
+
+#### Durchführung:
+
+1. Download des Testpakets
+1. Starten des SIP-Builders
+1. Auswahl der Option "Ein SIP aus dem Quellverzeichnis erstellen"
+1. Auswahl des Pakets ATBuildSingleLidoSip als Quellordner
+1. Festlegung des Zielordners
+1. Erstellung des SIPs mittels GUI
+
+#### Akkzeptanzkriterien:
+
+1. Der ausgewählte Zielordner enthält die Datei ATBuildSingleLidoSip.tgz mit folgendem Inhalt
+```
+  ATBuildSingleLidoSip/data/premis.xml
+  ATBuildSingleLidoSip/data/Picture2.bmp
+  ATBuildSingleLidoSip/data/Picture1.bmp
+  ATBuildSingleLidoSip/data/LIDO-Testexport2014-07-04-FML-Auswahl.xml
 ``` 
