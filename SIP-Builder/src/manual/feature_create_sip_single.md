@@ -202,3 +202,35 @@ b. Der User antwortet mit ja. Der ausgewählte Zielordner enthält die Datei ATB
   ATBuildSingleLidoSip/data/Picture1.bmp
   ATBuildSingleLidoSip/data/LIDO-Testexport2014-07-04-FML-Auswahl.xml
 ``` 
+
+## Szenario AT-BSS-XMP-1: Bilden eines einzelnen SIPs mit einer Metadatendatei des Typs XMP
+
+#### Kontext:
+
+* [ATSipBuilderCliXmp](../test/java/de/uzk/hki/da/at/ATSipBuilderCliXmp.java).testBuildSingleSipCorrectReferences()
+
+#### Testpaket:   
+
+* [ATBuildSingleXmpSip](../test/resources/at/ATBuildSingleXmpSip)
+
+#### Vorbedingungen
+
+* Siehe Hintergrund.
+
+#### Durchführung:
+
+1. Download des Testpakets
+1. Starten des SIP-Builders
+1. Auswahl der Option "Ein SIP aus dem Quellverzeichnis erstellen"
+1. Auswahl des Pakets ATBuildSingleXmpSip als Quellordner
+1. Festlegung des Zielordners
+1. Erstellung des SIPs mittels GUI
+
+#### Akkzeptanzkriterien:
+
+1. Der ausgewählte Zielordner enthält die Datei ATBuildSingleXmpSip.tgz mit folgendem Inhalt
+```
+  ATBuildSingleXmpSip/data/premis.xml
+  ATBuildSingleLidoSip/data/LVR ILR_0000008126.xmp
+  ATBuildSingleLidoSip/data/LVR ILR_0000008126.bmp
+``` 
