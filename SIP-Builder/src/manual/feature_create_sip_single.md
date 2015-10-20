@@ -8,7 +8,7 @@ Der Kunde hat seine Daten in einem Verzeichnis zusammengetragen und möchte sie 
 Dafür muss er zunächst mit dem SIP-Builder ein SIP erstellen.
 Der SIP-Builder überprüft vor der Bildung des SIP die Struktur des Pakets sowie die darin enthaltenen Metadaten. Bei identifizierten Abweichungen sieht der User entsprechende Fehlermeldungen.
 
-Momentan gibt es zwei Kategorien von Fehlermeldungen:
+Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 * Abweichungen, die zwangsläufig zu Problemen im ContentBroker führen werden.
 * Abweichungen, die unter bestimmten Bedingungen zu einer fehlerfreien Verarbeitung im ContentBroker führen werden.
 
@@ -16,13 +16,15 @@ Momentan gibt es zwei Kategorien von Fehlermeldungen:
 
 * Der User hat den SIP-Builder mit der Build-Nr. >= 1411.
 
-## Szenario AT-BSSE-1
+## Szenario AT-BSS-EAD-1: Bilden eines einzelnen (-single) SIPs mit einer Metadatendatei des Typs EAD
 
-Im Contract eines SIP ist eine mögliche Migrationsbedinung zu hinterlegen. Diese ist faktisch ein XML-Eintrag in der premis.xml, welche auch vom SIP-Builder generiert wird, je nach der Auswahl des Users. Lautet die hinterlegte Auswahl "keine Migrationsbedinung", so migriert das System, wenn möglich, aus den Dateiformaten des SIP in Dateiformate für die Langzeitarchivierung. 
+#### Testpaket:   
 
+* [ATBuildSingleEadSip](../test/resources/at/ATBuildSingleEadSip)
+ 
 #### Kontext:
 
-* ATUseCaseIngestMigrationAllowed#test
+* [ATSipBuilderCliEad](../test/java/de/uzk/hki/da/at/ATSipBuilderCliEad.java).testBuildSingleSipCorrectReferences()
 
 #### Testpaket:
 
