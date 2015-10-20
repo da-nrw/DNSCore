@@ -2,14 +2,14 @@ package daweb3
 import geb.spock.GebSpec;
 import spock.lang.Stepwise;
 import pages.*
-
+import javax.annotation.Resource as Slow
 
 /**
  * 
  * @author jens Peters
  * tests Login Page of Spring Security
  */
-
+@Slow
 @Stepwise
 class LoginAuthSpec extends GebSpec {
 
