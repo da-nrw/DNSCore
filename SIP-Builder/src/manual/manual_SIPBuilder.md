@@ -348,6 +348,12 @@ Die möglichen Codes und ihre Bedeutung können Sie der folgenden Übersicht ent
 25 Fehler beim Erstellen der Archivdatei  
 26 Fehler beim Erstellen der Lieferung  
 27 Temporäre Daten konnten nicht entfernt werden  
+28 Null-Byte-Dateien wurden gefunden
+29 Abbruch 
+30 Fehler in der Benutzeroberfläche
+31 Fehler in den Metadaten 
+32 Falsche Referenzen in den Metadaten 
+
 
 ### Hilfe
 
