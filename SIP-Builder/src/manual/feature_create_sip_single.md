@@ -157,6 +157,7 @@ Möchten Sie die SIP-Erstellung dennoch fortsetzen?
 ```
 
 a. Der User antwortet mit nein. Der ausgewählte Zielordner enthält keine Datei ATBuildSingleMetsSipWrongReferences.tgz.  
+
 b. Der User antwortet mit ja. Der ausgewählte Zielordner enthält die Datei ATBuildSingleMetsSipWrongReferences.tgz mit folgendem Inhalt
 ```
   ATBuildSingleMetsSip/data/premis.xml
