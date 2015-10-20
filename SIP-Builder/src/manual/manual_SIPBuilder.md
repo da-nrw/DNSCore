@@ -31,12 +31,14 @@ Im hier angegebenen Verzeichnis wird das fertige SIP am Ende des Generierungspro
 __Generierungsmodus__  
 Sie haben die Wahl zwischen verschiedenen Modi der SIP-Generierung:
 * _Einzelnes SIP aus dem Quellverzeichnis erstellen:_  
-Wählen Sie diese Option, wenn Sie die Daten des Quellordners zu einem einzelnen SIP bündeln möchten. Auch eventuell existierende Unterordner werden dem Paket hinzugefügt. Der Name des fertigen SIPs entspricht dem Namen des Quellordners.  
+Wählen Sie diese Option, wenn Sie die Daten des Quellordners zu einem einzelnen SIP bündeln möchten. Auch eventuell existierende Unterordner werden dem Paket hinzugefügt. Der Name des fertigen SIPs entspricht dem Namen des Quellordners.
+Bitte denken Sie daran, die ggf. vorhandenen Metadatendateien auf der obersten Ebene des Quellordners abzulegen. Anderenfalls werden die Metadaten nicht als solche erkannt. Die ggf. in den Metadaten angegebenen Referenzen müssen stets korrekt sein und auf die im Quelordner entaltenen Primärdateien zeigen. Sollte es sich um eine Delta-Einlieferung handeln, können die Referenzen auch auf die zuvor mitgelieferten Primärdateien zeigen. 
 * _SIPs aus Unterordnern des Quellverzeichnisses erstellen:_  
 Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu generieren. Dazu müssen sich die Daten für jedes Paket in einem eigenen Unterordner des Quellverzeichnisses befinden. Im Generierungsprozess werden die Daten jedes einzelnen Verzeichnisses zu jeweils einem eigenen SIP gebündelt. Die SIP-Namen entsprechen dem Verzeichnisnamen der Unterordner.
 * _SIPs auf unterster Ebene einer Baumstruktur erstellen (nur METS):_  
 Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu bilden. Die Daten für die  Pakete befinden sich auf befinden sich jeweils im untersten Ast einer beliebigen Baumstruktur aus Ordnern. Der SIP-Name wird aus der mitgelieferten URN gebildet, wobei allerdings ein Doppelpunkt in ein Pluszeichen umgewandelt wird.
 
+Zu beachten
 ### Laden der Rechteeinstellungen  
 
 __Laden__  
