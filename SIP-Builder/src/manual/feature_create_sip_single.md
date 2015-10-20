@@ -16,28 +16,42 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 * Der User hat den SIP-Builder mit der Build-Nr. >= 1411.
 
-## Szenario AT-BSS-EAD-1: Bilden eines einzelnen (-single) SIPs mit einer Metadatendatei des Typs EAD
-
-#### Kontext:
-
-* [ATSipBuilderCliEad](../test/java/de/uzk/hki/da/at/ATSipBuilderCliEad.java).testBuildSingleSipCorrectReferences()
+## Szenario AT-BSS-EAD-1: Bilden eines einzelnen SIPs mit einer Metadatendatei des Typs EAD
 
 #### Testpaket:   
 
 * [ATBuildSingleEadSip](../test/resources/at/ATBuildSingleEadSip)
+ 
+#### Kontext:
+
+* [ATSipBuilderCliEad](../test/java/de/uzk/hki/da/at/ATSipBuilderCliEad.java).testBuildSingleSipCorrectReferences()
+
+#### Testpaket:
+
+```
+(GitHub) ATMigrationAllowed.tgz
+ Inhalt
+   data/image42.jpg
+   data/premis.xml (MigrationRight: Migrationsbedingung: Keine)
+```
+
+#### Vorbedingungen
+
+* Siehe Hintergrund.
 
 #### Durchführung:
 
-1. Download des Testpakets
-1. Starten des SIP-Builders
-1. Auswahl der Option "Ein SIP aus dem Quellverzeichnis erstellen"
-1. Auswahl des Pakets ATBuildSingleEadSip als Quellordner
-1. Festlegung des Zielordners
-1. Erstellung des SIPs mittels GUI
+1. Siehe Hintergrund.
+1. Technischen Identifier notieren.
+1. In der Ansicht "Eingelieferte Objekte" das Objekt mit dem entsprechenden Identifier recherieren.
+1. Button "anfordern" für Objekt anwählen
+1. Entnahme des DIP-Paketes aus dem Entnahmeordner des einliefernden Users.
+1. Entpacken des DIP und Überprüfen der Inhalte.
 
 #### Akkzeptanzkriterien:
 
-1. In dem ausgewählten Zielordner befindet sich ein SIP mit dem Namen ATBuildSingleEadSip.tgz
+1. Das DIP enthält die Bilddatei vom migrierten Typ TIFF: image42.jp2
+1. Es enhält nicht die originale Bilddatei: image42.jpg.
 
 ## Szenario AT-MB-2 Migrationsrückfrage ablehnen
 
