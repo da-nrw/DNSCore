@@ -241,7 +241,6 @@ Beispiel:
 -single="Foto_SIP_2013"
 
 __-nested__
-
 Diese Option wurde für die Bildung von METS-SIPs aus einer verzweigten Ordnerstruktur implementiert. Die Daten für die Pakete befinden sich jeweils auf der untersten Ebene einer beliebigen Baumstruktur aus Ordnern. Der SIP-Name wird aus der URN der jeweils mitgelieferten METS-Datei gebildet, wobei jeder Doppelpunkt in ein Pluszeichen umgewandelt wird.
 ### Rechteeinstellungen
 
