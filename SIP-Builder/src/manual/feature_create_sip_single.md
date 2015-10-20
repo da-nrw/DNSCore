@@ -1,6 +1,6 @@
 # Leistungsmerkmal: Ein SIP aus dem Quellverzeichnis erstellen
 
-Beschreibung
+#Beschreibung
 
 #### Kontext:
 
@@ -8,8 +8,6 @@ Beschreibung
 
 Der Kunde hat seine Daten in einem Verzeichnis zusammengetragen und möchte sie in dieser Form in DNS langzeitarchivieren.
 Dafür muss er zunächst mit dem SIP-Builder ein SIP erstellen.
-
-gilt für alle Szenarien\!
 
 #### Vorbedingung:
 
