@@ -14,7 +14,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 #### Vorbedingung:
 
-* Der User hat den SIP-Builder mit der Build-Nr. >= 1411.
+* Der User hat den SIP-Builder mit der Build-Nr. >= 1497.
 
 ## Szenario AT-BSS-EAD-1: Bilden eines einzelnen SIPs mit einer Metadatendatei des Typs EAD
 
@@ -32,12 +32,12 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 #### Durchführung:
 
-1. Siehe Hintergrund.
-1. Technischen Identifier notieren.
-1. In der Ansicht "Eingelieferte Objekte" das Objekt mit dem entsprechenden Identifier recherieren.
-1. Button "anfordern" für Objekt anwählen
-1. Entnahme des DIP-Paketes aus dem Entnahmeordner des einliefernden Users.
-1. Entpacken des DIP und Überprüfen der Inhalte.
+1. Download des Testpakets
+1. Starten des SIP-Builders
+1. Auswahl der Option "Ein SIP aus dem Quellverzeichnis erstellen"
+1. Auswahl des Pakets ATBuildSingleEadSip als Quellordner
+1. Festlegung des Zielordners
+1. Erstellung des SIPs mittels GUI
 
 #### Akkzeptanzkriterien:
 
@@ -49,155 +49,40 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
   ATBuildSingleEadSip/data/Picture3.bmp  
   ATBuildSingleEadSip/data/Picture2.bmp  
   ATBuildSingleEadSip/data/Picture1.bmp  
-  ATBuildSingleEadSip/data/mets_2_32048.xml  
+  ATBuildSingleEadSip/data/mets_2_32048.xml
+  ATBuildSingleEadSip/data/mets_2_32047.xml
+  ATBuildSingleEadSip/data/mets_2_32046.xml
+  ATBuildSingleEadSip/data/mets_2_32045.xml
+  ATBuildSingleEadSip/data/mets_2_32044.xml
+  ATBuildSingleEadSip/data/EAD_Export.XML
 ``` 
 
-## Szenario AT-MB-2 Migrationsrückfrage ablehnen
-
-Szenario AT-MD-2 Migrationsrückfrage ablehnen
-Siehe auch Test AT-R1a.
-
-Hier wird vom einem Hinterlegten Recht "Migrationsbedinung - Nach Rückfrage" ausgegangen, so wie es auch vom SIP-Builder nach entsprechender Wahl in der premis.xml hinterlegt wird. In diesem Fall migriert das System Daten des entsprechenden Objektes niemals ungefragt, sondern fordert vom User eine Entscheidung ein, ob das Objekt migriert werden soll oder nicht.
-Dieses Szenario beschreibt den Fall, dass die Migration abgelehnt wird.
+## Szenario AT-BSS-EAD-2: Keine Erstellung des SIPs aus dem Quellverzeichnis mit einer EAD-Metadatendatei mit falschen Referenzen
 
 #### Kontext:
 
-* ATUseCaseIngestMigrationNotAllowed#test
+* [ATSipBuilderCliEad](../test/java/de/uzk/hki/da/at/ATSipBuilderCliEad.java).testBuildSingleSipErrorWrongReferences()
 
-#### Testpaket
+#### Testpaket:   
 
-```
-(GitHub) ATMigrationNotAllowed.tgz
-  Inhalt:
-  data/image42.jpg
-  data/premis.xml (MigrationRight: Migrationsbedingung: Zustimmung für Migration einholen).
-```
-
-
-####
-
+* [ATBuildSingleEadSip](../test/resources/at/ATBuildSingleEadSipWrongRefErrorCase/ATBuildSingleEadSipWrongRefError)
 
 #### Vorbedingungen
 
 * Siehe Hintergrund.
 
-#### Durchführung
-
-1. Siehe Hintergrund.
-1. In der DA-WEB-Maske "Entscheidungsübersicht" für das entsprechende Objekt Migration&nbsp;*ablehnen*.
-1. Warten auf Email, die die Einlieferung in die LZA bestätigt.&nbsp;
-1. Identifier notieren.
-1. In der Ansicht "Eingelieferte Objekte" das Objekt mit dem entsprechenden Identifier recherieren.
-1. Button "anfordern" für Objekt anwählen
-1. Entnahme des DIP-Paketes aus dem Entnahmeordner des einliefernden Users.
-1. Entpacken des DIP und Überprüfen der Inhalte.
-
-#### Akzeptanzkriterien
-
-* Das DIP enthält die Bilddatei vom originalen Typ JPEG: image42.jpg.
-* Es enhält nicht die migrierte Version der originalen Bilddatei Bilddatei: image42.jp2.
-
-
-## Szenario AT-MB-3 Migrationsrückfrage bestätigen.
-
-Während beim letzten Test die Migration letztendlich abgelehnt wurde, wird bei diesem Test bestätigt.
-
-#### Kontext:
-
-* ATUseCaseIngestMigrationNotAllowed#test
-
-#### Testpaket:
-
-```
-  (GitHub) ATMigrationNotAllowed.tgz
-  Inhalt:
-    data/image42.jpg
-    data/premis.xml (MigrationRight: Migrationsbedingung: Zustimmung für Migration einholen).
-``` 
-
-#### Vorbedingung:
-
-* Siehe Hintergrund.
-
 #### Durchführung:
 
-1. Siehe Hintergrund.
-1. In der DA-WEB Entscheidungsübersicht für das entsprechende Objekt Migration positiv&nbsp;*bestätigen*.
-1. Warten auf Email, die die Einlieferung in die LZA bestätigt.&nbsp;
-1. Identifier notieren.
-1. In der Ansicht "Eingelieferte Objekte" das Objekt mit dem entsprechenden Identifier recherieren.
-1. Button "anfordern" für Objekt anwählen
-1. Entnahme des DIP-Paketes aus dem Entnahmeordner des einliefernden Users.
-1. Entpacken des DIP und Überprüfen der Inhalte.
-
-#### Akzeptanzkriterien:
-
-* Das DIP enthält die Bilddatei vom migrierten Typ TIFF image42.jp2.
-* Es enhält nicht die originale Bilddatei: image42.jpg.
-
-
-
-
-## Szenario AT-MB-5 Informieren über Migration
-
-Bei der Wahl der Einstellung "Über Migration informieren wird der Nutzer bei jeder Migration seiner Daten informiert"
-
-#### Testpaket:
-
-``` 
-  (GitHub) TODO
-  Inhalt:
-    data/image42.jpg
-    data/premis.xml ((MigrationRight: Migrationsbedingung: Über Migration informieren).
-```
-
-#### Durchführung:
-
-1. Warten auf Email, die über die Migration informiert
-
-#### Akzeptanzkriterien:
-
-* TODO Inhalt der Email
-
-## Szenario AT-MB-4 Migration nach Verstreichen der Entscheidungsfrist.
-
-Die Tests AT-MBD-2 und AT-MB3 gehen davon aus, dass der User die Rückfrage ablehnt oder bestätigt. In diesem Szenario handelt der User für eine gegebene Zeitspanne gar nicht und in der Folge findet eine automatische Ablehung durch das System statt.
-
-#### Kontext:
-
-* ATUseCaseIngestMigrationNotAllowed#test
-
-#### Testpaket:
-
-```
-(GitHub) ATMigrationNotAllowed.tgz
-  Inhalt:
-  data/image42.jpg
-  data/premis.xml (&nbsp;(MigrationRight: Migrationsbedingung: Zustimmung für Migration einholen).
-``` 
-
-
-#### Vorbedingungen
-
-* Siehe Hintergrund
-
-#### Durchführung:
-
-1. Siehe Hintergrund
-1. 30 Tage warten.
-1. Warten auf Email, die die Einlieferung in die LZA bestätigt.&nbsp;
-1. Identifier notieren.
-1. In der Ansicht "Eingelieferte Objekte" das Objekt mit dem entsprechenden Identifier recherieren.
-1. Button "anfordern" für Objekt anwählen
-1. Entnahme des DIP-Paketes aus dem Entnahmeordner des einliefernden Users.
-1. Entpacken des DIP und Überprüfen der Inhalte.
+* Siehe AT-BSS-EAD-1
 
 #### Akkzeptanzkriterien:
 
-* Das DIP enthält die Bilddatei vom originalen Typ JPEG: image42.jpg.
-* Es enhält nicht die migrierte Version der originalen Bilddatei Bilddatei: image42.jp2.
+1. Der User sieht in der Benutzeroberfläche folgende Fehlermeldung
+```
+Aus dem Verzeichnis /home/polina/Desktop/at/ATBuildSingleEadSipWrongRefErrorCase/ATBuildSingleEadSipWrongRefError wird kein SIP erstellt. 
+Die Metadatendatei /home/polina/Desktop/at/ATBuildSingleEadSipWrongRefErrorCase/ATBuildSingleEadSipWrongRefError/EAD_Export.XML enthält falsche Referenzen.
+Folgende Dateien konnten nicht gefunden werden: 
+[../mets_2_32045.xml]
+```
 
-## Status und offene Punkte:
-
-implementiert mit Build > #1320
-
+1. Der ausgewählte Zielordner enthält keine Datei ATBuildSingleEadSipWrongRefError.tgz.
