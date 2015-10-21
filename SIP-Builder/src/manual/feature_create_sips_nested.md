@@ -1,4 +1,4 @@
- # Leistungsmerkmal: SIPs aus verzweigter Ordnerstruktur erstellen (nur METS)
+#Leistungsmerkmal: SIPs aus verzweigter Ordnerstruktur erstellen (nur METS)
 
 #Beschreibung
 
