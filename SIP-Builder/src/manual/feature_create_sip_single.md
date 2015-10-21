@@ -39,7 +39,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 1. Festlegung des Zielordners
 1. Erstellung des SIPs mittels GUI
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 1. Der ausgewählte Zielordner enthält die Datei ATBuildSingleEadSip.tgz mit folgendem Inhalt
 ```
@@ -75,7 +75,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 * Siehe AT-BSS-EAD-1
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 1. Der User sieht in der Benutzeroberfläche folgende Fehlermeldung 
 
@@ -112,7 +112,7 @@ Folgende Dateien konnten nicht gefunden werden:
 1. Festlegung des Zielordners
 1. Erstellung des SIPs mittels GUI
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 1. Der ausgewählte Zielordner enthält die Datei ATBuildSingleMetsSip.tgz mit folgendem Inhalt
 ```
@@ -145,7 +145,7 @@ Folgende Dateien konnten nicht gefunden werden:
 
 * Siehe AT-BSS-EAD-1
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 1. Der User sieht in der Benutzeroberfläche folgende Fehlermeldung 
 
@@ -193,7 +193,7 @@ b. Der User antwortet mit ja. Der ausgewählte Zielordner enthält die Datei ATB
 1. Festlegung des Zielordners
 1. Erstellung des SIPs mittels GUI
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 1. Der ausgewählte Zielordner enthält die Datei ATBuildSingleLidoSip.tgz mit folgendem Inhalt
 ```
@@ -226,7 +226,7 @@ b. Der User antwortet mit ja. Der ausgewählte Zielordner enthält die Datei ATB
 1. Festlegung des Zielordners
 1. Erstellung des SIPs mittels GUI
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 1. Der ausgewählte Zielordner enthält die Datei ATBuildSingleXmpSip.tgz mit folgendem Inhalt
 ```
