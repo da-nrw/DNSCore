@@ -13,9 +13,9 @@
 <b>Genauere Beschreibungen der einzelnen Leistungsmerkmale:</b>
 
 <c>Pre-Ingest:</c>
-* [Ein SIP aus dem Quellverzeichnis erstellen](feature_create_sip_single.md)   
-* [SIPs aus Unterordnern des Quellverzeichnisses erstellen](feature_create_sips_multiple.md)   
-* [SIPs aus Unterordnern des Quellverzeichnisses erstellen](feature_create_sips_nested.md)
+* Leistungsmerkmal [Ein SIP aus dem Quellverzeichnis erstellen](feature_create_sip_single.md)   
+* Leistungsmerkmal [SIPs aus Unterordnern des Quellverzeichnisses erstellen](feature_create_sips_multiple.md)   
+* Leistungsmerkmal [SIPs aus Unterordnern des Quellverzeichnisses erstellen](feature_create_sips_nested.md)
 
 <c>LZA, Präsentation und Archivverwaltung:</c>
 * Leistungsmerkmal [Migrationsbedingungen](feature_migration_right.md)
