@@ -35,7 +35,7 @@ Der SIP-Builder überprüft vor der Bildung des SIP die Struktur aller Pakete so
 1. Festlegung des Zielordners
 1. Erstellung des SIPs mittels GUI
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 1. Der User sieht in der Benutzeroberfläche zwei Fehlermeldung hintereinander
 
