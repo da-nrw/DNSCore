@@ -53,7 +53,8 @@ public class TimeBasedPublicationWorker extends Worker {
 	protected void insertJobs(Session session) {
 
 		String queryStr = "SELECT o FROM Object o "
-			+ "where o.published_flag>=0 and "
+			+ "where "
+			+ "o.published_flag>=0 and "
 			+ "(( o.static_nondisclosure_limit < ?1 and "
 			+ "	( o.published_flag = ?2 or o.published_flag = ?3)"
 			+ "		and o.dynamic_nondisclosure_limit is null) or "
@@ -61,7 +62,8 @@ public class TimeBasedPublicationWorker extends Worker {
 			+ "	( o.published_flag = ?4 or o.published_flag = ?5)"
 			+ "		and o.dynamic_nondisclosure_limit_institution is null)) and "
 			+ "o.object_state = ?6 and"
-			+ "(o.lastPublicationTry is null or o.lastPublicationTry < ?7)";
+			+ "(o.lastPublicationTry is null or o.lastPublicationTry < ?7) and"
+			+ "(o.initial_node = ?8)";
 
 		Date today = new Date();
 		Date runSinceLastTry = new Date(today.getTime() - pauseForDays * 86400000L);
@@ -78,6 +80,7 @@ public class TimeBasedPublicationWorker extends Worker {
 		query.setParameter("6",	Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		query.setParameter("7",	runSinceLastTry);
 
+		query.setParameter("8", this.getLocalNode().getName());
 		@SuppressWarnings("unchecked")
 		List<Object> obbis = query.list();
 

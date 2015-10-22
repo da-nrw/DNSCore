@@ -690,9 +690,8 @@ public class SIPFactory {
 					default:
 						break;
 					}
-
 				}
-
+				
 				new File(collectionFolder, "data").mkdirs();
 			}
 
@@ -738,8 +737,8 @@ public class SIPFactory {
 				}
 				folderListWithNames = tmpFolderListWithNames;
 			} catch (Exception e) {
-				messageWriter.showMessage("Das SIP konnte nicht erstellt werden.\n\n" +
-						"Ihre Daten sind möglicherweise nicht valide: \n\n"+e.getMessage(), JOptionPane.ERROR_MESSAGE);
+				messageWriter.showLongErrorMessage("Das SIP konnte nicht erstellt werden.\n\n" +
+						"Ihre Daten sind möglicherweise nicht valide: \n\n"+e.getMessage());
 				returnCode = Feedback.INVALID_METADATA;
 				abortSipBuilding();
 				return;

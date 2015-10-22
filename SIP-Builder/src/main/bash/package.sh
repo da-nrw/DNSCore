@@ -14,6 +14,6 @@ cp src/main/bash/SipBuilder-Unix.sh $INSTALLATION/
 cp src/main/binary/SipBuilder-Windows.exe $INSTALLATION/
 cp src/main/xml/standardRights.xml $INSTALLATION/conf
 
-echo -e "SipBuilder Version $VERSION\nWritten by\n Thomas Kleinke\n Martin Fischer" > $INSTALLATION/README.txt
+echo -e "SipBuilder Version $VERSION\nWritten by\n Thomas Kleinke\n Martin Fischer\n Polina Gubaidullina" > $INSTALLATION/README.txt
 
 

@@ -12,6 +12,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * 
+ * @author Polina Gubaidullina
+ *
+ */
+
 public class ATSipBuilderCliLido {
 	
 	private static File targetDir = new File("target/atTargetDir/");

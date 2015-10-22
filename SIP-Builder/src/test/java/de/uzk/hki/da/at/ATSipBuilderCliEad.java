@@ -13,6 +13,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * 
+ * @author Polina Gubaidullina
+ *
+ */
+
 public class ATSipBuilderCliEad {
 	private static File targetDir = new File("target/atTargetDir/");
 	private static File sourceDir = new File("src/test/resources/at/");
