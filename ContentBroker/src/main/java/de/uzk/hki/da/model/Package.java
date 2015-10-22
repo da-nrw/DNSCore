@@ -101,7 +101,7 @@ public class Package {
 	private List<Copy> copies = new ArrayList<Copy>();
 	
 	
-	private boolean pruneExceptions = false;
+	private Boolean pruneExceptions = false;
 	
 	private String container_name; 
 

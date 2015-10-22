@@ -73,15 +73,20 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 #### Durchführung:
 
-* Siehe AT-BSS-EAD-1
+1. Download des Testpakets
+1. Starten des SIP-Builders
+1. Auswahl der Option "Ein SIP aus dem Quellverzeichnis erstellen"
+1. Auswahl des Pakets ATBuildSingleEadSipWrongRefError als Quellordner
+1. Festlegung des Zielordners
+1. Erstellung des SIPs mittels GUI
 
 #### Akzeptanzkriterien:
 
 1. Der User sieht in der Benutzeroberfläche folgende Fehlermeldung 
 
 ```
-Aus dem Verzeichnis /home/polina/Desktop/at/ATBuildSingleEadSipWrongRefErrorCase/ATBuildSingleEadSipWrongRefError wird kein SIP erstellt. 
-Die Metadatendatei /home/polina/Desktop/at/ATBuildSingleEadSipWrongRefErrorCase/ATBuildSingleEadSipWrongRefError/EAD_Export.XML enthält falsche Referenzen.
+Aus dem Verzeichnis [...]/ATBuildSingleEadSipWrongRefError wird kein SIP erstellt. 
+Die Metadatendatei [...]/ATBuildSingleEadSipWrongRefError/EAD_Export.XML enthält falsche Referenzen.
 Folgende Dateien konnten nicht gefunden werden: 
 [../mets_2_32045.xml]
 ```
@@ -143,14 +148,19 @@ Folgende Dateien konnten nicht gefunden werden:
 
 #### Durchführung:
 
-* Siehe AT-BSS-EAD-1
+1. Download des Testpakets
+1. Starten des SIP-Builders
+1. Auswahl der Option "Ein SIP aus dem Quellverzeichnis erstellen"
+1. Auswahl des Pakets ATBuildSingleMetsSipWrongRefError als Quellordner
+1. Festlegung des Zielordners
+1. Erstellung des SIPs mittels GUI
 
 #### Akzeptanzkriterien:
 
 1. Der User sieht in der Benutzeroberfläche folgende Fehlermeldung 
 
 ```
-Die Metadatendatei /home/polina/Desktop/at/ATBuildSingleMetsSipWrongRefErrorCase/ATBuildSingleMetsSipWrongReferences/export_mets.xml enthält falsche Referenzen.
+Die Metadatendatei [...]/ATBuildSingleMetsSipWrongReferences/export_mets.xml enthält falsche Referenzen.
 Folgende Dateien konnten nicht gefunden werden: 
 [image/801616.bmp, image/801618.bmp] 
 Möchten Sie die SIP-Erstellung dennoch fortsetzen?
