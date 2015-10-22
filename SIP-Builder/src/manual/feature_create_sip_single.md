@@ -73,7 +73,12 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 #### Durchführung:
 
-* Siehe AT-BSS-EAD-1
+1. Download des Testpakets
+1. Starten des SIP-Builders
+1. Auswahl der Option "Ein SIP aus dem Quellverzeichnis erstellen"
+1. Auswahl des Pakets ATBuildSingleEadSipWrongRefError als Quellordner
+1. Festlegung des Zielordners
+1. Erstellung des SIPs mittels GUI
 
 #### Akzeptanzkriterien:
 
@@ -143,7 +148,12 @@ Folgende Dateien konnten nicht gefunden werden:
 
 #### Durchführung:
 
-* Siehe AT-BSS-EAD-1
+1. Download des Testpakets
+1. Starten des SIP-Builders
+1. Auswahl der Option "Ein SIP aus dem Quellverzeichnis erstellen"
+1. Auswahl des Pakets ATBuildSingleMetsSipWrongRefError als Quellordner
+1. Festlegung des Zielordners
+1. Erstellung des SIPs mittels GUI
 
 #### Akzeptanzkriterien:
 
