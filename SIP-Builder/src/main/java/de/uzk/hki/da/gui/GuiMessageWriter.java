@@ -185,7 +185,7 @@ class GuiMessageWriter extends MessageWriter {
 		
 		String[] options = new String[] {"Ja", "Nein" };
 		int answer = JOptionPane.showOptionDialog(gui, scrollPane, SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon(iconImage), options, null);
-
+		
 		switch (answer) {
 		case 0:
 			return UserInput.YES;

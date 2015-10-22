@@ -736,6 +736,10 @@ public class SIPFactory {
 					}
 				}
 				folderListWithNames = tmpFolderListWithNames;
+				if(folderListWithNames.isEmpty()) {
+					abortSipBuilding();
+					return;
+				}
 			} catch (Exception e) {
 				messageWriter.showLongErrorMessage("Das SIP konnte nicht erstellt werden.\n\n" +
 						"Ihre Daten sind möglicherweise nicht valide: \n\n"+e.getMessage());
