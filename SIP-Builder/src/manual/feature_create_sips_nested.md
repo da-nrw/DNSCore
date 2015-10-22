@@ -12,7 +12,7 @@ Der SIP-Builder überprüft vor der Bildung des SIP die Struktur aller Pakete so
 
 * Der User hat den SIP-Builder mit der Build-Nr. >= 1497.
 
-## Szenario AT-BSN-EAD-1:  SIPs aus verzweigter Ordnerstruktur trotz fehlerhaften Referenzen erstellen
+## Szenario AT-BSN-1:  SIPs aus verzweigter Ordnerstruktur trotz fehlerhaften Referenzen erstellen
 
 #### Kontext:
 
