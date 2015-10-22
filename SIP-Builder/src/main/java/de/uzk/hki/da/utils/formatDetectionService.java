@@ -180,10 +180,10 @@ public class formatDetectionService {
 			fileWithType.put(eadFiles.get(0), C.CB_PACKAGETYPE_EAD);
 		} else if(eadFiles.size()+metsFiles.size()+lidoFiles.size()>1) {
 			throw new Exception("Im Verzeichnis "+folder.getName()+" wurde mehr als eine Metadatendatei gefunden. " +
-					"\nEAD: " + eadFiles +
-					"\nMETS: " + metsFiles + 
-					"\nLIDO: "+lidoFiles + 
-					"\nXMP: "+xmpFiles);
+					"\nEAD: \n" + eadFiles +
+					"\nMETS: \n" + metsFiles + 
+					"\nLIDO: \n"+lidoFiles + 
+					"\nXMP: \n"+xmpFiles);
 		} else if(eadFiles.size()+metsFiles.size()+lidoFiles.size()==0) {
 			logger.error("Im Verzeichnis "+folder.getName()+" wurde keine Metadatendatei gefunden. \nBekannte Formate sind: EAD, METS, LIDO.");
 		}

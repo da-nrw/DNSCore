@@ -74,8 +74,9 @@ class GuiMessageWriter extends MessageWriter {
 	 */
 	@Override
 	public void showLongErrorMessage(String message) {
+		String prettyMsg = message.replace(",", ",\n");
 		JTextArea textArea = new JTextArea(5, 40);
-		textArea.setText(message);
+		textArea.setText(prettyMsg);
 		textArea.setEditable(false);
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		JOptionPane.showMessageDialog(gui, scrollPane, SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder", JOptionPane.ERROR_MESSAGE, new ImageIcon(iconImage));
@@ -176,8 +177,9 @@ class GuiMessageWriter extends MessageWriter {
 
 	@Override
 	public UserInput showWrongReferencesInMetadataDialog(String message) {
+		String prettyMsg = message.replace(",", ",\n");
 		JTextArea textArea = new JTextArea(5, 40);
-		textArea.setText(message);
+		textArea.setText(prettyMsg);
 		textArea.setEditable(false);
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		
