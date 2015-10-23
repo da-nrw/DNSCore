@@ -708,8 +708,12 @@ public class SIPFactory {
 							File file = metadataFileWithType.firstKey();
 							metadataType = metadataFileWithType.get(file);
 							if(metadataType!=C.CB_PACKAGETYPE_XMP) {
-								Utilities.validateFileReferencesInMetadata(file, metadataType);	
+								if(!duplicateFileNames(f, tmpFolderListWithNames)) {
+									Utilities.validateFileReferencesInMetadata(file, metadataType);	
+								}
 							}				
+						} else {
+							duplicateFileNames(f, tmpFolderListWithNames);
 						}
 					} catch (Error e) {
 						if(metadataType.equals(C.CB_PACKAGETYPE_EAD)) {
@@ -739,7 +743,7 @@ public class SIPFactory {
 				if(folderListWithNames.isEmpty()) {
 					abortSipBuilding();
 					return;
-				}
+				} 
 			} catch (Exception e) {
 				messageWriter.showLongErrorMessage("Das SIP konnte nicht erstellt werden.\n\n" +
 						"Ihre Daten sind möglicherweise nicht valide: \n\n"+e.getMessage());
@@ -832,6 +836,57 @@ public class SIPFactory {
 		public boolean isAborted() {
 			return abortRequested;
 		}
-
+		
+		private boolean duplicateFileNames(File f, HashMap<File, String> tmpFolderListWithNames) {
+			Boolean dfn = false;
+			HashMap<String, List<File>> duplicateFileNames = getFilesWithDuplicateFileNames(f);
+			if(!duplicateFileNames.isEmpty()) {
+				dfn = true;
+				String msg = "Aus dem Verzeichnis "+f+" wird kein SIP erstellt. \nDer Ordner enthält gleichnamige Dateien: \n"+duplicateFileNames;
+				messageWriter.showLongErrorMessage(msg);
+				tmpFolderListWithNames.remove(f);
+				returnCode = Feedback.DUPLICATE_FILENAMES;
+			} 
+			return dfn;
+		}
+		
+		private HashMap<String, List<File>> getFilesWithDuplicateFileNames(File folder) {
+			logger.debug("Search for duplicate file names in folde "+folder);
+			HashMap<String, List<File>> duplicateFilenamesWithFiles = new HashMap<String, List<File>>();
+			HashMap<String, File> filenamesWithFiles = new HashMap<String, File>();
+			for(File f : folder.listFiles()) {
+				logger.debug("Check file "+f);
+				if(f.isDirectory()) {
+					getFilesWithDuplicateFileNames(f);
+				} else {
+					
+					File file = new File(f.getAbsolutePath());
+					String ext = FilenameUtils.getExtension(file.getAbsolutePath());
+					String relFilePathWithoutExtension = new File(f.getAbsolutePath()).getAbsolutePath().toString().
+							replace(new File(f.getParent()).getAbsolutePath()+File.separator, "").
+							replace(ext, "");
+					logger.debug("relFilePathWithoutExtension: "+relFilePathWithoutExtension);
+					
+					if(filenamesWithFiles.get(relFilePathWithoutExtension)==null) {
+						logger.debug("New file name "+relFilePathWithoutExtension);
+						filenamesWithFiles.put(relFilePathWithoutExtension, f);
+					} else {
+						if(duplicateFilenamesWithFiles.get(relFilePathWithoutExtension)!=null) {
+							logger.debug("One more file with file name " + relFilePathWithoutExtension
+									+ "\nFirst file is "+duplicateFilenamesWithFiles.get(relFilePathWithoutExtension));
+							duplicateFilenamesWithFiles.get(relFilePathWithoutExtension).add(f);
+						} else {
+							List<File> duplicateFilenames = new ArrayList<File>();
+							logger.debug("Second file with the same file name. "
+									+ "\n First file is "+filenamesWithFiles.get(relFilePathWithoutExtension));
+							duplicateFilenames.add(filenamesWithFiles.get(relFilePathWithoutExtension));
+							duplicateFilenames.add(f);
+							duplicateFilenamesWithFiles.put(relFilePathWithoutExtension, duplicateFilenames);
+						}
+					}
+				}
+			}
+			return duplicateFilenamesWithFiles;
+		}
 	};
 }
