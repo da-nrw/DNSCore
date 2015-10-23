@@ -36,7 +36,7 @@ Sie haben die Wahl zwischen verschiedenen Modi der SIP-Generierung:
 Wählen Sie diese Option, wenn Sie die Daten des Quellordners zu einem einzelnen SIP bündeln möchten. Auch eventuell existierende Unterordner werden dem Paket hinzugefügt. Der Name des fertigen SIPs entspricht dem Namen des Quellordners.
 * _SIPs aus Unterordnern des Quellverzeichnisses erstellen:_  
 Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu generieren. Dazu müssen sich die Daten für jedes Paket in einem eigenen Unterordner des Quellverzeichnisses befinden. Im Generierungsprozess werden die Daten jedes einzelnen Verzeichnisses zu jeweils einem eigenen SIP gebündelt. Die SIP-Namen entsprechen dem Verzeichnisnamen der Unterordner.
-* _SIPs auf unterster Ebene einer Baumstruktur erstellen (nur METS):_  
+* _SIPs aus verzweigter Ordnerstruktur erstellen (nur METS):_  
 Wählen Sie diese Option, um mehrere SIPs mit den gleichen Rechteeinstellungen auf einmal zu bilden. Die Daten für die Pakete befinden sich jeweils auf der untersten Ebene einer beliebigen Baumstruktur aus Ordnern. Der SIP-Name wird aus der URN der jeweils mitgelieferten METS-Datei gebildet, wobei jeder Doppelpunkt in ein Pluszeichen umgewandelt wird.
 
 __WICHTIG!__

@@ -45,7 +45,7 @@ Tag 33437: FNumber Exif Private IFD spec p. 39
 
 #### Testpaket:
 
-[ATInvalidTiffTagsInBigTiff.tgz](../../../src/test/resources/at/ATInvalidTiffTagsInBigTiff.tgz) 
+[ATInvalidTiffTagsInBigTiff.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATInvalidTiffTagsInBigTiff.tgz) 
 
 #### Vorbedingung:
 
@@ -73,7 +73,7 @@ Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Pr
 
 #### Testpaket:
 
-[ATInvalidTiffTagsInBigTiff.tgz](../../../src/test/resources/at/ATInvalidTiffTagsInBigTiff.tgz) 
+[ATInvalidTiffTagsInBigTiff.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATInvalidTiffTagsInBigTiff.tgz) 
 
 #### Vorbedingungen:
 
@@ -105,7 +105,7 @@ Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Pr
 
 #### Testpaket:
 
-[ATInvalidTiffTagsInBigTiff.tgz](../../../src/test/resources/at/ATInvalidTiffTagsInBigTiff.tgz)
+[ATInvalidTiffTagsInBigTiff.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATInvalidTiffTagsInBigTiff.tgz)
 
 #### Vorbedingungen:
 
