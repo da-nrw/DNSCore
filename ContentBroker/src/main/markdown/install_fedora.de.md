@@ -8,7 +8,7 @@ Im folgenden wird davon ausgegangen dass die Installationspfade wie folgt lauten
 
 Im Source-Code-Tree von DNSCore finden sich Skripte und Config-Dateien zu Fedora:
 
-    https://github.com/da-nrw/DNSCore/tree/master/ContentBroker/src/main/python
+(Fedora Skripte)[https://github.com/da-nrw/DNSCore/tree/master/ContentBroker/src/main/python]
     
 ## Voraussetzungen
 
