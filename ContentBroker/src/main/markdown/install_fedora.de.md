@@ -6,7 +6,7 @@ Im folgenden wird davon ausgegangen dass die Installationspfade wie folgt lauten
 * Fedora: /opt/fedora
 * Tomcat: /opt/tomcat
 
-Im Source-Code-Repository befindet sich ein Projekt mit Skripten und Config-Dateien zu Fedora. Die aktuelle Adresse ist
+Im Source-Code-Tree von DNSCore finden sich Skripte und Config-Dateien zu Fedora:
 
     https://github.com/da-nrw/DNSCore/tree/master/ContentBroker/src/main/python
     
@@ -16,7 +16,7 @@ Im Source-Code-Repository befindet sich ein Projekt mit Skripten und Config-Date
 
 #### Tomcat
 
-Das Vorgehenzur Installation von Tomcat hängt vom Betriebssystem ab und wird hier deswegen nicht genauer dokumentiert. Fedora 3.5 läuft sowohl unter Tomcat 6, als auch unter Tomcat 7. Da folgende Versionen von Fedora Tomcat 7 benötigen wird dieser jedoch empfohlen.
+Tomcat 6 oder 7
 
 Sicherstellen, dass Tomcat genügend Speicher allozieren kann, z.B. indem in der Datei `CATALINA_BASE/bin/sentenv.sh` (anlegen, wenn Sie nicht existiert) folgendes eingetragen wird:
 
