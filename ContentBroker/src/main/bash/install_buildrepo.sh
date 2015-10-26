@@ -20,6 +20,6 @@ cp doc/daweb3_properties.groovy.dev $TARGET/DAWeb/daweb3_properties.groovy.templ
 
 cd /ci/DNSCore/SIP-Builder
 cp -r target/installation $TARGET/SipBuilder
-cd /ci/DNScore
+cd /ci/DNSCore
 git log --pretty=format:"%h %s %b" PRODUCTION..HEAD | grep -v 'Update.*md' | grep -vi Merge > $TARGET/CHANGES_README.txt
 
