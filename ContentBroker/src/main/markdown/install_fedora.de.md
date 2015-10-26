@@ -80,11 +80,11 @@ Fedora kann jetzt unter folgenden URLs erreicht werden:
 
 Um den Zugriff auf Objekte zu verhindern, die nicht öffentlich zugänglich sein sollen, müssen die entsprechenden XACML-Policies wie folgt installiert werden:
     
-Skripte und Policy-Dateien aus dem bazaar-Repository laden
+Skript laden:
 
-    git clone https://github.com/da-nrw/prepscripts.git
+https://github.com/da-nrw/DNSCore/tree/master/ContentBroker/src/main/python
 
-Die Policy-Objekte liegen unter `policies` und können mit dem Skript `scripts/setup-policies.py` geladen werden. Das Package python-httplib2 muss dazu installiert sein. Vor der Ausführung sollte die FedoraClient-URL in den Skriptdateien angepasst werden. Ansclipeßend das Skript ausführen (im Wurzelverzeichnis des prepscripts-Repository:
+Die Policy-Objekte liegen unter https://github.com/da-nrw/DNSCore/tree/master/ContentBroker/src/main/config und können mit dem Skript `scripts/setup-policies.py` geladen werden. Das Package python-httplib2 muss dazu installiert sein. Vor der Ausführung sollte die FedoraClient-URL in den Skriptdateien angepasst werden. Ansclipeßend das Skript ausführen (im Wurzelverzeichnis des prepscripts-Repository:
 
     python scripts/setup-policies.py
 
