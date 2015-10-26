@@ -49,7 +49,7 @@ Installer ausführen:
 
     sudo java -jar fcrepo-installer-3.5.jar config/install.properties
 
-Die Datei fedora.fcfg mit den entsprechenden Einstellungen befindet sich auch im Repository unter `config/fedora.fcfg`.
+Die Datei fedora.fcfg mit den entsprechenden Einstellungen befindet sich auch im Repository unter https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/fedora.fcfg 
 
 Ggf. die vom Installer erstellte server.xml in den Tomcat-Ordner conf kopieren. 
 
