@@ -72,9 +72,9 @@ Ggf. die Datenbankeinstellungen (weiter unten in `fedora.fcfg`) im datastore `lo
 Tomcat neustarten.
 
 Fedora kann jetzt unter folgenden URLs erreicht werden:
-* Generelle Informationen: http://<servername>:8080/fedora
-* Suchinterface: http://<servername>:8080/fedora/objects
-* Admininterface: http://<servername>:8080/fedora/admin
+* Generelle Informationen: http://localhost:8080/fedora
+* Suchinterface: http://localhost:8080/fedora/objects
+* Admininterface: http://localhost:8080/fedora/admin
 
 ### Policies
 
