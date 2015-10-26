@@ -8,7 +8,7 @@ Im folgenden wird davon ausgegangen dass die Installationspfade wie folgt lauten
 
 Im Source-Code-Repository befindet sich ein Projekt mit Skripten und Config-Dateien zu Fedora. Die aktuelle Adresse ist
 
-    https://github.com/da-nrw/prepscripts.git
+    https://github.com/da-nrw/DNSCore/tree/master/ContentBroker/src/main/python
     
 ## Voraussetzungen
 
