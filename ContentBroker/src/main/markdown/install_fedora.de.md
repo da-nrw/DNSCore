@@ -8,7 +8,7 @@ Im folgenden wird davon ausgegangen dass die Installationspfade wie folgt lauten
 
 Im Source-Code-Tree von DNSCore finden sich Skripte und Config-Dateien zu Fedora:
 
-(Fedora Skripte)[https://github.com/da-nrw/DNSCore/tree/master/ContentBroker/src/main/python]
+https://github.com/da-nrw/DNSCore/tree/master/ContentBroker/src/main/python
     
 ## Voraussetzungen
 
@@ -43,7 +43,7 @@ Fedora Installer in der Version 3.5 downloaden:
 
     wget http://downloads.sourceforge.net/fedora-commons/fcrepo-installer-3.5.jar
 
-Im Repository befindet sich die Datei `https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/install.properties`. Dort müssen die entsprechenden Passwörter und ggf. Einstellungen für die Datenbank, den Servernamen und die Installationspfade angepasst werden.
+Im Repository befindet sich die Datei https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/install.properties . Dort müssen die entsprechenden Passwörter und ggf. Einstellungen für die Datenbank, den Servernamen und die Installationspfade angepasst werden.
 
 Installer ausführen:
 
