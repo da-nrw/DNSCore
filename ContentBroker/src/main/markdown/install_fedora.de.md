@@ -43,7 +43,7 @@ Fedora Installer in der Version 3.5 downloaden:
 
     wget http://downloads.sourceforge.net/fedora-commons/fcrepo-installer-3.5.jar
 
-Im Repository befindet sich die Datei `config/install.properties`. Dort müssen die entsprechenden Passwörter und ggf. Einstellungen für die Datenbank, den Servernamen und die Installationspfade angepasst werden.
+Im Repository befindet sich die Datei `https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/install.properties`. Dort müssen die entsprechenden Passwörter und ggf. Einstellungen für die Datenbank, den Servernamen und die Installationspfade angepasst werden.
 
 Installer ausführen:
 
