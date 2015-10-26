@@ -26,10 +26,6 @@ Sicherstellen, dass Tomcat genügend Speicher allozieren kann, z.B. indem in der
 
 Nutzer `fedora` und Datenbank `fedora` anlegen:
 
-    useradd fedora
-    passwd fedora
-    su -l postgres
-    psql template1
     CREATE USER fedora WITH PASSWORD 's3cr3t';
     CREATE DATABASE fedora;
     GRANT ALL PRIVILEGES ON DATABASE fedora TO fedora;
@@ -38,7 +34,6 @@ Datenbank `riTriples` für den Resource Index in PostgreSQL anlegen (Achtung: ca
 
     CREATE DATABASE "riTriples";
     GRANT ALL PRIVILEGES ON DATABASE "riTriples" TO fedora;
-    \q
     
 ## Fedora
 
@@ -53,7 +48,6 @@ Im Repository befindet sich die Datei `config/install.properties`. Dort müssen 
 Installer ausführen:
 
     sudo java -jar fcrepo-installer-3.5.jar config/install.properties
-
 
 Die Datei fedora.fcfg mit den entsprechenden Einstellungen befindet sich auch im Repository unter `config/fedora.fcfg`.
 
