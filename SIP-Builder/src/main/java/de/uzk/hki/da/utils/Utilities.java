@@ -29,6 +29,9 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -50,7 +53,6 @@ import de.uzk.hki.da.sb.SIPFactory.KindOfSIPBuilding;
  */
 public class Utilities {
 	
-	private static final String sipBuilderVersion = "0.6.5-p1";
 	private static Logger logger = Logger.getLogger(Utilities.class );
 	/**
 	 * String to enum translation method
@@ -276,19 +278,6 @@ public class Utilities {
 			throw new Exception("Couldn't write to file " + outputFile.getAbsolutePath(), e);
 		}		
 	}
-	
-	public static String getSipBuilderVersion() {
-		return sipBuilderVersion;
-	}
-	
-	public static String getSipBuilderShortVersion() {
-		
-		int index = sipBuilderVersion.indexOf('-');
-		if (index == -1)
-			return sipBuilderVersion;
-		
-		return sipBuilderVersion.substring(0, index);		
-	}
 
 	public static void validateFileReferencesInMetadata(File metadataFile, String metadataType) throws Exception {
 		logger.info("Checking references in metadata file "+metadataFile);
@@ -327,5 +316,21 @@ public class Utilities {
 			}
 		}	
 		return isValid;
+	}
+
+	
+	public static String getBuildNumber() {
+		String buildNumber = "fakeBuildNumber";
+		try {
+			JarFile file=null;
+			Manifest mf =null;
+			file = new JarFile(new File(Utilities.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()));
+			mf = file.getManifest();
+			Attributes attr = mf.getMainAttributes();
+			buildNumber = attr.getValue("buildNumber");
+		} catch (Exception e) {
+			logger.debug("Can not extract the build number from ");
+		}
+		return buildNumber;
 	}
 }

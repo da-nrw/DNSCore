@@ -56,7 +56,6 @@ public class SIPBuilder {
 	
 	private static Properties properties;
 
-
 	public static void main(String[] args) {
     	
 		TTCCLayout layout = new TTCCLayout();

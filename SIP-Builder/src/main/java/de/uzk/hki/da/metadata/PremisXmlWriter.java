@@ -49,7 +49,7 @@ public class PremisXmlWriter {
 	private static final String XSI_NS = "http://www.w3.org/2001/XMLSchema-instance";
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 	private static final SimpleDateFormat dayDateFormat = new SimpleDateFormat("yyyy-MM-dd'T00:00:00.000+01:00'");
-	
+
 	private XMLStreamWriter writer = null;
 
 	
@@ -62,7 +62,6 @@ public class PremisXmlWriter {
 	 * @throws Exception
 	 */
 	public void createPremisFile(SIPFactory sip, File f, String packageName) throws Exception {
-		
 		createPremisFile(sip, f, null, packageName);
 	}
 	
@@ -245,7 +244,7 @@ public class PremisXmlWriter {
 			createTextElement("eventDateTime", formatDate(creationDate, dateFormat), 2);
 			createOpenElement("linkingAgentIdentifier", 2);
 				createTextElement("linkingAgentIdentifierType", "APPLICATION_NAME", 3);
-				createTextElement("linkingAgentIdentifierValue", SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder " + Utilities.getSipBuilderVersion(), 3);
+				createTextElement("linkingAgentIdentifierValue", SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder Build: " + Utilities.getBuildNumber(), 3);
 			createCloseElement(2);
 			createOpenElement("linkingObjectIdentifier", 2);
 				createTextElement("linkingObjectIdentifierType", "PACKAGE_NAME", 3);
@@ -264,7 +263,7 @@ public class PremisXmlWriter {
 		createOpenElement("agent", 1);
 			createOpenElement("agentIdentifier", 2);
 				createTextElement("agentIdentifierType", "APPLICATION_NAME", 3);
-				createTextElement("agentIdentifierValue", SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder " + Utilities.getSipBuilderVersion(), 3);
+				createTextElement("agentIdentifierValue", SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder " + Utilities.getBuildNumber(), 3);
 			createCloseElement(2);
 			createTextElement("agentType", "APPLICATION", 2);
 		createCloseElement(1);		

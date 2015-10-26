@@ -82,6 +82,7 @@ public class SIPFactory {
 
 	private Feedback returnCode;
 
+
 	public enum KindOfSIPBuilding { MULTIPLE_FOLDERS, SINGLE_FOLDER, NESTED_FOLDERS};
 
 	/**

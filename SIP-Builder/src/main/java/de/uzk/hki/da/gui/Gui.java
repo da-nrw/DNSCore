@@ -29,9 +29,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -83,6 +80,8 @@ public class Gui extends JFrame{
 	private static Logger logger = Logger.getLogger( Gui.class );
 	
 	private static final long serialVersionUID = -2783837120567684391L;
+	
+	private String buildNumber = Utilities.getBuildNumber();
 
 	SIPFactory sipFactory = new SIPFactory();
 	ContractSettings contractSettings = null;
@@ -485,16 +484,6 @@ public class Gui extends JFrame{
 	 * Creates the text labels
 	 */
 	private void initializeTextLabels() {
-		JarFile file=null;;
-		Manifest mf =null;
-		try {
-			file = new JarFile(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()));
-			mf = file.getManifest();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		Attributes attr = mf.getMainAttributes();
-		String buildNumber = attr.getValue("buildNumber");
 		versionInfoLabel = new JLabel("SIP-Builder Build: " + buildNumber + 
 				", LVR-InfoKom (ab 2014). HKI, Universität zu Köln 2011-2014.");
 		versionInfoLabel.setFont(standardFont.deriveFont(10.0f));
@@ -1863,7 +1852,7 @@ public class Gui extends JFrame{
 		helpIconButton.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e){
-				messageWriter.showMessage(SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder v" + Utilities.getSipBuilderVersion() + "\n\n" +
+				messageWriter.showMessage(SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder v" + buildNumber + "\n\n" +
 										  "Copyright (C) 2014 Historisch-Kulturwissenschaftliche\n" +
 										  "Informationsverarbeitung Universität zu Köln\n\n" +
 										  "www.danrw.de");
@@ -3816,5 +3805,13 @@ public class Gui extends JFrame{
 
 		return null;
 	}
+	
+	
+	public String getBuildNumber() {
+		return buildNumber;
+	}
 
+	public void setBuildNumber(String buildNumber) {
+		this.buildNumber = buildNumber;
+	}
 }

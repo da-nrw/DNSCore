@@ -43,9 +43,9 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 import de.uzk.hki.da.main.SIPBuilder;
+import de.uzk.hki.da.sb.Feedback;
 import de.uzk.hki.da.sb.MessageWriter;
 import de.uzk.hki.da.sb.SIPFactory;
-import de.uzk.hki.da.sb.Feedback;
 import de.uzk.hki.da.sb.UserInputValidator;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.StringUtilities;
@@ -689,7 +689,7 @@ public class Cli {
     	
 		System.out.println("");
 		System.out.println("");
-		System.out.println(SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder v" + Utilities.getSipBuilderVersion());
+		System.out.println(SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder Build: " + Utilities.getBuildNumber());
 		System.out.println("");
 		System.out.println("Aufruf: java -jar SipBuilder.jar [-source | -filelist | -siplist] -destination [Weitere Optionen]");
 		System.out.println("");
