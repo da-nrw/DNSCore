@@ -47,7 +47,7 @@ public class ATMigrationDecisionTimeout extends AcceptanceTest {
 		Job jobbi = ath.getJob(ORIG_NAME_NOTALLOWED);
 
 		String notRealyLongAgo = String
-				.valueOf(new Date().getTime() / 1000L - 864000 * 30);
+				.valueOf(new Date().getTime() / 1000L - 86400 * 30);
 
 		Session session = HibernateUtil.openSession();
 		session.refresh(jobbi);
