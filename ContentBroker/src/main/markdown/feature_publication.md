@@ -17,11 +17,15 @@
 
 #### Testpaket(e):
 
-* ATUCTimeBasedPublInstOnly
-* ATUCTimeBasedPublNoPubWithLawSet
-* ATUCTimeBasedPublNoPubWithStartDateSet
-* ATUCTimeBasedPublPublishNothing
-* ATUCTimeBasedPublAllPublic
+[ATUCTimeBasedPublInstOnly.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATUCTimeBasedPublInstOnly.tgz) 
+
+[ATUCTimeBasedPublNoPubWithLawSet.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATUCTimeBasedPublNoPubWithLawSet.tgz) 
+
+[ATUCTimeBasedPublNoPubWithStartDateSet.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATUCTimeBasedPublNoPubWithStartDateSet.tgz) 
+
+[ATUCTimeBasedPublPublishNothing.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATUCTimeBasedPublNoPubWithStartDateSet.tgz) 
+
+[ATUCTimeBasedPublAllPublic.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATUCTimeBasedPublAllPublic.tgz) 
 
 #### Ablauf
 
