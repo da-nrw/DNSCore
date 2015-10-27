@@ -108,5 +108,17 @@ Default Bootstrap-Policies löschen (sonst werden diese bei jedem Neustart gelad
 
 Tomcat neustarten.
 
+Ggfs. im IRODS PresKnoten den Default Erstellungsmodus von Files änder:
+
+    vi iRODS/scripts/perl/irodsctl.pl
+    
+    # $DefFileMode - the mode of the file created in the resource vault. 
+    # The default value is 0600 (DEFAULT_FILE_MODE).
+    # The input value must be an octal value and start with a "0", it must be declared between quotes: ''.
+    $DefFileMode='0640';
+
+
+    
+
 
 
