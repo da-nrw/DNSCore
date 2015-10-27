@@ -1,6 +1,9 @@
 # Leistungsmerkmal: Publikation
 
+Zur Verwaltung von Präsentationsderivaten (sog. PIP - eine spezielle Form eines DIP) wird ein Fedora-Repository und ein ElasticSearch index verwendet. Näheres dazu finden Sie unter [install_fedora.de.md](install_fedora.de.md)
+
 ## Szenario AT-P-1
+
 
 #### Kontext:
 
