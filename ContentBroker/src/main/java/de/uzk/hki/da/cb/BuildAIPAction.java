@@ -96,7 +96,7 @@ public class BuildAIPAction extends AbstractAction {
 				try {
 					FileUtils.deleteDirectory(Path.make(objectPath,WorkArea.DATA,children[i]).toFile());
 				} catch (IOException e) {
-					throw new RuntimeException("Couldn't delete folder: "+children[i]);
+					throw new RuntimeException("Couldn't delete folder: "+children[i], e);
 				}
 			}
 		}
