@@ -3,8 +3,6 @@ package de.uzk.hki.da.core;
 import java.util.Date;
 import java.util.List;
 
-import javax.mail.MessagingException;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -13,9 +11,7 @@ import org.slf4j.MDC;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PendingMail;
 import de.uzk.hki.da.service.HibernateUtil;
-import de.uzk.hki.da.service.Mail;
 import de.uzk.hki.da.utils.C;
 
 public class TimeBasedPublicationWorker extends Worker {
