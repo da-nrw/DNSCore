@@ -6,9 +6,9 @@ Im folgenden wird davon ausgegangen dass die Installationspfade wie folgt lauten
 * Fedora: /opt/fedora
 * Tomcat: /opt/tomcat
 
-Im Source-Code-Repository befindet sich ein Projekt mit Skripten und Config-Dateien zu Fedora. Die aktuelle Adresse ist
+Im Source-Code-Tree von DNSCore finden sich Skripte und Config-Dateien zu Fedora:
 
-    https://github.com/da-nrw/prepscripts.git
+https://github.com/da-nrw/DNSCore/tree/master/ContentBroker/src/main/python
     
 ## Voraussetzungen
 
@@ -16,7 +16,7 @@ Im Source-Code-Repository befindet sich ein Projekt mit Skripten und Config-Date
 
 #### Tomcat
 
-Das Vorgehenzur Installation von Tomcat hängt vom Betriebssystem ab und wird hier deswegen nicht genauer dokumentiert. Fedora 3.5 läuft sowohl unter Tomcat 6, als auch unter Tomcat 7. Da folgende Versionen von Fedora Tomcat 7 benötigen wird dieser jedoch empfohlen.
+Tomcat 6 oder 7
 
 Sicherstellen, dass Tomcat genügend Speicher allozieren kann, z.B. indem in der Datei `CATALINA_BASE/bin/sentenv.sh` (anlegen, wenn Sie nicht existiert) folgendes eingetragen wird:
 
@@ -43,13 +43,13 @@ Fedora Installer in der Version 3.5 downloaden:
 
     wget http://downloads.sourceforge.net/fedora-commons/fcrepo-installer-3.5.jar
 
-Im Repository befindet sich die Datei `config/install.properties`. Dort müssen die entsprechenden Passwörter und ggf. Einstellungen für die Datenbank, den Servernamen und die Installationspfade angepasst werden.
+Im Repository befindet sich die Datei https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/install.properties . Dort müssen die entsprechenden Passwörter und ggf. Einstellungen für die Datenbank, den Servernamen und die Installationspfade angepasst werden.
 
 Installer ausführen:
 
     sudo java -jar fcrepo-installer-3.5.jar config/install.properties
 
-Die Datei fedora.fcfg mit den entsprechenden Einstellungen befindet sich auch im Repository unter `config/fedora.fcfg`.
+Die Datei fedora.fcfg mit den entsprechenden Einstellungen befindet sich auch im Repository unter https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/fedora.fcfg 
 
 Ggf. die vom Installer erstellte server.xml in den Tomcat-Ordner conf kopieren. 
 
@@ -72,19 +72,19 @@ Ggf. die Datenbankeinstellungen (weiter unten in `fedora.fcfg`) im datastore `lo
 Tomcat neustarten.
 
 Fedora kann jetzt unter folgenden URLs erreicht werden:
-* Generelle Informationen: http://<servername>:8080/fedora
-* Suchinterface: http://<servername>:8080/fedora/objects
-* Admininterface: http://<servername>:8080/fedora/admin
+* Generelle Informationen: http://localhost:8080/fedora
+* Suchinterface: http://localhost:8080/fedora/objects
+* Admininterface: http://localhost:8080/fedora/admin
 
 ### Policies
 
 Um den Zugriff auf Objekte zu verhindern, die nicht öffentlich zugänglich sein sollen, müssen die entsprechenden XACML-Policies wie folgt installiert werden:
     
-Skripte und Policy-Dateien aus dem bazaar-Repository laden
+Skript laden:
 
-    git clone https://github.com/da-nrw/prepscripts.git
+https://github.com/da-nrw/DNSCore/tree/master/ContentBroker/src/main/python
 
-Die Policy-Objekte liegen unter `policies` und können mit dem Skript `scripts/setup-policies.py` geladen werden. Das Package python-httplib2 muss dazu installiert sein. Vor der Ausführung sollte die FedoraClient-URL in den Skriptdateien angepasst werden. Ansclipeßend das Skript ausführen (im Wurzelverzeichnis des prepscripts-Repository:
+Die Policy-Objekte liegen unter https://github.com/da-nrw/DNSCore/tree/master/ContentBroker/src/main/xml und können mit dem Skript `scripts/setup-policies.py` geladen werden. Das Package python-httplib2 muss dazu installiert sein. Vor der Ausführung sollte die FedoraClient-URL in den Skriptdateien angepasst werden. Ansclipeßend das Skript ausführen (im Wurzelverzeichnis des prepscripts-Repository:
 
     python scripts/setup-policies.py
 

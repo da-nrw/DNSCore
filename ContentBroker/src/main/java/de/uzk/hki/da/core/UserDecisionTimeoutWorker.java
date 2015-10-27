@@ -41,7 +41,7 @@ public class UserDecisionTimeoutWorker extends Worker {
 		logger.debug("updateTimedOut");
 
 
-		String dateBefore = String.valueOf(new Date().getTime() / 1000L - 864000 * 30);
+		String dateBefore = String.valueOf(new Date().getTime() / 1000L - 86400 * 30);
 
 		String queryStr = "SELECT j FROM Job j LEFT JOIN j.obj o "
 				+ "where j.status=?1 and j.date_modified < ?2 and j.responsibleNodeName=?3";

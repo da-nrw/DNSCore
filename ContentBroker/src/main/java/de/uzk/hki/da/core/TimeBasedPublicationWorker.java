@@ -3,6 +3,8 @@ package de.uzk.hki.da.core;
 import java.util.Date;
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -11,7 +13,9 @@ import org.slf4j.MDC;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.PendingMail;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.service.Mail;
 import de.uzk.hki.da.utils.C;
 
 public class TimeBasedPublicationWorker extends Worker {
@@ -23,6 +27,21 @@ public class TimeBasedPublicationWorker extends Worker {
 	
 	public void init() {
 		Session session = HibernateUtil.openSession();
+		String queryStr = "SELECT p FROM PendingMail p ";
+		Query query = session.createQuery(queryStr);
+		List<PendingMail> obbis = query.list();
+
+		Date date = new Date(1442328560L * 1000L);
+		
+		try {
+			Mail.sendAMail("Sp@m", "Josef.Hammer@lvr.de", "Sp@m-[234-pOQ345]-Cryp-{5678-AQ12-TREZ-ADAA-8900122}", 
+					"Sollte Sie diese Nachricht trotz Spamfilter erhalte ist. Ruf Sie http://Erst.Helfen.eh.\n"
+				+	"Ihre Teamadministrator");
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		session.refresh(localNode);
 		session.close();
 
