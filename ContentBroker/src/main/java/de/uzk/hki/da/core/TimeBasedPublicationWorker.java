@@ -49,6 +49,7 @@ public class TimeBasedPublicationWorker extends Worker {
 			Session session = HibernateUtil.openSession();
 			insertJobs(session);
 			session.close();
+
 			lastTimeDone = currentTime;
 		}
 	}
