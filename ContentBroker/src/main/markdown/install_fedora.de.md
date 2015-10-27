@@ -108,7 +108,7 @@ Default Bootstrap-Policies löschen (sonst werden diese bei jedem Neustart gelad
 
 Tomcat neustarten.
 
-Ggfs. im IRODS PresKnoten den Default Erstellungsmodus von Files änder:
+Ggfs. im IRODS PresKnoten den Default Erstellungsmodus von Files ändern:
 
     vi iRODS/scripts/perl/irodsctl.pl
     
