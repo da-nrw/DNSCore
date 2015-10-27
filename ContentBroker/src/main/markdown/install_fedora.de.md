@@ -1,6 +1,6 @@
 # Presentation Repository installieren
 
-Das Presentation Repository des DA-NRW zur Bereitstellung der konvertierten browserfähigen Objekte und zum Abruf durch Portale läuft nur an einem Knoten des Grids und zwar an der Universität zu Köln. Momentan wird als Repository-Software Fedora 3.5 eingesetzt.
+Das Presentation Repository des DA-NRW zur Bereitstellung der konvertierten browserfähigen Objekte PIP und zum Abruf durch Portale kann über die Installoption "pres" installiert werden. Momentan wird als Repository-Software Fedora 3.5 eingesetzt.
 
 Im folgenden wird davon ausgegangen dass die Installationspfade wie folgt lauten (diese müssen beim Abarbeiten der Dokumentation ggf. entsprechend angepasst werden):
 * Fedora: /opt/fedora
