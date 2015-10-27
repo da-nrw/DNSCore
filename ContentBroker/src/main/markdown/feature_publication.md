@@ -17,11 +17,11 @@
 
 #### Testpaket(e):
 
-[ATTimeBasedPublInstOnly.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublInstOnly.tgz) 
-[ATTimeBasedPublNoPubWithLawSet.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublNoPubWithLawSet.tgz) 
-[ATTimeBasedPublNoPubWithStartDateSet.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublNoPubWithStartDateSet.tgz) 
-[ATTimeBasedPublPublishNothing.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublNoPubWithStartDateSet.tgz) 
-[ATTimeBasedPublAllPublic.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublAllPublic.tgz) 
+* [ATTimeBasedPublInstOnly.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublInstOnly.tgz) 
+* [ATTimeBasedPublNoPubWithLawSet.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublNoPubWithLawSet.tgz) 
+* [ATTimeBasedPublNoPubWithStartDateSet.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublNoPubWithStartDateSet.tgz) 
+* [ATTimeBasedPublPublishNothing.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublNoPubWithStartDateSet.tgz) 
+* [ATTimeBasedPublAllPublic.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublAllPublic.tgz) 
 
 #### Ablauf
 
