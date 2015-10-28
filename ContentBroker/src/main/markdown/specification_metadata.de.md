@@ -31,7 +31,14 @@ Für die Präsentation im Portal werden die Primärdaten aus dem langzeitsichere
 
 ### Schnittstelle Portal
 
-Für die Präsentation der Daten im (HBZ-)Portal werden die aus spartenspezifischen Metadaten extrahierten Informationen in eine einheitliche Form gebracht. In DNSCore werden die Informationen in eine EDM.xml exportiert, die man sich neben den Originaldaten im PIP ansehen kann. Anschließend werden alle Felder der EDM mittels eines von uns definierten [Mappings](../conf/es_mapping.json)
+Für die Präsentation der Daten im (HBZ-)Portal werden die aus spartenspezifischen Metadaten extrahierten Informationen in eine einheitliche Form gebracht. In DNSCore werden die Informationen in eine EDM.xml exportiert, die man sich neben den Originaldaten im PIP ansehen kann. Anschließend werden alle Felder der EDM mittels eines von uns definierten [Mappings](../conf/es_mapping.json) in ein ElasticSearch-Index, der die eigentliche Schnittstelle zum Portal darstellt, eingetragen. Von da aus können die Daten in beliebiger Form im Portal gezeigt werden.
+
+Die Informationen darüber, Welche Metadatenfelder genau ihren Weg zum Portal finden, können Sie folgenden spartenspezifischen Tabellen entnehmen:
+
+1. [EAD](https://wiki1.hbz-nrw.de/display/DANOPEN/EAD+zu+EDM)
+1. [METS](https://wiki1.hbz-nrw.de/display/DANOPEN/METSMods+zu+EDM) 
+1. [LIDO](https://wiki1.hbz-nrw.de/display/DANOPEN/LIDO+to+EDM)
+1. [XMP](https://wiki1.hbz-nrw.de/display/DANOPEN/XMP+zu+EDM)
 
 ## Anforderungen an die Metadaten im DNSCore
 
