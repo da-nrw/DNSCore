@@ -363,4 +363,4 @@ __-help__
 Zeigt eine Übersicht der möglichen Optionen an.
 
 
-![Bild](https://raw.githubusercontent.com/../manual/Konversion_Migration.jpg)
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/blob/master/SIP-Builder/src/manual/Start.jpg)
