@@ -1,7 +1,7 @@
 Anleitung SIP-Builder
 =====================
 
-Bitte verwenden Sie eine Version des SIP-Builders, die mindestens die Build-Nr. 1497 hat!
+Bitte verwenden Sie eine Version des SIP-Builders, die mindestens die Build-Nr. 1512 hat!
 
 ## Überblick
 
@@ -21,7 +21,7 @@ Starten Sie den SIP-Builder, indem Sie je nach Betriebssystem eine der folgenden
 * SipBuilder-Unix.sh (Unix/Mac OS)
 
 ### Start
-
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Start.jpg)
  
 
 __Quellordner__  
@@ -45,6 +45,8 @@ __WICHTIG!__
 * Bitte denken Sie daran, dass in einem SIP (ausgenommen XMP-Pakete) keine gleichnamigen Dateien vorkommen dürfen, s. [SIP-Spezifikation](../../../ContentBroker/src/main/markdown/specification_sip.de.md).
 
 ### Laden der Rechteeinstellungen  
+
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Laden_Standard.jpg)
 
 __Laden__  
 Wenn Sie die Rechteeinstellungen bei einem früheren SIP-Generierungsvorgang schon einmal festgelegt und gespeichert haben (siehe __Einstellungen speichern__), können Sie die dabei erstellte Datei mit dieser Option laden. Die geladenen Einstellungen können in den nachfolgenden Schritten überprüft und gegebenenfalls angepasst werden.
