@@ -21,7 +21,7 @@ Zur Verwaltung von Präsentationsderivaten (sog. PIP - eine spezielle Form eines
 * [ATTimeBasedPublPublishNothing_id.pack_1.tar](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublPublishNothing_id.pack_1.tar) 
 * [ATTimeBasedPublAllPublic_id.pack_1.tar](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublAllPublic_id.pack_1.tar) 
 
-## Darüberhinaus sollten mittels händischer Tests die zeitgesteuerte Veröffentlichung überprüft werden: 
+## Darüberhinaus sollte mittels händischer Tests die zeitgesteuerte Veröffentlichung überprüft werden: 
 
 #### Vorbedingungen:
 
