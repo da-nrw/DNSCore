@@ -307,9 +307,6 @@ Beispiel:
 _java -jar SipBuilder.jar -source="D:\sipsource" -destination="D:\sips\" -single_  
 Erstellt ein einziges SIP aus dem Ordner __D:\sipsource__ im Verzeichnis __D:\sips\__. Es werden die Standardrechte angewendet.
 
-_java -jar SipBuilder.jar -source="/home/user/sipData" -destination="/home/user/sips" -collection="ExampleCollection"_  
-Erstellt mehrere SIPs aus den Unterordnern des Ordners __/home/user/sipData__. Die SIPs werden anschließend im Verzeichnis __/home/user/ sips/ExampleCollection__ gebündelt. Es werden die Standardrechte angewendet.
-
 _java -jar SipBuilder.jar -filelist="C:\Eigene Dateien\SIP-Source\filelist.txt"  -destination="D:\sips\" -single="ExampleSIP" -rights="D:\sipRights\contractRights_001.xml"  -alwaysOverwrite_  
 Erstellt ein SIP gemäß den Angaben in der Datei __C:\Eigene Dateien\SIP-Source\filelist.txt__ mit dem Namen "ExampleSIP" im Verzeichnis __D:\sips\__.  
 Dabei werden die in der Datei __D:\sipRights\contractRights_001.xml__ hinterlegten Rechteeinstellungen verwendet.  
