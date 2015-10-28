@@ -31,7 +31,7 @@ Für die Präsentation im Portal werden die Primärdaten aus dem langzeitsichere
 
 ### Schnittstelle Portal
 
-Für die Präsentation der Daten im (HBZ-)Portal werden die aus spartenspezifischen Metadaten extrahierten Informationen in eine einheitliche Form gebracht. In DNSCore werden die Informationen in eine EDM.xml exportiert, die man sich neben den Originaldaten im PIP ansehen kann. Anschließend werden alle Felder der EDM mittels eines [von uns definierten Mappings](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/conf/es_mapping.json)
+Für die Präsentation der Daten im (HBZ-)Portal werden die aus spartenspezifischen Metadaten extrahierten Informationen in eine einheitliche Form gebracht. In DNSCore werden die Informationen in eine EDM.xml exportiert, die man sich neben den Originaldaten im PIP ansehen kann. Anschließend werden alle Felder der EDM mittels eines von uns definierten [Mappings](../conf/es_mapping.json)
 
 ## Anforderungen an die Metadaten im DNSCore
 
