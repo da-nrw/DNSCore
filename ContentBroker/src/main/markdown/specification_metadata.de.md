@@ -80,7 +80,7 @@ Die in das DNSCore eingelieferten METS-Pakete werden auch als METS/MODS-Pakete b
 
 #### Verarbeitung in DNSCore
 
-Bei der Verarbeitung eines METS/MODS-Pakets wird bei jeder Migration der Primärdaten die METS-Datei aktualisiert. Dabei wird lediglich das fileSec-Element angepasst. Dieser Knoten besitzt den Kindknoten <fileGrp>, der die Auflistung aller Referenzen auf Primärfiles enthält. Jedes dieser Files wird mit jeweils einem <file>-Knoten beschrieben. Der <file>-Knoten enthält eine Reihe verschiedener Informationen. Aktuell werden in DNSCore insgesamt drei Felder aktualisiert: MIMETYPE, LOCTYPE und href.
+Bei der Verarbeitung eines METS/MODS-Pakets wird bei jeder Migration der Primärdaten die METS-Datei aktualisiert. Dabei wird lediglich das fileSec-Element angepasst. Dieser Knoten besitzt den Kindknoten <fileGrp>, der die Auflistung aller Referenzen auf Primärfiles enthält. Jedes dieser Files wird mit jeweils einem file-Knoten beschrieben. Der file-Knoten enthält eine Reihe verschiedener Informationen. Aktuell werden in DNSCore insgesamt drei Felder aktualisiert: MIMETYPE, LOCTYPE und href.
 Der Mimetype gibt den Typ der referenzierten Datei an. Hier erfährt man, ob es sich um ein Bild-, Audio- oder Videoformat handelt und welches genau das ist.
 Der Loctype gibt den Typ der Referenz an: der Attributwert „OTHER“ steht für eine Referenz auf dem Dateisystem, der Wert „URL“ verrät, dass es sich bei der Referenz um eine URL handelt.
 Schließlich enthält das Attribut „href“ die Referenz auf die Primärdatei. 
@@ -169,7 +169,7 @@ data/mets/mets.xml
 data/mets/bild.bmp
 ```
 
-Die Referenz auf die METS-Dateien werden im EAD im Knoten <daogrp> angegeben. Dieser sieht in der EAD-Datei aus dem Beispiel-Paket sowohl im SIP als auch im AIP wie folgt aus:
+Die Referenz auf die METS-Dateien werden im EAD im Knoten daogrp angegeben. Dieser sieht in der EAD-Datei aus dem Beispiel-Paket sowohl im SIP als auch im AIP wie folgt aus:
 
 ```
 <daogrp>
@@ -191,12 +191,12 @@ Für die Präsentation muss der Knoten aktualisiert werden:
 #### Allgemeine Informationen
 
 Lightweight Information Describing Objects (LIDO) ist ein XML-Dateiformat zur Beschreibung von digitalen Sammlungen von Primärobjekten. 
-Die Eignung von LIDO als Metadatenstandard für Museumsdaten ist nicht unumstritten, da LIDO im Gegensatz zu allen anderen unterstützten Metadatenstandards absolute URLs zu Inhaltsdaten mitführt. Die Verwendung von URLs zur Referenzierung von Primärdaten ist in der LIDO-Spezifikation  ( http://www.lido-schema.org/schema/v1.0/lido-v1.0-specification.pdf ) fest vorgegeben. Das für die Referenzierung vorgesehene Element <linkResource> wird in der Spezifikation als „A url reference in the worldwide web environment“ bezeichnet.
-Aus den im vorliegenden Dokument bereits genannten Gründen kann eine solche Art der Referenzierung von Primärdaten nicht für die Langzeitarchivierung verwendet werden. Aus diesem Grund werden alle Einlieferer, die ihre Daten im DA-NRW langzeitarchivieren möchten, gebeten, alle Elemente <linkResource> jeweils mit einem relativen Pfad auf die mitgelieferte Primärdatei zu befüllen. Anderenfalls wird das gebildete SIP als inkonsistentes Paket von DNSCore abgelehnt.
+Die Eignung von LIDO als Metadatenstandard für Museumsdaten ist nicht unumstritten, da LIDO im Gegensatz zu allen anderen unterstützten Metadatenstandards absolute URLs zu Inhaltsdaten mitführt. Die Verwendung von URLs zur Referenzierung von Primärdaten ist in der LIDO-Spezifikation  (http://www.lido-schema.org/schema/v1.0/lido-v1.0-specification.pdf) fest vorgegeben. Das für die Referenzierung vorgesehene Element <linkResource> wird in der Spezifikation als „A url reference in the worldwide web environment“ bezeichnet.
+Aus den im vorliegenden Dokument bereits genannten Gründen kann eine solche Art der Referenzierung von Primärdaten nicht für die Langzeitarchivierung verwendet werden. Aus diesem Grund werden alle Einlieferer, die ihre Daten im DA-NRW langzeitarchivieren möchten, gebeten, alle Elemente linkResource jeweils mit einem relativen Pfad auf die mitgelieferte Primärdatei zu befüllen. Anderenfalls wird das gebildete SIP als inkonsistentes Paket von DNSCore abgelehnt.
 
 ##### Verarbeitung in DNSCore
 
-Bei der Migration von Primärdaten für die Langzeitarchivierung und die Präsentation wird in der eingelieferten LIDO.xml pro Primärdatei ein <linkResource>-Element aktualisiert. 
+Bei der Migration von Primärdaten für die Langzeitarchivierung und die Präsentation wird in der eingelieferten LIDO.xml pro Primärdatei ein linkResource-Element aktualisiert. 
 Im Folgenden wird anhand eines Beispiels die im LIDO vorgenommenen Ersetzungen aufgezeigt:
 
 **Beispiel:**
@@ -210,7 +210,7 @@ data/lido.xml
 data/Bilder/bild.bmp
 ```
 
-Die Referenz auf die Primärdatei wird im Element < linkResource > angegeben:
+Die Referenz auf die Primärdatei wird im Element linkResource angegeben:
 
 ```xml
 <lido:linkResource>Bilder/bild.bmp</lido:linkResource>
@@ -227,7 +227,7 @@ data/Bilder/bild.tif
 <lido:linkResource>Bilder/bild.tif</lido:linkResource>
 ```
 
-**Präsentation:** Für die Präsentation wird aus dem TIFF eine JPG-Datei erzeugt. Da die beiden Dateien im WWW abrufbar sein sollen, muss die relative Referenz durch die Angabe einer absoluten URL ersetzt werden. Das Element <linkResource> sieht in der LIDO-Datei im PIP sieht wie folgt aus:
+**Präsentation:** Für die Präsentation wird aus dem TIFF eine JPG-Datei erzeugt. Da die beiden Dateien im WWW abrufbar sein sollen, muss die relative Referenz durch die Angabe einer absoluten URL ersetzt werden. Das Element linkResource sieht in der LIDO-Datei im PIP sieht wie folgt aus:
 
 ```
 <lido:linkResource> http://data.da-nrw.de/[...] /[new Filename].jpg </lido:linkResource>
