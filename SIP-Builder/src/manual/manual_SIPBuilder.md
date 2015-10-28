@@ -361,3 +361,6 @@ Die möglichen Codes und ihre Bedeutung können Sie der folgenden Übersicht ent
 
 __-help__ 
 Zeigt eine Übersicht der möglichen Optionen an.
+
+
+![Bild](https://raw.githubusercontent.com/Konversion_Migration.jpg)
