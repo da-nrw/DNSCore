@@ -12,7 +12,7 @@ Unabhängig vom jeweiligen Metadatenformat werden inhaltlich gesehen folgende Ar
 ## Akzeptierte Metadatenformate
 Im Rahmen des DA-NRW werden derzeit vier Metadatenformate akzeptiert:
 
-* EAD
+* EAD + METS/MODS
 * METS
 * LIDO
 * XMP
