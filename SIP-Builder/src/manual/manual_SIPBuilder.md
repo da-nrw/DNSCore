@@ -197,6 +197,7 @@ Beispiel:
 -siplist="C:\Eigene Dateien\SIP-Source\siplist.xml"
 
 Beispielinhalt einer SIP-Liste:  
+```
 <sipList>  
         <sip name="SIP_Nr1">
 		<file>D:\Foto\2010\foto_1.tif</file>
@@ -214,7 +215,7 @@ Beispielinhalt einer SIP-Liste:
 	<file>D:\Video\High_Resolution\</file>
 	</sip>
 </sipList>
-
+```
 
 #### Zielordner
 
@@ -279,10 +280,10 @@ SIPs werden als unkomprimierte tar-Container gespeichert. Der SIP-Erstellungspro
 #### Überschreiben von SIPs
 
 __-neverOverwrite (Standardoption)__  
-SIPs werden nicht erstellt, wenn sich im Zielordner bereits ein SIP gleichen Namens befindet. Sie erhalten in diesem Fall im Anschluss an den SIP-Erstellungsprozess eine Mitteilung darüber, dass bereits existierende SIPs nicht neu erstellt wurden. Existiert bereits eine Lieferung gleichen Namens im Zielordner, wird der SIP-Erstellungsprozess nicht durchgeführt.
+SIPs werden nicht erstellt, wenn sich im Zielordner bereits ein SIP gleichen Namens befindet. Sie erhalten in diesem Fall im Anschluss an den SIP-Erstellungsprozess eine Mitteilung darüber, dass bereits existierende SIPs nicht neu erstellt wurden. Existiert bereits ein Verzeichnis gleichen Namens im Zielordner, wird der SIP-Erstellungsprozess nicht durchgeführt.
 
 __-alwaysOverwrite__  
-Wenn sich bereits existierende SIPs oder Lieferungen gleichen Namens im Zielordner befinden, werden sie ohne weitere Nachfrage überschrieben, d. h. durch die neu erstellten Pakete bzw. die neu erstellte Lieferung ersetzt.
+Wenn sich bereits existierende SIPs gleichen Namens im Zielordner befinden, werden sie ohne weitere Nachfrage überschrieben, d. h. durch die neu erstellten Pakete ersetzt.
 
 __-alwaysIgnoreWrongReferencesInMetadata__   
 Bei der Valiedierung der Paketstruktur können ggf. Fehler in den Metadaten augedeckt werden. 
@@ -305,9 +306,6 @@ Beispiel:
 
 _java -jar SipBuilder.jar -source="D:\sipsource" -destination="D:\sips\" -single_  
 Erstellt ein einziges SIP aus dem Ordner __D:\sipsource__ im Verzeichnis __D:\sips\__. Es werden die Standardrechte angewendet.
-
-_java -jar SipBuilder.jar -source="/home/user/sipData" -destination="/home/user/sips" -collection="ExampleCollection"_  
-Erstellt mehrere SIPs aus den Unterordnern des Ordners __/home/user/sipData__. Die SIPs werden anschließend zu einer Lieferung im Verzeichnis __/home/user/ sips/ExampleCollection__ gebündelt. Es werden die Standardrechte angewendet.
 
 _java -jar SipBuilder.jar -filelist="C:\Eigene Dateien\SIP-Source\filelist.txt"  -destination="D:\sips\" -single="ExampleSIP" -rights="D:\sipRights\contractRights_001.xml"  -alwaysOverwrite_  
 Erstellt ein SIP gemäß den Angaben in der Datei __C:\Eigene Dateien\SIP-Source\filelist.txt__ mit dem Namen "ExampleSIP" im Verzeichnis __D:\sips\__.  
@@ -333,9 +331,9 @@ Die möglichen Codes und ihre Bedeutung können Sie der folgenden Übersicht ent
 8  Zielordner enthält Dateien, die keine Verzeichnisse sind (bei gleichzeitiger Erstellung mehrerer SIPs)  
 9  Name des SIPs fehlt  
 10 Name des SIPs enthält ungültige Zeichen  
-11 Name der Lieferung fehlt  
-12 Name der Lieferung enthält ungültige Zeichen  
-13 Gleichnamige Lieferung existiert bereits  
+11 Name des Verzeichnisses fehlt  
+12 Name des Verzeichnisses enthält ungültige Zeichen  
+13 Gleichnamiges Verzeichnis existiert bereits  
 14 Dateiliste konnte nicht gefunden werden  
 15 Fehler beim Einlesen der Dateiliste  
 16 SIP-Liste konnte nicht gefunden werden  
@@ -348,7 +346,7 @@ Die möglichen Codes und ihre Bedeutung können Sie der folgenden Übersicht ent
 23 Fehler beim Erstellen der Premis-Datei  
 24 Fehler beim Erstellen der BagIt-Metadaten  
 25 Fehler beim Erstellen der Archivdatei  
-26 Fehler beim Erstellen der Lieferung  
+26 Fehler beim Erstellen des SIP  
 27 Temporäre Daten konnten nicht entfernt werden  
 28 Null-Byte-Dateien wurden gefunden   
 29 Abbruch    
@@ -361,3 +359,6 @@ Die möglichen Codes und ihre Bedeutung können Sie der folgenden Übersicht ent
 
 __-help__ 
 Zeigt eine Übersicht der möglichen Optionen an.
+
+
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Start.jpg)

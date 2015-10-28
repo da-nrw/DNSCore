@@ -1,6 +1,6 @@
 # Presentation Repository installieren
 
-Das Presentation Repository des DA-NRW zur Bereitstellung der konvertierten browserfähigen Objekte und zum Abruf durch Portale läuft nur an einem Knoten des Grids und zwar an der Universität zu Köln. Momentan wird als Repository-Software Fedora 3.5 eingesetzt.
+Das Presentation Repository des DA-NRW zur Bereitstellung der konvertierten browserfähigen Objekte PIP und zum Abruf durch Portale kann über die Installoption "pres" installiert werden. Momentan wird als Repository-Software Fedora 3.5 eingesetzt.
 
 Im folgenden wird davon ausgegangen dass die Installationspfade wie folgt lauten (diese müssen beim Abarbeiten der Dokumentation ggf. entsprechend angepasst werden):
 * Fedora: /opt/fedora
@@ -107,6 +107,18 @@ Default Bootstrap-Policies löschen (sonst werden diese bei jedem Neustart gelad
     sudo rm -f /opt/fedora/pdp/policies/*
 
 Tomcat neustarten.
+
+Ggfs. im IRODS PresKnoten den Default Erstellungsmodus von Files ändern:
+
+    vi iRODS/scripts/perl/irodsctl.pl
+    
+    # $DefFileMode - the mode of the file created in the resource vault. 
+    # The default value is 0600 (DEFAULT_FILE_MODE).
+    # The input value must be an octal value and start with a "0", it must be declared between quotes: ''.
+    $DefFileMode='0640';
+
+
+    
 
 
 

@@ -42,25 +42,6 @@ Gilt für alle Szenarien:
   Identifier/data/CCITT_2.TIF
 ``` 
 
-#### Status und offene Punkte:
 
-* Ist die Email für den Einlieferungsbeleg aussagekräftig?
-* Ist die Email für die Fertigstellung des SIP aussagekräftig? Weiss der User, was zu tun ist? Evtl. Dokumentation?
-* Falls sich hier konkrete Anforderungen ergeben, müssen die Akzeptanzkriterien dementsprechend angepasst werden.
-* Ist die angegebene Dokumentation ausreichendv und verständlich?
-* Automatisierte Aspekte:
-** Die PREMIS-Datei wird automatisch geprüft in&nbsp;ATUseCaseIngestPREMISCheck#testProperPREMISCreation
-
-## Szenario: AT-IR-2: Generierung der PREMIS-Datei
-
-#### Testpaket(e):
-
-#### Vorbedingungen:
-
-#### Durchführung:
-
-#### Akzeptanzkriterien:
-
-#### Status und offene Punkte:
 
 
