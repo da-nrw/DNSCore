@@ -80,7 +80,7 @@ Die in das DNSCore eingelieferten METS-Pakete werden auch als METS/MODS-Pakete b
 
 #### Verarbeitung in DNSCore
 
-Bei der Verarbeitung eines METS/MODS-Pakets wird bei jeder Migration der Primärdaten die METS-Datei aktualisiert. Dabei wird lediglich der  <fileSec>-Knoten angepasst. Dieser Knoten besitzt den Kindknoten <fileGrp>, der die Auflistung aller Referenzen auf Primärfiles enthält. Jedes dieser Files wird mit jeweils einem <file>-Knoten beschrieben. Der <file>-Knoten enthält eine Reihe verschiedener Informationen. Aktuell werden in DNSCore insgesamt drei Felder aktualisiert: MIMETYPE, LOCTYPE und href.
+Bei der Verarbeitung eines METS/MODS-Pakets wird bei jeder Migration der Primärdaten die METS-Datei aktualisiert. Dabei wird lediglich das fileSec-Element angepasst. Dieser Knoten besitzt den Kindknoten <fileGrp>, der die Auflistung aller Referenzen auf Primärfiles enthält. Jedes dieser Files wird mit jeweils einem <file>-Knoten beschrieben. Der <file>-Knoten enthält eine Reihe verschiedener Informationen. Aktuell werden in DNSCore insgesamt drei Felder aktualisiert: MIMETYPE, LOCTYPE und href.
 Der Mimetype gibt den Typ der referenzierten Datei an. Hier erfährt man, ob es sich um ein Bild-, Audio- oder Videoformat handelt und welches genau das ist.
 Der Loctype gibt den Typ der Referenz an: der Attributwert „OTHER“ steht für eine Referenz auf dem Dateisystem, der Wert „URL“ verrät, dass es sich bei der Referenz um eine URL handelt.
 Schließlich enthält das Attribut „href“ die Referenz auf die Primärdatei. 
