@@ -318,8 +318,8 @@ Bei der Validierung der Paketstruktur können ggf. Fehler in den Metadaten aufge
 
 Es gibt Fehler, die zwangsläufig zum Abbruch der Verarbeitung im ContentBroker führen werden. Z. B. fehlerhafte Referenzen innerhalb der Metadaten werden im SIP-Builder erkannt und dem User mitgeteilt. Anschließend wird die SIP-Erstellung abgebrochen.
 
-Es gibt aber auch Fehler, die im Fall einer [Delta](../../../ContentBroker/src/main/markdown/the_delta_feature.md)-Einlieferung nicht umbedingt zu einem Verarbeitungsstopp im Contentbroker führen müssen. Diese Fehler werden dem User während der SIP-Erstellung ebenfalls mitgeteilt. Anschließend kann sich der User im GUI-Modus entscheiden, ob er die Verarbeitung abbrechen oder fortsetzen möchte.
-Für den CLI-Modus gibt es den Flag __-alwaysIgnoreWrongReferencesInMetadata__. Wenn dieser gesetzt ist, werden die ggf. unkritischen Fehlermeldungen zwar angezeigt, führen jedoch nicht zum Abbruch der SIP-Erstellung.
+Es gibt aber auch Fehler, die im Fall einer [Delta](../../../ContentBroker/src/main/markdown/the_delta_feature.md)-Einlieferung nicht unbedingt zu einem Verarbeitungsstopp im Contentbroker führen müssen. Diese Fehler werden dem User während der SIP-Erstellung ebenfalls mitgeteilt, wie z. B. fehlende Digitalisate, auf die in den Metadaten verwiesen wird, die aber in der Delta-Lieferung nicht erneut beigefügt wurden. Anschließend kann sich der User im GUI-Modus entscheiden, ob er die Verarbeitung abbrechen oder fortsetzen möchte.
+Für den CLI-Modus gibt es für diesen Fall den Flag __-alwaysIgnoreWrongReferencesInMetadata__. Wenn dieser gesetzt ist, werden die ggf. unkritischen Fehlermeldungen zwar angezeigt, führen jedoch nicht zum Abbruch der SIP-Erstellung.
 Dieser Flag sollte nur dann gesetzt werden, wenn der Nutzer Delta-SIPs bilden möchte und die Struktur des Gesamtpakets sehr gut kennt. Standardmäßig ist dieser Flag auf false gesetzt.
 
 #### Ausschluss bestimmter Dateiendungen
@@ -332,15 +332,15 @@ Beispiel:
 
 ### Beispielaufrufe
 
-__*java -jar SipBuilder.jar -source="D:\sipsource" -destination="D:\sips\" -single*__ 
+__*java -jar SipBuilder.jar -source="D:\sipsource" -destination="D:\sips\" -single*__  
 Erstellt ein einziges SIP aus dem Ordner __D:\sipsource__ im Verzeichnis __D:\sips\__. Es werden die Standardrechte angewendet.
 
-_java -jar SipBuilder.jar -filelist="C:\Eigene Dateien\SIP-Source\filelist.txt"  -destination="D:\sips\" -single="ExampleSIP" -rights="D:\sipRights\contractRights_001.xml"  -alwaysOverwrite_  
-Erstellt ein SIP gemäß den Angaben in der Datei __C:\Eigene Dateien\SIP-Source\filelist.txt__ mit dem Namen "ExampleSIP" im Verzeichnis __D:\sips\__.  
+__*java -jar SipBuilder.jar -filelist="C:\Eigene Dateien\SIP-Source\filelist.txt"  -destination="D:\sips\" -single="ExampleSIP" -rights="D:\sipRights\contractRights_001.xml"  -alwaysOverwrite*__  
+Erstellt ein SIP gemäß den Angaben in der Datei __C:\Eigene Dateien\SIP-Source\filelist.txt__ mit dem Namen __ExampleSIP__ im Verzeichnis __D:\sips\__.  
 Dabei werden die in der Datei __D:\sipRights\contractRights_001.xml__ hinterlegten Rechteeinstellungen verwendet.  
 Ein eventuell schon vorhandenes gleichnamiges SIP im Verzeichnis __D:\sips\__ wird überschrieben.
 
-_java -jar SipBuilder.jar -siplist="C:\Eigene Dateien\SIP-Source\siplist.xml" -destination="D:\sips\" -premis="C:\Eigene Dateien\SIP-Source\premis.xml"_  
+__*java -jar SipBuilder.jar -siplist="C:\Eigene Dateien\SIP-Source\siplist.xml" -destination="D:\sips\" -premis="C:\Eigene Dateien\SIP-Source\premis.xml"*__  
 Erstellt mehrere SIPs gemäß den Angaben in der Datei __C:\Eigene Dateien\SIP-Source\siplist.xml__. Die in der Premis-Datei __C:\Eigene Dateien\SIP-Source\ premis.xml__ angegebenen Rechte werden dabei übernommen.
 
 ### Fehlercodes
